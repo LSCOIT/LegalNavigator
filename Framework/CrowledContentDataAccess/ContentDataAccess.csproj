@@ -56,9 +56,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CrowledContentDataRepository.cs" />
+    <Compile Include="PlatformCoreSettingContents\PlatformCoreDatabaseContext.cs" />
+    <Compile Include="PlatformCoreSettingContents\PlatformEntities.cs" />
     <Compile Include="StateBasedContents\CrowledContentDataContextBase.cs" />
     <Compile Include="DataContextFactory\CrowledContentDataContextFactory.cs" />
-    <Compile Include="Document.cs" />
+    <Compile Include="StateBasedContents\Document.cs" />
     <Compile Include="DataContextFactory\ICrowledContentDataContextFactory.cs" />
     <Compile Include="ICrowledContentDataRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

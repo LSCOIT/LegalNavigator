@@ -1,13 +1,15 @@
 ﻿using Autofac;
 using Autofac.Integration.WebApi;
-using CrawledContentDataAccess.DataContextFactory;
-using CrowledContentDataAccess;
-using CrowledContentDataAccess.DataContextFactory;
+using ContentDataAccess.DataContextFactory;
+using ContentDataAccess;
 using System.Reflection;
 using System.Web.Http;
 
 namespace ContentsExtractionApi.App_Start
 {
+    /// <summary>
+    /// DependencyConfig
+    /// </summary>
     public class DependencyConfig
     {
         public static void  Register(HttpConfiguration config)

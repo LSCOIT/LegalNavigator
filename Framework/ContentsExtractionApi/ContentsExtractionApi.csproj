@@ -24,7 +24,8 @@
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>  
+    </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -305,9 +306,9 @@
       <Project>{66caccbd-c0fd-4441-b890-fe71e6999e83}</Project>
       <Name>CrawledContentsBusinessLayer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CrowledContentDataAccess\CrawledContentDataAccess.csproj">
+    <ProjectReference Include="..\CrowledContentDataAccess\ContentDataAccess.csproj">
       <Project>{dd97e6df-0200-40b4-9f95-1396645d1566}</Project>
-      <Name>CrawledContentDataAccess</Name>
+      <Name>ContentDataAccess</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

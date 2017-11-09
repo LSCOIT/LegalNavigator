@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.13
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrawledContentDataAccess", "CrowledContentDataAccess\CrawledContentDataAccess.csproj", "{DD97E6DF-0200-40B4-9F95-1396645D1566}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContentDataAccess", "CrowledContentDataAccess\ContentDataAccess.csproj", "{DD97E6DF-0200-40B4-9F95-1396645D1566}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TopicsAndContentCrawlerApp", "TopicsAndContentCrawlerApp\TopicsAndContentCrawlerApp.csproj", "{5FDC326D-F7A3-4EC1-9A23-4CDCCFD55C9D}"
 EndProject
@@ -36,5 +36,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5375144C-3A4E-40D7-86E9-A73F9E86F26A}
 	EndGlobalSection
 EndGlobal

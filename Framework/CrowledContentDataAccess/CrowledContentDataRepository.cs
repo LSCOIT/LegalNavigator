@@ -1,14 +1,10 @@
 ﻿
-using CrawledContentDataAccess.StateBasedContents;
-using CrowledContentDataAccess.DataContextFactory;
-using System;
+using ContentDataAccess.StateBasedContents;
+using ContentDataAccess.DataContextFactory;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CrowledContentDataAccess
+namespace ContentDataAccess
 {
     public class CrowledContentDataRepository : ICrowledContentDataRepository
     {

@@ -55,9 +55,9 @@
     <Compile Include="WlhDataExtraction\WebCrawler.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CrowledContentDataAccess\CrawledContentDataAccess.csproj">
+    <ProjectReference Include="..\CrowledContentDataAccess\ContentDataAccess.csproj">
       <Project>{dd97e6df-0200-40b4-9f95-1396645d1566}</Project>
-      <Name>CrawledContentDataAccess</Name>
+      <Name>ContentDataAccess</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

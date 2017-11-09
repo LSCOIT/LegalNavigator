@@ -1,4 +1,4 @@
-﻿using CrowledContentDataAccess;
+﻿using ContentDataAccess;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CrawledContentDataAccess.StateBasedContents
+namespace ContentDataAccess.StateBasedContents
 {
     public class CrowledContentDataContextBase: DbContext
     {

@@ -1,7 +1,7 @@
 ﻿
 namespace CrawledContentsBusinessLayer.WlhDataExtraction
 {
-    using CrowledContentDataAccess;
+    using ContentDataAccess.StateBasedContents;
     using System;
     using System.Collections.Generic;
     using System.IO;

@@ -1,11 +1,12 @@
-﻿using System;
+﻿using ContentDataAccess.StateBasedContents;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CrowledContentDataAccess
+namespace ContentDataAccess
 {
     public interface ICrowledContentDataRepository
     {        

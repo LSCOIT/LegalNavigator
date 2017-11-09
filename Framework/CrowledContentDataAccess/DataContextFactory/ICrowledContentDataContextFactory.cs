@@ -1,7 +1,6 @@
-﻿using CrawledContentDataAccess.StateBasedContents;
-using System.Data.Entity;
+﻿using ContentDataAccess.StateBasedContents;
 
-namespace CrowledContentDataAccess.DataContextFactory
+namespace ContentDataAccess.DataContextFactory
 {
     public  interface ICrowledContentDataContextFactory
     {
