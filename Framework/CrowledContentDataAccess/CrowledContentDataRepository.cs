@@ -221,7 +221,10 @@ namespace ContentDataAccess
                     var LawCategory = curatedCntx.LawCategories.FirstOrDefault(lawCat => nsmiCode.ToLower().Contains(lawCat.NSMICode.ToLower()));
                     var resource = LawCategory != null ? curatedCntx.Resources.Where(res => res.LawCategory.LCID == LawCategory.LCID) : null;
                     var process = LawCategory != null ? curatedCntx.Processes.Where(prcs => prcs.LawCategory.LCID == LawCategory.LCID) : null;
-                    var nsmiResult = new NSMIContent { Description = LawCategory?.Description, Resources = resource?.ToList(), Processes = process?.ToList() };
+                    var ParentNode = LawCategory != null ? plaformCntx.LawTaxonomies.FirstOrDefault(lawTx => lawTx.NSMICode == LawCategory.NSMICode) : null;
+                    var subCategories = ParentNode != null ? plaformCntx.LawTaxonomies.Where(lawTx => lawTx.ParentNodeId == ParentNode.NodeId) : null;
+                 
+                   var nsmiResult = new NSMIContent { Description = LawCategory?.Description, Resources = resource?.ToList(), Processes = process?.ToList(), SubCategories=subCategories?.Select(subCat=> subCat.Title).ToList()};
 
                     return nsmiResult;
                 }

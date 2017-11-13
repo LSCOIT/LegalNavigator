@@ -69,7 +69,7 @@ namespace ContentDataAccess.PlatformCoreSettingContents
     {
         public int NodeId { get; set; }
         public string NodeName { get; set; }
-        public bool ParentNodeId { get; set; }
+        public int ParentNodeId { get; set; }
         public string NSMICode { get; set; }
         public string Title { get; set; }
         public decimal Percentage { get; set; }

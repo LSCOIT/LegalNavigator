@@ -13,6 +13,7 @@ namespace ContentDataAccess.PlatformCoreSettingContents
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
         public virtual DbSet<CrawlerSetting> CrawlerSettings { get; set; }
+        public virtual DbSet<LawTaxonomy> LawTaxonomies { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
