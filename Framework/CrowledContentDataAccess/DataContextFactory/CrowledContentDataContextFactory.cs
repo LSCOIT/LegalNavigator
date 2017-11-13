@@ -1,5 +1,7 @@
 ﻿using ContentDataAccess.DataContextFactory;
+using ContentDataAccess.PlatformCoreSettingContents;
 using ContentDataAccess.StateBasedContents;
+using CrawledContentDataAccess.CuratedExperienceContents;
 
 namespace ContentDataAccess.DataContextFactory
 {
@@ -9,9 +11,15 @@ namespace ContentDataAccess.DataContextFactory
         {
             return new CrowledContentDataContextBase(connectionString);
         }
-        //public CrowledContentDataContextForAL GetCrowledContentDataContextForAL(string connectionString)
-        //{
-        //    return new CrowledContentDataContextForAL(connectionString);
-        //}
+
+        public CuratedExperienceDataContext GetCuratedExperienceDataContext()
+        {
+            return new CuratedExperienceDataContext();
+        }
+
+        public PlatformCoreDataContext GetPlatformCoreDataContext()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

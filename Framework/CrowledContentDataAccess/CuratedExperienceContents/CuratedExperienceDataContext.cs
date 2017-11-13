@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace CrawledContentDataAccess.CuratedExperienceContents
 {
-    class CuratedExperienceDatabaseContext: DbContext
+    public class CuratedExperienceDataContext: DbContext
     {
-        public CuratedExperienceDatabaseContext()
+        public CuratedExperienceDataContext()
             : base("name=CuratedExperienceDb")
         {
         }

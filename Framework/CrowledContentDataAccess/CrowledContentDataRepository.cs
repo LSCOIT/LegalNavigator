@@ -3,6 +3,8 @@ using ContentDataAccess.StateBasedContents;
 using ContentDataAccess.DataContextFactory;
 using System.Collections.Generic;
 using System.Linq;
+using CrawledContentDataAccess.CuratedExperienceContents;
+using ContentDataAccess.PlatformCoreSettingContents;
 
 namespace ContentDataAccess
 {
@@ -205,6 +207,24 @@ namespace ContentDataAccess
 
                 cntx.Topics.Add(topic);
                 cntx.SaveChanges();
+            }
+        }
+
+        public NSMIContent GetNSMIContent(string nsmiCode, string connectionString)
+        {
+            using (CuratedExperienceDataContext curatedCntx = iCrowledContentDataRepository.GetCuratedExperienceDataContext())
+
+            {
+                using (PlatformCoreDataContext plaformCntx = iCrowledContentDataRepository.GetPlatformCoreDataContext())
+                {
+
+                    var LawCategory = curatedCntx.LawCategories.FirstOrDefault(lawCat => nsmiCode.ToLower().Contains(lawCat.NSMICode.ToLower()));
+                    var resource = LawCategory != null ? curatedCntx.Resources.Where(res => res.LawCategory.LCID == LawCategory.LCID) : null;
+                    var process = LawCategory != null ? curatedCntx.Processes.Where(prcs => prcs.LawCategory.LCID == LawCategory.LCID) : null;
+                    var nsmiResult = new NSMIContent { Description = LawCategory?.Description, Resources = resource?.ToList(), Processes = process?.ToList() };
+
+                    return nsmiResult;
+                }
             }
         }
     }

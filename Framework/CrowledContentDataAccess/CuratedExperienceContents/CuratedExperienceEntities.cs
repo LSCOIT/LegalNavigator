@@ -14,7 +14,7 @@ namespace CrawledContentDataAccess.CuratedExperienceContents
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int LCID { get; set; }
-        public int NSMICode { get; set; }
+        public string NSMICode { get; set; }
         public string Description { get; set; }
     }
     public class Resource

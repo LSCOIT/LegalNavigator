@@ -56,9 +56,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CrowledContentDataRepository.cs" />
-    <Compile Include="CuratedExperienceContents\CuratedExperienceDatabaseContext.cs" />
+    <Compile Include="CuratedExperienceContents\CuratedExperienceDataContext.cs" />
     <Compile Include="CuratedExperienceContents\CuratedExperienceEntities.cs" />
-    <Compile Include="PlatformCoreSettingContents\PlatformCoreDatabaseContext.cs" />
+    <Compile Include="CuratedExperienceContents\NSMIContent.cs" />
+    <Compile Include="PlatformCoreSettingContents\PlatformCoreDataContext.cs" />
     <Compile Include="PlatformCoreSettingContents\PlatformEntities.cs" />
     <Compile Include="StateBasedContents\CrowledContentDataContextBase.cs" />
     <Compile Include="DataContextFactory\CrowledContentDataContextFactory.cs" />

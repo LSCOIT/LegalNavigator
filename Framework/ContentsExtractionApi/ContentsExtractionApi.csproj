@@ -211,6 +211,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\ExtractNSMIContentsController.cs" />
     <Compile Include="Controllers\ExtractSubTopicsController.cs" />
     <Compile Include="Controllers\ExtractTextFromBytesController.cs" />
     <Compile Include="Controllers\ExtractTextsFromHttpFileBaseController.cs" />
@@ -220,6 +221,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ContentExtractionRequest.cs" />
+    <Compile Include="Models\NSMIInput.cs" />
     <Compile Include="Models\SentenceInput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\StateToConnectionStringMapper.cs" />

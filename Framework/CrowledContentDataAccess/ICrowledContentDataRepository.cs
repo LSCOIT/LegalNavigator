@@ -1,4 +1,5 @@
 ﻿using ContentDataAccess.StateBasedContents;
+using CrawledContentDataAccess.CuratedExperienceContents;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Core.Objects;
@@ -18,6 +19,7 @@ namespace ContentDataAccess
         string GetRelevantContentTopDown(string intent, string title, string connectionString);
         List<RelevantTopic> GetRelevantTopicsDataAsPivot(string sentence, string connectionString);
         List<RelevantTopic> GetRelevantTopicsSentenceAsPivot(string sentence, string connectionString);
-        
+        NSMIContent GetNSMIContent(string nsmiCode, string connectionString);
+
     }
 }

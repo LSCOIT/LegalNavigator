@@ -3,16 +3,16 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace ContentDataAccess.PlatformCoreSettingContents
 {
-    class PlatformCoreDatabaseContext: DbContext
+    public class PlatformCoreDataContext : DbContext
     {
-        public PlatformCoreDatabaseContext()
+        public PlatformCoreDataContext()
             : base("name=PlatformCoreDb")
         {
         }
-        public virtual DbSet<User> Topics { get; set; }
-        public virtual DbSet<Role> SubTopics { get; set; }
-        public virtual DbSet<Location> Documents { get; set; }
-        public virtual DbSet<CrawlerSetting> DocumentContents { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<Location> Locations { get; set; }
+        public virtual DbSet<CrawlerSetting> CrawlerSettings { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
