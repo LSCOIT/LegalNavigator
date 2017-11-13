@@ -1,5 +1,4 @@
-﻿
-<div class="fixed-header">
+﻿<div class="fixed-header">
     <header>
         <div class="container-fluid">
             <div class="row">
@@ -22,9 +21,9 @@
                         <!-- Nav tabs -->
                         <ul class="nav nav-tabs" role="tablist">
                             <li role="presentation" routerLinkActive="active">
-                                <a [routerLink]="['/general']" ><span class="tabicon font20"><i class="fa fa-exclamation" aria-hidden="true"></i></span><span class="hidden-xs">General Info</span></a>
+                                <a [routerLink]="['/general']"><span class="tabicon font20"><i class="fa fa-exclamation" aria-hidden="true"></i></span><span class="hidden-xs">General Info</span></a>
                             </li>
-                            <li role="presentation" routerLinkActive="active"><a [routerLink]="['/guided']" ><span class="tabicon font20"><i class="fa fa-question-circle-o" aria-hidden="true"></i></span><span class="hidden-xs">Guided Assistant</span></a></li>
+                            <li role="presentation" routerLinkActive="active"><a [routerLink]="['/guided']"><span class="tabicon font20"><i class="fa fa-question-circle-o" aria-hidden="true"></i></span><span class="hidden-xs">Guided Assistant</span></a></li>
                             <li role="presentation" routerLinkActive="active"><a [routerLink]="['/doc']"><span class="tabicon font20"><i class="fa fa-file-text-o" aria-hidden="true"></i></span><span class="hidden-xs">Documents</span></a></li>
                             <li role="presentation" routerLinkActive="active"><a [routerLink]="['/chat']"><span class="tabicon font20"><i class="fa fa-comments" aria-hidden="true"></i></span><span class="hidden-xs">Chat</span></a></li>
                             <li role="presentation"><a href="#" data-target="#searchModal" data-toggle="modal"><span class="tabicon font20"><i class="fa fa-search" aria-hidden="true"></i></span><span class="hidden-xs">Search</span></a></li>
@@ -39,8 +38,6 @@
     </section>
 </div>
 
-
-
 <div class="modal fade timeline-modal" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel">
     <div class="modal-dialog modal-top" role="document">
         <div class="modal-content">
@@ -52,11 +49,11 @@
                     <input type="text" placeholder="Type Here" class="form-control">
                     <label class="input-group-btn">
 
-                        <button class="btn btn-resources" type="button" id="modalSearch" (click) ="dispalyDiv()">Search</button>
+                        <button class="btn btn-resources" type="button" id="modalSearch" (click)="dispalyDiv()">Search</button>
                     </label>
                 </div>
 
-                <div class="input-group col-md-12 timeline-browse m-top-20 m-bottom-10 display-none" id="divSnippet"  [ngClass]="[showDiv?'activeSlide':'hideSlide']">
+                <div class="input-group col-md-12 timeline-browse m-top-20 m-bottom-10 display-none" id="divSnippet" [ngClass]="[showDiv?'activeSlide':'hideSlide']">
                     <div class="topics-box height-topics-box p-b-10px">
 
                         <div class="snippet_ol">
@@ -74,14 +71,14 @@
                             <span class="">www.home.html</span>
                         </div>
                     </div>
-                    <h5 class="no-margin-bottom"><strong>Sexual Assault and homelessness with children</strong></h5>
-                    do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim venian sed do eiusmod tempor incididunt…...
+                    <h5 class="no-margin-bottom"><strong>Sexual Assault and homelessness with children</strong></h5> do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim venian sed do eiusmod tempor incididunt…...
                     <div class="f-s-12px"><strong>housing - family - crime</strong></div>
 
-                    <h5 class="no-margin-bottom"><strong>Homeless veterans</strong></h5>
-                    do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim venian sed do eiusmod tempor incididunt…
+                    <h5 class="no-margin-bottom"><strong>Homeless veterans</strong></h5> do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim venian sed do eiusmod tempor incididunt…
                     <div class="f-s-12px"><strong>housing - family</strong></div>
-                    <div class="m-top-20 text-center"><button class="btn btn-resources" type="button">SEE ALL</button></div>
+                    <div class="m-top-20 text-center">
+                        <button class="btn btn-resources" type="button">SEE ALL</button>
+                    </div>
 
                 </div>
             </div>
