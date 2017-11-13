@@ -9,7 +9,6 @@ namespace ContentDataAccess.PlatformCoreSettingContents
             : base("name=PlatformCoreDb")
         {
         }
-        // public virtual DbSet<CsvFile> CsvFileContents { get; set; }
         public virtual DbSet<User> Topics { get; set; }
         public virtual DbSet<Role> SubTopics { get; set; }
         public virtual DbSet<Location> Documents { get; set; }

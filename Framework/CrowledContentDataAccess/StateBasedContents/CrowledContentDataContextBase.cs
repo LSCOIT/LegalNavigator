@@ -19,7 +19,6 @@ namespace ContentDataAccess.StateBasedContents
             : base("name=CrowledContentsDb")
         {
         }
-        // public virtual DbSet<CsvFile> CsvFileContents { get; set; }
         public virtual DbSet<Topic> Topics { get; set; }
         public virtual DbSet<SubTopic> SubTopics { get; set; }
         public virtual DbSet<Document> Documents { get; set; }
