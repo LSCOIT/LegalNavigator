@@ -1,0 +1,109 @@
+﻿
+<div class="fixed-header">
+    <header>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="headerbg">
+                    <div class="headercontent">
+                        <div class="container">
+                            <h1>Legal Assist</h1>
+                            <p>One stop for all your legal problems</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section id="tabs">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="lp-tabs">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" routerLinkActive="active">
+                                <a [routerLink]="['/general']" ><span class="tabicon font20"><i class="fa fa-exclamation" aria-hidden="true"></i></span><span class="hidden-xs">General Info</span></a>
+                            </li>
+                            <li role="presentation" routerLinkActive="active"><a [routerLink]="['/guided']" ><span class="tabicon font20"><i class="fa fa-question-circle-o" aria-hidden="true"></i></span><span class="hidden-xs">Guided Assistant</span></a></li>
+                            <li role="presentation" routerLinkActive="active"><a [routerLink]="['/doc']"><span class="tabicon font20"><i class="fa fa-file-text-o" aria-hidden="true"></i></span><span class="hidden-xs">Documents</span></a></li>
+                            <li role="presentation" routerLinkActive="active"><a [routerLink]="['/chat']"><span class="tabicon font20"><i class="fa fa-comments" aria-hidden="true"></i></span><span class="hidden-xs">Chat</span></a></li>
+                            <li role="presentation"><a href="#" data-target="#searchModal" data-toggle="modal"><span class="tabicon font20"><i class="fa fa-search" aria-hidden="true"></i></span><span class="hidden-xs">Search</span></a></li>
+                            <li role="presentation"><a href="#" data-target="#returnModal" data-toggle="modal"><span class="tabicon font20"><i class="fa fa-lock" aria-hidden="true"></i></span><span class="hidden-xs">Returning User</span></a></li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+
+<div class="modal fade timeline-modal" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel">
+    <div class="modal-dialog modal-top" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btnSearchClose"><i class="fa fa-times" aria-hidden="true"></i></button>
+            </div>
+            <div class="modal-body search-p">
+                <div class="input-group col-md-10 timeline-browse search-mid">
+                    <input type="text" placeholder="Type Here" class="form-control">
+                    <label class="input-group-btn">
+
+                        <button class="btn btn-resources" type="button" id="modalSearch" (click) ="dispalyDiv()">Search</button>
+                    </label>
+                </div>
+
+                <div class="input-group col-md-12 timeline-browse m-top-20 m-bottom-10 display-none" id="divSnippet"  [ngClass]="[showDiv?'activeSlide':'hideSlide']">
+                    <div class="topics-box height-topics-box p-b-10px">
+
+                        <div class="snippet_ol">
+                            <ol>
+                                <li>Live on Cash for 2 Weeks. ...</li>
+                                <li>Increase Your Spending Awareness. ...</li>
+                                <li>Find Out Where Your Money Goes - Track Your Spending for 2 Weeks. ...</li>
+                                <li>Create a Spending Plan or a Budget to Solve and Prevent Financial Problems. ...</li>
+                                <li>Find a Replacement for One Large Expense in Your Monthly Budget. ...</li>
+                                <li>Identify Expenses You Can Reduce.</li>
+                            </ol>
+                        </div>
+                        <div class="text-center">
+                            <h4><a href="Home.html">Legal Connect</a></h4>
+                            <span class="">www.home.html</span>
+                        </div>
+                    </div>
+                    <h5 class="no-margin-bottom"><strong>Sexual Assault and homelessness with children</strong></h5>
+                    do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim venian sed do eiusmod tempor incididunt…...
+                    <div class="f-s-12px"><strong>housing - family - crime</strong></div>
+
+                    <h5 class="no-margin-bottom"><strong>Homeless veterans</strong></h5>
+                    do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim venian sed do eiusmod tempor incididunt…
+                    <div class="f-s-12px"><strong>housing - family</strong></div>
+                    <div class="m-top-20 text-center"><button class="btn btn-resources" type="button">SEE ALL</button></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade timeline-modal" id="returnModal" tabindex="-1" role="dialog" aria-labelledby="returnModalLabel">
+    <div class="modal-dialog modal-top" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
+            </div>
+            <div class="modal-body search-p">
+
+                <div class="input-group col-md-10 timeline-browse m-top-20 m-bottom-10">
+                    <input type="text" placeholder="User Id" class="form-control">
+                    <label class="input-group-btn">
+                        <button class="btn btn-resources" type="button" data-dismiss="modal" id="modalReturn" (click)="returnToChat()">Proceed</button>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

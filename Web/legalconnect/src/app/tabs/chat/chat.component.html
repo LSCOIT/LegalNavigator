@@ -1,0 +1,227 @@
+﻿<headerDiv>  </headerDiv>
+<section id="tabcontent">
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="resources">
+            <div class="tab-box">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-7"><h1>Chat</h1></div>
+                        <div class="col-md-5 m-top-20">
+                            <span class="col-md-1" style="line-height:32px; display:none;">Select</span>
+                            <div class="col-md-4 btn-group m-left-10">
+
+                                <select [(ngModel)]="selectedCountry">
+                                    <option value="Alabama">Alabama (AL)</option>
+                                    <option value="Alaska">Alaska (AK)</option>
+                                    <option value="Arizona">Arizona (AZ)</option>
+                                    <option value="Arkansas">Arkansas (AR)</option>
+                                    <option value="California">California (CA)</option>
+                                    <option value="Colorado">Colorado (CO)</option>
+                                    <option value="Connecticut">Connecticut (CT)</option>
+                                    <option value="Delaware">Delaware (DE)</option>
+                                    <option value="District Of Columbia">District Of Columbia (DC)</option>
+                                    <option value="Florida">ty (FL)</option>
+                                    <option value="Georgia">Georgia (GA)</option>
+                                    <option value="Hawaii">Hawaii (HI)</option>
+                                    <option value="Idaho">Idaho (ID)</option>
+                                    <option value="Illinois">Illinois (IL)</option>
+                                    <option value="Indiana">Indiana (IN)</option>
+                                    <option value="Iowa">Iowa (IA)</option>
+                                    <option value="Kansas">Kansas (KS)</option>
+                                    <option value="Kentucky">Kentucky (KY)</option>
+                                    <option value="Louisiana">Louisiana (LA)</option>
+                                    <option value="Maine">Maine (ME)</option>
+                                    <option value="Maryland">Maryland (MD)</option>
+                                    <option value="Massachusetts">Massachusetts (MA)</option>
+                                    <option value="Michigan">Michigan (MI)</option>
+                                    <option value="Minnesota">Minnesota (MN)</option>
+                                    <option value="Mississippi">Mississippi (MS)</option>
+                                    <option value="Missouri">Missouri (MO)</option>
+                                    <option value="Montana">Montana (MT)</option>
+                                    <option value="Nebraska">Nebraska (NE)</option>
+                                    <option value="Nevada">Nevada (NV)</option>
+                                    <option value="New Hampshire">New Hampshire (NH)</option>
+                                    <option value="New Jersey">New Jersey (NJ)</option>
+                                    <option value="New Mexico">New Mexico (NM)</option>
+                                    <option value="New York">New York (NY)</option>
+                                    <option value="North Carolina">North Carolina (NC)</option>
+                                    <option value="North Dakota">North Dakota (ND)</option>
+                                    <option value="Ohio">Ohio (OH)</option>
+                                    <option value="Oklahoma">Oklahoma (OK)</option>
+                                    <option value="Oregon">Oregon (OR)</option>
+                                    <option value="Pennsylvania">Pennsylvania (PA)</option>
+                                    <option value="Rhode Island">Rhode Island (RI)</option>
+                                    <option value="South Carolina">South Carolina (SC)</option>
+                                    <option value="South Dakota">South Dakota (SD)</option>
+                                    <option value="Tennessee">Tennessee (TN)</option>
+                                    <option value="Texas">Texas (TX)</option>
+                                    <option value="Utah">Utah (UT)</option>
+                                    <option value="Vermont">Vermont</option>
+                                    <option value="Virginia">Virginia</option>
+                                    <option value="Washington">Washington</option>
+                                    <option value="West Virginia">West Virginia</option>
+                                    <option value="Wisconsin">Wisconsin</option>
+                                    <option value="Wyoming">Wyoming</option>
+                                </select>
+                            </div>
+                        </div>
+                        <p class="m-top-20 col-md-12">
+                            <span class="resultstxt">QUESTIONS? WE CAN HELP, TALK TO OUR CUSTOMER SUPPORT SERVICE</span>
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+           
+            <form id="testForm1">
+                <div class="container" style="margin:0px; padding:0px;">
+
+                    <div class="row chat-window col-xs-12 col-md-12 m-top-30 m-bottom-30 m-t-b-30" id="chat_window_1">
+                        <div class="col-xs-12 col-sm-12 col-md-6 m-0 p-0">
+                            <div class="panel panel-default no-background no-border">
+
+
+                                <div class="col-xs-12 left-chat-box" id="chat_msgs">
+                                    <div class="welCome" *ngIf="returnFlag==='false'">Welcome to Legal Assist</div>
+
+                                    <div *ngIf="returnFlag==='true'">
+                                        <div class="welCome">Welcome Back to Legal Assist</div>
+                                        <div *ngFor="let message of returnMessages" [class]="message.self">
+                                            <div [class]="message.class" innerHtml="{{message.text}}"><span datetime='2009-11-13T20:00' style="float:right">{{message.time}}</span></div>
+
+                                        </div>
+                                    </div>
+                                    <div *ngFor="let message of messages" [class]="message.self">
+                                        <div [class]="message.class" innerHtml="{{message.text}}"><time datetime='2009-11-13T20:00' style="float:right">{{message.time}}</time></div>
+
+                                    </div>
+                                </div>
+                                <div class="panel-footer col-md-12 col-sm-12 col-xs-12 p-r-0">
+
+                                    <div class="col-md-11 col-sm-11 col-xs-10 m-0 p-0 w-88">
+
+
+                                        <span class="userTyp" *ngIf="showMessage">User is typing...</span>
+                                        <textarea id="btn-input" type="text" class="form-control" placeholder="Type here..." [(ngModel)]="replyMessage" name="replyMessage" style="height:70px;"
+                                                  (keyup.enter)="reply()"></textarea>
+
+
+                                    </div>
+                                    <div class="col-md-1 col-sm-1 col-xs-1 mrg-lft p-0 m-l-10" style="margin-top:22px;">
+
+                                        <a (click)="reply()"><i class="fa fa-paper-plane" aria-hidden="true"></i></a>
+                                    </div>
+                                    <div class="col-md-9 col-sm-9 col-xs-4">
+                                        <label for="my-file-selector">
+                                            <span class="fa fa-paperclip" aria-hidden="true" style="font-size:20px;margin-top:10px">
+
+                                                <input id="my-file-selector" type="file" #file (change)="onChange(file.files)" multiple style="display:none" />
+                                             
+                                            </span>
+                                        </label>
+                                    </div>
+                                    <div class="col-md-3 col-sm-3 col-xs-6">
+                                        <span class="hidden-xs">
+                                            <a href="#" data-target="#scanModal" data-toggle="modal" id="dsk_id"><i class="glyphicon glyphicon-camera full" style="margin-top:10px;font-size:20px; color:#000;"></i> </a>
+                                        </span>
+                                        <label for="take-picture" style="float:right">
+                                            <span class="hidden-lg hidden-sm hidden-md glyphicon glyphicon-camera" style="margin-top:13px;">
+                                                <input id="take-picture" accept="image/*" type="file" style="display:none">
+                                            </span>
+                                        </label>
+                                    </div>
+
+
+
+                                </div>
+                                <img src="" alt="" id="show-picture" style="width:20%;display:none">
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 m-top-100 m-0 p-0">
+                            <div class="panel panel-default no-background no-border m-0 p-0">
+
+                                <div class="col-xs-12 left-chat-box" id="resources">
+                                    <div *ngFor="let rightbox of rightboxes" [class]="rightbox.self">
+                                        <div class="box_sent2">
+
+                                            <div class="box_sent_sub">
+                                              
+                                                <a href="#" data-toggle="modal" data-target="#myModal-chat" (click)="openPop(rightbox.url)">
+                                                    {{rightbox.text}}
+                                                </a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+            <div class="modal fade timeline-modal" id="scanModal" tabindex="-1" role="dialog" aria-labelledby="scanModalLabel">
+                <div class="modal-dialog modal-top" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body search-p">
+
+                            <h4>Please use your mobile to scan your documnets</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Return Modal -->
+            <div class="modal fade timeline-modal" id="myModal-chat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog modal-top" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closePop()"><i class="fa fa-times" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="modal-body text-center p-left-20 p-right-20 p-top-20">
+                            <h2>USER ID</h2>
+                            <p class="m-top-15"><strong>12345</strong></p>
+                            <p>This userid is being generated for the sole purpose of allowing you to return to the same step in the process where you left off.  We are not retaining any of your personal or specific information.</p>
+                            <p class="m-top-15"><strong>OR</strong></p>
+                            <div class="input-group col-md-8 col-md-offset-2 timeline-browse m-top-20 m-bottom-10">
+                                <input type="text" placeholder="Enter Your Email" class="form-control">
+                                <label class="input-group-btn">
+                                 
+                                    <span class="btn btn-primary" data-dismiss="modal" (click)="closePop()">
+                                        Send Link
+                                    </span>
+                                </label>
+
+                            </div>
+
+                            <p>This userid is being generated for the sole purpose of allowing you to return to the same step in the process where you left off.  We are not retaining any of your personal or specific information.</p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="resources_content" id="Downsection">
+    <mrs></mrs>
+    <footerDiv></footerDiv>
+</section>
+<style>
+    body {
+        overflow-x: hidden !important;
+    }
+
+        body > * {
+            max-width: 100% !important;
+        }
+</style>

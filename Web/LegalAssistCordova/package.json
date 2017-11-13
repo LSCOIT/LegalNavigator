@@ -1,0 +1,13 @@
+{
+    "name": "LegalAssistCordova",
+    "version": "1.0.0",
+    "private": true,
+    "dependencies": {
+        "cordova-plugin-whitelist": "1"
+    },
+    "cordova": {
+        "plugins": {
+            "cordova-plugin-whitelist": {}
+        }
+    }
+}
