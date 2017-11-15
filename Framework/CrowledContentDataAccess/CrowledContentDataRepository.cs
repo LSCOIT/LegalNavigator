@@ -3,8 +3,8 @@ using ContentDataAccess.StateBasedContents;
 using ContentDataAccess.DataContextFactory;
 using System.Collections.Generic;
 using System.Linq;
-using CrawledContentDataAccess.CuratedExperienceContents;
 using ContentDataAccess.PlatformCoreSettingContents;
+using CrawledContentDataAccess.StateBasedContents;
 
 namespace ContentDataAccess
 {
@@ -20,7 +20,7 @@ namespace ContentDataAccess
         public string GetRelevantContent(string subTopic, string title, string connectionString)
         {
             // using (CrowledContentDataContext cntx = new CrowledContentDataContext())
-            using (CrowledContentDataContextBase cntx = iCrowledContentDataRepository.GetCrowledContentDataContext(connectionString))
+            using (var cntx = iCrowledContentDataRepository.GetStateBasedContentDataContext(connectionString))
             {
                 //Most relevant
                 var relevantDocFromDeepestLevelDocument = cntx.DocumentContents.Where(doc =>
@@ -54,7 +54,7 @@ namespace ContentDataAccess
         public string GetRelevantContentTopDown(string intent, string title, string connectionString)
         {
             //using (CrowledContentDataContext cntx = new CrowledContentDataContext())
-            using (CrowledContentDataContextBase cntx = iCrowledContentDataRepository.GetCrowledContentDataContext(connectionString))
+            using (var cntx = iCrowledContentDataRepository.GetStateBasedContentDataContext(connectionString))
             {
                 //Most relevant
                 var relevantIntents = cntx.SubTopics.Where(subtopic =>
@@ -105,7 +105,7 @@ namespace ContentDataAccess
         public List<RelevantTopic> GetRelevantTopicsSentenceAsPivot(string sentence, string connectionString)
         {
             //using (CrowledContentDataContext cntx = new CrowledContentDataContext())
-            using (CrowledContentDataContextBase cntx = iCrowledContentDataRepository.GetCrowledContentDataContext(connectionString))
+            using (var cntx = iCrowledContentDataRepository.GetStateBasedContentDataContext(connectionString))
             {
 
                 var relevantSubtopic = cntx.SubTopics.FirstOrDefault(subtopic => sentence.ToLower().Contains(subtopic.Name.ToLower()));
@@ -124,7 +124,7 @@ namespace ContentDataAccess
         public List<RelevantTopic> GetRelevantTopicsDataAsPivot(string sentence, string connectionString)
         {
             //using (CrowledContentDataContext cntx = new CrowledContentDataContext())
-            using (CrowledContentDataContextBase cntx = iCrowledContentDataRepository.GetCrowledContentDataContext(connectionString))
+            using (var cntx = iCrowledContentDataRepository.GetStateBasedContentDataContext(connectionString))
             {
                 var relevantSubtopic = cntx.SubTopics.FirstOrDefault(subtopic => subtopic.Name.ToLower().Contains(sentence.ToLower()));
                 var result = relevantSubtopic != null ? cntx.Documents.Where(doc => doc.SubTopic.SubTopicId == relevantSubtopic.SubTopicId).Select(doc => new RelevantTopic { Name = doc.Title, Url = doc.Url }).ToList() : null;
@@ -161,7 +161,7 @@ namespace ContentDataAccess
     public Topic GetTopic(int id, string connectionString)
         {
             //using (CrowledContentDataContext cntx = new CrowledContentDataContext())
-            using (CrowledContentDataContextBase cntx = iCrowledContentDataRepository.GetCrowledContentDataContext(connectionString))
+            using (var cntx = iCrowledContentDataRepository.GetStateBasedContentDataContext(connectionString))
             {
 
                 var relevantContetnt = cntx.Topics.FirstOrDefault(topic => topic.topicId == id);
@@ -174,7 +174,7 @@ namespace ContentDataAccess
         public Topic GetTopic(string name, string connectionString)
         {
             //using (CrowledContentDataContext cntx = new CrowledContentDataContext())
-            using (CrowledContentDataContextBase cntx = iCrowledContentDataRepository.GetCrowledContentDataContext(connectionString))
+            using (var cntx = iCrowledContentDataRepository.GetStateBasedContentDataContext(connectionString))
             {
 
                 var relevantContetnt = cntx.Topics.FirstOrDefault(topic => topic.Name == name);
@@ -186,8 +186,8 @@ namespace ContentDataAccess
 
         public List<Topic> GetTopics(string connectionString)
         {
-            //using (CrowledContentDataContext cntx = new CrowledContentDataContext())
-            using (CrowledContentDataContextBase cntx = iCrowledContentDataRepository.GetCrowledContentDataContext(connectionString))
+            
+            using (var cntx = iCrowledContentDataRepository.GetStateBasedContentDataContext(connectionString))
 
             {
 
@@ -202,7 +202,7 @@ namespace ContentDataAccess
         {
 
             //using (CrowledContentDataContext cntx = new CrowledContentDataContext())
-            using (CrowledContentDataContextBase cntx = iCrowledContentDataRepository.GetCrowledContentDataContext(connectionString))
+            using (var cntx = iCrowledContentDataRepository.GetStateBasedContentDataContext(connectionString))
             {
 
                 cntx.Topics.Add(topic);
@@ -212,7 +212,7 @@ namespace ContentDataAccess
 
         public NSMIContent GetNSMIContent(string nsmiCode, string connectionString)
         {
-            using (CuratedExperienceDataContext curatedCntx = iCrowledContentDataRepository.GetCuratedExperienceDataContext())
+            using (var curatedCntx = iCrowledContentDataRepository.GetStateBasedContentDataContext(connectionString))
 
             {
                 using (PlatformCoreDataContext plaformCntx = iCrowledContentDataRepository.GetPlatformCoreDataContext())

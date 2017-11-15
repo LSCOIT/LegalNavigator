@@ -1,5 +1,5 @@
 ﻿using ContentDataAccess.StateBasedContents;
-using CrawledContentDataAccess.CuratedExperienceContents;
+using CrawledContentDataAccess.StateBasedContents;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Core.Objects;

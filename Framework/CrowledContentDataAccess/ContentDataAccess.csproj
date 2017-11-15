@@ -56,14 +56,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CrowledContentDataRepository.cs" />
-    <Compile Include="CuratedExperienceContents\CuratedExperienceDataContext.cs" />
-    <Compile Include="CuratedExperienceContents\CuratedExperienceEntities.cs" />
-    <Compile Include="CuratedExperienceContents\NSMIContent.cs" />
     <Compile Include="PlatformCoreSettingContents\PlatformCoreDataContext.cs" />
     <Compile Include="PlatformCoreSettingContents\PlatformEntities.cs" />
-    <Compile Include="StateBasedContents\CrowledContentDataContextBase.cs" />
+    <Compile Include="StateBasedContents\CourtContentEntities.cs" />
+    <Compile Include="StateBasedContents\NSMIContent.cs" />
+    <Compile Include="StateBasedContents\StateBasedContentDataContext.cs" />
     <Compile Include="DataContextFactory\CrowledContentDataContextFactory.cs" />
-    <Compile Include="StateBasedContents\Document.cs" />
+    <Compile Include="StateBasedContents\CuratedExperienceEntities.cs" />
+    <Compile Include="StateBasedContents\LawHelpCrawledEntities.cs" />
     <Compile Include="DataContextFactory\ICrowledContentDataContextFactory.cs" />
     <Compile Include="ICrowledContentDataRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

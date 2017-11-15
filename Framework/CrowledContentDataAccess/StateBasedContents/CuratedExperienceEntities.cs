@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CrawledContentDataAccess.CuratedExperienceContents
+namespace CrawledContentDataAccess.StateBasedContents
 {
 
     public class LawCategory //ToDo: To be popaulated Manually

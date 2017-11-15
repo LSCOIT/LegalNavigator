@@ -1,7 +1,7 @@
 ﻿using ContentDataAccess;
 using ContentsExtractionApi.Models;
 using ContentsExtractionApi.Utilities;
-using CrawledContentDataAccess.CuratedExperienceContents;
+using CrawledContentDataAccess.StateBasedContents;
 using System;
 using System.Collections.Generic;
 using System.Web.Http;
