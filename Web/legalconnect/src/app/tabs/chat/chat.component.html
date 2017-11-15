@@ -83,7 +83,7 @@
                         <div class="col-xs-12 col-sm-12 col-md-6 m-0 p-0">
                             <div class="panel panel-default no-background no-border">
 
-                                <div class="col-xs-12 left-chat-box" id="chat_msgs">
+                                <div class="col-xs-12 left-chat-box" id="chat_msgs" (scroll)="onChatScroll()">
                                     <div class="welCome" *ngIf="returnFlag==='false'">Welcome to Legal Assist</div>
 
                                     <div *ngIf="returnFlag==='true'">
@@ -139,7 +139,7 @@
                         <div class="col-xs-12 col-md-6 m-top-100 m-0 p-0">
                             <div class="panel panel-default no-background no-border m-0 p-0">
 
-                                <div class="col-xs-12 left-chat-box" id="resources">
+                                <div class="col-xs-12 left-chat-box" id="chat_resources" (scroll)="onResScroll()">
                                     <div *ngFor="let rightbox of rightboxes" [class]="rightbox.self">
                                         <div class="box_sent2">
 

@@ -157,16 +157,17 @@ export class ChatComponent implements OnInit {
 
                         var dt = new Date();
                         var time = dt.getHours() + ":" + dt.getMinutes();
-                        setTimeout(() => {
-                            this.messages.push({
-                                "text": res,
-                                "self": true,
-                                "time": time,
-                                "class": "receive"
-                            })
-                        }, 100);
+                       
+                        this.messages.push({
+                            "text": res,
+                            "self": true,
+                            "time": time,
+                            "class": "receive"
+                        });
+                       
                         this.showMessage = false;
-
+                        localStorage.setItem('scrolled', 'false');
+                        localStorage.setItem('resScrolled', 'false');
 
                     },
                     (err: any) => {
@@ -194,12 +195,38 @@ export class ChatComponent implements OnInit {
 
         this.replyMessage = "";
 
-//window.setInterval(function() {
-//  var obj = document.getElementById('test');
-//  obj.scrollTop = obj.scrollHeight;
-//}, 0);
 
-}
+        setInterval(this.updateScroll, 100);
+        setInterval(this.updateResScroll, 100);
+
+    }
+
+    updateScroll() {
+
+        if (localStorage.getItem('scrolled') == 'false') {
+            var element = document.getElementById('chat_msgs');
+            element.scrollTop = element.scrollHeight;
+        }
+    }
+
+    updateResScroll() {
+
+        if (localStorage.getItem('resScrolled') == 'false') {
+            var element = document.getElementById('chat_resources');
+            element.scrollTop = element.scrollHeight;
+        }
+    }
+    onChatScroll() {
+       
+        localStorage.setItem('scrolled', 'true');
+
+    }
+
+    onResScroll() {
+       
+        localStorage.setItem('resScrolled', 'true');
+
+    }
 
     displayText(lang: string) {
 

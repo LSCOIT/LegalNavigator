@@ -135,15 +135,15 @@ var ChatComponent = (function () {
             _this.srchServ.getChatMessages(query, _this.lang, _this.selectedCountry == " " ? _this.geoCountry : _this.selectedCountry).subscribe(function (res) {
                 var dt = new Date();
                 var time = dt.getHours() + ":" + dt.getMinutes();
-                setTimeout(function () {
-                    _this.messages.push({
-                        "text": res,
-                        "self": true,
-                        "time": time,
-                        "class": "receive"
-                    });
-                }, 100);
+                _this.messages.push({
+                    "text": res,
+                    "self": true,
+                    "time": time,
+                    "class": "receive"
+                });
                 _this.showMessage = false;
+                localStorage.setItem('scrolled', 'false');
+                localStorage.setItem('resScrolled', 'false');
             }, function (err) {
                 _this.showMessage = false;
                 alert('No data found for location ' + _this.geoCountry + ' choose country from dropdown');
@@ -161,10 +161,26 @@ var ChatComponent = (function () {
         });
         this.isVisible = true;
         this.replyMessage = "";
-        //window.setInterval(function() {
-        //  var obj = document.getElementById('test');
-        //  obj.scrollTop = obj.scrollHeight;
-        //}, 0);
+        setInterval(this.updateScroll, 100);
+        setInterval(this.updateResScroll, 100);
+    };
+    ChatComponent.prototype.updateScroll = function () {
+        if (localStorage.getItem('scrolled') == 'false') {
+            var element = document.getElementById('chat_msgs');
+            element.scrollTop = element.scrollHeight;
+        }
+    };
+    ChatComponent.prototype.updateResScroll = function () {
+        if (localStorage.getItem('resScrolled') == 'false') {
+            var element = document.getElementById('chat_resources');
+            element.scrollTop = element.scrollHeight;
+        }
+    };
+    ChatComponent.prototype.onChatScroll = function () {
+        localStorage.setItem('scrolled', 'true');
+    };
+    ChatComponent.prototype.onResScroll = function () {
+        localStorage.setItem('resScrolled', 'true');
     };
     ChatComponent.prototype.displayText = function (lang) {
         this.lang = lang;

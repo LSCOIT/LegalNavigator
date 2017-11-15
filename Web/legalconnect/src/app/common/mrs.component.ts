@@ -20,7 +20,8 @@ export class MRSComponent implements OnInit {
     city: string = "";
     mapsUrl: any;
     qnClicked: boolean = false;
-
+    collapsed: string = 'collapse';
+    aClicked: boolean = false;
 
     currentUrl: string = '';
 
@@ -130,7 +131,14 @@ export class MRSComponent implements OnInit {
             this.text = arr.text;
             document.getElementById('mrlTopics').scrollIntoView();
         }
-
+        if (this.currentUrl == '/' + route + '/forms') {
+            document.getElementById('forms_steps').scrollIntoView();
+            this.aClicked = true;
+            if (this.collapsed == 'collapse in')
+                this.collapsed = 'collapse';
+            else
+                this.collapsed = 'collapse in'
+        }
         
     }
 

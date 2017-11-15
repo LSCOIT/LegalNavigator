@@ -7,7 +7,7 @@
     </div>
     <div class="row m-top-40">
         <div class="col-md-12">
-            <div class="carousel carousel-showmanymoveone slide" id="carousel-tilenav" data-interval="false">
+            <div class="carousel slide" id="carousel-tilenav" data-interval="false">
                 <div class="carousel-inner">
                     <div class="item active">
 
@@ -106,23 +106,20 @@
             </div>
 
         </div>
-        <div class="m-top-85">
+        <div class="m-top-85"  id="forms_steps">
             <div class="row m-top-46">
                 <div class="col-xs-12">
                     <div class="panel-group" id="accordion">
                         <div class="panel panel-default forms_grp">
                             <div class="panel-heading forms_heading" id="timeline">
                                 <h1 class="panel-title forms">
-                                    <!--<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="accordion-toggle">-->
-                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" [attr.aria-expanded]=aClicked>
                                         FORMS/STEPS
                                     </a>
-                                    <!--<p class="m-top-20">
-                                        Click to see information on legal steps and Access the forms you will need where you can get help.
-                                    </p>-->
+                                    
                                 </h1>
                             </div>
-                            <div id="collapseOne" class="panel-collapse collapse">
+                            <div id="collapseOne" class="panel-collapse" [ngClass]="[collapsed]">
                                 <div class="panel-body forms_body">
                                     <section class="resources_content timeline-padding no-padding">
 
@@ -151,8 +148,8 @@
                                                     <!-- /Icon -->
                                                     <!-- Body -->
                                                     <div class="panel-body">
-                                                        <h3>Fill out this form “<span>File_Path_Link.pdf</span>”</h3>
-                                                        <p>adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore…</p>
+                                                        <h3>Fill out this form <span>File_Path_Link.pdf</span></h3>
+                                                        <p>adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore</p>
                                                     </div>
                                                     <!-- /Body -->
                                                 </article>
@@ -165,8 +162,8 @@
                                                     <!-- /Icon -->
                                                     <!-- Body -->
                                                     <div class="panel-body">
-                                                        <h3>Fill in the “File_Path_Link” file”</h3>
-                                                        <p>adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore…</p>
+                                                        <h3>Fill in the File_Path_Link file</h3>
+                                                        <p>adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore</p>
                                                     </div>
                                                     <!-- /Body -->
                                                 </article>
@@ -194,7 +191,7 @@
                                                     <!-- /Icon -->
                                                     <!-- Body -->
                                                     <div class="panel-body opsty-5">
-                                                        <h3>Upload the filled-in “File_Path_Link” file</h3>
+                                                        <h3>Upload the filled-in File_Path_Link file</h3>
                                                         <div class="col-md-11">
                                                             <p>Send yourself a confidential link to save your progress/process. Your identity is ALWAYS CONFIDENTIAL*</p>
                                                         </div>
@@ -221,7 +218,7 @@
                                                     <div class="panel-body opsty-5">
                                                         <div class="row">
                                                             <div class="col-sm-9">
-                                                                <h3>Submit the “File_Path_Link.pdf” file</h3>
+                                                                <h3>Submit the File_Path_Link.pdf file</h3>
                                                                 <p>Send yourself a confidential link to save your progress/process. Your identity is ALWAYS CONFIDENTIAL*</p>
                                                             </div>
                                                             <div class="col-sm-3">
@@ -242,7 +239,7 @@
                                                     <!-- Body -->
                                                     <div class="panel-body opsty-5">
                                                         <h3>Done</h3>
-                                                        <p>adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore…</p>
+                                                        <p>adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore</p>
                                                     </div>
                                                     <!-- /Body -->
                                                 </article>
@@ -302,130 +299,3 @@
         </div>
 
     </div>
-
-    <style>
-        .carousel-showmanymoveone .carousel-control {
-            width: 4%;
-            background-image: none;
-        }
-
-            .carousel-showmanymoveone .carousel-control.left {
-                margin-left: 0;
-                color: #000;
-            }
-
-            .carousel-showmanymoveone .carousel-control.right {
-                margin-right: 0;
-                color: #000;
-            }
-
-        .carousel-showmanymoveone .cloneditem-1,
-        .carousel-showmanymoveone .cloneditem-2,
-        .carousel-showmanymoveone .cloneditem-3 {
-            display: none;
-        }
-
-        .carousel .item .col-xs-12 {
-            padding: 0;
-        }
-        /* Medium Devices, Desktops */
-
-        @media only screen and (max-width: 992px) {
-            .carousel .item .col-xs-12:nth-last-child(-n+2) {
-                display: none;
-            }
-        }
-
-        @media all and (min-width: 768px) {
-            .carousel-showmanymoveone .carousel-inner > .active.left,
-            .carousel-showmanymoveone .carousel-inner > .prev {
-                left: -50%;
-            }
-
-            .carousel-showmanymoveone .carousel-inner > .active.right,
-            .carousel-showmanymoveone .carousel-inner > .next {
-                left: 50%;
-            }
-
-            .carousel-showmanymoveone .carousel-inner > .left,
-            .carousel-showmanymoveone .carousel-inner > .prev.right,
-            .carousel-showmanymoveone .carousel-inner > .active {
-                left: 0;
-            }
-
-            .carousel-showmanymoveone .carousel-inner .cloneditem-1 {
-                display: block;
-            }
-        }
-
-        @media all and (min-width: 768px) and (transform-3d), all and (min-width: 768px) and (-webkit-transform-3d) {
-            .carousel-showmanymoveone .carousel-inner > .item.active.right,
-            .carousel-showmanymoveone .carousel-inner > .item.next {
-                -webkit-transform: translate3d(50%, 0, 0);
-                transform: translate3d(50%, 0, 0);
-                left: 0;
-            }
-
-            .carousel-showmanymoveone .carousel-inner > .item.active.left,
-            .carousel-showmanymoveone .carousel-inner > .item.prev {
-                -webkit-transform: translate3d(-50%, 0, 0);
-                transform: translate3d(-50%, 0, 0);
-                left: 0;
-            }
-
-                .carousel-showmanymoveone .carousel-inner > .item.left,
-                .carousel-showmanymoveone .carousel-inner > .item.prev.right,
-                .carousel-showmanymoveone .carousel-inner > .item.active {
-                    -webkit-transform: translate3d(0, 0, 0);
-                    transform: translate3d(0, 0, 0);
-                    left: 0;
-                }
-        }
-
-        @media all and (min-width: 992px) {
-            .carousel-showmanymoveone .carousel-inner > .active.left,
-            .carousel-showmanymoveone .carousel-inner > .prev {
-                left: -16.6%;
-            }
-
-            .carousel-showmanymoveone .carousel-inner > .active.right,
-            .carousel-showmanymoveone .carousel-inner > .next {
-                left: 16.6%;
-            }
-
-            .carousel-showmanymoveone .carousel-inner > .left,
-            .carousel-showmanymoveone .carousel-inner > .prev.right,
-            .carousel-showmanymoveone .carousel-inner > .active {
-                left: 0;
-            }
-
-            .carousel-showmanymoveone .carousel-inner .cloneditem-2,
-            .carousel-showmanymoveone .carousel-inner .cloneditem-3 {
-                display: block;
-            }
-        }
-
-        @media all and (min-width: 992px) and (transform-3d), all and (min-width: 992px) and (-webkit-transform-3d) {
-            .carousel-showmanymoveone .carousel-inner > .item.active.right,
-            .carousel-showmanymoveone .carousel-inner > .item.next {
-                -webkit-transform: translate3d(16.6%, 0, 0);
-                transform: translate3d(16.6%, 0, 0);
-                left: 0;
-            }
-
-            .carousel-showmanymoveone .carousel-inner > .item.active.left,
-            .carousel-showmanymoveone .carousel-inner > .item.prev {
-                -webkit-transform: translate3d(-16.6%, 0, 0);
-                transform: translate3d(-16.6%, 0, 0);
-                left: 0;
-            }
-
-                .carousel-showmanymoveone .carousel-inner > .item.left,
-                .carousel-showmanymoveone .carousel-inner > .item.prev.right,
-                .carousel-showmanymoveone .carousel-inner > .item.active {
-                    -webkit-transform: translate3d(0, 0, 0);
-                    transform: translate3d(0, 0, 0);
-                    left: 0;
-                }
-        }
-    </style>
