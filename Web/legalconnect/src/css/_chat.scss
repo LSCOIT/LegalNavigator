@@ -1,4 +1,4 @@
-.chat-window > div > .panel {
+﻿.chat-window > div > .panel {
   border-radius: 5px 5px 0 0;
 }
 
@@ -247,7 +247,9 @@ img {
 }
 
 .box_sent_sub {
-  background: url('images/chat-text.PNG') no-repeat left center;
+  /*background: url(./images/chat-text.PNG) no-repeat left center;*/
+  
+  /*background-image:url(./images/chat-text.PNG) ;*/
   padding: 18px 0 18px 47px;
   color: #000;
 }
@@ -319,4 +321,3 @@ input[type=file].dis-none {
 .opsty-5 {
   opacity: 0.5;
 }
-/*# sourceMappingURL=chat.css.map */

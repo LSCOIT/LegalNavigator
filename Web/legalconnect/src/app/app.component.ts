@@ -2,7 +2,8 @@ import { Component,OnInit } from '@angular/core';
 declare var device:any;
 @Component({
   selector: 'app',
-  template: '<router-outlet></router-outlet>'
+  template: '<router-outlet></router-outlet>',
+  //styleUrls:['../LegalAssist.scss']
 })
 export class AppComponent implements OnInit { 
     // name = 'Angular';

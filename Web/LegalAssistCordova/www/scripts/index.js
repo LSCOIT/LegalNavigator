@@ -10,7 +10,7 @@
         app.receivedEvent('deviceready');
 
         // Here, we redirect to the web site.
-        var targetUrl = "http://localhost:3000/"
+        var targetUrl = "http://localhost:4200/"
 
         var bkpLink = document.getElementById("bkpLink");
         bkpLink.setAttribute("href", targetUrl);

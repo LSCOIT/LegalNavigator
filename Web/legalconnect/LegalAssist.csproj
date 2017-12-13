@@ -14,8 +14,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>legalconnect</RootNamespace>
-    <AssemblyName>legalconnect</AssemblyName>
+    <RootNamespace>LegalAssist</RootNamespace>
+    <AssemblyName>LegalAssist</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -68,6 +68,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include=".gitignore" />
     <Content Include="karma.conf.js" />
     <Content Include="packages.config" />
     <Content Include="bs-config.json" />
@@ -94,21 +95,17 @@
     <Content Include="src\tsconfig.json" />
     <Content Include="tslint.json" />
     <Content Include="src\images\Alaska-Eviction-Notice-to-Quit-Form.pdf" />
-    <Content Include="src\images\washington-3-day-notice-to-quit-form-nonpayment.pdf" />
+    <Content Include="src\Css\_chat.scss" />
+    <Content Include="src\Css\_general.scss" />
+    <Content Include="src\Css\_legalassist.scss" />
     <Content Include="src\assets\.gitkeep" />
     <Content Include="src\assets\Alaska-Eviction-Notice-to-Quit-Form.pdf" />
-    <Content Include="src\css\_chat.scss" />
-    <Content Include="src\css\_general.scss" />
-    <Content Include="src\css\_legalassist.scss" />
     <Content Include="src\styles.scss" />
-    <Content Include="src\tsconfig.app.json" />
-    <Content Include="src\tsconfig.spec.json" />
     <Content Include=".angular-cli.json" />
     <Content Include=".editorconfig" />
-    <Content Include=".gitignore" />
-    <Content Include="README.md" />
     <Content Include="tsconfig.json" />
-    <None Include="Properties\PublishProfiles\LegalAssistProd - Web Deploy.pubxml" />
+    <Content Include="src\tsconfig.spec.json" />
+    <Content Include="src\tsconfig.app.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

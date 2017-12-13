@@ -1,12 +1,16 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SearchService } from '../../services/search.service';
+import {MRSComponent} from '../../common/mrs.component';
 
 @Component({
     selector: 'chat',
     templateUrl: './chat.component.html'
+         
 })
 export class ChatComponent implements OnInit {
+    @ViewChild(MRSComponent) private _mrs:
+    MRSComponent;
     files: FileList;
     geoCountry: any;
     lang: string = "en";
@@ -37,11 +41,17 @@ export class ChatComponent implements OnInit {
 
     replyMessage = "";
     rightmessMessage = "";
-
+    query: string = "";
     constructor(private srchServ: SearchService, private router: Router, private route: ActivatedRoute) { }
 
     ngOnInit() {
-
+        
+        this.srchServ.getLocation().subscribe(
+            (resCountry) => {
+                localStorage.setItem('geoState', resCountry.region);
+            });
+        localStorage.setItem('sentence', "");
+        this.query = this.replyMessage;
         this.returnFlag = localStorage.getItem('returnFlag');
 
         var dt = new Date();
@@ -133,10 +143,8 @@ export class ChatComponent implements OnInit {
     }
 
     reply() {
-      //  document.getElementById('chat_msgs').scrollIntoView();
-
-      
-        //document.getElementById('resources').scrollIntoView();
+        localStorage.setItem('hasData','true');
+        localStorage.setItem('curatesResources', null);
         this.isVisible = false;
         var dt = new Date();
         var time = dt.getHours() + ":" + dt.getMinutes();
@@ -148,13 +156,11 @@ export class ChatComponent implements OnInit {
         })
         var query = this.replyMessage;
         this.showMessage = true;
-        this.srchServ.getLocation().subscribe(
-            (resCountry) => {
-                this.geoCountry = resCountry.region;
-
-                this.srchServ.getChatMessages(query, this.lang, this.selectedCountry == " " ? this.geoCountry : this.selectedCountry).subscribe(
-                    (res) => {
-
+        if (this.selectedCountry!==" ")
+        localStorage.setItem('geoState', this.selectedCountry);
+                this.srchServ.getChatMessages(query, this.lang, this.selectedCountry == " " ? localStorage.getItem('geoState') : this.selectedCountry)
+                    .subscribe((res) => {
+                        
                         var dt = new Date();
                         var time = dt.getHours() + ":" + dt.getMinutes();
                        
@@ -168,17 +174,17 @@ export class ChatComponent implements OnInit {
                         this.showMessage = false;
                         localStorage.setItem('scrolled', 'false');
                         localStorage.setItem('resScrolled', 'false');
-
+                        
                     },
                     (err: any) => {
                         this.showMessage = false;
-
-                        alert('No data found for location ' + this.geoCountry + ' choose country from dropdown');
+                        console.log('error', err);
 
                     });
 
                 this.rightboxes = [];
-                this.srchServ.getChatReferences(query, this.selectedCountry == " " ? this.geoCountry : this.selectedCountry).subscribe((res) => {
+                this.srchServ.getChatReferences(query, this.selectedCountry == " " ? localStorage.getItem('geoState')  : this.selectedCountry).subscribe((res) => {
+                    
                     for (var i = 0; i < res.length; i++) {
                         this.rightboxes.push({
                             "url": res[i].Url,
@@ -187,17 +193,14 @@ export class ChatComponent implements OnInit {
                         })
                     }
                 });
-            }
-
-        );
-        this.isVisible = true;
-
-
+              this.isVisible = true;
+   
         this.replyMessage = "";
-
-
         setInterval(this.updateScroll, 100);
         setInterval(this.updateResScroll, 100);
+
+        localStorage.setItem('sentence', query);
+        this._mrs.ngOnInit();
 
     }
 
