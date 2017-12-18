@@ -68,7 +68,7 @@
                                 </select>
                             </div>
                         </div>
-                        <p class="m-top-20 col-md-12">
+                        <p class="m-top-10 col-md-12">
                             <span class="resultstxt">QUESTIONS? WE CAN HELP, TALK TO OUR CUSTOMER SUPPORT SERVICE</span>
                         </p>
 
@@ -79,13 +79,13 @@
             <form id="testForm1">
                 <div class="container" style="margin:0px; padding:0px;">
 
-                    <div class="row chat-window col-xs-12 col-md-12 m-top-30 m-bottom-30 m-t-b-30" id="chat_window_1">
+                    <div class="row chat-window col-xs-12 col-md-12 m-top-15 m-bottom-30 m-t-b-30" id="chat_window_1">
                         <div class="col-xs-12 col-sm-12 col-md-6 m-0 p-0">
                             <div class="panel panel-default no-background no-border">
 
                                 <div class="col-xs-12 left-chat-box" id="chat_msgs" (scroll)="onChatScroll()">
                                     <div class="welCome" *ngIf="returnFlag==='false'">Welcome to Legal Assist</div>
-
+                                  
                                     <div *ngIf="returnFlag==='true'">
                                         <div class="welCome">Welcome Back to Legal Assist</div>
                                         <div *ngFor="let message of returnMessages" [class]="message.self">
@@ -93,22 +93,32 @@
 
                                         </div>
                                     </div>
-                                    <div *ngFor="let message of messages" [class]="message.self">
-                                        <div [class]="message.class" innerHtml="{{message.text}}">
+                                    
+                                    <div *ngFor="let message of messages; let i = index" [class]="messages[i].self">
+                                        <!--<div [class]="message.class" innerHtml="{{message.text}}" (click)="showResourcesByScenario(message.id)">
                                             <time datetime='2009-11-13T20:00' style="float:right">{{message.time}}</time>
+                                        </div>-->
+                                        <div [class]="messages[i].class" *ngIf="messages[i].class!='tag-badge'" innerHtml="{{messages[i].text}}">
+                                            <time datetime='2009-11-13T20:00' style="float:right">{{messages[i].time}}</time>
                                         </div>
+                                        <div class="welCome" *ngIf="messages[i].class=='tag-badge'">
+                                     <span class="tag-badge" *ngFor="let sen of messages[i].scenarios; let j = index" (click)="showResourcesByScenario(messages[i].scenarios[j].ScenarioId)">{{messages[i].scenarios[j].Description}}</span>
+                                    </div>
+
 
                                     </div>
+
+                                    
                                 </div>
                                 <div class="panel-footer col-md-12 col-sm-12 col-xs-12 p-r-0">
 
                                     <div class="col-md-11 col-sm-11 col-xs-10 m-0 p-0 w-88">
 
                                         <span class="userTyp" *ngIf="showMessage">User is typing...</span>
-                                        <textarea id="btn-input" type="text" class="form-control" placeholder="Type here..." [(ngModel)]="replyMessage" name="replyMessage" style="height:70px;" (keyup.enter)="reply()"></textarea>
+                                        <textarea id="btn-input" type="text" class="form-control" placeholder="Type here..." [(ngModel)]="replyMessage" name="replyMessage" (keyup.enter)="reply()"></textarea>
 
                                     </div>
-                                    <div class="col-md-1 col-sm-1 col-xs-1 mrg-lft p-0 m-l-10" style="margin-top:22px;">
+                                    <div class="col-md-1 col-sm-1 col-xs-1 mrg-lft p-0 m-l-10 " style="margin-top:22px;">
 
                                         <a (click)="reply()"><i class="fa fa-paper-plane" aria-hidden="true"></i></a>
                                     </div>

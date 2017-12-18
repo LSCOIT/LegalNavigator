@@ -14,6 +14,7 @@ export class SearchService {
     private chatRefUrl = 'http://contentsextractionapiother.azurewebsites.net/api/ExtractSubTopics';
     private chatFileUploadUrl = 'http://contentsextractionapiother.azurewebsites.net/api/ExtractTextsFromHttpFileBase';
     private curatedContentsUrl = 'http://contentsextractionapiother.azurewebsites.net/api/ExtractCuratedContents';
+    private getCuratedScenarios = 'http://contentsextractionapiother.azurewebsites.net/api/ExtractCuratedContents'
     private tokenUrl = 'https://api.cognitive.microsoft.com/sts/v1.0/issueToken';
     private translateUrl = 'https://api.microsofttranslator.com/V2/Http.svc/Translate';
     geoCountry: any;
@@ -64,6 +65,11 @@ export class SearchService {
 
     public getLocation(): Observable<any> {
       return this._http.get("http://ipinfo.io").map((res: Response) => res.json());
+
+    }
+
+    public getCurScenarios(ScenarioId: string, State: string): Observable<any> {
+        return this._http.get(this.getCuratedScenarios + '?scenarioId=' + ScenarioId +'&state='+State).map((res: Response) => res.json());
 
     }
 

@@ -8,6 +8,7 @@ declare var device:any;
 export class AppComponent implements OnInit { 
     // name = 'Angular';
     ngOnInit() {
+localStorage.clear();
         document.addEventListener("deviceready", onDeviceReady, false);
         function onDeviceReady() {
             alert(device.platform);

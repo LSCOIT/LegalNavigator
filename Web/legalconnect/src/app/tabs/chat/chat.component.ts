@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, ViewChild } from '@angular/core';
+﻿import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SearchService } from '../../services/search.service';
 import {MRSComponent} from '../../common/mrs.component';
@@ -20,7 +20,9 @@ export class ChatComponent implements OnInit {
     sub: any;
     returnFlag: string = 'false';
     location: string;
-    obj:any;
+    obj: any;
+    scenarios: Array<any> = [];
+    hasScenario: boolean = false;
     rightboxes = [{
         "url": "",
         "text": "",
@@ -31,6 +33,7 @@ export class ChatComponent implements OnInit {
         "self": false,
         "time": "",
         "class": "",
+        "scenarios": [{}]
     }];
     returnMessages = [{
         "text": "",
@@ -45,15 +48,16 @@ export class ChatComponent implements OnInit {
     constructor(private srchServ: SearchService, private router: Router, private route: ActivatedRoute) { }
 
     ngOnInit() {
-        
+        this.selectedCountry = 'Alaska';
         this.srchServ.getLocation().subscribe(
             (resCountry) => {
                 localStorage.setItem('geoState', resCountry.region);
             });
         localStorage.setItem('sentence', "");
+        localStorage.setItem('linkName', "");
         this.query = this.replyMessage;
-        this.returnFlag = localStorage.getItem('returnFlag');
-
+        this.returnFlag = localStorage.getItem('returnFlag') == null ? 'false' : localStorage.getItem('returnFlag');
+        
         var dt = new Date();
         var time = dt.getHours() + ":" + dt.getMinutes();
         setTimeout(() => {
@@ -116,7 +120,7 @@ export class ChatComponent implements OnInit {
 
             this.srchServ.getfileUpload(data).subscribe(
                 (res) => {
-                    console.log(res._body);
+                    
                     var dt = new Date();
                     var time = dt.getHours() + ":" + dt.getMinutes();
 
@@ -124,7 +128,8 @@ export class ChatComponent implements OnInit {
                         "text": res._body,
                         "self": true,
                         "time": time,
-                        "class": "receive"
+                        "class": "receive",
+                        "scenarios": [{}]
                     })
 
                     this.showMessage = false;
@@ -143,6 +148,8 @@ export class ChatComponent implements OnInit {
     }
 
     reply() {
+        this.scenarios = [];
+        this.hasScenario = false;
         localStorage.setItem('hasData','true');
         localStorage.setItem('curatesResources', null);
         this.isVisible = false;
@@ -153,38 +160,42 @@ export class ChatComponent implements OnInit {
             "self": true,
             "time": time,
             "class": "sent",
+            "scenarios": this.scenarios
         })
         var query = this.replyMessage;
         this.showMessage = true;
         if (this.selectedCountry!==" ")
         localStorage.setItem('geoState', this.selectedCountry);
-                this.srchServ.getChatMessages(query, this.lang, this.selectedCountry == " " ? localStorage.getItem('geoState') : this.selectedCountry)
-                    .subscribe((res) => {
-                        
-                        var dt = new Date();
-                        var time = dt.getHours() + ":" + dt.getMinutes();
-                       
-                        this.messages.push({
-                            "text": res,
-                            "self": true,
-                            "time": time,
-                            "class": "receive"
-                        });
-                       
-                        this.showMessage = false;
-                        localStorage.setItem('scrolled', 'false');
-                        localStorage.setItem('resScrolled', 'false');
-                        
-                    },
-                    (err: any) => {
-                        this.showMessage = false;
-                        console.log('error', err);
+                //this.srchServ.getChatMessages(query, this.lang, this.selectedCountry == " " ? localStorage.getItem('geoState') : this.selectedCountry)
+                //    .subscribe((res) => {
+                //        console.log('content', res);
+                //        if (res != null ) {
+                //            var dt = new Date();
+                //            var time = dt.getHours() + ":" + dt.getMinutes();
 
-                    });
+                //            this.messages.push({
+                //                "text": res,
+                //                "self": true,
+                //                "time": time,
+                //                "class": "receive",
+                //                "scenarios": this.scenarios
+
+                //            });
+
+                //            this.showMessage = false;
+                //            localStorage.setItem('scrolled', 'false');
+                //            localStorage.setItem('resScrolled', 'false');
+                //        }
+                        
+                //    },
+                //    (err: any) => {
+                //        this.showMessage = false;
+                //        console.log('error', err);
+
+                //    });
 
                 this.rightboxes = [];
-                this.srchServ.getChatReferences(query, this.selectedCountry == " " ? localStorage.getItem('geoState')  : this.selectedCountry).subscribe((res) => {
-                    
+                this.srchServ.getChatReferences(query, this.selectedCountry == " " ? localStorage.getItem('geoState') : this.selectedCountry).subscribe((res) => {
                     for (var i = 0; i < res.length; i++) {
                         this.rightboxes.push({
                             "url": res[i].Url,
@@ -198,10 +209,56 @@ export class ChatComponent implements OnInit {
         this.replyMessage = "";
         setInterval(this.updateScroll, 100);
         setInterval(this.updateResScroll, 100);
-
+        
         localStorage.setItem('sentence', query);
-        this._mrs.ngOnInit();
 
+        this.srchServ.getCuratedContents(query, localStorage.getItem('geoState'))
+            .subscribe((res) => {
+                
+                var i = 0;
+                if (res != null) {
+                    localStorage.setItem('curatesResources', JSON.stringify(res)); //store data
+                    localStorage.setItem('hasData', "true");
+                    if (res.Scenarios.length > 0) {
+                        this.messages.push({
+                            "text": "What are you looking for?",
+                            "self": true,
+                            "time": time,
+                            "class": "receive",
+                            "scenarios": this.scenarios
+                        })
+                       
+                        this.scenarios = res.Scenarios;
+                    
+                            this.messages.push({
+                                "text": "",
+                                "self": true,
+                                "time": "",
+                                "class": "tag-badge",
+                                "scenarios": this.scenarios
+                           })
+                        this.hasScenario = true;
+       
+                    }
+                    
+                }
+                else
+                    localStorage.setItem('hasData', "false");
+                localStorage.setItem('scrolled', 'false');
+                localStorage.setItem('resScrolled', 'false');
+                this._mrs.ngOnInit();
+            },
+            (err: any) => {
+
+                console.log('curated error', err);
+
+
+            }
+        );
+                    this.showMessage = false;
+
+        
+        
     }
 
     updateScroll() {
@@ -231,9 +288,44 @@ export class ChatComponent implements OnInit {
 
     }
 
-    displayText(lang: string) {
+    showResourcesByScenario(scenarioId: string) {
+       
+        localStorage.setItem('hasData', 'true');
+        localStorage.setItem('curatesResources', null);
+        this.srchServ.getCurScenarios(scenarioId, localStorage.getItem('geoState'))
+            .subscribe((res) => {
+                var i = 0;
+                if (res != null) {
+                    localStorage.setItem('curatesResources', JSON.stringify(res)); //store data
+                    localStorage.setItem('hasData', "true");
+                    
+                    if (res.Scenarios.length > 0) {
+                        this.scenarios = res.Scenarios;
 
-        this.lang = lang;
+                        this.messages.push({
+                            "text": "",
+                            "self": true,
+                            "time": "",
+                            "class": "tag-badge",
+                            "scenarios": this.scenarios
+                        })
+                        this.hasScenario = true;
+                        
+                    }
+                }
+                else
+                    localStorage.setItem('hasData', "false");
+                this._mrs.ngOnInit();
+            },
+            (err: any) => {
+
+                console.log('curated error', err);
+
+
+            }
+            );
+
+        
     }
 
     openPop(Url: string) {

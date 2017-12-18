@@ -413,6 +413,24 @@ all and (min-width: 992px) and (-webkit-transform-3d) {
     {
         height:470px;
     }
+    .tab-content .tab-box
+    {
+        height:95px;
+    }
+    .tab-content .tab-box h1
+    {
+        font-size: 40px;
+        margin-top:5px;
+        margin-bottom:0px;
+    }
+    .left-chat-box
+    {
+        height:250px;
+    }
+    .panel-footer{
+        margin-top:10px;
+    }
+    
     }
     .topboxUrl
     {text-overflow:ellipsis;

@@ -25,7 +25,7 @@ export class GuidedComponent implements OnInit{
     constructor(private router: Router, private _el: ElementRef) { }
 
     ngOnInit() {
-   
+        localStorage.setItem('linkName', "");
         this.currentUrl = this.router.url; // this will give you current url
 
         if (this.currentUrl == '/guided/assist/evictionnotice')
