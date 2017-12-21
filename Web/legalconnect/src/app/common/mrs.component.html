@@ -1,9 +1,7 @@
 <div class="container rel-topics" >
     <div class="row" id="mrlTopics">
         <h1>Most Related Topics Based on Your Search</h1>
-        <!--<p class="m-top-20">
-            In this section you will find general information, resources and self-help packets on eviction issues
-        </p>-->
+        <p class="m-top-20">
     </div>
         
          <div class="m-top-40">
@@ -87,9 +85,9 @@
                                                     <!-- Body -->
                                                     <div class="panel-body opsty-5">
                                                         <h3>{{prc.title}}</h3>
-                                                        <div class="col-md-11">
-                                                            <a href="{{prc.desc}}" target="_blank"  *ngIf="prc.title==='Url'">{{prc.desc}}</a>
-                                                            <p *ngIf="prc.title!=='Url'">{{prc.desc}}</p>
+                                                        <div class="col-md-11" innerHtml="{{prc.desc}}">
+                                                            <!--<a href="{{prc.desc}}" target="_blank"  *ngIf="prc.title==='Url'">{{prc.desc}}</a>
+                                                            <p *ngIf="prc.title!=='Url'">{{prc.desc}}</p>-->
                                                         </div>
 
                                                     </div>

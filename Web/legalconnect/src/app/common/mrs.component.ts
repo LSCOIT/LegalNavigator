@@ -63,7 +63,7 @@ export class MRSComponent implements OnInit {
                                     Resources.push({
 
                                         "header": curResources.Resources[j].Title,
-                                        "body": curResources.Resources[j].ResourceJson == "" ? curResources.Resources[j].LawCategory.Description : curResources.Resources[j].LawCategory.Description + '<br /><br /><b>' + curResources.Resources[j].Action + '</b><br /><div class="topboxUrl" title="' + curResources.Resources[j].ResourceJson + '"><a href="' + curResources.Resources[j].ResourceJson + '"target="_blank">' + curResources.Resources[j].ResourceJson + '</a></div>',
+                                        "body": '<b>' + curResources.Resources[j].Action + '</b><br /><div class="topboxUrl" title="' + curResources.Resources[j].ResourceJson + '"><a href="' + curResources.Resources[j].ResourceJson + '"target="_blank">' + curResources.Resources[j].ResourceJson + '</a></div>',
 
                                     });
                                 }
@@ -71,7 +71,7 @@ export class MRSComponent implements OnInit {
                                     Resources.push({
 
                                         "header": curResources.Resources[j].Title,
-                                        "body": curResources.Resources[j].ResourceJson == "" ? curResources.Resources[j].LawCategory.Description : curResources.Resources[j].LawCategory.Description + '<br /><br /><b>' + curResources.Resources[j].Action + '</b><br />' + curResources.Resources[j].ResourceJson,
+                                        "body": '<b>' + curResources.Resources[j].Action + '</b><br />' + curResources.Resources[j].ResourceJson,
 
                                     });
                                 }
@@ -111,8 +111,8 @@ export class MRSComponent implements OnInit {
                         // if (res.Processes[i].ActionJson == "Title") {
                         this.processes.push({
                             "id": curResources.Processes[i].Id,
-                            "title": curResources.Processes[i].ActionJson,
-                            "desc": curResources.Processes[i].Description,
+                            "title": curResources.Processes[i].Title,
+                            "desc": curResources.Processes[i].Description + '</br>' + curResources.Processes[i].ActionJson,
                         });
                         //}
                     }
