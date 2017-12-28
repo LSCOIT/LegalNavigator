@@ -35,13 +35,10 @@ export class MRSComponent implements OnInit {
     { }
 
     ngOnInit() {
-       // this.showMrs = false;
-        console.log('init');
         this.sentence = localStorage.getItem('sentence');
         var i: number = 0;
         var j: number;
         var curResources = JSON.parse(localStorage.getItem('curatesResources'));
-        console.log('getScen', curResources);
         var hasData = localStorage.getItem('hasData');
         if (localStorage.getItem('linkName') === "") {
             
@@ -51,7 +48,6 @@ export class MRSComponent implements OnInit {
                 this.SubCat = [];
                 this.processes = [];
                 var curResources = JSON.parse(localStorage.getItem('curatesResources'));
-                //console.log(curResources);
                 this.hasData = true;
                 if (curResources.Resources.length > 0) {
                     
@@ -94,7 +90,7 @@ export class MRSComponent implements OnInit {
 
                     }
 
-                    console.log('items', this.items);   
+                     
                 }
                 if (curResources.RelatedIntents.length > 0) {
                     
@@ -108,13 +104,20 @@ export class MRSComponent implements OnInit {
                 if (curResources.Processes.length > 0) {
                     this.processes = [];
                     for (var i = 0; i < curResources.Processes.length; i++) {
-                        // if (res.Processes[i].ActionJson == "Title") {
+                        if (i == curResources.Processes.length-1)
                         this.processes.push({
                             "id": curResources.Processes[i].Id,
                             "title": curResources.Processes[i].Title,
                             "desc": curResources.Processes[i].Description + '</br>' + curResources.Processes[i].ActionJson,
-                        });
-                        //}
+                            "class":"padding0"
+                            });
+                        else
+                            this.processes.push({
+                                "id": curResources.Processes[i].Id,
+                                "title": curResources.Processes[i].Title,
+                                "desc": curResources.Processes[i].Description + '</br>' + curResources.Processes[i].ActionJson,
+                                "class": ""
+                            });
                     }
                 }
             }
@@ -169,7 +172,7 @@ export class MRSComponent implements OnInit {
         var route:string;
         this.srchServ.getCuratedContents(linkName, localStorage.getItem('geoState'))
             .subscribe((res) => {
-                console.log('click', res);
+                
                 var i = 0;
                 if (res != null) {
 
@@ -177,7 +180,7 @@ export class MRSComponent implements OnInit {
                     localStorage.setItem('hasData', "true");
                     this.hasData = true;
                     if (res.Resources.length > 0) {
-                        //console.log(res.Resources);
+                        
                         this.items = [];
                         while (i < res.Resources.length) {
                             var Resources: Array<any> = [];
@@ -219,7 +222,7 @@ export class MRSComponent implements OnInit {
                             i = i + 4;
 
                         }
-                        console.log('items', this.items);
+                        
                     }
                     if (res.RelatedIntents.length > 0) {
                         this.SubCat = [];
@@ -233,13 +236,20 @@ export class MRSComponent implements OnInit {
                     if (res.Processes.length > 0) {
                         this.processes = [];
                         for (var i = 0; i < res.Processes.length; i++) {
-                            // if (res.Processes[i].ActionJson == "Title") {
-                            this.processes.push({
-                                "id": res.Processes[i].Id,
-                                "title": res.Processes[i].ActionJson,
-                                "desc": res.Processes[i].Description,
-                            });
-                            //}
+                            if (i == res.Processes.length - 1)
+                                this.processes.push({
+                                    "id": res.Processes[i].Id,
+                                    "title": res.Processes[i].Title,
+                                    "desc": res.Processes[i].Description + '</br>' + res.Processes[i].ActionJson,
+                                    "class": "padding0"
+                                });
+                            else
+                                this.processes.push({
+                                    "id": res.Processes[i].Id,
+                                    "title": res.Processes[i].Title,
+                                    "desc": res.Processes[i].Description + '</br>' + res.Processes[i].ActionJson,
+                                    "class": ""
+                                });
                         }
                     }
                 }

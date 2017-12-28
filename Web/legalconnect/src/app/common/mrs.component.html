@@ -4,7 +4,7 @@
         <p class="m-top-20">
     </div>
         
-         <div class="m-top-40">
+        <div class="m-top-40">
                 <div class="col-md-12">
 
                     <div class="carousel slide" id="carousel-tilenav" data-ride="carousel" data-pause="hover" data-wrap="true" data-interval="false">
@@ -40,7 +40,7 @@
             </div>
 
         <div class="m-top-85"  id="forms_steps">
-            <div class="row m-top-46">
+            <div class="row m-top-46" >
                 <div class="col-xs-12">
                     <div class="panel-group" id="accordion">
                         <div class="panel panel-default forms_grp">
@@ -83,12 +83,10 @@
                                                     </div>
                                                     <!-- /Icon -->
                                                     <!-- Body -->
-                                                    <div class="panel-body opsty-5">
+                                                    <div class="panel-body opsty-5" [ngClass]="[prc.class]">
                                                         <h3>{{prc.title}}</h3>
-                                                        <div class="col-md-11" innerHtml="{{prc.desc}}">
-                                                            <!--<a href="{{prc.desc}}" target="_blank"  *ngIf="prc.title==='Url'">{{prc.desc}}</a>
-                                                            <p *ngIf="prc.title!=='Url'">{{prc.desc}}</p>-->
-                                                        </div>
+                                                        <p  innerHtml="{{prc.desc}}">
+                                                        </p>
 
                                                     </div>
                                                     <!-- /Body -->
@@ -141,7 +139,7 @@
             </div>
         </div>
 
-        <div class="m-top-85" id="subCat">
+        <div class="row m-top-85" id="subCat">
             <h1>Links To Sub-Categories of This Category</h1>
             <div class="row m-top-46">
                 <div class="col-xs-12 tagBadges">

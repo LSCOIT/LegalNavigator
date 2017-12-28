@@ -449,6 +449,7 @@ all and (min-width: 992px) and (-webkit-transform-3d) {
     background: #fff;
     border-radius: 10px 10px 10px 10px;
     border: 1px solid #000;
+     /*margin-left: 23px;*/
     padding: 5px;
     margin: 0px auto;
     color: #000;
@@ -459,15 +460,24 @@ all and (min-width: 992px) and (-webkit-transform-3d) {
     padding: 5px;
     margin-top:5px;
     margin-bottom: 0px;
+    border-radius: 10px 10px 10px 10px;
+    width:60%;
         }
      .receive{
         margin-top:5px;
          padding:5px;
+         /*width:70%;*/
+         margin-left:0px;
+         border-radius: 10px 10px 10px 10px;
      }
      .sent{
          margin-top:5px;
          padding:5px;
+         margin-left:246px;
+         border-radius: 10px 10px 10px 10px;
      }
+
+
      .tag-badge{
          margin-top:3px;
          margin-bottom:3px;
@@ -488,4 +498,37 @@ all and (min-width: 992px) and (-webkit-transform-3d) {
   text-decoration: none;
 }
 
-    
+    .timeline .panel-outline .panel-body.padding5
+    {
+        padding:5px 0;
+    }
+   .timeline .panel-outline .panel-body.padding0
+    {
+        padding:0px;
+    }
+
+
+    @media (min-width: 992px)
+    {
+        .footerHeight{
+            margin-top:85px;
+        }
+        }
+
+     @media (min-width: 1020px)
+    {
+        .footerHeight{
+            margin-top:170px;
+        }
+                .left-chat-box
+                {
+                    height:345px;
+                }
+        .sent{
+            margin-left:70%;
+        }
+        .receive
+        {
+            width:60%;
+        }
+        }

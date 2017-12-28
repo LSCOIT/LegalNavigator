@@ -178,17 +178,7 @@ img {
   display: flex;
 }
 
-.welCome {
-  background: #fff;
-  border-radius: 10px 10px 10px 10px;
-  border: 1px solid #000;
-  padding: 15px;
-  margin: 10px auto;
-  color: #000;
-  margin-bottom: 10px;
-  font-size: 14px;
-  display: inline-table;
-}
+
 
 .userTyp {
   font-size: 11px;
@@ -212,12 +202,25 @@ img {
   background: #fff;
   margin-top: 10px;
   border-radius: 15px 15px 0px 15px;
-  width: 96%;
+  /*width: 96%;*/
   margin-left: 23px;
   padding: 15px;
   border: 1px solid #000;
   color: #000;
-  display: block;
+  display: inline-table;
+}
+
+.welCome {
+  background: #fff;
+  border-radius: 10px 10px 10px 10px;
+  border: 1px solid #000;
+   /*margin-left: 23px;*/
+  padding: 15px;
+  margin: 10px auto;
+  color: #000;
+  margin-bottom: 10px;
+  font-size: 14px;
+  display: inline-table;
 }
 
 .box_sent2 {

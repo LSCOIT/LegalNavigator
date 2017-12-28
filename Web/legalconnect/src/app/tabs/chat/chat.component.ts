@@ -33,6 +33,8 @@ export class ChatComponent implements OnInit {
         "self": false,
         "time": "",
         "class": "",
+        "classIcon": "",
+        "from":"",
         "scenarios": [{}]
     }];
     returnMessages = [{
@@ -129,6 +131,8 @@ export class ChatComponent implements OnInit {
                         "self": true,
                         "time": time,
                         "class": "receive",
+                        "classIcon": "receiveIcon",
+                        "from": "LA",
                         "scenarios": [{}]
                     })
 
@@ -160,61 +164,39 @@ export class ChatComponent implements OnInit {
             "self": true,
             "time": time,
             "class": "sent",
+            "classIcon": "sentIcon",
+            "from": "You",
             "scenarios": this.scenarios
-        })
+        })  
         var query = this.replyMessage;
         this.showMessage = true;
         if (this.selectedCountry!==" ")
         localStorage.setItem('geoState', this.selectedCountry);
-                //this.srchServ.getChatMessages(query, this.lang, this.selectedCountry == " " ? localStorage.getItem('geoState') : this.selectedCountry)
-                //    .subscribe((res) => {
-                //        console.log('content', res);
-                //        if (res != null ) {
-                //            var dt = new Date();
-                //            var time = dt.getHours() + ":" + dt.getMinutes();
-
-                //            this.messages.push({
-                //                "text": res,
-                //                "self": true,
-                //                "time": time,
-                //                "class": "receive",
-                //                "scenarios": this.scenarios
-
-                //            });
-
-                //            this.showMessage = false;
-                //            localStorage.setItem('scrolled', 'false');
-                //            localStorage.setItem('resScrolled', 'false');
-                //        }
-                        
-                //    },
-                //    (err: any) => {
-                //        this.showMessage = false;
-                //        console.log('error', err);
-
-                //    });
-
+              
                 this.rightboxes = [];
                 this.srchServ.getChatReferences(query, this.selectedCountry == " " ? localStorage.getItem('geoState') : this.selectedCountry).subscribe((res) => {
-                    for (var i = 0; i < res.length; i++) {
-                        this.rightboxes.push({
-                            "url": res[i].Url,
-                            "text": res[i].Name,
-                            "self": true
-                        })
+                    if (res.length > 0) {
+                        for (var i = 0; i < res.length; i++) {
+                            this.rightboxes.push({
+                                "url": res[i].Url,
+                                "text": res[i].Name,
+                                "self": true
+                            })
+                        }
+
+                        localStorage.setItem('resScrolled', 'false');
                     }
                 });
               this.isVisible = true;
    
         this.replyMessage = "";
-        setInterval(this.updateScroll, 100);
-        setInterval(this.updateResScroll, 100);
+      
         
         localStorage.setItem('sentence', query);
 
         this.srchServ.getCuratedContents(query, localStorage.getItem('geoState'))
             .subscribe((res) => {
-                
+                console.log('curated', res);
                 var i = 0;
                 if (res != null) {
                     localStorage.setItem('curatesResources', JSON.stringify(res)); //store data
@@ -225,27 +207,59 @@ export class ChatComponent implements OnInit {
                             "self": true,
                             "time": time,
                             "class": "receive",
+                            "classIcon": "receiveIcon",
+                            "from": "LA",
                             "scenarios": this.scenarios
                         })
-                       
+
                         this.scenarios = res.Scenarios;
-                    
-                            this.messages.push({
-                                "text": "",
-                                "self": true,
-                                "time": "",
-                                "class": "tag-badge",
-                                "scenarios": this.scenarios
-                           })
+
+                        this.messages.push({
+                            "text": "",
+                            "self": true,
+                            "time": "",
+                            "class": "tag-badge",
+                            "classIcon": "",
+                            "from": "",
+                            "scenarios": this.scenarios
+                        })
                         this.hasScenario = true;
-       
+
                     }
+                    localStorage.setItem('scrolled', 'false');
+                }
+                else {
+                    this.srchServ.getChatMessages(query, this.lang, this.selectedCountry == " " ? localStorage.getItem('geoState') : this.selectedCountry)
+                        .subscribe((res) => {
+                                if (res != null) {
+                                var dt = new Date();
+                                var time = dt.getHours() + ":" + dt.getMinutes();
+
+                                this.messages.push({
+                                    "text": res,
+                                    "self": true,
+                                    "time": time,
+                                    "class": "receive",
+                                    "classIcon": "receiveIcon",
+                                    "from": "LA",
+                                    "scenarios": this.scenarios
+
+                                });
+
+                                this.showMessage = false;
+                            }
+                                localStorage.setItem('scrolled', 'false');
+                        },
+                        (err: any) => {
+                            this.showMessage = false;
+                            console.log('error', err);
+
+                        });
+                    localStorage.setItem('hasData', "false");
                     
                 }
-                else
-                    localStorage.setItem('hasData', "false");
-                localStorage.setItem('scrolled', 'false');
-                localStorage.setItem('resScrolled', 'false');
+            
+           
                 this._mrs.ngOnInit();
             },
             (err: any) => {
@@ -257,7 +271,8 @@ export class ChatComponent implements OnInit {
         );
                     this.showMessage = false;
 
-        
+                    setInterval(this.updateScroll, 100);
+                    setInterval(this.updateResScroll, 100);  
         
     }
 
@@ -288,33 +303,46 @@ export class ChatComponent implements OnInit {
 
     }
 
-    showResourcesByScenario(scenarioId: string) {
+    showResourcesByScenario(scenarioId: string, Description:string) {
        
         localStorage.setItem('hasData', 'true');
         localStorage.setItem('curatesResources', null);
         this.srchServ.getCurScenarios(scenarioId, localStorage.getItem('geoState'))
             .subscribe((res) => {
                 var i = 0;
+                this.messages.push({
+                    "text": Description,
+                    "self": true,
+                    "time": "",
+                    "class": "sent",
+                    "classIcon": "sentIcon",
+                    "from": "You",
+                    "scenarios": this.scenarios
+                })
                 if (res != null) {
                     localStorage.setItem('curatesResources', JSON.stringify(res)); //store data
                     localStorage.setItem('hasData', "true");
-                    
+                    console.log('sen by id', res);
                     if (res.Scenarios.length > 0) {
                         this.scenarios = res.Scenarios;
-
+                        
                         this.messages.push({
                             "text": "",
                             "self": true,
                             "time": "",
                             "class": "tag-badge",
+                            "classIcon": "",
+                            "from": "",
                             "scenarios": this.scenarios
                         })
                         this.hasScenario = true;
                         
+        
                     }
                 }
                 else
                     localStorage.setItem('hasData', "false");
+                localStorage.setItem('scrolled', 'false');
                 this._mrs.ngOnInit();
             },
             (err: any) => {
