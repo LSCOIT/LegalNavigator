@@ -25,7 +25,8 @@ const routes: Routes = [
     { path: 'chat/resources/:id', component: ChatComponent },
     { path: 'chat/QandA/:id', component: ChatComponent },
     { path: 'timeline', component: TLComponent },
-    { path: '', redirectTo: '/chat', pathMatch: 'full' },
+    //{ path: '', redirectTo: '/chat', pathMatch: 'full' },
+    { path: '', component: ChatComponent },
     { path: '**', component: ChatComponent },
 ];
 export const routing: ModuleWithProviders = RouterModule.forRoot(routes);

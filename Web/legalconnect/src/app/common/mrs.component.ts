@@ -104,21 +104,41 @@ export class MRSComponent implements OnInit {
                 if (curResources.Processes.length > 0) {
                     this.processes = [];
                     for (var i = 0; i < curResources.Processes.length; i++) {
-                        if (i == curResources.Processes.length-1)
-                        this.processes.push({
-                            "id": curResources.Processes[i].Id,
-                            "title": curResources.Processes[i].Title,
-                            "desc": curResources.Processes[i].Description + '</br>' + curResources.Processes[i].ActionJson,
-                            "class":"padding0"
-                            });
+                     
+                        var item = this.processes.find(x => x.title == curResources.Processes[i].Title);
+                        if (item != null || item != undefined)
+                            item.desc = item.desc + curResources.Processes[i].Description
                         else
                             this.processes.push({
-                                "id": curResources.Processes[i].Id,
+                                "id": curResources.Processes[i].stepNumber,
                                 "title": curResources.Processes[i].Title,
                                 "desc": curResources.Processes[i].Description + '</br>' + curResources.Processes[i].ActionJson,
                                 "class": ""
                             });
+                       
+                        //if (i == curResources.Processes.length-1)
+                        //this.processes.push({
+                        //    "id": curResources.Processes[i].stepNumber,
+                        //    "title": curResources.Processes[i].Title,
+                        //    "desc": curResources.Processes[i].Description + '</br>' + curResources.Processes[i].ActionJson,
+                        //    "class":"padding0"
+                        //    });
+                        //else
+                        //    this.processes.push({
+                        //        "id": curResources.Processes[i].stepNumber,
+                        //        "title": curResources.Processes[i].Title,
+                        //        "desc": curResources.Processes[i].Description + '</br>' + curResources.Processes[i].ActionJson,
+                        //        "class": ""
+                        //    });
                     }
+
+                    //this.processes.push({
+                    //    "id": "7",
+                    //    "title": "Done",
+                    //    "desc": "</br>",
+                    //    "class": ""
+                    //});
+                    console.log('processes',this.processes);
                 }
             }
             else if (hasData == "false") {
