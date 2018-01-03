@@ -132,12 +132,7 @@ export class MRSComponent implements OnInit {
                         //    });
                     }
 
-                    //this.processes.push({
-                    //    "id": "7",
-                    //    "title": "Done",
-                    //    "desc": "</br>",
-                    //    "class": ""
-                    //});
+                    
                     console.log('processes',this.processes);
                 }
             }

@@ -407,11 +407,86 @@ all and (min-width: 992px) and (-webkit-transform-3d) {
     top:10px;
 }
 }
-    @media (min-width: 992px)
+
+ .topboxUrl
+    {text-overflow:ellipsis;
+     overflow:hidden;
+    }
+
+    a[href^="tel:"]:before {
+  content: "\260e";
+  margin-right: 0.5em;
+}
+
+    a[href^="tel:"] {
+  color: orange;
+  text-decoration: none;
+}
+
+    .timeline .panel-outline .panel-body.padding5
     {
-        .headerbg
+        padding:5px 0;
+    }
+   .timeline .panel-outline .panel-body.padding0
+    {
+        padding:0px;
+    }
+
+    .receiveIcon{
+         background: #fff;
+    border-radius: 10px 10px 10px 10px;
+    border: 1px solid #ccc;
+    
+    padding: 5px;
+   margin: 0px auto;
+   margin-top:5px;
+    color: #000;
+    font-size: 12px;
+    display: inline-table;
+     }
+
+    .sentIcon{
+         background: #fff;
+    border-radius: 10px 10px 10px 10px;
+    border: 1px solid #ccc;
+    
+    padding: 5px;
+   margin: 0 auto;
+   margin-top:5px;
+   /*margin-left: 23px;*/
+    color: #000;
+    font-size: 12px;
+    display: inline-table;
+     }
+
+.welComeFirst {
+    background: #fff;
+    border-radius: 10px 10px 10px 10px;
+    border: 1px solid #000;
+     /*margin-left: 23px;*/
+    padding: 5px;
+    margin: 0px auto;
+    color: #000;
+    font-size: 14px;
+    display: inline-table;
+        }
+
+ .true{
+        width:60%;
+          float: left;
+    }
+    .sentTrue{
+        width:60%;
+        float:right;
+    }
+     @media (min-width: 992px)
+    {
+    .headerbg
         {
             height:110px;
+        }
+    .footerHeight{
+            margin-top:85px;
         }
     .topics-box
     {
@@ -456,25 +531,39 @@ all and (min-width: 992px) and (-webkit-transform-3d) {
     font-size: 14px;
     display: inline-table;
         }
-     .welCome {
+    .welCome {
     padding: 5px;
     margin-top:5px;
     margin-bottom: 0px;
     border-radius: 10px 10px 10px 10px;
-    width:60%;
+    /*width:60%;*/
         }
-     .receive{
+    .true{
+        width:60%;
+          float: left;
+    }
+    .sentTrue{
+        width:60%;
+        float:right;
+    }
+    .receive{
         margin-top:5px;
          padding:5px;
-         /*width:70%;*/
+         /*width:60%;*/
          margin-left:0px;
+         float:left;
          border-radius: 10px 10px 10px 10px;
      }
-     .sent{
+    .sent{
          margin-top:5px;
          padding:5px;
-         margin-left:246px;
+         /*margin-left:246px;*/
+         float:right;
+        /*margin-left:1px;*/
          border-radius: 10px 10px 10px 10px;
+     }
+     .sentIcon{
+         margin-left:243px;
      }
 
 
@@ -483,39 +572,8 @@ all and (min-width: 992px) and (-webkit-transform-3d) {
          margin-bottom:3px;
      }
  }
-    .topboxUrl
-    {text-overflow:ellipsis;
-     overflow:hidden;
-    }
-
-    a[href^="tel:"]:before {
-  content: "\260e";
-  margin-right: 0.5em;
-}
-
-    a[href^="tel:"] {
-  color: orange;
-  text-decoration: none;
-}
-
-    .timeline .panel-outline .panel-body.padding5
-    {
-        padding:5px 0;
-    }
-   .timeline .panel-outline .panel-body.padding0
-    {
-        padding:0px;
-    }
-
-
-    @media (min-width: 992px)
-    {
-        .footerHeight{
-            margin-top:85px;
-        }
-        }
-
-     @media (min-width: 1020px)
+ 
+     @media (min-width: 1370px)
     {
         .footerHeight{
             margin-top:170px;
@@ -525,10 +583,43 @@ all and (min-width: 992px) and (-webkit-transform-3d) {
                     height:345px;
                 }
         .sent{
+            float:right;
+            
+        }
+          .sentIcon{
             margin-left:70%;
         }
         .receive
         {
-            width:60%;
+         float:left;
         }
         }
+
+     @media (max-width: 767px)
+{
+.sent {
+    background: #EA005E;
+    margin-top: 5px;
+    padding: 5px;
+    border: none;
+    color: #fff;
+    display: inline-table;
+    float:right;
+}
+.receive {
+    background: #F7630C;
+    border: none;
+    color: #fff;
+    /*width: 91%;*/
+     margin-top: 5px;
+    padding: 5px;
+    float:left;
+    display: inline-table;
+    margin-left:0px;
+}
+.true{
+    width:80%;
+}
+
+}
+   

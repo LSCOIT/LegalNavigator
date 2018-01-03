@@ -14,9 +14,9 @@
                             <div class="col-md-4 btn-group m-left-10">
 
                                 <select [(ngModel)]="selectedCountry">
-                                    <!--<option value="Alabama">Alabama (AL)</option>-->
+                                    <option value="Alabama">Alabama (AL)</option>
                                     <option value="Alaska">Alaska (AK)</option>
-                                    <!--<option value="Arizona">Arizona (AZ)</option>
+                                    <option value="Arizona">Arizona (AZ)</option>
                                     <option value="Arkansas">Arkansas (AR)</option>
                                     <option value="California">California (CA)</option>
                                     <option value="Colorado">Colorado (CO)</option>
@@ -60,16 +60,16 @@
                                     <option value="Texas">Texas (TX)</option>
                                     <option value="Utah">Utah (UT)</option>
                                     <option value="Vermont">Vermont</option>
-                                    <option value="Virginia">Virginia</option>-->
-                                    <option value="Washington">Washington(WA)</option>
-                                    <!--<option value="West Virginia">West Virginia</option>
+                                    <option value="Virginia">Virginia</option>
+                                    <option value="Washington">Washington</option>
+                                    <option value="West Virginia">West Virginia</option>
                                     <option value="Wisconsin">Wisconsin</option>
-                                    <option value="Wyoming">Wyoming</option>-->
+                                    <option value="Wyoming">Wyoming</option>
                                 </select>
                             </div>
                         </div>
                         <p class="m-top-5 col-md-12 m-top-dskTop">
-                            <span class="resultstxt">Questions? We can help,talk to our customer support service</span>
+                            <span class="resultstxt">QUESTIONS? WE CAN HELP, TALK TO OUR CUSTOMER SUPPORT SERVICE</span>
                         </p>
 
                     </div>
@@ -85,11 +85,11 @@
 
                                 <div class="col-xs-12 left-chat-box" id="chat_msgs" (scroll)="onChatScroll()">
                                     <div class="welComeFirst" *ngIf="returnFlag==='false'">Welcome to Legal Assist</div>
-                                    <!--<div class="receive" *ngIf="returnFlag==='false'">Welcome to Legal Assist</div>-->
+                                  
                                   
                                     <div *ngIf="returnFlag==='true'">
-                                        <!--<div class="welComeFirst">Welcome Back to Legal Assist</div>-->
-                                        <div class="receive">Welcome Back to Legal Assist</div>
+                                        <div class="welComeFirst">Welcome Back to Legal Assist</div>
+                                        
                                         <div *ngFor="let message of returnMessages" [class]="message.self">
                                             <div [class]="message.class" innerHtml="{{message.text}}"><span datetime='2009-11-13T20:00' style="float:right">{{message.time}}</span></div>
 
@@ -97,10 +97,8 @@
                                     </div>
                                     
                                     <div *ngFor="let message of messages; let i = index" [class]="messages[i].self">
-                                        <!--<div [class]="message.class" innerHtml="{{message.text}}" (click)="showResourcesByScenario(message.id)">
-                                            <time datetime='2009-11-13T20:00' style="float:right">{{message.time}}</time>
-                                        </div>-->
                                         
+                                        <!--<span [class]="messages[i].classIcon">{{messages[i].from}}</span>-->
                                         <div [class]="messages[i].class" *ngIf="messages[i].class!='tag-badge'" innerHtml="{{messages[i].text}}">
                                             <time datetime='2009-11-13T20:00' style="float:right">{{messages[i].time}}</time>
                                         </div>

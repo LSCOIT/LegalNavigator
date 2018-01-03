@@ -30,7 +30,7 @@ export class ChatComponent implements OnInit {
     }];
     messages = [{
         "text": "",
-        "self": false,
+        "self": "false",
         "time": "",
         "class": "",
         "classIcon": "",
@@ -39,7 +39,7 @@ export class ChatComponent implements OnInit {
     }];
     returnMessages = [{
         "text": "",
-        "self": false,
+        "self": "false",
         "time": "",
         "class": "",
     }]
@@ -67,9 +67,9 @@ export class ChatComponent implements OnInit {
 
             this.returnMessages.push({
                 "text": "I have an eviction notice",
-                "self": false,
+                "self": "sentTrue",
                 "time": time,
-                "class": "receive",
+                "class": "sent",
             })
         }, 500);
 
@@ -77,17 +77,7 @@ export class ChatComponent implements OnInit {
             time = dt.getHours() + ":" + dt.getMinutes();
             this.returnMessages.push({
                 "text": "do you need assistance with it",
-                "self": true,
-                "time": time,
-                "class": "sent",
-            })
-        }, 500);
-
-        setTimeout(() => {
-            time = dt.getHours() + ":" + dt.getMinutes();
-            this.returnMessages.push({
-                "text": "yes, I don’t understand it",
-                "self": false,
+                "self": "true",
                 "time": time,
                 "class": "receive",
             })
@@ -96,10 +86,20 @@ export class ChatComponent implements OnInit {
         setTimeout(() => {
             time = dt.getHours() + ":" + dt.getMinutes();
             this.returnMessages.push({
-                "text": "use the camera icon to take a picture of it",
-                "self": true,
+                "text": "yes, I don’t understand it",
+                "self": "sentTrue",
                 "time": time,
                 "class": "sent",
+            })
+        }, 500);
+
+        setTimeout(() => {
+            time = dt.getHours() + ":" + dt.getMinutes();
+            this.returnMessages.push({
+                "text": "use the camera icon to take a picture of it",
+                "self": "true",
+                "time": time,
+                "class": "receive",
             })
         }, 500);
     }
@@ -128,7 +128,7 @@ export class ChatComponent implements OnInit {
 
                     this.messages.push({
                         "text": res._body,
-                        "self": true,
+                        "self": "true",
                         "time": time,
                         "class": "receive",
                         "classIcon": "receiveIcon",
@@ -161,7 +161,8 @@ export class ChatComponent implements OnInit {
         var time = dt.getHours() + ":" + dt.getMinutes();
         this.messages.push({
             "text": this.replyMessage,
-            "self": true,
+            //"self": true,
+            "self": "sentTrue",
             "time": time,
             "class": "sent",
             "classIcon": "sentIcon",
@@ -204,7 +205,7 @@ export class ChatComponent implements OnInit {
                     if (res.Scenarios.length > 0) {
                         this.messages.push({
                             "text": "What are you looking for?",
-                            "self": true,
+                            "self": "true",
                             "time": time,
                             "class": "receive",
                             "classIcon": "receiveIcon",
@@ -216,7 +217,7 @@ export class ChatComponent implements OnInit {
 
                         this.messages.push({
                             "text": "",
-                            "self": true,
+                            "self": "true",
                             "time": "",
                             "class": "tag-badge",
                             "classIcon": "",
@@ -237,7 +238,7 @@ export class ChatComponent implements OnInit {
 
                                 this.messages.push({
                                     "text": res,
-                                    "self": true,
+                                    "self": "true",
                                     "time": time,
                                     "class": "receive",
                                     "classIcon": "receiveIcon",
@@ -312,7 +313,7 @@ export class ChatComponent implements OnInit {
                 var i = 0;
                 this.messages.push({
                     "text": Description,
-                    "self": true,
+                    "self": "sentTrue",
                     "time": "",
                     "class": "sent",
                     "classIcon": "sentIcon",
@@ -328,7 +329,7 @@ export class ChatComponent implements OnInit {
                         
                         this.messages.push({
                             "text": "",
-                            "self": true,
+                            "self": "true",
                             "time": "",
                             "class": "tag-badge",
                             "classIcon": "",
