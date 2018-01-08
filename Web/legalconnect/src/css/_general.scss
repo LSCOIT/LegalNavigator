@@ -490,7 +490,7 @@ all and (min-width: 992px) and (-webkit-transform-3d) {
         }
     .topics-box
     {
-        height:470px;
+        min-height:470px;
     }
     .tab-content .tab-box
     {
@@ -622,4 +622,16 @@ all and (min-width: 992px) and (-webkit-transform-3d) {
 }
 
 }
+     .cntryDisplay
+     {
+         line-height:32px; display:none;
+     }
+     .btmMarginLeft
+     {
+         margin-left:10px;
+     }
    
+     .btnMarginTop
+     {
+         margin-top:15px;
+     }

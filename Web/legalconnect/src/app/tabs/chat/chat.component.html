@@ -10,7 +10,7 @@
                             <h1>Chat</h1>
                         </div>
                         <div class="col-md-5 m-top-20">
-                            <span class="col-md-1" style="line-height:32px; display:none;">Select</span>
+                            <span class="col-md-1 cntryDisplay">Select</span>
                             <div class="col-md-4 btn-group m-left-10">
 
                                 <select [(ngModel)]="selectedCountry">
@@ -119,9 +119,9 @@
                                         <textarea id="btn-input" type="text" class="form-control" placeholder="Type here..." [(ngModel)]="replyMessage" name="replyMessage" (keyup.enter)="reply()" style="border-radius:10px;"></textarea>
 
                                     </div>
-                                    <div class="col-md-1 col-sm-1 col-xs-1 mrg-lft p-0 m-l-10 " style="margin-top:22px;">
+                                    <div class="col-md-1 col-sm-1 col-xs-1 mrg-lft p-0 m-l-10 btnMarginTop">
 
-                                        <a (click)="reply()"><i class="fa fa-paper-plane" aria-hidden="true"></i></a>
+                                        <a (click)="reply()" class="btmMarginLeft"><i class="fa fa-paper-plane" aria-hidden="true"></i></a>
                                     </div>
                                     <div class="col-md-9 col-sm-9 col-xs-4">
                                         <label for="my-file-selector">

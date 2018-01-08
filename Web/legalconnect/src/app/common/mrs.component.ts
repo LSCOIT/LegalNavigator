@@ -47,40 +47,50 @@ export class MRSComponent implements OnInit {
                 this.items = [];
                 this.SubCat = [];
                 this.processes = [];
+                this.Resources = [];
                 var curResources = JSON.parse(localStorage.getItem('curatesResources'));
                 this.hasData = true;
+                console.log('cur resources', curResources.Resources);
                 if (curResources.Resources.length > 0) {
+                    for (var i = 0; i < curResources.Resources.length; i++) {
+                        if (curResources.Resources[i].Action == 'Title')
+                            this.Resources.push({
+                                "Title": curResources.Resources[i].Title,
+                                "ResourceJson": curResources.Resources[i].ResourceJson,
+                            });
+                    }
+                    for (var i = 0; i < curResources.Resources.length; i++) {
+
+                        var item = this.Resources.find(x => x.Title == curResources.Resources[i].Title);
+                        if (item != null && item != undefined) {
+                            if (curResources.Resources[i].Action != 'Title') {
+                                if (curResources.Resources[i].ResourceJson != null && curResources.Resources[i].ResourceJson != "") {
+                                    if (curResources.Resources[i].Action == 'Url') 
+                                        item.ResourceJson = item.ResourceJson + '<br /> <b> ' + curResources.Resources[i].Action + ': </b><br/><div class="topboxUrl" title="' + curResources.Resources[i].ResourceJson + '"><a href="' + curResources.Resources[i].ResourceJson + '"target="_blank">' + curResources.Resources[i].ResourceJson + '</a></div>' 
+
+                                    else
+                                        item.ResourceJson = item.ResourceJson + '<br /> <b> ' + curResources.Resources[i].Action + ': </b><br/>' + curResources.Resources[i].ResourceJson
+
+                                }
+                            }
+                        }
+                       
+                                             
+                    }
                     
-                    while (i < curResources.Resources.length) {
+                    i = 0;
+               
+                    while (i < this.Resources.length) {
                         var Resources: Array<any> = [];
-                        for (var j = i; (j < i + 4 && j < curResources.Resources.length); j++) {
-                            if (curResources.Resources[j].Action != 'Title') {
-                                if (curResources.Resources[j].Action == 'Url') {
-                                    Resources.push({
+                    
+                        for (var j = i; (j < i + 4 && j < this.Resources.length); j++) {
+                    
+                            Resources.push({
+                                "header": this.Resources[j].Title,
+                                "body": this.Resources[j].ResourceJson,
 
-                                        "header": curResources.Resources[j].Title,
-                                        "body": '<b>' + curResources.Resources[j].Action + '</b><br /><div class="topboxUrl" title="' + curResources.Resources[j].ResourceJson + '"><a href="' + curResources.Resources[j].ResourceJson + '"target="_blank">' + curResources.Resources[j].ResourceJson + '</a></div>',
-
-                                    });
-                                }
-                                else {
-                                    Resources.push({
-
-                                        "header": curResources.Resources[j].Title,
-                                        "body": '<b>' + curResources.Resources[j].Action + '</b><br />' + curResources.Resources[j].ResourceJson,
-
-                                    });
-                                }
-                            }
-                            else {
-                                Resources.push({
-
-                                    "header": curResources.Resources[j].Title,
-                                    "body": curResources.Resources[j].ResourceJson,
-
-                                });
-                            }
-
+                            });
+                        
                         }
                         if (i == 0)
                             this.items.push({ Resources, class: "active" });
@@ -92,6 +102,7 @@ export class MRSComponent implements OnInit {
 
                      
                 }
+                
                 if (curResources.RelatedIntents.length > 0) {
                     
                     for (var i = 0; i < curResources.RelatedIntents.length; i++) {
@@ -104,36 +115,27 @@ export class MRSComponent implements OnInit {
                 if (curResources.Processes.length > 0) {
                     this.processes = [];
                     for (var i = 0; i < curResources.Processes.length; i++) {
-                     
-                        var item = this.processes.find(x => x.title == curResources.Processes[i].Title);
-                        if (item != null || item != undefined)
-                            item.desc = item.desc + curResources.Processes[i].Description
-                        else
-                            this.processes.push({
-                                "id": curResources.Processes[i].stepNumber,
-                                "title": curResources.Processes[i].Title,
-                                "desc": curResources.Processes[i].Description + '</br>' + curResources.Processes[i].ActionJson,
-                                "class": ""
-                            });
-                       
-                        //if (i == curResources.Processes.length-1)
-                        //this.processes.push({
-                        //    "id": curResources.Processes[i].stepNumber,
-                        //    "title": curResources.Processes[i].Title,
-                        //    "desc": curResources.Processes[i].Description + '</br>' + curResources.Processes[i].ActionJson,
-                        //    "class":"padding0"
-                        //    });
-                        //else
-                        //    this.processes.push({
-                        //        "id": curResources.Processes[i].stepNumber,
-                        //        "title": curResources.Processes[i].Title,
-                        //        "desc": curResources.Processes[i].Description + '</br>' + curResources.Processes[i].ActionJson,
-                        //        "class": ""
-                        //    });
-                    }
+                        if (curResources.Processes[i].Description != null) {
+                            var item = this.processes.find(x => x.title == curResources.Processes[i].Title);
+                            if (item != null || item != undefined)
+                                //item.desc = item.desc + curResources.Processes[i].Description
+                                item.desc = curResources.Processes[i].ActionJson == null ? item.desc +'<ul><li>'+ curResources.Processes[i].Description +'</li></ul>': item.desc + '<ul><li>'+curResources.Processes[i].Description + '</br>' + curResources.Processes[i].ActionJson+'</li></ul>'
+                            else {
 
+                                this.processes.push({
+                                    "id": curResources.Processes[i].stepNumber,
+                                    "title": curResources.Processes[i].Title,
+                                    //  "desc": curResources.Processes[i].Description + '</br>' + curResources.Processes[i].ActionJson,
+                                    "desc": curResources.Processes[i].ActionJson == null ? '<ul><li>'+curResources.Processes[i].Description +'</li></ul>': '<ul><li>'+curResources.Processes[i].Description + '</br>' + curResources.Processes[i].ActionJson+'</li></ul>',
+                                    "class": ""
+                                });
+
+                            }        
+
+                        }
+                    }
                     
-                    console.log('processes',this.processes);
+                    
                 }
             }
             else if (hasData == "false") {
@@ -197,28 +199,37 @@ export class MRSComponent implements OnInit {
                     if (res.Resources.length > 0) {
                         
                         this.items = [];
+                        for (var i = 0; i < res.Resources.length; i++) {
+                            if (res.Resources[i].Action == 'Title')
+                                this.Resources.push({
+                                    "Title": res.Resources[i].Title,
+                                    "ResourceJson": res.Resources[i].ResourceJson,
+                                });
+                        }
+                        for (var i = 0; i < res.Resources.length; i++) {
+
+                            var item = this.Resources.find(x => x.Title == res.Resources[i].Title);
+                            if (item != null && item != undefined) {
+                                if (res.Resources[i].Action != 'Title') {
+                                    if (res.Resources[i].ResourceJson != null && res.Resources[i].ResourceJson != "") {
+                                        if (res.Resources[i].Action == 'Url')
+                                            item.ResourceJson = item.ResourceJson + '<br /> <b> ' + res.Resources[i].Action + ': </b><br/><div class="topboxUrl" title="' + res.Resources[i].ResourceJson + '"><a href="' + res.Resources[i].ResourceJson + '"target="_blank">' + res.Resources[i].ResourceJson + '</a></div>'
+
+                                        else
+                                            item.ResourceJson = item.ResourceJson + '<br /> <b> ' + res.Resources[i].Action + ': </b><br/>' + res.Resources[i].ResourceJson
+
+                                    }
+                                }
+                            }
+
+
+                        }
+
+                        i = 0;
+
                         while (i < res.Resources.length) {
                             var Resources: Array<any> = [];
                             for (var j = i; (j < i + 4 && j < res.Resources.length); j++) {
-                                if (res.Resources[j].Action != 'Title') {
-                                    if (res.Resources[j].Action == 'Url') {
-                                        Resources.push({
-
-                                            "header": res.Resources[j].Title,
-                                            "body": res.Resources[j].ResourceJson == "" ? res.Resources[j].LawCategory.Description : res.Resources[j].LawCategory.Description + '<br /><br /><b>' + res.Resources[j].Action + '</b><br /><div class="topboxUrl" title="' + res.Resources[j].ResourceJson + '"><a href="' + res.Resources[j].ResourceJson + '"target="_blank">' + res.Resources[j].ResourceJson + '</a></div>',
-
-                                        });
-                                    }
-                                    else {
-                                        Resources.push({
-
-                                            "header": res.Resources[j].Title,
-                                            "body": res.Resources[j].ResourceJson == "" ? res.Resources[j].LawCategory.Description : res.Resources[j].LawCategory.Description + '<br /><br /><b>' + res.Resources[j].Action + '</b><br />' + res.Resources[j].ResourceJson,
-
-                                        });
-                                    }
-                                }
-                                else {
 
                                     Resources.push({
 
@@ -227,7 +238,7 @@ export class MRSComponent implements OnInit {
 
 
                                     });
-                                }
+                                
 
                             }
                             if (i == 0)
@@ -250,21 +261,26 @@ export class MRSComponent implements OnInit {
                     }
                     if (res.Processes.length > 0) {
                         this.processes = [];
+                      
                         for (var i = 0; i < res.Processes.length; i++) {
-                            if (i == res.Processes.length - 1)
-                                this.processes.push({
-                                    "id": res.Processes[i].Id,
-                                    "title": res.Processes[i].Title,
-                                    "desc": res.Processes[i].Description + '</br>' + res.Processes[i].ActionJson,
-                                    "class": "padding0"
-                                });
-                            else
-                                this.processes.push({
-                                    "id": res.Processes[i].Id,
-                                    "title": res.Processes[i].Title,
-                                    "desc": res.Processes[i].Description + '</br>' + res.Processes[i].ActionJson,
-                                    "class": ""
-                                });
+                            if (res.Processes[i].Description != null) {
+                                var item = this.processes.find(x => x.title == res.Processes[i].Title);
+                                if (item != null || item != undefined)
+                                    //item.desc = item.desc + curResources.Processes[i].Description
+                                    item.desc = res.Processes[i].ActionJson == null ? item.desc + '<ul><li>' + res.Processes[i].Description + '</li></ul>' : item.desc + '<ul><li>' + res.Processes[i].Description + '</br>' + res.Processes[i].ActionJson + '</li></ul>'
+                                else {
+
+                                    this.processes.push({
+                                        "id": res.Processes[i].stepNumber,
+                                        "title": res.Processes[i].Title,
+                                        //  "desc": curResources.Processes[i].Description + '</br>' + curResources.Processes[i].ActionJson,
+                                        "desc": res.Processes[i].ActionJson == null ? '<ul><li>' + res.Processes[i].Description + '</li></ul>' : '<ul><li>' + res.Processes[i].Description + '</br>' + res.Processes[i].ActionJson + '</li></ul>',
+                                        "class": ""
+                                    });
+
+                                }
+
+                            }
                         }
                     }
                 }
