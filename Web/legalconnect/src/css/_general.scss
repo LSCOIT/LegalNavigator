@@ -256,13 +256,15 @@
 .carousel-control.right
 {
     background-image:none;
-    right:-100px;
+    /*right:-100px;*/
+    right:-20px;
+    width:2%
 }
 
 .carousel-control.left
 {
     background-image:none;
-       left:-100px;
+       left:-105px;
 }
 
 
@@ -490,7 +492,8 @@ all and (min-width: 992px) and (-webkit-transform-3d) {
         }
     .topics-box
     {
-        min-height:470px;
+        min-height:500px;
+        ;
     }
     .tab-content .tab-box
     {
@@ -634,4 +637,8 @@ all and (min-width: 992px) and (-webkit-transform-3d) {
      .btnMarginTop
      {
          margin-top:15px;
+     }
+
+     .btn-resources-save:focus{
+         color:#fff;
      }

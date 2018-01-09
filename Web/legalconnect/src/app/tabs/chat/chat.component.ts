@@ -199,7 +199,7 @@ export class ChatComponent implements OnInit {
             .subscribe((res) => {
                 console.log('curated', res);
                 var i = 0;
-                if (res != null) {
+                if (res != null && res.Description!=null) {
                     localStorage.setItem('curatesResources', JSON.stringify(res)); //store data
                     localStorage.setItem('hasData', "true");
                     if (res.Scenarios.length > 0) {
@@ -227,12 +227,14 @@ export class ChatComponent implements OnInit {
                         this.hasScenario = true;
 
                     }
+
                     localStorage.setItem('scrolled', 'false');
                 }
                 else {
                     this.srchServ.getChatMessages(query, this.lang, this.selectedCountry == " " ? localStorage.getItem('geoState') : this.selectedCountry)
                         .subscribe((res) => {
-                                if (res != null) {
+                            console.log('result', res);
+                                if (res != null && res!='') {
                                 var dt = new Date();
                                 var time = dt.getHours() + ":" + dt.getMinutes();
 
@@ -248,11 +250,30 @@ export class ChatComponent implements OnInit {
                                 });
 
                                 this.showMessage = false;
-                            }
+                                }
+                                else
+                                    this.messages.push({
+                                        "text": "Please try with other option",
+                                        "self": "sentTrue",
+                                        "time": "",
+                                        "class": "sent",
+                                        "classIcon": "sentIcon",
+                                        "from": "You",
+                                        "scenarios": this.scenarios
+                                    })
                                 localStorage.setItem('scrolled', 'false');
                         },
                         (err: any) => {
                             this.showMessage = false;
+                            this.messages.push({
+                                "text": "Please try with other option",
+                                "self": "sentTrue",
+                                "time": "",
+                                "class": "sent",
+                                "classIcon": "sentIcon",
+                                "from": "You",
+                                "scenarios": this.scenarios
+                            })
                             console.log('error', err);
 
                         });
@@ -304,8 +325,8 @@ export class ChatComponent implements OnInit {
 
     }
 
-    showResourcesByScenario(scenarioId: string, Description:string) {
-       
+    showResourcesByScenario(scenarioId: string, Description: string) {
+      
         localStorage.setItem('hasData', 'true');
         localStorage.setItem('curatesResources', null);
         this.srchServ.getCurScenarios(scenarioId, localStorage.getItem('geoState'))
@@ -324,9 +345,11 @@ export class ChatComponent implements OnInit {
                     localStorage.setItem('curatesResources', JSON.stringify(res)); //store data
                     localStorage.setItem('hasData', "true");
                     console.log('sen by id', res);
+                   
                     if (res.Scenarios.length > 0) {
+                       
                         this.scenarios = res.Scenarios;
-                        
+
                         this.messages.push({
                             "text": "",
                             "self": "true",
@@ -337,17 +360,45 @@ export class ChatComponent implements OnInit {
                             "scenarios": this.scenarios
                         })
                         this.hasScenario = true;
-                        
-        
+
+
                     }
+                    this.messages.push({
+                        "text": "Please Scroll Down To See Resources & Froms/Steps",
+                        "self": "sentTrue",
+                        "time": "",
+                        "class": "sent",
+                        "classIcon": "sentIcon",
+                        "from": "You",
+                        "scenarios": this.scenarios
+                    })
                 }
-                else
+                else {
                     localStorage.setItem('hasData', "false");
+                   
+                    this.messages.push({
+                        "text": "Please try with other option",
+                        "self": "sentTrue",
+                        "time": "",
+                        "class": "sent",
+                        "classIcon": "sentIcon",
+                        "from": "You",
+                        "scenarios": this.scenarios
+                    })
+                }
                 localStorage.setItem('scrolled', 'false');
                 this._mrs.ngOnInit();
             },
             (err: any) => {
-
+                this.messages.push({
+                    "text": "Please try with other option",
+                    "self": "sentTrue",
+                    "time": "",
+                    "class": "sent",
+                    "classIcon": "sentIcon",
+                    "from": "You",
+                    "scenarios": this.scenarios
+                })
                 console.log('curated error', err);
 
 

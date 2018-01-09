@@ -66,10 +66,10 @@ export class MRSComponent implements OnInit {
                             if (curResources.Resources[i].Action != 'Title') {
                                 if (curResources.Resources[i].ResourceJson != null && curResources.Resources[i].ResourceJson != "") {
                                     if (curResources.Resources[i].Action == 'Url') 
-                                        item.ResourceJson = item.ResourceJson + '<br /> <b> ' + curResources.Resources[i].Action + ': </b><br/><div class="topboxUrl" title="' + curResources.Resources[i].ResourceJson + '"><a href="' + curResources.Resources[i].ResourceJson + '"target="_blank">' + curResources.Resources[i].ResourceJson + '</a></div>' 
+                                        item.ResourceJson = item.ResourceJson + '<br /><br /><b> ' + curResources.Resources[i].Action + ': </b><br/><div class="topboxUrl" title="' + curResources.Resources[i].ResourceJson + '"><a href="' + curResources.Resources[i].ResourceJson + '"target="_blank">' + curResources.Resources[i].ResourceJson + '</a></div>' 
 
                                     else
-                                        item.ResourceJson = item.ResourceJson + '<br /> <b> ' + curResources.Resources[i].Action + ': </b><br/>' + curResources.Resources[i].ResourceJson
+                                        item.ResourceJson = item.ResourceJson + '<br /><br /> <b> ' + curResources.Resources[i].Action + ': </b><br/>' + curResources.Resources[i].ResourceJson
 
                                 }
                             }
@@ -113,6 +113,8 @@ export class MRSComponent implements OnInit {
                     }
                 }
                 if (curResources.Processes.length > 0) {
+                    this.collapsed = 'collapse in';
+                    this.aClicked = true;
                     this.processes = [];
                     for (var i = 0; i < curResources.Processes.length; i++) {
                         if (curResources.Processes[i].Description != null) {
@@ -134,8 +136,8 @@ export class MRSComponent implements OnInit {
 
                         }
                     }
-                    
-                    
+
+                    console.log('this processes', this.processes);
                 }
             }
             else if (hasData == "false") {
