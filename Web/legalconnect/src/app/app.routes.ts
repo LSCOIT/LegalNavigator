@@ -22,9 +22,11 @@ const routes: Routes = [
     { path: 'doc', component: DocComponent },
     { path: 'chat', component: ChatComponent },
     { path: 'chat/:id', component: ChatComponent },
+    { path: 'chat/resources/:id', component: ChatComponent },
     { path: 'chat/QandA/:id', component: ChatComponent },
     { path: 'timeline', component: TLComponent },
-    { path: '', redirectTo: '/search', pathMatch: 'full' },
-    { path: '**', component: SearchComponent },
+    //{ path: '', redirectTo: '/chat', pathMatch: 'full' },
+    { path: '', component: ChatComponent },
+    { path: '**', component: ChatComponent },
 ];
 export const routing: ModuleWithProviders = RouterModule.forRoot(routes);

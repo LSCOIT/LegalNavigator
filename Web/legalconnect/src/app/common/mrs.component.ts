@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input  } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { SearchService } from '../services/search.service';
 import { DomSanitizer } from "@angular/platform-browser";
@@ -8,7 +8,8 @@ import { DomSanitizer } from "@angular/platform-browser";
     templateUrl: './mrs.component.html',
 })
 export class MRSComponent implements OnInit {
-
+    hasData: boolean = true;
+    showMrs: boolean = false;
     text: string = "In this section you will find general legal information, self - help packets and videos on your rights as a<br />renter and what to do if you have a problem with your landlord.<a > http://www.washingtonlawhelp.org/issues/housing/tenants-rights</a>";
     aciveBdg: string = 'tenantrights';
     OneClass = "collapse";
@@ -20,96 +21,137 @@ export class MRSComponent implements OnInit {
     city: string = "";
     mapsUrl: any;
     qnClicked: boolean = false;
-
-
+    collapsed: string = 'collapse';
+    aClicked: boolean = false;
+    sentence: string = "";
     currentUrl: string = '';
-
-    SubCat = [{
-        "id": "tenantrights",
-        "name": "tenantrights",
-        "text": "In this section you will find general legal information, self-help packets and videos on your rights as a <br />renter and what to do if you have a problem with your landlord.<a> http://www.washingtonlawhelp.org/issues/housing/tenants-rights</a>"
-    },
-    {
-        "id": "foreclosure",
-        "name": "foreclosure",
-        "text": "Browse the information below to find information about foreclosure prevention, foreclosure mediation and other foreclosure issues. <a>http://www.washingtonlawhelp.org/issues/housing/foreclosure-1</a>"
-    },
-    {
-        "id": "emergencyshelter",
-        "name": "emergencyshelter",
-        "text": "Browse the resources below to find general information and resources on emergency shelter and assistance in Washington state.  <a>http://www.washingtonlawhelp.org/issues/housing/emergency-shelter-assistance</a>"
-    },
-    {
-        "id": "mobileparktenants",
-        "name": "mobileparktenants",
-        "text": "Browse the resources below to find general information and resources on emergency shelter and assistance in Washington state.  <a>http://www.washingtonlawhelp.org/issues/housing/emergency-shelter-assistance</a>';"
-    }
-    ]
-
-    Resources = [{
-        "id": "1",
-        "header": "Eviction in Washington State",
-        "body": " Read about the rules landlords have to follow if they want you to move out.  Find resources that explain the eviction process, your rights as a tenant and how to respond if you receive an eviction notice. Start by watching our <a href='#'>short video</a>",
-        "type": "button",
-        "typeText": "More"
-    },
-    {
-        "id": "2",
-        "header": "Eviction in Washington State",
-        "body": "For assistance with eviction go to  <a href='#'>Washington State 211</a> or 2-1-1 from a landline, 206-461-3200 or 800-621-4636 or 206-461-3610 for TTY/hearing impaired calls. The staff will tell you about agencies that can help you. They can also refer you to other resources such as financial education classes.",
-        "type": "button",
-        "typeText": "More"
-    },
-    {
-        "id": "3",
-        "header": "Chat",
-        "body": "Chat text - 'Questions?  We can help, talk to our customer support service'",
-        "type": "button",
-        "typeText": "Chat Now"
-    },
-    {
-        "id": "4",
-        "header": "Eviction Help Line",
-        "body": "<b>Eviction Help Line</b> (813) 991-0267. You Stop <b>Eviction</b>. Don't get locked out of your <b>home</b>, let us <b>help</b> you delay your eviction. ..."
-    },
-
-    ];
-    Resources_1 = [{
-        "id": "1",
-        "header": "Eviction in Alaska State",
-        "body": " Read about the rules landlords have to follow if they want you to move out.  Find resources that explain the eviction process, your rights as a tenant and how to respond if you receive an eviction notice. Start by watching our <a href='#'>short video</a>",
-        "type": "button",
-        "typeText": "More"
-    },
-    {
-        "id": "2",
-        "header": "Eviction in Alaska State",
-        "body": "For assistance with eviction go to  <a href='#'>Washington State 211</a> or 2-1-1 from a landline, 206-461-3200 or 800-621-4636 or 206-461-3610 for TTY/hearing impaired calls. The staff will tell you about agencies that can help you. They can also refer you to other resources such as financial education classes.",
-        "type": "button",
-        "typeText": "More"
-    },
-    {
-        "id": "3",
-        "header": "Chat",
-        "body": "Chat text - 'Questions?  We can help, talk to our customer support service'",
-        "type": "button",
-        "typeText": "Chat Now"
-    },
-    {
-        "id": "4",
-        "header": "Eviction Help Line Alaska",
-        "body": "<b>Eviction Help Line</b> (813) 991-0267. You Stop <b>Eviction</b>. Don't get locked out of your <b>home</b>, let us <b>help</b> you delay your eviction. ..."
-    },
-
-    ]
+    SubCat:Array<any> = [];
+    Resources:Array<any> = [];
+    items: Array<any> = [];
+    processes: Array<any> = [];
     private start = false;
-    constructor(private router: Router, private aRoute: ActivatedRoute, private domSanitizer: DomSanitizer, private srchServ: SearchService) { }
+    geoCountry: string = "";
+    constructor(private router: Router, private aRoute: ActivatedRoute, private domSanitizer: DomSanitizer, private srchServ: SearchService)
+    { }
 
     ngOnInit() {
+        this.sentence = localStorage.getItem('sentence');
+        var i: number = 0;
+        var j: number;
+        var curResources = JSON.parse(localStorage.getItem('curatesResources'));
+        var hasData = localStorage.getItem('hasData');
+        if (localStorage.getItem('linkName') === "") {
+            
+             if (hasData == "true") {  //display ui from local storage
+                this.showMrs = true;
+                this.items = [];
+                this.SubCat = [];
+                this.processes = [];
+                this.Resources = [];
+                var curResources = JSON.parse(localStorage.getItem('curatesResources'));
+                this.hasData = true;
+                console.log('cur resources', curResources.Resources);
+                if (curResources.Resources.length > 0) {
+                    for (var i = 0; i < curResources.Resources.length; i++) {
+                        if (curResources.Resources[i].Action == 'Title')
+                            this.Resources.push({
+                                "Title": curResources.Resources[i].Title,
+                                "ResourceJson": curResources.Resources[i].ResourceJson,
+                            });
+                    }
+                    for (var i = 0; i < curResources.Resources.length; i++) {
 
+                        var item = this.Resources.find(x => x.Title == curResources.Resources[i].Title);
+                        if (item != null && item != undefined) {
+                            if (curResources.Resources[i].Action != 'Title') {
+                                if (curResources.Resources[i].ResourceJson != null && curResources.Resources[i].ResourceJson != "") {
+                                    if (curResources.Resources[i].Action == 'Url') 
+                                        item.ResourceJson = item.ResourceJson + '<br /><br /><b> ' + curResources.Resources[i].Action + ': </b><br/><div class="topboxUrl" title="' + curResources.Resources[i].ResourceJson + '"><a href="' + curResources.Resources[i].ResourceJson + '"target="_blank">' + curResources.Resources[i].ResourceJson + '</a></div>' 
+
+                                    else
+                                        item.ResourceJson = item.ResourceJson + '<br /><br /> <b> ' + curResources.Resources[i].Action + ': </b><br/>' + curResources.Resources[i].ResourceJson
+
+                                }
+                            }
+                        }
+                       
+                                             
+                    }
+                    
+                    i = 0;
+               
+                    while (i < this.Resources.length) {
+                        var Resources: Array<any> = [];
+                    
+                        for (var j = i; (j < i + 4 && j < this.Resources.length); j++) {
+                    
+                            Resources.push({
+                                "header": this.Resources[j].Title,
+                                "body": this.Resources[j].ResourceJson,
+
+                            });
+                        
+                        }
+                        if (i == 0)
+                            this.items.push({ Resources, class: "active" });
+                        else
+                            this.items.push({ Resources, class: "" });
+                        i = i + 4;
+
+                    }
+
+                     
+                }
+                
+                if (curResources.RelatedIntents.length > 0) {
+                    
+                    for (var i = 0; i < curResources.RelatedIntents.length; i++) {
+                        this.SubCat.push({
+                            "id": curResources.RelatedIntents[i],
+                            "name": curResources.RelatedIntents[i],
+                        });
+                    }
+                }
+                if (curResources.Processes.length > 0) {
+                    this.collapsed = 'collapse in';
+                    this.aClicked = true;
+                    this.processes = [];
+                    for (var i = 0; i < curResources.Processes.length; i++) {
+                        if (curResources.Processes[i].Description != null) {
+                            var item = this.processes.find(x => x.title == curResources.Processes[i].Title);
+                            if (item != null || item != undefined)
+                                //item.desc = item.desc + curResources.Processes[i].Description
+                                item.desc = curResources.Processes[i].ActionJson == null ? item.desc +'<ul><li>'+ curResources.Processes[i].Description +'</li></ul>': item.desc + '<ul><li>'+curResources.Processes[i].Description + '</br>' + curResources.Processes[i].ActionJson+'</li></ul>'
+                            else {
+
+                                this.processes.push({
+                                    "id": curResources.Processes[i].stepNumber,
+                                    "title": curResources.Processes[i].Title,
+                                    //  "desc": curResources.Processes[i].Description + '</br>' + curResources.Processes[i].ActionJson,
+                                    "desc": curResources.Processes[i].ActionJson == null ? '<ul><li>'+curResources.Processes[i].Description +'</li></ul>': '<ul><li>'+curResources.Processes[i].Description + '</br>' + curResources.Processes[i].ActionJson+'</li></ul>',
+                                    "class": ""
+                                });
+
+                            }        
+
+                        }
+                    }
+
+                    console.log('this processes', this.processes);
+                }
+            }
+            else if (hasData == "false") {
+                this.showMrs = false;
+                this.hasData = false;
+                this.items = [];
+                this.SubCat = [];
+            
+            }
+        }
         this.currentUrl = this.router.url; // this will give you current url
 
-        var route;
+        var route:any;
+        
         if (this.currentUrl.indexOf('general') > 0)
             route = "general";
         else if (this.currentUrl.indexOf('chat') > 0)
@@ -118,38 +160,159 @@ export class MRSComponent implements OnInit {
             route = "guided";
         else
             route = "general";
-
-
-        var position = this.currentUrl.indexOf("/", this.currentUrl.indexOf("/") + 1);
-        var str = this.currentUrl.substring(position + 1);
-
-        var arr = this.SubCat.find(x => x.id === str);
-
-        if (arr != null && arr != undefined) {
-            this.aciveBdg = arr.id;
-            this.text = arr.text;
+        
+        if (localStorage.getItem('linkName') != null && localStorage.getItem('linkName') != undefined && localStorage.getItem('linkName')!="") {
+            this.aciveBdg = localStorage.getItem('linkName');
+            if (route != "chat")
             document.getElementById('mrlTopics').scrollIntoView();
         }
 
         
+        if (this.currentUrl == '/' + route + '/forms') {
+            document.getElementById('forms_steps').scrollIntoView();
+            this.aClicked = true;
+            if (this.collapsed == 'collapse in')
+                this.collapsed = 'collapse';
+            else
+                this.collapsed = 'collapse in'
+        }
+        
     }
 
-    displayText(id: string) {
-        this.aciveBdg = id;
-        var route;
+    displayText(linkName: string) {
 
+        localStorage.setItem('hasData', 'true');
+        localStorage.setItem('curatesResources', null);
+        
+        localStorage.setItem('linkName', linkName);
+        localStorage.setItem('sentence', linkName);
+        
+        this.aciveBdg = linkName;
+        var route:string;
+        this.srchServ.getCuratedContents(linkName, localStorage.getItem('geoState'))
+            .subscribe((res) => {
+                
+                var i = 0;
+                if (res != null) {
+
+                    localStorage.setItem('curatesResources', JSON.stringify(res)); //store data
+                    localStorage.setItem('hasData', "true");
+                    this.hasData = true;
+                    if (res.Resources.length > 0) {
+                        
+                        this.items = [];
+                        for (var i = 0; i < res.Resources.length; i++) {
+                            if (res.Resources[i].Action == 'Title')
+                                this.Resources.push({
+                                    "Title": res.Resources[i].Title,
+                                    "ResourceJson": res.Resources[i].ResourceJson,
+                                });
+                        }
+                        for (var i = 0; i < res.Resources.length; i++) {
+
+                            var item = this.Resources.find(x => x.Title == res.Resources[i].Title);
+                            if (item != null && item != undefined) {
+                                if (res.Resources[i].Action != 'Title') {
+                                    if (res.Resources[i].ResourceJson != null && res.Resources[i].ResourceJson != "") {
+                                        if (res.Resources[i].Action == 'Url')
+                                            item.ResourceJson = item.ResourceJson + '<br /> <b> ' + res.Resources[i].Action + ': </b><br/><div class="topboxUrl" title="' + res.Resources[i].ResourceJson + '"><a href="' + res.Resources[i].ResourceJson + '"target="_blank">' + res.Resources[i].ResourceJson + '</a></div>'
+
+                                        else
+                                            item.ResourceJson = item.ResourceJson + '<br /> <b> ' + res.Resources[i].Action + ': </b><br/>' + res.Resources[i].ResourceJson
+
+                                    }
+                                }
+                            }
+
+
+                        }
+
+                        i = 0;
+
+                        while (i < res.Resources.length) {
+                            var Resources: Array<any> = [];
+                            for (var j = i; (j < i + 4 && j < res.Resources.length); j++) {
+
+                                    Resources.push({
+
+                                        "header": res.Resources[j].Title,
+                                        "body": res.Resources[j].ResourceJson,
+
+
+                                    });
+                                
+
+                            }
+                            if (i == 0)
+                                this.items.push({ Resources, class: "active" });
+                            else
+                                this.items.push({ Resources, class: "" });
+                            i = i + 4;
+
+                        }
+                        
+                    }
+                    if (res.RelatedIntents.length > 0) {
+                        this.SubCat = [];
+                        for (var i = 0; i < res.RelatedIntents.length; i++) {
+                            this.SubCat.push({
+                                "id": res.RelatedIntents[i],
+                                "name": res.RelatedIntents[i],
+                            });
+                        }
+                    }
+                    if (res.Processes.length > 0) {
+                        this.processes = [];
+                      
+                        for (var i = 0; i < res.Processes.length; i++) {
+                            if (res.Processes[i].Description != null) {
+                                var item = this.processes.find(x => x.title == res.Processes[i].Title);
+                                if (item != null || item != undefined)
+                                    //item.desc = item.desc + curResources.Processes[i].Description
+                                    item.desc = res.Processes[i].ActionJson == null ? item.desc + '<ul><li>' + res.Processes[i].Description + '</li></ul>' : item.desc + '<ul><li>' + res.Processes[i].Description + '</br>' + res.Processes[i].ActionJson + '</li></ul>'
+                                else {
+
+                                    this.processes.push({
+                                        "id": res.Processes[i].stepNumber,
+                                        "title": res.Processes[i].Title,
+                                        //  "desc": curResources.Processes[i].Description + '</br>' + curResources.Processes[i].ActionJson,
+                                        "desc": res.Processes[i].ActionJson == null ? '<ul><li>' + res.Processes[i].Description + '</li></ul>' : '<ul><li>' + res.Processes[i].Description + '</br>' + res.Processes[i].ActionJson + '</li></ul>',
+                                        "class": ""
+                                    });
+
+                                }
+
+                            }
+                        }
+                    }
+                }
+                else {
+                    this.hasData = false;
+                    localStorage.setItem('hasData', "false");
+                    this.items = [];
+                 
+                    this.SubCat = []
+                    this.processes = [];
+
+                }
+            },
+            (err: any) => {
+
+                console.log('curated error', err);
+
+
+            }
+            );
         if (this.currentUrl.indexOf('general') > 0) route = "general";
         else if (this.currentUrl.indexOf('chat') > 0) route = "chat";
         else if (this.currentUrl.indexOf('guided') > 0) route = "guided";
         else route = "general";
+        console.log('route', '/' + route+'/'+linkName);
         document.getElementById('mrlTopics').scrollIntoView();
-        this.router.navigate(['/' + route, id]);
+        this.router.navigate(['/' + route, linkName]);
 
-        var arr = this.SubCat.find(x => x.id === id);
-        console.log('arr', arr);
-        if (arr != null && arr != undefined)
-            this.text = arr.text;
+        
 
     }
-   
+       
 }

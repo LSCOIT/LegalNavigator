@@ -9,38 +9,7 @@
     "installed_plugins": {
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "io.cordova.myappb9f816"
-        },
-        "cordova-plugin-battery-status": {
-            "PACKAGE_NAME": "io.cordova.myappb9f816"
-        },
-        "cordova-plugin-camera": {
-            "CAMERA_USAGE_DESCRIPTION": " ",
-            "PHOTOLIBRARY_USAGE_DESCRIPTION": " ",
-            "PACKAGE_NAME": "io.cordova.myapp3281d0"
-        },
-        "cordova-plugin-device": {
-            "PACKAGE_NAME": "io.cordova.myapp3281d0"
-        },
-        "cordova-plugin-device-motion": {
-            "PACKAGE_NAME": "io.cordova.myapp3281d0"
-        },
-        "cordova-plugin-geolocation": {
-            "GEOLOCATION_USAGE_DESCRIPTION": " ",
-            "PACKAGE_NAME": "io.cordova.myapp3281d0"
-        },
-        "cordova-plugin-media-capture": {
-            "CAMERA_USAGE_DESCRIPTION": " ",
-            "MICROPHONE_USAGE_DESCRIPTION": " ",
-            "PHOTOLIBRARY_USAGE_DESCRIPTION": " ",
-            "PACKAGE_NAME": "io.cordova.myapp3281d0"
         }
     },
-    "dependent_plugins": {
-        "cordova-plugin-compat": {
-            "PACKAGE_NAME": "io.cordova.myapp3281d0"
-        },
-        "cordova-plugin-file": {
-            "PACKAGE_NAME": "io.cordova.myapp3281d0"
-        }
-    }
+    "dependent_plugins": {}
 }

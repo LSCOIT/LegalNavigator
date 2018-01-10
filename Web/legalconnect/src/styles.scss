@@ -1,0 +1,11 @@
+/* You can add global styles to this file, and also import other style files */
+
+$icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
+@import "~bootstrap-sass/assets/stylesheets/_bootstrap.scss";
+$fa-font-path: "../node_modules/font-awesome/fonts";
+@import "../node_modules/font-awesome/scss/font-awesome.scss";
+@import "css/_legalassist.scss";
+@import "css/_chat.scss";
+@import "css/_general.scss";
+
+

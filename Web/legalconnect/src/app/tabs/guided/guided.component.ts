@@ -25,12 +25,8 @@ export class GuidedComponent implements OnInit{
     constructor(private router: Router, private _el: ElementRef) { }
 
     ngOnInit() {
-   
-        
-        console.log('top:', this._el.nativeElement.offsetTop);
+        localStorage.setItem('linkName', "");
         this.currentUrl = this.router.url; // this will give you current url
-
-       
 
         if (this.currentUrl == '/guided/assist/evictionnotice')
               this.activeSld = "Slide2";
@@ -67,6 +63,10 @@ export class GuidedComponent implements OnInit{
     {   
         this.myClass =param;
        
+    }
+    redirectToForms() {
+        document.getElementById('forms_steps').scrollIntoView();
+        this.router.navigate(['/guided', 'forms']);
     }
 }
 

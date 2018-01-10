@@ -6,6 +6,6 @@ import { Router } from '@angular/router';
 })
 export class DocComponent {
 
-
+    pdfSrc: string = 'images/Alaska-Eviction-Notice-to-Quit-Form.pdf';
 }
 

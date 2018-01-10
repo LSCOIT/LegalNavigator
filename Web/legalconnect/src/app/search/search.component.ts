@@ -1,6 +1,7 @@
-﻿import { Component } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
+import { SearchService } from '../services/search.service';
 
 @Component({
     selector: 'search',
@@ -11,7 +12,7 @@ import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
     }
   `]
 })
-export class SearchComponent {
+export class SearchComponent implements OnInit {
     searchText: string;
     arrayOfStrings = ["I am being evicted",
         "How to fight for eviction",
@@ -25,18 +26,29 @@ export class SearchComponent {
         "how an eviction works",
         "how long does it take to evict someone",
         "how an eviction affects you",
-        "apartment eviction process",];
+        "apartment eviction process",
+    "my husband makes me feel unsafe",];
 
-    constructor(private router: Router) { }
+    constructor(private router: Router, private srchServ: SearchService) { }
+
+
+    ngOnInit() {
+        localStorage.setItem('linkName', "");
+        this.srchServ.getLocation().subscribe(
+            (resCountry) => {
+                localStorage.setItem('geoState', resCountry.region);
+            });
+    }
 
     redirect() {
         localStorage.setItem('returnFlag', 'false');
+        localStorage.setItem('sentence', this.searchText );
         this.router.navigateByUrl("demo");
     }
 
     valueChanged(newVal: any) {
         this.searchText = newVal;
-        console.log("Case 2: value is changed to ", newVal);
+        
     }
 }
 

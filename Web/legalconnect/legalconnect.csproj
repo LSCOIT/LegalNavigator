@@ -68,9 +68,11 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="karma.conf.js" />
     <Content Include="packages.config" />
     <Content Include="bs-config.json" />
     <Content Include="package.json" />
+    <Content Include="protractor.conf.js" />
     <Content Include="src\app\common\footer.component.html" />
     <Content Include="src\app\common\header.component.html" />
     <Content Include="src\app\common\mrs.component.html" />
@@ -79,8 +81,7 @@
     <Content Include="src\app\tabs\general\general.component.html" />
     <Content Include="src\app\tabs\guided\guided.component.html" />
     <Content Include="src\app\tabs\timeline\timeline.component.html" />
-    <Content Include="src\chat.css" />
-    <Content Include="src\demo.css" />
+    <Content Include="src\assets\step-3.png" />
     <Content Include="src\images\browse.PNG" />
     <Content Include="src\images\browser.JPG" />
     <Content Include="src\images\chat-text.PNG" />
@@ -93,6 +94,21 @@
     <Content Include="src\tsconfig.json" />
     <Content Include="tslint.json" />
     <Content Include="src\images\Alaska-Eviction-Notice-to-Quit-Form.pdf" />
+    <Content Include="src\images\washington-3-day-notice-to-quit-form-nonpayment.pdf" />
+    <Content Include="src\assets\.gitkeep" />
+    <Content Include="src\assets\Alaska-Eviction-Notice-to-Quit-Form.pdf" />
+    <Content Include="src\css\_chat.scss" />
+    <Content Include="src\css\_general.scss" />
+    <Content Include="src\css\_legalassist.scss" />
+    <Content Include="src\styles.scss" />
+    <Content Include="src\tsconfig.app.json" />
+    <Content Include="src\tsconfig.spec.json" />
+    <Content Include=".angular-cli.json" />
+    <Content Include=".editorconfig" />
+    <Content Include=".gitignore" />
+    <Content Include="README.md" />
+    <Content Include="tsconfig.json" />
+    <None Include="Properties\PublishProfiles\LegalAssistProd - Web Deploy.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -106,8 +122,6 @@
     <Content Include="src\favicon.ico" />
     <Content Include="src\index.html" />
     <Content Include="src\app\search\search.component.html" />
-    <Content Include="src\LegalConnect.css" />
-    <Content Include="src\styles.css" />
     <Content Include="src\systemjs-angular-loader.js" />
     <Content Include="src\systemjs.config.extras.js" />
     <Content Include="src\systemjs.config.js" />
@@ -131,8 +145,13 @@
     <TypeScriptCompile Include="src\app\tabs\general\general.component.ts" />
     <TypeScriptCompile Include="src\app\tabs\guided\guided.component.ts" />
     <TypeScriptCompile Include="src\app\tabs\timeline\timeline.component.ts" />
+    <TypeScriptCompile Include="src\environments\environment.prod.ts" />
+    <TypeScriptCompile Include="src\environments\environment.ts" />
     <TypeScriptCompile Include="src\main.ts" />
     <TypeScriptCompile Include="src\app\search\search.component.ts" />
+    <TypeScriptCompile Include="src\polyfills.ts" />
+    <TypeScriptCompile Include="src\test.ts" />
+    <TypeScriptCompile Include="src\typings.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

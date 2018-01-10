@@ -9,15 +9,13 @@ import { Observable } from 'rxjs/Observable';
     templateUrl: './demo.component.html'
 })
 
-export class DemoComponent  {
+export class DemoComponent implements OnInit  {
     result: any;
+    searchText:string ;
     constructor(private router: Router, private srchServ: SearchService) {
-        //http.get('https://api.cognitive.microsoft.com/bing/v5.0/search?q=I am beign evictied&count=10&offset=0&mkt=en-us&safesearch=Moderate')
-        // Call map on the response observable to get the parsed people object
-        //.map(res => res.json())
-        // Subscribe to the observable to get the parsed people object and attach it to the
-        // component
-        //  .subscribe(people => this.people = people);
+        
     }
-
+    ngOnInit() {
+        this.searchText = localStorage.getItem('sentence');
+    }
 }

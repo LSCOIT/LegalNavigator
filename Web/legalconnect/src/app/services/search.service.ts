@@ -9,25 +9,29 @@ export class SearchService {
 
     }
     //private searchUrl = 'https://api.cognitive.microsoft.com/bing/v5.0/search';  
-    private searchUrl = 'http://contentsextractionapi.azurewebsites.net/api/ExtractContents';
-    private chatMessageUrl = 'http://contentsextractionapi.azurewebsites.net/api/ExtractContents';
-    private chatRefUrl = 'http://contentsextractionapi.azurewebsites.net/api/ExtractSubTopics';
-    private chatFileUploadUrl = 'http://contentsextractionapi.azurewebsites.net/api/ExtractTextsFromHttpFileBase';
+    private searchUrl = 'http://contentsextractionapiother.azurewebsites.net/api/ExtractCrawledContents';
+    private chatMessageUrl = 'http://contentsextractionapiother.azurewebsites.net/api/ExtractCrawledContents';
+    private chatRefUrl = 'http://contentsextractionapiother.azurewebsites.net/api/ExtractSubTopics';
+    private chatFileUploadUrl = 'http://contentsextractionapiother.azurewebsites.net/api/ExtractTextsFromHttpFileBase';
+    private curatedContentsUrl = 'http://contentsextractionapiother.azurewebsites.net/api/ExtractCuratedContents';
+    private getCuratedScenarios = 'http://contentsextractionapiother.azurewebsites.net/api/ExtractCuratedContents'
     private tokenUrl = 'https://api.cognitive.microsoft.com/sts/v1.0/issueToken';
     private translateUrl = 'https://api.microsofttranslator.com/V2/Http.svc/Translate';
     geoCountry: any;
 
     output: any;
   
-    public getChatMessages(query:string, lang: string, country: string): Observable<any> {
-   
-        return this._http.post(this.chatMessageUrl, { Topic: query, Title: query, State: country }).map((res: Response) => (res.json()));
+    public getChatMessages(query: string, lang: string, country: string): Observable<any> {
+        
+        
+        //return this._http.post(this.chatMessageUrl, { Topic: query, Title: query, State: country }).map((res: Response) => (res.json()));
+        return this._http.post(this.chatMessageUrl, { Topic: query.trim(), Title: query.trim(), State: country }).map((res: Response) => (res.json()));
     }
 
 
     public getChatReferences(query: string, country: string): Observable<any> {
-        console.log(country);
-        return this._http.post(this.chatRefUrl, { Sentence: query, State: country}).map((res: Response) => (res.json()));
+                
+        return this._http.post(this.chatRefUrl, { Sentence: query.trim(), State: country}).map((res: Response) => (res.json()));
 
     }
 
@@ -37,6 +41,12 @@ export class SearchService {
        headers.append('processData', 'false');
          return this._http.post(this.chatFileUploadUrl, data,{ headers: headers} ).map((res: Response) => (res));
        
+    }
+
+    public getCuratedContents(query: string, state: string): Observable<any> {
+        
+        return this._http.post(this.curatedContentsUrl, { Sentence: query.trim(), State: state }).map((res: Response) => (res.json()));
+
     }
     public TranslateToken() {
         var headers = new Headers();
@@ -55,6 +65,11 @@ export class SearchService {
 
     public getLocation(): Observable<any> {
       return this._http.get("http://ipinfo.io").map((res: Response) => res.json());
+
+    }
+
+    public getCurScenarios(ScenarioId: string, State: string): Observable<any> {
+        return this._http.get(this.getCuratedScenarios + '?scenarioId=' + ScenarioId +'&state='+State).map((res: Response) => res.json());
 
     }
 

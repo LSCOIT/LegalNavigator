@@ -28,6 +28,8 @@ var MRSComponent = (function () {
         this.state = "";
         this.city = "";
         this.qnClicked = false;
+        this.collapsed = 'collapse';
+        this.aClicked = false;
         this.currentUrl = '';
         this.SubCat = [{
                 "id": "tenantrights",
@@ -124,6 +126,14 @@ var MRSComponent = (function () {
             this.aciveBdg = arr.id;
             this.text = arr.text;
             document.getElementById('mrlTopics').scrollIntoView();
+        }
+        if (this.currentUrl == '/' + route + '/forms') {
+            document.getElementById('forms_steps').scrollIntoView();
+            this.aClicked = true;
+            if (this.collapsed == 'collapse in')
+                this.collapsed = 'collapse';
+            else
+                this.collapsed = 'collapse in';
         }
     };
     MRSComponent.prototype.displayText = function (id) {

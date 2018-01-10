@@ -11,9 +11,9 @@ body {
   background: #ffffff;
   font-size: 15px;
   @font-face: font-family: 'Segoe UI';
-  src: url("../fonts/SegoeUI.eot");
+  /*src: url("../fonts/SegoeUI.eot");
   src: url("../fonts/SegoeUI.eot?#iefix") format("embedded-opentype"), url("../fonts/SegoeUI.woff") format("woff"), url("../fonts/SegoeUI.ttf") format("truetype");
-  font-weight: normal;
+  font-weight: normal;*/
   font-style: normal;
 }
 
@@ -139,7 +139,8 @@ body {
 
 /*---------------Page2-----------------*/
 .headerbg {
-  background-image: url(../images/LP_background.png);
+  /*background-image: url(../images/LP_background.png);*/
+  background-image: url(./images/LP_background.png);
   background-size: cover;
   height: 122px;
   position: relative;
@@ -193,8 +194,7 @@ body {
   vertical-align: middle;
   padding-top: 4px;
   color: #ffffff;
-  font-weight: bold;
-  font-size: 16px;
+  font-size: 15px;
   text-transform: uppercase;
   border-radius: 0px;
 }
@@ -212,6 +212,7 @@ body {
 .tab-content .tab-box {
   width: 100%;
   min-height: 112px;
+  min-height: 70px;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
   -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
   -moz-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
@@ -220,10 +221,10 @@ body {
 
 .tab-content .tab-box h1 {
   font-size: 46px;
-  font-weight: bold;
   color: #454545;
   margin-bottom: 5px;
   margin-top: 15px;
+  
 }
 
 .tab-content .tab-box p {
@@ -236,7 +237,7 @@ body {
 }
 
 .font16 {
-  font-size: 16px;
+  font-size: 15px;
 }
 
 .m-top-15 {
@@ -348,12 +349,12 @@ body {
   font-size: 60px;
 }
 
-.guided h2 {
+/*.guided h2 {
   font-weight: bold;
-}
+}*/
 
 .guided p {
-  font-weight: 600;
+  font-weight: 400;
 }
 
 .lnk-btn, .lnk-btn:hover, .lnk-btn:visited, .lnk-btn:focus, .lnk-btn:active {
@@ -621,7 +622,6 @@ body {
 }
 
 .resources_content h1 {
-  font-weight: bold;
   font-size: 35px;
   color: #000;
   margin: 0;
@@ -644,7 +644,8 @@ body {
 
 .topics-box .header-img {
   width: 100%;
-  height: 160px;
+  /*height: 160px;*/
+  height: 190px;
   background: #999;
   position: relative;
 }
@@ -748,10 +749,11 @@ body {
 }
 
 .tag-badge {
+    margin-top:5px;
   background: #fff;
   color: #a2a2a2;
   border: 1px solid #b6b7b8;
-  border-radius: 0;
+  border-radius: 10px 10px 10px 10px;
   font-size: 14px;
   font-weight: 600;
   padding: 3px 15px;
@@ -880,6 +882,7 @@ footer p {
 .panel-default>.panel-heading a {
   display: block;
   padding: 10px 15px;
+  margin-top: 15px;
 }
 
 .panel-default>.panel-heading a:after {
@@ -955,7 +958,6 @@ footer p {
   padding: 15px;
   text-decoration: none;
   color: #a9a9aa;
-  font-weight: bold;
   font-size: 18px;
 }
 
@@ -979,7 +981,7 @@ footer p {
 }
 
 .save-progress h2 {
-  font-weight: 700;
+  font-weight: 600;
   color: #454545;
   font-size: 26px;
 }
@@ -1122,6 +1124,7 @@ footer p {
 }
 
 .timeline .panel-outline .panel-body {
+    width:95%;
   padding: 10px 0px;
 }
 
@@ -1580,7 +1583,10 @@ hr {
     font-size: 11px;
     margin-left: 18px;
   }
-
+  .btn-resources-save
+  {
+      top:0px;
+  }
   .img-left-width {
     width: 220px;
   }
@@ -1679,6 +1685,12 @@ hr {
   .container {
     width: 1280px;
   }
+      .m-r-49 {
+  margin-right: 62px;
+  }
+      .m-left-30 {
+    margin-left: 30px;
+}
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
@@ -1710,12 +1722,7 @@ hr {
   .resources_content.general {
     padding-top: 240px;
   }
-}
 
-@media (min-width: 992px) and (max-width: 1199px) {
-  .lp-tabs .nav > li > a {
-    min-width: 130px;
-  }
 }
 
 @media (max-width: 991px) {
@@ -1730,19 +1737,31 @@ hr {
  /*min-height: 498px;*/
     min-height: 498px;
   }
-
+   .lp-tabs .nav > li > a {
+    min-width: 130px;
+  }
   .side-notify {
     padding-top: 150px;
   }
+
+  .m-r-49 {
+  margin-right: 48px;
+}
+  .m-left-30 {
+    margin-left: 30px;
+}
 }
 
 @media (max-width: 768px) {
   .timeline-padding {
     padding-top: 0px;
   }
+  .timeline .panel{
+          padding-left: 60px;
+  }
 }
 
-.m-r-49 {
-  margin-right: 48px;
+  .m-left-30 {
+    margin-left: 0px;
 }
 /*--- End Media Queries ------*/

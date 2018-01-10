@@ -1,5 +1,6 @@
 import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { Ng2CarouselamosModule } from 'ng2-carouselamos';
 // the browser platform with a compiler
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { FormsModule } from '@angular/forms';  
@@ -25,7 +26,8 @@ import {SearchService} from './services/search.service';
         HttpModule,
         JsonpModule, 
         routing,
-        Ng2AutoCompleteModule
+        Ng2AutoCompleteModule,
+        Ng2CarouselamosModule
     ],
     declarations: [AppComponent,
         SearchComponent,

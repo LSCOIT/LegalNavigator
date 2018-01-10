@@ -27,7 +27,6 @@ var GuidedComponent = (function () {
         this.ctrType = "button";
     }
     GuidedComponent.prototype.ngOnInit = function () {
-        console.log('top:', this._el.nativeElement.offsetTop);
         this.currentUrl = this.router.url; // this will give you current url
         if (this.currentUrl == '/guided/assist/evictionnotice')
             this.activeSld = "Slide2";
@@ -50,6 +49,10 @@ var GuidedComponent = (function () {
     };
     GuidedComponent.prototype.ValidateContent = function (param) {
         this.myClass = param;
+    };
+    GuidedComponent.prototype.redirectToForms = function () {
+        document.getElementById('forms_steps').scrollIntoView();
+        this.router.navigate(['/guided', 'forms']);
     };
     return GuidedComponent;
 }());

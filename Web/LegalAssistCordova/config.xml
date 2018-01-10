@@ -7,14 +7,14 @@
   <access origin="*" />
   <vs:features />
   <preference name="SplashScreen" value="screen" />
-  <preference name="windows-target-version" value="10.0" />
+  <preference name="windows-target-version" value="8.1" />
   <allow-intent href="http://*/*" />
   <allow-intent href="https://*/*" />
   <allow-intent href="tel:*" />
   <allow-intent href="sms:*" />
   <allow-intent href="mailto:*" />
   <allow-intent href="geo:*" />
-  <allow-navigation href="http://localhost:3000/" />
+  <allow-navigation href="http://localhost:4200/" />
   <platform name="android">
     <allow-intent href="market:*" />
   </platform>
@@ -95,14 +95,12 @@
     <splash height="1280" src="res/screens/wp8/SplashScreenImage.png" width="768" />
   </platform>
   <plugin name="cordova-plugin-whitelist" spec="1" />
-  <vs:toolsetVersion>6.3.1</vs:toolsetVersion>
-  <engine name="android" spec="5.2.1" />
-  <engine name="ios" spec="4.2.0" />
-  <engine name="windows" spec="4.4.2" />
-  <plugin name="cordova-plugin-battery-status" spec="~1.2.4" />
-  <plugin name="cordova-plugin-camera" spec="~2.4.1" />
-  <plugin name="cordova-plugin-device" spec="~1.1.6" />
-  <plugin name="cordova-plugin-device-motion" spec="~1.2.5" />
-  <plugin name="cordova-plugin-geolocation" spec="~2.4.3" />
-  <plugin name="cordova-plugin-media-capture" spec="~1.4.3" />
+  <plugin name="cordova-plugin-battery-status" version="1.2.4" />
+  <plugin name="cordova-plugin-camera" version="2.4.1" />
+  <plugin name="cordova-plugin-compat" version="1.1.0" />
+  <plugin name="cordova-plugin-device" version="1.1.6" />
+  <plugin name="cordova-plugin-device-motion" version="1.2.5" />
+  <plugin name="cordova-plugin-file" version="4.3.3" />
+  <plugin name="cordova-plugin-geolocation" version="2.4.3" />
+  <plugin name="cordova-plugin-media-capture" version="1.4.3" />
 </widget>

@@ -9,7 +9,7 @@
             <div class="col-md-8 col-md-offset-4 col-xs-12 home-search-input-group hidden-xs">
                 <div class="input-group">
                     <div ng2-auto-complete [source]="arrayOfStrings" (valueChanged)="valueChanged($event)" placeholder="enter text">
-                        <input [ngModel]="model1" class="form-control search_txt" placeholder="Search for..." (keyup.enter)="redirect()" />
+                        <input [(ngModel)]="searchText" class="form-control search_txt" placeholder="Search for..." (keyup.enter)="redirect()" />
                     </div>
                     <div class="input-group-btn">
                         <button class="btn btn-secondary lp-btn search_btn" type="button" (click)="redirect()">Search</button>
@@ -20,7 +20,7 @@
                 <div class="input-group">
                     <div ng2-auto-complete [source]="arrayOfStrings" (valueChanged)="valueChanged($event)" placeholder="enter text">
 
-                        <input [ngModel]="model1" class="form-control search_txt" placeholder="Search for..." (keyup.enter)="redirect()" />
+                        <input [(ngModel)]="searchText" class="form-control search_txt" placeholder="Search for..." (keyup.enter)="redirect()" />
                     </div>
 
                 </div>
