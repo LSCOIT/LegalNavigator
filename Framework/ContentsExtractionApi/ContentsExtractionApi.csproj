@@ -211,16 +211,17 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-    <Compile Include="Controllers\ExtractNSMIContentsController.cs" />
+    <Compile Include="Controllers\ExtractCuratedContentsController.cs" />
     <Compile Include="Controllers\ExtractSubTopicsController.cs" />
     <Compile Include="Controllers\ExtractTextFromBytesController.cs" />
     <Compile Include="Controllers\ExtractTextsFromHttpFileBaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ExtractContentsController.cs" />
+    <Compile Include="Controllers\ExtractCrawledContentsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ContentExtractionRequest.cs" />
+    <Compile Include="Models\CuratedContent.cs" />
     <Compile Include="Models\NSMIInput.cs" />
     <Compile Include="Models\SentenceInput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -258,7 +259,11 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Properties\PublishProfiles\ContentExtractorApi - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\ContentsExtractionApi - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\ContentsExtractionApi20171127035726 - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\ContentsExtractionApiOther - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -276,7 +281,9 @@
     </Content>
     <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
     <Content Include="Content\Site.css" />
-    <Content Include="Views\Web.config" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />

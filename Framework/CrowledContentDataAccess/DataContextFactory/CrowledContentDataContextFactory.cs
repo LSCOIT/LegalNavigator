@@ -14,7 +14,7 @@ namespace ContentDataAccess.DataContextFactory
        
         public PlatformCoreDataContext GetPlatformCoreDataContext()
         {
-            throw new System.NotImplementedException();
+            return new PlatformCoreDataContext();
         }
     }
 }

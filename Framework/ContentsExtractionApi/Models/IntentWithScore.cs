@@ -8,17 +8,20 @@ namespace ContentsExtractionApi.Models
     /// <summary>
     /// 
     /// </summary>
-    public class NSMIInput
+    public class IntentWithScore
     {
-
+        /// <summary>
+        /// Top Scoring Intent
+        /// </summary>
+        public string TopScoringIntent { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public string Sentence { get; set; }
-
+        public  decimal Score { get; set; }
+        
         /// <summary>
         /// 
         /// </summary>
-        public string State { get; set; }
+        public  string [] TopTwoIntents { get; set; }
     }
 }

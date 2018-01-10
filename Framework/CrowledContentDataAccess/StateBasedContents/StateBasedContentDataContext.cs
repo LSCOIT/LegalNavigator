@@ -2,6 +2,7 @@
 using CrawledContentDataAccess.StateBasedContents;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace ContentDataAccess.StateBasedContents
 
         }
         public StateBasedContentDataContext()
-            : base("name=StateBasedContentsDb")
+            : base("name=StateBasedContentsDb") //Default connection string
         {
         }
 
@@ -34,13 +35,21 @@ namespace ContentDataAccess.StateBasedContents
 
         //--Curated Contents
         public virtual DbSet<LawCategory> LawCategories { get; set; }
+        public virtual DbSet<LawCategoryParentChild> LawCategoryParentChildren { get; set; }
+        public virtual DbSet<LawCategorySibling> LawCategorySiblings { get; set; }        
         public virtual DbSet<Resource> Resources { get; set; }
         public virtual DbSet<Process> Processes { get; set; }
         public virtual DbSet<IntentToNSMICode> IntentToNSMICodes { get; set; }
+        public virtual DbSet<Scenario> Scenarios { get; set; }
+        public virtual DbSet<LawCategoryToScenario> LawCategoryToScenarios { get; set; }
+        public virtual DbSet<ScenarioToLawCategory> ScenarioToLawCategories { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+            modelBuilder.Entity<LawCategory>()
+            .Property(c => c.LCID)
+            .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
         }
 
     }

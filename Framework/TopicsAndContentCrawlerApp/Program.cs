@@ -2,28 +2,43 @@
 using CrawledContentsBusinessLayer.WlhDataExtraction;
 using ContentDataAccess.StateBasedContents;
 using ContentDataAccess;
+using System.Collections.Generic;
+using ContentDataAccess.PlatformCoreSettingContents;
+using CrawledContentDataAccess.StateBasedContents;
 
-namespace TopicsAndContentCrawlerApp
+namespace MSFTA2JApp
 {
     class Program
     {
         static void Main(string[] args)
         {
+            ContentDataRepository x = new ContentDataRepository(new CrowledContentDataContextFactory());
+             // x.Save(new User { Email = "test@test.com", Name = "testUser", Roles = new List<Role> { new Role { StateAdmin = "StateAdmin" } } }, "ContentsDb_AK1");
+           x.Save(new LawCategory {  Description="description", NSMICode="20002"}, "ContentsDb_AK1");
+            //var counter = 1;
+            foreach (var item in x.GetScenarios("ContentsDb_AK1"))
+            {
+                System.Console.WriteLine("Descripiton " + item.Description);
+               // x.Save(new Scenario { Description = "desc", LC_ID = counter++, LawCategory=item}, "ContentsDb_AK");
+            }
+           
 
-            WebCrawler wc = new WebCrawler();
-            WebCrawler.s_statelhUrlBase = @"https://alaskalawhelp.org";
-
-            var topics = wc.GetWebPageList();
-            /*List<Topic> topics = new List<Topic> {
-                new Topic {
-                Name = "Topicname",
-                SubTopics = new List<SubTopic> { new SubTopic { Name="Subtopicname", Docs = new List<Document>() { new Document { Url="url", Title="title", Content="content" }  }, Url="url" } },
-                Url = "url"
-                }
-            } ;*/
-            ICrowledContentDataRepository crowledContentDataRepository = new CrowledContentDataRepository(new CrowledContentDataContextFactory());
+           // CrawledContentsBusinessLayer.CourtSiteExtraction.WebCrawler wc = new CrawledContentsBusinessLayer.CourtSiteExtraction.WebCrawler();
+           // WebCrawler.s_statelhUrlBase = @"https://alaskalawhelp.org";
+           // // WebCrawler.s_statelhUrlBase = @"http://www.courts.alaska.gov/shc/";
+           // var connectionStringName = "ContentsDb_WA";C:\Users\v-gedem\Source\Repos\Access2Justice\Framework\ContentsExtractionApi\packages.config
+           // //var connectionStringName = "ContentsDb_AL"
+           // var topics = wc.GetWebPageList();
+           // /*List<Topic> topics = new List<Topic> {
+           //     new Topic {
+           //     Name = "Topicname",
+           //     SubTopics = new List<SubTopic> { new SubTopic { Name="Subtopicname", Docs = new List<Document>() { new Document { Url="url", Title="title", Content="content" }  }, Url="url" } },
+           //     Url = "url"
+           //     }
+           // } ;*/
+           // IContentDataRepository crowledContentDataRepository = new ContentDataRepository(new CrowledContentDataContextFactory());
               
-            topics.ForEach(topic => crowledContentDataRepository.Save(topic, "CrowledContentsDb_AL"));
+           //topics.ForEach(topic => crowledContentDataRepository.Save(topic, connectionStringName));
 
         }
     }

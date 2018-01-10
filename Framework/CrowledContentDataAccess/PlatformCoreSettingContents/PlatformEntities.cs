@@ -67,6 +67,9 @@ namespace ContentDataAccess.PlatformCoreSettingContents
 
     public class LawTaxonomy
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]        
+        public int LawTaxonomyId { get; set; }
         public int NodeId { get; set; }
         public string NodeName { get; set; }
         public int ParentNodeId { get; set; }

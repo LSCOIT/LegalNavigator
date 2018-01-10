@@ -55,17 +55,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CrowledContentDataRepository.cs" />
+    <Compile Include="ContentDataRepository.cs" />
+    <Compile Include="CuratedContent.cs" />
     <Compile Include="PlatformCoreSettingContents\PlatformCoreDataContext.cs" />
     <Compile Include="PlatformCoreSettingContents\PlatformEntities.cs" />
     <Compile Include="StateBasedContents\CourtContentEntities.cs" />
-    <Compile Include="StateBasedContents\NSMIContent.cs" />
+    <Compile Include="StateBasedContents\CuratedContent.cs" />
     <Compile Include="StateBasedContents\StateBasedContentDataContext.cs" />
     <Compile Include="DataContextFactory\CrowledContentDataContextFactory.cs" />
     <Compile Include="StateBasedContents\CuratedExperienceEntities.cs" />
     <Compile Include="StateBasedContents\LawHelpCrawledEntities.cs" />
     <Compile Include="DataContextFactory\ICrowledContentDataContextFactory.cs" />
-    <Compile Include="ICrowledContentDataRepository.cs" />
+    <Compile Include="IContentDataRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -74,7 +75,6 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -13,6 +13,7 @@ namespace CrawledContentDataAccess.StateBasedContents
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        public string Url { get; set; }
         public string Title { get; set; }
         public int? ParentId { get; set; }
 
