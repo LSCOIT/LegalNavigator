@@ -50,11 +50,17 @@ export class ChatComponent implements OnInit {
     constructor(private srchServ: SearchService, private router: Router, private route: ActivatedRoute) { }
 
     ngOnInit() {
-        this.selectedCountry = 'Alaska';
-        this.srchServ.getLocation().subscribe(
-            (resCountry) => {
-                localStorage.setItem('geoState', resCountry.region);
-            });
+        localStorage.setItem('scrolled', 'true');
+      
+        if (localStorage.getItem('geoState') != null)
+            this.selectedCountry = localStorage.getItem('geoState');
+        else
+            this.selectedCountry = "Alaska";
+        //if (localStorage.getItem('geoState') == null)
+        //this.srchServ.getLocation().subscribe(
+        //    (resCountry) => {
+        //        localStorage.setItem('geoState', resCountry.region);
+        //    });
         localStorage.setItem('sentence', "");
         localStorage.setItem('linkName', "");
         this.query = this.replyMessage;
@@ -152,9 +158,10 @@ export class ChatComponent implements OnInit {
     }
 
     reply() {
+        localStorage.setItem('showProcess', 'false');
         this.scenarios = [];
         this.hasScenario = false;
-        localStorage.setItem('hasData','true');
+        
         localStorage.setItem('curatesResources', null);
         this.isVisible = false;
         var dt = new Date();
@@ -195,61 +202,62 @@ export class ChatComponent implements OnInit {
         
         localStorage.setItem('sentence', query);
 
-        this.srchServ.getCuratedContents(query, localStorage.getItem('geoState'))
-            .subscribe((res) => {
-                console.log('curated', res);
-                var i = 0;
-                if (res != null && res.Description!=null) {
-                    localStorage.setItem('curatesResources', JSON.stringify(res)); //store data
-                    localStorage.setItem('hasData', "true");
-                    if (res.Scenarios.length > 0) {
-                        this.messages.push({
-                            "text": "What are you looking for?",
-                            "self": "true",
-                            "time": time,
-                            "class": "receive",
-                            "classIcon": "receiveIcon",
-                            "from": "LA",
-                            "scenarios": this.scenarios
-                        })
+        if (localStorage.getItem('geoState') != 'Washington') {
+            this.srchServ.getCuratedContents(query, localStorage.getItem('geoState'))
+                .subscribe((res) => {
+                 
+                    var i = 0;
+                    if (res != null && res.Description != null) {
+                        localStorage.setItem('curatesResources', JSON.stringify(res)); //store data
+                        localStorage.setItem('hasData', "true");
+                        if (res.Scenarios.length > 0) {
+                            this.messages.push({
+                                "text": "What are you looking for?",
+                                "self": "true",
+                                "time": time,
+                                "class": "receive",
+                                "classIcon": "receiveIcon",
+                                "from": "LA",
+                                "scenarios": this.scenarios
+                            })
 
-                        this.scenarios = res.Scenarios;
+                            this.scenarios = res.Scenarios;
 
-                        this.messages.push({
-                            "text": "",
-                            "self": "true",
-                            "time": "",
-                            "class": "tag-badge",
-                            "classIcon": "",
-                            "from": "",
-                            "scenarios": this.scenarios
-                        })
-                        this.hasScenario = true;
+                            this.messages.push({
+                                "text": "",
+                                "self": "true",
+                                "time": "",
+                                "class": "tag-badge",
+                                "classIcon": "",
+                                "from": "",
+                                "scenarios": this.scenarios
+                            })
+                            this.hasScenario = true;
 
+                        }
+
+                        localStorage.setItem('scrolled', 'false');
                     }
+                    else {
+                        this.srchServ.getChatMessages(query, this.lang, this.selectedCountry == " " ? localStorage.getItem('geoState') : this.selectedCountry)
+                            .subscribe((res) => {
+                              
+                                if (res != null && res != '') {
+                                    var dt = new Date();
+                                    var time = dt.getHours() + ":" + dt.getMinutes();
 
-                    localStorage.setItem('scrolled', 'false');
-                }
-                else {
-                    this.srchServ.getChatMessages(query, this.lang, this.selectedCountry == " " ? localStorage.getItem('geoState') : this.selectedCountry)
-                        .subscribe((res) => {
-                            console.log('result', res);
-                                if (res != null && res!='') {
-                                var dt = new Date();
-                                var time = dt.getHours() + ":" + dt.getMinutes();
+                                    this.messages.push({
+                                        "text": res,
+                                        "self": "true",
+                                        "time": time,
+                                        "class": "receive",
+                                        "classIcon": "receiveIcon",
+                                        "from": "LA",
+                                        "scenarios": this.scenarios
 
-                                this.messages.push({
-                                    "text": res,
-                                    "self": "true",
-                                    "time": time,
-                                    "class": "receive",
-                                    "classIcon": "receiveIcon",
-                                    "from": "LA",
-                                    "scenarios": this.scenarios
+                                    });
 
-                                });
-
-                                this.showMessage = false;
+                                    this.showMessage = false;
                                 }
                                 else
                                     this.messages.push({
@@ -262,35 +270,86 @@ export class ChatComponent implements OnInit {
                                         "scenarios": this.scenarios
                                     })
                                 localStorage.setItem('scrolled', 'false');
-                        },
-                        (err: any) => {
-                            this.showMessage = false;
-                            this.messages.push({
-                                "text": "Please try with other option",
-                                "self": "sentTrue",
-                                "time": "",
-                                "class": "sent",
-                                "classIcon": "sentIcon",
-                                "from": "You",
-                                "scenarios": this.scenarios
-                            })
-                            console.log('error', err);
+                            },
+                            (err: any) => {
+                                this.showMessage = false;
+                                this.messages.push({
+                                    "text": "Please try with other option",
+                                    "self": "sentTrue",
+                                    "time": "",
+                                    "class": "sent",
+                                    "classIcon": "sentIcon",
+                                    "from": "You",
+                                    "scenarios": this.scenarios
+                                })
+                                console.log('error', err);
+
+                            });
+                        localStorage.setItem('hasData', "false");
+
+                    }
+
+
+                    this._mrs.ngOnInit();
+                },
+                (err: any) => {
+
+                    console.log('curated error', err);
+
+
+                }
+                );
+        }
+        else if (localStorage.getItem('geoState') == 'Washington') {
+            localStorage.setItem('hasData', "true");
+            this.srchServ.getChatMessages(query, this.lang, this.selectedCountry == " " ? localStorage.getItem('geoState') : this.selectedCountry)
+                .subscribe((res) => {
+                    console.log('result', res);
+                    if (res != null && res != '') {
+                        var dt = new Date();
+                        var time = dt.getHours() + ":" + dt.getMinutes();
+
+                        this.messages.push({
+                            "text": res,
+                            "self": "true",
+                            "time": time,
+                            "class": "receive",
+                            "classIcon": "receiveIcon",
+                            "from": "LA",
+                            "scenarios": this.scenarios
 
                         });
-                    localStorage.setItem('hasData', "false");
-                    
-                }
-            
-           
-                this._mrs.ngOnInit();
-            },
-            (err: any) => {
 
-                console.log('curated error', err);
+                        this.showMessage = false;
+                    }
+                    else
+                        this.messages.push({
+                            "text": "Please try with other option",
+                            "self": "sentTrue",
+                            "time": "",
+                            "class": "sent",
+                            "classIcon": "sentIcon",
+                            "from": "You",
+                            "scenarios": this.scenarios
+                        })
+                    localStorage.setItem('scrolled', 'false');
+                    this._mrs.ngOnInit();
+                },
+                (err: any) => {
+                    this.showMessage = false;
+                    this.messages.push({
+                        "text": "Please try with other option",
+                        "self": "sentTrue",
+                        "time": "",
+                        "class": "sent",
+                        "classIcon": "sentIcon",
+                        "from": "You",
+                        "scenarios": this.scenarios
+                    })
+                    console.log('error', err);
 
-
-            }
-        );
+                });
+        }
                     this.showMessage = false;
 
                     setInterval(this.updateScroll, 100);
@@ -327,7 +386,7 @@ export class ChatComponent implements OnInit {
 
     showResourcesByScenario(scenarioId: string, Description: string) {
       
-        localStorage.setItem('hasData', 'true');
+        localStorage.setItem('showProcess', 'true');
         localStorage.setItem('curatesResources', null);
         this.srchServ.getCurScenarios(scenarioId, localStorage.getItem('geoState'))
             .subscribe((res) => {
@@ -341,13 +400,22 @@ export class ChatComponent implements OnInit {
                     "from": "You",
                     "scenarios": this.scenarios
                 })
-                if (res != null) {
+                if (res != null && res.Description != null) {
                     localStorage.setItem('curatesResources', JSON.stringify(res)); //store data
                     localStorage.setItem('hasData', "true");
                     console.log('sen by id', res);
                    
                     if (res.Scenarios.length > 0) {
-                       
+                        //this.messages.push({
+                        //    "text": res.Scenarios[0].Outcome,
+                        //    "self": "true",
+                        //    "time": "",
+                        //    "class": "receive",
+                        //    "classIcon": "receiveIcon",
+                        //    "from": "LA",
+                        //    "scenarios": this.scenarios
+
+                        //});
                         this.scenarios = res.Scenarios;
 
                         this.messages.push({
@@ -364,7 +432,7 @@ export class ChatComponent implements OnInit {
 
                     }
                     this.messages.push({
-                        "text": "Please Scroll Down To See Resources & Froms/Steps",
+                        "text": "Please Scroll Down To See Resources & Forms/Steps",
                         "self": "sentTrue",
                         "time": "",
                         "class": "sent",
@@ -405,6 +473,13 @@ export class ChatComponent implements OnInit {
             }
             );
 
+        
+    }
+
+    stateOnChange(newValue:string) {
+        console.log(newValue);
+        localStorage.setItem('hasData', "false");
+        localStorage.setItem('geoState', newValue);
         
     }
 

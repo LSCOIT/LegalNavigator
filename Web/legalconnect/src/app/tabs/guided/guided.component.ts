@@ -21,13 +21,14 @@ export class GuidedComponent implements OnInit{
     myClass: string = "aciveSlide";
     ctrType: string = "button";
     steps: { "id": "Slide2", "question": "Have you received and eviction notice ?", "type": "button", "title":"evictionnotice", "options": [{ "name": "Yes" }, { "name": "No" }] }    //{
-    
+    showGuided: string = "";
     constructor(private router: Router, private _el: ElementRef) { }
 
     ngOnInit() {
         localStorage.setItem('linkName', "");
         this.currentUrl = this.router.url; // this will give you current url
-
+         this.showGuided = localStorage.getItem('hasData');
+        
         if (this.currentUrl == '/guided/assist/evictionnotice')
               this.activeSld = "Slide2";
        else if (this.currentUrl == '/guided/assist/housingproblem')

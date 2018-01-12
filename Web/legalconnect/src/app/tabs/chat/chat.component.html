@@ -13,10 +13,10 @@
                             <span class="col-md-1 cntryDisplay">Select</span>
                             <div class="col-md-4 btn-group m-left-10">
 
-                                <select [(ngModel)]="selectedCountry">
-                                    <option value="Alabama">Alabama (AL)</option>
+                                <select [(ngModel)]="selectedCountry" (ngModelChange)="stateOnChange($event)" name="sel2">
+                                    <!--<option value="Alabama">Alabama (AL)</option>-->
                                     <option value="Alaska">Alaska (AK)</option>
-                                    <option value="Arizona">Arizona (AZ)</option>
+                                    <!--<option value="Arizona">Arizona (AZ)</option>
                                     <option value="Arkansas">Arkansas (AR)</option>
                                     <option value="California">California (CA)</option>
                                     <option value="Colorado">Colorado (CO)</option>
@@ -60,11 +60,11 @@
                                     <option value="Texas">Texas (TX)</option>
                                     <option value="Utah">Utah (UT)</option>
                                     <option value="Vermont">Vermont</option>
-                                    <option value="Virginia">Virginia</option>
-                                    <option value="Washington">Washington</option>
-                                    <option value="West Virginia">West Virginia</option>
+                                    <option value="Virginia">Virginia</option>-->
+                                    <option value="Washington">Washington(WA)</option>
+                                    <!--<option value="West Virginia">West Virginia</option>
                                     <option value="Wisconsin">Wisconsin</option>
-                                    <option value="Wyoming">Wyoming</option>
+                                    <option value="Wyoming">Wyoming</option>-->
                                 </select>
                             </div>
                         </div>
@@ -221,7 +221,7 @@
     <mrs ></mrs>
     <footerDiv></footerDiv>
 </section>
-<style>
+<!--<style>
     body {
         overflow-x: hidden !important;
     }
@@ -229,4 +229,4 @@
         body > * {
             max-width: 100% !important;
         }
-</style>
+</style>-->

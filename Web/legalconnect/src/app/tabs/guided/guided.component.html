@@ -1,5 +1,5 @@
 ﻿<headerDiv></headerDiv>
-<section id="tabcontent">
+<section id="tabcontent" *ngIf="showGuided=='true'">
     <!-- Tab panes -->
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="resources">
@@ -170,7 +170,9 @@
     </div>
 </section>
 <section class="resources_content" id="Downsection">
-    <mrs></mrs>
+    <div class="mrsHeight">
+        <mrs></mrs>
+    </div>
     <footerDiv></footerDiv>
 </section>
 
