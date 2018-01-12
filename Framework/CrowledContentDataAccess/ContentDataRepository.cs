@@ -234,7 +234,7 @@ namespace ContentDataAccess
                     var relatedCategoriesNSMICode = childNodes.Union(siblings)?.Select(relCat => relCat.NSMICode)?.ToList();
                     var relatedIntents = relatedCategoriesNSMICode != null ? curatedCntx.IntentToNSMICodes.Where(intentToNsmi => relatedCategoriesNSMICode.Contains(intentToNsmi.NSMICode)).Select(intentToNsmi => intentToNsmi.Intent)?.ToList() : null;
                     var scenariosIds = LawCategory != null ? curatedCntx.LawCategoryToScenarios.Where(lctoscen => lctoscen.LCID == LawCategory.LCID).Select(lctoscen=> lctoscen.ScenarioId)?.ToList(): null;
-                    var scenarios= scenariosIds!=null && scenariosIds.Count > 0? curatedCntx.Scenarios.Where(scen=> scenariosIds.Contains(scen.ScenarioId)).Select(scn=> new CrawledContentDataAccess.Scenario { Description= scn.Description, LC_ID= scn.LC_ID, ScenarioId=scn.ScenarioId }) : null;
+                    var scenarios= scenariosIds!=null && scenariosIds.Count > 0? curatedCntx.Scenarios.Where(scen=> scenariosIds.Contains(scen.ScenarioId)).Select(scn=> new CrawledContentDataAccess.Scenario { Description= scn.Description, LC_ID= scn.LC_ID, ScenarioId=scn.ScenarioId, Outcome=scn.Outcome, StateDeviation=scn.StateDeviation }) : null;
                     var processList = processes?.ToList(); 
                     if (processList != null)
                     {                       
@@ -359,7 +359,7 @@ namespace ContentDataAccess
                     var scenarioObj = curatedCntx.Scenarios.FirstOrDefault(scenario => scenario.ScenarioId == scenarioId);
 
                     var LawCategory = scenarioObj != null ? curatedCntx.LawCategories.FirstOrDefault(lawCat => lawCat.LCID == scenarioObj.LC_ID) : null;
-                    var resource = LawCategory != null ? curatedCntx.Resources.Where(res => res.LawCategory.LCID == LawCategory.LCID).Select(res=> new CrawledContentDataAccess.Resource { Action=res.Action, ResourceId=res.ResourceId, ResourceJson = res.ResourceJson, ResourceType = res.ResourceType , Title = res.Title }) : null;
+                    var resources = LawCategory != null ? curatedCntx.Resources.Where(res => res.LawCategory.LCID == LawCategory.LCID && res.ResourceType == ResourceType.Related.ToString() ).OrderBy(res=> res.ResourceId).Select(res=> new CrawledContentDataAccess.Resource { Action=res.Action, ResourceId=res.ResourceId, ResourceJson = res.ResourceJson, ResourceType = res.ResourceType , Title = res.Title }) : null;
                     var processes = LawCategory != null ? curatedCntx.Processes.Where(prcs => prcs.LawCategory.LCID == LawCategory.LCID).OrderBy(prc => prc.Id).Select(prc=> new CrawledContentDataAccess.Process { ActionJson=prc.ActionJson, Description= prc.Description, Id= prc.Id, ParentId= prc.ParentId, stepType = prc.stepType, Title = prc.Title }) : null;
                     var childNodes = LawCategory != null ? curatedCntx.LawCategoryParentChildren.Where(lawCatPC => lawCatPC.ParentLawCategory != null && lawCatPC.ParentLawCategory.LCID == LawCategory.LCID).Select(lawCatPC => lawCatPC.ChildLawCategory) : null;
                     var siblings = LawCategory != null ? curatedCntx.LawCategorySiblings.Where(lawCatSib => lawCatSib.LawCategory != null && lawCatSib.LawCategory.LCID == LawCategory.LCID).Select(lawCatSib => lawCatSib.SiblingLawCategory) : null;
@@ -388,7 +388,7 @@ namespace ContentDataAccess
 
                         }
                     }
-                    var nsmiResult = new CuratedContent { Description = LawCategory?.Description, Resources = resource?.ToList(), Scenarios = scenarios?.ToList(), Processes = processList, RelatedIntents = relatedIntents };
+                    var nsmiResult = new CuratedContent { Description = LawCategory?.Description, Resources = resources?.ToList(), Scenarios = scenarios?.ToList(), Processes = processList, RelatedIntents = relatedIntents };
 
                     return nsmiResult;
                 }

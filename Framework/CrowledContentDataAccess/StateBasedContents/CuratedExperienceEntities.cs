@@ -69,7 +69,16 @@ namespace CrawledContentDataAccess.StateBasedContents
       //  public virtual Scenario Scenario { get; set; }
 
     }
-  
+    public enum ResourceType
+    {
+        Related ,
+        Title ,
+        Phone,
+        Address,
+        Url
+
+    }
+
     public enum StepType
     {
         Description=1 ,
@@ -107,7 +116,8 @@ namespace CrawledContentDataAccess.StateBasedContents
         //Let the code drive this column
         public int LC_ID { get; set; }        
         public string Description { get; set; }
-
+        public string StateDeviation { get; set; }
+        public string Outcome { get; set; }
         //public virtual LawCategory LawCategory { get; set; }
     }
 

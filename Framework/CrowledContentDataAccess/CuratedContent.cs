@@ -28,7 +28,8 @@ namespace CrawledContentDataAccess
         public int ScenarioId { get; set; }       
         public int LC_ID { get; set; }
         public string Description { get; set; }
-        
+        public string StateDeviation { get; set; }
+        public string Outcome { get; set; }
     }
 
     public class Process
