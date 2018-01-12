@@ -6,10 +6,15 @@ import { Router } from '@angular/router';
 })
 export class GeneralComponent implements OnInit {
     //  pageHeader: string = "Bing";
-
+    userMessage: string = "";
     ngOnInit() {
         localStorage.setItem('linkName', "");
-        console.log('general');
+        
+        var hasData = localStorage.getItem('hasData');
+        if (hasData == "true")
+            this.userMessage = " ";
+        else
+            this.userMessage = "Please go to chat";
     }
 }
 

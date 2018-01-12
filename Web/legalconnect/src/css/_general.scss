@@ -488,12 +488,12 @@ all and (min-width: 992px) and (-webkit-transform-3d) {
             height:110px;
         }
     .footerHeight{
-            margin-top:85px;
+            min-height:290px;
         }
     .topics-box
     {
         min-height:500px;
-        ;
+       // overflow-y:auto;
     }
     .tab-content .tab-box
     {
@@ -575,11 +575,17 @@ all and (min-width: 992px) and (-webkit-transform-3d) {
          margin-bottom:3px;
      }
  }
+
+     
  
-     @media (min-width: 1370px)
+     @media  (max-width: 1920px)
     {
-        .footerHeight{
-            margin-top:170px;
+        .mrsHeight{
+            min-height:478px;
+        }
+        .docHeight
+        {
+            min-height:306px;
         }
                 .left-chat-box
                 {
@@ -596,7 +602,117 @@ all and (min-width: 992px) and (-webkit-transform-3d) {
         {
          float:left;
         }
+        .feature-unavaiable{
+            margin-top: 150px;
+            margin-left: 400px;
         }
+        .doc-feature-unavaiable
+        {
+            margin-top: 150px;
+            margin-left: 534px;
+        }
+        }
+
+       @media (min-width: 992px) and (max-width: 1366px)
+    {
+    .headerbg
+        {
+            height:110px;
+        }
+    .footerHeight{
+            min-height:290px;
+        }
+    .topics-box
+    {
+        min-height:500px;
+       // overflow-y:auto;
+    }
+    .tab-content .tab-box
+    {
+        height:72px;
+    }
+    .tab-content .tab-box h1
+    {
+        font-size: 35px;
+        margin-top:13px;
+        margin-bottom:0px;
+        color:#000;
+    }
+    .left-chat-box
+    {
+        height:233px;
+    }
+    .panel-footer{
+        /*margin-top:10px;*/
+        margin-top:5px;
+    }
+    .resultstxt
+    {
+        font-size:14px;
+        
+    }
+    .m-top-dskTop
+    {
+        margin-top:-4px;
+    }
+    .welComeFirst {
+    background: #fff;
+    border-radius: 10px 10px 10px 10px;
+    border: 1px solid #000;
+     /*margin-left: 23px;*/
+    padding: 5px;
+    margin: 0px auto;
+    color: #000;
+    font-size: 14px;
+    display: inline-table;
+        }
+    .welCome {
+    padding: 5px;
+    margin-top:5px;
+    margin-bottom: 0px;
+    border-radius: 10px 10px 10px 10px;
+    /*width:60%;*/
+        }
+    .true{
+        width:60%;
+          float: left;
+    }
+    .sentTrue{
+        width:60%;
+        float:right;
+    }
+    .receive{
+        margin-top:5px;
+         padding:5px;
+         /*width:60%;*/
+         margin-left:0px;
+         float:left;
+         border-radius: 10px 10px 10px 10px;
+     }
+    .sent{
+         margin-top:5px;
+         padding:5px;
+         /*margin-left:246px;*/
+         float:right;
+        /*margin-left:1px;*/
+         border-radius: 10px 10px 10px 10px;
+     }
+     .sentIcon{
+         margin-left:243px;
+     }
+
+
+     .tag-badge{
+         margin-top:3px;
+         margin-bottom:3px;
+     }
+     .mrsHeight {
+    min-height: 362px;
+    }
+     .docHeight {
+    min-height: 190px;
+}
+ }
 
      @media (max-width: 767px)
 {
@@ -641,4 +757,13 @@ all and (min-width: 992px) and (-webkit-transform-3d) {
 
      .btn-resources-save:focus{
          color:#fff;
+     }
+
+     box-min-height-static
+     {
+         height:435px;
+     }
+
+     .box-btn-align-static{
+         margin-top:-73px;
      }

@@ -10,6 +10,8 @@ import { DomSanitizer } from "@angular/platform-browser";
 export class MRSComponent implements OnInit {
     hasData: boolean = true;
     showMrs: boolean = false;
+    showForms: boolean = false;
+    showSubCat: boolean = false;
     text: string = "In this section you will find general legal information, self - help packets and videos on your rights as a<br />renter and what to do if you have a problem with your landlord.<a > http://www.washingtonlawhelp.org/issues/housing/tenants-rights</a>";
     aciveBdg: string = 'tenantrights';
     OneClass = "collapse";
@@ -25,12 +27,14 @@ export class MRSComponent implements OnInit {
     aClicked: boolean = false;
     sentence: string = "";
     currentUrl: string = '';
-    SubCat:Array<any> = [];
+    SubCat: Array<any> = [];
     Resources:Array<any> = [];
     items: Array<any> = [];
     processes: Array<any> = [];
     private start = false;
     geoCountry: string = "";
+    page: string = "chat";
+    showWashingData: boolean = false;
     constructor(private router: Router, private aRoute: ActivatedRoute, private domSanitizer: DomSanitizer, private srchServ: SearchService)
     { }
 
@@ -40,10 +44,25 @@ export class MRSComponent implements OnInit {
         var j: number;
         var curResources = JSON.parse(localStorage.getItem('curatesResources'));
         var hasData = localStorage.getItem('hasData');
+        this.state = localStorage.getItem('geoState');
+        console.log('state', this.state);
+        if (this.state == 'Washington')
+        {
+            this.collapsed = 'collapse in';
+            this.aClicked = true;
+            if (hasData == 'true')
+                this.showWashingData = true;
+            else
+                this.showWashingData = false;
+        }
+        else {
+            this.collapsed = 'collapse';
+            this.aClicked = false;
+        
         if (localStorage.getItem('linkName') === "") {
             
              if (hasData == "true") {  //display ui from local storage
-                this.showMrs = true;
+                
                 this.items = [];
                 this.SubCat = [];
                 this.processes = [];
@@ -51,7 +70,8 @@ export class MRSComponent implements OnInit {
                 var curResources = JSON.parse(localStorage.getItem('curatesResources'));
                 this.hasData = true;
                 console.log('cur resources', curResources.Resources);
-                if (curResources.Resources.length > 0) {
+                if (curResources.Resources != null && curResources.Resources.length > 0) {
+                    this.showMrs = true;
                     for (var i = 0; i < curResources.Resources.length; i++) {
                         if (curResources.Resources[i].Action == 'Title')
                             this.Resources.push({
@@ -65,8 +85,8 @@ export class MRSComponent implements OnInit {
                         if (item != null && item != undefined) {
                             if (curResources.Resources[i].Action != 'Title') {
                                 if (curResources.Resources[i].ResourceJson != null && curResources.Resources[i].ResourceJson != "") {
-                                    if (curResources.Resources[i].Action == 'Url') 
-                                        item.ResourceJson = item.ResourceJson + '<br /><br /><b> ' + curResources.Resources[i].Action + ': </b><br/><div class="topboxUrl" title="' + curResources.Resources[i].ResourceJson + '"><a href="' + curResources.Resources[i].ResourceJson + '"target="_blank">' + curResources.Resources[i].ResourceJson + '</a></div>' 
+                                    if (curResources.Resources[i].Action == 'Url')
+                                        item.ResourceJson = item.ResourceJson + '<br /><br /><b> ' + curResources.Resources[i].Action + ': </b><br/><div class="topboxUrl" title="' + curResources.Resources[i].ResourceJson + '"><a href="' + curResources.Resources[i].ResourceJson + '"target="_blank">' + curResources.Resources[i].ResourceJson + '</a></div>'
 
                                     else
                                         item.ResourceJson = item.ResourceJson + '<br /><br /> <b> ' + curResources.Resources[i].Action + ': </b><br/>' + curResources.Resources[i].ResourceJson
@@ -74,23 +94,23 @@ export class MRSComponent implements OnInit {
                                 }
                             }
                         }
-                       
-                                             
+
+
                     }
-                    
+
                     i = 0;
-               
+
                     while (i < this.Resources.length) {
                         var Resources: Array<any> = [];
-                    
+
                         for (var j = i; (j < i + 4 && j < this.Resources.length); j++) {
-                    
+
                             Resources.push({
                                 "header": this.Resources[j].Title,
                                 "body": this.Resources[j].ResourceJson,
 
                             });
-                        
+
                         }
                         if (i == 0)
                             this.items.push({ Resources, class: "active" });
@@ -100,11 +120,13 @@ export class MRSComponent implements OnInit {
 
                     }
 
-                     
+
                 }
+                else
+                    this.showMrs = false;
                 
-                if (curResources.RelatedIntents.length > 0) {
-                    
+                if (curResources.RelatedIntents != null && curResources.RelatedIntents.length > 0) {
+                    this.showSubCat = true;
                     for (var i = 0; i < curResources.RelatedIntents.length; i++) {
                         this.SubCat.push({
                             "id": curResources.RelatedIntents[i],
@@ -112,7 +134,14 @@ export class MRSComponent implements OnInit {
                         });
                     }
                 }
-                if (curResources.Processes.length > 0) {
+                else
+                    this.showSubCat = false;
+
+                if (curResources.Processes != null && curResources.Processes.length > 0) {
+                    if (localStorage.getItem('showProcess') == 'true')
+                        this.showForms = true;
+                    else
+                        this.showForms = false;
                     this.collapsed = 'collapse in';
                     this.aClicked = true;
                     this.processes = [];
@@ -121,43 +150,62 @@ export class MRSComponent implements OnInit {
                             var item = this.processes.find(x => x.title == curResources.Processes[i].Title);
                             if (item != null || item != undefined)
                                 //item.desc = item.desc + curResources.Processes[i].Description
-                                item.desc = curResources.Processes[i].ActionJson == null ? item.desc +'<ul><li>'+ curResources.Processes[i].Description +'</li></ul>': item.desc + '<ul><li>'+curResources.Processes[i].Description + '</br>' + curResources.Processes[i].ActionJson+'</li></ul>'
+                                item.desc = curResources.Processes[i].ActionJson == null ? item.desc + '<ul><li>' + curResources.Processes[i].Description + '</li></ul>' : item.desc + '<ul><li>' + curResources.Processes[i].Description + '</br>' + curResources.Processes[i].ActionJson + '</li></ul>'
                             else {
 
                                 this.processes.push({
                                     "id": curResources.Processes[i].stepNumber,
                                     "title": curResources.Processes[i].Title,
                                     //  "desc": curResources.Processes[i].Description + '</br>' + curResources.Processes[i].ActionJson,
-                                    "desc": curResources.Processes[i].ActionJson == null ? '<ul><li>'+curResources.Processes[i].Description +'</li></ul>': '<ul><li>'+curResources.Processes[i].Description + '</br>' + curResources.Processes[i].ActionJson+'</li></ul>',
+                                    "desc": curResources.Processes[i].ActionJson == null ? '<ul><li>' + curResources.Processes[i].Description + '</li></ul>' : '<ul><li>' + curResources.Processes[i].Description + '</br>' + curResources.Processes[i].ActionJson + '</li></ul>',
                                     "class": ""
                                 });
 
-                            }        
+                            }
 
                         }
                     }
 
                     console.log('this processes', this.processes);
                 }
+                else
+                    this.showForms = false;
             }
             else if (hasData == "false") {
-                this.showMrs = false;
+                 this.showMrs = false;
+                 this.showForms = false;
+                 this.showSubCat = false;
                 this.hasData = false;
                 this.items = [];
                 this.SubCat = [];
             
             }
+            }
+
         }
         this.currentUrl = this.router.url; // this will give you current url
 
         var route:any;
-        
+        this.page = "chat";
         if (this.currentUrl.indexOf('general') > 0)
+        {
             route = "general";
+            this.page = "";
+        }
         else if (this.currentUrl.indexOf('chat') > 0)
+        {
             route = "chat";
+            this.page = "chat";
+        }
         else if (this.currentUrl.indexOf('guided') > 0)
+        {
             route = "guided";
+            this.page = "";
+        }
+        else if (this.currentUrl.indexOf('doc') > 0) {
+            route = "doc";
+            this.page = "";
+        }
         else
             route = "general";
         
@@ -194,12 +242,12 @@ export class MRSComponent implements OnInit {
                 
                 var i = 0;
                 if (res != null) {
-
+                    console.log('by link click', res);
                     localStorage.setItem('curatesResources', JSON.stringify(res)); //store data
                     localStorage.setItem('hasData', "true");
                     this.hasData = true;
-                    if (res.Resources.length > 0) {
-                        
+                    if (res.Resources!=null && res.Resources.length > 0 ) {
+                        this.showMrs = true;
                         this.items = [];
                         for (var i = 0; i < res.Resources.length; i++) {
                             if (res.Resources[i].Action == 'Title')
@@ -233,14 +281,14 @@ export class MRSComponent implements OnInit {
                             var Resources: Array<any> = [];
                             for (var j = i; (j < i + 4 && j < res.Resources.length); j++) {
 
-                                    Resources.push({
+                                Resources.push({
 
-                                        "header": res.Resources[j].Title,
-                                        "body": res.Resources[j].ResourceJson,
+                                    "header": res.Resources[j].Title,
+                                    "body": res.Resources[j].ResourceJson,
 
 
-                                    });
-                                
+                                });
+
 
                             }
                             if (i == 0)
@@ -250,9 +298,12 @@ export class MRSComponent implements OnInit {
                             i = i + 4;
 
                         }
-                        
+
                     }
-                    if (res.RelatedIntents.length > 0) {
+                    else
+                        this.showMrs = false;
+                    if (res.RelatedIntents != null && res.RelatedIntents.length > 0) {
+                        this.showSubCat = true;
                         this.SubCat = [];
                         for (var i = 0; i < res.RelatedIntents.length; i++) {
                             this.SubCat.push({
@@ -261,9 +312,11 @@ export class MRSComponent implements OnInit {
                             });
                         }
                     }
-                    if (res.Processes.length > 0) {
+                    else
+                        this.showSubCat = false;
+                    if (res.Processes != null && res.Processes.length > 0) {
                         this.processes = [];
-                      
+                        this.showForms = true;
                         for (var i = 0; i < res.Processes.length; i++) {
                             if (res.Processes[i].Description != null) {
                                 var item = this.processes.find(x => x.title == res.Processes[i].Title);
@@ -285,6 +338,9 @@ export class MRSComponent implements OnInit {
                             }
                         }
                     }
+                    else
+                         
+                    this.showForms = false;
                 }
                 else {
                     this.hasData = false;
@@ -309,7 +365,7 @@ export class MRSComponent implements OnInit {
         else route = "general";
         console.log('route', '/' + route+'/'+linkName);
         document.getElementById('mrlTopics').scrollIntoView();
-        this.router.navigate(['/' + route, linkName]);
+      //  this.router.navigate(['/' + route, linkName]);
 
         
 
