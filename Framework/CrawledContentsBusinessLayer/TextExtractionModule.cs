@@ -108,7 +108,8 @@ namespace CrawledContentsBusinessLayer
             {
                 var result = new List<string>();
                 var client = new HttpClient();
-                string linguisticsAnalyticsKey = "b1ca157753ff42c68410678871b584cd";
+                string linguisticsAnalyticsKey = "7c6f2b8697fd4e4a91a07ea75bfbdfbb";
+                 //"0055fe14a5854f90b6cb46954ce2b64b";//"b1ca157753ff42c68410678871b584cd";
 
                 // Request headers
                 client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", linguisticsAnalyticsKey);
@@ -117,6 +118,7 @@ namespace CrawledContentsBusinessLayer
 
                 HttpResponseMessage response;
 
+               // string reqBody = "{\"language\" : \"en\",\"analyzerIds\" : [\"22a6b758-420f-4745-8a3c-46835a67c0d2\", \"d70ddc6f-ccb7-4221-ad45-a89458ce02b5\"], \"text\" : \"" + sentence + "\" }";
                 string reqBody = "{\"language\" : \"en\",\"analyzerIds\" : [\"4fa79af1-f22c-408d-98bb-b7d7aeef7f04\", \"22a6b758-420f-4745-8a3c-46835a67c0d2\"], \"text\" : \"" + sentence + "\" }";
 
                 using (var content = new StringContent(reqBody))
@@ -159,12 +161,12 @@ namespace CrawledContentsBusinessLayer
 
         }
 
-        public static string GetIntentFromLuisApi(string sentence)
+        public static IntentWithScore GetIntentFromLuisApi(string sentence)
         {
             try
             {
-              
-                var uri = string.Format("https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/d70ddc6f-ccb7-4221-ad45-a89458ce02b5?subscription-key=cc7f076047764c8bb37fec016887db9e&timezoneOffset=0&verbose=true&q={0}", sentence);
+           
+                var uri = string.Format("https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/d70ddc6f-ccb7-4221-ad45-a89458ce02b5?subscription-key=0055fe14a5854f90b6cb46954ce2b64b&timezoneOffset=0&verbose=true&q={0}", sentence);
 
                 string result;
                 using (var client = new HttpClient())
@@ -175,14 +177,33 @@ namespace CrawledContentsBusinessLayer
                     }
                 }
                 JObject jObject = JObject.Parse(result);
+                jObject.Children();
                 JToken jTopScoringIntent = jObject["topScoringIntent"];
-                var intent = (string)jTopScoringIntent["intent"];
-                
-                return intent;
+                var TopTwoIntentsOtherthanTopScoringIntent = jObject["intents"].Skip(1).Take(2).Select(x => x["intent"]).ToArray();
+                return new IntentWithScore
+                {
+                    IsSuccessful =true,
+                    TopScoringIntent = (string)jTopScoringIntent["intent"],
+                    Score = (decimal)jTopScoringIntent["score"],
+                    TopTwoIntents =new [] { ((JValue)TopTwoIntentsOtherthanTopScoringIntent[0]).Value.ToString() ,
+                                            ((JValue)TopTwoIntentsOtherthanTopScoringIntent[1]).Value.ToString()
+                                          }
+                    
+                };
+
+               // var intent = (string)jTopScoringIntent["intent"];
+               // var score= (decimal)jTopScoringIntent["score"];
+
+               // return intentWithScore;
             }
             catch (Exception e)
             {
-                return e.Message;
+                return new IntentWithScore
+                {
+                    IsSuccessful =false,
+                    ErrorMessage = e.Message
+                };
+
             }
 
 
@@ -228,5 +249,33 @@ namespace CrawledContentsBusinessLayer
     {
        public string analyzerId { get; set; }
        public List<string[]> result { get; set; }
+    }
+
+    public class IntentWithScore
+    {
+        /// <summary>
+        /// Top Scoring Intent
+        /// </summary>
+        public string TopScoringIntent { get; set; }
+
+        /// <summary>
+        /// Score weight of the intent with respect to the user input
+        /// </summary>
+        public decimal Score { get; set; }
+
+        /// <summary>
+        ///  Top two intents other than the top Scoring intent
+        /// </summary>
+        public string[] TopTwoIntents { get; set; }
+
+        /// <summary>
+        /// Error message in case error happens before completion of result parsing
+        /// </summary>
+        public string ErrorMessage { get; set; }
+
+        /// <summary>
+        /// Indicator of whether the parsing is successful or not
+        /// </summary>
+        public bool IsSuccessful { get; set; }
     }
 }

@@ -17,7 +17,7 @@ namespace ContentsExtractionApi.App_Start
 
             var builder = new ContainerBuilder();
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
-            builder.RegisterType<CrowledContentDataRepository>().As<ICrowledContentDataRepository>();
+            builder.RegisterType<ContentDataRepository>().As<IContentDataRepository>();
             
             builder.RegisterType<CrowledContentDataContextFactory>().As<ICrowledContentDataContextFactory>();
             

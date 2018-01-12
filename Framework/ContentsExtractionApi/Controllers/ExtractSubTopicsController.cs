@@ -16,12 +16,17 @@ namespace ContentsExtractionApi.Controllers
     [EnableCors("*", "*", "*")]
     public class ExtractSubTopicsController : ApiController
     {
-        private ICrowledContentDataRepository crowledContentDataRepository;
+        private IContentDataRepository crowledContentDataRepository;
+
+        /// <summary>
+        /// connection string prefix 
+        /// </summary>
+        private const string prefix = "ContentsDb";
         /// <summary>
         /// 
         /// </summary>
         /// <param name="crowledContentDataRepository"></param>
-        public ExtractSubTopicsController(ICrowledContentDataRepository crowledContentDataRepository)
+        public ExtractSubTopicsController(IContentDataRepository crowledContentDataRepository)
         {
             this.crowledContentDataRepository = crowledContentDataRepository;
         }
@@ -58,7 +63,7 @@ namespace ContentsExtractionApi.Controllers
             var result = new List<RelevantTopic>();
             try
             {
-                result = crowledContentDataRepository.GetRelevantTopicsSentenceAsPivot(sentenceInput.Sentence, StateToConnectionStringMapper.ToConnectionString(sentenceInput.State));
+                result = crowledContentDataRepository.GetRelevantTopicsSentenceAsPivot(sentenceInput.Sentence, StateToConnectionStringMapper.ToConnectionString(prefix, sentenceInput.State));
                 if(result == null)
                 {
                     var extractedInput=TextExtractionModule.ExtractTextUsingLinguisticApi(sentenceInput.Sentence);
@@ -66,7 +71,7 @@ namespace ContentsExtractionApi.Controllers
                     {
                         for (int i = 0; i < extractedInput.Capacity; i++)
                         {
-                            result = crowledContentDataRepository.GetRelevantTopicsDataAsPivot(extractedInput[i], StateToConnectionStringMapper.ToConnectionString(sentenceInput.State));
+                            result = crowledContentDataRepository.GetRelevantTopicsDataAsPivot(extractedInput[i], StateToConnectionStringMapper.ToConnectionString(prefix, sentenceInput.State));
                             if(result!= null)
                             {
                                 return result;

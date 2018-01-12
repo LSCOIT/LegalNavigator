@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CourtSiteExtraction\WebCrawler.cs" />
     <Compile Include="Model\TextExctraction\ExctractedText.cs" />
     <Compile Include="Model\TextExctraction\ExtractedContent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

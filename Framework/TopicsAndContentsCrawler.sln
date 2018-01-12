@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContentDataAccess", "CrowledContentDataAccess\ContentDataAccess.csproj", "{DD97E6DF-0200-40B4-9F95-1396645D1566}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TopicsAndContentCrawlerApp", "TopicsAndContentCrawlerApp\TopicsAndContentCrawlerApp.csproj", "{5FDC326D-F7A3-4EC1-9A23-4CDCCFD55C9D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSFTA2JApp", "TopicsAndContentCrawlerApp\MSFTA2JApp.csproj", "{5FDC326D-F7A3-4EC1-9A23-4CDCCFD55C9D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContentsExtractionApi", "ContentsExtractionApi\ContentsExtractionApi.csproj", "{F2C9DC7F-C96B-471F-9668-98A1E0D849F6}"
 EndProject

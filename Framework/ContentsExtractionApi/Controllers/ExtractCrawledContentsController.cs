@@ -19,14 +19,24 @@ namespace ContentsExtractionApi.Controllers
     /// </summary>
     /// 
     [EnableCors("*", "*", "*")]
-    public class ExtractContentsController : ApiController
+    public class ExtractCrawledContentsController : ApiController
     {
-        private ICrowledContentDataRepository crowledContentDataRepository;
         /// <summary>
         /// 
         /// </summary>
+        private IContentDataRepository crowledContentDataRepository;
+        /// <summary>
+        /// connection string prefix 
+        /// </summary>
+        private const string prefix = "ContentsDb";
+
+        /// <summary>
+        /// threshold for low confidence intents 
+        /// </summary>
+        private const decimal treshold = 0.92m;
+
         /// <param name="crowledContentDataRepository"></param>
-        public ExtractContentsController(ICrowledContentDataRepository crowledContentDataRepository)
+        public ExtractCrawledContentsController(IContentDataRepository crowledContentDataRepository)
         {
             this.crowledContentDataRepository = crowledContentDataRepository;
         }
@@ -55,17 +65,19 @@ namespace ContentsExtractionApi.Controllers
             //{
             //    return new string[] { e.Message, e.StackTrace };
             //}
-            return crowledContentDataRepository.GetTopics(StateToConnectionStringMapper.ToConnectionString(state));
+            return crowledContentDataRepository.GetTopics(StateToConnectionStringMapper.ToConnectionString(prefix, state));
         }
         /// <summary>
         /// Gets the first topic
         /// </summary>
+        /// <param name="state"></param>
         /// <param name="id"></param>
         /// <returns></returns>C:\Users\v-gedem\Source\Repos\107465547\TopicsAndContentsCrawler\ContentsExtractionApi\Models\
         // GET api/ExtractContents/5       
         public Topic Get(string state, int id)
         {
-            return crowledContentDataRepository.GetTopic(id, StateToConnectionStringMapper.ToConnectionString(state));
+            //  return crowledContentDataRepository.GetTopic(id, StateToConnectionStringMapper.ToConnectionString(prefix, state));
+            return null;
         }
 
         /// <summary>
@@ -85,8 +97,19 @@ namespace ContentsExtractionApi.Controllers
                 //If no matching is found
                // if (string.IsNullOrEmpty(result))
                // {
-                    var topic_intent = TextExtractionModule.GetIntentFromLuisApi(contentExtractionRequest.Topic);
-                    var result=crowledContentDataRepository.GetRelevantContentTopDown(topic_intent, contentExtractionRequest.Title, StateToConnectionStringMapper.ToConnectionString(contentExtractionRequest.State));
+                    var intentWithScore = TextExtractionModule.GetIntentFromLuisApi(contentExtractionRequest.Topic);
+                    string topScorongIntent = null;
+                    if (intentWithScore != null)
+                    {
+                      topScorongIntent = intentWithScore.TopScoringIntent;
+                      if(intentWithScore.Score < treshold)
+                      {
+                        //return "intentWithScore.TopTwoIntents" as part of the response, to generated questions to confirm the user Intent.
+                        
+                      }
+
+                    }  
+                    var result=crowledContentDataRepository.GetRelevantContentTopDown(topScorongIntent, contentExtractionRequest.Title, StateToConnectionStringMapper.ToConnectionString(prefix, contentExtractionRequest.State));
                     if (string.IsNullOrEmpty(result))
                     {
                         // var phrases = StopWordUtilities.RemoveStopWordsFromSentence(contentExtractionRequest.Title?.ToLower());
@@ -94,7 +117,7 @@ namespace ContentsExtractionApi.Controllers
                         StringBuilder sb = new StringBuilder();
                         foreach (var phrase in phrases)
                         {
-                            var result_item = crowledContentDataRepository.GetRelevantContentTopDown(topic_intent, phrase, StateToConnectionStringMapper.ToConnectionString(contentExtractionRequest.State));
+                            var result_item = crowledContentDataRepository.GetRelevantContentTopDown(topScorongIntent, phrase, StateToConnectionStringMapper.ToConnectionString(prefix, contentExtractionRequest.State));
                             sb.Append(result_item + "<br/>");
                         }
                         result = sb.ToString();
@@ -125,7 +148,7 @@ namespace ContentsExtractionApi.Controllers
                     WebCrawler wc = new WebCrawler();
                     WebCrawler.s_statelhUrlBase = stateUrls[stateurlIndex++];
                     var topics = wc.GetWebPageList();
-                    topics.ForEach(topic => crowledContentDataRepository.Save(topic, StateToConnectionStringMapper.ToConnectionString(stateToPersist)));
+                    topics.ForEach(topic => crowledContentDataRepository.Save(topic, StateToConnectionStringMapper.ToConnectionString(prefix, stateToPersist)));
 
 
 
