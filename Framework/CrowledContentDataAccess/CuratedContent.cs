@@ -15,6 +15,16 @@ namespace CrawledContentDataAccess
         public List<string> RelatedIntents { get; set; }
         public string[] TopTwoIntentsForLowConfidenceIntents { get; set; }
     }
+    public class CuratedContentForAScenario
+    {
+        public int? ScenarioId { get; set; }
+        public string Description { get; set; }
+        public string StateDeviation { get; set; }
+        public string Outcome { get; set; }
+        public List<Resource> RelatedResources { get; set; }       
+        public List<Process> Processes { get; set; }
+        public List<string> RelatedIntents { get; set; }        
+    }
     public class Resource
     {        
         public int ResourceId { get; set; }

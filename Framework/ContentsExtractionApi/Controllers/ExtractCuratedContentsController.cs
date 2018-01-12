@@ -56,9 +56,9 @@ namespace ContentsExtractionApi.Controllers
         /// <param name="state"></param>       
         /// <returns></returns>
         // GET api/ExtractNSMIContents/5
-        public CrawledContentDataAccess.CuratedContent Get(int scenarioId,string state )
+        public CrawledContentDataAccess.CuratedContentForAScenario Get(int scenarioId,string state )
         {
-            var CuratedResult = new CrawledContentDataAccess.CuratedContent();
+            var CuratedResult = new CrawledContentDataAccess.CuratedContentForAScenario();
             try
             {
                 CuratedResult = crowledContentDataRepository.GetCuratedContent(scenarioId, StateToConnectionStringMapper.ToConnectionString(prefix,state));
