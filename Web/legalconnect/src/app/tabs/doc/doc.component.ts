@@ -8,9 +8,11 @@ export class DocComponent implements OnInit{
 
     pdfSrc: string = 'images/Alaska-Eviction-Notice-to-Quit-Form.pdf';
     showDoc: string = "";
+    state: string = "";
 
     ngOnInit() {
         this.showDoc = localStorage.getItem('hasData');
+        this.state = localStorage.getItem('geoState');
     }
 }
 

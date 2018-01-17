@@ -56,6 +56,34 @@ export class ChatComponent implements OnInit {
             this.selectedCountry = localStorage.getItem('geoState');
         else
             this.selectedCountry = "Alaska";
+
+        var msgs = JSON.parse(localStorage.getItem('messages'));
+        
+        if (msgs != null) {
+            for (var m = 0; m < msgs.length;m++)
+            this.messages.push({
+                "text": msgs[m].text,
+                //"self": true,
+                "self": msgs[m].self,
+                "time": time,
+                "class": msgs[m].class,
+                "classIcon": msgs[m].classIcon,
+                "from": "You",
+                "scenarios": msgs[m].scenarios
+                })
+            localStorage.setItem('scrolled', 'false');
+        }
+        var ref = JSON.parse(localStorage.getItem('references'));
+        console.log('ref history', ref);
+        if (ref != null) {
+            for (var r = 0; r < ref.length; r++)
+                this.rightboxes.push({
+                    "url": ref[r].url,
+                    "text": ref[r].text,
+                    "self": true
+                })
+            localStorage.setItem('resScrolled', 'false');
+        }
         //if (localStorage.getItem('geoState') == null)
         //this.srchServ.getLocation().subscribe(
         //    (resCountry) => {
@@ -176,14 +204,17 @@ export class ChatComponent implements OnInit {
             "from": "You",
             "scenarios": this.scenarios
         })  
+        localStorage.setItem('messages', JSON.stringify(this.messages));
         var query = this.replyMessage;
         this.showMessage = true;
         if (this.selectedCountry!==" ")
         localStorage.setItem('geoState', this.selectedCountry);
               
-                this.rightboxes = [];
+                
                 this.srchServ.getChatReferences(query, this.selectedCountry == " " ? localStorage.getItem('geoState') : this.selectedCountry).subscribe((res) => {
-                    if (res.length > 0) {
+                   
+                    if (res != null && res.length > 0) {
+                        this.rightboxes = [];
                         for (var i = 0; i < res.length; i++) {
                             this.rightboxes.push({
                                 "url": res[i].Url,
@@ -191,7 +222,7 @@ export class ChatComponent implements OnInit {
                                 "self": true
                             })
                         }
-
+                        localStorage.setItem('references', JSON.stringify(this.rightboxes));
                         localStorage.setItem('resScrolled', 'false');
                     }
                 });
@@ -212,7 +243,7 @@ export class ChatComponent implements OnInit {
                         localStorage.setItem('hasData', "true");
                         if (res.Scenarios.length > 0) {
                             this.messages.push({
-                                "text": "What are you looking for?",
+                                "text": "Which one of these best matches your situation?",
                                 "self": "true",
                                 "time": time,
                                 "class": "receive",
@@ -233,7 +264,7 @@ export class ChatComponent implements OnInit {
                                 "scenarios": this.scenarios
                             })
                             this.hasScenario = true;
-
+                            localStorage.setItem('messages', JSON.stringify(this.messages));
                         }
 
                         localStorage.setItem('scrolled', 'false');
@@ -258,8 +289,9 @@ export class ChatComponent implements OnInit {
                                     });
 
                                     this.showMessage = false;
+                                    localStorage.setItem('messages', JSON.stringify(this.messages));
                                 }
-                                else
+                                else {
                                     this.messages.push({
                                         "text": "Please try with other option",
                                         "self": "sentTrue",
@@ -269,6 +301,8 @@ export class ChatComponent implements OnInit {
                                         "from": "You",
                                         "scenarios": this.scenarios
                                     })
+                                    localStorage.setItem('messages', JSON.stringify(this.messages));
+                                }
                                 localStorage.setItem('scrolled', 'false');
                             },
                             (err: any) => {
@@ -282,6 +316,7 @@ export class ChatComponent implements OnInit {
                                     "from": "You",
                                     "scenarios": this.scenarios
                                 })
+                                localStorage.setItem('messages', JSON.stringify(this.messages));
                                 console.log('error', err);
 
                             });
@@ -319,10 +354,10 @@ export class ChatComponent implements OnInit {
                             "scenarios": this.scenarios
 
                         });
-
+                        localStorage.setItem('messages', JSON.stringify(this.messages));
                         this.showMessage = false;
                     }
-                    else
+                    else {
                         this.messages.push({
                             "text": "Please try with other option",
                             "self": "sentTrue",
@@ -332,6 +367,8 @@ export class ChatComponent implements OnInit {
                             "from": "You",
                             "scenarios": this.scenarios
                         })
+                        localStorage.setItem('messages', JSON.stringify(this.messages));
+                    }
                     localStorage.setItem('scrolled', 'false');
                     this._mrs.ngOnInit();
                 },
@@ -346,6 +383,7 @@ export class ChatComponent implements OnInit {
                         "from": "You",
                         "scenarios": this.scenarios
                     })
+                    localStorage.setItem('messages', JSON.stringify(this.messages));
                     console.log('error', err);
 
                 });
@@ -353,7 +391,8 @@ export class ChatComponent implements OnInit {
                     this.showMessage = false;
 
                     setInterval(this.updateScroll, 100);
-                    setInterval(this.updateResScroll, 100);  
+                    setInterval(this.updateResScroll, 100);
+                
         
     }
 
@@ -400,37 +439,39 @@ export class ChatComponent implements OnInit {
                     "from": "You",
                     "scenarios": this.scenarios
                 })
+                localStorage.setItem('messages', JSON.stringify(this.messages));
                 if (res != null && res.Description != null) {
                     localStorage.setItem('curatesResources', JSON.stringify(res)); //store data
                     localStorage.setItem('hasData', "true");
                     console.log('sen by id', res);
                    
-                    if (res.Scenarios.length > 0) {
-                        //this.messages.push({
-                        //    "text": res.Scenarios[0].Outcome,
-                        //    "self": "true",
-                        //    "time": "",
-                        //    "class": "receive",
-                        //    "classIcon": "receiveIcon",
-                        //    "from": "LA",
-                        //    "scenarios": this.scenarios
-
-                        //});
-                        this.scenarios = res.Scenarios;
-
+                  //  if (res.Scenarios.length > 0) {
                         this.messages.push({
-                            "text": "",
+                            "text": res.Outcome,
                             "self": "true",
                             "time": "",
-                            "class": "tag-badge",
-                            "classIcon": "",
-                            "from": "",
+                            "class": "receive",
+                            "classIcon": "receiveIcon",
+                            "from": "LA",
                             "scenarios": this.scenarios
-                        })
+
+                    });
+                        localStorage.setItem('messages', JSON.stringify(this.messages));
+                    //    this.scenarios = res.Scenarios;
+
+                        //this.messages.push({
+                        //    "text": "",
+                        //    "self": "true",
+                        //    "time": "",
+                        //    "class": "tag-badge",
+                        //    "classIcon": "",
+                        //    "from": "",
+                        //    "scenarios": this.scenarios
+                        //})
                         this.hasScenario = true;
 
 
-                    }
+                  //  }
                     this.messages.push({
                         "text": "Please Scroll Down To See Resources & Forms/Steps",
                         "self": "sentTrue",
@@ -439,7 +480,8 @@ export class ChatComponent implements OnInit {
                         "classIcon": "sentIcon",
                         "from": "You",
                         "scenarios": this.scenarios
-                    })
+                        })
+                    localStorage.setItem('messages', JSON.stringify(this.messages));
                 }
                 else {
                     localStorage.setItem('hasData', "false");
@@ -453,6 +495,7 @@ export class ChatComponent implements OnInit {
                         "from": "You",
                         "scenarios": this.scenarios
                     })
+                    localStorage.setItem('messages', JSON.stringify(this.messages));
                 }
                 localStorage.setItem('scrolled', 'false');
                 this._mrs.ngOnInit();
@@ -467,6 +510,7 @@ export class ChatComponent implements OnInit {
                     "from": "You",
                     "scenarios": this.scenarios
                 })
+                localStorage.setItem('messages', JSON.stringify(this.messages));
                 console.log('curated error', err);
 
 
@@ -477,7 +521,7 @@ export class ChatComponent implements OnInit {
     }
 
     stateOnChange(newValue:string) {
-        console.log(newValue);
+        
         localStorage.setItem('hasData', "false");
         localStorage.setItem('geoState', newValue);
         

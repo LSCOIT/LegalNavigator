@@ -587,7 +587,7 @@ all and (min-width: 992px) and (-webkit-transform-3d) {
         {
             min-height:306px;
         }
-                .left-chat-box
+        .left-chat-box
                 {
                     height:345px;
                 }
@@ -595,7 +595,7 @@ all and (min-width: 992px) and (-webkit-transform-3d) {
             float:right;
             
         }
-          .sentIcon{
+        .sentIcon{
             margin-left:70%;
         }
         .receive
@@ -604,16 +604,20 @@ all and (min-width: 992px) and (-webkit-transform-3d) {
         }
         .feature-unavaiable{
             margin-top: 150px;
-            margin-left: 400px;
+            margin-left: 225px;
         }
         .doc-feature-unavaiable
         {
             margin-top: 150px;
-            margin-left: 534px;
+            margin-left: 360px;
         }
+        .box_sent2{
+        width: 600px;
         }
 
-       @media (min-width: 992px) and (max-width: 1366px)
+        }
+
+     @media (min-width: 992px) and (max-width: 1366px)
     {
     .headerbg
         {
@@ -697,21 +701,22 @@ all and (min-width: 992px) and (-webkit-transform-3d) {
         /*margin-left:1px;*/
          border-radius: 10px 10px 10px 10px;
      }
-     .sentIcon{
+    .sentIcon{
          margin-left:243px;
      }
-
-
-     .tag-badge{
+    .tag-badge{
          margin-top:3px;
          margin-bottom:3px;
      }
-     .mrsHeight {
+    .mrsHeight {
     min-height: 362px;
     }
-     .docHeight {
-    min-height: 190px;
-}
+    .docHeight {
+     min-height: 190px;
+    }
+    .box_sent2{
+        width: 600px;
+    }
  }
 
      @media (max-width: 767px)

@@ -69,8 +69,9 @@ export class MRSComponent implements OnInit {
                 this.Resources = [];
                 var curResources = JSON.parse(localStorage.getItem('curatesResources'));
                 this.hasData = true;
-                console.log('cur resources', curResources.Resources);
-                if (curResources.Resources != null && curResources.Resources.length > 0) {
+               
+                if (curResources.Resources != undefined && curResources.Resources != null && curResources.Resources.length > 0) {
+                    
                     this.showMrs = true;
                     for (var i = 0; i < curResources.Resources.length; i++) {
                         if (curResources.Resources[i].Action == 'Title')
@@ -97,13 +98,118 @@ export class MRSComponent implements OnInit {
 
 
                     }
-
+                    
                     i = 0;
+                    
+                    if (this.Resources.length >= 4) {
+                        while (i < this.Resources.length) {
+                            var Resources: Array<any> = [];
 
-                    while (i < this.Resources.length) {
+                            for (var j = i; (j < i + 4 && j < this.Resources.length); j++) {
+
+                                Resources.push({
+                                    "header": this.Resources[j].Title,
+                                    "body": this.Resources[j].ResourceJson,
+
+                                });
+
+                            }
+
+
+                            if (i == 0)
+                                this.items.push({ Resources, class: "active" });
+                            else
+                                this.items.push({ Resources, class: "" });
+                            i = i + 4;
+
+                        }
+                    }
+
+                    if (this.Resources.length < 4) {
+                        
+                            var Resources: Array<any> = [];
+
+                            for (var j = i; j < this.Resources.length; j++) {
+
+                                Resources.push({
+                                    "header": this.Resources[j].Title,
+                                    "body": this.Resources[j].ResourceJson,
+
+                                });
+
+                            }
+
+
+                            
+                                this.items.push({ Resources, class: "active" });
+                            
+
+                        
+                    }
+
+                    
+                }
+                else if (curResources.RelatedResources != undefined && curResources.RelatedResources != null && curResources.RelatedResources.length > 0) {
+                    console.log('related resources', curResources.RelatedResources);
+                    this.showMrs = true;
+                    for (var i = 0; i < curResources.RelatedResources.length; i++) {
+                        
+                            this.Resources.push({
+                                "Title": curResources.RelatedResources[i].Title,
+                                "ResourceJson": curResources.RelatedResources[i].ResourceJson,
+                               // "ResourceJson": json,
+                            });
+
+                    }
+                    for (var i = 0; i < curResources.RelatedResources.length; i++) {
+
+                        var item = this.Resources.find(x => x.Title == curResources.RelatedResources[i].Title);
+                        if (item != null && item != undefined) {
+                            if (curResources.RelatedResources[i].ResourceType != 'Title' && curResources.RelatedResources[i].ResourceType != 'Related') {
+                                if (curResources.RelatedResources[i].ResourceJson != null && curResources.RelatedResources[i].ResourceJson != "") {
+                                    if (curResources.RelatedResources[i].ResourceType == 'Url')
+                                        item.ResourceJson = item.ResourceJson + '<br /><br /><b> ' + curResources.RelatedResources[i].ResourceType + ': </b><br/><div class="topboxUrl" title="' + curResources.RelatedResources[i].ResourceJson + '"><a href="' + curResources.RelatedResources[i].ResourceJson + '"target="_blank">' + curResources.RelatedResources[i].ResourceJson + '</a></div>'
+
+                                    else
+                                        item.ResourceJson = item.ResourceJson + '<br /><br /> <b> ' + curResources.RelatedResources[i].ResourceType + ': </b><br/>' + curResources.RelatedResources[i].ResourceJson
+
+                                }
+                            }
+                        }
+
+
+                    }
+                    i = 0;
+                    
+                    if (this.Resources.length >= 4) {
+                        while (i < this.Resources.length) {
+                            var Resources: Array<any> = []; 
+
+                            for (var j = i; (j < i + 4 && j < this.Resources.length); j++) {
+
+                                Resources.push({
+                                    "header": this.Resources[j].Title,
+                                    "body": this.Resources[j].ResourceJson,
+
+                                });
+
+                            }
+
+
+                            if (i == 0)
+                                this.items.push({ Resources, class: "active" });
+                            else
+                                this.items.push({ Resources, class: "" });
+                            i = i + 4;
+
+                        }
+                    }
+
+                    if (this.Resources.length < 4) {
+
                         var Resources: Array<any> = [];
 
-                        for (var j = i; (j < i + 4 && j < this.Resources.length); j++) {
+                        for (var j = i; j < this.Resources.length; j++) {
 
                             Resources.push({
                                 "header": this.Resources[j].Title,
@@ -112,11 +218,12 @@ export class MRSComponent implements OnInit {
                             });
 
                         }
-                        if (i == 0)
-                            this.items.push({ Resources, class: "active" });
-                        else
-                            this.items.push({ Resources, class: "" });
-                        i = i + 4;
+
+
+
+                        this.items.push({ Resources, class: "active" });
+
+
 
                     }
 

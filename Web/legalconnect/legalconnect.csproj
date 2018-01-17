@@ -109,6 +109,7 @@
     <Content Include="README.md" />
     <Content Include="tsconfig.json" />
     <None Include="Properties\PublishProfiles\LegalAssistProd - Web Deploy.pubxml" />
+    <Content Include="src\assets\washington-3-day-notice-to-quit-form-nonpayment.pdf" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
