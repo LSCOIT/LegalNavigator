@@ -234,7 +234,7 @@ namespace ContentDataAccess
                     var relatedCategoriesNSMICode = childNodes.Union(siblings)?.Select(relCat => relCat.NSMICode)?.ToList();
                     var relatedIntents = relatedCategoriesNSMICode != null ? curatedCntx.IntentToNSMICodes.Where(intentToNsmi => relatedCategoriesNSMICode.Contains(intentToNsmi.NSMICode)).Select(intentToNsmi => intentToNsmi.Intent)?.ToList() : null;
                     var scenariosIds = LawCategory != null ? curatedCntx.LawCategoryToScenarios.Where(lctoscen => lctoscen.LCID == LawCategory.LCID).Select(lctoscen=> lctoscen.ScenarioId)?.ToList(): null;
-                    var scenarios= scenariosIds!=null && scenariosIds.Count > 0? curatedCntx.Scenarios.Where(scen=> scenariosIds.Contains(scen.ScenarioId)).Select(scn=> new CrawledContentDataAccess.Scenario { Description= scn.Description, LC_ID= scn.LC_ID, ScenarioId=scn.ScenarioId, Outcome=scn.Outcome, StateDeviation=scn.StateDeviation }) : null;
+                    var scenarios= scenariosIds!=null && scenariosIds.Count > 0? curatedCntx.Scenarios.Where(scen=> scenariosIds.Contains(scen.ScenarioId)).Select(scn=> new CrawledContentDataAccess.Scenario { Description= scn.Description, LC_ID= scn.LC_ID, ScenarioId=scn.ScenarioId}) : null;
                     var processList = processes?.ToList(); 
                     if (processList != null)
                     {                       
@@ -348,7 +348,7 @@ namespace ContentDataAccess
             throw new NotImplementedException();
         }
 
-        public CuratedContent GetCuratedContent(int scenarioId, string connectionString)
+        public CuratedContentForAScenario GetCuratedContent(int scenarioId, string connectionString)
         {
             using (var curatedCntx = iCrowledContentDataContextFactory.GetStateBasedContentDataContext(connectionString))
 
@@ -388,7 +388,16 @@ namespace ContentDataAccess
 
                         }
                     }
-                    var nsmiResult = new CuratedContent { Description = LawCategory?.Description, Resources = resources?.ToList(), Scenarios = scenarios?.ToList(), Processes = processList, RelatedIntents = relatedIntents };
+                    var nsmiResult = new CuratedContentForAScenario
+                    { 
+                        ScenarioId= scenarioObj?.ScenarioId,
+                        Description = LawCategory?.Description,
+                        RelatedResources = resources?.ToList(),                         
+                        Outcome= scenarioObj?.Outcome,
+                        StateDeviation = scenarioObj?.StateDeviation,
+                        Processes = processList,
+                        RelatedIntents = relatedIntents
+                    };
 
                     return nsmiResult;
                 }

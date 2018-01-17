@@ -27,7 +27,7 @@ namespace ContentDataAccess
         List<RelevantTopic> GetRelevantTopicsSentenceAsPivot(string sentence, string connectionString);
         void Save(LawCategory lawCategory, string connectionString);
         CuratedContent GetCuratedContent(string intent, string connectionString);
-        CuratedContent GetCuratedContent(int scenarioId, string connectionString);
+        CuratedContentForAScenario GetCuratedContent(int scenarioId, string connectionString);
         void Save(User user);
         void Save(CrawledContentDataAccess.StateBasedContents.Scenario scenario, string connectionString);
     }
