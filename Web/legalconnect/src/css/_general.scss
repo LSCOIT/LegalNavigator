@@ -558,6 +558,8 @@ all and (min-width: 992px) and (-webkit-transform-3d) {
          border-radius: 10px 10px 10px 10px;
      }
     .sent{
+        background: #000;
+        color:#fff;
          margin-top:5px;
          padding:5px;
          /*margin-left:246px;*/
@@ -604,12 +606,12 @@ all and (min-width: 992px) and (-webkit-transform-3d) {
         }
         .feature-unavaiable{
             margin-top: 150px;
-            margin-left: 225px;
+            margin-left: 219px;
         }
         .doc-feature-unavaiable
         {
             margin-top: 150px;
-            margin-left: 360px;
+            margin-left: 361px;
         }
         .box_sent2{
         width: 600px;
@@ -694,6 +696,8 @@ all and (min-width: 992px) and (-webkit-transform-3d) {
          border-radius: 10px 10px 10px 10px;
      }
     .sent{
+        background: #000;
+        color:#fff;
          margin-top:5px;
          padding:5px;
          /*margin-left:246px;*/
@@ -717,6 +721,15 @@ all and (min-width: 992px) and (-webkit-transform-3d) {
     .box_sent2{
         width: 600px;
     }
+     .feature-unavaiable{
+            margin-top: 150px;
+            margin-left: 218.5px;
+        }
+    .doc-feature-unavaiable
+        {
+            margin-top: 150px;
+            margin-left: 267px;
+        }
  }
 
      @media (max-width: 767px)
@@ -761,6 +774,9 @@ all and (min-width: 992px) and (-webkit-transform-3d) {
      }
 
      .btn-resources-save:focus{
+         color:#fff;
+     }
+      .btn-resources:focus{
          color:#fff;
      }
 

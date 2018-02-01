@@ -85,31 +85,54 @@
 
                                 <div class="col-xs-12 left-chat-box" id="chat_msgs" (scroll)="onChatScroll()">
                                     <div class="welComeFirst" *ngIf="returnFlag==='false'">Welcome to Legal Assist</div>
-                                  
-                                  
+
+
                                     <div *ngIf="returnFlag==='true'">
                                         <div class="welComeFirst">Welcome Back to Legal Assist</div>
-                                        
+
                                         <div *ngFor="let message of returnMessages" [class]="message.self">
                                             <div [class]="message.class" innerHtml="{{message.text}}"><span datetime='2009-11-13T20:00' style="float:right">{{message.time}}</span></div>
 
                                         </div>
                                     </div>
-                                    
+
                                     <div *ngFor="let message of messages; let i = index" [class]="messages[i].self">
-                                        
-                                        <!--<span [class]="messages[i].classIcon">{{messages[i].from}}</span>-->
+
                                         <div [class]="messages[i].class" *ngIf="messages[i].class!='tag-badge'" innerHtml="{{messages[i].text}}">
                                             <time datetime='2009-11-13T20:00' style="float:right">{{messages[i].time}}</time>
                                         </div>
-                                        <div class="welCome" *ngIf="messages[i].class=='tag-badge'">
-                                     <span class="tag-badge" *ngFor="let sen of messages[i].scenarios; let j = index" (click)="showResourcesByScenario(messages[i].scenarios[j].ScenarioId,messages[i].scenarios[j].Description)">{{messages[i].scenarios[j].Description}}</span>
-                                    </div>
+                                        <div class="welCome" *ngIf="messages[i].class=='tag-badge' && messages[i].from!='TopScore'">
+                                            <span>Which one of these best matches your situation?</span>
+                                            <br />
+
+                                            <div *ngFor="let sen of messages[i].scenarios; let j = index">
+                                                <span class="tag-badge" *ngIf="j<3" (click)="showResourcesByScenarioId(messages[i].scenarios[j].ScenarioId,messages[i].scenarios[j].Description)">{{messages[i].scenarios[j].Description}}</span>
+                                            </div>
+
+
+                                            <div id="{{messages[i].id}}" class="collapse">
+                                                <div *ngFor="let sen of messages[i].scenarios; let j = index">
+                                                    <span *ngIf="j>3" class="tag-badge" (click)="showResourcesByScenario(messages[i].scenarios[j].ScenarioId,messages[i].scenarios[j].Description)">{{messages[i].scenarios[j].Description}}</span>
+                                                </div>
+
+                                            </div>
+
+                                            <div>
+                                                <a class="btn btn-link" data-toggle="collapse" [attr.href]="'#'+ messages[i].id" *ngIf="messages[i].scenarios?.length > 3" (click)="changeText($event)">More..</a>
+                                            </div>
+                                        </div>
+
+                                        <div class="welCome" *ngIf="messages[i].class=='tag-badge' && messages[i].from=='TopScore'">
+                                            <span>Which one of these best matches your situation?</span>
+                                            <div *ngFor="let sen of messages[i].scenarios; let j = index">
+                                                <span class="tag-badge" (click)="showResourcesByScenarioName(messages[i].scenarios[j])">{{messages[i].scenarios[j]}}</span>
+                                            </div>
+                                        </div>
 
 
                                     </div>
 
-                                    
+
                                 </div>
                                 <div class="panel-footer col-md-12 col-sm-12 col-xs-12 p-r-0">
 
@@ -218,7 +241,7 @@
     </div>
 </section>
 <section class="resources_content" id="Downsection">
-    <mrs ></mrs>
+    <mrs></mrs>
     <footerDiv></footerDiv>
 </section>
 <!--<style>

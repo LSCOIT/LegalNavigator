@@ -28,7 +28,7 @@ export class MRSComponent implements OnInit {
     sentence: string = "";
     currentUrl: string = '';
     SubCat: Array<any> = [];
-    Resources:Array<any> = [];
+    Resources: Array<any> = [];
     items: Array<any> = [];
     processes: Array<any> = [];
     private start = false;
@@ -45,9 +45,8 @@ export class MRSComponent implements OnInit {
         var curResources = JSON.parse(localStorage.getItem('curatesResources'));
         var hasData = localStorage.getItem('hasData');
         this.state = localStorage.getItem('geoState');
-        console.log('state', this.state);
-        if (this.state == 'Washington')
-        {
+
+        if (this.state == 'Washington') {
             this.collapsed = 'collapse in';
             this.aClicked = true;
             if (hasData == 'true')
@@ -58,75 +57,75 @@ export class MRSComponent implements OnInit {
         else {
             this.collapsed = 'collapse';
             this.aClicked = false;
-        
-        if (localStorage.getItem('linkName') === "") {
-            
-             if (hasData == "true") {  //display ui from local storage
-                
-                this.items = [];
-                this.SubCat = [];
-                this.processes = [];
-                this.Resources = [];
-                var curResources = JSON.parse(localStorage.getItem('curatesResources'));
-                this.hasData = true;
-               
-                if (curResources.Resources != undefined && curResources.Resources != null && curResources.Resources.length > 0) {
-                    
-                    this.showMrs = true;
-                    for (var i = 0; i < curResources.Resources.length; i++) {
-                        if (curResources.Resources[i].Action == 'Title')
-                            this.Resources.push({
-                                "Title": curResources.Resources[i].Title,
-                                "ResourceJson": curResources.Resources[i].ResourceJson,
-                            });
-                    }
-                    for (var i = 0; i < curResources.Resources.length; i++) {
 
-                        var item = this.Resources.find(x => x.Title == curResources.Resources[i].Title);
-                        if (item != null && item != undefined) {
-                            if (curResources.Resources[i].Action != 'Title') {
-                                if (curResources.Resources[i].ResourceJson != null && curResources.Resources[i].ResourceJson != "") {
-                                    if (curResources.Resources[i].Action == 'Url')
-                                        item.ResourceJson = item.ResourceJson + '<br /><br /><b> ' + curResources.Resources[i].Action + ': </b><br/><div class="topboxUrl" title="' + curResources.Resources[i].ResourceJson + '"><a href="' + curResources.Resources[i].ResourceJson + '"target="_blank">' + curResources.Resources[i].ResourceJson + '</a></div>'
+            if (localStorage.getItem('linkName') === "") {
 
-                                    else
-                                        item.ResourceJson = item.ResourceJson + '<br /><br /> <b> ' + curResources.Resources[i].Action + ': </b><br/>' + curResources.Resources[i].ResourceJson
+                if (hasData == "true") {  //display ui from local storage
 
+                    this.items = [];
+                    this.SubCat = [];
+                    this.processes = [];
+                    this.Resources = [];
+                    var curResources = JSON.parse(localStorage.getItem('curatesResources'));
+                    this.hasData = true;
+                    console.log('resources', curResources);
+                    if (curResources.Resources != undefined && curResources.Resources != null && curResources.Resources.length > 0) {
+
+                        this.showMrs = true;
+                        for (var i = 0; i < curResources.Resources.length; i++) {
+                            if (curResources.Resources[i].Action == 'Title')
+                                this.Resources.push({
+                                    "Title": curResources.Resources[i].Title,
+                                    "ResourceJson": curResources.Resources[i].ResourceJson,
+                                });
+                        }
+                        for (var i = 0; i < curResources.Resources.length; i++) {
+
+                            var item = this.Resources.find(x => x.Title == curResources.Resources[i].Title);
+                            if (item != null && item != undefined) {
+                                if (curResources.Resources[i].Action != 'Title' && curResources.Resources[i].Action != null) {
+                                    if (curResources.Resources[i].ResourceJson != null && curResources.Resources[i].ResourceJson != "") {
+                                        if (curResources.Resources[i].Action == 'Url')
+                                            item.ResourceJson = item.ResourceJson + '<br /><br /><b> ' + curResources.Resources[i].Action + ': </b><br/><div class="topboxUrl" title="' + curResources.Resources[i].ResourceJson + '"><a href="' + curResources.Resources[i].ResourceJson + '"target="_blank">' + curResources.Resources[i].ResourceJson + '</a></div>'
+
+                                        else
+                                            item.ResourceJson = item.ResourceJson + '<br /><br /> <b> ' + curResources.Resources[i].Action + ': </b><br/>' + curResources.Resources[i].ResourceJson
+
+                                    }
                                 }
                             }
+
+
                         }
 
+                        i = 0;
 
-                    }
-                    
-                    i = 0;
-                    
-                    if (this.Resources.length >= 4) {
-                        while (i < this.Resources.length) {
-                            var Resources: Array<any> = [];
+                        if (this.Resources.length >= 4) {
+                            while (i < this.Resources.length) {
+                                var Resources: Array<any> = [];
 
-                            for (var j = i; (j < i + 4 && j < this.Resources.length); j++) {
+                                for (var j = i; (j < i + 4 && j < this.Resources.length); j++) {
 
-                                Resources.push({
-                                    "header": this.Resources[j].Title,
-                                    "body": this.Resources[j].ResourceJson,
+                                    Resources.push({
+                                        "header": this.Resources[j].Title,
+                                        "body": this.Resources[j].ResourceJson,
 
-                                });
+                                    });
+
+                                }
+
+
+                                if (i == 0)
+                                    this.items.push({ Resources, class: "active" });
+                                else
+                                    this.items.push({ Resources, class: "" });
+                                i = i + 4;
 
                             }
-
-
-                            if (i == 0)
-                                this.items.push({ Resources, class: "active" });
-                            else
-                                this.items.push({ Resources, class: "" });
-                            i = i + 4;
-
                         }
-                    }
 
-                    if (this.Resources.length < 4) {
-                        
+                        if (this.Resources.length < 4) {
+
                             var Resources: Array<any> = [];
 
                             for (var j = i; j < this.Resources.length; j++) {
@@ -140,52 +139,103 @@ export class MRSComponent implements OnInit {
                             }
 
 
-                            
-                                this.items.push({ Resources, class: "active" });
-                            
 
-                        
-                    }
+                            this.items.push({ Resources, class: "active" });
 
-                    
-                }
-                else if (curResources.RelatedResources != undefined && curResources.RelatedResources != null && curResources.RelatedResources.length > 0) {
-                    console.log('related resources', curResources.RelatedResources);
-                    this.showMrs = true;
-                    for (var i = 0; i < curResources.RelatedResources.length; i++) {
-                        
-                            this.Resources.push({
-                                "Title": curResources.RelatedResources[i].Title,
-                                "ResourceJson": curResources.RelatedResources[i].ResourceJson,
-                               // "ResourceJson": json,
-                            });
 
-                    }
-                    for (var i = 0; i < curResources.RelatedResources.length; i++) {
 
-                        var item = this.Resources.find(x => x.Title == curResources.RelatedResources[i].Title);
-                        if (item != null && item != undefined) {
-                            if (curResources.RelatedResources[i].ResourceType != 'Title' && curResources.RelatedResources[i].ResourceType != 'Related') {
-                                if (curResources.RelatedResources[i].ResourceJson != null && curResources.RelatedResources[i].ResourceJson != "") {
-                                    if (curResources.RelatedResources[i].ResourceType == 'Url')
-                                        item.ResourceJson = item.ResourceJson + '<br /><br /><b> ' + curResources.RelatedResources[i].ResourceType + ': </b><br/><div class="topboxUrl" title="' + curResources.RelatedResources[i].ResourceJson + '"><a href="' + curResources.RelatedResources[i].ResourceJson + '"target="_blank">' + curResources.RelatedResources[i].ResourceJson + '</a></div>'
-
-                                    else
-                                        item.ResourceJson = item.ResourceJson + '<br /><br /> <b> ' + curResources.RelatedResources[i].ResourceType + ': </b><br/>' + curResources.RelatedResources[i].ResourceJson
-
-                                }
-                            }
                         }
 
 
                     }
-                    i = 0;
-                    
-                    if (this.Resources.length >= 4) {
-                        while (i < this.Resources.length) {
-                            var Resources: Array<any> = []; 
+                    else if (curResources.RelatedResources != undefined && curResources.RelatedResources != null && curResources.RelatedResources.length > 0) {
 
-                            for (var j = i; (j < i + 4 && j < this.Resources.length); j++) {
+                        this.showMrs = true;
+                        for (var i = 0; i < curResources.RelatedResources.length; i++) {
+                            if (curResources.RelatedResources[i].Action == 'Title')
+                                this.Resources.push({
+                                    "Title": curResources.RelatedResources[i].Title,
+                                    "ResourceJson": curResources.RelatedResources[i].ResourceJson,
+                                    // "ResourceJson": json,
+                                });
+
+                        }
+
+                        for (var i = 0; i < curResources.RelatedResources.length; i++) {
+
+                            var item = this.Resources.find(x => x.Title == curResources.RelatedResources[i].Title);
+                            if (item != null && item != undefined) {
+                                if (curResources.RelatedResources[i].Action != 'Title' && curResources.RelatedResources[i].Action != null) {
+                                    if (curResources.RelatedResources[i].ResourceJson != null && curResources.RelatedResources[i].ResourceJson != "") {
+                                        if (curResources.RelatedResources[i].Action == 'Url') {
+                                            if (curResources.RelatedResources[i].ResourceJson.indexOf('<a') >= 0)
+                                                item.ResourceJson = item.ResourceJson + '<br /><br /><b> ' + curResources.RelatedResources[i].Action + ': </b><br/><div class="topboxUrl">' + curResources.RelatedResources[i].ResourceJson + '</div>'
+                                            else
+                                                item.ResourceJson = item.ResourceJson + '<br /><br /><b> ' + curResources.RelatedResources[i].Action + ': </b><br/><div class="topboxUrl" title="' + curResources.RelatedResources[i].ResourceJson + '"><a href="' + curResources.RelatedResources[i].ResourceJson + '"target="_blank">' + curResources.RelatedResources[i].ResourceJson + '</a></div>'
+                                        }
+
+                                        else {
+
+                                            item.ResourceJson = item.ResourceJson + '<br /><br /> <b> ' + curResources.RelatedResources[i].Action + ': </b><br/>' + curResources.RelatedResources[i].ResourceJson
+                                        }
+
+                                    }
+                                }
+                            }
+                            //else {
+                            //    if (curResources.RelatedResources[i].Action != 'Title' && curResources.RelatedResources[i].Action != null) {
+                            //        if (curResources.RelatedResources[i].ResourceJson != null && curResources.RelatedResources[i].ResourceJson != "") {
+                            //            if (curResources.RelatedResources[i].Action == 'Url')
+                            //                this.Resources.push({
+                            //                    "Title": curResources.RelatedResources[i].Title,
+                            //                    "ResourceJson": '<b> ' + curResources.RelatedResources[i].Action + ': </b><br/><div class="topboxUrl" title="' + curResources.RelatedResources[i].ResourceJson + '"><a href="' + curResources.RelatedResources[i].ResourceJson + '"target="_blank">' + curResources.RelatedResources[i].ResourceJson + '</a></div>',
+                            //              });
+
+
+                            //            else
+                            //                this.Resources.push({
+                            //                    "Title": curResources.RelatedResources[i].Title,
+                            //                    "ResourceJson": '<b> ' + curResources.RelatedResources[i].Action + ': </b> <br/>' + curResources.RelatedResources[i].ResourceJson,
+                            //                });
+
+                            //        }
+                            //    }
+                            //}
+
+
+                        }
+                        i = 0;
+
+                        if (this.Resources.length >= 4) {
+                            while (i < this.Resources.length) {
+                                var Resources: Array<any> = [];
+
+                                for (var j = i; (j < i + 4 && j < this.Resources.length); j++) {
+
+                                    Resources.push({
+                                        "header": this.Resources[j].Title,
+                                        "body": this.Resources[j].ResourceJson,
+
+                                    });
+
+                                }
+
+
+                                if (i == 0)
+                                    this.items.push({ Resources, class: "active" });
+                                else
+                                    this.items.push({ Resources, class: "" });
+                                i = i + 4;
+
+                            }
+
+                        }
+
+                        if (this.Resources.length < 4) {
+
+                            var Resources: Array<any> = [];
+
+                            for (var j = i; j < this.Resources.length; j++) {
 
                                 Resources.push({
                                     "header": this.Resources[j].Title,
@@ -196,116 +246,89 @@ export class MRSComponent implements OnInit {
                             }
 
 
-                            if (i == 0)
-                                this.items.push({ Resources, class: "active" });
-                            else
-                                this.items.push({ Resources, class: "" });
-                            i = i + 4;
 
-                        }
-                    }
+                            this.items.push({ Resources, class: "active" });
 
-                    if (this.Resources.length < 4) {
 
-                        var Resources: Array<any> = [];
-
-                        for (var j = i; j < this.Resources.length; j++) {
-
-                            Resources.push({
-                                "header": this.Resources[j].Title,
-                                "body": this.Resources[j].ResourceJson,
-
-                            });
 
                         }
 
 
-
-                        this.items.push({ Resources, class: "active" });
-
-
-
                     }
-
-
-                }
-                else
-                    this.showMrs = false;
-                
-                if (curResources.RelatedIntents != null && curResources.RelatedIntents.length > 0) {
-                    this.showSubCat = true;
-                    for (var i = 0; i < curResources.RelatedIntents.length; i++) {
-                        this.SubCat.push({
-                            "id": curResources.RelatedIntents[i],
-                            "name": curResources.RelatedIntents[i],
-                        });
-                    }
-                }
-                else
-                    this.showSubCat = false;
-
-                if (curResources.Processes != null && curResources.Processes.length > 0) {
-                    if (localStorage.getItem('showProcess') == 'true')
-                        this.showForms = true;
                     else
-                        this.showForms = false;
-                    this.collapsed = 'collapse in';
-                    this.aClicked = true;
-                    this.processes = [];
-                    for (var i = 0; i < curResources.Processes.length; i++) {
-                        if (curResources.Processes[i].Description != null) {
-                            var item = this.processes.find(x => x.title == curResources.Processes[i].Title);
-                            if (item != null || item != undefined)
-                                //item.desc = item.desc + curResources.Processes[i].Description
-                                item.desc = curResources.Processes[i].ActionJson == null ? item.desc + '<ul><li>' + curResources.Processes[i].Description + '</li></ul>' : item.desc + '<ul><li>' + curResources.Processes[i].Description + '</br>' + curResources.Processes[i].ActionJson + '</li></ul>'
-                            else {
+                        this.showMrs = false;
 
-                                this.processes.push({
-                                    "id": curResources.Processes[i].stepNumber,
-                                    "title": curResources.Processes[i].Title,
-                                    //  "desc": curResources.Processes[i].Description + '</br>' + curResources.Processes[i].ActionJson,
-                                    "desc": curResources.Processes[i].ActionJson == null ? '<ul><li>' + curResources.Processes[i].Description + '</li></ul>' : '<ul><li>' + curResources.Processes[i].Description + '</br>' + curResources.Processes[i].ActionJson + '</li></ul>',
-                                    "class": ""
-                                });
+                    if (curResources.RelatedIntents != null && curResources.RelatedIntents.length > 0) {
+                        this.showSubCat = true;
+                        for (var i = 0; i < curResources.RelatedIntents.length; i++) {
+                            this.SubCat.push({
+                                "id": curResources.RelatedIntents[i],
+                                "name": curResources.RelatedIntents[i],
+                            });
+                        }
+                    }
+                    else
+                        this.showSubCat = false;
+
+                    if (curResources.Processes != null && curResources.Processes.length > 0) {
+                        if (localStorage.getItem('showProcess') == 'true')
+                            this.showForms = true;
+                        else
+                            this.showForms = false;
+                        this.collapsed = 'collapse in';
+                        this.aClicked = true;
+                        this.processes = [];
+                        for (var i = 0; i < curResources.Processes.length; i++) {
+                            if (curResources.Processes[i].Description != null) {
+                                var item = this.processes.find(x => x.title == curResources.Processes[i].Title);
+                                if (item != null || item != undefined)
+                                    //item.desc = item.desc + curResources.Processes[i].Description
+                                    item.desc = curResources.Processes[i].ActionJson == null ? item.desc + '<ul><li>' + curResources.Processes[i].Description + '</li></ul>' : item.desc + '<ul><li>' + curResources.Processes[i].Description + '</br>' + curResources.Processes[i].ActionJson + '</li></ul>'
+                                else {
+
+                                    this.processes.push({
+                                        "id": curResources.Processes[i].stepNumber,
+                                        "title": curResources.Processes[i].Title,
+                                        //  "desc": curResources.Processes[i].Description + '</br>' + curResources.Processes[i].ActionJson,
+                                        "desc": curResources.Processes[i].ActionJson == null ? '<ul><li>' + curResources.Processes[i].Description + '</li></ul>' : '<ul><li>' + curResources.Processes[i].Description + '</br>' + curResources.Processes[i].ActionJson + '</li></ul>',
+                                        "class": ""
+                                    });
+
+                                }
 
                             }
-
                         }
-                    }
 
-                    console.log('this processes', this.processes);
+
+                    }
+                    else
+                        this.showForms = false;
                 }
-                else
+                else if (hasData == "false") {
+                    this.showMrs = false;
                     this.showForms = false;
-            }
-            else if (hasData == "false") {
-                 this.showMrs = false;
-                 this.showForms = false;
-                 this.showSubCat = false;
-                this.hasData = false;
-                this.items = [];
-                this.SubCat = [];
-            
-            }
+                    this.showSubCat = false;
+                    this.hasData = false;
+                    this.items = [];
+                    this.SubCat = [];
+
+                }
             }
 
         }
         this.currentUrl = this.router.url; // this will give you current url
 
-        var route:any;
+        var route: any;
         this.page = "chat";
-        if (this.currentUrl.indexOf('general') > 0)
-        {
+        if (this.currentUrl.indexOf('general') > 0) {
             route = "general";
             this.page = "";
         }
-        else if (this.currentUrl.indexOf('chat') > 0)
-        {
+        else if (this.currentUrl.indexOf('chat') > 0) {
             route = "chat";
             this.page = "chat";
         }
-        else if (this.currentUrl.indexOf('guided') > 0)
-        {
+        else if (this.currentUrl.indexOf('guided') > 0) {
             route = "guided";
             this.page = "";
         }
@@ -315,14 +338,14 @@ export class MRSComponent implements OnInit {
         }
         else
             route = "general";
-        
-        if (localStorage.getItem('linkName') != null && localStorage.getItem('linkName') != undefined && localStorage.getItem('linkName')!="") {
+
+        if (localStorage.getItem('linkName') != null && localStorage.getItem('linkName') != undefined && localStorage.getItem('linkName') != "") {
             this.aciveBdg = localStorage.getItem('linkName');
             if (route != "chat")
-            document.getElementById('mrlTopics').scrollIntoView();
+                document.getElementById('mrlTopics').scrollIntoView();
         }
 
-        
+
         if (this.currentUrl == '/' + route + '/forms') {
             document.getElementById('forms_steps').scrollIntoView();
             this.aClicked = true;
@@ -331,29 +354,29 @@ export class MRSComponent implements OnInit {
             else
                 this.collapsed = 'collapse in'
         }
-        
+
     }
 
     displayText(linkName: string) {
 
         localStorage.setItem('hasData', 'true');
         localStorage.setItem('curatesResources', null);
-        
+
         localStorage.setItem('linkName', linkName);
         localStorage.setItem('sentence', linkName);
-        
+
         this.aciveBdg = linkName;
-        var route:string;
+        var route: string;
         this.srchServ.getCuratedContents(linkName, localStorage.getItem('geoState'))
             .subscribe((res) => {
-                
+
                 var i = 0;
                 if (res != null) {
-                    console.log('by link click', res);
+
                     localStorage.setItem('curatesResources', JSON.stringify(res)); //store data
                     localStorage.setItem('hasData', "true");
                     this.hasData = true;
-                    if (res.Resources!=null && res.Resources.length > 0 ) {
+                    if (res.Resources != null && res.Resources.length > 0) {
                         this.showMrs = true;
                         this.items = [];
                         for (var i = 0; i < res.Resources.length; i++) {
@@ -446,14 +469,14 @@ export class MRSComponent implements OnInit {
                         }
                     }
                     else
-                         
-                    this.showForms = false;
+
+                        this.showForms = false;
                 }
                 else {
                     this.hasData = false;
                     localStorage.setItem('hasData', "false");
                     this.items = [];
-                 
+
                     this.SubCat = []
                     this.processes = [];
 
@@ -470,12 +493,11 @@ export class MRSComponent implements OnInit {
         else if (this.currentUrl.indexOf('chat') > 0) route = "chat";
         else if (this.currentUrl.indexOf('guided') > 0) route = "guided";
         else route = "general";
-        console.log('route', '/' + route+'/'+linkName);
-        document.getElementById('mrlTopics').scrollIntoView();
-      //  this.router.navigate(['/' + route, linkName]);
 
-        
+        document.getElementById('mrlTopics').scrollIntoView();
+        //  this.router.navigate(['/' + route, linkName]);
+
+
 
     }
-       
 }
