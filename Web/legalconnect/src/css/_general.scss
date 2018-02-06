@@ -392,7 +392,7 @@ all and (min-width: 992px) and (-webkit-transform-3d) {
    }
 }
 
-.items {
+    items {
     max-width:300px;
     height:300px;
     background:#ECECEC;
@@ -402,15 +402,7 @@ all and (min-width: 992px) and (-webkit-transform-3d) {
     margin: 30px;
     }
 
-    @media (max-width: 767px)
-{
-.btn-resources-save.tml-save
-{
-    top:10px;
-}
-}
-
- .topboxUrl
+    .topboxUrl
     {text-overflow:ellipsis;
      overflow:hidden;
     }
@@ -481,15 +473,58 @@ all and (min-width: 992px) and (-webkit-transform-3d) {
         width:60%;
         float:right;
     }
+    
+     .cntryDisplay
+     {
+         line-height:32px; display:none;
+     }
+
+     .btmMarginLeft
+     {
+         margin-left:10px;
+     }
+   
+     .btnMarginTop
+     {
+         margin-top:15px;
+     }
+
+     .btn-resources-save:focus{
+         color:#fff;
+     }
+    
+     .btn-resources:focus{
+         color:#fff;
+     }
+
+     .box-min-height-static
+     {
+         height:435px;
+     }
+
+     .box-btn-align-static{
+         margin-top:-73px;
+     }
+
+
+     @media (max-width: 767px)
+{
+.btn-resources-save.tml-save
+{
+    top:10px;
+}
+}
+         
      @media (min-width: 992px)
     {
+     
     .headerbg
         {
             height:110px;
         }
-    .footerHeight{
+    /*.footerHeight{
             min-height:290px;
-        }
+        }*/
     .topics-box
     {
         min-height:500px;
@@ -578,56 +613,9 @@ all and (min-width: 992px) and (-webkit-transform-3d) {
      }
  }
 
+     @media  (min-width: 992px) and (max-width: 1366px)
+    {
      
- 
-     @media  (max-width: 1920px)
-    {
-        .mrsHeight{
-            min-height:478px;
-        }
-        .docHeight
-        {
-            min-height:306px;
-        }
-        .left-chat-box
-                {
-                    height:345px;
-                }
-        .sent{
-            float:right;
-            
-        }
-        .sentIcon{
-            margin-left:70%;
-        }
-        .receive
-        {
-         float:left;
-        }
-        .feature-unavaiable{
-            margin-top: 150px;
-            margin-left: 219px;
-        }
-        .doc-feature-unavaiable
-        {
-            margin-top: 150px;
-            margin-left: 361px;
-        }
-        .box_sent2{
-        width: 600px;
-        }
-
-        }
-
-     @media (min-width: 992px) and (max-width: 1366px)
-    {
-    .headerbg
-        {
-            height:110px;
-        }
-    .footerHeight{
-            min-height:290px;
-        }
     .topics-box
     {
         min-height:500px;
@@ -647,6 +635,7 @@ all and (min-width: 992px) and (-webkit-transform-3d) {
     .left-chat-box
     {
         height:233px;
+        /*height:191px;*/
     }
     .panel-footer{
         /*margin-top:10px;*/
@@ -712,25 +701,260 @@ all and (min-width: 992px) and (-webkit-transform-3d) {
          margin-top:3px;
          margin-bottom:3px;
      }
-    .mrsHeight {
-    min-height: 362px;
-    }
     .docHeight {
      min-height: 190px;
     }
     .box_sent2{
         width: 600px;
     }
-     .feature-unavaiable{
+    .feature-unavaiable{
+            
             margin-top: 150px;
             margin-left: 218.5px;
+            
         }
+    .feature-unavaiable h2{
+         font-size:20px;
+         font-weight:normal;
+         color: #000;
+    margin: 10px 0 0 0;
+     }
+     #tabcontent
+    {
+        padding-top:205px;
+        
+    }
+    .docContent{
+        padding-top:200px;
+    }
+    .footerPadding{
+        padding-top:252px;
+    }
+    .mrsHeight {
+    min-height: 362px;
+    padding-top:180px;
+    }
+    .mrsGuidedClass
+    {
+        padding-top:180px;
+    }
     .doc-feature-unavaiable
         {
-            margin-top: 150px;
-            margin-left: 267px;
+            /*margin-top: 150px;*/
+            margin-top: 330px;
+            margin-left: 275.5px;
         }
+    .fixed-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+   // height: 200px;
+    z-index: 3;
+  }
+    .headerbg
+        {
+            height:90px;
+        }
+    .headercontent h1
+    {
+        font-size:40px;
+        margin-top:5px;
+    }
+    #tabs
+    {
+        min-height:50px;
+        height:53px;
+    }   
+    .tab-content .tab-box{
+        min-height:40px;
+        height:65px;
+    }
+    .tab-content .tab-box h1
+    {
+        margin-top:0;
+    }
+     footer{
+        height:39px;
+    }
+    .lp-tabs .nav > li > a
+    {
+        padding-top:0;
+        height:53px;
+    }
+    .lp-tabs .nav-tabs
+    {
+        margin-top:0px;
+    }
+    .guidedFooterPadding
+    {
+        padding-top:262px;
+    }
+    .docFooterpadding{
+        padding-top:72px;
+    }
  }
+
+     @media (min-width: 1367px) and (max-width: 1920px)
+    {
+     #tabcontent
+    {
+        padding-top:180px;
+    }
+    .docContent{
+        padding-top:200px;
+    }
+    .footerPadding{
+        padding-top:229px;
+    }
+    .mrsGuidedClass
+    {
+        padding-top:277px;
+    }
+    .doc-feature-unavaiable
+        {
+            padding-top: 370px;
+            margin-left: 290.5px;
+        }
+  
+    .fixed-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+   // height: 200px;
+    z-index: 3;
+  }
+    .mrsHeight{
+            min-height:449px;
+            padding-top:277px;
+        }
+    .docHeight
+        {
+            min-height:179px;
+        }
+    .left-chat-box
+                {
+                    height:323px;
+                }
+    .sent{
+            float:right;
+            
+        }
+    .sentIcon{
+            margin-left:70%;
+        }
+    .receive
+        {
+         float:left;
+        }
+    .feature-unavaiable{
+            padding-top: 90px;
+            margin-left: 219px;
+        }
+    .feature-unavaiable h2{
+         font-size:20px;
+         font-weight:normal;
+         color: #000;
+    margin: 10px 0 0 0;
+     }
+        
+    .box_sent2{
+        width: 600px;
+        }
+     .headerbg
+        {
+            height:85px;
+        }
+    .headercontent h1
+    {
+        font-size:40px;
+        margin-top:5px;
+    }
+    #tabs
+    {
+        min-height:50px;
+        height:53px;
+    }   
+    .tab-content .tab-box{
+        min-height:40px;
+        height:65px;
+    }
+    .tab-content .tab-box h1
+    {
+        margin-top:0;
+    }
+    footer{
+        height:44px;
+    }
+    .lp-tabs .nav > li > a
+    {
+        padding-top:0;
+        height:53px;
+    }
+    .lp-tabs .nav-tabs
+    {
+        margin-top:0px;
+    }
+    .guidedFooterPadding
+    {
+        padding-top:279px;
+    }
+    .docFooterpadding{
+        padding-top:97px;
+    }
+    .chatFooterHeight{
+        height:21px;
+    }
+    }
+
+     @media screen and (max-width: 1360px)
+     {
+
+        .docFooterpadding {
+            padding-top: 72px;
+        }
+}
+
+     @media (min-width: 992px) and (max-width: 1280px)
+     {
+         #tabcontent
+         {
+             padding-top:225px;
+         }
+         .left-chat-box
+         {
+             height:213px;
+         }
+         .guidedFooterPadding
+         {
+             padding-top:262px;
+         }
+         .footerPadding {
+        padding-top: 252px;
+        }
+     }
+
+     @media  (min-width: 992px)  and (max-width: 1024px)
+     {
+
+.docFooterpadding {
+    padding-top: 72px;
+}
+.guidedFooterPadding {
+    padding-top: 262px;
+}
+.footerPadding {
+    padding-top: 252px;
+}
+.doc-feature-unavaiable {
+    /* margin-top: 150px; */
+    margin-top: 330px;
+    margin-left: 212px;
+}
+.feature-unavaiable {
+    margin-top: 150px;
+    margin-left: 170.5px;
+}
+}
 
      @media (max-width: 767px)
 {
@@ -759,32 +983,4 @@ all and (min-width: 992px) and (-webkit-transform-3d) {
 }
 
 }
-     .cntryDisplay
-     {
-         line-height:32px; display:none;
-     }
-     .btmMarginLeft
-     {
-         margin-left:10px;
-     }
-   
-     .btnMarginTop
-     {
-         margin-top:15px;
-     }
 
-     .btn-resources-save:focus{
-         color:#fff;
-     }
-      .btn-resources:focus{
-         color:#fff;
-     }
-
-     box-min-height-static
-     {
-         height:435px;
-     }
-
-     .box-btn-align-static{
-         margin-top:-73px;
-     }

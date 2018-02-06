@@ -1,18 +1,10 @@
 ﻿<headerDiv></headerDiv>
-<section id="tabcontent" *ngIf="showGuided=='true'">
+<section id="tabcontent" *ngIf="showGuided=='true'" >
     <!-- Tab panes -->
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="resources">
-            <div class="tab-box">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <h1>Resources and Information</h1>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="container">
+              <div class="container" >
+
                 <div class="row list-container" id="Slide1" [ngClass]="{'activeSlide': activeSld=='Slide1','hideSlide': activeSld!='Slide1'}">
                     <div class="col-md-6 col-md-offset-3 faq-list">
                         <div class="item guided text-center">
@@ -169,15 +161,13 @@
         </div>
     </div>
 </section>
-<section class="resources_content" id="Downsection">
-    <div class="mrsHeight">
+<section class="resources_content" id="Downsection" >
+    <div class="mrsHeight" [class]="[mrsClass]">
         <mrs></mrs>
     </div>
-    <footerDiv></footerDiv>
+    <div class="guidedFooterPadding">
+        <footerDiv></footerDiv>
+        </div>
 </section>
 
-<!--<section class="resources_content2" id="Upsection"  [ngClass]="{'activeSlide': myClass=='up','hideSlide': myClass=='down'}">
-    <div class="arrow-up-down">
-        <a (click)="ValidateContent('down');"><i class="fa fa-arrow-down" aria-hidden="true"></i></a>
-    </div>
-</section>-->
+

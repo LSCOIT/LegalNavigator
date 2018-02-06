@@ -1,10 +1,10 @@
 ﻿<headerDiv></headerDiv>
-<section class="resources_content timeline-padding no-padding" >
+<section class="resources_content timeline-padding no-padding"  >
     <div class="doc-feature-unavaiable" *ngIf="showDoc!='true'" >
         <h2>This feature is currently unavailable. Please click on the "Chat" tab above to get started</h2>
     </div>
-    <div class="docHeight">
-        <div *ngIf="showDoc=='true'">
+    <div class="docHeight" >
+        <div *ngIf="showDoc=='true'" class="docContent">
             <div class="container">
                 <p class="title-resources">Title for Information and Resources | Restraining Order | Form DV-150 </p>
             </div>
@@ -40,5 +40,7 @@
             </div>
         </div>
     </div>
-    <footerDiv></footerDiv>
+    <div class="docFooterpadding">
+        <footerDiv></footerDiv>
+        </div>
 </section>

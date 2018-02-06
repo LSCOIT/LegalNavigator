@@ -6,7 +6,7 @@ import {MRSComponent} from '../../common/mrs.component';
 @Component({
     selector: 'chat',
     templateUrl: './chat.component.html'
-
+         
 })
 export class ChatComponent implements OnInit {
     @ViewChild(MRSComponent) private _mrs:
@@ -30,13 +30,13 @@ export class ChatComponent implements OnInit {
     }];
     msgCount: number = 1;
     messages = [{
-        "id": 0,
+        "id":0,
         "text": "",
         "self": "false",
         "time": "",
         "class": "",
         "classIcon": "",
-        "from": "",
+        "from":"",
         "scenarios": [{}]
     }];
     returnMessages = [{
@@ -49,18 +49,20 @@ export class ChatComponent implements OnInit {
     replyMessage = "";
     rightmessMessage = "";
     query: string = "";
+    noneIntentClick: number = 0;
+    
     constructor(private srchServ: SearchService, private router: Router, private route: ActivatedRoute) { }
 
     ngOnInit() {
         localStorage.setItem('scrolled', 'true');
-
+      
         if (localStorage.getItem('geoState') != null)
             this.selectedCountry = localStorage.getItem('geoState');
         else
             this.selectedCountry = "Alaska";
 
         var msgs = JSON.parse(localStorage.getItem('messages'));
-
+        
         if (msgs != null) {
             for (var m = 0; m < msgs.length; m++) {
                 this.messages.push({
@@ -75,11 +77,11 @@ export class ChatComponent implements OnInit {
                     "scenarios": msgs[m].scenarios
                 })
                 this.msgCount = msgs[m].id;
-            }
+                }
             localStorage.setItem('scrolled', 'false');
         }
         var ref = JSON.parse(localStorage.getItem('references'));
-
+        
         if (ref != null) {
             for (var r = 0; r < ref.length; r++)
                 this.rightboxes.push({
@@ -89,16 +91,12 @@ export class ChatComponent implements OnInit {
                 })
             localStorage.setItem('resScrolled', 'false');
         }
-        //if (localStorage.getItem('geoState') == null)
-        //this.srchServ.getLocation().subscribe(
-        //    (resCountry) => {
-        //        localStorage.setItem('geoState', resCountry.region);
-        //    });
+      
         localStorage.setItem('sentence', "");
         localStorage.setItem('linkName', "");
         this.query = this.replyMessage;
         this.returnFlag = localStorage.getItem('returnFlag') == null ? 'false' : localStorage.getItem('returnFlag');
-
+        
         var dt = new Date();
         var time = dt.getHours() + ":" + dt.getMinutes();
         setTimeout(() => {
@@ -161,7 +159,7 @@ export class ChatComponent implements OnInit {
 
             this.srchServ.getfileUpload(data).subscribe(
                 (res) => {
-
+                    
                     var dt = new Date();
                     var time = dt.getHours() + ":" + dt.getMinutes();
                     this.msgCount = this.msgCount + 1;
@@ -195,8 +193,9 @@ export class ChatComponent implements OnInit {
         localStorage.setItem('showProcess', 'false');
         this.scenarios = [];
         this.hasScenario = false;
-
+        
         localStorage.setItem('curatesResources', null);
+       
         this.isVisible = false;
         var dt = new Date();
         var time = dt.getHours() + ":" + dt.getMinutes();
@@ -211,34 +210,34 @@ export class ChatComponent implements OnInit {
             "classIcon": "sentIcon",
             "from": "You",
             "scenarios": this.scenarios
-        })
+        })  
         localStorage.setItem('messages', JSON.stringify(this.messages));
         var query = this.replyMessage;
         this.showMessage = true;
-        if (this.selectedCountry !== " ")
-            localStorage.setItem('geoState', this.selectedCountry);
-
-
-        this.srchServ.getChatReferences(query, this.selectedCountry == " " ? localStorage.getItem('geoState') : this.selectedCountry).subscribe((res) => {
-
-            if (res != null && res.length > 0) {
-                this.rightboxes = [];
-                for (var i = 0; i < res.length; i++) {
-                    this.rightboxes.push({
-                        "url": res[i].Url,
-                        "text": res[i].Name,
-                        "self": true
-                    })
-                }
-                localStorage.setItem('references', JSON.stringify(this.rightboxes));
-                localStorage.setItem('resScrolled', 'false');
-            }
-        });
-        this.isVisible = true;
-
+        if (this.selectedCountry!==" ")
+        localStorage.setItem('geoState', this.selectedCountry);
+              
+                
+                this.srchServ.getChatReferences(query, this.selectedCountry == " " ? localStorage.getItem('geoState') : this.selectedCountry).subscribe((res) => {
+                   
+                    if (res != null && res.length > 0) {
+                        this.rightboxes = [];
+                        for (var i = 0; i < res.length; i++) {
+                            this.rightboxes.push({
+                                "url": res[i].Url,
+                                "text": res[i].Name,
+                                "self": true
+                            })
+                        }
+                        localStorage.setItem('references', JSON.stringify(this.rightboxes));
+                        localStorage.setItem('resScrolled', 'false');
+                    }
+                });
+              this.isVisible = true;
+   
         this.replyMessage = "";
-
-
+      
+        
         localStorage.setItem('sentence', query);
 
         if (localStorage.getItem('geoState') != 'Washington') {
@@ -246,24 +245,15 @@ export class ChatComponent implements OnInit {
                 .subscribe((res) => {
 
                     var i = 0;
+                    console.log('res', res);
                     if (res != null && res.Description != null) {
+                        
                         localStorage.setItem('curatesResources', JSON.stringify(res)); //store data
                         localStorage.setItem('hasData', "true");
                         if (res.Scenarios.length > 0) {
-                            //this.msgCount = this.msgCount + 1;
-                            //this.messages.push({
-                            //    "id": this.msgCount,
-                            //    "text": "Which one of these best matches your situation?",
-                            //    "self": "true",
-                            //    "time": time,
-                            //    "class": "receive",
-                            //    "classIcon": "receiveIcon",
-                            //    "from": "LA",
-                            //    "scenarios": this.scenarios
-                            //})
-
+                            
                             this.scenarios = res.Scenarios;
-
+                                                        
                             this.msgCount = this.msgCount + 1;
                             this.messages.push({
                                 "id": this.msgCount,
@@ -278,13 +268,37 @@ export class ChatComponent implements OnInit {
                             this.hasScenario = true;
                             localStorage.setItem('messages', JSON.stringify(this.messages));
                         }
+                      
 
                         localStorage.setItem('scrolled', 'false');
+                    }
+                    else if (res.Description == null && res.Resources == null && res.Scenarios == null && res.Processes == null && res.RelatedIntents == null && res.TopSixIntentsForLowConfidenceIntents!=null) {
+                        this.noneIntentClick = 0;
+                        localStorage.setItem('topSixIntents', JSON.stringify(res.TopSixIntentsForLowConfidenceIntents));
+                        var topFour: Array<any> = [];
+
+                        for (var k = 0; k < 4; k++)
+                            topFour.push( res.TopSixIntentsForLowConfidenceIntents[k])
+                        //topFour = res.TopSixIntentsForLowConfidenceIntents;
+                        this.msgCount = this.msgCount + 1;
+                        this.messages.push({
+                            "id": this.msgCount,
+                            "text": "",
+                            "self": "true",
+                            "time": "",
+                            "class": "tag-badge",
+                            "classIcon": "",
+                            "from": "TopSix",
+                            "scenarios": topFour
+
+                        });
+                        localStorage.setItem('scrolled', 'false');
+                        localStorage.setItem('messages', JSON.stringify(this.messages));
                     }
                     else {
                         this.srchServ.getChatMessages(query, this.lang, this.selectedCountry == " " ? localStorage.getItem('geoState') : this.selectedCountry)
                             .subscribe((res) => {
-
+                              
                                 if (res != null && res != '') {
                                     var dt = new Date();
                                     var time = dt.getHours() + ":" + dt.getMinutes();
@@ -308,7 +322,7 @@ export class ChatComponent implements OnInit {
                                     this.msgCount = this.msgCount + 1;
                                     this.messages.push({
                                         "id": this.msgCount,
-                                        "text": "Sorry we do not have informatio on this topic at this time",
+                                        "text": "Sorry we do not have information on this topic at this time",
                                         "self": "true",
                                         "time": "",
                                         "class": "receive",
@@ -325,7 +339,7 @@ export class ChatComponent implements OnInit {
                                 this.msgCount = this.msgCount + 1;
                                 this.messages.push({
                                     "id": this.msgCount,
-                                    "text": "Sorry we do not have informatio on this topic at this time",
+                                    "text": "Sorry we do not have information on this topic at this time",
                                     "self": "true",
                                     "time": "",
                                     "class": "receive",
@@ -356,7 +370,7 @@ export class ChatComponent implements OnInit {
             localStorage.setItem('hasData', "true");
             this.srchServ.getChatMessages(query, this.lang, this.selectedCountry == " " ? localStorage.getItem('geoState') : this.selectedCountry)
                 .subscribe((res) => {
-
+                    
                     if (res != null && res != '') {
                         var dt = new Date();
                         var time = dt.getHours() + ":" + dt.getMinutes();
@@ -379,7 +393,7 @@ export class ChatComponent implements OnInit {
                         this.msgCount = this.msgCount + 1;
                         this.messages.push({
                             "id": this.msgCount,
-                            "text": "Sorry we do not have informatio on this topic at this time",
+                            "text": "Sorry we do not have information on this topic at this time",
                             "self": "true",
                             "time": "",
                             "class": "receive",
@@ -397,7 +411,7 @@ export class ChatComponent implements OnInit {
                     this.msgCount = this.msgCount + 1;
                     this.messages.push({
                         "id": this.msgCount,
-                        "text": "Sorry we do not have informatio on this topic at this time",
+                        "text": "Sorry we do not have information on this topic at this time",
                         "self": "true",
                         "time": "",
                         "class": "receive",
@@ -410,12 +424,12 @@ export class ChatComponent implements OnInit {
 
                 });
         }
-        this.showMessage = false;
+                    this.showMessage = false;
 
-        setInterval(this.updateScroll, 100);
-        setInterval(this.updateResScroll, 100);
-
-
+                    setInterval(this.updateScroll, 100);
+                    setInterval(this.updateResScroll, 100);
+                
+        
     }
 
     updateScroll() {
@@ -435,13 +449,13 @@ export class ChatComponent implements OnInit {
     }
 
     onChatScroll() {
-
+       
         localStorage.setItem('scrolled', 'true');
 
     }
 
     onResScroll() {
-
+       
         localStorage.setItem('resScrolled', 'true');
 
     }
@@ -469,25 +483,25 @@ export class ChatComponent implements OnInit {
                     localStorage.setItem('curatesResources', JSON.stringify(res)); //store data
                     localStorage.setItem('hasData', "true");
                     console.log('sen by id', res);
-
-
+                   
+                  
                     this.msgCount = this.msgCount + 1;
                     this.messages.push({
                         "id": this.msgCount,
-                        "text": res.Outcome,
-                        "self": "true",
-                        "time": "",
-                        "class": "receive",
-                        "classIcon": "receiveIcon",
-                        "from": "LA",
-                        "scenarios": this.scenarios
+                            "text": res.Outcome,
+                            "self": "true",
+                            "time": "",
+                            "class": "receive",
+                            "classIcon": "receiveIcon",
+                            "from": "LA",
+                            "scenarios": this.scenarios
 
                     });
                     if (res.TopTwoIntentsForLowConfidenceIntents.length > 0) {
                         topScore = res.TopTwoIntentsForLowConfidenceIntents;
                         this.msgCount = this.msgCount + 1;
-                        this.messages.push({
-                            "id": this.msgCount,
+                     this.messages.push({
+                        "id": this.msgCount,
                             "text": "",
                             "self": "true",
                             "time": "",
@@ -497,15 +511,15 @@ export class ChatComponent implements OnInit {
                             "scenarios": topScore
 
                         });
-                        console.log('topscorethis.messages', this.messages);
+                     console.log('topscorethis.messages', this.messages);
                     }
-                    localStorage.setItem('messages', JSON.stringify(this.messages));
-                    this.hasScenario = true;
+                        localStorage.setItem('messages', JSON.stringify(this.messages));
+                        this.hasScenario = true;
 
-
-                    this.msgCount = this.msgCount + 1;
-                    this.messages.push({
-                        "id": this.msgCount,
+                   
+                        this.msgCount = this.msgCount + 1;
+                        this.messages.push({
+                            "id": this.msgCount,
                         "text": "Please Scroll Down To See Resources & Forms/Steps",
                         "self": "true",
                         "time": "",
@@ -513,7 +527,7 @@ export class ChatComponent implements OnInit {
                         "classIcon": "receiveIcon",
                         "from": "LA",
                         "scenarios": this.scenarios
-                    })
+                        })
                     localStorage.setItem('messages', JSON.stringify(this.messages));
                 }
                 else {
@@ -521,7 +535,7 @@ export class ChatComponent implements OnInit {
                     this.msgCount = this.msgCount + 1;
                     this.messages.push({
                         "id": this.msgCount,
-                        "text": "Sorry we do not have informatio on this topic at this time",
+                        "text": "Sorry we do not have information on this topic at this time",
                         "self": "true",
                         "time": "",
                         "class": "receive",
@@ -538,7 +552,7 @@ export class ChatComponent implements OnInit {
                 this.msgCount = this.msgCount + 1;
                 this.messages.push({
                     "id": this.msgCount,
-                    "text": "Sorry we do not have informatio on this topic at this time",
+                    "text": "Sorry we do not have information on this topic at this time",
                     "self": "true",
                     "time": "",
                     "class": "receive",
@@ -553,7 +567,7 @@ export class ChatComponent implements OnInit {
             }
             );
 
-
+        
     }
 
     showResourcesByScenarioName(query: string) {
@@ -581,17 +595,6 @@ export class ChatComponent implements OnInit {
                     localStorage.setItem('curatesResources', JSON.stringify(res)); //store data
                     localStorage.setItem('hasData', "true");
                     if (res.Scenarios.length > 0) {
-                        //this.msgCount = this.msgCount + 1;
-                        //this.messages.push({
-                        //    "id": this.msgCount,
-                        //    "text": "Which one of these best matches your situation?",
-                        //    "self": "true",
-                        //    "time": time,
-                        //    "class": "receive",
-                        //    "classIcon": "receiveIcon",
-                        //    "from": "LA",
-                        //    "scenarios": this.scenarios
-                        //})
 
                         this.scenarios = res.Scenarios;
 
@@ -616,7 +619,7 @@ export class ChatComponent implements OnInit {
                     this.msgCount = this.msgCount + 1;
                     this.messages.push({
                         "id": this.msgCount,
-                        "text": "Sorry we do not have informatio on this topic at this time",
+                        "text": "Sorry we do not have information on this topic at this time",
                         "self": "true",
                         "time": "",
                         "class": "receive",
@@ -637,7 +640,7 @@ export class ChatComponent implements OnInit {
                 this.msgCount = this.msgCount + 1;
                 this.messages.push({
                     "id": this.msgCount,
-                    "text": "Sorry we do not have informatio on this topic at this time",
+                    "text": "Sorry we do not have information on this topic at this time",
                     "self": "true",
                     "time": "",
                     "class": "receive",
@@ -655,11 +658,142 @@ export class ChatComponent implements OnInit {
 
     }
 
-    stateOnChange(newValue: string) {
+    showResourcesByTopIntent(query: string) {
+        console.log('by intent', query);
+        console.log('intent click', this.noneIntentClick);
+        console.log('topSixIntents', JSON.parse(localStorage.getItem('topSixIntents')));
 
+        this.noneIntentClick = this.noneIntentClick + 1;
+        if (query == "None" && this.noneIntentClick<2) {
+            var topSix = JSON.parse(localStorage.getItem('topSixIntents'));
+            var topFour: Array<any> = [];
+            for (var k = 4; k < 8; k++)
+                topFour.push(topSix[k])
+            this.msgCount = this.msgCount + 1;
+            this.messages.push({
+                "id": this.msgCount,
+                "text": "",
+                "self": "true",
+                "time": "",
+                "class": "tag-badge",
+                "classIcon": "",
+                "from": "TopSix",
+                "scenarios": topFour
+
+            });
+            localStorage.setItem('messages', JSON.stringify(this.messages));
+            localStorage.setItem('scrolled', 'false');
+        }
+        else if (query == "None" && this.noneIntentClick >= 2) {
+            this.msgCount = this.msgCount + 1;
+            this.messages.push({
+                "id": this.msgCount,
+                "text": "Sorry we’re not able to find what you are looking for. If you can, try rephrasing your question. To find help in your area, please see the resources section down below.",
+                "self": "true",
+                "time": "",
+                "class": "receive",
+                "classIcon": "receiveIcon",
+                "from": "LA",
+                "scenarios": this.scenarios
+            })
+            localStorage.setItem('scrolled', 'false');
+            localStorage.setItem('topSixIntents', null);
+            localStorage.setItem('messages', JSON.stringify(this.messages));
+            localStorage.setItem('hasData', "false");
+        }
+        else {
+            localStorage.setItem('showProcess', 'false');
+            this.scenarios = [];
+            this.hasScenario = false;
+
+            localStorage.setItem('curatesResources', null);
+            this.srchServ.getCuratedContents(query, localStorage.getItem('geoState'))
+                .subscribe((res) => {
+                    console.log('by scenario name', res);
+                    var i = 0;
+                    this.msgCount = this.msgCount + 1;
+                    this.messages.push({
+                        "id": this.msgCount,
+                        "text": query,
+                        "self": "sentTrue",
+                        "time": "",
+                        "class": "sent",
+                        "classIcon": "sentIcon",
+                        "from": "You",
+                        "scenarios": this.scenarios
+                    })
+                    if (res != null && res.Description != null) {
+                        localStorage.setItem('curatesResources', JSON.stringify(res)); //store data
+                        localStorage.setItem('hasData', "true");
+                        if (res.Scenarios.length > 0) {
+         
+                            this.scenarios = res.Scenarios;
+
+                            this.msgCount = this.msgCount + 1;
+                            this.messages.push({
+                                "id": this.msgCount,
+                                "text": "",
+                                "self": "true",
+                                "time": "",
+                                "class": "tag-badge",
+                                "classIcon": "",
+                                "from": "",
+                                "scenarios": this.scenarios
+                            })
+                            this.hasScenario = true;
+                            localStorage.setItem('messages', JSON.stringify(this.messages));
+                        }
+
+                        localStorage.setItem('scrolled', 'false');
+                    }
+                    else {
+                        this.msgCount = this.msgCount + 1;
+                        this.messages.push({
+                            "id": this.msgCount,
+                            "text": "Sorry we do not have information on this topic at this time",
+                            "self": "true",
+                            "time": "",
+                            "class": "receive",
+                            "classIcon": "receiveIcon",
+                            "from": "LA",
+                            "scenarios": this.scenarios
+                        })
+                        localStorage.setItem('scrolled', 'false');
+                        localStorage.setItem('messages', JSON.stringify(this.messages));
+                        localStorage.setItem('hasData', "false");
+
+                    }
+
+
+                    this._mrs.ngOnInit();
+                },
+                (err: any) => {
+                    this.msgCount = this.msgCount + 1;
+                    this.messages.push({
+                        "id": this.msgCount,
+                        "text": "Sorry we do not have information on this topic at this time",
+                        "self": "true",
+                        "time": "",
+                        "class": "receive",
+                        "classIcon": "receiveIcon",
+                        "from": "LA",
+                        "scenarios": this.scenarios
+                    })
+                    localStorage.setItem('messages', JSON.stringify(this.messages));
+                    console.log('curated error', err);
+
+
+                }
+                );
+        }
+
+    }
+
+    stateOnChange(newValue:string) {
+        
         localStorage.setItem('hasData', "false");
         localStorage.setItem('geoState', newValue);
-
+        
     }
 
     openPop(Url: string) {
@@ -672,12 +806,12 @@ export class ChatComponent implements OnInit {
     }
 
     changeText(event) {
-
+        
         var target = event.target || event.srcElement || event.currentTarget;
-        if (target.innerText == "More..")
+        if (target.innerText=="More..")
             target.innerText = "Hide";
         else
             target.innerText = "More..";
-
+        
     }
 }
