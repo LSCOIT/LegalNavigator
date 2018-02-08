@@ -39,13 +39,14 @@ export class MRSComponent implements OnInit {
     { }
 
     ngOnInit() {
+        
         this.sentence = localStorage.getItem('sentence');
         var i: number = 0;
         var j: number;
         var curResources = JSON.parse(localStorage.getItem('curatesResources'));
         var hasData = localStorage.getItem('hasData');
         this.state = localStorage.getItem('geoState');
-        
+        console.log('hasdata', hasData);
         if (this.state == 'Washington')
         {
             this.collapsed = 'collapse in';

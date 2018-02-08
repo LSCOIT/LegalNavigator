@@ -50,12 +50,15 @@ export class ChatComponent implements OnInit {
     rightmessMessage = "";
     query: string = "";
     noneIntentClick: number = 0;
-    
+    processes: Array<any> = [];
+    showForms: boolean = false;
+    hasData: boolean = true;
+    showProcess: string = "false";
     constructor(private srchServ: SearchService, private router: Router, private route: ActivatedRoute) { }
 
     ngOnInit() {
         localStorage.setItem('scrolled', 'true');
-      
+        this.showForms = false;
         if (localStorage.getItem('geoState') != null)
             this.selectedCountry = localStorage.getItem('geoState');
         else
@@ -91,7 +94,43 @@ export class ChatComponent implements OnInit {
                 })
             localStorage.setItem('resScrolled', 'false');
         }
-      
+        var curResources = JSON.parse(localStorage.getItem('curatesResources'));
+        if (localStorage.getItem('showProcess') == 'true')
+            this.showProcess = 'true';
+        else
+            this.showProcess = 'false';
+        if (curResources!=null && curResources.Processes != null && curResources.Processes.length > 0) {
+            this.processes = [];
+            this.showForms = true;
+            for (var i = 0; i < curResources.Processes.length; i++) {
+                if (curResources.Processes[i].Description != null) {
+                    var item = this.processes.find(x => x.title == curResources.Processes[i].Title);
+                    if (item != null || item != undefined)
+                        //item.desc = item.desc + curResources.Processes[i].Description
+                        item.desc = curResources.Processes[i].ActionJson == null ? item.desc + '<ul><li>' + curResources.Processes[i].Description + '</li></ul>' : item.desc + '<ul><li>' + curResources.Processes[i].Description + '</br>' + curResources.Processes[i].ActionJson + '</li></ul>'
+                    else {
+
+                        this.processes.push({
+                            "id": curResources.Processes[i].stepNumber,
+                            "title": curResources.Processes[i].Title,
+                            //  "desc": curResources.Processes[i].Description + '</br>' + curResources.Processes[i].ActionJson,
+                            "desc": curResources.Processes[i].ActionJson == null ? '<ul><li>' + curResources.Processes[i].Description + '</li></ul>' : '<ul><li>' + curResources.Processes[i].Description + '</br>' + curResources.Processes[i].ActionJson + '</li></ul>',
+                            "class": ""
+                        });
+
+                    }
+
+                }
+            }
+            localStorage.setItem('resScrolled', 'false');
+        }
+
+
+
+
+
+
+
         localStorage.setItem('sentence', "");
         localStorage.setItem('linkName', "");
         this.query = this.replyMessage;
@@ -191,6 +230,8 @@ export class ChatComponent implements OnInit {
 
     reply() {
         localStorage.setItem('showProcess', 'false');
+        this.showProcess = "false";
+        
         this.scenarios = [];
         this.hasScenario = false;
         
@@ -245,7 +286,7 @@ export class ChatComponent implements OnInit {
                 .subscribe((res) => {
 
                     var i = 0;
-                    console.log('res', res);
+                    
                     if (res != null && res.Description != null) {
                         
                         localStorage.setItem('curatesResources', JSON.stringify(res)); //store data
@@ -271,6 +312,7 @@ export class ChatComponent implements OnInit {
                       
 
                         localStorage.setItem('scrolled', 'false');
+                      
                     }
                     else if (res.Description == null && res.Resources == null && res.Scenarios == null && res.Processes == null && res.RelatedIntents == null && res.TopSixIntentsForLowConfidenceIntents!=null) {
                         this.noneIntentClick = 0;
@@ -283,7 +325,7 @@ export class ChatComponent implements OnInit {
                         this.msgCount = this.msgCount + 1;
                         this.messages.push({
                             "id": this.msgCount,
-                            "text": "",
+                            "text": "Which of these topics do you think applies to your situation?",
                             "self": "true",
                             "time": "",
                             "class": "tag-badge",
@@ -354,8 +396,6 @@ export class ChatComponent implements OnInit {
                         localStorage.setItem('hasData', "false");
 
                     }
-
-
                     this._mrs.ngOnInit();
                 },
                 (err: any) => {
@@ -463,6 +503,7 @@ export class ChatComponent implements OnInit {
     showResourcesByScenarioId(scenarioId: string, Description: string) {
         var topScore: Array<any> = [];
         localStorage.setItem('showProcess', 'true');
+        this.showProcess = "true";
         localStorage.setItem('curatesResources', null);
         this.srchServ.getCurScenarios(scenarioId, localStorage.getItem('geoState'))
             .subscribe((res) => {
@@ -520,7 +561,7 @@ export class ChatComponent implements OnInit {
                         this.msgCount = this.msgCount + 1;
                         this.messages.push({
                             "id": this.msgCount,
-                        "text": "Please Scroll Down To See Resources & Forms/Steps",
+                        "text": "Please Scroll Down To See Resources",
                         "self": "true",
                         "time": "",
                         "class": "receive",
@@ -528,7 +569,33 @@ export class ChatComponent implements OnInit {
                         "from": "LA",
                         "scenarios": this.scenarios
                         })
-                    localStorage.setItem('messages', JSON.stringify(this.messages));
+                        localStorage.setItem('messages', JSON.stringify(this.messages));
+
+                        if (res.Processes != null && res.Processes.length > 0) {
+                            this.processes = [];
+                            this.showForms = true;
+                            for (var i = 0; i < res.Processes.length; i++) {
+                                if (res.Processes[i].Description != null) {
+                                    var item = this.processes.find(x => x.title == res.Processes[i].Title);
+                                    if (item != null || item != undefined)
+                                        //item.desc = item.desc + curResources.Processes[i].Description
+                                        item.desc = res.Processes[i].ActionJson == null ? item.desc + '<ul><li>' + res.Processes[i].Description + '</li></ul>' : item.desc + '<ul><li>' + res.Processes[i].Description + '</br>' + res.Processes[i].ActionJson + '</li></ul>'
+                                    else {
+
+                                        this.processes.push({
+                                            "id": res.Processes[i].stepNumber,
+                                            "title": res.Processes[i].Title,
+                                            //  "desc": curResources.Processes[i].Description + '</br>' + curResources.Processes[i].ActionJson,
+                                            "desc": res.Processes[i].ActionJson == null ? '<ul><li>' + res.Processes[i].Description + '</li></ul>' : '<ul><li>' + res.Processes[i].Description + '</br>' + res.Processes[i].ActionJson + '</li></ul>',
+                                            "class": ""
+                                        });
+
+                                    }
+
+                                }
+                            }
+                            localStorage.setItem('resScrolled', 'false');
+                        }
                 }
                 else {
                     localStorage.setItem('hasData', "false");
@@ -658,10 +725,14 @@ export class ChatComponent implements OnInit {
 
     }
 
-    showResourcesByTopIntent(query: string) {
-        console.log('by intent', query);
-        console.log('intent click', this.noneIntentClick);
-        console.log('topSixIntents', JSON.parse(localStorage.getItem('topSixIntents')));
+    showResourcesByTopIntent(query: string, event: any) {
+
+        if (query == "None") {
+            var target = event.target || event.srcElement || event.currentTarget;
+            target.style.pointerEvents = "none";
+            target.style.opacity = "0.6";
+        }
+       
 
         this.noneIntentClick = this.noneIntentClick + 1;
         if (query == "None" && this.noneIntentClick<2) {
@@ -672,7 +743,7 @@ export class ChatComponent implements OnInit {
             this.msgCount = this.msgCount + 1;
             this.messages.push({
                 "id": this.msgCount,
-                "text": "",
+                "text": "Do any of these describe your problem?",
                 "self": "true",
                 "time": "",
                 "class": "tag-badge",
@@ -805,7 +876,7 @@ export class ChatComponent implements OnInit {
         window.open(this.location, '_blank');
     }
 
-    changeText(event) {
+    changeText(event:any) {
         
         var target = event.target || event.srcElement || event.currentTarget;
         if (target.innerText=="More..")
