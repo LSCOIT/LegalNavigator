@@ -31,7 +31,7 @@ namespace ContentsExtractionApi.Controllers
         /// </summary>
         private const decimal treshold = 0.92m;
 
-        private ILogger logger;
+        
 
         /// <summary>
         /// ExtractCuratedContentsController
@@ -40,11 +40,6 @@ namespace ContentsExtractionApi.Controllers
         public ExtractCuratedContentsController(IContentDataRepository crowledContentDataRepository)
         {
             this.crowledContentDataRepository = crowledContentDataRepository;
-            logger = new LoggerConfiguration()
-                     .WriteTo.Console()
-                     .CreateLogger();
-
-
         }
 
         /// <summary>
@@ -70,11 +65,9 @@ namespace ContentsExtractionApi.Controllers
             CuratedResult.SelectedState = state;
            // try
            // {
-                logger.Information("scenario id = {0} , state = {1}", scenarioId, state);
-                var stateShortName = crowledContentDataRepository.GetStateByName(state)?.ShortName;
+                  var stateShortName = crowledContentDataRepository.GetStateByName(state)?.ShortName;
 
-                logger.Information("short name from Db = {0} ", stateShortName);
-                var lowConfidenceIntents=
+                 
                 CuratedResult = crowledContentDataRepository.GetCuratedContent(scenarioId, StateToConnectionStringMapper.ToConnectionString(prefix,stateShortName));
                 CuratedResult.SelectedState = stateShortName;
                 if (CuratedResult != null && CuratedResult.CurrentIntent != null) {
