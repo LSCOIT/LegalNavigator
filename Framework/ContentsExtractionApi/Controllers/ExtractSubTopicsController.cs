@@ -54,8 +54,7 @@ namespace ContentsExtractionApi.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="sentenceInput"></param>
-        /// <param name="sentence"></param>
+        /// <param name="sentenceInput"></param>      
         /// <returns></returns>
         // POST api/<controller>
         public List<RelevantTopic> Post([FromBody]SentenceInput sentenceInput)
@@ -63,15 +62,17 @@ namespace ContentsExtractionApi.Controllers
             var result = new List<RelevantTopic>();
             try
             {
-                result = crowledContentDataRepository.GetRelevantTopicsSentenceAsPivot(sentenceInput.Sentence, StateToConnectionStringMapper.ToConnectionString(prefix, sentenceInput.State));
+                var stateShortName = crowledContentDataRepository.GetStateByName(sentenceInput.State)?.ShortName;
+                result = crowledContentDataRepository.GetRelevantTopicsSentenceAsPivot(sentenceInput.Sentence, StateToConnectionStringMapper.ToConnectionString(prefix, stateShortName));
                 if(result == null)
                 {
                     var extractedInput=TextExtractionModule.ExtractTextUsingLinguisticApi(sentenceInput.Sentence);
                     if (extractedInput != null)
                     {
-                        for (int i = 0; i < extractedInput.Capacity; i++)
+                         for (int i = 0; i < extractedInput.Capacity; i++)
                         {
-                            result = crowledContentDataRepository.GetRelevantTopicsDataAsPivot(extractedInput[i], StateToConnectionStringMapper.ToConnectionString(prefix, sentenceInput.State));
+
+                            result = crowledContentDataRepository.GetRelevantTopicsDataAsPivot(extractedInput[i], StateToConnectionStringMapper.ToConnectionString(prefix, stateShortName));
                             if(result!= null)
                             {
                                 return result;

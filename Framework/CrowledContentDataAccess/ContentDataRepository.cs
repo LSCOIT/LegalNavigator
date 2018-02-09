@@ -227,7 +227,7 @@ namespace ContentDataAccess
                     var intentToNSMICode = curatedCntx.IntentToNSMICodes.FirstOrDefault(intentToNsmi => intentToNsmi.Intent.ToLower().Contains(intent.ToLower()) || intent.ToLower().Contains(intentToNsmi.Intent.ToLower()));
 
                     var LawCategory = intentToNSMICode?.NSMICode != null ? curatedCntx.LawCategories.OrderBy(lawCat=> lawCat.LCID).FirstOrDefault(lawCat => lawCat.NSMICode==intentToNSMICode.NSMICode) : null;
-                    var resource = LawCategory != null ? curatedCntx.Resources.Where(res => res.LawCategory.LCID == LawCategory.LCID).Select(res=> new CrawledContentDataAccess.Resource { Action= res.Action, ResourceId=res.ResourceId, ResourceJson=res.ResourceJson, ResourceType=res.ResourceType, Title=res.Title}) : null;
+                    var resource = LawCategory != null ? curatedCntx.Resources.Where(res => res.LawCategory.LCID == LawCategory.LCID && res.ResourceType != ResourceType.Related.ToString()).Select(res=> new CrawledContentDataAccess.Resource { Action= res.Action, ResourceId=res.ResourceId, ResourceJson=res.ResourceJson, ResourceType=res.ResourceType, Title=res.Title}) : null;
                     var processes = LawCategory != null ? curatedCntx.Processes.Where(prcs => prcs.LawCategory.LCID == LawCategory.LCID).OrderBy(prc=>prc.Id).Select(prc =>  new CrawledContentDataAccess.Process { ActionJson = prc.ActionJson, Description = prc.Description, Id = prc.Id, ParentId = prc.ParentId, stepType = prc.stepType, Title = prc.Title }) : null;
                     var childNodes = LawCategory != null ? curatedCntx.LawCategoryParentChildren.Where(lawCatPC => lawCatPC.ParentLawCategory != null && lawCatPC.ParentLawCategory.LCID == LawCategory.LCID).Select(lawCatPC => lawCatPC.ChildLawCategory) : null;
                     var siblings = LawCategory != null ? curatedCntx.LawCategorySiblings.Where(lawCatSib => lawCatSib.LawCategory != null && lawCatSib.LawCategory.LCID == LawCategory.LCID).Select(lawCatSib => lawCatSib.SiblingLawCategory) : null;
@@ -253,7 +253,7 @@ namespace ContentDataAccess
                             
                         }
                     }
-                    var nsmiResult = new CuratedContent { Description = LawCategory?.Description, Resources = resource?.ToList(), Scenarios= scenarios?.ToList(),Processes = processList, RelatedIntents = relatedIntents };
+                    var nsmiResult = new CuratedContent { Description = LawCategory?.Description,StateDeviation=LawCategory?.StateDeviation, Resources = resource?.ToList(), Scenarios= scenarios?.ToList(),Processes = processList, RelatedIntents = relatedIntents };
 
                     return nsmiResult;
                 }
@@ -359,17 +359,18 @@ namespace ContentDataAccess
                     var scenarioObj = curatedCntx.Scenarios.FirstOrDefault(scenario => scenario.ScenarioId == scenarioId);
 
                     var LawCategory = scenarioObj != null ? curatedCntx.LawCategories.FirstOrDefault(lawCat => lawCat.LCID == scenarioObj.LC_ID) : null;
-                    var resources = LawCategory != null ? curatedCntx.Resources.Where(res => res.LawCategory.LCID == LawCategory.LCID && res.ResourceType == ResourceType.Related.ToString() ).OrderBy(res=> res.ResourceId).Select(res=> new CrawledContentDataAccess.Resource { Action=res.Action, ResourceId=res.ResourceId, ResourceJson = res.ResourceJson, ResourceType = res.ResourceType , Title = res.Title }) : null;
+                    var resources = LawCategory != null ? curatedCntx.Resources.Where(res => res.LawCategory.LCID == LawCategory.LCID && res.ResourceType == ResourceType.Related.ToString() && res.Action != ResourceType.Related.ToString()).OrderBy(res=> res.ResourceId).Select(res=> new CrawledContentDataAccess.Resource { Action=res.Action, ResourceId=res.ResourceId, ResourceJson = res.ResourceJson, ResourceType = res.ResourceType , Title = res.Title }) : null;
                     var processes = LawCategory != null ? curatedCntx.Processes.Where(prcs => prcs.LawCategory.LCID == LawCategory.LCID).OrderBy(prc => prc.Id).Select(prc=> new CrawledContentDataAccess.Process { ActionJson=prc.ActionJson, Description= prc.Description, Id= prc.Id, ParentId= prc.ParentId, stepType = prc.stepType, Title = prc.Title }) : null;
                     var childNodes = LawCategory != null ? curatedCntx.LawCategoryParentChildren.Where(lawCatPC => lawCatPC.ParentLawCategory != null && lawCatPC.ParentLawCategory.LCID == LawCategory.LCID).Select(lawCatPC => lawCatPC.ChildLawCategory) : null;
                     var siblings = LawCategory != null ? curatedCntx.LawCategorySiblings.Where(lawCatSib => lawCatSib.LawCategory != null && lawCatSib.LawCategory.LCID == LawCategory.LCID).Select(lawCatSib => lawCatSib.SiblingLawCategory) : null;
                     var relatedCategoriesNSMICode = childNodes.Union(siblings)?.Select(relCat => relCat.NSMICode)?.ToList();
                     var relatedIntents = relatedCategoriesNSMICode != null ? curatedCntx.IntentToNSMICodes.Where(intentToNsmi => relatedCategoriesNSMICode.Contains(intentToNsmi.NSMICode)).Select(intentToNsmi => intentToNsmi.Intent)?.ToList() : null;
-                    // var scenarios = LawCategory != null ? curatedCntx.Scenarios.Where(scen => scen.LawCategory != null && scen.LawCategory.LCID == LawCategory.LCID).Select(scn=> new CrawledContentDataAccess.Scenario { Description = scn.Description, LC_ID = scn.LC_ID, ScenarioId= scn.ScenarioId }) : null;
+                    // var scenarios = LawCategory != null ? curatedCntx.Scenarios.Where(scen => scen.LawCategory != null && scen.LawCategory.LCID == LawCategory.LCID).Select(scn=>   new CrawledContentDataAccess.Scenario { Description = scn.Description, LC_ID = scn.LC_ID, ScenarioId= scn.ScenarioId }) : null;
                     // var scenariosIds = LawCategory != null ? curatedCntx.LawCategoryToScenarios.Where(lctoscen => lctoscen.LCID == LawCategory.LCID).Select(lctoscen => lctoscen.ScenarioId)?.ToList() : null;
                     // var scenarios = scenariosIds != null && scenariosIds.Count > 0 ? curatedCntx.Scenarios.Where(scen => scenariosIds.Contains(scen.ScenarioId)).Select(scn => new CrawledContentDataAccess.Scenario { Description = scn.Description, LC_ID = scn.LC_ID, ScenarioId = scn.ScenarioId }) : null;
                     var scenarios = new List<CrawledContentDataAccess.Scenario>();// Since we are deriving curation  for a single scenario , we don't care about related scenarios
                     //List<CrawledContentDataAccess.Process> processList = null;
+                    var currentIntent = LawCategory != null ? curatedCntx.IntentToNSMICodes.FirstOrDefault(intentToNsmi => LawCategory.NSMICode == intentToNsmi.NSMICode):null;
                     var processList = processes?.ToList();
                     if (processList != null)
                     {
@@ -392,11 +393,12 @@ namespace ContentDataAccess
                     { 
                         ScenarioId= scenarioObj?.ScenarioId,
                         Description = LawCategory?.Description,
+                        StateDeviation = LawCategory?.StateDeviation,
                         RelatedResources = resources?.ToList(),                         
-                        Outcome= scenarioObj?.Outcome,
-                        StateDeviation = scenarioObj?.StateDeviation,
+                        Outcome= scenarioObj?.Outcome,                       
                         Processes = processList,
-                        RelatedIntents = relatedIntents
+                        RelatedIntents = relatedIntents,
+                        CurrentIntent = currentIntent?.Intent
                     };
 
                     return nsmiResult;
@@ -404,6 +406,29 @@ namespace ContentDataAccess
                 catch (Exception ex) { Console.WriteLine(ex.Message); }
             }
             return null;
+        }
+
+        public void Save(PlatformCoreSettingContents.State state)
+        {
+            using (var cntx = iCrowledContentDataContextFactory.GetPlatformCoreDataContext())
+            {
+
+                cntx.States.Add(state);
+                cntx.SaveChanges();
+            }
+        }
+
+        public CrawledContentDataAccess.State GetStateByName(string stateName)
+        {
+            using (var cntx = iCrowledContentDataContextFactory.GetPlatformCoreDataContext())
+            {            
+                var result= cntx.States.FirstOrDefault(state => string.Compare(state.Name, stateName, true) == 0 || string.Compare(state.ShortName, stateName, true) == 0);
+                if(result != null)
+                {
+                    return new CrawledContentDataAccess.State { Name = result.Name, ShortName = result.ShortName };
+                }
+                return null;
+            }
         }
     }
 }

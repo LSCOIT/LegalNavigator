@@ -179,14 +179,18 @@ namespace CrawledContentsBusinessLayer
                 JObject jObject = JObject.Parse(result);
                 jObject.Children();
                 JToken jTopScoringIntent = jObject["topScoringIntent"];
-                var TopTwoIntentsOtherthanTopScoringIntent = jObject["intents"].Skip(1).Take(2).Select(x => x["intent"]).ToArray();
+                var TopTwoIntentsOtherthanTopScoringIntent = jObject["intents"].Skip(1).Take(6).Select(x => x["intent"]).ToArray();
                 return new IntentWithScore
                 {
                     IsSuccessful =true,
                     TopScoringIntent = (string)jTopScoringIntent["intent"],
                     Score = (decimal)jTopScoringIntent["score"],
-                    TopTwoIntents =new [] { ((JValue)TopTwoIntentsOtherthanTopScoringIntent[0]).Value.ToString() ,
-                                            ((JValue)TopTwoIntentsOtherthanTopScoringIntent[1]).Value.ToString()
+                    TopSixIntents =new [] { ((JValue)TopTwoIntentsOtherthanTopScoringIntent[0]).Value.ToString() ,
+                                            ((JValue)TopTwoIntentsOtherthanTopScoringIntent[1]).Value.ToString() ,
+                                            ((JValue)TopTwoIntentsOtherthanTopScoringIntent[2]).Value.ToString() ,"None of these",
+                                            ((JValue)TopTwoIntentsOtherthanTopScoringIntent[3]).Value.ToString() ,                                           
+                                            ((JValue)TopTwoIntentsOtherthanTopScoringIntent[4]).Value.ToString() ,
+                                            ((JValue)TopTwoIntentsOtherthanTopScoringIntent[5]).Value.ToString(),"None of these"
                                           }
                     
                 };
@@ -266,7 +270,7 @@ namespace CrawledContentsBusinessLayer
         /// <summary>
         ///  Top two intents other than the top Scoring intent
         /// </summary>
-        public string[] TopTwoIntents { get; set; }
+        public string[] TopSixIntents { get; set; }
 
         /// <summary>
         /// Error message in case error happens before completion of result parsing

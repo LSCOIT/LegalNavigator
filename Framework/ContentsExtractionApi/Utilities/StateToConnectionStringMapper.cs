@@ -20,7 +20,11 @@ namespace ContentsExtractionApi.Utilities
         public static string ToConnectionString(string prefix, string state)
         {
             //Todo: adjust the suffix later
-            return string.Format("{0}_{1}", prefix, state.Substring(0,2).ToUpper());
+            if (!string.IsNullOrEmpty(state))
+            {
+                return string.Format("{0}_{1}", prefix, state.Substring(0, 2).ToUpper());
+            }
+            return null;
         }
     }
 }
