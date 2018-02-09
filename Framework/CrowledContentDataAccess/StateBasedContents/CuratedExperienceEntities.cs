@@ -16,9 +16,10 @@ namespace CrawledContentDataAccess.StateBasedContents
         public int LCID { get; set; }
         public string NSMICode { get; set; }
         public string Description { get; set; }
+        public string StateDeviation { get; set; }
         //public LCType LCType { get;set; }
         //public LawCategory[] RelatedIntents { get; set; }
-       
+
     }
 
     public class LawCategorySibling
@@ -115,8 +116,7 @@ namespace CrawledContentDataAccess.StateBasedContents
         public int ScenarioId { get; set; }
         //Let the code drive this column
         public int LC_ID { get; set; }        
-        public string Description { get; set; }
-        public string StateDeviation { get; set; }
+        public string Description { get; set; }       
         public string Outcome { get; set; }
         //public virtual LawCategory LawCategory { get; set; }
     }

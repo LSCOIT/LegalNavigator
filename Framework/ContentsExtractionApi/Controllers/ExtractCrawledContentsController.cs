@@ -47,6 +47,7 @@ namespace ContentsExtractionApi.Controllers
         // GET api/ExtractContents      
      
         public IEnumerable<Topic> Get(string state)
+        //public string Get(string state)
         {
             //try
             //{
@@ -65,7 +66,16 @@ namespace ContentsExtractionApi.Controllers
             //{
             //    return new string[] { e.Message, e.StackTrace };
             //}
-            return crowledContentDataRepository.GetTopics(StateToConnectionStringMapper.ToConnectionString(prefix, state));
+            try
+            {
+                var stateShortName = crowledContentDataRepository.GetStateByName(state)?.ShortName;
+                // return stateShortName;
+                return crowledContentDataRepository.GetTopics(StateToConnectionStringMapper.ToConnectionString(prefix, stateShortName));
+            }
+            catch(Exception e)
+            {
+                throw;
+            }
         }
         /// <summary>
         /// Gets the first topic
@@ -108,8 +118,9 @@ namespace ContentsExtractionApi.Controllers
                         
                       }
 
-                    }  
-                    var result=crowledContentDataRepository.GetRelevantContentTopDown(topScorongIntent, contentExtractionRequest.Title, StateToConnectionStringMapper.ToConnectionString(prefix, contentExtractionRequest.State));
+                    }
+                    var stateShortName = crowledContentDataRepository.GetStateByName(contentExtractionRequest.State)?.ShortName;
+                    var result=crowledContentDataRepository.GetRelevantContentTopDown(topScorongIntent, contentExtractionRequest.Title, StateToConnectionStringMapper.ToConnectionString(prefix, stateShortName));
                     if (string.IsNullOrEmpty(result))
                     {
                         // var phrases = StopWordUtilities.RemoveStopWordsFromSentence(contentExtractionRequest.Title?.ToLower());
@@ -117,7 +128,7 @@ namespace ContentsExtractionApi.Controllers
                         StringBuilder sb = new StringBuilder();
                         foreach (var phrase in phrases)
                         {
-                            var result_item = crowledContentDataRepository.GetRelevantContentTopDown(topScorongIntent, phrase, StateToConnectionStringMapper.ToConnectionString(prefix, contentExtractionRequest.State));
+                            var result_item = crowledContentDataRepository.GetRelevantContentTopDown(topScorongIntent, phrase, StateToConnectionStringMapper.ToConnectionString(prefix, stateShortName));
                             sb.Append(result_item + "<br/>");
                         }
                         result = sb.ToString();
@@ -136,23 +147,22 @@ namespace ContentsExtractionApi.Controllers
         /// </summary>
         /// <param name="id"></param>
         // DELETE api/ExtractContents/5
-        public void Delete(int id)
+        public void Delete(int id, string state)
         {
             try
             {
                 var statesToPersist =new [] { "AL", "WA" };
-                var stateUrls = new[] { @"https://alaskalawhelp.org", @"http://www.washingtonlawhelp.org" };
+                var stateUrls = new[] { @"https://alaskalawhelp.org", @"http://www.washingtonlawhelp.org" };//get state url from DB by state
                 var stateurlIndex = 0;
-                foreach (var stateToPersist in statesToPersist)
-                {
+               
                     WebCrawler wc = new WebCrawler();
                     WebCrawler.s_statelhUrlBase = stateUrls[stateurlIndex++];
                     var topics = wc.GetWebPageList();
-                    topics.ForEach(topic => crowledContentDataRepository.Save(topic, StateToConnectionStringMapper.ToConnectionString(prefix, stateToPersist)));
+                var stateShortName = crowledContentDataRepository.GetStateByName(state)?.ShortName;
+                topics.ForEach(topic => crowledContentDataRepository.Save(topic, StateToConnectionStringMapper.ToConnectionString(prefix, stateShortName)));
 
 
 
-                }
               /*WebCrawler wc = new WebCrawler();
               var topics = wc.GetWebPageList();
               topics.ForEach(topic => crowledContentDataRepository.Save(topic,StateToConnectionStringMapper.ToConnectionString("AL")));

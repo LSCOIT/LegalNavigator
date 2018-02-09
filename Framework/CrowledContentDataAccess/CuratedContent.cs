@@ -9,11 +9,12 @@ namespace CrawledContentDataAccess
     public class CuratedContent
     {
         public string Description { get; set; }
+        public string StateDeviation { get; set; }
         public List<Resource> Resources { get; set; }
         public List<Scenario> Scenarios { get; set; }
         public List<Process> Processes { get; set; }
         public List<string> RelatedIntents { get; set; }
-        public string[] TopTwoIntentsForLowConfidenceIntents { get; set; }
+        public string[] TopSixIntentsForLowConfidenceIntents { get; set; }
     }
     public class CuratedContentForAScenario
     {
@@ -23,7 +24,10 @@ namespace CrawledContentDataAccess
         public string Outcome { get; set; }
         public List<Resource> RelatedResources { get; set; }       
         public List<Process> Processes { get; set; }
-        public List<string> RelatedIntents { get; set; }        
+        public string CurrentIntent { get; set; }
+        public List<string> RelatedIntents { get; set; }
+        public string[] TopTwoIntentsForLowConfidenceIntents { get; set; }
+        public string SelectedState { get; set; }
     }
     public class Resource
     {        
@@ -54,5 +58,12 @@ namespace CrawledContentDataAccess
 
     }
 
-   
+    public class State
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string ShortName { get; set; }
+    }
+
+
 }
