@@ -727,7 +727,7 @@ export class ChatComponent implements OnInit {
 
     showResourcesByTopIntent(query: string, event: any) {
 
-        if (query == "None") {
+        if (query == "None of these") {
             var target = event.target || event.srcElement || event.currentTarget;
             target.style.pointerEvents = "none";
             target.style.opacity = "0.6";
@@ -735,7 +735,7 @@ export class ChatComponent implements OnInit {
        
 
         this.noneIntentClick = this.noneIntentClick + 1;
-        if (query == "None" && this.noneIntentClick<2) {
+        if (query == "None of these" && this.noneIntentClick<2) {
             var topSix = JSON.parse(localStorage.getItem('topSixIntents'));
             var topFour: Array<any> = [];
             for (var k = 4; k < 8; k++)
@@ -755,7 +755,7 @@ export class ChatComponent implements OnInit {
             localStorage.setItem('messages', JSON.stringify(this.messages));
             localStorage.setItem('scrolled', 'false');
         }
-        else if (query == "None" && this.noneIntentClick >= 2) {
+        else if (query == "None of these" && this.noneIntentClick >= 2) {
             this.msgCount = this.msgCount + 1;
             this.messages.push({
                 "id": this.msgCount,
