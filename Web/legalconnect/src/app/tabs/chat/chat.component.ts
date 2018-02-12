@@ -54,6 +54,7 @@ export class ChatComponent implements OnInit {
     showForms: boolean = false;
     hasData: boolean = true;
     showProcess: string = "false";
+    showWashingData: boolean=false;
     constructor(private srchServ: SearchService, private router: Router, private route: ActivatedRoute) { }
 
     ngOnInit() {
@@ -125,7 +126,10 @@ export class ChatComponent implements OnInit {
             localStorage.setItem('resScrolled', 'false');
         }
 
-
+        if (localStorage.getItem('showWashingData') === "true")
+            this.showWashingData = true;
+        else
+            this.showWashingData = false;
 
 
 
@@ -284,7 +288,8 @@ export class ChatComponent implements OnInit {
         if (localStorage.getItem('geoState') != 'Washington') {
             this.srchServ.getCuratedContents(query, localStorage.getItem('geoState'))
                 .subscribe((res) => {
-
+                    this.showWashingData = false;
+                    localStorage.setItem('showWashingData', "false");
                     var i = 0;
                     
                     if (res != null && res.Description != null) {
@@ -407,6 +412,8 @@ export class ChatComponent implements OnInit {
                 );
         }
         else if (localStorage.getItem('geoState') == 'Washington') {
+            this.showWashingData = true;
+            localStorage.setItem('showWashingData', "true");
             localStorage.setItem('hasData', "true");
             this.srchServ.getChatMessages(query, this.lang, this.selectedCountry == " " ? localStorage.getItem('geoState') : this.selectedCountry)
                 .subscribe((res) => {
@@ -428,6 +435,8 @@ export class ChatComponent implements OnInit {
                         });
                         localStorage.setItem('messages', JSON.stringify(this.messages));
                         this.showMessage = false;
+                        this.showProcess = 'true';
+                        localStorage.setItem('showProcess', 'true');
                     }
                     else {
                         this.msgCount = this.msgCount + 1;
@@ -523,8 +532,6 @@ export class ChatComponent implements OnInit {
                 if (res != null && res.Description != null) {
                     localStorage.setItem('curatesResources', JSON.stringify(res)); //store data
                     localStorage.setItem('hasData', "true");
-                    console.log('sen by id', res);
-                   
                   
                     this.msgCount = this.msgCount + 1;
                     this.messages.push({
@@ -574,6 +581,9 @@ export class ChatComponent implements OnInit {
                         if (res.Processes != null && res.Processes.length > 0) {
                             this.processes = [];
                             this.showForms = true;
+                            this.showWashingData = false;
+                            localStorage.setItem('showWashingData', "false");
+
                             for (var i = 0; i < res.Processes.length; i++) {
                                 if (res.Processes[i].Description != null) {
                                     var item = this.processes.find(x => x.title == res.Processes[i].Title);
@@ -862,7 +872,8 @@ export class ChatComponent implements OnInit {
 
     stateOnChange(newValue:string) {
         
-        localStorage.setItem('hasData', "false");
+        localStorage.setItem('hasData', "true");
+        
         localStorage.setItem('geoState', newValue);
         
     }
