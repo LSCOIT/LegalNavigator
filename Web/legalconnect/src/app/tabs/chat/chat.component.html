@@ -183,28 +183,32 @@
                             <div class="panel panel-default no-background no-border m-0 p-0">
 
                                 <div class="col-xs-12 left-chat-box" id="chat_resources" (scroll)="onResScroll()">
-                                    <!--<div *ngFor="let rightbox of rightboxes" [class]="rightbox.self">
-                                        <div class="box_sent2">
+                                    <div *ngIf="showWashingData===true">
+                                        <div *ngFor="let rightbox of rightboxes" [class]="rightbox.self">
+                                            <div class="box_sent2">
 
-                                            <div class="box_sent_sub">
+                                                <div class="box_sent_sub">
 
-                                                <a href="#" data-toggle="modal" data-target="#myModal-chat" (click)="openPop(rightbox.url)">
-                                                    {{rightbox.text}}
-                                                </a>
+                                                    <a href="#" data-toggle="modal" data-target="#myModal-chat" (click)="openPop(rightbox.url)">
+                                                        {{rightbox.text}}
+                                                    </a>
 
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>-->
-                                    <div class="m-top-85" id="forms_steps" *ngIf="showForms===true && showProcess==='true' && page!='chat'">
+                                    </div>
+
+
+                                    <div class="m-top-85" id="forms_steps" *ngIf="showForms===true && showProcess==='true' && page!='chat' && showWashingData===false">
                                         <div class="row">
                                             <div class="col-xs-12">
                                                 <div class="panel-group" id="accordion">
                                                     <div class="panel panel-default forms_grp">
                                                         <div class="panel-heading forms_heading" id="timeline">
                                                             <h1 class="panel-title forms" style="font-size:30px">
-                                                              
-                                                                    FORMS/STEPS
-                                                              
+
+                                                                FORMS/STEPS
+
 
                                                             </h1>
                                                         </div>
@@ -212,7 +216,7 @@
                                                             <div class="panel-body forms_body">
                                                                 <section class="resources_content timeline-padding no-padding" style="margin-left:-25px">
 
-                                                                    
+
                                                                     <div class="container-fluid bg-light-grey m-bottom-30">
                                                                         <div class="container">
                                                                             <div class="row save-progress">
@@ -223,8 +227,8 @@
                                                                         </div>
                                                                     </div>
 
-                                                                    <div  style="overflow-x:hidden;word-wrap:break-word">
-                                                                        <div class="container">
+                                                                    <div style="overflow-x:hidden;word-wrap:break-word">
+                                                                        <div class="container-fluid">
                                                                             <div class="timeline m-left-30">
                                                                                 <!-- Line component -->
                                                                                 <div class="line text-muted"></div>
