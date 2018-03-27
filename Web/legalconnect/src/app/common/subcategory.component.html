@@ -1,0 +1,8 @@
+﻿<div class="row m-top-85" id="subCat" *ngIf="showSubCat===true">
+    <h1>Other Related Topics</h1>
+    <div class="row m-top-46">
+        <div class="col-xs-12 tagBadges">
+            <span class="tag-badge" *ngFor="let link of SubCat" [ngClass]="{'activeBadge': aciveBdg==link.name}" id={{link.name}} (click)="displayText(link.name)">{{link.name}}</span>
+        </div>
+    </div>
+</div>

@@ -1,7 +1,7 @@
 ﻿import { ModuleWithProviders  } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { SearchComponent } from './search/search.component';
-import { DemoComponent } from './demo/demo.component';
+import { DemoComponent } from './search/demo.component';
 import { AppComponent } from './app.component';
 import { GeneralComponent } from './tabs/general/general.component';
 import { GuidedComponent } from './tabs/guided/guided.component';
@@ -11,7 +11,7 @@ import { TLComponent } from './tabs/timeline/timeline.component';
 
 const routes: Routes = [
     { path: 'search', component: SearchComponent },
-    { path: 'demo', component: DemoComponent },
+    //{ path: 'demo', component: DemoComponent },
     { path: 'general', component: GeneralComponent },
     { path: 'guided', component: GuidedComponent },
     { path: 'general/:id', component: GeneralComponent },

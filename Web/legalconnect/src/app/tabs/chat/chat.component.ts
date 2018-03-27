@@ -2,15 +2,18 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { SearchService } from '../../services/search.service';
 import {MRSComponent} from '../../common/mrs.component';
+import {FormsComponent} from '../../common/formsandsteps.component';
 
 @Component({
     selector: 'chat',
+    //templateUrl: './chatNew.component.html'
     templateUrl: './chat.component.html'
          
 })
 export class ChatComponent implements OnInit {
-    @ViewChild(MRSComponent) private _mrs:
-    MRSComponent;
+    @ViewChild(MRSComponent) private _mrs: MRSComponent;
+    @ViewChild(FormsComponent) private _frms: FormsComponent;
+    
     files: FileList;
     geoCountry: any;
     lang: string = "en";
@@ -19,7 +22,7 @@ export class ChatComponent implements OnInit {
     showMessage: boolean = false;
     sub: any;
     returnFlag: string = 'false';
-    location: string;
+    
     obj: any;
     scenarios: Array<any> = [];
     hasScenario: boolean = false;
@@ -50,12 +53,17 @@ export class ChatComponent implements OnInit {
     rightmessMessage = "";
     query: string = "";
     noneIntentClick: number = 0;
-    
+    processes: Array<any> = [];
+    showForms: boolean = false;
+    hasData: boolean = true;
+    showProcess: string = "false";
+    showWashingData: boolean=false;
     constructor(private srchServ: SearchService, private router: Router, private route: ActivatedRoute) { }
-
+    
     ngOnInit() {
         localStorage.setItem('scrolled', 'true');
-      
+        localStorage.setItem("play", "false");
+        this.showForms = false;
         if (localStorage.getItem('geoState') != null)
             this.selectedCountry = localStorage.getItem('geoState');
         else
@@ -80,18 +88,58 @@ export class ChatComponent implements OnInit {
                 }
             localStorage.setItem('scrolled', 'false');
         }
-        var ref = JSON.parse(localStorage.getItem('references'));
+        //var ref = JSON.parse(localStorage.getItem('references'));
         
-        if (ref != null) {
-            for (var r = 0; r < ref.length; r++)
-                this.rightboxes.push({
-                    "url": ref[r].url,
-                    "text": ref[r].text,
-                    "self": true
-                })
+        //if (ref != null) {
+        //    for (var r = 0; r < ref.length; r++)
+        //        this.rightboxes.push({
+        //            "url": ref[r].url,
+        //            "text": ref[r].text,
+        //            "self": true
+        //        })
+            
+        //}
+        var curResources = JSON.parse(localStorage.getItem('curatesResources'));
+        if (localStorage.getItem('showProcess') == 'true')
+            this.showProcess = 'true';
+        else
+            this.showProcess = 'false';
+        if (curResources!=null && curResources.Processes != null && curResources.Processes.length > 0) {
+            this.processes = [];
+            this.showForms = true;
+            for (var i = 0; i < curResources.Processes.length; i++) {
+                if (curResources.Processes[i].Description != null) {
+                    var item = this.processes.find(x => x.title == curResources.Processes[i].Title);
+                    if (item != null || item != undefined)
+                        //item.desc = item.desc + curResources.Processes[i].Description
+                        item.desc = curResources.Processes[i].ActionJson == null ? item.desc + '<ul><li>' + curResources.Processes[i].Description + '</li></ul>' : item.desc + '<ul><li>' + curResources.Processes[i].Description + '</br>' + curResources.Processes[i].ActionJson + '</li></ul>'
+                    else {
+
+                        this.processes.push({
+                            "id": curResources.Processes[i].stepNumber,
+                            "title": curResources.Processes[i].Title,
+                            //  "desc": curResources.Processes[i].Description + '</br>' + curResources.Processes[i].ActionJson,
+                            "desc": curResources.Processes[i].ActionJson == null ? '<ul><li>' + curResources.Processes[i].Description + '</li></ul>' : '<ul><li>' + curResources.Processes[i].Description + '</br>' + curResources.Processes[i].ActionJson + '</li></ul>',
+                            "class": ""
+                        });
+
+                    }
+
+                }
+            }
             localStorage.setItem('resScrolled', 'false');
         }
-      
+
+        if (localStorage.getItem('showWashingData') === "true") {
+            this.showWashingData = true;
+           // localStorage.setItem('resScrolled', 'false');
+        }
+        else {
+            this.showWashingData = false;
+            localStorage.setItem('resScrolled', 'true');
+        }
+
+
         localStorage.setItem('sentence', "");
         localStorage.setItem('linkName', "");
         this.query = this.replyMessage;
@@ -190,7 +238,11 @@ export class ChatComponent implements OnInit {
     }
 
     reply() {
+
+        localStorage.setItem("chatInit", "false");
         localStorage.setItem('showProcess', 'false');
+        this.showProcess = "false";
+        
         this.scenarios = [];
         this.hasScenario = false;
         
@@ -216,109 +268,160 @@ export class ChatComponent implements OnInit {
         this.showMessage = true;
         if (this.selectedCountry!==" ")
         localStorage.setItem('geoState', this.selectedCountry);
-              
+        localStorage.setItem('sentence', query);
                 
-                this.srchServ.getChatReferences(query, this.selectedCountry == " " ? localStorage.getItem('geoState') : this.selectedCountry).subscribe((res) => {
+       //this.srchServ.getChatReferences(query, this.selectedCountry == " " ? localStorage.getItem('geoState') : this.selectedCountry).subscribe((res) => {
                    
-                    if (res != null && res.length > 0) {
-                        this.rightboxes = [];
-                        for (var i = 0; i < res.length; i++) {
-                            this.rightboxes.push({
-                                "url": res[i].Url,
-                                "text": res[i].Name,
-                                "self": true
-                            })
-                        }
-                        localStorage.setItem('references', JSON.stringify(this.rightboxes));
-                        localStorage.setItem('resScrolled', 'false');
-                    }
-                });
-              this.isVisible = true;
+       //             if (res != null && res.length > 0) {
+       //                 this.rightboxes = [];
+       //                 for (var i = 0; i < res.length; i++) {
+       //                     this.rightboxes.push({
+       //                         "url": res[i].Url,
+       //                         "text": res[i].Name,
+       //                         "self": true
+       //                     })
+       //                 }
+       //                 localStorage.setItem('references', JSON.stringify(this.rightboxes));
+       //                 localStorage.setItem('resScrolled', 'false');
+       //             }
+       //         });
+       this.isVisible = true;
    
         this.replyMessage = "";
-      
         
-        localStorage.setItem('sentence', query);
 
-        if (localStorage.getItem('geoState') != 'Washington') {
-            this.srchServ.getCuratedContents(query, localStorage.getItem('geoState'))
-                .subscribe((res) => {
+        this.srchServ.getQnAMaker(query)
+            .subscribe((res1) => {
+                if (res1 != null && res1 != '') {
+                    var dt = new Date();
+                    var time = dt.getHours() + ":" + dt.getMinutes();
+                    this.msgCount = this.msgCount + 1;
+                    this.messages.push({
+                        "id": this.msgCount,
+                        "text": res1.answers[0].answer,
+                        "self": "true",
+                        "time": time,
+                        "class": "receive",
+                        "classIcon": "receiveIcon",
+                        "from": "LA",
+                        "scenarios": this.scenarios
 
-                    var i = 0;
-                    console.log('res', res);
-                    if (res != null && res.Description != null) {
-                        
-                        localStorage.setItem('curatesResources', JSON.stringify(res)); //store data
-                        localStorage.setItem('hasData', "true");
-                        if (res.Scenarios.length > 0) {
-                            
-                            this.scenarios = res.Scenarios;
-                                                        
+                    });
+                    localStorage.setItem('messages', JSON.stringify(this.messages));
+                    this.showMessage = false;
+                    
+                    
+                }
+               
+                localStorage.setItem('scrolled', 'false');
+               
+            },
+            (err: any) => {
+                this.showMessage = false;
+                console.log('error', err);
+
+            });
+
+        setTimeout(() => {
+            if (localStorage.getItem('geoState') != 'Washington') {
+                this.srchServ.getCuratedContents(query, localStorage.getItem('geoState'))
+                    .subscribe((res) => {
+                        console.log(res);
+                        this.showWashingData = false;
+                        localStorage.setItem('showWashingData', "false");
+                        var i = 0;
+
+                        if (res != null && res.Description != null) {
+
+                            localStorage.setItem('curatesResources', JSON.stringify(res)); //store data
+                            localStorage.setItem('hasData', "true");
+                            if (res.Scenarios.length > 0) {
+
+                                this.scenarios = res.Scenarios;
+
+                                this.msgCount = this.msgCount + 1;
+                                this.messages.push({
+                                    "id": this.msgCount,
+                                    "text": "",
+                                    "self": "true",
+                                    "time": "",
+                                    "class": "tag-badge",
+                                    "classIcon": "",
+                                    "from": "",
+                                    "scenarios": this.scenarios
+                                })
+                                this.hasScenario = true;
+                                localStorage.setItem('messages', JSON.stringify(this.messages));
+                            }
+
+
+                            localStorage.setItem('scrolled', 'false');
+
+                        }
+                        else if (res.Description == null && res.Resources == null && res.Scenarios == null && res.Processes == null && res.RelatedIntents == null && res.TopSixIntentsForLowConfidenceIntents != null) {
+                            this.noneIntentClick = 0;
+                            localStorage.setItem('topSixIntents', JSON.stringify(res.TopSixIntentsForLowConfidenceIntents));
+                            var topFour: Array<any> = [];
+
+                            for (var k = 0; k < 4; k++)
+                                topFour.push(res.TopSixIntentsForLowConfidenceIntents[k])
+                            //topFour = res.TopSixIntentsForLowConfidenceIntents;
                             this.msgCount = this.msgCount + 1;
                             this.messages.push({
                                 "id": this.msgCount,
-                                "text": "",
+                                "text": "Which of these topics do you think applies to your situation?",
                                 "self": "true",
                                 "time": "",
                                 "class": "tag-badge",
                                 "classIcon": "",
-                                "from": "",
-                                "scenarios": this.scenarios
-                            })
-                            this.hasScenario = true;
+                                "from": "TopSix",
+                                "scenarios": topFour
+
+                            });
+                            localStorage.setItem('scrolled', 'false');
                             localStorage.setItem('messages', JSON.stringify(this.messages));
                         }
-                      
+                        else {
+                            this.srchServ.getChatMessages(query, this.lang, this.selectedCountry == " " ? localStorage.getItem('geoState') : this.selectedCountry)
+                                .subscribe((res) => {
 
-                        localStorage.setItem('scrolled', 'false');
-                    }
-                    else if (res.Description == null && res.Resources == null && res.Scenarios == null && res.Processes == null && res.RelatedIntents == null && res.TopSixIntentsForLowConfidenceIntents!=null) {
-                        this.noneIntentClick = 0;
-                        localStorage.setItem('topSixIntents', JSON.stringify(res.TopSixIntentsForLowConfidenceIntents));
-                        var topFour: Array<any> = [];
+                                    if (res != null && res != '') {
+                                        var dt = new Date();
+                                        var time = dt.getHours() + ":" + dt.getMinutes();
+                                        this.msgCount = this.msgCount + 1;
+                                        this.messages.push({
+                                            "id": this.msgCount,
+                                            "text": res,
+                                            "self": "true",
+                                            "time": time,
+                                            "class": "receive",
+                                            "classIcon": "receiveIcon",
+                                            "from": "LA",
+                                            "scenarios": this.scenarios
 
-                        for (var k = 0; k < 4; k++)
-                            topFour.push( res.TopSixIntentsForLowConfidenceIntents[k])
-                        //topFour = res.TopSixIntentsForLowConfidenceIntents;
-                        this.msgCount = this.msgCount + 1;
-                        this.messages.push({
-                            "id": this.msgCount,
-                            "text": "",
-                            "self": "true",
-                            "time": "",
-                            "class": "tag-badge",
-                            "classIcon": "",
-                            "from": "TopSix",
-                            "scenarios": topFour
+                                        });
 
-                        });
-                        localStorage.setItem('scrolled', 'false');
-                        localStorage.setItem('messages', JSON.stringify(this.messages));
-                    }
-                    else {
-                        this.srchServ.getChatMessages(query, this.lang, this.selectedCountry == " " ? localStorage.getItem('geoState') : this.selectedCountry)
-                            .subscribe((res) => {
-                              
-                                if (res != null && res != '') {
-                                    var dt = new Date();
-                                    var time = dt.getHours() + ":" + dt.getMinutes();
-                                    this.msgCount = this.msgCount + 1;
-                                    this.messages.push({
-                                        "id": this.msgCount,
-                                        "text": res,
-                                        "self": "true",
-                                        "time": time,
-                                        "class": "receive",
-                                        "classIcon": "receiveIcon",
-                                        "from": "LA",
-                                        "scenarios": this.scenarios
-
-                                    });
-
+                                        this.showMessage = false;
+                                        localStorage.setItem('messages', JSON.stringify(this.messages));
+                                    }
+                                    else {
+                                        this.msgCount = this.msgCount + 1;
+                                        this.messages.push({
+                                            "id": this.msgCount,
+                                            "text": "Sorry we do not have information on this topic at this time",
+                                            "self": "true",
+                                            "time": "",
+                                            "class": "receive",
+                                            "classIcon": "receiveIcon",
+                                            "from": "LA",
+                                            "scenarios": this.scenarios
+                                        })
+                                        localStorage.setItem('messages', JSON.stringify(this.messages));
+                                    }
+                                    localStorage.setItem('scrolled', 'false');
+                                },
+                                (err: any) => {
                                     this.showMessage = false;
-                                    localStorage.setItem('messages', JSON.stringify(this.messages));
-                                }
-                                else {
                                     this.msgCount = this.msgCount + 1;
                                     this.messages.push({
                                         "id": this.msgCount,
@@ -331,65 +434,69 @@ export class ChatComponent implements OnInit {
                                         "scenarios": this.scenarios
                                     })
                                     localStorage.setItem('messages', JSON.stringify(this.messages));
-                                }
-                                localStorage.setItem('scrolled', 'false');
-                            },
-                            (err: any) => {
-                                this.showMessage = false;
-                                this.msgCount = this.msgCount + 1;
-                                this.messages.push({
-                                    "id": this.msgCount,
-                                    "text": "Sorry we do not have information on this topic at this time",
-                                    "self": "true",
-                                    "time": "",
-                                    "class": "receive",
-                                    "classIcon": "receiveIcon",
-                                    "from": "LA",
-                                    "scenarios": this.scenarios
-                                })
-                                localStorage.setItem('messages', JSON.stringify(this.messages));
-                                console.log('error', err);
+                                    console.log('error', err);
+
+                                });
+                            localStorage.setItem('hasData', "false");
+
+                        }
+                        this._mrs.ngOnInit();
+                    },
+                    (err: any) => {
+
+                        console.log('curated error', err);
+
+
+                    }
+                );
+                
+            }
+            else if (localStorage.getItem('geoState') == 'Washington') {
+                this.showWashingData = true;
+                localStorage.setItem('showWashingData', "true");
+                localStorage.setItem('hasData', "true");
+                this.srchServ.getChatMessages(query, this.lang, this.selectedCountry == " " ? localStorage.getItem('geoState') : this.selectedCountry)
+                    .subscribe((res) => {
+
+                        if (res != null && res != '') {
+                            var dt = new Date();
+                            var time = dt.getHours() + ":" + dt.getMinutes();
+                            this.msgCount = this.msgCount + 1;
+                            this.messages.push({
+                                "id": this.msgCount,
+                                "text": res,
+                                "self": "true",
+                                "time": time,
+                                "class": "receive",
+                                "classIcon": "receiveIcon",
+                                "from": "LA",
+                                "scenarios": this.scenarios
 
                             });
-                        localStorage.setItem('hasData', "false");
-
-                    }
-
-
-                    this._mrs.ngOnInit();
-                },
-                (err: any) => {
-
-                    console.log('curated error', err);
-
-
-                }
-                );
-        }
-        else if (localStorage.getItem('geoState') == 'Washington') {
-            localStorage.setItem('hasData', "true");
-            this.srchServ.getChatMessages(query, this.lang, this.selectedCountry == " " ? localStorage.getItem('geoState') : this.selectedCountry)
-                .subscribe((res) => {
-                    
-                    if (res != null && res != '') {
-                        var dt = new Date();
-                        var time = dt.getHours() + ":" + dt.getMinutes();
-                        this.msgCount = this.msgCount + 1;
-                        this.messages.push({
-                            "id": this.msgCount,
-                            "text": res,
-                            "self": "true",
-                            "time": time,
-                            "class": "receive",
-                            "classIcon": "receiveIcon",
-                            "from": "LA",
-                            "scenarios": this.scenarios
-
-                        });
-                        localStorage.setItem('messages', JSON.stringify(this.messages));
+                            localStorage.setItem('messages', JSON.stringify(this.messages));
+                            this.showMessage = false;
+                            this.showProcess = 'true';
+                            localStorage.setItem('showProcess', 'true');
+                        }
+                        else {
+                            this.msgCount = this.msgCount + 1;
+                            this.messages.push({
+                                "id": this.msgCount,
+                                "text": "Sorry we do not have information on this topic at this time",
+                                "self": "true",
+                                "time": "",
+                                "class": "receive",
+                                "classIcon": "receiveIcon",
+                                "from": "LA",
+                                "scenarios": this.scenarios
+                            })
+                            localStorage.setItem('messages', JSON.stringify(this.messages));
+                        }
+                        localStorage.setItem('scrolled', 'false');
+                        this._mrs.ngOnInit();
+                    },
+                    (err: any) => {
                         this.showMessage = false;
-                    }
-                    else {
                         this.msgCount = this.msgCount + 1;
                         this.messages.push({
                             "id": this.msgCount,
@@ -402,32 +509,14 @@ export class ChatComponent implements OnInit {
                             "scenarios": this.scenarios
                         })
                         localStorage.setItem('messages', JSON.stringify(this.messages));
-                    }
-                    localStorage.setItem('scrolled', 'false');
-                    this._mrs.ngOnInit();
-                },
-                (err: any) => {
-                    this.showMessage = false;
-                    this.msgCount = this.msgCount + 1;
-                    this.messages.push({
-                        "id": this.msgCount,
-                        "text": "Sorry we do not have information on this topic at this time",
-                        "self": "true",
-                        "time": "",
-                        "class": "receive",
-                        "classIcon": "receiveIcon",
-                        "from": "LA",
-                        "scenarios": this.scenarios
-                    })
-                    localStorage.setItem('messages', JSON.stringify(this.messages));
-                    console.log('error', err);
+                        console.log('error', err);
 
-                });
-        }
-                    this.showMessage = false;
-
-                    setInterval(this.updateScroll, 100);
-                    setInterval(this.updateResScroll, 100);
+                    });
+            }
+            this.showMessage = false;
+        }, 2000);
+        setInterval(this.updateScroll, 100);
+        //setInterval(this.updateResScroll, 100);
                 
         
     }
@@ -461,9 +550,13 @@ export class ChatComponent implements OnInit {
     }
 
     showResourcesByScenarioId(scenarioId: string, Description: string) {
+        
+        localStorage.setItem("chatInit", "false");
         var topScore: Array<any> = [];
         localStorage.setItem('showProcess', 'true');
+        this.showProcess = "true";
         localStorage.setItem('curatesResources', null);
+        
         this.srchServ.getCurScenarios(scenarioId, localStorage.getItem('geoState'))
             .subscribe((res) => {
                 var i = 0;
@@ -482,9 +575,7 @@ export class ChatComponent implements OnInit {
                 if (res != null && res.Description != null) {
                     localStorage.setItem('curatesResources', JSON.stringify(res)); //store data
                     localStorage.setItem('hasData', "true");
-                    console.log('sen by id', res);
-                   
-                  
+                    
                     this.msgCount = this.msgCount + 1;
                     this.messages.push({
                         "id": this.msgCount,
@@ -511,7 +602,7 @@ export class ChatComponent implements OnInit {
                             "scenarios": topScore
 
                         });
-                     console.log('topscorethis.messages', this.messages);
+                     
                     }
                         localStorage.setItem('messages', JSON.stringify(this.messages));
                         this.hasScenario = true;
@@ -520,7 +611,7 @@ export class ChatComponent implements OnInit {
                         this.msgCount = this.msgCount + 1;
                         this.messages.push({
                             "id": this.msgCount,
-                        "text": "Please Scroll Down To See Resources & Forms/Steps",
+                        "text": "Please Scroll Down To See Resources",
                         "self": "true",
                         "time": "",
                         "class": "receive",
@@ -528,7 +619,18 @@ export class ChatComponent implements OnInit {
                         "from": "LA",
                         "scenarios": this.scenarios
                         })
-                    localStorage.setItem('messages', JSON.stringify(this.messages));
+                        localStorage.setItem('messages', JSON.stringify(this.messages));
+
+                        if (res.Processes != null && res.Processes.length > 0) {
+                            this.processes = [];
+                            this.showForms = true;
+                            this.showWashingData = false;
+                            localStorage.setItem('showWashingData', "false");
+                            
+                           
+                               this._frms.ngOnInit();
+                           
+                        }
                 }
                 else {
                     localStorage.setItem('hasData', "false");
@@ -566,11 +668,11 @@ export class ChatComponent implements OnInit {
 
             }
             );
-
         
     }
 
     showResourcesByScenarioName(query: string) {
+        localStorage.setItem("chatInit", "false");
         localStorage.setItem('showProcess', 'false');
         this.scenarios = [];
         this.hasScenario = false;
@@ -658,13 +760,17 @@ export class ChatComponent implements OnInit {
 
     }
 
-    showResourcesByTopIntent(query: string) {
-        console.log('by intent', query);
-        console.log('intent click', this.noneIntentClick);
-        console.log('topSixIntents', JSON.parse(localStorage.getItem('topSixIntents')));
+    showResourcesByTopIntent(query: string, event: any) {
+        localStorage.setItem("chatInit", "false");
+        if (query == "None of these") {
+            var target = event.target || event.srcElement || event.currentTarget;
+            target.style.pointerEvents = "none";
+            target.style.opacity = "0.6";
+        }
+       
 
         this.noneIntentClick = this.noneIntentClick + 1;
-        if (query == "None" && this.noneIntentClick<2) {
+        if (query == "None of these" && this.noneIntentClick<2) {
             var topSix = JSON.parse(localStorage.getItem('topSixIntents'));
             var topFour: Array<any> = [];
             for (var k = 4; k < 8; k++)
@@ -672,7 +778,7 @@ export class ChatComponent implements OnInit {
             this.msgCount = this.msgCount + 1;
             this.messages.push({
                 "id": this.msgCount,
-                "text": "",
+                "text": "Do any of these describe your problem?",
                 "self": "true",
                 "time": "",
                 "class": "tag-badge",
@@ -684,7 +790,7 @@ export class ChatComponent implements OnInit {
             localStorage.setItem('messages', JSON.stringify(this.messages));
             localStorage.setItem('scrolled', 'false');
         }
-        else if (query == "None" && this.noneIntentClick >= 2) {
+        else if (query == "None of these" && this.noneIntentClick >= 2) {
             this.msgCount = this.msgCount + 1;
             this.messages.push({
                 "id": this.msgCount,
@@ -791,21 +897,14 @@ export class ChatComponent implements OnInit {
 
     stateOnChange(newValue:string) {
         
-        localStorage.setItem('hasData', "false");
+        localStorage.setItem('hasData', "true");
+        
         localStorage.setItem('geoState', newValue);
         
     }
 
-    openPop(Url: string) {
-
-        this.location = Url;
-    }
-
-    closePop() {
-        window.open(this.location, '_blank');
-    }
-
-    changeText(event) {
+    
+    changeText(event:any) {
         
         var target = event.target || event.srcElement || event.currentTarget;
         if (target.innerText=="More..")

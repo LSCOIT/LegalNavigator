@@ -17,6 +17,8 @@ export class SearchService {
     private getCuratedScenarios = 'http://contentsextractionapiother.azurewebsites.net/api/ExtractCuratedContents'
     private tokenUrl = 'https://api.cognitive.microsoft.com/sts/v1.0/issueToken';
     private translateUrl = 'https://api.microsofttranslator.com/V2/Http.svc/Translate';
+    private qnaMakerUrl = 'https://westus.api.cognitive.microsoft.com/qnamaker/v2.0/knowledgebases/afd490ef-3a14-4284-a8d8-a46d05829f35/generateAnswer'
+    private videoUrl = 'http://contentsextractionapiother.azurewebsites.net/api/RelatedVideos'
     geoCountry: any;
 
     output: any;
@@ -70,6 +72,19 @@ export class SearchService {
 
     public getCurScenarios(ScenarioId: string, State: string): Observable<any> {
         return this._http.get(this.getCuratedScenarios + '?scenarioId=' + ScenarioId +'&state='+State).map((res: Response) => res.json());
+
+    }
+    public getQnAMaker(query: string): Observable<any> {
+        
+        var headers = new Headers();
+        headers.append('Ocp-Apim-Subscription-Key', '90b5ba1264c54b78ae57d7d6095b2f0b');
+        headers.append('Content-Type', 'application/json');
+        return this._http.post(this.qnaMakerUrl, { question: query.trim() }, {headers:headers}).map((res: Response) => (res.json()));
+
+    }
+
+    public getVideos(query: string, State: string): Observable<any> {
+        return this._http.get(this.videoUrl + '?intent=' + query + '&state=' + State).map((res: Response) => res.json());
 
     }
 

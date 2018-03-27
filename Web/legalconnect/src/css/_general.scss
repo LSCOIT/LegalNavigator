@@ -506,6 +506,9 @@ all and (min-width: 992px) and (-webkit-transform-3d) {
          margin-top:-73px;
      }
 
+     .timeline .panel-outline .panel-body.chat-forms{
+         /*width:50%;*/
+     }
 
      @media (max-width: 767px)
 {
@@ -619,7 +622,8 @@ all and (min-width: 992px) and (-webkit-transform-3d) {
     .topics-box
     {
         min-height:500px;
-       // overflow-y:auto;
+       height: 500px;
+    overflow: hidden;
     }
     .tab-content .tab-box
     {
@@ -825,7 +829,7 @@ all and (min-width: 992px) and (-webkit-transform-3d) {
   }
     .mrsHeight{
             min-height:449px;
-            padding-top:277px;
+            padding-top:180px;
         }
     .docHeight
         {
@@ -984,3 +988,18 @@ all and (min-width: 992px) and (-webkit-transform-3d) {
 
 }
 
+
+
+.video-responsive{
+    overflow:hidden;
+    padding-bottom:56.25%;
+    position:relative;
+    height:0;
+}
+.video-responsive iframe{
+    left:0;
+    top:0;
+    height:100%;
+    width:100%;
+    position:absolute;
+}

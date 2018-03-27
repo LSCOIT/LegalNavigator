@@ -27,6 +27,7 @@ export class GuidedComponent implements OnInit{
 
     ngOnInit() {
         localStorage.setItem('linkName', "");
+        localStorage.setItem("play", "false");
         this.currentUrl = this.router.url; // this will give you current url
         this.showGuided = localStorage.getItem('hasData');
         if (this.showGuided == "true")
