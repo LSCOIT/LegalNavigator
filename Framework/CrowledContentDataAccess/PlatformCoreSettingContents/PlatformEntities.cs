@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ContentDataAccess.PlatformCoreSettingContents
-{   
+{
     public class User
     {
         public User()
@@ -36,13 +36,13 @@ namespace ContentDataAccess.PlatformCoreSettingContents
 
         public virtual ICollection<User> Users { get; set; }
     }
-   
+
 
     public class Location
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int LocationId { get; set; }        
+        public int LocationId { get; set; }
         public string LocationName { get; set; }
         public string DbConnection { get; set; }
         public string GeoAddress { get; set; }
@@ -68,7 +68,7 @@ namespace ContentDataAccess.PlatformCoreSettingContents
     public class LawTaxonomy
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]        
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int LawTaxonomyId { get; set; }
         public int NodeId { get; set; }
         public string NodeName { get; set; }
@@ -76,5 +76,14 @@ namespace ContentDataAccess.PlatformCoreSettingContents
         public string NSMICode { get; set; }
         public string Title { get; set; }
         public decimal Percentage { get; set; }
+    }
+
+    public class State
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string ShortName { get; set; }
     }
 }

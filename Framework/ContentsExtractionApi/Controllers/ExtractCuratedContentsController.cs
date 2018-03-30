@@ -9,6 +9,7 @@ using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Data.Entity;
 
+
 namespace ContentsExtractionApi.Controllers
 {
     /// <summary>
@@ -30,6 +31,8 @@ namespace ContentsExtractionApi.Controllers
         /// </summary>
         private const decimal treshold = 0.92m;
 
+        
+
         /// <summary>
         /// ExtractCuratedContentsController
         /// </summary>
@@ -44,10 +47,10 @@ namespace ContentsExtractionApi.Controllers
         /// </summary>
         /// <returns></returns>
         // GET api/ExtractNSMIContents
-       /* public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }*/
+        /* public IEnumerable<string> Get()
+         {
+             return new string[] { "value1", "value2" };
+         }*/
 
         /// <summary>
         /// 
@@ -59,14 +62,33 @@ namespace ContentsExtractionApi.Controllers
         public CrawledContentDataAccess.CuratedContentForAScenario Get(int scenarioId,string state )
         {
             var CuratedResult = new CrawledContentDataAccess.CuratedContentForAScenario();
-            try
-            {
-                CuratedResult = crowledContentDataRepository.GetCuratedContent(scenarioId, StateToConnectionStringMapper.ToConnectionString(prefix,state));
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError(string.Empty, ex.Message);
-            }
+            CuratedResult.SelectedState = state;
+           // try
+           // {
+                  var stateShortName = crowledContentDataRepository.GetStateByName(state)?.ShortName;
+
+                 
+                CuratedResult = crowledContentDataRepository.GetCuratedContent(scenarioId, StateToConnectionStringMapper.ToConnectionString(prefix,stateShortName));
+                CuratedResult.SelectedState = stateShortName;
+                if (CuratedResult != null && CuratedResult.CurrentIntent != null) {
+                    var intentWithScore = TextExtractionModule.GetIntentFromLuisApi(CuratedResult.CurrentIntent);
+                    if (intentWithScore != null && intentWithScore.IsSuccessful)
+                    {
+                        //if (intentWithScore.Score < treshold)
+                       // {
+                            //return "intentWithScore.TopTwoIntents" as part of the response, to generated questions to confirm the user Intent.
+                            CuratedResult.TopTwoIntentsForLowConfidenceIntents = intentWithScore.TopSixIntents;
+                       // }
+                    }
+
+                }
+          //  }
+          //  catch (Exception ex)
+           // {
+            //    ModelState.AddModelError(string.Empty, ex.Message);
+
+              //  throw;
+           // }
             return CuratedResult;
         }
 
@@ -91,12 +113,9 @@ namespace ContentsExtractionApi.Controllers
                    
 
                 }
-                else
-                {
-
-                }
-
-                CuratedResult = crowledContentDataRepository.GetCuratedContent(topScorongIntent, StateToConnectionStringMapper.ToConnectionString(prefix, nsmiInput.State));
+               
+                var stateShortName = crowledContentDataRepository.GetStateByName(nsmiInput.State)?.ShortName;
+                CuratedResult = crowledContentDataRepository.GetCuratedContent(topScorongIntent, StateToConnectionStringMapper.ToConnectionString(prefix, stateShortName));
                 if(CuratedResult== null)
                 {
                     CuratedResult = new CrawledContentDataAccess.CuratedContent();
@@ -106,7 +125,7 @@ namespace ContentsExtractionApi.Controllers
                     if (intentWithScore.Score < treshold)
                     {
                         //return "intentWithScore.TopTwoIntents" as part of the response, to generated questions to confirm the user Intent.
-                        CuratedResult.TopTwoIntentsForLowConfidenceIntents = intentWithScore.TopTwoIntents;
+                        CuratedResult.TopSixIntentsForLowConfidenceIntents = intentWithScore.TopSixIntents;
                     }
                 }
                 else if(intentWithScore != null)

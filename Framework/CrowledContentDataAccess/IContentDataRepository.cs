@@ -29,6 +29,8 @@ namespace ContentDataAccess
         CuratedContent GetCuratedContent(string intent, string connectionString);
         CuratedContentForAScenario GetCuratedContent(int scenarioId, string connectionString);
         void Save(User user);
+        void Save(PlatformCoreSettingContents.State state);
+        CrawledContentDataAccess.State GetStateByName(string stateName);
         void Save(CrawledContentDataAccess.StateBasedContents.Scenario scenario, string connectionString);
     }
 }

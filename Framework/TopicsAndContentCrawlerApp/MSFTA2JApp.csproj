@@ -80,6 +80,7 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Properties\PublishProfiles\MSFTA2JAppAnother - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\MSFTA2JAppAnother - Web Deploy.pubxml" />
     <None Include="Properties\webjob-publish-settings.json" />
   </ItemGroup>

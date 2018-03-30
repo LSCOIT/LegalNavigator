@@ -60,7 +60,6 @@
     <Compile Include="PlatformCoreSettingContents\PlatformCoreDataContext.cs" />
     <Compile Include="PlatformCoreSettingContents\PlatformEntities.cs" />
     <Compile Include="StateBasedContents\CourtContentEntities.cs" />
-    <Compile Include="StateBasedContents\CuratedContent.cs" />
     <Compile Include="StateBasedContents\StateBasedContentDataContext.cs" />
     <Compile Include="DataContextFactory\CrowledContentDataContextFactory.cs" />
     <Compile Include="StateBasedContents\CuratedExperienceEntities.cs" />
