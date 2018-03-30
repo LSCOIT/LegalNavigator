@@ -7,15 +7,15 @@
                 <div class="container">
                     <div class="row">
 
-                        <div class="col-md-7">
+                        <div class="col-md-5 ">
                             <h1>Chat</h1>
                         </div>
-                        <div class="col-md-5 m-top-20">
-                            <span class="col-md-1 cntryDisplay">Select</span>
-                            <div class="col-md-4 btn-group m-left-10">
+                        <div class="col-md-2  m-left-10 m-top-20">
+                            <span class="cntryDisplay">Select</span>
+                         
 
                                 <select [(ngModel)]="selectedCountry" (ngModelChange)="stateOnChange($event)" name="sel2">
-                                    <!--<option value="Alabama">Alabama (AL)</option>-->
+                                     <!--<option value="Alabama">Alabama (AL)</option>-->
                                     <option value="Alaska">Alaska (AK)</option>
                                     <!--<option value="Arizona">Arizona (AZ)</option>
                                     <option value="Arkansas">Arkansas (AR)</option>
@@ -68,6 +68,25 @@
                                     <option value="Wyoming">Wyoming</option>-->
                                 </select>
                             </div>
+
+                        <div class="col-md-2  m-left-10 m-top-20">
+                            <span class="cntryDisplay">Select</span>
+
+
+                            <select name="sel3" [(ngModel)]="selectedLang">
+                                <option value="select">Select Language</option>
+                                <option value="Chinese Simplified">Chinese Simplified</option>
+                                <option value="Filipino">Flipino</option>
+                                <option value="French">French</option>
+                                <option value="Hindi">Hindi</option>
+                                <option value="Korean">Korean</option>
+                                <option value="Slovak">Slovak</option>
+                                <option value="Tahitian">Tahitian</option>
+                                <option value="Tamil">Tamil</option>
+                                <option value="Thai">Thai</option>
+                                <option value="Urdu">Urdu</option>                              
+                            </select>
+
                         </div>
                         <p class="m-top-5 col-md-12 m-top-dskTop">
                             <span class="resultstxt">QUESTIONS? WE CAN HELP, TALK TO OUR CUSTOMER SUPPORT SERVICE</span>
@@ -79,7 +98,7 @@
 
             <form id="testForm1">
                 <div class="container" style="margin:0px; padding:0px;width:100%">
-
+                  
                     <div class="row chat-window col-xs-12 col-md-12 m-t-b-30" id="chat_window_1">
                         <div class="col-xs-12 col-sm-12 col-md-6 m-0 p-0">
                             <div class="panel panel-default no-background no-border">
@@ -123,7 +142,7 @@
                                             </div>
                                         </div>
 
-
+                                  
                                         <div class="welCome" *ngIf="messages[i].class=='tag-badge' && messages[i].from=='TopSix'">
                                             <span innerHtml="{{messages[i].text}}"></span>
                                             <div *ngFor="let sen of messages[i].scenarios; let j = index">
@@ -177,14 +196,14 @@
 
                                 <div class="col-xs-12 left-chat-box" id="chat_resources" (scroll)="onResScroll()">
                                     <div *ngIf="showWashingData===true">
-
+                                  
                                         <chatResources></chatResources>
                                     </div>
-
-
+                                        
+                                    
                                     <div class="m-top-85" id="forms_steps" *ngIf="showForms===true && showProcess==='true' && showWashingData===false">
                                         <formsSteps></formsSteps>
-
+                                       
                                     </div>
                                 </div>
 
@@ -211,7 +230,7 @@
                 </div>
             </div>
 
-
+            
         </div>
     </div>
 </section>

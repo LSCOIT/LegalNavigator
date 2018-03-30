@@ -121,7 +121,7 @@ export class MRSComponent implements OnInit {
         
         this.aciveBdg = linkName;
         var route:string;
-        this.srchServ.getCuratedContents(linkName, localStorage.getItem('geoState'))
+        this.srchServ.getCuratedContents(linkName, localStorage.getItem('geoState'), 'English', localStorage.getItem('translateTo') == undefined ? 'English' : localStorage.getItem('translateTo'))
             .subscribe((res) => {
                 
                 var i = 0;

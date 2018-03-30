@@ -45,9 +45,10 @@ export class SearchService {
        
     }
 
-    public getCuratedContents(query: string, state: string): Observable<any> {
+    public getCuratedContents(query: string, state: string,translateFrom:string,translateTo:string): Observable<any> {
         
-        return this._http.post(this.curatedContentsUrl, { Sentence: query.trim(), State: state }).map((res: Response) => (res.json()));
+        //return this._http.post(this.curatedContentsUrl, { Sentence: query.trim(), State: state, TranslateFrom: translateFrom, TranslateTo: translateTo }).map((res: Response) => (res.json()));
+        return this._http.post(this.curatedContentsUrl, { Sentence: query.trim(), State: state}).map((res: Response) => (res.json()));
 
     }
     public TranslateToken() {

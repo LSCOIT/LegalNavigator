@@ -18,6 +18,7 @@ export class ChatComponent implements OnInit {
     geoCountry: any;
     lang: string = "en";
     selectedCountry: string = " ";
+    selectedLang: string = " ";
     isVisible: boolean = true;
     showMessage: boolean = false;
     sub: any;
@@ -61,6 +62,7 @@ export class ChatComponent implements OnInit {
     constructor(private srchServ: SearchService, private router: Router, private route: ActivatedRoute) { }
     
     ngOnInit() {
+        this.selectedLang = "select";
         localStorage.setItem('scrolled', 'true');
         localStorage.setItem("play", "false");
         this.showForms = false;
@@ -269,22 +271,8 @@ export class ChatComponent implements OnInit {
         if (this.selectedCountry!==" ")
         localStorage.setItem('geoState', this.selectedCountry);
         localStorage.setItem('sentence', query);
+        localStorage.setItem('translateTo', this.selectedLang == 'select' ? 'English' : this.selectedLang);
                 
-       //this.srchServ.getChatReferences(query, this.selectedCountry == " " ? localStorage.getItem('geoState') : this.selectedCountry).subscribe((res) => {
-                   
-       //             if (res != null && res.length > 0) {
-       //                 this.rightboxes = [];
-       //                 for (var i = 0; i < res.length; i++) {
-       //                     this.rightboxes.push({
-       //                         "url": res[i].Url,
-       //                         "text": res[i].Name,
-       //                         "self": true
-       //                     })
-       //                 }
-       //                 localStorage.setItem('references', JSON.stringify(this.rightboxes));
-       //                 localStorage.setItem('resScrolled', 'false');
-       //             }
-       //         });
        this.isVisible = true;
    
         this.replyMessage = "";
@@ -324,9 +312,9 @@ export class ChatComponent implements OnInit {
 
         setTimeout(() => {
             if (localStorage.getItem('geoState') != 'Washington') {
-                this.srchServ.getCuratedContents(query, localStorage.getItem('geoState'))
+                this.srchServ.getCuratedContents(query, localStorage.getItem('geoState'),'English', this.selectedLang == 'select' ? 'English' : this.selectedLang)
                     .subscribe((res) => {
-                        console.log(res);
+                       console.log(res);
                         this.showWashingData = false;
                         localStorage.setItem('showWashingData', "false");
                         var i = 0;
@@ -678,7 +666,7 @@ export class ChatComponent implements OnInit {
         this.hasScenario = false;
 
         localStorage.setItem('curatesResources', null);
-        this.srchServ.getCuratedContents(query, localStorage.getItem('geoState'))
+        this.srchServ.getCuratedContents(query, localStorage.getItem('geoState'), 'English', this.selectedLang == 'select' ? 'English' : this.selectedLang)
             .subscribe((res) => {
                 console.log('by scenario name', res);
                 var i = 0;
@@ -813,7 +801,7 @@ export class ChatComponent implements OnInit {
             this.hasScenario = false;
 
             localStorage.setItem('curatesResources', null);
-            this.srchServ.getCuratedContents(query, localStorage.getItem('geoState'))
+            this.srchServ.getCuratedContents(query, localStorage.getItem('geoState'), 'English', this.selectedLang == 'select' ? 'English' : this.selectedLang)
                 .subscribe((res) => {
                     console.log('by scenario name', res);
                     var i = 0;

@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit, Input  } from '@angular/core';
 
 @Component({
-    selector: 'subCategory',
+    selector: 'subCat',
     templateUrl: './subcategory.component.html'
 })
 export class SubCatComponent implements OnInit {
