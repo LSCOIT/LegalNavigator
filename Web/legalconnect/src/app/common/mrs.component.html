@@ -1,167 +1,22 @@
+
 <div *ngIf="state!='Washington'">
-    <div class="container rel-topics">
-        <div class="row" id="mrlTopics" *ngIf="showMrs===true">
-            <h1>Resources Related to Your Search</h1>
-            <p class="m-top-20">
-        </div>
-
-        <div class="m-top-40" *ngIf="showMrs===true">
-            <div class="col-md-12">
-
-                <div class="carousel slide" id="carousel-tilenav" data-ride="carousel" data-pause="hover" data-wrap="true" data-interval="false">
-                    <div class="carousel-inner">
-                        <div class="item" *ngFor="let itm of items; let i = index" [ngClass]="items[i].class">
-                            <div calss="row">
-                                <div class="col-md-3 col-xs-12" *ngFor="let res of items[i].Resources; let j = index">
-                                    <div class="topics-box">
-                                        <div class="header-img">
-                                            <h3>{{items[i].Resources[j].header}}</h3>
-
-                                        </div>
-                                        <div class="box-para" innerHtml="{{items[i].Resources[j].body}}">
-
-                                        </div>
-
-
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-
-
-                    </div>
-                    <a class="left carousel-control" href="#carousel-tilenav" data-slide="prev"><i class="glyphicon glyphicon-chevron-left"></i></a>
-                    <a class="right carousel-control" href="#carousel-tilenav" data-slide="next"><i class="glyphicon glyphicon-chevron-right"></i></a>
-                </div>
-
-            </div><!--col-md-12-->
-        </div>
-
-        <div class="feature-unavaiable" *ngIf="showMrs!=true && showForms!=true && showSubCat!=true && page!='chat'">
-            <h2>This feature is currently unavailable. Please click on the "Chat" tab above to get started</h2>
-        </div>
-
-        <div class="m-top-85" id="forms_steps" *ngIf="showForms===true && page!='chat'">
-            <div class="row m-top-46">
-                <div class="col-xs-12">
-                    <div class="panel-group" id="accordion">
-                        <div class="panel panel-default forms_grp">
-                            <div class="panel-heading forms_heading" id="timeline">
-                                <h1 class="panel-title forms">
-                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" [attr.aria-expanded]=aClicked>
-                                        FORMS/STEPS
-                                    </a>
-
-                                </h1>
-                            </div>
-                            <div id="collapseOne" class="panel-collapse" [ngClass]="[collapsed]">
-                                <div class="panel-body forms_body">
-                                    <section class="resources_content timeline-padding no-padding" style="margin-left:-25px">
-
-                                        <!--<div class="container">
-                                            <p class="title-resources">Title for Information and Resources | Restraining Order</p>
-                                        </div>-->
-                                        <div class="container-fluid bg-light-grey m-bottom-30">
-                                            <div class="container">
-                                                <div class="row save-progress">
-                                                    <div class="col-md-8 m-bottom-20 m-top-20">
-                                                        <h2 class="no-margin"><i class="fa fa-download" aria-hidden="true"></i> Save your progress/process</h2>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div *ngIf="hasData==true" style="overflow-y: scroll;overflow-x:hidden;height: 400px; min-height: 300px;">
-                                            <div class="container">
-                                                <div class="timeline m-left-30">
-                                                    <!-- Line component -->
-                                                    <div class="line text-muted"></div>
-                                                    <!-- Panel -->
-                                                    <article class="panel panel-outline" *ngFor="let prc of processes; let i = index">
-                                                        <!-- Icon -->
-                                                        <div class="panel-heading icon grey">
-                                                            <p class="text-center">Step</p>
-                                                            <p class="text-center">{{prc.id}}</p>
-                                                        </div>
-                                                        <!-- /Icon -->
-                                                        <!-- Body -->
-                                                        <div class="panel-body opsty-5" [ngClass]="[prc.class]">
-                                                            <h3>{{prc.title}}</h3>
-                                                            <p innerHtml="{{prc.desc}}">
-                                                            </p>
-
-                                                        </div>
-                                                        <!-- /Body -->
-                                                    </article>
-                                                    <!-- /Panel -->
-
-
-
-
-                                                </div>
-                                                <br />
-                                                <button class="pull-right btn btn-resources btn-resources-save m-left-10 text-uppercase m-r-49 tml-save" data-toggle="modal" data-target="#myModal" type="button"><i class="fa fa-floppy-o" aria-hidden="true" tml-save></i> Save</button>
-                                                <br />
-                                                <!-- /Timeline -->
-                                            </div>
-                                        </div>
-                                        <!-- Modal -->
-                                        <div class="modal fade timeline-modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                            <div class="modal-dialog modal-top" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
-                                                    </div>
-                                                    <div class="modal-body text-center p-left-20 p-right-20 p-top-20">
-                                                        <h2>To pick up where you left off, you have two options:</h2>
-
-                                                        <p>Save this User ID Number. When you are ready to return, come back to our website, click on "Returning User" on the navigation bar above, and enter it into the User ID space.</p>
-                                                        <p class="m-top-15">
-                                                            <strong>USER ID</strong><br />
-                                                            <strong>12345</strong>
-                                                        </p>
-                                                        <p class="m-top-15"><strong>OR</strong></p>
-                                                        <p>Enter in your email address to get a special link sent directly to your inbox.</p>
-                                                        <div class="input-group col-md-8 col-md-offset-2 timeline-browse m-top-20 m-bottom-10">
-                                                            <input type="text" placeholder="Enter Your Email" class="form-control">
-                                                            <label class="input-group-btn">
-                                                                <span class="btn btn-primary">
-                                                                    Send Link
-                                                                </span>
-                                                            </label>
-
-                                                        </div>
-
-                                                        <p>We will never store any of your personal information.</p>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </section>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
+    <div class="container rel-topics" >
+      
+            <resources></resources>
+           
+            <div class="m-top-15" id="forms_steps" *ngIf="page!='chat'">
+                <formsSteps></formsSteps>
             </div>
+
+            <subCat></subCat>
+
+          <div class="feature-unavaiable" *ngIf="page!='chat'">
+           <noData></noData>
+           </div>
+
+        <videoTemplate></videoTemplate>
+
         </div>
-
-        <div class="row m-top-85" id="subCat" *ngIf="showSubCat===true">
-            <h1>Other Related Topics</h1>
-            <div class="row m-top-46">
-                <div class="col-xs-12 tagBadges">
-                    <span class="tag-badge" *ngFor="let link of SubCat" [ngClass]="{'activeBadge': aciveBdg==link.name}" id={{link.name}} (click)="displayText(link.name)">{{link.name}}</span>
-                </div>
-            </div>
-        </div>
-
-
-
-    </div>
 
 </div>
 
@@ -173,6 +28,7 @@
                 In this section you will find general information, resources and self-help packets on eviction issues
             </p>
         </div>
+     
         <div class="row m-top-40" *ngIf="showWashingData==true">
             <div class="col-md-3 col-xs-12">
                 <div class="topics-box">
@@ -227,10 +83,8 @@
             </div>
         </div>
 
-        <div class="feature-unavaiable" *ngIf="showWashingData==false && page!='chat'">
-            <h2>This feature is currently unavailable. Please click on the "Chat" tab above to get started</h2>
-        </div>
-        <div class="m-top-85" id="forms_steps" *ngIf="showWashingData==true">
+        
+        <div class="m-top-15" id="forms_steps" *ngIf="showWashingData==true">
             <div class="row m-top-46">
                 <div class="col-xs-12">
                     <div class="panel-group" id="accordion">
@@ -245,128 +99,129 @@
                             </div>
                             <div id="collapseOne" class="panel-collapse" [ngClass]="[collapsed]">
                                 <div class="panel-body forms_body">
-                                    <section class="resources_content timeline-padding no-padding" style="margin-left:-25px">
+                                    <section class="resources_content no-padding" style="margin-left:-25px">
                                         <div class="container-fluid bg-light-grey m-bottom-30">
-                                            <div class="container">
+                                            
                                                 <div class="row save-progress">
                                                     <div class="col-md-8 m-bottom-20 m-top-20">
                                                         <h2 class="no-margin"><i class="fa fa-download" aria-hidden="true"></i> Save your progress/process</h2>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            
                                         </div>
 
-
-                                        <div class="container">
-                                            <div class="timeline m-left-30">
-                                                <!-- Line component -->
-                                                <div class="line text-muted"></div>
-                                                <!-- Panel -->
-                                                <article class="panel panel-outline">
-                                                    <!-- Icon -->
-                                                    <div class="panel-heading icon">
-                                                        <i class="fa fa-check" aria-hidden="true"></i>
-                                                    </div>
-                                                    <!-- /Icon -->
-                                                    <!-- Body -->
-                                                    <div class="panel-body">
-                                                        <h3>Fill out this form "<span>File_Path_Link.pdf</span>"</h3>
-                                                        <p>adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore...</p>
-                                                    </div>
-                                                    <!-- /Body -->
-                                                </article>
-                                                <!-- /Panel -->
-                                                <article class="panel panel-outline">
-                                                    <!-- Icon -->
-                                                    <div class="panel-heading icon">
-                                                        <i class="fa fa-check" aria-hidden="true"></i>
-                                                    </div>
-                                                    <!-- /Icon -->
-                                                    <!-- Body -->
-                                                    <div class="panel-body">
-                                                        <h3>Fill in the "File_Path_Link" file</h3>
-                                                        <p>adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore...</p>
-                                                    </div>
-                                                    <!-- /Body -->
-                                                </article>
-                                                <!-- /Panel -->
-                                                <article class="panel active panel-outline m-r-49">
-                                                    <!-- Icon -->
-                                                    <div class="panel-heading icon no-background">
-                                                        <img src="images/step-3.png" class="m-top-5" />
-                                                    </div>
-                                                    <!-- /Icon -->
-                                                    <!-- Body -->
-                                                    <div class="panel-body">
-                                                        <h3>Do you have a document to scan?</h3>
-                                                        <p>Send yourself a confidential link to save your progress/process. Your identity is ALWAYS CONFIDENTIAL*</p>
-                                                    </div>
-                                                    <!-- /Body -->
-                                                </article>
-                                                <!-- /Panel -->
-                                                <article class="panel panel-outline">
-                                                    <!-- Icon -->
-                                                    <div class="panel-heading icon grey">
-                                                        <p class="text-center">Step</p><p class="text-center">4</p>
-                                                    </div>
-                                                    <!-- /Icon -->
-                                                    <!-- Body -->
-                                                    <div class="panel-body opsty-5">
-                                                        <h3>Upload the filled-in "File_Path_Link" file</h3>
-                                                        <div class="col-md-11"><p>Send yourself a confidential link to save your progress/process. Your identity is ALWAYS CONFIDENTIAL*</p></div>
-                                                        <div class="input-group col-md-1 pull-right timeline-browse">
-                                                            <span class='label label-info-txt' id="upload-file-info"></span>
-                                                            <label class="btn btn-resources m-r-49" for="my-file-selector">
-
-                                                                Browse
-                                                            </label>
-
+                                        
+                                            <div class="container-fluid">
+                                                <div class="timeline m-left-30">
+                                                    <!-- Line component -->
+                                                    <div class="line text-muted"></div>
+                                                    <!-- Panel -->
+                                                    <article class="panel panel-outline">
+                                                        <!-- Icon -->
+                                                        <div class="panel-heading icon">
+                                                            <i class="fa fa-check" aria-hidden="true"></i>
                                                         </div>
-                                                    </div>
-                                                    <!-- /Body -->
-                                                </article>
-                                                <!-- /Panel -->
-                                                <article class="panel panel-outline">
-                                                    <!-- Icon -->
-                                                    <div class="panel-heading icon grey">
-                                                        <p class="text-center">Step</p><p class="text-center">5</p>
-                                                    </div>
-                                                    <!-- /Icon -->
-                                                    <!-- Body -->
-                                                    <div class="panel-body opsty-5">
-                                                        <div class="row">
-                                                            <div class="col-sm-9">
-                                                                <h3>Submit the "File_Path_Link.pdf" file</h3>
-                                                                <p>Send yourself a confidential link to save your progress/process. Your identity is ALWAYS CONFIDENTIAL*</p>
-                                                            </div>
-                                                            <div class="col-sm-3">
-                                                                <button class="pull-right btn btn-resources m-r-49" type="button">Submit File</button>
+                                                        <!-- /Icon -->
+                                                        <!-- Body -->
+                                                        <div class="panel-body">
+                                                            <h3>Fill out this form "<span>File_Path_Link.pdf</span>"</h3>
+                                                            <p>adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore...</p>
+                                                        </div>
+                                                        <!-- /Body -->
+                                                    </article>
+                                                    <!-- /Panel -->
+                                                    <article class="panel panel-outline">
+                                                        <!-- Icon -->
+                                                        <div class="panel-heading icon">
+                                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                                        </div>
+                                                        <!-- /Icon -->
+                                                        <!-- Body -->
+                                                        <div class="panel-body">
+                                                            <h3>Fill in the "File_Path_Link" file</h3>
+                                                            <p>adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore...</p>
+                                                            <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/c_vYlZK6rvw" frameborder="0" allowfullscreen></iframe>
+                                                        </div>
+                                                        <!-- /Body -->
+                                                    </article>
+                                                    <!-- /Panel -->
+                                                    <article class="panel active panel-outline m-r-49">
+                                                        <!-- Icon -->
+                                                        <div class="panel-heading icon no-background">
+                                                            <img src="images/step-3.png" class="m-top-5" />
+                                                        </div>
+                                                        <!-- /Icon -->
+                                                        <!-- Body -->
+                                                        <div class="panel-body">
+                                                            <h3>Do you have a document to scan?</h3>
+                                                            <p>Send yourself a confidential link to save your progress/process. Your identity is ALWAYS CONFIDENTIAL*</p>
+                                                        </div>
+                                                        <!-- /Body -->
+                                                    </article>
+                                                    <!-- /Panel -->
+                                                    <article class="panel panel-outline">
+                                                        <!-- Icon -->
+                                                        <div class="panel-heading icon grey">
+                                                            <p class="text-center">Step</p><p class="text-center">4</p>
+                                                        </div>
+                                                        <!-- /Icon -->
+                                                        <!-- Body -->
+                                                        <div class="panel-body opsty-5">
+                                                            <h3>Upload the filled-in "File_Path_Link" file</h3>
+                                                            <div class="col-md-11"><p>Send yourself a confidential link to save your progress/process. Your identity is ALWAYS CONFIDENTIAL*</p></div>
+                                                            <div class="input-group col-md-1 pull-right timeline-browse">
+                                                                <span class='label label-info-txt' id="upload-file-info"></span>
+                                                                <label class="btn btn-resources m-r-49" for="my-file-selector">
+
+                                                                    Browse
+                                                                </label>
+
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <!-- /Body -->
-                                                </article>
-                                                <!-- /Panel -->
-                                                <article class="panel panel-outline">
-                                                    <!-- Icon -->
-                                                    <div class="panel-heading icon grey">
-                                                        <p class="text-center">Step</p><p class="text-center">6</p>
-                                                    </div>
-                                                    <!-- /Icon -->
-                                                    <!-- Body -->
-                                                    <div class="panel-body opsty-5">
-                                                        <h3>Done</h3>
-                                                        <p>adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore...</p>
-                                                    </div>
-                                                    <!-- /Body -->
-                                                </article>
-                                                <!-- /Panel -->
-                                                <button class="pull-right btn btn-resources btn-resources-save m-left-10 text-uppercase m-r-49" data-toggle="modal" data-target="#myModal" type="button"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
-                                                <!-- Modal -->
+                                                        <!-- /Body -->
+                                                    </article>
+                                 <!-- /Panel -->
+                                                    <article class="panel panel-outline">
+                                                        <!-- Icon -->
+                                                        <div class="panel-heading icon grey">
+                                                            <p class="text-center">Step</p><p class="text-center">5</p>
+                                                        </div>
+                                                        <!-- /Icon -->
+                                                        <!-- Body -->
+                                                        <div class="panel-body opsty-5">
+                                                            <div class="row">
+                                                                <div class="col-sm-9">
+                                                                    <h3>Submit the "File_Path_Link.pdf" file</h3>
+                                                                    <p>Send yourself a confidential link to save your progress/process. Your identity is ALWAYS CONFIDENTIAL*</p>
+                                                                </div>
+                                                                <div class="col-sm-3">
+                                                                    <button class="pull-right btn btn-resources m-r-49" type="button">Submit File</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- /Body -->
+                                                    </article>
+                                                    <!-- /Panel -->
+                                                    <article class="panel panel-outline">
+                                                        <!-- Icon -->
+                                                        <div class="panel-heading icon grey">
+                                                            <p class="text-center">Step</p><p class="text-center">6</p>
+                                                        </div>
+                                                        <!-- /Icon -->
+                                                        <!-- Body -->
+                                                        <div class="panel-body opsty-5">
+                                                            <h3>Done</h3>
+                                                            <p>adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore...</p>
+                                                        </div>
+                                                        <!-- /Body -->
+                                                    </article>
+                                                    <!-- /Panel -->
+                                                    <button class="pull-right btn btn-resources btn-resources-save m-left-10 text-uppercase m-r-49" data-toggle="modal" data-target="#myModal" type="button"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
+                                                    <!-- Modal -->
+                                                </div>
+                                                <!-- /Timeline -->
                                             </div>
-                                            <!-- /Timeline -->
-                                        </div>
-
+                                        
                                         <!-- Modal -->
                                         <div class="modal fade timeline-modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                             <div class="modal-dialog modal-top" role="document">
@@ -421,29 +276,28 @@
                 </div>
             </div>
         </div>
+                
 
-
-        <!--<div class="m-top-85" style="cursor:pointer" id="videos" (click)="videos('videos')">
+        <div class="m-top-15" style="cursor:pointer" id="videos">
             <h1>Video Component for Videos</h1>
             <p class="m-top-20">This video explains different kinds of termination notices</p>
+
             <div class="row m-top-40">
                 <div class="col-xs-10 col-xs-offset-1">
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/c_vYlZK6rvw" frameborder="0" allowfullscreen></iframe>
-                    </div>
+
+                    
+                        <div class="video-responsive">
+                            <iframe id="ifPlayer" width="420" height="315" src="https://www.youtube.com/embed/c_vYlZK6rvw" frameborder="0" allowfullscreen (mouseenter)="videoOpen($event)"></iframe>
+                        </div>
+                        <br />
+                    
                 </div>
             </div>
         </div>
+        <maps></maps>
 
-        <div class="m-top-85" (click)="maps('maps')" id="maps" style="cursor:pointer">
-            <h1>Maps for Locations</h1>
-            <p class="m-top-20">consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim…tempor incididunt utlabore et dolore magna aliqua. Ut enim ad minim</p>
-        </div>-->
     </div>
-    <!--<div class="container m-top-40">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d2775832.4157781773!2d-122.40028915806761!3d47.20143890666706!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sLegal+help+in+Washington+states!5e0!3m2!1sen!2sin!4v1498039664011" width="100%" height="600" frameborder="0" style="border:0" allowfullscreen></iframe>
-        <iframe [src]="mapsUrl" width="100%" height="600" frameborder="0" style="border:0" allowfullscreen></iframe>
-    </div>-->
-</div>
+        
+    </div>
 
 

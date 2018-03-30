@@ -7,15 +7,15 @@
                 <div class="container">
                     <div class="row">
 
-                        <div class="col-md-7">
+                        <div class="col-md-5 ">
                             <h1>Chat</h1>
                         </div>
-                        <div class="col-md-5 m-top-20">
-                            <span class="col-md-1 cntryDisplay">Select</span>
-                            <div class="col-md-4 btn-group m-left-10">
+                        <div class="col-md-2  m-left-10 m-top-20">
+                            <span class="cntryDisplay">Select</span>
+                         
 
                                 <select [(ngModel)]="selectedCountry" (ngModelChange)="stateOnChange($event)" name="sel2">
-                                    <!--<option value="Alabama">Alabama (AL)</option>-->
+                                     <!--<option value="Alabama">Alabama (AL)</option>-->
                                     <option value="Alaska">Alaska (AK)</option>
                                     <!--<option value="Arizona">Arizona (AZ)</option>
                                     <option value="Arkansas">Arkansas (AR)</option>
@@ -68,6 +68,25 @@
                                     <option value="Wyoming">Wyoming</option>-->
                                 </select>
                             </div>
+
+                        <div class="col-md-2  m-left-10 m-top-20">
+                            <span class="cntryDisplay">Select</span>
+
+
+                            <select name="sel3" [(ngModel)]="selectedLang">
+                                <option value="select">Select Language</option>
+                                <option value="Chinese Simplified">Chinese Simplified</option>
+                                <option value="Filipino">Flipino</option>
+                                <option value="French">French</option>
+                                <option value="Hindi">Hindi</option>
+                                <option value="Korean">Korean</option>
+                                <option value="Slovak">Slovak</option>
+                                <option value="Tahitian">Tahitian</option>
+                                <option value="Tamil">Tamil</option>
+                                <option value="Thai">Thai</option>
+                                <option value="Urdu">Urdu</option>                              
+                            </select>
+
                         </div>
                         <p class="m-top-5 col-md-12 m-top-dskTop">
                             <span class="resultstxt">QUESTIONS? WE CAN HELP, TALK TO OUR CUSTOMER SUPPORT SERVICE</span>
@@ -79,8 +98,7 @@
 
             <form id="testForm1">
                 <div class="container" style="margin:0px; padding:0px;width:100%">
-
-                    <!--<div class="row chat-window col-xs-12 col-md-12 m-bottom-30 m-t-b-30" id="chat_window_1">-->
+                  
                     <div class="row chat-window col-xs-12 col-md-12 m-t-b-30" id="chat_window_1">
                         <div class="col-xs-12 col-sm-12 col-md-6 m-0 p-0">
                             <div class="panel panel-default no-background no-border">
@@ -114,7 +132,7 @@
 
                                             <div id="{{messages[i].id}}" class="collapse">
                                                 <div *ngFor="let sen of messages[i].scenarios; let j = index">
-                                                    <span *ngIf="j>3" class="tag-badge" (click)="showResourcesByScenario(messages[i].scenarios[j].ScenarioId,messages[i].scenarios[j].Description)">{{messages[i].scenarios[j].Description}}</span>
+                                                    <span *ngIf="j>2" class="tag-badge" (click)="showResourcesByScenario(messages[i].scenarios[j].ScenarioId,messages[i].scenarios[j].Description)">{{messages[i].scenarios[j].Description}}</span>
                                                 </div>
 
                                             </div>
@@ -124,13 +142,7 @@
                                             </div>
                                         </div>
 
-                                        <!--<div class="welCome" *ngIf="messages[i].class=='tag-badge' && messages[i].from=='TopScore'">
-                                            <span>Which one of these best matches your situation?</span>
-                                            <div *ngFor="let sen of messages[i].scenarios; let j = index">
-                                                <span class="tag-badge" (click)="showResourcesByScenarioName(messages[i].scenarios[j])">{{messages[i].scenarios[j]}}</span>
-                                            </div>
-                                        </div>-->
-
+                                  
                                         <div class="welCome" *ngIf="messages[i].class=='tag-badge' && messages[i].from=='TopSix'">
                                             <span innerHtml="{{messages[i].text}}"></span>
                                             <div *ngFor="let sen of messages[i].scenarios; let j = index">
@@ -184,125 +196,14 @@
 
                                 <div class="col-xs-12 left-chat-box" id="chat_resources" (scroll)="onResScroll()">
                                     <div *ngIf="showWashingData===true">
-                                        <div *ngFor="let rightbox of rightboxes" [class]="rightbox.self">
-                                            <div class="box_sent2">
-
-                                                <div class="box_sent_sub">
-
-                                                    <a href="#" data-toggle="modal" data-target="#myModal-chat" (click)="openPop(rightbox.url)">
-                                                        {{rightbox.text}}
-                                                    </a>
-
-                                                </div>
-                                            </div>
-                                        </div>
+                                  
+                                        <chatResources></chatResources>
                                     </div>
-
-
-                                    <div class="m-top-85" id="forms_steps" *ngIf="showForms===true && showProcess==='true' && page!='chat' && showWashingData===false">
-                                        <div class="row">
-                                            <div class="col-xs-12">
-                                                <div class="panel-group" id="accordion">
-                                                    <div class="panel panel-default forms_grp">
-                                                        <div class="panel-heading forms_heading" id="timeline">
-                                                            <h1 class="panel-title forms" style="font-size:30px">
-
-                                                                FORMS/STEPS
-
-
-                                                            </h1>
-                                                        </div>
-                                                        <div id="collapseOne" class="panel-collapse">
-                                                            <div class="panel-body forms_body">
-                                                                <section class="resources_content timeline-padding no-padding" style="margin-left:-25px">
-
-
-                                                                    <div class="container-fluid bg-light-grey m-bottom-30">
-                                                                        <div class="container">
-                                                                            <div class="row save-progress">
-                                                                                <div class="col-md-8 ">
-                                                                                    <h2 class="no-margin"><i class="fa fa-download" aria-hidden="true"></i> Save your progress/process</h2>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div style="overflow-x:hidden;word-wrap:break-word">
-                                                                        <div class="container-fluid">
-                                                                            <div class="timeline m-left-30">
-                                                                                <!-- Line component -->
-                                                                                <div class="line text-muted"></div>
-                                                                                <!-- Panel -->
-                                                                                <article class="panel panel-outline" *ngFor="let prc of processes; let i = index">
-                                                                                    <!-- Icon -->
-                                                                                    <div class="panel-heading icon grey ">
-                                                                                        <p class="text-center">Step</p>
-                                                                                        <p class="text-center">{{prc.id}}</p>
-                                                                                    </div>
-                                                                                    <!-- /Icon -->
-                                                                                    <!-- Body -->
-                                                                                    <div class="panel-body opsty-5 chat-forms" [ngClass]="[prc.class]">
-                                                                                        <h3>{{prc.title}}</h3>
-                                                                                        <p innerHtml="{{prc.desc}}">
-                                                                                        </p>
-
-                                                                                    </div>
-                                                                                    <!-- /Body -->
-                                                                                </article>
-                                                                                <!-- /Panel -->
-
-
-
-
-                                                                            </div>
-                                                                            <br />
-                                                                            <button class="pull-right btn btn-resources btn-resources-save m-left-10 text-uppercase m-r-49 tml-save" data-toggle="modal" data-target="#myModal" type="button"><i class="fa fa-floppy-o" aria-hidden="true" tml-save></i> Save</button>
-                                                                            <br />
-                                                                            <!-- /Timeline -->
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- Modal -->
-                                                                    <div class="modal fade timeline-modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                                                        <div class="modal-dialog modal-top" role="document">
-                                                                            <div class="modal-content">
-                                                                                <div class="modal-header">
-                                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
-                                                                                </div>
-                                                                                <div class="modal-body text-center p-left-20 p-right-20 p-top-20">
-                                                                                    <h2>To pick up where you left off, you have two options:</h2>
-
-                                                                                    <p>Save this User ID Number. When you are ready to return, come back to our website, click on "Returning User" on the navigation bar above, and enter it into the User ID space.</p>
-                                                                                    <p class="m-top-15">
-                                                                                        <strong>USER ID</strong><br />
-                                                                                        <strong>12345</strong>
-                                                                                    </p>
-                                                                                    <p class="m-top-15"><strong>OR</strong></p>
-                                                                                    <p>Enter in your email address to get a special link sent directly to your inbox.</p>
-                                                                                    <div class="input-group col-md-8 col-md-offset-2 timeline-browse m-top-20 m-bottom-10">
-                                                                                        <input type="text" placeholder="Enter Your Email" class="form-control">
-                                                                                        <label class="input-group-btn">
-                                                                                            <span class="btn btn-primary">
-                                                                                                Send Link
-                                                                                            </span>
-                                                                                        </label>
-
-                                                                                    </div>
-
-                                                                                    <p>We will never store any of your personal information.</p>
-
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </section>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
+                                        
+                                    
+                                    <div class="m-top-85" id="forms_steps" *ngIf="showForms===true && showProcess==='true' && showWashingData===false">
+                                        <formsSteps></formsSteps>
+                                       
                                     </div>
                                 </div>
 
@@ -329,32 +230,7 @@
                 </div>
             </div>
 
-            <!-- Return Modal -->
-            <div class="modal fade timeline-modal" id="myModal-chat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog modal-top" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closePop()"><i class="fa fa-times" aria-hidden="true"></i></button>
-                        </div>
-                        <div class="modal-body text-center p-left-20 p-right-20 p-top-20">
-                            <h2>USER ID</h2>
-                            <p class="m-top-15"><strong>12345</strong></p>
-                            <p>This userid is being generated for the sole purpose of allowing you to return to the same step in the process where you left off. We are not retaining any of your personal or specific information.</p>
-                            <p class="m-top-15"><strong>OR</strong></p>
-                            <div class="input-group col-md-8 col-md-offset-2 timeline-browse m-top-20 m-bottom-10">
-                                <input type="text" placeholder="Enter Your Email" class="form-control">
-                                <label class="input-group-btn">
-
-                                    <span class="btn btn-primary" data-dismiss="modal" (click)="closePop()">
-                                        Send Link
-                                    </span>
-                                </label>
-                            </div>
-                            <p>This userid is being generated for the sole purpose of allowing you to return to the same step in the process where you left off. We are not retaining any of your personal or specific information.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
         </div>
     </div>
 </section>
