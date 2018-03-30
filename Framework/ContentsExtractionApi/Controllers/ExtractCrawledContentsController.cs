@@ -45,7 +45,7 @@ namespace ContentsExtractionApi.Controllers
         /// </summary>
         /// <returns></returns>
         // GET api/ExtractContents      
-     
+        
         public IEnumerable<Topic> Get(string state)
         //public string Get(string state)
         {

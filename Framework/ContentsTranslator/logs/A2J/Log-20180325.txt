@@ -1,0 +1,4 @@
+2018-03-25 08:06:36.432 -07:00 [Information] An appointment is booked successfully: { Id: 1, Subject: "Meeting of database migration", Timestamp: 03/12/2015 00:00:00 }
+2018-03-25 08:06:36.589 -07:00 [Error] Failed to book an appointment: { Id: 1, Subject: "Meeting of database migration", Timestamp: 03/12/2015 00:00:00 }
+2018-03-25 08:07:35.285 -07:00 [Information] An appointment is booked successfully: { Id: 1, Subject: "Meeting of database migration", Timestamp: 03/12/2015 00:00:00 }
+2018-03-25 08:07:35.348 -07:00 [Error] Failed to book an appointment: { Id: 1, Subject: "Meeting of database migration", Timestamp: 03/12/2015 00:00:00 }

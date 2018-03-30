@@ -212,6 +212,24 @@ namespace CrawledContentsBusinessLayer
 
 
         }
+
+        public static string TextTranslate(string query, string from, string to)
+        {
+           
+                try
+                {
+               
+                    //Get text the query translated "from" to "to" language                    
+                    return  getTextTranslate(query,from,to).Result;
+                   
+
+                }
+                catch (Exception e)
+                {
+                  throw;
+                }                            
+
+        }
         static async Task<string> getPhrasesFromAnalytics(string document)
         {
             try
@@ -246,6 +264,50 @@ namespace CrawledContentsBusinessLayer
                 return e.Message;
             }
         }
+
+        #region Text Translate API for query
+        static async Task<string> getTextTranslate(string query, string from, string to )
+        {
+            try
+            {
+                //string key = "f79c9411ee6d4daba6bb9aff008fe2eb";
+                string key = "ec00dfc70c914e0c98a29951b7ab87c0";
+                string token = "";
+                var uri = "https://api.cognitive.microsoft.com/sts/v1.0/issueToken";
+                HttpResponseMessage response;
+                var Tclient = new HttpClient();
+                Tclient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", key);
+                string reqBody = string.Empty;
+                using (var content = new StringContent(reqBody))
+                {
+                    content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                    response = await Tclient.PostAsync(uri, content);
+                    response.EnsureSuccessStatusCode();
+                    token = await response.Content.ReadAsStringAsync();
+                }
+                //uri = "https://api.cognitive.microsoft.com/sts/v1.0";
+                uri = "https://api.microsofttranslator.com/V2/Http.svc/Translate";
+                string result = "";
+               // var query = ((Microsoft.Bot.Connector.Activity)((Microsoft.Bot.Builder.Dialogs.IBotContext)context).Activity).Text;
+                string appid = "Bearer " + token;
+
+
+                 uri = string.Format("https://api.microsofttranslator.com/V2/Http.svc/Translate?Text=" + query + "&from=" + from + "&to=" + to + "&appid=" + appid);
+               // uri = string.Format(" https://api.cognitive.microsoft.com/sts/v1.0 
+                var httpClient = new HttpClient();
+                var responseT = await httpClient.GetAsync(uri);
+
+                //will throw an exception if not successful
+                responseT.EnsureSuccessStatusCode();
+
+               return result = await responseT.Content.ReadAsStringAsync();
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+        #endregion
     }
 
 

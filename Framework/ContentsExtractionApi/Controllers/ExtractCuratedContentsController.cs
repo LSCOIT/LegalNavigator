@@ -1,13 +1,11 @@
 ﻿using ContentDataAccess;
 using ContentsExtractionApi.Models;
 using ContentsExtractionApi.Utilities;
-using CrawledContentDataAccess.StateBasedContents;
 using CrawledContentsBusinessLayer;
 using System;
-using System.Collections.Generic;
+using System.Configuration;
 using System.Web.Http;
 using System.Web.Http.Cors;
-using System.Data.Entity;
 
 
 namespace ContentsExtractionApi.Controllers
@@ -19,7 +17,7 @@ namespace ContentsExtractionApi.Controllers
     public class ExtractCuratedContentsController : ApiController
     {
 
-        private IContentDataRepository crowledContentDataRepository;
+        private IContentDataRepository contentDataRepository;
 
         /// <summary>
         /// connection string prefix 
@@ -31,7 +29,17 @@ namespace ContentsExtractionApi.Controllers
         /// </summary>
         private const decimal treshold = 0.92m;
 
-        
+        /// <summary>
+        /// 
+        /// </summary>
+        private string[] separators = { ",", ".", "!", "?", ";", ":", " " };
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private string dbSourceConnectionStringName = ConfigurationManager.AppSettings["SourceConnectionString"];
+
 
         /// <summary>
         /// ExtractCuratedContentsController
@@ -39,7 +47,7 @@ namespace ContentsExtractionApi.Controllers
         /// <param name="crowledContentDataRepository"></param>
         public ExtractCuratedContentsController(IContentDataRepository crowledContentDataRepository)
         {
-            this.crowledContentDataRepository = crowledContentDataRepository;
+            this.contentDataRepository = crowledContentDataRepository;
         }
 
         /// <summary>
@@ -56,19 +64,20 @@ namespace ContentsExtractionApi.Controllers
         /// 
         /// </summary>
         /// <param name="scenarioId"></param>
-        /// <param name="state"></param>       
+        /// <param name="state"></param>
+        /// <param name="trnaslateTo"></param>       
         /// <returns></returns>
         // GET api/ExtractNSMIContents/5
-        public CrawledContentDataAccess.CuratedContentForAScenario Get(int scenarioId,string state )
+        public CrawledContentDataAccess.CuratedContentForAScenario Get(int scenarioId,string state, string trnaslateTo="en" )
         {
             var CuratedResult = new CrawledContentDataAccess.CuratedContentForAScenario();
             CuratedResult.SelectedState = state;
            // try
            // {
-                  var stateShortName = crowledContentDataRepository.GetStateByName(state)?.ShortName;
+                  var stateShortName = contentDataRepository.GetStateByName(state)?.ShortName;
 
                  
-                CuratedResult = crowledContentDataRepository.GetCuratedContent(scenarioId, StateToConnectionStringMapper.ToConnectionString(prefix,stateShortName));
+                CuratedResult = contentDataRepository.GetCuratedContent(scenarioId, StateToConnectionStringMapper.ToConnectionString(prefix,stateShortName, trnaslateTo != "en"?trnaslateTo:null),trnaslateTo);
                 CuratedResult.SelectedState = stateShortName;
                 if (CuratedResult != null && CuratedResult.CurrentIntent != null) {
                     var intentWithScore = TextExtractionModule.GetIntentFromLuisApi(CuratedResult.CurrentIntent);
@@ -92,6 +101,9 @@ namespace ContentsExtractionApi.Controllers
             return CuratedResult;
         }
 
+
+        
+
         /// <summary>
         /// 
         /// </summary>
@@ -104,18 +116,33 @@ namespace ContentsExtractionApi.Controllers
             try
             {
                 //var intent = TextExtractionModule.GetIntentFromLuisApi(nsmiInput.Sentence);
-
-                var intentWithScore = TextExtractionModule.GetIntentFromLuisApi(nsmiInput.Sentence);
+                if (!string.IsNullOrEmpty(nsmiInput?.TranslateFrom?.Trim()) && nsmiInput?.TranslateFrom != "en")
+                {
+                    
+                       nsmiInput.Sentence = TextExtractionModule.TextTranslate(nsmiInput.Sentence, nsmiInput.TranslateFrom, "en");
+                      var length = nsmiInput.Sentence.Length;
+                    
+                       var currentTranslationUsage = contentDataRepository.GetCurrentTranslationUsage(dbSourceConnectionStringName);
+                       currentTranslationUsage.UsedTillNow = currentTranslationUsage.UsedTillNow + length;
+                       currentTranslationUsage.LastUpdated = length;
+                       currentTranslationUsage.LastRunTime = DateTime.Now;
+                       contentDataRepository.Update(currentTranslationUsage, dbSourceConnectionStringName);
+                }
+                var intentWithScore = TextExtractionModule.GetIntentFromLuisApi(nsmiInput?.Sentence);
                 string topScorongIntent = null;
                 if (intentWithScore != null  && intentWithScore.IsSuccessful)
                 {
-                    topScorongIntent = intentWithScore.TopScoringIntent;
-                   
+                    topScorongIntent = intentWithScore.TopScoringIntent;   
 
                 }
-               
-                var stateShortName = crowledContentDataRepository.GetStateByName(nsmiInput.State)?.ShortName;
-                CuratedResult = crowledContentDataRepository.GetCuratedContent(topScorongIntent, StateToConnectionStringMapper.ToConnectionString(prefix, stateShortName));
+
+                if (string.IsNullOrEmpty(nsmiInput?.TranslateTo?.Trim()) && !string.IsNullOrEmpty(nsmiInput?.TranslateFrom?.Trim()))
+                {
+                    nsmiInput.TranslateTo = nsmiInput.TranslateFrom;
+                }
+
+                    var stateShortName = contentDataRepository.GetStateByName(nsmiInput.State)?.ShortName;
+                CuratedResult = contentDataRepository.GetCuratedContent(topScorongIntent, StateToConnectionStringMapper.ToConnectionString(prefix, stateShortName, nsmiInput.TranslateTo != "en" ? nsmiInput.TranslateTo : null), nsmiInput.TranslateTo);
                 if(CuratedResult== null)
                 {
                     CuratedResult = new CrawledContentDataAccess.CuratedContent();

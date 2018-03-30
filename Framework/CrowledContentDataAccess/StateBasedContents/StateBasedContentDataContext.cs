@@ -15,7 +15,7 @@ namespace ContentDataAccess.StateBasedContents
     {
         public StateBasedContentDataContext(string connectionString):base(connectionString)
         {
-
+            this.Database.CommandTimeout = 300;
         }
         public StateBasedContentDataContext()
             : base("name=StateBasedContentsDb") //Default connection string
@@ -43,6 +43,25 @@ namespace ContentDataAccess.StateBasedContents
         public virtual DbSet<Scenario> Scenarios { get; set; }
         public virtual DbSet<LawCategoryToScenario> LawCategoryToScenarios { get; set; }
         public virtual DbSet<ScenarioToLawCategory> ScenarioToLawCategories { get; set; }
+
+        public virtual DbSet<UploadBatchReference> UploadBatchReferences { get; set; }
+
+
+        public virtual DbSet<Video> Videos { get; set; }
+        public virtual DbSet<QuestionsAndAnswers> QuestionsAndAnswers { get; set; }
+
+        //Localization related tables
+        public virtual DbSet<UsageTranslation> UsageTranslations { get; set; }
+        public virtual DbSet<LanguageSupport> LanguageSupports { get; set; }
+        //public virtual DbSet<LawCategory_fr_FR> LawCategories_fr_FR { get; set; }
+        //public virtual DbSet<LawCategory_es_MX> LawCategories_es_MX { get; set; }
+        //public virtual DbSet<Scenario_fr_FR> Scenarios_fr_FR { get; set; }
+        //public virtual DbSet<Scenario_es_MX> Scenarios_es_MX { get; set; }
+        //public virtual DbSet<Resource_fr_FR> Resources_fr_FR { get; set; }
+        //public virtual DbSet<Resource_es_MX> Resources_es_MX { get; set; }
+        //public virtual DbSet<Process_fr_FR> Processes_fr_FR { get; set; }
+        //public virtual DbSet<Process_es_MX> Processes_es_MX { get; set; }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
