@@ -1,0 +1,98 @@
+﻿
+@{
+    ViewBag.Title = "_LanguageTranslationView";
+}
+@using ContentsUploader.Models
+@model LanguageTranslation
+<label>To Translate Migrated Content Choose Target Language and click "Translate": </label>
+@Html.DropDownListFor(m => m.SupportedLanguage, // 1. Store selected value in Model.State;
+                                         // when page is rendered after postback,
+                                         // take selected value from Model.State.
+
+                                              // 2. Take list of values from Model.States
+                                              Model.SupportedLanguages,
+
+                                              // 3. Text for the first 'default' option
+                                              " Please select a target language ",
+
+                                              //4. A class name to assign to <select> tag
+                                              new { @class = "form-control" })
+<input id="translate-language" type="submit" class="btn btn-primary btn-lg" value="Translate" onclick="submitTranslation()" />
+<div id="fade"></div>
+<div id="modal">
+    <img id="loader" src="~/Content/image/loading.gif" />
+</div>
+<style>
+    #fade {
+        display: none;
+        position: absolute;
+        top: 0%;
+        left: 0%;
+        width: 100%;
+        height: 100%;
+        background-color: #ababab;
+        z-index: 1001;
+        -moz-opacity: 0.8;
+        opacity: .70;
+        filter: alpha(opacity=80);
+    }
+    #modal {
+        display: none;
+        position: absolute;
+        top: 45%;
+        left: 45%;
+        /*width: 64px;
+        height: 64px;*/
+        padding: 30px 15px 0px;
+        border: 3px solid #ababab;
+        box-shadow: 1px 1px 10px #ababab;
+        border-radius: 20px;
+        background-color: white;
+        z-index: 1002;
+        text-align: center;
+        overflow: auto;
+    }
+</style>
+<script>
+    function openModal() {
+        document.getElementById('modal').style.display = 'block';
+        document.getElementById('fade').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('modal').style.display = 'none';
+        document.getElementById('fade').style.display = 'none';
+    }
+    function submitTranslation() {
+        var elements = document.getElementById("SupportedLanguage");
+        var value = elements.options[elements.selectedIndex].value;
+        if (value) {
+            openModal();
+            var xhttp = false;
+            if (window.XMLHttpRequest) {
+                xhttp = new XMLHttpRequest();
+            }
+            else {
+                xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            if (xhttp) {
+
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        closeModal();
+                        alert(this.responseText);
+                    }
+                };
+                xhttp.open("POST", '@Url.Action("Translate","Home")', true);
+                xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+                xhttp.send("selectedLanguage=" + value);
+            }
+        }
+        else {        
+            alert('Please select a language to initiate the Translation process');
+        }
+    }
+</script>
+
+

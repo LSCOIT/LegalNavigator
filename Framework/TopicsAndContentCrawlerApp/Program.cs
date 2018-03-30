@@ -5,6 +5,7 @@ using ContentDataAccess;
 using System.Collections.Generic;
 using ContentDataAccess.PlatformCoreSettingContents;
 using CrawledContentDataAccess.StateBasedContents;
+using System;
 
 namespace MSFTA2JApp
 {
@@ -12,35 +13,69 @@ namespace MSFTA2JApp
     {
         static void Main(string[] args)
         {
-            ContentDataRepository x = new ContentDataRepository(new CrowledContentDataContextFactory());
-             // x.Save(new User { Email = "test@test.com", Name = "testUser", Roles = new List<Role> { new Role { StateAdmin = "StateAdmin" } } }, "ContentsDb_AK1");
-           x.Save(new LawCategory {  Description="description", NSMICode="20002"}, "ContentsDb_AK1");
-            //var counter = 1;
-            foreach (var item in x.GetScenarios("ContentsDb_AK1"))
-            {
-                System.Console.WriteLine("Descripiton " + item.Description);
-               // x.Save(new Scenario { Description = "desc", LC_ID = counter++, LawCategory=item}, "ContentsDb_AK");
-            }
-           
+        //    try
+        //    {
+        //        //App Service Publish Profile Credentials 
+        //        string userName = "$MSFTA2JAppAnother"; //userName 
+        //    string userPassword = "k04DcMsTyiDPipxtjer6swHuLXtN1JMkiPbPbWk626azqiFNF3cW1FqrvYTc"; //userPWD 
 
-           // CrawledContentsBusinessLayer.CourtSiteExtraction.WebCrawler wc = new CrawledContentsBusinessLayer.CourtSiteExtraction.WebCrawler();
-           // WebCrawler.s_statelhUrlBase = @"https://alaskalawhelp.org";
-           // // WebCrawler.s_statelhUrlBase = @"http://www.courts.alaska.gov/shc/";
-           // var connectionStringName = "ContentsDb_WA";C:\Users\v-gedem\Source\Repos\Access2Justice\Framework\ContentsExtractionApi\packages.config
-           // //var connectionStringName = "ContentsDb_AL"
-           // var topics = wc.GetWebPageList();
-           // /*List<Topic> topics = new List<Topic> {
-           //     new Topic {
-           //     Name = "Topicname",
-           //     SubTopics = new List<SubTopic> { new SubTopic { Name="Subtopicname", Docs = new List<Document>() { new Document { Url="url", Title="title", Content="content" }  }, Url="url" } },
-           //     Url = "url"
-           //     }
-           // } ;*/
-           // IContentDataRepository crowledContentDataRepository = new ContentDataRepository(new CrowledContentDataContextFactory());
-              
-           //topics.ForEach(topic => crowledContentDataRepository.Save(topic, connectionStringName));
+        //    //change webJobName to your WebJob name 
+        //    string webJobName = "MSFTA2JApp";
 
-        }
+        //    var unEncodedString = String.Format($"{userName}:{userPassword}");
+        //    var encodedString = Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(unEncodedString));
+
+        //        //Change this URL to your WebApp hosting the 
+        //        //https://msfta2jappanother.scm.azurewebsites.net/azurejobs/#/jobs
+        //        string URL = "https://msfta2jappanother.scm.azurewebsites.net/api/triggeredwebjobs/" + webJobName + "/run?arguments=" + "argument1" + " " + "argument2";
+
+        //    System.Net.WebRequest request = System.Net.WebRequest.Create(URL);
+        //    request.Method = "POST";
+        //    request.ContentLength = 0;
+        //    request.Headers["Authorization"] = "Basic " + encodedString;
+        //    System.Net.WebResponse response = request.GetResponse();
+        //    System.IO.Stream dataStream = response.GetResponseStream();
+        //    System.IO.StreamReader reader = new System.IO.StreamReader(dataStream);
+        //    string responseFromServer = reader.ReadToEnd();
+        //    reader.Close();
+        //    response.Close();
+        //    Console.WriteLine("OK");  //no response 
+        //    Console.ReadLine();
+        //}
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex.Message.ToString());
+        //    }
+
+     ContentDataRepository x = new ContentDataRepository(new CrowledContentDataContextFactory());
+     // x.Save(new User { Email = "test@test.com", Name = "testUser", Roles = new List<Role> { new Role { StateAdmin = "StateAdmin" } } }, "ContentsDb_AK1");
+   x.Save(new LawCategory {  Description="Description", NSMICode="nsmiCode"}, "ContentsDb_AK1");
+     //var counter = 1;
+/*foreach (var item in x.GetScenarios("ContentsDb_AK1"))
+     {
+         System.Console.WriteLine("Descripiton " + item.Description);
+        // x.Save(new Scenario { Description = "desc", LC_ID = counter++, LawCategory=item}, "ContentsDb_AK");
+     }*/
+
+
+    // CrawledContentsBusinessLayer.CourtSiteExtraction.WebCrawler wc = new CrawledContentsBusinessLayer.CourtSiteExtraction.WebCrawler();
+    // WebCrawler.s_statelhUrlBase = @"https://alaskalawhelp.org";
+    // // WebCrawler.s_statelhUrlBase = @"http://www.courts.alaska.gov/shc/";
+    // var connectionStringName = "ContentsDb_WA";C:\Users\v-gedem\Source\Repos\Access2Justice\Framework\ContentsExtractionApi\packages.config
+    // //var connectionStringName = "ContentsDb_AL"
+    // var topics = wc.GetWebPageList();
+    // /*List<Topic> topics = new List<Topic> {
+    //     new Topic {
+    //     Name = "Topicname",
+    //     SubTopics = new List<SubTopic> { new SubTopic { Name="Subtopicname", Docs = new List<Document>() { new Document { Url="url", Title="title", Content="content" }  }, Url="url" } },
+    //     Url = "url"
+    //     }
+    // } ;*/
+    // IContentDataRepository crowledContentDataRepository = new ContentDataRepository(new CrowledContentDataContextFactory());
+
+    //topics.ForEach(topic => crowledContentDataRepository.Save(topic, connectionStringName));
+
+}
     }
 }
 namespace WlhDataExtraction

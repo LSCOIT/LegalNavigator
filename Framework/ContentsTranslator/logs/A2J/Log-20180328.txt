@@ -1,0 +1,45 @@
+2018-03-28 19:22:32.500 -07:00 [Information] Started Content Translator
+2018-03-28 19:22:32.559 -07:00 [Information] Exiting from  CountWordsToBeTranslatedWithInLimit Method. 
+2018-03-28 19:22:38.157 -07:00 [Information] Total Number of Words in Categories table for the batch id = 83 is 2507
+2018-03-28 19:22:47.173 -07:00 [Information] Total Number of Words in Scenario  table for the batch id = 83 is 5830
+2018-03-28 19:22:47.656 -07:00 [Information] Total Number of Words in Process table for the batch id = 83 is 11495
+2018-03-28 19:22:47.927 -07:00 [Information] Total Number of Words in Resource table for the batch id = 83 is 5363
+2018-03-28 19:22:47.929 -07:00 [Information] Exiting from  CountWordsToBeTranslatedWithInLimit Method. 
+2018-03-28 19:22:47.962 -07:00 [Information] Entering into  TranslateSentences Method. 
+2018-03-28 19:22:59.899 -07:00 [Error] Error occured: with exception message = An error occurred while executing the command definition. See the inner exception for details.  and stackTrace =    at System.Data.Entity.Core.EntityClient.Internal.EntityCommandDefinition.ExecuteStoreCommands(EntityCommand entityCommand, CommandBehavior behavior)
+   at System.Data.Entity.Core.Objects.Internal.ObjectQueryExecutionPlan.Execute[TResultType](ObjectContext context, ObjectParameterCollection parameterValues)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass7.<GetResults>b__6()
+   at System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.<>c__DisplayClass7.<GetResults>b__5()
+   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption)
+   at System.Data.Entity.Core.Objects.ObjectQuery`1.<System.Collections.Generic.IEnumerable<T>.GetEnumerator>b__0()
+   at System.Data.Entity.Internal.LazyEnumerator`1.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at ContentDataAccess.ContentDataRepository.GetSupportedLanguages(String connectionString) in C:\Users\v-gedem\Source\Repos\Access2Justice\Framework\CrowledContentDataAccess\ContentDataRepository.cs:line 690
+   at ContentsTranslator.TranslationManager.TranslateSentences(Int32 batchId, String state, String targetLanguageCode) in C:\Users\v-gedem\Source\Repos\Access2Justice\Framework\ContentsTranslator\TranslationManager.cs:line 75
+   at ContentsTranslator.Program.Main(String[] args) in C:\Users\v-gedem\Source\Repos\Access2Justice\Framework\ContentsTranslator\Program.cs:line 30
+2018-03-28 19:27:15.271 -07:00 [Information] Started Content Translator
+2018-03-28 19:27:19.422 -07:00 [Information] Exiting from  CountWordsToBeTranslatedWithInLimit Method. 
+2018-03-28 19:27:33.212 -07:00 [Information] Total Number of Words in Categories table for the batch id = 83 is 2507
+2018-03-28 19:27:35.903 -07:00 [Information] Total Number of Words in Scenario  table for the batch id = 83 is 5830
+2018-03-28 19:27:39.268 -07:00 [Information] Total Number of Words in Process table for the batch id = 83 is 11495
+2018-03-28 19:28:01.002 -07:00 [Information] Total Number of Words in Resource table for the batch id = 83 is 5363
+2018-03-28 19:28:01.507 -07:00 [Information] Exiting from  CountWordsToBeTranslatedWithInLimit Method. 
+2018-03-28 19:28:12.340 -07:00 [Information] Entering into  TranslateSentences Method. 
+2018-03-28 19:29:09.322 -07:00 [Error] Saved all the NSMI codes to target Db. 
+2018-03-28 19:29:23.023 -07:00 [Error] Inner Exception 1 Error occured: with exception message = Response status code does not indicate success: 403 (quota limit is reached).   and stackTrace =    at System.Net.Http.HttpResponseMessage.EnsureSuccessStatusCode()
+   at CrawledContentsBusinessLayer.TextExtractionModule.<getTextTranslate>d__7.MoveNext() in C:\Users\v-gedem\Source\Repos\Access2Justice\Framework\CrawledContentsBusinessLayer\TextExtractionModule.cs:line 306 
+2018-03-28 19:49:40.966 -07:00 [Information] Started Content Translator
+2018-03-28 19:49:41.033 -07:00 [Information] Exiting from  CountWordsToBeTranslatedWithInLimit Method. 
+2018-03-28 22:41:25.635 -07:00 [Information] Started Content Translator
+2018-03-28 22:41:25.695 -07:00 [Information] Exiting from  CountWordsToBeTranslatedWithInLimit Method. 
+2018-03-28 22:41:36.166 -07:00 [Information] Total Number of Words in Categories table for the batch id = 83 is 2507
+2018-03-28 22:41:36.454 -07:00 [Information] Total Number of Words in Scenario  table for the batch id = 83 is 5830
+2018-03-28 22:41:36.840 -07:00 [Information] Total Number of Words in Process table for the batch id = 83 is 11495
+2018-03-28 22:41:37.097 -07:00 [Information] Total Number of Words in Resource table for the batch id = 83 is 5363
+2018-03-28 22:41:37.098 -07:00 [Information] Exiting from  CountWordsToBeTranslatedWithInLimit Method. 
+2018-03-28 22:41:37.148 -07:00 [Information] Entering into  TranslateSentences Method. 
+2018-03-28 22:43:33.022 -07:00 [Information] Total Number of Words tranlated  for the current job is: 385. 
+2018-03-28 22:43:33.024 -07:00 [Information] Exiting from  TranslateSentences Method. 

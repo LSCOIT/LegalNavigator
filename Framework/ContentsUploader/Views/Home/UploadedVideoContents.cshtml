@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "Successfully Uploaded Excel content to the data store";
+    Layout = "~/Views/Shared/_DataGridLayout.cshtml";
+}
+@model int
+<div class="row">
+    <div class="panel-heading">
+        <div class="col-md-8  custom-heading3">
+
+
+            @using (Html.BeginForm("RollbackMigration", "Home", FormMethod.Post))
+            {
+                @Html.Hidden("migrationId", Model);
+                <div style="float:left;">
+                    <h3>
+                        <i class="fa fa-table"></i>
+                        <span style="display:inline; ">@ViewBag.SectionText</span>
+                        @*<span style="display:inline; "><input type="submit" value="Rollback Migration" /></span>*@
+                    </h3>
+                </div>
+
+            }
+
+
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <section class="col-md-12 col-md-push-0">
+
+        @Html.Partial("_ViewImportedVideoContentsPartial", Model)
+    </section>
+</div>

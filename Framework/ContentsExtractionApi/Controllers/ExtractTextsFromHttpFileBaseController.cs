@@ -1,19 +1,8 @@
-﻿using ContentsExtractionApi.Models;
-using CrawledContentsBusinessLayer;
-using CrawledContentsBusinessLayer.Model.TextExtraction;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
+﻿using CrawledContentsBusinessLayer;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
-using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
-using System.Web.Mvc;
 
 /// <summary>
 /// 

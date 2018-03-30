@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace ContentsExtractionApi.Models
+﻿namespace ContentsExtractionApi.Models
 {
     /// <summary>
     /// 
@@ -20,5 +15,15 @@ namespace ContentsExtractionApi.Models
         /// 
         /// </summary>
         public string State { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string TranslateFrom { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string TranslateTo { get; set; }
     }
 }
