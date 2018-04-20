@@ -1,0 +1,1 @@
+﻿simple business logic goes here (complicated business logic might be better moved to the Access2Justice.Shared project, this is up to the developer discretion)

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace A2J.Web.Controllers
+namespace Access2Justice.Web.Controllers
 {
     [Route("api/[controller]")]
     public class SampleDataController : Controller

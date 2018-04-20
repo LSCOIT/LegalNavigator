@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace A2J.Tests
+namespace Access2Justice.Shared
 {
     public class Class1
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace A2J.Api.Controllers
+namespace Access2Justice.Api.Controllers
 {
     [Route("api/[controller]")]
     public class ValuesController : Controller

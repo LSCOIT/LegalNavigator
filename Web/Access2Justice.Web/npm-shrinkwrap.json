@@ -1,5 +1,5 @@
 {
-  "name": "A2J.Web",
+  "name": "Access2Justice.Web",
   "version": "0.0.0",
   "dependencies": {
     "@angular/animations": {
