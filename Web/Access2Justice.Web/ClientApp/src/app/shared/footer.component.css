@@ -1,0 +1,11 @@
+#helpline {
+    background: #af1212;
+    color: #fff;
+    margin-top: 50px;
+}
+
+.footer-nav li {
+    list-style: none;
+    display: inline-block;
+    padding: 0 20px;
+}

@@ -1,0 +1,29 @@
+#home-img {
+    background-color: #f2f2f2;
+    width: 100%;
+    height: 300px;
+}
+
+#testimonial-img {
+    position: absolute;
+    border-radius: 50%;
+    background-color: #f2f2f2;
+    height: 100px;
+    width: 100px;
+    z-index: 1;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    box-shadow: 10px 10px 0px -2px rgba(231,166,26,1);
+    top: -10px;
+}
+
+@media only screen and (min-width : 768px) {
+
+}
+
+@media only screen and (min-width : 992px) {
+    #testimonial-img {
+        top: -10px;
+    }
+}

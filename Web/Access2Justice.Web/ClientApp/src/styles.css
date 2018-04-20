@@ -1,0 +1,110 @@
+body {
+  margin-top: 70px;
+}
+
+a {
+  color: #2c2d2d;
+}
+
+.navbar {
+  padding-left: 0;
+}
+
+.inline {
+  display: inline-block;
+}
+
+.mobile-hidden {
+  display: none;
+}
+
+#search {
+  width: 80%;
+}
+
+.row {
+  margin: 40px auto;
+}
+
+.row>.glyphicon {
+  font-size:30px;
+}
+
+.center-align {
+  margin: 0 auto;
+}
+
+/*Home Page - Carousel*/
+div.carousel.slide {
+  height: 300px;
+}
+
+.carousel-inner {
+  padding-top: 75px;
+}
+
+a.carousel-control{
+  width: 0;
+  margin: 0;
+  opacity: 1;
+  color: blue;
+  font-size: 2.5em;
+  text-shadow: none;
+  z-index: 1;
+}
+
+.carousel-indicators {
+  z-index: 1;
+}
+
+.carousel-indicators .active {
+  background-color: blue;
+  width: .6em;
+  height: .6em;
+  margin: 0 2px; 
+}
+
+.carousel-indicators li {
+  background-color: rgb(78, 134, 255);
+  margin: 0 2px; 
+  border: none;
+  width: .6em;
+  height: .6em;
+  z-index: 1;
+}
+
+/*Help Page - Accordion */
+.panel {
+  box-shadow: none;
+  border: none;
+}
+
+.panel-group .panel+.panel {
+  margin-top: -2px;
+}
+
+.panel-default>.panel-heading {
+  background:none;
+  border: 1px solid black;
+  border-radius: 0;
+}
+
+.panel-body {
+  padding: 25px 15px 50px 15px;
+}
+
+@media only screen and (min-width : 768px) {
+  .mobile-hidden {
+    display: block;
+  }
+
+  .carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chevron-right, .carousel-control .icon-next, .carousel-control .icon-prev {
+    font-size: 1.5em;
+  }
+}
+
+@media only screen and (min-width : 992px) {
+  .navbar {
+    padding-left: 30px;
+  }
+}

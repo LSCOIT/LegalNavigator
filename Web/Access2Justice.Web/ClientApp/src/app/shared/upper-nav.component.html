@@ -1,0 +1,54 @@
+<div class="navbar navbar-fixed-top upper-nav">
+  <div class="container-fluid">
+    <div class="navbar-left inline" id="edit-location">
+      <span type="button" class="glyphicon glyphicon-map-marker map-icon" aria-hidden="true"></span>
+      <span>Anchorage, AK (99510)</span>
+      <button type="button" (click)="openModal(template)" class="glyphicon glyphicon-pencil" aria-hidden="true"></button>
+    </div>
+    <ng-template #template>
+      <div class="modal-body text-center container-fluid">
+        <button type="button" class="close" aria-label="Close" (click)="modalRef.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="row">
+          <span type="button" class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+          <h4>Zip code</h4>
+          <p>We currently support Alask and Hawaii</p>
+          <p>You can learn more about the states we support by visiting our <a href="#">About</a> page</p>
+        </div>
+        <div class="row">
+          <span>Zip code</span>
+          <input type="text" placeholder="12345">
+        </div>
+        <p>You can also add your street address to get more local information:</p>
+        <div class="row">
+          <span>Address</span>
+          <input type="text">
+        </div>
+        <div class="row">
+          <button type="submit" class="btn btn-primary">Update Location</button>
+        </div>
+      </div>
+    </ng-template>   
+    <div class="navbar-right inline" id="language-dropdown">
+      <ul>
+        <li dropdown>
+          <a href dropdownToggle (click)="false"><span type="button" class="glyphicon glyphicon-globe" aria-hidden="true"></span>English</a>
+          <ul *dropdownMenu class="dropdown-menu pull-left">
+            <li class="list-items" *ngFor="let choice of items">
+              <a class="dropdown-item" href="#">{{choice}}</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav mobile-hidden">
+        <li><a routerLink='/help'><span type="button" class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>Help &amp; FAQs</a></li>
+        <li><a routerLink='/privacy'><span type="button" class="glyphicon glyphicon-tower" aria-hidden="true"></span>Privacy Promise</a></li>
+        <li><a routerLink='/createaccount' id="create-account"><span type="button" class="glyphicon glyphicon-user" aria-hidden="true"></span>Create Account</a></li>
+        <li><a routerLink='/login' id="log-in-nav">| Log In </a></li>
+        <li><a href="www.bing.com" id="exit-site"><span type="button" class="glyphicon glyphicon-log-out" aria-hidden="true"></span>Exit Website</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+  

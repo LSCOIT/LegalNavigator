@@ -1,0 +1,156 @@
+fieldset {
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
+
+h4, h5 {
+	line-height: 1.5em;
+	margin: 0;
+}
+
+img {
+    border: 0;
+    display: block;
+    height: auto;
+    max-width: 100%;
+}
+
+p { margin: 0; }
+
+.clearfix { *zoom: 1; } /* For IE 6/7 */
+.clearfix:before, .clearfix:after {
+    content: "";
+    display: table;
+}
+.clearfix:after { clear: both; }
+
+/* ---------- LIVE-CHAT ---------- */
+
+#live-chat {
+	bottom: 0;
+	font-size: 12px;
+	right: 24px;
+	position: fixed;
+	width: 240px;
+	z-index: 5;
+	background: #f2f2f2;
+}
+
+#live-chat header {
+	background:  rgb(189, 221, 241);
+	color: #fff;
+	cursor: pointer;
+	padding: 10px 24px;
+}
+
+#live-chat h4 {
+	font-size: 12px;
+}
+
+#live-chat input {
+	padding: 0;
+}
+
+#live-chat input[type="text"] {
+	border-radius: 3px;
+	padding: 8px;
+	outline: none;
+	width: 145px;
+	border: 0;
+	color: inherit;
+    font-family: inherit;
+    font-size: 100%;
+    line-height: normal;
+    margin: 0;
+}
+
+.chat-message-counter {
+	background: #e62727;
+	border: 1px solid #fff;
+	border-radius: 50%;
+	display: none;
+	font-size: 12px;
+	font-weight: bold;
+	height: 28px;
+	left: 0;
+	line-height: 28px;
+	margin: -15px 0 0 -15px;
+	position: absolute;
+	text-align: center;
+	top: 0;
+	width: 28px;
+}
+
+.chat-close {
+	border-radius: 50%;
+	color: #fff;
+	display: block;
+	float: right;
+	font-size: 16px;
+	height: 16px;
+	line-height: 16px;
+	margin: 2px 0 0 0;
+	text-align: center;
+	width: 16px;
+}
+
+.chat-history {
+	height: 220px;
+	padding: 8px 24px;
+	overflow-y: scroll;
+	padding-bottom: 30px;
+	margin-bottom: 20px;
+}
+
+.chat-message {
+	margin: 10px 0;
+}
+
+
+.chat-time {
+	font-size: 8px;
+}
+
+/* .chat-feedback {
+	font-style: italic;	
+	margin: 0 0 0 80px;
+} */
+
+.icon, .chat-title {
+    display: inline-block;
+}
+
+
+.chatbot-message {
+    background-color: #ffffff;
+    padding: 5px;
+    border-radius: 3px;
+    float: left;
+}
+
+.user-message {
+    background-color: rgb(189, 221, 241);
+    padding: 5px;
+    border-radius: 3px;
+    float: right;
+}
+
+.user-message + .chat-time {
+    float: right;
+}
+
+#chatbox-input {
+	position:absolute;
+	bottom: 10px;
+}
+.message-icon {
+    width: 30px;
+    padding: 5px 5px 5px 7px;
+    display: inline-block;
+    color: white;
+    background:  #1d0dff;
+	margin-left: -4px;
+	border-top-right-radius: 3px;
+	border-bottom-right-radius: 3px;
+}
