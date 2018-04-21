@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2037
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Access2Justice.Web", "Access2Justice.Web\Access2Justice.Web.csproj", "{B84AE37A-D5F8-4666-8F4C-8BE1079A87B6}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Access2Justice.Api", "Access2Justice.Api\Access2Justice.Api.csproj", "{2E4A3E5A-0995-46CB-9AA4-41D1C4D13413}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Access2Justice.Tests", "Access2Justice.Tests\Access2Justice.Tests.csproj", "{B3934597-5AAE-4FB4-8277-52B74AF4A18A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Access2Justice.Shared", "Access2Justice.Shared\Access2Justice.Shared.csproj", "{ACD1CAE7-2EE6-4BE4-BEFF-381D82FF050D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Access2Justice.Web", "Access2Justice.Web\Access2Justice.Web.csproj", "{CAF636C6-01E4-47D7-96F1-3D6018B65DA5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Access2Justice.CosmosDbService", "Access2Justice.CosmosDbService\Access2Justice.CosmosDbService.csproj", "{C56202B3-C452-4264-BE4A-718DC5FDE068}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,6 +19,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B84AE37A-D5F8-4666-8F4C-8BE1079A87B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B84AE37A-D5F8-4666-8F4C-8BE1079A87B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B84AE37A-D5F8-4666-8F4C-8BE1079A87B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B84AE37A-D5F8-4666-8F4C-8BE1079A87B6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2E4A3E5A-0995-46CB-9AA4-41D1C4D13413}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2E4A3E5A-0995-46CB-9AA4-41D1C4D13413}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E4A3E5A-0995-46CB-9AA4-41D1C4D13413}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -29,10 +35,10 @@ Global
 		{ACD1CAE7-2EE6-4BE4-BEFF-381D82FF050D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACD1CAE7-2EE6-4BE4-BEFF-381D82FF050D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ACD1CAE7-2EE6-4BE4-BEFF-381D82FF050D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CAF636C6-01E4-47D7-96F1-3D6018B65DA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CAF636C6-01E4-47D7-96F1-3D6018B65DA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CAF636C6-01E4-47D7-96F1-3D6018B65DA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CAF636C6-01E4-47D7-96F1-3D6018B65DA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C56202B3-C452-4264-BE4A-718DC5FDE068}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C56202B3-C452-4264-BE4A-718DC5FDE068}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C56202B3-C452-4264-BE4A-718DC5FDE068}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C56202B3-C452-4264-BE4A-718DC5FDE068}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
