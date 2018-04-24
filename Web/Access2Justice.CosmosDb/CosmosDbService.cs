@@ -12,17 +12,17 @@ using System.Threading.Tasks;
 
 namespace Access2Justice.CosmosDbService
 {
-    public class CosmosDbService<T> where T : class
+    public class CosmosDbService<T> : IBackendDatabaseService<T> where T : class
     {
         private readonly ICosmosDbConfigurations _config;
         private readonly IConfigurationManager _configurationManager;
         private readonly IDocumentClient _documentClient;
 
-        public CosmosDbService(IConfigurationManager configurationManager)
+        public CosmosDbService(IDocumentClient documentClient, IConfigurationManager configurationManager)
         {
+            _documentClient = documentClient;
             _configurationManager = configurationManager;
             _config = _configurationManager.Bind<CosmosDbConfigurations>(Directory.GetCurrentDirectory(), "cosmosDb");
-            _documentClient = new DocumentClient(new Uri(_config.Endpoint), _config.AuthKey);
 
             CreateDatabaseIfNotExistsAsync().Wait();
             CreateCollectionIfNotExistsAsync().Wait();
