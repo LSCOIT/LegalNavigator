@@ -27,12 +27,6 @@ namespace Access2Justice.Api.Controllers
         [HttpGet]
         public async Task<IEnumerable<string>> Get()
         {
-
-            var cosmosDb = new CosmosDbService.CosmosDbService<CuratedExperience>(
-                _documentClient, _configurationManager);
-
-            var itesm = await cosmosDb.GetItemsAsync(x => x.id == "46350752-a33d-3454-2e8d-e1045d554d41");
-
             return new string[] { "value1", "value2" };
         }
 

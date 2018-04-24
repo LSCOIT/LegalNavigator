@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.Azure.Documents;
 
-namespace Access2Justice.CosmosDbService
+namespace Access2Justice.CosmosDb
 {
     public interface IBackendDatabaseService<T> where T : class
     {

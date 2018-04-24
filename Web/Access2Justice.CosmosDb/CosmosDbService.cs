@@ -10,7 +10,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 
-namespace Access2Justice.CosmosDbService
+namespace Access2Justice.CosmosDb
 {
     public class CosmosDbService<T> : IBackendDatabaseService<T> where T : class
     {

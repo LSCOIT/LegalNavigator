@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Access2Justice.CosmosDbService;
+﻿using Access2Justice.Api.Models;
+using Access2Justice.CosmosDb;
 using Access2Justice.Shared;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,8 +7,7 @@ using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using System;
 
 namespace Access2Justice.Api
 {
@@ -29,14 +25,18 @@ namespace Access2Justice.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
             services.AddSingleton<IConfigurationManager, ConfigurationManager>();
             services.AddSingleton<IConfigurationBuilder, ConfigurationBuilder>();
 
-            // configure CosmosDb service
+            // configure CosmosDb client
             ICosmosDbConfigurations cosmosDbConfigurations = new CosmosDbConfigurations();
             Configuration.GetSection("cosmosDb").Bind(cosmosDbConfigurations);
-            IDocumentClient documentClient = new DocumentClient(new Uri(cosmosDbConfigurations.Endpoint), cosmosDbConfigurations.AuthKey);
-            services.AddSingleton(documentClient);
+            services.AddSingleton<IDocumentClient>(x =>
+                new DocumentClient(new Uri(cosmosDbConfigurations.Endpoint), cosmosDbConfigurations.AuthKey));
+
+            // inject CosmosDb service
+            services.AddSingleton(typeof(IBackendDatabaseService<CuratedExperience>), typeof(CosmosDbService<CuratedExperience>));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

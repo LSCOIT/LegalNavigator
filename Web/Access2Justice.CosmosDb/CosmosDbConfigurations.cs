@@ -1,4 +1,4 @@
-﻿namespace Access2Justice.CosmosDbService
+﻿namespace Access2Justice.CosmosDb
 {
     public class CosmosDbConfigurations : ICosmosDbConfigurations
     {
