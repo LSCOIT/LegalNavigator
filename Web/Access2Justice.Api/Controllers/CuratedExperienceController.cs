@@ -1,4 +1,5 @@
-﻿using Access2Justice.Api.Models;
+﻿using Access2Justice.Api.Models.CuratedExperience;
+using Access2Justice.Api.ViewModels;
 using Access2Justice.CosmosDb;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -10,23 +11,34 @@ namespace Access2Justice.Api.Controllers
     [Route("api/[controller]")]
     public class CuratedExperienceController : Controller
     {
-        //private readonly IConfigurationManager _configurationManager;
-        //private readonly IDocumentClient _documentClient;
         private readonly IBackendDatabaseService<CuratedExperience> _backendDatabaseService;
 
         public CuratedExperienceController(IBackendDatabaseService<CuratedExperience> backendDatabaseService)
         {
-            //_configurationManager = configurationManager;
-            //_documentClient = documentClient;
             _backendDatabaseService = backendDatabaseService;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<CuratedExperience>> Get()
+        public async Task<CuratedExperienceChoiceSet> Get([FromQuery] string id)
         {
-            var items = await _backendDatabaseService.GetItemsAsync(x => x.id == "46350752-a33d-3454-2e8d-e1045d554d41");
-            return items;
-        }
+            var choiceSet = new CuratedExperienceChoiceSet();
+            var choice = new List<Choice>();
 
+            var children = new List<string>();
+            children.Add("ffa0141d-ff2a-4f39-90eb-fbbb2f71e482");
+
+            var curatedExperience = new CuratedExperience();
+            curatedExperience.id = "8bafc1c9-c451-4f72-84f9-2383791fa713";
+            curatedExperience.parentId = "self";
+            curatedExperience.description = "are you a male or female?";
+            curatedExperience.childern = children;
+
+            await _backendDatabaseService.CreateItemAsync(curatedExperience);
+
+
+            var retrivedCuratedExperience = await _backendDatabaseService.GetItemAsync("8bafc1c9-c451-4f72-84f9-2383791fa713");
+
+            return choiceSet;
+        }
     }
 }

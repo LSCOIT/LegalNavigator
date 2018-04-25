@@ -1,4 +1,4 @@
-﻿using Access2Justice.Api.Models;
+﻿using Access2Justice.Api.Models.CuratedExperience;
 using Access2Justice.CosmosDb;
 using Access2Justice.Shared;
 using Microsoft.AspNetCore.Builder;

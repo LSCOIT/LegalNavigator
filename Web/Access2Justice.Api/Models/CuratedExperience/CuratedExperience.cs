@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace Access2Justice.Api.Models
+namespace Access2Justice.Api.Models.CuratedExperience
 {
     public class CuratedExperience
     {

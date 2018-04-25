@@ -28,7 +28,7 @@ namespace Access2Justice.CosmosDb
             CreateCollectionIfNotExistsAsync().Wait();
         }
 
-        public async Task<T> GetItemAsync(string id, string category)
+        public async Task<T> GetItemAsync(string id)
         {
             try
             {
@@ -76,7 +76,7 @@ namespace Access2Justice.CosmosDb
             return await _documentClient.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(_config.DatabaseId, _config.CollectionId, id), item);
         }
 
-        public async Task DeleteItemAsync(string id, string category)
+        public async Task DeleteItemAsync(string id)
         {
             await _documentClient.DeleteDocumentAsync(UriFactory.CreateDocumentUri(_config.DatabaseId, _config.CollectionId, id));
         }
