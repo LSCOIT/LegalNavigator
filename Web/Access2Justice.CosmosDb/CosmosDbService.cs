@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Access2Justice.CosmosDb
 {
-    public class CosmosDbService<T> : IBackendDatabaseService<T> where T : class
+    public class CosmosDbService : IBackendDatabaseService
     {
         private readonly ICosmosDbConfigurations _config;
         private readonly IConfigurationManager _configurationManager;
@@ -28,7 +28,7 @@ namespace Access2Justice.CosmosDb
             CreateCollectionIfNotExistsAsync().Wait();
         }
 
-        public async Task<T> GetItemAsync(string id)
+        public async Task<T> GetItemAsync<T>(string id)
         {
             try
             {
@@ -40,16 +40,17 @@ namespace Access2Justice.CosmosDb
             {
                 if (e.StatusCode == System.Net.HttpStatusCode.NotFound)
                 {
-                    return null;
+                    return default(T);
                 }
                 else
                 {
+                    // todo:@alaa log error
                     throw;
                 }
             }
         }
 
-        public async Task<IEnumerable<T>> GetItemsAsync(Expression<Func<T, bool>> predicate)
+        public async Task<IEnumerable<T>> GetItemsAsync<T>(Expression<Func<T, bool>> predicate)
         {
             IDocumentQuery<T> query = _documentClient.CreateDocumentQuery<T>(
                 UriFactory.CreateDocumentCollectionUri(_config.DatabaseId, _config.CollectionId),
@@ -66,12 +67,12 @@ namespace Access2Justice.CosmosDb
             return results;
         }
 
-        public async Task<Document> CreateItemAsync(T item)
+        public async Task<Document> CreateItemAsync<T>(T item)
         {
             return await _documentClient.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(_config.DatabaseId, _config.CollectionId), item);
         }
 
-        public async Task<Document> UpdateItemAsync(string id, T item)
+        public async Task<Document> UpdateItemAsync<T>(string id, T item)
         {
             return await _documentClient.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(_config.DatabaseId, _config.CollectionId, id), item);
         }
@@ -95,6 +96,7 @@ namespace Access2Justice.CosmosDb
                 }
                 else
                 {
+                    // todo:@alaa log error
                     throw;
                 }
             }
@@ -120,6 +122,7 @@ namespace Access2Justice.CosmosDb
                 }
                 else
                 {
+                     // todo:@alaa log error
                     throw;
                 }
             }

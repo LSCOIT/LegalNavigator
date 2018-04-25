@@ -1,5 +1,4 @@
-﻿using Access2Justice.Api.Models.CuratedExperience;
-using Access2Justice.CosmosDb;
+﻿using Access2Justice.CosmosDb;
 using Access2Justice.Shared;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,7 +35,7 @@ namespace Access2Justice.Api
                 new DocumentClient(new Uri(cosmosDbConfigurations.Endpoint), cosmosDbConfigurations.AuthKey));
 
             // inject CosmosDb service
-            services.AddSingleton(typeof(IBackendDatabaseService<CuratedExperience>), typeof(CosmosDbService<CuratedExperience>));
+            services.AddSingleton(typeof(IBackendDatabaseService), typeof(CosmosDbService));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
