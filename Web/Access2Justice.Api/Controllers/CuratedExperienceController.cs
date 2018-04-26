@@ -1,11 +1,14 @@
 ﻿using Access2Justice.Api.Models.CuratedExperience;
 using Access2Justice.Api.ViewModels;
 using Access2Justice.CosmosDb;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
+using Access2Justice.Shared.A2JExtensions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Access2Justice.Api.BusinessLogic;
+using Microsoft.VisualBasic;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -13,50 +16,52 @@ namespace Access2Justice.Api.Controllers
     public class CuratedExperienceController : Controller
     {
         private readonly IBackendDatabaseService _backendDatabaseService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public CuratedExperienceController(IBackendDatabaseService backendDatabaseService)
+        public CuratedExperienceController(IBackendDatabaseService backendDatabaseService, IHttpContextAccessor httpContextAccessor)
         {
             _backendDatabaseService = backendDatabaseService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpGet]
-        public async Task<CuratedExperienceChoiceSet> Get([FromQuery] string id)
+        public async Task<CuratedExperienceChoiceSet> Get([FromQuery] string survayId)
         {
-            var choiceSet = new CuratedExperienceChoiceSet();
-            var choice = new List<Choice>();
+            var curatedExperience = await GetCuratedExperience(survayId);
+            return CuratedExperienceChoiceSetMapper.GetQuestions(curatedExperience, curatedExperience.SurvayTree.First().SurvayItemId);  // start with the first question
+        }
 
 
-            var children = new List<string>();
-            children.Add("ffa0141d-ff2a-4f39-90eb-fbbb2f71e482");
 
-            var survay = new SurvayTree();
-            survay.ChoiceSetId = "b5269ec5-680f-4d8a-b0f9-779f7c9cfcb4";
-            survay.Description = "are you a 'male' or 'female'?";
-            survay.ParentId = "self";
-            survay.Childern = children;
+        [HttpPost]
+        public async Task<CuratedExperienceChoiceSet> Post([FromQuery] string survayId, string questionId, string answer)
+        {
+            var curatedExperience = await GetCuratedExperience(survayId);
+            var questions = CuratedExperienceChoiceSetMapper.GetQuestions(curatedExperience, questionId);
+
+            // check if there are answers to return, if not store them.
+
+            return questions;
+        }
+
+
+        private async Task<CuratedExperience> GetCuratedExperience(string id)
+        {
+            // todo:@alaa we should probably use some kind of caching here. Azure Radius?
 
             var curatedExperience = new CuratedExperience();
-            curatedExperience.CuratedExperienceId = "19a0c939-9635-40a5-a33c-c441fdb3f26f";
-            curatedExperience.Name = "Child Custody";
-            curatedExperience.SurvayTree.Add(survay);
 
-            var answers = new Dictionary<Guid, string>();
-            answers.Add(Guid.Parse("bfeee8b1-add7-4900-8726-7d758e8d0614"), "male");
-            answers.Add(Guid.Parse("1e3d78ce-8d5b-4c57-bdc4-0c08e35d6e3c"), "yes i'm in military serivce");
-
-
-            await _backendDatabaseService.CreateItemAsync(curatedExperience);
-            await _backendDatabaseService.CreateItemAsync(new CuratedExperienceAnswersMapper
+            if (HttpContext.Session.GetString("CuratedExperience") == null)
             {
-                CuratedExperienceId = Guid.Parse("d7da741a-9844-40fc-9128-baff482ed505"),
-                Answers = answers
-            });
+                curatedExperience = await _backendDatabaseService.GetItemAsync<CuratedExperience>(id);
+                _httpContextAccessor.HttpContext.Session.SetObjectAsJson("CuratedExperience", curatedExperience);
+            }
+            else
+            {
+                curatedExperience = _httpContextAccessor.HttpContext.Session.GetObjectFromJson<CuratedExperience>("CuratedExperience");
+            }
 
-
-            var retrivedCuratedExperience = await _backendDatabaseService.GetItemAsync<CuratedExperience>("be6b65aa-1c27-4aed-bf22-418b33a74878");
-            var retrivedAnswer = await _backendDatabaseService.GetItemAsync<CuratedExperienceAnswersMapper>("ffa0141d-ff2a-4f39-90eb-fbbb2f71e482");
-
-            return choiceSet;
+            return curatedExperience;
         }
     }
 }

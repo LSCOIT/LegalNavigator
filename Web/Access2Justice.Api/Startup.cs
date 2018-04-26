@@ -24,6 +24,7 @@ namespace Access2Justice.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddSession();
 
             services.AddSingleton<IConfigurationManager, ConfigurationManager>();
             services.AddSingleton<IConfigurationBuilder, ConfigurationBuilder>();
@@ -46,6 +47,7 @@ namespace Access2Justice.Api
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseSession();
             app.UseMvc();
         }
     }
