@@ -5,14 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Properties\PublishProfiles\Access2JusticeApi - Web Deploy.pubxml" />
+    <None Remove="Properties\PublishProfiles\Access2JusticeApiV2 - Web Deploy.pubxml" />
+    <None Remove="Properties\PublishProfiles\Access2JusticeApiV3 - Web Deploy.pubxml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
-    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.0.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.0.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.0.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" />
   </ItemGroup>
 

@@ -3,17 +3,17 @@ using System.Collections.Generic;
 
 namespace Access2Justice.Api.ViewModels
 {
-    public class CuratedExperienceSurvay
+    public class CuratedExperienceSurvey
     {
         // todo:@alaa turn IDs into Guids
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
         public string Title { get; set; }
         public string QuestionType { get; set; }
-        public string AnswerId { get; set; }
+        public string UserAnswer { get; set; }
         public List<Choice> Choices { get; set; }
 
-        public CuratedExperienceSurvay()
+        public CuratedExperienceSurvey()
         {
             Choices = new List<Choice>();
         }

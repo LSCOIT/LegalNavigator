@@ -9,19 +9,19 @@ namespace Access2Justice.Api.Models.CuratedExperience
         public string CuratedExperienceId { get; set; }
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
-        [JsonProperty(PropertyName = "survayTree")]
-        public List<SurvayTree> SurvayTree { get; set; }
+        [JsonProperty(PropertyName = "surveyTree")]
+        public List<SurveyTree> SurveyTree { get; set; }
 
         public CuratedExperience()
         {
-            SurvayTree = new List<SurvayTree>();
+            SurveyTree = new List<SurveyTree>();
         }
     }
 
-    public class SurvayTree
+    public class SurveyTree
     {
         [JsonProperty(PropertyName = "id")]
-        public string SurvayItemId { get; set; }
+        public string SurveyItemId { get; set; }
         [JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
         [JsonProperty(PropertyName = "parentId")]
@@ -31,7 +31,7 @@ namespace Access2Justice.Api.Models.CuratedExperience
         [JsonProperty(PropertyName = "questions")]
         public List<Questoin> Questoins { get; set; }
 
-        public SurvayTree(List<Questoin> questoins)
+        public SurveyTree(List<Questoin> questoins)
         {
             Questoins = questoins;
         }

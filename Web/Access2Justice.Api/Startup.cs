@@ -23,10 +23,6 @@ namespace Access2Justice.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSession(options => {
-                options.IdleTimeout = TimeSpan.FromMinutes(1);
-            });
-
             services.AddMvc();
 
             services.AddSingleton<IConfigurationManager, ConfigurationManager>();
@@ -50,7 +46,6 @@ namespace Access2Justice.Api
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseSession();
             app.UseMvc();
         }
     }

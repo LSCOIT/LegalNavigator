@@ -1,21 +1,20 @@
-﻿using System;
+﻿using Access2Justice.Api.Models.CuratedExperience;
+using Access2Justice.Api.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Access2Justice.Api.Models.CuratedExperience;
-using Access2Justice.Api.ViewModels;
-using Microsoft.VisualBasic;
 
 namespace Access2Justice.Api.BusinessLogic
 {
-    public class CuratedExperienceChoiceSetMapper
+    internal class CuratedExperienceChoiceSetMapper
     {
-        public static CuratedExperienceSurvay GetQuestions(CuratedExperience curatedExperience, string id)
+        internal static CuratedExperienceSurvey GetQuestions(CuratedExperience curatedExperience, string id)
         {
-            var jsonTreeItem = curatedExperience.SurvayTree.Where(x => x.SurvayItemId == id).First();
+            var jsonTreeItem = curatedExperience.SurveyTree.Where(x => x.SurveyItemId == id).First();
 
-            var choiceSet = new CuratedExperienceSurvay();
-            choiceSet.Id = jsonTreeItem.SurvayItemId;
+            var choiceSet = new CuratedExperienceSurvey();
+            choiceSet.Id = jsonTreeItem.SurveyItemId;
             choiceSet.Title = jsonTreeItem.Description;
             choiceSet.QuestionType = jsonTreeItem.QuestionType;
 
@@ -29,6 +28,19 @@ namespace Access2Justice.Api.BusinessLogic
             }
 
             return choiceSet;
+        }
+
+        internal static CuratedExperienceSurvey MapAnswersToQuestions(CuratedExperienceSurvey question, Dictionary<Guid, string> answers)
+        {
+            foreach (var answer in answers)
+            {
+                if(question.Id == answer.Key.ToString())
+                {
+                    question.UserAnswer = answer.Value;
+                }
+            }
+
+            return question;
         }
     }
 }

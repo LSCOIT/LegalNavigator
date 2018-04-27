@@ -1,15 +1,12 @@
-﻿using Access2Justice.Api.Models.CuratedExperience;
+﻿using Access2Justice.Api.BusinessLogic;
+using Access2Justice.Api.Models.CuratedExperience;
 using Access2Justice.Api.ViewModels;
 using Access2Justice.CosmosDb;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Access2Justice.Shared.A2JExtensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Access2Justice.Api.BusinessLogic;
-using Microsoft.VisualBasic;
-using System;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -17,63 +14,53 @@ namespace Access2Justice.Api.Controllers
     public class CuratedExperienceController : Controller
     {
         private readonly IBackendDatabaseService _backendDatabaseService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public CuratedExperienceController(IBackendDatabaseService backendDatabaseService, IHttpContextAccessor httpContextAccessor)
+        public CuratedExperienceController(IBackendDatabaseService backendDatabaseService)
         {
             _backendDatabaseService = backendDatabaseService;
-            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpGet]
-        public async Task<CuratedExperienceSurvay> Get([FromQuery] string survayId)
+        public async Task<CuratedExperienceSurvey> Get([FromQuery] string surveyId)
         {
-            var curatedExperience = await GetCuratedExperience(survayId);
-            return CuratedExperienceChoiceSetMapper.GetQuestions(curatedExperience, curatedExperience.SurvayTree.First().SurvayItemId);  // start with the first question
+            var curatedExperience = await _backendDatabaseService.GetItemAsync<CuratedExperience>(surveyId);
+            return CuratedExperienceChoiceSetMapper.GetQuestions(curatedExperience, curatedExperience.SurveyTree.First().SurveyItemId);
         }
 
 
 
         [HttpPost]
-        public async Task<CuratedExperienceSurvay> Post([FromQuery] string survayId, string questionId, string answer)
+        public async Task<CuratedExperienceSurvey> Post([FromQuery] string surveyId, string questionId, string answer)
         {
-            var curatedExperience = await GetCuratedExperience(survayId);
+             // todo:@alaa in reality we wouldn't retrieve this a second time, we should use some kind of caching. Azure radius cache?
+            var curatedExperience = await _backendDatabaseService.GetItemAsync<CuratedExperience>(surveyId);
             var questions = CuratedExperienceChoiceSetMapper.GetQuestions(curatedExperience, questionId);
 
-            var curatedExperienceAnswers = new CuratedExperienceAnswers();
-            if (HttpContext.Session.GetString("CuratedExperienceAnswers") == null)
+            // todo:@alaa we need some additional identifier, 'x.CuratedExperienceId == surveyId' is good for now
+            var savedUserInputDocument = await _backendDatabaseService.GetItemsAsync<CuratedExperienceAnswers>(x => x.CuratedExperienceId == surveyId); //.ToAsyncEnumerable().FirstOrDefault();
+            
+            //if (default(CuratedExperienceAnswers) != savedUserInputDocument)
+            if(savedUserInputDocument.Any())
             {
-                curatedExperienceAnswers = await _backendDatabaseService.GetItemAsync<CuratedExperienceAnswers>("84d2f769-2eb8-411d-a93a-cb4bfb6a0e5a");
-                _httpContextAccessor.HttpContext.Session.SetObjectAsJson("CuratedExperienceAnswers", curatedExperienceAnswers);
+                var answersIds = new List<Guid>(savedUserInputDocument.First().Answers.Keys);
+                foreach (var answerId in answersIds)
+                {
+                    if(answerId.ToString() == questionId)
+                    {
+                        savedUserInputDocument.First().Answers[Guid.Parse(questionId)] = answer;
+                    }
+                }
+                await _backendDatabaseService.UpdateItemAsync(savedUserInputDocument.First().Id, savedUserInputDocument.First());
+
+                
+                return CuratedExperienceChoiceSetMapper.MapAnswersToQuestions(questions, savedUserInputDocument.First().Answers);
             }
             else
             {
-                curatedExperience = _httpContextAccessor.HttpContext.Session.GetObjectFromJson<CuratedExperience>("CuratedExperienceAnswers");
+                // create a new answers document
             }
-            // todo:@alaa check if there are answers to return, if not store them.
 
             return questions;
-        }
-
-
-         // todo:@alaa make this generic
-        private async Task<CuratedExperience> GetCuratedExperience(string id)
-        {
-            // todo:@alaa we should probably use some kind of caching here. Azure Radius?
-
-            var curatedExperience = new CuratedExperience();
-
-            if (HttpContext.Session.GetString("CuratedExperience") == null)
-            {
-                curatedExperience = await _backendDatabaseService.GetItemAsync<CuratedExperience>(id);
-                _httpContextAccessor.HttpContext.Session.SetObjectAsJson("CuratedExperience", curatedExperience);
-            }
-            else
-            {
-                curatedExperience = _httpContextAccessor.HttpContext.Session.GetObjectFromJson<CuratedExperience>("CuratedExperience");
-            }
-
-            return curatedExperience;
         }
     }
 }
