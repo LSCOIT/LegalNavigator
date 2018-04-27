@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Access2Justice.Api.BusinessLogic;
 using Microsoft.VisualBasic;
+using System;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -25,7 +26,7 @@ namespace Access2Justice.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<CuratedExperienceChoiceSet> Get([FromQuery] string survayId)
+        public async Task<CuratedExperienceSurvay> Get([FromQuery] string survayId)
         {
             var curatedExperience = await GetCuratedExperience(survayId);
             return CuratedExperienceChoiceSetMapper.GetQuestions(curatedExperience, curatedExperience.SurvayTree.First().SurvayItemId);  // start with the first question
@@ -34,17 +35,28 @@ namespace Access2Justice.Api.Controllers
 
 
         [HttpPost]
-        public async Task<CuratedExperienceChoiceSet> Post([FromQuery] string survayId, string questionId, string answer)
+        public async Task<CuratedExperienceSurvay> Post([FromQuery] string survayId, string questionId, string answer)
         {
             var curatedExperience = await GetCuratedExperience(survayId);
             var questions = CuratedExperienceChoiceSetMapper.GetQuestions(curatedExperience, questionId);
 
-            // check if there are answers to return, if not store them.
+            var curatedExperienceAnswers = new CuratedExperienceAnswers();
+            if (HttpContext.Session.GetString("CuratedExperienceAnswers") == null)
+            {
+                curatedExperienceAnswers = await _backendDatabaseService.GetItemAsync<CuratedExperienceAnswers>("84d2f769-2eb8-411d-a93a-cb4bfb6a0e5a");
+                _httpContextAccessor.HttpContext.Session.SetObjectAsJson("CuratedExperienceAnswers", curatedExperienceAnswers);
+            }
+            else
+            {
+                curatedExperience = _httpContextAccessor.HttpContext.Session.GetObjectFromJson<CuratedExperience>("CuratedExperienceAnswers");
+            }
+            // todo:@alaa check if there are answers to return, if not store them.
 
             return questions;
         }
 
 
+         // todo:@alaa make this generic
         private async Task<CuratedExperience> GetCuratedExperience(string id)
         {
             // todo:@alaa we should probably use some kind of caching here. Azure Radius?
