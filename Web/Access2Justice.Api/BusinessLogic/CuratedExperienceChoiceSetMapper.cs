@@ -9,9 +9,9 @@ namespace Access2Justice.Api.BusinessLogic
 {
     internal class CuratedExperienceChoiceSetMapper
     {
-        internal static CuratedExperienceSurvey GetQuestions(CuratedExperience curatedExperience, string id)
+        internal static CuratedExperienceSurvey GetQuestions(CuratedExperience curatedExperience, string surveyItemId)
         {
-            var jsonTreeItem = curatedExperience.SurveyTree.Where(x => x.SurveyItemId == id).First();
+            var jsonTreeItem = curatedExperience.SurveyTree.Where(x => x.SurveyItemId == surveyItemId).First();
 
             var choiceSet = new CuratedExperienceSurvey();
             choiceSet.Id = jsonTreeItem.SurveyItemId;
