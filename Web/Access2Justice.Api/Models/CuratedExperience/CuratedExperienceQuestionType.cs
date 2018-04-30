@@ -1,9 +1,11 @@
-﻿namespace Access2Justice.Api.Models.CuratedExperience
+﻿using Newtonsoft.Json;
+
+namespace Access2Justice.Api.Models.CuratedExperience
 {
     public enum CuratedExperienceQuestionType
     {
-        Bool,
-        List,
-        Textbox
+        [JsonProperty(PropertyName = "bool")] Bool,
+        [JsonProperty(PropertyName = "list")] List,
+        [JsonProperty(PropertyName = "textbox")] Textbox
     }
 }

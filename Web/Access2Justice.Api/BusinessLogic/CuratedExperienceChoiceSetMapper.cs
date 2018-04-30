@@ -3,38 +3,37 @@ using Access2Justice.Api.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Access2Justice.Api.BusinessLogic
 {
     internal class CuratedExperienceChoiceSetMapper
     {
-        internal static CuratedExperienceSurvey GetQuestions(CuratedExperience curatedExperience, string surveyItemId)
+        internal static CuratedExperienceSurveyViewModel GetQuestions(CuratedExperienceSurvey curatedExperience, string surveyItemId)
         {
-            var jsonTreeItem = curatedExperience.SurveyTree.Where(x => x.SurveyItemId == surveyItemId).First();
+            var jsonTreeItem = curatedExperience.SurveyTree.Where(x => x.QuestionId == surveyItemId).First();
 
-            var choiceSet = new CuratedExperienceSurvey();
-            choiceSet.Id = jsonTreeItem.SurveyItemId;
-            choiceSet.Title = jsonTreeItem.Description;
-            choiceSet.QuestionType = jsonTreeItem.QuestionType;
+            var survey = new CuratedExperienceSurveyViewModel();
+            survey.QuestionId = jsonTreeItem.QuestionId;
+            survey.Title = jsonTreeItem.QuestionText;
+            survey.QuestionType = jsonTreeItem.QuestionType;
 
-            foreach (var child in jsonTreeItem.Questoins.ToList())
+            foreach (var child in jsonTreeItem.Choices.ToList())
             {
-                choiceSet.Choices.Add(new Choice
+                survey.ChoicesViewModel.Add(new ChoiceViewModel
                 {
-                    Id = child.Id,
-                    ChoiceText = child.Description
+                    ChoiceId = child.ChoiceId,
+                    ChoiceText = child.ChoiceText
                 });
             }
 
-            return choiceSet;
+            return survey;
         }
 
-        internal static CuratedExperienceSurvey MapAnswersToQuestions(CuratedExperienceSurvey question, Dictionary<Guid, string> answers)
+        internal static CuratedExperienceSurveyViewModel MapAnswersToQuestions(CuratedExperienceSurveyViewModel question, Dictionary<Guid, string> answers)
         {
             foreach (var answer in answers)
             {
-                if(question.Id == answer.Key.ToString())
+                if(question.QuestionId == answer.Key.ToString())
                 {
                     question.UserAnswer = answer.Value;
                 }

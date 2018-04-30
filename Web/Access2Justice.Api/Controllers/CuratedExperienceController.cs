@@ -3,7 +3,6 @@ using Access2Justice.Api.Models.CuratedExperience;
 using Access2Justice.Api.ViewModels;
 using Access2Justice.CosmosDb;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,14 +21,14 @@ namespace Access2Justice.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<CuratedExperienceSurvey> Get([FromQuery] string surveyId, string questionId)
+        public async Task<CuratedExperienceSurveyViewModel> Get([FromQuery] string surveyId, string choiceId)
         {
-            return await GetUserSurvay(surveyId, questionId);
+            return await GetUserSurvay(surveyId, choiceId);
         }
 
 
         [HttpPost]
-        public async Task<CuratedExperienceSurvey> Post([FromQuery] string surveyId, string questionId, string answer)
+        public async Task<CuratedExperienceSurveyViewModel> Post([FromQuery] string surveyId, string choiceId, string answer)
         {
             var savedUserInputDocument = await _backendDatabaseService.GetItemsAsync<CuratedExperienceAnswers>(x => x.CuratedExperienceId == surveyId); 
             if (savedUserInputDocument.Any() && answer != null)
@@ -37,9 +36,9 @@ namespace Access2Justice.Api.Controllers
                 var answersIds = new List<Guid>(savedUserInputDocument.First().Answers.Keys);
                 foreach (var answerId in answersIds)
                 {
-                    if (answerId.ToString() == questionId)
+                    if (answerId.ToString() == choiceId)
                     {
-                        savedUserInputDocument.First().Answers[Guid.Parse(questionId)] = answer;
+                        savedUserInputDocument.First().Answers[Guid.Parse(choiceId)] = answer;
                     }
                 }
                 await _backendDatabaseService.UpdateItemAsync(savedUserInputDocument.First().Id, savedUserInputDocument.First());
@@ -49,24 +48,24 @@ namespace Access2Justice.Api.Controllers
                 // todo:@alaa  create a new answers document
             }
 
-            return await GetUserSurvay(surveyId, questionId);
+            return await GetUserSurvay(surveyId, choiceId);
         }
 
 
          // todo:@alaa move this method to the business logic
-        private async Task<CuratedExperienceSurvey> GetUserSurvay(string surveyId, string questionId = null)
+        private async Task<CuratedExperienceSurveyViewModel> GetUserSurvay(string surveyId, string choiceId = null)
         {
             // todo:@alaa in reality we wouldn't retrieve this a second time, we should use some kind of caching. Azure radius cache?
-            var curatedExperience = await _backendDatabaseService.GetItemAsync<CuratedExperience>(surveyId);
+            var curatedExperience = await _backendDatabaseService.GetItemAsync<CuratedExperienceSurvey>(surveyId);
 
-            var questions = new CuratedExperienceSurvey();
-            if (questionId != null)
+            var questions = new CuratedExperienceSurveyViewModel();
+            if (choiceId != null)
             {
-                questions = CuratedExperienceChoiceSetMapper.GetQuestions(curatedExperience, questionId);
+                questions = CuratedExperienceChoiceSetMapper.GetQuestions(curatedExperience, choiceId);
             }
             else
             {
-                questions = CuratedExperienceChoiceSetMapper.GetQuestions(curatedExperience, curatedExperience.SurveyTree.First().SurveyItemId);
+                questions = CuratedExperienceChoiceSetMapper.GetQuestions(curatedExperience, curatedExperience.SurveyTree.First().QuestionId);
             }
 
             // todo:@alaa we need some additional identifier, 'x.CuratedExperienceId == surveyId' is good for now

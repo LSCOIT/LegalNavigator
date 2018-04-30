@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Access2Justice.Api.Models.CuratedExperience
 {
-    public class CuratedExperience
+    public class CuratedExperienceSurvey
     {
         [JsonProperty(PropertyName = "id")]
         public string CuratedExperienceId { get; set; }
@@ -12,7 +12,7 @@ namespace Access2Justice.Api.Models.CuratedExperience
         [JsonProperty(PropertyName = "surveyTree")]
         public List<SurveyTree> SurveyTree { get; set; }
 
-        public CuratedExperience()
+        public CuratedExperienceSurvey()
         {
             SurveyTree = new List<SurveyTree>();
         }
@@ -21,28 +21,27 @@ namespace Access2Justice.Api.Models.CuratedExperience
     public class SurveyTree
     {
         [JsonProperty(PropertyName = "id")]
-        public string SurveyItemId { get; set; }
-        [JsonProperty(PropertyName = "description")]
-        public string Description { get; set; }
+        public string QuestionId { get; set; }
+        [JsonProperty(PropertyName = "text")]
+        public string QuestionText { get; set; }
         [JsonProperty(PropertyName = "parentId")]
         public string ParentId { get; set; }
         [JsonProperty(PropertyName = "questionType")]
         public string QuestionType { get; set; }
-        [JsonProperty(PropertyName = "questions")]
-        public List<Questoin> Questoins { get; set; }
+        [JsonProperty(PropertyName = "choices")]
+        public List<Choice> Choices { get; set; }
 
-        public SurveyTree(List<Questoin> questoins)
+        public SurveyTree(List<Choice> choices)
         {
-            Questoins = questoins;
+            Choices = choices;
         }
     }
 
-
-    public class Questoin
+    public class Choice
     {
         [JsonProperty(PropertyName = "id")]
-        public string Id { get; set; }
-        [JsonProperty(PropertyName = "description")]
-        public string Description { get; set; }
+        public string ChoiceId { get; set; }
+        [JsonProperty(PropertyName = "text")]
+        public string ChoiceText { get; set; }
     }
 }
