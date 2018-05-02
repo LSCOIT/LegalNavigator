@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'lower-nav',
+  selector: 'app-lower-nav',
   templateUrl: './lower-nav.component.html',
   styleUrls: ['./lower-nav.component.css']
 })
