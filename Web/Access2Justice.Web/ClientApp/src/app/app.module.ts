@@ -1,8 +1,17 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
-import { AccordionModule, BsDropdownModule,  CarouselModule, CollapseModule, ModalModule, ProgressbarModule } from 'ngx-bootstrap';
+import {
+  AccordionModule,
+  BsDropdownModule,
+  CarouselModule,
+  CollapseModule,
+  ModalModule,
+  ProgressbarModule
+} from 'ngx-bootstrap';
 
 import { AppComponent } from './app.component';
 import { AboutComponent } from './about/about.component';
@@ -19,19 +28,23 @@ import { TopicService } from './topics-resources/topic.service';
 import { TopicsResourcesComponent } from './topics-resources/topics-resources.component';
 import { TopicsComponent } from './topics-resources/topics.component';
 import { UpperNavComponent } from './shared/upper-nav.component';
-import { ProblemsComponent } from './guided-assistant/problems.component';
+import { QuestionComponent } from './guided-assistant/question.component';
+import { QuestionService } from './guided-assistant/question.service';
+import { TopicComponent } from './topics-resources/topic.component';
 
 const appRoutes: Routes = [
   { path: 'about', component: AboutComponent },
   { path: 'createaccount', component: CreateAccountComponent },
   { path: 'guidedassistant', component: GuidedAssistantComponent },
-  { path: 'guidedassistant/123', component: ProblemsComponent},
+  { path: 'guidedassistant/123', component: QuestionComponent},
   { path: 'help', component: HelpFaqsComponent },
+  { path: 'home', component: HomeComponent },
   { path: 'login', component: LogInComponent },
   { path: 'privacy', component: PrivacyPromiseComponent },
   { path: 'topics', component: TopicsResourcesComponent },
+  { path: 'topics/:title', component: TopicComponent },
   { path: '', component: HomeComponent}
-]
+];
 
 @NgModule({
   declarations: [
@@ -46,13 +59,16 @@ const appRoutes: Routes = [
     LogInComponent,
     LowerNavComponent,
     PrivacyPromiseComponent,
+    QuestionComponent,
     TopicsComponent,
     TopicsResourcesComponent,
     UpperNavComponent,
-    ProblemsComponent
+    TopicComponent
   ],
   imports: [
     BrowserModule,
+    FormsModule,
+    HttpClientModule,
     RouterModule.forRoot(appRoutes),
     AccordionModule.forRoot(),
     BsDropdownModule.forRoot(),
@@ -61,7 +77,9 @@ const appRoutes: Routes = [
     ModalModule.forRoot(),
     ProgressbarModule.forRoot()
   ],
-  providers: [TopicService],
+  providers: [
+    TopicService,
+    QuestionService],
   bootstrap: [AppComponent]
 })
 

@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./topics-resources.component.css']
 })
 export class TopicsResourcesComponent implements OnInit {
+  topicLength = 18;
 
   constructor() { }
 
