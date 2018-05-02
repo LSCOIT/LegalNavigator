@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { SlicePipe } from '@angular/common';
 import { TopicService } from './topic.service';
 import { Topic } from './topic';
 import { TOPICS } from './mock-topics';
@@ -9,7 +10,7 @@ import { TOPICS } from './mock-topics';
   styleUrls: ['./topics.component.css']
 })
 export class TopicsComponent implements OnInit {
-
+  @Input() topicLength: number;
   topics: Topic[];
 
   getTopics(): void {
