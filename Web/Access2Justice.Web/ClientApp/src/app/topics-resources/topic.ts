@@ -1,6 +1,6 @@
 export class Topic {
     constructor(
-        public image: string,
+        public icon: string,
         public title: string,
         public url: string) { }
 }

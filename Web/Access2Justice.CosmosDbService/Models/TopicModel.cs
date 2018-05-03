@@ -14,6 +14,9 @@ namespace Access2Justice.CosmosDbService.Models
     {
         public int Id { get; set; }
         public string Heading { get; set; }
-        public string Content { get; set; } 
+        public string Content { get; set; }    
+        public string Articles { get; set; }
+        public string Videos { get; set; }
+        public string Forms { get; set; }
     }
 }

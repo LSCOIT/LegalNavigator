@@ -11,8 +11,8 @@ import { Response } from '@angular/http/src/static_response';
 @Injectable()
 export class TopicService {
 
-  topicURL = "http://localhost:59704/api/topics";
-  contentURL = "http://localhost:59704/api/topics";
+  topicURL = "http://localhost:59704/api/Topics/Get";
+  contentURL = "http://localhost:59704/api/Topics/GetContent";
 
   constructor(private http: Http) { }
 
