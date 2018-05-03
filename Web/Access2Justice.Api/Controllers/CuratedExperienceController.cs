@@ -1,7 +1,7 @@
 ﻿using Access2Justice.Api.BusinessLogic;
 using Access2Justice.Api.Models.CuratedExperience;
 using Access2Justice.Api.ViewModels;
-using Access2Justice.CosmosDb;
+using Access2Justice.Shared.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
