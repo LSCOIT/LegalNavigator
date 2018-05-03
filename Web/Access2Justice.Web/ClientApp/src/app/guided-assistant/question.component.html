@@ -1,0 +1,21 @@
+<div class="row">
+  <div *ngIf="question" class="col-md-6 col-md-offset-4">
+    <h4>{{question.title}}</h4>
+      <form #gaForm="ngForm" (ngSubmit)="onSubmit(gaForm)">
+        <div *ngIf="question.questionType.toLowerCase()==='list' || question.questionType.toLowerCase()==='bool' " class="radio">
+          <div *ngFor="let c of question.choices">
+            <input type="radio" name="listOptions" value={{c.choiceId}} [(ngModel)]="listOptions">
+            {{c.choiceText}}
+          </div>
+        </div>
+        <div *ngIf="question.questionType.toLowerCase()==='textbox'">
+          <input type="text" name="inputText" value="text" [(ngModel)]="inputText" />
+        </div>
+        <div class="row">
+          <div class="col-md-2 col-md-offset-2">
+            <button class="btn-primary">Continue</button>
+          </div>
+        </div>
+      </form>
+    </div>
+</div>

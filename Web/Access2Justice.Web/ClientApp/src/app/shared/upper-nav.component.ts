@@ -3,7 +3,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 @Component({
-  selector: 'upper-nav',
+  selector: 'app-upper-nav',
   templateUrl: './upper-nav.component.html',
   styleUrls: ['./upper-nav.component.css']
 })

@@ -4,7 +4,7 @@
   <div class="row">
     <div class="col-md-8 col-sm-12 col-xs-12" style="padding-left:0;">
       <div class="row center-align">
-        <app-topics></app-topics>
+        <app-topics [topicLength]="topicLength"></app-topics>
       </div>
     </div>
     <div class="col-md-4 col-sm-12 col-xs-12">
@@ -16,5 +16,9 @@
       </div>
     </div>
   </div>
-  
+  <div class="row">
+    <div class="col-md-2 col-md-offset-3 col-sm-12 text-center">
+      <button type="button" class="btn btn-primary">See More Topics</button>
+    </div>
+  </div>
 </div>
