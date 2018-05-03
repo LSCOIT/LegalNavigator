@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
+import { HttpModule } from '@angular/http';
 
 
 import {
@@ -49,6 +50,7 @@ import { TopicComponent } from './topics-resources/topic.component';
     BrowserModule,
     FormsModule,
     HttpClientModule,
+    HttpModule,
     AppRoutingModule,
     SharedModule,
     AccordionModule.forRoot(),
