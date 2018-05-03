@@ -21,7 +21,6 @@ namespace Access2Justice.Api
         public IConfiguration Configuration { get; }
         public object CosmosDbConfiguration { get; private set; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
@@ -29,13 +28,11 @@ namespace Access2Justice.Api
             services.AddSingleton<IConfigurationManager, ConfigurationManager>();
             services.AddSingleton<IConfigurationBuilder, ConfigurationBuilder>();
 
-            // configure CosmosDb client
+            // configure and inject CosmosDb client
             ICosmosDbConfigurations cosmosDbConfigurations = new CosmosDbConfigurations();
             Configuration.GetSection("cosmosDb").Bind(cosmosDbConfigurations);
             services.AddSingleton<IDocumentClient>(x =>
                 new DocumentClient(new Uri(cosmosDbConfigurations.Endpoint), cosmosDbConfigurations.AuthKey));
-
-            // inject CosmosDb service
             services.AddSingleton(typeof(IBackendDatabaseService), typeof(CosmosDbService));
 
             services.AddSwaggerGen(c =>
@@ -47,7 +44,6 @@ namespace Access2Justice.Api
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())

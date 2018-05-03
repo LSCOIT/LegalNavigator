@@ -44,7 +44,7 @@ namespace Access2Justice.CosmosDb
                 }
                 else
                 {
-                    // todo:@alaa log error
+                    // todo: log error
                     throw;
                 }
             }
@@ -96,7 +96,7 @@ namespace Access2Justice.CosmosDb
                 }
                 else
                 {
-                    // todo:@alaa log error
+                    // todo: log error
                     throw;
                 }
             }
@@ -122,7 +122,7 @@ namespace Access2Justice.CosmosDb
                 }
                 else
                 {
-                     // todo:@alaa log error
+                     // todo: log error
                     throw;
                 }
             }
