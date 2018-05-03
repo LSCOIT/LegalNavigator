@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Access2Justice.Api.Models;
-using Access2Justice.Shared;
+﻿using Access2Justice.Shared.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Documents;
-using Microsoft.Azure.Documents.Client;
-using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Access2Justice.Api.Controllers
 {

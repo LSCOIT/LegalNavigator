@@ -1,5 +1,6 @@
 ﻿using Access2Justice.CosmosDb;
 using Access2Justice.Shared;
+using Access2Justice.Shared.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Azure.Documents;

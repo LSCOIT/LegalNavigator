@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Access2Justice.Shared.Interfaces;
+using Microsoft.Extensions.Configuration;
 
 namespace Access2Justice.Shared
 {

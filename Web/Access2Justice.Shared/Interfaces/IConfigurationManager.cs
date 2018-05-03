@@ -1,4 +1,4 @@
-﻿namespace Access2Justice.Shared
+﻿namespace Access2Justice.Shared.Interfaces
 {
     public interface IConfigurationManager
     {
