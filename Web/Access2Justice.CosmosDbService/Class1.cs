@@ -13,7 +13,7 @@ namespace Access2Justice.CosmosDbService
             topics.Add(new TopicModel { Id = 2, Title = "Abuse and Harassment", Icon = "../assets/images/topics/topic12.png" });
             topics.Add(new TopicModel { Id = 3, Title = "Housing", Icon = "../assets/images/topics/topic13.png" });
             topics.Add(new TopicModel { Id = 4, Title = "PublicBenefits", Icon = "./assets/images/topics/topic14.png" });
-            topics.Add(new TopicModel { Id = 5, Title = "Descrimination", Icon = "../assets/images/topics/topic15.png" });
+            topics.Add(new TopicModel { Id = 5, Title = "Discrimination", Icon = "../assets/images/topics/topic15.png" });
             topics.Add(new TopicModel { Id = 6, Title = "MoneyDebt", Icon = "../assets/images/topics/topic16.png" });
             topics.Add(new TopicModel { Id = 7, Title = "Individual Rights", Icon = "../assets/images/topics/topic17.png" });
             topics.Add(new TopicModel { Id = 8, Title = "NativeRights", Icon = "../assets/images/topics/topic18.png" });
@@ -39,7 +39,7 @@ namespace Access2Justice.CosmosDbService
             content.Add(new SubjectModel { Id = 2, Heading = "Abuse and Harassment", Content = "Overview-Abuse&Harassment", Articles = "Articles-Abuse&Harassment", Videos = "Videos-Abuse&Harassment", Forms = "Forms-Abuse&Harassment" });
             content.Add(new SubjectModel { Id = 3, Heading = "Housing", Content = "Overview-Housing", Articles = "Articles-Housing", Videos = "Videos-Housing", Forms = "Forms-Housing" });
             content.Add(new SubjectModel { Id = 4, Heading = "PublicBenefits", Content = "Overview-PublicBenefits", Articles = "Articles-PublicBenefits", Videos = "Videos-PublicBenefits", Forms = "Forms-PublicBenefits" });
-            content.Add(new SubjectModel { Id = 5, Heading = "Descrimination", Content = "Overview-Descrimination", Articles = "Articles-Descrimination", Videos = "Videos-Descrimination", Forms = "Forms-Descrimination" });
+            content.Add(new SubjectModel { Id = 5, Heading = "Discrimination", Content = "Overview-Descrimination", Articles = "Articles-Descrimination", Videos = "Videos-Descrimination", Forms = "Forms-Descrimination" });
             content.Add(new SubjectModel { Id = 6, Heading = "MoneyDebt", Content = "Overview-Money&Debt", Articles = "Articles-Money&Debt", Videos = "Videos-Money&Debt", Forms = "Forms-Money&Debt" });
             content.Add(new SubjectModel { Id = 7, Heading = "Individual Rights", Content = "Overview-Individual Rights", Articles = "Articles-Individual Rights", Videos = "Videos-Individual Rights", Forms = "Forms-Individual Rights" });
             content.Add(new SubjectModel { Id = 8, Heading = "NativeRights", Content = "Overview-Native Rights", Articles = "Articles-Native Rights", Videos = "Videos-Native Rights", Forms = "Forms-Native Rights" });
