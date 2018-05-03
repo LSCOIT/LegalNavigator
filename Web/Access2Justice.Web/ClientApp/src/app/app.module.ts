@@ -29,6 +29,8 @@ import { TopicsComponent } from './topics-resources/topics.component';
 import { QuestionComponent } from './guided-assistant/question.component';
 import { QuestionService } from './guided-assistant/question.service';
 import { TopicComponent } from './topics-resources/topic.component';
+import { GuidedAssistantSidebarComponent } from './guided-assistant/guided-assistant-sidebar.component';
+import { ServiceOrgSidebarComponent } from './topics-resources/service-org-sidebar.component';
 
 
 @NgModule({
@@ -44,7 +46,9 @@ import { TopicComponent } from './topics-resources/topic.component';
     QuestionComponent,
     TopicsComponent,
     TopicsResourcesComponent,
-    TopicComponent
+    TopicComponent,
+    GuidedAssistantSidebarComponent,
+    ServiceOrgSidebarComponent
   ],
   imports: [
     BrowserModule,
