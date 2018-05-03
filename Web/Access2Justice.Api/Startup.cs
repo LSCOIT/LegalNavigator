@@ -6,6 +6,7 @@ using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Swashbuckle.AspNetCore.Swagger;
 using System;
 
 namespace Access2Justice.Api
@@ -36,6 +37,14 @@ namespace Access2Justice.Api
 
             // inject CosmosDb service
             services.AddSingleton(typeof(IBackendDatabaseService), typeof(CosmosDbService));
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Access2Justice API", Version = "v1" });
+                c.TagActionsBy(api => api.GroupName);
+                c.DescribeAllEnumsAsStrings();
+                c.OrderActionsBy((apiDesc) => $"{apiDesc.RelativePath}_{apiDesc.HttpMethod}");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,6 +56,12 @@ namespace Access2Justice.Api
             }
 
             app.UseMvc();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Access2Justice API V1");
+            });
         }
     }
 }
