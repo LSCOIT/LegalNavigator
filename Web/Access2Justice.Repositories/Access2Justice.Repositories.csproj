@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Access2Justice.CosmosDbService\Access2Justice.CosmosDbService.csproj" />
+  </ItemGroup>
+
 </Project>

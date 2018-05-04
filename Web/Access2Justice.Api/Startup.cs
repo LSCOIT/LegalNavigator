@@ -8,7 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-
+using Access2Justice.Repositories.Implement;
+using Access2Justice.Repositories.Interface;
 namespace Access2Justice.Api
 {
     public class Startup
@@ -24,6 +25,9 @@ namespace Access2Justice.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            //services.AddTransient<ITopicRepository, TopicRepository>();
+            //services.AddSingleton<ITopicRepository, TopicRepository>();
+            //services.AddScoped<ITopicRepository, TopicRepository>();
         }
         
 

@@ -16,7 +16,8 @@ export class TopicService {
 
   constructor(private http: Http) { }
 
-  getTopics() {
+  getTopics()
+  {
     return this.http.get(this.topicURL).map((response: Response) => response.json());
   }
 

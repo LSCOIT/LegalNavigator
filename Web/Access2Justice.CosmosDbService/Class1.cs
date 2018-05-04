@@ -24,9 +24,9 @@ namespace Access2Justice.CosmosDbService
             return topics;
         }
 
-        //public Overview GetContentsList(int id) 
+        //public Overview GetContentsList(int id)
         //{
-        //    return contents().Where(x=>x.Id==id).Select(x=>new Overview { Id=x.Id,Heading=x.Heading,Content=x.Content,Articles=x.Articles,Videos=x.Videos,Forms=x.Forms}).FirstOrDefault();
+        //    return contents().Where(x => x.Id == id).Select(x => new Overview { Id = x.Id, Heading = x.Heading, Content = x.Content, Articles = x.Articles, Videos = x.Videos, Forms = x.Forms }).FirstOrDefault();
         //}
         public SubjectModel GetContentsList(string name)
         {

@@ -8,7 +8,8 @@ namespace Access2Justice.CosmosDbService.Models
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public string Icon { get; set; } 
+        public string Icon { get; set; }
+     //   public Microsoft.Azure.Documents.PartitionKey PartitionKey { get; set; }
     }
     public class SubjectModel
     {

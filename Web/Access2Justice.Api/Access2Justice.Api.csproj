@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Access2Justice.CosmosDbService\Access2Justice.CosmosDbService.csproj" />
+    <ProjectReference Include="..\Access2Justice.Repositories\Access2Justice.Repositories.csproj" />
   </ItemGroup>
 
 </Project>
