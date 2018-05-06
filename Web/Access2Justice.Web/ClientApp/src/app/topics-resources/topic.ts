@@ -1,6 +1,5 @@
-export class Topic {
-    constructor(
-        public icon: string,
-        public title: string,
-        public url: string) { }
+export interface Topic {
+  id: number;
+  title: string;
+  icon: string;
 }

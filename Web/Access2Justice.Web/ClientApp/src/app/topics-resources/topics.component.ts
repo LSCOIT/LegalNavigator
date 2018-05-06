@@ -1,8 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { SlicePipe } from '@angular/common';
 import { TopicService } from './topic.service';
 import { Topic } from './topic';
-import { TOPICS } from './mock-topics';
 
 @Component({
   selector: 'app-topics',
@@ -11,7 +9,7 @@ import { TOPICS } from './mock-topics';
 })
 export class TopicsComponent implements OnInit {
   @Input() topicLength: number;
-  topics: Topic[];
+  topics: Topic;
 
   getTopics(): void {
     this.topicService.getTopics()

@@ -1,0 +1,21 @@
+<div *ngIf="subtopicDetail" class="container">
+  <h2>{{subtopicDetail.heading}}</h2>
+  <div class="panel-group">
+    <div class="panel panel-default">
+      <div class="panel-heading">Overview</div>
+      <div class="panel-body">{{subtopicDetail.content}}</div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">Articles</div>
+      <div class="panel-body">{{subtopicDetail.articles}}</div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">Videos</div>
+      <div class="panel-body">{{subtopicDetail.videos}}</div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">Forms</div>
+      <div class="panel-body">{{subtopicDetail.forms}}</div>
+    </div>
+  </div>
+</div>

@@ -28,9 +28,10 @@ import { TopicsResourcesComponent } from './topics-resources/topics-resources.co
 import { TopicsComponent } from './topics-resources/topics.component';
 import { QuestionComponent } from './guided-assistant/question.component';
 import { QuestionService } from './guided-assistant/question.service';
-import { TopicComponent } from './topics-resources/topic.component';
+import { SubtopicDetailComponent } from './topics-resources/subtopic-detail.component';
 import { GuidedAssistantSidebarComponent } from './guided-assistant/guided-assistant-sidebar.component';
 import { ServiceOrgSidebarComponent } from './topics-resources/service-org-sidebar.component';
+import { SubtopicsComponent } from './topics-resources/subtopics.component';
 
 
 @NgModule({
@@ -46,9 +47,10 @@ import { ServiceOrgSidebarComponent } from './topics-resources/service-org-sideb
     QuestionComponent,
     TopicsComponent,
     TopicsResourcesComponent,
-    TopicComponent,
+    SubtopicDetailComponent,
     GuidedAssistantSidebarComponent,
-    ServiceOrgSidebarComponent
+    ServiceOrgSidebarComponent,
+    SubtopicsComponent,
   ],
   imports: [
     BrowserModule,

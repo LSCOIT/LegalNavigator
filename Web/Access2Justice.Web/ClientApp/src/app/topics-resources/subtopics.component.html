@@ -1,0 +1,38 @@
+<div class="container">
+  <div class="row">
+    <a href="#">All topics ></a>
+  </div>
+  <div class="row">
+    <div class="col-md-9 col-sm-12 col-xs-12" style="padding-left: 0;">
+      <h4>More Topics Related to Housing</h4>
+      <p>Which topic would you like to learn more about?</p>
+      <div class="row subtopics">
+        <!--Need to loop through subtopics here-->
+        <li><a [routerLink]="['/topics/housing/eviction']">Eviction</a></li><!--Need to use routerlink to /topics/housing/eviction -->
+        <li><a href="#">Subtopic Name</a></li>
+        <li><a href="#">Subtopic Name</a></li>
+        <li><a href="#">Subtopic Name</a></li>
+        <li><a href="#">Subtopic Name</a></li>
+        <li><a href="#">Subtopic Name</a></li>
+        <li><a href="#">Subtopic Name</a></li>
+        <li><a href="#">Subtopic Name</a></li>
+        <li><a href="#">Subtopic Name</a></li>
+        <li><a href="#">Subtopic Name</a></li>
+        <li><a href="#">Subtopic Name</a></li>
+        <li><a href="#">Subtopic Name</a></li>
+        <li><a href="#">Subtopic Name</a></li>
+        <li><a href="#">Subtopic Name</a></li>
+        <li><a href="#">Subtopic Name</a></li>
+        <li><a href="#">Subtopic Name</a></li>
+        <li><a href="#">Subtopic Name</a></li>
+        <li><a href="#">Subtopic Name</a></li>
+        <li><a href="#">Subtopic Name</a></li>
+        <li><a href="#">Subtopic Name</a></li>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-12 col-xs-12">
+      <app-guided-assistant-sidebar></app-guided-assistant-sidebar>
+      <app-service-org-sidebar></app-service-org-sidebar>
+    </div>
+  </div>
+</div>

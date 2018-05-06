@@ -1,26 +1,22 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import 'rxjs/add/operator/map';
-
 import { Topic } from '../topics-resources/topic';
-import { TOPICS } from './mock-topics';
-import { Response } from '@angular/http/src/static_response';
+
 
 @Injectable()
 export class TopicService {
 
-  topicURL = "http://localhost:59704/api/Topics/Get";
-  contentURL = "http://localhost:59704/api/Topics/GetContent";
+  topicUrl = "http://localhost:64218/api/Topics/Get";
+  topicContentUrl = "http://localhost:64218/api/Topics/GetContent";
 
-  constructor(private http: Http) { }
+  constructor(private http: HttpClient) { }
 
-  getTopics() {
-    return this.http.get(this.topicURL).map((response: Response) => response.json());
+  getTopics(): Observable<Topic> {
+    return this.http.get<Topic>(this.topicUrl);
   }
 
-  getcontent(name: string) {
-    return this.http.get(this.contentURL + '?name=' + name).map((response: Response) => response.json());
+  getTopicDetail(name): Observable<any> {
+    return this.http.get<Topic>(this.topicContentUrl, {params: name});
   }
 }
