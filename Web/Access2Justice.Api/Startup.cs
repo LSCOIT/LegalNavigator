@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Access2Justice.Repositories.Implement;
 using Access2Justice.Repositories.Interface;
+using Access2Justice.Repositories.Models;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 
@@ -29,9 +30,11 @@ namespace Access2Justice.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-
+          
             services.AddSingleton<IConfigurationManager, ConfigurationManager>();
             services.AddSingleton<IConfigurationBuilder, ConfigurationBuilder>();
+            services.AddSingleton(typeof(ITopicRepository<TopicModel, string>), typeof(TopicRepository));
+    
 
             // configure and inject CosmosDb client
             ICosmosDbConfigurations cosmosDbConfigurations = new CosmosDbConfigurations();
@@ -56,6 +59,7 @@ namespace Access2Justice.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseBrowserLink();
             }
 
             app.UseSwagger();
@@ -63,8 +67,11 @@ namespace Access2Justice.Api
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Access2Justice API V1");
             });
-            app.UseCors(builder => builder.WithOrigins("http://localhost:59706"));
-            app.UseMvc();            
+            app.UseCors(builder => builder.WithOrigins("http://localhost:4200"));
+            app.UseMvc();
+
+
+
         }
     }
 }

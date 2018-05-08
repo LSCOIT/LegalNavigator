@@ -7,7 +7,8 @@ import { Topic } from '../shared/topic';
   templateUrl: './topics.component.html',
   styleUrls: ['./topics.component.css']
 })
-export class TopicsComponent implements OnInit {
+export class TopicsComponent implements OnInit
+{
   @Input() topicLength: number;
   topics: Topic;
 
