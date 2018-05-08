@@ -11,7 +11,8 @@ import { LogInComponent } from './account/log-in.component';
 import { PrivacyPromiseComponent } from './privacy-promise/privacy-promise.component';
 import { TopicsResourcesComponent } from './topics-resources/topics-resources.component';
 import { QuestionComponent } from './guided-assistant/question.component';
-import { TopicComponent } from './topics-resources/topic.component';
+import { SubtopicDetailComponent } from './topics-resources/subtopic/subtopic-detail.component';
+import { SubtopicsComponent } from './topics-resources/subtopic/subtopics.component';
 
 const appRoutes: Routes = [
   { path: 'about', component: AboutComponent },
@@ -22,8 +23,9 @@ const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LogInComponent },
   { path: 'privacy', component: PrivacyPromiseComponent },
+  { path: 'topics/:topic/:subtopic', component: SubtopicDetailComponent },
+  { path: 'topics/:topic', component: SubtopicsComponent },
   { path: 'topics', component: TopicsResourcesComponent },
-  { path: 'topics/:title', component: TopicComponent },
   { path: '', component: HomeComponent }
 ];
 

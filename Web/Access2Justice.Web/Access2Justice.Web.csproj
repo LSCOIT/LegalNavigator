@@ -32,6 +32,10 @@
     <None Remove="ClientApp\src\app\shared\link.directive.spec.ts" />
     <None Remove="ClientApp\src\app\shared\link.directive.ts" />
     <None Remove="ClientApp\src\app\shared\link.directive.ts" />
+    <None Remove="ClientApp\src\app\topics-resources\itopic.ts" />
+    <None Remove="ClientApp\src\app\topics-resources\itopic.ts" />
+    <None Remove="ClientApp\src\app\topics-resources\mock-topics.ts" />
+    <None Remove="ClientApp\src\app\topics-resources\mock-topics.ts" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

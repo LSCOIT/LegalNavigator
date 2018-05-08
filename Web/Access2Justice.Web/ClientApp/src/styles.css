@@ -1,5 +1,10 @@
+/*Shared Resources*/
 body {
   margin-top: 70px;
+}
+
+li {
+  list-style: none;
 }
 
 a {
@@ -33,6 +38,11 @@ a {
 .center-align {
   margin: 0 auto;
 }
+
+.sidebar {
+  border: 1px solid #000;
+}
+
 
 /*Home Page - Carousel*/
 div.carousel.slide {
@@ -92,6 +102,7 @@ a.carousel-control{
 .panel-body {
   padding: 25px 15px 50px 15px;
 }
+
 
 @media only screen and (min-width : 768px) {
   .mobile-hidden {

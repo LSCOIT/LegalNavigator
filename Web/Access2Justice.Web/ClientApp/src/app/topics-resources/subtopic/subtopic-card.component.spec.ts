@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TopicComponent } from './topic.component';
+import { SubtopicCardComponent } from './subtopic-card.component';
 
-describe('TopicComponent', () => {
-  let component: TopicComponent;
-  let fixture: ComponentFixture<TopicComponent>;
+describe('SubtopicCardComponent', () => {
+  let component: SubtopicCardComponent;
+  let fixture: ComponentFixture<SubtopicCardComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TopicComponent ]
+      declarations: [ SubtopicCardComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TopicComponent);
+    fixture = TestBed.createComponent(SubtopicCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
