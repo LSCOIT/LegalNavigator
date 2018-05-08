@@ -1,1 +1,0 @@
-﻿Domain Models go here.
