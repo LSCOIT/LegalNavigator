@@ -14,6 +14,9 @@
             if (model == null)
                 throw new ArgumentException("Attribute not applied on LUISInput");
 
+            if(value == null)
+                return ValidationResult.Success;
+
             string pattern = @"^\d{5}(\-\d{4})?$";
             Regex regex = new Regex(pattern);
             if (!regex.IsMatch(Convert.ToString(value))) {

@@ -11,6 +11,7 @@ namespace Access2Justice.Api
     using Access2Justice.CosmosDb;
     using Access2Justice.Shared;
     using Access2Justice.Shared.Interfaces;
+    using System;
 
     public class Startup
     {
@@ -29,10 +30,12 @@ namespace Access2Justice.Api
 
             services.Configure<App>(Configuration.GetSection("App"));
 
+
             services.AddSingleton<ILUISHelper, LUISHelper>();
             services.AddTransient<IHttpClientService, HttpClientService>();
 
             // configure and inject CosmosDb client
+
             ICosmosDbConfigurations cosmosDbConfigurations = new CosmosDbConfigurations();
             Configuration.GetSection("cosmosDb").Bind(cosmosDbConfigurations);
             services.AddSingleton<IDocumentClient>(x =>
