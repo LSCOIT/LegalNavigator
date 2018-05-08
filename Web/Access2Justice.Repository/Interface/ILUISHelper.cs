@@ -5,6 +5,6 @@
 
     public interface ILUISHelper
     {
-        Task GetLUISIntent(LUISInput luisInput);
+        Task<IntentWithScore> GetLUISIntent(LUISInput luisInput);
     }
 }

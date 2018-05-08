@@ -26,6 +26,7 @@
             services.Configure<App>(Configuration.GetSection("App"));
 
             services.AddSingleton<ILUISHelper, LUISHelper>();
+            services.AddTransient<IHttpClientService, HttpClientService>();
 
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new Info

@@ -13,7 +13,7 @@
     {
 
         private IOptions<App> _appSettings;
-        private ILUISHelper _luisHelper;
+        private ILUISHelper _luisHelper;        
 
         public IntentsMapperController(IOptions<App> appSettings, ILUISHelper luisHelper)
         {
@@ -22,9 +22,20 @@
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAsync()
+        public async Task<IActionResult> GetAsync(LUISInput luisInput)
         {
-            return Json("");
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+                return Json(await _luisHelper.GetLUISIntent(luisInput));
+            }
+            catch (Exception ex)
+            {
+                //need to implement error logging...
+                return StatusCode(500, ex.Message);
+            }
         }
 
     }
