@@ -1,17 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Access2Justice.Shared.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Documents;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Access2Justice.Api.Controllers
 {
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
+        private readonly IConfigurationManager _configurationManager;
+        private readonly IDocumentClient _documentClient;
+
+        public ValuesController(IConfigurationManager configurationManager, IDocumentClient documentClient)
+        {
+            _configurationManager = configurationManager;
+            _documentClient = documentClient;
+        }
+
         // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IEnumerable<string>> Get()
         {
             return new string[] { "value1", "value2" };
         }

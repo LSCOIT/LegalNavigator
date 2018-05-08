@@ -5,12 +5,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Properties\PublishProfiles\Access2JusticeApi - Web Deploy.pubxml" />
+    <None Remove="Properties\PublishProfiles\Access2JusticeApiV2 - Web Deploy.pubxml" />
+    <None Remove="Properties\PublishProfiles\Access2JusticeApiV3 - Web Deploy.pubxml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="Properties\PublishProfiles\" />
+    <Folder Include="ViewModels\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.AzureKeyVault" Version="2.0.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="2.4.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,6 +29,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Access2Justice.CosmosDb\Access2Justice.CosmosDb.csproj" />
+    <ProjectReference Include="..\Access2Justice.Shared\Access2Justice.Shared.csproj" /> 
     <ProjectReference Include="..\Access2Justice.CosmosDbService\Access2Justice.CosmosDbService.csproj" />
     <ProjectReference Include="..\Access2Justice.Repositories\Access2Justice.Repositories.csproj" />
   </ItemGroup>
