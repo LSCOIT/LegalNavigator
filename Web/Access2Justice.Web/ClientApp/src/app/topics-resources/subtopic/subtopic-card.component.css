@@ -1,0 +1,16 @@
+.subtopic-content {
+  border: 1px solid #000;
+  margin-bottom: 20px;
+}
+
+.subtopic-body {
+  margin: 20px;
+}
+
+.subtopic-body media {
+  padding-top: 15px;
+}
+
+.glyphicon {
+  padding: 0 5px;
+}

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { TopicService } from './topic.service';
-import { Topic } from './topic';
+import { TopicService } from '../shared/topic.service';
+import { Topic } from '../shared/topic';
 
 @Component({
   selector: 'app-topics',

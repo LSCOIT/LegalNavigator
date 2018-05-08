@@ -1,0 +1,55 @@
+<div class="container"><!--*ngIf="subtopicDetail"-->
+  <a href="#">All topics</a><span>></span><a href="#">Housing</a><span>></span>
+  <div class="row">
+    <div class="col-md-9 col-sm-12 col-xs-12">
+      <h3 class="subtopic-heading">Eviction</h3><!--<h2>{{subtopicDetail.heading}}</h2>-->
+      <span>Last Updated on XX/XX/XXX at X:XX AM TZT</span>
+    </div>
+    <div class="col-md-3 col-sm-12 col-xs-12 user-action">
+      <li><span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>Save</li>
+      <li><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>Share</li>
+      <li><span class="glyphicon glyphicon-print" aria-hidden="true"></span>Print</li>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-9 col-sm-12 col-xs-12">
+      <div class="subtopic-content">
+        <div class="subtopic-body">
+          <h4>Overview</h4>
+          <p>Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter. Solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter.</p>
+          <div class="row">
+            <h5>Essential Reading</h5>
+            <li><a href="#">Law in Hawaii</a></li>
+            <li><a href="#">Top 10 Most Frequently Asked Questions About Landlord-Tenant Law in Hawaii</a></li>
+            <li><a href="#">Eviction: Information for Landlords and Tenants</a></li>
+            <li><a href="#">Know Your Rights – Fair Housing</a></li>
+            <li><a href="#">Glossary of common eviction terms</a></li>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <h3>Action Plans</h3>
+        <p>Our action plans are based on common resolution steps for people dealing with eviction. Please ask a professional if you have questions.</p>
+        <!--insert resource content-->
+      </div>
+      <div class="row">
+        <h3>Articles</h3>
+        <!--insert resource content-->
+        <button>See more Articles</button>
+      </div>
+      <div class="row">
+        <h3>Videos</h3>
+        <!--insert resource content-->
+      </div>
+      <div class="row">
+        <h3>Forms</h3>
+        <!--insert resource content-->
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-12 col-xs-12">
+      <app-guided-assistant-sidebar></app-guided-assistant-sidebar>
+      <app-service-org-sidebar></app-service-org-sidebar>
+    </div>
+  </div>
+</div>
+

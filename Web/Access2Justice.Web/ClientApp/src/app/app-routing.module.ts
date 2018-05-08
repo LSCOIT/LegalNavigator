@@ -11,8 +11,8 @@ import { LogInComponent } from './account/log-in.component';
 import { PrivacyPromiseComponent } from './privacy-promise/privacy-promise.component';
 import { TopicsResourcesComponent } from './topics-resources/topics-resources.component';
 import { QuestionComponent } from './guided-assistant/question.component';
-import { SubtopicDetailComponent } from './topics-resources/subtopic-detail.component';
-import { SubtopicsComponent } from './topics-resources/subtopics.component';
+import { SubtopicDetailComponent } from './topics-resources/subtopic/subtopic-detail.component';
+import { SubtopicsComponent } from './topics-resources/subtopic/subtopics.component';
 
 const appRoutes: Routes = [
   { path: 'about', component: AboutComponent },

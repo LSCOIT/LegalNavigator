@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { Topic } from '../topics-resources/topic';
+import { Topic } from './topic';
 
 
 @Injectable()

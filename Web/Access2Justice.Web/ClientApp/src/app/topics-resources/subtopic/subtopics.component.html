@@ -1,12 +1,19 @@
 <div class="container">
-  <div class="row">
-    <a href="#">All topics ></a>
-  </div>
-  <div class="row">
-    <div class="col-md-9 col-sm-12 col-xs-12" style="padding-left: 0;">
-      <h4>More Topics Related to Housing</h4>
-      <p>Which topic would you like to learn more about?</p>
-      <div class="row subtopics">
+  <a href="#">All topics</a><span>></span>
+  <div class="row topic-content">
+    <div class="col-md-9 col-sm-12 col-xs-12 topic-list">
+      <div class="media">
+        <div class="media-left">
+          <a href="#">
+            <img class="media-object" src="../../assets/images/topics/topic1.png" alt="...">
+          </a>
+        </div>
+        <div class="media-body">
+          <h4 class="media-heading">More Topics Related to Housing</h4>
+          <p>Which topic would you like to learn more about?</p>
+        </div>
+      </div>
+      <div class="row topics">
         <!--Need to loop through subtopics here-->
         <li><a [routerLink]="['/topics/housing/eviction']">Eviction</a></li><!--Need to use routerlink to /topics/housing/eviction -->
         <li><a href="#">Subtopic Name</a></li>
@@ -29,6 +36,7 @@
         <li><a href="#">Subtopic Name</a></li>
         <li><a href="#">Subtopic Name</a></li>
       </div>
+      <button class="btn btn-primary">Back to main topics</button>
     </div>
     <div class="col-md-3 col-sm-12 col-xs-12">
       <app-guided-assistant-sidebar></app-guided-assistant-sidebar>

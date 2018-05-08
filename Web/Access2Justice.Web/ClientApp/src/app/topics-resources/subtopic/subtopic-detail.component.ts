@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import { TopicService } from '../topics-resources/topic.service';
+import { TopicService } from '../shared/topic.service';
 import { ActivatedRoute } from '@angular/router';
-import { Topic } from '../topics-resources/topic';
+import { Topic } from '../shared/topic';
 import { HttpParams } from '@angular/common/http';
 
 @Component({
