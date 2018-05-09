@@ -10,17 +10,24 @@ import { HttpParams } from '@angular/common/http';
   styleUrls: ['./subtopics.component.css']
 })
 export class SubtopicsComponent implements OnInit {
+
   subtopicDetails: Topic;
-  constructor(private topicService: TopicService, private activeRoute: ActivatedRoute) { }
-  getTopicDetails(): void {
-    let id = new HttpParams();
-    id = id.set('id', this.activeRoute.snapshot.params['id']);
-    this.topicService.getTopicDetails(id)
-      .subscribe(data => this.subtopicDetails = data);
+  constructor(private topicService: TopicService, private activeRoute: ActivatedRoute) {
   }
+
+  getTopicDetails(): void {
+
+    //let id = new HttpParams();
+    //id = id.set('id', this.activeRoute.snapshot.params['topic']);
+    this.topicService.getTopicDetails(this.activeRoute.snapshot.params['topic'])
+      .subscribe(
+      data => this.subtopicDetails = data);
+  }
+
   ngOnInit() {
 
     this.getTopicDetails();
   }
 
 }
+

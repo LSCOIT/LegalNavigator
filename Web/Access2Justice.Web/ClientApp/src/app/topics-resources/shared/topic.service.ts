@@ -6,9 +6,9 @@ import { Topic } from './topic';
 
 @Injectable()
 export class TopicService {
-
   topicUrl = "http://localhost:59704/api/Topics/Get";
   topicContentUrl = "http://localhost:59704/api/Topics/GetSubTopics";
+  subtopicUrl = "http://localhost:59704/api/Topics/GetSubTopics";
 
   constructor(private http: HttpClient) { }
 
@@ -19,7 +19,8 @@ export class TopicService {
   getTopicDetail(name): Observable<any> {
     return this.http.get<Topic>(this.topicContentUrl, { params: name });
   }
+
   getTopicDetails(id): Observable<any> {
-    return this.http.get<Topic>(this.topicContentUrl + '?id=' + id, { params: id });
+    return this.http.get<Topic>(this.subtopicUrl+'/'+ id);
   }
 }

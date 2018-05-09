@@ -7,13 +7,8 @@ using System.Threading.Tasks;
 namespace Access2Justice.Repositories.Interface
 {
     public interface ITopicRepository<TModel, in TPk>
-    {
-       //<TModel, in TPk>
+    {    
             Task<IEnumerable<TModel>> GetTopicsFromCollectionAsync();
-            Task<TModel> GetTopicsFromCollectionAsync(TPk id);
-            //Task<TModel> AddDocumentIntoCollectionAsync(TModel item);
-            //Task<TModel> UpdateDocumentFromCollection(TPk id, TModel item);
-            //Task DeleteDocumentFromCollectionAsync(TPk id);
-
+            Task<TModel> GetTopicsFromCollectionAsync(TPk id);         
         }
     }

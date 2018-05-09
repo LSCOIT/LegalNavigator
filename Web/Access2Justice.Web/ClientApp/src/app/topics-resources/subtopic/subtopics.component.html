@@ -9,42 +9,27 @@
           </a>
         </div>
         <div class="media-body">
-          <h4 class="media-heading">More Topics Related to Housing</h4>
+
+          <h4 class="media-heading">More Topics Related to{{ topic.title }}</h4>
           <p>Which topic would you like to learn more about?</p>
         </div>
       </div>
 
-
       <div class="row subtopics">
-        <!--Need to loop through subtopics here-->
-        <ul *ngFor="let subtopic of subtopicDetails">
-          <li [routerLink]="['/topics',subtopic.id]">{{subtopic.title}}</li>
-          <!--<li [routerLink]="['/topics/{{}}/{{subtopic.SubTopic}}']">{{subtopic.SubTopic}}</li>-->
+    
+        <ul *ngFor="let subtopic of subtopicDetails.subtopic">
+          
+          <li><a [routerLink]="['/subtopics',subtopic.id]">{{subtopic.title}}</a></li>
         </ul>
       </div>
-
-      <!--<div class="row topics">
-        <!Need to loop through subtopics here-->-->
+      <!--<div class="row topics">-->
+        <!Need to loop through subtopics here-->
         <!--<li><a [routerLink]="['/topics/housing/eviction']">Eviction</a></li>--><!--Need to use routerlink to /topics/housing/eviction -->
         <!--<li><a href="#">Subtopic Name</a></li>
         <li><a href="#">Subtopic Name</a></li>
         <li><a href="#">Subtopic Name</a></li>
         <li><a href="#">Subtopic Name</a></li>
-        <li><a href="#">Subtopic Name</a></li>
-        <li><a href="#">Subtopic Name</a></li>
-        <li><a href="#">Subtopic Name</a></li>
-        <li><a href="#">Subtopic Name</a></li>
-        <li><a href="#">Subtopic Name</a></li>
-        <li><a href="#">Subtopic Name</a></li>
-        <li><a href="#">Subtopic Name</a></li>
-        <li><a href="#">Subtopic Name</a></li>
-        <li><a href="#">Subtopic Name</a></li>
-        <li><a href="#">Subtopic Name</a></li>
-        <li><a href="#">Subtopic Name</a></li>
-        <li><a href="#">Subtopic Name</a></li>
-        <li><a href="#">Subtopic Name</a></li>
-        <li><a href="#">Subtopic Name</a></li>
-        <li><a href="#">Subtopic Name</a></li>
+  
       </div>-->
       <button class="btn btn-primary">Back to main topics</button>
     </div>

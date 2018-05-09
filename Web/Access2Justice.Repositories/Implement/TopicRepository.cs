@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using Access2Justice.Repositories.Interface;
-
 using System.Threading.Tasks;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents.Linq;
@@ -22,10 +21,8 @@ namespace Access2Justice.Repositories.Implement
 
         public TopicRepository()
         {
-            docClient = new DocumentClient(new Uri(Endpoint), Key);
-           
+            docClient = new DocumentClient(new Uri(Endpoint), Key);          
         }
-
         public async Task<IEnumerable<TopicModel>> GetTopicsFromCollectionAsync()
         {
             var documents = docClient.CreateDocumentQuery<TopicModel>(
@@ -39,13 +36,11 @@ namespace Access2Justice.Repositories.Implement
             }
             return topics;
         }
-
         public async Task<TopicModel> GetTopicsFromCollectionAsync(string id)
         {
             TopicModel model = new TopicModel();
             try
             {
-
                 Document doc = await docClient.ReadDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId,id));
 
                 return JsonConvert.DeserializeObject<TopicModel>(doc.ToString());

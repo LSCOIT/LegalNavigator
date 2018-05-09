@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.Cors;
 using Access2Justice.Repositories.Interface;
 using Access2Justice.Repositories.Models;
 using Access2Justice.CosmosDb;
-
+using Access2Justice.Shared.Interfaces;
+using Microsoft.Azure.Documents;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -16,7 +17,7 @@ namespace Access2Justice.Api.Controllers
    
     public class TopicsController : Controller
     {
-
+       
         ITopicRepository<TopicModel, string> _repo;
         public TopicsController(ITopicRepository<TopicModel, string> r)
         {
@@ -37,21 +38,6 @@ namespace Access2Justice.Api.Controllers
             var topics = _repo.GetTopicsFromCollectionAsync(id).Result;
             return Ok(topics);
         }
-
-
-        //Class1 cls = new Class1();
-        //[Route("api/Topics/Get")]
-        //[HttpGet]
-        //public List<TopicModel> Get()
-        //{
-        //    return cls.GetTopicsList();
-        //}
-
-        //[Route("api/topics/getcontent")]
-        //[HttpGet]
-        //public SubjectModel GetContent(string name) 
-        //{
-        //    return cls.GetContentsList(name);
-        //}
+    
     }
 }
