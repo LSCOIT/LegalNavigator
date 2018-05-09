@@ -6,9 +6,9 @@ import { Topic } from './topic';
 
 @Injectable()
 export class TopicService {
-  topicUrl = "http://localhost:59704/api/Topics/Get";
-  topicContentUrl = "http://localhost:59704/api/Topics/GetSubTopics";
-  subtopicUrl = "http://localhost:59704/api/Topics/GetSubTopics";
+  topicUrl = "http://localhost:64218/api/Topics/Get";
+  topicContentUrl = "http://localhost:64218/api/Topics/GetSubTopics";
+  subtopicUrl = "http://localhost:64218/api/Topics/GetSubTopics";
 
   constructor(private http: HttpClient) { }
 

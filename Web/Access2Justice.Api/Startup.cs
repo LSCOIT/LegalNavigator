@@ -61,7 +61,7 @@ namespace Access2Justice.Api
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Access2Justice API V1");
             });
-            app.UseCors(builder => builder.WithOrigins("http://localhost:59706"));
+            app.UseCors(builder => builder.WithOrigins("http://localhost:64044"));
             app.UseMvc();
 
 

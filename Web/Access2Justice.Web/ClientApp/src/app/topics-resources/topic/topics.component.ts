@@ -14,7 +14,7 @@ export class TopicsComponent implements OnInit
 
   getTopics(): void {
     this.topicService.getTopics()
-        .subscribe(topics => this.topics = topics);
+        .subscribe(topics => this.topics = topics["result"]);
   }
 
   constructor(private topicService: TopicService) { }
