@@ -10,7 +10,7 @@
         </div>
         <div class="media-body">
 
-          <h4 class="media-heading">More Topics Related to{{ topic.title }}</h4>
+          <h4 class="media-heading">More Topics Related to Housing</h4>
           <p>Which topic would you like to learn more about?</p>
         </div>
       </div>
@@ -19,7 +19,7 @@
     
         <ul *ngFor="let subtopic of subtopicDetails.subtopic">
           
-          <li><a [routerLink]="['/subtopics',subtopic.id]">{{subtopic.title}}</a></li>
+          <li><a [routerLink]="['/topics',subtopic.id]">{{subtopic.title}}</a></li>
         </ul>
       </div>
       <!--<div class="row topics">-->

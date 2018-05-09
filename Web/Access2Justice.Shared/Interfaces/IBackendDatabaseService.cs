@@ -13,5 +13,9 @@ namespace Access2Justice.Shared.Interfaces
         Task<T> GetItemAsync<T>(string id);
         Task<IEnumerable<T>> GetItemsAsync<T>(Expression<Func<T, bool>> predicate);
         Task<Document> UpdateItemAsync<T>(string id, T item);
+
+
+        Task<IEnumerable<TopicModel>> GetTopicsFromCollectionAsync();
+        Task<TopicModel> GetTopicsFromCollectionAsync(string id);
     }
 }

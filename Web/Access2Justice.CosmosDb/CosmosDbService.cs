@@ -3,6 +3,7 @@ using Access2Justice.Shared.Interfaces;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents.Linq;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -128,5 +129,46 @@ namespace Access2Justice.CosmosDb
                 }
             }
         }
+
+
+
+
+
+
+        public async Task<IEnumerable<TopicModel>> GetTopicsFromCollectionAsync()
+        {
+            var documents = _documentClient.CreateDocumentQuery<TopicModel>(
+                  UriFactory.CreateDocumentCollectionUri(_config.DatabaseId, _config.CollectionId),
+                  new FeedOptions { MaxItemCount = -1 })
+                  .AsDocumentQuery();
+            List<TopicModel> topics = new List<TopicModel>();
+            while (documents.HasMoreResults)
+            {
+                topics.AddRange(await documents.ExecuteNextAsync<TopicModel>());
+            }
+            return topics;
+        }
+        public async Task<TopicModel> GetTopicsFromCollectionAsync(string id)
+        {
+            TopicModel model = new TopicModel();
+            try
+            {
+                Document doc = await _documentClient.ReadDocumentAsync(UriFactory.CreateDocumentUri(_config.DatabaseId, _config.CollectionId, id));
+
+                return JsonConvert.DeserializeObject<TopicModel>(doc.ToString());
+            }
+            catch (DocumentClientException e)
+            {
+                if (e.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    return null;
+                }
+                else
+                {
+                    throw;
+                }
+            }
+        }
+
     }
 }
