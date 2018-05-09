@@ -1,8 +1,8 @@
-﻿namespace Access2Justice.Repository
+﻿namespace Access2Justice.CognitiveServices
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class LUISInput
+    public class LuisInput
     {
         /// <summary>
         /// 

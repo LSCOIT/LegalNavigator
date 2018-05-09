@@ -2,9 +2,10 @@
 {
     using System;    
     using System.Threading.Tasks;
-    using Access2Justice.Repository;    
+    using Access2Justice.CognitiveServices;    
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
+    using Access2Justice.Shared;
 
 
     [Produces("application/json")]
@@ -12,24 +13,24 @@
     public class IntentsMapperController : Controller
     {
 
-        private IOptions<App> _appSettings;
-        private ILUISHelper _luisHelper;        
+        private IOptions<App> appSettings;
+        private ILuisHelper luisHelper;        
 
-        public IntentsMapperController(IOptions<App> appSettings, ILUISHelper luisHelper)
+        public IntentsMapperController(IOptions<App> appSettings, ILuisHelper luisHelper)
         {
-            _appSettings = appSettings ?? throw new ArgumentNullException(nameof(appSettings));
-            _luisHelper = luisHelper ?? throw new ArgumentNullException(nameof(luisHelper));
+            this.appSettings = appSettings ?? throw new ArgumentNullException(nameof(appSettings));
+            this.luisHelper = luisHelper ?? throw new ArgumentNullException(nameof(luisHelper));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAsync(LUISInput luisInput)
+        public async Task<IActionResult> GetAsync(LuisInput luisInput)
         {
             try
             {
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
 
-                return Json(await _luisHelper.GetLUISIntent(luisInput));
+                return Json(await luisHelper.GetLuisIntent(luisInput));
             }
             catch (Exception ex)
             {

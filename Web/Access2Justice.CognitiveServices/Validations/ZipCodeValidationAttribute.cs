@@ -1,4 +1,4 @@
-﻿namespace Access2Justice.Repository
+﻿namespace Access2Justice.CognitiveServices
 {
     using System;    
     using System.ComponentModel.DataAnnotations;
@@ -9,7 +9,7 @@
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            var model = validationContext.ObjectInstance as LUISInput;
+            var model = validationContext.ObjectInstance as LuisInput;
 
             if (model == null)
                 throw new ArgumentException("Attribute not applied on LUISInput");

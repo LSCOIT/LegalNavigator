@@ -1,4 +1,4 @@
-﻿namespace Access2Justice.Repository
+﻿namespace Access2Justice.Shared
 {
     using System.Net.Http;
     using System.Threading.Tasks;

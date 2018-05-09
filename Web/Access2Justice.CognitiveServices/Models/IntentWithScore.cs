@@ -1,4 +1,4 @@
-﻿namespace Access2Justice.Repository
+﻿namespace Access2Justice.CognitiveServices
 {
     public class IntentWithScore
     {

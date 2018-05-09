@@ -5,7 +5,7 @@ namespace Access2Justice.Api
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;    
     using Swashbuckle.AspNetCore.Swagger;
-    using Access2Justice.Repository;
+    using Access2Justice.CognitiveServices;
     using Microsoft.Azure.Documents;
     using Microsoft.Azure.Documents.Client;
     using Access2Justice.CosmosDb;
@@ -31,7 +31,7 @@ namespace Access2Justice.Api
             services.Configure<App>(Configuration.GetSection("App"));
 
 
-            services.AddSingleton<ILUISHelper, LUISHelper>();
+            services.AddSingleton<ILuisHelper, LuisHelper>();
             services.AddTransient<IHttpClientService, HttpClientService>();
 
             // configure and inject CosmosDb client

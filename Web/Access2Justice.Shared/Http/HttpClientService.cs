@@ -1,4 +1,4 @@
-﻿namespace Access2Justice.Repository
+﻿namespace Access2Justice.Shared
 {
     using System;
     using System.Net.Http;
@@ -7,16 +7,16 @@
     public class HttpClientService : IHttpClientService
     {
         /// <summary>
-        /// The _http client.
+        /// The http client.
         /// </summary>
-        private readonly HttpClient _httpClient;
+        private readonly HttpClient httpClient;
 
         /// <summary>
         /// /// Initializes a new instance of the HttpClientService class.
         /// </summary>
         public HttpClientService()
         {
-            _httpClient = new HttpClient();
+            httpClient = new HttpClient();
         }
 
         public async Task<HttpResponseMessage> GetAsync(string apiUrl)
@@ -24,7 +24,7 @@
             HttpResponseMessage response = null;
             try
             {
-                response = await _httpClient.GetAsync(apiUrl);
+                response = await httpClient.GetAsync(apiUrl);
             }
             catch (Exception ex)
             {
@@ -38,7 +38,7 @@
             HttpResponseMessage response = null;
             try
             {
-                response = await _httpClient.PostAsync(apiUrl, httpContent);
+                response = await httpClient.PostAsync(apiUrl, httpContent);
             }
             catch (Exception ex)
             {
