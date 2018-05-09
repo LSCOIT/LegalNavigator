@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Microsoft.Azure.Documents;
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Microsoft.Azure.Documents;
 
 namespace Access2Justice.Shared.Interfaces
 {
