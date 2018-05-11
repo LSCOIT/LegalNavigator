@@ -6,7 +6,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
 import { HttpModule } from '@angular/http';
 
-
 import {
   AccordionModule,
   CarouselModule,
@@ -23,16 +22,13 @@ import { HelpFaqsComponent } from './help-faqs/help-faqs.component';
 import { HomeComponent } from './home/home.component';
 import { LogInComponent } from './account/log-in.component';
 import { PrivacyPromiseComponent } from './privacy-promise/privacy-promise.component';
-import { TopicService } from './topics-resources/shared/topic.service';
-import { TopicsResourcesComponent } from './topics-resources/topics-resources.component';
-import { TopicsComponent } from './topics-resources/topic/topics.component';
 import { QuestionComponent } from './guided-assistant/question.component';
 import { QuestionService } from './guided-assistant/question.service';
-import { SubtopicDetailComponent } from './topics-resources/subtopic/subtopic-detail.component';
-import { GuidedAssistantSidebarComponent } from './guided-assistant/guided-assistant-sidebar.component';
-import { ServiceOrgSidebarComponent } from './topics-resources/shared/service-org-sidebar.component';
+import { TopicService } from './topics-resources/shared/topic.service';
 import { SubtopicsComponent } from './topics-resources/subtopic/subtopics.component';
-import { SubtopicCardComponent } from './topics-resources/subtopic/subtopic-card.component';
+import { SubtopicDetailComponent } from './topics-resources/subtopic/subtopic-detail.component';
+import { TopicsResourcesComponent } from './topics-resources/topics-resources.component';
+import { TopicsComponent } from './topics-resources/topic/topics.component';
 
 
 @NgModule({
@@ -49,10 +45,7 @@ import { SubtopicCardComponent } from './topics-resources/subtopic/subtopic-card
     TopicsComponent,
     TopicsResourcesComponent,
     SubtopicDetailComponent,
-    GuidedAssistantSidebarComponent,
-    ServiceOrgSidebarComponent,
-    SubtopicsComponent,
-    SubtopicCardComponent,
+    SubtopicsComponent
   ],
   imports: [
     BrowserModule,

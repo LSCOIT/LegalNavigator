@@ -9,23 +9,25 @@ import { HelpFaqsComponent } from './help-faqs/help-faqs.component';
 import { HomeComponent } from './home/home.component';
 import { LogInComponent } from './account/log-in.component';
 import { PrivacyPromiseComponent } from './privacy-promise/privacy-promise.component';
-import { TopicsResourcesComponent } from './topics-resources/topics-resources.component';
 import { QuestionComponent } from './guided-assistant/question.component';
+import { SearchResultsComponent } from './shared/search/search-results.component';
 import { SubtopicDetailComponent } from './topics-resources/subtopic/subtopic-detail.component';
 import { SubtopicsComponent } from './topics-resources/subtopic/subtopics.component';
+import { TopicsResourcesComponent } from './topics-resources/topics-resources.component';
 
 const appRoutes: Routes = [
+  { path: 'search', component: SearchResultsComponent},
+  { path: 'guidedassistant/123', component: QuestionComponent },
+  { path: 'guidedassistant', component: GuidedAssistantComponent },
+  { path: 'topics/:topic/:subtopic', component: SubtopicDetailComponent },
+  { path: 'topics/:topic', component: SubtopicsComponent },
+  { path: 'topics', component: TopicsResourcesComponent },
   { path: 'about', component: AboutComponent },
   { path: 'createaccount', component: CreateAccountComponent },
-  { path: 'guidedassistant', component: GuidedAssistantComponent },
-  { path: 'guidedassistant/123', component: QuestionComponent },
   { path: 'help', component: HelpFaqsComponent },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LogInComponent },
   { path: 'privacy', component: PrivacyPromiseComponent },
-  { path: 'topics/:topic/:subtopic', component: SubtopicDetailComponent },
-  { path: 'topics/:topic', component: SubtopicsComponent },
-  { path: 'topics', component: TopicsResourcesComponent },
   { path: '', component: HomeComponent }
 ];
 

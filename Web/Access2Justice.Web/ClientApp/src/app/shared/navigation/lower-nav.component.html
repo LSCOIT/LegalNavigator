@@ -10,12 +10,7 @@
       <a class="navbar-brand" href="#">Legal Assist</a>
     </div>
     <div class="mobile-hidden" [style.display] = "getMenu()">
-      <form class="navbar-form navbar-right search-form">
-        <span type="button" class="glyphicon glyphicon-search" aria-hidden="true"></span>
-        <div class="form-group">
-          <input type="text" class="form-control" id="search" placeholder="Search">
-        </div>
-      </form>
+      <app-search></app-search>
       <ul class="nav navbar-nav">
         <li><a href="">Home</a></li>
         <li><a routerLink='/guidedassistant'>Guided Assistant</a></li>
