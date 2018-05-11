@@ -137,6 +137,7 @@ namespace Access2Justice.CosmosDb
 
         public async Task<IEnumerable<TopicModel>> GetTopicsFromCollectionAsync()
         {
+
             var documents = _documentClient.CreateDocumentQuery<TopicModel>(
                   UriFactory.CreateDocumentCollectionUri(_config.DatabaseId, _config.CollectionId),
                   new FeedOptions { MaxItemCount = -1 })
