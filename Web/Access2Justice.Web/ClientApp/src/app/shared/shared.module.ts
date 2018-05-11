@@ -14,6 +14,8 @@ import { ServiceOrgSidebarComponent } from './sidebars/service-org-sidebar.compo
 import { UpperNavComponent } from './navigation/upper-nav.component';
 
 import { BsDropdownModule } from 'ngx-bootstrap';
+import { ActionPlanComponent } from './resource/resource-card-detail/resource-types/action-plan.component';
+import { ResourceCardDetailComponent } from './resource/resource-card-detail/resource-card-detail.component';
 
 
 @NgModule({
@@ -32,7 +34,9 @@ import { BsDropdownModule } from 'ngx-bootstrap';
     SearchComponent,
     SearchResultsComponent,
     ServiceOrgSidebarComponent,
-    UpperNavComponent
+    UpperNavComponent,
+    ActionPlanComponent,
+    ResourceCardDetailComponent
   ],
   exports: [
     ChatbotComponent,

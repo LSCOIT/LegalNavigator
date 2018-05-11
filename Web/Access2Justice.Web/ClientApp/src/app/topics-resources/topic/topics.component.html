@@ -1,5 +1,5 @@
 <div *ngFor="let topic of topics" class="col-md-4 col-sm-6 col-xs-6 text-center">
-  <a><img src="{{ topic.icon }}"></a>
+  <a [routerLink]="['/topics', topic.title | lowercase]"><img src="{{ topic.icon }}" alt="{{topic.title}}"></a>
   <h5><a [routerLink]="['/topics', topic.title | lowercase]">{{ topic.title }}</a></h5>
 </div>
 

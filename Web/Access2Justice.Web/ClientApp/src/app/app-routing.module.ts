@@ -14,11 +14,15 @@ import { SearchResultsComponent } from './shared/search/search-results.component
 import { SubtopicDetailComponent } from './topics-resources/subtopic/subtopic-detail.component';
 import { SubtopicsComponent } from './topics-resources/subtopic/subtopics.component';
 import { TopicsResourcesComponent } from './topics-resources/topics-resources.component';
+import { ResourceCardDetailComponent } from
+'./shared/resource/resource-card-detail/resource-card-detail.component';
+
 
 const appRoutes: Routes = [
   { path: 'search', component: SearchResultsComponent},
   { path: 'guidedassistant/123', component: QuestionComponent },
   { path: 'guidedassistant', component: GuidedAssistantComponent },
+  { path: 'resource/:id', component: ResourceCardDetailComponent },
   { path: 'topics/:topic/:subtopic', component: SubtopicDetailComponent },
   { path: 'topics/:topic', component: SubtopicsComponent },
   { path: 'topics', component: TopicsResourcesComponent },
