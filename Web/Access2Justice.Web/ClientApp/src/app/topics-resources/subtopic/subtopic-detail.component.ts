@@ -30,7 +30,7 @@ export class SubtopicDetailComponent implements OnInit {
                   if (subtopics["result"][j]["title"].toLowerCase() === this.activeSubtopic) {
                     this.activeSubtopicId = subtopics["result"][j]["id"];
                     this.topicService.getSubtopicDetail(this.activeSubtopicId)
-                      .subscribe(subtopics => this.subtopicDetail = subtopics);
+                      .subscribe(subtopicDetail => this.subtopicDetail = subtopicDetail);
                   }
                 };
               });
