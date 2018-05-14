@@ -17,7 +17,7 @@
 
       <div class="row subtopics">
     
-        <ul *ngFor="let subtopic of subtopicDetails.subtopic">
+        <ul *ngFor="let subtopic of subtopicDetails">
           
           <li><a [routerLink]="['/topics',subtopic.id]">{{subtopic.title}}</a></li>
         </ul>

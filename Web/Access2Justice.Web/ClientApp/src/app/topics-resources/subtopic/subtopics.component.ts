@@ -21,7 +21,7 @@ export class SubtopicsComponent implements OnInit {
     //id = id.set('id', this.activeRoute.snapshot.params['topic']);
     this.topicService.getTopicDetails(this.activeRoute.snapshot.params['topic'])
       .subscribe(
-      data => this.subtopicDetails = data);
+      data => this.subtopicDetails = data["result"]);
   }
 
   ngOnInit() {

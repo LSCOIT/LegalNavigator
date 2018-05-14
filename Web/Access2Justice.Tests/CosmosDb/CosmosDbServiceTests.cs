@@ -36,7 +36,7 @@
         //[Test]
         public void ReadDbConnection()
         {
-            var resp = cosmosDbService.GetTopicsFromCollectionAsync("pleaseignore");
+        //    var resp = cosmosDbService.GetItemsAsync("please ignore");
         }
     }
 }

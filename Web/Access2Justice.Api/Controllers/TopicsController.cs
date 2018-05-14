@@ -21,20 +21,22 @@ namespace Access2Justice.Api.Controllers
         public TopicsController(IBackendDatabaseService backendDataBaseService)
         {
             this.backendDataBaseService = backendDataBaseService;          
-        } 
-        
+        }
+
         [HttpGet]
         [Route("api/topics/get")]
         public IActionResult Get()
         {
-            var topics = backendDataBaseService.GetItemsAsync<TopicModel>(a => a.type == "topic" && a.parentId == "");         
+            var topics = backendDataBaseService.GetItemsAsync<TopicModel>(a => a.Type == "topic" && a.ParentId == "");         
             return Ok(topics);                     
         }
         [HttpGet]
         [Route("api/topics/getsubtopics/{id}")]
+
         public IActionResult Get(string id)
         {
-            var topics = backendDataBaseService.GetTopicsFromCollectionAsync(id).Result;
+
+            var topics = backendDataBaseService.GetItemsAsync<TopicModel>(a => a.Type == "topic" && a.ParentId == id);
             return Ok(topics);
         }
         [HttpGet]

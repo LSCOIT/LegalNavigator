@@ -25,11 +25,9 @@ namespace Access2Justice.CosmosDb
             _documentClient = documentClient;
             _configurationManager = configurationManager;
             _config = _configurationManager.Bind<CosmosDbConfigurations>(Directory.GetCurrentDirectory(), "cosmosDb");
-
             CreateDatabaseIfNotExistsAsync().Wait();
             CreateCollectionIfNotExistsAsync().Wait();
-        }
-
+        }  
         public async Task<T> GetItemAsync<T>(string id)
         {
             try
@@ -51,7 +49,6 @@ namespace Access2Justice.CosmosDb
                 }
             }
         }
-
         public async Task<IEnumerable<T>> GetItemsAsync<T>(Expression<Func<T, bool>> predicate)
         {
             IDocumentQuery<T> query = _documentClient.CreateDocumentQuery<T>(
@@ -68,22 +65,18 @@ namespace Access2Justice.CosmosDb
 
             return results;
         }
-
         public async Task<Document> CreateItemAsync<T>(T item)
         {
             return await _documentClient.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(_config.DatabaseId, _config.CollectionId), item);
         }
-
         public async Task<Document> UpdateItemAsync<T>(string id, T item)
         {
             return await _documentClient.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(_config.DatabaseId, _config.CollectionId, id), item);
         }
-
         public async Task DeleteItemAsync(string id)
         {
             await _documentClient.DeleteDocumentAsync(UriFactory.CreateDocumentUri(_config.DatabaseId, _config.CollectionId, id));
         }
-
         private async Task CreateDatabaseIfNotExistsAsync()
         {
             try
@@ -103,7 +96,6 @@ namespace Access2Justice.CosmosDb
                 }
             }
         }
-
         private async Task CreateCollectionIfNotExistsAsync()
         {
             try
@@ -128,48 +120,7 @@ namespace Access2Justice.CosmosDb
                     throw;
                 }
             }
-        }
-
-
-
-
-
-
-        public async Task<IEnumerable<TopicModel>> GetTopicsFromCollectionAsync()
-        {
-
-            var documents = _documentClient.CreateDocumentQuery<TopicModel>(
-                  UriFactory.CreateDocumentCollectionUri(_config.DatabaseId, _config.CollectionId),
-                  new FeedOptions { MaxItemCount = -1 })
-                  .AsDocumentQuery();
-            List<TopicModel> topics = new List<TopicModel>();
-            while (documents.HasMoreResults)
-            {
-                topics.AddRange(await documents.ExecuteNextAsync<TopicModel>());
-            }
-            return topics;
-        }
-        public async Task<TopicModel> GetTopicsFromCollectionAsync(string id)
-        {
-            TopicModel model = new TopicModel();
-            try
-            {
-                Document doc = await _documentClient.ReadDocumentAsync(UriFactory.CreateDocumentUri(_config.DatabaseId, _config.CollectionId, id));
-
-                return JsonConvert.DeserializeObject<TopicModel>(doc.ToString());
-            }
-            catch (DocumentClientException e)
-            {
-                if (e.StatusCode == System.Net.HttpStatusCode.NotFound)
-                {
-                    return null;
-                }
-                else
-                {
-                    throw;
-                }
-            }
-        }
+        }   
 
     }
 }

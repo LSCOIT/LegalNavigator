@@ -1,137 +1,210 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Access2Justice.Shared
-{
-    public class TopicModel
+{   
+    public class TopicModel 
     {
-        public string id { get; set; }
-        public string parentId { get; set; }
-        public string type { get; set; }
-        public string title { get; set; }
-        public string icon { get; set; }
-        public string lang { get; set; }
-        public string overview { get; set; }
-        public string description { get; set; }
-        public string keywords { get; set; }
-        public string essentialReading { get; set; }
-        public string actionPlanHeading { get; set; }
-        public actionPlan[] actionPlan { get; set; }
-        public Organization[] organization { get; set; }
-        public Video[] video { get; set; }
-        public Article[] article { get; set; }
-        public Form[] form { get; set; }
-        public string createdTimeStamp { get; set; }      
-        public string modifiedTimeStamp { get; set; }
+        [JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+        [JsonProperty(PropertyName = "type")]
+        public string Type { get; set; }
+
+        [JsonProperty(PropertyName = "title")]
+        public string Title { get; set; }
+
+        [JsonProperty(PropertyName = "icon")]
+        public string Icon { get; set; }
+
+        [JsonProperty(PropertyName = "language")]
+        public string Language { get; set; }
+
+        [JsonProperty(PropertyName = "parentid")]
+        public string ParentId { get; set; }
+
+        [JsonProperty(PropertyName = "overview")]
+        public string Overview { get; set; }
+
+        [JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
+
+        [JsonProperty(PropertyName = "keywords")]
+        public string Keywords { get; set; }
+
+        [JsonProperty(PropertyName = "essentialreading")]
+        public string EssentialReading { get; set; }
+
+        [JsonProperty(PropertyName = "actionplanheading")]
+        public string ActionPlanHeading { get; set; }
+
+        public ActionPlan[] ActionPlan { get; set; }      
+        public Organization[] Organization { get; set; }       
+        public Video[] Video { get; set; }
+        public Article[] Article { get; set; }
+        public Form[] Form { get; set; }
+       
     }
-    public class actionPlan
+    public class ActionPlan
     {
-        public string id { get; set; }
-        public string type { get; set; }
-        public string title { get; set; }
-        public string subHead { get; set; }
-        public string description { get; set; }
-        public string keywords { get; set; }
-        public string content { get; set; }
-        public string createdBy { get; set; }
-        public string createdTimeStamp { get; set; }
-        public string modifiedBy { get; set; }
-        public string modifiedTimeStamp { get; set; }
-        public string status { get; set; }
+        [JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+        [JsonProperty(PropertyName = "type")]
+        public string Type { get; set; }
+
+        [JsonProperty(PropertyName = "title")]
+        public string Title { get; set; }
+
+        [JsonProperty(PropertyName = "subtitle")]
+        public string SubTitle { get; set; }
+
+        [JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
+
+        [JsonProperty(PropertyName = "keywords")]
+        public string Keywords { get; set; }
+
+        [JsonProperty(PropertyName = "content")]
+        public string Content { get; set; }    
 
     }
-    public class Organization
+    public class Organization 
     {
-        public string id { get; set; }
-        public string type { get; set; }
-        public string title { get; set; }
-        public string alternateTitle { get; set; }
-        public string subTitle { get; set; }
-        public string overview { get; set; }
-        public string description { get; set; }
-        public string lang { get; set; }
-        public string createdBy { get; set; }
-        public string createdTimeStamp { get; set; }
-        public string modifiedBy { get; set; }
-        public string modifiedTimeStamp { get; set; }
-        public string status { get; set; }
-        public string keywords { get; set; }
-       // public carouselBanner[] carouselBanner { get; set; }
-       // public Address[] address { get; set; }
-        public string telephone { get; set; }
-        public string faxNumber { get; set; }
-        public string url { get; set; }
-        public string email { get; set; }
-       // public businessHours[] businessHours { get; set; }
-     //   public eligibilityInformation[] eligibilityInformation { get; set; }
-      //  public memberReview[] memberReview { get; set; }
-    }
-    public class article
-    {
+        [JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
 
-        public string id { get; set; }
-        public string type { get; set; }
-        public string title { get; set; }
-        public string subHead { get; set; }
-        public string lang { get; set; }
-        public string description { get; set; }
-        public string keywords { get; set; }
-       // public content[] content { get; set; }
-        public string createdBy { get; set; }
-        public string createdTimeStamp { get; set; }
-        public string modifiedBy { get; set; }
-        public string modifiedTimeStamp { get; set; }
-        public string status { get; set; }
+        [JsonProperty(PropertyName = "type")]
+        public string Type { get; set; }
+
+        [JsonProperty(PropertyName = "title")]
+        public string Title { get; set; }
+
+        [JsonProperty(PropertyName = "alternatetitle")]
+        public string AlternateTitle { get; set; }
+
+        [JsonProperty(PropertyName = "subtitle")]
+        public string SubTitle { get; set; }
+
+        [JsonProperty(PropertyName = "overview")]
+        public string Overview { get; set; }
+
+        [JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
+
+        [JsonProperty(PropertyName = "language")]
+        public string Language { get; set; }
+
+        [JsonProperty(PropertyName = "keywords")]
+        public string Keywords { get; set; }
+
+        [JsonProperty(PropertyName = "telephone")]
+        public string Telephone { get; set; }
+
+        [JsonProperty(PropertyName = "faxnumber")]
+        public string FaxNumber { get; set; }
+
+        [JsonProperty(PropertyName = "url")]
+        public string Url { get; set; }
+
+        [JsonProperty(PropertyName = "email")]
+        public string Email { get; set; }
+        //public CarouselBanner[] CarouselBanner { get; set; }
+        //public Address[] Address { get; set; }
+        //public BusinessHours[] BusinessHours { get; set; }
+        //public EligibilityInformation[] EligibilityInformation { get; set; }
+        //public MemberReview[] memberReview { get; set; }
+    }
+    public class Article 
+    {
+        [JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+        [JsonProperty(PropertyName = "type")]
+        public string Type { get; set; }
+
+        [JsonProperty(PropertyName = "title")]
+        public string Title { get; set; }
+
+        [JsonProperty(PropertyName = "subtitle")]
+        public string SubTitle { get; set; }
+
+        [JsonProperty(PropertyName = "language")]
+        public string Language { get; set; }
+
+        [JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
+
+        [JsonProperty(PropertyName = "keywords")]
+        public string Keywords { get; set; }
+        
+        // public content[] content { get; set; }      
 
     }
-    public class Video
+    public class Video 
     {
-        public string id { get; set; }
-        public string type { get; set; }
-        public string title { get; set; }
-        public string subHead { get; set; }
-        public string description { get; set; }
-        public string keywords { get; set; }
-        public string url { get; set; }
-        public string createdBy { get; set; }
-        public string createdTimeStamp { get; set; }
-        public string modifiedBy { get; set; }
-        public string modifiedTimeStamp { get; set; }
-        public string status { get; set; }
+        [JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+        [JsonProperty(PropertyName = "type")]
+        public string Type { get; set; }
+
+        [JsonProperty(PropertyName = "title")]
+        public string Title { get; set; }
+
+        [JsonProperty(PropertyName = "subtitle")]
+        public string SubTitle { get; set; }
+
+        [JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
+
+        [JsonProperty(PropertyName = "keywords")]
+        public string Keywords { get; set; }
+
+        [JsonProperty(PropertyName = "url")]
+        public string Url { get; set; }
 
     }
     public class Form
-    {
-        public string id { get; set; }
-        public string type { get; set; }
-        public string title { get; set; }
-        public string subHead { get; set; }
-        public string keywords { get; set; }
-        public string url { get; set; }
-        public string createdBy { get; set; }
-        public string createdTimeStamp { get; set; }
-        public string modifiedBy { get; set; }
-        public string modifiedTimeStamp { get; set; }
-        public string status { get; set; }
+    { 
+        [JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
 
-    }
-    public class Article
-    {
-        public string id { get; set; }
-        public string type { get; set; }
-        public string title { get; set; }
-        public string subHead { get; set; }
-        public string description { get; set; }
-        public string keywords { get; set; }
-        public string content { get; set; }
-        public string createdBy { get; set; }
-        public string createdTimeStamp { get; set; }
-        public string modifiedBy { get; set; }
-        public string modifiedTimeStamp { get; set; }
-        public string status { get; set; }
+        [JsonProperty(PropertyName = "type")]
+        public string Type { get; set; }
 
+        [JsonProperty(PropertyName = "title")]
+        public string Title { get; set; }
+
+        [JsonProperty(PropertyName = "subtitle")]
+        public string SubTitle { get; set; }
+
+        [JsonProperty(PropertyName = "keywords")]
+        public string Keywords { get; set; }
+
+        [JsonProperty(PropertyName = "url")]
+        public string Url { get; set; }    
     }
+    public class CommonFields
+    {
+        [JsonProperty(PropertyName = "createdby")]
+        public string CreatedBy { get; set; }
+
+        [JsonProperty(PropertyName = "createdtimestamp")]
+        public string CreatedTimeStamp { get; set; }
+
+        [JsonProperty(PropertyName = "modifiedby")]
+        public string ModifiedBy { get; set; }
+
+        [JsonProperty(PropertyName = "modifiedtimestamp")]
+        public string ModifiedTimeStamp { get; set; }
+
+        [JsonProperty(PropertyName = "status")]
+        public string Status { get; set; }
+    }
+
 }
    
 
