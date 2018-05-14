@@ -1,7 +1,8 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { TopicService } from '../shared/topic.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Topic } from '../shared/topic';
+import { HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-subtopics',
@@ -9,19 +10,23 @@ import { Topic } from '../shared/topic';
   styleUrls: ['./subtopics.component.css']
 })
 export class SubtopicsComponent implements OnInit {
-  topics: Topic;
-  activeSubtopic = this.activeRoute.params["value"]["topic"];
 
-  constructor(private topicService: TopicService, private activeRoute: ActivatedRoute, private router: Router) {
+  subtopicDetails: Topic;
+  constructor(private topicService: TopicService, private activeRoute: ActivatedRoute) {
   }
 
-  getTopics(): void {
-    this.topicService.getTopics()
-      .subscribe(topics => this.topics = topics["result"]);
+  getTopicDetails(): void {
+
+    //let id = new HttpParams();
+    //id = id.set('id', this.activeRoute.snapshot.params['topic']);
+    this.topicService.getTopicDetails(this.activeRoute.snapshot.params['topic'])
+      .subscribe(
+      data => this.subtopicDetails = data["result"]);
   }
 
   ngOnInit() {
-    this.getTopics();
+
+    this.getTopicDetails();
   }
 
 }
