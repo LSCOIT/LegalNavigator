@@ -1,7 +1,8 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { TopicService } from '../shared/topic.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Topic } from '../shared/topic';
+import { HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-subtopics',
@@ -9,17 +10,26 @@ import { Topic } from '../shared/topic';
   styleUrls: ['./subtopics.component.css']
 })
 export class SubtopicsComponent implements OnInit {
-  topics: Topic;
-  activeSubtopic = this.activeRoute.params["value"]["topic"];
 
-  constructor(private topicService: TopicService, private activeRoute: ActivatedRoute, private router: Router) {
+  subtopics: Topic;
+  activeTopic = this.activeRoute.snapshot.params['topic'];
+  activeTopicId: string;
+
+  constructor(private topicService: TopicService, private activeRoute: ActivatedRoute) {
   }
 
   getTopics(): void {
     this.topicService.getTopics()
-      .subscribe(topics => this.topics = topics["result"]);
-  }
-
+      .subscribe(topics => {
+        for (let i = 0; i < topics["result"].length; i++) {
+          if (topics["result"][i]["title"].toLowerCase() === this.activeTopic) {
+            this.activeTopicId = topics["result"][i]["id"];
+            this.topicService.getSubtopics(this.activeTopicId).subscribe(subtopics => this.subtopics = subtopics["result"]);
+          }
+        }
+      });
+  };
+  
   ngOnInit() {
     this.getTopics();
   }

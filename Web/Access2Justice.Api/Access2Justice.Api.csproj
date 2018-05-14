@@ -29,8 +29,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Access2Justice.CosmosDb\Access2Justice.CosmosDb.csproj" />
+    <ProjectReference Include="..\Access2Justice.CognitiveServices\Access2Justice.CognitiveServices.csproj" />
+    <ProjectReference Include="..\Access2Justice.CosmosDb\Access2Justice.CosmosDb.csproj" />    
     <ProjectReference Include="..\Access2Justice.Shared\Access2Justice.Shared.csproj" />
+
   </ItemGroup>
 
 </Project>

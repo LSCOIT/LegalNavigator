@@ -1,5 +1,5 @@
 <div class="container">
-  <a href="#">All topics</a><span>></span>
+  <a [routerLink]="['/topics']">All topics</a><span class="angle-bracket">></span>
   <div class="row topic-content">
     <div class="col-md-9 col-sm-12 col-xs-12 topic-list">
       <div class="media">
@@ -9,15 +9,13 @@
           </a>
         </div>
         <div class="media-body">
-          <h4 class="media-heading">More Topics Related to Housing</h4>
+          <h4 class="media-heading">More Topics Related to <span class="text-capitalize">{{activeTopic}}</span></h4>
           <p>Which topic would you like to learn more about?</p>
         </div>
       </div>
-      <div *ngFor="let topic of topics"class="row topics">
-        <ul *ngIf="topic.title.toLowerCase() === activeSubtopic">
-          <li *ngFor="let subtopic of topic.subtopic">
-            <a [routerLink]="['/topics', activeSubtopic | lowercase, subtopic.title | lowercase]">{{subtopic.title}}</a>
-          </li>
+      <div class="row subtopics">
+        <ul *ngFor="let subtopic of subtopics">
+          <li><a [routerLink]="['/topics', activeTopic, subtopic.title | lowercase]">{{subtopic.title}}</a></li>
         </ul>
       </div>
       <button class="btn btn-primary">Back to main topics</button>

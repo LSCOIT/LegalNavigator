@@ -1,4 +1,4 @@
-﻿using Access2Justice.CosmosDb;
+using Access2Justice.CosmosDb;
 using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Microsoft.AspNetCore.Builder;
@@ -9,12 +9,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Access2Justice.CognitiveServices;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
+using Access2Justice.Api;
 
-namespace Access2Justice.Api
-{
-    public class Startup
+public class Startup
     {
         public Startup(IConfiguration configuration)
         {
@@ -26,11 +26,21 @@ namespace Access2Justice.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+  
+
+
+            services.Configure<App>(Configuration.GetSection("App"));
+
+
+            services.AddSingleton<ILuisHelper, LuisHelper>();
+            services.AddTransient<IHttpClientService, HttpClientService>();
+
             services.AddMvc();          
             services.AddSingleton<IConfigurationManager, ConfigurationManager>();
             services.AddSingleton<IConfigurationBuilder, ConfigurationBuilder>();
            
             // configure and inject CosmosDb client
+
             ICosmosDbConfigurations cosmosDbConfigurations = new CosmosDbConfigurations();
             Configuration.GetSection("cosmosDb").Bind(cosmosDbConfigurations);
             services.AddSingleton<IDocumentClient>(x =>
@@ -61,11 +71,14 @@ namespace Access2Justice.Api
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Access2Justice API V1");
             });
-            app.UseCors(builder => builder.WithOrigins("http://localhost:64044"));
+            //app.UseCors(builder => builder.WithOrigins("http://localhost:4200"));
+            app.UseCors(builder => builder.WithOrigins("http://localhost:64218"));
             app.UseMvc();
-
-
+    
+            //Swagger details
+            SwaggerConfig.Register(app);
 
         }
     }
-}
+
+

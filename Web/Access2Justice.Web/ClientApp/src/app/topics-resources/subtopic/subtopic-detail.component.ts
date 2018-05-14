@@ -12,20 +12,37 @@ import { HttpParams } from '@angular/common/http';
 
 export class SubtopicDetailComponent implements OnInit {
 
-  subTopicDetails: any;
+  subtopicDetail: Topic;
+  activeTopic = this.activeRoute.snapshot.params['topic'];
+  activeTopicId: string;
+  activeSubtopic = this.activeRoute.snapshot.params['subtopic'];
+  activeSubtopicId: string;
 
-  getTopicDetails(): void {
-    console.log(this.activeRoute);
-    //let subtopic = new HttpParams();
-    //subtopic = subtopic.set('title', this.activeRoute.snapshot.params['subtopic']);
-    //  this.topicService.getTopicDetails(this.activeRoute.snapshot.params['subtopic'])
-    //    .subscribe(
-    //    data => this.subtopicDetails = data);
+  getSubtopicDetail(): void {
+    this.topicService.getTopics()
+      .subscribe(topics => {
+        for (let i = 0; i < topics["result"].length; i++) {
+          if (topics["result"][i]["title"].toLowerCase() === this.activeTopic) {
+            this.activeTopicId = topics["result"][i]["id"];
+            this.topicService.getSubtopics(this.activeTopicId)
+              .subscribe(subtopics => {
+                for (let j = 0; j < subtopics["result"].length; j++) {
+                  if (subtopics["result"][j]["title"].toLowerCase() === this.activeSubtopic) {
+                    this.activeSubtopicId = subtopics["result"][j]["id"];
+                    this.topicService.getSubtopicDetail(this.activeSubtopicId)
+                      .subscribe(subtopics => this.subtopicDetail = subtopics);
+                  }
+                };
+              });
+          }
+        }
+      });
   }
+
   constructor(private topicService: TopicService, private activeRoute: ActivatedRoute) {}
 
   ngOnInit() {
-    this.getTopicDetails();
+    this.getSubtopicDetail();
   }
 
 }

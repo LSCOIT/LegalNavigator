@@ -1,14 +1,11 @@
 <div class="container"><!--*ngIf="subtopicDetail"-->
-  <a href="#">All topics</a><span>></span><a href="#">Housing</a><span>></span>
+  <a [routerLink]="['/topics']">All topics</a><span class="angle-bracket">></span><a a [routerLink]="['/topics', activeTopic]"><span class="text-capitalize">{{activeTopic}}</span></a><span class="angle-bracket">></span>
   <div class="row">
     <div class="col-md-9 col-sm-12 col-xs-12">
-      <h3 class="subtopic-heading">Eviction</h3>
-      <span>Last Updated on XX/XX/XXX at X:XX AM TZT</span>
+      <h3 class="subtopic-heading text-capitalize">{{activeSubtopic}}</h3>
     </div>
-    <div class="col-md-3 col-sm-12 col-xs-12 user-action">
-      <li><span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>Save</li>
-      <li><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>Share</li>
-      <li><span class="glyphicon glyphicon-print" aria-hidden="true"></span>Print</li>
+    <div class="col-md-3 col-sm-12 col-xs-12">
+      <app-user-action></app-user-action>
     </div>
   </div>
   <div class="row">
@@ -19,16 +16,18 @@
           <p>Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter. Solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter.</p>
           <div class="row">
             <h5>Essential Reading</h5>
-            <li><a href="#">Law in Hawaii</a></li>
-            <li><a href="#">Top 10 Most Frequently Asked Questions About Landlord-Tenant Law in Hawaii</a></li>
-            <li><a href="#">Eviction: Information for Landlords and Tenants</a></li>
-            <li><a href="#">Know Your Rights – Fair Housing</a></li>
-            <li><a href="#">Glossary of common eviction terms</a></li>
+            <ul>
+              <li><a href="#">Law in Hawaii</a></li>
+              <li><a href="#">Top 10 Most Frequently Asked Questions About Landlord-Tenant Law in Hawaii</a></li>
+              <li><a href="#">Eviction: Information for Landlords and Tenants</a></li>
+              <li><a href="#">Know Your Rights – Fair Housing</a></li>
+              <li><a href="#">Glossary of common eviction terms</a></li>
+            </ul>
           </div>
         </div>
       </div>
       <div class="row">
-        <h3>Action Plans</h3>
+        <a [routerLink]="['/resource', '123']"><h3>Action Plans</h3></a>
         <p>Our action plans are based on common resolution steps for people dealing with eviction. Please ask a professional if you have questions.</p>
         <!--insert resource content-->
       </div>

@@ -9,6 +9,7 @@ using Access2Justice.CosmosDb;
 using Access2Justice.Shared.Interfaces;
 using Microsoft.Azure.Documents;
 using System.Linq.Expressions;
+using Access2Justice.Shared;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -16,26 +17,33 @@ namespace Access2Justice.Api.Controllers
    
     public class TopicsController : Controller
     {
-        IBackendDatabaseService csdbsrvs;
-     
-        public TopicsController(IBackendDatabaseService bds)
+        IBackendDatabaseService backendDataBaseService; 
+        public TopicsController(IBackendDatabaseService backendDataBaseService)
         {
-            csdbsrvs = bds;          
-        }       
+            this.backendDataBaseService = backendDataBaseService;          
+        }
+
         [HttpGet]
-        [Route("api/Topics/Get")]
+        [Route("api/topics/get")]
         public IActionResult Get()
         {
-            var topics = csdbsrvs.GetTopicsFromCollectionAsync();
-            return Ok(topics);
-                      
+            var topics = backendDataBaseService.GetItemsAsync<TopicModel>(a => a.Type == "topic" && a.ParentId == "");         
+            return Ok(topics);                     
         }
         [HttpGet]
-        [Route("api/Topics/GetSubTopics/{id}")]
+        [Route("api/topics/getsubtopics/{id}")]
+
         public IActionResult Get(string id)
         {
-            var topics = csdbsrvs.GetTopicsFromCollectionAsync(id).Result;
+
+            var topics = backendDataBaseService.GetItemsAsync<TopicModel>(a => a.Type == "topic" && a.ParentId == id);
             return Ok(topics);
+        }
+        [HttpGet]
+        [Route("api/topics/getsubtopicdetails/{id}")]
+        public IActionResult getsubtopicdetails()
+        {
+            return null;
         }
     }
 }

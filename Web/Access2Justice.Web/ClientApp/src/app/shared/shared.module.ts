@@ -16,6 +16,7 @@ import { UpperNavComponent } from './navigation/upper-nav.component';
 import { BsDropdownModule } from 'ngx-bootstrap';
 import { ActionPlanComponent } from './resource/resource-card-detail/resource-types/action-plan.component';
 import { ResourceCardDetailComponent } from './resource/resource-card-detail/resource-card-detail.component';
+import { UserActionComponent } from './resource/user-action/user-action.component';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { ResourceCardDetailComponent } from './resource/resource-card-detail/res
     ServiceOrgSidebarComponent,
     UpperNavComponent,
     ActionPlanComponent,
-    ResourceCardDetailComponent
+    ResourceCardDetailComponent,
+    UserActionComponent
   ],
   exports: [
     ChatbotComponent,
@@ -47,7 +49,10 @@ import { ResourceCardDetailComponent } from './resource/resource-card-detail/res
     SearchComponent,
     SearchResultsComponent,
     ServiceOrgSidebarComponent,
-    UpperNavComponent
+    UpperNavComponent,
+    ActionPlanComponent,
+    ResourceCardDetailComponent,
+    UserActionComponent
    ]
 })
 export class SharedModule { }

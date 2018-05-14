@@ -3,11 +3,6 @@ h3.subtopic-heading {
   margin-top: 0;
 }
 
-.user-action li {
-  display: inline-block;
-  padding: 0 10px;
-}
-
 .subtopic-content {
   border: 1px solid #000;
   margin-bottom: 20px;
@@ -17,10 +12,6 @@ h3.subtopic-heading {
   margin: 20px;
 }
 
-  .subtopic-body media {
-    padding-top: 15px;
-  }
-
-.glyphicon {
-  padding: 0 5px;
+.subtopic-body media {
+  padding-top: 15px;
 }
