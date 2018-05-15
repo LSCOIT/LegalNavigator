@@ -26,7 +26,7 @@ import { Topic } from '../shared/topic';
 
 //}
 export class SubtopicsComponent implements OnInit {
-  subtopicDetails: Topic;
+  subtopics: Topic;
   activeSubtopic = this.activeRoute.params["value"]["topic"];
 
   constructor(private topicService: TopicService, private activeRoute: ActivatedRoute, private router: Router) {
@@ -38,7 +38,7 @@ export class SubtopicsComponent implements OnInit {
     //id = id.set('id', this.activeRoute.snapshot.params['topic']);
     this.topicService.getTopicDetails(this.activeRoute.snapshot.params['topic'])
       .subscribe(
-      data => this.subtopicDetails = data["result"]);
+      data => this.subtopics = data["result"]);
   }
 
   ngOnInit() {

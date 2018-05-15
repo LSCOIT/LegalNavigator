@@ -28,13 +28,14 @@ namespace Access2Justice.Api.Controllers
         [Route("api/topics/get")]
         public IActionResult Get()
         {
-            var topics = backendDataBaseService.GetItemsAsync<TopicModel>(a => a.Type == "topic" && a.ParentId =="");         
+            var topics = backendDataBaseService.GetItemsAsync<TopicModel>(a => a.Type == "topic" && a.ParentId == "");
+
             return Ok(topics);                     
         }
         [HttpGet]
         [Route("api/topics/getsubtopics/{id}")]
 
-        public IActionResult Get(string id)
+        public IActionResult GetSubTopics(string id)
         {
 
             var topics = backendDataBaseService.GetItemsAsync<TopicModel>(a => a.Type == "topic" && a.ParentId == id);
@@ -42,10 +43,10 @@ namespace Access2Justice.Api.Controllers
         }
         [HttpGet]
         [Route("api/topics/getsubtopicdetails/{id}")]
-        public async Task<IActionResult> getsubtopicdetails(string id)
+        public async Task<IActionResult> GetSubTopicDetails(string id)
         {
             string[] spParams = { "id", id };
-            var response = await backendDataBaseService.ExecuteStoredProcedureAsyncWithParameters<string>("GetResourceByKeyword", spParams);
+            var response = await backendDataBaseService.ExecuteStoredProcedureAsyncWithParameters<string>("GetResourceById", spParams);
             List<TopicModel> jsonResponse = JsonConvert.DeserializeObject<List<TopicModel>>(response);
             return Ok(jsonResponse);
         }
