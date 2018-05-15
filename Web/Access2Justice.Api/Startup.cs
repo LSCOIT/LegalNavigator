@@ -71,8 +71,10 @@ public class Startup
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Access2Justice API V1");
             });
+
             //app.UseCors(builder => builder.WithOrigins("http://localhost:4200"));
             app.UseCors(builder => builder.WithOrigins("http://localhost:64218"));
+
             app.UseMvc();
     
             //Swagger details

@@ -9,8 +9,24 @@ import { HttpParams } from '@angular/common/http';
   templateUrl: './subtopics.component.html',
   styleUrls: ['./subtopics.component.css']
 })
-export class SubtopicsComponent implements OnInit {
+//export class SubtopicsComponent implements OnInit {
+//  topics: Topic;
+//  activeSubtopic = this.activeRoute.params["value"]["topic"];
 
+//  constructor(private topicService: TopicService, private activeRoute: ActivatedRoute, private router: Router) {
+//  }
+
+//  getTopics(): void {
+//    this.topicService.getTopics()
+//      .subscribe(topics => this.topics = topics["result"]);
+//  }
+
+//  ngOnInit() {
+//    this.getTopics();
+//  }
+
+//}
+export class SubtopicsComponent implements OnInit {
   subtopics: Topic;
   activeTopic = this.activeRoute.snapshot.params['topic'];
   activeTopicId: string;
@@ -18,21 +34,19 @@ export class SubtopicsComponent implements OnInit {
   constructor(private topicService: TopicService, private activeRoute: ActivatedRoute) {
   }
 
-  getTopics(): void {
-    this.topicService.getTopics()
-      .subscribe(topics => {
-        for (let i = 0; i < topics["result"].length; i++) {
-          if (topics["result"][i]["title"].toLowerCase() === this.activeTopic) {
-            this.activeTopicId = topics["result"][i]["id"];
-            this.topicService.getSubtopics(this.activeTopicId).subscribe(subtopics => this.subtopics = subtopics["result"]);
-          }
-        }
-      });
-  };
-  
-  ngOnInit() {
-    this.getTopics();
+  getTopicDetails(): void {
+
+    //let id = new HttpParams();
+    //id = id.set('id', this.activeRoute.snapshot.params['topic']);
+    this.topicService.getSubtopicDetail(this.activeRoute.snapshot.params['topic'])
+      .subscribe(
+      data => this.subtopics = data["result"]);
   }
 
+  ngOnInit() {
+    this.getTopicDetails();
+  }
 }
+
+
 
