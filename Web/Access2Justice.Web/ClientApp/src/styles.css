@@ -7,6 +7,10 @@ li {
   list-style: none;
 }
 
+ul {
+  padding-left: 0;
+}
+
 a {
   color: #2c2d2d;
 }
@@ -21,10 +25,6 @@ a {
 
 .mobile-hidden {
   display: none;
-}
-
-#search {
-  width: 80%;
 }
 
 .row {
@@ -101,6 +101,11 @@ a.carousel-control{
 
 .panel-body {
   padding: 25px 15px 50px 15px;
+}
+
+/*Topics & Resources Page - Accordion */
+.angle-bracket {
+  padding: 0 5px;
 }
 
 

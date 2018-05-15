@@ -16,15 +16,11 @@ export class TopicService {
     return this.http.get<Topic>(this.topicUrl);
   }
 
-  //getTopicDetail(name): Observable<any> {
-  //  return this.http.get<Topic>(this.topicContentUrl, { params: name });
-  //}
-
-  getTopicDetail(id): Observable<any> {
-    return this.http.get<Topic>(this.topicContentUrl + '/' + id);
+  getSubtopics(id): Observable<any> {
+    return this.http.get<Topic>(this.subtopicUrl+'/'+ id);
   }
 
-  getTopicDetails(id): Observable<any> {
-    return this.http.get<Topic>(this.subtopicUrl+'/'+ id);
+  getSubtopicDetail(id): Observable<any> {
+    return this.http.get<Topic>(this.topicContentUrl + '/' + id);
   }
 }

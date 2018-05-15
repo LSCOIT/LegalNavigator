@@ -1,0 +1,98 @@
+<div class="resource-content">
+  <div class="resource-body">
+    <div class="pull-right">
+      <div class="btn-group" dropdown>
+        <span dropdownToggle type="button" class="glyphicon glyphicon-option-horizontal dropdown-toggle"></span>
+        <ul id="dropdown-disabled-item" *dropdownMenu class="dropdown-menu dropdown-menu-right"
+            role="menu">
+          <li role="menuitem">
+            <a class="dropdown-item" href="#">Save</a>
+          </li>
+          <li role="menuitem">
+            <a class="dropdown-item" href="#">Share</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!--if resource type = action plan-->
+    <div class="media">
+      <div class="media-left">
+        <a href="#">
+          <img class="media-object" src="#" alt="...">
+        </a>
+      </div>
+      <div class="media-body">
+        <a [routerLink]="['/resource', '123']"><h4 class="media-heading">Tenant Action Plan</h4></a>
+        <p>This action plan is for tenants who are facing eviction and have experienced the following:</p>
+        <ul>
+          <li>
+            <!--ngfor ... iterate through conditions-->
+            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+            Received two written notices: one from a landlord and one from a court
+          </li>
+          <li>
+            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+            <span>Have not yet talked to the court or their landlord</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!--end if resource type = action plans-->
+    <!--if resource type = article or forms -->
+    <div class="media">
+      <div class="media-left">
+        <a href="#">
+          <img class="media-object" src="#" alt="...">
+        </a>
+      </div>
+      <div class="media-body">
+        <h4 class="media-heading">Defense to Eviction</h4>
+        <p>While dealing with the prospect of losing your home is never easy, you aren't alone</p>
+      </div>
+    </div>
+    <!--end if resource type = article or forms -->
+    <!--if resource type = organization-->
+    <div class="media">
+      <div class="media-left">
+        <a href="#">
+          <img class="media-object" src="#" alt="...">
+        </a>
+      </div>
+      <div class="media-body">
+        <h4 class="media-heading org-card-heading">Organization Name, Housing Law Services</h4>
+        <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span><span class="span-text">External link</span>
+        <p>Ut fusce varius nisl ac ipsum gravida vel pretium tellus tincidunt integer eu augue augue nunc elit dolor, luctus placerat.</p>
+        <div class="org-content span-text">
+          <div class="col-sm-5">
+            <div class="address-content">
+              <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+            </div>
+            <div class="address-content">
+              <p>123 Street Name Road, Suite A</p>
+              <p>Cityname, ST, 12345</p>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span><span>907-272-3663</span>
+          </div>
+          <div class="col-sm-4 org-url">
+            <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span><span>https://www.travelalaska.com/</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--end if-->
+    <!--if resource type = video-->
+    <div class="row">
+      <div class="col-sm-4 col-xs-12 resource-video">
+        <iframe title="title" src="https://www.youtube.com/embed/RqtUFa67wWo" frameborder="0" allowfullscreen></iframe><!--add video title-->
+      </div>
+      <div class="col-sm-8 col-xs-12">
+        <h4 class="media-heading">Lorem ipsum dolor sit amet</h4>
+        <p>Sapien elit in malesuada semper mi, id sollicitudin urna fermentum.</p>
+      </div>
+    </div>
+    
+    <!--end if resource type = video-->
+  </div>
+</div>
