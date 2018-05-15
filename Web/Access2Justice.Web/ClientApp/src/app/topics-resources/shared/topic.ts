@@ -1,5 +1,9 @@
 export interface Topic {
-  id: number;
-  title: string;
-  icon: string;
+    id: string;
+    type: string;
+    icon: string;
+    keywords: string;
+    description: string;
+    lang: string;
+    subtopics: Array<object>;
 }
