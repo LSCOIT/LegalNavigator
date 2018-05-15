@@ -14,12 +14,20 @@
         </div>
       </div>
 
-      <div class="row subtopics">
-    
-        <ul *ngFor="let subtopic of subtopicDetails">
-          
-          <li><a [routerLink]="['/topics',subtopic.id]">{{subtopic.title}}</a></li>
+      <!--<div *ngFor="let topic of topics" class="row topics">
+        <ul *ngIf="topic.title.toLowerCase() === activeSubtopic">
+          <li *ngFor="let subtopic of topic.subtopic">
+            <a [routerLink]="['/topics', activeSubtopic | lowercase, subtopic.title | lowercase]">{{subtopic.title}}</a>
+          </li>
         </ul>
+      </div>-->
+
+      <div class="row subtopics">
+
+        <ul *ngFor="let subtopic of subtopicDetails">
+
+      <li><a [routerLink]="['/topics',subtopic.id]">{{subtopic.title}}</a></li>
+    </ul>
       </div>
       <button class="btn btn-primary">Back to main topics</button>
     </div>

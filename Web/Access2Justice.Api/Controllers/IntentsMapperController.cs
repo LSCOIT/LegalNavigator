@@ -6,7 +6,8 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
     using Access2Justice.Shared;
-
+    using Access2Justice.Shared.Interfaces;
+    using Newtonsoft.Json;
 
     [Produces("application/json")]
     [Route("api/IntentsMapper")]
@@ -14,12 +15,14 @@
     {
 
         private IOptions<App> appSettings;
-        private ILuisHelper luisHelper;        
+        private ILuisHelper luisHelper;
+        private IBackendDatabaseService backendDatabaseService;
 
-        public IntentsMapperController(IOptions<App> appSettings, ILuisHelper luisHelper)
+        public IntentsMapperController(IOptions<App> appSettings, ILuisHelper luisHelper,IBackendDatabaseService backendDatabaseService)
         {
             this.appSettings = appSettings ?? throw new ArgumentNullException(nameof(appSettings));
             this.luisHelper = luisHelper ?? throw new ArgumentNullException(nameof(luisHelper));
+            this.backendDatabaseService = backendDatabaseService ?? throw new ArgumentNullException(nameof(backendDatabaseService));
         }
 
         [HttpGet]
@@ -30,7 +33,12 @@
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
 
-                return Json(await luisHelper.GetLuisIntent(luisInput));
+                IntentWithScore intentWithScore = await luisHelper.GetLuisIntent(luisInput);
+                string input = intentWithScore.TopScoringIntent;
+                string[] spParams = { "keywords", input };
+                var response = await backendDatabaseService.ExecuteStoredProcedureAsyncWithParameters<string>("GetResourceByKeyword", spParams);
+                var jsonResponse = JsonConvert.DeserializeObject(response);
+                return null;
             }
             catch (Exception ex)
             {

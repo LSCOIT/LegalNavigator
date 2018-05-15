@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Access2Justice.Shared
 {   
-    public class TopicModel 
+    public class TopicModel : CommonFields
     {
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
@@ -47,7 +47,7 @@ namespace Access2Justice.Shared
         public Form[] Form { get; set; }
        
     }
-    public class ActionPlan
+    public class ActionPlan:CommonFields
     {
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
@@ -71,7 +71,7 @@ namespace Access2Justice.Shared
         public string Content { get; set; }    
 
     }
-    public class Organization 
+    public class Organization:CommonFields
     {
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
@@ -117,7 +117,7 @@ namespace Access2Justice.Shared
         //public EligibilityInformation[] EligibilityInformation { get; set; }
         //public MemberReview[] memberReview { get; set; }
     }
-    public class Article 
+    public class Article:CommonFields
     {
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
@@ -143,7 +143,7 @@ namespace Access2Justice.Shared
         // public content[] content { get; set; }      
 
     }
-    public class Video 
+    public class Video:CommonFields
     {
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
@@ -167,7 +167,7 @@ namespace Access2Justice.Shared
         public string Url { get; set; }
 
     }
-    public class Form
+    public class Form : CommonFields
     { 
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
@@ -203,6 +203,9 @@ namespace Access2Justice.Shared
 
         [JsonProperty(PropertyName = "status")]
         public string Status { get; set; }
+
+        [JsonProperty(PropertyName = "_etag")]
+        public string ETag { get; }
     }
 
 }

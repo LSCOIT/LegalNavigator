@@ -8,8 +8,25 @@ import { Topic } from '../shared/topic';
   templateUrl: './subtopics.component.html',
   styleUrls: ['./subtopics.component.css']
 })
+//export class SubtopicsComponent implements OnInit {
+//  topics: Topic;
+//  activeSubtopic = this.activeRoute.params["value"]["topic"];
+
+//  constructor(private topicService: TopicService, private activeRoute: ActivatedRoute, private router: Router) {
+//  }
+
+//  getTopics(): void {
+//    this.topicService.getTopics()
+//      .subscribe(topics => this.topics = topics["result"]);
+//  }
+
+//  ngOnInit() {
+//    this.getTopics();
+//  }
+
+//}
 export class SubtopicsComponent implements OnInit {
-  topics: Topic;
+  subtopicDetails: Topic;
   activeSubtopic = this.activeRoute.params["value"]["topic"];
 
   constructor(private topicService: TopicService, private activeRoute: ActivatedRoute, private router: Router) {
@@ -25,8 +42,9 @@ export class SubtopicsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getTopics();
+    this.getTopicDetails();
   }
-
 }
+
+
 

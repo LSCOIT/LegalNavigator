@@ -10,6 +10,7 @@ using Access2Justice.Shared.Interfaces;
 using Microsoft.Azure.Documents;
 using System.Linq.Expressions;
 using Access2Justice.Shared;
+using Newtonsoft.Json;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -27,7 +28,7 @@ namespace Access2Justice.Api.Controllers
         [Route("api/topics/get")]
         public IActionResult Get()
         {
-            var topics = backendDataBaseService.GetItemsAsync<TopicModel>(a => a.Type == "topic" && a.ParentId == "");         
+            var topics = backendDataBaseService.GetItemsAsync<TopicModel>(a => a.Type == "topic" && a.ParentId =="");         
             return Ok(topics);                     
         }
         [HttpGet]
@@ -41,9 +42,12 @@ namespace Access2Justice.Api.Controllers
         }
         [HttpGet]
         [Route("api/topics/getsubtopicdetails/{id}")]
-        public IActionResult getsubtopicdetails()
+        public async Task<IActionResult> getsubtopicdetails(string id)
         {
-            return null;
+            string[] spParams = { "id", id };
+            var response = await backendDataBaseService.ExecuteStoredProcedureAsyncWithParameters<string>("GetResourceByKeyword", spParams);
+            List<TopicModel> jsonResponse = JsonConvert.DeserializeObject<List<TopicModel>>(response);
+            return Ok(jsonResponse);
         }
     }
 }
