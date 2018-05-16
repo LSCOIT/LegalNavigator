@@ -15,7 +15,7 @@
       </div>
     </div>
     <!--if resource type = action plan-->
-    <div class="media">
+    <div *ngIf="type==='ActionPlan'" class="media">
       <div class="media-left">
         <a href="#">
           <img class="media-object" src="#" alt="...">
@@ -39,7 +39,9 @@
     </div>
     <!--end if resource type = action plans-->
     <!--if resource type = article or forms -->
-    <div class="media">
+
+    <div *ngIf="type==='Article' || type==='Form'" class="media">
+
       <div class="media-left">
         <a href="#">
           <img class="media-object" src="#" alt="...">
@@ -52,7 +54,7 @@
     </div>
     <!--end if resource type = article or forms -->
     <!--if resource type = organization-->
-    <div class="media">
+    <div *ngIf="type==='Organization'"class="media">
       <div class="media-left">
         <a href="#">
           <img class="media-object" src="#" alt="...">
@@ -83,7 +85,7 @@
     </div>
     <!--end if-->
     <!--if resource type = video-->
-    <div class="row">
+    <div *ngIf="type==='Video'" class="row">
       <div class="col-sm-4 col-xs-12 resource-video">
         <iframe title="title" src="https://www.youtube.com/embed/RqtUFa67wWo" frameborder="0" allowfullscreen></iframe><!--add video title-->
       </div>

@@ -2,7 +2,6 @@ import { Component, OnInit, Input } from "@angular/core";
 import { TopicService } from '../shared/topic.service';
 import { ActivatedRoute, Router  } from '@angular/router';
 import { Topic } from '../shared/topic';
-import { HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-subtopic-detail',
@@ -11,35 +10,18 @@ import { HttpParams } from '@angular/common/http';
 })
 
 export class SubtopicDetailComponent implements OnInit {
+  subtopicDetails: Topic;
+  activeSubtopic = this.activeRoute.params["value"]["topic"];
 
-  subtopicDetail: Topic;
-  activeTopic = this.activeRoute.snapshot.params['topic'];
-  activeTopicId: string;
-  activeSubtopic = this.activeRoute.snapshot.params['subtopic'];
-  activeSubtopicId: string;
-
-  getSubtopicDetail(): void {
-    this.topicService.getTopics()
-      .subscribe(topics => {
-        for (let i = 0; i < topics["result"].length; i++) {
-          if (topics["result"][i]["title"].toLowerCase() === this.activeTopic) {
-            this.activeTopicId = topics["result"][i]["id"];
-            this.topicService.getSubtopics(this.activeTopicId)
-              .subscribe(subtopics => {
-                for (let j = 0; j < subtopics["result"].length; j++) {
-                  if (subtopics["result"][j]["title"].toLowerCase() === this.activeSubtopic) {
-                    this.activeSubtopicId = subtopics["result"][j]["id"];
-                    this.topicService.getSubtopicDetail(this.activeSubtopicId)
-                      .subscribe(subtopicDetail => this.subtopicDetail = subtopicDetail);
-                  }
-                };
-              });
-          }
-        }
-      });
+  constructor(private topicService: TopicService, private activeRoute: ActivatedRoute, private router: Router) {
   }
 
-  constructor(private topicService: TopicService, private activeRoute: ActivatedRoute) {}
+  getSubtopicDetail(): void {
+    this.topicService.getSubtopicDetail(this.activeRoute.snapshot.params['subtopic'])
+      .subscribe(
+        data => this.subtopicDetails = data[0]
+      );
+  }
 
   ngOnInit() {
     this.getSubtopicDetail();

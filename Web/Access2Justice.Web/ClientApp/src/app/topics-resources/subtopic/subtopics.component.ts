@@ -9,10 +9,8 @@ import { HttpParams } from '@angular/common/http';
   templateUrl: './subtopics.component.html',
   styleUrls: ['./subtopics.component.css']
 })
-export class SubtopicsComponent implements OnInit {
-  //subtopics: Topic;
-  //activeSubtopic = this.activeRoute.params["value"]["topic"];
 
+export class SubtopicsComponent implements OnInit {
   subtopics: Topic;
   activeTopic = this.activeRoute.snapshot.params['topic'];
   activeTopicId: string;
@@ -20,7 +18,7 @@ export class SubtopicsComponent implements OnInit {
   constructor(private topicService: TopicService, private activeRoute: ActivatedRoute) {
   }
 
-  getTopics(): void {
+  getSubtopics(): void {
     this.topicService.getTopics()
       .subscribe(topics => {
         for (let i = 0; i < topics["result"].length; i++) {
@@ -31,9 +29,9 @@ export class SubtopicsComponent implements OnInit {
         }
       });
   };
-  
+
   ngOnInit() {
-    this.getTopics();
+    this.getSubtopics();
   }
 }
 
