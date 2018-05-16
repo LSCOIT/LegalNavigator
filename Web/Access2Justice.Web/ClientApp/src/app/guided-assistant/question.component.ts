@@ -20,12 +20,12 @@ export class QuestionComponent implements OnInit {
   }
 
 
-  onSubmit(empForm: NgForm): void {
+  onSubmit(gaForm: NgForm): void {
     let answer = new HttpParams();
     if (this.question.questionType.toLowerCase() === 'textbox') {
-      answer = answer.set('answer', empForm.value.inputText);
+      answer = answer.set('answer', gaForm.value.inputText);
     } else {
-      answer = answer.set('choiceId', empForm.value.listOptions);
+      answer = answer.set('choiceId', gaForm.value.listOptions);
     }
     
 

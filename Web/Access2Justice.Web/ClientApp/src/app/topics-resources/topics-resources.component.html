@@ -2,18 +2,14 @@
   <h3>Topics &amp; Resources</h3>
   <p>Browse articles, videos, and directories organized by topic</p>
   <div class="row">
-    <div class="col-md-8 col-sm-12 col-xs-12" style="padding-left:0;">
+    <div class="col-md-9 col-sm-12 col-xs-12" style="padding-left:0;">
       <div class="row center-align">
         <app-topics [topicLength]="topicLength"></app-topics>
       </div>
     </div>
-    <div class="col-md-4 col-sm-12 col-xs-12">
-      <div class="col-md-12 text-center">
-        <div style="background:#f2f2f2; height:250px"></div>
-      </div>
-      <div class="col-md-12 text-center">
-        <div style="background:#f2f2f2; height:250px"></div>
-      </div>
+    <div class="col-md-3 col-sm-12 col-xs-12">
+       <app-guided-assistant-sidebar></app-guided-assistant-sidebar>
+       <app-service-org-sidebar></app-service-org-sidebar>
     </div>
   </div>
   <div class="row">

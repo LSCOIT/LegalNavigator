@@ -128,5 +128,21 @@ namespace Access2Justice.CosmosDb
                 }
             }
         }
+
+
+
+
+
+        /// <summary>
+        /// Asynchronous method to get documents by the given property name
+        /// </summary>
+        /// <typeparam name="T">Document details</typeparam>
+        /// <param name="storedProcName">procedure name</param>
+        /// <param name="procedureParams">params for procedure</param>
+        /// <returns>Returns documents for the given property name</returns>
+        public async Task<T> ExecuteStoredProcedureAsyncWithParameters<T>(string storedProcName, params dynamic[] procedureParams)
+        {
+            return await _documentClient.ExecuteStoredProcedureAsync<T>(UriFactory.CreateStoredProcedureUri(_cosmosDbSettings.DatabaseId, _cosmosDbSettings.CollectionId, storedProcName), procedureParams);
+        }
     }
 }

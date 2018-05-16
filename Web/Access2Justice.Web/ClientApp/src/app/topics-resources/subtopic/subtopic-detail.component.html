@@ -1,0 +1,60 @@
+<div *ngIf="subtopicDetails" class="container">
+  <!--*ngIf="subtopicDetail"-->
+  <a [routerLink]="['/topics']">All topics</a><span class="angle-bracket">></span><a a [routerLink]="['/topics', activeTopic]"><span class="text-capitalize">{{activeTopic}}</span></a><span class="angle-bracket">></span>
+  <div class="row">
+    <div class="col-md-9 col-sm-12 col-xs-12">
+      <h3 class="subtopic-heading text-capitalize">{{subtopicDetails.title}}</h3>
+    </div>
+    <div class="col-md-3 col-sm-12 col-xs-12">
+      <app-user-action></app-user-action>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-9 col-sm-12 col-xs-12">
+      <div class="subtopic-content">
+        <div class="subtopic-body">
+          <h4>{{subtopicDetails.overview}}</h4>
+          <p></p>
+          <p>{{subtopicDetails.description}}</p>
+          <div class="row">
+            <h5>Essential Reading</h5>
+            <ul>
+              <li><a href="#">{{subtopicDetails.essentialreading}}</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <a [routerLink]="['/resource', '123']"><h3>Action Plans</h3></a>
+        <p>Our action plans are based on common resolution steps for people dealing with eviction. Please ask a professional if you have questions.</p>
+        <div *ngFor="let actionPlanData of subtopicDetails.ActionPlan">
+          <app-resource-card [type]="actionPlanData.type"></app-resource-card>
+        </div>
+      </div>
+      <div class="row">
+        <h3>Articles</h3>
+        <div *ngFor="let articleData of subtopicDetails.Article">
+          <app-resource-card [type]="articleData.type" [data]="subtopicDetails"></app-resource-card>
+        </div>
+
+        <button>See more Articles</button>
+      </div>
+      <div class="row">
+        <h3>Videos</h3>
+        <div *ngFor="let videoData of subtopicDetails.Video">
+          <app-resource-card [type]="videoData.type"></app-resource-card>
+        </div>
+      </div>
+      <div class="row">
+        <h3>Forms</h3>
+        <div *ngFor="let formData of subtopicDetails.Form">
+          <app-resource-card [type]="formData.type"></app-resource-card>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-12 col-xs-12">
+      <app-guided-assistant-sidebar></app-guided-assistant-sidebar>
+      <app-service-org-sidebar></app-service-org-sidebar>
+    </div>
+  </div>
+</div>

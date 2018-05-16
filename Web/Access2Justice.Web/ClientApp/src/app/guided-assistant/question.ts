@@ -1,9 +1,7 @@
-export class Question {
-
-  constructor(
-    public questionId: string,
-    public title: string,
-    public questionType: string,
-    public userAnswer: string,
-    public choices: any = []) { }
+export interface Question {
+    questionId: string;
+    title: string;
+    questionType: string;
+    userAnswer: string;
+    choices: Object;
 }

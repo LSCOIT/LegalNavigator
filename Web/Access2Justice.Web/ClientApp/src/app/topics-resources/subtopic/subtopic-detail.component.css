@@ -1,0 +1,17 @@
+h3.subtopic-heading {
+  display: inline-block;
+  margin-top: 0;
+}
+
+.subtopic-content {
+  border: 1px solid #000;
+  margin-bottom: 20px;
+}
+
+.subtopic-body {
+  margin: 20px;
+}
+
+.subtopic-body media {
+  padding-top: 15px;
+}
