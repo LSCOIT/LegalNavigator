@@ -16,7 +16,8 @@ export class SubtopicDetailComponent implements OnInit {
   constructor(private topicService: TopicService, private activeRoute: ActivatedRoute, private router: Router) {
   }
 
-  getSubtopicDetail(): void {
+  getSubtopicDetail(): void
+  {
     this.topicService.getSubtopicDetail(this.activeRoute.snapshot.params['subtopic'])
       .subscribe(
         data => this.subtopicDetails = data[0]

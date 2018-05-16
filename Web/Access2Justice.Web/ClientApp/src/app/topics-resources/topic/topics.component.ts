@@ -12,7 +12,8 @@ export class TopicsComponent implements OnInit
   @Input() topicLength: number;
   topics: Topic;
 
-  getTopics(): void {
+  getTopics(): void
+  {
     this.topicService.getTopics()
         .subscribe(topics => this.topics = topics["result"]);
   }

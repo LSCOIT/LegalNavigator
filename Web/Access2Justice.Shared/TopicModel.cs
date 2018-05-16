@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Access2Justice.Shared
-{   
+{
     public class TopicModel : CommonFields
     {
+       
+
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
 
@@ -40,12 +42,12 @@ namespace Access2Justice.Shared
         [JsonProperty(PropertyName = "actionplanheading")]
         public string ActionPlanHeading { get; set; }
 
-        public ActionPlan[] ActionPlan { get; set; }      
-        public Organization[] Organization { get; set; }       
+        public ActionPlan[] ActionPlan { get; set; }
+        public Organization[] Organization { get; set; }
         public Video[] Video { get; set; }
         public Article[] Article { get; set; }
         public Form[] Form { get; set; }
-       
+
     }
     public class ActionPlan:CommonFields
     {
@@ -185,7 +187,9 @@ namespace Access2Justice.Shared
         public string Keywords { get; set; }
 
         [JsonProperty(PropertyName = "url")]
-        public string Url { get; set; }    
+#pragma warning disable CA1056 // Uri properties should not be strings
+        public string Url { get; set; }
+#pragma warning restore CA1056 // Uri properties should not be strings
     }
     public class CommonFields
     {
