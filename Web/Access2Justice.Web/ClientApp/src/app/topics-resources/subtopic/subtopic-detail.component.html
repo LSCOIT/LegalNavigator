@@ -1,8 +1,9 @@
-<div class="container"><!--*ngIf="subtopicDetail"-->
+<div *ngIf="subtopicDetails" class="container">
+  <!--*ngIf="subtopicDetail"-->
   <a [routerLink]="['/topics']">All topics</a><span class="angle-bracket">></span><a a [routerLink]="['/topics', activeTopic]"><span class="text-capitalize">{{activeTopic}}</span></a><span class="angle-bracket">></span>
   <div class="row">
     <div class="col-md-9 col-sm-12 col-xs-12">
-      <h3 class="subtopic-heading text-capitalize">{{activeSubtopic}}</h3>
+      <h3 class="subtopic-heading text-capitalize">{{subtopicDetails.title}}</h3>
     </div>
     <div class="col-md-3 col-sm-12 col-xs-12">
       <app-user-action></app-user-action>
@@ -12,40 +13,41 @@
     <div class="col-md-9 col-sm-12 col-xs-12">
       <div class="subtopic-content">
         <div class="subtopic-body">
-          <!--<ul *ngFor="let subtopicdetails of subtopicDetailspage">
-
-        <li>
-          <a [routerLink]="['/topics',subtopicdetails.id]">{{subtopicdetails.title}}</a>
-        </li>
-      </ul>-->
-
+          <h4>Overview</h4>
+          <p>{{subtopicDetails.description}}</p>
+          <div class="row">
+            <h5>Essential Reading</h5>
+            <ul>
+              <li><a href="#">{{subtopicDetails.essentialreading}}</a></li>
+            </ul>
+          </div>
         </div>
       </div>
-      <!--TO DO # my code start from here--> 
-      <div class="col-md-9 col-sm-12 col-xs-12" *ngFor="let subTopicDetail of subtopicDetails">
-        <h3 class="subtopic-heading">="Eviction</h3><!--<h2>{{subTopicDetail.title}}</h2>-->
-        <span>n>Last Updated on XX/XX/XXX at X:XX AM TZT</span>
+      <div class="row">
+        <a [routerLink]="['/resource', '123']"><h3>Action Plans</h3></a>
+        <p>Our action plans are based on common resolution steps for people dealing with eviction. Please ask a professional if you have questions.</p>
+        <div *ngFor="let actionPlanData of subtopicDetails.actionPlan">
+          <app-resource-card [type]="actionPlanData.type"></app-resource-card>
+        </div>
+      </div>
+      <div class="row">
+        <h3>Articles</h3>
+        <div *ngFor="let articleData of subtopicDetails.article">
+          <app-resource-card [type]="articleData.type" [data]="subtopicDetails"></app-resource-card>
+        </div>
 
-        <div class="row" *ngFor="let actionPlan of subTopicDetail.ActionPlan">
-          <h3>{{actionPlan.title}}</h3>
-          <p>{{actionPlan.description}}</p>
-          <!--insert resource content-->
+        <button>See more Articles</button>
+      </div>
+      <div class="row">
+        <h3>Videos</h3>
+        <div *ngFor="let videoData of subtopicDetails.video">
+          <app-resource-card [type]="videoData.type"></app-resource-card>
         </div>
-        <div class="row" *ngFor="let article of subTopicDetail.Article">
-          <h3>{{article.title}}</h3>
-          <!--insert resource content-->          
-          <p>{{article.description}}</p>
-        </div>
-        <div class="row" *ngFor="let video of subTopicDetail.Video">
-          <h3>{{video.title}}</h3>
-          <p>{{video.description}}</p>
-          <iframe resource="video.url"></iframe>
-          <!--insert resource content-->
-        </div>
-        <div class="row" *ngFor="let form of subTopicDetail.Form">
-          <h3>{{form.title}}</h3>
-          <p>{{form.description}}</p>
-          <!--insert resource content-->
+      </div>
+      <div class="row">
+        <h3>Forms</h3>
+        <div *ngFor="let formData of subtopicDetails.form">
+          <app-resource-card [type]="formData.type"></app-resource-card>
         </div>
       </div>
     </div>
@@ -55,4 +57,3 @@
     </div>
   </div>
 </div>
-
