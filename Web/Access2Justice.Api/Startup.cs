@@ -1,5 +1,5 @@
 ﻿using Access2Justice.CosmosDb;
-using Access2Justice.Shared;
+using Access2Justice.CosmosDb.Interfaces;
 using Access2Justice.Shared.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,7 +8,6 @@ using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
-using System;
 
 namespace Access2Justice.Api
 {
@@ -26,15 +25,7 @@ namespace Access2Justice.Api
         {
             services.AddMvc();
 
-            services.AddSingleton<IConfigurationManager, ConfigurationManager>();
-            services.AddSingleton<IConfigurationBuilder, ConfigurationBuilder>();
-
-            // configure and inject CosmosDb client
-            ICosmosDbConfigurations cosmosDbConfigurations = new CosmosDbConfigurations();
-            Configuration.GetSection("cosmosDb").Bind(cosmosDbConfigurations);
-            services.AddSingleton<IDocumentClient>(x =>
-                new DocumentClient(new Uri(cosmosDbConfigurations.Endpoint), cosmosDbConfigurations.AuthKey));
-            services.AddSingleton(typeof(IBackendDatabaseService), typeof(CosmosDbService));
+            ConfigureCosmosDb(services);
 
             services.AddSwaggerGen(c =>
             {
@@ -59,6 +50,14 @@ namespace Access2Justice.Api
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Access2Justice API V1");
             });
+        }
+
+        private void ConfigureCosmosDb(IServiceCollection services)
+        {
+            ICosmosDbSettings cosmosDbSettings = new CosmosDbSettings(Configuration.GetSection("CosmosDb"));
+            services.AddSingleton(cosmosDbSettings);
+            services.AddSingleton<IDocumentClient>(x => new DocumentClient(cosmosDbSettings.Endpoint, cosmosDbSettings.AuthKey));
+            services.AddSingleton<IBackendDatabaseService, CosmosDbService>();
         }
     }
 }

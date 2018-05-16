@@ -9,15 +9,6 @@ namespace Access2Justice.Api.Controllers
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
-        private readonly IConfigurationManager _configurationManager;
-        private readonly IDocumentClient _documentClient;
-
-        public ValuesController(IConfigurationManager configurationManager, IDocumentClient documentClient)
-        {
-            _configurationManager = configurationManager;
-            _documentClient = documentClient;
-        }
-
         // GET api/values
         [HttpGet]
         public async Task<IEnumerable<string>> Get()
