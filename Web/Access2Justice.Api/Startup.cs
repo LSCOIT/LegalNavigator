@@ -1,5 +1,6 @@
 ﻿using Access2Justice.CosmosDb;
 using Access2Justice.CosmosDb.Interfaces;
+using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,6 +26,11 @@ namespace Access2Justice.Api
         {
             services.AddMvc();
 
+            IApp appSettings = new App(Configuration.GetSection("App"));
+            services.AddSingleton(appSettings);
+
+            services.AddSingleton<ILuisProxy, LuisProxy>();
+            services.AddTransient<IHttpClientService, HttpClientService>();
             ConfigureCosmosDb(services);
 
             services.AddSwaggerGen(c =>
