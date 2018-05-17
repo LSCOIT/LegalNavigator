@@ -14,12 +14,7 @@ export class ResourceCardComponent implements OnInit, OnChanges {
   constructor() { }
 
   ngOnInit() {
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['data']) {
-      this.subtopicDetails = this.data;
-    }
+    this.subtopicDetails = this.data;
   }
 
 }
