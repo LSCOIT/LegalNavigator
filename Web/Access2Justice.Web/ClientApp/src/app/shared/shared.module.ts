@@ -17,6 +17,7 @@ import { BsDropdownModule } from 'ngx-bootstrap';
 import { ActionPlanComponent } from './resource/resource-card-detail/resource-types/action-plan.component';
 import { ResourceCardDetailComponent } from './resource/resource-card-detail/resource-card-detail.component';
 import { UserActionComponent } from './resource/user-action/user-action.component';
+import { SearchFilterComponent } from './search/search-filter.component';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { UserActionComponent } from './resource/user-action/user-action.componen
     UpperNavComponent,
     ActionPlanComponent,
     ResourceCardDetailComponent,
-    UserActionComponent
+    UserActionComponent,
+    SearchFilterComponent
   ],
   exports: [
     ChatbotComponent,
