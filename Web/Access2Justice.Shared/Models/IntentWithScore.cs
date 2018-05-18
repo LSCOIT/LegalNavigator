@@ -17,7 +17,7 @@
         /// <summary>
         ///  Top three intents other than the top Scoring intent
         /// </summary>
-        public List<string> TopNIntents { get; set; }
+        public IEnumerable<string> TopNIntents { get; set; }
 
         /// <summary>
         /// Error message in case error happens before completion of result parsing

@@ -40,11 +40,11 @@ namespace Access2Justice.Shared
         [JsonProperty(PropertyName = "actionplanheading")]
         public string ActionPlanHeading { get; set; }
 
-        public ActionPlan[] ActionPlan { get; set; }
-        public Organization[] Organization { get; set; }
-        public Video[] Video { get; set; }
-        public Article[] Article { get; set; }
-        public Form[] Form { get; set; }
+        public IEnumerable<ActionPlan> ActionPlan { get; set; }
+        public IEnumerable<Organization> Organization { get; set; }
+        public IEnumerable<Video> Video { get; set; }
+        public IEnumerable<Article> Article { get; set; }
+        public IEnumerable<Form> Form { get; set; }
 
     }
     public class ActionPlan : CommonFields

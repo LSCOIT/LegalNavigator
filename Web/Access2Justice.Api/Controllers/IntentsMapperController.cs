@@ -28,17 +28,10 @@
                     return BadRequest(ModelState);
 
                 IntentWithScore intentWithScore = await luisProxy.GetLuisIntent(luisInput);
-                string input = intentWithScore.TopScoringIntent;
-                if (!string.IsNullOrEmpty(input) && input.ToUpperInvariant() == "NONE")
-                {
+                string[] spParams = luisProxy.FilterLuisIntents(intentWithScore);
+                if (spParams == null)
                     return StatusCode(200, "can you please share your problem in more detail.");
-                }
-                foreach (var item in intentWithScore.TopNIntents)
-                {
-                    input += ","+ item;
-                }                
-                string[] spParams= { Constants.keywords, input }; 
-                var response = await backendDatabaseService.ExecuteStoredProcedureAsyncWithParameters<string>(Constants.GetResourcesByKeywords, spParams);               
+                var response = await backendDatabaseService.ExecuteStoredProcedureAsyncWithParameters<string>(Constants.GetResourcesByKeywords, spParams);
 
                 return StatusCode(200, response);
             }

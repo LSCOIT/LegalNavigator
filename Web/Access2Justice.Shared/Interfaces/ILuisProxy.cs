@@ -5,5 +5,6 @@
     public interface ILuisProxy
     {
         Task<IntentWithScore> GetLuisIntent(LuisInput luisInput);
+        string[] FilterLuisIntents(IntentWithScore intentWithScore);
     }
 }

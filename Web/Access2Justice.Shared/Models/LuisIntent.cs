@@ -6,8 +6,8 @@
     {
         public string Query { get; set; }
         public Intents TopScoringIntent { get; set; }
-        public List<Intents> Intents { get; set; }
-        public List<LuisEntity> Entities { get; set; }
+        public IEnumerable<Intents> Intents { get; set; }
+        public IEnumerable<LuisEntity> Entities { get; set; }
     }
 
     public class Intents
