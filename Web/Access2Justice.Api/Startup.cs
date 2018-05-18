@@ -45,8 +45,7 @@ namespace Access2Justice.Api
 
             app.UseMvc();
             
-            //Swagger details
-            Register(app);            
+            ConfigureSwagger(app);            
         }
 
         private void ConfigureCosmosDb(IServiceCollection services)
@@ -57,7 +56,7 @@ namespace Access2Justice.Api
             services.AddSingleton<IBackendDatabaseService, CosmosDbService>();
         }
 
-        private void Register(IApplicationBuilder app)
+        private void ConfigureSwagger(IApplicationBuilder app)
         {
             app.UseSwagger(c =>
             {
