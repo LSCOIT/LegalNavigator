@@ -44,12 +44,8 @@ namespace Access2Justice.Api
             }
 
             app.UseMvc();
-
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Access2Justice API V1");
-            });
+            
+            ConfigureSwagger(app);            
         }
 
         private void ConfigureCosmosDb(IServiceCollection services)
@@ -59,5 +55,22 @@ namespace Access2Justice.Api
             services.AddSingleton<IDocumentClient>(x => new DocumentClient(cosmosDbSettings.Endpoint, cosmosDbSettings.AuthKey));
             services.AddSingleton<IBackendDatabaseService, CosmosDbService>();
         }
+
+        private void ConfigureSwagger(IApplicationBuilder app)
+        {
+            app.UseSwagger(c =>
+            {
+                c.PreSerializeFilters.Add((swagger, httpReq) =>
+                {
+                    swagger.Host = httpReq.Host.Value;                    
+                });
+            });
+
+            app.UseSwaggerUI(c => {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Access2Justice API");
+            });
+
+        }
+
     }
 }
