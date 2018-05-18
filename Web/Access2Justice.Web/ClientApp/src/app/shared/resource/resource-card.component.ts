@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Topic } from '../../topics-resources/shared/topic';
 
 @Component({
@@ -6,7 +6,7 @@ import { Topic } from '../../topics-resources/shared/topic';
   templateUrl: './resource-card.component.html',
   styleUrls: ['./resource-card.component.css']
 })
-export class ResourceCardComponent implements OnInit, OnChanges {
+export class ResourceCardComponent implements OnInit {
   @Input() data: Topic;
   @Input() type: string;
 
