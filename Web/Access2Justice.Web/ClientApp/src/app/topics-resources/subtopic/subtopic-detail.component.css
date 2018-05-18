@@ -15,3 +15,18 @@ h3.subtopic-heading {
 .subtopic-body media {
   padding-top: 15px;
 }
+
+.user-action {
+  padding-left: 0;
+}
+
+.user-action li {
+  display: inline-block;
+  padding: 0 10px;
+  cursor: pointer;
+}
+
+.glyphicon {
+  padding: 0 5px;
+}
+

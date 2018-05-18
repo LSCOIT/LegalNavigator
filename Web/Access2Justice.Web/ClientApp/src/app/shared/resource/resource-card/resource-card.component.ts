@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Topic } from '../../topics-resources/shared/topic';
+import { Topic } from '../../../topics-resources/shared/topic';
 
 @Component({
   selector: 'app-resource-card',

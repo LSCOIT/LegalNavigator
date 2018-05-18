@@ -6,12 +6,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  topicLength = 6;
 
   slides = [
-    {image: 'https://www.treehugger.com/natural-sciences/trees-talk-each-other-and-recognize-their-offspring.html'},
-    {image: 'https://www.treehugger.com/natural-sciences/trees-talk-each-other-and-recognize-their-offspring.html'},
-    {image: 'https://www.treehugger.com/natural-sciences/trees-talk-each-other-and-recognize-their-offspring.html'}
+    {image: ''},
+    {image: ''},
+    {image: ''}
   ];
 
   constructor() { }

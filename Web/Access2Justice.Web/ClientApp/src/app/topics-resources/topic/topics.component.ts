@@ -7,19 +7,14 @@ import { Topic } from '../shared/topic';
   templateUrl: './topics.component.html',
   styleUrls: ['./topics.component.css']
 })
-export class TopicsComponent implements OnInit
-{
-  @Input() topicLength: number;
+export class TopicsComponent implements OnInit {
   topics: Topic;
 
   getTopics(): void {
     this.topicService.getTopics()
-      .subscribe((topics) => {
-        console.log(topics),
-          this.topics = topics},
-      (err) => { console.log(err) });
-
-    //topics => this.topics = topics["result"]);
+      .subscribe(topics => 
+        this.topics = topics
+    );
   }
 
   constructor(private topicService: TopicService) { }

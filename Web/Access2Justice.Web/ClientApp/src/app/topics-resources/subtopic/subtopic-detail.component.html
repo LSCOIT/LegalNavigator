@@ -6,7 +6,11 @@
       <h3 class="subtopic-heading text-capitalize">{{subtopicDetails.title}}</h3>
     </div>
     <div class="col-md-3 col-sm-12 col-xs-12">
-      <app-user-action></app-user-action>
+      <ul class="user-action">
+        <li><span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span><app-save-button></app-save-button></li>
+        <li><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span><app-share-button></app-share-button></li>
+        <li><span class="glyphicon glyphicon-print" aria-hidden="true"></span><app-print-button></app-print-button></li>
+      </ul>
     </div>
   </div>
   <div class="row">
