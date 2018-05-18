@@ -44,18 +44,14 @@ namespace Access2Justice.Api
             }
 
             app.UseCors(builder => builder.WithOrigins("http://localhost:64218"));
-            app.UseCors(builder => builder.WithOrigins("http://localhost:4200"));
+
             app.UseMvc();
-            //app.UseCors(builder => builder.WithOrigins("http://localhost:59706"));
-            //app.UseCors(builder => builder.WithOrigins("http://localhost:4200"));
+
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Access2Justice API V1");
             });
-          
-         
-
         }
 
         private void ConfigureCosmosDb(IServiceCollection services)
@@ -65,5 +61,22 @@ namespace Access2Justice.Api
             services.AddSingleton<IDocumentClient>(x => new DocumentClient(cosmosDbSettings.Endpoint, cosmosDbSettings.AuthKey));
             services.AddSingleton<IBackendDatabaseService, CosmosDbService>();
         }
+
+        private void ConfigureSwagger(IApplicationBuilder app)
+        {
+            app.UseSwagger(c =>
+            {
+                c.PreSerializeFilters.Add((swagger, httpReq) =>
+                {
+                    swagger.Host = httpReq.Host.Value;                    
+                });
+            });
+
+            app.UseSwaggerUI(c => {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Access2Justice API");
+            });
+
+        }
+
     }
 }
