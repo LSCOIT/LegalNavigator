@@ -10,7 +10,7 @@ namespace Access2Justice.Api.Models.CuratedExperience
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
         [JsonProperty(PropertyName = "surveyTree")]
-        public List<SurveyTree> SurveyTree { get; set; }
+        public List<SurveyTree> SurveyTree { get; }
 
         public CuratedExperienceSurvey()
         {
@@ -29,7 +29,7 @@ namespace Access2Justice.Api.Models.CuratedExperience
         [JsonProperty(PropertyName = "questionType")]
         public string QuestionType { get; set; }
         [JsonProperty(PropertyName = "choices")]
-        public List<Choice> Choices { get; set; }
+        public List<Choice> Choices { get; }
 
         public SurveyTree(List<Choice> choices)
         {
