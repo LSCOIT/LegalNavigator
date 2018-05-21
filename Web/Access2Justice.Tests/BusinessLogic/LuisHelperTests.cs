@@ -1,14 +1,13 @@
-﻿namespace Access2Justice.Tests.ServiceUnitTestCases
-{
-    using NUnit.Framework;
-    using NSubstitute;    
-    using System.Net.Http;
-    using System.Net;
-    using Access2Justice.Shared;
-    using Access2Justice.Api;
-    using Microsoft.Extensions.Configuration;
-    using System.Collections.Generic;
+﻿using Access2Justice.Api;
+using Access2Justice.Shared;
+using NSubstitute;
+using NUnit.Framework;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 
+namespace Access2Justice.Tests.ServiceUnitTestCases
+{
     [TestFixture]
     public class LuisHelperTests
     {
@@ -103,7 +102,7 @@
 
             IntentWithScore intentWithScore = new IntentWithScore { TopScoringIntent= "None",Score= 93, TopNIntents = intents };
             //Act
-            string[] result = luisProxy.FilterLuisIntents(intentWithScore);
+            var result = luisProxy.FilterLuisIntents(intentWithScore);
             //Assert
             Assert.AreEqual(null, result);
         }
@@ -119,7 +118,7 @@
 
             IntentWithScore intentWithScore = new IntentWithScore { TopScoringIntent = "child custody", Score = 93, TopNIntents = intents };
             //Act
-            string[] result = luisProxy.FilterLuisIntents(intentWithScore);
+            var result = luisProxy.FilterLuisIntents(intentWithScore);
             //Assert            
             Assert.IsNotEmpty(result);
         }

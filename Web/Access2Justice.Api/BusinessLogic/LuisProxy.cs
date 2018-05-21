@@ -1,11 +1,12 @@
 ﻿namespace Access2Justice.Api
 {
-    using System;
-    using System.Threading.Tasks;    
-    using System.Linq;    
-    using Newtonsoft.Json;
     using Access2Justice.Shared;
+    using Newtonsoft.Json;
+    using System;
+    using System.Collections.Generic;
     using System.Globalization;
+    using System.Linq;
+    using System.Threading.Tasks;
 
     public class LuisProxy : ILuisProxy
     {
@@ -51,7 +52,7 @@
             }
         }
 
-        public string[] FilterLuisIntents(IntentWithScore intentWithScore)
+        public IEnumerable<string> FilterLuisIntents(IntentWithScore intentWithScore)
         {
             string input = intentWithScore.TopScoringIntent;           
             if (input?.ToUpperInvariant() == "NONE")

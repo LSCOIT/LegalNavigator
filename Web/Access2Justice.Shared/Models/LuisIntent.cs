@@ -1,7 +1,7 @@
-﻿namespace Access2Justice.Shared
-{
-    using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
+namespace Access2Justice.Shared
+{
     public class LuisIntent
     {
         public string Query { get; set; }

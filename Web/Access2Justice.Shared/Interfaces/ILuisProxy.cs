@@ -1,10 +1,11 @@
-﻿namespace Access2Justice.Shared
-{
-    using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using System.Collections.Generic;
 
+namespace Access2Justice.Shared
+{
     public interface ILuisProxy
     {
         Task<IntentWithScore> GetLuisIntent(LuisInput luisInput);
-        string[] FilterLuisIntents(IntentWithScore intentWithScore);
+        IEnumerable<string> FilterLuisIntents(IntentWithScore intentWithScore);
     }
 }

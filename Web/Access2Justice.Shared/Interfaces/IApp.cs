@@ -1,7 +1,7 @@
-﻿namespace Access2Justice.Shared
-{
-    using System;
+﻿using System;
 
+namespace Access2Justice.Shared
+{
     public interface IApp
     {
         Uri LuisUrl { get;}

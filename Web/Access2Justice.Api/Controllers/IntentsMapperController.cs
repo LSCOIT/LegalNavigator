@@ -1,20 +1,19 @@
-﻿namespace Access2Justice.Api.Controllers
-{
-    using System;    
-    using System.Threading.Tasks;    
-    using Microsoft.AspNetCore.Mvc;    
-    using Access2Justice.Shared;    
-    using Access2Justice.Shared.Interfaces;    
+﻿using Access2Justice.Shared;
+using Access2Justice.Shared.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
+namespace Access2Justice.Api.Controllers
+{
     [Produces("application/json")]
     [Route("api/IntentsMapper")]
     public class IntentsMapperController : Controller
-    {        
+    {
         private ILuisProxy luisProxy;
-        private IBackendDatabaseService backendDatabaseService;        
+        private IBackendDatabaseService backendDatabaseService;
 
         public IntentsMapperController(ILuisProxy luisProxy, IBackendDatabaseService backendDatabaseService)
-        {            
+        {
             this.luisProxy = luisProxy;
             this.backendDatabaseService = backendDatabaseService;
         }
@@ -22,24 +21,17 @@
         [HttpGet]
         public async Task<IActionResult> GetAsync(LuisInput luisInput)
         {
-            try
-            {
-                if (!ModelState.IsValid)
-                    return BadRequest(ModelState);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-                IntentWithScore intentWithScore = await luisProxy.GetLuisIntent(luisInput);
-                string[] spParams = luisProxy.FilterLuisIntents(intentWithScore);
-                if (spParams == null)
-                    return StatusCode(200, "can you please share your problem in more detail.");
-                var response = await backendDatabaseService.ExecuteStoredProcedureAsyncWithParameters<string>(Constants.GetResourcesByKeywords, spParams);
+            IntentWithScore intentWithScore = await luisProxy.GetLuisIntent(luisInput);
+            var spParams = luisProxy.FilterLuisIntents(intentWithScore);
 
-                return StatusCode(200, response);
-            }
-            catch (Exception ex)
-            {
-                //need to implement error logging...
-                return StatusCode(500, ex.Message);
-            }
+            if (spParams == null)
+                return StatusCode(200, "can you please share your problem in more detail.");
+            var response = await backendDatabaseService.ExecuteStoredProcedureAsyncWithParameters<string>(Constants.GetResourcesByKeywords, spParams);
+
+            return StatusCode(200, response);
         }
 
     }

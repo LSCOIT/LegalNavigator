@@ -1,7 +1,7 @@
-﻿namespace Access2Justice.Shared
-{
-    using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
+namespace Access2Justice.Shared
+{
     public class LuisInput
     {
         /// <summary>
