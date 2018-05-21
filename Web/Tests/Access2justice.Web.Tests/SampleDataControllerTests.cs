@@ -2,6 +2,9 @@
 
 namespace Access2Justice.Web.Tests
 {
+    /// <summary>
+    /// Sample unit tests to demonstrate use of unit testing framework and conventions 
+    /// </summary>
     public static class SampleDataControllerTests
     {
 
@@ -19,5 +22,4 @@ namespace Access2Justice.Web.Tests
             Assert.Equal(returnValue, expectedReturnValue);
         }
     }
-
 }
