@@ -1,13 +1,14 @@
-﻿namespace Access2Justice.Api
-{
-    using Access2Justice.Shared;
-    using Newtonsoft.Json;
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Linq;
-    using System.Threading.Tasks;
+﻿using Access2Justice.Shared;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 
+
+namespace Access2Justice.Api
+{
     public class LuisProxy : ILuisProxy
     {
         private IApp appSettings;
@@ -19,11 +20,11 @@
             this.httpClientService = httpClientService;
         }
 
-        public async Task<IntentWithScore> GetLuisIntent(LuisInput luisInput)
+        public async Task<IntentWithScore> GetIntents(string query)
         {
             try
             {
-                var uri = string.Format(CultureInfo.InvariantCulture, appSettings.LuisUrl.OriginalString, luisInput.Sentence);                
+                var uri = string.Format(CultureInfo.InvariantCulture, appSettings.LuisUrl.OriginalString, query);                
 
                 string result = string.Empty;
                 using (var response = await httpClientService.GetAsync(new Uri(uri)))

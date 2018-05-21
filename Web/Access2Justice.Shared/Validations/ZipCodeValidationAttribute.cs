@@ -1,4 +1,6 @@
-﻿namespace Access2Justice.Shared
+﻿// todo:@alaa remove?
+
+namespace Access2Justice.Shared
 {    
     using System;    
     using System.ComponentModel.DataAnnotations;

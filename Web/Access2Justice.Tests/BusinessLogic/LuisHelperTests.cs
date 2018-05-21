@@ -15,7 +15,6 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         private IHttpClientService httpClientService;
         private LuisProxy luisProxy;
         private List<string> intents;
-        private LuisInput luisInput;
 
 
         [SetUp]
@@ -33,7 +32,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         [Test]
         public void GetLuisIntentWithProperResponseFromLuis()
         {
-            luisInput = new LuisInput();
+            var query = "I need help to file for a child abuse";
 
             var responseq = new HttpResponseMessage();
             var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK)
@@ -45,7 +44,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             luisResponse.Returns(httpResponseMessage);
 
             //Act
-            IntentWithScore intentWithScore = luisProxy.GetLuisIntent(luisInput).Result;
+            IntentWithScore intentWithScore = luisProxy.GetIntents(query).Result;
 
             //Assert
             Assert.AreEqual(true, intentWithScore.IsSuccessful);
@@ -54,7 +53,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         [Test]
         public void GetLuisIntentWithNullObjectResponseFromLuis()
         {
-            luisInput = new LuisInput();
+            var query = "help with divorce";
 
             var responseq = new HttpResponseMessage();
             var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK)
@@ -65,7 +64,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             var luisResponse = httpClientService.GetAsync(options.LuisUrl);
             luisResponse.Returns(httpResponseMessage);
             //Act
-            IntentWithScore intentWithScore = luisProxy.GetLuisIntent(luisInput).Result;
+            IntentWithScore intentWithScore = luisProxy.GetIntents(query).Result;
 
             //Assert
             Assert.AreEqual(true, intentWithScore.IsSuccessful);
@@ -74,7 +73,6 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         [Test]
         public void GetLuisIntentWithEmptyResponseFromLuis()
         {
-            luisInput = new LuisInput();
 
             var responseq = new HttpResponseMessage();
             var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK)
@@ -85,7 +83,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             var luisResponse = httpClientService.GetAsync(options.LuisUrl);
             luisResponse.Returns(httpResponseMessage);
             //Act
-            IntentWithScore intentWithScore = luisProxy.GetLuisIntent(luisInput).Result;
+            IntentWithScore intentWithScore = luisProxy.GetIntents("").Result;
 
             //Assert
             Assert.AreEqual(true, intentWithScore.IsSuccessful);

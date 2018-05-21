@@ -5,7 +5,7 @@ namespace Access2Justice.Shared
 {
     public interface ILuisProxy
     {
-        Task<IntentWithScore> GetLuisIntent(LuisInput luisInput);
+        Task<IntentWithScore> GetIntents(string query);
         IEnumerable<string> FilterLuisIntents(IntentWithScore intentWithScore);
     }
 }
