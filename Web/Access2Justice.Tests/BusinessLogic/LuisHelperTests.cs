@@ -1,5 +1,6 @@
 ﻿using Access2Justice.Api;
 using Access2Justice.Shared;
+using Access2Justice.Shared.Luis;
 using NSubstitute;
 using NUnit.Framework;
 using System.Collections.Generic;

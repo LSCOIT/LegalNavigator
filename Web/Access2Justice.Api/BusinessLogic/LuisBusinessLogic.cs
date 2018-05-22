@@ -1,4 +1,6 @@
-﻿using Access2Justice.Shared;
+﻿using Access2Justice.CosmosDb.Interfaces;
+using Access2Justice.Shared;
+using Access2Justice.Shared.Interfaces;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -6,43 +8,41 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
-
 namespace Access2Justice.Api
 {
-    public class LuisProxy : ILuisProxy
+    public class LuisBusinessLogic : ILuisBusinessLogic
     {
-        private ILuisSettings _luisSettings;
-        private IHttpClientService _httpClientService;
+        private readonly IBackendDatabaseService _backendDatabaseService;
+        private readonly ILuisProxy _luisProxy;
+        private readonly ICosmosDbSettings _cosmosDbSettings;
+        private readonly ILuisSettings _luisSettings;
 
-        public LuisProxy(IHttpClientService httpClientService, ILuisSettings luisSettings)
+        public LuisBusinessLogic(IBackendDatabaseService backendDatabaseService, ILuisProxy luisProxy, 
+            ICosmosDbSettings cosmosDbSettings, ILuisSettings luisSettings)
         {
+            _backendDatabaseService = backendDatabaseService;
+            _cosmosDbSettings = cosmosDbSettings;
             _luisSettings = luisSettings;
-            _httpClientService = httpClientService;
+            _luisProxy = luisProxy;
         }
 
-        public async Task<string> GetIntents(string query)
+        public async Task<dynamic> GetInternalResources(string query)
         {
-            try
+            var luisResponse = await _luisProxy.GetIntents(query);
+            var intentWithScore = string.IsNullOrEmpty(luisResponse) ? null : ParseLuisIntent(luisResponse);
+
+            IEnumerable<string> keywords = FilterLuisIntents(intentWithScore);
+            string input = "";
+            foreach (var keyword in keywords)
             {
-                var uri = string.Format(CultureInfo.InvariantCulture, _luisSettings.Endpoint.OriginalString, query);
-
-                string result = string.Empty;
-                using (var response = await _httpClientService.GetAsync(new Uri(uri)))
-                {
-                    result = response.Content.ReadAsStringAsync().Result;
-                }
-
-                return result;
-
+                input = keyword; break;
             }
-            catch (Exception e)
-            {
-                //TO DO : Need to implement exception logging..
-                throw e;
+            var response = await GetTopicAsync(input);
+            
+            //todo: get resources
 
-            }
+            return response; // todo: return resources instead
         }
-
         public IntentWithScore ParseLuisIntent(string LuisResponse)
         {
             LuisIntent luisIntent = JsonConvert.DeserializeObject<LuisIntent>(LuisResponse);
@@ -80,6 +80,15 @@ namespace Access2Justice.Api
                 keywords.Add(input);
             }
             return keywords;
+        }
+
+        public async Task<dynamic> GetTopicAsync(string keywords)
+        {
+            // we need to use a quey format to retrieve items because we are returning a dynmaic object.
+            var qeury = string.Format("SELECT * FROM c WHERE CONTAINS(c.keywords, '{0}')", keywords.ToLower());
+            var result = await _backendDatabaseService.QueryItemsAsync(_cosmosDbSettings.TopicCollectionId, qeury);
+
+            return JsonConvert.SerializeObject(result);
         }
     }
 }

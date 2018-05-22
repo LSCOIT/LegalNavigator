@@ -1,8 +1,8 @@
-﻿namespace Access2Justice.Shared
-{
-    using Microsoft.Extensions.Configuration;
-    using System;
+﻿using Microsoft.Extensions.Configuration;
+using System;
 
+namespace Access2Justice.Shared.Luis
+{
     public class LuisSettings : ILuisSettings
     {
         public LuisSettings(IConfiguration configuration)

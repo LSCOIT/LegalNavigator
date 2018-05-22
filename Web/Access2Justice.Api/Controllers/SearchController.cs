@@ -12,33 +12,22 @@ namespace Access2Justice.Api.Controllers
     {
         private ILuisProxy _luisProxy;
         private IBackendDatabaseService _db;
-        private IHelper helper;
+        private ILuisBusinessLogic _luisBusinessLogic;
 
-        public SearchController(ILuisProxy luisProxy, IBackendDatabaseService backendDatabaseService, IHelper helper)
+        public SearchController(ILuisProxy luisProxy, IBackendDatabaseService backendDatabaseService, ILuisBusinessLogic luisBusinessLogic)
         {
             _luisProxy = luisProxy;
             _db = backendDatabaseService;
-            this.helper = helper;
+            _luisBusinessLogic = luisBusinessLogic;
         }
 
         [HttpGet("{query}")]
         public async Task<IActionResult> GetAsync(string query)
         {
-            string LuisResponse = await _luisProxy.GetIntents(query);
-            IntentWithScore intentWithScore = string.IsNullOrEmpty(LuisResponse) ? null : _luisProxy.ParseLuisIntent(LuisResponse);
-            if(intentWithScore == null || intentWithScore?.TopScoringIntent?.ToUpperInvariant() == "NONE")
-                return StatusCode(200, "can you please share your problem in more detail.");
+            var internalResources = await _luisBusinessLogic.GetInternalResources(query);
+            //var webResources = await _webSearchBusinessLogic.GetWebResources(query);
 
-            IEnumerable<string> keywords = _luisProxy.FilterLuisIntents(intentWithScore);
-            string input = "";
-            foreach (var keyword in keywords)
-            {
-                input = keyword;break;   
-            }
-            var response = await helper.GetTopicAsync(input);
-            //var response = await _db.ExecuteStoredProcedureAsyncWithParameters<string>(Constants.GetResourcesByKeywords, spParams);
-
-            return StatusCode(200, response);
+            return Content(internalResources, "application/json");
         }
     }
 }

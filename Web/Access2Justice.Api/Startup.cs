@@ -2,6 +2,7 @@
 using Access2Justice.CosmosDb.Interfaces;
 using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
+using Access2Justice.Shared.Luis;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Azure.Documents;
@@ -29,7 +30,7 @@ namespace Access2Justice.Api
             services.AddSingleton(luisSettings);
 
             services.AddSingleton<ILuisProxy, LuisProxy>();
-            services.AddSingleton<IHelper, Helper>();
+            services.AddSingleton<ILuisBusinessLogic, LuisBusinessLogic>();
             services.AddTransient<IHttpClientService, HttpClientService>();
             ConfigureCosmosDb(services);
 
