@@ -4,6 +4,7 @@
     using Access2Justice.Shared.Interfaces;    
     using System.Threading.Tasks;
     using Access2Justice.Shared;
+    using Newtonsoft.Json;
 
     public class Helper : IHelper
     {
@@ -19,7 +20,11 @@
 
         public async Task<dynamic> GetTopicAsync(string keywords)
         {
-            return await backendDatabaseService.GetItemsAsync<TopicModel>(a => a.keywords == keywords, cosmosDbSettings.TopicCollectionId);
+            // we need to use a quey format to retrieve items because we are returning a dynmaic object.
+            var qeury = string.Format("SELECT * FROM c WHERE CONTAINS(c.keywords, '{0}')", keywords);
+            var result = await backendDatabaseService.QueryItemsAsync(cosmosDbSettings.TopicCollectionId, qeury);
+
+            return JsonConvert.SerializeObject(result);
         }
     }
 }

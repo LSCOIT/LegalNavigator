@@ -12,6 +12,7 @@ namespace Access2Justice.Shared.Interfaces
         Task DeleteItemAsync(string id);
         Task<T> GetItemAsync<T>(string id);
         Task<IEnumerable<T>> GetItemsAsync<T>(Expression<Func<T, bool>> predicate,string collectionId);
+        Task<dynamic> QueryItemsAsync(string collectionId, string query);
         Task<Document> UpdateItemAsync<T>(string id, T item);        
         Task<T> ExecuteStoredProcedureAsyncWithParameters<T>(string storedProcName, params dynamic[] procedureParams);
     }

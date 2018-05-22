@@ -3,6 +3,7 @@ using Access2Justice.Shared.Interfaces;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents.Linq;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,16 +50,30 @@ namespace Access2Justice.CosmosDb
             }
         }
 
-        public async Task<IEnumerable<T>> GetItemsAsync<T>(Expression<Func<T, bool>> predicate,string CollectionId)
+        public async Task<IEnumerable<T>> GetItemsAsync<T>(Expression<Func<T, bool>> predicate,string collectionId)
         {
             IDocumentQuery<T> query = _documentClient.CreateDocumentQuery<T>(
-                UriFactory.CreateDocumentCollectionUri(_cosmosDbSettings.DatabaseId, CollectionId),
+                UriFactory.CreateDocumentCollectionUri(_cosmosDbSettings.DatabaseId, collectionId),
                 new FeedOptions { MaxItemCount = -1, EnableCrossPartitionQuery = true }).Where(predicate).AsDocumentQuery();
 
             List<T> results = new List<T>();
             while (query.HasMoreResults)
             {
                 results.AddRange(await query.ExecuteNextAsync<T>());
+            }
+
+            return results;
+        }
+
+        public async Task<dynamic> QueryItemsAsync(string collectionId, string query)
+        {
+            var docQuery = _documentClient.CreateDocumentQuery<dynamic>(
+                UriFactory.CreateDocumentCollectionUri(_cosmosDbSettings.DatabaseId, collectionId), query).AsDocumentQuery();
+
+            var results = new List<dynamic>();
+            while (docQuery.HasMoreResults)
+            {
+                results.AddRange(await docQuery.ExecuteNextAsync());
             }
 
             return results;
