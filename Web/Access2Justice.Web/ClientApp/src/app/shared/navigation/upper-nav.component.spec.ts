@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { ModalModule } from 'ngx-bootstrap';
 import { UpperNavComponent } from './upper-nav.component';
 
 describe('UpperNavComponent', () => {
@@ -8,7 +8,8 @@ describe('UpperNavComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UpperNavComponent ]
+      declarations: [UpperNavComponent],
+      imports: [ModalModule.forRoot()]
     })
     .compileComponents();
   }));

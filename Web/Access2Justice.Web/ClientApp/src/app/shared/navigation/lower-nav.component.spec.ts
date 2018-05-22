@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { FormsModule } from '@angular/forms';
 import { LowerNavComponent } from './lower-nav.component';
+import { SearchComponent } from '../search/search.component';
 
 describe('LowerNavComponent', () => {
   let component: LowerNavComponent;
@@ -8,7 +9,11 @@ describe('LowerNavComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LowerNavComponent ]
+      declarations: [
+        LowerNavComponent,
+        SearchComponent
+      ],
+      imports: [FormsModule]
     })
     .compileComponents();
   }));
