@@ -2,9 +2,9 @@
 
 namespace Access2Justice.Shared
 {
-    public interface IApp
+    public interface ILuisSettings
     {
-        Uri LuisUrl { get;}
+        Uri Endpoint { get;}
         string TopIntentsCount { get;}
     }
 }

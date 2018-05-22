@@ -21,7 +21,7 @@ namespace Access2Justice.Api.Controllers
         [HttpGet("{query}")]
         public async Task<IActionResult> GetAsync(string query)
         {
-            IntentWithScore intentWithScore = await _luisProxy.GetIntents(query);
+            var intentWithScore = await _luisProxy.GetIntents(query);
             var spParams = _luisProxy.FilterLuisIntents(intentWithScore);
 
             if (spParams == null)

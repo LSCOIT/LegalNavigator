@@ -3,13 +3,13 @@
     using Microsoft.Extensions.Configuration;
     using System;
 
-    public class App : IApp
+    public class LuisSettings : ILuisSettings
     {
-        public App(IConfiguration configuration)
+        public LuisSettings(IConfiguration configuration)
         {
             try
             {
-                LuisUrl = new Uri(configuration.GetSection("LuisUrl").Value);
+                Endpoint = new Uri(configuration.GetSection("Endpoint").Value);
                 TopIntentsCount = configuration.GetSection("TopIntentsCount").Value;
             }
             catch
@@ -18,7 +18,7 @@
             }
         }
         
-        public Uri LuisUrl { get; set; }
+        public Uri Endpoint { get; set; }
         public string TopIntentsCount { get; set; }
     }
 }

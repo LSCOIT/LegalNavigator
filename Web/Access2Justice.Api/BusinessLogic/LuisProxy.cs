@@ -11,23 +11,23 @@ namespace Access2Justice.Api
 {
     public class LuisProxy : ILuisProxy
     {
-        private IApp appSettings;
-        private IHttpClientService httpClientService;
+        private ILuisSettings _luisSettings;
+        private IHttpClientService _httpClientService;
 
-        public LuisProxy(IHttpClientService httpClientService, IApp appSettings)
+        public LuisProxy(IHttpClientService httpClientService, ILuisSettings luisSettings)
         {
-            this.appSettings = appSettings;
-            this.httpClientService = httpClientService;
+            _luisSettings = luisSettings;
+            _httpClientService = httpClientService;
         }
 
         public async Task<IntentWithScore> GetIntents(string query)
         {
             try
             {
-                var uri = string.Format(CultureInfo.InvariantCulture, appSettings.LuisUrl.OriginalString, query);                
+                var uri = string.Format(CultureInfo.InvariantCulture, _luisSettings.Endpoint.OriginalString, query);                
 
                 string result = string.Empty;
-                using (var response = await httpClientService.GetAsync(new Uri(uri)))
+                using (var response = await _httpClientService.GetAsync(new Uri(uri)))
                 {
                     result = response.Content.ReadAsStringAsync().Result;
                 }
@@ -38,7 +38,7 @@ namespace Access2Justice.Api
                     IsSuccessful = true,
                     TopScoringIntent = luisIntent?.TopScoringIntent?.Intent,
                     Score = luisIntent?.TopScoringIntent?.Score ?? 0,
-                    TopNIntents = luisIntent?.Intents.Skip(1).Take(Convert.ToInt16(appSettings.TopIntentsCount, provider)).Select(x => x.Intent).ToList()
+                    TopNIntents = luisIntent?.Intents.Skip(1).Take(Convert.ToInt16(_luisSettings.TopIntentsCount, provider)).Select(x => x.Intent).ToList()
                 };
             }
             catch (Exception e)

@@ -20,14 +20,13 @@ namespace Access2Justice.Api
         }
 
         public IConfiguration Configuration { get; }
-        public object CosmosDbConfiguration { get; private set; }
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
 
-            IApp appSettings = new App(Configuration.GetSection("App"));
-            services.AddSingleton(appSettings);
+            ILuisSettings luisSettings = new LuisSettings(Configuration.GetSection("Luis"));
+            services.AddSingleton(luisSettings);
 
             services.AddSingleton<ILuisProxy, LuisProxy>();
             services.AddTransient<IHttpClientService, HttpClientService>();
