@@ -1,4 +1,5 @@
-﻿using Access2Justice.CosmosDb;
+﻿using Access2Justice.Api.BusinessLogic;
+using Access2Justice.CosmosDb;
 using Access2Justice.CosmosDb.Interfaces;
 using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
@@ -31,6 +32,7 @@ namespace Access2Justice.Api
 
             services.AddSingleton<ILuisProxy, LuisProxy>();
             services.AddSingleton<ILuisBusinessLogic, LuisBusinessLogic>();
+            services.AddSingleton<ITopicsResourcesBusinessLogic, TopicsResourcesBusinessLogic>();
             services.AddTransient<IHttpClientService, HttpClientService>();
             ConfigureCosmosDb(services);
 

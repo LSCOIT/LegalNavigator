@@ -7,7 +7,6 @@ namespace Access2Justice.Shared.Interfaces
     {
         IEnumerable<string> FilterLuisIntents(IntentWithScore intentWithScore);
         Task<dynamic> GetInternalResources(string query);
-        Task<dynamic> GetTopicAsync(string keywords);
         IntentWithScore ParseLuisIntent(string LuisResponse);
     }
 }

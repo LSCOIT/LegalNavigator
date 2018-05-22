@@ -1,7 +1,5 @@
-﻿using Access2Justice.Shared;
-using Access2Justice.Shared.Interfaces;
+﻿using Access2Justice.Shared.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Access2Justice.Api.Controllers
@@ -10,14 +8,10 @@ namespace Access2Justice.Api.Controllers
     [Route("api/search")]
     public class SearchController : Controller
     {
-        private ILuisProxy _luisProxy;
-        private IBackendDatabaseService _db;
-        private ILuisBusinessLogic _luisBusinessLogic;
+        private readonly ILuisBusinessLogic _luisBusinessLogic;
 
-        public SearchController(ILuisProxy luisProxy, IBackendDatabaseService backendDatabaseService, ILuisBusinessLogic luisBusinessLogic)
+        public SearchController(ILuisBusinessLogic luisBusinessLogic)
         {
-            _luisProxy = luisProxy;
-            _db = backendDatabaseService;
             _luisBusinessLogic = luisBusinessLogic;
         }
 
