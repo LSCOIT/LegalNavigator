@@ -23,10 +23,10 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
 
             options = Substitute.For<ILuisSettings>();
             httpClientService = Substitute.For<IHttpClientService>();
-            luisProxy = new LuisProxy(httpClientService, options);            
+            luisProxy = new LuisProxy(httpClientService, options);
 
             options.Endpoint.Returns(new System.Uri("http://www.bing.com"));
-            options.TopIntentsCount.Returns("3");            
+            options.TopIntentsCount.Returns("3");
         }
 
         [Test]
@@ -44,10 +44,10 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             luisResponse.Returns(httpResponseMessage);
 
             //Act
-            IntentWithScore intentWithScore = luisProxy.GetIntents(query).Result;
+            string intentWithScore = luisProxy.GetIntents(query).Result;
 
-            //Assert
-            Assert.AreEqual(true, intentWithScore.IsSuccessful);
+            //TO DO : Assert
+            Assert.AreEqual(true, intentWithScore);
         }
 
         [Test]
@@ -64,10 +64,10 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             var luisResponse = httpClientService.GetAsync(options.Endpoint);
             luisResponse.Returns(httpResponseMessage);
             //Act
-            IntentWithScore intentWithScore = luisProxy.GetIntents(query).Result;
+            string intentWithScore = luisProxy.GetIntents(query).Result;
 
-            //Assert
-            Assert.AreEqual(true, intentWithScore.IsSuccessful);
+            //TO DO : Assert
+            Assert.AreEqual(true, intentWithScore);
         }
 
         [Test]
@@ -83,10 +83,10 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             var luisResponse = httpClientService.GetAsync(options.Endpoint);
             luisResponse.Returns(httpResponseMessage);
             //Act
-            IntentWithScore intentWithScore = luisProxy.GetIntents("").Result;
+            string intentWithScore = luisProxy.GetIntents("").Result;
 
-            //Assert
-            Assert.AreEqual(true, intentWithScore.IsSuccessful);
+            //TO DO : Assert
+            Assert.AreEqual(true, intentWithScore);
         }
 
         [Test]
@@ -98,7 +98,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
                 "eviction"
             };
 
-            IntentWithScore intentWithScore = new IntentWithScore { TopScoringIntent= "None",Score= 93, TopNIntents = intents };
+            IntentWithScore intentWithScore = new IntentWithScore { TopScoringIntent = "None", Score = 93, TopNIntents = intents };
             //Act
             var result = luisProxy.FilterLuisIntents(intentWithScore);
             //Assert

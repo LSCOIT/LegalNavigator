@@ -11,6 +11,8 @@
             {
                 Endpoint = new Uri(configuration.GetSection("Endpoint").Value);
                 TopIntentsCount = configuration.GetSection("TopIntentsCount").Value;
+                UpperThreshold = configuration.GetSection("UpperThreshold").Value;
+                LowerThreshold = configuration.GetSection("LowerThreshold").Value;
             }
             catch
             {
@@ -20,5 +22,7 @@
         
         public Uri Endpoint { get; set; }
         public string TopIntentsCount { get; set; }
+        public string UpperThreshold { get; set; }
+        public string LowerThreshold { get; set; }
     }
 }

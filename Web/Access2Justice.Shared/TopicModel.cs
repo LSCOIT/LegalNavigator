@@ -32,7 +32,7 @@ namespace Access2Justice.Shared
         public string Description { get; set; }
 
         [JsonProperty(PropertyName = "keywords")]
-        public string Keywords { get; set; }
+        public string keywords { get; set; }
 
         [JsonProperty(PropertyName = "essentialreading")]
         public string EssentialReading { get; set; }

@@ -29,6 +29,7 @@ namespace Access2Justice.Api
             services.AddSingleton(luisSettings);
 
             services.AddSingleton<ILuisProxy, LuisProxy>();
+            services.AddSingleton<IHelper, Helper>();
             services.AddTransient<IHttpClientService, HttpClientService>();
             ConfigureCosmosDb(services);
 

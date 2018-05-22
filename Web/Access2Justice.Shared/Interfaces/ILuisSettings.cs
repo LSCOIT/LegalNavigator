@@ -6,5 +6,7 @@ namespace Access2Justice.Shared
     {
         Uri Endpoint { get;}
         string TopIntentsCount { get;}
+        string UpperThreshold { get; }
+        string LowerThreshold { get; }
     }
 }
