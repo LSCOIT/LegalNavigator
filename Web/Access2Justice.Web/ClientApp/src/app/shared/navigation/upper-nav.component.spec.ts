@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { ModalModule } from 'ngx-bootstrap';
 import { UpperNavComponent } from './upper-nav.component';
 
@@ -22,5 +23,10 @@ describe('UpperNavComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should render five menu items', () => {
+    const menuItems = fixture.debugElement.queryAll(By.css('a'));
+    expect(menuItems.length).toBe(5);
   });
 });
