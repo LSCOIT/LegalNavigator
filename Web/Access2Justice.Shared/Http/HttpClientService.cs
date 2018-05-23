@@ -49,6 +49,22 @@
             return response;
         }
 
+        public async Task<HttpResponseMessage> GetDataAsync(Uri apiUrl,string subscriptionKey)
+        {
+            HttpResponseMessage response = null;
+            try
+            {
+                httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", subscriptionKey);
+                response = await httpClient.GetAsync(apiUrl);
+            }
+            catch (Exception ex)
+            {
+                //TO DO : Need to implement exception logging..
+                Console.WriteLine(ex);
+            }
+            return response;
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)

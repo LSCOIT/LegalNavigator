@@ -11,6 +11,7 @@ using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
+using Access2Justice.Shared.Bing;
 
 namespace Access2Justice.Api
 {
@@ -30,9 +31,13 @@ namespace Access2Justice.Api
             ILuisSettings luisSettings = new LuisSettings(Configuration.GetSection("Luis"));
             services.AddSingleton(luisSettings);
 
+            IBingSettings bingSettings = new BingSettings(Configuration.GetSection("Bing"));
+            services.AddSingleton(bingSettings);
+
             services.AddSingleton<ILuisProxy, LuisProxy>();
             services.AddSingleton<ILuisBusinessLogic, LuisBusinessLogic>();
             services.AddSingleton<ITopicsResourcesBusinessLogic, TopicsResourcesBusinessLogic>();
+            services.AddSingleton<IWebSearchBusinessLogic, WebSearchBusinessLogic>();
             services.AddTransient<IHttpClientService, HttpClientService>();
             ConfigureCosmosDb(services);
 

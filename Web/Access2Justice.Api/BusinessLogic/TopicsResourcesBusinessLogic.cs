@@ -1,8 +1,5 @@
 ﻿using Access2Justice.CosmosDb.Interfaces;
 using Access2Justice.Shared.Interfaces;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Access2Justice.Api.BusinessLogic
@@ -17,19 +14,22 @@ namespace Access2Justice.Api.BusinessLogic
             _cosmosDbSettings = cosmosDbSettings;
         }
 
-        public Task GetResources(IEnumerable<string> resourcesIds)
+        public async Task<dynamic> GetResources(string topicIds)
         {
-            // todo: use cosmos db methods to get resources of the provided topics ids
-            throw new NotImplementedException();
+            // we need to use a query format to retrieve items because we are returning a dynamic object.
+            var query = string.Format("SELECT  c.name,c.id,c.type,c.resourceType,c.externalUrl,c.url,c.location,c.overview,c.IsRecommened FROM c  JOIN a IN c.topicTags WHERE a.id IN({0})", topicIds);
+            var result = await _backendDatabaseService.QueryItemsAsync(_cosmosDbSettings.ResourceCollectionId, query);
+
+            return result;
         }
 
         public async Task<dynamic> GetTopicAsync(string keyword)
         {
-            // we need to use a quey format to retrieve items because we are returning a dynmaic object.
-            var qeury = string.Format("SELECT * FROM c WHERE CONTAINS(c.keywords, '{0}')", keyword.ToLower());
-            var result = await _backendDatabaseService.QueryItemsAsync(_cosmosDbSettings.TopicCollectionId, qeury);
+            // we need to use a query format to retrieve items because we are returning a dynamic object.
+            var query = string.Format("SELECT * FROM c WHERE CONTAINS(c.keywords, '{0}')", keyword.ToLower());
+            var result = await _backendDatabaseService.QueryItemsAsync(_cosmosDbSettings.TopicCollectionId, query);
 
-            return JsonConvert.SerializeObject(result);
+            return result;
         }
     }
 }

@@ -35,21 +35,25 @@ namespace Access2Justice.Api
             {
                 intentWithScore = ParseLuisIntent(luisResponse);
             }
+            
+            string keywords = FilterLuisIntents(intentWithScore);
+            List<dynamic> internalResources = new List<dynamic>();
+            var topics = await _topicsResourcesBusinessLogic.GetTopicAsync(keywords);
 
-            // todo: we need to work on this logic, it is not good the way it is:
-            IEnumerable<string> keywords = FilterLuisIntents(intentWithScore);
-            string input = "";
-            foreach (var keyword in keywords)
+            string topicIds = string.Empty;
+            foreach (var topic in topics)
             {
-                input = keyword; break;
+                topicIds += "'" + topic.id + "',";
+            }
+            internalResources.Add(JsonConvert.SerializeObject(topics));
+            if (!string.IsNullOrEmpty(topicIds))
+            {
+                topicIds = topicIds.Remove(topicIds.Length - 1);
+                var resources = await _topicsResourcesBusinessLogic.GetResources(topicIds);
+                internalResources.Add(JsonConvert.SerializeObject(resources));
             }
 
-
-
-            var topics = await _topicsResourcesBusinessLogic.GetTopicAsync(input);
-            var resources = topics; // todo: implement and use the await _topicsResourcesBusinessLogic.GetResources(pass topics id);
-
-            return resources;
+            return internalResources;
         }
 
         public IntentWithScore ParseLuisIntent(string LuisResponse)
@@ -65,28 +69,29 @@ namespace Access2Justice.Api
             };
         }
 
-        public IEnumerable<string> FilterLuisIntents(IntentWithScore intentWithScore)
+        public string FilterLuisIntents(IntentWithScore intentWithScore)
         {
 
             NumberFormatInfo provider = new NumberFormatInfo { NumberDecimalDigits = 2 };
             decimal upperThershold = Convert.ToDecimal(_luisSettings.UpperThreshold, provider);
-            //decimal lowerThershold = Convert.ToDecimal(_luisSettings.LowerThreshold, provider);
+            decimal lowerThershold = Convert.ToDecimal(_luisSettings.LowerThreshold, provider);
 
-            List<string> keywords = new List<string>();
+            string keywords = string.Empty;
             if (intentWithScore.Score >= upperThershold)
             {
-                keywords.Add(intentWithScore.TopScoringIntent);
+                keywords = intentWithScore.TopScoringIntent;
             }
-            //else if (intentWithScore.Score <= lowerThershold) {
+            else if (intentWithScore.Score <= lowerThershold)
+            {
+                // TO DO : Need to check this scenario and implement logic.
+            }
             else
             {
-                string input = intentWithScore.TopScoringIntent;
+                keywords = intentWithScore.TopScoringIntent;
                 foreach (var item in intentWithScore.TopNIntents)
                 {
-                    input += "," + item;
+                    keywords += "," + item;
                 }
-
-                keywords.Add(input);
             }
             return keywords;
         }
