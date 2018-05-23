@@ -1,4 +1,6 @@
-﻿namespace Access2Justice.CognitiveServices
+﻿using System.Collections.Generic;
+
+namespace Access2Justice.Shared
 {
     public class IntentWithScore
     {
@@ -15,7 +17,7 @@
         /// <summary>
         ///  Top three intents other than the top Scoring intent
         /// </summary>
-        public string[] TopThreeIntents { get; set; }
+        public IEnumerable<string> TopNIntents { get; set; }
 
         /// <summary>
         /// Error message in case error happens before completion of result parsing

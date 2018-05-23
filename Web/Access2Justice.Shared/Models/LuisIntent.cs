@@ -1,13 +1,13 @@
-﻿namespace Access2Justice.CognitiveServices
-{
-    using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
+namespace Access2Justice.Shared
+{
     public class LuisIntent
     {
         public string Query { get; set; }
         public Intents TopScoringIntent { get; set; }
-        public List<Intents> Intents { get; set; }
-        public List<LuisEntity> Entities { get; set; }
+        public IEnumerable<Intents> Intents { get; set; }
+        public IEnumerable<LuisEntity> Entities { get; set; }
     }
 
     public class Intents

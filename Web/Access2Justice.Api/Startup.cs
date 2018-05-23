@@ -43,7 +43,7 @@ namespace Access2Justice.Api
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors(builder => builder.WithOrigins("http://localhost:64218"));
+            app.UseCors(builder => builder.WithOrigins("http://localhost:59706"));
 
             app.UseMvc();
 

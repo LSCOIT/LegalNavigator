@@ -1,5 +1,7 @@
-﻿namespace Access2Justice.CognitiveServices
-{
+﻿// todo:@alaa remove?
+
+namespace Access2Justice.Shared
+{    
     using System;    
     using System.ComponentModel.DataAnnotations;
     using System.Text.RegularExpressions;
@@ -19,7 +21,7 @@
 
             string pattern = @"^\d{5}(\-\d{4})?$";
             Regex regex = new Regex(pattern);
-            if (!regex.IsMatch(Convert.ToString(value))) {
+            if (!regex.IsMatch(value.ToString())) {
                 return new ValidationResult("please enter valid zipcode.");
             }
             return ValidationResult.Success;

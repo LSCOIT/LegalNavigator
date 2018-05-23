@@ -1,7 +1,10 @@
-﻿namespace Access2Justice.CognitiveServices
-{
-    using System.ComponentModel.DataAnnotations;
+﻿// todo:@alaa remove file and related references?
 
+
+using System.ComponentModel.DataAnnotations;
+
+namespace Access2Justice.Shared
+{
     public class LuisInput
     {
         /// <summary>
