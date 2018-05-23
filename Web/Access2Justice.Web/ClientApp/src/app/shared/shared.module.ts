@@ -8,6 +8,7 @@ import { LowerNavComponent } from './lower-nav.component';
 import { UpperNavComponent } from './upper-nav.component';
 
 import { BsDropdownModule } from 'ngx-bootstrap';
+import { LocationComponent } from './location/location.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { BsDropdownModule } from 'ngx-bootstrap';
     ChatbotComponent,
     FooterComponent,
     LowerNavComponent,
-    UpperNavComponent
+    UpperNavComponent,
+    LocationComponent
   ],
   exports: [
     ChatbotComponent,
