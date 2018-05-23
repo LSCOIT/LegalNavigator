@@ -24,12 +24,12 @@ namespace Access2Justice.Api.Controllers
         [HttpGet("{query}")]
         public async Task<IActionResult> GetAsync(string query)
         {
-            var internalResources =  _luisBusinessLogic.GetInternalResources(query);
-            var webResources =  _webSearchBusinessLogic.GetWebResources(query);            
+            var internalResources = _luisBusinessLogic.GetInternalResources(query);
+            var webResources =  _webSearchBusinessLogic.GetWebResourcesAsync(query);           
 
             List<dynamic> resources =  new List<dynamic>() { await internalResources, await webResources };
-            return StatusCode(200, resources);
 
+            return StatusCode(200, resources);
         }
     }
 }

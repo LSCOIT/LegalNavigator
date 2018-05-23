@@ -36,7 +36,7 @@ namespace Access2Justice.Api
                 intentWithScore = ParseLuisIntent(luisResponse);
             }
             
-            string keywords = FilterLuisIntents(intentWithScore);
+            string keywords = ApplyThreshold(intentWithScore);
             List<dynamic> internalResources = new List<dynamic>();
             var topics = await _topicsResourcesBusinessLogic.GetTopicAsync(keywords);
 
@@ -49,7 +49,7 @@ namespace Access2Justice.Api
             if (!string.IsNullOrEmpty(topicIds))
             {
                 topicIds = topicIds.Remove(topicIds.Length - 1);
-                var resources = await _topicsResourcesBusinessLogic.GetResources(topicIds);
+                var resources = await _topicsResourcesBusinessLogic.GetResourcesAsync(topicIds);
                 internalResources.Add(JsonConvert.SerializeObject(resources));
             }
 
@@ -69,7 +69,7 @@ namespace Access2Justice.Api
             };
         }
 
-        public string FilterLuisIntents(IntentWithScore intentWithScore)
+        public string ApplyThreshold(IntentWithScore intentWithScore)
         {
 
             NumberFormatInfo provider = new NumberFormatInfo { NumberDecimalDigits = 2 };

@@ -14,10 +14,10 @@ namespace Access2Justice.Api.BusinessLogic
             _cosmosDbSettings = cosmosDbSettings;
         }
 
-        public async Task<dynamic> GetResources(string topicIds)
+        public async Task<dynamic> GetResourcesAsync(string topicIds)
         {
             // we need to use a query format to retrieve items because we are returning a dynamic object.
-            var query = string.Format("SELECT  c.name,c.id,c.type,c.resourceType,c.externalUrl,c.url,c.location,c.overview,c.IsRecommened FROM c  JOIN a IN c.topicTags WHERE a.id IN({0})", topicIds);
+            var query = string.Format("SELECT c.name,c.id,c.type,c.resourceType,c.externalUrl,c.url,c.location,c.overview,c.IsRecommened FROM c JOIN a IN c.topicTags WHERE a.id IN({0})", topicIds);
             var result = await _backendDatabaseService.QueryItemsAsync(_cosmosDbSettings.ResourceCollectionId, query);
 
             return result;
