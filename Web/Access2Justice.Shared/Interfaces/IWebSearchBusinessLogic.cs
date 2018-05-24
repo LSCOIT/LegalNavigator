@@ -7,6 +7,6 @@ namespace Access2Justice.Shared.Interfaces
 {
     public interface IWebSearchBusinessLogic
     {
-        Task<dynamic> GetWebResourcesAsync(string searchTerm);
+        Task<dynamic> SearchWebResourcesAsync(string searchTerm);
     }
 }

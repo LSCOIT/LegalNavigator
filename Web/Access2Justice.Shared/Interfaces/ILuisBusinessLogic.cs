@@ -5,8 +5,10 @@ namespace Access2Justice.Shared.Interfaces
 {
     public interface ILuisBusinessLogic
     {
-        string ApplyThreshold(IntentWithScore intentWithScore);
-        Task<dynamic> GetInternalResources(string query);
+        int ApplyThreshold(IntentWithScore intentWithScore);
+        Task<dynamic> GetInternalResourcesAsync(string intent);
         IntentWithScore ParseLuisIntent(string LuisResponse);
+        Task<dynamic> GetResourceBasedOnThresholdAsync(string query);
+        Task<dynamic> GetWebResourcesAsync(string query);
     }
 }
