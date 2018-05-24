@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UpperNavComponent } from './upper-nav.component';
+import { DownloadButtonComponent } from './download-button.component';
 
-describe('UpperNavComponent', () => {
-  let component: UpperNavComponent;
-  let fixture: ComponentFixture<UpperNavComponent>;
+describe('DownloadButtonComponent', () => {
+  let component: DownloadButtonComponent;
+  let fixture: ComponentFixture<DownloadButtonComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UpperNavComponent ]
+      declarations: [ DownloadButtonComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UpperNavComponent);
+    fixture = TestBed.createComponent(DownloadButtonComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

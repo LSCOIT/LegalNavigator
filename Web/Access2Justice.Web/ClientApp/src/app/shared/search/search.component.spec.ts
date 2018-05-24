@@ -1,20 +1,21 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+import { SearchComponent } from './search.component';
 
-import { LowerNavComponent } from './lower-nav.component';
-
-describe('LowerNavComponent', () => {
-  let component: LowerNavComponent;
-  let fixture: ComponentFixture<LowerNavComponent>;
+describe('SearchComponent', () => {
+  let component: SearchComponent;
+  let fixture: ComponentFixture<SearchComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LowerNavComponent ]
+      declarations: [SearchComponent],
+      imports: [FormsModule]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LowerNavComponent);
+    fixture = TestBed.createComponent(SearchComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

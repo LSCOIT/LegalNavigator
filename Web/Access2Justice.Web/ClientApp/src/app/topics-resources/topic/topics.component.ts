@@ -1,8 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { SlicePipe } from '@angular/common';
-import { TopicService } from './topic.service';
-import { Topic } from './topic';
-import { TOPICS } from './mock-topics';
+import { TopicService } from '../shared/topic.service';
+import { Topic } from '../shared/topic';
 
 @Component({
   selector: 'app-topics',
@@ -10,12 +8,13 @@ import { TOPICS } from './mock-topics';
   styleUrls: ['./topics.component.css']
 })
 export class TopicsComponent implements OnInit {
-  @Input() topicLength: number;
-  topics: Topic[];
+  topics: Topic;
 
   getTopics(): void {
     this.topicService.getTopics()
-        .subscribe(topics => this.topics = topics);
+      .subscribe(topics => 
+        this.topics = topics
+    );
   }
 
   constructor(private topicService: TopicService) { }

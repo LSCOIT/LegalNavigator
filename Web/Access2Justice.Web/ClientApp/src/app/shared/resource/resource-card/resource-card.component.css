@@ -1,0 +1,71 @@
+.resource-content {
+  border: 1px solid #000;
+  margin-bottom: 20px;
+}
+
+.resource-body {
+  margin: 20px;
+}
+
+.resource-body media {
+  padding-top: 15px;
+}
+
+.glyphicon {
+  padding: 0 5px;
+}
+
+.span-text {
+  font-size: 0.8em;
+}
+
+.org-card-heading {
+  display: inline-block;
+}
+
+.org-card-heading>.glyphicon {
+  margin-left: 15px;
+}
+
+.org-content {
+  margin-top: 20px;
+}
+
+.org-content div {
+  padding-left: 0;
+}
+
+.address-content {
+  display: inline-block;
+}
+
+.glyphicon-map-marker {
+  top: -24px;
+}
+
+.org-url {
+  margin-top: 10px;
+}
+
+.resource-video iframe {
+  width: 100%;
+  height: 250px;
+}
+
+.glyphicon-option-horizontal {
+  cursor: pointer;
+}
+
+@media only screen and (min-width : 768px) {
+  .org-url {
+    margin-top: 0;
+  }
+
+  .resource-video iframe {
+    width: 200px;
+    height: 150px;
+  }
+}
+
+@media only screen and (min-width : 992px) {
+}
