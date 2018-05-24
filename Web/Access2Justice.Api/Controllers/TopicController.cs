@@ -12,10 +12,10 @@ namespace Access2Justice.Api.Controllers
     [Produces("application/json")]
     public class TopicController : Controller
     {
-        IBackendDatabaseService backendDataBaseService;
-        public TopicController(IBackendDatabaseService backendDataBaseService)
+        private readonly ITopicBusinessLogic _topicBusinessLogic;
+        public TopicController(ITopicBusinessLogic topicBusinessLogic)
         {
-            this.backendDataBaseService = backendDataBaseService;
+            _topicBusinessLogic = topicBusinessLogic;
         }
 
         #region  GetTopics
@@ -23,7 +23,7 @@ namespace Access2Justice.Api.Controllers
         [Route("api/topics/get")]
         public async Task<IActionResult> Get()
         {
-            var response = await backendDataBaseService.ExecuteStoredProcedureAsyncWithoutParameters<dynamic>();
+            var response = await _topicBusinessLogic.GetTopicsAsync<dynamic>();
             return Ok(response);
         }
         #endregion
@@ -34,7 +34,7 @@ namespace Access2Justice.Api.Controllers
         public async Task<IActionResult> GetSubTopics(string id)
         {
 
-            var topics = await backendDataBaseService.GetItemsAsync<TopicModel>(a => a.Type == "Sub-Topic" && a.ParentTopicID == id);
+            var topics = await _topicBusinessLogic.GetSubTopicsAsync(id);
             return Ok(topics);
         }
         #endregion
@@ -44,9 +44,8 @@ namespace Access2Justice.Api.Controllers
         [Route("api/topics/getsubtopicdetails/{id}")]
         public async Task<IActionResult> GetSubTopicDetails(string id)
         {
-            string[] spParams = { "id", id };
-            var response = await backendDataBaseService.ExecuteStoredProcedureAsyncWithParameters<dynamic>("GetResourceById", spParams);         
-            return Ok(response);
+            var topics = await _topicBusinessLogic.GetSubTopicDetailAsync(id);
+            return Ok(topics);
         }
         #endregion
 

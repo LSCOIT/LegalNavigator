@@ -4,7 +4,7 @@
     using System.Net.Http;
     using System.Threading.Tasks;
 
-    public class HttpClientService : IHttpClientService
+    public class HttpClientService : IHttpClientService, IDisposable
     {
         /// <summary>
         /// The http client.
@@ -19,7 +19,7 @@
             httpClient = new HttpClient();
         }
 
-        public async Task<HttpResponseMessage> GetAsync(string apiUrl)
+        public async Task<HttpResponseMessage> GetAsync(Uri apiUrl)
         {
             HttpResponseMessage response = null;
             try
@@ -29,11 +29,12 @@
             catch (Exception ex)
             {
                 //TO DO : Need to implement exception logging..
+                Console.WriteLine(ex);
             }
             return response;
         }
 
-        public async Task<HttpResponseMessage> PostAsync(string apiUrl, HttpContent httpContent)
+        public async Task<HttpResponseMessage> PostAsync(Uri apiUrl, HttpContent httpContent)
         {
             HttpResponseMessage response = null;
             try
@@ -43,8 +44,41 @@
             catch (Exception ex)
             {
                 //TO DO : Need to implement exception logging..
+                Console.WriteLine(ex);
             }
             return response;
+        }
+
+        public async Task<HttpResponseMessage> GetDataAsync(Uri apiUrl,string subscriptionKey)
+        {
+            HttpResponseMessage response = null;
+            try
+            {
+                httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", subscriptionKey);
+                response = await httpClient.GetAsync(apiUrl);
+            }
+            catch (Exception ex)
+            {
+                //TO DO : Need to implement exception logging..
+                Console.WriteLine(ex);
+            }
+            return response;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // dispose managed resources
+                httpClient.Dispose();
+            }
+            // free native resources
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

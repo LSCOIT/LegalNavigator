@@ -1,6 +1,9 @@
-﻿using Access2Justice.CosmosDb;
+﻿using Access2Justice.Api.BusinessLogic;
+using Access2Justice.CosmosDb;
 using Access2Justice.CosmosDb.Interfaces;
+using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
+using Access2Justice.Shared.Luis;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Azure.Documents;
@@ -8,6 +11,7 @@ using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
+using Access2Justice.Shared.Bing;
 
 namespace Access2Justice.Api
 {
@@ -19,12 +23,23 @@ namespace Access2Justice.Api
         }
 
         public IConfiguration Configuration { get; }
-        public object CosmosDbConfiguration { get; private set; }
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
 
+            ILuisSettings luisSettings = new LuisSettings(Configuration.GetSection("Luis"));
+            services.AddSingleton(luisSettings);
+
+            IBingSettings bingSettings = new BingSettings(Configuration.GetSection("Bing"));
+            services.AddSingleton(bingSettings);
+
+            services.AddSingleton<ILuisProxy, LuisProxy>();
+            services.AddSingleton<ILuisBusinessLogic, LuisBusinessLogic>();
+            services.AddSingleton<ITopicBusinessLogic, TopicBusinessLogic>();
+            services.AddSingleton<ITopicsResourcesBusinessLogic, TopicsResourcesBusinessLogic>();
+            services.AddSingleton<IWebSearchBusinessLogic, WebSearchBusinessLogic>();
+            services.AddTransient<IHttpClientService, HttpClientService>();
             ConfigureCosmosDb(services);
 
             services.AddSwaggerGen(c =>
