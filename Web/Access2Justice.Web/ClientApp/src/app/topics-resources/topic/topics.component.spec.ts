@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { APP_BASE_HREF } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
-
+import { Observable } from 'rxjs';
 import { TopicsComponent } from './topics.component';
 import { TopicService } from '../shared/topic.service';
 import { SubtopicsComponent } from '../subtopic/subtopics.component';
@@ -12,6 +12,16 @@ import { ServiceOrgSidebarComponent } from '../../shared/sidebars/service-org-si
 describe('TopicsComponent', () => {
   let component: TopicsComponent;
   let fixture: ComponentFixture<TopicsComponent>;
+  let api: TopicService;
+  let router: RouterModule;
+
+  const mockTopicService = {
+    getTopics: () => { }
+  };
+
+  const mockRouter = {
+    navigate: () => { }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -29,7 +39,8 @@ describe('TopicsComponent', () => {
       ],
       providers: [
         { provide: APP_BASE_HREF, useValue: '/' },
-        TopicService
+        { provide: TopicService, useValue: mockTopicService },
+        { provide: RouterModule, useValue: mockRouter }
       ]
     })
     .compileComponents();
@@ -38,10 +49,15 @@ describe('TopicsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TopicsComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    api = fixture.debugElement.injector.get(TopicService);
+    router = fixture.debugElement.injector.get(RouterModule);
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  describe('initial display', () => {
+    it('makes a call to api.getTopics', () => {
+      spyOn(api, 'getTopics').and.returnValue(Observable.of());
+      fixture.detectChanges();
+      expect(api.getTopics).toHaveBeenCalled();
+    });
   });
 });
