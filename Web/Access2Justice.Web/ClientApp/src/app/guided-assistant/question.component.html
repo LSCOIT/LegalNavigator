@@ -1,21 +1,101 @@
 <div class="row">
-  <div *ngIf="question" class="col-md-6 col-md-offset-4">
-    <h4>{{question.title}}</h4>
+  <div class="mb-2">
+    <progressbar max="100" [value]="dynamic">
+      <span class="text-nowrap"></span>
+    </progressbar>
+  </div>
+  <span class="part">Part 1: Understanding your needs</span>
+  <span class="part">Part 2: Building your Action plan</span>
+  <span class="part">Part 3: View Action plan</span>
+  <div class="row link-right">
+    <a class="part" (click)="save()">Save</a>
+    <a class="part" (click)="exit()">Exit</a>
+  </div>
+  <div class="row row-top" *ngIf="!showRecommendations">
+    <div *ngIf="question" class="col-md-6 col-md-offset-4">
+      <h4>{{question.title}}</h4>
       <form #gaForm="ngForm" (ngSubmit)="onSubmit(gaForm)">
-        <div *ngIf="question.questionType.toLowerCase()==='list' || question.questionType.toLowerCase()==='bool' " class="radio">
+        <div *ngIf="question.questionType.toLowerCase()==='singleselection' " class="radio">
           <div *ngFor="let c of question.choices">
             <input type="radio" name="listOptions" value={{c.choiceId}} [(ngModel)]="listOptions">
             {{c.choiceText}}
           </div>
         </div>
+        <div *ngIf="question.questionType.toLowerCase()==='multipleselection' " class="radio">
+          <div *ngFor="let c of question.choices">
+            <div class="panel-heading panel-heading-space">
+              <input #chk type="checkbox" name="checkOptions"
+                     id="{{c.choiceId}}"
+                     [ngModel]="checkOptions"
+                     (ngModelChange)="validateCheckbox(chk)">
+              {{c.choiceText}}
+
+            </div>
+          </div>
+        </div>
+        <div *ngIf="question.questionType.toLowerCase()==='yesnotype' ">
+          <span *ngFor="let c of question.choices">
+            <!--<button name="btnOptions" class="btn-primary" value={{c.choiceId}} [(ngModel)]="btnOptions">{{c.choiceText}}</button>-->
+            <button #btn name="btnOptions" [ngClass]="{ 'btn-primary': isClicked, 'btn': !isClicked  }" class="" value={{c.choiceId}} id="{{c.choiceId}}"
+                    (click)="validateCheckbox(btn)">
+              {{c.choiceText}}
+            </button>
+          </span>
+        </div>
+        <div *ngIf="question.questionType.toLowerCase()==='plan'" class="container">
+
+        </div>
+
+        <div class="container" *ngIf="question.questionType.toLowerCase()==='plan'">
+          <h2>Showing information for Holonulu</h2>
+          <div class="panel panel-default">
+            <div class="panel-heading panel-heading-bottom">
+              <span class="glyphicon glyphicon-ok "></span>
+              <label class="part">Added to your plan</label>
+            </div>
+            <div class="panel-body">
+              <div *ngFor="let c of question.choices; let rowindex = index">
+                <div *ngIf="rowindex > 0">
+                  <hr />
+                  <label hidden>{{rowindex + 1}}</label>
+                </div>
+                <div class="glyphicon glyphicon-home"></div> <label class="part">{{c.choiceText}}</label>
+                <div class="part">
+                  <div class="glyphicon glyphicon-earphone"><label class="part">808-838-5151</label></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div *ngIf="question.questionType.toLowerCase()==='textbox'">
-          <input type="text" name="inputText" value="text" [(ngModel)]="inputText" />
+          <input #txtbox type="text" name="inputText" value="text" [(ngModel)]="inputText" />
         </div>
         <div class="row">
           <div class="col-md-2 col-md-offset-2">
-            <button class="btn-primary">Continue</button>
+            <button class="btn btn-primary">Continue</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2 col-md-offset-2">
+            <a class="part" (click)="back()">Back</a>
           </div>
         </div>
       </form>
     </div>
+  </div>
+  <div class="row-top col-md-6 col-md-offset-2" *ngIf="showRecommendations">
+    <h3>Thanks for answering the questions which created an action plan to help with your eviction issue.  Let’s review a plan with steps for both eviction and child custody.</h3>
+
+    <div class="row">
+      <div class="col-md-2 col-md-offset-2">
+        <button class="btn btn-primary">View Action Plan</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2 col-md-offset-2">
+        <a class="part" (click)="back()">Back</a>
+      </div>
+    </div>
+  </div>
 </div>

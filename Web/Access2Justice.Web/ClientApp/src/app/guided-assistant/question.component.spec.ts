@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { QuestionComponent } from './question.component';
+import { QuestionService } from './question.service';
 
 describe('QuestionComponent', () => {
   let component: QuestionComponent;
@@ -8,9 +10,14 @@ describe('QuestionComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ QuestionComponent ]
+      declarations: [QuestionComponent],
+      imports: [
+        FormsModule,
+        HttpClientModule
+      ],
+      providers: [QuestionService]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -22,4 +29,15 @@ describe('QuestionComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  //it('should', async(() => {
+  //  spyOn(component, 'onSubmit');
+
+  //  let button = fixture.debugElement.nativeElement.querySelector('button');
+  //  button.click();
+
+  //  fixture.whenStable().then(() => {
+  //    expect(component.onSubmit).toHaveBeenCalled();
+  //  })
+  //}));
 });
