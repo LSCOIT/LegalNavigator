@@ -8,6 +8,7 @@ import { LowerNavComponent } from './lower-nav.component';
 import { UpperNavComponent } from './upper-nav.component';
 
 import { BsDropdownModule } from 'ngx-bootstrap';
+import { SearchCuratedExperienceComponent } from './search-curated-experience/search-curated-experience.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { BsDropdownModule } from 'ngx-bootstrap';
     ChatbotComponent,
     FooterComponent,
     LowerNavComponent,
-    UpperNavComponent
+    UpperNavComponent,
+    SearchCuratedExperienceComponent
   ],
   exports: [
     ChatbotComponent,

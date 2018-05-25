@@ -12,6 +12,7 @@ import { PrivacyPromiseComponent } from './privacy-promise/privacy-promise.compo
 import { TopicsResourcesComponent } from './topics-resources/topics-resources.component';
 import { QuestionComponent } from './guided-assistant/question.component';
 import { TopicComponent } from './topics-resources/topic.component';
+import { SearchCuratedExperienceComponent } from './shared/search-curated-experience/search-curated-experience.component';
 
 const appRoutes: Routes = [
   { path: 'about', component: AboutComponent },
@@ -24,6 +25,7 @@ const appRoutes: Routes = [
   { path: 'privacy', component: PrivacyPromiseComponent },
   { path: 'topics', component: TopicsResourcesComponent },
   { path: 'topics/:title', component: TopicComponent },
+  { path: 'searchcuratedexperience', component: SearchCuratedExperienceComponent },
   { path: '', component: HomeComponent }
 ];
 
