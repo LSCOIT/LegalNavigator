@@ -53,8 +53,10 @@ export class QuestionComponent implements OnInit {
 
     this.dynamic = this.value + 20;
     this.value = this.value + 20;
-    this.questionService.getNextQuestion(answer)
-      .subscribe(response => this.question = { ...response });
+    if (answer != null) {
+      this.questionService.getNextQuestion(answer)
+        .subscribe(response => this.question = { ...response });
+    }
   }
 
   validateCheckbox(element: HTMLInputElement): void {

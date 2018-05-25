@@ -9,7 +9,7 @@ export class QuestionService {
 
   constructor(private http: HttpClient) { }
 
-  private questionUrl =
+  questionUrl =
     'http://access2justiceapi.azurewebsites.net/api/curatedexperience?surveyId=0b7dfe9b-cec9-4490-b768-c40916d52382';
 
   getQuestion(): Observable<Question> {

@@ -9,6 +9,8 @@ import { GuidedAssistantComponent } from './guided-assistant.component';
 import { QuestionComponent } from './question.component';
 
 import { TopicService } from '../topics-resources/topic.service';
+import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
+import { TopicsComponent } from '../topics-resources/topics.component';
 
 describe('GuidedAssistantComponent', () => {
   let component: GuidedAssistantComponent;
@@ -17,7 +19,7 @@ describe('GuidedAssistantComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        TopicComponent,
+        TopicsComponent,
         GuidedAssistantComponent,
         QuestionComponent
       ],
@@ -26,7 +28,8 @@ describe('GuidedAssistantComponent', () => {
           { path: 'guidedassistant/123', component: QuestionComponent }
         ]),
         FormsModule,
-        HttpClientModule
+        HttpClientModule,
+        ProgressbarModule
       ],
       providers: [
         { provide: APP_BASE_HREF, useValue: '/' },
