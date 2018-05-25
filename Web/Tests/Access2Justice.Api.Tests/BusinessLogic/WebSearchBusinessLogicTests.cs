@@ -24,8 +24,8 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             _httpClientService = Substitute.For<IHttpClientService>();
             _webSearchBusinessLogic = new WebSearchBusinessLogic(_httpClientService, _bingSettings);
 
-            _bingSettings.BingSearchUrl.Returns(new Uri("https://api.cognitive.microsoft.com/bingcustomsearch/v7.0/search"));
-            _bingSettings.SubscriptionKey.Returns("a444d4cb51b848e9a72408eebcac97b7");
+            _bingSettings.BingSearchUrl.Returns(new Uri("https://www.bing.com"));
+            _bingSettings.SubscriptionKey.Returns("456sdf56sd4f56d44546565");
             _bingSettings.CustomConfigId.Returns("2425415097");
         }
 
