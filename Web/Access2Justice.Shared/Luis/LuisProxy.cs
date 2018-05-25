@@ -7,8 +7,8 @@ namespace Access2Justice.Shared.Luis
 {
     public class LuisProxy : ILuisProxy
     {
-        private ILuisSettings _luisSettings;
-        private IHttpClientService _httpClientService;
+        private readonly ILuisSettings _luisSettings;
+        private readonly IHttpClientService _httpClientService;
 
         public LuisProxy(IHttpClientService httpClientService, ILuisSettings luisSettings)
         {

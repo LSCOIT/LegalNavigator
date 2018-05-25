@@ -30,16 +30,7 @@ namespace Access2Justice.Api
         public async Task<dynamic> GetResourceBasedOnThresholdAsync(string query)
         {
             var luisResponse = await _luisProxy.GetIntents(query);
-
-            var intentWithScore = new IntentWithScore();            
-            if (luisResponse == null)
-            {
-                return "No intents found";
-            }
-            else
-            {
-                intentWithScore = ParseLuisIntent(luisResponse);
-            }
+            var intentWithScore = ParseLuisIntent(luisResponse);       
 
             int threshold = ApplyThreshold(intentWithScore);
 
@@ -75,11 +66,11 @@ namespace Access2Justice.Api
             decimal upperThershold = Convert.ToDecimal(_luisSettings.UpperThreshold, provider);
             decimal lowerThershold = Convert.ToDecimal(_luisSettings.LowerThreshold, provider);
 
-            if (intentWithScore.Score >= upperThershold && intentWithScore.TopScoringIntent.ToUpperInvariant() != "NONE")
+            if (intentWithScore.Score >= upperThershold /*&& intentWithScore.TopScoringIntent.ToUpperInvariant() != "NONE"*/)
             {
                return (int)LuisAccuracyThreshold.High;
             }
-            else if (intentWithScore.Score <= lowerThershold && intentWithScore.TopScoringIntent.ToUpperInvariant() != "NONE")
+            else if (intentWithScore.Score <= lowerThershold /*&& intentWithScore.TopScoringIntent.ToUpperInvariant() != "NONE"*/)
             {
                 return (int)LuisAccuracyThreshold.Low;
             }
@@ -92,7 +83,7 @@ namespace Access2Justice.Api
 
         public async Task<dynamic> GetInternalResourcesAsync(string keywords)
         {
-            string topic, resource = string.Empty;
+            string topic = string.Empty, resource = string.Empty;
             var topics = await _topicsResourcesBusinessLogic.GetTopicAsync(keywords);
            
             string topicIds = string.Empty;
@@ -100,13 +91,11 @@ namespace Access2Justice.Api
             {
                 topicIds += "  ARRAY_CONTAINS(c.topicTags, { 'id' : '" + item.id + "'}) OR";
             }
-
-            topic = JsonFormatter.SanitizeJson(JsonConvert.SerializeObject(topics), "_");
-            
             if (!string.IsNullOrEmpty(topicIds))
             {
                 topicIds = topicIds.Remove(topicIds.Length - 2);
                 var resources = await _topicsResourcesBusinessLogic.GetResourcesAsync(topicIds);
+                topic = JsonFormatter.SanitizeJson(JsonConvert.SerializeObject(topics), "_");
                 resource = JsonFormatter.SanitizeJson(JsonConvert.SerializeObject(resources), "_");
             }
 
@@ -121,7 +110,7 @@ namespace Access2Justice.Api
         {
             var response = await _webSearchBusinessLogic.SearchWebResourcesAsync(query);
             List<string> props = new List<string> { "webPages", "value" };
-            string filteredJson = JsonFormatter.FilterJson(response, props);
+            string filteredJson = string.IsNullOrEmpty(response) ? "" : JsonFormatter.FilterJson(response, props);
             
             JObject webResources = new JObject
             {
