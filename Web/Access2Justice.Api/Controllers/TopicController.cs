@@ -49,7 +49,6 @@ namespace Access2Justice.Api.Controllers
         }
         #endregion
 
-        #region  GetResources
-        #endregion
+        
     }
 }
