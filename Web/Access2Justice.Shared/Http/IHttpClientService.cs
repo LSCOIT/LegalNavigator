@@ -1,5 +1,6 @@
 ﻿namespace Access2Justice.Shared
 {
+    using System;
     using System.Net.Http;
     using System.Threading.Tasks;
 
@@ -17,7 +18,7 @@
         /// <returns>
         /// The <see cref="Task"/>.
         /// </returns>
-        Task<HttpResponseMessage> PostAsync(string apiUrl, HttpContent httpContent);
+        Task<HttpResponseMessage> PostAsync(Uri apiUrl, HttpContent httpContent);
 
         /// <summary>
         /// The get async.
@@ -28,7 +29,9 @@
         /// <returns>
         /// The <see cref="Task"/>.
         /// </returns>
-        Task<HttpResponseMessage> GetAsync(string apiUrl);
+        Task<HttpResponseMessage> GetAsync(Uri apiUrl);
+
+        Task<HttpResponseMessage> GetDataAsync(Uri apiUrl, string subscriptionKey);
 
     }
 }

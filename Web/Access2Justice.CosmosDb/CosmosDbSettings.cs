@@ -13,7 +13,8 @@ namespace Access2Justice.CosmosDb
                 AuthKey = configuration.GetSection("AuthKey").Value;
                 Endpoint = new Uri(configuration.GetSection("Endpoint").Value);
                 DatabaseId = configuration.GetSection("DatabaseId").Value;
-                CollectionId = configuration.GetSection("CollectionId").Value;
+                TopicCollectionId = configuration.GetSection("TopicCollectionId").Value;
+                ResourceCollectionId = configuration.GetSection("ResourceCollectionId").Value;
             }
             catch
             {
@@ -23,6 +24,7 @@ namespace Access2Justice.CosmosDb
         public string AuthKey { get; private set; }
         public Uri Endpoint { get; private set; }
         public string DatabaseId { get; private set; }
-        public string CollectionId { get; private set; }
+        public string TopicCollectionId { get; private set; }
+        public string ResourceCollectionId { get; private set; }
     }
 }

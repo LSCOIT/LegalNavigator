@@ -1,9 +1,13 @@
+//need to update this and topic service spec file once database schema is completed
 export interface Topic {
     id: string;
-    type: string;
+    name: string;
     icon: string;
-    keywords: string;
-    description: string;
-    lang: string;
+}
+
+export interface Subtopic {  
+    id: string,
+    name: string,
     subtopics: Array<object>;
 }
+

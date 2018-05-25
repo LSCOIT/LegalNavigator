@@ -1,5 +1,7 @@
-﻿using Access2Justice.CosmosDb;
+﻿using Access2Justice.Api.BusinessLogic;
+using Access2Justice.CosmosDb;
 using Access2Justice.CosmosDb.Interfaces;
+using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,6 +10,7 @@ using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
+
 
 namespace Access2Justice.Api
 {
@@ -19,14 +22,13 @@ namespace Access2Justice.Api
         }
 
         public IConfiguration Configuration { get; }
-        public object CosmosDbConfiguration { get; private set; }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
-
+            services.AddMvc();         
+            services.AddSingleton<ITopicBusinessLogic, TopicBusinessLogic>();        
+            services.AddTransient<IHttpClientService, HttpClientService>();
             ConfigureCosmosDb(services);
-
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Access2Justice API", Version = "v1" });
