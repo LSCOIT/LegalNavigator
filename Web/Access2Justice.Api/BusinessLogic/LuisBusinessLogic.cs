@@ -2,13 +2,11 @@
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Luis;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Access2Justice.Shared.Utilities;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
 
 namespace Access2Justice.Api
 {
@@ -30,14 +28,14 @@ namespace Access2Justice.Api
         public async Task<dynamic> GetResourceBasedOnThresholdAsync(string query)
         {
             var luisResponse = await _luisProxy.GetIntents(query);
-            var intentWithScore = ParseLuisIntent(luisResponse);       
+            var intentWithScore = ParseLuisIntent(luisResponse);
 
             int threshold = ApplyThreshold(intentWithScore);
 
             switch (threshold)
             {
                 case (int)LuisAccuracyThreshold.High:
-                    return await GetInternalResourcesAsync(intentWithScore.TopScoringIntent);                    
+                    return await GetInternalResourcesAsync(intentWithScore.TopScoringIntent);
                 case (int)LuisAccuracyThreshold.Medium:
                     JObject luisObject = new JObject { { "luisResponse", luisResponse } };
                     return luisObject.ToString();
@@ -61,16 +59,15 @@ namespace Access2Justice.Api
 
         public int ApplyThreshold(IntentWithScore intentWithScore)
         {
-
             NumberFormatInfo provider = new NumberFormatInfo { NumberDecimalDigits = 2 };
             decimal upperThershold = Convert.ToDecimal(_luisSettings.UpperThreshold, provider);
             decimal lowerThershold = Convert.ToDecimal(_luisSettings.LowerThreshold, provider);
 
-            if (intentWithScore.Score >= upperThershold /*&& intentWithScore.TopScoringIntent.ToUpperInvariant() != "NONE"*/)
+            if (intentWithScore.Score >= upperThershold)
             {
-               return (int)LuisAccuracyThreshold.High;
+                return (int)LuisAccuracyThreshold.High;
             }
-            else if (intentWithScore.Score <= lowerThershold /*&& intentWithScore.TopScoringIntent.ToUpperInvariant() != "NONE"*/)
+            else if (intentWithScore.Score <= lowerThershold)
             {
                 return (int)LuisAccuracyThreshold.Low;
             }
@@ -78,43 +75,45 @@ namespace Access2Justice.Api
             {
                 return (int)LuisAccuracyThreshold.Medium;
             }
-            
         }
 
         public async Task<dynamic> GetInternalResourcesAsync(string keywords)
         {
             string topic = string.Empty, resource = string.Empty;
             var topics = await _topicsResourcesBusinessLogic.GetTopicAsync(keywords);
-           
+
             string topicIds = string.Empty;
             foreach (var item in topics)
             {
                 topicIds += "  ARRAY_CONTAINS(c.topicTags, { 'id' : '" + item.id + "'}) OR";
             }
+
+            dynamic serializedTopics = null;
+            dynamic serializedResources = null;
             if (!string.IsNullOrEmpty(topicIds))
             {
                 topicIds = topicIds.Remove(topicIds.Length - 2);
                 var resources = await _topicsResourcesBusinessLogic.GetResourcesAsync(topicIds);
-                topic = JsonFormatter.SanitizeJson(JsonConvert.SerializeObject(topics), "_");
-                resource = JsonFormatter.SanitizeJson(JsonConvert.SerializeObject(resources), "_");
+
+                serializedTopics = JsonConvert.SerializeObject(topics);
+                serializedResources = JsonConvert.SerializeObject(resources);
             }
 
             JObject internalResources = new JObject {
-                { "topics", topic },
-                { "resources", resource }
+                { "topics", JsonConvert.DeserializeObject(serializedTopics) },
+                { "resources", JsonConvert.DeserializeObject(serializedResources) }
             };
+
             return internalResources.ToString();
         }
 
         public async Task<dynamic> GetWebResourcesAsync(string query)
         {
             var response = await _webSearchBusinessLogic.SearchWebResourcesAsync(query);
-            List<string> props = new List<string> { "webPages", "value" };
-            string filteredJson = string.IsNullOrEmpty(response) ? "" : JsonFormatter.FilterJson(response, props);
-            
+
             JObject webResources = new JObject
             {
-                { "webResources" , filteredJson }
+                { "webResources" , JsonConvert.DeserializeObject(response) }
             };
             return webResources.ToString();
         }
