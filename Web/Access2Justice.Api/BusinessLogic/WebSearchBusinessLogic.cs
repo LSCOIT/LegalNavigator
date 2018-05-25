@@ -28,7 +28,7 @@ namespace Access2Justice.Api.BusinessLogic
             var responseContent = await httpResponseMessage.Content.ReadAsStringAsync();
             //returns webPage.name, url, displayUrl,snipper,dateLastCrawled etc.           
 
-            return responseContent;         
+            return responseContent;
         }
     }
 }

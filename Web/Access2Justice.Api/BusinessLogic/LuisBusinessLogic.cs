@@ -1,5 +1,6 @@
 ﻿using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
+using Access2Justice.Shared.Luis;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -44,9 +45,9 @@ namespace Access2Justice.Api
 
             switch (threshold)
             {
-                case (int)Threshold.Upper:
+                case (int)LuisAccuracyThreshold.High:
                     return await GetInternalResourcesAsync(intentWithScore.TopScoringIntent);                    
-                case (int)Threshold.Medium:
+                case (int)LuisAccuracyThreshold.Medium:
                     JObject luisObject = new JObject { { "luisResponse", luisResponse } };
                     return luisObject.ToString();
                 default:
@@ -76,15 +77,15 @@ namespace Access2Justice.Api
 
             if (intentWithScore.Score >= upperThershold && intentWithScore.TopScoringIntent.ToUpperInvariant() != "NONE")
             {
-               return (int)Threshold.Upper;
+               return (int)LuisAccuracyThreshold.High;
             }
             else if (intentWithScore.Score <= lowerThershold && intentWithScore.TopScoringIntent.ToUpperInvariant() != "NONE")
             {
-                return (int)Threshold.Lower;
+                return (int)LuisAccuracyThreshold.Low;
             }
             else
             {
-                return (int)Threshold.Medium;
+                return (int)LuisAccuracyThreshold.Medium;
             }
             
         }
@@ -128,13 +129,5 @@ namespace Access2Justice.Api
             };
             return webResources.ToString();
         }
-
-        public enum Threshold : int
-        {
-            Lower = 0,
-            Medium = 1,
-            Upper = 2
-        }
-
     }
 }
