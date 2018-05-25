@@ -38,7 +38,7 @@ namespace Access2Justice.Api.BusinessLogic
         #endregion
 
         #region GetSubtopicDetailsAsync
-        public async Task<dynamic> GetSubTopicDetailAsync(string id)
+        public async Task<dynamic> GetSubTopicDetailAsync(string id) 
         {
             var query = "SELECT * FROM c WHERE ARRAY_CONTAINS(c.topicTags, { 'id' : '" + id + "'})";
             var result = await _backendDatabaseService.QueryItemsAsync(_cosmosDbSettings.ResourceCollectionId, query);
