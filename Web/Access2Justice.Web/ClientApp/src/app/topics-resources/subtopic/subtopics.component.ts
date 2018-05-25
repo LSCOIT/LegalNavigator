@@ -23,7 +23,7 @@ export class SubtopicsComponent implements OnInit {
       .subscribe(topics => {
         for (let i = 0; i < topics.length; i++)
         {
-          if (topics[i]["title"].toLowerCase() === this.activeTopic)
+          if (topics[i]["name"].toLowerCase() === this.activeTopic)
           {
             this.activeTopicId = topics[i]["id"];
             this.topicService.getSubtopics(this.activeTopicId).subscribe(subtopics => this.subtopics = subtopics);
