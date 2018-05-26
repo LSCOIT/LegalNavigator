@@ -40,8 +40,9 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         {
             // arrange 
             // todo:rakesh - 
-            // 1. please move these to a constant and make it available at the class level. 
-            // 2. Also please add line breaks to make read better and fit better on screen 
+            // 1. please turn this into a constant and make it available at the class level. 
+            // 2. Also, please add line breaks to make read better and fit better on screen.
+            // (please make the same changes to all similar cases across the board..)
             string LuisResponse = "{\r\n  \"query\": \"child abuse\",\r\n  \"topScoringIntent\": {\r\n    \"intent\": \"ChildAbuse\",\r\n    \"score\": 0.239329442\r\n  },\r\n  \"intents\": [\r\n    {\r\n      \"intent\": \"ChildAbuse\",\r\n      \"score\": 0.239329442\r\n    },\r\n    {\r\n      \"intent\": \"Above18Age\",\r\n      \"score\": 0.09217278\r\n    },\r\n    {\r\n      \"intent\": \"Age\",\r\n      \"score\": 0.06267241\r\n    },\r\n    {\r\n      \"intent\": \"Greetings\",\r\n      \"score\": 0.00997853652\r\n    },\r\n    {\r\n      \"intent\": \"None\",\r\n      \"score\": 0.00248154555\r\n    }\r\n  ],\r\n  \"entities\": []\r\n}";
 
             // act
@@ -102,10 +103,10 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             int threshold = luisBusinessLogic.ApplyThreshold(intentWithScore);
 
             //assert
-            // todo:rakesh - please don't use magic number (number that 
+            // todo:rakesh - please don't use magic numbers (numbers that 
             // hide the meaning and make it difficult for other developer to understand what they mean). You could
-            // use something like this: const int expectedThreshold = 1; You should also move any constant to the top of 
-            // the class if it could be reused in other parts of the code.
+            // use something like this: int expectedThreshold = 1; You should also declare it as constant and 
+            // move it to the class level if it could be reused in other parts of the class.
             Assert.Equal(1, threshold);
         }
 
@@ -139,8 +140,9 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         }
 
         // todo:rakesh - this unit test doesn't test the logic of "SearchWebResourcesAsync(..)" method. Please
-        // delete it. You actually don't need to write a unit test for the methods that don't have any custom business logic,
-        // (methods that just call other methods/db/services don't have to be unit tested. We will implement Integration testing to cover these later on.
+        // delete it. You actually don't need to write a unit test for the methods that don't have a business logic,
+        // (methods that just call other methods/db/services and don't do anything else don't have to be unit tested,
+        // We will implement Integration testing to cover these later on.
         [Fact]
         public void GetWebResourcesAsyncWithProperData()
         {
