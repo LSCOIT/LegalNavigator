@@ -27,7 +27,7 @@ namespace Access2Justice.Api.BusinessLogic
         public async Task<dynamic> GetTopicAsync(string keyword)
         {
             // we need to use a query format to retrieve items because we are returning a dynamic object.
-            var query = string.Format(CultureInfo.InvariantCulture,"SELECT * FROM c WHERE CONTAINS(c.keywords, '{0}')", keyword.ToLower());
+            var query = string.Format(CultureInfo.InvariantCulture,"SELECT * FROM c WHERE CONTAINS(c.keywords, '{0}')", keyword.ToUpperInvariant());
             var result = await _backendDatabaseService.QueryItemsAsync(_cosmosDbSettings.TopicCollectionId, query);
 
             return result;

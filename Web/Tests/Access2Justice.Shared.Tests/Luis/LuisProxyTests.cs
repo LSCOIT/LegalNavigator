@@ -20,9 +20,9 @@ namespace Access2Justice.Shared.Tests.Luis
             luisProxy = new LuisProxy(_httpClientService, _luisSettings);
 
             _luisSettings.Endpoint.Returns(new Uri("https://www.luis.ai/home"));
-            _luisSettings.TopIntentsCount.Returns("3");
-            _luisSettings.UpperThreshold.Returns("0.9");
-            _luisSettings.LowerThreshold.Returns("0.6");
+            _luisSettings.TopIntentsCount.Returns(3);
+            _luisSettings.UpperThreshold.Returns(0.9M);
+            _luisSettings.LowerThreshold.Returns(0.6M);
         }
 
         [Fact]

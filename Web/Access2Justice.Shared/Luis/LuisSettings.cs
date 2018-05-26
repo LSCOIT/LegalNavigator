@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
+using System.Globalization;
 
 namespace Access2Justice.Shared.Luis
 {
@@ -10,9 +11,9 @@ namespace Access2Justice.Shared.Luis
             try
             {
                 Endpoint = new Uri(configuration.GetSection("Endpoint").Value);
-                TopIntentsCount = configuration.GetSection("TopIntentsCount").Value;
-                UpperThreshold = configuration.GetSection("UpperThreshold").Value;
-                LowerThreshold = configuration.GetSection("LowerThreshold").Value;
+                TopIntentsCount = int.Parse(configuration.GetSection("TopIntentsCount").Value, CultureInfo.InvariantCulture);
+                UpperThreshold = decimal.Parse(configuration.GetSection("UpperThreshold").Value, CultureInfo.InvariantCulture);
+                LowerThreshold = decimal.Parse(configuration.GetSection("LowerThreshold").Value, CultureInfo.InvariantCulture);
             }
             catch
             {
@@ -21,8 +22,8 @@ namespace Access2Justice.Shared.Luis
         }
         
         public Uri Endpoint { get; set; }
-        public string TopIntentsCount { get; set; }
-        public string UpperThreshold { get; set; }
-        public string LowerThreshold { get; set; }
+        public int TopIntentsCount { get; set; }
+        public decimal UpperThreshold { get; set; }
+        public decimal LowerThreshold { get; set; }
     }
 }

@@ -23,11 +23,10 @@ namespace Access2Justice.Api.BusinessLogic
         public async Task<dynamic> SearchWebResourcesAsync(string searchTerm)
         {            
             var uri = string.Format(CultureInfo.InvariantCulture, _bingSettings.BingSearchUrl.OriginalString, searchTerm,_bingSettings.CustomConfigId);
-            // Pull the data from Cognitive CustomSearch AI
+            
             var httpResponseMessage = await _httpClientService.GetDataAsync(new Uri(uri), _bingSettings.SubscriptionKey);
             var responseContent = await httpResponseMessage.Content.ReadAsStringAsync();
-            //returns webPage.name, url, displayUrl,snipper,dateLastCrawled etc.           
-
+            
             return responseContent;
         }
     }

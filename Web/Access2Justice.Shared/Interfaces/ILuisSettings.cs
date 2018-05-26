@@ -5,8 +5,8 @@ namespace Access2Justice.Shared
     public interface ILuisSettings
     {
         Uri Endpoint { get;}
-        string TopIntentsCount { get;}
-        string UpperThreshold { get; }
-        string LowerThreshold { get; }
+        int TopIntentsCount { get;}
+        decimal UpperThreshold { get; }
+        decimal LowerThreshold { get; }
     }
 }

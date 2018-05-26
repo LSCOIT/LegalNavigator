@@ -47,27 +47,23 @@ namespace Access2Justice.Api
         public IntentWithScore ParseLuisIntent(string LuisResponse)
         {
             LuisIntent luisIntent = JsonConvert.DeserializeObject<LuisIntent>(LuisResponse);
-            NumberFormatInfo provider = new NumberFormatInfo { PositiveSign = "pos " };
+
             return new IntentWithScore
             {
                 IsSuccessful = true,
                 TopScoringIntent = luisIntent?.TopScoringIntent?.Intent,
                 Score = luisIntent?.TopScoringIntent?.Score ?? 0,
-                TopNIntents = luisIntent?.Intents.Skip(1).Take(Convert.ToInt16(_luisSettings.TopIntentsCount, provider)).Select(x => x.Intent).ToList()
+                TopNIntents = luisIntent?.Intents.Skip(1).Take(_luisSettings.TopIntentsCount).Select(x => x.Intent).ToList()
             };
         }
 
         public int ApplyThreshold(IntentWithScore intentWithScore)
         {
-            NumberFormatInfo provider = new NumberFormatInfo { NumberDecimalDigits = 2 };
-            decimal upperThershold = Convert.ToDecimal(_luisSettings.UpperThreshold, provider);
-            decimal lowerThershold = Convert.ToDecimal(_luisSettings.LowerThreshold, provider);
-
-            if (intentWithScore.Score >= upperThershold)
+            if (intentWithScore.Score >= _luisSettings.UpperThreshold)
             {
                 return (int)LuisAccuracyThreshold.High;
             }
-            else if (intentWithScore.Score <= lowerThershold)
+            else if (intentWithScore.Score <= _luisSettings.LowerThreshold)
             {
                 return (int)LuisAccuracyThreshold.Low;
             }
