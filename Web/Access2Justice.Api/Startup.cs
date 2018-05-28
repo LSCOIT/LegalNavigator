@@ -2,7 +2,9 @@
 using Access2Justice.CosmosDb;
 using Access2Justice.CosmosDb.Interfaces;
 using Access2Justice.Shared;
+using Access2Justice.Shared.Bing;
 using Access2Justice.Shared.Interfaces;
+using Access2Justice.Shared.Luis;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Azure.Documents;
@@ -25,9 +27,20 @@ namespace Access2Justice.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();         
-            services.AddSingleton<ITopicBusinessLogic, TopicBusinessLogic>();        
-            services.AddTransient<IHttpClientService, HttpClientService>();
+            services.AddMvc();
+            ILuisSettings luisSettings = new LuisSettings(Configuration.GetSection("Luis"));
+            services.AddSingleton(luisSettings);
+            
+            IBingSettings bingSettings = new BingSettings(Configuration.GetSection("Bing"));
+            services.AddSingleton(bingSettings);
+            
+            services.AddSingleton<ILuisProxy, LuisProxy>();
+            services.AddSingleton<ILuisBusinessLogic, LuisBusinessLogic>();
+            services.AddSingleton<ITopicsResourcesBusinessLogic, TopicsResourcesBusinessLogic>();
+            services.AddSingleton<IWebSearchBusinessLogic, WebSearchBusinessLogic>();            
+            services.AddSingleton<ITopicBusinessLogic, TopicBusinessLogic>();
+            services.AddSingleton<IHttpClientService, HttpClientService>();
+
             ConfigureCosmosDb(services);
             services.AddSwaggerGen(c =>
             {
@@ -45,7 +58,7 @@ namespace Access2Justice.Api
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors(builder => builder.WithOrigins("http://localhost:59706"));
+            app.UseCors(builder => builder.WithOrigins("http://localhost:4200"));
 
             app.UseMvc();
 
