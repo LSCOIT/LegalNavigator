@@ -20,7 +20,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         #endregion
 
         #region Mocked Input Data
-        private readonly string searchText = "microsoft";
+        private readonly string searchText = "Microsoft";
         private readonly string emptyWebData = "{}";
         private readonly string webData =
                    "{\r\n  \"webResources\": {\r\n    \"_type\": \"SearchResponse\",\r\n    \"instrumentation\": {\r\n      \"_type\": " +
