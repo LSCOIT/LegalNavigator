@@ -27,7 +27,7 @@
               <input #chk type="checkbox" name="checkOptions"
                      id="{{c.choiceId}}"
                      [ngModel]="checkOptions"
-                     (ngModelChange)="validateCheckbox(chk)">
+                     (ngModelChange)="validateElement(chk)">
               {{c.choiceText}}
 
             </div>
@@ -35,9 +35,8 @@
         </div>
         <div *ngIf="question.questionType.toLowerCase()==='yesnotype' ">
           <span *ngFor="let c of question.choices">
-            <!--<button name="btnOptions" class="btn-primary" value={{c.choiceId}} [(ngModel)]="btnOptions">{{c.choiceText}}</button>-->
-            <button #btn name="btnOptions" [ngClass]="{ 'btn-primary': isClicked, 'btn': !isClicked  }" class="" value={{c.choiceId}} id="{{c.choiceId}}"
-                    (click)="validateCheckbox(btn)">
+            <button type="button" #btn name="btnOptions" [ngClass]="{ 'btn-primary': isClicked, 'btn': !isClicked  }" class="" value={{c.choiceId}} id="{{c.choiceId}}"
+                    (click)="validateElement(btn)">
               {{c.choiceText}}
             </button>
           </span>
@@ -73,7 +72,7 @@
         </div>
         <div class="row">
           <div class="col-md-2 col-md-offset-2">
-            <button type="submit" id="btnSubmit" class="btn btn-primary">Continue</button>
+            <button class="btn btn-primary">Continue</button>
           </div>
         </div>
         <div class="row">

@@ -45,7 +45,7 @@ describe('GuidedAssistantComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create guided assisstant component', () => {
     expect(component).toBeTruthy();
   });
 });
