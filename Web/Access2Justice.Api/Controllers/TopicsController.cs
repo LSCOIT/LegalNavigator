@@ -11,6 +11,7 @@ using Microsoft.Azure.Documents;
 using System.Linq.Expressions;
 using Access2Justice.Shared;
 using Newtonsoft.Json;
+using Access2Justice.CosmosDb.Interfaces;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -18,17 +19,19 @@ namespace Access2Justice.Api.Controllers
    
     public class TopicsController : Controller
     {
-        IBackendDatabaseService backendDataBaseService; 
-        public TopicsController(IBackendDatabaseService backendDataBaseService)
+        private readonly IBackendDatabaseService _backendDataBaseService;
+        private readonly ICosmosDbSettings _cosmosDbSettings;
+        public TopicsController(IBackendDatabaseService backendDataBaseService, ICosmosDbSettings cosmosDbSettings)
         {
-            this.backendDataBaseService = backendDataBaseService;          
+            _backendDataBaseService = backendDataBaseService;
+            _cosmosDbSettings = cosmosDbSettings;
         }
 
         [HttpGet]
         [Route("api/topics/get")]
         public async Task<IActionResult> Get()
         {
-            var topics = await backendDataBaseService.GetItemsAsync<TopicModel>(a => a.Type == "topic" && a.ParentId == "");
+            var topics = await _backendDataBaseService.GetItemsAsync<TopicModel>(a => a.Type == "topic" && a.ParentId == "", _cosmosDbSettings.TopicCollectionId);
 
             return Ok(topics);                     
         }
@@ -38,7 +41,7 @@ namespace Access2Justice.Api.Controllers
         public async Task<IActionResult> GetSubTopics(string id)
         {
 
-            var topics = await backendDataBaseService.GetItemsAsync<TopicModel>(a => a.Type == "topic" && a.ParentId == id);
+            var topics = await _backendDataBaseService.GetItemsAsync<TopicModel>(a => a.Type == "topic" && a.ParentId == id, _cosmosDbSettings.TopicCollectionId);
             return Ok(topics);
         }
         [HttpGet]
@@ -46,8 +49,7 @@ namespace Access2Justice.Api.Controllers
         public async Task<IActionResult> GetSubTopicDetails(string id)
         {
             string[] spParams = { "id", id };
-            var response = await backendDataBaseService.ExecuteStoredProcedureAsyncWithParameters<dynamic>("GetResourceById", spParams);
-            //List<TopicModel> jsonResponse = JsonConvert.DeserializeObject<List<TopicModel>>(response);
+            var response = await _backendDataBaseService.ExecuteStoredProcedureAsyncWithParameters<dynamic>("GetResourceById", spParams);            
             return Ok(response);
         }
     }
