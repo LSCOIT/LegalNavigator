@@ -73,7 +73,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         #endregion
 
         #region Mocked Output Data        
-        private readonly string expectedWebResponse = "microsoft";
+        private readonly string expectedWebResponse = "Microsoft";
         private readonly string expectedEmptyWebResponse = "{}";
         #endregion 
 
