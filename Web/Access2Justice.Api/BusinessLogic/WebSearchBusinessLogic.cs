@@ -1,11 +1,8 @@
 ﻿using Access2Justice.Shared;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Access2Justice.Shared.Interfaces;
 using System.Globalization;
-using Newtonsoft.Json;
 
 namespace Access2Justice.Api.BusinessLogic
 {

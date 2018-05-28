@@ -12,13 +12,149 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
 
     public class LuisBusinessLogicTests
     {
+        #region variables
         private readonly ILuisProxy _luisProxy;
         private readonly ILuisSettings _luisSettings;
         private readonly ITopicsResourcesBusinessLogic _topicsResourcesBusinessLogic;
         private readonly IWebSearchBusinessLogic _webSearchBusinessLogic;
         private readonly ILuisBusinessLogic _luisBusinessLogic;
         private readonly LuisBusinessLogic luisBusinessLogic;
+        #endregion
 
+        #region Mocked Input Data
+        private readonly string properLuisResponse =
+                   "{\r\n  \"query\": \"child abuse\",\r\n  \"topScoringIntent\": {\r\n    " +
+                   "\"intent\": \"eviction\",\r\n    \"score\": 0.919329442\r\n  },\r\n  \"intents\": [\r\n    {\r\n     " +
+                   " \"intent\": \"eviction\",\r\n      \"score\": 0.239329442\r\n    },\r\n    {\r\n      " +
+                   "\"intent\": \"child abuse\",\r\n      \"score\": 0.09217278\r\n    },\r\n    {\r\n      " +
+                   "\"intent\": \"child\",\r\n      \"score\": 0.06267241\r\n    },\r\n    {\r\n      " +
+                   "\"intent\": \"divorce\",\r\n      \"score\": 0.00997853652\r\n    },\r\n    {\r\n     " +
+                   " \"intent\": \"None\",\r\n      \"score\": 0.00248154555\r\n    }\r\n  ],\r\n  \"entities\": []\r\n}";
+        private readonly string lowScoreLuisResponse =
+                   "{\r\n  \"query\": \"child abuse\",\r\n  \"topScoringIntent\": {\r\n    " +
+                   "\"intent\": \"eviction\",\r\n    \"score\": 0.269329442\r\n  },\r\n  \"intents\": [\r\n    {\r\n     " +
+                   " \"intent\": \"eviction\",\r\n      \"score\": 0.239329442\r\n    },\r\n    {\r\n      " +
+                   "\"intent\": \"child abuse\",\r\n      \"score\": 0.09217278\r\n    },\r\n    {\r\n      " +
+                   "\"intent\": \"child\",\r\n      \"score\": 0.06267241\r\n    },\r\n    {\r\n      " +
+                   "\"intent\": \"divorce\",\r\n      \"score\": 0.00997853652\r\n    },\r\n    {\r\n     " +
+                   " \"intent\": \"None\",\r\n      \"score\": 0.00248154555\r\n    }\r\n  ],\r\n  \"entities\": []\r\n}";
+        private readonly string emptyLuisResponse = "";
+        private readonly string noneLuisResponse = 
+                   "{\r\n  \"query\": \"good bye\",\r\n  \"topScoringIntent\": {\r\n    " +
+                   "\"intent\": \"None\",\r\n    \"score\": 0.7257252\r\n  },\r\n  " +
+                   "\"intents\": [\r\n    {\r\n      \"intent\": \"None\",\r\n      " +            
+                   "\"score\": 0.06429157\r\n    },\r\n    {\r\n      \"intent\": \"Divorce\",\r\n      " +
+                   "\"score\": 0.05946025\r\n    },\r\n    {\r\n      \"intent\": \"Eviction\",\r\n     " +
+                   "\"score\": 4.371685E-05\r\n    }\r\n  ],\r\n  \"entities\": []\r\n}";        
+        private readonly string keyword = "eviction";
+        private readonly JArray topicsData = 
+                   JArray.Parse(@"[{'id':'addf41e9-1a27-4aeb-bcbb-7959f95094ba','name':'Family',
+                   'parentTopicID':'','keywords':'eviction','location':[{'state':'Hawaii','county':'Kalawao County','city':'Kalawao',
+                    'zipCode':'96742'},{'zipCode':'96741'},{'state':'Hawaii','county':'Honolulu County','city':'Honolulu'},{'state':
+                   'Hawaii','city':'Hawaiian Beaches'},{'state':'Hawaii','city':'Haiku-Pauwela'},{'state':'Alaska'}],'jsonContent':'',
+                   'icon':'./assets/images/topics/topic14.png','createdBy':'','createdTimeStamp':'','modifiedBy':'','modifiedTimeStamp':'
+                   ','_rid':'mwoSALHtpAEBAAAAAAAAAA==','_self':'dbs/mwoSAA==/colls/mwoSALHtpAE=/docs/mwoSALHtpAEBAAAAAAAAAA==/',
+                    '_etag':'\'05008e57-0000-0000-0000-5b0797c10000\'','_attachments':'attachments/','_ts':1527224257}]");        
+        private readonly JArray resourcesData = 
+                    JArray.Parse(@"[{'id':'77d301e7-6df2-612e-4704-c04edf271806','name':'Tenant Action Plan 
+                    for Eviction','description':'This action plan is for tenants who are facing eviction and have experienced the following:',
+                    'resourceType':'Action','externalUrl':'','url':'','topicTags':[{'id':'f102bfae-362d-4659-aaef-956c391f79de'},
+                    {'id':'2c0cc7b8-62b1-4efb-8568-b1f767f879bc'},{'id':'3aa3a1be-8291-42b1-85c2-252f756febbc'}],'location':[{'state':'Hawaii',
+                    'city':'Kalawao','zipCode':'96742'},{'zipCode':'96741'},{'state':'Alaska'}],'icon':'./assets/images/resources/resource.png',
+                    'createdBy':'','createdTimeStamp':'','modifiedBy':'','modifiedTimeStamp':'','_rid':'mwoSAJdNlwIBAAAAAAAAAA==',
+                    '_self':'dbs/mwoSAA==/colls/mwoSAJdNlwI=/docs/mwoSAJdNlwIBAAAAAAAAAA==/','_etag':'\'040007b5-0000-0000-0000-5b0792260000\'',
+                    '_attachments':'attachments/','_ts':1527222822},{'id':'19a02209-ca38-4b74-bd67-6ea941d41518','name':'Legal Help Organization',
+                    'description':'This action plan is for tenants who are facing eviction and have experienced the following:','resourceType':'Organization'
+                    ,'externalUrl':'','url':'','topicTags':[{'id':'f102bfae-362d-4659-aaef-956c391f79de'},{'id':'3aa3a1be-8291-42b1-85c2-252f756febbc'}],
+                    'location':[{'state':'Hawaii','city':'Kalawao','zipCode':'96742'}],'icon':'./assets/images/resources/resource.png','createdBy':'',
+                    'createdTimeStamp':'','modifiedBy':'','modifiedTimeStamp':'','_rid':'mwoSAJdNlwIBAAAAAAAAAA==','_self':
+                    'dbs/mwoSAA==/colls/mwoSAJdNlwI=/docs/mwoSAJdNlwIBAAAAAAAAAA==/','_etag':'\'040007b5-0000-0000-0000-5b0792260000\'',
+                    '_attachments':'attachments/','_ts':1527222822}]");        
+        private readonly JObject emptyTopicObject = JObject.Parse(@"{}");
+        private readonly JObject emptyResourceObject = JObject.Parse(@"{}");
+        private readonly string searchText = "i'm getting kicked out";
+        private readonly string webData = 
+                   "{\r\n  \"webResources\": {\r\n    \"_type\": \"SearchResponse\",\r\n    \"instrumentation\": {\r\n      \"_type\": " +
+                   "\"ResponseInstrumentation\",\r\n      \"pingUrlBase\": \"https://www.bingapis.com/api/ping?IG=1965C084847D497DB211864D4160BBAD&CID=0F6A141A98C863D31AD41FE799436276&ID=\"," +
+                   "\r\n      \"pageLoadPingUrl\": \"https://www.bingapis.com/api/ping/pageload?IG=1965C084847D497DB211864D4160BBAD&CID=0F6A141A98C863D31AD41FE799436276&Type=Event.CPT&DATA=0\"" +
+                   "\r\n    },\r\n    \"queryContext\": {\r\n      \"originalQuery\": \"getting kicked out\"\r\n    },\r\n    \"webPages\": " +
+                   "{\r\n      \"webSearchUrl\": \"https://www.bing.com/search?q=getting+kicked+out\",\r\n      \"webSearchUrlPingSuffix\": " +
+                   "\"DevEx,5388.1\",\r\n      \"totalEstimatedMatches\": 6,\r\n      \"value\": [\r\n        {\r\n          \"id\": " +
+                   "\"https://api.cognitive.microsoft.com/api/v7/#WebPages.0\",\r\n          \"name\": \"Mukesh and Another v State for NCT of Delhi and " +
+                   "Others - Lawnotes.in\",\r\n          \"url\": \"http://www.lawnotes.in/Mukesh_and_Another_v_State_for_NCT_of_Delhi_and_Others\"," +
+                   "\r\n          \"urlPingSuffix\": \"DevEx,5076.1\",\r\n          \"isFamilyFriendly\": true,\r\n          \"displayUrl\": " +
+                   "\"www.lawnotes.in/Mukesh_and_Another_v_State_for_NCT_of_Delhi_and_Others\",\r\n          \"snippet\": \"Mukesh and Another v State " +
+                   "for NCT of Delhi and Others. From Lawnotes.in. ... kicked on her abdomen and bitten over lips, cheek, breast and vulval region. " +
+                   "The prosecutrix remembered intercourse two times and rectal penetration also ... and his disclosure Ex.PW-60/H was also recorded. " +
+                   "He pointed out the Munirka bus stand from where the victims were picked up vide memo Ex.PW-68/I and he also pointed out Mahipalpur Flyover, " +
+                   "the place where the victims were thrown out of the moving bus ...\",\r\n          \"deepLinks\": [\r\n            {\r\n              " +
+                   "\"name\": \"K Srinivas Rao v D A Deepa\",\r\n              \"url\": \"http://www.lawnotes.in/K_Srinivas_Rao_v_D_A_Deepa\"," +
+                   "\r\n              \"urlPingSuffix\": \"DevEx,5065.1\",\r\n              \"snippet\": \"K abc Roo v D A Deep. From " +
+                   "Lawnotes.in. Jump to:navigation, search. ... the appellant-husband beat her mother and kicked her on her stomach. Both of " +
+                   "them received injuries. She, therefore, ... must ensure that this exercise does not lead to the erring spouse using mediation " +
+                   "process to get out of clutches of the law.\"\r\n            },\r\n            {\r\n              \"name\": \"LawNotes.\",\r" +
+                   "\n              \"url\": \"http://www.lawnotes.in/B_D_Khunte_v_Union_of_India_and_Others\",\r\n              \"urlPingSuffix" +
+                   "\": \"DevEx,5066.1\",\r\n              \"snippet\": \"B D Khunte v Union of India and Others. From Lawnotes.in. Jump to:" +
+                   "navigation, search. ... the deceased punched him and kicked him repeatedly and asked him to put up his hand and hold the side " +
+                   "beams of the top berth of the double bunk in the store room. The appellant’s further case is that the deceased thereafter made " +
+                   "unwelcome and improper ... We must at the threshold point out that there is no challenge to the finding that it was the " +
+                   "appellant who had shot the deceased using the weapon ...\"\r\n            },\r\n            {\r\n              \"name\": " +
+                   "\"C K Dasegowda And Others v State of Karnataka - LawNotes.\",\r\n              \"url\": \"https://www.lawnotes.in/C_K_Dasegowda_and_Others_v_State_of_Karnataka\"," +
+                   "\r\n              \"urlPingSuffix\": \"DevEx,5067.1\",\r\n              \"snippet\": \"C K Dasegowda and Others v State of " +
+                   "Karnataka. From Lawnotes.in. Jump to:navigation, search. ... Necessary relevant facts are stated hereunder to appreciate the " +
+                   "case of the appellants and also to find out whether they are entitled to the relief as prayed for in ... A-6, A-8 and A-10 " +
+                   "kicked PW-1. A-5 and A-7 assaulted Bhagyamma- PW-6 with iron blade of plough and A-9 kicked her. 4. A complaint (Ex.-P1) was " +
+                   "lodged on 11.8.1999 at 9:00 a.m. before the police. The Crime Case No. CC 728 of 2000 ...\"\r\n            },\r\n            {\r\n" +
+                   "   \"name\": \"Geeta Mehrotra And Another Vs State of U P And Another - Lawnotes.\",\r\n              \"url\": " +
+                   "\"https://www.lawnotes.in/Geeta_Mehrotra_and_Another_Vs_State_of_U_P_and_Another\",\r\n              \"urlPingSuffix\": \"DevEx,5068.1" +
+                   "\",\r\n              \"snippet\": \"Geeta Mehrotra and Another Vs State of U P and Another. From Lawnotes.in. Jump to:navigation, " +
+                   "search. Home Indian Law Supreme Court of India Supreme Court of India Cases 2012 Supreme Court of India Cases October 2012. " +
+                   "REPORTABLE IN THE SUPREME COURT OF INDIA ... Geeta Mehrotra regarding the complainant using bad words and it was said that if " +
+                   "her daughter came there she will be kicked out.\"\r\n            },\r\n            {\r\n              \"name\": \"B Thirumal " +
+                   "v Ananda Sivakumar And Others - LawNotes.\",\r\n              \"url\": \"https://www.lawnotes.in/B_Thirumal_v_Ananda_Sivakumar_and_Others\",\r\n" +
+                   "       \"urlPingSuffix\": \"DevEx,5069.1\",\r\n              \"snippet\": \"B Thirumal v Ananda Sivakumar and Others. From Lawnotes.in. Jump to:navigation," +
+                   " ... Leave granted. 2. These appeals arise out of a judgment and order dated 4th August, 2009 whereby a Division Bench of the " +
+                   "High Court of Judicature at Madras has allowed Writ Appeals No. 1155, ... such a person receives higher salary, but when he is " +
+                   "compulsorily “kicked upstairs” (if we may permitted to observe so) the Diploma-holder Junior Engineer, ...\"\r\n            }" +
+                   "\r\n          ],\r\n          \"dateLastCrawled\": \"2018-05-19T08:31:00Z\",\r\n          \"fixedPosition\": false,\r\n          " +
+                   "\"language\": \"en\"\r\n        }\r\n      ]\r\n    },\r\n    \"rankingResponse\": {\r\n      \"mainline\": {\r\n        " +
+                   "\"items\": [\r\n          {\r\n            \"answerType\": \"WebPages\",\r\n            \"resultIndex\": 0,\r\n            " +
+                   "\"value\": {\r\n              \"id\": \"https://api.cognitive.microsoft.com/api/v7/#WebPages.0\"\r\n            }\r\n          " +
+                   "}\r\n        ]\r\n      }\r\n    }\r\n  }\r\n}";
+        private readonly string internalResponse = 
+                  "{\r\n  \"topics\": [\r\n    {\r\n      \"id\": \"addf41e9-1a27-4aeb-bcbb-7959f95094ba\",\r\n      \"name\": \"Family\"," +
+                  "\r\n      \"parentTopicID\": \"\",\r\n      \"keywords\": \"EVICTION\",\r\n      \"location\": [\r\n        {\r\n          " +
+                  "\"state\": \"Hawaii\",\r\n          \"county\": \"Kalawao County\",\r\n          \"city\": \"Kalawao\",\r\n          " +
+                  "\"zipCode\": \"96742\"\r\n        },\r\n        {\r\n          \"zipCode\": \"96741\"\r\n        },\r\n        {\r\n          " +
+                  "\"state\": \"Hawaii\",\r\n          \"county\": \"Honolulu County\",\r\n          \"city\": \"Honolulu\"\r\n        }," +
+                  "\r\n        {\r\n          \"state\": \"Hawaii\",\r\n          \"city\": \"Hawaiian Beaches\"\r\n        },\r\n        " +
+                  "{\r\n          \"state\": \"Hawaii\",\r\n          \"city\": \"Haiku-Pauwela\"\r\n        },\r\n        {\r\n          " +
+                  "\"state\": \"Alaska\"\r\n        }\r\n      ],\r\n      \"jsonContent\": \"\",\r\n      \"icon\": \"./assets/images/topics/topic14.png\"," +
+                  "\r\n      \"createdBy\": \"\",\r\n      \"createdTimeStamp\": \"\",\r\n      \"modifiedBy\": \"\",\r\n      \"modifiedTimeStamp\": \"\"," +
+                  "\r\n      \"_rid\": \"mwoSALHtpAEBAAAAAAAAAA==\",\r\n      \"_self\": \"dbs/mwoSAA==/colls/mwoSALHtpAE=/docs/mwoSALHtpAEBAAAAAAAAAA==/\"," +
+                  "\r\n      \"_etag\": \"\\\"1700c9cf-0000-0000-0000-5b08a3340000\\\"\",\r\n      \"_attachments\": \"attachments/\",\r\n      " +
+                  "\"_ts\": 1527292724\r\n    }\r\n  ],\r\n  \"resources\": [\r\n    {\r\n      \"id\": \"77d301e7-6df2-612e-4704-c04edf271806\",\r\n      " +
+                  "\"name\": \"Tenant Action Plan for Eviction\",\r\n      \"description\": \"This action plan is for tenants who are facing eviction and " +
+                  "have experienced the following:\",\r\n      \"resourceType\": \"Action\",\r\n      \"externalUrl\": \"\",\r\n      \"url\": \"\",\r" +
+                  "\n      \"topicTags\": [\r\n        {\r\n          \"id\": \"addf41e9-1a27-4aeb-bcbb-7959f95094ba\"\r\n        },\r\n        {\r\n" +
+                  " \"id\": \"2c0cc7b8-62b1-4efb-8568-b1f767f879bc\"\r\n        },\r\n        {\r\n          \"id\": \"3aa3a1be-8291-42b1-85c2-252f756febbc\"\r" +
+                  "\n        }\r\n      ],\r\n      \"location\": \"Hawaii, Honolulu, 96812 |Hawaii, Hawaiian Beaches |Hawaii, Haiku-Pauwela | Alaska\"," +
+                  "\r\n      \"icon\": \"./assets/images/resources/resource.png\",\r\n      \"createdBy\": \"\",\r\n      \"createdTimeStamp\": \"\"," +
+                  "\r\n      \"modifiedBy\": \"\",\r\n      \"modifiedTimeStamp\": \"\",\r\n      \"_rid\": \"mwoSAJdNlwIBAAAAAAAAAA==\",\r\n      " +
+                  "\"_self\": \"dbs/mwoSAA==/colls/mwoSAJdNlwI=/docs/mwoSAJdNlwIBAAAAAAAAAA==/\",\r\n      \"_etag\": \"\\\"0e0002a6-0000-0000-0000-5b07fe950000\\\"\"," +
+                  "\r\n      \"_attachments\": \"attachments/\",\r\n      \"_ts\": 1527250581\r\n    }\r\n  ]\r\n}";
+        #endregion
+
+        #region Mocked Output Data         
+        private readonly string expectedLuisNoneIntent = "None";
+        private readonly int expectedLowerthreshold = 0;
+        private readonly string expectedLuisTopIntent = "eviction";
+        private readonly string expectedTopicId = "addf41e9-1a27-4aeb-bcbb-7959f95094ba";
+        private readonly string expectedResourceId = "77d301e7-6df2-612e-4704-c04edf271806";
+        private readonly string expectedLuisResponse = "luisResponse";
+        private readonly string expectedInternalResponse = "topics";
+        private readonly string expectedWebResponse = "webResources";
+        #endregion 
 
         public LuisBusinessLogicTests()
         {
@@ -38,28 +174,19 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         [Fact]
         public void ParseLuisIntentWithProperIntent()
         {
-            // arrange 
-            // todo:rakesh - 
-            // 1. please turn this into a constant and make it available at the class level. 
-            // 2. Also, please add line breaks to make read better and fit better on screen.
-            // (please make the same changes to all similar cases across the board..)
-            string LuisResponse = "{\r\n  \"query\": \"child abuse\",\r\n  \"topScoringIntent\": {\r\n    \"intent\": \"ChildAbuse\",\r\n    \"score\": 0.239329442\r\n  },\r\n  \"intents\": [\r\n    {\r\n      \"intent\": \"ChildAbuse\",\r\n      \"score\": 0.239329442\r\n    },\r\n    {\r\n      \"intent\": \"Above18Age\",\r\n      \"score\": 0.09217278\r\n    },\r\n    {\r\n      \"intent\": \"Age\",\r\n      \"score\": 0.06267241\r\n    },\r\n    {\r\n      \"intent\": \"Greetings\",\r\n      \"score\": 0.00997853652\r\n    },\r\n    {\r\n      \"intent\": \"None\",\r\n      \"score\": 0.00248154555\r\n    }\r\n  ],\r\n  \"entities\": []\r\n}";
-
+            
             // act
-            IntentWithScore intentWithScore = luisBusinessLogic.ParseLuisIntent(LuisResponse);
+            IntentWithScore intentWithScore = luisBusinessLogic.ParseLuisIntent(properLuisResponse);
 
             //assert            
-            Assert.Equal("ChildAbuse", intentWithScore.TopScoringIntent);
+            Assert.Equal(expectedLuisTopIntent , intentWithScore.TopScoringIntent);
         }
 
         [Fact]
         public void ParseLuisIntentWithEmptyObject()
         {
-            // arrange 
-            string LuisResponse = "";
-
             // act
-            IntentWithScore intentWithScore = luisBusinessLogic.ParseLuisIntent(LuisResponse);
+            IntentWithScore intentWithScore = luisBusinessLogic.ParseLuisIntent(emptyLuisResponse);
 
             //assert            
             Assert.Null(intentWithScore.TopScoringIntent);
@@ -67,15 +194,12 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
 
         [Fact]
         public void ParseLuisIntentWithNoneIntent()
-        {
-            // arrange 
-            string LuisResponse = "{\r\n  \"query\": \"good bye\",\r\n  \"topScoringIntent\": {\r\n    \"intent\": \"None\",\r\n    \"score\": 0.7257252\r\n  },\r\n  \"intents\": [\r\n    {\r\n      \"intent\": \"None\",\r\n      \"score\": 0.7257252\r\n    },\r\n    {\r\n      \"intent\": \"Mobile home park tenants\",\r\n      \"score\": 0.355601132\r\n    },\r\n    {\r\n      \"intent\": \"Small Claims Court\",\r\n      \"score\": 0.1499888\r\n    },\r\n    {\r\n      \"intent\": \"Domestic Violence\",\r\n      \"score\": 0.144558728\r\n    },\r\n    {\r\n      \"intent\": \"Going to court\",\r\n      \"score\": 0.120800942\r\n    },\r\n    {\r\n      \"intent\": \"Child support\",\r\n      \"score\": 0.06429157\r\n    },\r\n    {\r\n      \"intent\": \"Divorce\",\r\n      \"score\": 0.05946025\r\n    },\r\n    {\r\n      \"intent\": \"Eviction\",\r\n      \"score\": 0.0429888479\r\n    },\r\n    {\r\n      \"intent\": \"Tenant's rights\",\r\n      \"score\": 0.0364453942\r\n    },\r\n    {\r\n      \"intent\": \"Unemployment\",\r\n      \"score\": 0.0278799217\r\n    },\r\n    {\r\n      \"intent\": \"Public & subsidized housing\",\r\n      \"score\": 0.0264688972\r\n    },\r\n    {\r\n      \"intent\": \"child custody\",\r\n      \"score\": 0.0251409784\r\n    },\r\n    {\r\n      \"intent\": \"Separation\",\r\n      \"score\": 0.02284297\r\n    },\r\n    {\r\n      \"intent\": \"division of property\",\r\n      \"score\": 0.0187299736\r\n    },\r\n    {\r\n      \"intent\": \"Guardianship\",\r\n      \"score\": 0.01589121\r\n    },\r\n    {\r\n      \"intent\": \"Consumer Fraud\",\r\n      \"score\": 0.0157391261\r\n    },\r\n    {\r\n      \"intent\": \"Other Consumer\",\r\n      \"score\": 0.0153076174\r\n    },\r\n    {\r\n      \"intent\": \"Home buyers & owners\",\r\n      \"score\": 0.0150051648\r\n    },\r\n    {\r\n      \"intent\": \"Debt\",\r\n      \"score\": 0.013652849\r\n    },\r\n    {\r\n      \"intent\": \"Car issues\",\r\n      \"score\": 0.01349422\r\n    },\r\n    {\r\n      \"intent\": \"Elder Abuse\",\r\n      \"score\": 0.0122769\r\n    },\r\n    {\r\n      \"intent\": \"Contracts\",\r\n      \"score\": 0.0104453657\r\n    },\r\n    {\r\n      \"intent\": \"Managing money\",\r\n      \"score\": 0.009631508\r\n    },\r\n    {\r\n      \"intent\": \"Utilities & phones\",\r\n      \"score\": 0.008403383\r\n    },\r\n    {\r\n      \"intent\": \"marriage\",\r\n      \"score\": 0.00816951\r\n    },\r\n    {\r\n      \"intent\": \"Marriage equality\",\r\n      \"score\": 0.007255214\r\n    },\r\n    {\r\n      \"intent\": \"Sexual Assault\",\r\n      \"score\": 0.006860437\r\n    },\r\n    {\r\n      \"intent\": \"The child protection system\",\r\n      \"score\": 0.006541669\r\n    },\r\n    {\r\n      \"intent\": \"Employment Discrimination\",\r\n      \"score\": 0.0049147536\r\n    },\r\n    {\r\n      \"intent\": \"Contempt of court\",\r\n      \"score\": 0.004551603\r\n    },\r\n    {\r\n      \"intent\": \"Legal financial obligation\",\r\n      \"score\": 0.00444463268\r\n    },\r\n    {\r\n      \"intent\": \"Custody\",\r\n      \"score\": 0.00298966654\r\n    },\r\n    {\r\n      \"intent\": \"alimony\",\r\n      \"score\": 0.002650723\r\n    },\r\n    {\r\n      \"intent\": \"Emergency shelter & assistance\",\r\n      \"score\": 0.00261214585\r\n    },\r\n    {\r\n      \"intent\": \"Credit problems\",\r\n      \"score\": 0.0026004985\r\n    },\r\n    {\r\n      \"intent\": \"Paternity/Parentage\",\r\n      \"score\": 0.00255779\r\n    },\r\n    {\r\n      \"intent\": \"Driver & Professional licenses\",\r\n      \"score\": 0.00251075416\r\n    },\r\n    {\r\n      \"intent\": \"Parenting Plans/Custody\",\r\n      \"score\": 0.00225709751\r\n    },\r\n    {\r\n      \"intent\": \"Housing discrimination\",\r\n      \"score\": 0.002157124\r\n    },\r\n    {\r\n      \"intent\": \"Adoption\",\r\n      \"score\": 0.00167205709\r\n    },\r\n    {\r\n      \"intent\": \"Utilities and telecommunications\",\r\n      \"score\": 0.00149995193\r\n    },\r\n    {\r\n      \"intent\": \"Identity\",\r\n      \"score\": 0.00148085481\r\n    },\r\n    {\r\n      \"intent\": \"Divorce Contested\",\r\n      \"score\": 0.00137153524\r\n    },\r\n    {\r\n      \"intent\": \"Unmarried couples\",\r\n      \"score\": 0.0013140107\r\n    },\r\n    {\r\n      \"intent\": \"Medical bills\",\r\n      \"score\": 0.00116409734\r\n    },\r\n    {\r\n      \"intent\": \"Student loans\",\r\n      \"score\": 0.00110878225\r\n    },\r\n    {\r\n      \"intent\": \"Other family\",\r\n      \"score\": 0.0009938785\r\n    },\r\n    {\r\n      \"intent\": \"Divorce Legal Separation\",\r\n      \"score\": 0.0009852285\r\n    },\r\n    {\r\n      \"intent\": \"Divorce Annulment\",\r\n      \"score\": 0.000906408\r\n    },\r\n    {\r\n      \"intent\": \"More family court procedures\",\r\n      \"score\": 0.000795052\r\n    },\r\n    {\r\n      \"intent\": \"Divorce Uncontested\",\r\n      \"score\": 0.000634081371\r\n    },\r\n    {\r\n      \"intent\": \"Foreclosure\",\r\n      \"score\": 0.000577257\r\n    },\r\n    {\r\n      \"intent\": \"Non-parents caring for children\",\r\n      \"score\": 0.0004945614\r\n    },\r\n    {\r\n      \"intent\": \"Veteran/Military Families\",\r\n      \"score\": 0.000434205169\r\n    },\r\n    {\r\n      \"intent\": \"Bankrucptcy\",\r\n      \"score\": 0.000325363\r\n    },\r\n    {\r\n      \"intent\": \"Relocation\",\r\n      \"score\": 0.000226491058\r\n    },\r\n    {\r\n      \"intent\": \"Non-parent custody\",\r\n      \"score\": 4.371685E-05\r\n    }\r\n  ],\r\n  \"entities\": []\r\n}";
-
+        {            
             // act
-            IntentWithScore intentWithScore = luisBusinessLogic.ParseLuisIntent(LuisResponse);
+            IntentWithScore intentWithScore = luisBusinessLogic.ParseLuisIntent(noneLuisResponse);
 
             //assert            
-            Assert.Equal("None", intentWithScore.TopScoringIntent);
+            Assert.Equal(expectedLuisNoneIntent, intentWithScore.TopScoringIntent);
         }
 
         [Fact]
@@ -83,13 +207,15 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         {
             // arrange
             List<string> topNIntents = new List<string> { "eviction", "child abuse", "traffic ticket", "divorce" };
-            IntentWithScore intentWithScore = new IntentWithScore { IsSuccessful = true, Score = 0.96M, TopScoringIntent = "eviction", TopNIntents = topNIntents };
+            IntentWithScore intentWithScore = new IntentWithScore { IsSuccessful = true, Score = 0.96M,
+                                               TopScoringIntent = "eviction", TopNIntents = topNIntents };
+            int expectedUpperthreshold = 2;
 
             //act 
             int threshold = luisBusinessLogic.ApplyThreshold(intentWithScore);
 
             //assert
-            Assert.Equal(2, threshold);
+            Assert.Equal(expectedUpperthreshold, threshold);
         }
 
         [Fact]
@@ -97,17 +223,16 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         {
             // arrange
             List<string> topNIntents = new List<string> { "eviction", "child abuse", "traffic ticket", "divorce" };
-            IntentWithScore intentWithScore = new IntentWithScore { IsSuccessful = true, Score = 0.81M, TopScoringIntent = "eviction", TopNIntents = topNIntents };
+            IntentWithScore intentWithScore = new IntentWithScore { IsSuccessful = true, Score = 0.81M,
+                TopScoringIntent = "eviction", TopNIntents = topNIntents };
+            int expectedMediumthreshold = 1;
+
 
             //act 
             int threshold = luisBusinessLogic.ApplyThreshold(intentWithScore);
 
-            //assert
-            // todo:rakesh - please don't use magic numbers (numbers that 
-            // hide the meaning and make it difficult for other developer to understand what they mean). You could
-            // use something like this: int expectedThreshold = 1; You should also declare it as constant and 
-            // move it to the class level if it could be reused in other parts of the class.
-            Assert.Equal(1, threshold);
+            //assert            
+            Assert.Equal(expectedMediumthreshold, threshold);
         }
 
         [Fact]
@@ -115,14 +240,14 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         {
             // arrange
             List<string> topNIntents = new List<string> { "eviction", "child abuse", "traffic ticket", "divorce" };
-            IntentWithScore intentWithScore = new IntentWithScore { IsSuccessful = true, Score = 0.59M, TopScoringIntent = "eviction", TopNIntents = topNIntents };
+            IntentWithScore intentWithScore = new IntentWithScore { IsSuccessful = true, Score = 0.59M,
+                                              TopScoringIntent = "eviction", TopNIntents = topNIntents };
 
             //act 
             int threshold = luisBusinessLogic.ApplyThreshold(intentWithScore);
 
-            //assert
-            // todo:rakesh - same as the comment above on the magic numbers. Please change all instances of magic number in all unit tests.
-            Assert.Equal(0, threshold);
+            //assert            
+            Assert.Equal(expectedLowerthreshold, threshold);
         }
 
         [Fact]
@@ -130,220 +255,121 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         {
             // arrange
             List<string> topNIntents = new List<string> { "" };
-            IntentWithScore intentWithScore = new IntentWithScore { IsSuccessful = false, Score = 0M, TopScoringIntent = "", TopNIntents = topNIntents };
+            IntentWithScore intentWithScore = new IntentWithScore { IsSuccessful = false, Score = 0M, TopScoringIntent = "",
+                TopNIntents = topNIntents };
 
             //act 
             int threshold = luisBusinessLogic.ApplyThreshold(intentWithScore);
 
             //assert
-            Assert.Equal(0, threshold);
-        }
-
-        // todo:rakesh - this unit test doesn't test the logic of "SearchWebResourcesAsync(..)" method. Please
-        // delete it. You actually don't need to write a unit test for the methods that don't have a business logic,
-        // (methods that just call other methods/db/services and don't do anything else don't have to be unit tested,
-        // We will implement Integration testing to cover these later on.
-        [Fact]
-        public void GetWebResourcesAsyncWithProperData()
-        {
-            //arrange
-            string searchText = "Access2Justice";
-            string validResponse = "{\r\n  \"webResources\": \"[\\r\\n  {\\r\\n    \\\"id\\\": \\\"https://api.cognitive.microsoft.com/api/v7/#WebPages.0\\\",\\r\\n    \\\"name\\\": \\\"Offer - Indian Contract Act, 1872 - Lawnotes.in\\\",\\r\\n    \\\"url\\\": \\\"http://www.lawnotes.in/Offer_-_Indian_Contract_Act,_1872\\\",\\r\\n    \\\"urlPingSuffix\\\": \\\"DevEx,5071.1\\\",\\r\\n    \\\"about\\\": [\\r\\n      {\\r\\n        \\\"name\\\": \\\"Indian Contract Act, 1872\\\"\\r\\n      }\\r\\n    ],\\r\\n    \\\"isFamilyFriendly\\\": true,\\r\\n    \\\"displayUrl\\\": \\\"www.lawnotes.in/Offer_-_Inan_Contract_Act,_1872\\\",\\r\\n    \\\"snippet\\\": \\\"Main Article : Indian Contract Act, 1872. Offer is one of the essential elements of a contract as defined in Section 10 of the Indian Contract Act, 1872.\\\",\\r\\n    \\\"deepLinks\\\": [\\r\\n      {\\r\\n        \\\"name\\\": \\\"Section 245 of Income-Tax Act, 1961\\\",\\r\\n        \\\"url\\\": \\\"http://www.lawnotes.in/Section_245_of_Income-Tax_Act,_1961\\\",\\r\\n        \\\"urlPingSuffix\\\": \\\"DevEx,5062.1\\\",\\r\\n        \\\"snippet\\\": \\\"Section 245 of Income-Tax Act, 1961 deals with the topic of Set off of refunds against tax remaining payable\\\"\\r\\n      },\\r\\n      {\\r\\n        \\\"name\\\": \\\"11-CV-01846-LHK\\\",\\r\\n        \\\"url\\\": \\\"https://www.lawnotes.in/Apple_Inc_vs_Samsung_Electronics_Co_Ltd_et_al,_No._11-CV-01846-LHK\\\",\\r\\n        \\\"urlPingSuffix\\\": \\\"DevEx,5063.1\\\",\\r\\n        \\\"snippet\\\": \\\"Apple Inc vs Samsung Electronics Co Ltd et al, No. 11-CV-01846-LHK. From Lawnotes.in. Jump to:navigation, search. UNITED STATES DISTRICT COURT NORTHERN DISTRICT OF CALIFORNIA SAN JOSE DIVISION Case No.: 11-CV-01846-LHK APPLE, INC., a California corporation, Plaintiff and Counterdefendant, v. ... Uniloc USA, Inc. v. Micosoft Corp., 632 F.3d 1292, 1302 (Fed. Cir. 2011): ...\\\"\\r\\n      },\\r\\n      {\\r\\n        \\\"name\\\": \\\"Ramesh Chandra Shah And Others v Anil Joshi And Others - Lawnotes.\\\",\\r\\n        \\\"url\\\": \\\"https://www.lawnotes.in/Ramesh_Chandra_Shah_and_others_v_Anil_Joshi_and_others\\\",\\r\\n        \\\"urlPingSuffix\\\": \\\"DevEx,5064.1\\\",\\r\\n        \\\"snippet\\\": \\\"Ramesh Chandra Shah and others … Appellants versus Anil Joshi and others … Respondents J U D G M E N T ... with regard to basic knowledge of computer operation would be tested at the time of interview for which knowledge of Microsoft Operating System and Microsoft Office operation would be essential. In the call letter also which was sent to the appellant at the time of calling him for interview, ...\\\"\\r\\n      }\\r\\n    ],\\r\\n    \\\"dateLastCrawled\\\": \\\"2018-05-16T17:14:00Z\\\",\\r\\n    \\\"fixedPosition\\\": false,\\r\\n    \\\"language\\\": \\\"en\\\"\\r\\n  },\\r\\n  {\\r\\n    \\\"id\\\": \\\"https://api.cognitive.microsoft.com/api/v7/#WebPages.1\\\",\\r\\n    \\\"name\\\": \\\"Book Review- Balance of Justice\\\",\\r\\n    \\\"url\\\": \\\"http://accesstojustice-ng.org/Review_of_the_Balance_of_Justice.pdf\\\",\\r\\n    \\\"urlSuffix\\\": \\\"DevEx,5084.1\\\",\\r\\n    \\\"isFamilyFriendly\\\": true,\\r\\n    \\\"displayUrl\\\": \\\"accesstojustice-ng.org/Review_of_the_Balance_of_Justice.pdf\\\",\\r\\n    \\\"snippet\\\": \\\"The Balance of Justice presents factual insights into how judges of the Federal High Court, Lagos are perceived at work by users of the court system, and comprises of fact-based narratives, inventories, and analyses on the manner judges managed their time, the ... Microsoft Word - Book Review- Balance of Justice.doc Author: techniques Created Date:\\\",\\r\\n    \\\"dateLastCrawled\\\": \\\"2018-04-07T12:11:00Z\\\",\\r\\n    \\\"fixedPosition\\\": false,\\r\\n    \\\"language\\\": \\\"en\\\"\\r\\n  }\\r\\n]\"\r\n}";
-            var responseq = new HttpResponseMessage();
-            var ResponseMessage = "{\"_type\": \"SearchResponse\", \"instrumentation\": {\"_type\": \"ResponseInstrumentation\", \"pingUrlBase\": \"https:\\/\\/www.bingapis.com\\/api\\/ping?IG=428B8CFC22EA4711A146283DEF6F2821&CID=3ED5BEDB376A69A72CE9B52336E1689C&ID=\", \"pageLoadPingUrl\": \"https:\\/\\/www.bingapis.com\\/api\\/ping\\/pageload?IG=428B8CFC22EA4711A146283DEF6F2821&CID=3ED5BEDB376A69A72CE9B52336E1689C&Type=Event.CPT&DATA=0\"}, \"queryContext\": {\"originalQuery\": \"microsoft\"}, \"webPages\": {\"webSearchUrl\": \"https:\\/\\/www.bing.com\\/search?q=microsoft\", \"webSearchUrlPingSuffix\": \"DevEx,5232.1\", \"totalEstimatedMatches\": 5, \"value\": [{\"id\": \"https:\\/\\/api.cognitive.microsoft.com\\/api\\/v7\\/#WebPages.0\", \"name\": \"Offer - Indian Contract Act, 1872 - Lawnotes.in\", \"url\": \"http:\\/\\/www.lawnotes.in\\/Offer_-_Indian_Contract_Act,_1872\", \"urlPingSuffix\": \"DevEx,5071.1\", \"about\": [{\"name\": \"Indian Contract Act, 1872\"}], \"isFamilyFriendly\": true, \"displayUrl\": \"www.lawnotes.in\\/Offer_-_Inan_Contract_Act,_1872\", \"snippet\": \"Main Article : Indian Contract Act, 1872. Offer is one of the essential elements of a contract as defined in Section 10 of the Indian Contract Act, 1872.\", \"deepLinks\": [{\"name\": \"Section 245 of Income-Tax Act, 1961\", \"url\": \"http:\\/\\/www.lawnotes.in\\/Section_245_of_Income-Tax_Act,_1961\", \"urlPingSuffix\": \"DevEx,5062.1\", \"snippet\": \"Section 245 of Income-Tax Act, 1961 deals with the topic of Set off of refunds against tax remaining payable\"}, {\"name\": \"11-CV-01846-LHK\", \"url\": \"https:\\/\\/www.lawnotes.in\\/Apple_Inc_vs_Samsung_Electronics_Co_Ltd_et_al,_No._11-CV-01846-LHK\", \"urlPingSuffix\": \"DevEx,5063.1\", \"snippet\": \"Apple Inc vs Samsung Electronics Co Ltd et al, No. 11-CV-01846-LHK. From Lawnotes.in. Jump to:navigation, search. UNITED STATES DISTRICT COURT NORTHERN DISTRICT OF CALIFORNIA SAN JOSE DIVISION Case No.: 11-CV-01846-LHK APPLE, INC., a California corporation, Plaintiff and Counterdefendant, v. ... Uniloc USA, Inc. v. Micosoft Corp., 632 F.3d 1292, 1302 (Fed. Cir. 2011): ...\"}, {\"name\": \"Ramesh Chandra Shah And Others v Anil Joshi And Others - Lawnotes.\", \"url\": \"https:\\/\\/www.lawnotes.in\\/Ramesh_Chandra_Shah_and_others_v_Anil_Joshi_and_others\", \"urlPingSuffix\": \"DevEx,5064.1\", \"snippet\": \"Ramesh Chandra Shah and others … Appellants versus Anil Joshi and others … Respondents J U D G M E N T ... with regard to basic knowledge of computer operation would be tested at the time of interview for which knowledge of Microsoft Operating System and Microsoft Office operation would be essential. In the call letter also which was sent to the appellant at the time of calling him for interview, ...\"}], \"dateLastCrawled\": \"2018-05-16T17:14:00.0000000Z\", \"fixedPosition\": false, \"language\": \"en\"}, {\"id\": \"https:\\/\\/api.cognitive.microsoft.com\\/api\\/v7\\/#WebPages.1\", \"name\": \"Book Review- Balance of Justice\", \"url\": \"http:\\/\\/accesstojustice-ng.org\\/Review_of_the_Balance_of_Justice.pdf\", \"urlSuffix\": \"DevEx,5084.1\", \"isFamilyFriendly\": true, \"displayUrl\": \"accesstojustice-ng.org\\/Review_of_the_Balance_of_Justice.pdf\", \"snippet\": \"The Balance of Justice presents factual insights into how judges of the Federal High Court, Lagos are perceived at work by users of the court system, and comprises of fact-based narratives, inventories, and analyses on the manner judges managed their time, the ... Microsoft Word - Book Review- Balance of Justice.doc Author: techniques Created Date:\", \"dateLastCrawled\": \"2018-04-07T12:11:00.0000000Z\", \"fixedPosition\": false, \"language\": \"en\"}]}, \"rankingResponse\": {\"mainline\": {\"items\": [{\"answerType\": \"WebPages\", \"resultIndex\": 0, \"value\": {\"id\": \"https:\\/\\/api.cognitive.microsoft.com\\/api\\/v7\\/#WebPages.0\"}}, {\"answerType\": \"WebPages\", \"resultIndex\": 1, \"value\": {\"id\": \"https:\\/\\/api.cognitive.microsoft.com\\/api\\/v7\\/#WebPages.1\"}}]}}}";
-
-            var webResponse = _webSearchBusinessLogic.SearchWebResourcesAsync(searchText);
-            webResponse.Returns(ResponseMessage);
-
-            //act
-            var response = luisBusinessLogic.GetWebResourcesAsync(searchText).Result;
-
-            //assert
-            Assert.Equal(validResponse, response);
-        }
-
-        [Fact]
-        public void GetWebResourcesAsyncWithEmptyValueObject()
-        {
-            //arrange
-            string searchText = "Access2Justice";
-            var responseq = new HttpResponseMessage();
-            var ResponseMessage = "{\"_type\": \"SearchResponse\", \"instrumentation\": {}, \"queryContext\": {\"originalQuery\": \"microsoft\"}, \"webPages\": {\"webSearchUrl\": \"https:\\/\\/www.bing.com\\/search?q=microsoft\", \"webSearchUrlPingSuffix\": \"DevEx,5232.1\", \"totalEstimatedMatches\": 5, \"value\": [{}]}}";
-
-            var webResponse = _webSearchBusinessLogic.SearchWebResourcesAsync(searchText);
-            webResponse.Returns(ResponseMessage);
-
-            //act
-            var response = luisBusinessLogic.GetWebResourcesAsync(searchText).Result;
-
-            //assert
-            Assert.Contains("{\r\n  \"webResources\": \"[\\r\\n  {}\\r\\n]\"\r\n}", response);
-        }
-
-        [Fact]
-        public void GetWebResourcesAsyncWithoutwebPageObject()
-        {
-            //arrange
-            string searchText = "Access2Justice";
-            var responseq = new HttpResponseMessage();
-            var ResponseMessage = "{\"_type\": \"SearchResponse\", \"instrumentation\": {}, \"queryContext\": {\"originalQuery\": \"microsoft\"}}";
-
-            var webResponse = _webSearchBusinessLogic.SearchWebResourcesAsync(searchText);
-            webResponse.Returns(ResponseMessage);
-
-            //act
-            var response = luisBusinessLogic.GetWebResourcesAsync(searchText).Result;
-
-            //assert
-            Assert.Equal("{\r\n  \"webResources\": \"\"\r\n}", response);
-        }
-
-        [Fact]
-        public void GetWebResourcesAsyncWithEmptyObject()
-        {
-            //arrange
-            string searchText = "Access2Justice";
-            var responseq = new HttpResponseMessage();
-            var ResponseMessage = "";
-
-            var webResponse = _webSearchBusinessLogic.SearchWebResourcesAsync(searchText);
-            webResponse.Returns(ResponseMessage);
-
-            //act
-            var response = luisBusinessLogic.GetWebResourcesAsync(searchText).Result;
-
-            //assert
-            Assert.Equal("{\r\n  \"webResources\": \"\"\r\n}", response);
+            Assert.Equal(expectedLowerthreshold, threshold);
         }
 
         [Fact]
         public void GetInternalResourcesAsyncWithProperKeyword()
         {
             //arrange
-            string keywords = "eviction";
-            JArray topicsData = JArray.Parse(@"[{'id':'addf41e9-1a27-4aeb-bcbb-7959f95094ba','name':'Family','parentTopicID':'','keywords':'eviction','location':[{'state':'Hawaii','county':'Kalawao County','city':'Kalawao','zipCode':'96742'},{'zipCode':'96741'},{'state':'Hawaii','county':'Honolulu County','city':'Honolulu'},{'state':'Hawaii','city':'Hawaiian Beaches'},{'state':'Hawaii','city':'Haiku-Pauwela'},{'state':'Alaska'}],'jsonContent':'','icon':'./assets/images/topics/topic14.png','createdBy':'','createdTimeStamp':'','modifiedBy':'','modifiedTimeStamp':'','_rid':'mwoSALHtpAEBAAAAAAAAAA==','_self':'dbs/mwoSAA==/colls/mwoSALHtpAE=/docs/mwoSALHtpAEBAAAAAAAAAA==/','_etag':'\'05008e57-0000-0000-0000-5b0797c10000\'','_attachments':'attachments/','_ts':1527224257},{'id':'3e278591-ec50-479d-8e38-ae9a9d4cabd9','name':'Eviction','parentTopicID':'','keywords':'eviction','location':[{'state':'Hawaii','county':'Kalawao County','city':'Kalawao','zipCode':'96742'},{'zipCode':'96741'},{'state':'Hawaii','county':'Honolulu County','city':'Honolulu'},{'state':'Hawaii','city':'Hawaiian Beaches'},{'state':'Hawaii','city':'Haiku-Pauwela'},{'state':'Alaska'}],'jsonContent':'','icon':'./assets/images/topics/topic14.png','createdBy':'','createdTimeStamp':'','modifiedBy':'','modifiedTimeStamp':'','_rid':'mwoSALHtpAEBAAAAAAAAAA==','_self':'dbs/mwoSAA==/colls/mwoSALHtpAE=/docs/mwoSALHtpAEBAAAAAAAAAA==/','_etag':'\'05008e57-0000-0000-0000-5b0797c10000\'','_attachments':'attachments/','_ts':1527224257},{'id':'3aa3a1be-8291-42b1-85c2-252f756febbc','name':'Housing','parentTopicID':'','keywords':'eviction','location':[{'state':'Hawaii','county':'Kalawao County','city':'Kalawao','zipCode':'96742'},{'zipCode':'96741'},{'state':'Hawaii','county':'Honolulu County','city':'Honolulu'},{'state':'Hawaii','city':'Hawaiian Beaches'},{'state':'Hawaii','city':'Haiku-Pauwela'},{'state':'Alaska'}],'jsonContent':'','icon':'./assets/images/topics/topic14.png','createdBy':'','createdTimeStamp':'','modifiedBy':'','modifiedTimeStamp':'','_rid':'mwoSALHtpAEBAAAAAAAAAA==','_self':'dbs/mwoSAA==/colls/mwoSALHtpAE=/docs/mwoSALHtpAEBAAAAAAAAAA==/','_etag':'\'05008e57-0000-0000-0000-5b0797c10000\'','_attachments':'attachments/','_ts':1527224257}]");
-            JArray resourcesData = JArray.Parse(@"[{'id':'77d301e7-6df2-612e-4704-c04edf271806','name':'Tenant Action Plan for Eviction','description':'This action plan is for tenants who are facing eviction and have experienced the following:','resourceType':'Action','externalUrl':'','url':'','topicTags':[{'id':'f102bfae-362d-4659-aaef-956c391f79de'},{'id':'2c0cc7b8-62b1-4efb-8568-b1f767f879bc'},{'id':'3aa3a1be-8291-42b1-85c2-252f756febbc'}],'location':[{'state':'Hawaii','city':'Kalawao','zipCode':'96742'},{'zipCode':'96741'},{'state':'Hawaii','city':'Honolulu'},{'state':'Hawaii','city':'Hawaiian Beaches'},{'state':'Hawaii','city':'Haiku-Pauwela'},{'state':'Alaska'}],'icon':'./assets/images/resources/resource.png','createdBy':'','createdTimeStamp':'','modifiedBy':'','modifiedTimeStamp':'','_rid':'mwoSAJdNlwIBAAAAAAAAAA==','_self':'dbs/mwoSAA==/colls/mwoSAJdNlwI=/docs/mwoSAJdNlwIBAAAAAAAAAA==/','_etag':'\'040007b5-0000-0000-0000-5b0792260000\'','_attachments':'attachments/','_ts':1527222822},{'id':'19a02209-ca38-4b74-bd67-6ea941d41518','name':'Legal Help Organization','description':'This action plan is for tenants who are facing eviction and have experienced the following:','resourceType':'Organization','externalUrl':'','url':'','topicTags':[{'id':'f102bfae-362d-4659-aaef-956c391f79de'},{'id':'2c0cc7b8-62b1-4efb-8568-b1f767f879bc'},{'id':'3aa3a1be-8291-42b1-85c2-252f756febbc'}],'location':[{'state':'Hawaii','city':'Kalawao','zipCode':'96742'},{'zipCode':'96741'},{'state':'Hawaii','city':'Honolulu'},{'state':'Hawaii','city':'Hawaiian Beaches'},{'state':'Hawaii','city':'Haiku-Pauwela'},{'state':'Alaska'}],'icon':'./assets/images/resources/resource.png','createdBy':'','createdTimeStamp':'','modifiedBy':'','modifiedTimeStamp':'','_rid':'mwoSAJdNlwIBAAAAAAAAAA==','_self':'dbs/mwoSAA==/colls/mwoSAJdNlwI=/docs/mwoSAJdNlwIBAAAAAAAAAA==/','_etag':'\'040007b5-0000-0000-0000-5b0792260000\'','_attachments':'attachments/','_ts':1527222822},{'id':'2225cb29-2442-42ac-a4f5-9e88a7aabc4a','name':'Landlord Action Plan','description':'This action plan is for land lord who are facing eviction and have experienced the following:','resourceType':'Action','externalUrl':'','url':'','topicTags':[{'id':'f102bfae-362d-4659-aaef-956c391f79de'},{'id':'2c0cc7b8-62b1-4efb-8568-b1f767f879bc'},{'id':'3aa3a1be-8291-42b1-85c2-252f756febbc'}],'location':[{'state':'Hawaii','city':'Kalawao','zipCode':'96742'},{'zipCode':'96741'},{'state':'Hawaii','city':'Honolulu'},{'state':'Hawaii','city':'Hawaiian Beaches'},{'state':'Hawaii','city':'Haiku-Pauwela'},{'state':'Alaska'}],'icon':'./assets/images/resources/resource.png','createdBy':'','createdTimeStamp':'','modifiedBy':'','modifiedTimeStamp':'','_rid':'mwoSAJdNlwIBAAAAAAAAAA==','_self':'dbs/mwoSAA==/colls/mwoSAJdNlwI=/docs/mwoSAJdNlwIBAAAAAAAAAA==/','_etag':'\'040007b5-0000-0000-0000-5b0792260000\'','_attachments':'attachments/','_ts':1527222822}]");
-
             _topicsResourcesBusinessLogic.GetTopicAsync(Arg.Any<string>()).Returns(topicsData);
-
             _topicsResourcesBusinessLogic.GetResourcesAsync(Arg.Any<string>()).Returns(resourcesData);
-
-
+            
             //act
-            var result = luisBusinessLogic.GetInternalResourcesAsync(keywords).Result;
+            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword).Result;
 
-
-            //assert
-            Assert.Contains("77d301e7-6df2-612e-4704-c04edf271806", result);
-            Assert.DoesNotContain("_ts", result);
+            //assert            
+            Assert.Contains(expectedTopicId, result);            
         }
 
         [Fact]
         public void GetInternalResourcesAsyncWithEmptyTopic()
         {
             //arrange
-            string keywords = "eviction";
-            JObject topicsData = JObject.Parse(@"{}");
-
-            _topicsResourcesBusinessLogic.GetTopicAsync(Arg.Any<string>()).Returns(topicsData);
+            _topicsResourcesBusinessLogic.GetTopicAsync(Arg.Any<string>()).Returns(emptyTopicObject);
 
             //act
-            var result = luisBusinessLogic.GetInternalResourcesAsync(keywords).Result;
+            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword).Result;
 
             //assert
-            Assert.Equal("{\r\n  \"topics\": \"\",\r\n  \"resources\": \"\"\r\n}", result);
+            Assert.Equal("{\r\n  \"topics\": [],\r\n  \"resources\": []\r\n}", result);
         }
 
         [Fact]
         public void GetInternalResourcesAsyncWithEmptyResource()
         {
             //arrange
-            string keywords = "eviction";
-            JArray topicsData = JArray.Parse(@"[{'id':'addf41e9-1a27-4aeb-bcbb-7959f95094ba','name':'Family','parentTopicID':'','keywords':'eviction','location':[{'state':'Hawaii','county':'Kalawao County','city':'Kalawao','zipCode':'96742'},{'zipCode':'96741'},{'state':'Hawaii','county':'Honolulu County','city':'Honolulu'},{'state':'Hawaii','city':'Hawaiian Beaches'},{'state':'Hawaii','city':'Haiku-Pauwela'},{'state':'Alaska'}],'jsonContent':'','icon':'./assets/images/topics/topic14.png','createdBy':'','createdTimeStamp':'','modifiedBy':'','modifiedTimeStamp':'','_rid':'mwoSALHtpAEBAAAAAAAAAA==','_self':'dbs/mwoSAA==/colls/mwoSALHtpAE=/docs/mwoSALHtpAEBAAAAAAAAAA==/','_etag':'\'05008e57-0000-0000-0000-5b0797c10000\'','_attachments':'attachments/','_ts':1527224257},{'id':'3e278591-ec50-479d-8e38-ae9a9d4cabd9','name':'Eviction','parentTopicID':'','keywords':'eviction','location':[{'state':'Hawaii','county':'Kalawao County','city':'Kalawao','zipCode':'96742'},{'zipCode':'96741'},{'state':'Hawaii','county':'Honolulu County','city':'Honolulu'},{'state':'Hawaii','city':'Hawaiian Beaches'},{'state':'Hawaii','city':'Haiku-Pauwela'},{'state':'Alaska'}],'jsonContent':'','icon':'./assets/images/topics/topic14.png','createdBy':'','createdTimeStamp':'','modifiedBy':'','modifiedTimeStamp':'','_rid':'mwoSALHtpAEBAAAAAAAAAA==','_self':'dbs/mwoSAA==/colls/mwoSALHtpAE=/docs/mwoSALHtpAEBAAAAAAAAAA==/','_etag':'\'05008e57-0000-0000-0000-5b0797c10000\'','_attachments':'attachments/','_ts':1527224257},{'id':'3aa3a1be-8291-42b1-85c2-252f756febbc','name':'Housing','parentTopicID':'','keywords':'eviction','location':[{'state':'Hawaii','county':'Kalawao County','city':'Kalawao','zipCode':'96742'},{'zipCode':'96741'},{'state':'Hawaii','county':'Honolulu County','city':'Honolulu'},{'state':'Hawaii','city':'Hawaiian Beaches'},{'state':'Hawaii','city':'Haiku-Pauwela'},{'state':'Alaska'}],'jsonContent':'','icon':'./assets/images/topics/topic14.png','createdBy':'','createdTimeStamp':'','modifiedBy':'','modifiedTimeStamp':'','_rid':'mwoSALHtpAEBAAAAAAAAAA==','_self':'dbs/mwoSAA==/colls/mwoSALHtpAE=/docs/mwoSALHtpAEBAAAAAAAAAA==/','_etag':'\'05008e57-0000-0000-0000-5b0797c10000\'','_attachments':'attachments/','_ts':1527224257}]");
-            JObject resourcesData = JObject.Parse(@"{}");
-
             _topicsResourcesBusinessLogic.GetTopicAsync(Arg.Any<string>()).Returns(topicsData);
-
-            _topicsResourcesBusinessLogic.GetResourcesAsync(Arg.Any<string>()).Returns(resourcesData);
+            _topicsResourcesBusinessLogic.GetResourcesAsync(Arg.Any<string>()).Returns(emptyResourceObject);
 
             //act
-            var result = luisBusinessLogic.GetInternalResourcesAsync(keywords).Result;
+            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword).Result;
 
             //assert
-            Assert.Contains("addf41e9-1a27-4aeb-bcbb-7959f95094ba", result);
+            Assert.Contains(expectedTopicId, result);            
+            Assert.DoesNotContain(expectedResourceId, result);
         }
 
         [Fact]
         public void GetInternalResourcesAsyncWithTopicResource()
         {
             //arrange
-            string keywords = "eviction";
-            JArray topicsData = JArray.Parse(@"[{'id':'addf41e9-1a27-4aeb-bcbb-7959f95094ba','name':'Family','parentTopicID':'','keywords':'eviction','location':[{'state':'Hawaii','county':'Kalawao County','city':'Kalawao','zipCode':'96742'},{'zipCode':'96741'},{'state':'Hawaii','county':'Honolulu County','city':'Honolulu'},{'state':'Hawaii','city':'Hawaiian Beaches'},{'state':'Hawaii','city':'Haiku-Pauwela'},{'state':'Alaska'}],'jsonContent':'','icon':'./assets/images/topics/topic14.png','createdBy':'','createdTimeStamp':'','modifiedBy':'','modifiedTimeStamp':'','_rid':'mwoSALHtpAEBAAAAAAAAAA==','_self':'dbs/mwoSAA==/colls/mwoSALHtpAE=/docs/mwoSALHtpAEBAAAAAAAAAA==/','_etag':'\'05008e57-0000-0000-0000-5b0797c10000\'','_attachments':'attachments/','_ts':1527224257}]");
-            JArray resourcesData = JArray.Parse(@"[{'id':'77d301e7-6df2-612e-4704-c04edf271806','name':'Tenant Action Plan for Eviction','description':'This action plan is for tenants who are facing eviction and have experienced the following:','resourceType':'Action','externalUrl':'','url':'','topicTags':[{'id':'f102bfae-362d-4659-aaef-956c391f79de'},{'id':'2c0cc7b8-62b1-4efb-8568-b1f767f879bc'},{'id':'3aa3a1be-8291-42b1-85c2-252f756febbc'}],'location':[{'state':'Hawaii','city':'Kalawao','zipCode':'96742'},{'zipCode':'96741'},{'state':'Hawaii','city':'Honolulu'},{'state':'Hawaii','city':'Hawaiian Beaches'},{'state':'Hawaii','city':'Haiku-Pauwela'},{'state':'Alaska'}],'icon':'./assets/images/resources/resource.png','createdBy':'','createdTimeStamp':'','modifiedBy':'','modifiedTimeStamp':'','_rid':'mwoSAJdNlwIBAAAAAAAAAA==','_self':'dbs/mwoSAA==/colls/mwoSAJdNlwI=/docs/mwoSAJdNlwIBAAAAAAAAAA==/','_etag':'\'040007b5-0000-0000-0000-5b0792260000\'','_attachments':'attachments/','_ts':1527222822}]");
-
             _topicsResourcesBusinessLogic.GetTopicAsync(Arg.Any<string>()).Returns(topicsData);
 
             _topicsResourcesBusinessLogic.GetResourcesAsync(Arg.Any<string>()).Returns(resourcesData);
 
             //act
-            var result = luisBusinessLogic.GetInternalResourcesAsync(keywords).Result;
+            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword).Result;
 
             //assert
-            Assert.Contains("addf41e9-1a27-4aeb-bcbb-7959f95094ba", result);
-            Assert.Contains("77d301e7-6df2-612e-4704-c04edf271806", result);
+            Assert.Contains(expectedTopicId, result);
+            Assert.Contains(expectedResourceId, result);
         }
 
         [Fact]
         public void GetResourceBasedOnThresholdAsyncWithLowScore()
         {
-            string searchText = "i'm getting kicked out";
-            var luisResponse = _luisProxy.GetIntents(searchText);
-            // todo:rakesh - I updated the code so that the json doesn't have these escape charcter. Please update this json so that the test passes again.
-            luisResponse.Returns("{\r\n  \"query\": \"eviction\",\r\n  \"topScoringIntent\": {\r\n    \"intent\": \"Eviction\",\r\n    \"score\": 0.37\r\n  },\r\n  \"intents\": [\r\n    {\r\n      \"intent\": \"Eviction\",\r\n      \"score\": 0.998598337\r\n    },\r\n    {\r\n      \"intent\": \"None\",\r\n      \"score\": 0.3924698\r\n    },\r\n    {\r\n      \"intent\": \"Small Claims Court\",\r\n      \"score\": 0.374458015\r\n    },\r\n    {\r\n      \"intent\": \"Mobile home park tenants\",\r\n      \"score\": 0.352736056\r\n    },\r\n    {\r\n      \"intent\": \"Going to court\",\r\n      \"score\": 0.131461561\r\n    },\r\n    {\r\n      \"intent\": \"Domestic Violence\",\r\n      \"score\": 0.0386172235\r\n    },\r\n    {\r\n      \"intent\": \"Separation\",\r\n      \"score\": 0.035968408\r\n    },\r\n    {\r\n      \"intent\": \"Foreclosure\",\r\n      \"score\": 0.0271484256\r\n    },\r\n    {\r\n      \"intent\": \"division of property\",\r\n      \"score\": 0.0246635266\r\n    },\r\n    {\r\n      \"intent\": \"Child support\",\r\n      \"score\": 0.0197562873\r\n    },\r\n    {\r\n      \"intent\": \"child custody\",\r\n      \"score\": 0.0193109587\r\n    },\r\n    {\r\n      \"intent\": \"Other Consumer\",\r\n      \"score\": 0.0174270831\r\n    },\r\n    {\r\n      \"intent\": \"Unemployment\",\r\n      \"score\": 0.0172820911\r\n    },\r\n    {\r\n      \"intent\": \"Guardianship\",\r\n      \"score\": 0.0149135459\r\n    },\r\n    {\r\n      \"intent\": \"Consumer Fraud\",\r\n      \"score\": 0.0109810177\r\n    },\r\n    {\r\n      \"intent\": \"Contracts\",\r\n      \"score\": 0.0105354656\r\n    },\r\n    {\r\n      \"intent\": \"Elder Abuse\",\r\n      \"score\": 0.0100716464\r\n    },\r\n    {\r\n      \"intent\": \"Divorce\",\r\n      \"score\": 0.009231578\r\n    },\r\n    {\r\n      \"intent\": \"Managing money\",\r\n      \"score\": 0.00913277548\r\n    },\r\n    {\r\n      \"intent\": \"Sexual Assault\",\r\n      \"score\": 0.007721106\r\n    },\r\n    {\r\n      \"intent\": \"Home buyers & owners\",\r\n      \"score\": 0.00558177941\r\n    },\r\n    {\r\n      \"intent\": \"Marriage equality\",\r\n      \"score\": 0.005541543\r\n    },\r\n    {\r\n      \"intent\": \"Utilities & phones\",\r\n      \"score\": 0.00534641044\r\n    },\r\n    {\r\n      \"intent\": \"Public & subsidized housing\",\r\n      \"score\": 0.005005484\r\n    },\r\n    {\r\n      \"intent\": \"Contempt of court\",\r\n      \"score\": 0.00479589263\r\n    },\r\n    {\r\n      \"intent\": \"Tenant's rights\",\r\n      \"score\": 0.00391642563\r\n    },\r\n    {\r\n      \"intent\": \"marriage\",\r\n      \"score\": 0.00364745827\r\n    },\r\n    {\r\n      \"intent\": \"The child protection system\",\r\n      \"score\": 0.00345990737\r\n    },\r\n    {\r\n      \"intent\": \"Legal financial obligation\",\r\n      \"score\": 0.00318646478\r\n    },\r\n    {\r\n      \"intent\": \"Custody\",\r\n      \"score\": 0.002302651\r\n    },\r\n    {\r\n      \"intent\": \"Car issues\",\r\n      \"score\": 0.00218277727\r\n    },\r\n    {\r\n      \"intent\": \"Emergency shelter & assistance\",\r\n      \"score\": 0.00181414338\r\n    },\r\n    {\r\n      \"intent\": \"Driver & Professional licenses\",\r\n      \"score\": 0.00177037634\r\n    },\r\n    {\r\n      \"intent\": \"Employment Discrimination\",\r\n      \"score\": 0.00176623627\r\n    },\r\n    {\r\n      \"intent\": \"Credit problems\",\r\n      \"score\": 0.00128342363\r\n    },\r\n    {\r\n      \"intent\": \"alimony\",\r\n      \"score\": 0.00127891626\r\n    },\r\n    {\r\n      \"intent\": \"Parenting Plans/Custody\",\r\n      \"score\": 0.0012039718\r\n    },\r\n    {\r\n      \"intent\": \"Adoption\",\r\n      \"score\": 0.00105760642\r\n    },\r\n    {\r\n      \"intent\": \"Paternity/Parentage\",\r\n      \"score\": 0.00103898533\r\n    },\r\n    {\r\n      \"intent\": \"Divorce Contested\",\r\n      \"score\": 0.00100662454\r\n    },\r\n    {\r\n      \"intent\": \"Debt\",\r\n      \"score\": 0.0007743759\r\n    },\r\n    {\r\n      \"intent\": \"Identity\",\r\n      \"score\": 0.000727297564\r\n    },\r\n    {\r\n      \"intent\": \"Divorce Legal Separation\",\r\n      \"score\": 0.000590754149\r\n    },\r\n    {\r\n      \"intent\": \"Utilities and telecommunications\",\r\n      \"score\": 0.000529284531\r\n    },\r\n    {\r\n      \"intent\": \"Medical bills\",\r\n      \"score\": 0.000471992535\r\n    },\r\n    {\r\n      \"intent\": \"Student loans\",\r\n      \"score\": 0.0004546414\r\n    },\r\n    {\r\n      \"intent\": \"Divorce Annulment\",\r\n      \"score\": 0.000423705118\r\n    },\r\n    {\r\n      \"intent\": \"Other family\",\r\n      \"score\": 0.00041898893\r\n    },\r\n    {\r\n      \"intent\": \"Divorce Uncontested\",\r\n      \"score\": 0.0003876439\r\n    },\r\n    {\r\n      \"intent\": \"Unmarried couples\",\r\n      \"score\": 0.000380990357\r\n    },\r\n    {\r\n      \"intent\": \"More family court procedures\",\r\n      \"score\": 0.000221170354\r\n    },\r\n    {\r\n      \"intent\": \"Housing discrimination\",\r\n      \"score\": 0.00018730732\r\n    },\r\n    {\r\n      \"intent\": \"Veteran/Military Families\",\r\n      \"score\": 0.000181092473\r\n    },\r\n    {\r\n      \"intent\": \"Bankrucptcy\",\r\n      \"score\": 0.000131298162\r\n    },\r\n    {\r\n      \"intent\": \"Non-parents caring for children\",\r\n      \"score\": 7.45657E-05\r\n    },\r\n    {\r\n      \"intent\": \"Relocation\",\r\n      \"score\": 6.903267E-05\r\n    },\r\n    {\r\n      \"intent\": \"Non-parent custody\",\r\n      \"score\": 1.08726072E-05\r\n    }\r\n  ],\r\n  \"entities\": []\r\n}");
+            //arrange
+            var luisResponse = _luisProxy.GetIntents(searchText);           
+            luisResponse.Returns(lowScoreLuisResponse);
+           
+            var webResponse = _webSearchBusinessLogic.SearchWebResourcesAsync(searchText);
+            webResponse.Returns(webData);           
 
-            var webResponse = _luisBusinessLogic.GetWebResourcesAsync(searchText);
-            webResponse.Returns("{\r\n  \"webResources\": \"[\\r\\n  {\\r\\n    \\\"id\\\": \\\"https://api.cognitive.microsoft.com/api/v7/#WebPages.0\\\",\\r\\n    \\\"name\\\": \\\"Offer - Indian Contract Act, 1872 - Lawnotes.in\\\",\\r\\n    \\\"url\\\": \\\"http://www.lawnotes.in/Offer_-_Indian_Contract_Act,_1872\\\",\\r\\n    \\\"urlPingSuffix\\\": \\\"DevEx,5072.1\\\",\\r\\n    \\\"about\\\": [\\r\\n      {\\r\\n        \\\"name\\\": \\\"Indian Contract Act, 1872\\\"\\r\\n      }\\r\\n    ],\\r\\n    \\\"isFamilyFriendly\\\": true,\\r\\n    \\\"displayUrl\\\": \\\"www.lawnotes.in/Offer_-_Indian_Contract_Act,_1872\\\",\\r\\n    \\\"snippet\\\": \\\"Main Article : Indian Contract Act, 1872. Offer is one of the essential elements of a contract as defined in Section 10 of the Indian Contract Act, 1872.\\\",\\r\\n    \\\"deepLinks\\\": [\\r\\n      {\\r\\n        \\\"name\\\": \\\"Section 245 of Income-Tax Act, 1961\\\",\\r\\n        \\\"url\\\": \\\"http://www.lawnotes.in/Section_245_of_Income-Tax_Act,_1961\\\",\\r\\n        \\\"urlPingSuffix\\\": \\\"DevEx,5063.1\\\",\\r\\n        \\\"snippet\\\": \\\"Section 245 of Income-Tax Act, 1961 deals with the topic of Set off of refunds against tax remaining payable\\\"\\r\\n      },\\r\\n      {\\r\\n        \\\"name\\\": \\\"11-CV-01846-LHK\\\",\\r\\n        \\\"url\\\": \\\"https://www.lawnotes.in/Apple_Inc_vs_Samsung_Electronics_Co_Ltd_et_al,_No._11-CV-01846-LHK\\\",\\r\\n        \\\"urlPingSuffix\\\": \\\"DevEx,5064.1\\\",\\r\\n        \\\"snippet\\\": \\\"Apple Inc vs Samsung Electronics Co Ltd et al, No. 11-CV-01846-LHK. From Lawnotes.in. Jump to:navigation, search. UNITED STATES DISTRICT COURT NORTHERN DISTRICT OF CALIFORNIA SAN JOSE DIVISION Case No.: 11-CV-01846-LHK APPLE, INC., a California corporation, Plaintiff and Counterdefendant, v. ... Uniloc USA, Inc. v. Microsoft Corp., 632 F.3d 1292, 1302 (Fed. Cir. 2011): ...\\\"\\r\\n      },\\r\\n      {\\r\\n        \\\"name\\\": \\\"Ramesh Chandra Shah And Others v Anil Joshi And Others - Lawnotes.\\\",\\r\\n        \\\"url\\\": \\\"https://www.lawnotes.in/Ramesh_Chandra_Shah_and_others_v_Anil_Joshi_and_others\\\",\\r\\n        \\\"urlPingSuffix\\\": \\\"DevEx,5065.1\\\",\\r\\n        \\\"snippet\\\": \\\"Ramesh Chandra Shah and others … Appellants versus Anil Joshi and others … Respondents J U D G M E N T ... with regard to basic knowledge of computer operation would be tested at the time of interview for which knowledge of Microsoft Operating System and Microsoft Office operation would be essential. In the call letter also which was sent to the appellant at the time of calling him for interview, ...\\\"\\r\\n      }\\r\\n    ],\\r\\n    \\\"dateLastCrawled\\\": \\\"2018-05-19T11:27:00Z\\\",\\r\\n    \\\"fixedPosition\\\": false,\\r\\n    \\\"language\\\": \\\"en\\\"\\r\\n  },\\r\\n  {\\r\\n    \\\"id\\\": \\\"https://api.cognitive.microsoft.com/api/v7/#WebPages.1\\\",\\r\\n    \\\"name\\\": \\\"Book Review- Balance of Justice\\\",\\r\\n    \\\"url\\\": \\\"http://accesstojustice-ng.org/Review_of_the_Balance_of_Justice.pdf\\\",\\r\\n    \\\"urlPingSuffix\\\": \\\"DevEx,5085.1\\\",\\r\\n    \\\"isFamilyFriendly\\\": true,\\r\\n    \\\"displayUrl\\\": \\\"accesstojustice-ng.org/Review_of_the_Balance_of_Justice.pdf\\\",\\r\\n    \\\"snippet\\\": \\\"Access to Justice’ Report Put Federal High Court Judges in the Performance Spotlight The Report The Balance of Justice is a performance-related\\\",\\r\\n    \\\"dateLastCrawled\\\": \\\"2018-04-07T12:11:00Z\\\",\\r\\n    \\\"fixedPosition\\\": false,\\r\\n    \\\"language\\\": \\\"en\\\"\\r\\n  }\\r\\n]\"\r\n}");
-
+            //act
             var result = luisBusinessLogic.GetResourceBasedOnThresholdAsync(searchText).Result;
 
-
+            //assert
+            Assert.Contains(expectedWebResponse, result);
         }
 
         [Fact]
         public void GetResourceBasedOnThresholdAsyncWithMediumScore()
         {
             //arrange
-            string searchText = "i'm getting kicked out";
             var luisResponse = _luisProxy.GetIntents(searchText);
-            luisResponse.Returns("{\r\n  \"query\": \"eviction\",\r\n  \"topScoringIntent\": {\r\n    \"intent\": \"Eviction\",\r\n    \"score\": 0.78\r\n  },\r\n  \"intents\": [\r\n    {\r\n      \"intent\": \"Eviction\",\r\n      \"score\": 0.998598337\r\n    },\r\n    {\r\n      \"intent\": \"None\",\r\n      \"score\": 0.3924698\r\n    },\r\n    {\r\n      \"intent\": \"Small Claims Court\",\r\n      \"score\": 0.374458015\r\n    },\r\n    {\r\n      \"intent\": \"Mobile home park tenants\",\r\n      \"score\": 0.352736056\r\n    },\r\n    {\r\n      \"intent\": \"Going to court\",\r\n      \"score\": 0.131461561\r\n    },\r\n    {\r\n      \"intent\": \"Domestic Violence\",\r\n      \"score\": 0.0386172235\r\n    },\r\n    {\r\n      \"intent\": \"Separation\",\r\n      \"score\": 0.035968408\r\n    },\r\n    {\r\n      \"intent\": \"Foreclosure\",\r\n      \"score\": 0.0271484256\r\n    },\r\n    {\r\n      \"intent\": \"division of property\",\r\n      \"score\": 0.0246635266\r\n    },\r\n    {\r\n      \"intent\": \"Child support\",\r\n      \"score\": 0.0197562873\r\n    },\r\n    {\r\n      \"intent\": \"child custody\",\r\n      \"score\": 0.0193109587\r\n    },\r\n    {\r\n      \"intent\": \"Other Consumer\",\r\n      \"score\": 0.0174270831\r\n    },\r\n    {\r\n      \"intent\": \"Unemployment\",\r\n      \"score\": 0.0172820911\r\n    },\r\n    {\r\n      \"intent\": \"Guardianship\",\r\n      \"score\": 0.0149135459\r\n    },\r\n    {\r\n      \"intent\": \"Consumer Fraud\",\r\n      \"score\": 0.0109810177\r\n    },\r\n    {\r\n      \"intent\": \"Contracts\",\r\n      \"score\": 0.0105354656\r\n    },\r\n    {\r\n      \"intent\": \"Elder Abuse\",\r\n      \"score\": 0.0100716464\r\n    },\r\n    {\r\n      \"intent\": \"Divorce\",\r\n      \"score\": 0.009231578\r\n    },\r\n    {\r\n      \"intent\": \"Managing money\",\r\n      \"score\": 0.00913277548\r\n    },\r\n    {\r\n      \"intent\": \"Sexual Assault\",\r\n      \"score\": 0.007721106\r\n    },\r\n    {\r\n      \"intent\": \"Home buyers & owners\",\r\n      \"score\": 0.00558177941\r\n    },\r\n    {\r\n      \"intent\": \"Marriage equality\",\r\n      \"score\": 0.005541543\r\n    },\r\n    {\r\n      \"intent\": \"Utilities & phones\",\r\n      \"score\": 0.00534641044\r\n    },\r\n    {\r\n      \"intent\": \"Public & subsidized housing\",\r\n      \"score\": 0.005005484\r\n    },\r\n    {\r\n      \"intent\": \"Contempt of court\",\r\n      \"score\": 0.00479589263\r\n    },\r\n    {\r\n      \"intent\": \"Tenant's rights\",\r\n      \"score\": 0.00391642563\r\n    },\r\n    {\r\n      \"intent\": \"marriage\",\r\n      \"score\": 0.00364745827\r\n    },\r\n    {\r\n      \"intent\": \"The child protection system\",\r\n      \"score\": 0.00345990737\r\n    },\r\n    {\r\n      \"intent\": \"Legal financial obligation\",\r\n      \"score\": 0.00318646478\r\n    },\r\n    {\r\n      \"intent\": \"Custody\",\r\n      \"score\": 0.002302651\r\n    },\r\n    {\r\n      \"intent\": \"Car issues\",\r\n      \"score\": 0.00218277727\r\n    },\r\n    {\r\n      \"intent\": \"Emergency shelter & assistance\",\r\n      \"score\": 0.00181414338\r\n    },\r\n    {\r\n      \"intent\": \"Driver & Professional licenses\",\r\n      \"score\": 0.00177037634\r\n    },\r\n    {\r\n      \"intent\": \"Employment Discrimination\",\r\n      \"score\": 0.00176623627\r\n    },\r\n    {\r\n      \"intent\": \"Credit problems\",\r\n      \"score\": 0.00128342363\r\n    },\r\n    {\r\n      \"intent\": \"alimony\",\r\n      \"score\": 0.00127891626\r\n    },\r\n    {\r\n      \"intent\": \"Parenting Plans/Custody\",\r\n      \"score\": 0.0012039718\r\n    },\r\n    {\r\n      \"intent\": \"Adoption\",\r\n      \"score\": 0.00105760642\r\n    },\r\n    {\r\n      \"intent\": \"Paternity/Parentage\",\r\n      \"score\": 0.00103898533\r\n    },\r\n    {\r\n      \"intent\": \"Divorce Contested\",\r\n      \"score\": 0.00100662454\r\n    },\r\n    {\r\n      \"intent\": \"Debt\",\r\n      \"score\": 0.0007743759\r\n    },\r\n    {\r\n      \"intent\": \"Identity\",\r\n      \"score\": 0.000727297564\r\n    },\r\n    {\r\n      \"intent\": \"Divorce Legal Separation\",\r\n      \"score\": 0.000590754149\r\n    },\r\n    {\r\n      \"intent\": \"Utilities and telecommunications\",\r\n      \"score\": 0.000529284531\r\n    },\r\n    {\r\n      \"intent\": \"Medical bills\",\r\n      \"score\": 0.000471992535\r\n    },\r\n    {\r\n      \"intent\": \"Student loans\",\r\n      \"score\": 0.0004546414\r\n    },\r\n    {\r\n      \"intent\": \"Divorce Annulment\",\r\n      \"score\": 0.000423705118\r\n    },\r\n    {\r\n      \"intent\": \"Other family\",\r\n      \"score\": 0.00041898893\r\n    },\r\n    {\r\n      \"intent\": \"Divorce Uncontested\",\r\n      \"score\": 0.0003876439\r\n    },\r\n    {\r\n      \"intent\": \"Unmarried couples\",\r\n      \"score\": 0.000380990357\r\n    },\r\n    {\r\n      \"intent\": \"More family court procedures\",\r\n      \"score\": 0.000221170354\r\n    },\r\n    {\r\n      \"intent\": \"Housing discrimination\",\r\n      \"score\": 0.00018730732\r\n    },\r\n    {\r\n      \"intent\": \"Veteran/Military Families\",\r\n      \"score\": 0.000181092473\r\n    },\r\n    {\r\n      \"intent\": \"Bankrucptcy\",\r\n      \"score\": 0.000131298162\r\n    },\r\n    {\r\n      \"intent\": \"Non-parents caring for children\",\r\n      \"score\": 7.45657E-05\r\n    },\r\n    {\r\n      \"intent\": \"Relocation\",\r\n      \"score\": 6.903267E-05\r\n    },\r\n    {\r\n      \"intent\": \"Non-parent custody\",\r\n      \"score\": 1.08726072E-05\r\n    }\r\n  ],\r\n  \"entities\": []\r\n}");
+            luisResponse.Returns(noneLuisResponse);
 
             //act
             var response = luisBusinessLogic.GetResourceBasedOnThresholdAsync(searchText).Result;
 
             //assert
-            Assert.Contains("luisResponse", response);
+            Assert.Contains(expectedLuisResponse, response);
         }
 
         [Fact]
         public void GetResourceBasedOnThresholdAsyncUpperScore()
         {
             //arrange
-            string query = "i'm getting kicked out";
-            var internalResponse = "{\r\n  \"topics\": \"[\\r\\n  {\\r\\n    \\\"id\\\": \\\"addf41e9-1a27-4aeb-bcbb-7959f95094ba\\\",\\r\\n    \\\"name\\\": \\\"Family\\\",\\r\\n    \\\"parentTopicID\\\": \\\"\\\",\\r\\n    \\\"keywords\\\": \\\"eviction\\\",\\r\\n    \\\"location\\\": [\\r\\n      {\\r\\n        \\\"state\\\": \\\"Hawaii\\\",\\r\\n        \\\"county\\\": \\\"Kalawao County\\\",\\r\\n        \\\"city\\\": \\\"Kalawao\\\",\\r\\n        \\\"zipCode\\\": \\\"96742\\\"\\r\\n      },\\r\\n      {\\r\\n        \\\"zipCode\\\": \\\"96741\\\"\\r\\n      },\\r\\n      {\\r\\n        \\\"state\\\": \\\"Hawaii\\\",\\r\\n        \\\"county\\\": \\\"Honolulu County\\\",\\r\\n        \\\"city\\\": \\\"Honolulu\\\"\\r\\n      },\\r\\n      {\\r\\n        \\\"state\\\": \\\"Hawaii\\\",\\r\\n        \\\"city\\\": \\\"Hawaiian Beaches\\\"\\r\\n      },\\r\\n      {\\r\\n        \\\"state\\\": \\\"Hawaii\\\",\\r\\n        \\\"city\\\": \\\"Haiku-Pauwela\\\"\\r\\n      },\\r\\n      {\\r\\n        \\\"state\\\": \\\"Alaska\\\"\\r\\n      }\\r\\n    ],\\r\\n    \\\"jsonContent\\\": \\\"\\\",\\r\\n    \\\"icon\\\": \\\"./assets/images/topics/topic14.png\\\",\\r\\n    \\\"createdBy\\\": \\\"\\\",\\r\\n    \\\"createdTimeStamp\\\": \\\"\\\",\\r\\n    \\\"modifiedBy\\\": \\\"\\\",\\r\\n    \\\"modifiedTimeStamp\\\": \\\"\\\"\\r\\n  },\\r\\n  {\\r\\n    \\\"id\\\": \\\"3aa3a1be-8291-42b1-85c2-252f756febbc\\\",\\r\\n    \\\"name\\\": \\\"Housing\\\",\\r\\n    \\\"parentTopicID\\\": \\\"\\\",\\r\\n    \\\"keywords\\\": \\\"eviction|housing|tenant\\\",\\r\\n    \\\"location\\\": [\\r\\n      {\\r\\n        \\\"state\\\": \\\"Hawaii\\\"\\r\\n      },\\r\\n      {\\r\\n        \\\"state\\\": \\\"Alaska\\\"\\r\\n      }\\r\\n    ],\\r\\n    \\\"jsonContent\\\": \\\"\\\",\\r\\n    \\\"icon\\\": \\\"./assets/images/topics/topic14.png\\\",\\r\\n    \\\"createdBy\\\": \\\"\\\",\\r\\n    \\\"createdTimeStamp\\\": \\\"\\\",\\r\\n    \\\"modifiedBy\\\": \\\"\\\",\\r\\n    \\\"modifiedTimeStamp\\\": \\\"\\\"\\r\\n  },\\r\\n  {\\r\\n    \\\"id\\\": \\\"3e278591-ec50-479d-8e38-ae9a9d4cabd9\\\",\\r\\n    \\\"name\\\": \\\"Eviction\\\",\\r\\n    \\\"parentTopicID\\\": \\\"3aa3a1be-8291-42b1-85c2-252f756febbc\\\",\\r\\n    \\\"keywords\\\": \\\"eviction|kicked out|children\\\",\\r\\n    \\\"location\\\": [\\r\\n      {\\r\\n        \\\"state\\\": \\\"Hawaii\\\",\\r\\n        \\\"city\\\": \\\"Kalawao\\\"\\r\\n      },\\r\\n      {\\r\\n        \\\"zipCode\\\": \\\"96741\\\"\\r\\n      },\\r\\n      {\\r\\n        \\\"state\\\": \\\"Hawaii\\\",\\r\\n        \\\"city\\\": \\\"Honolulu\\\"\\r\\n      },\\r\\n      {\\r\\n        \\\"state\\\": \\\"Hawaii\\\",\\r\\n        \\\"city\\\": \\\"Hawaiian Beaches\\\"\\r\\n      },\\r\\n      {\\r\\n        \\\"state\\\": \\\"Hawaii\\\",\\r\\n        \\\"city\\\": \\\"Haiku-Pauwela\\\"\\r\\n      },\\r\\n      {\\r\\n        \\\"state\\\": \\\"Alaska\\\"\\r\\n      }\\r\\n    ],\\r\\n    \\\"jsonContent\\\": \\\"\\\",\\r\\n    \\\"icon\\\": \\\"./assets/images/topics/topic14.png\\\",\\r\\n    \\\"createdBy\\\": \\\"\\\",\\r\\n    \\\"createdTimeStamp\\\": \\\"\\\",\\r\\n    \\\"modifiedBy\\\": \\\"\\\",\\r\\n    \\\"modifiedTimeStamp\\\": \\\"\\\"\\r\\n  }\\r\\n]\",\r\n  \"resources\": \"[\\r\\n  {\\r\\n    \\\"id\\\": \\\"77d301e7-6df2-612e-4704-c04edf271806\\\",\\r\\n    \\\"name\\\": \\\"Tenant Action Plan for Eviction\\\",\\r\\n    \\\"description\\\": \\\"This action plan is for tenants who are facing eviction and have experienced the following:\\\",\\r\\n    \\\"resourceType\\\": \\\"Action\\\",\\r\\n    \\\"externalUrl\\\": \\\"\\\",\\r\\n    \\\"url\\\": \\\"\\\",\\r\\n    \\\"topicTags\\\": [\\r\\n      {\\r\\n        \\\"id\\\": \\\"addf41e9-1a27-4aeb-bcbb-7959f95094ba\\\"\\r\\n      },\\r\\n      {\\r\\n        \\\"id\\\": \\\"2c0cc7b8-62b1-4efb-8568-b1f767f879bc\\\"\\r\\n      },\\r\\n      {\\r\\n        \\\"id\\\": \\\"3aa3a1be-8291-42b1-85c2-252f756febbc\\\"\\r\\n      }\\r\\n    ],\\r\\n    \\\"location\\\": \\\"Hawaii, Honolulu, 96812 |Hawaii, Hawaiian Beaches |Hawaii, Haiku-Pauwela | Alaska\\\",\\r\\n    \\\"icon\\\": \\\"./assets/images/resources/resource.png\\\",\\r\\n    \\\"createdBy\\\": \\\"\\\",\\r\\n    \\\"createdTimeStamp\\\": \\\"\\\",\\r\\n    \\\"modifiedBy\\\": \\\"\\\",\\r\\n    \\\"modifiedTimeStamp\\\": \\\"\\\"\\r\\n  }\\r\\n]\"\r\n}";
-
-            var luisResponse = _luisProxy.GetIntents(query);
-            luisResponse.Returns("{\r\n  \"query\": \"eviction\",\r\n  \"topScoringIntent\": {\r\n    \"intent\": \"Eviction\",\r\n    \"score\": 0.998598337\r\n  },\r\n  \"intents\": [\r\n    {\r\n      \"intent\": \"Eviction\",\r\n      \"score\": 0.998598337\r\n    },\r\n    {\r\n      \"intent\": \"None\",\r\n      \"score\": 0.3924698\r\n    },\r\n    {\r\n      \"intent\": \"Small Claims Court\",\r\n      \"score\": 0.374458015\r\n    },\r\n    {\r\n      \"intent\": \"Mobile home park tenants\",\r\n      \"score\": 0.352736056\r\n    },\r\n    {\r\n      \"intent\": \"Going to court\",\r\n      \"score\": 0.131461561\r\n    },\r\n    {\r\n      \"intent\": \"Domestic Violence\",\r\n      \"score\": 0.0386172235\r\n    },\r\n    {\r\n      \"intent\": \"Separation\",\r\n      \"score\": 0.035968408\r\n    },\r\n    {\r\n      \"intent\": \"Foreclosure\",\r\n      \"score\": 0.0271484256\r\n    },\r\n    {\r\n      \"intent\": \"division of property\",\r\n      \"score\": 0.0246635266\r\n    },\r\n    {\r\n      \"intent\": \"Child support\",\r\n      \"score\": 0.0197562873\r\n    },\r\n    {\r\n      \"intent\": \"child custody\",\r\n      \"score\": 0.0193109587\r\n    },\r\n    {\r\n      \"intent\": \"Other Consumer\",\r\n      \"score\": 0.0174270831\r\n    },\r\n    {\r\n      \"intent\": \"Unemployment\",\r\n      \"score\": 0.0172820911\r\n    },\r\n    {\r\n      \"intent\": \"Guardianship\",\r\n      \"score\": 0.0149135459\r\n    },\r\n    {\r\n      \"intent\": \"Consumer Fraud\",\r\n      \"score\": 0.0109810177\r\n    },\r\n    {\r\n      \"intent\": \"Contracts\",\r\n      \"score\": 0.0105354656\r\n    },\r\n    {\r\n      \"intent\": \"Elder Abuse\",\r\n      \"score\": 0.0100716464\r\n    },\r\n    {\r\n      \"intent\": \"Divorce\",\r\n      \"score\": 0.009231578\r\n    },\r\n    {\r\n      \"intent\": \"Managing money\",\r\n      \"score\": 0.00913277548\r\n    },\r\n    {\r\n      \"intent\": \"Sexual Assault\",\r\n      \"score\": 0.007721106\r\n    },\r\n    {\r\n      \"intent\": \"Home buyers & owners\",\r\n      \"score\": 0.00558177941\r\n    },\r\n    {\r\n      \"intent\": \"Marriage equality\",\r\n      \"score\": 0.005541543\r\n    },\r\n    {\r\n      \"intent\": \"Utilities & phones\",\r\n      \"score\": 0.00534641044\r\n    },\r\n    {\r\n      \"intent\": \"Public & subsidized housing\",\r\n      \"score\": 0.005005484\r\n    },\r\n    {\r\n      \"intent\": \"Contempt of court\",\r\n      \"score\": 0.00479589263\r\n    },\r\n    {\r\n      \"intent\": \"Tenant's rights\",\r\n      \"score\": 0.00391642563\r\n    },\r\n    {\r\n      \"intent\": \"marriage\",\r\n      \"score\": 0.00364745827\r\n    },\r\n    {\r\n      \"intent\": \"The child protection system\",\r\n      \"score\": 0.00345990737\r\n    },\r\n    {\r\n      \"intent\": \"Legal financial obligation\",\r\n      \"score\": 0.00318646478\r\n    },\r\n    {\r\n      \"intent\": \"Custody\",\r\n      \"score\": 0.002302651\r\n    },\r\n    {\r\n      \"intent\": \"Car issues\",\r\n      \"score\": 0.00218277727\r\n    },\r\n    {\r\n      \"intent\": \"Emergency shelter & assistance\",\r\n      \"score\": 0.00181414338\r\n    },\r\n    {\r\n      \"intent\": \"Driver & Professional licenses\",\r\n      \"score\": 0.00177037634\r\n    },\r\n    {\r\n      \"intent\": \"Employment Discrimination\",\r\n      \"score\": 0.00176623627\r\n    },\r\n    {\r\n      \"intent\": \"Credit problems\",\r\n      \"score\": 0.00128342363\r\n    },\r\n    {\r\n      \"intent\": \"alimony\",\r\n      \"score\": 0.00127891626\r\n    },\r\n    {\r\n      \"intent\": \"Parenting Plans/Custody\",\r\n      \"score\": 0.0012039718\r\n    },\r\n    {\r\n      \"intent\": \"Adoption\",\r\n      \"score\": 0.00105760642\r\n    },\r\n    {\r\n      \"intent\": \"Paternity/Parentage\",\r\n      \"score\": 0.00103898533\r\n    },\r\n    {\r\n      \"intent\": \"Divorce Contested\",\r\n      \"score\": 0.00100662454\r\n    },\r\n    {\r\n      \"intent\": \"Debt\",\r\n      \"score\": 0.0007743759\r\n    },\r\n    {\r\n      \"intent\": \"Identity\",\r\n      \"score\": 0.000727297564\r\n    },\r\n    {\r\n      \"intent\": \"Divorce Legal Separation\",\r\n      \"score\": 0.000590754149\r\n    },\r\n    {\r\n      \"intent\": \"Utilities and telecommunications\",\r\n      \"score\": 0.000529284531\r\n    },\r\n    {\r\n      \"intent\": \"Medical bills\",\r\n      \"score\": 0.000471992535\r\n    },\r\n    {\r\n      \"intent\": \"Student loans\",\r\n      \"score\": 0.0004546414\r\n    },\r\n    {\r\n      \"intent\": \"Divorce Annulment\",\r\n      \"score\": 0.000423705118\r\n    },\r\n    {\r\n      \"intent\": \"Other family\",\r\n      \"score\": 0.00041898893\r\n    },\r\n    {\r\n      \"intent\": \"Divorce Uncontested\",\r\n      \"score\": 0.0003876439\r\n    },\r\n    {\r\n      \"intent\": \"Unmarried couples\",\r\n      \"score\": 0.000380990357\r\n    },\r\n    {\r\n      \"intent\": \"More family court procedures\",\r\n      \"score\": 0.000221170354\r\n    },\r\n    {\r\n      \"intent\": \"Housing discrimination\",\r\n      \"score\": 0.00018730732\r\n    },\r\n    {\r\n      \"intent\": \"Veteran/Military Families\",\r\n      \"score\": 0.000181092473\r\n    },\r\n    {\r\n      \"intent\": \"Bankrucptcy\",\r\n      \"score\": 0.000131298162\r\n    },\r\n    {\r\n      \"intent\": \"Non-parents caring for children\",\r\n      \"score\": 7.45657E-05\r\n    },\r\n    {\r\n      \"intent\": \"Relocation\",\r\n      \"score\": 6.903267E-05\r\n    },\r\n    {\r\n      \"intent\": \"Non-parent custody\",\r\n      \"score\": 1.08726072E-05\r\n    }\r\n  ],\r\n  \"entities\": []\r\n}");
-
-            JObject topicsData = JObject.Parse(@"{}");
-            _topicsResourcesBusinessLogic.GetTopicAsync(Arg.Any<string>()).Returns(topicsData);
+            var luisResponse = _luisProxy.GetIntents(searchText);
+            luisResponse.Returns(properLuisResponse);
+            
+            _topicsResourcesBusinessLogic.GetTopicAsync(Arg.Any<string>()).Returns(emptyTopicObject);
 
             _luisBusinessLogic.GetInternalResourcesAsync(Arg.Any<string>()).Returns(internalResponse);
 
             //act
-            var result = luisBusinessLogic.GetResourceBasedOnThresholdAsync(query).Result;
+            var result = luisBusinessLogic.GetResourceBasedOnThresholdAsync(searchText).Result;
 
             //assert
-            Assert.Contains("topics", result);
+            Assert.Contains(expectedInternalResponse, result);
 
         }
 

@@ -13,10 +13,69 @@ namespace Access2Justice.Api.Tests.BusinessLogic
     public class WebSearchBusinessLogicTests
     {
 
+        #region variables
         private readonly IBingSettings _bingSettings;
         private readonly IHttpClientService _httpClientService;
         private readonly WebSearchBusinessLogic _webSearchBusinessLogic;
+        #endregion
 
+        #region Mocked Input Data
+        private readonly string searchText = "microsoft";
+        private readonly string emptyWebData = "{}";
+        private readonly string webData =
+                   "{\r\n  \"webResources\": {\r\n    \"_type\": \"SearchResponse\",\r\n    \"instrumentation\": {\r\n      \"_type\": " +
+                   "\"ResponseInstrumentation\",\r\n      \"pingUrlBase\": \"https://www.bingapis.com/api/ping?IG=1965C084847D497DB211864D4160BBAD&CID=0F6A141A98C863D31AD41FE799436276&ID=\"," +
+                   "\r\n      \"pageLoadPingUrl\": \"https://www.bingapis.com/api/ping/pageload?IG=1965C084847D497DB211864D4160BBAD&CID=0F6A141A98C863D31AD41FE799436276&Type=Event.CPT&DATA=0\"" +
+                   "\r\n    },\r\n    \"queryContext\": {\r\n      \"originalQuery\": \"getting kicked out\"\r\n    },\r\n    \"webPages\": " +
+                   "{\r\n      \"webSearchUrl\": \"https://www.bing.com/search?q=getting+kicked+out\",\r\n      \"webSearchUrlPingSuffix\": " +
+                   "\"DevEx,5388.1\",\r\n      \"totalEstimatedMatches\": 6,\r\n      \"value\": [\r\n        {\r\n          \"id\": " +
+                   "\"https://api.cognitive.microsoft.com/api/v7/#WebPages.0\",\r\n          \"name\": \"Mukesh and Another v State for NCT of Delhi and " +
+                   "Others - Lawnotes.in\",\r\n          \"url\": \"http://www.lawnotes.in/Mukesh_and_Another_v_State_for_NCT_of_Delhi_and_Others\"," +
+                   "\r\n          \"urlPingSuffix\": \"DevEx,5076.1\",\r\n          \"isFamilyFriendly\": true,\r\n          \"displayUrl\": " +
+                   "\"www.lawnotes.in/Mukesh_and_Another_v_State_for_NCT_of_Delhi_and_Others\",\r\n          \"snippet\": \"Mukesh and Another v State " +
+                   "for NCT of Delhi and Others. From Lawnotes.in. ... kicked on her abdomen and bitten over lips, cheek, breast and vulval region. " +
+                   "The prosecutrix remembered intercourse two times and rectal penetration also ... and his disclosure Ex.PW-60/H was also recorded. " +
+                   "He pointed out the Munirka bus stand from where the victims were picked up vide memo Ex.PW-68/I and he also pointed out Mahipalpur Flyover, " +
+                   "the place where the victims were thrown out of the moving bus ...\",\r\n          \"deepLinks\": [\r\n            {\r\n              " +
+                   "\"name\": \"K Srinivas Rao v D A Deepa\",\r\n              \"url\": \"http://www.lawnotes.in/K_Srinivas_Rao_v_D_A_Deepa\"," +
+                   "\r\n              \"urlPingSuffix\": \"DevEx,5065.1\",\r\n              \"snippet\": \"K abc Roo v D A Deep. From " +
+                   "Lawnotes.in. Jump to:navigation, search. ... the appellant-husband beat her mother and kicked her on her stomach. Both of " +
+                   "them received injuries. She, therefore, ... must ensure that this exercise does not lead to the erring spouse using mediation " +
+                   "process to get out of clutches of the law.\"\r\n            },\r\n            {\r\n              \"name\": \"LawNotes.\",\r" +
+                   "\n              \"url\": \"http://www.lawnotes.in/B_D_Khunte_v_Union_of_India_and_Others\",\r\n              \"urlPingSuffix" +
+                   "\": \"DevEx,5066.1\",\r\n              \"snippet\": \"B D Khunte v Union of India and Others. From Lawnotes.in. Jump to:" +
+                   "navigation, search. ... the deceased punched him and kicked him repeatedly and asked him to put up his hand and hold the side " +
+                   "beams of the top berth of the double bunk in the store room. The appellant’s further case is that the deceased thereafter made " +
+                   "unwelcome and improper ... We must at the threshold point out that there is no challenge to the finding that it was the " +
+                   "appellant who had shot the deceased using the weapon ...\"\r\n            },\r\n            {\r\n              \"name\": " +
+                   "\"C K Dasegowda And Others v State of Karnataka - LawNotes.\",\r\n              \"url\": \"https://www.lawnotes.in/C_K_Dasegowda_and_Others_v_State_of_Karnataka\"," +
+                   "\r\n              \"urlPingSuffix\": \"DevEx,5067.1\",\r\n              \"snippet\": \"C K Dasegowda and Others v State of " +
+                   "Karnataka. From Lawnotes.in. Jump to:navigation, search. ... Necessary relevant facts are stated hereunder to appreciate the " +
+                   "case of the appellants and also to find out whether they are entitled to the relief as prayed for in ... A-6, A-8 and A-10 " +
+                   "kicked PW-1. A-5 and A-7 assaulted Bhagyamma- PW-6 with iron blade of plough and A-9 kicked her. 4. A complaint (Ex.-P1) was " +
+                   "lodged on 11.8.1999 at 9:00 a.m. before the police. The Crime Case No. CC 728 of 2000 ...\"\r\n            },\r\n            {\r\n" +
+                   "   \"name\": \"Geeta Mehrotra And Another Vs State of U P And Another - Lawnotes.\",\r\n              \"url\": " +
+                   "\"https://www.lawnotes.in/Geeta_Mehrotra_and_Another_Vs_State_of_U_P_and_Another\",\r\n              \"urlPingSuffix\": \"DevEx,5068.1" +
+                   "\",\r\n              \"snippet\": \"Geeta Mehrotra and Another Vs State of U P and Another. From Lawnotes.in. Jump to:navigation, " +
+                   "search. Home Indian Law Supreme Court of India Supreme Court of India Cases 2012 Supreme Court of India Cases October 2012. " +
+                   "REPORTABLE IN THE SUPREME COURT OF INDIA ... Geeta Mehrotra regarding the complainant using bad words and it was said that if " +
+                   "her daughter came there she will be kicked out.\"\r\n            },\r\n            {\r\n              \"name\": \"B Thirumal " +
+                   "v Ananda Sivakumar And Others - LawNotes.\",\r\n              \"url\": \"https://www.lawnotes.in/B_Thirumal_v_Ananda_Sivakumar_and_Others\",\r\n" +
+                   "       \"urlPingSuffix\": \"DevEx,5069.1\",\r\n              \"snippet\": \"B Thirumal v Ananda Sivakumar and Others. From Lawnotes.in. Jump to:navigation," +
+                   " ... Leave granted. 2. These appeals arise out of a judgment and order dated 4th August, 2009 whereby a Division Bench of the " +
+                   "High Court of Judicature at Madras has allowed Writ Appeals No. 1155, ... such a person receives higher salary, but when he is " +
+                   "compulsorily “kicked upstairs” (if we may permitted to observe so) the Diploma-holder Junior Engineer, ...\"\r\n            }" +
+                   "\r\n          ],\r\n          \"dateLastCrawled\": \"2018-05-19T08:31:00Z\",\r\n          \"fixedPosition\": false,\r\n          " +
+                   "\"language\": \"en\"\r\n        }\r\n      ]\r\n    },\r\n    \"rankingResponse\": {\r\n      \"mainline\": {\r\n        " +
+                   "\"items\": [\r\n          {\r\n            \"answerType\": \"WebPages\",\r\n            \"resultIndex\": 0,\r\n            " +
+                   "\"value\": {\r\n              \"id\": \"https://api.cognitive.microsoft.com/api/v7/#WebPages.0\"\r\n            }\r\n          " +
+                   "}\r\n        ]\r\n      }\r\n    }\r\n  }\r\n}";
+        #endregion
+
+        #region Mocked Output Data        
+        private readonly string expectedWebResponse = "microsoft";
+        private readonly string expectedEmptyWebResponse = "{}";
+        #endregion 
 
         public WebSearchBusinessLogicTests()
         {
@@ -35,14 +94,14 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var responseq = new HttpResponseMessage();
             var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK)
             {
-                Content = new StringContent("{\"_type\": \"SearchResponse\", \"instrumentation\": {\"_type\": \"ResponseInstrumentation\", \"pingUrlBase\": \"https:\\/\\/www.bingapis.com\\/api\\/ping?IG=428B8CFC22EA4711A146283DEF6F2821&CID=3ED5BEDB376A69A72CE9B52336E1689C&ID=\", \"pageLoadPingUrl\": \"https:\\/\\/www.bingapis.com\\/api\\/ping\\/pageload?IG=428B8CFC22EA4711A146283DEF6F2821&CID=3ED5BEDB376A69A72CE9B52336E1689C&Type=Event.CPT&DATA=0\"}, \"queryContext\": {\"originalQuery\": \"microsoft\"}, \"webPages\": {\"webSearchUrl\": \"https:\\/\\/www.bing.com\\/search?q=microsoft\", \"webSearchUrlPingSuffix\": \"DevEx,5232.1\", \"totalEstimatedMatches\": 5, \"value\": [{\"id\": \"https:\\/\\/api.cognitive.microsoft.com\\/api\\/v7\\/#WebPages.0\", \"name\": \"Offer - Indian Contract Act, 1872 - Lawnotes.in\", \"url\": \"http:\\/\\/www.lawnotes.in\\/Offer_-_Indian_Contract_Act,_1872\", \"urlPingSuffix\": \"DevEx,5071.1\", \"about\": [{\"name\": \"Indian Contract Act, 1872\"}], \"isFamilyFriendly\": true, \"displayUrl\": \"www.lawnotes.in\\/Offer_-_Inan_Contract_Act,_1872\", \"snippet\": \"Main Article : Indian Contract Act, 1872. Offer is one of the essential elements of a contract as defined in Section 10 of the Indian Contract Act, 1872.\", \"deepLinks\": [{\"name\": \"Section 245 of Income-Tax Act, 1961\", \"url\": \"http:\\/\\/www.lawnotes.in\\/Section_245_of_Income-Tax_Act,_1961\", \"urlPingSuffix\": \"DevEx,5062.1\", \"snippet\": \"Section 245 of Income-Tax Act, 1961 deals with the topic of Set off of refunds against tax remaining payable\"}, {\"name\": \"11-CV-01846-LHK\", \"url\": \"https:\\/\\/www.lawnotes.in\\/Apple_Inc_vs_Samsung_Electronics_Co_Ltd_et_al,_No._11-CV-01846-LHK\", \"urlPingSuffix\": \"DevEx,5063.1\", \"snippet\": \"Apple Inc vs Samsung Electronics Co Ltd et al, No. 11-CV-01846-LHK. From Lawnotes.in. Jump to:navigation, search. UNITED STATES DISTRICT COURT NORTHERN DISTRICT OF CALIFORNIA SAN JOSE DIVISION Case No.: 11-CV-01846-LHK APPLE, INC., a California corporation, Plaintiff and Counterdefendant, v. ... Uniloc USA, Inc. v. Micosoft Corp., 632 F.3d 1292, 1302 (Fed. Cir. 2011): ...\"}, {\"name\": \"Ramesh Chandra Shah And Others v Anil Joshi And Others - Lawnotes.\", \"url\": \"https:\\/\\/www.lawnotes.in\\/Ramesh_Chandra_Shah_and_others_v_Anil_Joshi_and_others\", \"urlPingSuffix\": \"DevEx,5064.1\", \"snippet\": \"Ramesh Chandra Shah and others … Appellants versus Anil Joshi and others … Respondents J U D G M E N T ... with regard to basic knowledge of computer operation would be tested at the time of interview for which knowledge of Microsoft Operating System and Microsoft Office operation would be essential. In the call letter also which was sent to the appellant at the time of calling him for interview, ...\"}], \"dateLastCrawled\": \"2018-05-16T17:14:00.0000000Z\", \"fixedPosition\": false, \"language\": \"en\"}, {\"id\": \"https:\\/\\/api.cognitive.microsoft.com\\/api\\/v7\\/#WebPages.1\", \"name\": \"Book Review- Balance of Justice\", \"url\": \"http:\\/\\/accesstojustice-ng.org\\/Review_of_the_Balance_of_Justice.pdf\", \"urlSuffix\": \"DevEx,5084.1\", \"isFamilyFriendly\": true, \"displayUrl\": \"accesstojustice-ng.org\\/Review_of_the_Balance_of_Justice.pdf\", \"snippet\": \"The Balance of Justice presents factual insights into how judges of the Federal High Court, Lagos are perceived at work by users of the court system, and comprises of fact-based narratives, inventories, and analyses on the manner judges managed their time, the ... Microsoft Word - Book Review- Balance of Justice.doc Author: techniques Created Date:\", \"dateLastCrawled\": \"2018-04-07T12:11:00.0000000Z\", \"fixedPosition\": false, \"language\": \"en\"}]}, \"rankingResponse\": {\"mainline\": {\"items\": [{\"answerType\": \"WebPages\", \"resultIndex\": 0, \"value\": {\"id\": \"https:\\/\\/api.cognitive.microsoft.com\\/api\\/v7\\/#WebPages.0\"}}, {\"answerType\": \"WebPages\", \"resultIndex\": 1, \"value\": {\"id\": \"https:\\/\\/api.cognitive.microsoft.com\\/api\\/v7\\/#WebPages.1\"}}]}}}")
+                Content = new StringContent(webData)
             };
             var response = _httpClientService.GetDataAsync(_bingSettings.BingSearchUrl, _bingSettings.SubscriptionKey);
             response.Returns(httpResponseMessage);
 
-            var responseContent = _webSearchBusinessLogic.SearchWebResourcesAsync("microsoft").Result;
+            var responseContent = _webSearchBusinessLogic.SearchWebResourcesAsync(searchText).Result;
 
-            Assert.Contains("microsoft", responseContent);
+            Assert.Contains(expectedWebResponse, responseContent);
         }
 
         [Fact]
@@ -51,30 +110,14 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var responseq = new HttpResponseMessage();
             var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK)
             {
-                Content = new StringContent("{\"_type\": \"SearchResponse\", \"instrumentation\": {\"_type\": \"ResponseInstrumentation\", \"pingUrlBase\": \"https:\\/\\/www.bingapis.com\\/api\\/ping?IG=428B8CFC22EA4711A146283DEF6F2821&CID=3ED5BEDB376A69A72CE9B52336E1689C&ID=\", \"pageLoadPingUrl\": \"https:\\/\\/www.bingapis.com\\/api\\/ping\\/pageload?IG=428B8CFC22EA4711A146283DEF6F2821&CID=3ED5BEDB376A69A72CE9B52336E1689C&Type=Event.CPT&DATA=0\"}, \"queryContext\": {\"originalQuery\": \"microsoft\"}, \"webPages\": {\"webSearchUrl\": \"https:\\/\\/www.bing.com\\/search?q=microsoft\", \"webSearchUrlPingSuffix\": \"DevEx,5232.1\", \"totalEstimatedMatches\": 5, \"value\": [{\"id\": \"https:\\/\\/api.cognitive.microsoft.com\\/api\\/v7\\/#WebPages.0\", \"name\": \"Offer - Indian Contract Act, 1872 - Lawnotes.in\", \"url\": \"http:\\/\\/www.lawnotes.in\\/Offer_-_Indian_Contract_Act,_1872\", \"urlPingSuffix\": \"DevEx,5071.1\", \"about\": [{\"name\": \"Indian Contract Act, 1872\"}], \"isFamilyFriendly\": true, \"displayUrl\": \"www.lawnotes.in\\/Offer_-_Inan_Contract_Act,_1872\", \"snippet\": \"Main Article : Indian Contract Act, 1872. Offer is one of the essential elements of a contract as defined in Section 10 of the Indian Contract Act, 1872.\", \"deepLinks\": [{\"name\": \"Section 245 of Income-Tax Act, 1961\", \"url\": \"http:\\/\\/www.lawnotes.in\\/Section_245_of_Income-Tax_Act,_1961\", \"urlPingSuffix\": \"DevEx,5062.1\", \"snippet\": \"Section 245 of Income-Tax Act, 1961 deals with the topic of Set off of refunds against tax remaining payable\"}, {\"name\": \"11-CV-01846-LHK\", \"url\": \"https:\\/\\/www.lawnotes.in\\/Apple_Inc_vs_Samsung_Electronics_Co_Ltd_et_al,_No._11-CV-01846-LHK\", \"urlPingSuffix\": \"DevEx,5063.1\", \"snippet\": \"Apple Inc vs Samsung Electronics Co Ltd et al, No. 11-CV-01846-LHK. From Lawnotes.in. Jump to:navigation, search. UNITED STATES DISTRICT COURT NORTHERN DISTRICT OF CALIFORNIA SAN JOSE DIVISION Case No.: 11-CV-01846-LHK APPLE, INC., a California corporation, Plaintiff and Counterdefendant, v. ... Uniloc USA, Inc. v. Micosoft Corp., 632 F.3d 1292, 1302 (Fed. Cir. 2011): ...\"}, {\"name\": \"Ramesh Chandra Shah And Others v Anil Joshi And Others - Lawnotes.\", \"url\": \"https:\\/\\/www.lawnotes.in\\/Ramesh_Chandra_Shah_and_others_v_Anil_Joshi_and_others\", \"urlPingSuffix\": \"DevEx,5064.1\", \"snippet\": \"Ramesh Chandra Shah and others … Appellants versus Anil Joshi and others … Respondents J U D G M E N T ... with regard to basic knowledge of computer operation would be tested at the time of interview for which knowledge of Microsoft Operating System and Microsoft Office operation would be essential. In the call letter also which was sent to the appellant at the time of calling him for interview, ...\"}], \"dateLastCrawled\": \"2018-05-16T17:14:00.0000000Z\", \"fixedPosition\": false, \"language\": \"en\"}, {\"id\": \"https:\\/\\/api.cognitive.microsoft.com\\/api\\/v7\\/#WebPages.1\", \"name\": \"Book Review- Balance of Justice\", \"url\": \"http:\\/\\/accesstojustice-ng.org\\/Review_of_the_Balance_of_Justice.pdf\", \"urlSuffix\": \"DevEx,5084.1\", \"isFamilyFriendly\": true, \"displayUrl\": \"accesstojustice-ng.org\\/Review_of_the_Balance_of_Justice.pdf\", \"snippet\": \"The Balance of Justice presents factual insights into how judges of the Federal High Court, Lagos are perceived at work by users of the court system, and comprises of fact-based narratives, inventories, and analyses on the manner judges managed their time, the ... Microsoft Word - Book Review- Balance of Justice.doc Author: techniques Created Date:\", \"dateLastCrawled\": \"2018-04-07T12:11:00.0000000Z\", \"fixedPosition\": false, \"language\": \"en\"}]}, \"rankingResponse\": {\"mainline\": {\"items\": [{\"answerType\": \"WebPages\", \"resultIndex\": 0, \"value\": {\"id\": \"https:\\/\\/api.cognitive.microsoft.com\\/api\\/v7\\/#WebPages.0\"}}, {\"answerType\": \"WebPages\", \"resultIndex\": 1, \"value\": {\"id\": \"https:\\/\\/api.cognitive.microsoft.com\\/api\\/v7\\/#WebPages.1\"}}]}}}")
+                Content = new StringContent(emptyWebData)
             };
             var response = _httpClientService.GetDataAsync(_bingSettings.BingSearchUrl, _bingSettings.SubscriptionKey);
             response.Returns(httpResponseMessage);
 
-            var responseContent = _webSearchBusinessLogic.SearchWebResourcesAsync("microsoft").Result;
+            var responseContent = _webSearchBusinessLogic.SearchWebResourcesAsync(searchText).Result;
 
-            Assert.DoesNotContain("No results found", responseContent);
-        }
-
-        [Fact]
-        public void SearchWebResourcesSubscriptionKeyMissingValidation()
-        {
-            var responseq = new HttpResponseMessage();
-            var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent("{\"_type\": \"SearchResponse\", \"instrumentation\": {\"_type\": \"ResponseInstrumentation\", \"pingUrlBase\": \"https:\\/\\/www.bingapis.com\\/api\\/ping?IG=428B8CFC22EA4711A146283DEF6F2821&CID=3ED5BEDB376A69A72CE9B52336E1689C&ID=\", \"pageLoadPingUrl\": \"https:\\/\\/www.bingapis.com\\/api\\/ping\\/pageload?IG=428B8CFC22EA4711A146283DEF6F2821&CID=3ED5BEDB376A69A72CE9B52336E1689C&Type=Event.CPT&DATA=0\"}, \"queryContext\": {\"originalQuery\": \"microsoft\"}, \"webPages\": {\"webSearchUrl\": \"https:\\/\\/www.bing.com\\/search?q=microsoft\", \"webSearchUrlPingSuffix\": \"DevEx,5232.1\", \"totalEstimatedMatches\": 5, \"value\": [{\"id\": \"https:\\/\\/api.cognitive.microsoft.com\\/api\\/v7\\/#WebPages.0\", \"name\": \"Offer - Indian Contract Act, 1872 - Lawnotes.in\", \"url\": \"http:\\/\\/www.lawnotes.in\\/Offer_-_Indian_Contract_Act,_1872\", \"urlPingSuffix\": \"DevEx,5071.1\", \"about\": [{\"name\": \"Indian Contract Act, 1872\"}], \"isFamilyFriendly\": true, \"displayUrl\": \"www.lawnotes.in\\/Offer_-_Inan_Contract_Act,_1872\", \"snippet\": \"Main Article : Indian Contract Act, 1872. Offer is one of the essential elements of a contract as defined in Section 10 of the Indian Contract Act, 1872.\", \"deepLinks\": [{\"name\": \"Section 245 of Income-Tax Act, 1961\", \"url\": \"http:\\/\\/www.lawnotes.in\\/Section_245_of_Income-Tax_Act,_1961\", \"urlPingSuffix\": \"DevEx,5062.1\", \"snippet\": \"Section 245 of Income-Tax Act, 1961 deals with the topic of Set off of refunds against tax remaining payable\"}, {\"name\": \"11-CV-01846-LHK\", \"url\": \"https:\\/\\/www.lawnotes.in\\/Apple_Inc_vs_Samsung_Electronics_Co_Ltd_et_al,_No._11-CV-01846-LHK\", \"urlPingSuffix\": \"DevEx,5063.1\", \"snippet\": \"Apple Inc vs Samsung Electronics Co Ltd et al, No. 11-CV-01846-LHK. From Lawnotes.in. Jump to:navigation, search. UNITED STATES DISTRICT COURT NORTHERN DISTRICT OF CALIFORNIA SAN JOSE DIVISION Case No.: 11-CV-01846-LHK APPLE, INC., a California corporation, Plaintiff and Counterdefendant, v. ... Uniloc USA, Inc. v. Micosoft Corp., 632 F.3d 1292, 1302 (Fed. Cir. 2011): ...\"}, {\"name\": \"Ramesh Chandra Shah And Others v Anil Joshi And Others - Lawnotes.\", \"url\": \"https:\\/\\/www.lawnotes.in\\/Ramesh_Chandra_Shah_and_others_v_Anil_Joshi_and_others\", \"urlPingSuffix\": \"DevEx,5064.1\", \"snippet\": \"Ramesh Chandra Shah and others … Appellants versus Anil Joshi and others … Respondents J U D G M E N T ... with regard to basic knowledge of computer operation would be tested at the time of interview for which knowledge of Microsoft Operating System and Microsoft Office operation would be essential. In the call letter also which was sent to the appellant at the time of calling him for interview, ...\"}], \"dateLastCrawled\": \"2018-05-16T17:14:00.0000000Z\", \"fixedPosition\": false, \"language\": \"en\"}, {\"id\": \"https:\\/\\/api.cognitive.microsoft.com\\/api\\/v7\\/#WebPages.1\", \"name\": \"Book Review- Balance of Justice\", \"url\": \"http:\\/\\/accesstojustice-ng.org\\/Review_of_the_Balance_of_Justice.pdf\", \"urlSuffix\": \"DevEx,5084.1\", \"isFamilyFriendly\": true, \"displayUrl\": \"accesstojustice-ng.org\\/Review_of_the_Balance_of_Justice.pdf\", \"snippet\": \"The Balance of Justice presents factual insights into how judges of the Federal High Court, Lagos are perceived at work by users of the court system, and comprises of fact-based narratives, inventories, and analyses on the manner judges managed their time, the ... Microsoft Word - Book Review- Balance of Justice.doc Author: techniques Created Date:\", \"dateLastCrawled\": \"2018-04-07T12:11:00.0000000Z\", \"fixedPosition\": false, \"language\": \"en\"}]}, \"rankingResponse\": {\"mainline\": {\"items\": [{\"answerType\": \"WebPages\", \"resultIndex\": 0, \"value\": {\"id\": \"https:\\/\\/api.cognitive.microsoft.com\\/api\\/v7\\/#WebPages.0\"}}, {\"answerType\": \"WebPages\", \"resultIndex\": 1, \"value\": {\"id\": \"https:\\/\\/api.cognitive.microsoft.com\\/api\\/v7\\/#WebPages.1\"}}]}}}")
-            };
-            var response = _httpClientService.GetDataAsync(_bingSettings.BingSearchUrl, _bingSettings.SubscriptionKey);
-            response.Returns(httpResponseMessage);
-
-            var responseContent = _webSearchBusinessLogic.SearchWebResourcesAsync("microsoft").Result;
-
-            Assert.DoesNotContain("Access denied due to missing subscription key. Make sure to include subscription key when making requests to an API.", responseContent);
+            Assert.Contains(expectedEmptyWebResponse, responseContent);
         }
 
     }

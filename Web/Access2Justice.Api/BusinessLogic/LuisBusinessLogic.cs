@@ -3,8 +3,6 @@ using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Luis;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -73,10 +71,10 @@ namespace Access2Justice.Api
             }
         }
 
-        public async Task<dynamic> GetInternalResourcesAsync(string keywords)
+        public async Task<dynamic> GetInternalResourcesAsync(string keyword)
         {
             string topic = string.Empty, resource = string.Empty;
-            var topics = await _topicsResourcesBusinessLogic.GetTopicAsync(keywords);
+            var topics = await _topicsResourcesBusinessLogic.GetTopicAsync(keyword);
 
             string topicIds = string.Empty;
             foreach (var item in topics)
@@ -84,8 +82,8 @@ namespace Access2Justice.Api
                 topicIds += "  ARRAY_CONTAINS(c.topicTags, { 'id' : '" + item.id + "'}) OR";
             }
 
-            dynamic serializedTopics = null;
-            dynamic serializedResources = null;
+            dynamic serializedTopics = "[]";
+            dynamic serializedResources = "[]";
             if (!string.IsNullOrEmpty(topicIds))
             {
                 topicIds = topicIds.Remove(topicIds.Length - 2);
@@ -111,6 +109,7 @@ namespace Access2Justice.Api
             {
                 { "webResources" , JsonConvert.DeserializeObject(response) }
             };
+             
             return webResources.ToString();
         }
     }
