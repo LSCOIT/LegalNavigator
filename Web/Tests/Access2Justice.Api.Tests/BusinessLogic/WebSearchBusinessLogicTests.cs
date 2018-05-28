@@ -26,7 +26,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
                    "{\r\n  \"webResources\": {\r\n    \"_type\": \"SearchResponse\",\r\n    \"instrumentation\": {\r\n      \"_type\": " +
                    "\"ResponseInstrumentation\",\r\n      \"pingUrlBase\": \"https://www.bingapis.com/api/ping?IG=1965C084847D497DB211864D4160BBAD&CID=0F6A141A98C863D31AD41FE799436276&ID=\"," +
                    "\r\n      \"pageLoadPingUrl\": \"https://www.bingapis.com/api/ping/pageload?IG=1965C084847D497DB211864D4160BBAD&CID=0F6A141A98C863D31AD41FE799436276&Type=Event.CPT&DATA=0\"" +
-                   "\r\n    },\r\n    \"queryContext\": {\r\n      \"originalQuery\": \"getting kicked out\"\r\n    },\r\n    \"webPages\": " +
+                   "\r\n    },\r\n    \"queryContext\": {\r\n      \"originalQuery\": \"Microsoft\"\r\n    },\r\n    \"webPages\": " +
                    "{\r\n      \"webSearchUrl\": \"https://www.bing.com/search?q=getting+kicked+out\",\r\n      \"webSearchUrlPingSuffix\": " +
                    "\"DevEx,5388.1\",\r\n      \"totalEstimatedMatches\": 6,\r\n      \"value\": [\r\n        {\r\n          \"id\": " +
                    "\"https://api.cognitive.microsoft.com/api/v7/#WebPages.0\",\r\n          \"name\": \"Mukesh and Another v State for NCT of Delhi and " +
