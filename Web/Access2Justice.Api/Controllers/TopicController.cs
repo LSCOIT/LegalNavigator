@@ -23,7 +23,7 @@ namespace Access2Justice.Api.Controllers
         [Route("api/topics/get")]
         public async Task<IActionResult> Get()
         {
-            var response = await _topicBusinessLogic.GetTopicsAsync<dynamic>();
+            var response = await _topicBusinessLogic.GetTopicsAsync();
             return Ok(response);
         }
         #endregion

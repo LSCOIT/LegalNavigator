@@ -14,4 +14,10 @@
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Access2Justice.Api\Access2Justice.Api.csproj" />
+    <ProjectReference Include="..\..\Access2Justice.CosmosDb\Access2Justice.CosmosDb.csproj" />
+    <ProjectReference Include="..\..\Access2Justice.Shared\Access2Justice.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

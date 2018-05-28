@@ -7,7 +7,7 @@ namespace Access2Justice.Shared.Interfaces
 {
    public interface ITopicBusinessLogic
     {
-        Task<T> GetTopicsAsync<T>();
+        Task<dynamic> GetTopicsAsync();
         Task<dynamic> GetSubTopicsAsync(string id);
         Task<dynamic> GetSubTopicDetailAsync(string id);
     }
