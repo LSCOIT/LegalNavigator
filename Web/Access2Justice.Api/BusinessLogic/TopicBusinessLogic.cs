@@ -20,7 +20,7 @@ namespace Access2Justice.Api.BusinessLogic
         }
 
         #region GetTopicAsync
-        public async Task<T> GetTopicsAsync<T>()
+        public async Task<dynamic> GetTopicsAsync()
         {  
             var query = "SELECT * FROM c where c.parentTopicID=''";
             var result = await _backendDatabaseService.QueryItemsAsync(_cosmosDbSettings.TopicCollectionId, query);
