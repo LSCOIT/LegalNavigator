@@ -1,0 +1,17 @@
+.sidebar {
+  margin-top: 20px;
+}
+
+.sidebar-wrapper {
+  margin-bottom: 20px;
+}
+
+.glyphicon-earphone {
+  margin-top: 10px; 
+}
+
+.org {
+  display: inline-block;
+  margin-top: 20px;
+  min-width: 220px;
+}

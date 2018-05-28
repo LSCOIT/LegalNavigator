@@ -57,9 +57,15 @@ namespace Access2Justice.Api
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(builder => builder.WithOrigins("http://localhost:64218"));
+
             app.UseMvc();
-            
-            ConfigureSwagger(app);            
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Access2Justice API V1");
+            });
         }
 
         private void ConfigureCosmosDb(IServiceCollection services)
