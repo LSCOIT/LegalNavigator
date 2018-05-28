@@ -8,6 +8,6 @@ namespace Access2Justice.Shared.Interfaces
     {
         Uri BingSearchUrl { get; }
         string SubscriptionKey { get; }
-        string CustomConfigId { get; }        
+        string CustomConfigId { get; }
     }
 }

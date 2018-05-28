@@ -13,7 +13,7 @@ namespace Access2Justice.Shared.Bing
             {
                 BingSearchUrl = new Uri(configuration.GetSection("BingSearchUrl").Value);
                 SubscriptionKey = configuration.GetSection("SubscriptionKey").Value;
-                CustomConfigId = configuration.GetSection("CustomConfigId").Value;                
+                CustomConfigId = configuration.GetSection("CustomConfigId").Value;
             }
             catch
             {
