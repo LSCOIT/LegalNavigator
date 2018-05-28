@@ -16,7 +16,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly ICosmosDbSettings _cosmosDbSettings;
         private readonly TopicBusinessLogic topicBusinessLogic;
 
-        public TopicBusinessLogicTests()
+        public TopicBusinessLogicTests() 
         {
             _backendDatabaseService = Substitute.For<IBackendDatabaseService>();
             _cosmosDbSettings = Substitute.For<ICosmosDbSettings>();
