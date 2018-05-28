@@ -2,7 +2,6 @@ import { Component, OnInit, TemplateRef, CUSTOM_ELEMENTS_SCHEMA, Input } from '@
 import { FormsModule } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
-import { Globals } from '../global';
 import { } from '@types/bingmaps';
 import { environment } from '../../../environments/environment';
 declare var Microsoft: any;
@@ -11,8 +10,7 @@ declare var Microsoft: any;
 @Component({
   selector: 'app-location',
   templateUrl: './location.component.html',
-  styleUrls: ['./location.component.css'],
-  providers: [Globals]
+  styleUrls: ['./location.component.css']
 })
 export class LocationComponent implements OnInit {
   showPosition: any;
@@ -26,8 +24,7 @@ export class LocationComponent implements OnInit {
   showLocation: boolean = true;
   geolocationPosition: any;
 
-  constructor(private modalService: BsModalService, private _global: Globals) {
-    this.map = this._global.mapGlobal;
+  constructor(private modalService: BsModalService) {
   }
 
   openModal(template: TemplateRef<any>) {
