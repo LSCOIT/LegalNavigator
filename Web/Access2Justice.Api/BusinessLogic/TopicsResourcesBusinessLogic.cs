@@ -7,19 +7,19 @@ namespace Access2Justice.Api.BusinessLogic
 {
     public class TopicsResourcesBusinessLogic : ITopicsResourcesBusinessLogic
     {
-        private readonly IBackendDatabaseService _backendDatabaseService;
-        private readonly ICosmosDbSettings _cosmosDbSettings;
+        private readonly IBackendDatabaseService backendDatabaseService;
+        private readonly ICosmosDbSettings cosmosDbSettings;
         public TopicsResourcesBusinessLogic(IBackendDatabaseService backendDatabaseService, ICosmosDbSettings cosmosDbSettings)
         {
-            _backendDatabaseService = backendDatabaseService;
-            _cosmosDbSettings = cosmosDbSettings;
+            this.backendDatabaseService = backendDatabaseService;
+            this.cosmosDbSettings = cosmosDbSettings;
         }
 
         public async Task<dynamic> GetResourcesAsync(string topicIds)
         {
             // we need to use a query format to retrieve items because we are returning a dynamic object.
             var query = string.Format(CultureInfo.InvariantCulture,"SELECT * FROM c  WHERE {0}", topicIds);
-            var result = await _backendDatabaseService.QueryItemsAsync(_cosmosDbSettings.ResourceCollectionId, query);
+            var result = await backendDatabaseService.QueryItemsAsync(cosmosDbSettings.ResourceCollectionId, query);
 
             return result;
         }
@@ -28,7 +28,7 @@ namespace Access2Justice.Api.BusinessLogic
         {
             // we need to use a query format to retrieve items because we are returning a dynamic object.
             var query = string.Format(CultureInfo.InvariantCulture,"SELECT * FROM c WHERE CONTAINS(c.keywords, '{0}')", keyword.ToUpperInvariant());
-            var result = await _backendDatabaseService.QueryItemsAsync(_cosmosDbSettings.TopicCollectionId, query);
+            var result = await backendDatabaseService.QueryItemsAsync(cosmosDbSettings.TopicCollectionId, query);
 
             return result;
         }

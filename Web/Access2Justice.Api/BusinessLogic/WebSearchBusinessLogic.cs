@@ -8,20 +8,20 @@ namespace Access2Justice.Api.BusinessLogic
 {
     public class WebSearchBusinessLogic : IWebSearchBusinessLogic
     {
-        private IBingSettings _bingSettings;
-        private IHttpClientService _httpClientService;
+        private IBingSettings bingSettings;
+        private IHttpClientService httpClientService;
 
         public WebSearchBusinessLogic(IHttpClientService httpClientService, IBingSettings bingSettings)
         {
-            _bingSettings = bingSettings;
-            _httpClientService = httpClientService;
+            this.bingSettings = bingSettings;
+            this.httpClientService = httpClientService;
         }
 
         public async Task<dynamic> SearchWebResourcesAsync(string searchTerm)
         {            
-            var uri = string.Format(CultureInfo.InvariantCulture, _bingSettings.BingSearchUrl.OriginalString, searchTerm,_bingSettings.CustomConfigId);
+            var uri = string.Format(CultureInfo.InvariantCulture, bingSettings.BingSearchUrl.OriginalString, searchTerm,bingSettings.CustomConfigId);
             
-            var httpResponseMessage = await _httpClientService.GetDataAsync(new Uri(uri), _bingSettings.SubscriptionKey);
+            var httpResponseMessage = await httpClientService.GetDataAsync(new Uri(uri), bingSettings.SubscriptionKey);
             var responseContent = await httpResponseMessage.Content.ReadAsStringAsync();
             
             return responseContent;

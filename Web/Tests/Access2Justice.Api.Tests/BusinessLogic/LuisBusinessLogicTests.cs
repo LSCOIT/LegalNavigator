@@ -13,11 +13,11 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
     public class LuisBusinessLogicTests
     {
         #region variables
-        private readonly ILuisProxy _luisProxy;
-        private readonly ILuisSettings _luisSettings;
-        private readonly ITopicsResourcesBusinessLogic _topicsResourcesBusinessLogic;
-        private readonly IWebSearchBusinessLogic _webSearchBusinessLogic;
-        private readonly ILuisBusinessLogic _luisBusinessLogic;
+        private readonly ILuisProxy luisProxy;
+        private readonly ILuisSettings luisSettings;
+        private readonly ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic;
+        private readonly IWebSearchBusinessLogic webSearchBusinessLogic;
+        private readonly ILuisBusinessLogic luis;
         private readonly LuisBusinessLogic luisBusinessLogic;
         #endregion
 
@@ -158,17 +158,17 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
 
         public LuisBusinessLogicTests()
         {
-            _luisProxy = Substitute.For<ILuisProxy>();
-            _luisSettings = Substitute.For<ILuisSettings>();
-            _topicsResourcesBusinessLogic = Substitute.For<ITopicsResourcesBusinessLogic>();
-            _webSearchBusinessLogic = Substitute.For<IWebSearchBusinessLogic>();
-            _luisBusinessLogic = Substitute.For<ILuisBusinessLogic>();
-            luisBusinessLogic = new LuisBusinessLogic(_luisProxy, _luisSettings, _topicsResourcesBusinessLogic, _webSearchBusinessLogic);
+            luisProxy = Substitute.For<ILuisProxy>();
+            luisSettings = Substitute.For<ILuisSettings>();
+            topicsResourcesBusinessLogic = Substitute.For<ITopicsResourcesBusinessLogic>();
+            webSearchBusinessLogic = Substitute.For<IWebSearchBusinessLogic>();
+            luis = Substitute.For<ILuisBusinessLogic>();
+            luisBusinessLogic = new LuisBusinessLogic(luisProxy, luisSettings, topicsResourcesBusinessLogic, webSearchBusinessLogic);
 
-            _luisSettings.Endpoint.Returns(new System.Uri("http://www.bing.com"));
-            _luisSettings.TopIntentsCount.Returns(3);
-            _luisSettings.UpperThreshold.Returns(0.9M);
-            _luisSettings.LowerThreshold.Returns(0.6M);
+            luisSettings.Endpoint.Returns(new System.Uri("http://www.bing.com"));
+            luisSettings.TopIntentsCount.Returns(3);
+            luisSettings.UpperThreshold.Returns(0.9M);
+            luisSettings.LowerThreshold.Returns(0.6M);
         }
 
         [Fact]
@@ -269,8 +269,8 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         public void GetInternalResourcesAsyncWithProperKeyword()
         {
             //arrange
-            _topicsResourcesBusinessLogic.GetTopicAsync(Arg.Any<string>()).Returns(topicsData);
-            _topicsResourcesBusinessLogic.GetResourcesAsync(Arg.Any<string>()).Returns(resourcesData);
+            topicsResourcesBusinessLogic.GetTopicAsync(Arg.Any<string>()).Returns(topicsData);
+            topicsResourcesBusinessLogic.GetResourcesAsync(Arg.Any<string>()).Returns(resourcesData);
             
             //act
             var result = luisBusinessLogic.GetInternalResourcesAsync(keyword).Result;
@@ -283,7 +283,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         public void GetInternalResourcesAsyncWithEmptyTopic()
         {
             //arrange
-            _topicsResourcesBusinessLogic.GetTopicAsync(Arg.Any<string>()).Returns(emptyTopicObject);
+            topicsResourcesBusinessLogic.GetTopicAsync(Arg.Any<string>()).Returns(emptyTopicObject);
 
             //act
             var result = luisBusinessLogic.GetInternalResourcesAsync(keyword).Result;
@@ -296,8 +296,8 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         public void GetInternalResourcesAsyncWithEmptyResource()
         {
             //arrange
-            _topicsResourcesBusinessLogic.GetTopicAsync(Arg.Any<string>()).Returns(topicsData);
-            _topicsResourcesBusinessLogic.GetResourcesAsync(Arg.Any<string>()).Returns(emptyResourceObject);
+            topicsResourcesBusinessLogic.GetTopicAsync(Arg.Any<string>()).Returns(topicsData);
+            topicsResourcesBusinessLogic.GetResourcesAsync(Arg.Any<string>()).Returns(emptyResourceObject);
 
             //act
             var result = luisBusinessLogic.GetInternalResourcesAsync(keyword).Result;
@@ -311,9 +311,9 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         public void GetInternalResourcesAsyncWithTopicResource()
         {
             //arrange
-            _topicsResourcesBusinessLogic.GetTopicAsync(Arg.Any<string>()).Returns(topicsData);
+            topicsResourcesBusinessLogic.GetTopicAsync(Arg.Any<string>()).Returns(topicsData);
 
-            _topicsResourcesBusinessLogic.GetResourcesAsync(Arg.Any<string>()).Returns(resourcesData);
+            topicsResourcesBusinessLogic.GetResourcesAsync(Arg.Any<string>()).Returns(resourcesData);
 
             //act
             var result = luisBusinessLogic.GetInternalResourcesAsync(keyword).Result;
@@ -327,10 +327,10 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         public void GetResourceBasedOnThresholdAsyncWithLowScore()
         {
             //arrange
-            var luisResponse = _luisProxy.GetIntents(searchText);           
+            var luisResponse = luisProxy.GetIntents(searchText);           
             luisResponse.Returns(lowScoreLuisResponse);
            
-            var webResponse = _webSearchBusinessLogic.SearchWebResourcesAsync(searchText);
+            var webResponse = webSearchBusinessLogic.SearchWebResourcesAsync(searchText);
             webResponse.Returns(webData);           
 
             //act
@@ -344,7 +344,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         public void GetResourceBasedOnThresholdAsyncWithMediumScore()
         {
             //arrange
-            var luisResponse = _luisProxy.GetIntents(searchText);
+            var luisResponse = luisProxy.GetIntents(searchText);
             luisResponse.Returns(noneLuisResponse);
 
             //act
@@ -358,12 +358,12 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         public void GetResourceBasedOnThresholdAsyncUpperScore()
         {
             //arrange
-            var luisResponse = _luisProxy.GetIntents(searchText);
+            var luisResponse = luisProxy.GetIntents(searchText);
             luisResponse.Returns(properLuisResponse);
             
-            _topicsResourcesBusinessLogic.GetTopicAsync(Arg.Any<string>()).Returns(emptyTopicObject);
+            topicsResourcesBusinessLogic.GetTopicAsync(Arg.Any<string>()).Returns(emptyTopicObject);
 
-            _luisBusinessLogic.GetInternalResourcesAsync(Arg.Any<string>()).Returns(internalResponse);
+            luis.GetInternalResourcesAsync(Arg.Any<string>()).Returns(internalResponse);
 
             //act
             var result = luisBusinessLogic.GetResourceBasedOnThresholdAsync(searchText).Result;

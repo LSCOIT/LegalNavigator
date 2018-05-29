@@ -10,8 +10,8 @@ namespace Access2Justice.Shared.Tests.Luis
     public class LuisProxyTests
     {
         #region variables
-        private readonly ILuisSettings _luisSettings;
-        private readonly IHttpClientService _httpClientService;
+        private readonly ILuisSettings luisSettings;
+        private readonly IHttpClientService httpClientService;
         private readonly LuisProxy luisProxy;
         #endregion
 
@@ -41,14 +41,14 @@ namespace Access2Justice.Shared.Tests.Luis
 
         public LuisProxyTests()
         {
-            _luisSettings = Substitute.For<ILuisSettings>();
-            _httpClientService = Substitute.For<IHttpClientService>();
-            luisProxy = new LuisProxy(_httpClientService, _luisSettings);
+            luisSettings = Substitute.For<ILuisSettings>();
+            httpClientService = Substitute.For<IHttpClientService>();
+            luisProxy = new LuisProxy(httpClientService, luisSettings);
 
-            _luisSettings.Endpoint.Returns(new Uri("https://www.luis.ai/home"));
-            _luisSettings.TopIntentsCount.Returns(3);
-            _luisSettings.UpperThreshold.Returns(0.9M);
-            _luisSettings.LowerThreshold.Returns(0.6M);
+            luisSettings.Endpoint.Returns(new Uri("https://www.luis.ai/home"));
+            luisSettings.TopIntentsCount.Returns(3);
+            luisSettings.UpperThreshold.Returns(0.9M);
+            luisSettings.LowerThreshold.Returns(0.6M);
         }
 
         [Fact]
@@ -61,7 +61,7 @@ namespace Access2Justice.Shared.Tests.Luis
                 Content = new StringContent(properLuisResponse)
             };
 
-            var luisResponse = _httpClientService.GetAsync(_luisSettings.Endpoint);
+            var luisResponse = httpClientService.GetAsync(luisSettings.Endpoint);
             luisResponse.Returns(httpResponseMessage);
 
             //act
@@ -81,7 +81,7 @@ namespace Access2Justice.Shared.Tests.Luis
                 Content = new StringContent(noneLuisResponse)
             };
 
-            var luisResponse = _httpClientService.GetAsync(_luisSettings.Endpoint);
+            var luisResponse = httpClientService.GetAsync(luisSettings.Endpoint);
             luisResponse.Returns(httpResponseMessage);
 
             //act
@@ -101,7 +101,7 @@ namespace Access2Justice.Shared.Tests.Luis
                 Content = new StringContent("")
             };
 
-            var luisResponse = _httpClientService.GetAsync(_luisSettings.Endpoint);
+            var luisResponse = httpClientService.GetAsync(luisSettings.Endpoint);
             luisResponse.Returns(httpResponseMessage);
 
             //act

@@ -1,9 +1,9 @@
 ﻿namespace Access2Justice.Shared.Luis
 {
-    public enum LuisAccuracyThreshold : int
+    public enum LuisAccuracyThreshold
     {
-        Low = 0,
-        Medium = 1,
-        High = 2
+        Low,
+        Medium,
+        High
     }
 }

@@ -11,8 +11,8 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 {
     public class TopicsResourcesBusinessLogicTests
     {
-        private readonly IBackendDatabaseService _backendDatabaseService;
-        private readonly ICosmosDbSettings _cosmosDbSettings;
+        private readonly IBackendDatabaseService backendDatabaseService;
+        private readonly ICosmosDbSettings cosmosDbSettings;
         private readonly TopicsResourcesBusinessLogic topicsResourcesBusinessLogic;
 
         //Mocked input data.
@@ -50,15 +50,15 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 
         public TopicsResourcesBusinessLogicTests()
         {
-            _backendDatabaseService = Substitute.For<IBackendDatabaseService>();
-            _cosmosDbSettings = Substitute.For<ICosmosDbSettings>();
+            backendDatabaseService = Substitute.For<IBackendDatabaseService>();
+            cosmosDbSettings = Substitute.For<ICosmosDbSettings>();
 
-            topicsResourcesBusinessLogic = new TopicsResourcesBusinessLogic(_backendDatabaseService, _cosmosDbSettings);
-            _cosmosDbSettings.AuthKey.Returns("69kXp6uzHNUkG8gr==");
-            _cosmosDbSettings.Endpoint.Returns(new System.Uri("https://access2justicedb.documents.azure.com:443/"));
-            _cosmosDbSettings.DatabaseId.Returns("a2jdb");
-            _cosmosDbSettings.TopicCollectionId.Returns("Topic");
-            _cosmosDbSettings.ResourceCollectionId.Returns("Resource");
+            topicsResourcesBusinessLogic = new TopicsResourcesBusinessLogic(backendDatabaseService, cosmosDbSettings);
+            cosmosDbSettings.AuthKey.Returns("69kXp6uzHNUkG8gr==");
+            cosmosDbSettings.Endpoint.Returns(new System.Uri("https://access2justicedb.documents.azure.com:443/"));
+            cosmosDbSettings.DatabaseId.Returns("a2jdb");
+            cosmosDbSettings.TopicCollectionId.Returns("Topic");
+            cosmosDbSettings.ResourceCollectionId.Returns("Resource");
 
         }
 
@@ -66,7 +66,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         public void GetTopicAsyncWithProperData()
         {
             //arrange
-            var dbResponse = _backendDatabaseService.QueryItemsAsync(_cosmosDbSettings.ResourceCollectionId, query);
+            var dbResponse = backendDatabaseService.QueryItemsAsync(cosmosDbSettings.ResourceCollectionId, query);
             dbResponse.ReturnsForAnyArgs<dynamic>(topicsData);
             
             //act
@@ -81,7 +81,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         public void GetTopicAsyncWithEmptyData()
         {
             //arrange
-            var dbResponse = _backendDatabaseService.QueryItemsAsync(_cosmosDbSettings.ResourceCollectionId, query);
+            var dbResponse = backendDatabaseService.QueryItemsAsync(cosmosDbSettings.ResourceCollectionId, query);
             dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
 
             //act
@@ -96,7 +96,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         public void GetResourcesAsyncWithProperData()
         {
             //arrange
-            var dbResponse = _backendDatabaseService.QueryItemsAsync(_cosmosDbSettings.ResourceCollectionId, query);
+            var dbResponse = backendDatabaseService.QueryItemsAsync(cosmosDbSettings.ResourceCollectionId, query);
             dbResponse.ReturnsForAnyArgs<dynamic>(resourcesData);
 
             //act
@@ -112,7 +112,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         {
             //arrange
 
-            var dbResponse = _backendDatabaseService.QueryItemsAsync(_cosmosDbSettings.ResourceCollectionId, query);
+            var dbResponse = backendDatabaseService.QueryItemsAsync(cosmosDbSettings.ResourceCollectionId, query);
             dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
 
             //act
