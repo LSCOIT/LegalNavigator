@@ -3,6 +3,6 @@
     <button class="btn btn-default" type="submit">
       <a routerLink='/search'><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
     </button>
-    <input type="text" name="inputText" value="text" class="form-control" id="search" [(ngModel)]="searchText" />
+    <input type="text" name="inputText" value="text" class="form-control" id="search" [(ngModel)]="searchText"  (keyup)="searchTextChange(searchText)"/>
   </div>
 </form>

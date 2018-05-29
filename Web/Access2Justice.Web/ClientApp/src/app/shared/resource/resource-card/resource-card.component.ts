@@ -9,12 +9,18 @@ import { Topic } from '../../../topics-resources/shared/topic';
 export class ResourceCardComponent implements OnInit {
   @Input() data: Topic;
   @Input() type: string;
+  @Input()
+  searchResults: any;
 
   subtopicDetails: Topic;
   constructor() { }
 
   ngOnInit() {
-    this.subtopicDetails = this.data;
+    if (this.searchResults != null || this.searchResults != undefined) {
+      this.subtopicDetails = this.searchResults.resources;
+    } else {
+      this.subtopicDetails = this.data;
+    }
   }
 
 }

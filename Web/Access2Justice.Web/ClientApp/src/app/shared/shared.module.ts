@@ -21,6 +21,9 @@ import { ServiceOrgSidebarComponent } from './sidebars/service-org-sidebar.compo
 import { ShareButtonComponent } from './resource/user-action/share-button.component';
 import { UpperNavComponent } from './navigation/upper-nav.component';
 
+import { NavigateDataService } from './navigate-data.service';
+import { SearchService } from './search/search.service';
+import { WebResourceComponent } from './resource/web-resource/web-resource.component';
 
 
 @NgModule({
@@ -46,7 +49,8 @@ import { UpperNavComponent } from './navigation/upper-nav.component';
     ServiceOrgSidebarComponent,
     SaveButtonComponent,
     ShareButtonComponent,
-    UpperNavComponent
+    UpperNavComponent,
+    WebResourceComponent
   ],
   exports: [
     ChatbotComponent,
@@ -65,6 +69,10 @@ import { UpperNavComponent } from './navigation/upper-nav.component';
     SaveButtonComponent,
     ShareButtonComponent,
     UpperNavComponent
-   ]
+  ],
+  providers: [
+    SearchService,
+    NavigateDataService,
+  ]
 })
 export class SharedModule { }

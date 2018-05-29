@@ -24,7 +24,7 @@ namespace Access2Justice.Api
         }
 
         public async Task<dynamic> GetResourceBasedOnThresholdAsync(string query)
-        {
+        {                   
             var luisResponse = await _luisProxy.GetIntents(query);
             var intentWithScore = ParseLuisIntent(luisResponse);
 
@@ -95,7 +95,8 @@ namespace Access2Justice.Api
 
             JObject internalResources = new JObject {
                 { "topics", JsonConvert.DeserializeObject(serializedTopics) },
-                { "resources", JsonConvert.DeserializeObject(serializedResources) }
+                { "resources", JsonConvert.DeserializeObject(serializedResources) },
+                { "topIntent", keyword }
             };
 
             return internalResources.ToString();
@@ -107,7 +108,7 @@ namespace Access2Justice.Api
 
             JObject webResources = new JObject
             {
-                { "webResources" , JsonConvert.DeserializeObject(response) }
+                { "webResources" , JsonConvert.DeserializeObject(response) }                
             };
              
             return webResources.ToString();

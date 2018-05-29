@@ -1,0 +1,44 @@
+<div class="col-md-12 sidebar">
+  <div class="sidebar-wrapper">
+    <h4>Web Resource</h4>
+    <div *ngIf="searchResults && searchResults.value">
+      <div *ngFor="let webResult of searchResults.value">
+        <div class="col-md-12 sidebar">
+          <div class="media">
+            <!--<div class="media-left">
+              <a href="#">
+                <img class="media-object" src="#" alt="...">
+              </a>
+            </div>-->
+            <div class="media-body">
+              <h4 class="media-heading">
+                <a href="{{webResult.url}}">{{webResult.name}}</a>
+              </h4>
+                <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span><span>{{webResult.displayUrl}}</span>
+                <p>{{webResult.snippet}}</p>
+</div>
+          </div>
+
+        </div>
+        <!-- Deep Link START -->
+
+        <div *ngIf="webResult.deepLinks" class="resource-content">
+          <div *ngFor="let deepLink of webResult.deepLinks" class="col-md-12 sidebar">
+
+            <div class="media-body">
+              <h4 class="media-heading">                
+                <a href="{{deepLink.url}}">{{deepLink.name}}</a>
+              </h4>
+              <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span><span>{{deepLink.url}}</span>
+              <p>{{deepLink.snippet}}</p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Deep Link END -->
+
+      </div>
+    </div>
+  </div>
+</div>

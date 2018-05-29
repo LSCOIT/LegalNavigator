@@ -1,15 +1,23 @@
 <div class="container">
-  <h2>Results for "Getting kicked out." We think you mean "Eviction."</h2>
+  <div *ngIf="isInternalResource">
+    <h2>Results for {{searchText}}. We think you mean {{searchResults.topIntent}}.</h2>
+  </div>
   <div class="row">
     <div class="col-md-9 col-sm-12 col-xs-12">
-      <div class="row center-align">
+      <div *ngIf="isInternalResource" class="row center-align">
         <app-search-filter></app-search-filter>
-      <app-resource-card></app-resource-card>
+        <app-resource-card [searchResults]="searchResults"></app-resource-card>
+      </div>
+      <div *ngIf="isWebResource" class="row center-align">
+        <app-web-resource [searchResults]="searchResults"></app-web-resource>
+      </div>
+      <div *ngIf="isLuisResponse" class="row center-align">
+        <h3> No resource found..</h3>
       </div>
     </div>
-    <div class="col-md-3 col-sm-12 col-xs-12">
-      <app-guided-assistant-sidebar></app-guided-assistant-sidebar>
-      <app-service-org-sidebar></app-service-org-sidebar>
+      <div class="col-md-3 col-sm-12 col-xs-12">
+        <app-guided-assistant-sidebar></app-guided-assistant-sidebar>
+        <app-service-org-sidebar></app-service-org-sidebar>
+      </div>
     </div>
-  </div>
 </div>
