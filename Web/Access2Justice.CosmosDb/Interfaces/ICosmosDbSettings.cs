@@ -7,6 +7,7 @@ namespace Access2Justice.CosmosDb.Interfaces
         string AuthKey { get; }
         Uri Endpoint { get; }
         string DatabaseId { get; }
-        string CollectionId { get; }
+        string TopicCollectionId { get; }
+        string ResourceCollectionId { get; }
     }
 }
