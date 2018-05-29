@@ -86,7 +86,9 @@ namespace Access2Justice.Api
             dynamic serializedResources = "[]";
             if (!string.IsNullOrEmpty(topicIds))
             {
+                // remove the last OR from the db query
                 topicIds = topicIds.Remove(topicIds.Length - 2);
+
                 var resources = await _topicsResourcesBusinessLogic.GetResourcesAsync(topicIds);
 
                 serializedTopics = JsonConvert.SerializeObject(topics);
