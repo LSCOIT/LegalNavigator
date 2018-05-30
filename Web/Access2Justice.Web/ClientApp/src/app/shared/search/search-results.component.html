@@ -3,7 +3,7 @@
     <h2>Results for {{searchText}}. We think you mean {{searchResults.topIntent}}.</h2>
   </div>
   <div class="row">
-    <app-search-filter></app-search-filter>
+    <app-search-filter [resourceResults]="resourceResults"></app-search-filter>
   </div>
   <div class="row">
     <div class="col-md-9 col-sm-12 col-xs-12">

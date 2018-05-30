@@ -1,10 +1,8 @@
 <div class="filter-type">
   Show:
-  <button class="btn btn-default">All<span>(21)</span></button>
-  <button class="btn btn-default">Articles<span>(10)</span></button>
-  <button class="btn btn-default">Organizations<span>(5)</span></button>
-  <button class="btn btn-default">Forms<span>(2)</span></button>
-  <button class="btn btn-default">Videos<span>(4)</span></button>
+  <span *ngFor="let resource of resourceResults">
+    <button class="btn btn-default">{{resource.resourceName}}<span>({{resource.resourceCount}})</span></button>
+  </span>
 </div>
 <span>Sort:</span>
 <div class="btn-group" dropdown>
