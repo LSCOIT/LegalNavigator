@@ -12,6 +12,7 @@ import { PrivacyPromiseComponent } from './privacy-promise/privacy-promise.compo
 import { TopicsResourcesComponent } from './topics-resources/topics-resources.component';
 import { QuestionComponent } from './guided-assistant/question.component';
 import { TopicComponent } from './topics-resources/topic.component';
+import { TopicsComponent } from './topics-resources/topics.component';
 
 const appRoutes: Routes = [
   { path: 'about', component: AboutComponent },
@@ -32,7 +33,9 @@ const appRoutes: Routes = [
     CommonModule,
     RouterModule.forRoot(appRoutes)
   ],
-  declarations: [],
+  declarations: [
+
+  ],
   exports: [
     RouterModule
   ]
