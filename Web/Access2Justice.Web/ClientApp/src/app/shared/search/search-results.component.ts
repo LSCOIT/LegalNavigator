@@ -18,13 +18,8 @@ export class SearchResultsComponent implements OnInit {
   searchResults: any;
   uniqueResources: any;
   resourceResult: ResourceResult = {};
-  @Input()
   resourceResults: ResourceResult[] = [];
   constructor(private navigateDataService: NavigateDataService) { }
-
-  getNotification(evt) {
-    console.log(evt);
-  }
 
   ngOnInit() {
     this.searchResults = this.navigateDataService.getResourceData();
@@ -42,18 +37,20 @@ export class SearchResultsComponent implements OnInit {
     }
 
   //To get the unique filter results
-    if (this.searchResults != null && this.searchResults.resources != null) {
+    if (!isNullOrUndefined(this.searchResults) && !isNullOrUndefined(this.searchResults.resources)) {
       this.resourceResults.push({ 'resourceName': 'All', 'resourceCount': this.searchResults.resources.length });
       this.uniqueResources = new Set(this.searchResults.resources.map(item => item.resourceType));
       this.uniqueResources.forEach(item => {
         console.log(item, this.searchResults.resources.filter(x => x.resourceType == item).length);
-        if (item != null) {
+        if (!isNullOrUndefined(item)) {
           this.resourceResults.push({ 'resourceName': item, 'resourceCount': this.searchResults.resources.filter(x => x.resourceType == item).length });
         }
       });
     }
   }
-  
+
 
 
 }
+
+
