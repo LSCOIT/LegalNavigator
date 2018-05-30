@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Access2Justice.Web.Tests", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Access2Justice.Api.Tests", "Tests\Access2Justice.Api.Tests\Access2Justice.Api.Tests.csproj", "{6727D9B7-88DB-4FC0-A21A-951B46DC8CF1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Access2Justice.Shared.Tests", "Tests\Access2Justice.Shared.Tests\Access2Justice.Shared.Tests.csproj", "{62B8612F-2D0E-456D-AEA3-3C2F5E95C7B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Access2Justice.Shared.Tests", "Tests\Access2Justice.Shared.Tests\Access2Justice.Shared.Tests.csproj", "{62B8612F-2D0E-456D-AEA3-3C2F5E95C7B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateTopicAndResources", "CreateTopicAndResources\CreateTopicAndResources.csproj", "{7566B053-5D33-4065-A1C9-2D52A12217E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +55,10 @@ Global
 		{62B8612F-2D0E-456D-AEA3-3C2F5E95C7B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62B8612F-2D0E-456D-AEA3-3C2F5E95C7B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62B8612F-2D0E-456D-AEA3-3C2F5E95C7B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7566B053-5D33-4065-A1C9-2D52A12217E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7566B053-5D33-4065-A1C9-2D52A12217E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7566B053-5D33-4065-A1C9-2D52A12217E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7566B053-5D33-4065-A1C9-2D52A12217E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

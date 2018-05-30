@@ -1,0 +1,5 @@
+id,name,parentTopicId,keywords,jsonContent,location,icon,createdBy,createdTimeStamp,modifiedBy,modifiedTimeStamp
+1,Housing,,house|property,,Hawaii|Kalawao County|Kalawao|96742,./assets/images/topics/topic14.png,,,,
+2,Eviction,1,evicted,,Hawaii|Kalawao County|Kalawao|96742,./assets/images/topics/topic14.png,,,,
+3,Domestic Violence,2,violence,,Hawaii|Kalawao County|Kalawao|96742,./assets/images/topics/topic14.png,,,,
+4,Child Custody,2 3,evicted,,Hawaii|Kalawao County|Kalawao|96742,./assets/images/topics/topic14.png,,,,
