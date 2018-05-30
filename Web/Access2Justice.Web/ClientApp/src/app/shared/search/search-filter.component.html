@@ -1,7 +1,7 @@
 <div class="filter-type">
   Show:
   <span *ngFor="let resource of resourceResults">
-    <button class="btn btn-default">{{resource.resourceName}}<span>({{resource.resourceCount}})</span></button>
+    <button class="btn btn-default" (click)="sendfilterCriteria(resource.resourceName)" >{{resource.resourceName}}<span>({{resource.resourceCount}})</span></button>
   </span>
 </div>
 <span>Sort:</span>

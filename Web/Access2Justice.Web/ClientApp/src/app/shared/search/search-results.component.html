@@ -6,7 +6,7 @@
     <div class="col-md-9 col-sm-12 col-xs-12">
       <div *ngIf="isInternalResource" class="row center-align">
         <app-search-filter [resourceResults]="resourceResults"></app-search-filter>
-        <app-resource-card [searchResults]="searchResults"></app-resource-card>
+        <app-resource-card (notifyFilterCriteria)="getNotification($event)" [searchResults]="searchResults"></app-resource-card>
       </div>
       <div *ngIf="isWebResource" class="row center-align">
         <app-web-resource [searchResults]="searchResults"></app-web-resource>
