@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Topic } from '../../../topics-resources/shared/topic';
 
 @Component({
   selector: 'app-resource-card',
@@ -7,19 +6,15 @@ import { Topic } from '../../../topics-resources/shared/topic';
   styleUrls: ['./resource-card.component.css']
 })
 export class ResourceCardComponent implements OnInit {
-  @Input() data: Topic;
-  @Input() type: string;
-  @Input()
-  searchResults: any;
-
-  subtopicDetails: Topic;
+  @Input() resource: any;
+  @Input() searchResource: any;
   constructor() { }
 
   ngOnInit() {
-    if (this.searchResults != null || this.searchResults != undefined) {
-      this.subtopicDetails = this.searchResults.resources;
+    if (this.searchResource != null || this.searchResource != undefined) {
+      this.resource = this.searchResource;
     } else {
-      this.subtopicDetails = this.data;
+      this.resource = this.resource;
     }
   }
 

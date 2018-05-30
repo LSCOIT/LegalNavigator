@@ -21,7 +21,6 @@ export class SearchComponent implements OnInit {
   }
 
   onSubmit(searchForm: NgForm): void {
-    console.log(searchForm.value.inputText);
     this.searchService.search(searchForm.value.inputText)
       .subscribe(response => {
         if (response != null || response != undefined) {
@@ -33,9 +32,4 @@ export class SearchComponent implements OnInit {
         }
       });
   }
-
-  searchTextChange(searchText: string): void {
-    console.log(searchText);
-  }
-
 }

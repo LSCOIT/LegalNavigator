@@ -27,11 +27,9 @@ export class SearchResultsComponent implements OnInit {
 
       if (!this.isWebResource && !this.isInternalResource) {
         this.isLuisResponse = true;
-        console.log(this.searchResults.luisResponse);
       }
 
     }
-
   }
 
 }
