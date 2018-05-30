@@ -1,14 +1,7 @@
-#myMap {
+#my-map {
   position: relative;
   width: 100%;
   height: 410px;
-}
-
-.directionsContainer {
-  width: 380px;
-  height: 100%;
-  overflow-y: auto;
-  float: left;
 }
 
 .glyphicon-pencil {
@@ -33,10 +26,6 @@ li > a.map-icon {
 
 .modal-body {
   margin-bottom: 50px;
-}
-
-#search {
-  margin-left: 10px;
 }
 
 .search-box {

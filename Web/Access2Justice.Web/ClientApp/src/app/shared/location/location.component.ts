@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, CUSTOM_ELEMENTS_SCHEMA, Input } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
@@ -23,7 +23,7 @@ export class LocationComponent implements OnInit {
   anchorageAddress: any;
   showLocation: boolean = true;
   geolocationPosition: any;
-
+  
   constructor(private modalService: BsModalService) {
   }
 
@@ -40,13 +40,13 @@ export class LocationComponent implements OnInit {
   loadSearchManager() {
     let suggestionSelected;
     let searchManager;
-    let map = new Microsoft.Maps.Map('#myMap',
+    let map = new Microsoft.Maps.Map('#my-map',
       {
         credentials: environment.bingmap_key
       });
 
     let manager = new Microsoft.Maps.AutosuggestManager(map);
-    manager.attachAutosuggest('#searchBox', '#searchBoxContainer', suggestionSelected);
+    manager.attachAutosuggest('#search-box', '#searchbox-container', suggestionSelected);
     searchManager = new Microsoft.Maps.Search.SearchManager(map);
   }
 
@@ -62,7 +62,7 @@ export class LocationComponent implements OnInit {
 
   geocode() {
     //Get the users query and geocode it.
-    let query = document.getElementById('searchBox');
+    let query = document.getElementById('search-box');
     let loc;
     let searchRequest = {
       where: query["value"],
@@ -78,14 +78,14 @@ export class LocationComponent implements OnInit {
           pins.push(pin);
           locs.push(loc.location);
           this.locAddress = loc.address.postalCode;
-          if (this.locAddress != undefined) {
+          if (this.locAddress !== undefined) {
             localStorage.setItem("tempSearchedLocation", loc.address.postalCode);
           }
           else {
             localStorage.setItem("tempSearchedLocation", loc.address.locality);
           }
           localStorage.setItem("tempSearchedLocationState", loc.address.formattedAddress);
-          this.map = new Microsoft.Maps.Map('#myMap',
+          this.map = new Microsoft.Maps.Map('#my-map',
             {
               credentials: environment.bingmap_key
             });
@@ -100,7 +100,7 @@ export class LocationComponent implements OnInit {
       }
     };
     //Make the geocode request.
-    let map = new Microsoft.Maps.Map('#myMap',
+    let map = new Microsoft.Maps.Map('#my-map',
       {
         credentials: environment.bingmap_key
       });
@@ -115,7 +115,7 @@ export class LocationComponent implements OnInit {
     localStorage.setItem("searchedLocationAddress", this.tempLoc);
     this.anchorage = localStorage.getItem("searchedLocation");
     this.anchorageAddress = localStorage.getItem("searchedLocationAddress");
-    if (this.anchorage != "" && this.anchorageAddress != "") {
+    if (this.anchorage !== "" && this.anchorageAddress !== "") {
       this.showLocation = false;
     }
     this.modalRef.hide();

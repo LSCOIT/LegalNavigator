@@ -21,11 +21,11 @@
       <p>You can learn more about the states we support by visiting our <a href="#">About</a> page</p>
     </div>
     <div class="row">
-      <div id='searchBoxContainer'>
-        <input type='text' id='searchBox' (keyup.enter)="geocode()" placeholder="city, zip code, address" />
+      <div id='searchbox-container'>
+        <input type='text' id='search-box' placeholder="city, zip code, address" />
         <span type="button" class="glyphicon glyphicon-search" (click)="geocode()"></span>
       </div>
-      <div id="myMap"></div>
+      <div id="my-map"></div>
     </div>
     <div class="row">
       <button type="submit" (click)="updateLocation()" class="btn btn-primary">Update Location</button>
