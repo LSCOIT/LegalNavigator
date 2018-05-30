@@ -9,13 +9,13 @@ import { CuratedExperienceService } from './curatedexperience.service';
   styleUrls: ['./search-curated-experience.component.css']
 })
 export class SearchCuratedExperienceComponent implements OnInit {
-  curExp: CuratedExperience[];
+  curatedExperience: CuratedExperience[];
 
   constructor(private curatedExpService: CuratedExperienceService) { }
 
   getSearchCuratedExperience(): void {
     this.curatedExpService.getSearchCuratedExperience()
-      .subscribe(curExp => this.curExp = curExp);
+      .subscribe(curatedExperience => this.curatedExperience = curatedExperience);
   }
 
   ngOnInit() {

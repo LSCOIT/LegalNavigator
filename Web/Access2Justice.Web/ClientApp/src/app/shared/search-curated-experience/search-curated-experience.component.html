@@ -1,10 +1,10 @@
 <div class="col-md-12 sidebar">
   <div class="sidebar-wrapper">
     <h4>Curated Experience results.</h4>
-    <div *ngFor="let cuexp of curExp">
+    <div *ngFor="let curExp of curatedExperience">
       <div class="col-md-12 sidebar">
-        <h4>{{cuexp.title}}</h4>
-        <a routerLink='/guidedassistant/123'>{{cuexp.url}}</a>
+        <h4>{{curExp.title}}</h4>
+        <a routerLink='/guidedassistant/123'>{{curExp.url}}</a>
       </div>
     </div>
   </div>
