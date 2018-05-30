@@ -1,7 +1,7 @@
 <form #searchForm="ngForm" (ngSubmit)="onSubmit(searchForm)" class="navbar-form navbar-right search-form">
   <div class="form-group">
     <button class="btn btn-default" type="submit">
-      <a routerLink='/search'><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+      <span class="glyphicon glyphicon-search" aria-hidden="true" ></span>
     </button>
     <input type="text" name="inputText" value="text" class="form-control" id="search" [(ngModel)]="searchText" />
   </div>
