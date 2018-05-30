@@ -10,6 +10,10 @@ import { GuidedAssistantSidebarComponent } from '../sidebars/guided-assistant-si
 import { ServiceOrgSidebarComponent } from '../sidebars/service-org-sidebar.component';
 import { SaveButtonComponent } from '../resource/user-action/save-button.component';
 import { ShareButtonComponent } from '../resource/user-action/share-button.component';
+import { NavigateDataService } from '../navigate-data.service';
+import { isNullOrUndefined } from 'util';
+import { ResourceResult } from '../search/search-result';
+import { WebResourceComponent } from '../resource/web-resource/web-resource.component';
 
 describe('SearchResultsComponent', () => {
   let component: SearchResultsComponent;
@@ -24,14 +28,15 @@ describe('SearchResultsComponent', () => {
         GuidedAssistantSidebarComponent,
         ServiceOrgSidebarComponent,
         SaveButtonComponent,
-        ShareButtonComponent
+        ShareButtonComponent,
+        WebResourceComponent
       ],
       imports: [
         RouterModule.forRoot([
           { path: 'search', component: SearchResultsComponent }
         ])
       ],
-      providers: [
+      providers: [NavigateDataService,
         { provide: APP_BASE_HREF, useValue: '/' }
       ]
     })
