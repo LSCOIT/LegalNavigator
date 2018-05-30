@@ -14,13 +14,13 @@ namespace Access2Justice.CosmosDb
 {
     public class CosmosDbService : IBackendDatabaseService
     {
-        private readonly IDocumentClient _documentClient;
-        private readonly ICosmosDbSettings _cosmosDbSettings;
+        private readonly IDocumentClient documentClient;
+        private readonly ICosmosDbSettings cosmosDbSettings;
 
         public CosmosDbService(IDocumentClient documentClient, ICosmosDbSettings cosmosDbSettings)
         {
-            _documentClient = documentClient;
-            _cosmosDbSettings = cosmosDbSettings;
+            this.documentClient = documentClient;
+            this.cosmosDbSettings = cosmosDbSettings;
 
             CreateDatabaseIfNotExistsAsync().Wait();
             CreateCollectionIfNotExistsAsync().Wait();
@@ -30,8 +30,8 @@ namespace Access2Justice.CosmosDb
         {
             try
             {
-                Document document = await _documentClient.ReadDocumentAsync(
-                        UriFactory.CreateDocumentUri(_cosmosDbSettings.DatabaseId, _cosmosDbSettings.CollectionId, id));
+                Document document = await documentClient.ReadDocumentAsync(
+                        UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, id));
 
                 return (T)(dynamic)document;
             }
@@ -49,10 +49,10 @@ namespace Access2Justice.CosmosDb
             }
         }
 
-        public async Task<IEnumerable<T>> GetItemsAsync<T>(Expression<Func<T, bool>> predicate)
+        public async Task<IEnumerable<T>> GetItemsAsync<T>(Expression<Func<T, bool>> predicate,string collectionId)
         {
-            IDocumentQuery<T> query = _documentClient.CreateDocumentQuery<T>(
-                UriFactory.CreateDocumentCollectionUri(_cosmosDbSettings.DatabaseId, _cosmosDbSettings.CollectionId),
+            IDocumentQuery<T> query = documentClient.CreateDocumentQuery<T>(
+                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, collectionId),
                 new FeedOptions { MaxItemCount = -1, EnableCrossPartitionQuery = true }).Where(predicate).AsDocumentQuery();
 
             List<T> results = new List<T>();
@@ -64,35 +64,49 @@ namespace Access2Justice.CosmosDb
             return results;
         }
 
+        public async Task<dynamic> QueryItemsAsync(string collectionId, string query)
+        {
+            var docQuery = documentClient.CreateDocumentQuery<dynamic>(
+                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, collectionId), query).AsDocumentQuery();
+
+            var results = new List<dynamic>();
+            while (docQuery.HasMoreResults)
+            {
+                results.AddRange(await docQuery.ExecuteNextAsync());
+            }
+
+            return results;
+        }
+
         public async Task<Document> CreateItemAsync<T>(T item)
         {
-            return await _documentClient.CreateDocumentAsync(
-                UriFactory.CreateDocumentCollectionUri(_cosmosDbSettings.DatabaseId, _cosmosDbSettings.CollectionId), item);
+            return await documentClient.CreateDocumentAsync(
+                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId), item);
         }
 
         public async Task<Document> UpdateItemAsync<T>(string id, T item)
         {
-            return await _documentClient.ReplaceDocumentAsync(
-                UriFactory.CreateDocumentUri(_cosmosDbSettings.DatabaseId, _cosmosDbSettings.CollectionId, id), item);
+            return await documentClient.ReplaceDocumentAsync(
+                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, id), item);
         }
 
         public async Task DeleteItemAsync(string id)
         {
-            await _documentClient.DeleteDocumentAsync(
-                UriFactory.CreateDocumentUri(_cosmosDbSettings.DatabaseId, _cosmosDbSettings.CollectionId, id));
+            await documentClient.DeleteDocumentAsync(
+                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, id));
         }
 
         private async Task CreateDatabaseIfNotExistsAsync()
         {
             try
             {
-                await _documentClient.ReadDatabaseAsync(UriFactory.CreateDatabaseUri(_cosmosDbSettings.DatabaseId));
+                await documentClient.ReadDatabaseAsync(UriFactory.CreateDatabaseUri(cosmosDbSettings.DatabaseId));
             }
             catch (DocumentClientException e)
             {
                 if (e.StatusCode == System.Net.HttpStatusCode.NotFound)
                 {
-                    await _documentClient.CreateDatabaseAsync(new Database { Id = _cosmosDbSettings.DatabaseId });
+                    await documentClient.CreateDatabaseAsync(new Database { Id = cosmosDbSettings.DatabaseId });
                 }
                 else
                 {
@@ -106,18 +120,18 @@ namespace Access2Justice.CosmosDb
         {
             try
             {
-                await _documentClient.ReadDocumentCollectionAsync(
-                    UriFactory.CreateDocumentCollectionUri(_cosmosDbSettings.DatabaseId, _cosmosDbSettings.CollectionId));
+                await documentClient.ReadDocumentCollectionAsync(
+                    UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId));
             }
             catch (DocumentClientException e)
             {
                 if (e.StatusCode == System.Net.HttpStatusCode.NotFound)
                 {
-                    await _documentClient.CreateDocumentCollectionAsync(
-                        UriFactory.CreateDatabaseUri(_cosmosDbSettings.DatabaseId),
+                    await documentClient.CreateDocumentCollectionAsync(
+                        UriFactory.CreateDatabaseUri(cosmosDbSettings.DatabaseId),
                         new DocumentCollection
                         {
-                            Id = _cosmosDbSettings.CollectionId
+                            Id = cosmosDbSettings.TopicCollectionId
                         },
                         new RequestOptions { OfferThroughput = 400 });
                 }
@@ -127,6 +141,11 @@ namespace Access2Justice.CosmosDb
                     throw;
                 }
             }
+        }
+
+        public async Task<T> ExecuteStoredProcedureAsyncWithParameters<T>(string storedProcName, params dynamic[] procedureParams)
+        {
+            return await documentClient.ExecuteStoredProcedureAsync<T>(UriFactory.CreateStoredProcedureUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, storedProcName), procedureParams);
         }
     }
 }
