@@ -8,17 +8,17 @@ namespace Access2Justice.Api.Controllers
     [Route("api/search")]
     public class SearchController : Controller
     {
-        private readonly ILuisBusinessLogic _luisBusinessLogic;
+        private readonly ILuisBusinessLogic luisBusinessLogic;
 
         public SearchController(ILuisBusinessLogic luisBusinessLogic)
         {
-            _luisBusinessLogic = luisBusinessLogic;
+            this.luisBusinessLogic = luisBusinessLogic;
         }
 
         [HttpGet("{query}")]
         public async Task<IActionResult> GetAsync(string query)
         {
-            var resources = await _luisBusinessLogic.GetResourceBasedOnThresholdAsync(query);
+            var resources = await luisBusinessLogic.GetResourceBasedOnThresholdAsync(query);
             return Content(resources);
         }
     }

@@ -10,22 +10,23 @@ namespace Access2Justice.Api
 {
     public class LuisBusinessLogic : ILuisBusinessLogic
     {
-        private readonly ILuisProxy _luisProxy;
-        private readonly ILuisSettings _luisSettings;
-        private readonly ITopicsResourcesBusinessLogic _topicsResourcesBusinessLogic;
-        private readonly IWebSearchBusinessLogic _webSearchBusinessLogic;
+        private readonly ILuisProxy luisProxy;
+        private readonly ILuisSettings luisSettings;
+        private readonly ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic;
+        private readonly IWebSearchBusinessLogic webSearchBusinessLogic;
 
         public LuisBusinessLogic(ILuisProxy luisProxy, ILuisSettings luisSettings, ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic, IWebSearchBusinessLogic webSearchBusinessLogic)
         {
-            _luisSettings = luisSettings;
-            _luisProxy = luisProxy;
-            _topicsResourcesBusinessLogic = topicsResourcesBusinessLogic;
-            _webSearchBusinessLogic = webSearchBusinessLogic;
+            this.luisSettings = luisSettings;
+            this.luisProxy = luisProxy;
+            this.topicsResourcesBusinessLogic = topicsResourcesBusinessLogic;
+            this.webSearchBusinessLogic = webSearchBusinessLogic;
         }
 
         public async Task<dynamic> GetResourceBasedOnThresholdAsync(string query)
-        {                   
-            var luisResponse = await _luisProxy.GetIntents(query);
+        {
+            var luisResponse = await luisProxy.GetIntents(query);
+
             var intentWithScore = ParseLuisIntent(luisResponse);
 
             int threshold = ApplyThreshold(intentWithScore);
@@ -51,17 +52,17 @@ namespace Access2Justice.Api
                 IsSuccessful = true,
                 TopScoringIntent = luisIntent?.TopScoringIntent?.Intent,
                 Score = luisIntent?.TopScoringIntent?.Score ?? 0,
-                TopNIntents = luisIntent?.Intents.Skip(1).Take(_luisSettings.TopIntentsCount).Select(x => x.Intent).ToList()
+                TopNIntents = luisIntent?.Intents.Skip(1).Take(luisSettings.TopIntentsCount).Select(x => x.Intent).ToList()
             };
         }
 
         public int ApplyThreshold(IntentWithScore intentWithScore)
         {
-            if (intentWithScore.Score >= _luisSettings.UpperThreshold)
+            if (intentWithScore.Score >= luisSettings.UpperThreshold)
             {
                 return (int)LuisAccuracyThreshold.High;
             }
-            else if (intentWithScore.Score <= _luisSettings.LowerThreshold)
+            else if (intentWithScore.Score <= luisSettings.LowerThreshold)
             {
                 return (int)LuisAccuracyThreshold.Low;
             }
@@ -74,7 +75,7 @@ namespace Access2Justice.Api
         public async Task<dynamic> GetInternalResourcesAsync(string keyword)
         {
             string topic = string.Empty, resource = string.Empty;
-            var topics = await _topicsResourcesBusinessLogic.GetTopicAsync(keyword);
+            var topics = await topicsResourcesBusinessLogic.GetTopicAsync(keyword);
 
             string topicIds = string.Empty;
             foreach (var item in topics)
@@ -86,8 +87,10 @@ namespace Access2Justice.Api
             dynamic serializedResources = "[]";
             if (!string.IsNullOrEmpty(topicIds))
             {
+                // remove the last OR from the db query
                 topicIds = topicIds.Remove(topicIds.Length - 2);
-                var resources = await _topicsResourcesBusinessLogic.GetResourcesAsync(topicIds);
+
+                var resources = await topicsResourcesBusinessLogic.GetResourcesAsync(topicIds);
 
                 serializedTopics = JsonConvert.SerializeObject(topics);
                 serializedResources = JsonConvert.SerializeObject(resources);
@@ -104,7 +107,7 @@ namespace Access2Justice.Api
 
         public async Task<dynamic> GetWebResourcesAsync(string query)
         {
-            var response = await _webSearchBusinessLogic.SearchWebResourcesAsync(query);
+            var response = await webSearchBusinessLogic.SearchWebResourcesAsync(query);
 
             JObject webResources = new JObject
             {

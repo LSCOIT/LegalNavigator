@@ -14,9 +14,9 @@ namespace Access2Justice.Api.Tests.BusinessLogic
     {
 
         #region variables
-        private readonly IBingSettings _bingSettings;
-        private readonly IHttpClientService _httpClientService;
-        private readonly WebSearchBusinessLogic _webSearchBusinessLogic;
+        private readonly IBingSettings bingSettings;
+        private readonly IHttpClientService httpClientService;
+        private readonly WebSearchBusinessLogic webSearchBusinessLogic;
         #endregion
 
         #region Mocked Input Data
@@ -79,13 +79,13 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 
         public WebSearchBusinessLogicTests()
         {
-            _bingSettings = Substitute.For<IBingSettings>();
-            _httpClientService = Substitute.For<IHttpClientService>();
-            _webSearchBusinessLogic = new WebSearchBusinessLogic(_httpClientService, _bingSettings);
+            bingSettings = Substitute.For<IBingSettings>();
+            httpClientService = Substitute.For<IHttpClientService>();
+            webSearchBusinessLogic = new WebSearchBusinessLogic(httpClientService, bingSettings);
 
-            _bingSettings.BingSearchUrl.Returns(new Uri("https://www.bing.com"));
-            _bingSettings.SubscriptionKey.Returns("456sdf56sd4f56d44546565");
-            _bingSettings.CustomConfigId.Returns("2425415097");
+            bingSettings.BingSearchUrl.Returns(new Uri("https://www.bing.com"));
+            bingSettings.SubscriptionKey.Returns("456sdf56sd4f56d44546565");
+            bingSettings.CustomConfigId.Returns("2425415097");
         }
 
         [Fact]
@@ -96,10 +96,10 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             {
                 Content = new StringContent(webData)
             };
-            var response = _httpClientService.GetDataAsync(_bingSettings.BingSearchUrl, _bingSettings.SubscriptionKey);
+            var response = httpClientService.GetDataAsync(bingSettings.BingSearchUrl, bingSettings.SubscriptionKey);
             response.Returns(httpResponseMessage);
 
-            var responseContent = _webSearchBusinessLogic.SearchWebResourcesAsync(searchText).Result;
+            var responseContent = webSearchBusinessLogic.SearchWebResourcesAsync(searchText).Result;
 
             Assert.Contains(expectedWebResponse, responseContent);
         }
@@ -112,10 +112,10 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             {
                 Content = new StringContent(emptyWebData)
             };
-            var response = _httpClientService.GetDataAsync(_bingSettings.BingSearchUrl, _bingSettings.SubscriptionKey);
+            var response = httpClientService.GetDataAsync(bingSettings.BingSearchUrl, bingSettings.SubscriptionKey);
             response.Returns(httpResponseMessage);
 
-            var responseContent = _webSearchBusinessLogic.SearchWebResourcesAsync(searchText).Result;
+            var responseContent = webSearchBusinessLogic.SearchWebResourcesAsync(searchText).Result;
 
             Assert.Contains(expectedEmptyWebResponse, responseContent);
         }
