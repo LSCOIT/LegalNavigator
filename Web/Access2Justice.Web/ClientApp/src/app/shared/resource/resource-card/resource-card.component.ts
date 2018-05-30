@@ -7,14 +7,16 @@ import { Topic } from '../../../topics-resources/shared/topic';
   styleUrls: ['./resource-card.component.css']
 })
 export class ResourceCardComponent implements OnInit {
-  @Input() data: Topic;
-  @Input() type: string;
+  //@Input() data: Topic;
+  //@Input() type: string;
+  @Input() resource: any;
 
-  subtopicDetails: Topic;
+  //subtopicDetails: Topic;
   constructor() { }
 
   ngOnInit() {
-    this.subtopicDetails = this.data;
+  //  this.subtopicDetails = this.data;
+    this.resource = this.resource;
   }
 
 }
