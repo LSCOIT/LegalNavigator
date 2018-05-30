@@ -17,9 +17,12 @@ export class SearchResultsComponent implements OnInit {
   @Input()
   searchResults: any;
   uniqueResources: any;
-  resourceResult: ResourceResult = {};
+  @Input()
   resourceResults: ResourceResult[] = [];
+  filterType: string = 'All';
   constructor(private navigateDataService: NavigateDataService) { }
+
+  
 
   ngOnInit() {
     this.searchResults = this.navigateDataService.getResourceData();
@@ -36,7 +39,7 @@ export class SearchResultsComponent implements OnInit {
 
     }
 
-  //To get the unique filter results
+    //To get the unique filter results
     if (!isNullOrUndefined(this.searchResults) && !isNullOrUndefined(this.searchResults.resources)) {
       this.resourceResults.push({ 'resourceName': 'All', 'resourceCount': this.searchResults.resources.length });
       this.uniqueResources = new Set(this.searchResults.resources.map(item => item.resourceType));
@@ -47,6 +50,10 @@ export class SearchResultsComponent implements OnInit {
         }
       });
     }
+  }
+
+  filterSearchResults(resourceType) {
+    this.filterType = resourceType;
   }
 
 

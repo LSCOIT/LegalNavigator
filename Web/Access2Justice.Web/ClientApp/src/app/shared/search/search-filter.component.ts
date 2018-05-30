@@ -10,9 +10,8 @@ import { isNullOrUndefined } from 'util';
 export class SearchFilterComponent implements OnInit {
   @Input()
   resourceResults: any;
-  @Output() notifyFilterCriteria: EventEmitter<any> = new EventEmitter();
+  @Output() notifyFilterCriteria = new EventEmitter();
   
-
   constructor() { }
 
   sendfilterCriteria(resourceType) {
