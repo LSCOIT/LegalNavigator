@@ -35,7 +35,7 @@
         </div>
         <div *ngIf="question.questionType.toLowerCase()==='yesnotype' ">
           <span *ngFor="let c of question.choices">
-            <button type="button" #btn name="btnOptions" [ngClass]="{ 'btn-primary': isClicked, 'btn': !isClicked  }" class="" value={{c.choiceId}} id="{{c.choiceId}}"
+            <button type="button" #btn name="btnOptions" [ngClass]="{ 'btn btn-primary': isClicked, 'btn': !isClicked  }" value={{c.choiceId}} id="{{c.choiceId}}"
                     (click)="validateElement(btn)">
               {{c.choiceText}}
             </button>

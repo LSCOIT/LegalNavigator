@@ -3,11 +3,8 @@ import { APP_BASE_HREF } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-
-import { TopicComponent } from '../topics-resources/topic.component';
 import { GuidedAssistantComponent } from './guided-assistant.component';
 import { QuestionComponent } from './question.component';
-
 import { TopicService } from '../topics-resources/topic.service';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { TopicsComponent } from '../topics-resources/topics.component';

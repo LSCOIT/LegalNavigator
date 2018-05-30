@@ -8,7 +8,7 @@ describe('QuestionService', () => {
   let service: QuestionService;
   let sampleQuestion: Question = {
     title: 'Question Title',
-    questionId: 'Question 1',
+    questionId: 'Question1',
     questionType: 'Question Type',
     userAnswer: 'Question User Answer',
     choices: ['Question choices']

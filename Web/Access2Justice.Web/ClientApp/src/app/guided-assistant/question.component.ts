@@ -11,7 +11,7 @@ import { Answer } from './answers';
   styleUrls: ['./question.component.css']
 })
 export class QuestionComponent implements OnInit {
-  model = new Answer();
+  answer: Answer = {  answers : [] };
   isClicked = false;
   maximum: number = 100;
   dynamic: number = 0;
@@ -32,12 +32,12 @@ export class QuestionComponent implements OnInit {
       answer = answer.set('choiceId', empForm.value.listOptions);
     }
     else if (this.question.questionType.toLowerCase() === 'multipleselection') {
-      for (var i = 0; i < this.model.answers.length; i++) {
-        answer = answer.set('choiceId', this.model.answers[i]);
+      for (var i = 0; i < this.answer.answers.length; i++) {
+        answer = answer.set('choiceId', this.answer.answers[i]);
       }
     }
     else if (this.question.questionType.toLowerCase() === 'yesnotype') {
-      answer = answer.set('choiceId', this.model.answers[0]);
+      answer = answer.set('choiceId', this.answer.answers[0]);
     }
 
     this.ques = this.ques + 1;
@@ -51,22 +51,21 @@ export class QuestionComponent implements OnInit {
   }
 
   validateElement(element: HTMLInputElement): void {
-    this.model.answers = [];
+    this.answer.answers = [];
     if (element.name == "checkOptions") {
-      if (this.model.answers.includes(element.id) == false && element.checked == true) {
-        this.model.answers.push(element.id)
+      if (this.answer.answers.includes(element.id) == false && element.checked == true) {
+        this.answer.answers.push(element.id)
       }
-      else if (this.model.answers.includes(element.id) == true && element.checked == false) {
-        delete this.model.answers[this.model.answers.indexOf(element.id)];
+      else if (this.answer.answers.includes(element.id) == true && element.checked == false) {
+        delete this.answer.answers[this.answer.answers.indexOf(element.id)];
       }
     }
     if (element.name == "btnOptions") {
-      if (this.model.answers.includes(element.id) == false && element.id != "") {
-        this.model.answers.push(element.id);
-        this.isClicked = true;
+      if (this.answer.answers.includes(element.id) == false && element.id != "") {
+        this.answer.answers.push(element.id);
       }
-      else if (this.model.answers.includes(element.id) == true && element.id == "") {
-        delete this.model.answers[this.model.answers.indexOf(element.id)];
+      else if (this.answer.answers.includes(element.id) == true && element.id == "") {
+        delete this.answer.answers[this.answer.answers.indexOf(element.id)];
       }
     }
   }

@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule, NgForm } from '@angular/forms';
-import { HttpClientModule, HttpParams } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { QuestionComponent } from './question.component';
 import { QuestionService } from './question.service';
 import { ProgressbarModule, ProgressbarConfig } from 'ngx-bootstrap/progressbar';
@@ -169,14 +169,14 @@ describe('QuestionComponent', () => {
     let htmlInputElement: any = { id: 'GUID', name: "checkOptions", checked: true };
     component.question = sampleMultipleSelectionQuestion;
     component.validateElement(htmlInputElement);
-    expect(htmlInputElement.id).toEqual(component.model.answers.shift());
+    expect(htmlInputElement.id).toEqual(component.answer.answers.shift());
   }));
 
   it('should validate button click for btnOptions', async(() => {
     let htmlInputElement: any = { id: 'GUID', name: "btnOptions", checked: true };
     component.question = sampleYesNoQuestion;
     component.validateElement(htmlInputElement);
-    expect(htmlInputElement.id).toEqual(component.model.answers.shift());
+    expect(htmlInputElement.id).toEqual(component.answer.answers.shift());
   }));
 
 });
