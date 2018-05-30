@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NavigateDataService } from '../navigate-data.service';
 import { isNullOrUndefined } from 'util';
+import { ResourceResult } from '../search/search-result';
 
 @Component({
   selector: 'app-search-results',
@@ -14,7 +15,10 @@ export class SearchResultsComponent implements OnInit {
   isLuisResponse: boolean;
   searchText: any;
   @Input()
-  searchResults: any;  
+  searchResults: any;
+  uniqueResources: any;
+  resourceResult: ResourceResult = {};
+  resourceResults: ResourceResult[] = [];
   constructor(private navigateDataService: NavigateDataService) { }
 
   ngOnInit() {
@@ -32,6 +36,21 @@ export class SearchResultsComponent implements OnInit {
 
     }
 
+  //To get the unique filter results
+    if (this.searchResults != null && this.searchResults.resources != null) {
+      this.resourceResults.push({ 'resourceName': 'All', 'resourceCount': this.searchResults.resources.length });
+      this.uniqueResources = new Set(this.searchResults.resources.map(item => item.resourceType));
+      this.uniqueResources.forEach(item => {
+        console.log(item, this.searchResults.resources.filter(x => x.resourceType == item).length);
+        if (item != null) {
+          this.resourceResults.push({ 'resourceName': item, 'resourceCount': this.searchResults.resources.filter(x => x.resourceType == item).length; });
+        }
+      });
+    }
   }
+
+
+
+}
 
 }

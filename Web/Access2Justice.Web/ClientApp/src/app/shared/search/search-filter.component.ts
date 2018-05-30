@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { ResourceResult } from '../search/search-result';
 
 @Component({
   selector: 'app-search-filter',
@@ -6,10 +7,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./search-filter.component.css']
 })
 export class SearchFilterComponent implements OnInit {
+  @Input()
+  resourceResults: any;
 
   constructor() { }
 
   ngOnInit() {
+    
   }
 
 }
