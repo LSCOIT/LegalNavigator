@@ -22,8 +22,4 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
 </Project>

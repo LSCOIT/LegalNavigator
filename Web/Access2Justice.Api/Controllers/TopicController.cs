@@ -12,10 +12,10 @@ namespace Access2Justice.Api.Controllers
     [Produces("application/json")]
     public class TopicController : Controller
     {
-        private readonly ITopicBusinessLogic _topicBusinessLogic;
+        private readonly ITopicBusinessLogic topicBusinessLogic;
         public TopicController(ITopicBusinessLogic topicBusinessLogic)
         {
-            _topicBusinessLogic = topicBusinessLogic;
+            this.topicBusinessLogic = topicBusinessLogic;
         }
 
         #region  GetTopics
@@ -23,32 +23,29 @@ namespace Access2Justice.Api.Controllers
         [Route("api/topics/get")]
         public async Task<IActionResult> Get()
         {
-            var response = await _topicBusinessLogic.GetTopicsAsync();
+            var response = await topicBusinessLogic.GetTopicsAsync();
             return Ok(response);
         }
         #endregion
-
         #region GetSubTopics
         [HttpGet]
         [Route("api/topics/getsubtopics/{id}")]
         public async Task<IActionResult> GetSubTopics(string id)
         {
 
-            var topics = await _topicBusinessLogic.GetSubTopicsAsync(id);
+            var topics = await topicBusinessLogic.GetSubTopicsAsync(id);
             return Ok(topics);
         }
         #endregion
-
         #region GetSubTopicDetails
         [HttpGet]
         [Route("api/topics/getsubtopicdetails/{id}")]
         public async Task<IActionResult> GetSubTopicDetails(string id)
         {
-            var topics = await _topicBusinessLogic.GetSubTopicDetailAsync(id);
+            var topics = await topicBusinessLogic.GetSubTopicDetailAsync(id);
             return Ok(topics);
         }
         #endregion
-
-        
+     
     }
 }

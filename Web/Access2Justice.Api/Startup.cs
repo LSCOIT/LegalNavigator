@@ -3,6 +3,7 @@ using Access2Justice.CosmosDb;
 using Access2Justice.CosmosDb.Interfaces;
 using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
+using Access2Justice.Shared.Luis;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Azure.Documents;
@@ -10,7 +11,7 @@ using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
-
+using Access2Justice.Shared.Bing;
 
 namespace Access2Justice.Api
 {
@@ -25,10 +26,22 @@ namespace Access2Justice.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();         
-            services.AddSingleton<ITopicBusinessLogic, TopicBusinessLogic>();        
+            services.AddMvc();
+
+            ILuisSettings luisSettings = new LuisSettings(Configuration.GetSection("Luis"));
+            services.AddSingleton(luisSettings);
+
+            IBingSettings bingSettings = new BingSettings(Configuration.GetSection("Bing"));
+            services.AddSingleton(bingSettings);
+
+            services.AddSingleton<ILuisProxy, LuisProxy>();
+            services.AddSingleton<ILuisBusinessLogic, LuisBusinessLogic>();
+            services.AddSingleton<ITopicBusinessLogic, TopicBusinessLogic>();
+            services.AddSingleton<ITopicsResourcesBusinessLogic, TopicsResourcesBusinessLogic>();
+            services.AddSingleton<IWebSearchBusinessLogic, WebSearchBusinessLogic>();
             services.AddTransient<IHttpClientService, HttpClientService>();
             ConfigureCosmosDb(services);
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Access2Justice API", Version = "v1" });
@@ -44,16 +57,10 @@ namespace Access2Justice.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseCors(builder => builder.WithOrigins("http://localhost:59706"));
-
+            app.UseCors(builder => builder.WithOrigins("http://localhost:64218"));
             app.UseMvc();
 
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Access2Justice API V1");
-            });
+            ConfigureSwagger(app);
         }
 
         private void ConfigureCosmosDb(IServiceCollection services)
@@ -70,7 +77,7 @@ namespace Access2Justice.Api
             {
                 c.PreSerializeFilters.Add((swagger, httpReq) =>
                 {
-                    swagger.Host = httpReq.Host.Value;                    
+                    swagger.Host = httpReq.Host.Value;
                 });
             });
 
