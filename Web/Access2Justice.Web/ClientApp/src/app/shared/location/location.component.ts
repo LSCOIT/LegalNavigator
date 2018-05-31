@@ -18,9 +18,9 @@ export class LocationComponent implements OnInit {
   modalRef: BsModalRef;
   searchManager: any;
   locAddress: any;
-  anchorage: string;
+  locality: string;
   tempLoc: any;
-  anchorageAddress: any;
+  address: any;
   showLocation: boolean = true;
   geolocationPosition: any;
   
@@ -113,9 +113,9 @@ export class LocationComponent implements OnInit {
     localStorage.setItem("searchedLocation", this.tempLoc);
     this.tempLoc = localStorage.getItem("tempSearchedLocationState");
     localStorage.setItem("searchedLocationAddress", this.tempLoc);
-    this.anchorage = localStorage.getItem("searchedLocation");
-    this.anchorageAddress = localStorage.getItem("searchedLocationAddress");
-    if (this.anchorage !== "" && this.anchorageAddress !== "") {
+    this.locality = localStorage.getItem("searchedLocation");
+    this.address = localStorage.getItem("searchedLocationAddress");
+    if (this.locality !== "" && this.address !== "") {
       this.showLocation = false;
     }
     this.modalRef.hide();
