@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace CreateTopicAndResources
 {
-    public class Topics : Topic_BL
+    public class Topics
     {
         public string Id { get; set; }
         public List<Topic> TopicsList { get; set; }
@@ -47,13 +47,13 @@ namespace CreateTopicAndResources
         public string CreatedBy { get; set; }
 
         [JsonProperty(PropertyName = "createdTimeStamp")]
-        public string CreatedTimeStamp { get; set; }
+        public DateTime? CreatedTimeStamp { get; set; } = DateTime.UtcNow;
 
         [JsonProperty(PropertyName = "modifiedBy")]
         public string ModifiedBy { get; set; }
 
         [JsonProperty(PropertyName = "modifiedTimeStamp")]
-        public string ModifiedTimeStamp { get; set; }
+        public DateTime? ModifiedTimeStamp { get; set; } = DateTime.UtcNow;
     }
 
     public class ParentTopicID

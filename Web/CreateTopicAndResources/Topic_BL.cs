@@ -15,19 +15,22 @@ namespace CreateTopicAndResources
         private const string EndpointUrl = "";
         private const string PrimaryKey = "";
         private const string Database = "access2justicedb";
+        private const string ResourceCollection = "Resources";
+        private const string TopicCollection = "Topics";
         private DocumentClient client;
 
         public async Task<IEnumerable<Topic>> GetTopics()
         {
             this.client = new DocumentClient(new Uri(EndpointUrl), PrimaryKey);
 
-            await this.client.CreateDatabaseIfNotExistsAsync(new Database { Id = "access2justicedb" });
+            await this.client.CreateDatabaseIfNotExistsAsync(new Database { Id = Database });
 
-            await this.client.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri("access2justicedb"),
-            new DocumentCollection { Id = "Topics" });
+            await this.client.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri(Database),
+            new DocumentCollection { Id = TopicCollection });
 
             InsertTopics obj = new InsertTopics();
             var content = obj.CreateJsonFromCSV();
+
 
             Topics topics = new Topics
             {
@@ -37,6 +40,8 @@ namespace CreateTopicAndResources
             foreach (var topicList in topics.TopicsList)
             {
                 int count = topicList.ParentTopicID.Length;
+                // foreach (var parentId in topicList.ParentTopicID)
+
                 foreach (var parentId in topicList.ParentTopicID)
                 {
                     if (parentId.ParentTopicId != "")
@@ -45,7 +50,7 @@ namespace CreateTopicAndResources
                         parentId.ParentTopicId = updatedId.FirstOrDefault();
                     }
                 }
-                await this.CreateTopicDocumentIfNotExists("access2justicedb", "Topics", topicList);
+                await this.CreateTopicDocumentIfNotExists(Database, TopicCollection, topicList);
             }
             var items = await this.GetItemsFromCollectionAsync();
             return items;
@@ -59,7 +64,7 @@ namespace CreateTopicAndResources
         public async Task<IEnumerable<Topic>> GetItemsFromCollectionAsync()
         {
             var documents = client.CreateDocumentQuery<Topic>(
-                  UriFactory.CreateDocumentCollectionUri("access2justicedb", "Topics"),
+                  UriFactory.CreateDocumentCollectionUri(Database, TopicCollection),
                   new FeedOptions { MaxItemCount = -1 }).AsDocumentQuery();
             List<Topic> td = new List<Topic>();
             while (documents.HasMoreResults)
@@ -68,5 +73,8 @@ namespace CreateTopicAndResources
             }
             return td;
         }
+
+
     }
 }
+

@@ -17,7 +17,7 @@ namespace CreateTopicAndResources
             int lineCount = File.ReadLines(path).Count();
             List<ParentTopic> parentTopics = new List<ParentTopic>();
             List<Topic> topicsList = new List<Topic>();
-            Topics topics = new Topics();
+            Topics topics = new Topics();//new Topic[lineCount - 1];
 
             using (var fileStream = File.OpenRead(textFilePath))
             using (var streamReader = new StreamReader(fileStream, Encoding.UTF8, true, BufferSize))
@@ -27,7 +27,7 @@ namespace CreateTopicAndResources
                 string[] parts = line1.Split(',');
                 int len = parts.Length;
                 string val;
-                int j = 0, q = 0; //k = 0;
+                int j = 0, q = 0;
 
                 while ((line2 = streamReader.ReadLine()) != null)
                 {
@@ -36,6 +36,8 @@ namespace CreateTopicAndResources
                     ParentTopicID[] parentTopicIds = null;
                     List<string> parent_Id = new List<string>();
                     List<Location> location = new List<Location>();
+                    List<Location> locations = new List<Location>();
+                    List<string> loc_Id = new List<string>();
                     List<string> location_Id = new List<string>();
                     for (int i = 0; i < partsb.Length; i++)
                     {
@@ -45,7 +47,7 @@ namespace CreateTopicAndResources
                             string tempParentId = partsb[i];
                             parent_Id.Add(partsb[i]);
                             string[] parentsb = null;
-                            parentsb = tempParentId.Split(' ');
+                            parentsb = tempParentId.Split('|');
                             parentTopicIds = new ParentTopicID[parentsb.Length];
                             for (int m = 0; m < parentsb.Length; m++)
                             {
@@ -54,21 +56,48 @@ namespace CreateTopicAndResources
                                     ParentTopicId = parentsb[m],
                                 };
                             }
+                            //k++;
                         }
 
                         else if (val.EndsWith("location"))
                         {
-                            string templocationId = partsb[i];
-                            location_Id.Add(partsb[i]);
-                            string[] locationsb = null;
-                            locationsb = templocationId.Split('|');
-                            location.Add(new Location() //todo location specific changes to be implemented, for now its taking format "State->County->City->ZipCode" format.
+                            string templocId = partsb[i];
+                            loc_Id.Add(partsb[i]);
+                            string[] locsb = null;
+                            locsb = templocId.Split('|');
+                            for (int m = 0; m < locsb.Length; m++)
                             {
-                                State = locationsb[0] ?? string.Empty,
-                                County = locationsb[1] ?? string.Empty,
-                                City = locationsb[2] ?? string.Empty,
-                                ZipCode = locationsb[3] ?? string.Empty
-                            });
+                                string templocationId = locsb[m];
+                                location_Id.Add(locsb[m]);
+                                string[] locationsb = null;
+                                locationsb = templocationId.Split(';');
+                                if (locationsb.Length == 4)
+                                {
+                                    int position = 0;
+                                    var specificLocation = new Location();
+                                    string state = string.Empty, county = string.Empty, city = string.Empty, zipCode = string.Empty;
+                                    foreach (var subLocation in templocationId.Split(';'))
+                                    {
+                                        state = position == 0 && string.IsNullOrEmpty(state) ? subLocation : state;
+                                        county = position == 1 && string.IsNullOrEmpty(county) ? subLocation : county;
+                                        city = position == 2 && string.IsNullOrEmpty(city) ? subLocation : city;
+                                        zipCode = position == 3 && string.IsNullOrEmpty(zipCode) ? subLocation : zipCode;
+
+                                        if (position == 3)
+                                        {
+                                            specificLocation = new Location()
+                                            {
+                                                State = state,
+                                                County = county,
+                                                City = city,
+                                                ZipCode = zipCode,
+                                            };
+                                        }
+                                        position++;
+                                    }
+                                    locations.Add(specificLocation);
+                                }
+                            }
                         }
 
                         else
@@ -86,12 +115,12 @@ namespace CreateTopicAndResources
                         ParentTopicID = parentTopicIds,
                         Keywords = value[2],
                         JsonContent = value[3],
-                        Location = location,
+                        Location = locations,
                         Icon = value[4],
                         CreatedBy = value[5],
-                        CreatedTimeStamp = value[6],
-                        ModifiedBy = value[7],
-                        ModifiedTimeStamp = value[8]
+                        //CreatedTimeStamp = value[6],//DateTime.UtcNow.Date
+                        ModifiedBy = value[6],
+                        //ModifiedTimeStamp = value[8] //DateTime.UtcNow.Date
                     });
                     q++;
                 }
@@ -102,4 +131,3 @@ namespace CreateTopicAndResources
         }
     }
 }
-
