@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from '../app-routing.module';
 import { FormsModule } from '@angular/forms';
-import { BsDropdownModule } from 'ngx-bootstrap';
+import { BsDropdownModule, ModalModule } from 'ngx-bootstrap';
 
 import { ChatbotComponent } from './chatbot/chatbot.component';
 import { DownloadButtonComponent } from './resource/user-action/download-button.component';
@@ -24,6 +24,8 @@ import { UpperNavComponent } from './navigation/upper-nav.component';
 import { NavigateDataService } from './navigate-data.service';
 import { SearchService } from './search/search.service';
 import { WebResourceComponent } from './resource/web-resource/web-resource.component';
+import { LanguageComponent } from './language/language.component';
+import { LocationComponent } from './location/location.component';
 
 
 @NgModule({
@@ -31,7 +33,8 @@ import { WebResourceComponent } from './resource/web-resource/web-resource.compo
     CommonModule,
     AppRoutingModule,
     FormsModule,
-    BsDropdownModule.forRoot()
+    BsDropdownModule.forRoot(),
+    ModalModule.forRoot()
   ],
   declarations: [
     ChatbotComponent,
@@ -50,7 +53,9 @@ import { WebResourceComponent } from './resource/web-resource/web-resource.compo
     SaveButtonComponent,
     ShareButtonComponent,
     UpperNavComponent,
-    WebResourceComponent
+    WebResourceComponent,
+    LanguageComponent,
+    LocationComponent
   ],
   exports: [
     ChatbotComponent,

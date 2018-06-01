@@ -3,17 +3,15 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Topic } from './topic';
 
-
 @Injectable()
 
 export class TopicService {  
 
-  siteHostName = "http://localhost:12176/";
+  siteHostName = "http://localhost:59019/";
   topicUrl = this.siteHostName + "api/topics/gettopics";
   subtopicUrl = this.siteHostName + "api/topics/getsubtopics";
   subtopicDetailUrl = this.siteHostName + "api/topics/getresourcedetails";
   getDocumentUrl = this.siteHostName + "api/topics/getdocument";
-
 
   constructor(private http: HttpClient) { }
 

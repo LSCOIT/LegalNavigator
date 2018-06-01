@@ -1,8 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { TopicService } from '../shared/topic.service';
 import { ActivatedRoute } from '@angular/router';
-import { Topic } from '../shared/topic';
-import { HttpParams } from '@angular/common/http';
 import { NavigateDataService } from '../../shared/navigate-data.service';
 
 @Component({
@@ -17,23 +15,27 @@ export class SubtopicsComponent implements OnInit {
   activeTopicId: string;
   subtopicName: string;
 
-  constructor(private topicService: TopicService, private activeRoute: ActivatedRoute,private navigateDataService: NavigateDataService) {
-  }
+  constructor(
+    private topicService: TopicService,
+    private activeRoute: ActivatedRoute,
+    private navigateDataService: NavigateDataService
+  ) {}
 
-  getSubtopics(): void
-  {
+  getSubtopics(): void {
     this.topicService.getTopics()
       .subscribe(topics => {
-        for (let i = 0; i < topics.length; i++)
-        {
-          if (topics[i]["name"].toLowerCase() === this.activeTopic)
-          {
+        for (let i = 0; i < topics.length; i++) {
+          if (topics[i]["name"].toLowerCase() === this.activeTopic) {
             this.activeTopicId = topics[i]["id"];
-            this.topicService.getSubtopics(this.activeTopicId).subscribe(subtopics => this.subtopics = subtopics);
-
-             this.topicService.getSubtopics(this.activeTopicId).subscribe(subtopics => {
-               this.subtopics = subtopics;
-               this.navigateDataService.setData(this.subtopics);
+            this.topicService.getSubtopics(this.activeTopicId)
+              .subscribe(
+                subtopics => this.subtopics = subtopics
+               );
+            this.topicService.getSubtopics(this.activeTopicId)
+              .subscribe(
+                subtopics => {
+                  this.subtopics = subtopics;
+                  this.navigateDataService.setData(this.subtopics);
             });
           }
         }
@@ -44,6 +46,3 @@ export class SubtopicsComponent implements OnInit {
     this.getSubtopics();
   }
 }
-
-
-

@@ -6,7 +6,6 @@ import { SearchService } from './search.service';
 import { NavigateDataService } from '../navigate-data.service';
 import { isNullOrUndefined } from 'util';
 
-
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -27,9 +26,10 @@ export class SearchComponent implements OnInit {
         if (!isNullOrUndefined(response)) {
           this.searchResults = response;
           this.navigateDataService.setData(this.searchResults);          
-          this.router.navigateByUrl('/searchRefresh', { skipLocationChange: true }).then(() =>
-            this.router.navigate(['/search']));
-          
+          this.router.navigateByUrl('/searchRefresh', { skipLocationChange: true })
+            .then(() =>
+              this.router.navigate(['/search'])
+            );
         }
       });
   }

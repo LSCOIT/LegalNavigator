@@ -8,10 +8,6 @@ li.web-hidden {
     margin: 0;
 }
 
-#search {
-    margin-left: 10px;
-}
-
 .glyphicon-search {
     color: rgb(117, 117, 117);
 }
@@ -20,11 +16,11 @@ li.web-hidden {
     display: inline-block;
 }
 
-@media only screen and (min-width : 768px) {
+.account-menu {
+  display: inline-block;
+}
 
-    #search {
-        width: 100px;
-    }
+@media only screen and (min-width : 768px) {
 
     li.web-hidden {
         display: none;
@@ -32,10 +28,6 @@ li.web-hidden {
 }
 
 @media only screen and (min-width : 992px) {
-    #search {
-        width: 100px;
-    }
-
     li.web-hidden {
         display: none;
     }

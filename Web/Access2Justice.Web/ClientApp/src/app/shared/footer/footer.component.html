@@ -6,15 +6,12 @@
 <div class="row">
   <div class="col-md-12">
     <ul class="footer-nav text-center">
-      <li><a href="#">Guided Assitant</a></li>
-      <li><a href="#">Topics &amp; Resources</a></li>
-      <li><a href="#">Search</a></li>
-      <li><a href="#">Chat</a></li>
-      <li><a href="#">About</a></li>
-      <li><a href="#">Help &amp; FAQs</a></li>
-      <li><a href="#">Privacy Promise</a></li>
-      <li><a href="#">Account</a></li>
-      <li><a href="#">Exit Website</a></li>
+      <li><a [routerLink]="['/home']">Home</a></li>
+      <li><a [routerLink]="['/guidedassistant']">Guided Assitant</a></li>
+      <li><a [routerLink]="['/topics']">Topics &amp; Resources</a></li>
+      <li><a [routerLink]="['/about']">About</a></li>
+      <li><a [routerLink]="['/privacy']">Privacy Promise</a></li>
+      <li><a [routerLink]="['/help']">Help &amp; FAQs</a></li>
     </ul>
   </div>
 </div>

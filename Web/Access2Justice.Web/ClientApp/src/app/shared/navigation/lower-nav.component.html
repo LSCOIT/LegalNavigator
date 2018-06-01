@@ -9,16 +9,20 @@
       </button>
       <a class="navbar-brand" href="#">Legal Assist</a>
     </div>
-    <div class="mobile-hidden" [style.display] = "getMenu()">
+    <div class="mobile-hidden" [style.display]="getMenu()">
       <app-search></app-search>
       <ul class="nav navbar-nav">
-        <li><a href="">Home</a></li>
-        <li><a routerLink='/guidedassistant'>Guided Assistant</a></li>
-        <li><a routerLink='/topics'>Topics &amp; Resources</a></li>
-        <li><a routerLink='/about'>About</a></li>
-        <li class="web-hidden"><a class="web-hidden-link" href="#">Help &amp; FAQs</a></li>
-        <li class="web-hidden"><a class="web-hidden-link" href="#">Privacy Promise</a></li>
-        <li class="web-hidden"><a class="web-hidden-link" href="#" class="exit-site">Exit Website</a></li>
+        <li><a [routerLink]="['/guidedassistant']">Home</a></li>
+        <li><a [routerLink]="['/guidedassistant']">Guided Assistant</a></li>
+        <li><a [routerLink]="['/topics']">Topics &amp; Resources</a></li>
+        <li><a [routerLink]="['/about']">About</a></li>
+        <li class="web-hidden"><a [routerLink]="['/help']">Help &amp; FAQs</a></li>
+        <li class="web-hidden"><a [routerLink]="['/privacy']">Privacy Promise</a></li>
+        <li class="web-hidden">
+          <a [routerLink]="['/createaccount']" class="account-menu">Create Account</a>
+          <span>|</span>
+          <a [routerLink]="['/login']" class="account-menu">Log In</a>
+        </li>
       </ul>
     </div>
   </div>
