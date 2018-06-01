@@ -1,7 +1,8 @@
+using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
+
 namespace Access2Justice.Api
-{
-    using Microsoft.AspNetCore;
-    using Microsoft.AspNetCore.Hosting;
+{  
 
     public class Program
     {
