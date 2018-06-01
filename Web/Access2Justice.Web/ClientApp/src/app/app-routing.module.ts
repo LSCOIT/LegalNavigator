@@ -19,7 +19,8 @@ import { ResourceCardDetailComponent } from
 
 
 const appRoutes: Routes = [
-  { path: 'search', component: SearchResultsComponent},
+  { path: 'search', component: SearchResultsComponent },
+  { path: 'searchRefresh', component: SearchResultsComponent },
   { path: 'guidedassistant/123', component: QuestionComponent },
   { path: 'guidedassistant', component: GuidedAssistantComponent },
   { path: 'resource/:id', component: ResourceCardDetailComponent },

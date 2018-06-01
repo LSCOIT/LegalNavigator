@@ -27,7 +27,8 @@ export class SearchComponent implements OnInit {
         if (!isNullOrUndefined(response)) {
           this.searchResults = response;
           this.navigateDataService.setData(this.searchResults);          
-          this.router.navigate(['/search']);
+          this.router.navigateByUrl('/searchRefresh', { skipLocationChange: true }).then(() =>
+            this.router.navigate(['/search']));
           
         }
       });
