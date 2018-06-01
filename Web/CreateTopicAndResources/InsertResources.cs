@@ -11,7 +11,7 @@ namespace CreateTopicAndResources
     {
         public Resources CreateJsonFromCSV()
         {
-            string path = "C:\\Users\\v-sobhad\\Desktop\\reading-csv\\Resource_Data.csv";
+            string path = "C:\\Users\\v-sobhad\\Desktop\\reading-csv\\Resource_Data_tab.txt";
             string textFilePath = path;
             const Int32 BufferSize = 128;
             int lineCount = File.ReadLines(path).Count();
@@ -23,7 +23,7 @@ namespace CreateTopicAndResources
             {
                 String line1, line2;
                 line1 = streamReader.ReadLine();
-                string[] parts = line1.Split(',');
+                string[] parts = line1.Split('\t');
                 int len = parts.Length;
                 string val;
                 int j = 0, q = 0;
@@ -31,7 +31,7 @@ namespace CreateTopicAndResources
                 while ((line2 = streamReader.ReadLine()) != null)
                 {
                     List<string> value = new List<string>();
-                    string[] partsb = line2.Split(',');
+                    string[] partsb = line2.Split('\t');
                     Conditions[] conditions = null;
                     ReferenceTag[] referenceTags = null;
                     List<string> reference_Id = new List<string>();
