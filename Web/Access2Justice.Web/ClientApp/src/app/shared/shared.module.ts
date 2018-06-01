@@ -9,6 +9,7 @@ import { UpperNavComponent } from './upper-nav.component';
 
 import { BsDropdownModule } from 'ngx-bootstrap';
 import { SearchCuratedExperienceComponent } from './search-curated-experience/search-curated-experience.component';
+import { CuratedExperienceService } from './search-curated-experience/curatedexperience.service';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import { SearchCuratedExperienceComponent } from './search-curated-experience/se
     FooterComponent,
     LowerNavComponent,
     UpperNavComponent
-   ]
+  ],
+  providers: [CuratedExperienceService]
 })
 export class SharedModule { }

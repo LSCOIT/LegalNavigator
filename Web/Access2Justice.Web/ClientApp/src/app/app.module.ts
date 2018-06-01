@@ -28,8 +28,6 @@ import { TopicsComponent } from './topics-resources/topics.component';
 import { QuestionComponent } from './guided-assistant/question.component';
 import { QuestionService } from './guided-assistant/question.service';
 import { TopicComponent } from './topics-resources/topic.component';
-import { SearchCuratedExperienceComponent } from './shared/search-curated-experience/search-curated-experience.component';
-import { CuratedExperienceService } from './shared/search-curated-experience/curatedexperience.service';
 
 
 @NgModule({
@@ -61,8 +59,7 @@ import { CuratedExperienceService } from './shared/search-curated-experience/cur
   ],
   providers: [
     TopicService,
-    QuestionService,
-    CuratedExperienceService],
+    QuestionService],
   bootstrap: [AppComponent]
 })
 
