@@ -36,7 +36,6 @@ namespace Access2Justice.Api
 
             services.AddSingleton<ILuisProxy, LuisProxy>();
             services.AddSingleton<ILuisBusinessLogic, LuisBusinessLogic>();
-            services.AddSingleton<ITopicBusinessLogic, TopicBusinessLogic>();
             services.AddSingleton<ITopicsResourcesBusinessLogic, TopicsResourcesBusinessLogic>();
             services.AddSingleton<IWebSearchBusinessLogic, WebSearchBusinessLogic>();
             services.AddTransient<IHttpClientService, HttpClientService>();
@@ -57,7 +56,7 @@ namespace Access2Justice.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseCors(builder => builder.WithOrigins("http://localhost:64218"));
+            app.UseCors(builder => builder.WithOrigins("http://localhost:59706"));
             app.UseMvc();
 
             ConfigureSwagger(app);

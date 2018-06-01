@@ -7,9 +7,16 @@ import { Topic } from './topic';
 @Injectable()
 export class TopicService {
   
-  topicUrl = "http://localhost:64218/api/topics/get";
-  subtopicUrl = "http://localhost:64218/api/topics/getsubtopics";
-  subtopicDetailUrl = "http://localhost:64218/api/topics/getsubtopicdetails";
+  //topicUrl = "http://localhost:59704/api/topics/gettopics";
+  //subtopicUrl = "http://localhost:59704/api/topics/getsubtopics";
+  //subtopicDetailUrl = "http://localhost:59704/api/topics/getsubtopicdetails";
+
+  siteHostName = "http://localhost:59704/";
+  topicUrl = this.siteHostName + "api/topics/gettopics";
+  subtopicUrl = this.siteHostName + "api/topics/getsubtopics";
+  subtopicDetailUrl = this.siteHostName + "api/topics/getresourcedetails";
+  getDocumentUrl = this.siteHostName + "api/topics/getdocument";
+
 
   constructor(private http: HttpClient) { }
 
@@ -23,5 +30,9 @@ export class TopicService {
 
   getSubtopicDetail(id): Observable<any> {
     return this.http.get<Topic>(this.subtopicDetailUrl + '/' + id);
+  }
+
+  getDocumentData(id): Observable<any> {
+    return this.http.get<Topic>(this.getDocumentUrl + '/' + id);
   }
 }

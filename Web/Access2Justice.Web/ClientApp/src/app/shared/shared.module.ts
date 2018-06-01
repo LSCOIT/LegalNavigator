@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from '../app-routing.module';
 import { FormsModule } from '@angular/forms';
 import { BsDropdownModule } from 'ngx-bootstrap';
+import { NavigateDataService } from './navigate-data.service';
 
 import { ChatbotComponent } from './chatbot/chatbot.component';
 import { DownloadButtonComponent } from './resource/user-action/download-button.component';
@@ -65,6 +66,9 @@ import { UpperNavComponent } from './navigation/upper-nav.component';
     SaveButtonComponent,
     ShareButtonComponent,
     UpperNavComponent
-   ]
+  ],
+  providers: [
+    NavigateDataService
+  ]
 })
 export class SharedModule { }

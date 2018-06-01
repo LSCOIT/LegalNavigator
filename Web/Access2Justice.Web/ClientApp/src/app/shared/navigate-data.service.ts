@@ -6,10 +6,12 @@ export class NavigateDataService
  
   titlefield: any;
 
-  getSubtopics() {
+  getSubtopics()
+  {
     return this.titlefield;
   }
-  settitlefield(data: any) {
+  settitlefield(data: any)
+  {
     this.titlefield = data;
   }
 }
