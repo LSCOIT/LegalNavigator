@@ -32,5 +32,33 @@ namespace Access2Justice.Api.BusinessLogic
 
             return result;
         }
+
+        public async Task<dynamic> GetTopicsAsync()
+        {
+            var query = "SELECT * FROM c where c.parentTopicID=''";
+            var result = await backendDatabaseService.QueryItemsAsync(cosmosDbSettings.TopicCollectionId, query);
+            return result;
+        }
+
+        public async Task<dynamic> GetSubTopicsAsync(string ParentTopicId)
+        {
+            var query = "SELECT * FROM c WHERE c.parentTopicID='" + ParentTopicId + "'";
+            var result = await backendDatabaseService.QueryItemsAsync(cosmosDbSettings.TopicCollectionId, query);
+            return result;
+        }
+
+        public async Task<dynamic> GetReourceDetailAsync(string ParentTopicId)
+        {
+            var query = "SELECT * FROM c WHERE ARRAY_CONTAINS(c.topicTags, { 'id' : '" + ParentTopicId + "'})";
+            var result = await backendDatabaseService.QueryItemsAsync(cosmosDbSettings.ResourceCollectionId, query);
+            return result;
+        }
+
+        public async Task<dynamic> GetDocumentData(string id)
+        {
+            var query = "SELECT * FROM c WHERE c.id='" + id + "'";
+            var result = await backendDatabaseService.QueryItemsAsync(cosmosDbSettings.TopicCollectionId, query);
+            return result;
+        }
     }
 }

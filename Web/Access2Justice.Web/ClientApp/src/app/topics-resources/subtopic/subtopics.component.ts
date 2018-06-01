@@ -3,6 +3,7 @@ import { TopicService } from '../shared/topic.service';
 import { ActivatedRoute } from '@angular/router';
 import { Topic } from '../shared/topic';
 import { HttpParams } from '@angular/common/http';
+import { NavigateDataService } from '../../shared/navigate-data.service';
 
 @Component({
   selector: 'app-subtopics',
@@ -14,11 +15,13 @@ export class SubtopicsComponent implements OnInit {
   subtopics: any[];
   activeTopic = this.activeRoute.snapshot.params['topic'];
   activeTopicId: string;
+  subtopicName: string;
 
-  constructor(private topicService: TopicService, private activeRoute: ActivatedRoute) {
+  constructor(private topicService: TopicService, private activeRoute: ActivatedRoute,private navigateDataService: NavigateDataService) {
   }
 
-  getSubtopics(): void {
+  getSubtopics(): void
+  {
     this.topicService.getTopics()
       .subscribe(topics => {
         for (let i = 0; i < topics.length; i++)
@@ -27,6 +30,11 @@ export class SubtopicsComponent implements OnInit {
           {
             this.activeTopicId = topics[i]["id"];
             this.topicService.getSubtopics(this.activeTopicId).subscribe(subtopics => this.subtopics = subtopics);
+
+             this.topicService.getSubtopics(this.activeTopicId).subscribe(subtopics => {
+               this.subtopics = subtopics;
+               this.navigateDataService.setData(this.subtopics);
+            });
           }
         }
       });
