@@ -2,20 +2,16 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 
+ // we can use this service for transferring data between two components while routing.
 export class NavigateDataService {
-  searchResult: any;
-  getResourceData() {
-    return this.searchResult;
+
+  data: any;
+
+  getData() {
+    return this.data;
   }
-  setResourceData(data: any) {
-    this.searchResult = data;
+  setData(data: any) {
+    this.data = data;
   }
 
-  searchText: any;
-  getsearchText() {
-    return this.searchText;
-  }
-  setsearchText(data: any) {
-    this.searchText = data;
-  }
 }

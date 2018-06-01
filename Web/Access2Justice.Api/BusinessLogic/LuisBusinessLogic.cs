@@ -58,11 +58,11 @@ namespace Access2Justice.Api
 
         public int ApplyThreshold(IntentWithScore intentWithScore)
         {
-            if (intentWithScore.Score >= luisSettings.UpperThreshold)
+            if (intentWithScore.Score >= luisSettings.UpperThreshold && intentWithScore.TopScoringIntent.ToUpperInvariant() != "NONE" )
             {
                 return (int)LuisAccuracyThreshold.High;
             }
-            else if (intentWithScore.Score <= luisSettings.LowerThreshold)
+            else if (intentWithScore.Score <= luisSettings.LowerThreshold || intentWithScore.TopScoringIntent.ToUpperInvariant() == "NONE")
             {
                 return (int)LuisAccuracyThreshold.Low;
             }

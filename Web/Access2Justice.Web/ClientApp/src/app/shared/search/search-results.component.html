@@ -1,6 +1,6 @@
 <div class="container">
   <div *ngIf="isInternalResource">
-    <h2>Results for {{searchText}}. We think you mean {{searchResults.topIntent}}.</h2>
+    <h2>Results for {{searchResults.topIntent}}.</h2>
   </div>
   <div class="row">
     <app-search-filter (notifyFilterCriteria)='filterSearchResults($event)' [resourceResults]="resourceResults"></app-search-filter>
@@ -18,7 +18,7 @@
         <app-web-resource [searchResults]="searchResults"></app-web-resource>
       </div>
       <div *ngIf="isLuisResponse" class="row center-align">
-        <h3>Sorry, we did not find anything that matches {{searchText}}. Please try again.</h3>
+        <h3>Sorry, we did not find anything that matches you're input. Please try again.</h3>
       </div>
     </div>
       <div class="col-md-3 col-sm-12 col-xs-12">

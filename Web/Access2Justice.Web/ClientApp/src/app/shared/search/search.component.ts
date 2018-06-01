@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 
 import { SearchService } from './search.service';
 import { NavigateDataService } from '../navigate-data.service';
+import { isNullOrUndefined } from 'util';
 
 
 @Component({
@@ -23,10 +24,9 @@ export class SearchComponent implements OnInit {
   onSubmit(searchForm: NgForm): void {
     this.searchService.search(searchForm.value.inputText)
       .subscribe(response => {
-        if (response != null || response != undefined) {
+        if (!isNullOrUndefined(response)) {
           this.searchResults = response;
-          this.navigateDataService.setResourceData(this.searchResults);
-          this.navigateDataService.setsearchText(searchForm.value.inputText);
+          this.navigateDataService.setData(this.searchResults);          
           this.router.navigate(['/search']);
           
         }

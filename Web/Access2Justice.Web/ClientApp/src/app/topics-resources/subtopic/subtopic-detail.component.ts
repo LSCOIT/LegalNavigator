@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { TopicService } from '../shared/topic.service';
-import { ActivatedRoute, Router  } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Topic } from '../shared/topic';
 
 @Component({
@@ -34,11 +34,11 @@ export class SubtopicDetailComponent implements OnInit {
   getSubtopicDetail(): void {
     this.topicService.getSubtopicDetail(this.activeRoute.snapshot.params['subtopic'])
       .subscribe(
-        data => {
-          this.subtopicDetails = data;
-          this.filterSubtopicDetail();
-        }
-      ); 
+      data => {
+        this.subtopicDetails = data;
+        this.filterSubtopicDetail();
+      }
+      );
 
   }
 

@@ -25,8 +25,7 @@ export class SearchResultsComponent implements OnInit {
   
 
   ngOnInit() {
-    this.searchResults = this.navigateDataService.getResourceData();
-    this.searchText = this.navigateDataService.getsearchText();
+    this.searchResults = this.navigateDataService.getData();    
 
     if (!isNullOrUndefined(this.searchResults)) {
       this.isInternalResource = this.searchResults.resources;
