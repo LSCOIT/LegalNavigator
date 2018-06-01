@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Helper\" />
     <Folder Include="Models\" />
     <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="ViewModels\" />
