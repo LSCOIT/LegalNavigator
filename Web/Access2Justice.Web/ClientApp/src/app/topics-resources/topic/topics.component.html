@@ -1,7 +1,11 @@
 <ul>
-  <li class="topic-list col-md-4 col-sm-6 col-xs-6 text-center" *ngFor="let topic of topics" >
-    <a [routerLink]="['/topics', topic.name | lowercase]"><img src="{{ topic.icon }}" alt="{{topic.name}}"></a>
-    <h5><a [routerLink]="['/topics', topic.name | lowercase]">{{ topic.name }}</a></h5>
+  <li class="topic-list col-md-4 col-sm-6 col-xs-6 text-center" *ngFor="let topic of topics | slice: 0:topicLength" >
+    <a [routerLink]="['/topics', topic.name | lowercase]">
+      <img src="{{ topic.icon }}" alt="{{topic.name}}">
+    </a>
+    <a [routerLink]="['/topics', topic.name | lowercase]">
+      <h5>{{ topic.name }}</h5>
+    </a>
   </li>
 </ul>
 

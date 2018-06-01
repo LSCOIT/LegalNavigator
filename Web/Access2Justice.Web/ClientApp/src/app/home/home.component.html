@@ -37,11 +37,11 @@
       </div>
     </div>
     <div class="row">
-      <app-topics></app-topics>
+      <app-topics [topicLength]="topicLength"></app-topics>
     </div>
     <div class="row">
       <div class="col-sm-12 text-center">
-        <button type="button" class="btn btn-primary">See More Topics</button>
+        <button [routerLink]="['/topics']" type="button" class="btn btn-primary">See More Topics</button>
       </div>
     </div>
 </div>
