@@ -17,7 +17,7 @@ namespace CreateTopicAndResources
             int lineCount = File.ReadLines(path).Count();
             List<ParentTopic> parentTopics = new List<ParentTopic>();
             List<Topic> topicsList = new List<Topic>();
-            Topics topics = new Topics();//new Topic[lineCount - 1];
+            Topics topics = new Topics();
 
             using (var fileStream = File.OpenRead(textFilePath))
             using (var streamReader = new StreamReader(fileStream, Encoding.UTF8, true, BufferSize))
@@ -35,7 +35,6 @@ namespace CreateTopicAndResources
                     string[] partsb = line2.Split(',');
                     ParentTopicID[] parentTopicIds = null;
                     List<string> parent_Id = new List<string>();
-                    List<Location> location = new List<Location>();
                     List<Location> locations = new List<Location>();
                     List<string> loc_Id = new List<string>();
                     List<string> location_Id = new List<string>();

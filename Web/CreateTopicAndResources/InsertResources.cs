@@ -15,10 +15,8 @@ namespace CreateTopicAndResources
             string textFilePath = path;
             const Int32 BufferSize = 128;
             int lineCount = File.ReadLines(path).Count();
-            //List<ParentResource> parentResources = new List<ParentResource>();
             List<Resource> ResourcesList = new List<Resource>();
-            //ReferenceTag referenceTags = new ReferenceTag();
-            Resources Resources = new Resources();//new Resource[lineCount - 1];
+            Resources Resources = new Resources();
 
             using (var fileStream = File.OpenRead(textFilePath))
             using (var streamReader = new StreamReader(fileStream, Encoding.UTF8, true, BufferSize))
@@ -38,7 +36,6 @@ namespace CreateTopicAndResources
                     ReferenceTag[] referenceTags = null;
                     List<string> reference_Id = new List<string>();
                     List<string> condition_Id = new List<string>();
-                    List<Locations> Locations = new List<Locations>();
                     List<Locations> locations = new List<Locations>();
                     List<string> loc_Id = new List<string>();
                     List<string> locations_Id = new List<string>();
@@ -128,7 +125,6 @@ namespace CreateTopicAndResources
                         j++;
                     }
                     var newResourceId = Guid.NewGuid();
-                    //parentResources.Add(new ParentResource() { DummyId = value[0], NewId = newResourceId });
                     ResourcesList.Add(new Resource()
                     {
                         //ResourceId = value[0],//Guid.NewGuid(),//
@@ -167,7 +163,6 @@ namespace CreateTopicAndResources
                 }
             }
             Resources.ResourcesList = ResourcesList.ToList();
-            //Resources.ParentResourceList = parentResources.ToList();
             return Resources;
         }
     }

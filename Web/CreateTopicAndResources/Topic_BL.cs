@@ -6,17 +6,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Configuration;
 
 namespace CreateTopicAndResources
 {
     public class Topic_BL
     {
-
-        private const string EndpointUrl = "";
-        private const string PrimaryKey = "";
-        private const string Database = "access2justicedb";
-        private const string ResourceCollection = "Resources";
-        private const string TopicCollection = "Topics";
+        private string EndpointUrl = ConfigurationManager.AppSettings["EndpointUrl"];
+        private string PrimaryKey = ConfigurationManager.AppSettings["PrimaryKey"];
+        private string Database = ConfigurationManager.AppSettings["Database"];
+        private string ResourceCollection = ConfigurationManager.AppSettings["ResourceCollection"];
+        private string TopicCollection = ConfigurationManager.AppSettings["TopicCollection"];
         private DocumentClient client;
 
         public async Task<IEnumerable<Topic>> GetTopics()

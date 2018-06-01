@@ -35,7 +35,6 @@ namespace CreateTopicAndResources
 
         [JsonProperty(PropertyName = "referenceTags")]
         public IEnumerable<ReferenceTag> ReferenceTags { get; set; }
-        //public string[] ReferenceTags { get; set; }
 
         [JsonProperty(PropertyName = "location")]
         public IEnumerable<Locations> Location { get; set; }
