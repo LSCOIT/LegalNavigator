@@ -1,0 +1,15 @@
+#edit-location {
+  float: right;
+}
+
+li>a.map-icon {
+  display: inline-block;
+  padding-right: 5px;
+  padding-left: 0;
+}
+
+.glyphicon-pencil {
+  margin-left: 5px;
+  border: none;
+  background: none;
+}
