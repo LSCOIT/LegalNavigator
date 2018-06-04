@@ -18,7 +18,8 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         private readonly ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic;
         private readonly IWebSearchBusinessLogic webSearchBusinessLogic;
         private readonly ILuisBusinessLogic luis;
-        private readonly LuisBusinessLogic luisBusinessLogic;
+        private readonly IBingSettings bingSettings;
+        private readonly LuisBusinessLogic luisBusinessLogic;        
         #endregion
 
         #region Mocked Input Data
@@ -172,7 +173,8 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             topicsResourcesBusinessLogic = Substitute.For<ITopicsResourcesBusinessLogic>();
             webSearchBusinessLogic = Substitute.For<IWebSearchBusinessLogic>();
             luis = Substitute.For<ILuisBusinessLogic>();
-            luisBusinessLogic = new LuisBusinessLogic(luisProxy, luisSettings, topicsResourcesBusinessLogic, webSearchBusinessLogic);
+            bingSettings = Substitute.For<IBingSettings>();
+            luisBusinessLogic = new LuisBusinessLogic(luisProxy, luisSettings, topicsResourcesBusinessLogic, webSearchBusinessLogic, bingSettings);
 
             luisSettings.Endpoint.Returns(new System.Uri("http://www.bing.com"));
             luisSettings.TopIntentsCount.Returns(3);
@@ -339,7 +341,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             var luisResponse = luisProxy.GetIntents(searchText);           
             luisResponse.Returns(lowScoreLuisResponse);
            
-            var webResponse = webSearchBusinessLogic.SearchWebResourcesAsync(searchText);
+            var webResponse = webSearchBusinessLogic.SearchWebResourcesAsync(new System.Uri(searchText));
             webResponse.Returns(webData);           
 
             //act

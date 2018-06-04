@@ -3,6 +3,8 @@ using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Luis;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,13 +16,15 @@ namespace Access2Justice.Api
         private readonly ILuisSettings luisSettings;
         private readonly ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic;
         private readonly IWebSearchBusinessLogic webSearchBusinessLogic;
+        private IBingSettings bingSettings;
 
-        public LuisBusinessLogic(ILuisProxy luisProxy, ILuisSettings luisSettings, ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic, IWebSearchBusinessLogic webSearchBusinessLogic)
+        public LuisBusinessLogic(ILuisProxy luisProxy, ILuisSettings luisSettings, ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic, IWebSearchBusinessLogic webSearchBusinessLogic, IBingSettings bingSettings)
         {
             this.luisSettings = luisSettings;
             this.luisProxy = luisProxy;
             this.topicsResourcesBusinessLogic = topicsResourcesBusinessLogic;
             this.webSearchBusinessLogic = webSearchBusinessLogic;
+            this.bingSettings = bingSettings;
         }
 
         public async Task<dynamic> GetResourceBasedOnThresholdAsync(string query)
@@ -105,9 +109,11 @@ namespace Access2Justice.Api
             return internalResources.ToString();
         }
 
-        public async Task<dynamic> GetWebResourcesAsync(string query)
+        public async Task<dynamic> GetWebResourcesAsync(string searchTerm)
         {
-            var response = await webSearchBusinessLogic.SearchWebResourcesAsync(query);
+            var uri = string.Format(CultureInfo.InvariantCulture, bingSettings.BingSearchUrl.OriginalString, searchTerm, bingSettings.CustomConfigId,bingSettings.DefaultCount,bingSettings.DefaultOffset);
+
+            var response = await webSearchBusinessLogic.SearchWebResourcesAsync(new Uri(uri));
 
             JObject webResources = new JObject
             {

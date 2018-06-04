@@ -17,14 +17,14 @@ namespace Access2Justice.Api.BusinessLogic
             this.httpClientService = httpClientService;
         }
 
-        public async Task<dynamic> SearchWebResourcesAsync(string searchTerm)
-        {            
-            var uri = string.Format(CultureInfo.InvariantCulture, bingSettings.BingSearchUrl.OriginalString, searchTerm,bingSettings.CustomConfigId);
-            
-            var httpResponseMessage = await httpClientService.GetDataAsync(new Uri(uri), bingSettings.SubscriptionKey);
+        public async Task<dynamic> SearchWebResourcesAsync(Uri uri)
+        {
+
+            var httpResponseMessage = await httpClientService.GetDataAsync(uri, bingSettings.SubscriptionKey);
             var responseContent = await httpResponseMessage.Content.ReadAsStringAsync();
-            
+
             return responseContent;
         }
+        
     }
 }

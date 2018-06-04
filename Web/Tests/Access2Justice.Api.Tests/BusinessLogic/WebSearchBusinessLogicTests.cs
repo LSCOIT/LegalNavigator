@@ -99,7 +99,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var response = httpClientService.GetDataAsync(bingSettings.BingSearchUrl, bingSettings.SubscriptionKey);
             response.Returns(httpResponseMessage);
 
-            var responseContent = webSearchBusinessLogic.SearchWebResourcesAsync(searchText).Result;
+            var responseContent = webSearchBusinessLogic.SearchWebResourcesAsync(new System.Uri(searchText)).Result;
 
             Assert.Contains(expectedWebResponse, responseContent);
         }
@@ -115,7 +115,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var response = httpClientService.GetDataAsync(bingSettings.BingSearchUrl, bingSettings.SubscriptionKey);
             response.Returns(httpResponseMessage);
 
-            var responseContent = webSearchBusinessLogic.SearchWebResourcesAsync(searchText).Result;
+            var responseContent = webSearchBusinessLogic.SearchWebResourcesAsync(new System.Uri(searchText)).Result;
 
             Assert.Contains(expectedEmptyWebResponse, responseContent);
         }

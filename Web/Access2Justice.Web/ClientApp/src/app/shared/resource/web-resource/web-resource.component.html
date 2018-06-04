@@ -4,15 +4,26 @@
     <a href="{{webResult.url}}"><h4>{{webResult.name}}</h4></a>
     <span class="display-url">{{webResult.displayUrl}}</span>
     <p>{{webResult.snippet}}</p>
+
     <!-- Deep Link START -->
     <div *ngIf="webResult.deepLinks" class="resource-content">
-      <div *ngFor="let deepLink of webResult.deepLinks" class="col-md-12 sidebar">                
+      <div *ngFor="let deepLink of webResult.deepLinks" class="col-md-12 sidebar">
         <a href="{{deepLink.url}}"><h4>{{deepLink.name}}</h4></a>
         <span class="display-url">{{deepLink.url}}</span>
         <p>{{deepLink.snippet}}</p>
       </div>
     </div>
     <!-- Deep Link END -->
+
+  </div>
+  <div>
+    <app-pagination (goPage)="goToPage($event)"
+                    (goNext)="onNext()"
+                    (goPrev)="onPrev()"
+                    [pagesToShow]="10"
+                    [page]="page"
+                    [perPage]="limit"
+                    [count]="total"></app-pagination>
   </div>
 </div>
 

@@ -5,12 +5,19 @@ import { Observable } from 'rxjs';
 @Injectable()
 export class SearchService {
 
-  endPoint: string = "http://localhost:59019/api/search/";  
+  endPoint: string = "http://localhost:12176/api/search/";
+  siteHostName = "http://localhost:12176/";
+  searchUrl = this.siteHostName + "api/search/";
+  searchOffsetUrl = this.siteHostName + "api/websearch/";
 
   constructor(private httpClient: HttpClient) { }
 
   search(searchText: string) {
-    return this.httpClient.get(this.endPoint + searchText);
+    return this.httpClient.get(this.searchUrl + searchText);
+  }
+
+  searchByOffset(searchText: string, offset: number) {
+    return this.httpClient.get(this.searchOffsetUrl + searchText + "/" + offset);
   }
 
 }

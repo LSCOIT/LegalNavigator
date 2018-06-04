@@ -26,6 +26,7 @@ import { SearchService } from './search/search.service';
 import { WebResourceComponent } from './resource/web-resource/web-resource.component';
 import { LanguageComponent } from './language/language.component';
 import { LocationComponent } from './location/location.component';
+import { PaginationComponent } from './pagination/pagination.component';
 
 
 @NgModule({
@@ -55,7 +56,8 @@ import { LocationComponent } from './location/location.component';
     UpperNavComponent,
     WebResourceComponent,
     LanguageComponent,
-    LocationComponent
+    LocationComponent,
+    PaginationComponent
   ],
   exports: [
     ChatbotComponent,
