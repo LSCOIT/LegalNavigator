@@ -8,10 +8,8 @@
   <div class="row">
     <div class="col-md-9 col-sm-12 col-xs-12">
       <div *ngIf="isInternalResource" class="row center-align">
-        <div *ngFor="let searchResource of searchResults.resources">
-          <div *ngIf="filterType == 'All' ||searchResource.resourceType == filterType">
+        <div *ngFor="let searchResource of searchResults.resources | searchFilter:{ filter : sortType, source : 'internal'} ">
             <app-resource-card [searchResource]="searchResource"></app-resource-card>
-          </div>
         </div>
       </div>
       <div *ngIf="isWebResource" class="row center-align">
@@ -21,9 +19,9 @@
         <h3>Sorry, we did not find anything that matches you're input. Please try again.</h3>
       </div>
     </div>
-      <div class="col-md-3 col-sm-12 col-xs-12">
-        <app-guided-assistant-sidebar></app-guided-assistant-sidebar>
-        <app-service-org-sidebar></app-service-org-sidebar>
-      </div>
+    <div class="col-md-3 col-sm-12 col-xs-12">
+      <app-guided-assistant-sidebar></app-guided-assistant-sidebar>
+      <app-service-org-sidebar></app-service-org-sidebar>
     </div>
+  </div>
 </div>

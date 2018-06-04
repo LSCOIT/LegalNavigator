@@ -19,8 +19,9 @@ export class SearchResultsComponent implements OnInit {
   uniqueResources: any;
   @Input()
   resourceResults: ResourceResult[] = [];
-  filterType: string = 'All';
+  filterType: string;
   constructor(private navigateDataService: NavigateDataService) { }
+  sortType: any;
 
   
 
@@ -51,12 +52,13 @@ export class SearchResultsComponent implements OnInit {
     }
   }
 
-  filterSearchResults(resourceType) {
-    this.filterType = resourceType;
+  filterSearchResults(event) {
+    //console.log(event);
+    this.filterType = event.filterParam;
+    if (!isNullOrUndefined(event.actionType)) {
+      this.sortType = event;
+    }
   }
-
-
-
 }
 
 

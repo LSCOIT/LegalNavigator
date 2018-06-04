@@ -10,12 +10,12 @@ import { isNullOrUndefined } from 'util';
 export class SearchFilterComponent implements OnInit {
   @Input()
   resourceResults: any;
-  @Output() notifyFilterCriteria = new EventEmitter();
+  @Output() notifyFilterCriteria = new EventEmitter<object>();
   
   constructor() { }
 
-  sendfilterCriteria(resourceType) {
-    this.notifyFilterCriteria.emit(resourceType);
+  sendfilterCriteria(resourceType,type) {
+    this.notifyFilterCriteria.emit({ filterParam: resourceType, actionType: type });
   }
 
   ngOnInit() {
