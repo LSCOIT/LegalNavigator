@@ -1,6 +1,13 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { APP_BASE_HREF } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { GuidedAssistantComponent } from './guided-assistant.component';
+import { QuestionComponent } from './question.component';
+import { TopicService } from '../topics-resources/topic.service';
+import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
+import { TopicsComponent } from '../topics-resources/topics.component';
 
 describe('GuidedAssistantComponent', () => {
   let component: GuidedAssistantComponent;
@@ -8,9 +15,25 @@ describe('GuidedAssistantComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GuidedAssistantComponent ]
+      declarations: [
+        TopicsComponent,
+        GuidedAssistantComponent,
+        QuestionComponent
+      ],
+      imports: [
+        RouterModule.forRoot([
+          { path: 'guidedassistant/123', component: QuestionComponent }
+        ]),
+        FormsModule,
+        HttpClientModule,
+        ProgressbarModule
+      ],
+      providers: [
+        { provide: APP_BASE_HREF, useValue: '/' },
+        TopicService
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +42,7 @@ describe('GuidedAssistantComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create guided assisstant component', () => {
     expect(component).toBeTruthy();
   });
 });

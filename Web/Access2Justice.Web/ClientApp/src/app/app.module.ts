@@ -11,7 +11,8 @@ import {
   CarouselModule,
   CollapseModule,
   ModalModule,
-  ProgressbarModule
+  ProgressbarModule,
+  ProgressbarConfig
 } from 'ngx-bootstrap';
 
 import { AppComponent } from './app.component';
@@ -59,7 +60,8 @@ import { TopicComponent } from './topics-resources/topic.component';
   ],
   providers: [
     TopicService,
-    QuestionService],
+    QuestionService,
+    ProgressbarConfig],
   bootstrap: [AppComponent]
 })
 
