@@ -9,6 +9,7 @@ import { UpperNavComponent } from './upper-nav.component';
 
 import { BsDropdownModule } from 'ngx-bootstrap';
 import { LocationComponent } from './location/location.component';
+import { LocationService } from './location/location.service';
 
 
 @NgModule({
@@ -29,6 +30,8 @@ import { LocationComponent } from './location/location.component';
     FooterComponent,
     LowerNavComponent,
     UpperNavComponent
-   ]
+  ],
+  providers: [
+    LocationService]
 })
 export class SharedModule { }

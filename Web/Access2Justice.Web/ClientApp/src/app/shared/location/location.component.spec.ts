@@ -1,14 +1,14 @@
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
-import { LocationComponent } from './location.component';;
-import { } from '@types/bingmaps';
+import { LocationComponent } from './location.component';
+import { LocationService } from './location.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { Injectable, TemplateRef, DebugElement } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import { By } from '@angular/platform-browser';
 declare var Microsoft: any;
 
+const mockLocationService = {
+  updateLocation: () => { }
+};
 
 describe('LocationComponent', () => {
   @Injectable()
@@ -20,6 +20,7 @@ describe('LocationComponent', () => {
   let fixture: ComponentFixture<LocationComponent>;
   let modalService: BsModalService;
   let template: TemplateRef<any>;
+  let locationService: LocationService;
 
   beforeEach(
     async(() => {
@@ -29,6 +30,7 @@ describe('LocationComponent', () => {
         providers: [
           LocationComponent,
           { provide: BsModalService, useClass: mockModalService },
+          { provide: LocationService, useValue: mockLocationService }
         ]
       });
       TestBed.compileComponents();
@@ -39,6 +41,7 @@ describe('LocationComponent', () => {
     fixture = TestBed.createComponent(LocationComponent);
     component = fixture.componentInstance;
     modalService = fixture.debugElement.injector.get(BsModalService);
+    locationService = fixture.debugElement.injector.get(LocationService);
   });
 
   it("should create", () => {
