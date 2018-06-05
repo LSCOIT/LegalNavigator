@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Access2Justice.Shared.Tests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateTopicAndResources", "CreateTopicAndResources\CreateTopicAndResources.csproj", "{7566B053-5D33-4065-A1C9-2D52A12217E8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Access2Justice.Tools", "Access2Justice.Tools\Access2Justice.Tools.csproj", "{09693485-52A3-4B84-B3A4-4FA538F6EB01}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{7566B053-5D33-4065-A1C9-2D52A12217E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7566B053-5D33-4065-A1C9-2D52A12217E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7566B053-5D33-4065-A1C9-2D52A12217E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09693485-52A3-4B84-B3A4-4FA538F6EB01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09693485-52A3-4B84-B3A4-4FA538F6EB01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09693485-52A3-4B84-B3A4-4FA538F6EB01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09693485-52A3-4B84-B3A4-4FA538F6EB01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

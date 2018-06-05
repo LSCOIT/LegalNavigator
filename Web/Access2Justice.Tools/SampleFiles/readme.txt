@@ -1,0 +1,1 @@
+﻿Please delete CreateTopicAndResources project afterwards after you port all your files..
