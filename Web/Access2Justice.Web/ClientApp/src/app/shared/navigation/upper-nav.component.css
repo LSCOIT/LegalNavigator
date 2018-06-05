@@ -1,0 +1,23 @@
+.upper-nav {
+    background: #000;
+    color: #fff;
+}
+
+.left-menu {
+  padding-top: 15px;
+}
+
+@media only screen and (min-width : 768px) {  
+  .upper-nav {
+      background: #f2f2f2;
+      color: #000;
+  }
+
+  .create-account {
+    margin-right: -25px;
+  }
+
+  .account-menu {
+    display: inline-block;
+  }
+}

@@ -1,0 +1,9 @@
+.sidebar {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: 1px solid black;
+}
+
+.display-url {
+  font-size: 0.85em;
+}
