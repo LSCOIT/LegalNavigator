@@ -25,7 +25,16 @@ export class SearchResultsComponent implements OnInit {
   
 
   ngOnInit() {
-    this.searchResults = this.navigateDataService.getData();    
+
+    this.bindData();
+    this.applyFilter();
+    
+  }
+
+  //Binding data to local variable which we get from route.
+  bindData() {
+
+    this.searchResults = this.navigateDataService.getData();
 
     if (!isNullOrUndefined(this.searchResults)) {
       this.isInternalResource = this.searchResults.resources;
@@ -38,17 +47,22 @@ export class SearchResultsComponent implements OnInit {
 
     }
 
+  }
+
+  //Applying filter to implement sorting.
+  applyFilter() {
+
     //To get the unique filter results
     if (!isNullOrUndefined(this.searchResults) && !isNullOrUndefined(this.searchResults.resources)) {
       this.resourceResults.push({ 'resourceName': 'All', 'resourceCount': this.searchResults.resources.length });
       this.uniqueResources = new Set(this.searchResults.resources.map(item => item.resourceType));
       this.uniqueResources.forEach(item => {
-        console.log(item, this.searchResults.resources.filter(x => x.resourceType == item).length);
         if (!isNullOrUndefined(item)) {
           this.resourceResults.push({ 'resourceName': item, 'resourceCount': this.searchResults.resources.filter(x => x.resourceType == item).length });
         }
       });
     }
+
   }
 
   filterSearchResults(resourceType) {

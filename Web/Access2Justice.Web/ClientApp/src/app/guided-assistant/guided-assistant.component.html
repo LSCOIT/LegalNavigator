@@ -2,6 +2,7 @@
   <div class="row">
     <div class="col-md-4 col-md-offset-4 col-sm-12 text-center">
       <h2>Tell us what's going on</h2>
+      <h5>We'll create a personalized action plan with step-by-step recommendations for you. <a routerLink='/guidedassistant'>Learn more</a></h5>
     </div>
   </div>
   <div class="row">
@@ -12,7 +13,7 @@
   </div>
   <div class="row">
     <div class="col-md-4 col-md-offset-4 col-sm-12 text-center">
-      <button class="btn btn-primary" type="submit"><a routerLink='/guidedassistant/123'>Continue</a></button>
+      <button class="btn btn-primary" type="submit" routerLink='/guidedassistant/123'>Continue</button>
     </div>
   </div>
   <div class="row">
@@ -21,7 +22,7 @@
     </div>
   </div>
   <div class="row">
-    <app-topics [topicLength]="topicLength"></app-topics>
+    <app-topics></app-topics>
   </div>
   <div class="row">
     <div class="col-sm-12 text-center">
