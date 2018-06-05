@@ -8,16 +8,10 @@ import { isNullOrUndefined } from 'util';
 })
 export class WebResourceComponent implements OnInit {
 
-  @Input()
-  searchResults: any;
+  @Input() webResult: any;
 
   constructor() {  }
 
-  ngOnInit() {
-    if (!isNullOrUndefined(this.searchResults) && !isNullOrUndefined(this.searchResults.webResources)) {
-      this.searchResults = this.searchResults.webResources.webPages;
-      
-    } 
-  }
+  ngOnInit() {  }
 
 }

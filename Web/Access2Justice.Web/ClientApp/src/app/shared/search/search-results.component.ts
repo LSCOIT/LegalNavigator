@@ -20,11 +20,9 @@ export class SearchResultsComponent implements OnInit {
   @Input()
   resourceResults: ResourceResult[] = [];
   filterType: string;
-  constructor(private navigateDataService: NavigateDataService) { }
   sortType: any;
-
+  constructor(private navigateDataService: NavigateDataService) { }
   
-
   ngOnInit() {
     this.searchResults = this.navigateDataService.getData();    
 

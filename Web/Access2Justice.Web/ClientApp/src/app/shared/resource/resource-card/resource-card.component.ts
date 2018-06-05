@@ -11,7 +11,8 @@ export class ResourceCardComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    if (this.searchResource !== null || this.searchResource !== undefined) {
+    console.log(this.resource);
+    if (this.searchResource != null || this.searchResource != undefined) {
       this.resource = this.searchResource;
     } else {
       this.resource = this.resource;
