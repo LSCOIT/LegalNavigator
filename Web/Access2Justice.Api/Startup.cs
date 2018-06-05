@@ -56,10 +56,10 @@ namespace Access2Justice.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseCors(builder => builder.WithOrigins("http://localhost:4200"));
             app.UseMvc();
-            
-            ConfigureSwagger(app);            
+
+            ConfigureSwagger(app);
         }
 
         private void ConfigureCosmosDb(IServiceCollection services)
@@ -76,7 +76,7 @@ namespace Access2Justice.Api
             {
                 c.PreSerializeFilters.Add((swagger, httpReq) =>
                 {
-                    swagger.Host = httpReq.Host.Value;                    
+                    swagger.Host = httpReq.Host.Value;
                 });
             });
 

@@ -1,0 +1,18 @@
+.topic-list {
+  padding: 0;
+}
+
+.topics li {
+  display: inline-block;
+  width: 45%;
+  margin-bottom: 15px;
+}
+
+.topic-img {
+  padding-left: 0;
+  margin-top: 10px;
+}
+
+.topic-img img {
+  width: 100px;
+}

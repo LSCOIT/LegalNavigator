@@ -26,6 +26,7 @@ namespace Access2Justice.Api
         public async Task<dynamic> GetResourceBasedOnThresholdAsync(string query)
         {
             var luisResponse = await luisProxy.GetIntents(query);
+
             var intentWithScore = ParseLuisIntent(luisResponse);
 
             int threshold = ApplyThreshold(intentWithScore);
@@ -57,11 +58,11 @@ namespace Access2Justice.Api
 
         public int ApplyThreshold(IntentWithScore intentWithScore)
         {
-            if (intentWithScore.Score >= luisSettings.UpperThreshold)
+            if (intentWithScore.Score >= luisSettings.UpperThreshold && intentWithScore.TopScoringIntent.ToUpperInvariant() != "NONE" )
             {
                 return (int)LuisAccuracyThreshold.High;
             }
-            else if (intentWithScore.Score <= luisSettings.LowerThreshold)
+            else if (intentWithScore.Score <= luisSettings.LowerThreshold || intentWithScore.TopScoringIntent.ToUpperInvariant() == "NONE")
             {
                 return (int)LuisAccuracyThreshold.Low;
             }
@@ -97,7 +98,8 @@ namespace Access2Justice.Api
 
             JObject internalResources = new JObject {
                 { "topics", JsonConvert.DeserializeObject(serializedTopics) },
-                { "resources", JsonConvert.DeserializeObject(serializedResources) }
+                { "resources", JsonConvert.DeserializeObject(serializedResources) },
+                { "topIntent", keyword }
             };
 
             return internalResources.ToString();
@@ -109,7 +111,7 @@ namespace Access2Justice.Api
 
             JObject webResources = new JObject
             {
-                { "webResources" , JsonConvert.DeserializeObject(response) }
+                { "webResources" , JsonConvert.DeserializeObject(response) }                
             };
              
             return webResources.ToString();

@@ -1,0 +1,19 @@
+<div class="filter-type">
+  Show:
+  <span *ngFor="let resource of resourceResults">
+    <button class="btn btn-default" (click)="sendfilterCriteria(resource.resourceName)" >{{resource.resourceName}}<span>({{resource.resourceCount}})</span></button>
+  </span>
+</div>
+<span>Sort:</span>
+<div class="btn-group" dropdown>
+  <button id="button-basic" dropdownToggle type="button" class="btn btn-default dropdown-toggle"
+          aria-controls="dropdown-basic">
+    Best Match <span class="caret"></span>
+  </button>
+  <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+      role="menu" aria-labelledby="button-basic">
+    <li role="menuitem"><a class="dropdown-item" href="#">A-Z</a></li>
+    <li role="menuitem"><a class="dropdown-item" href="#">Best Match</a></li>
+    <li role="menuitem"><a class="dropdown-item" href="#">Newest to Oldest</a></li>
+  </ul>
+</div>

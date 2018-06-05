@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
 
-
 import {
   AccordionModule,
   CarouselModule,
@@ -23,12 +22,13 @@ import { HelpFaqsComponent } from './help-faqs/help-faqs.component';
 import { HomeComponent } from './home/home.component';
 import { LogInComponent } from './account/log-in.component';
 import { PrivacyPromiseComponent } from './privacy-promise/privacy-promise.component';
-import { TopicService } from './topics-resources/topic.service';
-import { TopicsResourcesComponent } from './topics-resources/topics-resources.component';
-import { TopicsComponent } from './topics-resources/topics.component';
 import { QuestionComponent } from './guided-assistant/question.component';
 import { QuestionService } from './guided-assistant/question.service';
-import { TopicComponent } from './topics-resources/topic.component';
+import { TopicService } from './topics-resources/shared/topic.service';
+import { SubtopicsComponent } from './topics-resources/subtopic/subtopics.component';
+import { SubtopicDetailComponent } from './topics-resources/subtopic/subtopic-detail.component';
+import { TopicsResourcesComponent } from './topics-resources/topics-resources.component';
+import { TopicsComponent } from './topics-resources/topic/topics.component';
 
 
 @NgModule({
@@ -44,7 +44,8 @@ import { TopicComponent } from './topics-resources/topic.component';
     QuestionComponent,
     TopicsComponent,
     TopicsResourcesComponent,
-    TopicComponent
+    SubtopicDetailComponent,
+    SubtopicsComponent
   ],
   imports: [
     BrowserModule,
@@ -61,7 +62,8 @@ import { TopicComponent } from './topics-resources/topic.component';
   providers: [
     TopicService,
     QuestionService,
-    ProgressbarConfig],
+    ProgressbarConfig
+  ],
   bootstrap: [AppComponent]
 })
 

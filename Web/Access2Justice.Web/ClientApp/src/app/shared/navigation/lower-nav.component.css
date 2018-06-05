@@ -1,0 +1,34 @@
+.lower-nav {
+    background: #fff;
+    border: none;
+}
+
+li.web-hidden {
+    background-color: #000;
+    margin: 0;
+}
+
+.glyphicon-search {
+    color: rgb(117, 117, 117);
+}
+
+.form-group {
+    display: inline-block;
+}
+
+.account-menu {
+  display: inline-block;
+}
+
+@media only screen and (min-width : 768px) {
+
+    li.web-hidden {
+        display: none;
+    }
+}
+
+@media only screen and (min-width : 992px) {
+    li.web-hidden {
+        display: none;
+    }
+}
