@@ -28,6 +28,7 @@ import { LanguageComponent } from './language/language.component';
 import { LocationComponent } from './location/location.component';
 import { SearchCuratedExperienceComponent } from './search-curated-experience/search-curated-experience.component';
 import { CuratedExperienceService } from './search-curated-experience/curatedexperience.service';
+import { LocationService } from './location/location.service';
 
 
 @NgModule({
@@ -81,7 +82,8 @@ import { CuratedExperienceService } from './search-curated-experience/curatedexp
   providers: [
     SearchService,
     NavigateDataService,
-    CuratedExperienceService
+    CuratedExperienceService,
+    LocationService
   ]
 })
 export class SharedModule { }
