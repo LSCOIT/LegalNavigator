@@ -7,16 +7,20 @@ import { Question } from '../guided-assistant/question';
 @Injectable()
 export class QuestionService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  private questionUrl =
-    'http://access2justiceapi.azurewebsites.net/api/curatedexperience?surveyId=19a0c939-9635-40a5-a33c-c441fdb3f26f';
+  questionUrl =
+    'http://access2justiceapi.azurewebsites.net/api/curatedexperience?surveyId=0b7dfe9b-cec9-4490-b768-c40916d52382';
 
   getQuestion(): Observable<Question> {
     return this.http.get<Question>(this.questionUrl);
   }
 
   getNextQuestion(params): Observable<Question> {
+    return this.http.post<Question>(this.questionUrl, params);
+  }
+
+  getPrevQuestion(params): Observable<Question> {
     return this.http.post<Question>(this.questionUrl, params);
   }
 }

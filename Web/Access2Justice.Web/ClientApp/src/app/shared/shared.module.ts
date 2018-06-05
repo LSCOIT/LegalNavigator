@@ -26,6 +26,8 @@ import { SearchService } from './search/search.service';
 import { WebResourceComponent } from './resource/web-resource/web-resource.component';
 import { LanguageComponent } from './language/language.component';
 import { LocationComponent } from './location/location.component';
+import { SearchCuratedExperienceComponent } from './search-curated-experience/search-curated-experience.component';
+import { CuratedExperienceService } from './search-curated-experience/curatedexperience.service';
 
 
 @NgModule({
@@ -55,7 +57,8 @@ import { LocationComponent } from './location/location.component';
     UpperNavComponent,
     WebResourceComponent,
     LanguageComponent,
-    LocationComponent
+    LocationComponent,
+    SearchCuratedExperienceComponent
   ],
   exports: [
     ChatbotComponent,
@@ -78,6 +81,7 @@ import { LocationComponent } from './location/location.component';
   providers: [
     SearchService,
     NavigateDataService,
+    CuratedExperienceService
   ]
 })
 export class SharedModule { }

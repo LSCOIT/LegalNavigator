@@ -14,10 +14,15 @@ export class WebResourceComponent implements OnInit {
   constructor() {  }
 
   ngOnInit() {
+    this.bindingData();
+  }
+
+  bindingData() {
+
     if (!isNullOrUndefined(this.searchResults) && !isNullOrUndefined(this.searchResults.webResources)) {
       this.searchResults = this.searchResults.webResources.webPages;
-      
-    } 
+    }
+
   }
 
 }

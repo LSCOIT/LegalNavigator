@@ -53,15 +53,25 @@ export class SubtopicDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    this.getDataOnReload();
+
+  }
+
+  getDataOnReload() {
+
+    // Getting the sub topic name while routing from subtopic page.
     this.subtopics = this.navigateDataService.getData();
     if (this.subtopics == null || this.subtopics == 'undefined') {
       this.topicService.getDocumentData(this.activeSubtopicParam)
         .subscribe(
-          data => {
-            this.subtopics = data;
-          }
+        data => {
+          this.subtopics = data;
+        }
         );
     }
     this.getSubtopicDetail();
+
   }
+
 }
