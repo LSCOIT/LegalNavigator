@@ -1,5 +1,4 @@
 export interface MapLocation {
-
-  locality: string
-  address: string
+  locality: string;
+  address: string;
 }

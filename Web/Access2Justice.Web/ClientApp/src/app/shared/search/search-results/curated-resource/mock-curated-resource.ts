@@ -1,6 +1,6 @@
-import { CuratedExperience } from "../search-curated-experience/curatedexperience";
+import { CuratedResource } from "../curated-resource/curated-resource";
 
-export const CuratedExp: CuratedExperience[] = [
+export const curatedRes: CuratedResource[] = [
   { title: 'Eviction', url: 'Eviction Guided Assisstant' },
   { title: 'Domestic Violence', url: 'Domestic Violence Guided Assisstant' },
   { title: 'Child Custody', url: 'Child Custody Guided Assisstant' },

@@ -6,12 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./guided-assistant.component.css']
 })
 export class GuidedAssistantComponent implements OnInit {
-  constructor() {
+  topicLength = 9;
 
-  }
+  constructor() { }
 
-  ngOnInit() {
-  }
-
-  
+  ngOnInit() { }
 }

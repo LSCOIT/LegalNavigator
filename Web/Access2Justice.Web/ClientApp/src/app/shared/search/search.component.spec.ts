@@ -7,8 +7,8 @@ import { SaveButtonComponent } from '../../shared/resource/user-action/save-butt
 import { ShareButtonComponent } from '../../shared/resource/user-action/share-button.component';
 import { PrintButtonComponent } from '../../shared/resource/user-action/print-button.component';
 import { SearchComponent } from './search.component';
-import { SearchResultsComponent } from './search-results.component';
-import { SearchFilterComponent } from './search-filter.component';
+import { SearchResultsComponent } from './search-results/search-results.component';
+import { SearchFilterComponent } from './search-filter/search-filter.component';
 import { ResourceCardComponent } from '../resource/resource-card/resource-card.component';
 import { NavigateDataService } from '../navigate-data.service';
 import { SearchService } from './search.service';
