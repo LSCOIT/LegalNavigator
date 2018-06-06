@@ -10,7 +10,7 @@ export class SearchFilterComponent implements OnInit {
     @Input()
     resourceResults: any;
     @Output() notifyFilterCriteria = new EventEmitter<object>();
-    selectedSortCriteria: string = 'Best Match';
+    selectedSortCriteria: string;
     filterParam: any;
     sortParam: any;
 
