@@ -2,6 +2,8 @@
 using Access2Justice.Shared.Interfaces;
 using System.Globalization;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Access2Justice.Api.BusinessLogic
 {
@@ -23,6 +25,18 @@ namespace Access2Justice.Api.BusinessLogic
             return result;
         }
 
+        public async Task<dynamic> GetResourcesAsyncV2(dynamic topics)
+        {
+            var ids = new List<string>();
+            foreach(var topic in topics)
+            {
+                ids.Add(topic.id);
+            }
+            var result2 = await FindItemsWhereArrayContains(cosmosDbSettings.ResourceCollectionId, "topicTags", "id", ids);
+
+            return result2;
+        }
+
         public async Task<dynamic> GetTopicsAsync(string keyword)
         {
             return await FindItemsWhereContains(cosmosDbSettings.TopicCollectionId, "keywords", keyword);
@@ -40,10 +54,7 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<dynamic> GetResourceAsync(string ParentTopicId)
         {
-            var query = "SELECT * FROM c WHERE ARRAY_CONTAINS(c.topicTags, { 'id' : '" + ParentTopicId + "'})";
-            var result = await backendDatabaseService.QueryItemsAsync(cosmosDbSettings.ResourceCollectionId, query);
-
-            return result;
+            return await FindItemsWhereArrayContains(cosmosDbSettings.ResourceCollectionId, "topicTags", "id", ParentTopicId);
         }
 
         public async Task<dynamic> GetDocumentAsync(string id)
@@ -63,6 +74,30 @@ namespace Access2Justice.Api.BusinessLogic
             var query = $"SELECT * FROM c WHERE CONTAINS(c.{propertyName}, '{value.ToUpperInvariant()}')";
             var result = await backendDatabaseService.QueryItemsAsync(cosmosDbSettings.TopicCollectionId, query);
 
+            return result;
+        }
+
+        public async Task<dynamic> FindItemsWhereArrayContains(string collectionId, string arrayName, string propertyName, string value)
+        {
+            var ids = new List<string> { value };
+            return await FindItemsWhereArrayContains(collectionId, arrayName, propertyName, ids);
+        }
+
+        public async Task<dynamic> FindItemsWhereArrayContains(string collectionId, string arrayName, string propertyName, IEnumerable<string> values)
+        {
+            var arrayContainsClause = string.Empty;
+            var lastItem = values.Last();
+            foreach (var value in values)
+            {
+                arrayContainsClause += $" ARRAY_CONTAINS(c.{arrayName}, {{ '{propertyName}' : '" + value + "'})";
+                if (value != lastItem)
+                {
+                    arrayContainsClause += "OR";
+                }
+            }
+
+            var query = $"SELECT * FROM c WHERE {arrayContainsClause}";
+            var result = await backendDatabaseService.QueryItemsAsync(collectionId, query);
             return result;
         }
     }

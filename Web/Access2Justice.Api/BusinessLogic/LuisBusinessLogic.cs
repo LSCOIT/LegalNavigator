@@ -77,6 +77,10 @@ namespace Access2Justice.Api
             string topic = string.Empty, resource = string.Empty;
             var topics = await topicsResourcesBusinessLogic.GetTopicsAsync(keyword);
 
+
+
+            var restul = await topicsResourcesBusinessLogic.GetResourcesAsyncV2(topics);
+
             string topicIds = string.Empty;
             foreach (var item in topics)
             {
@@ -95,6 +99,13 @@ namespace Access2Justice.Api
                 serializedTopics = JsonConvert.SerializeObject(topics);
                 serializedResources = JsonConvert.SerializeObject(resources);
             }
+
+
+
+
+            
+
+
 
             JObject internalResources = new JObject {
                 { "topics", JsonConvert.DeserializeObject(serializedTopics) },
