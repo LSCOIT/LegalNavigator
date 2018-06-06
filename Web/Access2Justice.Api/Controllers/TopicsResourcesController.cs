@@ -46,11 +46,11 @@ namespace Access2Justice.Api.Controllers
 
         #region get Spectific document data 
         [HttpGet]
-        [Route("api/topics/getdocument/{ParentTopicId}")]
-        public async Task<IActionResult> GetDocumentDataWithGuid(string ParentTopicId)  
+        [Route("api/topics/getdocument/{id}")]
+        public async Task<IActionResult> GetDocumentDataWithGuid(string id)  
         {
 
-            var topics = await topicsResourcesBusinessLogic.GetDocumentData(ParentTopicId);
+            var topics = await topicsResourcesBusinessLogic.GetDocumentData(id);
             return Ok(topics);
         }
         #endregion

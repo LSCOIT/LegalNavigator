@@ -5,29 +5,30 @@ import { FormsModule } from '@angular/forms';
 import { BsDropdownModule, ModalModule } from 'ngx-bootstrap';
 
 import { ChatbotComponent } from './chatbot/chatbot.component';
+import { CuratedResourceComponent } from './search/search-results/curated-resource/curated-resource.component';
 import { DownloadButtonComponent } from './resource/user-action/download-button.component';
 import { FooterComponent } from './footer/footer.component';
 import { GuidedAssistantSidebarComponent } from './sidebars/guided-assistant-sidebar.component';
+import { LanguageComponent } from './language/language.component';
+import { LocationComponent } from './location/location.component';
+import { LocationService } from './location/location.service';
 import { LowerNavComponent } from './navigation/lower-nav.component';
+import { NavigateDataService } from './navigate-data.service';
 import { PrintButtonComponent } from './resource/user-action/print-button.component';
 import { ResourceCardComponent } from './resource/resource-card/resource-card.component';
 import { ResourceCardDetailComponent } from './resource/resource-card-detail/resource-card-detail.component';
 import { RemoveButtonComponent } from './resource/user-action/remove-button.component';
 import { SaveButtonComponent } from './resource/user-action/save-button.component';
 import { SearchComponent } from './search/search.component';
-import { SearchFilterComponent } from './search/search-filter.component';
-import { SearchResultsComponent } from './search/search-results.component';
+import { SearchFilterComponent } from './search/search-filter/search-filter.component';
+import { SearchResultsComponent } from './search/search-results/search-results.component';
+import { SearchService } from './search/search.service';
 import { ServiceOrgSidebarComponent } from './sidebars/service-org-sidebar.component';
 import { ShareButtonComponent } from './resource/user-action/share-button.component';
 import { UpperNavComponent } from './navigation/upper-nav.component';
-
-import { NavigateDataService } from './navigate-data.service';
-import { SearchService } from './search/search.service';
-import { WebResourceComponent } from './resource/web-resource/web-resource.component';
-import { LanguageComponent } from './language/language.component';
-import { LocationComponent } from './location/location.component';
+import { WebResourceComponent } from './search/search-results/web-resource/web-resource.component';
+import { CuratedResourceService } from './search/search-results/curated-resource/curated-resource.service';
 import { SearchFilterPipe } from './search/search-filter.pipe';
-
 
 @NgModule({
   imports: [
@@ -39,9 +40,12 @@ import { SearchFilterPipe } from './search/search-filter.pipe';
   ],
   declarations: [
     ChatbotComponent,
+    CuratedResourceComponent,
     DownloadButtonComponent,
     FooterComponent,
     GuidedAssistantSidebarComponent,
+    LanguageComponent,
+    LocationComponent,
     LowerNavComponent,
     PrintButtonComponent,
     ResourceCardComponent,
@@ -54,16 +58,17 @@ import { SearchFilterPipe } from './search/search-filter.pipe';
     SaveButtonComponent,
     ShareButtonComponent,
     UpperNavComponent,
-    WebResourceComponent,
-    LanguageComponent,
-    LocationComponent,
-    SearchFilterPipe
+      WebResourceComponent,
+      SearchFilterPipe
   ],
   exports: [
     ChatbotComponent,
+    CuratedResourceComponent,
     DownloadButtonComponent,
     FooterComponent,
     GuidedAssistantSidebarComponent,
+    LanguageComponent,
+    LocationComponent,
     LowerNavComponent,
     PrintButtonComponent,
     ResourceCardComponent,
@@ -75,11 +80,14 @@ import { SearchFilterPipe } from './search/search-filter.pipe';
     ServiceOrgSidebarComponent,
     SaveButtonComponent,
     ShareButtonComponent,
-    UpperNavComponent
+    UpperNavComponent,
+    WebResourceComponent
   ],
   providers: [
-    SearchService,
+    CuratedResourceService,
+    LocationService,
     NavigateDataService,
+    SearchService
   ]
 })
 export class SharedModule { }

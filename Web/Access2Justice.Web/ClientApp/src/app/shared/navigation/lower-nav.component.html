@@ -7,12 +7,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Legal Assist</a>
+      <a class="navbar-brand" [routerLink]="['/']">Legal Assist</a>
     </div>
     <div class="mobile-hidden" [style.display]="getMenu()">
       <app-search></app-search>
       <ul class="nav navbar-nav">
-        <li><a [routerLink]="['/guidedassistant']">Home</a></li>
+        <li><a [routerLink]="['/']">Home</a></li>
         <li><a [routerLink]="['/guidedassistant']">Guided Assistant</a></li>
         <li><a [routerLink]="['/topics']">Topics &amp; Resources</a></li>
         <li><a [routerLink]="['/about']">About</a></li>

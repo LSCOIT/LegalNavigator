@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-guided-assistant',
@@ -7,15 +7,8 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class GuidedAssistantComponent implements OnInit {
   topicLength = 9;
-  max: number = 200;
-  dynamic: number = 100;
- 
-  constructor() {
 
-  }
+  constructor() { }
 
-  ngOnInit() {
-  }
-
-  
+  ngOnInit() { }
 }

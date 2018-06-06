@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ResourceResult } from '../search/search-result';
 import { isNullOrUndefined } from 'util';
 
 @Component({
@@ -18,8 +17,6 @@ export class SearchFilterComponent implements OnInit {
     this.notifyFilterCriteria.emit({ filterParam: resourceType, actionType: type });
   }
 
-  ngOnInit() {
-      
-  }
+  ngOnInit() { }
 
 }

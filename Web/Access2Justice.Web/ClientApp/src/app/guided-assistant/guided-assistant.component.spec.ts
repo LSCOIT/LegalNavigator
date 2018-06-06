@@ -3,12 +3,11 @@ import { APP_BASE_HREF } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-
-import { TopicsComponent } from '../topics-resources/topic/topics.component';
 import { GuidedAssistantComponent } from './guided-assistant.component';
 import { QuestionComponent } from './question.component';
-
 import { TopicService } from '../topics-resources/shared/topic.service';
+import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
+import { TopicsComponent } from '../topics-resources/topic/topics.component';
 
 describe('GuidedAssistantComponent', () => {
   let component: GuidedAssistantComponent;
@@ -26,14 +25,15 @@ describe('GuidedAssistantComponent', () => {
           { path: 'guidedassistant/123', component: QuestionComponent }
         ]),
         FormsModule,
-        HttpClientModule
+        HttpClientModule,
+        ProgressbarModule
       ],
       providers: [
         { provide: APP_BASE_HREF, useValue: '/' },
         TopicService
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -42,7 +42,7 @@ describe('GuidedAssistantComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create guided assisstant component', () => {
     expect(component).toBeTruthy();
   });
 });
