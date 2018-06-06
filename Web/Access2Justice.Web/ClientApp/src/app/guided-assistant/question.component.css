@@ -1,0 +1,30 @@
+.panel-heading {
+  margin-right: 50%;
+  background-color: lightgray;
+}
+
+.panel-heading-bottom {
+  border-bottom: none;
+}
+
+.panel-body {
+  border: 1px solid black;
+  margin-right: 50%;
+}
+
+.panel-heading-space {
+  margin: 10px;
+}
+
+.part {
+  padding-left: 20px;
+}
+
+.link-right {
+  float: right;
+  padding-right: 30px;
+}
+
+.row-top {
+  padding-top: 50px;
+}

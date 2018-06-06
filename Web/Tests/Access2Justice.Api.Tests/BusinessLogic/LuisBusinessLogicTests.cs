@@ -38,6 +38,13 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
                    "\"intent\": \"child\",\r\n      \"score\": 0.06267241\r\n    },\r\n    {\r\n      " +
                    "\"intent\": \"divorce\",\r\n      \"score\": 0.00997853652\r\n    },\r\n    {\r\n     " +
                    " \"intent\": \"None\",\r\n      \"score\": 0.00248154555\r\n    }\r\n  ],\r\n  \"entities\": []\r\n}";
+        private readonly string meduimScoreLuisResponse =
+                   "{\r\n  \"query\": \"good bye\",\r\n  \"topScoringIntent\": {\r\n    " +
+                   "\"intent\": \"child abuse\",\r\n    \"score\": 0.7257252\r\n  },\r\n  " +
+                   "\"intents\": [\r\n    {\r\n      \"intent\": \"None\",\r\n      " +
+                   "\"score\": 0.06429157\r\n    },\r\n    {\r\n      \"intent\": \"Divorce\",\r\n      " +
+                   "\"score\": 0.05946025\r\n    },\r\n    {\r\n      \"intent\": \"Eviction\",\r\n     " +
+                   "\"score\": 4.371685E-05\r\n    }\r\n  ],\r\n  \"entities\": []\r\n}";
         private readonly string emptyLuisResponse = "";
         private readonly string noneLuisResponse = 
                    "{\r\n  \"query\": \"good bye\",\r\n  \"topScoringIntent\": {\r\n    " +
@@ -154,7 +161,9 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         private readonly string expectedLuisResponse = "luisResponse";
         private readonly string expectedInternalResponse = "topics";
         private readonly string expectedWebResponse = "webResources";
-        #endregion 
+        private readonly string expectedEmptyInternalResponse = "{\r\n  \"topics\": [],\r\n  \"resources\": []," +
+                                                                  "\r\n  \"topIntent\": \"eviction\"\r\n}";
+        #endregion
 
         public LuisBusinessLogicTests()
         {
@@ -289,7 +298,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             var result = luisBusinessLogic.GetInternalResourcesAsync(keyword).Result;
 
             //assert
-            Assert.Equal("{\r\n  \"topics\": [],\r\n  \"resources\": []\r\n}", result);
+            Assert.Equal(expectedEmptyInternalResponse, result);
         }
 
         [Fact]
@@ -345,7 +354,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         {
             //arrange
             var luisResponse = luisProxy.GetIntents(searchText);
-            luisResponse.Returns(noneLuisResponse);
+            luisResponse.Returns(meduimScoreLuisResponse);
 
             //act
             var response = luisBusinessLogic.GetResourceBasedOnThresholdAsync(searchText).Result;
