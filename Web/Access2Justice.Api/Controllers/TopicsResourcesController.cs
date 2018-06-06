@@ -18,7 +18,7 @@ namespace Access2Justice.Api.Controllers
         [Route("api/topics/gettopics")]
         public async Task<IActionResult> GetTopics()
         {
-            var response = await topicsResourcesBusinessLogic.GetTopicsAsync();
+            var response = await topicsResourcesBusinessLogic.GetTopLevelTopicsAsync();
             return Ok(response);
         }
         #endregion
@@ -39,7 +39,7 @@ namespace Access2Justice.Api.Controllers
         [Route("api/topics/getresourcedetails/{ParentTopicId}")]
         public async Task<IActionResult> GetResourceDetails(string parentTopicId)  
         {
-            var topics = await topicsResourcesBusinessLogic.GetReourceDetailAsync(parentTopicId);
+            var topics = await topicsResourcesBusinessLogic.GetReourceAsync(parentTopicId);
             return Ok(topics);
         }
         #endregion
@@ -50,7 +50,7 @@ namespace Access2Justice.Api.Controllers
         public async Task<IActionResult> GetDocumentDataWithGuid(string id)  
         {
 
-            var topics = await topicsResourcesBusinessLogic.GetDocumentData(id);
+            var topics = await topicsResourcesBusinessLogic.GetDocumentAsync(id);
             return Ok(topics);
         }
         #endregion

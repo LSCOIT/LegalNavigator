@@ -131,7 +131,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var dbResponse = backendDatabaseService.QueryItemsAsync(cosmosDbSettings.TopicCollectionId, query);
             dbResponse.ReturnsForAnyArgs<dynamic>(topicsData);
             //act
-            var response = topicsResourcesBusinessLogic.GetTopicsAsync().Result;
+            var response = topicsResourcesBusinessLogic.GetTopLevelTopicsAsync().Result;
             string result = JsonConvert.SerializeObject(response);
             //assert
             Assert.Contains(expectedTopicId, result, StringComparison.InvariantCulture);
@@ -145,7 +145,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
 
             //act
-            var response = topicsResourcesBusinessLogic.GetTopicsAsync();
+            var response = topicsResourcesBusinessLogic.GetTopLevelTopicsAsync();
             string result = JsonConvert.SerializeObject(response);
 
             //assert
@@ -189,7 +189,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var dbResponse = backendDatabaseService.QueryItemsAsync(cosmosDbSettings.ResourceCollectionId, query);
             dbResponse.ReturnsForAnyArgs<dynamic>(topicsData);
             //act
-            var response = topicsResourcesBusinessLogic.GetReourceDetailAsync(topicId).Result;
+            var response = topicsResourcesBusinessLogic.GetReourceAsync(topicId).Result;
             string result = JsonConvert.SerializeObject(response);
             //assert
             Assert.Contains(topicId, result, StringComparison.InvariantCulture);
@@ -203,7 +203,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
 
             //act
-            var response = topicsResourcesBusinessLogic.GetReourceDetailAsync(topicId);
+            var response = topicsResourcesBusinessLogic.GetReourceAsync(topicId);
             string result = JsonConvert.SerializeObject(response);
 
             //assert

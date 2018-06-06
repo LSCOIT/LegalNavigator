@@ -17,47 +17,59 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<dynamic> GetResourcesAsync(string topicIds)
         {
-            // we need to use a query format to retrieve items because we are returning a dynamic object.
-            var query = string.Format(CultureInfo.InvariantCulture,"SELECT * FROM c  WHERE {0}", topicIds);
+            var query = string.Format(CultureInfo.InvariantCulture, "SELECT * FROM c  WHERE {0}", topicIds);
             var result = await backendDatabaseService.QueryItemsAsync(cosmosDbSettings.ResourceCollectionId, query);
 
             return result;
+
+            // return await FindItemsWhere(cosmosDbSettings.ResourceCollectionId, topicIds);
         }
+
+
+        //public async Task<dynamic> FindItemsWhere(string collectionId, string condition)
+        //{
+
+        //    var query = string.Format(CultureInfo.InvariantCulture, "SELECT * FROM c  WHERE {0}", condition);
+        //    var result = await backendDatabaseService.QueryItemsAsync(cosmosDbSettings.ResourceCollectionId, query);
+
+        //    return result;
+        //}
 
         public async Task<dynamic> GetTopicAsync(string keyword)
         {
-            // we need to use a query format to retrieve items because we are returning a dynamic object.
-            var query = string.Format(CultureInfo.InvariantCulture,"SELECT * FROM c WHERE CONTAINS(c.keywords, '{0}')", keyword.ToUpperInvariant());
+            var query = string.Format(CultureInfo.InvariantCulture, "SELECT * FROM c WHERE CONTAINS(c.keywords, '{0}')", keyword.ToUpperInvariant());
             var result = await backendDatabaseService.QueryItemsAsync(cosmosDbSettings.TopicCollectionId, query);
 
             return result;
         }
 
-        public async Task<dynamic> GetTopicsAsync()
+        public async Task<dynamic> GetTopLevelTopicsAsync()
         {
-            var query = "SELECT * FROM c where c.parentTopicID=''";
-            var result = await backendDatabaseService.QueryItemsAsync(cosmosDbSettings.TopicCollectionId, query);
-            return result;
+            return await FindItemsWhere(cosmosDbSettings.TopicCollectionId, "parentTopicID", "");
         }
 
         public async Task<dynamic> GetSubTopicsAsync(string ParentTopicId)
         {
-            var query = "SELECT * FROM c WHERE c.parentTopicID='" + ParentTopicId + "'";
-            var result = await backendDatabaseService.QueryItemsAsync(cosmosDbSettings.TopicCollectionId, query);
-            return result;
+            return await FindItemsWhere(cosmosDbSettings.TopicCollectionId, "parentTopicID", ParentTopicId);
         }
 
-        public async Task<dynamic> GetReourceDetailAsync(string ParentTopicId)
+        public async Task<dynamic> GetReourceAsync(string ParentTopicId)
         {
             var query = "SELECT * FROM c WHERE ARRAY_CONTAINS(c.topicTags, { 'id' : '" + ParentTopicId + "'})";
             var result = await backendDatabaseService.QueryItemsAsync(cosmosDbSettings.ResourceCollectionId, query);
             return result;
         }
 
-        public async Task<dynamic> GetDocumentData(string id)
+        public async Task<dynamic> GetDocumentAsync(string id)
         {
-            var query = "SELECT * FROM c WHERE c.id='" + id + "'";
-            var result = await backendDatabaseService.QueryItemsAsync(cosmosDbSettings.TopicCollectionId, query);
+            return await FindItemsWhere(cosmosDbSettings.TopicCollectionId, "id", id);
+        }
+
+
+        public async Task<dynamic> FindItemsWhere(string collectionId, string propertyName, string value)
+        {
+            var query = $"SELECT * FROM c WHERE c.{propertyName}='{value}'";
+            var result = await backendDatabaseService.QueryItemsAsync(collectionId, query);
             return result;
         }
     }
