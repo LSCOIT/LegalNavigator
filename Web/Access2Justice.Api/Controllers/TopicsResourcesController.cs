@@ -39,7 +39,7 @@ namespace Access2Justice.Api.Controllers
         [Route("api/topics/getresourcedetails/{ParentTopicId}")]
         public async Task<IActionResult> GetResourceDetails(string parentTopicId)  
         {
-            var topics = await topicsResourcesBusinessLogic.GetReourceAsync(parentTopicId);
+            var topics = await topicsResourcesBusinessLogic.GetResourceAsync(parentTopicId);
             return Ok(topics);
         }
         #endregion

@@ -75,7 +75,7 @@ namespace Access2Justice.Api
         public async Task<dynamic> GetInternalResourcesAsync(string keyword)
         {
             string topic = string.Empty, resource = string.Empty;
-            var topics = await topicsResourcesBusinessLogic.GetTopicAsync(keyword);
+            var topics = await topicsResourcesBusinessLogic.GetTopicsAsync(keyword);
 
             string topicIds = string.Empty;
             foreach (var item in topics)
