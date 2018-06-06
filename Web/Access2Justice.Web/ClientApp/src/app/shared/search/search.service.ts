@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 @Injectable()
 export class SearchService {
 
-  endPoint: string = "http://localhost:59019/api/search/";  
+  endPoint: string = "http://localhost:57203/api/search/";  
 
   constructor(private httpClient: HttpClient) { }
 

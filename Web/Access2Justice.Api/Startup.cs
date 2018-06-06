@@ -56,7 +56,7 @@ namespace Access2Justice.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseCors(builder => builder.WithOrigins("http://localhost:4200"));
+            app.UseCors(builder => builder.WithOrigins("http://localhost:57202"));
             app.UseMvc();
 
             ConfigureSwagger(app);
