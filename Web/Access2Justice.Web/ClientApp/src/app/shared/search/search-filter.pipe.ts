@@ -3,68 +3,65 @@ import { isNullOrUndefined } from 'util';
 
 @Pipe({ name: 'searchFilter', pure: true })
 export class SearchFilterPipe implements PipeTransform {
-  transform(items: Array<any>, args: any[]): any[] {
-    let source = args['source']
-    let filter = args['filter'];
-    let filterParam: string;
-    let actionType: string;
+    transform(items: Array<any>, args: any[]): any[] {
+        let filter = args['filter'];
+        if (!items || !args || isNullOrUndefined(filter)) {
+            return items;
+        }
 
-    if (!items || !args || isNullOrUndefined(filter)) {
-      return items;
-    }
+        let source = args['source'];
+        let filterParam: string;
+        let sortParam: string;
 
-    if (!isNullOrUndefined(filter)) {
-      filterParam = filter['filterParam'];
-      actionType = filter['actionType'];
-    }
+        filterParam = filter['filterParam'];
+        sortParam = filter['sortParam'];
 
-    if (!isNullOrUndefined(filter) && actionType == 'filter') {
-      if (filterParam != 'All') {
-        console.log(filterParam);
-        items = items.filter(item => item.resourceType == filterParam);
+        if (!isNullOrUndefined(filterParam)) {
+            if (filterParam != 'All') {
+                items = items.filter(item => item.resourceType == filterParam);
+            }
+            else {
+                items = items;
+            }
+        }
+
+        if (!isNullOrUndefined(sortParam)) {
+            if (sortParam == 'name') {
+                return this.orderBy(items, sortParam);
+            }
+            else if (sortParam == 'date' && source == 'internal') {
+                return this.sortDate(items, '_ts');
+            }
+            else if (sortParam == 'date' && source == 'external') {
+                return this.sortDate(items, 'dateLastCrawled');
+            }
+        }
+
         return items;
-      }
-      else {
-        return items;
-      }
-    }
-    if (!isNullOrUndefined(filter) && actionType == 'sort') {
-      if (filterParam == 'name') {
-        console.log(filterParam);
-        return this.sortOrderBy(items, filterParam);
-      }
-      else if (filterParam == 'date' && source == 'internal') {
-        return this.sortDate(items, 'modifiedTimeStamp');
-      }
-      else if (filterParam == 'date' && source == 'external') {
-        return this.sortDate(items, 'dateLastCrawled');
-      }
-      else {
-        return items;
-      }
-    }
-  }
 
-  sortDate(items, field) {
-    let data = items.sort(function (a, b) {
-      return new Date(b[field]).getTime() - new Date(a[field]).getTime();
-    });
-    return data;
-  }
+    }
 
-  sortOrderBy(items, field) {
-    return items.sort(function (a, b) {
-      if (a[field] < b[field]) {
-        return -1;
-      }
-      else if (a[field] > b[field]) {
-        return 1;
-      }
-      else {
-        return 0;
-      }
-    });
-  }
+    sortDate(items, field) {
+        let data = items.sort(function (a, b) {
+            return new Date(b[field]).getTime() - new Date(a[field]).getTime();
+        });
+
+        return data;
+    }
+
+    orderBy(items, field) {
+        return items.sort(function (a, b) {
+            if (a[field] < b[field]) {
+                return -1;
+            }
+            else if (a[field] > b[field]) {
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        });
+    }
 }
 
 
