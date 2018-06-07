@@ -11,7 +11,8 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 {
     public class TopicsResourcesBusinessLogicTests
     {
-        private readonly IBackendDatabaseService backendDatabaseService;
+        private readonly IDynamicQueries backendDatabaseService;
+        //private readonly IDynamicQueries dynamicQueries;
         private readonly ICosmosDbSettings cosmosDbSettings;
         private readonly TopicsResourcesBusinessLogic topicsResourcesBusinessLogic;
 
@@ -51,7 +52,8 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 
         public TopicsResourcesBusinessLogicTests()
         {
-            backendDatabaseService = Substitute.For<IBackendDatabaseService>();
+            backendDatabaseService = Substitute.For<IDynamicQueries>();
+            //dynamicQueries = Substitute.For<IDynamicQueries>();
             cosmosDbSettings = Substitute.For<ICosmosDbSettings>();
 
             topicsResourcesBusinessLogic = new TopicsResourcesBusinessLogic(backendDatabaseService, cosmosDbSettings);

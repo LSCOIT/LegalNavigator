@@ -77,9 +77,12 @@ namespace Access2Justice.Api
             var topics = await topicsResourcesBusinessLogic.GetTopicsAsync(keyword);
             var resources = await topicsResourcesBusinessLogic.GetResourcesAsync(topics);
 
+            var serializedTopics = JsonConvert.SerializeObject(topics);
+            var serializedResources = JsonConvert.SerializeObject(resources);
+
             JObject internalResources = new JObject {
-                { "topics", JsonConvert.DeserializeObject(topics) },
-                { "resources", JsonConvert.DeserializeObject(resources) },
+                { "topics", JsonConvert.DeserializeObject(serializedTopics) },
+                { "resources", JsonConvert.DeserializeObject(serializedResources) },
                 { "topIntent", keyword }
             };
 

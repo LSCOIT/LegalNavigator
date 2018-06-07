@@ -5,7 +5,6 @@ using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents.Linq;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -13,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Access2Justice.CosmosDb
 {
-    public class CosmosDbService : IBackendDatabaseService
+    public class CosmosDbService : IBackendDatabaseService, IDynamicQueries
     {
         private readonly IDocumentClient documentClient;
         private readonly ICosmosDbSettings cosmosDbSettings;
@@ -25,6 +24,12 @@ namespace Access2Justice.CosmosDb
 
             CreateDatabaseIfNotExistsAsync().Wait();
             CreateCollectionIfNotExistsAsync().Wait();
+        }
+
+        public async Task<Document> CreateItemAsync<T>(T item)
+        {
+            return await documentClient.CreateDocumentAsync(
+                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId), item);
         }
 
         public async Task<T> GetItemAsync<T>(string id)
@@ -65,6 +70,61 @@ namespace Access2Justice.CosmosDb
             return results;
         }
 
+        public async Task<Document> UpdateItemAsync<T>(string id, T item)
+        {
+            return await documentClient.ReplaceDocumentAsync(
+                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, id), item);
+        }
+
+        public async Task DeleteItemAsync(string id)
+        {
+            await documentClient.DeleteDocumentAsync(
+                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, id));
+        }
+
+        public async Task<T> ExecuteStoredProcedureAsyncWithParameters<T>(string storedProcName, params dynamic[] procedureParams)
+        {
+            return await documentClient.ExecuteStoredProcedureAsync<T>(UriFactory.CreateStoredProcedureUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, storedProcName), procedureParams);
+        }
+
+        public async Task<dynamic> FindItemsWhere(string collectionId, string propertyName, string value)
+        {
+            var query = $"SELECT * FROM c WHERE c.{propertyName}='{value}'";
+            return await QueryItemsAsync(collectionId, query);
+        }
+
+        public async Task<dynamic> FindItemsWhereContains(string collectionId, string propertyName, string value)
+        {
+            var query = $"SELECT * FROM c WHERE CONTAINS(c.{propertyName}, '{value.ToUpperInvariant()}')";
+            var result = await QueryItemsAsync(cosmosDbSettings.TopicCollectionId, query);
+
+            return result;
+        }
+
+        public async Task<dynamic> FindItemsWhereArrayContains(string collectionId, string arrayName, string propertyName, string value)
+        {
+            var ids = new List<string> { value };
+            return await FindItemsWhereArrayContains(collectionId, arrayName, propertyName, ids);
+        }
+
+        public async Task<dynamic> FindItemsWhereArrayContains(string collectionId, string arrayName, string propertyName, IEnumerable<string> values)
+        {
+            var arrayContainsClause = string.Empty;
+            var lastItem = values.Last();
+
+            foreach (var value in values)
+            {
+                arrayContainsClause += $" ARRAY_CONTAINS(c.{arrayName}, {{ '{propertyName}' : '" + value + "'})";
+                if (value != lastItem)
+                {
+                    arrayContainsClause += "OR";
+                }
+            }
+
+            var query = $"SELECT * FROM c WHERE {arrayContainsClause}";
+            return await QueryItemsAsync(collectionId, query);
+        }
+
         public async Task<dynamic> QueryItemsAsync(string collectionId, string query)
         {
             var docQuery = documentClient.CreateDocumentQuery<dynamic>(
@@ -77,24 +137,6 @@ namespace Access2Justice.CosmosDb
             }
 
             return results;
-        }
-
-        public async Task<Document> CreateItemAsync<T>(T item)
-        {
-            return await documentClient.CreateDocumentAsync(
-                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId), item);
-        }
-
-        public async Task<Document> UpdateItemAsync<T>(string id, T item)
-        {
-            return await documentClient.ReplaceDocumentAsync(
-                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, id), item);
-        }
-
-        public async Task DeleteItemAsync(string id)
-        {
-            await documentClient.DeleteDocumentAsync(
-                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, id));
         }
 
         private async Task CreateDatabaseIfNotExistsAsync()
@@ -138,15 +180,10 @@ namespace Access2Justice.CosmosDb
                 }
                 else
                 {
-                     // todo: log error
+                    // todo: log error
                     throw;
                 }
             }
-        }
-
-        public async Task<T> ExecuteStoredProcedureAsyncWithParameters<T>(string storedProcName, params dynamic[] procedureParams)
-        {
-            return await documentClient.ExecuteStoredProcedureAsync<T>(UriFactory.CreateStoredProcedureUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, storedProcName), procedureParams);
         }
     }
 }
