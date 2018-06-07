@@ -1,0 +1,14 @@
+#my-map-results {
+  position: relative;
+  width: 100%;
+  height: 80%;
+}
+
+.sidebar-wrapper {
+  margin-bottom: 20px;
+  border: 1px solid black;
+}
+
+h5 {
+  text-decoration: underline;
+}

@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from '../app-routing.module';
 import { FormsModule } from '@angular/forms';
 import { BsDropdownModule, ModalModule } from 'ngx-bootstrap';
-
 import { ChatbotComponent } from './chatbot/chatbot.component';
 import { CuratedResourceComponent } from './search/search-results/curated-resource/curated-resource.component';
 import { DownloadButtonComponent } from './resource/user-action/download-button.component';
@@ -28,6 +27,8 @@ import { ShareButtonComponent } from './resource/user-action/share-button.compon
 import { UpperNavComponent } from './navigation/upper-nav.component';
 import { WebResourceComponent } from './search/search-results/web-resource/web-resource.component';
 import { CuratedResourceService } from './search/search-results/curated-resource/curated-resource.service';
+import { MapResultsComponent } from './sidebars/map-results.component';
+import { MapResultsService } from './sidebars/map-results.service';
 
 @NgModule({
   imports: [
@@ -57,7 +58,8 @@ import { CuratedResourceService } from './search/search-results/curated-resource
     SaveButtonComponent,
     ShareButtonComponent,
     UpperNavComponent,
-    WebResourceComponent
+    WebResourceComponent,
+    MapResultsComponent
   ],
   exports: [
     ChatbotComponent,
@@ -84,6 +86,7 @@ import { CuratedResourceService } from './search/search-results/curated-resource
   providers: [
     CuratedResourceService,
     LocationService,
+    MapResultsService,
     NavigateDataService,
     SearchService
   ]
