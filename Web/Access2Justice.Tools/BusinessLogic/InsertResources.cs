@@ -43,7 +43,7 @@ namespace Access2Justice.Tools.BusinessLogic
                     for (int i = 0; i < partsb.Length; i++)
                     {
                         val = parts[i];
-                        if (val.EndsWith("referenceTags"))
+                        if (val.EndsWith("referenceTags", StringComparison.CurrentCultureIgnoreCase))
                         {
                             string tempReferenceId = partsb[i];
                             reference_Id.Add(partsb[i]);
@@ -57,10 +57,9 @@ namespace Access2Justice.Tools.BusinessLogic
                                     ReferenceTags = referencesb[m],
                                 };
                             }
-                            //k++;
                         }
 
-                        else if (val.EndsWith("location"))
+                        else if (val.EndsWith("location", StringComparison.CurrentCultureIgnoreCase))
                         {
                             string templocId = partsb[i];
                             loc_Id.Add(partsb[i]);
@@ -101,7 +100,7 @@ namespace Access2Justice.Tools.BusinessLogic
                             }
                         }
 
-                        else if (val.EndsWith("conditions"))
+                        else if (val.EndsWith("conditions", StringComparison.CurrentCultureIgnoreCase))
                         {
                             string tempconditionId = partsb[i];
                             condition_Id.Add(partsb[i]);
@@ -115,7 +114,6 @@ namespace Access2Justice.Tools.BusinessLogic
                                     Condition = conditionsb[m],
                                 };
                             }
-                            //k++;
                         }
 
                         else
@@ -127,7 +125,6 @@ namespace Access2Justice.Tools.BusinessLogic
                     var newResourceId = Guid.NewGuid();
                     ResourcesList.Add(new Resource()
                     {
-                        //ResourceId = value[0],//Guid.NewGuid(),//
                         Name = value[1],
                         Description = value[2],
                         ResourceType = value[3],
@@ -155,9 +152,7 @@ namespace Access2Justice.Tools.BusinessLogic
                         ReviewerImage = value[22],
                         FullDescription = value[23],
                         CreatedBy = value[24],
-                        //CreatedTimeStamp = value[25],
-                        ModifiedBy = value[25]//,
-                        //ModifiedTimeStamp = value[27]
+                        ModifiedBy = value[25]
                     });
                     q++;
                 }

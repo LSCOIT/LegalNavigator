@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 
 namespace Access2Justice.Tools.BusinessLogic
 {
-    public class TopicBusinessLogic
+    public class TopicBusinessLogic: IDisposable
     {
         private string EndpointUrl = "";
         private string PrimaryKey = "";
@@ -22,11 +22,9 @@ namespace Access2Justice.Tools.BusinessLogic
         public async Task<IEnumerable<Topic>> GetTopics()
         {
             this.client = new DocumentClient(new Uri(EndpointUrl), PrimaryKey);
-
-            await this.client.CreateDatabaseIfNotExistsAsync(new Database { Id = Database });
-
+            await this.client.CreateDatabaseIfNotExistsAsync(new Database { Id = Database }).ConfigureAwait(true);
             await this.client.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri(Database),
-            new DocumentCollection { Id = TopicCollection });
+            new DocumentCollection { Id = TopicCollection }).ConfigureAwait(true);
 
             InsertTopics obj = new InsertTopics();
             var content = obj.CreateJsonFromCSV();
@@ -50,15 +48,15 @@ namespace Access2Justice.Tools.BusinessLogic
 
                 var serializedResult = JsonConvert.SerializeObject(topicList);
                 JObject result = (JObject)JsonConvert.DeserializeObject(serializedResult);
-                await this.CreateTopicDocumentIfNotExists(Database, TopicCollection, result);
+                await this.CreateTopicDocumentIfNotExists(Database, TopicCollection, result).ConfigureAwait(true);
             }
-            var items = await this.GetItemsFromCollectionAsync();
+            var items = await this.GetItemsFromCollectionAsync().ConfigureAwait(true);
             return items;
         }
 
         private async Task CreateTopicDocumentIfNotExists(string databaseName, string collectionName, object td)
         {
-            await this.client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(databaseName, collectionName), td);
+            await this.client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(databaseName, collectionName), td).ConfigureAwait(true);
         }
 
         public async Task<IEnumerable<Topic>> GetItemsFromCollectionAsync()
@@ -69,10 +67,24 @@ namespace Access2Justice.Tools.BusinessLogic
             List<Topic> td = new List<Topic>();
             while (documents.HasMoreResults)
             {
-                td.AddRange(await documents.ExecuteNextAsync<Topic>());
+                td.AddRange(await documents.ExecuteNextAsync<Topic>().ConfigureAwait(true));
             }
             return td;
         }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // dispose managed resources
+            }
+            // free native resources
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
     }
 }
-

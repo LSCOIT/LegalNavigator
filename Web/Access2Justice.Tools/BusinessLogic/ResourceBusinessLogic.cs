@@ -7,12 +7,12 @@ using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Globalization;
 
 namespace Access2Justice.Tools.BusinessLogic
 {
-    class ResourceBusinessLogic
+    class ResourceBusinessLogic: IDisposable
     {
-
         private string EndpointUrl = "";
         private string PrimaryKey = "";
         private string Database = "access2justicedb";
@@ -23,11 +23,9 @@ namespace Access2Justice.Tools.BusinessLogic
         public async Task<IEnumerable<Models.Resource>> GetResources()
         {
             this.client = new DocumentClient(new Uri(EndpointUrl), PrimaryKey);
-
-            await this.client.CreateDatabaseIfNotExistsAsync(new Database { Id = Database });
-
+            await this.client.CreateDatabaseIfNotExistsAsync(new Database { Id = Database }).ConfigureAwait(true);
             await this.client.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri(Database),
-            new DocumentCollection { Id = ResourceCollection });
+            new DocumentCollection { Id = ResourceCollection }).ConfigureAwait(true);
 
             InsertResources obj = new InsertResources();
             var content = obj.CreateJsonFromCSV();
@@ -55,16 +53,16 @@ namespace Access2Justice.Tools.BusinessLogic
                 var serializedResult = JsonConvert.SerializeObject(resourceList);
                 JObject result = (JObject)JsonConvert.DeserializeObject(serializedResult);
 
-                await this.CreateResourceDocumentIfNotExists(Database, ResourceCollection, result);
+                await this.CreateResourceDocumentIfNotExists(Database, ResourceCollection, result).ConfigureAwait(true);
             }
 
-            var items = await this.GetItemsFromCollectionAsync();
+            var items = await this.GetItemsFromCollectionAsync().ConfigureAwait(true);
             return items;
         }
 
         private async Task CreateResourceDocumentIfNotExists(string databaseName, string collectionName, object td)
         {
-            await this.client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(databaseName, collectionName), td);
+            await this.client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(databaseName, collectionName), td).ConfigureAwait(true);
         }
 
         public async Task<IEnumerable<Models.Resource>> GetItemsFromCollectionAsync()
@@ -75,15 +73,15 @@ namespace Access2Justice.Tools.BusinessLogic
             List<Models.Resource> td = new List<Models.Resource>();
             while (documents.HasMoreResults)
             {
-                td.AddRange(await documents.ExecuteNextAsync<Models.Resource>());
+                td.AddRange(await documents.ExecuteNextAsync<Models.Resource>().ConfigureAwait(true));
             }
             return td;
         }
 
         private async Task<dynamic> GetTopicAsync(string topicName)
         {
-            var _query = string.Format("SELECT c.id FROM c WHERE c.name = " + "\"" + topicName + "\"");
-            var result = await QueryTopicAsync(TopicCollection, _query);
+            var _query = "SELECT c.id FROM c WHERE c.name = " + "\"" + topicName + "\"";
+            var result = await QueryTopicAsync(TopicCollection, _query).ConfigureAwait(true);
 
             return result;
         }
@@ -95,10 +93,25 @@ namespace Access2Justice.Tools.BusinessLogic
             var results = new List<dynamic>();
             while (docQuery.HasMoreResults)
             {
-                results.AddRange(await docQuery.ExecuteNextAsync());
+                results.AddRange(await docQuery.ExecuteNextAsync().ConfigureAwait(true));
             }
 
             return results;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // dispose managed resources
+            }
+            // free native resources
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

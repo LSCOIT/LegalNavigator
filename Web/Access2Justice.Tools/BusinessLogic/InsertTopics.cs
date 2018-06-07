@@ -41,7 +41,7 @@ namespace Access2Justice.Tools.BusinessLogic
                     for (int i = 0; i < partsb.Length; i++)
                     {
                         val = parts[i];
-                        if (val.EndsWith("TopicId"))
+                        if (val.EndsWith("TopicId", StringComparison.CurrentCultureIgnoreCase))
                         {
                             string tempParentId = partsb[i];
                             parent_Id.Add(partsb[i]);
@@ -55,10 +55,9 @@ namespace Access2Justice.Tools.BusinessLogic
                                     ParentTopicId = parentsb[m],
                                 };
                             }
-                            //k++;
                         }
 
-                        else if (val.EndsWith("location"))
+                        else if (val.EndsWith("location", StringComparison.CurrentCultureIgnoreCase))
                         {
                             string templocId = partsb[i];
                             loc_Id.Add(partsb[i]);
@@ -117,9 +116,7 @@ namespace Access2Justice.Tools.BusinessLogic
                         Location = locations,
                         Icon = value[4],
                         CreatedBy = value[5],
-                        //CreatedTimeStamp = value[6],//DateTime.UtcNow.Date
-                        ModifiedBy = value[6],
-                        //ModifiedTimeStamp = value[8] //DateTime.UtcNow.Date
+                        ModifiedBy = value[6]
                     });
                     q++;
                 }
