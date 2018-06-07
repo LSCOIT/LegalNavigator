@@ -1,6 +1,6 @@
 ﻿using Access2Justice.CosmosDb.Interfaces;
 using Access2Justice.Shared.Interfaces;
-using System.Globalization;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,34 +17,27 @@ namespace Access2Justice.Api.BusinessLogic
             this.cosmosDbSettings = cosmosDbSettings;
         }
 
-        public async Task<dynamic> GetResourcesAsync(string topicIds)
-        {
-            var query = string.Format(CultureInfo.InvariantCulture, "SELECT * FROM c  WHERE {0}", topicIds);
-            var result = await backendDatabaseService.QueryItemsAsync(cosmosDbSettings.ResourceCollectionId, query);
-
-            return result;
-        }
-
-        public async Task<dynamic> GetResourcesAsyncV2(dynamic topics)
+        public async Task<dynamic> GetResourcesAsync(dynamic topics)
         {
             var ids = new List<string>();
             foreach(var topic in topics)
             {
                 ids.Add(topic.id);
             }
-            var result2 = await FindItemsWhereArrayContains(cosmosDbSettings.ResourceCollectionId, "topicTags", "id", ids);
 
-            return result2;
+            return await FindItemsWhereArrayContains(cosmosDbSettings.ResourceCollectionId, "topicTags", "id", ids);
         }
 
         public async Task<dynamic> GetTopicsAsync(string keyword)
         {
-            return await FindItemsWhereContains(cosmosDbSettings.TopicCollectionId, "keywords", keyword);
+            var result = await FindItemsWhereContains(cosmosDbSettings.TopicCollectionId, "keywords", keyword);
+            return JsonConvert.SerializeObject(result);
         }
 
         public async Task<dynamic> GetTopLevelTopicsAsync()
         {
-            return await FindItemsWhere(cosmosDbSettings.TopicCollectionId, "parentTopicID", "");
+            var result = await FindItemsWhere(cosmosDbSettings.TopicCollectionId, "parentTopicID", "");
+            return JsonConvert.SerializeObject(result);
         }
 
         public async Task<dynamic> GetSubTopicsAsync(string ParentTopicId)
@@ -65,8 +58,7 @@ namespace Access2Justice.Api.BusinessLogic
         public async Task<dynamic> FindItemsWhere(string collectionId, string propertyName, string value)
         {
             var query = $"SELECT * FROM c WHERE c.{propertyName}='{value}'";
-            var result = await backendDatabaseService.QueryItemsAsync(collectionId, query);
-            return result;
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query);
         }
 
         public async Task<dynamic> FindItemsWhereContains(string collectionId, string propertyName, string value)
@@ -82,6 +74,8 @@ namespace Access2Justice.Api.BusinessLogic
             var ids = new List<string> { value };
             return await FindItemsWhereArrayContains(collectionId, arrayName, propertyName, ids);
         }
+
+
 
         public async Task<dynamic> FindItemsWhereArrayContains(string collectionId, string arrayName, string propertyName, IEnumerable<string> values)
         {
