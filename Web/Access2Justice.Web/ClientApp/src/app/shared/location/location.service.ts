@@ -24,7 +24,6 @@ export class LocationService {
   }
 
   loadSearchManager() {
-    let suggestionSelected;
     let searchManager;
     let map = new Microsoft.Maps.Map('#my-map',
       {
@@ -86,4 +85,27 @@ export class LocationService {
     return this.mapLocation;
   }
 
+}
+
+function suggestionSelected(result) {
+  let map = new Microsoft.Maps.Map('#my-map',
+    {
+      credentials: environment.bingmap_key
+    });
+  //Remove previously selected suggestions from the map.
+  map.entities.clear();
+  //Show the suggestion as a pushpin and center map over it.
+  var pin = new Microsoft.Maps.Pushpin(result.location, {
+    icon: '../../assets/images/location/poi_custom.png'
+  });
+  map.entities.push(pin);
+  map.setView({ bounds: result.bestView, padding: 30 });
+  this.locAddress = result.address.postalCode;
+  if (this.locAddress !== undefined) {
+    localStorage.setItem("tempSearchedLocation", result.address.postalCode);
+  }
+  else {
+    localStorage.setItem("tempSearchedLocation", result.address.locality);
+  }
+  localStorage.setItem("tempSearchedLocationState", result.address.formattedAddress);
 }
