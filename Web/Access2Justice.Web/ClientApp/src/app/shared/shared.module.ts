@@ -14,6 +14,7 @@ import { LocationComponent } from './location/location.component';
 import { LocationService } from './location/location.service';
 import { LowerNavComponent } from './navigation/lower-nav.component';
 import { NavigateDataService } from './navigate-data.service';
+import { RouteDataService } from './route-data.service';
 import { PrintButtonComponent } from './resource/user-action/print-button.component';
 import { ResourceCardComponent } from './resource/resource-card/resource-card.component';
 import { ResourceCardDetailComponent } from './resource/resource-card-detail/resource-card-detail.component';
@@ -31,63 +32,64 @@ import { CuratedResourceService } from './search/search-results/curated-resource
 import { SearchFilterPipe } from './search/search-filter.pipe';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    AppRoutingModule,
-    FormsModule,
-    BsDropdownModule.forRoot(),
-    ModalModule.forRoot()
-  ],
-  declarations: [
-    ChatbotComponent,
-    CuratedResourceComponent,
-    DownloadButtonComponent,
-    FooterComponent,
-    GuidedAssistantSidebarComponent,
-    LanguageComponent,
-    LocationComponent,
-    LowerNavComponent,
-    PrintButtonComponent,
-    ResourceCardComponent,
-    ResourceCardDetailComponent,
-    RemoveButtonComponent,
-    SearchComponent,
-    SearchFilterComponent,
-    SearchResultsComponent,
-    ServiceOrgSidebarComponent,
-    SaveButtonComponent,
-    ShareButtonComponent,
-    UpperNavComponent,
-      WebResourceComponent,
-      SearchFilterPipe
-  ],
-  exports: [
-    ChatbotComponent,
-    CuratedResourceComponent,
-    DownloadButtonComponent,
-    FooterComponent,
-    GuidedAssistantSidebarComponent,
-    LanguageComponent,
-    LocationComponent,
-    LowerNavComponent,
-    PrintButtonComponent,
-    ResourceCardComponent,
-    ResourceCardDetailComponent,
-    RemoveButtonComponent,
-    SearchComponent,
-    SearchFilterComponent,
-    SearchResultsComponent,
-    ServiceOrgSidebarComponent,
-    SaveButtonComponent,
-    ShareButtonComponent,
-    UpperNavComponent,
-    WebResourceComponent
-  ],
-  providers: [
-    CuratedResourceService,
-    LocationService,
-    NavigateDataService,
-    SearchService
-  ]
+    imports: [
+        CommonModule,
+        AppRoutingModule,
+        FormsModule,
+        BsDropdownModule.forRoot(),
+        ModalModule.forRoot()
+    ],
+    declarations: [
+        ChatbotComponent,
+        CuratedResourceComponent,
+        DownloadButtonComponent,
+        FooterComponent,
+        GuidedAssistantSidebarComponent,
+        LanguageComponent,
+        LocationComponent,
+        LowerNavComponent,
+        PrintButtonComponent,
+        ResourceCardComponent,
+        ResourceCardDetailComponent,
+        RemoveButtonComponent,
+        SearchComponent,
+        SearchFilterComponent,
+        SearchResultsComponent,
+        ServiceOrgSidebarComponent,
+        SaveButtonComponent,
+        ShareButtonComponent,
+        UpperNavComponent,
+        WebResourceComponent,
+        SearchFilterPipe
+    ],
+    exports: [
+        ChatbotComponent,
+        CuratedResourceComponent,
+        DownloadButtonComponent,
+        FooterComponent,
+        GuidedAssistantSidebarComponent,
+        LanguageComponent,
+        LocationComponent,
+        LowerNavComponent,
+        PrintButtonComponent,
+        ResourceCardComponent,
+        ResourceCardDetailComponent,
+        RemoveButtonComponent,
+        SearchComponent,
+        SearchFilterComponent,
+        SearchResultsComponent,
+        ServiceOrgSidebarComponent,
+        SaveButtonComponent,
+        ShareButtonComponent,
+        UpperNavComponent,
+        WebResourceComponent
+    ],
+    providers: [
+        CuratedResourceService,
+        LocationService,
+        NavigateDataService,
+        SearchService,
+        RouteDataService
+    ]
 })
 export class SharedModule { }
