@@ -54,58 +54,20 @@ namespace Access2Justice.Api.BusinessLogic
             return await dbClient.FindItemsWhere(dbSettings.TopicCollectionId, "id", id);
         }
 
-        public async Task<dynamic> GetFirstPageResource(ResourceFilter resourceFilter, string queryFilter)
+        public async Task<dynamic> ApplyPaginationAsync(ResourceFilter resourceFilter)
         {
-            var query = string.Format(CultureInfo.InvariantCulture, "SELECT * FROM c  WHERE {0}", queryFilter);
-            FeedOptions feedOptions = new FeedOptions()
+            PagedResources pagedResources = new PagedResources();            
+            string query = dbClient.FindItemsWhereArrayContainsWithAndClause("topicTags", "id","resourceType",resourceFilter.ResourceType,resourceFilter.TopicIds);
+            if (resourceFilter.PageNumber == 0)
             {
-                MaxItemCount = cosmosDbSettings.DefaultCount
-            };
-            var result = await backendDatabaseService.QueryItemsPaginationAsync(cosmosDbSettings.ResourceCollectionId, query, feedOptions);
-
-            return result;
-        }
-
-        public async Task<dynamic> GetPagedResourcesAsync(ResourceFilter resourceFilter, string queryFilter)
-        {
-            // we need to use a query format to retrieve items because we are returning a dynamic object.
-            var query = string.Format(CultureInfo.InvariantCulture, "SELECT * FROM c  WHERE {0}", queryFilter);
-            FeedOptions feedOptions = new FeedOptions()
-            {
-                MaxItemCount = cosmosDbSettings.DefaultCount,
-                RequestContinuation = resourceFilter.ContinuationToken
-            };
-
-            var result = await backendDatabaseService.QueryItemsPaginationAsync(cosmosDbSettings.ResourceCollectionId, query, feedOptions);
-
-            return result;
-        }
-
-        public string FilterPagedResource(ResourceFilter resourceFilter)
-        {
-            string queryFilter = "";
-            string topicIds = "";
-
-            foreach (var topic in resourceFilter.TopicIds)
-            {
-                topicIds += "  ARRAY_CONTAINS(c.topicTags, { 'id' : '" + topic + "'}) OR";
-            }
-            if (!string.IsNullOrEmpty(topicIds))
-            {
-                // remove the last OR from the db query 
-                topicIds = topicIds.Remove(topicIds.Length - 2);
-                topicIds = "(" + topicIds + ")";
-                if (resourceFilter.ResourceType.ToUpperInvariant() != "ALL")
-                {
-                    queryFilter = " AND c.resourceType = '" + resourceFilter.ResourceType + "'";
-                }
+                pagedResources = await dbClient.QueryPagedResourcesAsync(query, "");                
             }
             else
             {
-                queryFilter = " c.resourceType = '" + resourceFilter.ResourceType + "'";
+                pagedResources = await dbClient.QueryPagedResourcesAsync(query, resourceFilter.ContinuationToken);
             }
 
-            return topicIds + queryFilter;
+            return pagedResources;
         }
     }
 }

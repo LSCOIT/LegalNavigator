@@ -12,8 +12,6 @@ namespace Access2Justice.Shared.Interfaces
         Task<dynamic> GetSubTopicsAsync(string ParentTopicId);
         Task<dynamic> GetResourceAsync(string ParentTopicId);
         Task<dynamic> GetDocumentAsync(string id);
-        Task<dynamic> GetFirstPageResource(ResourceFilter resourceFilter, string queryFilter);
-        Task<dynamic> GetPagedResourcesAsync(ResourceFilter resourceFilter, string queryFilter);
-        string FilterPagedResource(ResourceFilter resourceFilter);
+        Task<dynamic> ApplyPaginationAsync(ResourceFilter resourceFilter);
     }
 }

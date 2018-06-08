@@ -1,10 +1,12 @@
 ﻿using Access2Justice.CosmosDb.Interfaces;
 using Access2Justice.Shared.Interfaces;
+using Access2Justice.Shared.Models;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents.Linq;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -130,6 +132,35 @@ namespace Access2Justice.CosmosDb
             return await QueryItemsAsync(collectionId, query);
         }
 
+        public dynamic FindItemsWhereArrayContainsWithAndClause(string arrayName, string propertyName, string andPropertyName, string andPropertyValue, IEnumerable<string> values)
+        {
+            EnsureParametersAreNotOrEmpty(arrayName, propertyName, andPropertyName, andPropertyValue);
+            var arrayContainsWithAndClause = string.Empty;
+            var lastItem = values.Last();
+
+            foreach (var value in values)
+            {
+                arrayContainsWithAndClause += $" ARRAY_CONTAINS(c.{arrayName}, {{ '{propertyName}' : '" + value + "'})";
+                // arrayContainsWithAndClause += "  ARRAY_CONTAINS(c.topicTags, { 'id' : '" + value + "'}) ";
+                if (value != lastItem)
+                {
+                    arrayContainsWithAndClause += "OR";
+                }
+            }
+            //if (!string.IsNullOrEmpty(arrayContainsWithAndClause))
+            //{
+            // remove the last OR from the db query
+            arrayContainsWithAndClause = "(" + arrayContainsWithAndClause + ")";
+            //if (resourceFilter.ResourceType.ToUpperInvariant() != "ALL")
+            //{
+            arrayContainsWithAndClause += $" AND c.{andPropertyName} = '" + andPropertyValue + "'";
+            //arrayContainsWithAndClause += $" AND c.resourceType = '" + resourceFilter.ResourceType + "'";
+            //}
+            //}
+            var query = $"SELECT * FROM c WHERE {arrayContainsWithAndClause}";
+            return query;
+        }
+
         public async Task<dynamic> QueryItemsAsync(string collectionId, string query)
         {
             var docQuery = documentClient.CreateDocumentQuery<dynamic>(
@@ -140,6 +171,24 @@ namespace Access2Justice.CosmosDb
             {
                 results.AddRange(await docQuery.ExecuteNextAsync());
             }
+
+            return results;
+        }
+
+        public async Task<dynamic> QueryItemsPaginationAsync(string collectionId, string query, FeedOptions feedOptions)
+        {
+
+            var docQuery = documentClient.CreateDocumentQuery<dynamic>(
+                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, collectionId), query, feedOptions).AsDocumentQuery();
+
+            var results = new PagedResources();
+            var queryResult = await docQuery.ExecuteNextAsync();
+            if (!queryResult.Any())
+            {
+                return results;
+            }
+            results.ContinuationToken = queryResult.ResponseContinuation;
+            results.Results.AddRange(queryResult);
 
             return results;
         }
@@ -202,42 +251,43 @@ namespace Access2Justice.CosmosDb
             }
         }
 
-        public async Task<dynamic> QueryItemsPaginationAsync(string collectionId, string query, FeedOptions feedOptions)
+        public async Task<dynamic> QueryPagedResourcesAsync(string query, string continuationToken)
         {
-
-            var docQuery = documentClient.CreateDocumentQuery<dynamic>(
-                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, collectionId), query, feedOptions).AsDocumentQuery();
-
-            var results = new PagedResults();
-            var queryResult = await docQuery.ExecuteNextAsync();
-            if (!queryResult.Any())
+            dynamic result = null;
+            if (string.IsNullOrEmpty(continuationToken))
             {
-                return results;
+                result = await GetFirstPageResourceAsync(query);
             }
-            results.ContinuationToken = queryResult.ResponseContinuation;
-            results.Results.AddRange(queryResult);
-
-            return results;
+            else
+            {
+                result = await GetNextPageResourcesAsync(query, continuationToken);
+            }
+            return result;
         }
 
-    }
-
-    public class PagedResults
-    {
-        public PagedResults()
+        public async Task<dynamic> GetFirstPageResourceAsync(string query)
         {
-            Results = new List<dynamic>();
+            FeedOptions feedOptions = new FeedOptions()
+            {
+                MaxItemCount = cosmosDbSettings.DefaultCount
+            };
+            var result = await QueryItemsPaginationAsync(cosmosDbSettings.ResourceCollectionId, query, feedOptions);
+
+            return result;
         }
-        /// <summary>
-        /// Continuation Token for DocumentDB
-        /// </summary>
-        public string ContinuationToken { get; set; }
 
-        /// <summary>
-        /// Results
-        /// </summary>
-        public List<dynamic> Results { get; set; }
+        public async Task<dynamic> GetNextPageResourcesAsync(string query, string continuationToken)
+        {
+            FeedOptions feedOptions = new FeedOptions()
+            {
+                MaxItemCount = cosmosDbSettings.DefaultCount,
+                RequestContinuation = continuationToken
+            };
 
-        public string Id { get; set; }
+            var result = await QueryItemsPaginationAsync(cosmosDbSettings.ResourceCollectionId, query, feedOptions);
+
+            return result;
+        }
+
     }
 }

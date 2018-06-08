@@ -4,6 +4,9 @@ using Access2Justice.Shared.Luis;
 using Access2Justice.Shared.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,13 +18,15 @@ namespace Access2Justice.Api
         private readonly ILuisSettings luisSettings;
         private readonly ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic;
         private readonly IWebSearchBusinessLogic webSearchBusinessLogic;
+        private readonly IBingSettings bingSettings;
 
-        public LuisBusinessLogic(ILuisProxy luisProxy, ILuisSettings luisSettings, ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic, IWebSearchBusinessLogic webSearchBusinessLogic)
+        public LuisBusinessLogic(ILuisProxy luisProxy, ILuisSettings luisSettings, ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic, IWebSearchBusinessLogic webSearchBusinessLogic, IBingSettings bingSettings)
         {
             this.luisSettings = luisSettings;
             this.luisProxy = luisProxy;
             this.topicsResourcesBusinessLogic = topicsResourcesBusinessLogic;
             this.webSearchBusinessLogic = webSearchBusinessLogic;
+            this.bingSettings = bingSettings;
         }
 
         public async Task<dynamic> GetResourceBasedOnThresholdAsync(string query)
@@ -76,7 +81,7 @@ namespace Access2Justice.Api
         public async Task<dynamic> GetInternalResourcesAsync(string keyword)
         {
             string topic = string.Empty, resource = string.Empty;
-            var topics = await topicsResourcesBusinessLogic.GetTopicAsync(keyword);
+            var topics = await topicsResourcesBusinessLogic.GetTopicsAsync(keyword);
 
             List<string> topicIds = new List<string>();
             foreach (var item in topics)
@@ -90,7 +95,7 @@ namespace Access2Justice.Api
             if (topicIds.Count > 0)
             {
                 ResourceFilter resourceFilter = new ResourceFilter { TopicIds = topicIds, PageNumber = 0 };
-                CosmosDb.PagedResults resources = await ApplyPaginationAsync(resourceFilter);
+                PagedResources resources = await topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
 
                 serializedTopics = JsonConvert.SerializeObject(topics);
                 serializedResources = JsonConvert.SerializeObject(resources.Results);
@@ -120,21 +125,6 @@ namespace Access2Justice.Api
 
             return webResources.ToString();
         }
-
-        public async Task<dynamic> ApplyPaginationAsync(ResourceFilter resourceFilter)
-        {
-            CosmosDb.PagedResults pagedResults = new CosmosDb.PagedResults();
-            string queryfilter = topicsResourcesBusinessLogic.FilterPagedResource(resourceFilter);
-            if (resourceFilter.PageNumber == 0)
-            {
-                pagedResults = await topicsResourcesBusinessLogic.GetFirstPageResource(resourceFilter, queryfilter);
-            }
-            else
-            {
-                pagedResults = await topicsResourcesBusinessLogic.GetPagedResourcesAsync(resourceFilter, queryfilter);
-            }
-
-            return pagedResults;
-        }
+        
     }
 }
