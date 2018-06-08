@@ -11,7 +11,8 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 {
     public class TopicsResourcesBusinessLogicTests
     {
-        private readonly IBackendDatabaseService backendDatabaseService;
+        private readonly IDynamicQueries backendDatabaseService;
+        //private readonly IDynamicQueries dynamicQueries;
         private readonly ICosmosDbSettings cosmosDbSettings;
         private readonly TopicsResourcesBusinessLogic topicsResourcesBusinessLogic;
 
@@ -51,7 +52,8 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 
         public TopicsResourcesBusinessLogicTests()
         {
-            backendDatabaseService = Substitute.For<IBackendDatabaseService>();
+            backendDatabaseService = Substitute.For<IDynamicQueries>();
+            //dynamicQueries = Substitute.For<IDynamicQueries>();
             cosmosDbSettings = Substitute.For<ICosmosDbSettings>();
 
             topicsResourcesBusinessLogic = new TopicsResourcesBusinessLogic(backendDatabaseService, cosmosDbSettings);
@@ -71,7 +73,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             dbResponse.ReturnsForAnyArgs<dynamic>(topicsData);
             
             //act
-            var response = topicsResourcesBusinessLogic.GetTopicAsync(keyword);
+            var response = topicsResourcesBusinessLogic.GetTopicsAsync(keyword);
             string result = JsonConvert.SerializeObject(response);
 
             //assert
@@ -86,7 +88,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
 
             //act
-            var response = topicsResourcesBusinessLogic.GetTopicAsync(keyword);
+            var response = topicsResourcesBusinessLogic.GetTopicsAsync(keyword);
             string result = JsonConvert.SerializeObject(response);
 
             //assert
@@ -131,7 +133,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var dbResponse = backendDatabaseService.QueryItemsAsync(cosmosDbSettings.TopicCollectionId, query);
             dbResponse.ReturnsForAnyArgs<dynamic>(topicsData);
             //act
-            var response = topicsResourcesBusinessLogic.GetTopicsAsync().Result;
+            var response = topicsResourcesBusinessLogic.GetTopLevelTopicsAsync().Result;
             string result = JsonConvert.SerializeObject(response);
             //assert
             Assert.Contains(expectedTopicId, result, StringComparison.InvariantCulture);
@@ -145,7 +147,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
 
             //act
-            var response = topicsResourcesBusinessLogic.GetTopicsAsync();
+            var response = topicsResourcesBusinessLogic.GetTopLevelTopicsAsync();
             string result = JsonConvert.SerializeObject(response);
 
             //assert
@@ -189,7 +191,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var dbResponse = backendDatabaseService.QueryItemsAsync(cosmosDbSettings.ResourceCollectionId, query);
             dbResponse.ReturnsForAnyArgs<dynamic>(topicsData);
             //act
-            var response = topicsResourcesBusinessLogic.GetReourceDetailAsync(topicId).Result;
+            var response = topicsResourcesBusinessLogic.GetResourceAsync(topicId).Result;
             string result = JsonConvert.SerializeObject(response);
             //assert
             Assert.Contains(topicId, result, StringComparison.InvariantCulture);
@@ -203,7 +205,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
 
             //act
-            var response = topicsResourcesBusinessLogic.GetReourceDetailAsync(topicId);
+            var response = topicsResourcesBusinessLogic.GetResourceAsync(topicId);
             string result = JsonConvert.SerializeObject(response);
 
             //assert

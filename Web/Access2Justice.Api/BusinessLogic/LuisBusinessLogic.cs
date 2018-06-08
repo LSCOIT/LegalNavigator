@@ -4,9 +4,6 @@ using Access2Justice.Shared.Luis;
 using Access2Justice.Shared.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,15 +15,13 @@ namespace Access2Justice.Api
         private readonly ILuisSettings luisSettings;
         private readonly ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic;
         private readonly IWebSearchBusinessLogic webSearchBusinessLogic;
-        private IBingSettings bingSettings;
 
-        public LuisBusinessLogic(ILuisProxy luisProxy, ILuisSettings luisSettings, ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic, IWebSearchBusinessLogic webSearchBusinessLogic, IBingSettings bingSettings)
+        public LuisBusinessLogic(ILuisProxy luisProxy, ILuisSettings luisSettings, ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic, IWebSearchBusinessLogic webSearchBusinessLogic)
         {
             this.luisSettings = luisSettings;
             this.luisProxy = luisProxy;
             this.topicsResourcesBusinessLogic = topicsResourcesBusinessLogic;
             this.webSearchBusinessLogic = webSearchBusinessLogic;
-            this.bingSettings = bingSettings;
         }
 
         public async Task<dynamic> GetResourceBasedOnThresholdAsync(string query)
@@ -64,7 +59,7 @@ namespace Access2Justice.Api
 
         public int ApplyThreshold(IntentWithScore intentWithScore)
         {
-            if (intentWithScore.Score >= luisSettings.UpperThreshold && intentWithScore.TopScoringIntent.ToUpperInvariant() != "NONE" )
+            if (intentWithScore.Score >= luisSettings.UpperThreshold && intentWithScore.TopScoringIntent.ToUpperInvariant() != "NONE")
             {
                 return (int)LuisAccuracyThreshold.High;
             }
@@ -98,13 +93,13 @@ namespace Access2Justice.Api
                 CosmosDb.PagedResults resources = await ApplyPaginationAsync(resourceFilter);
 
                 serializedTopics = JsonConvert.SerializeObject(topics);
-                serializedResources = JsonConvert.SerializeObject(resources.Results);                
+                serializedResources = JsonConvert.SerializeObject(resources.Results);
                 serializedToken = JsonConvert.SerializeObject(resources.ContinuationToken);
             }
 
             JObject internalResources = new JObject {
                 { "topics", JsonConvert.DeserializeObject(serializedTopics) },
-                { "resources", JsonConvert.DeserializeObject(serializedResources) },                
+                { "resources", JsonConvert.DeserializeObject(serializedResources) },
                 {"continuationToken", JsonConvert.DeserializeObject(serializedToken) },
                 { "topIntent", keyword }
             };
@@ -114,27 +109,28 @@ namespace Access2Justice.Api
 
         public async Task<dynamic> GetWebResourcesAsync(string searchTerm)
         {
-            var uri = string.Format(CultureInfo.InvariantCulture, bingSettings.BingSearchUrl.OriginalString, searchTerm, bingSettings.CustomConfigId,bingSettings.DefaultCount,bingSettings.DefaultOffset);
+            var uri = string.Format(CultureInfo.InvariantCulture, bingSettings.BingSearchUrl.OriginalString, searchTerm, bingSettings.CustomConfigId, bingSettings.DefaultCount, bingSettings.DefaultOffset);
 
             var response = await webSearchBusinessLogic.SearchWebResourcesAsync(new Uri(uri));
 
             JObject webResources = new JObject
             {
-                { "webResources" , JsonConvert.DeserializeObject(response) }                
+                { "webResources" , JsonConvert.DeserializeObject(response) }
             };
-             
+
             return webResources.ToString();
         }
 
         public async Task<dynamic> ApplyPaginationAsync(ResourceFilter resourceFilter)
         {
             CosmosDb.PagedResults pagedResults = new CosmosDb.PagedResults();
-            string queryfilter =  topicsResourcesBusinessLogic.FilterPagedResource(resourceFilter);
+            string queryfilter = topicsResourcesBusinessLogic.FilterPagedResource(resourceFilter);
             if (resourceFilter.PageNumber == 0)
             {
                 pagedResults = await topicsResourcesBusinessLogic.GetFirstPageResource(resourceFilter, queryfilter);
             }
-            else {
+            else
+            {
                 pagedResults = await topicsResourcesBusinessLogic.GetPagedResourcesAsync(resourceFilter, queryfilter);
             }
 

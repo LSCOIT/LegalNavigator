@@ -280,7 +280,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         public void GetInternalResourcesAsyncWithProperKeyword()
         {
             //arrange
-            topicsResourcesBusinessLogic.GetTopicAsync(Arg.Any<string>()).Returns(topicsData);
+            topicsResourcesBusinessLogic.GetTopicsAsync(Arg.Any<string>()).Returns(topicsData);
             topicsResourcesBusinessLogic.GetResourcesAsync(Arg.Any<string>()).Returns(resourcesData);
             
             //act
@@ -294,7 +294,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         public void GetInternalResourcesAsyncWithEmptyTopic()
         {
             //arrange
-            topicsResourcesBusinessLogic.GetTopicAsync(Arg.Any<string>()).Returns(emptyTopicObject);
+            topicsResourcesBusinessLogic.GetTopicsAsync(Arg.Any<string>()).Returns(emptyTopicObject);
 
             //act
             var result = luisBusinessLogic.GetInternalResourcesAsync(keyword).Result;
@@ -307,7 +307,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         public void GetInternalResourcesAsyncWithEmptyResource()
         {
             //arrange
-            topicsResourcesBusinessLogic.GetTopicAsync(Arg.Any<string>()).Returns(topicsData);
+            topicsResourcesBusinessLogic.GetTopicsAsync(Arg.Any<string>()).Returns(topicsData);
             topicsResourcesBusinessLogic.GetResourcesAsync(Arg.Any<string>()).Returns(emptyResourceObject);
 
             //act
@@ -322,7 +322,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         public void GetInternalResourcesAsyncWithTopicResource()
         {
             //arrange
-            topicsResourcesBusinessLogic.GetTopicAsync(Arg.Any<string>()).Returns(topicsData);
+            topicsResourcesBusinessLogic.GetTopicsAsync(Arg.Any<string>()).Returns(topicsData);
 
             topicsResourcesBusinessLogic.GetResourcesAsync(Arg.Any<string>()).Returns(resourcesData);
 
@@ -372,7 +372,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             var luisResponse = luisProxy.GetIntents(searchText);
             luisResponse.Returns(properLuisResponse);
             
-            topicsResourcesBusinessLogic.GetTopicAsync(Arg.Any<string>()).Returns(emptyTopicObject);
+            topicsResourcesBusinessLogic.GetTopicsAsync(Arg.Any<string>()).Returns(emptyTopicObject);
 
             luis.GetInternalResourcesAsync(Arg.Any<string>()).Returns(internalResponse);
 
