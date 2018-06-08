@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { SearchService } from '../../search/search.service';
+import { SearchService } from '../../search.service';
 import { isNullOrUndefined } from 'util';
 
 @Component({
@@ -22,6 +22,7 @@ export class WebResourceComponent implements OnInit {
   page = 1;
   limit = 10;
   offset = 0;
+  pagesToShow = 10;
 
   constructor(private searchService: SearchService) {  }
 

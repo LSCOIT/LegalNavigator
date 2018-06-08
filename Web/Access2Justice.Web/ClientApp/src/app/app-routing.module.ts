@@ -10,7 +10,7 @@ import { HomeComponent } from './home/home.component';
 import { LogInComponent } from './account/log-in.component';
 import { PrivacyPromiseComponent } from './privacy-promise/privacy-promise.component';
 import { QuestionComponent } from './guided-assistant/question.component';
-import { SearchResultsComponent } from './shared/search/search-results.component';
+import { SearchResultsComponent } from './shared/search/search-results/search-results.component';
 import { SubtopicDetailComponent } from './topics-resources/subtopic/subtopic-detail.component';
 import { SubtopicsComponent } from './topics-resources/subtopic/subtopics.component';
 import { TopicsResourcesComponent } from './topics-resources/topics-resources.component';

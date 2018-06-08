@@ -5,9 +5,9 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { GuidedAssistantComponent } from './guided-assistant.component';
 import { QuestionComponent } from './question.component';
-import { TopicService } from '../topics-resources/topic.service';
+import { TopicService } from '../topics-resources/shared/topic.service';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
-import { TopicsComponent } from '../topics-resources/topics.component';
+import { TopicsComponent } from '../topics-resources/topic/topics.component';
 
 describe('GuidedAssistantComponent', () => {
   let component: GuidedAssistantComponent;

@@ -20,7 +20,7 @@
     <app-pagination (goPage)="goToPage($event)"
                     (goNext)="onNext()"
                     (goPrev)="onPrev()"
-                    [pagesToShow]="10"
+                    [pagesToShow]="pagesToShow"
                     [page]="page"
                     [perPage]="limit"
                     [count]="total"></app-pagination>

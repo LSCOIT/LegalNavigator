@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { NavigateDataService } from '../navigate-data.service';
+import { NavigateDataService } from '../../navigate-data.service';
 import { isNullOrUndefined } from 'util';
-import { ResourceResult } from '../search/search-result';
+import { ResourceResult } from './search-result';
 
 @Component({
   selector: 'app-search-results',
@@ -17,60 +17,51 @@ export class SearchResultsComponent implements OnInit {
   @Input()
   searchResults: any;
   uniqueResources: any;
-  @Input()
   resourceResults: ResourceResult[] = [];
   filterType: string = 'All';
+
   constructor(private navigateDataService: NavigateDataService) { }
 
-  
-
-  ngOnInit() {
-
-    this.bindData();
-    this.applyFilter();
-    
-  }
-
-  //Binding data to local variable which we get from route.
   bindData() {
-
     this.searchResults = this.navigateDataService.getData();
-
     if (!isNullOrUndefined(this.searchResults)) {
       this.isInternalResource = this.searchResults.resources;
       this.isWebResource = this.searchResults.webResources;
-
       if (!this.isWebResource && !this.isInternalResource) {
         this.isLuisResponse = true;
         console.log(this.searchResults.luisResponse);
       }
-
     }
-
   }
 
-  //Applying filter to implement sorting.
   applyFilter() {
-
-    //To get the unique filter results
     if (!isNullOrUndefined(this.searchResults) && !isNullOrUndefined(this.searchResults.resources)) {
-      this.resourceResults.push({ 'resourceName': 'All', 'resourceCount': this.searchResults.resources.length });
-      this.uniqueResources = new Set(this.searchResults.resources.map(item => item.resourceType));
+      this.resourceResults.push({
+        'resourceName': 'All',
+        'resourceCount': this.searchResults.resources.length
+      });
+      this.uniqueResources = new Set(this.searchResults.resources
+        .map(item => item.resourceType));
       this.uniqueResources.forEach(item => {
         if (!isNullOrUndefined(item)) {
-          this.resourceResults.push({ 'resourceName': item, 'resourceCount': this.searchResults.resources.filter(x => x.resourceType == item).length });
+          this.resourceResults.push({
+            'resourceName': item,
+            'resourceCount': this.searchResults.resources
+              .filter(x => x.resourceType === item).length
+          });
         }
       });
     }
-
   }
 
   filterSearchResults(resourceType) {
     this.filterType = resourceType;
   }
 
-
-
+  ngOnInit() {
+    this.bindData();
+    this.applyFilter();
+  }
 }
 
 
