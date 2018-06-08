@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 
 namespace Access2Justice.CosmosDb
@@ -55,7 +56,7 @@ namespace Access2Justice.CosmosDb
             }
         }
 
-        public async Task<IEnumerable<T>> GetItemsAsync<T>(Expression<Func<T, bool>> predicate,string collectionId)
+        public async Task<IEnumerable<T>> GetItemsAsync<T>(Expression<Func<T, bool>> predicate, string collectionId)
         {
             IDocumentQuery<T> query = documentClient.CreateDocumentQuery<T>(
                 UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, collectionId),
@@ -89,26 +90,32 @@ namespace Access2Justice.CosmosDb
 
         public async Task<dynamic> FindItemsWhere(string collectionId, string propertyName, string value)
         {
+            EnsureParametersAreNotOrEmpty(collectionId, propertyName);
+
             var query = $"SELECT * FROM c WHERE c.{propertyName}='{value}'";
             return await QueryItemsAsync(collectionId, query);
         }
 
         public async Task<dynamic> FindItemsWhereContains(string collectionId, string propertyName, string value)
         {
-            var query = $"SELECT * FROM c WHERE CONTAINS(c.{propertyName}, '{value.ToUpperInvariant()}')";
-            var result = await QueryItemsAsync(cosmosDbSettings.TopicCollectionId, query);
+            EnsureParametersAreNotOrEmpty(collectionId, propertyName);
 
-            return result;
+            var query = $"SELECT * FROM c WHERE CONTAINS(c.{propertyName}, '{value.ToUpperInvariant()}')";
+            return await QueryItemsAsync(cosmosDbSettings.TopicCollectionId, query);
         }
 
         public async Task<dynamic> FindItemsWhereArrayContains(string collectionId, string arrayName, string propertyName, string value)
         {
+            EnsureParametersAreNotOrEmpty(collectionId, arrayName, propertyName);
+
             var ids = new List<string> { value };
             return await FindItemsWhereArrayContains(collectionId, arrayName, propertyName, ids);
         }
 
         public async Task<dynamic> FindItemsWhereArrayContains(string collectionId, string arrayName, string propertyName, IEnumerable<string> values)
         {
+            EnsureParametersAreNotOrEmpty(collectionId, arrayName, propertyName);
+
             var arrayContainsClause = string.Empty;
             var lastItem = values.Last();
 
@@ -182,6 +189,18 @@ namespace Access2Justice.CosmosDb
                 {
                     // todo: log error
                     throw;
+                }
+            }
+        }
+
+        private void EnsureParametersAreNotOrEmpty(params string[] parameters)
+        {
+            foreach (var param in parameters)
+            {
+                if (string.IsNullOrWhiteSpace(param))
+                {
+                    // move to resource file
+                    throw new ArgumentException("Paramters can not be null or empty spaces.");
                 }
             }
         }
