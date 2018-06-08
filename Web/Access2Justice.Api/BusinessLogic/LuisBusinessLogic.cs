@@ -91,10 +91,10 @@ namespace Access2Justice.Api
 
             dynamic serializedTopics = "[]";
             dynamic serializedResources = "[]";
-            dynamic serializedToken = "[]";
+            dynamic serializedToken = "[]";            
             if (topicIds.Count > 0)
             {
-                ResourceFilter resourceFilter = new ResourceFilter { TopicIds = topicIds, PageNumber = 0 };
+                ResourceFilter resourceFilter = new ResourceFilter { TopicIds = topicIds, PageNumber = 0, ResourceType = "ALL" };
                 PagedResources resources = await topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
 
                 serializedTopics = JsonConvert.SerializeObject(topics);
@@ -105,7 +105,7 @@ namespace Access2Justice.Api
             JObject internalResources = new JObject {
                 { "topics", JsonConvert.DeserializeObject(serializedTopics) },
                 { "resources", JsonConvert.DeserializeObject(serializedResources) },
-                {"continuationToken", JsonConvert.DeserializeObject(serializedToken) },
+                {"continuationToken", JsonConvert.DeserializeObject(serializedToken) },                
                 { "topIntent", keyword }
             };
 

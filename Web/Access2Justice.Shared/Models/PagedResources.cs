@@ -18,8 +18,8 @@ namespace Access2Justice.Shared.Models
         /// <summary>
         /// Results
         /// </summary>
-        public List<dynamic> Results { get; set; }
+        public IEnumerable<dynamic> Results { get; set; }
 
-        public string Id { get; set; }
+        public IEnumerable<string> TopicIds { get; set; }
     }
 }

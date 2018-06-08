@@ -3,8 +3,6 @@ using Access2Justice.Shared.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Access2Justice.Shared.Models;
-using Microsoft.Azure.Documents.Client;
-using System.Globalization;
 
 namespace Access2Justice.Api.BusinessLogic
 {
@@ -54,17 +52,27 @@ namespace Access2Justice.Api.BusinessLogic
             return await dbClient.FindItemsWhere(dbSettings.TopicCollectionId, "id", id);
         }
 
+        public async Task<dynamic> GetPagedResourceAsync(ResourceFilter resourceFilter)
+        {
+
+            PagedResources pagedResources = await ApplyPaginationAsync(resourceFilter);
+
+            return pagedResources;
+        }
+
         public async Task<dynamic> ApplyPaginationAsync(ResourceFilter resourceFilter)
         {
             PagedResources pagedResources = new PagedResources();            
             string query = dbClient.FindItemsWhereArrayContainsWithAndClause("topicTags", "id","resourceType",resourceFilter.ResourceType,resourceFilter.TopicIds);
             if (resourceFilter.PageNumber == 0)
             {
-                pagedResources = await dbClient.QueryPagedResourcesAsync(query, "");                
+                pagedResources = await dbClient.QueryPagedResourcesAsync(query, "");
+                pagedResources.TopicIds = resourceFilter.TopicIds;
             }
             else
             {
                 pagedResources = await dbClient.QueryPagedResourcesAsync(query, resourceFilter.ContinuationToken);
+                pagedResources.TopicIds = resourceFilter.TopicIds;
             }
 
             return pagedResources;

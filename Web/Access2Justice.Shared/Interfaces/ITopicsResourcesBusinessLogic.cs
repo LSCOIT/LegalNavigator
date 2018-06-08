@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Access2Justice.Shared.Models;
 
 namespace Access2Justice.Shared.Interfaces
@@ -12,6 +11,7 @@ namespace Access2Justice.Shared.Interfaces
         Task<dynamic> GetSubTopicsAsync(string ParentTopicId);
         Task<dynamic> GetResourceAsync(string ParentTopicId);
         Task<dynamic> GetDocumentAsync(string id);
+        Task<dynamic> GetPagedResourceAsync(ResourceFilter resourceFilter);
         Task<dynamic> ApplyPaginationAsync(ResourceFilter resourceFilter);
     }
 }

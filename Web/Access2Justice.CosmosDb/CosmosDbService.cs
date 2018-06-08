@@ -147,15 +147,20 @@ namespace Access2Justice.CosmosDb
                     arrayContainsWithAndClause += "OR";
                 }
             }
+            //ARRAY_CONTAINS(c.Location, { 'state' : 'Alaska','city':'hyd'})
+            //AND (ARRAY_CONTAINS(c.location,{ 'state' : 'Hawaii','city':'Kalawao','zipCode':'96742'}))
+
+
             //if (!string.IsNullOrEmpty(arrayContainsWithAndClause))
             //{
             // remove the last OR from the db query
-            arrayContainsWithAndClause = "(" + arrayContainsWithAndClause + ")";
-            //if (resourceFilter.ResourceType.ToUpperInvariant() != "ALL")
-            //{
-            arrayContainsWithAndClause += $" AND c.{andPropertyName} = '" + andPropertyValue + "'";
-            //arrayContainsWithAndClause += $" AND c.resourceType = '" + resourceFilter.ResourceType + "'";
-            //}
+            if (andPropertyValue.ToUpperInvariant() != "ALL")
+            {
+                arrayContainsWithAndClause = "(" + arrayContainsWithAndClause + ")";
+
+                arrayContainsWithAndClause += $" AND c.{andPropertyName} = '" + andPropertyValue + "'";
+                //arrayContainsWithAndClause += $" AND c.resourceType = '" + resourceFilter.ResourceType + "'";
+            }
             //}
             var query = $"SELECT * FROM c WHERE {arrayContainsWithAndClause}";
             return query;
@@ -182,15 +187,58 @@ namespace Access2Justice.CosmosDb
                 UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, collectionId), query, feedOptions).AsDocumentQuery();
 
             var results = new PagedResources();
+            List<dynamic> resources = new List<dynamic>();
             var queryResult = await docQuery.ExecuteNextAsync();
             if (!queryResult.Any())
             {
                 return results;
             }
             results.ContinuationToken = queryResult.ResponseContinuation;
-            results.Results.AddRange(queryResult);
+            resources.AddRange(queryResult);
+            results.Results = resources;
 
             return results;
+        }
+
+        // need to work on this code for optimization.. it is very bad :(
+        private dynamic FindLocationWhereArrayContains(Location location)
+        {
+
+            string locationQuery = string.Empty;
+            string query = "(ARRAY_CONTAINS(c.location,{0}))";
+            if (!string.IsNullOrEmpty(location.State))
+            {
+                locationQuery += " 'state' : '" + location.State + "'";
+            }
+            if (!string.IsNullOrEmpty(location.City))
+            {
+                if (!string.IsNullOrEmpty(locationQuery))
+                {
+                    locationQuery += locationQuery + ",";
+                }
+                locationQuery += " 'city':'" + location.City + "'";
+            }
+            if (!string.IsNullOrEmpty(location.County))
+            {
+                if (!string.IsNullOrEmpty(locationQuery))
+                {
+                    locationQuery += locationQuery + ",";
+                }
+                locationQuery += " 'county':'" + location.County + "'";
+            }
+            if (!string.IsNullOrEmpty(location.County))
+            {
+                if (!string.IsNullOrEmpty(locationQuery))
+                {
+                    locationQuery += locationQuery + ",";
+                }
+                locationQuery += " 'zipCode':'" + location.ZipCode + "'";
+            }
+            if (!string.IsNullOrEmpty(locationQuery))
+            {
+                locationQuery = string.Format(CultureInfo.InvariantCulture, query, locationQuery);
+            }
+            return locationQuery;
         }
 
         private async Task CreateDatabaseIfNotExistsAsync()

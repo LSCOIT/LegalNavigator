@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Access2Justice.Shared.Interfaces;
+using Access2Justice.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Access2Justice.Api.Controllers
@@ -60,9 +61,11 @@ namespace Access2Justice.Api.Controllers
 
         [HttpGet]
         [Route("api/resources")]
-        public async Task<IActionResult> GetPagedDataAsync(dynamic resourceInput)
+        public async Task<IActionResult> GetPagedDataAsync(ResourceFilter resourceInput)
         {
-            var resource = await topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceInput);
+            var response = await topicsResourcesBusinessLogic.GetPagedResourceAsync(resourceInput);
+
+            var resource = Newtonsoft.Json.JsonConvert.SerializeObject(response);
 
             return Content(resource);
         }
