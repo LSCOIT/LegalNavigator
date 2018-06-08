@@ -8,8 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-
 
 namespace Access2Justice.CosmosDb
 {
@@ -199,7 +197,6 @@ namespace Access2Justice.CosmosDb
             {
                 if (string.IsNullOrWhiteSpace(param))
                 {
-                    // move to resource file
                     throw new ArgumentException("Paramters can not be null or empty spaces.");
                 }
             }

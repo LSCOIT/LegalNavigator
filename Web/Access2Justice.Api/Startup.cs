@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using Access2Justice.Shared.Bing;
+using System.Resources;
 
 namespace Access2Justice.Api
 {
