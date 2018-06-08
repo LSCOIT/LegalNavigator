@@ -1,6 +1,7 @@
 ﻿using Access2Justice.CosmosDb.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Globalization;
 
 namespace Access2Justice.CosmosDb
 {
@@ -15,6 +16,7 @@ namespace Access2Justice.CosmosDb
                 DatabaseId = configuration.GetSection("DatabaseId").Value;
                 TopicCollectionId = configuration.GetSection("TopicCollectionId").Value;
                 ResourceCollectionId = configuration.GetSection("ResourceCollectionId").Value;
+                DefaultCount = Int16.Parse(configuration.GetSection("DefaultCount").Value, CultureInfo.InvariantCulture);
             }
             catch
             {
@@ -26,5 +28,6 @@ namespace Access2Justice.CosmosDb
         public string DatabaseId { get; private set; }
         public string TopicCollectionId { get; private set; }
         public string ResourceCollectionId { get; private set; }
+        public Int16 DefaultCount { get; private set; }
     }
 }

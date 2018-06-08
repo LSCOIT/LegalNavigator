@@ -1,4 +1,5 @@
 ﻿using Microsoft.Azure.Documents;
+using Microsoft.Azure.Documents.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -15,5 +16,7 @@ namespace Access2Justice.Shared.Interfaces
         Task<dynamic> QueryItemsAsync(string collectionId, string query);
         Task<Document> UpdateItemAsync<T>(string id, T item);        
         Task<T> ExecuteStoredProcedureAsyncWithParameters<T>(string storedProcName, params dynamic[] procedureParams);
+        //Task<dynamic> QueryItemsFirstPageAsync(string collectionId, string query, FeedOptions feedOptions);
+        Task<dynamic> QueryItemsPaginationAsync(string collectionId, string query, FeedOptions feedOptions);
     }
 }

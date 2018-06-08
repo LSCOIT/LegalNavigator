@@ -8,9 +8,12 @@ namespace Access2Justice.Api.Controllers
     public class TopicsResourcesController : Controller
     {
         private readonly ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic;
-        public TopicsResourcesController(ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic)
+        private readonly ILuisBusinessLogic luisBusinessLogic;
+
+        public TopicsResourcesController(ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic, ILuisBusinessLogic luisBusinessLogic)
         {
             this.topicsResourcesBusinessLogic = topicsResourcesBusinessLogic;
+            this.luisBusinessLogic = luisBusinessLogic;
         }
 
         #region  get all topics when parentTopicId is empty
@@ -54,6 +57,15 @@ namespace Access2Justice.Api.Controllers
             return Ok(topics);
         }
         #endregion
+
+        [HttpGet]
+        [Route("api/resources")]
+        public async Task<IActionResult> GetPagedDataAsync(dynamic resourceInput)
+        {
+            var resource = await luisBusinessLogic.ApplyPaginationAsync(resourceInput);
+
+            return Content(resource);
+        }
 
     }
 }

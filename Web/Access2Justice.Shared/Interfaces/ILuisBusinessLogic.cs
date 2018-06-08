@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Access2Justice.Shared.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Access2Justice.Shared.Interfaces
@@ -10,5 +11,6 @@ namespace Access2Justice.Shared.Interfaces
         IntentWithScore ParseLuisIntent(string LuisResponse);
         Task<dynamic> GetResourceBasedOnThresholdAsync(string query);
         Task<dynamic> GetWebResourcesAsync(string query);
+        Task<dynamic> ApplyPaginationAsync(ResourceFilter resourceFilter);
     }
 }

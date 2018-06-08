@@ -147,5 +147,64 @@ namespace Access2Justice.CosmosDb
         {
             return await documentClient.ExecuteStoredProcedureAsync<T>(UriFactory.CreateStoredProcedureUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, storedProcName), procedureParams);
         }
+
+        //public async Task<dynamic> QueryItemsFirstPageAsync(string collectionId, string query, FeedOptions feedOptions)
+        //{
+
+        //    var docQuery = documentClient.CreateDocumentQuery<dynamic>(
+        //        UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, collectionId), query, feedOptions).AsDocumentQuery();
+
+        //    var results = new PagedResults();
+
+        //    var queryResult = await docQuery.ExecuteNextAsync();
+        //    if (!queryResult.Any())
+        //    {
+        //        return results;
+        //    }
+        //    results.ContinuationToken = queryResult.ResponseContinuation;
+        //    results.Results.AddRange(queryResult);
+
+        //    return results;
+        //}
+
+        public async Task<dynamic> QueryItemsPaginationAsync(string collectionId,string query, FeedOptions feedOptions)
+        {
+
+            var docQuery = documentClient.CreateDocumentQuery<dynamic>(
+                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, collectionId), query, feedOptions).AsDocumentQuery();
+
+            var results = new PagedResults();
+            var queryResult = await docQuery.ExecuteNextAsync();
+            if (!queryResult.Any())
+            {
+                return results;
+            }
+            results.ContinuationToken = queryResult.ResponseContinuation;
+            results.Results.AddRange(queryResult);
+
+            return results;
+        }
+
     }
+
+
+    public class PagedResults
+    {
+        public PagedResults()
+        {
+            Results = new List<dynamic>();
+        }
+        /// <summary>
+        /// Continuation Token for DocumentDB
+        /// </summary>
+        public string ContinuationToken { get; set; }
+
+        /// <summary>
+        /// Results
+        /// </summary>
+        public List<dynamic> Results { get; set; }
+
+        public string Id { get; set; }
+    }
+
 }

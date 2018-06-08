@@ -1,9 +1,11 @@
 ﻿using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Luis;
+using Access2Justice.Shared.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -81,28 +83,29 @@ namespace Access2Justice.Api
             string topic = string.Empty, resource = string.Empty;
             var topics = await topicsResourcesBusinessLogic.GetTopicAsync(keyword);
 
-            string topicIds = string.Empty;
+            List<string> topicIds = new List<string>();
             foreach (var item in topics)
             {
-                topicIds += "  ARRAY_CONTAINS(c.topicTags, { 'id' : '" + item.id + "'}) OR";
+                topicIds.Add(item.id);
             }
 
             dynamic serializedTopics = "[]";
             dynamic serializedResources = "[]";
-            if (!string.IsNullOrEmpty(topicIds))
+            dynamic serializedToken = "[]";
+            if (topicIds.Count > 0)
             {
-                // remove the last OR from the db query
-                topicIds = topicIds.Remove(topicIds.Length - 2);
-
-                var resources = await topicsResourcesBusinessLogic.GetResourcesAsync(topicIds);
+                ResourceFilter resourceFilter = new ResourceFilter { TopicIds = topicIds, PageNumber = 0 };
+                CosmosDb.PagedResults resources = await ApplyPaginationAsync(resourceFilter);
 
                 serializedTopics = JsonConvert.SerializeObject(topics);
-                serializedResources = JsonConvert.SerializeObject(resources);
+                serializedResources = JsonConvert.SerializeObject(resources.Results);                
+                serializedToken = JsonConvert.SerializeObject(resources.ContinuationToken);
             }
 
             JObject internalResources = new JObject {
                 { "topics", JsonConvert.DeserializeObject(serializedTopics) },
-                { "resources", JsonConvert.DeserializeObject(serializedResources) },
+                { "resources", JsonConvert.DeserializeObject(serializedResources) },                
+                {"continuationToken", JsonConvert.DeserializeObject(serializedToken) },
                 { "topIntent", keyword }
             };
 
@@ -121,6 +124,21 @@ namespace Access2Justice.Api
             };
              
             return webResources.ToString();
+        }
+
+        public async Task<dynamic> ApplyPaginationAsync(ResourceFilter resourceFilter)
+        {
+            CosmosDb.PagedResults pagedResults = new CosmosDb.PagedResults();
+            string queryfilter =  topicsResourcesBusinessLogic.FilterPagedResource(resourceFilter);
+            if (resourceFilter.PageNumber == 0)
+            {
+                pagedResults = await topicsResourcesBusinessLogic.GetFirstPageResource(resourceFilter, queryfilter);
+            }
+            else {
+                pagedResults = await topicsResourcesBusinessLogic.GetPagedResourcesAsync(resourceFilter, queryfilter);
+            }
+
+            return pagedResults;
         }
     }
 }
