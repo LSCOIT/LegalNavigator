@@ -29,9 +29,9 @@ namespace Access2Justice.Api
             this.bingSettings = bingSettings;
         }
 
-        public async Task<dynamic> GetResourceBasedOnThresholdAsync(string query)
+        public async Task<dynamic> GetResourceBasedOnThresholdAsync(LuisInput luisInput)
         {
-            var luisResponse = await luisProxy.GetIntents(query);
+            var luisResponse = await luisProxy.GetIntents(luisInput.Sentence);
 
             var intentWithScore = ParseLuisIntent(luisResponse);
 
@@ -40,12 +40,12 @@ namespace Access2Justice.Api
             switch (threshold)
             {
                 case (int)LuisAccuracyThreshold.High:
-                    return await GetInternalResourcesAsync(intentWithScore.TopScoringIntent);
+                    return await GetInternalResourcesAsync(intentWithScore.TopScoringIntent,luisInput.Location);
                 case (int)LuisAccuracyThreshold.Medium:
                     JObject luisObject = new JObject { { "luisResponse", luisResponse } };
                     return luisObject.ToString();
                 default:
-                    return await GetWebResourcesAsync(query);
+                    return await GetWebResourcesAsync(luisInput.Sentence);
             }
         }
 
@@ -78,10 +78,10 @@ namespace Access2Justice.Api
             }
         }
 
-        public async Task<dynamic> GetInternalResourcesAsync(string keyword)
+        public async Task<dynamic> GetInternalResourcesAsync(string keyword,Location location)
         {
             string topic = string.Empty, resource = string.Empty;
-            var topics = await topicsResourcesBusinessLogic.GetTopicsAsync(keyword);
+            var topics = await topicsResourcesBusinessLogic.GetTopicsAsync(keyword,location);
 
             List<string> topicIds = new List<string>();
             foreach (var item in topics)
@@ -91,21 +91,24 @@ namespace Access2Justice.Api
 
             dynamic serializedTopics = "[]";
             dynamic serializedResources = "[]";
-            dynamic serializedToken = "[]";            
+            dynamic serializedToken = "[]";
+            dynamic serializedTopicIds = "[]";
             if (topicIds.Count > 0)
             {
-                ResourceFilter resourceFilter = new ResourceFilter { TopicIds = topicIds, PageNumber = 0, ResourceType = "ALL" };
+                ResourceFilter resourceFilter = new ResourceFilter { TopicIds = topicIds, PageNumber = 0, ResourceType = "ALL", Location = location };
                 PagedResources resources = await topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
 
                 serializedTopics = JsonConvert.SerializeObject(topics);
                 serializedResources = JsonConvert.SerializeObject(resources.Results);
-                serializedToken = JsonConvert.SerializeObject(resources.ContinuationToken);
+                serializedToken = resources.ContinuationToken;
+                serializedTopicIds = JsonConvert.SerializeObject(topicIds);
             }
 
             JObject internalResources = new JObject {
                 { "topics", JsonConvert.DeserializeObject(serializedTopics) },
                 { "resources", JsonConvert.DeserializeObject(serializedResources) },
-                {"continuationToken", JsonConvert.DeserializeObject(serializedToken) },                
+                {"continuationToken", JsonConvert.DeserializeObject(serializedToken) },
+                {"topicIds" , JsonConvert.DeserializeObject(serializedTopicIds)},
                 { "topIntent", keyword }
             };
 

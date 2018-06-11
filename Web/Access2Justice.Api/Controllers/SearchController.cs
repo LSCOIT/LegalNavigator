@@ -1,4 +1,5 @@
-﻿using Access2Justice.Shared.Interfaces;
+﻿using Access2Justice.Shared;
+using Access2Justice.Shared.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -15,10 +16,10 @@ namespace Access2Justice.Api.Controllers
             this.luisBusinessLogic = luisBusinessLogic;
         }
 
-        [HttpGet("{query}")]
-        public async Task<IActionResult> GetAsync(string query)
+        [HttpGet]
+        public async Task<IActionResult> GetAsync(LuisInput luisInput)
         {
-            var resources = await luisBusinessLogic.GetResourceBasedOnThresholdAsync(query);
+            var resources = await luisBusinessLogic.GetResourceBasedOnThresholdAsync(luisInput);
             return Content(resources);
         }
     }

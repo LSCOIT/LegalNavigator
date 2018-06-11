@@ -96,11 +96,14 @@ namespace Access2Justice.CosmosDb
             return await QueryItemsAsync(collectionId, query);
         }
 
-        public async Task<dynamic> FindItemsWhereContains(string collectionId, string propertyName, string value)
+        public async Task<dynamic> FindItemsWhereContainsWithLocation(string collectionId, string propertyName, string value,Location location)
         {
             EnsureParametersAreNotOrEmpty(collectionId, propertyName);
-
+            string locationFilter = FindLocationWhereArrayContains(location);
             var query = $"SELECT * FROM c WHERE CONTAINS(c.{propertyName}, '{value.ToUpperInvariant()}')";
+            if (!string.IsNullOrEmpty(locationFilter)) {
+                query = query + " AND " + locationFilter;
+            }
             return await QueryItemsAsync(cosmosDbSettings.TopicCollectionId, query);
         }
 
@@ -132,7 +135,7 @@ namespace Access2Justice.CosmosDb
             return await QueryItemsAsync(collectionId, query);
         }
 
-        public dynamic FindItemsWhereArrayContainsWithAndClause(string arrayName, string propertyName, string andPropertyName, string andPropertyValue, IEnumerable<string> values)
+        public dynamic FindItemsWhereArrayContainsWithAndClause(string arrayName, string propertyName, string andPropertyName, string andPropertyValue, IEnumerable<string> values,Location location)
         {
             EnsureParametersAreNotOrEmpty(arrayName, propertyName, andPropertyName, andPropertyValue);
             var arrayContainsWithAndClause = string.Empty;
@@ -150,7 +153,7 @@ namespace Access2Justice.CosmosDb
             //ARRAY_CONTAINS(c.Location, { 'state' : 'Alaska','city':'hyd'})
             //AND (ARRAY_CONTAINS(c.location,{ 'state' : 'Hawaii','city':'Kalawao','zipCode':'96742'}))
 
-
+            string locationFilter = FindLocationWhereArrayContains(location);
             //if (!string.IsNullOrEmpty(arrayContainsWithAndClause))
             //{
             // remove the last OR from the db query
@@ -162,6 +165,10 @@ namespace Access2Justice.CosmosDb
                 //arrayContainsWithAndClause += $" AND c.resourceType = '" + resourceFilter.ResourceType + "'";
             }
             //}
+
+            if (!string.IsNullOrEmpty(locationFilter)) {
+                arrayContainsWithAndClause = arrayContainsWithAndClause + " AND " + locationFilter;
+            }
             var query = $"SELECT * FROM c WHERE {arrayContainsWithAndClause}";
             return query;
         }
@@ -205,7 +212,7 @@ namespace Access2Justice.CosmosDb
         {
 
             string locationQuery = string.Empty;
-            string query = "(ARRAY_CONTAINS(c.location,{0}))";
+            string query = " (ARRAY_CONTAINS(c.location,{0}))";
             if (!string.IsNullOrEmpty(location.State))
             {
                 locationQuery += " 'state' : '" + location.State + "'";
@@ -236,7 +243,7 @@ namespace Access2Justice.CosmosDb
             }
             if (!string.IsNullOrEmpty(locationQuery))
             {
-                locationQuery = string.Format(CultureInfo.InvariantCulture, query, locationQuery);
+                locationQuery = string.Format(CultureInfo.InvariantCulture, query, "{" + locationQuery + "}");
             }
             return locationQuery;
         }

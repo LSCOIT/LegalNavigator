@@ -63,11 +63,9 @@ namespace Access2Justice.Api.Controllers
         [Route("api/resources")]
         public async Task<IActionResult> GetPagedDataAsync(ResourceFilter resourceInput)
         {
-            var response = await topicsResourcesBusinessLogic.GetPagedResourceAsync(resourceInput);
+            var response = await topicsResourcesBusinessLogic.GetPagedResourceAsync(resourceInput);                      
 
-            var resource = Newtonsoft.Json.JsonConvert.SerializeObject(response);
-
-            return Content(resource);
+            return Content(response);
         }
 
     }

@@ -3,6 +3,8 @@ using Access2Justice.Shared.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Access2Justice.Shared.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Access2Justice.Api.BusinessLogic
 {
@@ -27,9 +29,9 @@ namespace Access2Justice.Api.BusinessLogic
             return await dbClient.FindItemsWhereArrayContains(dbSettings.ResourceCollectionId, "topicTags", "id", ids);
         }
 
-        public async Task<dynamic> GetTopicsAsync(string keyword)
+        public async Task<dynamic> GetTopicsAsync(string keyword,Location location)
         {
-            return await dbClient.FindItemsWhereContains(dbSettings.TopicCollectionId, "keywords", keyword);
+            return await dbClient.FindItemsWhereContainsWithLocation(dbSettings.TopicCollectionId, "keywords", keyword, location);
         }
 
         public async Task<dynamic> GetTopLevelTopicsAsync()
@@ -54,16 +56,31 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<dynamic> GetPagedResourceAsync(ResourceFilter resourceFilter)
         {
+            dynamic serializedResources = "[]";
+            dynamic serializedToken = "[]";
+            dynamic serializedTopicIds = "[]";
 
             PagedResources pagedResources = await ApplyPaginationAsync(resourceFilter);
+            if (pagedResources != null)
+            {
+                serializedResources = JsonConvert.SerializeObject(pagedResources.Results);
+                serializedToken = pagedResources.ContinuationToken;
+                serializedTopicIds = JsonConvert.SerializeObject(pagedResources.TopicIds);
+            }
 
-            return pagedResources;
+            JObject internalResources = new JObject {
+                { "resources", JsonConvert.DeserializeObject(serializedResources) },
+                {"continuationToken", JsonConvert.DeserializeObject(serializedToken) },
+                {"topicIds" , JsonConvert.DeserializeObject(serializedTopicIds)}                
+            };
+
+            return internalResources.ToString();
         }
 
         public async Task<dynamic> ApplyPaginationAsync(ResourceFilter resourceFilter)
         {
             PagedResources pagedResources = new PagedResources();            
-            string query = dbClient.FindItemsWhereArrayContainsWithAndClause("topicTags", "id","resourceType",resourceFilter.ResourceType,resourceFilter.TopicIds);
+            string query = dbClient.FindItemsWhereArrayContainsWithAndClause("topicTags", "id","resourceType",resourceFilter.ResourceType,resourceFilter.TopicIds,resourceFilter.Location);
             if (resourceFilter.PageNumber == 0)
             {
                 pagedResources = await dbClient.QueryPagedResourcesAsync(query, "");
