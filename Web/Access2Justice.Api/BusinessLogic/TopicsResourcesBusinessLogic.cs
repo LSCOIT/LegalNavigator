@@ -60,5 +60,13 @@ namespace Access2Justice.Api.BusinessLogic
             var result = await backendDatabaseService.QueryItemsAsync(cosmosDbSettings.TopicCollectionId, query);
             return result;
         }
+
+        public async Task<dynamic> GetBreadCrumbDataByIdAsync(string id)
+        {
+            var spName = "GetParentTopics";
+            dynamic[] procParams = new dynamic[] { id };
+            var result = await backendDatabaseService.ExecuteStoredProcedureAsyncWithParameters(spName, procParams);
+            return result;
+        }
     }
 }

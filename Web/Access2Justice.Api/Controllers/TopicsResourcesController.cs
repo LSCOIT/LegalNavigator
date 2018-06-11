@@ -55,5 +55,14 @@ namespace Access2Justice.Api.Controllers
         }
         #endregion
 
+        #region get breadcrumbs data 
+        [HttpGet]
+        [Route("api/topics/getbreadcrumbs/{id}")]
+        public async Task<IActionResult> GetBreadCrumbsForGuid(string id)
+        {
+            var topics = await topicsResourcesBusinessLogic.GetBreadCrumbDataByIdAsync(id);
+            return Ok(topics);
+        }
+        #endregion
     }
 }

@@ -30,66 +30,69 @@ import { UpperNavComponent } from './navigation/upper-nav.component';
 import { WebResourceComponent } from './search/search-results/web-resource/web-resource.component';
 import { CuratedResourceService } from './search/search-results/curated-resource/curated-resource.service';
 import { SearchFilterPipe } from './search/search-filter.pipe';
+import { BreadcrumbComponent } from '../topics-resources/breadcrumb/breadcrumb.component';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        AppRoutingModule,
-        FormsModule,
-        BsDropdownModule.forRoot(),
-        ModalModule.forRoot()
-    ],
-    declarations: [
-        ChatbotComponent,
-        CuratedResourceComponent,
-        DownloadButtonComponent,
-        FooterComponent,
-        GuidedAssistantSidebarComponent,
-        LanguageComponent,
-        LocationComponent,
-        LowerNavComponent,
-        PrintButtonComponent,
-        ResourceCardComponent,
-        ResourceCardDetailComponent,
-        RemoveButtonComponent,
-        SearchComponent,
-        SearchFilterComponent,
-        SearchResultsComponent,
-        ServiceOrgSidebarComponent,
-        SaveButtonComponent,
-        ShareButtonComponent,
-        UpperNavComponent,
-        WebResourceComponent,
-        SearchFilterPipe
-    ],
-    exports: [
-        ChatbotComponent,
-        CuratedResourceComponent,
-        DownloadButtonComponent,
-        FooterComponent,
-        GuidedAssistantSidebarComponent,
-        LanguageComponent,
-        LocationComponent,
-        LowerNavComponent,
-        PrintButtonComponent,
-        ResourceCardComponent,
-        ResourceCardDetailComponent,
-        RemoveButtonComponent,
-        SearchComponent,
-        SearchFilterComponent,
-        SearchResultsComponent,
-        ServiceOrgSidebarComponent,
-        SaveButtonComponent,
-        ShareButtonComponent,
-        UpperNavComponent,
-        WebResourceComponent
-    ],
-    providers: [
-        CuratedResourceService,
-        LocationService,
-        NavigateDataService,
-        SearchService,
-        RouteDataService
-    ]
+  imports: [
+    CommonModule,
+    AppRoutingModule,
+    FormsModule,
+    BsDropdownModule.forRoot(),
+    ModalModule.forRoot()    
+  ],
+  declarations: [
+    ChatbotComponent,
+    CuratedResourceComponent,
+    DownloadButtonComponent,
+    FooterComponent,
+    GuidedAssistantSidebarComponent,
+    LanguageComponent,
+    LocationComponent,
+    LowerNavComponent,
+    PrintButtonComponent,
+    ResourceCardComponent,
+    ResourceCardDetailComponent,
+    RemoveButtonComponent,
+    SearchComponent,
+    SearchFilterComponent,
+    SearchResultsComponent,
+    ServiceOrgSidebarComponent,
+    SaveButtonComponent,
+    ShareButtonComponent,
+    UpperNavComponent,
+    WebResourceComponent,
+    SearchFilterPipe,
+    BreadcrumbComponent
+  ],
+  exports: [
+    ChatbotComponent,
+    CuratedResourceComponent,
+    DownloadButtonComponent,
+    FooterComponent,
+    GuidedAssistantSidebarComponent,
+    LanguageComponent,
+    LocationComponent,
+    LowerNavComponent,
+    PrintButtonComponent,
+    ResourceCardComponent,
+    ResourceCardDetailComponent,
+    RemoveButtonComponent,
+    SearchComponent,
+    SearchFilterComponent,
+    SearchResultsComponent,
+    ServiceOrgSidebarComponent,
+    SaveButtonComponent,
+    ShareButtonComponent,
+    UpperNavComponent,
+    WebResourceComponent,
+    BreadcrumbComponent
+  ],
+  providers: [
+    CuratedResourceService,
+    LocationService,
+    NavigateDataService,
+    SearchService,
+    RouteDataService
+  ]
 })
 export class SharedModule { }

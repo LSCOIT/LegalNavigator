@@ -17,7 +17,7 @@ export class SubtopicsComponent implements OnInit {
 
   constructor(
     private topicService: TopicService,
-    private activeRoute: ActivatedRoute,
+    private activeRoute: ActivatedRoute,    
     private navigateDataService: NavigateDataService
   ) {}
 
@@ -29,14 +29,10 @@ export class SubtopicsComponent implements OnInit {
             this.activeTopicId = topics[i]["id"];
             this.topicService.getSubtopics(this.activeTopicId)
               .subscribe(
-                subtopics => this.subtopics = subtopics
-               );
-            this.topicService.getSubtopics(this.activeTopicId)
-              .subscribe(
-                subtopics => {
-                  this.subtopics = subtopics;
-                  this.navigateDataService.setData(this.subtopics);
-            });
+              subtopics => {
+                this.subtopics = subtopics;
+                this.navigateDataService.setData(this.subtopics);
+              });
           }
         }
       });

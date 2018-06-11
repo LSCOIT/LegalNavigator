@@ -143,9 +143,9 @@ namespace Access2Justice.CosmosDb
             }
         }
 
-        public async Task<T> ExecuteStoredProcedureAsyncWithParameters<T>(string storedProcName, params dynamic[] procedureParams)
+        public async Task<dynamic> ExecuteStoredProcedureAsyncWithParameters(string storedProcName, params dynamic[] procedureParams)
         {
-            return await documentClient.ExecuteStoredProcedureAsync<T>(UriFactory.CreateStoredProcedureUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, storedProcName), procedureParams);
+            return await documentClient.ExecuteStoredProcedureAsync<dynamic>(UriFactory.CreateStoredProcedureUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, storedProcName), procedureParams);
         }
     }
 }

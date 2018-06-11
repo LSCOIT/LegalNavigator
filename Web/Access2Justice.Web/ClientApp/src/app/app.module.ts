@@ -29,7 +29,7 @@ import { SubtopicsComponent } from './topics-resources/subtopic/subtopics.compon
 import { SubtopicDetailComponent } from './topics-resources/subtopic/subtopic-detail.component';
 import { TopicsResourcesComponent } from './topics-resources/topics-resources.component';
 import { TopicsComponent } from './topics-resources/topic/topics.component';
-
+import { BreadCrumbService } from './topics-resources/shared/breadcrumb.service';
 
 @NgModule({
   declarations: [
@@ -45,7 +45,7 @@ import { TopicsComponent } from './topics-resources/topic/topics.component';
     TopicsComponent,
     TopicsResourcesComponent,
     SubtopicDetailComponent,
-    SubtopicsComponent
+    SubtopicsComponent    
   ],
   imports: [
     BrowserModule,
@@ -62,7 +62,8 @@ import { TopicsComponent } from './topics-resources/topic/topics.component';
   providers: [
     TopicService,
     QuestionService,
-    ProgressbarConfig
+    ProgressbarConfig,
+    BreadCrumbService 
   ],
   bootstrap: [AppComponent]
 })
