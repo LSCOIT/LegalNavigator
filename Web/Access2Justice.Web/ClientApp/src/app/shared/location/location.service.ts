@@ -3,7 +3,7 @@ import { environment } from '../../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
-import { MapLocation } from './location';
+import { MapLocation, DisplayMapLocation } from './location';
 declare var Microsoft: any;
 
 @Injectable()
@@ -15,7 +15,8 @@ export class LocationService {
   location: any;
   pin: any;
   tempLoc: any;
-  mapLocation: MapLocation = { locality: '', address:''};
+  mapLocation: MapLocation = { state: '', city: '', county: '', zipCode: '' };
+  displayMapLocation: DisplayMapLocation = { locality: '', address: ''}
 
   constructor() { }
 
@@ -44,14 +45,26 @@ export class LocationService {
           this.pin = new Microsoft.Maps.Pushpin(this.location.location, {
             icon: '../../assets/images/location/poi_custom.png'
           });
-          this.locAddress = this.location.address.postalCode;
-          if (this.locAddress !== undefined) {
-            localStorage.setItem("tempSearchedLocation", this.location.address.postalCode);
+
+          if (this.location.address.postalCode === undefined) {
+            if (this.location.address.locality === undefined) {
+              if (this.location.address.district === undefined) {
+                this.locAddress = this.location.address.adminDistrict;
+              }
+              else {
+                this.locAddress = this.location.address.district;
+              }
+            }
+            else {
+              this.locAddress = this.location.address.locality;
+            }
           }
           else {
-            localStorage.setItem("tempSearchedLocation", this.location.address.locality);
+            this.locAddress = this.location.address.postalCode;
           }
-          localStorage.setItem("tempSearchedLocationState", this.location.address.formattedAddress);
+
+          localStorage.setItem("tempSearchedLocation", this.locAddress);
+          localStorage.setItem("tempSearchedLocationState", this.location.address.adminDistrict);
           this.map = new Microsoft.Maps.Map('#my-map',
             {
               credentials: environment.bingmap_key
@@ -74,15 +87,15 @@ export class LocationService {
     this.searchManager.geocode(searchRequest);
   }
 
-  updateLocation(): MapLocation {
+  updateLocation(): DisplayMapLocation {
     this.tempLoc = localStorage.getItem("tempSearchedLocation");
     localStorage.setItem("searchedLocation", this.tempLoc);
     this.tempLoc = localStorage.getItem("tempSearchedLocationState");
     localStorage.setItem("searchedLocationAddress", this.tempLoc);
-    this.mapLocation.locality = localStorage.getItem("searchedLocation");
-    this.mapLocation.address = localStorage.getItem("searchedLocationAddress");
-    
-    return this.mapLocation;
+    this.displayMapLocation.locality = localStorage.getItem("searchedLocation");
+    this.displayMapLocation.address = localStorage.getItem("searchedLocationAddress");
+
+    return this.displayMapLocation;
   }
 
 }
@@ -100,12 +113,22 @@ function suggestionSelected(result) {
   });
   map.entities.push(pin);
   map.setView({ bounds: result.bestView, padding: 30 });
-  this.locAddress = result.address.postalCode;
-  if (this.locAddress !== undefined) {
-    localStorage.setItem("tempSearchedLocation", result.address.postalCode);
+  if (result.address.postalCode === undefined) {
+    if (result.address.locality === undefined) {
+      if (result.address.district === undefined) {
+        this.locAddress = result.address.adminDistrict;
+      }
+      else {
+        this.locAddress = result.address.district;
+      }
+    }
+    else {
+      this.locAddress = result.address.locality;
+    }
   }
   else {
-    localStorage.setItem("tempSearchedLocation", result.address.locality);
+    this.locAddress = result.address.postalCode;
   }
-  localStorage.setItem("tempSearchedLocationState", result.address.formattedAddress);
+  localStorage.setItem("tempSearchedLocation", this.locAddress);
+  localStorage.setItem("tempSearchedLocationState", result.address.adminDistrict);
 }

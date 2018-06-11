@@ -3,6 +3,12 @@
     <h2>Results for {{searchResults.topIntent}}.</h2>
   </div>
   <div class="row">
+    <div class=" panel-heading panel-heading-space">
+      <span>Showing Information for</span>
+      <span><app-location></app-location></span>
+    </div>
+  </div>
+  <div class="row">
     <app-search-filter (notifyFilterCriteria)='filterSearchResults($event)' [resourceResults]="resourceResults"></app-search-filter>
   </div>
   <div class="row">
@@ -21,10 +27,10 @@
         <h3>Sorry, we did not find anything that matches you're input. Please try again.</h3>
       </div>
     </div>
-      <div class="col-md-3 col-sm-12 col-xs-12">
-        <app-map-results></app-map-results>
-        <app-guided-assistant-sidebar></app-guided-assistant-sidebar>
-        <app-service-org-sidebar></app-service-org-sidebar>
-      </div>
+    <div class="col-md-3 col-sm-12 col-xs-12">
+      <app-map-results [searchResource]="searchResults"></app-map-results>
+      <app-guided-assistant-sidebar></app-guided-assistant-sidebar>
+      <app-service-org-sidebar></app-service-org-sidebar>
     </div>
+  </div>
 </div>
