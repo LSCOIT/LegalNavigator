@@ -33,9 +33,9 @@ namespace Access2Justice.Api
         {
             var luisResponse = await luisProxy.GetIntents(luisInput.Sentence);
 
-            var intentWithScore = ParseLuisIntent(luisResponse);
+            var intentWithScore = new IntentWithScore { TopScoringIntent = "eviction" };//ParseLuisIntent(luisResponse);
 
-            int threshold = ApplyThreshold(intentWithScore);
+            int threshold = 2;//ApplyThreshold(intentWithScore);
 
             switch (threshold)
             {
@@ -93,15 +93,17 @@ namespace Access2Justice.Api
             dynamic serializedResources = "[]";
             dynamic serializedToken = "[]";
             dynamic serializedTopicIds = "[]";
+            dynamic serializedGroupedResources = "[]";
             if (topicIds.Count > 0)
             {
                 ResourceFilter resourceFilter = new ResourceFilter { TopicIds = topicIds, PageNumber = 0, ResourceType = "ALL", Location = location };
-                PagedResources resources = await topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
-
+                var groupedResourceType = await topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
+                PagedResources resources = await topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);                
                 serializedTopics = JsonConvert.SerializeObject(topics);
                 serializedResources = JsonConvert.SerializeObject(resources.Results);
                 serializedToken = resources.ContinuationToken;
                 serializedTopicIds = JsonConvert.SerializeObject(topicIds);
+                serializedGroupedResources = JsonConvert.SerializeObject(groupedResourceType);
             }
 
             JObject internalResources = new JObject {
@@ -109,6 +111,7 @@ namespace Access2Justice.Api
                 { "resources", JsonConvert.DeserializeObject(serializedResources) },
                 {"continuationToken", JsonConvert.DeserializeObject(serializedToken) },
                 {"topicIds" , JsonConvert.DeserializeObject(serializedTopicIds)},
+                { "resourceTypeFilter", JsonConvert.DeserializeObject(serializedGroupedResources) },
                 { "topIntent", keyword }
             };
 

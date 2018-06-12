@@ -16,9 +16,10 @@ namespace Access2Justice.Api.Controllers
             this.luisBusinessLogic = luisBusinessLogic;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAsync(LuisInput luisInput)
+        [HttpGet("{query}")]
+        public async Task<IActionResult> GetAsync(string query)
         {
+            LuisInput luisInput = new LuisInput { Sentence = query };
             var resources = await luisBusinessLogic.GetResourceBasedOnThresholdAsync(luisInput);
             return Content(resources);
         }

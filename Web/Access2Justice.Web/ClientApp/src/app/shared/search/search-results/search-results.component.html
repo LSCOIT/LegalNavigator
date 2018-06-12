@@ -25,6 +25,16 @@
       <div *ngIf="isLuisResponse" class="row center-align">
         <h3>Sorry, we did not find anything that matches you're input. Please try again.</h3>
       </div>
+      <!-- pagination logic here -->
+      <div *ngIf="isInternalResource || isWebResource">
+        <app-pagination (goPage)="goToPage($event)"
+                        (goNext)="onNext()"
+                        (goPrev)="onPrev()"
+                        [pagesToShow]="pagesToShow"
+                        [page]="page"
+                        [perPage]="limit"
+                        [count]="total"></app-pagination>
+      </div>
     </div>
     <div class="col-md-3 col-sm-12 col-xs-12">
       <app-guided-assistant-sidebar></app-guided-assistant-sidebar>

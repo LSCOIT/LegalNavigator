@@ -55,7 +55,7 @@ export class PaginationComponent {
   getPages(): number[] {
     const c = Math.ceil(this.count / this.perPage);
     const p = this.page || 1;
-    const pagesToShow = this.pagesToShow || 9;
+    const pagesToShow = this.pagesToShow || 2;
     const pages: number[] = [];
     pages.push(p);
     const times = pagesToShow - 1;

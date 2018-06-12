@@ -13,5 +13,6 @@ namespace Access2Justice.Shared.Interfaces
         Task<dynamic> GetDocumentAsync(string id);
         Task<dynamic> GetPagedResourceAsync(ResourceFilter resourceFilter);
         Task<dynamic> ApplyPaginationAsync(ResourceFilter resourceFilter);
+        Task<dynamic> GetResourcesCountAsync(ResourceFilter resourceFilter);
     }
 }

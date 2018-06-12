@@ -13,5 +13,6 @@ namespace Access2Justice.Shared.Interfaces
         Task<dynamic> FindItemsWhereArrayContains(string collectionId, string arrayName, string propertyName, IEnumerable<string> values);
         dynamic FindItemsWhereArrayContainsWithAndClause(string arrayName, string propertyName, string andPropertyName, string andPropertyValue, IEnumerable<string> values,Location location);
         Task<dynamic> QueryPagedResourcesAsync(string query, string continuationToken);
+        Task<dynamic> QueryResourcesCountAsync(string query);
     }
 }

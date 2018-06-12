@@ -30,6 +30,7 @@ import { UpperNavComponent } from './navigation/upper-nav.component';
 import { WebResourceComponent } from './search/search-results/web-resource/web-resource.component';
 import { CuratedResourceService } from './search/search-results/curated-resource/curated-resource.service';
 import { SearchFilterPipe } from './search/search-filter.pipe';
+import { PaginationComponent } from './pagination/pagination.component';
 
 @NgModule({
     imports: [
@@ -60,7 +61,8 @@ import { SearchFilterPipe } from './search/search-filter.pipe';
         ShareButtonComponent,
         UpperNavComponent,
         WebResourceComponent,
-        SearchFilterPipe
+        SearchFilterPipe,
+        PaginationComponent
     ],
     exports: [
         ChatbotComponent,

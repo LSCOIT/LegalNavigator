@@ -152,8 +152,7 @@ namespace Access2Justice.CosmosDb
             }
             //ARRAY_CONTAINS(c.Location, { 'state' : 'Alaska','city':'hyd'})
             //AND (ARRAY_CONTAINS(c.location,{ 'state' : 'Hawaii','city':'Kalawao','zipCode':'96742'}))
-
-            string locationFilter = FindLocationWhereArrayContains(location);
+                        
             //if (!string.IsNullOrEmpty(arrayContainsWithAndClause))
             //{
             // remove the last OR from the db query
@@ -165,7 +164,7 @@ namespace Access2Justice.CosmosDb
                 //arrayContainsWithAndClause += $" AND c.resourceType = '" + resourceFilter.ResourceType + "'";
             }
             //}
-
+            string locationFilter = FindLocationWhereArrayContains(location);
             if (!string.IsNullOrEmpty(locationFilter)) {
                 arrayContainsWithAndClause = arrayContainsWithAndClause + " AND " + locationFilter;
             }
@@ -210,7 +209,9 @@ namespace Access2Justice.CosmosDb
         // need to work on this code for optimization.. it is very bad :(
         private dynamic FindLocationWhereArrayContains(Location location)
         {
-
+            if (location == null) {
+                return "";
+            }
             string locationQuery = string.Empty;
             string query = " (ARRAY_CONTAINS(c.location,{0}))";
             if (!string.IsNullOrEmpty(location.State))
@@ -243,7 +244,7 @@ namespace Access2Justice.CosmosDb
             }
             if (!string.IsNullOrEmpty(locationQuery))
             {
-                locationQuery = string.Format(CultureInfo.InvariantCulture, query, "{" + locationQuery + "}");
+                locationQuery = string.Format(CultureInfo.InvariantCulture, query, "{" + locationQuery + "},true");
             }
             return locationQuery;
         }
@@ -320,12 +321,22 @@ namespace Access2Justice.CosmosDb
             return result;
         }
 
-        public async Task<dynamic> GetFirstPageResourceAsync(string query)
+        public async Task<dynamic> QueryResourcesCountAsync(string query)
         {
-            FeedOptions feedOptions = new FeedOptions()
+            dynamic result = await GetFirstPageResourceAsync(query, true);
+            return result;
+        }
+
+        public async Task<dynamic> GetFirstPageResourceAsync(string query, bool isInitialPage = false)
+        {
+            FeedOptions feedOptions = null;
+            if (!isInitialPage)
             {
-                MaxItemCount = cosmosDbSettings.DefaultCount
-            };
+                feedOptions = new FeedOptions()
+                {
+                    MaxItemCount = cosmosDbSettings.DefaultCount
+                };
+            }
             var result = await QueryItemsPaginationAsync(cosmosDbSettings.ResourceCollectionId, query, feedOptions);
 
             return result;

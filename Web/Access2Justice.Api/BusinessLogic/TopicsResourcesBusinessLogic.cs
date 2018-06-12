@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Access2Justice.Shared.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Linq;
+using System;
 
 namespace Access2Justice.Api.BusinessLogic
 {
@@ -64,7 +66,7 @@ namespace Access2Justice.Api.BusinessLogic
             if (pagedResources != null)
             {
                 serializedResources = JsonConvert.SerializeObject(pagedResources.Results);
-                serializedToken = pagedResources.ContinuationToken;
+                serializedToken = pagedResources.ContinuationToken ?? "[]";
                 serializedTopicIds = JsonConvert.SerializeObject(pagedResources.TopicIds);
             }
 
@@ -93,6 +95,35 @@ namespace Access2Justice.Api.BusinessLogic
             }
 
             return pagedResources;
+        }
+
+        public async Task<dynamic> GetResourcesCountAsync(ResourceFilter resourceFilter)
+        {
+            string query = dbClient.FindItemsWhereArrayContainsWithAndClause("topicTags", "id", "resourceType", resourceFilter.ResourceType, resourceFilter.TopicIds, resourceFilter.Location);
+            query = query.Replace("*", "c.resourceType",System.StringComparison.InvariantCulture);
+            PagedResources pagedResources = await dbClient.QueryResourcesCountAsync(query);
+           return ResourcesCount(pagedResources);
+        }
+
+        private dynamic ResourcesCount(PagedResources resources)
+        {
+            List<dynamic> allResources = new List<dynamic>();
+            allResources.Add(new
+            {
+                ResourceName = "All",
+                ResourceCount = resources.Results.Count()
+            });
+
+            var groupedResourceType = resources.Results.GroupBy(u => u.resourceType)
+                  .OrderBy(group => group.Key)
+                  .Select(n => new
+                  {
+                      ResourceName = n.Key,
+                      ResourceCount = n.Count()
+                  }).OrderBy(n => n.ResourceName);
+
+            dynamic resourceList = groupedResourceType.Concat(allResources);
+            return resourceList;
         }
     }
 }

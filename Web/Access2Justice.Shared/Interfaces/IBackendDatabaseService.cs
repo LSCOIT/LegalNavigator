@@ -18,7 +18,7 @@ namespace Access2Justice.Shared.Interfaces
         Task<Document> UpdateItemAsync<T>(string id, T item);        
         Task<T> ExecuteStoredProcedureAsyncWithParameters<T>(string storedProcName, params dynamic[] procedureParams);        
         Task<dynamic> QueryItemsPaginationAsync(string collectionId, string query, FeedOptions feedOptions);
-        Task<dynamic> GetFirstPageResourceAsync(string query);
-        Task<dynamic> GetNextPageResourcesAsync(string query, string continuationToken);
+        Task<dynamic> GetFirstPageResourceAsync(string query,bool isInitialPage);
+        Task<dynamic> GetNextPageResourcesAsync(string query, string continuationToken);        
     }
 }
