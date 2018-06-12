@@ -1,29 +1,62 @@
+<div [className]="my_Class"></div>
 <div class="navbar navbar-default lower-nav">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" (click)="toggleMenu()" class="navbar-toggle collapsed" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" [routerLink]="['/']">Legal Assist</a>
+  <div class="container">
+    <div class="pull-right">
+      <span class="search-form" (click)="toggleSearch()" *ngIf="!showSearch">
+        <img class="search-icon" src="/assets/images/small-icons/search.svg" aria-hidden="true" />
+        <span class="inline search-text">Search</span>
+      </span>
+      <span class="web-hidden pull-right" id="nav-bar-toggle" (click)="openNav()" >&#9776;</span>
     </div>
-    <div class="mobile-hidden" [style.display]="getMenu()">
-      <app-search></app-search>
-      <ul class="nav navbar-nav">
-        <li><a [routerLink]="['/']">Home</a></li>
-        <li><a [routerLink]="['/guidedassistant']">Guided Assistant</a></li>
-        <li><a [routerLink]="['/topics']">Topics &amp; Resources</a></li>
-        <li><a [routerLink]="['/about']">About</a></li>
-        <li class="web-hidden"><a [routerLink]="['/help']">Help &amp; FAQs</a></li>
-        <li class="web-hidden"><a [routerLink]="['/privacy']">Privacy Promise</a></li>
-        <li class="web-hidden">
-          <a [routerLink]="['/createaccount']" class="account-menu">Create Account</a>
-          <span>|</span>
-          <a [routerLink]="['/login']" class="account-menu">Log In</a>
-        </li>
+    <div class="navbar-header">
+      <a [routerLink]="['/']">
+        <h3 class="inline logo" id="first-logo">Legal</h3>
+        <h3 class="inline logo">Assist</h3>
+      </a>
+    </div>
+    <div class="navbar-left" >
+      <ul class="nav navbar-nav mobile-hidden">
+        <li><a [routerLink]="['/']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a></li>
+        <li><a [routerLink]="['/guidedassistant']" routerLinkActive="active">Guided Assistant</a></li>
+        <li><a [routerLink]="['/topics']" routerLinkActive="active">Topics &amp; Resources</a></li>
+        <li><a [routerLink]="['/about']" routerLinkActive="active">About</a></li>
       </ul>
+    </div>
+    
+    <app-search *ngIf="showSearch"></app-search>
+    <div #sidenav id="sidenav">
+      <a class="closebtn" (click)="closeNav()">&times;</a>
+      <ul class="sidenav-menu">
+        <li id="home-nav"><a [routerLink]="['/']">Home</a></li><hr/>
+        <li><a [routerLink]="['/guidedassistant']">Guided Assistant</a></li><hr/>
+        <li><a [routerLink]="['/topics']">Topics &amp; Resources</a></li><hr/>
+        <li><a [routerLink]="['/about']">About</a></li>
+      </ul>
+      <div class="bottom-menu">
+        <ul>
+          <li>
+              <a [routerLink]="['/privacy']">
+                <img class="nav-icon" src="/assets/images/small-icons/privacy.svg" aria-hidden="true" />
+                Privacy Promise
+              </a>
+          </li>
+          <li>
+            <a [routerLink]="['/help']">
+              <span class="glyphicon glyphicon-question-sign nav-icon" aria-hidden="true"></span>
+              Help &amp; FAQs
+            </a>
+          </li>
+          <li>    
+            <a [routerLink]="['/createaccount']" class="account-menu">
+              <img class="nav-icon" src="/assets/images/small-icons/profile.svg" aria-hidden="true" />
+              Create Account
+            </a>
+            <span>|</span>
+            <a [routerLink]="['/login']" class="account-menu">Log In</a>
+          </li>
+
+        </ul>
+        </div>
     </div>
   </div>
 </div>

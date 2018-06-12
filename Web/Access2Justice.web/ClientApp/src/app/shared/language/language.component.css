@@ -1,11 +1,19 @@
-#language-dropdown>a {
-  color: #fff;
+#language-dropdown {
+  padding-left: 10px;
+}
+
+#language-dropdown > a {
+  color: #333;
   text-decoration: none;
-  margin-right: 15px;
   cursor: pointer;
 }
 
-.list-items>a.dropdown-item {
+.dropdown-icon {
+  width: 10px;
+  margin-left: 5px;
+}
+
+.list-items > a.dropdown-item {
   color: #000;
 }
 
@@ -13,7 +21,7 @@ ul.dropdown-menu {
   width: 100%;
   height: 360px;
   overflow-y: scroll;
-  background-color: #f2f2f2;
+  background-color: #f4f4f4;
   border: 0;
   border-radius: 0;
   margin-top: 0;
@@ -26,6 +34,10 @@ ul.dropdown-menu {
 }
 
 @media only screen and (min-width : 768px) {
+  #language-dropdown {
+    padding: 10px 15px 10px 0;
+  }
+
   #language-dropdown>a {
     color: #000;
   }
@@ -50,5 +62,9 @@ ul.dropdown-menu {
     width: 110px;
     float: left;
     margin-top: 15px;
+  }
+
+  .nav-icon {
+    margin-left: 0;
   }
 }

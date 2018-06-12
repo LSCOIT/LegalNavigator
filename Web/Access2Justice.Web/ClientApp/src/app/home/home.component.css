@@ -1,29 +1,88 @@
+.top-row {
+    margin-top: 0;
+}
+
 #home-img {
-    background-color: #f2f2f2;
     width: 100%;
-    height: 300px;
+    margin-top: 10px;
+}
+
+.outer-bg {
+    background-color: #f4f4f4;
+    /* margin: 0 -15%; */
+}
+
+.container button {
+    margin-bottom: 40px;
+}
+
+.secondary-img {
+    width: 65%;
+    margin: 20px auto;
+    float: none;
 }
 
 #testimonial-img {
-    position: absolute;
-    border-radius: 50%;
-    background-color: #f2f2f2;
-    height: 100px;
-    width: 100px;
-    z-index: 1;
-    margin: 0 auto;
-    left: 0;
-    right: 0;
-    box-shadow: 10px 10px 0px -2px rgba(231,166,26,1);
-    top: -10px;
+    border-radius: 5px;
+    background-color: #ccc;
+    height: 180px;
+    width: 180px;
+}
+
+ul>li {
+    padding-bottom: 15px;
+}
+
+ul>li>span {
+    display: block;
+    margin-right: 5px;
+}
+
+.privacy-promise {
+    background-color: #0B2B78;
+    color: #F4F4F4;
+    padding: 40px 0;
+    margin-bottom: 0;
+}
+
+.privacy-promise button {
+    margin-left: 0;
 }
 
 @media only screen and (min-width : 768px) {
+    .top-row {
+        margin-top: 20px;
+    }
 
+    .tagline {
+        margin-top: 10%;
+        padding: 0;
+        text-align: left;
+    }
+
+    #home-img {
+        width: 95%;
+        margin-top: 0;
+    }
+    
+    .secondary-img {
+        width: 80%;
+        margin-top: 0;
+        float: right;
+    }
+
+    .guided-assistant-steps {
+        text-align: left;
+    }
+
+    ul>li>span {
+        display: inline-block;
+    }
+
+    .privacy-promise {
+        text-align: left;
+    }
 }
 
 @media only screen and (min-width : 992px) {
-    #testimonial-img {
-        top: -10px;
-    }
 }

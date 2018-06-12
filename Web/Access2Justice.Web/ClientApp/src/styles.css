@@ -1,6 +1,17 @@
+@import url("style-guide.css");
+
 /*Shared Resources*/
 body {
-  margin-top: 70px;
+  margin-top: 40px;
+}
+
+[class*="col-"] {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.col-xs-12 {
+  margin: 0 auto;
 }
 
 li {
@@ -12,31 +23,30 @@ ul {
 }
 
 a {
-  color: #2c2d2d;
+  color: #333;
 }
 
-.navbar {
-  padding-left: 0;
+.nav-icon {
+  width: 15px;
+  margin: 0 5px 2px 5px;
 }
 
 .inline {
   display: inline-block;
 }
 
-.mobile-hidden {
-  display: none;
+li.web-hidden {
+  background-color: #f4f4f4;
+  margin: 0;
 }
 
-.glyphicon {
-  margin-right: 10px;
+.mobile-hidden {
+  display: none;
+  text-align: center;
 }
 
 .row {
-  margin: 40px auto;
-}
-
-.row>.glyphicon {
-  font-size:30px;
+  margin: 20px auto;
 }
 
 .center-align {
@@ -49,7 +59,8 @@ a {
 
 /*Home Page - Carousel*/
 div.carousel.slide {
-  height: 300px;
+  height: 350px;
+  background-color: #f4f4f4;
 }
 
 .carousel-inner {
@@ -58,9 +69,9 @@ div.carousel.slide {
 
 a.carousel-control{
   width: 0;
-  margin: 0;
+  margin: 0 10px;
   opacity: 1;
-  color: blue;
+  color: #0D3FBB;
   font-size: 2.5em;
   text-shadow: none;
   z-index: 1;
@@ -71,14 +82,14 @@ a.carousel-control{
 }
 
 .carousel-indicators .active {
-  background-color: blue;
+  background-color: #0D3FBB;
   width: .6em;
   height: .6em;
   margin: 0 2px; 
 }
 
 .carousel-indicators li {
-  background-color: rgb(78, 134, 255);
+  background-color: #7EB1ED;
   margin: 0 2px; 
   border: none;
   width: .6em;
@@ -112,17 +123,26 @@ a.carousel-control{
 }
 
 @media only screen and (min-width : 768px) {
-  .mobile-hidden {
-    display: block;
+  
+  .row {
+    margin: 40px auto;
   }
-
+  
   .carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chevron-right, .carousel-control .icon-next, .carousel-control .icon-prev {
     font-size: 1.5em;
   }
 }
 
 @media only screen and (min-width : 992px) {
-  .navbar {
-    padding-left: 30px;
+  .container {
+    width: 80%;
+  }
+  
+  li.web-hidden {
+    display: none;
+  }
+
+  .mobile-hidden {
+    display: block;
   }
 }

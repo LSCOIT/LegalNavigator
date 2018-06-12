@@ -1,34 +1,171 @@
 .lower-nav {
-    background: #fff;
-    border: none;
+  background: #fff;
+  border: none;
+  box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.1);
+  min-height: 55px;
+  margin-bottom: 10px;
+  padding-top: 8px;
 }
 
-li.web-hidden {
-    background-color: #000;
-    margin: 0;
+.active {
+  border-bottom: 3px solid #0D3FB8;
 }
 
-.glyphicon-search {
-    color: rgb(117, 117, 117);
+.dimmer {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  background-color: rgb(0,0,0,.6);
+  z-index: 1;
+  transition: background-color .5s;
 }
 
-.form-group {
-    display: inline-block;
+.navbar-header {
+  margin-top: -15px;
+  margin-left: 0;
 }
 
-.account-menu {
+.logo {
+  font-weight: 600;
+}
+
+#first-logo {
+  color: #333;
+}
+
+.navbar-left {
+  margin-top: 3px;
+}
+
+ul.web-hidden {
+  background-color: #f4f4f4;
+  margin: 0;
+  text-align: left;
+}
+
+#sidenav {
+  height: 0;
+  width: 100%;
+  position: fixed;
+  z-index: 1;
+  top: 40px;
+  right: 0;
+  background-color: #fff;
+  overflow: hidden;
+  transition: 0.5s;
+}
+
+#sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  color: #333;
+  display: block;
+  transition: 0.3s;
+}
+
+#sidenav a:hover {
+  color: #333;
+}
+
+#nav-bar-toggle, .closebtn  {
+  font-size:30px;
+  cursor: pointer;
+}
+
+#sidenav .closebtn {
+  float: right;
+  margin-right: 20px;
+  font-size:40px;
+  padding: 0;
+}
+
+.sidenav-menu {
+  width: 225px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+#home-nav {
+  clear: both;
+}
+
+#sidenav .account-menu {
   display: inline-block;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.sidenav-menu>li {
+  margin-right: 10px;
+}
+
+.bottom-menu {
+  background-color: #f4f4f4;
+  height: 100%;
+}
+
+.bottom-menu>ul {
+  width: 225px;
+  margin: 15px auto;
+  text-align: left;
+  padding: 20px 0;
+}
+
+.bottom-menu>ul>li:last-child {
+  margin-left: 32px;
+}
+
+.search-form {
+  display: inline-block;
+  margin-top: 12px;
+  margin-right: 15px;
+}
+
+.search-text {
+  display: none;
+}
+
+.search-icon {
+  width: 20px;
+}
+
+.bottom-menu {
+  text-align: left;
+  background-color: #f4f4f4;
 }
 
 @media only screen and (min-width : 768px) {
-
-    li.web-hidden {
-        display: none;
-    }
+  #sidenav {
+    height: 100%;
+    width: 0;
+    top: 0;
+    padding-top: 40px;
+  }
 }
 
 @media only screen and (min-width : 992px) {
-    li.web-hidden {
-        display: none;
-    }
+  .lower-nav {
+    min-height: 65px;
+  }
+  
+  #mobile-menu {
+    display: none;
+  }
+  
+  li.web-hidden {
+    display: none;
+  }
+
+  .navbar-header {
+    margin-right: 10%;
+  }
+
+  #nav-bar-toggle {
+    display: none;
+  }
+
+  .search-text {
+    display: inline-block;
+  }
 }

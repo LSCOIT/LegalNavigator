@@ -1,39 +1,55 @@
-<div class="container fluid">
-  <div class="row">
-    <div class="col-md-10 col-md-offset-1 text-center">
-      <h2>We are dedicated to helping you find answers to your legal questions in Alaska</h2>
+<div>
+  <div class="container">
+    <div class="row top-row">
+      <div class="col-sm-6 tagline text-center">
+        <h2>Get help with your legal questions in Alaska</h2>
+        <p>We will always protect your privacy. Read our
+          <a [routerLink]="['/privacy']" class="link">Privacy Promise</a>
+        </p>
+      </div>
+      <div class="col-sm-6">
+        <img id="home-img" 
+             src="/assets/images/primary-illustrations/hawaii.svg" 
+             alt="Guided Assistant Illustration">
+      </div>
     </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-md-12" id="home-img">
+  <div class="outer-bg text-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1">
+          <h3>Need a plan of action for your legal issue? Our Guided Assistant can help.
+          </h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4 col-xs-12">
+          <img class="secondary-img"          
+                src="/assets/images/secondary-illustrations/guided_assistant.svg" 
+                alt="Guided Assistant Illustration">
+        </div>
+        <div class="guided-assistant-steps col-sm-7 col-sm-offset-1">
+          <ul class="p">
+            <li><span>1.</span>Answer a few questions to help us understand your needs.</li>
+            <li><span>2.</span>We'll create a personalized plan with steps and resources.</li>
+            <li><span>3.</span>Share, print, or create a profile to save your plan.</li>
+          </ul>
+          <p>Free and no account necessary. We never share any information you provide.
+            <a [routerLink]="['/privacy']">Privacy Promise.</a>
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 text-center">
+          <button type="button" class="btn btn-primary">Start the Guided Assistant</button>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
-<div class="container fluid">
+  <div class="container">
     <div class="row">
       <div class="col-md-6 col-md-offset-3 text-center">
-        <h3>Use our Guided Assistant</h3>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-4">
-        <div style="background:#f2f2f2; height:50px"></div>
-      </div>
-      <div class="col-sm-4">
-        <div style="background:#f2f2f2; height:50px"></div>
-      </div>
-      <div class="col-sm-4">
-        <div style="background:#f2f2f2; height:50px"></div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-12 text-center">
-        <button type="button" class="btn btn-primary">Start the Guided Assistant</button>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-6 col-md-offset-3 text-center">
-        <h3>Browse Articles, Videos and Links to Resources by Topic</h3>
+        <h3>More Information, Videos, and Links to Resources by Topic</h3>
       </div>
     </div>
     <div class="row">
@@ -44,43 +60,73 @@
         <button [routerLink]="['/topics']" type="button" class="btn btn-primary">See More Topics</button>
       </div>
     </div>
-</div>
-<div class="row">
-  <div class="col-md-2 col-md-offset-5">
-    <div id="testimonial-img"></div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 bg-info">
+      <carousel>
+        <slide>
+          <div class="text-center">
+            <div id="testimonial-img inline"></div>
+            <div class="slide-content inline">
+              <p>"Nulla vitae elit libero, a pharetra augue mollis interdum."</p>
+              <hr/>
+              <span>Robbie</span>
+              <span>Anchorage, AK</span>
+            </div>
+          </div>
+        </slide>
+        <slide>
+          <div class="text-center">
+            <div id="testimonial-img inline"></div>
+            <div class="slide-content inline">
+              <p>"Nulla vitae elit libero, a pharetra augue mollis interdum."</p>
+              <hr/>
+              <span>Robbie</span>
+              <span>Anchorage, AK</span>
+            </div>
+          </div>
+        </slide>
+        <slide>
+          <div class="text-center">
+            <div id="testimonial-img inline"></div>
+            <div class="slide-content inline">
+              <p>"Nulla vitae elit libero, a pharetra augue mollis interdum."</p>
+              <hr/>
+              <span>Robbie</span>
+              <span>Anchorage, AK</span>
+            </div>
+          </div>
+        </slide>
+      </carousel>
+    </div>
   </div>
 </div>
-<div class="row">
-  <div class="col-md-12 bg-info">
-    <carousel>
-      <slide>
-        <div class="text-center">
-          <h2>First custom content</h2>
-          <div class="lead">
-            <h3>First slide label</h3>
-            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-          </div>
+<div class="row text-center">
+  <div class="col-md-6 col-md-offset-3">
+    <h4>Information you can trust</h4>
+    <p>This site is here to provide equal access to legal information and resources for everyone. Legal disclaimer lorem ipsum dolor amet. It is brought to you by partnership of these nonproffit organizations.</p>
+    <img src="" alt="">
+    <img src="" alt="">
+    <button class="btn btn-primary">Learn more</button>
+  </div>
+</div>
+<div class="privacy-promise text-center">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-5">
+          <img class="secondary-img" 
+          src="/assets/images/secondary-illustrations/privacy_promise.svg" 
+          alt="Guided Assistant Illustration">
+      </div>
+      <div class="col-sm-5 col-sm-offset-1">
+        <h3>Our Privacy Promise</h3>
+        <p>We value your privacy and will never share your personal information with anyone without your lorem ipsum dolor sit amet.</p>
+        <div class="row">
+          <button class="btn btn-secondary">Learn more</button>
         </div>
-      </slide>
-      <slide>
-        <div class="text-center">
-          <h2>Second custom content</h2>
-          <div class="lead">
-            <h3>Second slide label</h3>
-            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-          </div>
-        </div>
-      </slide>
-      <slide>
-        <div class="text-center">
-          <h2>Third custom content</h2>
-          <div class="lead">
-            <h3>Third slide label</h3>
-            <p>Nulla vitae elit libero, a pharetra augue mollis interdum. </p>
-          </div>
-        </div>
-      </slide>
-    </carousel>
+      </div>
+    </div>
   </div>
 </div>
 <chatbot></chatbot>
+

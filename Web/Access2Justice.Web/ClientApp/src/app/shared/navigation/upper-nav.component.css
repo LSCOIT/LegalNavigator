@@ -1,23 +1,27 @@
 .upper-nav {
-    background: #000;
-    color: #fff;
+  background: #f4f4f4;
+  color: #333;
+  min-height: 40px;
 }
 
-.left-menu {
-  padding-top: 15px;
+.navbar-nav > li > a {
+  padding: 10px 15px;
 }
 
-@media only screen and (min-width : 768px) {  
-  .upper-nav {
-      background: #f2f2f2;
-      color: #000;
-  }
-
+.navbar-nav > li > a:hover {
+  background-color: #f4f4f4;
+  color: #333;
+}
+@media only screen and (min-width : 992px) {
   .create-account {
     margin-right: -25px;
   }
 
   .account-menu {
     display: inline-block;
+  }
+
+  .left-menu {
+    margin: 0;
   }
 }

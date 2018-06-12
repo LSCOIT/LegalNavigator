@@ -1,23 +1,11 @@
+.edit-location {
+  padding-right: 25px;
+}
+
 #my-map {
   position: relative;
   width: 100%;
   height: 410px;
-}
-
-.glyphicon-pencil {
-  margin-left: 5px;
-  border: none;
-  background: none;
-}
-
-ul > li > a > .glyphicon {
-  margin-right: 5px;
-}
-
-li > a.map-icon {
-  display: inline-block;
-  padding-right: 5px;
-  padding-left: 0;
 }
 
 .modal-content {
@@ -28,10 +16,19 @@ li > a.map-icon {
   margin-bottom: 50px;
 }
 
-.search-box {
-  padding-left: 5px;
+.change-location-btn {
+  color: #0D3FB8;
+  font-weight: 600;
+  border: none;
+  background-color: #f2f2f2;
 }
 
-.glyphicon-search {
-  color: rgb(117, 117, 117);
+@media only screen and (min-width : 768px) {
+  .edit-location {
+    padding: 10px;
+  }
+
+  .mobile-hidden {
+     display: inline-block;
+  }
 }
