@@ -32,8 +32,8 @@ describe('LocationService', () => {
     localStorage.setItem('tempSearchedLocation', tempSearchLocation);
     localStorage.setItem('tempSearchedLocationState', tempSearchedLocationState);
     service.updateLocation();
-    expect(service.mapLocation.address).toEqual(tempSearchedLocationState);
-    expect(service.mapLocation.locality).toEqual(tempSearchLocation);
+    expect(service.displayMapLocation.address).toEqual(tempSearchedLocationState);
+    expect(service.displayMapLocation.locality).toEqual(tempSearchLocation);
   });
 
   //it('should call Microsoft Maps load module when getMap is called', () => {

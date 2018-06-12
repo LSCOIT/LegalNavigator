@@ -16,7 +16,7 @@ export class LocationService {
   pin: any;
   tempLoc: any;
   mapLocation: MapLocation = { state: '', city: '', county: '', zipCode: '' };
-  displayMapLocation: DisplayMapLocation = { locality: '', address: ''}
+  displayMapLocation: DisplayMapLocation = { locality: '', address: '' }
 
   constructor() { }
 
@@ -63,8 +63,13 @@ export class LocationService {
             this.locAddress = this.location.address.postalCode;
           }
 
-          localStorage.setItem("tempSearchedLocation", this.locAddress);
-          localStorage.setItem("tempSearchedLocationState", this.location.address.adminDistrict);
+          localStorage.setItem("tempGlobalState", this.location.address.adminDistrict);
+          localStorage.setItem("tempGlobalCounty", this.location.address.district);
+          localStorage.setItem("tempGlobalCity", this.location.address.locality);
+          localStorage.setItem("tempGlobalZipCode", this.location.address.postalCode);
+
+          localStorage.setItem("tempGlobalSearchedLocation", this.locAddress);
+          localStorage.setItem("tempGlobalSearchedLocationState", this.location.address.adminDistrict);
           this.map = new Microsoft.Maps.Map('#my-map',
             {
               credentials: environment.bingmap_key
@@ -88,12 +93,18 @@ export class LocationService {
   }
 
   updateLocation(): DisplayMapLocation {
-    this.tempLoc = localStorage.getItem("tempSearchedLocation");
-    localStorage.setItem("searchedLocation", this.tempLoc);
-    this.tempLoc = localStorage.getItem("tempSearchedLocationState");
-    localStorage.setItem("searchedLocationAddress", this.tempLoc);
-    this.displayMapLocation.locality = localStorage.getItem("searchedLocation");
-    this.displayMapLocation.address = localStorage.getItem("searchedLocationAddress");
+    this.tempLoc = localStorage.getItem("tempGlobalSearchedLocation");
+    localStorage.setItem("globalSearchedLocation", this.tempLoc);
+    this.tempLoc = localStorage.getItem("tempGlobalSearchedLocationState");
+    localStorage.setItem("globalSearchedLocationAddress", this.tempLoc);
+
+    this.mapLocation.state = localStorage.getItem("tempGlobalState");
+    this.mapLocation.county = localStorage.getItem("tempGlobalCounty");
+    this.mapLocation.city = localStorage.getItem("tempGlobalCity");
+    this.mapLocation.zipCode = localStorage.getItem("tempGlobalZipCode");
+
+    this.displayMapLocation.locality = localStorage.getItem("globalSearchedLocation");
+    this.displayMapLocation.address = localStorage.getItem("globalSearchedLocationAddress");
 
     return this.displayMapLocation;
   }
@@ -129,6 +140,7 @@ function suggestionSelected(result) {
   else {
     this.locAddress = result.address.postalCode;
   }
-  localStorage.setItem("tempSearchedLocation", this.locAddress);
-  localStorage.setItem("tempSearchedLocationState", result.address.adminDistrict);
+
+  localStorage.setItem("tempGlobalSearchedLocation", this.locAddress);
+  localStorage.setItem("tempGlobalSearchedLocationState", result.address.adminDistrict);
 }

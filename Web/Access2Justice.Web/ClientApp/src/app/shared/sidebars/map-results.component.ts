@@ -4,6 +4,7 @@ import { LocationService } from '../location/location.service';
 import { environment } from '../../../environments/environment';
 import { MapLocationResult, LatitudeLongitude } from './map-results';
 declare var Microsoft: any;
+declare var google: any;
 
 @Component({
   selector: 'app-map-results',
@@ -16,7 +17,7 @@ export class MapResultsComponent implements OnInit {
   latlong: LatitudeLongitude;
   @Input() searchResource: any;
 
-  constructor() {
+  constructor(private mapResultsService: MapResultsService) {
   }
 
   getMap() {
@@ -42,10 +43,11 @@ export class MapResultsComponent implements OnInit {
   }
 
   ngOnInit() {
+    let address;
     //this.getMap();
     if (this.searchResource != null || this.searchResource != undefined) {
       for (let i = 0; i < this.searchResource.resources.length; i++) {
-        if (this.searchResource.resources[i].resourceType === "Organizations") {
+        if (this.searchResource.resources[i].resourceType.toLowerCase() === "Organizations") {
           this.organizationsList.push(this.searchResource.resources[i].address);
           //this.latlong = { latitude: 15, longitude: -15 };
           //this.latitudeLongitude.push(this.latlong);
@@ -57,6 +59,7 @@ export class MapResultsComponent implements OnInit {
       {
         credentials: environment.bingmap_key
       });
+    map.getCredentials(this.mapResultsService.callGeocodeService);
     this.latlong = { latitude: 15, longitude: -15 };
     this.latitudeLongitude.push(this.latlong);  
     this.latlong = { latitude: 47.6149, longitude: -122.1941 };
@@ -73,5 +76,11 @@ export class MapResultsComponent implements OnInit {
   }
   }
 
+  
+
+
 }
+
+
+
 
