@@ -2,6 +2,7 @@
 using Access2Justice.CosmosDb;
 using Access2Justice.CosmosDb.Interfaces;
 using Access2Justice.Shared;
+using Access2Justice.Shared.Bing;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Luis;
 using Microsoft.AspNetCore.Builder;
@@ -11,8 +12,6 @@ using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
-using Access2Justice.Shared.Bing;
-using System.Resources;
 
 namespace Access2Justice.Api
 {
