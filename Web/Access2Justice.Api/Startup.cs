@@ -69,7 +69,7 @@ namespace Access2Justice.Api
             services.AddSingleton(cosmosDbSettings);
             services.AddSingleton<IDocumentClient>(x => new DocumentClient(cosmosDbSettings.Endpoint, cosmosDbSettings.AuthKey));
             services.AddSingleton<IBackendDatabaseService, CosmosDbService>();
-            services.AddSingleton<IDynamicQueries, CosmosDbService>();
+            services.AddSingleton<IDynamicQueries, CosmosDbDynamicQueries>();
         }
 
         private void ConfigureSwagger(IApplicationBuilder app)
