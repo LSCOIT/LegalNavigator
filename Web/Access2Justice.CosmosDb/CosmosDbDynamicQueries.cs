@@ -6,13 +6,27 @@ using System.Threading.Tasks;
 
 namespace Access2Justice.CosmosDb
 {
-    public class CosmosDbDynamicQueries: IDynamicQueries
+    public class CosmosDbDynamicQueries : IDynamicQueries, IDisposable
     {
-        private readonly IBackendDatabaseService backendDatabaseService;
+        private IBackendDatabaseService backendDatabaseService;
 
         public CosmosDbDynamicQueries(IBackendDatabaseService backendDatabaseService)
         {
             this.backendDatabaseService = backendDatabaseService;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing && backendDatabaseService != null)
+            {
+                backendDatabaseService = null;
+            }
         }
 
         public async Task<dynamic> FindItemsWhere(string collectionId, string propertyName, string value)

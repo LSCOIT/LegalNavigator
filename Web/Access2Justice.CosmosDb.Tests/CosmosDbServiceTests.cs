@@ -1,31 +1,19 @@
-using Xunit;
-using NSubstitute;
-using System.Collections.Generic;
-using System.Net.Http;
-using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
-using Microsoft.Azure.Documents;
-using Access2Justice.CosmosDb.Interfaces;
+using NSubstitute;
 using System;
-using Newtonsoft.Json.Linq;
-using Microsoft.Azure.Documents.Linq;
-using Newtonsoft.Json;
-using System.Linq;
-using Microsoft.Azure.Documents.Client;
+using System.Collections.Generic;
+using Xunit;
 
 namespace Access2Justice.CosmosDb.Tests
 {
-    public class CosmosDbServiceTests
+    // todo: implement IDisposable and consolidate test methods into one class
+    public class CosmosDbServiceTests1
     {
         private readonly IBackendDatabaseService cosmosDbService;
-        //private readonly IDocumentClient documentClient;
-        //private readonly ICosmosDbSettings cosmosDbSettings;
 
-        public CosmosDbServiceTests()
+        public CosmosDbServiceTests1()
         {
             cosmosDbService = Substitute.For<IBackendDatabaseService>();
-            //documentClient = Substitute.For<IDocumentClient>();
-            //cosmosDbSettings = Substitute.For<ICosmosDbSettings>();
         }
 
         [Fact]
@@ -33,15 +21,26 @@ namespace Access2Justice.CosmosDb.Tests
         {
             // Arrange
             var sut = new CosmosDbDynamicQueries(cosmosDbService);
-            string query = @"SELECT * FROM c WHERE c.Name='Eviction'";
+            string query = @"SELECT * FROM c WHERE c.name='eviction'";
 
             // Act
-            var result = sut.FindItemsWhere("TopicsCollections", "Name", "eviction").Result;
+            var result = sut.FindItemsWhere("topicsCollections", "name", "eviction").Result;
 
 
             // Assert
             cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(), query);
         }
+    }
+
+    public class CosmosDbServiceTests2
+    {
+        private readonly IBackendDatabaseService cosmosDbService;
+
+        public CosmosDbServiceTests2()
+        {
+            cosmosDbService = Substitute.For<IBackendDatabaseService>();
+        }
+
 
         [Fact]
         public void FindItemsWhereContains_ShouldConstructValidSqlQuery()
@@ -58,15 +57,51 @@ namespace Access2Justice.CosmosDb.Tests
             cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(), query);
         }
 
+    }
+
+    public class CosmosDbServiceTests3
+    {
+        private readonly IBackendDatabaseService cosmosDbService;
+
+        public CosmosDbServiceTests3()
+        {
+            cosmosDbService = Substitute.For<IBackendDatabaseService>();
+        }
+
         [Theory]
-        [InlineData("", "Name", "Eviction")]
-        [InlineData("Topic", "", "Eviction")]
-        [InlineData("Topic", "Name", "")]
-        public void FindItemsWhere_ShouldFail_WhenParametersAreNullOrEmpty(string collection, string property, string value)
+        [InlineData("", "PropertyName")]
+        [InlineData("CollectionName", "")]
+        public void FindItemsWhere_ShouldFail_WhenParametersAreNullOrEmpty(string collection, string property)
         {
             var sut = new CosmosDbDynamicQueries(cosmosDbService);
 
-            Assert.ThrowsAny<Exception>(() => sut.FindItemsWhere(collection, property, value).Result);            
+            Assert.ThrowsAny<Exception>(() => sut.FindItemsWhere(collection, property, Arg.Any<string>()).Result);
+        }
+    }
+
+    public class CosmosDbServiceTests4
+    {
+        private readonly IBackendDatabaseService cosmosDbService;
+
+        public CosmosDbServiceTests4()
+        {
+            cosmosDbService = Substitute.For<IBackendDatabaseService>();
+        }
+
+        [Fact]
+        public void FindItemsWhereArrayContains_ShouldConstructValidSqlQuery()
+        {
+            // Arrange
+            var sut = new CosmosDbDynamicQueries(cosmosDbService);
+            var ids = new List<string>() { "guid1", "guid2", "guid2" };
+            string query = @"SELECT * FROM c WHERE  ARRAY_CONTAINS(c.TopicTags, { 'Id' : 'guid1'})OR ARRAY_CONTAINS(c.TopicTags, { 'Id' : 'guid2'}) ARRAY_CONTAINS(c.TopicTags, { 'Id' : 'guid2'})";
+
+            // Act
+            sut.FindItemsWhereArrayContains("TopicsCollections", "TopicTags", "Id", ids);
+
+            // Assert
+            cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(), query);
         }
     }
 }
+    
