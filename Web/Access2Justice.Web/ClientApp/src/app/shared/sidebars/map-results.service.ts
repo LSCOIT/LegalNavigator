@@ -25,17 +25,14 @@ export class MapResultsService implements OnInit {
       encodeURI(address) +
       '?output=json&key=' + credentials;
 
-    //this.http
-    //  .get(searchRequest)
-    //  .toPromise()
-    //  .then(response => {
+    //that.http.get(searchRequest).toPromise().then(response => {
     //    console.log(response);
     //  });
 
-    var mapscript = document.createElement('script');
-    mapscript.type = 'text/javascript';
-    mapscript.src = searchRequest;
-    document.getElementById('my-map-results').appendChild(mapscript);
+    //var mapscript = document.createElement('script');
+    //mapscript.type = 'text/javascript';
+    //mapscript.src = searchRequest;
+    //document.getElementById('my-map-results').appendChild(mapscript);
   }
 
 
