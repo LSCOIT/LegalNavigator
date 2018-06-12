@@ -33,7 +33,6 @@ namespace Access2Justice.CosmosDb.Tests
             // Act
             var result = dynamicQueries.FindItemsWhereContains("TopicsCollections", "Name", "EvicTION").Result;
 
-
             // Assert
             cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(), query);
         }

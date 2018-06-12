@@ -5,12 +5,12 @@ using Xunit;
 
 namespace Access2Justice.CosmosDb.Tests
 {
-    public class CosmosDbDynmaicQueries
+    public class CosmosDbDynmaicQueriesTests
     {
         private readonly IBackendDatabaseService cosmosDbService;
         private readonly IDynamicQueries dynamicQueries;
 
-        public CosmosDbDynmaicQueries()
+        public CosmosDbDynmaicQueriesTests()
         {
             cosmosDbService = Substitute.For<IBackendDatabaseService>();
             dynamicQueries = new CosmosDbDynamicQueries(cosmosDbService);
@@ -33,11 +33,10 @@ namespace Access2Justice.CosmosDb.Tests
         public void FindItemsWhereShouldConstructValidSqlQuery()
         {
             // Arrange
-            var sut = new CosmosDbDynamicQueries(cosmosDbService);
             string query = @"SELECT * FROM c WHERE c.name='eviction'";
 
             // Act
-            var result = sut.FindItemsWhere("topicsCollections", "name", "eviction").Result;
+            var result = dynamicQueries.FindItemsWhere("topicsCollections", "name", "eviction").Result;
 
             // Assert
             cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(), query);
