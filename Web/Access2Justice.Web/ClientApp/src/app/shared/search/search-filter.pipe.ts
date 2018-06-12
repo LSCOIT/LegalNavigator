@@ -3,6 +3,7 @@ import { isNullOrUndefined } from 'util';
 
 @Pipe({ name: 'searchFilter', pure: true })
 export class SearchFilterPipe implements PipeTransform {
+    reverse: boolean = false;
     transform(items: Array<any>, args: any[]): any[] {
         let filter = args['filter'];
         if (!items || !args || isNullOrUndefined(filter)) {
@@ -27,13 +28,13 @@ export class SearchFilterPipe implements PipeTransform {
 
         if (!isNullOrUndefined(sortParam)) {
             if (sortParam == 'name') {
-                return this.orderBy(items, sortParam);
+                return this.sortOrder(this.orderBy(items, sortParam));
             }
             else if (sortParam == 'date' && source == 'internal') {
-                return this.sortDate(items, '_ts');
+                return this.sortOrder(this.sortDate(items, '_ts'));
             }
             else if (sortParam == 'date' && source == 'external') {
-                return this.sortDate(items, 'dateLastCrawled');
+                return this.sortOrder(this.sortDate(items, 'dateLastCrawled'));
             }
         }
 
@@ -41,11 +42,22 @@ export class SearchFilterPipe implements PipeTransform {
 
     }
 
+    sortOrder(items) {
+        if (this.reverse == true) {
+            this.reverse = false;
+            items = items.slice().reverse();
+        }
+        else if (this.reverse == false) {
+            this.reverse = true;
+        }
+        return items;
+    }
+ 
     sortDate(items, field) {
         let data = items.sort(function (a, b) {
             return new Date(b[field]).getTime() - new Date(a[field]).getTime();
         });
-
+        
         return data;
     }
 
