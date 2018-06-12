@@ -1,6 +1,6 @@
-<div class="navbar-left edit-location pull-right" (click)="openModal(template)">
+<div class="navbar-left edit-location pull-right">
   <img class="nav-icon" src="/assets/images/small-icons/location.svg" aria-hidden="true" />
-  <span *ngIf="showLocation; else elseBlock">
+  <span *ngIf="showLocation; else elseBlock" (click)="openModal(template)">
     Please Select Location
   </span>
   <ng-template #elseBlock>
