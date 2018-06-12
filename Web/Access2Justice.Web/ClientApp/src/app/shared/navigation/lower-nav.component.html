@@ -22,23 +22,22 @@
         <li><a [routerLink]="['/about']" routerLinkActive="active">About</a></li>
       </ul>
     </div>
-    
     <app-search *ngIf="showSearch"></app-search>
     <div #sidenav id="sidenav">
       <a class="closebtn" (click)="closeNav()">&times;</a>
-      <ul class="sidenav-menu">
+      <ul class="sidenav-menu" (click)="closeNav()">
         <li id="home-nav"><a [routerLink]="['/']">Home</a></li><hr/>
         <li><a [routerLink]="['/guidedassistant']">Guided Assistant</a></li><hr/>
         <li><a [routerLink]="['/topics']">Topics &amp; Resources</a></li><hr/>
         <li><a [routerLink]="['/about']">About</a></li>
       </ul>
-      <div class="bottom-menu">
+      <div class="bottom-menu" (click)="closeNav()">
         <ul>
           <li>
-              <a [routerLink]="['/privacy']">
-                <img class="nav-icon" src="/assets/images/small-icons/privacy.svg" aria-hidden="true" />
-                Privacy Promise
-              </a>
+            <a [routerLink]="['/privacy']">
+              <img class="nav-icon" src="/assets/images/small-icons/privacy.svg" aria-hidden="true" />
+              Privacy Promise
+            </a>
           </li>
           <li>
             <a [routerLink]="['/help']">
@@ -54,9 +53,8 @@
             <span>|</span>
             <a [routerLink]="['/login']" class="account-menu">Log In</a>
           </li>
-
         </ul>
-        </div>
+      </div>
     </div>
   </div>
 </div>

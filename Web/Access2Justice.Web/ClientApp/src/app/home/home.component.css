@@ -12,21 +12,14 @@
     /* margin: 0 -15%; */
 }
 
-.container button {
-    margin-bottom: 40px;
-}
-
 .secondary-img {
     width: 65%;
     margin: 20px auto;
     float: none;
 }
 
-#testimonial-img {
-    border-radius: 5px;
-    background-color: #ccc;
-    height: 180px;
-    width: 180px;
+.slide-content {
+  text-align: center;
 }
 
 ul>li {
@@ -70,6 +63,11 @@ ul>li>span {
         margin-top: 0;
         float: right;
     }
+
+    .slide-content {
+      text-align: left;
+    }
+
 
     .guided-assistant-steps {
         text-align: left;

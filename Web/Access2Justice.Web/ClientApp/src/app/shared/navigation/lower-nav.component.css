@@ -1,7 +1,7 @@
 .lower-nav {
   background: #fff;
   border: none;
-  box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px 0 rgba(0,0,0,0.1);
   min-height: 55px;
   margin-bottom: 10px;
   padding-top: 8px;
@@ -16,7 +16,7 @@
   height: 100%;
   position: fixed;
   top: 0;
-  background-color: rgb(0,0,0,.6);
+  background: rgba(0,0,0,0.6);
   z-index: 1;
   transition: background-color .5s;
 }
@@ -44,6 +44,11 @@ ul.web-hidden {
   text-align: left;
 }
 
+#nav-bar-toggle, .closebtn  {
+  font-size:30px;
+  cursor: pointer;
+}
+
 #sidenav {
   height: 0;
   width: 100%;
@@ -68,11 +73,6 @@ ul.web-hidden {
   color: #333;
 }
 
-#nav-bar-toggle, .closebtn  {
-  font-size:30px;
-  cursor: pointer;
-}
-
 #sidenav .closebtn {
   float: right;
   margin-right: 20px;
@@ -86,10 +86,6 @@ ul.web-hidden {
   text-align: center;
 }
 
-#home-nav {
-  clear: both;
-}
-
 #sidenav .account-menu {
   display: inline-block;
   padding-left: 0;
@@ -100,9 +96,14 @@ ul.web-hidden {
   margin-right: 10px;
 }
 
+#home-nav {
+  clear: both;
+}
+
 .bottom-menu {
   background-color: #f4f4f4;
   height: 100%;
+  text-align: left;
 }
 
 .bottom-menu>ul {
@@ -110,6 +111,10 @@ ul.web-hidden {
   margin: 15px auto;
   text-align: left;
   padding: 20px 0;
+}
+
+.bottom-menu>ul>li {
+  margin-bottom: 15px;
 }
 
 .bottom-menu>ul>li:last-child {
@@ -130,17 +135,21 @@ ul.web-hidden {
   width: 20px;
 }
 
-.bottom-menu {
-  text-align: left;
-  background-color: #f4f4f4;
-}
 
 @media only screen and (min-width : 768px) {
+  #nav-bar-toggle {
+    display: block;
+  }
+
   #sidenav {
     height: 100%;
     width: 0;
     top: 0;
     padding-top: 40px;
+  }
+
+  .bottom-menu>ul {
+    margin: 15px 5%;
   }
 }
 
@@ -163,6 +172,12 @@ ul.web-hidden {
 
   #nav-bar-toggle {
     display: none;
+  }
+
+  .search-form {
+    display: inline-block;
+    margin-top: 12px;
+    margin-right: 0;
   }
 
   .search-text {

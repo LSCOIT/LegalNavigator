@@ -1,10 +1,109 @@
-<ul>
-  <li class="topic-list col-md-4 col-sm-6 col-xs-6 text-center" *ngFor="let topic of topics | slice: 0:topicLength" >
+<!--<ul>
+  <li class="topic-list col-md-3 col-sm-4 col-xs-6 text-center" *ngFor="let topic of topics | slice: 0:topicLength" >
     <a [routerLink]="['/topics', topic.name | lowercase]">
       <img src="{{ topic.icon }}" alt="{{topic.name}}">
     </a>
     <a [routerLink]="['/topics', topic.name | lowercase]">
       <h5>{{ topic.name }}</h5>
+    </a>
+  </li>
+</ul>-->
+
+<ul>
+  <li class="topic-list col-md-3 col-sm-4 col-xs-6 text-center">
+    <a>
+      <img src="./assets/images/categories/family.svg" alt="Family">
+    </a>
+    <a>
+      <p>Family</p>
+    </a>
+  </li>
+  <li class="topic-list col-md-3 col-sm-4 col-xs-6 text-center">
+    <a>
+      <img src="./assets/images/categories/abuse.svg" alt="Abuse & Harassment">
+    </a>
+    <a>
+      <p>Abuse & Harassment</p>
+    </a>
+  </li>
+  <li class="topic-list col-md-3 col-sm-4 col-xs-6 text-center">
+    <a>
+      <img src="./assets/images/categories/housing.svg" alt="Housing">
+    </a>
+    <a>
+      <p>Housing</p>
+    </a>
+  </li>
+  <li class="topic-list col-md-3 col-sm-4 col-xs-6 text-center">
+    <a >
+      <img src="./assets/images/categories/public_benefits.svg" alt="Public Benefit">
+    </a>
+    <a >
+      <p>Public Benefit</p>
+    </a>
+  </li>
+  <li class="topic-list col-md-3 col-sm-4 col-xs-6 text-center">
+    <a >
+      <img src="./assets/images/categories/discrimination.svg" alt="Discrimination">
+    </a>
+    <a >
+      <p>Discrimination</p>
+    </a>
+  </li>
+  <li class="topic-list col-md-3 col-sm-4 col-xs-6 text-center">
+    <a >
+      <img src="./assets/images/categories/money_debt.svg" alt="Money & Debt">
+    </a>
+    <a >
+      <p>Money & Debt</p>
+    </a>
+  </li>
+  <li class="topic-list col-md-3 col-sm-4 col-xs-6 text-center">
+    <a >
+      <img src="./assets/images/categories/individual_rights.svg" alt="Individual Rights">
+    </a>
+    <a >
+      <p>Individual Rights</p>
+    </a>
+  </li>
+  <li class="topic-list col-md-3 col-sm-4 col-xs-6 text-center">
+    <a >
+      <img src="./assets/images/categories/native_rights.svg" alt="Native Rights">
+    </a>
+    <a >
+      <p>Native Rights</p>
+    </a>
+  </li>
+  <li class="topic-list col-md-3 col-sm-4 col-xs-6 text-center">
+    <a >
+      <img src="./assets/images/categories/seniors_life_planning.svg" alt="Seniors & Life Planning">
+    </a>
+    <a >
+      <p>Seniors & Life Planning</p>
+    </a>
+  </li>
+  <li class="topic-list col-md-3 col-sm-4 col-xs-6 text-center">
+    <a >
+      <img src="./assets/images/categories/immigration.svg" alt="Immigration">
+    </a>
+    <a >
+      <p>Immigration</p>
+    </a>
+  </li>
+  <li class="topic-list col-md-3 col-sm-4 col-xs-6 text-center">
+    <a >
+      <img src="./assets/images/categories/govt_records_docs.svg" alt="Government Records & Documents">
+    </a>
+    <a >
+      <p>Government Records & Documents</p>
+    </a>
+  </li>
+  <li class="topic-list col-md-3 col-sm-4 col-xs-6 text-center">
+    <a >
+      <img src="./assets/images/categories/veterans.svg" alt="Veterans">
+    </a>
+    <a >
+      <p>Veterans</p>
     </a>
   </li>
 </ul>
