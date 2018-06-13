@@ -74,6 +74,7 @@ ul>li>span {
 
     .slide-content {
       text-align: left;
+      padding-left: 8%;
     }
 
     .guided-assistant-steps {
@@ -90,4 +91,8 @@ ul>li>span {
 }
 
 @media only screen and (min-width : 992px) {
+  .testimonial-img {
+    width: 230px;
+    height: 230px;
+  }
 }
