@@ -19,19 +19,21 @@ export class SearchResultsComponent implements OnInit {
   searchResults: any;
   uniqueResources: any;
   resourceResults: ResourceResult[] = [];
-  filterType: string;
+  filterType: string = 'All';
   sortType: any;
   resourceTypeFilter: any[];
   resourceFilter: IResourceFilter = { ResourceType: '',ContinuationToken: '',TopicIds: '',PageNumber: '',Location: ''};
   topicIds: any[];
   isServiceCall: boolean;
+  currentPage: number = 0;
+  pageCount: number;
 
   loading = false;
   total = 0;
   page = 1;
-  limit = 10;
+  limit = 0;
   offset = 0;
-  pagesToShow = 2;
+  pagesToShow = 0;
 
 
   constructor(private navigateDataService: NavigateDataService, private searchService: SearchService) { }
@@ -45,8 +47,8 @@ export class SearchResultsComponent implements OnInit {
         this.total = this.searchResults.webResources.webPages.totalEstimatedMatches;
         this.searchText = this.searchResults.webResources.queryContext.originalQuery;
         this.pagesToShow = 10;
-      } else if (this.isInternalResource) {
-        this.total = 20;
+        this.limit = 10;
+      } else if (this.isInternalResource) {        
         this.resourceTypeFilter = this.searchResults.resourceTypeFilter;
         this.resourceResults = this.searchResults.resourceTypeFilter.reverse();
         //need to write logic here..
@@ -56,9 +58,12 @@ export class SearchResultsComponent implements OnInit {
             if (this.resourceTypeFilter[i].ResourceName === "All") {
               this.resourceTypeFilter[i]["ResourceList"] = [{
                 'resources': this.searchResults.resources,
-                'continutationToken': this.searchResults.continuationToken
+                'continuationToken': this.searchResults.continuationToken
               }];
               this.topicIds = this.searchResults.topicIds;
+              this.total = this.resourceTypeFilter[i].ResourceCount;
+              this.pagesToShow = 2;
+              this.limit = 5;
             }
           }
           //this.searchResults.resourceTypeFilter.forEach(item => {
@@ -104,6 +109,9 @@ export class SearchResultsComponent implements OnInit {
   filterSearchResults(event) {
     if (!isNullOrUndefined(event)) {
       this.sortType = event;
+      this.filterType = event.filterParam;
+      this.page = 1;
+      this.currentPage = 0;
       this.getInternalResource(event.filterParam, 0);
     }
   }
@@ -126,16 +134,18 @@ export class SearchResultsComponent implements OnInit {
   checkResource(resourceName, pageNumber): boolean {
 
     this.resourceTypeFilter.forEach(item => {
-      if (item.ResourceName === resourceName && !isNullOrUndefined(item.ResourceList) && !isNullOrUndefined(item.ResourceList[pageNumber])) {
+      if (item.ResourceName === resourceName && !isNullOrUndefined(item.ResourceList)
+        && !isNullOrUndefined(item.ResourceList[pageNumber]) && !(this.page > this.currentPage)) {
         this.searchResults = item.ResourceList[pageNumber];
         this.isServiceCall = false;
       }
-      else if (item.ResourceName === resourceName && isNullOrUndefined(item.ResourceList)) {
+      else if (item.ResourceName === resourceName) {
+        this.total = item.ResourceCount;
         this.resourceFilter.ResourceType = item.ResourceName;
-        this.resourceFilter.PageNumber = pageNumber;
+        this.resourceFilter.PageNumber = this.currentPage;
         this.resourceFilter.TopicIds = this.topicIds;
-        if (!isNullOrUndefined(item.ResourceList) && !isNullOrUndefined(item.ResourceList[pageNumber - 1])) {
-          this.resourceFilter.ContinuationToken = item.ResourceList[pageNumber - 1]["continuationToken"];
+        if (!isNullOrUndefined(item.ResourceList) && !isNullOrUndefined(item.ResourceList[pageNumber])) {
+          this.resourceFilter.ContinuationToken = JSON.stringify(item.ResourceList[pageNumber]["continuationToken"]);
         }
         this.isServiceCall = true;
       }
@@ -150,12 +160,12 @@ export class SearchResultsComponent implements OnInit {
         if (isNullOrUndefined(this.resourceTypeFilter[i]["ResourceList"])) {
           this.resourceTypeFilter[i]["ResourceList"] = [{
             'resources': this.searchResults.resources,
-            'continutationToken': this.searchResults.continuationToken
+            'continuationToken': this.searchResults.continuationToken
           }];
         } else {
           this.resourceTypeFilter[i]["ResourceList"].push({
             'resources': this.searchResults.resources,
-            'continutationToken': this.searchResults.continuationToken
+            'continuationToken': this.searchResults.continuationToken
           });
 
         }
@@ -179,35 +189,46 @@ export class SearchResultsComponent implements OnInit {
 
 
   goToPage(n: number): void {
+    this.currentPage = this.page;
     this.page = n;
     if (this.isWebResource) {
       this.searchResource(this.calculateOffsetValue(n));
-    } else {
-
+    } else {      
+      this.getInternalResource(this.filterType, this.currentPage - 1 );
     }
   }
 
   onNext(): void {
+    this.currentPage = this.page;
     this.page++;
+    //this.pageCount = this.totalPages();
+    //if ((this.page) >= this.pageCount) {
+    //  return;
+    //}
     if (this.isWebResource) {
-      this.searchResource(this.calculateOffsetValue(this.page++));
+      this.searchResource(this.calculateOffsetValue(this.page));
     } else {
-
+      this.getInternalResource(this.filterType, this.currentPage - 1);
     }
   }
 
+  totalPages(): number {
+    return Math.ceil(this.total / this.limit) || 0;
+  }
+
   onPrev(): void {
+    this.currentPage = this.page;
     this.page--;
     if (this.isWebResource) {
-      this.searchResource(this.calculateOffsetValue(this.page--));
+      this.searchResource(this.calculateOffsetValue(this.page));
     } else {
-
+      this.getInternalResource(this.filterType, this.page - 1);
     }
   }
 
   calculateOffsetValue(pageNumber: number): number {
 
-    this.offset = Math.ceil(pageNumber * 10) + 1;
+    this.offset = Math.ceil(pageNumber  * 10) + 1;
 
     return this.offset;
   }

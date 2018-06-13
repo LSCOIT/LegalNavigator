@@ -49,7 +49,7 @@ export class PaginationComponent {
   }
 
   lastPage(): boolean {
-    return this.perPage * this.page > this.count;
+    return this.perPage * this.page >= this.count;
   }
 
   getPages(): number[] {
