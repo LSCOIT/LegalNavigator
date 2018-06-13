@@ -10,11 +10,8 @@ declare var Microsoft: any;
 
 class MockBsModalRef {
   public isHideCalled = false;
-  /**
-   * Hides the modal
-   */
+
   hide() {
-    //let th = this;
     this.isHideCalled = true;
   }
 }
