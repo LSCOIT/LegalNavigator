@@ -4,7 +4,7 @@ import { environment } from '../../../environments/environment';
 declare var Microsoft: any;
 
 describe('LocationService', () => {
-  let service: LocationService = new LocationService();
+  let service: LocationService;
   let microsoftMaps = {
     Microsoft: {
       Maps: {
@@ -29,28 +29,10 @@ describe('LocationService', () => {
     let tempSearchLocation = 'This is tempSearchedLocation';
     let tempSearchedLocationState = 'This is tempSearchedLocationState';
 
-    localStorage.setItem('tempSearchedLocation', tempSearchLocation);
-    localStorage.setItem('tempSearchedLocationState', tempSearchedLocationState);
+    localStorage.setItem('tempGlobalSearchedLocation', tempSearchLocation);
+    localStorage.setItem('tempGlobalSearchedLocationState', tempSearchedLocationState);
     service.updateLocation();
     expect(service.displayMapLocation.address).toEqual(tempSearchedLocationState);
     expect(service.displayMapLocation.locality).toEqual(tempSearchLocation);
   });
-
-  //it('should call Microsoft Maps load module when getMap is called', () => {
-  //  // Unit test for getMap is not possible as New of Microsoft is used.
-  //  let map = new Microsoft.Maps.Map('#my-map',
-  //    {
-  //      credentials: environment.bingmap_key
-  //    });
-  //  spyOn(Microsoft.Maps, 'loadModule');
-  //  service.getMap();
-  //  expect(Microsoft.Maps.loadModule).toHaveBeenCalled();
-  //});
-
-  //it('should have new instance for searchManager when loadSearchManager is called', () => {
-  //  // Unit test for getMap is not possible as New of Microsoft is used.
-  //  expect(service.searchManager).toBeUndefined();
-  //  service.loadSearchManager()
-  //  expect(service.searchManager).not.toBeNull();
-  //});
 });

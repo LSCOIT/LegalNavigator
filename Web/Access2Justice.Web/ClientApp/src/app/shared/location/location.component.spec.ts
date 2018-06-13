@@ -5,7 +5,24 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { TemplateRef, DebugElement } from '@angular/core';
 import { ModalModule } from 'ngx-bootstrap';
+import { By } from '@angular/platform-browser';
 declare var Microsoft: any;
+
+class MockBsModalRef {
+  public isHideCalled = false;
+  /**
+   * Hides the modal
+   */
+  hide() {
+    //let th = this;
+    this.isHideCalled = true;
+  }
+}
+
+class MockDocument {
+  public isHideCalled = false;
+}
+
 
 describe('LocationComponent', () => {
   let component: LocationComponent;
@@ -53,16 +70,32 @@ describe('LocationComponent', () => {
     expect(modalService.show).toHaveBeenCalled();
   });
 
-  //it("should call update location service", () => {
-  //  let mockMapLocation = {
-  //    locality: "Sample Locality",
-  //    address: "Sample Address"
-  //  }
-  //  component.mapLocation = mockMapLocation;
-  //  spyOn(locationService, 'updateLocation');
-  //  component.updateLocation();
-  //  expect(locationService.updateLocation).toHaveBeenCalled();
-  //});
+  it("should call update location of location service when update location of component is called", () => {
+    spyOn(locationService, 'updateLocation').and.returnValue({ locality: '', address: '' });
+    spyOn(modalService, 'hide');
+    component.updateLocation();
+    expect(locationService.updateLocation).toHaveBeenCalled();
+  });
 
+  it("should call hide of modal ref when update location of component is called", () => {
+    spyOn(locationService, 'updateLocation').and.returnValue({ locality: '', address: '' });
+    spyOn(modalService, 'hide');
+    let modalRefInstance = new MockBsModalRef();
+    component.modalRef = modalRefInstance;
+    component.updateLocation();
+    expect(modalRefInstance.isHideCalled).toBeTruthy();
+  });
+
+  it("should set the address,locality and showLocation variables of component when update location of component is called", () => {
+    let address = 'Sample address';
+    let location = 'Sample location';
+    spyOn(locationService, 'updateLocation').and.returnValue({ locality: location, address: address });
+    spyOn(modalService, 'hide');
+    component.showLocation = true;
+    component.updateLocation();
+    expect(component.address).toEqual(address);
+    expect(component.locality).toEqual(location);
+    expect(component.showLocation).toBeFalsy();
+  });
 });
 
