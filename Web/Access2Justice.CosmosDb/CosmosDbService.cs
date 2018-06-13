@@ -9,7 +9,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-
 namespace Access2Justice.CosmosDb
 {
     public class CosmosDbService : IBackendDatabaseService
@@ -24,6 +23,12 @@ namespace Access2Justice.CosmosDb
 
             CreateDatabaseIfNotExistsAsync().Wait();
             CreateCollectionIfNotExistsAsync().Wait();
+        }
+
+        public async Task<Document> CreateItemAsync<T>(T item)
+        {
+            return await documentClient.CreateDocumentAsync(
+                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId), item);
         }
 
         public async Task<T> GetItemAsync<T>(string id)
@@ -49,7 +54,7 @@ namespace Access2Justice.CosmosDb
             }
         }
 
-        public async Task<IEnumerable<T>> GetItemsAsync<T>(Expression<Func<T, bool>> predicate,string collectionId)
+        public async Task<IEnumerable<T>> GetItemsAsync<T>(Expression<Func<T, bool>> predicate, string collectionId)
         {
             IDocumentQuery<T> query = documentClient.CreateDocumentQuery<T>(
                 UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, collectionId),
@@ -64,6 +69,23 @@ namespace Access2Justice.CosmosDb
             return results;
         }
 
+        public async Task<Document> UpdateItemAsync<T>(string id, T item)
+        {
+            return await documentClient.ReplaceDocumentAsync(
+                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, id), item);
+        }
+
+        public async Task DeleteItemAsync(string id)
+        {
+            await documentClient.DeleteDocumentAsync(
+                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, id));
+        }
+
+        public async Task<T> ExecuteStoredProcedureAsyncWithParameters<T>(string storedProcName, params dynamic[] procedureParams)
+        {
+            return await documentClient.ExecuteStoredProcedureAsync<T>(UriFactory.CreateStoredProcedureUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, storedProcName), procedureParams);
+        }
+
         public async Task<dynamic> QueryItemsAsync(string collectionId, string query)
         {
             var docQuery = documentClient.CreateDocumentQuery<dynamic>(
@@ -76,24 +98,6 @@ namespace Access2Justice.CosmosDb
             }
 
             return results;
-        }
-
-        public async Task<Document> CreateItemAsync<T>(T item)
-        {
-            return await documentClient.CreateDocumentAsync(
-                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId), item);
-        }
-
-        public async Task<Document> UpdateItemAsync<T>(string id, T item)
-        {
-            return await documentClient.ReplaceDocumentAsync(
-                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, id), item);
-        }
-
-        public async Task DeleteItemAsync(string id)
-        {
-            await documentClient.DeleteDocumentAsync(
-                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, id));
         }
 
         private async Task CreateDatabaseIfNotExistsAsync()
@@ -137,15 +141,10 @@ namespace Access2Justice.CosmosDb
                 }
                 else
                 {
-                     // todo: log error
+                    // todo: log error
                     throw;
                 }
             }
-        }
-
-        public async Task<T> ExecuteStoredProcedureAsyncWithParameters<T>(string storedProcName, params dynamic[] procedureParams)
-        {
-            return await documentClient.ExecuteStoredProcedureAsync<T>(UriFactory.CreateStoredProcedureUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, storedProcName), procedureParams);
         }
     }
 }
