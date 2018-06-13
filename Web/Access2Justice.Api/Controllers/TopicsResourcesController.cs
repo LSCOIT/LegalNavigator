@@ -29,7 +29,6 @@ namespace Access2Justice.Api.Controllers
         [Route("api/topics/getsubtopics/{parentTopicId}")]
         public async Task<IActionResult> GetSubTopics(string parentTopicId)
         {
-
             var topics = await topicsResourcesBusinessLogic.GetSubTopicsAsync(parentTopicId);
             return Ok(topics);
         }
@@ -37,7 +36,7 @@ namespace Access2Justice.Api.Controllers
 
         #region get all resources when parentTopicId is mapped to topicTags
         [HttpGet]
-        [Route("api/topics/getresourcedetails/{ParentTopicId}")]
+        [Route("api/topics/getresourcedetails/{parentTopicId}")]
         public async Task<IActionResult> GetResourceDetails(string parentTopicId)  
         {
             var topics = await topicsResourcesBusinessLogic.GetResourceAsync(parentTopicId);
@@ -58,7 +57,7 @@ namespace Access2Justice.Api.Controllers
 
         #region get Orgationzation details when location value passed
         [HttpGet]
-        [Route("api/topics/getorganizationdetails")]
+        [Route("api/topics/getorganizationdetails/{location}")]
         public async Task<IActionResult> GetOrganizationsWhenParamsValuePassed(Location location)
         {
             var organizations = await topicsResourcesBusinessLogic.GetOrganizationsAsync(location); 

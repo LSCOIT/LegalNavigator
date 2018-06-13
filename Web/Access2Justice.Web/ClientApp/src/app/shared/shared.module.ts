@@ -28,6 +28,7 @@ import { ShareButtonComponent } from './resource/user-action/share-button.compon
 import { UpperNavComponent } from './navigation/upper-nav.component';
 import { WebResourceComponent } from './search/search-results/web-resource/web-resource.component';
 import { CuratedResourceService } from './search/search-results/curated-resource/curated-resource.service';
+import { ServiceOrgService } from './sidebars/service-org.service';
 
 @NgModule({
   imports: [
@@ -85,7 +86,8 @@ import { CuratedResourceService } from './search/search-results/curated-resource
     CuratedResourceService,
     LocationService,
     NavigateDataService,
-    SearchService
+    SearchService,
+    ServiceOrgService
   ]
 })
 export class SharedModule { }

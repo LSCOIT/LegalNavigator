@@ -12,8 +12,8 @@ export class ServiceOrgService {
 
   constructor(private http: HttpClient) { }
 
-  getOrganizationDetail(value): Observable<any> {
-    return this.http.get<Organization>(this.getOrganizationDetailsUrl + '/' + value);
+  getOrganizationDetail(location): Observable<any> {
+    return this.http.get<Organization>(this.getOrganizationDetailsUrl + '/' + location);
   }
 
 }

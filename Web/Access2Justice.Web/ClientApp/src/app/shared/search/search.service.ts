@@ -5,12 +5,10 @@ import { Observable } from 'rxjs';
 @Injectable()
 export class SearchService {
 
-  endPoint: string = "http://localhost:59019/api/search/";  
-
+  endPoint: string = "http://localhost:59704/api/search/";  
   constructor(private httpClient: HttpClient) { }
 
   search(searchText: string) {
     return this.httpClient.get(this.endPoint + searchText);
   }
-
 }

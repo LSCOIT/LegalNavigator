@@ -7,7 +7,7 @@ import { Topic } from './topic';
 
 export class TopicService {  
 
-  siteHostName = "http://localhost:59019/";
+  siteHostName = "http://localhost:59704/";
   topicUrl = this.siteHostName + "api/topics/gettopics";
   subtopicUrl = this.siteHostName + "api/topics/getsubtopics";
   subtopicDetailUrl = this.siteHostName + "api/topics/getresourcedetails";
