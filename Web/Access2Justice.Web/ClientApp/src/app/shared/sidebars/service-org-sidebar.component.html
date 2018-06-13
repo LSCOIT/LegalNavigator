@@ -1,4 +1,4 @@
-<div class="col-sm-12 sidebar text-center">
+<!--<div class="col-sm-12 sidebar text-center">
   <div class="sidebar-wrapper">
     <h4>Service organizations in your community</h4>
     <p>Free local services available to all.</p>
@@ -20,6 +20,21 @@
       </div>
     </div>
 
+    <button><a href='#'>See more organizations</a></button>
+  </div>
+</div>-->
+
+
+<div class="col-sm-12 sidebar text-center">
+  <div class="sidebar-wrapper">
+    <h4>Service organizations in your community</h4>
+    <p>Free local services available to all.</p>
+    <div class="org-info">
+      <ul *ngFor="let organization of organizations">
+        <li>{{organization.name}}</li>
+        <li>{{organization.telephone}}</li>
+      </ul>
+    </div>
     <button><a href='#'>See more organizations</a></button>
   </div>
 </div>
