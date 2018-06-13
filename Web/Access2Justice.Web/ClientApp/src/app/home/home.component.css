@@ -19,7 +19,15 @@
 }
 
 .slide-content {
-  text-align: center;
+    text-align: center;
+}
+
+.testimonial-img {
+    width: 200px; 
+    height: 200px; 
+    background-color: #333; 
+    border-radius: 10px; 
+    margin: 0 auto;
 }
 
 ul>li {
@@ -67,7 +75,6 @@ ul>li>span {
     .slide-content {
       text-align: left;
     }
-
 
     .guided-assistant-steps {
         text-align: left;
