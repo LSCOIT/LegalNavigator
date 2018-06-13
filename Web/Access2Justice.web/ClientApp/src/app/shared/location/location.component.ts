@@ -16,9 +16,8 @@ export class LocationComponent implements OnInit {
   showLocation: boolean = true;
   query: any;
   searchLocation: string;
-  mapLocation: MapLocation;
   displayMapLocation: DisplayMapLocation;
-  
+
   constructor(private modalService: BsModalService, private locationService: LocationService) {
   }
 
@@ -40,7 +39,9 @@ export class LocationComponent implements OnInit {
       this.locality = this.displayMapLocation.locality;
       this.showLocation = false;
     }
-    this.modalRef.hide();
+    if (this.modalRef) {
+      this.modalRef.hide();
+    }
   }
 
   ngOnInit() {
