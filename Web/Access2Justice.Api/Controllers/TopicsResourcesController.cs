@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Access2Justice.Shared.Interfaces;
+using Access2Justice.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Access2Justice.Api.Controllers
@@ -52,6 +53,16 @@ namespace Access2Justice.Api.Controllers
 
             var topics = await topicsResourcesBusinessLogic.GetDocumentAsync(id);
             return Ok(topics);
+        }
+        #endregion
+
+        #region get Orgationzation details when location value passed
+        [HttpGet]
+        [Route("api/topics/getorganizationdetails")]
+        public async Task<IActionResult> GetOrganizationsWhenParamsValuePassed(Location location)
+        {
+            var organizations = await topicsResourcesBusinessLogic.GetOrganizationsAsync(location); 
+            return Ok(organizations);
         }
         #endregion
 

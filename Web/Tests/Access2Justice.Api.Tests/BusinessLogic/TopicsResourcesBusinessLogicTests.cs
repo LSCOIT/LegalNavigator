@@ -6,6 +6,7 @@ using Access2Justice.CosmosDb.Interfaces;
 using Access2Justice.Api.BusinessLogic;
 using Newtonsoft.Json;
 using System;
+using Access2Justice.Shared.Models;
 
 namespace Access2Justice.Api.Tests.BusinessLogic
 {
@@ -18,6 +19,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 
         //Mocked input data.
         private readonly string keyword = "eviction";
+        private readonly Location location;
         private readonly string query = "select * from t";
         private readonly string topicId = "addf41e9-1a27-4aeb-bcbb-7959f95094ba";
         private readonly JArray emptyData = JArray.Parse(@"[{}]");
@@ -44,6 +46,22 @@ namespace Access2Justice.Api.Tests.BusinessLogic
                     'createdTimeStamp':'','modifiedBy':'','modifiedTimeStamp':'','_rid':'mwoSAJdNlwIBAAAAAAAAAA==','_self':
                     'dbs/mwoSAA==/colls/mwoSAJdNlwI=/docs/mwoSAJdNlwIBAAAAAAAAAA==/','_etag':'\'040007b5-0000-0000-0000-5b0792260000\'',
                     '_attachments':'attachments/','_ts':1527222822}]");
+
+        private readonly JArray organizationsData = JArray.Parse(@"[{'id': 'a171f18d-0235-4f2d-8edd-411ea93b983f','name': 'John','type': 'Housing Law Professional',
+                       'description': 'Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter.
+                        Solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter.',
+                       'resourceType': 'Organizations','externalUrl': '','url': '','topicTags': [ { 'id': 'afabf032-72a8-4b04-81cb-c101bb1a0730'   },{ 'id': 'c5e09391-2c4d-4b4c-8014-8105de85b46d'
+                        } ],  'location': [ {  'state': 'Hawaii', 'city': 'Kalawao', 'zipCode': '96742'},{'zipCode': '96741' },{'state': 'Hawaii','city': 'Honolulu'},{
+                        'state': 'Hawaii','city': 'Hawaiian Beaches'   }, { 'state': 'Hawaii','city': 'Haiku-Pauwela' }, {  'state': 'Alaska'  } ],'icon': './assets/images/resources/resource.png',   
+                       'address': '1234 Streetname Road N,Cityname,State, 12345',
+                        'telephone': 'XXX-XXX-XXXX',
+                        'overview': 'Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter. Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter.',
+                       'eligibilityInformation': 'Copy describing eligibility qualification lorem ipsum dolor sit amet. ',
+                        'reviewedByCommunityMember': 'Quote from community member consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.',
+                        'reviewerFullName': '', 'reviewerTitle': '','reviewerImage': '','createdBy': '','createdTimeStamp': '', 'modifiedBy': '','modifiedTimeStamp': '2018-02-01T04:18:00Z',
+                        '_rid': 'mwoSAJdNlwIHAAAAAAAAAA==','_self': 'dbs/mwoSAA==/colls/mwoSAJdNlwI=/docs/mwoSAJdNlwIHAAAAAAAAAA==/', '_etag': '\'0001b43c-0000-0000-0000-5b167b460000\'', '_attachments': 'attachments/',  '_ts': 1528200006
+                           }]");
+
 
         //Mocked result data.
         private readonly string expectedEmptyArrayObject = "[{}]";
@@ -182,8 +200,6 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             Assert.Contains("[{}]", result, StringComparison.InvariantCultureIgnoreCase);
         }
 
-
-
         [Fact]
         public void GetSubTopicDetailsAsyncWithProperData()
         {
@@ -212,5 +228,32 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             Assert.Contains("[{}]", result, StringComparison.InvariantCultureIgnoreCase);
         }
 
+        [Fact]
+        public void GetOrganizationsAsyncWithProperData()
+        {
+            //arrange
+            var dbResponse = backendDatabaseService.QueryItemsAsync(cosmosDbSettings.ResourceCollectionId, query);
+            dbResponse.ReturnsForAnyArgs<dynamic>(organizationsData);
+            //act
+            var response = topicsResourcesBusinessLogic.GetOrganizationsAsync(location).Result;
+            string result = JsonConvert.SerializeObject(response);
+            //assert
+            Assert.Contains(keyword, result, StringComparison.InvariantCulture);
+        }
+
+        [Fact]
+        public void GetOrganizationsAsyncEmptyData()
+        {
+            //arrange
+            var dbResponse = backendDatabaseService.QueryItemsAsync(cosmosDbSettings.ResourceCollectionId, query);
+            dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
+
+            //act
+            var response = topicsResourcesBusinessLogic.GetOrganizationsAsync(location);
+            string result = JsonConvert.SerializeObject(response);
+
+            //assert
+            Assert.Contains("[{}]", result, StringComparison.InvariantCultureIgnoreCase);
+        }
     }
 }

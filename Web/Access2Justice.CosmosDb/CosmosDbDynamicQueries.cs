@@ -1,6 +1,8 @@
 ﻿using Access2Justice.Shared.Interfaces;
+using Access2Justice.Shared.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -69,5 +71,73 @@ namespace Access2Justice.CosmosDb
                 }
             }
         }
+
+
+        public dynamic  FindLocationWhereArrayContains(Location location)
+        {
+            if (location == null)
+            {
+                return "";
+            }
+            string locationQuery = string.Empty;
+            string query = " (ARRAY_CONTAINS(c.location,{0}))";
+
+
+            if (!string.IsNullOrEmpty(location.State))
+            {
+                locationQuery += " 'state' : '" + location.State + "'";
+            }
+
+
+            if (!string.IsNullOrEmpty(location.City))
+            {
+                if (!string.IsNullOrEmpty(locationQuery))
+                {
+                    locationQuery += locationQuery + ",";
+                }
+                locationQuery += " 'city':'" + location.City + "'";
+            }
+
+
+            if (!string.IsNullOrEmpty(location.County))
+            {
+                if (!string.IsNullOrEmpty(locationQuery))
+                {
+                    locationQuery += locationQuery + ",";
+                }
+                locationQuery += " 'county':'" + location.County + "'";
+            }
+
+            if (!string.IsNullOrEmpty(location.ZipCode))
+            {
+                if (!string.IsNullOrEmpty(locationQuery))
+                {
+                    locationQuery += locationQuery + ",";
+                }
+                locationQuery += " 'zipCode':'" + location.ZipCode + "'";
+            }
+
+
+            if (!string.IsNullOrEmpty(locationQuery))
+            {
+                locationQuery = string.Format(CultureInfo.InvariantCulture, query, "{" + locationQuery + "},true");
+            }
+            return locationQuery;
+          
+
+        }
+
+        public  dynamic FindOrganizationsWhereArrayContains(string collectionId, Location location)
+        {
+            string result = FindLocationWhereArrayContains(location);
+            if (!string.IsNullOrEmpty(result)) {
+                result = " AND " + result;
+            }
+            var query = $"SELECT * FROM c WHERE c.resourceType='Organizations' {result}";
+            return  backendDatabaseService.QueryItemsAsync(collectionId, query);
+        }
+
+
+
     }
 }

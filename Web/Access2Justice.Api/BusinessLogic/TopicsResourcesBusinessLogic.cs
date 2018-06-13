@@ -1,5 +1,6 @@
 ﻿using Access2Justice.CosmosDb.Interfaces;
 using Access2Justice.Shared.Interfaces;
+using Access2Justice.Shared.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -49,6 +50,12 @@ namespace Access2Justice.Api.BusinessLogic
         public async Task<dynamic> GetDocumentAsync(string id)
         {
             return await dbClient.FindItemsWhere(dbSettings.TopicCollectionId, "id", id);
+        }
+
+       
+        public async Task<dynamic> GetOrganizationsAsync(Location location)
+        {
+            return await dbClient.FindOrganizationsWhereArrayContains(dbSettings.ResourceCollectionId, location);
         }
     }
 }

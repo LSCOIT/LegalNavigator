@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Output, EventEmitter } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
@@ -15,8 +15,9 @@ export class LocationService {
   location: any;
   pin: any;
   tempLoc: any;
-  mapLocation: MapLocation = { locality: '', address:''};
+  mapLocation: MapLocation = { locality: '', address: '' };
 
+  @Output() change: EventEmitter<boolean> = new EventEmitter();
   constructor() { }
 
   getMap() {
@@ -82,7 +83,7 @@ export class LocationService {
     localStorage.setItem("searchedLocationAddress", this.tempLoc);
     this.mapLocation.locality = localStorage.getItem("searchedLocation");
     this.mapLocation.address = localStorage.getItem("searchedLocationAddress");
-    
+    this.change.emit();
     return this.mapLocation;
   }
 

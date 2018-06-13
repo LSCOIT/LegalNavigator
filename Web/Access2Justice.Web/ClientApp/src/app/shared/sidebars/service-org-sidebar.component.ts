@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ServiceOrgService } from '../sidebars/service-org.service';
+import { Organization } from '../sidebars/organization';
+import { LocationService } from '../location/location.service';
 
 @Component({
   selector: 'app-service-org-sidebar',
@@ -7,9 +10,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ServiceOrgSidebarComponent implements OnInit {
 
-  constructor() { }
+  organizations: any[];
+
+  constructor(private serviceOrgService: ServiceOrgService, private locationService: LocationService) { }
+
+  getOrganizationDetail(value) {
+    this.serviceOrgService.getOrganizationDetail(value)
+      .subscribe(organizations =>
+        this.organizations = organizations
+      );
+  }
 
   ngOnInit() {
+    //var mapLocation = localStorage.getItem("GetCM");    
+    this.locationService.change.subscribe(this.getOrganizationDetail('Hawaii'));
   }
 
 }

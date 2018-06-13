@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Access2Justice.Shared.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Access2Justice.Shared.Interfaces
@@ -11,5 +12,6 @@ namespace Access2Justice.Shared.Interfaces
         Task<dynamic> GetSubTopicsAsync(string ParentTopicId);
         Task<dynamic> GetResourceAsync(string ParentTopicId);
         Task<dynamic> GetDocumentAsync(string id);
+        Task<dynamic> GetOrganizationsAsync(Location location);  
     }
 }
