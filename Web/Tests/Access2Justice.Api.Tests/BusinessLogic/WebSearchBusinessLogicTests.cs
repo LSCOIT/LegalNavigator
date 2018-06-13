@@ -89,8 +89,9 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void SearchWebResourcesAsyncSearchTextFound()
+        public void SearchReturnsExpectedResult()
         {
+            // arrange
             var responseq = new HttpResponseMessage();
             var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK)
             {
@@ -99,10 +100,12 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var response = httpClientService.GetDataAsync(bingSettings.BingSearchUrl, bingSettings.SubscriptionKey);
             response.Returns(httpResponseMessage);
 
+            // act
             var responseContent = webSearchBusinessLogic.SearchWebResourcesAsync(searchText).Result;
 
+            // assert
             Assert.Contains(expectedWebResponse, responseContent);
-        }
+        }            
 
         [Fact]
         public void SearchWebResourcesSearchTextNotFound()

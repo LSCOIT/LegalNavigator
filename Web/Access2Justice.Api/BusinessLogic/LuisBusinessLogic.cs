@@ -58,7 +58,7 @@ namespace Access2Justice.Api
 
         public int ApplyThreshold(IntentWithScore intentWithScore)
         {
-            if (intentWithScore.Score >= luisSettings.UpperThreshold && intentWithScore.TopScoringIntent.ToUpperInvariant() != "NONE" )
+            if (intentWithScore.Score >= luisSettings.UpperThreshold && intentWithScore.TopScoringIntent.ToUpperInvariant() != "NONE")
             {
                 return (int)LuisAccuracyThreshold.High;
             }
@@ -74,27 +74,11 @@ namespace Access2Justice.Api
 
         public async Task<dynamic> GetInternalResourcesAsync(string keyword)
         {
-            string topic = string.Empty, resource = string.Empty;
-            var topics = await topicsResourcesBusinessLogic.GetTopicAsync(keyword);
+            var topics = await topicsResourcesBusinessLogic.GetTopicsAsync(keyword);
+            var resources = await topicsResourcesBusinessLogic.GetResourcesAsync(topics);
 
-            string topicIds = string.Empty;
-            foreach (var item in topics)
-            {
-                topicIds += "  ARRAY_CONTAINS(c.topicTags, { 'id' : '" + item.id + "'}) OR";
-            }
-
-            dynamic serializedTopics = "[]";
-            dynamic serializedResources = "[]";
-            if (!string.IsNullOrEmpty(topicIds))
-            {
-                // remove the last OR from the db query
-                topicIds = topicIds.Remove(topicIds.Length - 2);
-
-                var resources = await topicsResourcesBusinessLogic.GetResourcesAsync(topicIds);
-
-                serializedTopics = JsonConvert.SerializeObject(topics);
-                serializedResources = JsonConvert.SerializeObject(resources);
-            }
+            var serializedTopics = JsonConvert.SerializeObject(topics);
+            var serializedResources = JsonConvert.SerializeObject(resources);
 
             JObject internalResources = new JObject {
                 { "topics", JsonConvert.DeserializeObject(serializedTopics) },
@@ -111,9 +95,9 @@ namespace Access2Justice.Api
 
             JObject webResources = new JObject
             {
-                { "webResources" , JsonConvert.DeserializeObject(response) }                
+                { "webResources" , JsonConvert.DeserializeObject(response) }
             };
-             
+
             return webResources.ToString();
         }
     }

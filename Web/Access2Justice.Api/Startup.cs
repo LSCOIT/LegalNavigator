@@ -2,6 +2,7 @@
 using Access2Justice.CosmosDb;
 using Access2Justice.CosmosDb.Interfaces;
 using Access2Justice.Shared;
+using Access2Justice.Shared.Bing;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Luis;
 using Microsoft.AspNetCore.Builder;
@@ -11,7 +12,6 @@ using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
-using Access2Justice.Shared.Bing;
 
 namespace Access2Justice.Api
 {
@@ -68,6 +68,7 @@ namespace Access2Justice.Api
             services.AddSingleton(cosmosDbSettings);
             services.AddSingleton<IDocumentClient>(x => new DocumentClient(cosmosDbSettings.Endpoint, cosmosDbSettings.AuthKey));
             services.AddSingleton<IBackendDatabaseService, CosmosDbService>();
+            services.AddSingleton<IDynamicQueries, CosmosDbDynamicQueries>();
         }
 
         private void ConfigureSwagger(IApplicationBuilder app)
