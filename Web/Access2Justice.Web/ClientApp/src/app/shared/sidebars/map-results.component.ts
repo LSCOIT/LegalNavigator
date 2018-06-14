@@ -33,28 +33,17 @@ export class MapResultsComponent implements OnInit {
 
   getMapResults(organizations) {
     this.organizationsList = organizations;
-    let map = new Microsoft.Maps.Map('#my-map-results',
-      {
-        credentials: environment.bingmap_key
-      });
-
+    this.mapResultsService.getMap();
     if (this.organizationsList.length > 0) {
       for (let i = 0, len = this.organizationsList.length; i < len; i++) {
-        this.mapResultsService.getLocationDetails(this.organizationsList[i], environment.bingmap_key).subscribe(locationCoordinates => {
+        this.mapResultsService.getLocationDetails(this.organizationsList[i], environment.bingmap_key).subscribe((locationCoordinates) => {
           this.latlong = {
             latitude: locationCoordinates.resourceSets[0].resources[0].point.coordinates[0],
             longitude: locationCoordinates.resourceSets[0].resources[0].point.coordinates[1]
           }
           this.latitudeLongitude.push(this.latlong);
           if (this.latitudeLongitude.length == this.organizationsList.length) {
-            for (let i = 0, len = this.latitudeLongitude.length; i < len; i++) {
-              var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(this.latitudeLongitude[i].latitude, this.latitudeLongitude[i].longitude), {
-                icon: '../../assets/images/location/poi_custom.png'
-              });
-              map.entities.push(pin);
-              let bestview = Microsoft.Maps.LocationRect.fromLocations(this.latitudeLongitude);
-              map.setView({ bounds: bestview, zoom: 5 });
-            }
+            this.mapResultsService.mapResults(this.latitudeLongitude);
           }
         });
       }

@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import { MapLocation, DisplayMapLocation } from './location';
+import { DisplayMapLocation, MapLocation } from './location';
 declare var Microsoft: any;
 
 @Injectable()
@@ -15,8 +12,8 @@ export class LocationService {
   location: any;
   pin: any;
   tempLoc: any;
-  mapLocation: MapLocation = { state: '', city: '', county: '', zipCode: '' };
-  displayMapLocation: DisplayMapLocation = { locality: '', address: '' }
+  mapLocation: MapLocation;
+  displayMapLocation: DisplayMapLocation;
 
   constructor() { }
 
@@ -62,14 +59,20 @@ export class LocationService {
           else {
             this.locAddress = this.location.address.postalCode;
           }
+          this.mapLocation = { state: '', city: '', county: '', zipCode: '' };
+          this.displayMapLocation = { locality: '', address: '' }
+          this.mapLocation.state = this.location.address.adminDistrict;
+          this.mapLocation.county = this.location.address.district;
+          this.mapLocation.city = this.location.address.locality;
+          this.mapLocation.zipCode = this.location.address.postalCode;
 
-          localStorage.setItem("tempGlobalState", this.location.address.adminDistrict);
-          localStorage.setItem("tempGlobalCounty", this.location.address.district);
-          localStorage.setItem("tempGlobalCity", this.location.address.locality);
-          localStorage.setItem("tempGlobalZipCode", this.location.address.postalCode);
+          sessionStorage.setItem("tempGlobalMapLocation", JSON.stringify(this.mapLocation));
 
-          localStorage.setItem("tempGlobalSearchedLocation", this.locAddress);
-          localStorage.setItem("tempGlobalSearchedLocationState", this.location.address.adminDistrict);
+          this.displayMapLocation.locality = this.locAddress;
+          this.displayMapLocation.address = this.location.address.adminDistrict;
+
+          sessionStorage.setItem("tempGlobalDisplayMapLocation", JSON.stringify(this.displayMapLocation));
+
           this.map = new Microsoft.Maps.Map('#my-map',
             {
               credentials: environment.bingmap_key
@@ -93,22 +96,11 @@ export class LocationService {
   }
 
   updateLocation(): DisplayMapLocation {
-    this.tempLoc = localStorage.getItem("tempGlobalSearchedLocation");
-    localStorage.setItem("globalSearchedLocation", this.tempLoc);
-    this.tempLoc = localStorage.getItem("tempGlobalSearchedLocationState");
-    localStorage.setItem("globalSearchedLocationAddress", this.tempLoc);
-
-    this.mapLocation.state = localStorage.getItem("tempGlobalState");
-    this.mapLocation.county = localStorage.getItem("tempGlobalCounty");
-    this.mapLocation.city = localStorage.getItem("tempGlobalCity");
-    this.mapLocation.zipCode = localStorage.getItem("tempGlobalZipCode");
-
-    this.displayMapLocation.locality = localStorage.getItem("globalSearchedLocation");
-    this.displayMapLocation.address = localStorage.getItem("globalSearchedLocationAddress");
-
+    this.displayMapLocation = JSON.parse(sessionStorage.getItem("tempGlobalDisplayMapLocation"));
+    this.mapLocation = JSON.parse(sessionStorage.getItem("tempGlobalMapLocation"));
+    
     return this.displayMapLocation;
   }
-
 }
 
 function suggestionSelected(result) {
@@ -140,7 +132,9 @@ function suggestionSelected(result) {
   else {
     this.locAddress = result.address.postalCode;
   }
+  this.displayMapLocation = { locality: '', address: '' }
+  this.displayMapLocation.locality = this.locAddress;
+  this.displayMapLocation.address = result.address.adminDistrict;
 
-  localStorage.setItem("tempGlobalSearchedLocation", this.locAddress);
-  localStorage.setItem("tempGlobalSearchedLocationState", result.address.adminDistrict);
+  sessionStorage.setItem("tempGlobalDisplayMapLocation", JSON.stringify(this.displayMapLocation));
 }

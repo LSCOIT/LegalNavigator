@@ -1,10 +1,10 @@
 import { LocationService } from './location.service';
-import { MapLocation } from './location';
-import { environment } from '../../../environments/environment';
-declare var Microsoft: any;
+import { MapLocation, DisplayMapLocation } from './location';
 
 describe('LocationService', () => {
   let service: LocationService;
+  let mockDisplayMapLocation: DisplayMapLocation;
+  let mockMapLocation: MapLocation;
   let microsoftMaps = {
     Microsoft: {
       Maps: {
@@ -16,7 +16,7 @@ describe('LocationService', () => {
   beforeEach(() => {
     service = new LocationService();
   });
-  
+
   it('should create location service', () => {
     expect(service).toBeTruthy();
   });
@@ -25,14 +25,23 @@ describe('LocationService', () => {
     expect(service).toBeDefined();
   });
 
-  it('should have value in mapLocation when updateLocation is called', () => {
-    let tempSearchLocation = 'This is tempSearchedLocation';
-    let tempSearchedLocationState = 'This is tempSearchedLocationState';
+  it('should have value in mapLocation and display map location when updateLocation is called', () => {
+    mockDisplayMapLocation = {
+      locality: "Sample locality",
+      address: "Sample address"
+    }
+    mockMapLocation = {
+      state: "Sample state",
+      city: "Sample city",
+      county: 'Sample county',
+      zipCode: 'Sample zip code'
+    };
 
-    localStorage.setItem('tempGlobalSearchedLocation', tempSearchLocation);
-    localStorage.setItem('tempGlobalSearchedLocationState', tempSearchedLocationState);
+    sessionStorage.setItem('tempGlobalDisplayMapLocation', JSON.stringify(mockDisplayMapLocation));
+    sessionStorage.setItem('tempGlobalMapLocation', JSON.stringify(mockMapLocation));
     service.updateLocation();
-    expect(service.displayMapLocation.address).toEqual(tempSearchedLocationState);
-    expect(service.displayMapLocation.locality).toEqual(tempSearchLocation);
+    expect(service.displayMapLocation).toEqual(mockDisplayMapLocation);
+    expect(service.mapLocation).toEqual(mockMapLocation);
   });
+  
 });
