@@ -2,7 +2,7 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { LocationService } from './location.service';
-import { MapLocation } from './location';
+import { MapLocation, DisplayMapLocation } from './location';
 
 @Component({
   selector: 'app-location',
@@ -16,8 +16,8 @@ export class LocationComponent implements OnInit {
   showLocation: boolean = true;
   query: any;
   searchLocation: string;
-  mapLocation: MapLocation;
-  
+  displayMapLocation: DisplayMapLocation;
+
   constructor(private modalService: BsModalService, private locationService: LocationService) {
   }
 
@@ -33,13 +33,15 @@ export class LocationComponent implements OnInit {
   }
 
   updateLocation() {
-    this.mapLocation = this.locationService.updateLocation();
-    if (this.mapLocation.locality !== "" && this.mapLocation.address !== "") {
-      this.address = this.mapLocation.address;
-      this.locality = this.mapLocation.locality;
+    this.displayMapLocation = this.locationService.updateLocation();
+    if (this.displayMapLocation.locality !== "" && this.displayMapLocation.address !== "") {
+      this.address = this.displayMapLocation.address;
+      this.locality = this.displayMapLocation.locality;
       this.showLocation = false;
     }
-    this.modalRef.hide();
+    if (this.modalRef) {
+      this.modalRef.hide();
+    }
   }
 
   ngOnInit() {
