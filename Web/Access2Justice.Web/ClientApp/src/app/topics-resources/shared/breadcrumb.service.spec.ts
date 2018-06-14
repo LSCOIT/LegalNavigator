@@ -1,5 +1,4 @@
 import { BreadCrumbService } from './breadcrumb.service';
-import { Observable } from 'rxjs/Rx';
 
 describe('BreadCrumb Service:', () => {
   let service: BreadCrumbService;
