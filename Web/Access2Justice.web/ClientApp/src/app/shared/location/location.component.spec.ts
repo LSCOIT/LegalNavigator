@@ -5,8 +5,6 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { TemplateRef, DebugElement } from '@angular/core';
 import { ModalModule } from 'ngx-bootstrap';
-import { By } from '@angular/platform-browser';
-declare var Microsoft: any;
 
 class MockBsModalRef {
   public isHideCalled = false;
@@ -19,7 +17,6 @@ class MockBsModalRef {
 class MockDocument {
   public isHideCalled = false;
 }
-
 
 describe('LocationComponent', () => {
   let component: LocationComponent;
