@@ -1,9 +1,9 @@
 <ul>
   <li class="topic-list col-md-4 col-sm-6 col-xs-6 text-center" *ngFor="let topic of topics | slice: 0:topicLength" >
-    <a [routerLink]="['/topics', topic.name | lowercase]">
+    <a [routerLink]="['/topics', topic.id | lowercase]">
       <img src="{{ topic.icon }}" alt="{{topic.name}}">
     </a>
-    <a [routerLink]="['/topics', topic.name | lowercase]">
+    <a [routerLink]="['/topics', topic.id | lowercase]">
       <h5>{{ topic.name }}</h5>
     </a>
   </li>

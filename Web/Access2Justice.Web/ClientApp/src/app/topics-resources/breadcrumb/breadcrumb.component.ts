@@ -11,14 +11,23 @@ export class BreadcrumbComponent implements OnInit {
   breadcrumbs = [];
   activeTopic: any;
   isResource: boolean = false;
-  mainTopic: any;
-  
+  activeTopicName: any;
+
   constructor(private breadCrumbService: BreadCrumbService,
     private activeRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    if (this.activeRoute.snapshot.params['subtopic'] != null) {
-      this.activeTopic = this.activeRoute.snapshot.params['subtopic'];
+    this.activeRoute.url
+      .subscribe(routeParts => {
+        for (let i = 1; i < routeParts.length; i++) {
+          this.getBreadcrumbDetails();
+        }
+      });
+  }
+
+  getBreadcrumbDetails() {
+    if (this.activeRoute.snapshot.params['topic'] != null) {
+      this.activeTopic = this.activeRoute.snapshot.params['topic'];
     };
     if (this.activeRoute.snapshot.params['id'] != null) {
       this.isResource = true;
@@ -27,12 +36,15 @@ export class BreadcrumbComponent implements OnInit {
     //Get the data for topic from breadcrumb service
     this.breadCrumbService.getBreadCrumbs(this.activeTopic)
       .subscribe(
-      items => {
-        this.breadcrumbs = items.response.reverse();
-        for (var i = 0; i < this.breadcrumbs.length; i++) {
-          this.mainTopic = this.breadcrumbs[i].name;
-          break;
-        }
-      });
+        items => {
+          this.breadcrumbs = items.response.reverse();
+
+          this.breadcrumbs.forEach(item => {
+            if (item.id == this.activeTopic) {
+              this.activeTopicName = item.name;
+            }
+          });
+        });
+
   }
 }
