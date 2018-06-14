@@ -14,7 +14,6 @@ import { LocationComponent } from './location/location.component';
 import { LocationService } from './location/location.service';
 import { LowerNavComponent } from './navigation/lower-nav.component';
 import { NavigateDataService } from './navigate-data.service';
-import { RouteDataService } from './route-data.service';
 import { PrintButtonComponent } from './resource/user-action/print-button.component';
 import { ResourceCardComponent } from './resource/resource-card/resource-card.component';
 import { ResourceCardDetailComponent } from './resource/resource-card-detail/resource-card-detail.component';
@@ -91,8 +90,7 @@ import { BreadcrumbComponent } from '../topics-resources/breadcrumb/breadcrumb.c
     CuratedResourceService,
     LocationService,
     NavigateDataService,
-    SearchService,
-    RouteDataService
+    SearchService    
   ]
 })
 export class SharedModule { }
