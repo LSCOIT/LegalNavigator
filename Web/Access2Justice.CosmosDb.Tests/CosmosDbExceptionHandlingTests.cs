@@ -21,7 +21,7 @@ namespace Access2Justice.CosmosDb.Tests
         [InlineData("CollectionName", "")]
         public void FindItemsWhereShouldFailWhenParametersAreNullOrEmpty(string collection, string property)
         {
-            Assert.ThrowsAny<Exception>(() => dynamicQueries.FindItemsWhere(collection, property, Arg.Any<string>()).Result);
+            Assert.ThrowsAny<Exception>(() => dynamicQueries.FindItemsWhereAsync(collection, property, Arg.Any<string>()).Result);
         }
 
         [Fact]
@@ -31,7 +31,7 @@ namespace Access2Justice.CosmosDb.Tests
             string query = @"SELECT * FROM c WHERE CONTAINS(c.Name, 'EVICTION')";
 
             // Act
-            var result = dynamicQueries.FindItemsWhereContains("TopicsCollections", "Name", "EvicTION").Result;
+            var result = dynamicQueries.FindItemsWhereContainsAsync("TopicsCollections", "Name", "EvicTION").Result;
 
             // Assert
             cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(), query);
