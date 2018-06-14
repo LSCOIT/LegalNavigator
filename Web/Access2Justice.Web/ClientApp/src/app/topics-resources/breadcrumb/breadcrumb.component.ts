@@ -11,7 +11,8 @@ export class BreadcrumbComponent implements OnInit {
   breadcrumbs = [];
   activeTopic: any;
   isResource: boolean = false;
-  activeTopicName: any;
+  activeTopicName: string;
+  activeTopicId: string;
 
   constructor(private breadCrumbService: BreadCrumbService,
     private activeRoute: ActivatedRoute) { }
@@ -42,9 +43,9 @@ export class BreadcrumbComponent implements OnInit {
           this.breadcrumbs.forEach(item => {
             if (item.id == this.activeTopic) {
               this.activeTopicName = item.name;
+              this.activeTopicId = item.id;
             }
           });
         });
-
   }
 }

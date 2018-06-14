@@ -1,5 +1,5 @@
 <div class="container">
-  <app-breadcrumb></app-breadcrumb>
+  <app-breadcrumb #breadcrumb></app-breadcrumb>
   <div class="row topic-content">
     <div class="col-md-9 col-sm-12 col-xs-12 topic-list">
       <div class="media">
@@ -9,7 +9,7 @@
           </a>
         </div>
         <div class="media-body">
-          <h4 class="media-heading">More Topics Related to <span class="text-capitalize">{{activeTopic}}{{activeTopicName}}</span></h4>
+          <h4 class="media-heading">More Topics Related to <span class="text-capitalize">{{breadcrumb.activeTopicName}}</span></h4>
           <p>Which topic would you like to learn more about?</p>
         </div>
       </div>

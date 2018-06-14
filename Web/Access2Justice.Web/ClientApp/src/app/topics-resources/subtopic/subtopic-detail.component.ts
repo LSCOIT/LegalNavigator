@@ -1,6 +1,6 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit} from "@angular/core";
 import { TopicService } from '../shared/topic.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { NavigateDataService } from '../../shared/navigate-data.service';
 import { isNullOrUndefined } from 'util';
 
@@ -24,7 +24,6 @@ export class SubtopicDetailComponent implements OnInit {
   constructor(
     private topicService: TopicService,
     private activeRoute: ActivatedRoute,
-    private router: Router,
     private navigateDataService: NavigateDataService
   ) { }
 

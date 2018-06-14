@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { Breadcrumb } from './breadcrumb';
 
 @Injectable()
 
@@ -9,7 +8,7 @@ export class BreadCrumbService {
   siteHostName: string
   getBreadCrumbsUrl: string;
   constructor(private http: HttpClient) {
-    this.siteHostName = "http://localhost:7150/";
+    this.siteHostName = "http://localhost:61726/";
     this.getBreadCrumbsUrl = this.siteHostName + "api/topics/getbreadcrumbs";
   }
   
