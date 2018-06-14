@@ -15,7 +15,7 @@ namespace Access2Justice.CosmosDb
             this.backendDatabaseService = backendDatabaseService;
         }
 
-        public async Task<dynamic> FindItemsWhere(string collectionId, string propertyName, string value)
+        public async Task<dynamic> FindItemsWhereAsync(string collectionId, string propertyName, string value)
         {
             EnsureParametersAreNotOrEmpty(collectionId, propertyName);
 
@@ -23,7 +23,7 @@ namespace Access2Justice.CosmosDb
             return await backendDatabaseService.QueryItemsAsync(collectionId, query);
         }
 
-        public async Task<dynamic> FindItemsWhereContains(string collectionId, string propertyName, string value)
+        public async Task<dynamic> FindItemsWhereContainsAsync(string collectionId, string propertyName, string value)
         {
             EnsureParametersAreNotOrEmpty(collectionId, propertyName);
 
@@ -31,15 +31,15 @@ namespace Access2Justice.CosmosDb
             return await backendDatabaseService.QueryItemsAsync(collectionId, query);
         }
 
-        public async Task<dynamic> FindItemsWhereArrayContains(string collectionId, string arrayName, string propertyName, string value)
+        public async Task<dynamic> FindItemsWhereArrayContainsAsync(string collectionId, string arrayName, string propertyName, string value)
         {
             EnsureParametersAreNotOrEmpty(collectionId, arrayName, propertyName);
 
             var ids = new List<string> { value };
-            return await FindItemsWhereArrayContains(collectionId, arrayName, propertyName, ids);
+            return await FindItemsWhereArrayContainsAsync(collectionId, arrayName, propertyName, ids);
         }
 
-        public async Task<dynamic> FindItemsWhereArrayContains(string collectionId, string arrayName, string propertyName, IEnumerable<string> values)
+        public async Task<dynamic> FindItemsWhereArrayContainsAsync(string collectionId, string arrayName, string propertyName, IEnumerable<string> values)
         {
             EnsureParametersAreNotOrEmpty(collectionId, arrayName, propertyName);
 
