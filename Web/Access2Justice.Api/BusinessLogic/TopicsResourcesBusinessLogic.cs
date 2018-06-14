@@ -28,32 +28,32 @@ namespace Access2Justice.Api.BusinessLogic
                 ids.Add(topic.id);
             }
 
-            return await dbClient.FindItemsWhereArrayContains(dbSettings.ResourceCollectionId, "topicTags", "id", ids);
+            return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourceCollectionId, "topicTags", "id", ids);
         }
 
         public async Task<dynamic> GetTopicsAsync(string keyword,Location location)
         {
-            return await dbClient.FindItemsWhereContainsWithLocation(dbSettings.TopicCollectionId, "keywords", keyword, location);
+            return await dbClient.FindItemsWhereContainsWithLocationAsync(dbSettings.TopicCollectionId, "keywords", keyword, location);
         }
 
         public async Task<dynamic> GetTopLevelTopicsAsync()
         {
-            return await dbClient.FindItemsWhere(dbSettings.TopicCollectionId, "parentTopicID", "");
+            return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, "parentTopicID", "");
         }
 
         public async Task<dynamic> GetSubTopicsAsync(string ParentTopicId)
         {
-            return await dbClient.FindItemsWhere(dbSettings.TopicCollectionId, "parentTopicID", ParentTopicId);
+            return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, "parentTopicID", ParentTopicId);
         }
 
         public async Task<dynamic> GetResourceAsync(string ParentTopicId)
         {
-            return await dbClient.FindItemsWhereArrayContains(dbSettings.ResourceCollectionId, "topicTags", "id", ParentTopicId);
+            return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourceCollectionId, "topicTags", "id", ParentTopicId);
         }
 
         public async Task<dynamic> GetDocumentAsync(string id)
         {
-            return await dbClient.FindItemsWhere(dbSettings.TopicCollectionId, "id", id);
+            return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, "id", id);
         }
 
         public async Task<dynamic> GetPagedResourceAsync(ResourceFilter resourceFilter)
@@ -81,27 +81,15 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<dynamic> ApplyPaginationAsync(ResourceFilter resourceFilter)
         {
-            PagedResources pagedResources = new PagedResources();            
-            string query = dbClient.FindItemsWhereArrayContainsWithAndClause("topicTags", "id","resourceType",resourceFilter.ResourceType,resourceFilter.TopicIds,resourceFilter.Location);
-            if (resourceFilter.PageNumber == 0)
-            {
-                pagedResources = await dbClient.QueryPagedResourcesAsync(query, "");
-                pagedResources.TopicIds = resourceFilter.TopicIds;
-            }
-            else
-            {
-                pagedResources = await dbClient.QueryPagedResourcesAsync(query, resourceFilter.ContinuationToken);
-                pagedResources.TopicIds = resourceFilter.TopicIds;
-            }
+            PagedResources pagedResources = await dbClient.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id","resourceType",resourceFilter.ResourceType,resourceFilter);            
 
             return pagedResources;
         }
 
         public async Task<dynamic> GetResourcesCountAsync(ResourceFilter resourceFilter)
         {
-            string query = dbClient.FindItemsWhereArrayContainsWithAndClause("topicTags", "id", "resourceType", resourceFilter.ResourceType, resourceFilter.TopicIds, resourceFilter.Location);
-            query = query.Replace("*", "c.resourceType",System.StringComparison.InvariantCulture);
-            PagedResources pagedResources = await dbClient.QueryResourcesCountAsync(query);
+            PagedResources pagedResources = await dbClient.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter.ResourceType, resourceFilter, true);
+            
            return ResourcesCount(pagedResources);
         }
 

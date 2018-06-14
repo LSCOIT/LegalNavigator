@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Access2Justice.CosmosDb
 {
-    public class CosmosDbService : IBackendDatabaseService, IDynamicQueries
+    public class CosmosDbService : IBackendDatabaseService
     {
         private readonly IDocumentClient documentClient;
         private readonly ICosmosDbSettings cosmosDbSettings;
@@ -88,90 +88,6 @@ namespace Access2Justice.CosmosDb
             return await documentClient.ExecuteStoredProcedureAsync<T>(UriFactory.CreateStoredProcedureUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, storedProcName), procedureParams);
         }
 
-        public async Task<dynamic> FindItemsWhere(string collectionId, string propertyName, string value)
-        {
-            EnsureParametersAreNotOrEmpty(collectionId, propertyName);
-
-            var query = $"SELECT * FROM c WHERE c.{propertyName}='{value}'";
-            return await QueryItemsAsync(collectionId, query);
-        }
-
-        public async Task<dynamic> FindItemsWhereContainsWithLocation(string collectionId, string propertyName, string value,Location location)
-        {
-            EnsureParametersAreNotOrEmpty(collectionId, propertyName);
-            string locationFilter = FindLocationWhereArrayContains(location);
-            var query = $"SELECT * FROM c WHERE CONTAINS(c.{propertyName}, '{value.ToUpperInvariant()}')";
-            if (!string.IsNullOrEmpty(locationFilter)) {
-                query = query + " AND " + locationFilter;
-            }
-            return await QueryItemsAsync(cosmosDbSettings.TopicCollectionId, query);
-        }
-
-        public async Task<dynamic> FindItemsWhereArrayContains(string collectionId, string arrayName, string propertyName, string value)
-        {
-            EnsureParametersAreNotOrEmpty(collectionId, arrayName, propertyName);
-
-            var ids = new List<string> { value };
-            return await FindItemsWhereArrayContains(collectionId, arrayName, propertyName, ids);
-        }
-
-        public async Task<dynamic> FindItemsWhereArrayContains(string collectionId, string arrayName, string propertyName, IEnumerable<string> values)
-        {
-            EnsureParametersAreNotOrEmpty(collectionId, arrayName, propertyName);
-
-            var arrayContainsClause = string.Empty;
-            var lastItem = values.Last();
-
-            foreach (var value in values)
-            {
-                arrayContainsClause += $" ARRAY_CONTAINS(c.{arrayName}, {{ '{propertyName}' : '" + value + "'})";
-                if (value != lastItem)
-                {
-                    arrayContainsClause += "OR";
-                }
-            }
-
-            var query = $"SELECT * FROM c WHERE {arrayContainsClause}";
-            return await QueryItemsAsync(collectionId, query);
-        }
-
-        public dynamic FindItemsWhereArrayContainsWithAndClause(string arrayName, string propertyName, string andPropertyName, string andPropertyValue, IEnumerable<string> values,Location location)
-        {
-            EnsureParametersAreNotOrEmpty(arrayName, propertyName, andPropertyName, andPropertyValue);
-            var arrayContainsWithAndClause = string.Empty;
-            var lastItem = values.Last();
-
-            foreach (var value in values)
-            {
-                arrayContainsWithAndClause += $" ARRAY_CONTAINS(c.{arrayName}, {{ '{propertyName}' : '" + value + "'})";
-                // arrayContainsWithAndClause += "  ARRAY_CONTAINS(c.topicTags, { 'id' : '" + value + "'}) ";
-                if (value != lastItem)
-                {
-                    arrayContainsWithAndClause += "OR";
-                }
-            }
-            //ARRAY_CONTAINS(c.Location, { 'state' : 'Alaska','city':'hyd'})
-            //AND (ARRAY_CONTAINS(c.location,{ 'state' : 'Hawaii','city':'Kalawao','zipCode':'96742'}))
-                        
-            //if (!string.IsNullOrEmpty(arrayContainsWithAndClause))
-            //{
-            // remove the last OR from the db query
-            if (andPropertyValue.ToUpperInvariant() != "ALL")
-            {
-                arrayContainsWithAndClause = "(" + arrayContainsWithAndClause + ")";
-
-                arrayContainsWithAndClause += $" AND c.{andPropertyName} = '" + andPropertyValue + "'";
-                //arrayContainsWithAndClause += $" AND c.resourceType = '" + resourceFilter.ResourceType + "'";
-            }
-            //}
-            string locationFilter = FindLocationWhereArrayContains(location);
-            if (!string.IsNullOrEmpty(locationFilter)) {
-                arrayContainsWithAndClause = arrayContainsWithAndClause + " AND " + locationFilter;
-            }
-            var query = $"SELECT * FROM c WHERE {arrayContainsWithAndClause}";
-            return query;
-        }
-
         public async Task<dynamic> QueryItemsAsync(string collectionId, string query)
         {
             var docQuery = documentClient.CreateDocumentQuery<dynamic>(
@@ -204,107 +120,6 @@ namespace Access2Justice.CosmosDb
             results.Results = resources;
 
             return results;
-        }
-
-        // need to work on this code for optimization.. it is very bad :(
-        private dynamic FindLocationWhereArrayContains(Location location)
-        {
-            if (location == null) {
-                return "";
-            }
-            string locationQuery = string.Empty;
-            string query = " (ARRAY_CONTAINS(c.location,{0}))";
-            if (!string.IsNullOrEmpty(location.State))
-            {
-                locationQuery += " 'state' : '" + location.State + "'";
-            }
-            if (!string.IsNullOrEmpty(location.City))
-            {
-                if (!string.IsNullOrEmpty(locationQuery))
-                {
-                    locationQuery += locationQuery + ",";
-                }
-                locationQuery += " 'city':'" + location.City + "'";
-            }
-            if (!string.IsNullOrEmpty(location.County))
-            {
-                if (!string.IsNullOrEmpty(locationQuery))
-                {
-                    locationQuery += locationQuery + ",";
-                }
-                locationQuery += " 'county':'" + location.County + "'";
-            }
-            if (!string.IsNullOrEmpty(location.County))
-            {
-                if (!string.IsNullOrEmpty(locationQuery))
-                {
-                    locationQuery += locationQuery + ",";
-                }
-                locationQuery += " 'zipCode':'" + location.ZipCode + "'";
-            }
-            if (!string.IsNullOrEmpty(locationQuery))
-            {
-                locationQuery = string.Format(CultureInfo.InvariantCulture, query, "{" + locationQuery + "},true");
-            }
-            return locationQuery;
-        }
-
-        private async Task CreateDatabaseIfNotExistsAsync()
-        {
-            try
-            {
-                await documentClient.ReadDatabaseAsync(UriFactory.CreateDatabaseUri(cosmosDbSettings.DatabaseId));
-            }
-            catch (DocumentClientException e)
-            {
-                if (e.StatusCode == System.Net.HttpStatusCode.NotFound)
-                {
-                    await documentClient.CreateDatabaseAsync(new Database { Id = cosmosDbSettings.DatabaseId });
-                }
-                else
-                {
-                    // todo: log error
-                    throw;
-                }
-            }
-        }
-
-        private async Task CreateCollectionIfNotExistsAsync()
-        {
-            try
-            {
-                await documentClient.ReadDocumentCollectionAsync(
-                    UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId));
-            }
-            catch (DocumentClientException e)
-            {
-                if (e.StatusCode == System.Net.HttpStatusCode.NotFound)
-                {
-                    await documentClient.CreateDocumentCollectionAsync(
-                        UriFactory.CreateDatabaseUri(cosmosDbSettings.DatabaseId),
-                        new DocumentCollection
-                        {
-                            Id = cosmosDbSettings.TopicCollectionId
-                        },
-                        new RequestOptions { OfferThroughput = 400 });
-                }
-                else
-                {
-                    // todo: log error
-                    throw;
-                }
-            }
-        }
-
-        private void EnsureParametersAreNotOrEmpty(params string[] parameters)
-        {
-            foreach (var param in parameters)
-            {
-                if (string.IsNullOrWhiteSpace(param))
-                {
-                    throw new ArgumentException("Paramters can not be null or empty spaces.");
-                }
-            }
         }
 
         public async Task<dynamic> QueryPagedResourcesAsync(string query, string continuationToken)
@@ -353,6 +168,53 @@ namespace Access2Justice.CosmosDb
             var result = await QueryItemsPaginationAsync(cosmosDbSettings.ResourceCollectionId, query, feedOptions);
 
             return result;
+        }
+
+        private async Task CreateDatabaseIfNotExistsAsync()
+        {
+            try
+            {
+                await documentClient.ReadDatabaseAsync(UriFactory.CreateDatabaseUri(cosmosDbSettings.DatabaseId));
+            }
+            catch (DocumentClientException e)
+            {
+                if (e.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    await documentClient.CreateDatabaseAsync(new Database { Id = cosmosDbSettings.DatabaseId });
+                }
+                else
+                {
+                    // todo: log error
+                    throw;
+                }
+            }
+        }
+
+        private async Task CreateCollectionIfNotExistsAsync()
+        {
+            try
+            {
+                await documentClient.ReadDocumentCollectionAsync(
+                    UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId));
+            }
+            catch (DocumentClientException e)
+            {
+                if (e.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    await documentClient.CreateDocumentCollectionAsync(
+                        UriFactory.CreateDatabaseUri(cosmosDbSettings.DatabaseId),
+                        new DocumentCollection
+                        {
+                            Id = cosmosDbSettings.TopicCollectionId
+                        },
+                        new RequestOptions { OfferThroughput = 400 });
+                }
+                else
+                {
+                    // todo: log error
+                    throw;
+                }
+            }
         }
 
     }

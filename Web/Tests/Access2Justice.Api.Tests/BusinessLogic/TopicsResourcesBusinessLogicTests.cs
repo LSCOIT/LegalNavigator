@@ -11,8 +11,8 @@
 //{
 //    public class TopicsResourcesBusinessLogicTests
 //    {
-//        private readonly IDynamicQueries backendDatabaseService;
-//        //private readonly IDynamicQueries dynamicQueries;
+//        private readonly IBackendDatabaseService backendDatabaseService;
+//        private readonly IDynamicQueries dynamicQueries;
 //        private readonly ICosmosDbSettings cosmosDbSettings;
 //        private readonly TopicsResourcesBusinessLogic topicsResourcesBusinessLogic;
 
@@ -52,11 +52,11 @@
 
 //        public TopicsResourcesBusinessLogicTests()
 //        {
-//            backendDatabaseService = Substitute.For<IDynamicQueries>();
-//            //dynamicQueries = Substitute.For<IDynamicQueries>();
+//            backendDatabaseService = Substitute.For<IBackendDatabaseService>();
+//            dynamicQueries = Substitute.For<IDynamicQueries>();
 //            cosmosDbSettings = Substitute.For<ICosmosDbSettings>();
 
-//            topicsResourcesBusinessLogic = new TopicsResourcesBusinessLogic(backendDatabaseService, cosmosDbSettings);
+//            topicsResourcesBusinessLogic = new TopicsResourcesBusinessLogic(dynamicQueries, cosmosDbSettings);
 //            cosmosDbSettings.AuthKey.Returns("69kXp6uzHNUkG8gr==");
 //            cosmosDbSettings.Endpoint.Returns(new System.Uri("https://access2justicedb.documents.azure.com:443/"));
 //            cosmosDbSettings.DatabaseId.Returns("a2jdb");

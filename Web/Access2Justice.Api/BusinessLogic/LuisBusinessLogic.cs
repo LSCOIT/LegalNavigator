@@ -97,8 +97,10 @@ namespace Access2Justice.Api
             if (topicIds.Count > 0)
             {
                 ResourceFilter resourceFilter = new ResourceFilter { TopicIds = topicIds, PageNumber = 0, ResourceType = "ALL", Location = location };
-                var groupedResourceType = await topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
-                PagedResources resources = await topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);                
+                var task1 =  topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
+                var task2 =  topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
+                var groupedResourceType = await task1;
+                PagedResources resources = await task2;
                 serializedTopics = JsonConvert.SerializeObject(topics);
                 serializedResources = JsonConvert.SerializeObject(resources.Results);
                 serializedToken = resources.ContinuationToken;
