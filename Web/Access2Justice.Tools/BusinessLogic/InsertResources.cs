@@ -24,9 +24,7 @@ namespace Access2Justice.Tools.BusinessLogic
                 String line1, line2;
                 line1 = streamReader.ReadLine();
                 string[] parts = line1.Split('\t');
-                int len = parts.Length;
                 string val;
-                int j = 0, q = 0;
 
                 while ((line2 = streamReader.ReadLine()) != null)
                 {
@@ -34,41 +32,34 @@ namespace Access2Justice.Tools.BusinessLogic
                     string[] partsb = line2.Split('\t');
                     Conditions[] conditions = null;
                     ReferenceTag[] referenceTags = null;
-                    List<string> reference_Id = new List<string>();
-                    List<string> condition_Id = new List<string>();
                     List<Locations> locations = new List<Locations>();
-                    List<string> loc_Id = new List<string>();
-                    List<string> locations_Id = new List<string>();
 
-                    for (int i = 0; i < partsb.Length; i++)
+                    for (int iterationCounter = 0; iterationCounter < partsb.Length; iterationCounter++)
                     {
-                        val = parts[i];
+                        val = parts[iterationCounter];
                         if (val.EndsWith("referenceTags", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            string tempReferenceId = partsb[i];
-                            reference_Id.Add(partsb[i]);
+                            string tempReferenceId = partsb[iterationCounter];
                             string[] referencesb = null;
                             referencesb = tempReferenceId.Split('|');
                             referenceTags = new ReferenceTag[referencesb.Length];
-                            for (int m = 0; m < referencesb.Length; m++)
+                            for (int referenceTagIterator = 0; referenceTagIterator < referencesb.Length; referenceTagIterator++)
                             {
-                                referenceTags[m] = new ReferenceTag()
+                                referenceTags[referenceTagIterator] = new ReferenceTag()
                                 {
-                                    ReferenceTags = referencesb[m],
+                                    ReferenceTags = referencesb[referenceTagIterator],
                                 };
                             }
                         }
 
                         else if (val.EndsWith("location", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            string templocId = partsb[i];
-                            loc_Id.Add(partsb[i]);
+                            string templocId = partsb[iterationCounter];
                             string[] locsb = null;
                             locsb = templocId.Split('|');
-                            for (int m = 0; m < locsb.Length; m++)
+                            for (int locationIterator = 0; locationIterator < locsb.Length; locationIterator++)
                             {
-                                string tempLocationsId = locsb[m];
-                                locations_Id.Add(locsb[m]);
+                                string tempLocationsId = locsb[locationIterator];
                                 string[] locationsb = null;
                                 locationsb = tempLocationsId.Split(';');
                                 if (locationsb.Length == 4)
@@ -102,25 +93,23 @@ namespace Access2Justice.Tools.BusinessLogic
 
                         else if (val.EndsWith("conditions", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            string tempconditionId = partsb[i];
-                            condition_Id.Add(partsb[i]);
+                            string tempconditionId = partsb[iterationCounter];
                             string[] conditionsb = null;
                             conditionsb = tempconditionId.Split('|');
                             conditions = new Conditions[conditionsb.Length];
-                            for (int m = 0; m < conditionsb.Length; m++)
+                            for (int conditionIterator = 0; conditionIterator < conditionsb.Length; conditionIterator++)
                             {
-                                conditions[m] = new Conditions()
+                                conditions[conditionIterator] = new Conditions()
                                 {
-                                    Condition = conditionsb[m],
+                                    Condition = conditionsb[conditionIterator],
                                 };
                             }
                         }
 
                         else
                         {
-                            value.Add(partsb[i]);
+                            value.Add(partsb[iterationCounter]);
                         }
-                        j++;
                     }
                     var newResourceId = Guid.NewGuid();
                     ResourcesList.Add(new Resource()
@@ -154,7 +143,6 @@ namespace Access2Justice.Tools.BusinessLogic
                         CreatedBy = value[24],
                         ModifiedBy = value[25]
                     });
-                    q++;
                 }
             }
             Resources.ResourcesList = ResourcesList.ToList();

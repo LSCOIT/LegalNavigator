@@ -25,48 +25,40 @@ namespace Access2Justice.Tools.BusinessLogic
                 String line1, line2;
                 line1 = streamReader.ReadLine();
                 string[] parts = line1.Split('\t');
-                int len = parts.Length;
                 string val;
-                int j = 0, q = 0;
 
                 while ((line2 = streamReader.ReadLine()) != null)
                 {
                     List<string> value = new List<string>();
                     string[] partsb = line2.Split('\t');
                     ParentTopicID[] parentTopicIds = null;
-                    List<string> parent_Id = new List<string>();
                     List<Location> locations = new List<Location>();
-                    List<string> loc_Id = new List<string>();
-                    List<string> location_Id = new List<string>();
-                    for (int i = 0; i < partsb.Length; i++)
+                    for (int iterationCounter = 0; iterationCounter < partsb.Length; iterationCounter++)
                     {
-                        val = parts[i];
+                        val = parts[iterationCounter];
                         if (val.EndsWith("TopicId", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            string tempParentId = partsb[i];
-                            parent_Id.Add(partsb[i]);
+                            string tempParentId = partsb[iterationCounter];
                             string[] parentsb = null;
                             parentsb = tempParentId.Split('|');
                             parentTopicIds = new ParentTopicID[parentsb.Length];
-                            for (int m = 0; m < parentsb.Length; m++)
+                            for (int topicIdIterator = 0; topicIdIterator < parentsb.Length; topicIdIterator++)
                             {
-                                parentTopicIds[m] = new ParentTopicID()
+                                parentTopicIds[topicIdIterator] = new ParentTopicID()
                                 {
-                                    ParentTopicId = parentsb[m],
+                                    ParentTopicId = parentsb[topicIdIterator],
                                 };
                             }
                         }
 
                         else if (val.EndsWith("location", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            string templocId = partsb[i];
-                            loc_Id.Add(partsb[i]);
+                            string templocId = partsb[iterationCounter];
                             string[] locsb = null;
                             locsb = templocId.Split('|');
-                            for (int m = 0; m < locsb.Length; m++)
+                            for (int locationIterator = 0; locationIterator < locsb.Length; locationIterator++)
                             {
-                                string templocationId = locsb[m];
-                                location_Id.Add(locsb[m]);
+                                string templocationId = locsb[locationIterator];
                                 string[] locationsb = null;
                                 locationsb = templocationId.Split(';');
                                 if (locationsb.Length == 4)
@@ -100,9 +92,8 @@ namespace Access2Justice.Tools.BusinessLogic
 
                         else
                         {
-                            value.Add(partsb[i]);
+                            value.Add(partsb[iterationCounter]);
                         }
-                        j++;
                     }
                     var newTopicId = Guid.NewGuid();
                     parentTopics.Add(new ParentTopic() { DummyId = value[0], NewId = newTopicId });
@@ -118,7 +109,6 @@ namespace Access2Justice.Tools.BusinessLogic
                         CreatedBy = value[5],
                         ModifiedBy = value[6]
                     });
-                    q++;
                 }
             }
             topics.TopicsList = topicsList.ToList();
