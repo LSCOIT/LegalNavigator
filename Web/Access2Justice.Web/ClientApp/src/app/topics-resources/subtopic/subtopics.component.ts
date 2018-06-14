@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { TopicService } from '../shared/topic.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute,Router } from '@angular/router';
 import { NavigateDataService } from '../../shared/navigate-data.service';
+import { isNullOrUndefined } from "util";
 
 @Component({
   selector: 'app-subtopics',
@@ -11,34 +12,36 @@ import { NavigateDataService } from '../../shared/navigate-data.service';
 
 export class SubtopicsComponent implements OnInit {
   subtopics: any[];
-  activeTopic = this.activeRoute.snapshot.params['topic'];
+  activeTopic: any;
   activeTopicId: string;
-  subtopicName: string;
+  subtopicName: string;  
 
   constructor(
-    private topicService: TopicService,
-    private activeRoute: ActivatedRoute,    
+    private topicService: TopicService,    
+    private activeRoute: ActivatedRoute,
+    private router: Router,
     private navigateDataService: NavigateDataService
   ) {}
 
   getSubtopics(): void {
-    this.topicService.getTopics()
-      .subscribe(topics => {
-        for (let i = 0; i < topics.length; i++) {
-          if (topics[i]["name"].toLowerCase() === this.activeTopic) {
-            this.activeTopicId = topics[i]["id"];
-            this.topicService.getSubtopics(this.activeTopicId)
-              .subscribe(
-              subtopics => {
-                this.subtopics = subtopics;
-                this.navigateDataService.setData(this.subtopics);
-              });
+    this.activeTopic = this.activeRoute.snapshot.params['topic'];
+    this.topicService.getSubtopics(this.activeTopic)
+      .subscribe(
+        subtopics => {
+          this.subtopics = subtopics;
+          this.navigateDataService.setData(this.subtopics);
+          if (this.subtopics.length == 0) {
+            this.router.navigateByUrl('/subtopics/' + this.activeTopic, { skipLocationChange: true });
           }
-        }
-      });
-  };
+        });
+  }
 
   ngOnInit() {
-    this.getSubtopics();
+    this.activeRoute.url
+      .subscribe(routeParts => {
+        for (let i = 1; i < routeParts.length; i++) {
+          this.getSubtopics();
+        }
+      });
   }
 }
