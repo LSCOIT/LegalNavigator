@@ -18,7 +18,7 @@ namespace Access2Justice.Api.BusinessLogic
         public async Task<dynamic> GetResourcesAsync(dynamic topics)
         {
             var ids = new List<string>();
-            foreach(var topic in topics)
+            foreach (var topic in topics)
             {
                 ids.Add(topic.id);
             }
@@ -51,12 +51,9 @@ namespace Access2Justice.Api.BusinessLogic
             return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, "id", id);
         }
 
-        public async Task<dynamic> GetBreadCrumbDataByIdAsync(string id)
+        public async Task<dynamic> GetBreadCrumbDataByIdAsync( string id)
         {
-            var spName = "GetParentTopics";
-            dynamic[] procParams = new dynamic[] { id };
-            var result = await backendDatabaseService.ExecuteStoredProcedureAsyncWithParameters(spName, procParams);
-            return result;
+            return await dbClient.ExecuteStoredProcedureAsyncWithParameters( id);
         }
     }
 }

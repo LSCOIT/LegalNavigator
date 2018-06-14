@@ -6,17 +6,14 @@
   <li *ngFor="let item of breadcrumbs let i = index; let first = first; let last = last"
       [ngClass]="{ first: first, last: last }">
 
-    <span *ngIf="breadcrumbs?.length == 1" [routerLink]="['/topics',item.id]">
+    <span *ngIf="breadcrumbs?.length == 1">
       {{item.name}}
     </span>
     <span *ngIf="breadcrumbs?.length > 1">
-      <a *ngIf="first" [routerLink]="['/topics',item.id]">
+       <a *ngIf="!last" [routerLink]="['/topics',item.id]">
         {{item.name}}
       </a>
-      <a *ngIf="!last && !first" [routerLink]="['/topics', item.id | lowercase]">
-        {{item.name}}
-      </a>
-      <span *ngIf="last" [routerLink]="['/topics',item.id]">
+      <span *ngIf="last">
         {{item.name}}
       </span>
       <span *ngIf="!last" class="angle-bracket">></span>

@@ -59,6 +59,12 @@ namespace Access2Justice.CosmosDb
             return await backendDatabaseService.QueryItemsAsync(collectionId, query);
         }
 
+        public async Task<dynamic> ExecuteStoredProcedureAsyncWithParameters(string id)
+        {
+            string spName = "GetParentTopics";
+            dynamic[] procParams = new dynamic[] { id };
+            return await backendDatabaseService.ExecuteStoredProcedureAsyncWithParameters(spName, procParams);
+        }
         private void EnsureParametersAreNotOrEmpty(params string[] parameters)
         {
             foreach (var param in parameters)
