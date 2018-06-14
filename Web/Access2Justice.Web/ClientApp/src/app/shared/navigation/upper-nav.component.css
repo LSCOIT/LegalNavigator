@@ -12,6 +12,23 @@
   background-color: #f4f4f4;
   color: #333;
 }
+
+#location {
+  position: absolute;
+  top: 7px;
+  right: 0;
+  width: 65%;
+  background: #f4f4f4;
+  height: 33px;
+}
+
+@media only screen and (min-width : 768px) {
+  #location {
+    position: static;
+    width: auto;
+  }
+}
+
 @media only screen and (min-width : 992px) {
   .create-account {
     margin-right: -25px;

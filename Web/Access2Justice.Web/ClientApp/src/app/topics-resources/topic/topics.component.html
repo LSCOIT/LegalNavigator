@@ -4,7 +4,7 @@
       <img src="{{ topic.icon }}" alt="{{topic.name}}">
     </a>
     <a [routerLink]="['/topics', topic.name | lowercase]">
-      <h5>{{ topic.name }}</h5>
+      <p>{{ topic.name }}</p>
     </a>
   </li>
 </ul>

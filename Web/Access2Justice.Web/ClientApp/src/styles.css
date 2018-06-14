@@ -57,6 +57,22 @@ li.web-hidden {
   border: 1px solid #000;
 }
 
+/* Language Dropdown */
+.navbar-nav .open .dropdown-menu {
+  height: 360px;
+  overflow-y: scroll;
+  background-color: #fff;
+  border: 0;
+  border-radius: 0;
+  margin-top: 0;
+  margin-top: 13px;
+}
+
+.nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
+  background-color: #fff;
+  padding: 15px;
+}
+
 /*Home Page - Carousel*/
 .carousel.slide {
   height: 525px;
@@ -145,6 +161,13 @@ a.carousel-control .icon-next {
 @media only screen and (min-width : 768px) {
   .row {
     margin: 40px auto;
+  }
+  
+  .navbar-nav .open .dropdown-menu {
+    width: 630px;
+    min-height: 415px;
+    overflow: hidden;
+    margin-top: 5px;
   }
 
   .carousel.slide {
