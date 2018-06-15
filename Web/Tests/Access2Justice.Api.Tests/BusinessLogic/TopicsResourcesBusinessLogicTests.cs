@@ -219,7 +219,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var dbResponse = backendDatabaseService.QueryItemsAsync(cosmosDbSettings.ResourceCollectionId, query);
             dbResponse.ReturnsForAnyArgs<dynamic>(topicsData);
             //act
-            var response = topicsResourcesBusinessLogic.GetResourceAsync(topicId).Result;
+            var response = topicsResourcesBusinessLogic.GetBreadCrumbDataByIdAsync(topicId).Result;
             string result = JsonConvert.SerializeObject(response);
             //assert
             Assert.Contains(topicId, result, StringComparison.InvariantCulture);
