@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { LocationService } from './location.service';
@@ -10,6 +10,7 @@ import { MapLocation, DisplayMapLocation } from './location';
   styleUrls: ['./location.component.css']
 })
 export class LocationComponent implements OnInit {
+  @Input()  isGlobalMap: boolean;
   modalRef: BsModalRef;
   locality: string;
   address: any;
@@ -33,7 +34,7 @@ export class LocationComponent implements OnInit {
   }
 
   updateLocation() {
-    this.displayMapLocation = this.locationService.updateLocation();
+    this.displayMapLocation = this.locationService.updateLocation(this.isGlobalMap);
     if (this.displayMapLocation.locality !== "" && this.displayMapLocation.address !== "") {
       this.address = this.displayMapLocation.address;
       this.locality = this.displayMapLocation.locality;
