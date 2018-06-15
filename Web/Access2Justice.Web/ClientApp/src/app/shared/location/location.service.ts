@@ -15,6 +15,7 @@ export class LocationService {
   tempLoc: any;
   mapLocation: MapLocation;
   displayMapLocation: DisplayMapLocation;
+
   constructor() { }
 
   getMap() {
@@ -32,7 +33,7 @@ export class LocationService {
     searchManager = new Microsoft.Maps.Search.SearchManager(map);
   }
 
-  identifyLocation(searchLocation) {
+  identifyLocation(searchLocation, mapType) {
     let searchRequest = {
       where: searchLocation,
       callback: function (r) {
@@ -49,11 +50,13 @@ export class LocationService {
           this.mapLocation.county = this.location.address.district;
           this.mapLocation.city = this.location.address.locality;
           this.mapLocation.zipCode = this.location.address.postalCode;
-
-          sessionStorage.setItem("globalMapLocation", JSON.stringify(this.mapLocation));
+          
           let locaService = new LocationService();
           this.displayMapLocation = locaService.mapLocationDetails(this.location);
-          sessionStorage.setItem("globalDisplayMapLocation", JSON.stringify(this.displayMapLocation));
+          //sessionStorage.setItem("globalMapLocation", JSON.stringify(this.mapLocation));
+          //sessionStorage.setItem("globalDisplayMapLocation", JSON.stringify(this.displayMapLocation));
+
+          this.setSessionStorage(mapType);
 
           this.map = new Microsoft.Maps.Map('#my-map',
             {
@@ -77,11 +80,15 @@ export class LocationService {
     this.searchManager.geocode(searchRequest);
   }
 
-  updateLocation(isGlobalMap): DisplayMapLocation {
-    this.displayMapLocation = JSON.parse(sessionStorage.getItem("globalDisplayMapLocation"));
-    if (isGlobalMap) {
-      this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
-    }
+  updateLocation(mapType): DisplayMapLocation {
+    this.displayMapLocation = this.getSessionStorageDisplayMapLocation(mapType);//JSON.parse(sessionStorage.getItem("globalDisplayMapLocation"));
+    //if (mapType === "global") {
+    //  this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+    //}
+    //if (mapType === "searchResultsMap") {
+    //  this.mapLocation = JSON.parse(sessionStorage.getItem("searchResultsMapLocation"));
+    //}
+    this.mapLocation = this.getSessionStorageMapLocation(mapType);
     return this.displayMapLocation;
   }
 
@@ -107,6 +114,37 @@ export class LocationService {
     this.displayMapLocation.locality = this.locAddress;
     this.displayMapLocation.address = this.location.address.adminDistrict;
 
+    return this.displayMapLocation;
+  }
+
+  setSessionStorage(mapType) {
+    if (mapType === "global") {
+      sessionStorage.setItem("globalMapLocation", JSON.stringify(this.mapLocation));
+      sessionStorage.setItem("globalDisplayMapLocation", JSON.stringify(this.displayMapLocation));
+    }
+    if (mapType === "searchResultsMap") {
+      sessionStorage.setItem("searchresultsMapLocation", JSON.stringify(this.mapLocation));
+      sessionStorage.setItem("searchresultsDisplayMapLocation", JSON.stringify(this.displayMapLocation));
+    }
+  }
+
+  getSessionStorageMapLocation(mapType): MapLocation {
+    if (mapType === "global") {
+      this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+    }
+    if (mapType === "searchResultsMap") {
+      this.mapLocation = JSON.parse(sessionStorage.getItem("searchResultsMapLocation"));
+    }
+    return this.mapLocation;
+  }
+
+  getSessionStorageDisplayMapLocation(mapType): DisplayMapLocation {
+    if (mapType === "global") {
+      this.displayMapLocation = JSON.parse(sessionStorage.getItem("globalDisplayMapLocation"));
+    }
+    if (mapType === "searchResultsMap") {
+      this.displayMapLocation = JSON.parse(sessionStorage.getItem("searchResultsDisplayMapLocation"));
+    }
     return this.displayMapLocation;
   }
 

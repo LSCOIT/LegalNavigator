@@ -19,6 +19,7 @@ export class SearchResultsComponent implements OnInit {
   uniqueResources: any;
   resourceResults: ResourceResult[] = [];
   filterType: string = 'All';
+  searchResultsMap: string = 'searchResultsMap';
 
   constructor(private navigateDataService: NavigateDataService) { }
 

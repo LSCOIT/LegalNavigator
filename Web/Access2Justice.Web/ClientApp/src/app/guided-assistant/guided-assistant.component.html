@@ -4,6 +4,8 @@
       <h2>Tell us what's going on</h2>
       <h5>We'll create a personalized action plan with step-by-step recommendations for you. <a routerLink='/guidedassistant'>Learn more</a></h5>
     </div>
+    <span *ngIf="!location.showLocation" class="label-display">Showing Information for </span>
+    <app-location #location [mapType]="false"></app-location>
   </div>
   <div class="row">
     <div class="col-md-6 col-md-offset-3 col-sm-12">
