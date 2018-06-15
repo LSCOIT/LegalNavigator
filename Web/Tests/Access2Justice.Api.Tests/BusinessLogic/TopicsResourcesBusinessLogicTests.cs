@@ -56,7 +56,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             dynamicQueries = Substitute.For<IDynamicQueries>();
             cosmosDbSettings = Substitute.For<ICosmosDbSettings>();
 
-            topicsResourcesBusinessLogic = new TopicsResourcesBusinessLogic(dynamicQueries, cosmosDbSettings);
+            topicsResourcesBusinessLogic = new TopicsResourcesBusinessLogic(dynamicQueries, cosmosDbSettings, backendDatabaseService);
             cosmosDbSettings.AuthKey.Returns("69kXp6uzHNUkG8gr==");
             cosmosDbSettings.Endpoint.Returns(new System.Uri("https://access2justicedb.documents.azure.com:443/"));
             cosmosDbSettings.DatabaseId.Returns("a2jdb");

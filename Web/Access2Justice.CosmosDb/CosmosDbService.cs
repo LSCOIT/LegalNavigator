@@ -1,5 +1,6 @@
 ﻿using Access2Justice.CosmosDb.Interfaces;
 using Access2Justice.Shared.Interfaces;
+using Access2Justice.Shared.Models;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents.Linq;
@@ -25,11 +26,17 @@ namespace Access2Justice.CosmosDb
             CreateCollectionIfNotExistsAsync().Wait();
         }
 
-        public async Task<Document> CreateItemAsync<T>(T item)
+        public async Task<Document> CreateItemAsync<T>(T item,string collectionId)
         {
             return await documentClient.CreateDocumentAsync(
-                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId), item);
+                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, collectionId), item);
         }
+
+        //public async Task<Document> CreateResourceAsync<T>(T item)
+        //{
+        //    return await documentClient.CreateDocumentAsync(
+        //        UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.ResourceCollectionId), item);
+        //}
 
         public async Task<T> GetItemAsync<T>(string id)
         {
@@ -145,6 +152,21 @@ namespace Access2Justice.CosmosDb
                     throw;
                 }
             }
+        }
+
+        //Added for mandatory fields
+        public async Task<IEnumerable<Topic>> QueryTopicsAsync(string collectionId, string query)
+        {
+            var docQuery = documentClient.CreateDocumentQuery<Topic>(
+                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, collectionId), query).AsDocumentQuery();
+
+            List<Topic> results = new List<Topic>();
+            while (docQuery.HasMoreResults)
+            {
+                results.AddRange(await docQuery.ExecuteNextAsync<Topic>());
+            }
+
+            return results;
         }
     }
 }

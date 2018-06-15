@@ -5,6 +5,7 @@ using Access2Justice.Shared;
 using Access2Justice.Shared.Bing;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Luis;
+using Access2Justice.Shared.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Azure.Documents;
@@ -12,6 +13,7 @@ using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
+
 
 namespace Access2Justice.Api
 {
@@ -47,6 +49,8 @@ namespace Access2Justice.Api
                 c.TagActionsBy(api => api.GroupName);
                 c.DescribeAllEnumsAsStrings();
                 c.OrderActionsBy((apiDesc) => $"{apiDesc.RelativePath}_{apiDesc.HttpMethod}");
+                c.OperationFilter<FileUploadOperation>(); //Register File Upload Operation Filter
+                c.OperationFilter<FileUploadOperationResource>();
             });
         }
 
