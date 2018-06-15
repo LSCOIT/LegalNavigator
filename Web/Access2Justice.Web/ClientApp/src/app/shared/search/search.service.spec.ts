@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Rx';
 describe('SearchService', () => {
   let service: SearchService;
   const httpSpy = jasmine.createSpyObj('http', ['get']);
+  let luisInput: ILuisInput = { Sentence: '', Location: '', TranslateFrom: '', TranslateTo: '' };  
 
   beforeEach(() => {
     service = new SearchService(httpSpy);
@@ -58,8 +59,8 @@ describe('SearchService', () => {
 
     httpSpy.get.and.returnValue(mockResponse);
 
-    service.search("eviction").subscribe(searchResponse => {
-      expect(httpSpy.get).toHaveBeenCalledWith(`${service.endPoint}eviction`);
+    service.search(luisInput).subscribe(searchResponse => {
+      expect(httpSpy.get).toHaveBeenCalledWith(`${service.searchUrl}`);
       expect(searchResponse).toEqual(resources);
       done();
     });
@@ -93,8 +94,8 @@ describe('SearchService', () => {
 
     httpSpy.get.and.returnValue(mockResponse);
 
-    service.search("eviction").subscribe(searchResponse => {
-      expect(httpSpy.get).toHaveBeenCalledWith(`${service.endPoint}eviction`);
+    service.search(luisInput).subscribe(searchResponse => {
+      expect(httpSpy.get).toHaveBeenCalledWith(`${service.searchUrl}`);
       expect(searchResponse).toEqual(luisResponse);
       done();
     });
@@ -142,8 +143,8 @@ describe('SearchService', () => {
 
     httpSpy.get.and.returnValue(mockResponse);
 
-    service.search("eviction").subscribe(searchResponse => {
-      expect(httpSpy.get).toHaveBeenCalledWith(`${service.endPoint}eviction`);
+    service.search(luisInput).subscribe(searchResponse => {
+      expect(httpSpy.get).toHaveBeenCalledWith(`${service.searchUrl}`);
       expect(searchResponse).toEqual(webResources);
       done();
     });

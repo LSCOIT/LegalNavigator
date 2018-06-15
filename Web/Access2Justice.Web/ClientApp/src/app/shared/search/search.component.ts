@@ -14,6 +14,7 @@ import { isNullOrUndefined } from 'util';
 export class SearchComponent implements OnInit {
   @Input()
   searchResults: any;
+  luisInput: ILuisInput = { Sentence: '', Location: '', TranslateFrom: '', TranslateTo: '' };  
   
   constructor(private searchService: SearchService, private router: Router, private navigateDataService: NavigateDataService) { }
 
@@ -21,7 +22,10 @@ export class SearchComponent implements OnInit {
   }
 
   onSubmit(searchForm: NgForm): void {
-    this.searchService.search(searchForm.value.inputText)
+    this.luisInput.Sentence = searchForm.value.inputText;
+    this.luisInput.Location = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+
+    this.searchService.search(this.luisInput)
       .subscribe(response => {
         if (!isNullOrUndefined(response)) {
           this.searchResults = response;

@@ -63,7 +63,7 @@ export class SearchResultsComponent implements OnInit {
               this.topicIds = this.searchResults.topicIds;
               this.total = this.resourceTypeFilter[i].ResourceCount;
               this.pagesToShow = 2;
-              this.limit = 5;
+              this.limit = 1;
             }
           }
           //this.searchResults.resourceTypeFilter.forEach(item => {
@@ -134,10 +134,10 @@ export class SearchResultsComponent implements OnInit {
   checkResource(resourceName, pageNumber): boolean {
 
     this.resourceTypeFilter.forEach(item => {
-      if (item.ResourceName === resourceName && !isNullOrUndefined(item.ResourceList)
-        && !isNullOrUndefined(item.ResourceList[pageNumber]) && !(this.page > this.currentPage)) {
+      if (item.ResourceName === resourceName && !isNullOrUndefined(item.ResourceList) && !isNullOrUndefined(item.ResourceList[pageNumber])
+        && !(this.page > this.currentPage)) {
         this.searchResults = item.ResourceList[pageNumber];
-        this.isServiceCall = false;
+        this.isServiceCall = false;        
       }
       else if (item.ResourceName === resourceName) {
         this.total = item.ResourceCount;
@@ -189,7 +189,11 @@ export class SearchResultsComponent implements OnInit {
 
 
   goToPage(n: number): void {
-    this.currentPage = this.page;
+    if (this.page < n) {
+      this.currentPage = this.page;
+    } else {
+      this.currentPage = n;
+    }
     this.page = n;
     if (this.isWebResource) {
       this.searchResource(this.calculateOffsetValue(n));
@@ -200,11 +204,7 @@ export class SearchResultsComponent implements OnInit {
 
   onNext(): void {
     this.currentPage = this.page;
-    this.page++;
-    //this.pageCount = this.totalPages();
-    //if ((this.page) >= this.pageCount) {
-    //  return;
-    //}
+    this.page++;    
     if (this.isWebResource) {
       this.searchResource(this.calculateOffsetValue(this.page));
     } else {
@@ -227,12 +227,15 @@ export class SearchResultsComponent implements OnInit {
   }
 
   calculateOffsetValue(pageNumber: number): number {
-
     this.offset = Math.ceil(pageNumber  * 10) + 1;
-
     return this.offset;
   }
 
 }
 
 
+//currentpage       page          passingvalue
+//1                  2                  0
+//3                  4                  2
+//4                  3                  2
+//2                  6                  1 -- > need to consider count here then

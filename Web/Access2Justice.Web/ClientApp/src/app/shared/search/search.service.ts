@@ -5,17 +5,19 @@ import { Observable } from 'rxjs';
 @Injectable()
 export class SearchService {
 
-  endPoint: string = "http://localhost:12176/api/search/";
   siteHostName = "http://localhost:12176/";
-  searchUrl = this.siteHostName + "api/search/";
+  searchUrl = this.siteHostName + "api/search";
   searchOffsetUrl = this.siteHostName + "api/websearch/";
   getResourceUrl = this.siteHostName + "api/resources";
   
 
   constructor(private httpClient: HttpClient) { }
 
-  search(searchText: string) {
-    return this.httpClient.get(this.searchUrl + searchText);
+  search(luisInput: ILuisInput) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json'})
+    };
+    return this.httpClient.put(this.searchUrl, luisInput, httpOptions);
   }
 
   getPagedResources(resourceInput: IResourceFilter) {

@@ -95,12 +95,14 @@ namespace Access2Justice.Api.BusinessLogic
 
         private dynamic ResourcesCount(PagedResources resources)
         {
-            List<dynamic> allResources = new List<dynamic>();
-            allResources.Add(new
+            List<dynamic> allResources = new List<dynamic>
             {
-                ResourceName = "All",
-                ResourceCount = resources.Results.Count()
-            });
+                new
+                {
+                    ResourceName = "All",
+                    ResourceCount = resources.Results.Count()
+                }
+            };
 
             var groupedResourceType = resources.Results.GroupBy(u => u.resourceType)
                   .OrderBy(group => group.Key)

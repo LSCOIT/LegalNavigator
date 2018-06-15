@@ -5,3 +5,12 @@ interface IResourceFilter {
   PageNumber: any;
   Location: any;
 }
+
+
+
+interface ILuisInput {
+  Sentence: string;
+  Location: any;
+  TranslateFrom: string;
+  TranslateTo: string;
+}
