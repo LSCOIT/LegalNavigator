@@ -63,8 +63,6 @@ namespace Access2Justice.Api.BusinessLogic
         //Get Topic Guid based on topic name for ParentTopicID in Topics and refernceTags in Resources
         public async Task<dynamic> GetTopicAsync(string topicName)
         {
-            //var query = "SELECT c.id FROM c WHERE c.name = " + "\"" + topicName + "\"";
-            //var result = await backendDatabaseService.QueryItemsAsync(cosmosDbSettings.TopicCollectionId, query);
             var result = await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, "name", topicName);
             return result;
         }
@@ -72,8 +70,6 @@ namespace Access2Justice.Api.BusinessLogic
         //Get Topic Details
         public async Task<dynamic> GetTopicDetailsAsync(string topicName)
         {
-            //var query = "SELECT * FROM c WHERE c.name = " + "\"" + topicName + "\"";
-            //var result = await backendDatabaseService.QueryItemsAsync(dbSettings.TopicCollectionId, query);
             var result = await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, "name", topicName);
             return result;
         }
@@ -81,9 +77,6 @@ namespace Access2Justice.Api.BusinessLogic
         //Get Resources Details
         public async Task<dynamic> GetResourceDetailAsync(string resourceName, string resourceType)
         {
-            //var query = "SELECT * FROM c WHERE c.name = " + "\"" + resourceName + "\"" + " AND " + "c.resourceType = " + "\"" + resourceType + "\"";
-            //SELECT* FROM c where c.name = "Sample" AND c.resourceType = "forms"
-
             var result = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, "name", resourceName, "resourceType", resourceType);//Need to create another method to fetch resource based on name and type
             return result;
         }
@@ -91,7 +84,6 @@ namespace Access2Justice.Api.BusinessLogic
         //Added for mandatory fields
         public async Task<IEnumerable<Topic>> GetTopicMandatoryDetailsAsync(string topicName)
         {
-            //var query = "SELECT * FROM c WHERE c.name = " + "\"" + topicName + "\"";
             IEnumerable<Topic> result = await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId,"name", topicName);
             return result;
         }
@@ -159,86 +151,102 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 if (resourceObject.resourceType == "Forms")
                 {
-                    List<ReferenceTag> referenceTags = new List<ReferenceTag>();
-                    List<Location> locations = new List<Location>();
-
-                    foreach (JProperty field in resourceObject)
-                    {
-
-                        if (field.Name == "referenceTags")
-                        {
-                            foreach (var referenceTag in field.Value)
-                            {
-                                string id = string.Empty;
-                                foreach (JProperty tags in referenceTag)
-                                {
-                                    if (tags.Name == "id")
-                                    {
-                                        id = tags.Value.ToString();
-                                    }
-                                }
-                                referenceTags.Add(new ReferenceTag { ReferenceTags = id });
-                            }
-                        }
-
-                        if (field.Name == "location")
-                        {
-                            foreach (var loc in field.Value)
-                            {
-                                string state = string.Empty, county = string.Empty, city = string.Empty, zipCode = string.Empty;
-                                foreach (JProperty locs in loc)
-                                {
-                                    if (locs.Name == "state")
-                                    {
-                                        state = locs.Value.ToString();
-                                    }
-                                    else if (locs.Name == "county")
-                                    {
-                                        county = locs.Value.ToString();
-                                    }
-                                    else if (locs.Name == "city")
-                                    {
-                                        city = locs.Value.ToString();
-                                    }
-                                    else if (locs.Name == "zipCode")
-                                    {
-                                        zipCode = locs.Value.ToString();
-                                    }
-                                }
-                                locations.Add(new Location { State = state, County = county, City = city, ZipCode = zipCode });
-                            }
-                        }
-                    }
-
-                    forms.Add(new Form()
-                    {
-                        ResourceId = Guid.NewGuid(),
-                        Name = resourceObject.name,
-                        Description = resourceObject.description,
-                        ResourceType = resourceObject.resourceType,
-                        ExternalUrls = resourceObject.externalUrl,
-                        Urls = resourceObject.url,
-                        ReferenceTags = referenceTags,
-                        Location = locations,
-                        Icon = resourceObject.icon,
-                        FullDescription = resourceObject.fullDescription,
-                        CreatedBy = resourceObject.createdBy,
-                        ModifiedBy = resourceObject.modifiedBy,
-                        Overview = resourceObject.overview
-                    });
+                    forms = CreateResourcesForms(resourceObject);
+                    var serializedResult = JsonConvert.SerializeObject(forms);
+                    var resourceFormObject = JsonConvert.DeserializeObject<List<object>>(serializedResult);
+                    var resourceForm = resourceFormObject[0];
+                    var result = await backendDatabaseService.CreateItemAsync(resourceForm, dbSettings.ResourceCollectionId);
+                    resources.Add(result);
                 }
-            }
-
-            foreach (var resourceForm in forms)
-            {
-                var serializedResult = JsonConvert.SerializeObject(resourceForm);
-                var resourceFormObject = JsonConvert.DeserializeObject<object>(serializedResult);
-                var result = await backendDatabaseService.CreateItemAsync(resourceFormObject, dbSettings.ResourceCollectionId);
-                resources.Add(result);
             }
 
             return resources;
         }
 
+        public dynamic GetReferenceTags(dynamic tagValues)
+        {
+            List<ReferenceTag> referenceTags = new List<ReferenceTag>();
+            foreach (var referenceTag in tagValues)
+            {
+                string id = string.Empty;
+                foreach (JProperty tags in referenceTag)
+                {
+                    if (tags.Name == "id")
+                    {
+                        id = tags.Value.ToString();
+                    }
+                }
+                referenceTags.Add(new ReferenceTag { ReferenceTags = id });
+            }
+            return referenceTags;
+        }
+
+        public dynamic GetLocations(dynamic locationValues)
+        {
+            List<Location> locations = new List<Location>();
+            foreach (var loc in locationValues)
+            {
+                string state = string.Empty, county = string.Empty, city = string.Empty, zipCode = string.Empty;
+                foreach (JProperty locs in loc)
+                {
+                    if (locs.Name == "state")
+                    {
+                        state = locs.Value.ToString();
+                    }
+                    else if (locs.Name == "county")
+                    {
+                        county = locs.Value.ToString();
+                    }
+                    else if (locs.Name == "city")
+                    {
+                        city = locs.Value.ToString();
+                    }
+                    else if (locs.Name == "zipCode")
+                    {
+                        zipCode = locs.Value.ToString();
+                    }
+                }
+                locations.Add(new Location { State = state, County = county, City = city, ZipCode = zipCode });
+            }
+            return locations;
+        }
+
+        public dynamic CreateResourcesForms(dynamic resourceObject)
+        {
+            List<Form> forms = new List<Form>();
+            List<ReferenceTag> referenceTags = new List<ReferenceTag>();
+            List<Location> locations = new List<Location>();
+
+            foreach (JProperty field in resourceObject)
+            {
+                if (field.Name == "referenceTags")
+                {
+                    referenceTags = GetReferenceTags(field.Value);
+                }
+
+                if (field.Name == "location")
+                {
+                    locations = GetLocations(field.Value);
+                }
+            }
+
+            forms.Add(new Form()
+            {
+                ResourceId = Guid.NewGuid(),
+                Name = resourceObject.name,
+                Description = resourceObject.description,
+                ResourceType = resourceObject.resourceType,
+                ExternalUrls = resourceObject.externalUrl,
+                Urls = resourceObject.url,
+                ReferenceTags = referenceTags,
+                Location = locations,
+                Icon = resourceObject.icon,
+                FullDescription = resourceObject.fullDescription,
+                CreatedBy = resourceObject.createdBy,
+                ModifiedBy = resourceObject.modifiedBy,
+                Overview = resourceObject.overview
+            });
+            return forms;
+        }  
     }
 }
