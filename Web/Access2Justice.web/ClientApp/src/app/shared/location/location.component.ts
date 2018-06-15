@@ -10,7 +10,7 @@ import { MapLocation, DisplayMapLocation } from './location';
   styleUrls: ['./location.component.css']
 })
 export class LocationComponent implements OnInit {
-  @Input()  isGlobalMap: boolean;
+  @Input() mapType: string;
   modalRef: BsModalRef;
   locality: string;
   address: any;
@@ -30,21 +30,40 @@ export class LocationComponent implements OnInit {
   geocode() {
     this.query = document.getElementById('search-box');
     this.searchLocation = this.query["value"];
-    this.locationService.identifyLocation(this.searchLocation);
+    this.locationService.identifyLocation(this.searchLocation, this.mapType);
   }
 
   updateLocation() {
-    this.displayMapLocation = this.locationService.updateLocation(this.isGlobalMap);
-    if (this.displayMapLocation.locality !== "" && this.displayMapLocation.address !== "") {
-      this.address = this.displayMapLocation.address;
-      this.locality = this.displayMapLocation.locality;
-      this.showLocation = false;
-    }
+    this.displayMapLocation = this.locationService.updateLocation(this.mapType);
+    //if (this.displayMapLocation.locality !== "" && this.displayMapLocation.address !== "") {
+    //  this.address = this.displayMapLocation.address;
+    //  this.locality = this.displayMapLocation.locality;
+    //  this.showLocation = false;
+    //}
+    this.displayLocationDetails(this.displayMapLocation);
     if (this.modalRef) {
       this.modalRef.hide();
     }
   }
 
+  displayLocationDetails(displayMapLocation) {
+    this.displayMapLocation = displayMapLocation;
+    if (this.displayMapLocation) {
+      this.address = this.displayMapLocation.address;
+      this.locality = this.displayMapLocation.locality;
+      this.showLocation = false;
+    }
+  }
+
   ngOnInit() {
+    if (sessionStorage.getItem("globalDisplayMapLocation")) {
+      if (this.mapType === "global") {
+        this.displayMapLocation = JSON.parse(sessionStorage.getItem("globalDisplayMapLocation"));
+      }
+      if (this.mapType === "searchResultsMap") {
+        this.displayMapLocation = JSON.parse(sessionStorage.getItem("searchresultsDisplayMapLocation"));
+      }
+      this.displayLocationDetails(this.displayMapLocation);
+    }
   }
 }
