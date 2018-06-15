@@ -31,63 +31,21 @@ namespace Access2Justice.Tools.BusinessLogic
                 {
                     List<string> value = new List<string>();
                     string[] partsb = line2.Split('\t');
-                    ParentTopicID[] parentTopicIds = null;
-                    List<Location> locations = new List<Location>();
+                    ParentTopicID[] parentTopicIds = null;                    
+                    List<Locations> locations = new List<Locations>();
                     for (int iterationCounter = 0; iterationCounter < partsb.Length; iterationCounter++)
                     {
                         val = parts[iterationCounter];
                         if (val.EndsWith("TopicId", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            string tempParentId = partsb[iterationCounter];
-                            string[] parentsb = null;
-                            parentsb = tempParentId.Split('|');
-                            parentTopicIds = new ParentTopicID[parentsb.Length];
-                            for (int topicIdIterator = 0; topicIdIterator < parentsb.Length; topicIdIterator++)
-                            {
-                                parentTopicIds[topicIdIterator] = new ParentTopicID()
-                                {
-                                    ParentTopicId = parentsb[topicIdIterator],
-                                };
-                            }
+                            string parentId = partsb[iterationCounter];
+                            parentTopicIds = GetParentId(parentId);
                         }
 
                         else if (val.EndsWith("location", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            string templocId = partsb[iterationCounter];
-                            string[] locsb = null;
-                            locsb = templocId.Split('|');
-                            for (int locationIterator = 0; locationIterator < locsb.Length; locationIterator++)
-                            {
-                                string templocationId = locsb[locationIterator];
-                                string[] locationsb = null;
-                                locationsb = templocationId.Split(';');
-                                if (locationsb.Length == 4)
-                                {
-                                    int position = 0;
-                                    var specificLocation = new Location();
-                                    string state = string.Empty, county = string.Empty, city = string.Empty, zipCode = string.Empty;
-                                    foreach (var subLocation in templocationId.Split(';'))
-                                    {
-                                        state = position == 0 && string.IsNullOrEmpty(state) ? subLocation : state;
-                                        county = position == 1 && string.IsNullOrEmpty(county) ? subLocation : county;
-                                        city = position == 2 && string.IsNullOrEmpty(city) ? subLocation : city;
-                                        zipCode = position == 3 && string.IsNullOrEmpty(zipCode) ? subLocation : zipCode;
-
-                                        if (position == 3)
-                                        {
-                                            specificLocation = new Location()
-                                            {
-                                                State = state,
-                                                County = county,
-                                                City = city,
-                                                ZipCode = zipCode,
-                                            };
-                                        }
-                                        position++;
-                                    }
-                                    locations.Add(specificLocation);
-                                }
-                            }
+                            string locationId = partsb[iterationCounter];
+                            locations = GetLocations(locationId);
                         }
 
                         else
@@ -114,6 +72,63 @@ namespace Access2Justice.Tools.BusinessLogic
             topics.TopicsList = topicsList.ToList();
             topics.ParentTopicList = parentTopics.ToList();
             return topics;
+        }
+
+        public dynamic GetLocations(string locationId)
+        {
+            List<Locations> locations = new List<Locations>();
+            string[] locsb = null;
+            locsb = locationId.Split('|');
+            for (int locationIterator = 0; locationIterator < locsb.Length; locationIterator++)
+            {
+                string tempLocationsId = locsb[locationIterator];
+                string[] locationsb = null;
+                locationsb = tempLocationsId.Split(';');
+                if (locationsb.Length == 4)
+                {
+                    int position = 0;
+                    var specificLocations = new Locations();
+                    string state = string.Empty, county = string.Empty, city = string.Empty, zipCode = string.Empty;
+                    foreach (var subLocations in tempLocationsId.Split(';'))
+                    {
+                        state = position == 0 && string.IsNullOrEmpty(state) ? subLocations : state;
+                        county = position == 1 && string.IsNullOrEmpty(county) ? subLocations : county;
+                        city = position == 2 && string.IsNullOrEmpty(city) ? subLocations : city;
+                        zipCode = position == 3 && string.IsNullOrEmpty(zipCode) ? subLocations : zipCode;
+
+                        if (position == 3)
+                        {
+                            specificLocations = new Locations()
+                            {
+                                State = state,
+                                County = county,
+                                City = city,
+                                ZipCode = zipCode,
+                            };
+                        }
+                        position++;
+                    }
+                    locations.Add(specificLocations);
+                }
+
+            }
+            return locations;
+        }
+
+        public dynamic GetParentId(string parentId)
+        {
+            ParentTopicID[] parentTopicIds = null;
+            string[] parentsb = null;
+            parentsb = parentId.Split('|');
+            parentTopicIds = new ParentTopicID[parentsb.Length];
+            for (int topicIdIterator = 0; topicIdIterator < parentsb.Length; topicIdIterator++)
+            {
+                parentTopicIds[topicIdIterator] = new ParentTopicID()
+                {
+                    ParentTopicId = parentsb[topicIdIterator],
+                };
+            }
+            return parentTopicIds;
         }
     }
 }

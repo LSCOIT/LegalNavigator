@@ -7,7 +7,6 @@ using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Globalization;
 
 namespace Access2Justice.Tools.BusinessLogic
 {
@@ -82,9 +81,20 @@ namespace Access2Justice.Tools.BusinessLogic
         {
             var _query = "SELECT c.id FROM c WHERE c.name = " + "\"" + topicName + "\"";
             var result = await QueryTopicAsync(TopicCollection, _query).ConfigureAwait(true);
-
-            return result;
+            return result;            
         }
+
+        //private void createCosmosDbInstance() {
+        //    IConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+        //    configurationBuilder.AddJsonFile("AppSettings.json");
+        //    IConfiguration configuration = configurationBuilder.Build();
+
+        //    CosmosDb.Interfaces.ICosmosDbSettings cosmosDbSettings = new CosmosDbSettings(configuration.GetSection("CosmosDb"));
+
+        //    IDocumentClient  documentClient= new DocumentClient(cosmosDbSettings.Endpoint, cosmosDbSettings.AuthKey);
+        //    CosmosDbService cosmosDbService = new CosmosDbService(documentClient, cosmosDbSettings);
+        //}
+
         private async Task<dynamic> QueryTopicAsync(string TopicCollection, string query)
         {
             var docQuery = client.CreateDocumentQuery<dynamic>(
@@ -95,7 +105,6 @@ namespace Access2Justice.Tools.BusinessLogic
             {
                 results.AddRange(await docQuery.ExecuteNextAsync().ConfigureAwait(true));
             }
-
             return results;
         }
 

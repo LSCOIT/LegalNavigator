@@ -36,7 +36,7 @@ namespace Access2Justice.Tools.Models
         public string JsonContent { get; set; }
 
         [JsonProperty(PropertyName = "location")]
-        public IEnumerable<Location> Location { get; set; }
+        public IEnumerable<Locations> Location { get; set; }
 
         [JsonProperty(PropertyName = "icon")]
         public string Icon { get; set; }
@@ -58,20 +58,5 @@ namespace Access2Justice.Tools.Models
     {
         [JsonProperty(PropertyName = "id")]
         public dynamic ParentTopicId { get; set; }
-    }
-
-    public class Location
-    {
-        [JsonProperty(PropertyName = "state")]
-        public string State { get; set; }
-
-        [JsonProperty(PropertyName = "county")]
-        public string County { get; set; }
-
-        [JsonProperty(PropertyName = "city")]
-        public string City { get; set; }
-
-        [JsonProperty(PropertyName = "zipCode")]
-        public string ZipCode { get; set; }
     }
 }
