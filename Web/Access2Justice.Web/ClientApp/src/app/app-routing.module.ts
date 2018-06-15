@@ -16,7 +16,7 @@ import { SubtopicsComponent } from './topics-resources/subtopic/subtopics.compon
 import { TopicsResourcesComponent } from './topics-resources/topics-resources.component';
 import { ResourceCardDetailComponent } from
 './shared/resource/resource-card-detail/resource-card-detail.component';
-
+import { PersonalizedPlanComponent } from './profile/personalized-plan/personalized-plan.component';
 
 const appRoutes: Routes = [
   { path: 'search', component: SearchResultsComponent },
@@ -29,6 +29,7 @@ const appRoutes: Routes = [
   { path: 'topics', component: TopicsResourcesComponent },
   { path: 'about', component: AboutComponent },
   { path: 'createaccount', component: CreateAccountComponent },
+  { path: 'plan', component: PersonalizedPlanComponent },
   { path: 'help', component: HelpFaqsComponent },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LogInComponent },

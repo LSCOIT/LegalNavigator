@@ -1,0 +1,12 @@
+.plan-detail {
+  box-shadow: 0 0 5px 3px #ddd;
+  padding-left: 20px;
+}
+
+.plan-heading {
+  border-bottom: 1px solid #ddd;
+}
+
+.plan-icon {
+  width: 10%;
+}

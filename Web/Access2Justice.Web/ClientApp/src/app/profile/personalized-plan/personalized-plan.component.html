@@ -1,0 +1,91 @@
+<div class="container">
+  <div class="row">
+    <ul class="user-action col-sm-offset-9">
+    <li>
+    <span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>
+    <app-save-button></app-save-button>
+    </li>
+    <li>
+    <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+    <app-share-button></app-share-button>
+    </li>
+    <li>
+    <span class="glyphicon glyphicon-print" aria-hidden="true"></span>
+    <app-print-button></app-print-button>
+    </li>
+    </ul>
+  </div>
+  <div class="row">
+    <h3>Your Personalized Plan</h3>
+    <p>The following information and resources are sponsored by the following organizations. Legal disclaimer lorem ipsum dolor amet.</p>
+  </div>
+  <div class="row">
+    <tabset>
+      <tab heading="My Plan">
+        <div class="row">
+          <span>Show</span>
+          <button class="btn">Eviction</button>
+          <button class="btn">Child Custody</button>
+        </div>
+        <div class="plan-detail">
+          <div class="row plan-heading">
+            <div class="col-md-4">
+              <img class="plan-icon" src="./assets/images/categories/housing.svg" alt="eviction icon" />
+              <h3 class="inline">Eviction</h3>  
+            </div>
+            <div class="col-md-3 pull-right">
+              <img class="plan-icon" src="./assets/images/small-icons/more_menu.svg" alt="Alternate Text" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <p class="pxl">Quick Links</p>
+              <ul>
+                <li><a href="#">content</a></li>
+                <li><a href="#">content</a></li>
+              </ul>
+            </div>
+            <div class="col-md-8">
+              <accordion>
+                <accordion-group>
+                  <div accordion-heading class="clearfix">
+                    <span class="glyphicon glyphicon-plus float-left pull-left"></span>
+                    <span class="faq">Step 1. Make sure your summon is real.</span>
+                  </div>
+                  <div class="col-md-2 col-md-offset-10">
+                    <input id="checkBox" type="checkbox">
+                    <label>Completed</label>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      Why you should do this dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo.
+                    </div>
+                  </div>
+                </accordion-group>
+                <accordion-group>
+                  <div accordion-heading class="clearfix">
+                    <span class="glyphicon glyphicon-plus float-left pull-left"></span>
+                    <span class="faq">Step 2. Mi, id sollicitudin urna fermentum ut fusce varius nisl ac ipsum gravida vel pretium tellus.</span>
+                  </div>
+                  <div class="col-md-2 col-md-offset-10">
+                    <input id="checkBox" type="checkbox">
+                    <label>Completed</label>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      Why you should do this dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo.
+                    </div>
+                  </div>
+                </accordion-group>
+              </accordion>
+            </div>
+          </div>
+
+        </div>
+      </tab>
+      <tab heading="My Saved Resources">
+        <app-resource-card></app-resource-card>
+      </tab>
+    </tabset>
+  </div>
+</div>

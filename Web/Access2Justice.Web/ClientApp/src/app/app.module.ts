@@ -11,7 +11,8 @@ import {
   CollapseModule,
   ModalModule,
   ProgressbarModule,
-  ProgressbarConfig
+  ProgressbarConfig,
+  TabsModule 
 } from 'ngx-bootstrap';
 
 import { AppComponent } from './app.component';
@@ -29,6 +30,7 @@ import { SubtopicsComponent } from './topics-resources/subtopic/subtopics.compon
 import { SubtopicDetailComponent } from './topics-resources/subtopic/subtopic-detail.component';
 import { TopicsResourcesComponent } from './topics-resources/topics-resources.component';
 import { TopicsComponent } from './topics-resources/topic/topics.component';
+import { PersonalizedPlanComponent } from './profile/personalized-plan/personalized-plan.component';
 
 
 @NgModule({
@@ -45,7 +47,8 @@ import { TopicsComponent } from './topics-resources/topic/topics.component';
     TopicsComponent,
     TopicsResourcesComponent,
     SubtopicDetailComponent,
-    SubtopicsComponent
+    SubtopicsComponent,
+    PersonalizedPlanComponent
   ],
   imports: [
     BrowserModule,
@@ -57,7 +60,8 @@ import { TopicsComponent } from './topics-resources/topic/topics.component';
     CarouselModule.forRoot(),
     CollapseModule.forRoot(),
     ModalModule.forRoot(),
-    ProgressbarModule.forRoot()
+    ProgressbarModule.forRoot(),
+    TabsModule.forRoot()
   ],
   providers: [
     TopicService,
