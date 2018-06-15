@@ -212,5 +212,32 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             Assert.Contains("[{}]", result, StringComparison.InvariantCultureIgnoreCase);
         }
 
+        [Fact]
+        public void GetBreadcrumbItemsAsyncProperData()
+        {
+            //arrange
+            var dbResponse = backendDatabaseService.QueryItemsAsync(cosmosDbSettings.ResourceCollectionId, query);
+            dbResponse.ReturnsForAnyArgs<dynamic>(topicsData);
+            //act
+            var response = topicsResourcesBusinessLogic.GetResourceAsync(topicId).Result;
+            string result = JsonConvert.SerializeObject(response);
+            //assert
+            Assert.Contains(topicId, result, StringComparison.InvariantCulture);
+        }
+
+        [Fact]
+        public void GetBreadcrumbItemsAsyncEmptyData()
+        {
+            //arrange
+            var dbResponse = backendDatabaseService.QueryItemsAsync(cosmosDbSettings.ResourceCollectionId, query);
+            dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
+
+            //act
+            var response = topicsResourcesBusinessLogic.GetBreadCrumbDataByIdAsync(topicId);
+            string result = JsonConvert.SerializeObject(response);
+
+            //assert
+            Assert.Contains("[{}]", result, StringComparison.InvariantCultureIgnoreCase);
+        }
     }
 }
