@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { DisplayMapLocation, MapLocation } from './location';
+import { LatitudeLongitude } from '../sidebars/map-results';
 declare var Microsoft: any;
 
 @Injectable()
@@ -14,7 +15,6 @@ export class LocationService {
   tempLoc: any;
   mapLocation: MapLocation;
   displayMapLocation: DisplayMapLocation;
-
   constructor() { }
 
   getMap() {
@@ -25,9 +25,8 @@ export class LocationService {
     let searchManager;
     let map = new Microsoft.Maps.Map('#my-map',
       {
-        credentials: environment.bingmap_key
+        credentials: environment.bingmap_key,
       });
-
     let manager = new Microsoft.Maps.AutosuggestManager(map);
     manager.attachAutosuggest('#search-box', '#searchbox-container', suggestionSelected);
     searchManager = new Microsoft.Maps.Search.SearchManager(map);
@@ -43,22 +42,7 @@ export class LocationService {
             icon: '../../assets/images/location/poi_custom.png'
           });
 
-          if (this.location.address.postalCode === undefined) {
-            if (this.location.address.locality === undefined) {
-              if (this.location.address.district === undefined) {
-                this.locAddress = this.location.address.adminDistrict;
-              }
-              else {
-                this.locAddress = this.location.address.district;
-              }
-            }
-            else {
-              this.locAddress = this.location.address.locality;
-            }
-          }
-          else {
-            this.locAddress = this.location.address.postalCode;
-          }
+
           this.mapLocation = { state: '', city: '', county: '', zipCode: '' };
           this.displayMapLocation = { locality: '', address: '' }
           this.mapLocation.state = this.location.address.adminDistrict;
@@ -66,12 +50,10 @@ export class LocationService {
           this.mapLocation.city = this.location.address.locality;
           this.mapLocation.zipCode = this.location.address.postalCode;
 
-          sessionStorage.setItem("tempGlobalMapLocation", JSON.stringify(this.mapLocation));
-
-          this.displayMapLocation.locality = this.locAddress;
-          this.displayMapLocation.address = this.location.address.adminDistrict;
-
-          sessionStorage.setItem("tempGlobalDisplayMapLocation", JSON.stringify(this.displayMapLocation));
+          sessionStorage.setItem("globalMapLocation", JSON.stringify(this.mapLocation));
+          let locaService = new LocationService();
+          this.displayMapLocation = locaService.mapLocationDetails(this.location);
+          sessionStorage.setItem("globalDisplayMapLocation", JSON.stringify(this.displayMapLocation));
 
           this.map = new Microsoft.Maps.Map('#my-map',
             {
@@ -95,12 +77,39 @@ export class LocationService {
     this.searchManager.geocode(searchRequest);
   }
 
-  updateLocation(): DisplayMapLocation {
-    this.displayMapLocation = JSON.parse(sessionStorage.getItem("tempGlobalDisplayMapLocation"));
-    this.mapLocation = JSON.parse(sessionStorage.getItem("tempGlobalMapLocation"));
-    
+  updateLocation(isGlobalMap): DisplayMapLocation {
+    this.displayMapLocation = JSON.parse(sessionStorage.getItem("globalDisplayMapLocation"));
+    if (isGlobalMap) {
+      this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+    }
     return this.displayMapLocation;
   }
+
+  mapLocationDetails(location): DisplayMapLocation {
+    this.location = location;
+    if (this.location.address.postalCode === undefined) {
+      if (this.location.address.locality === undefined) {
+        if (this.location.address.district === undefined) {
+          this.locAddress = this.location.address.adminDistrict;
+        }
+        else {
+          this.locAddress = this.location.address.district;
+        }
+      }
+      else {
+        this.locAddress = this.location.address.locality;
+      }
+    }
+    else {
+      this.locAddress = this.location.address.postalCode;
+    }
+    this.displayMapLocation = { locality: '', address: '' }
+    this.displayMapLocation.locality = this.locAddress;
+    this.displayMapLocation.address = this.location.address.adminDistrict;
+
+    return this.displayMapLocation;
+  }
+
 }
 
 function suggestionSelected(result) {
@@ -116,25 +125,7 @@ function suggestionSelected(result) {
   });
   map.entities.push(pin);
   map.setView({ bounds: result.bestView, padding: 30 });
-  if (result.address.postalCode === undefined) {
-    if (result.address.locality === undefined) {
-      if (result.address.district === undefined) {
-        this.locAddress = result.address.adminDistrict;
-      }
-      else {
-        this.locAddress = result.address.district;
-      }
-    }
-    else {
-      this.locAddress = result.address.locality;
-    }
-  }
-  else {
-    this.locAddress = result.address.postalCode;
-  }
-  this.displayMapLocation = { locality: '', address: '' }
-  this.displayMapLocation.locality = this.locAddress;
-  this.displayMapLocation.address = result.address.adminDistrict;
-
-  sessionStorage.setItem("tempGlobalDisplayMapLocation", JSON.stringify(this.displayMapLocation));
+  var locaService = new LocationService();
+  this.displayMapLocation = locaService.mapLocationDetails(result);
+  sessionStorage.setItem("globalDisplayMapLocation", JSON.stringify(this.displayMapLocation));
 }

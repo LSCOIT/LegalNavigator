@@ -10,7 +10,7 @@ declare var Microsoft: any;
   styleUrls: ['./map-results.component.css']
 })
 export class MapResultsComponent implements OnInit {
-  organizationsList: Array<MapLocationResult> = [];
+  addressList: Array<MapLocationResult> = [];
   latitudeLongitude: Array<LatitudeLongitude> = [];
   latlong: LatitudeLongitude;
   @Input() searchResource: any;
@@ -19,30 +19,30 @@ export class MapResultsComponent implements OnInit {
   }
 
   getAddress() {
-    if (this.searchResource != null || this.searchResource != undefined) {
-      if (this.searchResource.resources != null || this.searchResource.resources != undefined) {
+    if (this.searchResource) {
+      if (this.searchResource.resources) {
         for (let i = 0; i < this.searchResource.resources.length; i++) {
-          if (this.searchResource.resources[i].resourceType.toLowerCase() === "organizations") {
-            this.organizationsList.push(this.searchResource.resources[i].address);
+          if (this.searchResource.resources[i].address) {
+            this.addressList.push(this.searchResource.resources[i].address);
           }
         }
       }
-      this.getMapResults(this.organizationsList);
+      this.getMapResults(this.addressList);
     }
   }
 
-  getMapResults(organizations) {
-    this.organizationsList = organizations;
+  getMapResults(address) {
+    this.addressList = address;
     this.mapResultsService.getMap();
-    if (this.organizationsList.length > 0) {
-      for (let i = 0, len = this.organizationsList.length; i < len; i++) {
-        this.mapResultsService.getLocationDetails(this.organizationsList[i], environment.bingmap_key).subscribe((locationCoordinates) => {
+    if (this.addressList.length > 0) {
+      for (let i = 0, len = this.addressList.length; i < len; i++) {
+        this.mapResultsService.getLocationDetails(this.addressList[i], environment.bingmap_key).subscribe((locationCoordinates) => {
           this.latlong = {
             latitude: locationCoordinates.resourceSets[0].resources[0].point.coordinates[0],
             longitude: locationCoordinates.resourceSets[0].resources[0].point.coordinates[1]
           }
           this.latitudeLongitude.push(this.latlong);
-          if (this.latitudeLongitude.length == this.organizationsList.length) {
+          if (this.latitudeLongitude.length == this.addressList.length) {
             this.mapResultsService.mapResults(this.latitudeLongitude);
           }
         });

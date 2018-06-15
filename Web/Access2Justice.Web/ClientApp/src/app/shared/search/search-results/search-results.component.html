@@ -3,9 +3,9 @@
     <h2>Results for {{searchResults.topIntent}}.</h2>
   </div>
   <div class="row">
-    <div class=" panel-heading panel-heading-space">
+    <div class=" panel-heading panel-heading-space">      
       <span *ngIf="!location.showLocation" class="label-display">Showing Information for </span>
-      <app-location #location></app-location>
+      <app-location #location [isGlobalMap]="false"></app-location>
     </div>
   </div>
   <div class="row">

@@ -70,25 +70,25 @@ describe('MapResultsComponent', () => {
     expect(service.getMap).toHaveBeenCalled();
   });
 
-  it("should push into organizationsList when getAddress is called", () => {
+  it("should push into addressList when getAddress is called", () => {
     spyOn(service, 'getMap').and.returnValue(null);
     component.searchResource = onlyOneOrganization;
     component.getAddress();
-    expect(component.organizationsList.length).toEqual(1);
+    expect(component.addressList.length).toEqual(1);
   });
 
   it("should push 2 items into organizations into list when getAddress is called", () => {
     spyOn(service, 'getMap').and.returnValue(null);
     component.searchResource = onlyTwoOrganization;
     component.getAddress();
-    expect(component.organizationsList.length).toEqual(2);
+    expect(component.addressList.length).toEqual(2);
   });
 
-  it("should not push into organizationsList when getAddress is called", () => {
+  it("should not push into addressList when getAddress is called", () => {
     spyOn(service, 'getMap').and.returnValue(null);
     component.searchResource = nonOrganization;
     component.getAddress();
-    expect(component.organizationsList.length).toEqual(0);
+    expect(component.addressList.length).toEqual(0);
   });
 
   it("should call getMapResults of the component when getAddress is called", () => {

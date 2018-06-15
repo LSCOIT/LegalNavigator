@@ -37,8 +37,8 @@ describe('LocationService', () => {
       zipCode: 'Sample zip code'
     };
 
-    sessionStorage.setItem('tempGlobalDisplayMapLocation', JSON.stringify(mockDisplayMapLocation));
-    sessionStorage.setItem('tempGlobalMapLocation', JSON.stringify(mockMapLocation));
+    sessionStorage.setItem('mockTempGlobalDisplayMapLocation', JSON.stringify(mockDisplayMapLocation));
+    sessionStorage.setItem('mockTempGlobalMapLocation', JSON.stringify(mockMapLocation));
     service.updateLocation();
     expect(service.displayMapLocation).toEqual(mockDisplayMapLocation);
     expect(service.mapLocation).toEqual(mockMapLocation);
