@@ -81,11 +81,6 @@ namespace Access2Justice.CosmosDb
                 UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, id));
         }
 
-        public async Task<T> ExecuteStoredProcedureAsyncWithParameters<T>(string storedProcName, params dynamic[] procedureParams)
-        {
-            return await documentClient.ExecuteStoredProcedureAsync<T>(UriFactory.CreateStoredProcedureUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, storedProcName), procedureParams);
-        }
-
         public async Task<dynamic> QueryItemsAsync(string collectionId, string query)
         {
             var docQuery = documentClient.CreateDocumentQuery<dynamic>(
@@ -98,6 +93,11 @@ namespace Access2Justice.CosmosDb
             }
 
             return results;
+        }
+
+        public async Task<dynamic> ExecuteStoredProcedureAsync(string storedProcName, params dynamic[] procedureParams)
+        {
+            return await documentClient.ExecuteStoredProcedureAsync<dynamic>(UriFactory.CreateStoredProcedureUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, storedProcName), procedureParams);
         }
 
         private async Task CreateDatabaseIfNotExistsAsync()
@@ -145,11 +145,6 @@ namespace Access2Justice.CosmosDb
                     throw;
                 }
             }
-        }
-
-        public async Task<dynamic> ExecuteStoredProcedureAsyncWithParameters(string storedProcName, params dynamic[] procedureParams)
-        {
-            return await documentClient.ExecuteStoredProcedureAsync<dynamic>(UriFactory.CreateStoredProcedureUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, storedProcName), procedureParams);
         }
     }
 }

@@ -51,9 +51,9 @@ namespace Access2Justice.Api.BusinessLogic
             return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, "id", id);
         }
 
-        public async Task<dynamic> GetBreadCrumbDataByIdAsync( string id)
+        public async Task<dynamic> GetBreadCrumbDataByIdAsync(string id)
         {
-            return await dbClient.ExecuteStoredProcedureAsyncWithParameters( id);
+            return await dbClient.ExecuteStoredProcedureAsync(id);
         }
     }
 }
