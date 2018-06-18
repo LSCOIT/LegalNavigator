@@ -1,5 +1,6 @@
-import { SearchService } from './search.service';
 import { Observable } from 'rxjs/Rx';
+import { searchApi } from '../../../api/api';
+import { SearchService } from './search.service';
 
 describe('SearchService', () => {
   let service: SearchService;
@@ -59,7 +60,7 @@ describe('SearchService', () => {
     httpSpy.get.and.returnValue(mockResponse);
 
     service.search("eviction").subscribe(searchResponse => {
-      expect(httpSpy.get).toHaveBeenCalledWith(`${service.endPoint}eviction`);
+      expect(httpSpy.get).toHaveBeenCalledWith(`${searchApi.searchUrl}eviction`);
       expect(searchResponse).toEqual(resources);
       done();
     });
@@ -94,7 +95,7 @@ describe('SearchService', () => {
     httpSpy.get.and.returnValue(mockResponse);
 
     service.search("eviction").subscribe(searchResponse => {
-      expect(httpSpy.get).toHaveBeenCalledWith(`${service.endPoint}eviction`);
+      expect(httpSpy.get).toHaveBeenCalledWith(`${searchApi.searchUrl}eviction`);
       expect(searchResponse).toEqual(luisResponse);
       done();
     });
@@ -143,7 +144,7 @@ describe('SearchService', () => {
     httpSpy.get.and.returnValue(mockResponse);
 
     service.search("eviction").subscribe(searchResponse => {
-      expect(httpSpy.get).toHaveBeenCalledWith(`${service.endPoint}eviction`);
+      expect(httpSpy.get).toHaveBeenCalledWith(`${searchApi.searchUrl}eviction`);
       expect(searchResponse).toEqual(webResources);
       done();
     });
