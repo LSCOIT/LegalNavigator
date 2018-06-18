@@ -17,9 +17,6 @@ export class SearchComponent implements OnInit {
   
   constructor(private searchService: SearchService, private router: Router, private navigateDataService: NavigateDataService) { }
 
-  ngOnInit() {
-  }
-
   onSubmit(searchForm: NgForm): void {
     this.searchService.search(searchForm.value.inputText)
       .subscribe(response => {
@@ -33,4 +30,8 @@ export class SearchComponent implements OnInit {
         }
       });
   }
+
+  ngOnInit() {
+  }
+
 }
