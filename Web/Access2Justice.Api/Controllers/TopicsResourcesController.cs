@@ -213,12 +213,11 @@ namespace Access2Justice.Api.Controllers
         [Route("api/createresourcedocument")]
         public async Task<IActionResult> CreateResourceDocument(dynamic resource)
         {
-            string json = "";
             using (StreamReader r = new StreamReader("C:\\Users\\v-sobhad\\Desktop\\CreateJSON\\FormsData.json"))
             {
-                json = r.ReadToEnd();
+                resource = r.ReadToEnd();
             }
-            var resources = await topicsResourcesBusinessLogic.CreateResourceDocumentAsync(json);
+            var resources = await topicsResourcesBusinessLogic.CreateResourceDocumentAsync(resource);
 
             return Ok(resources);
         }

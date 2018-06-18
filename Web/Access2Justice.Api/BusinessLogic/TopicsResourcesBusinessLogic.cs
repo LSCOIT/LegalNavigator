@@ -144,22 +144,21 @@ namespace Access2Justice.Api.BusinessLogic
         {
             List<dynamic> results = new List<dynamic>();
             List<dynamic> resources = new List<dynamic>();
-
             var resourceObjects = JsonConvert.DeserializeObject<List<dynamic>>(resource);
-            List<Form> forms = new List<Form>();
+            Form forms = new Form();
+
             foreach (var resourceObject in resourceObjects)
             {
                 if (resourceObject.resourceType == "Forms")
                 {
                     forms = CreateResourcesForms(resourceObject);
                     var serializedResult = JsonConvert.SerializeObject(forms);
-                    var resourceFormObject = JsonConvert.DeserializeObject<List<object>>(serializedResult);
-                    var resourceForm = resourceFormObject[0];
+                    var resourceFormObject = JsonConvert.DeserializeObject<object>(serializedResult);
+                    var resourceForm = resourceFormObject;
                     var result = await backendDatabaseService.CreateItemAsync(resourceForm, dbSettings.ResourceCollectionId);
                     resources.Add(result);
                 }
             }
-
             return resources;
         }
 
@@ -206,14 +205,14 @@ namespace Access2Justice.Api.BusinessLogic
                         zipCode = locs.Value.ToString();
                     }
                 }
-                locations.Add(new Location { State = state, County = county, City = city, ZipCode = zipCode });
+                locations.Add(new Location { State = state, County = county, City = city, ZipCode = zipCode });                
             }
             return locations;
         }
 
         public dynamic CreateResourcesForms(dynamic resourceObject)
         {
-            List<Form> forms = new List<Form>();
+            Form forms = new Form();
             List<ReferenceTag> referenceTags = new List<ReferenceTag>();
             List<Location> locations = new List<Location>();
 
@@ -224,13 +223,13 @@ namespace Access2Justice.Api.BusinessLogic
                     referenceTags = GetReferenceTags(field.Value);
                 }
 
-                if (field.Name == "location")
+                else if (field.Name == "location")
                 {
                     locations = GetLocations(field.Value);
                 }
             }
-
-            forms.Add(new Form()
+            
+            forms = new Form() 
             {
                 ResourceId = Guid.NewGuid(),
                 Name = resourceObject.name,
@@ -245,7 +244,8 @@ namespace Access2Justice.Api.BusinessLogic
                 CreatedBy = resourceObject.createdBy,
                 ModifiedBy = resourceObject.modifiedBy,
                 Overview = resourceObject.overview
-            });
+            };
+            forms.Validate();
             return forms;
         }  
     }

@@ -6,6 +6,8 @@ using System.ComponentModel.DataAnnotations;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Globalization;
+using System.Text;
+using System.Collections;
 
 namespace Access2Justice.Shared.Models
 {
@@ -13,7 +15,6 @@ namespace Access2Justice.Shared.Models
     {
         public void Apply(Swashbuckle.AspNetCore.Swagger.Operation operation, OperationFilterContext context)
         {
-            //if (operation.OperationId.ToLower() == "apitopicscreatetopicuploadpost")
             if (operation.OperationId.ToLower(CultureInfo.CurrentCulture) == "apitopicscreateresourceuploadpost")
             {
                 operation.Parameters.Clear();
@@ -35,15 +36,15 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "id")]
         public dynamic ResourceId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Name is a required field.")]
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Description is a required field.")]
         [JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "ResourceType is a required field.")]
         [JsonProperty(PropertyName = "resourceType")]
         public string ResourceType { get; set; }
 
@@ -56,7 +57,7 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "referenceTags")]
         public IEnumerable<ReferenceTag> ReferenceTags { get; set; }
 
-        [Required]
+        [EnsureOneElementAttribute(ErrorMessage = "At least one location is required")]
         [JsonProperty(PropertyName = "location")]
         public IEnumerable<Location> Location { get; set; }
 
@@ -74,6 +75,23 @@ namespace Access2Justice.Shared.Models
 
         [JsonProperty(PropertyName = "modifiedTimeStamp")]
         public DateTime? ModifiedTimeStamp { get; set; } = DateTime.UtcNow;
+
+        public void Validate()
+        {
+            ValidationContext context = new ValidationContext(this, serviceProvider: null, items: null);
+            List<ValidationResult> results = new List<ValidationResult>();
+            bool isValid = Validator.TryValidateObject(this, context, results, true);
+
+            if (isValid == false)
+            {
+                StringBuilder sbrErrors = new StringBuilder();
+                foreach (var validationResult in results)
+                {
+                    sbrErrors.AppendLine(validationResult.ErrorMessage);
+                }
+                throw new ValidationException(sbrErrors.ToString());
+            }
+        }
     }
 
     public class ReferenceTag
@@ -167,10 +185,25 @@ namespace Access2Justice.Shared.Models
 
     public class Form: Resource
     {
+        [Required(ErrorMessage = "Overview is a required field.")]
         [JsonProperty(PropertyName = "overview")]
         public string Overview { get; set; }
 
         [JsonProperty(PropertyName = "fullDescription")]
-        public string FullDescription { get; set; }
+        public string FullDescription { get; set; }                
+    }
+
+    [AttributeUsage(AttributeTargets.Property)]
+    public class EnsureOneElementAttribute : ValidationAttribute
+    {        
+        public override bool IsValid(object value)
+        {
+            var list = value as IList;
+            if (list != null)
+            {
+                return list.Count > 0;
+            }
+            return false;
+        }
     }
 }
