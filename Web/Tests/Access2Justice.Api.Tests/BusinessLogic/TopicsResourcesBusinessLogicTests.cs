@@ -12,12 +12,14 @@ namespace Access2Justice.Api.Tests.BusinessLogic
     public class TopicsResourcesBusinessLogicTests
     {
         private readonly IBackendDatabaseService backendDatabaseService;
+        private readonly IDynamicQueries dynamicQueries;
         private readonly ICosmosDbSettings cosmosDbSettings;
         private readonly TopicsResourcesBusinessLogic topicsResourcesBusinessLogic;
 
         //Mocked input data.
         private readonly string keyword = "eviction";
         private readonly string query = "select * from t";
+        private readonly string topicId = "addf41e9-1a27-4aeb-bcbb-7959f95094ba";
         private readonly JArray emptyData = JArray.Parse(@"[{}]");
         private readonly JArray topicsData =
                   JArray.Parse(@"[{'id':'addf41e9-1a27-4aeb-bcbb-7959f95094ba','name':'Family',
@@ -51,9 +53,10 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         public TopicsResourcesBusinessLogicTests()
         {
             backendDatabaseService = Substitute.For<IBackendDatabaseService>();
+            dynamicQueries = Substitute.For<IDynamicQueries>();
             cosmosDbSettings = Substitute.For<ICosmosDbSettings>();
 
-            topicsResourcesBusinessLogic = new TopicsResourcesBusinessLogic(backendDatabaseService, cosmosDbSettings);
+            topicsResourcesBusinessLogic = new TopicsResourcesBusinessLogic(dynamicQueries, cosmosDbSettings);
             cosmosDbSettings.AuthKey.Returns("69kXp6uzHNUkG8gr==");
             cosmosDbSettings.Endpoint.Returns(new System.Uri("https://access2justicedb.documents.azure.com:443/"));
             cosmosDbSettings.DatabaseId.Returns("a2jdb");
@@ -70,7 +73,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             dbResponse.ReturnsForAnyArgs<dynamic>(topicsData);
             
             //act
-            var response = topicsResourcesBusinessLogic.GetTopicAsync(keyword);
+            var response = topicsResourcesBusinessLogic.GetTopicsAsync(keyword);
             string result = JsonConvert.SerializeObject(response);
 
             //assert
@@ -85,7 +88,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
 
             //act
-            var response = topicsResourcesBusinessLogic.GetTopicAsync(keyword);
+            var response = topicsResourcesBusinessLogic.GetTopicsAsync(keyword);
             string result = JsonConvert.SerializeObject(response);
 
             //assert
@@ -121,6 +124,92 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 
             //assert
             Assert.Contains(expectedEmptyArrayObject, result, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        [Fact]
+        public void GetTopicsAsyncWithProperData()
+        {
+            //arrange
+            var dbResponse = backendDatabaseService.QueryItemsAsync(cosmosDbSettings.TopicCollectionId, query);
+            dbResponse.ReturnsForAnyArgs<dynamic>(topicsData);
+            //act
+            var response = topicsResourcesBusinessLogic.GetTopLevelTopicsAsync().Result;
+            string result = JsonConvert.SerializeObject(response);
+            //assert
+            Assert.Contains(expectedTopicId, result, StringComparison.InvariantCulture);
+        }
+
+        [Fact]
+        public void GetTopicsAsyncWithEmptyData()
+        {
+            //arrange
+            var dbResponse = backendDatabaseService.QueryItemsAsync(cosmosDbSettings.TopicCollectionId, query);
+            dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
+
+            //act
+            var response = topicsResourcesBusinessLogic.GetTopLevelTopicsAsync();
+            string result = JsonConvert.SerializeObject(response);
+
+            //assert
+            Assert.Contains("[{}]", result, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        [Fact]
+        public void GetSubTopicsAsyncWithProperData()
+        {
+            //arrange
+            var dbResponse = backendDatabaseService.QueryItemsAsync(cosmosDbSettings.TopicCollectionId, query);
+            dbResponse.ReturnsForAnyArgs<dynamic>(resourcesData);
+            //act
+            var response = topicsResourcesBusinessLogic.GetSubTopicsAsync(topicId).Result;
+            string result = JsonConvert.SerializeObject(response);
+            //assert
+            Assert.Contains(expectedResourceId, result, StringComparison.InvariantCulture);
+        }
+
+        [Fact]
+        public void GetSubTopicsAsyncWithEmptyData()
+        {
+            //arrange
+            var dbResponse = backendDatabaseService.QueryItemsAsync(cosmosDbSettings.TopicCollectionId, query);
+            dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
+
+            //act
+            var response = topicsResourcesBusinessLogic.GetSubTopicsAsync(topicId);
+            string result = JsonConvert.SerializeObject(response);
+
+            //assert
+            Assert.Contains("[{}]", result, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+
+
+        [Fact]
+        public void GetSubTopicDetailsAsyncWithProperData()
+        {
+            //arrange
+            var dbResponse = backendDatabaseService.QueryItemsAsync(cosmosDbSettings.ResourceCollectionId, query);
+            dbResponse.ReturnsForAnyArgs<dynamic>(topicsData);
+            //act
+            var response = topicsResourcesBusinessLogic.GetResourceAsync(topicId).Result;
+            string result = JsonConvert.SerializeObject(response);
+            //assert
+            Assert.Contains(topicId, result, StringComparison.InvariantCulture);
+        }
+
+        [Fact]
+        public void GetSubTopicDetailsAsyncEmptyData()
+        {
+            //arrange
+            var dbResponse = backendDatabaseService.QueryItemsAsync(cosmosDbSettings.ResourceCollectionId, query);
+            dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
+
+            //act
+            var response = topicsResourcesBusinessLogic.GetResourceAsync(topicId);
+            string result = JsonConvert.SerializeObject(response);
+
+            //assert
+            Assert.Contains("[{}]", result, StringComparison.InvariantCultureIgnoreCase);
         }
 
     }

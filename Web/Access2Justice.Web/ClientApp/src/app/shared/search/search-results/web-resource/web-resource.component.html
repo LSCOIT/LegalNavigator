@@ -1,0 +1,16 @@
+<h3>We found the following web resources related to your search</h3>
+<div *ngIf="searchResults && searchResults.value">
+  <div *ngFor="let webResult of searchResults.value" class="col-md-12 sidebar">
+    <a href="{{webResult.url}}"><h4>{{webResult.name}}</h4></a>
+    <span class="display-url">{{webResult.displayUrl}}</span>
+    <p>{{webResult.snippet}}</p>
+    <div *ngIf="webResult.deepLinks" class="resource-content">
+      <div *ngFor="let deepLink of webResult.deepLinks" class="col-md-12 sidebar">                
+        <a href="{{deepLink.url}}"><h4>{{deepLink.name}}</h4></a>
+        <span class="display-url">{{deepLink.url}}</span>
+        <p>{{deepLink.snippet}}</p>
+      </div>
+    </div>
+  </div>
+</div>
+

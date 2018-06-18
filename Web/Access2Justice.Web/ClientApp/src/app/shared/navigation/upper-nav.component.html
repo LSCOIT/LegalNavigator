@@ -1,0 +1,34 @@
+<div class="navbar navbar-fixed-top upper-nav">
+  <div class="container">
+    <div class="navbar-left left-menu pxs">
+      <ul class="nav navbar-nav">  
+        <li class="inline"><app-language></app-language></li>
+        <li class="inline" id="location"><app-location></app-location></li>
+      </ul>
+    </div>
+    <div class="navbar-right">
+      <ul class="nav navbar-nav mobile-hidden pxs">
+        <li>
+          <a [routerLink]="['/privacy']">
+            <img class="nav-icon" src="/assets/images/small-icons/privacy.svg" aria-hidden="true" />
+            Privacy Promise
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/help']">
+            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+            Help &amp; FAQs
+          </a>
+        </li>
+        <li>    
+          <a [routerLink]="['/createaccount']" class="account-menu">
+            <img class="nav-icon" src="/assets/images/small-icons/profile.svg" aria-hidden="true" />
+            Create Account
+          </a>
+          <span>|</span>
+          <a [routerLink]="['/login']" class="account-menu">Log In</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

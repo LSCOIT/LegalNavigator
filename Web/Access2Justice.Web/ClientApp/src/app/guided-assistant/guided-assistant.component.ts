@@ -6,17 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./guided-assistant.component.css']
 })
 export class GuidedAssistantComponent implements OnInit {
-  topicLength = 6;
+  topicLength = 12;
 
-  max: number = 200;
-  dynamic: number = 100;
- 
-  constructor() {
+  constructor() { }
 
-  }
-
-  ngOnInit() {
-  }
-
-  
+  ngOnInit() { }
 }

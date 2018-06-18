@@ -1,0 +1,10 @@
+<ul>
+  <li class="topic-list col-md-3 col-sm-4 col-xs-6 text-center" *ngFor="let topic of topics | slice: 0:topicLength" >
+    <a [routerLink]="['/topics', topic.name | lowercase]">
+      <img src="{{ topic.icon }}" alt="{{topic.name}}">
+    </a>
+    <a [routerLink]="['/topics', topic.name | lowercase]">
+      <p>{{ topic.name }}</p>
+    </a>
+  </li>
+</ul>

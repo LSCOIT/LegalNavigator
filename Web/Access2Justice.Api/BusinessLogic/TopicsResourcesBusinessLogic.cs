@@ -1,36 +1,54 @@
 ﻿using Access2Justice.CosmosDb.Interfaces;
 using Access2Justice.Shared.Interfaces;
-using System.Globalization;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Access2Justice.Api.BusinessLogic
 {
     public class TopicsResourcesBusinessLogic : ITopicsResourcesBusinessLogic
     {
-        private readonly IBackendDatabaseService backendDatabaseService;
-        private readonly ICosmosDbSettings cosmosDbSettings;
-        public TopicsResourcesBusinessLogic(IBackendDatabaseService backendDatabaseService, ICosmosDbSettings cosmosDbSettings)
+        private readonly IDynamicQueries dbClient;
+        private readonly ICosmosDbSettings dbSettings;
+        public TopicsResourcesBusinessLogic(IDynamicQueries dynamicQueries, ICosmosDbSettings cosmosDbSettings)
         {
-            this.backendDatabaseService = backendDatabaseService;
-            this.cosmosDbSettings = cosmosDbSettings;
+            dbClient = dynamicQueries;
+            dbSettings = cosmosDbSettings;
         }
 
-        public async Task<dynamic> GetResourcesAsync(string topicIds)
+        public async Task<dynamic> GetResourcesAsync(dynamic topics)
         {
-            // we need to use a query format to retrieve items because we are returning a dynamic object.
-            var query = string.Format(CultureInfo.InvariantCulture,"SELECT * FROM c  WHERE {0}", topicIds);
-            var result = await backendDatabaseService.QueryItemsAsync(cosmosDbSettings.ResourceCollectionId, query);
+            var ids = new List<string>();
+            foreach(var topic in topics)
+            {
+                ids.Add(topic.id);
+            }
 
-            return result;
+            return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourceCollectionId, "topicTags", "id", ids);
         }
 
-        public async Task<dynamic> GetTopicAsync(string keyword)
+        public async Task<dynamic> GetTopicsAsync(string keyword)
         {
-            // we need to use a query format to retrieve items because we are returning a dynamic object.
-            var query = string.Format(CultureInfo.InvariantCulture,"SELECT * FROM c WHERE CONTAINS(c.keywords, '{0}')", keyword.ToUpperInvariant());
-            var result = await backendDatabaseService.QueryItemsAsync(cosmosDbSettings.TopicCollectionId, query);
+            return await dbClient.FindItemsWhereContainsAsync(dbSettings.TopicCollectionId, "keywords", keyword);
+        }
 
-            return result;
+        public async Task<dynamic> GetTopLevelTopicsAsync()
+        {
+            return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, "parentTopicID", "");
+        }
+
+        public async Task<dynamic> GetSubTopicsAsync(string ParentTopicId)
+        {
+            return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, "parentTopicID", ParentTopicId);
+        }
+
+        public async Task<dynamic> GetResourceAsync(string ParentTopicId)
+        {
+            return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourceCollectionId, "topicTags", "id", ParentTopicId);
+        }
+
+        public async Task<dynamic> GetDocumentAsync(string id)
+        {
+            return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, "id", id);
         }
     }
 }
