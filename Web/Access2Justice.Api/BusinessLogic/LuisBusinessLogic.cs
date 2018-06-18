@@ -86,7 +86,8 @@ namespace Access2Justice.Api
             List<string> topicIds = new List<string>();
             foreach (var item in topics)
             {
-                topicIds.Add(item.id);
+                string topicId = item.id;
+                topicIds.Add(topicId);
             }
 
             dynamic serializedTopics = "[]";

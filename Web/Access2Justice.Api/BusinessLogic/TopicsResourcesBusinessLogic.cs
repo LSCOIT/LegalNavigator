@@ -81,14 +81,14 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<dynamic> ApplyPaginationAsync(ResourceFilter resourceFilter)
         {
-            PagedResources pagedResources = await dbClient.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id","resourceType",resourceFilter.ResourceType,resourceFilter);            
+            PagedResources pagedResources = await dbClient.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter);
 
             return pagedResources;
         }
 
         public async Task<dynamic> GetResourcesCountAsync(ResourceFilter resourceFilter)
         {
-            PagedResources pagedResources = await dbClient.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter.ResourceType, resourceFilter, true);
+            PagedResources pagedResources = await dbClient.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter, true);
             
            return ResourcesCount(pagedResources);
         }

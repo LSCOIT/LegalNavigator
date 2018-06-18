@@ -74,9 +74,9 @@ namespace Access2Justice.CosmosDb
             return await backendDatabaseService.QueryItemsAsync(collectionId, query);
         }
 
-        public async Task<dynamic> FindItemsWhereArrayContainsWithAndClauseAsync(string arrayName, string propertyName, string andPropertyName, string andPropertyValue, ResourceFilter resourceFilter, bool isResourceCountCall = false)
+        public async Task<dynamic> FindItemsWhereArrayContainsWithAndClauseAsync(string arrayName, string propertyName, string andPropertyName, ResourceFilter resourceFilter, bool isResourceCountCall = false)
         {
-            EnsureParametersAreNotOrEmpty(arrayName, propertyName, andPropertyName, andPropertyValue);
+            EnsureParametersAreNotOrEmpty(arrayName, propertyName, andPropertyName, resourceFilter.ResourceType);
             var arrayContainsWithAndClause = string.Empty;
             var lastItem = resourceFilter.TopicIds.Last();
 
@@ -89,11 +89,11 @@ namespace Access2Justice.CosmosDb
                 }
             }
 
-            if (andPropertyValue.ToUpperInvariant() != "ALL")
+            if (resourceFilter.ResourceType.ToUpperInvariant() != "ALL")
             {
                 arrayContainsWithAndClause = "(" + arrayContainsWithAndClause + ")";
 
-                arrayContainsWithAndClause += $" AND c.{andPropertyName} = '" + andPropertyValue + "'";
+                arrayContainsWithAndClause += $" AND c.{andPropertyName} = '" + resourceFilter.ResourceType + "'";
             }
             string locationFilter = FindLocationWhereArrayContains(resourceFilter.Location);
             if (!string.IsNullOrEmpty(locationFilter))
