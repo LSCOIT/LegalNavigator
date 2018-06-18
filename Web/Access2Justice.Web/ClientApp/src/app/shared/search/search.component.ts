@@ -18,9 +18,6 @@ export class SearchComponent implements OnInit {
   
   constructor(private searchService: SearchService, private router: Router, private navigateDataService: NavigateDataService) { }
 
-  ngOnInit() {
-  }
-
   onSubmit(searchForm: NgForm): void {
     this.luisInput.Sentence = searchForm.value.inputText;
     this.luisInput.Location = JSON.parse(sessionStorage.getItem("globalMapLocation"));
@@ -37,4 +34,8 @@ export class SearchComponent implements OnInit {
         }
       });
   }
+
+  ngOnInit() {
+  }
+
 }

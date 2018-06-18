@@ -1,0 +1,189 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,600)');
+@import '~bootstrap/dist/css/bootstrap.min.css';
+
+* {
+  font-family: 'Montserrat', sans-serif;
+}
+/* Heading */
+h1 {
+  font-size: 30px;
+  line-height: 38px;
+}
+
+h2 {
+  font-size: 24px;
+  line-height: 32px;
+}
+
+h3 {
+  font-size: 22px;
+  line-height: 30px;
+}
+
+h4 {
+  font-size: 20px;
+  line-height: 28px;
+}
+
+h5 {
+  font-size: 18px;
+  line-height: 26px;
+}
+
+.pxl {
+  font-size: 16px;
+  line-height: 26px;
+}
+
+.pl {
+  font-size: 16px;
+  line-height: 24px;
+}
+
+p, .p {
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.ps {
+  font-size: 12px;
+  line-height: 20px;
+}
+
+h1, h2, h3, h4, h5 {
+  color: #0B2B78;
+  font-family: Georgia, serif;
+}
+
+/* Buttons */
+button, .btn {
+  border: none;
+}
+
+.btn {
+  border-radius: 24px;
+  padding: 10px 40px;
+  font-weight: 600;
+}
+
+.btn-primary {
+  background-color: #0D3FBB;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #0B2B78;
+}
+
+.btn-secondary {
+  border: 1px solid #0D3FB8;
+  color: #0D3FB8;
+}
+
+.btn-secondary:hover {
+  border: 1px solid #0D3FB8;
+  color: #0B2B78;
+}
+
+.btn-inactive {
+  background-color: #DDD;
+  color: #585858;
+  border: 1px solid #7E7E7E;
+}
+
+/* Links */
+.navbar-default .navbar-nav > li > a {
+  color: #333;
+}
+
+
+.navbar-default .navbar-nav > li > a:hover {
+  color: #585858;
+}
+
+.link {
+  color: #0D3FB8;
+}
+
+.link:hover {
+  color: #0B2B78;
+}
+
+@media only screen and (min-width : 768px) {
+  .h1, h1 {
+    font-size: 36px;
+    line-height: 45px;
+  }
+
+  h2 {
+    font-size: 26px;
+    line-height: 36px;
+  }
+
+  h3 {
+    font-size: 24px;
+    line-height: 34px;
+  }
+
+  h4 {
+    font-size: 22px;
+    line-height: 32px;
+  }
+
+  h5 {
+    font-size: 19px;
+    line-height: 28px;
+  }
+
+  .pxl {
+    font-size: 16px;
+    line-height: 24px;
+  }
+}
+
+@media only screen and (min-width : 992px) {
+  .h1, h1 {
+    font-size: 42px;
+    line-height: 54px;
+  }
+
+  h2 {
+    font-size: 34px;
+    line-height: 42px;
+  }
+
+  h3 {
+    font-size: 30px;
+    line-height: 38px;
+  }
+
+  h4 {
+    font-size: 24px;
+    line-height: 36px;
+  }
+
+  h5, .pxl {
+    font-size: 20px;
+    line-height: 30px;
+  }
+
+  .pl {
+    font-size: 18px;
+    line-height: 26px;
+  }
+
+  p, .p {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .ps {
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  .pxs {
+    font-size: 12px;
+    line-height: 20px;
+  }
+}
