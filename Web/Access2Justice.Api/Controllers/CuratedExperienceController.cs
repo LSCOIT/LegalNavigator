@@ -30,7 +30,7 @@ namespace Access2Justice.Api.Controllers
         [HttpPost]
         public async Task<CuratedExperienceSurveyViewModel> Post([FromQuery] string surveyId, string choiceId, string answer)
         {
-            var savedUserInputDocument = await _backendDatabaseService.GetItemsAsync<CuratedExperienceAnswers>(x => x.CuratedExperienceId == surveyId); 
+            var savedUserInputDocument = await _backendDatabaseService.GetItemsAsync<CuratedExperienceAnswers>(x => x.CuratedExperienceId == surveyId, "CuratedExperience"); 
             if (savedUserInputDocument.Any() && answer != null)
             {
                 var answersIds = new List<Guid>(savedUserInputDocument.First().Answers.Keys);
@@ -69,7 +69,8 @@ namespace Access2Justice.Api.Controllers
             }
 
             // todo:@alaa we need some additional identifier, 'x.CuratedExperienceId == surveyId' is good for now
-            var savedUserInputDocument = await _backendDatabaseService.GetItemsAsync<CuratedExperienceAnswers>(x => x.CuratedExperienceId == surveyId);
+             // todo:@alaa get collection id from the settings
+            var savedUserInputDocument = await _backendDatabaseService.GetItemsAsync<CuratedExperienceAnswers>(x => x.CuratedExperienceId == surveyId, "CuratedExperience");
             if (savedUserInputDocument.Any())
             {
                 return CuratedExperienceChoiceSetMapper.MapAnswersToQuestions(questions, savedUserInputDocument.First().Answers);

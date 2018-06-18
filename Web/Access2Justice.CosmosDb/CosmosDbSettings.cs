@@ -15,6 +15,7 @@ namespace Access2Justice.CosmosDb
                 DatabaseId = configuration.GetSection("DatabaseId").Value;
                 TopicCollectionId = configuration.GetSection("TopicCollectionId").Value;
                 ResourceCollectionId = configuration.GetSection("ResourceCollectionId").Value;
+                CuratedExperienceCollectionId = configuration.GetSection("CuratedExperienceCollectionId").Value;
             }
             catch
             {
@@ -26,5 +27,6 @@ namespace Access2Justice.CosmosDb
         public string DatabaseId { get; private set; }
         public string TopicCollectionId { get; private set; }
         public string ResourceCollectionId { get; private set; }
+        public string CuratedExperienceCollectionId { get; private set; }
     }
 }

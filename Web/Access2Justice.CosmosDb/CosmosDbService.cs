@@ -28,7 +28,7 @@ namespace Access2Justice.CosmosDb
         public async Task<Document> CreateItemAsync<T>(T item)
         {
             return await documentClient.CreateDocumentAsync(
-                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId), item);
+                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.CuratedExperienceCollectionId), item);
         }
 
         public async Task<T> GetItemAsync<T>(string id)
@@ -36,7 +36,7 @@ namespace Access2Justice.CosmosDb
             try
             {
                 Document document = await documentClient.ReadDocumentAsync(
-                        UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, id));
+                        UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.CuratedExperienceCollectionId, id));
 
                 return (T)(dynamic)document;
             }
@@ -72,18 +72,18 @@ namespace Access2Justice.CosmosDb
         public async Task<Document> UpdateItemAsync<T>(string id, T item)
         {
             return await documentClient.ReplaceDocumentAsync(
-                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, id), item);
+                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.CuratedExperienceCollectionId, id), item);
         }
 
         public async Task DeleteItemAsync(string id)
         {
             await documentClient.DeleteDocumentAsync(
-                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, id));
+                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.CuratedExperienceCollectionId, id));
         }
 
         public async Task<T> ExecuteStoredProcedureAsyncWithParameters<T>(string storedProcName, params dynamic[] procedureParams)
         {
-            return await documentClient.ExecuteStoredProcedureAsync<T>(UriFactory.CreateStoredProcedureUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, storedProcName), procedureParams);
+            return await documentClient.ExecuteStoredProcedureAsync<T>(UriFactory.CreateStoredProcedureUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.CuratedExperienceCollectionId, storedProcName), procedureParams);
         }
 
         public async Task<dynamic> QueryItemsAsync(string collectionId, string query)
@@ -125,7 +125,7 @@ namespace Access2Justice.CosmosDb
             try
             {
                 await documentClient.ReadDocumentCollectionAsync(
-                    UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId));
+                    UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.CuratedExperienceCollectionId));
             }
             catch (DocumentClientException e)
             {
@@ -135,7 +135,7 @@ namespace Access2Justice.CosmosDb
                         UriFactory.CreateDatabaseUri(cosmosDbSettings.DatabaseId),
                         new DocumentCollection
                         {
-                            Id = cosmosDbSettings.TopicCollectionId
+                            Id = cosmosDbSettings.CuratedExperienceCollectionId
                         },
                         new RequestOptions { OfferThroughput = 400 });
                 }
