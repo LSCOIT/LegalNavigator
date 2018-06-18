@@ -5,5 +5,6 @@
 
 export const environment = {
   production: false,
-  bingmap_key: ''
+  bingmap_key: '',
+  map_type: false
 };

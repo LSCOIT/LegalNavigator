@@ -1,24 +1,21 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { DisplayMapLocation, MapLocation } from './location';
-import { LatitudeLongitude } from '../sidebars/map-results';
+import { MapLocation } from './location';
 declare var Microsoft: any;
 
 @Injectable()
-
 export class LocationService {
   searchManager: any;
   map: any;
   locAddress: any;
   location: any;
   pin: any;
-  tempLoc: any;
   mapLocation: MapLocation;
-  displayMapLocation: DisplayMapLocation;
 
   constructor() { }
 
-  getMap() {
+  getMap(mapType) {
+    environment.map_type = mapType;
     Microsoft.Maps.loadModule(['Microsoft.Maps.AutoSuggest', 'Microsoft.Maps.Search'], this.loadSearchManager);
   }
 
@@ -32,7 +29,7 @@ export class LocationService {
     manager.attachAutosuggest('#search-box', '#searchbox-container', suggestionSelected);
     searchManager = new Microsoft.Maps.Search.SearchManager(map);
   }
-
+  
   identifyLocation(searchLocation, mapType) {
     let searchRequest = {
       where: searchLocation,
@@ -43,20 +40,8 @@ export class LocationService {
             icon: '../../assets/images/location/poi_custom.png'
           });
 
-
-          this.mapLocation = { state: '', city: '', county: '', zipCode: '' };
-          this.displayMapLocation = { locality: '', address: '' }
-          this.mapLocation.state = this.location.address.adminDistrict;
-          this.mapLocation.county = this.location.address.district;
-          this.mapLocation.city = this.location.address.locality;
-          this.mapLocation.zipCode = this.location.address.postalCode;
-          
-          let locaService = new LocationService();
-          this.displayMapLocation = locaService.mapLocationDetails(this.location);
-          //sessionStorage.setItem("globalMapLocation", JSON.stringify(this.mapLocation));
-          //sessionStorage.setItem("globalDisplayMapLocation", JSON.stringify(this.displayMapLocation));
-
-          this.setSessionStorage(mapType);
+          let locationService = new LocationService();
+          locationService.mapLocationDetails(this.location);
 
           this.map = new Microsoft.Maps.Map('#my-map',
             {
@@ -80,20 +65,27 @@ export class LocationService {
     this.searchManager.geocode(searchRequest);
   }
 
-  updateLocation(mapType): DisplayMapLocation {
-    this.displayMapLocation = this.getSessionStorageDisplayMapLocation(mapType);//JSON.parse(sessionStorage.getItem("globalDisplayMapLocation"));
-    //if (mapType === "global") {
-    //  this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
-    //}
-    //if (mapType === "searchResultsMap") {
-    //  this.mapLocation = JSON.parse(sessionStorage.getItem("searchResultsMapLocation"));
-    //}
-    this.mapLocation = this.getSessionStorageMapLocation(mapType);
-    return this.displayMapLocation;
+  updateLocation(mapType): MapLocation {
+    if (mapType) {
+      this.mapLocation = JSON.parse(localStorage.getItem("globalSearchMapLocation"));
+      sessionStorage.setItem("globalMapLocation", JSON.stringify(this.mapLocation));
+      localStorage.removeItem('globalSearchMapLocation');
+    }
+    else {
+      this.mapLocation = JSON.parse(localStorage.getItem("localSearchMapLocation"));
+      localStorage.removeItem('localSearchMapLocation');
+    }
+    return this.mapLocation;
   }
 
-  mapLocationDetails(location): DisplayMapLocation {
+  mapLocationDetails(location) {
     this.location = location;
+    this.mapLocation = { state: '', city: '', county: '', zipCode: '', locality: '', address: '' };
+    this.mapLocation.state = this.location.address.adminDistrict;
+    this.mapLocation.county = this.location.address.district;
+    this.mapLocation.city = this.location.address.locality;
+    this.mapLocation.zipCode = this.location.address.postalCode;
+
     if (this.location.address.postalCode === undefined) {
       if (this.location.address.locality === undefined) {
         if (this.location.address.district === undefined) {
@@ -110,44 +102,16 @@ export class LocationService {
     else {
       this.locAddress = this.location.address.postalCode;
     }
-    this.displayMapLocation = { locality: '', address: '' }
-    this.displayMapLocation.locality = this.locAddress;
-    this.displayMapLocation.address = this.location.address.adminDistrict;
-
-    return this.displayMapLocation;
-  }
-
-  setSessionStorage(mapType) {
-    if (mapType === "global") {
-      sessionStorage.setItem("globalMapLocation", JSON.stringify(this.mapLocation));
-      sessionStorage.setItem("globalDisplayMapLocation", JSON.stringify(this.displayMapLocation));
+    this.mapLocation.locality = this.locAddress;
+    this.mapLocation.address = this.location.address.adminDistrict;
+    if (environment.map_type) {
+      localStorage.setItem("globalSearchMapLocation", JSON.stringify(this.mapLocation));
     }
-    if (mapType === "searchResultsMap") {
-      sessionStorage.setItem("searchresultsMapLocation", JSON.stringify(this.mapLocation));
-      sessionStorage.setItem("searchresultsDisplayMapLocation", JSON.stringify(this.displayMapLocation));
+    else {
+      localStorage.setItem("localSearchMapLocation", JSON.stringify(this.mapLocation));
     }
   }
-
-  getSessionStorageMapLocation(mapType): MapLocation {
-    if (mapType === "global") {
-      this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
-    }
-    if (mapType === "searchResultsMap") {
-      this.mapLocation = JSON.parse(sessionStorage.getItem("searchResultsMapLocation"));
-    }
-    return this.mapLocation;
-  }
-
-  getSessionStorageDisplayMapLocation(mapType): DisplayMapLocation {
-    if (mapType === "global") {
-      this.displayMapLocation = JSON.parse(sessionStorage.getItem("globalDisplayMapLocation"));
-    }
-    if (mapType === "searchResultsMap") {
-      this.displayMapLocation = JSON.parse(sessionStorage.getItem("searchResultsDisplayMapLocation"));
-    }
-    return this.displayMapLocation;
-  }
-
+  
 }
 
 function suggestionSelected(result) {
@@ -163,7 +127,6 @@ function suggestionSelected(result) {
   });
   map.entities.push(pin);
   map.setView({ bounds: result.bestView, padding: 30 });
-  var locaService = new LocationService();
-  this.displayMapLocation = locaService.mapLocationDetails(result);
-  sessionStorage.setItem("globalDisplayMapLocation", JSON.stringify(this.displayMapLocation));
+  let locationService = new LocationService();
+  locationService.mapLocationDetails(result);
 }
