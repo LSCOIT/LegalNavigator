@@ -1,6 +1,6 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
-import { guidedAssistantApi } from '../../api/api';
+import { api } from '../../api/api';
 import { QuestionService } from './question.service';
 import { Question } from './question';
 import { Observable } from 'rxjs/Rx';
@@ -37,7 +37,7 @@ describe('QuestionService', () => {
   it('should return list of questions', (done) => {
     httpSpy.get.and.returnValue(mockResponse);
     service.getQuestion().subscribe(question => {
-      expect(httpSpy.get).toHaveBeenCalledWith(`${guidedAssistantApi.questionUrl}`);
+      expect(httpSpy.get).toHaveBeenCalledWith(`${api.questionUrl}`);
       expect(question).toEqual(sampleQuestion);
       done();
     });
