@@ -1,12 +1,12 @@
 ﻿using Xunit;
 using NSubstitute;
 using System.Collections.Generic;
-using System.Net.Http;
 using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Api;
 using Newtonsoft.Json.Linq;
 using Access2Justice.Shared.Models;
+using System;
 
 namespace Access2Justice.Tests.ServiceUnitTestCases
 {
@@ -169,8 +169,8 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         private readonly List<string> topicIds = new List<string> { "addf41e9-1a27-4aeb-bcbb-7959f95094ba" };
     #endregion
 
-    #region Mocked Output Data         
-    private readonly string expectedLuisNoneIntent = "None";
+        #region Mocked Output Data         
+        private readonly string expectedLuisNoneIntent = "None";
         private readonly int expectedLowerthreshold = 0;
         private readonly string expectedLuisTopIntent = "eviction";
         private readonly string expectedTopicId = "addf41e9-1a27-4aeb-bcbb-7959f95094ba";
@@ -180,6 +180,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         private readonly string expectedWebResponse = "webResources";
         private readonly string expectedEmptyInternalResponse = "{\r\n  \"topics\": [],\r\n  \"resources\": [],\r\n  \"continuationToken\": [],\r\n  " +
                    "\"topicIds\": [],\r\n  \"resourceTypeFilter\": [],\r\n  \"topIntent\": \"eviction\"\r\n}";
+        
         #endregion
 
         public LuisBusinessLogicTests()
@@ -192,10 +193,14 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             bingSettings = Substitute.For<IBingSettings>();
             luisBusinessLogic = new LuisBusinessLogic(luisProxy, luisSettings, topicsResourcesBusinessLogic, webSearchBusinessLogic, bingSettings);
 
-            luisSettings.Endpoint.Returns(new System.Uri("http://www.bing.com"));
+            luisSettings.Endpoint.Returns(new Uri("http://www.bing.com"));
             luisSettings.TopIntentsCount.Returns(3);
             luisSettings.UpperThreshold.Returns(0.9M);
             luisSettings.LowerThreshold.Returns(0.6M);
+            bingSettings.BingSearchUrl.Returns(new Uri("http://www.bing.com?{0}{1}{2}"));
+            bingSettings.CustomConfigId.Returns("0");
+            bingSettings.DefaultCount.Returns((short)10);
+            bingSettings.DefaultOffset.Returns((short)1);
         }
 
         [Fact]
@@ -338,10 +343,6 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             PagedResources pagedResources = new PagedResources() { Results = resourcesData, ContinuationToken = "[]", TopicIds = topicIds };
             var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
             topicResponse.Returns(emptyTopicObject);
-            //var resourceCount = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
-            //resourceCount.ReturnsForAnyArgs<dynamic>(allResourcesCount);
-            //var paginationResult = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
-            //paginationResult.ReturnsForAnyArgs<dynamic>(pagedResources);
 
             //act
             var result = luisBusinessLogic.GetInternalResourcesAsync(keyword, location).Result;
@@ -354,9 +355,28 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         public void GetInternalResourcesAsyncTestsShouldReturnEmptyResources()
         {
             //arrange
+            PagedResources pagedResources = new PagedResources() { TopicIds = new List<string>() };
+            var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
+            topicResponse.Returns(topicsData);
+            var resourceCount = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
+            resourceCount.ReturnsForAnyArgs<dynamic>(new List<dynamic>());
+            var paginationResult = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
+            paginationResult.ReturnsForAnyArgs<dynamic>(pagedResources);
+
+            //act
+            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword, location).Result;
+
+            //assert            
+            Assert.Contains(expectedTopicId, result);
+        }               
+
+        [Fact]
+        public void GetInternalResourcesAsyncTestsShouldReturnTopIntent()
+        {
+            //arrange
             PagedResources pagedResources = new PagedResources() { Results = resourcesData, ContinuationToken = "[]", TopicIds = topicIds };
             var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
-            topicResponse.Returns(emptyTopicObject);
+            topicResponse.Returns(topicsData);
             var resourceCount = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
             resourceCount.ReturnsForAnyArgs<dynamic>(allResourcesCount);
             var paginationResult = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
@@ -366,66 +386,19 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             var result = luisBusinessLogic.GetInternalResourcesAsync(keyword, location).Result;
 
             //assert            
-            Assert.Equal(expectedEmptyInternalResponse, result);
+            Assert.Contains(keyword, result);
         }
-
+                
         [Fact]
-        public void GetInternalResourcesAsyncWithEmptyTopic()
-        {
-            //arrange
-            var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
-            topicResponse.ReturnsForAnyArgs<dynamic>(emptyTopicObject);
-
-            //act
-            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword, location).Result;
-
-            //assert
-            Assert.Equal(expectedEmptyInternalResponse, result);
-        }
-
-        [Fact]
-        public void GetInternalResourcesAsyncWithEmptyResource()
-        {
-            //arrange
-            var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
-            topicResponse.ReturnsForAnyArgs<dynamic>(topicsData);
-            topicsResourcesBusinessLogic.GetResourcesAsync(Arg.Any<string>()).Returns(emptyResourceObject);
-
-            //act
-            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword, location).Result;
-
-            //assert
-            Assert.Contains(expectedTopicId, result);
-            Assert.DoesNotContain(expectedResourceId, result);
-        }
-
-        [Fact]
-        public void GetInternalResourcesAsyncWithTopicResource()
-        {
-            //arrange
-            var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
-            topicResponse.ReturnsForAnyArgs<dynamic>(topicsData);
-
-            topicsResourcesBusinessLogic.GetResourcesAsync(Arg.Any<string>()).Returns(resourcesData);
-
-            //act
-            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword, location).Result;
-
-            //assert
-            Assert.Contains(expectedTopicId, result);
-            Assert.Contains(expectedResourceId, result);
-        }
-
-        [Fact]
-        public void GetResourceBasedOnThresholdAsyncWithLowScore()
+        public void GetResourceBasedOnThresholdAsyncTestsShouldValidateLowScore()
         {
             //arrange
             luisInput.Sentence = searchText;
             var luisResponse = luisProxy.GetIntents(searchText);
             luisResponse.Returns(lowScoreLuisResponse);
 
-            var webResponse = webSearchBusinessLogic.SearchWebResourcesAsync(new System.Uri(searchText));
-            webResponse.Returns(webData);
+            var webResponse = webSearchBusinessLogic.SearchWebResourcesAsync(bingSettings.BingSearchUrl);
+            webResponse.ReturnsForAnyArgs<dynamic>(webData);
 
             //act
             var result = luisBusinessLogic.GetResourceBasedOnThresholdAsync(luisInput).Result;
@@ -435,7 +408,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         }
 
         [Fact]
-        public void GetResourceBasedOnThresholdAsyncWithMediumScore()
+        public void GetResourceBasedOnThresholdAsyncTestsShouldValidateMediumScore()
         {
             //arrange
             luisInput.Sentence = searchText;
@@ -450,7 +423,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         }
 
         [Fact]
-        public void GetResourceBasedOnThresholdAsyncUpperScore()
+        public void GetResourceBasedOnThresholdAsyncTestsShouldValidateUpperScore()
         {
             //arrange
             luisInput.Sentence = searchText;
@@ -458,7 +431,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             luisResponse.Returns(properLuisResponse);
 
             var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
-            topicResponse.Returns(emptyTopicObject);
+            topicResponse.ReturnsForAnyArgs<dynamic>(emptyTopicObject);
 
             var internalResponse = luis.GetInternalResourcesAsync(keyword, location);
             internalResponse.ReturnsForAnyArgs<dynamic>(internalResponse);

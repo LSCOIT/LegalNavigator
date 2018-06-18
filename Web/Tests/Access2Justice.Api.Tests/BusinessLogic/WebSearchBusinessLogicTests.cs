@@ -83,9 +83,11 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             httpClientService = Substitute.For<IHttpClientService>();
             webSearchBusinessLogic = new WebSearchBusinessLogic(httpClientService, bingSettings);
 
-            bingSettings.BingSearchUrl.Returns(new Uri("https://www.bing.com"));
-            bingSettings.SubscriptionKey.Returns("456sdf56sd4f56d44546565");
-            bingSettings.CustomConfigId.Returns("2425415097");
+            bingSettings.BingSearchUrl.Returns(new Uri("http://www.bing.com?{0}{1}{2}"));
+            bingSettings.SubscriptionKey.Returns("subscriptionKey");
+            bingSettings.CustomConfigId.Returns("0");
+            bingSettings.DefaultCount.Returns((short)10);
+            bingSettings.DefaultOffset.Returns((short)1);
         }
 
         [Fact]
@@ -99,7 +101,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var response = httpClientService.GetDataAsync(bingSettings.BingSearchUrl, bingSettings.SubscriptionKey);
             response.Returns(httpResponseMessage);
 
-            var responseContent = webSearchBusinessLogic.SearchWebResourcesAsync(new System.Uri(searchText)).Result;
+            var responseContent = webSearchBusinessLogic.SearchWebResourcesAsync(bingSettings.BingSearchUrl).Result;
 
             Assert.Contains(expectedWebResponse, responseContent);
         }
@@ -115,7 +117,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var response = httpClientService.GetDataAsync(bingSettings.BingSearchUrl, bingSettings.SubscriptionKey);
             response.Returns(httpResponseMessage);
 
-            var responseContent = webSearchBusinessLogic.SearchWebResourcesAsync(new System.Uri(searchText)).Result;
+            var responseContent = webSearchBusinessLogic.SearchWebResourcesAsync(bingSettings.BingSearchUrl).Result;
 
             Assert.Contains(expectedEmptyWebResponse, responseContent);
         }

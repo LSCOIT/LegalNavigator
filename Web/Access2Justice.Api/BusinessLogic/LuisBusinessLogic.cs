@@ -33,9 +33,9 @@ namespace Access2Justice.Api
         {
             var luisResponse = await luisProxy.GetIntents(luisInput.Sentence);
 
-            var intentWithScore = new IntentWithScore { TopScoringIntent = "eviction" };//ParseLuisIntent(luisResponse);
+            var intentWithScore = ParseLuisIntent(luisResponse);
 
-            int threshold = 2;//ApplyThreshold(intentWithScore);
+            int threshold = ApplyThreshold(intentWithScore);
 
             switch (threshold)
             {
@@ -98,13 +98,14 @@ namespace Access2Justice.Api
             if (topicIds.Count > 0)
             {
                 ResourceFilter resourceFilter = new ResourceFilter { TopicIds = topicIds, PageNumber = 0, ResourceType = "ALL", Location = location };
+                // need to look into this logic parallel tasks.
                 var task1 =  topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
                 var task2 =  topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
                 var groupedResourceType = await task1;
                 PagedResources resources = await task2;
                 serializedTopics = JsonConvert.SerializeObject(topics);
                 serializedResources = JsonConvert.SerializeObject(resources.Results);
-                serializedToken = resources.ContinuationToken;
+                serializedToken = resources.ContinuationToken ?? "[]";
                 serializedTopicIds = JsonConvert.SerializeObject(topicIds);
                 serializedGroupedResources = JsonConvert.SerializeObject(groupedResourceType);
             }
