@@ -19,7 +19,7 @@ describe('BreadCrumb Service:', () => {
     expect(service.getBreadCrumbs.length).toBe(1);
   });
 
-  it('should retrive root parent breadcrumb', () => {
+  it('should retrieve root parent breadcrumb', () => {
     service = new BreadCrumbService(httpSpy);
     service.getBreadCrumbs("addf41e9-1a27-4aeb-bcbb-7959f95094ba")
     expect(service.getBreadCrumbs.length).toBe(1);
