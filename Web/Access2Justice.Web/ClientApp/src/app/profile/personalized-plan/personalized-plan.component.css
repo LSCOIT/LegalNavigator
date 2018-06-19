@@ -1,12 +1,36 @@
 .plan-detail {
   box-shadow: 0 0 5px 3px #ddd;
-  padding-left: 20px;
 }
 
 .plan-heading {
   border-bottom: 1px solid #ddd;
+  padding: 10px;
+}
+
+.subtopic-icon {
+  width: 45px;
+}
+
+.more-menu {
+  margin-top: 30px;
 }
 
 .plan-icon {
-  width: 10%;
+  width: 30px;
+}
+
+.filter-plan {
+  background-color: #F4F4F4;
+}
+
+.plan-spacing {
+  padding: 20px 40px;
+}
+
+.filter-plan button {
+  margin: 0 10px;
+}
+
+.main-icon {
+  margin-top: 10px;
 }

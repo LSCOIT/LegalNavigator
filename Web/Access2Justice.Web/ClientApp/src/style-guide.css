@@ -91,6 +91,14 @@ button, .btn {
   border: 1px solid #7E7E7E;
 }
 
+.btn-selected {
+  border: 1px solid #DDD;
+  height: 45px;
+  background-color:  #fff;
+  border-radius: 5px;
+  padding: 10px 40px;
+}
+
 /* Links */
 .navbar-default .navbar-nav > li > a {
   color: #333;
