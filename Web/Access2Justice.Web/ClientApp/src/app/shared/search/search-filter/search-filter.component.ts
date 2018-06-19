@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { isNullOrUndefined } from 'util';
 
 @Component({
     selector: 'app-search-filter',

@@ -75,7 +75,7 @@ export class SubtopicDetailComponent implements OnInit {
                 );
         }
 
-        this.subtopic = this.getCurrentSubtopic(this.subtopics, this.activeSubtopicParam);//this.subtopics.filter((item) => item.id === this.activeSubtopicParam);
+        this.subtopic = this.getCurrentSubtopic(this.subtopics, this.activeSubtopicParam);
         this.getSubtopicDetail();
         this.routeDataService.setData({ subtopic: this.subtopic, topicName: this.activeSubtopic });
 
@@ -83,7 +83,7 @@ export class SubtopicDetailComponent implements OnInit {
 
     getCurrentSubtopic(items, activeParam) {
         let subtopic: any;
-        if (!isNullOrUndefined(items) && !isNullOrUndefined(activeParam)) {
+      if (items != undefined && activeParam != undefined) {
             subtopic = items.filter((item) => item.id === activeParam);
         }
         return subtopic;

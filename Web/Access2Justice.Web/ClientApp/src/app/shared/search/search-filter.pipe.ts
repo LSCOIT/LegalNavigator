@@ -1,12 +1,11 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { isNullOrUndefined } from 'util';
 
 @Pipe({ name: 'searchFilter', pure: true })
 export class SearchFilterPipe implements PipeTransform {
     reverse: boolean = false;
     transform(items: Array<any>, args: any[]): any[] {
-        let filter = args['filter'];
-        if (!items || !args || isNullOrUndefined(filter)) {
+      let filter = args['filter'];
+      if (!items || !args || filter == undefined) {
             return items;
         }
 
@@ -17,7 +16,7 @@ export class SearchFilterPipe implements PipeTransform {
         filterParam = filter['filterParam'];
         sortParam = filter['sortParam'];
 
-        if (!isNullOrUndefined(filterParam)) {
+      if (filterParam != undefined) {
             if (filterParam != 'All') {
                 items = items.filter(item => item.resourceType == filterParam);
             }
@@ -26,7 +25,7 @@ export class SearchFilterPipe implements PipeTransform {
             }
         }
 
-        if (!isNullOrUndefined(sortParam)) {
+      if (sortParam != undefined) {
             if (sortParam == 'name') {
                 return this.sortOrder(this.orderBy(items, sortParam));
             }

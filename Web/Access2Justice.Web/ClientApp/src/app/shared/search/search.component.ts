@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 
 import { SearchService } from './search.service';
 import { NavigateDataService } from '../navigate-data.service';
-import { isNullOrUndefined } from 'util';
 
 @Component({
   selector: 'app-search',
@@ -24,9 +23,9 @@ export class SearchComponent implements OnInit {
 
     this.searchService.search(this.luisInput)
       .subscribe(response => {
-        if (!isNullOrUndefined(response)) {
+        if (response != undefined) {
           this.searchResults = response;
-          this.navigateDataService.setData(this.searchResults);          
+          this.navigateDataService.setData(this.searchResults);
           this.router.navigateByUrl('/searchRefresh', { skipLocationChange: true })
             .then(() =>
               this.router.navigate(['/search'])

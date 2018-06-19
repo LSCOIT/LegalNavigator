@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { RouteDataService } from '../../../shared/route-data.service';
-import { isNullOrUndefined } from 'util';
 
 
 @Component({
@@ -18,7 +17,7 @@ export class ResourceCardDetailComponent implements OnInit {
 
     ngOnInit() {
         this.data = this.routeDataService.getData();
-        if (!isNullOrUndefined(this.data) && !isNullOrUndefined(this.data.subtopic)) {
+      if (this.data != undefined && this.data.subtopic != undefined) {
             this.subtopic = this.data.subtopic[0];
             this.topic = this.data.topicName;
         }
