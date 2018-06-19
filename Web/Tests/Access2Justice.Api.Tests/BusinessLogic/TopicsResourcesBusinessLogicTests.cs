@@ -6,6 +6,11 @@ using Access2Justice.CosmosDb.Interfaces;
 using Access2Justice.Api.BusinessLogic;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using Microsoft.Azure.Documents;
+using System.IO;
+using System.Linq;
+using Access2Justice.Shared.Models;
 
 namespace Access2Justice.Api.Tests.BusinessLogic
 {
@@ -50,7 +55,12 @@ namespace Access2Justice.Api.Tests.BusinessLogic
                     'id':'77d301e7-6df2-612e-4704-c04edf271806','name': 'Form1','description': 'Subhead lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem',
                     'resourceType': 'Forms','externalUrl': 'www.youtube.com','url': 'access2justice.com','referenceTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],
                     'location': [{'state': 'Hawaii','county':'','city': 'Haiku-Pauwela','zipCode':''}],'icon': './assets/images/resources/resource.png','createdBy': 'API','createdTimeStamp': '','modifiedBy': 'API','modifiedTimeStamp': ''}]");
-        
+
+        private readonly JArray referenceTagData =
+                     JArray.Parse(@"[{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}]");
+        private readonly JArray locationData =
+                     JArray.Parse(@"[{'state':'Hawaii','county':'','city':'Haiku-Pauwela','zipCode':''},{'state':'Alaska','county':'','city':'','zipCode':''}]");
+
         //Mocked result data.
         private readonly string expectedEmptyArrayObject = "[{}]";
         private readonly string expectedTopicId = "addf41e9-1a27-4aeb-bcbb-7959f95094ba";
@@ -60,7 +70,13 @@ namespace Access2Justice.Api.Tests.BusinessLogic
                     'id':'77d301e7-6df2-612e-4704-c04edf271806','name': 'Form1','description': 'Subhead lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem',
                     'resourceType': 'Forms','externalUrl': 'www.youtube.com','url': 'access2justice.com','referenceTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],
                     'location': [{'state': 'Hawaii','county':'','city': 'Haiku-Pauwela','zipCode':''}],'icon': './assets/images/resources/resource.png','createdBy': 'API','createdTimeStamp': '','modifiedBy': 'API','modifiedTimeStamp': ''}]");
-        
+
+        private readonly string expectedReferenceTagData = "aaa085ef-96fb-4fd0-bcd0-0472ede66512";
+        private readonly string emptyReferenceTagObject = "";
+        private readonly JArray expectedLocationData =
+                    JArray.Parse(@"[{'state':'Hawaii','county':'','city':'Haiku-Pauwela','zipCode':''},{'state':'Alaska','county':'','city':'','zipCode':''}]");
+        private readonly JArray emptyLocationObject =
+                    JArray.Parse(@"[{'state':'','county':'','city':'','zipCode':''}]");
         public TopicsResourcesBusinessLogicTests()
         {
             backendDatabaseService = Substitute.For<IBackendDatabaseService>();
@@ -221,7 +237,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
         
         [Fact]
-        public void CreateFormsAsyncWithProperData()
+        public void CreateFormsAsyncWithProperData()  //To do - CreateFormsAsyncEmptyData after expcetion logging
         {
             //arrange
             var form = this.formData[0];
@@ -246,62 +262,85 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             
             //assert
             Assert.Equal(expectedformData[0].ToString(), result.ToString());
-        }
-
-        //[Fact]
-        //public void CreateFormsAsyncWithEmptyData()
-        //{
-        //    //arrange
-        //    var form = this.emptyData[0];
-
-        //    //act
-        //    var response = topicsResourcesBusinessLogic.CreateResourcesForms(form);
-        //    var result = JsonConvert.SerializeObject(response);
-        //    var formResult = (JObject)JsonConvert.DeserializeObject(result);
-        //    result = formResult;
-        //    foreach (JProperty field in result)
-        //    {
-        //        if (field.Name == "createdTimeStamp")
-        //        {
-        //            field.Value = "";
-        //        }
-
-        //        else if (field.Name == "modifiedTimeStamp")
-        //        {
-        //            field.Value = "";
-        //        }
-        //    }
-
-        //    //assert
-        //    Assert.Equal(expectedformData[0].ToString(), result.ToString());
-        //}
+        }  
 
         [Fact]
         public void CreateResourceAsyncWithProperData()
         {
             //arrange
-            var form = this.formData[0];
+            var form = this.formData;
+            var resource = JsonConvert.SerializeObject(form);
+            Document document = new Document();
+            JsonTextReader reader = new JsonTextReader(new StringReader(form[0].ToString()));
+            document.LoadFrom(reader);
+            dynamic actualResourceData = null;
+            
+            //act
+            var dbResponse = backendDatabaseService.CreateItemAsync<dynamic>(form, cosmosDbSettings.ResourceCollectionId).ReturnsForAnyArgs(document);
+            var response = topicsResourcesBusinessLogic.CreateResourceDocumentAsync(resource).Result;
+            foreach (var result in response)
+            {
+                actualResourceData = result;
+            }
+            
+            //assert
+            Assert.Equal(expectedformData[0].ToString(), actualResourceData.ToString());
+        }
+
+        [Fact]
+        public void GetReferenceTagsWithProperData()
+        {
+            //arrange
+            var referenceTag = this.referenceTagData;
 
             //act
-            var response = topicsResourcesBusinessLogic.CreateResourcesForms(form);
-            var result = JsonConvert.SerializeObject(response);
-            var formResult = (JObject)JsonConvert.DeserializeObject(result);
-            result = formResult;
-            foreach (JProperty field in result)
-            {
-                if (field.Name == "createdTimeStamp")
-                {
-                    field.Value = "";
-                }
+            var response = topicsResourcesBusinessLogic.GetReferenceTags(referenceTag);
+            
+            //assert
+            Assert.Equal(expectedReferenceTagData, response[0].ReferenceTags);
+        }
 
-                else if (field.Name == "modifiedTimeStamp")
-                {
-                    field.Value = "";
-                }
-            }
+        [Fact]
+        public void GetReferenceTagsWithEmptyData()
+        {
+            //arrange
+            var referenceTag = this.emptyData;            
+
+            //act
+            var response = topicsResourcesBusinessLogic.GetReferenceTags(referenceTag);
+            
+            //assert
+            Assert.Equal(emptyReferenceTagObject, response[0].ReferenceTags);
+        }
+
+        [Fact]
+        public void GetLocationWithProperData()
+        {
+            //arrange
+            var location = this.locationData;
+
+            //act
+            var response = topicsResourcesBusinessLogic.GetLocations(location);
+            var actualLocation = JsonConvert.SerializeObject(response);
+            var expectedLocation = JsonConvert.SerializeObject(expectedLocationData);
 
             //assert
-            Assert.Equal(expectedformData[0].ToString(), result.ToString());
+            Assert.Equal(expectedLocation, actualLocation);
+        }
+
+        [Fact]
+        public void GetLocationWithEmptyData()
+        {
+            //arrange
+            var location = this.emptyData;
+
+            //act
+            var response = topicsResourcesBusinessLogic.GetLocations(location);
+            var actualLocation = JsonConvert.SerializeObject(response);
+            var expectedLocation = JsonConvert.SerializeObject(emptyLocationObject);
+
+            //assert
+            Assert.Equal(expectedLocation, actualLocation);
         }
     }    
 }
