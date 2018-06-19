@@ -1,8 +1,0 @@
-<ol class="breadcrumb">
-  <li><a [routerLink]="['/topics']">All topics</a></li>
-  <li *ngIf="topic">
-  <li><a [routerLink]="['/topics', topic]">{{topic}}</a></li>
-  <li *ngIf="topic && subtopic">
-    <a [routerLink]="['/topics/',topic,subtopic.id]">{{subtopic.name}}</a>
-  </li>
-</ol>

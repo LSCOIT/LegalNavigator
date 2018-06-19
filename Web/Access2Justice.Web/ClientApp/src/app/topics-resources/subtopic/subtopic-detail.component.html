@@ -2,7 +2,8 @@
   <ol class="breadcrumb">
     <!--edit this once breadcrumb task is done-->
     <li><a [routerLink]="['/topics']">All topics</a></li>
-    <li><a [routerLink]="['/topics',activeSubtopic]">{{activeSubtopic}}</a></li>
+    <li><a href="#">Subtopic</a></li>
+    <li class="active">Subtopic</li>
   </ol>
   <div class="row">
     <div class="col-md-9 col-sm-12 col-xs-12" *ngFor="let subtopic of subtopics">
