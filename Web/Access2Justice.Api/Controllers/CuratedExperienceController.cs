@@ -3,10 +3,11 @@ using Access2Justice.Api.Models.CuratedExperience;
 using Access2Justice.Api.ViewModels;
 using Access2Justice.Shared.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Linq;
 using System.Threading.Tasks;
+
 
 namespace Access2Justice.Api.Controllers
 {
@@ -27,29 +28,31 @@ namespace Access2Justice.Api.Controllers
         }
 
 
-        [HttpPost]
-        public async Task<CuratedExperienceSurveyViewModel> Post([FromQuery] string surveyId, string choiceId, string answer)
-        {
-            var savedUserInputDocument = await _backendDatabaseService.GetItemsAsync<CuratedExperienceAnswers>(x => x.CuratedExperienceId == surveyId, "CuratedExperience"); 
-            if (savedUserInputDocument.Any() && answer != null)
-            {
-                var answersIds = new List<Guid>(savedUserInputDocument.First().Answers.Keys);
-                foreach (var answerId in answersIds)
-                {
-                    if (answerId.ToString() == choiceId)
-                    {
-                        savedUserInputDocument.First().Answers[Guid.Parse(choiceId)] = answer;
-                    }
-                }
-                await _backendDatabaseService.UpdateItemAsync(savedUserInputDocument.First().Id, savedUserInputDocument.First());
-            }
-            else
-            {
-                // todo:@alaa  create a new answers document
-            }
+        //[HttpPost]
+        //[ActionName("GetNextQuestion")]
+        // // todo:@alaa i don't like the name
+        //public async Task<CuratedExperienceSurveyViewModel> GetNextQuestion([FromQuery] string surveyId, string choiceId, string answer)
+        //{
+        //    var savedUserInputDocument = await _backendDatabaseService.GetItemsAsync<CuratedExperienceAnswers>(x => x.CuratedExperienceId == surveyId, "CuratedExperience"); 
+        //    if (savedUserInputDocument.Any() && answer != null)
+        //    {
+        //        var answersIds = new List<Guid>(savedUserInputDocument.First().Answers.Keys);
+        //        foreach (var answerId in answersIds)
+        //        {
+        //            if (answerId.ToString() == choiceId)
+        //            {
+        //                savedUserInputDocument.First().Answers[Guid.Parse(choiceId)] = answer;
+        //            }
+        //        }
+        //        await _backendDatabaseService.UpdateItemAsync(savedUserInputDocument.First().Id, savedUserInputDocument.First());
+        //    }
+        //    else
+        //    {
+        //        // todo:@alaa  create a new answers document
+        //    }
 
-            return await GetUserSurvay(surveyId, choiceId);
-        }
+        //    return await GetUserSurvay(surveyId, choiceId);
+        //}
 
 
          // todo:@alaa move this method to the business logic
@@ -77,6 +80,29 @@ namespace Access2Justice.Api.Controllers
             }
 
             return questions;
+        }
+
+
+
+
+        [HttpPost]
+        [ActionName("ImportA2JGuidedInterview")]
+        public async Task<dynamic> ImportA2JGuidedInterview([FromBody] dynamic guide)
+        {
+            var gi = JsonConvert.SerializeObject(guide);
+            // var a2jGi = JsonConvert.DeserializeObject<A2JAuthorGuidedInterview_V2>(gi);
+            var a2jGiDynamic = JsonConvert.DeserializeObject(guide.ToString());
+            // var a2jGi = JsonConvert.DeserializeObject<A2JAuthorGuidedInterview_V2>(guide);
+            //JObject parsedGi = new JObject {
+            //    { "GuidedInterview", JsonConvert.DeserializeObject(gi) },
+            //};
+
+
+            //var temp = parsedGi;
+
+            //return parsedGi;
+
+            return a2jGiDynamic;
         }
     }
 }

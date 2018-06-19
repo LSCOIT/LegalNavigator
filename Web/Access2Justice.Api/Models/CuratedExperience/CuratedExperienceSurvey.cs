@@ -41,7 +41,15 @@ namespace Access2Justice.Api.Models.CuratedExperience
     {
         [JsonProperty(PropertyName = "id")]
         public string ChoiceId { get; set; }
+
         [JsonProperty(PropertyName = "text")]
         public string ChoiceText { get; set; }
+
+        [JsonProperty(propertyName: "nextQuestion")]
+        public string NextQuestion { get; set; }
+
+        [JsonProperty(propertyName: "tags")]
+        public List<string> Tags { get; set; }
+
     }
 }

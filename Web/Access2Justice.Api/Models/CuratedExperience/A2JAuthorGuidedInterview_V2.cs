@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Access2Justice.Api.Models.CuratedExperience
 {
-    public class RootObject
+    public class A2JAuthorGuidedInterview_V2
     {
         public int authorId { get; set; }
         public string tool { get; set; }
@@ -38,7 +38,6 @@ namespace Access2Justice.Api.Models.CuratedExperience
         public Vars vars { get; set; }
         public Pages pages { get; set; }
     }
-
 
     public class Author
     {
@@ -420,7 +419,7 @@ namespace Access2Justice.Api.Models.CuratedExperience
         public string value { get; set; }
     }
 
-    public class __invalid_type__1Introduction
+    public class Introduction
     {
         public string name { get; set; }
         public string type { get; set; }
@@ -475,7 +474,7 @@ namespace Access2Justice.Api.Models.CuratedExperience
         public string invalidPrompt { get; set; }
     }
 
-    public class __invalid_type__1Name
+    public class Name
     {
         public string name { get; set; }
         public string type { get; set; }
@@ -530,7 +529,7 @@ namespace Access2Justice.Api.Models.CuratedExperience
         public string invalidPrompt { get; set; }
     }
 
-    public class __invalid_type__2Gender
+    public class Gender
     {
         public string name { get; set; }
         public string type { get; set; }
@@ -585,7 +584,7 @@ namespace Access2Justice.Api.Models.CuratedExperience
         public string invalidPrompt { get; set; }
     }
 
-    public class __invalid_type__3Address
+    public class Address
     {
         public string name { get; set; }
         public string type { get; set; }
@@ -640,7 +639,7 @@ namespace Access2Justice.Api.Models.CuratedExperience
         public string invalidPrompt { get; set; }
     }
 
-    public class __invalid_type__4PhoneNumber
+    public class PhoneNumber
     {
         public string name { get; set; }
         public string type { get; set; }
@@ -695,7 +694,7 @@ namespace Access2Justice.Api.Models.CuratedExperience
         public string invalidPrompt { get; set; }
     }
 
-    public class __invalid_type__1MaritalStatus
+    public class MaritalStatus
     {
         public string name { get; set; }
         public string type { get; set; }
@@ -732,7 +731,7 @@ namespace Access2Justice.Api.Models.CuratedExperience
         public string value { get; set; }
     }
 
-    public class __invalid_type__2HaveChildren
+    public class HaveChildren
     {
         public string name { get; set; }
         public string type { get; set; }
@@ -787,7 +786,7 @@ namespace Access2Justice.Api.Models.CuratedExperience
         public string invalidPrompt { get; set; }
     }
 
-    public class __invalid_type__3HowManyChildren
+    public class HowManyChildren
     {
         public string name { get; set; }
         public string type { get; set; }
@@ -824,7 +823,7 @@ namespace Access2Justice.Api.Models.CuratedExperience
         public string value { get; set; }
     }
 
-    public class __invalid_type__1TheEnd
+    public class TheEnd
     {
         public string name { get; set; }
         public string type { get; set; }
@@ -879,7 +878,7 @@ namespace Access2Justice.Api.Models.CuratedExperience
         public string invalidPrompt { get; set; }
     }
 
-    public class __invalid_type__1PurposeOfForm
+    public class PurposeOfForm
     {
         public string name { get; set; }
         public string type { get; set; }
@@ -934,7 +933,7 @@ namespace Access2Justice.Api.Models.CuratedExperience
         public string invalidPrompt { get; set; }
     }
 
-    public class __invalid_type__4ChildSNameAndBirthdate
+    public class ChildsNameAndBirthdate
     {
         public string name { get; set; }
         public string type { get; set; }
