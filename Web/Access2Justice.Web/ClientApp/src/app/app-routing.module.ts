@@ -34,6 +34,7 @@ const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LogInComponent },
   { path: 'privacy', component: PrivacyPromiseComponent },
+  { path: 'personalizedplan/:id', component: PersonalizedPlanComponent },
   { path: '', component: HomeComponent }
 ];
 

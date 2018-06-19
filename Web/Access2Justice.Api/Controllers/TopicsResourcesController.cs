@@ -36,7 +36,7 @@ namespace Access2Justice.Api.Controllers
 
         #region get all resources when parentTopicId is mapped to topicTags
         [HttpGet]
-        [Route("api/topics/getresourcedetails/{ParentTopicId}")]
+        [Route("api/topics/getresourcedetails/{parentTopicId}")]
         public async Task<IActionResult> GetResourceDetails(string parentTopicId)  
         {
             var topics = await topicsResourcesBusinessLogic.GetResourceAsync(parentTopicId);
@@ -52,6 +52,17 @@ namespace Access2Justice.Api.Controllers
 
             var topics = await topicsResourcesBusinessLogic.GetDocumentAsync(id);
             return Ok(topics);
+        }
+        #endregion
+
+        #region get all resources when resource type is action plan for a parentTopicId
+        [HttpGet]
+        [Route("api/topics/getactionplanresourcedetails/{parentTopicId}")]
+        public async Task<IActionResult> GetActionPlanResourceDetails(string parentTopicId)
+        {
+            var filterValue = "Action Plans";
+            var resources = await topicsResourcesBusinessLogic.GetResourceActionPlanAsync(parentTopicId, filterValue);
+            return Ok(resources);
         }
         #endregion
 

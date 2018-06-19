@@ -69,5 +69,35 @@ namespace Access2Justice.CosmosDb
                 }
             }
         }
+
+        public async Task<dynamic> FindItemsWhereArrayContainsFilterAsync(string collectionId, string arrayName, string propertyName, string value, string filterName, string filterValue)
+        {
+            EnsureParametersAreNotOrEmpty(collectionId, arrayName, propertyName);
+
+            var ids = new List<string> { value };
+            return await FindItemsWhereArrayContainsFilterAsync(collectionId, arrayName, propertyName, ids, filterName, filterValue);
+        }
+
+        public async Task<dynamic> FindItemsWhereArrayContainsFilterAsync(string collectionId, string arrayName, string propertyName, IEnumerable<string> values, string filterName, string filterValue)
+        {
+            EnsureParametersAreNotOrEmpty(collectionId, arrayName, propertyName);
+
+            var arrayContainsClause = string.Empty;
+            var filterClause = string.Empty;
+            var lastItem = values.Last();
+
+            foreach (var value in values)
+            {
+                arrayContainsClause += $" ARRAY_CONTAINS(c.{arrayName}, {{ '{propertyName}' : '" + value + "'})";
+                if (value != lastItem)
+                {
+                    arrayContainsClause += "OR";
+                }
+            }
+
+            filterClause += " AND" + $" c.{filterName} = '" + filterValue + "'";
+            var query = $"SELECT * FROM c WHERE {arrayContainsClause} {filterClause}";
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query);
+        }
     }
 }

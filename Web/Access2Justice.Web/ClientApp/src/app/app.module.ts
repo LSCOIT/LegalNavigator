@@ -31,6 +31,7 @@ import { SubtopicDetailComponent } from './topics-resources/subtopic/subtopic-de
 import { TopicsResourcesComponent } from './topics-resources/topics-resources.component';
 import { TopicsComponent } from './topics-resources/topic/topics.component';
 import { PersonalizedPlanComponent } from './profile/personalized-plan/personalized-plan.component';
+import { PersonalizedPlanService } from './profile/personalized-plan/personalized-plan.service';
 
 
 @NgModule({
@@ -66,7 +67,8 @@ import { PersonalizedPlanComponent } from './profile/personalized-plan/personali
   providers: [
     TopicService,
     QuestionService,
-    ProgressbarConfig
+    ProgressbarConfig,
+    PersonalizedPlanService
   ],
   bootstrap: [AppComponent]
 })

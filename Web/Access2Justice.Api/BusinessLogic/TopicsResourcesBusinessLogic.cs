@@ -50,5 +50,10 @@ namespace Access2Justice.Api.BusinessLogic
         {
             return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, "id", id);
         }
+
+        public async Task<dynamic> GetResourceActionPlanAsync(string ParentTopicId, string filterValue)
+        {
+            return await dbClient.FindItemsWhereArrayContainsFilterAsync(dbSettings.ResourceCollectionId, "topicTags", "id", ParentTopicId, "resourceType" , filterValue);
+        }
     }
 }
