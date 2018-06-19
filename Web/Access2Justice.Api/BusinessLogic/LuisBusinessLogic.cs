@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Access2Justice.Api
 {
@@ -31,7 +32,10 @@ namespace Access2Justice.Api
 
         public async Task<dynamic> GetResourceBasedOnThresholdAsync(LuisInput luisInput)
         {
-            var luisResponse = await luisProxy.GetIntents(luisInput.Sentence);
+            //Encoding search Text before sending it to external systems.
+            string encodedSentence = HttpUtility.UrlEncode(luisInput.Sentence);            
+
+            var luisResponse = await luisProxy.GetIntents(encodedSentence);
 
             var intentWithScore = ParseLuisIntent(luisResponse);
 
@@ -45,7 +49,7 @@ namespace Access2Justice.Api
                     JObject luisObject = new JObject { { "luisResponse", luisResponse } };
                     return luisObject.ToString();
                 default:
-                    return await GetWebResourcesAsync(luisInput.Sentence);
+                    return await GetWebResourcesAsync(encodedSentence);
             }
         }
 
