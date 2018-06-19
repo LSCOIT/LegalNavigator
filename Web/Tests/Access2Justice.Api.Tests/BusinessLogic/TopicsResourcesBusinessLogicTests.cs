@@ -44,6 +44,13 @@ namespace Access2Justice.Api.Tests.BusinessLogic
                     'createdTimeStamp':'','modifiedBy':'','modifiedTimeStamp':'','_rid':'mwoSAJdNlwIBAAAAAAAAAA==','_self':
                     'dbs/mwoSAA==/colls/mwoSAJdNlwI=/docs/mwoSAJdNlwIBAAAAAAAAAA==/','_etag':'\'040007b5-0000-0000-0000-5b0792260000\'',
                     '_attachments':'attachments/','_ts':1527222822}]");
+        private readonly JArray breadcrumbData =
+                    JArray.Parse(@"[{'id': '4589592f-3312-eca7-64ed-f3561bbb7398',
+                    'parentId': '5c035d27-2fdb-9776-6236-70983a918431', 'name': 'family1.2.1'},
+                    {'id': '5c035d27-2fdb-9776-6236-70983a918431','parentId': 'f102bfae-362d-4659-aaef-956c391f79de',
+                    'name': 'family1.1.1'},{'id': 'f102bfae-362d-4659-aaef-956c391f79de',
+                    'parentId': 'addf41e9-1a27-4aeb-bcbb-7959f95094ba','name': 'family subtopic name 1.1'
+                    },{'id': 'addf41e9-1a27-4aeb-bcbb-7959f95094ba','name': 'family'}]");
 
         //Mocked result data.
         private readonly string expectedEmptyArrayObject = "[{}]";
@@ -216,8 +223,8 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         public void GetBreadcrumbItemsAsyncProperData()
         {
             //arrange
-            var dbResponse = backendDatabaseService.QueryItemsAsync(cosmosDbSettings.ResourceCollectionId, query);
-            dbResponse.ReturnsForAnyArgs<dynamic>(topicsData);
+            var dbResponse = dynamicQueries.ExecuteStoredProcedureAsync(topicId);
+            dbResponse.ReturnsForAnyArgs<dynamic>(breadcrumbData);
             //act
             var response = topicsResourcesBusinessLogic.GetBreadCrumbDataByIdAsync(topicId).Result;
             string result = JsonConvert.SerializeObject(response);
@@ -229,11 +236,11 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         public void GetBreadcrumbItemsAsyncEmptyData()
         {
             //arrange
-            var dbResponse = backendDatabaseService.QueryItemsAsync(cosmosDbSettings.ResourceCollectionId, query);
+            var dbResponse = dynamicQueries.ExecuteStoredProcedureAsync(topicId);
             dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
 
             //act
-            var response = topicsResourcesBusinessLogic.GetBreadCrumbDataByIdAsync(topicId);
+            var response = topicsResourcesBusinessLogic.GetBreadCrumbDataByIdAsync(topicId).Result;
             string result = JsonConvert.SerializeObject(response);
 
             //assert
