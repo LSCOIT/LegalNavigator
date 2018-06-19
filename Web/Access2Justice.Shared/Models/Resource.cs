@@ -57,7 +57,7 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "referenceTags")]
         public IEnumerable<ReferenceTag> ReferenceTags { get; set; }
 
-        [EnsureOneElementAttribute(ErrorMessage = "At least one location is required")]
+        //[EnsureOneElementAttribute(ErrorMessage = "At least one location is required")]
         [JsonProperty(PropertyName = "location")]
         public IEnumerable<Location> Location { get; set; }
 

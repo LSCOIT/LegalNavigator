@@ -228,10 +228,10 @@ namespace Access2Justice.Api.BusinessLogic
                     locations = GetLocations(field.Value);
                 }
             }
-            
-            forms = new Form() 
+
+            forms = new Form()
             {
-                ResourceId = Guid.NewGuid(),
+                ResourceId = resourceObject.id=="" ? Guid.NewGuid(): resourceObject.id,
                 Name = resourceObject.name,
                 Description = resourceObject.description,
                 ResourceType = resourceObject.resourceType,
