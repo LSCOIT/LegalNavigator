@@ -413,7 +413,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             //arrange
             luisInput.Sentence = searchText;
             var luisResponse = luisProxy.GetIntents(searchText);
-            luisResponse.Returns(meduimScoreLuisResponse);
+            luisResponse.ReturnsForAnyArgs(meduimScoreLuisResponse);
 
             //act
             var response = luisBusinessLogic.GetResourceBasedOnThresholdAsync(luisInput).Result;
@@ -428,7 +428,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             //arrange
             luisInput.Sentence = searchText;
             var luisResponse = luisProxy.GetIntents(searchText);
-            luisResponse.Returns(properLuisResponse);
+            luisResponse.ReturnsForAnyArgs(properLuisResponse);
 
             var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
             topicResponse.ReturnsForAnyArgs<dynamic>(emptyTopicObject);
