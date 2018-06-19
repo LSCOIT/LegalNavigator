@@ -1,6 +1,7 @@
-﻿using Access2Justice.Shared.Interfaces;
+﻿using Access2Justice.Shared.Helper;
+using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
-using Microsoft.Azure.Documents.Client;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -124,47 +125,21 @@ namespace Access2Justice.CosmosDb
             }
             return pagedResources;
         }
-
-        // need to work on this code for optimization.. it is very bad :(
+        
         private dynamic FindLocationWhereArrayContains(Location location)
         {
-            if (location == null)
+            if (location == null || (string.IsNullOrEmpty(location.State) && string.IsNullOrEmpty(location.County)
+                && string.IsNullOrEmpty(location.City) && string.IsNullOrEmpty(location.ZipCode)))
             {
                 return "";
             }
-            string locationQuery = string.Empty;
+            var jsonSettings = UtilityHelper.JSONSanitizer();
+
+            string locationQuery = JsonConvert.SerializeObject(location, jsonSettings);
             string query = " (ARRAY_CONTAINS(c.location,{0}))";
-            if (!string.IsNullOrEmpty(location.State))
-            {
-                locationQuery += " 'state' : '" + location.State + "'";
-            }
-            if (!string.IsNullOrEmpty(location.City))
-            {
-                if (!string.IsNullOrEmpty(locationQuery))
-                {
-                    locationQuery += locationQuery + ",";
-                }
-                locationQuery += " 'city':'" + location.City + "'";
-            }
-            if (!string.IsNullOrEmpty(location.County))
-            {
-                if (!string.IsNullOrEmpty(locationQuery))
-                {
-                    locationQuery += locationQuery + ",";
-                }
-                locationQuery += " 'county':'" + location.County + "'";
-            }
-            if (!string.IsNullOrEmpty(location.County))
-            {
-                if (!string.IsNullOrEmpty(locationQuery))
-                {
-                    locationQuery += locationQuery + ",";
-                }
-                locationQuery += " 'zipCode':'" + location.ZipCode + "'";
-            }
             if (!string.IsNullOrEmpty(locationQuery))
             {
-                locationQuery = string.Format(CultureInfo.InvariantCulture, query, "{" + locationQuery + "},true");
+                locationQuery = string.Format(CultureInfo.InvariantCulture, query, locationQuery + ",true");
             }
             return locationQuery;
         }

@@ -75,8 +75,8 @@ namespace Access2Justice.CosmosDb.Tests
         [Fact]
         public void FindItemsWhereContainsWithLocationAsyncShouldConstructValidSqlQueryWithLocationCondition()
         {
-            // Arrange            
-            string query = @"SELECT * FROM c WHERE CONTAINS(c.keywords, 'EVICTION') AND  (ARRAY_CONTAINS(c.location,{ 'state' : 'Hawaii'},true))";
+            // Arrange
+            string query = "SELECT * FROM c WHERE CONTAINS(c.keywords, 'EVICTION') AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\"},true))";
 
             //Act
             dynamicQueries.FindItemsWhereContainsWithLocationAsync("TopicsCollections", "keywords", "eviction", new Location() { State = "Hawaii" });
@@ -120,7 +120,7 @@ namespace Access2Justice.CosmosDb.Tests
             var ids = new List<string>() { "guid1" };
             Location location = new Location { State = "Hawaii" };
             ResourceFilter resourceFilter = new ResourceFilter { TopicIds = ids, PageNumber = 0, ResourceType = "All",Location = location };
-            string query = @"SELECT * FROM c WHERE  ARRAY_CONTAINS(c.topicTags, { 'id' : 'guid1'}) AND  (ARRAY_CONTAINS(c.location,{ 'state' : 'Hawaii'},true))";
+            string query = "SELECT * FROM c WHERE  ARRAY_CONTAINS(c.topicTags, { 'id' : 'guid1'}) AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\"},true))";
 
 
             //Act
@@ -138,7 +138,7 @@ namespace Access2Justice.CosmosDb.Tests
             var ids = new List<string>() { "guid1" };
             Location location = new Location { State = "Hawaii" };
             ResourceFilter resourceFilter = new ResourceFilter { TopicIds = ids, PageNumber = 2, ResourceType = "All", Location = location, ContinuationToken = "222" };
-            string query = @"SELECT * FROM c WHERE  ARRAY_CONTAINS(c.topicTags, { 'id' : 'guid1'}) AND  (ARRAY_CONTAINS(c.location,{ 'state' : 'Hawaii'},true))";
+            string query = "SELECT * FROM c WHERE  ARRAY_CONTAINS(c.topicTags, { 'id' : 'guid1'}) AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\"},true))";
 
 
             //Act
@@ -156,7 +156,25 @@ namespace Access2Justice.CosmosDb.Tests
             var ids = new List<string>() { "guid1" };
             Location location = new Location { State = "Hawaii" };
             ResourceFilter resourceFilter = new ResourceFilter { TopicIds = ids, PageNumber = 0, ResourceType = "Forms", Location = location };
-            string query = @"SELECT * FROM c WHERE ( ARRAY_CONTAINS(c.topicTags, { 'id' : 'guid1'})) AND c.resourceType = 'Forms' AND  (ARRAY_CONTAINS(c.location,{ 'state' : 'Hawaii'},true))";
+            string query = "SELECT * FROM c WHERE ( ARRAY_CONTAINS(c.topicTags, { 'id' : 'guid1'})) AND c.resourceType = 'Forms' AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\"},true))";
+
+
+            //Act
+            dynamicQueries.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter);
+
+            // Assert
+            cosmosDbService.Received().QueryPagedResourcesAsync(query, "");
+
+        }
+
+        [Fact]
+        public void FindItemsWhereArrayContainsWithAndClauseAsyncShouldVaildSqlQueryWithProperLocationDetails()
+        {
+            // Arrange
+            var ids = new List<string>() { "guid1" };
+            Location location = new Location { State = "Hawaii", City = "Honolulu", County = "Honolulu", ZipCode = "96801" };
+            ResourceFilter resourceFilter = new ResourceFilter { TopicIds = ids, PageNumber = 0, ResourceType = "Forms", Location = location };
+            string query = "SELECT * FROM c WHERE ( ARRAY_CONTAINS(c.topicTags, { 'id' : 'guid1'})) AND c.resourceType = 'Forms' AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\",\"city\":\"Honolulu\",\"county\":\"Honolulu\",\"zipCode\":\"96801\"},true))";
 
 
             //Act
@@ -174,7 +192,7 @@ namespace Access2Justice.CosmosDb.Tests
             var ids = new List<string>() { "guid1" };
             Location location = new Location { State = "Hawaii" };
             ResourceFilter resourceFilter = new ResourceFilter { TopicIds = ids, PageNumber = 0, ResourceType = "ALL", Location = location };
-            string query = @"SELECT c.resourceType FROM c WHERE  ARRAY_CONTAINS(c.topicTags, { 'id' : 'guid1'}) AND  (ARRAY_CONTAINS(c.location,{ 'state' : 'Hawaii'},true))";
+            string query = "SELECT c.resourceType FROM c WHERE  ARRAY_CONTAINS(c.topicTags, { 'id' : 'guid1'}) AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\"},true))";
 
 
             //Act

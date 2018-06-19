@@ -98,11 +98,11 @@ namespace Access2Justice.Api
             if (topicIds.Count > 0)
             {
                 ResourceFilter resourceFilter = new ResourceFilter { TopicIds = topicIds, PageNumber = 0, ResourceType = "ALL", Location = location };
-                // need to look into this logic parallel tasks.
-                var task1 =  topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
-                var task2 =  topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
-                var groupedResourceType = await task1;
-                PagedResources resources = await task2;
+                // need to discuss with others related to logic for parallel tasks.
+                var GetResourcesTask =  topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
+                var ApplyPaginationTask =  topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
+                var groupedResourceType = await GetResourcesTask;
+                PagedResources resources = await ApplyPaginationTask;
                 serializedTopics = JsonConvert.SerializeObject(topics);
                 serializedResources = JsonConvert.SerializeObject(resources.Results);
                 serializedToken = resources.ContinuationToken ?? "[]";

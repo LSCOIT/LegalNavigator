@@ -11,8 +11,6 @@ import { ServiceOrgSidebarComponent } from '../../sidebars/service-org-sidebar.c
 import { SaveButtonComponent } from '../../resource/user-action/save-button.component';
 import { ShareButtonComponent } from '../../resource/user-action/share-button.component';
 import { NavigateDataService } from '../../navigate-data.service';
-import { isNullOrUndefined } from 'util';
-import { ResourceResult } from './search-result';
 import { WebResourceComponent } from './web-resource/web-resource.component';
 
 describe('SearchResultsComponent', () => {

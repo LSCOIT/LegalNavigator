@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
 
 @Injectable()
 export class SearchService {
@@ -24,11 +23,7 @@ export class SearchService {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
-    //let httpHeaders = new Headers();
-    //httpHeaders.append('resourceInput', resourceFilter);
-
     return this.httpClient.put(this.getResourceUrl, resourceInput, httpOptions);
-    //return this.httpClient.get(this.getResourceUrl, resourceFilter, httpOptions);
   }
 
   searchByOffset(searchText: string, offset: number) {

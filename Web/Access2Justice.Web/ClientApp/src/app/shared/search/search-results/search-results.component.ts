@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NavigateDataService } from '../../navigate-data.service';
-import { isNullOrUndefined } from 'util';
 import { ResourceResult } from './search-result';
 import { SearchService } from '../search.service';
 
@@ -17,6 +16,7 @@ export class SearchResultsComponent implements OnInit {
   searchText: string;
   @Input()
   searchResults: any;
+  sortType: any;
   resourceResults: ResourceResult[] = [];
   filterType: string = 'All';  
   resourceTypeFilter: any[];
@@ -37,19 +37,19 @@ export class SearchResultsComponent implements OnInit {
 
   bindData() {
     this.searchResults = this.navigateDataService.getData();
-    if (!isNullOrUndefined(this.searchResults)) {
+    if (this.searchResults != undefined) {
       this.isInternalResource = this.searchResults.resources;
       this.isWebResource = this.searchResults.webResources;
       if (this.isWebResource) {
         this.total = this.searchResults.webResources.webPages.totalEstimatedMatches;
         this.searchText = this.searchResults.webResources.queryContext.originalQuery;
         this.pagesToShow = 10;
-        this.limit = 10;
+        this.limit = 50;
       } else if (this.isInternalResource) {
         this.resourceTypeFilter = this.searchResults.resourceTypeFilter;
-        this.resourceResults = this.searchResults.resourceTypeFilter.reverse();
-        //need to write logic here..
-        if (!isNullOrUndefined(this.resourceTypeFilter)) {
+        // need to revisit this logic..
+        this.resourceResults = this.searchResults.resourceTypeFilter.reverse();        
+        if (this.resourceTypeFilter != undefined) {
 
           for (var i = 0; i < this.resourceTypeFilter.length; i++) {
             if (this.resourceTypeFilter[i].ResourceName === "All") {
@@ -75,10 +75,11 @@ export class SearchResultsComponent implements OnInit {
   }
   
   filterSearchResults(event) {
-    if (!isNullOrUndefined(event)) {      
-      this.filterType = event.filterParam;
+    this.sortType = event;
+    if (this.isInternalResource && event != undefined) {
       this.page = 1;
       this.currentPage = 0;
+      this.filterType = event.filterParam;
       this.getInternalResource(event.filterParam, 0);
     }
   }
@@ -92,7 +93,7 @@ export class SearchResultsComponent implements OnInit {
     if (this.isServiceCall) {
       this.searchService.getPagedResources(this.resourceFilter).subscribe(response => {
         this.searchResults = response;
-        this.addResource(filterName, response);
+        this.addResource(filterName);
       });
     }
   }
@@ -100,8 +101,8 @@ export class SearchResultsComponent implements OnInit {
   checkResource(resourceName, pageNumber): boolean {
 
     this.resourceTypeFilter.forEach(item => {
-      if (item.ResourceName === resourceName && !isNullOrUndefined(item.ResourceList)
-        && item.ResourceList[this.page - 1] !== undefined) {
+      if (item.ResourceName === resourceName && item.ResourceList != undefined
+        && item.ResourceList[this.page - 1] != undefined) {
         this.searchResults = item.ResourceList[this.page - 1];
         this.isServiceCall = false;
       }
@@ -110,7 +111,7 @@ export class SearchResultsComponent implements OnInit {
         this.resourceFilter.ResourceType = item.ResourceName;
         this.resourceFilter.PageNumber = this.currentPage;
         this.resourceFilter.TopicIds = this.topicIds;
-        if (!isNullOrUndefined(item.ResourceList) && !isNullOrUndefined(item.ResourceList[pageNumber])) {
+        if (item.ResourceList != undefined && item.ResourceList[pageNumber] != undefined ) {
           this.resourceFilter.ContinuationToken = JSON.stringify(item.ResourceList[pageNumber]["continuationToken"]);
         }
         this.isServiceCall = true;
@@ -120,10 +121,10 @@ export class SearchResultsComponent implements OnInit {
     return this.isServiceCall;
   }
 
-  addResource(filterName, resource) {
+  addResource(filterName) {
     for (var i = 0; i < this.resourceTypeFilter.length; i++) {
       if (this.resourceTypeFilter[i].ResourceName === filterName) {
-        if (isNullOrUndefined(this.resourceTypeFilter[i]["ResourceList"])) {
+        if (this.resourceTypeFilter[i]["ResourceList"] == undefined ) {
           this.resourceTypeFilter[i]["ResourceList"] = [{
             'resources': this.searchResults.resources,
             'continuationToken': this.searchResults.continuationToken
@@ -143,7 +144,7 @@ export class SearchResultsComponent implements OnInit {
   searchResource(offset: number): void {
     this.searchService.searchByOffset(this.searchText, offset)
       .subscribe(response => {
-        if (!isNullOrUndefined(response) && !isNullOrUndefined(response)) {
+        if (response != undefined) {
           this.searchResults = response;
         }
       });

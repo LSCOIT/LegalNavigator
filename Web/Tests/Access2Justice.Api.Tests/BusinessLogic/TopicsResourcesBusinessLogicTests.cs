@@ -47,12 +47,17 @@ namespace Access2Justice.Api.Tests.BusinessLogic
                     'createdTimeStamp':'','modifiedBy':'','modifiedTimeStamp':'','_rid':'mwoSAJdNlwIBAAAAAAAAAA==','_self':
                     'dbs/mwoSAA==/colls/mwoSAJdNlwI=/docs/mwoSAJdNlwIBAAAAAAAAAA==/','_etag':'\'040007b5-0000-0000-0000-5b0792260000\'',
                     '_attachments':'attachments/','_ts':1527222822}]");
+        private readonly JArray resourceCountData = JArray.Parse(@"[{'resourceType':'Organizations'},{'resourceType':'Organizations'},{'resourceType':'Organizations'},
+                    {'resourceType':'Organizations'},{'resourceType':'All'},{'resourceType':'All'}]");
         private readonly ResourceFilter resourceFilter = new ResourceFilter { TopicIds = new List<string> { "addf41e9-1a27-4aeb-bcbb-7959f95094ba" }, PageNumber = 0, ResourceType = "ALL", Location = new Location() };
 
         //Mocked result data.
         private readonly string expectedEmptyArrayObject = "[{}]";
         private readonly string expectedTopicId = "addf41e9-1a27-4aeb-bcbb-7959f95094ba";
         private readonly string expectedResourceId = "77d301e7-6df2-612e-4704-c04edf271806";
+        private readonly string expectedpagedResource = "{\"ContinuationToken\":\"[]\",\"Results\":[],\"TopicIds\":null}";
+        private readonly string expectedResourceCount = "{\"ResourceName\":\"Organizations\",\"ResourceCount\":4}";
+        private readonly string expectedEmptyResourceCount = "{\"ResourceName\":\"All\",\"ResourceCount\":0}";
 
         public TopicsResourcesBusinessLogicTests()
         {
@@ -131,7 +136,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void GetTopicsAsyncWithProperData()
+        public void GetTopicsAsyncTestsShouldReturnProperData()
         {
             //arrange
             var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.TopicCollectionId, query, "");
@@ -144,7 +149,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void GetTopicsAsyncWithEmptyData()
+        public void GetTopicsAsyncTestsShouldReturnEmptyData()
         {
             //arrange
             var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.TopicCollectionId, query, "");
@@ -159,7 +164,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void GetSubTopicsAsyncWithProperData()
+        public void GetSubTopicsAsyncTestsShouldReturnProperData()
         {
             //arrange
             var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.TopicCollectionId, query, "");
@@ -172,7 +177,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void GetSubTopicsAsyncWithEmptyData()
+        public void GetSubTopicsAsyncTestsShouldReturnEmptyData()
         {
             //arrange
             var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.TopicCollectionId, query, "");
@@ -187,7 +192,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void GetSubTopicDetailsAsyncWithProperData()
+        public void GetSubTopicDetailsAsyncTestsShouldReturnProperData()
         {
             //arrange
             var dbResponse = dynamicQueries.FindItemsWhereArrayContainsAsync(cosmosDbSettings.ResourceCollectionId, "topicTags", "id", topicId);
@@ -200,7 +205,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void GetSubTopicDetailsAsyncEmptyData()
+        public void GetSubTopicDetailsAsyncTestsShouldReturnEmptyData()
         {
             //arrange
             var dbResponse = dynamicQueries.FindItemsWhereArrayContainsAsync(cosmosDbSettings.ResourceCollectionId, "topicTags", "id", "");
@@ -212,6 +217,70 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 
             //assert
             Assert.Contains("[{}]", result, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        [Fact]
+        public void ApplyPaginationAsyncTestsShouldReturnProperData()
+        {
+            //arrange
+            PagedResources pagedResources = new PagedResources { Results = resourcesData, ContinuationToken = "[]" };
+            var dbResponse = dynamicQueries.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter);            
+            dbResponse.ReturnsForAnyArgs(pagedResources);
+
+            //act
+            var response = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
+            string result = JsonConvert.SerializeObject(response);
+
+            //assert
+            Assert.Contains(expectedResourceId, result, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        [Fact]
+        public void ApplyPaginationAsyncTestsShouldReturnEmptyData()
+        {
+            //arrange
+            PagedResources pagedResources = new PagedResources { ContinuationToken = "[]" };
+            var dbResponse = dynamicQueries.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter);
+            dbResponse.ReturnsForAnyArgs(pagedResources);
+
+            //act
+            var response = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
+            string result = JsonConvert.SerializeObject(response);
+
+            //assert
+            Assert.Contains(expectedpagedResource, result, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        [Fact]
+        public void GetResourcesCountAsyncTestsShouldReturnProperData()
+        {
+            //arrange
+            PagedResources pagedResources = new PagedResources { Results = resourceCountData, ContinuationToken = "[]" };
+            var dbResponse = dynamicQueries.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter, true);
+            dbResponse.ReturnsForAnyArgs(pagedResources);
+
+            //act
+            var response = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
+            string result = JsonConvert.SerializeObject(response);
+
+            //assert
+            Assert.Contains(expectedResourceCount, result, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        [Fact]
+        public void GetResourcesCountAsyncTestsShouldReturnEmptyData()
+        {
+            //arrange
+            PagedResources pagedResources = new PagedResources { Results = new List<string>(), ContinuationToken = "[]" };
+            var dbResponse = dynamicQueries.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter, true);
+            dbResponse.ReturnsForAnyArgs(pagedResources);
+
+            //act
+            var response = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
+            string result = JsonConvert.SerializeObject(response);
+
+            //assert
+            Assert.Contains(expectedEmptyResourceCount, result, StringComparison.InvariantCultureIgnoreCase);
         }
 
     }
