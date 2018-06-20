@@ -16,15 +16,16 @@ describe('LowerNavComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        LowerNavComponent
-        ,SearchComponent
+        LowerNavComponent, 
+        SearchComponent
       ],
       imports: [
         RouterModule.forRoot([ ]),
         HttpClientModule, FormsModule],
       providers: [
         { provide: APP_BASE_HREF, useValue: '/' },
-        SearchService, NavigateDataService]
+        SearchService, 
+        NavigateDataService]
     })
     .compileComponents();
   }));

@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, Output, EventEmitter } from '@angular/core'; 
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { LocationService } from './location.service';
@@ -18,6 +18,7 @@ export class LocationComponent implements OnInit {
   searchLocation: string;
   mapLocation: MapLocation;
   displayMapLocation: DisplayMapLocation;
+  @Output() notifyUpdatedLocation = new EventEmitter(); 
 
   constructor(private modalService: BsModalService, private locationService: LocationService) {
   }
@@ -38,6 +39,7 @@ export class LocationComponent implements OnInit {
     if (this.displayMapLocation.locality !== "" && this.displayMapLocation.address !== "") {
       this.address = this.displayMapLocation.address;
       this.locality = this.displayMapLocation.locality;
+      this.notifyUpdatedLocation.emit(this.displayMapLocation); 
       this.showLocation = false;
     }
     this.modalRef.hide();

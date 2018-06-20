@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { NavigateDataService } from '../../navigate-data.service';
 import { isNullOrUndefined } from 'util';
 import { ResourceResult } from './search-result';
+import { DisplayMapLocation } from '../../location/location';
 
 @Component({
   selector: 'app-search-results',
@@ -19,6 +20,7 @@ export class SearchResultsComponent implements OnInit {
   uniqueResources: any;
   resourceResults: ResourceResult[] = [];
   filterType: string = 'All';
+  location: DisplayMapLocation;
 
   constructor(private navigateDataService: NavigateDataService) { }
 
@@ -58,6 +60,10 @@ export class SearchResultsComponent implements OnInit {
     this.filterType = resourceType;
   }
 
+  displayOrganizations(location) {
+    console.log("Test" + location);
+    this.location = location;
+  }
   ngOnInit() {
     this.bindData();
     this.applyFilter();

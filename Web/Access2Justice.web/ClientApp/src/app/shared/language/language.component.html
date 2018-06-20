@@ -1,8 +1,12 @@
-<li dropdown  class="inline" id="language-dropdown">
-  <a dropdownToggle (click)="false"><span type="button" class="glyphicon glyphicon-globe" aria-hidden="true"></span>English</a>
+<div dropdown  class="inline" id="language-dropdown">
+  <a dropdownToggle (click)="false">
+    <img class="nav-icon" src="/assets/images/small-icons/language.svg" aria-hidden="true"/>
+    English
+    <img class="dropdown-icon" src="/assets/images/small-icons/dropdown_arrow.svg" alt="language dropdown icon" />
+  </a>
   <ul *dropdownMenu class="dropdown-menu pull-left">
     <li class="list-items" *ngFor="let choice of items">
       <a class="dropdown-item" href="#">{{choice}}</a>
     </li>
   </ul>
-</li>
+</div>

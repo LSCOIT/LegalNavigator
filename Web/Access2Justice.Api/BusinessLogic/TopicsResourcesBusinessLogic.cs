@@ -24,32 +24,32 @@ namespace Access2Justice.Api.BusinessLogic
                 ids.Add(topic.id);
             }
 
-            return await dbClient.FindItemsWhereArrayContains(dbSettings.ResourceCollectionId, "topicTags", "id", ids);
+            return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourceCollectionId, "topicTags", "id", ids);
         }
 
         public async Task<dynamic> GetTopicsAsync(string keyword)
         {
-            return await dbClient.FindItemsWhereContains(dbSettings.TopicCollectionId, "keywords", keyword);
+            return await dbClient.FindItemsWhereContainsAsync(dbSettings.TopicCollectionId, "keywords", keyword);
         }
 
         public async Task<dynamic> GetTopLevelTopicsAsync()
         {
-            return await dbClient.FindItemsWhere(dbSettings.TopicCollectionId, "parentTopicID", "");
+            return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, "parentTopicID", "");
         }
 
         public async Task<dynamic> GetSubTopicsAsync(string ParentTopicId)
         {
-            return await dbClient.FindItemsWhere(dbSettings.TopicCollectionId, "parentTopicID", ParentTopicId);
+            return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, "parentTopicID", ParentTopicId);
         }
 
         public async Task<dynamic> GetResourceAsync(string ParentTopicId)
         {
-            return await dbClient.FindItemsWhereArrayContains(dbSettings.ResourceCollectionId, "topicTags", "id", ParentTopicId);
+            return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourceCollectionId, "topicTags", "id", ParentTopicId);
         }
 
         public async Task<dynamic> GetDocumentAsync(string id)
         {
-            return await dbClient.FindItemsWhere(dbSettings.TopicCollectionId, "id", id);
+            return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, "id", id);
         }
 
        

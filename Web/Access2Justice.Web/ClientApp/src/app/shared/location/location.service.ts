@@ -18,7 +18,7 @@ export class LocationService {
   mapLocation: MapLocation = { state: '', city: '', county: '', zipCode: '' };
   displayMapLocation: DisplayMapLocation = { locality: '', address: '' }
 
-  @Output() change: EventEmitter<boolean> = new EventEmitter();
+  @Output() notifyLocation = new EventEmitter(); 
 
   constructor() { }
 
@@ -107,7 +107,7 @@ export class LocationService {
 
     this.displayMapLocation.locality = localStorage.getItem("globalSearchedLocation");
     this.displayMapLocation.address = localStorage.getItem("globalSearchedLocationAddress");
-    this.change.emit();
+    this.notifyLocation.emit(this.displayMapLocation);
     return this.displayMapLocation;
   }
 
