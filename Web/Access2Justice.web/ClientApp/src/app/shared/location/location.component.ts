@@ -34,7 +34,7 @@ export class LocationComponent implements OnInit {
   }
 
   updateLocation() {
-    this.mapLocation = this.locationService.updateLocation(this.mapType);
+    this.mapLocation = this.locationService.updateLocation();
     this.displayLocationDetails(this.mapLocation);
     if (this.modalRef) {
       this.modalRef.hide();
