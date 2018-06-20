@@ -4,6 +4,7 @@ import { BreadCrumbService } from '../shared/breadcrumb.service';
 import { Observable } from 'rxjs/Rx';
 import { ActivatedRoute } from '@angular/router/src/router_state';
 import { Component } from '@angular/compiler/src/core';
+import { api } from '../../../api/api';
 
 describe('BreadCrumb Component', () => {
   let service: BreadCrumbService;
@@ -48,7 +49,7 @@ describe('BreadCrumb Component', () => {
     httpSpy.get.and.returnValue(mockResponse);
 
     service.getBreadCrumbs(id).subscribe(topicid => {
-      expect(httpSpy.get).toHaveBeenCalledWith(`${service.getBreadCrumbsUrl}/` + id);
+      expect(httpSpy.get).toHaveBeenCalledWith(`${api.breadCrumbsUrl}/` + id);
       expect(topicid).toEqual(mockBreadcrumb);
       done();
     });
