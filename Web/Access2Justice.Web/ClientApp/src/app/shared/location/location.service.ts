@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { DisplayMapLocation, MapLocation } from './location';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
+import { MapLocation } from './location';
 declare var Microsoft: any;
 
 @Injectable()
@@ -12,8 +15,7 @@ export class LocationService {
   location: any;
   pin: any;
   tempLoc: any;
-  mapLocation: MapLocation;
-  displayMapLocation: DisplayMapLocation;
+  mapLocation: MapLocation = { locality: '', address: '' };
 
   constructor() { }
 
@@ -22,6 +24,7 @@ export class LocationService {
   }
 
   loadSearchManager() {
+    let suggestionSelected;
     let searchManager;
     let map = new Microsoft.Maps.Map('#my-map',
       {
@@ -42,37 +45,14 @@ export class LocationService {
           this.pin = new Microsoft.Maps.Pushpin(this.location.location, {
             icon: '../../assets/images/location/poi_custom.png'
           });
-
-          if (this.location.address.postalCode === undefined) {
-            if (this.location.address.locality === undefined) {
-              if (this.location.address.district === undefined) {
-                this.locAddress = this.location.address.adminDistrict;
-              }
-              else {
-                this.locAddress = this.location.address.district;
-              }
-            }
-            else {
-              this.locAddress = this.location.address.locality;
-            }
+          this.locAddress = this.location.address.postalCode;
+          if (this.locAddress !== undefined) {
+            localStorage.setItem("tempSearchedLocation", this.location.address.postalCode);
           }
           else {
-            this.locAddress = this.location.address.postalCode;
+            localStorage.setItem("tempSearchedLocation", this.location.address.locality);
           }
-          this.mapLocation = { state: '', city: '', county: '', zipCode: '' };
-          this.displayMapLocation = { locality: '', address: '' }
-          this.mapLocation.state = this.location.address.adminDistrict;
-          this.mapLocation.county = this.location.address.district;
-          this.mapLocation.city = this.location.address.locality;
-          this.mapLocation.zipCode = this.location.address.postalCode;
-
-          sessionStorage.setItem("tempGlobalMapLocation", JSON.stringify(this.mapLocation));
-
-          this.displayMapLocation.locality = this.locAddress;
-          this.displayMapLocation.address = this.location.address.adminDistrict;
-
-          sessionStorage.setItem("tempGlobalDisplayMapLocation", JSON.stringify(this.displayMapLocation));
-
+          localStorage.setItem("tempSearchedLocationState", this.location.address.formattedAddress);
           this.map = new Microsoft.Maps.Map('#my-map',
             {
               credentials: environment.bingmap_key
@@ -95,46 +75,15 @@ export class LocationService {
     this.searchManager.geocode(searchRequest);
   }
 
-  updateLocation(): DisplayMapLocation {
-    this.displayMapLocation = JSON.parse(sessionStorage.getItem("tempGlobalDisplayMapLocation"));
-    this.mapLocation = JSON.parse(sessionStorage.getItem("tempGlobalMapLocation"));
-    
-    return this.displayMapLocation;
-  }
-}
+  updateLocation(): MapLocation {
+    this.tempLoc = localStorage.getItem("tempSearchedLocation");
+    localStorage.setItem("searchedLocation", this.tempLoc);
+    this.tempLoc = localStorage.getItem("tempSearchedLocationState");
+    localStorage.setItem("searchedLocationAddress", this.tempLoc);
+    this.mapLocation.locality = localStorage.getItem("searchedLocation");
+    this.mapLocation.address = localStorage.getItem("searchedLocationAddress");
 
-function suggestionSelected(result) {
-  let map = new Microsoft.Maps.Map('#my-map',
-    {
-      credentials: environment.bingmap_key
-    });
-  //Remove previously selected suggestions from the map.
-  map.entities.clear();
-  //Show the suggestion as a pushpin and center map over it.
-  var pin = new Microsoft.Maps.Pushpin(result.location, {
-    icon: '../../assets/images/location/poi_custom.png'
-  });
-  map.entities.push(pin);
-  map.setView({ bounds: result.bestView, padding: 30 });
-  if (result.address.postalCode === undefined) {
-    if (result.address.locality === undefined) {
-      if (result.address.district === undefined) {
-        this.locAddress = result.address.adminDistrict;
-      }
-      else {
-        this.locAddress = result.address.district;
-      }
-    }
-    else {
-      this.locAddress = result.address.locality;
-    }
+    return this.mapLocation;
   }
-  else {
-    this.locAddress = result.address.postalCode;
-  }
-  this.displayMapLocation = { locality: '', address: '' }
-  this.displayMapLocation.locality = this.locAddress;
-  this.displayMapLocation.address = result.address.adminDistrict;
 
-  sessionStorage.setItem("tempGlobalDisplayMapLocation", JSON.stringify(this.displayMapLocation));
 }

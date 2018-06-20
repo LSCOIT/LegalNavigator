@@ -29,20 +29,6 @@
   }
 
   .mobile-hidden {
-     display: inline-block;
+    display: inline-block;
   }
-}
-
-#searchbox-container{
-  width:80%;
-  padding-bottom:20px;
-  align-items:center;
-}
-
-#search-box{
-  height:30px;
-}
-
-.btn-height {
-  height: 30px;
 }

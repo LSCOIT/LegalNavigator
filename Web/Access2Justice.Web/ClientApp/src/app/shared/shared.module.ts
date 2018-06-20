@@ -31,8 +31,6 @@ import { WebResourceComponent } from './search/search-results/web-resource/web-r
 import { CuratedResourceService } from './search/search-results/curated-resource/curated-resource.service';
 import { SearchFilterPipe } from './search/search-filter.pipe';
 import { PaginationComponent } from './pagination/pagination.component';
-import { MapResultsComponent } from './sidebars/map-results.component';
-import { MapResultsService } from './sidebars/map-results.service';
 
 @NgModule({
     imports: [
@@ -64,8 +62,7 @@ import { MapResultsService } from './sidebars/map-results.service';
         UpperNavComponent,
         WebResourceComponent,
         SearchFilterPipe,
-        PaginationComponent,
-        MapResultsComponent
+        PaginationComponent
     ],
     exports: [
         ChatbotComponent,
@@ -94,8 +91,7 @@ import { MapResultsService } from './sidebars/map-results.service';
         LocationService,
         NavigateDataService,
         SearchService,
-        RouteDataService,
-        MapResultsService
+        RouteDataService
     ]
 })
 export class SharedModule { }

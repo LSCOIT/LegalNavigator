@@ -1,47 +1,22 @@
+import { TestBed, inject, ComponentFixture } from '@angular/core/testing';
 import { LocationService } from './location.service';
-import { MapLocation, DisplayMapLocation } from './location';
+import { MapLocation } from './location';
 
 describe('LocationService', () => {
   let service: LocationService;
-  let mockDisplayMapLocation: DisplayMapLocation;
-  let mockMapLocation: MapLocation;
-  let microsoftMaps = {
-    Microsoft: {
-      Maps: {
-        loadModule: {}
-      }
-    }
-  };
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [LocationService]
+    });
+  });
 
   beforeEach(() => {
     service = new LocationService();
   });
 
-  it('should create location service', () => {
+  it('should create location service', inject([LocationService], (service: LocationService) => {
     expect(service).toBeTruthy();
-  });
+  }));
 
-  it('should define location service', () => {
-    expect(service).toBeDefined();
-  });
-
-  it('should have value in mapLocation and display map location when updateLocation is called', () => {
-    mockDisplayMapLocation = {
-      locality: "Sample locality",
-      address: "Sample address"
-    }
-    mockMapLocation = {
-      state: "Sample state",
-      city: "Sample city",
-      county: 'Sample county',
-      zipCode: 'Sample zip code'
-    };
-
-    sessionStorage.setItem('tempGlobalDisplayMapLocation', JSON.stringify(mockDisplayMapLocation));
-    sessionStorage.setItem('tempGlobalMapLocation', JSON.stringify(mockMapLocation));
-    service.updateLocation();
-    expect(service.displayMapLocation).toEqual(mockDisplayMapLocation);
-    expect(service.mapLocation).toEqual(mockMapLocation);
-  });
-  
 });
