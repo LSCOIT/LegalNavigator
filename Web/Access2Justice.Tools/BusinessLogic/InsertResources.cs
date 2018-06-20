@@ -11,7 +11,9 @@ namespace Access2Justice.Tools.BusinessLogic
     {
         public Resources CreateJsonFromCSV()
         {
-            string path = "C:\\Users\\v-sobhad\\Desktop\\reading-csv\\Resource_Data_tab.txt";
+            // path to the schema file to be converted. Look at the included 
+            // sample file in this same project 'SampleFiles/Resource_Data_tab'.
+            string path = "";
             string textFilePath = path;
             const Int32 BufferSize = 128;
             int lineCount = File.ReadLines(path).Count();
