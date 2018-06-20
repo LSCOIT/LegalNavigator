@@ -6,6 +6,7 @@ namespace Access2Justice.Shared.Interfaces
 {
     public interface ITopicsResourcesBusinessLogic
     {
+        //string Path { get; }
         Task<dynamic> GetTopicsAsync(string keyword);
         Task<dynamic> GetResourcesAsync(dynamic resourcesIds);
         Task<dynamic> GetTopLevelTopicsAsync();
@@ -19,7 +20,11 @@ namespace Access2Justice.Shared.Interfaces
         Task<IEnumerable<Topic>> GetTopicMandatoryDetailsAsync(string topicName);
         Task<IEnumerable<object>> CreateTopicsAsync(string path);
         Task<object> CreateTopicDocumentAsync(Topic topic);
-        Task<IEnumerable<object>> CreateResourcesAsync(string type, string path);
+        Task<IEnumerable<object>> CreateResourcesUploadAsync(string path);
         Task<IEnumerable<object>> CreateResourceDocumentAsync(dynamic resource);
+        dynamic CreateResourcesForms(dynamic resource);
+        (dynamic,dynamic) GetReferences(dynamic resource);
+        dynamic GetReferenceTags(dynamic tagValues);
+        dynamic GetLocations(dynamic locationValues);
     }
 }

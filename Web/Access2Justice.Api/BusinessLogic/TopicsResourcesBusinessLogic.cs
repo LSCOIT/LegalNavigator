@@ -111,31 +111,13 @@ namespace Access2Justice.Api.BusinessLogic
 
         }
 
-        public async Task<IEnumerable<object>> CreateResourcesAsync(string type, string path)
+        public async Task<IEnumerable<object>> CreateResourcesUploadAsync(string path)
         {
             using (StreamReader r = new StreamReader(path))
             {
                 dynamic resources = null;
                 string json = r.ReadToEnd();
-                resources = JsonConvert.DeserializeObject<List<dynamic>>(json);
-
-                if (type == "Action Plans")
-                {
-                    foreach (var resource in resources)
-                    {
-                        //validations goes here
-                        var result = await backendDatabaseService.CreateItemAsync(resource, dbSettings.ResourceCollectionId);
-                    }
-                }
-
-                else if (type == "Forms")
-                {
-                    foreach (var resource in resources)
-                    {
-                        //validations goes here
-                        var result = await backendDatabaseService.CreateItemAsync(resource, dbSettings.ResourceCollectionId);
-                    }
-                }
+                resources = await CreateResourceDocumentAsync(json);
                 return resources;
             }
         }
@@ -160,6 +142,55 @@ namespace Access2Justice.Api.BusinessLogic
                 }
             }
             return resources;
+        }
+
+        public dynamic CreateResourcesForms(dynamic resourceObject)
+        {
+            Form forms = new Form();
+            List<ReferenceTag> referenceTags = new List<ReferenceTag>();
+            List<Location> locations = new List<Location>();
+            dynamic references = GetReferences(resourceObject);
+            referenceTags = references.Item1;
+            locations = references.Item2;
+
+            forms = new Form()
+            {
+                ResourceId = resourceObject.id == "" ? Guid.NewGuid() : resourceObject.id,
+                Name = resourceObject.name,
+                Description = resourceObject.description,
+                ResourceType = resourceObject.resourceType,
+                ExternalUrls = resourceObject.externalUrl,
+                Urls = resourceObject.url,
+                ReferenceTags = referenceTags,
+                Location = locations,
+                Icon = resourceObject.icon,
+                FullDescription = resourceObject.fullDescription,
+                CreatedBy = resourceObject.createdBy,
+                ModifiedBy = resourceObject.modifiedBy,
+                Overview = resourceObject.overview
+            };
+            forms.Validate();
+            return forms;
+        }
+
+        public (dynamic, dynamic) GetReferences(dynamic resourceObject)
+        {
+            List<ReferenceTag> referenceTags = new List<ReferenceTag>();
+            List<Location> locations = new List<Location>();
+
+            foreach (JProperty field in resourceObject)
+            {
+                if (field.Name == "referenceTags")
+                {
+                    referenceTags = GetReferenceTags(field.Value);
+                }
+
+                else if (field.Name == "location")
+                {
+                    locations = GetLocations(field.Value);
+                }
+            }
+            return (referenceTags, locations);
         }
 
         public dynamic GetReferenceTags(dynamic tagValues)
@@ -210,43 +241,5 @@ namespace Access2Justice.Api.BusinessLogic
             return locations;
         }
 
-        public dynamic CreateResourcesForms(dynamic resourceObject)
-        {
-            Form forms = new Form();
-            List<ReferenceTag> referenceTags = new List<ReferenceTag>();
-            List<Location> locations = new List<Location>();
-
-            foreach (JProperty field in resourceObject)
-            {
-                if (field.Name == "referenceTags")
-                {
-                    referenceTags = GetReferenceTags(field.Value);
-                }
-
-                else if (field.Name == "location")
-                {
-                    locations = GetLocations(field.Value);
-                }
-            }
-
-            forms = new Form()
-            {
-                ResourceId = resourceObject.id=="" ? Guid.NewGuid(): resourceObject.id,
-                Name = resourceObject.name,
-                Description = resourceObject.description,
-                ResourceType = resourceObject.resourceType,
-                ExternalUrls = resourceObject.externalUrl,
-                Urls = resourceObject.url,
-                ReferenceTags = referenceTags,
-                Location = locations,
-                Icon = resourceObject.icon,
-                FullDescription = resourceObject.fullDescription,
-                CreatedBy = resourceObject.createdBy,
-                ModifiedBy = resourceObject.modifiedBy,
-                Overview = resourceObject.overview
-            };
-            forms.Validate();
-            return forms;
-        }  
     }
 }

@@ -20,6 +20,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly IDynamicQueries dynamicQueries;
         private readonly ICosmosDbSettings cosmosDbSettings;
         private readonly TopicsResourcesBusinessLogic topicsResourcesBusinessLogic;
+        private readonly ITopicsResourcesBusinessLogic topicsResourcesSettings;
 
         //Mocked input data.
         private readonly string keyword = "eviction";
@@ -61,6 +62,8 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly JArray locationData =
                      JArray.Parse(@"[{'state':'Hawaii','county':'','city':'Haiku-Pauwela','zipCode':''},{'state':'Alaska','county':'','city':'','zipCode':''}]");
 
+        private readonly JArray emptyFormData = JArray.Parse(@"[{'id': '','location': [{'state': '','county':'','': '','zipCode':''}] }]");//go
+
         //Mocked result data.
         private readonly string expectedEmptyArrayObject = "[{}]";
         private readonly string expectedTopicId = "addf41e9-1a27-4aeb-bcbb-7959f95094ba";
@@ -74,21 +77,25 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly string expectedReferenceTagData = "aaa085ef-96fb-4fd0-bcd0-0472ede66512";
         private readonly string emptyReferenceTagObject = "";
         private readonly JArray expectedLocationData =
-                    JArray.Parse(@"[{'state':'Hawaii','county':'','city':'Haiku-Pauwela','zipCode':''},{'state':'Alaska','county':'','city':'','zipCode':''}]");
+                     JArray.Parse(@"[{'state':'Hawaii','county':'','city':'Haiku-Pauwela','zipCode':''},{'state':'Alaska','county':'','city':'','zipCode':''}]");
+        private readonly JArray expectedReferenceLocationData =
+                     JArray.Parse(@"[{'state': 'Hawaii','county':'','city': 'Haiku-Pauwela','zipCode':''}]");
+
         private readonly JArray emptyLocationObject =
-                    JArray.Parse(@"[{'state':'','county':'','city':'','zipCode':''}]");
+                     JArray.Parse(@"[{'state':'','county':'','city':'','zipCode':''}]");
         public TopicsResourcesBusinessLogicTests()
         {
             backendDatabaseService = Substitute.For<IBackendDatabaseService>();
             dynamicQueries = Substitute.For<IDynamicQueries>();
             cosmosDbSettings = Substitute.For<ICosmosDbSettings>();
+            topicsResourcesSettings = Substitute.For<ITopicsResourcesBusinessLogic>();
 
             topicsResourcesBusinessLogic = new TopicsResourcesBusinessLogic(dynamicQueries, cosmosDbSettings, backendDatabaseService);
             cosmosDbSettings.AuthKey.Returns("dummyAuth");
             cosmosDbSettings.Endpoint.Returns(new System.Uri("https://bing.com"));
             cosmosDbSettings.DatabaseId.Returns("dummyDb");
             cosmosDbSettings.TopicCollectionId.Returns("TopicCollection");
-            cosmosDbSettings.ResourceCollectionId.Returns("ResourceCollection");            
+            cosmosDbSettings.ResourceCollectionId.Returns("ResourceCollection");
         }
 
         [Fact]
@@ -235,7 +242,55 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             //assert
             Assert.Contains("[{}]", result, StringComparison.InvariantCultureIgnoreCase);
         }
-        
+
+        [Fact]
+        public void CreateResourceUploadAsyncWithProperData()
+        {
+            //arrange
+            var form = this.formData;
+            var resource = JsonConvert.SerializeObject(form);
+            Document document = new Document();
+            JsonTextReader reader = new JsonTextReader(new StringReader(form[0].ToString()));
+            document.LoadFrom(reader);
+            dynamic actualResourceData = null;
+
+            //act
+            var dbResponse = backendDatabaseService.CreateItemAsync<dynamic>(form, cosmosDbSettings.ResourceCollectionId).ReturnsForAnyArgs(document);
+            var dbResponseResource = topicsResourcesSettings.CreateResourceDocumentAsync(resource).ReturnsForAnyArgs(form[0]);
+            var response = topicsResourcesBusinessLogic.CreateResourcesUploadAsync("C:\\Users\\v-sobhad\\Desktop\\CreateJSON\\ResourceData.json").Result;
+            foreach (var result in response)
+            {
+                actualResourceData = result;
+            }
+
+            //assert
+            Assert.Equal(expectedformData[0].ToString(), actualResourceData.ToString());
+        }
+
+        [Fact]
+        public void CreateResourceAsyncWithProperData()
+        {
+            //arrange
+            var form = this.formData;
+            var resource = JsonConvert.SerializeObject(form);
+            Document document = new Document();
+            JsonTextReader reader = new JsonTextReader(new StringReader(form[0].ToString()));
+            document.LoadFrom(reader);
+            dynamic actualResourceData = null;
+            
+            //act
+            var dbResponse = backendDatabaseService.CreateItemAsync<dynamic>(form, cosmosDbSettings.ResourceCollectionId).ReturnsForAnyArgs(document);
+            var dbResponseReferenceTag = topicsResourcesSettings.CreateResourcesForms(form[0]).ReturnsForAnyArgs<dynamic>(expectedformData[0]);
+            var response = topicsResourcesBusinessLogic.CreateResourceDocumentAsync(resource).Result;
+            foreach (var result in response)
+            {
+                actualResourceData = result;
+            }
+            
+            //assert
+            Assert.Equal(expectedformData[0].ToString(), actualResourceData.ToString());
+        }
+
         [Fact]
         public void CreateFormsAsyncWithProperData()  //To do - CreateFormsAsyncEmptyData after expcetion logging
         {
@@ -243,6 +298,8 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var form = this.formData[0];
 
             //act
+            var dbResponseReferenceTag = topicsResourcesSettings.GetReferenceTags(referenceTagData).ReturnsForAnyArgs<dynamic>(expectedReferenceTagData);
+            var dbResponseLocation = topicsResourcesSettings.GetLocations(locationData).ReturnsForAnyArgs<dynamic>(expectedReferenceLocationData);
             var response = topicsResourcesBusinessLogic.CreateResourcesForms(form);
             var result = JsonConvert.SerializeObject(response);
             var formResult = (JObject)JsonConvert.DeserializeObject(result);
@@ -258,33 +315,54 @@ namespace Access2Justice.Api.Tests.BusinessLogic
                 {
                     field.Value = "";
                 }
-            }         
-            
+            }
+
             //assert
             Assert.Equal(expectedformData[0].ToString(), result.ToString());
-        }  
+        }
 
         [Fact]
-        public void CreateResourceAsyncWithProperData()
+        public void GetReferncesWithProperData()
         {
             //arrange
             var form = this.formData;
-            var resource = JsonConvert.SerializeObject(form);
-            Document document = new Document();
-            JsonTextReader reader = new JsonTextReader(new StringReader(form[0].ToString()));
-            document.LoadFrom(reader);
-            dynamic actualResourceData = null;
-            
+            var referenceTag = this.referenceTagData;
+            var location = this.locationData;
+
             //act
-            var dbResponse = backendDatabaseService.CreateItemAsync<dynamic>(form, cosmosDbSettings.ResourceCollectionId).ReturnsForAnyArgs(document);
-            var response = topicsResourcesBusinessLogic.CreateResourceDocumentAsync(resource).Result;
-            foreach (var result in response)
-            {
-                actualResourceData = result;
-            }
+            var dbResponseReferenceTag = topicsResourcesSettings.GetReferenceTags(referenceTag).ReturnsForAnyArgs<dynamic>(expectedReferenceTagData);
+            var dbResponseLocation = topicsResourcesSettings.GetLocations(location).ReturnsForAnyArgs<dynamic>(expectedReferenceLocationData);
+
+            var response = topicsResourcesBusinessLogic.GetReferences(form[0]);
             
+            var actualLocation = JsonConvert.SerializeObject(expectedReferenceLocationData[0]);
+            var actualReferenceLocation = JsonConvert.SerializeObject(response.Item2[0]);
+
             //assert
-            Assert.Equal(expectedformData[0].ToString(), actualResourceData.ToString());
+            Assert.Equal(expectedReferenceTagData, response.Item1[0].ReferenceTags);
+            Assert.Equal(actualLocation, actualReferenceLocation);
+        }
+
+        [Fact]
+        public void GetReferncesWithEmptyData()
+        {
+            //arrange
+            var form = this.emptyFormData;
+            var referenceTag = this.emptyData;
+            var location = this.emptyLocationObject;
+
+            //act
+            var dbResponseReferenceTag = topicsResourcesSettings.GetReferenceTags(referenceTag).ReturnsForAnyArgs<dynamic>(emptyReferenceTagObject);
+            var dbResponseLocation = topicsResourcesSettings.GetLocations(location).ReturnsForAnyArgs<dynamic>(emptyLocationObject);
+
+            var response = topicsResourcesBusinessLogic.GetReferences(form[0]);
+
+            var expectedLocationData = JsonConvert.SerializeObject(emptyLocationObject[0]);
+            var actualLocation = JsonConvert.SerializeObject(response.Item2[0]);
+
+            //assert
+            Assert.Equal(emptyReferenceTagObject.Count(), response.Item1.Count);
+            Assert.Equal(expectedLocationData, actualLocation);
         }
 
         [Fact]
@@ -342,5 +420,6 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             //assert
             Assert.Equal(expectedLocation, actualLocation);
         }
+        
     }    
 }

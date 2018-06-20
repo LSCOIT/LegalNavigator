@@ -198,12 +198,11 @@ namespace Access2Justice.Api.Controllers
 
         #region Create Resources Document
         [HttpPost]
-        [Route("api/topics/createresource/Upload")]
+        [Route("api/topics/createresource/upload")]
         public async Task<IActionResult> CreateResource(IFormFile uploadedFile)
         {
-            string type = "Forms";//TO DO: for now hardcoded for swagger. need to update for admin ui accordingly
             var path = uploadedFile.FileName;
-            var resources = await topicsResourcesBusinessLogic.CreateResourcesAsync(type, path);
+            var resources = await topicsResourcesBusinessLogic.CreateResourcesUploadAsync(path);
             return Ok(resources);
         }
         #endregion
