@@ -1,8 +1,8 @@
-<form #searchForm="ngForm" (ngSubmit)="onSubmit(searchForm)" class="navbar-form navbar-right search-form">
+<form #searchForm="ngForm" (ngSubmit)="onSubmit(searchForm)" class="navbar-form navbar-right">
   <div class="form-group">
-    <button class="btn btn-default" type="submit">
-      <span class="glyphicon glyphicon-search" aria-hidden="true" ></span>
+    <input type="text" name="inputText" value="text" id="search" [(ngModel)]="searchText" />
+    <button type="submit">
+      <img class="search-icon" src="/assets/images/small-icons/search.svg" aria-hidden="true" />
     </button>
-    <input type="text" name="inputText" value="text" class="form-control" id="search" [(ngModel)]="searchText" />
   </div>
 </form>

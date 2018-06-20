@@ -1,26 +1,30 @@
 <div class="navbar navbar-fixed-top upper-nav">
-  <div class="container-fluid">
-    <div class="navbar-left left-menu">
-      <app-language></app-language>      
-      <app-location #location [mapType]="true"></app-location>
+  <div class="container">
+    <div class="navbar-left left-menu pxs">
+      <ul class="nav navbar-nav">  
+        <li class="inline"><app-language></app-language></li>
+        <li class="inline" id="location">
+          <app-location #location [mapType]="true"></app-location>
+        </li>
+      </ul>
     </div>
     <div class="navbar-right">
-      <ul class="nav navbar-nav mobile-hidden">
+      <ul class="nav navbar-nav mobile-hidden pxs">
         <li>
-          <a routerLink='/help'>
+          <a [routerLink]="['/privacy']">
+            <img class="nav-icon" src="/assets/images/small-icons/privacy.svg" aria-hidden="true" />
+            Privacy Promise
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/help']">
             <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
             Help &amp; FAQs
           </a>
         </li>
-        <li>
-          <a routerLink='/privacy'>
-            <span class="glyphicon glyphicon-tower" aria-hidden="true"></span>
-            Privacy Promise
-          </a>
-        </li>
         <li>    
           <a [routerLink]="['/createaccount']" class="account-menu">
-            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+            <img class="nav-icon" src="/assets/images/small-icons/profile.svg" aria-hidden="true" />
             Create Account
           </a>
           <span>|</span>
