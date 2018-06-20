@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 
 import { SearchService } from './search.service';
 import { NavigateDataService } from '../navigate-data.service';
+import { ILuisInput } from './search-results/search-results.model';
 
 @Component({
   selector: 'app-search',

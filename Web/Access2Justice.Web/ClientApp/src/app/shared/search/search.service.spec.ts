@@ -1,5 +1,7 @@
 import { SearchService } from './search.service';
 import { Observable } from 'rxjs/Rx';
+import { api } from '../../../api/api';
+import { ILuisInput } from '../search/search-results/search-results.model';
 
 describe('SearchService', () => {
   let service: SearchService;
@@ -60,7 +62,7 @@ describe('SearchService', () => {
     httpSpy.get.and.returnValue(mockResponse);
 
     service.search(luisInput).subscribe(searchResponse => {
-      expect(httpSpy.get).toHaveBeenCalledWith(`${service.searchUrl}`);
+      expect(httpSpy.get).toHaveBeenCalledWith(`${api.searchUrl}`);
       expect(searchResponse).toEqual(resources);
       done();
     });
@@ -95,7 +97,7 @@ describe('SearchService', () => {
     httpSpy.get.and.returnValue(mockResponse);
 
     service.search(luisInput).subscribe(searchResponse => {
-      expect(httpSpy.get).toHaveBeenCalledWith(`${service.searchUrl}`);
+      expect(httpSpy.get).toHaveBeenCalledWith(`${api.searchUrl}`);
       expect(searchResponse).toEqual(luisResponse);
       done();
     });
@@ -144,7 +146,7 @@ describe('SearchService', () => {
     httpSpy.get.and.returnValue(mockResponse);
 
     service.search(luisInput).subscribe(searchResponse => {
-      expect(httpSpy.get).toHaveBeenCalledWith(`${service.searchUrl}`);
+      expect(httpSpy.get).toHaveBeenCalledWith(`${api.searchUrl}`);
       expect(searchResponse).toEqual(webResources);
       done();
     });

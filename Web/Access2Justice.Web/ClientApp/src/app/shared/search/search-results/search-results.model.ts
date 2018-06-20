@@ -1,4 +1,4 @@
-interface IResourceFilter {
+export interface IResourceFilter {
   ResourceType: any;
   ContinuationToken: any;
   TopicIds: any;
@@ -8,7 +8,7 @@ interface IResourceFilter {
 
 
 
-interface ILuisInput {
+export interface ILuisInput {
   Sentence: string;
   Location: any;
   TranslateFrom: string;

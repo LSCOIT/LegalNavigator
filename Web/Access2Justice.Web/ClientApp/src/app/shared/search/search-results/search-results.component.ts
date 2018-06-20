@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { NavigateDataService } from '../../navigate-data.service';
 import { ResourceResult } from './search-result';
 import { SearchService } from '../search.service';
+import { IResourceFilter } from './search-results.model';
 
 @Component({
   selector: 'app-search-results',
