@@ -7,8 +7,6 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UpperNavComponent implements OnInit {
 
-  global: string = 'global';
-
   constructor() {}
 
   ngOnInit() {

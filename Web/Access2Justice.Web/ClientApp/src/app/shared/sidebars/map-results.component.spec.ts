@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MapResultsComponent } from './map-results.component';
 import { MapResultsService } from './map-results.service';
 import { DebugElement } from '@angular/core';
@@ -9,7 +9,6 @@ describe('MapResultsComponent', () => {
   let component: MapResultsComponent;
   let fixture: ComponentFixture<MapResultsComponent>;
   let service: MapResultsService;
-  let element: DebugElement;
   let onlyOneOrganization = {
     resources: [{
       resourceType: 'organizations',

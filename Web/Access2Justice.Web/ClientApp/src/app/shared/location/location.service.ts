@@ -30,7 +30,7 @@ export class LocationService {
     searchManager = new Microsoft.Maps.Search.SearchManager(map);
   }
   
-  identifyLocation(searchLocation, mapType) {
+  identifyLocation(searchLocation) {
     let searchRequest = {
       where: searchLocation,
       callback: function (r) {
@@ -54,6 +54,7 @@ export class LocationService {
         }
       },
       errorCallback: function (e) {
+        console.log(e);
       }
     };
     //Make the geocode request.

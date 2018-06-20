@@ -1,4 +1,3 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MapResultsService } from './map-results.service';
 import { Observable } from 'rxjs/Rx';
 

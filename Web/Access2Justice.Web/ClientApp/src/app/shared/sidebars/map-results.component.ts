@@ -2,7 +2,6 @@ import { Component, OnInit, Input } from '@angular/core';
 import { MapResultsService } from './map-results.service';
 import { environment } from '../../../environments/environment';
 import { MapLocationResult, LatitudeLongitude } from './map-results';
-declare var Microsoft: any;
 
 @Component({
   selector: 'app-map-results',

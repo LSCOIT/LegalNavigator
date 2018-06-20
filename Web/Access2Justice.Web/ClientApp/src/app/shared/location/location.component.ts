@@ -10,7 +10,7 @@ import { MapLocation } from './location';
   styleUrls: ['./location.component.css']
 })
 export class LocationComponent implements OnInit {
-  @Input() mapType: string;
+  @Input() mapType: boolean;
   modalRef: BsModalRef;
   locality: string;
   address: any;
@@ -30,7 +30,7 @@ export class LocationComponent implements OnInit {
   geocode() {
     this.query = document.getElementById('search-box');
     this.searchLocation = this.query["value"];
-    this.locationService.identifyLocation(this.searchLocation, this.mapType);
+    this.locationService.identifyLocation(this.searchLocation);
   }
 
   updateLocation() {
@@ -52,9 +52,7 @@ export class LocationComponent implements OnInit {
 
   ngOnInit() {
     if (sessionStorage.getItem("globalMapLocation")) {
-      if (this.mapType) {
-        this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
-      }
+      this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
       this.displayLocationDetails(this.mapLocation);
     }
   }
