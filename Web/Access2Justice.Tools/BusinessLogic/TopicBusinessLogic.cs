@@ -19,6 +19,7 @@ namespace Access2Justice.Tools.BusinessLogic
         private string TopicCollection = "Topics";
         private DocumentClient client;
 
+        [Obsolete("This is deprecated. Please use the api endpoints to import Topics.")]
         public async Task<IEnumerable<Topic>> GetTopics()
         {
             this.client = new DocumentClient(new Uri(EndpointUrl), PrimaryKey);
