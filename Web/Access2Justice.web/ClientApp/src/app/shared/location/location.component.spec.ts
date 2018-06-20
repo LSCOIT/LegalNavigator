@@ -2,8 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LocationComponent } from './location.component';
 import { LocationService } from './location.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
-import { TemplateRef, DebugElement } from '@angular/core';
+import { TemplateRef } from '@angular/core';
 import { ModalModule } from 'ngx-bootstrap';
 
 class MockBsModalRef {
@@ -14,17 +13,12 @@ class MockBsModalRef {
   }
 }
 
-class MockDocument {
-  public isHideCalled = false;
-}
-
 describe('LocationComponent', () => {
   let component: LocationComponent;
   let fixture: ComponentFixture<LocationComponent>;
   let modalService: BsModalService;
   let template: TemplateRef<any>;
   let locationService: LocationService;
-  let element: DebugElement;
 
   beforeEach(
     () => {
