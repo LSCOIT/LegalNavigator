@@ -35,9 +35,10 @@ a {
   display: inline-block;
 }
 
-li.web-hidden {
+.web-hidden {
   background-color: #f4f4f4;
   margin: 0;
+  display: inline-block;
 }
 
 .mobile-hidden {
@@ -198,12 +199,12 @@ a.carousel-control .icon-next {
     width: 90%;
   }
   
-  li.web-hidden {
+  .web-hidden {
     display: none;
   }
 
   .mobile-hidden {
-    display: block;
+    display: inline-block;
   }
 }
 

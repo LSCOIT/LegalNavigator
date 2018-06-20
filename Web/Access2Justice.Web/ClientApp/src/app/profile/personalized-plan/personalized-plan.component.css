@@ -1,5 +1,5 @@
-.user-action li:first-child {
- position: absolute;
+.user-action {
+  background-color: #fff;
 }
 
 .plan-detail {
@@ -29,19 +29,23 @@
   background-color: #F4F4F4;
 }
 
-.plan-spacing {
-  padding: 20px 40px;
+.filter-plan button {
+  float: left;
 }
 
-.filter-plan button {
-  margin: 0 10px;
+.plan-spacing {
+  padding: 10px;
+}
+
+.filter-plan span {
+  margin-right: 10px;
 }
 
 .main-icon {
   margin-top: 10px;
 }
 
-.btn-selected {
+.plan-steps .btn-selected {
   padding: 10px;
   width: 120px;
   float: right;
@@ -63,16 +67,31 @@
   margin-bottom: 30px;
 }
 
+.mobile-action {
+  text-align: center;
+}
+
 @media only screen and (min-width : 768px) {
   .user-action {
-    position: absolute;
-    top: 125px;
-    right: 11%;
-    margin-bottom: 20px;
+    float: right;
+  }
+
+  .filter-plan button {
+    margin: 0 10px 10px 10px;
+  }
+
+  .plan-spacing {
+    padding: 15px;
   }
 
   .step-content {
     margin-left: 33px;
     padding-right: 35px;
+  }
+}
+
+@media only screen and (min-width : 992px) {
+  .plan-spacing {
+    padding: 20px 40px;
   }
 }

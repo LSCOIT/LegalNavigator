@@ -7,6 +7,7 @@ import { SharedModule } from './shared/shared.module';
 
 import {
   AccordionModule,
+  BsDropdownModule, 
   CarouselModule,
   CollapseModule,
   ModalModule,
@@ -57,6 +58,7 @@ import { PersonalizedPlanComponent } from './profile/personalized-plan/personali
     AppRoutingModule,
     SharedModule,
     AccordionModule.forRoot(),
+    BsDropdownModule.forRoot(),
     CarouselModule.forRoot(),
     CollapseModule.forRoot(),
     ModalModule.forRoot(),

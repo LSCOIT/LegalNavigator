@@ -1,6 +1,6 @@
 <div class="container">
   <div class="row">
-    <ul class="user-action col-sm-offset-9">
+    <ul class="user-action mobile-hidden">
       <li>
         <img src="./assets/images/small-icons/save.svg" class="nav-icon" aria-hidden="true" />
         <app-save-button></app-save-button>
@@ -20,63 +20,78 @@
   <div class="row">
     <tabset>
       <tab heading="My Plan">
-        <div class="row filter-plan plan-spacing">
-          <span>Show:</span>
-          <button class="btn btn-selected">Eviction</button>
-          <button class="btn btn-selected">Child Custody</button>
+        <div class="row plan-spacing filter-plan">
+          <span class="col-sm-1">Show:</span>
+          <!--web filtering-->
+          <div class="mobile-hidden col-sm-10">
+            <button class="btn btn-selected">Eviction</button>
+            <button class="btn btn-selected">Child Custody</button>
+          </div>
+          <!--mobile filtering-->
+          <div class="btn-group web-hidden" dropdown>
+            <button id="button-basic" dropdownToggle type="button" class="btn btn-selected dropdown-toggle"
+                    aria-controls="dropdown-basic">
+              Button dropdown <span class="caret"></span>
+            </button>
+            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+                role="menu" aria-labelledby="button-basic">
+              <li role="menuitem"><a class="dropdown-item" href="#">Eviction</a></li>
+              <li role="menuitem"><a class="dropdown-item" href="#">Child Custody</a></li>
+            </ul>
+          </div>
         </div>
         <div class="row plan-detail">
           <div class="col-sm-12 plan-spacing plan-heading">
             <div class="col-sm-11">
               <div class="main-icon col-sm-1">
-                <img class="subtopic-icon" src="./assets/images/categories/housing.svg" alt="eviction icon"/>
+                <img class="subtopic-icon" src="./assets/images/categories/housing.svg" alt="eviction icon" />
               </div>
               <div class="col-sm-11">
                 <h3 class="inline">Eviction</h3>
               </div>
             </div>
             <div class="col-sm-1">
-              <img class="pull-right more-menu" src="./assets/images/small-icons/more_menu.svg" alt="plan menu"/>
+              <img class="pull-right more-menu" src="./assets/images/small-icons/more_menu.svg" alt="plan menu" />
             </div>
           </div>
           <div>
             <div class="col-md-9 col-sm-12 pull-right plan-steps">
-            <accordion>
-              <accordion-group>
-                <div accordion-heading>
-                  <div class="col-sm-10">
-                    <img class="pull-left plan-icon accordion-img" src="./assets/images/small-icons/open_accordion.svg" alt="open accordion"/>
-                    <h3>Step 1. Make sure your summon is real.</h3>
+              <accordion>
+                <accordion-group>
+                  <div accordion-heading>
+                    <div class="col-sm-10">
+                      <img class="pull-left plan-icon accordion-img" src="./assets/images/small-icons/open_accordion.svg" alt="open accordion" />
+                      <h3>Step 1. Make sure your summon is real.</h3>
+                    </div>
+                    <div class="col-sm-2 btn-selected">
+                      <input id="checkBox" type="checkbox">
+                      <label class="ps">Completed</label>
+                    </div>
                   </div>
-                  <div class="col-sm-2 btn-selected">
-                    <input id="checkBox" type="checkbox">
-                    <label class="ps">Completed</label>
+                  <div class="col-sm-12 step-content">
+                    Why you should do this dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo.
                   </div>
-                </div>
-                <div class="col-sm-12 step-content">
-                  Why you should do this dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo.
-                </div>
-                <div class="col-sm-12">
-                  <hr />
-                </div>
-              </accordion-group>
-              <accordion-group class="clearfix">
-                <div accordion-heading>
-                  <div class="col-sm-10">
-                    <img class="pull-left plan-icon accordion-img" src="./assets/images/small-icons/open_accordion.svg" alt="open accordion" />
-                    <h3>Step 2. Make sure your summon is real.</h3>
+                  <div class="col-sm-12">
+                    <hr />
                   </div>
-                  <div class="col-sm-2 btn-selected">
-                    <input id="checkBox" type="checkbox">
-                    <label class="ps">Completed</label>
+                </accordion-group>
+                <accordion-group class="clearfix">
+                  <div accordion-heading>
+                    <div class="col-sm-10">
+                      <img class="pull-left plan-icon accordion-img" src="./assets/images/small-icons/open_accordion.svg" alt="open accordion" />
+                      <h3>Step 2. Make sure your summon is real.</h3>
+                    </div>
+                    <div class="col-sm-2 btn-selected">
+                      <input id="checkBox" type="checkbox">
+                      <label class="ps">Completed</label>
+                    </div>
                   </div>
-                </div>
-                <div class="col-sm-12 step-content">
-                  Why you should do this dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo.
-                </div>
-              </accordion-group>
-            </accordion>
-          </div>
+                  <div class="col-sm-12 step-content">
+                    Why you should do this dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo.
+                  </div>
+                </accordion-group>
+              </accordion>
+            </div>
             <div class="col-md-3 col-sm-12 plan-spacing quick-links">
               <p>Quick Links</p>
               <ul>
@@ -91,5 +106,21 @@
         <app-resource-card></app-resource-card>
       </tab>
     </tabset>
+  </div>
+  <div class="row mobile-action">
+    <ul class="user-action web-hidden">
+      <li>
+        <img src="./assets/images/small-icons/save.svg" class="nav-icon" aria-hidden="true" />
+        <app-save-button></app-save-button>
+      </li>
+      <li>
+        <img src="./assets/images/small-icons/share.svg" class="nav-icon" aria-hidden="true" />
+        <app-share-button></app-share-button>
+      </li>
+      <li>
+        <img src="./assets/images/small-icons/print.svg" class="nav-icon" aria-hidden="true" />
+        <app-print-button></app-print-button>
+      </li>
+    </ul>
   </div>
 </div>
