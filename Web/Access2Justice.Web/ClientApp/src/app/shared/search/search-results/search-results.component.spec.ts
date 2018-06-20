@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { APP_BASE_HREF } from '@angular/common';
 
 import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 import { SearchResultsComponent } from './search-results.component';
 import { SearchFilterComponent } from '../search-filter/search-filter.component';
@@ -15,12 +16,16 @@ import { WebResourceComponent } from './web-resource/web-resource.component';
 import { PaginationComponent } from '../../../shared/pagination/pagination.component';
 import { ResourceResult } from './search-result';
 import { IResourceFilter, ILuisInput } from './search-results.model';
+import { SearchFilterPipe } from '../search-filter.pipe';
+import { SearchService } from '../search.service';
 
 describe('SearchResultsComponent', () => {
   let component: SearchResultsComponent;
   let fixture: ComponentFixture<SearchResultsComponent>;
   let pagesToShow: number;
-  
+  let searchService: SearchService;
+
+
 let  isInternalResource: boolean;
 let  isWebResource: boolean;
 let  isLuisResponse: boolean;
@@ -47,6 +52,7 @@ let  currentPage: number = 0;
       declarations: [
         SearchResultsComponent,
         SearchFilterComponent,
+        SearchFilterPipe,
         ResourceCardComponent,
         GuidedAssistantSidebarComponent,
         ServiceOrgSidebarComponent,
@@ -58,9 +64,11 @@ let  currentPage: number = 0;
       imports: [
         RouterModule.forRoot([
           { path: 'search', component: SearchResultsComponent }
-        ])
+        ]),
+        HttpClientModule
       ],
       providers: [NavigateDataService,
+        SearchService,
         { provide: APP_BASE_HREF, useValue: '/' }
       ]
     })
@@ -73,6 +81,9 @@ let  currentPage: number = 0;
     component = fixture.componentInstance;
     fixture.detectChanges();
 
+    // SearchService provided to the TestBed
+    searchService = TestBed.get(SearchService);
+    
     component.isWebResource = false;
     component.isInternalResource = true;
     component.isLuisResponse = false;
@@ -91,4 +102,19 @@ let  currentPage: number = 0;
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should call filterSearchResults with event defined', () => {
+    spyOn(component, 'getInternalResource');
+    let event = { filterParam: "All" };
+    component.filterSearchResults(event);
+    expect(component.getInternalResource).toHaveBeenCalled();
+  });
+
+  it('should call filterSearchResults with event undefined', () => {
+    spyOn(component, 'getInternalResource');    
+    component.filterSearchResults(event);
+    expect(component.getInternalResource).toHaveBeenCalledTimes(0);
+  });
+
+
 });
