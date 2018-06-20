@@ -1,9 +1,9 @@
 .panel-heading {
   margin-right: 50%;
   background-color: lightgrey;
-  width: 38%;
-  border-radius:25px;
-  height:40px;
+  display: inline-block;
+  border-radius: 25px;
+  height: 40px;
 }
 
 .panel-heading-space {

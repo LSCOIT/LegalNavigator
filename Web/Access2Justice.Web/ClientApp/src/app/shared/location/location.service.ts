@@ -66,8 +66,8 @@ export class LocationService {
     this.searchManager.geocode(searchRequest);
   }
 
-  updateLocation(mapType): MapLocation {
-    if (mapType) {
+  updateLocation(): MapLocation {
+    if (environment.map_type) {
       this.mapLocation = JSON.parse(localStorage.getItem("globalSearchMapLocation"));
       sessionStorage.setItem("globalMapLocation", JSON.stringify(this.mapLocation));
       localStorage.removeItem('globalSearchMapLocation');

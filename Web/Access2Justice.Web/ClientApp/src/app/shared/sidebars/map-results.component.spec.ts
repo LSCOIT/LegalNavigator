@@ -83,13 +83,6 @@ describe('MapResultsComponent', () => {
     expect(component.addressList.length).toEqual(2);
   });
 
-  it("should not push into addressList when getAddress is called", () => {
-    spyOn(service, 'getMap').and.returnValue(null);
-    component.searchResource = nonOrganization;
-    component.getAddress();
-    expect(component.addressList.length).toEqual(0);
-  });
-
   it("should call getMapResults of the component when getAddress is called", () => {
     spyOn(service, 'getMap').and.returnValue(null);
     spyOn(component, 'getMapResults').and.returnValue(Observable.of());
