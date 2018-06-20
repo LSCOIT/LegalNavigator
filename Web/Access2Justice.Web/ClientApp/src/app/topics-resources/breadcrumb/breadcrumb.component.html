@@ -1,22 +1,10 @@
 <ol class="breadcrumb">
   <li>
-    <a [routerLink]="['/topics']">All topics</a>
-    <span class="angle-bracket">></span>
+    <a [routerLink]="['/topics']">All Topics</a>
   </li>
-  <li *ngFor="let item of breadcrumbs let i = index; let first = first; let last = last"
-      [ngClass]="{ first: first, last: last }">
-
-    <span *ngIf="breadcrumbs?.length == 1">
+  <li *ngFor="let item of breadcrumbs">
+    <a class="text-capitalize" [routerLink]="['/topics',item.id]">
       {{item.name}}
-    </span>
-    <span *ngIf="breadcrumbs?.length > 1">
-       <a *ngIf="!last" [routerLink]="['/topics',item.id]">
-        {{item.name}}
-      </a>
-      <span *ngIf="last">
-        {{item.name}}
-      </span>
-      <span *ngIf="!last" class="angle-bracket">></span>
-    </span>
+    </a>
   </li>
 </ol>

@@ -9,13 +9,13 @@
           </a>
         </div>
         <div class="media-body">
-          <h4 class="media-heading">More Topics Related to <span class="text-capitalize">{{breadcrumb.activeTopicName}}</span></h4>
+          <h4 class="media-heading text-capitalize">More Topics Related to {{breadcrumb.activeTopicName}}</h4>
           <p>Which topic would you like to learn more about?</p>
         </div>
       </div>
       <div class="row subtopics">
         <ul *ngFor="let subtopic of subtopics">
-          <li><a [routerLink]="['/topics', subtopic.id | lowercase]">{{subtopic.name}}</a></li>
+          <li><a [routerLink]="['/topics', subtopic.id]">{{subtopic.name}}</a></li>
         </ul>
       </div>
       <button class="btn btn-primary">Back to main topics</button>
