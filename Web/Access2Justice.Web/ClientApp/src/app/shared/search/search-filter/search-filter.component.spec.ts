@@ -1,10 +1,13 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SearchFilterComponent } from './search-filter.component';
+import { DebugElement } from '@angular/core';
+import { By } from '@angular/platform-browser';
 
 describe('SearchFilterComponent', () => {
   let component: SearchFilterComponent;
   let fixture: ComponentFixture<SearchFilterComponent>;
+  let buttonElement: DebugElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -16,6 +19,7 @@ describe('SearchFilterComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchFilterComponent);
     component = fixture.componentInstance;
+    buttonElement = fixture.debugElement.query(By.css(".filter-type button"));
     fixture.detectChanges();
   });
 
@@ -23,25 +27,16 @@ describe('SearchFilterComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should create after selecting Filter Criteria', () => {
-    component.filterParam = "Best Match"
-    component.notifyFilterCriteria.emit({ filterParam: component.filterParam, sortParam: component.sortParam });
-    expect(component).toBeTruthy();
+  it('should create current filter criteria', () => {
+    let resourceType = "All";
+    component.sendFilterCriteria(resourceType);
+    expect(component.filterParam).toEqual(resourceType);
   });
 
-  it('should create after sort', () => {
+  it('should create current sort criteria', () => {
     let value = "Best Match";
-    component.sortParam = "Best Match";
-    component.notifyFilterCriteria.emit({ filterParam: component.filterParam, sortParam: component.sortParam });
-    component.selectedSortCriteria = value;
-    expect(component.selectedSortCriteria).toBe(value);
-  });
-
-  it('should select corrent Sort Criteria', () => {
-    let value = "Best Match";
-    component.sortParam = "Best Match";
-    component.notifyFilterCriteria.emit({ filterParam: component.filterParam, sortParam: component.sortParam });
-    component.selectedSortCriteria = value;
+    let resourceType = "bestMatch";
+    component.sendSortCriteria(value, resourceType);
     expect(component.selectedSortCriteria).toEqual(value);
   });
     

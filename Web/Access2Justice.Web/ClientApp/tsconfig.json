@@ -14,9 +14,7 @@
     "lib": [
       "es2017",
       "dom"
-    ],
-    "noUnusedLocals": false,
-    "noUnusedParameters": false
+    ]
   }
 }
 
