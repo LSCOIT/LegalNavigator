@@ -161,8 +161,8 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         private readonly string expectedLuisResponse = "luisResponse";
         private readonly string expectedInternalResponse = "topics";
         private readonly string expectedWebResponse = "webResources";
-        private readonly string expectedEmptyInternalResponse = "{\r\n  \"topics\": [],\r\n  \"resources\": []," +
-                                                                  "\r\n  \"topIntent\": \"eviction\"\r\n}";
+        private readonly string expectedEmptyInternalResponse = "{\r\n  \"topics\": {},\r\n  \"resources\": null," +
+                                                                  "\r\n  \"topIntent\": \"\"\r\n}";
         #endregion
 
         public LuisBusinessLogicTests()
@@ -293,9 +293,10 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         {
             //arrange
             topicsResourcesBusinessLogic.GetTopicsAsync(Arg.Any<string>()).Returns(emptyTopicObject);
+            topicsResourcesBusinessLogic.GetResourcesAsync(Arg.Any<string>()).Returns(emptyResourceObject);
 
             //act
-            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword).Result;
+            var result = luisBusinessLogic.GetInternalResourcesAsync("").Result;
 
             //assert
             Assert.Equal(expectedEmptyInternalResponse, result);
@@ -322,7 +323,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             //arrange
             topicsResourcesBusinessLogic.GetTopicsAsync(Arg.Any<string>()).Returns(topicsData);
 
-            topicsResourcesBusinessLogic.GetResourcesAsync(Arg.Any<string>()).Returns(resourcesData);
+            topicsResourcesBusinessLogic.GetResourcesAsync(Arg.Any<string>()).ReturnsForAnyArgs(resourcesData);
 
             //act
             var result = luisBusinessLogic.GetInternalResourcesAsync(keyword).Result;
