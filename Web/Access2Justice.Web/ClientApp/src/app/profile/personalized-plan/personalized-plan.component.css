@@ -1,10 +1,13 @@
+.user-action li:first-child {
+ position: absolute;
+}
+
 .plan-detail {
   box-shadow: 0 0 5px 3px #ddd;
 }
 
 .plan-heading {
   border-bottom: 1px solid #ddd;
-  padding: 10px;
 }
 
 .subtopic-icon {
@@ -13,10 +16,13 @@
 
 .more-menu {
   margin-top: 30px;
+  width: 30px;
 }
 
-.plan-icon {
-  width: 30px;
+.accordion-img {
+  width: 20px;
+  margin-right: 15px;
+  margin-top: 5px;
 }
 
 .filter-plan {
@@ -33,4 +39,40 @@
 
 .main-icon {
   margin-top: 10px;
+}
+
+.btn-selected {
+  padding: 10px;
+  width: 120px;
+  float: right;
+  margin-top: -5px;
+}
+
+.quick-links {
+  margin-top: 10px;
+  font-weight: 600;
+}
+
+.plan-steps {
+  border-left: 1px solid #ddd;
+  margin: 20px 0;
+  padding-right: 20px;
+}
+.accordion-img + h3 {
+  margin-top: -3px;
+  margin-bottom: 30px;
+}
+
+@media only screen and (min-width : 768px) {
+  .user-action {
+    position: absolute;
+    top: 125px;
+    right: 11%;
+    margin-bottom: 20px;
+  }
+
+  .step-content {
+    margin-left: 33px;
+    padding-right: 35px;
+  }
 }

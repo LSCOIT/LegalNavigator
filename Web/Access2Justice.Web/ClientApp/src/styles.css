@@ -144,23 +144,14 @@ a.carousel-control .icon-next {
 }
 
 .panel-default>.panel-heading {
-  background:none;
-  border: 1px solid black;
+  background: #FFF;
+  border: none;
   border-radius: 0;
 }
 
-.panel-body {
-  padding: 25px 15px 50px 15px;
-}
-
-
-.glyphicon-plus {
-  margin-right: 20px;
-  margin-top:5px;
-}
-
-.faq {
-  font-size: 1.3em;
+.panel-default > .panel-heading + .panel-collapse > .panel-body,
+.panel-collapse .collapse .in .show {
+  border-top: none;
 }
 
 /*Topics & Resources Page - Accordion */
