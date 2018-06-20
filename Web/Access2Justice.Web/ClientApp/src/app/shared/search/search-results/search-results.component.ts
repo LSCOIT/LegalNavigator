@@ -104,6 +104,7 @@ export class SearchResultsComponent implements OnInit {
     this.resourceTypeFilter.forEach(item => {
       if (item.ResourceName === resourceName && item.ResourceList != undefined
         && item.ResourceList[this.page - 1] != undefined) {
+        this.total = item.ResourceCount;
         this.searchResults = item.ResourceList[this.page - 1];
         this.isServiceCall = false;
       }
