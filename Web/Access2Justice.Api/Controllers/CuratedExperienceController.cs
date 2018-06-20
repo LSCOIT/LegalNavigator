@@ -87,22 +87,48 @@ namespace Access2Justice.Api.Controllers
 
         [HttpPost]
         [ActionName("ImportA2JGuidedInterview")]
-        public async Task<dynamic> ImportA2JGuidedInterview([FromBody] dynamic guide)
+        public async Task<dynamic> ImportA2JGuidedInterview([FromBody] dynamic a2jAuthorRawSchema)
         {
-            var gi = JsonConvert.SerializeObject(guide);
+            var gi = JsonConvert.SerializeObject(a2jAuthorRawSchema);
             // var a2jGi = JsonConvert.DeserializeObject<A2JAuthorGuidedInterview_V2>(gi);
-            var a2jGiDynamic = JsonConvert.DeserializeObject(guide.ToString());
-            // var a2jGi = JsonConvert.DeserializeObject<A2JAuthorGuidedInterview_V2>(guide);
-            //JObject parsedGi = new JObject {
-            //    { "GuidedInterview", JsonConvert.DeserializeObject(gi) },
-            //};
+            var a2jGiDynamic = JsonConvert.DeserializeObject(a2jAuthorRawSchema.ToString());
 
+            var cuEx = A2JAuthor2CuratedExperienceConverter(a2jGiDynamic);
 
-            //var temp = parsedGi;
-
-            //return parsedGi;
 
             return a2jGiDynamic;
+        }
+
+
+
+        public static CuratedExperienceSurvey A2JAuthor2CuratedExperienceConverter(dynamic a2j)
+        {
+            var cx = new CuratedExperienceSurvey();
+            var properties = a2j.GetType().GetProperties();
+            var temp = a2j.GetType();
+
+            JObject job = (JObject)a2j;
+
+            var root = job.Root;
+
+            foreach (var item in job.Root.ToList())
+            {
+                var temp3 = item;
+                var name = ((JProperty)temp3).Name;
+
+
+
+                var breakpoint = string.Empty;
+            }
+
+            var temp4 = job.Root.ToList().Where(x => ((JProperty)x).Name == "authorId").First();
+
+            var temp5 = job.Root.ToList().Where(x => ((JProperty)x).Name == "authorId").FirstOrDefault();
+
+            string authoridValue = ((JProperty)temp5).Value.ToString();
+
+
+            return cx;
         }
     }
 }

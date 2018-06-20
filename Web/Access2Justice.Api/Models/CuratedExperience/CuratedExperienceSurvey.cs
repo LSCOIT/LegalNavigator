@@ -7,8 +7,28 @@ namespace Access2Justice.Api.Models.CuratedExperience
     {
         [JsonProperty(PropertyName = "id")]
         public string CuratedExperienceId { get; set; }
+
+
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
+
+
+        [JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
+
+
+        [JsonProperty(PropertyName = "author")]
+        public string Author { get; set; }
+
+
+        [JsonProperty(PropertyName = "version")]
+        public string Version { get; set; }
+
+
+        [JsonProperty(PropertyName = "a2JAutherId")]
+        public string A2JAutherId { get; set; }
+
+
         [JsonProperty(PropertyName = "surveyTree")]
         public List<SurveyTree> SurveyTree { get; }
 
