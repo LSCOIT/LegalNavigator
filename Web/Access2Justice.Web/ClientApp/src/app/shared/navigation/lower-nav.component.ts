@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-lower-nav',
@@ -6,21 +6,43 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./lower-nav.component.css']
 })
 export class LowerNavComponent implements OnInit {
-  public showMenu = false;
-  constructor() { }
+  width = 0;
+  showSearch = false;
+  showMenu = false;
+  my_Class = '';
 
-  ngOnInit() {
+  @ViewChild('sidenav') sidenav:ElementRef;
+  @HostListener('window:resize')
+    onResize() {
+    this.width = window.innerWidth;
   }
 
-  getMenu() {
-    if (this.showMenu) {
-      return 'block';
+  constructor() { }
+  
+  openNav() {
+    this.my_Class="dimmer";
+    if (this.width >= 768) {
+      this.sidenav.nativeElement.style.width = "33.333%";
+      this.sidenav.nativeElement.style.height = "100%";
     } else {
-      return '';
+      this.sidenav.nativeElement.style.height = "100%";
+      this.sidenav.nativeElement.style.width = "100%";
     }
   }
+  
+  closeNav() {
+    this.my_Class="";
+    if (this.width >= 768) {
+      this.sidenav.nativeElement.style.width = "0";
+    } else {
+      this.sidenav.nativeElement.style.height = "0";
+    }
+  }
+  
+  toggleSearch() {
+    this.showSearch = !this.showSearch;
+  }
 
-  toggleMenu() {
-    this.showMenu = !this.showMenu;
+  ngOnInit() {
   }
 }

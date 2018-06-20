@@ -5,13 +5,11 @@ namespace Access2Justice.Shared.Interfaces
 {
     public interface ITopicsResourcesBusinessLogic
     {
-        Task<dynamic> GetTopicAsync(string keyword);
-        Task<dynamic> GetResourcesAsync(string resourcesIds);
-
-
-        Task<dynamic> GetTopicsAsync();
+        Task<dynamic> GetTopicsAsync(string keyword);
+        Task<dynamic> GetResourcesAsync(dynamic resourcesIds);
+        Task<dynamic> GetTopLevelTopicsAsync();
         Task<dynamic> GetSubTopicsAsync(string ParentTopicId);
-        Task<dynamic> GetReourceDetailAsync(string ParentTopicId);
-        Task<dynamic> GetDocumentData(string id);
+        Task<dynamic> GetResourceAsync(string ParentTopicId);
+        Task<dynamic> GetDocumentAsync(string id);
     }
 }
