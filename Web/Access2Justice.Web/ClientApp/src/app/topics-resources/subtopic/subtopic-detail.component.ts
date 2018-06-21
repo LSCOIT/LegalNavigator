@@ -2,7 +2,6 @@ import { Component, OnInit} from "@angular/core";
 import { TopicService } from '../shared/topic.service';
 import { ActivatedRoute } from '@angular/router';
 import { NavigateDataService } from '../../shared/navigate-data.service';
-import { isNullOrUndefined } from 'util';
 
 @Component({
   selector: 'app-subtopic-detail',
@@ -42,6 +41,19 @@ export class SubtopicDetailComponent implements OnInit {
     }
   }
 
+  getDataOnReload() {
+    this.activeSubtopicParam = this.activeRoute.snapshot.params['topic'];
+    // Getting the sub topic name while routing from subtopic page.
+    this.subtopics = this.navigateDataService.getData();
+    if (this.subtopics) {
+      this.topicService.getDocumentData(this.activeSubtopicParam)
+        .subscribe(
+          data => this.subtopics = data
+        );
+    }
+    this.getSubtopicDetail();
+  }
+
   getSubtopicDetail(): void {
     this.topicService.getSubtopicDetail(this.activeSubtopicParam)
       .subscribe(
@@ -59,20 +71,5 @@ export class SubtopicDetailComponent implements OnInit {
           this.getDataOnReload();
         }
       });
-  }
-
-  getDataOnReload() {
-    this.activeSubtopicParam = this.activeRoute.snapshot.params['topic'];
-    // Getting the sub topic name while routing from subtopic page.
-    this.subtopics = this.navigateDataService.getData();
-    if (!isNullOrUndefined(this.subtopics)) {
-      this.topicService.getDocumentData(this.activeSubtopicParam)
-        .subscribe(
-          data => {
-            this.subtopics = data;
-          }
-        );
-    }
-    this.getSubtopicDetail();
   }
 }
