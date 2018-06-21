@@ -20,7 +20,8 @@ namespace Access2Justice.Api.BusinessLogic
             var ids = new List<string>();
             foreach (var topic in topics)
             {
-                ids.Add(topic.id);
+                string topicId = topic.id;
+                ids.Add(topicId);
             }
 
             return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourceCollectionId, "topicTags", "id", ids);
