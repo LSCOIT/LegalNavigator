@@ -1,9 +1,11 @@
 <div class="navbar navbar-fixed-top upper-nav">
   <div class="container">
     <div class="navbar-left left-menu pxs">
-      <ul class="nav navbar-nav">  
+      <ul class="nav navbar-nav">
         <li class="inline"><app-language></app-language></li>
-        <li class="inline" id="location"><app-location></app-location></li>
+        <li class="inline" id="location">
+          <app-location #location [mapType]="true"></app-location>
+        </li>
       </ul>
     </div>
     <div class="navbar-right">
@@ -20,7 +22,7 @@
             Help &amp; FAQs
           </a>
         </li>
-        <li>    
+        <li>
           <a [routerLink]="['/createaccount']" class="account-menu">
             <img class="nav-icon" src="/assets/images/small-icons/profile.svg" aria-hidden="true" />
             Create Account

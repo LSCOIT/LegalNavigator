@@ -20,7 +20,6 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         //Mocked input data.
         private readonly string keyword = "eviction";
         private readonly string query = "select * from t";
-        private readonly Location location = new Location() {State="alaska" };
         private readonly string topicId = "addf41e9-1a27-4aeb-bcbb-7959f95094ba";
         private readonly List<string> topicIds = new List<string> { "addf41e9-1a27-4aeb-bcbb-7959f95094ba" };
         private readonly JArray emptyData = JArray.Parse(@"[{}]");
@@ -71,6 +70,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly string expectedEmptyArrayObject = "[{}]";
         private readonly string expectedTopicId = "addf41e9-1a27-4aeb-bcbb-7959f95094ba";
         private readonly string expectedResourceId = "77d301e7-6df2-612e-4704-c04edf271806";
+        private readonly Location expectedLocationValue = new Location() { State="Hawaii"};
 
         public TopicsResourcesBusinessLogicTests()
         {
@@ -149,12 +149,11 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         {
             //arrange
             var dbResponse = dynamicQueries.FindItemsWhereArrayContainsAsync(cosmosDbSettings.ResourceCollectionId, "topicTags", "id", new List<string>());
-            dbResponse.ReturnsForAnyArgs<dynamic>(resourcesData);
+            dbResponse.ReturnsForAnyArgs<dynamic>(topicsData);
 
             //act
-            var response = topicsResourcesBusinessLogic.GetResourcesAsync(topicsData);
-            string result = JsonConvert.SerializeObject(response);
-
+            var response = topicsResourcesBusinessLogic.GetResourcesAsync(resourcesData);
+            string result = JsonConvert.SerializeObject(response);             
             //assert
             Assert.Contains(expectedResourceId, result, StringComparison.InvariantCultureIgnoreCase);
         }
@@ -237,26 +236,27 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         {
 
             //arrange
-            var dbResponse = dynamicQueries.FindOrganizationsWhereArrayContains(cosmosDbSettings.ResourceCollectionId,location);
+            var dbResponse = dynamicQueries.FindOrganizationsWhereArrayContains(cosmosDbSettings.ResourceCollectionId, expectedLocationValue);
             dbResponse.ReturnsForAnyArgs<dynamic>(organizationsData);
 
           
             //act
-            var response = topicsResourcesBusinessLogic.GetOrganizationsAsync(location);
+            var response = topicsResourcesBusinessLogic.GetOrganizationsAsync(expectedLocationValue);
             string result = JsonConvert.SerializeObject(response);
+           
             //assert
-            Assert.Contains(location.State, result, StringComparison.InvariantCulture);
+            Assert.Contains(expectedLocationValue.State, result, StringComparison.InvariantCulture);
         }
 
         [Fact]
         public void GetOrganizationsAsyncEmptyData()
         {
             //arrange
-            var dbResponse = dynamicQueries.FindOrganizationsWhereArrayContains(cosmosDbSettings.ResourceCollectionId, location);
+            var dbResponse = dynamicQueries.FindOrganizationsWhereArrayContains(cosmosDbSettings.ResourceCollectionId, expectedLocationValue);
             dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
 
             //act
-            var response = topicsResourcesBusinessLogic.GetOrganizationsAsync(location);
+            var response = topicsResourcesBusinessLogic.GetOrganizationsAsync(expectedLocationValue);
             string result = JsonConvert.SerializeObject(response);
 
             //assert

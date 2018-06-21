@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Access2Justice.Api.Controllers
@@ -33,7 +34,6 @@ namespace Access2Justice.Api.Controllers
             return Ok(topics);
         }
         #endregion
-
         #region get all resources when parentTopicId is mapped to topicTags
         [HttpGet]
         [Route("api/topics/getresourcedetails/{parentTopicId}")]
@@ -43,7 +43,6 @@ namespace Access2Justice.Api.Controllers
             return Ok(topics);
         }
         #endregion
-
         #region get Spectific document data 
         [HttpGet]
         [Route("api/topics/getdocument/{id}")]
@@ -56,13 +55,13 @@ namespace Access2Justice.Api.Controllers
         #endregion
 
         #region get Orgationzation details when location value passed
-        [HttpGet]
-        [Route("api/topics/getorganizationdetails/{location}")]
-        public async Task<IActionResult> GetOrganizationsWhenParamsValuePassed(Location location)
+        [HttpPost]
+        [Route("api/topics/getorganizationdetails")]
+        public async Task<IActionResult> GetOrganizationsWhenParamsValuePassed([FromBody]Location location)
         {
             var organizations = await topicsResourcesBusinessLogic.GetOrganizationsAsync(location); 
             return Ok(organizations);
-        }
+        }  
         #endregion
 
     }

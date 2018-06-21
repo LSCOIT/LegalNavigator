@@ -17,7 +17,6 @@ namespace Access2Justice.CosmosDb
     {
         private readonly IDocumentClient documentClient;
         private readonly ICosmosDbSettings cosmosDbSettings;
-
         public CosmosDbService(IDocumentClient documentClient, ICosmosDbSettings cosmosDbSettings)
         {
             this.documentClient = documentClient;
@@ -26,7 +25,6 @@ namespace Access2Justice.CosmosDb
             CreateDatabaseIfNotExistsAsync().Wait();
             CreateCollectionIfNotExistsAsync().Wait();
         }
-
         public async Task<Document> CreateItemAsync<T>(T item)
         {
             return await documentClient.CreateDocumentAsync(
@@ -148,9 +146,6 @@ namespace Access2Justice.CosmosDb
                 }
             }
         }
-
-
-
-      
+   
     }
 }

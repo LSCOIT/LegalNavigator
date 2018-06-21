@@ -1,5 +1,7 @@
-﻿using Access2Justice.Shared.Interfaces;
+﻿using Access2Justice.Shared.Helper;
+using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -73,68 +75,32 @@ namespace Access2Justice.CosmosDb
         }
 
 
-        public dynamic  FindLocationWhereArrayContains(Location location)
+        public dynamic FindLocationWhereArrayContains(Location location)
         {
-            if (location == null)
+            if (location == null || (string.IsNullOrEmpty(location.State) && string.IsNullOrEmpty(location.County)
+                && string.IsNullOrEmpty(location.City) && string.IsNullOrEmpty(location.ZipCode)))
             {
                 return "";
             }
-            string locationQuery = string.Empty;
-            string query = " (ARRAY_CONTAINS(c.location,{0}))";
+            var jsonSettings = UtilityHelper.JSONSanitizer();
 
-
-            if (!string.IsNullOrEmpty(location.State))
-            {
-                locationQuery += " 'state' : '" + location.State + "'";
-            }
-
-
-            if (!string.IsNullOrEmpty(location.City))
-            {
-                if (!string.IsNullOrEmpty(locationQuery))
-                {
-                    locationQuery += locationQuery + ",";
-                }
-                locationQuery += " 'city':'" + location.City + "'";
-            }
-
-
-            if (!string.IsNullOrEmpty(location.County))
-            {
-                if (!string.IsNullOrEmpty(locationQuery))
-                {
-                    locationQuery += locationQuery + ",";
-                }
-                locationQuery += " 'county':'" + location.County + "'";
-            }
-
-            if (!string.IsNullOrEmpty(location.ZipCode))
-            {
-                if (!string.IsNullOrEmpty(locationQuery))
-                {
-                    locationQuery += locationQuery + ",";
-                }
-                locationQuery += " 'zipCode':'" + location.ZipCode + "'";
-            }
-
-
+            string locationQuery = JsonConvert.SerializeObject(location, jsonSettings);
+            string query = " ARRAY_CONTAINS(c.location,{0})";
             if (!string.IsNullOrEmpty(locationQuery))
             {
-                locationQuery = string.Format(CultureInfo.InvariantCulture, query, "{" + locationQuery + "},true");
+                locationQuery = string.Format(CultureInfo.InvariantCulture, query, locationQuery + ",true");
             }
             return locationQuery;
-          
-
         }
 
-        public  dynamic FindOrganizationsWhereArrayContains(string collectionId, Location location)
+        public async Task<dynamic> FindOrganizationsWhereArrayContains(string collectionId, Location location)
         {
             string result = FindLocationWhereArrayContains(location);
             if (!string.IsNullOrEmpty(result)) {
                 result = " AND " + result;
             }
             var query = $"SELECT * FROM c WHERE c.resourceType='Organizations' {result}";
-            return  backendDatabaseService.QueryItemsAsync(collectionId, query);
+            return await  backendDatabaseService.QueryItemsAsync(collectionId, query);
         }
 
 

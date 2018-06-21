@@ -13,6 +13,6 @@ namespace Access2Justice.Shared.Interfaces
 
 
         dynamic FindLocationWhereArrayContains(Location location);
-        dynamic FindOrganizationsWhereArrayContains(string collectionId, Location location);
+        Task<dynamic> FindOrganizationsWhereArrayContains(string collectionId, Location location);
     }
 }

@@ -2,7 +2,8 @@ import { Component, OnInit,Input } from '@angular/core';
 import { ServiceOrgService } from '../sidebars/service-org.service';
 import { Organization } from '../sidebars/organization';
 import { LocationService } from '../location/location.service';
-
+import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
+import { MapLocation } from '../location/location';
 
 @Component({
   selector: 'app-service-org-sidebar',
@@ -11,21 +12,35 @@ import { LocationService } from '../location/location.service';
 })
 export class ServiceOrgSidebarComponent implements OnInit {
 
-  organizations: any[];
+  organizations: Organization;
+  location: MapLocation;
+  subscription: any;
   
-  constructor(private serviceOrgService: ServiceOrgService, private locationService: LocationService) { }
+  constructor(private serviceOrgService: ServiceOrgService, private locationService: LocationService) {
+  }
 
-  getOrganizationDetail(value) {
-    this.serviceOrgService.getOrganizationDetail(value)
+  getOrganizations(location) {
+    this.serviceOrgService.getOrganizationDetail(location)
       .subscribe(organizations =>
         this.organizations = organizations
-      );
+    );
   }
 
   ngOnInit() {
-    var mapLocation = localStorage.getItem("GetCM");
-    console.log("test1");
-    this.locationService.notifyLocation.subscribe(this.getOrganizationDetail('Hawaii'));
+    if (sessionStorage.getItem("globalMapLocation")) {
+      this.location = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+    }
+
+    this.subscription = this.locationService.notifyLocation.subscribe((value) => {
+      this.location = value;
+      this.getOrganizations(this.location);
+    });
+    this.getOrganizations(this.location);
   }
 
+  ngOnDestroy() {
+    if (this.subscription != undefined) {
+      this.subscription.unsubscribe();
+    }
+  }
 }

@@ -1,8 +1,8 @@
-import { Component, Input, OnInit, TemplateRef, Output, EventEmitter } from '@angular/core'; 
+import { Component, Input, OnInit, TemplateRef } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { LocationService } from './location.service';
-import { MapLocation, DisplayMapLocation } from './location';
+import { MapLocation } from './location';
 
 @Component({
   selector: 'app-location',
@@ -10,6 +10,7 @@ import { MapLocation, DisplayMapLocation } from './location';
   styleUrls: ['./location.component.css']
 })
 export class LocationComponent implements OnInit {
+  @Input() mapType: boolean;
   modalRef: BsModalRef;
   locality: string;
   address: any;
@@ -17,15 +18,13 @@ export class LocationComponent implements OnInit {
   query: any;
   searchLocation: string;
   mapLocation: MapLocation;
-  displayMapLocation: DisplayMapLocation;
-  @Output() notifyUpdatedLocation = new EventEmitter(); 
 
   constructor(private modalService: BsModalService, private locationService: LocationService) {
   }
 
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
-    this.locationService.getMap();
+    this.locationService.getMap(this.mapType);
   }
 
   geocode() {
@@ -35,16 +34,26 @@ export class LocationComponent implements OnInit {
   }
 
   updateLocation() {
-    this.displayMapLocation = this.locationService.updateLocation();
-    if (this.displayMapLocation.locality !== "" && this.displayMapLocation.address !== "") {
-      this.address = this.displayMapLocation.address;
-      this.locality = this.displayMapLocation.locality;
-      this.notifyUpdatedLocation.emit(this.displayMapLocation); 
+    this.mapLocation = this.locationService.updateLocation();
+    this.displayLocationDetails(this.mapLocation);
+    if (this.modalRef) {
+      this.modalRef.hide();
+    }
+  }
+
+  displayLocationDetails(mapLocation) {
+    this.mapLocation = mapLocation;
+    if (this.mapLocation) {
+      this.address = this.mapLocation.address;
+      this.locality = this.mapLocation.locality;
       this.showLocation = false;
     }
-    this.modalRef.hide();
   }
 
   ngOnInit() {
+    if (sessionStorage.getItem("globalMapLocation")) {
+      this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+      this.displayLocationDetails(this.mapLocation);
+    }
   }
 }

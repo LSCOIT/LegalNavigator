@@ -40,7 +40,6 @@ namespace Access2Justice.Api
             services.AddSingleton<IWebSearchBusinessLogic, WebSearchBusinessLogic>();
             services.AddTransient<IHttpClientService, HttpClientService>();
             ConfigureCosmosDb(services);
-
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Access2Justice API", Version = "v1" });
@@ -55,10 +54,10 @@ namespace Access2Justice.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-            }
-            app.UseCors(builder => builder.WithOrigins("http://localhost:4200"));
+            }         
+            app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseMvc();
-
+            
             ConfigureSwagger(app);
         }
 
