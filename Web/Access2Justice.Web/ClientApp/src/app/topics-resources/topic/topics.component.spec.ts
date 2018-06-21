@@ -9,7 +9,7 @@ import { SubtopicsComponent } from '../subtopic/subtopics.component';
 import { GuidedAssistantSidebarComponent } from '../../shared/sidebars/guided-assistant-sidebar.component';
 import { ServiceOrgSidebarComponent } from '../../shared/sidebars/service-org-sidebar.component';
 import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
-import { BreadCrumbService } from '../shared/breadcrumb.service';
+import { BreadcrumbService } from '../shared/breadcrumb.service';
 
 
 describe('TopicsComponent', () => {
@@ -45,7 +45,7 @@ describe('TopicsComponent', () => {
         { provide: APP_BASE_HREF, useValue: '/' },
         { provide: TopicService, useValue: mockTopicService },
         { provide: RouterModule, useValue: mockRouter },
-        { provide: BreadCrumbService, useValue: mockTopicService }
+        { provide: BreadcrumbService, useValue: mockTopicService }
       ]
     })
     .compileComponents();

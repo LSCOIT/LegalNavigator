@@ -5,11 +5,11 @@ import { api } from '../../../api/api';
 
 @Injectable()
 
-export class BreadCrumbService {
+export class BreadcrumbService {
 
   constructor(private http: HttpClient) { }
   
-  getBreadCrumbs(breadCrumbId: string): Observable<any> {
-    return this.http.get(api.breadCrumbsUrl + '/' +  breadCrumbId);
+  getBreadcrumbs(breadcrumbId: string): Observable<any> {
+    return this.http.get(api.breadcrumbsUrl + '/' +  breadcrumbId);
   }
 }

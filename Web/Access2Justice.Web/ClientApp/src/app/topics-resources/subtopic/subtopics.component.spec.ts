@@ -8,7 +8,7 @@ import { GuidedAssistantSidebarComponent } from '../../shared/sidebars/guided-as
 import { TopicService } from '../shared/topic.service';
 import { NavigateDataService } from '../../shared/navigate-data.service';
 import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
-import { BreadCrumbService } from '../shared/breadcrumb.service';
+import { BreadcrumbService } from '../shared/breadcrumb.service';
 
 describe('SubtopicsComponent', () => {
   let component: SubtopicsComponent;
@@ -32,7 +32,7 @@ describe('SubtopicsComponent', () => {
         { provide: APP_BASE_HREF, useValue: '/' },
         TopicService,
         NavigateDataService,
-        BreadCrumbService
+        BreadcrumbService
       ]
     })
     .compileComponents();

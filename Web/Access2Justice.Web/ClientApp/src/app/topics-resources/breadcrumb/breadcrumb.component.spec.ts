@@ -1,13 +1,13 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { BreadcrumbComponent } from './breadcrumb.component';
-import { BreadCrumbService } from '../shared/breadcrumb.service';
+import { BreadcrumbService } from '../shared/breadcrumb.service';
 import { Observable } from 'rxjs/Rx';
 import { ActivatedRoute } from '@angular/router/src/router_state';
 import { Component } from '@angular/compiler/src/core';
 import { api } from '../../../api/api';
 
-describe('BreadCrumb Component', () => {
-  let service: BreadCrumbService;
+describe('Breadcrumb Component', () => {
+  let service: BreadcrumbService;
   let breadcrumbComponent: BreadcrumbComponent;
   const httpSpy = jasmine.createSpyObj('http', ['get']);
   let id: string = '19a02209-ca38-4b74-bd67-6ea941d41518';
@@ -24,7 +24,7 @@ describe('BreadCrumb Component', () => {
 
   //Testing whether breadcrumb service is created
   beforeEach(() => {
-    service = new BreadCrumbService(httpSpy);
+    service = new BreadcrumbService(httpSpy);
     httpSpy.get.calls.reset();
   });
 
@@ -35,7 +35,7 @@ describe('BreadCrumb Component', () => {
 
   //Testing whether breadcrumb items are retriving via breadcrumb service
   beforeEach(() => {
-    service = new BreadCrumbService(httpSpy);
+    service = new BreadcrumbService(httpSpy);
     httpSpy.get.calls.reset();
   });
 
@@ -48,8 +48,8 @@ describe('BreadCrumb Component', () => {
 
     httpSpy.get.and.returnValue(mockResponse);
 
-    service.getBreadCrumbs(id).subscribe(topicid => {
-      expect(httpSpy.get).toHaveBeenCalledWith(`${api.breadCrumbsUrl}/` + id);
+    service.getBreadcrumbs(id).subscribe(topicid => {
+      expect(httpSpy.get).toHaveBeenCalledWith(`${api.breadcrumbsUrl}/` + id);
       expect(topicid).toEqual(mockBreadcrumb);
       done();
     });

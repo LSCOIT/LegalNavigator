@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BreadCrumbService } from '../shared/breadcrumb.service';
+import { BreadcrumbService } from '../shared/breadcrumb.service';
 
 @Component({
   selector: 'app-breadcrumb',
@@ -14,7 +14,7 @@ export class BreadcrumbComponent implements OnInit {
   activeTopicName: string;
   activeTopicId: string;
 
-  constructor(private breadCrumbService: BreadCrumbService,
+  constructor(private breadcrumbService: BreadcrumbService,
     private activeRoute: ActivatedRoute) { }
 
   ngOnInit() {
@@ -35,7 +35,7 @@ export class BreadcrumbComponent implements OnInit {
     };
 
     //Get the data for topic from breadcrumb service
-    this.breadCrumbService.getBreadCrumbs(this.activeTopic)
+    this.breadcrumbService.getBreadcrumbs(this.activeTopic)
       .subscribe(
         items => {
           this.breadcrumbs = items.response.reverse();

@@ -14,11 +14,13 @@ namespace Access2Justice.Api.Tests.BusinessLogic
     {
         private readonly IDynamicQueries dynamicQueries;
         private readonly ICosmosDbSettings cosmosDbSettings;
+        private readonly IBackendDatabaseService backendDatabaseService;
         private readonly TopicsResourcesBusinessLogic topicsResourcesBusinessLogic;
 
         //Mocked input data.
         private readonly string keyword = "eviction";
         private readonly string query = "select * from t";
+        private readonly string procedureName = "GetParentTopics";
         private readonly string topicId = "addf41e9-1a27-4aeb-bcbb-7959f95094ba";
         private readonly List<string> topicIds = new List<string> { "addf41e9-1a27-4aeb-bcbb-7959f95094ba" };        
         private readonly JArray emptyData = JArray.Parse(@"[{}]");
@@ -64,8 +66,9 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         {
             dynamicQueries = Substitute.For<IDynamicQueries>();
             cosmosDbSettings = Substitute.For<ICosmosDbSettings>();
+            backendDatabaseService = Substitute.For<IBackendDatabaseService>();
 
-            topicsResourcesBusinessLogic = new TopicsResourcesBusinessLogic(dynamicQueries, cosmosDbSettings);
+            topicsResourcesBusinessLogic = new TopicsResourcesBusinessLogic(dynamicQueries, cosmosDbSettings, backendDatabaseService);
             cosmosDbSettings.AuthKey.Returns("dummykey");
             cosmosDbSettings.Endpoint.Returns(new System.Uri("https://bing.com"));
             cosmosDbSettings.DatabaseId.Returns("dbname");
@@ -222,10 +225,10 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         public void GetBreadcrumbItemsAsyncProperData()
         {
             //arrange
-            var dbResponse = dynamicQueries.ExecuteStoredProcedureAsync(topicId);
+            var dbResponse = backendDatabaseService.ExecuteStoredProcedureAsync(cosmosDbSettings.TopicCollectionId, procedureName, topicId);
             dbResponse.ReturnsForAnyArgs<dynamic>(breadcrumbData);
             //act
-            var response = topicsResourcesBusinessLogic.GetBreadCrumbDataByIdAsync(topicId).Result;
+            var response = topicsResourcesBusinessLogic.GetBreadcrumbDataAsync(topicId).Result;
             string result = JsonConvert.SerializeObject(response);
             //assert
             Assert.Contains(topicId, result, StringComparison.InvariantCulture);
@@ -235,11 +238,11 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         public void GetBreadcrumbItemsAsyncEmptyData()
         {
             //arrange
-            var dbResponse = dynamicQueries.ExecuteStoredProcedureAsync(topicId);
+            var dbResponse = backendDatabaseService.ExecuteStoredProcedureAsync(cosmosDbSettings.TopicCollectionId, procedureName, topicId);
             dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
 
             //act
-            var response = topicsResourcesBusinessLogic.GetBreadCrumbDataByIdAsync(topicId).Result;
+            var response = topicsResourcesBusinessLogic.GetBreadcrumbDataAsync(topicId).Result;
             string result = JsonConvert.SerializeObject(response);
 
             //assert

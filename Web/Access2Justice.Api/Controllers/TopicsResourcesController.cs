@@ -62,7 +62,7 @@ namespace Access2Justice.Api.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("api/topics/getdocument/{id}")]
-        public async Task<IActionResult> GetDocumentDataWithGuid(string id)
+        public async Task<IActionResult> GetDocumentDataAsync(string id)
         {
 
             var topics = await topicsResourcesBusinessLogic.GetDocumentAsync(id);
@@ -70,14 +70,17 @@ namespace Access2Justice.Api.Controllers
         }
 
         
-        #region get breadcrumbs data 
+        /// <summary>
+        /// Get the parent topics by a topic id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("api/topics/getbreadcrumbs/{id}")]
-        public async Task<IActionResult> GetBreadCrumbsForGuid(string id)
+        public async Task<IActionResult> GetBreadcrumbAsync(string id)
         {
-            var topics = await topicsResourcesBusinessLogic.GetBreadCrumbDataByIdAsync(id);
+            var topics = await topicsResourcesBusinessLogic.GetBreadcrumbDataAsync(id);
             return Ok(topics);
         }
-        #endregion
     }
 }
