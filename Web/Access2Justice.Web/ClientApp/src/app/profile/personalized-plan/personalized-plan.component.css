@@ -1,5 +1,15 @@
 .user-action {
   background-color: #fff;
+  margin: 20px 0;
+}
+
+.row-half-spacing {
+  margin: 20px auto;
+}
+
+.page-heading {
+  display: inline-block;
+  margin-left: 20px;  
 }
 
 .plan-detail {
@@ -92,6 +102,6 @@
 
 @media only screen and (min-width : 992px) {
   .plan-spacing {
-    padding: 20px 40px;
+    padding: 10px 30px;
   }
 }
