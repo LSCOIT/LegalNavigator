@@ -1,5 +1,5 @@
 export interface MapLocationResult {
-  organizationAddress: string;
+  Address: string;
 }
 
 export interface LatitudeLongitude {

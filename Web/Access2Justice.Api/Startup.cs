@@ -12,6 +12,7 @@ using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
+using System;
 
 namespace Access2Justice.Api
 {
@@ -56,8 +57,10 @@ namespace Access2Justice.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseCors(builder => builder.WithOrigins(Configuration.GetSection("App:Endpoint").Value+":"+ Configuration.GetSection("App:Port").Value));
+            var apiEnpoint = new Uri(Configuration.GetSection("Api:Endpoint").Value);
+            var url = $"{apiEnpoint.Scheme}://{apiEnpoint.Host}:{apiEnpoint.Port}";
+            
+            app.UseCors(builder => builder.WithOrigins(url));
             app.UseMvc();
 
             ConfigureSwagger(app);
