@@ -128,6 +128,7 @@ namespace Access2Justice.Api.BusinessLogic
             List<dynamic> resources = new List<dynamic>();
             var resourceObjects = JsonConvert.DeserializeObject<List<dynamic>>(resource);
             Form forms = new Form();
+            ActionPlan actionPlans = new ActionPlan();
 
             foreach (var resourceObject in resourceObjects)
             {
@@ -135,49 +136,29 @@ namespace Access2Justice.Api.BusinessLogic
                 {
                     forms = CreateResourcesForms(resourceObject);
                     var serializedResult = JsonConvert.SerializeObject(forms);
-                    var resourceFormObject = JsonConvert.DeserializeObject<object>(serializedResult);
-                    var resourceForm = resourceFormObject;
-                    var result = await backendDatabaseService.CreateItemAsync(resourceForm, dbSettings.ResourceCollectionId);
+                    var resourceDocument = JsonConvert.DeserializeObject<object>(serializedResult);
+                    var result = await backendDatabaseService.CreateItemAsync(resourceDocument, dbSettings.ResourceCollectionId);
+                    resources.Add(result);
+                }
+
+                else if (resourceObject.resourceType == "Action Plans")
+                {
+                    actionPlans = CreateResourcesActionPlans(resourceObject);
+                    var serializedResult = JsonConvert.SerializeObject(actionPlans);
+                    var resourceDocument = JsonConvert.DeserializeObject<object>(serializedResult);
+                    var result = await backendDatabaseService.CreateItemAsync(resourceDocument, dbSettings.ResourceCollectionId);
                     resources.Add(result);
                 }
             }
             return resources;
         }
-
-        public dynamic CreateResourcesForms(dynamic resourceObject)
-        {
-            Form forms = new Form();
-            List<ReferenceTag> referenceTags = new List<ReferenceTag>();
-            List<Location> locations = new List<Location>();
-            dynamic references = GetReferences(resourceObject);
-            referenceTags = references.Item1;
-            locations = references.Item2;
-
-            forms = new Form()
-            {
-                ResourceId = resourceObject.id == "" ? Guid.NewGuid() : resourceObject.id,
-                Name = resourceObject.name,
-                Description = resourceObject.description,
-                ResourceType = resourceObject.resourceType,
-                ExternalUrls = resourceObject.externalUrl,
-                Urls = resourceObject.url,
-                ReferenceTags = referenceTags,
-                Location = locations,
-                Icon = resourceObject.icon,
-                FullDescription = resourceObject.fullDescription,
-                CreatedBy = resourceObject.createdBy,
-                ModifiedBy = resourceObject.modifiedBy,
-                Overview = resourceObject.overview
-            };
-            forms.Validate();
-            return forms;
-        }
-
-        public (dynamic, dynamic) GetReferences(dynamic resourceObject)
+        
+        public dynamic GetReferences(dynamic resourceObject)
         {
             List<ReferenceTag> referenceTags = new List<ReferenceTag>();
             List<Location> locations = new List<Location>();
-
+            List<Conditions> conditions = new List<Conditions>();
+            List<dynamic> references = new List<dynamic>();
             foreach (JProperty field in resourceObject)
             {
                 if (field.Name == "referenceTags")
@@ -189,8 +170,18 @@ namespace Access2Justice.Api.BusinessLogic
                 {
                     locations = GetLocations(field.Value);
                 }
+
+                else if (field.Name == "conditions")
+                {
+                    conditions = GetConditions(field.Value);
+                }
             }
-            return (referenceTags, locations);
+
+            references.Add(referenceTags);
+            references.Add(locations);
+            references.Add(conditions);
+
+            return references;
         }
 
         public dynamic GetReferenceTags(dynamic tagValues)
@@ -241,5 +232,94 @@ namespace Access2Justice.Api.BusinessLogic
             return locations;
         }
 
+        public dynamic GetConditions(dynamic conditionsValues)
+        {
+            List<Conditions> conditions = new List<Conditions>();
+            foreach (var conditon in conditionsValues)
+            {
+                List<Condition> conditionData = new List<Condition>();
+                string title = string.Empty, description = string.Empty;
+                foreach (JProperty conditionJson in conditon)
+                {
+                    if (conditionJson.Name == "condition")
+                    {
+                        var conditionDetails = conditionJson.Value;
+                        foreach (JProperty conditionDetail in conditionDetails)
+                        {
+                            if (conditionDetail.Name == "title")
+                            {
+                                title=conditionDetail.Value.ToString();
+                            }
+                            else if (conditionDetail.Name == "description")
+                            {
+                                description = conditionDetail.Value.ToString();
+                            }
+                        }
+                        conditionData.Add(new Condition {Title=title, ConditionDescription = description });
+                    }
+                }
+                conditions.Add(new Conditions {ConditionDetail = conditionData });
+            }
+            return conditions;
+        }
+
+        public dynamic CreateResourcesForms(dynamic resourceObject)
+        {
+            Form forms = new Form();
+            List<ReferenceTag> referenceTags = new List<ReferenceTag>();
+            List<Location> locations = new List<Location>();
+            dynamic references = GetReferences(resourceObject);
+            referenceTags = references[0];
+            locations = references[1];
+
+            forms = new Form()
+            {
+                ResourceId = resourceObject.id == "" ? Guid.NewGuid() : resourceObject.id,
+                Name = resourceObject.name,
+                Description = resourceObject.description,
+                ResourceType = resourceObject.resourceType,
+                ExternalUrls = resourceObject.externalUrl,
+                Urls = resourceObject.url,
+                ReferenceTags = referenceTags,
+                Location = locations,
+                Icon = resourceObject.icon,
+                Overview = resourceObject.overview,
+                FullDescription = resourceObject.fullDescription,
+                CreatedBy = resourceObject.createdBy,
+                ModifiedBy = resourceObject.modifiedBy
+            };
+            forms.Validate();
+            return forms;
+        }
+
+        public dynamic CreateResourcesActionPlans(dynamic resourceObject)
+        {
+            ActionPlan actionPlans = new ActionPlan();
+            List<ReferenceTag> referenceTags = new List<ReferenceTag>();
+            List<Location> locations = new List<Location>();
+            List<Conditions> conditions = new List<Conditions>();
+            dynamic references = GetReferences(resourceObject);
+            referenceTags = references[0];
+            locations = references[1];
+            conditions = references[2];
+
+            actionPlans = new ActionPlan()
+            {
+                ResourceId = resourceObject.id == "" ? Guid.NewGuid() : resourceObject.id,
+                Name = resourceObject.name,
+                Description = resourceObject.description,
+                ResourceType = resourceObject.resourceType,
+                ExternalUrls = resourceObject.externalUrl,
+                Urls = resourceObject.url,
+                ReferenceTags = referenceTags,
+                Location = locations,
+                Icon = resourceObject.icon,
+                Conditions = conditions,
+                CreatedBy = resourceObject.createdBy,
+                ModifiedBy = resourceObject.modifiedBy
+            };
+            actionPlans.Validate();
+            return actionPlans;
+        }
     }
 }

@@ -22,9 +22,11 @@ namespace Access2Justice.Shared.Interfaces
         Task<object> CreateTopicDocumentAsync(Topic topic);
         Task<IEnumerable<object>> CreateResourcesUploadAsync(string path);
         Task<IEnumerable<object>> CreateResourceDocumentAsync(dynamic resource);
-        dynamic CreateResourcesForms(dynamic resource);
-        (dynamic,dynamic) GetReferences(dynamic resource);
+        dynamic GetReferences(dynamic resource);
         dynamic GetReferenceTags(dynamic tagValues);
         dynamic GetLocations(dynamic locationValues);
+        dynamic GetConditions(dynamic conditionValues);
+        dynamic CreateResourcesForms(dynamic resource);
+        dynamic CreateResourcesActionPlans(dynamic resource);
     }
 }

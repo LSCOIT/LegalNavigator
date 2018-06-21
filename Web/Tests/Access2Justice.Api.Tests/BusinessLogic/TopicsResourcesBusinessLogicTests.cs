@@ -57,15 +57,32 @@ namespace Access2Justice.Api.Tests.BusinessLogic
                     'resourceType': 'Forms','externalUrl': 'www.youtube.com','url': 'access2justice.com','referenceTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],
                     'location': [{'state': 'Hawaii','county':'','city': 'Haiku-Pauwela','zipCode':''}],'icon': './assets/images/resources/resource.png','createdBy': 'API','createdTimeStamp': '','modifiedBy': 'API','modifiedTimeStamp': ''}]");
 
+        private readonly JArray actionPlanData =
+                    JArray.Parse(@"[{'conditions': [{'condition': {'title': 'Take to your partner to see if you can come to an agreement', 'description': 'Why you should do this dolor sit amet.'}}],
+                    'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Action Plan','description': 'This action plan is for tenants who are facing eviction and have experienced the following:',
+                    'resourceType': 'Action Plans','externalUrl': 'www.youtube.com','url': 'access2justice.com','referenceTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
+                    'icon': './assets/images/resources/resource.png','createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]");
+
         private readonly JArray referenceTagData =
                      JArray.Parse(@"[{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}]");
         private readonly JArray locationData =
                      JArray.Parse(@"[{'state':'Hawaii','county':'','city':'Haiku-Pauwela','zipCode':''},{'state':'Alaska','county':'','city':'','zipCode':''}]");
 
-        private readonly JArray emptyFormData = JArray.Parse(@"[{'id': '','location': [{'state': '','county':'','': '','zipCode':''}] }]");//go
+        private readonly JArray conditionData =
+                     JArray.Parse(@"[{'condition': {'title': 'Take to your partner to see if you can come to an agreement','description': 'Why you should do this dolor sit amet'}}]");
+
+        private readonly JArray emptyResourceData = JArray.Parse(@"[{'id': '','location': [{'state': '','county':'','': '','zipCode':''}] }]");
 
         //Mocked result data.
         private readonly string expectedEmptyArrayObject = "[{}]";
+        private readonly string emptyReferenceTagData = "";
+        private readonly JArray emptyLocationData =
+                     JArray.Parse(@"[{'state':'','county':'','city':'','zipCode':''}]");
+        private readonly JArray emptyConditionObject =
+                     JArray.Parse(@"[{'condition':[]}]");
+        private readonly JArray EmptyReferences =
+                     JArray.Parse(@"[[],[{'state':'','county':'','city':'','zipCode':''}],[]]");
+
         private readonly string expectedTopicId = "addf41e9-1a27-4aeb-bcbb-7959f95094ba";
         private readonly string expectedResourceId = "77d301e7-6df2-612e-4704-c04edf271806";
         private readonly JArray expectedformData =
@@ -73,16 +90,24 @@ namespace Access2Justice.Api.Tests.BusinessLogic
                     'id':'77d301e7-6df2-612e-4704-c04edf271806','name': 'Form1','description': 'Subhead lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem',
                     'resourceType': 'Forms','externalUrl': 'www.youtube.com','url': 'access2justice.com','referenceTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],
                     'location': [{'state': 'Hawaii','county':'','city': 'Haiku-Pauwela','zipCode':''}],'icon': './assets/images/resources/resource.png','createdBy': 'API','createdTimeStamp': '','modifiedBy': 'API','modifiedTimeStamp': ''}]");
-
+        private readonly JArray expectedActionPlanData =
+                    JArray.Parse(@"[{'conditions': [{'condition': [{'title': 'Take to your partner to see if you can come to an agreement', 'description': 'Why you should do this dolor sit amet.'}]}],
+                    'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Action Plan','description': 'This action plan is for tenants who are facing eviction and have experienced the following:',
+                    'resourceType': 'Action Plans','externalUrl': 'www.youtube.com','url': 'access2justice.com','referenceTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
+                    'icon': './assets/images/resources/resource.png','createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]");
+           
         private readonly string expectedReferenceTagData = "aaa085ef-96fb-4fd0-bcd0-0472ede66512";
-        private readonly string emptyReferenceTagObject = "";
         private readonly JArray expectedLocationData =
                      JArray.Parse(@"[{'state':'Hawaii','county':'','city':'Haiku-Pauwela','zipCode':''},{'state':'Alaska','county':'','city':'','zipCode':''}]");
         private readonly JArray expectedReferenceLocationData =
                      JArray.Parse(@"[{'state': 'Hawaii','county':'','city': 'Haiku-Pauwela','zipCode':''}]");
+        private readonly JArray expectedConditionData =
+                     JArray.Parse(@"[{'condition':[{'title':'Take to your partner to see if you can come to an agreement', 'description':'Why you should do this dolor sit amet'}]}]");
+        private readonly JArray expectedFormReferences =
+                     JArray.Parse(@"[[{'id':'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],[{'state':'Hawaii','county':'','city':'Haiku-Pauwela','zipCode':''},{'state':'Alaska','county':'','city':'','zipCode':''}]]");
+        private readonly JArray expectedActionPlanReferences =
+                     JArray.Parse(@"[[{'id':'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],[{'state':'Hawaii','county':'','city':'Haiku-Pauwela','zipCode':''},{'state':'Alaska','county':'','city':'','zipCode':''}],[{'condition':[{'title':'Take to your partner to see if you can come to an agreement','description':'Why you should do this dolor sit amet.'}]}]]");
 
-        private readonly JArray emptyLocationObject =
-                     JArray.Parse(@"[{'state':'','county':'','city':'','zipCode':''}]");
         public TopicsResourcesBusinessLogicTests()
         {
             backendDatabaseService = Substitute.For<IBackendDatabaseService>();
@@ -290,79 +315,45 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             //assert
             Assert.Equal(expectedformData[0].ToString(), actualResourceData.ToString());
         }
-
-        [Fact]
-        public void CreateFormsAsyncWithProperData()  //To do - CreateFormsAsyncEmptyData after expcetion logging
-        {
-            //arrange
-            var form = this.formData[0];
-
-            //act
-            var dbResponseReferenceTag = topicsResourcesSettings.GetReferenceTags(referenceTagData).ReturnsForAnyArgs<dynamic>(expectedReferenceTagData);
-            var dbResponseLocation = topicsResourcesSettings.GetLocations(locationData).ReturnsForAnyArgs<dynamic>(expectedReferenceLocationData);
-            var response = topicsResourcesBusinessLogic.CreateResourcesForms(form);
-            var result = JsonConvert.SerializeObject(response);
-            var formResult = (JObject)JsonConvert.DeserializeObject(result);
-            result = formResult;
-            foreach (JProperty field in result)
-            {
-                if (field.Name == "createdTimeStamp")
-                {
-                    field.Value = "";
-                }
-
-                else if (field.Name == "modifiedTimeStamp")
-                {
-                    field.Value = "";
-                }
-            }
-
-            //assert
-            Assert.Equal(expectedformData[0].ToString(), result.ToString());
-        }
-
+        
         [Fact]
         public void GetReferncesWithProperData()
         {
             //arrange
-            var form = this.formData;
+            var actionPlan = this.actionPlanData;
             var referenceTag = this.referenceTagData;
             var location = this.locationData;
+            var condition = this.conditionData;
 
             //act
             var dbResponseReferenceTag = topicsResourcesSettings.GetReferenceTags(referenceTag).ReturnsForAnyArgs<dynamic>(expectedReferenceTagData);
             var dbResponseLocation = topicsResourcesSettings.GetLocations(location).ReturnsForAnyArgs<dynamic>(expectedReferenceLocationData);
-
-            var response = topicsResourcesBusinessLogic.GetReferences(form[0]);
+            var dbResponseConditions = topicsResourcesSettings.GetConditions(condition).ReturnsForAnyArgs<dynamic>(expectedConditionData);
+            var response = topicsResourcesBusinessLogic.GetReferences(actionPlan[0]);
+            var expectedReferencesData = JsonConvert.SerializeObject(expectedActionPlanReferences);
+            var actualReferenceData = JsonConvert.SerializeObject(response);
             
-            var actualLocation = JsonConvert.SerializeObject(expectedReferenceLocationData[0]);
-            var actualReferenceLocation = JsonConvert.SerializeObject(response.Item2[0]);
-
             //assert
-            Assert.Equal(expectedReferenceTagData, response.Item1[0].ReferenceTags);
-            Assert.Equal(actualLocation, actualReferenceLocation);
+            Assert.Equal(expectedReferencesData, actualReferenceData);
         }
 
         [Fact]
         public void GetReferncesWithEmptyData()
         {
             //arrange
-            var form = this.emptyFormData;
+            var emptyResource = this.emptyResourceData;
             var referenceTag = this.emptyData;
-            var location = this.emptyLocationObject;
+            var location = this.emptyLocationData;
 
             //act
-            var dbResponseReferenceTag = topicsResourcesSettings.GetReferenceTags(referenceTag).ReturnsForAnyArgs<dynamic>(emptyReferenceTagObject);
-            var dbResponseLocation = topicsResourcesSettings.GetLocations(location).ReturnsForAnyArgs<dynamic>(emptyLocationObject);
-
-            var response = topicsResourcesBusinessLogic.GetReferences(form[0]);
-
-            var expectedLocationData = JsonConvert.SerializeObject(emptyLocationObject[0]);
-            var actualLocation = JsonConvert.SerializeObject(response.Item2[0]);
+            var dbResponseReferenceTag = topicsResourcesSettings.GetReferenceTags(referenceTag).ReturnsForAnyArgs<dynamic>(emptyReferenceTagData);
+            var dbResponseLocation = topicsResourcesSettings.GetLocations(location).ReturnsForAnyArgs<dynamic>(emptyLocationData);
+            var response = topicsResourcesBusinessLogic.GetReferences(emptyResource[0]);
+            var ActualReferenceData = JsonConvert.SerializeObject(response);
+            var expectedReferencesData = JsonConvert.SerializeObject(EmptyReferences);
 
             //assert
-            Assert.Equal(emptyReferenceTagObject.Count(), response.Item1.Count);
-            Assert.Equal(expectedLocationData, actualLocation);
+            Assert.Equal(expectedReferencesData, ActualReferenceData);
         }
 
         [Fact]
@@ -388,7 +379,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var response = topicsResourcesBusinessLogic.GetReferenceTags(referenceTag);
             
             //assert
-            Assert.Equal(emptyReferenceTagObject, response[0].ReferenceTags);
+            Assert.Equal(emptyReferenceTagData, response[0].ReferenceTags);
         }
 
         [Fact]
@@ -415,11 +406,103 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             //act
             var response = topicsResourcesBusinessLogic.GetLocations(location);
             var actualLocation = JsonConvert.SerializeObject(response);
-            var expectedLocation = JsonConvert.SerializeObject(emptyLocationObject);
+            var expectedLocation = JsonConvert.SerializeObject(emptyLocationData);
 
             //assert
             Assert.Equal(expectedLocation, actualLocation);
         }
+
+        [Fact]
+        public void GetConditionWithProperData()
+        {
+            //arrange
+            var condition = this.conditionData;
+
+            //act
+            var response = topicsResourcesBusinessLogic.GetConditions(condition);
+            var actualCondition = JsonConvert.SerializeObject(response);
+            var expectedCondition = JsonConvert.SerializeObject(expectedConditionData);
+
+            //assert
+            Assert.Equal(expectedCondition, actualCondition);
+        }
+
+        [Fact]
+        public void GetConditionWithEmptyData()
+        {
+            //arrange
+            var condition = this.emptyData;
+
+            //act
+            var response = topicsResourcesBusinessLogic.GetConditions(condition);
+            var actualCondition = JsonConvert.SerializeObject(response);
+            var expectedCondition = JsonConvert.SerializeObject(emptyConditionObject);
+
+            //assert
+            Assert.Equal(expectedCondition, actualCondition);
+        }
         
+        [Fact]
+        public void CreateFormsAsyncWithProperData()  //To do - CreateFormsAsyncEmptyData after excpetion logging
+        {
+            //arrange
+            var form = this.formData[0];
+
+            //act
+            var dbResponseReferenceTag = topicsResourcesSettings.GetReferenceTags(referenceTagData).ReturnsForAnyArgs<dynamic>(expectedReferenceTagData);
+            var dbResponseLocation = topicsResourcesSettings.GetLocations(locationData).ReturnsForAnyArgs<dynamic>(expectedReferenceLocationData);
+            var dbResponse = topicsResourcesSettings.GetReferences(form).ReturnsForAnyArgs<dynamic>(expectedFormReferences);
+            var response = topicsResourcesBusinessLogic.CreateResourcesForms(form);
+            var result = JsonConvert.SerializeObject(response);
+            var formResult = (JObject)JsonConvert.DeserializeObject(result);
+            result = formResult;
+            foreach (JProperty field in result)
+            {
+                if (field.Name == "createdTimeStamp")
+                {
+                    field.Value = "";
+                }
+
+                else if (field.Name == "modifiedTimeStamp")
+                {
+                    field.Value = "";
+                }
+            }
+
+            //assert
+            Assert.Equal(expectedformData[0].ToString(), result.ToString());
+        }
+
+        [Fact]
+        public void CreateActionPlansAsyncWithProperData()  //To do - CreateActionPlansAsyncEmptyData after excpetion logging
+        {
+            //arrange
+            var actionPlan = this.actionPlanData[0];
+
+            //act
+            var dbResponseReferenceTag = topicsResourcesSettings.GetReferenceTags(referenceTagData).ReturnsForAnyArgs<dynamic>(expectedReferenceTagData);
+            var dbResponseLocation = topicsResourcesSettings.GetLocations(locationData).ReturnsForAnyArgs<dynamic>(expectedReferenceLocationData);
+            var dbResponseCondition = topicsResourcesSettings.GetConditions(conditionData).ReturnsForAnyArgs<dynamic>(expectedConditionData);
+            var dbResponse = topicsResourcesSettings.GetReferences(actionPlan).ReturnsForAnyArgs<dynamic>(expectedFormReferences);
+            var response = topicsResourcesBusinessLogic.CreateResourcesActionPlans(actionPlan);
+            var result = JsonConvert.SerializeObject(response);
+            var actionPlanResult = (JObject)JsonConvert.DeserializeObject(result);
+            result = actionPlanResult;
+            foreach (JProperty field in result)
+            {
+                if (field.Name == "createdTimeStamp")
+                {
+                    field.Value = "";
+                }
+
+                else if (field.Name == "modifiedTimeStamp")
+                {
+                    field.Value = "";
+                }
+            }
+
+            //assert
+            Assert.Equal(expectedActionPlanData[0].ToString(), result.ToString());
+        }
     }    
 }

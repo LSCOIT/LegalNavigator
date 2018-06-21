@@ -79,29 +79,24 @@ namespace Access2Justice.Shared.Models
         public void Validate()
         {
             
-                ValidationContext context = new ValidationContext(this, serviceProvider: null, items: null);
-                List<ValidationResult> results = new List<ValidationResult>();
-                bool isValid = Validator.TryValidateObject(this, context, results, true);
+            ValidationContext context = new ValidationContext(this, serviceProvider: null, items: null);
+            List<ValidationResult> results = new List<ValidationResult>();
+            bool isValid = Validator.TryValidateObject(this, context, results, true);
 
             if (isValid == false)
             {
                 StringBuilder sbrErrors = new StringBuilder();
-                try
                 {
                     foreach (var validationResult in results)
                     {
                         sbrErrors.AppendLine(validationResult.ErrorMessage);
                     }
+                    throw new ValidationException(sbrErrors.ToString());//TO DO - excpetions to be logged
                 }
-                catch
-                {
-                    throw new ValidationException(sbrErrors.ToString());
-                    //TO DO - excpetions to be logged
-                }
+                //TO DO log errors
             }
         }
     }
-
     public class ReferenceTag
     {
         [JsonProperty(PropertyName = "id")]
@@ -111,13 +106,22 @@ namespace Access2Justice.Shared.Models
     public class ActionPlan : Resource
     {
         [JsonProperty(PropertyName = "conditions")]
-        public IEnumerable<Condition> Condition { get; set; }
+        public IEnumerable<Conditions> Conditions { get; set; }
     }
 
-    public class Condition : Resource
+    public class Conditions
     {
         [JsonProperty(PropertyName = "condition")]
-        public string Conditions { get; set; }
+        public IEnumerable<Condition> ConditionDetail { get; set; }
+    }
+
+    public class Condition
+    {
+        [JsonProperty(PropertyName = "title")]
+        public string Title { get; set; }
+
+        [JsonProperty(PropertyName = "description")]
+        public string ConditionDescription { get; set; }
     }
 
     public class EssentialReading : Resource

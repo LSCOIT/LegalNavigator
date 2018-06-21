@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Globalization;
+using System.Text;
 
 namespace Access2Justice.Shared.Models
 {
@@ -36,21 +37,20 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "id")]
         public dynamic Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Name is a required field.")]
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
         [JsonProperty(PropertyName = "parentTopicID")]
         public IEnumerable<ParentTopicID> ParentTopicID { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Keywords is a required field.")]
         [JsonProperty(PropertyName = "keywords")]
         public string Keywords { get; set; }
 
         [JsonProperty(PropertyName = "jsonContent")]
         public string JsonContent { get; set; }
 
-        [Required]
         [JsonProperty(PropertyName = "location")]
         public IEnumerable<Location> Location { get; set; }
 
@@ -69,6 +69,26 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "modifiedTimeStamp")]
         public DateTime? ModifiedTimeStamp { get; set; } = DateTime.UtcNow;
 
+        public void Validate()
+        {
+
+            ValidationContext context = new ValidationContext(this, serviceProvider: null, items: null);
+            List<ValidationResult> results = new List<ValidationResult>();
+            bool isValid = Validator.TryValidateObject(this, context, results, true);
+
+            if (isValid == false)
+            {
+                StringBuilder sbrErrors = new StringBuilder();
+                {
+                    foreach (var validationResult in results)
+                    {
+                        sbrErrors.AppendLine(validationResult.ErrorMessage);
+                    }
+                    throw new ValidationException(sbrErrors.ToString());//TO DO - excpetions to be logged
+                }
+                //TO DO log errors
+            }
+        }
     }
 
     public class ParentTopicID
