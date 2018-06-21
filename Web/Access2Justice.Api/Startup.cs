@@ -57,10 +57,11 @@ namespace Access2Justice.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
             var apiEnpoint = new Uri(Configuration.GetSection("Api:Endpoint").Value);
-            var url = $"{apiEnpoint.Scheme}://{apiEnpoint.Host}:{apiEnpoint.Port}";
-            
+            var url = $"{apiEnpoint.Scheme}://{apiEnpoint.Host}:{apiEnpoint.Port}";         
             app.UseCors(builder => builder.WithOrigins(url));
+
             app.UseMvc();
 
             ConfigureSwagger(app);
