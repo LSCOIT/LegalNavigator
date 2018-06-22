@@ -11,7 +11,8 @@ import {
   CollapseModule,
   ModalModule,
   ProgressbarModule,
-  ProgressbarConfig
+  ProgressbarConfig,
+  TabsModule
 } from 'ngx-bootstrap';
 
 import { AppComponent } from './app.component';
@@ -60,13 +61,15 @@ import { PersonalizedPlanService } from './profile/personalized-plan/personalize
     CarouselModule.forRoot(),
     CollapseModule.forRoot(),
     ModalModule.forRoot(),
-    ProgressbarModule.forRoot()
+    ProgressbarModule.forRoot(),
+    TabsModule.forRoot()
   ],
   providers: [
     TopicService,
     QuestionService,
     ProgressbarConfig,
-    BreadcrumbService 
+    BreadcrumbService,
+    PersonalizedPlanService
   ],
   bootstrap: [AppComponent]
 })

@@ -15,4 +15,8 @@ export class PersonalizedPlanService {
     return this.http.get<PersonalizedPlanCondition>(this.actionPlanUrl + '/' + id);
   }
 
+  saveResourcesToSession(resources) {
+    sessionStorage.setItem("bookmarkedResource", JSON.stringify(resources));
+  }
+
 }

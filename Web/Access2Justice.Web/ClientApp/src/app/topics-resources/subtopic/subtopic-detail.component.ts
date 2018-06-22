@@ -1,7 +1,9 @@
 import { Component, OnInit} from "@angular/core";
 import { TopicService } from '../shared/topic.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NavigateDataService } from '../../shared/navigate-data.service';
+import { PersonalizedPlanService } from "../../profile/personalized-plan/personalized-plan.service";
+import { Resources } from "../../profile/personalized-plan/personalized-plan";
 
 @Component({
   selector: 'app-subtopic-detail',
@@ -19,11 +21,14 @@ export class SubtopicDetailComponent implements OnInit {
   formData: any;
   subtopics: any;
   subtopic: any;
+  resources: Resources;
 
   constructor(
     private topicService: TopicService,
     private activeRoute: ActivatedRoute,
-    private navigateDataService: NavigateDataService
+    private navigateDataService: NavigateDataService,
+    private router: Router,
+    private personalizedPlanService: PersonalizedPlanService
   ) { }
 
   filterSubtopicDetail(): void {
@@ -62,6 +67,15 @@ export class SubtopicDetailComponent implements OnInit {
           this.filterSubtopicDetail();
         }
       );
+  }
+
+  savePlanResources() {
+    this.resources = { url: '', resourceType: '', itemId:'' };
+    this.resources.url = this.router.url;
+    this.resources.resourceType = "Sub Topics";
+    this.resources.itemId = this.activeRoute.snapshot.params['topic'];
+    this.personalizedPlanService.saveResourcesToSession(this.resources);
+    console.log("Book marked!!!");
   }
 
   ngOnInit() {

@@ -72,7 +72,7 @@ namespace Access2Justice.CosmosDb
 
         public async Task<dynamic> FindItemsWhereArrayContainsFilterAsync(string collectionId, string arrayName, string propertyName, string value, string filterName, string filterValue)
         {
-            EnsureParametersAreNotOrEmpty(collectionId, arrayName, propertyName);
+            //EnsureParametersAreNotOrEmpty(collectionId, arrayName, propertyName);
 
             var ids = new List<string> { value };
             return await FindItemsWhereArrayContainsFilterAsync(collectionId, arrayName, propertyName, ids, filterName, filterValue);
@@ -80,7 +80,7 @@ namespace Access2Justice.CosmosDb
 
         public async Task<dynamic> FindItemsWhereArrayContainsFilterAsync(string collectionId, string arrayName, string propertyName, IEnumerable<string> values, string filterName, string filterValue)
         {
-            EnsureParametersAreNotOrEmpty(collectionId, arrayName, propertyName);
+            //EnsureParametersAreNotOrEmpty(collectionId, arrayName, propertyName);
 
             var arrayContainsClause = string.Empty;
             var filterClause = string.Empty;
