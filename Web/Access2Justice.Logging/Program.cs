@@ -13,21 +13,19 @@ namespace Access2Justice.Logger
         static void Main(string[] args)
         {            
             string key = "<App Insights Instrumentation Key will come here....>";
-            var _logger = AppInsightsLogger.GetInstance(key);
-
-            var properties = new Dictionary<string, string> {{"Method Name", "Main"}, {"Search Topic", "User Keyword"}};
-            _logger.TrackEvent("logging custom event with properties", properties);
-            _logger.FlushInsights();
+            var _fameLogger = AppInsightsLogger.GetInstance(key);
+            _fameLogger.TrackEvent("logging custom event....Execution Started from program.cs ");
+            _fameLogger.FlushInsights();
 
             try
             {
-                Console.WriteLine("Checking exception...");
+                Console.WriteLine("Hello World!");
                 System.IO.DirectoryInfo dr = new System.IO.DirectoryInfo("f:\\dfadfas\\a.txt");
-                dr.CreateSubdirectory("f:\\dfadfas\\a");
+                //dr.CreateSubdirectory("f:\\dfadfas\\a");
             }
             catch(Exception ex)
             {
-                _logger.TrackException(ex, "1", AppEnum.EventDictionary.MessageFailedValidation);
+                _fameLogger.TrackException(ex);
             }
         
            // Console.ReadKey();
