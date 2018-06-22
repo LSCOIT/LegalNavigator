@@ -1,0 +1,10 @@
+<ol class="breadcrumb">
+  <li>
+    <a [routerLink]="['/topics']">All Topics</a>
+  </li>
+  <li *ngFor="let item of breadcrumbs">
+    <a class="text-capitalize" [routerLink]="['/topics',item.id]">
+      {{item.name}}
+    </a>
+  </li>
+</ol>

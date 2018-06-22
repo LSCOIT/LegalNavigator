@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Access2Justice.Shared.Tests
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Access2Justice.CosmosDb.Tests", "Access2Justice.CosmosDb.Tests\Access2Justice.CosmosDb.Tests.csproj", "{1A2A57AC-82C4-4E3D-BBCF-56F17BB9A920}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Access2Justice.Logger", "Access2Justice.Logging\Access2Justice.Logger.csproj", "{FD4C7B02-D322-4EBB-A2F1-FE0F42E4CB14}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{1A2A57AC-82C4-4E3D-BBCF-56F17BB9A920}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A2A57AC-82C4-4E3D-BBCF-56F17BB9A920}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A2A57AC-82C4-4E3D-BBCF-56F17BB9A920}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD4C7B02-D322-4EBB-A2F1-FE0F42E4CB14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD4C7B02-D322-4EBB-A2F1-FE0F42E4CB14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD4C7B02-D322-4EBB-A2F1-FE0F42E4CB14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD4C7B02-D322-4EBB-A2F1-FE0F42E4CB14}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
