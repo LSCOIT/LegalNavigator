@@ -46,15 +46,15 @@ describe('LocationService', () => {
     expect(service.getMap).toHaveBeenCalled();
   });
 
-  it('should return searched global location details(map type is true) from local storage when updateLocation is called for global map', () => {
-    localStorage.setItem("globalSearchMapLocation", JSON.stringify(mockMapLocation));
+  it('should return searched global location details(map type is true) from session storage when updateLocation is called for global map', () => {
+    sessionStorage.setItem("globalSearchMapLocation", JSON.stringify(mockMapLocation));
     environment.map_type = true;
     service.updateLocation();
     expect(service.mapLocation).toEqual(mockMapLocation);
   });
 
   it('should store searched global location details(map type is true) to session when updateLocation is called for global map', () => {
-    localStorage.setItem("globalSearchMapLocation", JSON.stringify(mockMapLocation));
+    sessionStorage.setItem("globalSearchMapLocation", JSON.stringify(mockMapLocation));
     environment.map_type = true;
     service.updateLocation();
     expect(service.mapLocation).toEqual(mockMapLocation);
@@ -62,25 +62,25 @@ describe('LocationService', () => {
     expect(JSON.parse(sessionStorage.getItem("mockGlobalMapLocation"))).toEqual(mockMapLocation);
   });
 
-  it('should clear searched global location details from local storage when updateLocation is called for global map', () => {
-    localStorage.setItem("globalSearchMapLocation", JSON.stringify(mockMapLocation));
+  it('should clear searched global location details from session storage when updateLocation is called for global map', () => {
+    sessionStorage.setItem("globalSearchMapLocation", JSON.stringify(mockMapLocation));
     environment.map_type = true;
     service.updateLocation();
-    expect(JSON.parse(localStorage.getItem("globalSearchMapLocation"))).toBeNull;
+    expect(JSON.parse(sessionStorage.getItem("globalSearchMapLocation"))).toBeNull;
   });
 
-  it('should return searched local location details(map type is false) from local storage when updateLocation is called for local map', () => {
-    localStorage.setItem("localSearchMapLocation", JSON.stringify(mockMapLocation));
+  it('should return searched local location details(map type is false) from session storage when updateLocation is called for local map', () => {
+    sessionStorage.setItem("localSearchMapLocation", JSON.stringify(mockMapLocation));
     environment.map_type = false;
     service.updateLocation();
     expect(service.mapLocation).toEqual(mockMapLocation);
   });
 
-  it('should clear searched local location details from local storage when updateLocation is called for global map', () => {
-    localStorage.setItem("localSearchMapLocation", JSON.stringify(mockMapLocation));
+  it('should clear searched local location details from session storage when updateLocation is called for global map', () => {
+    sessionStorage.setItem("localSearchMapLocation", JSON.stringify(mockMapLocation));
     environment.map_type = true;
     service.updateLocation();
-    expect(JSON.parse(localStorage.getItem("localSearchMapLocation"))).toBeNull;
+    expect(JSON.parse(sessionStorage.getItem("localSearchMapLocation"))).toBeNull;
   });
 
   it("should set the variables of service when mapLocationDetails is called", () => {
@@ -167,16 +167,16 @@ describe('LocationService', () => {
     expect(service.mapLocation.address).toEqual(mockLocation.address.adminDistrict);
   });
 
-  it("should store global map location details to local storage when mapLocationDetails is called from global map(map type is true)", () => {
+  it("should store global map location details to session storage when mapLocationDetails is called from global map(map type is true)", () => {
     environment.map_type = true;
     service.mapLocationDetails(mockLocation);
-    expect(JSON.parse(localStorage.getItem("globalSearchMapLocation"))).toEqual(service.mapLocation);
+    expect(JSON.parse(sessionStorage.getItem("globalSearchMapLocation"))).toEqual(service.mapLocation);
   });
 
-  it("should store local map location details to local storage when mapLocationDetails is called from global map(map type is flase)", () => {
+  it("should store local map location details to session storage when mapLocationDetails is called from global map(map type is flase)", () => {
     environment.map_type = false;
     service.mapLocationDetails(mockLocation);
-    expect(JSON.parse(localStorage.getItem("localSearchMapLocation"))).toEqual(service.mapLocation);
+    expect(JSON.parse(sessionStorage.getItem("localSearchMapLocation"))).toEqual(service.mapLocation);
   });
 
 });
