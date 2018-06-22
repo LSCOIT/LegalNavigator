@@ -41,12 +41,12 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<dynamic> GetTopLevelTopicsAsync()
         {
-            return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, "parentTopicID", "");
+            return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, "ParentTopicId", "");
         }
 
         public async Task<dynamic> GetSubTopicsAsync(string ParentTopicId)
         {
-            return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, "parentTopicID", ParentTopicId);
+            return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, "ParentTopicId", ParentTopicId);
         }
 
         public async Task<dynamic> GetResourceAsync(string ParentTopicId)
@@ -60,7 +60,7 @@ namespace Access2Justice.Api.BusinessLogic
         }
 
         //Added for Topic and Resource Tools API
-        //Get Topic Guid based on topic name for ParentTopicID in Topics and refernceTags in Resources
+        //Get Topic Guid based on topic name for ParentTopicId in Topics and refernceTags in Resources
         public async Task<dynamic> GetTopicAsync(string topicName)
         {
             var result = await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, "name", topicName);
@@ -110,54 +110,13 @@ namespace Access2Justice.Api.BusinessLogic
             return results;
 
         }
-
-        public async Task<IEnumerable<object>> CreateResourcesUploadAsync(string path)
-        {
-            using (StreamReader r = new StreamReader(path))
-            {
-                dynamic resources = null;
-                string json = r.ReadToEnd();
-                resources = await CreateResourceDocumentAsync(json);
-                return resources;
-            }
-        }
-
-        public async Task<IEnumerable<object>> CreateResourceDocumentAsync(dynamic resource)
-        {
-            List<dynamic> results = new List<dynamic>();
-            List<dynamic> resources = new List<dynamic>();
-            var resourceObjects = JsonConvert.DeserializeObject<List<dynamic>>(resource);
-            Form forms = new Form();
-            ActionPlan actionPlans = new ActionPlan();
-
-            foreach (var resourceObject in resourceObjects)
-            {
-                if (resourceObject.resourceType == "Forms")
-                {
-                    forms = CreateResourcesForms(resourceObject);
-                    var serializedResult = JsonConvert.SerializeObject(forms);
-                    var resourceDocument = JsonConvert.DeserializeObject<object>(serializedResult);
-                    var result = await backendDatabaseService.CreateItemAsync(resourceDocument, dbSettings.ResourceCollectionId);
-                    resources.Add(result);
-                }
-
-                else if (resourceObject.resourceType == "Action Plans")
-                {
-                    actionPlans = CreateResourcesActionPlans(resourceObject);
-                    var serializedResult = JsonConvert.SerializeObject(actionPlans);
-                    var resourceDocument = JsonConvert.DeserializeObject<object>(serializedResult);
-                    var result = await backendDatabaseService.CreateItemAsync(resourceDocument, dbSettings.ResourceCollectionId);
-                    resources.Add(result);
-                }
-            }
-            return resources;
-        }
         
         public dynamic GetReferences(dynamic resourceObject)
         {
             List<ReferenceTag> referenceTags = new List<ReferenceTag>();
             List<Location> locations = new List<Location>();
             List<Conditions> conditions = new List<Conditions>();
+            List<ParentTopicId> ParentTopicIds = new List<ParentTopicId>();
             List<dynamic> references = new List<dynamic>();
             foreach (JProperty field in resourceObject)
             {
@@ -175,11 +134,17 @@ namespace Access2Justice.Api.BusinessLogic
                 {
                     conditions = GetConditions(field.Value);
                 }
+
+                else if (field.Name == "parentTopicId")
+                {
+                    ParentTopicIds = GetParentTopicIds(field.Value);
+                }
             }
 
             references.Add(referenceTags);
             references.Add(locations);
             references.Add(conditions);
+            references.Add(ParentTopicIds);
 
             return references;
         }
@@ -263,6 +228,106 @@ namespace Access2Justice.Api.BusinessLogic
             return conditions;
         }
 
+        public dynamic GetParentTopicIds(dynamic ParentTopicIdValues)
+        {
+            List<ParentTopicId> ParentTopicIds = new List<ParentTopicId>();
+            foreach (var parentTopic in ParentTopicIdValues)
+            {
+                string id = string.Empty;
+                foreach (JProperty parentId in parentTopic)
+                {
+                    if (parentId.Name == "id")
+                    {
+                        id = parentId.Value.ToString();
+                    }
+                }
+                ParentTopicIds.Add(new ParentTopicId { ParentTopicIds = id });
+            }
+            return ParentTopicIds;
+        }
+        
+        public async Task<IEnumerable<object>> CreateResourcesUploadAsync(string path)
+        {
+            using (StreamReader r = new StreamReader(path))
+            {
+                dynamic resources = null;
+                string json = r.ReadToEnd();
+                resources = await CreateResourceDocumentAsync(json);
+                return resources;
+            }
+        }
+
+        public async Task<IEnumerable<object>> CreateResourceDocumentAsync(dynamic resource)
+        {
+            List<dynamic> results = new List<dynamic>();
+            List<dynamic> resources = new List<dynamic>();
+            var resourceObjects = JsonConvert.DeserializeObject<List<dynamic>>(resource);
+            Form forms = new Form();
+            ActionPlan actionPlans = new ActionPlan();
+            Article articles = new Article();
+            Video videos = new Video();
+            Organization organizations = new Organization();
+            EssentialReading essentialReadings = new EssentialReading();
+
+            foreach (var resourceObject in resourceObjects)
+            {
+                if (resourceObject.resourceType == "Forms")
+                {
+                    forms = CreateResourcesForms(resourceObject);
+                    var serializedResult = JsonConvert.SerializeObject(forms);
+                    var resourceDocument = JsonConvert.DeserializeObject<object>(serializedResult);
+                    var result = await backendDatabaseService.CreateItemAsync(resourceDocument, dbSettings.ResourceCollectionId);
+                    resources.Add(result);
+                }
+
+                else if (resourceObject.resourceType == "Action Plans")
+                {
+                    actionPlans = CreateResourcesActionPlans(resourceObject);
+                    var serializedResult = JsonConvert.SerializeObject(actionPlans);
+                    var resourceDocument = JsonConvert.DeserializeObject<object>(serializedResult);
+                    var result = await backendDatabaseService.CreateItemAsync(resourceDocument, dbSettings.ResourceCollectionId);
+                    resources.Add(result);
+                }
+
+                else if (resourceObject.resourceType == "Articles")
+                {
+                    articles = CreateResourcesArticles(resourceObject);
+                    var serializedResult = JsonConvert.SerializeObject(articles);
+                    var resourceDocument = JsonConvert.DeserializeObject<object>(serializedResult);
+                    var result = await backendDatabaseService.CreateItemAsync(resourceDocument, dbSettings.ResourceCollectionId);
+                    resources.Add(result);
+                }
+
+                else if (resourceObject.resourceType == "Videos")
+                {
+                    videos = CreateResourcesVideos(resourceObject);
+                    var serializedResult = JsonConvert.SerializeObject(videos);
+                    var resourceDocument = JsonConvert.DeserializeObject<object>(serializedResult);
+                    var result = await backendDatabaseService.CreateItemAsync(resourceDocument, dbSettings.ResourceCollectionId);
+                    resources.Add(result);
+                }
+
+                else if (resourceObject.resourceType == "Organizations")
+                {
+                    organizations = CreateResourcesOrganizations(resourceObject);
+                    var serializedResult = JsonConvert.SerializeObject(organizations);
+                    var resourceDocument = JsonConvert.DeserializeObject<object>(serializedResult);
+                    var result = await backendDatabaseService.CreateItemAsync(resourceDocument, dbSettings.ResourceCollectionId);
+                    resources.Add(result);
+                }
+
+                else if (resourceObject.resourceType == "Essential Readings")
+                {
+                    essentialReadings = CreateResourcesEssentialReadings(resourceObject);
+                    var serializedResult = JsonConvert.SerializeObject(essentialReadings);
+                    var resourceDocument = JsonConvert.DeserializeObject<object>(serializedResult);
+                    var result = await backendDatabaseService.CreateItemAsync(resourceDocument, dbSettings.ResourceCollectionId);
+                    resources.Add(result);
+                }
+            }
+            return resources;
+        }
+
         public dynamic CreateResourcesForms(dynamic resourceObject)
         {
             Form forms = new Form();
@@ -320,6 +385,188 @@ namespace Access2Justice.Api.BusinessLogic
             };
             actionPlans.Validate();
             return actionPlans;
+        }
+
+        public dynamic CreateResourcesArticles(dynamic resourceObject)
+        {
+            Article articles = new Article();
+            List<ReferenceTag> referenceTags = new List<ReferenceTag>();
+            List<Location> locations = new List<Location>();
+            dynamic references = GetReferences(resourceObject);
+            referenceTags = references[0];
+            locations = references[1];
+
+            articles = new Article()
+            {
+                ResourceId = resourceObject.id == "" ? Guid.NewGuid() : resourceObject.id,
+                Name = resourceObject.name,
+                Description = resourceObject.description,
+                ResourceType = resourceObject.resourceType,
+                ExternalUrls = resourceObject.externalUrl,
+                Urls = resourceObject.url,
+                ReferenceTags = referenceTags,
+                Location = locations,
+                Icon = resourceObject.icon,
+                CreatedBy = resourceObject.createdBy,
+                ModifiedBy = resourceObject.modifiedBy,
+                Overview = resourceObject.overview,
+                HeadLine1 = resourceObject.headline1,
+                HeadLine2 = resourceObject.headline2,
+                HeadLine3 = resourceObject.headline3
+            };
+            articles.Validate();
+            return articles;
+        }
+
+        public dynamic CreateResourcesVideos(dynamic resourceObject)
+        {
+            Video videos = new Video();
+            List<ReferenceTag> referenceTags = new List<ReferenceTag>();
+            List<Location> locations = new List<Location>();
+            dynamic references = GetReferences(resourceObject);
+            referenceTags = references[0];
+            locations = references[1];
+
+            videos = new Video()
+            {
+                ResourceId = resourceObject.id == "" ? Guid.NewGuid() : resourceObject.id,
+                Name = resourceObject.name,
+                Description = resourceObject.description,
+                ResourceType = resourceObject.resourceType,
+                ExternalUrls = resourceObject.externalUrl,
+                Urls = resourceObject.url,
+                ReferenceTags = referenceTags,
+                Location = locations,
+                Icon = resourceObject.icon,
+                CreatedBy = resourceObject.createdBy,
+                ModifiedBy = resourceObject.modifiedBy,
+                Overview = resourceObject.overview,
+                IsRecommended = resourceObject.isRecommended,
+                VideoUrls = resourceObject.videoUrl
+            };
+            videos.Validate();
+            return videos;
+        }
+
+        public dynamic CreateResourcesOrganizations(dynamic resourceObject)
+        {
+            Organization organizations = new Organization();
+            List<ReferenceTag> referenceTags = new List<ReferenceTag>();
+            List<Location> locations = new List<Location>();
+            dynamic references = GetReferences(resourceObject);
+            referenceTags = references[0];
+            locations = references[1];
+
+            organizations = new Organization()
+            {
+                ResourceId = resourceObject.id == "" ? Guid.NewGuid() : resourceObject.id,
+                Name = resourceObject.name,
+                Description = resourceObject.description,
+                ResourceType = resourceObject.resourceType,
+                ExternalUrls = resourceObject.externalUrl,
+                Urls = resourceObject.url,
+                ReferenceTags = referenceTags,
+                Location = locations,
+                Icon = resourceObject.icon,
+                CreatedBy = resourceObject.createdBy,
+                ModifiedBy = resourceObject.modifiedBy,
+                Overview = resourceObject.overview,
+                SubService = resourceObject.subService,
+                Street = resourceObject.street,
+                City = resourceObject.city,
+                State = resourceObject.state,
+                ZipCode = resourceObject.zipCode,
+                Telephone = resourceObject.telephone,
+                EligibilityInformation = resourceObject.eligibilityInformation,
+                ReviewedByCommunityMember = resourceObject.reviewedByCommunityMember,
+                ReviewerFullName = resourceObject.reviewerFullName,
+                ReviewerTitle = resourceObject.reviewerTitle,
+                ReviewerImage = resourceObject.reviewerImage
+            };
+            organizations.Validate();
+            return organizations;
+        }
+
+        public dynamic CreateResourcesEssentialReadings(dynamic resourceObject)
+        {
+            EssentialReading essentialReadings = new EssentialReading();
+            List<ReferenceTag> referenceTags = new List<ReferenceTag>();
+            List<Location> locations = new List<Location>();
+            dynamic references = GetReferences(resourceObject);
+            referenceTags = references[0];
+            locations = references[1];
+
+            essentialReadings = new EssentialReading()
+            {
+                ResourceId = resourceObject.id == "" ? Guid.NewGuid() : resourceObject.id,
+                Name = resourceObject.name,
+                Description = resourceObject.description,
+                ResourceType = resourceObject.resourceType,
+                ExternalUrls = resourceObject.externalUrl,
+                Urls = resourceObject.url,
+                ReferenceTags = referenceTags,
+                Location = locations,
+                Icon = resourceObject.icon,
+                CreatedBy = resourceObject.createdBy,
+                ModifiedBy = resourceObject.modifiedBy
+            };
+            essentialReadings.Validate();
+            return essentialReadings;
+        }
+
+        public async Task<IEnumerable<object>> CreateTopicsUploadAsync(string path)
+        {
+            using (StreamReader r = new StreamReader(path))
+            {
+                dynamic topics = null;
+                string json = r.ReadToEnd();
+                topics = await CreateTopicDocumentAsync(json);
+                return topics;
+            }
+        }
+
+        public async Task<IEnumerable<object>> CreateTopicDocumentAsync(dynamic topic)
+        {
+            List<dynamic> results = new List<dynamic>();
+            List<dynamic> topics = new List<dynamic>();
+            var topicObjects = JsonConvert.DeserializeObject<List<dynamic>>(topic);
+            Topic topicdocuments = new Topic();
+
+            foreach (var topicObject in topicObjects)
+            {
+                
+                    topicdocuments = CreateTopics(topicObject);
+                    var serializedResult = JsonConvert.SerializeObject(topicdocuments);
+                    var topicDocument = JsonConvert.DeserializeObject<object>(serializedResult);
+                    var result = await backendDatabaseService.CreateItemAsync(topicDocument, dbSettings.TopicCollectionId);
+                    topics.Add(result);                
+            }
+            return topics;
+        }
+
+        public dynamic CreateTopics(dynamic topicObject)
+        {
+            Topic topics = new Topic();
+            List<ParentTopicId> parentTopicIds = new List<ParentTopicId>();
+            List<Location> locations = new List<Location>();
+            dynamic references = GetReferences(topicObject);
+            locations = references[1];
+            parentTopicIds = references[3];
+
+            topics = new Topic()
+            {
+                Id = topicObject.id == "" ? Guid.NewGuid() : topicObject.id,
+                Name = topicObject.name,
+                ParentTopicId = parentTopicIds,
+                Keywords = topicObject.keywords,
+                JsonContent = topicObject.jsonContent,
+                Location = locations,
+                Icon = topicObject.icon,
+                CreatedBy = topicObject.createdBy,
+                ModifiedBy = topicObject.modifiedBy
+            };
+            topics.Validate();
+            return topics;
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Access2Justice.Shared.Models
     {
         public void Apply(Swashbuckle.AspNetCore.Swagger.Operation operation, OperationFilterContext context)
         {
-            if (operation.OperationId.ToLower(CultureInfo.CurrentCulture) == "apitopicscreateresourceuploadpost")
+            if (operation.OperationId.ToLower(CultureInfo.CurrentCulture) == "apitopicscreateresourcesuploadpost")
             {
                 operation.Parameters.Clear();
                 operation.Parameters.Add(new NonBodyParameter
@@ -97,6 +97,7 @@ namespace Access2Justice.Shared.Models
             }
         }
     }
+
     public class ReferenceTag
     {
         [JsonProperty(PropertyName = "id")]
@@ -134,13 +135,13 @@ namespace Access2Justice.Shared.Models
        [JsonProperty(PropertyName = "overview")]
         public string Overview { get; set; }
 
-        [JsonProperty(PropertyName = "headLine1")]
+        [JsonProperty(PropertyName = "headline1")]
         public string HeadLine1 { get; set; }
 
-        [JsonProperty(PropertyName = "headLine2")]
+        [JsonProperty(PropertyName = "headline2")]
         public string HeadLine2 { get; set; }
 
-        [JsonProperty(PropertyName = "headLine3")]
+        [JsonProperty(PropertyName = "headline3")]
         public string HeadLine3 { get; set; }        
     }
 

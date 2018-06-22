@@ -59,7 +59,7 @@ namespace Access2Justice.Api.Controllers
         #endregion
 
         //Added for Topic and Resource Tools API
-        #region get all topic Guids when parentTopicId is mapped to topicTags or ReferenceTags for resources
+        #region get all topic Guids when ParentTopicId is mapped to topicTags or ReferenceTags for resources
         [HttpGet]
         [Route("api/topics/gettopicguid/{name}")]
         public async Task<IActionResult> GetTopicGuid(string name)
@@ -69,7 +69,7 @@ namespace Access2Justice.Api.Controllers
         }
         #endregion
 
-        #region get topic sample schema
+        #region get topic sample document
         [HttpGet]
         [Route("api/topics/getsampletopicdetails")]
         public async Task<IActionResult> GetSampleTopicDetails()
@@ -80,7 +80,7 @@ namespace Access2Justice.Api.Controllers
         }
         #endregion
 
-        #region get resource sample schema based on type
+        #region get resource sample document based on type
         [HttpGet]
         [Route("api/topics/getsampleresourcedetails/{type}")]
         public async Task<IActionResult> GetSampleResourceDetails(string type)
@@ -168,38 +168,10 @@ namespace Access2Justice.Api.Controllers
         }
         #endregion
         
-        #region Create Topics Document
+        #region Create Resource Documents using upload
         [HttpPost]
-        [Route("api/topics/createtopic/Upload")]
-        public async Task<IActionResult> CreateTopic(IFormFile uploadedFile)
-        {
-            var path = uploadedFile.FileName;
-            var topics = await topicsResourcesBusinessLogic.CreateTopicsAsync(path);
-            return Ok(topics);
-        }
-        #endregion
-
-        #region Create Topic Document
-        [HttpPost]
-        [Route("api/createtopicdocument")]
-        public async Task<IActionResult> CreateTopicDocument(dynamic topic)
-        {
-            //var topics = await topicsResourcesBusinessLogic.CreateTopicDocumentAsync(topic);
-            string json = "";
-            using (StreamReader r = new StreamReader("C:\\Users\\v-sobhad\\Desktop\\CreateJSON\\TopicData.json"))
-            {
-                json = r.ReadToEnd();
-            }
-            var topics = await topicsResourcesBusinessLogic.CreateResourceDocumentAsync(json);
-
-            return Ok(topics);
-        }
-        #endregion
-
-        #region Create Resources Document
-        [HttpPost]
-        [Route("api/topics/createresource/upload")]
-        public async Task<IActionResult> CreateResource(IFormFile uploadedFile)
+        [Route("api/topics/createresources/upload")]
+        public async Task<IActionResult> CreateResources(IFormFile uploadedFile)
         {
             var path = uploadedFile.FileName;
             var resources = await topicsResourcesBusinessLogic.CreateResourcesUploadAsync(path);
@@ -212,7 +184,7 @@ namespace Access2Justice.Api.Controllers
         [Route("api/createresourcedocument")]
         public async Task<IActionResult> CreateResourceDocument(dynamic resource)
         {
-            using (StreamReader r = new StreamReader("C:\\Users\\v-sobhad\\Desktop\\CreateJSON\\FormsData.json"))
+            using (StreamReader r = new StreamReader("C:\\Users\\v-sobhad\\Desktop\\CreateJSON\\EssentialReadingsData.json"))
             {
                 resource = r.ReadToEnd();
             }
@@ -222,5 +194,30 @@ namespace Access2Justice.Api.Controllers
         }
         #endregion
 
+        #region Create Topic Documents using upload 
+        [HttpPost]
+        [Route("api/topics/createtopics/upload")]
+        public async Task<IActionResult> CreateTopics(IFormFile uploadedFile)
+        {
+            var path = uploadedFile.FileName;
+            var topics = await topicsResourcesBusinessLogic.CreateTopicsUploadAsync(path);
+            return Ok(topics);
+        }
+        #endregion
+
+        #region Create Topic Document
+        [HttpPost]
+        [Route("api/createtopicdocument")]
+        public async Task<IActionResult> CreateTopicDocument(dynamic topic)
+        {
+            using (StreamReader r = new StreamReader("C:\\Users\\v-sobhad\\Desktop\\CreateJSON\\TopicData.json"))
+            {
+                topic = r.ReadToEnd();
+            }
+            var topics = await topicsResourcesBusinessLogic.CreateTopicDocumentAsync(topic);
+
+            return Ok(topics);
+        }
+        #endregion
     }
 }

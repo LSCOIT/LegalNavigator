@@ -19,14 +19,22 @@ namespace Access2Justice.Shared.Interfaces
         Task<dynamic> GetResourceDetailAsync(string resourceName, string resourceType);
         Task<IEnumerable<Topic>> GetTopicMandatoryDetailsAsync(string topicName);
         Task<IEnumerable<object>> CreateTopicsAsync(string path);
-        Task<object> CreateTopicDocumentAsync(Topic topic);
-        Task<IEnumerable<object>> CreateResourcesUploadAsync(string path);
-        Task<IEnumerable<object>> CreateResourceDocumentAsync(dynamic resource);
+        Task<object> CreateTopicDocumentAsync(Topic topic);        
         dynamic GetReferences(dynamic resource);
         dynamic GetReferenceTags(dynamic tagValues);
         dynamic GetLocations(dynamic locationValues);
         dynamic GetConditions(dynamic conditionValues);
+        dynamic GetParentTopicIds(dynamic ParentTopicIdValues);
+        Task<IEnumerable<object>> CreateResourcesUploadAsync(string path);
+        Task<IEnumerable<object>> CreateResourceDocumentAsync(dynamic resource);
         dynamic CreateResourcesForms(dynamic resource);
         dynamic CreateResourcesActionPlans(dynamic resource);
+        dynamic CreateResourcesArticles(dynamic resource);
+        dynamic CreateResourcesVideos(dynamic resource);
+        dynamic CreateResourcesOrganizations(dynamic resource);
+        dynamic CreateResourcesEssentialReadings(dynamic resource);
+        Task<IEnumerable<object>> CreateTopicsUploadAsync(string path);
+        Task<IEnumerable<object>> CreateTopicDocumentAsync(dynamic topic);
+        dynamic CreateTopics(dynamic topic);
     }
 }

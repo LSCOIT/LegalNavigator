@@ -15,7 +15,7 @@ namespace Access2Justice.Shared.Models
         public void Apply(Swashbuckle.AspNetCore.Swagger.Operation operation, OperationFilterContext context)
         {
             //if (operation.OperationId.ToLower() == "apitopicscreatetopicuploadpost")
-            if (operation.OperationId.ToLower(CultureInfo.CurrentCulture) == "apitopicscreatetopicuploadpost")
+            if (operation.OperationId.ToLower(CultureInfo.CurrentCulture) == "apitopicscreatetopicsuploadpost")
             {
                 operation.Parameters.Clear();
                 operation.Parameters.Add(new NonBodyParameter
@@ -41,8 +41,8 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
-        [JsonProperty(PropertyName = "parentTopicID")]
-        public IEnumerable<ParentTopicID> ParentTopicID { get; set; }
+        [JsonProperty(PropertyName = "parentTopicId")]
+        public IEnumerable<ParentTopicId> ParentTopicId { get; set; }
 
         [Required(ErrorMessage = "Keywords is a required field.")]
         [JsonProperty(PropertyName = "keywords")]
@@ -91,10 +91,10 @@ namespace Access2Justice.Shared.Models
         }
     }
 
-    public class ParentTopicID
+    public class ParentTopicId
     {
         [JsonProperty(PropertyName = "id")]
-        public dynamic ParentTopicId { get; set; }
+        public dynamic ParentTopicIds { get; set; }
     }
 
     public class Location
