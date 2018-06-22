@@ -10,36 +10,37 @@ import { MapLocation } from '../location/location';
   templateUrl: './service-org-sidebar.component.html',
   styleUrls: ['./service-org-sidebar.component.css']
 })
-export class ServiceOrgSidebarComponent implements OnInit {
-
+export class ServiceOrgSidebarComponent implements OnInit
+{
   organizations: Organization;
   location: MapLocation;
   subscription: any;
-  
-  constructor(private serviceOrgService: ServiceOrgService, private locationService: LocationService) {
+  constructor(private serviceOrgService: ServiceOrgService, private locationService: LocationService)
+  {
   }
-
-  getOrganizations(location) {
-    this.serviceOrgService.getOrganizationDetail(location)
+  getOrganizations(location)
+  {
+    this.serviceOrgService.getOrganizationDetails(location)
       .subscribe(organizations =>
-        this.organizations = organizations
-    );
+        this.organizations = organizations); 
   }
-
-  ngOnInit() {
-    if (sessionStorage.getItem("globalMapLocation")) {
+  ngOnInit()
+  {
+    if (sessionStorage.getItem("globalMapLocation"))
+    {
       this.location = JSON.parse(sessionStorage.getItem("globalMapLocation"));
     }
-
     this.subscription = this.locationService.notifyLocation.subscribe((value) => {
-      this.location = value;
-      this.getOrganizations(this.location);
+    this.location = value;  
+    this.getOrganizations(this.location);
     });
+
     this.getOrganizations(this.location);
   }
-
-  ngOnDestroy() {
-    if (this.subscription != undefined) {
+  ngOnDestroy()
+  {
+    if (this.subscription != undefined)
+    {
       this.subscription.unsubscribe();
     }
   }

@@ -5,17 +5,14 @@ import { Organization } from '../sidebars/organization';
 import { api } from '../../../api/api';
 
 const httpOptions = {
-  headers: new HttpHeaders({
-    'Content-Type': 'application/json'
-  })
-};
-
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+ };
 @Injectable()
 export class ServiceOrgService
 {
   constructor(private http: HttpClient) { }
 
-  getOrganizationDetail(location): Observable<any>
+  getOrganizationDetails(location): Observable<any>
   {
     var objectToSend = JSON.stringify(location);
     return this.http.post<Organization>(api.getOrganizationDetailsUrl, objectToSend, httpOptions);

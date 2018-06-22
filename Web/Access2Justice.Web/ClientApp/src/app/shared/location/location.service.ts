@@ -70,15 +70,14 @@ export class LocationService {
 
   updateLocation(): MapLocation {
     if (environment.map_type) {
-      this.mapLocation = JSON.parse(localStorage.getItem("globalSearchMapLocation"));
+      this.mapLocation = JSON.parse(sessionStorage.getItem("globalSearchMapLocation"));
       sessionStorage.setItem("globalMapLocation", JSON.stringify(this.mapLocation));
-      localStorage.removeItem('globalSearchMapLocation');
-      console.log("Test");
+      sessionStorage.removeItem('globalSearchMapLocation');
       this.notifyLocation.next(this.mapLocation);
     }
     else {
-      this.mapLocation = JSON.parse(localStorage.getItem("localSearchMapLocation"));
-      localStorage.removeItem('localSearchMapLocation');
+      this.mapLocation = JSON.parse(sessionStorage.getItem("localSearchMapLocation"));
+      sessionStorage.removeItem('localSearchMapLocation');
     }
     return this.mapLocation;
   }
@@ -110,10 +109,10 @@ export class LocationService {
     this.mapLocation.locality = this.locAddress;
     this.mapLocation.address = this.location.address.adminDistrict;
     if (environment.map_type) {
-      localStorage.setItem("globalSearchMapLocation", JSON.stringify(this.mapLocation));
+      sessionStorage.setItem("globalSearchMapLocation", JSON.stringify(this.mapLocation));
     }
     else {
-      localStorage.setItem("localSearchMapLocation", JSON.stringify(this.mapLocation));
+      sessionStorage.setItem("localSearchMapLocation", JSON.stringify(this.mapLocation));
     }
   }
 
