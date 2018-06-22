@@ -9,46 +9,55 @@ namespace Access2Justice.Api.BusinessLogic
     {
         private readonly IDynamicQueries dbClient;
         private readonly ICosmosDbSettings dbSettings;
-        public TopicsResourcesBusinessLogic(IDynamicQueries dynamicQueries, ICosmosDbSettings cosmosDbSettings)
+        private readonly IBackendDatabaseService dbService;
+        public TopicsResourcesBusinessLogic(IDynamicQueries dynamicQueries, ICosmosDbSettings cosmosDbSettings, IBackendDatabaseService backendDatabaseService)
         {
             dbClient = dynamicQueries;
             dbSettings = cosmosDbSettings;
+            dbService = backendDatabaseService;
         }
 
         public async Task<dynamic> GetResourcesAsync(dynamic topics)
         {
             var ids = new List<string>();
-            foreach(var topic in topics)
+            foreach (var topic in topics)
             {
-                ids.Add(topic.id);
+                string topicId = topic.id;
+                ids.Add(topicId);
             }
 
-            return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourceCollectionId, "topicTags", "id", ids);
+            return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourceCollectionId, Constants.TopicTags, Constants.Id, ids);
         }
 
         public async Task<dynamic> GetTopicsAsync(string keyword)
         {
-            return await dbClient.FindItemsWhereContainsAsync(dbSettings.TopicCollectionId, "keywords", keyword);
+            return await dbClient.FindItemsWhereContainsAsync(dbSettings.TopicCollectionId, Constants.Keywords, keyword);
         }
 
         public async Task<dynamic> GetTopLevelTopicsAsync()
         {
-            return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, "parentTopicID", "");
+            return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.ParentTopicId, "");
         }
 
         public async Task<dynamic> GetSubTopicsAsync(string ParentTopicId)
         {
-            return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, "parentTopicID", ParentTopicId);
+            return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.ParentTopicId, ParentTopicId);
         }
 
         public async Task<dynamic> GetResourceAsync(string ParentTopicId)
         {
-            return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourceCollectionId, "topicTags", "id", ParentTopicId);
+            return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourceCollectionId, Constants.TopicTags, Constants.Id, ParentTopicId);
         }
 
         public async Task<dynamic> GetDocumentAsync(string id)
         {
-            return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, "id", id);
+            return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.Id, id);
+        }
+
+        public async Task<dynamic> GetBreadcrumbDataAsync(string id)
+        {
+            List<dynamic> procedureParams = new List<dynamic>() { id };
+            return await dbService.ExecuteStoredProcedureAsync(dbSettings.TopicCollectionId, Constants.BreadcrumbStoredProcedureName, procedureParams);
         }
 
         public async Task<dynamic> GetResourceActionPlanAsync(string ParentTopicId, string filterValue)

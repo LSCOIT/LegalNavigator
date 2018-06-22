@@ -1,5 +1,6 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
+import { api } from '../../api/api';
 import { QuestionService } from './question.service';
 import { Question } from './question';
 import { Observable } from 'rxjs/Rx';
@@ -36,7 +37,7 @@ describe('QuestionService', () => {
   it('should return list of questions', (done) => {
     httpSpy.get.and.returnValue(mockResponse);
     service.getQuestion().subscribe(question => {
-      expect(httpSpy.get).toHaveBeenCalledWith(`${service.questionUrl}`);
+      expect(httpSpy.get).toHaveBeenCalledWith(`${api.questionUrl}`);
       expect(question).toEqual(sampleQuestion);
       done();
     });

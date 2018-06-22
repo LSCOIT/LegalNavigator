@@ -1,5 +1,6 @@
 import { TopicService } from './topic.service';
 import { Observable } from 'rxjs/Rx';
+import { api } from '../../../api/api';
 
 describe('TopicService', () => {
   let service: TopicService;
@@ -22,7 +23,7 @@ describe('TopicService', () => {
     httpSpy.get.and.returnValue(mockResponse);
 
     service.getTopics().subscribe(topics => {
-      expect(httpSpy.get).toHaveBeenCalledWith(`${service.topicUrl}`);
+      expect(httpSpy.get).toHaveBeenCalledWith(`${api.topicUrl}`);
       expect(topics).toEqual(mockTopics);
       done();
     });
@@ -43,7 +44,7 @@ describe('TopicService', () => {
     httpSpy.get.and.returnValue(mockResponse);
 
     service.getSubtopics(1).subscribe(subtopics => {
-      expect(httpSpy.get).toHaveBeenCalledWith(`${service.subtopicUrl}/1`);
+      expect(httpSpy.get).toHaveBeenCalledWith(`${api.subtopicUrl}/1`);
       expect(subtopics).toEqual(mockSubtopics);
       done();
     });
@@ -62,7 +63,7 @@ describe('TopicService', () => {
     httpSpy.get.and.returnValue(mockResponse);
 
     service.getSubtopicDetail(1).subscribe(subtopicDetail => {
-      expect(httpSpy.get).toHaveBeenCalledWith(`${service.subtopicDetailUrl}/1`);
+      expect(httpSpy.get).toHaveBeenCalledWith(`${api.subtopicDetailUrl}/1`);
       expect(subtopicDetail).toEqual(mockSubtopicDetail);
       done();
     });

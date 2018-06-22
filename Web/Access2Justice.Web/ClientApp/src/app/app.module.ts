@@ -11,8 +11,7 @@ import {
   CollapseModule,
   ModalModule,
   ProgressbarModule,
-  ProgressbarConfig,
-  TabsModule 
+  ProgressbarConfig
 } from 'ngx-bootstrap';
 
 import { AppComponent } from './app.component';
@@ -30,9 +29,7 @@ import { SubtopicsComponent } from './topics-resources/subtopic/subtopics.compon
 import { SubtopicDetailComponent } from './topics-resources/subtopic/subtopic-detail.component';
 import { TopicsResourcesComponent } from './topics-resources/topics-resources.component';
 import { TopicsComponent } from './topics-resources/topic/topics.component';
-import { PersonalizedPlanComponent } from './profile/personalized-plan/personalized-plan.component';
-import { PersonalizedPlanService } from './profile/personalized-plan/personalized-plan.service';
-
+import { BreadcrumbService } from './topics-resources/shared/breadcrumb.service';
 
 @NgModule({
   declarations: [
@@ -48,8 +45,7 @@ import { PersonalizedPlanService } from './profile/personalized-plan/personalize
     TopicsComponent,
     TopicsResourcesComponent,
     SubtopicDetailComponent,
-    SubtopicsComponent,
-    PersonalizedPlanComponent
+    SubtopicsComponent    
   ],
   imports: [
     BrowserModule,
@@ -61,14 +57,13 @@ import { PersonalizedPlanService } from './profile/personalized-plan/personalize
     CarouselModule.forRoot(),
     CollapseModule.forRoot(),
     ModalModule.forRoot(),
-    ProgressbarModule.forRoot(),
-    TabsModule.forRoot()
+    ProgressbarModule.forRoot()
   ],
   providers: [
     TopicService,
     QuestionService,
     ProgressbarConfig,
-    PersonalizedPlanService
+    BreadcrumbService 
   ],
   bootstrap: [AppComponent]
 })
