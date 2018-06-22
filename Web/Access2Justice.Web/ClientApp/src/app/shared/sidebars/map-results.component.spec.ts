@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MapResultsComponent } from './map-results.component';
 import { MapResultsService } from './map-results.service';
-import { DebugElement } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { MapLocationResult } from './map-results';
