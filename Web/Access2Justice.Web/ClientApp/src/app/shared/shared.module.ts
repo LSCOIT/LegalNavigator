@@ -30,6 +30,8 @@ import { WebResourceComponent } from './search/search-results/web-resource/web-r
 import { CuratedResourceService } from './search/search-results/curated-resource/curated-resource.service';
 import { SearchFilterPipe } from './search/search-filter.pipe';
 import { BreadcrumbComponent } from '../topics-resources/breadcrumb/breadcrumb.component';
+import { MapResultsComponent } from './sidebars/map-results.component';
+import { MapResultsService } from './sidebars/map-results.service';
 
 @NgModule({
   imports: [
@@ -61,7 +63,8 @@ import { BreadcrumbComponent } from '../topics-resources/breadcrumb/breadcrumb.c
     UpperNavComponent,
     WebResourceComponent,
     SearchFilterPipe,
-    BreadcrumbComponent
+    BreadcrumbComponent,
+    MapResultsComponent
   ],
   exports: [
     ChatbotComponent,
@@ -90,7 +93,8 @@ import { BreadcrumbComponent } from '../topics-resources/breadcrumb/breadcrumb.c
     CuratedResourceService,
     LocationService,
     NavigateDataService,
-    SearchService    
+    SearchService,
+    MapResultsService
   ]
 })
 export class SharedModule { }
