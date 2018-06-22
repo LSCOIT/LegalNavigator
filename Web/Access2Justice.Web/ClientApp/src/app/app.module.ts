@@ -30,6 +30,8 @@ import { SubtopicDetailComponent } from './topics-resources/subtopic/subtopic-de
 import { TopicsResourcesComponent } from './topics-resources/topics-resources.component';
 import { TopicsComponent } from './topics-resources/topic/topics.component';
 import { BreadcrumbService } from './topics-resources/shared/breadcrumb.service';
+import { PersonalizedPlanComponent } from './profile/personalized-plan/personalized-plan.component';
+import { PersonalizedPlanService } from './profile/personalized-plan/personalized-plan.service';
 
 @NgModule({
   declarations: [
@@ -45,7 +47,8 @@ import { BreadcrumbService } from './topics-resources/shared/breadcrumb.service'
     TopicsComponent,
     TopicsResourcesComponent,
     SubtopicDetailComponent,
-    SubtopicsComponent    
+    SubtopicsComponent,
+    PersonalizedPlanComponent
   ],
   imports: [
     BrowserModule,
