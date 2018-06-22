@@ -20,6 +20,7 @@
   width: 65%;
   background: #f4f4f4;
   height: 33px;
+  padding: 10px;
 }
 
 @media only screen and (min-width : 768px) {
