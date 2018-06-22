@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from '../app-routing.module';
 import { FormsModule } from '@angular/forms';
 import { BsDropdownModule, ModalModule } from 'ngx-bootstrap';
+
 import { ChatbotComponent } from './chatbot/chatbot.component';
 import { CuratedResourceComponent } from './search/search-results/curated-resource/curated-resource.component';
 import { DownloadButtonComponent } from './resource/user-action/download-button.component';
@@ -27,8 +28,8 @@ import { ShareButtonComponent } from './resource/user-action/share-button.compon
 import { UpperNavComponent } from './navigation/upper-nav.component';
 import { WebResourceComponent } from './search/search-results/web-resource/web-resource.component';
 import { CuratedResourceService } from './search/search-results/curated-resource/curated-resource.service';
-import { MapResultsComponent } from './sidebars/map-results.component';
-import { MapResultsService } from './sidebars/map-results.service';
+import { SearchFilterPipe } from './search/search-filter.pipe';
+import { BreadcrumbComponent } from '../topics-resources/breadcrumb/breadcrumb.component';
 
 @NgModule({
   imports: [
@@ -36,7 +37,7 @@ import { MapResultsService } from './sidebars/map-results.service';
     AppRoutingModule,
     FormsModule,
     BsDropdownModule.forRoot(),
-    ModalModule.forRoot()
+    ModalModule.forRoot()    
   ],
   declarations: [
     ChatbotComponent,
@@ -59,7 +60,8 @@ import { MapResultsService } from './sidebars/map-results.service';
     ShareButtonComponent,
     UpperNavComponent,
     WebResourceComponent,
-    MapResultsComponent
+    SearchFilterPipe,
+    BreadcrumbComponent
   ],
   exports: [
     ChatbotComponent,
@@ -81,14 +83,14 @@ import { MapResultsService } from './sidebars/map-results.service';
     SaveButtonComponent,
     ShareButtonComponent,
     UpperNavComponent,
-    WebResourceComponent
+    WebResourceComponent,
+    BreadcrumbComponent
   ],
   providers: [
     CuratedResourceService,
     LocationService,
-    MapResultsService,
     NavigateDataService,
-    SearchService
+    SearchService    
   ]
 })
 export class SharedModule { }
