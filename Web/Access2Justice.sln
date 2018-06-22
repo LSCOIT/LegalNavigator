@@ -21,7 +21,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Access2Justice.Shared.Tests
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Access2Justice.CosmosDb.Tests", "Access2Justice.CosmosDb.Tests\Access2Justice.CosmosDb.Tests.csproj", "{1A2A57AC-82C4-4E3D-BBCF-56F17BB9A920}"
 EndProject
+<<<<<<< HEAD
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Access2Justice.Logger", "Access2Justice.Logging\Access2Justice.Logger.csproj", "{FD4C7B02-D322-4EBB-A2F1-FE0F42E4CB14}"
+=======
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Access2Justice.Tools", "Access2Justice.Tools\Access2Justice.Tools.csproj", "{A8CE4F02-2E36-4802-A5C6-38A2605583B3}"
+>>>>>>> parent of 711b4ec... Added App Insights logger
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,10 +65,17 @@ Global
 		{1A2A57AC-82C4-4E3D-BBCF-56F17BB9A920}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A2A57AC-82C4-4E3D-BBCF-56F17BB9A920}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A2A57AC-82C4-4E3D-BBCF-56F17BB9A920}.Release|Any CPU.Build.0 = Release|Any CPU
+<<<<<<< HEAD
 		{FD4C7B02-D322-4EBB-A2F1-FE0F42E4CB14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FD4C7B02-D322-4EBB-A2F1-FE0F42E4CB14}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD4C7B02-D322-4EBB-A2F1-FE0F42E4CB14}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD4C7B02-D322-4EBB-A2F1-FE0F42E4CB14}.Release|Any CPU.Build.0 = Release|Any CPU
+=======
+		{A8CE4F02-2E36-4802-A5C6-38A2605583B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8CE4F02-2E36-4802-A5C6-38A2605583B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8CE4F02-2E36-4802-A5C6-38A2605583B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8CE4F02-2E36-4802-A5C6-38A2605583B3}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>>> parent of 711b4ec... Added App Insights logger
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
