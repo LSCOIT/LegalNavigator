@@ -26,6 +26,8 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly string keyword = "eviction";
         private readonly string query = "select * from t";
         private readonly string topicId = "addf41e9-1a27-4aeb-bcbb-7959f95094ba";
+        private readonly string topicName = "Family";
+        private readonly string resourceName = "Action Plan";
         private readonly JArray emptyData = JArray.Parse(@"[{}]");
         private readonly JArray topicsData =
                   JArray.Parse(@"[{'id':'addf41e9-1a27-4aeb-bcbb-7959f95094ba','name':'Family',
@@ -332,9 +334,75 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             //assert
             Assert.Contains("[{}]", result, StringComparison.InvariantCultureIgnoreCase);
         }
-        
+                
         [Fact]
-        public void GetReferncesWithProperData()
+        public void GetTopicDetailsAsyncTestsShouldReturnProperData()
+        {
+            //arrange
+            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.TopicCollectionId, "name", topicName);
+            dbResponse.ReturnsForAnyArgs<dynamic>(topicData);
+
+            //act
+            var response = topicsResourcesBusinessLogic.GetTopicDetailsAsync(topicName).Result;
+            string result = JsonConvert.SerializeObject(response);
+
+            //assert
+            Assert.Contains(topicName, result, StringComparison.InvariantCulture);
+        }
+
+        [Fact]
+        public void GetTopicDetailsAsyncTestsShouldReturnEmptyData()
+
+        {
+            //arrange
+            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.TopicCollectionId, "name", "");
+            dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
+
+            //act
+            var response = topicsResourcesBusinessLogic.GetTopicDetailsAsync(topicId);
+            string result = JsonConvert.SerializeObject(response);
+
+            //assert
+            Assert.Contains("[{}]", result, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        [Fact]
+        public void GetResourceDetailAsyncTestsShouldReturnProperData()
+        {
+            //arrange
+            var resourceType = "Action Plans";
+            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.ResourceCollectionId, "name", resourceName, "resourceType", resourceType);
+            dbResponse.ReturnsForAnyArgs<dynamic>(actionPlanData);
+
+            //act
+            var response = topicsResourcesBusinessLogic.GetResourceDetailAsync(resourceName, resourceType).Result;
+            string result = JsonConvert.SerializeObject(response);
+
+            //assert
+            Assert.Contains(resourceName, result, StringComparison.InvariantCulture);
+        }
+
+        [Fact]
+        public void GetResourceDetailAsyncTestsShouldReturnEmptyData()
+
+        {
+            //arrange
+            var resourceName = "";
+            var resourceType = "Action Plans";
+
+            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.ResourceCollectionId, "name", resourceName, "resourceType", resourceType);
+            dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
+
+            //act
+            var response = topicsResourcesBusinessLogic.GetResourceDetailAsync(resourceName, resourceType);
+            string result = JsonConvert.SerializeObject(response);
+
+            //assert
+            Assert.Contains("[{}]", result, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        [Fact]
+        public void GetReferncesTestsShouldReturnProperData()
         {
             //arrange
             var referenceInput = this.referencesInputData;
@@ -357,7 +425,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void GetReferncesWithEmptyData()
+        public void GetReferncesTestsShouldReturnEmptyData()
         {
             //arrange
             var emptyResource = this.emptyResourceData;
@@ -380,7 +448,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void GetReferenceTagsWithProperData()
+        public void GetReferenceTagsTestsShouldReturnProperData()
         {
             //arrange
             var referenceTag = this.referenceTagData;
@@ -393,7 +461,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void GetReferenceTagsWithEmptyData()
+        public void GetReferenceTagsTestsShouldReturnEmptyData()
         {
             //arrange
             var referenceTag = this.emptyData;            
@@ -406,7 +474,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void GetLocationWithProperData()
+        public void GetLocationTestsShouldReturnProperData()
         {
             //arrange
             var location = this.locationData;
@@ -421,7 +489,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void GetLocationWithEmptyData()
+        public void GetLocationTestsShouldReturnEmptyData()
         {
             //arrange
             var location = this.emptyData;
@@ -436,7 +504,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void GetConditionWithProperData()
+        public void GetConditionTestsShouldReturnProperData()
         {
             //arrange
             var condition = this.conditionData;
@@ -451,7 +519,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void GetConditionWithEmptyData()
+        public void GetConditionTestsShouldReturnEmptyData()
         {
             //arrange
             var condition = this.emptyData;
@@ -466,7 +534,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void CreateResourceUploadAsyncWithProperData()
+        public void CreateResourceUploadAsyncTestsShouldReturnProperData()
         {
             //arrange
             var form = this.formData;
@@ -490,7 +558,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void CreateResourceAsyncWithProperData()
+        public void CreateResourceAsyncTestsShouldReturnProperData()
         {
             //arrange
             var form = this.formData;
@@ -514,7 +582,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void CreateResourcesFormsWithProperData()  //To do - CreateFormsAsyncEmptyData after excpetion logging
+        public void CreateResourcesFormsTestsShouldReturnProperData()  //To do - CreateFormsAsyncEmptyData after excpetion logging
         {
             //arrange
             var form = this.formData[0];
@@ -545,7 +613,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void CreateResourcesActionPlansWithProperData()  //To do - CreateActionPlansAsyncEmptyData after excpetion logging
+        public void CreateResourcesActionPlansTestsShouldReturnProperData()  //To do - CreateActionPlansAsyncEmptyData after excpetion logging
         {
             //arrange
             var actionPlan = this.actionPlanData[0];
@@ -577,7 +645,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void CreateResourcesArticlesWithProperData()
+        public void CreateResourcesArticlesTestsShouldReturnProperData()
         {
             //arrange
             var article = this.articleData[0];
@@ -608,7 +676,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void CreateResourcesVideosWithProperData()
+        public void CreateResourcesVideosTestsShouldReturnProperData()
         {
             //arrange
             var video = this.videoData[0];
@@ -639,7 +707,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void CreateResourcesOrganizationsWithProperData()
+        public void CreateResourcesOrganizationsTestsShouldReturnProperData()
         {
             //arrange
             var organization = this.organizationData[0];
@@ -670,7 +738,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void CreateResourcesEssentialReadingsWithProperData()
+        public void CreateResourcesEssentialReadingsTestsShouldReturnProperData()
         {
             //arrange
             var essentialReading = this.essentialReadingData[0];
@@ -701,7 +769,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void GetParentTopicIdsWithProperData()
+        public void GetParentTopicIdsTestsShouldReturnProperData()
         {
             //arrange
             var parentId = this.parentTopicIdData;
@@ -714,7 +782,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void GetParentTopicIdsWithEmptyData()
+        public void GetParentTopicIdsTestsShouldReturnEmptyData()
         {
             //arrange
             var parentTopicId = this.emptyData;
@@ -727,7 +795,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void CreateTopicUploadAsyncWithProperData()
+        public void CreateTopicUploadAsyncTestsShouldReturnProperData()
         {
             //arrange
             var topic = this.topicData;
@@ -751,7 +819,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void CreateTopicDocumentAsyncWithProperData()
+        public void CreateTopicDocumentAsyncTestsShouldReturnProperData()
         {
             //arrange
             var topic = this.topicData;
@@ -775,7 +843,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void CreateTopicsWithProperData()
+        public void CreateTopicsTestsShouldReturnProperData()
         {
             //arrange
             var topic = this.topicData[0];
@@ -810,5 +878,6 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             //assert
             Assert.Equal(expectedTopicData[0].ToString(), result.ToString());
         }
+
     }
 }

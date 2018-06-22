@@ -61,10 +61,10 @@ namespace Access2Justice.Api.Controllers
         //Added for Topic and Resource Tools API
         #region get all topic Guids when ParentTopicId is mapped to topicTags or ReferenceTags for resources
         [HttpGet]
-        [Route("api/topics/gettopicguid/{name}")]
-        public async Task<IActionResult> GetTopicGuid(string name)
+        [Route("api/topics/gettopicdetails/{name}")]
+        public async Task<IActionResult> GetTopicDetails(string name)
         {
-            var topics = await topicsResourcesBusinessLogic.GetTopicAsync(name);
+            var topics = await topicsResourcesBusinessLogic.GetTopicDetailsAsync(name);
             return Ok(topics);
         }
         #endregion
@@ -98,7 +98,7 @@ namespace Access2Justice.Api.Controllers
         {
             var topics = new Topic();
             var name = topic.Name;
-            await topicsResourcesBusinessLogic.GetTopicMandatoryDetailsAsync(name);
+            await topicsResourcesBusinessLogic.GetTopicDetailsAsync(name);
             return null;
         }
         #endregion
@@ -167,7 +167,20 @@ namespace Access2Justice.Api.Controllers
             return null;
         }
         #endregion
-        
+
+        #region get essential reading schema
+        [HttpGet]
+        [Route("api/topics/getschemaessentialreading")]
+        public async Task<IActionResult> GetSchemaEssentialReading(EssentialReading essentialReading)
+        {
+            var essentialReadings = new EssentialReading();
+            var name = essentialReading.Name;
+            var type = "Essential Readings";
+            await topicsResourcesBusinessLogic.GetResourceDetailAsync(name, type);
+            return null;
+        }
+        #endregion
+
         #region Create Resource Documents using upload
         [HttpPost]
         [Route("api/topics/createresources/upload")]

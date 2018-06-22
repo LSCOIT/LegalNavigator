@@ -59,58 +59,18 @@ namespace Access2Justice.Api.BusinessLogic
             return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, "id", id);
         }
 
-        //Added for Topic and Resource Tools API
-        //Get Topic Guid based on topic name for ParentTopicId in Topics and refernceTags in Resources
-        public async Task<dynamic> GetTopicAsync(string topicName)
-        {
-            var result = await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, "name", topicName);
-            return result;
-        }
-
-        //Get Topic Details
         public async Task<dynamic> GetTopicDetailsAsync(string topicName)
         {
             var result = await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, "name", topicName);
             return result;
         }
-
-        //Get Resources Details
+                
         public async Task<dynamic> GetResourceDetailAsync(string resourceName, string resourceType)
         {
             var result = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, "name", resourceName, "resourceType", resourceType);//Need to create another method to fetch resource based on name and type
             return result;
         }
-
-        //Added for mandatory fields
-        public async Task<IEnumerable<Topic>> GetTopicMandatoryDetailsAsync(string topicName)
-        {
-            IEnumerable<Topic> result = await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId,"name", topicName);
-            return result;
-        }
-
-        public async Task<IEnumerable<object>> CreateTopicsAsync(string path)
-        {
-            using (StreamReader r = new StreamReader(path))
-            {
-                string json = r.ReadToEnd();
-                var topics = JsonConvert.DeserializeObject<List<dynamic>>(json);
-                foreach (var topic in topics)
-                {
-                    var result = await backendDatabaseService.CreateItemAsync(topic, dbSettings.TopicCollectionId);
-                }
-                return topics;
-            }
-        }
-
-        public async Task<object> CreateTopicDocumentAsync(Topic topic)
-        {
-            var serializedResult = JsonConvert.SerializeObject(topic);
-            JObject result = (JObject)JsonConvert.DeserializeObject(serializedResult);
-            var results = await backendDatabaseService.CreateItemAsync(result, dbSettings.TopicCollectionId);
-            return results;
-
-        }
-        
+                
         public dynamic GetReferences(dynamic resourceObject)
         {
             List<ReferenceTag> referenceTags = new List<ReferenceTag>();
