@@ -44,9 +44,34 @@ describe('LocationComponent', () => {
       component = fixture.componentInstance;
       locationService = TestBed.get(LocationService);
       modalService = TestBed.get(BsModalService);
+
+      let store = {};
+      const mockSessionStorage = {
+        getItem: (key: string): string => {
+          return key in store ? store[key] : null;
+        },
+        setItem: (key: string, value: string) => {
+          store[key] = `${value}`;
+        },
+        removeItem: (key: string) => {
+          delete store[key];
+        },
+        clear: () => {
+          store = {};
+        }
+      };
+
+      spyOn(sessionStorage, 'getItem')
+        .and.callFake(mockSessionStorage.getItem);
+      spyOn(sessionStorage, 'setItem')
+        .and.callFake(mockSessionStorage.setItem);
+      spyOn(sessionStorage, 'removeItem')
+        .and.callFake(mockSessionStorage.removeItem);
+      spyOn(sessionStorage, 'clear')
+        .and.callFake(mockSessionStorage.clear);
     });
 
-  it("should create", () => {
+  it("should create component", () => {
     expect(component).toBeTruthy();
   });
 
