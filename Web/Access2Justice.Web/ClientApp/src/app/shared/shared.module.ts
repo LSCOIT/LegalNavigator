@@ -28,15 +28,16 @@ import { ShareButtonComponent } from './resource/user-action/share-button.compon
 import { UpperNavComponent } from './navigation/upper-nav.component';
 import { WebResourceComponent } from './search/search-results/web-resource/web-resource.component';
 import { CuratedResourceService } from './search/search-results/curated-resource/curated-resource.service';
+import { SearchFilterPipe } from './search/search-filter.pipe';
+import { BreadcrumbComponent } from '../topics-resources/breadcrumb/breadcrumb.component';
 import { ServiceOrgService } from './sidebars/service-org.service';
-
 @NgModule({
   imports: [
     CommonModule,
     AppRoutingModule,
     FormsModule,
     BsDropdownModule.forRoot(),
-    ModalModule.forRoot()
+    ModalModule.forRoot()    
   ],
   declarations: [
     ChatbotComponent,
@@ -58,7 +59,9 @@ import { ServiceOrgService } from './sidebars/service-org.service';
     SaveButtonComponent,
     ShareButtonComponent,
     UpperNavComponent,
-    WebResourceComponent
+    WebResourceComponent,
+    SearchFilterPipe,
+    BreadcrumbComponent
   ],
   exports: [
     ChatbotComponent,
@@ -80,14 +83,15 @@ import { ServiceOrgService } from './sidebars/service-org.service';
     SaveButtonComponent,
     ShareButtonComponent,
     UpperNavComponent,
-    WebResourceComponent
+    WebResourceComponent,
+    BreadcrumbComponent
   ],
   providers: [
     CuratedResourceService,
     LocationService,
     NavigateDataService,
     SearchService,
-    ServiceOrgService
+    ServiceOrgService    
   ]
 })
 export class SharedModule { }

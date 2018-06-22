@@ -1,6 +1,6 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit} from "@angular/core";
 import { TopicService } from '../shared/topic.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { NavigateDataService } from '../../shared/navigate-data.service';
 
 @Component({
@@ -11,21 +11,20 @@ import { NavigateDataService } from '../../shared/navigate-data.service';
 
 export class SubtopicDetailComponent implements OnInit {
   subtopicDetails: any;
-  activeSubtopic = this.activeRoute.params["value"]["topic"];
-  activeSubtopicParam = this.activeRoute.snapshot.params['subtopic'];
+  activeSubtopicParam = this.activeRoute.snapshot.params['topic'];
   actionPlanData: any;
   articleData: any;
   videoData: any;
   organizationData: any;
   formData: any;
   subtopics: any;
+  subtopic: any;
 
   constructor(
     private topicService: TopicService,
     private activeRoute: ActivatedRoute,
-    private router: Router,
     private navigateDataService: NavigateDataService
-  ) {}
+  ) { }
 
   filterSubtopicDetail(): void {
     if (this.subtopicDetails) {
@@ -42,6 +41,19 @@ export class SubtopicDetailComponent implements OnInit {
     }
   }
 
+  getDataOnReload() {
+    this.activeSubtopicParam = this.activeRoute.snapshot.params['topic'];
+    // Getting the sub topic name while routing from subtopic page.
+    this.subtopics = this.navigateDataService.getData();
+    if (this.subtopics) {
+      this.topicService.getDocumentData(this.activeSubtopicParam)
+        .subscribe(
+          data => this.subtopics = data
+        );
+    }
+    this.getSubtopicDetail();
+  }
+
   getSubtopicDetail(): void {
     this.topicService.getSubtopicDetail(this.activeSubtopicParam)
       .subscribe(
@@ -53,25 +65,11 @@ export class SubtopicDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    this.getDataOnReload();
-
-  }
-
-  getDataOnReload() {
-
-    // Getting the sub topic name while routing from subtopic page.
-    this.subtopics = this.navigateDataService.getData();
-    if (this.subtopics == null || this.subtopics == 'undefined') {
-      this.topicService.getDocumentData(this.activeSubtopicParam)
-        .subscribe(
-        data => {
-          this.subtopics = data;
+    this.activeRoute.url
+      .subscribe(routeParts => {
+        for (let i = 1; i < routeParts.length; i++) {
+          this.getDataOnReload();
         }
-        );
-    }
-    this.getSubtopicDetail();
-
+      });
   }
-
 }
