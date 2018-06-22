@@ -1,19 +1,20 @@
+import { TestBed, inject } from '@angular/core/testing';
 import { LocationService } from './location.service';
 import { environment } from '../../../environments/environment';
 
 describe('LocationService', () => {
   let service: LocationService;
   let mockMapType: boolean = false;
-  let mockMapLocation = {
+  const mockMapLocation = {
     state: "California",
     city: "Riverside County",
-    county: 'Indio',
-    zipCode: '92201',
+    county: "Indio",
+    zipCode: "92201",
     locality: "Indio",
     address: "92201"
   };
 
-  let mockLocation = {
+  const mockLocation = {
     address:
       {
         addressLine: "Hjorth St",
@@ -28,12 +29,40 @@ describe('LocationService', () => {
   };
 
   beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [LocationService]
+    });
     service = new LocationService();
+
+    let store = {};
+    const mockSessionStorage = {
+      getItem: (key: string): string => {
+        return key in store ? store[key] : null;
+      },
+      setItem: (key: string, value: string) => {
+        store[key] = `${value}`;
+      },
+      removeItem: (key: string) => {
+        delete store[key];
+      },
+      clear: () => {
+        store = {};
+      }
+    };
+
+    spyOn(sessionStorage, 'getItem')
+      .and.callFake(mockSessionStorage.getItem);
+    spyOn(sessionStorage, 'setItem')
+      .and.callFake(mockSessionStorage.setItem);
+    spyOn(sessionStorage, 'removeItem')
+      .and.callFake(mockSessionStorage.removeItem);
+    spyOn(sessionStorage, 'clear')
+      .and.callFake(mockSessionStorage.clear);
   });
 
   it('should create location service', () => {
-    expect(service).toBeTruthy();
-  });
+      expect(service).toBeTruthy();
+    });
 
   it('should define location service', () => {
     expect(service).toBeDefined();
@@ -66,7 +95,7 @@ describe('LocationService', () => {
     sessionStorage.setItem("globalSearchMapLocation", JSON.stringify(mockMapLocation));
     environment.map_type = true;
     service.updateLocation();
-    expect(JSON.parse(sessionStorage.getItem("globalSearchMapLocation"))).toBeNull;
+    expect(JSON.parse(sessionStorage.getItem("globalSearchMapLocation"))).toBeNull();
   });
 
   it('should return searched local location details(map type is false) from session storage when updateLocation is called for local map', () => {
@@ -78,9 +107,9 @@ describe('LocationService', () => {
 
   it('should clear searched local location details from session storage when updateLocation is called for global map', () => {
     sessionStorage.setItem("localSearchMapLocation", JSON.stringify(mockMapLocation));
-    environment.map_type = true;
+    environment.map_type = false;
     service.updateLocation();
-    expect(JSON.parse(sessionStorage.getItem("localSearchMapLocation"))).toBeNull;
+    expect(JSON.parse(sessionStorage.getItem("localSearchMapLocation"))).toBeNull();
   });
 
   it("should set the variables of service when mapLocationDetails is called", () => {
