@@ -133,6 +133,7 @@ ul.web-hidden {
 
 .search-icon {
   width: 20px;
+  margin-bottom: 5px;
 }
 
 
@@ -167,7 +168,7 @@ ul.web-hidden {
   }
 
   .navbar-header {
-    margin-right: 10%;
+    margin-right: 6%;
   }
 
   #nav-bar-toggle {
@@ -176,11 +177,16 @@ ul.web-hidden {
 
   .search-form {
     display: inline-block;
-    margin-top: 12px;
+    margin-top: 18px;
     margin-right: 0;
   }
 
   .search-text {
     display: inline-block;
+  }
+
+  .search-icon {
+    margin-right: 10px;
+    margin-bottom: 0;
   }
 }
