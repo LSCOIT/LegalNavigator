@@ -7,8 +7,6 @@ import { ProgressbarModule, ProgressbarConfig } from 'ngx-bootstrap/progressbar'
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { Question } from './question';
-import { DebugElement } from '@angular/core';
-import { By } from '@angular/platform-browser';
 
 const sampleQuestion: Question = {
   title: "sample question",
@@ -79,7 +77,7 @@ describe('QuestionComponent', () => {
   });
 
   it('should create method get Question', () => {
-    spyOn(questionService, "getQuestion").and.callFake((params: any): Observable<Question> => {
+    spyOn(questionService, "getQuestion").and.callFake((): Observable<Question> => {
       return of(sampleQuestion);
     });
     component.getQuestion();
@@ -87,7 +85,7 @@ describe('QuestionComponent', () => {
   })
 
   it('should create method get Next Question', () => {
-    spyOn(questionService, "getNextQuestion").and.callFake((params: any): Observable<Question> => {
+    spyOn(questionService, "getNextQuestion").and.callFake((): Observable<Question> => {
       return of(sampleQuestion);
     });
     expect(mockQuestionService.getNextQuestion).toBeDefined();
@@ -103,7 +101,7 @@ describe('QuestionComponent', () => {
   it('should increment ques counter for singleselection questionType', async(() => {
     let value: any = { listOptions: null };
     let empForm: any = { value };
-    spyOn(questionService, "getQuestion").and.callFake((params: any): Observable<Question> => {
+    spyOn(questionService, "getQuestion").and.callFake((): Observable<Question> => {
       return of(sampleSingleSelectionQuestion);
     });
     component.question = sampleSingleSelectionQuestion;
@@ -114,7 +112,7 @@ describe('QuestionComponent', () => {
   it('should increment ques counter for multipleselection questionType', async(() => {
     let value: any = { checkOptions: null };
     let empForm: any = { value };
-    spyOn(questionService, "getQuestion").and.callFake((params: any): Observable<Question> => {
+    spyOn(questionService, "getQuestion").and.callFake((): Observable<Question> => {
       return of(sampleMultipleSelectionQuestion);
     });
     component.question = sampleMultipleSelectionQuestion;
@@ -125,7 +123,7 @@ describe('QuestionComponent', () => {
   it('should increment ques counter for yesno questionType', async(() => {
     let value: any = { checkOptions: null };
     let empForm: any = { value };
-    spyOn(questionService, "getQuestion").and.callFake((params: any): Observable<Question> => {
+    spyOn(questionService, "getQuestion").and.callFake((): Observable<Question> => {
       return of(sampleYesNoQuestion);
     });
     component.question = sampleYesNoQuestion;
@@ -136,7 +134,7 @@ describe('QuestionComponent', () => {
   it('should increment progress bar on answering question', async(() => {
     let value: any = { checkOptions: null };
     let empForm: any = { value };
-    spyOn(questionService, "getQuestion").and.callFake((params: any): Observable<Question> => {
+    spyOn(questionService, "getQuestion").and.callFake((): Observable<Question> => {
       return of(sampleYesNoQuestion);
     });
     component.question = sampleYesNoQuestion;
@@ -146,21 +144,21 @@ describe('QuestionComponent', () => {
 
   it('should call on Validate Element on Checkbox selection', async(() => {
     let htmlInputElement: any = { id: 'GUID', name: "checkOptions", checked: true };
-    spyOn(component, "validateElement").and.callFake((params: any): Observable<Question> => {
+    spyOn(component, "validateElement").and.callFake((): Observable<Question> => {
       return of(htmlInputElement);
     });
   }));
 
   it('should call on Validate Element on button click', async(() => {
     let htmlInputElement: any = { id: 'GUID', name: "btnOptions", checked: true };
-    spyOn(component, "validateElement").and.callFake((params: any): Observable<Question> => {
+    spyOn(component, "validateElement").and.callFake((): Observable<Question> => {
       return of(htmlInputElement);
     });
   }));
 
   it('should call on Validate Element on Checkbox selection', async(() => {
     let htmlInputElement: any = { id: 'GUID', name: "otherOptions", checked: true };
-    spyOn(component, "validateElement").and.callFake((params: any): Observable<Question> => {
+    spyOn(component, "validateElement").and.callFake((): Observable<Question> => {
       return of(htmlInputElement);
     });
   }));

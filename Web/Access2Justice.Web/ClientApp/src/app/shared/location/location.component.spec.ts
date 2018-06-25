@@ -1,56 +1,139 @@
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LocationComponent } from './location.component';
 import { LocationService } from './location.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
-import { Injectable, TemplateRef, DebugElement } from '@angular/core';
-declare var Microsoft: any;
+import { TemplateRef } from '@angular/core';
+import { ModalModule } from 'ngx-bootstrap';
+import { MapLocation } from './location';
 
-const mockLocationService = {
-  updateLocation: () => { }
-};
+class MockBsModalRef {
+  public isHideCalled = false;
+
+  hide() {
+    this.isHideCalled = true;
+  }
+}
 
 describe('LocationComponent', () => {
-  @Injectable()
-  class mockModalService {
-    show: (template) => {}
-  }
-
   let component: LocationComponent;
   let fixture: ComponentFixture<LocationComponent>;
   let modalService: BsModalService;
   let template: TemplateRef<any>;
   let locationService: LocationService;
+  let mockMapLocation: MapLocation = {
+    state: 'Sample State',
+    city: 'Sample City',
+    county: 'Sample County',
+    zipCode: '1009203',
+    locality: 'Sample Location',
+    address: 'Sample Address'
+  };
 
   beforeEach(
-    async(() => {
+    () => {
       TestBed.configureTestingModule({
-        imports: [],
+        imports: [ModalModule.forRoot()],
         declarations: [LocationComponent],
         providers: [
-          LocationComponent,
-          { provide: BsModalService, useClass: mockModalService },
-          { provide: LocationService, useValue: mockLocationService }
+          BsModalService,
+          LocationService
         ]
       });
       TestBed.compileComponents();
-    })
-  );
+      fixture = TestBed.createComponent(LocationComponent);
+      component = fixture.componentInstance;
+      locationService = TestBed.get(LocationService);
+      modalService = TestBed.get(BsModalService);
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(LocationComponent);
-    component = fixture.componentInstance;
-    modalService = fixture.debugElement.injector.get(BsModalService);
-    locationService = fixture.debugElement.injector.get(LocationService);
-  });
+      let store = {};
+      const mockSessionStorage = {
+        getItem: (key: string): string => {
+          return key in store ? store[key] : null;
+        },
+        setItem: (key: string, value: string) => {
+          store[key] = `${value}`;
+        },
+        removeItem: (key: string) => {
+          delete store[key];
+        },
+        clear: () => {
+          store = {};
+        }
+      };
 
-  it("should create", () => {
+      spyOn(sessionStorage, 'getItem')
+        .and.callFake(mockSessionStorage.getItem);
+      spyOn(sessionStorage, 'setItem')
+        .and.callFake(mockSessionStorage.setItem);
+      spyOn(sessionStorage, 'removeItem')
+        .and.callFake(mockSessionStorage.removeItem);
+      spyOn(sessionStorage, 'clear')
+        .and.callFake(mockSessionStorage.clear);
+    });
+
+  it("should create component", () => {
     expect(component).toBeTruthy();
   });
 
   it("should define component", () => {
     expect(component).toBeDefined();
   });
-  
-});
 
+  it("should assign session storage details to map location on ngInit", () => {
+    sessionStorage.setItem("mockGlobalMapLocation", JSON.stringify(mockMapLocation));
+    component.mapLocation = JSON.parse(sessionStorage.getItem("mockGlobalMapLocation"));
+  });
+
+  it("should call displayLocationDetails on ngInit", () => {
+    spyOn(component, 'displayLocationDetails');
+    component.ngOnInit();
+    component.displayLocationDetails(mockMapLocation);
+    expect(component.displayLocationDetails).toHaveBeenCalled();
+  });
+
+  it("should call modalService show when openModal is called", () => {
+    spyOn(locationService, 'getMap');
+    spyOn(modalService, 'show');
+    component.openModal(template);
+    expect(modalService.show).toHaveBeenCalled();
+  });
+
+  it("should call locationService getMap when openModal is called", () => {
+    spyOn(locationService, 'getMap');
+    component.openModal(template);
+    expect(locationService.getMap).toHaveBeenCalled();
+  });
+
+  it("should call update location of location service when update location of component is called", () => {
+    spyOn(locationService, 'updateLocation').and.returnValue(mockMapLocation);
+    spyOn(modalService, 'hide');
+    component.updateLocation();
+    expect(locationService.updateLocation).toHaveBeenCalled();
+  });
+
+  it("should call hide of modal ref when update location of component is called", () => {
+    spyOn(locationService, 'updateLocation').and.returnValue(mockMapLocation);
+    spyOn(modalService, 'hide');
+    let modalRefInstance = new MockBsModalRef();
+    component.modalRef = modalRefInstance;
+    component.updateLocation();
+    expect(modalRefInstance.isHideCalled).toBeTruthy();
+  });
+
+  it("should call displayLocationDetails when updateLocation is called", () => {
+    spyOn(locationService, 'updateLocation').and.returnValue(mockMapLocation);
+    spyOn(component, 'displayLocationDetails');
+    spyOn(modalService, 'hide');
+    component.updateLocation();
+    expect(component.displayLocationDetails).toHaveBeenCalled();
+  });
+
+  it("should set the address,locality and showLocation variables of component when displayLocationDetails is called", () => {
+    spyOn(modalService, 'hide');
+    component.showLocation = true;
+    component.displayLocationDetails(mockMapLocation);
+    expect(component.address).toEqual(mockMapLocation.address);
+    expect(component.locality).toEqual(mockMapLocation.locality);
+    expect(component.showLocation).toBeFalsy();
+  });
+});

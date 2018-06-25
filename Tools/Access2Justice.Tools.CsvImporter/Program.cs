@@ -6,7 +6,6 @@ namespace Access2Justice.Tools
 {
     class Program
     {
-        // This tool is deprecated. Please use the api endpoints to import Topics and Resources files.
         static void Main(string[] args)
         {
             Console.WriteLine("Executing the script...");

@@ -20,15 +20,25 @@
   color: #0D3FB8;
   font-weight: 600;
   border: none;
-  background-color: #f2f2f2;
+  background-color: transparent;
 }
 
 @media only screen and (min-width : 768px) {
-  .edit-location {
-    padding: 10px;
-  }
-
   .mobile-hidden {
      display: inline-block;
   }
+}
+
+#searchbox-container{
+  width:80%;
+  padding-bottom:20px;
+  align-items:center;
+}
+
+#search-box{
+  height:30px;
+}
+
+.btn-height {
+  height: 30px;
 }
