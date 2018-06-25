@@ -14,20 +14,30 @@
       <span aria-hidden="true">&times;</span>
     </button>
     <div class="row">
-      <span type="button" class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
-      <h4>Zip code</h4>
+      <img class="location-icon" src="/assets/images/small-icons/location.svg" aria-hidden="true" />
+      <h4>Location</h4>
       <p>We currently support Alaska and Hawaii</p>
-      <p>You can learn more about the states we support by visiting our <a href="#">About</a> page</p>
+      <p class="ps">You can learn more about the states we support by visiting our
+        <a [routerLink]="['/about']" class="link">About</a>
+        page
+      </p>
     </div>
     <div class="row">
-      <div id='searchbox-container'>
-        <input type='text' id='search-box' placeholder="city, zip code, address" />
-        <span type="button" class="btn btn-primary btn-height" (click)="geocode()"> Search</span>
+      <div id="searchbox-container">
+        <input type="text" id="search-box"  autocomplete="off" placeholder="city, zip code, address" />
+        <span type="button" class="search-btn" (click)="geocode()">Search</span>
       </div>
       <div id="my-map"></div>
     </div>
     <div class="row">
-      <button type="submit" (click)="updateLocation()" class="btn btn-primary">Update Location</button>
+      <p>
+        We promise to never share your location. View our
+        <a class="link ps" [routerLink]="['/privacy']">Privacy Promise</a>
+        .
+      </p>
+    </div>
+    <div class="row">
+      <button type="submit" (click)="updateLocation()" class="btn btn-primary">Update</button>
     </div>
   </div>
 </ng-template>
