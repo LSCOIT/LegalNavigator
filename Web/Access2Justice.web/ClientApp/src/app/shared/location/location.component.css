@@ -1,7 +1,3 @@
-.row {
-  margin: 20px auto;
-}
-
 .edit-location {
   padding-right: 17px;
 }
@@ -9,11 +5,15 @@
 #my-map {
   position: relative;
   width: 100%;
-  height: 300px;
+  height: 410px;
 }
 
 .modal-content {
   border-radius: 0;
+}
+
+.modal-body {
+  margin-bottom: 50px;
 }
 
 .change-location-btn {
@@ -23,20 +23,22 @@
   background-color: transparent;
 }
 
-#searchbox-container{
-  padding-bottom:20px;
-}
-
-.search-btn { 
-  background-color: #0D3FBB;
-  color: #fff;
-  padding: 4.5px;
-  border-radius: 0 5px 5px 0;
-  margin-left: -5px;
-}
-
 @media only screen and (min-width : 768px) {
   .mobile-hidden {
      display: inline-block;
   }
+}
+
+#searchbox-container{
+  width:80%;
+  padding-bottom:20px;
+  align-items:center;
+}
+
+#search-box{
+  height:30px;
+}
+
+.btn-height {
+  height: 30px;
 }
