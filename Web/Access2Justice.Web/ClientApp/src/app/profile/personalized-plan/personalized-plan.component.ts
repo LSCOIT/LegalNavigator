@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PersonalizedPlanService } from './personalized-plan.service';
-import { PersonalizedPlanCondition } from './personalized-plan';
+import { PersonalizedPlanCondition, Resources } from './personalized-plan';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -11,6 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 export class PersonalizedPlanComponent implements OnInit {
   conditionsList: Array<PersonalizedPlanCondition>[];
   activeActionPlan = this.activeRoute.snapshot.params['id'];
+  resources: Resources;
   constructor(private personalizedPlanService: PersonalizedPlanService, private activeRoute: ActivatedRoute) { }
 
   getConditions(): void {
@@ -25,8 +26,13 @@ export class PersonalizedPlanComponent implements OnInit {
       });
   }
 
+  getSavedResources(): void {
+    this.resources = JSON.parse(sessionStorage.getItem("bookmarkedResource"));
+  }
+
   ngOnInit() {
     this.getConditions();
+    this.getSavedResources();
   }
 
 }

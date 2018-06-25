@@ -72,7 +72,7 @@ export class SubtopicDetailComponent implements OnInit {
   savePlanResources(): void {
     this.resources = { url: '', resourceType: '', itemId:'' };
     this.resources.url = this.router.url;
-    this.resources.resourceType = "Sub Topics";
+    this.resources.resourceType = "Organizations";
     this.resources.itemId = this.activeRoute.snapshot.params['topic'];
     this.personalizedPlanService.saveResourcesToSession(this.resources);
     console.log("Book marked!!!");
