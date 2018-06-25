@@ -12,6 +12,8 @@ export class PersonalizedPlanComponent implements OnInit {
   conditionsList: Array<PersonalizedPlanCondition>[];
   activeActionPlan = this.activeRoute.snapshot.params['id'];
   resources: Resources;
+  savedFrom: string = "personalizedPlan";
+
   constructor(private personalizedPlanService: PersonalizedPlanService, private activeRoute: ActivatedRoute) { }
 
   getConditions(): void {
@@ -26,13 +28,8 @@ export class PersonalizedPlanComponent implements OnInit {
       });
   }
 
-  getSavedResources(): void {
-    this.resources = JSON.parse(sessionStorage.getItem("bookmarkedResource"));
-  }
-
   ngOnInit() {
     this.getConditions();
-    this.getSavedResources();
   }
 
 }

@@ -34,6 +34,8 @@ import { TopicsComponent } from './topics-resources/topic/topics.component';
 import { BreadcrumbService } from './topics-resources/shared/breadcrumb.service';
 import { PersonalizedPlanComponent } from './profile/personalized-plan/personalized-plan.component';
 import { PersonalizedPlanService } from './profile/personalized-plan/personalized-plan.service';
+import { UserProfileComponent } from './profile/user-profile/user-profile.component';
+import { SharedPlanComponent } from './profile/shared-plan/shared-plan.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,9 @@ import { PersonalizedPlanService } from './profile/personalized-plan/personalize
     TopicsResourcesComponent,
     SubtopicDetailComponent,
     SubtopicsComponent,
-    PersonalizedPlanComponent
+    PersonalizedPlanComponent,
+    UserProfileComponent,
+    SharedPlanComponent
   ],
   imports: [
     BrowserModule,
