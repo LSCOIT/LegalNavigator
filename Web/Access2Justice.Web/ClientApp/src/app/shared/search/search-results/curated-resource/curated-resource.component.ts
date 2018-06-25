@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { curatedRes } from './mock-curated-resource';
 import { CuratedResource } from './curated-resource'
 import { CuratedResourceService } from './curated-resource.service';
 
