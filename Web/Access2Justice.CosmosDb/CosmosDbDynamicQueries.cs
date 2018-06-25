@@ -99,5 +99,16 @@ namespace Access2Justice.CosmosDb
             var query = $"SELECT * FROM c WHERE {arrayContainsClause} {filterClause}";
             return await backendDatabaseService.QueryItemsAsync(collectionId, query);
         }
+
+        private void EnsureParametersAreNotOrEmpty(params string[] parameters)
+        {
+            foreach (var param in parameters)
+            {
+                if (string.IsNullOrWhiteSpace(param))
+                {
+                    throw new ArgumentException("Paramters can not be null or empty spaces.");
+                }
+            }
+        }
     }
 }
