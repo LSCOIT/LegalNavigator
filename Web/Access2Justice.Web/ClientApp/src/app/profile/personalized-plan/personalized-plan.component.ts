@@ -16,7 +16,12 @@ export class PersonalizedPlanComponent implements OnInit {
   getConditions(): void {
     this.personalizedPlanService.getActionPlanConditions(this.activeActionPlan)
       .subscribe(conditions => {
-        this.conditionsList = conditions[0].conditions;
+        if (this.conditionsList) {
+          this.conditionsList = conditions[0].conditions;
+        }
+        else {
+          this.conditionsList = null;
+        }
       });
   }
 

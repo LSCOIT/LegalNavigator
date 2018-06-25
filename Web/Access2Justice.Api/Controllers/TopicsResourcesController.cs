@@ -82,5 +82,21 @@ namespace Access2Justice.Api.Controllers
             var topics = await topicsResourcesBusinessLogic.GetBreadcrumbDataAsync(id);
             return Ok(topics);
         }
+
+        /// <summary>
+        /// Get the topic details by the document parent Id
+        /// </summary>
+        /// <param name="parentTopicId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("api/topics/getactionplanresourcedetails/{id}")]
+        public async Task<IActionResult> GetActionPlanResourceDetails(string id)
+        {
+            var filterValue = "Action Plans";
+            var actionPlans = await topicsResourcesBusinessLogic.GetResourceActionPlanAsync(id, filterValue);
+            return Ok(actionPlans);
+        }
+
+
     }
 }

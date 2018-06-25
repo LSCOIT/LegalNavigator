@@ -69,7 +69,7 @@ export class SubtopicDetailComponent implements OnInit {
       );
   }
 
-  savePlanResources() {
+  savePlanResources(): void {
     this.resources = { url: '', resourceType: '', itemId:'' };
     this.resources.url = this.router.url;
     this.resources.resourceType = "Sub Topics";
