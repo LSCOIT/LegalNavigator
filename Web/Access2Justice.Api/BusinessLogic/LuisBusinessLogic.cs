@@ -36,7 +36,7 @@ namespace Access2Justice.Api
                 case (int)LuisAccuracyThreshold.High:
                     return await GetInternalResourcesAsync(intentWithScore.TopScoringIntent);
                 case (int)LuisAccuracyThreshold.Medium:
-                    JObject luisObject = new JObject { { "luisResponse", luisResponse } };
+                    JObject luisObject = new JObject { { Constants.LuisResponse, luisResponse } };
                     return luisObject.ToString();
                 default:
                     return await GetWebResourcesAsync(query);
@@ -81,9 +81,9 @@ namespace Access2Justice.Api
             var serializedResources = JsonConvert.SerializeObject(resources);
 
             JObject internalResources = new JObject {
-                { "topics", JsonConvert.DeserializeObject(serializedTopics) },
-                { "resources", JsonConvert.DeserializeObject(serializedResources) },
-                { "topIntent", keyword }
+                { Constants.Topics, JsonConvert.DeserializeObject(serializedTopics) },
+                { Constants.Resources, JsonConvert.DeserializeObject(serializedResources) },
+                { Constants.TopIntent, keyword }
             };
 
             return internalResources.ToString();
@@ -95,7 +95,7 @@ namespace Access2Justice.Api
 
             JObject webResources = new JObject
             {
-                { "webResources" , JsonConvert.DeserializeObject(response) }
+                { Constants.WebResources , JsonConvert.DeserializeObject(response) }
             };
 
             return webResources.ToString();
