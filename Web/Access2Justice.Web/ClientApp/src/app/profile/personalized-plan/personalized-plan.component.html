@@ -1,53 +1,66 @@
 <div class="container">
-  <div class="row">
-    <ul class="user-action col-sm-offset-9">
-      <li>
-        <img src="./assets/images/small-icons/save.svg" class="nav-icon" aria-hidden="true" />
-        <app-save-button></app-save-button>
-      </li>
-      <li>
-        <img src="./assets/images/small-icons/share.svg" class="nav-icon" aria-hidden="true" />
-        <app-share-button></app-share-button>
-      </li>
-     <li>
-       <img src="./assets/images/small-icons/print.svg" class="nav-icon" aria-hidden="true" />
-       <app-print-button></app-print-button>
-     </li>
-    </ul>
+  <ul class="user-action mobile-hidden">
+    <li>
+      <img src="./assets/images/small-icons/save.svg" class="nav-icon" aria-hidden="true" />
+      <app-save-button></app-save-button>
+    </li>
+    <li>
+      <img src="./assets/images/small-icons/share.svg" class="nav-icon" aria-hidden="true" />
+      <app-share-button></app-share-button>
+    </li>
+    <li>
+      <img src="./assets/images/small-icons/print.svg" class="nav-icon" aria-hidden="true" />
+      <app-print-button></app-print-button>
+    </li>
+  </ul>
+  <div class="row row-half-spacing">
+    <img class="sec-illustration" src="./assets/images/secondary-illustrations/plan.svg" alt="action plan">
+    <h3 class="page-heading">Your Personalized Plan</h3>
   </div>
-  <h3>Your Personalized Plan</h3>
-  <p>The following information and resources are sponsored by the following organizations. Legal disclaimer lorem ipsum dolor amet.</p>
-  <div class="row">
+  <div class="row row-half-spacing">
+    <div class="col-sm-8">
+      <p>The following information and resources are sponsored by the following organizations. Legal disclaimer lorem ipsum dolor amet.</p>
+    </div>
+  </div>
+  <div class="row row-half-spacing">
     <tabset>
       <tab heading="My Plan">
-        <div class="row filter-plan plan-spacing">
-          <span>Show:</span>
-          <button class="btn btn-selected">Eviction</button>
-          <button class="btn btn-selected">Child Custody</button>
+        <div class="row plan-spacing filter-plan">
+          <span class="col-sm-1">Show:</span>
+          <!--web filtering-->
+          <div class="mobile-hidden col-sm-10">
+            <button class="btn btn-selected">Eviction</button>
+            <button class="btn btn-selected">Child Custody</button>
+          </div>
+          <!--mobile filtering-->
+          <div class="btn-group web-hidden" dropdown>
+            <button id="button-basic" dropdownToggle type="button" class="btn btn-selected dropdown-toggle"
+                    aria-controls="dropdown-basic">
+              Button dropdown <span class="caret"></span>
+            </button>
+            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+                role="menu" aria-labelledby="button-basic">
+              <li role="menuitem"><a class="dropdown-item" href="#">Eviction</a></li>
+              <li role="menuitem"><a class="dropdown-item" href="#">Child Custody</a></li>
+            </ul>
+          </div>
         </div>
-        <div class="plan-detail">
-          <div class="row plan-heading plan-spacing">
-            <div class="col-md-3">
-              <div class="main-icon col-md-2">
-                <img class="subtopic-icon" src="./assets/images/categories/housing.svg" alt="eviction icon"/>
+        <div class="row plan-detail">
+          <div class="col-sm-12 plan-spacing plan-heading">
+            <div class="col-sm-11">
+              <div class="main-icon col-sm-1">
+                <img class="subtopic-icon" src="./assets/images/categories/housing.svg" alt="eviction icon" />
               </div>
-              <div class="col-md-8 col-md-offset-1">
+              <div class="col-sm-11">
                 <h3 class="inline">Eviction</h3>
               </div>
             </div>
-            <div class="more-menu col-md-1 col-md-offset-8">
-              <img class="pull-right plan-icon" src="./assets/images/small-icons/more_menu.svg" alt="plan menu" />
+            <div class="col-sm-1">
+              <img class="pull-right more-menu" src="./assets/images/small-icons/more_menu.svg" alt="plan menu" />
             </div>
           </div>
           <div>
-            <div class="col-md-3 plan-spacing">
-              <p class="pxl">Quick Links</p>
-              <ul>
-                <li><a href="#">content</a></li>
-                <li><a href="#">content</a></li>
-              </ul>
-            </div>
-            <div class="col-md-8 plan-spacing">
+            <div class="col-md-9 col-sm-12 pull-right plan-steps">
               <accordion>
                 <div *ngFor= "let condition of conditionsList; let rowindex = index">
                   <accordion-group>
@@ -68,6 +81,13 @@
                 </div>
               </accordion>
             </div>
+            <div class="col-md-3 col-xs-12 plan-spacing quick-links">
+              <p>Quick Links</p>
+              <ul>
+                <li><a href="#" class="link">Eviction Rules &amp; Regulations</a></li>
+                <li><a href="#" class="link">Organizations that can help</a></li>
+              </ul>
+            </div>
           </div>
         </div>
       </tab>
@@ -75,5 +95,21 @@
         <app-resource-card></app-resource-card>
       </tab>
     </tabset>
+  </div>
+  <div class="row mobile-action">
+    <ul class="user-action web-hidden">
+      <li>
+        <img src="./assets/images/small-icons/save.svg" class="nav-icon" aria-hidden="true" />
+        <app-save-button></app-save-button>
+      </li>
+      <li>
+        <img src="./assets/images/small-icons/share.svg" class="nav-icon" aria-hidden="true" />
+        <app-share-button></app-share-button>
+      </li>
+      <li>
+        <img src="./assets/images/small-icons/print.svg" class="nav-icon" aria-hidden="true" />
+        <app-print-button></app-print-button>
+      </li>
+    </ul>
   </div>
 </div>
