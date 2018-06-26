@@ -2,6 +2,12 @@
   <div *ngIf="isInternalResource">
     <h2>Results for {{searchResults.topIntent}}.</h2>
   </div>
+  <div class="row">
+    <div class=" panel-heading panel-heading-space">
+      <span class="label-display">Showing Information for </span>
+      <app-location #location [mapType]="false"></app-location>
+    </div>
+  </div>
   <div *ngIf="isWebResource">
     <h2>We found the following web resources related to your search</h2>
   </div>
@@ -37,6 +43,7 @@
       </div>
     </div>
     <div class="col-md-3 col-sm-12 col-xs-12">
+      <app-map-results [searchResource]="searchResults"></app-map-results>
       <app-guided-assistant-sidebar></app-guided-assistant-sidebar>
       <app-service-org-sidebar></app-service-org-sidebar>
     </div>

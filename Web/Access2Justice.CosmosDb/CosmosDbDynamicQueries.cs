@@ -21,7 +21,7 @@ namespace Access2Justice.CosmosDb
 
         public async Task<dynamic> FindItemsWhereAsync(string collectionId, string propertyName, string value)
         {
-            EnsureParametersAreNotOrEmpty(collectionId, propertyName);
+            EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
 
             var query = $"SELECT * FROM c WHERE c.{propertyName}='{value}'";
             return await backendDatabaseService.QueryItemsAsync(collectionId, query);
@@ -29,7 +29,7 @@ namespace Access2Justice.CosmosDb
 
         public async Task<dynamic> FindItemsWhereContainsAsync(string collectionId, string propertyName, string value)
         {
-            EnsureParametersAreNotOrEmpty(collectionId, propertyName);
+            EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
 
             var query = $"SELECT * FROM c WHERE CONTAINS(c.{propertyName}, '{value.ToUpperInvariant()}')";
             return await backendDatabaseService.QueryItemsAsync(collectionId, query);
@@ -37,7 +37,7 @@ namespace Access2Justice.CosmosDb
 
         public async Task<dynamic> FindItemsWhereArrayContainsAsync(string collectionId, string arrayName, string propertyName, string value)
         {
-            EnsureParametersAreNotOrEmpty(collectionId, arrayName, propertyName);
+            EnsureParametersAreNotNullOrEmpty(collectionId, arrayName, propertyName);
 
             var ids = new List<string> { value };
             return await FindItemsWhereArrayContainsAsync(collectionId, arrayName, propertyName, ids);
@@ -45,7 +45,7 @@ namespace Access2Justice.CosmosDb
 
         public async Task<dynamic> FindItemsWhereArrayContainsAsync(string collectionId, string arrayName, string propertyName, IEnumerable<string> values)
         {
-            EnsureParametersAreNotOrEmpty(collectionId, arrayName, propertyName);
+            EnsureParametersAreNotNullOrEmpty(collectionId, arrayName, propertyName);
 
             var arrayContainsClause = string.Empty;
             var lastItem = values.Last();
@@ -65,7 +65,7 @@ namespace Access2Justice.CosmosDb
 
         public async Task<dynamic> FindItemsWhereContainsWithLocationAsync(string collectionId, string propertyName, string value, Location location)
         {
-            EnsureParametersAreNotOrEmpty(collectionId, propertyName);
+            EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
             string locationFilter = FindLocationWhereArrayContains(location);
             var query = $"SELECT * FROM c WHERE CONTAINS(c.{propertyName}, '{value.ToUpperInvariant()}')";
             if (!string.IsNullOrEmpty(locationFilter))
@@ -77,7 +77,7 @@ namespace Access2Justice.CosmosDb
 
         public async Task<dynamic> FindItemsWhereArrayContainsWithAndClauseAsync(string arrayName, string propertyName, string andPropertyName, ResourceFilter resourceFilter, bool isResourceCountCall = false)
         {
-            EnsureParametersAreNotOrEmpty(arrayName, propertyName, andPropertyName, resourceFilter.ResourceType);
+            EnsureParametersAreNotNullOrEmpty(arrayName, propertyName, andPropertyName, resourceFilter.ResourceType);
             var arrayContainsWithAndClause = string.Empty;
             var lastItem = resourceFilter.TopicIds.Last();
 
@@ -144,7 +144,7 @@ namespace Access2Justice.CosmosDb
             return locationQuery;
         }
 
-        private void EnsureParametersAreNotOrEmpty(params string[] parameters)
+        private void EnsureParametersAreNotNullOrEmpty(params string[] parameters)
         {
             foreach (var param in parameters)
             {

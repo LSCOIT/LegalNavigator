@@ -10,7 +10,9 @@ import { PrintButtonComponent } from '../../shared/resource/user-action/print-bu
 import { ResourceCardComponent } from '../../shared/resource/resource-card/resource-card.component';
 import { GuidedAssistantSidebarComponent } from '../../shared/sidebars/guided-assistant-sidebar.component';
 import { ServiceOrgSidebarComponent } from '../../shared/sidebars/service-org-sidebar.component';
+import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 import { TopicService } from '../shared/topic.service';
+import { NavigateDataService } from '../../shared/navigate-data.service';
 
 describe('SubtopicDetailComponent', () => {
   let component: SubtopicDetailComponent;
@@ -25,17 +27,19 @@ describe('SubtopicDetailComponent', () => {
         PrintButtonComponent,
         ResourceCardComponent,
         GuidedAssistantSidebarComponent,
-        ServiceOrgSidebarComponent
+        ServiceOrgSidebarComponent,
+        BreadcrumbComponent
       ],
       imports: [
         RouterModule.forRoot([
-          { path: 'topics/:topic/:subtopic', component: SubtopicDetailComponent }
+          { path: 'subtopics/:topic', component: SubtopicDetailComponent }
         ]),
         HttpClientModule
       ],
       providers: [
         { provide: APP_BASE_HREF, useValue: '/' },
-        TopicService
+        TopicService,
+        NavigateDataService
       ]
     })
     .compileComponents();

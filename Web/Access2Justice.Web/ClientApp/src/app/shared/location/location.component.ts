@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { LocationService } from './location.service';
@@ -10,6 +10,7 @@ import { MapLocation } from './location';
   styleUrls: ['./location.component.css']
 })
 export class LocationComponent implements OnInit {
+  @Input() mapType: boolean;
   modalRef: BsModalRef;
   locality: string;
   address: any;
@@ -23,7 +24,7 @@ export class LocationComponent implements OnInit {
 
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
-    this.locationService.getMap();
+    this.locationService.getMap(this.mapType);
   }
 
   geocode() {
@@ -34,14 +35,25 @@ export class LocationComponent implements OnInit {
 
   updateLocation() {
     this.mapLocation = this.locationService.updateLocation();
-    if (this.mapLocation.locality !== "" && this.mapLocation.address !== "") {
+    this.displayLocationDetails(this.mapLocation);
+    if (this.modalRef) {
+      this.modalRef.hide();
+    }
+  }
+
+  displayLocationDetails(mapLocation) {
+    this.mapLocation = mapLocation;
+    if (this.mapLocation) {
       this.address = this.mapLocation.address;
       this.locality = this.mapLocation.locality;
       this.showLocation = false;
     }
-    this.modalRef.hide();
   }
 
   ngOnInit() {
+    if (sessionStorage.getItem("globalMapLocation")) {
+      this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+      this.displayLocationDetails(this.mapLocation);
+    }
   }
 }

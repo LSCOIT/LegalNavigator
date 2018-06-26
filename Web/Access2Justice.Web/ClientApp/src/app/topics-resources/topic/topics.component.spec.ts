@@ -8,6 +8,9 @@ import { TopicService } from '../shared/topic.service';
 import { SubtopicsComponent } from '../subtopic/subtopics.component';
 import { GuidedAssistantSidebarComponent } from '../../shared/sidebars/guided-assistant-sidebar.component';
 import { ServiceOrgSidebarComponent } from '../../shared/sidebars/service-org-sidebar.component';
+import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
+import { BreadcrumbService } from '../shared/breadcrumb.service';
+
 
 describe('TopicsComponent', () => {
   let component: TopicsComponent;
@@ -29,7 +32,8 @@ describe('TopicsComponent', () => {
         TopicsComponent,
         SubtopicsComponent,
         GuidedAssistantSidebarComponent,
-        ServiceOrgSidebarComponent
+        ServiceOrgSidebarComponent,
+        BreadcrumbComponent
       ],
       imports: [
         RouterModule.forRoot([
@@ -40,7 +44,8 @@ describe('TopicsComponent', () => {
       providers: [
         { provide: APP_BASE_HREF, useValue: '/' },
         { provide: TopicService, useValue: mockTopicService },
-        { provide: RouterModule, useValue: mockRouter }
+        { provide: RouterModule, useValue: mockRouter },
+        { provide: BreadcrumbService, useValue: mockTopicService }
       ]
     })
     .compileComponents();

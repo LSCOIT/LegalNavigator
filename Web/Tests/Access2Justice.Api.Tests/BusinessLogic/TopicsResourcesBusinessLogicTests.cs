@@ -15,11 +15,13 @@ namespace Access2Justice.Api.Tests.BusinessLogic
     {
         private readonly IDynamicQueries dynamicQueries;
         private readonly ICosmosDbSettings cosmosDbSettings;
+        private readonly IBackendDatabaseService backendDatabaseService;
         private readonly TopicsResourcesBusinessLogic topicsResourcesBusinessLogic;
 
         //Mocked input data.
         private readonly string keyword = "eviction";
         private readonly string query = "select * from t";
+        private readonly string procedureName = "GetParentTopics";
         private readonly string topicId = "addf41e9-1a27-4aeb-bcbb-7959f95094ba";
         private readonly List<string> topicIds = new List<string> { "addf41e9-1a27-4aeb-bcbb-7959f95094ba" };
         private readonly Location location = new Location();
@@ -47,6 +49,13 @@ namespace Access2Justice.Api.Tests.BusinessLogic
                     'createdTimeStamp':'','modifiedBy':'','modifiedTimeStamp':'','_rid':'mwoSAJdNlwIBAAAAAAAAAA==','_self':
                     'dbs/mwoSAA==/colls/mwoSAJdNlwI=/docs/mwoSAJdNlwIBAAAAAAAAAA==/','_etag':'\'040007b5-0000-0000-0000-5b0792260000\'',
                     '_attachments':'attachments/','_ts':1527222822}]");
+        private readonly JArray breadcrumbData =
+                    JArray.Parse(@"[{'id': '4589592f-3312-eca7-64ed-f3561bbb7398',
+                    'parentId': '5c035d27-2fdb-9776-6236-70983a918431', 'name': 'family1.2.1'},
+                    {'id': '5c035d27-2fdb-9776-6236-70983a918431','parentId': 'f102bfae-362d-4659-aaef-956c391f79de',
+                    'name': 'family1.1.1'},{'id': 'f102bfae-362d-4659-aaef-956c391f79de',
+                    'parentId': 'addf41e9-1a27-4aeb-bcbb-7959f95094ba','name': 'family subtopic name 1.1'
+                    },{'id': 'addf41e9-1a27-4aeb-bcbb-7959f95094ba','name': 'family'}]");
         private readonly JArray resourceCountData = JArray.Parse(@"[{'resourceType':'Organizations'},{'resourceType':'Organizations'},{'resourceType':'Organizations'},
                     {'resourceType':'Organizations'},{'resourceType':'All'},{'resourceType':'All'}]");
         private readonly ResourceFilter resourceFilter = new ResourceFilter { TopicIds = new List<string> { "addf41e9-1a27-4aeb-bcbb-7959f95094ba" }, PageNumber = 0, ResourceType = "ALL", Location = new Location() };
@@ -63,8 +72,9 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         {
             dynamicQueries = Substitute.For<IDynamicQueries>();
             cosmosDbSettings = Substitute.For<ICosmosDbSettings>();
+            backendDatabaseService = Substitute.For<IBackendDatabaseService>();
 
-            topicsResourcesBusinessLogic = new TopicsResourcesBusinessLogic(dynamicQueries, cosmosDbSettings);
+            topicsResourcesBusinessLogic = new TopicsResourcesBusinessLogic(dynamicQueries, cosmosDbSettings, backendDatabaseService);
             cosmosDbSettings.AuthKey.Returns("dummykey");
             cosmosDbSettings.Endpoint.Returns(new System.Uri("https://bing.com"));
             cosmosDbSettings.DatabaseId.Returns("dbname");
@@ -213,6 +223,34 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 
             //act
             var response = topicsResourcesBusinessLogic.GetResourceAsync(topicId);
+            string result = JsonConvert.SerializeObject(response);
+
+            //assert
+            Assert.Contains("[{}]", result, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        [Fact]
+        public void GetBreadcrumbItemsAsyncProperData()
+        {
+            //arrange
+            var dbResponse = backendDatabaseService.ExecuteStoredProcedureAsync(cosmosDbSettings.TopicCollectionId, procedureName, topicId);
+            dbResponse.ReturnsForAnyArgs<dynamic>(breadcrumbData);
+            //act
+            var response = topicsResourcesBusinessLogic.GetBreadcrumbDataAsync(topicId).Result;
+            string result = JsonConvert.SerializeObject(response);
+            //assert
+            Assert.Contains(topicId, result, StringComparison.InvariantCulture);
+        }
+
+        [Fact]
+        public void GetBreadcrumbItemsAsyncEmptyData()
+        {
+            //arrange
+            var dbResponse = backendDatabaseService.ExecuteStoredProcedureAsync(cosmosDbSettings.TopicCollectionId, procedureName, topicId);
+            dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
+
+            //act
+            var response = topicsResourcesBusinessLogic.GetBreadcrumbDataAsync(topicId).Result;
             string result = JsonConvert.SerializeObject(response);
 
             //assert
