@@ -89,11 +89,10 @@ namespace Access2Justice.Api.Controllers
         /// <param name="parentTopicId"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("api/topics/getactionplanresourcedetails/{id}")]
-        public async Task<IActionResult> GetActionPlanResourceDetails(string id)
+        [Route("api/topics/getplandetails/{id}")]
+        public async Task<IActionResult> GetPlanDetailsAsync(string id)
         {
-            var filterValue = "Action Plans";
-            var actionPlans = await topicsResourcesBusinessLogic.GetResourceActionPlanAsync(id, filterValue);
+            var actionPlans = await topicsResourcesBusinessLogic.GetPlanDataAsync(id);
             return Ok(actionPlans);
         }
 

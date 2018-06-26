@@ -10,5 +10,6 @@ export const api = {
   getDocumentUrl: topic + '/getdocument',
   searchUrl: apiUrl + '/search',
   breadcrumbsUrl: topic + '/getbreadcrumbs',
+  planUrl: topic + "/getplandetails",
   questionUrl: 'http://access2justiceapi.azurewebsites.net/api/curatedexperience?surveyId=0b7dfe9b-cec9-4490-b768-c40916d52382'
 }

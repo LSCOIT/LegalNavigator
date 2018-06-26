@@ -2,6 +2,10 @@
 using Access2Justice.Shared.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Microsoft.Azure.Documents;
+using Microsoft.Azure.Documents.Client;
 
 namespace Access2Justice.Api.BusinessLogic
 {
@@ -39,14 +43,14 @@ namespace Access2Justice.Api.BusinessLogic
             return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.ParentTopicId, "");
         }
 
-        public async Task<dynamic> GetSubTopicsAsync(string ParentTopicId)
+        public async Task<dynamic> GetSubTopicsAsync(string parentTopicId)
         {
-            return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.ParentTopicId, ParentTopicId);
+            return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.ParentTopicId, parentTopicId);
         }
 
-        public async Task<dynamic> GetResourceAsync(string ParentTopicId)
+        public async Task<dynamic> GetResourceAsync(string parentTopicId)
         {
-            return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourceCollectionId, Constants.TopicTags, Constants.Id, ParentTopicId);
+            return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourceCollectionId, Constants.TopicTags, Constants.Id, parentTopicId);
         }
 
         public async Task<dynamic> GetDocumentAsync(string id)
@@ -60,9 +64,21 @@ namespace Access2Justice.Api.BusinessLogic
             return await dbService.ExecuteStoredProcedureAsync(dbSettings.TopicCollectionId, Constants.BreadcrumbStoredProcedureName, procedureParams);
         }
 
-        public async Task<dynamic> GetResourceActionPlanAsync(string ParentTopicId, string filterValue)
+        public async Task<dynamic> GetPlanDataAsync(string planId)
         {
-            return await dbClient.FindItemsWhereArrayContainsFilterAsync(dbSettings.ResourceCollectionId, "topicTags", "id", ParentTopicId, "resourceType" , filterValue);
+            List<dynamic> procedureParams = new List<dynamic>() { planId };
+            var result = await dbService.ExecuteStoredProcedureAsync(dbSettings.ResourceCollectionId, Constants.PlanStoredProcedureName, procedureParams);
+            var planDetails = result.Response;
+            int i = 0;
+            foreach (var item in planDetails)
+            {
+                string topicId = item.topicId;
+                var topicData = await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.Id, topicId);
+                planDetails[i].topicId = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(topicData));
+                i++;
+            }
+
+            return planDetails;
         }
     }
 }
