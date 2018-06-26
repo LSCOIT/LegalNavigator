@@ -9,7 +9,7 @@
 
 .page-heading {
   display: inline-block;
-  margin-left: 20px;  
+  margin-left: 10px;  
 }
 
 .plan-detail {
@@ -31,7 +31,7 @@
 
 .accordion-img {
   width: 20px;
-  margin-right: 15px;
+  /* margin-right: 15px; */
   margin-top: 5px;
 }
 
@@ -65,6 +65,11 @@
 .quick-links {
   margin-top: 10px;
   font-weight: 600;
+  padding: 20px 10px 20px 20px;
+}
+
+.quick-links li {
+  padding: 10px 0;
 }
 
 .plan-steps {
@@ -72,13 +77,9 @@
   margin: 20px 0;
   padding-right: 20px;
 }
-.accordion-img + h3 {
+.media-body h3 {
   margin-top: -3px;
   margin-bottom: 30px;
-}
-
-.mobile-action {
-  text-align: center;
 }
 
 @media only screen and (min-width : 768px) {
@@ -101,6 +102,12 @@
 }
 
 @media only screen and (min-width : 992px) {
+  .plan-spacing {
+    padding: 10px 20px;
+  }
+}
+
+@media only screen and (min-width : 1224px) {
   .plan-spacing {
     padding: 10px 30px;
   }
