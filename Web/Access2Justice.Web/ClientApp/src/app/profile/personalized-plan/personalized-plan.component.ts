@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PersonalizedPlanService } from './personalized-plan.service';
-import { PersonalizedPlanCondition } from './personalized-plan';
+import { PersonalizedPlanCondition, Resources } from './personalized-plan';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -11,12 +11,20 @@ import { ActivatedRoute } from '@angular/router';
 export class PersonalizedPlanComponent implements OnInit {
   conditionsList: Array<PersonalizedPlanCondition>[];
   activeActionPlan = this.activeRoute.snapshot.params['id'];
+  resources: Resources;
+  savedFrom: string = "personalizedPlan";
+
   constructor(private personalizedPlanService: PersonalizedPlanService, private activeRoute: ActivatedRoute) { }
 
   getConditions(): void {
     this.personalizedPlanService.getActionPlanConditions(this.activeActionPlan)
       .subscribe(conditions => {
-        this.conditionsList = conditions[0].conditions;
+        if (this.conditionsList) {
+          this.conditionsList = conditions[0].conditions;
+        }
+        else {
+          this.conditionsList = null;
+        }
       });
   }
 

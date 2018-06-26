@@ -1,6 +1,6 @@
 import { Component, OnInit} from "@angular/core";
 import { TopicService } from '../shared/topic.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NavigateDataService } from '../../shared/navigate-data.service';
 
 @Component({
@@ -19,6 +19,7 @@ export class SubtopicDetailComponent implements OnInit {
   formData: any;
   subtopics: any;
   subtopic: any;
+  savedFrom: string = "subTopicDetails";
 
   constructor(
     private topicService: TopicService,

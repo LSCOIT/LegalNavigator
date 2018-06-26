@@ -17,6 +17,7 @@ import { TopicsResourcesComponent } from './topics-resources/topics-resources.co
 import { ResourceCardDetailComponent } from
 './shared/resource/resource-card-detail/resource-card-detail.component';
 import { PersonalizedPlanComponent } from './profile/personalized-plan/personalized-plan.component';
+import { UserProfileComponent } from './profile/user-profile/user-profile.component';
 
 const appRoutes: Routes = [
   { path: 'search', component: SearchResultsComponent },
@@ -35,6 +36,7 @@ const appRoutes: Routes = [
   { path: 'login', component: LogInComponent },
   { path: 'privacy', component: PrivacyPromiseComponent },
   { path: 'personalizedplan/:id', component: PersonalizedPlanComponent },
+  { path: 'userProfile', component: UserProfileComponent },
   { path: '', component: HomeComponent }
 ];
 

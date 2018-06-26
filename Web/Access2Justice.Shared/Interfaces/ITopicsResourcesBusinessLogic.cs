@@ -12,6 +12,6 @@ namespace Access2Justice.Shared.Interfaces
         Task<dynamic> GetResourceAsync(string ParentTopicId);
         Task<dynamic> GetDocumentAsync(string id);
         Task<dynamic> GetBreadcrumbDataAsync(string id);
-        Task<dynamic> GetResourceActionPlanAsync(string parentTopicId, string filterValue);
+        Task<dynamic> GetResourceActionPlanAsync(string ParentTopicId, string filterValue);
     }
 }

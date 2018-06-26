@@ -1,10 +1,6 @@
 <div class="container">
   <ul class="user-action mobile-hidden">
     <li>
-      <!--<img src="./assets/images/small-icons/save.svg" class="nav-icon" aria-hidden="true" />-->
-      <app-save-button [savedFrom]=savedFrom></app-save-button>
-    </li>
-    <li>
       <img src="./assets/images/small-icons/share.svg" class="nav-icon" aria-hidden="true" />
       <app-share-button></app-share-button>
     </li>
@@ -12,17 +8,30 @@
       <img src="./assets/images/small-icons/print.svg" class="nav-icon" aria-hidden="true" />
       <app-print-button></app-print-button>
     </li>
+    <li>
+      <img src="./assets/images/small-icons/share.svg" class="nav-icon" aria-hidden="true" />
+      <app-download-button></app-download-button>
+    </li>
   </ul>
   <div class="row row-half-spacing">
     <img class="sec-illustration" src="./assets/images/secondary-illustrations/plan.svg" alt="action plan">
-    <h3 class="page-heading">Your Personalized Plan</h3>
+    <h3 class="page-heading">User ID's Profile</h3>
   </div>
   <div class="row row-half-spacing">
     <div class="col-sm-8">
-      <p>The following information and resources are sponsored by the following organizations. Legal disclaimer lorem ipsum dolor amet.</p>
+      <p>We value your privacy and will never share your personal information with anyone without your lorem ipsum dolor sit amet. View our <a [routerLink]="['/privacy']">Privacy Promise</a></p>
     </div>
   </div>
-  <app-shared-plan></app-shared-plan>
+  <div class="row row-half-spacing">
+    <tabset>
+      <tab heading="My Plan">
+        <app-shared-plan></app-shared-plan>
+      </tab>
+      <tab heading="My Saved Resources">
+        <app-resource-card [resources]="resources"></app-resource-card>
+      </tab>
+    </tabset>
+  </div>
   <div class="row mobile-action">
     <ul class="user-action web-hidden">
       <li>
