@@ -136,29 +136,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
                    "\"language\": \"en\"\r\n        }\r\n      ]\r\n    },\r\n    \"rankingResponse\": {\r\n      \"mainline\": {\r\n        " +
                    "\"items\": [\r\n          {\r\n            \"answerType\": \"WebPages\",\r\n            \"resultIndex\": 0,\r\n            " +
                    "\"value\": {\r\n              \"id\": \"https://api.cognitive.microsoft.com/api/v7/#WebPages.0\"\r\n            }\r\n          " +
-                   "}\r\n        ]\r\n      }\r\n    }\r\n  }\r\n}";
-        private readonly string internalResponse =
-                  "{\r\n  \"topics\": [\r\n    {\r\n      \"id\": \"addf41e9-1a27-4aeb-bcbb-7959f95094ba\",\r\n      \"name\": \"Family\"," +
-                  "\r\n      \"parentTopicID\": \"\",\r\n      \"keywords\": \"EVICTION\",\r\n      \"location\": [\r\n        {\r\n          " +
-                  "\"state\": \"Hawaii\",\r\n          \"county\": \"Kalawao County\",\r\n          \"city\": \"Kalawao\",\r\n          " +
-                  "\"zipCode\": \"96742\"\r\n        },\r\n        {\r\n          \"zipCode\": \"96741\"\r\n        },\r\n        {\r\n          " +
-                  "\"state\": \"Hawaii\",\r\n          \"county\": \"Honolulu County\",\r\n          \"city\": \"Honolulu\"\r\n        }," +
-                  "\r\n        {\r\n          \"state\": \"Hawaii\",\r\n          \"city\": \"Hawaiian Beaches\"\r\n        },\r\n        " +
-                  "{\r\n          \"state\": \"Hawaii\",\r\n          \"city\": \"Haiku-Pauwela\"\r\n        },\r\n        {\r\n          " +
-                  "\"state\": \"Alaska\"\r\n        }\r\n      ],\r\n      \"jsonContent\": \"\",\r\n      \"icon\": \"./assets/images/topics/topic14.png\"," +
-                  "\r\n      \"createdBy\": \"\",\r\n      \"createdTimeStamp\": \"\",\r\n      \"modifiedBy\": \"\",\r\n      \"modifiedTimeStamp\": \"\"," +
-                  "\r\n      \"_rid\": \"mwoSALHtpAEBAAAAAAAAAA==\",\r\n      \"_self\": \"dbs/mwoSAA==/colls/mwoSALHtpAE=/docs/mwoSALHtpAEBAAAAAAAAAA==/\"," +
-                  "\r\n      \"_etag\": \"\\\"1700c9cf-0000-0000-0000-5b08a3340000\\\"\",\r\n      \"_attachments\": \"attachments/\",\r\n      " +
-                  "\"_ts\": 1527292724\r\n    }\r\n  ],\r\n  \"resources\": [\r\n    {\r\n      \"id\": \"77d301e7-6df2-612e-4704-c04edf271806\",\r\n      " +
-                  "\"name\": \"Tenant Action Plan for Eviction\",\r\n      \"description\": \"This action plan is for tenants who are facing eviction and " +
-                  "have experienced the following:\",\r\n      \"resourceType\": \"Action\",\r\n      \"externalUrl\": \"\",\r\n      \"url\": \"\",\r" +
-                  "\n      \"topicTags\": [\r\n        {\r\n          \"id\": \"addf41e9-1a27-4aeb-bcbb-7959f95094ba\"\r\n        },\r\n        {\r\n" +
-                  " \"id\": \"2c0cc7b8-62b1-4efb-8568-b1f767f879bc\"\r\n        },\r\n        {\r\n          \"id\": \"3aa3a1be-8291-42b1-85c2-252f756febbc\"\r" +
-                  "\n        }\r\n      ],\r\n      \"location\": \"Hawaii, Honolulu, 96812 |Hawaii, Hawaiian Beaches |Hawaii, Haiku-Pauwela | Alaska\"," +
-                  "\r\n      \"icon\": \"./assets/images/resources/resource.png\",\r\n      \"createdBy\": \"\",\r\n      \"createdTimeStamp\": \"\"," +
-                  "\r\n      \"modifiedBy\": \"\",\r\n      \"modifiedTimeStamp\": \"\",\r\n      \"_rid\": \"mwoSAJdNlwIBAAAAAAAAAA==\",\r\n      " +
-                  "\"_self\": \"dbs/mwoSAA==/colls/mwoSAJdNlwI=/docs/mwoSAJdNlwIBAAAAAAAAAA==/\",\r\n      \"_etag\": \"\\\"0e0002a6-0000-0000-0000-5b07fe950000\\\"\"," +
-                  "\r\n      \"_attachments\": \"attachments/\",\r\n      \"_ts\": 1527250581\r\n    }\r\n  ]\r\n}";
+                   "}\r\n        ]\r\n      }\r\n    }\r\n  }\r\n}";        
         private readonly Location location = new Location();
         private readonly LuisInput luisInput = new LuisInput();
         private readonly ResourceFilter resourceFilter = new ResourceFilter { TopicIds = new List<string> { "addf41e9-1a27-4aeb-bcbb-7959f95094ba" }, PageNumber = 0, ResourceType = "ALL", Location = new Location() };
@@ -174,7 +152,6 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         private readonly int expectedLowerthreshold = 0;
         private readonly string expectedLuisTopIntent = "eviction";
         private readonly string expectedTopicId = "addf41e9-1a27-4aeb-bcbb-7959f95094ba";
-        private readonly string expectedResourceId = "77d301e7-6df2-612e-4704-c04edf271806";
         private readonly string expectedLuisResponse = "luisResponse";
         private readonly string expectedInternalResponse = "topics";
         private readonly string expectedWebResponse = "webResources";
