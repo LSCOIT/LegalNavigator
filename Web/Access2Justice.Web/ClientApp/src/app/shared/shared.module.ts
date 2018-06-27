@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from '../app-routing.module';
 import { FormsModule } from '@angular/forms';
-import { BsDropdownModule, ModalModule } from 'ngx-bootstrap';
+import { AccordionModule, BsDropdownModule, ModalModule } from 'ngx-bootstrap';
 
 import { ChatbotComponent } from './chatbot/chatbot.component';
 import { CuratedResourceComponent } from './search/search-results/curated-resource/curated-resource.component';
@@ -28,16 +28,20 @@ import { ShareButtonComponent } from './resource/user-action/share-button.compon
 import { UpperNavComponent } from './navigation/upper-nav.component';
 import { WebResourceComponent } from './search/search-results/web-resource/web-resource.component';
 import { CuratedResourceService } from './search/search-results/curated-resource/curated-resource.service';
+import { ActionPlanCardComponent } from './action-plan/action-plan-card.component';
+import { UserActionSidebarComponent } from './sidebars/user-action-sidebar.component';
 
 @NgModule({
   imports: [
     CommonModule,
     AppRoutingModule,
     FormsModule,
+    AccordionModule.forRoot(),
     BsDropdownModule.forRoot(),
     ModalModule.forRoot()
   ],
   declarations: [
+    ActionPlanCardComponent,
     ChatbotComponent,
     CuratedResourceComponent,
     DownloadButtonComponent,
@@ -57,9 +61,11 @@ import { CuratedResourceService } from './search/search-results/curated-resource
     SaveButtonComponent,
     ShareButtonComponent,
     UpperNavComponent,
-    WebResourceComponent
+    WebResourceComponent,
+    UserActionSidebarComponent
   ],
   exports: [
+    ActionPlanCardComponent,
     ChatbotComponent,
     CuratedResourceComponent,
     DownloadButtonComponent,
@@ -79,6 +85,7 @@ import { CuratedResourceService } from './search/search-results/curated-resource
     SaveButtonComponent,
     ShareButtonComponent,
     UpperNavComponent,
+    UserActionSidebarComponent,
     WebResourceComponent
   ],
   providers: [

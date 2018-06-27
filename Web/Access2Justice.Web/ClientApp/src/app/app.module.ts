@@ -31,7 +31,8 @@ import { SubtopicsComponent } from './topics-resources/subtopic/subtopics.compon
 import { SubtopicDetailComponent } from './topics-resources/subtopic/subtopic-detail.component';
 import { TopicsResourcesComponent } from './topics-resources/topics-resources.component';
 import { TopicsComponent } from './topics-resources/topic/topics.component';
-import { PersonalizedPlanComponent } from './profile/personalized-plan/personalized-plan.component';
+import { PersonalizedPlanComponent } from './guided-assistant/personalized-plan/personalized-plan.component';
+import { ProfileComponent } from './profile/profile.component';
 
 
 @NgModule({
@@ -49,7 +50,8 @@ import { PersonalizedPlanComponent } from './profile/personalized-plan/personali
     TopicsResourcesComponent,
     SubtopicDetailComponent,
     SubtopicsComponent,
-    PersonalizedPlanComponent
+    PersonalizedPlanComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

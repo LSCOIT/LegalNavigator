@@ -36,9 +36,9 @@ a {
 }
 
 .web-hidden {
-  background-color: #f4f4f4;
+  background-color: transparent;
   margin: 0;
-  display: inline-block;
+  display: block;
 }
 
 .mobile-hidden {
@@ -54,8 +54,10 @@ a {
   margin: 0 auto;
 }
 
-.sidebar {
-  border: 1px solid #000;
+.sidebar-block {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 0 20px;
 }
 
 /* Language Dropdown */
@@ -179,6 +181,16 @@ a.carousel-control .icon-next {
   border-bottom: 1px solid #0D3FBB;
 }
 
+.plan-steps accordion-group:after {
+  height: 3px;
+  display: block;
+  width: 90%;
+  margin: 0 auto 20px auto;
+  clear: both;
+  border-top: 1px solid #ddd;
+  content: '';
+}
+
 @media only screen and (min-width : 768px) {
   .row {
     margin: 40px auto;
@@ -201,7 +213,7 @@ a.carousel-control .icon-next {
 
   a.carousel-control {
     top: 282px;
-  }
+  } 
 }
 @media only screen and (min-width : 992px) {
   .container {
