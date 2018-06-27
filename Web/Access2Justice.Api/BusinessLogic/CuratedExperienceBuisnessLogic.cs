@@ -1,4 +1,5 @@
 ﻿using Access2Justice.Shared.Extensions;
+using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Newtonsoft.Json.Linq;
 using System;
@@ -8,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Access2Justice.Api.BusinessLogic
 {
-    public class CuratedExperienceBuisnessLogic
+    public class CuratedExperienceBuisnessLogic : ICuratedExperienceBuisnessLogic
     {
-        public CuratedExperience A2JAuthor2CuratedExperienceConverterV3(dynamic a2jSchema)
+        public CuratedExperience ConvertA2JAuthorToCuratedExperience(dynamic a2jSchema)
         {
             var cx = new CuratedExperience();
             var a2jProperties = ((JObject)a2jSchema).Properties();
