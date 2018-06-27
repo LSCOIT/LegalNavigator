@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActionPlanCardComponent } from './action-plan-card.component';
 
 describe('ActionPlanCardComponent', () => {
@@ -8,7 +8,8 @@ describe('ActionPlanCardComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ActionPlanCardComponent ]
+      declarations: [ ActionPlanCardComponent ],
+      schemas: [ NO_ERRORS_SCHEMA ]
     })
     .compileComponents();
   }));

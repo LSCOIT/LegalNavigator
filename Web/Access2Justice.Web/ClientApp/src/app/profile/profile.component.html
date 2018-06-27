@@ -1,6 +1,11 @@
 <div class="container">
   <div class="row user-action mobile-hidden">
-    <app-user-action-sidebar [mobile]=true></app-user-action-sidebar>
+    <app-user-action-sidebar 
+      [mobile]=true 
+      [showSave]=false 
+      [showDownload]=true 
+      [showSetting]=true>
+    </app-user-action-sidebar>
   </div>
   <div class="row row-half-spacing">
     <img class="sec-illustration" src="./assets/images/secondary-illustrations/profile.svg" alt="action plan">
@@ -42,7 +47,7 @@
     </tabset>
   </div>
   <div class="row user-action web-hidden text-center">
-    <app-user-action-sidebar [mobile]=true></app-user-action-sidebar>
+    <app-user-action-sidebar [mobile]=true [showSave]=false [showPrint]=false [showDownload]=true [showSetting]=true></app-user-action-sidebar>
   </div>
 </div>
   

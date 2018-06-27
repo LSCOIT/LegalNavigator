@@ -13,8 +13,16 @@
         <img id="button-basic" dropdownToggle type="button" aria-controls="dropdown-basic" src="./assets/images/small-icons/more_menu.svg" alt="plan menu" />
         <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
             role="menu" aria-labelledby="button-basic">
-          <li role="menuitem"><a class="dropdown-item" href="#">Share</a></li>
-          <li role="menuitem"><a class="dropdown-item" href="#">Remove</a></li>
+          <li role="menuitem">
+            <a class="dropdown-item" href="#">
+              <app-share-button></app-share-button>
+            </a>
+          </li>
+          <li role="menuitem">
+            <a class="dropdown-item" href="#">
+              <app-remove-button></app-remove-button>
+            </a>
+          </li>
         </ul>
       </div>
     </div>

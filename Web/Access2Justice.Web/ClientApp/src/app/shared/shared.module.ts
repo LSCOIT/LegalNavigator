@@ -30,6 +30,7 @@ import { WebResourceComponent } from './search/search-results/web-resource/web-r
 import { CuratedResourceService } from './search/search-results/curated-resource/curated-resource.service';
 import { ActionPlanCardComponent } from './action-plan/action-plan-card.component';
 import { UserActionSidebarComponent } from './sidebars/user-action-sidebar.component';
+import { SettingButtonComponent } from './resource/user-action/setting-button.component';
 
 @NgModule({
   imports: [
@@ -62,7 +63,8 @@ import { UserActionSidebarComponent } from './sidebars/user-action-sidebar.compo
     ShareButtonComponent,
     UpperNavComponent,
     WebResourceComponent,
-    UserActionSidebarComponent
+    UserActionSidebarComponent,
+    SettingButtonComponent
   ],
   exports: [
     ActionPlanCardComponent,

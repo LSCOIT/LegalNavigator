@@ -21,7 +21,7 @@
   </div>
 </div>
 <ul *ngIf="mobile" class="user-action">
-  <li>
+  <li *ngIf="showSave">
     <img src="./assets/images/small-icons/save.svg" class="nav-icon" aria-hidden="true" />
     <app-save-button></app-save-button>
   </li>
@@ -29,8 +29,16 @@
     <img src="./assets/images/small-icons/share.svg" class="nav-icon" aria-hidden="true" />
     <app-share-button></app-share-button>
   </li>
-  <li>
+  <li *ngIf="showPrint">
     <img src="./assets/images/small-icons/print.svg" class="nav-icon" aria-hidden="true" />
     <app-print-button></app-print-button>
+  </li>
+  <li *ngIf="showDownload">
+    <img src="./assets/images/small-icons/download.svg" class="nav-icon" aria-hidden="true" />
+    <app-download-button></app-download-button>
+  </li>
+  <li *ngIf="showSetting">
+    <img src="./assets/images/small-icons/settings.svg" class="nav-icon" aria-hidden="true" />
+    <app-setting-button></app-setting-button>
   </li>
 </ul>
