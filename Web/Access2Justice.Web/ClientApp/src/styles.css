@@ -193,6 +193,18 @@ a.carousel-control .icon-next {
   content: '';
 }
 
+/*Location Modal*/
+.modal-content {
+  border-radius: 0;
+}
+
+.close {
+  font-size: 50px;
+  font-weight: 400;
+  color: #0D3FB8;
+  opacity: 1;
+}
+
 @media only screen and (min-width : 768px) {
   .row {
     margin: 40px auto;
@@ -215,7 +227,11 @@ a.carousel-control .icon-next {
 
   a.carousel-control {
     top: 282px;
-  } 
+  }
+
+  .modal-dialog {
+    width: 65%;
+  }
 }
 @media only screen and (min-width : 992px) {
   .container {

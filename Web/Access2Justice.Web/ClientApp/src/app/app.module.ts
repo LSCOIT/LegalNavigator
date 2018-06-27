@@ -31,9 +31,9 @@ import { SubtopicsComponent } from './topics-resources/subtopic/subtopics.compon
 import { SubtopicDetailComponent } from './topics-resources/subtopic/subtopic-detail.component';
 import { TopicsResourcesComponent } from './topics-resources/topics-resources.component';
 import { TopicsComponent } from './topics-resources/topic/topics.component';
+import { BreadcrumbService } from './topics-resources/shared/breadcrumb.service';
 import { PersonalizedPlanComponent } from './guided-assistant/personalized-plan/personalized-plan.component';
 import { ProfileComponent } from './profile/profile.component';
-
 
 @NgModule({
   declarations: [
@@ -70,7 +70,8 @@ import { ProfileComponent } from './profile/profile.component';
   providers: [
     TopicService,
     QuestionService,
-    ProgressbarConfig
+    ProgressbarConfig,
+    BreadcrumbService 
   ],
   bootstrap: [AppComponent]
 })
