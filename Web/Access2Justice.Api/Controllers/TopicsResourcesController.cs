@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Access2Justice.Shared.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Access2Justice.Shared.Models;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -94,6 +95,18 @@ namespace Access2Justice.Api.Controllers
         {
             var actionPlans = await topicsResourcesBusinessLogic.GetPlanDataAsync(id);
             return Ok(actionPlans);
+        }
+
+        /// Get the topic details by the document parent Id
+        /// </summary>
+        /// <param name="parentTopicId"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("api/personalizedresources")]
+        public async Task<IActionResult> GetPersonalizedDataAsync([FromBody]ResourceFilter resourceInput)
+        {
+            var response = await topicsResourcesBusinessLogic.GetPersonalizedResourcesAsync(resourceInput);
+            return Content(response);
         }
 
 

@@ -110,5 +110,26 @@ namespace Access2Justice.CosmosDb
                 }
             }
         }
+
+        public async Task<dynamic> FindItemsWhereInClauseAsync(string collectionId, string propertyName, IEnumerable<string> values)
+        {
+            EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
+
+            var inClause = string.Empty;
+            var lastItem = values.Last();
+
+            foreach (var value in values)
+            {
+                inClause += $"'" + value + "'";
+                if (value != lastItem)
+                {
+                    inClause += ",";
+                }
+            }
+
+            var query = $"SELECT * FROM c WHERE c.{propertyName} IN ({inClause})";
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query);
+        }
+
     }
 }

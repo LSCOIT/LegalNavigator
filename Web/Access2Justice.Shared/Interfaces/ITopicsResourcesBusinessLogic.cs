@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Access2Justice.Shared.Models;
 
 namespace Access2Justice.Shared.Interfaces
 {
@@ -13,5 +14,6 @@ namespace Access2Justice.Shared.Interfaces
         Task<dynamic> GetDocumentAsync(string id);
         Task<dynamic> GetBreadcrumbDataAsync(string id);
         Task<dynamic> GetPlanDataAsync(string planId);
+        Task<dynamic> GetPersonalizedResourcesAsync(ResourceFilter resourceFilter);
     }
 }

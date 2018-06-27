@@ -1,11 +1,12 @@
 ﻿using Access2Justice.CosmosDb.Interfaces;
 using Access2Justice.Shared.Interfaces;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using Access2Justice.Shared.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Microsoft.Azure.Documents;
-using Microsoft.Azure.Documents.Client;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Linq;
+using System;
 
 namespace Access2Justice.Api.BusinessLogic
 {
@@ -80,5 +81,31 @@ namespace Access2Justice.Api.BusinessLogic
 
             return planDetails;
         }
+
+        public async Task<dynamic> GetPersonalizedResourcesAsync(ResourceFilter resourceFilter)
+        {
+            dynamic Topics = Array.Empty<string>();
+            dynamic Resources = Array.Empty<string>();
+            if (resourceFilter.TopicIds != null && resourceFilter.TopicIds.Count() > 0)
+            {
+                Topics = await dbClient.FindItemsWhereInClauseAsync(dbSettings.TopicCollectionId, "id", resourceFilter.TopicIds) ?? Array.Empty<string>();
+            }
+            if (resourceFilter.ResourceIds != null && resourceFilter.ResourceIds.Count() > 0)
+            {
+                Resources = await dbClient.FindItemsWhereInClauseAsync(dbSettings.ResourceCollectionId, "id", resourceFilter.ResourceIds) ?? Array.Empty<string>();
+            }
+
+            Topics = JsonConvert.SerializeObject(Topics);
+            Resources = JsonConvert.SerializeObject(Resources);
+
+            JObject personalizedResources = new JObject {
+                { "topics", JsonConvert.DeserializeObject(Topics) },
+                {"resources", JsonConvert.DeserializeObject(Resources) }
+            };
+
+            return personalizedResources.ToString();
+
+        }
+
     }
 }

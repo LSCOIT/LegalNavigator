@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute,Router } from '@angular/router';
 import { Resources } from '../../../profile/personalized-plan/personalized-plan';
 import { PersonalizedPlanService } from '../../../profile/personalized-plan/personalized-plan.service';
 
@@ -11,20 +11,22 @@ import { PersonalizedPlanService } from '../../../profile/personalized-plan/pers
  `
 })
 export class SaveButtonComponent implements OnInit {
-  activeRoute: any;
   resources: Resources;
   @Input() savedFrom: string;
 
   constructor(private router: Router,
+    private activeRoute: ActivatedRoute,
     private personalizedPlanService: PersonalizedPlanService) { }
 
   savePlanResources(): void {
-    this.resources = { url: '', resourceType: '', itemId: '' };
+    this.resources = { url: '', itemId: '' };
     this.resources.url = this.router.url;
-    this.resources.resourceType = "Organizations";
-    this.resources.itemId = this.savedFrom; // "GUID";
+    if (this.activeRoute.snapshot.params['topic']) {
+      this.resources.itemId = this.activeRoute.snapshot.params['topic'];
+    } else if (this.activeRoute.snapshot.params['id']) {
+      this.resources.itemId = this.activeRoute.snapshot.params['id'];
+    }
     this.personalizedPlanService.saveResourcesToSession(this.resources);
-    console.log("Book marked!!!");
   }
 
   ngOnInit() {

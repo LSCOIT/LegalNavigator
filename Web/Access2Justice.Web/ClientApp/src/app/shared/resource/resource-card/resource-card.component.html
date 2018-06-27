@@ -93,6 +93,17 @@
           <p>{{resource.description}}</p>
         </div>
       </div>
+      <div *ngIf="resource.resourceType === 'Topics'" class="media">
+        <div class="media-left">
+          <a href="#">
+            <img class="media-object" src="#" alt="...">
+          </a>
+        </div>
+        <div class="media-body">
+          <h4 class="media-heading">{{resource.name}}</h4>
+          <p>{{resource.description}}</p>
+        </div>
+      </div>
     </div>
   </div>
 </div>

@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { PersonalizedPlanService } from '../profile/personalized-plan/personalized-plan.service';
 import { PersonalizedPlanCondition, Resources, PlanSteps } from '../profile/personalized-plan/personalized-plan';
-import { NavigateDataService } from '../shared/navigate-data.service';
+import { IResourceFilter } from '../shared/search/search-results/search-results.model';
 
 @Component({
   selector: 'app-profile',
@@ -11,9 +11,11 @@ import { NavigateDataService } from '../shared/navigate-data.service';
 export class ProfileComponent implements OnInit {
   resources: Resources;
   topics: string;
+  resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: '', PageNumber: 0, Location: '', ResourceIds: '' };
+  personalizedResources: any;
+  isSavedResources: boolean = false; 
 
-  constructor(private personalizedPlanService: PersonalizedPlanService,
-    private navigateDataService: NavigateDataService) { }
+  constructor(private personalizedPlanService: PersonalizedPlanService) { }
 
   getSavedResources(): void {
     this.resources = JSON.parse(sessionStorage.getItem("bookmarkedResource"));
@@ -22,10 +24,19 @@ export class ProfileComponent implements OnInit {
       .subscribe(items => {
         if (items) {
           this.topics = items.topicTags;
-          this.navigateDataService.setData(items);
         }
       });
   }
+
+  getpersonalizedResources(event) {
+    this.personalizedPlanService.getPersonalizedResources(this.resourceFilter)
+      .subscribe(response => {
+        if (response != undefined) {
+          this.personalizedResources = response;
+          this.isSavedResources = true;
+        }
+      });
+  } 
 
   ngOnInit() {
     this.getSavedResources();

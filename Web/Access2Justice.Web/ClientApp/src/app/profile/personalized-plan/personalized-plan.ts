@@ -10,9 +10,8 @@ export interface PersonalizedPlanCondition {
 }
 
 export interface Resources {
-  url: string; //bookmarked link - url at which user saves hte profile
-  resourceType: string;  //Articles/organizations
-  itemId: string; //GUID from Url
+  url: string; 
+  itemId: string; 
 }
 
 export interface PlanSteps {
