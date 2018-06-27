@@ -16,7 +16,7 @@
       <span class="col-sm-1">Show:</span>
       <!--web filtering-->
       <div class="mobile-hidden col-sm-10">
-        <button class="btn btn-selected">Eviction</button>
+        <button class="btn btn-selected" (click)="filterSelectedResource()">Eviction</button>
         <button class="btn btn-selected">Child Custody</button>
       </div>
       <!--mobile filtering-->
@@ -32,7 +32,7 @@
         </ul>
       </div>
     </div>
-    <app-action-plan-card></app-action-plan-card>
+    <app-action-plan-card  [activeActionPlan]="activeActionPlan"></app-action-plan-card>
   </div>
 </div>
 <div class="row">

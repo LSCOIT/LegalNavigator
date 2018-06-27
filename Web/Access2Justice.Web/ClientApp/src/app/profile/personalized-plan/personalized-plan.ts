@@ -15,6 +15,10 @@ export interface Resources {
   itemId: string; //GUID from Url
 }
 
+export interface ActionPlanSteps{
+  actionPlanStep: Array<PlanSteps>[];
+}
+
 export interface PlanSteps {
   topicId: string;
   steps: Array<Steps>[];
