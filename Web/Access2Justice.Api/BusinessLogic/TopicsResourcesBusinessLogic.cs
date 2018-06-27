@@ -70,11 +70,11 @@ namespace Access2Justice.Api.BusinessLogic
             var result = await dbService.ExecuteStoredProcedureAsync(dbSettings.ResourceCollectionId, Constants.PlanStoredProcedureName, procedureParams);
             var planDetails = result.Response;
             int i = 0;
-            foreach (var item in planDetails)
+            foreach (var item in planDetails.topicTags)
             {
-                string topicId = item.topicId;
+                string topicId = item.id;
                 var topicData = await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.Id, topicId);
-                planDetails[i].topicId = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(topicData));
+                planDetails.topicTags[i].id = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(topicData));
                 i++;
             }
 
