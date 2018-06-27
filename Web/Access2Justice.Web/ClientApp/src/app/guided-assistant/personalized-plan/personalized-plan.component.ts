@@ -15,8 +15,7 @@ export class PersonalizedPlanComponent implements OnInit {
   topic: string = '';
 
   constructor(private personalizedPlanService: PersonalizedPlanService,
-    private activeRoute: ActivatedRoute
-    ) { }
+    private activeRoute: ActivatedRoute) { }
 
   getTopics(topic): void {
     this.personalizedPlanService.getActionPlanConditions(this.activeActionPlan)

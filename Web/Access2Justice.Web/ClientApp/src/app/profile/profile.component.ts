@@ -16,49 +16,55 @@ export class ProfileComponent implements OnInit {
   topic: string = '';
   resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: '', PageNumber: 0, Location: '', ResourceIds: '' };
   personalizedResources: any;
-  isSavedResources: boolean = false; 
+  isSavedResources: boolean = false;
+  planId: string;
 
   constructor(private personalizedPlanService: PersonalizedPlanService) { }
 
-  getSavedResources(): void {
-    this.resources = JSON.parse(sessionStorage.getItem("bookmarkedResource"));
+  getTopics(topic): void {
+    if (this.planId) {
+      this.personalizedPlanService.getActionPlanConditions(this.planId)
+        .subscribe(items => {
+          if (items) {
+            this.topics = items.topicTags;
+            if (topic === '') {
+              this.planDetails = items;
+            }
+            else {
+              let i = 0;
+              this.planDetails = items;
+              items.topicTags.forEach(item => {
+                if (item.id[0].name === topic) {
+                  this.planDetails = items.topicTags[i];
+                }
+                i++;
+              });
+            }
+          }
+        });
+    }
+  }
 
-    this.personalizedPlanService.getActionPlanConditions("bf8d7e7e-2574-7b39-efc7-83cb94adae07")//Read data from session
-      .subscribe(items => {
-        if (items) {
-          this.topics = items.topicTags;
-          this.planDetails = items;
+  getpersonalizedResources(event) {
+    this.personalizedPlanService.getPersonalizedResources(this.resourceFilter)
+      .subscribe(response => {
+        if (response != undefined) {
+          this.personalizedResources = response;
+          this.isSavedResources = true;
         }
       });
   }
 
-  getTopics(topic): void {
-    this.personalizedPlanService.getActionPlanConditions("bf8d7e7e-2574-7b39-efc7-83cb94adae07")
-      .subscribe(items => {
-        if (items) {
-          this.topics = items.topicTags;
-          if (topic === '') {
-            this.planDetails = items;
-          }
-          else {
-            let i = 0;
-            this.planDetails = items;
-            items.topicTags.forEach(item => {
-              if (item.id[0].name === topic) {
-                this.planDetails = items.topicTags[i];
-              }
-              i++;
-            });
-          }
-        }
-      });
-  } 
+  getPersonalizedPlan() {
+    this.planId = this.personalizedPlanService.getPersonalizedPlan();
+  }
 
   filterSelectedResource(topic): void {
     this.getTopics(topic);
   }
 
   ngOnInit() {
+    this.getPersonalizedPlan();
     this.getTopics(this.topic);
   }
 

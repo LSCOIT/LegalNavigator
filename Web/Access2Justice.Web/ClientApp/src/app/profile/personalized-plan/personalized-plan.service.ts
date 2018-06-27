@@ -21,7 +21,6 @@ export class PersonalizedPlanService {
   constructor(private http: HttpClient) { }
 
   getActionPlanConditions(id): Observable<any> {
-    //return this.http.get<PersonalizedPlanCondition>(api.actionPlanUrl + '/' + id);
     return this.http.get<PersonalizedPlanCondition>(api.planUrl + '/' + id);
   }
 
@@ -50,16 +49,21 @@ export class PersonalizedPlanService {
   getPersonalizedResources(resourceInput: IResourceFilter) {
     this.getBookmarkedData();
     if (this.topics) {
-      resourceInput.TopicIds = this.topics;//["f102bfae-362d-4659-aaef-956c391f79de", "addf41e9-1a27-4aeb-bcbb-7959f95094ba"];
+      resourceInput.TopicIds = this.topics;
     }
     if (this.resources) {
-      resourceInput.ResourceIds = this.resources; //["2225cb29-2442-42ac-a4f5-9e88a7aabc4a", "77d301e7-6df2-612e-4704-c04edf271806"];
+      resourceInput.ResourceIds = this.resources;
     }
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
 
     return this.http.put(api.getPersonalizedResourcesUrl, resourceInput, httpOptions);
+  }
+
+  getPersonalizedPlan() {
+    this.getBookmarkedData();
+    return this.planId;
   }
 
 
@@ -80,7 +84,6 @@ export class PersonalizedPlanService {
           this.planId = this.tempStorage[i].itemId;
         }
       }
-      console.log(this.planId);
     }
   }
 }
