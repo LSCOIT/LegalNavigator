@@ -67,13 +67,13 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<dynamic> GetTopicDetailsAsync(string topicName)
         {
-            var result = await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, "name", topicName);
+            var result = await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.Name, topicName);
             return result;
         }
                 
         public async Task<dynamic> GetResourceDetailAsync(string resourceName, string resourceType)
         {
-            var result = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, "name", resourceName, "resourceType", resourceType);//Need to create another method to fetch resource based on name and type
+            var result = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, Constants.Name, resourceName, Constants.ResourceType, resourceType);
             return result;
         }
                 
