@@ -29,7 +29,7 @@ export class LocationService {
     manager.attachAutosuggest('#search-box', '#searchbox-container', suggestionSelected);
     searchManager = new Microsoft.Maps.Search.SearchManager(map);
   }
-  
+
   identifyLocation(searchLocation) {
     let searchRequest = {
       where: searchLocation,
@@ -112,7 +112,7 @@ export class LocationService {
       sessionStorage.setItem("localSearchMapLocation", JSON.stringify(this.mapLocation));
     }
   }
-  
+
 }
 
 function suggestionSelected(result) {

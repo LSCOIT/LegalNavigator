@@ -1,19 +1,29 @@
+.row {
+  margin: 20px auto;
+}
+
 .edit-location {
   padding-right: 17px;
+  cursor: pointer;
 }
 
 #my-map {
   position: relative;
-  width: 100%;
-  height: 410px;
+  width: 90%;
+  margin: 0 auto;
+  height: 380px;
+  margin-top: 30px;
 }
 
-.modal-content {
-  border-radius: 0;
+#searchbox-container {
+  max-width: 550px;
+  margin: 0 auto;
 }
 
-.modal-body {
-  margin-bottom: 50px;
+.location-icon {
+  width: 20px;
+  margin-left: 25px;
+  margin-top: 15px;
 }
 
 .change-location-btn {
@@ -23,22 +33,26 @@
   background-color: transparent;
 }
 
+#search-box {
+  height: 39.5px;
+  width: 200px;
+}
+
+.search-btn {
+  background-color: #0D3FB8;
+  padding: 11.5px;
+  border-radius: 0 5px 5px 0;
+  color: #fff;
+  margin-left: -5px;
+  font-weight: 600;
+}
+
 @media only screen and (min-width : 768px) {
   .mobile-hidden {
-     display: inline-block;
+    display: inline-block;
   }
-}
 
-#searchbox-container{
-  width:80%;
-  padding-bottom:20px;
-  align-items:center;
-}
-
-#search-box{
-  height:30px;
-}
-
-.btn-height {
-  height: 30px;
+  #search-box {
+    width: 250px;
+  }
 }

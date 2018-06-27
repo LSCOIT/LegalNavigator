@@ -61,8 +61,8 @@ describe('LocationService', () => {
   });
 
   it('should create location service', () => {
-      expect(service).toBeTruthy();
-    });
+    expect(service).toBeTruthy();
+  });
 
   it('should define location service', () => {
     expect(service).toBeDefined();

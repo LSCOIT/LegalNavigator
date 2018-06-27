@@ -35,10 +35,9 @@ a {
   display: inline-block;
 }
 
-.web-hidden {
+li.web-hidden {
   background-color: #f4f4f4;
   margin: 0;
-  display: inline-block;
 }
 
 .mobile-hidden {
@@ -145,14 +144,13 @@ a.carousel-control .icon-next {
 }
 
 .panel-default>.panel-heading {
-  background: #FFF;
-  border: none;
+  background:none;
+  border: 1px solid black;
   border-radius: 0;
 }
 
-.panel-default > .panel-heading + .panel-collapse > .panel-body,
-.panel-collapse .collapse .in .show {
-  border-top: none;
+.panel-body {
+  padding: 25px 15px 50px 15px;
 }
 
 /*Topics & Resources Page - Accordion */
@@ -160,23 +158,16 @@ a.carousel-control .icon-next {
   padding: 0 5px;
 }
 
-.user-action {
-  padding-left: 0;
+/*Location Modal*/
+.modal-content {
+  border-radius: 0;
 }
 
-.user-action li {
-  display: inline-block;
-  padding: 0 10px;
-  cursor: pointer;
-}
-
-/* Personalized Plan */
-.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
-  border: 1px solid #0D3FBB;
-  border-bottom-color: transparent;
-}
-.nav-tabs {
-  border-bottom: 1px solid #0D3FBB;
+.close {
+  font-size: 50px;
+  font-weight: 400;
+  color: #0D3FB8;
+  opacity: 1;
 }
 
 @media only screen and (min-width : 768px) {
@@ -202,18 +193,22 @@ a.carousel-control .icon-next {
   a.carousel-control {
     top: 282px;
   }
+
+  .modal-dialog {
+    width: 65%;
+  }
 }
 @media only screen and (min-width : 992px) {
   .container {
     width: 90%;
   }
   
-  .web-hidden {
+  li.web-hidden {
     display: none;
   }
 
   .mobile-hidden {
-    display: inline-block;
+    display: block;
   }
 }
 
