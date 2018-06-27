@@ -1,13 +1,21 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Access2Justice.Shared.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Access2Justice.Api.Controllers
 {
     [Produces("application/json")]
-    [Route("api/GuidedAssistance")]
+    [Route("api/CuratedExperience")]
     public class CuratedExperienceController : Controller
     {
+        private readonly ICuratedExperienceBuisnessLogic curatedExperienceBuisnessLogic;
+
+        public CuratedExperienceController(ICuratedExperienceBuisnessLogic curatedExperienceBuisnessLogic)
+        {
+            this.curatedExperienceBuisnessLogic = curatedExperienceBuisnessLogic;
+        }
+
         /// <summary>
         /// This endpoint is just to demo the Guided Assistance. It is a sample schema imported from A2J Author.
         /// </summary>
@@ -26,7 +34,7 @@ namespace Access2Justice.Api.Controllers
             try
             {
                 JObject.Parse(a2jSchema.ToString());
-                return Content("success"); // call the converter
+                return Json(curatedExperienceBuisnessLogic.ConvertA2JAuthorToCuratedExperience(a2jSchema));
             }
             catch
             {
