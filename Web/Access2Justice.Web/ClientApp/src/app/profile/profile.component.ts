@@ -11,6 +11,9 @@ import { IResourceFilter } from '../shared/search/search-results/search-results.
 export class ProfileComponent implements OnInit {
   resources: Resources;
   topics: string;
+  planDetails: Array<PlanSteps> = [];
+  activeActionPlan: string = '';
+  topic: string = '';
   resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: '', PageNumber: 0, Location: '', ResourceIds: '' };
   personalizedResources: any;
   isSavedResources: boolean = false; 
@@ -24,22 +27,39 @@ export class ProfileComponent implements OnInit {
       .subscribe(items => {
         if (items) {
           this.topics = items.topicTags;
+          this.planDetails = items;
         }
       });
   }
 
-  getpersonalizedResources(event) {
-    this.personalizedPlanService.getPersonalizedResources(this.resourceFilter)
-      .subscribe(response => {
-        if (response != undefined) {
-          this.personalizedResources = response;
-          this.isSavedResources = true;
+  getTopics(topic): void {
+    this.personalizedPlanService.getActionPlanConditions("bf8d7e7e-2574-7b39-efc7-83cb94adae07")
+      .subscribe(items => {
+        if (items) {
+          this.topics = items.topicTags;
+          if (topic === '') {
+            this.planDetails = items;
+          }
+          else {
+            let i = 0;
+            this.planDetails = items;
+            items.topicTags.forEach(item => {
+              if (item.id[0].name === topic) {
+                this.planDetails = items.topicTags[i];
+              }
+              i++;
+            });
+          }
         }
       });
   } 
 
+  filterSelectedResource(topic): void {
+    this.getTopics(topic);
+  }
+
   ngOnInit() {
-    this.getSavedResources();
+    this.getTopics(this.topic);
   }
 
 }
