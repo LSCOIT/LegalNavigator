@@ -1,65 +1,65 @@
 .user-action {
-    background-color: #fff;
-    margin: 20px 0;
-  }
+  background-color: #fff;
+  margin: 20px 0;
+}
   
-  .row-half-spacing {
-    margin: 20px auto;
-  }
-  
-  .page-heading {
+.row-half-spacing {
+  margin: 20px auto;
+}
+
+.page-heading {
+  display: inline-block;
+  margin-left: 10px;  
+}
+
+.filter-plan {
+  background-color: #F4F4F4;
+  padding: 10px;
+}
+
+.filter-plan button {
+  float: left;
+}
+
+.filter-plan span {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.web-hidden .btn-selected {
+  padding: 10px 34px;
+}
+
+@media only screen and (min-width : 768px) {
+  .mobile-hidden {
     display: inline-block;
-    margin-left: 10px;  
   }
-  
-  .filter-plan {
-    background-color: #F4F4F4;
-    padding: 10px;
+
+  .web-hidden {
+    display: none;
   }
-  
+
+  .user-action {
+    float: right;
+  }
+
   .filter-plan button {
-    float: left;
+    margin: 0 10px 10px 10px;
   }
   
-  .filter-plan span {
-    margin-right: 10px;
-    margin-left: 10px;
+  .filter-plan span, .filter-plan .mobile-hidden {
+    padding-top: 10px;
   }
-  
-  .web-hidden .btn-selected {
-    padding: 10px 34px;
+}
+
+@media only screen and (min-width : 992px) {
+  .plan-steps {
+    border-left: 1px solid #ddd;
   }
-  
-  @media only screen and (min-width : 768px) {
-    .mobile-hidden {
-      display: inline-block;
-    }
-  
-    .web-hidden {
-      display: none;
-    }
-  
-    .user-action {
-      float: right;
-    }
-  
-    .filter-plan button {
-      margin: 0 10px 10px 10px;
-    }
-    
-    .filter-plan span, .filter-plan .mobile-hidden {
-      padding-top: 10px;
-    }
+
+  .quick-links {
+    margin-top: 10px;
+    padding-top: 20px;
   }
-  
-  @media only screen and (min-width : 992px) {
-    .plan-steps {
-      border-left: 1px solid #ddd;
-    }
-  
-    .quick-links {
-      margin-top: 10px;
-      padding-top: 20px;
-    }
-  }
+}
   
