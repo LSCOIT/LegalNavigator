@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PersonalizedPlanService } from '../../profile/personalized-plan/personalized-plan.service';
-import { PersonalizedPlanCondition, Resources } from '../../profile/personalized-plan/personalized-plan';
+import { PersonalizedPlanCondition, Resources, PlanSteps } from '../../profile/personalized-plan/personalized-plan';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -10,21 +10,37 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class PersonalizedPlanComponent implements OnInit {
   conditionsList: Array<PersonalizedPlanCondition>[];
-  activeActionPlan = this.activeRoute.snapshot.params['id'];
+  activeActionPlan = 'bf8d7e7e-2574-7b39-efc7-83cb94adae07';//this.activeRoute.snapshot.params['id'];
   resources: Resources;
-  savedFrom: string = "personalizedPlan";
+  steps: any;
+  planSteps: Array<PlanSteps> = [];// [{ topicId: '', steps: [] }];
+  planStep: PlanSteps = { topicId: '', steps: [] };
 
   constructor(private personalizedPlanService: PersonalizedPlanService, private activeRoute: ActivatedRoute) { }
 
   getConditions(): void {
     this.personalizedPlanService.getActionPlanConditions(this.activeActionPlan)
-      .subscribe(conditions => {
-        if (this.conditionsList) {
-          this.conditionsList = conditions[0].conditions;
+      .subscribe(steps => {
+        console.log(steps)
+        if (steps) {
+          this.steps = steps.topicTags;
+          this.steps.forEach(item => {
+            this.planStep.topicId = item.id[0].name;
+            this.planStep.steps = item.stepTags;
+            this.planSteps.push(this.planStep);
+            console.log(this.planSteps);
+          });
+
+          //for (let i = 0; i < this.steps.length; i++) {
+          //  this.planSteps[i].topicId = this.steps[i].id[0].name;
+          //  this.planSteps[i].steps = this.steps[i].stepTags;
+          //}
         }
         else {
-          this.conditionsList = null;
+          this.steps = null;
         }
+        console.log(this.steps);
+        console.log(this.planSteps);
       });
   }
 

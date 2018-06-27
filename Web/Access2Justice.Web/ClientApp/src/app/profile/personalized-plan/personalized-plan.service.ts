@@ -8,31 +8,38 @@ import { api } from '../../../api/api';
 export class PersonalizedPlanService {
 
   resource: Resources;
-  tempStorage: Array<Resources>;
+  tempStorage: Array<Resources> = [];
+  resoureStorage: any = [];
+  resourceTemp: any = [];
   sessionKey: string = "bookmarkedResource";
+  isObjectExists: boolean = false;
 
   constructor(private http: HttpClient) { }
 
   getActionPlanConditions(id): Observable<any> {
+    //return this.http.get<PersonalizedPlanCondition>(api.actionPlanUrl + '/' + id);
     return this.http.get<PersonalizedPlanCondition>(api.planUrl + '/' + id);
   }
 
   saveResourcesToSession(resources) {
-    this.tempStorage = JSON.parse(sessionStorage.getItem(this.sessionKey));
-    if (this.tempStorage) {
-      let i = 0;
-      //for (let i = 0; i < this.tempStorage.length; i++) {
-        if (this.tempStorage[i].itemId !== resources.itemId) {
-          this.tempStorage[i] = JSON.parse(sessionStorage.getItem(this.sessionKey));
-          //this.tempStorage[i] = (this.tempStorage[i] === null) ? [] : this.tempStorage[i];
-          this.tempStorage.push(resources);
 
-          sessionStorage.setItem(this.sessionKey, JSON.stringify(this.tempStorage[i]));
+    this.resoureStorage = sessionStorage.getItem(this.sessionKey);
+
+    if (this.resoureStorage != undefined && this.resoureStorage.length > 0) {
+      this.tempStorage = JSON.parse(this.resoureStorage);
+      for (var i = 0; i < this.tempStorage.length; i++) {
+        if (JSON.stringify(this.tempStorage[i]) == JSON.stringify(resources)) {
+          this.isObjectExists = true;
         }
-      //}
+      }
+      if (!this.isObjectExists) {
+        this.tempStorage.push(resources);
+        sessionStorage.setItem(this.sessionKey, JSON.stringify(this.tempStorage));
+      }
     }
     else {
-      sessionStorage.setItem(this.sessionKey, JSON.stringify(resources));
+      this.tempStorage = [resources];
+      sessionStorage.setItem(this.sessionKey, JSON.stringify(this.tempStorage));
     }
   }
 
