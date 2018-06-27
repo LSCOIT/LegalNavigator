@@ -31,11 +31,10 @@ import { SubtopicsComponent } from './topics-resources/subtopic/subtopics.compon
 import { SubtopicDetailComponent } from './topics-resources/subtopic/subtopic-detail.component';
 import { TopicsResourcesComponent } from './topics-resources/topics-resources.component';
 import { TopicsComponent } from './topics-resources/topic/topics.component';
+import { PersonalizedPlanComponent } from './guided-assistant/personalized-plan/personalized-plan.component';
+import { ProfileComponent } from './profile/profile.component';
 import { BreadcrumbService } from './topics-resources/shared/breadcrumb.service';
-import { PersonalizedPlanComponent } from './profile/personalized-plan/personalized-plan.component';
 import { PersonalizedPlanService } from './profile/personalized-plan/personalized-plan.service';
-import { UserProfileComponent } from './profile/user-profile/user-profile.component';
-import { SharedPlanComponent } from './profile/shared-plan/shared-plan.component';
 
 @NgModule({
   declarations: [
@@ -53,8 +52,7 @@ import { SharedPlanComponent } from './profile/shared-plan/shared-plan.component
     SubtopicDetailComponent,
     SubtopicsComponent,
     PersonalizedPlanComponent,
-    UserProfileComponent,
-    SharedPlanComponent
+    ProfileComponent    
   ],
   imports: [
     BrowserModule,

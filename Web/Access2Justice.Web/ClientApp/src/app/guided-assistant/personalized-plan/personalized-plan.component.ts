@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { PersonalizedPlanService } from './personalized-plan.service';
-import { PersonalizedPlanCondition, Resources } from './personalized-plan';
+import { PersonalizedPlanService } from '../../profile/personalized-plan/personalized-plan.service';
+import { PersonalizedPlanCondition, Resources } from '../../profile/personalized-plan/personalized-plan';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({

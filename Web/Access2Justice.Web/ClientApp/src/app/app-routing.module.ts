@@ -8,6 +8,7 @@ import { GuidedAssistantComponent } from './guided-assistant/guided-assistant.co
 import { HelpFaqsComponent } from './help-faqs/help-faqs.component';
 import { HomeComponent } from './home/home.component';
 import { LogInComponent } from './account/log-in.component';
+import { ProfileComponent } from './profile/profile.component';
 import { PrivacyPromiseComponent } from './privacy-promise/privacy-promise.component';
 import { QuestionComponent } from './guided-assistant/question.component';
 import { SearchResultsComponent } from './shared/search/search-results/search-results.component';
@@ -16,8 +17,7 @@ import { SubtopicsComponent } from './topics-resources/subtopic/subtopics.compon
 import { TopicsResourcesComponent } from './topics-resources/topics-resources.component';
 import { ResourceCardDetailComponent } from
 './shared/resource/resource-card-detail/resource-card-detail.component';
-import { PersonalizedPlanComponent } from './profile/personalized-plan/personalized-plan.component';
-import { UserProfileComponent } from './profile/user-profile/user-profile.component';
+import { PersonalizedPlanComponent } from './guided-assistant/personalized-plan/personalized-plan.component';
 
 const appRoutes: Routes = [
   { path: 'search', component: SearchResultsComponent },
@@ -36,7 +36,7 @@ const appRoutes: Routes = [
   { path: 'login', component: LogInComponent },
   { path: 'privacy', component: PrivacyPromiseComponent },
   { path: 'personalizedplan/:id', component: PersonalizedPlanComponent },
-  { path: 'userProfile', component: UserProfileComponent },
+  { path: 'userProfile', component: ProfileComponent },
   { path: '', component: HomeComponent }
 ];
 
