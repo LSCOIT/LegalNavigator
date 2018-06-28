@@ -13,32 +13,32 @@ namespace Access2Justice.Logger.Logging
     /// </summary>
     public class AppInsightsLogger : ILogger
     {
-        private TelemetryClient _client;
+        private TelemetryClient aiClient;
 
 
         private AppInsightsLogger(string instrumentationKey)
         {
-            _client = new TelemetryClient();
-            _client.InstrumentationKey = instrumentationKey;
+            aiClient = new TelemetryClient();
+            aiClient.InstrumentationKey = instrumentationKey;
         }
 
-        private static Object _object = new Object();
-        private static Lazy<IDictionary<String, AppInsightsLogger>> _loggers = new Lazy<IDictionary<string, AppInsightsLogger>>(
+        private static Object lockObject = new Object();
+        private static Lazy<IDictionary<String, AppInsightsLogger>> aiLogger = new Lazy<IDictionary<string, AppInsightsLogger>>(
             () => new Dictionary<String, AppInsightsLogger>()
             );
 
         public static AppInsightsLogger GetInstance(string instrumentationKey)
         {
-            lock (_object)
+            lock (lockObject)
             {
-                if (_loggers.Value.ContainsKey(instrumentationKey.Trim()))
+                if (aiLogger.Value.ContainsKey(instrumentationKey.Trim()))
                 {
-                    return _loggers.Value[instrumentationKey];
+                    return aiLogger.Value[instrumentationKey];
                 }
                 else
                 {
                     var appInsightsLogger = new AppInsightsLogger(instrumentationKey.Trim());
-                    _loggers.Value.Add(instrumentationKey.Trim(), appInsightsLogger);
+                    aiLogger.Value.Add(instrumentationKey.Trim(), appInsightsLogger);
                     return appInsightsLogger;
                 }
             }
@@ -61,7 +61,7 @@ namespace Access2Justice.Logger.Logging
                 properties.AddCorelationId(corelationId);
             }
 
-            _client.TrackException(ex, properties, metrics);
+            aiClient.TrackException(ex, properties, metrics);
         }
 
         public virtual void TrackException(Exception ex, EventDictionary? eventId = null, IDictionary<string, string> properties = null, IDictionary<string, double> metrics = null)
@@ -77,7 +77,7 @@ namespace Access2Justice.Logger.Logging
                 properties.AddEventId(ex.GetEventId());
             }
 
-            _client.TrackException(ex, properties, metrics);
+            aiClient.TrackException(ex, properties, metrics);
         }
 
 
@@ -90,7 +90,7 @@ namespace Access2Justice.Logger.Logging
             {
                 properties.AddCorelationId(corelationId);
             }
-            _client.TrackTrace(message, severity, properties);
+            aiClient.TrackTrace(message, severity, properties);
         }
 
 
@@ -100,7 +100,7 @@ namespace Access2Justice.Logger.Logging
             properties = InitializeProperties(properties);
             properties.AddEventId((int)eventId);
 
-            _client.TrackTrace(message, severity, properties);
+            aiClient.TrackTrace(message, severity, properties);
         }
 
         public virtual void TrackEvent(string eventName, string corelationId, IDictionary<string, string> properties = null, IDictionary<string, double> metrics = null)
@@ -111,13 +111,13 @@ namespace Access2Justice.Logger.Logging
             {
                 properties.AddCorelationId(corelationId);
             }
-            _client.TrackEvent(eventName, properties, metrics);
+            aiClient.TrackEvent(eventName, properties, metrics);
         }
 
         public virtual void TrackEvent(string eventName, IDictionary<string, string> properties = null, IDictionary<string, double> metrics = null)
         {
             //TelemetryClient client = new TelemetryClient();
-            _client.TrackEvent(eventName, properties, metrics);
+            aiClient.TrackEvent(eventName, properties, metrics);
         }
 
         public virtual void TrackMetric(string name, double value, string corelationId, IDictionary<string, string> properties = null)
@@ -128,25 +128,25 @@ namespace Access2Justice.Logger.Logging
             {
                 properties.AddCorelationId(corelationId);
             }
-            _client.TrackMetric(name, value, properties);
+            aiClient.TrackMetric(name, value, properties);
         }
 
         public virtual void TrackMetric(string name, double value, IDictionary<string, string> properties = null)
         {
             //TelemetryClient client = new TelemetryClient();
-            _client.TrackMetric(name, value, properties);
+            aiClient.TrackMetric(name, value, properties);
         }
 
         public virtual void TrackDependency(string dependencyTypeName, string target, string dependencyName, string data, DateTimeOffset startTime, TimeSpan duration, string resultCode, bool success)
         {
             //TelemetryClient client = new TelemetryClient();
-            _client.TrackDependency(dependencyTypeName, target, dependencyName, data, startTime, duration, resultCode, success);
+            aiClient.TrackDependency(dependencyTypeName, target, dependencyName, data, startTime, duration, resultCode, success);
         }
 
         public virtual void TrackAvailability(string name, DateTimeOffset timeStamp, TimeSpan duration, string runLocation, bool success, string message = null)
         {
             //TelemetryClient client = new TelemetryClient();
-            _client.TrackAvailability(name, timeStamp, duration, runLocation, success, message);
+            aiClient.TrackAvailability(name, timeStamp, duration, runLocation, success, message);
         }
 
         private IDictionary<string, string> InitializeProperties(IDictionary<string, string> properties)
@@ -156,19 +156,19 @@ namespace Access2Justice.Logger.Logging
 
         public void FlushInsights()
         {
-            _client.Flush();
+            aiClient.Flush();
             // Allow time for flushing:
             System.Threading.Thread.Sleep(1000);
         }
 
         public void TrackRequest(string name, DateTimeOffset startTime, TimeSpan duration, string responseCode, bool success)
         {
-            _client.TrackRequest(name, startTime, duration, responseCode, success);
+            aiClient.TrackRequest(name, startTime, duration, responseCode, success);
         }
 
         public void TrackRequest(RequestTelemetry request)
         {
-            _client.TrackRequest(request);
+            aiClient.TrackRequest(request);
         }
     }
 
