@@ -33,6 +33,7 @@ import { BreadcrumbComponent } from '../topics-resources/breadcrumb/breadcrumb.c
 import { MapResultsComponent } from './sidebars/map-results.component';
 import { MapResultsService } from './sidebars/map-results.service';
 import { PaginationComponent } from './pagination/pagination.component';
+import { PaginationService } from './search/pagination.service';
 
 @NgModule({
   imports: [
@@ -96,7 +97,8 @@ import { PaginationComponent } from './pagination/pagination.component';
     LocationService,
     NavigateDataService,
     SearchService,
-    MapResultsService
+    MapResultsService,
+    PaginationService
   ]
 })
 export class SharedModule { }

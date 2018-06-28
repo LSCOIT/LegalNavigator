@@ -101,12 +101,12 @@ namespace Access2Justice.Api
             dynamic serializedGroupedResources = "[]";
             if (topicIds.Count > 0)
             {
-                ResourceFilter resourceFilter = new ResourceFilter { TopicIds = topicIds, PageNumber = 0, ResourceType = "ALL", Location = location };
-                // need to discuss with others related to logic for parallel tasks.
+                ResourceFilter resourceFilter = new ResourceFilter { TopicIds = topicIds, PageNumber = 0, ResourceType = "ALL", Location = location };                
                 var GetResourcesTask =  topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
                 var ApplyPaginationTask =  topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
-                var groupedResourceType = await GetResourcesTask;
-                PagedResources resources = await ApplyPaginationTask;
+                await Task.WhenAll(GetResourcesTask, ApplyPaginationTask);
+                var groupedResourceType = GetResourcesTask.Result;
+                PagedResources resources = ApplyPaginationTask.Result;
                 serializedTopics = JsonConvert.SerializeObject(topics);
                 serializedResources = JsonConvert.SerializeObject(resources.Results);
                 serializedToken = resources.ContinuationToken ?? "[]";
@@ -122,23 +122,18 @@ namespace Access2Justice.Api
                 { "resourceTypeFilter", JsonConvert.DeserializeObject(serializedGroupedResources) },
                 { "topIntent", keyword }
             };
-
             return internalResources.ToString();
         }
 
         public async Task<dynamic> GetWebResourcesAsync(string searchTerm)
         {
-            var uri = string.Format(CultureInfo.InvariantCulture, bingSettings.BingSearchUrl.OriginalString, searchTerm, bingSettings.CustomConfigId, bingSettings.DefaultCount, bingSettings.DefaultOffset);
-
+            var uri = string.Format(CultureInfo.InvariantCulture, bingSettings.BingSearchUrl.OriginalString, searchTerm, bingSettings.CustomConfigId, bingSettings.PageResultsCount, bingSettings.PageOffsetValue);
             var response = await webSearchBusinessLogic.SearchWebResourcesAsync(new Uri(uri));
-
             JObject webResources = new JObject
             {
                 { "webResources" , JsonConvert.DeserializeObject(response) }
             };
-
             return webResources.ToString();
-        }
-        
+        }        
     }
 }

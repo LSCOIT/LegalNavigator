@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { api } from '../../../api/api';
-import { ILuisInput, IResourceFilter } from '../search/search-results/search-results.model';
+import { ILuisInput } from '../search/search-results/search-results.model';
 
 @Injectable()
 export class SearchService {
@@ -12,18 +12,6 @@ export class SearchService {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json'})
     };
-    return this.httpClient.put(api.searchUrl, luisInput, httpOptions);
+    return this.httpClient.post(api.searchUrl, luisInput, httpOptions);
   }
-
-  getPagedResources(resourceInput: IResourceFilter) {
-    const httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-    };
-    return this.httpClient.put(api.getResourceUrl, resourceInput, httpOptions);
-  }
-
-  searchByOffset(searchText: string, offset: number) {
-    return this.httpClient.get(api.searchOffsetUrl + "/" + searchText + "/" + offset);
-  }
-
 }

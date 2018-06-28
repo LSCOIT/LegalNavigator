@@ -144,7 +144,7 @@ namespace Access2Justice.CosmosDb
             {
                 feedOptions = new FeedOptions()
                 {
-                    MaxItemCount = cosmosDbSettings.DefaultCount
+                    MaxItemCount = cosmosDbSettings.PageResultsCount
                 };
             }
             var result = await QueryItemsPaginationAsync(cosmosDbSettings.ResourceCollectionId, query, feedOptions);
@@ -156,7 +156,7 @@ namespace Access2Justice.CosmosDb
         {
             FeedOptions feedOptions = new FeedOptions()
             {
-                MaxItemCount = cosmosDbSettings.DefaultCount,
+                MaxItemCount = cosmosDbSettings.PageResultsCount,
                 RequestContinuation = continuationToken
             };
 

@@ -9,6 +9,6 @@ namespace Access2Justice.CosmosDb.Interfaces
         string DatabaseId { get; }
         string TopicCollectionId { get; }
         string ResourceCollectionId { get; }
-        Int16 DefaultCount { get; }
+        Int16 PageResultsCount { get; }
     }
 }

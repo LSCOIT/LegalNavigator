@@ -64,7 +64,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly string expectedEmptyArrayObject = "[{}]";
         private readonly string expectedTopicId = "addf41e9-1a27-4aeb-bcbb-7959f95094ba";
         private readonly string expectedResourceId = "77d301e7-6df2-612e-4704-c04edf271806";
-        private readonly string expectedpagedResource = "{\"ContinuationToken\":\"[]\",\"Results\":[],\"TopicIds\":null}";
+        private readonly string expectedpagedResource = "{\"ContinuationToken\":\"[]\",\"Results\":[],\"TopicIds\":[]}";
         private readonly string expectedResourceCount = "{\"ResourceName\":\"Organizations\",\"ResourceCount\":4}";
         private readonly string expectedEmptyResourceCount = "{\"ResourceName\":\"All\",\"ResourceCount\":0}";
 

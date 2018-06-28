@@ -73,7 +73,7 @@ namespace Access2Justice.Api.Controllers
             return Ok(topics);
         }
 
-        [HttpPut]
+        [HttpPost]
         [Route("api/resources")]
         public async Task<IActionResult> GetPagedDataAsync([FromBody]ResourceFilter resourceInput)
         {

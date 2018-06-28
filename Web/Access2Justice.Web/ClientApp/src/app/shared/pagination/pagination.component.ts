@@ -53,11 +53,11 @@ export class PaginationComponent {
   }
 
   getPages(): number[] {
-    const c = Math.ceil(this.count / this.perPage);
-    const p = this.page || 1;
+    const pagesToDisplay = Math.ceil(this.count / this.perPage);
+    const currentPage = this.page || 1;
     const pagesToShow = this.pagesToShow || 2;
     const pages: number[] = [];
-    pages.push(p);
+    pages.push(currentPage);
     const times = pagesToShow - 1;
     for (let i = 0; i < times; i++) {
       if (pages.length < pagesToShow) {
@@ -66,7 +66,7 @@ export class PaginationComponent {
         }
       }
       if (pages.length < pagesToShow) {
-        if (Math.max.apply(null, pages) < c) {
+        if (Math.max.apply(null, pages) < pagesToDisplay) {
           pages.push(Math.max.apply(null, pages) + 1);
         }
       }

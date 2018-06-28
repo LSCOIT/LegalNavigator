@@ -176,8 +176,8 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             luisSettings.LowerThreshold.Returns(0.6M);
             bingSettings.BingSearchUrl.Returns(new Uri("http://www.bing.com?{0}{1}{2}"));
             bingSettings.CustomConfigId.Returns("0");
-            bingSettings.DefaultCount.Returns((short)10);
-            bingSettings.DefaultOffset.Returns((short)1);
+            bingSettings.PageResultsCount.Returns((short)10);
+            bingSettings.PageOffsetValue.Returns((short)1);
         }
 
         [Fact]

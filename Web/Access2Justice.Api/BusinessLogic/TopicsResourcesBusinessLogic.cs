@@ -6,7 +6,6 @@ using Access2Justice.Shared.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Linq;
-using System;
 
 namespace Access2Justice.Api.BusinessLogic
 {
@@ -67,22 +66,18 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<dynamic> GetPagedResourceAsync(ResourceFilter resourceFilter)
         {
-            dynamic serializedResources = "[]";
-            dynamic serializedToken = "[]";
+            dynamic serializedResources = "[]";            
             dynamic serializedTopicIds = "[]";
 
             PagedResources pagedResources = await ApplyPaginationAsync(resourceFilter);
-            if (pagedResources != null)
-            {
-                serializedResources = JsonConvert.SerializeObject(pagedResources.Results);
-                serializedToken = pagedResources.ContinuationToken ?? "[]";
-                serializedTopicIds = JsonConvert.SerializeObject(pagedResources.TopicIds);
-            }
+            serializedResources = JsonConvert.SerializeObject(pagedResources?.Results);
+            dynamic serializedToken = pagedResources?.ContinuationToken ?? "[]";
+            serializedTopicIds = JsonConvert.SerializeObject(pagedResources?.TopicIds);
 
             JObject internalResources = new JObject {
                 { "resources", JsonConvert.DeserializeObject(serializedResources) },
                 {"continuationToken", JsonConvert.DeserializeObject(serializedToken) },
-                {"topicIds" , JsonConvert.DeserializeObject(serializedTopicIds)}                
+                {"topicIds" , JsonConvert.DeserializeObject(serializedTopicIds)}
             };
 
             return internalResources.ToString();

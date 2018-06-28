@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Access2Justice.Shared.Models
 {
@@ -9,17 +7,10 @@ namespace Access2Justice.Shared.Models
         public PagedResources()
         {
             Results = new List<dynamic>();
+            TopicIds = new List<string>();
         }
-        /// <summary>
-        /// Continuation Token for DocumentDB
-        /// </summary>
         public string ContinuationToken { get; set; }
-
-        /// <summary>
-        /// Results
-        /// </summary>
         public IEnumerable<dynamic> Results { get; set; }
-
         public IEnumerable<string> TopicIds { get; set; }
     }
 }

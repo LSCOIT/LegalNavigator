@@ -19,12 +19,8 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<dynamic> SearchWebResourcesAsync(Uri uri)
         {
-
             var httpResponseMessage = await httpClientService.GetDataAsync(uri, bingSettings.SubscriptionKey);
-            var responseContent = await httpResponseMessage.Content.ReadAsStringAsync();
-
-            return responseContent;
-        }
-        
+            return await httpResponseMessage.Content.ReadAsStringAsync();
+        }        
     }
 }

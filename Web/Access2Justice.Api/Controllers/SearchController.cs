@@ -16,7 +16,7 @@ namespace Access2Justice.Api.Controllers
             this.luisBusinessLogic = luisBusinessLogic;
         }
 
-        [HttpPut]
+        [HttpPost]
         public async Task<IActionResult> GetAsync([FromBody]LuisInput luisInput)
         {
             var resources = await luisBusinessLogic.GetResourceBasedOnThresholdAsync(luisInput);

@@ -6,8 +6,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.environment = {
     production: false,
-    apiUrl: 'http://localhost:12176/api',
-    bingmap_key: 'AqpcQxjuTmheUzCm8b5kUhV9UhjfsK66CtvV2uBvRmBJXZS9FoBvIrnifnZctuaB',
-    map_type: false
+    apiUrl: 'http://localhost:59019/api',
+    bingmap_key: '',
+    map_type: false,
+    internalResourcePagesToShow: 2,
+    internalResourceRecordsToDisplay: 1,
+    webResourcePagesToShow: 10,
+    webResourceRecordsToDisplay: 10
 };
 //# sourceMappingURL=environment.js.map

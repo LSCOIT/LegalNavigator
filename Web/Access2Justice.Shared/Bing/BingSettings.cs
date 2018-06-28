@@ -14,8 +14,8 @@ namespace Access2Justice.Shared.Bing
                 BingSearchUrl = new Uri(configuration.GetSection("BingSearchUrl").Value);
                 SubscriptionKey = configuration.GetSection("SubscriptionKey").Value;
                 CustomConfigId = configuration.GetSection("CustomConfigId").Value;
-                DefaultCount = Int16.Parse(configuration.GetSection("DefaultCount").Value, CultureInfo.InvariantCulture);
-                DefaultOffset = Int16.Parse(configuration.GetSection("DefaultOffset").Value, CultureInfo.InvariantCulture);
+                PageResultsCount = Int16.Parse(configuration.GetSection("PageResultsCount").Value, CultureInfo.InvariantCulture);
+                PageOffsetValue = Int16.Parse(configuration.GetSection("PageOffsetValue").Value, CultureInfo.InvariantCulture);
             }
             catch
             {
@@ -28,8 +28,8 @@ namespace Access2Justice.Shared.Bing
 
         public string CustomConfigId { get; set; }
 
-        public Int16 DefaultCount { get; set; }
+        public Int16 PageResultsCount { get; set; }
 
-        public Int16 DefaultOffset { get; set; }
+        public Int16 PageOffsetValue { get; set; }
     }
 }

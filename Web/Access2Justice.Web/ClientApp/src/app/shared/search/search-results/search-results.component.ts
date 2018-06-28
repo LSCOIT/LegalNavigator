@@ -2,7 +2,9 @@ import { Component, OnInit, Input } from '@angular/core';
 import { NavigateDataService } from '../../navigate-data.service';
 import { ResourceResult } from './search-result';
 import { SearchService } from '../search.service';
+import { PaginationService } from '../pagination.service';
 import { IResourceFilter } from './search-results.model';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-search-results',
@@ -21,7 +23,7 @@ export class SearchResultsComponent implements OnInit {
   resourceResults: ResourceResult[] = [];
   filterType: string = 'All';  
   resourceTypeFilter: any[];
-  resourceFilter: IResourceFilter = { ResourceType: '',ContinuationToken: '',TopicIds: '',PageNumber: '',Location: ''};
+  resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: '', PageNumber: 0, Location: '' };
   topicIds: any[];
   isServiceCall: boolean;
   currentPage: number = 0;  
@@ -34,7 +36,7 @@ export class SearchResultsComponent implements OnInit {
   pagesToShow = 0;
 
 
-  constructor(private navigateDataService: NavigateDataService, private searchService: SearchService) { }
+  constructor(private navigateDataService: NavigateDataService, private searchService: SearchService, private paginationService: PaginationService) { }
 
   bindData() {
     this.searchResults = this.navigateDataService.getData();
@@ -44,12 +46,12 @@ export class SearchResultsComponent implements OnInit {
       if (this.isWebResource) {
         this.total = this.searchResults.webResources.webPages.totalEstimatedMatches;
         this.searchText = this.searchResults.webResources.queryContext.originalQuery;
-        this.pagesToShow = 10;
-        this.limit = 50;
+        this.pagesToShow = environment.webResourcePagesToShow;
+        this.limit = environment.webResourceRecordsToDisplay;
       } else if (this.isInternalResource) {
         this.resourceTypeFilter = this.searchResults.resourceTypeFilter;
         // need to revisit this logic..
-        this.resourceResults = this.searchResults.resourceTypeFilter.reverse();        
+        this.resourceResults = this.searchResults.resourceTypeFilter.reverse();
         if (this.resourceTypeFilter != undefined) {
 
           for (var i = 0; i < this.resourceTypeFilter.length; i++) {
@@ -60,18 +62,16 @@ export class SearchResultsComponent implements OnInit {
               }];
               this.topicIds = this.searchResults.topicIds;
               this.total = this.resourceTypeFilter[i].ResourceCount;
-              this.pagesToShow = 2;
-              this.limit = 1;
+              this.pagesToShow = environment.internalResourcePagesToShow;
+              this.limit = environment.internalResourceRecordsToDisplay;
               break;
             }
           }
         }
-
       } else {
         this.isLuisResponse = true;
         console.log(this.searchResults.luisResponse);
       }
-
     }
   }
   
@@ -92,7 +92,7 @@ export class SearchResultsComponent implements OnInit {
   getInternalResource(filterName, pageNumber): void {
     this.isServiceCall = this.checkResource(filterName, pageNumber);
     if (this.isServiceCall) {
-      this.searchService.getPagedResources(this.resourceFilter).subscribe(response => {
+      this.paginationService.getPagedResources(this.resourceFilter).subscribe(response => {
         this.searchResults = response;
         this.addResource(filterName);
       });
@@ -118,7 +118,6 @@ export class SearchResultsComponent implements OnInit {
         }
         this.isServiceCall = true;
       }
-
     });
     return this.isServiceCall;
   }
@@ -136,23 +135,19 @@ export class SearchResultsComponent implements OnInit {
             'resources': this.searchResults.resources,
             'continuationToken': this.searchResults.continuationToken
           });
-
         }
-
       }
     }
   }
 
   searchResource(offset: number): void {
-    this.searchService.searchByOffset(this.searchText, offset)
+    this.paginationService.searchByOffset(this.searchText, offset)
       .subscribe(response => {
         if (response != undefined) {
           this.searchResults = response;
         }
       });
   }
-
-
 
   goToPage(n: number): void {
     if (this.page < n) {
@@ -191,5 +186,4 @@ export class SearchResultsComponent implements OnInit {
   calculateOffsetValue(pageNumber: number): number {
     return Math.ceil(pageNumber * 10) + 1;
   }
-
 }

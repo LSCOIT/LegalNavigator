@@ -85,8 +85,8 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             bingSettings.BingSearchUrl.Returns(new Uri("http://www.bing.com?{0}{1}{2}"));
             bingSettings.SubscriptionKey.Returns("subscriptionKey");
             bingSettings.CustomConfigId.Returns("0");
-            bingSettings.DefaultCount.Returns((short)10);
-            bingSettings.DefaultOffset.Returns((short)1);
+            bingSettings.PageResultsCount.Returns((short)10);
+            bingSettings.PageOffsetValue.Returns((short)1);
         }
 
         [Fact]
