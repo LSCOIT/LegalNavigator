@@ -29,7 +29,7 @@ namespace Access2Justice.Api.Controllers
 
 
         [HttpPost]
-        public IActionResult Post([FromBody] dynamic a2jSchema)
+        public IActionResult Post([FromBody] JObject a2jSchema)
         {
             try
             {
