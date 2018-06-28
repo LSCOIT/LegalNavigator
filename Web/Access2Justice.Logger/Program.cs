@@ -9,12 +9,12 @@ namespace Access2Justice.Logger
         static void Main(string[] args)
         {
             //Sample code for logging....         
-            var _properties = new Dictionary<string, string> { { "Search Topic", "Kicked out from home" }, { "Intent Result", "Eviction" } };
+            var aiLogProperties = new Dictionary<string, string> { { "Search Topic", "Kicked out from home" }, { "Intent Result", "Eviction" } };
             //pass null for key to pick it up from app.config...or use keyvalut (preferred) to get instrumentation key.
 
-            var _log = LoggerFactory.GetLogger(AppEnum.LoggerType.AppInsight, null);
-            _log.TrackEvent("TopicSearch", _properties);
-            _log.FlushInsights();
+            var aiLog = LoggerFactory.GetLogger(AppEnum.LoggerType.AppInsight, null);
+            aiLog.TrackEvent("TopicSearch", aiLogProperties);
+            aiLog.FlushInsights();
             try
             {
                 Console.WriteLine("logging exception...");
@@ -23,8 +23,8 @@ namespace Access2Justice.Logger
             }
             catch (Exception ex)
             {
-                _log.TrackException(ex, "100", AppEnum.EventDictionary.MessageFailedValidation);
-                _log.FlushInsights();
+                aiLog.TrackException(ex, "100", AppEnum.EventDictionary.MessageFailedValidation);
+                aiLog.FlushInsights();
             }
         }
     }

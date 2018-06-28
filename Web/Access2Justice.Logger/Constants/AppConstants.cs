@@ -8,7 +8,6 @@ namespace Access2Justice.Logger.Constants
 {
 	class AppConstants
 	{
-		public const string InstrumentationKey = "InstrumentationKey";
-        public const string ServiceFabricAppInsightContainer = "ApplicationInsight";
+		public const string InstrumentationKey = "InstrumentationKey";     
     }
 }
