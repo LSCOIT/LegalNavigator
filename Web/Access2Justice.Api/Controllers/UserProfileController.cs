@@ -17,14 +17,14 @@ namespace Access2Justice.Api.Controllers
         /// <summary>
         /// Get the user details by a user Id
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="oid"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("api/user/getuserprofile/{id}")]
-        public async Task<IActionResult> GetUserProfileDataAsync(string id)
+        [Route("api/user/getuserprofile/{oid}")]
+        public async Task<IActionResult> GetUserProfileDataAsync(string oid)
         {
 
-            var users = await UserProfileBusinessLogic.GetUserProficeDataAsync(id);
+            var users = await UserProfileBusinessLogic.GetUserProficeDataAsync(oid);
             return Ok(users);
         }
     }
