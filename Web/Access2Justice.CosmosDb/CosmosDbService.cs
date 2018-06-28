@@ -25,12 +25,12 @@ namespace Access2Justice.CosmosDb
             CreateCollectionIfNotExistsAsync().Wait();
         }
 
-        public async Task<Document> CreateItemAsync<T>(T item)
+        public async Task<Document> CreateItemAsync<T>(T item, string collectionId)
         {
             return await documentClient.CreateDocumentAsync(
-                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId), item);
+                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, collectionId), item);
         }
-
+                
         public async Task<T> GetItemAsync<T>(string id)
         {
             try

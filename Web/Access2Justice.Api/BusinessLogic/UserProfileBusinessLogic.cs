@@ -1,5 +1,6 @@
 ﻿using Access2Justice.CosmosDb.Interfaces;
 using Access2Justice.Shared.Interfaces;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -17,10 +18,17 @@ namespace Access2Justice.Api.BusinessLogic
             dbService = backendDatabaseService;
         }
 
-
         public async Task<dynamic> GetUserProfileDataAsync(string oId)
         {
             return await dbClient.FindItemsWhereAsync(dbSettings.UserProfileCollectionId, Constants.OId, oId);
+        }
+
+        public async Task<dynamic> CreateUserProfileDataAsync(dynamic userData)
+        {
+            var serializedResult = JsonConvert.SerializeObject(userData);
+            var userDocument = JsonConvert.DeserializeObject<object>(serializedResult);
+            var result = await dbService.CreateItemAsync(userDocument, dbSettings.ResourceCollectionId);
+            return result;
         }
 
     }
