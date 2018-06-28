@@ -18,7 +18,7 @@ namespace Access2Justice.Api.BusinessLogic
         }
 
 
-        public async Task<dynamic> GetUserProficeDataAsync(string oId)
+        public async Task<dynamic> GetUserProfileDataAsync(string oId)
         {
             return await dbClient.FindItemsWhereAsync(dbSettings.UserProfileCollectionId, Constants.OId, oId);
         }
