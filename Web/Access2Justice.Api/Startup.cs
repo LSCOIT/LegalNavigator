@@ -40,6 +40,7 @@ namespace Access2Justice.Api
             services.AddSingleton<ITopicsResourcesBusinessLogic, TopicsResourcesBusinessLogic>();
             services.AddSingleton<IWebSearchBusinessLogic, WebSearchBusinessLogic>();
             services.AddTransient<IHttpClientService, HttpClientService>();
+            services.AddSingleton<IUserProfileBusinessLogic, UserProfileBusinessLogic>();
             ConfigureCosmosDb(services);
 
             services.AddSwaggerGen(c =>
