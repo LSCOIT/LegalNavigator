@@ -38,6 +38,7 @@ h5 {
 .pl {
   font-size: 16px;
   line-height: 24px;
+  font-weight: 600;
 }
 
 p, .p {
@@ -91,11 +92,18 @@ button, .btn {
   border: 1px solid #7E7E7E;
 }
 
+.btn-selected {
+  border: 1px solid #7E7E7E;
+  height: 45px;
+  background-color:  #fff;
+  border-radius: 5px;
+  padding: 10px 40px;
+}
+
 /* Links */
 .navbar-default .navbar-nav > li > a {
   color: #333;
 }
-
 
 .navbar-default .navbar-nav > li > a:hover {
   color: #585858;
@@ -103,10 +111,16 @@ button, .btn {
 
 .link {
   color: #0D3FB8;
+  font-weight: 600;
 }
 
 .link:hover {
   color: #0B2B78;
+}
+
+/*Images*/
+.sec-illustration {
+  width: 60px;
 }
 
 @media only screen and (min-width : 768px) {
