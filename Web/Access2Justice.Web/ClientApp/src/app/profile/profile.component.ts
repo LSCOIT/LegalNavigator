@@ -1,6 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PersonalizedPlanService } from '../profile/personalized-plan/personalized-plan.service';
-import { PersonalizedPlanCondition, Resources, PlanSteps } from '../profile/personalized-plan/personalized-plan';
+import { Resources, PlanSteps } from '../profile/personalized-plan/personalized-plan';
 import { IResourceFilter } from '../shared/search/search-results/search-results.model';
 
 @Component({
@@ -45,7 +45,7 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  getpersonalizedResources(event) {
+  getpersonalizedResources() {
     this.personalizedPlanService.getPersonalizedResources(this.resourceFilter)
       .subscribe(response => {
         if (response != undefined) {

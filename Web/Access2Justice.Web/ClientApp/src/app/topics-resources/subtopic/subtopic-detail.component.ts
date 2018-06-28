@@ -1,6 +1,6 @@
 import { Component, OnInit} from "@angular/core";
 import { TopicService } from '../shared/topic.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { NavigateDataService } from '../../shared/navigate-data.service';
 
 @Component({

@@ -35,7 +35,7 @@
         </div>
         <app-action-plan-card [planDetails]="planDetails"></app-action-plan-card>
       </tab>
-      <tab heading="My Saved Resources" (select)="getpersonalizedResources($event)">
+      <tab heading="My Saved Resources" (select)="getpersonalizedResources()">
         <app-search-results [personalizedResources]="personalizedResources" *ngIf="isSavedResources"></app-search-results>
       </tab>
     </tabset>

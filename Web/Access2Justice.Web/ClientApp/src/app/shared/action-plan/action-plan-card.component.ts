@@ -1,7 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { PersonalizedPlanCondition, Resources, PlanSteps } from '../../profile/personalized-plan/personalized-plan';
-import { PersonalizedPlanService } from '../../profile/personalized-plan/personalized-plan.service';
-import { ActivatedRoute } from '@angular/router';
+import { PlanSteps, UpdateCompletedStatus } from '../../profile/personalized-plan/personalized-plan';
 import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 
 @Component({
@@ -15,10 +13,11 @@ export class ActionPlanCardComponent implements OnChanges {
   tmptopics: any = [];
   steps: any;
   planSteps: Array<PlanSteps>;
-  planStep: PlanSteps = { topicId: '', steps: [] };
+  planStep: PlanSteps = { topicId: '', topicName:'', steps: [] };
   displaySteps: boolean = false;
+  updateCompletedStatus: UpdateCompletedStatus = { oId: '', topicId: '', stepId: '', completedStatus: false };
 
-  constructor(private personalizedPlanService: PersonalizedPlanService) { }
+  constructor() { }
 
   getConditions(): void {
     if (this.planDetails.length === 0) {
@@ -29,23 +28,25 @@ export class ActionPlanCardComponent implements OnChanges {
       this.planSteps = [];
       if (this.planDetails.topicTags) {
         this.planDetails.topicTags.forEach(item => {
-          this.planStep = { topicId: '', steps: [] };
-          this.planStep.topicId = item.id[0].name;
+          this.planStep = { topicId: '', topicName: '', steps: [] };
+          this.planStep.topicName = item.id[0].name;
+          this.planStep.topicId = item.id[0].id;
           this.planStep.steps = item.stepTags;
           this.planSteps.push(this.planStep);
           this.displaySteps = true;
         });
       }
       else {
-        this.planStep = { topicId: '', steps: [] };
-        this.planStep.topicId = this.planDetails.id[0].name;
+        this.planStep = { topicId: '', topicName: '', steps: [] };
+        this.planStep.topicName = this.planDetails.id[0].name;
+        this.planStep.topicId = this.planDetails.id[0].id;
         this.planStep.steps = this.planDetails.stepTags;
         this.planSteps.push(this.planStep);
         this.displaySteps = true;
       }
-
     }
   }
+
   ngOnChanges() {
     this.getConditions();
   }

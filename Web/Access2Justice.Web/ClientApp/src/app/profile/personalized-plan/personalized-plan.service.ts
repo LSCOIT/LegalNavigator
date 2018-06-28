@@ -7,11 +7,8 @@ import { IResourceFilter } from '../../shared/search/search-results/search-resul
 
 @Injectable()
 export class PersonalizedPlanService {
-
-  resource: Resources;
   tempStorage: Array<Resources> = [];
   resoureStorage: any = [];
-  resourceTemp: any = [];
   sessionKey: string = "bookmarkedResource";
   isObjectExists: boolean = false;
   topics: string[] = [];
@@ -25,9 +22,7 @@ export class PersonalizedPlanService {
   }
 
   saveResourcesToSession(resources) {
-
-    this.resoureStorage = sessionStorage.getItem(this.sessionKey);
-
+    this.resoureStorage = localStorage.getItem(this.sessionKey);
     if (this.resoureStorage != undefined && this.resoureStorage.length > 0) {
       this.tempStorage = JSON.parse(this.resoureStorage);
       for (var i = 0; i < this.tempStorage.length; i++) {
@@ -37,12 +32,12 @@ export class PersonalizedPlanService {
       }
       if (!this.isObjectExists) {
         this.tempStorage.push(resources);
-        sessionStorage.setItem(this.sessionKey, JSON.stringify(this.tempStorage));
+        localStorage.setItem(this.sessionKey, JSON.stringify(this.tempStorage));
       }
     }
     else {
       this.tempStorage = [resources];
-      sessionStorage.setItem(this.sessionKey, JSON.stringify(this.tempStorage));
+      localStorage.setItem(this.sessionKey, JSON.stringify(this.tempStorage));
     }
   }
 
@@ -70,7 +65,7 @@ export class PersonalizedPlanService {
   getBookmarkedData() {
     this.topics = [];
     this.resources = [];
-    var resourceData = sessionStorage.getItem(this.sessionKey);
+    var resourceData = localStorage.getItem(this.sessionKey);
     if (resourceData != undefined && resourceData.length > 0) {
       this.tempStorage = JSON.parse(resourceData);
       for (var i = 0; i < this.tempStorage.length; i++) {

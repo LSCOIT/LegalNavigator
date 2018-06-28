@@ -1,10 +1,5 @@
 export interface PersonalizedPlanCondition {
-  title: string;
-  description: string;
-  markCompleted: boolean;
-  stepId: string;
-  order: string;
-  url: string; //bookmarked link - url at which user saves hte profile
+  url: string; //bookmarked link - url at which user saves the profile
   resourceType: string;  //Articles/organizations
   itemId: string; //GUID from Url
 }
@@ -20,6 +15,7 @@ export interface ActionPlanSteps{
 
 export interface PlanSteps {
   topicId: string;
+  topicName: string;
   steps: Array<Steps>[];
 }
 
@@ -29,6 +25,14 @@ export interface Steps {
   type: string;
   description: string;
   order: string;
+  isCompleted: boolean;
+}
+
+export interface UpdateCompletedStatus {
+  oId: string;
+  topicId: string;
+  stepId: string;
+  completedStatus: boolean;
 }
 
 
