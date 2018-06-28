@@ -32,6 +32,8 @@ import { SearchFilterPipe } from './search/search-filter.pipe';
 import { BreadcrumbComponent } from '../topics-resources/breadcrumb/breadcrumb.component';
 import { MapResultsComponent } from './sidebars/map-results.component';
 import { MapResultsService } from './sidebars/map-results.service';
+import { PaginationComponent } from './pagination/pagination.component';
+import { PaginationService } from './search/pagination.service';
 import { ActionPlanCardComponent } from './action-plan/action-plan-card.component';
 import { UserActionSidebarComponent } from './sidebars/user-action-sidebar.component';
 import { SettingButtonComponent } from './resource/user-action/setting-button.component';
@@ -70,6 +72,7 @@ import { SettingButtonComponent } from './resource/user-action/setting-button.co
     SearchFilterPipe,
     BreadcrumbComponent,
     MapResultsComponent,
+    PaginationComponent,
     UserActionSidebarComponent,
     SettingButtonComponent
   ],
@@ -103,7 +106,8 @@ import { SettingButtonComponent } from './resource/user-action/setting-button.co
     LocationService,
     NavigateDataService,
     SearchService,
-    MapResultsService
+    MapResultsService,
+    PaginationService
   ]
 })
 export class SharedModule { }

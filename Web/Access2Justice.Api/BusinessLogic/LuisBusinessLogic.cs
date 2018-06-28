@@ -1,10 +1,15 @@
 ﻿using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Luis;
+using Access2Justice.Shared.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Access2Justice.Api
 {
@@ -14,18 +19,23 @@ namespace Access2Justice.Api
         private readonly ILuisSettings luisSettings;
         private readonly ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic;
         private readonly IWebSearchBusinessLogic webSearchBusinessLogic;
+        private readonly IBingSettings bingSettings;
 
-        public LuisBusinessLogic(ILuisProxy luisProxy, ILuisSettings luisSettings, ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic, IWebSearchBusinessLogic webSearchBusinessLogic)
+        public LuisBusinessLogic(ILuisProxy luisProxy, ILuisSettings luisSettings, ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic, IWebSearchBusinessLogic webSearchBusinessLogic, IBingSettings bingSettings)
         {
             this.luisSettings = luisSettings;
             this.luisProxy = luisProxy;
             this.topicsResourcesBusinessLogic = topicsResourcesBusinessLogic;
             this.webSearchBusinessLogic = webSearchBusinessLogic;
+            this.bingSettings = bingSettings;
         }
 
-        public async Task<dynamic> GetResourceBasedOnThresholdAsync(string query)
+        public async Task<dynamic> GetResourceBasedOnThresholdAsync(LuisInput luisInput)
         {
-            var luisResponse = await luisProxy.GetIntents(query);
+            //Encoding search Text before sending it to external systems.
+            string encodedSentence = HttpUtility.UrlEncode(luisInput.Sentence);            
+
+            var luisResponse = await luisProxy.GetIntents(encodedSentence);
 
             var intentWithScore = ParseLuisIntent(luisResponse);
 
@@ -34,12 +44,12 @@ namespace Access2Justice.Api
             switch (threshold)
             {
                 case (int)LuisAccuracyThreshold.High:
-                    return await GetInternalResourcesAsync(intentWithScore.TopScoringIntent);
+                    return await GetInternalResourcesAsync(intentWithScore.TopScoringIntent,luisInput.Location);
                 case (int)LuisAccuracyThreshold.Medium:
-                    JObject luisObject = new JObject { { Constants.LuisResponse, luisResponse } };
+                    JObject luisObject = new JObject { { "luisResponse", luisResponse } };
                     return luisObject.ToString();
                 default:
-                    return await GetWebResourcesAsync(query);
+                    return await GetWebResourcesAsync(encodedSentence);
             }
         }
 
@@ -72,33 +82,58 @@ namespace Access2Justice.Api
             }
         }
 
-        public async Task<dynamic> GetInternalResourcesAsync(string keyword)
+        public async Task<dynamic> GetInternalResourcesAsync(string keyword,Location location)
         {
-            var topics = await topicsResourcesBusinessLogic.GetTopicsAsync(keyword);
-            var resources = await topicsResourcesBusinessLogic.GetResourcesAsync(topics);
+            string topic = string.Empty, resource = string.Empty;
+            var topics = await topicsResourcesBusinessLogic.GetTopicsAsync(keyword,location);
 
-            var serializedTopics = JsonConvert.SerializeObject(topics);
-            var serializedResources = JsonConvert.SerializeObject(resources);
+            List<string> topicIds = new List<string>();
+            foreach (var item in topics)
+            {
+                string topicId = item.id;
+                topicIds.Add(topicId);
+            }
+
+            dynamic serializedTopics = "[]";
+            dynamic serializedResources = "[]";
+            dynamic serializedToken = "[]";
+            dynamic serializedTopicIds = "[]";
+            dynamic serializedGroupedResources = "[]";
+            if (topicIds.Count > 0)
+            {
+                ResourceFilter resourceFilter = new ResourceFilter { TopicIds = topicIds, PageNumber = 0, ResourceType = "ALL", Location = location };                
+                var GetResourcesTask =  topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
+                var ApplyPaginationTask =  topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
+                await Task.WhenAll(GetResourcesTask, ApplyPaginationTask);
+                var groupedResourceType = GetResourcesTask.Result;
+                PagedResources resources = ApplyPaginationTask.Result;
+                serializedTopics = JsonConvert.SerializeObject(topics);
+                serializedResources = JsonConvert.SerializeObject(resources.Results);
+                serializedToken = resources.ContinuationToken ?? "[]";
+                serializedTopicIds = JsonConvert.SerializeObject(topicIds);
+                serializedGroupedResources = JsonConvert.SerializeObject(groupedResourceType);
+            }
 
             JObject internalResources = new JObject {
-                { Constants.Topics, JsonConvert.DeserializeObject(serializedTopics) },
-                { Constants.Resources, JsonConvert.DeserializeObject(serializedResources) },
-                { Constants.TopIntent, keyword }
+                { "topics", JsonConvert.DeserializeObject(serializedTopics) },
+                { "resources", JsonConvert.DeserializeObject(serializedResources) },
+                {"continuationToken", JsonConvert.DeserializeObject(serializedToken) },
+                {"topicIds" , JsonConvert.DeserializeObject(serializedTopicIds)},
+                { "resourceTypeFilter", JsonConvert.DeserializeObject(serializedGroupedResources) },
+                { "topIntent", keyword }
             };
-
             return internalResources.ToString();
         }
 
-        public async Task<dynamic> GetWebResourcesAsync(string query)
+        public async Task<dynamic> GetWebResourcesAsync(string searchTerm)
         {
-            var response = await webSearchBusinessLogic.SearchWebResourcesAsync(query);
-
+            var uri = string.Format(CultureInfo.InvariantCulture, bingSettings.BingSearchUrl.OriginalString, searchTerm, bingSettings.CustomConfigId, bingSettings.PageResultsCount, bingSettings.PageOffsetValue);
+            var response = await webSearchBusinessLogic.SearchWebResourcesAsync(new Uri(uri));
             JObject webResources = new JObject
             {
-                { Constants.WebResources , JsonConvert.DeserializeObject(response) }
+                { "webResources" , JsonConvert.DeserializeObject(response) }
             };
-
             return webResources.ToString();
-        }
+        }        
     }
 }

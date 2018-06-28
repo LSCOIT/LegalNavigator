@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Access2Justice.Shared.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Access2Justice.Shared.Interfaces
@@ -7,7 +8,9 @@ namespace Access2Justice.Shared.Interfaces
     {
         Task<dynamic> FindItemsWhereAsync(string collectionId, string propertyName, string value);
         Task<dynamic> FindItemsWhereContainsAsync(string collectionId, string propertyName, string value);
+        Task<dynamic> FindItemsWhereContainsWithLocationAsync(string collectionId, string propertyName, string value,Location location);
         Task<dynamic> FindItemsWhereArrayContainsAsync(string collectionId, string arrayName, string propertyName, string value);
         Task<dynamic> FindItemsWhereArrayContainsAsync(string collectionId, string arrayName, string propertyName, IEnumerable<string> values);
+        Task<dynamic> FindItemsWhereArrayContainsWithAndClauseAsync(string arrayName, string propertyName, string andPropertyName, ResourceFilter resourceFilter,bool isResourceCountCall= false);
     }
 }
