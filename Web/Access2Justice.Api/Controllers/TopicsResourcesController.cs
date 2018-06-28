@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Access2Justice.Shared.Interfaces;
+using Access2Justice.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Access2Justice.Api.Controllers
@@ -8,9 +9,12 @@ namespace Access2Justice.Api.Controllers
     public class TopicsResourcesController : Controller
     {
         private readonly ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic;
-        public TopicsResourcesController(ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic)
+        private readonly ILuisBusinessLogic luisBusinessLogic;
+
+        public TopicsResourcesController(ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic, ILuisBusinessLogic luisBusinessLogic)
         {
             this.topicsResourcesBusinessLogic = topicsResourcesBusinessLogic;
+            this.luisBusinessLogic = luisBusinessLogic;
         }
 
         /// <summary>
@@ -67,6 +71,15 @@ namespace Access2Justice.Api.Controllers
 
             var topics = await topicsResourcesBusinessLogic.GetDocumentAsync(id);
             return Ok(topics);
+        }
+
+        [HttpPost]
+        [Route("api/resources")]
+        public async Task<IActionResult> GetPagedDataAsync([FromBody]ResourceFilter resourceInput)
+        {
+            var response = await topicsResourcesBusinessLogic.GetPagedResourceAsync(resourceInput);
+            
+            return Content(response);            
         }
 
         

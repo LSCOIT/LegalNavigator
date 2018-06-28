@@ -5,6 +5,7 @@
 <!-- Deep Link START -->
 <div *ngIf="webResult.deepLinks" class="resource-content">
   <div *ngFor="let deepLink of webResult.deepLinks" class="col-md-12 sidebar">
+    <b><p>{{webResult.dateLastCrawled}}</p></b>
     <a href="{{deepLink.url}}"><h4>{{deepLink.name}}</h4></a>
     <span class="display-url">{{deepLink.url}}</span>
     <p>{{deepLink.snippet}}</p>

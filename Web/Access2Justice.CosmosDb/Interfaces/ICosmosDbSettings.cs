@@ -10,5 +10,6 @@ namespace Access2Justice.CosmosDb.Interfaces
         string TopicCollectionId { get; }
         string ResourceCollectionId { get; }
         string UserProfileCollectionId { get; }
+        int PageResultsCount { get; }
     }
 }

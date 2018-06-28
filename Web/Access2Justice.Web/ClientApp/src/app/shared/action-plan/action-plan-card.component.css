@@ -1,0 +1,107 @@
+.plan-detail {
+  box-shadow: 0 0 5px 3px #ddd;
+}
+
+.plan-heading {
+  border-bottom: 1px solid #ddd;
+}
+
+.plan-spacing {
+  padding: 10px;
+}
+
+.main-icon {
+  margin-top: 10px;
+}
+
+.subtopic-icon {
+  width: 45px;
+}
+
+.more-menu {
+	margin-top: 30px;
+	width: 30px;
+	cursor: pointer;
+}
+
+.accordion-img {
+	width: 20px;
+	margin-top: 5px;
+}
+
+.plan-steps .btn-selected {
+	padding: 10px;
+	width: 120px;
+	float: right;
+	margin-top: -5px;
+}
+
+.quick-links {
+	margin-top: 0;
+	padding-top: 0;
+	font-weight: 600;
+	padding: 20px 10px 20px 20px;
+}
+
+.quick-links li {
+	padding: 10px 0;
+}
+
+.plan-steps {
+	margin: 20px 0;
+	padding-right: 20px;
+}
+
+.media-body h3 {
+	margin-top: -3px;
+	margin-bottom: 30px;
+}
+
+#complete-btn {
+	float: left;
+	margin-bottom: 30px;
+}
+
+.step-content div {
+  margin-bottom: 20px;
+}
+
+.step-content div ul li {
+  padding: 5px 0;
+}
+
+iframe {
+  width: 100%;
+  height: 325px;
+}
+
+@media only screen and (min-width : 768px) {
+	.plan-spacing {
+    padding: 15px;
+  }
+
+  .step-content {
+    margin-left: 33px;
+    padding-right: 35px;
+  }
+
+  #complete-btn {
+    float: right;
+    margin-bottom: 0;
+  }
+}
+
+@media only screen and (min-width : 992px) {
+  .plan-spacing {
+    padding: 10px 20px;
+  }
+
+  .plan-steps {
+    border-left: 1px solid #ddd;
+  }
+
+  .quick-links {
+    margin-top: 10px;
+    padding-top: 20px;
+  }
+}
