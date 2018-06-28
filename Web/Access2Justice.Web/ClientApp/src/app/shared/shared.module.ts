@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from '../app-routing.module';
 import { FormsModule } from '@angular/forms';
-import { BsDropdownModule, ModalModule } from 'ngx-bootstrap';
+import { AccordionModule, BsDropdownModule, ModalModule } from 'ngx-bootstrap';
 
 import { ChatbotComponent } from './chatbot/chatbot.component';
 import { CuratedResourceComponent } from './search/search-results/curated-resource/curated-resource.component';
@@ -34,16 +34,21 @@ import { MapResultsComponent } from './sidebars/map-results.component';
 import { MapResultsService } from './sidebars/map-results.service';
 import { PaginationComponent } from './pagination/pagination.component';
 import { PaginationService } from './search/pagination.service';
+import { ActionPlanCardComponent } from './action-plan/action-plan-card.component';
+import { UserActionSidebarComponent } from './sidebars/user-action-sidebar.component';
+import { SettingButtonComponent } from './resource/user-action/setting-button.component';
 
 @NgModule({
   imports: [
     CommonModule,
     AppRoutingModule,
     FormsModule,
+    AccordionModule.forRoot(),
     BsDropdownModule.forRoot(),
     ModalModule.forRoot()    
   ],
   declarations: [
+    ActionPlanCardComponent,
     ChatbotComponent,
     CuratedResourceComponent,
     DownloadButtonComponent,
@@ -67,9 +72,12 @@ import { PaginationService } from './search/pagination.service';
     SearchFilterPipe,
     BreadcrumbComponent,
     MapResultsComponent,
-    PaginationComponent
+    PaginationComponent,
+    UserActionSidebarComponent,
+    SettingButtonComponent
   ],
   exports: [
+    ActionPlanCardComponent,
     ChatbotComponent,
     CuratedResourceComponent,
     DownloadButtonComponent,
@@ -89,8 +97,9 @@ import { PaginationService } from './search/pagination.service';
     SaveButtonComponent,
     ShareButtonComponent,
     UpperNavComponent,
-    WebResourceComponent,
-    BreadcrumbComponent
+    BreadcrumbComponent,
+    UserActionSidebarComponent,
+    WebResourceComponent
   ],
   providers: [
     CuratedResourceService,

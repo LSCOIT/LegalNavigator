@@ -7,11 +7,13 @@ import { SharedModule } from './shared/shared.module';
 
 import {
   AccordionModule,
+  BsDropdownModule, 
   CarouselModule,
   CollapseModule,
   ModalModule,
   ProgressbarModule,
-  ProgressbarConfig
+  ProgressbarConfig,
+  TabsModule 
 } from 'ngx-bootstrap';
 
 import { AppComponent } from './app.component';
@@ -30,6 +32,8 @@ import { SubtopicDetailComponent } from './topics-resources/subtopic/subtopic-de
 import { TopicsResourcesComponent } from './topics-resources/topics-resources.component';
 import { TopicsComponent } from './topics-resources/topic/topics.component';
 import { BreadcrumbService } from './topics-resources/shared/breadcrumb.service';
+import { PersonalizedPlanComponent } from './guided-assistant/personalized-plan/personalized-plan.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +49,9 @@ import { BreadcrumbService } from './topics-resources/shared/breadcrumb.service'
     TopicsComponent,
     TopicsResourcesComponent,
     SubtopicDetailComponent,
-    SubtopicsComponent    
+    SubtopicsComponent,
+    PersonalizedPlanComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -54,10 +60,12 @@ import { BreadcrumbService } from './topics-resources/shared/breadcrumb.service'
     AppRoutingModule,
     SharedModule,
     AccordionModule.forRoot(),
+    BsDropdownModule.forRoot(),
     CarouselModule.forRoot(),
     CollapseModule.forRoot(),
     ModalModule.forRoot(),
-    ProgressbarModule.forRoot()
+    ProgressbarModule.forRoot(),
+    TabsModule.forRoot()
   ],
   providers: [
     TopicService,
