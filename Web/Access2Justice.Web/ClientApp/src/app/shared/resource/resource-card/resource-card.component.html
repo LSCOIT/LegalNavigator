@@ -74,7 +74,7 @@
       </div>
       <div *ngIf="resource.resourceType === 'Videos'" class="row">
         <div class="col-sm-4 col-xs-12 resource-video">
-          <iframe title="{{resource.name}}" src="" frameborder="0" allowfullscreen></iframe><!--add video title-->
+          <iframe title="{{resource.name}}" [src]='resourceUrl()' frameborder="0" allowfullscreen></iframe><!--add video title-->
         </div>
         <div class="col-sm-8 col-xs-12">
           <h4 class="media-heading">{{resource.name}}</h4>
