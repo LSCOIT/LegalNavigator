@@ -11,10 +11,10 @@ namespace Access2Justice.Api.BusinessLogic
 {
     public class CuratedExperienceBuisnessLogic : ICuratedExperienceBuisnessLogic
     {
-        public CuratedExperience ConvertA2JAuthorToCuratedExperience(dynamic a2jSchema)
+        public CuratedExperience ConvertA2JAuthorToCuratedExperience(JObject a2jSchema)
         {
             var cx = new CuratedExperience();
-            var a2jProperties = ((JObject)a2jSchema).Properties();
+            var a2jProperties = (a2jSchema).Properties();
 
             cx.CuratedExperienceId = Guid.NewGuid();
             cx.Version = a2jProperties.GetValue("version");
