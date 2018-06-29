@@ -31,6 +31,12 @@ namespace Access2Justice.CosmosDb
                 UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId), item);
         }
 
+        public async Task<Document> CreateItemAsync<T>(T item, string collectionId)
+        {
+            return await documentClient.CreateDocumentAsync(
+                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, collectionId), item);
+        }
+
         public async Task<T> GetItemAsync<T>(string id)
         {
             try
@@ -145,6 +151,12 @@ namespace Access2Justice.CosmosDb
                     throw;
                 }
             }
+        }
+
+        public async Task<Document> CreateUserProfileAsync<T>(T item)
+        {
+            return await documentClient.CreateDocumentAsync(
+                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.UserProfileCollectionId), item);
         }
     }
 }

@@ -15,5 +15,6 @@ namespace Access2Justice.Shared.Interfaces
         Task<Document> UpdateItemAsync<T>(string id, T item);
         Task<dynamic> QueryItemsAsync(string collectionId, string query);
         Task<dynamic> ExecuteStoredProcedureAsync(string collectionId, string storedProcName, params dynamic[] procedureParams);
+        Task<Document> CreateItemAsync<T>(T item, string collectionId);
     }
 }
