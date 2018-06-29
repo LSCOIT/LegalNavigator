@@ -62,9 +62,9 @@ namespace Access2Justice.Api
             var apiEnpoint = new Uri(Configuration.GetSection("Api:Endpoint").Value);
             var url = $"{apiEnpoint.Scheme}://{apiEnpoint.Host}:{apiEnpoint.Port}";         
             app.UseCors(builder => builder.WithOrigins(url)
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader());
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
 
             app.UseMvc();
 
