@@ -1,5 +1,5 @@
 <div *ngIf="resource">
-  <div class="resource-content">
+  <div class="box-no-shadow">
     <div class="resource-body">
       <div class="pull-right">
         <div class="btn-group" dropdown>
@@ -17,9 +17,7 @@
       </div>
       <div *ngIf="resource.resourceType === 'Action Plans'" class="media">
         <div class="media-left">
-          <a href="#">
-            <img class="media-object" src="#" alt="...">
-          </a>
+          <img class="media-object" src="/assets/images/icons/action_plans.svg" aria-hidden="True">
         </div>
         <div class="media-body">
           <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}</h4></a>
@@ -39,9 +37,7 @@
       </div>
       <div *ngIf="resource.resourceType === 'Articles'" class="media">
         <div class="media-left">
-          <a href="#">
-            <img class="media-object" src="#" alt="...">
-          </a>
+          <img class="media-object" src="/assets/images/icons/articles.svg" aria-hidden="True">
         </div>
         <div class="media-body">
           <h4 class="media-heading">{{resource.name}}</h4>
@@ -50,42 +46,46 @@
       </div>
       <div *ngIf="resource.resourceType === 'Organizations'" class="media">
         <div class="media-left">
-          <a href="#">
-            <img class="media-object" src="#" alt="...">
-          </a>
+          <img class="media-object" src="/assets/images/icons/organizations.svg" aria-hidden="True">
         </div>
         <div class="media-body">
           <h4 class="media-heading org-card-heading">{{resource.name}}, {{resource.type}}</h4>
           <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span><span class="span-text">External link</span>
           <p>{{resource.description}}</p>
           <div class="org-content span-text">
-            <div class="col-sm-5">
-              <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+            <div class="col-sm-4" *ngIf="resource.address.length > 0">
+              <img src="./assets/images/small-icons/location.svg" alt="Address" class="nav-icon" />
               <span>{{resource.address}}</span>
             </div>
-            <div class="col-sm-3">
-              <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span><span>{{resource.telephone}}</span>
+            <div class="col-sm-4" *ngIf="resource.telephone.length > 0">
+              <img src="./assets/images/small-icons/call.svg" alt="Telephone" class="nav-icon" />
+              <span>{{resource.telephone}}</span>
             </div>
-            <div class="col-sm-4 org-url">
-              <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span><span>{{resource.url}}</span>
+            <div class="col-sm-4 org-url" *ngIf="resource.url.length > 0">
+              <img src="./assets/images/small-icons/email.svg" alt="Email" class="nav-icon" />
+              <span>{{resource.url}}</span>
             </div>
           </div>
         </div>
       </div>
       <div *ngIf="resource.resourceType === 'Videos'" class="row">
-        <div class="col-sm-4 col-xs-12 resource-video">
-          <iframe title="{{resource.name}}" src="" frameborder="0" allowfullscreen></iframe><!--add video title-->
+        <div class="media-left">
+          <img class="media-object" src="/assets/images/icons/videos.svg" aria-hidden="True">
         </div>
-        <div class="col-sm-8 col-xs-12">
-          <h4 class="media-heading">{{resource.name}}</h4>
+        <div class="media-body">
+          <h4 class="media-heading" (click)="openModal(template)">{{resource.name}}</h4>
           <p>{{resource.description}}</p>
         </div>
+        <ng-template #template>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <iframe title="{{resource.name}}" [src]='resourceUrl()' frameborder="0" allowfullscreen></iframe>
+        </ng-template>
       </div>
       <div *ngIf="resource.resourceType === 'Forms'" class="media">
         <div class="media-left">
-          <a href="#">
-            <img class="media-object" src="#" alt="...">
-          </a>
+          <img class="media-object" src="/assets/images/icons/forms.svg" aria-hidden="True">
         </div>
         <div class="media-body">
           <h4 class="media-heading">{{resource.name}}</h4>

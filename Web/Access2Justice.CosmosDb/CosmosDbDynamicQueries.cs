@@ -1,6 +1,10 @@
-﻿using Access2Justice.Shared.Interfaces;
+﻿using Access2Justice.Shared.Helper;
+using Access2Justice.Shared.Interfaces;
+using Access2Justice.Shared.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -43,20 +47,70 @@ namespace Access2Justice.CosmosDb
         {
             EnsureParametersAreNotNullOrEmpty(collectionId, arrayName, propertyName);
 
-            var arrayContainsClause = string.Empty;
-            var lastItem = values.Last();
-
-            foreach (var value in values)
-            {
-                arrayContainsClause += $" ARRAY_CONTAINS(c.{arrayName}, {{ '{propertyName}' : '" + value + "'})";
-                if (value != lastItem)
-                {
-                    arrayContainsClause += "OR";
-                }
-            }
-
+            string arrayContainsClause = ArrayContainsWithOrClause(arrayName, propertyName, values);
             var query = $"SELECT * FROM c WHERE {arrayContainsClause}";
             return await backendDatabaseService.QueryItemsAsync(collectionId, query);
+        }
+
+        public async Task<dynamic> FindItemsWhereContainsWithLocationAsync(string collectionId, string propertyName, string value, Location location)
+        {
+            EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
+            string locationFilter = FindLocationWhereArrayContains(location);
+            var query = $"SELECT * FROM c WHERE CONTAINS(c.{propertyName}, '{value.ToUpperInvariant()}')";
+            if (!string.IsNullOrEmpty(locationFilter))
+            {
+                query = query + " AND " + locationFilter;
+            }
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query);
+        }
+
+        public async Task<dynamic> FindItemsWhereArrayContainsWithAndClauseAsync(string arrayName, string propertyName, string andPropertyName, ResourceFilter resourceFilter, bool isResourceCountCall = false)
+        {
+            EnsureParametersAreNotNullOrEmpty(arrayName, propertyName, andPropertyName, resourceFilter.ResourceType);
+            string arrayContainsWithAndClause = ArrayContainsWithOrClause(arrayName, propertyName, resourceFilter.TopicIds);
+
+            if (resourceFilter.ResourceType.ToUpperInvariant() != "ALL")
+            {
+                arrayContainsWithAndClause = "(" + arrayContainsWithAndClause + ")";
+                arrayContainsWithAndClause += $" AND c.{andPropertyName} = '" + resourceFilter.ResourceType + "'";
+            }
+            string locationFilter = FindLocationWhereArrayContains(resourceFilter.Location);
+            if (!string.IsNullOrEmpty(locationFilter))
+            {
+                arrayContainsWithAndClause = arrayContainsWithAndClause + " AND " + locationFilter;
+            }
+
+            PagedResources pagedResources = new PagedResources();
+            if (isResourceCountCall)
+            {
+                var query = $"SELECT c.resourceType FROM c WHERE {arrayContainsWithAndClause}";
+                pagedResources = await backendDatabaseService.QueryResourcesCountAsync(query);
+            }
+            else
+            {
+                var query = $"SELECT * FROM c WHERE {arrayContainsWithAndClause}";
+                if (resourceFilter.PageNumber == 0)
+                {
+                    pagedResources = await backendDatabaseService.QueryPagedResourcesAsync(query, "");
+                    pagedResources.TopicIds = resourceFilter.TopicIds;
+                }
+                else
+                {
+                    pagedResources = await backendDatabaseService.QueryPagedResourcesAsync(query, resourceFilter.ContinuationToken);
+                    pagedResources.TopicIds = resourceFilter.TopicIds;
+                }
+            }
+            return pagedResources;
+        }
+
+        private dynamic FindLocationWhereArrayContains(Location location)
+        {
+            if (location == null || (string.IsNullOrEmpty(location.State) && string.IsNullOrEmpty(location.County)
+                && string.IsNullOrEmpty(location.City) && string.IsNullOrEmpty(location.ZipCode)))
+            {
+                return "";
+            }
+            return ArrayContainsWithMulitpleProperties("location", location);
         }
 
         private void EnsureParametersAreNotNullOrEmpty(params string[] parameters)
@@ -65,9 +119,37 @@ namespace Access2Justice.CosmosDb
             {
                 if (string.IsNullOrWhiteSpace(param))
                 {
-                    throw new ArgumentException("Paramters can not be null or empty spaces.");
+                    throw new ArgumentException("Parameters can not be null or empty spaces.");
                 }
             }
+        }
+
+        private string ArrayContainsWithMulitpleProperties(string propertyName, dynamic input)
+        {
+            var jsonSettings = UtilityHelper.JSONSanitizer();
+
+            string arrayContainsClause = JsonConvert.SerializeObject(input, jsonSettings);
+            string query = $" (ARRAY_CONTAINS(c.{propertyName},{{0}}))";
+            if (!string.IsNullOrEmpty(arrayContainsClause))
+            {
+                arrayContainsClause = string.Format(CultureInfo.InvariantCulture, query, arrayContainsClause + ",true");
+            }
+            return arrayContainsClause;
+        }
+
+        private string ArrayContainsWithOrClause(string arrayName, string propertyName, IEnumerable<string> values)
+        {
+            string arrayContainsWithOrClause = string.Empty;
+            var lastItem = values.Last();
+            foreach (var value in values)
+            {
+                arrayContainsWithOrClause += $" ARRAY_CONTAINS(c.{arrayName}, {{ '{propertyName}' : '" + value + "'})";
+                if (value != lastItem)
+                {
+                    arrayContainsWithOrClause += "OR";
+                }
+            }
+            return arrayContainsWithOrClause;
         }
     }
 }

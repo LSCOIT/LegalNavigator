@@ -1,17 +1,28 @@
-.sidebar {
-  margin-top: 20px;
+.sidebar-block {
+  background-color: #f4f4f4;
 }
 
 .sidebar-wrapper {
   margin-bottom: 20px;
 }
 
-.glyphicon-earphone {
-  margin-top: 10px; 
+.btn-primary {
+  margin: 20px auto;
 }
 
-.org {
-  display: inline-block;
-  margin-top: 20px;
-  min-width: 220px;
+.secondary-img {
+  width: 250px;
+  margin: 20px auto;
+}
+
+.link {
+  display: block;
+  margin-bottom: 10px;
+  color: #000;
+}
+
+@media only screen and (min-width : 992px) {
+  .secondary-img {
+    width: 100%;
+  }
 }
