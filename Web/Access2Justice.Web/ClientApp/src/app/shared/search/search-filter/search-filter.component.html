@@ -1,20 +1,25 @@
-<div class="filter-type">
-  Show:
-  <span *ngFor="let resource of resourceResults">
-    <button class="btn btn-default" (click)="sendFilterCriteria(resource.ResourceName)">{{resource.ResourceName}}<span>({{resource.ResourceCount}})</span></button>
-  </span>
-</div>
-<span>Sort:</span>
-<div class="btn-group" dropdown>
-  <button id="button-basic" dropdownToggle type="button" class="btn btn-default dropdown-toggle"
-          aria-controls="dropdown-basic">
-    {{selectedSortCriteria}} <span class="caret"></span>
-  </button>
-  <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-      role="menu" aria-labelledby="button-basic">
-    <li role="menuitem"><a class="dropdown-item" (click)="sendSortCriteria('A-Z','name')">A-Z</a></li>
-    <li role="menuitem"><a class="dropdown-item" (click)="sendSortCriteria('Best Match', 'bestMatch')">Best Match</a></li>
-    <li role="menuitem"><a class="dropdown-item" (click)="sendSortCriteria('Newest to Oldest','date')">Newest to Oldest</a></li>
-  </ul>
+<div class="filter row">
+  <div class="filter-type col-sm-9">
+    <div class="col-sm-1 p">
+      Show:
+    </div>
+    <div class="col-sm-11">
+      <button *ngFor="let resource of resourceResults" class="btn btn-selected" (click)="sendFilterCriteria(resource.ResourceName)">{{resource.ResourceName}}<span>({{resource.ResourceCount}})</span></button>
+    </div>
+  </div>
+  <div class="col-sm-2">
+    <div class="col-sm-4 p">Sort:</div>
+    <div class="btn-group col-sm-8" dropdown>
+      <button id="button-basic" dropdownToggle type="button" class="btn btn-selected dropdown-toggle" aria-controls="dropdown-basic">
+        {{selectedSortCriteria}} <span class="caret"></span>
+      </button>
+      <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+          role="menu" aria-labelledby="button-basic">
+        <li role="menuitem"><a class="dropdown-item" (click)="sendSortCriteria('A-Z','name')">A-Z</a></li>
+        <li role="menuitem"><a class="dropdown-item" (click)="sendSortCriteria('Best Match', 'bestMatch')">Best Match</a></li>
+        <li role="menuitem"><a class="dropdown-item" (click)="sendSortCriteria('Newest to Oldest','date')">Newest to Oldest</a></li>
+      </ul>
+    </div>
+  </div>
 </div>
 
