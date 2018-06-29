@@ -45,6 +45,21 @@ namespace Access2Justice.CosmosDb.Tests
         }
 
         [Fact]
+        public void FindItemsWhereWithMultipleArgumentsShouldConstructValidSqlQuery()
+        {
+            // Arrange
+            string query = @"SELECT * FROM c WHERE c.name='Tenant Action Plan for Eviction' AND c.resourceType='Action Plans'";
+            List<string> propertyNames = new List<string>() { "name", "resourceType" };
+            List<string> values = new List<string>() { "Tenant Action Plan for Eviction", "Action Plans" };
+
+            // Act
+            var result = dynamicQueries.FindItemsWhereAsync("resourcesCollections", propertyNames, values).Result;
+
+            // Assert
+            cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(), query);
+        }
+
+        [Fact]
         public void FindItemsWhereArrayContainsShouldConstructValidSqlQuery()
         {
             // Arrange

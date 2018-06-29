@@ -71,13 +71,15 @@ namespace Access2Justice.Api.BusinessLogic
             var result = await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.Name, topicName);
             return result;
         }
-                
+
         public async Task<dynamic> GetResourceDetailAsync(string resourceName, string resourceType)
         {
-            var result = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, Constants.Name, resourceName, Constants.ResourceType, resourceType);
+            List<string> propertyNames = new List<string>() { Constants.Name, Constants.ResourceType };
+            List<string> values = new List<string>() { resourceName, resourceType };
+            var result = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, propertyNames, values);
             return result;
         }
-                
+
         public async Task<dynamic> GetPagedResourceAsync(ResourceFilter resourceFilter)
         {
             dynamic serializedResources = "[]";
@@ -556,8 +558,7 @@ namespace Access2Justice.Api.BusinessLogic
             Topic topicdocuments = new Topic();
 
             foreach (var topicObject in topicObjects)
-            {
-                
+            {                
                     topicdocuments = CreateTopics(topicObject);
                     var serializedResult = JsonConvert.SerializeObject(topicdocuments);
                     var topicDocument = JsonConvert.DeserializeObject<object>(serializedResult);

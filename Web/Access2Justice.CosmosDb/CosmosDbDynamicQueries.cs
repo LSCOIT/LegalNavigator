@@ -27,12 +27,17 @@ namespace Access2Justice.CosmosDb
             return await backendDatabaseService.QueryItemsAsync(collectionId, query);
         }
 
-        public async Task<dynamic> FindItemsWhereAsync(string collectionId, string firstPropertyName, string firstValue, string secondPropertyName, string secondValue)
+        public async Task<dynamic> FindItemsWhereAsync(string collectionId, List<string> propertyNames, List<string> values)
         {
-            EnsureParametersAreNotNullOrEmpty(collectionId, firstPropertyName);
-            EnsureParametersAreNotNullOrEmpty(collectionId, secondPropertyName);
-
-            var query = $"SELECT * FROM c WHERE c.{firstPropertyName}='{firstValue}' AND c.{secondPropertyName}='{secondValue}'";
+            var query = "SELECT * FROM c WHERE ";
+            for (int iterator = 0; iterator< propertyNames.Count(); iterator++)
+            {
+                EnsureParametersAreNotNullOrEmpty(collectionId, propertyNames[iterator]);
+                query += $"c.{propertyNames[iterator]}='{values[iterator]}'";
+                if (iterator != propertyNames.Count()-1) {
+                    query += " AND ";
+                }
+            }
             return await backendDatabaseService.QueryItemsAsync(collectionId, query);
         }
 

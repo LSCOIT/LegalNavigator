@@ -30,8 +30,7 @@ namespace Access2Justice.Api.Controllers
             var response = await topicsResourcesBusinessLogic.GetTopLevelTopicsAsync();
             return Ok(response);
         }
-
-        
+                
         /// <summary>
         /// Get subtopics by the topic Id
         /// </summary>
@@ -41,12 +40,10 @@ namespace Access2Justice.Api.Controllers
         [Route("api/topics/getsubtopics/{parentTopicId}")]
         public async Task<IActionResult> GetSubTopics(string parentTopicId)
         {
-
             var topics = await topicsResourcesBusinessLogic.GetSubTopicsAsync(parentTopicId);
             return Ok(topics);
         }
-
-
+        
         /// <summary>
         /// Get the topic details by the document parent Id
         /// </summary>
@@ -60,7 +57,6 @@ namespace Access2Justice.Api.Controllers
             return Ok(topics);
         }
 
-
         /// <summary>
         /// Get the document details by a document Id
         /// </summary>
@@ -70,13 +66,38 @@ namespace Access2Justice.Api.Controllers
         [Route("api/topics/getdocument/{id}")]
         public async Task<IActionResult> GetDocumentDataAsync(string id)
         {
-
             var topics = await topicsResourcesBusinessLogic.GetDocumentAsync(id);
             return Ok(topics);
         }
 
+        [HttpPost]
+        [Route("api/resources")]
+        public async Task<IActionResult> GetPagedDataAsync([FromBody]ResourceFilter resourceInput)
+        {
+            var response = await topicsResourcesBusinessLogic.GetPagedResourceAsync(resourceInput);
+
+            return Content(response);
+        }
+
+        /// <summary>
+        /// Get the parent topics by a topic id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("api/topics/getbreadcrumbs/{id}")]
+        public async Task<IActionResult> GetBreadcrumbAsync(string id)
+        {
+            var topics = await topicsResourcesBusinessLogic.GetBreadcrumbDataAsync(id);
+            return Ok(topics);
+        }
+
         //Added for Topic and Resource Tools API
-        #region get all topic Guids when ParentTopicId is mapped to topicTags or ReferenceTags for resources
+        /// <summary>
+        /// get topic details based on topic name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("api/topics/gettopicdetails/{name}")]
         public async Task<IActionResult> GetTopicDetails(string name)
@@ -84,136 +105,93 @@ namespace Access2Justice.Api.Controllers
             var topics = await topicsResourcesBusinessLogic.GetTopicDetailsAsync(name);
             return Ok(topics);
         }
-        #endregion
 
-        #region get topic sample document
+        /// <summary>
+        /// get resource details based on name and resource type
+        /// </summary>
+        /// <param name="name", "resourceType"></param>
+        /// <returns></returns>
         [HttpGet]
-        [Route("api/topics/getsampletopicdetails")]
-        public async Task<IActionResult> GetSampleTopicDetails()
+        [Route("api/topics/getresourcedetails/{name}/{type}")]
+        public async Task<IActionResult> GetResourceDetails(string name, string type)
         {
-            string name = "Sample";
-            var topics = await topicsResourcesBusinessLogic.GetTopicDetailsAsync(name);
-            return Ok(topics);
-        }
-        #endregion
-
-        #region get resource sample document based on type
-        [HttpGet]
-        [Route("api/topics/getsampleresourcedetails/{type}")]
-        public async Task<IActionResult> GetSampleResourceDetails(string type)
-        {
-            string name = "Sample";
             var resources = await topicsResourcesBusinessLogic.GetResourceDetailAsync(name, type);
             return Ok(resources);
         }
-        #endregion
 
-        #region get topic schema
+        /// <summary>
+        /// get topic schema
+        /// </summary>
         [HttpGet]
         [Route("api/topics/getschematopic")]
-        public async Task<IActionResult> GetSchemaTopic(Topic topic)
+        public  Topic GetSchemaTopic()
         {
-            var topics = new Topic();
-            var name = topic.Name;
-            await topicsResourcesBusinessLogic.GetTopicDetailsAsync(name);
-            return null;
+            return new Topic();            
         }
-        #endregion
-
-        #region get action plan schema
+ 
+        /// <summary>
+        /// get action plan schema
+        /// </summary>
         [HttpGet]
         [Route("api/topics/getschemaactionplan")]
-        public async Task<IActionResult> GetSchemaActionPlan(ActionPlan actionPlan)
-        {
-            var actionPlans = new ActionPlan();
-            var name = actionPlans.Name;
-            var type = "Action Plans";
-            await topicsResourcesBusinessLogic.GetResourceDetailAsync(name,type);
-            return null;
+        public ActionPlan GetSchemaActionPlan()
+        {           
+            return new ActionPlan();
         }
-        #endregion
 
-        #region get article schema
+        /// <summary>
+        /// get article schema
+        /// </summary>
         [HttpGet]
         [Route("api/topics/getschemaarticle")]
-        public async Task<IActionResult> GetSchemaArticle(Article article)
+        public Article GetSchemaArticle()
         {
-            var articles = new Article();
-            var name = articles.Name;
-            var type = "Articles";
-            await topicsResourcesBusinessLogic.GetResourceDetailAsync(name, type);
-            return null;
+            return new Article();
         }
-        #endregion
 
-        #region get video schema
+        /// <summary>
+        /// get video schema
+        /// </summary>
         [HttpGet]
         [Route("api/topics/getschemavideo")]
-        public async Task<IActionResult> GetSchemaVideo(Video video)
+        public Video GetSchemaVideo()
         {
-            var videos = new Video();
-            var name = videos.Name;
-            var type = "Videos";
-            await topicsResourcesBusinessLogic.GetResourceDetailAsync(name, type);
-            return null;
+            return new Video();
         }
-        #endregion
 
-        #region get organizations schema
+        /// <summary>
+        /// get organizations schema
+        /// </summary>
         [HttpGet]
         [Route("api/topics/getschemaorganization")]
-        public async Task<IActionResult> GetSchemaOrganization(Organization form)
+        public Organization GetSchemaOrganization()
         {
-            var organizations = new Organization();
-            var name = organizations.Name;
-            var type = "Organizations";
-            await topicsResourcesBusinessLogic.GetResourceDetailAsync(name, type);
-            return null;
-        }
-        #endregion
-
-        [HttpPost]
-        [Route("api/resources")]
-        public async Task<IActionResult> GetPagedDataAsync([FromBody]ResourceFilter resourceInput)
-        {
-            var response = await topicsResourcesBusinessLogic.GetPagedResourceAsync(resourceInput);
-            
-            return Content(response);            
+            return new Organization();
         }
 
-        
         /// <summary>
-        /// Get the parent topics by a topic id
+        /// get form schema
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        #region get form schema
         [HttpGet]
         [Route("api/topics/getschemaform")]
-        public async Task<IActionResult> GetSchemaForm(Form form)
+        public Form GetSchemaForm()
         {
-            var forms = new Form();
-            var name = form.Name;
-            var type = "Forms";
-            await topicsResourcesBusinessLogic.GetResourceDetailAsync(name, type);
-            return null;
+            return new Form();
         }
-        #endregion
 
-        #region get essential reading schema
+        /// <summary>
+        /// get essential reading schema
+        /// </summary>
         [HttpGet]
         [Route("api/topics/getschemaessentialreading")]
-        public async Task<IActionResult> GetSchemaEssentialReading(EssentialReading essentialReading)
+        public EssentialReading GetSchemaEssentialReading()
         {
-            var essentialReadings = new EssentialReading();
-            var name = essentialReading.Name;
-            var type = "Essential Readings";
-            await topicsResourcesBusinessLogic.GetResourceDetailAsync(name, type);
-            return null;
+           return new EssentialReading();
         }
-        #endregion
 
-        #region Create Resource Documents using upload
+        /// <summary>
+        /// Create Resource Documents using upload
+        /// </summary>
         [HttpPost]
         [Route("api/topics/createresources/upload")]
         public async Task<IActionResult> CreateResources(IFormFile uploadedFile)
@@ -222,9 +200,10 @@ namespace Access2Justice.Api.Controllers
             var resources = await topicsResourcesBusinessLogic.CreateResourcesUploadAsync(path);
             return Ok(resources);
         }
-        #endregion
 
-        #region Create Resource Document
+        /// <summary>
+        /// Create Resource Document
+        /// </summary>
         [HttpPost]
         [Route("api/createresourcedocument")]
         public async Task<IActionResult> CreateResourceDocument(dynamic resource)
@@ -237,9 +216,10 @@ namespace Access2Justice.Api.Controllers
 
             return Ok(resources);
         }
-        #endregion
 
-        #region Create Topic Documents using upload 
+        /// <summary>
+        /// Create Topic Documents using upload 
+        /// </summary>
         [HttpPost]
         [Route("api/topics/createtopics/upload")]
         public async Task<IActionResult> CreateTopics(IFormFile uploadedFile)
@@ -248,9 +228,10 @@ namespace Access2Justice.Api.Controllers
             var topics = await topicsResourcesBusinessLogic.CreateTopicsUploadAsync(path);
             return Ok(topics);
         }
-        #endregion
 
-        #region Create Topic Document
+        /// <summary>
+        /// Create Topic Document
+        /// </summary>
         [HttpPost]
         [Route("api/createtopicdocument")]
         public async Task<IActionResult> CreateTopicDocument(dynamic topic)
@@ -263,6 +244,5 @@ namespace Access2Justice.Api.Controllers
 
             return Ok(topics);
         }
-        #endregion
     }
 }

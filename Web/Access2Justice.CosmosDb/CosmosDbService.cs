@@ -33,12 +33,6 @@ namespace Access2Justice.CosmosDb
                 UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, collectionId), item);
         }
 
-        //public async Task<Document> CreateResourceAsync<T>(T item)
-        //{
-        //    return await documentClient.CreateDocumentAsync(
-        //        UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.ResourceCollectionId), item);
-        //}
-
         public async Task<T> GetItemAsync<T>(string id)
         {
             try
@@ -222,21 +216,5 @@ namespace Access2Justice.CosmosDb
                 }
             }
         }
-
-        //Added for mandatory fields
-        public async Task<IEnumerable<Topic>> QueryTopicsAsync(string collectionId, string query)
-        {
-            var docQuery = documentClient.CreateDocumentQuery<Topic>(
-                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, collectionId), query).AsDocumentQuery();
-
-            List<Topic> results = new List<Topic>();
-            while (docQuery.HasMoreResults)
-            {
-                results.AddRange(await docQuery.ExecuteNextAsync<Topic>());
-            }
-
-            return results;
-        }
-
     }
 }
