@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { PersonalizedPlanCondition, Resources } from './personalized-plan';
+import { PlanSteps, Resources } from './personalized-plan';
 import { api } from '../../../api/api';
 import { IResourceFilter } from '../../shared/search/search-results/search-results.model';
 
@@ -18,7 +18,7 @@ export class PersonalizedPlanService {
   constructor(private http: HttpClient) { }
 
   getActionPlanConditions(id): Observable<any> {
-    return this.http.get<PersonalizedPlanCondition>(api.planUrl + '/' + id);
+    return this.http.get<PlanSteps>(api.planUrl + '/' + id);
   }
 
   saveResourcesToSession(resources) {

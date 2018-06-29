@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { PlanSteps, UpdateCompletedStatus } from '../../profile/personalized-plan/personalized-plan';
+import { PlanSteps } from '../../profile/personalized-plan/personalized-plan';
 import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 
 @Component({
@@ -15,7 +15,6 @@ export class ActionPlanCardComponent implements OnChanges {
   planSteps: Array<PlanSteps>;
   planStep: PlanSteps = { topicId: '', topicName:'', steps: [] };
   displaySteps: boolean = false;
-  updateCompletedStatus: UpdateCompletedStatus = { oId: '', topicId: '', stepId: '', completedStatus: false };
 
   constructor() { }
 

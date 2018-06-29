@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PersonalizedPlanService } from '../profile/personalized-plan/personalized-plan.service';
-import { Resources, PlanSteps } from '../profile/personalized-plan/personalized-plan';
+import { PlanSteps } from '../profile/personalized-plan/personalized-plan';
 import { IResourceFilter } from '../shared/search/search-results/search-results.model';
 
 @Component({
@@ -9,7 +9,6 @@ import { IResourceFilter } from '../shared/search/search-results/search-results.
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  resources: Resources;
   topics: string;
   planDetails: Array<PlanSteps> = [];
   activeActionPlan: string = '';
