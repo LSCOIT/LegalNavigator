@@ -1,5 +1,7 @@
-.sidebar-block {
+.service-org {
   background-color: #f4f4f4;
+  padding: 20px 5%;
+  margin-top: 0;
 }
 
 .sidebar-wrapper {
@@ -11,7 +13,7 @@
 }
 
 .secondary-img {
-  width: 250px;
+  width: 80%;
   margin: 20px auto;
 }
 
@@ -21,8 +23,16 @@
   color: #000;
 }
 
-@media only screen and (min-width : 992px) {
+.sidebar-block {
+  width: 100%;
+}
+
+@media only screen and (min-width : 768px) {
   .secondary-img {
-    width: 100%;
+    width: 250px;
+  }
+
+  .fullPage + div .sidebar-block {
+    width: 33%;
   }
 }
