@@ -10,7 +10,6 @@ import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 export class ActionPlanCardComponent implements OnChanges {
   @Input() planDetails;
   topics: any = [];
-  tmptopics: any = [];
   steps: any;
   planSteps: Array<PlanSteps>;
   planStep: PlanSteps = { topicId: '', topicName:'', steps: [] };
