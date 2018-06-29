@@ -126,13 +126,13 @@ namespace Access2Justice.Api.BusinessLogic
             List<dynamic> procedureParams = new List<dynamic>() { planId };
             var result = await dbService.ExecuteStoredProcedureAsync(dbSettings.ResourceCollectionId, Constants.PlanStoredProcedureName, procedureParams);
             var planDetails = result.Response;
-            int indexOfTopcTags = 0;
+            int indexOfTopicTags = 0;
             foreach (var item in planDetails.topicTags)
             {
                 string topicId = item.id;
                 var topicData = await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.Id, topicId);
-                planDetails.topicTags[indexOfTopcTags].id = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(topicData));
-                indexOfTopcTags++;
+                planDetails.topicTags[indexOfTopicTags].id = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(topicData));
+                indexOfTopicTags++;
             }
 
             return planDetails;
