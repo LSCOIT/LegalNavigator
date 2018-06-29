@@ -96,19 +96,4 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "id")]
         public dynamic ParentTopicIds { get; set; }
     }
-
-    public class Location
-    {
-        [JsonProperty(PropertyName = "state")]
-        public string State { get; set; }
-
-        [JsonProperty(PropertyName = "county")]
-        public string County { get; set; }
-
-        [JsonProperty(PropertyName = "city")]
-        public string City { get; set; }
-
-        [JsonProperty(PropertyName = "zipCode")]
-        public string ZipCode { get; set; }
-    }
 }

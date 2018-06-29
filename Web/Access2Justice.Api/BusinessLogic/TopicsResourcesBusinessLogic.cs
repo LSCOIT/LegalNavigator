@@ -7,9 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using Access2Justice.Shared.Models;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Linq;
 
 namespace Access2Justice.Api.BusinessLogic
@@ -81,6 +78,62 @@ namespace Access2Justice.Api.BusinessLogic
             return result;
         }
                 
+        public async Task<dynamic> GetPagedResourceAsync(ResourceFilter resourceFilter)
+        {
+            dynamic serializedResources = "[]";
+            dynamic serializedTopicIds = "[]";
+
+            PagedResources pagedResources = await ApplyPaginationAsync(resourceFilter);
+            serializedResources = JsonConvert.SerializeObject(pagedResources?.Results);
+            dynamic serializedToken = pagedResources?.ContinuationToken ?? "[]";
+            serializedTopicIds = JsonConvert.SerializeObject(pagedResources?.TopicIds);
+
+            JObject internalResources = new JObject {
+                { "resources", JsonConvert.DeserializeObject(serializedResources) },
+                {"continuationToken", JsonConvert.DeserializeObject(serializedToken) },
+                {"topicIds" , JsonConvert.DeserializeObject(serializedTopicIds)}
+            };
+
+            return internalResources.ToString();
+        }
+
+        public async Task<dynamic> ApplyPaginationAsync(ResourceFilter resourceFilter)
+        {
+            PagedResources pagedResources = await dbClient.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter);
+
+            return pagedResources;
+        }
+
+        public async Task<dynamic> GetResourcesCountAsync(ResourceFilter resourceFilter)
+        {
+            PagedResources pagedResources = await dbClient.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter, true);
+
+            return ResourcesCount(pagedResources);
+        }
+
+        private dynamic ResourcesCount(PagedResources resources)
+        {
+            List<dynamic> allResources = new List<dynamic>
+            {
+                new
+                {
+                    ResourceName = "All",
+                    ResourceCount = resources.Results.Count()
+                }
+            };
+
+            var groupedResourceType = resources.Results.GroupBy(u => u.resourceType)
+                  .OrderBy(group => group.Key)
+                  .Select(n => new
+                  {
+                      ResourceName = n.Key,
+                      ResourceCount = n.Count()
+                  }).OrderBy(n => n.ResourceName);
+
+            dynamic resourceList = groupedResourceType.Concat(allResources);
+            return resourceList;
+        }
+
         public dynamic GetReferences(dynamic resourceObject)
         {
             List<ReferenceTag> referenceTags = new List<ReferenceTag>();

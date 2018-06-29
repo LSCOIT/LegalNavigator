@@ -1,7 +1,6 @@
 ﻿using Access2Justice.Shared.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Access2Justice.Shared.Models;
 
 namespace Access2Justice.Shared.Interfaces
 {
