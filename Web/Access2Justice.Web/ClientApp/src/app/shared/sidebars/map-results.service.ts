@@ -6,7 +6,7 @@ declare var Microsoft: any;
 
 @Injectable()
 
-export class MapResultsService  {
+export class MapResultsService {
   latitudeLongitude: Array<LatitudeLongitude> = [];
   constructor(private http: HttpClient) {
   }
@@ -29,7 +29,7 @@ export class MapResultsService  {
       {
         credentials: environment.bingmap_key
       });
-    for (let i = 0, len = this.latitudeLongitude.length; i < len; i++) {     
+    for (let i = 0, len = this.latitudeLongitude.length; i < len; i++) {
       var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(this.latitudeLongitude[i].latitude, this.latitudeLongitude[i].longitude), {
         icon: '../../assets/images/location/poi_custom.png'
       });
@@ -37,8 +37,6 @@ export class MapResultsService  {
       let bestview = Microsoft.Maps.LocationRect.fromLocations(this.latitudeLongitude);
       map.setView({ bounds: bestview, zoom: 5 });
     }
-    
+
   }
 }
-
-

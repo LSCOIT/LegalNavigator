@@ -19,5 +19,6 @@ namespace Access2Justice.Api
         public const string WebResources = "webResources";
         public const string Name = "name";
         public const string ResourceType = "resourceType";
+        public const string OId = "oId";
     }
 }

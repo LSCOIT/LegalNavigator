@@ -11,9 +11,12 @@ namespace Access2Justice.Api.Controllers
     public class TopicsResourcesController : Controller
     {
         private readonly ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic;
-        public TopicsResourcesController(ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic)
+        private readonly ILuisBusinessLogic luisBusinessLogic;
+
+        public TopicsResourcesController(ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic, ILuisBusinessLogic luisBusinessLogic)
         {
             this.topicsResourcesBusinessLogic = topicsResourcesBusinessLogic;
+            this.luisBusinessLogic = luisBusinessLogic;
         }
 
         /// <summary>
@@ -169,6 +172,21 @@ namespace Access2Justice.Api.Controllers
         }
         #endregion
 
+        [HttpPost]
+        [Route("api/resources")]
+        public async Task<IActionResult> GetPagedDataAsync([FromBody]ResourceFilter resourceInput)
+        {
+            var response = await topicsResourcesBusinessLogic.GetPagedResourceAsync(resourceInput);
+            
+            return Content(response);            
+        }
+
+        
+        /// <summary>
+        /// Get the parent topics by a topic id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         #region get form schema
         [HttpGet]
         [Route("api/topics/getschemaform")]

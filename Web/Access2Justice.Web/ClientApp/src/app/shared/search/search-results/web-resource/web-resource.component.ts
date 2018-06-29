@@ -1,28 +1,26 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { isNullOrUndefined } from 'util';
+import { SearchService } from '../../search.service';
 
 @Component({
-    selector: 'app-web-resource',
-    templateUrl: './web-resource.component.html',
-    styleUrls: ['./web-resource.component.css']
+  selector: 'app-web-resource',
+  templateUrl: './web-resource.component.html',
+  styleUrls: ['./web-resource.component.css']
 })
 export class WebResourceComponent implements OnInit {
 
-    @Input() searchResults: any;
-    @Input() webResult: any;
+  @Input()
+  searchResults: any;
+  @Input()
+  webResult: any;
 
-    constructor() { }
+  constructor(private searchService: SearchService) { }
 
-    ngOnInit() {
-        this.bindingData();
-    }
-
-    bindingData() {
-
-        if (!isNullOrUndefined(this.searchResults) && !isNullOrUndefined(this.searchResults.webResources)) {
-            this.searchResults = this.searchResults.webResources.webPages;
-        }
+  ngOnInit() {
+    if (this.searchResults != undefined && this.searchResults.webResources != undefined) { 
+      this.searchResults = this.searchResults.webResources.webPages;
 
     }
+  }
+
 
 }

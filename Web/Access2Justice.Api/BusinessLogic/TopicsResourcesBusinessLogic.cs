@@ -7,6 +7,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Access2Justice.Shared.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Linq;
 
 namespace Access2Justice.Api.BusinessLogic
 {
@@ -34,9 +38,9 @@ namespace Access2Justice.Api.BusinessLogic
             return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourceCollectionId, Constants.TopicTags, Constants.Id, ids);
         }
 
-        public async Task<dynamic> GetTopicsAsync(string keyword)
+        public async Task<dynamic> GetTopicsAsync(string keyword,Location location)
         {
-            return await dbClient.FindItemsWhereContainsAsync(dbSettings.TopicCollectionId, Constants.Keywords, keyword);
+            return await dbClient.FindItemsWhereContainsWithLocationAsync(dbSettings.TopicCollectionId, "keywords", keyword, location);
         }
 
         public async Task<dynamic> GetTopLevelTopicsAsync()
