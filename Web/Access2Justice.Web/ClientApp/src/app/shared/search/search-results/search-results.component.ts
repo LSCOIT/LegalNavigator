@@ -4,6 +4,7 @@ import { ResourceResult } from './search-result';
 import { SearchService } from '../search.service';
 import { PaginationService } from '../pagination.service';
 import { IResourceFilter } from './search-results.model';
+import { LocationService } from '../../location/location.service';
 import { environment } from '../../../../environments/environment';
 
 @Component({
@@ -23,10 +24,12 @@ export class SearchResultsComponent implements OnInit {
   resourceResults: ResourceResult[] = [];
   filterType: string = 'All';  
   resourceTypeFilter: any[];
-  resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: '', PageNumber: 0, Location: '' };
+  resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: '', PageNumber: 0, Location: '' };  
+  location: any;
   topicIds: any[];
   isServiceCall: boolean;
-  currentPage: number = 0;  
+  currentPage: number = 0;
+  subscription: any;
 
   loading = false;
   total = 0;
@@ -36,7 +39,8 @@ export class SearchResultsComponent implements OnInit {
   pagesToShow = 0;
 
 
-  constructor(private navigateDataService: NavigateDataService, private searchService: SearchService, private paginationService: PaginationService) { }
+  constructor(private navigateDataService: NavigateDataService, private searchService: SearchService,
+    private paginationService: PaginationService, private locationService: LocationService) { }
 
   bindData() {
     this.searchResults = this.navigateDataService.getData();
@@ -48,7 +52,9 @@ export class SearchResultsComponent implements OnInit {
         this.searchText = this.searchResults.webResources.queryContext.originalQuery;
         this.pagesToShow = environment.webResourcePagesToShow;
         this.limit = environment.webResourceRecordsToDisplay;
-      } else if (this.isInternalResource) {
+      }
+      else if (this.isInternalResource)
+      {
         this.resourceTypeFilter = this.searchResults.resourceTypeFilter;
         // need to revisit this logic..
         this.resourceResults = this.searchResults.resourceTypeFilter.reverse();
@@ -68,7 +74,8 @@ export class SearchResultsComponent implements OnInit {
             }
           }
         }
-      } else {
+      }
+      else {
         this.isLuisResponse = true;
         console.log(this.searchResults.luisResponse);
       }
@@ -87,6 +94,36 @@ export class SearchResultsComponent implements OnInit {
 
   ngOnInit() {
     this.bindData();
+    this.locationChange();
+  }
+
+  locationChange() {
+    if (sessionStorage.getItem("localSearchMapLocation")) {
+      this.location = JSON.parse(sessionStorage.getItem("localSearchMapLocation"));
+    }
+    this.subscription = this.locationService.notifyLocalLocation.subscribe((value) => {
+      this.searchResults = this.navigateDataService.getData();     
+      this.location = value;
+      this.resourceFilter.Location = value;
+      this.resourceFilter.TopicIds = this.searchResults.topicIds;
+      this.resourceFilter.PageNumber = 0;
+      this.resourceFilter.ResourceType = "ALL";
+      //this.searchService.search(this.luisInput)
+      //  .subscribe(response => {
+      //    if (response != undefined) {
+      //      this.searchResults = response;
+      //      this.navigateDataService.setData(this.searchResults);
+      //      this.total = 0;
+      //      this.mapInternalResource();
+      //    }
+      //  });
+      this.paginationService.getPagedResources(this.resourceFilter).subscribe(response => {
+        this.searchResults = response;
+        this.navigateDataService.setData(this.searchResults);
+        this.total = 0;
+        this.bindData();
+      });
+    });
   }
 
   getInternalResource(filterName, pageNumber): void {
