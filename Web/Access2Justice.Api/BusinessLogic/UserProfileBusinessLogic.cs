@@ -23,11 +23,11 @@ namespace Access2Justice.Api.BusinessLogic
             return await dbClient.FindItemsWhereAsync(dbSettings.UserProfileCollectionId, Constants.OId, oId);
         }
 
-        public async Task<dynamic> CreateUserProfileDataAsync(dynamic userData)
+        public async Task<dynamic> CreateUserPersonalizedPlanAsync(dynamic userData)
         {
             var serializedResult = JsonConvert.SerializeObject(userData);
             var userDocument = JsonConvert.DeserializeObject<object>(serializedResult);
-            var result = await dbService.CreateItemAsync(userDocument, dbSettings.ResourceCollectionId);
+            var result = await dbService.CreateItemAsync(userDocument[0], dbSettings.UserProfileCollectionId);
             return result;
         }
 

@@ -54,8 +54,8 @@ namespace Access2Justice.Api.Tests.BusinessLogic
                     'name': 'family1.1.1'},{'id': 'f102bfae-362d-4659-aaef-956c391f79de',
                     'parentId': 'addf41e9-1a27-4aeb-bcbb-7959f95094ba','name': 'family subtopic name 1.1'
                     },{'id': 'addf41e9-1a27-4aeb-bcbb-7959f95094ba','name': 'family'}]");
-        private readonly JArray resourceCountData = JArray.Parse(@"[{'resourceType':'Organizations'},{'resourceType':'Organizations'},{'resourceType':'Organizations'},
-                    {'resourceType':'Organizations'},{'resourceType':'All'},{'resourceType':'All'}]");
+        //private readonly JArray resourceCountData = JArray.Parse(@"[{'resourceType':'Organizations'},{'resourceType':'Organizations'},{'resourceType':'Organizations'},
+        //            {'resourceType':'Organizations'},{'resourceType':'All'},{'resourceType':'All'}]");
 
         //Mocked result data.
         private readonly string expectedEmptyArrayObject = "[{}]";

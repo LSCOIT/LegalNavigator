@@ -40,13 +40,14 @@ namespace Access2Justice.Api.Controllers
         /// <param name="userData"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("api/user/createuserprofile/")]
-        public async Task<IActionResult> CreateUserProfileDataAsync(dynamic userData)
+        [Route("api/user/createuserpersonalizedplan/")]
+        public async Task<IActionResult> CreateUserPersonalizedPlanAsync(dynamic userData)
         {
-            var query = "select * from c where c.id = 'bf8d7e7e-2574-7b39-efc7-83cb94adae07'";
-            userData = backendDatabaseService.QueryItemsAsync(cosmosDbSettings.UserProfileCollectionId, query);
-            var users = await userProfileBusinessLogic.CreateUserProfileDataAsync(userData);
+            var query = "select * from c where c.id = 'e3736497-7f7b-40e7-b388-0975603db857'";
+            userData =await backendDatabaseService.QueryItemsAsync(cosmosDbSettings.ResourceCollectionId, query);
+            var users = await userProfileBusinessLogic.CreateUserPersonalizedPlanAsync(userData);
             return Ok(users);
+
         }
 
     }
