@@ -67,6 +67,12 @@ button, .btn {
   font-weight: 600;
 }
 
+.btn-sm {
+  border-radius: 24px;
+  padding: 10px;
+  font-weight: 600;
+}
+
 .btn-primary {
   background-color: #0D3FBB;
   color: #fff;
@@ -107,6 +113,10 @@ button, .btn {
 
 .navbar-default .navbar-nav > li > a:hover {
   color: #585858;
+}
+
+.btn-primary a {
+  color: #fff;
 }
 
 .link {

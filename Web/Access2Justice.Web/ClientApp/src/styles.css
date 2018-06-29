@@ -4,7 +4,7 @@
 body {
   margin-top: 40px;
 }
-
+  
 [class*="col-"] {
   padding-left: 0;
   padding-right: 0;
@@ -57,11 +57,17 @@ a {
 
 .sidebar-block {
   display: inline-block;
-  margin-top: 20px;
-  padding: 0 20px;
-  min-width: 165px;
+  padding: 20px;
+  min-width: 200px;
 }
 
+.box-shadow {
+  box-shadow: 0 0 5px 3px #ddd;
+}
+
+.box-no-shadow {
+  border: 1px solid #ddd;
+}
 /* Language Dropdown */
 .navbar-nav .open .dropdown-menu {
   height: 360px;
@@ -174,6 +180,13 @@ a.carousel-control .icon-next {
   cursor: pointer;
 }
 
+ol.breadcrumb {
+  background-color: #fff;
+  border-radius: 0;
+  border-top: 1px solid #f4f4f4;
+  border-bottom: 1px solid #f4f4f4;
+}
+
 /* Personalized Plan */
 .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
   border: 1px solid #0D3FBB;
@@ -193,6 +206,7 @@ a.carousel-control .icon-next {
   content: '';
 }
 
+
 /*Location Modal*/
 .modal-content {
   border-radius: 0;
@@ -206,10 +220,10 @@ a.carousel-control .icon-next {
 }
 
 @media only screen and (min-width : 768px) {
-  .row {
-    margin: 40px auto;
+  .container {
+    width: 90%;
   }
-  
+
   .navbar-nav .open .dropdown-menu {
     width: 630px;
     min-height: 415px;
@@ -234,10 +248,6 @@ a.carousel-control .icon-next {
   }
 }
 @media only screen and (min-width : 992px) {
-  .container {
-    width: 90%;
-  }
-  
   .web-hidden {
     display: none;
   }
@@ -248,6 +258,10 @@ a.carousel-control .icon-next {
 }
 
 @media only screen and (min-width : 1224px) {
+  .row {
+    margin: 30px auto;
+  }
+
   .container {
     width: 80%
   }
