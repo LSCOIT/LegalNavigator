@@ -1,6 +1,7 @@
 <div *ngIf="!mobile" class="text-center sidebar col-sm-12">
   <div class="container">
     <div class="col-sm-4 sidebar-block">
+      <img src="./assets/images/secondary-illustrations/save.svg" alt="Save your Plan">
       <p class="pl">Save your plan</p>
       <p>Access it later on a computer or phone. Your information will never be shared without your permission.</p>
       <a class="link" href=""><app-save-button></app-save-button></a>
@@ -20,15 +21,24 @@
   </div>
 </div>
 <ul *ngIf="mobile" class="user-action">
-  <li>
+  <li *ngIf="showSave">
+    <img src="./assets/images/small-icons/save.svg" class="nav-icon" aria-hidden="true" />
     <app-save-button></app-save-button>
   </li>
   <li>
     <img src="./assets/images/small-icons/share.svg" class="nav-icon" aria-hidden="true" />
     <app-share-button></app-share-button>
   </li>
-  <li>
+  <li *ngIf="showPrint">
     <img src="./assets/images/small-icons/print.svg" class="nav-icon" aria-hidden="true" />
     <app-print-button></app-print-button>
+  </li>
+  <li *ngIf="showDownload">
+    <img src="./assets/images/small-icons/download.svg" class="nav-icon" aria-hidden="true" />
+    <app-download-button></app-download-button>
+  </li>
+  <li *ngIf="showSetting">
+    <img src="./assets/images/small-icons/settings.svg" class="nav-icon" aria-hidden="true" />
+    <app-setting-button></app-setting-button>
   </li>
 </ul>

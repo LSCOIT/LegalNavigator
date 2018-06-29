@@ -40,6 +40,7 @@ namespace Access2Justice.Api
             services.AddSingleton<ITopicsResourcesBusinessLogic, TopicsResourcesBusinessLogic>();
             services.AddSingleton<IWebSearchBusinessLogic, WebSearchBusinessLogic>();
             services.AddTransient<IHttpClientService, HttpClientService>();
+            services.AddSingleton<IUserProfileBusinessLogic, UserProfileBusinessLogic>();
             ConfigureCosmosDb(services);
 
             services.AddSwaggerGen(c =>
@@ -60,10 +61,7 @@ namespace Access2Justice.Api
 
             var apiEnpoint = new Uri(Configuration.GetSection("Api:Endpoint").Value);
             var url = $"{apiEnpoint.Scheme}://{apiEnpoint.Host}:{apiEnpoint.Port}";         
-            app.UseCors(builder => builder.WithOrigins(url)
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .AllowAnyOrigin());
+            app.UseCors(builder => builder.WithOrigins(url).AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             app.UseMvc();
 

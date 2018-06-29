@@ -7,6 +7,10 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class UserActionSidebarComponent implements OnInit {
   @Input() mobile = false;
+  @Input() showSave = true;
+  @Input() showPrint = true;
+  @Input() showDownload = false;
+  @Input() showSetting = false;
 
   constructor() { }
 

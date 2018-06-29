@@ -28,12 +28,15 @@ import { ShareButtonComponent } from './resource/user-action/share-button.compon
 import { UpperNavComponent } from './navigation/upper-nav.component';
 import { WebResourceComponent } from './search/search-results/web-resource/web-resource.component';
 import { CuratedResourceService } from './search/search-results/curated-resource/curated-resource.service';
-import { ActionPlanCardComponent } from './action-plan/action-plan-card.component';
-import { UserActionSidebarComponent } from './sidebars/user-action-sidebar.component';
 import { SearchFilterPipe } from './search/search-filter.pipe';
 import { BreadcrumbComponent } from '../topics-resources/breadcrumb/breadcrumb.component';
 import { MapResultsComponent } from './sidebars/map-results.component';
 import { MapResultsService } from './sidebars/map-results.service';
+import { PaginationComponent } from './pagination/pagination.component';
+import { PaginationService } from './search/pagination.service';
+import { ActionPlanCardComponent } from './action-plan/action-plan-card.component';
+import { UserActionSidebarComponent } from './sidebars/user-action-sidebar.component';
+import { SettingButtonComponent } from './resource/user-action/setting-button.component';
 
 @NgModule({
   imports: [
@@ -66,10 +69,12 @@ import { MapResultsService } from './sidebars/map-results.service';
     ShareButtonComponent,
     UpperNavComponent,
     WebResourceComponent,
-    UserActionSidebarComponent,
     SearchFilterPipe,
     BreadcrumbComponent,
-    MapResultsComponent
+    MapResultsComponent,
+    PaginationComponent,
+    UserActionSidebarComponent,
+    SettingButtonComponent
   ],
   exports: [
     ActionPlanCardComponent,
@@ -92,16 +97,17 @@ import { MapResultsService } from './sidebars/map-results.service';
     SaveButtonComponent,
     ShareButtonComponent,
     UpperNavComponent,
-    UserActionSidebarComponent,    
-    WebResourceComponent,
-    BreadcrumbComponent
+    BreadcrumbComponent,
+    UserActionSidebarComponent,
+    WebResourceComponent
   ],
   providers: [
     CuratedResourceService,
     LocationService,
     NavigateDataService,
     SearchService,
-    MapResultsService
+    MapResultsService,
+    PaginationService
   ]
 })
 export class SharedModule { }

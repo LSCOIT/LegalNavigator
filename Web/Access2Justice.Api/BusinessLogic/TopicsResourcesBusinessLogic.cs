@@ -34,9 +34,9 @@ namespace Access2Justice.Api.BusinessLogic
             return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourceCollectionId, Constants.TopicTags, Constants.Id, ids);
         }
 
-        public async Task<dynamic> GetTopicsAsync(string keyword)
+        public async Task<dynamic> GetTopicsAsync(string keyword,Location location)
         {
-            return await dbClient.FindItemsWhereContainsAsync(dbSettings.TopicCollectionId, Constants.Keywords, keyword);
+            return await dbClient.FindItemsWhereContainsWithLocationAsync(dbSettings.TopicCollectionId, "keywords", keyword, location);
         }
 
         public async Task<dynamic> GetTopLevelTopicsAsync()
@@ -63,6 +63,62 @@ namespace Access2Justice.Api.BusinessLogic
         {
             List<dynamic> procedureParams = new List<dynamic>() { id };
             return await dbService.ExecuteStoredProcedureAsync(dbSettings.TopicCollectionId, Constants.BreadcrumbStoredProcedureName, procedureParams);
+        }
+
+        public async Task<dynamic> GetPagedResourceAsync(ResourceFilter resourceFilter)
+        {
+            dynamic serializedResources = "[]";            
+            dynamic serializedTopicIds = "[]";
+
+            PagedResources pagedResources = await ApplyPaginationAsync(resourceFilter);
+            serializedResources = JsonConvert.SerializeObject(pagedResources?.Results);
+            dynamic serializedToken = pagedResources?.ContinuationToken ?? "[]";
+            serializedTopicIds = JsonConvert.SerializeObject(pagedResources?.TopicIds);
+
+            JObject internalResources = new JObject {
+                { "resources", JsonConvert.DeserializeObject(serializedResources) },
+                {"continuationToken", JsonConvert.DeserializeObject(serializedToken) },
+                {"topicIds" , JsonConvert.DeserializeObject(serializedTopicIds)}
+            };
+
+            return internalResources.ToString();
+        }
+
+        public async Task<dynamic> ApplyPaginationAsync(ResourceFilter resourceFilter)
+        {
+            PagedResources pagedResources = await dbClient.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter);
+
+            return pagedResources;
+        }
+
+        public async Task<dynamic> GetResourcesCountAsync(ResourceFilter resourceFilter)
+        {
+            PagedResources pagedResources = await dbClient.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter, true);
+            
+           return ResourcesCount(pagedResources);
+        }
+
+        private dynamic ResourcesCount(PagedResources resources)
+        {
+            List<dynamic> allResources = new List<dynamic>
+            {
+                new
+                {
+                    ResourceName = "All",
+                    ResourceCount = resources.Results.Count()
+                }
+            };
+
+            var groupedResourceType = resources.Results.GroupBy(u => u.resourceType)
+                  .OrderBy(group => group.Key)
+                  .Select(n => new
+                  {
+                      ResourceName = n.Key,
+                      ResourceCount = n.Count()
+                  }).OrderBy(n => n.ResourceName);
+
+            dynamic resourceList = groupedResourceType.Concat(allResources);
+            return resourceList;
         }
 
         public async Task<dynamic> GetPlanDataAsync(string planId)

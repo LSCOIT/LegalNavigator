@@ -35,10 +35,19 @@
     <None Remove="ClientApp\src\app\shared\link.directive.spec.ts" />
     <None Remove="ClientApp\src\app\shared\link.directive.ts" />
     <None Remove="ClientApp\src\app\shared\link.directive.ts" />
+    <None Remove="ClientApp\src\app\shared\sidebars\map-results.service.ts" />
     <None Remove="ClientApp\src\app\topics-resources\itopic.ts" />
     <None Remove="ClientApp\src\app\topics-resources\itopic.ts" />
     <None Remove="ClientApp\src\app\topics-resources\mock-topics.ts" />
     <None Remove="ClientApp\src\app\topics-resources\mock-topics.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ClientApp\src\app\shared\search\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\shared\sidebars\map-results.service.ts" />
   </ItemGroup>
 
    <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

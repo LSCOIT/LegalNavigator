@@ -1,29 +1,16 @@
 <div *ngIf="subtopicDetails" class="container">
   <app-breadcrumb></app-breadcrumb>
   <div class="row">
-    <div class="col-md-9 col-sm-12 col-xs-12" *ngFor="let subtopic of subtopics">
+    <div class="col-sm-7" *ngFor="let subtopic of subtopics">
       <h3 *ngIf="subtopic.id == activeSubtopicParam" class="subtopic-heading text-capitalize">{{subtopic.name}}</h3>
     </div>
-    <div class="col-md-3 col-sm-12 col-xs-12">
-      <ul class="user-action">
-        <li>
-          <!--<span class="glyphicon glyphicon-bookmark" aria-hidden="true" (click) ="savePlanResources()"></span>-->
-          <app-save-button [savedFrom]=savedFrom></app-save-button>
-        </li>
-        <li>
-          <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
-          <app-share-button></app-share-button>
-        </li>
-        <li>
-          <span class="glyphicon glyphicon-print" aria-hidden="true"></span>
-          <app-print-button></app-print-button>
-        </li>
-      </ul>
+    <div class="col-sm-5 user-action">
+      <app-user-action-sidebar [mobile]="true"></app-user-action-sidebar>
     </div>
   </div>
   <div class="row">
-    <div class="col-md-9 col-sm-12 col-xs-12">
-      <div class="subtopic-content">
+    <div class="col-md-8 col-sm-12">
+      <div class="box-no-shadow">
         <div class="subtopic-body">
           <h4>Overview</h4>
           <p>{{subtopicDetails.description}}</p> <!--need this info from the subtopicDetail get response-->
@@ -37,43 +24,50 @@
           </div>
         </div>
       </div>
-      <div class="row">
+      <div *ngIf="actionPlanData.length > 0" class="row">
         <a [routerLink]="['/resource', '123']">
-          <h3>Action Plans</h3></a>
+          <h3>Action Plans</h3>
+        </a>
         <p>Our action plans are based on common resolution steps for people dealing with eviction. Please ask a professional if you have questions.</p>
         <div *ngFor="let resource of actionPlanData">
           <app-resource-card [resource]="resource"></app-resource-card>
         </div>
+        <button class="btn btn-primary">See more Action Plans</button>
       </div>
-      <div class="row">
+      <div *ngIf="articleData.length > 0" class="row">
         <h3>Articles</h3>
         <div *ngFor="let resource of articleData">
           <app-resource-card [resource]="resource"></app-resource-card>
         </div>
-        <button>See more Articles</button>
+        <button class="btn-sm btn-primary">See more Articles</button>
       </div>
-      <div class="row">
+      <div *ngIf="organizationData.length > 0" class="row">
         <h3>Organizations That May Be Able To Help</h3>
         <div *ngFor="let resource of organizationData">
           <app-resource-card [resource]="resource"></app-resource-card>
         </div>
+        <button class="btn-sm btn-primary">See more Organizations</button>
       </div>
-      <div class="row">
+      <div *ngIf="videoData.length > 0" class="row">
         <h3>Videos</h3>
         <div *ngFor="let resource of videoData">
           <app-resource-card [resource]="resource"></app-resource-card>
         </div>
+        <button class="btn-sm btn-primary">See more Videos</button>
       </div>
-      <div class="row">
+      <div *ngIf="formData.length > 0" class="row">
         <h3>Forms</h3>
         <div *ngFor="let resource of formData">
           <app-resource-card [resource]="resource"></app-resource-card>
         </div>
+        <button class="btn-sm btn-primary">See more Forms</button>
       </div>
     </div>
-    <div class="col-md-3 col-sm-12 col-xs-12">
+    <div class="col-md-3 col-sm-12 pull-right">
       <app-guided-assistant-sidebar></app-guided-assistant-sidebar>
-      <app-service-org-sidebar></app-service-org-sidebar>
+      <div class="row">
+        <app-service-org-sidebar></app-service-org-sidebar>
+      </div>
     </div>
   </div>
 </div>

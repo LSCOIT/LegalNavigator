@@ -1,8 +1,15 @@
 export interface IResourceFilter {
-  ResourceType: any;
+  ResourceType: string;
   ContinuationToken: any;
   TopicIds: any;
   ResourceIds: any;
-  PageNumber: any;
+  PageNumber: number;
   Location: any;
+}
+
+export interface ILuisInput {
+  Sentence: string;
+  Location: any;
+  TranslateFrom: string;
+  TranslateTo: string;
 }

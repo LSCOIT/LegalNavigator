@@ -9,6 +9,8 @@ export const api = {
   subtopicDetailUrl: topic + '/getresourcedetails',
   getDocumentUrl: topic + '/getdocument',
   searchUrl: apiUrl + '/search',
+  getResourceUrl: apiUrl + '/resources',
+  searchOffsetUrl: apiUrl + '/websearch',
   breadcrumbsUrl: topic + '/getbreadcrumbs',
   planUrl: topic + "/getplandetails",
   getPersonalizedResourcesUrl: apiUrl + '/personalizedresources', 

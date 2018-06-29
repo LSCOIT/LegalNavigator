@@ -5,7 +5,11 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:61726/api',
+  apiUrl: 'http://localhost:57203/api',
   bingmap_key: '',
-  map_type: false
+  map_type: false,
+  internalResourcePagesToShow: 2,
+  internalResourceRecordsToDisplay: 1,
+  webResourcePagesToShow: 10,
+  webResourceRecordsToDisplay: 10
 };

@@ -52,7 +52,7 @@ import { PersonalizedPlanService } from './profile/personalized-plan/personalize
     SubtopicDetailComponent,
     SubtopicsComponent,
     PersonalizedPlanComponent,
-    ProfileComponent    
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

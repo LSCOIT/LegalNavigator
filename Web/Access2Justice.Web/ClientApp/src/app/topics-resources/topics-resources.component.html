@@ -1,20 +1,17 @@
 <div class="container fluid">
   <h3>Topics &amp; Resources</h3>
   <p>Browse articles, videos, and directories organized by topic</p>
-  <div class="row">
-    <div class="col-md-9 col-sm-12 col-xs-12">
-      <div class="row center-align">
-        <app-topics></app-topics>
-      </div>
-    </div>
-    <div class="col-md-3 col-sm-12 col-xs-12">
-       <app-guided-assistant-sidebar></app-guided-assistant-sidebar>
-       <app-service-org-sidebar></app-service-org-sidebar>
+  <div class="col-md-8 col-sm-12 col-xs-12">
+    <div class="row">
+      <app-topics></app-topics>
     </div>
   </div>
-  <div class="row">
-    <div class="col-md-2 col-md-offset-3 col-sm-12 text-center">
-      <button type="button" class="btn btn-primary">See More Topics</button>
+  <div class="col-md-3 col-sm-12 col-xs-12 pull-right">
+    <div class="row">
+      <app-guided-assistant-sidebar></app-guided-assistant-sidebar>
+    </div>
+    <div class="row">
+      <app-service-org-sidebar></app-service-org-sidebar>
     </div>
   </div>
 </div>

@@ -1,7 +1,3 @@
-.plan-detail {
-  box-shadow: 0 0 5px 3px #ddd;
-}
-
 .plan-heading {
   border-bottom: 1px solid #ddd;
 }
@@ -60,6 +56,19 @@
 #complete-btn {
 	float: left;
 	margin-bottom: 30px;
+}
+
+.step-content div {
+  margin-bottom: 20px;
+}
+
+.step-content div ul li {
+  padding: 5px 0;
+}
+
+iframe {
+  width: 100%;
+  height: 325px;
 }
 
 @media only screen and (min-width : 768px) {

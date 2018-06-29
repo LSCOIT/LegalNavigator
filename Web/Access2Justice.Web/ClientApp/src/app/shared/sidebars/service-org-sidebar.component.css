@@ -1,6 +1,5 @@
-.sidebar {
+.sidebar-block {
   background-color: #f4f4f4;
-  padding: 20px 0;
 }
 
 .sidebar-wrapper {
@@ -11,16 +10,19 @@
   margin: 20px auto;
 }
 
-.btn-primary a {
-  color: #fff;
-}
-
 .secondary-img {
   width: 250px;
   margin: 20px auto;
 }
 
-.pl {
+.link {
   display: block;
   margin-bottom: 10px;
+  color: #000;
+}
+
+@media only screen and (min-width : 992px) {
+  .secondary-img {
+    width: 100%;
+  }
 }

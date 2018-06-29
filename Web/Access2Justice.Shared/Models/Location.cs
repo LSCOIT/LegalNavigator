@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿
+
+using Newtonsoft.Json;
 using System.ComponentModel;
 
 namespace Access2Justice.Shared.Models

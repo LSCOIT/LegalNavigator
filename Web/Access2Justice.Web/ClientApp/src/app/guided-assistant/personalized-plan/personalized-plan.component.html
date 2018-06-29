@@ -1,6 +1,9 @@
 <div class="container">
   <div class="user-action upper-action mobile-hidden">
-    <app-user-action-sidebar [mobile]=true></app-user-action-sidebar>
+    <app-user-action-sidebar 
+      [mobile]=true 
+      [showDownload]=true>
+    </app-user-action-sidebar>
   </div>
   <div class="row row-half-spacing">
     <img class="sec-illustration" src="./assets/images/secondary-illustrations/plan.svg" alt="action plan">
@@ -11,7 +14,7 @@
       <p>The following information and resources are sponsored by the following organizations. Legal disclaimer lorem ipsum dolor amet.</p>
     </div>
   </div>
-  <div class="row row-half-spacing">
+
     <div class="row plan-spacing filter-plan">
       <span class="col-sm-1">Show:</span>
       <!--web filtering-->
@@ -34,7 +37,6 @@
     </div>
     <app-action-plan-card [planDetails]="planDetails"></app-action-plan-card>
   </div>
-</div>
 <div class="row">
   <app-service-org-sidebar></app-service-org-sidebar>
 </div>
@@ -42,5 +44,9 @@
   <app-user-action-sidebar [mobile]=false></app-user-action-sidebar>
 </div>
 <div class="row user-action web-hidden text-center">
-  <app-user-action-sidebar [mobile]=true></app-user-action-sidebar>
+  <app-user-action-sidebar 
+    [mobile]=true 
+    [showPrint]=false 
+    [showDownload]=true>
+  </app-user-action-sidebar>
 </div>
