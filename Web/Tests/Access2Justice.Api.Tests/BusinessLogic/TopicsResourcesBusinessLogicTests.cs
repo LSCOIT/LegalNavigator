@@ -400,9 +400,11 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         {
             //arrange
             var resourceType = "Action Plans";
-            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.ResourceCollectionId, "name", resourceName);
+            List<string> propertyNames = new List<string>() { "name", "resourceType" };
+            List<string> values = new List<string>() { resourceName, resourceType };
+            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.ResourceCollectionId, propertyNames, values);
             dbResponse.ReturnsForAnyArgs<dynamic>(actionPlanData);
-
+            
             //act
             var response = topicsResourcesBusinessLogic.GetResourceDetailAsync(resourceName, resourceType).Result;
             string result = JsonConvert.SerializeObject(response);
@@ -418,8 +420,9 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             //arrange
             var resourceName = "";
             var resourceType = "Action Plans";
-
-            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.ResourceCollectionId, "name", resourceName);
+            List<string> propertyNames = new List<string>() { "name", "resourceType" };
+            List<string> values = new List<string>() { resourceName, resourceType };
+            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.ResourceCollectionId, propertyNames, values);
             dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
 
             //act
