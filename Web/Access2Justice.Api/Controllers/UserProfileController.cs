@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Access2Justice.Api.BusinessLogic;
 using Access2Justice.Shared.Interfaces;
+using Access2Justice.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Access2Justice.Api.Controllers
@@ -37,7 +38,7 @@ namespace Access2Justice.Api.Controllers
             var profile = await userProfileBusinessLogic.CreateUserProfileDataAsync(userProfile);
             return Ok(profile);
         }
-        #endregion
+        #endregion      
     }
 
 }

@@ -80,7 +80,11 @@ namespace Access2Justice.CosmosDb
             return await documentClient.ReplaceDocumentAsync(
                 UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, id), item);
         }
-
+        public async Task<Document> UpdateItemAsync<T>(string id, T item, string collectionId)
+        {
+            return await documentClient.ReplaceDocumentAsync(
+                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, id), item);
+        }
         public async Task DeleteItemAsync(string id)
         {
             await documentClient.DeleteDocumentAsync(
@@ -157,6 +161,12 @@ namespace Access2Justice.CosmosDb
         {
             return await documentClient.CreateDocumentAsync(
                 UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.UserProfileCollectionId), item);
+        }
+
+        public async Task<Document> UpdateUserProfileAsync<T>(string id, T item)
+        {
+            return await documentClient.ReplaceDocumentAsync(
+                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.UserProfileCollectionId, id), item);
         }
     }
 }

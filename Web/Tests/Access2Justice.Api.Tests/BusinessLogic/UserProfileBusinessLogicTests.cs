@@ -31,8 +31,8 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             dynamicQueries = Substitute.For<IDynamicQueries>();
             cosmosDbSettings = Substitute.For<ICosmosDbSettings>();
             backendDatabaseService = Substitute.For<IBackendDatabaseService>();
-            userProfileBusinessLogic = new UserProfileBusinessLogic(dynamicQueries,cosmosDbSettings,backendDatabaseService);
-            
+            userProfileBusinessLogic = new UserProfileBusinessLogic(dynamicQueries, cosmosDbSettings, backendDatabaseService);
+
             cosmosDbSettings.AuthKey.Returns("dummykey");
             cosmosDbSettings.Endpoint.Returns(new System.Uri("https://bing.com"));
             cosmosDbSettings.DatabaseId.Returns("dbname");
@@ -44,7 +44,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         public void GetUserProficeDataAsyncShouldReturnEmptyData()
         {
             //arrange      
-            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.UserProfileCollectionId,"oId", expectedUserProfileId);
+            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.UserProfileCollectionId, "oId", expectedUserProfileId);
             dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
 
             //act
@@ -68,27 +68,6 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 
             //assert
             Assert.Contains(expectedUserProfileId, result, StringComparison.InvariantCultureIgnoreCase);
-        }
-        
-        [Fact]
-        public void CreateUserProfileDataAsyncTestsShouldReturnProperData()
-        {         
-            List<dynamic> userprofiles = new List<dynamic>();
-            List<dynamic> userprofiles2 = new List<dynamic>();
-
-            //arrange
-            var userprofileObjects = JsonConvert.SerializeObject(userProfile);
-            var userDeserialisedObjects = JsonConvert.DeserializeObject(userprofileObjects);
-            var result = backendDatabaseService.CreateItemAsync(userDeserialisedObjects, cosmosDbSettings.UserProfileCollectionId);
-            userprofiles.Add(result);
-
-            //act         
-            var response = userProfileBusinessLogic.CreateUserProfileDataAsync(userProfile);
-            userprofiles2.Add(response);
-            string results = JsonConvert.SerializeObject(response);            
-
-            //assert
-            Assert.Equal(userprofiles.Count, userprofiles2.Count);
         }
     }
 }
