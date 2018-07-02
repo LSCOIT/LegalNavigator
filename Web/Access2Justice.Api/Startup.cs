@@ -5,6 +5,7 @@ using Access2Justice.Shared;
 using Access2Justice.Shared.Bing;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Luis;
+using Access2Justice.Shared.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Azure.Documents;
@@ -13,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
+
 
 namespace Access2Justice.Api
 {
@@ -39,6 +41,7 @@ namespace Access2Justice.Api
             services.AddSingleton<ILuisBusinessLogic, LuisBusinessLogic>();
             services.AddSingleton<ITopicsResourcesBusinessLogic, TopicsResourcesBusinessLogic>();
             services.AddSingleton<IWebSearchBusinessLogic, WebSearchBusinessLogic>();
+            services.AddSingleton<ICuratedExperienceBuisnessLogic, CuratedExperienceBuisnessLogic>();
             services.AddTransient<IHttpClientService, HttpClientService>();
             services.AddSingleton<IUserProfileBusinessLogic, UserProfileBusinessLogic>();
             ConfigureCosmosDb(services);
@@ -49,6 +52,8 @@ namespace Access2Justice.Api
                 c.TagActionsBy(api => api.GroupName);
                 c.DescribeAllEnumsAsStrings();
                 c.OrderActionsBy((apiDesc) => $"{apiDesc.RelativePath}_{apiDesc.HttpMethod}");
+                c.OperationFilter<FileUploadOperation>(); //Register File Upload Operation Filter
+                c.OperationFilter<FileUploadOperationResource>();
             });
         }
 
@@ -61,7 +66,7 @@ namespace Access2Justice.Api
 
             var apiEnpoint = new Uri(Configuration.GetSection("Api:Endpoint").Value);
             var url = $"{apiEnpoint.Scheme}://{apiEnpoint.Host}:{apiEnpoint.Port}";         
-            app.UseCors(builder => builder.WithOrigins(url));
+            app.UseCors(builder => builder.WithOrigins(url).AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             app.UseMvc();
 

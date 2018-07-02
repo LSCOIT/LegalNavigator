@@ -19,18 +19,18 @@ namespace Access2Justice.Api.BusinessLogic
             dbSettings = cosmosDbSettings;
             dbService = backendDatabaseService;
         }
-
-        public async Task<dynamic> GetUserProficeDataAsync(string oId)
+        public async Task<dynamic> GetUserProfileDataAsync(string oId)
         {
             return await dbClient.FindItemsWhereAsync(dbSettings.UserProfileCollectionId, Constants.OId, oId);
         }
         public async Task<dynamic> CreateUserProfileDataAsync(UserProfile userProfile)
         {
             List<dynamic> userprofiles = new List<dynamic>();
-            string oId = GetUserProficeDataAsync(userProfile.OId).ToString();
-            if (!oId.Contains(userProfile.OId))
+
+            var resultUP = GetUserProfileDataAsync(userProfile.OId);
+            var userprofileObjects = JsonConvert.SerializeObject(resultUP);
+            if (!userprofileObjects.Contains(userProfile.OId))
             {
-                var userprofileObjects = JsonConvert.SerializeObject(userProfile);
                 var userDeserialisedObjects = JsonConvert.DeserializeObject(userprofileObjects);
                 var result = await dbService.CreateItemAsync(userDeserialisedObjects, dbSettings.UserProfileCollectionId);
                 userprofiles.Add(result);
@@ -39,10 +39,4 @@ namespace Access2Justice.Api.BusinessLogic
         }
 
     }
-
-  
-
- 
-
-
 }

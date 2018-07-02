@@ -17,7 +17,7 @@ namespace Access2Justice.Api.Controllers
         }
 
         /// <summary>
-        /// Get the user details by a user Id
+        /// Get the user details by a user OId
         /// </summary>
         /// <param name="oid"></param>
         /// <returns></returns>
@@ -26,7 +26,7 @@ namespace Access2Justice.Api.Controllers
         public async Task<IActionResult> GetUserProfileDataAsync(string oid)
         {
 
-            var users = await userProfileBusinessLogic.GetUserProficeDataAsync(oid);
+            var users = await userProfileBusinessLogic.GetUserProfileDataAsync(oid);
             return Ok(users);
         }
 
@@ -40,5 +40,5 @@ namespace Access2Justice.Api.Controllers
         }
         #endregion      
     }
-
+        
 }

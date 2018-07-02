@@ -48,7 +48,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
 
             //act
-            var response = userProfileBusinessLogic.GetUserProficeDataAsync(expectedUserProfileId);
+            var response = userProfileBusinessLogic.GetUserProfileDataAsync(expectedUserProfileId);
             string result = JsonConvert.SerializeObject(response);
 
             //assert
@@ -63,7 +63,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             dbResponse.ReturnsForAnyArgs<dynamic>(userProfile);
 
             //act
-            var response = userProfileBusinessLogic.GetUserProficeDataAsync(expectedUserProfileId);
+            var response = userProfileBusinessLogic.GetUserProfileDataAsync(expectedUserProfileId);
             string result = JsonConvert.SerializeObject(response);
 
             //assert

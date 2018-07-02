@@ -1,4 +1,17 @@
+.filter {
+  background: #f4f4f4;
+  padding: 15px;
+  margin: 0;
+}
+
 .filter-type {
   display: inline-block;
   margin-right: 15px;
+
+}
+
+.btn-selected {
+  padding: 8px;
+  margin-right: 10px;
+  margin-bottom: 10px;
 }

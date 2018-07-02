@@ -1,15 +1,6 @@
-.breadcrumb {
-  background-color: #fff;
-}
-
 h3.subtopic-heading {
   display: inline-block;
   margin-top: 0;
-}
-
-.subtopic-content {
-  border: 1px solid #000;
-  margin-bottom: 20px;
 }
 
 .subtopic-body {
@@ -21,11 +12,5 @@ h3.subtopic-heading {
 }
 
 .user-action {
-  padding-left: 0;
-}
-
-.user-action li {
-  display: inline-block;
-  padding: 0 10px;
-  cursor: pointer;
+  text-align: right;
 }
