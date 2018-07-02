@@ -4,7 +4,7 @@
 body {
   margin-top: 40px;
 }
-
+  
 [class*="col-"] {
   padding-left: 0;
   padding-right: 0;
@@ -28,6 +28,7 @@ a {
 
 .nav-icon {
   width: 15px;
+  height: 15px;
   margin: 0 5px 2px 5px;
 }
 
@@ -35,9 +36,10 @@ a {
   display: inline-block;
 }
 
-li.web-hidden {
-  background-color: #f4f4f4;
+.web-hidden {
+  background-color: transparent;
   margin: 0;
+  display: block;
 }
 
 .mobile-hidden {
@@ -53,10 +55,18 @@ li.web-hidden {
   margin: 0 auto;
 }
 
-.sidebar {
-  border: 1px solid #000;
+.sidebar-block {
+  display: inline-block;
+  padding: 20px;
 }
 
+.box-shadow {
+  box-shadow: 0 0 5px 3px #ddd;
+}
+
+.box-no-shadow {
+  border: 1px solid #ddd;
+}
 /* Language Dropdown */
 .navbar-nav .open .dropdown-menu {
   height: 360px;
@@ -144,13 +154,14 @@ a.carousel-control .icon-next {
 }
 
 .panel-default>.panel-heading {
-  background:none;
-  border: 1px solid black;
+  background: #FFF;
+  border: none;
   border-radius: 0;
 }
 
-.panel-body {
-  padding: 25px 15px 50px 15px;
+.panel-default > .panel-heading + .panel-collapse > .panel-body,
+.panel-collapse .collapse .in .show {
+  border-top: none;
 }
 
 /*Topics & Resources Page - Accordion */
@@ -158,11 +169,60 @@ a.carousel-control .icon-next {
   padding: 0 5px;
 }
 
+.user-action {
+  padding-left: 0;
+}
+
+.user-action li {
+  display: inline-block;
+  padding: 0 10px;
+  cursor: pointer;
+}
+
+ol.breadcrumb {
+  background-color: #fff;
+  border-radius: 0;
+  border-top: 1px solid #f4f4f4;
+  border-bottom: 1px solid #f4f4f4;
+}
+
+/* Personalized Plan */
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+  border: 1px solid #0D3FBB;
+  border-bottom-color: transparent;
+}
+.nav-tabs {
+  border-bottom: 1px solid #0D3FBB;
+}
+
+.plan-steps accordion-group:after {
+  height: 3px;
+  display: block;
+  width: 90%;
+  margin: 0 auto 20px auto;
+  clear: both;
+  border-top: 1px solid #ddd;
+  content: '';
+}
+
+
+/*Location Modal*/
+.modal-content {
+  border-radius: 0;
+}
+
+.close {
+  font-size: 50px;
+  font-weight: 400;
+  color: #0D3FB8;
+  opacity: 1;
+}
+
 @media only screen and (min-width : 768px) {
-  .row {
-    margin: 40px auto;
+  .container {
+    width: 90%;
   }
-  
+
   .navbar-nav .open .dropdown-menu {
     width: 630px;
     min-height: 415px;
@@ -181,22 +241,26 @@ a.carousel-control .icon-next {
   a.carousel-control {
     top: 282px;
   }
+
+  .modal-dialog {
+    width: 65%;
+  }
 }
 @media only screen and (min-width : 992px) {
-  .container {
-    width: 90%;
-  }
-  
-  li.web-hidden {
+  .web-hidden {
     display: none;
   }
 
   .mobile-hidden {
-    display: block;
+    display: inline-block;
   }
 }
 
 @media only screen and (min-width : 1224px) {
+  .row {
+    margin: 30px auto;
+  }
+
   .container {
     width: 80%
   }

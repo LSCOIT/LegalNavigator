@@ -43,6 +43,20 @@ namespace Access2Justice.CosmosDb.Tests
         }
 
         [Fact]
+        public void FindItemsWhereShouldConstructValidSqlQueryWith2Inputs()
+        {
+            // Arrange
+            string query = @"SELECT * FROM c WHERE c.name='eviction form' AND c.resourceType = 'Forms'";
+
+            // Act
+            var result = dynamicQueries.FindItemsWhereAsync("topicsCollections", "name", "eviction form","resourceType","Forms").Result;
+
+            // Assert
+            cosmosDbService.ReceivedWithAnyArgs().QueryItemsAsync(Arg.Any<string>(), query);
+        }
+
+
+        [Fact]
         public void FindItemsWhereArrayContainsShouldConstructValidSqlQuery()
         {
             // Arrange

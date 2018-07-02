@@ -1,10 +1,12 @@
 ﻿using Access2Justice.CosmosDb.Interfaces;
 using Access2Justice.Shared.Interfaces;
+using Access2Justice.Shared.Models;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents.Linq;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -25,10 +27,10 @@ namespace Access2Justice.CosmosDb
             CreateCollectionIfNotExistsAsync().Wait();
         }
 
-        public async Task<Document> CreateItemAsync<T>(T item)
+        public async Task<Document> CreateItemAsync<T>(T item,string collectionId)
         {
             return await documentClient.CreateDocumentAsync(
-                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.CuratedExperienceCollectionId), item);
+                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, collectionId), item);
         }
 
         public async Task<T> GetItemAsync<T>(string id)
@@ -36,7 +38,7 @@ namespace Access2Justice.CosmosDb
             try
             {
                 Document document = await documentClient.ReadDocumentAsync(
-                        UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.CuratedExperienceCollectionId, id));
+                        UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, id));
 
                 return (T)(dynamic)document;
             }
@@ -72,13 +74,13 @@ namespace Access2Justice.CosmosDb
         public async Task<Document> UpdateItemAsync<T>(string id, T item)
         {
             return await documentClient.ReplaceDocumentAsync(
-                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.CuratedExperienceCollectionId, id), item);
+                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, id), item);
         }
 
         public async Task DeleteItemAsync(string id)
         {
             await documentClient.DeleteDocumentAsync(
-                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.CuratedExperienceCollectionId, id));
+                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, id));
         }
 
         public async Task<dynamic> QueryItemsAsync(string collectionId, string query)
@@ -93,6 +95,74 @@ namespace Access2Justice.CosmosDb
             }
 
             return results;
+        }
+
+        public async Task<dynamic> QueryItemsPaginationAsync(string collectionId, string query, FeedOptions feedOptions)
+        {
+
+            var docQuery = documentClient.CreateDocumentQuery<dynamic>(
+                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, collectionId), query, feedOptions).AsDocumentQuery();
+
+            var results = new PagedResources();
+            List<dynamic> resources = new List<dynamic>();
+            var queryResult = await docQuery.ExecuteNextAsync();
+            if (!queryResult.Any())
+            {
+                return results;
+            }
+            results.ContinuationToken = queryResult.ResponseContinuation;
+            resources.AddRange(queryResult);
+            results.Results = resources;
+
+            return results;
+        }
+
+        public async Task<dynamic> QueryPagedResourcesAsync(string query, string continuationToken)
+        {
+            dynamic result = null;
+            if (string.IsNullOrEmpty(continuationToken))
+            {
+                result = await GetFirstPageResourceAsync(query);
+            }
+            else
+            {
+                result = await GetNextPageResourcesAsync(query, continuationToken);
+            }
+            return result;
+        }
+
+        public async Task<dynamic> QueryResourcesCountAsync(string query)
+        {
+            dynamic result = await GetFirstPageResourceAsync(query, true);
+            return result;
+        }
+
+        public async Task<dynamic> GetFirstPageResourceAsync(string query, bool isInitialPage = false)
+        {
+            FeedOptions feedOptions = null;
+            if (!isInitialPage)
+            {
+                feedOptions = new FeedOptions()
+                {
+                    MaxItemCount = cosmosDbSettings.PageResultsCount
+                };
+            }
+            var result = await QueryItemsPaginationAsync(cosmosDbSettings.ResourceCollectionId, query, feedOptions);
+
+            return result;
+        }
+
+        public async Task<dynamic> GetNextPageResourcesAsync(string query, string continuationToken)
+        {
+            FeedOptions feedOptions = new FeedOptions()
+            {
+                MaxItemCount = cosmosDbSettings.PageResultsCount,
+                RequestContinuation = continuationToken
+            };
+
+            var result = await QueryItemsPaginationAsync(cosmosDbSettings.ResourceCollectionId, query, feedOptions);
+
+            return result;
         }
 
         public async Task<dynamic> ExecuteStoredProcedureAsync(string collectionId, string storedProcName, params dynamic[] procedureParams)
@@ -125,7 +195,7 @@ namespace Access2Justice.CosmosDb
             try
             {
                 await documentClient.ReadDocumentCollectionAsync(
-                    UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.CuratedExperienceCollectionId));
+                    UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId));
             }
             catch (DocumentClientException e)
             {
@@ -135,7 +205,7 @@ namespace Access2Justice.CosmosDb
                         UriFactory.CreateDatabaseUri(cosmosDbSettings.DatabaseId),
                         new DocumentCollection
                         {
-                            Id = cosmosDbSettings.CuratedExperienceCollectionId
+                            Id = cosmosDbSettings.TopicCollectionId
                         },
                         new RequestOptions { OfferThroughput = 400 });
                 }

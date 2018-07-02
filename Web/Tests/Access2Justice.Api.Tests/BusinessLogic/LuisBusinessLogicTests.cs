@@ -1,11 +1,12 @@
 ﻿using Xunit;
 using NSubstitute;
 using System.Collections.Generic;
-using System.Net.Http;
 using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Api;
 using Newtonsoft.Json.Linq;
+using Access2Justice.Shared.Models;
+using System;
 
 namespace Access2Justice.Tests.ServiceUnitTestCases
 {
@@ -18,6 +19,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         private readonly ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic;
         private readonly IWebSearchBusinessLogic webSearchBusinessLogic;
         private readonly ILuisBusinessLogic luis;
+        private readonly IBingSettings bingSettings;
         private readonly LuisBusinessLogic luisBusinessLogic;
         #endregion
 
@@ -46,23 +48,30 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
                    "\"score\": 0.05946025\r\n    },\r\n    {\r\n      \"intent\": \"Eviction\",\r\n     " +
                    "\"score\": 4.371685E-05\r\n    }\r\n  ],\r\n  \"entities\": []\r\n}";
         private readonly string emptyLuisResponse = "";
-        private readonly string noneLuisResponse = 
+        private readonly string noneLuisResponse =
                    "{\r\n  \"query\": \"good bye\",\r\n  \"topScoringIntent\": {\r\n    " +
                    "\"intent\": \"None\",\r\n    \"score\": 0.7257252\r\n  },\r\n  " +
-                   "\"intents\": [\r\n    {\r\n      \"intent\": \"None\",\r\n      " +            
+                   "\"intents\": [\r\n    {\r\n      \"intent\": \"None\",\r\n      " +
                    "\"score\": 0.06429157\r\n    },\r\n    {\r\n      \"intent\": \"Divorce\",\r\n      " +
                    "\"score\": 0.05946025\r\n    },\r\n    {\r\n      \"intent\": \"Eviction\",\r\n     " +
-                   "\"score\": 4.371685E-05\r\n    }\r\n  ],\r\n  \"entities\": []\r\n}";        
+                   "\"score\": 4.371685E-05\r\n    }\r\n  ],\r\n  \"entities\": []\r\n}";
         private readonly string keyword = "eviction";
-        private readonly JArray topicsData = 
+        private readonly JArray topicsData =
                    JArray.Parse(@"[{'id':'addf41e9-1a27-4aeb-bcbb-7959f95094ba','name':'Family',
                    'parentTopicID':'','keywords':'eviction','location':[{'state':'Hawaii','county':'Kalawao County','city':'Kalawao',
                     'zipCode':'96742'},{'zipCode':'96741'},{'state':'Hawaii','county':'Honolulu County','city':'Honolulu'},{'state':
                    'Hawaii','city':'Hawaiian Beaches'},{'state':'Hawaii','city':'Haiku-Pauwela'},{'state':'Alaska'}],'jsonContent':'',
                    'icon':'./assets/images/topics/topic14.png','createdBy':'','createdTimeStamp':'','modifiedBy':'','modifiedTimeStamp':'
                    ','_rid':'mwoSALHtpAEBAAAAAAAAAA==','_self':'dbs/mwoSAA==/colls/mwoSALHtpAE=/docs/mwoSALHtpAEBAAAAAAAAAA==/',
-                    '_etag':'\'05008e57-0000-0000-0000-5b0797c10000\'','_attachments':'attachments/','_ts':1527224257}]");        
-        private readonly JArray resourcesData = 
+                    '_etag':'\'05008e57-0000-0000-0000-5b0797c10000\'','_attachments':'attachments/','_ts':1527224257},
+                    {'id':'3aa3a1be-8291-42b1-85c2-252f756febbc','name':'Family',
+                   'parentTopicID':'','keywords':'eviction','location':[{'state':'Hawaii','county':'Kalawao County','city':'Kalawao',
+                    'zipCode':'96742'},{'zipCode':'96741'},{'state':'Hawaii','county':'Honolulu County','city':'Honolulu'},{'state':
+                   'Hawaii','city':'Hawaiian Beaches'},{'state':'Hawaii','city':'Haiku-Pauwela'},{'state':'Alaska'}],'jsonContent':'',
+                   'icon':'./assets/images/topics/topic14.png','createdBy':'','createdTimeStamp':'','modifiedBy':'','modifiedTimeStamp':'
+                   ','_rid':'mwoSALHtpAEBAAAAAAAAAA==','_self':'dbs/mwoSAA==/colls/mwoSALHtpAE=/docs/mwoSALHtpAEBAAAAAAAAAA==/',
+                    '_etag':'\'05008e57-0000-0000-0000-5b0797c10000\'','_attachments':'attachments/','_ts':1527224257}]");
+        private readonly JArray resourcesData =
                     JArray.Parse(@"[{'id':'77d301e7-6df2-612e-4704-c04edf271806','name':'Tenant Action Plan 
                     for Eviction','description':'This action plan is for tenants who are facing eviction and have experienced the following:',
                     'resourceType':'Action','externalUrl':'','url':'','topicTags':[{'id':'f102bfae-362d-4659-aaef-956c391f79de'},
@@ -76,11 +85,11 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
                     'location':[{'state':'Hawaii','city':'Kalawao','zipCode':'96742'}],'icon':'./assets/images/resources/resource.png','createdBy':'',
                     'createdTimeStamp':'','modifiedBy':'','modifiedTimeStamp':'','_rid':'mwoSAJdNlwIBAAAAAAAAAA==','_self':
                     'dbs/mwoSAA==/colls/mwoSAJdNlwI=/docs/mwoSAJdNlwIBAAAAAAAAAA==/','_etag':'\'040007b5-0000-0000-0000-5b0792260000\'',
-                    '_attachments':'attachments/','_ts':1527222822}]");        
+                    '_attachments':'attachments/','_ts':1527222822}]");
         private readonly JObject emptyTopicObject = JObject.Parse(@"{}");
         private readonly JObject emptyResourceObject = JObject.Parse(@"{}");
         private readonly string searchText = "i'm getting kicked out";
-        private readonly string webData = 
+        private readonly string webData =
                    "{\r\n  \"webResources\": {\r\n    \"_type\": \"SearchResponse\",\r\n    \"instrumentation\": {\r\n      \"_type\": " +
                    "\"ResponseInstrumentation\",\r\n      \"pingUrlBase\": \"https://www.bingapis.com/api/ping?IG=1965C084847D497DB211864D4160BBAD&CID=0F6A141A98C863D31AD41FE799436276&ID=\"," +
                    "\r\n      \"pageLoadPingUrl\": \"https://www.bingapis.com/api/ping/pageload?IG=1965C084847D497DB211864D4160BBAD&CID=0F6A141A98C863D31AD41FE799436276&Type=Event.CPT&DATA=0\"" +
@@ -127,42 +136,28 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
                    "\"language\": \"en\"\r\n        }\r\n      ]\r\n    },\r\n    \"rankingResponse\": {\r\n      \"mainline\": {\r\n        " +
                    "\"items\": [\r\n          {\r\n            \"answerType\": \"WebPages\",\r\n            \"resultIndex\": 0,\r\n            " +
                    "\"value\": {\r\n              \"id\": \"https://api.cognitive.microsoft.com/api/v7/#WebPages.0\"\r\n            }\r\n          " +
-                   "}\r\n        ]\r\n      }\r\n    }\r\n  }\r\n}";
-        private readonly string internalResponse = 
-                  "{\r\n  \"topics\": [\r\n    {\r\n      \"id\": \"addf41e9-1a27-4aeb-bcbb-7959f95094ba\",\r\n      \"name\": \"Family\"," +
-                  "\r\n      \"parentTopicID\": \"\",\r\n      \"keywords\": \"EVICTION\",\r\n      \"location\": [\r\n        {\r\n          " +
-                  "\"state\": \"Hawaii\",\r\n          \"county\": \"Kalawao County\",\r\n          \"city\": \"Kalawao\",\r\n          " +
-                  "\"zipCode\": \"96742\"\r\n        },\r\n        {\r\n          \"zipCode\": \"96741\"\r\n        },\r\n        {\r\n          " +
-                  "\"state\": \"Hawaii\",\r\n          \"county\": \"Honolulu County\",\r\n          \"city\": \"Honolulu\"\r\n        }," +
-                  "\r\n        {\r\n          \"state\": \"Hawaii\",\r\n          \"city\": \"Hawaiian Beaches\"\r\n        },\r\n        " +
-                  "{\r\n          \"state\": \"Hawaii\",\r\n          \"city\": \"Haiku-Pauwela\"\r\n        },\r\n        {\r\n          " +
-                  "\"state\": \"Alaska\"\r\n        }\r\n      ],\r\n      \"jsonContent\": \"\",\r\n      \"icon\": \"./assets/images/topics/topic14.png\"," +
-                  "\r\n      \"createdBy\": \"\",\r\n      \"createdTimeStamp\": \"\",\r\n      \"modifiedBy\": \"\",\r\n      \"modifiedTimeStamp\": \"\"," +
-                  "\r\n      \"_rid\": \"mwoSALHtpAEBAAAAAAAAAA==\",\r\n      \"_self\": \"dbs/mwoSAA==/colls/mwoSALHtpAE=/docs/mwoSALHtpAEBAAAAAAAAAA==/\"," +
-                  "\r\n      \"_etag\": \"\\\"1700c9cf-0000-0000-0000-5b08a3340000\\\"\",\r\n      \"_attachments\": \"attachments/\",\r\n      " +
-                  "\"_ts\": 1527292724\r\n    }\r\n  ],\r\n  \"resources\": [\r\n    {\r\n      \"id\": \"77d301e7-6df2-612e-4704-c04edf271806\",\r\n      " +
-                  "\"name\": \"Tenant Action Plan for Eviction\",\r\n      \"description\": \"This action plan is for tenants who are facing eviction and " +
-                  "have experienced the following:\",\r\n      \"resourceType\": \"Action\",\r\n      \"externalUrl\": \"\",\r\n      \"url\": \"\",\r" +
-                  "\n      \"topicTags\": [\r\n        {\r\n          \"id\": \"addf41e9-1a27-4aeb-bcbb-7959f95094ba\"\r\n        },\r\n        {\r\n" +
-                  " \"id\": \"2c0cc7b8-62b1-4efb-8568-b1f767f879bc\"\r\n        },\r\n        {\r\n          \"id\": \"3aa3a1be-8291-42b1-85c2-252f756febbc\"\r" +
-                  "\n        }\r\n      ],\r\n      \"location\": \"Hawaii, Honolulu, 96812 |Hawaii, Hawaiian Beaches |Hawaii, Haiku-Pauwela | Alaska\"," +
-                  "\r\n      \"icon\": \"./assets/images/resources/resource.png\",\r\n      \"createdBy\": \"\",\r\n      \"createdTimeStamp\": \"\"," +
-                  "\r\n      \"modifiedBy\": \"\",\r\n      \"modifiedTimeStamp\": \"\",\r\n      \"_rid\": \"mwoSAJdNlwIBAAAAAAAAAA==\",\r\n      " +
-                  "\"_self\": \"dbs/mwoSAA==/colls/mwoSAJdNlwI=/docs/mwoSAJdNlwIBAAAAAAAAAA==/\",\r\n      \"_etag\": \"\\\"0e0002a6-0000-0000-0000-5b07fe950000\\\"\"," +
-                  "\r\n      \"_attachments\": \"attachments/\",\r\n      \"_ts\": 1527250581\r\n    }\r\n  ]\r\n}";
-        #endregion
+                   "}\r\n        ]\r\n      }\r\n    }\r\n  }\r\n}";        
+        private readonly Location location = new Location();
+        private readonly LuisInput luisInput = new LuisInput();
+        private readonly ResourceFilter resourceFilter = new ResourceFilter { TopicIds = new List<string> { "addf41e9-1a27-4aeb-bcbb-7959f95094ba" }, PageNumber = 0, ResourceType = "ALL", Location = new Location() };
+        private readonly List<dynamic> allResourcesCount = new List<dynamic> {  new {  ResourceName = "All", ResourceCount = 10     },
+            new {  ResourceName = "Action Plans", ResourceCount = 2 },
+            new {  ResourceName = "Articles", ResourceCount = 6 },
+            new {   ResourceName = "Forms", ResourceCount = 2 } };
+        private readonly List<string> topicIds = new List<string> { "addf41e9-1a27-4aeb-bcbb-7959f95094ba" };
+    #endregion
 
         #region Mocked Output Data         
         private readonly string expectedLuisNoneIntent = "None";
         private readonly int expectedLowerthreshold = 0;
         private readonly string expectedLuisTopIntent = "eviction";
         private readonly string expectedTopicId = "addf41e9-1a27-4aeb-bcbb-7959f95094ba";
-        private readonly string expectedResourceId = "77d301e7-6df2-612e-4704-c04edf271806";
         private readonly string expectedLuisResponse = "luisResponse";
         private readonly string expectedInternalResponse = "topics";
         private readonly string expectedWebResponse = "webResources";
-        private readonly string expectedEmptyInternalResponse = "{\r\n  \"topics\": {},\r\n  \"resources\": null," +
-                                                                  "\r\n  \"topIntent\": \"\"\r\n}";
+        private readonly string expectedEmptyInternalResponse = "{\r\n  \"topics\": [],\r\n  \"resources\": [],\r\n  \"continuationToken\": [],\r\n  " +
+                   "\"topicIds\": [],\r\n  \"resourceTypeFilter\": [],\r\n  \"topIntent\": \"eviction\"\r\n}";
+        
         #endregion
 
         public LuisBusinessLogicTests()
@@ -172,27 +167,32 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             topicsResourcesBusinessLogic = Substitute.For<ITopicsResourcesBusinessLogic>();
             webSearchBusinessLogic = Substitute.For<IWebSearchBusinessLogic>();
             luis = Substitute.For<ILuisBusinessLogic>();
-            luisBusinessLogic = new LuisBusinessLogic(luisProxy, luisSettings, topicsResourcesBusinessLogic, webSearchBusinessLogic);
+            bingSettings = Substitute.For<IBingSettings>();
+            luisBusinessLogic = new LuisBusinessLogic(luisProxy, luisSettings, topicsResourcesBusinessLogic, webSearchBusinessLogic, bingSettings);
 
-            luisSettings.Endpoint.Returns(new System.Uri("http://www.bing.com"));
+            luisSettings.Endpoint.Returns(new Uri("http://www.bing.com"));
             luisSettings.TopIntentsCount.Returns(3);
             luisSettings.UpperThreshold.Returns(0.9M);
             luisSettings.LowerThreshold.Returns(0.6M);
+            bingSettings.BingSearchUrl.Returns(new Uri("http://www.bing.com?{0}{1}{2}"));
+            bingSettings.CustomConfigId.Returns("0");
+            bingSettings.PageResultsCount.Returns((short)10);
+            bingSettings.PageOffsetValue.Returns((short)1);
         }
 
         [Fact]
-        public void ParseLuisIntentWithProperIntent()
+        public void ParseLuisIntentTestsShouldReturnProperIntent()
         {
-            
+
             // act
             IntentWithScore intentWithScore = luisBusinessLogic.ParseLuisIntent(properLuisResponse);
 
             //assert            
-            Assert.Equal(expectedLuisTopIntent , intentWithScore.TopScoringIntent);
+            Assert.Equal(expectedLuisTopIntent, intentWithScore.TopScoringIntent);
         }
 
         [Fact]
-        public void ParseLuisIntentWithEmptyObject()
+        public void ParseLuisIntentTestsShouldReturnEmptyObject()
         {
             // act
             IntentWithScore intentWithScore = luisBusinessLogic.ParseLuisIntent(emptyLuisResponse);
@@ -202,8 +202,8 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         }
 
         [Fact]
-        public void ParseLuisIntentWithNoneIntent()
-        {            
+        public void ParseLuisIntentTestsShouldReturnNoneIntent()
+        {
             // act
             IntentWithScore intentWithScore = luisBusinessLogic.ParseLuisIntent(noneLuisResponse);
 
@@ -212,12 +212,17 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         }
 
         [Fact]
-        public void ApplyThresholdToMatchWithUpperthreshold()
+        public void ApplyThresholdTestsShouldMatchUpperthreshold()
         {
             // arrange
             List<string> topNIntents = new List<string> { "eviction", "child abuse", "traffic ticket", "divorce" };
-            IntentWithScore intentWithScore = new IntentWithScore { IsSuccessful = true, Score = 0.96M,
-                                               TopScoringIntent = "eviction", TopNIntents = topNIntents };
+            IntentWithScore intentWithScore = new IntentWithScore
+            {
+                IsSuccessful = true,
+                Score = 0.96M,
+                TopScoringIntent = "eviction",
+                TopNIntents = topNIntents
+            };
             int expectedUpperthreshold = 2;
 
             //act 
@@ -228,12 +233,17 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         }
 
         [Fact]
-        public void ApplyThresholdToMatchWithMediumthreshold()
+        public void ApplyThresholdTestsShouldMatchMediumthreshold()
         {
             // arrange
             List<string> topNIntents = new List<string> { "eviction", "child abuse", "traffic ticket", "divorce" };
-            IntentWithScore intentWithScore = new IntentWithScore { IsSuccessful = true, Score = 0.81M,
-                TopScoringIntent = "eviction", TopNIntents = topNIntents };
+            IntentWithScore intentWithScore = new IntentWithScore
+            {
+                IsSuccessful = true,
+                Score = 0.81M,
+                TopScoringIntent = "eviction",
+                TopNIntents = topNIntents
+            };
             int expectedMediumthreshold = 1;
 
 
@@ -245,12 +255,17 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         }
 
         [Fact]
-        public void ApplyThresholdToMatchWithLowerthreshold()
+        public void ApplyThresholdTestsShouldMatchLowerthreshold()
         {
             // arrange
             List<string> topNIntents = new List<string> { "eviction", "child abuse", "traffic ticket", "divorce" };
-            IntentWithScore intentWithScore = new IntentWithScore { IsSuccessful = true, Score = 0.59M,
-                                              TopScoringIntent = "eviction", TopNIntents = topNIntents };
+            IntentWithScore intentWithScore = new IntentWithScore
+            {
+                IsSuccessful = true,
+                Score = 0.59M,
+                TopScoringIntent = "eviction",
+                TopNIntents = topNIntents
+            };
 
             //act 
             int threshold = luisBusinessLogic.ApplyThreshold(intentWithScore);
@@ -260,12 +275,17 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         }
 
         [Fact]
-        public void ApplyThresholdWithEmptyObject()
+        public void ApplyThresholdTestsShouldWithEmptyObject()
         {
             // arrange
             List<string> topNIntents = new List<string> { "" };
-            IntentWithScore intentWithScore = new IntentWithScore { IsSuccessful = false, Score = 0M, TopScoringIntent = "",
-                TopNIntents = topNIntents };
+            IntentWithScore intentWithScore = new IntentWithScore
+            {
+                IsSuccessful = false,
+                Score = 0M,
+                TopScoringIntent = "",
+                TopNIntents = topNIntents
+            };
 
             //act 
             int threshold = luisBusinessLogic.ApplyThreshold(intentWithScore);
@@ -275,108 +295,126 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         }
 
         [Fact]
-        public void GetInternalResourcesAsyncWithProperKeyword()
+        public void GetInternalResourcesAsyncTestsShouldReturnProperResult()
         {
             //arrange
-            topicsResourcesBusinessLogic.GetTopicsAsync(Arg.Any<string>()).Returns(topicsData);
-            topicsResourcesBusinessLogic.GetResourcesAsync(Arg.Any<string>()).Returns(resourcesData);
-            
+            PagedResources pagedResources = new PagedResources() { Results = resourcesData, ContinuationToken = "[]", TopicIds = topicIds };
+            var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
+            topicResponse.Returns(topicsData);
+            var resourceCount = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);            
+            resourceCount.ReturnsForAnyArgs<dynamic>(allResourcesCount);
+            var paginationResult = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
+            paginationResult.ReturnsForAnyArgs<dynamic>(pagedResources);
+
             //act
-            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword).Result;
+            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword, location).Result;
 
             //assert            
-            Assert.Contains(expectedTopicId, result);            
+            Assert.Contains(expectedTopicId, result);
         }
 
         [Fact]
-        public void GetInternalResourcesAsyncWithEmptyTopic()
+        public void GetInternalResourcesAsyncTestsShouldReturnEmptyTopics()
         {
             //arrange
-            topicsResourcesBusinessLogic.GetTopicsAsync(Arg.Any<string>()).Returns(emptyTopicObject);
-            topicsResourcesBusinessLogic.GetResourcesAsync(Arg.Any<string>()).Returns(emptyResourceObject);
+            PagedResources pagedResources = new PagedResources() { Results = resourcesData, ContinuationToken = "[]", TopicIds = topicIds };
+            var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
+            topicResponse.Returns(emptyTopicObject);
 
             //act
-            var result = luisBusinessLogic.GetInternalResourcesAsync("").Result;
+            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword, location).Result;
 
-            //assert
+            //assert            
             Assert.Equal(expectedEmptyInternalResponse, result);
         }
 
         [Fact]
-        public void GetInternalResourcesAsyncWithEmptyResource()
+        public void GetInternalResourcesAsyncTestsShouldReturnEmptyResources()
         {
             //arrange
-            topicsResourcesBusinessLogic.GetTopicsAsync(Arg.Any<string>()).Returns(topicsData);
-            topicsResourcesBusinessLogic.GetResourcesAsync(Arg.Any<string>()).Returns(emptyResourceObject);
+            PagedResources pagedResources = new PagedResources() { TopicIds = new List<string>() };
+            var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
+            topicResponse.Returns(topicsData);
+            var resourceCount = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
+            resourceCount.ReturnsForAnyArgs<dynamic>(new List<dynamic>());
+            var paginationResult = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
+            paginationResult.ReturnsForAnyArgs<dynamic>(pagedResources);
 
             //act
-            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword).Result;
+            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword, location).Result;
 
-            //assert
-            Assert.Contains(expectedTopicId, result);            
-            Assert.DoesNotContain(expectedResourceId, result);
-        }
-
-        [Fact]
-        public void GetInternalResourcesAsyncWithTopicResource()
-        {
-            //arrange
-            topicsResourcesBusinessLogic.GetTopicsAsync(Arg.Any<string>()).Returns(topicsData);
-
-            topicsResourcesBusinessLogic.GetResourcesAsync(Arg.Any<string>()).ReturnsForAnyArgs(resourcesData);
-
-            //act
-            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword).Result;
-
-            //assert
+            //assert            
             Assert.Contains(expectedTopicId, result);
-            Assert.Contains(expectedResourceId, result);
-        }
+        }               
 
         [Fact]
-        public void GetResourceBasedOnThresholdAsyncWithLowScore()
+        public void GetInternalResourcesAsyncTestsShouldReturnTopIntent()
         {
             //arrange
-            var luisResponse = luisProxy.GetIntents(searchText);           
-            luisResponse.Returns(lowScoreLuisResponse);
-           
-            var webResponse = webSearchBusinessLogic.SearchWebResourcesAsync(searchText);
-            webResponse.Returns(webData);           
+            PagedResources pagedResources = new PagedResources() { Results = resourcesData, ContinuationToken = "[]", TopicIds = topicIds };
+            var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
+            topicResponse.Returns(topicsData);
+            var resourceCount = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
+            resourceCount.ReturnsForAnyArgs<dynamic>(allResourcesCount);
+            var paginationResult = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
+            paginationResult.ReturnsForAnyArgs<dynamic>(pagedResources);
 
             //act
-            var result = luisBusinessLogic.GetResourceBasedOnThresholdAsync(searchText).Result;
+            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword, location).Result;
+
+            //assert            
+            Assert.Contains(keyword, result);
+        }
+                
+        [Fact]
+        public void GetResourceBasedOnThresholdAsyncTestsShouldValidateLowScore()
+        {
+            //arrange
+            luisInput.Sentence = searchText;
+            var luisResponse = luisProxy.GetIntents(searchText);
+            luisResponse.Returns(lowScoreLuisResponse);
+
+            var webResponse = webSearchBusinessLogic.SearchWebResourcesAsync(bingSettings.BingSearchUrl);
+            webResponse.ReturnsForAnyArgs<dynamic>(webData);
+
+            //act
+            var result = luisBusinessLogic.GetResourceBasedOnThresholdAsync(luisInput).Result;
 
             //assert
             Assert.Contains(expectedWebResponse, result);
         }
 
         [Fact]
-        public void GetResourceBasedOnThresholdAsyncWithMediumScore()
+        public void GetResourceBasedOnThresholdAsyncTestsShouldValidateMediumScore()
         {
             //arrange
+            luisInput.Sentence = searchText;
             var luisResponse = luisProxy.GetIntents(searchText);
-            luisResponse.Returns(meduimScoreLuisResponse);
+            luisResponse.ReturnsForAnyArgs(meduimScoreLuisResponse);
 
             //act
-            var response = luisBusinessLogic.GetResourceBasedOnThresholdAsync(searchText).Result;
+            var response = luisBusinessLogic.GetResourceBasedOnThresholdAsync(luisInput).Result;
 
             //assert
             Assert.Contains(expectedLuisResponse, response);
         }
 
         [Fact]
-        public void GetResourceBasedOnThresholdAsyncUpperScore()
+        public void GetResourceBasedOnThresholdAsyncTestsShouldValidateUpperScore()
         {
             //arrange
+            luisInput.Sentence = searchText;
             var luisResponse = luisProxy.GetIntents(searchText);
-            luisResponse.Returns(properLuisResponse);
-            
-            topicsResourcesBusinessLogic.GetTopicsAsync(Arg.Any<string>()).Returns(emptyTopicObject);
+            luisResponse.ReturnsForAnyArgs(properLuisResponse);
 
-            luis.GetInternalResourcesAsync(Arg.Any<string>()).Returns(internalResponse);
+            var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
+            topicResponse.ReturnsForAnyArgs<dynamic>(emptyTopicObject);
+
+            var internalResponse = luis.GetInternalResourcesAsync(keyword, location);
+            internalResponse.ReturnsForAnyArgs<dynamic>(internalResponse);
 
             //act
-            var result = luisBusinessLogic.GetResourceBasedOnThresholdAsync(searchText).Result;
+            var result = luisBusinessLogic.GetResourceBasedOnThresholdAsync(luisInput).Result;
 
             //assert
             Assert.Contains(expectedInternalResponse, result);
