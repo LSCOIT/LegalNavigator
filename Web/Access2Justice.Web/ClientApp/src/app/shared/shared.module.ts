@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from '../app-routing.module';
 import { FormsModule } from '@angular/forms';
-import { BsDropdownModule, ModalModule } from 'ngx-bootstrap';
+import { AccordionModule, BsDropdownModule, ModalModule } from 'ngx-bootstrap';
 
 import { ChatbotComponent } from './chatbot/chatbot.component';
 import { CuratedResourceComponent } from './search/search-results/curated-resource/curated-resource.component';
@@ -30,16 +30,26 @@ import { WebResourceComponent } from './search/search-results/web-resource/web-r
 import { CuratedResourceService } from './search/search-results/curated-resource/curated-resource.service';
 import { SearchFilterPipe } from './search/search-filter.pipe';
 import { BreadcrumbComponent } from '../topics-resources/breadcrumb/breadcrumb.component';
+import { MapResultsComponent } from './sidebars/map-results.component';
+import { MapResultsService } from './sidebars/map-results.service';
+import { PaginationComponent } from './pagination/pagination.component';
+import { PaginationService } from './search/pagination.service';
+import { ActionPlanCardComponent } from './action-plan/action-plan-card.component';
+import { UserActionSidebarComponent } from './sidebars/user-action-sidebar.component';
+import { SettingButtonComponent } from './resource/user-action/setting-button.component';
 import { ServiceOrgService } from './sidebars/service-org.service';
+
 @NgModule({
   imports: [
     CommonModule,
     AppRoutingModule,
     FormsModule,
+    AccordionModule.forRoot(),
     BsDropdownModule.forRoot(),
     ModalModule.forRoot()    
   ],
   declarations: [
+    ActionPlanCardComponent,
     ChatbotComponent,
     CuratedResourceComponent,
     DownloadButtonComponent,
@@ -61,9 +71,14 @@ import { ServiceOrgService } from './sidebars/service-org.service';
     UpperNavComponent,
     WebResourceComponent,
     SearchFilterPipe,
-    BreadcrumbComponent
+    BreadcrumbComponent,
+    MapResultsComponent,
+    PaginationComponent,
+    UserActionSidebarComponent,
+    SettingButtonComponent
   ],
   exports: [
+    ActionPlanCardComponent,
     ChatbotComponent,
     CuratedResourceComponent,
     DownloadButtonComponent,
@@ -83,15 +98,19 @@ import { ServiceOrgService } from './sidebars/service-org.service';
     SaveButtonComponent,
     ShareButtonComponent,
     UpperNavComponent,
-    WebResourceComponent,
-    BreadcrumbComponent
+    BreadcrumbComponent,
+    UserActionSidebarComponent,
+    WebResourceComponent
   ],
   providers: [
     CuratedResourceService,
     LocationService,
     NavigateDataService,
     SearchService,
-    ServiceOrgService    
+    MapResultsService,
+    PaginationService,
+    ServiceOrgService
+
   ]
 })
 export class SharedModule { }

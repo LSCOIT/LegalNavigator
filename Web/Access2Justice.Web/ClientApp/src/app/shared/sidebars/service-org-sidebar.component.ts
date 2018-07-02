@@ -12,6 +12,7 @@ import { MapLocation } from '../location/location';
 })
 export class ServiceOrgSidebarComponent implements OnInit
 {
+  @Input() fullPage;
   organizations: Organization;
   location: MapLocation;
   subscription: any;

@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { MapLocation } from './location';
-import { Subject } from 'rxjs';
 declare var Microsoft: any;
-
+import { Subject } from 'rxjs';
 @Injectable()
 export class LocationService {
   searchManager: any;
@@ -13,7 +12,6 @@ export class LocationService {
   pin: any;
   mapLocation: MapLocation;
   notifyLocation: Subject<MapLocation> = new Subject<MapLocation>();
-
   constructor() { }
 
   getMap(mapType) {

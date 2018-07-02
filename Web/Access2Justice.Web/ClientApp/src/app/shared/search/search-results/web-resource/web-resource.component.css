@@ -1,9 +1,9 @@
-.sidebar {
-  margin-top: 20px;
+.web-resource {
+  border-bottom: 1px solid #ddd;
   margin-bottom: 20px;
-  border: 1px solid black;
 }
 
-.display-url {
-  font-size: 0.85em;
+.web-resource .ps {
+  font-weight: 600;
+  color: #585858;
 }

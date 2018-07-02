@@ -17,6 +17,7 @@ namespace Access2Justice.CosmosDb
     {
         private readonly IDocumentClient documentClient;
         private readonly ICosmosDbSettings cosmosDbSettings;
+
         public CosmosDbService(IDocumentClient documentClient, ICosmosDbSettings cosmosDbSettings)
         {
             this.documentClient = documentClient;
@@ -25,10 +26,11 @@ namespace Access2Justice.CosmosDb
             CreateDatabaseIfNotExistsAsync().Wait();
             CreateCollectionIfNotExistsAsync().Wait();
         }
-        public async Task<Document> CreateItemAsync<T>(T item)
+
+        public async Task<Document> CreateItemAsync<T>(T item,string collectionId)
         {
             return await documentClient.CreateDocumentAsync(
-                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId), item);
+                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, collectionId), item);
         }
 
         public async Task<T> GetItemAsync<T>(string id)
@@ -95,6 +97,74 @@ namespace Access2Justice.CosmosDb
             return results;
         }
 
+        public async Task<dynamic> QueryItemsPaginationAsync(string collectionId, string query, FeedOptions feedOptions)
+        {
+
+            var docQuery = documentClient.CreateDocumentQuery<dynamic>(
+                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, collectionId), query, feedOptions).AsDocumentQuery();
+
+            var results = new PagedResources();
+            List<dynamic> resources = new List<dynamic>();
+            var queryResult = await docQuery.ExecuteNextAsync();
+            if (!queryResult.Any())
+            {
+                return results;
+            }
+            results.ContinuationToken = queryResult.ResponseContinuation;
+            resources.AddRange(queryResult);
+            results.Results = resources;
+
+            return results;
+        }
+
+        public async Task<dynamic> QueryPagedResourcesAsync(string query, string continuationToken)
+        {
+            dynamic result = null;
+            if (string.IsNullOrEmpty(continuationToken))
+            {
+                result = await GetFirstPageResourceAsync(query);
+            }
+            else
+            {
+                result = await GetNextPageResourcesAsync(query, continuationToken);
+            }
+            return result;
+        }
+
+        public async Task<dynamic> QueryResourcesCountAsync(string query)
+        {
+            dynamic result = await GetFirstPageResourceAsync(query, true);
+            return result;
+        }
+
+        public async Task<dynamic> GetFirstPageResourceAsync(string query, bool isInitialPage = false)
+        {
+            FeedOptions feedOptions = null;
+            if (!isInitialPage)
+            {
+                feedOptions = new FeedOptions()
+                {
+                    MaxItemCount = cosmosDbSettings.PageResultsCount
+                };
+            }
+            var result = await QueryItemsPaginationAsync(cosmosDbSettings.ResourceCollectionId, query, feedOptions);
+
+            return result;
+        }
+
+        public async Task<dynamic> GetNextPageResourcesAsync(string query, string continuationToken)
+        {
+            FeedOptions feedOptions = new FeedOptions()
+            {
+                MaxItemCount = cosmosDbSettings.PageResultsCount,
+                RequestContinuation = continuationToken
+            };
+
+            var result = await QueryItemsPaginationAsync(cosmosDbSettings.ResourceCollectionId, query, feedOptions);
+
+            return result;
+        }
+
         public async Task<dynamic> ExecuteStoredProcedureAsync(string collectionId, string storedProcName, params dynamic[] procedureParams)
         {
             return await documentClient.ExecuteStoredProcedureAsync<dynamic>(UriFactory.CreateStoredProcedureUri(cosmosDbSettings.DatabaseId, collectionId, storedProcName), procedureParams);
@@ -146,6 +216,5 @@ namespace Access2Justice.CosmosDb
                 }
             }
         }
-   
     }
 }

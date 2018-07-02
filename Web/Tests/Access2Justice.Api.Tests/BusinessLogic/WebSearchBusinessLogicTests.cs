@@ -20,7 +20,6 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         #endregion
 
         #region Mocked Input Data
-        private readonly string searchText = "Microsoft";
         private readonly string emptyWebData = "{}";
         private readonly string webData =
                    "{\r\n  \"webResources\": {\r\n    \"_type\": \"SearchResponse\",\r\n    \"instrumentation\": {\r\n      \"_type\": " +
@@ -83,15 +82,16 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             httpClientService = Substitute.For<IHttpClientService>();
             webSearchBusinessLogic = new WebSearchBusinessLogic(httpClientService, bingSettings);
 
-            bingSettings.BingSearchUrl.Returns(new Uri("https://www.bing.com"));
-            bingSettings.SubscriptionKey.Returns("456sdf56sd4f56d44546565");
-            bingSettings.CustomConfigId.Returns("2425415097");
+            bingSettings.BingSearchUrl.Returns(new Uri("http://www.bing.com?{0}{1}{2}"));
+            bingSettings.SubscriptionKey.Returns("subscriptionKey");
+            bingSettings.CustomConfigId.Returns("0");
+            bingSettings.PageResultsCount.Returns((short)10);
+            bingSettings.PageOffsetValue.Returns((short)1);
         }
 
         [Fact]
-        public void SearchReturnsExpectedResult()
+        public void SearchWebResourcesAsyncSearchTextFound()
         {
-            // arrange
             var responseq = new HttpResponseMessage();
             var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK)
             {
@@ -100,12 +100,10 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var response = httpClientService.GetDataAsync(bingSettings.BingSearchUrl, bingSettings.SubscriptionKey);
             response.Returns(httpResponseMessage);
 
-            // act
-            var responseContent = webSearchBusinessLogic.SearchWebResourcesAsync(searchText).Result;
+            var responseContent = webSearchBusinessLogic.SearchWebResourcesAsync(bingSettings.BingSearchUrl).Result;
 
-            // assert
             Assert.Contains(expectedWebResponse, responseContent);
-        }            
+        }
 
         [Fact]
         public void SearchWebResourcesSearchTextNotFound()
@@ -118,7 +116,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var response = httpClientService.GetDataAsync(bingSettings.BingSearchUrl, bingSettings.SubscriptionKey);
             response.Returns(httpResponseMessage);
 
-            var responseContent = webSearchBusinessLogic.SearchWebResourcesAsync(searchText).Result;
+            var responseContent = webSearchBusinessLogic.SearchWebResourcesAsync(bingSettings.BingSearchUrl).Result;
 
             Assert.Contains(expectedEmptyWebResponse, responseContent);
         }

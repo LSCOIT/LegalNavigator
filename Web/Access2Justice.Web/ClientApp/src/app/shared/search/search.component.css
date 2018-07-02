@@ -1,5 +1,7 @@
 .navbar-form {
   cursor: pointer;
+  padding-right: 0;
+  margin-top: 13px;
 }
 
 .search-icon {
@@ -24,6 +26,6 @@
 
 @media only screen and (min-width : 768px) {
   #search {
-     width: 200px;
+     width: 180px;
   }
 }

@@ -1,0 +1,9 @@
+.panel-heading {
+  display: inline-block;
+  border-radius: 25px;
+}
+
+.label-display {
+  float: left;
+  padding-right: 10px;
+}

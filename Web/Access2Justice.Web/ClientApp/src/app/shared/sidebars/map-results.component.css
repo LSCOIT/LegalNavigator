@@ -1,0 +1,16 @@
+#my-map-results {
+  position: relative;
+  width: 100%;
+  height: 410px;
+}
+
+#my-map-results, h5 {
+  border: 1px solid #ddd;
+}
+
+h5 {
+  border-top: none;
+  text-decoration: underline;
+  margin: 0;
+  padding: 10px;
+}
