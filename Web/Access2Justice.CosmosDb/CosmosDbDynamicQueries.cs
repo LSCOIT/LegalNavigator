@@ -27,6 +27,20 @@ namespace Access2Justice.CosmosDb
             return await backendDatabaseService.QueryItemsAsync(collectionId, query);
         }
 
+        public async Task<dynamic> FindItemsWhereAsync(string collectionId, List<string> propertyNames, List<string> values)
+        {
+            var query = "SELECT * FROM c WHERE ";
+            for (int iterator = 0; iterator< propertyNames.Count(); iterator++)
+            {
+                EnsureParametersAreNotNullOrEmpty(collectionId, propertyNames[iterator]);
+                query += $"c.{propertyNames[iterator]}='{values[iterator]}'";
+                if (iterator != propertyNames.Count()-1) {
+                    query += " AND ";
+                }
+            }
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query);
+        }
+
         public async Task<dynamic> FindItemsWhereContainsAsync(string collectionId, string propertyName, string value)
         {
             EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);

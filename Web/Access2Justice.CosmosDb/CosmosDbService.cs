@@ -216,6 +216,5 @@ namespace Access2Justice.CosmosDb
                 }
             }
         }
-
     }
 }
