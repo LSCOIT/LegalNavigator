@@ -4,11 +4,13 @@
   height: 410px;
 }
 
-.sidebar-wrapper {
-  margin-bottom: 20px;
-  border: 1px solid black;
+#my-map-results, h5 {
+  border: 1px solid #ddd;
 }
 
 h5 {
+  border-top: none;
   text-decoration: underline;
+  margin: 0;
+  padding: 10px;
 }

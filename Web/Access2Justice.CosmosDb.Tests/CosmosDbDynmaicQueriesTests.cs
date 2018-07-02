@@ -45,6 +45,21 @@ namespace Access2Justice.CosmosDb.Tests
         }
 
         [Fact]
+        public void FindItemsWhereWithMultipleArgumentsShouldConstructValidSqlQuery()
+        {
+            // Arrange
+            string query = @"SELECT * FROM c WHERE c.name='Tenant Action Plan for Eviction' AND c.resourceType='Action Plans'";
+            List<string> propertyNames = new List<string>() { "name", "resourceType" };
+            List<string> values = new List<string>() { "Tenant Action Plan for Eviction", "Action Plans" };
+
+            // Act
+            var result = dynamicQueries.FindItemsWhereAsync("resourcesCollections", propertyNames, values).Result;
+
+            // Assert
+            cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(), query);
+        }
+
+        [Fact]
         public void FindItemsWhereArrayContainsShouldConstructValidSqlQuery()
         {
             // Arrange
@@ -172,7 +187,7 @@ namespace Access2Justice.CosmosDb.Tests
             var ids = new List<string>() { "guid1" };
             Location location = new Location { State = "Hawaii", City = "Honolulu", County = "Honolulu", ZipCode = "96801" };
             ResourceFilter resourceFilter = new ResourceFilter { TopicIds = ids, PageNumber = 0, ResourceType = "Forms", Location = location };
-            string query = "SELECT * FROM c WHERE ( ARRAY_CONTAINS(c.topicTags, { 'id' : 'guid1'})) AND c.resourceType = 'Forms' AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\",\"city\":\"Honolulu\",\"county\":\"Honolulu\",\"zipCode\":\"96801\"},true))";                            
+            string query = "SELECT * FROM c WHERE ( ARRAY_CONTAINS(c.topicTags, { 'id' : 'guid1'})) AND c.resourceType = 'Forms' AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\",\"county\":\"Honolulu\",\"city\":\"Honolulu\",\"zipCode\":\"96801\"},true))";
 
             //Act
             dynamicQueries.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter);
