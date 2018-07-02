@@ -71,10 +71,10 @@ namespace Access2Justice.CosmosDb
             return results;
         }
 
-        public async Task<Document> UpdateItemAsync<T>(string id, T item)
+        public async Task<Document> UpdateItemAsync<T>(string id, T item, string collectionId)
         {
             return await documentClient.ReplaceDocumentAsync(
-                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, id), item);
+                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, collectionId, id), item);
         }
 
         public async Task DeleteItemAsync(string id)

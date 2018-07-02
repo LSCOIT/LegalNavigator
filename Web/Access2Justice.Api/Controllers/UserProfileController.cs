@@ -43,13 +43,26 @@ namespace Access2Justice.Api.Controllers
         [Route("api/user/createuserpersonalizedplan/")]
         public async Task<IActionResult> CreateUserPersonalizedPlanAsync(dynamic userData)
         {
-            var query = "select * from c where c.id = 'e3736497-7f7b-40e7-b388-0975603db857'";
+            var query = "select * from c where c.id = 'bb51f8eb-57b9-4932-950c-090d1c814dc2'";
             userData =await backendDatabaseService.QueryItemsAsync(cosmosDbSettings.ResourceCollectionId, query);
             var users = await userProfileBusinessLogic.CreateUserPersonalizedPlanAsync(userData);
             return Ok(users);
 
         }
 
-    }
-        
+        /// <summary>
+        /// Update the user profile personalized plan
+        /// </summary>
+        /// <param name="userData"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("api/user/updateuserpersonalizedplan/")]
+        public async Task<IActionResult> UpdateUserPersonalizedPlanAsync(dynamic userData)
+        {
+            var query = "select * from c where c.id = 'bb51f8eb-57b9-4932-950c-090d1c814dc2'";
+            userData = await backendDatabaseService.QueryItemsAsync(cosmosDbSettings.UserProfileCollectionId, query);
+            var users = await userProfileBusinessLogic.UpdateUserPersonalizedPlanAsync(userData);
+            return Ok(users);
+        }
+    }        
 }
