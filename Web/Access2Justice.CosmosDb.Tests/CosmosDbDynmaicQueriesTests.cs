@@ -102,8 +102,8 @@ namespace Access2Justice.CosmosDb.Tests
             // Arrange
             var ids = new List<string>() { "guid1" };
             ResourceFilter resourceFilter = new ResourceFilter { TopicIds = ids, PageNumber = 0, ResourceType = "All" };
-            string query = @"SELECT * FROM c WHERE  ARRAY_CONTAINS(c.topicTags, { 'id' : 'guid1'})";
-            
+            string query = @"SELECT * FROM c WHERE ( ARRAY_CONTAINS(c.topicTags, { 'id' : 'guid1'}))";
+
 
             //Act
             dynamicQueries.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter);
@@ -120,7 +120,7 @@ namespace Access2Justice.CosmosDb.Tests
             var ids = new List<string>() { "guid1" };
             Location location = new Location { State = "Hawaii" };
             ResourceFilter resourceFilter = new ResourceFilter { TopicIds = ids, PageNumber = 0, ResourceType = "All",Location = location };
-            string query = "SELECT * FROM c WHERE  ARRAY_CONTAINS(c.topicTags, { 'id' : 'guid1'}) AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\"},true))";
+            string query = "SELECT * FROM c WHERE ( ARRAY_CONTAINS(c.topicTags, { 'id' : 'guid1'})) AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\"},true))";
 
 
             //Act
@@ -138,7 +138,7 @@ namespace Access2Justice.CosmosDb.Tests
             var ids = new List<string>() { "guid1" };
             Location location = new Location { State = "Hawaii" };
             ResourceFilter resourceFilter = new ResourceFilter { TopicIds = ids, PageNumber = 2, ResourceType = "All", Location = location, ContinuationToken = "222" };
-            string query = "SELECT * FROM c WHERE  ARRAY_CONTAINS(c.topicTags, { 'id' : 'guid1'}) AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\"},true))";
+            string query = "SELECT * FROM c WHERE ( ARRAY_CONTAINS(c.topicTags, { 'id' : 'guid1'})) AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\"},true))";
 
 
             //Act
@@ -189,7 +189,7 @@ namespace Access2Justice.CosmosDb.Tests
             var ids = new List<string>() { "guid1" };
             Location location = new Location { State = "Hawaii" };
             ResourceFilter resourceFilter = new ResourceFilter { TopicIds = ids, PageNumber = 0, ResourceType = "ALL", Location = location };
-            string query = "SELECT c.resourceType FROM c WHERE  ARRAY_CONTAINS(c.topicTags, { 'id' : 'guid1'}) AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\"},true))";                           
+            string query = "SELECT c.resourceType FROM c WHERE ( ARRAY_CONTAINS(c.topicTags, { 'id' : 'guid1'})) AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\"},true))";
 
             //Act
             dynamicQueries.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter, true);

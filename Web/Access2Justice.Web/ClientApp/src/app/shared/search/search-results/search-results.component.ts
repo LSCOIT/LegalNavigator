@@ -1,9 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { NavigateDataService } from '../../navigate-data.service';
 import { ResourceResult } from './search-result';
 import { SearchService } from '../search.service';
 import { PaginationService } from '../pagination.service';
-import { IResourceFilter } from './search-results.model';
+import { IResourceFilter, ILuisInput } from './search-results.model';
 import { LocationService } from '../../location/location.service';
 import { environment } from '../../../../environments/environment';
 
@@ -24,7 +24,8 @@ export class SearchResultsComponent implements OnInit {
   resourceResults: ResourceResult[] = [];
   filterType: string = 'All';  
   resourceTypeFilter: any[];
-  resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: '', PageNumber: 0, Location: '' };  
+  resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: '', PageNumber: 0, Location: {} };
+  luisInput: ILuisInput = { Sentence: '', Location: {}, LuisTopScoringIntent: '', TranslateFrom: '', TranslateTo: '' };
   location: any;
   topicIds: any[];
   isServiceCall: boolean;
@@ -55,29 +56,33 @@ export class SearchResultsComponent implements OnInit {
       }
       else if (this.isInternalResource)
       {
-        this.resourceTypeFilter = this.searchResults.resourceTypeFilter;
-        // need to revisit this logic..
-        this.resourceResults = this.searchResults.resourceTypeFilter.reverse();
-        if (this.resourceTypeFilter != undefined) {
-
-          for (var i = 0; i < this.resourceTypeFilter.length; i++) {
-            if (this.resourceTypeFilter[i].ResourceName === "All") {
-              this.resourceTypeFilter[i]["ResourceList"] = [{
-                'resources': this.searchResults.resources,
-                'continuationToken': this.searchResults.continuationToken
-              }];
-              this.topicIds = this.searchResults.topicIds;
-              this.total = this.resourceTypeFilter[i].ResourceCount;
-              this.pagesToShow = environment.internalResourcePagesToShow;
-              this.limit = environment.internalResourceRecordsToDisplay;
-              break;
-            }
-          }
-        }
+        this.mapInternalResource();
       }
       else {
         this.isLuisResponse = true;
         console.log(this.searchResults.luisResponse);
+      }
+    }
+  }
+
+  mapInternalResource() {
+    this.resourceTypeFilter = this.searchResults.resourceTypeFilter;
+    // need to revisit this logic..
+    this.resourceResults = this.searchResults.resourceTypeFilter.reverse();
+    if (this.resourceTypeFilter != undefined) {
+
+      for (var i = 0; i < this.resourceTypeFilter.length; i++) {
+        if (this.resourceTypeFilter[i].ResourceName === "All") {
+          this.resourceTypeFilter[i]["ResourceList"] = [{
+            'resources': this.searchResults.resources,
+            'continuationToken': this.searchResults.continuationToken
+          }];
+          this.topicIds = this.searchResults.topicIds;
+          this.total = this.resourceTypeFilter[i].ResourceCount;
+          this.pagesToShow = environment.internalResourcePagesToShow;
+          this.limit = environment.internalResourceRecordsToDisplay;
+          break;
+        }
       }
     }
   }
@@ -94,41 +99,37 @@ export class SearchResultsComponent implements OnInit {
 
   ngOnInit() {
     this.bindData();
-    this.locationChange();
+    this.notifyLocationChange();
   }
 
-  locationChange() {
+  notifyLocationChange() {
     if (sessionStorage.getItem("localSearchMapLocation")) {
       this.location = JSON.parse(sessionStorage.getItem("localSearchMapLocation"));
     }
     this.subscription = this.locationService.notifyLocalLocation.subscribe((value) => {
-      this.searchResults = this.navigateDataService.getData();     
+      this.searchResults = this.navigateDataService.getData();
       this.location = value;
-      this.resourceFilter.Location = value;
-      this.resourceFilter.TopicIds = this.searchResults.topicIds;
-      this.resourceFilter.PageNumber = 0;
-      this.resourceFilter.ResourceType = "ALL";
-      //this.searchService.search(this.luisInput)
-      //  .subscribe(response => {
-      //    if (response != undefined) {
-      //      this.searchResults = response;
-      //      this.navigateDataService.setData(this.searchResults);
-      //      this.total = 0;
-      //      this.mapInternalResource();
-      //    }
-      //  });
-      this.paginationService.getPagedResources(this.resourceFilter).subscribe(response => {
-        this.searchResults = response;
-        this.navigateDataService.setData(this.searchResults);
-        this.total = 0;
-        this.bindData();
-      });
+      this.luisInput.Location = value;
+      this.luisInput.LuisTopScoringIntent = this.searchResults.topIntent;
+      this.luisInput.Sentence = this.searchResults.topIntent;
+      this.searchService.search(this.luisInput)
+        .subscribe(response => {
+          if (response != undefined) {
+            this.searchResults = response;
+            this.navigateDataService.setData(this.searchResults);
+            this.total = 0;
+            this.mapInternalResource();
+          }
+        });
     });
   }
 
   getInternalResource(filterName, pageNumber): void {
     this.isServiceCall = this.checkResource(filterName, pageNumber);
     if (this.isServiceCall) {
+      if (sessionStorage.getItem("localSearchMapLocation")) {
+        this.resourceFilter.Location = JSON.parse(sessionStorage.getItem("localSearchMapLocation"));
+      }
       this.paginationService.getPagedResources(this.resourceFilter).subscribe(response => {
         this.searchResults = response;
         this.addResource(filterName);
@@ -222,5 +223,11 @@ export class SearchResultsComponent implements OnInit {
 
   calculateOffsetValue(pageNumber: number): number {
     return Math.ceil(pageNumber * 10) + 1;
+  }
+
+  ngOnDestroy() {
+    if (this.subscription != undefined) {
+      this.subscription.unsubscribe();
+    }
   }
 }

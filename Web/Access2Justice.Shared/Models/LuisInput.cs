@@ -13,5 +13,7 @@ namespace Access2Justice.Shared
         public string TranslateFrom { get; set; }
 
         public string TranslateTo { get; set; }
+
+        public string LuisTopScoringIntent { get; set; }
     }
 }

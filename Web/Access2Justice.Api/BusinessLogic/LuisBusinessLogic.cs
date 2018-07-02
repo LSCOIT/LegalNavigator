@@ -32,24 +32,30 @@ namespace Access2Justice.Api
 
         public async Task<dynamic> GetResourceBasedOnThresholdAsync(LuisInput luisInput)
         {
-            //Encoding search Text before sending it to external systems.
-            string encodedSentence = HttpUtility.UrlEncode(luisInput.Sentence);            
+            dynamic luisResponse = null;
+            dynamic intentWithScore = null;
+            int threshold = 2;
+            if (string.IsNullOrEmpty(luisInput.LuisTopScoringIntent))
+            {
+                //Encoding search Text before sending it to external systems.
+                string encodedSentence = HttpUtility.UrlEncode(luisInput.Sentence);
 
-            var luisResponse = await luisProxy.GetIntents(encodedSentence);
+                luisResponse = await luisProxy.GetIntents(encodedSentence);
 
-            var intentWithScore = ParseLuisIntent(luisResponse);
+                intentWithScore = ParseLuisIntent(luisResponse);
 
-            int threshold = ApplyThreshold(intentWithScore);
+                threshold = ApplyThreshold(intentWithScore);
+            }
 
             switch (threshold)
             {
                 case (int)LuisAccuracyThreshold.High:
-                    return await GetInternalResourcesAsync(intentWithScore.TopScoringIntent,luisInput.Location);
+                    return await GetInternalResourcesAsync(intentWithScore?.TopScoringIntent ?? luisInput.LuisTopScoringIntent, luisInput.Location);
                 case (int)LuisAccuracyThreshold.Medium:
                     JObject luisObject = new JObject { { "luisResponse", luisResponse } };
                     return luisObject.ToString();
                 default:
-                    return await GetWebResourcesAsync(encodedSentence);
+                    return await GetWebResourcesAsync(intentWithScore?.TopScoringIntent);
             }
         }
 

@@ -421,5 +421,26 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
 
         }
 
+        [Fact]
+        public void GetResourceBasedOnThresholdAsyncTestsWithoutLuisApiCall()
+        {
+            //arrange
+            luisInput.LuisTopScoringIntent = keyword;            
+            var luisResponse = luisProxy.GetIntents(searchText);
+            luisResponse.ReturnsForAnyArgs(properLuisResponse);
+
+            var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
+            topicResponse.ReturnsForAnyArgs<dynamic>(emptyTopicObject);
+
+            var internalResponse = luis.GetInternalResourcesAsync(keyword, location);
+            internalResponse.ReturnsForAnyArgs<dynamic>(internalResponse);
+
+            //act
+            var result = luisBusinessLogic.GetResourceBasedOnThresholdAsync(luisInput).Result;
+
+            //assert
+            Assert.Contains(expectedInternalResponse, result);
+        }
+
     }
 }
