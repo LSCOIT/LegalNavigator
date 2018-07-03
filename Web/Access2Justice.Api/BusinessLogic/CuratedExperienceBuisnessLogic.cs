@@ -21,7 +21,6 @@ namespace Access2Justice.Api.BusinessLogic
             cx.Title = a2jProperties.GetValue("title");
             cx.SubjectAreas.Add(a2jProperties.GetValue("subjectarea"));
             cx.Description = a2jProperties.GetValue("description");
-            cx.Authors = GetAuthors(a2jProperties);
 
             var pages = ((JObject)a2jProperties.Where(x => x.Name == "pages").FirstOrDefault()?.Value).Properties();
             foreach (var page in pages)
@@ -43,26 +42,6 @@ namespace Access2Justice.Api.BusinessLogic
             }
 
             return cx;
-        }
-
-        private List<Author> GetAuthors(IEnumerable<JProperty> rootProperties)
-        {
-            var authors = new List<Author>();
-            var a2jAuthors = rootProperties.GetArrayValue("authors");
-            foreach (var author in a2jAuthors.FirstOrDefault())
-            {
-                var authorProperties = ((JObject)author).Properties();
-
-                authors.Add(new Author
-                {
-                    Name = authorProperties.GetValue("name"),
-                    Title = authorProperties.GetValue("title"),
-                    Organization = authorProperties.GetValue("organization"),
-                    Email = authorProperties.GetValue("email")
-                });
-            }
-
-            return authors;
         }
 
         private List<Field> GetFields(IEnumerable<JProperty> pageProperties)

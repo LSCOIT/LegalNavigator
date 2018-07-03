@@ -21,33 +21,14 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "version")]
         public string Version { get; set; }
 
-        [JsonProperty(PropertyName = "authors")]
-        public IList<Author> Authors { get; set; }
-
         [JsonProperty(PropertyName = "components")]
         public IList<Component> Components { get; set; }
 
         public CuratedExperience()
         {
             Components = new List<Component>();
-            Authors = new List<Author>();
             SubjectAreas = new List<string>();
         }
-    }
-
-    public class Author
-    {
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
-        [JsonProperty(PropertyName = "title")]
-        public string Title { get; set; }
-
-        [JsonProperty(PropertyName = "organization")]
-        public string Organization { get; set; }
-
-        [JsonProperty(PropertyName = "email")]
-        public string Email { get; set; }
     }
 
     public class Component
