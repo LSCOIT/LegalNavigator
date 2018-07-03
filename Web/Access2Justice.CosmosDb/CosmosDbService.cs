@@ -27,12 +27,12 @@ namespace Access2Justice.CosmosDb
             CreateCollectionIfNotExistsAsync().Wait();
         }
 
-        public async Task<Document> CreateItemAsync<T>(T item,string collectionId)
+        public async Task<Document> CreateItemAsync<T>(T item, string collectionId)
         {
             return await documentClient.CreateDocumentAsync(
                 UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, collectionId), item);
         }
-       
+
         public async Task<T> GetItemAsync<T>(string id)
         {
             try
@@ -70,16 +70,10 @@ namespace Access2Justice.CosmosDb
 
             return results;
         }
-
-        public async Task<Document> UpdateItemAsync<T>(string id, T item)
-        {
-            return await documentClient.ReplaceDocumentAsync(
-                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, id), item);
-        }
         public async Task<Document> UpdateItemAsync<T>(string id, T item, string collectionId)
         {
             return await documentClient.ReplaceDocumentAsync(
-                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, id), item);
+                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, collectionId, id), item);
         }
         public async Task DeleteItemAsync(string id)
         {
@@ -227,10 +221,10 @@ namespace Access2Justice.CosmosDb
                 UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.UserProfileCollectionId), item);
         }
 
-        public async Task<Document> UpdateUserProfileAsync<T>(string id, T item)
-        {
-            return await documentClient.ReplaceDocumentAsync(
-                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.UserProfileCollectionId, id), item);
-        }
+        //public async Task<Document> UpdateUserProfileAsync<T>(string id, T item)
+        //{
+        //    return await documentClient.ReplaceDocumentAsync(
+        //        UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.UserProfileCollectionId, id), item);
+        //}
     }
 }

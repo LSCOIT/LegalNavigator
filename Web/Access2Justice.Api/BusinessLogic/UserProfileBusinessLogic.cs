@@ -31,12 +31,32 @@ namespace Access2Justice.Api.BusinessLogic
             var userprofileObjects = JsonConvert.SerializeObject(resultUP);
             if (!userprofileObjects.Contains(userProfile.OId))
             {
-                var userDeserialisedObjects = JsonConvert.DeserializeObject(userprofileObjects);
-                var result = await dbService.CreateItemAsync(userDeserialisedObjects, dbSettings.UserProfileCollectionId);
+                var serializedResult = JsonConvert.SerializeObject(userProfile);
+                var resourceDocument = JsonConvert.DeserializeObject<object>(serializedResult);               
+                var result = await dbService.CreateItemAsync(resourceDocument, dbSettings.UserProfileCollectionId);
                 userprofiles.Add(result);
             }
             return userprofiles;
         }
+        public async Task<dynamic> UpdateUserProfileDataAsync(UserProfile userProfile, string userIdGuid)
+        {
+            List<dynamic> userprofiles = new List<dynamic>();
+            
+            var resultUP = GetUserProfileDataAsync(userProfile.OId);
+            var userprofileObjects = JsonConvert.SerializeObject(resultUP);
+            
+            if (userprofileObjects.Contains(userProfile.OId)) // condition to verify oId and update the details
+            {
+                userProfile.Id = userIdGuid; // guid id of the document
+                var serializedResult = JsonConvert.SerializeObject(userProfile);
+                var resourceDocument = JsonConvert.DeserializeObject<object>(serializedResult);
+               
+                var result = await dbService.UpdateItemAsync(userIdGuid, resourceDocument, dbSettings.UserProfileCollectionId);
+                userprofiles.Add(result);
+            }
+            return userprofiles;
+        }
+
 
     }
 }
