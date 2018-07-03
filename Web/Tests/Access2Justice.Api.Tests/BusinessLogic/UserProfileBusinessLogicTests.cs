@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using Microsoft.Azure.Documents;
 using System.IO;
 using System.Collections.Generic;
+using Access2Justice.Api.Tests.TestData;
 
 namespace Access2Justice.Api.Tests.BusinessLogic
 {
@@ -25,6 +26,10 @@ namespace Access2Justice.Api.Tests.BusinessLogic
                     'oId': '709709e7t0r7t96', 'firstName': 'family1.2.1', 'lastName': '5c035d27-2fdb-9776-6236-70983a918431','email': 'f102bfae-362d-4659-aaef-956c391f79de'}]");
         private readonly string expectedUserProfileId = "709709e7t0r7t96";
         private readonly JArray emptyData = JArray.Parse(@"[{}]");
+        private readonly string query = "select * from t";
+        private readonly JArray userProfilePersonalizedPlanData = UserPersonalizedPlanTestData.userProfilePersonalizedPlanData;
+        private readonly JArray expectedUserProfilePersonalizedPlanData = UserPersonalizedPlanTestData.expectedUserProfilePersonalizedPlanData;
+        private readonly JArray expectedUserProfilePersonalizedPlanUpdateData = UserPersonalizedPlanTestData.expectedUserProfilePersonalizedPlanUpdateData;
 
         public UserProfileBusinessLogicTests()
         {
@@ -41,7 +46,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void GetUserProficeDataAsyncShouldReturnEmptyData()
+        public void GetUserProfileDataAsyncShouldReturnEmptyData()
         {
             //arrange      
             var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.UserProfileCollectionId, "oId", expectedUserProfileId);
@@ -56,7 +61,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void GetUserProficeDataAsyncTestsShouldReturnProperData()
+        public void GetUserProfileDataAsyncTestsShouldReturnProperData()
         {
             //arrange      
             var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.UserProfileCollectionId, "oId", expectedUserProfileId);
@@ -68,6 +73,68 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 
             //assert
             Assert.Contains(expectedUserProfileId, result, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        [Fact]
+        public void UpsertUserPersonalizedPlanAsyncTestsShouldReturnProperData()
+        {
+            //arrange
+            var userProfilePersonalizedPlan = this.userProfilePersonalizedPlanData;
+            var resource = JsonConvert.SerializeObject(userProfilePersonalizedPlan);
+            var userUIDocument = JsonConvert.DeserializeObject<dynamic>(resource);
+            var inputJson = userUIDocument[0];
+            dynamic actualResult = null;
+            var dbResponseForFindItems = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.ResourceCollectionId, query, "").ReturnsForAnyArgs(expectedUserProfilePersonalizedPlanUpdateData);
+            
+            //act
+            actualResult = userProfileBusinessLogic.UpsertUserPersonalizedPlanAsync(inputJson).Result;
+            string result = JsonConvert.SerializeObject(actualResult);
+            var response = JsonConvert.DeserializeObject<dynamic>(resource);
+
+            //assert
+            Assert.Equal(expectedUserProfilePersonalizedPlanData[0].ToString(), response[0].ToString());
+        }    
+
+        [Fact]
+        public void CreateUserPersonalizedPlanAsyncTestsShouldReturnProperData()
+        {
+            //arrange
+            var userProfilePersonalizedPlan = this.userProfilePersonalizedPlanData;
+            var resource = JsonConvert.SerializeObject(userProfilePersonalizedPlan);
+            Document document = new Document();
+            JsonTextReader reader = new JsonTextReader(new StringReader(userProfilePersonalizedPlan[0].ToString()));
+            document.LoadFrom(reader);
+            dynamic actualUserPersonalizedPlanData = null;
+            var dbResponse = backendDatabaseService.CreateItemAsync<dynamic>(userProfilePersonalizedPlan, cosmosDbSettings.ResourceCollectionId).ReturnsForAnyArgs(document);
+
+            //act
+            actualUserPersonalizedPlanData = userProfileBusinessLogic.CreateUserPersonalizedPlanAsync(resource).Result;
+
+            //assert
+            Assert.Equal(expectedUserProfilePersonalizedPlanData[0].ToString(), actualUserPersonalizedPlanData.ToString());
+        }
+
+        [Fact]
+        public void UpdateUserPersonalizedPlanAsyncTestsShouldReturnProperData()
+        {
+            //arrange
+            var userProfilePersonalizedPlan = this.userProfilePersonalizedPlanData;
+            var resource = JsonConvert.SerializeObject(userProfilePersonalizedPlan);
+            var userUIDocument = JsonConvert.DeserializeObject<dynamic>(resource);
+            var inputJson = userUIDocument[0];
+            string id = userUIDocument[0].id;
+            Document document = new Document();
+            JsonTextReader reader = new JsonTextReader(new StringReader(expectedUserProfilePersonalizedPlanUpdateData[0].ToString()));
+            document.LoadFrom(reader);
+            dynamic actualResult = null;
+            var dbResponseForFindItems = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.ResourceCollectionId, query, "").ReturnsForAnyArgs(expectedUserProfilePersonalizedPlanUpdateData);
+            var dbResponse = backendDatabaseService.UpdateItemAsync<dynamic>(id, document, cosmosDbSettings.ResourceCollectionId).ReturnsForAnyArgs(document);
+
+            //act
+            actualResult = userProfileBusinessLogic.UpdateUserPersonalizedPlanAsync(inputJson).Result;
+
+            //assert
+            Assert.Equal(expectedUserProfilePersonalizedPlanUpdateData[0].ToString(), actualResult.ToString());
         }
     }
 }

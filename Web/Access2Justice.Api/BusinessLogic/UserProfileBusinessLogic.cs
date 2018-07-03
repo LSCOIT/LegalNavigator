@@ -79,14 +79,14 @@ namespace Access2Justice.Api.BusinessLogic
 
             for (int planTagsIterator = 0; planTagsIterator < userUIDocument.planTags.Count; planTagsIterator++)
             {
-                for (int stepsIterator = 0; stepsIterator < userUIDocument.planTags[planTagsIterator].steps.Count; stepsIterator++)
+                for (int stepTagsIterator = 0; stepTagsIterator < userUIDocument.planTags[planTagsIterator].stepTags.Count; stepTagsIterator++)
                 {
-                    bool uiMarkCompleted = userUIDocument?.planTags[planTagsIterator].steps[stepsIterator].markCompleted;
-                    bool dbMarkCompleted = userDBDocument[0]?.planTags[planTagsIterator].steps[stepsIterator].markCompleted;
+                    bool uiMarkCompleted = userUIDocument?.planTags[planTagsIterator].stepTags[stepTagsIterator].markCompleted;
+                    bool dbMarkCompleted = userDBDocument[0]?.planTags[planTagsIterator].stepTags[stepTagsIterator].markCompleted;
 
                     if ((uiMarkCompleted.Equals(true)) && (dbMarkCompleted.Equals(false)))
                     {
-                        userDBDocument[0].planTags[planTagsIterator].steps[stepsIterator].markCompleted = userUIDocument.planTags[planTagsIterator].steps[stepsIterator].markCompleted;
+                        userDBDocument[0].planTags[planTagsIterator].stepTags[stepTagsIterator].markCompleted = userUIDocument.planTags[planTagsIterator].stepTags[stepTagsIterator].markCompleted;
                     }
                 }
             }            
