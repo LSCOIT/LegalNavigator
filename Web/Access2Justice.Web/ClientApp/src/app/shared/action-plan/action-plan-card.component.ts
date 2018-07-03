@@ -21,12 +21,15 @@ export class ActionPlanCardComponent implements OnChanges {
       this.displaySteps = false;
     }
     else {
+      console.log(this.planDetails);
       this.planSteps = [];
-      if (this.planDetails.topicTags) {
-        this.planDetails.topicTags.forEach(item => {
+      if (this.planDetails.planTags) {
+        this.planDetails.planTags.forEach(item => {
           this.planStep = { topicId: '', topicName: '', steps: [] };
-          this.planStep.topicName = item.id[0].name;
-          this.planStep.topicId = item.id[0].id;
+          if (item.id[0]) {
+            this.planStep.topicName = item.id[0].name;
+            this.planStep.topicId = item.id[0].id;
+          }
           this.planStep.steps = item.stepTags;
           this.planSteps.push(this.planStep);
           this.displaySteps = true;
