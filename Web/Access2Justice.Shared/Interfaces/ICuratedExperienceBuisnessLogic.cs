@@ -1,4 +1,4 @@
-﻿using Access2Justice.Shared.Models;
+﻿using Access2Justice.Shared.Models.CuratedExperience;
 using Newtonsoft.Json.Linq;
 
 namespace Access2Justice.Shared.Interfaces

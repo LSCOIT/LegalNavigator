@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Access2Justice.Shared.Models
+namespace Access2Justice.Shared.Models.CuratedExperience
 {
     public class CuratedExperience
     {

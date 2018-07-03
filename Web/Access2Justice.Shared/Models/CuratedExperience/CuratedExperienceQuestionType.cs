@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Access2Justice.Api.Models.CuratedExperience
+namespace Access2Justice.Shared.Models.CuratedExperience
 {
     public enum CuratedExperienceQuestionType
     {
