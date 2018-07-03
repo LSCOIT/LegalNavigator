@@ -45,9 +45,9 @@ namespace Access2Justice.Api.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("api/user/upsertuserpersonalizedplan")]
-        public async Task<IActionResult> UpSertUserPersonalizedPlanAsync([FromBody]dynamic userData)
+        public async Task<IActionResult> UpsertUserPersonalizedPlanAsync([FromBody]dynamic userData)
         {
-            var users = await userProfileBusinessLogic.UpSertUserPersonalizedPlanAsync(userData);
+            var users = await userProfileBusinessLogic.UpsertUserPersonalizedPlanAsync(userData);
             return Ok(users);
         }
     }   

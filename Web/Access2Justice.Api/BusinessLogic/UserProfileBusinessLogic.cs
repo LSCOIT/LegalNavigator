@@ -40,7 +40,7 @@ namespace Access2Justice.Api.BusinessLogic
             return userprofiles;
         }
 
-        public async Task<dynamic> UpSertUserPersonalizedPlanAsync(dynamic userData)
+        public async Task<dynamic> UpsertUserPersonalizedPlanAsync(dynamic userData)
         {
             var serializedResult = JsonConvert.SerializeObject(userData);
             var userDocument = JsonConvert.DeserializeObject<object>(serializedResult);

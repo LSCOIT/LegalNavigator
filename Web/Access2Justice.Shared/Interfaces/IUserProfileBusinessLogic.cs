@@ -11,6 +11,6 @@ namespace Access2Justice.Shared.Interfaces
         Task<dynamic> CreateUserProfileDataAsync(UserProfile userProfile);
         Task<object> CreateUserPersonalizedPlanAsync(dynamic userData);
         Task<object> UpdateUserPersonalizedPlanAsync(dynamic userData);
-        Task<object> UpSertUserPersonalizedPlanAsync(dynamic userData);               
+        Task<object> UpsertUserPersonalizedPlanAsync(dynamic userData);               
     }
 }
