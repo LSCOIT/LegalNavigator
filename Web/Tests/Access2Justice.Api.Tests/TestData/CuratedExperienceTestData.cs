@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Access2Justice.Api.Tests.Constants
+namespace Access2Justice.Api.Tests.TestData
 {
     public static class CuratedExperienceTestData
     {

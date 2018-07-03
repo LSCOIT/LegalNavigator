@@ -417,9 +417,11 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         {
             //arrange
             var resourceType = "Action Plans";
-            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.ResourceCollectionId, "name", resourceName);
+            List<string> propertyNames = new List<string>() { "name", "resourceType" };
+            List<string> values = new List<string>() { resourceName, resourceType };
+            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.ResourceCollectionId, propertyNames, values);
             dbResponse.ReturnsForAnyArgs<dynamic>(actionPlanData);
-
+            
             //act
             var response = topicsResourcesBusinessLogic.GetResourceDetailAsync(resourceName, resourceType).Result;
             string result = JsonConvert.SerializeObject(response);
@@ -435,8 +437,9 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             //arrange
             var resourceName = "";
             var resourceType = "Action Plans";
-
-            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.ResourceCollectionId, "name", resourceName);
+            List<string> propertyNames = new List<string>() { "name", "resourceType" };
+            List<string> values = new List<string>() { resourceName, resourceType };
+            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.ResourceCollectionId, propertyNames, values);
             dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
 
             //act
@@ -593,7 +596,8 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             //act
             var dbResponse = backendDatabaseService.CreateItemAsync<dynamic>(form, cosmosDbSettings.ResourceCollectionId).ReturnsForAnyArgs(document);
             var dbResponseResource = topicsResourcesSettings.CreateResourceDocumentAsync(resource).ReturnsForAnyArgs(form[0]);
-            var response = topicsResourcesBusinessLogic.CreateResourcesUploadAsync("C:\\Users\\v-sobhad\\Desktop\\CreateJSON\\ResourceData.json").Result;
+            string filePath = Path.Combine(Environment.CurrentDirectory, "TestData\\ResourceData.json");
+            var response = topicsResourcesBusinessLogic.CreateResourcesUploadAsync(filePath).Result;
             foreach (var result in response)
             {
                 actualResourceData = result;
@@ -854,7 +858,9 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             //act
             var dbResponse = backendDatabaseService.CreateItemAsync<dynamic>(topic, cosmosDbSettings.TopicCollectionId).ReturnsForAnyArgs(document);
             var dbResponseResource = topicsResourcesSettings.CreateTopicDocumentAsync(topics).ReturnsForAnyArgs(topic[0]);
-            var response = topicsResourcesBusinessLogic.CreateTopicsUploadAsync("C:\\Users\\v-sobhad\\Desktop\\CreateJSON\\TopicData.json").Result;
+            string filePath = Path.Combine(Environment.CurrentDirectory, "TestData\\TopicData.json");
+            var response = topicsResourcesBusinessLogic.CreateTopicsUploadAsync(filePath).Result;
+            
             foreach (var result in response)
             {
                 actualTopicData = result;

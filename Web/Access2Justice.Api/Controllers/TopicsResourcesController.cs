@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
@@ -221,12 +222,12 @@ namespace Access2Justice.Api.Controllers
         [Route("api/createresourcedocument")]
         public async Task<IActionResult> CreateResourceDocument(dynamic resource)
         {
-            using (StreamReader r = new StreamReader("C:\\Users\\v-sobhad\\Desktop\\CreateJSON\\EssentialReadingsData.json"))
+            string filePath = Path.Combine(Environment.CurrentDirectory, "SampleJsons\\EssentialReadingsData.json");
+            using (StreamReader r = new StreamReader(filePath))
             {
                 resource = r.ReadToEnd();
             }
             var resources = await topicsResourcesBusinessLogic.CreateResourceDocumentAsync(resource);
-
             return Ok(resources);
         }
 
@@ -249,12 +250,12 @@ namespace Access2Justice.Api.Controllers
         [Route("api/createtopicdocument")]
         public async Task<IActionResult> CreateTopicDocument(dynamic topic)
         {
-            using (StreamReader r = new StreamReader("C:\\Users\\v-sobhad\\Desktop\\CreateJSON\\TopicData.json"))
+            string filePath = Path.Combine(Environment.CurrentDirectory, "SampleJsons\\TopicData.json");
+            using (StreamReader r = new StreamReader(filePath))
             {
                 topic = r.ReadToEnd();
             }
             var topics = await topicsResourcesBusinessLogic.CreateTopicDocumentAsync(topic);
-
             return Ok(topics);
         }
     }
