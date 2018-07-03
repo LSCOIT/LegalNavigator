@@ -1,10 +1,7 @@
 ﻿using System.Threading.Tasks;
-using Access2Justice.Api.BusinessLogic;
-using Access2Justice.CosmosDb.Interfaces;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -27,11 +24,20 @@ namespace Access2Justice.Api.Controllers
         [Route("api/user/getuserprofile/{oid}")]
         public async Task<IActionResult> GetUserProfileDataAsync(string oid)
         {
-
             var users = await userProfileBusinessLogic.GetUserProfileDataAsync(oid);
             return Ok(users);
         }
-        
+
+        #region Create User Profile Document
+        [HttpPost]
+        [Route("api/user/createuserprofiledocument")]
+        public async Task<IActionResult> CreateUserProfileDocumentAsync(UserProfile userProfile)
+        {
+            var profile = await userProfileBusinessLogic.CreateUserProfileDataAsync(userProfile);
+            return Ok(profile);
+        }
+        #endregion
+
         /// <summary>
         /// Insert and Update the user profile personalized plan
         /// </summary>
@@ -44,17 +50,5 @@ namespace Access2Justice.Api.Controllers
             var users = await userProfileBusinessLogic.UpSetUserPersonalizedPlanAsync(userData);
             return Ok(users);
         }
-    }        
-
-        #region Create User Profile Document
-        [HttpPost]
-        [Route("api/user/createuserprofiledocument")]
-        public async Task<IActionResult> CreateUserProfileDocumentAsync(UserProfile userProfile)
-        {           
-            var profile = await userProfileBusinessLogic.CreateUserProfileDataAsync(userProfile);
-            return Ok(profile);
-        }
-        #endregion      
-    }
-        
+    }   
 }
