@@ -1,13 +1,20 @@
-<div class="col-sm-12 sidebar text-center">
-  <div class="sidebar-wrapper">
+<div class="text-center row service-org">
+  <img class="secondary-img" src="./assets/images/secondary-illustrations/service_org.svg" alt="Service Organizations">
+  <div>
     <h4>Service organizations in your community</h4>
     <p>Free local services available to all.</p>
-    <div class="org-info">
-      <ul *ngFor="let organization of organizations">
-        <li>{{organization.name}}</li>
-        <li>{{organization.telephone}}</li>
-      </ul>
+    <div *ngIf="fullPage" class="fullPage"></div>
+    <div>
+      <div class="sidebar-block">
+        <ul *ngFor="let organization of organizations">
+          <li> <a class="link p" href="#">{{organization.name}}</a></li>
+          <li> <img class="nav-icon" src="./assets/images/small-icons/call.svg"/> {{organization.telephone}}</li>
+        </ul>
+      </div>
     </div>
-    <button><a href='#'>See more organizations</a></button>
+    <div class="col-sm-12">
+      <button class="btn-sm btn-primary"><a href='#'>See more organizations</a></button>
+    </div>
   </div>
 </div>
+
