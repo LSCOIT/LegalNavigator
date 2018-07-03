@@ -48,8 +48,8 @@ namespace Access2Justice.Api.Controllers
         }
 
 
-        [HttpPost]
-        public IActionResult Post([FromBody] JObject a2jSchema)
+        [HttpPost("ConvertA2JAuthorToCuratedExperience")]
+        public IActionResult ConvertA2JAuthorToCuratedExperience([FromBody] JObject a2jSchema)
         {
             try
             {

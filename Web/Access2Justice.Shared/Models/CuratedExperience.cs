@@ -12,22 +12,12 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "title")]
         public string Title { get; set; }
 
-        [JsonProperty(PropertyName = "subjectAreas")]
-        public IList<string> SubjectAreas { get; set; }
-
-        [JsonProperty(PropertyName = "description")]
-        public string Description { get; set; }
-
-        [JsonProperty(PropertyName = "version")]
-        public string Version { get; set; }
-
         [JsonProperty(PropertyName = "components")]
         public IList<Component> Components { get; set; }
 
         public CuratedExperience()
         {
             Components = new List<Component>();
-            SubjectAreas = new List<string>();
         }
     }
 
@@ -48,9 +38,6 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "help")]
         public string Help { get; set; }
 
-        //[JsonProperty(PropertyName = "parentId")]
-        //public Guid ParentId { get; set; }
-
         [JsonProperty(propertyName: "tags")]
         public IList<string> Tags { get; set; }
 
@@ -66,7 +53,6 @@ namespace Access2Justice.Shared.Models
             Buttons = new List<Button>();
             Fields = new List<Field>();
         }
-
     }
 
     public class Button
@@ -79,11 +65,6 @@ namespace Access2Justice.Shared.Models
 
         [JsonProperty(PropertyName = "destination")]
         public string Destination { get; set; }
-
-        // alaa:todo maybe we could use a field like this to encampus logic
-        // [JsonProperty(propertyName: "action")]
-        // public string Action { get; set; }
-
     }
 
     public class Field

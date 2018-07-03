@@ -5,7 +5,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Globalization;
 
 namespace Access2Justice.Api.BusinessLogic
 {
@@ -17,10 +17,8 @@ namespace Access2Justice.Api.BusinessLogic
             var a2jProperties = (a2jSchema).Properties();
 
             cx.CuratedExperienceId = Guid.NewGuid();
-            cx.Version = a2jProperties.GetValue("version");
             cx.Title = a2jProperties.GetValue("title");
-            cx.SubjectAreas.Add(a2jProperties.GetValue("subjectarea"));
-            cx.Description = a2jProperties.GetValue("description");
+            var resource = MapResourceProperties(a2jProperties, cx.CuratedExperienceId);
 
             var pages = ((JObject)a2jProperties.Where(x => x.Name == "pages").FirstOrDefault()?.Value).Properties();
             foreach (var page in pages)
@@ -41,7 +39,23 @@ namespace Access2Justice.Api.BusinessLogic
                 });
             }
 
+            // todo: persist the curated experience and the resource
+
+
             return cx;
+        }
+
+        private Resource MapResourceProperties(IEnumerable<JProperty> a2jProperties, Guid curatedExperienceId)
+        {
+            return new Resource
+            {
+                ResourceId = Guid.NewGuid(),
+                ExternalUrls = curatedExperienceId.ToString(),
+                Name = a2jProperties.GetValue("subjectarea"),
+                Description = a2jProperties.GetValue("description"),
+                CreatedTimeStamp = a2jProperties.GetDateOrNull("createdate"),
+                ModifiedTimeStamp = a2jProperties.GetDateOrNull("modifydate")
+            };
         }
 
         private List<Field> GetFields(IEnumerable<JProperty> pageProperties)
