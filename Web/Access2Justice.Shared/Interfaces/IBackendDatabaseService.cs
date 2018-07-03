@@ -21,6 +21,7 @@ namespace Access2Justice.Shared.Interfaces
         Task<dynamic> GetFirstPageResourceAsync(string query,bool isInitialPage);
         Task<dynamic> GetNextPageResourcesAsync(string query, string continuationToken);
         Task<dynamic> QueryPagedResourcesAsync(string query, string continuationToken);
-        Task<dynamic> QueryResourcesCountAsync(string query);
+        Task<dynamic> QueryResourcesCountAsync(string query);       
+        Task<Document> UpdateItemAsync<T>(string id, T item, string collectionId);
     }
 }

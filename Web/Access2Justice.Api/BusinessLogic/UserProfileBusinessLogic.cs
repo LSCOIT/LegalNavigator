@@ -1,7 +1,8 @@
 ﻿using Access2Justice.CosmosDb.Interfaces;
 using Access2Justice.Shared.Interfaces;
+using Access2Justice.Shared.Models;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -49,6 +50,20 @@ namespace Access2Justice.Api.BusinessLogic
             var userDocument = JsonConvert.DeserializeObject<object>(serializedResult);
             var result = await dbService.CreateItemAsync(userDocument[0], dbSettings.ResourceCollectionId);
             return result;
+        }
+        public async Task<dynamic> CreateUserProfileDataAsync(UserProfile userProfile)
+        {
+            List<dynamic> userprofiles = new List<dynamic>();
+
+            var resultUP = GetUserProfileDataAsync(userProfile.OId);
+            var userprofileObjects = JsonConvert.SerializeObject(resultUP);
+            if (!userprofileObjects.Contains(userProfile.OId))
+            {
+                var userDeserialisedObjects = JsonConvert.DeserializeObject(userprofileObjects);
+                var result = await dbService.CreateItemAsync(userDeserialisedObjects, dbSettings.UserProfileCollectionId);
+                userprofiles.Add(result);
+            }
+            return userprofiles;
         }
 
         public async Task<dynamic> UpdateUserPersonalizedPlanAsync(dynamic userUIData)
