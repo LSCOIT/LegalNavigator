@@ -579,7 +579,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             //act
             var dbResponse = backendDatabaseService.CreateItemAsync<dynamic>(form, cosmosDbSettings.ResourceCollectionId).ReturnsForAnyArgs(document);
             var dbResponseResource = topicsResourcesSettings.CreateResourceDocumentAsync(resource).ReturnsForAnyArgs(form[0]);
-            string filePath = Path.Combine(Environment.CurrentDirectory, "SampleJsons\\ResourceData.json");
+            string filePath = Path.Combine(Environment.CurrentDirectory, "TestData\\ResourceData.json");
             var response = topicsResourcesBusinessLogic.CreateResourcesUploadAsync(filePath).Result;
             foreach (var result in response)
             {
@@ -841,7 +841,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             //act
             var dbResponse = backendDatabaseService.CreateItemAsync<dynamic>(topic, cosmosDbSettings.TopicCollectionId).ReturnsForAnyArgs(document);
             var dbResponseResource = topicsResourcesSettings.CreateTopicDocumentAsync(topics).ReturnsForAnyArgs(topic[0]);
-            string filePath = Path.Combine(Environment.CurrentDirectory, "SampleJsons\\TopicData.json");
+            string filePath = Path.Combine(Environment.CurrentDirectory, "TestData\\TopicData.json");
             var response = topicsResourcesBusinessLogic.CreateTopicsUploadAsync(filePath).Result;
             
             foreach (var result in response)
