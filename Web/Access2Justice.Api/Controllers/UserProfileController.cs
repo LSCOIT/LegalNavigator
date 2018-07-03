@@ -44,10 +44,10 @@ namespace Access2Justice.Api.Controllers
         /// <param name="userData"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("api/user/upsetuserpersonalizedplan")]
-        public async Task<IActionResult> UpSetUserPersonalizedPlanAsync([FromBody]dynamic userData)
+        [Route("api/user/upsertuserpersonalizedplan")]
+        public async Task<IActionResult> UpSertUserPersonalizedPlanAsync([FromBody]dynamic userData)
         {
-            var users = await userProfileBusinessLogic.UpSetUserPersonalizedPlanAsync(userData);
+            var users = await userProfileBusinessLogic.UpSertUserPersonalizedPlanAsync(userData);
             return Ok(users);
         }
     }   

@@ -24,8 +24,23 @@ namespace Access2Justice.Api.BusinessLogic
         {
             return await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, Constants.OId, oId);
         }
+                
+        public async Task<dynamic> CreateUserProfileDataAsync(UserProfile userProfile)
+        {
+            List<dynamic> userprofiles = new List<dynamic>();
 
-        public async Task<dynamic> UpSetUserPersonalizedPlanAsync(dynamic userData)
+            var resultUP = GetUserProfileDataAsync(userProfile.OId);
+            var userprofileObjects = JsonConvert.SerializeObject(resultUP);
+            if (!userprofileObjects.Contains(userProfile.OId))
+            {
+                var userDeserialisedObjects = JsonConvert.DeserializeObject(userprofileObjects);
+                var result = await dbService.CreateItemAsync(userDeserialisedObjects, dbSettings.UserProfileCollectionId);
+                userprofiles.Add(result);
+            }
+            return userprofiles;
+        }
+
+        public async Task<dynamic> UpSertUserPersonalizedPlanAsync(dynamic userData)
         {
             var serializedResult = JsonConvert.SerializeObject(userData);
             var userDocument = JsonConvert.DeserializeObject<object>(serializedResult);
@@ -51,20 +66,6 @@ namespace Access2Justice.Api.BusinessLogic
             var result = await dbService.CreateItemAsync(userDocument[0], dbSettings.ResourceCollectionId);
             return result;
         }
-        public async Task<dynamic> CreateUserProfileDataAsync(UserProfile userProfile)
-        {
-            List<dynamic> userprofiles = new List<dynamic>();
-
-            var resultUP = GetUserProfileDataAsync(userProfile.OId);
-            var userprofileObjects = JsonConvert.SerializeObject(resultUP);
-            if (!userprofileObjects.Contains(userProfile.OId))
-            {
-                var userDeserialisedObjects = JsonConvert.DeserializeObject(userprofileObjects);
-                var result = await dbService.CreateItemAsync(userDeserialisedObjects, dbSettings.UserProfileCollectionId);
-                userprofiles.Add(result);
-            }
-            return userprofiles;
-        }
 
         public async Task<dynamic> UpdateUserPersonalizedPlanAsync(dynamic userUIData)
         {
@@ -75,12 +76,12 @@ namespace Access2Justice.Api.BusinessLogic
             var serializedDBResult = JsonConvert.SerializeObject(userDBData);
             var userDBDocument = JsonConvert.DeserializeObject<dynamic>(serializedDBResult);
 
-            for (int topicTagIterator= 0; topicTagIterator < userUIDocument[0].topicTags.Count; topicTagIterator++)
+            for (int topicTagIterator= 0; topicTagIterator < userUIDocument[0]?.topicTags.Count; topicTagIterator++)
             {
-                for (int stepTagIterator = 0; stepTagIterator < userUIDocument[0].topicTags[topicTagIterator].stepTags.Count; stepTagIterator++)
+                for (int stepTagIterator = 0; stepTagIterator < userUIDocument?[0].topicTags[topicTagIterator]?.stepTags.Count; stepTagIterator++)
                 {
-                    bool uiMarkCompleted = userUIDocument[0]?.topicTags[topicTagIterator].stepTags[stepTagIterator].markCompleted;
-                    bool dbMarkCompleted = userDBDocument[0]?.topicTags[topicTagIterator].stepTags[stepTagIterator].markCompleted;
+                    bool uiMarkCompleted = userUIDocument[0]?.topicTags[topicTagIterator]?.stepTags[stepTagIterator]?.markCompleted;
+                    bool dbMarkCompleted = userDBDocument[0]?.topicTags[topicTagIterator]?.stepTags[stepTagIterator]?.markCompleted;
 
                     if ((uiMarkCompleted.Equals(true)) && (dbMarkCompleted.Equals(false)))
                     {
