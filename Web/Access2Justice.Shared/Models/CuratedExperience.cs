@@ -21,12 +21,6 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "version")]
         public string Version { get; set; }
 
-        //[JsonProperty(PropertyName = "")]
-        //public DateTime? DateCreated { get; set; }
-
-        //[JsonProperty(PropertyName = "")]
-        //public DateTime? DateModified { get; set; }
-
         [JsonProperty(PropertyName = "authors")]
         public IList<Author> Authors { get; set; }
 
