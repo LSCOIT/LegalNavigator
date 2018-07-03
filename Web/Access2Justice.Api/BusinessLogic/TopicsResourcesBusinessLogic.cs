@@ -129,7 +129,7 @@ namespace Access2Justice.Api.BusinessLogic
             int indexOfTopicTags = 0;
             foreach (var item in planDetails.planTags)
             {
-                string topicId = item.id;
+                string topicId = item.topicId;
                 var topicData = await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.Id, topicId);
                 planDetails.planTags[indexOfTopicTags].id = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(topicData));
                 indexOfTopicTags++;

@@ -21,16 +21,16 @@ export class PersonalizedPlanComponent implements OnInit {
     this.personalizedPlanService.getActionPlanConditions(this.activeActionPlan)
       .subscribe(items => {
         if (items) {
-          this.topics = items.topicTags;
+          this.topics = items.planTags;
           if (topic === '') {
             this.planDetails = items;
           }
           else {
             let i = 0;
             this.planDetails = items;
-            items.topicTags.forEach(item => {
+            items.planTags.forEach(item => {
               if (item.id[0].name === topic) {
-                this.planDetails = items.topicTags[i];
+                this.planDetails = items.planTags[i];
               }
               i++;
             });
