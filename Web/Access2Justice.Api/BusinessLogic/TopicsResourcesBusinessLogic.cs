@@ -30,7 +30,6 @@ namespace Access2Justice.Api.BusinessLogic
                 string topicId = topic.id;
                 ids.Add(topicId);
             }
-
             return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourceCollectionId, Constants.TopicTags, Constants.Id, ids);
         }
 
@@ -69,7 +68,6 @@ namespace Access2Justice.Api.BusinessLogic
         {
             dynamic serializedResources = "[]";            
             dynamic serializedTopicIds = "[]";
-
             PagedResources pagedResources = await ApplyPaginationAsync(resourceFilter);
             serializedResources = JsonConvert.SerializeObject(pagedResources?.Results);
             dynamic serializedToken = pagedResources?.ContinuationToken ?? "[]";
@@ -80,22 +78,19 @@ namespace Access2Justice.Api.BusinessLogic
                 {"continuationToken", JsonConvert.DeserializeObject(serializedToken) },
                 {"topicIds" , JsonConvert.DeserializeObject(serializedTopicIds)}
             };
-
             return internalResources.ToString();
         }
 
         public async Task<dynamic> ApplyPaginationAsync(ResourceFilter resourceFilter)
         {
             PagedResources pagedResources = await dbClient.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter);
-
             return pagedResources;
         }
 
         public async Task<dynamic> GetResourcesCountAsync(ResourceFilter resourceFilter)
         {
             PagedResources pagedResources = await dbClient.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter, true);
-            
-           return ResourcesCount(pagedResources);
+            return ResourcesCount(pagedResources);
         }
 
         private dynamic ResourcesCount(PagedResources resources)
@@ -108,7 +103,6 @@ namespace Access2Justice.Api.BusinessLogic
                     ResourceCount = resources.Results.Count()
                 }
             };
-
             var groupedResourceType = resources.Results.GroupBy(u => u.resourceType)
                   .OrderBy(group => group.Key)
                   .Select(n => new
@@ -116,7 +110,6 @@ namespace Access2Justice.Api.BusinessLogic
                       ResourceName = n.Key,
                       ResourceCount = n.Count()
                   }).OrderBy(n => n.ResourceName);
-
             dynamic resourceList = groupedResourceType.Concat(allResources);
             return resourceList;
         }
@@ -134,7 +127,6 @@ namespace Access2Justice.Api.BusinessLogic
                 planDetails.planTags[indexOfTopicTags].id = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(topicData));
                 indexOfTopicTags++;
             }
-
             return planDetails;
         }
 
@@ -150,7 +142,6 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 Resources = await dbClient.FindItemsWhereInClauseAsync(dbSettings.ResourceCollectionId, "id", resourceFilter.ResourceIds) ?? Array.Empty<string>();
             }
-
             Topics = JsonConvert.SerializeObject(Topics);
             Resources = JsonConvert.SerializeObject(Resources);
 
@@ -158,9 +149,7 @@ namespace Access2Justice.Api.BusinessLogic
                 { "topics", JsonConvert.DeserializeObject(Topics) },
                 {"resources", JsonConvert.DeserializeObject(Resources) }
             };
-
             return personalizedResources.ToString();
-
         }
 
     }

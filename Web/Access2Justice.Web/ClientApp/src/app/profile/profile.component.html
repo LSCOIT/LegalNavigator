@@ -24,7 +24,7 @@
           <span class="col-sm-1 col-xs-2">Show:</span>
           <!--web filtering-->
           <div *ngFor="let topic of topics" class="mobile-hidden col-xs-9">
-            <button class="btn btn-selected" (click)="filterSelectedResource(topic.id[0].name)">{{topic.id[0].name}}</button>
+            <button class="btn btn-selected">{{topic.id[0].name}}</button>
           </div>
           <!--mobile filtering-->
           <div class="btn-group web-hidden col-xs-9" dropdown>

@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { PlanSteps } from '../../profile/personalized-plan/personalized-plan';
 import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
+import { PlanSteps } from '../../guided-assistant/personalized-plan/personalized-plan';
 
 @Component({
   selector: 'app-action-plan-card',
@@ -24,13 +24,13 @@ export class ActionPlanCardComponent implements OnChanges {
       console.log(this.planDetails);
       this.planSteps = [];
       if (this.planDetails.planTags) {
-        this.planDetails.planTags.forEach(item => {
+        this.planDetails.planTags.forEach(planTag => {
           this.planStep = { topicId: '', topicName: '', steps: [] };
-          if (item.id[0]) {
-            this.planStep.topicName = item.id[0].name;
-            this.planStep.topicId = item.id[0].id;
+          if (planTag.id[0]) {
+            this.planStep.topicName = planTag.id[0].name;
+            this.planStep.topicId = planTag.id[0].id;
           }
-          this.planStep.steps = item.stepTags;
+          this.planStep.steps = planTag.stepTags;
           this.planSteps.push(this.planStep);
           this.displaySteps = true;
         });

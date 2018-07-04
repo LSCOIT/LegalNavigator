@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { PersonalizedPlanService } from '../profile/personalized-plan/personalized-plan.service';
-import { PlanSteps } from '../profile/personalized-plan/personalized-plan';
 import { IResourceFilter } from '../shared/search/search-results/search-results.model';
+import { PersonalizedPlanService } from '../guided-assistant/personalized-plan/personalized-plan.service';
+import { PlanSteps } from '../guided-assistant/personalized-plan/personalized-plan';
 
 @Component({
   selector: 'app-profile',
@@ -11,8 +11,6 @@ import { IResourceFilter } from '../shared/search/search-results/search-results.
 export class ProfileComponent implements OnInit {
   topics: string;
   planDetails: Array<PlanSteps> = [];
-  activeActionPlan: string = '';
-  topic: string = '';
   resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: '', PageNumber: 0, Location: '', ResourceIds: '' };
   personalizedResources: any;
   isSavedResources: boolean = false;
@@ -20,28 +18,14 @@ export class ProfileComponent implements OnInit {
 
   constructor(private personalizedPlanService: PersonalizedPlanService) { }
 
-  getTopics(topic): void {
-    if (this.planId) {
-      this.personalizedPlanService.getActionPlanConditions(this.planId)
-        .subscribe(items => {
-          if (items) {
-            this.topics = items.planTags;
-            if (topic === '') {
-              this.planDetails = items;
-            }
-            else {
-              let i = 0;
-              this.planDetails = items;
-              items.planTags.forEach(item => {
-                if (item.id[0].name === topic) {
-                  this.planDetails = items.planTags[i];
-                }
-                i++;
-              });
-            }
-          }
-        });
-    }
+  getTopics(): void {
+    this.personalizedPlanService.getActionPlanConditions(this.planId)
+      .subscribe(plan => {
+        if (plan) {
+          this.topics = plan.planTags;
+          this.planDetails = plan;
+        }
+      });
   }
 
   getpersonalizedResources() {
@@ -58,13 +42,9 @@ export class ProfileComponent implements OnInit {
     this.planId = this.personalizedPlanService.getPersonalizedPlan();
   }
 
-  filterSelectedResource(topic): void {
-    this.getTopics(topic);
-  }
-
   ngOnInit() {
     this.getPersonalizedPlan();
-    this.getTopics(this.topic);
+    this.getTopics();
   }
 
 }

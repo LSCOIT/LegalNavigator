@@ -28,7 +28,6 @@ namespace Access2Justice.Api.Controllers
             var response = await topicsResourcesBusinessLogic.GetTopLevelTopicsAsync();
             return Ok(response);
         }
-
         
         /// <summary>
         /// Get subtopics by the topic Id
@@ -44,7 +43,6 @@ namespace Access2Justice.Api.Controllers
             return Ok(topics);
         }
 
-
         /// <summary>
         /// Get the topic details by the document parent Id
         /// </summary>
@@ -58,7 +56,6 @@ namespace Access2Justice.Api.Controllers
             return Ok(topics);
         }
 
-
         /// <summary>
         /// Get the document details by a document Id
         /// </summary>
@@ -68,7 +65,6 @@ namespace Access2Justice.Api.Controllers
         [Route("api/topics/getdocument/{id}")]
         public async Task<IActionResult> GetDocumentDataAsync(string id)
         {
-
             var topics = await topicsResourcesBusinessLogic.GetDocumentAsync(id);
             return Ok(topics);
         }
@@ -78,10 +74,8 @@ namespace Access2Justice.Api.Controllers
         public async Task<IActionResult> GetPagedDataAsync([FromBody]ResourceFilter resourceInput)
         {
             var response = await topicsResourcesBusinessLogic.GetPagedResourceAsync(resourceInput);
-            
             return Content(response);            
         }
-
         
         /// <summary>
         /// Get the parent topics by a topic id
@@ -120,7 +114,6 @@ namespace Access2Justice.Api.Controllers
             var response = await topicsResourcesBusinessLogic.GetPersonalizedResourcesAsync(resourceInput);
             return Content(response);
         }
-
 
     }
 }

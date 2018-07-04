@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { PersonalizedPlanService } from '../../profile/personalized-plan/personalized-plan.service';
-import { PlanSteps } from '../../profile/personalized-plan/personalized-plan';
 import { ActivatedRoute } from '@angular/router';
+import { PersonalizedPlanService } from './personalized-plan.service';
+import { PlanSteps } from './personalized-plan';
 
 @Component({
   selector: 'app-personalized-plan',
@@ -17,34 +17,18 @@ export class PersonalizedPlanComponent implements OnInit {
   constructor(private personalizedPlanService: PersonalizedPlanService,
     private activeRoute: ActivatedRoute) { }
 
-  getTopics(topic): void {
+  getTopics(): void {
     this.personalizedPlanService.getActionPlanConditions(this.activeActionPlan)
-      .subscribe(items => {
-        if (items) {
-          this.topics = items.planTags;
-          if (topic === '') {
-            this.planDetails = items;
-          }
-          else {
-            let i = 0;
-            this.planDetails = items;
-            items.planTags.forEach(item => {
-              if (item.id[0].name === topic) {
-                this.planDetails = items.planTags[i];
-              }
-              i++;
-            });
-          }
+      .subscribe(plan => {
+        if (plan) {
+          this.topics = plan.planTags;
+          this.planDetails = plan;
         }
       });
   }
 
-  filterSelectedResource(topic): void {
-    this.getTopics(topic);
-  }
-
   ngOnInit() {
-    this.getTopics(this.topic);
+    this.getTopics();
   }
 
 }

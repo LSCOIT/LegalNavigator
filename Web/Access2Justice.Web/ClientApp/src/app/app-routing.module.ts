@@ -30,13 +30,12 @@ const appRoutes: Routes = [
   { path: 'topics', component: TopicsResourcesComponent },
   { path: 'about', component: AboutComponent },
   { path: 'createaccount', component: CreateAccountComponent },
-  { path: 'plan', component: PersonalizedPlanComponent },
+  { path: 'plan/:id', component: PersonalizedPlanComponent },
   { path: 'help', component: HelpFaqsComponent },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LogInComponent },
   { path: 'privacy', component: PrivacyPromiseComponent },
-  { path: 'personalizedplan/:id', component: PersonalizedPlanComponent },
-  { path: 'userProfile', component: ProfileComponent },
+  { path: 'profile', component: ProfileComponent },
   { path: '', component: HomeComponent }
 ];
 

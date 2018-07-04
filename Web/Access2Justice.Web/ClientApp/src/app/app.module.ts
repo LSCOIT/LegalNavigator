@@ -34,7 +34,7 @@ import { TopicsComponent } from './topics-resources/topic/topics.component';
 import { PersonalizedPlanComponent } from './guided-assistant/personalized-plan/personalized-plan.component';
 import { ProfileComponent } from './profile/profile.component';
 import { BreadcrumbService } from './topics-resources/shared/breadcrumb.service';
-import { PersonalizedPlanService } from './profile/personalized-plan/personalized-plan.service';
+import { PersonalizedPlanService } from './guided-assistant/personalized-plan/personalized-plan.service';
 
 @NgModule({
   declarations: [

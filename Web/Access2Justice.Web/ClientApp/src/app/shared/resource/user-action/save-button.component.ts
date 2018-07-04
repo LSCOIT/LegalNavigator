@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute,Router } from '@angular/router';
-import { Resources } from '../../../profile/personalized-plan/personalized-plan';
-import { PersonalizedPlanService } from '../../../profile/personalized-plan/personalized-plan.service';
+import { PersonalizedPlanService } from '../../../guided-assistant/personalized-plan/personalized-plan.service';
+import { Resources } from '../../../guided-assistant/personalized-plan/personalized-plan';
 
 @Component({
   selector: 'app-save-button',

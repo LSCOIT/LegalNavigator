@@ -76,8 +76,6 @@ export class SearchResultsComponent implements OnInit {
         this.isLuisResponse = true;
         console.log(this.searchResults.luisResponse);
       }
-
-
     }
     if (this.personalizedResources != undefined) {
       this.searchResults = this.personalizedResources;
@@ -136,7 +134,6 @@ export class SearchResultsComponent implements OnInit {
   }
 
   checkResource(resourceName, pageNumber): boolean {
-
     this.resourceTypeFilter.forEach(item => {
       if (item.ResourceName === resourceName && item.ResourceList != undefined
         && item.ResourceList[this.page - 1] != undefined) {
