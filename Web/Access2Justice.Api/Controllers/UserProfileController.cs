@@ -28,7 +28,11 @@ namespace Access2Justice.Api.Controllers
             return Ok(users);
         }
 
-        #region Create User Profile Document
+        /// <summary>
+        /// Create User Profile Document
+        /// </summary>
+        /// <param name="userProfile"></param>
+        /// <returns></returns>        
         [HttpPost]
         [Route("api/user/createuserprofiledocument")]
         public async Task<IActionResult> CreateUserProfileDocumentAsync(UserProfile userProfile)
@@ -36,7 +40,6 @@ namespace Access2Justice.Api.Controllers
             var profile = await userProfileBusinessLogic.CreateUserProfileDataAsync(userProfile);
             return Ok(profile);
         }
-        #endregion
 
         /// <summary>
         /// Insert and Update the user profile personalized plan

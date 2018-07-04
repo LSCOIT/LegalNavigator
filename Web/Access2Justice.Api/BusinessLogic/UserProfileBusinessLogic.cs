@@ -2,8 +2,10 @@
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Access2Justice.Api.BusinessLogic
@@ -24,11 +26,10 @@ namespace Access2Justice.Api.BusinessLogic
         {
             return await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, Constants.OId, oId);
         }
-                
+
         public async Task<dynamic> CreateUserProfileDataAsync(UserProfile userProfile)
         {
-            List<dynamic> userprofiles = new List<dynamic>();
-
+            var userprofiles = new List<dynamic>();
             var resultUP = GetUserProfileDataAsync(userProfile.OId);
             var userprofileObjects = JsonConvert.SerializeObject(resultUP);
             if (!userprofileObjects.Contains(userProfile.OId))
@@ -43,7 +44,7 @@ namespace Access2Justice.Api.BusinessLogic
         public async Task<dynamic> UpsertUserPersonalizedPlanAsync(dynamic userData)
         {
             var serializedResult = JsonConvert.SerializeObject(userData);
-            var userDocument = JsonConvert.DeserializeObject<object>(serializedResult);
+            var userDocument = JsonConvert.DeserializeObject(serializedResult);
             string oId = userDocument.oId;
             dynamic result = null;
             var userDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, Constants.OId, oId);
@@ -62,36 +63,37 @@ namespace Access2Justice.Api.BusinessLogic
         public async Task<dynamic> CreateUserPersonalizedPlanAsync(dynamic userData)
         {
             var serializedResult = JsonConvert.SerializeObject(userData);
-            var userDocument = JsonConvert.DeserializeObject<object>(serializedResult);
-            var result = await dbService.CreateItemAsync(userDocument, dbSettings.ResourceCollectionId);
-            return result;
+            var userDocument = JsonConvert.DeserializeObject(serializedResult);
+            return await dbService.CreateItemAsync(userDocument, dbSettings.ResourceCollectionId);
         }
 
         public async Task<dynamic> UpdateUserPersonalizedPlanAsync(dynamic userUIData)
         {
-            var serializedResult = JsonConvert.SerializeObject(userUIData);
-            var userUIDocument = JsonConvert.DeserializeObject<dynamic>(serializedResult);
-            string oId = userUIDocument?.oId;
-            string id = userUIDocument?.id;
+            var serializedUIResult = JsonConvert.SerializeObject(userUIData);
+            string oId = userUIData?.oId;
+            string id = userUIData?.id;
             var userDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, Constants.OId, oId);
-            var serializedDBResult = JsonConvert.SerializeObject(userDBData);
-            var userDBDocument = JsonConvert.DeserializeObject<dynamic>(serializedDBResult);            
-
-            for (int planTagsIterator = 0; planTagsIterator < userUIDocument.planTags.Count; planTagsIterator++)
+            var serializedDBResult = JsonConvert.SerializeObject(userDBData[0]);
+            JObject uiData = JObject.Parse(serializedUIResult);
+            JObject dbData = JObject.Parse(serializedDBResult);
+            var DbStepTags = from a in dbData["planTags"].Children() select a["stepTags"];
+            var UiStepTags = from a in uiData["planTags"].Children() select a["stepTags"];
+            var indexOfPlanTags = 0;
+            foreach (var dbItem in DbStepTags)
             {
-                for (int stepTagsIterator = 0; stepTagsIterator < userUIDocument.planTags[planTagsIterator].stepTags.Count; stepTagsIterator++)
+                var indexOfStepTags = 0;
+                foreach (var item in UiStepTags)
                 {
-                    bool uiMarkCompleted = userUIDocument?.planTags[planTagsIterator].stepTags[stepTagsIterator].markCompleted;
-                    bool dbMarkCompleted = userDBDocument[0]?.planTags[planTagsIterator].stepTags[stepTagsIterator].markCompleted;
-
-                    if ((uiMarkCompleted.Equals(true)) && (dbMarkCompleted.Equals(false)))
+                    if ((dbData["planTags"][indexOfPlanTags]["stepTags"][indexOfStepTags]["id"]).Value<string>() == (uiData["planTags"][indexOfPlanTags]["stepTags"][indexOfStepTags]["id"]).Value<string>())
                     {
-                        userDBDocument[0].planTags[planTagsIterator].stepTags[stepTagsIterator].markCompleted = userUIDocument.planTags[planTagsIterator].stepTags[stepTagsIterator].markCompleted;
+                        dbData["planTags"][indexOfPlanTags]["stepTags"][indexOfStepTags]["markCompleted"] = uiData["planTags"][indexOfPlanTags]["stepTags"][indexOfStepTags]["markCompleted"]
+                            .Value<string>();
                     }
+                    indexOfStepTags++;
                 }
-            }            
-            var result = await dbService.UpdateItemAsync(id, userDBDocument[0], dbSettings.ResourceCollectionId);
-            return result;
+                indexOfPlanTags++;
+            }
+            return await dbService.UpdateItemAsync(id, dbData, dbSettings.ResourceCollectionId);
         }
     }
 }
