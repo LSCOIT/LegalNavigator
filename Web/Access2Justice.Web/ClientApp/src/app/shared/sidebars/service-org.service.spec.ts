@@ -27,18 +27,18 @@ describe('ServiceOrgService', () => {
     httpSpy.get.calls.reset();
   });
 
-  it('should create service organization service component',() => {
-     expect(service).toBeTruthy();
+  it('should create service organization service component', () => {
+    expect(service).toBeTruthy();
   });
 
-  it('should define service organization service component',() => {
-     expect(service).toBeDefined();
+  it('should define service organization service component', () => {
+    expect(service).toBeDefined();
   });
 
-  it('should retrieve organizations from the API when the location value is state',(done) => {
+  it('should retrieve organizations from the API when the location value is state', (done) => {
     let mockMapLocation =
       {
-        state: "California",
+        state: "sample state",
         city: undefined,
         county: undefined,
         zipCode: undefined
@@ -51,30 +51,13 @@ describe('ServiceOrgService', () => {
     });
   });
 
-  it('should retrieve organizations from the API when the location value is city',(done) => {
-    let mockMapLocation =
-      {
-        state: undefined,
-        city: "testcity",
-        county: undefined,
-        zipCode: undefined
-      };
-      httpSpy.post.and.returnValue(mockResponse);
-      service.getOrganizationDetails(mockMapLocation).subscribe(organizations => {
-      expect(httpSpy.post).toHaveBeenCalled();
-      expect(organizations).toEqual(mockOrganizations);
-      done();
-    });
-  });
-
-  it('should retrieve organizations from the API when the location value is county',(done) => {
-    let mockMapLocation =
-      {
-        state: undefined,
-        city: undefined,
-        county: "testcity",
-        zipCode: undefined
-      };
+  it('should retrieve organizations from the API when the location value is city', (done) => {
+    let mockMapLocation = {
+      state: undefined,
+      city: "sample city",
+      county: undefined,
+      zipCode: undefined
+    };
     httpSpy.post.and.returnValue(mockResponse);
     service.getOrganizationDetails(mockMapLocation).subscribe(organizations => {
       expect(httpSpy.post).toHaveBeenCalled();
@@ -83,14 +66,28 @@ describe('ServiceOrgService', () => {
     });
   });
 
-  it('should retrieve organizations from the API  when the location value is zipcode',(done) => {
-    let mockMapLocation =
-      {
-        state: undefined,
-        city: undefined,
-        county: undefined,
-        zipCode: '96701'
-      };
+  it('should retrieve organizations from the API when the location value is county', (done) => {
+    let mockMapLocation = {
+      state: undefined,
+      city: undefined,
+      county: "sample county",
+      zipCode: undefined
+    };
+    httpSpy.post.and.returnValue(mockResponse);
+    service.getOrganizationDetails(mockMapLocation).subscribe(organizations => {
+      expect(httpSpy.post).toHaveBeenCalled();
+      expect(organizations).toEqual(mockOrganizations);
+      done();
+    });
+  });
+
+  it('should retrieve organizations from the API  when the location value is zipcode', (done) => {
+    let mockMapLocation = {
+      state: undefined,
+      city: undefined,
+      county: undefined,
+      zipCode: '96701'
+    };
     httpSpy.post.and.returnValue(mockResponse);
     service.getOrganizationDetails(mockMapLocation).subscribe(organizations => {
       expect(httpSpy.post).toHaveBeenCalled();
@@ -100,13 +97,12 @@ describe('ServiceOrgService', () => {
   });
 
   it('should retrieve organizations from the API when the location value is country/city/state/zip', (done) => {
-    let mockMapLocation =
-      {
-        state: 'Hawaii',
-        city: 'Honolulu',
-        county: 'Honolulu',
-        zipCode: '96514'
-      };
+    let mockMapLocation = {
+      state: 'Hawaii',
+      city: 'Honolulu',
+      county: 'Honolulu',
+      zipCode: '96514'
+    };
     httpSpy.post.and.returnValue(mockResponse);
     service.getOrganizationDetails(mockMapLocation).subscribe(organizations => {
       expect(httpSpy.post).toHaveBeenCalled();
@@ -116,13 +112,12 @@ describe('ServiceOrgService', () => {
   });
 
   it('should return null from the API if no value is passed', (done) => {
-    let mockMapLocation =
-      {
-        state: undefined,
-        city: undefined,
-        county: undefined,
-        zipCode: undefined
-      };
+    let mockMapLocation = {
+      state: undefined,
+      city: undefined,
+      county: undefined,
+      zipCode: undefined
+    };
     httpSpy.post.and.returnValue(mockResponse);
     service.getOrganizationDetails(mockMapLocation).subscribe(organizations => {
       expect(httpSpy.post).toHaveBeenCalled();

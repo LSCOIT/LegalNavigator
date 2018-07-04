@@ -244,10 +244,10 @@ namespace Access2Justice.Api.BusinessLogic
                                 description = conditionDetail.Value.ToString();
                             }
                         }
-                        conditionData.Add(new Condition { Title = title, ConditionDescription = description });
+                        conditionData.Add(new Condition {Title=title, ConditionDescription = description });
                     }
                 }
-                conditions.Add(new Conditions { ConditionDetail = conditionData });
+                conditions.Add(new Conditions {ConditionDetail = conditionData });
             }
             return conditions;
         }

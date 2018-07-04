@@ -8,12 +8,12 @@ const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
  };
 @Injectable()
-export class ServiceOrgService
-{
-  constructor(private http: HttpClient) { }
+export class ServiceOrgService {
+  constructor(
+    private http: HttpClient
+  ) {}
 
-  getOrganizationDetails(location): Observable<any>
-  {
+  getOrganizationDetails(location): Observable<any>{
     var objectToSend = JSON.stringify(location);
     return this.http.post<Organization>(api.getOrganizationDetailsUrl, objectToSend, httpOptions);
   }
