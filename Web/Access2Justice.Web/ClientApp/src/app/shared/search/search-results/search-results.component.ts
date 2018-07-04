@@ -54,8 +54,7 @@ export class SearchResultsComponent implements OnInit {
         this.pagesToShow = environment.webResourcePagesToShow;
         this.limit = environment.webResourceRecordsToDisplay;
       }
-      else if (this.isInternalResource)
-      {
+      else if (this.isInternalResource) {
         this.mapInternalResource();
       }
       else {
