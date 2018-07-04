@@ -23,9 +23,11 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         //Mocked input data
         private readonly JArray userProfile =
                    JArray.Parse(@"[{'id': '4589592f-3312-eca7-64ed-f3561bbb7398',
-                    'oId': '709709e7t0r7t96', 'firstName': 'family1.2.1', 'lastName': '5c035d27-2fdb-9776-6236-70983a918431','email': 'f102bfae-362d-4659-aaef-956c391f79de'}]");
+                    'oId': '709709e7t0r7t96', 'firstName': 'family1.2.1', 'lastName': 'family1.2.2','email': 'test@email.com','IsActive': 'Yes','CreatedBy': 'vn','CreatedTimeStamp':'01/01/2018 10:00:00','ModifiedBy': 'vn','ModifiedTimeStamp':'01/01/2018 10:00:00'}]");
         private readonly string expectedUserProfileId = "709709e7t0r7t96";
         private readonly JArray emptyData = JArray.Parse(@"[{}]");
+        private readonly string createUserProfileObjOId = "709709e7t0r7123";
+        private readonly string updateUserProfileObjOId = "99889789";
 
         public UserProfileBusinessLogicTests()
         {
@@ -92,7 +94,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             List<dynamic> userprofiles2 = new List<dynamic>();
 
             //arrange
-            userProfileObj.OId = "709709e7t0r7123";
+            userProfileObj.OId = createUserProfileObjOId;
             var serializedResult = JsonConvert.SerializeObject(userProfileObj);
             var userDeserialisedObjects = JsonConvert.DeserializeObject<object>(serializedResult);
             var result = backendDatabaseService.CreateItemAsync(userDeserialisedObjects, cosmosDbSettings.UserProfileCollectionId);
@@ -155,8 +157,8 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             List<dynamic> userprofiles2 = new List<dynamic>();
 
             //arrange
-            userProfileObj.Id = "99889789"; // Id is new, so should not update the data for this id
-            var resultUP = userProfileBusinessLogic.GetUserProfileDataAsync(userProfileObj.Id);
+            userProfileObj.OId = updateUserProfileObjOId; // Id is new, so should not update the data for this id
+            var resultUP = userProfileBusinessLogic.GetUserProfileDataAsync(userProfileObj.OId);
             
             var serializedResult = JsonConvert.SerializeObject(userProfileObj);
             var userDeserialisedObjects = JsonConvert.DeserializeObject<object>(serializedResult);
