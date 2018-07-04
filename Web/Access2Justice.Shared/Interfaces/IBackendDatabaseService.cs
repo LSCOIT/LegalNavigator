@@ -10,7 +10,7 @@ namespace Access2Justice.Shared.Interfaces
 {
     public interface IBackendDatabaseService
     {
-        Task<Document> CreateItemAsync<T>(T item);
+        Task<Document> CreateItemAsync<T>(T item, string collectionId);
         Task DeleteItemAsync(string id);
         Task<T> GetItemAsync<T>(string id);
         Task<IEnumerable<T>> GetItemsAsync<T>(Expression<Func<T, bool>> predicate,string collectionId);
@@ -21,6 +21,7 @@ namespace Access2Justice.Shared.Interfaces
         Task<dynamic> GetFirstPageResourceAsync(string query,bool isInitialPage);
         Task<dynamic> GetNextPageResourcesAsync(string query, string continuationToken);
         Task<dynamic> QueryPagedResourcesAsync(string query, string continuationToken);
-        Task<dynamic> QueryResourcesCountAsync(string query);
+        Task<dynamic> QueryResourcesCountAsync(string query);       
+        Task<Document> UpdateItemAsync<T>(string id, T item, string collectionId);
     }
 }

@@ -40,7 +40,9 @@ export class SearchResultsComponent implements OnInit {
   pagesToShow = 0;
 
 
-  constructor(private navigateDataService: NavigateDataService, private searchService: SearchService, private paginationService: PaginationService) { }
+  constructor(private navigateDataService: NavigateDataService,
+              private searchService: SearchService,
+              private paginationService: PaginationService) { }
 
   bindData() {
     this.searchResults = this.navigateDataService.getData();
@@ -74,7 +76,6 @@ export class SearchResultsComponent implements OnInit {
         }
       } else {
         this.isLuisResponse = true;
-        console.log(this.searchResults.luisResponse);
       }
     }
     if (this.personalizedResources != undefined) {

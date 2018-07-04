@@ -21,7 +21,6 @@ export class ActionPlanCardComponent implements OnChanges {
       this.displaySteps = false;
     }
     else {
-      console.log(this.planDetails);
       this.planSteps = [];
       if (this.planDetails.planTags) {
         this.planDetails.planTags.forEach(planTag => {

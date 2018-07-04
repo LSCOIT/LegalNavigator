@@ -27,12 +27,12 @@ namespace Access2Justice.CosmosDb
             CreateCollectionIfNotExistsAsync().Wait();
         }
 
-        public async Task<Document> CreateItemAsync<T>(T item)
+        public async Task<Document> CreateItemAsync<T>(T item,string collectionId)
         {
             return await documentClient.CreateDocumentAsync(
-                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId), item);
+                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, collectionId), item);
         }
-
+       
         public async Task<T> GetItemAsync<T>(string id)
         {
             try
@@ -76,7 +76,11 @@ namespace Access2Justice.CosmosDb
             return await documentClient.ReplaceDocumentAsync(
                 UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, id), item);
         }
-
+        public async Task<Document> UpdateItemAsync<T>(string id, T item, string collectionId)
+        {
+            return await documentClient.ReplaceDocumentAsync(
+                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, id), item);
+        }
         public async Task DeleteItemAsync(string id)
         {
             await documentClient.DeleteDocumentAsync(
@@ -217,5 +221,16 @@ namespace Access2Justice.CosmosDb
             }
         }
 
+        public async Task<Document> CreateUserProfileAsync<T>(T item)
+        {
+            return await documentClient.CreateDocumentAsync(
+                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.UserProfileCollectionId), item);
+        }
+
+        public async Task<Document> UpdateUserProfileAsync<T>(string id, T item)
+        {
+            return await documentClient.ReplaceDocumentAsync(
+                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.UserProfileCollectionId, id), item);
+        }
     }
 }
