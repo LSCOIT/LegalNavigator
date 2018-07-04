@@ -96,11 +96,6 @@ export class SearchResultsComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
-    this.bindData();
-    this.notifyLocationChange();
-  }
-
   notifyLocationChange() {
     if (sessionStorage.getItem("localSearchMapLocation")) {
       this.location = JSON.parse(sessionStorage.getItem("localSearchMapLocation"));
@@ -222,6 +217,11 @@ export class SearchResultsComponent implements OnInit {
 
   calculateOffsetValue(pageNumber: number): number {
     return Math.ceil(pageNumber * 10) + 1;
+  }
+
+  ngOnInit() {
+    this.bindData();
+    this.notifyLocationChange();
   }
 
   ngOnDestroy() {
