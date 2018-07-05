@@ -10,10 +10,10 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 {
     public class CuratedExperienceBuisnessLogicTests
     {
-        private readonly CuratedExperienceBuisnessLogic curatedExperience;
+        private readonly A2JAuthorBuisnessLogic curatedExperience;
         public CuratedExperienceBuisnessLogicTests()
         {
-            curatedExperience = new CuratedExperienceBuisnessLogic();
+            curatedExperience = new A2JAuthorBuisnessLogic();
         }
 
         [Fact]

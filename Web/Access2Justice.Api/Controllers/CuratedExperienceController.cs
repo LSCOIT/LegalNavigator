@@ -10,9 +10,9 @@ namespace Access2Justice.Api.Controllers
     [Route("api/[controller]")]
     public class CuratedExperienceController : Controller
     {
-        private readonly ICuratedExperienceBuisnessLogic curatedExperienceBuisnessLogic;
+        private readonly IA2JAuthorBuisnessLogic curatedExperienceBuisnessLogic;
 
-        public CuratedExperienceController(ICuratedExperienceBuisnessLogic curatedExperienceBuisnessLogic)
+        public CuratedExperienceController(IA2JAuthorBuisnessLogic curatedExperienceBuisnessLogic)
         {
             this.curatedExperienceBuisnessLogic = curatedExperienceBuisnessLogic;
         }
@@ -56,8 +56,8 @@ namespace Access2Justice.Api.Controllers
             }
         }
 
-        [HttpGet("GetNextQuestion")]
-        public IActionResult GetNextQuestion(Guid buttonId)
+        [HttpGet("GetQuestion")]
+        public IActionResult GetQuestion(Guid buttonId)
         {
 
             return Content("next question");
