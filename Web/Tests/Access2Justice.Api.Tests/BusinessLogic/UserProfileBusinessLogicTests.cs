@@ -24,11 +24,10 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly JArray userProfile = UserPersonalizedPlanTestData.userProfile;
         private readonly string expectedUserProfileId = "709709e7t0r7t96";
         private readonly JArray emptyData = JArray.Parse(@"[{}]");
-        private readonly string query = "select * from t";
         private readonly JArray userProfilePersonalizedPlanData = UserPersonalizedPlanTestData.userProfilePersonalizedPlanData;
         private readonly JArray expectedUserProfilePersonalizedPlanData = UserPersonalizedPlanTestData.expectedUserProfilePersonalizedPlanData;
         private readonly JArray expectedUserProfilePersonalizedPlanUpdateData = UserPersonalizedPlanTestData.expectedUserProfilePersonalizedPlanUpdateData;
-
+       
         public UserProfileBusinessLogicTests()
         {
             dynamicQueries = Substitute.For<IDynamicQueries>();
@@ -81,16 +80,25 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var resource = JsonConvert.SerializeObject(userProfilePersonalizedPlan);
             var userUIDocument = JsonConvert.DeserializeObject<dynamic>(resource);
             var inputJson = userUIDocument[0];
+            string id = userUIDocument[0].id;
+            string oId = userUIDocument[0].oId;
+            string planId = userUIDocument[0].planId;
+            List<string> propertyNames = new List<string>() { Constants.OId, Constants.PlanId };
+            List<string> values = new List<string>() { oId, planId };
             dynamic actualResult = null;
-            var dbResponseForFindItems = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.ResourceCollectionId, query, "").ReturnsForAnyArgs(expectedUserProfilePersonalizedPlanUpdateData);
-            
+            Document document = new Document();
+            JsonTextReader reader = new JsonTextReader(new StringReader(expectedUserProfilePersonalizedPlanUpdateData[0].ToString()));
+            document.LoadFrom(reader);
+            dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.ResourceCollectionId, propertyNames, values).ReturnsForAnyArgs(expectedUserProfilePersonalizedPlanUpdateData);
+            backendDatabaseService.UpdateItemAsync<dynamic>(id, document, cosmosDbSettings.ResourceCollectionId).ReturnsForAnyArgs(document);
+
             //act
             actualResult = userProfileBusinessLogic.UpsertUserPersonalizedPlanAsync(inputJson).Result;
-            string result = JsonConvert.SerializeObject(actualResult);
-            var response = JsonConvert.DeserializeObject<dynamic>(resource);
+            string result = JsonConvert.SerializeObject(actualResult.Result);
+            var response = JsonConvert.DeserializeObject<dynamic>(result);
 
             //assert
-            Assert.Equal(expectedUserProfilePersonalizedPlanData[0].ToString(), response[0].ToString());
+            Assert.Contains(planId, response.ToString());
         }    
 
         [Fact]
@@ -121,12 +129,16 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var userUIDocument = JsonConvert.DeserializeObject<dynamic>(resource);
             var inputJson = userUIDocument[0];
             string id = userUIDocument[0].id;
+            string oId = userUIDocument[0].oId;
+            string planId = userUIDocument[0].planId;
+            List<string> propertyNames = new List<string>() { Constants.OId, Constants.PlanId };
+            List<string> values = new List<string>() { oId, planId };
             Document document = new Document();
             JsonTextReader reader = new JsonTextReader(new StringReader(expectedUserProfilePersonalizedPlanUpdateData[0].ToString()));
             document.LoadFrom(reader);
             dynamic actualResult = null;
-            var dbResponseForFindItems = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.ResourceCollectionId, query, "").ReturnsForAnyArgs(expectedUserProfilePersonalizedPlanUpdateData);
-            var dbResponse = backendDatabaseService.UpdateItemAsync<dynamic>(id, document, cosmosDbSettings.ResourceCollectionId).ReturnsForAnyArgs(document);
+            dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.ResourceCollectionId, propertyNames, values).ReturnsForAnyArgs(expectedUserProfilePersonalizedPlanUpdateData);
+            backendDatabaseService.UpdateItemAsync<dynamic>(id, document, cosmosDbSettings.ResourceCollectionId).ReturnsForAnyArgs(document);
 
             //act
             actualResult = userProfileBusinessLogic.UpdateUserPersonalizedPlanAsync(id,inputJson).Result;
