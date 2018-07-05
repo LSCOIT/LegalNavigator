@@ -73,21 +73,29 @@ namespace Access2Justice.Api.BusinessLogic
         public async Task<dynamic> UpdateUserPersonalizedPlanAsync(string id, dynamic userUIData)
         {
             var serializedResult = JsonConvert.SerializeObject(userUIData);
-            var userDocument = JsonConvert.DeserializeObject(serializedResult);
-            return await dbService.UpdateItemAsync(id, userDocument, dbSettings.ResourceCollectionId);
-        }
-
-        public async void DeleteUserPersonalizedPlanAsync(dynamic userUIData)
-        {
-            var serializedResult = JsonConvert.SerializeObject(userUIData);
-            var userDocument = JsonConvert.DeserializeObject(serializedResult);
-            string oId = userDocument.oId;
-            string planId = userDocument.planId;
+            var userUIDocument = JsonConvert.DeserializeObject(serializedResult);
+            string oId = userUIDocument.oId;
+            string planId = userUIDocument.planId;
             List<string> propertyNames = new List<string>() { Constants.OId, Constants.PlanId };
             List<string> values = new List<string>() { oId, planId };
             var userDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, propertyNames, values);
-            string id = userDBData[0].id;
-            await dbService.DeleteItemAsync(id, dbSettings.ResourceCollectionId);
+            var serializedDBResult = JsonConvert.SerializeObject(userDBData[0]);
+            JObject dbObject = JObject.Parse(serializedDBResult);
+            JObject uiObject = JObject.Parse(serializedResult);
+
+            foreach (var prop in uiObject.Properties())
+            {
+                var targetProperty = dbObject.Property(prop.Name);
+                if (targetProperty == null)
+                {
+                    dbObject.Add(prop.Name, prop.Value);
+                }
+                else
+                {
+                    targetProperty.Value = prop.Value;
+                }
+            }            
+            return await dbService.UpdateItemAsync(id, dbObject, dbSettings.ResourceCollectionId);
         }
     }
 }
