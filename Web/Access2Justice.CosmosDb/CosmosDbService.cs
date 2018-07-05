@@ -77,10 +77,10 @@ namespace Access2Justice.CosmosDb
                 UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, collectionId, id), item);
         }
 
-        public async Task DeleteItemAsync(string id)
+        public async Task DeleteItemAsync(string id, string collectionId)
         {
             await documentClient.DeleteDocumentAsync(
-                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, id));
+                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, collectionId, id));
         }
 
         public async Task<dynamic> QueryItemsAsync(string collectionId, string query)

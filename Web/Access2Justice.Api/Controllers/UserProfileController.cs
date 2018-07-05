@@ -53,5 +53,18 @@ namespace Access2Justice.Api.Controllers
             var users = await userProfileBusinessLogic.UpsertUserPersonalizedPlanAsync(userData);
             return Ok(users);
         }
+
+        /// <summary>
+        /// Delete the user profile personalized plan
+        /// </summary>
+        /// <param name="userData"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("api/user/deleteuserpersonalizedplan")]
+        public async Task<IActionResult> DeleteUserPersonalizedPlanAsync([FromBody]dynamic userData)
+        {
+            var users = await userProfileBusinessLogic.DeleteUserPersonalizedPlanAsync(userData);
+            return Ok(users);
+        }
     }   
 }

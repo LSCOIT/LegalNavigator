@@ -21,9 +21,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly UserProfileBusinessLogic userProfileBusinessLogic;
 
         //Mocked input data
-        private readonly JArray userProfile =
-                   JArray.Parse(@"[{'id': '4589592f-3312-eca7-64ed-f3561bbb7398',
-                    'oId': '709709e7t0r7t96', 'firstName': 'family1.2.1', 'lastName': '5c035d27-2fdb-9776-6236-70983a918431','email': 'f102bfae-362d-4659-aaef-956c391f79de'}]");
+        private readonly JArray userProfile = UserPersonalizedPlanTestData.userProfile;
         private readonly string expectedUserProfileId = "709709e7t0r7t96";
         private readonly JArray emptyData = JArray.Parse(@"[{}]");
         private readonly string query = "select * from t";
@@ -131,7 +129,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var dbResponse = backendDatabaseService.UpdateItemAsync<dynamic>(id, document, cosmosDbSettings.ResourceCollectionId).ReturnsForAnyArgs(document);
 
             //act
-            actualResult = userProfileBusinessLogic.UpdateUserPersonalizedPlanAsync(inputJson).Result;
+            actualResult = userProfileBusinessLogic.UpdateUserPersonalizedPlanAsync(id,inputJson).Result;
 
             //assert
             Assert.Equal(expectedUserProfilePersonalizedPlanUpdateData[0].ToString(), actualResult.ToString());

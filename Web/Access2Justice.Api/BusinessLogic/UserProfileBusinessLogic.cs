@@ -46,16 +46,19 @@ namespace Access2Justice.Api.BusinessLogic
             var serializedResult = JsonConvert.SerializeObject(userData);
             var userDocument = JsonConvert.DeserializeObject(serializedResult);
             string oId = userDocument.oId;
+            string planId = userDocument.planId;
+            List<string> propertyNames = new List<string>() { Constants.OId, Constants.PlanId };
+            List<string> values = new List<string>() { oId, planId };
             dynamic result = null;
-            var userDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, Constants.OId, oId);
-
+            var userDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, propertyNames, values);           
             if (userDBData.Count == 0)
             {
                 result = CreateUserPersonalizedPlanAsync(userData);
             }
             else
             {
-                result = UpdateUserPersonalizedPlanAsync(userData);
+                string id = userDBData[0].id;
+                result = UpdateUserPersonalizedPlanAsync(id, userData);
             }
             return result;
         }
@@ -67,33 +70,24 @@ namespace Access2Justice.Api.BusinessLogic
             return await dbService.CreateItemAsync(userDocument, dbSettings.ResourceCollectionId);
         }
 
-        public async Task<dynamic> UpdateUserPersonalizedPlanAsync(dynamic userUIData)
+        public async Task<dynamic> UpdateUserPersonalizedPlanAsync(string id, dynamic userUIData)
         {
-            var serializedUIResult = JsonConvert.SerializeObject(userUIData);
-            string oId = userUIData?.oId;
-            string id = userUIData?.id;
-            var userDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, Constants.OId, oId);
-            var serializedDBResult = JsonConvert.SerializeObject(userDBData[0]);
-            JObject uiData = JObject.Parse(serializedUIResult);
-            JObject dbData = JObject.Parse(serializedDBResult);
-            var DbStepTags = from a in dbData["planTags"].Children() select a["stepTags"];
-            var UiStepTags = from a in uiData["planTags"].Children() select a["stepTags"];
-            var indexOfPlanTags = 0;
-            foreach (var dbItem in DbStepTags)
-            {
-                var indexOfStepTags = 0;
-                foreach (var item in UiStepTags)
-                {
-                    if ((dbData["planTags"][indexOfPlanTags]["stepTags"][indexOfStepTags]["id"]).Value<string>() == (uiData["planTags"][indexOfPlanTags]["stepTags"][indexOfStepTags]["id"]).Value<string>())
-                    {
-                        dbData["planTags"][indexOfPlanTags]["stepTags"][indexOfStepTags]["markCompleted"] = uiData["planTags"][indexOfPlanTags]["stepTags"][indexOfStepTags]["markCompleted"]
-                            .Value<string>();
-                    }
-                    indexOfStepTags++;
-                }
-                indexOfPlanTags++;
-            }
-            return await dbService.UpdateItemAsync(id, dbData, dbSettings.ResourceCollectionId);
+            var serializedResult = JsonConvert.SerializeObject(userUIData);
+            var userDocument = JsonConvert.DeserializeObject(serializedResult);
+            return await dbService.UpdateItemAsync(id, userDocument, dbSettings.ResourceCollectionId);
+        }
+
+        public async void DeleteUserPersonalizedPlanAsync(dynamic userUIData)
+        {
+            var serializedResult = JsonConvert.SerializeObject(userUIData);
+            var userDocument = JsonConvert.DeserializeObject(serializedResult);
+            string oId = userDocument.oId;
+            string planId = userDocument.planId;
+            List<string> propertyNames = new List<string>() { Constants.OId, Constants.PlanId };
+            List<string> values = new List<string>() { oId, planId };
+            var userDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, propertyNames, values);
+            string id = userDBData[0].id;
+            await dbService.DeleteItemAsync(id, dbSettings.ResourceCollectionId);
         }
     }
 }
