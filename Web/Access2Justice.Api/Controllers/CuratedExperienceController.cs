@@ -1,20 +1,24 @@
 ﻿using Access2Justice.Shared.Interfaces;
+using Access2Justice.Shared.Models.CuratedExperience;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-
+using System.Threading.Tasks;
 
 namespace Access2Justice.Api.Controllers
 {
     [Route("api/[controller]")]
     public class CuratedExperienceController : Controller
     {
-        private readonly IA2JAuthorBuisnessLogic curatedExperienceBuisnessLogic;
+        private readonly IA2JAuthorBusinessLogic a2jAuthorBuisnessLogic;
+        private readonly ICuratedExperienceBusinessLogic curatedExperienceBusinessLogic;
 
-        public CuratedExperienceController(IA2JAuthorBuisnessLogic curatedExperienceBuisnessLogic)
+        public CuratedExperienceController(IA2JAuthorBusinessLogic a2jAuthorBuisnessLogic, ICuratedExperienceBusinessLogic curatedExperienceBusinessLogic)
         {
-            this.curatedExperienceBuisnessLogic = curatedExperienceBuisnessLogic;
+            this.a2jAuthorBuisnessLogic = a2jAuthorBuisnessLogic;
+            this.curatedExperienceBusinessLogic = curatedExperienceBusinessLogic;
         }
 
         #region DEMO
@@ -48,7 +52,7 @@ namespace Access2Justice.Api.Controllers
             try
             {
                 JObject.Parse(a2jSchema.ToString());
-                return Json(curatedExperienceBuisnessLogic.ConvertA2JAuthorToCuratedExperience(a2jSchema));
+                return Json(a2jAuthorBuisnessLogic.ConvertA2JAuthorToCuratedExperience(a2jSchema));
             }
             catch
             {
@@ -57,10 +61,24 @@ namespace Access2Justice.Api.Controllers
         }
 
         [HttpGet("GetQuestion")]
-        public IActionResult GetQuestion(Guid buttonId)
+        public IActionResult GetQuestion(Guid curatedExperienceId, Guid buttonId)
         {
-
+            var curatedExperience = GetCuratedExperience(curatedExperienceId);
             return Content("next question");
+        }
+
+
+        private async Task<CuratedExperience> GetCuratedExperience(Guid id)
+        {
+            var curatedExperience = HttpContext.Session.GetString("CuratedExperience");
+            if (string.IsNullOrWhiteSpace(curatedExperience))
+            {
+                var curatedExperienceJson = await curatedExperienceBusinessLogic.GetCuratedExperience(id);
+                curatedExperience = JsonConvert.SerializeObject(curatedExperienceJson);
+                HttpContext.Session.SetString("CuratedExperience", curatedExperience);
+            }
+
+            return JsonConvert.DeserializeObject<CuratedExperience>(curatedExperience);
         }
     }
 }

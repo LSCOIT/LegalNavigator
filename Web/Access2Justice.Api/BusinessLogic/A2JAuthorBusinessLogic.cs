@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Access2Justice.Api.BusinessLogic
 {
-    public class A2JAuthorBuisnessLogic : IA2JAuthorBuisnessLogic
+    public class A2JAuthorBusinessLogic : IA2JAuthorBusinessLogic
     {
         public CuratedExperience ConvertA2JAuthorToCuratedExperience(JObject a2jSchema)
         {

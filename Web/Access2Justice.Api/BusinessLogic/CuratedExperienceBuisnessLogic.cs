@@ -1,16 +1,23 @@
-﻿using Access2Justice.Shared.Extensions;
+﻿using Access2Justice.CosmosDb.Interfaces;
 using Access2Justice.Shared.Interfaces;
-using Access2Justice.Shared.Models;
 using Access2Justice.Shared.Models.CuratedExperience;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
+
 
 namespace Access2Justice.Api.BusinessLogic
 {
-    public class CuratedExperienceBuisnessLogic
+    public class CuratedExperienceBuisnessLogic : ICuratedExperienceBusinessLogic
     {
+        private readonly ICosmosDbSettings dbSettings;
+        private readonly IBackendDatabaseService dbService;
+
+        public CuratedExperienceBuisnessLogic(ICosmosDbSettings cosmosDbSettings, IBackendDatabaseService backendDatabaseService)
+        {
+            dbSettings = cosmosDbSettings;
+            dbService = backendDatabaseService;
+        }
+
         public Component GetQuestion(Guid buttonId)
         {
             var curatedExperience = GetCuratedExperience(buttonId);
@@ -18,10 +25,9 @@ namespace Access2Justice.Api.BusinessLogic
             throw new NotImplementedException();
         }
 
-        public CuratedExperience GetCuratedExperience(Guid id)
+        public async Task<CuratedExperience> GetCuratedExperience(Guid id)
         {
-
-            throw new NotImplementedException();
+            return await dbService.GetItemAsync<CuratedExperience>(id.ToString());
         }
     }
 }

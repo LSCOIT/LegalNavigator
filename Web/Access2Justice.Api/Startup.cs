@@ -41,10 +41,12 @@ namespace Access2Justice.Api
             services.AddSingleton<ILuisBusinessLogic, LuisBusinessLogic>();
             services.AddSingleton<ITopicsResourcesBusinessLogic, TopicsResourcesBusinessLogic>();
             services.AddSingleton<IWebSearchBusinessLogic, WebSearchBusinessLogic>();
-            services.AddSingleton<IA2JAuthorBuisnessLogic, A2JAuthorBuisnessLogic>();
+            services.AddSingleton<IA2JAuthorBusinessLogic, A2JAuthorBusinessLogic>();
+            services.AddSingleton<ICuratedExperienceBusinessLogic, CuratedExperienceBuisnessLogic>();
             services.AddTransient<IHttpClientService, HttpClientService>();
             services.AddSingleton<IUserProfileBusinessLogic, UserProfileBusinessLogic>();
             ConfigureCosmosDb(services);
+            ConfigureSession(services);
 
             services.AddSwaggerGen(c =>
             {
@@ -70,6 +72,8 @@ namespace Access2Justice.Api
 
             app.UseMvc();
 
+            app.UseSession();
+
             ConfigureSwagger(app);
         }
 
@@ -80,6 +84,17 @@ namespace Access2Justice.Api
             services.AddSingleton<IDocumentClient>(x => new DocumentClient(cosmosDbSettings.Endpoint, cosmosDbSettings.AuthKey));
             services.AddSingleton<IBackendDatabaseService, CosmosDbService>();
             services.AddSingleton<IDynamicQueries, CosmosDbDynamicQueries>();
+        }
+
+        private void ConfigureSession(IServiceCollection services)
+        {
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(10);
+                options.Cookie.HttpOnly = true;
+            });
         }
 
         private void ConfigureSwagger(IApplicationBuilder app)
