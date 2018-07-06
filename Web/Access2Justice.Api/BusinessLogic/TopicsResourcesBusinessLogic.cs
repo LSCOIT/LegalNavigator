@@ -1,5 +1,7 @@
 ﻿using Access2Justice.CosmosDb.Interfaces;
 using Access2Justice.Shared.Interfaces;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Access2Justice.Shared.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -45,14 +47,14 @@ namespace Access2Justice.Api.BusinessLogic
             return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.ParentTopicId, "");
         }
 
-        public async Task<dynamic> GetSubTopicsAsync(string ParentTopicId)
+        public async Task<dynamic> GetSubTopicsAsync(string parentTopicId)
         {
-            return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.ParentTopicId, ParentTopicId);
+            return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.ParentTopicId, parentTopicId);
         }
 
-        public async Task<dynamic> GetResourceAsync(string ParentTopicId)
+        public async Task<dynamic> GetResourceAsync(string parentTopicId)
         {
-            return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourceCollectionId, Constants.TopicTags, Constants.Id, ParentTopicId);
+            return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourceCollectionId, Constants.TopicTags, Constants.Id, parentTopicId);
         }
 
         public async Task<dynamic> GetDocumentAsync(string id)
@@ -592,5 +594,48 @@ namespace Access2Justice.Api.BusinessLogic
             topics.Validate();
             return topics;
         }
+
+        public async Task<dynamic> GetPlanDataAsync(string planId)
+        {
+            List<dynamic> procedureParams = new List<dynamic>() { planId };
+            var result = await dbService.ExecuteStoredProcedureAsync(dbSettings.ResourceCollectionId, Constants.PlanStoredProcedureName, procedureParams);
+            var planDetails = result.Response;
+            int indexOfTopicTags = 0;
+            foreach (var item in planDetails.planTags)
+            {
+                string topicId = item.topicId;
+                var topicData = await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.Id, topicId);
+                planDetails.planTags[indexOfTopicTags].id = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(topicData));
+                indexOfTopicTags++;
+            }
+
+            return planDetails;
+        }
+
+        public async Task<dynamic> GetPersonalizedResourcesAsync(ResourceFilter resourceFilter)
+        {
+            dynamic Topics = Array.Empty<string>();
+            dynamic Resources = Array.Empty<string>();
+            if (resourceFilter.TopicIds != null && resourceFilter.TopicIds.Count() > 0)
+            {
+                Topics = await dbClient.FindItemsWhereInClauseAsync(dbSettings.TopicCollectionId, "id", resourceFilter.TopicIds) ?? Array.Empty<string>();
+            }
+            if (resourceFilter.ResourceIds != null && resourceFilter.ResourceIds.Count() > 0)
+            {
+                Resources = await dbClient.FindItemsWhereInClauseAsync(dbSettings.ResourceCollectionId, "id", resourceFilter.ResourceIds) ?? Array.Empty<string>();
+            }
+
+            Topics = JsonConvert.SerializeObject(Topics);
+            Resources = JsonConvert.SerializeObject(Resources);
+
+            JObject personalizedResources = new JObject {
+                { "topics", JsonConvert.DeserializeObject(Topics) },
+                {"resources", JsonConvert.DeserializeObject(Resources) }
+            };
+
+            return personalizedResources.ToString();
+
+        }
+
     }
 }

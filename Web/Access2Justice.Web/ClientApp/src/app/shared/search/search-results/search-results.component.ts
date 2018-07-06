@@ -19,14 +19,18 @@ export class SearchResultsComponent implements OnInit {
   searchText: string;
   @Input()
   searchResults: any;
+  uniqueResources: any;
   sortType: any;
   resourceResults: ResourceResult[] = [];
   filterType: string = 'All';  
   resourceTypeFilter: any[];
-  resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: '', PageNumber: 0, Location: '' };
+  resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: '', ResourceIds:'', PageNumber: 0, Location: '' };
   topicIds: any[];
   isServiceCall: boolean;
-  currentPage: number = 0;  
+  currentPage: number = 0;
+  @Input()
+  personalizedResources: any;
+  isPersonalizedresource: boolean;
 
   loading = false;
   total = 0;
@@ -72,6 +76,38 @@ export class SearchResultsComponent implements OnInit {
         this.isLuisResponse = true;
         console.log(this.searchResults.luisResponse);
       }
+
+
+    }
+    if (this.personalizedResources != undefined) {
+      this.searchResults = this.personalizedResources;
+      if (this.personalizedResources.topics != undefined) {
+        this.personalizedResources.topics.forEach(topic => {
+          this.searchResults.resources.push(topic);
+        });
+      }
+      this.isPersonalizedresource = this.searchResults;
+      this.applyFilter();
+    }
+  }
+
+  applyFilter() {
+    if (this.searchResults != undefined && this.searchResults.resources != undefined) {
+      this.resourceResults.push({
+        'ResourceName': 'All',
+        'ResourceCount': this.searchResults.resources.length
+      });
+      this.uniqueResources = new Set(this.searchResults.resources
+        .map(item => item.resourceType));
+      this.uniqueResources.forEach(item => {
+        if (item != undefined) {
+          this.resourceResults.push({
+            'ResourceName': item,
+            'ResourceCount': this.searchResults.resources
+              .filter(x => x.resourceType === item).length
+          });
+        }
+      });
     }
   }
   

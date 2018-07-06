@@ -245,5 +245,31 @@ namespace Access2Justice.Api.Controllers
             var topics = await topicsResourcesBusinessLogic.CreateTopicDocumentAsync(topic);
             return Ok(topics);
         }
+
+        /// <summary>
+        /// Get the topic details by the document parent Id
+        /// </summary>
+        /// <param name="parentTopicId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("api/topics/getplandetails/{id}")]
+        public async Task<IActionResult> GetPlanDetailsAsync(string id)
+        {
+            var actionPlans = await topicsResourcesBusinessLogic.GetPlanDataAsync(id);
+            return Ok(actionPlans);
+        }
+
+        /// Get the topic details by the document parent Id
+        /// </summary>
+        /// <param name="parentTopicId"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("api/personalizedresources")]
+        public async Task<IActionResult> GetPersonalizedDataAsync([FromBody]ResourceFilter resourceInput)
+        {
+            var response = await topicsResourcesBusinessLogic.GetPersonalizedResourcesAsync(resourceInput);
+            return Content(response);
+        }
+        
     }
 }

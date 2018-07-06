@@ -21,6 +21,7 @@
         </div>
         <div class="media-body">
           <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}</h4></a>
+          <!--<a [routerLink]="['/plan', resource.id]"><h4 class="media-heading">{{resource.name}}</h4></a>-->
           <p>This action plan is for tenants who are facing Eviction and have experienced the following:</p>
           <ul>
             <li>
@@ -86,6 +87,17 @@
       <div *ngIf="resource.resourceType === 'Forms'" class="media">
         <div class="media-left">
           <img class="media-object" src="/assets/images/icons/forms.svg" aria-hidden="True">
+        </div>
+        <div class="media-body">
+          <h4 class="media-heading">{{resource.name}}</h4>
+          <p>{{resource.description}}</p>
+        </div>
+      </div>
+      <div *ngIf="resource.resourceType === 'Topics'" class="media">
+        <div class="media-left">
+          <a href="#">
+            <img class="media-object" src="#" alt="...">
+          </a>
         </div>
         <div class="media-body">
           <h4 class="media-heading">{{resource.name}}</h4>

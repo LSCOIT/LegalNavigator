@@ -6,7 +6,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.environment = {
     production: false,
-    apiUrl: 'http://localhost:59019/api',
+    apiUrl: 'http://localhost:58507/api',
     bingmap_key: '',
     map_type: false,
     internalResourcePagesToShow: 2,
