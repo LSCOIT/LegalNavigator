@@ -6,7 +6,7 @@ import { ILuisInput } from '../search/search-results/search-results.model';
 describe('SearchService', () => {
   let service: SearchService;
   const httpSpy = jasmine.createSpyObj('http', ['get']);
-  let luisInput: ILuisInput = { Sentence: '', Location: '', TranslateFrom: '', TranslateTo: '' };  
+  let luisInput: ILuisInput = { Sentence: '', Location: '', TranslateFrom: '', TranslateTo: '', LuisTopScoringIntent:'' };  
 
   beforeEach(() => {
     service = new SearchService(httpSpy);
