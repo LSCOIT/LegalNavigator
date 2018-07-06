@@ -6,7 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { TopicsResourcesComponent } from './topics-resources.component';
 import { TopicsComponent } from './topic/topics.component';
 import { GuidedAssistantSidebarComponent } from '../shared/sidebars/guided-assistant-sidebar.component';
-import { ServiceOrgSidebarComponent } from '../shared/sidebars/service-org-sidebar.component';
+//import { ServiceOrgSidebarComponent } from '../shared/sidebars/service-org-sidebar.component';
 import { TopicService } from './shared/topic.service';
 
 describe('TopicsResourcesComponent', () => {
@@ -18,8 +18,8 @@ describe('TopicsResourcesComponent', () => {
       declarations: [
         TopicsResourcesComponent,
         TopicsComponent,
-        GuidedAssistantSidebarComponent,
-        ServiceOrgSidebarComponent
+        GuidedAssistantSidebarComponent
+      
       ],
       imports: [
         RouterModule.forRoot([

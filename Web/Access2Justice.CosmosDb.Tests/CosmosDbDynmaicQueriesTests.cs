@@ -66,7 +66,7 @@ namespace Access2Justice.CosmosDb.Tests
             var ids = new List<string>() { "guid1", "guid2", "guid3" };
             string query = @"SELECT * FROM c WHERE  ARRAY_CONTAINS(c.TopicTags, { 'Id' : 'guid1'})OR ARRAY_CONTAINS(c.TopicTags, { 'Id' : 'guid2'})OR ARRAY_CONTAINS(c.TopicTags, { 'Id' : 'guid3'})";
 
-            // Act
+            // Acts
             dynamicQueries.FindItemsWhereArrayContainsAsync("TopicsCollections", "TopicTags", "Id", ids);
 
             // Assert
@@ -77,10 +77,10 @@ namespace Access2Justice.CosmosDb.Tests
         public void FindItemsWhereContainsWithLocationAsyncShouldConstructValidSqlQueryWithoutLocation()
         {
             // Arrange            
-            string query = @"SELECT * FROM c WHERE CONTAINS(c.keywords, 'eviction')";
+            string query = @"SELECT * FROM c WHERE CONTAINS(c.keywords, 'EVICTION')";
 
             //Act
-            dynamicQueries.FindItemsWhereContainsWithLocationAsync("TopicsCollections", "keywords", "eviction", new Location());
+            dynamicQueries.FindItemsWhereContainsWithLocationAsync("TopicsCollections", "keywords", "EVICTION", new Location());
 
             // Assert
             cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(), query);
