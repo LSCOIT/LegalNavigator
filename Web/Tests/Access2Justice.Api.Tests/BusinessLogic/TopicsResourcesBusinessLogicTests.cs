@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using Microsoft.Azure.Documents;
 using System.IO;
 using System.Linq;
+using Access2Justice.Api.Tests.TestData;
 
 namespace Access2Justice.Api.Tests.BusinessLogic
 {
@@ -32,144 +33,52 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly string topicName = "Family";
         private readonly string resourceName = "Action Plan";
         private readonly JArray emptyData = JArray.Parse(@"[{}]");
-        private readonly JArray topicsData =
-                  JArray.Parse(@"[{'id':'addf41e9-1a27-4aeb-bcbb-7959f95094ba','name':'Family',
-                   'ParentTopicId':'','keywords':'eviction','location':[{'state':'Hawaii','county':'Kalawao County','city':'Kalawao',
-                    'zipCode':'96742'},{'zipCode':'96741'},{'state':'Hawaii','county':'Honolulu County','city':'Honolulu'},{'state':
-                   'Hawaii','city':'Hawaiian Beaches'},{'state':'Hawaii','city':'Haiku-Pauwela'},{'state':'Alaska'}],'jsonContent':'',
-                   'icon':'./assets/images/topics/topic14.png','createdBy':'','createdTimeStamp':'','modifiedBy':'','modifiedTimeStamp':'
-                   ','_rid':'mwoSALHtpAEBAAAAAAAAAA==','_self':'dbs/mwoSAA==/colls/mwoSALHtpAE=/docs/mwoSALHtpAEBAAAAAAAAAA==/',
-                    '_etag':'\'05008e57-0000-0000-0000-5b0797c10000\'','_attachments':'attachments/','_ts':1527224257}]");
-        private readonly JArray resourcesData =
-                    JArray.Parse(@"[{'id':'77d301e7-6df2-612e-4704-c04edf271806','name':'Tenant Action Plan 
-                    for Eviction','description':'This action plan is for tenants who are facing eviction and have experienced the following:',
-                    'resourceType':'Action','externalUrl':'','url':'','topicTags':[{'id':'f102bfae-362d-4659-aaef-956c391f79de'},
-                    {'id':'2c0cc7b8-62b1-4efb-8568-b1f767f879bc'},{'id':'3aa3a1be-8291-42b1-85c2-252f756febbc'}],'location':[{'state':'Hawaii',
-                    'city':'Kalawao','zipCode':'96742'},{'zipCode':'96741'},{'state':'Alaska'}],'icon':'./assets/images/resources/resource.png',
-                    'createdBy':'','createdTimeStamp':'','modifiedBy':'','modifiedTimeStamp':'','_rid':'mwoSAJdNlwIBAAAAAAAAAA==',
-                    '_self':'dbs/mwoSAA==/colls/mwoSAJdNlwI=/docs/mwoSAJdNlwIBAAAAAAAAAA==/','_etag':'\'040007b5-0000-0000-0000-5b0792260000\'',
-                    '_attachments':'attachments/','_ts':1527222822},{'id':'19a02209-ca38-4b74-bd67-6ea941d41518','name':'Legal Help Organization',
-                    'description':'This action plan is for tenants who are facing eviction and have experienced the following:','resourceType':'Organization'
-                    ,'externalUrl':'','url':'','topicTags':[{'id':'f102bfae-362d-4659-aaef-956c391f79de'},{'id':'3aa3a1be-8291-42b1-85c2-252f756febbc'}],
-                    'location':[{'state':'Hawaii','city':'Kalawao','zipCode':'96742'}],'icon':'./assets/images/resources/resource.png','createdBy':'',
-                    'createdTimeStamp':'','modifiedBy':'','modifiedTimeStamp':'','_rid':'mwoSAJdNlwIBAAAAAAAAAA==','_self':
-                    'dbs/mwoSAA==/colls/mwoSAJdNlwI=/docs/mwoSAJdNlwIBAAAAAAAAAA==/','_etag':'\'040007b5-0000-0000-0000-5b0792260000\'',
-                    '_attachments':'attachments/','_ts':1527222822}]");
-        private readonly JArray breadcrumbData =
-                    JArray.Parse(@"[{'id': '4589592f-3312-eca7-64ed-f3561bbb7398',
-                    'parentId': '5c035d27-2fdb-9776-6236-70983a918431', 'name': 'family1.2.1'},
-                    {'id': '5c035d27-2fdb-9776-6236-70983a918431','parentId': 'f102bfae-362d-4659-aaef-956c391f79de',
-                    'name': 'family1.1.1'},{'id': 'f102bfae-362d-4659-aaef-956c391f79de',
-                    'parentId': 'addf41e9-1a27-4aeb-bcbb-7959f95094ba','name': 'family subtopic name 1.1'
-                    },{'id': 'addf41e9-1a27-4aeb-bcbb-7959f95094ba','name': 'family'}]");
-        private readonly JArray resourceCountData = JArray.Parse(@"[{'resourceType':'Organizations'},{'resourceType':'Organizations'},{'resourceType':'Organizations'},
-                    {'resourceType':'Organizations'},{'resourceType':'All'},{'resourceType':'All'}]");
-        private readonly ResourceFilter resourceFilter = new ResourceFilter { TopicIds = new List<string> { "addf41e9-1a27-4aeb-bcbb-7959f95094ba" }, PageNumber = 0, ResourceType = "ALL", Location = new Location() };
-        private readonly JArray formData =
-                    JArray.Parse(@"[{'overview': 'Form1','fullDescription': 'Below is the form you will need if you are looking to settle your child custody dispute in court. We have included helpful tips to guide you along the way.',
-                    'id':'77d301e7-6df2-612e-4704-c04edf271806','name': 'Form1','description': 'Subhead lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem',
-                    'resourceType': 'Forms','externalUrl': 'www.youtube.com','url': 'access2justice.com','referenceTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],
-                    'location': [{'state': 'Hawaii','county':'','city': 'Haiku-Pauwela','zipCode':''}],'icon': './assets/images/resources/resource.png','createdBy': 'API','createdTimeStamp': '','modifiedBy': 'API','modifiedTimeStamp': ''}]");
-        private readonly JArray actionPlanData =
-                    JArray.Parse(@"[{'conditions': [{'condition': {'title': 'Take to your partner to see if you can come to an agreement', 'description': 'Why you should do this dolor sit amet.'}}],
-                    'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Action Plan','description': 'This action plan is for tenants who are facing eviction and have experienced the following:',
-                    'resourceType': 'Action Plans','externalUrl': 'www.youtube.com','url': 'access2justice.com','referenceTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
-                    'icon': './assets/images/resources/resource.png','createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]");
-        private readonly JArray referencesInputData =
-                    JArray.Parse(@"[{'conditions': [{'condition': {'title': 'Take to your partner to see if you can come to an agreement', 'description': 'Why you should do this dolor sit amet.'}}],
-                    'parentTopicId': [{'id': '349fa67b-164f-4a65-bb5d-a5b3dd2640a6'}],'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Action Plan','description': 'This action plan is for tenants who are facing eviction and have experienced the following:',
-                    'resourceType': 'Action Plans','externalUrl': 'www.youtube.com','url': 'access2justice.com','referenceTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
-                    'icon': './assets/images/resources/resource.png','createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]");
-        private readonly JArray articleData =
-                    JArray.Parse(@"[{'overview': 'Overview','headline1': 'HL1','headline2': 'HL2','headline3': 'HL3','id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Article1','description': 'Subhead lorem ipsum solor sit amet bibodem',
-                    'resourceType': 'Articles','externalUrl': 'www.youtube.com','url': 'access2justice.com','referenceTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
-                    'icon': './assets/images/resources/resource.png','createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]");
-        private readonly JArray videoData =
-                    JArray.Parse(@"[{'overview': 'Overview','isRecommended': 'Yes','videoUrl': 'Url','id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Video','description': 'Subhead lorem ipsum solor sit amet bibodem',
-                    'resourceType': 'Videos','externalUrl': 'www.youtube.com','url': 'access2justice.com','referenceTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
-                    'icon': './assets/images/resources/resource.png','createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]");
-        private readonly JArray organizationData =
-                    JArray.Parse(@"[{'overview': 'Overview','subService': 'Law Professional','street': '123 Street','city': 'Honululu','state': 'Hawaii','zipCode': '70085','telephone': '67586758768','eligibilityInformation': 'eligibility','reviewedByCommunityMember': 'Community member',
-                    'reviewerFullName': 'John Smith','reviewerTitle': 'Lawyer','reviewerImage': 'ReviewerImage.jpeg','id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Organization','description': 'Subhead lorem ipsum solor sit amet bibodem',
-                    'resourceType': 'Organizations','externalUrl': 'www.youtube.com','url': 'access2justice.com','referenceTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
-                    'icon': './assets/images/resources/resource.png','createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]");
-        private readonly JArray essentialReadingData =
-                    JArray.Parse(@"[{'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Essential Reading in Hawaii','description': 'Subhead lorem ipsum solor sit amet bibodem',
-                    'resourceType': 'Essential Readings','externalUrl': 'www.youtube.com','url': 'access2justice.com','referenceTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
-                    'icon': './assets/images/resources/resource.png','createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]");
-        private readonly JArray topicData =
-                    JArray.Parse(@"[{'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Family','parentTopicId': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'keywords': 'HOUSING',
-                    'location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
-                    'jsonContent':'jsonContent','icon': './assets/images/resources/resource.png','createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]");
-        private readonly JArray referenceTagData =
-                     JArray.Parse(@"[{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}]");
-        private readonly JArray parentTopicIdData =
-                     JArray.Parse(@"[{'id': '349fa67b-164f-4a65-bb5d-a5b3dd2640a6'}]");
-        private readonly JArray locationData =
-                     JArray.Parse(@"[{'state':'Hawaii','county':'','city':'Haiku-Pauwela','zipCode':''},{'state':'Alaska','county':'','city':'','zipCode':''}]");
-        private readonly JArray conditionData =
-                     JArray.Parse(@"[{'condition': {'title': 'Take to your partner to see if you can come to an agreement','description': 'Why you should do this dolor sit amet'}}]");
-        private readonly JArray emptyResourceData = JArray.Parse(@"[{'referenceTags':[{'id': ''}],'location': [{'state': '','county':'','': '','zipCode':''}],'conditions': [{'condition': {'title': '','description': ''}}],'parentTopicId':[{'id':''}] }]");
-        
+        private readonly JArray topicsData = TopicResourceTestData.topicsData;
+        private readonly JArray resourcesData = TopicResourceTestData.resourcesData;
+        private readonly JArray breadcrumbData = TopicResourceTestData.breadcrumbData;
+        private readonly JArray resourceCountData = TopicResourceTestData.resourceCountData;
+        private readonly ResourceFilter resourceFilter = TopicResourceTestData.resourceFilter;
+        private readonly JArray formData = TopicResourceTestData.formData;
+        private readonly JArray actionPlanData = TopicResourceTestData.actionPlanData;
+        private readonly JArray referencesInputData = TopicResourceTestData.referencesInputData;
+        private readonly JArray articleData = TopicResourceTestData.articleData;
+        private readonly JArray videoData = TopicResourceTestData.videoData;
+        private readonly JArray organizationData = TopicResourceTestData.organizationData;
+        private readonly JArray essentialReadingData = TopicResourceTestData.essentialReadingData;
+        private readonly JArray topicData = TopicResourceTestData.topicData;
+        private readonly JArray referenceTagData = TopicResourceTestData.referenceTagData;
+        private readonly JArray parentTopicIdData = TopicResourceTestData.parentTopicIdData;
+        private readonly JArray locationData = TopicResourceTestData.locationData;
+        private readonly JArray conditionData = TopicResourceTestData.conditionData;
+        private readonly JArray emptyResourceData = TopicResourceTestData.emptyResourceData;
+
         //Mocked result data.
         private readonly string expectedEmptyArrayObject = "[{}]";
         private readonly string emptyReferenceTagData = "";
-        private readonly JArray emptyLocationData =
-                     JArray.Parse(@"[{'state':'','county':'','city':'','zipCode':''}]");
-        private readonly JArray emptyConditionObject =
-                     JArray.Parse(@"[{'condition':[]}]");
-        private readonly JArray EmptyReferences =
-                     JArray.Parse(@"[[{'id':''}],[{'state':'','county':'','city':'','zipCode':''}],[{'condition':[{'title':'','description':''}]}],[{'id':''}]]");
-        private readonly string expectedTopicId = "addf41e9-1a27-4aeb-bcbb-7959f95094ba";
-        private readonly string expectedResourceId = "77d301e7-6df2-612e-4704-c04edf271806";
-        private readonly string expectedpagedResource = "{\"ContinuationToken\":\"[]\",\"Results\":[],\"TopicIds\":[]}";
-        private readonly string expectedResourceCount = "{\"ResourceName\":\"Organizations\",\"ResourceCount\":4}";
-        private readonly string expectedEmptyResourceCount = "{\"ResourceName\":\"All\",\"ResourceCount\":0}";
-        private readonly JArray expectedformData =
-                     JArray.Parse(@"[{'overview': 'Form1','fullDescription': 'Below is the form you will need if you are looking to settle your child custody dispute in court. We have included helpful tips to guide you along the way.',
-                    'id':'77d301e7-6df2-612e-4704-c04edf271806','name': 'Form1','description': 'Subhead lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem',
-                    'resourceType': 'Forms','externalUrl': 'www.youtube.com','url': 'access2justice.com','referenceTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],
-                    'location': [{'state': 'Hawaii','county':'','city': 'Haiku-Pauwela','zipCode':''}],'icon': './assets/images/resources/resource.png','createdBy': 'API','createdTimeStamp': '','modifiedBy': 'API','modifiedTimeStamp': ''}]");
-        private readonly JArray expectedActionPlanData =
-                    JArray.Parse(@"[{'conditions': [{'condition': [{'title': 'Take to your partner to see if you can come to an agreement', 'description': 'Why you should do this dolor sit amet.'}]}],
-                    'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Action Plan','description': 'This action plan is for tenants who are facing eviction and have experienced the following:',
-                    'resourceType': 'Action Plans','externalUrl': 'www.youtube.com','url': 'access2justice.com','referenceTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
-                    'icon': './assets/images/resources/resource.png','createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]");
-        private readonly JArray expectedArticleData =
-                    JArray.Parse(@"[{'overview': 'Overview','headline1': 'HL1','headline2': 'HL2','headline3': 'HL3','id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Article1','description': 'Subhead lorem ipsum solor sit amet bibodem',
-                    'resourceType': 'Articles','externalUrl': 'www.youtube.com','url': 'access2justice.com','referenceTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
-                    'icon': './assets/images/resources/resource.png','createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]");
-        private readonly JArray expectedVideoData =
-                    JArray.Parse(@"[{'overview': 'Overview','isRecommended': 'Yes','videoUrl': 'Url','id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Video','description': 'Subhead lorem ipsum solor sit amet bibodem',
-                    'resourceType': 'Videos','externalUrl': 'www.youtube.com','url': 'access2justice.com','referenceTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
-                    'icon': './assets/images/resources/resource.png','createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]");
-        private readonly JArray expectedOrganizationData =
-                    JArray.Parse(@"[{'overview': 'Overview','subService': 'Law Professional','street': '123 Street','city': 'Honululu','state': 'Hawaii','zipCode': '70085','telephone': '67586758768','eligibilityInformation': 'eligibility','reviewedByCommunityMember': 'Community member',
-                    'reviewerFullName': 'John Smith','reviewerTitle': 'Lawyer','reviewerImage': 'ReviewerImage.jpeg','id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Organization','description': 'Subhead lorem ipsum solor sit amet bibodem',
-                    'resourceType': 'Organizations','externalUrl': 'www.youtube.com','url': 'access2justice.com','referenceTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
-                    'icon': './assets/images/resources/resource.png','createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]");
-        private readonly JArray expectedEssentialReadingData =
-                    JArray.Parse(@"[{'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Essential Reading in Hawaii','description': 'Subhead lorem ipsum solor sit amet bibodem',
-                    'resourceType': 'Essential Readings','externalUrl': 'www.youtube.com','url': 'access2justice.com','referenceTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
-                    'icon': './assets/images/resources/resource.png','createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]");
-        private readonly JArray expectedTopicData=
-                    JArray.Parse(@"[{'id':'807f2e0d-c431-4f1c-b8c8-1223e6750bec','name':'Family','parentTopicId':[{'id':'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'keywords':'HOUSING','jsonContent':'jsonContent','location':[{'state':'Hawaii','county':'','city':'Haiku-Pauwela','zipCode':''},{'state':'Alaska','county':'','city':'','zipCode':''}],'icon':'./assets/images/resources/resource.png','createdBy':'API','createdTimeStamp':'','modifiedBy':'API','modifiedTimeStamp':''}]");
-        private readonly JArray expectedTopicsData=
-                    JArray.Parse(@"[{'id':'807f2e0d-c431-4f1c-b8c8-1223e6750bec','name':'Family','parentTopicId':[{'id':'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'keywords':'HOUSING','location':[{'state':'Hawaii','county':'','city':'Haiku-Pauwela','zipCode':''},{'state':'Alaska','county':'','city':'','zipCode':''}],'jsonContent':'jsonContent','icon':'./assets/images/resources/resource.png','createdBy':'API','createdTimeStamp':'','modifiedBy':'API','modifiedTimeStamp':''}]");
-        private readonly string expectedReferenceTagData = "aaa085ef-96fb-4fd0-bcd0-0472ede66512";
-        private readonly string expectedParentTopicIdData ="349fa67b-164f-4a65-bb5d-a5b3dd2640a6";
-        private readonly JArray expectedLocationData =
-                     JArray.Parse(@"[{'state':'Hawaii','county':'','city':'Haiku-Pauwela','zipCode':''},{'state':'Alaska','county':'','city':'','zipCode':''}]");
-        private readonly JArray expectedReferenceLocationData =
-                     JArray.Parse(@"[{'state': 'Hawaii','county':'','city': 'Haiku-Pauwela','zipCode':''}]");
-        private readonly JArray expectedConditionData =
-                     JArray.Parse(@"[{'condition':[{'title':'Take to your partner to see if you can come to an agreement', 'description':'Why you should do this dolor sit amet'}]}]");
-        private readonly JArray expectedResourceReferences =
-                     JArray.Parse(@"[[{'id':'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],[{'state':'Hawaii','county':'','city':'Haiku-Pauwela','zipCode':''},{'state':'Alaska','county':'','city':'','zipCode':''}]]");
-        private readonly JArray expectedActionPlanReferences =
-                     JArray.Parse(@"[[{'id':'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],[{'state':'Hawaii','county':'','city':'Haiku-Pauwela','zipCode':''},{'state':'Alaska','county':'','city':'','zipCode':''}],[{'condition':[{'title':'Take to your partner to see if you can come to an agreement','description':'Why you should do this dolor sit amet.'}]}]]");
-        private readonly JArray expectedReferencesData =
-                     JArray.Parse(@"[[{'id':'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],[{'state':'Hawaii','county':'','city':'Haiku-Pauwela','zipCode':''},{'state':'Alaska','county':'','city':'','zipCode':''}],[{'condition':[{'title':'Take to your partner to see if you can come to an agreement','description':'Why you should do this dolor sit amet.'}]}],[{'id':'349fa67b-164f-4a65-bb5d-a5b3dd2640a6'}]]");
+        private readonly JArray emptyLocationData = TopicResourceTestData.emptyLocationData;
+        private readonly JArray emptyConditionObject = TopicResourceTestData.emptyConditionObject;
+        private readonly JArray EmptyReferences = TopicResourceTestData.EmptyReferences;
+        private readonly string expectedTopicId = TopicResourceTestData.expectedTopicId;
+        private readonly string expectedResourceId = TopicResourceTestData.expectedResourceId;
+        private readonly string expectedpagedResource = TopicResourceTestData.expectedpagedResource;
+        private readonly string expectedResourceCount = TopicResourceTestData.expectedResourceCount;
+        private readonly string expectedEmptyResourceCount = TopicResourceTestData.expectedEmptyResourceCount;
+        private readonly JArray expectedformData = TopicResourceTestData.expectedformData;
+        private readonly JArray expectedActionPlanData = TopicResourceTestData.expectedActionPlanData;
+        private readonly JArray expectedArticleData = TopicResourceTestData.expectedArticleData;
+        private readonly JArray expectedVideoData = TopicResourceTestData.expectedVideoData;
+        private readonly JArray expectedOrganizationData = TopicResourceTestData.expectedOrganizationData;
+        private readonly JArray expectedEssentialReadingData = TopicResourceTestData.expectedEssentialReadingData;
+        private readonly JArray expectedTopicData = TopicResourceTestData.expectedTopicData;
+        private readonly JArray expectedTopicsData = TopicResourceTestData.expectedTopicsData;
+        private readonly string expectedReferenceTagData = TopicResourceTestData.expectedReferenceTagData;
+        private readonly string expectedParentTopicIdData = TopicResourceTestData.expectedParentTopicIdData;
+        private readonly JArray expectedLocationData = TopicResourceTestData.expectedLocationData;
+        private readonly JArray expectedReferenceLocationData = TopicResourceTestData.expectedReferenceLocationData;
+        private readonly JArray expectedConditionData = TopicResourceTestData.expectedConditionData;
+        private readonly JArray expectedResourceReferences = TopicResourceTestData.expectedResourceReferences;
+        private readonly JArray expectedActionPlanReferences = TopicResourceTestData.expectedActionPlanReferences;
+        private readonly JArray expectedReferencesData = TopicResourceTestData.expectedReferencesData;
 
         public TopicsResourcesBusinessLogicTests()
         {
@@ -579,7 +488,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             //act
             var dbResponse = backendDatabaseService.CreateItemAsync<dynamic>(form, cosmosDbSettings.ResourceCollectionId).ReturnsForAnyArgs(document);
             var dbResponseResource = topicsResourcesSettings.CreateResourceDocumentAsync(resource).ReturnsForAnyArgs(form[0]);
-            string filePath = Path.Combine(Environment.CurrentDirectory, "SampleJsons\\ResourceData.json");
+            string filePath = Path.Combine(Environment.CurrentDirectory, "TestData\\ResourceData.json");
             var response = topicsResourcesBusinessLogic.CreateResourcesUploadAsync(filePath).Result;
             foreach (var result in response)
             {
@@ -841,7 +750,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             //act
             var dbResponse = backendDatabaseService.CreateItemAsync<dynamic>(topic, cosmosDbSettings.TopicCollectionId).ReturnsForAnyArgs(document);
             var dbResponseResource = topicsResourcesSettings.CreateTopicDocumentAsync(topics).ReturnsForAnyArgs(topic[0]);
-            string filePath = Path.Combine(Environment.CurrentDirectory, "SampleJsons\\TopicData.json");
+            string filePath = Path.Combine(Environment.CurrentDirectory, "TestData\\TopicData.json");
             var response = topicsResourcesBusinessLogic.CreateTopicsUploadAsync(filePath).Result;
             
             foreach (var result in response)
