@@ -46,19 +46,38 @@ namespace Access2Justice.Api.BusinessLogic
             var serializedResult = JsonConvert.SerializeObject(userData);
             var userDocument = JsonConvert.DeserializeObject(serializedResult);
             string oId = userDocument.oId;
-            string planId = userDocument.planId;
-            List<string> propertyNames = new List<string>() { Constants.OId, Constants.PlanId };
-            List<string> values = new List<string>() { oId, planId };
-            dynamic result = null;
-            var userDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, propertyNames, values);           
-            if (userDBData.Count == 0)
-            {
-                result = CreateUserPersonalizedPlanAsync(userData);
+            dynamic result = null;         
+            if (userData.type == "plans")
+            {                
+                string planId = userDocument.planId;
+                List<string> propertyNames = new List<string>() { Constants.OId, Constants.PlanId };
+                List<string> values = new List<string>() { oId, planId };
+                var userDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, propertyNames, values);
+                if (userDBData.Count == 0)
+                {
+                    result = CreateUserPersonalizedPlanAsync(userData);
+                }
+                else
+                {
+                    string id = userDBData[0].id;
+                    result = UpdateUserPersonalizedPlanAsync(id, userData);
+                }
             }
-            else
+            else if (userData.type == "resources")
             {
-                string id = userDBData[0].id;
-                result = UpdateUserPersonalizedPlanAsync(id, userData);
+                string type = userData.type;
+                List<string> resourcesPropertyNames = new List<string>() { Constants.OId, Constants.Type };
+                List<string> resourcesValues = new List<string>() { oId, type };
+                var userResourcesDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, resourcesPropertyNames, resourcesValues);
+                if (userResourcesDBData.Count == 0)
+                {
+                    result = CreateUserSavedResourcesAsync(userData);
+                }
+                else
+                {
+                    string id = userResourcesDBData[0].id;
+                    result = UpdateUserSavedResourcesAsync(id, userData);
+                }
             }
             return result;
         }
@@ -95,6 +114,96 @@ namespace Access2Justice.Api.BusinessLogic
                     targetProperty.Value = prop.Value;
                 }
             }            
+            return await dbService.UpdateItemAsync(id, dbObject, dbSettings.ResourceCollectionId);
+        }
+        
+        public async Task<dynamic> CreateUserSavedResourcesAsync(dynamic userResources)
+        {
+            var serializedResult = JsonConvert.SerializeObject(userResources);
+            var userDocument = JsonConvert.DeserializeObject(serializedResult);
+            return await dbService.CreateItemAsync(userDocument, dbSettings.ResourceCollectionId);
+        }
+
+        public async Task<dynamic> UpdateUserSavedResourcesAsync(string id, dynamic userResources)
+        {
+            var serializedResult = JsonConvert.SerializeObject(userResources);
+            var userUIDocument = JsonConvert.DeserializeObject(serializedResult);
+            string oId = userUIDocument.oId;
+            string type = userUIDocument.type;
+            List<string> propertyNames = new List<string>() { Constants.OId, Constants.Type };
+            List<string> values = new List<string>() { oId, type };
+            var userDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, propertyNames, values);
+            var serializedDBResult = JsonConvert.SerializeObject(userDBData[0]);
+            JObject dbObject = JObject.Parse(serializedDBResult);
+            JObject uiObject = JObject.Parse(serializedResult);
+
+            foreach (var prop in uiObject.Properties())
+            {
+                var targetProperty = dbObject.Property(prop.Name);
+                if (targetProperty == null)
+                {
+                    dbObject.Add(prop.Name, prop.Value);
+                }
+                else
+                {
+                    targetProperty.Value = prop.Value;
+                }
+            }
+            return await dbService.UpdateItemAsync(id, dbObject, dbSettings.ResourceCollectionId);
+        }
+
+        public async Task<dynamic> UpsertUserPlanAsync(dynamic userPlan)
+        {
+            var serializedResult = JsonConvert.SerializeObject(userPlan);
+            var userDocument = JsonConvert.DeserializeObject(serializedResult);
+            string oId = userDocument.oId;
+            dynamic result = null;           
+            string id = userDocument.id;
+            List<string> propertyNames = new List<string>() { Constants.OId, Constants.Id };
+            List<string> values = new List<string>() { oId, id };
+            var userDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, propertyNames, values);
+            if (userDBData.Count == 0)
+            {
+                result = CreateUserPlanAsync(userPlan);
+            }
+            else
+            {
+                result = UpdateUserPlanAsync(id, userPlan);
+            }            
+            return result;
+        }
+
+        public async Task<dynamic> CreateUserPlanAsync(dynamic userData)
+        {
+            var serializedResult = JsonConvert.SerializeObject(userData);
+            var userDocument = JsonConvert.DeserializeObject(serializedResult);
+            return await dbService.CreateItemAsync(userDocument, dbSettings.ResourceCollectionId);
+        }
+
+        public async Task<dynamic> UpdateUserPlanAsync(string id, dynamic userUIData)
+        {
+            var serializedResult = JsonConvert.SerializeObject(userUIData);
+            var userUIDocument = JsonConvert.DeserializeObject(serializedResult);
+            string oId = userUIDocument.oId;
+            List<string> propertyNames = new List<string>() { Constants.OId, Constants.Id };
+            List<string> values = new List<string>() { oId, id };
+            var userDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, propertyNames, values);
+            var serializedDBResult = JsonConvert.SerializeObject(userDBData[0]);
+            JObject dbObject = JObject.Parse(serializedDBResult);
+            JObject uiObject = JObject.Parse(serializedResult);
+
+            foreach (var prop in uiObject.Properties())
+            {
+                var targetProperty = dbObject.Property(prop.Name);
+                if (targetProperty == null)
+                {
+                    dbObject.Add(prop.Name, prop.Value);
+                }
+                else
+                {
+                    targetProperty.Value = prop.Value;
+                }
+            }
             return await dbService.UpdateItemAsync(id, dbObject, dbSettings.ResourceCollectionId);
         }
     }
