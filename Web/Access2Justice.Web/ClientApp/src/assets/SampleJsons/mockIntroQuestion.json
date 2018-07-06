@@ -1,0 +1,17 @@
+{
+  "id": "0173c6ca-2ba7-4d1d-94f5-7e3fec1f9dfc",
+  "name": "1-Introduction",
+  "text": "<P>This is the introduction. This A2J Guided Interview was created as part of a sample exercise. It is not intended for use by the general public. </P>",
+  "learn": "",
+  "help": "",
+  "parentId": "00000000-0000-0000-0000-000000000000",
+  "tags": [],
+  "buttons": [
+    {
+      "id": "f3a1e369-edba-4152-bbc7-a52e8e77b56e",
+      "label": "Continue",
+      "destination": "1-Name"
+    }
+  ],
+  "fields": []
+}

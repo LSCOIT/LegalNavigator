@@ -24,8 +24,8 @@ import { HelpFaqsComponent } from './help-faqs/help-faqs.component';
 import { HomeComponent } from './home/home.component';
 import { LogInComponent } from './account/log-in.component';
 import { PrivacyPromiseComponent } from './privacy-promise/privacy-promise.component';
-import { QuestionComponent } from './guided-assistant/curated-experience/question.component';
-import { QuestionService } from './guided-assistant/curated-experience/question.service';
+import { QuestionComponent } from './guided-assistant/question/question.component';
+import { QuestionService } from './guided-assistant/question/question.service';
 import { TopicService } from './topics-resources/shared/topic.service';
 import { SubtopicsComponent } from './topics-resources/subtopic/subtopics.component';
 import { SubtopicDetailComponent } from './topics-resources/subtopic/subtopic-detail.component';
@@ -36,6 +36,7 @@ import { PersonalizedPlanComponent } from './guided-assistant/personalized-plan/
 import { ProfileComponent } from './profile/profile.component';
 import { DidYouKnowComponent } from './guided-assistant/did-you-know/did-you-know.component';
 import { ArticlesResourcesComponent } from './guided-assistant/articles-resources/articles-resources.component';
+import { CuratedExperienceComponent } from './guided-assistant/curated-experience/curated-experience.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { ArticlesResourcesComponent } from './guided-assistant/articles-resource
     PersonalizedPlanComponent,
     ProfileComponent,
     DidYouKnowComponent,
-    ArticlesResourcesComponent
+    ArticlesResourcesComponent,
+    CuratedExperienceComponent
   ],
   imports: [
     BrowserModule,

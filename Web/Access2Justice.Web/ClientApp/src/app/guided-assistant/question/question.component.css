@@ -1,16 +1,13 @@
-.part {
-  padding-left: 20px;
-}
-
 .question-body {
   padding: 10px 0;
 }
 
 label {
-  text-align: right;
+  text-align: left;
+  width: 80px;
 }
 
-input, .dropdown-toggle {
+.textbox, .dropdown-toggle {
   text-align: left;
   width: 300px;
   height: 45px;
