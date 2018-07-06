@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { HttpParams } from '@angular/common/http';
+//import { NgForm } from '@angular/forms';
+//import { HttpParams } from '@angular/common/http';
 import { QuestionService } from './question.service';
 import { Question } from './question';
-import { Answer } from './answers';
+//import { Answer } from './answers';
 
 @Component({
   selector: 'app-question',

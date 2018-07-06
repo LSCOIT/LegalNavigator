@@ -85,6 +85,7 @@ button, .btn {
 .btn-secondary {
   border: 1px solid #0D3FB8;
   color: #0D3FB8;
+  background-color: #FFF;
 }
 
 .btn-secondary:hover {

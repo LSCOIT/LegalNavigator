@@ -34,6 +34,8 @@ import { TopicsComponent } from './topics-resources/topic/topics.component';
 import { BreadcrumbService } from './topics-resources/shared/breadcrumb.service';
 import { PersonalizedPlanComponent } from './guided-assistant/personalized-plan/personalized-plan.component';
 import { ProfileComponent } from './profile/profile.component';
+import { DidYouKnowComponent } from './guided-assistant/did-you-know/did-you-know.component';
+import { ArticlesResourcesComponent } from './guided-assistant/articles-resources/articles-resources.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +53,9 @@ import { ProfileComponent } from './profile/profile.component';
     SubtopicDetailComponent,
     SubtopicsComponent,
     PersonalizedPlanComponent,
-    ProfileComponent
+    ProfileComponent,
+    DidYouKnowComponent,
+    ArticlesResourcesComponent
   ],
   imports: [
     BrowserModule,

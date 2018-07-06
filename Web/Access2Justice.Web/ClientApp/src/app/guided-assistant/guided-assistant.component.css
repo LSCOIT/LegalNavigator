@@ -31,6 +31,15 @@
   margin: 20px auto;
 }
 
+.learn-more {
+  margin-top: 20px;
+}
+
+.learn-more button {
+  display: block;
+  margin: 0 auto 20px auto;
+}
+
 @media only screen and (min-width : 768px) {
   .media {
     padding: 40px;
@@ -43,5 +52,14 @@
   .media .col-sm-10 {
     padding-left: 10%;
     text-align: left;
+  }
+
+  .learn-more button {
+    display: inline-block;
+    margin: 0 auto;
+  }
+
+  .learn-more a {
+    margin-left: 20px;
   }
 }
