@@ -86,7 +86,7 @@ namespace Access2Justice.CosmosDb
             {
                 arrayContainsWithAndClause = "(" + arrayContainsWithAndClause + ")";
             }
-            if (resourceFilter.ResourceType.ToUpperInvariant() != "ALL")
+            if (resourceFilter.ResourceType.ToUpperInvariant() != Constants.ResourceTypeAll)
             {                
                 arrayContainsWithAndClause += $" AND c.{andPropertyName} = '" + resourceFilter.ResourceType + "'";
             }
