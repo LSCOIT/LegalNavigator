@@ -34,11 +34,11 @@ namespace Access2Justice.Api
         {
             dynamic luisResponse = null;
             dynamic intentWithScore = null;
-            int threshold = 2;
+            int threshold = 2; string encodedSentence = string.Empty;
             if (string.IsNullOrEmpty(luisInput.LuisTopScoringIntent))
             {
                 //Encoding search Text before sending it to external systems.
-                string encodedSentence = HttpUtility.UrlEncode(luisInput.Sentence);
+                encodedSentence = HttpUtility.UrlEncode(luisInput.Sentence);
 
                 luisResponse = await luisProxy.GetIntents(encodedSentence);
 
@@ -52,10 +52,9 @@ namespace Access2Justice.Api
                 case (int)LuisAccuracyThreshold.High:
                     return await GetInternalResourcesAsync(intentWithScore?.TopScoringIntent ?? luisInput.LuisTopScoringIntent, luisInput.Location);
                 case (int)LuisAccuracyThreshold.Medium:
-                    JObject luisObject = new JObject { { "luisResponse", luisResponse } };
-                    return luisObject.ToString();
+                    return await GetWebResourcesAsync(intentWithScore?.TopScoringIntent);                
                 default:
-                    return await GetWebResourcesAsync(intentWithScore?.TopScoringIntent);
+                    return await GetWebResourcesAsync(encodedSentence);
             }
         }
 
@@ -88,10 +87,10 @@ namespace Access2Justice.Api
             }
         }
 
-        public async Task<dynamic> GetInternalResourcesAsync(string keyword,Location location)
+        public async Task<dynamic> GetInternalResourcesAsync(string keyword, Location location)
         {
             string topic = string.Empty, resource = string.Empty;
-            var topics = await topicsResourcesBusinessLogic.GetTopicsAsync(keyword,location);
+            var topics = await topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
 
             List<string> topicIds = new List<string>();
             foreach (var item in topics)
@@ -107,9 +106,9 @@ namespace Access2Justice.Api
             dynamic serializedGroupedResources = "[]";
             if (topicIds.Count > 0)
             {
-                ResourceFilter resourceFilter = new ResourceFilter { TopicIds = topicIds, PageNumber = 0, ResourceType = "ALL", Location = location };                
-                var GetResourcesTask =  topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
-                var ApplyPaginationTask =  topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
+                ResourceFilter resourceFilter = new ResourceFilter { TopicIds = topicIds, PageNumber = 0, ResourceType = "ALL", Location = location };
+                var GetResourcesTask = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
+                var ApplyPaginationTask = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
                 await Task.WhenAll(GetResourcesTask, ApplyPaginationTask);
                 var groupedResourceType = GetResourcesTask.Result;
                 PagedResources resources = ApplyPaginationTask.Result;
@@ -140,6 +139,6 @@ namespace Access2Justice.Api
                 { "webResources" , JsonConvert.DeserializeObject(response) }
             };
             return webResources.ToString();
-        }        
+        }
     }
 }

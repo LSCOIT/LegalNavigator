@@ -151,8 +151,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         private readonly string expectedLuisNoneIntent = "None";
         private readonly int expectedLowerthreshold = 0;
         private readonly string expectedLuisTopIntent = "eviction";
-        private readonly string expectedTopicId = "addf41e9-1a27-4aeb-bcbb-7959f95094ba";
-        private readonly string expectedLuisResponse = "luisResponse";
+        private readonly string expectedTopicId = "addf41e9-1a27-4aeb-bcbb-7959f95094ba";        
         private readonly string expectedInternalResponse = "topics";
         private readonly string expectedWebResponse = "webResources";
         private readonly string expectedEmptyInternalResponse = "{\r\n  \"topics\": [],\r\n  \"resources\": [],\r\n  \"continuationToken\": [],\r\n  " +
@@ -391,12 +390,15 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             luisInput.Sentence = searchText;
             var luisResponse = luisProxy.GetIntents(searchText);
             luisResponse.ReturnsForAnyArgs(meduimScoreLuisResponse);
+            
+            var webResponse = webSearchBusinessLogic.SearchWebResourcesAsync(bingSettings.BingSearchUrl);
+            webResponse.ReturnsForAnyArgs<dynamic>(webData);
 
             //act
             var response = luisBusinessLogic.GetResourceBasedOnThresholdAsync(luisInput).Result;
 
             //assert
-            Assert.Contains(expectedLuisResponse, response);
+            Assert.Contains(expectedWebResponse, response);
         }
 
         [Fact]
