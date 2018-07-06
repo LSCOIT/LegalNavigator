@@ -27,7 +27,7 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<CuratedExperience> GetCuratedExperience(Guid id)
         {
-            return await dbService.GetItemAsync<CuratedExperience>(id.ToString());
+            return await dbService.GetItemAsync<CuratedExperience>(id.ToString(), dbSettings.CuratedExperienceCollectionId);
         }
     }
 }

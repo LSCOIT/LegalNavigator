@@ -33,12 +33,12 @@ namespace Access2Justice.CosmosDb
                 UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, collectionId), item);
         }
        
-        public async Task<T> GetItemAsync<T>(string id)
+        public async Task<T> GetItemAsync<T>(string id, string collectionId)
         {
             try
             {
                 Document document = await documentClient.ReadDocumentAsync(
-                        UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, id));
+                        UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, collectionId, id));
 
                 return (T)(dynamic)document;
             }

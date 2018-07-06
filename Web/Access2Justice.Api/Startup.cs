@@ -29,6 +29,13 @@ namespace Access2Justice.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            //services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(10);
+                //options.Cookie.HttpOnly = true;
+            });
+
             services.AddMvc();
 
             ILuisSettings luisSettings = new LuisSettings(Configuration.GetSection("Luis"));
@@ -46,7 +53,6 @@ namespace Access2Justice.Api
             services.AddTransient<IHttpClientService, HttpClientService>();
             services.AddSingleton<IUserProfileBusinessLogic, UserProfileBusinessLogic>();
             ConfigureCosmosDb(services);
-            ConfigureSession(services);
 
             services.AddSwaggerGen(c =>
             {
@@ -70,9 +76,9 @@ namespace Access2Justice.Api
             var url = $"{apiEnpoint.Scheme}://{apiEnpoint.Host}:{apiEnpoint.Port}";         
             app.UseCors(builder => builder.WithOrigins(url).AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
-            app.UseMvc();
-
             app.UseSession();
+
+            app.UseMvc();
 
             ConfigureSwagger(app);
         }
@@ -84,17 +90,6 @@ namespace Access2Justice.Api
             services.AddSingleton<IDocumentClient>(x => new DocumentClient(cosmosDbSettings.Endpoint, cosmosDbSettings.AuthKey));
             services.AddSingleton<IBackendDatabaseService, CosmosDbService>();
             services.AddSingleton<IDynamicQueries, CosmosDbDynamicQueries>();
-        }
-
-        private void ConfigureSession(IServiceCollection services)
-        {
-            services.AddDistributedMemoryCache();
-
-            services.AddSession(options =>
-            {
-                options.IdleTimeout = TimeSpan.FromMinutes(10);
-                options.Cookie.HttpOnly = true;
-            });
         }
 
         private void ConfigureSwagger(IApplicationBuilder app)

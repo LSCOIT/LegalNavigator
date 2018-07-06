@@ -7,6 +7,8 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Threading.Tasks;
 
+
+
 namespace Access2Justice.Api.Controllers
 {
     [Route("api/[controller]")]
@@ -56,9 +58,10 @@ namespace Access2Justice.Api.Controllers
             }
             catch
             {
-                return BadRequest("Schema you sent is not a valid json.");
+                return BadRequest("The schema you sent does not have a valid json.");
             }
         }
+
 
         [HttpGet("GetQuestion")]
         public IActionResult GetQuestion(Guid curatedExperienceId, Guid buttonId)
@@ -68,17 +71,36 @@ namespace Access2Justice.Api.Controllers
         }
 
 
-        private async Task<CuratedExperience> GetCuratedExperience(Guid id)
+        private async Task<string> GetCuratedExperience(Guid id)
         {
-            var curatedExperience = HttpContext.Session.GetString("CuratedExperience");
-            if (string.IsNullOrWhiteSpace(curatedExperience))
+            //var curatedExperience = HttpContext.Session.GetString("CuratedExperience");
+            var curatedExperience = HttpContext.Session.GetString("CuExSessionKey");
+
+            try
             {
-                var curatedExperienceJson = await curatedExperienceBusinessLogic.GetCuratedExperience(id);
-                curatedExperience = JsonConvert.SerializeObject(curatedExperienceJson);
-                HttpContext.Session.SetString("CuratedExperience", curatedExperience);
+
+                if (string.IsNullOrWhiteSpace(curatedExperience))
+                {
+
+                    // the issue seems to happen when i comment out this async call:
+                    //var curatedExperienceJson = await curatedExperienceBusinessLogic.GetCuratedExperience(id);
+
+                    // otherweise, i could store and retrieve everything completely fine from/to the session as long as I don't call that async method before!
+                    // I so far fail to see how related calling the method and storing something completly different in the session!
+
+                    //curatedExperience = JsonConvert.SerializeObject(curatedExperienceJson);
+
+                    curatedExperience = "Curated experience json";
+                    HttpContext.Session.SetString("CuExSessionKey", curatedExperience);
+                }
+            }
+            catch (Exception ex)
+            {
+                var exx = ex;
             }
 
-            return JsonConvert.DeserializeObject<CuratedExperience>(curatedExperience);
+
+            return curatedExperience; // JsonConvert.DeserializeObject<CuratedExperience>(curatedExperience);
         }
     }
 }
