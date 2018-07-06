@@ -27,7 +27,10 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly JArray userProfilePersonalizedPlanData = UserPersonalizedPlanTestData.userProfilePersonalizedPlanData;
         private readonly JArray expectedUserProfilePersonalizedPlanData = UserPersonalizedPlanTestData.expectedUserProfilePersonalizedPlanData;
         private readonly JArray expectedUserProfilePersonalizedPlanUpdateData = UserPersonalizedPlanTestData.expectedUserProfilePersonalizedPlanUpdateData;
-       
+        private readonly JArray userProfileSavedResourcesData = UserPersonalizedPlanTestData.userProfileSavedResourcesData;
+        private readonly JArray expectedUserProfileSavedResourcesData = UserPersonalizedPlanTestData.expectedUserProfileSavedResourcesData;
+        private readonly JArray expectedUserProfileSavedResourcesUpdateData = UserPersonalizedPlanTestData.expectedUserProfileSavedResourcesUpdateData;
+
         public UserProfileBusinessLogicTests()
         {
             dynamicQueries = Substitute.For<IDynamicQueries>();
@@ -145,6 +148,52 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 
             //assert
             Assert.Equal(expectedUserProfilePersonalizedPlanUpdateData[0].ToString(), actualResult.ToString());
+        }
+
+        [Fact]
+        public void CreateUserSavedResourcesAsyncTestsShouldReturnProperData()
+        {
+            //arrange
+            var userProfileSavedResources = this.userProfileSavedResourcesData;
+            var resource = JsonConvert.SerializeObject(userProfileSavedResources);
+            Document document = new Document();
+            JsonTextReader reader = new JsonTextReader(new StringReader(userProfileSavedResources[0].ToString()));
+            document.LoadFrom(reader);
+            dynamic actualUserSavedResourcesData = null;
+            var dbResponse = backendDatabaseService.CreateItemAsync<dynamic>(userProfileSavedResources, cosmosDbSettings.ResourceCollectionId).ReturnsForAnyArgs(document);
+
+            //act
+            actualUserSavedResourcesData = userProfileBusinessLogic.CreateUserSavedResourcesAsync(resource).Result;
+
+            //assert
+            Assert.Equal(expectedUserProfileSavedResourcesData[0].ToString(), actualUserSavedResourcesData.ToString());
+        }
+
+        [Fact]
+        public void UpdateUserSavedResourcesAsyncTestsShouldReturnProperData()
+        {
+            //arrange
+            var userProfileSavedResources = this.userProfileSavedResourcesData;
+            var resource = JsonConvert.SerializeObject(userProfileSavedResources);
+            var userUIDocument = JsonConvert.DeserializeObject<dynamic>(resource);
+            var inputJson = userUIDocument[0];
+            string id = userUIDocument[0].id;
+            string oId = userUIDocument[0].oId;
+            string type = userUIDocument[0].type;
+            List<string> resourcesPropertyNames = new List<string>() { Constants.OId, Constants.Type };
+            List<string> resourcesValues = new List<string>() { oId, type };
+            Document document = new Document();
+            JsonTextReader reader = new JsonTextReader(new StringReader(expectedUserProfileSavedResourcesUpdateData[0].ToString()));
+            document.LoadFrom(reader);
+            dynamic actualResult = null;
+            dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.ResourceCollectionId, resourcesPropertyNames, resourcesValues).ReturnsForAnyArgs(expectedUserProfileSavedResourcesUpdateData);
+            backendDatabaseService.UpdateItemAsync<dynamic>(id, document, cosmosDbSettings.ResourceCollectionId).ReturnsForAnyArgs(document);
+
+            //act
+            actualResult = userProfileBusinessLogic.UpdateUserSavedResourcesAsync(id, inputJson).Result;
+
+            //assert
+            Assert.Equal(expectedUserProfileSavedResourcesUpdateData[0].ToString(), actualResult.ToString());
         }
     }
 }
