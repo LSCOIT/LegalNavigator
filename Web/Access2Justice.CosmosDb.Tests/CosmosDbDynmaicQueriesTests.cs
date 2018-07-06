@@ -214,5 +214,20 @@ namespace Access2Justice.CosmosDb.Tests
 
         }
 
-    }
+		[Fact]
+		public void FindItemsWhereInClauseAsyncShouldValidSqlQueryForPersonalizedPlan()
+		{
+			//Arrange
+			var ids = new List<string>() { "guid1" };
+			string query = "SELECT * FROM c WHERE c.id IN ('guid1')";
+
+			//Act
+			dynamicQueries.FindItemsWhereInClauseAsync("TopicsCollections", "id", ids);
+
+			// Assert
+			cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(), query);
+
+		}
+
+	}
 }
