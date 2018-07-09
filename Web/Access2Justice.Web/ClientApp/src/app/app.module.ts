@@ -13,7 +13,7 @@ import {
   ModalModule,
   ProgressbarModule,
   ProgressbarConfig,
-  TabsModule 
+  TabsModule
 } from 'ngx-bootstrap';
 
 import { AppComponent } from './app.component';
@@ -31,9 +31,10 @@ import { SubtopicsComponent } from './topics-resources/subtopic/subtopics.compon
 import { SubtopicDetailComponent } from './topics-resources/subtopic/subtopic-detail.component';
 import { TopicsResourcesComponent } from './topics-resources/topics-resources.component';
 import { TopicsComponent } from './topics-resources/topic/topics.component';
-import { BreadcrumbService } from './topics-resources/shared/breadcrumb.service';
 import { PersonalizedPlanComponent } from './guided-assistant/personalized-plan/personalized-plan.component';
 import { ProfileComponent } from './profile/profile.component';
+import { BreadcrumbService } from './topics-resources/shared/breadcrumb.service';
+import { PersonalizedPlanService } from './guided-assistant/personalized-plan/personalized-plan.service';
 
 @NgModule({
   declarations: [
@@ -71,7 +72,8 @@ import { ProfileComponent } from './profile/profile.component';
     TopicService,
     QuestionService,
     ProgressbarConfig,
-    BreadcrumbService 
+    BreadcrumbService,
+    PersonalizedPlanService
   ],
   bootstrap: [AppComponent]
 })
