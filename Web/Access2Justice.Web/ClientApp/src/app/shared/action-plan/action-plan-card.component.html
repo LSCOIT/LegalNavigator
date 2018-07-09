@@ -1,6 +1,6 @@
-<div class="row box-shadow">
-  <div *ngIf="displaySteps">
-    <div *ngFor="let planStep of planSteps">
+<div *ngIf="displaySteps">
+  <div *ngFor="let planStep of planSteps">
+    <div class="row box-shadow">
       <div class="col-xs-12 plan-spacing plan-heading">
         <div class="col-xs-11">
           <div class="main-icon col-sm-1 col-xs-2">
@@ -46,7 +46,7 @@
                 </div>
                 <div class="col-sm-3 col-xs-12 btn-selected" id="complete-btn">
                   <input id="checkBox" type="checkbox" (change)="checkCompleted($event,planStep.topicId,step.id.id,template)"
-                         [ngModel]="step.markCompleted">                       
+                         [ngModel]="step.markCompleted">
                   <label class="ps">Completed</label>
                 </div>
                 <ng-template #template>

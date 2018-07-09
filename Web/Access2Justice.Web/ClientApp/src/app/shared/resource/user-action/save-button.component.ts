@@ -15,12 +15,11 @@ export class SaveButtonComponent implements OnInit {
   @Input() savedFrom: string;
   userId: string = "User Id";
   planId: string;
-  createPlan: CreatePlan = { planId: '', oId: '', type:'', planTags:[] };
+  createPlan: CreatePlan = { planId: '', oId: '', type: '', planTags: [] };
   planDetails: any;
   updatedSteps: Array<StepTag>;
-  planTags: Array<PlanTag> =[];
+  planTags: Array<PlanTag> = [];
   updatedStep: StepTag = { id: '', order: '', markCompleted: false };
-  //updatePlan: UpdatePlan = { id: '', oId: '', planTags: this.planTags };
   steps: Array<Steps>;
   planTag: PlanTag = { topicId: '', stepTags: this.steps };
 
@@ -42,32 +41,31 @@ export class SaveButtonComponent implements OnInit {
     else {
       if (this.resources.url.startsWith("/plan")) {
         this.planId = this.resources.itemId;
-        //this.createPlan = { planId: this.planId, oId: this.userId }
       }
-      this.planTags = [];
-     // this.updatePlan = { id: '', oId: '', planTags: this.planTags };
-      this.personalizedPlanService.getActionPlanConditions(this.planId)
-        .subscribe(planDetails => {
-          planDetails.planTags.forEach(item => {
-            this.updatedSteps = [];
-            item.stepTags.forEach(step => {
-              this.updatedStep = { id: step.id.id, order: step.order, markCompleted: step.markCompleted }
-              this.updatedSteps.push(this.updatedStep);
-            })
-            this.planTag = { topicId: item.id[0].id, stepTags: this.updatedSteps };
-            this.planTags.push(this.planTag);
-          });
-            
-          this.createPlan.planId = planDetails.id;
-          this.createPlan.oId = this.userId;
-          this.createPlan.planTags = this.planTags;
-          this.createPlan.type = planDetails.type;
-          this.personalizedPlanService.userPlan(this.createPlan)
-            .subscribe(response => {
-              console.log(response);
-            })
-        });
+      if (this.resources.url.startsWith("/subtopics")) {
+        //this.resources = '';
+      }
+      this.savePlanToProfile();
     }
+  }
+
+  savePlanToProfile() {
+    this.planTags = [];
+    this.personalizedPlanService.getActionPlanConditions(this.planId)
+      .subscribe(planDetails => {
+        planDetails.planTags.forEach(plan => {
+          this.updatedSteps = [];
+          plan.stepTags.forEach(step => {
+            this.updatedStep = { id: step.id.id, order: step.order, markCompleted: step.markCompleted }
+            this.updatedSteps.push(this.updatedStep);
+          })
+          this.planTag = { topicId: plan.id[0].id, stepTags: this.updatedSteps };
+          this.planTags.push(this.planTag);
+        });
+        this.createPlan = { planId: planDetails.id, oId: this.userId, type: planDetails.type, planTags: this.planTags }
+        this.personalizedPlanService.userPlan(this.createPlan)
+          .subscribe()
+      });
   }
 
   ngOnInit() {
