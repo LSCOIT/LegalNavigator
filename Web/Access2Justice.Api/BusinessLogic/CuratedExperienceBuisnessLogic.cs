@@ -18,7 +18,7 @@ namespace Access2Justice.Api.BusinessLogic
             dbService = backendDatabaseService;
         }
 
-        public Component GetQuestion(Guid buttonId)
+        public Component GetComponent(Guid buttonId)
         {
             var curatedExperience = GetCuratedExperience(buttonId);
 

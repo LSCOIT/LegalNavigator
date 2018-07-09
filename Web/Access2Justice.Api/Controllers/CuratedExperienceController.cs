@@ -64,43 +64,25 @@ namespace Access2Justice.Api.Controllers
 
 
         [HttpGet("GetQuestion")]
-        public IActionResult GetQuestion(Guid curatedExperienceId, Guid buttonId)
+        public IActionResult GetComponent(Guid curatedExperienceId, Guid buttonId)
         {
             var curatedExperience = GetCuratedExperience(curatedExperienceId);
             return Content("next question");
         }
 
 
-        private async Task<string> GetCuratedExperience(Guid id)
+        private async Task<CuratedExperience> GetCuratedExperience(Guid id)
         {
-            //var curatedExperience = HttpContext.Session.GetString("CuratedExperience");
             var curatedExperience = HttpContext.Session.GetString("CuExSessionKey");
-
-            try
+            if (string.IsNullOrWhiteSpace(curatedExperience))
             {
+                // Todo:@Alaa find a way to run this asynchronously (whenever I use any async call the 'Session' breaks!!)
+                var curatedExperienceJson = curatedExperienceBusinessLogic.GetCuratedExperience(id).Result;
+                curatedExperience = JsonConvert.SerializeObject(curatedExperienceJson);
 
-                if (string.IsNullOrWhiteSpace(curatedExperience))
-                {
-
-                    // the issue seems to happen when i comment out this async call:
-                    //var curatedExperienceJson = await curatedExperienceBusinessLogic.GetCuratedExperience(id);
-
-                    // otherweise, i could store and retrieve everything completely fine from/to the session as long as I don't call that async method before!
-                    // I so far fail to see how related calling the method and storing something completly different in the session!
-
-                    //curatedExperience = JsonConvert.SerializeObject(curatedExperienceJson);
-
-                    curatedExperience = "Curated experience json";
-                    HttpContext.Session.SetString("CuExSessionKey", curatedExperience);
-                }
+                HttpContext.Session.SetString("CuExSessionKey", curatedExperience);
             }
-            catch (Exception ex)
-            {
-                var exx = ex;
-            }
-
-
-            return curatedExperience; // JsonConvert.DeserializeObject<CuratedExperience>(curatedExperience);
+            return JsonConvert.DeserializeObject<CuratedExperience>(curatedExperience);
         }
     }
 }

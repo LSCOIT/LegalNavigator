@@ -5,7 +5,7 @@ namespace Access2Justice.Api.ViewModels
 {
     public class CuratedExperienceSurveyViewModel
     {
-        // todo:@alaa modifiy this based on the new schema structure
+        // Todo:@Alaa update this based on the new schema structure
         [JsonProperty(PropertyName = "questionId")]
         public string QuestionId { get; set; }
         [JsonProperty(PropertyName = "title")]

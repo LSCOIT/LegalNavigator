@@ -39,7 +39,7 @@ namespace Access2Justice.Api.BusinessLogic
                 });
             }
 
-            // todo:@alaa persist the curated experience and the resource
+            // Todo:@Alaa persist the curated experience and the resource
             // save curated experience
             // save resources
 
