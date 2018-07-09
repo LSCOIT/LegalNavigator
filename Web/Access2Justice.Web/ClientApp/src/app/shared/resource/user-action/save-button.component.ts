@@ -1,7 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Resources, CreatePlan, UpdatePlan, StepTag, PlanTag, Steps } from '../../../guided-assistant/personalized-plan/personalized-plan';
+import { Resources, CreatePlan, UpdatePlan, StepTag, PlanTag, Steps, ProfileResources } from '../../../guided-assistant/personalized-plan/personalized-plan';
 import { PersonalizedPlanService } from '../../../guided-assistant/personalized-plan/personalized-plan.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-save-button',
@@ -12,8 +13,9 @@ import { PersonalizedPlanService } from '../../../guided-assistant/personalized-
 })
 export class SaveButtonComponent implements OnInit {
   resources: Resources;
+  profileResources: ProfileResources = { oId: '', resourceTags: [], type:'' };
   @Input() savedFrom: string;
-  userId: string = "User Id";
+  userId: string = environment.userId;
   planId: string;
   createPlan: CreatePlan = { planId: '', oId: '', type: '', planTags: [] };
   planDetails: any;
@@ -41,11 +43,12 @@ export class SaveButtonComponent implements OnInit {
     else {
       if (this.resources.url.startsWith("/plan")) {
         this.planId = this.resources.itemId;
+        this.savePlanToProfile();
       }
       if (this.resources.url.startsWith("/subtopics")) {
-        //this.resources = '';
+        this.profileResources.resourceTags.push(this.resources.itemId);
+        this.saveResourceToProfile(this.profileResources.resourceTags);
       }
-      this.savePlanToProfile();
     }
   }
 
@@ -64,8 +67,14 @@ export class SaveButtonComponent implements OnInit {
         });
         this.createPlan = { planId: planDetails.id, oId: this.userId, type: planDetails.type, planTags: this.planTags }
         this.personalizedPlanService.userPlan(this.createPlan)
-          .subscribe()
+          .subscribe();
       });
+  }
+
+  saveResourceToProfile(resourceTags) {
+    this.profileResources = { oId: environment.userId, resourceTags: resourceTags, type: 'resources' };
+    this.personalizedPlanService.userPlan(this.profileResources)
+      .subscribe();
   }
 
   ngOnInit() {

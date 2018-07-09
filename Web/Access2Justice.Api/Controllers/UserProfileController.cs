@@ -46,7 +46,7 @@ namespace Access2Justice.Api.Controllers
         /// </summary>
         /// <param name="userData"></param>
         /// <returns></returns>
-        [HttpPut]
+        [HttpPost]
         [Route("api/user/upsertuserpersonalizedplan")]
         public async Task<IActionResult> UpsertUserPersonalizedPlanAsync([FromBody]dynamic userData)
         {
@@ -59,7 +59,7 @@ namespace Access2Justice.Api.Controllers
         /// </summary>
         /// <param name="userData"></param>
         /// <returns></returns>
-        [HttpPut]
+        [HttpPost]
         [Route("api/user/upsertuserplan")]
         public async Task<IActionResult> UpsertUserPlanAsync([FromBody]dynamic userData)
         {

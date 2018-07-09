@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PersonalizedPlanService } from '../guided-assistant/personalized-plan/personalized-plan.service';
 import { PlanSteps } from '../guided-assistant/personalized-plan/personalized-plan';
 import { IResourceFilter } from '../shared/search/search-results/search-results.model';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-profile',
@@ -16,12 +17,11 @@ export class ProfileComponent implements OnInit {
   personalizedResources: any;
   isSavedResources: boolean = false;
   planId: string;
-  userId: string= "User Id";
+  userId: string = environment.userId;
 
   constructor(private personalizedPlanService: PersonalizedPlanService) { }
 
   getTopics(): void {
-    //this.planId = "bf8d7e7e-2574-7b39-efc7-83cb94adae07";
     if (this.planId) {
       this.personalizedPlanService.getActionPlanConditions(this.planId)
         .subscribe(plan => {
@@ -30,26 +30,6 @@ export class ProfileComponent implements OnInit {
             this.planDetails = plan;
           }
         });
-        //.subscribe(items => {
-        //  if (items) {
-        //    this.topics = items.planTags;
-        //    if (topic === '') {
-        //      this.planDetails = items;
-        //      console.log("plan Details:");
-        //      console.log(this.planDetails);
-        //    }
-        //    else {
-        //      let i = 0;
-        //      this.planDetails = items;
-        //      items.planTags.forEach(item => {
-        //        if (item.id[0].name === topic) {
-        //          this.planDetails = items.planTags[i];
-        //        }
-        //        i++;
-        //      });
-        //    }
-        //  }
-        //});
     }
   }
 
@@ -79,13 +59,8 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  //filterSelectedResource(topic): void {
-  //  this.getTopics(topic);
-  //}
-
   ngOnInit() {
     this.getPersonalizedPlan();
-    //this.getTopics(this.topic);
   }
 
 }

@@ -5,6 +5,7 @@ import { PersonalizedPlanService } from '../../guided-assistant/personalized-pla
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-action-plan-card',
@@ -28,7 +29,7 @@ export class ActionPlanCardComponent implements OnChanges {
   updatedPlan: any;
   modalRef: BsModalRef;
   url: any;
-  userId: string = "User Id";//this.planDetails.oId; // need to modify after login
+  userId: string = environment.userId;
   isCompleted: boolean = false;
   selectedPlanDetails: any = { planDetails: [], topicId: '' };
 
@@ -172,28 +173,6 @@ export class ActionPlanCardComponent implements OnChanges {
 
   ngOnChanges() {
     this.getPersonalizedPlan(this.planDetails);
-  }
-
-  orderBy1(items, args: any[]) {
-    let field1 = args[0];
-    let field2 = args[1];
-    return items.sort((a, b) => {
-      if (a[field1] === b[field1]) {
-        if (a[field2] < b[field2]) {
-          return -1;
-        }
-        else if (a[field2] > b[field2]) {
-          return 1;
-        }
-      }
-      else if (a[field1] < b[field1]) {
-        return -1;
-      } else if (a[field1] > b[field1]) {
-        return 1;
-      } else {
-        return 0;
-      }
-    });
   }
 
   orderBy(items, field) {

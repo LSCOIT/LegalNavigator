@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { PersonalizedPlanService } from '../../../guided-assistant/personalized-plan/personalized-plan.service';
 import { RemovePlanTag, UserRemovePlanTag, StepTag, UpdatePlan, UserUpdatePlan, PlanTag } from '../../../guided-assistant/personalized-plan/personalized-plan';
 import { ProfileComponent } from '../../../profile/profile.component';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-remove-button',
@@ -11,7 +12,7 @@ import { ProfileComponent } from '../../../profile/profile.component';
 })
 export class RemoveButtonComponent implements OnInit {
   @Input() selectedPlanDetails;
-  userId: string = "User Id";
+  userId: string = environment.userId;
   isRemoved: boolean;
   removePlanTag: RemovePlanTag = { id: '', oId: '', topicId: '' };
   userRemovePlanTag: UserRemovePlanTag = { id: '', planId: '', oId: '', topicId: '', type: '' };

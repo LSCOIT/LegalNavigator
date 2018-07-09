@@ -3,6 +3,12 @@ export interface Resources {
   itemId: string; 
 }
 
+export interface ProfileResources {
+  oId: string;
+  resourceTags: Array<string>;
+  type: string;
+}
+
 export interface PlanSteps {
   topicId: string;
   topicName: string;
