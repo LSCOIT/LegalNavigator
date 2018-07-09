@@ -47,6 +47,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             cosmosDbSettings.DatabaseId.Returns("dbname");
             cosmosDbSettings.TopicCollectionId.Returns("TopicCollection");
             cosmosDbSettings.ResourceCollectionId.Returns("ResourceCollection");
+            cosmosDbSettings.UserProfileCollectionId.Returns("UserProfile");
 
             //mock user data
             userProfileObj.Id = "4589592f-3312-eca7-64ed-f3561bbb7398";
@@ -163,7 +164,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             userprofiles2.Add(response);
 
             //assert
-            Assert.NotEqual(userprofiles.ToString(), userprofiles2.ToString());
+            Assert.NotEqual(userprofiles, userprofiles2);
         }
         private object ResourceDeserialized(UserProfile userProfile)
         {
