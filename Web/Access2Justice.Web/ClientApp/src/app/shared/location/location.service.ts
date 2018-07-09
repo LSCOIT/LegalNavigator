@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { MapLocation } from './location';
+import { Subject } from 'rxjs';
 declare var Microsoft: any;
 
 @Injectable()
@@ -11,6 +12,7 @@ export class LocationService {
   location: any;
   pin: any;
   mapLocation: MapLocation;
+  notifyLocalLocation: Subject<MapLocation> = new Subject<MapLocation>();
 
   constructor() { }
 
@@ -69,12 +71,11 @@ export class LocationService {
   updateLocation(): MapLocation {
     if (environment.map_type) {
       this.mapLocation = JSON.parse(sessionStorage.getItem("globalSearchMapLocation"));
-      sessionStorage.setItem("globalMapLocation", JSON.stringify(this.mapLocation));
-      sessionStorage.removeItem('globalSearchMapLocation');
+      sessionStorage.setItem("globalMapLocation", JSON.stringify(this.mapLocation));      
     }
     else {
-      this.mapLocation = JSON.parse(sessionStorage.getItem("localSearchMapLocation"));
-      sessionStorage.removeItem('localSearchMapLocation');
+      this.mapLocation = JSON.parse(sessionStorage.getItem("localSearchMapLocation"));      
+      this.notifyLocalLocation.next(this.mapLocation);
     }
     return this.mapLocation;
   }

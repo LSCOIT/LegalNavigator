@@ -14,7 +14,7 @@ import { ILuisInput } from './search-results/search-results.model';
 export class SearchComponent implements OnInit {
   @Input()
   searchResults: any;
-  luisInput: ILuisInput = { Sentence: '', Location: '', TranslateFrom: '', TranslateTo: '' };  
+  luisInput: ILuisInput = { Sentence: '', Location: '', TranslateFrom: '', TranslateTo: '', LuisTopScoringIntent: '' };
   
   constructor(private searchService: SearchService, private router: Router, private navigateDataService: NavigateDataService) { }
 
