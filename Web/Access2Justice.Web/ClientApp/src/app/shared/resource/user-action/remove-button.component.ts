@@ -46,7 +46,9 @@ export class RemoveButtonComponent implements OnInit {
       };
       this.personalizedPlanService.userPlan(this.userUpdatePlan)
         .subscribe(response => {
-          this.profileComponent.getPersonalizedPlan();
+          if (response != undefined) {
+            this.profileComponent.getPersonalizedPlan();
+          }
         });
     }
     else {

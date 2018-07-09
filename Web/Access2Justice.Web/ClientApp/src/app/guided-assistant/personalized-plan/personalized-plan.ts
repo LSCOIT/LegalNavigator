@@ -70,7 +70,3 @@ export interface UserRemovePlanTag {
   type: string;
 }
 
-export interface UserProfile {
-  userDetails: any;
-}
-

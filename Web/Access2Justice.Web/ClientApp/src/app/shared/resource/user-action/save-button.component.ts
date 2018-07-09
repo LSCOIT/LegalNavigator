@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Resources, CreatePlan, UpdatePlan, StepTag, PlanTag, Steps, ProfileResources } from '../../../guided-assistant/personalized-plan/personalized-plan';
+import { Resources, CreatePlan, StepTag, PlanTag, Steps, ProfileResources } from '../../../guided-assistant/personalized-plan/personalized-plan';
 import { PersonalizedPlanService } from '../../../guided-assistant/personalized-plan/personalized-plan.service';
 import { environment } from '../../../../environments/environment';
 

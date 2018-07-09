@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { PlanSteps, Resources, UserProfile } from './personalized-plan';
+import { PlanSteps, Resources } from './personalized-plan';
 import { api } from '../../../api/api';
 import { IResourceFilter } from '../../shared/search/search-results/search-results.model';
 import { environment } from '../../../environments/environment';
@@ -24,7 +24,7 @@ export class PersonalizedPlanService {
 
   saveResourcesToSession(resources) {
     this.resoureStorage = sessionStorage.getItem(this.sessionKey);
-    if (this.resoureStorage != undefined && this.resoureStorage.length > 0) {
+    if (this.resoureStorage && this.resoureStorage.length > 0) {
       this.tempStorage = JSON.parse(this.resoureStorage);
       for (var i = 0; i < this.tempStorage.length; i++) {
         if (JSON.stringify(this.tempStorage[i]) == JSON.stringify(resources)) {
@@ -67,13 +67,12 @@ export class PersonalizedPlanService {
   getUserPlanId(oid): Observable<any> {
     return this.http.get<PlanSteps>(api.getProfileUrl + '/' + oid);
   }
-
-
+  
   getBookmarkedData() {
     this.topics = [];
     this.resources = [];
     var resourceData = sessionStorage.getItem(this.sessionKey);
-    if (resourceData != undefined && resourceData.length > 0) {
+    if (resourceData && resourceData.length > 0) {
       this.tempStorage = JSON.parse(resourceData);
       for (var i = 0; i < this.tempStorage.length; i++) {
         if (this.tempStorage[i].url.startsWith("/subtopics")) {
@@ -101,10 +100,6 @@ export class PersonalizedPlanService {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
     return this.http.post(api.userPlanUrl, plan, httpOptions);
-  }
-
-  removeResources(planTag) {
-    return true;
   }
 
 }

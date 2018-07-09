@@ -52,7 +52,11 @@ export class ProfileComponent implements OnInit {
       this.personalizedPlanService.getUserPlanId(this.userId)
         .subscribe(response => {
           if (response != undefined) {
-            this.planId = response[1].id;
+            response.forEach(property => {
+              if (property.planId) {
+                this.planId = property.planId;
+              }
+            });
             this.getTopics();
           }
         });

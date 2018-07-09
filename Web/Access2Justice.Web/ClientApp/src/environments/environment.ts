@@ -12,5 +12,5 @@ export const environment = {
   internalResourceRecordsToDisplay: 1,
   webResourcePagesToShow: 10,
   webResourceRecordsToDisplay: 10,
-  userId: ''
+  userId: 'User Id'
 };

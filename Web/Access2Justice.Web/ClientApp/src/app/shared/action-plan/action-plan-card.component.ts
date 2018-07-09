@@ -32,6 +32,7 @@ export class ActionPlanCardComponent implements OnChanges {
   userId: string = environment.userId;
   isCompleted: boolean = false;
   selectedPlanDetails: any = { planDetails: [], topicId: '' };
+  isUser: boolean = false;
 
   constructor(private personalizedPlanService: PersonalizedPlanService, private modalService: BsModalService,
     public sanitizer: DomSanitizer) {
@@ -56,7 +57,6 @@ export class ActionPlanCardComponent implements OnChanges {
             this.planStep.topicId = item.id[0].id;
           }
           this.planStep.stepTags = this.orderBy(item.stepTags, "markCompleted");
-          //this.planStep.stepTags = this.orderBy(item.stepTags, ["markCompleted", "order"]);
           this.planSteps.push(this.planStep);
           this.displaySteps = true;
         });
@@ -74,44 +74,49 @@ export class ActionPlanCardComponent implements OnChanges {
   }
 
   checkCompleted(event, topicId, stepId, template: TemplateRef<any>) {
-    this.planSteps = [];
-    this.planTags = [];
-    this.steps = [];
-    this.planDetails.planTags.forEach(item => {
-      this.planStep = { topicId: '', topicName: '', stepTags: [] };
-      this.planStep.topicName = item.id[0].name;
-      this.planStep.topicId = item.id[0].id;
-      if (this.planStep.topicId === topicId) {
-        this.updatedSteps = [];
-        item.stepTags.forEach(step => {
-          this.step = { id: '', title: '', type: '', description: '', order: '', markCompleted: false };
-          this.step = step;
-          this.updatedStep = { id: step.id.id, order: step.order, markCompleted: step.markCompleted }
-          if (step.id.id === stepId) {
-            this.step.markCompleted = event.target.checked;
-            this.updatedStep.markCompleted = event.target.checked;
-          }
-          this.steps.push(this.step);
-          this.updatedSteps.push(this.updatedStep);
-        })
-        item.stepTags = this.steps;
-      }
-      else {
-        this.updatedSteps = [];
-        item.stepTags.forEach(step => {
-          this.updatedStep = { id: step.id.id, order: step.order, markCompleted: step.markCompleted }
-          this.updatedSteps.push(this.updatedStep);
-        });
-      }
-
-      this.planStep.stepTags = item.stepTags; //this.orderBy(item.stepTags, ["markCompleted", "order"]);
-      this.planSteps.push(this.planStep);
-      this.planTag = { topicId: item.id[0].id, stepTags: this.updatedSteps };
-      this.planTags.push(this.planTag);
-      this.displaySteps = true;
-
-    });
-    this.updatedUserPlan(event.target.checked, this.planTags, template);
+    if (environment.userId) {
+      this.planSteps = [];
+      this.planTags = [];
+      this.steps = [];
+      this.isUser = false;
+      this.planDetails.planTags.forEach(item => {
+        this.planStep = { topicId: '', topicName: '', stepTags: [] };
+        this.planStep.topicName = item.id[0].name;
+        this.planStep.topicId = item.id[0].id;
+        if (this.planStep.topicId === topicId) {
+          this.updatedSteps = [];
+          item.stepTags.forEach(step => {
+            this.step = { id: '', title: '', type: '', description: '', order: '', markCompleted: false };
+            this.step = step;
+            this.updatedStep = { id: step.id.id, order: step.order, markCompleted: step.markCompleted }
+            if (step.id.id === stepId) {
+              this.step.markCompleted = event.target.checked;
+              this.updatedStep.markCompleted = event.target.checked;
+            }
+            this.steps.push(this.step);
+            this.updatedSteps.push(this.updatedStep);
+          })
+          item.stepTags = this.steps;
+        }
+        else {
+          this.updatedSteps = [];
+          item.stepTags.forEach(step => {
+            this.updatedStep = { id: step.id.id, order: step.order, markCompleted: step.markCompleted }
+            this.updatedSteps.push(this.updatedStep);
+          });
+        }
+        this.planStep.stepTags = item.stepTags;
+        this.planSteps.push(this.planStep);
+        this.planTag = { topicId: item.id[0].id, stepTags: this.updatedSteps };
+        this.planTags.push(this.planTag);
+        this.displaySteps = true;
+      });
+      this.updatedUserPlan(event.target.checked, this.planTags, template);
+    }
+    else {
+      this.isUser = true;
+      this.modalRef = this.modalService.show(template);
+    }
   }
 
   updatedUserPlan(isChecked, planTags, template) {
@@ -132,7 +137,6 @@ export class ActionPlanCardComponent implements OnChanges {
           }
         });
     }
-
     else {
       this.updatePlan = { id: this.planDetails.id, oId: this.userId, planTags: this.planTags };
       this.personalizedPlanService.getMarkCompletedUpdatedPlan(this.updatePlan)
@@ -167,7 +171,7 @@ export class ActionPlanCardComponent implements OnChanges {
     this.modalRef = this.modalService.show(template);
   }
 
-  PlanTagOptions(topicId, template: TemplateRef<any>) {
+  PlanTagOptions(topicId) {
     this.selectedPlanDetails = { planDetails: this.planDetails, topicId: topicId };
   }
 
