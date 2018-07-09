@@ -11,4 +11,5 @@ export interface ILuisInput {
   Location: any;
   TranslateFrom: string;
   TranslateTo: string;
+  LuisTopScoringIntent: string;
 }

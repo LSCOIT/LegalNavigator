@@ -21,6 +21,7 @@ namespace Access2Justice.Api
         public const string ResourceType = "resourceType";
         public const string OId = "oId";
         public const string PlanId = "planId";
+        public const string Type = "type";
         public const string Organization = "Organizations";
     }
 }
