@@ -22,13 +22,13 @@
             Help &amp; FAQs
           </a>
         </li>
-        <li>    
+        <li>
           <a [routerLink]="['/createaccount']" class="account-menu">
             <img class="nav-icon" src="/assets/images/small-icons/profile.svg" aria-hidden="true" />
             Create Account
           </a>
           <span>|</span>
-          <a [routerLink]="['/login']" class="account-menu">Log In</a>
+          <a (click)="externalLogin()" class="account-menu">Log In</a>
         </li>
       </ul>
     </div>
