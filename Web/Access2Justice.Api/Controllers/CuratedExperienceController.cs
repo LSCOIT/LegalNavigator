@@ -1,4 +1,5 @@
-﻿using Access2Justice.Shared.Interfaces;
+﻿using Access2Justice.Shared.Extensions;
+using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models.CuratedExperience;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -71,18 +72,17 @@ namespace Access2Justice.Api.Controllers
         }
 
 
-        private async Task<CuratedExperience> GetCuratedExperience(Guid id)
+        private CuratedExperience GetCuratedExperience(Guid id)
         {
-            var curatedExperience = HttpContext.Session.GetString("CuExSessionKey");
-            if (string.IsNullOrWhiteSpace(curatedExperience))
+            var cuExSession = HttpContext.Session.GetString("CuExSessionKey");
+            if (string.IsNullOrWhiteSpace(cuExSession))
             {
-                // Todo:@Alaa find a way to run this asynchronously (whenever I use any async call the 'Session' breaks!!)
-                var curatedExperienceJson = curatedExperienceBusinessLogic.GetCuratedExperience(id).Result;
-                curatedExperience = JsonConvert.SerializeObject(curatedExperienceJson);
-
-                HttpContext.Session.SetString("CuExSessionKey", curatedExperience);
+                // Todo:@Alaa find a way to run this asynchronously (whenever I use any async call the 'Session' breaks!)
+                var rawCuratedExperience = curatedExperienceBusinessLogic.GetCuratedExperience(id).Result;
+                HttpContext.Session.SetObjectAsJson("CuExSessionKey", rawCuratedExperience);
             }
-            return JsonConvert.DeserializeObject<CuratedExperience>(curatedExperience);
+
+            return HttpContext.Session.GetObjectAsJson<CuratedExperience>("CuExSessionKey");
         }
     }
 }
