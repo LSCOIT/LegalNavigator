@@ -22,23 +22,43 @@ namespace Access2Justice.Api.BusinessLogic
             dbService = backendDatabaseService;
         }
 
-        public async Task<dynamic> GetUserProfileDataAsync(string oId)
+        public async Task<dynamic> GetUserProfileDataAsync(string oId,string collectionId)
         {
-            return await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, Constants.OId, oId);
+            return await dbClient.FindItemsWhereAsync(collectionId, Constants.OId, oId);
         }
 
         public async Task<dynamic> CreateUserProfileDataAsync(UserProfile userProfile)
         {
             var userprofiles = new List<dynamic>();
-            var resultUP = GetUserProfileDataAsync(userProfile.OId);
+            var resultUP = GetUserProfileDataAsync(userProfile.OId, dbSettings.UserProfileCollectionId);
             var userprofileObjects = JsonConvert.SerializeObject(resultUP);
             if (!userprofileObjects.Contains(userProfile.OId))
             {
-                var userDeserialisedObjects = JsonConvert.DeserializeObject(userprofileObjects);
-                var result = await dbService.CreateItemAsync(userDeserialisedObjects, dbSettings.UserProfileCollectionId);
+                var result = await dbService.CreateItemAsync(ResourceDeserialized(userProfile), dbSettings.UserProfileCollectionId);
                 userprofiles.Add(result);
             }
             return userprofiles;
+        }
+        public async Task<dynamic> UpdateUserProfileDataAsync(UserProfile userProfile, string userIdGuid)
+        {
+            var userprofiles = new List<dynamic>();
+            
+            var resultUP = GetUserProfileDataAsync(userProfile.OId, dbSettings.UserProfileCollectionId);
+            var userprofileObjects = JsonConvert.SerializeObject(resultUP);
+            
+            if (userprofileObjects.Contains(userProfile.OId)) // condition to verify oId and update the details
+            {
+                userProfile.Id = userIdGuid; // guid id of the document
+               
+                var result = await dbService.UpdateItemAsync(userIdGuid, ResourceDeserialized(userProfile), dbSettings.UserProfileCollectionId);
+                userprofiles.Add(result);
+            }
+            return userprofiles;
+        }
+        private object ResourceDeserialized(UserProfile userProfile)
+        {
+            var serializedResult = JsonConvert.SerializeObject(userProfile);
+            return JsonConvert.DeserializeObject<object>(serializedResult);
         }
 
         public async Task<dynamic> UpsertUserPersonalizedPlanAsync(dynamic userData)
