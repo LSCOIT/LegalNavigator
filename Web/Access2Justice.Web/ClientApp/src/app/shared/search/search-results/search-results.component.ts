@@ -1,9 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { NavigateDataService } from '../../navigate-data.service';
 import { ResourceResult } from './search-result';
 import { SearchService } from '../search.service';
 import { PaginationService } from '../pagination.service';
-import { IResourceFilter } from './search-results.model';
+import { IResourceFilter, ILuisInput } from './search-results.model';
+import { LocationService } from '../../location/location.service';
 import { environment } from '../../../../environments/environment';
 
 @Component({
@@ -23,10 +24,13 @@ export class SearchResultsComponent implements OnInit {
   resourceResults: ResourceResult[] = [];
   filterType: string = 'All';  
   resourceTypeFilter: any[];
-  resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: '', PageNumber: 0, Location: '' };
+  resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: '', PageNumber: 0, Location: {} };
+  luisInput: ILuisInput = { Sentence: '', Location: {}, LuisTopScoringIntent: '', TranslateFrom: '', TranslateTo: '' };
+  location: any;
   topicIds: any[];
   isServiceCall: boolean;
-  currentPage: number = 0;  
+  currentPage: number = 0;
+  subscription: any;
 
   loading = false;
   total = 0;
@@ -36,7 +40,8 @@ export class SearchResultsComponent implements OnInit {
   pagesToShow = 0;
 
 
-  constructor(private navigateDataService: NavigateDataService, private searchService: SearchService, private paginationService: PaginationService) { }
+  constructor(private navigateDataService: NavigateDataService, private searchService: SearchService,
+    private paginationService: PaginationService, private locationService: LocationService) { }
 
   bindData() {
     this.searchResults = this.navigateDataService.getData();
@@ -48,29 +53,35 @@ export class SearchResultsComponent implements OnInit {
         this.searchText = this.searchResults.webResources.queryContext.originalQuery;
         this.pagesToShow = environment.webResourcePagesToShow;
         this.limit = environment.webResourceRecordsToDisplay;
-      } else if (this.isInternalResource) {
-        this.resourceTypeFilter = this.searchResults.resourceTypeFilter;
-        // need to revisit this logic..
-        this.resourceResults = this.searchResults.resourceTypeFilter.reverse();
-        if (this.resourceTypeFilter != undefined) {
-
-          for (var i = 0; i < this.resourceTypeFilter.length; i++) {
-            if (this.resourceTypeFilter[i].ResourceName === "All") {
-              this.resourceTypeFilter[i]["ResourceList"] = [{
-                'resources': this.searchResults.resources,
-                'continuationToken': this.searchResults.continuationToken
-              }];
-              this.topicIds = this.searchResults.topicIds;
-              this.total = this.resourceTypeFilter[i].ResourceCount;
-              this.pagesToShow = environment.internalResourcePagesToShow;
-              this.limit = environment.internalResourceRecordsToDisplay;
-              break;
-            }
-          }
-        }
-      } else {
+      }
+      else if (this.isInternalResource) {
+        this.mapInternalResource();
+      }
+      else {
         this.isLuisResponse = true;
         console.log(this.searchResults.luisResponse);
+      }
+    }
+  }
+
+  mapInternalResource() {
+    this.resourceTypeFilter = this.searchResults.resourceTypeFilter;
+    // need to revisit this logic..
+    this.resourceResults = this.searchResults.resourceTypeFilter.reverse();
+    if (this.resourceTypeFilter != undefined) {
+
+      for (var i = 0; i < this.resourceTypeFilter.length; i++) {
+        if (this.resourceTypeFilter[i].ResourceName === "All") {
+          this.resourceTypeFilter[i]["ResourceList"] = [{
+            'resources': this.searchResults.resources,
+            'continuationToken': this.searchResults.continuationToken
+          }];
+          this.topicIds = this.searchResults.topicIds;
+          this.total = this.resourceTypeFilter[i].ResourceCount;
+          this.pagesToShow = environment.internalResourcePagesToShow;
+          this.limit = environment.internalResourceRecordsToDisplay;
+          break;
+        }
       }
     }
   }
@@ -85,13 +96,34 @@ export class SearchResultsComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
-    this.bindData();
+  notifyLocationChange() {
+    if (sessionStorage.getItem("localSearchMapLocation")) {
+      this.location = JSON.parse(sessionStorage.getItem("localSearchMapLocation"));
+    }
+    this.subscription = this.locationService.notifyLocalLocation.subscribe((value) => {
+      this.searchResults = this.navigateDataService.getData();
+      this.location = value;
+      this.luisInput.Location = value;
+      this.luisInput.LuisTopScoringIntent = this.searchResults.topIntent;
+      this.luisInput.Sentence = this.searchResults.topIntent;
+      this.searchService.search(this.luisInput)
+        .subscribe(response => {
+          if (response != undefined) {
+            this.searchResults = response;
+            this.navigateDataService.setData(this.searchResults);
+            this.total = 0;
+            this.mapInternalResource();
+          }
+        });
+    });
   }
 
   getInternalResource(filterName, pageNumber): void {
     this.isServiceCall = this.checkResource(filterName, pageNumber);
     if (this.isServiceCall) {
+      if (sessionStorage.getItem("localSearchMapLocation")) {
+        this.resourceFilter.Location = JSON.parse(sessionStorage.getItem("localSearchMapLocation"));
+      }
       this.paginationService.getPagedResources(this.resourceFilter).subscribe(response => {
         this.searchResults = response;
         this.addResource(filterName);
@@ -185,5 +217,16 @@ export class SearchResultsComponent implements OnInit {
 
   calculateOffsetValue(pageNumber: number): number {
     return Math.ceil(pageNumber * 10) + 1;
+  }
+
+  ngOnInit() {
+    this.bindData();
+    this.notifyLocationChange();
+  }
+
+  ngOnDestroy() {
+    if (this.subscription != undefined) {
+      this.subscription.unsubscribe();
+    }
   }
 }
