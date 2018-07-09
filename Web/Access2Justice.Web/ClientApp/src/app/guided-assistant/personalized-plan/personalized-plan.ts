@@ -37,7 +37,6 @@ export interface CreatePlan {
 }
 
 export interface UpdatePlan {
-  //planId: string;
   id: string;
   oId: string;
   planTags: Array<PlanTag>;

@@ -12,7 +12,6 @@ export class ProfileComponent implements OnInit {
   topics: string;
   planDetails: Array<PlanSteps> = [];
   activeActionPlan: string = '';
-  //topic: string = '';
   resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: '', PageNumber: 0, Location: '', ResourceIds: '' };
   personalizedResources: any;
   isSavedResources: boolean = false;

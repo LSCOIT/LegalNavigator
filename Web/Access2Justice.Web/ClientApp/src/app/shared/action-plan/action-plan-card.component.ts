@@ -30,7 +30,7 @@ export class ActionPlanCardComponent implements OnChanges {
   url: any;
   userId: string = "User Id";//this.planDetails.oId; // need to modify after login
   isCompleted: boolean = false;
-  selectedPlanDetails: any = {planDetails:[], topicId:''};
+  selectedPlanDetails: any = { planDetails: [], topicId: '' };
 
   constructor(private personalizedPlanService: PersonalizedPlanService, private modalService: BsModalService,
     public sanitizer: DomSanitizer) {
@@ -73,11 +73,9 @@ export class ActionPlanCardComponent implements OnChanges {
   }
 
   checkCompleted(event, topicId, stepId, template: TemplateRef<any>) {
-    //if (event.target.checked) {
     this.planSteps = [];
     this.planTags = [];
     this.steps = [];
-    this.updatePlan = { id: '', oId: '', planTags: this.planTags };
     this.planDetails.planTags.forEach(item => {
       this.planStep = { topicId: '', topicName: '', stepTags: [] };
       this.planStep.topicName = item.id[0].name;
@@ -112,12 +110,18 @@ export class ActionPlanCardComponent implements OnChanges {
       this.displaySteps = true;
 
     });
+    this.updatedUserPlan(event.target.checked, this.planTags, template);
+  }
+
+  updatedUserPlan(isChecked, planTags, template) {
+    this.planTags = planTags;
+    this.updatePlan = { id: '', oId: '', planTags: this.planTags };
     if (this.planDetails.planId) {
       this.userUpdatePlan = { id: this.planDetails.id, planId: this.planDetails.planId, oId: this.userId, planTags: this.planTags, type: this.planDetails.type };
       this.personalizedPlanService.userPlan(this.userUpdatePlan)
         .subscribe(response => {
           if (response != undefined) {
-            if (event.target.checked) {
+            if (isChecked) {
               this.isCompleted = true;
             }
             else {
@@ -133,7 +137,7 @@ export class ActionPlanCardComponent implements OnChanges {
       this.personalizedPlanService.getMarkCompletedUpdatedPlan(this.updatePlan)
         .subscribe(response => {
           if (response != undefined) {
-            if (event.target.checked) {
+            if (isChecked) {
               this.isCompleted = true;
             }
             else {
@@ -143,7 +147,6 @@ export class ActionPlanCardComponent implements OnChanges {
           }
         });
     }
-    //}
   }
 
   close() {
@@ -164,8 +167,7 @@ export class ActionPlanCardComponent implements OnChanges {
   }
 
   PlanTagOptions(topicId, template: TemplateRef<any>) {
-    this.selectedPlanDetails = { planDetails: this.planDetails, topicId:topicId};
-    
+    this.selectedPlanDetails = { planDetails: this.planDetails, topicId: topicId };
   }
 
   ngOnChanges() {

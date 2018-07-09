@@ -158,15 +158,7 @@ namespace Access2Justice.Api.BusinessLogic
             var userDocument = JsonConvert.DeserializeObject(serializedResult);
             string oId = userDocument.oId;
             dynamic result = null;
-            string id = string.Empty;
-            //if (userDocument.planId != id)
-            //{
-            //    id = userDocument.planId;
-            //}
-            //else
-            //{
-                id = userDocument.id;
-            //}
+            string id = userDocument.id;
             List<string> propertyNames = new List<string>() { Constants.OId, Constants.Id };
             List<string> values = new List<string>() { oId, id };
             var userDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, propertyNames, values);
