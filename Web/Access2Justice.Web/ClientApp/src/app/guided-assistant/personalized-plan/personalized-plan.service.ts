@@ -23,7 +23,7 @@ export class PersonalizedPlanService {
   }
 
   saveResourcesToSession(resources) {
-    this.resoureStorage = localStorage.getItem(this.sessionKey);
+    this.resoureStorage = sessionStorage.getItem(this.sessionKey);
     if (this.resoureStorage != undefined && this.resoureStorage.length > 0) {
       this.tempStorage = JSON.parse(this.resoureStorage);
       for (var i = 0; i < this.tempStorage.length; i++) {
@@ -33,12 +33,12 @@ export class PersonalizedPlanService {
       }
       if (!this.isObjectExists) {
         this.tempStorage.push(resources);
-        localStorage.setItem(this.sessionKey, JSON.stringify(this.tempStorage));
+        sessionStorage.setItem(this.sessionKey, JSON.stringify(this.tempStorage));
       }
     }
     else {
       this.tempStorage = [resources];
-      localStorage.setItem(this.sessionKey, JSON.stringify(this.tempStorage));
+      sessionStorage.setItem(this.sessionKey, JSON.stringify(this.tempStorage));
     }
   }
 
@@ -72,7 +72,7 @@ export class PersonalizedPlanService {
   getBookmarkedData() {
     this.topics = [];
     this.resources = [];
-    var resourceData = localStorage.getItem(this.sessionKey);
+    var resourceData = sessionStorage.getItem(this.sessionKey);
     if (resourceData != undefined && resourceData.length > 0) {
       this.tempStorage = JSON.parse(resourceData);
       for (var i = 0; i < this.tempStorage.length; i++) {
