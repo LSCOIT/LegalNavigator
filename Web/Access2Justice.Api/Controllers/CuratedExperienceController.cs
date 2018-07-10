@@ -6,9 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Threading.Tasks;
-
-
 
 namespace Access2Justice.Api.Controllers
 {
@@ -63,14 +60,12 @@ namespace Access2Justice.Api.Controllers
             }
         }
 
-
-        [HttpGet("GetQuestion")]
+        [HttpGet("GetComponent")]
         public IActionResult GetComponent(Guid curatedExperienceId, Guid buttonId)
         {
             var curatedExperience = GetCuratedExperience(curatedExperienceId);
-            return Content("next question");
+            return Ok(curatedExperienceBusinessLogic.GetComponent(curatedExperience, buttonId));
         }
-
 
         private CuratedExperience GetCuratedExperience(Guid id)
         {

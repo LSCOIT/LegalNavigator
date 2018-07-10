@@ -2,6 +2,7 @@
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models.CuratedExperience;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 
@@ -18,11 +19,16 @@ namespace Access2Justice.Api.BusinessLogic
             dbService = backendDatabaseService;
         }
 
-        public Component GetComponent(Guid buttonId)
+        public Component GetComponent(CuratedExperience curatedExperience, Guid componentId)
         {
-            var curatedExperience = GetCuratedExperience(buttonId);
-
-            throw new NotImplementedException();
+            if(componentId == default(Guid))
+            {
+                return curatedExperience.Components.First();
+            }
+            else
+            {
+                return curatedExperience.Components.Where(x => x.Id == componentId).FirstOrDefault();
+            }
         }
 
         public async Task<CuratedExperience> GetCuratedExperience(Guid id)

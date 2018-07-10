@@ -7,6 +7,6 @@ namespace Access2Justice.Shared.Interfaces
     public interface ICuratedExperienceBusinessLogic
     {
         Task<CuratedExperience> GetCuratedExperience(Guid id);
-        Component GetComponent(Guid buttonId);
+        Component GetComponent(CuratedExperience curatedExperience, Guid buttonId);
     }
 }
