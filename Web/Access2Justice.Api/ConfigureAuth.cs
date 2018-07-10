@@ -8,6 +8,8 @@ using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Linq;
+using Access2Justice.Shared.Models;
 
 namespace Access2Justice.Api
 {
@@ -17,7 +19,6 @@ namespace Access2Justice.Api
         {
             services.AddAuthentication(auth =>
             {
-                auth.DefaultChallengeScheme = "Microsoft-Auth";
                 auth.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 auth.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             })
@@ -32,12 +33,22 @@ namespace Access2Justice.Api
                     {
                         context.Response.StatusCode = 401;
                         context.Response.ContentType = "application/json";
-                        var err = context.Failure.Message;
-                        return context.Response.WriteAsync(err);
+                        return context.Response.WriteAsync(context.Failure.Message);
                     },
                     OnTicketReceived = context =>
                     {
-                        return Task.CompletedTask;
+                        var request = new HttpRequestMessage(HttpMethod.Get, Configuration["Api:Endpoint"]);
+                        if (context.Principal.Identity.IsAuthenticated)
+                        {
+                            ApplicationUser user = new ApplicationUser();
+                            var identity = context.Principal.Identity as ClaimsIdentity;
+                            user.UserName = identity.Name;
+                            user.UserId = identity.Claims.Where(x => x.Type.Contains("nameidentifier")).Select(x => x.Value).FirstOrDefault();
+                            context.Response.Cookies.Append("profileData", Newtonsoft.Json.JsonConvert.SerializeObject(user));
+                            context.ReturnUri = Configuration["Api:Endpoint"];
+                            context.Response.Redirect(context.ReturnUri, true);
+                        }
+                        return Task.FromResult(0);
                     },
                     OnCreatingTicket = async context =>
                     {
