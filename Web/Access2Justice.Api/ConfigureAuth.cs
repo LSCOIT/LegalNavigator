@@ -10,6 +10,12 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Linq;
 using Access2Justice.Shared.Models;
+using Access2Justice.CosmosDb.Interfaces;
+using Microsoft.Azure.Documents.Client;
+using Newtonsoft.Json;
+using System;
+using Access2Justice.CosmosDb;
+using System.Globalization;
 
 namespace Access2Justice.Api
 {
@@ -61,30 +67,48 @@ namespace Access2Justice.Api
 
                         // Extract the user info object
                         var user = JObject.Parse(await response.Content.ReadAsStringAsync());
-
-                        // Add the Name Identifier claim
-                        var userId = user.Value<string>("id");
-                        if (!string.IsNullOrEmpty(userId))
-                        {
-                            context.Identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, userId, ClaimValueTypes.String, context.Options.ClaimsIssuer));
-                        }
-
-                        // Add the Name claim
-                        var email = user.Value<string>("displayName");
-                        if (!string.IsNullOrEmpty(email))
-                        {
-                            context.Identity.AddClaim(new Claim(ClaimsIdentity.DefaultNameClaimType, email, ClaimValueTypes.String, context.Options.ClaimsIssuer));
-                        }
+                        UriCreateUserDetails(user);
                     }
                 };
             })
-            .AddCookie(o => o.LoginPath = new PathString("/login"));
+            .AddCookie(cookieOptions => cookieOptions.LoginPath = new PathString("/login"));
+        }
+
+        private async void UriCreateUserDetails(dynamic userObject)
+        {
+            var resource = JsonConvert.SerializeObject(userObject);
+            var userUIDocument = JsonConvert.DeserializeObject<dynamic>(resource);
+
+            UserProfile userProfile = new UserProfile();
+            userProfile.OId = ((JToken)userUIDocument).Root.SelectToken("id").Value<string>();
+            userProfile.FirstName = ((JToken)userUIDocument).Root.SelectToken("givenName").Value<string>();
+            userProfile.LastName = ((JToken)userUIDocument).Root.SelectToken("surname").Value<string>();
+            userProfile.EMail = ((JToken)userUIDocument).Root.SelectToken("userPrincipalName").Value<string>();
+            userProfile.IsActive = "Yes";
+            userProfile.CreatedBy = ((JToken)userUIDocument).Root.SelectToken("displayName").Value<string>();
+            userProfile.CreatedTimeStamp = Convert.ToString(DateTime.UtcNow, CultureInfo.InvariantCulture);
+
+            ICosmosDbSettings cosmosDbSettings = new CosmosDbSettings(Configuration.GetSection("CosmosDb"));
+
+            using (var client = new DocumentClient(new Uri(cosmosDbSettings.Endpoint.ToString()), cosmosDbSettings.AuthKey))
+            {
+                await client.OpenAsync();
+                var response = client.CreateDocumentQuery(UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.UserProfileCollectionId),
+                       "select * from c  where  c.oId in ('" + userProfile.OId + "')").ToList();
+                if (response.Count == 0)
+                {
+                    // var document = response.First();
+                    var result = await client.CreateDocumentAsync(
+                        UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.UserProfileCollectionId),
+                        userProfile);
+                }
+            }
         }
 
 
         public void ConfigureRoutes(IApplicationBuilder app)
         {
-            app.Map("/login", builder =>
+            app.Map("/api/login", builder =>
             {
                 builder.Run(async context =>
                 {
@@ -93,19 +117,14 @@ namespace Access2Justice.Api
                 });
             });
 
-            app.Map("/logout", builder =>
+            app.Map("/api/logout", builder =>
             {
                 builder.Run(async context =>
                 {
                     await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                    context.Response.Redirect("/");
+                    context.Response.Redirect(Configuration["Api:Endpoint"]);
                 });
             });
         }
-
     }
 }
-
-
-
-
