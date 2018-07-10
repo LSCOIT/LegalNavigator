@@ -6,13 +6,13 @@ namespace Access2Justice.Api.ViewModels
 {
     public class CuratedExperienceComponentViewModel
     {
+        public Guid CuratedExperienceId { get; set; }
+        public Guid ButtonId { get; set; }
+        public IList<Field> Fields { get; set; }
         public CuratedExperienceComponentViewModel()
         {
             Fields = new List<Field>();
         }
-        public Guid CuratedExperienceId { get; set; }
-        public Guid ComponentId { get; set; }
-        public IList<Field> Fields { get; set; }
     }
 
     public class Field

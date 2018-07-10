@@ -61,7 +61,7 @@ namespace Access2Justice.Api.Controllers
             }
         }
 
-        [HttpGet("GetComponent")]
+        [HttpGet("GetComponentV2")]
         public IActionResult GetComponent(Guid curatedExperienceId, Guid buttonId)
         {
             var curatedExperience = GetCuratedExperience(curatedExperienceId);
@@ -69,7 +69,7 @@ namespace Access2Justice.Api.Controllers
         }
 
         [HttpPost("SaveAndGetNextComponent")]
-        public IActionResult SaveAndGetNextComponent(CuratedExperienceComponentViewModel component)
+        public IActionResult SaveAndGetNextComponent([FromBody] CuratedExperienceComponentViewModel component)
         {
             var curatedExperience = GetCuratedExperience(component.CuratedExperienceId);
             
@@ -78,7 +78,9 @@ namespace Access2Justice.Api.Controllers
             // businessLogic.SaveResources(,)
 
             // Todo:@Alaa return the next question when this endpoint is hit.
-            return Ok(curatedExperienceBusinessLogic.GetComponent(curatedExperience, component.ComponentId));
+            // find next component
+            // return the component resulted from FindComponent
+            return Ok(curatedExperienceBusinessLogic.GetComponent(curatedExperience, component.ButtonId));
         }
 
         private CuratedExperience GetCuratedExperience(Guid id)
