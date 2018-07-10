@@ -31,7 +31,7 @@ namespace Access2Justice.Api.Controllers
             var response = await topicsResourcesBusinessLogic.GetTopLevelTopicsAsync();
             return Ok(response);
         }
-                
+        
         /// <summary>
         /// Get subtopics by the topic Id
         /// </summary>
@@ -44,7 +44,7 @@ namespace Access2Justice.Api.Controllers
             var topics = await topicsResourcesBusinessLogic.GetSubTopicsAsync(parentTopicId);
             return Ok(topics);
         }
-        
+
         /// <summary>
         /// Get the topic details by the document parent Id
         /// </summary>
@@ -76,10 +76,9 @@ namespace Access2Justice.Api.Controllers
         public async Task<IActionResult> GetPagedDataAsync([FromBody]ResourceFilter resourceInput)
         {
             var response = await topicsResourcesBusinessLogic.GetPagedResourceAsync(resourceInput);
-
-            return Content(response);
+            return Content(response);            
         }
-
+        
         /// <summary>
         /// Get the parent topics by a topic id
         /// </summary>

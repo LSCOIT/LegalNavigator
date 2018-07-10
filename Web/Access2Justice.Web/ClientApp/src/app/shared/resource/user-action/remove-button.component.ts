@@ -3,6 +3,7 @@ import { PersonalizedPlanService } from '../../../guided-assistant/personalized-
 import { RemovePlanTag, UserRemovePlanTag, StepTag, UpdatePlan, UserUpdatePlan, PlanTag } from '../../../guided-assistant/personalized-plan/personalized-plan';
 import { ProfileComponent } from '../../../profile/profile.component';
 import { environment } from '../../../../environments/environment';
+import { PersonalizedPlanComponent } from '../../../guided-assistant/personalized-plan/personalized-plan.component';
 
 @Component({
   selector: 'app-remove-button',
@@ -23,7 +24,8 @@ export class RemoveButtonComponent implements OnInit {
   updatePlan: UpdatePlan = { id: '', oId: '', planTags: this.planTags };
   userUpdatePlan: UserUpdatePlan = { id: '', planId: '', oId: '', planTags: this.planTags, type: '' };
 
-  constructor(private personalizedPlanService: PersonalizedPlanService, private profileComponent: ProfileComponent) { }
+  constructor(private personalizedPlanService: PersonalizedPlanService, private profileComponent: ProfileComponent,
+    private personalizedPlanComponent: PersonalizedPlanComponent) { }
 
   removeSavedResources() {
     this.updatedSteps = [];
@@ -56,7 +58,7 @@ export class RemoveButtonComponent implements OnInit {
       this.personalizedPlanService.getMarkCompletedUpdatedPlan(this.updatePlan)
         .subscribe(response => {
           if (response != undefined) {
-            this.profileComponent.getPersonalizedPlan();
+            this.personalizedPlanComponent.getTopics();
           }
         });
     }

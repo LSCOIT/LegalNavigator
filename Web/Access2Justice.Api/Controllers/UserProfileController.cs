@@ -34,10 +34,24 @@ namespace Access2Justice.Api.Controllers
         /// <param name="userProfile"></param>
         /// <returns></returns>        
         [HttpPost]
-        [Route("api/user/createuserprofiledocument")]
+        [Route("api/user/createuserprofile")]
         public async Task<IActionResult> CreateUserProfileDocumentAsync(UserProfile userProfile)
         {
             var profile = await userProfileBusinessLogic.CreateUserProfileDataAsync(userProfile);
+            return Ok(profile);
+        }
+
+        /// <summary>
+        /// Update User Profile Document
+        /// </summary>
+        /// <param name="oId"></param>
+        /// <param name="userProfile"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("api/user/updateuserprofile")]
+        public async Task<IActionResult> UpdateUserProfileDocumentAsync(string userIdGuid, UserProfile userProfile)
+        {
+            var profile = await userProfileBusinessLogic.UpdateUserProfileDataAsync(userProfile, userIdGuid);
             return Ok(profile);
         }
 

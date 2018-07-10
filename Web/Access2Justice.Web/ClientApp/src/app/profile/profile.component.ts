@@ -54,7 +54,7 @@ export class ProfileComponent implements OnInit {
           if (response != undefined) {
             response.forEach(property => {
               if (property.planId) {
-                this.planId = property.planId;
+                this.planId = property.id;
               }
             });
             this.getTopics();

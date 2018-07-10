@@ -74,7 +74,8 @@ import { PersonalizedPlanService } from './guided-assistant/personalized-plan/pe
     ProgressbarConfig,
     BreadcrumbService,
     PersonalizedPlanService,
-    ProfileComponent
+    ProfileComponent,
+    PersonalizedPlanComponent
   ],
   bootstrap: [AppComponent]
 })
