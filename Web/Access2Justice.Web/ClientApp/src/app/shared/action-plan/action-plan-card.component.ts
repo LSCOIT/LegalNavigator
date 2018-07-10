@@ -66,7 +66,6 @@ export class ActionPlanCardComponent implements OnChanges {
         this.planStep.topicName = planDetails.id[0].name;
         this.planStep.topicId = planDetails.id[0].id;
         this.planStep.stepTags = this.orderBy(planDetails.stepTags, "markCompleted");
-        this.planStep.stepTags = this.orderBy(planDetails.stepTags, ["markCompleted", "order"]);
         this.planSteps.push(this.planStep);
         this.displaySteps = true;
       }
