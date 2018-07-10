@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Access2Justice.CosmosDb.Interfaces
+namespace Access2Justice.Shared.Interfaces
 {
     public interface ICosmosDbSettings
     {

@@ -1,6 +1,6 @@
 ﻿using Access2Justice.Api.BusinessLogic;
+using Access2Justice.Api.Interfaces;
 using Access2Justice.CosmosDb;
-using Access2Justice.CosmosDb.Interfaces;
 using Access2Justice.Shared;
 using Access2Justice.Shared.Bing;
 using Access2Justice.Shared.Interfaces;

@@ -1,4 +1,5 @@
-﻿using Access2Justice.Api.ViewModels;
+﻿using Access2Justice.Api.Interfaces;
+using Access2Justice.Api.ViewModels;
 using Access2Justice.Shared.Extensions;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models.CuratedExperience;
@@ -15,7 +16,6 @@ namespace Access2Justice.Api.Controllers
     {
         private readonly IA2JAuthorBusinessLogic a2jAuthorBuisnessLogic;
         private readonly ICuratedExperienceBusinessLogic curatedExperienceBusinessLogic;
-
         public CuratedExperienceController(IA2JAuthorBusinessLogic a2jAuthorBuisnessLogic, ICuratedExperienceBusinessLogic curatedExperienceBusinessLogic)
         {
             this.a2jAuthorBuisnessLogic = a2jAuthorBuisnessLogic;
@@ -61,11 +61,24 @@ namespace Access2Justice.Api.Controllers
             }
         }
 
-        [HttpGet("GetComponentV2")]
-        public IActionResult GetComponent(Guid curatedExperienceId, Guid buttonId)
+        [HttpGet("StartCuratedExperience")]
+        public IActionResult StartCuratedExperience(Guid curatedExperienceId)
         {
             var curatedExperience = GetCuratedExperience(curatedExperienceId);
-            return Ok(curatedExperienceBusinessLogic.GetComponent(curatedExperience, buttonId));
+            var dbComponent = curatedExperienceBusinessLogic.GetComponent(curatedExperience);
+            return Ok(new CuratedExperienceComponentViewModel
+            {
+                CuratedExperienceId = curatedExperienceId,
+                ComponentId = dbComponent.ComponentId,
+                AnswersDocId = Guid.NewGuid(),
+                Name = dbComponent.Name,
+                Text = dbComponent.Text,
+                Help = dbComponent.Help,
+                Learn = dbComponent.Learn,
+                Tags = dbComponent.Tags,
+                Buttons = dbComponent.Buttons,
+                Fields = dbComponent.Fields,                          
+            });
         }
 
         [HttpPost("SaveAndGetNextComponent")]

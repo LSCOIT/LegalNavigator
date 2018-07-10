@@ -1,5 +1,5 @@
-﻿using Access2Justice.Api.ViewModels;
-using Access2Justice.CosmosDb.Interfaces;
+﻿using Access2Justice.Api.Interfaces;
+using Access2Justice.Api.ViewModels;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models.CuratedExperience;
 using System;
@@ -20,10 +20,24 @@ namespace Access2Justice.Api.BusinessLogic
             dbService = backendDatabaseService;
         }
 
-        public CuratedExperienceComponentViewModel GetComponent(CuratedExperience curatedExperience, Guid componentId)
+        public CuratedExperienceComponent GetComponent(CuratedExperience curatedExperience)
+        {
+            return GetComponent(curatedExperience, Guid.Empty);
+        }
+
+        public CuratedExperienceComponent SaveAndGetNextComponentXXX(CuratedExperience curatedExperience, Guid buttonId)
+        {
+            return null;
+        }
+        public CuratedExperienceComponentViewModel SaveAndGetNextComponentViewModel(CuratedExperience curatedExperience, Guid buttonId)
+        {
+            return null;
+        }
+
+        private CuratedExperienceComponent GetComponent(CuratedExperience curatedExperience, Guid componentId)
         {
             var dbCompoent = new CuratedExperienceComponent();
-            if(componentId == default(Guid))
+            if (componentId == default(Guid))
             {
                 dbCompoent = curatedExperience.Components.First();
             }
@@ -32,25 +46,21 @@ namespace Access2Justice.Api.BusinessLogic
                 dbCompoent = curatedExperience.Components.Where(x => x.ComponentId == componentId).FirstOrDefault();
             }
 
-            return MapComponentToComponentViewModel(dbCompoent, curatedExperience.CuratedExperienceId);
+            return dbCompoent; // MapComponentToComponentViewModel(dbCompoent, curatedExperience.CuratedExperienceId);
         }
 
-        public CuratedExperienceComponentViewModel SaveAndGetNextComponent(CuratedExperience curatedExperience, Guid buttonId)
-        {
-            return null;
-        }
-        private CuratedExperienceComponentViewModel MapComponentToComponentViewModel(CuratedExperienceComponent dbCompoent, Guid curatedExperienceId)
-        {
-            var viewModel = (CuratedExperienceComponentViewModel)dbCompoent;
-            viewModel.CuratedExperienceId = curatedExperienceId;
-            viewModel.AnswersDocId = new Guid();
+        //private CuratedExperienceComponentViewModel MapComponentToComponentViewModel(CuratedExperienceComponent dbCompoent, Guid curatedExperienceId)
+        //{
+        //    var viewModel = (CuratedExperienceComponentViewModel)dbCompoent;
+        //    viewModel.CuratedExperienceId = curatedExperienceId;
+        //    viewModel.AnswersDocId = new Guid();
 
-            return viewModel;
-        }
+        //    return viewModel;
+        //}
 
-        public async Task SaveUserAnswer(CuratedExperienceComponentViewModel compoent)
+        public async Task SaveUserAnswer(CuratedExperienceComponentViewModel component)
         {
-            var savedAnswersDoc = await dbService.GetItemAsync<CuratedExperienceAnswers>(compoent.ComponentId.ToString(), dbSettings.CuratedExperienceAnswersCollectionId);
+            var savedAnswersDoc = await dbService.GetItemAsync<CuratedExperienceAnswers>(component.ComponentId.ToString(), dbSettings.CuratedExperienceAnswersCollectionId);
         }
 
         public async Task<CuratedExperience> GetCuratedExperience(Guid id)
@@ -58,12 +68,7 @@ namespace Access2Justice.Api.BusinessLogic
             return await dbService.GetItemAsync<CuratedExperience>(id.ToString(), dbSettings.CuratedExperienceCollectionId);
         }
 
-        CuratedExperienceComponent ICuratedExperienceBusinessLogic.GetComponent(CuratedExperience curatedExperience, Guid buttonId)
-        {
-            throw new NotImplementedException();
-        }
-
-        CuratedExperienceComponent ICuratedExperienceBusinessLogic.SaveAndGetNextComponent(CuratedExperience curatedExperience, Guid buttonId)
+        public CuratedExperienceComponent SaveAndGetNextComponent(CuratedExperience curatedExperience, Guid buttonId)
         {
             throw new NotImplementedException();
         }

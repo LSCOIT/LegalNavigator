@@ -1,4 +1,4 @@
-﻿using Access2Justice.CosmosDb.Interfaces;
+﻿using Access2Justice.Shared.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Globalization;
