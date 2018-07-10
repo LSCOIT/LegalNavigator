@@ -9,7 +9,8 @@ import { TopicService } from '../shared/topic.service';
 import { NavigateDataService } from '../../shared/navigate-data.service';
 import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 import { BreadcrumbService } from '../shared/breadcrumb.service';
-
+import { ServiceOrgService } from '../../shared/sidebars/service-org.service';
+import { LocationService } from '../../shared/location/location.service';
 describe('SubtopicsComponent', () => {
   let component: SubtopicsComponent;
   let fixture: ComponentFixture<SubtopicsComponent>;
@@ -32,7 +33,9 @@ describe('SubtopicsComponent', () => {
         { provide: APP_BASE_HREF, useValue: '/' },
         TopicService,
         NavigateDataService,
-        BreadcrumbService
+        BreadcrumbService,
+        ServiceOrgService,
+        LocationService
       ]
     })
     .compileComponents();
