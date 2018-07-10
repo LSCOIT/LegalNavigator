@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace Access2Justice.Api.ViewModels
@@ -9,7 +10,8 @@ namespace Access2Justice.Api.ViewModels
         {
             Fields = new List<Field>();
         }
-        public string ComponentId { get; set; }
+        public Guid CuratedExperienceId { get; set; }
+        public Guid ComponentId { get; set; }
         public IList<Field> Fields { get; set; }
     }
 

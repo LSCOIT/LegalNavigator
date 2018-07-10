@@ -1,4 +1,5 @@
-﻿using Access2Justice.Shared.Extensions;
+﻿using Access2Justice.Api.ViewModels;
+using Access2Justice.Shared.Extensions;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models.CuratedExperience;
 using Microsoft.AspNetCore.Http;
@@ -65,6 +66,19 @@ namespace Access2Justice.Api.Controllers
         {
             var curatedExperience = GetCuratedExperience(curatedExperienceId);
             return Ok(curatedExperienceBusinessLogic.GetComponent(curatedExperience, buttonId));
+        }
+
+        [HttpPost("SaveAndGetNextComponent")]
+        public IActionResult SaveAndGetNextComponent(CuratedExperienceComponentViewModel component)
+        {
+            var curatedExperience = GetCuratedExperience(component.CuratedExperienceId);
+            
+            // Todo:@Alaa save answers and resources
+            // businessLogic.SaveAnswers(,)
+            // businessLogic.SaveResources(,)
+
+            // Todo:@Alaa return the next question when this endpoint is hit.
+            return Ok(curatedExperienceBusinessLogic.GetComponent(curatedExperience, component.ComponentId));
         }
 
         private CuratedExperience GetCuratedExperience(Guid id)
