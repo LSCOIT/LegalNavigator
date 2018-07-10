@@ -48,14 +48,14 @@ namespace Access2Justice.Api
             ConfigureCosmosDb(services);
 
             services.AddSwaggerGen(c =>
-                {
-                    c.SwaggerDoc("v1", new Info { Title = "Access2Justice API", Version = "v1" });
-                    c.TagActionsBy(api => api.GroupName);
-                    c.DescribeAllEnumsAsStrings();
-                    c.OrderActionsBy((apiDesc) => $"{apiDesc.RelativePath}_{apiDesc.HttpMethod}");
-                    c.OperationFilter<FileUploadOperation>(); //Register File Upload Operation Filter
-                    c.OperationFilter<FileUploadOperationResource>();
-                });
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Access2Justice API", Version = "v1" });
+                c.TagActionsBy(api => api.GroupName);
+                c.DescribeAllEnumsAsStrings();
+                c.OrderActionsBy((apiDesc) => $"{apiDesc.RelativePath}_{apiDesc.HttpMethod}");
+                c.OperationFilter<FileUploadOperation>(); //Register File Upload Operation Filter
+                c.OperationFilter<FileUploadOperationResource>();
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -64,14 +64,13 @@ namespace Access2Justice.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                app.UseExceptionHandler("/Error");
-            }
 
             var apiEnpoint = new Uri(Configuration.GetSection("Api:Endpoint").Value);
-            var url = $"{apiEnpoint.Scheme}://{apiEnpoint.Host}:{apiEnpoint.Port}";
-            app.UseCors(builder => builder.WithOrigins(url).AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            var url = $"{apiEnpoint.Scheme}://{apiEnpoint.Host}:{apiEnpoint.Port}";         
+            app.UseCors(builder => builder.WithOrigins(url)
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
 
             app.UseAuthentication();
 
@@ -101,8 +100,7 @@ namespace Access2Justice.Api
                 });
             });
 
-            app.UseSwaggerUI(c =>
-            {
+            app.UseSwaggerUI(c => {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Access2Justice API");
             });
 

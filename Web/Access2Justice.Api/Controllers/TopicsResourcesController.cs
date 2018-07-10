@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
@@ -30,7 +31,7 @@ namespace Access2Justice.Api.Controllers
             var response = await topicsResourcesBusinessLogic.GetTopLevelTopicsAsync();
             return Ok(response);
         }
-                
+        
         /// <summary>
         /// Get subtopics by the topic Id
         /// </summary>
@@ -43,7 +44,7 @@ namespace Access2Justice.Api.Controllers
             var topics = await topicsResourcesBusinessLogic.GetSubTopicsAsync(parentTopicId);
             return Ok(topics);
         }
-        
+
         /// <summary>
         /// Get the topic details by the document parent Id
         /// </summary>
@@ -75,10 +76,9 @@ namespace Access2Justice.Api.Controllers
         public async Task<IActionResult> GetPagedDataAsync([FromBody]ResourceFilter resourceInput)
         {
             var response = await topicsResourcesBusinessLogic.GetPagedResourceAsync(resourceInput);
-
-            return Content(response);
+            return Content(response);            
         }
-
+        
         /// <summary>
         /// Get the parent topics by a topic id
         /// </summary>
@@ -208,12 +208,12 @@ namespace Access2Justice.Api.Controllers
         [Route("api/createresourcedocument")]
         public async Task<IActionResult> CreateResourceDocument(dynamic resource)
         {
-            using (StreamReader r = new StreamReader("C:\\Users\\v-sobhad\\Desktop\\CreateJSON\\EssentialReadingsData.json"))
+            string filePath = Path.Combine(Environment.CurrentDirectory, "SampleJsons\\EssentialReadingsData.json");
+            using (StreamReader r = new StreamReader(filePath))
             {
                 resource = r.ReadToEnd();
             }
             var resources = await topicsResourcesBusinessLogic.CreateResourceDocumentAsync(resource);
-
             return Ok(resources);
         }
 
@@ -236,13 +236,39 @@ namespace Access2Justice.Api.Controllers
         [Route("api/createtopicdocument")]
         public async Task<IActionResult> CreateTopicDocument(dynamic topic)
         {
-            using (StreamReader r = new StreamReader("C:\\Users\\v-sobhad\\Desktop\\CreateJSON\\TopicData.json"))
+            string filePath = Path.Combine(Environment.CurrentDirectory, "SampleJsons\\TopicData.json");
+            using (StreamReader r = new StreamReader(filePath))
             {
                 topic = r.ReadToEnd();
             }
             var topics = await topicsResourcesBusinessLogic.CreateTopicDocumentAsync(topic);
-
             return Ok(topics);
         }
+
+        /// <summary>
+        /// Get the topic details by the document parent Id
+        /// </summary>
+        /// <param name="parentTopicId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("api/topics/getplandetails/{id}")]
+        public async Task<IActionResult> GetPlanDetailsAsync(string id)
+        {
+            var actionPlans = await topicsResourcesBusinessLogic.GetPlanDataAsync(id);
+            return Ok(actionPlans);
+        }
+
+        /// Get the topic details by the document parent Id
+        /// </summary>
+        /// <param name="parentTopicId"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("api/personalizedresources")]
+        public async Task<IActionResult> GetPersonalizedDataAsync([FromBody]ResourceFilter resourceInput)
+        {
+            var response = await topicsResourcesBusinessLogic.GetPersonalizedResourcesAsync(resourceInput);
+            return Content(response);
+        }
+
     }
 }

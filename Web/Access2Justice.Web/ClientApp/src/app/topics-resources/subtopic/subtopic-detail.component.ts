@@ -19,6 +19,7 @@ export class SubtopicDetailComponent implements OnInit {
   formData: any;
   subtopics: any;
   subtopic: any;
+  savedFrom: string = "subTopicDetails";
 
   constructor(
     private topicService: TopicService,
