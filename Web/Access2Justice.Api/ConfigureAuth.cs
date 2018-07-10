@@ -41,20 +41,28 @@ namespace Access2Justice.Api
                     },
                     OnCreatingTicket = async context =>
                     {
+                        // Retrieve user info
                         var request = new HttpRequestMessage(HttpMethod.Get, context.Options.UserInformationEndpoint);
                         request.Headers.Add("Authorization", $"Bearer {context.AccessToken}");
+
                         var response = await context.Backchannel.SendAsync(request, context.HttpContext.RequestAborted);
                         response.EnsureSuccessStatusCode();
-                        var userObject = JObject.Parse(await response.Content.ReadAsStringAsync());
-                        var userId = userObject.SelectToken("id").Value<string>();
-                        var fullName = userObject.SelectToken("displayName").Value<string>();
-                        if (!string.IsNullOrEmpty(userId.ToString()))
+
+                        // Extract the user info object
+                        var user = JObject.Parse(await response.Content.ReadAsStringAsync());
+
+                        // Add the Name Identifier claim
+                        var userId = user.Value<string>("id");
+                        if (!string.IsNullOrEmpty(userId))
                         {
-                            context.Identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, userId.ToString(), ClaimValueTypes.String, context.Options.ClaimsIssuer));
+                            context.Identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, userId, ClaimValueTypes.String, context.Options.ClaimsIssuer));
                         }
-                        if (!string.IsNullOrEmpty(fullName))
+
+                        // Add the Name claim
+                        var email = user.Value<string>("displayName");
+                        if (!string.IsNullOrEmpty(email))
                         {
-                            context.Identity.AddClaim(new Claim(ClaimTypes.Name, fullName, ClaimValueTypes.String, context.Options.ClaimsIssuer));
+                            context.Identity.AddClaim(new Claim(ClaimsIdentity.DefaultNameClaimType, email, ClaimValueTypes.String, context.Options.ClaimsIssuer));
                         }
                     }
                 };
