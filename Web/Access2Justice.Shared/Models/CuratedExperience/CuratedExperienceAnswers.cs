@@ -12,7 +12,6 @@ namespace Access2Justice.Shared.Models.CuratedExperience
         public string CuratedExperienceId { get; set; }
         [JsonProperty(PropertyName = "answers")]
         public Answer Answers { get; set; }
-
         public CuratedExperienceAnswers()
         {
             Answers = new Answer();

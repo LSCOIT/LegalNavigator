@@ -19,6 +19,7 @@ namespace Access2Justice.CosmosDb
                 UserProfileCollectionId = configuration.GetSection("UserProfileCollectionId").Value;
                 PageResultsCount = int.Parse(configuration.GetSection("PageResultsCount").Value, CultureInfo.InvariantCulture);
                 CuratedExperienceCollectionId = configuration.GetSection("CuratedExperienceCollectionId").Value;
+                CuratedExperienceAnswersCollectionId = configuration.GetSection("CuratedExperienceAnswersId").Value;
             }
             catch
             {
@@ -33,5 +34,6 @@ namespace Access2Justice.CosmosDb
         public int PageResultsCount { get; private set; }
         public string UserProfileCollectionId { get; private set; }
         public string CuratedExperienceCollectionId { get; private set; }
+        public string CuratedExperienceAnswersCollectionId { get; private set; }
     }
 }

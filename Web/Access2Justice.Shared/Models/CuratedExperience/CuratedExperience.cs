@@ -13,18 +13,18 @@ namespace Access2Justice.Shared.Models.CuratedExperience
         public string Title { get; set; }
 
         [JsonProperty(PropertyName = "components")]
-        public IList<Component> Components { get; set; }
+        public IList<CuratedExperienceComponent> Components { get; set; }
 
         public CuratedExperience()
         {
-            Components = new List<Component>();
+            Components = new List<CuratedExperienceComponent>();
         }
     }
 
-    public class Component
+    public class CuratedExperienceComponent
     {
         [JsonProperty(PropertyName = "id")]
-        public Guid Id { get; set; }
+        public Guid ComponentId { get; set; }
 
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
@@ -47,7 +47,7 @@ namespace Access2Justice.Shared.Models.CuratedExperience
         [JsonProperty(PropertyName = "fields")]
         public IList<Field> Fields { get; set; }
 
-        public Component()
+        public CuratedExperienceComponent()
         {
             Tags = new List<string>();
             Buttons = new List<Button>();

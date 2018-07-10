@@ -12,5 +12,6 @@ namespace Access2Justice.CosmosDb.Interfaces
         string UserProfileCollectionId { get; }
         int PageResultsCount { get; }
         string CuratedExperienceCollectionId { get; }
+        string CuratedExperienceAnswersCollectionId { get; }
     }
 }

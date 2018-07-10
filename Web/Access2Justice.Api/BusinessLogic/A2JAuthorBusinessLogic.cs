@@ -27,9 +27,9 @@ namespace Access2Justice.Api.BusinessLogic
                 var componentFields = GetFields(pageProperties);
                 var componentButtons = GetButtons(pageProperties);
 
-                cx.Components.Add(new Component
+                cx.Components.Add(new CuratedExperienceComponent
                 {
-                    Id = Guid.NewGuid(),
+                    ComponentId = Guid.NewGuid(),
                     Name = pageProperties.GetValue("name"),
                     Help = pageProperties.GetValue("help"),
                     Learn = pageProperties.GetValue("learn"),
