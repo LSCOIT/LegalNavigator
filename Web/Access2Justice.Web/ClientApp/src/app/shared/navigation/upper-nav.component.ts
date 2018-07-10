@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { api } from '../../../api/api';
+import { UpperNavService } from './upper-nav.service';
 
 @Component({
   selector: 'app-upper-nav',
@@ -13,7 +14,7 @@ export class UpperNavComponent implements OnInit {
 
   userProfile: string;
   isLoggedIn: boolean = false;
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private upperNavService: UpperNavService) {
 
   }
   externalLogin() {
@@ -26,6 +27,7 @@ export class UpperNavComponent implements OnInit {
 
   logout() {
     localStorage.removeItem("profileData");
+    this.upperNavService.setData = undefined;
     var form = document.createElement('form');
     form.setAttribute('method', 'GET');
     form.setAttribute('action', api.logoutUrl);
@@ -39,6 +41,7 @@ export class UpperNavComponent implements OnInit {
       profileData = JSON.parse(profileData);
       this.isLoggedIn = true;
       this.userProfile = profileData["UserName"];
+      this.upperNavService.setData = profileData["UserId"];
     }
   }
 

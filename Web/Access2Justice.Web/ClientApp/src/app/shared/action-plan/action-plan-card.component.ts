@@ -6,6 +6,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from '../../../environments/environment';
+import { UpperNavService } from '../navigation/upper-nav.service';
 
 @Component({
   selector: 'app-action-plan-card',
@@ -29,14 +30,15 @@ export class ActionPlanCardComponent implements OnChanges {
   updatedPlan: any;
   modalRef: BsModalRef;
   url: any;
-  userId: string = environment.userId;
+  userId: string;
   isCompleted: boolean = false;
   selectedPlanDetails: any = { planDetails: [], topicId: '' };
   isUser: boolean = false;
 
   constructor(private personalizedPlanService: PersonalizedPlanService, private modalService: BsModalService,
-    public sanitizer: DomSanitizer) {
+    public sanitizer: DomSanitizer,private upperNavService: UpperNavService) {
     this.sanitizer = sanitizer;
+    this.userId = this.upperNavService.getData();
   }
 
   getPersonalizedPlan(planDetails): void {
@@ -73,7 +75,7 @@ export class ActionPlanCardComponent implements OnChanges {
   }
 
   checkCompleted(event, topicId, stepId, template: TemplateRef<any>) {
-    if (environment.userId) {
+    if (this.userId) {
       this.planSteps = [];
       this.planTags = [];
       this.steps = [];

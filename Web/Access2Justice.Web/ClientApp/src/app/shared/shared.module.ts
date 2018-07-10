@@ -37,6 +37,7 @@ import { PaginationService } from './search/pagination.service';
 import { ActionPlanCardComponent } from './action-plan/action-plan-card.component';
 import { UserActionSidebarComponent } from './sidebars/user-action-sidebar.component';
 import { SettingButtonComponent } from './resource/user-action/setting-button.component';
+import { UpperNavService } from './navigation/upper-nav.service';
 
 @NgModule({
   imports: [
@@ -107,7 +108,8 @@ import { SettingButtonComponent } from './resource/user-action/setting-button.co
     NavigateDataService,
     SearchService,
     MapResultsService,
-    PaginationService
+    PaginationService,
+    UpperNavService
   ]
 })
 export class SharedModule { }

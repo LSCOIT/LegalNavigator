@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Resources, CreatePlan, StepTag, PlanTag, Steps, ProfileResources } from '../../../guided-assistant/personalized-plan/personalized-plan';
 import { PersonalizedPlanService } from '../../../guided-assistant/personalized-plan/personalized-plan.service';
 import { environment } from '../../../../environments/environment';
+import { UpperNavService } from '../../navigation/upper-nav.service';
 
 @Component({
   selector: 'app-save-button',
@@ -15,7 +16,7 @@ export class SaveButtonComponent implements OnInit {
   resources: Resources;
   profileResources: ProfileResources = { oId: '', resourceTags: [], type: '' };
   @Input() savedFrom: string;
-  userId: string = environment.userId;
+  userId: string;
   planId: string;
   createPlan: CreatePlan = { planId: '', oId: '', type: '', planTags: [] };
   planDetails: any;
@@ -27,7 +28,10 @@ export class SaveButtonComponent implements OnInit {
 
   constructor(private router: Router,
     private activeRoute: ActivatedRoute,
-    private personalizedPlanService: PersonalizedPlanService) { }
+    private personalizedPlanService: PersonalizedPlanService,
+    private upperNavService: UpperNavService) {
+    this.userId = this.upperNavService.getData();
+  }
 
   savePlanResources(): void {
     this.resources = { url: '', itemId: '' };
@@ -84,7 +88,7 @@ export class SaveButtonComponent implements OnInit {
   }
 
   saveResourceToProfile(resourceTags) {
-    this.profileResources = { oId: environment.userId, resourceTags: resourceTags, type: 'resources' };
+    this.profileResources = { oId: this.userId, resourceTags: resourceTags, type: 'resources' };
     this.personalizedPlanService.userPlan(this.profileResources)
       .subscribe();
   }

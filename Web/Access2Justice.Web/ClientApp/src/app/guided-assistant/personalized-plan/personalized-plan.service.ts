@@ -5,6 +5,7 @@ import { PlanSteps, Resources } from './personalized-plan';
 import { api } from '../../../api/api';
 import { IResourceFilter } from '../../shared/search/search-results/search-results.model';
 import { environment } from '../../../environments/environment';
+import { UpperNavService } from '../../shared/navigation/upper-nav.service';
 
 @Injectable()
 export class PersonalizedPlanService {
@@ -16,7 +17,7 @@ export class PersonalizedPlanService {
   resources: string[] = [];
   planId: string;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private upperNavService: UpperNavService) { }
 
   getActionPlanConditions(id): Observable<any> {
     return this.http.get<PlanSteps>(api.planUrl + '/' + id);
@@ -43,7 +44,8 @@ export class PersonalizedPlanService {
   }
 
   getPersonalizedResources(resourceInput: IResourceFilter) {
-    if (!environment.userId) {
+    let userId = this.upperNavService.getData();
+    if (userId != undefined) {
       this.getBookmarkedData();
       if (this.topics) {
         resourceInput.TopicIds = this.topics;

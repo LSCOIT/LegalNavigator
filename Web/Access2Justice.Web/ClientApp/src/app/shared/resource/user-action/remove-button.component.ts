@@ -4,6 +4,7 @@ import { RemovePlanTag, UserRemovePlanTag, StepTag, UpdatePlan, UserUpdatePlan, 
 import { ProfileComponent } from '../../../profile/profile.component';
 import { environment } from '../../../../environments/environment';
 import { PersonalizedPlanComponent } from '../../../guided-assistant/personalized-plan/personalized-plan.component';
+import { UpperNavService } from '../../navigation/upper-nav.service';
 
 @Component({
   selector: 'app-remove-button',
@@ -13,7 +14,7 @@ import { PersonalizedPlanComponent } from '../../../guided-assistant/personalize
 })
 export class RemoveButtonComponent implements OnInit {
   @Input() selectedPlanDetails;
-  userId: string = environment.userId;
+  userId: string;
   isRemoved: boolean;
   removePlanTag: RemovePlanTag = { id: '', oId: '', topicId: '' };
   userRemovePlanTag: UserRemovePlanTag = { id: '', planId: '', oId: '', topicId: '', type: '' };
@@ -25,7 +26,10 @@ export class RemoveButtonComponent implements OnInit {
   userUpdatePlan: UserUpdatePlan = { id: '', planId: '', oId: '', planTags: this.planTags, type: '' };
 
   constructor(private personalizedPlanService: PersonalizedPlanService, private profileComponent: ProfileComponent,
-    private personalizedPlanComponent: PersonalizedPlanComponent) { }
+    private personalizedPlanComponent: PersonalizedPlanComponent,
+    private upperNavService: UpperNavService) {
+    this.userId = this.upperNavService.getData();
+  }
 
   removeSavedResources() {
     this.updatedSteps = [];

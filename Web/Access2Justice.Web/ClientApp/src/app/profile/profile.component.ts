@@ -3,6 +3,7 @@ import { PersonalizedPlanService } from '../guided-assistant/personalized-plan/p
 import { PlanSteps } from '../guided-assistant/personalized-plan/personalized-plan';
 import { IResourceFilter } from '../shared/search/search-results/search-results.model';
 import { environment } from '../../environments/environment';
+import { UpperNavService } from '../shared/navigation/upper-nav.service';
 
 @Component({
   selector: 'app-profile',
@@ -17,9 +18,11 @@ export class ProfileComponent implements OnInit {
   personalizedResources: any;
   isSavedResources: boolean = false;
   planId: string;
-  userId: string = environment.userId;
+  userId: string;
 
-  constructor(private personalizedPlanService: PersonalizedPlanService) { }
+  constructor(private personalizedPlanService: PersonalizedPlanService, private upperNavService: UpperNavService) {
+    this.userId = this.upperNavService.getData();
+  }
 
   getTopics(): void {
     if (this.planId) {
