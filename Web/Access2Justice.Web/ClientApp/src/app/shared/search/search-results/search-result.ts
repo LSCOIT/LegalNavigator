@@ -1,4 +1,4 @@
 export interface ResourceResult {
-  resourceName?: string;
-  resourceCount?: number;
+  ResourceName?: string;
+  ResourceCount?: number;
 }

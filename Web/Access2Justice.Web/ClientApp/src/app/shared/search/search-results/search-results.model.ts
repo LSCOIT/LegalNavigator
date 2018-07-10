@@ -2,6 +2,7 @@ export interface IResourceFilter {
   ResourceType: string;
   ContinuationToken: any;
   TopicIds: any;
+  ResourceIds: any;
   PageNumber: number;
   Location: any;
 }

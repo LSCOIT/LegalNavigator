@@ -31,11 +31,10 @@ namespace Access2Justice.Api.BusinessLogic
                 string topicId = topic.id;
                 ids.Add(topicId);
             }
-
             return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourceCollectionId, Constants.TopicTags, Constants.Id, ids);
         }
 
-        public async Task<dynamic> GetTopicsAsync(string keyword, Location location)
+        public async Task<dynamic> GetTopicsAsync(string keyword,Location location)
         {
             return await dbClient.FindItemsWhereContainsWithLocationAsync(dbSettings.TopicCollectionId, "keywords", keyword.ToUpperInvariant(), location);
         }
@@ -45,14 +44,14 @@ namespace Access2Justice.Api.BusinessLogic
             return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.ParentTopicId, "");
         }
 
-        public async Task<dynamic> GetSubTopicsAsync(string ParentTopicId)
+        public async Task<dynamic> GetSubTopicsAsync(string parentTopicId)
         {
-            return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.ParentTopicId, ParentTopicId);
+            return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.ParentTopicId, parentTopicId);
         }
 
-        public async Task<dynamic> GetResourceAsync(string ParentTopicId)
+        public async Task<dynamic> GetResourceAsync(string parentTopicId)
         {
-            return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourceCollectionId, Constants.TopicTags, Constants.Id, ParentTopicId);
+            return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourceCollectionId, Constants.TopicTags, Constants.Id, parentTopicId);
         }
 
         public async Task<dynamic> GetDocumentAsync(string id)
@@ -79,11 +78,11 @@ namespace Access2Justice.Api.BusinessLogic
             var result = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, propertyNames, values);
             return result;
         }
+
         public async Task<dynamic> GetPagedResourceAsync(ResourceFilter resourceFilter)
         {
             dynamic serializedResources = "[]";
             dynamic serializedTopicIds = "[]";
-
             PagedResources pagedResources = await ApplyPaginationAsync(resourceFilter);
             serializedResources = JsonConvert.SerializeObject(pagedResources?.Results);
             dynamic serializedToken = pagedResources?.ContinuationToken ?? "[]";
@@ -94,21 +93,18 @@ namespace Access2Justice.Api.BusinessLogic
                 {"continuationToken", JsonConvert.DeserializeObject(serializedToken) },
                 {"topicIds" , JsonConvert.DeserializeObject(serializedTopicIds)}
             };
-
             return internalResources.ToString();
         }
 
         public async Task<dynamic> ApplyPaginationAsync(ResourceFilter resourceFilter)
         {
             PagedResources pagedResources = await dbClient.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter);
-
             return pagedResources;
         }
 
         public async Task<dynamic> GetResourcesCountAsync(ResourceFilter resourceFilter)
         {
             PagedResources pagedResources = await dbClient.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter, true);
-
             return ResourcesCount(pagedResources);
         }
 
@@ -122,7 +118,6 @@ namespace Access2Justice.Api.BusinessLogic
                     ResourceCount = resources.Results.Count()
                 }
             };
-
             var groupedResourceType = resources.Results.GroupBy(u => u.resourceType)
                   .OrderBy(group => group.Key)
                   .Select(n => new
@@ -130,7 +125,6 @@ namespace Access2Justice.Api.BusinessLogic
                       ResourceName = n.Key,
                       ResourceCount = n.Count()
                   }).OrderBy(n => n.ResourceName);
-
             dynamic resourceList = groupedResourceType.Concat(allResources);
             return resourceList;
         }
@@ -216,7 +210,7 @@ namespace Access2Justice.Api.BusinessLogic
                         zipCode = locs.Value.ToString();
                     }
                 }
-                locations.Add(new Location { State = state, County = county, City = city, ZipCode = zipCode });
+                locations.Add(new Location { State = state, County = county, City = city, ZipCode = zipCode });                
             }
             return locations;
         }
@@ -237,7 +231,7 @@ namespace Access2Justice.Api.BusinessLogic
                         {
                             if (conditionDetail.Name == "title")
                             {
-                                title = conditionDetail.Value.ToString();
+                                title=conditionDetail.Value.ToString();
                             }
                             else if (conditionDetail.Name == "description")
                             {
@@ -269,7 +263,7 @@ namespace Access2Justice.Api.BusinessLogic
             }
             return ParentTopicIds;
         }
-
+        
         public async Task<IEnumerable<object>> CreateResourcesUploadAsync(string path)
         {
             using (StreamReader r = new StreamReader(path))
@@ -557,12 +551,12 @@ namespace Access2Justice.Api.BusinessLogic
             Topic topicdocuments = new Topic();
 
             foreach (var topicObject in topicObjects)
-            {
-                topicdocuments = CreateTopics(topicObject);
-                var serializedResult = JsonConvert.SerializeObject(topicdocuments);
-                var topicDocument = JsonConvert.DeserializeObject<object>(serializedResult);
-                var result = await dbService.CreateItemAsync(topicDocument, dbSettings.TopicCollectionId);
-                topics.Add(result);
+            {                
+                    topicdocuments = CreateTopics(topicObject);
+                    var serializedResult = JsonConvert.SerializeObject(topicdocuments);
+                    var topicDocument = JsonConvert.DeserializeObject<object>(serializedResult);
+                    var result = await dbService.CreateItemAsync(topicDocument, dbSettings.TopicCollectionId);
+                    topics.Add(result);                
             }
             return topics;
         }
@@ -591,6 +585,45 @@ namespace Access2Justice.Api.BusinessLogic
             topics.Validate();
             return topics;
         }
+
+        public async Task<dynamic> GetPlanDataAsync(string planId)
+        {
+            List<dynamic> procedureParams = new List<dynamic>() { planId };
+            var result = await dbService.ExecuteStoredProcedureAsync(dbSettings.ResourceCollectionId, Constants.PlanStoredProcedureName, procedureParams);
+            var planDetails = result.Response;
+            int indexOfTopicTags = 0;
+            foreach (var item in planDetails.planTags)
+            {
+                string topicId = item.topicId;
+                var topicData = await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.Id, topicId);
+                planDetails.planTags[indexOfTopicTags].id = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(topicData));
+                indexOfTopicTags++;
+            }
+            return planDetails;
+        }
+
+        public async Task<dynamic> GetPersonalizedResourcesAsync(ResourceFilter resourceFilter)
+        {
+            dynamic Topics = Array.Empty<string>();
+            dynamic Resources = Array.Empty<string>();
+            if (resourceFilter.TopicIds != null && resourceFilter.TopicIds.Count() > 0)
+            {
+                Topics = await dbClient.FindItemsWhereInClauseAsync(dbSettings.TopicCollectionId, "id", resourceFilter.TopicIds) ?? Array.Empty<string>();
+            }
+            if (resourceFilter.ResourceIds != null && resourceFilter.ResourceIds.Count() > 0)
+            {
+                Resources = await dbClient.FindItemsWhereInClauseAsync(dbSettings.ResourceCollectionId, "id", resourceFilter.ResourceIds) ?? Array.Empty<string>();
+            }
+            Topics = JsonConvert.SerializeObject(Topics);
+            Resources = JsonConvert.SerializeObject(Resources);
+
+            JObject personalizedResources = new JObject {
+                { "topics", JsonConvert.DeserializeObject(Topics) },
+                {"resources", JsonConvert.DeserializeObject(Resources) }
+            };
+            return personalizedResources.ToString();
+        }
+
 
 
         public async Task<dynamic> GetOrganizationsAsync(Location location)
