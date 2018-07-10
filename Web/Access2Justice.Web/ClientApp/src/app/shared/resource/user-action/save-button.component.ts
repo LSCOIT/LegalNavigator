@@ -13,7 +13,7 @@ import { environment } from '../../../../environments/environment';
 })
 export class SaveButtonComponent implements OnInit {
   resources: Resources;
-  profileResources: ProfileResources = { oId: '', resourceTags: [], type:'' };
+  profileResources: ProfileResources = { oId: '', resourceTags: [], type: '' };
   @Input() savedFrom: string;
   userId: string = environment.userId;
   planId: string;
@@ -46,8 +46,20 @@ export class SaveButtonComponent implements OnInit {
         this.savePlanToProfile();
       }
       if (this.resources.url.startsWith("/subtopics")) {
-        this.profileResources.resourceTags.push(this.resources.itemId);
-        this.saveResourceToProfile(this.profileResources.resourceTags);
+        this.personalizedPlanService.getUserPlanId(this.userId)
+          .subscribe(response => {
+            if (response != undefined) {
+              response.forEach(property => {
+                if (property.resourceTags) {
+                  property.resourceTags.forEach(resource => {
+                    this.profileResources.resourceTags.push(resource);
+                  })
+                }
+              });
+            }
+            this.profileResources.resourceTags.push(this.resources.itemId);
+            this.saveResourceToProfile(this.profileResources.resourceTags);
+          });
       }
     }
   }
