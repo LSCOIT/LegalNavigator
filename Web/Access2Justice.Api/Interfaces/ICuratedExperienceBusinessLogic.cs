@@ -1,4 +1,5 @@
-﻿using Access2Justice.Shared.Models.CuratedExperience;
+﻿using Access2Justice.Api.ViewModels;
+using Access2Justice.Shared.Models.CuratedExperience;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +11,7 @@ namespace Access2Justice.Api.Interfaces
     {
         Task<CuratedExperience> GetCuratedExperience(Guid id);
         CuratedExperienceComponent GetComponent(CuratedExperience curatedExperience);
-        // Todo:@Alaa I think I'll make this a private method to the business logic. Still thinking about it.
-        // CuratedExperienceComponent GetComponent(CuratedExperience curatedExperience, Guid buttonId);
         CuratedExperienceComponent SaveAndGetNextComponent(CuratedExperience curatedExperience, Guid buttonId);
+        CuratedExperienceComponentViewModel MapComponentToViewModelComponent(CuratedExperienceComponent dbComponent, Guid curatedExperienceId);
     }
 }

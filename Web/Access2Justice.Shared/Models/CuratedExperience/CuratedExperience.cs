@@ -23,7 +23,7 @@ namespace Access2Justice.Shared.Models.CuratedExperience
 
     public class CuratedExperienceComponent
     {
-        [JsonProperty(PropertyName = "id")]
+        [JsonProperty(PropertyName = "componentId")]
         public Guid ComponentId { get; set; }
 
         [JsonProperty(PropertyName = "name")]

@@ -32,7 +32,7 @@ namespace Access2Justice.Api
             //services.AddDistributedMemoryCache();
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromMinutes(10);
+                options.IdleTimeout = TimeSpan.FromMinutes(10);  // Todo:@Alaa read this from the config
                 //options.Cookie.HttpOnly = true;
             });
 
