@@ -70,16 +70,17 @@ namespace Access2Justice.Api.Controllers
         [HttpPost("Component/SaveAndGetNext")]
         public async Task<IActionResult> GetNextComponent([FromBody] CuratedExperienceAnswersViewModel component)
         {
-            var curatedExperience = GetCuratedExperience(component.CuratedExperienceId);
+            var curatedExperience = RetrieveCachedCuratedExperience(component.CuratedExperienceId);
 
             // Todo:@Alaa save answers and resources
             // businessLogic.SaveAnswers(,)
+            await curatedExperienceBusinessLogic.SaveAnswers(component);
             // this should be part of the plan businessLogic.SaveResources(,)
 
             // Todo:@Alaa return the next question when this endpoint is hit.
             // find next component
             // return map and return the component resulted from FindComponent
-            return Ok(curatedExperienceBusinessLogic.SaveAndGetNextComponent(curatedExperience, component.ButtonId));
+            return Ok();
         }
 
         [HttpGet("Component")]
@@ -88,12 +89,12 @@ namespace Access2Justice.Api.Controllers
             return Ok(GetComponent(curatedExperienceId, componentId));
         }
 
-        private CuratedExperience GetCuratedExperience(Guid id)
+        private CuratedExperience RetrieveCachedCuratedExperience(Guid id)
         {
             var cuExSession = HttpContext.Session.GetString("CuExSessionKey");
             if (string.IsNullOrWhiteSpace(cuExSession))
             {
-                // Todo:@Alaa find a way to run this asynchronously (whenever I use any async call the 'Session' breaks!)
+                // Todo: Find a way to run this asynchronously (whenever I use any async call the 'Session' breaks!)
                 var rawCuratedExperience = curatedExperienceBusinessLogic.GetCuratedExperience(id).Result;
                 HttpContext.Session.SetObjectAsJson("CuExSessionKey", rawCuratedExperience);
             }
@@ -103,7 +104,7 @@ namespace Access2Justice.Api.Controllers
 
         private CuratedExperienceComponentViewModel GetComponent(Guid curatedExperienceId, Guid componentId)
         {
-            var curatedExperience = GetCuratedExperience(curatedExperienceId);
+            var curatedExperience = RetrieveCachedCuratedExperience(curatedExperienceId);
             var dbComponent = new CuratedExperienceComponent();
             if (componentId == default(Guid))
             {

@@ -32,19 +32,15 @@ namespace Access2Justice.Api.BusinessLogic
             return curatedExperience.Components.Where(x => x.ComponentId == componentId).FirstOrDefault();
         }
 
-        public async Task SaveAnswers(CuratedExperienceComponentViewModel component)
+        public async Task SaveAnswers(CuratedExperienceAnswersViewModel component)
         {
-            var savedAnswersDoc = await dbService.GetItemAsync<CuratedExperienceAnswers>(component.ComponentId.ToString(), dbSettings.CuratedExperienceAnswersCollectionId);
+             // Todo:@Alaa check if there is an answer file already
+            var savedAnswersDoc = await dbService.GetItemAsync<CuratedExperienceAnswers>(component.AnswersDocId.ToString(), dbSettings.CuratedExperienceAnswersCollectionId);
         }
 
         public async Task<CuratedExperience> GetCuratedExperience(Guid id)
         {
             return await dbService.GetItemAsync<CuratedExperience>(id.ToString(), dbSettings.CuratedExperienceCollectionId);
-        }
-
-        public CuratedExperienceComponent SaveAndGetNextComponent(CuratedExperience curatedExperience, Guid buttonId)
-        {
-            throw new NotImplementedException();
         }
 
         public CuratedExperienceComponentViewModel MapComponentToViewModelComponent(CuratedExperienceComponent dbComponent, Guid curatedExperienceId)
