@@ -22,12 +22,14 @@ namespace Access2Justice.Api.BusinessLogic
 
         public CuratedExperienceComponent GetComponent(CuratedExperience curatedExperience)
         {
-            return GetComponent(curatedExperience, Guid.Empty);
+             // Todo:@Alaa add try/catch
+            return curatedExperience.Components.First();
         }
 
-        public CuratedExperienceComponentViewModel SaveAndGetNextComponentViewModel(CuratedExperience curatedExperience, Guid buttonId)
+        public CuratedExperienceComponent GetComponent(CuratedExperience curatedExperience, Guid componentId)
         {
-            return null;
+            // Todo:@Alaa add try/catch
+            return curatedExperience.Components.Where(x => x.ComponentId == componentId).FirstOrDefault();
         }
 
         public async Task SaveAnswers(CuratedExperienceComponentViewModel component)
@@ -60,18 +62,6 @@ namespace Access2Justice.Api.BusinessLogic
                 Buttons = dbComponent.Buttons,
                 Fields = dbComponent.Fields,
             };
-        }
-
-        private CuratedExperienceComponent GetComponent(CuratedExperience curatedExperience, Guid componentId)
-        {
-            if (componentId == default(Guid))
-            {
-                return curatedExperience.Components.First();
-            }
-            else
-            {
-                return curatedExperience.Components.Where(x => x.ComponentId == componentId).FirstOrDefault();
-            }
         }
     }
 }

@@ -35,7 +35,6 @@ namespace Access2Justice.Api.Controllers
             return Content(JsonConvert.DeserializeObject(json).ToString());
         }
 
-
         /// <summary>
         /// This endpoint is just to demo the Curated Experience. It is a sample component payload for the UI.
         /// </summary>
@@ -63,21 +62,16 @@ namespace Access2Justice.Api.Controllers
         }
 
         [HttpGet("Start")]
-        public IActionResult StartCuratedExperience(Guid curatedExperienceId)
+        public IActionResult GetFirstComponent(Guid curatedExperienceId)
         {
-            var curatedExperience = GetCuratedExperience(curatedExperienceId);
-            var dbComponent = curatedExperienceBusinessLogic.GetComponent(curatedExperience);
-            var viewModelComponent = curatedExperienceBusinessLogic.MapComponentToViewModelComponent(dbComponent, curatedExperienceId);
-            return Ok(viewModelComponent);
+            return Ok(GetComponent(curatedExperienceId, Guid.Empty));
         }
 
-        // [HttpGet("Component")
-
         [HttpPost("Component/SaveAndGetNext")]
-        public async Task<IActionResult> SaveAndGetNextComponent([FromBody] CuratedExperienceAnswersViewModel component)
+        public async Task<IActionResult> GetNextComponent([FromBody] CuratedExperienceAnswersViewModel component)
         {
             var curatedExperience = GetCuratedExperience(component.CuratedExperienceId);
-            
+
             // Todo:@Alaa save answers and resources
             // businessLogic.SaveAnswers(,)
             // this should be part of the plan businessLogic.SaveResources(,)
@@ -86,6 +80,12 @@ namespace Access2Justice.Api.Controllers
             // find next component
             // return map and return the component resulted from FindComponent
             return Ok(curatedExperienceBusinessLogic.SaveAndGetNextComponent(curatedExperience, component.ButtonId));
+        }
+
+        [HttpGet("Component")]
+        public IActionResult GetSpecificComponent([FromQuery] Guid curatedExperienceId, [FromQuery] Guid componentId)
+        {
+            return Ok(GetComponent(curatedExperienceId, componentId));
         }
 
         private CuratedExperience GetCuratedExperience(Guid id)
@@ -99,6 +99,21 @@ namespace Access2Justice.Api.Controllers
             }
 
             return HttpContext.Session.GetObjectAsJson<CuratedExperience>("CuExSessionKey");
+        }
+
+        private CuratedExperienceComponentViewModel GetComponent(Guid curatedExperienceId, Guid componentId)
+        {
+            var curatedExperience = GetCuratedExperience(curatedExperienceId);
+            var dbComponent = new CuratedExperienceComponent();
+            if (componentId == default(Guid))
+            {
+                dbComponent = curatedExperienceBusinessLogic.GetComponent(curatedExperience);
+            }
+            else
+            {
+                dbComponent = curatedExperienceBusinessLogic.GetComponent(curatedExperience, componentId);
+            }
+            return curatedExperienceBusinessLogic.MapComponentToViewModelComponent(dbComponent, curatedExperienceId);
         }
     }
 }
