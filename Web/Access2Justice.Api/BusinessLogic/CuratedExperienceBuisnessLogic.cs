@@ -21,15 +21,18 @@ namespace Access2Justice.Api.BusinessLogic
             dbService = backendDatabaseService;
         }
 
-        public CuratedExperienceComponent GetComponent(CuratedExperience curatedExperience)
+        public CuratedExperienceComponentViewModel GetComponent(CuratedExperience curatedExperience, Guid componentId)
         {
-            // Todo:@Alaa add try/catch
-            return curatedExperience.Components.First();
-        }
-
-        public CuratedExperienceComponent GetComponent(CuratedExperience curatedExperience, Guid componentId)
-        {
-            return curatedExperience.Components.Where(x => x.ComponentId == componentId).FirstOrDefault();
+            var dbComponent = new CuratedExperienceComponent();
+            if (componentId == default(Guid))
+            {
+                dbComponent = curatedExperience.Components.First();
+            }
+            else
+            {
+                dbComponent = curatedExperience.Components.Where(x => x.ComponentId == componentId).FirstOrDefault();
+            }
+            return MapComponentToViewModelComponent(curatedExperience, dbComponent);
         }
 
         public async Task SaveAnswers(CuratedExperienceAnswersViewModel viewModelAnswer)
@@ -58,7 +61,7 @@ namespace Access2Justice.Api.BusinessLogic
             return await dbService.GetItemAsync<CuratedExperience>(id.ToString(), dbSettings.CuratedExperienceCollectionId);
         }
 
-        public CuratedExperienceComponentViewModel MapComponentToViewModelComponent(CuratedExperience curatedExperience, CuratedExperienceComponent dbComponent)
+        private CuratedExperienceComponentViewModel MapComponentToViewModelComponent(CuratedExperience curatedExperience, CuratedExperienceComponent dbComponent)
         {
             int stepRemained = 0;  // Todo:@Alaa calculated remaining steps
             return new CuratedExperienceComponentViewModel

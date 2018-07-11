@@ -64,7 +64,8 @@ namespace Access2Justice.Api.Controllers
         [HttpGet("Start")]
         public IActionResult GetFirstComponent(Guid curatedExperienceId)
         {
-            return Ok(GetComponent(curatedExperienceId, Guid.Empty));
+            return Ok(curatedExperienceBusinessLogic.GetComponent(
+                RetrieveCachedCuratedExperience(curatedExperienceId), Guid.Empty));
         }
 
         [HttpPost("Component/SaveAndGetNext")]
@@ -87,7 +88,8 @@ namespace Access2Justice.Api.Controllers
         [HttpGet("Component")]
         public IActionResult GetSpecificComponent([FromQuery] Guid curatedExperienceId, [FromQuery] Guid componentId)
         {
-            return Ok(GetComponent(curatedExperienceId, componentId));
+            return Ok(curatedExperienceBusinessLogic.GetComponent(
+                RetrieveCachedCuratedExperience(curatedExperienceId), componentId));
         }
 
         private CuratedExperience RetrieveCachedCuratedExperience(Guid id)
@@ -101,21 +103,6 @@ namespace Access2Justice.Api.Controllers
             }
 
             return HttpContext.Session.GetObjectAsJson<CuratedExperience>("CuExSessionKey");
-        }
-
-        private CuratedExperienceComponentViewModel GetComponent(Guid curatedExperienceId, Guid componentId)
-        {
-            var curatedExperience = RetrieveCachedCuratedExperience(curatedExperienceId);
-            var dbComponent = new CuratedExperienceComponent();
-            if (componentId == default(Guid))
-            {
-                dbComponent = curatedExperienceBusinessLogic.GetComponent(curatedExperience);
-            }
-            else
-            {
-                dbComponent = curatedExperienceBusinessLogic.GetComponent(curatedExperience, componentId);
-            }
-            return curatedExperienceBusinessLogic.MapComponentToViewModelComponent(curatedExperience, dbComponent);
         }
     }
 }
