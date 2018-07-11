@@ -7,10 +7,15 @@
           <ul id="dropdown-disabled-item" *dropdownMenu class="dropdown-menu dropdown-menu-right"
               role="menu">
             <li role="menuitem">
-              <app-save-button></app-save-button>
+              <a class="dropdown-item">
+                <app-save-button></app-save-button>
+              </a>
             </li>
-            <li role="menuitem">
-              <a class="dropdown-item" href="#"><app-share-button></app-share-button></a>
+            <li role="menuitem">              
+              <a class="dropdown-item" href="#">
+                <img src="./assets/images/small-icons/share.svg" class="nav-icon" aria-hidden="true" />
+                <app-share-button></app-share-button>
+              </a>
             </li>
           </ul>
         </div>

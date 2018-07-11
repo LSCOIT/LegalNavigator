@@ -31,7 +31,7 @@
             </a>
             <ul *dropdownMenu class="dropdown-menu pull-left" style="width: 30px;min-height: 10px;max-height: 90px;">
               <li class="list-items">
-                <a class="dropdown-item" href="#">My Plan</a>
+                <a class="dropdown-item" [routerLink]="['/profile']">My Plan</a>
                 <a class="dropdown-item" href="#">Account Settings</a>
                 <a class="dropdown-item" (click)="logout()">Log Out</a>
               </li>
