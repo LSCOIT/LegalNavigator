@@ -78,7 +78,8 @@ namespace Access2Justice.Api.Controllers
             // this should be part of the plan businessLogic.SaveResources(,)
 
             // Todo:@Alaa return the next question when this endpoint is hit.
-            // find next component
+            // find next component: 
+            // CuratedExperienceComponent nextComponent = curatedExperienceBusinessLogic.FindNextComponent(curatedExperience, buttonId);
             // return map and return the component resulted from FindComponent
             return Ok();
         }
