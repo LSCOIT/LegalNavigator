@@ -12,10 +12,13 @@ namespace Access2Justice.Api.ViewModels
         public Guid AnswersDocId { get; set; }
         [JsonProperty(PropertyName = "buttonId")]
         public Guid ButtonId { get; set; }
+        [JsonProperty(PropertyName = "multiSelectionFieldIds")]
+        public IList<Guid> MultiSelectionFieldIds { get; set; }
         [JsonProperty(PropertyName = "fields")]
         public IList<Field> Fields { get; set; }
         public CuratedExperienceAnswersViewModel()
         {
+            MultiSelectionFieldIds = new List<Guid>();
             Fields = new List<Field>();
         }
     }

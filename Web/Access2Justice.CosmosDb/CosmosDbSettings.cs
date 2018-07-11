@@ -19,7 +19,7 @@ namespace Access2Justice.CosmosDb
                 UserProfileCollectionId = configuration.GetSection("UserProfileCollectionId").Value;
                 PageResultsCount = int.Parse(configuration.GetSection("PageResultsCount").Value, CultureInfo.InvariantCulture);
                 CuratedExperienceCollectionId = configuration.GetSection("CuratedExperienceCollectionId").Value;
-                CuratedExperienceAnswersCollectionId = configuration.GetSection("CuratedExperienceAnswersId").Value;
+                CuratedExperienceAnswersCollectionId = configuration.GetSection("CuratedExperienceAnswersCollectionId").Value;
             }
             catch
             {

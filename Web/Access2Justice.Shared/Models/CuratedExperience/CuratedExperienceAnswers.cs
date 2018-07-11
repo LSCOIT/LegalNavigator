@@ -9,12 +9,12 @@ namespace Access2Justice.Shared.Models.CuratedExperience
         [JsonProperty(PropertyName = "id")]
         public Guid AnswersDocId { get; set; }
         [JsonProperty(PropertyName = "curatedExperienceId")]
-        public string CuratedExperienceId { get; set; }
+        public Guid CuratedExperienceId { get; set; }
         [JsonProperty(PropertyName = "answers")]
-        public Answer Answers { get; set; }
+        public IList<Answer> Answers { get; set; }
         public CuratedExperienceAnswers()
         {
-            Answers = new Answer();
+            Answers = new List<Answer>();
         }
     }
 
