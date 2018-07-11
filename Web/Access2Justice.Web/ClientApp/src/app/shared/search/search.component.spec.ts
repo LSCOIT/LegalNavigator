@@ -40,7 +40,7 @@ describe('SearchComponent', () => {
         SearchService, NavigateDataService],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

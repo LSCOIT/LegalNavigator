@@ -170,7 +170,7 @@ export class ActionPlanCardComponent implements OnChanges {
     this.modalRef = this.modalService.show(template);
   }
 
-  PlanTagOptions(topicId) {
+  planTagOptions(topicId) {
     this.selectedPlanDetails = { planDetails: this.planDetails, topicId: topicId };
   }
 

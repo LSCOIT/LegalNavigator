@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { APP_BASE_HREF } from '@angular/common';
-
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -18,13 +18,17 @@ import { ResourceResult } from './search-result';
 import { IResourceFilter, ILuisInput } from './search-results.model';
 import { SearchFilterPipe } from '../search-filter.pipe';
 import { SearchService } from '../search.service';
+import { PaginationService } from '../pagination.service';
+import { ServiceOrgService } from '../../sidebars/service-org.service';
+import { LocationService } from '../../location/location.service';
+import { JitCompiler } from '@angular/compiler/src/jit/compiler';
 
 describe('SearchResultsComponent', () => {
   let component: SearchResultsComponent;
   let fixture: ComponentFixture<SearchResultsComponent>;
   let pagesToShow: number;
   let searchService: SearchService;
-
+  let paginationService: PaginationService;
 
 let  isInternalResource: boolean;
 let  isWebResource: boolean;
@@ -69,8 +73,12 @@ let  currentPage: number = 0;
       ],
       providers: [NavigateDataService,
         SearchService,
+        PaginationService,
+        ServiceOrgService,
+        LocationService,
         { provide: APP_BASE_HREF, useValue: '/' }
-      ]
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
     })
       .compileComponents();
 
@@ -83,7 +91,8 @@ let  currentPage: number = 0;
 
     // SearchService provided to the TestBed
     searchService = TestBed.get(SearchService);
-    
+    paginationService = TestBed.get(PaginationService);
+
     component.isWebResource = false;
     component.isInternalResource = true;
     component.isLuisResponse = false;
@@ -99,10 +108,12 @@ let  currentPage: number = 0;
 
   });
 
-  it('should create', () => {
+  it('should create search result component', () => {
     expect(component).toBeTruthy();
   });
-
+  it('should define search result component', () => {
+    expect(component).toBeDefined();
+  });
   it('should call filterSearchResults with event defined', () => {
     spyOn(component, 'getInternalResource');
     let event = { filterParam: "All" };
@@ -115,6 +126,5 @@ let  currentPage: number = 0;
     component.filterSearchResults(event);
     expect(component.getInternalResource).toHaveBeenCalledTimes(0);
   });
-
 
 });

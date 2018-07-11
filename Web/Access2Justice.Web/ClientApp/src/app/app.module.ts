@@ -35,7 +35,7 @@ import { PersonalizedPlanComponent } from './guided-assistant/personalized-plan/
 import { ProfileComponent } from './profile/profile.component';
 import { BreadcrumbService } from './topics-resources/shared/breadcrumb.service';
 import { PersonalizedPlanService } from './guided-assistant/personalized-plan/personalized-plan.service';
-
+import { ServiceOrgService } from './shared/sidebars/service-org.service';
 @NgModule({
   declarations: [
     AppComponent,
