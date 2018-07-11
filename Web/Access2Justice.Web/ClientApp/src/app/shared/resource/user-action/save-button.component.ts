@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Resources, CreatePlan, StepTag, PlanTag, Steps, ProfileResources } from '../../../guided-assistant/personalized-plan/personalized-plan';
+import { Resources, CreatePlan, StepTag, PlanTag, Steps, ProfileResources, SavedResources } from '../../../guided-assistant/personalized-plan/personalized-plan';
 import { PersonalizedPlanService } from '../../../guided-assistant/personalized-plan/personalized-plan.service';
 import { environment } from '../../../../environments/environment';
 import { UpperNavService } from '../../navigation/upper-nav.service';
@@ -14,10 +14,13 @@ import { UpperNavService } from '../../navigation/upper-nav.service';
 })
 export class SaveButtonComponent implements OnInit {
   resources: Resources;
-  profileResources: ProfileResources = { oId: '', resourceTags: [], type: '' };
-  @Input() savedFrom: string;
+  savedResources: SavedResources;
+  profileResources: ProfileResources = { oId: '', resourceTags: [], type: '' };  
+  @Input() resourceId: string;
+  @Input() resourceType: string;
   userId: string;
   planId: string;
+  type: string;
   createPlan: CreatePlan = { planId: '', oId: '', type: '', planTags: [] };
   planDetails: any;
   updatedSteps: Array<StepTag>;
@@ -53,9 +56,17 @@ export class SaveButtonComponent implements OnInit {
         this.planId = this.resources.itemId;
         this.savePlanToProfile();
       }
-      if (this.resources.url.startsWith("/subtopics")) {
+      if (  this.resources.url.startsWith("/subtopics") ||
+        this.resources.url.startsWith("/search")) {
+        this.type = "Topic";
+        if (this.resourceId != undefined) {
+          this.resources.itemId = this.resourceId;
+          this.type = this.resourceType;
+        }
+        this.profileResources.resourceTags = [];
+        this.savedResources = { itemId: '', resourceType:'' };
         this.personalizedPlanService.getUserPlanId(this.userId)
-          .subscribe(response => {
+          .subscribe(response => {            
             if (response != undefined) {
               response.forEach(property => {
                 if (property.resourceTags) {
@@ -65,8 +76,11 @@ export class SaveButtonComponent implements OnInit {
                 }
               });
             }
-            this.profileResources.resourceTags.push(this.resources.itemId);
-            this.saveResourceToProfile(this.profileResources.resourceTags);
+            this.savedResources = { itemId: this.resources.itemId, resourceType: this.type };
+            if (this.profileResources.resourceTags != undefined && this.profileResources.resourceTags.indexOf(this.savedResources) == -1) {              
+              this.profileResources.resourceTags.push(this.savedResources);
+              this.saveResourceToProfile(this.profileResources.resourceTags);
+            }
           });
       }
     }

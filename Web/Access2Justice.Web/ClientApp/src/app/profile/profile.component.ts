@@ -19,6 +19,8 @@ export class ProfileComponent implements OnInit {
   isSavedResources: boolean = false;
   planId: string;
   userId: string;
+  topicIds: string[] = [];
+  resourceIds: string[] = [];
 
   constructor(private personalizedPlanService: PersonalizedPlanService, private upperNavService: UpperNavService) {
     let profileData = localStorage.getItem("profileData");
@@ -41,7 +43,30 @@ export class ProfileComponent implements OnInit {
   }
 
   getpersonalizedResources() {
-    this.personalizedPlanService.getPersonalizedResources(this.resourceFilter)
+    this.topicIds = [];
+    this.resourceIds = [];
+    this.personalizedPlanService.getUserPlanId(this.userId)
+      .subscribe(response => {
+        if (response != undefined) {
+          response.forEach(property => {
+            if (property.resourceTags != undefined) {
+              property.resourceTags.forEach(resource => {
+                if (resource.resourceType == "Topic") {
+                  this.topicIds.push(resource.itemId);
+                } else {
+                  this.resourceIds.push(resource.itemId);
+                }
+              });
+              this.resourceFilter = { TopicIds: this.topicIds, ResourceIds: this.resourceIds, ResourceType: 'ALL', PageNumber: 0, ContinuationToken: null, Location: null };
+              this.getSavedResource(this.resourceFilter);
+            }
+          });          
+        }
+      });    
+  }
+
+  getSavedResource(resourceFilter: IResourceFilter) {
+    this.personalizedPlanService.getPersonalizedResources(resourceFilter)
       .subscribe(response => {
         if (response != undefined) {
           this.personalizedResources = response;
