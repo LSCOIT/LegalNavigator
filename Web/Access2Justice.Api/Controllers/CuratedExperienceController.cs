@@ -68,28 +68,20 @@ namespace Access2Justice.Api.Controllers
                 RetrieveCachedCuratedExperience(curatedExperienceId), Guid.Empty));
         }
 
-        [HttpPost("Component/SaveAndGetNext")]
-        public async Task<IActionResult> GetNextComponent([FromBody] CuratedExperienceAnswersViewModel component)
-        {
-            var curatedExperience = RetrieveCachedCuratedExperience(component.CuratedExperienceId);
-
-            // Todo:@Alaa save answers and resources
-            // businessLogic.SaveAnswers(,)
-            await curatedExperienceBusinessLogic.SaveAnswers(component);
-            // this should be part of the plan businessLogic.SaveResources(,)
-
-            // Todo:@Alaa return the next question when this endpoint is hit.
-            // find next component: 
-            // CuratedExperienceComponent nextComponent = curatedExperienceBusinessLogic.FindNextComponent(curatedExperience, buttonId);
-            // return map and return the component resulted from FindComponent
-            return Ok();
-        }
-
         [HttpGet("Component")]
         public IActionResult GetSpecificComponent([FromQuery] Guid curatedExperienceId, [FromQuery] Guid componentId)
         {
             return Ok(curatedExperienceBusinessLogic.GetComponent(
                 RetrieveCachedCuratedExperience(curatedExperienceId), componentId));
+        }
+
+        [HttpPost("Component/SaveAndGetNext")]
+        public async Task<IActionResult> SaveAndGetNextComponent([FromBody] CuratedExperienceAnswersViewModel component)
+        {
+            var curatedExperience = RetrieveCachedCuratedExperience(component.CuratedExperienceId);
+            await curatedExperienceBusinessLogic.SaveAnswers(component);
+
+            return Ok(curatedExperienceBusinessLogic.FindNextComponent(curatedExperience, component));
         }
 
         private CuratedExperience RetrieveCachedCuratedExperience(Guid id)

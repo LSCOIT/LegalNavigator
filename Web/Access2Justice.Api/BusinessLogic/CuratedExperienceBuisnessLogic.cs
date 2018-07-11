@@ -21,6 +21,11 @@ namespace Access2Justice.Api.BusinessLogic
             dbService = backendDatabaseService;
         }
 
+        public async Task<CuratedExperience> GetCuratedExperience(Guid id)
+        {
+            return await dbService.GetItemAsync<CuratedExperience>(id.ToString(), dbSettings.CuratedExperienceCollectionId);
+        }
+
         public CuratedExperienceComponentViewModel GetComponent(CuratedExperience curatedExperience, Guid componentId)
         {
             var dbComponent = new CuratedExperienceComponent();
@@ -33,6 +38,30 @@ namespace Access2Justice.Api.BusinessLogic
                 dbComponent = curatedExperience.Components.Where(x => x.ComponentId == componentId).FirstOrDefault();
             }
             return MapComponentToViewModelComponent(curatedExperience, dbComponent);
+        }
+
+        public CuratedExperienceComponentViewModel FindNextComponent(CuratedExperience curatedExperience, CuratedExperienceAnswersViewModel component)
+        {
+            var allButtonsInCuratedExperience = curatedExperience.Components.Select(x => x.Buttons).ToList();
+            var userClickedButton = new Button();
+            foreach (var button in allButtonsInCuratedExperience)
+            {
+                if (button.Where(x => x.Id == component.ButtonId).Any())
+                {
+                    userClickedButton = button.Where(x => x.Id == component.ButtonId).First();
+                }
+            }
+
+            var nextComponentToSendToUI = new CuratedExperienceComponent();
+            if(!string.IsNullOrWhiteSpace(userClickedButton.Destination))
+            {
+                if(curatedExperience.Components.Where(x => x.Name == userClickedButton.Destination).Any())
+                {
+                    nextComponentToSendToUI = curatedExperience.Components.Where(x => x.Name == userClickedButton.Destination).First();
+                }
+            }
+
+            return MapComponentToViewModelComponent(curatedExperience, nextComponentToSendToUI);
         }
 
         public async Task SaveAnswers(CuratedExperienceAnswersViewModel viewModelAnswer)
@@ -54,11 +83,6 @@ namespace Access2Justice.Api.BusinessLogic
                 savedAnswersDoc.Answers.Add(dbAnswers.Answers.First());
                 await dbService.UpdateItemAsync(viewModelAnswer.AnswersDocId.ToString(), savedAnswersDoc, answersDbCollection);
             }
-        }
-        
-        public async Task<CuratedExperience> GetCuratedExperience(Guid id)
-        {
-            return await dbService.GetItemAsync<CuratedExperience>(id.ToString(), dbSettings.CuratedExperienceCollectionId);
         }
 
         private CuratedExperienceComponentViewModel MapComponentToViewModelComponent(CuratedExperience curatedExperience, CuratedExperienceComponent dbComponent)
