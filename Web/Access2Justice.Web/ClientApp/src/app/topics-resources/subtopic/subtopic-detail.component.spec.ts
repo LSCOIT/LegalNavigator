@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { APP_BASE_HREF } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
@@ -13,7 +14,8 @@ import { ServiceOrgSidebarComponent } from '../../shared/sidebars/service-org-si
 import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 import { TopicService } from '../shared/topic.service';
 import { NavigateDataService } from '../../shared/navigate-data.service';
-
+import { ServiceOrgService } from '../../shared/sidebars/service-org.service';
+import { LocationService } from '../../shared/location/location.service';
 describe('SubtopicDetailComponent', () => {
   let component: SubtopicDetailComponent;
   let fixture: ComponentFixture<SubtopicDetailComponent>;
@@ -39,8 +41,11 @@ describe('SubtopicDetailComponent', () => {
       providers: [
         { provide: APP_BASE_HREF, useValue: '/' },
         TopicService,
-        NavigateDataService
-      ]
+        NavigateDataService,
+        ServiceOrgService,
+        LocationService
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   }));
