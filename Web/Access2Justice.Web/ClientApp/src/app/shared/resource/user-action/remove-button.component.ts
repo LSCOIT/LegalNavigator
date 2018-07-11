@@ -28,7 +28,7 @@ export class RemoveButtonComponent implements OnInit {
   constructor(private personalizedPlanService: PersonalizedPlanService, private profileComponent: ProfileComponent,
     private personalizedPlanComponent: PersonalizedPlanComponent,
     private upperNavService: UpperNavService) {
-    let profileData = localStorage.getItem("profileData");
+    let profileData = sessionStorage.getItem("profileData");
     if (profileData != undefined) {
       profileData = JSON.parse(profileData);
       this.userId = profileData["UserId"];

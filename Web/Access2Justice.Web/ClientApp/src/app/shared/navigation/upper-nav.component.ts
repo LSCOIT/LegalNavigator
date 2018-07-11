@@ -26,7 +26,7 @@ export class UpperNavComponent implements OnInit {
   }
 
   logout() {
-    localStorage.removeItem("profileData");
+    sessionStorage.removeItem("profileData");
     this.upperNavService.setData = undefined;
     var form = document.createElement('form');
     form.setAttribute('method', 'GET');
@@ -36,7 +36,7 @@ export class UpperNavComponent implements OnInit {
   }
 
   ngOnInit() {
-    let profileData = localStorage.getItem("profileData");
+    let profileData = sessionStorage.getItem("profileData");
     if (profileData != undefined) {
       profileData = JSON.parse(profileData);
       this.isLoggedIn = true;

@@ -50,7 +50,7 @@ export class SearchResultsComponent implements OnInit {
 
   bindData() {
     this.searchResults = this.navigateDataService.getData();
-    if (this.searchResults != undefined) {
+    if (this.searchResults != undefined && this.personalizedResources == undefined) {
       this.isInternalResource = this.searchResults.resources;
       this.isWebResource = this.searchResults.webResources;
       if (this.isWebResource) {
@@ -67,7 +67,7 @@ export class SearchResultsComponent implements OnInit {
         console.log(this.searchResults.luisResponse);
       }
     }
-    if (this.personalizedResources != undefined) {
+    if (this.personalizedResources != undefined) {      
       this.searchResults = this.personalizedResources;
       if (this.personalizedResources.topics != undefined) {
         this.personalizedResources.topics.forEach(topic => {

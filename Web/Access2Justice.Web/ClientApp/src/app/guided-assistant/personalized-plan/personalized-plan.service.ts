@@ -45,7 +45,7 @@ export class PersonalizedPlanService {
   }
 
   getPersonalizedResources(resourceInput: IResourceFilter) {
-    let profileData = localStorage.getItem("profileData");
+    let profileData = sessionStorage.getItem("profileData");
     if (profileData != undefined) {
       profileData = JSON.parse(profileData);
       this.userId = profileData["UserId"];

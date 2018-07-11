@@ -19,14 +19,16 @@ export class ProfileComponent implements OnInit {
   isSavedResources: boolean = false;
   planId: string;
   userId: string;
+  userName: string;
   topicIds: string[] = [];
   resourceIds: string[] = [];
 
   constructor(private personalizedPlanService: PersonalizedPlanService, private upperNavService: UpperNavService) {
-    let profileData = localStorage.getItem("profileData");
+    let profileData = sessionStorage.getItem("profileData");
     if (profileData != undefined) {
       profileData = JSON.parse(profileData);
       this.userId = profileData["UserId"];
+      this.userName = profileData["UserName"];
     }
   }
 

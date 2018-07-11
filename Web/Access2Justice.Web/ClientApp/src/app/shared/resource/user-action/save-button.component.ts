@@ -15,14 +15,14 @@ import { api } from '../../../../api/api';
 <span>Save to profile</span>
 <ng-template #template>
 <div *ngIf="isSavedPlan">
-    <button type="button" class="close" aria-label="Close" (click)="Close()">
+    <button type="button" class="close" aria-label="Close" (click)="close()">
         <span aria-hidden="true">&times;</span>
     </button>
     <div class="row text-center">
         <h3>Added to Profile</h3>
     </div>
     <div class="row text-center">
-        <button type="button" (click)="Close()" class="btn btn-primary">Close</button>
+        <button type="button" (click)="close()" class="btn btn-primary">Close</button>
     </div>
 </div>
 </ng-template>
@@ -53,7 +53,7 @@ export class SaveButtonComponent implements OnInit {
     private personalizedPlanService: PersonalizedPlanService,
     private modalService: BsModalService,
     private upperNavService: UpperNavService) {
-    let profileData = localStorage.getItem("profileData");
+    let profileData = sessionStorage.getItem("profileData");
     if (profileData != undefined) {
       profileData = JSON.parse(profileData);
       this.userId = profileData["UserId"];
@@ -76,7 +76,7 @@ export class SaveButtonComponent implements OnInit {
     } else if (this.activeRoute.snapshot.params['id']) {
       this.resources.itemId = this.activeRoute.snapshot.params['id'];
     }
-    if (!this.userId) {
+    if (!this.userId) {      
       this.personalizedPlanService.saveResourcesToSession(this.resources);
       this.externalLogin();
     }
@@ -108,7 +108,7 @@ export class SaveButtonComponent implements OnInit {
             this.savedResources = { itemId: this.resources.itemId, resourceType: this.type };
             if (this.profileResources.resourceTags != undefined && this.profileResources.resourceTags.indexOf(this.savedResources) == -1) {              
               this.profileResources.resourceTags.push(this.savedResources);
-              this.saveResourceToProfile(this.profileResources.resourceTags);
+              this.saveResourceToProfile(this.profileResources.resourceTags, template);
             }
           });
       }
@@ -138,7 +138,7 @@ export class SaveButtonComponent implements OnInit {
       });
   }
 
-  Close() {
+  close() {
     this.modalRef.hide();
     this.router.navigate(['profile']);
   }
