@@ -26,6 +26,10 @@
   margin-left: 10px;
 }
 
+.capitalize {
+  text-transform: capitalize;
+}
+
 .web-hidden .btn-selected {
   padding: 10px 34px;
 }
@@ -62,4 +66,3 @@
     padding-top: 20px;
   }
 }
-  
