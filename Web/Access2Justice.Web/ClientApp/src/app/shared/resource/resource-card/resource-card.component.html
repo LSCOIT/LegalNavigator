@@ -7,9 +7,7 @@
           <ul id="dropdown-disabled-item" *dropdownMenu class="dropdown-menu dropdown-menu-right"
               role="menu">
             <li role="menuitem">
-              <a class="dropdown-item">
-                <app-save-button></app-save-button>
-              </a>
+              <app-save-button [resourceId] ="resource.id" [resourceType]="resource.resourceType"></app-save-button>
             </li>
             <li role="menuitem">              
               <a class="dropdown-item" href="#">

@@ -3,9 +3,14 @@ export interface Resources {
   itemId: string; 
 }
 
+export interface SavedResources {
+  itemId: string;
+  resourceType: string;
+}
+
 export interface ProfileResources {
   oId: string;
-  resourceTags: Array<string>;
+  resourceTags: Array<SavedResources>;
   type: string;
 }
 

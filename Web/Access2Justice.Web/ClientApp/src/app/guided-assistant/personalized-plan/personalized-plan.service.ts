@@ -50,7 +50,7 @@ export class PersonalizedPlanService {
       profileData = JSON.parse(profileData);
       this.userId = profileData["UserId"];
     }
-    if (this.userId != undefined) {
+    if (this.userId === undefined) {
       this.getBookmarkedData();
       if (this.topics) {
         resourceInput.TopicIds = this.topics;
