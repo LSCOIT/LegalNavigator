@@ -13,6 +13,6 @@ namespace Access2Justice.Api.Interfaces
         CuratedExperienceComponent GetComponent(CuratedExperience curatedExperience);
         CuratedExperienceComponent GetComponent(CuratedExperience curatedExperience, Guid componentId);
         Task SaveAnswers(CuratedExperienceAnswersViewModel component);
-        CuratedExperienceComponentViewModel MapComponentToViewModelComponent(CuratedExperienceComponent dbComponent, Guid curatedExperienceId);
+        CuratedExperienceComponentViewModel MapComponentToViewModelComponent(CuratedExperience curatedExperience, CuratedExperienceComponent dbComponent);
     }
 }

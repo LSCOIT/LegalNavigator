@@ -11,5 +11,8 @@ namespace Access2Justice.Api.ViewModels
 
         [JsonProperty(PropertyName = "answersDocId")]
         public Guid AnswersDocId { get; set; }
+
+        [JsonProperty(PropertyName = "stepRemained")]
+        public int StepsRemained { get; set; }
     }
 }

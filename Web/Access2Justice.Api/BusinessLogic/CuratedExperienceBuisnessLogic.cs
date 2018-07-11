@@ -22,19 +22,21 @@ namespace Access2Justice.Api.BusinessLogic
 
         public CuratedExperienceComponent GetComponent(CuratedExperience curatedExperience)
         {
-             // Todo:@Alaa add try/catch
+            // Todo:@Alaa add try/catch
             return curatedExperience.Components.First();
         }
 
         public CuratedExperienceComponent GetComponent(CuratedExperience curatedExperience, Guid componentId)
         {
-            // Todo:@Alaa add try/catch
             return curatedExperience.Components.Where(x => x.ComponentId == componentId).FirstOrDefault();
         }
 
         public async Task SaveAnswers(CuratedExperienceAnswersViewModel component)
         {
-             // Todo:@Alaa check if there is an answer file already
+            // Todo: we could store the answers doc in the session and persist it to the db when the user
+            // answers the last question. This will save us a trip to the database each time the user moves to
+            // the next step. The caveat for this is that the users will need to repeat the survey from the
+            // beginning if the session expires which might be frustrating.
             var savedAnswersDoc = await dbService.GetItemAsync<CuratedExperienceAnswers>(component.AnswersDocId.ToString(), dbSettings.CuratedExperienceAnswersCollectionId);
         }
 
@@ -43,13 +45,15 @@ namespace Access2Justice.Api.BusinessLogic
             return await dbService.GetItemAsync<CuratedExperience>(id.ToString(), dbSettings.CuratedExperienceCollectionId);
         }
 
-        public CuratedExperienceComponentViewModel MapComponentToViewModelComponent(CuratedExperienceComponent dbComponent, Guid curatedExperienceId)
+        public CuratedExperienceComponentViewModel MapComponentToViewModelComponent(CuratedExperience curatedExperience, CuratedExperienceComponent dbComponent)
         {
+            int stepRemained = 0;  // Todo:@Alaa calculated remaining steps
             return new CuratedExperienceComponentViewModel
             {
-                CuratedExperienceId = curatedExperienceId,
-                ComponentId = dbComponent.ComponentId,
+                CuratedExperienceId = curatedExperience.CuratedExperienceId,
                 AnswersDocId = Guid.NewGuid(),
+                StepsRemained = stepRemained,
+                ComponentId = dbComponent.ComponentId,
                 Name = dbComponent.Name,
                 Text = dbComponent.Text,
                 Help = dbComponent.Help,

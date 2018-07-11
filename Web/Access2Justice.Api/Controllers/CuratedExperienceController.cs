@@ -115,7 +115,7 @@ namespace Access2Justice.Api.Controllers
             {
                 dbComponent = curatedExperienceBusinessLogic.GetComponent(curatedExperience, componentId);
             }
-            return curatedExperienceBusinessLogic.MapComponentToViewModelComponent(dbComponent, curatedExperienceId);
+            return curatedExperienceBusinessLogic.MapComponentToViewModelComponent(curatedExperience, dbComponent);
         }
     }
 }
