@@ -28,7 +28,11 @@ export class RemoveButtonComponent implements OnInit {
   constructor(private personalizedPlanService: PersonalizedPlanService, private profileComponent: ProfileComponent,
     private personalizedPlanComponent: PersonalizedPlanComponent,
     private upperNavService: UpperNavService) {
-    this.userId = this.upperNavService.getData();
+    let profileData = localStorage.getItem("profileData");
+    if (profileData != undefined) {
+      profileData = JSON.parse(profileData);
+      this.userId = profileData["UserId"];
+    }
   }
 
   removeSavedResources() {

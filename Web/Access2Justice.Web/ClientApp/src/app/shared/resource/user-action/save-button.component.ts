@@ -30,7 +30,11 @@ export class SaveButtonComponent implements OnInit {
     private activeRoute: ActivatedRoute,
     private personalizedPlanService: PersonalizedPlanService,
     private upperNavService: UpperNavService) {
-    this.userId = this.upperNavService.getData();
+    let profileData = localStorage.getItem("profileData");
+    if (profileData != undefined) {
+      profileData = JSON.parse(profileData);
+      this.userId = profileData["UserId"];
+    }
   }
 
   savePlanResources(): void {

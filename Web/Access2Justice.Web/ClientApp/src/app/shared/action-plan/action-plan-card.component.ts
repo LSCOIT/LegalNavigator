@@ -38,7 +38,11 @@ export class ActionPlanCardComponent implements OnChanges {
   constructor(private personalizedPlanService: PersonalizedPlanService, private modalService: BsModalService,
     public sanitizer: DomSanitizer,private upperNavService: UpperNavService) {
     this.sanitizer = sanitizer;
-    this.userId = this.upperNavService.getData();
+    let profileData = localStorage.getItem("profileData");
+    if (profileData != undefined) {
+      profileData = JSON.parse(profileData);
+      this.userId = profileData["UserId"];
+    }
   }
 
   getPersonalizedPlan(planDetails): void {

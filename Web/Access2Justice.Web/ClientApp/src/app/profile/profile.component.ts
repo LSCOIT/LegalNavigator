@@ -21,7 +21,11 @@ export class ProfileComponent implements OnInit {
   userId: string;
 
   constructor(private personalizedPlanService: PersonalizedPlanService, private upperNavService: UpperNavService) {
-    this.userId = this.upperNavService.getData();
+    let profileData = localStorage.getItem("profileData");
+    if (profileData != undefined) {
+      profileData = JSON.parse(profileData);
+      this.userId = profileData["UserId"];
+    }
   }
 
   getTopics(): void {

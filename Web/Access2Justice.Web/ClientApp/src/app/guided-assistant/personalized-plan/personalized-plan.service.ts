@@ -16,6 +16,7 @@ export class PersonalizedPlanService {
   topics: string[] = [];
   resources: string[] = [];
   planId: string;
+  userId: string;
 
   constructor(private http: HttpClient, private upperNavService: UpperNavService) { }
 
@@ -44,8 +45,12 @@ export class PersonalizedPlanService {
   }
 
   getPersonalizedResources(resourceInput: IResourceFilter) {
-    let userId = this.upperNavService.getData();
-    if (userId != undefined) {
+    let profileData = localStorage.getItem("profileData");
+    if (profileData != undefined) {
+      profileData = JSON.parse(profileData);
+      this.userId = profileData["UserId"];
+    }
+    if (this.userId != undefined) {
       this.getBookmarkedData();
       if (this.topics) {
         resourceInput.TopicIds = this.topics;
