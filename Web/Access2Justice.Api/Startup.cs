@@ -15,10 +15,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 
-
 namespace Access2Justice.Api
 {
-    public class Startup
+    public partial class Startup
     {
         public Startup(IConfiguration configuration)
         {
@@ -29,6 +28,8 @@ namespace Access2Justice.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            ConfigureAuth(services);
+
             services.AddMvc();
 
             ILuisSettings luisSettings = new LuisSettings(Configuration.GetSection("Luis"));
@@ -70,6 +71,10 @@ namespace Access2Justice.Api
                         .AllowAnyOrigin()
                         .AllowAnyMethod()
                         .AllowAnyHeader());
+
+            app.UseAuthentication();
+
+            ConfigureRoutes(app);
 
             app.UseMvc();
 
