@@ -79,7 +79,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly JArray expectedResourceReferences = TopicResourceTestData.expectedResourceReferences;
         private readonly JArray expectedActionPlanReferences = TopicResourceTestData.expectedActionPlanReferences;
         private readonly JArray expectedReferencesData = TopicResourceTestData.expectedReferencesData;
-
+        private readonly Location expectedLocationValue = TopicResourceTestData.expectedLocationValue;
         public TopicsResourcesBusinessLogicTests()
         {
             dynamicQueries = Substitute.For<IDynamicQueries>();
@@ -900,6 +900,39 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 
             //assert
             Assert.Contains(expectedEmptyResourceCount, result, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+
+
+
+        [Fact]
+        public void GetOrganizationsAsyncWithProperData()
+        {
+            //arrange
+            var dbResponse = dynamicQueries.FindItemsWhereContainsWithLocationAsync(cosmosDbSettings.ResourceCollectionId, "resourceType", "Organizations", expectedLocationValue);
+            dbResponse.ReturnsForAnyArgs<dynamic>(organizationData);
+
+
+            //act
+            var response = topicsResourcesBusinessLogic.GetOrganizationsAsync(expectedLocationValue);
+            string result = JsonConvert.SerializeObject(response);
+
+            //assert
+            Assert.Contains(expectedLocationValue.State, result, StringComparison.InvariantCulture);
+        }
+        [Fact]
+        public void GetOrganizationsAsyncEmptyData()
+        {
+            //arrange
+            var dbResponse = dynamicQueries.FindItemsWhereContainsWithLocationAsync(cosmosDbSettings.ResourceCollectionId, "resourceType", "Organizations", expectedLocationValue);
+            dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
+
+            //act
+            var response = topicsResourcesBusinessLogic.GetOrganizationsAsync(expectedLocationValue);
+            string result = JsonConvert.SerializeObject(response);
+
+            //assert
+            Assert.Contains("[{}]", result, StringComparison.InvariantCultureIgnoreCase);
         }
 
     }

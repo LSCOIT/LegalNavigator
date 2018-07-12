@@ -6,19 +6,10 @@
     <div *ngIf="fullPage" class="fullPage"></div>
     <div>
       <div class="sidebar-block">
-        <a class="link p" href="#">Food Bank of Alaska</a>
-        <img class="nav-icon" src="./assets/images/small-icons/call.svg" alt="phone number" />
-        <span>907-272-3663</span>
-      </div>
-      <div class="sidebar-block">
-        <a class="link p" href="#">Food Bank of Alaska</a>
-        <img class="nav-icon" src="./assets/images/small-icons/call.svg" alt="phone number" />
-        <span>907-272-3663</span>
-      </div>
-      <div class="sidebar-block">
-        <a class="link p" href="#">Food Bank of Alaska</a>
-        <img class="nav-icon" src="./assets/images/small-icons/call.svg" alt="phone number" />
-        <span>907-272-3663</span>
+        <ul *ngFor="let organization of organizations">
+          <li> <a class="link p" href="#">{{organization.name}}</a></li>
+          <li> <img class="nav-icon" src="./assets/images/small-icons/call.svg"/> {{organization.telephone}}</li>
+        </ul>
       </div>
     </div>
     <div class="col-sm-12">
@@ -26,3 +17,4 @@
     </div>
   </div>
 </div>
+
