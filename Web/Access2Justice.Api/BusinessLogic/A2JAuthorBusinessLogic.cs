@@ -5,6 +5,7 @@ using Access2Justice.Shared.Models.CuratedExperience;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace Access2Justice.Api.BusinessLogic
@@ -67,10 +68,12 @@ namespace Access2Justice.Api.BusinessLogic
             foreach (var buttonProperty in fieldsProperties)
             {
                 var field = ((JObject)buttonProperty).Properties();
+                var type = MapA2JFieldTypeToCuratedExperienceQuestionType(field.GetValue("type"));
+
                 componentFields.Add(new Field
                 {
                     Id = Guid.NewGuid(),
-                    Type = field.GetValue("type"),
+                    Type = type.ToString(),
                     Label = field.GetValue("label"),
                     IsRequired = bool.Parse(field.GetValue("required")),
                     MinLength = field.GetValue("min"),
@@ -99,6 +102,41 @@ namespace Access2Justice.Api.BusinessLogic
             }
 
             return componentButtons;
+        }
+
+        private CuratedExperienceQuestionType MapA2JFieldTypeToCuratedExperienceQuestionType(string a2jAuthorFieldtype)
+        {
+            switch (a2jAuthorFieldtype)
+            {
+                case "text":
+                    return CuratedExperienceQuestionType.Text;
+                case "textlong":
+                    return CuratedExperienceQuestionType.RichText;
+                case "textpick":
+                    return CuratedExperienceQuestionType.List;
+                case "number":
+                    return CuratedExperienceQuestionType.Number;
+                case "numberdollar":
+                    return CuratedExperienceQuestionType.Currency;
+                case "numberssn":
+                    return CuratedExperienceQuestionType.Ssn;
+                case "numberphone":
+                    return CuratedExperienceQuestionType.Phone;
+                case "numberzip":
+                    return CuratedExperienceQuestionType.ZipCode;
+                case "numberpick":
+                    return CuratedExperienceQuestionType.List;
+                case "gender":
+                    return CuratedExperienceQuestionType.RadioButton;
+                case "radio":
+                    return CuratedExperienceQuestionType.RadioButton;
+                case "checkbox":
+                    return CuratedExperienceQuestionType.CheckBox;
+                case "checkboxNOTA":
+                    return CuratedExperienceQuestionType.CheckBox;
+                default:
+                    return CuratedExperienceQuestionType.Text;
+            }
         }
     }
 }

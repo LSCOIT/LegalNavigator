@@ -6,6 +6,8 @@ namespace Access2Justice.Shared.Models.CuratedExperience
     {
         [JsonProperty(PropertyName = "text")]
         Text,
+        [JsonProperty(PropertyName = "richText")]
+        RichText,
         [JsonProperty(PropertyName = "list")]
         List,
         [JsonProperty(PropertyName = "number")]
@@ -24,11 +26,5 @@ namespace Access2Justice.Shared.Models.CuratedExperience
         RadioButton,
         [JsonProperty(PropertyName = "checkBox")]
         CheckBox
-
-        // Todo: these data types are from A2J Authors but we don't have equivalent 
-        // for them of at this point. We should find their use case or remove them if
-        // we could manage without them.
-        // Text (Long)
-        // Check Box (None of the Above)
     }
 }
