@@ -64,22 +64,30 @@ namespace Access2Justice.Api.Controllers
         [HttpGet("Start")]
         public IActionResult GetFirstComponent(Guid curatedExperienceId)
         {
-            return Ok(curatedExperienceBusinessLogic.GetComponent(
-                RetrieveCachedCuratedExperience(curatedExperienceId), Guid.Empty));
+            var component = curatedExperienceBusinessLogic.GetComponent(RetrieveCachedCuratedExperience(curatedExperienceId), Guid.Empty);
+            if(component == null) return NotFound();
+
+            return Ok(component);
         }
 
         [HttpGet("Component")]
         public IActionResult GetSpecificComponent([FromQuery] Guid curatedExperienceId, [FromQuery] Guid componentId)
         {
-            return Ok(curatedExperienceBusinessLogic.GetComponent(
-                RetrieveCachedCuratedExperience(curatedExperienceId), componentId));
+            var component = curatedExperienceBusinessLogic.GetComponent(RetrieveCachedCuratedExperience(curatedExperienceId), componentId);
+            if (component == null) return NotFound();
+
+            return Ok(component);
         }
 
         [HttpPost("Component/SaveAndGetNext")]
         public async Task<IActionResult> SaveAndGetNextComponent([FromBody] CuratedExperienceAnswersViewModel component)
         {
             var curatedExperience = RetrieveCachedCuratedExperience(component.CuratedExperienceId);
-            await curatedExperienceBusinessLogic.SaveAnswers(component);
+            var document = await curatedExperienceBusinessLogic.SaveAnswers(component);
+            if (component == null)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
 
             return Ok(curatedExperienceBusinessLogic.FindNextComponent(curatedExperience, component));
         }

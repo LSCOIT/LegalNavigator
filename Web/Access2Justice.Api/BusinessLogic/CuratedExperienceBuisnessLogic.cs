@@ -2,6 +2,7 @@
 using Access2Justice.Api.ViewModels;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models.CuratedExperience;
+using Microsoft.Azure.Documents;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,16 +29,24 @@ namespace Access2Justice.Api.BusinessLogic
 
         public CuratedExperienceComponentViewModel GetComponent(CuratedExperience curatedExperience, Guid componentId)
         {
-            var dbComponent = new CuratedExperienceComponent();
-            if (componentId == default(Guid))
+            try
             {
-                dbComponent = curatedExperience.Components.First();
+                var dbComponent = new CuratedExperienceComponent();
+                if (componentId == default(Guid))
+                {
+                    dbComponent = curatedExperience.Components.First();
+                }
+                else
+                {
+                    dbComponent = curatedExperience.Components.Where(x => x.ComponentId == componentId).FirstOrDefault();
+                }
+                return MapComponentToViewModelComponent(curatedExperience, dbComponent);
             }
-            else
+            catch
             {
-                dbComponent = curatedExperience.Components.Where(x => x.ComponentId == componentId).FirstOrDefault();
+                // log exception
+                return null;
             }
-            return MapComponentToViewModelComponent(curatedExperience, dbComponent);
         }
 
         public CuratedExperienceComponentViewModel FindNextComponent(CuratedExperience curatedExperience, CuratedExperienceAnswersViewModel component)
@@ -64,24 +73,32 @@ namespace Access2Justice.Api.BusinessLogic
             return MapComponentToViewModelComponent(curatedExperience, nextComponentToSendToUI);
         }
 
-        public async Task SaveAnswers(CuratedExperienceAnswersViewModel viewModelAnswer)
+        public async Task<Document> SaveAnswers(CuratedExperienceAnswersViewModel viewModelAnswer)
         {
-            // Todo: we could store the answers doc in the session and persist it to the db when the user
-            // answers the last question. This will save us a trip to the database each time the user moves to
-            // the next step. The caveat for this is that the users will need to repeat the survey from the
-            // beginning if the session expires which might be frustrating.
-            var answersDbCollection = dbSettings.CuratedExperienceAnswersCollectionId;
-            var dbAnswers = MapViewModelAnswerToCuratedExperienceAnswers(viewModelAnswer);
+            try
+            {
+                // Todo: we could store the answers doc in the session and persist it to the db when the user
+                // answers the last question. This will save us a trip to the database each time the user moves to
+                // the next step. The caveat for this is that the users will need to repeat the survey from the
+                // beginning if the session expires which might be frustrating.
+                var answersDbCollection = dbSettings.CuratedExperienceAnswersCollectionId;
+                var dbAnswers = MapViewModelAnswerToCuratedExperienceAnswers(viewModelAnswer);
 
-            var savedAnswersDoc = await dbService.GetItemAsync<CuratedExperienceAnswers>(viewModelAnswer.AnswersDocId.ToString(), answersDbCollection);
-            if (savedAnswersDoc == null)
-            {
-                await dbService.CreateItemAsync(dbAnswers, answersDbCollection);
+                var savedAnswersDoc = await dbService.GetItemAsync<CuratedExperienceAnswers>(viewModelAnswer.AnswersDocId.ToString(), answersDbCollection);
+                if (savedAnswersDoc == null)
+                {
+                    return await dbService.CreateItemAsync(dbAnswers, answersDbCollection);
+                }
+                else
+                {
+                    savedAnswersDoc.Answers.Add(dbAnswers.Answers.First());
+                    return await dbService.UpdateItemAsync(viewModelAnswer.AnswersDocId.ToString(), savedAnswersDoc, answersDbCollection);
+                }
             }
-            else
+            catch
             {
-                savedAnswersDoc.Answers.Add(dbAnswers.Answers.First());
-                await dbService.UpdateItemAsync(viewModelAnswer.AnswersDocId.ToString(), savedAnswersDoc, answersDbCollection);
+                // log exception
+                return null;
             }
         }
 
