@@ -36,5 +36,6 @@ namespace Access2Justice.Shared.Interfaces
         Task<dynamic> GetResourcesCountAsync(ResourceFilter resourceFilter);
         Task<dynamic> GetPlanDataAsync(string planId);
         Task<dynamic> GetPersonalizedResourcesAsync(ResourceFilter resourceFilter);
+        Task<dynamic> GetOrganizationsAsync(Location location);
     }
 }

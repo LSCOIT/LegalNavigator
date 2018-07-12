@@ -120,6 +120,19 @@ namespace Access2Justice.Api.Controllers
         }
 
         /// <summary>
+        /// Get the organizations by the location
+        /// </summary>
+        /// <param name="location"></param>
+        /// <returns></returns>
+
+        [HttpPost]
+        [Route("api/topics/getorganizationdetails")]
+        public async Task<IActionResult> GetOrganizationsWhenParamsValuePassed([FromBody]Location location)
+        {
+            var organizations = await topicsResourcesBusinessLogic.GetOrganizationsAsync(location);
+            return Ok(organizations);
+        }
+        /// <summary>
         /// get topic schema
         /// </summary>
         [HttpGet]

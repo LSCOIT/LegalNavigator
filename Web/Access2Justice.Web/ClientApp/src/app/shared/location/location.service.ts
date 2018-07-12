@@ -13,7 +13,7 @@ export class LocationService {
   pin: any;
   mapLocation: MapLocation;
   notifyLocalLocation: Subject<MapLocation> = new Subject<MapLocation>();
-
+  notifyLocation: Subject<MapLocation> = new Subject<MapLocation>();
   constructor() { }
 
   getMap(mapType) {
@@ -71,7 +71,9 @@ export class LocationService {
   updateLocation(): MapLocation {
     if (environment.map_type) {
       this.mapLocation = JSON.parse(sessionStorage.getItem("globalSearchMapLocation"));
-      sessionStorage.setItem("globalMapLocation", JSON.stringify(this.mapLocation));      
+      sessionStorage.setItem("globalMapLocation", JSON.stringify(this.mapLocation));
+      sessionStorage.removeItem('globalSearchMapLocation');
+      this.notifyLocation.next(this.mapLocation);
     }
     else {
       this.mapLocation = JSON.parse(sessionStorage.getItem("localSearchMapLocation"));      
