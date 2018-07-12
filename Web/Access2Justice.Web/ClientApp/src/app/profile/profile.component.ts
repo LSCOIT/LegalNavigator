@@ -53,7 +53,7 @@ export class ProfileComponent implements OnInit {
           response.forEach(property => {
             if (property.resourceTags != undefined) {
               property.resourceTags.forEach(resource => {
-                if (resource.resourceType == "Topic") {
+                if (resource.resourceType === "Topic") {
                   this.topicIds.push(resource.itemId);
                 } else {
                   this.resourceIds.push(resource.itemId);

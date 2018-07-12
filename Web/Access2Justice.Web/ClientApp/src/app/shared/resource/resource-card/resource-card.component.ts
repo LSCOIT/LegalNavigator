@@ -10,7 +10,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class ResourceCardComponent implements OnInit {
   modalRef: BsModalRef;
-
+  @Input() personalizedResources;
   @Input() resource: any;
   @Input() searchResource: any;
   @Input() isSearchResults: boolean;

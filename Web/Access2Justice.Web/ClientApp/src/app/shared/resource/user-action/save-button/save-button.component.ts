@@ -3,8 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Resources, CreatePlan, StepTag, PlanTag, Steps, ProfileResources, SavedResources } from '../../../../guided-assistant/personalized-plan/personalized-plan';
 import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
 import { environment } from '../../../../../environments/environment';
-import { UpperNavService } from '../../../navigation/upper-nav.service';
-import { Subject } from 'rxjs';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap';
 import { api } from '../../../../../api/api';
 
@@ -30,14 +28,12 @@ export class SaveButtonComponent implements OnInit {
   steps: Array<Steps>;
   planTag: PlanTag = { topicId: '', stepTags: this.steps };
   isSavedPlan: boolean = false;
-  notifySavePlan: Subject<boolean> = new Subject<boolean>();
   modalRef: BsModalRef;
 
   constructor(private router: Router,
     private activeRoute: ActivatedRoute,
     private personalizedPlanService: PersonalizedPlanService,
-    private modalService: BsModalService,
-    private upperNavService: UpperNavService) {
+    private modalService: BsModalService) {
     let profileData = sessionStorage.getItem("profileData");
     if (profileData != undefined) {
       profileData = JSON.parse(profileData);
@@ -116,7 +112,6 @@ export class SaveButtonComponent implements OnInit {
         this.createPlan = { planId: planDetails.id, oId: this.userId, type: planDetails.type, planTags: this.planTags }
         this.personalizedPlanService.userPlan(this.createPlan)
           .subscribe(() => {
-            console.log("Saved Successfully");
             this.isSavedPlan = true;
             this.modalRef = this.modalService.show(template);
           });

@@ -15,9 +15,10 @@
                 <app-share-button></app-share-button>
               </a>
             </li>
-            <li role="menuitem" *ngIf="!isSearchResults">
+            <!--<li role="menuitem" *ngIf="!isSearchResults">-->
+            <li role="menuitem">
               <a class="dropdown-item">
-                <app-remove-button></app-remove-button>
+                <app-remove-button [resourceId]="resource.id" [resourceType]="resource.resourceType" [personalizedResources]="personalizedResources"></app-remove-button>
               </a>
             </li>
           </ul>
@@ -101,7 +102,7 @@
           <p>{{resource.description}}</p>
         </div>
       </div>
-      <div *ngIf="resource.resourceType === 'Topics'" class="media">        
+      <div *ngIf="resource.resourceType === 'Topic'" class="media">        
         <div class="media-left">
           <a href="#">
             <img class="media-object" src="#" alt="...">
