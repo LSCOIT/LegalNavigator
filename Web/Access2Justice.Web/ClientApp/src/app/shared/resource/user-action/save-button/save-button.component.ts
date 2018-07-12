@@ -1,37 +1,22 @@
 import { Component, OnInit, Input, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Resources, CreatePlan, StepTag, PlanTag, Steps, ProfileResources, SavedResources } from '../../../guided-assistant/personalized-plan/personalized-plan';
-import { PersonalizedPlanService } from '../../../guided-assistant/personalized-plan/personalized-plan.service';
-import { environment } from '../../../../environments/environment';
-import { UpperNavService } from '../../navigation/upper-nav.service';
+import { Resources, CreatePlan, StepTag, PlanTag, Steps, ProfileResources, SavedResources } from '../../../../guided-assistant/personalized-plan/personalized-plan';
+import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
+import { environment } from '../../../../../environments/environment';
+import { UpperNavService } from '../../../navigation/upper-nav.service';
 import { Subject } from 'rxjs';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap';
-import { api } from '../../../../api/api';
+import { api } from '../../../../../api/api';
 
 @Component({
   selector: 'app-save-button',
-  template: `
-<img src="./assets/images/small-icons/save.svg" class="nav-icon" aria-hidden="true" (click) ="savePlanResources(template)" />
-<span>Save to profile</span>
-<ng-template #template>
-<div *ngIf="isSavedPlan">
-    <button type="button" class="close" aria-label="Close" (click)="close()">
-        <span aria-hidden="true">&times;</span>
-    </button>
-    <div class="row text-center">
-        <h3>Added to Profile</h3>
-    </div>
-    <div class="row text-center">
-        <button type="button" (click)="close()" class="btn btn-primary">Close</button>
-    </div>
-</div>
-</ng-template>
-`
+  templateUrl: './save-button.component.html',
+  styleUrls: ['./save-button.component.css']
 })
 export class SaveButtonComponent implements OnInit {
   resources: Resources;
   savedResources: SavedResources;
-  profileResources: ProfileResources = { oId: '', resourceTags: [], type: '' };  
+  profileResources: ProfileResources = { oId: '', resourceTags: [], type: '' };
   @Input() resourceId: string;
   @Input() resourceType: string;
   userId: string;
@@ -76,7 +61,7 @@ export class SaveButtonComponent implements OnInit {
     } else if (this.activeRoute.snapshot.params['id']) {
       this.resources.itemId = this.activeRoute.snapshot.params['id'];
     }
-    if (!this.userId) {      
+    if (!this.userId) {
       this.personalizedPlanService.saveResourcesToSession(this.resources);
       this.externalLogin();
     }
@@ -85,7 +70,7 @@ export class SaveButtonComponent implements OnInit {
         this.planId = this.resources.itemId;
         this.savePlanToProfile(template);
       }
-      if (  this.resources.url.startsWith("/subtopics") ||
+      if (this.resources.url.startsWith("/subtopics") ||
         this.resources.url.startsWith("/search")) {
         this.type = "Topic";
         if (this.resourceId != undefined) {
@@ -93,9 +78,9 @@ export class SaveButtonComponent implements OnInit {
           this.type = this.resourceType;
         }
         this.profileResources.resourceTags = [];
-        this.savedResources = { itemId: '', resourceType:'' };
+        this.savedResources = { itemId: '', resourceType: '' };
         this.personalizedPlanService.getUserPlanId(this.userId)
-          .subscribe(response => {            
+          .subscribe(response => {
             if (response != undefined) {
               response.forEach(property => {
                 if (property.resourceTags) {
@@ -106,7 +91,7 @@ export class SaveButtonComponent implements OnInit {
               });
             }
             this.savedResources = { itemId: this.resources.itemId, resourceType: this.type };
-            if (this.profileResources.resourceTags != undefined && this.profileResources.resourceTags.indexOf(this.savedResources) == -1) {              
+            if (this.profileResources.resourceTags != undefined && this.profileResources.resourceTags.indexOf(this.savedResources) == -1) {
               this.profileResources.resourceTags.push(this.savedResources);
               this.saveResourceToProfile(this.profileResources.resourceTags, template);
             }
@@ -134,7 +119,7 @@ export class SaveButtonComponent implements OnInit {
             console.log("Saved Successfully");
             this.isSavedPlan = true;
             this.modalRef = this.modalService.show(template);
-            });
+          });
       });
   }
 
@@ -156,3 +141,4 @@ export class SaveButtonComponent implements OnInit {
   }
 
 }
+

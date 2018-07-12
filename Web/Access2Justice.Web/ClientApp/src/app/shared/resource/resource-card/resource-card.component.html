@@ -6,13 +6,18 @@
           <span dropdownToggle type="button" class="glyphicon glyphicon-option-horizontal dropdown-toggle"></span>
           <ul id="dropdown-disabled-item" *dropdownMenu class="dropdown-menu dropdown-menu-right"
               role="menu">
-            <li role="menuitem">
-              <app-save-button [resourceId] ="resource.id" [resourceType]="resource.resourceType"></app-save-button>
+            <li role="menuitem" *ngIf="isSearchResults">
+              <app-save-button [resourceId]="resource.id" [resourceType]="resource.resourceType"></app-save-button>
             </li>
-            <li role="menuitem">              
+            <li role="menuitem">
               <a class="dropdown-item" href="#">
                 <img src="./assets/images/small-icons/share.svg" class="nav-icon" aria-hidden="true" />
                 <app-share-button></app-share-button>
+              </a>
+            </li>
+            <li role="menuitem" *ngIf="!isSearchResults">
+              <a class="dropdown-item">
+                <app-remove-button></app-remove-button>
               </a>
             </li>
           </ul>

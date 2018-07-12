@@ -8,9 +8,9 @@ describe('SaveButtonComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SaveButtonComponent ]
+      declarations: [SaveButtonComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

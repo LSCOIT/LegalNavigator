@@ -20,7 +20,7 @@
     <div class="col-md-8 col-sm-12">
       <div *ngIf="isInternalResource || isPersonalizedresource" class="row center-align">
         <div *ngFor="let searchResource of searchResults.resources | searchFilter:{ filter : sortType, source : 'internal'} ">
-          <app-resource-card [searchResource]="searchResource"></app-resource-card>          
+          <app-resource-card [searchResource]="searchResource" [isSearchResults]="true"></app-resource-card>          
         </div>
       </div>
       <div *ngIf="isWebResource" class="row center-align">
