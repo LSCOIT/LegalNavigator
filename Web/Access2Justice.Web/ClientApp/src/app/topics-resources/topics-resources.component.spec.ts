@@ -32,7 +32,7 @@ describe('TopicsResourcesComponent', () => {
         TopicService
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

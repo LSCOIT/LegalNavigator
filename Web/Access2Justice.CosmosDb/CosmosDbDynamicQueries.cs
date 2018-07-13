@@ -70,7 +70,7 @@ namespace Access2Justice.CosmosDb
         {
             EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
             string locationFilter = FindLocationWhereArrayContains(location);
-            var query = $"SELECT * FROM c WHERE CONTAINS(c.{propertyName}, '{value.ToUpperInvariant()}')";
+            var query = $"SELECT * FROM c WHERE CONTAINS(c.{propertyName}, '{value}')";
             if (!string.IsNullOrEmpty(locationFilter))
             {
                 query = query + " AND " + locationFilter;
@@ -78,14 +78,18 @@ namespace Access2Justice.CosmosDb
             return await backendDatabaseService.QueryItemsAsync(collectionId, query);
         }
 
+
+
         public async Task<dynamic> FindItemsWhereArrayContainsWithAndClauseAsync(string arrayName, string propertyName, string andPropertyName, ResourceFilter resourceFilter, bool isResourceCountCall = false)
         {
             EnsureParametersAreNotNullOrEmpty(arrayName, propertyName, andPropertyName, resourceFilter.ResourceType);
             string arrayContainsWithAndClause = ArrayContainsWithOrClause(arrayName, propertyName, resourceFilter.TopicIds);
-
-            if (resourceFilter.ResourceType.ToUpperInvariant() != "ALL")
+            if (!string.IsNullOrEmpty(arrayContainsWithAndClause))
             {
                 arrayContainsWithAndClause = "(" + arrayContainsWithAndClause + ")";
+            }
+            if (resourceFilter.ResourceType.ToUpperInvariant() != Constants.ResourceTypeAll)
+            {                
                 arrayContainsWithAndClause += $" AND c.{andPropertyName} = '" + resourceFilter.ResourceType + "'";
             }
             string locationFilter = FindLocationWhereArrayContains(resourceFilter.Location);
@@ -164,6 +168,39 @@ namespace Access2Justice.CosmosDb
                 }
             }
             return arrayContainsWithOrClause;
+        }       
+
+        private void EnsureParametersAreNotOrEmpty(params string[] parameters)
+        {
+            foreach (var param in parameters)
+            {
+                if (string.IsNullOrWhiteSpace(param))
+                {
+                    throw new ArgumentException("Paramters can not be null or empty spaces.");
+                }
+            }
         }
+
+        public async Task<dynamic> FindItemsWhereInClauseAsync(string collectionId, string propertyName, IEnumerable<string> values)
+        {
+            EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
+
+            var inClause = string.Empty;
+            var lastItem = values.Last();
+
+            foreach (var value in values)
+            {
+                inClause += $"'" + value + "'";
+                if (value != lastItem)
+                {
+                    inClause += ",";
+                }
+            }
+
+            var query = $"SELECT * FROM c WHERE c.{propertyName} IN ({inClause})";
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query);
+        }
+
+    
     }
 }

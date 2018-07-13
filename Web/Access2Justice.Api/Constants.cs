@@ -8,6 +8,7 @@ namespace Access2Justice.Api
     public static class Constants
     {
         public const string BreadcrumbStoredProcedureName = "GetParentTopics";
+        public const string PlanStoredProcedureName = "GetPlanDetails";
         public const string TopicTags = "topicTags";
         public const string Id = "id";
         public const string ParentTopicId = "parentTopicID";
@@ -20,5 +21,8 @@ namespace Access2Justice.Api
         public const string Name = "name";
         public const string ResourceType = "resourceType";
         public const string OId = "oId";
+        public const string PlanId = "planId";
+        public const string Type = "type";
+        public const string Organization = "Organizations";
     }
 }

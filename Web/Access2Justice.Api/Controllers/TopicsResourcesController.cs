@@ -31,7 +31,7 @@ namespace Access2Justice.Api.Controllers
             var response = await topicsResourcesBusinessLogic.GetTopLevelTopicsAsync();
             return Ok(response);
         }
-                
+        
         /// <summary>
         /// Get subtopics by the topic Id
         /// </summary>
@@ -44,7 +44,7 @@ namespace Access2Justice.Api.Controllers
             var topics = await topicsResourcesBusinessLogic.GetSubTopicsAsync(parentTopicId);
             return Ok(topics);
         }
-        
+
         /// <summary>
         /// Get the topic details by the document parent Id
         /// </summary>
@@ -76,10 +76,9 @@ namespace Access2Justice.Api.Controllers
         public async Task<IActionResult> GetPagedDataAsync([FromBody]ResourceFilter resourceInput)
         {
             var response = await topicsResourcesBusinessLogic.GetPagedResourceAsync(resourceInput);
-
-            return Content(response);
+            return Content(response);            
         }
-
+        
         /// <summary>
         /// Get the parent topics by a topic id
         /// </summary>
@@ -120,6 +119,19 @@ namespace Access2Justice.Api.Controllers
             return Ok(resources);
         }
 
+        /// <summary>
+        /// Get the organizations by the location
+        /// </summary>
+        /// <param name="location"></param>
+        /// <returns></returns>
+
+        [HttpPost]
+        [Route("api/topics/getorganizationdetails")]
+        public async Task<IActionResult> GetOrganizationsWhenParamsValuePassed([FromBody]Location location)
+        {
+            var organizations = await topicsResourcesBusinessLogic.GetOrganizationsAsync(location);
+            return Ok(organizations);
+        }
         /// <summary>
         /// get topic schema
         /// </summary>
@@ -245,5 +257,31 @@ namespace Access2Justice.Api.Controllers
             var topics = await topicsResourcesBusinessLogic.CreateTopicDocumentAsync(topic);
             return Ok(topics);
         }
+
+        /// <summary>
+        /// Get the topic details by the document parent Id
+        /// </summary>
+        /// <param name="parentTopicId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("api/topics/getplandetails/{id}")]
+        public async Task<IActionResult> GetPlanDetailsAsync(string id)
+        {
+            var actionPlans = await topicsResourcesBusinessLogic.GetPlanDataAsync(id);
+            return Ok(actionPlans);
+        }
+
+        /// Get the topic details by the document parent Id
+        /// </summary>
+        /// <param name="parentTopicId"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("api/personalizedresources")]
+        public async Task<IActionResult> GetPersonalizedDataAsync([FromBody]ResourceFilter resourceInput)
+        {
+            var response = await topicsResourcesBusinessLogic.GetPersonalizedResourcesAsync(resourceInput);
+            return Content(response);
+        }
+
     }
 }
