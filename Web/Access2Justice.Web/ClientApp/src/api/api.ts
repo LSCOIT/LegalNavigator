@@ -19,5 +19,7 @@ export const api = {
   updatePlanUrl: userProfile + "/upsertuserplan",
   getProfileUrl: userProfile + "/getuserprofile",
     userPlanUrl: userProfile + "/upsertuserpersonalizedplan",
-    getOrganizationDetailsUrl: topic + '/getorganizationdetails'
+    getOrganizationDetailsUrl: topic + '/getorganizationdetails',
+    loginUrl: apiUrl + '/login',
+    logoutUrl: apiUrl + '/logout'
 }

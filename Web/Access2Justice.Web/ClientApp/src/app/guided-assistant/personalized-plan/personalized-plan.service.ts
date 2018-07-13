@@ -74,15 +74,15 @@ export class PersonalizedPlanService {
     var resourceData = sessionStorage.getItem(this.sessionKey);
     if (resourceData && resourceData.length > 0) {
       this.tempStorage = JSON.parse(resourceData);
-      for (var i = 0; i < this.tempStorage.length; i++) {
-        if (this.tempStorage[i].url.startsWith("/subtopics")) {
-          this.topics.push(this.tempStorage[i].itemId);
+      for (var index = 0; index < this.tempStorage.length; index++) {
+        if (this.tempStorage[index].url.startsWith("/subtopics")) {
+          this.topics.push(this.tempStorage[index].itemId);
         }
-        if (this.tempStorage[i].url.startsWith("/resource")) {
-          this.resources.push(this.tempStorage[i].itemId);
+        if (this.tempStorage[index].url.startsWith("/resource")) {
+          this.resources.push(this.tempStorage[index].itemId);
         }
-        if (this.tempStorage[i].url.startsWith("/plan")) {
-          this.planId = this.tempStorage[i].itemId;
+        if (this.tempStorage[index].url.startsWith("/plan")) {
+          this.planId = this.tempStorage[index].itemId;
         }
       }
     }
