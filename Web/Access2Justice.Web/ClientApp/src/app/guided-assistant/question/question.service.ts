@@ -1,23 +1,29 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { api } from '../../../api/api';
 import { Question } from './question';
+import { Answer } from './answers';
 
 @Injectable()
 export class QuestionService {
 
   constructor(private http: HttpClient) { }
 
-  getQuestion(): Observable<Question> {
-    return this.http.get<Question>(api.questionUrl);
+  getQuestion(params): Observable<Question> {
+    return this.http.get<Question>(api.questionUrl + '?' + params);
     //return this.http.get<Question>('./assets/SampleJsons/mockIntroQuestion.json');
     //return this.http.get<Question>('./assets/SampleJsons/mockRadioQuestion.json');
   }
 
-  //getNextQuestion(params): Observable<Question> {
-  //  return this.http.post<Question>(api.questionUrl, params);
-  //}
+  getNextQuestion(params: Answer): Observable<Question> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.post<Question>(api.saveAndGetNextUrl, params, httpOptions);
+  }
 
   //getPrevQuestion(params): Observable<Question> {
   //  return this.http.post<Question>(api.questionUrl, params);

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-did-you-know',
@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./did-you-know.component.css']
 })
 export class DidYouKnowComponent implements OnInit {
+  @Input() learn: any;
 
   constructor() { }
 

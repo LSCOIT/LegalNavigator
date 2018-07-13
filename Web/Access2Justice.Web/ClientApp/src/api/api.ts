@@ -12,5 +12,6 @@ export const api = {
   getResourceUrl: apiUrl + '/resources',
   searchOffsetUrl: apiUrl + '/websearch',
   breadcrumbsUrl: topic + '/getbreadcrumbs',
-  questionUrl: 'https://access2justiceapi.azurewebsites.net/api/CuratedExperience/GetComponent'
+  questionUrl: 'https://access2justiceapi.azurewebsites.net/api/CuratedExperience/Start',
+  saveAndGetNextUrl: 'https://access2justiceapi.azurewebsites.net/api/CuratedExperience/Component/SaveAndGetNext'
 }

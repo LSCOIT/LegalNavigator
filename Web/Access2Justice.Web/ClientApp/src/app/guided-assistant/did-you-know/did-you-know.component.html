@@ -1,9 +1,9 @@
-<div class="media">
+<div class="media" *ngIf="learn">
   <div class="media-left media-middle">
     <img class="media-object" src="./assets/images/icons/did_you_know.svg" alt="light bulb">
   </div>
   <div class="media-body">
     <h5 class="media-heading">Did you know?</h5>
-    <p class="ps">The most frequently suggested alternative to custody conflicts is mediation, wherein a neutral third party helps all parties find a common ground. They can also provide creative solutions and assist in drafting a settlement.</p>
+    <p class="ps">{{learn}}</p>
   </div>
 </div>
