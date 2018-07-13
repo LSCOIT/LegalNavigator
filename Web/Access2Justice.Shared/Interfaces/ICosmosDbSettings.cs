@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Access2Justice.CosmosDb.Interfaces
+namespace Access2Justice.Shared.Interfaces
 {
     public interface ICosmosDbSettings
     {
@@ -11,5 +11,7 @@ namespace Access2Justice.CosmosDb.Interfaces
         string ResourceCollectionId { get; }
         string UserProfileCollectionId { get; }
         int PageResultsCount { get; }
+        string CuratedExperienceCollectionId { get; }
+        string CuratedExperienceAnswersCollectionId { get; }
     }
 }

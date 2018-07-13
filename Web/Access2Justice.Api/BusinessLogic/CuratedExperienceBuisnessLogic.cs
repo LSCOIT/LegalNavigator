@@ -1,110 +1,158 @@
-﻿using Access2Justice.Shared.Extensions;
+﻿using Access2Justice.Api.Interfaces;
+using Access2Justice.Api.ViewModels;
 using Access2Justice.Shared.Interfaces;
-using Access2Justice.Shared.Models;
-using Newtonsoft.Json.Linq;
+using Access2Justice.Shared.Models.CuratedExperience;
+using Microsoft.Azure.Documents;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace Access2Justice.Api.BusinessLogic
 {
-    public class CuratedExperienceBuisnessLogic : ICuratedExperienceBuisnessLogic
+    public class CuratedExperienceBuisnessLogic : ICuratedExperienceBusinessLogic
     {
-        public CuratedExperience ConvertA2JAuthorToCuratedExperience(JObject a2jSchema)
+        private readonly ICosmosDbSettings dbSettings;
+        private readonly IBackendDatabaseService dbService;
+
+        public CuratedExperienceBuisnessLogic(ICosmosDbSettings cosmosDbSettings, IBackendDatabaseService backendDatabaseService)
         {
-            var cx = new CuratedExperience();
-            var a2jProperties = (a2jSchema).Properties();
-
-            cx.CuratedExperienceId = Guid.NewGuid();
-            cx.Version = a2jProperties.GetValue("version");
-            cx.Title = a2jProperties.GetValue("title");
-            cx.SubjectAreas.Add(a2jProperties.GetValue("subjectarea"));
-            cx.Description = a2jProperties.GetValue("description");
-            cx.Authors = GetAuthors(a2jProperties);
-
-            var pages = ((JObject)a2jProperties.Where(x => x.Name == "pages").FirstOrDefault()?.Value).Properties();
-            foreach (var page in pages)
-            {
-                var pageProperties = ((JObject)page.FirstOrDefault()).Properties();
-                var componentFields = GetFields(pageProperties);
-                var componentButtons = GetButtons(pageProperties);
-
-                cx.Components.Add(new Component
-                {
-                    Id = Guid.NewGuid(),
-                    Name = pageProperties.GetValue("name"),
-                    Help = pageProperties.GetValue("help"),
-                    Learn = pageProperties.GetValue("learn"),
-                    Text = pageProperties.GetValue("text"),
-                    Fields = componentFields,
-                    Buttons = componentButtons
-                });
-            }
-
-            return cx;
+            dbSettings = cosmosDbSettings;
+            dbService = backendDatabaseService;
         }
 
-        private List<Author> GetAuthors(IEnumerable<JProperty> rootProperties)
+        public async Task<CuratedExperience> GetCuratedExperience(Guid id)
         {
-            var authors = new List<Author>();
-            var a2jAuthors = rootProperties.GetArrayValue("authors");
-            foreach (var author in a2jAuthors.FirstOrDefault())
-            {
-                var authorProperties = ((JObject)author).Properties();
-
-                authors.Add(new Author
-                {
-                    Name = authorProperties.GetValue("name"),
-                    Title = authorProperties.GetValue("title"),
-                    Organization = authorProperties.GetValue("organization"),
-                    Email = authorProperties.GetValue("email")
-                });
-            }
-
-            return authors;
+            return await dbService.GetItemAsync<CuratedExperience>(id.ToString(), dbSettings.CuratedExperienceCollectionId);
         }
 
-        private List<Field> GetFields(IEnumerable<JProperty> pageProperties)
+        public CuratedExperienceComponentViewModel GetComponent(CuratedExperience curatedExperience, Guid componentId)
         {
-            var componentFields = new List<Field>();
-            var fieldsProperties = pageProperties.GetArrayValue("fields").FirstOrDefault().ToList();
-
-            foreach (var buttonProperty in fieldsProperties)
+            try
             {
-                var field = ((JObject)buttonProperty).Properties();
-                componentFields.Add(new Field
+                var dbComponent = new CuratedExperienceComponent();
+                if (componentId == default(Guid))
                 {
-                    Id = Guid.NewGuid(),
-                    Type = field.GetValue("type"),
-                    Label = field.GetValue("label"),
-                    IsRequired = bool.Parse(field.GetValue("required")),
-                    MinLength = field.GetValue("min"),
-                    MaxLength = field.GetValue("max"),
-                    InvalidPrompt = field.GetValue("invalidPrompt")
-                });
+                    dbComponent = curatedExperience.Components.First();
+                }
+                else
+                {
+                    dbComponent = curatedExperience.Components.Where(x => x.ComponentId == componentId).FirstOrDefault();
+                }
+                return MapComponentToViewModelComponent(curatedExperience, dbComponent);
             }
-
-            return componentFields;
+            catch
+            {
+                // log exception
+                return null;
+            }
         }
 
-        private List<Button> GetButtons(IEnumerable<JProperty> pageProperties)
+        public CuratedExperienceComponentViewModel FindNextComponent(CuratedExperience curatedExperience, CuratedExperienceAnswersViewModel component)
         {
-            var componentButtons = new List<Button>();
-            var buttonsProperties = pageProperties.GetArrayValue("buttons").FirstOrDefault().ToList();
-
-            foreach (var buttonProperty in buttonsProperties)
+            var allButtonsInCuratedExperience = curatedExperience.Components.Select(x => x.Buttons).ToList();
+            var userClickedButton = new Button();
+            foreach (var button in allButtonsInCuratedExperience)
             {
-                var button = ((JObject)buttonProperty).Properties();
-                componentButtons.Add(new Button
+                if (button.Where(x => x.Id == component.ButtonId).Any())
                 {
-                    Id = Guid.NewGuid(),
-                    Label = button.GetValue("label"),
-                    Destination = button.GetValue("next")
+                    userClickedButton = button.Where(x => x.Id == component.ButtonId).First();
+                }
+            }
+
+            var nextComponentToSendToUI = new CuratedExperienceComponent();
+            if(!string.IsNullOrWhiteSpace(userClickedButton.Destination))
+            {
+                if(curatedExperience.Components.Where(x => x.Name == userClickedButton.Destination).Any())
+                {
+                    nextComponentToSendToUI = curatedExperience.Components.Where(x => x.Name == userClickedButton.Destination).First();
+                }
+            }
+
+            return MapComponentToViewModelComponent(curatedExperience, nextComponentToSendToUI);
+        }
+
+        public async Task<Document> SaveAnswers(CuratedExperienceAnswersViewModel viewModelAnswer)
+        {
+            try
+            {
+                // Todo: we could store the answers doc in the session and persist it to the db when the user
+                // answers the last question. This will save us a trip to the database each time the user moves to
+                // the next step. The caveat for this is that the users will need to repeat the survey from the
+                // beginning if the session expires which might be frustrating.
+                var answersDbCollection = dbSettings.CuratedExperienceAnswersCollectionId;
+                var dbAnswers = MapViewModelAnswerToCuratedExperienceAnswers(viewModelAnswer);
+
+                var savedAnswersDoc = await dbService.GetItemAsync<CuratedExperienceAnswers>(viewModelAnswer.AnswersDocId.ToString(), answersDbCollection);
+                if (savedAnswersDoc == null)
+                {
+                    return await dbService.CreateItemAsync(dbAnswers, answersDbCollection);
+                }
+                else
+                {
+                    savedAnswersDoc.Answers.Add(dbAnswers.Answers.First());
+                    return await dbService.UpdateItemAsync(viewModelAnswer.AnswersDocId.ToString(), savedAnswersDoc, answersDbCollection);
+                }
+            }
+            catch
+            {
+                // log exception
+                return null;
+            }
+        }
+
+        private CuratedExperienceComponentViewModel MapComponentToViewModelComponent(CuratedExperience curatedExperience, CuratedExperienceComponent dbComponent)
+        {
+            int stepRemained = 0;  // Todo:@Alaa calculated remaining steps
+            return new CuratedExperienceComponentViewModel
+            {
+                CuratedExperienceId = curatedExperience.CuratedExperienceId,
+                AnswersDocId = Guid.NewGuid(),
+                StepsRemained = stepRemained,
+                ComponentId = dbComponent.ComponentId,
+                Name = dbComponent.Name,
+                Text = dbComponent.Text,
+                Help = dbComponent.Help,
+                Learn = dbComponent.Learn,
+                Tags = dbComponent.Tags,
+                Buttons = dbComponent.Buttons,
+                Fields = dbComponent.Fields,
+            };
+        }
+
+        private CuratedExperienceAnswers MapViewModelAnswerToCuratedExperienceAnswers(CuratedExperienceAnswersViewModel viewModelAnswer)
+        {
+            var selectedItemsIds = new List<Guid>();
+            foreach (var selectedFieldId in viewModelAnswer.MultiSelectionFieldIds)
+            {
+                selectedItemsIds.Add(selectedFieldId);
+            }
+
+            var filledInTexts = new List<FilledInText>();
+            foreach (var field in viewModelAnswer.Fields)
+            {
+                filledInTexts.Add(new FilledInText
+                {
+                    FieldId = field.FieldId,
+                    Value = field.Value
                 });
             }
 
-            return componentButtons;
+            var collectAnswersList = new List<Answer>();
+            collectAnswersList.Add(new Answer
+            {
+                ClickedButtonId = viewModelAnswer.ButtonId,
+                FilledInTexts = filledInTexts,
+                SelectedItemsIds = selectedItemsIds
+            });
+
+            return new CuratedExperienceAnswers
+            {
+                CuratedExperienceId = viewModelAnswer.CuratedExperienceId,
+                AnswersDocId = viewModelAnswer.AnswersDocId,
+                Answers = collectAnswersList,
+            };
         }
     }
 }
