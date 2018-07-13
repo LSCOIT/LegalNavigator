@@ -13,7 +13,7 @@
 }
 
 .secondary-img {
-  width: 80%;
+  width: 250px;
   margin: 20px auto;
 }
 
@@ -28,11 +28,13 @@
 }
 
 @media only screen and (min-width : 768px) {
-  .secondary-img {
-    width: 250px;
-  }
-
   .fullPage + div .sidebar-block {
     width: 33%;
+  }
+}
+
+@media only screen and (min-width : 992px) {
+  .secondary-img {
+    width: 100%;
   }
 }
