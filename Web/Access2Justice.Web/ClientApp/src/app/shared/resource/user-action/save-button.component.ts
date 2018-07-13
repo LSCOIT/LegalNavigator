@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Resources, CreatePlan, StepTag, PlanTag, Steps, ProfileResources, SavedResources } from '../../../guided-assistant/personalized-plan/personalized-plan';
 import { PersonalizedPlanService } from '../../../guided-assistant/personalized-plan/personalized-plan.service';
 import { environment } from '../../../../environments/environment';
-import { UpperNavService } from '../../navigation/upper-nav.service';
+import { SharedService } from '../../shared.service';
 import { Subject } from 'rxjs';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap';
 import { api } from '../../../../api/api';
@@ -32,11 +32,11 @@ export class SaveButtonComponent implements OnInit {
   resources: Resources;
   savedResources: SavedResources;
   profileResources: ProfileResources = { oId: '', resourceTags: [], type: '' };  
-  @Input() resourceId: string;
-  @Input() resourceType: string;
+  @Input() id: string;
+  @Input() type: string;
   userId: string;
   planId: string;
-  type: string;
+  //type: string;
   createPlan: CreatePlan = { planId: '', oId: '', type: '', planTags: [] };
   planDetails: any;
   updatedSteps: Array<StepTag>;
@@ -52,7 +52,7 @@ export class SaveButtonComponent implements OnInit {
     private activeRoute: ActivatedRoute,
     private personalizedPlanService: PersonalizedPlanService,
     private modalService: BsModalService,
-    private upperNavService: UpperNavService) {
+    private sharedService: SharedService) {
     let profileData = sessionStorage.getItem("profileData");
     if (profileData != undefined) {
       profileData = JSON.parse(profileData);
@@ -69,29 +69,19 @@ export class SaveButtonComponent implements OnInit {
   }
 
   savePlanResources(template: TemplateRef<any>): void {
-    this.resources = { url: '', itemId: '' };
-    this.resources.url = this.router.url;
-    if (this.activeRoute.snapshot.params['topic']) {
-      this.resources.itemId = this.activeRoute.snapshot.params['topic'];
-    } else if (this.activeRoute.snapshot.params['id']) {
-      this.resources.itemId = this.activeRoute.snapshot.params['id'];
-    }
-    if (!this.userId) {      
-      this.personalizedPlanService.saveResourcesToSession(this.resources);
+    this.resources = { url: '', itemId: '', type: '' };
+    this.resources.url = this.router.url;    
+    if (!this.userId) {
+      this.savedResources = { itemId: this.id, resourceType: this.type };
+      this.personalizedPlanService.saveResourcesToSession(this.savedResources);
       this.externalLogin();
     }
     else {
-      if (this.resources.url.startsWith("/plan")) {
-        this.planId = this.resources.itemId;
+      if (this.type == "Plan") {
+        this.planId = this.id;
         this.savePlanToProfile(template);
       }
-      if (  this.resources.url.startsWith("/subtopics") ||
-        this.resources.url.startsWith("/search")) {
-        this.type = "Topic";
-        if (this.resourceId != undefined) {
-          this.resources.itemId = this.resourceId;
-          this.type = this.resourceType;
-        }
+      else {
         this.profileResources.resourceTags = [];
         this.savedResources = { itemId: '', resourceType:'' };
         this.personalizedPlanService.getUserPlanId(this.userId)
@@ -105,8 +95,8 @@ export class SaveButtonComponent implements OnInit {
                 }
               });
             }
-            this.savedResources = { itemId: this.resources.itemId, resourceType: this.type };
-            if (this.profileResources.resourceTags != undefined && this.profileResources.resourceTags.indexOf(this.savedResources) == -1) {              
+            this.savedResources = { itemId: this.id, resourceType: this.type };
+            if (!this.sharedService.checkObjectExistInArray(this.profileResources.resourceTags, this.savedResources)) {
               this.profileResources.resourceTags.push(this.savedResources);
               this.saveResourceToProfile(this.profileResources.resourceTags, template);
             }
@@ -140,7 +130,7 @@ export class SaveButtonComponent implements OnInit {
 
   close() {
     this.modalRef.hide();
-    this.router.navigate(['profile']);
+    //this.router.navigate(['profile']);
   }
 
   saveResourceToProfile(resourceTags, template) {

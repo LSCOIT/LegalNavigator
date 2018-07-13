@@ -18,7 +18,7 @@ export const api = {
   logoutUrl: apiUrl +'/logout',
   updatePlanUrl: userProfile + "/upsertuserplan",
   getProfileUrl: userProfile + "/getuserprofile",
-  userPlanUrl: userProfile + "/upsertuserpersonalizedplan"
+  userPlanUrl: userProfile + "/upsertuserpersonalizedplan",
   getPersonalizedResourcesUrl: apiUrl + '/personalizedresources', 
   questionUrl: 'http://access2justiceapi.azurewebsites.net/api/curatedexperience?surveyId=0b7dfe9b-cec9-4490-b768-c40916d52382',
   getOrganizationDetailsUrl: topic + '/getorganizationdetails'

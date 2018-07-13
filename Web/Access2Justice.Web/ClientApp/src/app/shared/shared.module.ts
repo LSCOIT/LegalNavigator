@@ -39,6 +39,7 @@ import { UserActionSidebarComponent } from './sidebars/user-action-sidebar.compo
 import { SettingButtonComponent } from './resource/user-action/setting-button.component';
 import { UpperNavService } from './navigation/upper-nav.service';
 import { ServiceOrgService } from './sidebars/service-org.service';
+import { SharedService } from './shared.service';
 
 @NgModule({
   imports: [
@@ -111,8 +112,8 @@ import { ServiceOrgService } from './sidebars/service-org.service';
     MapResultsService,
     UpperNavService,
     PaginationService,
-    ServiceOrgService
-
+    ServiceOrgService,
+    SharedService
   ]
 })
 export class SharedModule { }

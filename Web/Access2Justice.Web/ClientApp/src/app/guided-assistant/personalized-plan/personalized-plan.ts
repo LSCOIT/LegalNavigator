@@ -1,6 +1,7 @@
 export interface Resources {
   url: string; 
-  itemId: string; 
+  itemId: string;
+  type: string;
 }
 
 export interface SavedResources {
