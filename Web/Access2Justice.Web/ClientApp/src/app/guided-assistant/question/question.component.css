@@ -16,3 +16,24 @@ label {
   padding: 10px;
   border-radius: 3px;
 }
+
+.button-container {
+  display: inline-block;
+  cursor: pointer;
+  font-size: 22px;
+  margin-right: 20px;
+  height: 45px;
+}
+
+.button-container input {
+  position: absolute;
+  cursor: pointer;
+}
+
+.radio-label {
+  width: 50%;
+  padding: 10px 15px;
+  border: 1px solid #CCC;
+  border-radius: 3px;
+}
+

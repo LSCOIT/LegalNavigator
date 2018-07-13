@@ -8,37 +8,37 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { Question } from './question';
 
-const sampleQuestion: Question = {
-  title: "sample question",
-  questionId: "ABDC",
-  questionType: "singleselection",
-  choices: [],
-  userAnswer: "ASDF"
-};
+//const sampleQuestion: Question = {
+//  title: "sample question",
+//  questionId: "ABDC",
+//  questionType: "singleselection",
+//  choices: [],
+//  userAnswer: "ASDF"
+//};
 
-const sampleSingleSelectionQuestion: Question = {
-  title: "single selection question",
-  questionId: "ABDC",
-  questionType: "singleselection",
-  choices: [],
-  userAnswer: "ASDF"
-};
+//const sampleSingleSelectionQuestion: Question = {
+//  title: "single selection question",
+//  questionId: "ABDC",
+//  questionType: "singleselection",
+//  choices: [],
+//  userAnswer: "ASDF"
+//};
 
-const sampleMultipleSelectionQuestion: Question = {
-  title: "multiple selection question",
-  questionId: "ABDC",
-  questionType: "multipleselection",
-  choices: [],
-  userAnswer: "ASDF"
-};
+//const sampleMultipleSelectionQuestion: Question = {
+//  title: "multiple selection question",
+//  questionId: "ABDC",
+//  questionType: "multipleselection",
+//  choices: [],
+//  userAnswer: "ASDF"
+//};
 
-const sampleYesNoQuestion: Question = {
-  title: "yes no type question",
-  questionId: "ABDC",
-  questionType: "yesnotype",
-  choices: [],
-  userAnswer: "ASDF"
-};
+//const sampleYesNoQuestion: Question = {
+//  title: "yes no type question",
+//  questionId: "ABDC",
+//  questionType: "yesnotype",
+//  choices: [],
+//  userAnswer: "ASDF"
+//};
 
 const mockQuestionService = {
   getQuestion: () => { },
@@ -76,13 +76,13 @@ describe('QuestionComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should create method get Question', () => {
-    spyOn(questionService, "getQuestion").and.callFake((): Observable<Question> => {
-      return of(sampleQuestion);
-    });
-    component.getQuestion();
-    expect(mockQuestionService.getQuestion).toBeDefined();
-  })
+  //it('should create method get Question', () => {
+  //  spyOn(questionService, "getQuestion").and.callFake((): Observable<Question> => {
+  //    return of(sampleQuestion);
+  //  });
+  //  component.getQuestion();
+  //  expect(mockQuestionService.getQuestion).toBeDefined();
+  //})
 
   //it('should create method get Next Question', () => {
   //  spyOn(questionService, "getNextQuestion").and.callFake((): Observable<Question> => {

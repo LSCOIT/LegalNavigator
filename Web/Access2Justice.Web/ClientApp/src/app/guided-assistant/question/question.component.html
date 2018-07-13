@@ -3,24 +3,28 @@
   <form #gaForm="ngForm" (ngSubmit)="onSubmit(gaForm)">
     <div *ngIf="question.fields" class="row">
       <div *ngFor="let field of question.fields" class="question-body">
-        <div class="inputs">
-          <label>{{field.label}}</label>
-          <input class="textbox" *ngIf="field.type === 'text'" type="text" name={{field.label}} value={{field.id}} [(ngModel)]="listOptions">
-          <input class="textbox" *ngIf="field.type === 'numberzip'" type="number" name={{field.label}} value={{field.id}} [(ngModel)]="listOptions">
-          <input *ngIf="field.type === 'radio'" type="radio" name={{field.label}} value={{field.id}} [(ngModel)]="listOptions">
-          <div *ngIf="field.type ==='textpick'" class="btn-group" dropdown>
-            <button id="button-basic" dropdownToggle type="button" class="dropdown-toggle"
-                    aria-controls="dropdown-basic">
-              State
-              <span class="caret"></span>
-            </button>
-            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-                role="menu" aria-labelledby="button-basic">
-              <li role="menuitem"><a class="dropdown-item" href="#">HI</a></li>
-              <li role="menuitem"><a class="dropdown-item" href="#">AL</a></li>
-            </ul>
+        <label class="radio-label" *ngIf="field.type === 'radio'; else elseBlock" [appButtonSelected]>{{field.label}}
+          <input class="button-container pull-left" type="radio" name={{field.label}} value={{field.id}} [(ngModel)]="listOptions">
+        </label>
+        <ng-template #elseBlock>
+          <div class="inputs">
+            <label>{{field.label}}</label>
+            <input class="textbox" *ngIf="field.type === 'text'" type="text" [name]="field.label" [value]="field.id" autocomplete="off" [(ngModel)]="listOptions">
+            <input class="textbox" *ngIf="field.type === 'numberzip'" type="number" [name]="field.label" [value]="field.id" autocomplete="off" [(ngModel)]="listOptions">
+            <div *ngIf="field.type ==='textpick'" class="btn-group" dropdown>
+              <button id="button-basic" dropdownToggle type="button" class="dropdown-toggle"
+                      aria-controls="dropdown-basic">
+                State
+                <span class="caret"></span>
+              </button>
+              <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+                  role="menu" aria-labelledby="button-basic">
+                <li role="menuitem">HI</li>
+                <li role="menuitem">AL</li>
+              </ul>
+            </div>
           </div>
-        </div>
+        </ng-template>
       </div>
     </div>
     <div *ngIf="question.buttons.length > 1">

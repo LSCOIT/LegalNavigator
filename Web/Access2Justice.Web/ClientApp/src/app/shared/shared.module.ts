@@ -102,7 +102,8 @@ import { ButtonSelectedDirective } from './styling/button-selected.directive';
     UpperNavComponent,
     BreadcrumbComponent,
     UserActionSidebarComponent,
-    WebResourceComponent
+    WebResourceComponent,
+    ButtonSelectedDirective
   ],
   providers: [
     CuratedResourceService,

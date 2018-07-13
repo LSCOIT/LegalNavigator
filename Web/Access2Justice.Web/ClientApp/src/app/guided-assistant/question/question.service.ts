@@ -11,9 +11,10 @@ export class QuestionService {
   constructor(private http: HttpClient) { }
 
   getQuestion(params): Observable<Question> {
-    return this.http.get<Question>(api.questionUrl + '?' + params);
+    //return this.http.get<Question>(api.questionUrl + '?' + params);
     //return this.http.get<Question>('./assets/SampleJsons/mockIntroQuestion.json');
     //return this.http.get<Question>('./assets/SampleJsons/mockRadioQuestion.json');
+    return this.http.get<Question>('./assets/SampleJsons/mockInputQuestion.json');
   }
 
   getNextQuestion(params: Answer): Observable<Question> {
