@@ -7,6 +7,7 @@ export interface Resources {
 export interface SavedResources {
   itemId: string;
   resourceType: string;
+  resourceDetails: any;
 }
 
 export interface ProfileResources {

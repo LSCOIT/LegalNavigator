@@ -74,6 +74,11 @@ export class SearchResultsComponent implements OnInit {
           this.searchResults.resources.push(topic);
         });
       }
+      if (this.personalizedResources.webResources != undefined) {
+        this.personalizedResources.webResources.forEach(webResource => {
+          this.searchResults.resources.push(webResource);
+        });
+      }
       this.isPersonalizedresource = this.searchResults;
       this.applyFilter();
     }

@@ -15,13 +15,14 @@ export class ProfileComponent implements OnInit {
   planDetails: Array<PlanSteps> = [];
   activeActionPlan: string = '';
   resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: '', PageNumber: 0, Location: '', ResourceIds: '' };
-  personalizedResources: any;
+  personalizedResources: { resources: any, topics: any, webResources: any };
   isSavedResources: boolean = false;
   planId: string;
   userId: string;
   userName: string;
   topicIds: string[] = [];
   resourceIds: string[] = [];
+  webResources: any[] = [];
 
   constructor(private personalizedPlanService: PersonalizedPlanService, private upperNavService: UpperNavService) {
     let profileData = sessionStorage.getItem("profileData");
@@ -55,7 +56,10 @@ export class ProfileComponent implements OnInit {
               property.resourceTags.forEach(resource => {
                 if (resource.resourceType == "Topics") {
                   this.topicIds.push(resource.itemId);
-                } else {
+                } else if (resource.resourceType == "WebResources") {
+                  this.webResources.push(resource);
+                }
+                else {
                   this.resourceIds.push(resource.itemId);
                 }
               });
@@ -68,10 +72,11 @@ export class ProfileComponent implements OnInit {
   }
 
   getSavedResource(resourceFilter: IResourceFilter) {
+    this.personalizedResources = { resources: [], topics: [], webResources: this.webResources };
     this.personalizedPlanService.getPersonalizedResources(resourceFilter)
       .subscribe(response => {
         if (response != undefined) {
-          this.personalizedResources = response;
+          this.personalizedResources = { resources: response["resources"], topics: response["topics"], webResources: this.webResources };
           this.isSavedResources = true;
         }
       });
