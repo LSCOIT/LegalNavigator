@@ -4,8 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { PlanSteps, Resources } from './personalized-plan';
 import { api } from '../../../api/api';
 import { IResourceFilter } from '../../shared/search/search-results/search-results.model';
-import { environment } from '../../../environments/environment';
-import { UpperNavService } from '../../shared/navigation/upper-nav.service';
+import { SharedService } from '../../shared/shared.service';
 
 @Injectable()
 export class PersonalizedPlanService {
@@ -18,7 +17,7 @@ export class PersonalizedPlanService {
   planId: string;
   userId: string;
 
-  constructor(private http: HttpClient, private upperNavService: UpperNavService) { }
+  constructor(private http: HttpClient, private sharedService: SharedService) { }
 
   getActionPlanConditions(id): Observable<any> {
     return this.http.get<PlanSteps>(api.planUrl + '/' + id);
@@ -28,11 +27,7 @@ export class PersonalizedPlanService {
     this.resoureStorage = sessionStorage.getItem(this.sessionKey);
     if (this.resoureStorage && this.resoureStorage.length > 0) {
       this.tempStorage = JSON.parse(this.resoureStorage);
-      for (var i = 0; i < this.tempStorage.length; i++) {
-        if (JSON.stringify(this.tempStorage[i]) == JSON.stringify(resources)) {
-          this.isObjectExists = true;
-        }
-      }
+      this.isObjectExists = this.sharedService.checkObjectExistInArray(this.tempStorage, resources);
       if (!this.isObjectExists) {
         this.tempStorage.push(resources);
         sessionStorage.setItem(this.sessionKey, JSON.stringify(this.tempStorage));
@@ -82,14 +77,14 @@ export class PersonalizedPlanService {
     if (resourceData && resourceData.length > 0) {
       this.tempStorage = JSON.parse(resourceData);
       for (var i = 0; i < this.tempStorage.length; i++) {
-        if (this.tempStorage[i].url.startsWith("/subtopics")) {
+        if (this.tempStorage[i].type == "Topics") {
           this.topics.push(this.tempStorage[i].itemId);
         }
-        if (this.tempStorage[i].url.startsWith("/resource")) {
-          this.resources.push(this.tempStorage[i].itemId);
-        }
-        if (this.tempStorage[i].url.startsWith("/plan")) {
+        else if (this.tempStorage[i].type == "Plan") {
           this.planId = this.tempStorage[i].itemId;
+        }
+        else {
+          this.resources.push(this.tempStorage[i].itemId);
         }
       }
     }
@@ -108,5 +103,4 @@ export class PersonalizedPlanService {
     };
     return this.http.post(api.userPlanUrl, plan, httpOptions);
   }
-
 }

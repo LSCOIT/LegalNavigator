@@ -20,6 +20,7 @@ export class SubtopicDetailComponent implements OnInit {
   subtopics: any;
   subtopic: any;
   savedFrom: string = "subTopicDetails";
+  type: string = "Topics";
 
   constructor(
     private topicService: TopicService,

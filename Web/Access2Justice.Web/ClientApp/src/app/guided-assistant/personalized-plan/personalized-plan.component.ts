@@ -12,6 +12,7 @@ export class PersonalizedPlanComponent implements OnInit {
   activeActionPlan = this.activeRoute.snapshot.params['id'];
   topics: string;
   planDetails: Array<PlanSteps> = [];
+  type: string = "Plan";
 
   constructor(private personalizedPlanService: PersonalizedPlanService,
     private activeRoute: ActivatedRoute) { }
@@ -27,7 +28,7 @@ export class PersonalizedPlanComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getTopics();
+    this.getTopics(); 
   }
 
 }

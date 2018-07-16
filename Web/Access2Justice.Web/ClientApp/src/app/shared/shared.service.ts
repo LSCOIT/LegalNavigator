@@ -5,4 +5,14 @@ export class SharedService {
 
   constructor() { }
 
+  checkObjectExistInArray(objects, object): boolean {
+    let isObjectExists = false;
+    objects.forEach(item => {
+      if (JSON.stringify(item) == JSON.stringify(object)) {
+        isObjectExists = true;
+      }
+    });
+    return isObjectExists;
+  }
+
 }

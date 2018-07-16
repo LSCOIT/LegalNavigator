@@ -2,7 +2,6 @@ import { Component, OnInit, Input, TemplateRef } from '@angular/core';
 import { PersonalizedPlanService } from '../../../guided-assistant/personalized-plan/personalized-plan.service';
 import { RemovePlanTag, UserRemovePlanTag, StepTag, UpdatePlan, UserUpdatePlan, PlanTag, SavedResources, ProfileResources } from '../../../guided-assistant/personalized-plan/personalized-plan';
 import { ProfileComponent } from '../../../profile/profile.component';
-import { environment } from '../../../../environments/environment';
 import { PersonalizedPlanComponent } from '../../../guided-assistant/personalized-plan/personalized-plan.component';
 import { UpperNavService } from '../../navigation/upper-nav.service';
 import { resource } from 'selenium-webdriver/http';

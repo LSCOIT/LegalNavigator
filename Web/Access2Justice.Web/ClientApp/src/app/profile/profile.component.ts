@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { PersonalizedPlanService } from '../guided-assistant/personalized-plan/personalized-plan.service';
 import { PlanSteps } from '../guided-assistant/personalized-plan/personalized-plan';
 import { IResourceFilter } from '../shared/search/search-results/search-results.model';
-import { environment } from '../../environments/environment';
-import { UpperNavService } from '../shared/navigation/upper-nav.service';
 
 @Component({
   selector: 'app-profile',
@@ -23,7 +21,7 @@ export class ProfileComponent implements OnInit {
   topicIds: string[] = [];
   resourceIds: string[] = [];
 
-  constructor(private personalizedPlanService: PersonalizedPlanService, private upperNavService: UpperNavService) {
+  constructor(private personalizedPlanService: PersonalizedPlanService) {
     let profileData = sessionStorage.getItem("profileData");
     if (profileData != undefined) {
       profileData = JSON.parse(profileData);
@@ -53,7 +51,7 @@ export class ProfileComponent implements OnInit {
           response.forEach(property => {
             if (property.resourceTags != undefined) {
               property.resourceTags.forEach(resource => {
-                if (resource.resourceType === "Topic") {
+                if (resource.resourceType == "Topics") {
                   this.topicIds.push(resource.itemId);
                 } else {
                   this.resourceIds.push(resource.itemId);

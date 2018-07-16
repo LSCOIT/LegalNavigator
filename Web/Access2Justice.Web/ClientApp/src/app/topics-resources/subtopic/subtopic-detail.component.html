@@ -5,7 +5,7 @@
       <h3 *ngIf="subtopic.id == activeSubtopicParam" class="subtopic-heading text-capitalize">{{subtopic.name}}</h3>
     </div>
     <div class="col-sm-5 user-action">
-      <app-user-action-sidebar [mobile]="true"></app-user-action-sidebar>
+      <app-user-action-sidebar [mobile]="true" [id]="activeSubtopicParam" [type]="type"></app-user-action-sidebar>
     </div>
   </div>
   <div class="row">

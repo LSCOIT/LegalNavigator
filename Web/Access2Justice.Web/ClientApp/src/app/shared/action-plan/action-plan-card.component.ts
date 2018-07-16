@@ -5,8 +5,6 @@ import { PersonalizedPlanService } from '../../guided-assistant/personalized-pla
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { DomSanitizer } from '@angular/platform-browser';
-import { environment } from '../../../environments/environment';
-import { UpperNavService } from '../navigation/upper-nav.service';
 
 @Component({
   selector: 'app-action-plan-card',
@@ -36,7 +34,7 @@ export class ActionPlanCardComponent implements OnChanges {
   isUser: boolean = false;
 
   constructor(private personalizedPlanService: PersonalizedPlanService, private modalService: BsModalService,
-    public sanitizer: DomSanitizer,private upperNavService: UpperNavService) {
+    public sanitizer: DomSanitizer) {
     this.sanitizer = sanitizer;
     let profileData = sessionStorage.getItem("profileData");
     if (profileData != undefined) {
