@@ -224,10 +224,10 @@ a.carousel-control .icon-next {
   }
 
   .navbar-nav .open .dropdown-menu {
-    width: 630px;
+    width: 690px;
     min-height: 415px;
     overflow: hidden;
-    margin-top: 5px;
+    margin-top: 1px;
   }
 
   .carousel.slide {

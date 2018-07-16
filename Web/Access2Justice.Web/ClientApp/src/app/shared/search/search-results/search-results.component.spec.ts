@@ -39,7 +39,7 @@ let  sortType: any;
 let  resourceResults: ResourceResult[] = [];
 let  filterType: string = 'All';
 let  resourceTypeFilter: any[];
-let  resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: '', PageNumber: 0, Location: '' };
+  let resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: '', ResourceIds: '', PageNumber: 0, Location: '' };
 let  topicIds: any[];
 let  isServiceCall: boolean;
 let  currentPage: number = 0;

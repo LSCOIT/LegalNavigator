@@ -1,10 +1,11 @@
 ﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Access2Justice.Shared.Extensions
 {
-    public static class CuratedExperienceExtensions
+    public static class A2JAuthorExtensions
     {
         public static string GetValue(this IEnumerable<JProperty> jProperties, string propertyName)
         {
@@ -14,6 +15,18 @@ namespace Access2Justice.Shared.Extensions
         public static IEnumerable<JToken> GetArrayValue(this IEnumerable<JProperty> jProperties, string propertyName)
         {
             return jProperties.Where(x => x.Name == propertyName).FirstOrDefault()?.ToList();
+        }
+
+        public static DateTime? GetDateOrNull(this IEnumerable<JProperty> jProperties, string propertyName)
+        {
+            var dateString = jProperties.Where(x => x.Name == propertyName).FirstOrDefault()?.Value.ToString();
+
+            var date = new DateTime();
+            if (DateTime.TryParse(dateString, out date))
+            {
+                return date;
+            }
+            return null;
         }
     }
 }

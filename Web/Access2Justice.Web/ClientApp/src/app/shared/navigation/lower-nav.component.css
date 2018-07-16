@@ -136,6 +136,12 @@ ul.web-hidden {
   margin-bottom: 5px;
 }
 
+li.vertical-line {
+  border-bottom: 1px solid #f4f4f4;
+  width: 100%;
+  margin: 15px auto;
+}
+
 @media only screen and (min-width : 768px) {
   #nav-bar-toggle {
     display: block;
