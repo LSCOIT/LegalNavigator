@@ -6,6 +6,11 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Remove="Properties\PublishProfiles\Access2JusticeApi - Web Deploy.pubxml" />
     <None Remove="Properties\PublishProfiles\Access2JusticeApiV2 - Web Deploy.pubxml" />
