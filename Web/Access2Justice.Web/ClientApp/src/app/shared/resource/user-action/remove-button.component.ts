@@ -2,9 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { PersonalizedPlanService } from '../../../guided-assistant/personalized-plan/personalized-plan.service';
 import { RemovePlanTag, UserRemovePlanTag, StepTag, UpdatePlan, UserUpdatePlan, PlanTag } from '../../../guided-assistant/personalized-plan/personalized-plan';
 import { ProfileComponent } from '../../../profile/profile.component';
-import { environment } from '../../../../environments/environment';
 import { PersonalizedPlanComponent } from '../../../guided-assistant/personalized-plan/personalized-plan.component';
-import { UpperNavService } from '../../navigation/upper-nav.service';
 
 @Component({
   selector: 'app-remove-button',
@@ -26,8 +24,7 @@ export class RemoveButtonComponent implements OnInit {
   userUpdatePlan: UserUpdatePlan = { id: '', planId: '', oId: '', planTags: this.planTags, type: '' };
 
   constructor(private personalizedPlanService: PersonalizedPlanService, private profileComponent: ProfileComponent,
-    private personalizedPlanComponent: PersonalizedPlanComponent,
-    private upperNavService: UpperNavService) {
+    private personalizedPlanComponent: PersonalizedPlanComponent) {
     let profileData = sessionStorage.getItem("profileData");
     if (profileData != undefined) {
       profileData = JSON.parse(profileData);

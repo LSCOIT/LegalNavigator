@@ -4,7 +4,6 @@ import { Observable } from 'rxjs/Observable';
 import { PlanSteps, Resources } from './personalized-plan';
 import { api } from '../../../api/api';
 import { IResourceFilter } from '../../shared/search/search-results/search-results.model';
-import { environment } from '../../../environments/environment';
 import { SharedService } from '../../shared/shared.service';
 
 @Injectable()

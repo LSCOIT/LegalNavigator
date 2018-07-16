@@ -37,7 +37,6 @@ import { PaginationService } from './search/pagination.service';
 import { ActionPlanCardComponent } from './action-plan/action-plan-card.component';
 import { UserActionSidebarComponent } from './sidebars/user-action-sidebar.component';
 import { SettingButtonComponent } from './resource/user-action/setting-button.component';
-import { UpperNavService } from './navigation/upper-nav.service';
 import { ServiceOrgService } from './sidebars/service-org.service';
 import { SharedService } from './shared.service';
 
@@ -110,7 +109,6 @@ import { SharedService } from './shared.service';
     NavigateDataService,
     SearchService,
     MapResultsService,
-    UpperNavService,
     PaginationService,
     ServiceOrgService,
     SharedService
