@@ -36,7 +36,6 @@ export class SaveButtonComponent implements OnInit {
   @Input() type: string;
   userId: string;
   planId: string;
-  //type: string;
   createPlan: CreatePlan = { planId: '', oId: '', type: '', planTags: [] };
   planDetails: any;
   updatedSteps: Array<StepTag>;
@@ -130,7 +129,6 @@ export class SaveButtonComponent implements OnInit {
 
   close() {
     this.modalRef.hide();
-    //this.router.navigate(['profile']);
   }
 
   saveResourceToProfile(resourceTags, template) {
