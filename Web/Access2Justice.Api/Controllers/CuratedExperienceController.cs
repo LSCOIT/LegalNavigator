@@ -89,7 +89,7 @@ namespace Access2Justice.Api.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
-            return Ok(curatedExperienceBusinessLogic.FindNextComponent(curatedExperience, component));
+            return Ok(curatedExperienceBusinessLogic.GetNextComponent(curatedExperience, component));
         }
 
         private CuratedExperience RetrieveCachedCuratedExperience(Guid id)
