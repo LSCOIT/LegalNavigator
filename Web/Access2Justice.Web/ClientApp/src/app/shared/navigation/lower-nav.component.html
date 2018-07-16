@@ -26,9 +26,12 @@
     <div #sidenav id="sidenav">
       <a class="closebtn" (click)="closeNav()">&times;</a>
       <ul class="sidenav-menu" (click)="closeNav()">
-        <li id="home-nav"><a [routerLink]="['/']">Home</a></li><hr/>
-        <li><a [routerLink]="['/guidedassistant']">Guided Assistant</a></li><hr/>
-        <li><a [routerLink]="['/topics']">Topics &amp; Resources</a></li><hr/>
+        <li id="home-nav"><a [routerLink]="['/']">Home</a></li>
+        <li class="vertical-line"></li>
+        <li><a [routerLink]="['/guidedassistant']">Guided Assistant</a></li>
+        <li class="vertical-line"></li>
+        <li><a [routerLink]="['/topics']">Topics &amp; Resources</a></li>
+        <li class="vertical-line"></li>
         <li><a [routerLink]="['/about']">About</a></li>
       </ul>
       <div class="bottom-menu" (click)="closeNav()">

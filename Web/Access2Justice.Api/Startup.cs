@@ -1,6 +1,6 @@
 ﻿using Access2Justice.Api.BusinessLogic;
+using Access2Justice.Api.Interfaces;
 using Access2Justice.CosmosDb;
-using Access2Justice.CosmosDb.Interfaces;
 using Access2Justice.Shared;
 using Access2Justice.Shared.Bing;
 using Access2Justice.Shared.Interfaces;
@@ -30,6 +30,13 @@ namespace Access2Justice.Api
         {
             ConfigureAuth(services);
 
+            //services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(10);  // Todo:@Alaa read this from the config
+                //options.Cookie.HttpOnly = true;
+            });
+
             services.AddMvc();
 
             ILuisSettings luisSettings = new LuisSettings(Configuration.GetSection("Luis"));
@@ -42,7 +49,8 @@ namespace Access2Justice.Api
             services.AddSingleton<ILuisBusinessLogic, LuisBusinessLogic>();
             services.AddSingleton<ITopicsResourcesBusinessLogic, TopicsResourcesBusinessLogic>();
             services.AddSingleton<IWebSearchBusinessLogic, WebSearchBusinessLogic>();
-            services.AddSingleton<ICuratedExperienceBuisnessLogic, CuratedExperienceBuisnessLogic>();
+            services.AddSingleton<IA2JAuthorBusinessLogic, A2JAuthorBusinessLogic>();
+            services.AddSingleton<ICuratedExperienceBusinessLogic, CuratedExperienceBuisnessLogic>();
             services.AddTransient<IHttpClientService, HttpClientService>();
             services.AddSingleton<IUserProfileBusinessLogic, UserProfileBusinessLogic>();
             ConfigureCosmosDb(services);
@@ -75,6 +83,8 @@ namespace Access2Justice.Api
             app.UseAuthentication();
 
             ConfigureRoutes(app);
+
+            app.UseSession();
 
             app.UseMvc();
 

@@ -20,7 +20,7 @@
       </div>
       <div *ngIf="resource.resourceType === 'Action Plans'" class="media">
         <div class="media-left">
-          <img class="media-object" src="/assets/images/icons/action_plans.svg" aria-hidden="True">
+          <img class="media-object" src="/assets/images/icons/action_plans.svg" alt="Action Plan">
         </div>
         <div class="media-body">
           <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}</h4></a>
@@ -41,7 +41,7 @@
       </div>
       <div *ngIf="resource.resourceType === 'Articles'" class="media">
         <div class="media-left">
-          <img class="media-object" src="/assets/images/icons/articles.svg" aria-hidden="True">
+          <img class="media-object" src="/assets/images/icons/articles.svg" alt="Article">
         </div>
         <div class="media-body">
           <h4 class="media-heading">{{resource.name}}</h4>
@@ -50,7 +50,7 @@
       </div>
       <div *ngIf="resource.resourceType === 'Organizations'" class="media">
         <div class="media-left">
-          <img class="media-object" src="/assets/images/icons/organizations.svg" aria-hidden="True">
+          <img class="media-object" src="/assets/images/icons/organizations.svg" aria-hidden="true">
         </div>
         <div class="media-body">
           <h4 class="media-heading org-card-heading">{{resource.name}}, {{resource.type}}</h4>
@@ -74,7 +74,7 @@
       </div>
       <div *ngIf="resource.resourceType === 'Videos'" class="row">
         <div class="media-left">
-          <img class="media-object" src="/assets/images/icons/videos.svg" aria-hidden="True">
+          <img class="media-object" src="/assets/images/icons/videos.svg" alt="Video">
         </div>
         <div class="media-body">
           <h4 class="media-heading" (click)="openModal(template)">{{resource.name}}</h4>
@@ -89,7 +89,7 @@
       </div>
       <div *ngIf="resource.resourceType === 'Forms'" class="media">
         <div class="media-left">
-          <img class="media-object" src="/assets/images/icons/forms.svg" aria-hidden="True">
+          <img class="media-object" src="/assets/images/icons/forms.svg" alt="Form">
         </div>
         <div class="media-body">
           <h4 class="media-heading">{{resource.name}}</h4>
@@ -99,7 +99,7 @@
       <div *ngIf="resource.resourceType === 'Topics'" class="media">
         <div class="media-left">
           <a href="#">
-            <img class="media-object" src="#" alt="...">
+            <img class="media-object" src="#" alt="Other resource types">
           </a>
         </div>
         <div class="media-body">

@@ -11,7 +11,7 @@ import { MapLocation } from '../location/location';
   styleUrls: ['./service-org-sidebar.component.css']
 })
 export class ServiceOrgSidebarComponent implements OnInit {
-  @Input() fullPage;
+  @Input() fullPage = false;
   organizations: Organization;
   location: MapLocation;
   subscription: any;
