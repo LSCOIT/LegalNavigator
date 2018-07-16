@@ -6,6 +6,10 @@ import { api } from '../../../api/api';
 import { IResourceFilter } from '../../shared/search/search-results/search-results.model';
 import { SharedService } from '../../shared/shared.service';
 
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
+
 @Injectable()
 export class PersonalizedPlanService {
   tempStorage: Array<Resources> = [];
@@ -53,10 +57,7 @@ export class PersonalizedPlanService {
       if (this.resources) {
         resourceInput.ResourceIds = this.resources;
       }
-    }
-    const httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-    };
+    }    
 
     return this.http.put(api.getPersonalizedResourcesUrl, resourceInput, httpOptions);
   }
@@ -91,16 +92,10 @@ export class PersonalizedPlanService {
   }
 
   getMarkCompletedUpdatedPlan(updatePlan) {
-    const httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-    };
     return this.http.post(api.updatePlanUrl, updatePlan, httpOptions);
   }
 
-  userPlan(plan) {
-    const httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-    };
+  userPlan(plan) { 
     return this.http.post(api.userPlanUrl, plan, httpOptions);
   }
 }

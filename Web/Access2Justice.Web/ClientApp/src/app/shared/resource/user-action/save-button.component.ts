@@ -34,6 +34,7 @@ export class SaveButtonComponent implements OnInit {
   profileResources: ProfileResources = { oId: '', resourceTags: [], type: '' };  
   @Input() id: string;
   @Input() type: string;
+  @Input() resourceDetails: any = {};
   userId: string;
   planId: string;
   createPlan: CreatePlan = { planId: '', oId: '', type: '', planTags: [] };
@@ -67,11 +68,9 @@ export class SaveButtonComponent implements OnInit {
     form.submit();
   }
 
-  savePlanResources(template: TemplateRef<any>): void {
-    this.resources = { url: '', itemId: '', type: '' };
-    this.resources.url = this.router.url;    
+  savePlanResources(template: TemplateRef<any>): void {  
     if (!this.userId) {
-      this.savedResources = { itemId: this.id, resourceType: this.type };
+      this.savedResources = { itemId: this.id, resourceType: this.type, resourceDetails : this.resourceDetails };
       this.personalizedPlanService.saveResourcesToSession(this.savedResources);
       this.externalLogin();
     }
@@ -82,7 +81,7 @@ export class SaveButtonComponent implements OnInit {
       }
       else {
         this.profileResources.resourceTags = [];
-        this.savedResources = { itemId: '', resourceType:'' };
+        this.savedResources = { itemId: '', resourceType: '', resourceDetails: '' };
         this.personalizedPlanService.getUserPlanId(this.userId)
           .subscribe(response => {            
             if (response != undefined) {
@@ -94,7 +93,7 @@ export class SaveButtonComponent implements OnInit {
                 }
               });
             }
-            this.savedResources = { itemId: this.id, resourceType: this.type };
+            this.savedResources = { itemId: this.id, resourceType: this.type, resourceDetails: this.resourceDetails };
             if (!this.sharedService.checkObjectExistInArray(this.profileResources.resourceTags, this.savedResources)) {
               this.profileResources.resourceTags.push(this.savedResources);
               this.saveResourceToProfile(this.profileResources.resourceTags, template);
