@@ -11,12 +11,12 @@
             </li>
             <li role="menuitem">
               <a class="dropdown-item" href="#">
-                <img src="./assets/images/small-icons/share.svg" class="nav-icon" aria-hidden="true" />
+                <!--<img src="./assets/images/small-icons/share.svg" class="nav-icon" aria-hidden="true" />-->
                 <app-share-button></app-share-button>
               </a>
             </li>
             <!--<li role="menuitem" *ngIf="!isSearchResults">-->
-            <li role="menuitem">
+            <li role="menuitem" *ngIf="showRemoveOption">
               <a class="dropdown-item">
                 <app-remove-button [resourceId]="resource.id" [resourceType]="resource.resourceType" [personalizedResources]="personalizedResources"></app-remove-button>
               </a>

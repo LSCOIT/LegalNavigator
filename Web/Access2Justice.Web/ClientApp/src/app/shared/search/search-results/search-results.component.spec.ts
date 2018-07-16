@@ -9,7 +9,7 @@ import { SearchFilterComponent } from '../search-filter/search-filter.component'
 import { ResourceCardComponent } from '../../resource/resource-card/resource-card.component';
 import { GuidedAssistantSidebarComponent } from '../../sidebars/guided-assistant-sidebar.component';
 import { ServiceOrgSidebarComponent } from '../../sidebars/service-org-sidebar.component';
-import { SaveButtonComponent } from '../../resource/user-action/save-button.component';
+import { SaveButtonComponent } from '../../resource/user-action/save-button/save-button.component';
 import { ShareButtonComponent } from '../../resource/user-action/share-button.component';
 import { NavigateDataService } from '../../navigate-data.service';
 import { WebResourceComponent } from './web-resource/web-resource.component';

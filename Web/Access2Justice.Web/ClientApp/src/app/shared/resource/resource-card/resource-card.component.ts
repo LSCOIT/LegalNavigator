@@ -14,6 +14,7 @@ export class ResourceCardComponent implements OnInit {
   @Input() resource: any;
   @Input() searchResource: any;
   @Input() isSearchResults: boolean;
+  @Input() showRemoveOption: boolean;
   url: any;
 
   constructor(public sanitizer: DomSanitizer, private modalService: BsModalService) {

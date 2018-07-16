@@ -1,9 +1,8 @@
 import { Component, OnInit, Input, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Resources, CreatePlan, StepTag, PlanTag, Steps, ProfileResources, SavedResources } from '../../../guided-assistant/personalized-plan/personalized-plan';
-import { PersonalizedPlanService } from '../../../guided-assistant/personalized-plan/personalized-plan.service';
-import { environment } from '../../../../environments/environment';
-import { SharedService } from '../../shared.service';
+import { Resources, CreatePlan, StepTag, PlanTag, Steps, ProfileResources, SavedResources } from '../../../../guided-assistant/personalized-plan/personalized-plan';
+import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
+import { SharedService } from '../../../shared.service';
 import { Subject } from 'rxjs';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap';
 import { api } from '../../../../../api/api';
