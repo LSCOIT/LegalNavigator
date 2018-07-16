@@ -37,7 +37,6 @@ export class SaveButtonComponent implements OnInit {
   @Input() resourceDetails: any = {};
   userId: string;
   planId: string;
-  //type: string;
   createPlan: CreatePlan = { planId: '', oId: '', type: '', planTags: [] };
   planDetails: any;
   updatedSteps: Array<StepTag>;
@@ -69,9 +68,7 @@ export class SaveButtonComponent implements OnInit {
     form.submit();
   }
 
-  savePlanResources(template: TemplateRef<any>): void {
-    this.resources = { url: '', itemId: '', type: '' };
-    this.resources.url = this.router.url;    
+  savePlanResources(template: TemplateRef<any>): void {  
     if (!this.userId) {
       this.savedResources = { itemId: this.id, resourceType: this.type, resourceDetails : this.resourceDetails };
       this.personalizedPlanService.saveResourcesToSession(this.savedResources);
@@ -131,7 +128,6 @@ export class SaveButtonComponent implements OnInit {
 
   close() {
     this.modalRef.hide();
-    //this.router.navigate(['profile']);
   }
 
   saveResourceToProfile(resourceTags, template) {
