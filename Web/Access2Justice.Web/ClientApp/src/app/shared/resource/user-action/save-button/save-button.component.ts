@@ -68,7 +68,7 @@ export class SaveButtonComponent implements OnInit {
       }
       if (this.resources.url.startsWith("/subtopics") ||
         this.resources.url.startsWith("/search")) {
-        this.type = "Topic";
+        this.type = "Topics";
         if (this.resourceId != undefined) {
           this.resources.itemId = this.resourceId;
           this.type = this.resourceType;
