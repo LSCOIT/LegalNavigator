@@ -31,7 +31,7 @@ import { api } from '../../../../api/api';
 export class SaveButtonComponent implements OnInit {
   resources: Resources;
   savedResources: SavedResources;
-  profileResources: ProfileResources = { oId: '', resourceTags: [], type: '' };  
+  profileResources: ProfileResources = { oId: '', resourceTags: [], type: '' };
   @Input() id: string;
   @Input() type: string;
   @Input() resourceDetails: any = {};
@@ -68,7 +68,7 @@ export class SaveButtonComponent implements OnInit {
     form.submit();
   }
 
-  savePlanResources(template: TemplateRef<any>): void {  
+  savePlanResources(template: TemplateRef<any>): void {
     if (!this.userId) {
       this.savedResources = { itemId: this.id, resourceType: this.type, resourceDetails : this.resourceDetails };
       this.personalizedPlanService.saveResourcesToSession(this.savedResources);
@@ -83,7 +83,7 @@ export class SaveButtonComponent implements OnInit {
         this.profileResources.resourceTags = [];
         this.savedResources = { itemId: '', resourceType: '', resourceDetails: '' };
         this.personalizedPlanService.getUserPlanId(this.userId)
-          .subscribe(response => {            
+          .subscribe(response => {
             if (response != undefined) {
               response.forEach(property => {
                 if (property.resourceTags) {
@@ -122,7 +122,7 @@ export class SaveButtonComponent implements OnInit {
             console.log("Saved Successfully");
             this.isSavedPlan = true;
             this.modalRef = this.modalService.show(template);
-            });
+          });
       });
   }
 
