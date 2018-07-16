@@ -51,7 +51,6 @@ namespace Access2Justice.Api
                             user.UserName = identity.Name;
                             user.UserId = identity.Claims.Where(x => x.Type.Contains("nameidentifier")).Select(x => x.Value).FirstOrDefault();
                             context.Response.Cookies.Append("profileData", Newtonsoft.Json.JsonConvert.SerializeObject(user));
-                            context.ReturnUri = Configuration["Api:Endpoint"];
                             context.Response.Redirect(context.ReturnUri, true);
                         }
                         return Task.FromResult(0);
@@ -112,7 +111,8 @@ namespace Access2Justice.Api
             {
                 builder.Run(async context =>
                 {
-                    await context.ChallengeAsync("Microsoft-Auth", new AuthenticationProperties() { RedirectUri = "/" });
+                    string refererUrl = context.Request.Headers["Referer"];
+                    await context.ChallengeAsync("Microsoft-Auth", new AuthenticationProperties() { RedirectUri = refererUrl ?? "/" });
                     return;
                 });
             });
@@ -121,8 +121,16 @@ namespace Access2Justice.Api
             {
                 builder.Run(async context =>
                 {
+                    Uri refererUrl = new Uri(context.Request.Headers["Referer"]);
                     await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                    context.Response.Redirect(Configuration["Api:Endpoint"]);
+                    if (refererUrl != null)
+                    {
+                        context.Response.Redirect(refererUrl.Scheme + "://" + refererUrl.Authority);
+                    }
+                    else
+                    {
+                        context.Response.Redirect(Configuration["Api:Endpoint"]);
+                    }
                 });
             });
         }
