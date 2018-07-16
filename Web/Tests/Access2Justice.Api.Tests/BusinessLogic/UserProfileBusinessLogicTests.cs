@@ -1,16 +1,15 @@
-﻿using Access2Justice.CosmosDb.Interfaces;
-using Access2Justice.Shared.Interfaces;
-using Access2Justice.Api.BusinessLogic;
-using System;
-using NSubstitute;
-using Xunit;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using Microsoft.Azure.Documents;
-using System.IO;
-using System.Collections.Generic;
+﻿using Access2Justice.Api.BusinessLogic;
 using Access2Justice.Api.Tests.TestData;
+using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
+using Microsoft.Azure.Documents;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using NSubstitute;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using Xunit;
 
 namespace Access2Justice.Api.Tests.BusinessLogic
 {

@@ -1,5 +1,4 @@
-﻿using Access2Justice.CosmosDb.Interfaces;
-using Access2Justice.Shared.Interfaces;
+﻿using Access2Justice.Shared.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Access2Justice.Shared.Models;
@@ -8,8 +7,8 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Access2Justice.Api.BusinessLogic
 {

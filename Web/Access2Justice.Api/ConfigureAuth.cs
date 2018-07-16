@@ -1,21 +1,21 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using Access2Justice.CosmosDb;
+using Access2Justice.Shared.Interfaces;
+using Access2Justice.Shared.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Globalization;
+using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Linq;
-using Access2Justice.Shared.Models;
-using Access2Justice.CosmosDb.Interfaces;
-using Microsoft.Azure.Documents.Client;
-using Newtonsoft.Json;
-using System;
-using Access2Justice.CosmosDb;
-using System.Globalization;
 
 namespace Access2Justice.Api
 {

@@ -1,6 +1,6 @@
 ﻿using Access2Justice.Api.BusinessLogic;
+using Access2Justice.Api.Interfaces;
 using Access2Justice.CosmosDb;
-using Access2Justice.CosmosDb.Interfaces;
 using Access2Justice.Shared;
 using Access2Justice.Shared.Bing;
 using Access2Justice.Shared.Interfaces;
@@ -30,6 +30,13 @@ namespace Access2Justice.Api
         {
             ConfigureAuth(services);
 
+            //services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(10);  // Todo:@Alaa read this from the config
+                //options.Cookie.HttpOnly = true;
+            });
+
             services.AddMvc();
 
             ILuisSettings luisSettings = new LuisSettings(Configuration.GetSection("Luis"));
@@ -42,20 +49,21 @@ namespace Access2Justice.Api
             services.AddSingleton<ILuisBusinessLogic, LuisBusinessLogic>();
             services.AddSingleton<ITopicsResourcesBusinessLogic, TopicsResourcesBusinessLogic>();
             services.AddSingleton<IWebSearchBusinessLogic, WebSearchBusinessLogic>();
-            services.AddSingleton<ICuratedExperienceBuisnessLogic, CuratedExperienceBuisnessLogic>();
+            services.AddSingleton<IA2JAuthorBusinessLogic, A2JAuthorBusinessLogic>();
+            services.AddSingleton<ICuratedExperienceBusinessLogic, CuratedExperienceBuisnessLogic>();
             services.AddTransient<IHttpClientService, HttpClientService>();
             services.AddSingleton<IUserProfileBusinessLogic, UserProfileBusinessLogic>();
             ConfigureCosmosDb(services);
 
             services.AddSwaggerGen(c =>
-                {
-                    c.SwaggerDoc("v1", new Info { Title = "Access2Justice API", Version = "v1" });
-                    c.TagActionsBy(api => api.GroupName);
-                    c.DescribeAllEnumsAsStrings();
-                    c.OrderActionsBy((apiDesc) => $"{apiDesc.RelativePath}_{apiDesc.HttpMethod}");
-                    c.OperationFilter<FileUploadOperation>(); //Register File Upload Operation Filter
-                    c.OperationFilter<FileUploadOperationResource>();
-                });
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Access2Justice API", Version = "v1" });
+                c.TagActionsBy(api => api.GroupName);
+                c.DescribeAllEnumsAsStrings();
+                c.OrderActionsBy((apiDesc) => $"{apiDesc.RelativePath}_{apiDesc.HttpMethod}");
+                c.OperationFilter<FileUploadOperation>(); //Register File Upload Operation Filter
+                c.OperationFilter<FileUploadOperationResource>();
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -64,19 +72,19 @@ namespace Access2Justice.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                app.UseExceptionHandler("/Error");
-            }
 
             var apiEnpoint = new Uri(Configuration.GetSection("Api:Endpoint").Value);
-            var url = $"{apiEnpoint.Scheme}://{apiEnpoint.Host}:{apiEnpoint.Port}";
-            app.UseCors(builder => builder.WithOrigins(url).AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-            app.UseCors(builder => builder.WithOrigins("http://localhost:61726").AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            var url = $"{apiEnpoint.Scheme}://{apiEnpoint.Host}:{apiEnpoint.Port}";         
+            app.UseCors(builder => builder.WithOrigins(url)
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
 
             app.UseAuthentication();
 
             ConfigureRoutes(app);
+
+            app.UseSession();
 
             app.UseMvc();
 
@@ -102,8 +110,7 @@ namespace Access2Justice.Api
                 });
             });
 
-            app.UseSwaggerUI(c =>
-            {
+            app.UseSwaggerUI(c => {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Access2Justice API");
             });
 
