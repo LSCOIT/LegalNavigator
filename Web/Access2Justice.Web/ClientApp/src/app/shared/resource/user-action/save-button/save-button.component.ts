@@ -59,7 +59,7 @@ export class SaveButtonComponent implements OnInit {
       this.externalLogin();
     }
     else {
-      if (this.type == "Plan") {
+      if (this.type === "Plan") {
         this.planId = this.id;
         this.savePlanToProfile(template);
       }

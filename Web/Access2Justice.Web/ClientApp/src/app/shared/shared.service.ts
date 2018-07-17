@@ -8,7 +8,7 @@ export class SharedService {
   checkObjectExistInArray(objects, object): boolean {
     let isObjectExists = false;
     objects.forEach(item => {
-      if (JSON.stringify(item) == JSON.stringify(object)) {
+      if (JSON.stringify(item) === JSON.stringify(object)) {
         isObjectExists = true;
       }
     });

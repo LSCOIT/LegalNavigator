@@ -600,7 +600,6 @@ namespace Access2Justice.Api.BusinessLogic
                 planDetails.planTags[indexOfTopicTags].id = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(topicData));
                 indexOfTopicTags++;
             }
-
             return planDetails;
         }
 
@@ -616,7 +615,6 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 Resources = await dbClient.FindItemsWhereInClauseAsync(dbSettings.ResourceCollectionId, "id", resourceFilter.ResourceIds) ?? Array.Empty<string>();
             }
-
             Topics = JsonConvert.SerializeObject(Topics);
             Resources = JsonConvert.SerializeObject(Resources);
 
@@ -624,9 +622,7 @@ namespace Access2Justice.Api.BusinessLogic
                 { "topics", JsonConvert.DeserializeObject(Topics) },
                 {"resources", JsonConvert.DeserializeObject(Resources) }
             };
-
             return personalizedResources.ToString();
-
         }
 
 

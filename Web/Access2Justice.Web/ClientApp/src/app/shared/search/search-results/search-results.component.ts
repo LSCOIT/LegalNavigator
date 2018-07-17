@@ -52,7 +52,7 @@ export class SearchResultsComponent implements OnInit {
 
   bindData() {
     this.searchResults = this.navigateDataService.getData();
-    if (this.searchResults != undefined && this.personalizedResources == undefined) {
+    if (this.searchResults != undefined && this.personalizedResources === undefined) {
       this.isInternalResource = this.searchResults.resources;
       this.isWebResource = this.searchResults.webResources;
       if (this.isWebResource) {
@@ -173,7 +173,7 @@ export class SearchResultsComponent implements OnInit {
   addResource(filterName) {
     for (var i = 0; i < this.resourceTypeFilter.length; i++) {
       if (this.resourceTypeFilter[i].ResourceName === filterName) {
-        if (this.resourceTypeFilter[i]["ResourceList"] == undefined) {
+        if (this.resourceTypeFilter[i]["ResourceList"] === undefined) {
           this.resourceTypeFilter[i]["ResourceList"] = [{
             'resources': this.searchResults.resources,
             'continuationToken': this.searchResults.continuationToken

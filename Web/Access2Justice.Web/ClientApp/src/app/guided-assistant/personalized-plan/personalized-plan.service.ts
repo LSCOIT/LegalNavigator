@@ -45,10 +45,10 @@ export class PersonalizedPlanService {
     if (resourceData && resourceData.length > 0) {
       this.tempStorage = JSON.parse(resourceData);
       for (var i = 0; i < this.tempStorage.length; i++) {
-        if (this.tempStorage[i].type == "Topics") {
+        if (this.tempStorage[i].type === "Topics") {
           this.topics.push(this.tempStorage[i].itemId);
         }
-        else if (this.tempStorage[i].type == "Plan") {
+        else if (this.tempStorage[i].type === "Plan") {
           this.planId = this.tempStorage[i].itemId;
         }
         else {
