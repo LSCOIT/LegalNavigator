@@ -26,14 +26,11 @@ export class QuestionComponent implements OnInit {
 
   onSubmit(gaForm: NgForm): void {
     const params = {
-      "curatedExperienceId": "f3daa1e4-5f20-47ce-ab6d-f59829f936fe",
-      "answersDocId": "c3469dee-e628-4377-b4eb-81923766b02f",
-      "buttonId": "2b92e07b-a555-48e8-ad7b-90b99ebc5c96",
+      "curatedExperienceId": this.question.curatedExperienceId,
+      "answersDocId": this.question.answersDocId,
+      "buttonId": this.question.buttons[0].id,
       "multiSelectionFieldIds": [],
-      "fields": [{
-        "fieldId": "",
-        "value": "",
-      }]
+      "fields": []
     }
     this.questionService.getNextQuestion(params)
         .subscribe(response => this.question = { ...response });

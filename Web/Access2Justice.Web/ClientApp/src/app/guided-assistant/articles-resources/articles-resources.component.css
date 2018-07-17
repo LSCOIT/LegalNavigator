@@ -1,0 +1,45 @@
+.button-wrapper {
+  margin-bottom: 0;
+  margin-top: 40px;
+}
+
+.verticle-line {
+  border-bottom: 1.5px solid #0D3FBB;
+  margin-bottom: 20px;
+}
+
+.show-articles {
+  border: 1.5px solid #0D3FBB;
+  border-bottom: none;
+  border-radius: 4px 4px 0 0;
+  background-color: #FFF;
+  margin-bottom: -1.5px;
+  padding: 10px;
+}
+
+.dropdown-icon {
+  width: 12px;
+  margin: 0 5px 2px 5px;
+}
+
+h5, span {
+  color: #000;
+  font-weight: 600;
+}
+
+li {
+  margin: 10px 0;
+}
+
+.link a {
+  color: #0D3FBB;
+}
+
+.articles-content {
+  margin: 0 8%;
+  display: none;
+}
+
+.topic-section {
+  padding: 0 15px;
+}

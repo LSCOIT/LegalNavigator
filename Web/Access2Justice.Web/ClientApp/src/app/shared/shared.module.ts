@@ -38,6 +38,7 @@ import { ActionPlanCardComponent } from './action-plan/action-plan-card.componen
 import { UserActionSidebarComponent } from './sidebars/user-action-sidebar.component';
 import { SettingButtonComponent } from './resource/user-action/setting-button.component';
 import { ServiceOrgService } from './sidebars/service-org.service';
+import { HelplineComponent } from './helpline/helpline.component';
 
 @NgModule({
   imports: [
@@ -75,7 +76,8 @@ import { ServiceOrgService } from './sidebars/service-org.service';
     MapResultsComponent,
     PaginationComponent,
     UserActionSidebarComponent,
-    SettingButtonComponent
+    SettingButtonComponent,
+    HelplineComponent
   ],
   exports: [
     ActionPlanCardComponent,
@@ -100,7 +102,8 @@ import { ServiceOrgService } from './sidebars/service-org.service';
     UpperNavComponent,
     BreadcrumbComponent,
     UserActionSidebarComponent,
-    WebResourceComponent
+    WebResourceComponent,
+    HelplineComponent
   ],
   providers: [
     CuratedResourceService,

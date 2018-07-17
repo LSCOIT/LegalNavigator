@@ -1,0 +1,8 @@
+ul li {
+  display: inline-block;
+  padding: 0 15px;
+}
+
+.user-action {
+  text-align: right;
+}
