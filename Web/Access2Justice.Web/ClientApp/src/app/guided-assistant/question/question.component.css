@@ -1,8 +1,8 @@
-.question-body {
+.inputs {
   padding: 10px 0;
 }
 
-label {
+.inputs label {
   text-align: left;
   width: 80px;
 }
@@ -12,28 +12,84 @@ label {
   width: 300px;
   height: 45px;
   background-color: #FFF;
-  border: 1px solid #CCC;
+  border: 1px solid #7E7E7E;
   padding: 10px;
-  border-radius: 3px;
+  border-radius: 4px;
 }
 
-.button-container {
-  display: inline-block;
-  cursor: pointer;
-  font-size: 22px;
-  margin-right: 20px;
-  height: 45px;
+.radio-container {
+  display: block;
+  position: relative;
+  margin: 20px auto;
+  height: auto;
+  width: 60%;
 }
 
-.button-container input {
+.radio-container ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+}
+
+ul li {
+  display: block;
+  position: relative;
+  float: left;
+  width: 100%;
+}
+
+ul li input[type=radio] {
   position: absolute;
+  visibility: hidden;
+}
+
+ul li label {
+  display: block;
+  position: relative;
+  padding: 15px 25px 15px 60px;
+  z-index: 9;
   cursor: pointer;
+  -webkit-transition: all 0.25s linear;
+  text-align: left;
+  margin: 0;
+  border: 1px solid #7E7E7E;
+  border-radius: 4px;
 }
 
-.radio-label {
-  width: 50%;
-  padding: 10px 15px;
-  border: 1px solid #CCC;
-  border-radius: 3px;
+ul li .check {
+  display: block;
+  position: absolute;
+  border: 1px solid #7E7E7E;
+  border-radius: 100%;
+  height: 20px;
+  width: 20px;
+  top: 15px;
+  left: 20px;
+  z-index: 5;
+  transition: border .25s linear;
+  -webkit-transition: border .25s linear;
 }
 
+ul li .check::before {
+  display: block;
+  position: absolute;
+  content: '';
+  border-radius: 100%;
+  height: 12px;
+  width: 12px;
+  top: 3px;
+  left: 3px;
+  margin: auto;
+  transition: background 0.25s linear;
+  -webkit-transition: background 0.25s linear;
+}
+
+input[type=radio]:checked ~ .check::before {
+  background: #0D3FB8;
+}
+
+input[type=radio]:checked ~ label {
+  background-color: #D9F2F8;
+  z-index: 0;
+}

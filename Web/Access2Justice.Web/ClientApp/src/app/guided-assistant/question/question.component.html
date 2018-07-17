@@ -3,9 +3,15 @@
   <form #gaForm="ngForm" (ngSubmit)="onSubmit(gaForm)">
     <div *ngIf="question.fields" class="row">
       <div *ngFor="let field of question.fields" class="question-body">
-        <label class="radio-label" *ngIf="field.type === 'radio'; else elseBlock" [appButtonSelected]>{{field.label}}
-          <input class="button-container pull-left" type="radio" name={{field.label}} value={{field.id}} [(ngModel)]="listOptions">
-        </label>
+        <div class="radio-container" *ngIf="field.type === 'radio'; else elseBlock">
+          <ul>
+            <li>
+              <input type="radio" id={{field.id}} name="selector">
+              <label for={{field.id}}>{{field.label}}</label>
+              <div class="check"></div>
+            </li>
+          </ul>
+        </div>
         <ng-template #elseBlock>
           <div class="inputs">
             <label>{{field.label}}</label>
