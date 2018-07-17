@@ -94,15 +94,14 @@ namespace Access2Justice.Api.Controllers
 
         private CuratedExperience RetrieveCachedCuratedExperience(Guid id)
         {
-            var cuExSession = HttpContext.Session.GetString("CuExSessionKey");
+            var cuExSession = HttpContext.Session.GetString(id.ToString());
             if (string.IsNullOrWhiteSpace(cuExSession))
             {
-                // Todo: Find a way to run this asynchronously (whenever I use any async call the 'Session' breaks!)
                 var rawCuratedExperience = curatedExperienceBusinessLogic.GetCuratedExperience(id).Result;
-                HttpContext.Session.SetObjectAsJson("CuExSessionKey", rawCuratedExperience);
+                HttpContext.Session.SetObjectAsJson(id.ToString(), rawCuratedExperience);
             }
 
-            return HttpContext.Session.GetObjectAsJson<CuratedExperience>("CuExSessionKey");
+            return HttpContext.Session.GetObjectAsJson<CuratedExperience>(id.ToString());
         }
     }
 }
