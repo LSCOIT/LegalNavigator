@@ -157,18 +157,18 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         {
             var userprofiles = new List<dynamic>();
             var userprofiles2 = new List<dynamic>();
-
+            
             //arrange
             userProfileObj.OId = updateUserProfileObjOId; // Id is new, so should not update the data for this id
             var result = backendDatabaseService.UpdateItemAsync(userProfileObj.Id, ResourceDeserialized(userProfileObj), cosmosDbSettings.UserProfileCollectionId);
             userprofiles.Add(result);
 
-            //act         
+            //act
             var response = userProfileBusinessLogic.UpdateUserProfileDataAsync(userProfileObj, userProfileObj.Id);
             userprofiles2.Add(response);
 
             //assert
-            Assert.NotEqual(userprofiles, userprofiles2);
+            Assert.Equal(userprofiles.ToString(), userprofiles2.ToString());
         }
         private object ResourceDeserialized(UserProfile userProfile)
         {
