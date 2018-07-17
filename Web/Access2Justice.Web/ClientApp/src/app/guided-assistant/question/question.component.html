@@ -2,11 +2,12 @@
   <h3>{{question.text}}</h3>
   <form #gaForm="ngForm" (ngSubmit)="onSubmit(gaForm)">
     <div *ngIf="question.fields" class="row">
-      <div *ngFor="let field of question.fields" class="question-body">
-        <div class="radio-container" *ngIf="field.type === 'radio'; else elseBlock">
+      <div *ngFor="let field of question.fields">
+        <div class="button-container" *ngIf="field.type === 'radio' || field.type === 'checkbox'; else elseBlock">
           <ul>
             <li>
-              <input type="radio" id={{field.id}} name="selector">
+              <input *ngIf="field.type === 'radio'" type="radio" id={{field.id}} name="selector">
+              <input  *ngIf="field.type === 'checkbox'" type="checkbox" id={{field.id}} name="selector">
               <label for={{field.id}}>{{field.label}}</label>
               <div class="check"></div>
             </li>
@@ -45,4 +46,3 @@
     </div>
   </form>
 </div>
-
