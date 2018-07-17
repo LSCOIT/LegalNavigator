@@ -26,8 +26,8 @@ export class PersonalizedPlanService {
     this.resoureStorage = sessionStorage.getItem(this.sessionKey);
     if (this.resoureStorage && this.resoureStorage.length > 0) {
       this.tempStorage = JSON.parse(this.resoureStorage);
-      for (var i = 0; i < this.tempStorage.length; i++) {
-        if (JSON.stringify(this.tempStorage[i]) == JSON.stringify(resources)) {
+      for (var index = 0; index < this.tempStorage.length; index++) {
+        if (JSON.stringify(this.tempStorage[index]) == JSON.stringify(resources)) {
           this.isObjectExists = true;
         }
       }
