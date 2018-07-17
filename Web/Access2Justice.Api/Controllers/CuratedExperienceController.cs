@@ -17,6 +17,7 @@ namespace Access2Justice.Api.Controllers
     {
         private readonly IA2JAuthorBusinessLogic a2jAuthorBuisnessLogic;
         private readonly ICuratedExperienceBusinessLogic curatedExperienceBusinessLogic;
+
         public CuratedExperienceController(IA2JAuthorBusinessLogic a2jAuthorBuisnessLogic, ICuratedExperienceBusinessLogic curatedExperienceBusinessLogic)
         {
             this.a2jAuthorBuisnessLogic = a2jAuthorBuisnessLogic;

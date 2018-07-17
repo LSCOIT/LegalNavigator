@@ -62,7 +62,7 @@ namespace Access2Justice.Api.BusinessLogic
         {
             try
             {
-                // Todo: we could store the answers doc in the session and persist it to the db when the user
+                // We could store the answers doc in the session and persist it to the db when the user
                 // answers the last question. This will save us a trip to the database each time the user moves to
                 // the next step. The caveat for this is that the users will need to repeat the survey from the
                 // beginning if the session expires which might be frustrating.
@@ -85,6 +85,65 @@ namespace Access2Justice.Api.BusinessLogic
                 // log exception
                 return null;
             }
+        }
+
+        public CuratedExperienceComponent FindDestinationComponent(CuratedExperience curatedExperience, Guid buttonId)
+        {
+            var allButtonsInCuratedExperience = curatedExperience.Components.Select(x => x.Buttons).ToList();
+            var currentButton = new Button();
+            foreach (var button in allButtonsInCuratedExperience)
+            {
+                if (button.Where(x => x.Id == buttonId).Any())
+                {
+                    currentButton = button.Where(x => x.Id == buttonId).First();
+                }
+            }
+
+            var destinationComponent = new CuratedExperienceComponent();
+            if (!string.IsNullOrWhiteSpace(currentButton.Destination))
+            {
+                if (curatedExperience.Components.Where(x => x.Name == currentButton.Destination).Any())
+                {
+                    destinationComponent = curatedExperience.Components.Where(x => x.Name == currentButton.Destination).First();
+                }
+            }
+
+            return destinationComponent.ComponentId == default(Guid) ? null : destinationComponent;
+        }
+
+        public int CalculateRemainingQuestions(CuratedExperience curatedExperience, CuratedExperienceComponent component)
+        {
+            var indexOfTheGivenQuestion = curatedExperience.Components.FindIndex(x => x.ComponentId == component.ComponentId);
+
+            // In any given component, max possible buttons is 3 as per the A2J Author system.
+            var button1RemainingQuestions = new List<CuratedExperienceComponent>();
+            var button2RemainingQuestions = new List<CuratedExperienceComponent>();
+            var button3RemainingQuestions = new List<CuratedExperienceComponent>();
+
+            foreach (var remainingComponent in curatedExperience.Components.Skip(indexOfTheGivenQuestion))
+            {
+                foreach (var button in remainingComponent.Buttons)
+                {
+                    switch (remainingComponent.Buttons.IndexOf(button))
+                    {
+                        case 0:
+                            button1RemainingQuestions.AddIfNotNull(FindDestinationComponent(curatedExperience, button.Id));
+                            break;
+                        case 1:
+                            button2RemainingQuestions.AddIfNotNull(FindDestinationComponent(curatedExperience, button.Id));
+                            break;
+                        case 2:
+                            button3RemainingQuestions.AddIfNotNull(FindDestinationComponent(curatedExperience, button.Id));
+                            break;
+                        default:
+                            return 0;
+                    }
+                }
+            }
+
+            // return the longest possible route
+            var allRemainingQuestions = new[] { button1RemainingQuestions, button2RemainingQuestions, button3RemainingQuestions };
+            return allRemainingQuestions.ToList().OrderByDescending(x => x.Count).First().Count;
         }
 
         private CuratedExperienceComponentViewModel MapComponentToViewModelComponent(CuratedExperience curatedExperience, CuratedExperienceComponent dbComponent, Guid answersDocId)
@@ -142,65 +201,6 @@ namespace Access2Justice.Api.BusinessLogic
                 AnswersDocId = viewModelAnswer.AnswersDocId,
                 Answers = collectAnswersList,
             };
-        }
-
-        private CuratedExperienceComponent FindDestinationComponent(CuratedExperience curatedExperience, Guid buttonId)
-        {
-            var allButtonsInCuratedExperience = curatedExperience.Components.Select(x => x.Buttons).ToList();
-            var currentButton = new Button();
-            foreach (var button in allButtonsInCuratedExperience)
-            {
-                if (button.Where(x => x.Id == buttonId).Any())
-                {
-                    currentButton = button.Where(x => x.Id == buttonId).First();
-                }
-            }
-
-            var destinationComponent = new CuratedExperienceComponent();
-            if (!string.IsNullOrWhiteSpace(currentButton.Destination))
-            {
-                if (curatedExperience.Components.Where(x => x.Name == currentButton.Destination).Any())
-                {
-                    destinationComponent = curatedExperience.Components.Where(x => x.Name == currentButton.Destination).First();
-                }
-            }
-
-            return destinationComponent.ComponentId == default(Guid) ? null : destinationComponent;
-        }
-
-        private int CalculateRemainingQuestions(CuratedExperience curatedExperience, CuratedExperienceComponent component)
-        {
-            var indexOfTheGivenQuestion = curatedExperience.Components.FindIndex(x => x.ComponentId == component.ComponentId);
-
-            // In any given component, max possible buttons is 3 as per the A2J Author system.
-            var button1RemainingQuestions = new List<CuratedExperienceComponent>();
-            var button2RemainingQuestions = new List<CuratedExperienceComponent>();
-            var button3RemainingQuestions = new List<CuratedExperienceComponent>();
-
-            foreach (var remainingComponent in curatedExperience.Components.Skip(indexOfTheGivenQuestion))
-            {
-                foreach (var button in remainingComponent.Buttons)
-                {
-                    switch (remainingComponent.Buttons.IndexOf(button))
-                    {
-                        case 0:
-                                button1RemainingQuestions.AddIfNotNull(FindDestinationComponent(curatedExperience, button.Id));
-                            break;
-                        case 1:
-                            button2RemainingQuestions.AddIfNotNull(FindDestinationComponent(curatedExperience, button.Id));
-                            break;
-                        case 2:
-                            button3RemainingQuestions.AddIfNotNull(FindDestinationComponent(curatedExperience, button.Id));
-                            break;
-                        default:
-                            return 0;
-                    }
-                }
-            }
-
-            // return the longest possible route
-            var allRemainingQuestions = new[] { button1RemainingQuestions, button2RemainingQuestions, button3RemainingQuestions };
-            return allRemainingQuestions.ToList().OrderByDescending(x => x.Count).First().Count;
         }
     }
 }

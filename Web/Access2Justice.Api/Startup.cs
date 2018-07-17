@@ -29,6 +29,7 @@ namespace Access2Justice.Api
         public void ConfigureServices(IServiceCollection services)
         {
             ConfigureAuth(services);
+
             ConfigureSession(services);
 
             services.AddMvc();
