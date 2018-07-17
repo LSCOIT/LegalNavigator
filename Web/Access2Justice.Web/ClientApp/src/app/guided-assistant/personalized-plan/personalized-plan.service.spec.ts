@@ -434,6 +434,44 @@ describe('PersonalizedPlan Service', () => {
     "_attachments": "attachments/",
     "_ts": 1531203760
   };
+  let mockupdateplan =
+    {
+      "planId": "bf8d7e7e-2574-7b39-efc7-83cb94adae07",
+      "oId": "User Id",
+      "type": "plans",
+      "planTags": [
+        {
+          "topicId": "addf41e9-1a27-4aeb-bcbb-7959f95094ba",
+          "stepTags": [
+            {
+              "id": "6b230be1-302b-7090-6cb3-fc6aa084274c",
+              "order": 1,
+              "markCompleted": true
+            },
+            {
+              "id": "d46aecee-8c79-df1b-4081-1ea02b5022df",
+              "order": 2,
+              "markCompleted": false
+            }
+          ]
+        },
+        {
+          "topicId": "932abb0a-c6bb-46da-a3d8-5f52c2c914a0",
+          "stepTags": [
+            {
+              "id": "2705d544-6af7-bd69-4f19-a1b53e346da2",
+              "order": 1,
+              "markCompleted": false
+            },
+            {
+              "id": "3d64b676-cc4b-397d-a5bb-f4a0ea6d3040",
+              "order": 2,
+              "markCompleted": false
+            }
+          ]
+        }
+      ]
+    };
 
   let service: PersonalizedPlanService;
   let mockActiveRoute: ActivatedRoute;
@@ -452,7 +490,6 @@ describe('PersonalizedPlan Service', () => {
     service = new PersonalizedPlanService(httpSpy, sharedService);
     httpSpy.get.calls.reset();
   });
-
 
   it('should be created', () => {
     expect(service).toBeTruthy();
@@ -478,12 +515,7 @@ describe('PersonalizedPlan Service', () => {
                 "type": "steps",
                 "title": "Make sure your summons is real.",
                 "description": "Why you should do this dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo.",
-                "resourceTags": [],
-                "_rid": "mwoSAJdNlwIyAAAAAAAAAA==",
-                "_self": "dbs/mwoSAA==/colls/mwoSAJdNlwI=/docs/mwoSAJdNlwIyAAAAAAAAAA==/",
-                "_etag": "\"cd00ed8e-0000-0000-0000-5b2cf6550000\"",
-                "_attachments": "attachments/",
-                "_ts": 1529673301
+                "resourceTags": []
               },
               "order": 1,
               "markCompleted": false
@@ -494,12 +526,7 @@ describe('PersonalizedPlan Service', () => {
                 "type": "steps",
                 "title": "Try to resolve the issue with your landlord to see if you can come to an agreement",
                 "description": "Why you should do this dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo.",
-                "resourceTags": [],
-                "_rid": "mwoSAJdNlwIzAAAAAAAAAA==",
-                "_self": "dbs/mwoSAA==/colls/mwoSAJdNlwI=/docs/mwoSAJdNlwIzAAAAAAAAAA==/",
-                "_etag": "\"cd00e08e-0000-0000-0000-5b2cf6500000\"",
-                "_attachments": "attachments/",
-                "_ts": 1529673296
+                "resourceTags": []
               },
               "order": 2,
               "markCompleted": false
@@ -526,17 +553,6 @@ describe('PersonalizedPlan Service', () => {
                   "state": "Hawaii",
                   "county": "Honolulu County",
                   "city": "Honolulu"
-                },
-                {
-                  "state": "Hawaii",
-                  "city": "Hawaiian Beaches"
-                },
-                {
-                  "state": "Hawaii",
-                  "city": "Haiku-Pauwela"
-                },
-                {
-                  "state": "Alaska"
                 }
               ],
               "jsonContent": "",
@@ -545,21 +561,11 @@ describe('PersonalizedPlan Service', () => {
               "createdTimeStamp": "",
               "modifiedBy": "",
               "modifiedTimeStamp": "",
-              "_rid": "mwoSALHtpAEBAAAAAAAAAA==",
-              "_self": "dbs/mwoSAA==/colls/mwoSALHtpAE=/docs/mwoSALHtpAEBAAAAAAAAAA==/",
-              "_etag": "\"2700f297-0000-0000-0000-5b3366320000\"",
-              "_attachments": "attachments/",
-              "_ts": 1530095154
             }
           ]
         },
         {}
-      ],
-      "_rid": "mwoSAJdNlwIxAAAAAAAAAA==",
-      "_self": "dbs/mwoSAA==/colls/mwoSAJdNlwI=/docs/mwoSAJdNlwIxAAAAAAAAAA==/",
-      "_etag": "\"00006bf3-0000-0000-0000-5b4314bb0000\"",
-      "_attachments": "attachments/",
-      "_ts": 1531122875
+      ]
     }
     const mockResponse = Observable.of(mockplan);
     httpSpy.get.and.returnValue(mockResponse);
@@ -621,44 +627,6 @@ describe('PersonalizedPlan Service', () => {
   });
 
   it('should return mark completed updated plan when passed value is update plan', (done) => {
-    let mockupdateplan =
-      {
-        "planId": "bf8d7e7e-2574-7b39-efc7-83cb94adae07",
-        "oId": "User Id",
-        "type": "plans",
-        "planTags": [
-          {
-            "topicId": "addf41e9-1a27-4aeb-bcbb-7959f95094ba",
-            "stepTags": [
-              {
-                "id": "6b230be1-302b-7090-6cb3-fc6aa084274c",
-                "order": 1,
-                "markCompleted": true
-              },
-              {
-                "id": "d46aecee-8c79-df1b-4081-1ea02b5022df",
-                "order": 2,
-                "markCompleted": false
-              }
-            ]
-          },
-          {
-            "topicId": "932abb0a-c6bb-46da-a3d8-5f52c2c914a0",
-            "stepTags": [
-              {
-                "id": "2705d544-6af7-bd69-4f19-a1b53e346da2",
-                "order": 1,
-                "markCompleted": false
-              },
-              {
-                "id": "3d64b676-cc4b-397d-a5bb-f4a0ea6d3040",
-                "order": 2,
-                "markCompleted": false
-              }
-            ]
-          }
-        ]
-      };
     httpSpy.post.and.returnValue(mockResponse);
     service.getMarkCompletedUpdatedPlan(mockupdateplan).subscribe(updateplan => {
       expect(httpSpy.post).toHaveBeenCalled();
@@ -668,59 +636,11 @@ describe('PersonalizedPlan Service', () => {
   });
 
   it('should return userplan when value passed is plan', (done) => {
-    let mockupdateplan =
-      {
-        "planId": "bf8d7e7e-2574-7b39-efc7-83cb94adae07",
-        "oId": "User Id",
-        "type": "plans",
-        "planTags": [
-          {
-            "topicId": "addf41e9-1a27-4aeb-bcbb-7959f95094ba",
-            "stepTags": [
-              {
-                "id": "6b230be1-302b-7090-6cb3-fc6aa084274c",
-                "order": 1,
-                "markCompleted": false
-              },
-              {
-                "id": "d46aecee-8c79-df1b-4081-1ea02b5022df",
-                "order": 2,
-                "markCompleted": false
-              }
-            ]
-          },
-          {
-            "topicId": "932abb0a-c6bb-46da-a3d8-5f52c2c914a0",
-            "stepTags": [
-              {
-                "id": "2705d544-6af7-bd69-4f19-a1b53e346da2",
-                "order": 1,
-                "markCompleted": false
-              },
-              {
-                "id": "3d64b676-cc4b-397d-a5bb-f4a0ea6d3040",
-                "order": 2,
-                "markCompleted": false
-              }
-            ]
-          }
-        ]
-      };
     httpSpy.post.and.returnValue(mockResponse);
     service.userPlan(mockupdateplan).subscribe(userplan => {
       expect(httpSpy.post).toHaveBeenCalled();
       expect(userplan).toEqual(mockPlanDetailsJson);
       done();
     });
-  });
-
-  it('should return personalized plan when input is resource input', (done) => {
-    let mockPlanid = "1234567";
-    spyOn(service, 'getPersonalizedPlan');
-    spyOn(service, 'getBookmarkedData');
-    service.getPersonalizedPlan();
-    expect(service.getPersonalizedPlan).toHaveBeenCalled();
-    expect(service.getBookmarkedData).toHaveBeenCalled();
-    expect(service.planId).toEqual(mockPlanid);
   });
 });

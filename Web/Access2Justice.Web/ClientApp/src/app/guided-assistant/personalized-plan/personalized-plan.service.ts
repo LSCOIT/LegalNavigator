@@ -26,49 +26,18 @@ export class PersonalizedPlanService {
     return this.http.get<PlanSteps>(api.planUrl + '/' + id);
   }
 
-  saveResourcesToSession(resources) {
-    this.resoureStorage = sessionStorage.getItem(this.sessionKey);
-    if (this.resoureStorage && this.resoureStorage.length > 0) {
-      this.tempStorage = JSON.parse(this.resoureStorage);
-      this.isObjectExists = this.sharedService.checkObjectExistInArray(this.tempStorage, resources);
-      if (!this.isObjectExists) {
-        this.tempStorage.push(resources);
-        sessionStorage.setItem(this.sessionKey, JSON.stringify(this.tempStorage));
-      }
-    }
-    else {
-      this.tempStorage = [resources];
-      sessionStorage.setItem(this.sessionKey, JSON.stringify(this.tempStorage));
-    }
-  }
-
-  getPersonalizedResources(resourceInput: IResourceFilter) {
-    let profileData = sessionStorage.getItem("profileData");
-    if (profileData != undefined) {
-      profileData = JSON.parse(profileData);
-      this.userId = profileData["UserId"];
-    }
-    if (this.userId === undefined) {
-      this.getBookmarkedData();
-      if (this.topics) {
-        resourceInput.TopicIds = this.topics;
-      }
-      if (this.resources) {
-        resourceInput.ResourceIds = this.resources;
-      }
-    }
-    return this.http.put(api.getPersonalizedResourcesUrl, resourceInput, httpOptions);
-  }
-
-  getPersonalizedPlan(): string {
-      this.getBookmarkedData();
-      return this.planId;
-  }
-
   getUserPlanId(oid): Observable<any> {
     return this.http.get<PlanSteps>(api.getProfileUrl + '/' + oid);
   }
-  
+
+  getMarkCompletedUpdatedPlan(updatePlan) {
+    return this.http.post(api.updatePlanUrl, updatePlan, httpOptions);
+  }
+
+  userPlan(plan) {
+    return this.http.post(api.userPlanUrl, plan, httpOptions);
+  }
+
   getBookmarkedData() {
     this.topics = [];
     this.resources = [];
@@ -89,11 +58,44 @@ export class PersonalizedPlanService {
     }
   }
 
-  getMarkCompletedUpdatedPlan(updatePlan) {
-    return this.http.post(api.updatePlanUrl, updatePlan, httpOptions);
+  getPersonalizedPlan(): string {
+    this.getBookmarkedData();
+    return this.planId;
   }
 
-  userPlan(plan) {
-    return this.http.post(api.userPlanUrl, plan, httpOptions);
+  getPersonalizedResources(resourceInput: IResourceFilter) {
+    let profileData = sessionStorage.getItem("profileData");
+    if (profileData != undefined) {
+      profileData = JSON.parse(profileData);
+      this.userId = profileData["UserId"];
+    }
+    if (this.userId === undefined) {
+      this.getBookmarkedData();
+      if (this.topics) {
+        resourceInput.TopicIds = this.topics;
+      }
+      if (this.resources) {
+        resourceInput.ResourceIds = this.resources;
+      }
+    }
+    return this.http.put(api.getPersonalizedResourcesUrl, resourceInput, httpOptions);
   }
+
+  //Below method need to be modified to store data in session if user is not logged in
+  saveResourcesToSession(resources) {
+    this.resoureStorage = sessionStorage.getItem(this.sessionKey);
+    if (this.resoureStorage && this.resoureStorage.length > 0) {
+      this.tempStorage = JSON.parse(this.resoureStorage);
+      this.isObjectExists = this.sharedService.checkObjectExistInArray(this.tempStorage, resources);
+      if (!this.isObjectExists) {
+        this.tempStorage.push(resources);
+        sessionStorage.setItem(this.sessionKey, JSON.stringify(this.tempStorage));
+      }
+    }
+    else {
+      this.tempStorage = [resources];
+      sessionStorage.setItem(this.sessionKey, JSON.stringify(this.tempStorage));
+    }
+  }
+
 }
