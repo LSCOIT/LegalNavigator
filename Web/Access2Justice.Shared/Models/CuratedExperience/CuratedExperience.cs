@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Access2Justice.Shared.Models
+namespace Access2Justice.Shared.Models.CuratedExperience
 {
     public class CuratedExperience
     {
@@ -12,54 +12,19 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "title")]
         public string Title { get; set; }
 
-        [JsonProperty(PropertyName = "subjectAreas")]
-        public IList<string> SubjectAreas { get; set; }
-
-        [JsonProperty(PropertyName = "description")]
-        public string Description { get; set; }
-
-        [JsonProperty(PropertyName = "version")]
-        public string Version { get; set; }
-
-        //[JsonProperty(PropertyName = "")]
-        //public DateTime? DateCreated { get; set; }
-
-        //[JsonProperty(PropertyName = "")]
-        //public DateTime? DateModified { get; set; }
-
-        [JsonProperty(PropertyName = "authors")]
-        public IList<Author> Authors { get; set; }
-
         [JsonProperty(PropertyName = "components")]
-        public IList<Component> Components { get; set; }
+        public IList<CuratedExperienceComponent> Components { get; set; }
 
         public CuratedExperience()
         {
-            Components = new List<Component>();
-            Authors = new List<Author>();
-            SubjectAreas = new List<string>();
+            Components = new List<CuratedExperienceComponent>();
         }
     }
 
-    public class Author
+    public class CuratedExperienceComponent
     {
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
-        [JsonProperty(PropertyName = "title")]
-        public string Title { get; set; }
-
-        [JsonProperty(PropertyName = "organization")]
-        public string Organization { get; set; }
-
-        [JsonProperty(PropertyName = "email")]
-        public string Email { get; set; }
-    }
-
-    public class Component
-    {
-        [JsonProperty(PropertyName = "id")]
-        public Guid Id { get; set; }
+        [JsonProperty(PropertyName = "componentId")]
+        public Guid ComponentId { get; set; }
 
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
@@ -73,9 +38,6 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "help")]
         public string Help { get; set; }
 
-        //[JsonProperty(PropertyName = "parentId")]
-        //public Guid ParentId { get; set; }
-
         [JsonProperty(propertyName: "tags")]
         public IList<string> Tags { get; set; }
 
@@ -85,13 +47,12 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "fields")]
         public IList<Field> Fields { get; set; }
 
-        public Component()
+        public CuratedExperienceComponent()
         {
             Tags = new List<string>();
             Buttons = new List<Button>();
             Fields = new List<Field>();
         }
-
     }
 
     public class Button
@@ -104,11 +65,6 @@ namespace Access2Justice.Shared.Models
 
         [JsonProperty(PropertyName = "destination")]
         public string Destination { get; set; }
-
-        // alaa:todo maybe we could use a field like this to encampus logic
-        // [JsonProperty(propertyName: "action")]
-        // public string Action { get; set; }
-
     }
 
     public class Field

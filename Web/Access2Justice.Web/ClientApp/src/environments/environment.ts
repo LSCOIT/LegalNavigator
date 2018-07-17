@@ -4,7 +4,7 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:57203/api',
+  apiUrl: 'http://localhost:4200/api',
   bingmap_key: '',
   map_type: false,
   internalResourcePagesToShow: 2,

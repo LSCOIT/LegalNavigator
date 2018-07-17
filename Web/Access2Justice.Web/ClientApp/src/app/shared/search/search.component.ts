@@ -12,6 +12,7 @@ import { ILuisInput } from './search-results/search-results.model';
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent implements OnInit {
+  inputText: string; 
   @Input()
   searchResults: any;
   luisInput: ILuisInput = { Sentence: '', Location: '', TranslateFrom: '', TranslateTo: '', LuisTopScoringIntent: '' };

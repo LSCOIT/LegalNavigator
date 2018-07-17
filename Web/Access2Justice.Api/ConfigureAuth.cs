@@ -1,21 +1,21 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using Access2Justice.CosmosDb;
+using Access2Justice.Shared.Interfaces;
+using Access2Justice.Shared.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Globalization;
+using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Linq;
-using Access2Justice.Shared.Models;
-using Access2Justice.CosmosDb.Interfaces;
-using Microsoft.Azure.Documents.Client;
-using Newtonsoft.Json;
-using System;
-using Access2Justice.CosmosDb;
-using System.Globalization;
 
 namespace Access2Justice.Api
 {
@@ -51,7 +51,6 @@ namespace Access2Justice.Api
                             user.UserName = identity.Name;
                             user.UserId = identity.Claims.Where(x => x.Type.Contains("nameidentifier")).Select(x => x.Value).FirstOrDefault();
                             context.Response.Cookies.Append("profileData", Newtonsoft.Json.JsonConvert.SerializeObject(user));
-                            context.ReturnUri = Configuration["Api:Endpoint"];
                             context.Response.Redirect(context.ReturnUri, true);
                         }
                         return Task.FromResult(0);
@@ -112,7 +111,8 @@ namespace Access2Justice.Api
             {
                 builder.Run(async context =>
                 {
-                    await context.ChallengeAsync("Microsoft-Auth", new AuthenticationProperties() { RedirectUri = "/" });
+                    string refererUrl = context.Request.Headers["Referer"];
+                    await context.ChallengeAsync("Microsoft-Auth", new AuthenticationProperties() { RedirectUri = refererUrl ?? "/" });
                     return;
                 });
             });
@@ -121,8 +121,16 @@ namespace Access2Justice.Api
             {
                 builder.Run(async context =>
                 {
+                    Uri refererUrl = new Uri(context.Request.Headers["Referer"]);
                     await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                    context.Response.Redirect(Configuration["Api:Endpoint"]);
+                    if (refererUrl != null)
+                    {
+                        context.Response.Redirect(refererUrl.Scheme + "://" + refererUrl.Authority);
+                    }
+                    else
+                    {
+                        context.Response.Redirect(Configuration["Api:Endpoint"]);
+                    }
                 });
             });
         }
