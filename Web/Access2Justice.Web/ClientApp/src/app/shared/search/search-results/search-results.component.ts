@@ -35,7 +35,7 @@ export class SearchResultsComponent implements OnInit {
   personalizedResources: any;
   isPersonalizedresource: boolean;
   subscription: any;
-
+  displayMessage: boolean = false;
   loading = false;
   total = 0;
   page = 1;
@@ -114,7 +114,7 @@ export class SearchResultsComponent implements OnInit {
   notifyLocationChange() {
     if (sessionStorage.getItem("localSearchMapLocation")) {
       this.location = JSON.parse(sessionStorage.getItem("localSearchMapLocation"));
-    }
+    }    
     this.subscription = this.locationService.notifyLocalLocation.subscribe((value) => {
       this.searchResults = this.navigateDataService.getData();
       this.location = value;
@@ -127,7 +127,13 @@ export class SearchResultsComponent implements OnInit {
             this.searchResults = response;
             this.navigateDataService.setData(this.searchResults);
             this.total = 0;
+            this.displayMessage = false;
             this.mapInternalResource();
+            if (this.searchResults != undefined &&
+              this.searchResults.resources != undefined &&
+              this.searchResults.resources.length === 0) {
+              this.displayMessage = true;
+            }            
           }
         });
     });
