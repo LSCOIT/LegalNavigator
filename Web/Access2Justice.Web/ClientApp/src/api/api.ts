@@ -17,6 +17,6 @@ export const api = {
   getOrganizationDetailsUrl: topic + '/getorganizationdetails',
   loginUrl: apiUrl + '/login',
   logoutUrl: apiUrl + '/logout',
-  questionUrl: 'http://access2justiceapi.azurewebsites.net/api/curatedexperience?surveyId=0b7dfe9b-cec9-4490-b768-c40916d52382'
-    
+  questionUrl: 'https://access2justiceapi.azurewebsites.net/api/CuratedExperience/Start',
+  saveAndGetNextUrl: 'https://access2justiceapi.azurewebsites.net/api/CuratedExperience/Component/SaveAndGetNext'
 }

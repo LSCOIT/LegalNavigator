@@ -10,7 +10,7 @@ import { HomeComponent } from './home/home.component';
 import { LogInComponent } from './account/log-in.component';
 import { ProfileComponent } from './profile/profile.component';
 import { PrivacyPromiseComponent } from './privacy-promise/privacy-promise.component';
-import { QuestionComponent } from './guided-assistant/question.component';
+import { CuratedExperienceComponent } from './guided-assistant/curated-experience/curated-experience.component';
 import { SearchResultsComponent } from './shared/search/search-results/search-results.component';
 import { SubtopicDetailComponent } from './topics-resources/subtopic/subtopic-detail.component';
 import { SubtopicsComponent } from './topics-resources/subtopic/subtopics.component';
@@ -22,7 +22,7 @@ import { PersonalizedPlanComponent } from './guided-assistant/personalized-plan/
 const appRoutes: Routes = [
   { path: 'search', component: SearchResultsComponent },
   { path: 'searchRefresh', component: SearchResultsComponent },
-  { path: 'guidedassistant/123', component: QuestionComponent },
+  { path: 'guidedassistant/123', component: CuratedExperienceComponent },
   { path: 'guidedassistant', component: GuidedAssistantComponent },
   { path: 'resource/:id', component: ResourceCardDetailComponent },
   { path: 'subtopics/:topic', component: SubtopicDetailComponent },
