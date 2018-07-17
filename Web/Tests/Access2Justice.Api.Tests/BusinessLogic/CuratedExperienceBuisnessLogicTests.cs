@@ -1,7 +1,9 @@
 ﻿using Access2Justice.Api.BusinessLogic;
 using Access2Justice.Api.Tests.TestData;
+using Access2Justice.Shared.Interfaces;
+using Access2Justice.Shared.Models.CuratedExperience;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using NSubstitute;
 using System;
 using System.Linq;
 using Xunit;
@@ -10,33 +12,49 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 {
     public class CuratedExperienceBuisnessLogicTests
     {
-        private readonly A2JAuthorBusinessLogic curatedExperience;
+        private readonly IBackendDatabaseService dbService;
+        private readonly ICosmosDbSettings dbSettings;
+        private readonly CuratedExperienceBuisnessLogic curatedExperience;
+
         public CuratedExperienceBuisnessLogicTests()
         {
-            curatedExperience = new A2JAuthorBusinessLogic();
+            dbService = Substitute.For<IBackendDatabaseService>();
+            dbSettings = Substitute.For<ICosmosDbSettings>();
+
+            curatedExperience = new CuratedExperienceBuisnessLogic(dbSettings, dbService);
         }
 
         [Fact]
-        public void ConvertA2JAuthorToCuratedExperienceShouldConstructValidJson()
+        public void FindDestinationComponentShouldReturnTheNextComponentInLine()
         {
             // Arrange
-            var a2j = CuratedExperienceTestData.A2JAuthorSampleSchema;
-            var a2jJson = (JObject)JsonConvert.DeserializeObject(a2j);
-            var curatedExperienceJson = curatedExperience.ConvertA2JAuthorToCuratedExperience(a2jJson);
-
-            var expectedComponantText = "Enter your name.";
-            var expectedButtonLabel = "Continue";
-            var expectedFieldLabel = "First";
-
+            var curatedExperienceJson = JsonConvert.DeserializeObject<CuratedExperience>(
+                CuratedExperienceTestData.CuratedExperienceSampleSchema);
+            var buttonId = Guid.Parse("2b92e07b-a555-48e8-ad7b-90b99ebc5c96");
+            var expectedComponentName = "2-Gender";
             // Act
-            var componentFromA2jJson = curatedExperienceJson.Components.Where(x => x.Name == "1-Name").First();
-            var buttonFromA2jJson = componentFromA2jJson.Buttons.First();
-            var fieldFromA2jJson = componentFromA2jJson.Fields.First();
+            var actualNextComponent = curatedExperience.FindDestinationComponent(curatedExperienceJson, buttonId);
 
             // Assert  
-            Assert.Equal(expectedButtonLabel, buttonFromA2jJson.Label);
-            Assert.Contains(expectedFieldLabel, fieldFromA2jJson.Label, StringComparison.InvariantCultureIgnoreCase);
-            Assert.Contains(expectedComponantText, componentFromA2jJson.Text, StringComparison.InvariantCultureIgnoreCase);
+            Assert.Equal(expectedComponentName, actualNextComponent.Name);
+        }
+
+        [Fact]
+        public void CalculateRemainingQuestionsShouldReturnLongestPossibleRoute()
+        {
+            // Arrange
+            var curatedExperienceJson = JsonConvert.DeserializeObject<CuratedExperience>(
+                CuratedExperienceTestData.CuratedExperienceSampleSchema);
+            var component = curatedExperienceJson.Components.Where(
+                x => x.ComponentId == Guid.Parse("4adec03b-4f9b-4bc9-bc44-27a8e84e30ae")).FirstOrDefault();
+            var expectedRemainingQuestions = 8;
+            
+            // Act
+            var actualRemainingQuestions = curatedExperience.CalculateRemainingQuestions(curatedExperienceJson, component);
+
+            // Assert  
+            Assert.Equal(expectedRemainingQuestions, actualRemainingQuestions);
         }
     }
+
 }
