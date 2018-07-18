@@ -24,7 +24,7 @@ namespace Access2Justice.Api.Controllers
         [Route("api/user/getuserprofile/{oid}")]
         public async Task<IActionResult> GetUserProfileDataAsync(string oid)
         {
-            var users = await userProfileBusinessLogic.GetUserProfileDataAsync(oid);
+            var users = await userProfileBusinessLogic.GetUserResourceProfileDataAsync(oid);
             return Ok(users);
         }
 

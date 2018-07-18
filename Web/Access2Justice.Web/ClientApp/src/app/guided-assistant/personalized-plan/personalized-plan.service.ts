@@ -4,7 +4,11 @@ import { Observable } from 'rxjs/Observable';
 import { PlanSteps, Resources } from './personalized-plan';
 import { api } from '../../../api/api';
 import { IResourceFilter } from '../../shared/search/search-results/search-results.model';
+import { environment } from '../../../environments/environment';
 
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
 @Injectable()
 export class PersonalizedPlanService {
   tempStorage: Array<Resources> = [];
@@ -23,10 +27,10 @@ export class PersonalizedPlanService {
 
   saveResourcesToSession(resources) {
     this.resoureStorage = sessionStorage.getItem(this.sessionKey);
-    if (this.resoureStorage != undefined && this.resoureStorage.length > 0) {
+    if (this.resoureStorage && this.resoureStorage.length > 0) {
       this.tempStorage = JSON.parse(this.resoureStorage);
       for (let index = 0; index < this.tempStorage.length; index++) {
-        if (JSON.stringify(this.tempStorage[index]) == JSON.stringify(resources)) {
+        if (JSON.stringify(this.tempStorage[index]) === JSON.stringify(resources)) {
           this.isObjectExists = true;
         }
       }
@@ -34,51 +38,58 @@ export class PersonalizedPlanService {
         this.tempStorage.push(resources);
         sessionStorage.setItem(this.sessionKey, JSON.stringify(this.tempStorage));
       }
-    }
-    else {
+    } else {
       this.tempStorage = [resources];
       sessionStorage.setItem(this.sessionKey, JSON.stringify(this.tempStorage));
     }
   }
 
   getPersonalizedResources(resourceInput: IResourceFilter) {
-    this.getBookmarkedData();
-    if (this.topics) {
-      resourceInput.TopicIds = this.topics;
+    if (!environment.userId) {
+      this.getBookmarkedData();
+      if (this.topics) {
+        resourceInput.TopicIds = this.topics;
+      }
+      if (this.resources) {
+        resourceInput.ResourceIds = this.resources;
+      }
     }
-    if (this.resources) {
-      resourceInput.ResourceIds = this.resources;
-    }
-    const httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-    };
-
     return this.http.put(api.getPersonalizedResourcesUrl, resourceInput, httpOptions);
   }
 
-  getPersonalizedPlan() {
+  getPersonalizedPlan(): string {
     this.getBookmarkedData();
     return this.planId;
   }
 
+  getUserPlanId(oid): Observable<any> {
+    return this.http.get<PlanSteps>(api.getProfileUrl + '/' + oid);
+  }
 
   getBookmarkedData() {
     this.topics = [];
     this.resources = [];
-    var resourceData = sessionStorage.getItem(this.sessionKey);
-    if (resourceData != undefined && resourceData.length > 0) {
+    let resourceData = sessionStorage.getItem(this.sessionKey);
+    if (resourceData && resourceData.length > 0) {
       this.tempStorage = JSON.parse(resourceData);
-      for (var i = 0; i < this.tempStorage.length; i++) {
-        if (this.tempStorage[i].url.startsWith("/subtopics")) {
-          this.topics.push(this.tempStorage[i].itemId);
-        }
-        if (this.tempStorage[i].url.startsWith("/resource")) {
-          this.resources.push(this.tempStorage[i].itemId);
-        }
-        if (this.tempStorage[i].url.startsWith("/plan")) {
-          this.planId = this.tempStorage[i].itemId;
+      for (let index = 0; index < this.tempStorage.length; index++) {
+        if (this.tempStorage[index].url.startsWith("/subtopics")) {
+          this.topics.push(this.tempStorage[index].itemId);
+        } else if (this.tempStorage[index].url.startsWith("/resource")) {
+          this.resources.push(this.tempStorage[index].itemId);
+        } else if (this.tempStorage[index].url.startsWith("/plan")) {
+          this.planId = this.tempStorage[index].itemId;
         }
       }
     }
   }
+
+  getMarkCompletedUpdatedPlan(updatePlan) {
+    return this.http.post(api.updatePlanUrl, updatePlan, httpOptions);
+  }
+
+  userPlan(plan) {
+    return this.http.post(api.userPlanUrl, plan, httpOptions);
+  }
+
 }

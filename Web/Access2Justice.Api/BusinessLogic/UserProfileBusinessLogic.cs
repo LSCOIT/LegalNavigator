@@ -26,6 +26,10 @@ namespace Access2Justice.Api.BusinessLogic
             userProfile = ConvertUserProfile(resultUserData);
             return userProfile;
         }
+        public async Task<dynamic> GetUserResourceProfileDataAsync(string oId)
+        {
+            return await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, Constants.OId, oId);
+        }
         public async Task<int> CreateUserProfileDataAsync(UserProfile userProfile)
         {
             UserProfile resultUserProfile = await GetUserProfileDataAsync(userProfile.OId);
@@ -37,7 +41,7 @@ namespace Access2Justice.Api.BusinessLogic
             return 0;
         }
         public async Task<int> UpdateUserProfileDataAsync(UserProfile userProfile, string userIdGuid)
-        {       
+        {
             var resultUP = GetUserProfileDataAsync(userProfile.OId);
             var userprofileObjects = JsonConvert.SerializeObject(resultUP);
 

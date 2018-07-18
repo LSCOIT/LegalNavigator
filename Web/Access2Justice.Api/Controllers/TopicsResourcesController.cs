@@ -282,6 +282,6 @@ namespace Access2Justice.Api.Controllers
             var response = await topicsResourcesBusinessLogic.GetPersonalizedResourcesAsync(resourceInput);
             return Content(response);
         }
-
+        
     }
 }

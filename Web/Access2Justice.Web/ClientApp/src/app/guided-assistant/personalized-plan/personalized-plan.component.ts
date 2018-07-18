@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { PersonalizedPlanService } from '../personalized-plan/personalized-plan.service';
+import { PlanSteps } from '../personalized-plan/personalized-plan';
 import { ActivatedRoute } from '@angular/router';
-import { PersonalizedPlanService } from './personalized-plan.service';
-import { PlanSteps } from './personalized-plan';
 
 @Component({
   selector: 'app-personalized-plan',
@@ -12,7 +12,6 @@ export class PersonalizedPlanComponent implements OnInit {
   activeActionPlan = this.activeRoute.snapshot.params['id'];
   topics: string;
   planDetails: Array<PlanSteps> = [];
-  topic: string = '';
 
   constructor(private personalizedPlanService: PersonalizedPlanService,
     private activeRoute: ActivatedRoute) { }

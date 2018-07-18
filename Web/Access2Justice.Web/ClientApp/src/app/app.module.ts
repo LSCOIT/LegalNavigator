@@ -81,7 +81,8 @@ import { CuratedExperienceComponent } from './guided-assistant/curated-experienc
     ProgressbarConfig,
     BreadcrumbService,
     PersonalizedPlanService,
-    ServiceOrgService
+    ProfileComponent,
+    PersonalizedPlanComponent
   ],
   bootstrap: [AppComponent]
 })
