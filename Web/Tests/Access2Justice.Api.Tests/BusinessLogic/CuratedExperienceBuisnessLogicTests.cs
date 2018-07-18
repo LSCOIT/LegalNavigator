@@ -50,7 +50,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var expectedRemainingQuestions = 8;
             
             // Act
-            var actualRemainingQuestions = curatedExperience.CalculateRemainingQuestionsV2(curatedExperienceJson, component);
+            var actualRemainingQuestions = curatedExperience.CalculateRemainingQuestions(curatedExperienceJson, component);
 
             // Assert  
             Assert.Equal(expectedRemainingQuestions, actualRemainingQuestions);

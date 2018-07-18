@@ -111,80 +111,30 @@ namespace Access2Justice.Api.BusinessLogic
             return destinationComponent.ComponentId == default(Guid) ? null : destinationComponent;
         }
 
-        public int CalculateRemainingQuestions(CuratedExperienceTree curatedExperience, CuratedExperienceComponent component)
+        public int CalculateRemainingQuestions(CuratedExperienceTree curatedExperience, CuratedExperienceComponent currentComponent)
         {
-            var indexOfTheGivenQuestion = curatedExperience.Components.FindIndex(x => x.ComponentId == component.ComponentId);
+            // start calculating routes based on the current component location in the json tree.
+            var indexOfCurrentComponent = curatedExperience.Components.FindIndex(x => x.ComponentId == currentComponent.ComponentId);
 
-            // In any given component, max possible buttons is 3 as per the A2J Author system.
-            var button1RemainingQuestions = new List<CuratedExperienceComponent>();
-            var button2RemainingQuestions = new List<CuratedExperienceComponent>();
-            var button3RemainingQuestions = new List<CuratedExperienceComponent>();
-
-            foreach (var remainingComponent in curatedExperience.Components.Skip(indexOfTheGivenQuestion))
-            {
-                foreach (var button in remainingComponent.Buttons)
-                {
-                    switch (remainingComponent.Buttons.IndexOf(button))
-                    {
-                        case 0:
-                            button1RemainingQuestions.AddIfNotNull(FindDestinationComponent(curatedExperience, button.Id));
-                            break;
-                        case 1:
-                            button2RemainingQuestions.AddIfNotNull(FindDestinationComponent(curatedExperience, button.Id));
-                            break;
-                        case 2:
-                            button3RemainingQuestions.AddIfNotNull(FindDestinationComponent(curatedExperience, button.Id));
-                            break;
-                        default:
-                            return 0;
-                    }
-                }
-            }
-
-            // return the longest possible route
-            var allRemainingQuestions = new[] { button1RemainingQuestions, button2RemainingQuestions, button3RemainingQuestions };
-            return allRemainingQuestions.ToList().OrderByDescending(x => x.Count).First().Count;
-        }
-
-
-
-        public int CalculateRemainingQuestionsV2(CuratedExperienceTree curatedExperience, CuratedExperienceComponent component)
-        {
             // every curated experience has one or more components; every component has one or more buttons; every button has one or more destinations.
-            var indexOfTheGivenQuestion = curatedExperience.Components.FindIndex(x => x.ComponentId == component.ComponentId);
-            var remainingQuestions = new List<List<CuratedExperienceComponent>>();
+            var possibleRoutes = new List<List<CuratedExperienceComponent>>();
 
-            foreach (var remainingComponent in curatedExperience.Components.Skip(indexOfTheGivenQuestion))
+            foreach (var component in curatedExperience.Components.Skip(indexOfCurrentComponent))
             {
-                var buttons = remainingComponent.Buttons;
-                //foreach (var button in remainingComponent.Buttons)
-                //{
-                for (int i = 0; i < buttons.Count; i++)
+                for (int i = 0; i < component.Buttons.Count; i++)
                 {
-                    //if (remainingComponent.Buttons.IndexOf(buttons[i]) == i)
-                    //{
-                    if (remainingQuestions.Count <= i)
+                    if (possibleRoutes.Count <= i)
                     {
-                        remainingQuestions.Add(new List<CuratedExperienceComponent>());
+                        possibleRoutes.Add(new List<CuratedExperienceComponent>());
                     }
-                    //var tempList = ;
-                    //var com = new List<CuratedExperienceComponent> { FindDestinationComponent(curatedExperience, buttons[i].Id) };
 
-                    remainingQuestions[i].AddIfNotNull(FindDestinationComponent(curatedExperience, buttons[i].Id));
-                    //}
-                    //}
+                    possibleRoutes[i].AddIfNotNull(FindDestinationComponent(curatedExperience, component.Buttons[i].Id));
                 }
             }
 
-
-            var breakpoint = remainingQuestions; // Todo:@Alaa - remove this temp code
-
-            //return remainingQuestions.Count;
             // return the longest possible route
-            //var allRemainingQuestions = new[] { button1RemainingQuestions, button2RemainingQuestions, button3RemainingQuestions };
-            return remainingQuestions.OrderByDescending(x => x.Count).First().Count;
+            return possibleRoutes.OrderByDescending(x => x.Count).First().Count;
         }
-
 
         private CuratedExperienceComponentViewModel MapComponentToViewModelComponent(CuratedExperienceTree curatedExperience, CuratedExperienceComponent dbComponent, Guid answersDocId)
         {
