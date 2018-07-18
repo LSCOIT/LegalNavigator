@@ -93,7 +93,7 @@ namespace Access2Justice.Api.Controllers
             return Ok(curatedExperienceBusinessLogic.GetNextComponent(curatedExperience, component));
         }
 
-        private CuratedExperience RetrieveCachedCuratedExperience(Guid id)
+        private CuratedExperienceTree RetrieveCachedCuratedExperience(Guid id)
         {
             var cuExSession = HttpContext.Session.GetString(id.ToString());
             if (string.IsNullOrWhiteSpace(cuExSession))
@@ -102,7 +102,7 @@ namespace Access2Justice.Api.Controllers
                 HttpContext.Session.SetObjectAsJson(id.ToString(), rawCuratedExperience);
             }
 
-            return HttpContext.Session.GetObjectAsJson<CuratedExperience>(id.ToString());
+            return HttpContext.Session.GetObjectAsJson<CuratedExperienceTree>(id.ToString());
         }
     }
 }

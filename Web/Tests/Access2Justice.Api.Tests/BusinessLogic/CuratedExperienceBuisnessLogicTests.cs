@@ -28,7 +28,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         public void FindDestinationComponentShouldReturnTheNextComponentInLine()
         {
             // Arrange
-            var curatedExperienceJson = JsonConvert.DeserializeObject<CuratedExperience>(
+            var curatedExperienceJson = JsonConvert.DeserializeObject<CuratedExperienceTree>(
                 CuratedExperienceTestData.CuratedExperienceSampleSchema);
             var buttonId = Guid.Parse("2b92e07b-a555-48e8-ad7b-90b99ebc5c96");
             var expectedComponentName = "2-Gender";
@@ -43,7 +43,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         public void CalculateRemainingQuestionsShouldReturnLongestPossibleRoute()
         {
             // Arrange
-            var curatedExperienceJson = JsonConvert.DeserializeObject<CuratedExperience>(
+            var curatedExperienceJson = JsonConvert.DeserializeObject<CuratedExperienceTree>(
                 CuratedExperienceTestData.CuratedExperienceSampleSchema);
             var component = curatedExperienceJson.Components.Where(
                 x => x.ComponentId == Guid.Parse("4adec03b-4f9b-4bc9-bc44-27a8e84e30ae")).FirstOrDefault();

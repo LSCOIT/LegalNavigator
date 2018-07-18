@@ -11,9 +11,9 @@ namespace Access2Justice.Api.BusinessLogic
 {
     public class A2JAuthorBusinessLogic : IA2JAuthorBusinessLogic
     {
-        public CuratedExperience ConvertA2JAuthorToCuratedExperience(JObject a2jSchema)
+        public CuratedExperienceTree ConvertA2JAuthorToCuratedExperience(JObject a2jSchema)
         {
-            var cx = new CuratedExperience();
+            var cx = new CuratedExperienceTree();
             var a2jProperties = (a2jSchema).Properties();
 
             cx.CuratedExperienceId = Guid.NewGuid();

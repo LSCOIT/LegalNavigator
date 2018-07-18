@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Access2Justice.Shared.Models.CuratedExperience
 {
-    public class CuratedExperience
+    public class CuratedExperienceTree
     {
         [JsonProperty(PropertyName = "id")]
         public Guid CuratedExperienceId { get; set; }
@@ -15,7 +15,7 @@ namespace Access2Justice.Shared.Models.CuratedExperience
         [JsonProperty(PropertyName = "components")]
         public List<CuratedExperienceComponent> Components { get; set; }
 
-        public CuratedExperience()
+        public CuratedExperienceTree()
         {
             Components = new List<CuratedExperienceComponent>();
         }

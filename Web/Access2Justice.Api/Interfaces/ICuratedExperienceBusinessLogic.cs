@@ -8,9 +8,9 @@ namespace Access2Justice.Api.Interfaces
 {
     public interface ICuratedExperienceBusinessLogic
     {
-        Task<CuratedExperience> GetCuratedExperience(Guid id);
-        CuratedExperienceComponentViewModel GetComponent(CuratedExperience curatedExperience, Guid componentId);
-        CuratedExperienceComponentViewModel GetNextComponent(CuratedExperience curatedExperience, CuratedExperienceAnswersViewModel component);
+        Task<CuratedExperienceTree> GetCuratedExperience(Guid id);
+        CuratedExperienceComponentViewModel GetComponent(CuratedExperienceTree curatedExperience, Guid componentId);
+        CuratedExperienceComponentViewModel GetNextComponent(CuratedExperienceTree curatedExperience, CuratedExperienceAnswersViewModel component);
         Task<Document> SaveAnswers(CuratedExperienceAnswersViewModel component);
     }
 }

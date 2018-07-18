@@ -122,6 +122,5 @@ namespace Access2Justice.Api
             });
 
         }
-
     }
 }

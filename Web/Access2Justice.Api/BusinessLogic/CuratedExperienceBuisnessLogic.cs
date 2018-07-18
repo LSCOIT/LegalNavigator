@@ -23,12 +23,12 @@ namespace Access2Justice.Api.BusinessLogic
             dbService = backendDatabaseService;
         }
 
-        public async Task<CuratedExperience> GetCuratedExperience(Guid id)
+        public async Task<CuratedExperienceTree> GetCuratedExperience(Guid id)
         {
-            return await dbService.GetItemAsync<CuratedExperience>(id.ToString(), dbSettings.CuratedExperienceCollectionId);
+            return await dbService.GetItemAsync<CuratedExperienceTree>(id.ToString(), dbSettings.CuratedExperienceCollectionId);
         }
 
-        public CuratedExperienceComponentViewModel GetComponent(CuratedExperience curatedExperience, Guid componentId)
+        public CuratedExperienceComponentViewModel GetComponent(CuratedExperienceTree curatedExperience, Guid componentId)
         {
             try
             {
@@ -52,7 +52,7 @@ namespace Access2Justice.Api.BusinessLogic
             }
         }
 
-        public CuratedExperienceComponentViewModel GetNextComponent(CuratedExperience curatedExperience, CuratedExperienceAnswersViewModel component)
+        public CuratedExperienceComponentViewModel GetNextComponent(CuratedExperienceTree curatedExperience, CuratedExperienceAnswersViewModel component)
         {
             return MapComponentToViewModelComponent(curatedExperience,
                 FindDestinationComponent(curatedExperience, component.ButtonId), component.AnswersDocId);
@@ -87,7 +87,7 @@ namespace Access2Justice.Api.BusinessLogic
             }
         }
 
-        public CuratedExperienceComponent FindDestinationComponent(CuratedExperience curatedExperience, Guid buttonId)
+        public CuratedExperienceComponent FindDestinationComponent(CuratedExperienceTree curatedExperience, Guid buttonId)
         {
             var allButtonsInCuratedExperience = curatedExperience.Components.Select(x => x.Buttons).ToList();
             var currentButton = new Button();
@@ -111,7 +111,7 @@ namespace Access2Justice.Api.BusinessLogic
             return destinationComponent.ComponentId == default(Guid) ? null : destinationComponent;
         }
 
-        public int CalculateRemainingQuestions(CuratedExperience curatedExperience, CuratedExperienceComponent component)
+        public int CalculateRemainingQuestions(CuratedExperienceTree curatedExperience, CuratedExperienceComponent component)
         {
             var indexOfTheGivenQuestion = curatedExperience.Components.FindIndex(x => x.ComponentId == component.ComponentId);
 
@@ -146,7 +146,7 @@ namespace Access2Justice.Api.BusinessLogic
             return allRemainingQuestions.ToList().OrderByDescending(x => x.Count).First().Count;
         }
 
-        private CuratedExperienceComponentViewModel MapComponentToViewModelComponent(CuratedExperience curatedExperience, CuratedExperienceComponent dbComponent, Guid answersDocId)
+        private CuratedExperienceComponentViewModel MapComponentToViewModelComponent(CuratedExperienceTree curatedExperience, CuratedExperienceComponent dbComponent, Guid answersDocId)
         {
             if (dbComponent == null || dbComponent.ComponentId == default(Guid))
             {
