@@ -21,5 +21,6 @@ export const api = {
   userPlanUrl: userProfile + "/upsertuserpersonalizedplan",
   getPersonalizedResourcesUrl: apiUrl + '/personalizedresources', 
   questionUrl: 'http://access2justiceapi.azurewebsites.net/api/curatedexperience?surveyId=0b7dfe9b-cec9-4490-b768-c40916d52382',
-  getOrganizationDetailsUrl: topic + '/getorganizationdetails'
+  getOrganizationDetailsUrl: topic + '/getorganizationdetails',
+  saveAndGetNextUrl: 'https://access2justiceapi.azurewebsites.net/api/CuratedExperience/Component/SaveAndGetNext'
 }
