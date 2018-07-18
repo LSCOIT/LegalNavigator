@@ -36,7 +36,7 @@ export class ProfileComponent implements OnInit {
   getpersonalizedResources() {
     this.personalizedPlanService.getPersonalizedResources(this.resourceFilter)
       .subscribe(response => {
-        if (response != undefined) {
+        if (response) {
           this.personalizedResources = response;
           this.isSavedResources = true;
         }
@@ -47,11 +47,10 @@ export class ProfileComponent implements OnInit {
     if (!this.userId) {
       this.planId = this.personalizedPlanService.getPersonalizedPlan();
       this.getTopics();
-    }
-    else {
+    } else {
       this.personalizedPlanService.getUserPlanId(this.userId)
         .subscribe(response => {
-          if (response != undefined) {
+          if (response) {
             response.forEach(property => {
               if (property.planId) {
                 this.planId = property.id;

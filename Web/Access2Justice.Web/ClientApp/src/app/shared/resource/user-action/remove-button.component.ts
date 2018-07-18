@@ -40,28 +40,38 @@ export class RemoveButtonComponent implements OnInit {
         this.planTags.push(this.planTag);
       }
     });
+    this.removePersonalizedPlanTag();
+  }
 
+  removePersonalizedPlanTag() {
     if (this.selectedPlanDetails.planDetails.planId) {
-      this.userUpdatePlan = {
-        id: this.selectedPlanDetails.planDetails.id, planId: this.selectedPlanDetails.planDetails.planId,
-        oId: this.userId, planTags: this.planTags, type: this.selectedPlanDetails.planDetails.type
-      };
-      this.personalizedPlanService.userPlan(this.userUpdatePlan)
-        .subscribe(response => {
-          if (response != undefined) {
-            this.profileComponent.getPersonalizedPlan();
-          }
-        });
+      this.removePlanTagFromUserProfile();
+    } else {
+      this.removePlanTagFromPersonalizedPlan();
     }
-    else {
-      this.updatePlan = { id: this.selectedPlanDetails.planDetails.id, oId: this.userId, planTags: this.planTags };
-      this.personalizedPlanService.getMarkCompletedUpdatedPlan(this.updatePlan)
-        .subscribe(response => {
-          if (response != undefined) {
-            this.personalizedPlanComponent.getTopics();
-          }
-        });
-    }
+  }
+
+  removePlanTagFromUserProfile() {
+    this.userUpdatePlan = {
+      id: this.selectedPlanDetails.planDetails.id, planId: this.selectedPlanDetails.planDetails.planId,
+      oId: this.userId, planTags: this.planTags, type: this.selectedPlanDetails.planDetails.type
+    };
+    this.personalizedPlanService.userPlan(this.userUpdatePlan)
+      .subscribe(response => {
+        if (response) {
+          this.profileComponent.getPersonalizedPlan();
+        }
+      });
+  }
+
+  removePlanTagFromPersonalizedPlan() {
+    this.updatePlan = { id: this.selectedPlanDetails.planDetails.id, oId: this.userId, planTags: this.planTags };
+    this.personalizedPlanService.getMarkCompletedUpdatedPlan(this.updatePlan)
+      .subscribe(response => {
+        if (response) {
+          this.personalizedPlanComponent.getTopics();
+        }
+      });
   }
 
   ngOnInit() {

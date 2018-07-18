@@ -55,8 +55,7 @@ export class SaveButtonComponent implements OnInit {
     }
     if (!this.userId) {
       this.personalizedPlanService.saveResourcesToSession(this.resources);
-    }
-    else {
+    } else {
       if (this.resources.url.startsWith("/plan")) {
         this.planId = this.resources.itemId;
         this.savePlanToProfile(template);
@@ -92,7 +91,6 @@ export class SaveButtonComponent implements OnInit {
 
   close() {
     this.modalRef.hide();
-    this.router.navigate(['profile']);
   }
 
  saveResourceToProfile(resourceTags) {

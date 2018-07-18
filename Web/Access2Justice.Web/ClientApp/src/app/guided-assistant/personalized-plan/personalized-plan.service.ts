@@ -6,6 +6,9 @@ import { api } from '../../../api/api';
 import { IResourceFilter } from '../../shared/search/search-results/search-results.model';
 import { environment } from '../../../environments/environment';
 
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
 @Injectable()
 export class PersonalizedPlanService {
   tempStorage: Array<Resources> = [];
@@ -26,8 +29,8 @@ export class PersonalizedPlanService {
     this.resoureStorage = sessionStorage.getItem(this.sessionKey);
     if (this.resoureStorage && this.resoureStorage.length > 0) {
       this.tempStorage = JSON.parse(this.resoureStorage);
-      for (var index = 0; index < this.tempStorage.length; index++) {
-        if (JSON.stringify(this.tempStorage[index]) == JSON.stringify(resources)) {
+      for (let index = 0; index < this.tempStorage.length; index++) {
+        if (JSON.stringify(this.tempStorage[index]) === JSON.stringify(resources)) {
           this.isObjectExists = true;
         }
       }
@@ -35,8 +38,7 @@ export class PersonalizedPlanService {
         this.tempStorage.push(resources);
         sessionStorage.setItem(this.sessionKey, JSON.stringify(this.tempStorage));
       }
-    }
-    else {
+    } else {
       this.tempStorage = [resources];
       sessionStorage.setItem(this.sessionKey, JSON.stringify(this.tempStorage));
     }
@@ -52,36 +54,30 @@ export class PersonalizedPlanService {
         resourceInput.ResourceIds = this.resources;
       }
     }
-    const httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-    };
-
     return this.http.put(api.getPersonalizedResourcesUrl, resourceInput, httpOptions);
   }
 
   getPersonalizedPlan(): string {
-      this.getBookmarkedData();
-      return this.planId;
+    this.getBookmarkedData();
+    return this.planId;
   }
 
   getUserPlanId(oid): Observable<any> {
     return this.http.get<PlanSteps>(api.getProfileUrl + '/' + oid);
   }
-  
+
   getBookmarkedData() {
     this.topics = [];
     this.resources = [];
-    var resourceData = sessionStorage.getItem(this.sessionKey);
+    let resourceData = sessionStorage.getItem(this.sessionKey);
     if (resourceData && resourceData.length > 0) {
       this.tempStorage = JSON.parse(resourceData);
-      for (var index = 0; index < this.tempStorage.length; index++) {
+      for (let index = 0; index < this.tempStorage.length; index++) {
         if (this.tempStorage[index].url.startsWith("/subtopics")) {
           this.topics.push(this.tempStorage[index].itemId);
-        }
-        if (this.tempStorage[index].url.startsWith("/resource")) {
+        } else if (this.tempStorage[index].url.startsWith("/resource")) {
           this.resources.push(this.tempStorage[index].itemId);
-        }
-        if (this.tempStorage[index].url.startsWith("/plan")) {
+        } else if (this.tempStorage[index].url.startsWith("/plan")) {
           this.planId = this.tempStorage[index].itemId;
         }
       }
@@ -89,16 +85,10 @@ export class PersonalizedPlanService {
   }
 
   getMarkCompletedUpdatedPlan(updatePlan) {
-    const httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-    };
     return this.http.post(api.updatePlanUrl, updatePlan, httpOptions);
   }
 
   userPlan(plan) {
-    const httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-    };
     return this.http.post(api.userPlanUrl, plan, httpOptions);
   }
 
