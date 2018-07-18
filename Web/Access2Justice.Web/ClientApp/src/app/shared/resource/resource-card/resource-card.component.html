@@ -115,16 +115,9 @@
         <div class="media-body">
           <!--TO DO Need to check on this for routing URL-->
           <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}</h4></a>
-          <div class="media-body">            
+          <div class="media-body">
             <p>{{resource.description}}</p>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-          <h4 class="media-heading">{{resource.name}}</h4>
-          <p>{{resource.description}}</p>
         </div>
       </div>
       <div *ngIf="resource.resourceType === 'WebResources'" class="media">

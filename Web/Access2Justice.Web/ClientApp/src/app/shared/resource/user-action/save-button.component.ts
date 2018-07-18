@@ -1,8 +1,7 @@
-import { Component, OnInit, Input, TemplateRef } from '@angular/core';
+import { Component, OnInit, Input, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Resources, CreatePlan, StepTag, PlanTag, Steps, ProfileResources, SavedResources } from '../../../guided-assistant/personalized-plan/personalized-plan';
 import { PersonalizedPlanService } from '../../../guided-assistant/personalized-plan/personalized-plan.service';
-import { environment } from '../../../../environments/environment';
 import { CommonService } from '../../common.service';
 import { Subject } from 'rxjs';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap';
@@ -47,6 +46,9 @@ export class SaveButtonComponent implements OnInit {
   isSavedPlan: boolean = false;
   notifySavePlan: Subject<boolean> = new Subject<boolean>();
   modalRef: BsModalRef;
+  @ViewChild('template') public templateref: TemplateRef<any>;
+  sessionKey: string = "bookmarkedResource";
+  resourceStorage: any;
 
   constructor(private router: Router,
     private activeRoute: ActivatedRoute,
@@ -139,7 +141,20 @@ export class SaveButtonComponent implements OnInit {
       });
   }
 
+  saveBookmarkedResource() {
+    this.resourceStorage = sessionStorage.getItem(this.sessionKey);
+    if (this.resourceStorage && this.resourceStorage.length > 0) {
+      this.resourceStorage = JSON.parse(this.resourceStorage);
+      this.id = this.resourceStorage[0].itemId;
+      this.type = this.resourceStorage[0].resourceType;
+      this.resourceDetails = this.resourceStorage[0].resourceDetails;
+      this.savePlanResources(this.templateref);
+      sessionStorage.removeItem(this.sessionKey);
+    }
+  }
+
   ngOnInit() {
+    this.saveBookmarkedResource();
   }
 
 }
