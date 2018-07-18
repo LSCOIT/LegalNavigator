@@ -24,7 +24,7 @@ namespace Access2Justice.Api.Controllers
         [Route("api/user/getuserprofile/{oid}")]
         public async Task<IActionResult> GetUserProfileDataAsync(string oid)
         {
-            var users = await userProfileBusinessLogic.GetUserProfileDataAsync(oid);
+            var users = await userProfileBusinessLogic.GetUserResourceProfileDataAsync(oid);
             return Ok(users);
         }
 
@@ -32,7 +32,7 @@ namespace Access2Justice.Api.Controllers
         /// Create User Profile Document
         /// </summary>
         /// <param name="userProfile"></param>
-        /// <returns></returns>        
+        /// <returns>1-Success,0-Fail</returns>        
         [HttpPost]
         [Route("api/user/createuserprofile")]
         public async Task<IActionResult> CreateUserProfileDocumentAsync(UserProfile userProfile)
@@ -46,7 +46,7 @@ namespace Access2Justice.Api.Controllers
         /// </summary>
         /// <param name="oId"></param>
         /// <param name="userProfile"></param>
-        /// <returns></returns>
+        /// <returns>1-Success,0-Fail</returns>
         [HttpPost]
         [Route("api/user/updateuserprofile")]
         public async Task<IActionResult> UpdateUserProfileDocumentAsync(string userIdGuid, UserProfile userProfile)

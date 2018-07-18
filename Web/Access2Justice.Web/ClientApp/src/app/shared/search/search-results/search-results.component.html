@@ -11,6 +11,15 @@
   <div *ngIf="isWebResource">
     <h2>We found the following web resources related to your search</h2>
   </div>
+  <div *ngIf="displayMessage">
+    <h2>Your search for this location did not match any resources.</h2>
+    <br />
+    <h4>
+      <p>Suggestions:</p>
+      <p>Try to search within a larger area.</p>
+      <p>Change the location.</p>
+    </h4>
+  </div>
   <div class="row">
     <div class="col-sm-12">
       <app-search-filter (notifyFilterCriteria)='filterSearchResults($event)' [resourceResults]="resourceResults"></app-search-filter>
@@ -20,7 +29,7 @@
     <div class="col-md-8 col-sm-12">
       <div *ngIf="isInternalResource || isPersonalizedresource" class="row center-align">
         <div *ngFor="let searchResource of searchResults.resources | searchFilter:{ filter : sortType, source : 'internal'} ">
-          <app-resource-card [searchResource]="searchResource"></app-resource-card>          
+          <app-resource-card [searchResource]="searchResource"></app-resource-card>
         </div>
       </div>
       <div *ngIf="isWebResource" class="row center-align">
@@ -46,7 +55,7 @@
     </div>
     <div *ngIf="isInternalResource" class="col-md-3 col-sm-12 pull-right">
       <div class="row">
-        <app-map-results  [searchResource]="searchResults"></app-map-results>
+        <app-map-results [searchResource]="searchResults"></app-map-results>
       </div>
       <app-guided-assistant-sidebar></app-guided-assistant-sidebar>
       <app-service-org-sidebar></app-service-org-sidebar>

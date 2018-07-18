@@ -179,7 +179,7 @@ a.carousel-control .icon-next {
   cursor: pointer;
 }
 
-ol.breadcrumb {
+.breadcrumb {
   background-color: #fff;
   border-radius: 0;
   border-top: 1px solid #f4f4f4;

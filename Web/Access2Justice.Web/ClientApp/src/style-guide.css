@@ -85,6 +85,7 @@ button, .btn {
 .btn-secondary {
   border: 1px solid #0D3FB8;
   color: #0D3FB8;
+  background-color: #FFF;
 }
 
 .btn-secondary:hover {
@@ -104,6 +105,121 @@ button, .btn {
   background-color:  #fff;
   border-radius: 5px;
   padding: 10px 40px;
+}
+
+/*Button Selected Effect*/
+.button-container {
+  display: block;
+  position: relative;
+  margin: 20px auto;
+  height: auto;
+  width: 60%;
+}
+
+.button-container ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+}
+
+.button-container ul li {
+  display: block;
+  position: relative;
+  float: left;
+  width: 100%;
+}
+
+.button-container ul li input[type=radio] {
+  position: absolute;
+  visibility: hidden;
+}
+
+.button-container ul li input[type=checkbox] {
+  position: absolute;
+  visibility: hidden;
+}
+
+.button-container ul li label {
+  display: block;
+  position: relative;
+  padding: 15px 25px 15px 60px;
+  z-index: 9;
+  cursor: pointer;
+  -webkit-transition: all 0.25s linear;
+  text-align: left;
+  margin: 0;
+  border: 1px solid #7E7E7E;
+  border-radius: 4px;
+}
+
+ul li .check {
+  display: block;
+  position: absolute;
+  border: 1px solid #7E7E7E;
+  height: 20px;
+  width: 20px;
+  top: 15px;
+  left: 20px;
+  z-index: 5;
+  transition: border .25s linear;
+  -webkit-transition: border .25s linear;
+}
+
+input[type=radio] ~ .check {
+  border-radius: 100%;
+}
+
+input[type=checkbox] ~ .check {
+  border-radius: 4px;
+}
+
+input[type=radio] ~ .check::before {
+  display: block;
+  position: absolute;
+  content: '';
+  border-radius: 100%;
+  height: 12px;
+  width: 12px;
+  top: 3px;
+  left: 3px;
+  margin: auto;
+  transition: background 0.25s linear;
+  -webkit-transition: background 0.25s linear;
+}
+
+input[type=checkbox] ~ .check::before {
+  display: block;
+  position: absolute;
+  content: '';
+  border-radius: 4px;
+  height: 18px;
+  width: 18px;
+  top: 0;
+  left: 0;
+  margin: auto;
+  transition: background 0.25s linear;
+  -webkit-transition: background 0.25s linear;
+}
+
+input[type=radio]:checked ~ .check::before {
+  background: #0D3FB8;
+}
+
+input[type=checkbox]:checked ~ .check::before {
+  background: #0D3FB8;
+  content: '\2714';
+  color: #FFF;
+}
+
+.button-container input[type=radio]:checked ~ label {
+  background-color: #D9F2F8;
+  z-index: 0;
+}
+
+.button-container input[type=checkbox]:checked ~ label {
+  background-color: #D9F2F8;
+  z-index: 0;
 }
 
 /* Links */
@@ -130,7 +246,7 @@ button, .btn {
 
 /*Images*/
 .sec-illustration {
-  width: 60px;
+  width: 80px;
 }
 
 @media only screen and (min-width : 768px) {
