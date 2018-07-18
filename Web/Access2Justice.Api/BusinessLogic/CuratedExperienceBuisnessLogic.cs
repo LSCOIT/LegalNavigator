@@ -146,6 +146,46 @@ namespace Access2Justice.Api.BusinessLogic
             return allRemainingQuestions.ToList().OrderByDescending(x => x.Count).First().Count;
         }
 
+
+
+        public int CalculateRemainingQuestionsV2(CuratedExperienceTree curatedExperience, CuratedExperienceComponent component)
+        {
+            // every curated experience has one or more components; every component has one or more buttons; every button has one or more destinations.
+            var indexOfTheGivenQuestion = curatedExperience.Components.FindIndex(x => x.ComponentId == component.ComponentId);
+            var remainingQuestions = new List<List<CuratedExperienceComponent>>();
+
+            foreach (var remainingComponent in curatedExperience.Components.Skip(indexOfTheGivenQuestion))
+            {
+                var buttons = remainingComponent.Buttons;
+                //foreach (var button in remainingComponent.Buttons)
+                //{
+                for (int i = 0; i < buttons.Count; i++)
+                {
+                    //if (remainingComponent.Buttons.IndexOf(buttons[i]) == i)
+                    //{
+                    if (remainingQuestions.Count <= i)
+                    {
+                        remainingQuestions.Add(new List<CuratedExperienceComponent>());
+                    }
+                    //var tempList = ;
+                    //var com = new List<CuratedExperienceComponent> { FindDestinationComponent(curatedExperience, buttons[i].Id) };
+
+                    remainingQuestions[i].AddIfNotNull(FindDestinationComponent(curatedExperience, buttons[i].Id));
+                    //}
+                    //}
+                }
+            }
+
+
+            var breakpoint = remainingQuestions; // Todo:@Alaa - remove this temp code
+
+            //return remainingQuestions.Count;
+            // return the longest possible route
+            //var allRemainingQuestions = new[] { button1RemainingQuestions, button2RemainingQuestions, button3RemainingQuestions };
+            return remainingQuestions.OrderByDescending(x => x.Count).First().Count;
+        }
+
+
         private CuratedExperienceComponentViewModel MapComponentToViewModelComponent(CuratedExperienceTree curatedExperience, CuratedExperienceComponent dbComponent, Guid answersDocId)
         {
             if (dbComponent == null || dbComponent.ComponentId == default(Guid))
