@@ -1,0 +1,48 @@
+<div *ngIf="question" class="col-sm-8 col-sm-offset-2 text-center">
+  <h3>{{question.text}}</h3>
+  <form #gaForm="ngForm" (ngSubmit)="onSubmit(gaForm)">
+    <div *ngIf="question.fields" class="row">
+      <div *ngFor="let field of question.fields">
+        <div class="button-container" *ngIf="field.type === 'radio' || field.type === 'checkbox'; else elseBlock">
+          <ul>
+            <li>
+              <input *ngIf="field.type === 'radio'" type="radio" id={{field.id}} name="selector">
+              <input  *ngIf="field.type === 'checkbox'" type="checkbox" id={{field.id}} name="selector">
+              <label for={{field.id}}>{{field.label}}</label>
+              <div class="check"></div>
+            </li>
+          </ul>
+        </div>
+        <ng-template #elseBlock>
+          <div class="inputs">
+            <label>{{field.label}}</label>
+            <input class="textbox" *ngIf="field.type === 'text'" type="text" [name]="field.label" [value]="field.id" autocomplete="off" [(ngModel)]="listOptions">
+            <input class="textbox" *ngIf="field.type === 'numberzip'" type="number" [name]="field.label" [value]="field.id" autocomplete="off" [(ngModel)]="listOptions">
+            <div *ngIf="field.type ==='textpick'" class="btn-group" dropdown>
+              <button id="button-basic" dropdownToggle type="button" class="dropdown-toggle"
+                      aria-controls="dropdown-basic">
+                State
+                <span class="caret"></span>
+              </button>
+              <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+                  role="menu" aria-labelledby="button-basic">
+                <li role="menuitem">HI</li>
+                <li role="menuitem">AL</li>
+              </ul>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+    <div *ngIf="question.buttons.length > 1">
+      <div *ngFor="let button of question?.buttons" class="row">
+        <button class="btn btn-selected">{{button.label}}</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <button class="btn btn-primary">Continue</button>
+      </div>
+    </div>
+  </form>
+</div>
