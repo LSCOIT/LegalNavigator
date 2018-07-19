@@ -52,12 +52,11 @@ export class ProfileComponent implements OnInit {
           response.forEach(property => {
             if (property.resourceTags != undefined) {
               property.resourceTags.forEach(resource => {
-                if (resource.resourceType == "Topics") {
+                if (resource.resourceType === "Topics") {
                   this.topicIds.push(resource.itemId);
-                } else if (resource.resourceType == "WebResources") {
+                } else if (resource.resourceType === "WebResources") {
                   this.webResources.push(resource);
-                }
-                else {
+                } else {
                   this.resourceIds.push(resource.itemId);
                 }
               });
@@ -84,11 +83,10 @@ export class ProfileComponent implements OnInit {
     if (!this.userId) {
       this.planId = this.personalizedPlanService.getPersonalizedPlan();
       this.getTopics();
-    }
-    else {
+    } else {
       this.personalizedPlanService.getUserPlanId(this.userId)
         .subscribe(response => {
-          if (response != undefined) {
+          if (response) {
             response.forEach(property => {
               if (property.planId) {
                 this.planId = property.id;

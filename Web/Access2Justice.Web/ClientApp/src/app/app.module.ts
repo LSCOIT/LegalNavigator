@@ -82,8 +82,7 @@ import { CuratedExperienceComponent } from './guided-assistant/curated-experienc
     BreadcrumbService,
     PersonalizedPlanService,
     ProfileComponent,
-    PersonalizedPlanComponent,
-    ServiceOrgService
+    PersonalizedPlanComponent
   ],
   bootstrap: [AppComponent]
 })

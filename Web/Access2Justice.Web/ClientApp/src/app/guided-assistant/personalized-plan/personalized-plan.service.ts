@@ -9,7 +9,6 @@ import { CommonService } from '../../shared/common.service';
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
-
 @Injectable()
 export class PersonalizedPlanService {
   tempStorage: Array<Resources> = [];
@@ -36,8 +35,7 @@ export class PersonalizedPlanService {
         this.tempStorage.push(resources);
         sessionStorage.setItem(this.sessionKey, JSON.stringify(this.tempStorage));
       }
-    }
-    else {
+    } else {
       this.tempStorage = [resources];
       sessionStorage.setItem(this.sessionKey, JSON.stringify(this.tempStorage));
     }
@@ -57,34 +55,31 @@ export class PersonalizedPlanService {
       if (this.resources) {
         resourceInput.ResourceIds = this.resources;
       }
-    }    
-
+    }
     return this.http.put(api.getPersonalizedResourcesUrl, resourceInput, httpOptions);
   }
 
   getPersonalizedPlan(): string {
-      this.getBookmarkedData();
-      return this.planId;
+    this.getBookmarkedData();
+    return this.planId;
   }
 
   getUserPlanId(oid): Observable<any> {
     return this.http.get<PlanSteps>(api.getProfileUrl + '/' + oid);
   }
-  
+
   getBookmarkedData() {
     this.topics = [];
     this.resources = [];
-    var resourceData = sessionStorage.getItem(this.sessionKey);
+    let resourceData = sessionStorage.getItem(this.sessionKey);
     if (resourceData && resourceData.length > 0) {
       this.tempStorage = JSON.parse(resourceData);
       for (var i = 0; i < this.tempStorage.length; i++) {
-        if (this.tempStorage[i].type == "Topics") {
+        if (this.tempStorage[i].type === "Topics") {
           this.topics.push(this.tempStorage[i].itemId);
-        }
-        else if (this.tempStorage[i].type == "Plan") {
+        } else if (this.tempStorage[i].type === "Plan") {
           this.planId = this.tempStorage[i].itemId;
-        }
-        else {
+        } else {
           this.resources.push(this.tempStorage[i].itemId);
         }
       }

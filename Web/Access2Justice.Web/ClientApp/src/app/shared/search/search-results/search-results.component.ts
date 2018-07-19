@@ -13,7 +13,6 @@ import { environment } from '../../../../environments/environment';
   styleUrls: ['./search-results.component.css']
 })
 export class SearchResultsComponent implements OnInit {
-
   isInternalResource: boolean;
   isWebResource: boolean;
   isLuisResponse: boolean;
@@ -50,7 +49,7 @@ export class SearchResultsComponent implements OnInit {
 
   bindData() {
     this.searchResults = this.navigateDataService.getData();
-    if (this.searchResults != undefined && this.personalizedResources == undefined) {
+    if (this.searchResults != undefined && this.personalizedResources === undefined) {
       this.isInternalResource = this.searchResults.resources;
       this.isWebResource = this.searchResults.webResources;
       if (this.isWebResource) {
@@ -58,11 +57,9 @@ export class SearchResultsComponent implements OnInit {
         this.searchText = this.searchResults.webResources.queryContext.originalQuery;
         this.pagesToShow = environment.webResourcePagesToShow;
         this.limit = environment.webResourceRecordsToDisplay;
-      }
-      else if (this.isInternalResource) {
+      } else if (this.isInternalResource) {
         this.mapInternalResource();
-      }
-      else {
+      } else {
         this.isLuisResponse = true;
         console.log(this.searchResults.luisResponse);
       }
@@ -90,14 +87,14 @@ export class SearchResultsComponent implements OnInit {
     this.resourceResults = this.searchResults.resourceTypeFilter.reverse();
     if (this.resourceTypeFilter != undefined) {
 
-      for (var i = 0; i < this.resourceTypeFilter.length; i++) {
-        if (this.resourceTypeFilter[i].ResourceName === "All") {
-          this.resourceTypeFilter[i]["ResourceList"] = [{
+      for (let index = 0; index < this.resourceTypeFilter.length; index++) {
+        if (this.resourceTypeFilter[index].ResourceName === "All") {
+          this.resourceTypeFilter[index]["ResourceList"] = [{
             'resources': this.searchResults.resources,
             'continuationToken': this.searchResults.continuationToken
           }];
           this.topicIds = this.searchResults.topicIds;
-          this.total = this.resourceTypeFilter[i].ResourceCount;
+          this.total = this.resourceTypeFilter[index].ResourceCount;
           this.pagesToShow = environment.internalResourcePagesToShow;
           this.limit = environment.internalResourceRecordsToDisplay;
           break;
@@ -164,8 +161,7 @@ export class SearchResultsComponent implements OnInit {
         this.total = item.ResourceCount;
         this.searchResults = item.ResourceList[this.page - 1];
         this.isServiceCall = false;
-      }
-      else if (item.ResourceName === resourceName) {
+      } else if (item.ResourceName === resourceName) {
         this.total = item.ResourceCount;
         this.resourceFilter.ResourceType = item.ResourceName;
         this.resourceFilter.PageNumber = this.currentPage;
@@ -180,15 +176,15 @@ export class SearchResultsComponent implements OnInit {
   }
 
   addResource(filterName) {
-    for (var i = 0; i < this.resourceTypeFilter.length; i++) {
-      if (this.resourceTypeFilter[i].ResourceName === filterName) {
-        if (this.resourceTypeFilter[i]["ResourceList"] == undefined) {
-          this.resourceTypeFilter[i]["ResourceList"] = [{
+    for (let index = 0; index < this.resourceTypeFilter.length; index++) {
+      if (this.resourceTypeFilter[index].ResourceName === filterName) {
+        if (this.resourceTypeFilter[index]["ResourceList"] == undefined) {
+          this.resourceTypeFilter[index]["ResourceList"] = [{
             'resources': this.searchResults.resources,
             'continuationToken': this.searchResults.continuationToken
           }];
         } else {
-          this.resourceTypeFilter[i]["ResourceList"].push({
+          this.resourceTypeFilter[index]["ResourceList"].push({
             'resources': this.searchResults.resources,
             'continuationToken': this.searchResults.continuationToken
           });

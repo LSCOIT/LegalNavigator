@@ -75,13 +75,11 @@ export class SaveButtonComponent implements OnInit {
       this.savedResources = { itemId: this.id, resourceType: this.type, resourceDetails : this.resourceDetails };
       this.personalizedPlanService.saveResourcesToSession(this.savedResources);
       this.externalLogin();
-    }
-    else {
-      if (this.type == "Plan") {
+    } else {
+      if (this.type === "Plan") {
         this.planId = this.id;
         this.savePlanToProfile(template);
-      }
-      else {
+      } else {
         this.profileResources.resourceTags = [];
         this.savedResources = { itemId: '', resourceType: '', resourceDetails: '' };
         this.personalizedPlanService.getUserPlanId(this.userId)
@@ -121,7 +119,6 @@ export class SaveButtonComponent implements OnInit {
         this.createPlan = { planId: planDetails.id, oId: this.userId, type: planDetails.type, planTags: this.planTags }
         this.personalizedPlanService.userPlan(this.createPlan)
           .subscribe(() => {
-            console.log("Saved Successfully");
             this.isSavedPlan = true;
             this.modalRef = this.modalService.show(template);
           });

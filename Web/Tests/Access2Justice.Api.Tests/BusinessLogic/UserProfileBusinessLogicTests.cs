@@ -28,6 +28,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly JArray emptyData = JArray.Parse(@"[{}]");
         private readonly string createUserProfileObjOId = "709709e7t0r7123";
         private readonly string updateUserProfileObjOId = "99889789";
+        private readonly string expectedUserId = "outlookoremailOId";
 
         private readonly JArray userProfilePersonalizedPlanData = UserPersonalizedPlanTestData.userProfilePersonalizedPlanData;
         private readonly JArray expectedUserProfilePersonalizedPlanData = UserPersonalizedPlanTestData.expectedUserProfilePersonalizedPlanData;
@@ -368,6 +369,37 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 
             //assert
             Assert.Equal(expectedUserPlanUpdateData[0].ToString(), actualResult.ToString());
+        }
+
+
+        [Fact]
+        public void GetUserResourceProfileDataAsyncWithProperData()
+        {
+            //arrange
+            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.ResourceCollectionId, "oId", expectedUserId);
+            dbResponse.ReturnsForAnyArgs<dynamic>(userProfilePersonalizedPlanData);
+
+
+            //act
+            var response = userProfileBusinessLogic.GetUserResourceProfileDataAsync(expectedUserProfileId);
+            string result = JsonConvert.SerializeObject(response);
+
+            //assert
+            Assert.Contains(expectedUserId, result, StringComparison.InvariantCulture);
+        }
+        [Fact]
+        public void GetUserResourceProfileDataAsyncEmptyData()
+        {
+            //arrange
+            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.ResourceCollectionId, "oId", expectedUserProfileId);
+            dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
+
+            //act
+            var response = userProfileBusinessLogic.GetUserResourceProfileDataAsync(string.Empty);
+            string result = JsonConvert.SerializeObject(response);
+
+            //assert
+            Assert.Contains("[{}]", result, StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }
