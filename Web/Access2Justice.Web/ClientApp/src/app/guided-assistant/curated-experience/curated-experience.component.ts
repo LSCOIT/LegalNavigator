@@ -20,12 +20,15 @@ export class CuratedExperienceComponent implements OnInit {
 
   receiveTotalQuestions($event) {
     this.totalQuestions = $event;
-    console.log(this.totalQuestions);
-    this.maxProgress = Math.ceil(this.totalQuestions / 0.85);
+    this.maxProgress = Math.ceil(this.totalQuestions / 0.75);
   }
 
   calculateProgress() {
-    this.questionProgress = this.totalQuestions -this.questionsRemaining;
+    if (this.questionsRemaining >= 0) {
+      this.questionProgress = this.totalQuestions - this.questionsRemaining;
+    } else {
+      this.questionProgress = this.maxProgress;
+    }
   }
 
   ngOnInit() {

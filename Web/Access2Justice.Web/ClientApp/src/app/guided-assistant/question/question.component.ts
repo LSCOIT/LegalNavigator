@@ -16,8 +16,8 @@ export class QuestionComponent implements OnInit {
   question: Question;
   curatedExperienceId: string;
   fieldParam: Array<Object>;
-  @Output() sendQuestionsRemainingEvent = new EventEmitter<string>();
-  @Output() sendTotalQuestionsEvent = new EventEmitter<string>();
+  @Output() sendQuestionsRemainingEvent = new EventEmitter<number>();
+  @Output() sendTotalQuestionsEvent = new EventEmitter<number>();
 
   constructor(private questionService: QuestionService) { }
 
@@ -41,33 +41,38 @@ export class QuestionComponent implements OnInit {
   }
 
   createFieldParam(formValue) {
-      this.fieldParam = Object.keys(formValue.value).map(key => {
-        return ({
-            fieldId: key,
-            value: formValue.value[key]
-          }
-        );
-      });
-    }
+    this.fieldParam = Object.keys(formValue.value).map(key => {
+      return ({
+        fieldId: key,
+        value: formValue.value[key]
+      }
+      );
+    });
+  }
+
 
   onSubmit(gaForm: NgForm): void { /*need to add logic when we hit the last question*/
-    if(gaForm.value) {
+    if (gaForm.value) {
       this.createFieldParam(gaForm);
-    }
-
-    if (this.question.questionsRemaining) {
-      this.sendQuestionsRemaining(this.question.questionsRemaining);
     }
 
     const params = {
       "curatedExperienceId": this.question.curatedExperienceId,
       "answersDocId": this.question.answersDocId,
       "buttonId": this.question.buttons[0].id,
-      "multiSelectionFieldIds": [],/*need to add logic for multiselect*/
+      "multiSelectionFieldIds": [], /*need to add logic for multiselect*/
       "fields": this.fieldParam
     }
-    this.questionService.getNextQuestion(params)
-        .subscribe(response => this.question = { ...response });
+    if (this.question.questionsRemaining > 0) {
+      this.questionService.getNextQuestion(params)
+        .subscribe(response => {
+          this.question = { ...response }
+          this.sendQuestionsRemaining(this.question.questionsRemaining);
+        });
+    } else {
+      this.question = null;
+      this.sendQuestionsRemaining(-1);
+    }
   };
 
   ngOnInit() {

@@ -1,4 +1,4 @@
-<div *ngIf="question" class="col-sm-8 col-sm-offset-2 text-center">
+<div *ngIf="question else viewPlanBlock" class="col-sm-8 col-sm-offset-2 text-center">
   <h3>{{question.text}}</h3>
   <form #gaForm="ngForm" (ngSubmit)="onSubmit(gaForm)">
     <div *ngIf="question.fields" class="row">
@@ -7,7 +7,7 @@
           <ul>
             <li>
               <input *ngIf="field.type === 'radio'" type="radio" id={{field.id}} name="selector">
-              <input  *ngIf="field.type === 'checkbox'" type="checkbox" id={{field.id}} name="selector">
+              <input *ngIf="field.type === 'checkbox'" type="checkbox" id={{field.id}} name="selector">
               <label for={{field.id}}>{{field.label}}</label>
               <div class="check"></div>
             </li>
@@ -18,7 +18,7 @@
             <label>{{field.label}}</label>
             <input class="textbox" *ngIf="field.type === 'text'" type="text" [name]="field.id" autocomplete="off" ngModel>
             <input class="textbox" *ngIf="field.type === 'numberzip'" type="number" [name]="field.id" autocomplete="off" ngModel>
-            <input class="textbox" *ngIf="field.type === 'numberphone'" type="number" [name]="field.id"autocomplete="off" ngModel>
+            <input class="textbox" *ngIf="field.type === 'numberphone'" type="number" [name]="field.id" autocomplete="off" ngModel>
             <input class="textbox" *ngIf="field.type === 'datemdy'" type="date" [name]="field.id" autocomplete="off" ngModel>
             <div *ngIf="field.type ==='textpick' || field.type ==='numberpick'" class="btn-group" dropdown>
               <button id="button-basic" dropdownToggle type="button" class="dropdown-toggle"
@@ -28,8 +28,9 @@
               </button>
               <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
                   role="menu" aria-labelledby="button-basic">
-                <li role="menuitem">HI</li>
-                <li role="menuitem">AL</li>
+                <li role="menuitem"><a class="dropdown-item" href="#">Action</a></li>
+                <li role="menuitem"><a class="dropdown-item" href="#">Another action</a></li>
+                <li role="menuitem"><a class="dropdown-item" href="#">Something else here</a></li>
               </ul>
             </div>
           </div>
@@ -48,3 +49,13 @@
     </div>
   </form>
 </div>
+<ng-template #viewPlanBlock>
+  <div class="col-sm-8 col-sm-offset-2 text-center">
+    <h3>Thanks for answering the questions which created an action plan to help with your eviction issue. Let’s view you personalized plan.</h3>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <button class="btn btn-primary" type="button"><a [routerLink]="['/plan/d4e18da7-f594-27f6-d782-f74256b84e51']">View Action Plan</a></button>
+      </div>
+    </div>
+  </div>
+</ng-template>
