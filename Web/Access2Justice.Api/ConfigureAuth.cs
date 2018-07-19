@@ -1,4 +1,5 @@
 ﻿using Access2Justice.CosmosDb;
+using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -16,7 +17,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Access2Justice.Shared.Helper;
 
 namespace Access2Justice.Api
 {
@@ -110,7 +110,7 @@ namespace Access2Justice.Api
             string encryptedId = input;
             if (!string.IsNullOrEmpty(input))
             {
-                encryptedId = UtilityHelper.GenerateSHA512String(input);
+                encryptedId = Utilities.GenerateSHA512String(input);
             }
             return encryptedId;
         }

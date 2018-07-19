@@ -3,9 +3,9 @@ using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Access2Justice.Shared.Helper
+namespace Access2Justice.Shared
 {
-    public class UtilityHelper
+    public class Utilities
     {
         public static JsonSerializerSettings JSONSanitizer()
         {
