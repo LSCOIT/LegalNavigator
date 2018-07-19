@@ -1,18 +1,18 @@
 <div class="container">
   <div class="row">
     <div class="col-xs-12">
-      <progressbar max="100" [value]="dynamic">
+      <progressbar [max]="maxProgress" [value]="questionProgress">
         <span class="text-nowrap"></span>
       </progressbar>
     </div>
-    <span class="col-sm-6 pxs">Part 1: Understanding your needs</span>
-    <span class="col-sm-4 pxs">Part 2: View Action plan</span>
+    <span class="col-sm-8 pxs">Part 1: Understanding your needs</span>
+    <span class="col-sm-2 pxs">Part 2: View Action plan</span>
     <ul class="col-sm-2 pxs user-action">
       <li>Save</li>
       <li>Exit</li>
     </ul>
   </div>
-  <app-question (notifyParent)="getNotification($event)"></app-question>
+  <app-question (sendTotalQuestionsEvent)="receiveTotalQuestions($event)" (sendQuestionsRemainingEvent)="receiveQuestionsRemaining($event)"></app-question>
   <div class="row">
     <div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0">
       <app-did-you-know></app-did-you-know>
