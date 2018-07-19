@@ -205,7 +205,6 @@ a.carousel-control .icon-next {
   content: '';
 }
 
-
 /*Location Modal*/
 .modal-content {
   border-radius: 0;
@@ -216,6 +215,16 @@ a.carousel-control .icon-next {
   font-weight: 400;
   color: #0D3FB8;
   opacity: 1;
+}
+
+/*Curated Experience*/
+#articles-dropdown .dropdown-menu {
+  position: static;
+  z-index: 0;
+  padding: 0;
+  border: none;
+  box-shadow: none;
+  width: 100%;
 }
 
 @media only screen and (min-width : 768px) {

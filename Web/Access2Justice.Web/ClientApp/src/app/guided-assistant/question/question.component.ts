@@ -15,6 +15,9 @@ export class QuestionComponent implements OnInit {
   answer: Answer;
   question: Question;
   curatedExperienceId: string;
+  fieldParam: Array<Object>;s
+
+  constructor(private questionService: QuestionService) { }
 
   getQuestion(): void {
     this.curatedExperienceId = "f3daa1e4-5f20-47ce-ab6d-f59829f936fe";
@@ -24,19 +27,31 @@ export class QuestionComponent implements OnInit {
       .subscribe(question => this.question = { ...question });
   }
 
+  createFieldParam(formValue) {
+      this.fieldParam = Object.keys(formValue.value).map(key => {
+        return ({
+            fieldId: key,
+            value: formValue.value[key]
+          }
+        );
+      });
+    }
+
   onSubmit(gaForm: NgForm): void {
+    if(gaForm.value) {
+      this.createFieldParam(gaForm);
+    }
+
     const params = {
       "curatedExperienceId": this.question.curatedExperienceId,
       "answersDocId": this.question.answersDocId,
       "buttonId": this.question.buttons[0].id,
       "multiSelectionFieldIds": [],
-      "fields": []
+      "fields": this.fieldParam
     }
     this.questionService.getNextQuestion(params)
         .subscribe(response => this.question = { ...response });
   };
-
-  constructor(private questionService: QuestionService) { }
 
   ngOnInit() {
     this.getQuestion();

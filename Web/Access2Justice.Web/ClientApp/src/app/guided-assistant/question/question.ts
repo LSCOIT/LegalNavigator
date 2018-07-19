@@ -1,7 +1,7 @@
 export interface Question {
   curatedExperienceId : string,
   answersDocId: string,
-  stepRemained: number,
+  questionsRemaining: number,
   componentId: string,
   name: string,
   text: string,

@@ -35,11 +35,21 @@ li {
   color: #0D3FBB;
 }
 
-.articles-content {
-  margin: 0 8%;
-  display: none;
-}
-
 .topic-section {
   padding: 0 15px;
+}
+
+.articles-content {
+  margin: 0 8%;
+}
+
+.articles-content:after {
+  content: "";
+  border-bottom: 1px solid #ccc;
+  width: 100%;
+}
+
+.verticle-line-grey {
+  border-bottom: 1.5px solid #ccc;
+  margin: 50px 0 20px 0;
 }
