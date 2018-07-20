@@ -34,6 +34,9 @@ export class SearchResultsComponent implements OnInit {
   personalizedResources: any;
   isPersonalizedresource: boolean;
   subscription: any;
+  showRemoveOption: boolean;
+  @Input() showRemove: boolean;
+
   displayMessage: boolean = false;
   loading = false;
   total = 0;
@@ -262,6 +265,12 @@ export class SearchResultsComponent implements OnInit {
   ngOnInit() {
     this.bindData();
     this.notifyLocationChange();
+    if (this.showRemove) {
+      this.showRemoveOption = this.showRemove;
+    }
+    else {
+      this.showRemoveOption = false;
+    }
   }
 
   ngOnDestroy() {

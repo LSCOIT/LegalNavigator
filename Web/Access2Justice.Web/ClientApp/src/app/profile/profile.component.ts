@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { PersonalizedPlanService } from '../guided-assistant/personalized-plan/personalized-plan.service';
 import { PlanSteps } from '../guided-assistant/personalized-plan/personalized-plan';
 import { IResourceFilter } from '../shared/search/search-results/search-results.model';
+import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnChanges {
   topics: string;
   planDetails: Array<PlanSteps> = [];
   activeActionPlan: string = '';
@@ -20,6 +21,7 @@ export class ProfileComponent implements OnInit {
   userName: string;
   topicIds: string[] = [];
   resourceIds: string[] = [];
+  showRemove: boolean;
   webResources: any[] = [];
 
   constructor(private personalizedPlanService: PersonalizedPlanService) {
@@ -100,6 +102,12 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.getPersonalizedPlan();
+    this.getpersonalizedResources();
+    this.showRemove = true;
+  }
+
+  ngOnChanges() {
+    this.getpersonalizedResources();
   }
 
 }

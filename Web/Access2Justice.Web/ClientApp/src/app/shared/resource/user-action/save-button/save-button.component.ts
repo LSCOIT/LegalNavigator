@@ -1,31 +1,16 @@
 import { Component, OnInit, Input, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Resources, CreatePlan, StepTag, PlanTag, Steps, ProfileResources, SavedResources } from '../../../guided-assistant/personalized-plan/personalized-plan';
-import { PersonalizedPlanService } from '../../../guided-assistant/personalized-plan/personalized-plan.service';
-import { CommonService } from '../../common.service';
+import { Resources, CreatePlan, StepTag, PlanTag, Steps, ProfileResources, SavedResources } from '../../../../guided-assistant/personalized-plan/personalized-plan';
+import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
+import { CommonService } from '../../../common.service';
 import { Subject } from 'rxjs';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap';
-import { api } from '../../../../api/api';
+import { api } from '../../../../../api/api';
 
 @Component({
   selector: 'app-save-button',
-  template: `
-<img src="./assets/images/small-icons/save.svg" class="nav-icon" aria-hidden="true" (click) ="savePlanResources(template)" />
-<span>Save to profile</span>
-<ng-template #template>
-<div *ngIf="isSavedPlan">
-    <button type="button" class="close" aria-label="Close" (click)="close()">
-        <span aria-hidden="true">&times;</span>
-    </button>
-    <div class="row text-center">
-        <h3>Added to Profile</h3>
-    </div>
-    <div class="row text-center">
-        <button type="button" (click)="close()" class="btn btn-primary">Close</button>
-    </div>
-</div>
-</ng-template>
-`
+  templateUrl: './save-button.component.html',
+  styleUrls: ['./save-button.component.css']
 })
 export class SaveButtonComponent implements OnInit {
   resources: Resources;
@@ -44,7 +29,6 @@ export class SaveButtonComponent implements OnInit {
   steps: Array<Steps>;
   planTag: PlanTag = { topicId: '', stepTags: this.steps };
   isSavedPlan: boolean = false;
-  notifySavePlan: Subject<boolean> = new Subject<boolean>();
   modalRef: BsModalRef;
   @ViewChild('template') public templateref: TemplateRef<any>;
   sessionKey: string = "bookmarkedResource";
@@ -155,3 +139,4 @@ export class SaveButtonComponent implements OnInit {
   }
 
 }
+
