@@ -65,10 +65,23 @@ namespace Access2Justice.Shared.Models.CuratedExperience
 
         [JsonProperty(PropertyName = "destination")]
         public string Destination { get; set; }
+
+        [JsonProperty(PropertyName = "resourceIds")]
+        public List<Guid> ResourceIds { get; set; }
+
+        [JsonProperty(PropertyName = "topicIds")]
+        public List<Guid> TopicIds { get; set; }
     }
 
     public class Field
     {
+        [JsonProperty(PropertyName = "resourceIds")]
+        public List<Guid> ResourceIds { get; set; }
+
+        [JsonProperty(PropertyName = "topicIds")]
+        public List<Guid> TopicIds { get; set; }
+
+
         [JsonProperty(PropertyName = "id")]
         public Guid Id { get; set; }
 

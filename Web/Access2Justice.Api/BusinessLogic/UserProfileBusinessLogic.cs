@@ -1,4 +1,5 @@
-﻿using Access2Justice.Shared.Interfaces;
+﻿using Access2Justice.Shared;
+using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
