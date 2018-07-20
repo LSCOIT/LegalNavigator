@@ -1,4 +1,5 @@
 ﻿using Access2Justice.CosmosDb;
+using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -48,8 +49,8 @@ namespace Access2Justice.Api
                         {
                             ApplicationUser user = new ApplicationUser();
                             var identity = context.Principal.Identity as ClaimsIdentity;
-                            user.UserName = identity.Name;
-                            user.UserId = identity.Claims.Where(x => x.Type.Contains("nameidentifier")).Select(x => x.Value).FirstOrDefault();
+                            user.UserName = identity.Name;                            
+                            user.UserId = EncryptString(identity.Claims.Where(x => x.Type.Contains("nameidentifier")).Select(x => x.Value).FirstOrDefault());
                             context.Response.Cookies.Append("profileData", Newtonsoft.Json.JsonConvert.SerializeObject(user));
                             context.Response.Redirect(context.ReturnUri, true);
                         }
@@ -78,8 +79,8 @@ namespace Access2Justice.Api
             var resource = JsonConvert.SerializeObject(userObject);
             var userUIDocument = JsonConvert.DeserializeObject<dynamic>(resource);
 
-            UserProfile userProfile = new UserProfile();
-            userProfile.OId = ((JToken)userUIDocument).Root.SelectToken("id").Value<string>();
+            UserProfile userProfile = new UserProfile();            
+            userProfile.OId = EncryptString(((JToken)userUIDocument).Root.SelectToken("id").Value<string>());
             userProfile.FirstName = ((JToken)userUIDocument).Root.SelectToken("givenName").Value<string>();
             userProfile.LastName = ((JToken)userUIDocument).Root.SelectToken("surname").Value<string>();
             userProfile.EMail = ((JToken)userUIDocument).Root.SelectToken("userPrincipalName").Value<string>();
@@ -104,6 +105,15 @@ namespace Access2Justice.Api
             }
         }
 
+        private string EncryptString(string input)
+        {
+            string encryptedId = input;
+            if (!string.IsNullOrEmpty(input))
+            {
+                encryptedId = Utilities.GenerateSHA512String(input);
+            }
+            return encryptedId;
+        }
 
         public void ConfigureRoutes(IApplicationBuilder app)
         {
