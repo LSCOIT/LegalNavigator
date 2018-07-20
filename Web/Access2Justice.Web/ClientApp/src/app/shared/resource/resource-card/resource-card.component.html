@@ -6,7 +6,7 @@
           <span dropdownToggle type="button" class="glyphicon glyphicon-option-horizontal dropdown-toggle"></span>
           <ul id="dropdown-disabled-item" *dropdownMenu class="dropdown-menu dropdown-menu-right"
               role="menu">
-            <li role="menuitem">
+            <li role="menuitem" *ngIf="!showRemoveOption">
               <app-save-button [id] ="resource.id" [type]="resource.resourceType"></app-save-button>
             </li>
             <li role="menuitem">

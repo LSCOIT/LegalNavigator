@@ -1,7 +1,8 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PersonalizedPlanService } from '../guided-assistant/personalized-plan/personalized-plan.service';
 import { PlanSteps } from '../guided-assistant/personalized-plan/personalized-plan';
 import { IResourceFilter } from '../shared/search/search-results/search-results.model';
+import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 
 @Component({
   selector: 'app-profile',

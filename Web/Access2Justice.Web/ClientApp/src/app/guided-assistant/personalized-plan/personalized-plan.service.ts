@@ -41,18 +41,16 @@ export class PersonalizedPlanService {
   getBookmarkedData() {
     this.topics = [];
     this.resources = [];
-    var resourceData = sessionStorage.getItem(this.sessionKey);
+    let resourceData = sessionStorage.getItem(this.sessionKey);
     if (resourceData && resourceData.length > 0) {
       this.tempStorage = JSON.parse(resourceData);
-      for (var i = 0; i < this.tempStorage.length; i++) {
-        if (this.tempStorage[i].type === "Topics") {
-          this.topics.push(this.tempStorage[i].itemId);
-        }
-        else if (this.tempStorage[i].type === "Plan") {
-          this.planId = this.tempStorage[i].itemId;
-        }
-        else {
-          this.resources.push(this.tempStorage[i].itemId);
+      for (let index = 0; index < this.tempStorage.length; index++) {
+        if (this.tempStorage[index].type === "Topics") {
+          this.topics.push(this.tempStorage[index].itemId);
+        } else if (this.tempStorage[index].type === "Plan") {
+          this.planId = this.tempStorage[index].itemId;
+        } else {
+          this.resources.push(this.tempStorage[index].itemId);
         }
       }
     }
@@ -91,8 +89,7 @@ export class PersonalizedPlanService {
         this.tempStorage.push(resources);
         sessionStorage.setItem(this.sessionKey, JSON.stringify(this.tempStorage));
       }
-    }
-    else {
+    } else {
       this.tempStorage = [resources];
       sessionStorage.setItem(this.sessionKey, JSON.stringify(this.tempStorage));
     }
