@@ -227,6 +227,18 @@ a.carousel-control .icon-next {
   width: 100%;
 }
 
+.progress {
+  height: 15px;
+  border: 1px solid #ccc;
+  background-color: #FFF;
+  box-shadow: none;
+  border-radius: 10px;
+}
+
+.progress-bar {
+  background-color: #0D3FBB;
+}
+
 @media only screen and (min-width : 768px) {
   .container {
     width: 90%;

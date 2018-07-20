@@ -1,3 +1,7 @@
+#progress-bar {
+  margin-bottom: 0;
+}
+
 ul li {
   display: inline-block;
   padding: 0 15px;

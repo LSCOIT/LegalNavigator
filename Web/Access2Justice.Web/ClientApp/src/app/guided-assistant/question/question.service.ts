@@ -12,7 +12,6 @@ export class QuestionService {
 
   getQuestion(params): Observable<Question> {
     return this.http.get<Question>(api.questionUrl + '?' + params);
-    //return this.http.get<Question>('./assets/SampleJsons/mockRadioQuestion.json');
   }
 
   getNextQuestion(params: Answer): Observable<Question> {

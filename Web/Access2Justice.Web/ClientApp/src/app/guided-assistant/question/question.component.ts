@@ -16,6 +16,7 @@ export class QuestionComponent implements OnInit {
   question: Question;
   curatedExperienceId: string;
   fieldParam: Array<Object>;
+  buttonParam: Array<Object>;
   @Output() sendQuestionsRemainingEvent = new EventEmitter<number>();
   @Output() sendTotalQuestionsEvent = new EventEmitter<number>();
 
@@ -30,7 +31,7 @@ export class QuestionComponent implements OnInit {
   }
 
   getQuestion(): void {
-    this.curatedExperienceId = "f3daa1e4-5f20-47ce-ab6d-f59829f936fe";
+    this.curatedExperienceId = "9a6a6131-657d-467d-b09b-c570b7dad242";
     let params = new HttpParams()
       .set("curatedExperienceId", this.curatedExperienceId);
     this.questionService.getQuestion(params)
@@ -41,28 +42,37 @@ export class QuestionComponent implements OnInit {
   }
 
   createFieldParam(formValue) {
-    this.fieldParam = Object.keys(formValue.value).map(key => {
-      return ({
-        fieldId: key,
-        value: formValue.value[key]
-      }
-      );
-    });
+    this.fieldParam = Object.keys(formValue.value)
+      .filter(key => formValue.value[key] !== "")
+      .map(key => {
+        if (key === "radioOptions" || key === "multiSelectOptions") {
+          return ({
+            fieldId: formValue.value[key]
+          });
+        } else {
+          return ({
+            fieldId: key,
+            value: formValue.value[key]
+          });
+        }
+      });
   }
 
-
-  onSubmit(gaForm: NgForm): void { /*need to add logic when we hit the last question*/
+  onSubmit(gaForm: NgForm): void {
+    console.log(gaForm.value);
     if (gaForm.value) {
       this.createFieldParam(gaForm);
     }
+
+    window.scrollTo(0, 0);
 
     const params = {
       "curatedExperienceId": this.question.curatedExperienceId,
       "answersDocId": this.question.answersDocId,
       "buttonId": this.question.buttons[0].id,
-      "multiSelectionFieldIds": [], /*need to add logic for multiselect*/
       "fields": this.fieldParam
     }
+
     if (this.question.questionsRemaining > 0) {
       this.questionService.getNextQuestion(params)
         .subscribe(response => {
@@ -70,8 +80,14 @@ export class QuestionComponent implements OnInit {
           this.sendQuestionsRemaining(this.question.questionsRemaining);
         });
     } else {
-      this.question = null;
-      this.sendQuestionsRemaining(-1);
+      this.questionService.getNextQuestion(params)
+        .subscribe(response => {
+          this.question.text =
+            "Thanks for answering the questions which created an action plan to help with your eviction issue. Let’s view you personalized plan.";
+          this.question.questionsRemaining = -1;
+          this.question.fields = [];
+          this.sendQuestionsRemaining(this.question.questionsRemaining);
+        });
     }
   };
 

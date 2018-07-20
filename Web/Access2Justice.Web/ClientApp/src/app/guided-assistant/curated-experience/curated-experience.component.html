@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="row">
+  <div class="row" id="progress-bar">
     <div class="col-xs-12">
       <progressbar [max]="maxProgress" [value]="questionProgress">
         <span class="text-nowrap"></span>
@@ -12,11 +12,9 @@
       <li>Exit</li>
     </ul>
   </div>
-  <app-question (sendTotalQuestionsEvent)="receiveTotalQuestions($event)" (sendQuestionsRemainingEvent)="receiveQuestionsRemaining($event)"></app-question>
-  <div class="row">
-    <div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0">
-      <app-did-you-know></app-did-you-know>
-    </div>
-  </div>
+  <app-question
+    (sendTotalQuestionsEvent)="receiveTotalQuestions($event)"
+    (sendQuestionsRemainingEvent)="receiveQuestionsRemaining($event)">
+  </app-question>
 </div>
 <app-articles-resources></app-articles-resources>
