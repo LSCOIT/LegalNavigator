@@ -5,18 +5,6 @@ import { api } from '../../../api/api';
 import { HttpHeaders } from '@angular/common/http';
 import { IResourceFilter } from '../search/search-results/search-results.model';
 
-//describe('PaginationService', () => {
-//  beforeEach(() => {
-//    TestBed.configureTestingModule({
-//      providers: [PaginationService]
-//    });
-//  });
-
-//  it('should be created', inject([PaginationService], (service: PaginationService) => {
-//    expect(service).toBeTruthy();
-//  }));
-//});
-
 describe('PaginationService', () => {
   let service: PaginationService;
   const mockHttpOptions = {
@@ -24,7 +12,7 @@ describe('PaginationService', () => {
       'Content-Type': 'application/json'
     })
   };
-  let mockSearchText = "Lorem ipsum solor sit amet bibodem consecuter orem ipsum"; // solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter. Solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter."
+  let mockSearchText = "Lorem ipsum solor sit amet bibodem consecuter orem ipsum";
   let mockResponse = Observable.of(mockSearchText);
   let mockOffset = 5;
   let resourceInput: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: '', ResourceIds: '', PageNumber: 1, Location: '' };
