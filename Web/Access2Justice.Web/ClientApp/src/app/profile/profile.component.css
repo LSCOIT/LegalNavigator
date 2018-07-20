@@ -34,6 +34,10 @@
   padding: 10px 34px;
 }
 
+.selected-item {
+  background-color: #ddd;
+}
+
 @media only screen and (min-width : 768px) {
   .mobile-hidden {
     display: inline-block;

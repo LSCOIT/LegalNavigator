@@ -77,3 +77,15 @@ export interface UserRemovePlanTag {
   type: string;
 }
 
+export interface PersonalizedPlanTopic {
+  topic: any;
+  isSelected: boolean;
+}
+
+export interface PlanDetailTags {
+  id: string;
+  oId: string;
+  planTags: any;
+  type: string;
+}
+
