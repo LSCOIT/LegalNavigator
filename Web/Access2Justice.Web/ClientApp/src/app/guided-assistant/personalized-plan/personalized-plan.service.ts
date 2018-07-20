@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { PlanSteps, Resources } from './personalized-plan';
+import { PlanSteps, Resources, PersonalizedPlanTopic, PlanDetailTags } from './personalized-plan';
 import { api } from '../../../api/api';
 import { IResourceFilter } from '../../shared/search/search-results/search-results.model';
 import { environment } from '../../../environments/environment';
@@ -18,6 +18,12 @@ export class PersonalizedPlanService {
   topics: string[] = [];
   resources: string[] = [];
   planId: string;
+  planTopic: PersonalizedPlanTopic = { topic: {}, isSelected: true };
+  topicsList: Array<PersonalizedPlanTopic> = [];
+  planDetailTags: PlanDetailTags = { id: '', oId: '', planTags: [{}], type: '' };
+  tempPlanDetailTags: PlanDetailTags = { id: '', oId: '', planTags: [{}], type: '' };
+  tempPlanDetails: any;
+  planDetails: Array<PlanSteps> = [];
 
   constructor(private http: HttpClient) { }
 
@@ -90,6 +96,30 @@ export class PersonalizedPlanService {
 
   userPlan(plan) {
     return this.http.post(api.userPlanUrl, plan, httpOptions);
+  }
+
+  createTopicsList(topics): Array<PersonalizedPlanTopic> {
+    this.topicsList = [];
+    topics.forEach(topic => {
+      this.planTopic = { topic: topic, isSelected: true };
+      this.topicsList.push(this.planTopic);
+    });
+    return this.topicsList;
+  }
+
+  displayPlanDetails(planDetailTags, topicsList): Array<PlanSteps> {
+    this.planDetailTags = planDetailTags;
+    this.topicsList = topicsList;
+    this.tempPlanDetailTags = JSON.parse(JSON.stringify(this.planDetailTags));
+    for (let index = 0, planTagIndex = 0; index < this.topicsList.length; index++ , planTagIndex++) {
+      if (!this.topicsList[index].isSelected) {
+        this.tempPlanDetailTags.planTags.splice(planTagIndex, 1);
+        planTagIndex--;
+      }
+    }
+    this.tempPlanDetails = this.tempPlanDetailTags;
+    this.planDetails = this.tempPlanDetails;
+    return this.planDetails;
   }
 
 }

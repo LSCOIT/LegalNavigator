@@ -15,54 +15,37 @@ export class PersonalizedPlanComponent implements OnInit {
   topicsList: Array<PersonalizedPlanTopic> = [];
   tempTopicsList: Array<PersonalizedPlanTopic> = [];
   planDetails: Array<PlanSteps> = [];
-  planDetailTags: PlanDetailTags ={ id: '', oId: '', planTags: [{}], type:'' };
-  tempPlanDetailTags: PlanDetailTags = { id: '', oId: '', planTags: [{}], type:'' };
-  tempPlanDetails: any;
+  planDetailTags: PlanDetailTags = { id: '', oId: '', planTags: [{}], type: '' };
+  isFiltered: boolean = false;
 
   constructor(private personalizedPlanService: PersonalizedPlanService,
     private activeRoute: ActivatedRoute) { }
 
   getTopics(): void {
-    this.personalizedPlanService.getActionPlanConditions(this.activeActionPlan)
-      .subscribe(plan => {
-        if (plan) {
-          this.topics = plan.planTags;
-          this.planDetails = plan;
-          this.planDetailTags = plan;
-        }
-        this.createTopicsList();
-        this.displayPlanDetails();
-      });
+    if (!this.isFiltered) {
+      this.personalizedPlanService.getActionPlanConditions(this.activeActionPlan)
+        .subscribe(plan => {
+          if (plan) {
+            this.topics = plan.planTags;
+            this.planDetailTags = plan;
+          }
+          this.getPlanDetails();
+        });
+    }
   }
 
-  createTopicsList() {
-    this.topicsList = [];
-    this.topics.forEach(topic => {
-      this.planTopic = { topic: topic, isSelected: true };
-      this.topicsList.push(this.planTopic);
-    });
+  getPlanDetails() {
+    this.topicsList = this.personalizedPlanService.createTopicsList(this.topics);
+    this.planDetails = this.personalizedPlanService.displayPlanDetails(this.planDetailTags, this.topicsList);
   }
 
-  displayPlanDetails() {
-    this.tempPlanDetailTags = { id: '', oId: '', planTags: [{}], type: '' };
-    this.tempPlanDetailTags = this.planDetailTags;
-    this.planDetails = [];
-    let index = 0;
-    this.topicsList.forEach(topic => {
-      if (!topic.isSelected) {
-        if (index !== -1) {
-          this.tempPlanDetailTags.planTags.splice(index++, 1);
-        }
-    console.log(this.planDetailTags);
-      }
-    });
-    this.tempPlanDetails = this.tempPlanDetailTags;
-    this.planDetails = this.tempPlanDetails;
-    console.log(this.planDetails);
-  }
-
-  filterPlan(event, topic) {
+  filterPlan(topic) {
     this.tempTopicsList = this.topicsList;
+    this.filterTopicsList(topic);
+    this.planDetails = this.personalizedPlanService.displayPlanDetails(this.planDetailTags, this.topicsList);
+  }
+
+  filterTopicsList(topic) {
     this.topicsList = [];
     this.tempTopicsList.forEach(topicDetail => {
       this.planTopic = { topic: {}, isSelected: true };
@@ -73,7 +56,6 @@ export class PersonalizedPlanComponent implements OnInit {
       }
       this.topicsList.push(this.planTopic);
     });
-    this.displayPlanDetails();
   }
 
   ngOnInit() {
