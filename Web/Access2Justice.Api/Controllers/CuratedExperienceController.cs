@@ -162,11 +162,6 @@ namespace Access2Justice.Api.Controllers
         [HttpPost("PersonalizedPlan")]
         public async Task<IActionResult> GeneratePersonalizedPlan([FromQuery] Guid curatedExperienceId, [FromQuery] Guid answersDocId)
         {
-            // you have the curated experience schema and the users answers by now, you also have the newly
-            // created CuratedExperienceActionPlanViewModel which will host all the info required by the Personalized Plan page,
-            // now use the params to pull and map the data from the different sources (AnswersDoc, Topics, Resources... Look at
-            // the stored proc "GetPlanDetails" to see some of the mappings there.
-
             return Content("The personalized plan is WIP and will be implemented soon.");
         }
 

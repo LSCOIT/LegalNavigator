@@ -75,13 +75,6 @@ namespace Access2Justice.Shared.Models.CuratedExperience
 
     public class Field
     {
-        [JsonProperty(PropertyName = "resourceIds")]
-        public List<Guid> ResourceIds { get; set; }
-
-        [JsonProperty(PropertyName = "topicIds")]
-        public List<Guid> TopicIds { get; set; }
-
-
         [JsonProperty(PropertyName = "id")]
         public Guid Id { get; set; }
 
@@ -102,5 +95,11 @@ namespace Access2Justice.Shared.Models.CuratedExperience
 
         [JsonProperty(PropertyName = "invalidPrompt")]
         public string InvalidPrompt { get; set; }
+
+        [JsonProperty(PropertyName = "resourceIds")]
+        public List<Guid> ResourceIds { get; set; }
+
+        [JsonProperty(PropertyName = "topicIds")]
+        public List<Guid> TopicIds { get; set; }
     }
 }

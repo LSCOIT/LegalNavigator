@@ -47,7 +47,7 @@ namespace Access2Justice.Api.ViewModels
         public Guid StepId { get; set; }
 
         [JsonProperty(PropertyName = "type")]
-        public string Type { get; set; }
+        public string Type { get; set; }  // Todo:@Alaa create an enum
 
         [JsonProperty(PropertyName = "title")]
         public string Title { get; set; }
@@ -82,7 +82,7 @@ namespace Access2Justice.Api.ViewModels
         public string Description { get; set; }
 
         [JsonProperty(PropertyName = "resourceType")]
-        public string Type { get; set; }
+        public string Type { get; set; }  // Todo:@Alaa create an enum
 
         [JsonProperty(PropertyName = "externalUrl")]
         public Uri ExternalUrl { get; set; }

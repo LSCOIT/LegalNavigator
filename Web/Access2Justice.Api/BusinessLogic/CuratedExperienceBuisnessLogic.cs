@@ -161,12 +161,6 @@ namespace Access2Justice.Api.BusinessLogic
 
         private CuratedExperienceAnswers MapViewModelAnswerToCuratedExperienceAnswer(CuratedExperienceAnswersViewModel viewModelAnswer)
         {
-            var selectedItemsIds = new List<Guid>();
-            foreach (var selectedFieldId in viewModelAnswer.MultiSelectionFieldIds)
-            {
-                selectedItemsIds.Add(selectedFieldId);
-            }
-
             var filledInTexts = new List<FilledInText>();
             foreach (var field in viewModelAnswer.Fields)
             {
@@ -182,7 +176,6 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 ClickedButtonId = viewModelAnswer.ButtonId,
                 FilledInTexts = filledInTexts,
-                SelectedItemsIds = selectedItemsIds
             });
 
             return new CuratedExperienceAnswers
