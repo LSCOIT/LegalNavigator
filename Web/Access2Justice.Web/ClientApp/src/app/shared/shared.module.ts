@@ -39,6 +39,7 @@ import { UserActionSidebarComponent } from './sidebars/user-action-sidebar.compo
 import { SettingButtonComponent } from './resource/user-action/setting-button.component';
 import { ServiceOrgService } from './sidebars/service-org.service';
 import { HelplineComponent } from './helpline/helpline.component';
+import { ButtonSelectedDirective } from './styling/button-selected.directive';
 
 @NgModule({
   imports: [
@@ -77,7 +78,8 @@ import { HelplineComponent } from './helpline/helpline.component';
     PaginationComponent,
     UserActionSidebarComponent,
     SettingButtonComponent,
-    HelplineComponent
+    HelplineComponent,
+    ButtonSelectedDirective
   ],
   exports: [
     ActionPlanCardComponent,
