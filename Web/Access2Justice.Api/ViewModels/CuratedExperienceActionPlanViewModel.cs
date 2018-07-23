@@ -4,13 +4,18 @@ using System.Collections.Generic;
 
 namespace Access2Justice.Api.ViewModels
 {
-    public class CuratedExperienceActionPlanViewModel
+    public class PersonalizedActionPlanViewModel
     {
         [JsonProperty(PropertyName = "id")]
-        public Guid ActionPlanId { get; set; }
+        public Guid PersonalizedPlanId { get; set; }
 
         [JsonProperty(PropertyName = "topics")]
         public List<PlanTopic> Topics { get; set; }
+
+        public PersonalizedActionPlanViewModel()
+        {
+            Topics = new List<PlanTopic>();
+        }
     }
 
     public class PlanTopic
@@ -18,11 +23,25 @@ namespace Access2Justice.Api.ViewModels
         [JsonProperty(PropertyName = "topicId")]
         public Guid TopicId { get; set; }
 
+        public List<PlanQuickLink> QuickLinks { get; set; }
+
         [JsonProperty(PropertyName = "steps")]
-        public List<Step> Steps { get; set; }
+        public List<PlanStep> Steps { get; set; }
+
+        public PlanTopic()
+        {
+            QuickLinks = new List<PlanQuickLink>();
+            Steps = new List<PlanStep>();
+        }
     }
 
-    public class Step
+    public class PlanQuickLink
+    {
+        public string Title { get; set; }
+        public Uri Url { get; set; }
+    }
+
+    public class PlanStep
     {
         [JsonProperty(PropertyName = "stepId")]
         public Guid StepId { get; set; }
@@ -44,6 +63,11 @@ namespace Access2Justice.Api.ViewModels
 
         [JsonProperty(PropertyName = "resources")]
         public List<PlanResource> Resources { get; set; }
+
+        public PlanStep()
+        {
+            Resources = new List<PlanResource>();
+        }
     }
 
     public class PlanResource
@@ -79,7 +103,13 @@ namespace Access2Justice.Api.ViewModels
         public string Overview { get; set; }
 
         [JsonProperty(PropertyName = "isRecommended")]
-        public string IsRecommended { get; set; }
+        public bool IsRecommended { get; set; }
+
+        public PlanResource()
+        {
+            Tags = new List<string>();
+            Location = new List<PlanLocation>();
+        }
     }
 
     public class PlanLocation
