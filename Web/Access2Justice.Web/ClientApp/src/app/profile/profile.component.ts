@@ -133,7 +133,6 @@ export class ProfileComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.getPersonalizedPlan();
-    this.getpersonalizedResources();
     this.showRemove = true;
   }
 
