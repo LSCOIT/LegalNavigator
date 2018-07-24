@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { PlanSteps, Resources, PersonalizedPlanTopic, PlanDetailTags } from './personalized-plan';
 import { api } from '../../../api/api';
 import { IResourceFilter } from '../../shared/search/search-results/search-results.model';
-import { CommonService } from '../../shared/common.service';
+import { UtilityService } from '../../shared/utility.service';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -26,7 +26,7 @@ export class PersonalizedPlanService {
   planDetails: Array<PlanSteps> = [];
   userId: string;
 
-  constructor(private http: HttpClient, private commonService: CommonService) { }
+  constructor(private http: HttpClient, private utilityService: UtilityService) { }
 
   getActionPlanConditions(id): Observable<any> {
     return this.http.get<PlanSteps>(api.planUrl + '/' + id);
@@ -90,7 +90,7 @@ export class PersonalizedPlanService {
     this.resoureStorage = sessionStorage.getItem(this.sessionKey);
     if (this.resoureStorage && this.resoureStorage.length > 0) {
       this.tempStorage = JSON.parse(this.resoureStorage);
-      this.isObjectExists = this.commonService.checkObjectExistInArray(this.tempStorage, resources);
+      this.isObjectExists = this.utilityService.checkObjectExistInArray(this.tempStorage, resources);
       if (!this.isObjectExists) {
         this.tempStorage.push(resources);
         sessionStorage.setItem(this.sessionKey, JSON.stringify(this.tempStorage));

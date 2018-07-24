@@ -26,7 +26,7 @@ export class UpperNavComponent implements OnInit {
 
   logout() {
     sessionStorage.removeItem("profileData");
-    var form = document.createElement('form');
+    let form = document.createElement('form');
     form.setAttribute('method', 'GET');
     form.setAttribute('action', api.logoutUrl);
     document.body.appendChild(form);

@@ -127,7 +127,6 @@ export class RemoveButtonComponent implements OnInit {
         this.profileResources.resourceTags.push(this.removeResource);
       }
     });
-      //this.saveResourceToProfile(this.profileResources.resourceTags, template);
   }
 
   removeUserSavedTopic(template) {
@@ -137,7 +136,6 @@ export class RemoveButtonComponent implements OnInit {
         this.profileResources.resourceTags.push(this.removeResource);
       }
     });
-      //this.saveResourceToProfile(this.profileResources.resourceTags, template);
   }
 
   saveResourceToProfile(resourceTags, template) {
