@@ -62,65 +62,11 @@ namespace Access2Justice.Api.ViewModels
         public bool IsComplete { get; set; }
 
         [JsonProperty(PropertyName = "resources")]
-        public List<PlanResource> Resources { get; set; }
+        public List<Guid> ResourcesIds { get; set; }
 
         public PlanStep()
         {
-            Resources = new List<PlanResource>();
+            ResourcesIds = new List<Guid>();
         }
-    }
-
-    public class PlanResource
-    {
-        [JsonProperty(PropertyName = "id")]
-        public Guid ResourceId { get; set; }
-
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
-        [JsonProperty(PropertyName = "description")]
-        public string Description { get; set; }
-
-        [JsonProperty(PropertyName = "resourceType")]
-        public string Type { get; set; }  // Todo:@Alaa create an enum
-
-        [JsonProperty(PropertyName = "externalUrl")]
-        public Uri ExternalUrl { get; set; }
-
-        //[JsonProperty(PropertyName = "url")]
-        //public Uri Url { get; set; }
-
-        [JsonProperty(PropertyName = "tags")]
-        public List<string> Tags { get; set; }
-
-        [JsonProperty(PropertyName = "location")]
-        public List<PlanLocation> Location { get; set; }
-
-        [JsonProperty(PropertyName = "icon")]
-        public string Icon { get; set; }
-
-        [JsonProperty(PropertyName = "overview")]
-        public string Overview { get; set; }
-
-        [JsonProperty(PropertyName = "isRecommended")]
-        public bool IsRecommended { get; set; }
-
-        public PlanResource()
-        {
-            Tags = new List<string>();
-            Location = new List<PlanLocation>();
-        }
-    }
-
-    public class PlanLocation
-    {
-        [JsonProperty(PropertyName = "state")]
-        public string State { get; set; }
-
-        [JsonProperty(PropertyName = "city")]
-        public string City { get; set; }
-
-        [JsonProperty(PropertyName = "zipCode")]
-        public string ZipCode { get; set; }
     }
 }

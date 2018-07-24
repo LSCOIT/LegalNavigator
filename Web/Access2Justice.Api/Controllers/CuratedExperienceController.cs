@@ -18,11 +18,14 @@ namespace Access2Justice.Api.Controllers
     {
         private readonly IA2JAuthorBusinessLogic a2jAuthorBuisnessLogic;
         private readonly ICuratedExperienceBusinessLogic curatedExperienceBusinessLogic;
+        private readonly IPersonalizedPlanBusinessLogic personalizedPlanBusinessLogic;
 
-        public CuratedExperienceController(IA2JAuthorBusinessLogic a2jAuthorBuisnessLogic, ICuratedExperienceBusinessLogic curatedExperienceBusinessLogic)
+        public CuratedExperienceController(IA2JAuthorBusinessLogic a2jAuthorBuisnessLogic, ICuratedExperienceBusinessLogic curatedExperienceBusinessLogic,
+            IPersonalizedPlanBusinessLogic personalizedPlanBusinessLogic)
         {
             this.a2jAuthorBuisnessLogic = a2jAuthorBuisnessLogic;
             this.curatedExperienceBusinessLogic = curatedExperienceBusinessLogic;
+            this.personalizedPlanBusinessLogic = personalizedPlanBusinessLogic;
         }
 
         #region DEMO
@@ -55,13 +58,13 @@ namespace Access2Justice.Api.Controllers
         [HttpGet("PersonalizedPlan/Demo")]
         public IActionResult GetDemoPersonalizedPlan()
         {
-            var locations = new List<PlanLocation>();
-            locations.Add(new PlanLocation
-            {
-                City = "test city",
-                State = "test state",
-                ZipCode = "11332"
-            });
+            //var locations = new List<PlanLocation>();
+            //locations.Add(new PlanLocation
+            //{
+            //    City = "test city",
+            //    State = "test state",
+            //    ZipCode = "11332"
+            //});
             
             var quicklinks = new List<PlanQuickLink>();
             quicklinks.Add(new PlanQuickLink
@@ -70,20 +73,20 @@ namespace Access2Justice.Api.Controllers
                 Url = new Uri("http://localhost/topic1")
             });
 
-            var resources = new List<PlanResource>();
-            resources.Add(new PlanResource
-            {
-                Description = "Lorem ipsum dolor sit amet, usu soluta aliquid recusabo in, eloquentiam adversarium in vel.",
-                ExternalUrl = new Uri("http://localhost"),
-                Icon = "",
-                IsRecommended = false,
-                Location = locations,
-                Name = "Resource Name",
-                Overview = "Sale oratio tractatos duo et, pri harum senserit mediocritatem an. No eum aliquip menandri.",
-                ResourceId = Guid.NewGuid(),
-                Tags = new List<string>() { "Test", "Demo" },
-                Type = "Organization",
-            });
+            //var resources = new List<PlanResource>();
+            //resources.Add(new PlanResource
+            //{
+            //    Description = "Lorem ipsum dolor sit amet, usu soluta aliquid recusabo in, eloquentiam adversarium in vel.",
+            //    ExternalUrl = new Uri("http://localhost"),
+            //    Icon = "",
+            //    IsRecommended = false,
+            //    Location = locations,
+            //    Name = "Resource Name",
+            //    Overview = "Sale oratio tractatos duo et, pri harum senserit mediocritatem an. No eum aliquip menandri.",
+            //    ResourceId = Guid.NewGuid(),
+            //    Tags = new List<string>() { "Test", "Demo" },
+            //    Type = "Organization",
+            //});
 
             var steps = new List<PlanStep>();
             steps.Add(new PlanStep
@@ -93,7 +96,7 @@ namespace Access2Justice.Api.Controllers
                 Description = "test plan for building the UI",
                 Order = 1,
                 IsComplete = false,
-                Resources = resources,
+                //Resources = resources,
                 Type = "PersonalizedPlan"
             });
 
@@ -158,11 +161,17 @@ namespace Access2Justice.Api.Controllers
             return Ok(curatedExperienceBusinessLogic.GetNextComponent(curatedExperience, component));
         }
 
-
         [HttpPost("PersonalizedPlan")]
         public async Task<IActionResult> GeneratePersonalizedPlan([FromQuery] Guid curatedExperienceId, [FromQuery] Guid answersDocId)
         {
-            return Content("The personalized plan is WIP and will be implemented soon.");
+            var personalizedPlan = await personalizedPlanBusinessLogic.GeneratePersonalizedPlan(
+                RetrieveCachedCuratedExperience(curatedExperienceId), answersDocId);
+            if (personalizedPlan == null)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+            return Ok(personalizedPlan);
         }
 
         private CuratedExperienceTree RetrieveCachedCuratedExperience(Guid id)

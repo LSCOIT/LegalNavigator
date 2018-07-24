@@ -8,10 +8,16 @@ namespace Access2Justice.Shared.Models.CuratedExperience
     {
         [JsonProperty(PropertyName = "id")]
         public Guid AnswersDocId { get; set; }
+
         [JsonProperty(PropertyName = "curatedExperienceId")]
         public Guid CuratedExperienceId { get; set; }
+
+        [JsonProperty(PropertyName = "userId")]
+        public Guid UserId { get; set; }
+
         [JsonProperty(PropertyName = "answers")]
         public IList<Answer> Answers { get; set; }
+
         public CuratedExperienceAnswers()
         {
             Answers = new List<Answer>();
@@ -22,8 +28,10 @@ namespace Access2Justice.Shared.Models.CuratedExperience
     {
         [JsonProperty(PropertyName = "clickedButtonId")]
         public Guid ClickedButtonId { get; set; }
+
         [JsonProperty(PropertyName = "selectedItemsIds")]
         public IList<Guid> SelectedItemsIds { get; set; }
+
         [JsonProperty(PropertyName = "filledInTexts")]
         public IList<FilledInText> FilledInTexts { get; set; }
         public Answer()
@@ -37,6 +45,7 @@ namespace Access2Justice.Shared.Models.CuratedExperience
     {
         [JsonProperty(PropertyName = "fieldId")]
         public string FieldId { get; set; }
+
         [JsonProperty(PropertyName = "value")]
         public string Value { get; set; }
     }
