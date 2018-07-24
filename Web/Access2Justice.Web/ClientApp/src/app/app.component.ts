@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit {
   title = 'app';
-
+    
   getCookie(cookieName: string) {    
     let cookieNameEQ = cookieName + "=";
     let cookies = document.cookie.split(';');
@@ -36,8 +36,8 @@ export class AppComponent implements OnInit {
     let profileData = this.getCookie("profileData");
     if (profileData != undefined) {
       profileData = decodeURIComponent(profileData);
-      localStorage.setItem("profileData", profileData);
-      this.deleteCookie("profileData", "", -1);
+      sessionStorage.setItem("profileData", profileData);      
+      this.deleteCookie("profileData", "", -1);      
     }
   }
 }

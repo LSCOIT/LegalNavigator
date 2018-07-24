@@ -3,7 +3,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
-import { SaveButtonComponent } from '../../shared/resource/user-action/save-button.component';
+import { SaveButtonComponent } from '../../shared/resource/user-action/save-button/save-button.component';
 import { ShareButtonComponent } from '../../shared/resource/user-action/share-button.component';
 import { PrintButtonComponent } from '../../shared/resource/user-action/print-button.component';
 import { SearchComponent } from './search.component';

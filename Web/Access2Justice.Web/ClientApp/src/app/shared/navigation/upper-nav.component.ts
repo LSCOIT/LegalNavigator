@@ -13,9 +13,9 @@ export class UpperNavComponent implements OnInit {
 
   userProfile: string;
   isLoggedIn: boolean = false;
-  constructor(private http: HttpClient) {
 
-  }
+  constructor(private http: HttpClient) { }
+
   externalLogin() {
     var form = document.createElement('form');
     form.setAttribute('method', 'GET');
@@ -25,8 +25,8 @@ export class UpperNavComponent implements OnInit {
   }
 
   logout() {
-    localStorage.removeItem("profileData");
-    var form = document.createElement('form');
+    sessionStorage.removeItem("profileData");
+    let form = document.createElement('form');
     form.setAttribute('method', 'GET');
     form.setAttribute('action', api.logoutUrl);
     document.body.appendChild(form);
@@ -34,7 +34,7 @@ export class UpperNavComponent implements OnInit {
   }
 
   ngOnInit() {
-    let profileData = localStorage.getItem("profileData");
+    let profileData = sessionStorage.getItem("profileData");
     if (profileData != undefined) {
       profileData = JSON.parse(profileData);
       this.isLoggedIn = true;

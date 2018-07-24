@@ -26,8 +26,16 @@
   margin-left: 10px;
 }
 
+.capitalize {
+  text-transform: capitalize;
+}
+
 .web-hidden .btn-selected {
   padding: 10px 34px;
+}
+
+.selected-item {
+  background-color: #ddd;
 }
 
 @media only screen and (min-width : 768px) {
@@ -62,4 +70,3 @@
     padding-top: 20px;
   }
 }
-  

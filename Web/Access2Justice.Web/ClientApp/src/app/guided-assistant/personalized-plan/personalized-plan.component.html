@@ -2,7 +2,7 @@
   <div class="user-action upper-action mobile-hidden">
     <app-user-action-sidebar 
       [mobile]=true 
-      [showDownload]=true>
+      [showDownload]=true [id]="activeActionPlan" [type]="type">
     </app-user-action-sidebar>
   </div>
   <div class="row row-half-spacing">
@@ -18,8 +18,11 @@
     <div class="row plan-spacing filter-plan">
       <span class="col-sm-1">Show:</span>
       <!--web filtering-->
-      <div *ngFor="let topic of topics" class="mobile-hidden col-sm-10">
-        <button class="btn btn-selected">{{topic.id[0].name}}</button>
+      <div *ngFor="let topic of topicsList" class="mobile-hidden col-sm-10">
+        <button type="button" [ngClass]="{ 'btn-sm btn-primary': topic.isSelected, 'btn': !topic.isSelected  }"
+                (click)="filterPlan(topic.topic.id[0].name)">
+          {{topic.topic.id[0].name}}
+        </button>
       </div>
       <!--mobile filtering-->
       <div class="btn-group web-hidden" dropdown>
@@ -30,7 +33,8 @@
 
         <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
             role="menu" aria-labelledby="button-basic">
-          <li *ngFor="let topic of topics" role="menuitem"><a class="dropdown-item" href="#">{{topic.id[0].name}}</a></li>
+          <li *ngFor="let topic of topicsList" role="menuitem" (click)="filterPlan(topic.topic.id[0].name)">
+            <a [ngClass]="{ 'selected-item dropdown-item': topic.isSelected, 'dropdown-item': !topic.isSelected  }"> {{topic.topic.id[0].name}} </a></li>
         </ul>
 
       </div>

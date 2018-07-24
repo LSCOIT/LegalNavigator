@@ -12,6 +12,7 @@ export class WebResourceComponent implements OnInit {
   searchResults: any;
   @Input()
   webResult: any;
+  type: string = "WebResources";
 
   constructor(private searchService: SearchService) { }
 

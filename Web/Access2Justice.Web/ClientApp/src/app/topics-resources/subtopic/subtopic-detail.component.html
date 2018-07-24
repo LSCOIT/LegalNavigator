@@ -5,7 +5,7 @@
       <h3 *ngIf="subtopic.id == activeSubtopicParam" class="subtopic-heading text-capitalize">{{subtopic.name}}</h3>
     </div>
     <div class="col-sm-5 user-action">
-      <app-user-action-sidebar [mobile]="true"></app-user-action-sidebar>
+      <app-user-action-sidebar [mobile]="true" [id]="activeSubtopicParam" [type]="type"></app-user-action-sidebar>
     </div>
   </div>
   <div class="row">
@@ -30,35 +30,35 @@
         </a>
         <p>Our action plans are based on common resolution steps for people dealing with eviction. Please ask a professional if you have questions.</p>
         <div *ngFor="let resource of actionPlanData">
-          <app-resource-card [resource]="resource"></app-resource-card>
+          <app-resource-card [resource]="resource" [showRemoveOption]="showRemoveOption"></app-resource-card>
         </div>
         <button class="btn btn-primary">See more Action Plans</button>
       </div>
       <div *ngIf="articleData.length > 0" class="row">
         <h3>Articles</h3>
         <div *ngFor="let resource of articleData">
-          <app-resource-card [resource]="resource"></app-resource-card>
+          <app-resource-card [resource]="resource" [showRemoveOption]="showRemoveOption"></app-resource-card>
         </div>
         <button class="btn-sm btn-primary">See more Articles</button>
       </div>
       <div *ngIf="organizationData.length > 0" class="row">
         <h3>Organizations That May Be Able To Help</h3>
         <div *ngFor="let resource of organizationData">
-          <app-resource-card [resource]="resource"></app-resource-card>
+          <app-resource-card [resource]="resource" [showRemoveOption]="showRemoveOption"></app-resource-card>
         </div>
         <button class="btn-sm btn-primary">See more Organizations</button>
       </div>
       <div *ngIf="videoData.length > 0" class="row">
         <h3>Videos</h3>
         <div *ngFor="let resource of videoData">
-          <app-resource-card [resource]="resource"></app-resource-card>
+          <app-resource-card [resource]="resource" [showRemoveOption]="showRemoveOption"></app-resource-card>
         </div>
         <button class="btn-sm btn-primary">See more Videos</button>
       </div>
       <div *ngIf="formData.length > 0" class="row">
         <h3>Forms</h3>
         <div *ngFor="let resource of formData">
-          <app-resource-card [resource]="resource"></app-resource-card>
+          <app-resource-card [resource]="resource" [showRemoveOption]="showRemoveOption"></app-resource-card>
         </div>
         <button class="btn-sm btn-primary">See more Forms</button>
       </div>
