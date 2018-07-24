@@ -22,12 +22,12 @@ export class QuestionComponent implements OnInit {
 
   constructor(private questionService: QuestionService) { }
 
-  sendQuestionsRemaining(message) {
-    this.sendQuestionsRemainingEvent.emit(message);
+  sendQuestionsRemaining(questionsRemaining) {
+    this.sendQuestionsRemainingEvent.emit(questionsRemaining);
   }
 
-  sendTotalQuestions(totalQues) {
-    this.sendTotalQuestionsEvent.emit(totalQues);
+  sendTotalQuestions(totalQuestion) {
+    this.sendTotalQuestionsEvent.emit(totalQuestion);
   }
 
   getQuestion(): void {
@@ -58,8 +58,8 @@ export class QuestionComponent implements OnInit {
       });
   }
 
-  onSubmit(gaForm: NgForm): void {
-    console.log(gaForm.value);
+  onSubmit(gaForm: NgForm) {
+    console.log(gaForm);
     if (gaForm.value) {
       this.createFieldParam(gaForm);
     }

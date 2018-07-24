@@ -8,10 +8,12 @@ export interface Question {
   learn: string,
   help: string,
   tags: Array<string>,
-  buttons: [{
-    id: string,
-    label: string,
-    destination: string,
-  }],
-  fields: Array<string>,
+  buttons: Array<Buttons>,
+  fields: Array<string>
+}
+
+export interface Buttons {
+  id: string,
+  label: string,
+  destination: string
 }
