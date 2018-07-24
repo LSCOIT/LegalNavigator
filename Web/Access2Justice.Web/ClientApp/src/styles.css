@@ -69,6 +69,7 @@ a {
 }
 /* Language Dropdown */
 .navbar-nav .open .dropdown-menu {
+  position: absolute;
   height: 360px;
   overflow-y: scroll;
   background-color: #fff;
@@ -81,6 +82,23 @@ a {
 .nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
   background-color: #fff;
   padding: 15px;
+}
+
+.dropdown-menu > li > a {
+  font-size: 13px;
+  padding: 3px 15px;
+}
+
+.dropdown-icon {
+  width: 10px;
+  margin-left: 5px;
+}
+
+/*Profile Dropdown*/
+#signin-dropdown .dropdown-menu {
+  width: 259px;
+  margin-top: 12px;
+  margin-right: 3px;
 }
 
 /*Home Page - Carousel*/
@@ -225,9 +243,11 @@ a.carousel-control .icon-next {
 
   .navbar-nav .open .dropdown-menu {
     width: 690px;
-    min-height: 415px;
+    height: auto;
     overflow: hidden;
     margin-top: 1px;
+    border: none;
+    border-radius: 0;
   }
 
   .carousel.slide {
