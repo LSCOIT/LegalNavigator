@@ -11,10 +11,16 @@ export class UserActionSidebarComponent implements OnInit {
   @Input() showPrint = true;
   @Input() showDownload = false;
   @Input() showSetting = false;
+  @Input() id: string = "";
+  @Input() type: string = "";
+  resourceId: string;
+  resourceType: string;
 
   constructor() { }
 
   ngOnInit() {
+    this.resourceId = this.id;
+    this.resourceType = this.type;
   }
 
 }

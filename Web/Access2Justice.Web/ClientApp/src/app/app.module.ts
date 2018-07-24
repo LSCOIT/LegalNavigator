@@ -7,7 +7,7 @@ import { SharedModule } from './shared/shared.module';
 
 import {
   AccordionModule,
-  BsDropdownModule, 
+  BsDropdownModule,
   CarouselModule,
   CollapseModule,
   ModalModule,

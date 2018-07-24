@@ -1,11 +1,18 @@
 export interface Resources {
   url: string; 
-  itemId: string; 
+  itemId: string;
+  type: string;
+}
+
+export interface SavedResources {
+  itemId: string;
+  resourceType: string;
+  resourceDetails: any;
 }
 
 export interface ProfileResources {
   oId: string;
-  resourceTags: Array<string>;
+  resourceTags: Array<SavedResources>;
   type: string;
 }
 
@@ -67,6 +74,18 @@ export interface UserRemovePlanTag {
   planId: string;
   oId: string;
   topicId: string;
+  type: string;
+}
+
+export interface PersonalizedPlanTopic {
+  topic: any;
+  isSelected: boolean;
+}
+
+export interface PlanDetailTags {
+  id: string;
+  oId: string;
+  planTags: any;
   type: string;
 }
 

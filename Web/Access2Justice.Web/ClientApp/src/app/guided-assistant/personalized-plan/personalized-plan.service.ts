@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { PlanSteps, Resources } from './personalized-plan';
+import { PlanSteps, Resources, PersonalizedPlanTopic, PlanDetailTags } from './personalized-plan';
 import { api } from '../../../api/api';
 import { IResourceFilter } from '../../shared/search/search-results/search-results.model';
-import { environment } from '../../../environments/environment';
+import { UtilityService } from '../../shared/utility.service';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -18,34 +18,62 @@ export class PersonalizedPlanService {
   topics: string[] = [];
   resources: string[] = [];
   planId: string;
+  planTopic: PersonalizedPlanTopic = { topic: {}, isSelected: true };
+  topicsList: Array<PersonalizedPlanTopic> = [];
+  planDetailTags: PlanDetailTags = { id: '', oId: '', planTags: [{}], type: '' };
+  tempPlanDetailTags: PlanDetailTags = { id: '', oId: '', planTags: [{}], type: '' };
+  tempPlanDetails: any;
+  planDetails: Array<PlanSteps> = [];
+  userId: string;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private utilityService: UtilityService) { }
 
   getActionPlanConditions(id): Observable<any> {
     return this.http.get<PlanSteps>(api.planUrl + '/' + id);
   }
 
-  saveResourcesToSession(resources) {
-    this.resoureStorage = sessionStorage.getItem(this.sessionKey);
-    if (this.resoureStorage && this.resoureStorage.length > 0) {
-      this.tempStorage = JSON.parse(this.resoureStorage);
+  getUserPlanId(oid): Observable<any> {
+    return this.http.get<PlanSteps>(api.getProfileUrl + '/' + oid);
+  }
+
+  getMarkCompletedUpdatedPlan(updatePlan) {
+    return this.http.post(api.updatePlanUrl, updatePlan, httpOptions);
+  }
+
+  userPlan(plan) {
+    return this.http.post(api.userPlanUrl, plan, httpOptions);
+  }
+
+  getBookmarkedData() {
+    this.topics = [];
+    this.resources = [];
+    let resourceData = sessionStorage.getItem(this.sessionKey);
+    if (resourceData && resourceData.length > 0) {
+      this.tempStorage = JSON.parse(resourceData);
       for (let index = 0; index < this.tempStorage.length; index++) {
-        if (JSON.stringify(this.tempStorage[index]) === JSON.stringify(resources)) {
-          this.isObjectExists = true;
+        if (this.tempStorage[index].type === "Topics") {
+          this.topics.push(this.tempStorage[index].itemId);
+        } else if (this.tempStorage[index].type === "Plan") {
+          this.planId = this.tempStorage[index].itemId;
+        } else {
+          this.resources.push(this.tempStorage[index].itemId);
         }
       }
-      if (!this.isObjectExists) {
-        this.tempStorage.push(resources);
-        sessionStorage.setItem(this.sessionKey, JSON.stringify(this.tempStorage));
-      }
-    } else {
-      this.tempStorage = [resources];
-      sessionStorage.setItem(this.sessionKey, JSON.stringify(this.tempStorage));
     }
   }
 
+  getPersonalizedPlan(): string {
+    this.getBookmarkedData();
+    return this.planId;
+  }
+
   getPersonalizedResources(resourceInput: IResourceFilter) {
-    if (!environment.userId) {
+    let profileData = sessionStorage.getItem("profileData");
+    if (profileData != undefined) {
+      profileData = JSON.parse(profileData);
+      this.userId = profileData["UserId"];
+    }
+    if (this.userId === undefined) {
       this.getBookmarkedData();
       if (this.topics) {
         resourceInput.TopicIds = this.topics;
@@ -57,39 +85,44 @@ export class PersonalizedPlanService {
     return this.http.put(api.getPersonalizedResourcesUrl, resourceInput, httpOptions);
   }
 
-  getPersonalizedPlan(): string {
-    this.getBookmarkedData();
-    return this.planId;
-  }
-
-  getUserPlanId(oid): Observable<any> {
-    return this.http.get<PlanSteps>(api.getProfileUrl + '/' + oid);
-  }
-
-  getBookmarkedData() {
-    this.topics = [];
-    this.resources = [];
-    let resourceData = sessionStorage.getItem(this.sessionKey);
-    if (resourceData && resourceData.length > 0) {
-      this.tempStorage = JSON.parse(resourceData);
-      for (let index = 0; index < this.tempStorage.length; index++) {
-        if (this.tempStorage[index].url.startsWith("/subtopics")) {
-          this.topics.push(this.tempStorage[index].itemId);
-        } else if (this.tempStorage[index].url.startsWith("/resource")) {
-          this.resources.push(this.tempStorage[index].itemId);
-        } else if (this.tempStorage[index].url.startsWith("/plan")) {
-          this.planId = this.tempStorage[index].itemId;
-        }
+  //Below method need to be modified to store data in session if user is not logged in
+  saveResourcesToSession(resources) {
+    this.resoureStorage = sessionStorage.getItem(this.sessionKey);
+    if (this.resoureStorage && this.resoureStorage.length > 0) {
+      this.tempStorage = JSON.parse(this.resoureStorage);
+      this.isObjectExists = this.utilityService.checkObjectExistInArray(this.tempStorage, resources);
+      if (!this.isObjectExists) {
+        this.tempStorage.push(resources);
+        sessionStorage.setItem(this.sessionKey, JSON.stringify(this.tempStorage));
       }
+    } else {
+      this.tempStorage = [resources];
+      sessionStorage.setItem(this.sessionKey, JSON.stringify(this.tempStorage));
     }
   }
 
-  getMarkCompletedUpdatedPlan(updatePlan) {
-    return this.http.post(api.updatePlanUrl, updatePlan, httpOptions);
+  createTopicsList(topics): Array<PersonalizedPlanTopic> {
+    this.topicsList = [];
+    topics.forEach(topic => {
+      this.planTopic = { topic: topic, isSelected: true };
+      this.topicsList.push(this.planTopic);
+    });
+    return this.topicsList;
   }
 
-  userPlan(plan) {
-    return this.http.post(api.userPlanUrl, plan, httpOptions);
+  displayPlanDetails(planDetailTags, topicsList): Array<PlanSteps> {
+    this.planDetailTags = planDetailTags;
+    this.topicsList = topicsList;
+    this.tempPlanDetailTags = JSON.parse(JSON.stringify(this.planDetailTags));
+    for (let index = 0, planTagIndex = 0; index < this.topicsList.length; index++ , planTagIndex++) {
+      if (!this.topicsList[index].isSelected) {
+        this.tempPlanDetailTags.planTags.splice(planTagIndex, 1);
+        planTagIndex--;
+      }
+    }
+    this.tempPlanDetails = this.tempPlanDetailTags;
+    this.planDetails = this.tempPlanDetails;
+    return this.planDetails;
   }
 
 }

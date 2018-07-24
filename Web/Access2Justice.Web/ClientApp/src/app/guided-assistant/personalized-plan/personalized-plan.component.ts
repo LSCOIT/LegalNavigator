@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PersonalizedPlanService } from '../personalized-plan/personalized-plan.service';
-import { PlanSteps } from '../personalized-plan/personalized-plan';
+import { PlanSteps, PersonalizedPlanTopic, PlanDetailTags } from '../personalized-plan/personalized-plan';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -10,24 +10,57 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class PersonalizedPlanComponent implements OnInit {
   activeActionPlan = this.activeRoute.snapshot.params['id'];
-  topics: string;
+  topics: Array<any> = [];
+  planTopic: PersonalizedPlanTopic = { topic: {}, isSelected: true };
+  topicsList: Array<PersonalizedPlanTopic> = [];
+  tempTopicsList: Array<PersonalizedPlanTopic> = [];
   planDetails: Array<PlanSteps> = [];
+  planDetailTags: PlanDetailTags = { id: '', oId: '', planTags: [{}], type: '' };
+  isFiltered: boolean = false;
+  type: string = "Plan";
 
   constructor(private personalizedPlanService: PersonalizedPlanService,
     private activeRoute: ActivatedRoute) { }
 
   getTopics(): void {
-    this.personalizedPlanService.getActionPlanConditions(this.activeActionPlan)
-      .subscribe(plan => {
-        if (plan) {
-          this.topics = plan.planTags;
-          this.planDetails = plan;
-        }
-      });
+    if (!this.isFiltered) {
+      this.personalizedPlanService.getActionPlanConditions(this.activeActionPlan)
+        .subscribe(plan => {
+          if (plan) {
+            this.topics = plan.planTags;
+            this.planDetailTags = plan;
+          }
+          this.getPlanDetails();
+        });
+    }
+  }
+
+  getPlanDetails() {
+    this.topicsList = this.personalizedPlanService.createTopicsList(this.topics);
+    this.planDetails = this.personalizedPlanService.displayPlanDetails(this.planDetailTags, this.topicsList);
+  }
+
+  filterPlan(topic) {
+    this.tempTopicsList = this.topicsList;
+    this.filterTopicsList(topic);
+    this.planDetails = this.personalizedPlanService.displayPlanDetails(this.planDetailTags, this.topicsList);
+  }
+
+  filterTopicsList(topic) {
+    this.topicsList = [];
+    this.tempTopicsList.forEach(topicDetail => {
+      this.planTopic = { topic: {}, isSelected: true };
+      if (topicDetail.topic.id[0].name === topic) {
+        this.planTopic = { topic: topicDetail.topic, isSelected: !topicDetail.isSelected };
+      } else {
+        this.planTopic = { topic: topicDetail.topic, isSelected: topicDetail.isSelected };
+      }
+      this.topicsList.push(this.planTopic);
+    });
   }
 
   ngOnInit() {
-    this.getTopics();
+    this.getTopics(); 
   }
 
 }
