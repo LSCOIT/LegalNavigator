@@ -263,7 +263,12 @@ a.carousel-control .icon-next {
   }
 
   .modal-dialog {
-    width: 65%;
+    width: 660px;
+    height: 570px;
+  }
+
+  .modal-content {
+    height: 100%;
   }
 }
 @media only screen and (min-width : 992px) {
@@ -277,6 +282,10 @@ a.carousel-control .icon-next {
 }
 
 @media only screen and (min-width : 1224px) {
+  .modal-dialog {
+    margin: 1% auto;
+  }
+
   .row {
     margin: 30px auto;
   }
