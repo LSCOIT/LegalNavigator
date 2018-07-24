@@ -38,7 +38,7 @@ import { ActionPlanCardComponent } from './action-plan/action-plan-card.componen
 import { UserActionSidebarComponent } from './sidebars/user-action-sidebar.component';
 import { SettingButtonComponent } from './resource/user-action/setting-button.component';
 import { ServiceOrgService } from './sidebars/service-org.service';
-import { UtilityService } from './utility.service';
+import { ArrayUtilityService } from './array-utility.service';
 
 @NgModule({
   imports: [
@@ -111,7 +111,7 @@ import { UtilityService } from './utility.service';
     MapResultsService,
     PaginationService,
     ServiceOrgService,
-    UtilityService
+    ArrayUtilityService
   ]
 })
 export class SharedModule { }
