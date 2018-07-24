@@ -1,6 +1,6 @@
-<a (click)="savePlanResources(template)">
-  <img src="./assets/images/small-icons/save.svg" class="nav-icon" aria-hidden="true" />
-  <span>Save to profile</span>
+<a id="save" (click)="savePlanResources(template)">
+  <img *ngIf="showIcon" src="./assets/images/small-icons/save.svg" class="nav-icon" aria-hidden="true" />
+  Save to profile
 </a>
 <ng-template #template>
   <div *ngIf="isSavedPlan">

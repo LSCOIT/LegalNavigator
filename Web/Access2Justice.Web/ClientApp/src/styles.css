@@ -94,11 +94,16 @@ a {
   margin-left: 5px;
 }
 
-/*Profile Dropdown*/
+/*Profile*/
 #signin-dropdown .dropdown-menu {
   width: 259px;
   margin-top: 12px;
   margin-right: 3px;
+}
+
+.nav-tabs > li > a:hover {
+  background-color: transparent;
+  border: none;
 }
 
 /*Home Page - Carousel*/

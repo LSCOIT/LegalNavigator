@@ -1,4 +1,4 @@
-<div class="container">
+<div [ngClass]="{ 'no-container': fullPage, 'container': !fullPage }">
   <div *ngIf="isInternalResource">
     <h2>Results for {{searchResults.topIntent}}.</h2>
   </div>
@@ -24,7 +24,7 @@
     </div>
   </div>
   <div>
-    <div class="col-md-8 col-sm-12">
+    <div [ngClass]="{ 'col-sm-12': fullPage, 'col-md-8 col-sm-12': !fullPage }">
       <div *ngIf="isInternalResource || isPersonalizedresource">
         <div *ngFor="let searchResource of searchResults.resources | searchFilter:{ filter : sortType, source : 'internal'} ">
           <app-resource-card [searchResource]="searchResource" [isSearchResults]="true" [personalizedResources]="personalizedResources" [showRemoveOption]="showRemoveOption"></app-resource-card>          
@@ -52,7 +52,9 @@
     </div>
     <div *ngIf="isInternalResource" class="col-md-3 col-sm-12 pull-right">
       <app-map-results [searchResource]="searchResults"></app-map-results>
-      <app-guided-assistant-sidebar></app-guided-assistant-sidebar>
+      <div class="row guided-assistant">
+        <app-guided-assistant-sidebar></app-guided-assistant-sidebar>
+      </div>
       <app-service-org-sidebar></app-service-org-sidebar>
     </div>
   </div>

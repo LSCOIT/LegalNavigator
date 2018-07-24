@@ -13,6 +13,7 @@ import { api } from '../../../../../api/api';
   styleUrls: ['./save-button.component.css']
 })
 export class SaveButtonComponent implements OnInit {
+  @Input() showIcon = true;
   resources: Resources;
   savedResources: SavedResources;
   profileResources: ProfileResources = { oId: '', resourceTags: [], type: '' };
