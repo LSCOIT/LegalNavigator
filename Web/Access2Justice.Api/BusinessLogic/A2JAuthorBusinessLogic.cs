@@ -1,7 +1,6 @@
 ﻿using Access2Justice.Shared.Extensions;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
-using Access2Justice.Shared.Models.CuratedExperience;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -11,9 +10,9 @@ namespace Access2Justice.Api.BusinessLogic
 {
     public class A2JAuthorBusinessLogic : IA2JAuthorBusinessLogic
     {
-        public CuratedExperienceTree ConvertA2JAuthorToCuratedExperience(JObject a2jSchema)
+        public CuratedExperience ConvertA2JAuthorToCuratedExperience(JObject a2jSchema)
         {
-            var cx = new CuratedExperienceTree();
+            var cx = new CuratedExperience();
             var a2jProperties = (a2jSchema).Properties();
 
             cx.CuratedExperienceId = Guid.NewGuid();

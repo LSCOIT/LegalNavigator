@@ -1,7 +1,7 @@
 ﻿using Access2Justice.Api.Interfaces;
 using Access2Justice.Api.ViewModels;
 using Access2Justice.Shared.Interfaces;
-using Access2Justice.Shared.Models.CuratedExperience;
+using Access2Justice.Shared.Models;
 using System;
 using System.Threading.Tasks;
 
@@ -21,7 +21,7 @@ namespace Access2Justice.Api.BusinessLogic
             this.topicsResourcesBusinessLogic = topicsResourcesBusinessLogic;
         }
 
-        public async Task<PersonalizedActionPlanViewModel> GeneratePersonalizedPlan(CuratedExperienceTree curatedExperience, Guid answersDocId)
+        public async Task<PersonalizedActionPlanViewModel> GeneratePersonalizedPlan(CuratedExperience curatedExperience, Guid answersDocId)
         {
             var temp = await dbService.GetItemAsync<string>("", "");
             return null;

@@ -2,7 +2,7 @@
 using Access2Justice.Api.ViewModels;
 using Access2Justice.Shared.Extensions;
 using Access2Justice.Shared.Interfaces;
-using Access2Justice.Shared.Models.CuratedExperience;
+using Access2Justice.Shared.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -174,7 +174,7 @@ namespace Access2Justice.Api.Controllers
             return Ok(personalizedPlan);
         }
 
-        private CuratedExperienceTree RetrieveCachedCuratedExperience(Guid id)
+        private CuratedExperience RetrieveCachedCuratedExperience(Guid id)
         {
             var cuExSession = HttpContext.Session.GetString(id.ToString());
             if (string.IsNullOrWhiteSpace(cuExSession))
@@ -183,7 +183,7 @@ namespace Access2Justice.Api.Controllers
                 HttpContext.Session.SetObjectAsJson(id.ToString(), rawCuratedExperience);
             }
 
-            return HttpContext.Session.GetObjectAsJson<CuratedExperienceTree>(id.ToString());
+            return HttpContext.Session.GetObjectAsJson<CuratedExperience>(id.ToString());
         }
     }
 }

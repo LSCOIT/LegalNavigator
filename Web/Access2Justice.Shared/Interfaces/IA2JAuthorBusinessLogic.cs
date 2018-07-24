@@ -1,10 +1,10 @@
-﻿using Access2Justice.Shared.Models.CuratedExperience;
+﻿using Access2Justice.Shared.Models;
 using Newtonsoft.Json.Linq;
 
 namespace Access2Justice.Shared.Interfaces
 {
     public interface IA2JAuthorBusinessLogic
     {
-        CuratedExperienceTree ConvertA2JAuthorToCuratedExperience(JObject a2jSchema);
+        CuratedExperience ConvertA2JAuthorToCuratedExperience(JObject a2jSchema);
     }
 }
