@@ -1,6 +1,8 @@
 .user-action {
   background-color: #fff;
-  margin: 20px 0;
+  margin: 20px 0 0 0;
+  width: 100%;
+  text-align: right;
 }
   
 .row-half-spacing {
@@ -26,8 +28,16 @@
   margin-left: 10px;
 }
 
+.capitalize {
+  text-transform: capitalize;
+}
+
 .web-hidden .btn-selected {
   padding: 10px 34px;
+}
+
+.selected-item {
+  background-color: #ddd;
 }
 
 @media only screen and (min-width : 768px) {
@@ -62,4 +72,3 @@
     padding-top: 20px;
   }
 }
-  

@@ -1,8 +1,8 @@
-<div class="container">
+<div [ngClass]="{ 'no-container': fullPage, 'container': !fullPage }">
   <div *ngIf="isInternalResource">
     <h2>Results for {{searchResults.topIntent}}.</h2>
   </div>
-  <div class="row" *ngIf="isInternalResource">
+  <div *ngIf="isInternalResource">
     <div class="panel-heading box-shadow">
       <span class="label-display mobile-hidden">Showing Information for </span>
       <app-location #location [mapType]="false"></app-location>
@@ -11,19 +11,26 @@
   <div *ngIf="isWebResource">
     <h2>We found the following web resources related to your search</h2>
   </div>
+  <div *ngIf="displayMessage">
+    <h2>Your search for this location did not match any resources.</h2>
+      <ul>Suggestions:
+        <li>Try to search within a larger area.</li>
+        <li>Change the location.</li>
+      </ul>
+  </div>
   <div class="row">
     <div class="col-sm-12">
       <app-search-filter (notifyFilterCriteria)='filterSearchResults($event)' [resourceResults]="resourceResults"></app-search-filter>
     </div>
   </div>
   <div>
-    <div class="col-md-8 col-sm-12">
-      <div *ngIf="isInternalResource || isPersonalizedresource" class="row center-align">
+    <div [ngClass]="{ 'col-sm-12': fullPage, 'col-md-8 col-sm-12': !fullPage }">
+      <div *ngIf="isInternalResource || isPersonalizedresource">
         <div *ngFor="let searchResource of searchResults.resources | searchFilter:{ filter : sortType, source : 'internal'} ">
-          <app-resource-card [searchResource]="searchResource"></app-resource-card>          
+          <app-resource-card [searchResource]="searchResource" [isSearchResults]="true" [personalizedResources]="personalizedResources" [showRemoveOption]="showRemoveOption"></app-resource-card>          
         </div>
       </div>
-      <div *ngIf="isWebResource" class="row center-align">
+      <div *ngIf="isWebResource">
         <div *ngIf="searchResults && searchResults.webResources && searchResults.webResources.webPages">
           <div *ngFor="let webResult of searchResults.webResources.webPages.value | searchFilter:{ filter : sortType, source : 'external'}" class="col-md-12 sidebar">
             <app-web-resource [webResult]="webResult"></app-web-resource>
@@ -33,7 +40,6 @@
       <div *ngIf="isLuisResponse" class="row center-align">
         <h3>Sorry, we did not find anything that matches you're input. Please try again.</h3>
       </div>
-      <!-- pagination logic here -->
       <div *ngIf="isInternalResource || isWebResource">
         <app-pagination (goPage)="goToPage($event)"
                         (goNext)="onNext()"
@@ -45,10 +51,10 @@
       </div>
     </div>
     <div *ngIf="isInternalResource" class="col-md-3 col-sm-12 pull-right">
-      <div class="row">
-        <app-map-results  [searchResource]="searchResults"></app-map-results>
+      <app-map-results [searchResource]="searchResults"></app-map-results>
+      <div class="row guided-assistant">
+        <app-guided-assistant-sidebar></app-guided-assistant-sidebar>
       </div>
-      <app-guided-assistant-sidebar></app-guided-assistant-sidebar>
       <app-service-org-sidebar></app-service-org-sidebar>
     </div>
   </div>

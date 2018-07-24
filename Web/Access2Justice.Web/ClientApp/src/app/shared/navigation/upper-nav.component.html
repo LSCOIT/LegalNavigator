@@ -1,7 +1,7 @@
 <div class="navbar navbar-fixed-top upper-nav">
   <div class="container">
     <div class="navbar-left left-menu pxs">
-      <ul class="nav navbar-nav">
+      <ul class="nav navbar-nav">  
         <li class="inline"><app-language></app-language></li>
         <li class="inline" id="location">
           <app-location #location [mapType]="true"></app-location>
@@ -23,15 +23,16 @@
           </a>
         </li>
         <li>
-          <a *ngIf="!isLoggedIn" (click)="externalLogin()" class="account-menu">Log In</a>
-          <div *ngIf="isLoggedIn" dropdown class="inline" id="signin-dropdown" style="margin-top: 10px;">
+          <a *ngIf="!isLoggedIn" (click)="externalLogin()" class="account-menu"><img class="nav-icon" src="/assets/images/small-icons/profile.svg" aria-hidden="true" />Log In</a>
+          <div *ngIf="isLoggedIn" dropdown class="inline" id="signin-dropdown">
             <a dropdownToggle (click)="false">
+              <img class="nav-icon" src="/assets/images/small-icons/profile.svg" aria-hidden="true" />
               {{userProfile}}
-              <img class="dropdown-icon" style="height: 6px;" src="/assets/images/small-icons/dropdown_arrow.svg" alt="signin dropdown icon" />
+              <img class="dropdown-icon" src="/assets/images/small-icons/dropdown_arrow.svg" alt="signin dropdown icon" />
             </a>
-            <ul *dropdownMenu class="dropdown-menu pull-left" style="width: 30px;min-height: 10px;max-height: 90px;">
+            <ul *dropdownMenu class="dropdown-menu pull-right">
               <li class="list-items">
-                <a class="dropdown-item" href="#">My Plan</a>
+                <a class="dropdown-item" [routerLink]="['/profile']">My Plan</a>
                 <a class="dropdown-item" href="#">Account Settings</a>
                 <a class="dropdown-item" (click)="logout()">Log Out</a>
               </li>

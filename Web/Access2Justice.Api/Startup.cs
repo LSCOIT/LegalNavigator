@@ -30,12 +30,7 @@ namespace Access2Justice.Api
         {
             ConfigureAuth(services);
 
-            //services.AddDistributedMemoryCache();
-            services.AddSession(options =>
-            {
-                options.IdleTimeout = TimeSpan.FromMinutes(10);  // Todo:@Alaa read this from the config
-                //options.Cookie.HttpOnly = true;
-            });
+            ConfigureSession(services);
 
             services.AddMvc();
 
@@ -53,6 +48,7 @@ namespace Access2Justice.Api
             services.AddSingleton<ICuratedExperienceBusinessLogic, CuratedExperienceBuisnessLogic>();
             services.AddTransient<IHttpClientService, HttpClientService>();
             services.AddSingleton<IUserProfileBusinessLogic, UserProfileBusinessLogic>();
+
             ConfigureCosmosDb(services);
 
             services.AddSwaggerGen(c =>
@@ -98,6 +94,17 @@ namespace Access2Justice.Api
             services.AddSingleton<IDocumentClient>(x => new DocumentClient(cosmosDbSettings.Endpoint, cosmosDbSettings.AuthKey));
             services.AddSingleton<IBackendDatabaseService, CosmosDbService>();
             services.AddSingleton<IDynamicQueries, CosmosDbDynamicQueries>();
+        }
+
+        private void ConfigureSession(IServiceCollection services)
+        {
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(
+                    Configuration.GetValue<int>("Api:SessionDurationInMinutes"));
+                options.Cookie.HttpOnly = true;
+            });
         }
 
         private void ConfigureSwagger(IApplicationBuilder app)

@@ -13,7 +13,7 @@ namespace Access2Justice.Shared.Models.CuratedExperience
         public string Title { get; set; }
 
         [JsonProperty(PropertyName = "components")]
-        public IList<CuratedExperienceComponent> Components { get; set; }
+        public List<CuratedExperienceComponent> Components { get; set; }
 
         public CuratedExperience()
         {
@@ -39,13 +39,13 @@ namespace Access2Justice.Shared.Models.CuratedExperience
         public string Help { get; set; }
 
         [JsonProperty(propertyName: "tags")]
-        public IList<string> Tags { get; set; }
+        public List<string> Tags { get; set; }
 
         [JsonProperty(PropertyName = "buttons")]
-        public IList<Button> Buttons { get; set; }
+        public List<Button> Buttons { get; set; }
 
         [JsonProperty(PropertyName = "fields")]
-        public IList<Field> Fields { get; set; }
+        public List<Field> Fields { get; set; }
 
         public CuratedExperienceComponent()
         {

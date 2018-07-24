@@ -22,8 +22,7 @@
 </div>
 <ul *ngIf="mobile" class="user-action">
   <li *ngIf="showSave">
-    <img src="./assets/images/small-icons/save.svg" class="nav-icon" aria-hidden="true" />
-    <app-save-button></app-save-button>
+    <app-save-button  [id]="resourceId" [type]="resourceType"></app-save-button>
   </li>
   <li>
     <img src="./assets/images/small-icons/share.svg" class="nav-icon" aria-hidden="true" />

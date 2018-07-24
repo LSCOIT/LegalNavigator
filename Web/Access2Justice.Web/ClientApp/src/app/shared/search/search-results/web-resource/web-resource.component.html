@@ -1,14 +1,48 @@
-<div class="web-resource">
-  <p class="ps">{{webResult.dateLastCrawled}}</p>
-  <a href="{{webResult.url}}"><p class="pl">{{webResult.name}}</p></a>
-  <a href="{{webResult.url}}"><span class="link">{{webResult.displayUrl}}</span></a>
-  <p>{{webResult.snippet}}</p>
-  <div *ngIf="webResult.deepLinks">
-    <div *ngFor="let deepLink of webResult.deepLinks">
-      <p class="ps">{{webResult.dateLastCrawled}}</p>
-      <a href="{{deepLink.url}}"><p class="pl">{{deepLink.name}}</p></a>
-      <a href="{{deepLink.url}}"><span class="link">{{deepLink.url}}</span></a>
-      <p>{{deepLink.snippet}}</p>
+  <div class="box-no-shadow">
+    <div class="resource-body">
+      <div class="btn-group pull-right" dropdown>
+        <span dropdownToggle type="button" class="glyphicon glyphicon-option-horizontal dropdown-toggle"></span>
+        <ul id="dropdown-disabled-item" *dropdownMenu class="dropdown-menu dropdown-menu-right"
+            role="menu">
+          <li role="menuitem">
+            <app-save-button [id]="webResult.name" [type]="type" [resourceDetails]="webResult"></app-save-button>
+          </li>
+          <li role="menuitem">
+            <a class="dropdown-item" href="#">
+              <img src="./assets/images/small-icons/share.svg" class="nav-icon" aria-hidden="true" />
+              <app-share-button></app-share-button>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="web-resource">
+        <p class="ps">{{webResult.dateLastCrawled}}</p>
+        <a href="{{webResult.url}}"><p class="pl">{{webResult.name}}</p></a>
+        <a href="{{webResult.url}}"><span class="link">{{webResult.displayUrl}}</span></a>
+        <p>{{webResult.snippet}}</p>
+        <div class="web-resource" *ngIf="webResult.deepLinks">
+          <div *ngFor="let deepLink of webResult.deepLinks">
+            <!--<div class="btn-group" dropdown>
+              <span dropdownToggle type="button" class="glyphicon glyphicon-option-horizontal dropdown-toggle"></span>
+              <ul id="dropdown-disabled-item" *dropdownMenu class="dropdown-menu dropdown-menu-right"
+                  role="menu">
+                <li role="menuitem">
+                  <app-save-button [id]="deepLink.name" [type]="type"></app-save-button>
+                </li>
+                <li role="menuitem">
+                  <a class="dropdown-item" href="#">
+                    <img src="./assets/images/small-icons/share.svg" class="nav-icon" aria-hidden="true" />
+                    <app-share-button></app-share-button>
+                  </a>
+                </li>
+              </ul>
+            </div>-->
+            <p class="ps">{{webResult.dateLastCrawled}}</p>
+            <a href="{{deepLink.url}}"><p class="pl">{{deepLink.name}}</p></a>
+            <a href="{{deepLink.url}}"><span class="link">{{deepLink.url}}</span></a>
+            <p>{{deepLink.snippet}}</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</div>

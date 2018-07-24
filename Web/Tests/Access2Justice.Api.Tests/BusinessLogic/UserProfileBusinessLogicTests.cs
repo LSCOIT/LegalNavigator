@@ -28,6 +28,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly JArray emptyData = JArray.Parse(@"[{}]");
         private readonly string createUserProfileObjOId = "709709e7t0r7123";
         private readonly string updateUserProfileObjOId = "99889789";
+        private readonly string expectedUserId = "outlookoremailOId";
 
         private readonly JArray userProfilePersonalizedPlanData = UserPersonalizedPlanTestData.userProfilePersonalizedPlanData;
         private readonly JArray expectedUserProfilePersonalizedPlanData = UserPersonalizedPlanTestData.expectedUserProfilePersonalizedPlanData;
@@ -65,7 +66,6 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             userProfileObj.CreatedTimeStamp = "01/01/2018 10:00:00";
             userProfileObj.ModifiedBy = "vn";
             userProfileObj.ModifiedTimeStamp = "01/01/2018 10:00:00";
-
         }
 
         [Fact]
@@ -76,11 +76,11 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
 
             //act
-            var response = userProfileBusinessLogic.GetUserProfileDataAsync(expectedUserProfileId, cosmosDbSettings.UserProfileCollectionId);
+            var response = userProfileBusinessLogic.GetUserProfileDataAsync(expectedUserProfileId);
             string result = JsonConvert.SerializeObject(response);
 
             //assert
-            Assert.Contains("[{}]", result, StringComparison.InvariantCultureIgnoreCase);
+            Assert.DoesNotContain(expectedUserProfileId, result, StringComparison.InvariantCultureIgnoreCase);
         }
 
         [Fact]
@@ -91,7 +91,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             dbResponse.ReturnsForAnyArgs<dynamic>(userProfile);
 
             //act
-            var response = userProfileBusinessLogic.GetUserProfileDataAsync(expectedUserProfileId, cosmosDbSettings.UserProfileCollectionId);
+            var response = userProfileBusinessLogic.GetUserProfileDataAsync(expectedUserProfileId);
             string result = JsonConvert.SerializeObject(response);
 
             //assert
@@ -110,7 +110,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             userprofiles.Add(result);
 
             //act         
-            var response = userProfileBusinessLogic.CreateUserProfileDataAsync(userProfileObj);
+            var response = userProfileBusinessLogic.CreateUserProfileDataAsync(userProfileObj);            
             userprofiles2.Add(response);
 
             //assert
@@ -158,18 +158,18 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         {
             var userprofiles = new List<dynamic>();
             var userprofiles2 = new List<dynamic>();
-
+            
             //arrange
             userProfileObj.OId = updateUserProfileObjOId; // Id is new, so should not update the data for this id
             var result = backendDatabaseService.UpdateItemAsync(userProfileObj.Id, ResourceDeserialized(userProfileObj), cosmosDbSettings.UserProfileCollectionId);
             userprofiles.Add(result);
 
-            //act         
+            //act
             var response = userProfileBusinessLogic.UpdateUserProfileDataAsync(userProfileObj, userProfileObj.Id);
             userprofiles2.Add(response);
 
             //assert
-            Assert.NotEqual(userprofiles, userprofiles2);
+            Assert.Equal(userprofiles.ToString(), userprofiles2.ToString());
         }
         private object ResourceDeserialized(UserProfile userProfile)
         {
@@ -369,6 +369,37 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 
             //assert
             Assert.Equal(expectedUserPlanUpdateData[0].ToString(), actualResult.ToString());
+        }
+
+
+        [Fact]
+        public void GetUserResourceProfileDataAsyncWithProperData()
+        {
+            //arrange
+            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.ResourceCollectionId, "oId", expectedUserId);
+            dbResponse.ReturnsForAnyArgs<dynamic>(userProfilePersonalizedPlanData);
+
+
+            //act
+            var response = userProfileBusinessLogic.GetUserResourceProfileDataAsync(expectedUserProfileId);
+            string result = JsonConvert.SerializeObject(response);
+
+            //assert
+            Assert.Contains(expectedUserId, result, StringComparison.InvariantCulture);
+        }
+        [Fact]
+        public void GetUserResourceProfileDataAsyncEmptyData()
+        {
+            //arrange
+            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.ResourceCollectionId, "oId", expectedUserProfileId);
+            dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
+
+            //act
+            var response = userProfileBusinessLogic.GetUserResourceProfileDataAsync(string.Empty);
+            string result = JsonConvert.SerializeObject(response);
+
+            //assert
+            Assert.Contains("[{}]", result, StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }

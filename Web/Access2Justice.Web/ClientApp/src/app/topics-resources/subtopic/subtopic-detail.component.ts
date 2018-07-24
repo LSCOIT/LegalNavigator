@@ -20,6 +20,8 @@ export class SubtopicDetailComponent implements OnInit {
   subtopics: any;
   subtopic: any;
   savedFrom: string = "subTopicDetails";
+  type: string = "Topics";
+  showRemoveOption: boolean;
 
   constructor(
     private topicService: TopicService,
@@ -72,5 +74,6 @@ export class SubtopicDetailComponent implements OnInit {
           this.getDataOnReload();
         }
       });
+    this.showRemoveOption = false;
   }
 }

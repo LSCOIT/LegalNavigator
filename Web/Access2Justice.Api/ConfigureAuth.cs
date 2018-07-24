@@ -1,4 +1,5 @@
 ﻿using Access2Justice.CosmosDb;
+using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -48,10 +49,9 @@ namespace Access2Justice.Api
                         {
                             ApplicationUser user = new ApplicationUser();
                             var identity = context.Principal.Identity as ClaimsIdentity;
-                            user.UserName = identity.Name;
-                            user.UserId = identity.Claims.Where(x => x.Type.Contains("nameidentifier")).Select(x => x.Value).FirstOrDefault();
+                            user.UserName = identity.Name;                            
+                            user.UserId = EncryptString(identity.Claims.Where(x => x.Type.Contains("nameidentifier")).Select(x => x.Value).FirstOrDefault());
                             context.Response.Cookies.Append("profileData", Newtonsoft.Json.JsonConvert.SerializeObject(user));
-                            context.ReturnUri = Configuration["Api:Endpoint"];
                             context.Response.Redirect(context.ReturnUri, true);
                         }
                         return Task.FromResult(0);
@@ -79,8 +79,8 @@ namespace Access2Justice.Api
             var resource = JsonConvert.SerializeObject(userObject);
             var userUIDocument = JsonConvert.DeserializeObject<dynamic>(resource);
 
-            UserProfile userProfile = new UserProfile();
-            userProfile.OId = ((JToken)userUIDocument).Root.SelectToken("id").Value<string>();
+            UserProfile userProfile = new UserProfile();            
+            userProfile.OId = EncryptString(((JToken)userUIDocument).Root.SelectToken("id").Value<string>());
             userProfile.FirstName = ((JToken)userUIDocument).Root.SelectToken("givenName").Value<string>();
             userProfile.LastName = ((JToken)userUIDocument).Root.SelectToken("surname").Value<string>();
             userProfile.EMail = ((JToken)userUIDocument).Root.SelectToken("userPrincipalName").Value<string>();
@@ -105,6 +105,15 @@ namespace Access2Justice.Api
             }
         }
 
+        private string EncryptString(string input)
+        {
+            string encryptedId = input;
+            if (!string.IsNullOrEmpty(input))
+            {
+                encryptedId = Utilities.GenerateSHA512String(input);
+            }
+            return encryptedId;
+        }
 
         public void ConfigureRoutes(IApplicationBuilder app)
         {
@@ -112,7 +121,8 @@ namespace Access2Justice.Api
             {
                 builder.Run(async context =>
                 {
-                    await context.ChallengeAsync("Microsoft-Auth", new AuthenticationProperties() { RedirectUri = "/" });
+                    string refererUrl = context.Request.Headers["Referer"];
+                    await context.ChallengeAsync("Microsoft-Auth", new AuthenticationProperties() { RedirectUri = refererUrl ?? "/" });
                     return;
                 });
             });
@@ -121,8 +131,16 @@ namespace Access2Justice.Api
             {
                 builder.Run(async context =>
                 {
+                    Uri refererUrl = new Uri(context.Request.Headers["Referer"]);
                     await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                    context.Response.Redirect(Configuration["Api:Endpoint"]);
+                    if (refererUrl != null)
+                    {
+                        context.Response.Redirect(refererUrl.Scheme + "://" + refererUrl.Authority);
+                    }
+                    else
+                    {
+                        context.Response.Redirect(Configuration["Api:Endpoint"]);
+                    }
                 });
             });
         }

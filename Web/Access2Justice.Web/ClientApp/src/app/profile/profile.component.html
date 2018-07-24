@@ -9,7 +9,7 @@
   </div>
   <div class="row row-half-spacing">
     <img class="sec-illustration" src="./assets/images/secondary-illustrations/profile.svg" alt="action plan">
-    <h3 class="page-heading">User ID's Profile</h3>
+    <h3 class="page-heading capitalize">{{userName}}'s Profile</h3>
   </div>
   <div class="row row-half-spacing">
     <div class="col-sm-12">
@@ -23,8 +23,11 @@
           <!--need to use the filter component here instead once merged with develop-->
           <span class="col-sm-1 col-xs-2">Show:</span>
           <!--web filtering-->
-          <div *ngFor="let topic of topics" class="mobile-hidden col-xs-9">
-            <button class="btn btn-selected">{{topic.id[0].name}}</button>
+          <div class="mobile-hidden col-sm-10">
+            <button *ngFor="let topic of topicsList" type="button" [ngClass]="{ 'btn-sm btn-primary': topic.isSelected, 'btn': !topic.isSelected  }"
+                    (click)="filterPlan(topic.topic.id[0].name)">
+              {{topic.topic.id[0].name}}
+            </button>
           </div>
           <!--mobile filtering-->
           <div class="btn-group web-hidden col-xs-9" dropdown>
@@ -34,14 +37,16 @@
             </button>
             <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
                 role="menu" aria-labelledby="button-basic">
-              <li *ngFor="let topic of topics" role="menuitem"><a class="dropdown-item" href="#">{{topic.id[0].name}}</a></li>
+              <li *ngFor="let topic of topicsList" role="menuitem" (click)="filterPlan(topic.topic.id[0].name)">
+                <a [ngClass]="{ 'selected-item dropdown-item': topic.isSelected, 'dropdown-item': !topic.isSelected  }"> {{topic.topic.id[0].name}} </a>
+              </li>
             </ul>
           </div>
         </div>
         <app-action-plan-card [planDetails]="planDetails"></app-action-plan-card>
       </tab>
       <tab heading="My Saved Resources" (select)="getpersonalizedResources()">
-        <app-search-results [personalizedResources]="personalizedResources" *ngIf="isSavedResources"></app-search-results>
+        <app-search-results [fullPage]="true" [personalizedResources]="personalizedResources" [showRemove]="showRemove" *ngIf="isSavedResources"></app-search-results>
       </tab>
     </tabset>
   </div>

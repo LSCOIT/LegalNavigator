@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Access2Justice.Shared.Extensions
 {
-    public static class A2JAuthorExtensions
+    public static class JsonExtensions
     {
         public static string GetValue(this IEnumerable<JProperty> jProperties, string propertyName)
         {

@@ -17,8 +17,8 @@ import { NavigateDataService } from './navigate-data.service';
 import { PrintButtonComponent } from './resource/user-action/print-button.component';
 import { ResourceCardComponent } from './resource/resource-card/resource-card.component';
 import { ResourceCardDetailComponent } from './resource/resource-card-detail/resource-card-detail.component';
-import { RemoveButtonComponent } from './resource/user-action/remove-button.component';
-import { SaveButtonComponent } from './resource/user-action/save-button.component';
+import { RemoveButtonComponent } from './resource/user-action/remove-button/remove-button.component';
+import { SaveButtonComponent } from './resource/user-action/save-button/save-button.component';
 import { SearchComponent } from './search/search.component';
 import { SearchFilterComponent } from './search/search-filter/search-filter.component';
 import { SearchResultsComponent } from './search/search-results/search-results.component';
@@ -38,6 +38,7 @@ import { ActionPlanCardComponent } from './action-plan/action-plan-card.componen
 import { UserActionSidebarComponent } from './sidebars/user-action-sidebar.component';
 import { SettingButtonComponent } from './resource/user-action/setting-button.component';
 import { ServiceOrgService } from './sidebars/service-org.service';
+import { ArrayUtilityService } from './array-utility.service';
 import { HelplineComponent } from './helpline/helpline.component';
 import { ButtonSelectedDirective } from './styling/button-selected.directive';
 
@@ -114,8 +115,8 @@ import { ButtonSelectedDirective } from './styling/button-selected.directive';
     SearchService,
     MapResultsService,
     PaginationService,
-    ServiceOrgService
-
+    ServiceOrgService,
+    ArrayUtilityService
   ]
 })
 export class SharedModule { }

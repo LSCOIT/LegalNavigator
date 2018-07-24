@@ -8,7 +8,8 @@ export const environment = {
   bingmap_key: '',
   map_type: false,
   internalResourcePagesToShow: 2,
-  internalResourceRecordsToDisplay: 1,
+  internalResourceRecordsToDisplay: 10,
   webResourcePagesToShow: 10,
-  webResourceRecordsToDisplay: 10
+  webResourceRecordsToDisplay: 10,
+  userId: 'User Id'
 };
