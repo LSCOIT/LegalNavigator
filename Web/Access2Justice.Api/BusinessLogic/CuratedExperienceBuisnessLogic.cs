@@ -161,10 +161,10 @@ namespace Access2Justice.Api.BusinessLogic
 
         private CuratedExperienceAnswers MapViewModelAnswerToCuratedExperienceAnswer(CuratedExperienceAnswersViewModel viewModelAnswer)
         {
-            var filledInTexts = new List<FilledInText>();
+            var filledInTexts = new List<AnswerField>();
             foreach (var field in viewModelAnswer.Fields)
             {
-                filledInTexts.Add(new FilledInText
+                filledInTexts.Add(new AnswerField
                 {
                     FieldId = field.FieldId,
                     Value = field.Value
@@ -174,8 +174,8 @@ namespace Access2Justice.Api.BusinessLogic
             var collectAnswersList = new List<Answer>();
             collectAnswersList.Add(new Answer
             {
-                ClickedButtonId = viewModelAnswer.ButtonId,
-                FilledInTexts = filledInTexts,
+                AnswerButtonId = viewModelAnswer.ButtonId,
+                AnswerFields = filledInTexts,
             });
 
             return new CuratedExperienceAnswers

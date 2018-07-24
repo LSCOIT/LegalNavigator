@@ -12,9 +12,6 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "curatedExperienceId")]
         public Guid CuratedExperienceId { get; set; }
 
-        [JsonProperty(PropertyName = "userId")]
-        public Guid UserId { get; set; }
-
         [JsonProperty(PropertyName = "answers")]
         public IList<Answer> Answers { get; set; }
 
@@ -26,22 +23,18 @@ namespace Access2Justice.Shared.Models
 
     public class Answer
     {
-        [JsonProperty(PropertyName = "clickedButtonId")]
-        public Guid ClickedButtonId { get; set; }
+        [JsonProperty(PropertyName = "answerButtonId")]
+        public Guid AnswerButtonId { get; set; }
 
-        [JsonProperty(PropertyName = "selectedItemsIds")]
-        public IList<Guid> SelectedItemsIds { get; set; }
-
-        [JsonProperty(PropertyName = "filledInTexts")]
-        public IList<FilledInText> FilledInTexts { get; set; }
+        [JsonProperty(PropertyName = "answerFields")]
+        public IList<AnswerField> AnswerFields { get; set; }
         public Answer()
         {
-            SelectedItemsIds = new List<Guid>();
-            FilledInTexts = new List<FilledInText>();
+            AnswerFields = new List<AnswerField>();
         }
     }
 
-    public class FilledInText
+    public class AnswerField
     {
         [JsonProperty(PropertyName = "fieldId")]
         public string FieldId { get; set; }

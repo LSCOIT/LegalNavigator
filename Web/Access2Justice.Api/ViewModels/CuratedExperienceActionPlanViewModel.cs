@@ -47,7 +47,7 @@ namespace Access2Justice.Api.ViewModels
         public Guid StepId { get; set; }
 
         [JsonProperty(PropertyName = "type")]
-        public string Type { get; set; }  // Todo:@Alaa create an enum
+        public string Type { get; set; }  // Todo: create an enum
 
         [JsonProperty(PropertyName = "title")]
         public string Title { get; set; }
@@ -58,15 +58,15 @@ namespace Access2Justice.Api.ViewModels
         [JsonProperty(PropertyName = "order")]
         public int Order { get; set; }
 
-        [JsonProperty(PropertyName = "markCompleted")]
+        [JsonProperty(PropertyName = "isComplete")]
         public bool IsComplete { get; set; }
 
         [JsonProperty(PropertyName = "resources")]
-        public List<Guid> ResourcesIds { get; set; }
+        public List<dynamic> Resources { get; set; }
 
         public PlanStep()
         {
-            ResourcesIds = new List<Guid>();
+            Resources = new List<dynamic>();
         }
     }
 }

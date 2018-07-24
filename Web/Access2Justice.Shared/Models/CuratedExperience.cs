@@ -71,6 +71,12 @@ namespace Access2Justice.Shared.Models
 
         [JsonProperty(PropertyName = "topicIds")]
         public List<Guid> TopicIds { get; set; }
+
+        public Button()
+        {
+            ResourceIds = new List<Guid>();
+            TopicIds = new List<Guid>();
+        }
     }
 
     public class Field
@@ -101,5 +107,11 @@ namespace Access2Justice.Shared.Models
 
         [JsonProperty(PropertyName = "topicIds")]
         public List<Guid> TopicIds { get; set; }
+
+        public Field()
+        {
+            ResourceIds = new List<Guid>();
+            TopicIds = new List<Guid>();
+        }
     }
 }
