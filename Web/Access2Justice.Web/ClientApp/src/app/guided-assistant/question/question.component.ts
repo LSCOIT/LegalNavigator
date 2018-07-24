@@ -1,7 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { HttpParams } from '@angular/common/http';
-//import { Observable } from 'rxjs/Observable';
 import { QuestionService } from './question.service';
 import { Question } from './question';
 import { Answer } from './answers';

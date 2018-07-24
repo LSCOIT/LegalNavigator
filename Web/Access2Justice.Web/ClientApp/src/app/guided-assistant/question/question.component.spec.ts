@@ -1,12 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgForm } from '@angular/forms';
 import { QuestionComponent } from './question.component';
-import { QuestionService } from './question.service';
-import { ProgressbarModule, ProgressbarConfig } from 'ngx-bootstrap/progressbar';
-import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 
-fdescribe('QuestionComponent', () => {
+describe('QuestionComponent', () => {
   let component: QuestionComponent;
   let mockQuestionService;
   let mockQuestion = {
