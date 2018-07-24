@@ -32,6 +32,7 @@ export class RemoveButtonComponent implements OnInit {
   profileResources: ProfileResources = { oId: '', resourceTags: [], type: '' };
   isRemovedPlan: boolean = false;
   modalRef: BsModalRef;
+  resourceDetails: any;
 
   constructor(private personalizedPlanService: PersonalizedPlanService,
     private profileComponent: ProfileComponent,
@@ -108,7 +109,7 @@ export class RemoveButtonComponent implements OnInit {
   }
 
   removedSavedResource(template) {
-    this.removeResource = { itemId: '', resourceType: '', resourceDetails: '' };
+    this.removeResource = { itemId: '', resourceType: '', resourceDetails: {} };
     this.profileResources.resourceTags = [];
     if (this.personalizedResources.resources) {
       this.removeUserSavedResource(template);
@@ -119,11 +120,15 @@ export class RemoveButtonComponent implements OnInit {
     this.saveResourceToProfile(this.profileResources.resourceTags, template);
   }
 
-  removeUserSavedResource(template) {
+ removeUserSavedResource(template) {
     this.personalizedResources.resources.forEach(resource => {
-      if (resource.id !== this.resourceId) {
-        console.log(resource);
-        this.removeResource = { itemId: resource.id, resourceType: resource.resourceType, resourceDetails: resource.resourceDetails };
+      if (resource.id !== this.resourceId && resource.resourceType !=="Topics") {
+        if (resource.resourceDetails) {
+          this.resourceDetails = resource.resourceDetails;
+        } else {
+          this.resourceDetails = {};
+        }
+        this.removeResource = { itemId: resource.id, resourceType: resource.resourceType, resourceDetails: this.resourceDetails };
         this.profileResources.resourceTags.push(this.removeResource);
       }
     });
@@ -132,7 +137,12 @@ export class RemoveButtonComponent implements OnInit {
   removeUserSavedTopic(template) {
     this.personalizedResources.topics.forEach(topic => {
       if (topic.id !== this.resourceId) {
-        this.removeResource = { itemId: topic.id, resourceType: topic.resourceType, resourceDetails: topic.resourceDetails };
+        if (topic.resourceDetails) {
+          this.resourceDetails = topic.resourceDetails;
+        } else {
+          this.resourceDetails = {};
+        }
+        this.removeResource = { itemId: topic.id, resourceType: topic.resourceType, resourceDetails: this.resourceDetails };
         this.profileResources.resourceTags.push(this.removeResource);
       }
     });
