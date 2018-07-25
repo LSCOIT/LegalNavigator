@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Access2Justice.Shared.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -62,11 +63,11 @@ namespace Access2Justice.Api.ViewModels
         public bool IsComplete { get; set; }
 
         [JsonProperty(PropertyName = "resources")]
-        public List<dynamic> Resources { get; set; }
+        public List<Resource> Resources { get; set; }
 
         public PlanStep()
         {
-            Resources = new List<dynamic>();
+            Resources = new List<Resource>();
         }
     }
 }
