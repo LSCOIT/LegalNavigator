@@ -114,6 +114,9 @@ export class RemoveButtonComponent implements OnInit {
     if (this.personalizedResources.resources) {
       this.removeUserSavedResource(template);
     }
+    if (this.personalizedResources.WebResources) {
+      this.removeUserSavedWebResource(template);
+    }
     if (this.personalizedResources.topics) {
       this.removeUserSavedTopic(template);
     }
@@ -123,6 +126,20 @@ export class RemoveButtonComponent implements OnInit {
  removeUserSavedResource(template) {
     this.personalizedResources.resources.forEach(resource => {
       if (resource.id !== this.resourceId && resource.resourceType !=="Topics") {
+        if (resource.resourceDetails) {
+          this.resourceDetails = resource.resourceDetails;
+        } else {
+          this.resourceDetails = {};
+        }
+        this.removeResource = { itemId: resource.id, resourceType: resource.resourceType, resourceDetails: this.resourceDetails };
+        this.profileResources.resourceTags.push(this.removeResource);
+      }
+    });
+  }
+
+  removeUserSavedWebResource(template) {
+    this.personalizedResources.webResources.forEach(resource => {
+      if (resource.id !== this.resourceId && resource.resourceType !== "Topics") {
         if (resource.resourceDetails) {
           this.resourceDetails = resource.resourceDetails;
         } else {
