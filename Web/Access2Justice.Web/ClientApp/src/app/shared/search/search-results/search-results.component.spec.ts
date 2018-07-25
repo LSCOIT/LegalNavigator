@@ -27,41 +27,21 @@ import { Observable } from 'rxjs';
 describe('SearchResultsComponent', () => {
   let component: SearchResultsComponent;
   let fixture: ComponentFixture<SearchResultsComponent>;
-  let pagesToShow: number;
   let searchService: SearchService;
   let paginationService: PaginationService;
   let navigateDataService: NavigateDataService;
-
-  let isInternalResource: boolean;
-  let isWebResource: boolean;
-  let isLuisResponse: boolean;
-  let searchText: string;
-  let searchResults: any;
-  let sortType: any;
-  let resourceResults: ResourceResult[] = [];
-  let filterType: string = 'All';
-  let resourceTypeFilter: any[];
   let resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: '', ResourceIds: '', PageNumber: 0, Location: '' };
-  let topicIds: any[];
-  let isServiceCall: boolean;
   let currentPage: number = 0;
   let mockPageNumber: number = 0;
-  let loading = false;
-  let total: number;
-  let page: number;
-  let limit: number;
-  let offset: number;
   let mockResourceName = 'Videos'
   let mockResourceNameUndifined = 'NoVideos'
   let mockResourceTypeFilter = [{ ResourceName: "Videos", ResourceCount: 1 }, { ResourceName: "Organizations", ResourceCount: 2 }, { ResourceName: "Forms", ResourceCount: 1 }];
   let mockResourceTypeFilterTemp = [{ ResourceName: "test", ResourceCount: 1 }, { ResourceName: "test", ResourceCount: 2 }, { ResourceName: "test", ResourceCount: 1 }];
   let mockResourceListFilterAll = [{ ResourceCount: 10, ResourceList: [{ continuationToken: {}, resources: [{ address: "Houston County, Texas, United States", name: "Tenant Action Plan for Eviction" }, { address: "Houston County, Texas, United States", name: "Landlord Action Plan" }] }], ResourceName: "All" }];
-  let mockSearchResults = [{ ResourceList: [{ continuationToken: {}, resources: [{ address: "Houston County, Texas, United States", name: "Tenant Action Plan for Eviction" }, { address: "Houston County, Texas, United States", name: "Landlord Action Plan" }] }] }]
-  let mockResourceTypeFilterWithList = [{ ResourceName: "Videos", ResourceCount: 20, ResourceList: [{ continuationToken: [{ test: '2' }], resources: [{ address: "Houston County, Texas, United States", name: "Tenant Action Plan for Eviction" }, { address: "Houston County, Texas, United States", name: "Landlord Action Plan" }] }] }, { ResourceName: "Organizations", ResourceCount: 2 }, { ResourceName: "Forms", ResourceCount: 1 }];
   let mockResourceTypeFilterWithResourceList = [{ ResourceList: [{ continuationToken: [{ test: '2' }], resources: [{ address: "Houston County, Texas, United States", name: "Tenant Action Plan for Eviction" }, { address: "Houston County, Texas, United States", name: "Landlord Action Plan" }] }] }, { ResourceName: "Organizations", ResourceCount: 2 }, { ResourceName: "Forms", ResourceCount: 1 }];
   let mockResourceTypeFilter2 = [{ ResourceName: "Videos", ResourceCount: 1, ResourceList: [{ continuationToken: [{ test: '2' }], resources: [{ address: "Houston County, Texas, United States", name: "Tenant Action Plan for Eviction" }, { address: "Houston County, Texas, United States", name: "Landlord Action Plan" }] }] }, { ResourceName: "Organizations", ResourceCount: 2 }, { ResourceName: "Forms", ResourceCount: 1 }];
   let mockSearchText = 'eviction'
-  let mockResponse = Observable.of('test');
+  let mockSearchResults2 = [{ continuationToken: [{ test: '2' }], resources: [{ address: "Houston County, Texas, United States", name: "Tenant Action Plan for Eviction" }, { address: "Houston County, Texas, United States", name: "Landlord Action Plan" }] }]
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -147,46 +127,47 @@ describe('SearchResultsComponent', () => {
     component.resourceTypeFilter = mockResourceTypeFilter;
     component.currentPage = mockPageNumber;
     component.checkResource(mockResourceName, mockPageNumber);
-    expect(component.checkResource(mockResourceName, mockPageNumber)).toBeTruthy;
+    expect(component.checkResource(mockResourceName, mockPageNumber)).toBeTruthy();
   });
 
   it('should call checkResource with resource name undefined and resource list undefined', () => {
     component.resourceTypeFilter = mockResourceTypeFilterTemp;
     component.currentPage = mockPageNumber;
     component.checkResource(mockResourceName, mockPageNumber);
-    expect(component.checkResource(mockResourceName, mockPageNumber)).toBeFalsy;
+    expect(component.checkResource(mockResourceName, mockPageNumber)).toBeFalsy();
   });
 
   it('should call checkResource with resource name defined and resource list defined', () => {
     component.resourceTypeFilter = mockResourceListFilterAll;
     component.currentPage = mockPageNumber;
     component.checkResource(mockResourceName, mockPageNumber);
-    expect(component.checkResource(mockResourceName, mockPageNumber)).toBeFalsy;
+    expect(component.checkResource(mockResourceName, mockPageNumber)).toBeFalsy();
   });
 
   it('should call AddResource with resource name defined', () => {
     component.resourceTypeFilter = mockResourceTypeFilter;
+    component.searchResults = mockSearchResults2;
     component.addResource(mockResourceName);
-    expect(component.addResource(mockResourceName)).toBeTruthy;
+    expect(component.addResource).toBeTruthy();
   });
 
   it('should call AddResource with resource name defined and resource list defined ', () => {
     component.resourceTypeFilter = mockResourceTypeFilter2;
     component.searchResults = mockResourceTypeFilterWithResourceList;
     component.addResource(mockResourceName);
-    expect(component.addResource(mockResourceName)).toBeTruthy;
+    expect(component.addResource).toBeTruthy();
   });
 
   it('should call AddResource with resource name undefined and resource list defined', () => {
     component.resourceTypeFilter = mockResourceTypeFilter2;
     component.addResource(mockResourceNameUndifined);
-    expect(component.addResource(mockResourceNameUndifined)).toBeTruthy;
+    expect(component.addResource).toBeTruthy();
   });
 
   it('should call AddResource with resource list undefined', () => {
     component.resourceTypeFilter = mockResourceTypeFilter;
     component.addResource(mockResourceNameUndifined);
-    expect(component.addResource(mockResourceNameUndifined)).toBeTruthy;
+    expect(component.addResource).toBeTruthy();
   });
 
   it('should call Search Resource by offset', () => {
@@ -194,8 +175,7 @@ describe('SearchResultsComponent', () => {
     component.searchText = mockSearchText;
     component.offset = 1
     component.searchResource(1);
-    expect(component.searchResource).toHaveBeenCalled;
-    expect(paginationService.searchByOffset).toHaveBeenCalled;
+    expect(paginationService.searchByOffset).toHaveBeenCalled();
   });
 
   it('should call goToPage - web resource page', () => {
