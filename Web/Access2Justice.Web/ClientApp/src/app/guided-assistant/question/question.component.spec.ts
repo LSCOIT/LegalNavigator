@@ -1,43 +1,126 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { NgForm } from '@angular/forms';
 import { QuestionComponent } from './question.component';
-import { QuestionService } from './question.service';
-import { ProgressbarModule, ProgressbarConfig } from 'ngx-bootstrap/progressbar';
-import { Observable } from 'rxjs/Observable';
-
-const mockQuestionService = {
-  getQuestion: () => { },
-  getNextQuestion: () => { return Observable.of(); }
-};
+import { of } from 'rxjs/observable/of';
 
 describe('QuestionComponent', () => {
   let component: QuestionComponent;
-  let fixture: ComponentFixture<QuestionComponent>;
-  let questionService: QuestionService;
- 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [QuestionComponent],
-      imports: [
-        FormsModule,
-        HttpClientModule,
-        ProgressbarModule
-      ],
-      providers: [
-        { provide: QuestionService, useValue: mockQuestionService },
-        ProgressbarConfig]
-    })
-      .compileComponents();
-  }));
+  let mockQuestionService;
+  let mockQuestion = {
+    curatedExperienceId: '123',
+    answersDocId: '456',
+    questionsRemaining: 9,
+    componentId: '789',
+    name: '',
+    text: '',
+    learn: '',
+    help: '',
+    tags: [],
+    buttons: [{
+      id: "111",
+      label: "Continue",
+      destination: ""
+    }],
+    fields: []
+  }
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(QuestionComponent);
-    component = fixture.componentInstance;
-    questionService = fixture.debugElement.injector.get(QuestionService);
+    mockQuestionService = jasmine.createSpyObj(['getQuestion', 'getNextQuestion']);
+    component = new QuestionComponent(mockQuestionService);
+
   });
 
-  it('should create question component', () => {
-    expect(component).toBeTruthy();
+  it('should get initial set of question', () => {
+    mockQuestionService.getQuestion.and.returnValue(of(mockQuestion));
+    spyOn(component, 'sendTotalQuestions');
+    component.getQuestion();
+    expect(component.question).toEqual(mockQuestion);
+    expect(component.sendTotalQuestions).toHaveBeenCalled();
+  });
+
+  it('should map input value to correct parameter', () => {
+      let formValue = {
+        value: {
+          "111": "abc",
+          "222": "def",
+          "333": "ghi"
+        }
+      };
+      let mockFieldParam = [
+        { "fieldId": "111", "value": "abc" },
+        { "fieldId": "222", "value": "def" },
+        { "fieldId": "333", "value": "ghi" }
+      ];
+      component.createFieldParam(formValue);
+      expect(component.fieldParam).toEqual(mockFieldParam);
+  });
+
+  it('should map radio value to crrect parameter', () => {
+    let formValue = {
+      value: {
+        "radioOptions": "111"
+      }
+    };
+    let mockFieldParam = [{ "fieldId": "111" }];
+    component.createFieldParam(formValue);
+    expect(component.fieldParam).toEqual(mockFieldParam);
+  });
+
+  it('should call getNextQuestion if remaining question is greater than 0', () => {
+    spyOn(component, 'sendQuestionsRemaining');
+    let formValue = <NgForm>{
+      value: {
+        "111": "abc",
+        "222": "def",
+        "333": "ghi"
+      }
+    };
+    mockQuestionService.getNextQuestion.and.returnValue(of(mockQuestion));
+    component.question = mockQuestion;
+    component.onSubmit(formValue);
+
+    expect(mockQuestionService.getNextQuestion).toHaveBeenCalledWith({
+      "curatedExperienceId": "123",
+      "answersDocId": "456",
+      "buttonId": "111",
+      "fields": [
+        { "fieldId": "111", "value": "abc" },
+        { "fieldId": "222", "value": "def" },
+        { "fieldId": "333", "value": "ghi" }
+      ]
+    });
+
+    expect(component.sendQuestionsRemaining).toHaveBeenCalled();
+  });
+
+  it('should call getNextQuestion if remaining question is equal 0', () => {
+    spyOn(component, 'sendQuestionsRemaining');
+    let formValue = <NgForm>{
+      value: {
+        "111": "abc",
+        "222": "def",
+        "333": "ghi"
+      }
+    };
+    mockQuestion.questionsRemaining = 0;
+    mockQuestionService.getNextQuestion.and.returnValue(of(mockQuestion));
+    console.log(mockQuestion.questionsRemaining);
+    component.question = mockQuestion;
+    component.onSubmit(formValue);
+
+    expect(mockQuestionService.getNextQuestion).toHaveBeenCalledWith({
+      "curatedExperienceId": "123",
+      "answersDocId": "456",
+      "buttonId": "111",
+      "fields": [
+        { "fieldId": "111", "value": "abc" },
+        { "fieldId": "222", "value": "def" },
+        { "fieldId": "333", "value": "ghi" }
+      ]
+    });
+
+    expect(component.sendQuestionsRemaining).toHaveBeenCalled();
+    expect(component.question.text).toContain("Thanks for answering the questions");
+    expect(component.question.questionsRemaining).toBe(-1);
+    expect(component.question.fields).toEqual([]);
   });
 });

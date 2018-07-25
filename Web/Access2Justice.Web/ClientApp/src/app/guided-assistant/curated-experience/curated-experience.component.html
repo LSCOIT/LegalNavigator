@@ -1,18 +1,20 @@
 <div class="container">
-  <div class="row">
+  <div class="row" id="progress-bar">
     <div class="col-xs-12">
-      <progressbar max="100" [value]="100">
+      <progressbar [max]="maxProgress" [value]="questionProgress">
         <span class="text-nowrap"></span>
       </progressbar>
     </div>
-    <span class="col-sm-3 pxs">Part 1: Understanding your needs</span>
-    <span class="col-sm-3 pxs">Part 2: Building your Action plan</span>
-    <span class="col-sm-3 pxs">Part 3: View Action plan</span>
+    <span class="col-sm-8 pxs">Part 1: Understanding your needs</span>
+    <span class="col-sm-2 pxs">Part 2: View Action plan</span>
+    <ul class="col-sm-2 pxs user-action">
+      <li>Save</li>
+      <li>Exit</li>
+    </ul>
   </div>
-  <app-question></app-question>
-  <div class="row">
-    <div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0">
-      <app-did-you-know></app-did-you-know>
-    </div>
-  </div>
+  <app-question
+    (sendTotalQuestionsEvent)="receiveTotalQuestions($event)"
+    (sendQuestionsRemainingEvent)="receiveQuestionsRemaining($event)">
+  </app-question>
 </div>
+<app-articles-resources></app-articles-resources>
