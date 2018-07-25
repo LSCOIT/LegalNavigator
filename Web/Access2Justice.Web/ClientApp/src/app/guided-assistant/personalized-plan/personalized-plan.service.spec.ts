@@ -4,7 +4,7 @@ import { PersonalizedPlanService } from './personalized-plan.service';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { api } from '../../../api/api';
 import { Observable } from 'rxjs/Rx';
-import { SharedService } from '../../shared/shared.service';
+
 
 describe('PersonalizedPlan Service', () => {
   const mockHttpOptions = {
@@ -12,7 +12,6 @@ describe('PersonalizedPlan Service', () => {
       'Content-Type': 'application/json'
     })
   };
-
   let mockPlanDetailsJson = {
     "id": "bf8d7e7e-2574-7b39-efc7-83cb94adae07",
     "oId": "User Id",
@@ -477,7 +476,7 @@ describe('PersonalizedPlan Service', () => {
   let mockActiveRoute: ActivatedRoute;
   let resoureStorage = sessionStorage.getItem(this.sessionKey);
   let oid = "123456789";
-  let sharedService: SharedService;
+ 
   const httpSpy = jasmine.createSpyObj('http', ['get', 'post']);
   let mockResponse = Observable.of(mockPlanDetailsJson);
 
@@ -487,15 +486,15 @@ describe('PersonalizedPlan Service', () => {
         HttpClientModule],
       providers: [PersonalizedPlanService]
     });
-    service = new PersonalizedPlanService(httpSpy, sharedService);
+   
     httpSpy.get.calls.reset();
   });
 
-  it('should be created', () => {
+  it('personalized plan should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should be defined ', () => {
+  it('personalized plan should be defined ', () => {
     expect(service).toBeDefined();
   });
 

@@ -4,19 +4,20 @@ import { ProfileComponent } from './profile.component';
 import { PersonalizedPlanService } from '../guided-assistant/personalized-plan/personalized-plan.service';
 import { HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { SharedService } from '../shared/shared.service';
+import { ArrayUtilityService } from '../shared/array-utility.service';
+
 
 describe('Component:Profile', () => {
   let component: ProfileComponent;
   let fixture: ComponentFixture<ProfileComponent>;
   let personalizedPlanService: PersonalizedPlanService;
-  let sharedService: SharedService;
+ 
 
   const mockTopicService = {
     getTopics: () => { }
   };
   let mockPlanId = "dkk2k333";
-
+  let mockPlanDetailTags = { id: '773993', oId: 'rere', planTags: [{}], type: '' };
   let mockPlanDetailsJson = {
     "id": "bf8d7e7e-2574-7b39-efc7-83cb94adae07",
     "oId": "User Id",
@@ -438,14 +439,17 @@ describe('Component:Profile', () => {
     "_attachments": "attachments/",
     "_ts": 1531203760
   };
-
+  let mockTopicList = [{
+    topic: 'test',
+    isSelected: false
+  }]
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
       declarations: [ProfileComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [PersonalizedPlanService,
-        SharedService]
+      providers: [PersonalizedPlanService, ArrayUtilityService
+      ]
     })
       .compileComponents();
   }));
@@ -464,26 +468,46 @@ describe('Component:Profile', () => {
     expect(component).toBeDefined();
   });
 
-  //it('should call getActionPlanConditions service method when  getTopics is called', () => {
-  //  spyOn(component, 'getTopics');
-  //  component.planId = mockPlanId;
-  //  spyOn(personalizedPlanService, 'getActionPlanConditions');
-  //  component.getTopics();
-  //  expect(personalizedPlanService.getActionPlanConditions).toHaveBeenCalled();
-  //});
+  it('should call getActionPlanConditions service method when  getTopics is called', () => {
+    spyOn(component, 'getTopics');
+    spyOn(personalizedPlanService, 'getActionPlanConditions');
+    component.planId = mockPlanId;
+    component.getTopics();
+    personalizedPlanService.getActionPlanConditions(mockPlanId);
+    expect(personalizedPlanService.getActionPlanConditions).toHaveBeenCalled();
+  });
 
-  //it('should call getPersonalizedPlan service method when getPersonalizedPlan is called', () => {
-  //  spyOn(component, 'getPersonalizedPlan');
-  //  component.getPersonalizedPlan();
-  //  spyOn(personalizedPlanService, 'getPersonalizedPlan');
-  //  personalizedPlanService.getActionPlanConditions(mockPlanId);
-  //  expect(personalizedPlanService.getActionPlanConditions(mockPlanId)).toHaveBeenCalled();
-  //});
-  //it('should call getpersonalizedResources service method when getpersonalizedResources is called', () => {
-  //  spyOn(component, 'getpersonalizedResources');
-  //  component.getpersonalizedResources();
-  //  spyOn(personalizedPlanService, 'getPersonalizedResources');
-  //  personalizedPlanService.getActionPlanConditions(mockPlanId);
-  //  expect(personalizedPlanService.getActionPlanConditions(mockPlanId)).toHaveBeenCalled();
-  //});
+  it('should call getPlanDetails  method when  createTopicsList is called', () => {
+
+    spyOn(component, 'getPlanDetails');
+    spyOn(personalizedPlanService, 'createTopicsList');
+    spyOn(personalizedPlanService, 'displayPlanDetails');
+
+    component.topics = 'test';
+
+    component.planDetailTags = mockPlanDetailTags;
+    component.topicsList = mockTopicList;
+    component.getPlanDetails();
+    personalizedPlanService.createTopicsList(component.topics);
+    personalizedPlanService.displayPlanDetails(mockPlanDetailTags, mockTopicList);
+    expect(personalizedPlanService.createTopicsList).toHaveBeenCalled();
+    expect(personalizedPlanService.displayPlanDetails).toHaveBeenCalled();
+  });
+
+ 
+
+  it('should call getPersonalizedPlan service method when getPersonalizedPlan is called', () => {
+    spyOn(component, 'getPersonalizedPlan');
+    component.getPersonalizedPlan();
+    spyOn(personalizedPlanService, 'getPersonalizedPlan');
+    personalizedPlanService.getActionPlanConditions(mockPlanId);
+    expect(personalizedPlanService.getActionPlanConditions(mockPlanId)).toHaveBeenCalled();
+  });
+  it('should call getpersonalizedResources service method when getpersonalizedResources is called', () => {
+    spyOn(component, 'getpersonalizedResources');
+    component.getpersonalizedResources();
+    spyOn(personalizedPlanService, 'getPersonalizedResources');
+    personalizedPlanService.getActionPlanConditions(mockPlanId);
+    expect(personalizedPlanService.getActionPlanConditions(mockPlanId)).toHaveBeenCalled();
+  });
 });

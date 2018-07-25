@@ -6,12 +6,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { RouterModule } from '@angular/router';
 import { APP_BASE_HREF } from '@angular/common';
-import { SharedService } from '../../shared/shared.service';
+import { ArrayUtilityService } from '../../shared/array-utility.service';
+
 
 describe('PersonalizedPlanComponent', () => {
   let component: PersonalizedPlanComponent;
   let fixture: ComponentFixture<PersonalizedPlanComponent>;
-  let sharedService: SharedService;
+  
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -23,8 +24,8 @@ describe('PersonalizedPlanComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: APP_BASE_HREF, useValue: '/' },
-        PersonalizedPlanService,
-        SharedService]
+        PersonalizedPlanService, ArrayUtilityService
+       ]
     })
       .compileComponents();
   }));
