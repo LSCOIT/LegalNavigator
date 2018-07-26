@@ -18,8 +18,8 @@
     <div class="row plan-spacing filter-plan">
       <span class="col-sm-1">Show:</span>
       <!--web filtering-->
-      <div *ngFor="let topic of topicsList" class="mobile-hidden col-sm-10">
-        <button type="button" [ngClass]="{ 'btn-sm btn-primary': topic.isSelected, 'btn': !topic.isSelected  }"
+      <div class="mobile-hidden col-sm-10">
+        <button *ngFor="let topic of topicsList" type="button" [ngClass]="{ 'btn-sm btn-primary': topic.isSelected, 'btn': !topic.isSelected  }"
                 (click)="filterPlan(topic.topic.id[0].name)">
           {{topic.topic.id[0].name}}
         </button>

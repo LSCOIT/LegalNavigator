@@ -9,10 +9,19 @@
 
 .textbox, .dropdown-toggle {
   text-align: left;
-  width: 300px;
+  width: 250px;
   height: 45px;
   background-color: #FFF;
   border: 1px solid #7E7E7E;
   padding: 10px;
   border-radius: 4px;
+}
+
+button-choice-row {
+  margin: 0 auto;
+}
+
+.button-choice {
+  display: inline-block;
+  margin: 0 20px;
 }

@@ -94,11 +94,16 @@ a {
   margin-left: 5px;
 }
 
-/*Profile Dropdown*/
+/*Profile*/
 #signin-dropdown .dropdown-menu {
   width: 259px;
   margin-top: 12px;
   margin-right: 3px;
+}
+
+.nav-tabs > li > a:hover {
+  background-color: transparent;
+  border: none;
 }
 
 /*Home Page - Carousel*/
@@ -223,7 +228,6 @@ a.carousel-control .icon-next {
   content: '';
 }
 
-
 /*Location Modal*/
 .modal-content {
   border-radius: 0;
@@ -234,6 +238,28 @@ a.carousel-control .icon-next {
   font-weight: 400;
   color: #0D3FB8;
   opacity: 1;
+}
+
+/*Curated Experience*/
+#articles-dropdown .dropdown-menu {
+  position: static;
+  z-index: 0;
+  padding: 0;
+  border: none;
+  box-shadow: none;
+  width: 100%;
+}
+
+.progress {
+  height: 15px;
+  border: 1px solid #ccc;
+  background-color: #FFF;
+  box-shadow: none;
+  border-radius: 10px;
+}
+
+.progress-bar {
+  background-color: #0D3FBB;
 }
 
 @media only screen and (min-width : 768px) {
@@ -263,7 +289,12 @@ a.carousel-control .icon-next {
   }
 
   .modal-dialog {
-    width: 65%;
+    width: 660px;
+    height: 570px;
+  }
+
+  .modal-content {
+    height: 100%;
   }
 }
 @media only screen and (min-width : 992px) {
@@ -277,6 +308,10 @@ a.carousel-control .icon-next {
 }
 
 @media only screen and (min-width : 1224px) {
+  .modal-dialog {
+    margin: 1% auto;
+  }
+
   .row {
     margin: 30px auto;
   }

@@ -1,0 +1,12 @@
+.helpline-wrapper {
+  margin-top: 0;
+}
+
+#helpline {
+  background: #0D3FB8;
+  padding: 5px;
+}
+
+#helpline h4 {
+  color: #FFF;
+}

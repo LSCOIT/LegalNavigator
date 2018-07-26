@@ -1,38 +1,25 @@
-.footer {
-    margin-top: 0;
-}
-
-#helpline {
-    background: #0D3FB8;
-    padding: 5px;
-}
-
-#helpline h4 {
-    color: #FFF;
-}
-
 .footer-nav li {
-    list-style: none;
-    display: block;
-    padding: 10px 20px;
+  list-style: none;
+  display: block;
+  padding: 10px 20px;
 }
 
 .footer-nav li.vertical-line {
-    border-bottom: 1px solid #ccc;
-    width: 60%;
-    margin: 0 auto;
+  border-bottom: 1px solid #ccc;
+  width: 60%;
+  margin: 0 auto;
 }
 
 @media only screen and (min-width : 992px) {
-    .footer-nav li {
-        display: inline-block;
-    }
+  .footer-nav li {
+    display: inline-block;
+  }
 
-    .footer-nav li.vertical-line {
-        border-left: 1px solid #ccc;
-        border-bottom: none;
-        width: 1px;
-        height: 10px;
-        padding: 0;
-    }
+  .footer-nav li.vertical-line {
+    border-left: 1px solid #ccc;
+    border-bottom: none;
+    width: 1px;
+    height: 10px;
+    padding: 0;
+  }
 }

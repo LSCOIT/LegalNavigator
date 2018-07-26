@@ -2,7 +2,7 @@ import { Component, OnInit, Input, TemplateRef, ViewChild } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router';
 import { Resources, CreatePlan, StepTag, PlanTag, Steps, ProfileResources, SavedResources } from '../../../../guided-assistant/personalized-plan/personalized-plan';
 import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
-import { UtilityService } from '../../../utility.service';
+import { ArrayUtilityService } from '../../../array-utility.service';
 import { Subject } from 'rxjs';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap';
 import { api } from '../../../../../api/api';
@@ -13,6 +13,7 @@ import { api } from '../../../../../api/api';
   styleUrls: ['./save-button.component.css']
 })
 export class SaveButtonComponent implements OnInit {
+  @Input() showIcon = true;
   resources: Resources;
   savedResources: SavedResources;
   profileResources: ProfileResources = { oId: '', resourceTags: [], type: '' };
@@ -38,7 +39,7 @@ export class SaveButtonComponent implements OnInit {
     private activeRoute: ActivatedRoute,
     private personalizedPlanService: PersonalizedPlanService,
     private modalService: BsModalService,
-    private utilityService: UtilityService) {
+    private arrayUtilityService: ArrayUtilityService) {
     let profileData = sessionStorage.getItem("profileData");
     if (profileData != undefined) {
       profileData = JSON.parse(profileData);
@@ -78,7 +79,7 @@ export class SaveButtonComponent implements OnInit {
               });
             }
             this.savedResources = { itemId: this.id, resourceType: this.type, resourceDetails: this.resourceDetails };
-            if (!this.utilityService.checkObjectExistInArray(this.profileResources.resourceTags, this.savedResources)) {
+            if (!this.arrayUtilityService.checkObjectExistInArray(this.profileResources.resourceTags, this.savedResources)) {
               this.profileResources.resourceTags.push(this.savedResources);
               this.saveResourceToProfile(this.profileResources.resourceTags, template);
             }

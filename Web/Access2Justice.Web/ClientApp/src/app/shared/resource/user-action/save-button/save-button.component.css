@@ -1,0 +1,8 @@
+#save {
+  cursor: pointer;
+}
+
+#save:hover {
+  text-decoration: none;
+  color: #333;
+}

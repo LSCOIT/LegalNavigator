@@ -13,6 +13,7 @@ import { environment } from '../../../../environments/environment';
   styleUrls: ['./search-results.component.css']
 })
 export class SearchResultsComponent implements OnInit {
+  @Input() fullPage = false;
   isInternalResource: boolean;
   isWebResource: boolean;
   isLuisResponse: boolean;
