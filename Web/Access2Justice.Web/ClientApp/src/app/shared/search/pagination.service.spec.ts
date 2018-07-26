@@ -12,7 +12,7 @@ describe('PaginationService', () => {
       'Content-Type': 'application/json'
     })
   };
-  let mockSearchText = "Lorem ipsum solor sit amet bibodem consecuter orem ipsum";
+  let mockSearchText = "Lorem ipsum solor sit amet bibodem consecuter orem ipsum"; 
   let mockResponse = Observable.of(mockSearchText);
   let mockOffset = 5;
   let resourceInput: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: '', ResourceIds: '', PageNumber: 1, Location: '' };
@@ -100,6 +100,7 @@ describe('PaginationService', () => {
       done();
     });
   });
+
   it('should not fail PagedResources when the ResourceIds are null in resourceInput', (done) => {
     httpSpy.post.and.returnValue(mockResponse);
     let resourceInput: IResourceFilter = {
@@ -116,6 +117,7 @@ describe('PaginationService', () => {
       done();
     });
   });
+
   it('should not fail PagedResources when the PageNumber is zero in resourceInput', (done) => {
     httpSpy.post.and.returnValue(mockResponse);
     let resourceInput: IResourceFilter = {
@@ -132,6 +134,7 @@ describe('PaginationService', () => {
       done();
     });
   });
+
   it('should not fail PagedResources when the Location is null in resourceInput', (done) => {
     httpSpy.post.and.returnValue(mockResponse);
     let resourceInput: IResourceFilter = {
