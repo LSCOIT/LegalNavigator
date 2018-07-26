@@ -1,5 +1,6 @@
 #save {
   cursor: pointer;
+  display: block;
 }
 
 #save:hover {
