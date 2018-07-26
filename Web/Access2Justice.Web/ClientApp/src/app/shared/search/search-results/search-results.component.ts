@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, OnChanges, SimpleChanges, SimpleChange, ChangeDetectorRef, NgZone } from '@angular/core';
 import { NavigateDataService } from '../../navigate-data.service';
 import { ResourceResult } from './search-result';
 import { SearchService } from '../search.service';
@@ -12,14 +12,13 @@ import { environment } from '../../../../environments/environment';
   templateUrl: './search-results.component.html',
   styleUrls: ['./search-results.component.css']
 })
-export class SearchResultsComponent implements OnInit {
+export class SearchResultsComponent implements OnInit, OnChanges {
   @Input() fullPage = false;
   isInternalResource: boolean;
   isWebResource: boolean;
   isLuisResponse: boolean;
   searchText: string;
-  @Input()
-  searchResults: any;
+  @Input() searchResults: any;
   uniqueResources: any;
   sortType: any;
   resourceResults: ResourceResult[] = [];
@@ -37,7 +36,7 @@ export class SearchResultsComponent implements OnInit {
   subscription: any;
   showRemoveOption: boolean;
   @Input() showRemove: boolean;
-
+  initialResourceLength:number;
   displayMessage: boolean = false;
   loading = false;
   total = 0;
@@ -49,7 +48,9 @@ export class SearchResultsComponent implements OnInit {
 
   constructor(private navigateDataService: NavigateDataService,
     private searchService: SearchService, private locationService: LocationService,
-    private paginationService: PaginationService) { }
+    private paginationService: PaginationService,
+    private cdr: ChangeDetectorRef,
+    private zone: NgZone) { }
 
   bindData() {
     this.searchResults = this.navigateDataService.getData();
@@ -81,6 +82,7 @@ export class SearchResultsComponent implements OnInit {
         });
       }
       this.isPersonalizedresource = this.searchResults;
+      this.initialResourceLength = this.isPersonalizedresource["resources"].length;
       this.applyFilter();
     }
   }
@@ -245,21 +247,24 @@ export class SearchResultsComponent implements OnInit {
   }
   applyFilter() {
     if (this.searchResults != undefined && this.searchResults.resources != undefined) {
-      this.resourceResults.push({
+      let allFilter = [{
         'ResourceName': 'All',
         'ResourceCount': this.searchResults.resources.length
-      });
+      }];
       this.uniqueResources = new Set(this.searchResults.resources
         .map(item => item.resourceType));
-      this.uniqueResources.forEach(item => {
-        if (item != undefined) {
-          this.resourceResults.push({
-            'ResourceName': item,
-            'ResourceCount': this.searchResults.resources
-              .filter(x => x.resourceType === item).length
-          });
-        }
-      });
+      let resourceFilters = [];
+      resourceFilters = Array.from(this.uniqueResources).map(resource => {
+            return (
+              {
+                'ResourceName': resource,
+                'ResourceCount': this.searchResults.resources
+                  .filter(x => x.resourceType === resource).length
+              }
+            );
+        });
+      this.resourceResults = [...allFilter, ...resourceFilters];
+
     }
   }
 
@@ -278,5 +283,12 @@ export class SearchResultsComponent implements OnInit {
     if (this.subscription != undefined) {
       this.subscription.unsubscribe();
     }
+  }
+
+
+  ngOnChanges(changes: SimpleChanges) {
+    const personalizedResources: SimpleChange = changes.personalizedResources;
+    this.searchResults = personalizedResources.currentValue;
+    this.applyFilter();
   }
 }

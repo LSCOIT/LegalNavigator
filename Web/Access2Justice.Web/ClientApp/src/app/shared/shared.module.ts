@@ -41,6 +41,7 @@ import { ServiceOrgService } from './sidebars/service-org.service';
 import { ArrayUtilityService } from './array-utility.service';
 import { HelplineComponent } from './helpline/helpline.component';
 import { ButtonSelectedDirective } from './styling/button-selected.directive';
+import { EventUtilityService } from './event-utility.service';
 
 @NgModule({
   imports: [
@@ -116,7 +117,8 @@ import { ButtonSelectedDirective } from './styling/button-selected.directive';
     MapResultsService,
     PaginationService,
     ServiceOrgService,
-    ArrayUtilityService
+    ArrayUtilityService,
+    EventUtilityService
   ]
 })
 export class SharedModule { }

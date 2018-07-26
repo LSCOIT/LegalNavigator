@@ -7,6 +7,7 @@ import { PersonalizedPlanComponent } from '../../../../guided-assistant/personal
 import { BsModalService, BsModalRef } from 'ngx-bootstrap';
 import { Router } from '@angular/router';
 import { resource } from 'selenium-webdriver/http';
+import { EventUtilityService } from '../../../event-utility.service';
 
 @Component({
   selector: 'app-remove-button',
@@ -34,15 +35,18 @@ export class RemoveButtonComponent implements OnInit {
   modalRef: BsModalRef;
   resourceDetails: any;
 
-  constructor(private personalizedPlanService: PersonalizedPlanService,
+  constructor(
+    private personalizedPlanService: PersonalizedPlanService,
     private profileComponent: ProfileComponent,
     private personalizedPlanComponent: PersonalizedPlanComponent,
     private modalService: BsModalService,
-    private router: Router) {
-    let profileData = sessionStorage.getItem("profileData");
-    if (profileData != undefined) {
-      profileData = JSON.parse(profileData);
-      this.userId = profileData["UserId"];
+    private router: Router,
+    private eventUtilityService: EventUtilityService
+  ) {
+      let profileData = sessionStorage.getItem("profileData");
+      if (profileData != undefined) {
+        profileData = JSON.parse(profileData);
+        this.userId = profileData["UserId"];
     }
   }
 
@@ -153,9 +157,8 @@ export class RemoveButtonComponent implements OnInit {
     this.personalizedPlanService.userPlan(this.profileResources)
       .subscribe(response => {
         if (response != undefined) {
-          this.profileComponent.getpersonalizedResources();
           this.isRemovedPlan = true;
-          this.modalRef = this.modalService.show(template);
+          this.eventUtilityService.updateSavedResource("RESOURCE REMOVED");
         }
       });
   }
