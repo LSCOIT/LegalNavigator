@@ -89,6 +89,7 @@ export class ProfileComponent implements OnInit {
   getpersonalizedResources() {
     this.topicIds = [];
     this.resourceIds = [];
+    this.webResources = [];
     this.personalizedPlanService.getUserPlanId(this.userId)
       .subscribe(response => {
         if (response != undefined) {

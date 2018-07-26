@@ -282,7 +282,6 @@ export class SearchResultsComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     const personalizedResources: SimpleChange = changes.personalizedResources;
-    console.log(personalizedResources);
     this.mapPersonalizedResource(personalizedResources.currentValue);
   }
 }
