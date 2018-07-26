@@ -1,8 +1,10 @@
-import { Component, Input, OnInit, TemplateRef } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { LocationService } from './location.service';
 import { MapLocation } from './location';
+import { environment } from '../../../environments/environment';
+import { MapResultsService } from '../../shared/sidebars/map-results.service';
 
 @Component({
   selector: 'app-location',
@@ -18,9 +20,12 @@ export class LocationComponent implements OnInit {
   query: any;
   searchLocation: string;
   mapLocation: MapLocation;
+  geolocationPosition: any;
+  selectedAddress: any;
+  @ViewChild('template') public templateref: TemplateRef<any>;
 
-  constructor(private modalService: BsModalService, private locationService: LocationService) {
-  }
+  constructor(private modalService: BsModalService, private locationService: LocationService,
+              private mapResultsService: MapResultsService) {  }
 
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
@@ -50,7 +55,29 @@ export class LocationComponent implements OnInit {
     }
   }
 
+  loadCurrentLocation() {
+    if (window.navigator && window.navigator.geolocation) {
+      window.navigator.geolocation.getCurrentPosition(
+        position => {
+          this.geolocationPosition = position,
+            this.mapResultsService.getAddressBasedOnPoints(this.geolocationPosition.coords.latitude,
+              this.geolocationPosition.coords.longitude, environment.bingmap_key).subscribe(response => {
+                this.selectedAddress = response;
+                environment.map_type = true;
+                this.locationService.mapLocationDetails(this.selectedAddress.resourceSets[0].resources[0]);
+                this.locationService.updateLocation();
+                this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+                this.displayLocationDetails(this.mapLocation);
+              });
+        },
+        error => {
+          this.openModal(this.templateref);
+        });
+    }
+  }
+
   ngOnInit() {
+    this.loadCurrentLocation();
     if (sessionStorage.getItem("globalMapLocation")) {
       this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
       this.displayLocationDetails(this.mapLocation);
