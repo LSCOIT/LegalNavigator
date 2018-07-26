@@ -21,6 +21,6 @@ export const api = {
     getOrganizationDetailsUrl: topic + '/getorganizationdetails',
     loginUrl: apiUrl + '/login',
     logoutUrl: apiUrl + '/logout',
-    questionUrl: 'https://access2justiceapi.azurewebsites.net/api/CuratedExperience/Start',
-    saveAndGetNextUrl: 'https://access2justiceapi.azurewebsites.net/api/CuratedExperience/Component/SaveAndGetNext'
+    questionUrl: apiUrl + '/CuratedExperience/Start',
+    saveAndGetNextUrl: apiUrl + '/CuratedExperience/Component/SaveAndGetNext'
 }
