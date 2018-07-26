@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy, OnChanges, SimpleChanges, SimpleChange, ChangeDetectorRef, NgZone } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
 import { NavigateDataService } from '../../navigate-data.service';
 import { ResourceResult } from './search-result';
 import { SearchService } from '../search.service';
@@ -45,12 +45,11 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   offset = 0;
   pagesToShow = 0;
 
-
-  constructor(private navigateDataService: NavigateDataService,
-    private searchService: SearchService, private locationService: LocationService,
-    private paginationService: PaginationService,
-    private cdr: ChangeDetectorRef,
-    private zone: NgZone) { }
+  constructor(
+    private navigateDataService: NavigateDataService,
+    private searchService: SearchService,
+    private locationService: LocationService,
+    private paginationService: PaginationService) { }
 
   bindData() {
     this.searchResults = this.navigateDataService.getData();
@@ -70,21 +69,18 @@ export class SearchResultsComponent implements OnInit, OnChanges {
       }
     }
     if (this.personalizedResources != undefined) {      
-      this.searchResults = this.personalizedResources;
-      if (this.personalizedResources.topics != undefined) {
-        this.personalizedResources.topics.forEach(topic => {
-          this.searchResults.resources.push(topic);
-        });
-      }
-      if (this.personalizedResources.webResources != undefined) {
-        this.personalizedResources.webResources.forEach(webResource => {
-          this.searchResults.resources.push(webResource);
-        });
-      }
-      this.isPersonalizedresource = this.searchResults;
-      this.initialResourceLength = this.isPersonalizedresource["resources"].length;
-      this.applyFilter();
+      this.mapPersonalizedResource(this.personalizedResources);
     }
+  }
+
+  mapPersonalizedResource(personalizedResources) {
+    this.searchResults = { resources: [] }
+    this.searchResults.resources = personalizedResources.resources
+      .concat(
+        personalizedResources.topics,
+        personalizedResources.webResources);
+    this.isPersonalizedresource = this.searchResults;
+    this.applyFilter();
   }
 
   mapInternalResource() {
@@ -264,7 +260,6 @@ export class SearchResultsComponent implements OnInit, OnChanges {
             );
         });
       this.resourceResults = [...allFilter, ...resourceFilters];
-
     }
   }
 
@@ -285,10 +280,9 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     }
   }
 
-
   ngOnChanges(changes: SimpleChanges) {
     const personalizedResources: SimpleChange = changes.personalizedResources;
-    this.searchResults = personalizedResources.currentValue;
-    this.applyFilter();
+    console.log(personalizedResources);
+    this.mapPersonalizedResource(personalizedResources.currentValue);
   }
 }
