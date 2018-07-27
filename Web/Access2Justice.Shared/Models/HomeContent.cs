@@ -13,7 +13,7 @@ namespace Access2Justice.Shared.Models
 {
     public class HomeContent
     {
-        [JsonProperty(PropertyName = "name")]
+        [JsonProperty(PropertyName = "id")]
         public string Name { get; set; }
 
         [JsonProperty(PropertyName = "hero")]
@@ -37,9 +37,6 @@ namespace Access2Justice.Shared.Models
 
     public class HeroContent
     {
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
         [DefaultValue("")]
         [JsonProperty(PropertyName = "overview")]
         public string Overview { get; set; }
@@ -63,16 +60,13 @@ namespace Access2Justice.Shared.Models
 
     public class GuidedAssistantContent
     {
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
         [DefaultValue("")]
         [JsonProperty(PropertyName = "overview")]
         public string Overview { get; set; }
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "description")]
-        public string Description { get; set; }
+        public Description Description { get; set; }
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "buttonText")]
@@ -89,9 +83,6 @@ namespace Access2Justice.Shared.Models
 
     public class TopicAndResourcesContent
     {
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
         [DefaultValue("")]
         [JsonProperty(PropertyName = "overview")]
         public string Overview { get; set; }
@@ -107,43 +98,14 @@ namespace Access2Justice.Shared.Models
 
     public class CarouselContent  //Need to check feasibility for html
     {
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
         [DefaultValue("")]
         [JsonProperty(PropertyName = "overview")]
-        public string Overview { get; set; }
+        public Overview Overviewdetails { get; set; }        
 
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "description")]
-        public string Description { get; set; }
-
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "byName")]
-        public string ByName { get; set; }
-
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "location")]
-        public string Location { get; set; }
-
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "buttonText")]
-        public string ButtonText { get; set; }
-
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "buttonLink")]
-        public string ButtonLink { get; set; }
-
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "image")]
-        public Image ImageUrl { get; set; }
     }
 
     public class InformationContent
     {
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
         [DefaultValue("")]
         [JsonProperty(PropertyName = "overview")]
         public string Overview { get; set; }
@@ -163,12 +125,13 @@ namespace Access2Justice.Shared.Models
 
     public class PrivacyContent
     {
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
         [DefaultValue("")]
         [JsonProperty(PropertyName = "overview")]
         public string Overview { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "buttonText")]
@@ -192,5 +155,56 @@ namespace Access2Justice.Shared.Models
         [DefaultValue("")]
         [JsonProperty(PropertyName = "path")]
         public string Path { get; set; }
+    }
+
+    public class Description
+    {
+        [JsonProperty(PropertyName = "steps")]
+        public Step Steps { get; set; }
+
+        [JsonProperty(PropertyName = "paragraph")]
+        public Paragraph ParagraphDetails { get; set; }
+    }
+
+    public class Step
+    {
+        [JsonProperty(PropertyName = "order")]
+        public int Order { get; set; }
+
+        [JsonProperty(PropertyName = "descritpion")]
+        public int Descritpion { get; set; }
+    }
+
+    public class Paragraph
+    {
+        [JsonProperty(PropertyName = "text")]
+        public string Text { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "routerText")]
+        public string RouterText { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "routerLink")]
+        public string RouterLink { get; set; }
+    }
+
+    public class Overview
+    {
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "byName")]
+        public string ByName { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "location")]
+        public string Location { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "image")]
+        public Image ImageUrl { get; set; }
     }
 }
