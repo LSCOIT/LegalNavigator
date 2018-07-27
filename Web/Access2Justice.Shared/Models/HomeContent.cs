@@ -88,12 +88,11 @@ namespace Access2Justice.Shared.Models
         public string ButtonLink { get; set; }
     }
 
-    public class CarouselContent  //Need to check feasibility for html
+    public class CarouselContent
     {
         [DefaultValue("")]
         [JsonProperty(PropertyName = "overview")]
         public IEnumerable<Overview> Overviewdetails { get; set; }        
-
     }
 
     public class InformationContent

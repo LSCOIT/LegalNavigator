@@ -14,7 +14,7 @@ namespace Access2Justice.Shared.Models
     public class PrivacyPromiseContent
     {
         [DefaultValue("")]
-        [JsonProperty(PropertyName = "name")]
+        [JsonProperty(PropertyName = "id")]
         public string Name { get; set; }
 
         [DefaultValue("")]
@@ -27,7 +27,7 @@ namespace Access2Justice.Shared.Models
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "details")]
-        public Detail Details { get; set; }
+        public IEnumerable<Detail> Details { get; set; }
     }
 
     public class Detail
@@ -37,8 +37,8 @@ namespace Access2Justice.Shared.Models
         public int Order { get; set; }
 
         [DefaultValue("")]
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
+        [JsonProperty(PropertyName = "title")]
+        public string Title { get; set; }
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "description")]

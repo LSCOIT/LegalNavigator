@@ -14,7 +14,7 @@ namespace Access2Justice.Shared.Models
     public class HelpAndFaqsContent
     {
         [DefaultValue("")]
-        [JsonProperty(PropertyName = "name")]
+        [JsonProperty(PropertyName = "id")]
         public string Name { get; set; }
 
         [DefaultValue("")]
@@ -27,7 +27,7 @@ namespace Access2Justice.Shared.Models
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "details")]
-        public ContentLink Link { get; set; }
+        public IEnumerable<ContentLink> Link { get; set; }
     }
 
     public class ContentLink
@@ -46,6 +46,13 @@ namespace Access2Justice.Shared.Models
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "description")]
-        public string Description { get; set; }
+        public IEnumerable<Paragraph> Description { get; set; }
+    }
+
+    public class Paragraph
+    {
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "paragraph")]
+        public string Paragraphs { get; set; }
     }
 }
