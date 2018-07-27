@@ -26,7 +26,7 @@ namespace Access2Justice.Shared.Models
         public TopicAndResourcesContent TopicAndResources { get; set; }
 
         [JsonProperty(PropertyName = "carousel")]
-        public IEnumerable<CarouselContent> Carousel { get; set; }
+        public CarouselContent Carousel { get; set; }
 
         [JsonProperty(PropertyName = "information")]
         public InformationContent Information { get; set; }
@@ -44,14 +44,6 @@ namespace Access2Justice.Shared.Models
         [DefaultValue("")]
         [JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
-
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "routerText")]
-        public string RouterText { get; set; }
-
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "routerLink")]
-        public string RouterLink { get; set; }
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "image")]
@@ -100,7 +92,7 @@ namespace Access2Justice.Shared.Models
     {
         [DefaultValue("")]
         [JsonProperty(PropertyName = "overview")]
-        public Overview Overviewdetails { get; set; }        
+        public IEnumerable<Overview> Overviewdetails { get; set; }        
 
     }
 
@@ -160,10 +152,10 @@ namespace Access2Justice.Shared.Models
     public class Description
     {
         [JsonProperty(PropertyName = "steps")]
-        public Step Steps { get; set; }
+        public IEnumerable<Step> Steps { get; set; }
 
         [JsonProperty(PropertyName = "paragraph")]
-        public Paragraph ParagraphDetails { get; set; }
+        public string Paragraph { get; set; }
     }
 
     public class Step
@@ -174,34 +166,12 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "descritpion")]
         public int Descritpion { get; set; }
     }
-
-    public class Paragraph
-    {
-        [JsonProperty(PropertyName = "text")]
-        public string Text { get; set; }
-
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "routerText")]
-        public string RouterText { get; set; }
-
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "routerLink")]
-        public string RouterLink { get; set; }
-    }
-
+    
     public class Overview
     {
         [DefaultValue("")]
-        [JsonProperty(PropertyName = "description")]
+        [JsonProperty(PropertyName = "html")]
         public string Description { get; set; }
-
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "byName")]
-        public string ByName { get; set; }
-
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "location")]
-        public string Location { get; set; }
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "image")]
