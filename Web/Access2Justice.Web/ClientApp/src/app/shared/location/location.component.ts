@@ -23,12 +23,23 @@ export class LocationComponent implements OnInit {
   geolocationPosition: any;
   selectedAddress: any;
   @ViewChild('template') public templateref: TemplateRef<any>;
+  config: Object;
+  locationInputRequired: boolean;
 
   constructor(private modalService: BsModalService, private locationService: LocationService,
               private mapResultsService: MapResultsService) {  }
-
+  
+   changeLocation(template) {
+    this.config = {
+      ignoreBackdropClick: false,
+      keyboard: true
+    };
+    this.locationInputRequired = false;
+    this.openModal(template);
+  }
+  
   openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template);
+    this.modalRef = this.modalService.show(template, this.config);
     this.locationService.getMap(this.mapType);
   }
 
@@ -71,6 +82,11 @@ export class LocationComponent implements OnInit {
               });
         },
         error => {
+          this.config = {
+            ignoreBackdropClick: true,
+            keyboard: false
+          };
+          this.locationInputRequired = true;
           this.openModal(this.templateref);
         });
     }
