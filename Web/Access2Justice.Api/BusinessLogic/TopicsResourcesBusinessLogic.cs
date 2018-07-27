@@ -602,6 +602,23 @@ namespace Access2Justice.Api.BusinessLogic
             return planDetails;
         }
 
+        //public async Task<dynamic> GetPlanDataAsync(string planId)
+        //{
+        //    List<dynamic> procedureParams = new List<dynamic>() { planId };
+        //    //var result = await dbService.ExecuteStoredProcedureAsync(dbSettings.ResourceCollectionId, Constants.PlanStoredProcedureName, procedureParams);
+        //    var planDetails = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, Constants.Id, planId);
+        //    //var planDetails = result.Response;
+        //    int indexOfTopicTags = 0;
+        //    foreach (var item in planDetails.topics)
+        //    {
+        //        string topicId = item.topicId;
+        //        var topicData = await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.Id, topicId);
+        //        planDetails.topics[indexOfTopicTags].id = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(topicData));
+        //        indexOfTopicTags++;
+        //    }
+        //    return planDetails;
+        //}
+
         public async Task<dynamic> GetPersonalizedResourcesAsync(ResourceFilter resourceFilter)
         {
             dynamic Topics = Array.Empty<string>();
