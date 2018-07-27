@@ -21,7 +21,7 @@ namespace Access2Justice.Api.Controllers
         /// <param name="oid"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("api/StaticResource/getstaticresource/{name}")]
+        [Route("api/staticresource/getstaticresource/{name}")]
         public async Task<IActionResult> GetStaticResourceDataAsync(string name)
         {
             var users = await StaticResourceBusinessLogic.GetPageStaticResourceDataAsync(name);
