@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
 import { APP_BASE_HREF } from '@angular/common';
 import { ArrayUtilityService } from '../../shared/array-utility.service';
 
+
 describe('Component:PersonalizedPlan', () => {
   let component: PersonalizedPlanComponent;
   let fixture: ComponentFixture<PersonalizedPlanComponent>;
@@ -385,7 +386,7 @@ describe('Component:PersonalizedPlan', () => {
       ]
     }, isSelected: true }];
   let mockTopic = "Family";
-
+  ArrayUtilityService
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
