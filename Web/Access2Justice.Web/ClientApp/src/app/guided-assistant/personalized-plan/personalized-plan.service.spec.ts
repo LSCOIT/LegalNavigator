@@ -650,6 +650,7 @@ describe(' Service:PersonalizedPlan', () => {
   let arrayUtilityService: ArrayUtilityService;
   const httpSpy = jasmine.createSpyObj('http', ['get', 'post']);
   var originalTimeout;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -660,6 +661,7 @@ describe(' Service:PersonalizedPlan', () => {
     arrayUtilityService = new ArrayUtilityService();
     httpSpy.get.calls.reset();
   });
+
   beforeEach(function () {
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
@@ -670,15 +672,19 @@ describe(' Service:PersonalizedPlan', () => {
       expect(service.getBookmarkedData).toBeDefined();
     });
   });
+
   afterEach(function () {
     jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
   });
-  it('personalized plan should be created', () => {
+
+  it('service should be created', () => {
     expect(service).toBeTruthy();
   });
-  it('personalized plan should be defined ', () => {
+
+  it('service should be defined ', () => {
     expect(service).toBeDefined();
   });
+
   it('should retrieve plan steps when the id  value is id', (done) => {
     let mockid = "bf8d7e7e-2574-7b39-efc7-83cb94adae07";
     let mockplan = {
@@ -755,6 +761,7 @@ describe(' Service:PersonalizedPlan', () => {
       done();
     });
   });
+  
   it('should return user profile plan details', (done) => {
     let mockUserPlan = [
       {
@@ -803,6 +810,7 @@ describe(' Service:PersonalizedPlan', () => {
       done();
     });
   });
+
   it('should return mark completed updated plan when passed value is update plan', (done) => {
     httpSpy.post.and.returnValue(mockResponse);
     service.getMarkCompletedUpdatedPlan(mockupdateplan).subscribe(updateplan => {
@@ -811,6 +819,7 @@ describe(' Service:PersonalizedPlan', () => {
       done();
     });
   });
+
   it('should return userplan when value passed is plan', (done) => {
     httpSpy.post.and.returnValue(mockResponse);
     service.userPlan(mockupdateplan).subscribe(userplan => {
@@ -819,6 +828,7 @@ describe(' Service:PersonalizedPlan', () => {
       done();
     });
   });
+
   it('should call getPersonalizedResources when value is  resource input', () => {
     spyOn(service, 'getBookmarkedData');
     spyOn(service, 'getPersonalizedResources');    
@@ -826,6 +836,7 @@ describe(' Service:PersonalizedPlan', () => {
     expect(service.getPersonalizedResources).toBeDefined();
  
   });
+
   it('should return resources when saveResourcesToSession method called', () => {
     spyOn(service, 'saveResourcesToSession');
     spyOn(arrayUtilityService, 'checkObjectExistInArray');
@@ -834,6 +845,7 @@ describe(' Service:PersonalizedPlan', () => {
     expect(service.saveResourcesToSession).toHaveBeenCalled();
     expect(arrayUtilityService.checkObjectExistInArray).toHaveBeenCalled();
   });
+
   it('should return topics list when createTopicsList method called', () => {
     const mockResponse = Observable.of(mockTopicsList);
     spyOn(service, 'createTopicsList').and.returnValue(mockResponse);   

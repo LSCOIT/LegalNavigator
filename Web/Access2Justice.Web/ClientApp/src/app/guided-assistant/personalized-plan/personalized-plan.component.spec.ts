@@ -8,7 +8,6 @@ import { RouterModule } from '@angular/router';
 import { APP_BASE_HREF } from '@angular/common';
 import { ArrayUtilityService } from '../../shared/array-utility.service';
 
-
 describe('Component:PersonalizedPlan', () => {
   let component: PersonalizedPlanComponent;
   let fixture: ComponentFixture<PersonalizedPlanComponent>;
@@ -386,7 +385,7 @@ describe('Component:PersonalizedPlan', () => {
       ]
     }, isSelected: true }];
   let mockTopic = "Family";
-  ArrayUtilityService
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -415,9 +414,11 @@ describe('Component:PersonalizedPlan', () => {
     component.ngOnInit();
     expect(component.getTopics).toHaveBeenCalled();
   });
+
   it('should create personalized plan component', () => {
     expect(component).toBeTruthy();
   });
+
   it('should define personalized plan component', () => {
     expect(component).toBeDefined();
   });
@@ -448,6 +449,7 @@ describe('Component:PersonalizedPlan', () => {
     expect(personalizedPlanService.createTopicsList).toHaveBeenCalled();
     expect(personalizedPlanService.displayPlanDetails).toHaveBeenCalled();
   });
+
   it('should call displayPlanDetails service method when getplandetails method called', () => {
     spyOn(component, 'getPlanDetails');
     spyOn(personalizedPlanService, 'displayPlanDetails');
@@ -457,6 +459,7 @@ describe('Component:PersonalizedPlan', () => {
     personalizedPlanService.displayPlanDetails(mockPlanDetailTags, mockTopicList);
     expect(personalizedPlanService.displayPlanDetails).toHaveBeenCalled();
   });
+
   it('should call filterPlan  method when input is topic', () => {
     spyOn(component, 'filterTopicsList');
     spyOn(personalizedPlanService, 'displayPlanDetails');
@@ -466,13 +469,14 @@ describe('Component:PersonalizedPlan', () => {
     personalizedPlanService.displayPlanDetails(mockPlanDetailTags, mockTopicList);
     expect(personalizedPlanService.displayPlanDetails).toHaveBeenCalled();
   });
+
   it('should call filterTopicsList  method when input is blank in topic', () => {
    spyOn(component, 'filterTopicsList');
     component.filterTopicsList(mockTopicListBlank);
     expect(component.topicsList.values)
   });
 
-  it("should push items into topicsList when filterTopicsList is called", () => {
+  it("should push items into topiclist when filterTopicsList is called", () => {
     component.tempTopicsList = mockTempTopicsList;
     component.filterTopicsList(mockTopic);
     expect(component.topicsList.length).toEqual(2);
