@@ -1,0 +1,28 @@
+<span id="share" (click)="openModal(template)">
+  <img *ngIf="showIcon" src="./assets/images/small-icons/share.svg" class="nav-icon" aria-hidden="true" />
+  Share
+</span>
+<ng-template #template>
+  <div class="modal-body">
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <div class="row text-center">
+      <h4 class="modal-title pull-left">Share Link</h4>
+      <div class="row">
+        <p>Share this content with anyone using the link below.</p>
+        <div>
+          <input type="type" name="name" value="" />
+          <button type="button" id="copy-btn">Copy Link</button>
+        </div>
+        <span class="pxs">Note: Link will automatically expire after 12 months.</span>
+      </div>
+    </div>
+    <div class="row remove-share"> <!--ngIf the link has already been shared-->
+      <h4 class="modal-title pull-left">Disable Link</h4>
+      <div class="row">
+        <button id="remove-btn">Disable Link</button>
+      </div>
+    </div>
+  </div>
+</ng-template>

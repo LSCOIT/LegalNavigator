@@ -1,0 +1,39 @@
+input {
+  width: 50%;
+  height: 40px;
+}
+
+#copy-btn {
+  height: 40px;
+  margin-left: -4px;
+  background-color: #0D3FBB;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 0 5px 5px 0;
+}
+
+p {
+  margin: 20px auto;
+}
+
+span {
+  margin: 10px auto;
+  display: block;
+}
+
+#remove-btn {
+  margin-top: 30px;
+  background-color: #CA3636;
+  text-align: center;
+  display: block;
+  height: 40px;
+  width: 200px;
+  border-radius: 5px;
+  color: #fff;
+  font-weight: 600;
+}
+
+.remove-share {
+  border-top: 1px solid #ddd;
+  padding-top: 40px;
+}
