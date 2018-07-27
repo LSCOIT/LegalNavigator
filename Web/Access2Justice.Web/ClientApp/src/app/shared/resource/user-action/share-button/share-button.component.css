@@ -13,27 +13,28 @@ input {
 }
 
 p {
-  margin: 20px auto;
+  margin: 35px auto 20px auto;
 }
 
 span {
-  margin: 10px auto;
+  margin: 20px auto;
   display: block;
 }
 
+.text-center {
+  margin-top: 40px;
+}
+
 #remove-btn {
-  margin-top: 30px;
+  margin: 0 auto;
   background-color: #CA3636;
-  text-align: center;
-  display: block;
-  height: 40px;
-  width: 200px;
-  border-radius: 5px;
-  color: #fff;
-  font-weight: 600;
 }
 
 .remove-share {
   border-top: 1px solid #ddd;
   padding-top: 40px;
+}
+
+.close {
+  margin-top: -30px;
 }

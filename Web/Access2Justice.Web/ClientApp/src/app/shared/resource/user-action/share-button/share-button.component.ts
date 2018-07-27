@@ -16,6 +16,12 @@ export class ShareButtonComponent implements OnInit {
     this.modalRef = this.modalService.show(template);
   }
 
+  copyLink(inputElement) {
+    inputElement.select();
+    document.execCommand('copy');
+    inputElement.setSelectionRange(0, 0);
+  }
+
   ngOnInit() {
   }
 
