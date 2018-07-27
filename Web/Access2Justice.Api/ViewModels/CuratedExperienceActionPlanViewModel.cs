@@ -63,11 +63,11 @@ namespace Access2Justice.Api.ViewModels
         public bool IsComplete { get; set; }
 
         [JsonProperty(PropertyName = "resources")]
-        public List<Resource> Resources { get; set; }
+        public List<Guid> Resources { get; set; }
 
         public PlanStep()
         {
-            Resources = new List<Resource>();
+            Resources = new List<Guid>();
         }
     }
 }

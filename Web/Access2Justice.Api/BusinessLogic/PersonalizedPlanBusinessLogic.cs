@@ -12,6 +12,7 @@ namespace Access2Justice.Api.BusinessLogic
 {
     public class PersonalizedPlanBusinessLogic : IPersonalizedPlanBusinessLogic
     {
+        private readonly IDynamicQueries dbClient;
         private readonly ICosmosDbSettings dbSettings;
         private readonly IBackendDatabaseService dbService;
         private readonly IDynamicQueries dynamicQueries;
@@ -27,20 +28,31 @@ namespace Access2Justice.Api.BusinessLogic
         {
             var userAnswers = await dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.CuratedExperienceAnswersCollectionId);
             var personalizedPlan = new PersonalizedActionPlanViewModel();
-            personalizedPlan.PersonalizedPlanId = Guid.NewGuid();
+            var personalizedPlanSteps = new PersonalizedPlanSteps();
 
-            var relevantResources = new List<Guid>();
-            var relevantTopics = new List<Guid>();
+            personalizedPlan.PersonalizedPlanId = Guid.NewGuid();
+            List<Guid> topics = new List<Guid>();
             var steps = new List<PlanStep>();
             var quicklinks = new List<PlanQuickLink>();
-            int stepOrder = 0;
-            foreach (var answer in userAnswers.Answers)
+            int stepOrder = 1;
+            quicklinks.Add(new PlanQuickLink
             {
+                Title = "Quick link to topic1",
+                Url = new Uri("http://localhost/topic1")
+            });
+
+            var planSteps = new List<PersonalizedPlanStep>();
+            //foreach (var answer in userAnswers.Answers)
+            //{
+                var planTopic = new PlanTopic();
                 foreach (var component in curatedExperience.Components)
                 {
-                    var answerButton = component.Buttons?.Where(x => x.Id == answer.AnswerButtonId).FirstOrDefault();
-                    if (answerButton != null)
+                //var answerButton = component.Buttons?.Where(x => x.Id == answer.AnswerButtonId).FirstOrDefault();
+                var answerButton = component.Buttons?.Where(x => x.Id == component.Buttons[0].Id).FirstOrDefault();
+                if (answerButton != null)
                     {
+                        List<Guid> relevantResources = new List<Guid>();
+                        List<Guid> relevantTopics = new List<Guid>();
                         if (answerButton.ResourceIds.Any())
                         {
                             relevantResources.AddRange(answerButton.ResourceIds);
@@ -49,43 +61,45 @@ namespace Access2Justice.Api.BusinessLogic
                         {
                             relevantTopics.AddRange(answerButton.TopicIds);
                         }
+                        if(relevantResources.Count > 0)
+                        {
+                            planSteps.Add(new PersonalizedPlanStep()
+                            {
+                                StepId = Guid.NewGuid(),
+                                Title = answerButton.Destination,
+                                Description = answerButton.Destination,
+                                Order = stepOrder++,
+                                IsComplete = false,
+                                Resources = (relevantResources.Count > 0) ? relevantResources : new List<Guid>(),
+                                Topics = (relevantTopics.Count > 0) ? relevantTopics : new List<Guid>()
+                            });
+                        }
                     }
 
-                    var answerField = component.Fields?.Where(x => x.Id == answer.AnswerButtonId).FirstOrDefault();
-                    if (answerField != null)
-                    {
-                        if (answerField.ResourceIds.Any())
-                        {
-                            relevantResources.AddRange(answerField.ResourceIds);
-                        }
-                        if (answerField.TopicIds.Any())
-                        {
-                            relevantTopics.AddRange(answerField.TopicIds);
-                        }
-                    }
-                    
-                    steps.Add(new PlanStep
-                    {
-                        StepId = Guid.NewGuid(),
-                        Title = component.Name,
-                        Description = component.Text,
-                        Order = stepOrder++,
-                        IsComplete = false,
-                        //Resources = relevantResources,
-                        Type = "PersonalizedPlan"
-                    });
+
+                    //var answerField = component.Fields?.Where(x => x.Id == answer.AnswerButtonId).FirstOrDefault();
+                    //if (answerField != null)
+                    //{
+                    //    if (answerField.ResourceIds.Any())
+                    //    {
+                    //        relevantResources.AddRange(answerField.ResourceIds);
+                    //    }
+                    //    if (answerField.TopicIds.Any())
+                    //    {
+                    //        relevantTopics.AddRange(answerField.TopicIds);
+                    //    }
+                    //}
                 }
-                quicklinks.Add(new PlanQuickLink
-                {
-                    Title = "Quick link to topic1",
-                    Url = new Uri("http://localhost/topic1")
-                });
-                var planTopic = new PlanTopic();
-                planTopic.TopicId = relevantTopics[0];
-                planTopic.Steps = steps;
-                planTopic.QuickLinks = quicklinks;
-                personalizedPlan.Topics.Add(planTopic);
-            }
+                //planTopic.Steps = steps;
+                //planTopic.QuickLinks = quicklinks;
+                //personalizedPlan.Topics.Add(planTopic);
+
+                personalizedPlanSteps.PlanSteps = planSteps;
+            //}
+
+            personalizedPlanSteps.PersonalizedPlanId = Guid.NewGuid();
+            personalizedPlanSteps = JsonConvert.DeserializeObject<PersonalizedPlanSteps>(JsonConvert.SerializeObject(personalizedPlanSteps));
+            var res = await dbService.CreateItemAsync((personalizedPlanSteps), dbSettings.PersonalizedActionPlanCollectionId);
 
             // todo: use the dyanmic queries (or maybe the methods in the TpoicsResourcesBusinessLogic) to 
             // get resources (based on relevantResources and relevantTopics lists) then add them to the plan
@@ -93,14 +107,25 @@ namespace Access2Justice.Api.BusinessLogic
             // construct a plan
             //var personalizedPlan = new PersonalizedActionPlanViewModel();
             //personalizedPlan.PersonalizedPlanId = Guid.NewGuid();
+
+            //PlanStep planStep = new PlanStep()
+            //{
+            //    StepId = Guid.NewGuid(),
+            //    Title = component.Name,
+            //    Description = component.Text,
+            //    Order = stepOrder++,
+            //    IsComplete = false,
+            //    //Resources = relevantResources,
+            //    Type = "PersonalizedPlan"
+            //};
             //foreach(var topic in relevantTopics)
             //{
             //    PlanTopic planTopic = new PlanTopic();
             //    planTopic.TopicId = topic;
             //    personalizedPlan.Topics.Add(planTopic);
             //}
-            personalizedPlan = JsonConvert.DeserializeObject<PersonalizedActionPlanViewModel>(JsonConvert.SerializeObject(personalizedPlan));
-            var res = await dbService.CreateItemAsync((personalizedPlan), dbSettings.PersonalizedActionPlanCollectionId);
+            //personalizedPlan = JsonConvert.DeserializeObject<PersonalizedActionPlanViewModel>(JsonConvert.SerializeObject(personalizedPlan));
+            //var res = await dbService.CreateItemAsync((personalizedPlan), dbSettings.PersonalizedActionPlanCollectionId);
             // save the newly generated plan in the Personalized plan (PersonalizedActionPlan collection)
 
             return personalizedPlan;
