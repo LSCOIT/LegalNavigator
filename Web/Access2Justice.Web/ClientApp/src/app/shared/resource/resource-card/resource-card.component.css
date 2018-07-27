@@ -63,8 +63,12 @@ h4 {
 }
 
 #save-dropdown {
-  padding-left: 15px;
   font-size: 13px;
+}
+
+.more-menu {
+  width: 20px;
+  cursor: pointer;
 }
 
 @media only screen and (min-width : 768px) {

@@ -3,18 +3,19 @@
     <div class="resource-body">
       <div class="pull-right">
         <div class="btn-group" dropdown>
-          <span dropdownToggle type="button" class="glyphicon glyphicon-option-horizontal dropdown-toggle"></span>
+          <img dropdownToggle type="button" class="more-menu dropdown-toggle" src="./assets/images/small-icons/more_menu.svg" alt="Menu" />
           <ul id="dropdown-disabled-item" *dropdownMenu class="dropdown-menu dropdown-menu-right"
               role="menu">
             <li role="menuitem" id="save-dropdown" *ngIf="!showRemoveOption">
-              <app-save-button [showIcon] = false [id] ="resource.id" [type]="resource.resourceType"></app-save-button>
+              <a class="dropdown-item">
+              <app-save-button [showIcon]=false [id]="resource.id" [type]="resource.resourceType"></app-save-button>
+              </a>
             </li>
             <li role="menuitem">
               <a class="dropdown-item" href="#">
                 <app-share-button></app-share-button>
               </a>
             </li>
-            <!--<li role="menuitem" *ngIf="!isSearchResults">-->
             <li role="menuitem" *ngIf="showRemoveOption">
               <a class="dropdown-item">
                 <app-remove-button [resourceId]="resource.id" [resourceType]="resource.resourceType" [personalizedResources]="personalizedResources"></app-remove-button>

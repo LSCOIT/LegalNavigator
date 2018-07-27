@@ -10,3 +10,8 @@
 .box-no-shadow {
   margin-bottom: 20px;
 }
+
+.more-menu {
+  width: 20px;
+  cursor: pointer;
+}
