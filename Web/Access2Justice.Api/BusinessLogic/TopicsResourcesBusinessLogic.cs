@@ -586,40 +586,54 @@ namespace Access2Justice.Api.BusinessLogic
             return topics;
         }
 
-        public async Task<dynamic> GetPlanDataAsync(string planId)
-        {
-            List<dynamic> procedureParams = new List<dynamic>() { planId };
-            var result = await dbService.ExecuteStoredProcedureAsync(dbSettings.ResourceCollectionId, Constants.PlanStoredProcedureName, procedureParams);
-            var planDetails = result.Response;
-            int indexOfTopicTags = 0;
-            foreach (var item in planDetails.planTags)
-            {
-                string topicId = item.topicId;
-                var topicData = await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.Id, topicId);
-                planDetails.planTags[indexOfTopicTags].id = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(topicData));
-                indexOfTopicTags++;
-            }
-            return planDetails;
-        }
+		//public async Task<dynamic> GetPlanDataAsync(string planId)
+		//{
+		//    List<dynamic> procedureParams = new List<dynamic>() { planId };
+		//    var result = await dbService.ExecuteStoredProcedureAsync(dbSettings.ResourceCollectionId, Constants.PlanStoredProcedureName, procedureParams);
+		//    var planDetails = result.Response;
+		//    int indexOfTopicTags = 0;
+		//    foreach (var item in planDetails.planTags)
+		//    {
+		//        string topicId = item.topicId;
+		//        var topicData = await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.Id, topicId);
+		//        planDetails.planTags[indexOfTopicTags].id = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(topicData));
+		//        indexOfTopicTags++;
+		//    }
+		//    return planDetails;
+		//}
+		private PersonalizedPlanSteps ConvertPersonalizedPlanSteps(dynamic convObj)
+		{
+			var serializedResult = JsonConvert.SerializeObject(convObj);
+			PersonalizedPlanSteps listPlanSteps = JsonConvert.DeserializeObject<PersonalizedPlanSteps>(serializedResult);
+			PersonalizedPlanSteps personalizedPlanSteps = new PersonalizedPlanSteps();
+			//foreach (PersonalizedPlanSteps planSteps in listPlanSteps)
+			//{
+				personalizedPlanSteps.PersonalizedPlanId = listPlanSteps.PersonalizedPlanId;
+				personalizedPlanSteps.PlanSteps = listPlanSteps.PlanSteps;
+			//}
+			return personalizedPlanSteps;
+		}
+		public async Task<dynamic> GetPlanDataAsync(string planId)
+		{
+			List<dynamic> procedureParams = new List<dynamic>() { planId };
+			//var result = await dbService.ExecuteStoredProcedureAsync(dbSettings.ResourceCollectionId, Constants.PlanStoredProcedureName, procedureParams);
+			var planDetails = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, Constants.Id, planId);
+			//var planDetails = result.Response;
+			//planDetails = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(planDetails));
+			PersonalizedPlanSteps personalizedPlanSteps = new PersonalizedPlanSteps();
+			personalizedPlanSteps = ConvertPersonalizedPlanSteps(planDetails);
+			int indexOfTopicTags = 0;
+			foreach (var item in planDetails.topics)
+			{
+				string topicId = item.topicId;
+				var topicData = await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.Id, topicId);
+				planDetails.topics[indexOfTopicTags].id = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(topicData));
+				indexOfTopicTags++;
+			}
+			return planDetails;
+		}
 
-        //public async Task<dynamic> GetPlanDataAsync(string planId)
-        //{
-        //    List<dynamic> procedureParams = new List<dynamic>() { planId };
-        //    //var result = await dbService.ExecuteStoredProcedureAsync(dbSettings.ResourceCollectionId, Constants.PlanStoredProcedureName, procedureParams);
-        //    var planDetails = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, Constants.Id, planId);
-        //    //var planDetails = result.Response;
-        //    int indexOfTopicTags = 0;
-        //    foreach (var item in planDetails.topics)
-        //    {
-        //        string topicId = item.topicId;
-        //        var topicData = await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.Id, topicId);
-        //        planDetails.topics[indexOfTopicTags].id = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(topicData));
-        //        indexOfTopicTags++;
-        //    }
-        //    return planDetails;
-        //}
-
-        public async Task<dynamic> GetPersonalizedResourcesAsync(ResourceFilter resourceFilter)
+		public async Task<dynamic> GetPersonalizedResourcesAsync(ResourceFilter resourceFilter)
         {
             dynamic Topics = Array.Empty<string>();
             dynamic Resources = Array.Empty<string>();
