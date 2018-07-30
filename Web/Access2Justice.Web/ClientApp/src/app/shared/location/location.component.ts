@@ -25,6 +25,7 @@ export class LocationComponent implements OnInit {
   @ViewChild('template') public templateref: TemplateRef<any>;
   config: Object;
   locationInputRequired: boolean;
+  isError: boolean = false;
 
   constructor(private modalService: BsModalService, private locationService: LocationService,
               private mapResultsService: MapResultsService) {  }
@@ -50,11 +51,18 @@ export class LocationComponent implements OnInit {
   }
 
   updateLocation() {
+    this.isError = false;
     this.mapLocation = this.locationService.updateLocation();
     this.displayLocationDetails(this.mapLocation);
-    if (this.modalRef) {
+    if (this.modalRef && this.mapLocation) {
       this.modalRef.hide();
+    } else {
+      this.isError = true;
     }
+  }
+
+  onSearchChange() {
+    this.isError = false;
   }
 
   displayLocationDetails(mapLocation) {

@@ -24,11 +24,14 @@
     </div>
     <div class="row">
       <div id="searchbox-container">
-        <input type="text" id="search-box" aria-label="search address box" autocomplete="off" placeholder="City, zip code, address" />
+        <input type="text" id="search-box" aria-label="search address box" autocomplete="off" placeholder="City, zip code, address" (input)="onSearchChange()"/>
         <button type="button" class="search-btn" (click)="geocode()">Search</button>
+        <span *ngIf="isError" class="alert alert-danger">
+          Please select your location.
+        </span>
+      </div>              
+        <div id="my-map"></div>
       </div>
-      <div id="my-map"></div>
-    </div>
     <div class="row">
       <p class="ps">
         We promise to never share your location. View our
