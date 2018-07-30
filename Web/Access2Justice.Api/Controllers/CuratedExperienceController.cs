@@ -161,7 +161,7 @@ namespace Access2Justice.Api.Controllers
             return Ok(curatedExperienceBusinessLogic.GetNextComponent(curatedExperience, component));
         }
 
-        [HttpPost("PersonalizedPlan")]
+        [HttpGet("PersonalizedPlan")]
         public async Task<IActionResult> GeneratePersonalizedPlan([FromQuery] Guid curatedExperienceId, [FromQuery] Guid answersDocId)
         {
             var personalizedPlan = await personalizedPlanBusinessLogic.GeneratePersonalizedPlan(

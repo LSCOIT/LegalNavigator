@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { HttpParams } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { QuestionService } from './question.service';
 import { Question } from './question';
 import { Answer } from './answers';
@@ -19,7 +20,7 @@ export class QuestionComponent implements OnInit {
   @Output() sendQuestionsRemainingEvent = new EventEmitter<number>();
   @Output() sendTotalQuestionsEvent = new EventEmitter<number>();
 
-  constructor(private questionService: QuestionService) { }
+  constructor(private questionService: QuestionService, private router: Router) { }
 
   sendQuestionsRemaining(questionsRemaining) {
     this.sendQuestionsRemainingEvent.emit(questionsRemaining);
@@ -89,6 +90,19 @@ export class QuestionComponent implements OnInit {
         });
     }
   };
+
+  getActionPlan(): void {
+    let params = new HttpParams()
+      .set("curatedExperienceId", this.curatedExperienceId)
+      .set("answersDocId", this.question.answersDocId);
+    
+    this.questionService.getpersonalizedPlan(params)
+      .subscribe(response => {
+        if (response != undefined && response.id != undefined) {
+          this.router.navigate(['/plan', response.id]);
+        }
+      });
+  }
 
   ngOnInit() {
     this.getQuestion();
