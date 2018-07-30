@@ -34,7 +34,7 @@ namespace Access2Justice.Shared.Interfaces
         Task<dynamic> GetPagedResourceAsync(ResourceFilter resourceFilter);
         Task<dynamic> ApplyPaginationAsync(ResourceFilter resourceFilter);
         Task<dynamic> GetResourcesCountAsync(ResourceFilter resourceFilter);
-        Task<dynamic> GetPlanDataAsync(string planId);
+        //Task<dynamic> GetPlanDataAsync(string planId);//Need to remove after integrating with personalized plan UI
         Task<dynamic> GetPersonalizedResourcesAsync(ResourceFilter resourceFilter);
         Task<dynamic> GetOrganizationsAsync(Location location);
     }

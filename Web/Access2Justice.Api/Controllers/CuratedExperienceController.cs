@@ -185,5 +185,13 @@ namespace Access2Justice.Api.Controllers
 
             return HttpContext.Session.GetObjectAsJson<CuratedExperience>(id.ToString());
         }
+
+        [HttpGet]
+        [Route("getplandetails/{id}")]
+        public async Task<IActionResult> GetPlanDetailsAsync(string id)
+        {
+            var actionPlans = await personalizedPlanBusinessLogic.GetPlanDataAsync(id);
+            return Ok(actionPlans);
+        }
     }
 }

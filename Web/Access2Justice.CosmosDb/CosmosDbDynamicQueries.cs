@@ -201,6 +201,14 @@ namespace Access2Justice.CosmosDb
             return await backendDatabaseService.QueryItemsAsync(collectionId, query);
         }
 
-    
+        //public async Task<dynamic> FindItemsListWhereAsync(string collectionId, string propertyName, IEnumerable<string> values)
+        //{
+        //    EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
+
+        //    var query = $"SELECT * FROM c WHERE c.{propertyName}='{value}'";
+        //    return await backendDatabaseService.QueryItemsAsync(collectionId, query);
+        //}
+
+
     }
 }

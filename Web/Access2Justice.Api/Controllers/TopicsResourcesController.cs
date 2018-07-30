@@ -263,13 +263,14 @@ namespace Access2Justice.Api.Controllers
         /// </summary>
         /// <param name="parentTopicId"></param>
         /// <returns></returns>
-        [HttpGet]
-        [Route("api/topics/getplandetails/{id}")]
-        public async Task<IActionResult> GetPlanDetailsAsync(string id)
-        {
-            var actionPlans = await topicsResourcesBusinessLogic.GetPlanDataAsync(id);
-            return Ok(actionPlans);
-        }
+        /// Need to remove after integrating UI with API
+        //[HttpGet]
+        //[Route("api/topics/getplandetails/{id}")]
+        //public async Task<IActionResult> GetPlanDetailsAsync(string id)
+        //{
+        //    var actionPlans = await topicsResourcesBusinessLogic.GetPlanDataAsync(id);
+        //    return Ok(actionPlans);
+        //}
 
         /// Get the topic details by the document parent Id
         /// </summary>

@@ -9,10 +9,29 @@ namespace Access2Justice.Shared.Models
     {
         [JsonProperty(PropertyName = "id")]
         public Guid PersonalizedPlanId { get; set; }
+        [JsonProperty(PropertyName = "topics")]
+        public List<PersonalizedPlanTopic> Topics { get; set; }
 
-        [JsonProperty(PropertyName = "PlanSteps")]
-        public List<PersonalizedPlanStep> PlanSteps { get; set; }
+        //[JsonProperty(PropertyName = "PlanSteps")]
+        //public List<PersonalizedPlanStep> PlanSteps { get; set; }
+        //public PersonalizedPlanSteps()
+        //{
+        //    PlanSteps = new List<PersonalizedPlanStep>();
+        //}
         public PersonalizedPlanSteps()
+        {
+            Topics = new List<PersonalizedPlanTopic>();
+        }
+    }
+
+    public class PersonalizedPlanTopic
+    {
+        [JsonProperty(PropertyName = "topicId")]
+        public Guid TopicId { get; set; }
+
+        [JsonProperty(PropertyName = "steps")]
+        public List<PersonalizedPlanStep> PlanSteps { get; set; }
+        public PersonalizedPlanTopic()
         {
             PlanSteps = new List<PersonalizedPlanStep>();
         }

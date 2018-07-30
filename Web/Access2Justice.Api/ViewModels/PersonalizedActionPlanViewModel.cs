@@ -24,7 +24,13 @@ namespace Access2Justice.Api.ViewModels
         [JsonProperty(PropertyName = "topicId")]
         public Guid TopicId { get; set; }
 
+        [JsonProperty(PropertyName = "name")]
+        public string TopicName { get; set; }
+
         public List<PlanQuickLink> QuickLinks { get; set; }
+
+        [JsonProperty(PropertyName = "icon")]
+        public string Icon { get; set; }
 
         [JsonProperty(PropertyName = "steps")]
         public List<PlanStep> Steps { get; set; }
@@ -63,11 +69,23 @@ namespace Access2Justice.Api.ViewModels
         public bool IsComplete { get; set; }
 
         [JsonProperty(PropertyName = "resources")]
-        public List<Guid> Resources { get; set; }
+        public List<Resource> Resources { get; set; }
 
         public PlanStep()
         {
-            Resources = new List<Guid>();
+            Resources = new List<Resource>();
         }
+    }
+
+    public class TopicDetails
+    {
+        [JsonProperty(PropertyName = "id")]
+        public Guid TopicId { get; set; }
+
+        [JsonProperty(PropertyName = "name")]
+        public string TopicName { get; set; } 
+
+        [JsonProperty(PropertyName = "icon")]
+        public string Icon { get; set; }
     }
 }
