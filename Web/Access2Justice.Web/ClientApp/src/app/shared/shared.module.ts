@@ -38,7 +38,10 @@ import { ActionPlanCardComponent } from './action-plan/action-plan-card.componen
 import { UserActionSidebarComponent } from './sidebars/user-action-sidebar.component';
 import { SettingButtonComponent } from './resource/user-action/setting-button.component';
 import { ServiceOrgService } from './sidebars/service-org.service';
-import { UtilityService } from './utility.service';
+import { ArrayUtilityService } from './array-utility.service';
+import { HelplineComponent } from './helpline/helpline.component';
+import { ButtonSelectedDirective } from './styling/button-selected.directive';
+import { EventUtilityService } from './event-utility.service';
 
 @NgModule({
   imports: [
@@ -76,7 +79,9 @@ import { UtilityService } from './utility.service';
     MapResultsComponent,
     PaginationComponent,
     UserActionSidebarComponent,
-    SettingButtonComponent
+    SettingButtonComponent,
+    HelplineComponent,
+    ButtonSelectedDirective
   ],
   exports: [
     ActionPlanCardComponent,
@@ -101,7 +106,8 @@ import { UtilityService } from './utility.service';
     UpperNavComponent,
     BreadcrumbComponent,
     UserActionSidebarComponent,
-    WebResourceComponent
+    WebResourceComponent,
+    HelplineComponent
   ],
   providers: [
     CuratedResourceService,
@@ -111,7 +117,8 @@ import { UtilityService } from './utility.service';
     MapResultsService,
     PaginationService,
     ServiceOrgService,
-    UtilityService
+    ArrayUtilityService,
+    EventUtilityService
   ]
 })
 export class SharedModule { }

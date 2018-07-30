@@ -15,12 +15,12 @@ export const api = {
     breadcrumbsUrl: topic + '/getbreadcrumbs',
     planUrl: topic + "/getplandetails",
     getPersonalizedResourcesUrl: apiUrl + '/personalizedresources',
-    questionUrl: 'http://access2justiceapi.azurewebsites.net/api/curatedexperience?surveyId=0b7dfe9b-cec9-4490-b768-c40916d52382',
     updatePlanUrl: userProfile + "/upsertuserplan",
     getProfileUrl: userProfile + "/getuserprofile",
     userPlanUrl: userProfile + "/upsertuserpersonalizedplan",
     getOrganizationDetailsUrl: topic + '/getorganizationdetails',
     loginUrl: apiUrl + '/login',
     logoutUrl: apiUrl + '/logout',
-    saveAndGetNextUrl: 'https://access2justiceapi.azurewebsites.net/api/CuratedExperience/Component/SaveAndGetNext'
+    questionUrl: apiUrl + '/CuratedExperience/Start',
+    saveAndGetNextUrl: apiUrl + '/CuratedExperience/Component/SaveAndGetNext'
 }

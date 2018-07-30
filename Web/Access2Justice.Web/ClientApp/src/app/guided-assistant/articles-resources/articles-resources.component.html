@@ -1,0 +1,35 @@
+<div id="articles-dropdown" dropdown>
+  <div class="button-wrapper">
+    <div class="col-sm-offset-1">
+      <button type="button" id="button-basic" dropdownToggle
+              aria-controls="dropdown-basic" class="show-articles dropdown-toggle" appChangeDropdownImg>
+        <img class="nav-icon" src="./assets/images/small-icons/articles_resources.svg" aria-hidden="True" />
+        <span>Articles &amp; Resources</span>
+        <img class="dropdown-icon" src="./assets/images/small-icons/dropdown_arrow.svg" alt="Dropdown button"/>
+      </button>
+    </div>
+  </div>
+  <div class="verticle-line">
+  </div>
+  <div class="dropdown-menu" id="dropdown-basic" *dropdownMenu
+       role="menu" aria-labelledby="button-basic">
+    <div class="articles-content">
+      <div class="topic-section col-sm-6">
+        <h6 class="pl">Eviction</h6>
+        <ul>
+          <li class="link"><a href="">Amet, consectetur adipiscing elit.</a></li>
+          <li class="link"><a href="">Consectetur adipiscing elit fusce vel.</a></li>
+        </ul>
+      </div>
+      <div class="topic-section col-sm-6">
+        <h6 class="pl">Child Custody</h6>
+        <ul>
+          <li class="link"><a href="">Amet, consectetur adipiscing elit.</a></li>
+          <li class="link"><a href="">Consectetur adipiscing elit fusce vel.</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="verticle-line-grey col-xs-12">
+    </div>
+  </div>
+</div>

@@ -1,21 +1,58 @@
-import { TestBed, inject } from '@angular/core/testing';
-import { HttpClientModule } from '@angular/common/http';
-import { api } from '../../../api/api';
+import { TestBed } from '@angular/core/testing';
 import { QuestionService } from './question.service';
-import { Question } from './question';
-import { Observable } from 'rxjs/Rx';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { api } from '../../../api/api';
 
 describe('QuestionService', () => {
+  let httpTestingController: HttpTestingController;
   let service: QuestionService;
+  let mockQuestion = {
+    curatedExperienceId: '123',
+    answersDocId: '456',
+    questionsRemaining: 9,
+    componentId: '789',
+    name: '',
+    text: '',
+    learn: '',
+    help: '',
+    tags: [],
+    buttons: [],
+    fields: [],
+  }
 
-  const httpSpy = jasmine.createSpyObj('http', ['get', 'post']);
+  let mockAnswer = {
+    curatedExperienceId: "123",
+    answersDocId: "",
+    buttonId: "",
+    fields: []
+  }
 
   beforeEach(() => {
-    service = new QuestionService(httpSpy);
-    httpSpy.get.calls.reset();
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [
+        QuestionService
+      ]
+    });
+    httpTestingController = TestBed.get(HttpTestingController);
+    service = TestBed.get(QuestionService);
   });
 
-  it('should create question service', inject([QuestionService], (service: QuestionService) => {
-    expect(service).toBeTruthy();
-  }));
+  describe('getQuestion', () => {
+    it('should call get with the correct URL', () => {
+      service.getQuestion('123').subscribe();
+      const req = httpTestingController.expectOne(api.questionUrl + '?123');
+      req.flush(mockQuestion);
+      httpTestingController.verify();
+    });
+  });
+
+  describe('getNextQuestion', () => {
+    it('should call post with the correct URL', () => {
+      service.getNextQuestion(mockAnswer).subscribe();
+      const req = httpTestingController.expectOne(api.saveAndGetNextUrl);
+      req.flush(mockQuestion);
+      httpTestingController.verify();
+    });
+  });
 });

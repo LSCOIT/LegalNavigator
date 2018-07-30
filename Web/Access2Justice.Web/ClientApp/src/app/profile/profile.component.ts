@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { PersonalizedPlanService } from '../guided-assistant/personalized-plan/personalized-plan.service';
 import { PlanSteps, PlanDetailTags, PersonalizedPlanTopic } from '../guided-assistant/personalized-plan/personalized-plan';
 import { IResourceFilter } from '../shared/search/search-results/search-results.model';
-import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
+import { EventUtilityService } from '../shared/event-utility.service';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent implements OnInit, OnChanges {
+export class ProfileComponent implements OnInit {
   topics: string;
   planDetails: Array<PlanSteps> = [];
   activeActionPlan: string = '';
@@ -30,7 +30,17 @@ export class ProfileComponent implements OnInit, OnChanges {
   showRemove: boolean;
   webResources: any[] = [];
 
-  constructor(private personalizedPlanService: PersonalizedPlanService) {
+  constructor(
+    private personalizedPlanService: PersonalizedPlanService,
+    private eventUtilityService: EventUtilityService
+  ) {
+
+    eventUtilityService.resourceUpdated$.subscribe(response => {
+      if (response) {
+        this.getpersonalizedResources();
+      }
+    });
+
     let profileData = sessionStorage.getItem("profileData");
     if (profileData != undefined) {
       profileData = JSON.parse(profileData);
@@ -79,6 +89,7 @@ export class ProfileComponent implements OnInit, OnChanges {
   getpersonalizedResources() {
     this.topicIds = [];
     this.resourceIds = [];
+    this.webResources = [];
     this.personalizedPlanService.getUserPlanId(this.userId)
       .subscribe(response => {
         if (response != undefined) {
@@ -135,9 +146,4 @@ export class ProfileComponent implements OnInit, OnChanges {
     this.getPersonalizedPlan();
     this.showRemove = true;
   }
-
-  ngOnChanges() {
-    this.getpersonalizedResources();
-  }
-
 }

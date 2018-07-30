@@ -1,6 +1,8 @@
 .user-action {
   background-color: #fff;
-  margin: 20px 0;
+  margin: 20px 0 0 0;
+  width: 100%;
+  text-align: right;
 }
   
 .row-half-spacing {

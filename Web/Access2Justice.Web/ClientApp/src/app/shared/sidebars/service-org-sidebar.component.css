@@ -12,11 +12,6 @@
   margin: 20px auto;
 }
 
-.secondary-img {
-  width: 250px;
-  margin: 20px auto;
-}
-
 .link {
   display: block;
   margin-bottom: 10px;
@@ -27,14 +22,14 @@
   width: 100%;
 }
 
-@media only screen and (min-width : 768px) {
-  .fullPage + div .sidebar-block {
-    width: 33%;
-  }
+.sidebar-img {
+  width: 100%;
 }
 
-@media only screen and (min-width : 992px) {
-  .secondary-img {
-    width: 100%;
-  }
+.full-page-img {
+  width: 250px;
+}
+
+.sidebar-block .col-sm-4 {
+  margin: 15px 0;
 }
