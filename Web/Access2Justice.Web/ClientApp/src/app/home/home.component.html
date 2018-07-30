@@ -2,14 +2,14 @@
   <div class="container">
     <div class="row top-row">
       <div class="col-sm-6 tagline text-center">
-        <h2>Get help with your legal questions in Alaska</h2>
-        <p>We will always protect your privacy. Read our
-          <a [routerLink]="['/privacy']" class="link">Privacy Promise</a>
+        <h2>{{heroData.overview}}</h2>
+        <p>{{heroData.description}}
+          <a [routerLink]="['/privacy']" class="link">{{heroData.routerText}}</a>
         </p>
       </div>
       <div class="col-sm-6">
         <img id="home-img" 
-             src="/assets/images/primary-illustrations/hawaii.svg" 
+             src="{{heroData.image.path}}" 
              alt="Guided Assistant Illustration">
       </div>
     </div>
@@ -18,7 +18,7 @@
     <div class="container">
       <div class="row">
         <div class="col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1">
-          <h3>Need a plan of action for your legal issue? Our Guided Assistant can help.
+          <h3>{{guidedAssistantData.overview}}
           </h3>
         </div>
       </div>
@@ -29,19 +29,17 @@
                 alt="Guided Assistant Illustration">
         </div>
         <div class="guided-assistant-steps col-sm-7 col-sm-offset-1">
-          <ul class="p">
-            <li><span>1.</span>Answer a few questions to help us understand your needs.</li>
-            <li><span>2.</span>We'll create a personalized plan with steps and resources.</li>
-            <li><span>3.</span>Share, print, or create a profile to save your plan.</li>
+          <ul *ngFor="let content of guidedAssistantData.description.steps" class="p">
+            <li><span>{{content.order}}.</span>{{content.descritpion}} </li>
           </ul>
-          <p>Free and no account necessary. We never share any information you provide.
-            <a [routerLink]="['/privacy']">Privacy Promise.</a>
+          <p>{{guidedAssistantData.text}}
+            <a [routerLink]="['/privacy']">{{guidedAssistantData.routerText}}</a>
           </p>
         </div>
       </div>
       <div class="row">
         <div class="col-sm-12 text-center">
-          <button type="button" class="btn btn-primary">Start the Guided Assistant</button>
+          <button type="button" class="btn btn-primary">{{guidedAssistantData.buttonText}}</button>
         </div>
       </div>
     </div>
@@ -49,7 +47,7 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-8 col-sm-offset-2 text-center">
-        <h3>More Information, Videos, and Links to Resources by Topic</h3>
+        <h3>{{topicAndResourcesData.overview}}</h3>
       </div>
     </div>
     <div class="row">
@@ -57,7 +55,7 @@
     </div>
     <div class="row">
       <div class="col-sm-12 text-center">
-        <button [routerLink]="['/topics']" type="button" class="btn btn-primary">See More Topics</button>
+        <button [routerLink]="['/topics']" type="button" class="btn btn-primary">{{topicAndResourcesData.buttonText}}</button>
       </div>
     </div>
   </div>
@@ -108,11 +106,11 @@
 </div>
 <div class="row text-center">
   <div class="col-md-6 col-md-offset-3">
-    <h4>Information you can trust</h4>
-    <p>This site is here to provide equal access to legal information and resources for everyone. Legal disclaimer lorem ipsum dolor amet. It is brought to you by partnership of these nonproffit organizations.</p>
+    <h4>{{informationData.overview}}</h4>
+    <p>{{informationData.description}}</p>
     <img src="" alt="">
     <img src="" alt="">
-    <button class="btn btn-primary">Learn more</button>
+    <button class="btn btn-primary">{{informationData.buttonText}}</button>
   </div>
 </div>
 <div class="privacy-promise text-center">
@@ -120,14 +118,14 @@
     <div class="row">
       <div class="col-sm-5">
         <img class="secondary-img" 
-             src="/assets/images/secondary-illustrations/privacy_promise.svg" 
+             src="{{privacyData.image.path}}" 
              alt="Guided Assistant Illustration">
       </div>
       <div class="col-sm-5 col-sm-offset-1">
-        <h3>Our Privacy Promise</h3>
-        <p>We value your privacy and will never share your personal information with anyone without your lorem ipsum dolor sit amet.</p>
+        <h3>{{privacyData.overview}}</h3>
+        <p>{{privacyData.description}}</p>
         <div class="row">
-          <button class="btn btn-secondary">Learn more</button>
+          <button class="btn btn-secondary">{{privacyData.buttonText}}</button>
         </div>
       </div>
     </div>

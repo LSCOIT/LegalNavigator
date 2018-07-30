@@ -3,7 +3,7 @@ import { environment } from '../environments/environment';
 const apiUrl = environment.apiUrl;
 const topic = apiUrl + '/topics';
 const userProfile = apiUrl + '/user';
-
+const home = apiUrl + '/staticresource';
 export const api = {
     topicUrl: topic + '/gettopics',
     subtopicUrl: topic + '/getsubtopics',
@@ -22,5 +22,6 @@ export const api = {
     loginUrl: apiUrl + '/login',
     logoutUrl: apiUrl + '/logout',
     questionUrl: apiUrl + '/CuratedExperience/Start',
-    saveAndGetNextUrl: apiUrl + '/CuratedExperience/Component/SaveAndGetNext'
+    saveAndGetNextUrl: apiUrl + '/CuratedExperience/Component/SaveAndGetNext',
+    homeContentUrl: home + '/getstaticresource',
 }
