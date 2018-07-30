@@ -5,13 +5,14 @@ import { api } from '../../../api/api';
 import { HttpHeaders } from '@angular/common/http';
 import { IResourceFilter } from '../search/search-results/search-results.model';
 
-describe('PaginationService', () => {
+fdescribe('PaginationService', () => {
   let service: PaginationService;
   const mockHttpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
     })
   };
+  let mockResourceType = 'test';
   let mockSearchText = "Lorem ipsum solor sit amet bibodem consecuter orem ipsum"; 
   let mockResponse = Observable.of(mockSearchText);
   let mockOffset = 5;

@@ -44,7 +44,8 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   limit = 0;
   offset = 0;
   pagesToShow = 0;
-  topIntent: string; 
+  topIntent: string;
+  initialResourceFilter: string;
 
   constructor(
     private navigateDataService: NavigateDataService,
@@ -87,6 +88,9 @@ export class SearchResultsComponent implements OnInit, OnChanges {
 
   mapInternalResource() {
     this.resourceTypeFilter = this.searchResults.resourceTypeFilter;
+    if (this.searchResults.resourceType) {
+      this.initialResourceFilter = this.searchResults.resourceType;
+    }
     // need to revisit this logic..
     this.resourceResults = this.searchResults.resourceTypeFilter.reverse();
     if (this.resourceTypeFilter != undefined) {
