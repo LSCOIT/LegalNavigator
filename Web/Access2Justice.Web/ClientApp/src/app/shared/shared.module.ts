@@ -24,7 +24,7 @@ import { SearchFilterComponent } from './search/search-filter/search-filter.comp
 import { SearchResultsComponent } from './search/search-results/search-results.component';
 import { SearchService } from './search/search.service';
 import { ServiceOrgSidebarComponent } from './sidebars/service-org-sidebar.component';
-import { ShareButtonComponent } from './resource/user-action/share-button.component';
+import { ShareButtonComponent } from './resource/user-action/share-button/share-button.component';
 import { UpperNavComponent } from './navigation/upper-nav.component';
 import { WebResourceComponent } from './search/search-results/web-resource/web-resource.component';
 import { CuratedResourceService } from './search/search-results/curated-resource/curated-resource.service';
