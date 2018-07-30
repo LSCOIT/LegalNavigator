@@ -1,6 +1,6 @@
 <div [ngClass]="{ 'no-container': fullPage, 'container': !fullPage }">
   <div *ngIf="isInternalResource">
-    <h2>Results for {{searchResults.topIntent}}.</h2>
+    <h2>Results for {{topIntent}}.</h2>
   </div>
   <div *ngIf="isInternalResource">
     <div class="panel-heading box-shadow">

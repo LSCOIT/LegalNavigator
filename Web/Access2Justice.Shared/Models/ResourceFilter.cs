@@ -11,6 +11,6 @@ namespace Access2Justice.Shared.Models
         public IEnumerable<string> ResourceIds { get; set; }
         public Int16 PageNumber { get; set; }
         public Location Location { get; set; }
-
+        public Boolean IsResourceCountRequired { get; set; }
     }
 }

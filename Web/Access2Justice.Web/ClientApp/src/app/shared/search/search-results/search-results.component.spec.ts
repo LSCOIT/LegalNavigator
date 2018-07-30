@@ -30,7 +30,7 @@ describe('SearchResultsComponent', () => {
   let searchService: SearchService;
   let paginationService: PaginationService;
   let navigateDataService: NavigateDataService;
-  let resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: '', ResourceIds: '', PageNumber: 0, Location: '' };
+  let resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: '', IsResourceCountRequired: false }; 
   let currentPage: number = 0;
   let mockPageNumber: number = 0;
   let mockResourceName = 'Videos'
