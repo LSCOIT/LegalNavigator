@@ -24,7 +24,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   resourceResults: ResourceResult[] = [];
   filterType: string = 'All';
   resourceTypeFilter: any[];
-  resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: '', ResourceIds: '', PageNumber: 0, Location: {} };
+  resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: {}, IsResourceCountRequired: false }; 
   luisInput: ILuisInput = { Sentence: '', Location: {}, LuisTopScoringIntent: '', TranslateFrom: '', TranslateTo: '' };
   location: any;
   topicIds: any[];
@@ -44,6 +44,8 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   limit = 0;
   offset = 0;
   pagesToShow = 0;
+  topIntent: string;
+  initialResourceFilter: string;
 
   constructor(
     private navigateDataService: NavigateDataService,
@@ -62,6 +64,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
         this.pagesToShow = environment.webResourcePagesToShow;
         this.limit = environment.webResourceRecordsToDisplay;
       } else if (this.isInternalResource) {
+        this.topIntent = this.searchResults.topIntent; 
         this.mapInternalResource();
       } else {
         this.isLuisResponse = true;
@@ -85,12 +88,17 @@ export class SearchResultsComponent implements OnInit, OnChanges {
 
   mapInternalResource() {
     this.resourceTypeFilter = this.searchResults.resourceTypeFilter;
+    if (this.searchResults.resourceType) {
+      this.initialResourceFilter = this.searchResults.resourceType;
+    }
     // need to revisit this logic..
     this.resourceResults = this.searchResults.resourceTypeFilter.reverse();
     if (this.resourceTypeFilter != undefined) {
-
       for (let index = 0; index < this.resourceTypeFilter.length; index++) {
-        if (this.resourceTypeFilter[index].ResourceName === "All") {
+        if ((this.searchResults.resourceType &&
+          this.resourceTypeFilter[index].ResourceName === this.searchResults.resourceType)
+          || (this.resourceTypeFilter[index].ResourceName === "All"
+            && !this.searchResults.resourceType)) { 
           this.resourceTypeFilter[index]["ResourceList"] = [{
             'resources': this.searchResults.resources,
             'continuationToken': this.searchResults.continuationToken

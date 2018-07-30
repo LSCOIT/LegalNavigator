@@ -6,7 +6,7 @@ import { api } from '../../../api/api';
 
 @Injectable()
 
-export class TopicService {  
+export class TopicService {
 
   constructor(private http: HttpClient) { }
 
@@ -15,7 +15,7 @@ export class TopicService {
   }
 
   getSubtopics(id): Observable<any> {
-    return this.http.get<Topic>(api.subtopicUrl +'/'+ id);
+    return this.http.get<Topic>(api.subtopicUrl + '/' + id);
   }
 
   getSubtopicDetail(id): Observable<any> {

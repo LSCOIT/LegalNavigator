@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { api } from '../../../api/api';
-import { ILuisInput } from '../search/search-results/search-results.model';
+import { ILuisInput, IResourceFilter } from '../search/search-results/search-results.model';
 
 @Injectable()
 export class SearchService {
