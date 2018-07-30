@@ -26,30 +26,8 @@ describe(' Service:PersonalizedPlan', () => {
             "id": "6b230be1-302b-7090-6cb3-fc6aa084274c",
             "order": 1,
             "markCompleted": true
-          },
-          {
-            "id": "d46aecee-8c79-df1b-4081-1ea02b5022df",
-            "order": 2,
-            "markCompleted": false
-          }
-        ]
-      },
-      {
-        "topicId": "932abb0a-c6bb-46da-a3d8-5f52c2c914a0",
-        "stepTags": [
-          {
-            "id": "2705d544-6af7-bd69-4f19-a1b53e346da2",
-            "order": 1,
-            "markCompleted": false
-          },
-          {
-            "id": "3d64b676-cc4b-397d-a5bb-f4a0ea6d3040",
-            "order": 2,
-            "markCompleted": false
-          }
-        ]
-      }
-    ]
+          }]  
+      }] 
   };
   let mockPlanDetailsJson = {
     "id": "bf8d7e7e-2574-7b39-efc7-83cb94adae07",
@@ -60,17 +38,7 @@ describe(' Service:PersonalizedPlan', () => {
         "topicId": "addf41e9-1a27-4aeb-bcbb-7959f95094ba",
         "stepTags": [
           {
-            "id": {
-              "id": "6b230be1-302b-7090-6cb3-fc6aa084274c",
-              "type": "steps",
-              "title": "Make sure your summons is real.",
-              "description": "Why you should do this dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo.",
-              "resourceTags": [
-                {
-                    "id": "9fc75d90-7ffa-4c26-9cb7-ba271f2007ad"
-                }
-              ]
-            },
+            "id": "6b230be1-302b-7090-6cb3-fc6aa084274c",
             "order": 1,
             "markCompleted": false
           }
@@ -91,38 +59,15 @@ describe(' Service:PersonalizedPlan', () => {
     "planId": "bf8d7e7e-2574-7b39-efc7-83cb94adae07",
     "oId": "User Id",
     "type": "plans",
-    "planTags": [
-      {
+    "planTags": [{
         "topicId": "addf41e9-1a27-4aeb-bcbb-7959f95094ba",
         "stepTags": [
           {
             "id": "6b230be1-302b-7090-6cb3-fc6aa084274c",
             "order": 1,
             "markCompleted": true
-          },
-          {
-            "id": "d46aecee-8c79-df1b-4081-1ea02b5022df",
-            "order": 2,
-            "markCompleted": false
-          }
-        ]
-      },
-      {
-        "topicId": "932abb0a-c6bb-46da-a3d8-5f52c2c914a0",
-        "stepTags": [
-          {
-            "id": "2705d544-6af7-bd69-4f19-a1b53e346da2",
-            "order": 1,
-            "markCompleted": false
-          },
-          {
-            "id": "3d64b676-cc4b-397d-a5bb-f4a0ea6d3040",
-            "order": 2,
-            "markCompleted": false
-          }
-        ]
-      }
-    ]
+          }]       
+    }]
   };
   let mockPlanDetailTags = [{
     "id": "393994-133-33",

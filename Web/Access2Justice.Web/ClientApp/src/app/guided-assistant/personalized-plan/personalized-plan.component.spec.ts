@@ -27,37 +27,11 @@ describe('Component:PersonalizedPlan', () => {
     topic: {
       "topicId": "addf41e9-1a27-4aeb-bcbb-7959f95094ba",
       "stepTags": [{
-          "id":{
-            "id": "6b230be1-302b-7090-6cb3-fc6aa084274c",
-            "type": "steps",
-            "title": "Make sure your summons is real.",
-            "description": "Why you should do this dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo.",
-            "resourceTags": [
-              {
-                "id": "9fc75d90-7ffa-4c26-9cb7-ba271f2007ad"
-              },
-              {
-                "id": "19a02209-ca38-4b74-bd67-6ea941d41518"
-              }
-            ]
-          },
+        "id": "6b230be1-302b-7090-6cb3-fc6aa084274c",
           "order": 1,
           "markCompleted": false
         }],
-      "id": [{
-          "id": "addf41e9-1a27-4aeb-bcbb-7959f95094ba",
-          "name": "Family",
-          "parentTopicID": "",
-          "resourceType": "Topics",
-          "keywords": "EVICTION",
-          "location":
-            {
-              "state": "Hawaii",
-              "county": "Kalawao County",
-              "city": "Kalawao",
-              "zipCode": "96742"
-            }
-        }]
+      "id": "addf41e9-1a27-4aeb-bcbb-7959f95094ba",
     }, isSelected: true
   }];
   let mockTopic = "Family";
