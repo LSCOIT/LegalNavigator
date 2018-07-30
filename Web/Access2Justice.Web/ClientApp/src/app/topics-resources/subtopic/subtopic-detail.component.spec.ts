@@ -6,7 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { SubtopicDetailComponent } from './subtopic-detail.component';
 import { SaveButtonComponent } from '../../shared/resource/user-action/save-button/save-button.component';
-import { ShareButtonComponent } from '../../shared/resource/user-action/share-button.component';
+import { ShareButtonComponent } from '../../shared/resource/user-action/share-button/share-button.component';
 import { PrintButtonComponent } from '../../shared/resource/user-action/print-button.component';
 import { ResourceCardComponent } from '../../shared/resource/resource-card/resource-card.component';
 import { GuidedAssistantSidebarComponent } from '../../shared/sidebars/guided-assistant-sidebar.component';

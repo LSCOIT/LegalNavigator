@@ -4,13 +4,13 @@ import { ProfileComponent } from './profile.component';
 import { PersonalizedPlanService } from '../guided-assistant/personalized-plan/personalized-plan.service';
 import { HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { SharedService } from '../shared/shared.service';
+import { ArrayUtilityService } from '../shared/array-utility.service';
 
 describe('Component:Profile', () => {
   let component: ProfileComponent;
   let fixture: ComponentFixture<ProfileComponent>;
   let personalizedPlanService: PersonalizedPlanService;
-  let sharedService: SharedService;
+  let sharedService: ArrayUtilityService;
 
   const mockTopicService = {
     getTopics: () => { }
@@ -445,7 +445,7 @@ describe('Component:Profile', () => {
       declarations: [ProfileComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [PersonalizedPlanService,
-        SharedService]
+        ArrayUtilityService]
     })
       .compileComponents();
   }));

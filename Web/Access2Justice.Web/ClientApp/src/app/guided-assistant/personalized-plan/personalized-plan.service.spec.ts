@@ -4,7 +4,7 @@ import { PersonalizedPlanService } from './personalized-plan.service';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { api } from '../../../api/api';
 import { Observable } from 'rxjs/Rx';
-import { SharedService } from '../../shared/shared.service';
+import { ArrayUtilityService } from '../../shared/array-utility.service';
 
 describe('PersonalizedPlan Service', () => {
   const mockHttpOptions = {
@@ -477,7 +477,7 @@ describe('PersonalizedPlan Service', () => {
   let mockActiveRoute: ActivatedRoute;
   let resoureStorage = sessionStorage.getItem(this.sessionKey);
   let oid = "123456789";
-  let sharedService: SharedService;
+  let sharedService: ArrayUtilityService;
   const httpSpy = jasmine.createSpyObj('http', ['get', 'post']);
   let mockResponse = Observable.of(mockPlanDetailsJson);
 
