@@ -15,7 +15,7 @@ export class PersonalizedPlanComponent implements OnInit {
   topicsList: Array<PersonalizedPlanTopic> = [];
   tempTopicsList: Array<PersonalizedPlanTopic> = [];
   planDetails: Array<PlanSteps> = [];
-  planDetailTags: PlanDetailTags = { id: '', oId: '', planTags: [{}], type: '' };
+  planDetailTags: PlanDetailTags = { id: '', oId: '', topics: [{}], type: '' };
   isFiltered: boolean = false;
   type: string = "Plan";
 
@@ -27,7 +27,7 @@ export class PersonalizedPlanComponent implements OnInit {
       this.personalizedPlanService.getActionPlanConditions(this.activeActionPlan)
         .subscribe(plan => {
           if (plan) {
-            this.topics = plan.planTags;
+            this.topics = plan.topics; //plan.planTags;
             this.planDetailTags = plan;
           }
           this.getPlanDetails();
@@ -50,7 +50,7 @@ export class PersonalizedPlanComponent implements OnInit {
     this.topicsList = [];
     this.tempTopicsList.forEach(topicDetail => {
       this.planTopic = { topic: {}, isSelected: true };
-      if (topicDetail.topic.id[0].name === topic) {
+      if (topicDetail.topic.name === topic) {
         this.planTopic = { topic: topicDetail.topic, isSelected: !topicDetail.isSelected };
       } else {
         this.planTopic = { topic: topicDetail.topic, isSelected: topicDetail.isSelected };

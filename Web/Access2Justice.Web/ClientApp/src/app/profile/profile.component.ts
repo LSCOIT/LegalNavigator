@@ -17,8 +17,8 @@ export class ProfileComponent implements OnInit {
   personalizedResources: { resources: any, topics: any, webResources: any };
   isSavedResources: boolean = false;
   planId: string;
-  planDetailTags: PlanDetailTags = { id: '', oId: '', planTags: [{}], type: '' };
-  tempPlanDetailTags: PlanDetailTags = { id: '', oId: '', planTags: [{}], type: '' };
+  planDetailTags: PlanDetailTags = { id: '', oId: '', topics: [{}], type: '' };
+  tempPlanDetailTags: PlanDetailTags = { id: '', oId: '', topics: [{}], type: '' };
   topicsList: Array<PersonalizedPlanTopic> = [];
   tempTopicsList: Array<PersonalizedPlanTopic> = [];
   planTopic: PersonalizedPlanTopic = { topic: {}, isSelected: true };

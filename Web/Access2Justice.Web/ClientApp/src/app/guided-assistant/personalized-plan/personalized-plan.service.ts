@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { PlanSteps, Resources, PersonalizedPlanTopic, PlanDetailTags } from './personalized-plan';
 import { api } from '../../../api/api';
@@ -20,8 +20,8 @@ export class PersonalizedPlanService {
   planId: string;
   planTopic: PersonalizedPlanTopic = { topic: {}, isSelected: true };
   topicsList: Array<PersonalizedPlanTopic> = [];
-  planDetailTags: PlanDetailTags = { id: '', oId: '', planTags: [{}], type: '' };
-  tempPlanDetailTags: PlanDetailTags = { id: '', oId: '', planTags: [{}], type: '' };
+  planDetailTags: PlanDetailTags = { id: '', oId: '', topics: [{}], type: '' };
+  tempPlanDetailTags: PlanDetailTags = { id: '', oId: '', topics: [{}], type: '' };
   tempPlanDetails: any;
   planDetails: Array<PlanSteps> = [];
   userId: string;
@@ -42,6 +42,12 @@ export class PersonalizedPlanService {
 
   userPlan(plan) {
     return this.http.post(api.userPlanUrl, plan, httpOptions);
+  }
+
+  savePersonalizedPlanToProfile(params): Observable<any> {    
+    //var params1 = new HttpParams(params);
+   
+    return this.http.post(api.updateUserProfileUrl, params);
   }
 
   getBookmarkedData() {
@@ -116,7 +122,7 @@ export class PersonalizedPlanService {
     this.tempPlanDetailTags = JSON.parse(JSON.stringify(this.planDetailTags));
     for (let index = 0, planTagIndex = 0; index < this.topicsList.length; index++ , planTagIndex++) {
       if (!this.topicsList[index].isSelected) {
-        this.tempPlanDetailTags.planTags.splice(planTagIndex, 1);
+        this.tempPlanDetailTags.topics.splice(planTagIndex, 1);
         planTagIndex--;
       }
     }

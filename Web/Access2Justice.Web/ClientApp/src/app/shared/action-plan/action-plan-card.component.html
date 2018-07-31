@@ -40,13 +40,13 @@
                       <img class="pull-left plan-icon accordion-img" src="./assets/images/small-icons/open_accordion.svg" alt="open accordion" />
                     </div>
                     <div class="media-body">
-                      <h3>Step {{step.order}}. {{step.id.title}}</h3>
+                      <h3>Step {{step.order}}. {{step.title}}</h3>
                     </div>
                   </div>
                 </div>
                 <div class="col-sm-3 col-xs-12 btn-selected" id="complete-btn">
-                  <input id="checkBox" type="checkbox" (change)="checkCompleted($event,planStep.topicId,step.id.id,template)"
-                         [ngModel]="step.markCompleted">
+                  <input id="checkBox" type="checkbox" (change)="checkCompleted($event,planStep.topicId,step.id,template)"
+                         [ngModel]="step.isComplete">
                   <label class="ps">Completed</label>
                 </div>
                 <ng-template #template>
@@ -72,7 +72,7 @@
               <div class="col-xs-12 step-content">
                 <div>
                   <p>
-                    {{step.id.description}}
+                    {{step.description}}
                   </p>
                 </div>
                 <div>
@@ -89,25 +89,25 @@
                     <li><a href="" class="link">Learn more about court appearances and what to expect.</a></li>
                   </ul>
                 </div>
-                <div *ngFor="let resource of step.id.resourceTags">
-                  <div *ngIf="resource.id.resourceType === 'Videos'" class="row box-shadow">
+                <div *ngFor="let resource of step.resources">
+                  <div *ngIf="resource.resourceType === 'Videos'" class="row box-shadow">
                     <div class="media-left">
                       <img class="media-object" src="../../../assets/images/icons/videos.svg" aria-hidden="True">
                     </div>
                     <div class="media-body">
-                      <h4 class="media-heading" (click)="openModal(vedioTemplate)">{{resource.id.name}}</h4>
-                      <p>{{resource.id.description}}</p>
+                      <h4 class="media-heading" (click)="openModal(vedioTemplate)">{{resource.name}}</h4>
+                      <p>{{resource.description}}</p>
                     </div>
                     <ng-template #vedioTemplate>
                       <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
                         <span aria-hidden="true">&times;</span>
                       </button>
-                      <iframe title="{{resource.id.name}}" [src]='resourceUrl(resource.id.url)' frameborder="0" allowfullscreen></iframe>
+                      <iframe title="{{resource.name}}" [src]='resourceUrl(resource.url)' frameborder="0" allowfullscreen></iframe>
                     </ng-template>
                   </div>
-                  <div *ngIf="resource.id.resourceType==='Organizations'">
+                  <div *ngIf="resource.resourceType==='Organizations'">
                     <img src="./assets/images/small-icons/call.svg" alt="Phone number" class="nav-icon">
-                    <span class="p">{{resource.id.telephone}}</span>
+                    <span class="p">{{resource.telephone}}</span>
                   </div>
                 </div>
               </div>

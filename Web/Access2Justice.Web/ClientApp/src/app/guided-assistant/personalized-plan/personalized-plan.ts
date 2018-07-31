@@ -85,7 +85,7 @@ export interface PersonalizedPlanTopic {
 export interface PlanDetailTags {
   id: string;
   oId: string;
-  planTags: any;
+  topics: any;
   type: string;
 }
 

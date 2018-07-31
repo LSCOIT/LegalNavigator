@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace Access2Justice.Shared.Models
@@ -55,13 +56,14 @@ namespace Access2Justice.Shared.Models
 
         [JsonProperty(PropertyName = "resources")]
         public List<Guid> Resources { get; set; }
-        [JsonProperty(PropertyName = "topics")]
-        public List<Guid> Topics { get; set; }
+
+        [JsonProperty(PropertyName = "topicIds")]
+        public List<Guid> TopicIds { get; set; }
 
         public PersonalizedPlanStep()
         {
             Resources = new List<Guid>();
-            Topics = new List<Guid>();
+            TopicIds = new List<Guid>();
         }
     }
 }

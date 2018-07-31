@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -49,9 +50,9 @@ namespace Access2Justice.Api.Controllers
         /// <returns>1-Success,0-Fail</returns>
         [HttpPost]
         [Route("api/user/updateuserprofile")]
-        public async Task<IActionResult> UpdateUserProfileDocumentAsync(string userIdGuid, UserProfile userProfile)
-        {
-            var profile = await userProfileBusinessLogic.UpdateUserProfileDataAsync(userProfile, userIdGuid);
+        public async Task<IActionResult> UpdateUserProfileDocumentAsync(string oId, Guid planId)
+         {
+            var profile = await userProfileBusinessLogic.UpdateUserProfileDataAsync(oId, planId);
             return Ok(profile);
         }
 

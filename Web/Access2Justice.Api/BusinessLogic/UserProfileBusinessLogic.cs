@@ -3,6 +3,7 @@ using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -41,17 +42,16 @@ namespace Access2Justice.Api.BusinessLogic
             }
             return 0;
         }
-        public async Task<int> UpdateUserProfileDataAsync(UserProfile userProfile, string userIdGuid)
+        public async Task<int> UpdateUserProfileDataAsync(string oId, Guid planId)//, string userIdGuid)
         {
-            var resultUP = GetUserProfileDataAsync(userProfile.OId);
+            var resultUP = await GetUserProfileDataAsync(oId);
             var userprofileObjects = JsonConvert.SerializeObject(resultUP);
 
-            if (userprofileObjects.Contains(userProfile.OId)) // condition to verify oId and update the details
+            if (userprofileObjects.Contains(oId)) // condition to verify oId and update the details
             {
-                userProfile.Id = userIdGuid; // guid id of the document
-
-                var result = await dbService.UpdateItemAsync(userIdGuid, ResourceDeserialized(userProfile), dbSettings.UserProfileCollectionId);
-                if (result.ToString().Contains(userProfile.OId)) return 1;
+                resultUP.PersonalizedActionPlanId = planId;
+                var result = await dbService.UpdateItemAsync(resultUP.Id, ResourceDeserialized(resultUP), dbSettings.UserProfileCollectionId);
+                if (result.ToString().Contains(oId)) return 1;
             }
             return 0;
         }

@@ -59,7 +59,7 @@ namespace Access2Justice.Api.BusinessLogic
                             Order = stepOrder++,
                             IsComplete = false,
                             Resources = (relevantResources.Count > 0) ? relevantResources : new List<Guid>(),
-                            Topics = (relevantTopics.Count > 0) ? relevantTopics : new List<Guid>()
+                            TopicIds = (relevantTopics.Count > 0) ? relevantTopics : new List<Guid>()
                         });
                     }
                 }
@@ -69,9 +69,9 @@ namespace Access2Justice.Api.BusinessLogic
             List<Guid> topics = new List<Guid>();
             foreach (var topic in personalizedPlanSteps.PlanSteps)
             {
-                if (topic.Topics.Any() && !((topics.ToList()).Contains(topic.Topics[0]))) //To do: multiple topics cannot be mapped to same step
+                if (topic.TopicIds.Any() && !((topics.ToList()).Contains(topic.TopicIds[0]))) //To do: multiple topics cannot be mapped to same step
                 {
-                    topics.AddRange(topic.Topics);
+                    topics.AddRange(topic.TopicIds);
                 }
             }
             // todo: use the dyanmic queries (or maybe the methods in the TpoicsResourcesBusinessLogic) to 
@@ -100,7 +100,9 @@ namespace Access2Justice.Api.BusinessLogic
             var personalizedPlan = new PersonalizedPlanSteps();
             personalizedPlan.PersonalizedPlanId = Guid.NewGuid();
             personalizedPlan.Topics = planTopics;
-
+            
+           // var sanitizedObject = personalizedPlan.Topics.Select(x => x.PlanSteps.Select(v => v.TopicIds.Count() > 0));
+            
             // save the newly generated plan in the Personalized plan (PersonalizedActionPlan collection)
             personalizedPlan = JsonConvert.DeserializeObject<PersonalizedPlanSteps>(JsonConvert.SerializeObject(personalizedPlan));
             var res = await dbService.CreateItemAsync((personalizedPlan), dbSettings.PersonalizedActionPlanCollectionId);
@@ -113,7 +115,7 @@ namespace Access2Justice.Api.BusinessLogic
 			int stepOrder = 1;
             foreach (var personalizedPlanStep in personalizedPlanSteps)
             {
-                var topicId = personalizedPlanStep.Topics?.Where(x => x == personalizedPlanStep.Topics.FirstOrDefault()).FirstOrDefault(); //To do: multiple topics cannot be mapped to same step
+                var topicId = personalizedPlanStep.TopicIds?.Where(x => x == personalizedPlanStep.TopicIds.FirstOrDefault()).FirstOrDefault(); //To do: multiple topics cannot be mapped to same step
                 if (topicId == topic)
                 {
                     PlanSteps.Add(new PersonalizedPlanStep

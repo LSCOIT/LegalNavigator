@@ -59,7 +59,7 @@ export class ActionPlanCardComponent implements OnChanges {
   }
 
   buildPersonalizedPlan(planDetails) {
-    if (planDetails.planTags) {
+    if (planDetails.topics) {
       this.buildPersonalizedPlanWithPlanTags(planDetails);
     } else {
       this.buildPersonalizedPlanWithPlanSteps(planDetails);
@@ -67,13 +67,13 @@ export class ActionPlanCardComponent implements OnChanges {
   }
 
   buildPersonalizedPlanWithPlanTags(planDetails) {
-    planDetails.planTags.forEach(item => {
+    planDetails.topics.forEach(item => {
       this.planStep = { topicId: '', topicName: '', stepTags: [] };
-      if (item.id[0]) {
-        this.planStep.topicName = item.id[0].name;
-        this.planStep.topicId = item.id[0].id;
+      if (item) {
+        this.planStep.topicName = item.name;
+        this.planStep.topicId = item.topicId;
       }
-      this.planStep.stepTags = this.orderBy(item.stepTags, "markCompleted");
+      this.planStep.stepTags = this.orderBy(item.steps, "isComplete");
       this.planSteps.push(this.planStep);
       this.displaySteps = true;
     });
@@ -82,8 +82,8 @@ export class ActionPlanCardComponent implements OnChanges {
   buildPersonalizedPlanWithPlanSteps(planDetails) {
     this.planStep = { topicId: '', topicName: '', stepTags: [] };
     this.planStep.topicName = planDetails.id[0].name;
-    this.planStep.topicId = planDetails.id[0].id;
-    this.planStep.stepTags = this.orderBy(planDetails.stepTags, "markCompleted");
+    this.planStep.topicId = planDetails.id[0].topicId;
+    this.planStep.stepTags = this.orderBy(planDetails.steps, "isComplete");
     this.planSteps.push(this.planStep);
     this.displaySteps = true;
   }
@@ -104,10 +104,10 @@ export class ActionPlanCardComponent implements OnChanges {
   }
 
   updateMarkCompleted(topicId, stepId, isChecked) {
-    this.planDetails.planTags.forEach(item => {
+    this.planDetails.topics.forEach(item => {
       this.planStep = { topicId: '', topicName: '', stepTags: [] };
-      this.planStep.topicName = item.id[0].name;
-      this.planStep.topicId = item.id[0].id;
+      this.planStep.topicName = item.name;
+      this.planStep.topicId = item.topicId;
       this.updatedSteps = [];
       if (this.planStep.topicId === topicId) {
         this.updatedSteps = this.updateStepTagForMatchingTopicId(item, stepId, isChecked);
@@ -119,10 +119,10 @@ export class ActionPlanCardComponent implements OnChanges {
   }
 
   updateStepTagForMatchingTopicId(item, stepId, isChecked): Array<StepTag> {
-    item.stepTags.forEach(step => {
+    item.steps.forEach(step => {
       this.step = { id: '', title: '', type: '', description: '', order: '', markCompleted: false };
       this.step = step;
-      this.updatedStep = { id: step.id.id, order: step.order, markCompleted: step.markCompleted }
+      this.updatedStep = { id: step.id.id, order: step.order, markCompleted: step.isComplete }
       if (step.id.id === stepId) {
         this.step.markCompleted = isChecked;
         this.updatedStep.markCompleted = isChecked;
@@ -130,22 +130,22 @@ export class ActionPlanCardComponent implements OnChanges {
       this.steps.push(this.step);
       this.updatedSteps.push(this.updatedStep);
     });
-    item.stepTags = this.steps;
+    item.steps = this.steps;
     return this.updatedSteps;
   }
 
   stepTagForNonMatchingTopicId(item): Array<StepTag> {
-    item.stepTags.forEach(step => {
-      this.updatedStep = { id: step.id.id, order: step.order, markCompleted: step.markCompleted }
+    item.steps.forEach(step => {
+      this.updatedStep = { id: step.id.id, order: step.order, markCompleted: step.isComplete }
       this.updatedSteps.push(this.updatedStep);
     });
     return this.updatedSteps;
   }
 
   updatePlanSteps(item) {
-    this.planStep.stepTags = item.stepTags;
+    this.planStep.stepTags = item.steps;
     this.planSteps.push(this.planStep);
-    this.planTag = { topicId: item.id[0].id, stepTags: this.updatedSteps };
+    this.planTag = { topicId: item.topicId, stepTags: this.updatedSteps };
     this.planTags.push(this.planTag);
     this.displaySteps = true;
   }

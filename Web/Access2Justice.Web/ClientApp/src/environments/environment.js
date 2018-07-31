@@ -12,7 +12,6 @@ exports.environment = {
     internalResourcePagesToShow: 2,
     internalResourceRecordsToDisplay: 10,
     webResourcePagesToShow: 10,
-    webResourceRecordsToDisplay: 10,
-    userId: 'User Id'
+    webResourceRecordsToDisplay: 10
 };
 //# sourceMappingURL=environment.js.map

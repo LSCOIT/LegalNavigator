@@ -6,6 +6,7 @@ import { ArrayUtilityService } from '../../../array-utility.service';
 import { Subject } from 'rxjs';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap';
 import { api } from '../../../../../api/api';
+import { HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-save-button',
@@ -34,6 +35,7 @@ export class SaveButtonComponent implements OnInit {
   @ViewChild('template') public templateref: TemplateRef<any>;
   sessionKey: string = "bookmarkedResource";
   resourceStorage: any;
+  savePlan: { oId: string, planId: string };
 
   constructor(private router: Router,
     private activeRoute: ActivatedRoute,
@@ -92,17 +94,19 @@ export class SaveButtonComponent implements OnInit {
     this.planTags = [];
     this.personalizedPlanService.getActionPlanConditions(this.planId)
       .subscribe(planDetails => {
-        planDetails.planTags.forEach(plan => {
+        planDetails.topics.forEach(plan => {
           this.updatedSteps = [];
-          plan.stepTags.forEach(step => {
-            this.updatedStep = { id: step.id.id, order: step.order, markCompleted: step.markCompleted }
+          plan.steps.forEach(step => {
+            this.updatedStep = { id: step.id, order: step.order, markCompleted: step.isComplete }
             this.updatedSteps.push(this.updatedStep);
           })
-          this.planTag = { topicId: plan.id[0].id, stepTags: this.updatedSteps };
+          this.planTag = { topicId: plan.topicId, stepTags: this.updatedSteps };
           this.planTags.push(this.planTag);
         });
-        this.createPlan = { planId: planDetails.id, oId: this.userId, type: planDetails.type, planTags: this.planTags }
-        this.personalizedPlanService.userPlan(this.createPlan)
+        let params = new HttpParams()
+          .set("oId", this.userId)
+          .set("planId", this.planId);
+        this.personalizedPlanService.savePersonalizedPlanToProfile(params)
           .subscribe(() => {
             this.isSavedPlan = true;
             this.modalRef = this.modalService.show(template);
