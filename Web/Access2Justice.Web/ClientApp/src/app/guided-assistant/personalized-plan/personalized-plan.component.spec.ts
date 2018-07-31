@@ -17,7 +17,7 @@ describe('Component:PersonalizedPlan', () => {
   let mockTopicList = [{
     topic: 'test',
     isSelected: false
-  }]
+  }];
   let mockTopicListBlank = [{
     topic: '',
     isSelected: false
@@ -132,7 +132,7 @@ describe('Component:PersonalizedPlan', () => {
   it('should call filterTopicsList  method when input is blank in topic', () => {
     spyOn(component, 'filterTopicsList');
     component.filterTopicsList(mockTopicListBlank);
-    expect(component.topicsList.values)
+    expect(component.topicsList.values);
   });
 
   it("should push items into topiclist when filterTopicsList is called", () => {
