@@ -82,6 +82,12 @@ namespace Access2Justice.Api.BusinessLogic
         {
             dynamic serializedResources = "[]";
             dynamic serializedTopicIds = "[]";
+            dynamic serializedGroupedResources = "[]";
+            if (resourceFilter.IsResourceCountRequired)
+            {
+                var groupedResourceType = await GetResourcesCountAsync(resourceFilter);
+                serializedGroupedResources = JsonConvert.SerializeObject(groupedResourceType);
+            }
             PagedResources pagedResources = await ApplyPaginationAsync(resourceFilter);
             serializedResources = JsonConvert.SerializeObject(pagedResources?.Results);
             dynamic serializedToken = pagedResources?.ContinuationToken ?? "[]";
@@ -89,8 +95,9 @@ namespace Access2Justice.Api.BusinessLogic
 
             JObject internalResources = new JObject {
                 { "resources", JsonConvert.DeserializeObject(serializedResources) },
-                {"continuationToken", JsonConvert.DeserializeObject(serializedToken) },
-                {"topicIds" , JsonConvert.DeserializeObject(serializedTopicIds)}
+                { "continuationToken", JsonConvert.DeserializeObject(serializedToken) },
+                { "resourceTypeFilter", JsonConvert.DeserializeObject(serializedGroupedResources) },
+                { "topicIds" , JsonConvert.DeserializeObject(serializedTopicIds)}
             };
             return internalResources.ToString();
         }

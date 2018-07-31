@@ -9,8 +9,7 @@ import { PlanSteps, UpdatePlan, Steps, PlanTag, StepTag, UserUpdatePlan } from '
 import { assertNotNull } from '@angular/compiler/src/output/output_ast';
 import { Observable } from 'rxjs/Observable';
 import { TemplateRef } from '@angular/core';
-import { ArrayUtilityService } from '../array-utility.service';
-
+import { ArrayUtilityService } from '../../shared/array-utility.service';
 
 const mockMarkCompletedUpdatedPlan = {
   getMarkCompletedUpdatedPlan: () => { return Observable.of(); }
@@ -20,7 +19,7 @@ describe('ActionPlanCardComponent', () => {
   let component: ActionPlanCardComponent;
   let fixture: ComponentFixture<ActionPlanCardComponent>;
   let modalService: BsModalService;
-  
+  let sharedService: ArrayUtilityService;
   //let template: TemplateRef<any>;
   let mockPlanDetails = {};
   let mockplanSteps: Array<PlanSteps>;

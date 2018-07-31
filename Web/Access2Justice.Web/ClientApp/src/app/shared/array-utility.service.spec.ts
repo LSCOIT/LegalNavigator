@@ -1,10 +1,11 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { ArrayUtilityService } from './array-utility.service';
 
-describe('ArrayUtilityService', () => {
+import { ArrayUtilityService } from '../shared/array-utility.service';
+
+describe('UtilityService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: []
+      providers: [ArrayUtilityService]
     });
   });
 

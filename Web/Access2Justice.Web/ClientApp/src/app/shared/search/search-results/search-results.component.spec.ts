@@ -10,7 +10,7 @@ import { ResourceCardComponent } from '../../resource/resource-card/resource-car
 import { GuidedAssistantSidebarComponent } from '../../sidebars/guided-assistant-sidebar.component';
 import { ServiceOrgSidebarComponent } from '../../sidebars/service-org-sidebar.component';
 import { SaveButtonComponent } from '../../resource/user-action/save-button/save-button.component';
-import { ShareButtonComponent } from '../../resource/user-action/share-button.component';
+import { ShareButtonComponent } from '../../resource/user-action/share-button/share-button.component';
 import { NavigateDataService } from '../../navigate-data.service';
 import { WebResourceComponent } from './web-resource/web-resource.component';
 import { PaginationComponent } from '../../../shared/pagination/pagination.component';
@@ -30,7 +30,7 @@ describe('SearchResultsComponent', () => {
   let searchService: SearchService;
   let paginationService: PaginationService;
   let navigateDataService: NavigateDataService;
-  let resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: '', ResourceIds: '', PageNumber: 0, Location: '' };
+  let resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: '', IsResourceCountRequired: false }; 
   let currentPage: number = 0;
   let mockPageNumber: number = 0;
   let mockResourceName = 'Videos'
