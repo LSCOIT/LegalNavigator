@@ -58,7 +58,7 @@ namespace Access2Justice.Shared.Models
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "description")]
-        public Description Description { get; set; }
+        public string Description { get; set; }
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "buttonText")]
@@ -146,15 +146,6 @@ namespace Access2Justice.Shared.Models
         [DefaultValue("")]
         [JsonProperty(PropertyName = "path")]
         public string Path { get; set; }
-    }
-
-    public class Description
-    {
-        [JsonProperty(PropertyName = "steps")]
-        public IEnumerable<Step> Steps { get; set; }
-
-        [JsonProperty(PropertyName = "paragraph")]
-        public string Paragraph { get; set; }
     }
 
     public class Step
