@@ -119,7 +119,7 @@ namespace Access2Justice.Api
             });
 
             app.UseSwaggerUI(c => {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Access2Justice API");
+                c.SwaggerEndpoint(Configuration.GetValue<string>("Api:VirtualPath") + "/swagger/v1/swagger.json", "Access2Justice API");
             });
 
         }

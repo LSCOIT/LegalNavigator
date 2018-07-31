@@ -1,6 +1,6 @@
 <div [ngClass]="{ 'no-container': fullPage, 'container': !fullPage }">
   <div *ngIf="isInternalResource">
-    <h2>Results for {{searchResults.topIntent}}.</h2>
+    <h2>Results for {{topIntent}}.</h2>
   </div>
   <div *ngIf="isInternalResource">
     <div class="panel-heading box-shadow">
@@ -20,7 +20,7 @@
   </div>
   <div class="row">
     <div class="col-sm-12">
-      <app-search-filter (notifyFilterCriteria)='filterSearchResults($event)' [resourceResults]="resourceResults"></app-search-filter>
+      <app-search-filter (notifyFilterCriteria)='filterSearchResults($event)' [resourceResults]="resourceResults" [initialResourceFilter]="initialResourceFilter"></app-search-filter>
     </div>
   </div>
   <div>

@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 
 import { ResourceCardComponent } from './resource-card.component';
 import { SaveButtonComponent } from '../user-action/save-button/save-button.component';
-import { ShareButtonComponent } from '../user-action/share-button.component';
+import { ShareButtonComponent } from '../user-action/share-button/share-button.component';
 import { ResourceCardDetailComponent } from '../resource-card-detail/resource-card-detail.component';
 
 describe('ResourceCardComponent', () => {

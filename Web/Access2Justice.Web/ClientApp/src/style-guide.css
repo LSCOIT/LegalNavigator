@@ -222,6 +222,10 @@ input[type=checkbox]:checked ~ .check::before {
   z-index: 0;
 }
 
+.button-highlight {
+  background-color: #D9F2F8;
+}
+
 /* Links */
 .navbar-default .navbar-nav > li > a {
   color: #333;
