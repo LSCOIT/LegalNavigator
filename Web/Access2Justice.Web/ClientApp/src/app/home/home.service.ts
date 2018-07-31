@@ -10,7 +10,7 @@ export class HomeService {
     private http: HttpClient
   ) { }
 
-  getHomeContent(name: string): Observable<any> {
-    return this.http.get<any>(api.homeContentUrl + '/' + name);
+  getHomeContent(): Observable<any> {
+    return this.http.get<any>('./assets/SampleJsons/HomeStaticResource.json');
   }
 }

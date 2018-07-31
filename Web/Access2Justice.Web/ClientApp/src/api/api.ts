@@ -23,5 +23,5 @@ export const api = {
     logoutUrl: apiUrl + '/logout',
     questionUrl: apiUrl + '/CuratedExperience/Start',
     saveAndGetNextUrl: apiUrl + '/CuratedExperience/Component/SaveAndGetNext',
-    homeContentUrl: home + '/getstaticresource',
+    homeContentUrl: apiUrl + '/getstaticresource',
 }

@@ -39,6 +39,7 @@ import { ServiceOrgService } from './shared/sidebars/service-org.service';
 import { DidYouKnowComponent } from './guided-assistant/did-you-know/did-you-know.component';
 import { ArticlesResourcesComponent } from './guided-assistant/articles-resources/articles-resources.component';
 import { CuratedExperienceComponent } from './guided-assistant/curated-experience/curated-experience.component';
+import { HomeService } from './home/home.service'
 
 @NgModule({
   declarations: [
@@ -82,7 +83,8 @@ import { CuratedExperienceComponent } from './guided-assistant/curated-experienc
     BreadcrumbService,
     PersonalizedPlanService,
     ProfileComponent,
-    PersonalizedPlanComponent
+    PersonalizedPlanComponent,
+    HomeService
   ],
   bootstrap: [AppComponent]
 })
