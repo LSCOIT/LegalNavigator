@@ -125,7 +125,7 @@ describe(' Service:PersonalizedPlan', () => {
   let service: PersonalizedPlanService;
   let arrayUtilityService: ArrayUtilityService;
   const httpSpy = jasmine.createSpyObj('http', ['get', 'post']);
-  var originalTimeout;
+  var originalTimeout;  
 
   beforeEach(() => {
     TestBed.configureTestingModule({

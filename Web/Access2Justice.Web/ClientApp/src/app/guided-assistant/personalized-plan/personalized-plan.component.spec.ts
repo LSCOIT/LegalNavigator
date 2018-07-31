@@ -45,7 +45,7 @@ describe('Component:PersonalizedPlan', () => {
     ],
     "id": "addf41e9-1a27-4aeb-bcbb-7959f95094ba"
   };
-
+  
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
