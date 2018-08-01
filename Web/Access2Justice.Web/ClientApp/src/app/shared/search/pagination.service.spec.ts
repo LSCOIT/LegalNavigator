@@ -5,7 +5,7 @@ import { api } from '../../../api/api';
 import { HttpHeaders } from '@angular/common/http';
 import { IResourceFilter } from '../search/search-results/search-results.model';
 
-fdescribe('PaginationService', () => {
+describe('PaginationService', () => {
   let service: PaginationService;
   const mockHttpOptions = {
     headers: new HttpHeaders({
