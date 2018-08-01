@@ -6,24 +6,18 @@ import { ArrayUtilityService } from '../../../array-utility.service';
 import { ProfileComponent } from '../../../../profile/profile.component';
 import { EventUtilityService } from '../../../event-utility.service';
 import { PersonalizedPlanComponent } from '../../../../guided-assistant/personalized-plan/personalized-plan.component';
-import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ModalModule } from 'ngx-bootstrap';
+import { ModalModule, BsModalService } from 'ngx-bootstrap';
 
 describe('RemoveButtonComponent', () => {
   let component: RemoveButtonComponent;
   let fixture: ComponentFixture<RemoveButtonComponent>;
 
-  //const fakeActivatedRoute = {
-  //  snapshot: { data: { ... } }
-  //} as ActivatedRoute;
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule, RouterTestingModule, ModalModule.forRoot()],
       declarations: [RemoveButtonComponent],
-      providers: [PersonalizedPlanService, HttpClientModule, HttpClient, HttpHandler, ArrayUtilityService, ProfileComponent, EventUtilityService, PersonalizedPlanComponent, ActivatedRoute]
-      //, useValue: fakeActivatedRoute 
+      providers: [PersonalizedPlanService, ArrayUtilityService, ProfileComponent, EventUtilityService, PersonalizedPlanComponent, BsModalService]
     })
     .compileComponents();
   }));
