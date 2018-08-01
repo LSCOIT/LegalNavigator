@@ -26,10 +26,10 @@ namespace Access2Justice.Shared.Models
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "details")]
-        public IEnumerable<ContentLink> Link { get; set; }
+        public IEnumerable<HelpDetails> HelpDetails { get; set; }
     }
 
-    public class ContentLink
+    public class HelpDetails
     {
         [DefaultValue("")]
         [JsonProperty(PropertyName = "order")]

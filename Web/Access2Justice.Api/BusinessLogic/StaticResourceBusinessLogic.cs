@@ -22,6 +22,120 @@ namespace Access2Justice.Api.BusinessLogic
         public async Task<dynamic> GetPageStaticResourceDataAsync(string name)
         {
             return await dbClient.FindItemsWhereAsync(dbSettings.StaticResourceCollectionId, Constants.Id, name);
-        }        
+        }
+
+        public async Task<dynamic> UpsertStaticHomePageDataAsync(HomeContent homePageContent)
+        {
+            var serializedResult = JsonConvert.SerializeObject(homePageContent);
+            var pageDocument = JsonConvert.DeserializeObject(serializedResult);
+            string name = homePageContent.Name;
+            dynamic result = null;
+            var pageDBData = await dbClient.FindItemsWhereAsync(dbSettings.StaticResourceCollectionId, Constants.Id, name);
+            if (pageDBData.Count == 0)
+            {
+                result = await dbService.CreateItemAsync(pageDocument, dbSettings.StaticResourceCollectionId);
+            }
+            else
+            {
+                string id = pageDBData[0].id;
+                result = await dbService.UpdateItemAsync(id, pageDocument, dbSettings.StaticResourceCollectionId);
+            }
+            return result;
+        }
+
+        public async Task<dynamic> UpsertStaticPrivacyPromisePageDataAsync(PrivacyPromiseContent privacyPromisePageContent)
+        {
+            var serializedResult = JsonConvert.SerializeObject(privacyPromisePageContent);
+            var pageDocument = JsonConvert.DeserializeObject(serializedResult);
+            string name = privacyPromisePageContent.Name;
+            dynamic result = null;
+            var pageDBData = await dbClient.FindItemsWhereAsync(dbSettings.StaticResourceCollectionId, Constants.Id, name);
+            if (pageDBData.Count == 0)
+            {
+                result = await dbService.CreateItemAsync(pageDocument, dbSettings.StaticResourceCollectionId);
+            }
+            else
+            {
+                string id = pageDBData[0].id;
+                result = await dbService.UpdateItemAsync(id, pageDocument, dbSettings.StaticResourceCollectionId);
+            }
+            return result;
+        }
+
+        public async Task<dynamic> UpsertStaticHelpAndFAQPageDataAsync(HelpAndFaqsContent helpAndFAQPageContent)
+        {
+            var serializedResult = JsonConvert.SerializeObject(helpAndFAQPageContent);
+            var pageDocument = JsonConvert.DeserializeObject(serializedResult);
+            string name = helpAndFAQPageContent.Name;
+            dynamic result = null;
+            var pageDBData = await dbClient.FindItemsWhereAsync(dbSettings.StaticResourceCollectionId, Constants.Id, name);
+            if (pageDBData.Count == 0)
+            {
+                result = await dbService.CreateItemAsync(pageDocument, dbSettings.StaticResourceCollectionId);
+            }
+            else
+            {
+                string id = pageDBData[0].id;
+                result = await dbService.UpdateItemAsync(id, pageDocument, dbSettings.StaticResourceCollectionId);
+            }
+            return result;
+        }
+
+        public async Task<dynamic> UpsertStaticHeaderDataAsync(Header headerContent)
+        {
+            var serializedResult = JsonConvert.SerializeObject(headerContent);
+            var pageDocument = JsonConvert.DeserializeObject(serializedResult);
+            string name = headerContent.Name;
+            dynamic result = null;
+            var pageDBData = await dbClient.FindItemsWhereAsync(dbSettings.StaticResourceCollectionId, Constants.Id, name);
+            if (pageDBData.Count == 0)
+            {
+                result = await dbService.CreateItemAsync(pageDocument, dbSettings.StaticResourceCollectionId);
+            }
+            else
+            {
+                string id = pageDBData[0].id;
+                result = await dbService.UpdateItemAsync(id, pageDocument, dbSettings.StaticResourceCollectionId);
+            }
+            return result;
+        }
+
+        public async Task<dynamic> UpsertStaticFooterDataAsync(Footer footerContent)
+        {
+            var serializedResult = JsonConvert.SerializeObject(footerContent);
+            var pageDocument = JsonConvert.DeserializeObject(serializedResult);
+            string name = footerContent.Name;
+            dynamic result = null;
+            var pageDBData = await dbClient.FindItemsWhereAsync(dbSettings.StaticResourceCollectionId, Constants.Id, name);
+            if (pageDBData.Count == 0)
+            {
+                result = await dbService.CreateItemAsync(pageDocument, dbSettings.StaticResourceCollectionId);
+            }
+            else
+            {
+                string id = pageDBData[0].id;
+                result = await dbService.UpdateItemAsync(id, pageDocument, dbSettings.StaticResourceCollectionId);
+            }
+            return result;
+        }
+
+        public async Task<dynamic> UpsertStaticNavigationDataAsync(Navigation navigationContent)
+        {
+            var serializedResult = JsonConvert.SerializeObject(navigationContent);
+            var pageDocument = JsonConvert.DeserializeObject(serializedResult);
+            string name = navigationContent.Name;
+            dynamic result = null;
+            var pageDBData = await dbClient.FindItemsWhereAsync(dbSettings.StaticResourceCollectionId, Constants.Id, name);
+            if (pageDBData.Count == 0)
+            {
+                result = await dbService.CreateItemAsync(pageDocument, dbSettings.StaticResourceCollectionId);
+            }
+            else
+            {
+                string id = pageDBData[0].id;
+                result = await dbService.UpdateItemAsync(id, pageDocument, dbSettings.StaticResourceCollectionId);
+            }
+            return result;
+        }
     }
 }

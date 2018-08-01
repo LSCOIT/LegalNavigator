@@ -39,6 +39,10 @@ namespace Access2Justice.Shared.Models
         [DefaultValue("")]
         [JsonProperty(PropertyName = "privacy")]
         public PrivacyContent Privacy { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "helpText")]
+        public string HelpText { get; set; }
     }
 
     public class HeroContent
@@ -105,7 +109,7 @@ namespace Access2Justice.Shared.Models
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "sponsors")]
-        public Image Sponsors { get; set; }
+        public IEnumerable<Image> Sponsors { get; set; }
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "button")]
