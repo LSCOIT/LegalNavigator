@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { APP_BASE_HREF } from '@angular/common';
 import { RouterModule } from '@angular/router';
-
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ResourceCardComponent } from './resource-card.component';
 import { SaveButtonComponent } from '../user-action/save-button/save-button.component';
 import { ShareButtonComponent } from '../user-action/share-button/share-button.component';
@@ -30,7 +30,8 @@ describe('ResourceCardComponent', () => {
       ],
       providers: [
         { provide: APP_BASE_HREF, useValue: '/' }
-      ]
+      ],
+      schemas: [ NO_ERRORS_SCHEMA ]
     })
     .compileComponents();
   }));
