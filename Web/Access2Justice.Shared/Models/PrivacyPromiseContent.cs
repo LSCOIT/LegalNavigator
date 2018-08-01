@@ -13,17 +13,16 @@ namespace Access2Justice.Shared.Models
 {    
     public class PrivacyPromiseContent
     {
-        [DefaultValue("")]
         [JsonProperty(PropertyName = "id")]
         public string Name { get; set; }
 
         [DefaultValue("")]
-        [JsonProperty(PropertyName = "overview")]
-        public string Overview { get; set; }
+        [JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "image")]
-        public Image ImageUrl { get; set; }
+        public Image Image { get; set; }
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "details")]
@@ -43,9 +42,5 @@ namespace Access2Justice.Shared.Models
         [DefaultValue("")]
         [JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
-
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "image")]
-        public Image ImageUrl { get; set; }
     }
 }
