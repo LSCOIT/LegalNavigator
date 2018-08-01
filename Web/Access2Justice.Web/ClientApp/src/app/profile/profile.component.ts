@@ -54,14 +54,14 @@ export class ProfileComponent implements OnInit {
       this.personalizedPlanService.getActionPlanConditions(this.planId)
         .subscribe(plan => {
           if (plan) {
-            this.topics = plan.planTags;
+            this.topics = plan.topics;
             this.planDetailTags = plan;
           }
           this.getPlanDetails();
         });
     }
   }
-  
+
   getPlanDetails() {
     this.topicsList = this.personalizedPlanService.createTopicsList(this.topics);
     this.planDetails = this.personalizedPlanService.displayPlanDetails(this.planDetailTags, this.topicsList);
@@ -77,7 +77,7 @@ export class ProfileComponent implements OnInit {
     this.topicsList = [];
     this.tempTopicsList.forEach(topicDetail => {
       this.planTopic = { topic: {}, isSelected: true };
-      if (topicDetail.topic.id[0].name === topic) {
+      if (topicDetail.topic.name === topic) {
         this.planTopic = { topic: topicDetail.topic, isSelected: !topicDetail.isSelected };
       } else {
         this.planTopic = { topic: topicDetail.topic, isSelected: topicDetail.isSelected };
@@ -90,7 +90,7 @@ export class ProfileComponent implements OnInit {
     this.topicIds = [];
     this.resourceIds = [];
     this.webResources = [];
-    this.personalizedPlanService.getUserPlanId(this.userId)
+    this.personalizedPlanService.getUserSavedResources(this.userId)
       .subscribe(response => {
         if (response != undefined) {
           response.forEach(property => {
@@ -107,9 +107,9 @@ export class ProfileComponent implements OnInit {
               this.resourceFilter = { TopicIds: this.topicIds, ResourceIds: this.resourceIds, ResourceType: 'ALL', PageNumber: 0, ContinuationToken: null, Location: null };
               this.getSavedResource(this.resourceFilter);
             }
-          });          
+          });
         }
-      });    
+      });
   }
 
   getSavedResource(resourceFilter: IResourceFilter) {
@@ -130,14 +130,10 @@ export class ProfileComponent implements OnInit {
     } else {
       this.personalizedPlanService.getUserPlanId(this.userId)
         .subscribe(response => {
-          if (response) {
-            response.forEach(property => {
-              if (property.planId) {
-                this.planId = property.id;
-              }
-            });
-            this.getTopics();
+          if (response.personalizedActionPlanId) {
+            this.planId = response.personalizedActionPlanId;
           }
+          this.getTopics();
         });
     }
   }

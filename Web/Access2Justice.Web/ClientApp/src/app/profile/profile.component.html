@@ -25,8 +25,8 @@
           <!--web filtering-->
           <div class="mobile-hidden col-sm-10">
             <button *ngFor="let topic of topicsList" type="button" [ngClass]="{ 'btn-sm btn-primary': topic.isSelected, 'btn': !topic.isSelected  }"
-                    (click)="filterPlan(topic.topic.id[0].name)">
-              {{topic.topic.id[0].name}}
+                    (click)="filterPlan(topic.topic.name)">
+              {{topic.topic.name}}
             </button>
           </div>
           <!--mobile filtering-->
@@ -37,8 +37,8 @@
             </button>
             <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
                 role="menu" aria-labelledby="button-basic">
-              <li *ngFor="let topic of topicsList" role="menuitem" (click)="filterPlan(topic.topic.id[0].name)">
-                <a [ngClass]="{ 'selected-item dropdown-item': topic.isSelected, 'dropdown-item': !topic.isSelected  }"> {{topic.topic.id[0].name}} </a>
+              <li *ngFor="let topic of topicsList" role="menuitem" (click)="filterPlan(topic.topic.name)">
+                <a [ngClass]="{ 'selected-item dropdown-item': topic.isSelected, 'dropdown-item': !topic.isSelected  }"> {{topic.topic.name}} </a>
               </li>
             </ul>
           </div>

@@ -23,9 +23,22 @@ namespace Access2Justice.Api.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("api/user/getuserprofile/{oid}")]
-        public async Task<IActionResult> GetUserProfileDataAsync(string oid)
+        public async Task<IActionResult> GetUserDataAsync(string oid)
         {
             var users = await userProfileBusinessLogic.GetUserResourceProfileDataAsync(oid);
+            return Ok(users);
+        }
+
+        /// <summary>
+        /// Get the user details by a user OId
+        /// </summary>
+        /// <param name="oid"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("api/user/getuserprofiledata/{oid}")]
+        public async Task<IActionResult> GetUserProfileDataAsync(string oid)
+        {
+            UserProfile users = await userProfileBusinessLogic.GetUserProfileDataAsync(oid);
             return Ok(users);
         }
 

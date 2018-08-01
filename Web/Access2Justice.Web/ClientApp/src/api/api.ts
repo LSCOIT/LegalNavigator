@@ -3,6 +3,7 @@ import { environment } from '../environments/environment';
 const apiUrl = environment.apiUrl;
 const topic = apiUrl + '/topics';
 const userProfile = apiUrl + '/user';
+const curatedExperience = apiUrl + '/CuratedExperience';
 
 export const api = {
   topicUrl: topic + '/gettopics',
@@ -13,8 +14,8 @@ export const api = {
   getResourceUrl: apiUrl + '/resources',
   searchOffsetUrl: apiUrl + '/websearch',
   breadcrumbsUrl: topic + '/getbreadcrumbs',
-  personalizedPlan: apiUrl + '/CuratedExperience/PersonalizedPlan',
-  planUrl: apiUrl + "/CuratedExperience/getplandetails",
+  personalizedPlan: curatedExperience + '/PersonalizedPlan',
+  planUrl: curatedExperience + "/getplandetails",
   getPersonalizedResourcesUrl: apiUrl + '/personalizedresources',
   updatePlanUrl: userProfile + "/upsertuserplan",
   getProfileUrl: userProfile + "/getuserprofile",
@@ -22,7 +23,9 @@ export const api = {
   getOrganizationDetailsUrl: topic + '/getorganizationdetails',
   loginUrl: apiUrl + '/login',
   logoutUrl: apiUrl + '/logout',
-  questionUrl: apiUrl + '/CuratedExperience/Start',
-  saveAndGetNextUrl: apiUrl + '/CuratedExperience/Component/SaveAndGetNext',
-  updateUserProfileUrl: userProfile +'/updateuserprofile'
+  questionUrl: curatedExperience + '/Start',
+  saveAndGetNextUrl: curatedExperience + '/Component/SaveAndGetNext',
+  updateUserProfileUrl: userProfile + '/updateuserprofile',
+  getUserProfileUrl: userProfile + "/getuserprofiledata",
+  updateUserPlanUrl: curatedExperience + "/updateplan"
 }

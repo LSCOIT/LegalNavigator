@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { PlanSteps, Resources, PersonalizedPlanTopic, PlanDetailTags } from './personalized-plan';
+import { PlanSteps, Resources, PersonalizedPlanTopic, PlanDetailTags, PersonalizedPlan } from './personalized-plan';
 import { api } from '../../../api/api';
 import { IResourceFilter } from '../../shared/search/search-results/search-results.model';
 import { ArrayUtilityService } from '../../shared/array-utility.service';
@@ -33,6 +33,10 @@ export class PersonalizedPlanService {
   }
 
   getUserPlanId(oid): Observable<any> {
+    return this.http.get<PlanSteps>(api.getUserProfileUrl + '/' + oid);
+  }
+
+  getUserSavedResources(oid): Observable<any> {
     return this.http.get<PlanSteps>(api.getProfileUrl + '/' + oid);
   }
 
@@ -40,13 +44,15 @@ export class PersonalizedPlanService {
     return this.http.post(api.updatePlanUrl, updatePlan, httpOptions);
   }
 
-  userPlan(plan) {
-    return this.http.post(api.userPlanUrl, plan, httpOptions);
+  saveResources(resource) {
+    return this.http.post(api.userPlanUrl, resource, httpOptions);
   }
 
-  savePersonalizedPlanToProfile(params): Observable<any> {    
-    //var params1 = new HttpParams(params);
-   
+  userPlan(plan: PersonalizedPlan) {
+    return this.http.post<any>(api.updateUserPlanUrl, plan, httpOptions);
+  }
+
+  savePersonalizedPlanToProfile(params): Observable<any> {
     return this.http.post(api.updateUserProfileUrl, params);
   }
 

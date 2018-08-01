@@ -45,7 +45,7 @@
                   </div>
                 </div>
                 <div class="col-sm-3 col-xs-12 btn-selected" id="complete-btn">
-                  <input id="checkBox" type="checkbox" (change)="checkCompleted($event,planStep.topicId,step.id,template)"
+                  <input id="checkBox" type="checkbox" (change)="checkCompleted($event,planStep.topicId,step.stepId,template)"
                          [ngModel]="step.isComplete">
                   <label class="ps">Completed</label>
                 </div>

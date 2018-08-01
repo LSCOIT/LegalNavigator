@@ -4,6 +4,7 @@ using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,10 +30,10 @@ namespace Access2Justice.Api.BusinessLogic
             var userAnswers = await dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.CuratedExperienceAnswersCollectionId);
             var personalizedPlanSteps = new PersonalizedPlanTopic();
             var steps = new List<PlanStep>();
-			CuratedExperienceAnswers curatedExperienceAnswers = new CuratedExperienceAnswers();
-			curatedExperienceAnswers = userAnswers;
-			var answerButtons = curatedExperienceAnswers.Answers.Select(x => x.AnswerButtonId.ToString()).ToList().Distinct();
-			var planSteps = new List<PersonalizedPlanStep>();
+            CuratedExperienceAnswers curatedExperienceAnswers = new CuratedExperienceAnswers();
+            curatedExperienceAnswers = userAnswers;
+            var answerButtons = curatedExperienceAnswers.Answers.Select(x => x.AnswerButtonId.ToString()).ToList().Distinct();
+            var planSteps = new List<PersonalizedPlanStep>();
             foreach (var component in curatedExperience.Components)
             {
                 var answerButton = component.Buttons?.Where(x => x.Id == component.Buttons[0].Id).FirstOrDefault();
@@ -47,9 +48,9 @@ namespace Access2Justice.Api.BusinessLogic
                     if (answerButton.TopicIds.Any())
                     {
                         relevantTopics.AddRange(answerButton.TopicIds);
-					}
-					int stepOrder = 1;
-					if (relevantResources.Count > 0)
+                    }
+                    int stepOrder = 1;
+                    if (relevantResources.Count > 0)
                     {
                         planSteps.Add(new PersonalizedPlanStep()
                         {
@@ -100,9 +101,9 @@ namespace Access2Justice.Api.BusinessLogic
             var personalizedPlan = new PersonalizedPlanSteps();
             personalizedPlan.PersonalizedPlanId = Guid.NewGuid();
             personalizedPlan.Topics = planTopics;
-            
-           // var sanitizedObject = personalizedPlan.Topics.Select(x => x.PlanSteps.Select(v => v.TopicIds.Count() > 0));
-            
+
+            // var sanitizedObject = personalizedPlan.Topics.Select(x => x.PlanSteps.Select(v => v.TopicIds.Count() > 0));
+
             // save the newly generated plan in the Personalized plan (PersonalizedActionPlan collection)
             personalizedPlan = JsonConvert.DeserializeObject<PersonalizedPlanSteps>(JsonConvert.SerializeObject(personalizedPlan));
             var res = await dbService.CreateItemAsync((personalizedPlan), dbSettings.PersonalizedActionPlanCollectionId);
@@ -112,7 +113,7 @@ namespace Access2Justice.Api.BusinessLogic
         public List<PersonalizedPlanStep> GetPlanSteps(Guid topic, List<PersonalizedPlanStep> personalizedPlanSteps)
         {
             List<PersonalizedPlanStep> PlanSteps = new List<PersonalizedPlanStep>();
-			int stepOrder = 1;
+            int stepOrder = 1;
             foreach (var personalizedPlanStep in personalizedPlanSteps)
             {
                 var topicId = personalizedPlanStep.TopicIds?.Where(x => x == personalizedPlanStep.TopicIds.FirstOrDefault()).FirstOrDefault(); //To do: multiple topics cannot be mapped to same step
@@ -241,6 +242,44 @@ namespace Access2Justice.Api.BusinessLogic
                 }
             }
             return resources;
+        }
+
+        public async Task<dynamic> UpdatePersonalizedPlan(dynamic plan)
+        {
+            var personalizedPlanSteps = ConvertToPersonalizedPlanSteps(plan);
+            //var personalizedPlanSteps= JsonConvert.DeserializeObject(JsonConvert.SerializeObject(plan));
+            var result = await dbService.UpdateItemAsync(personalizedPlanSteps.PersonalizedPlanId.ToString(), personalizedPlanSteps, dbSettings.PersonalizedActionPlanCollectionId);
+            return result;
+        }
+
+        public PersonalizedPlanSteps ConvertToPersonalizedPlanSteps(dynamic convObj)
+        {
+            PersonalizedPlanSteps personalizedPlanSteps = new PersonalizedPlanSteps();
+            var serializedResult = JsonConvert.SerializeObject(convObj);
+            //PersonalizedPlanSteps planSteps = JsonConvert.DeserializeObject(serializedResult);
+            var planSteps = JsonConvert.DeserializeObject(serializedResult);
+            personalizedPlanSteps.PersonalizedPlanId = planSteps.id;
+
+            Array planTopics = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(planSteps.topics));
+
+
+            List<PersonalizedPlanTopic> topics = new List<PersonalizedPlanTopic>();
+            foreach(PersonalizedPlanTopic topic in planTopics)
+            {
+                topics.Add(new PersonalizedPlanTopic
+                {
+                    TopicId = topic.TopicId,
+                    PlanSteps=topic.PlanSteps
+                });
+            }
+            personalizedPlanSteps.Topics = planSteps.topics;
+            return personalizedPlanSteps;
+        }
+
+        private object ResourceDeserialized(PersonalizedPlanSteps personalizedPlanSteps)
+        {
+            var serializedResult = JsonConvert.SerializeObject(personalizedPlanSteps);
+            return JsonConvert.DeserializeObject<object>(serializedResult);
         }
     }
 }

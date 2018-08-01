@@ -120,7 +120,7 @@ export class SaveButtonComponent implements OnInit {
 
   saveResourceToProfile(resourceTags, template) {
     this.profileResources = { oId: this.userId, resourceTags: resourceTags, type: 'resources' };
-    this.personalizedPlanService.userPlan(this.profileResources)
+    this.personalizedPlanService.saveResources(this.profileResources)
       .subscribe(() => {
         this.isSavedPlan = true;
         this.modalRef = this.modalService.show(template);

@@ -1,10 +1,11 @@
 import { Component, Input, TemplateRef } from '@angular/core';
-import { PlanSteps, UpdatePlan, Steps, PlanTag, StepTag, UserUpdatePlan } from '../../guided-assistant/personalized-plan/personalized-plan';
+import { PlanSteps, UpdatePlan, Steps, PlanTag, StepTag, UserUpdatePlan, PlanTopic, PersonalizedPlan, PlanStep, QuickLink } from '../../guided-assistant/personalized-plan/personalized-plan';
 import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 import { PersonalizedPlanService } from '../../guided-assistant/personalized-plan/personalized-plan.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Title } from '@angular/platform-browser/src/browser/title';
 
 @Component({
   selector: 'app-action-plan-card',
@@ -34,6 +35,14 @@ export class ActionPlanCardComponent implements OnChanges {
   isUser: boolean = false;
   isChecked: boolean = false;
 
+  personalizedPlanStep: PlanStep = { stepId: '', title: '', description: '', order: 1, isComplete: false, resources: []};
+  personalizedPlanSteps: Array<PlanStep>;
+  quickLink: QuickLink = { title: '', url: '' };
+  quickLinks: Array<QuickLink>;
+  planTopic: PlanTopic = { name: '', icon: '', quickLinks: [], topicId: '', planStep: this.personalizedPlanSteps };
+  planTopics: Array<PlanTopic>;
+  personalizedPlan: PersonalizedPlan = { id: '', topics: this.planTopics };
+
   constructor(private personalizedPlanService: PersonalizedPlanService,
     private modalService: BsModalService,
     public sanitizer: DomSanitizer) {
@@ -51,22 +60,13 @@ export class ActionPlanCardComponent implements OnChanges {
       this.displaySteps = false;
     } else {
       this.planSteps = [];
-      if (planDetails[0]) {
-        planDetails = planDetails[0];
+      if(planDetails.topics) {
+        this.buildPersonalizedPlan(planDetails);
       }
-      this.buildPersonalizedPlan(planDetails);
     }
   }
 
   buildPersonalizedPlan(planDetails) {
-    if (planDetails.topics) {
-      this.buildPersonalizedPlanWithPlanTags(planDetails);
-    } else {
-      this.buildPersonalizedPlanWithPlanSteps(planDetails);
-    }
-  }
-
-  buildPersonalizedPlanWithPlanTags(planDetails) {
     planDetails.topics.forEach(item => {
       this.planStep = { topicId: '', topicName: '', stepTags: [] };
       if (item) {
@@ -79,14 +79,7 @@ export class ActionPlanCardComponent implements OnChanges {
     });
   }
 
-  buildPersonalizedPlanWithPlanSteps(planDetails) {
-    this.planStep = { topicId: '', topicName: '', stepTags: [] };
-    this.planStep.topicName = planDetails.id[0].name;
-    this.planStep.topicId = planDetails.id[0].topicId;
-    this.planStep.stepTags = this.orderBy(planDetails.steps, "isComplete");
-    this.planSteps.push(this.planStep);
-    this.displaySteps = true;
-  }
+
 
   checkCompleted(event, topicId, stepId, template: TemplateRef<any>) {
     if (this.userId) {
@@ -96,7 +89,8 @@ export class ActionPlanCardComponent implements OnChanges {
       this.isUser = false;
       this.isChecked = event.target.checked;
       this.updateMarkCompleted(topicId, stepId, this.isChecked);
-      this.updatedUserPlan(this.isChecked, this.planTags, template);
+      this.updateProfilePlan(this.isChecked, template);
+      //this.updatedUserPlan(this.isChecked, this.planTags, template);
     } else {
       this.isUser = true;
       this.modalRef = this.modalService.show(template);
@@ -104,42 +98,58 @@ export class ActionPlanCardComponent implements OnChanges {
   }
 
   updateMarkCompleted(topicId, stepId, isChecked) {
+    this.planTopics = [];
+    this.personalizedPlanSteps = [];
+    this.planTopic = { name: '', icon: '', quickLinks: [], topicId: '', planStep: this.personalizedPlanSteps };
     this.planDetails.topics.forEach(item => {
-      this.planStep = { topicId: '', topicName: '', stepTags: [] };
-      this.planStep.topicName = item.name;
-      this.planStep.topicId = item.topicId;
-      this.updatedSteps = [];
-      if (this.planStep.topicId === topicId) {
-        this.updatedSteps = this.updateStepTagForMatchingTopicId(item, stepId, isChecked);
+      if (item.topicId === topicId) {
+        this.personalizedPlanSteps = this.updateStepTagForMatchingTopicId(item, stepId, isChecked);
       } else {
-        this.updatedSteps = this.stepTagForNonMatchingTopicId(item);
+        this.personalizedPlanSteps = this.stepTagForNonMatchingTopicId(item);
       }
-      this.updatePlanSteps(item);
+      this.quickLinks= this.getQuickLinks(item);
+      this.planTopic = { name: item.name, icon: item.icon, quickLinks: this.quickLinks, topicId: item.topicId, planStep: this.personalizedPlanSteps };
+      this.planTopics.push(this.planTopic);
     });
+    this.personalizedPlan = { id: this.planDetails.id, topics: this.planTopics };
+    console.log(this.planDetails);
   }
 
-  updateStepTagForMatchingTopicId(item, stepId, isChecked): Array<StepTag> {
-    item.steps.forEach(step => {
-      this.step = { id: '', title: '', type: '', description: '', order: '', markCompleted: false };
-      this.step = step;
-      this.updatedStep = { id: step.id.id, order: step.order, markCompleted: step.isComplete }
-      if (step.id.id === stepId) {
-        this.step.markCompleted = isChecked;
-        this.updatedStep.markCompleted = isChecked;
-      }
-      this.steps.push(this.step);
-      this.updatedSteps.push(this.updatedStep);
+  getQuickLinks(topic): Array<QuickLink>{
+    this.quickLinks = [];
+    topic.quickLinks.forEach(quickLink => {
+      this.quickLink = { url: quickLink.url, title: quickLink.title };
+      this.quickLinks.push(this.quickLink);
     });
-    item.steps = this.steps;
-    return this.updatedSteps;
+    return this.quickLinks;
   }
 
-  stepTagForNonMatchingTopicId(item): Array<StepTag> {
+  updateStepTagForMatchingTopicId(item, stepId, isChecked): Array<PlanStep> {
+    this.personalizedPlanSteps = [];
     item.steps.forEach(step => {
-      this.updatedStep = { id: step.id.id, order: step.order, markCompleted: step.isComplete }
-      this.updatedSteps.push(this.updatedStep);
+      this.personalizedPlanStep = {
+        stepId: step.stepId, title: step.title, description: step.description,
+        order: step.order, isComplete: step.isComplete, resources: step.resources
+      };
+      if (step.stepId === stepId) {
+        this.personalizedPlanStep.isComplete = isChecked;
+      }
+      this.personalizedPlanSteps.push(this.personalizedPlanStep);
     });
-    return this.updatedSteps;
+    item.steps = this.personalizedPlanSteps;
+    return this.personalizedPlanSteps;
+  }
+
+  stepTagForNonMatchingTopicId(item): Array<PlanStep> {
+    this.personalizedPlanSteps = [];
+    item.steps.forEach(step => {
+      this.personalizedPlanStep = {
+        stepId: step.stepId, title: step.title, description: step.description,
+        order: step.order, isComplete: step.isComplete, resources: step.resources
+      };
+      this.personalizedPlanSteps.push(this.personalizedPlanStep);
+    });
+    return this.personalizedPlanSteps;
   }
 
   updatePlanSteps(item) {
@@ -162,7 +172,8 @@ export class ActionPlanCardComponent implements OnChanges {
 
   updateProfilePlan(isChecked, template) {
     this.userUpdatePlan = { id: this.planDetails.id, planId: this.planDetails.planId, oId: this.userId, planTags: this.planTags, type: this.planDetails.type };
-    this.personalizedPlanService.userPlan(this.userUpdatePlan)
+
+    this.personalizedPlanService.userPlan(this.personalizedPlan)//this.userUpdatePlan)
       .subscribe(response => {
         if (response) {
           if (isChecked) {

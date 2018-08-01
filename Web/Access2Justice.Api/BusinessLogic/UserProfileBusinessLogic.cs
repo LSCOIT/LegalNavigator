@@ -72,6 +72,8 @@ namespace Access2Justice.Api.BusinessLogic
                 userProfile.CreatedTimeStamp = user.CreatedTimeStamp;
                 userProfile.ModifiedBy = user.ModifiedBy;
                 userProfile.ModifiedTimeStamp = user.ModifiedTimeStamp;
+                userProfile.PersonalizedActionPlanId = user.PersonalizedActionPlanId;
+                userProfile.CuratedExperienceAnswersId = user.CuratedExperienceAnswersId;
             }
             return userProfile;
         }

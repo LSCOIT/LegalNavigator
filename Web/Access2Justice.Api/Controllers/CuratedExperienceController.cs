@@ -174,6 +174,13 @@ namespace Access2Justice.Api.Controllers
             return Ok(personalizedPlan);
         }
 
+        [HttpPost("updateplan")]
+        public async Task<IActionResult> UpdateUserProfileDocumentAsync([FromBody]PersonalizedPlanSteps plan)
+        {
+            var personalizedPlan = await personalizedPlanBusinessLogic.UpdatePersonalizedPlan(plan);
+            return Ok(personalizedPlan);
+        }
+
         private CuratedExperience RetrieveCachedCuratedExperience(Guid id)
         {
             var cuExSession = HttpContext.Session.GetString(id.ToString());

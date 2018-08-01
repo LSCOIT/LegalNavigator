@@ -77,6 +77,33 @@ export interface UserRemovePlanTag {
   type: string;
 }
 
+export interface PersonalizedPlan {
+  id: string;
+  topics: Array<PlanTopic>;
+}
+
+export interface PlanTopic {
+  name: string;
+  icon: string;
+  quickLinks: Array<QuickLink>;
+  topicId: string;
+  planStep: Array<PlanStep>;
+}
+
+export interface QuickLink {
+  title: string;
+  url: string;
+}
+
+export interface PlanStep {
+  stepId: string;
+  title: string;
+  description: string;
+  order: number;
+  isComplete: boolean;
+  resources: Array<string>;
+}
+
 export interface PersonalizedPlanTopic {
   topic: any;
   isSelected: boolean;
