@@ -105,15 +105,15 @@
       }
     ],
     "button": {
-      "buttonText": "See More Topics",
-      "buttonLink": "topics"
+      "buttonText": "Learn More",
+      "buttonLink": "about"
     }
   },
   "privacy": {
     "heading": "Our Privacy Promise", 
     "description": "We value your privacy and will never share your personal information with anyone without your lorem ipsum dolor sit amet.",
     "button": {
-      "buttonText": "See More Topics",
+      "buttonText": "Learn more",
       "buttonLink": "privacy"
     },
     "image": {
