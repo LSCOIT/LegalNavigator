@@ -1,14 +1,16 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ShareButtonComponent } from './share-button.component';
+import { BsModalService, ComponentLoaderFactory, PositioningService } from 'ngx-bootstrap';
 
 describe('ShareButtonComponent', () => {
   let component: ShareButtonComponent;
   let fixture: ComponentFixture<ShareButtonComponent>;
-
+  
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ShareButtonComponent ]
+      declarations: [ShareButtonComponent],
+      providers: [BsModalService, ComponentLoaderFactory, PositioningService]
     })
     .compileComponents();
   }));
