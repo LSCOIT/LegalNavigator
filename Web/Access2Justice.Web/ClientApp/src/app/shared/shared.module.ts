@@ -42,6 +42,7 @@ import { ArrayUtilityService } from './array-utility.service';
 import { HelplineComponent } from './helpline/helpline.component';
 import { ButtonSelectedDirective } from './styling/button-selected.directive';
 import { EventUtilityService } from './event-utility.service';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 @NgModule({
   imports: [
@@ -81,7 +82,8 @@ import { EventUtilityService } from './event-utility.service';
     UserActionSidebarComponent,
     SettingButtonComponent,
     HelplineComponent,
-    ButtonSelectedDirective
+    ButtonSelectedDirective,
+    NotFoundComponent
   ],
   exports: [
     ActionPlanCardComponent,
@@ -118,7 +120,7 @@ import { EventUtilityService } from './event-utility.service';
     PaginationService,
     ServiceOrgService,
     ArrayUtilityService,
-    EventUtilityService
+    EventUtilityService    
   ]
 })
 export class SharedModule { }
