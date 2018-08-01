@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from '../app-routing.module';
 import { FormsModule } from '@angular/forms';
-import { AccordionModule, BsDropdownModule, ModalModule } from 'ngx-bootstrap';
+import { AccordionModule, BsDropdownModule, ModalModule, CarouselModule } from 'ngx-bootstrap';
 
 import { ChatbotComponent } from './chatbot/chatbot.component';
 import { CuratedResourceComponent } from './search/search-results/curated-resource/curated-resource.component';
@@ -42,6 +42,8 @@ import { ArrayUtilityService } from './array-utility.service';
 import { HelplineComponent } from './helpline/helpline.component';
 import { ButtonSelectedDirective } from './styling/button-selected.directive';
 import { EventUtilityService } from './event-utility.service';
+import { ArticlesComponent } from './resource/resource-type/articles/articles.component';
+import { OrganizationsComponent } from './resource/resource-type/organizations/organizations.component';
 
 @NgModule({
   imports: [
@@ -50,7 +52,8 @@ import { EventUtilityService } from './event-utility.service';
     FormsModule,
     AccordionModule.forRoot(),
     BsDropdownModule.forRoot(),
-    ModalModule.forRoot()    
+    ModalModule.forRoot(),
+    CarouselModule.forRoot()
   ],
   declarations: [
     ActionPlanCardComponent,
@@ -81,7 +84,9 @@ import { EventUtilityService } from './event-utility.service';
     UserActionSidebarComponent,
     SettingButtonComponent,
     HelplineComponent,
-    ButtonSelectedDirective
+    ButtonSelectedDirective,
+    ArticlesComponent,
+    OrganizationsComponent
   ],
   exports: [
     ActionPlanCardComponent,
