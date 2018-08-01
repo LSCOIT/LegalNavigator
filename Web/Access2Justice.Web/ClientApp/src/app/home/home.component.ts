@@ -17,34 +17,34 @@ export class HomeComponent implements OnInit {
   ];
   //homePageId: string;
   homeContent: any;
-  //heroData: Array<Hero> = [];
-  //guidedAssistantData: Array<GuidedAssistant> = [];
-  //topicAndResourcesData: Array<TopicAndResources> = [];
-  //carouselData: Array<Carousel> = [];
-  //informationData: Array<Information> = [];
-  //privacyData: Array<Privacy> = [];
+  heroData: Array<Hero> = [];
+  guidedAssistantOverviewData: Array<GuidedAssistant> = [];
+  topicAndResourcesData: Array<TopicAndResources> = [];
+  carouselData: Array<Carousel> = [];
+  sponsorOverviewData: Array<Information> = [];
+  privacyData: Array<Privacy> = [];
 
   constructor(
     private homeService: HomeService
   ) { }
 
-  //filterHomeContent(): void {
-  //  if (this.homeContent) {
-  //    this.heroData = this.homeContent[0].hero;
-  //    this.guidedAssistantData = this.homeContent[0].guidedAssistant;
-  //    this.topicAndResourcesData = this.homeContent[0].topicAndResources;
-  //    this.carouselData = this.homeContent[0].carousel;
-  //    this.informationData = this.homeContent[0].information;
-  //    this.privacyData = this.homeContent[0].privacy;
-  //  }
-  //}
+  filterHomeContent(): void {
+    if (this.homeContent) {
+      this.heroData = this.homeContent.hero;
+      this.guidedAssistantOverviewData = this.homeContent.guidedAssistantOverview;
+      this.topicAndResourcesData = this.homeContent.topicAndResources;
+      this.carouselData = this.homeContent.carousel;
+      this.sponsorOverviewData = this.homeContent.sponsorOverview;
+      this.privacyData = this.homeContent.privacy;
+    }
+  }
 
   getHomePageContent(): void {
     this.homeService.getHomeContent()
       .subscribe(content => {    
         this.homeContent = content;
-        console.log(this.homeContent.hero.subHeading);
-        //this.filterHomeContent();
+        console.log(this.homeContent.hero.description.textWithLink.url);
+        this.filterHomeContent();
       });
   }
   ngOnInit() {

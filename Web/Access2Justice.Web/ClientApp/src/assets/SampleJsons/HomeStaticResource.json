@@ -2,92 +2,124 @@
   "id": "HomePageV0",
   "hero": {
     "heading": "Get help with your legal questions in",
-    "subHeading": "We will always protect your privacy. Read our Privacy Promise",
+    "description": {
+      "text": "We will always protect your privacy. Read our",
+      "textWithLink": {
+        "urlText": "Privacy Promise",
+        "url": "privacy"
+      }
+    },
     "image": {
       "id": "",
-      "path": "/assets/images/primary-illustrations/hawaii.svg"
+      "source": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/primary-illustrations/hawaii.svg",
+      "altText": "Illustration of Hawaii"
     }
   },
-  "guidedAssistant": {
-    "overview": "Need a plan of action for your legal issue? Our Guided Assistant can help.",
+  "guidedAssistantOverview": {
+    "heading": "Need a plan of action for your legal issue? Our Guided Assistant can help.",
     "description": {
       "steps": [
         {
           "order": "1",
-          "descritpion": "Answer a few questions to help us understand your needs."
+          "description": "Answer a few questions to help us understand your needs."
         },
         {
           "order": "2",
-          "descritpion": "We'll create a personalized plan with steps and resources."
+          "description": "We'll create a personalized plan with steps and resources."
         },
         {
           "order": "3",
-          "descritpion": "Share, print, or create a profile to save your plan."
+          "description": "Share, print, or create a profile to save your plan."
         }
       ],
-      "paragraph": {
-        "text": "Free and no account necessary. We never share any information you provide.",
-        "routerText": "Privacy Promise.",
-        "routerLink": "PrivacyPromise.link"
+      "text": "Free and no account necessary. We never share any information you provide.",
+      "textWithLink": {
+        "urlText": "Privacy Promise",
+        "url": "privacy"
       }
     },
-    "buttonText": "Start the Guided Assistant",
-    "buttonLink": "",
+    "button": {
+      "buttonText": "Start the Guided Assistant",
+      "buttonLink": "guidedassistant"
+    },
     "image": {
       "id": "",
-      "path": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/secondary-illustrations/guided_assistant.svg"
+      "source": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/secondary-illustrations/guided_assistant.svg",
+      "altText": "Guided Assistant Illustration"
     }
   },
   "topicAndResources": {
-    "overview": "More Information, Videos, and Links to Resources by Topic",
-    "buttonText": "See More Topics",
-    "buttonLink": "/topics"
+    "heading": "More Information, Videos, and Links to Resources by Topic",
+    "button": {
+      "buttonText": "See More Topics",
+      "buttonLink": "topics"
+    }
   },
   "carousel": {
-    "overview": [
+    "slides": [
       {
-        "description": "Tincidunt integer eu augue augue nunc elit dolor, luctus placerat scelerisque euismod, iaculis eu lacus nunc mi elit, vehicula ut laoreet ac, aliquam sit amet justo nunc tempor, metus vel..",
-        "byName": "Robbie",
+        "quote": "Tincidunt integer eu augue augue nunc elit dolor, luctus placerat scelerisque euismod, iaculis eu lacus nunc mi elit, vehicula ut laoreet ac, aliquam sit amet justo nunc tempor, metus vel..",
+        "author": "Robbie",
         "location": "Anchorage, AK",
         "image": {
           "id": "",
-          "path": "updatelink"
+          "source": "updatelink",
+          "altText": ""
         }
       },
       {
-        "description": "Ut fusce varius nisl ac ipsum gravida vel pretium tellus tincidunt integer eu augue augue nunc elit dolor, luctus placerat.",
-        "byName": "Robbie",
+        "quote": "Ut fusce varius nisl ac ipsum gravida vel pretium tellus tincidunt integer eu augue augue nunc elit dolor, luctus placerat.",
+        "author": "Robbie",
         "location": "Anchorage, AK",
         "image": {
           "id": "",
-          "path": "updatelink"
+          "source": "updatelink",
+          "altText": ""
         }
       },
       {
-        "description": "This site is here to provide equal access to legal information and resources for everyone. Legal disclaimer lorem ipsum dolor amet. It is brought to you by partnership of these nonproffit organizations.",
-        "byName": "Robbie",
+        "quote": "This site is here to provide equal access to legal information and resources for everyone. Legal disclaimer lorem ipsum dolor amet. It is brought to you by partnership of these nonproffit organizations.",
+        "author": "Robbie",
         "location": "Anchorage, AK",
         "image": {
           "id": "",
-          "path": "updatelink"
+          "source": "updatelink",
+          "altText": ""
         }
       }
     ]
   },
-  "information": {
-    "overview": "Information you can trust",
+  "sponsorOverview": {
+    "heading": "Information you can trust",
     "description": "This site is here to provide equal access to legal information and resources for everyone. Legal disclaimer lorem ipsum dolor amet. It is brought to you by partnership of these nonproffit organizations",
-    "buttonText": "Learn more",
-    "buttonLink": "url"
+    "sponsors": [
+      {
+        "imageId": "",
+        "source": "updatelink",
+        "altText": ""
+      },
+      {
+        "imageId": "",
+        "source": "updatelink",
+        "altText": ""
+      }
+    ],
+    "button": {
+      "buttonText": "See More Topics",
+      "buttonLink": "topics"
+    }
   },
   "privacy": {
-    "overview": "Our Privacy Promise",
+    "heading": "Our Privacy Promise", 
     "description": "We value your privacy and will never share your personal information with anyone without your lorem ipsum dolor sit amet.",
-    "buttonText": "Learn more",
-    "buttonLink": "url",
+    "button": {
+      "buttonText": "See More Topics",
+      "buttonLink": "privacy"
+    },
     "image": {
       "id": "",
-      "path": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/secondary-illustrations/privacy_promise.svg"
+      "source": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/secondary-illustrations/privacy_promise.svg",
+      "altText": "Privacy Illustration"
     }
   },
   "_rid": "mwoSAIKx1tkEAAAAAAAAAA==",
