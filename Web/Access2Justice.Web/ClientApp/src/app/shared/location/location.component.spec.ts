@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { LocationComponent } from './location.component';
 import { LocationService } from './location.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -37,7 +38,8 @@ describe('LocationComponent', () => {
         providers: [
           BsModalService,
           LocationService
-        ]
+        ], 
+        schemas: [ NO_ERRORS_SCHEMA ]
       });
       TestBed.compileComponents();
       fixture = TestBed.createComponent(LocationComponent);
