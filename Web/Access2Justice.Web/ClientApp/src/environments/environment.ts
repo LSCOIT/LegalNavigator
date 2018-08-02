@@ -12,5 +12,6 @@ export const environment = {
   webResourcePagesToShow: 10,
   webResourceRecordsToDisplay: 10,
   userId: 'User Id',
-  homePageId:'HomePageV0'
+  homePageId: 'HomePageV0',
+  blobUrl: '' 
 };
