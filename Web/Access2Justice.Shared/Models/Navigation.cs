@@ -16,9 +16,29 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "id")]
         public string Name { get; set; }
 
-        [JsonProperty(PropertyName = "header")]
-        public NavHeader Header { get; set; }
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "language")]
+        public Language Language { get; set; }
 
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "location")]
+        public HeaderLocation Location { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "privacyPromise")]
+        public ButtonImage PrivacyPromise { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "helpAndFAQ")]
+        public ButtonImage HelpAndFAQ { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "login")]
+        public ButtonImage Login { get; set; }
+
+        [JsonProperty(PropertyName = "logo")]
+        public Logo Logo { get; set; }
+        
         [DefaultValue("")]
         [JsonProperty(PropertyName = "home")]
         public ButtonStaticContent Home { get; set; }
@@ -30,7 +50,7 @@ namespace Access2Justice.Shared.Models
         [DefaultValue("")]
         [JsonProperty(PropertyName = "topicAndResources")]
         public ButtonStaticContent TopicAndResources { get; set; }
-        
+
         [DefaultValue("")]
         [JsonProperty(PropertyName = "about")]
         public ButtonStaticContent About { get; set; }
@@ -38,13 +58,54 @@ namespace Access2Justice.Shared.Models
         [DefaultValue("")]
         [JsonProperty(PropertyName = "search")]
         public ButtonImage Search { get; set; }
-
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "helpAndFAQ")]
-        public ButtonStaticContent HelpAndFAQ { get; set; }
     }
 
-    public class NavHeader
+    public class Language
+    {
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "button")]
+        public ButtonStaticContent Button { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "navigationImage")]
+        public Image NavigationImage { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "dropDownImage")]
+        public Image DropDownImage { get; set; }
+    }
+
+    public class HeaderLocation
+    {
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "text")]
+        public string Text { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "altText")]
+        public string AltText { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "button")]
+        public ButtonStaticContent Button { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "image")]
+        public Image Image { get; set; }
+    }
+
+    public class ButtonImage
+    {
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "button")]
+        public ButtonStaticContent Button { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "image")]
+        public Image Image { get; set; }
+    }
+
+    public class Logo
     {
         [DefaultValue("")]
         [JsonProperty(PropertyName = "firstLogo")]

@@ -25,37 +25,33 @@ namespace Access2Justice.Shared.Models
         public Image Image { get; set; }
 
         [DefaultValue("")]
-        [JsonProperty(PropertyName = "details")]
+        [JsonProperty(PropertyName = "imageExpand")]
+        public Image ImageExpand { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "imageCollapse")]
+        public Image ImageCollapse { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "faqs")]
         public IEnumerable<HelpDetails> HelpDetails { get; set; }
     }
 
     public class HelpDetails
     {
         [DefaultValue("")]
-        [JsonProperty(PropertyName = "order")]
-        public int Order { get; set; }
-
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "image")]
-        public Image Image { get; set; }
-
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "urltext")]
+        [JsonProperty(PropertyName = "question")]
         public string UrlsText { get; set; }
 
         [DefaultValue("")]
-        [JsonProperty(PropertyName = "urlLink")]
-        public string UrlsLink { get; set; }
-
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "description")]
+        [JsonProperty(PropertyName = "answer")]
         public IEnumerable<Paragraph> Description { get; set; }
     }
 
     public class Paragraph
     {
         [DefaultValue("")]
-        [JsonProperty(PropertyName = "paragraph")]
-        public string Paragraphs { get; set; }
+        [JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
     }
 }

@@ -32,10 +32,6 @@ namespace Access2Justice.Shared.Models
     public class Detail
     {
         [DefaultValue("")]
-        [JsonProperty(PropertyName = "order")]
-        public int Order { get; set; }
-
-        [DefaultValue("")]
         [JsonProperty(PropertyName = "title")]
         public string Title { get; set; }
 
