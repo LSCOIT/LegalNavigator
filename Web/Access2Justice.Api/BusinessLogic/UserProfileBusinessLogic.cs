@@ -4,6 +4,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System;
+using System.Globalization;
 
 namespace Access2Justice.Api.BusinessLogic
 {
@@ -40,20 +42,7 @@ namespace Access2Justice.Api.BusinessLogic
             }
             return 0;
         }
-        public async Task<int> UpdateUserProfileDataAsync(UserProfile userProfile, string userIdGuid)
-        {
-            var resultUP = GetUserProfileDataAsync(userProfile.OId);
-            var userprofileObjects = JsonConvert.SerializeObject(resultUP);
 
-            if (userprofileObjects.Contains(userProfile.OId)) // condition to verify oId and update the details
-            {
-                userProfile.Id = userIdGuid; // guid id of the document
-
-                var result = await dbService.UpdateItemAsync(userIdGuid, ResourceDeserialized(userProfile), dbSettings.UserProfileCollectionId);
-                if (result.ToString().Contains(userProfile.OId)) return 1;
-            }
-            return 0;
-        }
         private UserProfile ConvertUserProfile(dynamic convObj)
         {
             var serializedResult = JsonConvert.SerializeObject(convObj);
@@ -71,6 +60,7 @@ namespace Access2Justice.Api.BusinessLogic
                 userProfile.CreatedTimeStamp = user.CreatedTimeStamp;
                 userProfile.ModifiedBy = user.ModifiedBy;
                 userProfile.ModifiedTimeStamp = user.ModifiedTimeStamp;
+                userProfile.SharedResource = user.SharedResource;
             }
             return userProfile;
         }
@@ -248,6 +238,44 @@ namespace Access2Justice.Api.BusinessLogic
                 }
             }
             return await dbService.UpdateItemAsync(id, dbObject, dbSettings.ResourceCollectionId);
+        }
+
+        public async Task<object> ShareResourceDataAsync(Guid resourceGuid, string oId)
+        {
+            UserProfile userProfile = await GetUserProfileDataAsync(oId);
+            var sharedResource = new SharedResource
+            {
+                ExpirationDate = DateTime.UtcNow,
+                IsShared = true,
+                //ToDo - Need to finalize how to pass the actual route url because the share functionality is available in multiple places
+                //Topics Detail Page - route url here is /topics
+                //Personalized Plan Page - /plan
+                //Resource Detail Page - /resource
+                //Profile Page - /profile
+                Url = new Uri("/plan/" + resourceGuid.ToString("D", CultureInfo.InvariantCulture), UriKind.Relative),
+                PermaLink = oId + resourceGuid
+            };
+            if (userProfile.SharedResource == null)
+            {
+                userProfile.SharedResource = new List<SharedResource>();
+            }
+            userProfile.SharedResource.Add(sharedResource);
+
+            return await UpdateUserProfileDataAsync(userProfile);
+        }
+
+        public async Task<object> UnshareResourceDataAsync(Guid resourceGuid, string oId)
+        {
+            UserProfile userProfile = await GetUserProfileDataAsync(oId);
+            userProfile.SharedResource.RemoveAll(a => a.PermaLink == oId + resourceGuid);
+            return await UpdateUserProfileDataAsync(userProfile);
+        }
+
+        public async Task<int> UpdateUserProfileDataAsync(UserProfile userProfile)
+        {
+            var result = await dbService.UpdateItemAsync(userProfile.Id, ResourceDeserialized(userProfile), dbSettings.UserProfileCollectionId);
+            if (result.ToString().Contains(userProfile.OId)) return 1;
+            return 0;
         }
     }
 }

@@ -2,6 +2,7 @@
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -51,7 +52,7 @@ namespace Access2Justice.Api.Controllers
         [Route("api/user/updateuserprofile")]
         public async Task<IActionResult> UpdateUserProfileDocumentAsync(string userIdGuid, UserProfile userProfile)
         {
-            var profile = await userProfileBusinessLogic.UpdateUserProfileDataAsync(userProfile, userIdGuid);
+            var profile = await userProfileBusinessLogic.UpdateUserProfileDataAsync(userProfile);
             return Ok(profile);
         }
 
@@ -78,6 +79,22 @@ namespace Access2Justice.Api.Controllers
         public async Task<IActionResult> UpsertUserPlanAsync([FromBody]dynamic userData)
         {
             var users = await userProfileBusinessLogic.UpsertUserPlanAsync(userData);
+            return Ok(users);
+        }
+
+        [HttpPost]
+        [Route("share")]
+        public async Task<IActionResult> ShareAsync([FromQuery]Guid resourceGuid, [FromQuery]string oId)
+        {
+            var users = await userProfileBusinessLogic.ShareResourceDataAsync(resourceGuid, oId);
+            return Ok(users);
+        }
+
+        [HttpPost]
+        [Route("unshare")]
+        public async Task<IActionResult> UnshareAsync([FromQuery]Guid resourceGuid, [FromQuery]string oId)
+        {
+            var users = await userProfileBusinessLogic.UnshareResourceDataAsync(resourceGuid, oId);
             return Ok(users);
         }
     }   
