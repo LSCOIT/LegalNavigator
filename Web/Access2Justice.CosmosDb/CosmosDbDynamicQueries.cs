@@ -23,7 +23,16 @@ namespace Access2Justice.CosmosDb
         {
             EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
 
-            var query = $"SELECT * FROM c WHERE c.{propertyName}='{value}'";
+            var query = string.Empty;
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                query = $"SELECT * FROM c WHERE c.{propertyName}=[]";
+            }
+            else
+            {
+                query = $"SELECT * FROM c WHERE c.{propertyName}='{value}'";
+            }
+
             return await backendDatabaseService.QueryItemsAsync(collectionId, query);
         }
 
@@ -78,8 +87,6 @@ namespace Access2Justice.CosmosDb
             return await backendDatabaseService.QueryItemsAsync(collectionId, query);
         }
 
-
-
         public async Task<dynamic> FindItemsWhereArrayContainsWithAndClauseAsync(string arrayName, string propertyName, string andPropertyName, ResourceFilter resourceFilter, bool isResourceCountCall = false)
         {
             EnsureParametersAreNotNullOrEmpty(arrayName, propertyName, andPropertyName, resourceFilter.ResourceType);
@@ -120,6 +127,28 @@ namespace Access2Justice.CosmosDb
             }
             return pagedResources;
         }
+
+        public async Task<dynamic> FindItemsWhereInClauseAsync(string collectionId, string propertyName, IEnumerable<string> values)
+        {
+            EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
+
+            var inClause = string.Empty;
+            var lastItem = values.Last();
+
+            foreach (var value in values)
+            {
+                inClause += $"'" + value + "'";
+                if (value != lastItem)
+                {
+                    inClause += ",";
+                }
+            }
+
+            var query = $"SELECT * FROM c WHERE c.{propertyName} IN ({inClause})";
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query);
+        }
+
+
 
         private dynamic FindLocationWhereArrayContains(Location location)
         {
@@ -180,27 +209,5 @@ namespace Access2Justice.CosmosDb
                 }
             }
         }
-
-        public async Task<dynamic> FindItemsWhereInClauseAsync(string collectionId, string propertyName, IEnumerable<string> values)
-        {
-            EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
-
-            var inClause = string.Empty;
-            var lastItem = values.Last();
-
-            foreach (var value in values)
-            {
-                inClause += $"'" + value + "'";
-                if (value != lastItem)
-                {
-                    inClause += ",";
-                }
-            }
-
-            var query = $"SELECT * FROM c WHERE c.{propertyName} IN ({inClause})";
-            return await backendDatabaseService.QueryItemsAsync(collectionId, query);
-        }
-
-    
     }
 }
