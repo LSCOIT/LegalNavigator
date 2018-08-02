@@ -34,7 +34,7 @@ import { MapResultsComponent } from './sidebars/map-results.component';
 import { MapResultsService } from './sidebars/map-results.service';
 import { PaginationComponent } from './pagination/pagination.component';
 import { PaginationService } from './search/pagination.service';
-import { ActionPlanCardComponent } from './action-plan/action-plan-card.component';
+import { ActionPlansComponent } from './resource/resource-type/action-plan/action-plans.component';
 import { UserActionSidebarComponent } from './sidebars/user-action-sidebar.component';
 import { SettingButtonComponent } from './resource/user-action/setting-button.component';
 import { ServiceOrgService } from './sidebars/service-org.service';
@@ -44,6 +44,7 @@ import { ButtonSelectedDirective } from './styling/button-selected.directive';
 import { EventUtilityService } from './event-utility.service';
 import { ArticlesComponent } from './resource/resource-type/articles/articles.component';
 import { OrganizationsComponent } from './resource/resource-type/organizations/organizations.component';
+import { VideosComponent } from './resource/resource-type/videos/videos.component';
 
 @NgModule({
   imports: [
@@ -56,7 +57,7 @@ import { OrganizationsComponent } from './resource/resource-type/organizations/o
     CarouselModule.forRoot()
   ],
   declarations: [
-    ActionPlanCardComponent,
+    ActionPlansComponent,
     ChatbotComponent,
     CuratedResourceComponent,
     DownloadButtonComponent,
@@ -86,10 +87,11 @@ import { OrganizationsComponent } from './resource/resource-type/organizations/o
     HelplineComponent,
     ButtonSelectedDirective,
     ArticlesComponent,
-    OrganizationsComponent
+    OrganizationsComponent,
+    VideosComponent
   ],
   exports: [
-    ActionPlanCardComponent,
+    ActionPlansComponent,
     ChatbotComponent,
     CuratedResourceComponent,
     DownloadButtonComponent,
