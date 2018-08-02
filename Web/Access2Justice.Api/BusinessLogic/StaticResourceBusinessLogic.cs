@@ -80,45 +80,7 @@ namespace Access2Justice.Api.BusinessLogic
             }
             return result;
         }
-
-        public async Task<dynamic> UpsertStaticHeaderDataAsync(Header headerContent)
-        {
-            var serializedResult = JsonConvert.SerializeObject(headerContent);
-            var pageDocument = JsonConvert.DeserializeObject(serializedResult);
-            string name = headerContent.Name;
-            dynamic result = null;
-            var pageDBData = await dbClient.FindItemsWhereAsync(dbSettings.StaticResourceCollectionId, Constants.Id, name);
-            if (pageDBData.Count == 0)
-            {
-                result = await dbService.CreateItemAsync(pageDocument, dbSettings.StaticResourceCollectionId);
-            }
-            else
-            {
-                string id = pageDBData[0].id;
-                result = await dbService.UpdateItemAsync(id, pageDocument, dbSettings.StaticResourceCollectionId);
-            }
-            return result;
-        }
-
-        public async Task<dynamic> UpsertStaticFooterDataAsync(Footer footerContent)
-        {
-            var serializedResult = JsonConvert.SerializeObject(footerContent);
-            var pageDocument = JsonConvert.DeserializeObject(serializedResult);
-            string name = footerContent.Name;
-            dynamic result = null;
-            var pageDBData = await dbClient.FindItemsWhereAsync(dbSettings.StaticResourceCollectionId, Constants.Id, name);
-            if (pageDBData.Count == 0)
-            {
-                result = await dbService.CreateItemAsync(pageDocument, dbSettings.StaticResourceCollectionId);
-            }
-            else
-            {
-                string id = pageDBData[0].id;
-                result = await dbService.UpdateItemAsync(id, pageDocument, dbSettings.StaticResourceCollectionId);
-            }
-            return result;
-        }
-
+                
         public async Task<dynamic> UpsertStaticNavigationDataAsync(Navigation navigationContent)
         {
             var serializedResult = JsonConvert.SerializeObject(navigationContent);

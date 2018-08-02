@@ -68,32 +68,6 @@ namespace Access2Justice.Api.Controllers
         }
 
         /// <summary>
-        /// Insert and Update the header static contents
-        /// </summary>
-        /// <param name="headerContent"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [Route("api/staticresource/upsertstaticheader")]
-        public async Task<IActionResult> UpsertStaticHeaderDataAsync(Header headerContent)
-        {
-            var users = await staticResourceBusinessLogic.UpsertStaticHeaderDataAsync(headerContent);
-            return Ok(users);
-        }
-
-        /// <summary>
-        /// Insert and Update the footer static contents
-        /// </summary>
-        /// <param name="footerContent"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [Route("api/staticresource/upsertstaticfooter")]
-        public async Task<IActionResult> UpsertStaticFooterDataAsync(Footer footerContent)
-        {
-            var users = await staticResourceBusinessLogic.UpsertStaticFooterDataAsync(footerContent);
-            return Ok(users);
-        }
-
-        /// <summary>
         /// Insert and Update the navigation static contents
         /// </summary>
         /// <param name="navigationContent"></param>
