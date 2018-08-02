@@ -53,6 +53,7 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "resources")]
         public List<Guid> Resources { get; set; }
 
+        [JsonIgnore]
         [JsonProperty(PropertyName = "topicIds")]
         public List<Guid> TopicIds { get; set; }
 

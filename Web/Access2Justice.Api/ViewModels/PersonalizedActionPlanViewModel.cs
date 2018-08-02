@@ -27,6 +27,7 @@ namespace Access2Justice.Api.ViewModels
         [JsonProperty(PropertyName = "name")]
         public string TopicName { get; set; }
 
+        [JsonProperty(PropertyName = "quickLinks")]
         public List<PlanQuickLink> QuickLinks { get; set; }
 
         [JsonProperty(PropertyName = "icon")]
@@ -44,7 +45,7 @@ namespace Access2Justice.Api.ViewModels
 
     public class PlanQuickLink
     {
-        public string Title { get; set; }
+        public string Text { get; set; }
         public Uri Url { get; set; }
     }
 
@@ -87,5 +88,12 @@ namespace Access2Justice.Api.ViewModels
 
         [JsonProperty(PropertyName = "icon")]
         public string Icon { get; set; }
+
+        [JsonProperty(PropertyName = "quickLinks")]
+        public List<PlanQuickLink> QuickLinks { get; set; }
+        public TopicDetails()
+        {
+            QuickLinks = new List<PlanQuickLink>();
+        }
     }
 }

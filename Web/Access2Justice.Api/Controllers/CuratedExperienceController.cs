@@ -69,7 +69,7 @@ namespace Access2Justice.Api.Controllers
             var quicklinks = new List<PlanQuickLink>();
             quicklinks.Add(new PlanQuickLink
             {
-                Title = "Quick link to topic1",
+                Text = "Quick link to topic1",
                 Url = new Uri("http://localhost/topic1")
             });
 

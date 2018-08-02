@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PersonalizedPlanService } from '../guided-assistant/personalized-plan/personalized-plan.service';
-import { PlanSteps, PlanDetailTags, PersonalizedPlanTopic } from '../guided-assistant/personalized-plan/personalized-plan';
+import { PersonalizedPlanTopic } from '../guided-assistant/personalized-plan/personalized-plan';
 import { IResourceFilter } from '../shared/search/search-results/search-results.model';
 import { EventUtilityService } from '../shared/event-utility.service';
 
@@ -11,24 +11,21 @@ import { EventUtilityService } from '../shared/event-utility.service';
 })
 export class ProfileComponent implements OnInit {
   topics: string;
-  planDetails: Array<PlanSteps> = [];
-  activeActionPlan: string = '';
+  planDetails: any = [];
   resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: '', PageNumber: 0, Location: '', ResourceIds: '' };
   personalizedResources: { resources: any, topics: any, webResources: any };
   isSavedResources: boolean = false;
   planId: string;
-  planDetailTags: PlanDetailTags = { id: '', oId: '', topics: [{}], type: '' };
-  tempPlanDetailTags: PlanDetailTags = { id: '', oId: '', topics: [{}], type: '' };
+  planDetailTags: any;
   topicsList: Array<PersonalizedPlanTopic> = [];
   tempTopicsList: Array<PersonalizedPlanTopic> = [];
   planTopic: PersonalizedPlanTopic = { topic: {}, isSelected: true };
-  isFiltered: boolean = false;
   userId: string;
   userName: string;
   topicIds: string[] = [];
   resourceIds: string[] = [];
-  showRemove: boolean;
   webResources: any[] = [];
+  showRemove: boolean;
 
   constructor(
     private personalizedPlanService: PersonalizedPlanService,

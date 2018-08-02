@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, TemplateRef } from '@angular/core';
 import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
-import { RemovePlanTag, UserRemovePlanTag, StepTag, UpdatePlan, UserUpdatePlan, PlanTag, SavedResources, ProfileResources }
-  from '../../../../guided-assistant/personalized-plan/personalized-plan';
+import { SavedResources, ProfileResources } from '../../../../guided-assistant/personalized-plan/personalized-plan';
 import { ProfileComponent } from '../../../../profile/profile.component';
 import { PersonalizedPlanComponent } from '../../../../guided-assistant/personalized-plan/personalized-plan.component';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap';
@@ -21,19 +20,12 @@ export class RemoveButtonComponent implements OnInit {
   @Input() selectedPlanDetails;
   userId: string;
   isRemoved: boolean;
-  removePlanTag: RemovePlanTag = { id: '', oId: '', topicId: '' };
-  userRemovePlanTag: UserRemovePlanTag = { id: '', planId: '', oId: '', topicId: '', type: '' };
-  updatedStep: StepTag = { id: '', order: '', markCompleted: false };
-  updatedSteps: Array<StepTag>;
-  planTag: PlanTag = { topicId: '', stepTags: this.updatedSteps };
-  planTags: Array<PlanTag>;
-  updatePlan: UpdatePlan = { id: '', oId: '', planTags: this.planTags };
-  userUpdatePlan: UserUpdatePlan = { id: '', planId: '', oId: '', planTags: this.planTags, type: '' };
   removeResource: SavedResources;
   profileResources: ProfileResources = { oId: '', resourceTags: [], type: '' };
   isRemovedPlan: boolean = false;
   modalRef: BsModalRef;
   resourceDetails: any;
+  topicIndex: number;
 
   constructor(
     private personalizedPlanService: PersonalizedPlanService,
@@ -51,8 +43,6 @@ export class RemoveButtonComponent implements OnInit {
   }
 
   removeSavedResources(template: TemplateRef<any>) {
-    this.updatedSteps = [];
-    this.planTags = [];
     if (this.selectedPlanDetails) {
       this.removeSavedPlan(template);
     }
@@ -69,45 +59,28 @@ export class RemoveButtonComponent implements OnInit {
   }
 
   createRemovePlanTag() {
-    this.selectedPlanDetails.planDetails.planTags.forEach(plan => {
-      if (plan.topicId !== this.selectedPlanDetails.topicId) {
-        plan.stepTags.forEach(step => {
-          this.updatedStep = { id: step.id.id, order: step.order, markCompleted: step.markCompleted };
-          this.updatedSteps.push(this.updatedStep);
-        });
-        this.planTag = { topicId: plan.topicId, stepTags: this.updatedSteps };
-        this.planTags.push(this.planTag);
+    this.topicIndex = 0;
+    this.selectedPlanDetails.planDetails.topics.forEach(topic => {
+      if (topic.topicId === this.selectedPlanDetails.topicId) {
+        this.selectedPlanDetails.planDetails.topics.splice(this.topicIndex, 1);
       }
+      this.topicIndex++;
     });
   }
 
   removePersonalizedPlan(template) {
-    if (this.selectedPlanDetails.planDetails.planId) {
-      this.removeUserProfilePlan(template);
-    } else {
-      this.removeUserPersonalizedPlan(template);
+    const params = {
+      "id": this.selectedPlanDetails.planDetails.id,
+      "topics": this.selectedPlanDetails.planDetails.topics
     }
-  }
-
-  removeUserProfilePlan(template) {
-    this.userUpdatePlan = {
-      id: this.selectedPlanDetails.planDetails.id, planId: this.selectedPlanDetails.planDetails.planId,
-      oId: this.userId, planTags: this.planTags, type: this.selectedPlanDetails.planDetails.type
-    };
-    this.personalizedPlanService.saveResources(this.userUpdatePlan)
+    this.personalizedPlanService.userPlan(params)
       .subscribe(response => {
-        if (response != undefined) {
-          this.profileComponent.getPersonalizedPlan();
-        }
-      });
-  }
-
-  removeUserPersonalizedPlan(template) {
-    this.updatePlan = { id: this.selectedPlanDetails.planDetails.id, oId: this.userId, planTags: this.planTags };
-    this.personalizedPlanService.getMarkCompletedUpdatedPlan(this.updatePlan)
-      .subscribe(response => {
-        if (response != undefined) {
-          this.personalizedPlanComponent.getTopics();
+        if (response) {
+          if (this.userId) {
+            this.profileComponent.getPersonalizedPlan();
+          } else {
+            this.personalizedPlanComponent.getTopics();
+          }
         }
       });
   }

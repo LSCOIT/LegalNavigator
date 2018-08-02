@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { PlanSteps, Resources, PersonalizedPlanTopic, PlanDetailTags, PersonalizedPlan } from './personalized-plan';
+import { Resources, PersonalizedPlanTopic, PersonalizedPlan } from './personalized-plan';
 import { api } from '../../../api/api';
 import { IResourceFilter } from '../../shared/search/search-results/search-results.model';
 import { ArrayUtilityService } from '../../shared/array-utility.service';
@@ -20,24 +20,22 @@ export class PersonalizedPlanService {
   planId: string;
   planTopic: PersonalizedPlanTopic = { topic: {}, isSelected: true };
   topicsList: Array<PersonalizedPlanTopic> = [];
-  planDetailTags: PlanDetailTags = { id: '', oId: '', topics: [{}], type: '' };
-  tempPlanDetailTags: PlanDetailTags = { id: '', oId: '', topics: [{}], type: '' };
-  tempPlanDetails: any;
-  planDetails: Array<PlanSteps> = [];
+  planDetailTags: any;
+  tempPlanDetailTags: any;
   userId: string;
 
   constructor(private http: HttpClient, private arrayUtilityService: ArrayUtilityService) { }
 
   getActionPlanConditions(id): Observable<any> {
-    return this.http.get<PlanSteps>(api.planUrl + '/' + id);
+    return this.http.get<PersonalizedPlan>(api.planUrl + '/' + id);
   }
 
   getUserPlanId(oid): Observable<any> {
-    return this.http.get<PlanSteps>(api.getUserProfileUrl + '/' + oid);
+    return this.http.get<PersonalizedPlan>(api.getUserProfileUrl + '/' + oid);
   }
 
   getUserSavedResources(oid): Observable<any> {
-    return this.http.get<PlanSteps>(api.getProfileUrl + '/' + oid);
+    return this.http.get<PersonalizedPlan>(api.getProfileUrl + '/' + oid);
   }
 
   getMarkCompletedUpdatedPlan(updatePlan) {
@@ -122,7 +120,7 @@ export class PersonalizedPlanService {
     return this.topicsList;
   }
 
-  displayPlanDetails(planDetailTags, topicsList): Array<PlanSteps> {
+  displayPlanDetails(planDetailTags, topicsList): any {
     this.planDetailTags = planDetailTags;
     this.topicsList = topicsList;
     this.tempPlanDetailTags = JSON.parse(JSON.stringify(this.planDetailTags));
@@ -132,9 +130,7 @@ export class PersonalizedPlanService {
         planTagIndex--;
       }
     }
-    this.tempPlanDetails = this.tempPlanDetailTags;
-    this.planDetails = this.tempPlanDetails;
-    return this.planDetails;
+    return this.tempPlanDetailTags;
   }
 
 }

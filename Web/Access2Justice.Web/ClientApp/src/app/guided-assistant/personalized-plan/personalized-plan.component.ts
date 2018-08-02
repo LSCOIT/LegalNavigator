@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PersonalizedPlanService } from '../personalized-plan/personalized-plan.service';
-import { PlanSteps, PersonalizedPlanTopic, PlanDetailTags } from '../personalized-plan/personalized-plan';
+import { PersonalizedPlanTopic } from '../personalized-plan/personalized-plan';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -14,8 +14,8 @@ export class PersonalizedPlanComponent implements OnInit {
   planTopic: PersonalizedPlanTopic = { topic: {}, isSelected: true };
   topicsList: Array<PersonalizedPlanTopic> = [];
   tempTopicsList: Array<PersonalizedPlanTopic> = [];
-  planDetails: Array<PlanSteps> = [];
-  planDetailTags: PlanDetailTags = { id: '', oId: '', topics: [{}], type: '' };
+  planDetails: any = [];
+  planDetailTags: any;
   isFiltered: boolean = false;
   type: string = "Plan";
 
@@ -27,7 +27,7 @@ export class PersonalizedPlanComponent implements OnInit {
       this.personalizedPlanService.getActionPlanConditions(this.activeActionPlan)
         .subscribe(plan => {
           if (plan) {
-            this.topics = plan.topics; //plan.planTags;
+            this.topics = plan.topics;
             this.planDetailTags = plan;
           }
           this.getPlanDetails();

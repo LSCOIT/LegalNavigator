@@ -16,83 +16,14 @@ export interface ProfileResources {
   type: string;
 }
 
-export interface PlanSteps {
-  topicId: string;
-  topicName: string;
-  stepTags: Array<Steps>[];
-}
-
-export interface PlanTag {
-  topicId: string;
-  stepTags: Array<StepTag>;
-}
-
-export interface StepTag {
-  id: string;
-  order: string;
-  markCompleted: boolean;
-}
-
-export interface Steps {
-  id: string;
-  title: string;
-  type: string;
-  description: string;
-  order: string;
-  markCompleted: boolean;
-}
-
-export interface CreatePlan {
-  planId: string;
-  oId: string;
-  type: string;
-  planTags: any;
-}
-
-export interface UpdatePlan {
-  id: string;
-  oId: string;
-  planTags: Array<PlanTag>;
-}
-
-export interface UserUpdatePlan {
-  id: string;
-  planId: string;
-  oId: string;
-  planTags: Array<PlanTag>;
-  type: string;
-}
-
-export interface RemovePlanTag {
-  id: string;
-  oId: string;
-  topicId: string;
-}
-
-export interface UserRemovePlanTag {
-  id: string;
-  planId: string;
-  oId: string;
-  topicId: string;
-  type: string;
-}
-
 export interface PersonalizedPlan {
   id: string;
   topics: Array<PlanTopic>;
 }
 
 export interface PlanTopic {
-  name: string;
-  icon: string;
-  quickLinks: Array<QuickLink>;
   topicId: string;
-  planStep: Array<PlanStep>;
-}
-
-export interface QuickLink {
-  title: string;
-  url: string;
+  steps: Array<PlanStep>;
 }
 
 export interface PlanStep {
@@ -102,17 +33,10 @@ export interface PlanStep {
   order: number;
   isComplete: boolean;
   resources: Array<string>;
+  topicIds: Array<string>;
 }
 
 export interface PersonalizedPlanTopic {
   topic: any;
   isSelected: boolean;
 }
-
-export interface PlanDetailTags {
-  id: string;
-  oId: string;
-  topics: any;
-  type: string;
-}
-
