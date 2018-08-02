@@ -32,29 +32,6 @@ namespace Access2Justice.Api.BusinessLogic
         {
             return await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, Constants.OId, oId);
         }
-        public async Task<int> CreateUserProfileDataAsync(UserProfile userProfile)
-        {
-            UserProfile resultUserProfile = await GetUserProfileDataAsync(userProfile.OId);
-            if (!(resultUserProfile.OId == userProfile.OId))
-            {
-                var result = await dbService.CreateItemAsync(ResourceDeserialized(userProfile), dbSettings.UserProfileCollectionId);
-                if (result.ToString().Contains(userProfile.OId)) return 1;
-            }
-            return 0;
-        }
-        public async Task<int> UpdateUserProfileDataAsync(string oId, Guid planId)//, string userIdGuid)
-        {
-            var resultUP = await GetUserProfileDataAsync(oId);
-            var userprofileObjects = JsonConvert.SerializeObject(resultUP);
-
-            if (userprofileObjects.Contains(oId)) // condition to verify oId and update the details
-            {
-                resultUP.PersonalizedActionPlanId = planId;
-                var result = await dbService.UpdateItemAsync(resultUP.Id, ResourceDeserialized(resultUP), dbSettings.UserProfileCollectionId);
-                if (result.ToString().Contains(oId)) return 1;
-            }
-            return 0;
-        }
         private UserProfile ConvertUserProfile(dynamic convObj)
         {
             var serializedResult = JsonConvert.SerializeObject(convObj);
@@ -77,12 +54,20 @@ namespace Access2Justice.Api.BusinessLogic
             }
             return userProfile;
         }
-        private object ResourceDeserialized(UserProfile userProfile)
+        public async Task<dynamic> UpdateUserProfileDataAsync(UserProfile userProfile)
         {
-            var serializedResult = JsonConvert.SerializeObject(userProfile);
-            return JsonConvert.DeserializeObject<object>(serializedResult);
+            var resultUP = await GetUserProfileDataAsync(userProfile.OId);
+            var result = await dbService.UpdateItemAsync(resultUP.Id, ResourceDeserialized(resultUP), dbSettings.UserProfileCollectionId);
+            return result;
         }
-        private object ResourceDynamicDeserialized(dynamic userProfile)
+        public async Task<dynamic> UpdateUserProfilePlanIdAsync(string oId, Guid planId)
+        {
+            var resultUP = await GetUserProfileDataAsync(oId);
+            resultUP.PersonalizedActionPlanId = planId;
+            var result = await dbService.UpdateItemAsync(resultUP.Id, ResourceDeserialized(resultUP), dbSettings.UserProfileCollectionId);
+            return result;
+        }
+        private object ResourceDeserialized(UserProfile userProfile)
         {
             var serializedResult = JsonConvert.SerializeObject(userProfile);
             return JsonConvert.DeserializeObject<object>(serializedResult);
@@ -93,23 +78,7 @@ namespace Access2Justice.Api.BusinessLogic
             var userDocument = JsonConvert.DeserializeObject(serializedResult);
             string oId = userDocument.oId;
             dynamic result = null;
-            if (userData.type == "plans")
-            {
-                string planId = userDocument.planId;
-                List<string> propertyNames = new List<string>() { Constants.OId, Constants.PlanId };
-                List<string> values = new List<string>() { oId, planId };
-                var userDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, propertyNames, values);
-                if (userDBData.Count == 0)
-                {
-                    result = CreateUserPersonalizedPlanAsync(userData);
-                }
-                else
-                {
-                    string id = userDBData[0].id;
-                    result = UpdateUserPersonalizedPlanAsync(id, userData);
-                }
-            }
-            else if (userData.type == "resources")
+            if (userData.type == "resources")
             {
                 string type = userData.type;
                 List<string> resourcesPropertyNames = new List<string>() { Constants.OId, Constants.Type };
@@ -127,49 +96,12 @@ namespace Access2Justice.Api.BusinessLogic
             }
             return result;
         }
-
-        public async Task<dynamic> CreateUserPersonalizedPlanAsync(dynamic userData)
-        {
-            var serializedResult = JsonConvert.SerializeObject(userData);
-            var userDocument = JsonConvert.DeserializeObject(serializedResult);
-            return await dbService.CreateItemAsync(userDocument, dbSettings.ResourceCollectionId);
-        }
-
-        public async Task<dynamic> UpdateUserPersonalizedPlanAsync(string id, dynamic userUIData)
-        {
-            var serializedResult = JsonConvert.SerializeObject(userUIData);
-            var userUIDocument = JsonConvert.DeserializeObject(serializedResult);
-            string oId = userUIDocument.oId;
-            string planId = userUIDocument.planId;
-            List<string> propertyNames = new List<string>() { Constants.OId, Constants.PlanId };
-            List<string> values = new List<string>() { oId, planId };
-            var userDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, propertyNames, values);
-            var serializedDBResult = JsonConvert.SerializeObject(userDBData[0]);
-            JObject dbObject = JObject.Parse(serializedDBResult);
-            JObject uiObject = JObject.Parse(serializedResult);
-
-            foreach (var prop in uiObject.Properties())
-            {
-                var targetProperty = dbObject.Property(prop.Name);
-                if (targetProperty == null)
-                {
-                    dbObject.Add(prop.Name, prop.Value);
-                }
-                else
-                {
-                    targetProperty.Value = prop.Value;
-                }
-            }
-            return await dbService.UpdateItemAsync(id, dbObject, dbSettings.ResourceCollectionId);
-        }
-
         public async Task<dynamic> CreateUserSavedResourcesAsync(dynamic userResources)
         {
             var serializedResult = JsonConvert.SerializeObject(userResources);
             var userDocument = JsonConvert.DeserializeObject(serializedResult);
             return await dbService.CreateItemAsync(userDocument, dbSettings.ResourceCollectionId);
         }
-
         public async Task<dynamic> UpdateUserSavedResourcesAsync(string id, dynamic userResources)
         {
             var serializedResult = JsonConvert.SerializeObject(userResources);
@@ -178,61 +110,6 @@ namespace Access2Justice.Api.BusinessLogic
             string type = userUIDocument.type;
             List<string> propertyNames = new List<string>() { Constants.OId, Constants.Type };
             List<string> values = new List<string>() { oId, type };
-            var userDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, propertyNames, values);
-            var serializedDBResult = JsonConvert.SerializeObject(userDBData[0]);
-            JObject dbObject = JObject.Parse(serializedDBResult);
-            JObject uiObject = JObject.Parse(serializedResult);
-
-            foreach (var prop in uiObject.Properties())
-            {
-                var targetProperty = dbObject.Property(prop.Name);
-                if (targetProperty == null)
-                {
-                    dbObject.Add(prop.Name, prop.Value);
-                }
-                else
-                {
-                    targetProperty.Value = prop.Value;
-                }
-            }
-            return await dbService.UpdateItemAsync(id, dbObject, dbSettings.ResourceCollectionId);
-        }
-
-        public async Task<dynamic> UpsertUserPlanAsync(dynamic userPlan)
-        {
-            var serializedResult = JsonConvert.SerializeObject(userPlan);
-            var userDocument = JsonConvert.DeserializeObject(serializedResult);
-            string oId = userDocument.oId;
-            dynamic result = null;
-            string id = userDocument.id;
-            List<string> propertyNames = new List<string>() { Constants.OId, Constants.Id };
-            List<string> values = new List<string>() { oId, id };
-            var userDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, propertyNames, values);
-            if (userDBData.Count == 0)
-            {
-                result = CreateUserPlanAsync(userPlan);
-            }
-            else
-            {
-                result = UpdateUserPlanAsync(id, userPlan);
-            }
-            return result;
-        }
-
-        public async Task<dynamic> CreateUserPlanAsync(dynamic userData)
-        {
-            var serializedResult = JsonConvert.SerializeObject(userData);
-            var userDocument = JsonConvert.DeserializeObject(serializedResult);
-            return await dbService.CreateItemAsync(userDocument, dbSettings.ResourceCollectionId);
-        }
-
-        public async Task<dynamic> UpdateUserPlanAsync(string id, dynamic userUIData)
-        {
-            var serializedResult = JsonConvert.SerializeObject(userUIData);
-            var userUIDocument = JsonConvert.DeserializeObject(serializedResult);
-            string oId = userUIDocument.oId;
-            List<string> propertyNames = new List<string>() { Constants.OId, Constants.Id };
-            List<string> values = new List<string>() { oId, id };
             var userDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, propertyNames, values);
             var serializedDBResult = JsonConvert.SerializeObject(userDBData[0]);
             JObject dbObject = JObject.Parse(serializedDBResult);

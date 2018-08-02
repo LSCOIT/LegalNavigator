@@ -43,19 +43,6 @@ namespace Access2Justice.Api.Controllers
         }
 
         /// <summary>
-        /// Create User Profile Document
-        /// </summary>
-        /// <param name="userProfile"></param>
-        /// <returns>1-Success,0-Fail</returns>        
-        [HttpPost]
-        [Route("api/user/createuserprofile")]
-        public async Task<IActionResult> CreateUserProfileDocumentAsync(UserProfile userProfile)
-        {
-            var profile = await userProfileBusinessLogic.CreateUserProfileDataAsync(userProfile);
-            return Ok(profile);
-        }
-
-        /// <summary>
         /// Update User Profile Document
         /// </summary>
         /// <param name="oId"></param>
@@ -65,7 +52,7 @@ namespace Access2Justice.Api.Controllers
         [Route("api/user/updateuserprofile")]
         public async Task<IActionResult> UpdateUserProfileDocumentAsync(string oId, Guid planId)
          {
-            var profile = await userProfileBusinessLogic.UpdateUserProfileDataAsync(oId, planId);
+            var profile = await userProfileBusinessLogic.UpdateUserProfilePlanIdAsync(oId, planId);
             return Ok(profile);
         }
 
@@ -81,18 +68,6 @@ namespace Access2Justice.Api.Controllers
             var users = await userProfileBusinessLogic.UpsertUserPersonalizedPlanAsync(userData);
             return Ok(users);
         }
-
-        /// <summary>
-        /// Insert and Update the user plan
-        /// </summary>
-        /// <param name="userData"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [Route("api/user/upsertuserplan")]
-        public async Task<IActionResult> UpsertUserPlanAsync([FromBody]dynamic userData)
-        {
-            var users = await userProfileBusinessLogic.UpsertUserPlanAsync(userData);
-            return Ok(users);
-        }
+        
     }   
 }

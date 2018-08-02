@@ -63,7 +63,7 @@ export class SaveButtonComponent implements OnInit {
       } else {
         this.profileResources.resourceTags = [];
         this.savedResources = { itemId: '', resourceType: '', resourceDetails: {} };
-        this.personalizedPlanService.getUserPlanId(this.userId)
+        this.personalizedPlanService.getUserSavedResources(this.userId)
           .subscribe(response => {
             if (response != undefined) {
               response.forEach(property => {
