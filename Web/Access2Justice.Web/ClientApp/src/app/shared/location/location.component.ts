@@ -40,6 +40,7 @@ export class LocationComponent implements OnInit {
   }
   
   openModal(template: TemplateRef<any>) {
+    this.isError = false;
     this.modalRef = this.modalService.show(template, this.config);
     this.locationService.getMap(this.mapType);
   }
