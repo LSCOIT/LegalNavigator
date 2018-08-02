@@ -4,7 +4,13 @@
       Show:
     </div>
     <div class="col-sm-11">
-      <button *ngFor="let resource of resourceResults" class="btn btn-selected" (click)="sendFilterCriteria(resource.ResourceName)">{{resource.ResourceName}}<span>({{resource.ResourceCount}})</span></button>
+      <button
+        #filterButtons
+        *ngFor="let resource of resourceResults"
+        class="btn btn-selected"
+        (click)="sendFilterCriteria(resource.ResourceName)">
+        {{resource.ResourceName}}({{resource.ResourceCount}})
+      </button>
     </div>
   </div>
   <div class="col-sm-2">
