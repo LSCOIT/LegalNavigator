@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
 import { NavigateDataService } from '../../navigate-data.service';
 import { ResourceResult } from './search-result';
 import { SearchService } from '../search.service';
@@ -12,20 +12,19 @@ import { environment } from '../../../../environments/environment';
   templateUrl: './search-results.component.html',
   styleUrls: ['./search-results.component.css']
 })
-export class SearchResultsComponent implements OnInit {
+export class SearchResultsComponent implements OnInit, OnChanges {
   @Input() fullPage = false;
   isInternalResource: boolean;
   isWebResource: boolean;
   isLuisResponse: boolean;
   searchText: string;
-  @Input()
-  searchResults: any;
+  @Input() searchResults: any;
   uniqueResources: any;
   sortType: any;
   resourceResults: ResourceResult[] = [];
   filterType: string = 'All';
   resourceTypeFilter: any[];
-  resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: '', ResourceIds: '', PageNumber: 0, Location: {} };
+  resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: {}, IsResourceCountRequired: false }; 
   luisInput: ILuisInput = { Sentence: '', Location: {}, LuisTopScoringIntent: '', TranslateFrom: '', TranslateTo: '' };
   location: any;
   topicIds: any[];
@@ -37,7 +36,7 @@ export class SearchResultsComponent implements OnInit {
   subscription: any;
   showRemoveOption: boolean;
   @Input() showRemove: boolean;
-
+  initialResourceLength:number;
   displayMessage: boolean = false;
   loading = false;
   total = 0;
@@ -45,10 +44,13 @@ export class SearchResultsComponent implements OnInit {
   limit = 0;
   offset = 0;
   pagesToShow = 0;
+  topIntent: string;
+  initialResourceFilter: string;
 
-
-  constructor(private navigateDataService: NavigateDataService,
-    private searchService: SearchService, private locationService: LocationService,
+  constructor(
+    private navigateDataService: NavigateDataService,
+    private searchService: SearchService,
+    private locationService: LocationService,
     private paginationService: PaginationService) { }
 
   bindData() {
@@ -62,6 +64,7 @@ export class SearchResultsComponent implements OnInit {
         this.pagesToShow = environment.webResourcePagesToShow;
         this.limit = environment.webResourceRecordsToDisplay;
       } else if (this.isInternalResource) {
+        this.topIntent = this.searchResults.topIntent; 
         this.mapInternalResource();
       } else {
         this.isLuisResponse = true;
@@ -69,30 +72,33 @@ export class SearchResultsComponent implements OnInit {
       }
     }
     if (this.personalizedResources != undefined) {      
-      this.searchResults = this.personalizedResources;
-      if (this.personalizedResources.topics != undefined) {
-        this.personalizedResources.topics.forEach(topic => {
-          this.searchResults.resources.push(topic);
-        });
-      }
-      if (this.personalizedResources.webResources != undefined) {
-        this.personalizedResources.webResources.forEach(webResource => {
-          this.searchResults.resources.push(webResource);
-        });
-      }
-      this.isPersonalizedresource = this.searchResults;
-      this.applyFilter();
+      this.mapPersonalizedResource(this.personalizedResources);
     }
+  }
+
+  mapPersonalizedResource(personalizedResources) {
+    this.searchResults = { resources: [] }
+    this.searchResults.resources = personalizedResources.resources
+      .concat(
+        personalizedResources.topics,
+        personalizedResources.webResources);
+    this.isPersonalizedresource = this.searchResults;
+    this.applyFilter();
   }
 
   mapInternalResource() {
     this.resourceTypeFilter = this.searchResults.resourceTypeFilter;
+    if (this.searchResults.resourceType) {
+      this.initialResourceFilter = this.searchResults.resourceType;
+    }
     // need to revisit this logic..
     this.resourceResults = this.searchResults.resourceTypeFilter.reverse();
     if (this.resourceTypeFilter != undefined) {
-
       for (let index = 0; index < this.resourceTypeFilter.length; index++) {
-        if (this.resourceTypeFilter[index].ResourceName === "All") {
+        if ((this.searchResults.resourceType &&
+          this.resourceTypeFilter[index].ResourceName === this.searchResults.resourceType)
+          || (this.resourceTypeFilter[index].ResourceName === "All"
+            && !this.searchResults.resourceType)) { 
           this.resourceTypeFilter[index]["ResourceList"] = [{
             'resources': this.searchResults.resources,
             'continuationToken': this.searchResults.continuationToken
@@ -245,21 +251,23 @@ export class SearchResultsComponent implements OnInit {
   }
   applyFilter() {
     if (this.searchResults != undefined && this.searchResults.resources != undefined) {
-      this.resourceResults.push({
+      let allFilter = [{
         'ResourceName': 'All',
         'ResourceCount': this.searchResults.resources.length
-      });
+      }];
       this.uniqueResources = new Set(this.searchResults.resources
         .map(item => item.resourceType));
-      this.uniqueResources.forEach(item => {
-        if (item != undefined) {
-          this.resourceResults.push({
-            'ResourceName': item,
-            'ResourceCount': this.searchResults.resources
-              .filter(x => x.resourceType === item).length
-          });
-        }
-      });
+      let resourceFilters = [];
+      resourceFilters = Array.from(this.uniqueResources).map(resource => {
+            return (
+              {
+                'ResourceName': resource,
+                'ResourceCount': this.searchResults.resources
+                  .filter(x => x.resourceType === resource).length
+              }
+            );
+        });
+      this.resourceResults = [...allFilter, ...resourceFilters];
     }
   }
 
@@ -278,5 +286,10 @@ export class SearchResultsComponent implements OnInit {
     if (this.subscription != undefined) {
       this.subscription.unsubscribe();
     }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    const personalizedResources: SimpleChange = changes.personalizedResources;
+    this.mapPersonalizedResource(personalizedResources.currentValue);
   }
 }

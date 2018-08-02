@@ -3,6 +3,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { ModalModule } from 'ngx-bootstrap';
 import { UpperNavComponent } from './upper-nav.component';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('UpperNavComponent', () => {
   let component: UpperNavComponent;
@@ -11,7 +12,7 @@ describe('UpperNavComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [UpperNavComponent],
-      imports: [ModalModule.forRoot()],
+      imports: [ModalModule.forRoot(), HttpClientModule],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
@@ -29,6 +30,6 @@ describe('UpperNavComponent', () => {
 
   it('should render four menu items', () => {
     const menuItems = fixture.debugElement.queryAll(By.css('a'));
-    expect(menuItems.length).toBe(4);
+    expect(menuItems.length).toBe(3);
   });
 });

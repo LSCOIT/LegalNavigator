@@ -70,7 +70,7 @@ namespace Access2Justice.CosmosDb
         {
             EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
             string locationFilter = FindLocationWhereArrayContains(location);
-            var query = $"SELECT * FROM c WHERE CONTAINS(c.{propertyName}, '{value}')";
+            var query = $"SELECT * FROM c WHERE CONTAINS(c.{propertyName}, \"{value}\")";
             if (!string.IsNullOrEmpty(locationFilter))
             {
                 query = query + " AND " + locationFilter;
@@ -88,8 +88,8 @@ namespace Access2Justice.CosmosDb
             {
                 arrayContainsWithAndClause = "(" + arrayContainsWithAndClause + ")";
             }
-            if (resourceFilter.ResourceType.ToUpperInvariant() != Constants.ResourceTypeAll)
-            {                
+            if (resourceFilter.ResourceType.ToUpperInvariant() != Constants.ResourceTypeAll && !isResourceCountCall)
+            {
                 arrayContainsWithAndClause += $" AND c.{andPropertyName} = '" + resourceFilter.ResourceType + "'";
             }
             string locationFilter = FindLocationWhereArrayContains(resourceFilter.Location);

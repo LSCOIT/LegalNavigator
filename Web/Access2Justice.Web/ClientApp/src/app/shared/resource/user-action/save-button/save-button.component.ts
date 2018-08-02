@@ -66,7 +66,7 @@ export class SaveButtonComponent implements OnInit {
         this.savePlanToProfile(template);
       } else {
         this.profileResources.resourceTags = [];
-        this.savedResources = { itemId: '', resourceType: '', resourceDetails: '' };
+        this.savedResources = { itemId: '', resourceType: '', resourceDetails: {} };
         this.personalizedPlanService.getUserPlanId(this.userId)
           .subscribe(response => {
             if (response != undefined) {

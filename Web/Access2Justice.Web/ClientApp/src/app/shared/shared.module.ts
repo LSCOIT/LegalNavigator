@@ -24,7 +24,7 @@ import { SearchFilterComponent } from './search/search-filter/search-filter.comp
 import { SearchResultsComponent } from './search/search-results/search-results.component';
 import { SearchService } from './search/search.service';
 import { ServiceOrgSidebarComponent } from './sidebars/service-org-sidebar.component';
-import { ShareButtonComponent } from './resource/user-action/share-button.component';
+import { ShareButtonComponent } from './resource/user-action/share-button/share-button.component';
 import { UpperNavComponent } from './navigation/upper-nav.component';
 import { WebResourceComponent } from './search/search-results/web-resource/web-resource.component';
 import { CuratedResourceService } from './search/search-results/curated-resource/curated-resource.service';
@@ -41,6 +41,7 @@ import { ServiceOrgService } from './sidebars/service-org.service';
 import { ArrayUtilityService } from './array-utility.service';
 import { HelplineComponent } from './helpline/helpline.component';
 import { ButtonSelectedDirective } from './styling/button-selected.directive';
+import { EventUtilityService } from './event-utility.service';
 
 @NgModule({
   imports: [
@@ -116,7 +117,8 @@ import { ButtonSelectedDirective } from './styling/button-selected.directive';
     MapResultsService,
     PaginationService,
     ServiceOrgService,
-    ArrayUtilityService
+    ArrayUtilityService,
+    EventUtilityService
   ]
 })
 export class SharedModule { }

@@ -7,6 +7,7 @@ import { PersonalizedPlanComponent } from '../../../../guided-assistant/personal
 import { BsModalService, BsModalRef } from 'ngx-bootstrap';
 import { Router } from '@angular/router';
 import { resource } from 'selenium-webdriver/http';
+import { EventUtilityService } from '../../../event-utility.service';
 
 @Component({
   selector: 'app-remove-button',
@@ -34,15 +35,18 @@ export class RemoveButtonComponent implements OnInit {
   modalRef: BsModalRef;
   resourceDetails: any;
 
-  constructor(private personalizedPlanService: PersonalizedPlanService,
+  constructor(
+    private personalizedPlanService: PersonalizedPlanService,
     private profileComponent: ProfileComponent,
     private personalizedPlanComponent: PersonalizedPlanComponent,
     private modalService: BsModalService,
-    private router: Router) {
-    let profileData = sessionStorage.getItem("profileData");
-    if (profileData != undefined) {
-      profileData = JSON.parse(profileData);
-      this.userId = profileData["UserId"];
+    private router: Router,
+    private eventUtilityService: EventUtilityService
+  ) {
+      let profileData = sessionStorage.getItem("profileData");
+      if (profileData != undefined) {
+        profileData = JSON.parse(profileData);
+        this.userId = profileData["UserId"];
     }
   }
 
@@ -112,40 +116,40 @@ export class RemoveButtonComponent implements OnInit {
     this.removeResource = { itemId: '', resourceType: '', resourceDetails: {} };
     this.profileResources.resourceTags = [];
     if (this.personalizedResources.resources) {
-      this.removeUserSavedResource(template);
+      this.removeUserSavedResourceFromProfile(this.personalizedResources.resources, true, template);
+    }
+    if (this.personalizedResources.webResources) {
+      this.removeUserSavedResourceFromProfile(this.personalizedResources.webResources, false, template);
     }
     if (this.personalizedResources.topics) {
-      this.removeUserSavedTopic(template);
+      this.removeUserSavedResourceFromProfile(this.personalizedResources.topics, false, template);
     }
     this.saveResourceToProfile(this.profileResources.resourceTags, template);
   }
 
- removeUserSavedResource(template) {
-    this.personalizedResources.resources.forEach(resource => {
-      if (resource.id !== this.resourceId && resource.resourceType !=="Topics") {
-        if (resource.resourceDetails) {
-          this.resourceDetails = resource.resourceDetails;
-        } else {
-          this.resourceDetails = {};
+  removeUserSavedResourceFromProfile(savedResource, isResource, template) {
+    savedResource.forEach(resource => {
+      if (isResource) {
+        if (resource.id !== this.resourceId && resource.resourceType !== "Topics" && resource.resourceType !== "WebResources") {
+          this.removeUserSavedResource(resource);
         }
-        this.removeResource = { itemId: resource.id, resourceType: resource.resourceType, resourceDetails: this.resourceDetails };
-        this.profileResources.resourceTags.push(this.removeResource);
+      } else {
+        if (resource.id !== this.resourceId) {
+          this.removeUserSavedResource(resource);
+        }
       }
     });
   }
 
-  removeUserSavedTopic(template) {
-    this.personalizedResources.topics.forEach(topic => {
-      if (topic.id !== this.resourceId) {
-        if (topic.resourceDetails) {
-          this.resourceDetails = topic.resourceDetails;
-        } else {
-          this.resourceDetails = {};
-        }
-        this.removeResource = { itemId: topic.id, resourceType: topic.resourceType, resourceDetails: this.resourceDetails };
-        this.profileResources.resourceTags.push(this.removeResource);
-      }
-    });
+  removeUserSavedResource(resource) {
+    if (resource.resourceDetails) {
+      this.resourceDetails = resource.resourceDetails;
+    } else {
+      this.resourceDetails = {};
+    }
+    this.removeResource = { itemId: resource.id, resourceType: resource.resourceType, resourceDetails: this.resourceDetails };
+    this.profileResources.resourceTags.push(this.removeResource);
+
   }
 
   saveResourceToProfile(resourceTags, template) {
@@ -153,9 +157,8 @@ export class RemoveButtonComponent implements OnInit {
     this.personalizedPlanService.userPlan(this.profileResources)
       .subscribe(response => {
         if (response != undefined) {
-          this.profileComponent.getpersonalizedResources();
           this.isRemovedPlan = true;
-          this.modalRef = this.modalService.show(template);
+          this.eventUtilityService.updateSavedResource("RESOURCE REMOVED");
         }
       });
   }
