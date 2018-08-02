@@ -90,12 +90,14 @@ namespace Access2Justice.CosmosDb
             }
             if (resourceFilter.ResourceType.ToUpperInvariant() != Constants.ResourceTypeAll && !isResourceCountCall)
             {
-                arrayContainsWithAndClause += $" AND c.{andPropertyName} = '" + resourceFilter.ResourceType + "'";
+                arrayContainsWithAndClause += string.IsNullOrEmpty(arrayContainsWithAndClause) ? $" c.{andPropertyName} = '" + resourceFilter.ResourceType + "'"
+                                             : $" AND c.{andPropertyName} = '" + resourceFilter.ResourceType + "'";
             }
             string locationFilter = FindLocationWhereArrayContains(resourceFilter.Location);
             if (!string.IsNullOrEmpty(locationFilter))
             {
-                arrayContainsWithAndClause = arrayContainsWithAndClause + " AND " + locationFilter;
+                arrayContainsWithAndClause = string.IsNullOrEmpty(arrayContainsWithAndClause) ? locationFilter
+                                          : arrayContainsWithAndClause + " AND " + locationFilter;
             }
 
             PagedResources pagedResources = new PagedResources();
@@ -158,7 +160,7 @@ namespace Access2Justice.CosmosDb
         private string ArrayContainsWithOrClause(string arrayName, string propertyName, IEnumerable<string> values)
         {
             string arrayContainsWithOrClause = string.Empty;
-            var lastItem = values.Last();
+            var lastItem = values?.Count() > 0 ? values.Last() : "";
             foreach (var value in values)
             {
                 arrayContainsWithOrClause += $" ARRAY_CONTAINS(c.{arrayName}, {{ '{propertyName}' : '" + value + "'})";
