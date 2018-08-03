@@ -46,6 +46,19 @@ namespace Access2Justice.Api.BusinessLogic
             return 0;
         }
 
+        public async Task<int> UpdateUserProfileDataAsync(UserProfile userProfile, string userIdGuid)
+        {
+            var resultUP = GetUserProfileDataAsync(userProfile.OId);
+            var userprofileObjects = JsonConvert.SerializeObject(resultUP);
+            if (userprofileObjects.Contains(userProfile.OId)) // condition to verify oId and update the details
+            {
+                userProfile.Id = userIdGuid; // guid id of the document
+                var result = await dbService.UpdateItemAsync(userIdGuid, ResourceDeserialized(userProfile), dbSettings.UserProfileCollectionId);
+                if (result.ToString().Contains(userProfile.OId)) return 1;
+            }
+            return 0;
+        }
+
         private UserProfile ConvertUserProfile(dynamic convObj)
         {
             var serializedResult = JsonConvert.SerializeObject(convObj);
