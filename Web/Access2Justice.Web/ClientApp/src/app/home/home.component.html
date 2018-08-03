@@ -56,7 +56,7 @@
     <div class="row">
       <div class="col-sm-12 text-center">
         <button type="button" class="btn btn-primary">
-          <a [routerLink]="contentUrl + topicAndResourcesData.button.buttonLink"> {{topicAndResourcesData.button.buttonText}} </a>
+          <a [routerLink]="topicAndResourcesData.button.buttonLink"> {{topicAndResourcesData.button.buttonText}} </a>
         </button>
       </div>
     </div>
@@ -87,7 +87,7 @@
     <p>{{sponsorOverviewData.description}}</p>
     <div class="row">
       <div class="col-sm-6" *ngFor="let sponsor of sponsorOverviewData.sponsors">
-        <img [src]="contentUrl + sponsor.source" alt="sponsor.altText">
+        <img [src]="contentUrl + sponsor.source" [alt]="sponsor.altText">
       </div>
     </div>
     <button class="btn btn-primary">
@@ -101,16 +101,14 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-5">
-        <img class="secondary-img"
-             [src]="privacyData.image.source"
-             [alt]="privacyData.image.altText">
+        <img [src]="contentUrl + privacyData.image.source" [alt]="privacyData.image.altText">
       </div>
       <div class="col-sm-5 col-sm-offset-1">
         <h3>{{privacyData.heading}}</h3>
         <p>{{privacyData.description}}</p>
         <div class="row">
           <button class="btn btn-secondary">
-            <a [routerLink]="contentUrl + privacyData.button.buttonLink">
+            <a [routerLink]="privacyData.button.buttonLink">
               {{privacyData.button.buttonText}}
             </a>
           </button>
@@ -120,3 +118,4 @@
   </div>
 </div>
 <app-helpline></app-helpline>
+
