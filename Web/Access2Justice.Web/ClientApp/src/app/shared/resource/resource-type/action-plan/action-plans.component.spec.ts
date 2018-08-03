@@ -1,25 +1,25 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ActionPlanCardComponent } from './action-plan-card.component';
-import { PersonalizedPlanService } from '../../guided-assistant/personalized-plan/personalized-plan.service';
+import { ActionPlansComponent } from './action-plans.component';
+import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
 import { HttpClientModule } from '@angular/common/http';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { ModalModule } from 'ngx-bootstrap';
-import { PlanSteps, UpdatePlan, Steps, PlanTag, StepTag, UserUpdatePlan } from '../../guided-assistant/personalized-plan/personalized-plan';
+import { PlanSteps, UpdatePlan, Steps, PlanTag, StepTag, UserUpdatePlan } from '../../../../guided-assistant/personalized-plan/personalized-plan';
 import { assertNotNull } from '@angular/compiler/src/output/output_ast';
 import { Observable } from 'rxjs/Observable';
 import { TemplateRef } from '@angular/core';
-import { SharedService } from '../shared.service';
+import { ArrayUtilityService } from '../../../../shared/array-utility.service';
 
 const mockMarkCompletedUpdatedPlan = {
   getMarkCompletedUpdatedPlan: () => { return Observable.of(); }
 };
 
-describe('ActionPlanCardComponent', () => {
-  let component: ActionPlanCardComponent;
-  let fixture: ComponentFixture<ActionPlanCardComponent>;
+describe('ActionPlansComponent', () => {
+  let component: ActionPlansComponent;
+  let fixture: ComponentFixture<ActionPlansComponent>;
   let modalService: BsModalService;
-  let sharedService: SharedService;
+  let sharedService: ArrayUtilityService;
   //let template: TemplateRef<any>;
   let mockPlanDetails = {};
   let mockplanSteps: Array<PlanSteps>;
@@ -514,15 +514,15 @@ describe('ActionPlanCardComponent', () => {
       imports: [
         HttpClientModule, ModalModule.forRoot()
       ],
-      declarations: [ActionPlanCardComponent],
+      declarations: [ActionPlansComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [PersonalizedPlanService, BsModalService, SharedService]
+      providers: [PersonalizedPlanService, BsModalService, ArrayUtilityService]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ActionPlanCardComponent);
+    fixture = TestBed.createComponent(ActionPlansComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
     modalService = TestBed.get(BsModalService);

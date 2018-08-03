@@ -1,18 +1,18 @@
 import { Component, Input, TemplateRef } from '@angular/core';
 import { PlanTopic, PersonalizedPlan, PlanStep } from '../../guided-assistant/personalized-plan/personalized-plan';
 import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
-import { PersonalizedPlanService } from '../../guided-assistant/personalized-plan/personalized-plan.service';
+import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Title } from '@angular/platform-browser/src/browser/title';
 
 @Component({
-  selector: 'app-action-plan-card',
-  templateUrl: './action-plan-card.component.html',
-  styleUrls: ['./action-plan-card.component.css']
+  selector: 'app-action-plans',
+  templateUrl: './action-plans.component.html',
+  styleUrls: ['./action-plans.component.css']
 })
-export class ActionPlanCardComponent implements OnChanges {
+export class ActionPlansComponent implements OnChanges {
   @Input() planDetails;
   displaySteps: boolean = false;
   updatedPlan: any;

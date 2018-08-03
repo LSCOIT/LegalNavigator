@@ -101,7 +101,7 @@ export class ProfileComponent implements OnInit {
                   this.resourceIds.push(resource.itemId);
                 }
               });
-              this.resourceFilter = { TopicIds: this.topicIds, ResourceIds: this.resourceIds, ResourceType: 'ALL', PageNumber: 0, ContinuationToken: null, Location: null };
+              this.resourceFilter = { TopicIds: this.topicIds, ResourceIds: this.resourceIds, ResourceType: 'ALL', PageNumber: 0, ContinuationToken: null, Location: null, IsResourceCountRequired: false };
               this.getSavedResource(this.resourceFilter);
             }
           });

@@ -37,7 +37,7 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<dynamic> GetTopicsAsync(string keyword, Location location)
         {
-            return await dbClient.FindItemsWhereContainsWithLocationAsync(dbSettings.TopicCollectionId, "keywords", keyword.ToUpperInvariant(), location);
+            return await dbClient.FindItemsWhereContainsWithLocationAsync(dbSettings.TopicCollectionId, "keywords", keyword, location);
         }
 
         public async Task<dynamic> GetTopLevelTopicsAsync()
@@ -47,7 +47,7 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<dynamic> GetSubTopicsAsync(string parentTopicId)
         {
-            return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.ParentTopicId, parentTopicId);
+            return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.TopicCollectionId, Constants.ParentTopicId, Constants.Id, parentTopicId);
         }
 
         public async Task<dynamic> GetResourceAsync(string parentTopicId)
@@ -84,6 +84,12 @@ namespace Access2Justice.Api.BusinessLogic
         {
             dynamic serializedResources = "[]";
             dynamic serializedTopicIds = "[]";
+            dynamic serializedGroupedResources = "[]";
+            if (resourceFilter.IsResourceCountRequired)
+            {
+                var groupedResourceType = await GetResourcesCountAsync(resourceFilter);
+                serializedGroupedResources = JsonConvert.SerializeObject(groupedResourceType);
+            }
             PagedResources pagedResources = await ApplyPaginationAsync(resourceFilter);
             serializedResources = JsonConvert.SerializeObject(pagedResources?.Results);
             dynamic serializedToken = pagedResources?.ContinuationToken ?? "[]";
@@ -91,8 +97,9 @@ namespace Access2Justice.Api.BusinessLogic
 
             JObject internalResources = new JObject {
                 { "resources", JsonConvert.DeserializeObject(serializedResources) },
-                {"continuationToken", JsonConvert.DeserializeObject(serializedToken) },
-                {"topicIds" , JsonConvert.DeserializeObject(serializedTopicIds)}
+                { "continuationToken", JsonConvert.DeserializeObject(serializedToken) },
+                { "resourceTypeFilter", JsonConvert.DeserializeObject(serializedGroupedResources) },
+                { "topicIds" , JsonConvert.DeserializeObject(serializedTopicIds)}
             };
             return internalResources.ToString();
         }

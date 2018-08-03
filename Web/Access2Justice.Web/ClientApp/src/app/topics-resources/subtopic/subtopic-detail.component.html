@@ -1,8 +1,8 @@
 <div *ngIf="subtopicDetails" class="container">
   <app-breadcrumb></app-breadcrumb>
   <div class="row">
-    <div class="col-sm-7" *ngFor="let subtopic of subtopics">
-      <h3 *ngIf="subtopic.id == activeSubtopicParam" class="subtopic-heading text-capitalize">{{subtopic.name}}</h3>
+    <div class="col-sm-7">
+      <h3 *ngIf="subtopics.id == activeSubtopicParam" class="subtopic-heading text-capitalize">{{subtopics.name}}</h3>
     </div>
     <div class="col-sm-5 user-action">
       <app-user-action-sidebar [mobile]="true" [id]="activeSubtopicParam" [type]="type"></app-user-action-sidebar>
@@ -13,12 +13,12 @@
       <div class="box-no-shadow">
         <div class="subtopic-body">
           <h4>Overview</h4>
-          <p>{{subtopicDetails.description}}</p> <!--need this info from the subtopicDetail get response-->
+          <p>{{subtopics.overview}}</p> <!--need this info from the subtopicDetail get response-->
           <div class="row">
             <h5>Essential Reading</h5>
             <ul *ngFor="let resource of subtopicDetails">
-              <li *ngIf="resource.resourceType === 'Essential Reading'">
-                <a href="{{resource.url}}">{{resource.name}}</a>
+              <li *ngIf="resource.resourceType === 'Related Links'">
+                <a class="link" href="{{resource.url}}">{{resource.name}}</a>
               </li>
             </ul>
           </div>
@@ -32,35 +32,35 @@
         <div *ngFor="let resource of actionPlanData">
           <app-resource-card [resource]="resource" [showRemoveOption]="showRemoveOption"></app-resource-card>
         </div>
-        <button class="btn btn-primary">See more Action Plans</button>
+        <button class="btn btn-primary" (click)="clickShowMore(actionPlanData[0].resourceType)">See more Action Plans</button>
       </div>
       <div *ngIf="articleData.length > 0" class="row">
         <h3>Articles</h3>
         <div *ngFor="let resource of articleData">
           <app-resource-card [resource]="resource" [showRemoveOption]="showRemoveOption"></app-resource-card>
         </div>
-        <button class="btn-sm btn-primary">See more Articles</button>
+        <button class="btn-sm btn-primary" (click)="clickShowMore(articleData[0].resourceType)">See more Articles</button>
       </div>
       <div *ngIf="organizationData.length > 0" class="row">
         <h3>Organizations That May Be Able To Help</h3>
         <div *ngFor="let resource of organizationData">
           <app-resource-card [resource]="resource" [showRemoveOption]="showRemoveOption"></app-resource-card>
         </div>
-        <button class="btn-sm btn-primary">See more Organizations</button>
+        <button class="btn-sm btn-primary" (click)="clickShowMore(organizationData[0].resourceType)">See more Organizations</button>
       </div>
       <div *ngIf="videoData.length > 0" class="row">
         <h3>Videos</h3>
         <div *ngFor="let resource of videoData">
           <app-resource-card [resource]="resource" [showRemoveOption]="showRemoveOption"></app-resource-card>
         </div>
-        <button class="btn-sm btn-primary">See more Videos</button>
+        <button class="btn-sm btn-primary" (click)="clickShowMore(videoData[0].resourceType)">See more Videos</button>
       </div>
       <div *ngIf="formData.length > 0" class="row">
         <h3>Forms</h3>
         <div *ngFor="let resource of formData">
           <app-resource-card [resource]="resource" [showRemoveOption]="showRemoveOption"></app-resource-card>
         </div>
-        <button class="btn-sm btn-primary">See more Forms</button>
+        <button class="btn-sm btn-primary" (click)="clickShowMore(formData[0].resourceType)">See more Forms</button>
       </div>
     </div>
     <div class="col-md-3 col-sm-12 pull-right">

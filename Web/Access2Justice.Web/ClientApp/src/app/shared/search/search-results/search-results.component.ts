@@ -22,9 +22,9 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   uniqueResources: any;
   sortType: any;
   resourceResults: ResourceResult[] = [];
-  filterType: string = 'All';
+  filterType: string = environment.All;
   resourceTypeFilter: any[];
-  resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: '', ResourceIds: '', PageNumber: 0, Location: {} };
+  resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: {}, IsResourceCountRequired: false };
   luisInput: ILuisInput = { Sentence: '', Location: {}, LuisTopScoringIntent: '', TranslateFrom: '', TranslateTo: '' };
   location: any;
   topicIds: any[];
@@ -44,6 +44,10 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   limit = 0;
   offset = 0;
   pagesToShow = 0;
+  topIntent: string;
+  initialResourceFilter: string;
+  showDefaultMessage: boolean = false;
+  showNoResultsMessage: boolean = false;
 
   constructor(
     private navigateDataService: NavigateDataService,
@@ -52,23 +56,29 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     private paginationService: PaginationService) { }
 
   bindData() {
+    this.showDefaultMessage = false;
+    this.showNoResultsMessage = false;
     this.searchResults = this.navigateDataService.getData();
     if (this.searchResults != undefined && this.personalizedResources === undefined) {
       this.isInternalResource = this.searchResults.resources;
       this.isWebResource = this.searchResults.webResources;
       if (this.isWebResource) {
-        this.total = this.searchResults.webResources.webPages.totalEstimatedMatches;
-        this.searchText = this.searchResults.webResources.queryContext.originalQuery;
-        this.pagesToShow = environment.webResourcePagesToShow;
-        this.limit = environment.webResourceRecordsToDisplay;
-      } else if (this.isInternalResource) {
-        this.mapInternalResource();
-      } else {
-        this.isLuisResponse = true;
-        console.log(this.searchResults.luisResponse);
+        this.mapWebResources();
       }
+      else {
+        this.topIntent = this.searchResults.topIntent;
+        if (this.searchResults.resources.length > 0) {
+          this.mapInternalResource();
+        } else {
+          this.isInternalResource = false;
+          this.showNoResultsMessage = true;
+        }
+      }
+    } else {
+      this.showDefaultMessage = true;
     }
-    if (this.personalizedResources != undefined) {      
+    if (this.personalizedResources != undefined) {
+      this.showDefaultMessage = false;
       this.mapPersonalizedResource(this.personalizedResources);
     }
   }
@@ -85,12 +95,19 @@ export class SearchResultsComponent implements OnInit, OnChanges {
 
   mapInternalResource() {
     this.resourceTypeFilter = this.searchResults.resourceTypeFilter;
+    if (this.searchResults.resourceType) {
+      this.initialResourceFilter = this.searchResults.resourceType;
+    }
     // need to revisit this logic..
     this.resourceResults = this.searchResults.resourceTypeFilter.reverse();
+    this.filterType = environment.All;
     if (this.resourceTypeFilter != undefined) {
 
       for (let index = 0; index < this.resourceTypeFilter.length; index++) {
-        if (this.resourceTypeFilter[index].ResourceName === "All") {
+        if ((this.searchResults.isItFromTopicPage &&
+          this.resourceTypeFilter[index].ResourceName === this.searchResults.resourceType)
+          || (this.resourceTypeFilter[index].ResourceName === environment.All
+            && !this.searchResults.isItFromTopicPage)) {
           this.resourceTypeFilter[index]["ResourceList"] = [{
             'resources': this.searchResults.resources,
             'continuationToken': this.searchResults.continuationToken
@@ -105,9 +122,16 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     }
   }
 
+  mapWebResources() {
+    this.total = this.searchResults.webResources.webPages.totalEstimatedMatches;
+    this.searchText = this.searchResults.webResources.queryContext.originalQuery;
+    this.pagesToShow = environment.webResourcePagesToShow;
+    this.limit = environment.webResourceRecordsToDisplay;
+  }
+
   filterSearchResults(event) {
     this.sortType = event;
-    if (this.isInternalResource && event != undefined) {
+    if (this.isInternalResource && event != undefined && event.filterParam != undefined) {
       this.page = 1;
       this.currentPage = 0;
       this.filterType = event.filterParam;
@@ -118,33 +142,70 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   notifyLocationChange() {
     if (sessionStorage.getItem("localSearchMapLocation")) {
       this.location = JSON.parse(sessionStorage.getItem("localSearchMapLocation"));
-    }    
+    }
     this.subscription = this.locationService.notifyLocalLocation.subscribe((value) => {
-      this.searchResults = this.navigateDataService.getData();
       this.location = value;
-      this.luisInput.Location = value;
-      this.luisInput.LuisTopScoringIntent = this.searchResults.topIntent;
-      this.luisInput.Sentence = this.searchResults.topIntent;
-      this.searchService.search(this.luisInput)
-        .subscribe(response => {
-          if (response != undefined) {
-            this.searchResults = response;
-            this.navigateDataService.setData(this.searchResults);
-            this.total = 0;
-            this.displayMessage = false;
-            this.mapInternalResource();
-            if (this.searchResults != undefined &&
-              this.searchResults.resources != undefined &&
-              this.searchResults.resources.length === 0) {
-              this.displayMessage = true;
-            }            
-          }
-        });
+      this.searchResults = this.navigateDataService.getData();
+      if (this.searchResults.isItFromTopicPage) {
+        this.filterResourceByTopicAndLocation();
+      } else {
+        this.filterResourceByKeywordAndLocation();
+      }
     });
   }
 
+  filterResourceByTopicAndLocation() {
+    this.resourceFilter = {
+      ResourceType: environment.All, TopicIds: this.searchResults.topicIds, Location: this.location,
+      PageNumber: 0, ContinuationToken: '', IsResourceCountRequired: true, ResourceIds: []
+    }
+    this.paginationService.getPagedResources(this.resourceFilter).subscribe(response => {
+      if (response != undefined) {
+        this.searchResults = response;
+        this.searchResults.topIntent = this.topIntent;
+        this.searchResults.isItFromTopicPage = true;
+        this.searchResults.resourceType = environment.All;
+        this.displayFetchedResources();
+      }
+    });
+  }
+
+  filterResourceByKeywordAndLocation() {
+    this.luisInput.Location = this.location;
+    this.luisInput.LuisTopScoringIntent = this.searchResults.topIntent;
+    this.luisInput.Sentence = this.searchResults.topIntent;
+    this.searchService.search(this.luisInput)
+      .subscribe(response => {
+        if (response != undefined) {
+          this.searchResults = response;
+          this.displayFetchedResources();
+        }
+      });
+  }
+
+  displayFetchedResources() {
+    this.navigateDataService.setData(this.searchResults);
+    this.isInternalResource = true;
+    this.displayNoResultsMessage();
+    this.mapInternalResource();
+    //TODO: There is reload issue in ngFor and data is not loading.
+    // So we are triggering Filter method.
+    let event = { filterParam: environment.All };
+    this.filterSearchResults(event);
+  }
+
+  displayNoResultsMessage() {
+    this.displayMessage = false;
+    if (this.searchResults != undefined &&
+      this.searchResults.resources != undefined &&
+      this.searchResults.resources.length === 0) {
+      this.displayMessage = true;
+      this.isInternalResource = false;
+    }
+  }
+
   getInternalResource(filterName, pageNumber): void {
-    this.isServiceCall = this.checkResource(filterName, pageNumber);
+    this.checkResource(filterName, pageNumber);
     if (this.isServiceCall) {
       if (sessionStorage.getItem("localSearchMapLocation")) {
         this.resourceFilter.Location = JSON.parse(sessionStorage.getItem("localSearchMapLocation"));
@@ -156,25 +217,29 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     }
   }
 
-  checkResource(resourceName, pageNumber): boolean {
-    this.resourceTypeFilter.forEach(item => {
-      if (item.ResourceName === resourceName && item.ResourceList != undefined
-        && item.ResourceList[this.page - 1] != undefined) {
-        this.total = item.ResourceCount;
-        this.searchResults = item.ResourceList[this.page - 1];
+  checkResource(resourceName, pageNumber): void {
+    for (let index = 0; index < this.resourceTypeFilter.length; index++) {
+      if (this.resourceTypeFilter[index].ResourceName === resourceName
+        && this.resourceTypeFilter[index].ResourceList != undefined
+        && this.resourceTypeFilter[index].ResourceList[this.page - 1] != undefined) {
+        this.total = this.resourceTypeFilter[index].ResourceCount;
+        this.searchResults = this.resourceTypeFilter[index].ResourceList[this.page - 1];
         this.isServiceCall = false;
-      } else if (item.ResourceName === resourceName) {
-        this.total = item.ResourceCount;
-        this.resourceFilter.ResourceType = item.ResourceName;
+        break;
+      }
+      else if (this.resourceTypeFilter[index].ResourceName === resourceName) {
+        this.total = this.resourceTypeFilter[index].ResourceCount;
+        this.resourceFilter.ResourceType = this.resourceTypeFilter[index].ResourceName;
         this.resourceFilter.PageNumber = this.currentPage;
         this.resourceFilter.TopicIds = this.topicIds;
-        if (item.ResourceList != undefined && item.ResourceList[pageNumber] != undefined) {
-          this.resourceFilter.ContinuationToken = JSON.stringify(item.ResourceList[pageNumber]["continuationToken"]);
+        if (this.resourceTypeFilter[index].ResourceList != undefined
+          && this.resourceTypeFilter[index].ResourceList[pageNumber] != undefined) {
+          this.resourceFilter.ContinuationToken = JSON.stringify(this.resourceTypeFilter[index].ResourceList[pageNumber]["continuationToken"]);
         }
         this.isServiceCall = true;
+        break;
       }
-    });
-    return this.isServiceCall;
+    }
   }
 
   addResource(filterName) {
@@ -241,6 +306,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   calculateOffsetValue(pageNumber: number): number {
     return Math.ceil(pageNumber * 10) + 1;
   }
+
   applyFilter() {
     if (this.searchResults != undefined && this.searchResults.resources != undefined) {
       let allFilter = [{
@@ -251,14 +317,14 @@ export class SearchResultsComponent implements OnInit, OnChanges {
         .map(item => item.resourceType));
       let resourceFilters = [];
       resourceFilters = Array.from(this.uniqueResources).map(resource => {
-            return (
-              {
-                'ResourceName': resource,
-                'ResourceCount': this.searchResults.resources
-                  .filter(x => x.resourceType === resource).length
-              }
-            );
-        });
+        return (
+          {
+            'ResourceName': resource,
+            'ResourceCount': this.searchResults.resources
+              .filter(x => x.resourceType === resource).length
+          }
+        );
+      });
       this.resourceResults = [...allFilter, ...resourceFilters];
     }
   }
@@ -275,6 +341,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   }
 
   ngOnDestroy() {
+    sessionStorage.removeItem("localSearchMapLocation");
     if (this.subscription != undefined) {
       this.subscription.unsubscribe();
     }

@@ -1,0 +1,54 @@
+.expanded-image {
+  position: relative;
+}
+
+.expanded-image img {
+  width: 100%;
+  max-height: 350px;
+}
+
+.thumbnails {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  padding: 8px;
+  opacity: 0.7;
+  background-color: #000;
+}
+
+.thumbnails img, .modal-thumbnails img {
+  width: 65px;
+  max-height: 65px;
+  margin: 0 3px;
+  cursor: pointer;
+}
+
+.thumbnails a {
+  font-weight: 600;
+  text-decoration: underline;
+  color: #fff;
+  cursor: pointer;
+  margin-left: 15px;
+}
+
+.box-no-shadow {
+  margin: 20px 0;
+}
+
+.resource-body {
+  padding: 20px;
+}
+
+.hours p {
+  width: 60px;
+  display: inline-block;
+}
+
+.modal-thumbnails {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.current-img {
+  text-align: center;
+}

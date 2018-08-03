@@ -12,6 +12,7 @@ exports.environment = {
     internalResourcePagesToShow: 2,
     internalResourceRecordsToDisplay: 10,
     webResourcePagesToShow: 10,
-    webResourceRecordsToDisplay: 10
+    webResourceRecordsToDisplay: 10,
+    All: 'All'
 };
 //# sourceMappingURL=environment.js.map
