@@ -42,6 +42,7 @@ import { ArrayUtilityService } from './array-utility.service';
 import { HelplineComponent } from './helpline/helpline.component';
 import { ButtonSelectedDirective } from './styling/button-selected.directive';
 import { EventUtilityService } from './event-utility.service';
+import { StaticResourceService } from './navigation/static-resource.service';
 
 @NgModule({
   imports: [
@@ -118,7 +119,8 @@ import { EventUtilityService } from './event-utility.service';
     PaginationService,
     ServiceOrgService,
     ArrayUtilityService,
-    EventUtilityService
+    EventUtilityService,
+    StaticResourceService
   ]
 })
 export class SharedModule { }
