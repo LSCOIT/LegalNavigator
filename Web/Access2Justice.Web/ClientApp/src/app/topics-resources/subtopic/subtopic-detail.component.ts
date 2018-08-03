@@ -63,7 +63,7 @@ export class SubtopicDetailComponent implements OnInit {
       this.topicService.getDocumentData(this.activeSubtopicParam)
         .subscribe(
         data => {
-          this.subtopics = data;
+          this.subtopics = data[0];
           this.topIntent = data[0].name;
         }); 
     }
@@ -75,6 +75,7 @@ export class SubtopicDetailComponent implements OnInit {
       .subscribe(
         data => {
           this.subtopicDetails = data;
+          console.log(this.subtopicDetails);
           this.filterSubtopicDetail();
         }
       );
