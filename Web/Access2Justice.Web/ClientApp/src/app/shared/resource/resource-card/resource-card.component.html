@@ -58,8 +58,9 @@
         <div class="media-left">
           <img class="media-object" src="/assets/images/icons/organizations.svg" aria-hidden="true">
         </div>
-        <div class="media-body">
-          <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}, {{resource.type}}</h4></a>
+        <div class="media-body">          
+          <a (click)="navigateToResource(resource)"><h4 class="media-heading">{{resource.name}}, {{resource.type}}</h4></a>
+          <!--<a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}, {{resource.type}}</h4></a>-->
           <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span><span class="span-text">External link</span>
           <p>{{resource.description}}</p>
           <div class="org-content span-text">

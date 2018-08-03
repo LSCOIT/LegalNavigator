@@ -2,6 +2,8 @@ import { Component, OnInit, Input, TemplateRef } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ArrayUtilityService } from '../../array-utility.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-resource-card',
@@ -17,7 +19,10 @@ export class ResourceCardComponent implements OnInit {
   @Input() showRemoveOption: boolean;
   url: any;
 
-  constructor(public sanitizer: DomSanitizer, private modalService: BsModalService) {
+  constructor(public sanitizer: DomSanitizer,
+    private modalService: BsModalService,
+    private router: Router,
+    private arrayUtilityService: ArrayUtilityService) {
     this.sanitizer = sanitizer;
   }
 
@@ -28,6 +33,11 @@ export class ResourceCardComponent implements OnInit {
   resourceUrl() {
     this.url = this.sanitizer.bypassSecurityTrustResourceUrl(this.resource.url);
     return this.url;
+  }
+
+  navigateToResource(resource: any) {
+    this.arrayUtilityService.resource = resource;
+    this.router.navigate(['/resource', resource.id]);
   }
 
   ngOnInit() {

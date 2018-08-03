@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit, TemplateRef, Input } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
@@ -11,6 +11,9 @@ export class OrganizationsComponent implements OnInit {
   currentImage: string;
   currentModalImage: string;
   modalRef: BsModalRef;
+  @Input()
+  organizationResource: any;
+  searchResource: any = { resources: [] };
 
   constructor(private modalService: BsModalService) { }
 
@@ -29,6 +32,8 @@ export class OrganizationsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.organizationResource = this.organizationResource;
+    this.searchResource.resources.push(this.organizationResource);
   }
 
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ArrayUtilityService } from '../../array-utility.service';
 
 @Component({
   selector: 'app-resource-card-detail',
@@ -7,9 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ResourceCardDetailComponent implements OnInit {
 
-  constructor() { }
+  constructor(private arrayUtilityService: ArrayUtilityService) { }
+  organizationResource: any;
 
   ngOnInit() {
+    this.organizationResource = this.arrayUtilityService.resource;
   }
 
 }

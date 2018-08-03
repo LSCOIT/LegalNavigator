@@ -5,6 +5,8 @@ export class ArrayUtilityService {
 
   constructor() { }
 
+  public resource: any;
+
   checkObjectExistInArray(objects, object): boolean {
     let isObjectExists = false;
     objects.forEach(item => {
