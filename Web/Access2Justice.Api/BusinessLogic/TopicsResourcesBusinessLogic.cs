@@ -585,24 +585,7 @@ namespace Access2Justice.Api.BusinessLogic
             };
             topics.Validate();
             return topics;
-        }
-
-        //public async Task<dynamic> GetPlanDataAsync(string planId)
-        //{
-        //    List<dynamic> procedureParams = new List<dynamic>() { planId };
-        //    var result = await dbService.ExecuteStoredProcedureAsync(dbSettings.ResourceCollectionId, Constants.PlanStoredProcedureName, procedureParams);
-        //    var planDetails = result.Response;
-        //    int indexOfTopicTags = 0;
-        //    foreach (var item in planDetails.planTags)
-        //    {
-        //        string topicId = item.topicId;
-        //        var topicData = await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.Id, topicId);
-        //        planDetails.planTags[indexOfTopicTags].id = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(topicData));
-        //        indexOfTopicTags++;
-        //    }
-        //    return planDetails;
-        //}
-       
+        }       
 
         public async Task<dynamic> GetPersonalizedResourcesAsync(ResourceFilter resourceFilter)
         {
