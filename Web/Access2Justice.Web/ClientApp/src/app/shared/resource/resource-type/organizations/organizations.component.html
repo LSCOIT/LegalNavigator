@@ -1,0 +1,99 @@
+<h2>Organization Name</h2>
+<p>Housing Services</p>
+<div class="col-md-8 col-sm-12">
+  <div class="expanded-image">
+    <img *ngIf="currentImage else elseblock" [src]="currentImage" alt="Alternate Text" />
+    <img *ngIf="!currentImage" #elseblock src="https://www.w3schools.com/howto/img_snow.jpg" (click)="changeModalImage($event)" alt="Alternate Text" />
+    <div class="thumbnails">
+      <img src="https://www.w3schools.com/howto/img_snow.jpg" (click)="changeImage($event)" alt="Alternate Text" />
+      <img src="https://www.w3schools.com/howto/img_mountains.jpg" (click)="changeImage($event)" alt="Alternate Text" />
+      <img src="https://www.w3schools.com/howto/img_lights.jpg" (click)="changeImage($event)" alt="Alternate Text" />
+      <a (click)="openModal(template)">3 more photos</a>
+      <ng-template #template>
+        <div class="modal-header">
+          <h4 class="modal-title pull-left">Organization Name's photo gallery</h4>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="current-img">
+            <img *ngIf="currentModalImage else modalElseblock" [src]="currentModalImage" alt="Alternate Text" />
+            <img *ngIf="!currentModalImage" #modalElseblock src="https://www.w3schools.com/howto/img_snow.jpg" (click)="changeModalImage($event)" alt="Alternate Text" />
+          </div>
+          <div class="modal-thumbnails">
+            <img src="https://www.w3schools.com/howto/img_snow.jpg" (click)="changeModalImage($event)" alt="Alternate Text" />
+            <img src="https://www.w3schools.com/howto/img_mountains.jpg" (click)="changeModalImage($event)" alt="Alternate Text" />
+            <img src="https://www.w3schools.com/howto/img_lights.jpg" (click)="changeModalImage($event)" alt="Alternate Text" />
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+  <div class="box-no-shadow">
+    <div class="resource-body">
+      <div>
+        1234 Streetname Road N
+        Cityname, ST 12345
+      </div>
+      <div>XXX-XXX-XXXX</div>
+      <div>websiteurl.com</div>
+    </div>
+  </div>
+  <div class="box-no-shadow">
+    <div class="resource-body">
+      <h4>Overview</h4>
+      <p>
+        Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter. Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter.
+      </p>
+      <p>
+        Please read our eligbility information before contacting.
+      </p>
+      <h5>Specialties</h5>
+      <ul>
+        <li>Lorem ipsum solor sit amet bibodem consecuter orem ipsum</li>
+        <li>Ipsum solor sit amet bibodem consecuter orem ipsum</li>
+        <li>Sapien elit in malesuada semper mi, id sollicitudin urna fermentum.</li>
+        <li>Consectetur adipiscing elit fusce vel.</li>
+        <li>Amet, consectetur adipiscing elit.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="box-no-shadow">
+    <div class="resource-body">
+      <h4>Eligibility Information</h4>
+      <p>Copy describing eligibility qualification lorem ipsum dolor sit amet.</p>
+      <h5>Qualifications</h5>
+      <ul>
+        <li>Lorem ipsum solor sit amet bibodem consecuter orem ipsum</li>
+        <li>Ipsum solor sit amet bibodem consecuter orem ipsum</li>
+        <li>Sapien elit in malesuada semper mi, id sollicitudin urna fermentum.</li>
+        <li>Consectetur adipiscing elit fusce vel.</li>
+        <li>Amet, consectetur adipiscing elit.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="box-no-shadow">
+    <div class="resource-body">
+      <h4>Reviewed by a mebmer of your community</h4>
+      <p>"Quote from community member consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."</p>
+    </div>
+  </div>
+</div>
+<div class="col-md-3 pull-right">
+  <app-map-results></app-map-results>
+  <div class="box-no-shadow">
+    <div class="resource-body">
+      <h5>Business Hours</h5>
+      <ul class="hours">
+        <li><p>Mon</p>8:00 AM - 5:00 PM</li>
+        <li><p>Tues</p>8:00 AM - 5:00 PM</li>
+        <li><p>Wed</p>8:00 AM - 5:00 PM</li>
+        <li><p>Thurs</p>8:00 AM - 5:00 PM</li>
+        <li><p>Fri</p>8:00 AM - 5:00 PM</li>
+        <li><p>Sat</p>8:00 AM - 5:00 PM</li>
+        <li><p>Sun</p>8:00 AM - 5:00 PM</li>
+      </ul>
+    </div>
+  </div>
+</div>
