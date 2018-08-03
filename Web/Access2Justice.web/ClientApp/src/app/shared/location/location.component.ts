@@ -26,6 +26,7 @@ export class LocationComponent implements OnInit {
   config: Object;
   locationInputRequired: boolean;
   isError: boolean = false;
+  showLocality: boolean = true;
 
   constructor(private modalService: BsModalService, private locationService: LocationService,
               private mapResultsService: MapResultsService) {  }
@@ -55,10 +56,13 @@ export class LocationComponent implements OnInit {
     this.isError = false;
     this.mapLocation = this.locationService.updateLocation();
     this.displayLocationDetails(this.mapLocation);
-    if (this.modalRef && this.mapLocation) {
+    if ((this.modalRef && this.mapLocation) || !this.mapType) {
       this.modalRef.hide();
     } else {
       this.isError = true;
+    }
+    if (!this.mapType) {
+      this.showLocality = false;
     }
   }
 
@@ -102,10 +106,13 @@ export class LocationComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.mapType) {
+    this.showLocality = true;
+    if (this.mapType) {      
       this.loadCurrentLocation();
+    } else {
+      this.showLocality = false;
     }
-    if (sessionStorage.getItem("globalMapLocation")) {
+    if (sessionStorage.getItem("globalMapLocation")) {      
       this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
       this.displayLocationDetails(this.mapLocation);
     }

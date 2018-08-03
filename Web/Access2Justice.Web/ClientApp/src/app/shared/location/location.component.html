@@ -4,7 +4,7 @@
     Please Select Location
   </span>
   <ng-template #elseBlock>
-    <span>{{address}} ({{locality}})</span>
+    <span *ngIf="!showLocality"> {{locality}}(</span><span>{{address}}</span><span *ngIf="!showLocality">)</span>
   </ng-template>
   <button type="button" class="change-location-btn pxs mobile-hidden">Change</button>
 </div>
