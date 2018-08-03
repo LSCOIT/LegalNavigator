@@ -28,8 +28,6 @@ namespace Access2Justice.Api.BusinessLogic
         public async Task<PersonalizedPlanSteps> GeneratePersonalizedPlan(CuratedExperience curatedExperience, Guid answersDocId)
         {
             var userAnswers = await dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.CuratedExperienceAnswersCollectionId);
-            var personalizedPlanSteps = new PersonalizedPlanTopic();
-            var steps = new List<PlanStep>();
             CuratedExperienceAnswers curatedExperienceAnswers = new CuratedExperienceAnswers();
             curatedExperienceAnswers = userAnswers;
             var answerButtons = curatedExperienceAnswers.Answers.Select(x => x.AnswerButtonId.ToString()).ToList().Distinct();
@@ -65,8 +63,19 @@ namespace Access2Justice.Api.BusinessLogic
                     }
                 }
             }
+            var personalizedPlan = new PersonalizedPlanSteps();
+            personalizedPlan = BuildPersonalizedPlan(planSteps);
+            personalizedPlan = JsonConvert.DeserializeObject<PersonalizedPlanSteps>(JsonConvert.SerializeObject(personalizedPlan));
+            var res = await dbService.CreateItemAsync((personalizedPlan), dbSettings.PersonalizedActionPlanCollectionId);
+            return personalizedPlan;
+        }
 
-            personalizedPlanSteps.PlanSteps = planSteps;
+        public PersonalizedPlanSteps BuildPersonalizedPlan(List<PersonalizedPlanStep> planSteps)
+        {
+            var personalizedPlanSteps = new PersonalizedPlanTopic
+            {
+                PlanSteps = planSteps
+            };
             List<Guid> topics = new List<Guid>();
             foreach (var topic in personalizedPlanSteps.PlanSteps)
             {
@@ -75,8 +84,6 @@ namespace Access2Justice.Api.BusinessLogic
                     topics.AddRange(topic.TopicIds);
                 }
             }
-            // todo: use the dyanmic queries (or maybe the methods in the TpoicsResourcesBusinessLogic) to 
-            // get resources (based on relevantResources and relevantTopics lists) then add them to the plan
 
             // construct a plan
             List<PersonalizedPlanTopic> planTopics = new List<PersonalizedPlanTopic>();
@@ -91,16 +98,12 @@ namespace Access2Justice.Api.BusinessLogic
                 });
             }
 
-            var personalizedPlan = new PersonalizedPlanSteps();
-            personalizedPlan.PersonalizedPlanId = Guid.NewGuid();
-            personalizedPlan.IsShared = false;
-            personalizedPlan.Topics = planTopics;
-
-            // var sanitizedObject = personalizedPlan.Topics.Select(x => x.PlanSteps.Select(v => v.TopicIds.Count() > 0));
-
-            // save the newly generated plan in the Personalized plan (PersonalizedActionPlan collection)
-            personalizedPlan = JsonConvert.DeserializeObject<PersonalizedPlanSteps>(JsonConvert.SerializeObject(personalizedPlan));
-            var res = await dbService.CreateItemAsync((personalizedPlan), dbSettings.PersonalizedActionPlanCollectionId);
+            var personalizedPlan = new PersonalizedPlanSteps
+            {
+                PersonalizedPlanId = Guid.NewGuid(),
+                IsShared = false,
+                Topics = planTopics
+            };
             return personalizedPlan;
         }
 
@@ -253,7 +256,8 @@ namespace Access2Justice.Api.BusinessLogic
         public async Task<PersonalizedPlanSteps> GetPersonalizedPlan(string planId)
         {
             var planDetails = await dynamicQueries.FindItemsWhereAsync(dbSettings.PersonalizedActionPlanCollectionId, Constants.Id, planId);
-            return JsonConvert.DeserializeObject<PersonalizedPlanSteps>(JsonConvert.SerializeObject(planDetails));
+            var personalizedPlan = JsonConvert.DeserializeObject<List<PersonalizedPlanSteps>>(JsonConvert.SerializeObject(planDetails));
+            return personalizedPlan[0];
         }
 
         public async Task<PersonalizedPlanSteps> UpdatePersonalizedPlan(PersonalizedPlanSteps plan)

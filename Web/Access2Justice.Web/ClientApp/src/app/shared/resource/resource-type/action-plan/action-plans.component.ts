@@ -1,5 +1,5 @@
 import { Component, Input, TemplateRef } from '@angular/core';
-import { PlanTopic, PersonalizedPlan, PlanStep } from '../../guided-assistant/personalized-plan/personalized-plan';
+import { PlanTopic, PersonalizedPlan, PlanStep } from '../../../../guided-assistant/personalized-plan/personalized-plan';
 import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
 import { BsModalService } from 'ngx-bootstrap/modal';

@@ -98,42 +98,6 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             Assert.Contains(expectedUserProfileId, result, StringComparison.InvariantCultureIgnoreCase);
         }
 
-        //[Fact]
-        //public void UpdateUserProfileDataAsyncTestsShouldUpdateProperData()
-        //{
-        //    var userprofiles = new List<dynamic>();
-        //    var userprofiles2 = new List<dynamic>();
-
-        //    //arrange
-        //    var result = backendDatabaseService.UpdateItemAsync(userProfileObj.Id, ResourceDeserialized(userProfileObj), cosmosDbSettings.UserProfileCollectionId);
-        //    userprofiles.Add(result);
-
-        //    //act         
-        //    var response = userProfileBusinessLogic.UpdateUserProfileDataAsync(userProfileObj);
-        //    userprofiles2.Add(response);
-
-        //    //assert
-        //    Assert.Equal(userprofiles.ToString(), userprofiles2.ToString());
-        //}
-
-        //[Fact]
-        //public void UpdateUserProfileDataAsyncTestsShouldNotUpdateData()
-        //{
-        //    var userprofiles = new List<dynamic>();
-        //    var userprofiles2 = new List<dynamic>();
-            
-        //    //arrange
-        //    userProfileObj.OId = updateUserProfileObjOId; // Id is new, so should not update the data for this id
-        //    var result = backendDatabaseService.UpdateItemAsync(userProfileObj.Id, ResourceDeserialized(userProfileObj), cosmosDbSettings.UserProfileCollectionId);
-        //    userprofiles.Add(result);
-
-        //    //act
-        //    var response = userProfileBusinessLogic.UpdateUserProfileDataAsync(userProfileObj);
-        //    userprofiles2.Add(response);
-
-        //    //assert
-        //    Assert.Equal(userprofiles.ToString(), userprofiles2.ToString());
-        //}
         private object ResourceDeserialized(UserProfile userProfile)
         {
             var serializedResult = JsonConvert.SerializeObject(userProfile);

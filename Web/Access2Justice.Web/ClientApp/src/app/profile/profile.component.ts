@@ -12,7 +12,7 @@ import { EventUtilityService } from '../shared/event-utility.service';
 export class ProfileComponent implements OnInit {
   topics: string;
   planDetails: any = [];
-  resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: '', PageNumber: 0, Location: '', ResourceIds: '' };
+  resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: [], PageNumber: 0, Location: '', ResourceIds: [], IsResourceCountRequired: false };
   personalizedResources: { resources: any, topics: any, webResources: any };
   isSavedResources: boolean = false;
   planId: string;

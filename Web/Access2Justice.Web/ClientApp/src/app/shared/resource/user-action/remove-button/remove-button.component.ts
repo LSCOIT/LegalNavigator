@@ -71,7 +71,8 @@ export class RemoveButtonComponent implements OnInit {
   removePersonalizedPlan(template) {
     const params = {
       "id": this.selectedPlanDetails.planDetails.id,
-      "topics": this.selectedPlanDetails.planDetails.topics
+      "topics": this.selectedPlanDetails.planDetails.topics,
+      "isShared": this.selectedPlanDetails.planDetails.isShared
     }
     this.personalizedPlanService.userPlan(params)
       .subscribe(response => {
