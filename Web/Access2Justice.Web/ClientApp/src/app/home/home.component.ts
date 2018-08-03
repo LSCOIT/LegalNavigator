@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { HomeService } from './home.service';
-import { Hero, GuidedAssistant, TopicAndResources, Carousel, Information, Privacy } from './home';
+
+import { Hero, GuidedAssistantOverview, TopicAndResources, Carousel, SponsorOverview, Privacy } from './home';
+import { StaticResourceService } from '../shared/static-resource.service';
 
 @Component({
   selector: 'app-home',
@@ -15,17 +16,18 @@ export class HomeComponent implements OnInit {
     { image: '' },
     { image: '' }
   ];
-  //homePageId: string;
+  contentUrl: any = environment.blobUrl;
+  pageId = 'HomePage';
   homeContent: any;
-  heroData: Array<Hero> = [];
-  guidedAssistantOverviewData: Array<GuidedAssistant> = [];
-  topicAndResourcesData: Array<TopicAndResources> = [];
-  carouselData: Array<Carousel> = [];
-  sponsorOverviewData: Array<Information> = [];
-  privacyData: Array<Privacy> = [];
+  heroData: Hero
+  guidedAssistantOverviewData: GuidedAssistantOverview
+  topicAndResourcesData: TopicAndResources;
+  carouselData: Carousel;
+  sponsorOverviewData: SponsorOverview;
+  privacyData: Privacy;
 
   constructor(
-    private homeService: HomeService
+    private staticResourceService: StaticResourceService
   ) { }
 
   filterHomeContent(): void {
@@ -40,15 +42,14 @@ export class HomeComponent implements OnInit {
   }
 
   getHomePageContent(): void {
-    this.homeService.getHomeContent()
-      .subscribe(content => {    
-        this.homeContent = content;
-        console.log(this.homeContent.hero.description.textWithLink.url);
+    this.staticResourceService.getStaticContents(this.pageId)
+      .subscribe(content => {
+        this.homeContent = content[0];
         this.filterHomeContent();
       });
   }
   ngOnInit() {
-    //this.homePageId = environment.homePageId;
     this.getHomePageContent();
   }
 }
+

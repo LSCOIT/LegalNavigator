@@ -1,60 +1,69 @@
-export interface HomeRouter {
-  overview: string;
-  routerText: string;
-  routerLink: string;
-}
-export interface HomeButton {
-  overview: string;
-  buttonText: string;
-  buttonLink: string;
-}
 export interface Hero {
-  home: Array<HomeRouter>
-  description: string;
-  image: Array<Image>;
+  heading: string;
+  description: Description;
+  image: Image;
 }
-export interface GuidedAssistant {
-  homebutton: Array<HomeButton>
-  description: Array<Description>;
-  image: Array<Image>;
+export interface Description {
+  text: string;
+  textWithLink: TextWithLink;
 }
-export interface TopicAndResources {
-  homebutton: Array<HomeButton>
-}
-export interface Carousel {
-  overview: Array<OverView>;
-}
-export interface Information {
-  description: string;
-  homebutton: Array<HomeButton>
-  image: Array<Image>;
-}
-export interface Privacy {
-  description: string;
-  homebutton: Array<HomeButton>;
-  image: Array<Image>
+export interface TextWithLink {
+  urlText: string;
+  url: string;
 }
 export interface Image {
-  id: number;
-  path: string
+  source: string;
+  altText: string
+}
+export interface GuidedAssistantOverview {
+  heading: string;
+  description: DescriptionGuidedAssistant;
+  button: Button;
+  image: Image
+}
+export interface DescriptionGuidedAssistant {
+  steps: Array<Steps>;
+  text: string;
+  textWithLink: TextWithLink;
 }
 export interface Steps {
   order: number;
   descritpion: string
 }
-export interface Paragraph {
-  text: string;
-  routerText: string;
-  routerLink: string;
+export interface Button {
+  buttonText: string;
+  buttonAltText: string;
+  buttonLink: string
 }
-export interface Description {
-  steps: Array<Steps>;
-  paragraphs: Array<Paragraph>;
+export interface TopicAndResources {
+  heading: string;
+  button: Button
 }
-export interface OverView {
-  description: string;
-  byName: string;
+export interface Carousel {
+  slides: Array<Slides>
+}
+export interface Slides {
+  quote: string;
+  author: string;
   location: string;
-  image: Array<Image>;
+  image: Image
 }
-
+export interface SponsorOverview {
+  heading: string;
+  description: string;
+  sponsors: Array<Sponsors>
+  button: Button
+}
+export interface Sponsors {
+  source: string;
+  altText: string
+}
+export interface Privacy {
+  heading: string;
+  description: string;
+  button: Button;
+  image: Image
+}
+export interface HelpText {
+  helpText: string
+}

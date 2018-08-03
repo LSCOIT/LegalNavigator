@@ -6,13 +6,13 @@
   <div class="row">
     <div class="col-md-8 col-md-offset-2 col-xs-offset-0 text-center">
       <p>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. A non excepturi ullam magnam similique, nobis officiis cupiditate aperiam consectetur at labore commodi! Soluta, expedita fuga in quod corporis voluptatem reiciendis.
+        {{helpAndFaqsContent.description}}
       </p>
     </div>
   </div>
   <div class="row">
     <div class="col-md-8 col-md-offset-2 col-xs-offset-0">
-      <accordion>
+      <accordion *ngFor="let content of faqData">
         <accordion-group>
           <div accordion-heading>
             <div class="media">
@@ -20,32 +20,17 @@
                 <img class="accordion-img" src="./assets/images/small-icons/open_accordion.svg" alt="open accordion" />
               </div>
               <div class="media-body">
-                <h4>Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias quo expedita, ab vero repellat voluptates molestiae? Ipsam, ducimus nam. Ducimus.</h4>
+                <h4>{{content.question}}</h4>
               </div>
             </div>
           </div>
-          <div class="col-xs-12 step-content">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat reprehenderit laborum dicta architecto iusto at sed iste fugit necessitatibus rem, fuga ad minima provident neque est autem dolore officiis, ab nihil? Consectetur, nostrum nam eligendi praesentium illo dignissimos magni maxime.</p>
-          </div>
-        </accordion-group>
-        <accordion-group>
-          <div accordion-heading>
-            <div class="media">
-              <div class="media-left">
-                <img class="accordion-img" src="./assets/images/small-icons/open_accordion.svg" alt="open accordion" />
-              </div>
-              <div class="media-body">
-                <h4>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae nam corporis laboriosam voluptate, neque eligendi?</h4>
-              </div>
-            </div>
-          </div>
-          <div class="col-xs-12 step-content">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim iure cupiditate eius fugit eveniet sit deserunt velit esse repellendus totam quia, accusamus ipsum doloribus. Adipisci aliquam nostrum quibusdam similique alias itaque optio dolorum magni et eveniet architecto debitis quos inventore sit, quam non. 
-              <br><br/>
-              Sit hic cumque distinctio sunt temporibus, est quidem quos. Tempore tenetur, mollitia tempora nesciunt exercitationem alias eos, eligendi voluptas aperiam quasi veritatis dolorum ab blanditiis, soluta debitis!</p>
+          <div class="col-xs-12 step-content" *ngFor="let answer of content.answer">
+            <p>{{answer.description}}</p>
           </div>
         </accordion-group>
       </accordion>
+
+
     </div>
   </div>
 </div>

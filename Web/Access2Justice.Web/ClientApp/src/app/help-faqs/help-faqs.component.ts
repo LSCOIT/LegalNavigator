@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-
+import { HelpAndFaqs, ImageUrl, Faq, } from '../help-faqs/help-faqs';
+import { StaticResourceService } from '../shared/static-resource.service';
 @Component({
   selector: 'app-help-faqs',
   templateUrl: './help-faqs.component.html',
@@ -7,9 +8,29 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HelpFaqsComponent implements OnInit {
 
-  constructor() { }
+  helpAndFaqsContent: HelpAndFaqs;
+  faqData: Array<Faq> = [];
+  imageData: ImageUrl;
+  id: string = 'HelpAndFAQPage';
+  constructor(
+    private staticResourceService: StaticResourceService
+  ) { }
 
-  ngOnInit() {
+  filterHelpAndFaqContent(): void {
+    if (this.helpAndFaqsContent) {
+      this.faqData = this.helpAndFaqsContent.faqs;
+      this.imageData = this.helpAndFaqsContent.image;
+    }
   }
 
+  getHelpFaqPageContent(id): void {
+    this.staticResourceService.getStaticContents(id)
+      .subscribe(content => {
+        this.helpAndFaqsContent = content[0];
+        this.filterHelpAndFaqContent();
+      });
+  }
+  ngOnInit() {
+    this.getHelpFaqPageContent(this.id);
+  }
 }

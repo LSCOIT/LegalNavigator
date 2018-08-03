@@ -3,12 +3,13 @@
     <div class="row top-row">
       <div class="col-sm-6 tagline text-center">
         <h2>{{heroData.heading}} State</h2>
-        <p>{{heroData.description.text}}
-          <a class="link" [routerLink]="'/'+ heroData.description.textWithLink.url">{{heroData.description.textWithLink.urlText}}</a>
+        <p>
+          {{heroData.description.text}}
+          <a class="link" [routerLink]="heroData.description.textWithLink.url">{{heroData.description.textWithLink.urlText}}</a>
         </p>
       </div>
       <div class="col-sm-6">
-        <img id="home-img" [src]="heroData.image.source" [alt]="heroData.image.altText">
+        <img id="home-img" [src]="contentUrl + heroData.image.source" [alt]="heroData.image.altText">
       </div>
     </div>
   </div>
@@ -21,22 +22,23 @@
       </div>
       <div class="row">
         <div class="col-sm-4 col-xs-12">
-          <img class="secondary-img" [src]="guidedAssistantOverviewData.image.source"
+          <img class="secondary-img" [src]="contentUrl + guidedAssistantOverviewData.image.source"
                [alt]="guidedAssistantOverviewData.image.altText">
         </div>
         <div class="guided-assistant-steps col-sm-7 col-sm-offset-1">
           <ul class="p" *ngFor="let steps of guidedAssistantOverviewData.description.steps">
             <li><span>{{steps.order}}.</span>{{steps.description}}</li>
           </ul>
-          <p>{{guidedAssistantOverviewData.description.text}}
-            <a [routerLink]="'/'+ guidedAssistantOverviewData.description.textWithLink.url">{{guidedAssistantOverviewData.description.textWithLink.urlText}}.</a>
+          <p>
+            {{guidedAssistantOverviewData.description.text}}
+            <a [routerLink]="guidedAssistantOverviewData.description.textWithLink.url">{{guidedAssistantOverviewData.description.textWithLink.urlText}}.</a>
           </p>
         </div>
       </div>
       <div class="row">
         <div class="col-sm-12 text-center">
           <button type="button" class="btn btn-primary">
-            <a [routerLink]="'/'+ guidedAssistantOverviewData.button.buttonLink">{{guidedAssistantOverviewData.button.buttonText}}</a>
+            <a [routerLink]="guidedAssistantOverviewData.button.buttonLink">{{guidedAssistantOverviewData.button.buttonText}}</a>
           </button>
         </div>
       </div>
@@ -54,9 +56,7 @@
     <div class="row">
       <div class="col-sm-12 text-center">
         <button type="button" class="btn btn-primary">
-          <a [routerLink]="'/'+ topicAndResourcesData.button.buttonLink">
-            {{topicAndResourcesData.button.buttonText}}
-          </a>
+          <a [routerLink]="contentUrl + topicAndResourcesData.button.buttonLink"> {{topicAndResourcesData.button.buttonText}} </a>
         </button>
       </div>
     </div>
@@ -67,7 +67,7 @@
         <carousel>
           <slide *ngFor="let slide of carouselData.slides">
             <div>
-              <img [src]="slide.image.source" class="testimonial-img col-lg-3 col-sm-4"  alt="slide.image.altText">
+              <img [src]="slide.image.source" class="testimonial-img col-lg-3 col-sm-4" alt="slide.image.altText">
               <div class="slide-content inline col-lg-9 col-sm-8">
                 <h5>{{slide.quote}}</h5>
                 <hr />
@@ -87,11 +87,11 @@
     <p>{{sponsorOverviewData.description}}</p>
     <div class="row">
       <div class="col-sm-6" *ngFor="let sponsor of sponsorOverviewData.sponsors">
-        <img [src]="sponsor.source" alt="sponsor.altText">
+        <img [src]="contentUrl + sponsor.source" alt="sponsor.altText">
       </div>
     </div>
     <button class="btn btn-primary">
-      <a [routerLink]="'/'+ sponsorOverviewData.button.buttonLink">
+      <a [routerLink]="sponsorOverviewData.button.buttonLink">
         {{sponsorOverviewData.button.buttonText}}
       </a>
     </button>
@@ -110,7 +110,7 @@
         <p>{{privacyData.description}}</p>
         <div class="row">
           <button class="btn btn-secondary">
-            <a [routerLink]="'/' + privacyData.button.buttonLink">
+            <a [routerLink]="contentUrl + privacyData.button.buttonLink">
               {{privacyData.button.buttonText}}
             </a>
           </button>
