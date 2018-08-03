@@ -45,7 +45,7 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<dynamic> GetSubTopicsAsync(string parentTopicId)
         {
-            return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.ParentTopicId, parentTopicId);
+            return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.TopicCollectionId, Constants.ParentTopicId, Constants.Id, parentTopicId);
         }
 
         public async Task<dynamic> GetResourceAsync(string parentTopicId)
