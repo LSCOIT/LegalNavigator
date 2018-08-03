@@ -1,7 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
-import { StaticResourceService } from './static-resource.service';
-import { Navigation, Language, Location, ButtonImage, Logo, Button } from './navigation';
-import { Privacy } from '../../home/home';
+import { StaticResourceService } from '../../shared/static-resource.service';
+import { Navigation, Language, Location, Logo, Home, GuidedAssistant, TopicAndResources, About, Search, PrivacyPromise, HelpAndFAQ, Login } from './navigation';
 import { environment } from '../../../environments/environment';
 
 @Component({
@@ -21,8 +20,7 @@ export class LowerNavComponent implements OnInit {
     this.width = window.innerWidth;
   }
 
-  blob: any = environment.blobUrl;
-  navigationContent: any;
+  contentUrl: any = environment.blobUrl;
   navigation: Navigation = {
     id: '',
     language: { button: { buttonText: '', buttonAltText: '', buttonLink: '' }, navigationImage: { source: '', altText: '' }, dropDownImage: { source: '', altText: '' } },
@@ -31,24 +29,24 @@ export class LowerNavComponent implements OnInit {
     helpAndFAQ: { button: { buttonText: '', buttonAltText: '', buttonLink: '' }, image: { source: '', altText: '' } },
     login: { button: { buttonText: '', buttonAltText: '', buttonLink: '' }, image: { source: '', altText: '' } },
     logo: { firstLogo: '', secondLogo: '', link: '' },
-    home: { buttonText: '', buttonAltText: '', buttonLink: '' },
-    guidedAssistant: { buttonText: '', buttonAltText: '', buttonLink: '' },
-    topicAndResources: { buttonText: '', buttonAltText: '', buttonLink: '' },
-    about: { buttonText: '', buttonAltText: '', buttonLink: '' },
+    home: { button: { buttonText: '', buttonAltText: '', buttonLink: '' } },
+    guidedAssistant: { button: { buttonText: '', buttonAltText: '', buttonLink: '' } },
+    topicAndResources: { button: { buttonText: '', buttonAltText: '', buttonLink: '' } },
+    about: { button: { buttonText: '', buttonAltText: '', buttonLink: '' } },
     search: { button: { buttonText: '', buttonAltText: '', buttonLink: '' }, image: { source: '', altText: '' } }
   }
   id: string = 'Navigation';
   language: Language = { button: { buttonText: '', buttonAltText: '', buttonLink: '' }, navigationImage: { source: '', altText: '' }, dropDownImage: { source: '', altText: '' } };
   location: Location = { text: '', altText: '', button: { buttonText: '', buttonAltText: '', buttonLink: '' }, image: { source: '', altText: '' } };
-  privacyPromise: ButtonImage = { button: { buttonText: '', buttonAltText: '', buttonLink: '' }, image: { source: '', altText: '' } };
-  helpAndFAQ: ButtonImage = { button: { buttonText: '', buttonAltText: '', buttonLink: '' }, image: { source: '', altText: '' } };
-  login: ButtonImage = { button: { buttonText: '', buttonAltText: '', buttonLink: '' }, image: { source: '', altText: '' } };
+  privacyPromise: PrivacyPromise = { button: { buttonText: '', buttonAltText: '', buttonLink: '' }, image: { source: '', altText: '' } };
+  helpAndFAQ: HelpAndFAQ = { button: { buttonText: '', buttonAltText: '', buttonLink: '' }, image: { source: '', altText: '' } };
+  login: Login = { button: { buttonText: '', buttonAltText: '', buttonLink: '' }, image: { source: '', altText: '' } };
   logo: Logo = { firstLogo: '', secondLogo: '', link: '' };
-  home: Button = { buttonText: '', buttonAltText: '', buttonLink: '' };
-  guidedAssistant: Button = { buttonText: '', buttonAltText: '', buttonLink: '' };
-  topicAndResources: Button = { buttonText: '', buttonAltText: '', buttonLink: '' };
-  about: Button = { buttonText: '', buttonAltText: '', buttonLink: '' };
-  search: ButtonImage = { button: { buttonText: '', buttonAltText: '', buttonLink: '' }, image: { source: '', altText: '' } };
+  home: Home = { button: { buttonText: '', buttonAltText: '', buttonLink: '' } };
+  guidedAssistant: GuidedAssistant = { button: { buttonText: '', buttonAltText: '', buttonLink: '' } };
+  topicAndResources: TopicAndResources = { button: { buttonText: '', buttonAltText: '', buttonLink: '' } };
+  about: About = { button: { buttonText: '', buttonAltText: '', buttonLink: '' } };
+  search: Search = { button: { buttonText: '', buttonAltText: '', buttonLink: '' }, image: { source: '', altText: '' } };
 
 
   constructor(
@@ -93,7 +91,6 @@ export class LowerNavComponent implements OnInit {
       this.topicAndResources = this.navigation.topicAndResources;
       this.about = this.navigation.about;
       this.search = this.navigation.search;
-      this.search.image.source = this.navigation.search.image.source;
     }
   }
 
@@ -101,7 +98,6 @@ export class LowerNavComponent implements OnInit {
     this.staticResourceService.getStaticContents(this.id)
       .subscribe(content => {
         this.navigation = content[0];
-        console.log(this.navigation.id);
         this.filterNavigationContent();
       });
   }

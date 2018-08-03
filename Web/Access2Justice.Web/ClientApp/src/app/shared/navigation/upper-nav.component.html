@@ -11,19 +11,19 @@
     <div class="navbar-right">
       <ul class="nav navbar-nav mobile-hidden pxs">
         <li>
-          <a [routerLink]="['/privacy']">
-            <img class="nav-icon" src="/assets/images/small-icons/privacy.svg" aria-hidden="true" />
-            Privacy Promise
+          <a [routerLink]="['/', privacyPromise.button.buttonLink]">
+            <img class="nav-icon" src={{contentUrl+privacyPromise.image.source}} aria-hidden="true" />
+            {{privacyPromise.button.buttonText}}
           </a>
         </li>
         <li>
-          <a [routerLink]="['/help']">
-            <img class="nav-icon" src="/assets/images/small-icons/faq.svg" aria-hidden="true" />
-            Help &amp; FAQs
+          <a [routerLink]="['/', helpAndFAQ.button.buttonLink]">
+            <img class="nav-icon" src={{contentUrl+helpAndFAQ.image.source}} aria-hidden="true" />
+            {{helpAndFAQ.button.buttonText}}
           </a>
         </li>
         <li>
-          <a *ngIf="!isLoggedIn" (click)="externalLogin()" class="account-menu"><img class="nav-icon" src="/assets/images/small-icons/profile.svg" aria-hidden="true" />Log In</a>
+          <a *ngIf="!isLoggedIn" (click)="externalLogin()" class="account-menu"><img class="nav-icon" src={{contentUrl+login.image.source}} aria-hidden="true" />{{login.button.buttonText}}</a>
           <div *ngIf="isLoggedIn" dropdown class="inline" id="signin-dropdown">
             <a dropdownToggle (click)="false">
               <img class="nav-icon" src="/assets/images/small-icons/profile.svg" aria-hidden="true" />

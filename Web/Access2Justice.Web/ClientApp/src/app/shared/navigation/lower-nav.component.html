@@ -3,58 +3,58 @@
   <div class="container">
     <div class="pull-right">
       <span class="search-form" (click)="toggleSearch()" *ngIf="!showSearch">
-        <img class="search-icon" src={{blob+search.image.source}} aria-hidden="true" />
+        <img class="search-icon" src={{contentUrl+search.image.source}} aria-hidden="true" />
         <span class="inline search-text">{{search.button.buttonText}}</span>
       </span>
-      <span class="web-hidden pull-right" id="nav-bar-toggle" (click)="openNav()" >&#9776;</span>
+      <span class="web-hidden pull-right" id="nav-bar-toggle" (click)="openNav()">&#9776;</span>
     </div>
     <div class="navbar-header">
-      <a [routerLink]="['/']">
+      <a [routerLink]="['/'+ logo.link]">
         <h3 class="inline logo" id="first-logo">{{logo.firstLogo}}</h3>
         <h3 class="inline logo">{{logo.secondLogo}}</h3>
       </a>
     </div>
-    <div class="navbar-left" >
+    <div class="navbar-left">
       <ul class="nav navbar-nav mobile-hidden">
-        <li><a [routerLink]="['/']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">{{home.button.buttonText}}</a></li>
-        <li><a [routerLink]="['/guidedassistant']" routerLinkActive="active">{{guidedAssistant.button.buttonText}}</a></li>
-        <li><a [routerLink]="['/topics']" routerLinkActive="active">{{topicAndResources.button.buttonText}}</a></li>
-        <li><a [routerLink]="['/about']" routerLinkActive="active">{{about.button.buttonText}}</a></li>
+        <li><a [routerLink]="['/'+ home.button.buttonLink]" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">{{home.button.buttonText}}</a></li>
+        <li><a [routerLink]="['/', guidedAssistant.button.buttonLink]" routerLinkActive="active">{{guidedAssistant.button.buttonText}}</a></li>
+        <li><a [routerLink]="['/', topicAndResources.button.buttonLink]" routerLinkActive="active">{{topicAndResources.button.buttonText}}</a></li>
+        <li><a [routerLink]="['/', about.button.buttonLink]" routerLinkActive="active">{{about.button.buttonText}}</a></li>
       </ul>
     </div>
     <app-search *ngIf="showSearch"></app-search>
     <div #sidenav id="sidenav">
       <a class="closebtn" (click)="closeNav()">&times;</a>
       <ul class="sidenav-menu" (click)="closeNav()">
-        <li id="home-nav"><a [routerLink]="['/']">{{home.button.buttonText}}</a></li>
+        <li id="home-nav"><a [routerLink]="['/'+ home.button.buttonLink]">{{home.button.buttonText}}</a></li>
         <li class="vertical-line"></li>
-        <li><a [routerLink]="['/guidedassistant']">{{guidedAssistant.buttonText}}</a></li>
+        <li><a [routerLink]="['/', guidedAssistant.button.buttonLink]">{{guidedAssistant.button.buttonText}}</a></li>
         <li class="vertical-line"></li>
-        <li><a [routerLink]="['/topics']">{{topicAndResources.button.buttonText}}</a></li>
+        <li><a [routerLink]="['/', topicAndResources.button.buttonLink]">{{topicAndResources.button.buttonText}}</a></li>
         <li class="vertical-line"></li>
-        <li><a [routerLink]="['/about']">{{about.button.buttonText}}</a></li>
+        <li><a [routerLink]="['/', about.button.buttonLink]">{{about.button.buttonText}}</a></li>
       </ul>
       <div class="bottom-menu" (click)="closeNav()">
         <ul>
           <li>
-            <a [routerLink]="['/privacy']">
-              <img class="nav-icon" src="/assets/images/small-icons/privacy.svg" aria-hidden="true" />
+            <a [routerLink]="['/', privacyPromise.button.buttonLink]">
+              <img class="nav-icon" src={{contentUrl+privacyPromise.image.source}} aria-hidden="true" />
               {{privacyPromise.button.buttonText}}
             </a>
           </li>
           <li>
-            <a [routerLink]="['/help']">
+            <a [routerLink]="['/', helpAndFAQ.button.buttonLink]">
               <span class="glyphicon glyphicon-question-sign nav-icon" aria-hidden="true"></span>
               {{helpAndFAQ.button.buttonText}}
             </a>
           </li>
-          <li>    
+          <li>
             <a [routerLink]="['/createaccount']" class="account-menu">
               <img class="nav-icon" src="/assets/images/small-icons/profile.svg" aria-hidden="true" />
               Create Account
             </a>
             <span>|</span>
-            <a [routerLink]="['/login']" class="account-menu">{{login.button.buttonText}}</a>
+            <a [routerLink]="['/', login.button.buttonLink]" class="account-menu">{{login.button.buttonText}}</a>
           </li>
         </ul>
       </div>

@@ -2,15 +2,15 @@ export interface Navigation {
   id: string;
   language: Language;
   location: Location;
-  privacyPromise: ButtonImage;
-  helpAndFAQ: ButtonImage;
-  login: ButtonImage;
+  privacyPromise: PrivacyPromise;
+  helpAndFAQ: HelpAndFAQ;
+  login: Login;
   logo: Logo;
-  home: Button;
-  guidedAssistant: Button;
-  topicAndResources: Button;
-  about: Button;
-  search: ButtonImage;
+  home: Home;
+  guidedAssistant: GuidedAssistant;
+  topicAndResources: TopicAndResources;
+  about: About;
+  search: Search;
 }
 
 export interface Button {
@@ -37,13 +37,44 @@ export interface Location {
   image: Image;
 }
 
-export interface ButtonImage {
-  button: Button;
-  image: Image;
-}
-
 export interface Logo {
   firstLogo: string;
   secondLogo: string;
   link: string;
+}
+
+export interface PrivacyPromise {
+  button: Button;
+  image: Image;
+}
+
+export interface HelpAndFAQ {
+  button: Button;
+  image: Image;
+}
+
+export interface Login {
+  button: Button;
+  image: Image;
+}
+
+export interface Home {
+  button: Button;
+}
+
+export interface GuidedAssistant {
+  button: Button;
+}
+
+export interface TopicAndResources {
+  button: Button;
+}
+
+export interface About {
+  button: Button;
+}
+
+export interface Search {
+  button: Button;
+  image: Image;
 }
