@@ -1,8 +1,8 @@
 <div [ngClass]="{ 'no-container': fullPage, 'container': !fullPage }">
-  <div *ngIf="isInternalResource">
+  <div *ngIf="isInternalResource || displayMessage">
     <h2>Results for {{topIntent}}.</h2>
   </div>
-  <div *ngIf="isInternalResource">
+  <div *ngIf="isInternalResource || displayMessage">
     <div class="panel-heading box-shadow">
       <span class="label-display mobile-hidden">Showing Information for </span>
       <app-location #location [mapType]="false"></app-location>
@@ -11,14 +11,20 @@
   <div *ngIf="isWebResource">
     <h2>We found the following web resources related to your search</h2>
   </div>
+  <div *ngIf="showDefaultMessage">
+    <h2>No search criteria provided.Try searching again.</h2>
+  </div>
+  <div *ngIf="showNoResultsMessage">
+    <h2>We couldn't find any results. Try search with another text.</h2>
+  </div>
   <div *ngIf="displayMessage">
     <h2>Your search for this location did not match any resources.</h2>
-      <ul>Suggestions:
-        <li>Try to search within a larger area.</li>
-        <li>Change the location.</li>
-      </ul>
+    <ul>Suggestions:
+      <li>Try to search within a larger area.</li>
+      <li>Change the location.</li>
+    </ul>
   </div>
-  <div class="row">
+  <div class="row" *ngIf="isInternalResource  || isPersonalizedresource">
     <div class="col-sm-12">
       <app-search-filter (notifyFilterCriteria)='filterSearchResults($event)' [resourceResults]="resourceResults" [initialResourceFilter]="initialResourceFilter"></app-search-filter>
     </div>
@@ -27,7 +33,7 @@
     <div [ngClass]="{ 'col-sm-12': fullPage, 'col-md-8 col-sm-12': !fullPage }">
       <div *ngIf="isInternalResource || isPersonalizedresource">
         <div *ngFor="let searchResource of searchResults.resources | searchFilter:{ filter : sortType, source : 'internal'} ">
-          <app-resource-card [searchResource]="searchResource" [isSearchResults]="true" [personalizedResources]="personalizedResources" [showRemoveOption]="showRemoveOption"></app-resource-card>          
+          <app-resource-card [searchResource]="searchResource" [isSearchResults]="true" [personalizedResources]="personalizedResources" [showRemoveOption]="showRemoveOption"></app-resource-card>
         </div>
       </div>
       <div *ngIf="isWebResource">
@@ -36,9 +42,6 @@
             <app-web-resource [webResult]="webResult"></app-web-resource>
           </div>
         </div>
-      </div>
-      <div *ngIf="isLuisResponse" class="row center-align">
-        <h3>Sorry, we did not find anything that matches you're input. Please try again.</h3>
       </div>
       <div *ngIf="isInternalResource || isWebResource">
         <app-pagination (goPage)="goToPage($event)"
