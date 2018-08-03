@@ -54,7 +54,7 @@ namespace Access2Justice.Api.Controllers
         [Route("api/user/updateuserprofile")]
         public async Task<IActionResult> UpdateUserProfileDocumentAsync(string userIdGuid, UserProfile userProfile)
         {
-            var profile = await userProfileBusinessLogic.UpdateUserProfileDataAsync(userProfile);
+            var profile = await userProfileBusinessLogic.UpdateUserProfileDataAsync(userProfile, userIdGuid);
             return Ok(profile);
         }
 
