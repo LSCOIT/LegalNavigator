@@ -200,5 +200,13 @@ namespace Access2Justice.Api.Controllers
             var actionPlans = await personalizedPlanBusinessLogic.GetPlanDataAsync(id);
             return Ok(actionPlans);
         }
+
+        [HttpGet]
+        [Route("getplan/{id}")]
+        public async Task<IActionResult> GetPlanAsync(string id)
+        {
+            var actionPlans = await personalizedPlanBusinessLogic.GetPersonalizedPlan(id);
+            return Ok(actionPlans);
+        }
     }
 }

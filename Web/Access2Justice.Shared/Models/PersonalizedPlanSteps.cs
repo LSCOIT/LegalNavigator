@@ -14,6 +14,9 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "topics")]
         public List<PersonalizedPlanTopic> Topics { get; set; }
 
+        [JsonProperty(PropertyName = "isShared")]
+        public bool IsShared { get; set; }
+
         public PersonalizedPlanSteps()
         {
             Topics = new List<PersonalizedPlanTopic>();

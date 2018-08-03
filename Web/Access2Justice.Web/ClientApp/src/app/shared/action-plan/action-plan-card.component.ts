@@ -27,7 +27,7 @@ export class ActionPlanCardComponent implements OnChanges {
   planTopic: PlanTopic = { topicId: '', steps: this.personalizedPlanSteps };
   planTopics: Array<PlanTopic>;
   resourceIds: Array<string>;
-  personalizedPlan: PersonalizedPlan = { id: '', topics: this.planTopics };
+  personalizedPlan: PersonalizedPlan = { id: '', topics: this.planTopics, isShared:false };
   selectedPlanDetails: any = { planDetails: [], topicId: '' };
 
   constructor(private personalizedPlanService: PersonalizedPlanService,
@@ -76,7 +76,7 @@ export class ActionPlanCardComponent implements OnChanges {
       this.planTopic = { topicId: item.topicId, steps: this.personalizedPlanSteps };
       this.planTopics.push(this.planTopic);
     });
-    this.personalizedPlan = { id: this.planDetails.id, topics: this.planTopics };
+    this.personalizedPlan = { id: this.planDetails.id, topics: this.planTopics, isShared: this.planDetails.isShared };
   }
 
   getResourceIds(resources): Array<string> {
@@ -117,7 +117,8 @@ export class ActionPlanCardComponent implements OnChanges {
   updateProfilePlan(isChecked, template) {
     const params = {
       "id": this.personalizedPlan.id,
-      "topics": this.personalizedPlan.topics
+      "topics": this.personalizedPlan.topics,
+      "isShared": this.personalizedPlan.isShared
     }
     this.personalizedPlanService.userPlan(params)
       .subscribe(response => {
@@ -164,7 +165,7 @@ export class ActionPlanCardComponent implements OnChanges {
       this.planTopic = { topicId: item.topicId, steps: this.personalizedPlanSteps };
       this.planTopics.push(this.planTopic);
     });
-    this.personalizedPlan = { id: this.planDetails.id, topics: this.planTopics };
+    this.personalizedPlan = { id: this.planDetails.id, topics: this.planTopics, isShared: this.planDetails.isShared };
     this.selectedPlanDetails = { planDetails: this.personalizedPlan, topicId: topicId };
   }
 

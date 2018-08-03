@@ -54,25 +54,19 @@ namespace Access2Justice.Api.BusinessLogic
             }
             return userProfile;
         }
-        public async Task<dynamic> UpdateUserProfileDataAsync(UserProfile userProfile)
-        {
-            var resultUP = await GetUserProfileDataAsync(userProfile.OId);
-            var result = await dbService.UpdateItemAsync(resultUP.Id, ResourceDeserialized(resultUP), dbSettings.UserProfileCollectionId);
-            return result;
-        }
-        public async Task<dynamic> UpdateUserProfilePlanIdAsync(string oId, Guid planId)
+        public async Task<UserProfile> UpdateUserProfilePlanIdAsync(string oId, Guid planId)
         {
             var resultUP = await GetUserProfileDataAsync(oId);
             resultUP.PersonalizedActionPlanId = planId;
             var result = await dbService.UpdateItemAsync(resultUP.Id, ResourceDeserialized(resultUP), dbSettings.UserProfileCollectionId);
-            return result;
+            return JsonConvert.DeserializeObject<UserProfile>(JsonConvert.SerializeObject(result));
         }
         private object ResourceDeserialized(UserProfile userProfile)
         {
             var serializedResult = JsonConvert.SerializeObject(userProfile);
             return JsonConvert.DeserializeObject<object>(serializedResult);
         }
-        public async Task<dynamic> UpsertUserPersonalizedPlanAsync(dynamic userData)
+        public async Task<dynamic> UpsertUserSavedResourcesAsync(dynamic userData)
         {
             var serializedResult = JsonConvert.SerializeObject(userData);
             var userDocument = JsonConvert.DeserializeObject(serializedResult);

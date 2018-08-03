@@ -13,6 +13,9 @@ namespace Access2Justice.Api.ViewModels
         [JsonProperty(PropertyName = "topics")]
         public List<PlanTopic> Topics { get; set; }
 
+        [JsonProperty(PropertyName = "isShared")]
+        public bool IsShared { get; set; }
+
         public PersonalizedActionPlanViewModel()
         {
             Topics = new List<PlanTopic>();

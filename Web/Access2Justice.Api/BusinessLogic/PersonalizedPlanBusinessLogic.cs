@@ -93,6 +93,7 @@ namespace Access2Justice.Api.BusinessLogic
 
             var personalizedPlan = new PersonalizedPlanSteps();
             personalizedPlan.PersonalizedPlanId = Guid.NewGuid();
+            personalizedPlan.IsShared = false;
             personalizedPlan.Topics = planTopics;
 
             // var sanitizedObject = personalizedPlan.Topics.Select(x => x.PlanSteps.Select(v => v.TopicIds.Count() > 0));
@@ -155,6 +156,7 @@ namespace Access2Justice.Api.BusinessLogic
             List<Resource> resourceDetails = JsonConvert.DeserializeObject<List<Resource>>(JsonConvert.SerializeObject(resourceData));
             PersonalizedActionPlanViewModel personalizedPlan = new PersonalizedActionPlanViewModel();
             personalizedPlan.PersonalizedPlanId = personalizedPlanSteps.PersonalizedPlanId;
+            personalizedPlan.IsShared = personalizedPlanSteps.IsShared;
 
             List<PlanTopic> planTopics = new List<PlanTopic>();
             foreach (var item in personalizedPlanSteps.Topics)
@@ -198,9 +200,9 @@ namespace Access2Justice.Api.BusinessLogic
 
             foreach (var topic in topicDetails)
             {
-                if (topic.TopicId == topicId && topic.QuickLinks.Count>0)
+                if (topic.TopicId == topicId && topic.QuickLinks.Count > 0)
                 {
-                    foreach(var quickLink in topic.QuickLinks)
+                    foreach (var quickLink in topic.QuickLinks)
                     {
                         quicklinks.Add(new PlanQuickLink
                         {
@@ -211,7 +213,7 @@ namespace Access2Justice.Api.BusinessLogic
                 }
             }
             return quicklinks;
-        } 
+        }
 
         public List<PlanStep> ConvertToPlanSteps(List<PersonalizedPlanStep> personalizedPlanSteps, List<Resource> resourceDetails)
         {
@@ -248,11 +250,17 @@ namespace Access2Justice.Api.BusinessLogic
             return resources;
         }
 
-        public async Task<dynamic> UpdatePersonalizedPlan(PersonalizedPlanSteps plan)
+        public async Task<PersonalizedPlanSteps> GetPersonalizedPlan(string planId)
         {
-            var personalizedPlanSteps= JsonConvert.DeserializeObject<object>(JsonConvert.SerializeObject(plan));
+            var planDetails = await dynamicQueries.FindItemsWhereAsync(dbSettings.PersonalizedActionPlanCollectionId, Constants.Id, planId);
+            return JsonConvert.DeserializeObject<PersonalizedPlanSteps>(JsonConvert.SerializeObject(planDetails));
+        }
+
+        public async Task<PersonalizedPlanSteps> UpdatePersonalizedPlan(PersonalizedPlanSteps plan)
+        {
+            var personalizedPlanSteps = JsonConvert.DeserializeObject<object>(JsonConvert.SerializeObject(plan));
             var result = await dbService.UpdateItemAsync(plan.PersonalizedPlanId.ToString(), personalizedPlanSteps, dbSettings.PersonalizedActionPlanCollectionId);
-            return result;
+            return JsonConvert.DeserializeObject<PersonalizedPlanSteps>(JsonConvert.SerializeObject(result));
         }
     }
 }

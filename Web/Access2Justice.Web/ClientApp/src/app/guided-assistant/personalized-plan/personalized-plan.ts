@@ -19,6 +19,7 @@ export interface ProfileResources {
 export interface PersonalizedPlan {
   id: string;
   topics: Array<PlanTopic>;
+  isShared: boolean;
 }
 
 export interface PlanTopic {
