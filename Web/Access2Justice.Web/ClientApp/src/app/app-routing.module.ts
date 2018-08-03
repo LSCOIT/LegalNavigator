@@ -22,7 +22,7 @@ import { PersonalizedPlanComponent } from './guided-assistant/personalized-plan/
 const appRoutes: Routes = [
   { path: 'search', component: SearchResultsComponent },
   { path: 'searchRefresh', component: SearchResultsComponent },
-  { path: 'guidedassistant/123', component: CuratedExperienceComponent },
+  { path: 'guidedassistant/:id', component: CuratedExperienceComponent },
   { path: 'guidedassistant', component: GuidedAssistantComponent },
   { path: 'resource/:id', component: ResourceCardDetailComponent },
   { path: 'subtopics/:topic', component: SubtopicDetailComponent },

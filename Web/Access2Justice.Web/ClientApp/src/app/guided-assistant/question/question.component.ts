@@ -4,6 +4,7 @@ import { HttpParams } from '@angular/common/http';
 import { QuestionService } from './question.service';
 import { Question } from './question';
 import { Answer } from './answers';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-question',
@@ -19,7 +20,10 @@ export class QuestionComponent implements OnInit {
   @Output() sendQuestionsRemainingEvent = new EventEmitter<number>();
   @Output() sendTotalQuestionsEvent = new EventEmitter<number>();
 
-  constructor(private questionService: QuestionService) { }
+  constructor(
+    private questionService: QuestionService,
+    private activeRoute: ActivatedRoute
+  ) { }
 
   sendQuestionsRemaining(questionsRemaining) {
     this.sendQuestionsRemainingEvent.emit(questionsRemaining);
@@ -30,7 +34,8 @@ export class QuestionComponent implements OnInit {
   }
 
   getQuestion(): void {
-    this.curatedExperienceId = "9a6a6131-657d-467d-b09b-c570b7dad242";
+    
+    this.curatedExperienceId = this.activeRoute.snapshot.params["id"];
     let params = new HttpParams()
       .set("curatedExperienceId", this.curatedExperienceId);
     this.questionService.getQuestion(params)
