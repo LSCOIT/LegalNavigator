@@ -37,7 +37,7 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "modifiedTimeStamp")]
         public string ModifiedTimeStamp { get; set; }
 
-        [JsonProperty(PropertyName = "shareResource")]
+        [JsonProperty(PropertyName = "sharedResource")]
         public List<SharedResource> SharedResource { get; set; }
 
     }

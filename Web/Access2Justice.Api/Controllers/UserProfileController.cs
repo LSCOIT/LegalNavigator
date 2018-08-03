@@ -3,6 +3,8 @@ using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using Access2Justice.Shared;
+using Microsoft.AspNetCore.Http;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -83,19 +85,27 @@ namespace Access2Justice.Api.Controllers
         }
 
         [HttpPost]
-        [Route("share")]
-        public async Task<IActionResult> ShareAsync([FromQuery]Guid resourceGuid, [FromQuery]string oId)
+        [Route("api/user/share")]
+        public async Task<IActionResult> ShareAsync([FromBody] ShareInput shareInput)
         {
-            var users = await userProfileBusinessLogic.ShareResourceDataAsync(resourceGuid, oId);
-            return Ok(users);
+            if (shareInput != null)
+            {
+                var response = await userProfileBusinessLogic.ShareResourceDataAsync(shareInput);
+                return Ok(response);
+            }
+            return StatusCode(StatusCodes.Status412PreconditionFailed);
         }
 
         [HttpPost]
-        [Route("unshare")]
-        public async Task<IActionResult> UnshareAsync([FromQuery]Guid resourceGuid, [FromQuery]string oId)
+        [Route("api/user/unshare")]
+        public async Task<IActionResult> UnshareAsync([FromBody] UnShareInput unShareInput)
         {
-            var users = await userProfileBusinessLogic.UnshareResourceDataAsync(resourceGuid, oId);
-            return Ok(users);
+            if (unShareInput != null)
+            {
+                var response = await userProfileBusinessLogic.UnshareResourceDataAsync(unShareInput);
+                return Ok(response);
+            }
+            return StatusCode(StatusCodes.Status412PreconditionFailed);
         }
-    }   
+    }
 }

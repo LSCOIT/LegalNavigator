@@ -6,6 +6,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
 using System.Globalization;
+using Access2Justice.Shared;
+using Microsoft.Azure.Documents;
+using Microsoft.AspNetCore.Http;
 
 namespace Access2Justice.Api.BusinessLogic
 {
@@ -240,42 +243,58 @@ namespace Access2Justice.Api.BusinessLogic
             return await dbService.UpdateItemAsync(id, dbObject, dbSettings.ResourceCollectionId);
         }
 
-        public async Task<object> ShareResourceDataAsync(Guid resourceGuid, string oId)
+        public async Task<object> ShareResourceDataAsync(ShareInput shareInput)
         {
-            UserProfile userProfile = await GetUserProfileDataAsync(oId);
+            UserProfile userProfile = await GetUserProfileDataAsync(shareInput.UserId);
+            var permaLink = Utilities.GenerateSHA256String(shareInput.UserId + shareInput.ResourceId);
             var sharedResource = new SharedResource
             {
                 ExpirationDate = DateTime.UtcNow,
                 IsShared = true,
-                //ToDo - Need to finalize how to pass the actual route url because the share functionality is available in multiple places
-                //Topics Detail Page - route url here is /topics
-                //Personalized Plan Page - /plan
-                //Resource Detail Page - /resource
-                //Profile Page - /profile
-                Url = new Uri("/plan/" + resourceGuid.ToString("D", CultureInfo.InvariantCulture), UriKind.Relative),
-                PermaLink = oId + resourceGuid
+                Url = new Uri(shareInput.Url + "/" + shareInput.ResourceId.ToString("D", CultureInfo.InvariantCulture), UriKind.Relative),
+                PermaLink = permaLink
             };
             if (userProfile.SharedResource == null)
             {
                 userProfile.SharedResource = new List<SharedResource>();
             }
             userProfile.SharedResource.Add(sharedResource);
-
-            return await UpdateUserProfileDataAsync(userProfile);
+            if (shareInput.Url.OriginalString.Contains("plan"))
+            {
+                //ToDo - Update the IsShared flag in the personalized plan document when user share the plan 
+                //PersonalizedPlanSteps plan = GetPersonalizedPlan(shareInput.ResourceId);
+                //plan.IsShared = true;
+                //UpdatePersonalizedPlan(plan);
+            }
+            var response = await UpdateUserProfileDataAsync(userProfile);
+            if (response == null)
+            {
+                return StatusCodes.Status500InternalServerError;
+            }
+            return permaLink;
         }
 
-        public async Task<object> UnshareResourceDataAsync(Guid resourceGuid, string oId)
+        public async Task<object> UnshareResourceDataAsync(UnShareInput unShareInput)
         {
-            UserProfile userProfile = await GetUserProfileDataAsync(oId);
-            userProfile.SharedResource.RemoveAll(a => a.PermaLink == oId + resourceGuid);
-            return await UpdateUserProfileDataAsync(userProfile);
+            UserProfile userProfile = await GetUserProfileDataAsync(unShareInput.UserId);
+            var permaLink = Utilities.GenerateSHA256String(unShareInput.UserId + unShareInput.ResourceId);
+            var sharedResource = userProfile.SharedResource.FindAll(a => a.PermaLink == permaLink);
+            if (sharedResource.Count == 0)
+            {
+                return false;
+            }
+            userProfile.SharedResource.RemoveAll(a => a.PermaLink == permaLink);
+            var response = await UpdateUserProfileDataAsync(userProfile);
+            if (response == null)
+            {
+                return StatusCodes.Status500InternalServerError;
+            }
+            return true;
         }
 
-        public async Task<int> UpdateUserProfileDataAsync(UserProfile userProfile)
+        public async Task<object> UpdateUserProfileDataAsync(UserProfile userProfile)
         {
-            var result = await dbService.UpdateItemAsync(userProfile.Id, ResourceDeserialized(userProfile), dbSettings.UserProfileCollectionId);
-            if (result.ToString().Contains(userProfile.OId)) return 1;
-            return 0;
+            return await dbService.UpdateItemAsync(userProfile.Id, ResourceDeserialized(userProfile), dbSettings.UserProfileCollectionId);
         }
     }
 }
