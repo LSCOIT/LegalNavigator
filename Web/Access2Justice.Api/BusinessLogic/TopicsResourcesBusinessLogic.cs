@@ -35,7 +35,7 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<dynamic> GetTopicsAsync(string keyword,Location location)
         {
-            return await dbClient.FindItemsWhereContainsWithLocationAsync(dbSettings.TopicCollectionId, "keywords", keyword.ToUpperInvariant(), location);
+            return await dbClient.FindItemsWhereContainsWithLocationAsync(dbSettings.TopicCollectionId, "keywords", keyword, location);
         }
 
         public async Task<dynamic> GetTopLevelTopicsAsync()

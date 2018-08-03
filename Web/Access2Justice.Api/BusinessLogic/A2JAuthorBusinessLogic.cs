@@ -11,6 +11,15 @@ namespace Access2Justice.Api.BusinessLogic
 {
     public class A2JAuthorBusinessLogic : IA2JAuthorBusinessLogic
     {
+        private readonly ICosmosDbSettings dbSettings;
+        private readonly IBackendDatabaseService dbService;
+
+        public A2JAuthorBusinessLogic(ICosmosDbSettings cosmosDbSettings, IBackendDatabaseService backendDatabaseService)
+        {
+            dbSettings = cosmosDbSettings;
+            dbService = backendDatabaseService;
+        }
+
         public CuratedExperience ConvertA2JAuthorToCuratedExperience(JObject a2jSchema)
         {
             var cx = new CuratedExperience();
@@ -39,9 +48,9 @@ namespace Access2Justice.Api.BusinessLogic
                 });
             }
 
-            // Todo:@Alaa persist the curated experience and the resource
-            // save curated experience
-            // save resources
+            // Todo: we should figure a way to do upsert, we currently can't do that because we don't have an identifier 
+            dbService.CreateItemAsync(cx, dbSettings.CuratedExperienceCollectionId);
+            dbService.CreateItemAsync(resource, dbSettings.ResourceCollectionId);
 
             return cx;
         }
