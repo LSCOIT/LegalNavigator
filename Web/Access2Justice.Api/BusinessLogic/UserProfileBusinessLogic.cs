@@ -249,7 +249,7 @@ namespace Access2Justice.Api.BusinessLogic
             var permaLink = Utilities.GenerateSHA256String(shareInput.UserId + shareInput.ResourceId);
             var sharedResource = new SharedResource
             {
-                ExpirationDate = DateTime.UtcNow,
+                ExpirationDate = DateTime.UtcNow.AddYears(1),
                 IsShared = true,
                 Url = new Uri(shareInput.Url + "/" + shareInput.ResourceId.ToString("D", CultureInfo.InvariantCulture), UriKind.Relative),
                 PermaLink = permaLink
