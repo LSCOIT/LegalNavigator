@@ -11,11 +11,6 @@
               <app-save-button [showIcon]=false [id]="resource.id" [type]="resource.resourceType"></app-save-button>
               </a>
             </li>
-            <li role="menuitem">
-              <a class="dropdown-item" href="#">
-                <app-share-button></app-share-button>
-              </a>
-            </li>
             <li role="menuitem" *ngIf="showRemoveOption">
               <a class="dropdown-item">
                 <app-remove-button [resourceId]="resource.id" [resourceType]="resource.resourceType" [personalizedResources]="personalizedResources"></app-remove-button>
@@ -58,10 +53,8 @@
         <div class="media-left">
           <img class="media-object" src="/assets/images/icons/organizations.svg" aria-hidden="true">
         </div>
-        <div class="media-body">          
-          <a (click)="navigateToResource(resource)"><h4 class="media-heading">{{resource.name}}, {{resource.type}}</h4></a>
-          <!--<a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}, {{resource.type}}</h4></a>-->
-          <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span><span class="span-text">External link</span>
+        <div class="media-body">
+          <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}, {{resource.type}}</h4></a>
           <p>{{resource.description}}</p>
           <div class="org-content span-text">
             <div class="col-sm-4" *ngIf="resource.address.length > 0">
@@ -84,23 +77,23 @@
           <img class="media-object" src="/assets/images/icons/videos.svg" alt="Video">
         </div>
         <div class="media-body">
-          <!--TO DO Need to check whether routing is really needed or not-->
-          <h4 class="media-heading" (click)="openModal(template)">{{resource.name}}</h4>
+          <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}</h4></a>
           <p>{{resource.description}}</p>
         </div>
-        <ng-template #template>
+        <!--<ng-template #template>
           <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
             <span aria-hidden="true">&times;</span>
           </button>
           <iframe title="{{resource.name}}" [src]='resourceUrl()' frameborder="0" allowfullscreen></iframe>
-        </ng-template>
+        </ng-template>-->
       </div>
-      <div *ngIf="resource.resourceType === 'Forms'" class="media">
+      <div *ngIf="resource.resourceType === 'Forms' || resource.resourceType === 'Related Links'" class="media">
         <div class="media-left">
           <img class="media-object" src="/assets/images/icons/forms.svg" alt="Form">
         </div>
         <div class="media-body">
-          <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}</h4></a>
+          <a [href]="resource.url"><h4 class="media-heading">{{resource.name}}</h4></a>
+          <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span><span class="span-text">External link</span>
           <p>{{resource.description}}</p>
         </div>
       </div>
@@ -120,7 +113,6 @@
           <img class="media-object" src="/assets/images/icons/action_plans.svg" alt="Action Plan">
         </div>
         <div class="media-body">
-          <!--TO DO Need to check on this for routing URL-->
           <a [routerLink]="['/guidedassistant', resource.externalUrl]"><h4 class="media-heading">{{resource.name}}</h4></a>
           <div class="media-body">
             <p>{{resource.description}}</p>

@@ -1,15 +1,15 @@
-<div class="container">
-  <!--<div *ngIf="resource.resourcetype === 'articles">-->
-    <!--<app-articles></app-articles>-->
-  <!--</div>-->
-  <!--<div *ngIf="resource.resourcetype === 'organiations">-->
-    <app-organizations [organizationResource]="organizationResource"></app-organizations>
-  <!--</div>-->
-  <!--<div *ngIf="resource.resourcetype === 'videos">-->
-    <!--<app-videos></app-videos>-->
-  <!--</div>-->
-  <!--<div *ngIf="resource.resourcetype === 'action plans">-->
-    <!--<app-action-plans></app-action-plans>-->
-  <!--</div>-->
+<div *ngIf="resource" class="container">
+  <div *ngIf="resource.resourceType === 'Articles'">
+    <app-articles [resource]="resource"></app-articles>
+  </div>
+  <div *ngIf="resource.resourceType === 'Organizations'">
+    <app-organizations [resource]="resource"></app-organizations>
+  </div>
+  <div *ngIf="resource.resourceType === 'Videos'">
+    <app-videos [resource]="resource"></app-videos>
+  </div>
+  <div *ngIf="resource.resourceType === 'Action Plans'">
+    <app-action-plans></app-action-plans>
+  </div>
 </div>
 

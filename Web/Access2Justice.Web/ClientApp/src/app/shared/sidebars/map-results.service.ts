@@ -16,6 +16,11 @@ export class MapResultsService {
     return this.http.get(searchRequest);
   }
 
+  getAddressBasedOnPoints(latitude, longitude, credentials): any {
+    let searchRequest = 'http://dev.virtualearth.net/REST/v1/Locations/' + encodeURI(latitude) + ',' + encodeURI(longitude) + '?key=' + credentials;
+    return this.http.get(searchRequest);
+  }
+
   getMap() {
     let map = new Microsoft.Maps.Map('#my-map-results',
       {

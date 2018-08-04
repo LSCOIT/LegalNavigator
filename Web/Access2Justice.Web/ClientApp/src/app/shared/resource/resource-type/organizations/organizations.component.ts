@@ -11,6 +11,7 @@ export class OrganizationsComponent implements OnInit {
   currentImage: string;
   currentModalImage: string;
   modalRef: BsModalRef;
+  @Input() resource;
   @Input()
   organizationResource: any;
   searchResource: any = { resources: [] };

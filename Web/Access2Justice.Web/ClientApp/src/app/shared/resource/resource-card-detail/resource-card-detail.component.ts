@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ArrayUtilityService } from '../../array-utility.service';
+import { ActivatedRoute } from '@angular/router';
+import { ResourceService } from '../resource.service';
 
 @Component({
   selector: 'app-resource-card-detail',
@@ -7,12 +8,22 @@ import { ArrayUtilityService } from '../../array-utility.service';
   styleUrls: ['./resource-card-detail.component.css']
 })
 export class ResourceCardDetailComponent implements OnInit {
+  resource: any;
+  resourceId: string;
 
-  constructor(private arrayUtilityService: ArrayUtilityService) { }
-  organizationResource: any;
+  constructor(
+    private resourceService: ResourceService,
+    private activeRoute: ActivatedRoute
+  ) { }
+
+  getResource() {
+    this.resourceId = this.activeRoute.snapshot.params["id"];
+    this.resourceService.getResource(this.resourceId)
+      .subscribe(resource => this.resource = resource[0]);
+  };
 
   ngOnInit() {
-    this.organizationResource = this.arrayUtilityService.resource;
+    this.getResource();
   }
 
 }
