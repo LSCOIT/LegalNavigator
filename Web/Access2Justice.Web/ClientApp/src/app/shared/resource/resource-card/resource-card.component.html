@@ -6,9 +6,14 @@
           <img dropdownToggle type="button" class="more-menu dropdown-toggle" src="./assets/images/small-icons/more_menu.svg" alt="Menu" />
           <ul id="dropdown-disabled-item" *dropdownMenu class="dropdown-menu dropdown-menu-right"
               role="menu">
+            <li role="menuitem">
+              <a class="dropdown-item">
+                <app-share-button [showIcon]=false></app-share-button>
+              </a>
+            </li>
             <li role="menuitem" id="save-dropdown" *ngIf="!showRemoveOption">
               <a class="dropdown-item">
-              <app-save-button [showIcon]=false [id]="resource.id" [type]="resource.resourceType"></app-save-button>
+                <app-save-button [showIcon]=false [id]="resource.id" [type]="resource.resourceType"></app-save-button>
               </a>
             </li>
             <li role="menuitem" *ngIf="showRemoveOption">
