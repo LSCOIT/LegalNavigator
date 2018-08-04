@@ -84,7 +84,6 @@ namespace Access2Justice.CosmosDb.Tests
 
             // Assert
             cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(), query);
-
         }
 
         [Fact]
@@ -98,7 +97,6 @@ namespace Access2Justice.CosmosDb.Tests
 
             // Assert
             cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(), query);
-
         }
 
         [Fact]
@@ -124,8 +122,7 @@ namespace Access2Justice.CosmosDb.Tests
             dynamicQueries.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter);
 
             // Assert
-            cosmosDbService.Received().QueryPagedResourcesAsync(query, "");            
-
+            cosmosDbService.Received().QueryPagedResourcesAsync(query, "");
         }
 
         [Fact]
@@ -143,7 +140,6 @@ namespace Access2Justice.CosmosDb.Tests
 
             // Assert
             cosmosDbService.Received().QueryPagedResourcesAsync(query, "");
-
         }
 
         [Fact]
@@ -161,7 +157,6 @@ namespace Access2Justice.CosmosDb.Tests
 
             // Assert
             cosmosDbService.Received().QueryPagedResourcesAsync(query, resourceFilter.ContinuationToken);
-
         }
 
         [Fact]
@@ -177,7 +172,6 @@ namespace Access2Justice.CosmosDb.Tests
 
             // Assert
             cosmosDbService.Received().QueryPagedResourcesAsync(query, "");
-
         }
 
         [Fact]
@@ -194,7 +188,36 @@ namespace Access2Justice.CosmosDb.Tests
 
             // Assert
             cosmosDbService.Received().QueryPagedResourcesAsync(query, "");
+        }
 
+        [Fact]
+        public void FindItemsWhereArrayContainsWithAndClauseAsyncShouldVaildSqlQueryWithResourceTypeAndLocationDetails()
+        {
+            // Arrange
+            Location location = new Location { State = "Hawaii", City = "Honolulu", County = "Honolulu", ZipCode = "96801" };
+            ResourceFilter resourceFilter = new ResourceFilter { PageNumber = 0, ResourceType = "Forms", Location = location };
+            string query = "SELECT * FROM c WHERE  c.resourceType = 'Forms' AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\",\"county\":\"Honolulu\",\"city\":\"Honolulu\",\"zipCode\":\"96801\"},true))";
+
+            //Act
+            dynamicQueries.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter);
+
+            // Assert
+            cosmosDbService.Received().QueryPagedResourcesAsync(query, "");
+        }
+
+        [Fact]
+        public void FindItemsWhereArrayContainsWithAndClauseAsyncShouldVaildSqlQueryWithOnlyLocationDetails()
+        {
+            // Arrange
+            Location location = new Location { State = "Hawaii", City = "Honolulu", County = "Honolulu", ZipCode = "96801" };
+            ResourceFilter resourceFilter = new ResourceFilter { PageNumber = 0, ResourceType = "ALL", Location = location };
+            string query = "SELECT * FROM c WHERE  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\",\"county\":\"Honolulu\",\"city\":\"Honolulu\",\"zipCode\":\"96801\"},true))";
+
+            //Act
+            dynamicQueries.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter);
+
+            // Assert
+            cosmosDbService.Received().QueryPagedResourcesAsync(query, "");
         }
 
         [Fact]
@@ -211,7 +234,21 @@ namespace Access2Justice.CosmosDb.Tests
 
             // Assert
             cosmosDbService.Received().QueryResourcesCountAsync(query);
+        }
 
+        [Fact]
+        public void FindItemsWhereArrayContainsWithAndClauseAsyncShouldVaildSqlQueryForResourceCountWithLocationDetails()
+        {
+            // Arrange
+            Location location = new Location { State = "Hawaii" };
+            ResourceFilter resourceFilter = new ResourceFilter { PageNumber = 0, ResourceType = "ALL", Location = location };
+            string query = "SELECT c.resourceType FROM c WHERE  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\"},true))";
+
+            //Act
+            dynamicQueries.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter, true);
+
+            // Assert
+            cosmosDbService.Received().QueryResourcesCountAsync(query);
         }
 
         [Fact]
@@ -226,8 +263,6 @@ namespace Access2Justice.CosmosDb.Tests
 
             // Assert
             cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(), query);
-
         }
-
     }
 }
