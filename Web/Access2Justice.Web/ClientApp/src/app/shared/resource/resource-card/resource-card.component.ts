@@ -35,11 +35,6 @@ export class ResourceCardComponent implements OnInit {
     return this.url;
   }
 
-  navigateToResource(resource: any) {
-    this.arrayUtilityService.resource = resource;
-    this.router.navigate(['/resource', resource.id]);
-  }
-
   ngOnInit() {
     if (this.searchResource != null || this.searchResource != undefined) {
       this.resource = this.searchResource;

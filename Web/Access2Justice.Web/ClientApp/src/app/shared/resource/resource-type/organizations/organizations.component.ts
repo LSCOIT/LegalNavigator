@@ -12,9 +12,7 @@ export class OrganizationsComponent implements OnInit {
   currentModalImage: string;
   modalRef: BsModalRef;
   @Input() resource;
-  @Input()
-  organizationResource: any;
-  searchResource: any = { resources: [] };
+  @Input() searchResource: any = { resources: [] };
 
   constructor(private modalService: BsModalService) { }
 
@@ -23,18 +21,14 @@ export class OrganizationsComponent implements OnInit {
   }
 
   changeImage(image) {
-    console.log(image.target.src);
     this.currentImage = image.target.src;
   }
 
   changeModalImage(image) {
-    console.log(image.target.src);
     this.currentModalImage = image.target.src;
   }
 
   ngOnInit() {
-    this.organizationResource = this.organizationResource;
-    this.searchResource.resources.push(this.organizationResource);
+    this.searchResource.resources.push(this.resource);
   }
-
 }
