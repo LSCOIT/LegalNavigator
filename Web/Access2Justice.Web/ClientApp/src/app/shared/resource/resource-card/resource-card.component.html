@@ -80,12 +80,6 @@
           <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}</h4></a>
           <p>{{resource.description}}</p>
         </div>
-        <!--<ng-template #template>
-          <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-            <span aria-hidden="true">&times;</span>
-          </button>
-          <iframe title="{{resource.name}}" [src]='resourceUrl()' frameborder="0" allowfullscreen></iframe>
-        </ng-template>-->
       </div>
       <div *ngIf="resource.resourceType === 'Forms' || resource.resourceType === 'Related Links'" class="media">
         <div class="media-left">

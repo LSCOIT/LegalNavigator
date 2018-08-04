@@ -1,9 +1,5 @@
-import { Component, OnInit, Input, TemplateRef } from '@angular/core';
-import { BsModalService } from 'ngx-bootstrap/modal';
-import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { Component, OnInit, Input } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ArrayUtilityService } from '../../array-utility.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-resource-card',
@@ -11,7 +7,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./resource-card.component.css']
 })
 export class ResourceCardComponent implements OnInit {
-  modalRef: BsModalRef;
   @Input() personalizedResources;
   @Input() resource: any;
   @Input() searchResource: any;
@@ -19,15 +14,8 @@ export class ResourceCardComponent implements OnInit {
   @Input() showRemoveOption: boolean;
   url: any;
 
-  constructor(public sanitizer: DomSanitizer,
-    private modalService: BsModalService,
-    private router: Router,
-    private arrayUtilityService: ArrayUtilityService) {
+  constructor(public sanitizer: DomSanitizer) {
     this.sanitizer = sanitizer;
-  }
-
-  openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template);
   }
 
   resourceUrl() {
