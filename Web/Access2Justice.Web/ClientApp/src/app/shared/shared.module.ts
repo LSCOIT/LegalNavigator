@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from '../app-routing.module';
 import { FormsModule } from '@angular/forms';
-import { AccordionModule, BsDropdownModule, ModalModule } from 'ngx-bootstrap';
+import { AccordionModule, BsDropdownModule, ModalModule, CarouselModule } from 'ngx-bootstrap';
 
 import { ChatbotComponent } from './chatbot/chatbot.component';
 import { CuratedResourceComponent } from './search/search-results/curated-resource/curated-resource.component';
@@ -34,7 +34,7 @@ import { MapResultsComponent } from './sidebars/map-results.component';
 import { MapResultsService } from './sidebars/map-results.service';
 import { PaginationComponent } from './pagination/pagination.component';
 import { PaginationService } from './search/pagination.service';
-import { ActionPlanCardComponent } from './action-plan/action-plan-card.component';
+import { ActionPlansComponent } from './resource/resource-type/action-plan/action-plans.component';
 import { UserActionSidebarComponent } from './sidebars/user-action-sidebar.component';
 import { SettingButtonComponent } from './resource/user-action/setting-button.component';
 import { ServiceOrgService } from './sidebars/service-org.service';
@@ -42,6 +42,10 @@ import { ArrayUtilityService } from './array-utility.service';
 import { HelplineComponent } from './helpline/helpline.component';
 import { ButtonSelectedDirective } from './styling/button-selected.directive';
 import { EventUtilityService } from './event-utility.service';
+import { ArticlesComponent } from './resource/resource-type/articles/articles.component';
+import { OrganizationsComponent } from './resource/resource-type/organizations/organizations.component';
+import { VideosComponent } from './resource/resource-type/videos/videos.component';
+import { ResourceService } from './resource/resource.service';
 
 @NgModule({
   imports: [
@@ -50,10 +54,11 @@ import { EventUtilityService } from './event-utility.service';
     FormsModule,
     AccordionModule.forRoot(),
     BsDropdownModule.forRoot(),
-    ModalModule.forRoot()    
+    ModalModule.forRoot(),
+    CarouselModule.forRoot()
   ],
   declarations: [
-    ActionPlanCardComponent,
+    ActionPlansComponent,
     ChatbotComponent,
     CuratedResourceComponent,
     DownloadButtonComponent,
@@ -81,10 +86,13 @@ import { EventUtilityService } from './event-utility.service';
     UserActionSidebarComponent,
     SettingButtonComponent,
     HelplineComponent,
-    ButtonSelectedDirective
+    ButtonSelectedDirective,
+    ArticlesComponent,
+    OrganizationsComponent,
+    VideosComponent
   ],
   exports: [
-    ActionPlanCardComponent,
+    ActionPlansComponent,
     ChatbotComponent,
     CuratedResourceComponent,
     DownloadButtonComponent,
@@ -118,7 +126,8 @@ import { EventUtilityService } from './event-utility.service';
     PaginationService,
     ServiceOrgService,
     ArrayUtilityService,
-    EventUtilityService
+    EventUtilityService,
+    ResourceService
   ]
 })
 export class SharedModule { }

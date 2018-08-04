@@ -1,1 +1,15 @@
+<div *ngIf="resource" class="container">
+  <div *ngIf="resource.resourceType === 'Articles'">
+    <app-articles [resource]="resource"></app-articles>
+  </div>
+  <div *ngIf="resource.resourceType === 'Organizations'">
+    <app-organizations [resource]="resource"></app-organizations>
+  </div>
+  <div *ngIf="resource.resourceType === 'Videos'">
+    <app-videos [resource]="resource"></app-videos>
+  </div>
+  <div *ngIf="resource.resourceType === 'Action Plans'">
+    <app-action-plans></app-action-plans>
+  </div>
+</div>
 

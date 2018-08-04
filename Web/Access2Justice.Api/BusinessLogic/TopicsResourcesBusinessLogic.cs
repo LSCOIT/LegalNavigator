@@ -35,7 +35,7 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<dynamic> GetTopicsAsync(string keyword,Location location)
         {
-            return await dbClient.FindItemsWhereContainsWithLocationAsync(dbSettings.TopicCollectionId, "keywords", keyword.ToUpperInvariant(), location);
+            return await dbClient.FindItemsWhereContainsWithLocationAsync(dbSettings.TopicCollectionId, "keywords", keyword, location);
         }
 
         public async Task<dynamic> GetTopLevelTopicsAsync()
@@ -45,7 +45,12 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<dynamic> GetSubTopicsAsync(string parentTopicId)
         {
-            return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.ParentTopicId, parentTopicId);
+            return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.TopicCollectionId, Constants.ParentTopicId, Constants.Id, parentTopicId);
+        }
+
+        public async Task<dynamic> GetResourceByIdAsync(string id)
+        {
+            return await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, Constants.Id, id);
         }
 
         public async Task<dynamic> GetResourceAsync(string parentTopicId)
