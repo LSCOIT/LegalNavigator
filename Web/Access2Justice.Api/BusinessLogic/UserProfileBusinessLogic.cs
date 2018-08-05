@@ -17,11 +17,14 @@ namespace Access2Justice.Api.BusinessLogic
         private readonly IDynamicQueries dbClient;
         private readonly ICosmosDbSettings dbSettings;
         private readonly IBackendDatabaseService dbService;
-        public UserProfileBusinessLogic(IDynamicQueries dynamicQueries, ICosmosDbSettings cosmosDbSettings, IBackendDatabaseService backendDatabaseService)
+        private readonly IShareSettings dbShareSettings;
+        public UserProfileBusinessLogic(IDynamicQueries dynamicQueries, ICosmosDbSettings cosmosDbSettings, 
+            IBackendDatabaseService backendDatabaseService, IShareSettings shareSettings)
         {
             dbClient = dynamicQueries;
             dbSettings = cosmosDbSettings;
             dbService = backendDatabaseService;
+            dbShareSettings = shareSettings;
         }
 
         public async Task<UserProfile> GetUserProfileDataAsync(string oId)
@@ -259,7 +262,7 @@ namespace Access2Justice.Api.BusinessLogic
         public async Task<object> ShareResourceDataAsync(ShareInput shareInput)
         {
             UserProfile userProfile = await GetUserProfileDataAsync(shareInput.UserId);
-            var permaLink = Utilities.GenerateSHA256String(shareInput.UserId + shareInput.ResourceId);
+            var permaLink = Utilities.GenerateSHA256String(Guid.NewGuid() + shareInput.UserId + shareInput.ResourceId);
             var sharedResource = new SharedResource
             {
                 ExpirationDate = DateTime.UtcNow.AddYears(1),
@@ -284,25 +287,33 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 return StatusCodes.Status500InternalServerError;
             }
-            return permaLink;
+            if (dbShareSettings.PermaLinkMaxLength > 0)
+                return permaLink.Substring(0, dbShareSettings.PermaLinkMaxLength);
+            else
+                return permaLink;
         }
 
         public async Task<object> UnshareResourceDataAsync(UnShareInput unShareInput)
         {
             UserProfile userProfile = await GetUserProfileDataAsync(unShareInput.UserId);
-            var permaLink = Utilities.GenerateSHA256String(unShareInput.UserId + unShareInput.ResourceId);
-            var sharedResource = userProfile.SharedResource.FindAll(a => a.PermaLink == permaLink);
+            var sharedResource = userProfile.SharedResource.FindAll(a => a.Url.OriginalString.Contains(Convert.ToString(unShareInput.ResourceId,CultureInfo.InvariantCulture)));
             if (sharedResource.Count == 0)
             {
                 return false;
             }
-            userProfile.SharedResource.RemoveAll(a => a.PermaLink == permaLink);
+            userProfile.SharedResource.RemoveAll(a => a.Url.OriginalString.Contains(Convert.ToString(unShareInput.ResourceId, CultureInfo.InvariantCulture)));
             var response = await UpdateUserProfileDataAsync(userProfile);
             if (response == null)
             {
                 return StatusCodes.Status500InternalServerError;
             }
             return true;
+        }
+
+
+        public async Task<object> GetPermaLinkDataAsync(string permaLink)
+        {
+            return await dbClient.FindFieldWhereArrayContainsAsync(dbSettings.UserProfileCollectionId, Constants.StoredResource, Constants.Url, Constants.PermaLink, permaLink);
         }
 
         public async Task<object> UpdateUserProfileDataAsync(UserProfile userProfile)

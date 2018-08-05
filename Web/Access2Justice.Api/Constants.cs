@@ -24,5 +24,8 @@ namespace Access2Justice.Api
         public const string PlanId = "planId";
         public const string Type = "type";
         public const string Organization = "Organizations";
+        public const string PermaLink = "permaLink";
+        public const string StoredResource = "sharedResource";
+        public const string Url = "url";
     }
 }

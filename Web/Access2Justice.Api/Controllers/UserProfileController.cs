@@ -107,5 +107,19 @@ namespace Access2Justice.Api.Controllers
             }
             return StatusCode(StatusCodes.Status412PreconditionFailed);
         }
+
+        [HttpPost]
+        [Route("api/user/permalink")]
+        public async Task<IActionResult> PermaLinkAsync([FromQuery] string permaLink)
+        {
+            if (permaLink != null)
+            {
+                var response = await userProfileBusinessLogic.GetPermaLinkDataAsync(permaLink);
+                return Ok(response);
+            }
+            return StatusCode(StatusCodes.Status412PreconditionFailed);
+        }
+
+
     }
 }

@@ -6,6 +6,7 @@ using Access2Justice.Shared.Bing;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Luis;
 using Access2Justice.Shared.Models;
+using Access2Justice.Shared.Share;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Azure.Documents;
@@ -39,6 +40,9 @@ namespace Access2Justice.Api
 
             IBingSettings bingSettings = new BingSettings(Configuration.GetSection("Bing"));
             services.AddSingleton(bingSettings);
+
+            IShareSettings shareSettings = new ShareSettings(Configuration.GetSection("Share"));
+            services.AddSingleton(shareSettings);
 
             services.AddSingleton<ILuisProxy, LuisProxy>();
             services.AddSingleton<ILuisBusinessLogic, LuisBusinessLogic>();

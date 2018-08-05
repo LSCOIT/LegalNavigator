@@ -150,7 +150,13 @@ namespace Access2Justice.CosmosDb
             return await backendDatabaseService.QueryItemsAsync(collectionId, query);
         }
 
-
+        public async Task<dynamic> FindFieldWhereArrayContainsAsync(string collectionId, string arrayName, string outputfieldName, string propertyName, string value)
+        {
+            EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
+            
+            var query = $"SELECT value(f.{outputfieldName}) FROM c JOIN f in c.{arrayName} WHERE CONTAINS(f.{propertyName}, '{value}')";
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query);
+        }
 
         private dynamic FindLocationWhereArrayContains(Location location)
         {
