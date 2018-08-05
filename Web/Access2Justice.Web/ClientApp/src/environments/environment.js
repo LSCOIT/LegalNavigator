@@ -13,6 +13,8 @@ exports.environment = {
     internalResourceRecordsToDisplay: 10,
     webResourcePagesToShow: 10,
     webResourceRecordsToDisplay: 10,
+    userId: 'User Id',
+    blobUrl: '',
     All: 'All'
 };
 //# sourceMappingURL=environment.js.map

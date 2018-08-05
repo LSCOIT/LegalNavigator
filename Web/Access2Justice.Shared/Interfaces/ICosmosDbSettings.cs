@@ -13,5 +13,6 @@ namespace Access2Justice.Shared.Interfaces
         int PageResultsCount { get; }
         string CuratedExperienceCollectionId { get; }
         string CuratedExperienceAnswersCollectionId { get; }
+        string StaticResourceCollectionId { get; }
     }
 }
