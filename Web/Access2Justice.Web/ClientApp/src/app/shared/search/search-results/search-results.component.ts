@@ -130,6 +130,9 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   }
 
   filterSearchResults(event) {
+    if (!event.filterParam) {
+      event = { filterParam: event, sortParam: undefined }
+    }
     this.sortType = event;
     if (this.isInternalResource && event != undefined && event.filterParam != undefined) {
       this.page = 1;
