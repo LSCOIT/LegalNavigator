@@ -23,7 +23,6 @@ describe('ServiceOrgService', () => {
   const httpSpy = jasmine.createSpyObj('http', ['get', 'post']);
 
   beforeEach(() => {
-    //service = new ServiceOrgService(httpSpy);
     httpSpy.get.calls.reset();
   });
 
