@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit {
     { image: '' },
     { image: '' }
   ];
-  contentUrl: any = environment.blobUrl;
+  blobUrl: any = environment.blobUrl;
   pageId = 'HomePage';
   homeContent: any;
   heroData: Hero
@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
   sponsorOverviewData: SponsorOverview;
   privacyData: Privacy;
 
-  
+
   loadStateName() {
     if (sessionStorage.getItem("globalMapLocation")) {
       this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
@@ -39,7 +39,7 @@ export class HomeComponent implements OnInit {
     }
   }
   constructor(
-      private staticResourceService: StaticResourceService, private locationService: LocationService
+    private staticResourceService: StaticResourceService, private locationService: LocationService
   ) { }
 
   filterHomeContent(): void {
@@ -66,10 +66,8 @@ export class HomeComponent implements OnInit {
       .subscribe((value) => {
         this.loadStateName();
       });
-  }
     this.getHomePageContent();
   }
-}
 
   ngOnDestroy() {
     if (this.subscription != undefined) {
@@ -77,3 +75,6 @@ export class HomeComponent implements OnInit {
     }
   }
 }
+
+
+

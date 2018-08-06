@@ -3,7 +3,7 @@
   <div class="container">
     <div class="pull-right">
       <span class="search-form" (click)="toggleSearch()" *ngIf="!showSearch">
-        <img class="search-icon" src={{contentUrl+search.image.source}} aria-hidden="true" />
+        <img class="search-icon" src={{blobUrl+search.image.source}} aria-hidden="true" />
         <span class="inline search-text">{{search.button.buttonText}}</span>
       </span>
       <span class="web-hidden pull-right" id="nav-bar-toggle" (click)="openNav()">&#9776;</span>
@@ -38,7 +38,7 @@
         <ul>
           <li>
             <a [routerLink]="['/', privacyPromise.button.buttonLink]">
-              <img class="nav-icon" src={{contentUrl+privacyPromise.image.source}} aria-hidden="true" />
+              <img class="nav-icon" src={{blobUrl+privacyPromise.image.source}} aria-hidden="true" />
               {{privacyPromise.button.buttonText}}
             </a>
           </li>

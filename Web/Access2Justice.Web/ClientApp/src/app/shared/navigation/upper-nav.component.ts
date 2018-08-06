@@ -15,27 +15,14 @@ export class UpperNavComponent implements OnInit {
 
   userProfile: string;
   isLoggedIn: boolean = false;
-  contentUrl: any = environment.blobUrl;
-  navigation: Navigation = {
-    id: '',
-    language: { button: { buttonText: '', buttonAltText: '', buttonLink: '' }, navigationImage: { source: '', altText: '' }, dropDownImage: { source: '', altText: '' } },
-    location: { text: '', altText: '', button: { buttonText: '', buttonAltText: '', buttonLink: '' }, image: { source: '', altText: '' } },
-    privacyPromise: { button: { buttonText: '', buttonAltText: '', buttonLink: '' }, image: { source: '', altText: '' } },
-    helpAndFAQ: { button: { buttonText: '', buttonAltText: '', buttonLink: '' }, image: { source: '', altText: '' } },
-    login: { button: { buttonText: '', buttonAltText: '', buttonLink: '' }, image: { source: '', altText: '' } },
-    logo: { firstLogo: '', secondLogo: '', link: '' },
-    home: { button: { buttonText: '', buttonAltText: '', buttonLink: '' } },
-    guidedAssistant: { button: { buttonText: '', buttonAltText: '', buttonLink: '' } },
-    topicAndResources: { button: { buttonText: '', buttonAltText: '', buttonLink: '' } },
-    about: { button: { buttonText: '', buttonAltText: '', buttonLink: '' } },
-    search: { button: { buttonText: '', buttonAltText: '', buttonLink: '' }, image: { source: '', altText: '' } }
-  }
+  blobUrl: any = environment.blobUrl;
+  navigation: Navigation;
   id: string = 'Navigation';
-  language: Language = { button: { buttonText: '', buttonAltText: '', buttonLink: '' }, navigationImage: { source: '', altText: '' }, dropDownImage: { source: '', altText: '' } };
-  location: Location = { text: '', altText: '', button: { buttonText: '', buttonAltText: '', buttonLink: '' }, image: { source: '', altText: '' } };
-  privacyPromise: PrivacyPromise = { button: { buttonText: '', buttonAltText: '', buttonLink: '' }, image: { source: '', altText: '' } };
-  helpAndFAQ: HelpAndFAQ = { button: { buttonText: '', buttonAltText: '', buttonLink: '' }, image: { source: '', altText: '' } };
-  login: Login = { button: { buttonText: '', buttonAltText: '', buttonLink: '' }, image: { source: '', altText: '' } };
+  language: Language;
+  location: Location;
+  privacyPromise: PrivacyPromise;
+  helpAndFAQ: HelpAndFAQ;
+  login: Login;
 
   constructor(private http: HttpClient, private staticResourceService: StaticResourceService) { }
 
@@ -82,6 +69,5 @@ export class UpperNavComponent implements OnInit {
       this.userProfile = profileData["UserName"];      
     }
   }
-
-
+ 
 }
