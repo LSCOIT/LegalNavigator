@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit {
     { image: '' }
   ];
   blobUrl: any = environment.blobUrl;
-  pageId = 'HomePage';
+  pageId: any = 'HomePage';
   homeContent: any;
   heroData: Hero
   guidedAssistantOverviewData: GuidedAssistantOverview
@@ -31,13 +31,6 @@ export class HomeComponent implements OnInit {
   sponsorOverviewData: SponsorOverview;
   privacyData: Privacy;
 
-
-  loadStateName() {
-    if (sessionStorage.getItem("globalMapLocation")) {
-      this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
-      this.state = this.mapLocation.locality;
-    }
-  }
   constructor(
     private staticResourceService: StaticResourceService, private locationService: LocationService
   ) { }
@@ -53,6 +46,13 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  loadStateName() {
+    if (sessionStorage.getItem("globalMapLocation")) {
+      this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+      this.state = this.mapLocation.address;
+    }
+  }
+
   getHomePageContent(): void {
     this.staticResourceService.getStaticContents(this.pageId)
       .subscribe(content => {
@@ -60,13 +60,15 @@ export class HomeComponent implements OnInit {
         this.filterHomeContent();
       });
   }
+
   ngOnInit() {
+    this.getHomePageContent();
     this.loadStateName();
     this.subscription = this.locationService.notifyLocation
       .subscribe((value) => {
         this.loadStateName();
       });
-    this.getHomePageContent();
+    
   }
 
   ngOnDestroy() {

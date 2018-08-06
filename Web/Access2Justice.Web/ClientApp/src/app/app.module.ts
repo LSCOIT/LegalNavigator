@@ -40,6 +40,7 @@ import { DidYouKnowComponent } from './guided-assistant/did-you-know/did-you-kno
 import { ArticlesResourcesComponent } from './guided-assistant/articles-resources/articles-resources.component';
 import { CuratedExperienceComponent } from './guided-assistant/curated-experience/curated-experience.component';
 import { HomeService } from './home/home.service'
+import { StaticResourceService } from './shared/static-resource.service';
 
 @NgModule({
   declarations: [
@@ -84,7 +85,8 @@ import { HomeService } from './home/home.service'
     PersonalizedPlanService,
     ProfileComponent,
     PersonalizedPlanComponent,
-    HomeService
+    HomeService,
+    StaticResourceService
   ],
   bootstrap: [AppComponent]
 })
