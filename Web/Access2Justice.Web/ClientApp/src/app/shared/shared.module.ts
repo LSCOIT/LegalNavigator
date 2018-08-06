@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from '../app-routing.module';
 import { FormsModule } from '@angular/forms';
-import { AccordionModule, BsDropdownModule, ModalModule } from 'ngx-bootstrap';
+import { AccordionModule, BsDropdownModule, ModalModule, CarouselModule } from 'ngx-bootstrap';
 
 import { ChatbotComponent } from './chatbot/chatbot.component';
 import { CuratedResourceComponent } from './search/search-results/curated-resource/curated-resource.component';
@@ -34,7 +34,7 @@ import { MapResultsComponent } from './sidebars/map-results.component';
 import { MapResultsService } from './sidebars/map-results.service';
 import { PaginationComponent } from './pagination/pagination.component';
 import { PaginationService } from './search/pagination.service';
-import { ActionPlanCardComponent } from './action-plan/action-plan-card.component';
+import { ActionPlansComponent } from './resource/resource-type/action-plan/action-plans.component';
 import { UserActionSidebarComponent } from './sidebars/user-action-sidebar.component';
 import { SettingButtonComponent } from './resource/user-action/setting-button.component';
 import { ServiceOrgService } from './sidebars/service-org.service';
@@ -43,6 +43,10 @@ import { HelplineComponent } from './helpline/helpline.component';
 import { ButtonSelectedDirective } from './styling/button-selected.directive';
 import { EventUtilityService } from './event-utility.service';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { ArticlesComponent } from './resource/resource-type/articles/articles.component';
+import { OrganizationsComponent } from './resource/resource-type/organizations/organizations.component';
+import { VideosComponent } from './resource/resource-type/videos/videos.component';
+import { ResourceService } from './resource/resource.service';
 
 @NgModule({
   imports: [
@@ -51,10 +55,11 @@ import { NotFoundComponent } from './not-found/not-found.component';
     FormsModule,
     AccordionModule.forRoot(),
     BsDropdownModule.forRoot(),
-    ModalModule.forRoot()    
+    ModalModule.forRoot(),
+    CarouselModule.forRoot()
   ],
   declarations: [
-    ActionPlanCardComponent,
+    ActionPlansComponent,
     ChatbotComponent,
     CuratedResourceComponent,
     DownloadButtonComponent,
@@ -84,9 +89,12 @@ import { NotFoundComponent } from './not-found/not-found.component';
     HelplineComponent,
     ButtonSelectedDirective,
     NotFoundComponent
+    ArticlesComponent,
+    OrganizationsComponent,
+    VideosComponent
   ],
   exports: [
-    ActionPlanCardComponent,
+    ActionPlansComponent,
     ChatbotComponent,
     CuratedResourceComponent,
     DownloadButtonComponent,
@@ -120,7 +128,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
     PaginationService,
     ServiceOrgService,
     ArrayUtilityService,
-    EventUtilityService    
+    EventUtilityService,
+    ResourceService
   ]
 })
 export class SharedModule { }

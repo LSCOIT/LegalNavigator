@@ -29,7 +29,7 @@ export class SubtopicsComponent implements OnInit {
         subtopics => {
           this.subtopics = subtopics;
           this.navigateDataService.setData(this.subtopics);
-          if (this.subtopics.length == 0) {
+          if (this.subtopics.length === 0) {
             this.router.navigateByUrl('/subtopics/' + this.activeTopic, { skipLocationChange: true });
           }
         });

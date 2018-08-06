@@ -22,5 +22,6 @@ export const api = {
     loginUrl: apiUrl + '/login',
     logoutUrl: apiUrl + '/logout',
     questionUrl: apiUrl + '/CuratedExperience/Start',
-    saveAndGetNextUrl: apiUrl + '/CuratedExperience/Component/SaveAndGetNext'
+    saveAndGetNextUrl: apiUrl + '/CuratedExperience/Component/SaveAndGetNext',
+    resourceUrl: topic + '/getresource'
 }

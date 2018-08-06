@@ -5,6 +5,11 @@ namespace Access2Justice.Shared.Models
 {
     public class ResourceFilter
     {
+        public ResourceFilter()
+        {
+            TopicIds = new List<string>();
+            ResourceIds = new List<string>();
+        }
         public string ResourceType { get; set; }
         public string ContinuationToken { get; set; }
         public IEnumerable<string> TopicIds { get; set; }

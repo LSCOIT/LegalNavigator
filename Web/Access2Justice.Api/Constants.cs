@@ -11,7 +11,7 @@ namespace Access2Justice.Api
         public const string PlanStoredProcedureName = "GetPlanDetails";
         public const string TopicTags = "topicTags";
         public const string Id = "id";
-        public const string ParentTopicId = "parentTopicID";
+        public const string ParentTopicId = "parentTopicId";
         public const string Keywords = "keywords";
         public const string LuisResponse = "luisResponse";
         public const string Topics = "topics";
