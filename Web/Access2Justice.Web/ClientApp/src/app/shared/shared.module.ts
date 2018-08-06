@@ -46,6 +46,8 @@ import { ArticlesComponent } from './resource/resource-type/articles/articles.co
 import { OrganizationsComponent } from './resource/resource-type/organizations/organizations.component';
 import { VideosComponent } from './resource/resource-type/videos/videos.component';
 import { ResourceService } from './resource/resource.service';
+import { ShareService } from './resource/user-action/share-button/share.service';
+import { ShareButtonRouteComponent } from './resource/user-action/share-button/share-button-route/share-button-route.component';
 
 @NgModule({
   imports: [
@@ -89,7 +91,8 @@ import { ResourceService } from './resource/resource.service';
     ButtonSelectedDirective,
     ArticlesComponent,
     OrganizationsComponent,
-    VideosComponent
+    VideosComponent,
+    ShareButtonRouteComponent
   ],
   exports: [
     ActionPlansComponent,
@@ -127,7 +130,8 @@ import { ResourceService } from './resource/resource.service';
     ServiceOrgService,
     ArrayUtilityService,
     EventUtilityService,
-    ResourceService
+    ResourceService,
+    ShareService
   ]
 })
 export class SharedModule { }

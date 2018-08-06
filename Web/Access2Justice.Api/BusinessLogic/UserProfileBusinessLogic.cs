@@ -9,6 +9,8 @@ using System.Globalization;
 using Access2Justice.Shared;
 using Microsoft.Azure.Documents;
 using Microsoft.AspNetCore.Http;
+using System.Linq;
+using Access2Justice.Api.ViewModels;
 
 namespace Access2Justice.Api.BusinessLogic
 {
@@ -18,7 +20,7 @@ namespace Access2Justice.Api.BusinessLogic
         private readonly ICosmosDbSettings dbSettings;
         private readonly IBackendDatabaseService dbService;
         private readonly IShareSettings dbShareSettings;
-        public UserProfileBusinessLogic(IDynamicQueries dynamicQueries, ICosmosDbSettings cosmosDbSettings, 
+        public UserProfileBusinessLogic(IDynamicQueries dynamicQueries, ICosmosDbSettings cosmosDbSettings,
             IBackendDatabaseService backendDatabaseService, IShareSettings shareSettings)
         {
             dbClient = dynamicQueries;
@@ -257,68 +259,6 @@ namespace Access2Justice.Api.BusinessLogic
                 }
             }
             return await dbService.UpdateItemAsync(id, dbObject, dbSettings.ResourceCollectionId);
-        }
-
-        public async Task<object> ShareResourceDataAsync(ShareInput shareInput)
-        {
-            UserProfile userProfile = await GetUserProfileDataAsync(shareInput.UserId);
-            var permaLink = Utilities.GenerateSHA256String(Guid.NewGuid() + shareInput.UserId + shareInput.ResourceId);
-            var sharedResource = new SharedResource
-            {
-                ExpirationDate = DateTime.UtcNow.AddYears(1),
-                IsShared = true,
-                Url = new Uri(shareInput.Url + "/" + shareInput.ResourceId.ToString("D", CultureInfo.InvariantCulture), UriKind.Relative),
-                PermaLink = permaLink
-            };
-            if (userProfile.SharedResource == null)
-            {
-                userProfile.SharedResource = new List<SharedResource>();
-            }
-            userProfile.SharedResource.Add(sharedResource);
-            if (shareInput.Url.OriginalString.Contains("plan"))
-            {
-                //ToDo - Update the IsShared flag in the personalized plan document when user share the plan 
-                //PersonalizedPlanSteps plan = GetPersonalizedPlan(shareInput.ResourceId);
-                //plan.IsShared = true;
-                //UpdatePersonalizedPlan(plan);
-            }
-            var response = await UpdateUserProfileDataAsync(userProfile);
-            if (response == null)
-            {
-                return StatusCodes.Status500InternalServerError;
-            }
-            if (dbShareSettings.PermaLinkMaxLength > 0)
-                return permaLink.Substring(0, dbShareSettings.PermaLinkMaxLength);
-            else
-                return permaLink;
-        }
-
-        public async Task<object> UnshareResourceDataAsync(UnShareInput unShareInput)
-        {
-            UserProfile userProfile = await GetUserProfileDataAsync(unShareInput.UserId);
-            var sharedResource = userProfile.SharedResource.FindAll(a => a.Url.OriginalString.Contains(Convert.ToString(unShareInput.ResourceId,CultureInfo.InvariantCulture)));
-            if (sharedResource.Count == 0)
-            {
-                return false;
-            }
-            userProfile.SharedResource.RemoveAll(a => a.Url.OriginalString.Contains(Convert.ToString(unShareInput.ResourceId, CultureInfo.InvariantCulture)));
-            var response = await UpdateUserProfileDataAsync(userProfile);
-            if (response == null)
-            {
-                return StatusCodes.Status500InternalServerError;
-            }
-            return true;
-        }
-
-
-        public async Task<object> GetPermaLinkDataAsync(string permaLink)
-        {
-            return await dbClient.FindFieldWhereArrayContainsAsync(dbSettings.UserProfileCollectionId, Constants.StoredResource, Constants.Url, Constants.PermaLink, permaLink);
-        }
-
-        public async Task<object> UpdateUserProfileDataAsync(UserProfile userProfile)
-        {
-            return await dbService.UpdateItemAsync(userProfile.Id, ResourceDeserialized(userProfile), dbSettings.UserProfileCollectionId);
         }
     }
 }

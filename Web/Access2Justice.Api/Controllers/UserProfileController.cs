@@ -83,43 +83,5 @@ namespace Access2Justice.Api.Controllers
             var users = await userProfileBusinessLogic.UpsertUserPlanAsync(userData);
             return Ok(users);
         }
-
-        [HttpPost]
-        [Route("api/user/share")]
-        public async Task<IActionResult> ShareAsync([FromBody] ShareInput shareInput)
-        {
-            if (shareInput != null)
-            {
-                var response = await userProfileBusinessLogic.ShareResourceDataAsync(shareInput);
-                return Ok(response);
-            }
-            return StatusCode(StatusCodes.Status412PreconditionFailed);
-        }
-
-        [HttpPost]
-        [Route("api/user/unshare")]
-        public async Task<IActionResult> UnshareAsync([FromBody] UnShareInput unShareInput)
-        {
-            if (unShareInput != null)
-            {
-                var response = await userProfileBusinessLogic.UnshareResourceDataAsync(unShareInput);
-                return Ok(response);
-            }
-            return StatusCode(StatusCodes.Status412PreconditionFailed);
-        }
-
-        [HttpPost]
-        [Route("api/user/permalink")]
-        public async Task<IActionResult> PermaLinkAsync([FromQuery] string permaLink)
-        {
-            if (permaLink != null)
-            {
-                var response = await userProfileBusinessLogic.GetPermaLinkDataAsync(permaLink);
-                return Ok(response);
-            }
-            return StatusCode(StatusCodes.Status412PreconditionFailed);
-        }
-
-
     }
 }

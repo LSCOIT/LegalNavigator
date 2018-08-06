@@ -18,6 +18,7 @@ import { TopicsResourcesComponent } from './topics-resources/topics-resources.co
 import { ResourceCardDetailComponent } from
 './shared/resource/resource-card-detail/resource-card-detail.component';
 import { PersonalizedPlanComponent } from './guided-assistant/personalized-plan/personalized-plan.component';
+import { ShareButtonRouteComponent } from './shared/resource/user-action/share-button/share-button-route/share-button-route.component';
 
 const appRoutes: Routes = [
   { path: 'search', component: SearchResultsComponent },
@@ -31,6 +32,7 @@ const appRoutes: Routes = [
   { path: 'about', component: AboutComponent },
   { path: 'createaccount', component: CreateAccountComponent },
   { path: 'plan/:id', component: PersonalizedPlanComponent },
+  { path: 'share/:id', component: ShareButtonRouteComponent },
   { path: 'help', component: HelpFaqsComponent },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LogInComponent },
