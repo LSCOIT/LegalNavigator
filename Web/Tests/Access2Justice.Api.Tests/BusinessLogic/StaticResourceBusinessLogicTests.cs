@@ -22,8 +22,12 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         //Mocked input data
         private readonly JArray homePageData = StaticResourceTestData.homePageData;
         private readonly JArray emptyData = JArray.Parse(@"[{}]");
+        Location location = new Location
+        {
+            State = "Hawaii"
+        };
         //expected data
-        private readonly string expectedPageId = "HomePage";
+        private readonly string expectedPageName = "HomePage";
         
         public StaticResourceBusinessLogicTests()
         {
@@ -43,31 +47,31 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         [Fact]
         public void GetStaticResourceDataAsyncTestsShouldReturnProperData()
         {
-            //arrange      
-            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.StaticResourceCollectionId, Constants.Id, expectedPageId);
+            //arrange
+            var dbResponse = dynamicQueries.FindItemsWhereWithLocationAsync(cosmosDbSettings.StaticResourceCollectionId, Constants.Name, expectedPageName, location);
             dbResponse.ReturnsForAnyArgs<dynamic>(homePageData);
 
             //act
-            var response = staticResourceBusinessLogic.GetPageStaticResourceDataAsync(expectedPageId);
+            var response = staticResourceBusinessLogic.GetPageStaticResourceDataAsync(expectedPageName, location);
             string result = JsonConvert.SerializeObject(response);
 
             //assert
-            Assert.Contains(expectedPageId, result, StringComparison.InvariantCultureIgnoreCase);
+            Assert.Contains(expectedPageName, result, StringComparison.InvariantCultureIgnoreCase);
         }
 
         [Fact]
         public void GetStaticResourceDataAsyncShouldReturnEmptyData()
         {
             //arrange      
-            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.StaticResourceCollectionId, Constants.Id, expectedPageId);
+            var dbResponse = dynamicQueries.FindItemsWhereWithLocationAsync(cosmosDbSettings.StaticResourceCollectionId, Constants.Id, expectedPageName, location);
             dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
 
             //act
-            var response = staticResourceBusinessLogic.GetPageStaticResourceDataAsync(expectedPageId);
+            var response = staticResourceBusinessLogic.GetPageStaticResourceDataAsync(expectedPageName, location);
             string result = JsonConvert.SerializeObject(response);
 
             //assert
-            Assert.DoesNotContain(expectedPageId, result, StringComparison.InvariantCultureIgnoreCase);
+            Assert.DoesNotContain(expectedPageName, result, StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }
