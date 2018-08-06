@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Organization } from '../sidebars/organization';
 import { api } from '../../../api/api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NavigateDataService } from '../navigate-data.service';
@@ -26,7 +25,7 @@ export class ServiceOrgService {
   activeResource: any;
   getOrganizationDetails(location): Observable<any> {
     var objectToSend = JSON.stringify(location);
-    return this.http.post<Organization>(api.getOrganizationDetailsUrl, objectToSend, httpOptions);
+    return this.http.post<any>(api.getOrganizationDetailsUrl, objectToSend, httpOptions);
   }
   clickSeeMoreOrganizations(resourceType: string, activeId: string) {
 
