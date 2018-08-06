@@ -22,12 +22,13 @@ export class SearchComponent implements OnInit {
   onSubmit(searchForm: NgForm): void {
     this.luisInput.Sentence = searchForm.value.inputText;
     this.luisInput.Location = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+    sessionStorage.removeItem("cacheSearchResults");
 
     this.searchService.search(this.luisInput)
       .subscribe(response => {
         if (response != undefined) {
-          this.searchResults = response;
-          this.navigateDataService.setData(this.searchResults);
+          this.searchResults = response;          
+          this.navigateDataService.setData(this.searchResults);          
           this.router.navigateByUrl('/searchRefresh', { skipLocationChange: true })
             .then(() =>
               this.router.navigate(['/search'])
