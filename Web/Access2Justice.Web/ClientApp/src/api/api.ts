@@ -27,5 +27,6 @@ export const api = {
   saveAndGetNextUrl: curatedExperience + '/Component/SaveAndGetNext',
   updateUserProfileUrl: userProfile + '/updateuserprofile',
   getUserProfileUrl: userProfile + "/getuserprofiledata",
-  updateUserPlanUrl: curatedExperience + "/updateplan"
+    updateUserPlanUrl: curatedExperience + "/updateplan",
+    resourceUrl: topic + '/getresource'
 }

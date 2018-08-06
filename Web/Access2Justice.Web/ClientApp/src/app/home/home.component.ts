@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MapLocation } from '../shared/location/location';
+import { LocationService } from '../shared/location/location.service';
 
 @Component({
   selector: 'app-home',
@@ -7,16 +9,35 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
   topicLength = 12;
-
+  mapLocation: MapLocation;
+  state: string;
+  subscription: any;
   slides = [
-    {image: ''},
-    {image: ''},
-    {image: ''}
+    { image: '' },
+    { image: '' },
+    { image: '' }
   ];
 
-  constructor() { }
+  constructor(private locationService: LocationService) { }
 
-  ngOnInit() {
+  loadStateName() {
+    if (sessionStorage.getItem("globalMapLocation")) {
+      this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+      this.state = this.mapLocation.locality;
+    }
   }
 
+  ngOnInit() {
+    this.loadStateName();
+    this.subscription = this.locationService.notifyLocation
+      .subscribe((value) => {
+        this.loadStateName();
+      });
+  }
+
+  ngOnDestroy() {
+    if (this.subscription != undefined) {
+      this.subscription.unsubscribe();
+    }
+  }
 }

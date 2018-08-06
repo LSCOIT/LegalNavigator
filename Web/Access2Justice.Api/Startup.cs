@@ -49,6 +49,7 @@ namespace Access2Justice.Api
             services.AddTransient<IHttpClientService, HttpClientService>();
             services.AddSingleton<IUserProfileBusinessLogic, UserProfileBusinessLogic>();
             services.AddSingleton<IPersonalizedPlanBusinessLogic, PersonalizedPlanBusinessLogic>();
+            services.AddSingleton<IStaticResourceBusinessLogic, StaticResourceBusinessLogic>();
 
             ConfigureCosmosDb(services);
 

@@ -21,6 +21,11 @@ span {
   display: block;
 }
 
+#share {
+  margin: 0;
+  cursor: pointer;
+}
+
 .text-center {
   margin-top: 40px;
 }

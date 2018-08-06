@@ -3,6 +3,9 @@ using System.Threading.Tasks;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using Access2Justice.Shared;
+using Microsoft.AspNetCore.Http;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -68,6 +71,29 @@ namespace Access2Justice.Api.Controllers
             var users = await userProfileBusinessLogic.UpsertUserSavedResourcesAsync(userData);
             return Ok(users);
         }
-        
-    }   
+
+        [HttpPost]
+        [Route("api/user/share")]
+        public async Task<IActionResult> ShareAsync([FromBody] ShareInput shareInput)
+        {
+            if (shareInput != null)
+            {
+                var response = await userProfileBusinessLogic.ShareResourceDataAsync(shareInput);
+                return Ok(response);
+            }
+            return StatusCode(StatusCodes.Status412PreconditionFailed);
+        }
+
+        [HttpPost]
+        [Route("api/user/unshare")]
+        public async Task<IActionResult> UnshareAsync([FromBody] UnShareInput unShareInput)
+        {
+            if (unShareInput != null)
+            {
+                var response = await userProfileBusinessLogic.UnshareResourceDataAsync(unShareInput);
+                return Ok(response);
+            }
+            return StatusCode(StatusCodes.Status412PreconditionFailed);
+        }
+    }
 }
