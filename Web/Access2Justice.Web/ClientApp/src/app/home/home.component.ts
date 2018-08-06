@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MapLocation } from '../shared/location/location';
+import { LocationService } from '../shared/location/location.service';
 import { environment } from '../../environments/environment';
 
 import { Hero, GuidedAssistantOverview, TopicAndResources, Carousel, SponsorOverview, Privacy } from './home';
@@ -11,6 +13,9 @@ import { StaticResourceService } from '../shared/static-resource.service';
 })
 export class HomeComponent implements OnInit {
   topicLength = 12;
+  mapLocation: MapLocation;
+  state: string;
+  subscription: any;
   slides = [
     { image: '' },
     { image: '' },
@@ -26,8 +31,15 @@ export class HomeComponent implements OnInit {
   sponsorOverviewData: SponsorOverview;
   privacyData: Privacy;
 
+  
+  loadStateName() {
+    if (sessionStorage.getItem("globalMapLocation")) {
+      this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+      this.state = this.mapLocation.locality;
+    }
+  }
   constructor(
-    private staticResourceService: StaticResourceService
+      private staticResourceService: StaticResourceService, private locationService: LocationService
   ) { }
 
   filterHomeContent(): void {
@@ -49,7 +61,19 @@ export class HomeComponent implements OnInit {
       });
   }
   ngOnInit() {
+    this.loadStateName();
+    this.subscription = this.locationService.notifyLocation
+      .subscribe((value) => {
+        this.loadStateName();
+      });
+  }
     this.getHomePageContent();
   }
 }
 
+  ngOnDestroy() {
+    if (this.subscription != undefined) {
+      this.subscription.unsubscribe();
+    }
+  }
+}

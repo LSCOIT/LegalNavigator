@@ -45,7 +45,7 @@ import { EventUtilityService } from './event-utility.service';
 import { ArticlesComponent } from './resource/resource-type/articles/articles.component';
 import { OrganizationsComponent } from './resource/resource-type/organizations/organizations.component';
 import { VideosComponent } from './resource/resource-type/videos/videos.component';
-import { StaticResourceService } from '../shared/static-resource.service';
+import { ResourceService } from './resource/resource.service';
 
 @NgModule({
   imports: [
@@ -127,7 +127,7 @@ import { StaticResourceService } from '../shared/static-resource.service';
     ServiceOrgService,
     ArrayUtilityService,
     EventUtilityService,
-    StaticResourceService
+    ResourceService
   ]
 })
 export class SharedModule { }

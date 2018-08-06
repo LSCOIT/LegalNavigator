@@ -46,6 +46,19 @@ namespace Access2Justice.Api.Controllers
         }
 
         /// <summary>
+        /// Get resource by resource id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("api/topics/getresource/{id}")]
+        public async Task<IActionResult> GetResource(string id)
+        {
+            var resource = await topicsResourcesBusinessLogic.GetResourceByIdAsync(id);
+            return Ok(resource);
+        }
+
+        /// <summary>
         /// Get the topic details by the document parent Id
         /// </summary>
         /// <param name="parentTopicId"></param>

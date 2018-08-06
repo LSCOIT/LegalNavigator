@@ -25,6 +25,14 @@ namespace Access2Justice.Shared
             return GetStringFromHash(hash);
         }
 
+        public static string GenerateSHA256String(string inputString)
+        {
+            SHA256 sha256 = SHA256Managed.Create();
+            byte[] bytes = Encoding.UTF8.GetBytes(inputString);
+            byte[] hash = sha256.ComputeHash(bytes);
+            return GetStringFromHash(hash);
+        }
+
         private static string GetStringFromHash(byte[] hash)
         {
             StringBuilder result = new StringBuilder();
