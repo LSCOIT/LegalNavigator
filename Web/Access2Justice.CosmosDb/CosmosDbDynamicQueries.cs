@@ -87,6 +87,18 @@ namespace Access2Justice.CosmosDb
             return await backendDatabaseService.QueryItemsAsync(collectionId, query);
         }
 
+        public async Task<dynamic> FindItemsWhereWithLocationAsync(string collectionId, string propertyName, string value, Location location)
+        {
+            EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
+            string locationFilter = FindLocationWhereArrayContains(location);
+            var  query = $"SELECT * FROM c WHERE c.{propertyName}='{value}'";
+            if (!string.IsNullOrEmpty(locationFilter))
+            {
+                query = query + " AND " + locationFilter;
+            }
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query);
+        }
+
         public async Task<dynamic> FindItemsWhereArrayContainsWithAndClauseAsync(string arrayName, string propertyName, string andPropertyName, ResourceFilter resourceFilter, bool isResourceCountCall = false)
         {
             EnsureParametersAreNotNullOrEmpty(arrayName, propertyName, andPropertyName, resourceFilter.ResourceType);
