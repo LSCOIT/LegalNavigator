@@ -21,7 +21,7 @@ namespace Access2Justice.Shared.Models
         public Language Language { get; set; }
 
         [DefaultValue("")]
-        [JsonProperty(PropertyName = "location")]
+        [JsonProperty(PropertyName = "locationNavContent")]
         public HeaderLocation Location { get; set; }
 
         [DefaultValue("")]
