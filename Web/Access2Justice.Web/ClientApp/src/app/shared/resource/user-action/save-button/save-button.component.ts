@@ -28,8 +28,9 @@ export class SaveButtonComponent implements OnInit {
   modalRef: BsModalRef;
   @ViewChild('template') public templateref: TemplateRef<any>;
   sessionKey: string = "bookmarkedResource";
+  planSessionKey: string= "bookmarkPlanId";
   resourceStorage: any;
-  savePlan: { oId: string, planId: string };
+  planStorage: any;
 
   constructor(private router: Router,
     private activeRoute: ActivatedRoute,
@@ -53,46 +54,62 @@ export class SaveButtonComponent implements OnInit {
 
   savePlanResources(template: TemplateRef<any>): void {
     if (!this.userId) {
-      this.savedResources = { itemId: this.id, resourceType: this.type, resourceDetails : this.resourceDetails };
-      this.personalizedPlanService.saveResourcesToSession(this.savedResources);
+      this.savePlanResourcesPreLogin();
       this.externalLogin();
     } else {
-      if (this.type === "Plan") {
-        this.planId = this.id;
-        this.savePlanToProfile(template);
-      } else {
-        this.profileResources.resourceTags = [];
-        this.savedResources = { itemId: '', resourceType: '', resourceDetails: {} };
-        this.personalizedPlanService.getUserSavedResources(this.userId)
-          .subscribe(response => {
-            if (response != undefined) {
-              response.forEach(property => {
-                if (property.resourceTags) {
-                  property.resourceTags.forEach(resource => {
-                    this.profileResources.resourceTags.push(resource);
-                  })
-                }
-              });
-            }
-            this.savedResources = { itemId: this.id, resourceType: this.type, resourceDetails: this.resourceDetails };
-            if (!this.arrayUtilityService.checkObjectExistInArray(this.profileResources.resourceTags, this.savedResources)) {
-              this.profileResources.resourceTags.push(this.savedResources);
-              this.saveResourceToProfile(this.profileResources.resourceTags, template);
-            }
-          });
-      }
+      this.savePlanResourcesPostLogin(template);
     }
   }
 
+  savePlanResourcesPreLogin() {
+    if (this.type === "Plan") {
+      this.personalizedPlanService.savePlanToSession(this.id);
+    } else {
+      this.savedResources = { itemId: this.id, resourceType: this.type, resourceDetails: this.resourceDetails };
+      this.personalizedPlanService.saveResourcesToSession(this.savedResources);
+    }
+  }
+
+  savePlanResourcesPostLogin(template) {
+    if (this.type === "Plan") {
+      this.planId = this.id;
+      this.savePlanToProfile(template);
+    } else {
+      this.saveResourcesToProfile(template)
+    }
+  }
+  
   savePlanToProfile(template) {
-        let params = new HttpParams()
-          .set("oId", this.userId)
-          .set("planId", this.planId);
-        this.personalizedPlanService.savePersonalizedPlanToProfile(params)
-          .subscribe(() => {
-            this.isSavedPlan = true;
-            this.modalRef = this.modalService.show(template);
+    let params = new HttpParams()
+      .set("oId", this.userId)
+      .set("planId", this.planId);
+    this.personalizedPlanService.savePersonalizedPlanToProfile(params)
+      .subscribe(() => {
+        this.isSavedPlan = true;
+        this.modalRef = this.modalService.show(template);
+      });
+  }
+
+  saveResourcesToProfile(template) {
+    this.profileResources.resourceTags = [];
+    this.savedResources = { itemId: '', resourceType: '', resourceDetails: {} };
+    this.personalizedPlanService.getUserSavedResources(this.userId)
+      .subscribe(response => {
+        if (response != undefined) {
+          response.forEach(property => {
+            if (property.resourceTags) {
+              property.resourceTags.forEach(resource => {
+                this.profileResources.resourceTags.push(resource);
+              })
+            }
           });
+        }
+        this.savedResources = { itemId: this.id, resourceType: this.type, resourceDetails: this.resourceDetails };
+        if (!this.arrayUtilityService.checkObjectExistInArray(this.profileResources.resourceTags, this.savedResources)) {
+          this.profileResources.resourceTags.push(this.savedResources);
+          this.saveResourceToProfile(this.profileResources.resourceTags, template);
+        }
+      });
   }
 
   close() {
@@ -106,6 +123,14 @@ export class SaveButtonComponent implements OnInit {
         this.isSavedPlan = true;
         this.modalRef = this.modalService.show(template);
       });
+  }
+  
+  saveBookmarkedPlan() {
+    this.planStorage = sessionStorage.getItem(this.planSessionKey);
+    if (this.planStorage) {
+      this.savePlanResources(this.templateref);
+      sessionStorage.removeItem(this.planSessionKey);
+    }
   }
 
   saveBookmarkedResource() {
@@ -122,6 +147,9 @@ export class SaveButtonComponent implements OnInit {
 
   ngOnInit() {
     this.saveBookmarkedResource();
+    if (this.userId) {
+      this.saveBookmarkedPlan();
+    }
   }
 
 }

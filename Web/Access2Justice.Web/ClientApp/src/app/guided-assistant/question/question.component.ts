@@ -37,7 +37,7 @@ export class QuestionComponent implements OnInit {
 
   getQuestion(): void {
     
-    this.curatedExperienceId = "9a6a6131-657d-467d-b09b-c570b7dad242";
+    this.curatedExperienceId = this.activeRoute.snapshot.params["id"];
     let params = new HttpParams()
       .set("curatedExperienceId", this.curatedExperienceId);
     this.questionService.getQuestion(params)
