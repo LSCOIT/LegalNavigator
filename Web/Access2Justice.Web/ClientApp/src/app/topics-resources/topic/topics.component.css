@@ -45,7 +45,7 @@
 
 @media only screen and (min-width : 992px) {
   .topic-list {
-     padding: 15px;
+     padding: 15px 5px;
   }
 
   .topic-list:nth-child(2n) {

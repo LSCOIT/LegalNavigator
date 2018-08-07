@@ -22,10 +22,10 @@ namespace Access2Justice.Api.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("api/staticresource/getstaticresource/{name}")]
-        public async Task<IActionResult> GetStaticResourceDataAsync(string name)
+        public async Task<IActionResult> GetStaticResourceDataAsync(string name, Location location)
         {
-            var users = await staticResourceBusinessLogic.GetPageStaticResourceDataAsync(name);
-            return Ok(users);
+            var contents = await staticResourceBusinessLogic.GetPageStaticResourceDataAsync(name, location);
+            return Ok(contents);
         }
 
         /// <summary>
@@ -35,10 +35,10 @@ namespace Access2Justice.Api.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("api/staticresource/upsertstatichomepage")]
-        public async Task<IActionResult> UpsertStaticHomePageDataAsync(HomeContent homePageContent)
+        public async Task<IActionResult> UpsertStaticHomePageDataAsync(HomeContent homePageContent, Location location)
         {
-            var users = await staticResourceBusinessLogic.UpsertStaticHomePageDataAsync(homePageContent);
-            return Ok(users);
+            var contents = await staticResourceBusinessLogic.UpsertStaticHomePageDataAsync(homePageContent, location);
+            return Ok(contents);
         }
 
         /// <summary>
@@ -48,10 +48,10 @@ namespace Access2Justice.Api.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("api/staticresource/upsertstaticprivacypage")]
-        public async Task<IActionResult> UpsertStaticPrivacyPromisePageDataAsync(PrivacyPromiseContent privacyPromiseContent)
+        public async Task<IActionResult> UpsertStaticPrivacyPromisePageDataAsync(PrivacyPromiseContent privacyPromiseContent, Location location)
         {
-            var users = await staticResourceBusinessLogic.UpsertStaticPrivacyPromisePageDataAsync(privacyPromiseContent);
-            return Ok(users);
+            var contents = await staticResourceBusinessLogic.UpsertStaticPrivacyPromisePageDataAsync(privacyPromiseContent, location);
+            return Ok(contents);
         }
 
         /// <summary>
@@ -61,10 +61,10 @@ namespace Access2Justice.Api.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("api/staticresource/upsertstatichelpandfaqpage")]
-        public async Task<IActionResult> UpsertStaticHelpAndFAQPageDataAsync(HelpAndFaqsContent helpAndFAQPageContent)
+        public async Task<IActionResult> UpsertStaticHelpAndFAQPageDataAsync(HelpAndFaqsContent helpAndFAQPageContent, Location location)
         {
-            var users = await staticResourceBusinessLogic.UpsertStaticHelpAndFAQPageDataAsync(helpAndFAQPageContent);
-            return Ok(users);
+            var contents = await staticResourceBusinessLogic.UpsertStaticHelpAndFAQPageDataAsync(helpAndFAQPageContent, location);
+            return Ok(contents);
         }
 
         /// <summary>
@@ -74,10 +74,10 @@ namespace Access2Justice.Api.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("api/staticresource/upsertstaticnavigation")]
-        public async Task<IActionResult> UpsertStaticNavigationDataAsync(Navigation navigationContent)
+        public async Task<IActionResult> UpsertStaticNavigationDataAsync(Navigation navigationContent, Location location)
         {
-            var users = await staticResourceBusinessLogic.UpsertStaticNavigationDataAsync(navigationContent);
-            return Ok(users);
+            var contents = await staticResourceBusinessLogic.UpsertStaticNavigationDataAsync(navigationContent, location);
+            return Ok(contents);
         }
     }   
 }
