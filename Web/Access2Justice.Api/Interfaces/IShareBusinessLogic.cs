@@ -1,6 +1,5 @@
 ﻿using Access2Justice.Api.ViewModels;
 using Access2Justice.Shared;
-using Access2Justice.Shared.Models.CuratedExperience;
 using Microsoft.Azure.Documents;
 using System;
 using System.Threading.Tasks;
