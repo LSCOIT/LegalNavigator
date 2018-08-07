@@ -42,11 +42,12 @@ import { ArrayUtilityService } from './array-utility.service';
 import { HelplineComponent } from './helpline/helpline.component';
 import { ButtonSelectedDirective } from './styling/button-selected.directive';
 import { EventUtilityService } from './event-utility.service';
-import { NotFoundComponent } from './not-found/not-found.component';
+import { NotFoundComponent } from './error/not-found/not-found.component';
 import { ArticlesComponent } from './resource/resource-type/articles/articles.component';
 import { OrganizationsComponent } from './resource/resource-type/organizations/organizations.component';
 import { VideosComponent } from './resource/resource-type/videos/videos.component';
 import { ResourceService } from './resource/resource.service';
+import { InternalErrorComponent } from './error/internal-error/internal-error.component';
 
 @NgModule({
   imports: [
@@ -88,10 +89,11 @@ import { ResourceService } from './resource/resource.service';
     SettingButtonComponent,
     HelplineComponent,
     ButtonSelectedDirective,
-    NotFoundComponent
+    NotFoundComponent,
     ArticlesComponent,
     OrganizationsComponent,
-    VideosComponent
+    VideosComponent,
+    InternalErrorComponent
   ],
   exports: [
     ActionPlansComponent,

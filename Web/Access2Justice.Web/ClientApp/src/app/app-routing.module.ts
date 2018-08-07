@@ -18,7 +18,7 @@ import { TopicsResourcesComponent } from './topics-resources/topics-resources.co
 import { ResourceCardDetailComponent } from
 './shared/resource/resource-card-detail/resource-card-detail.component';
 import { PersonalizedPlanComponent } from './guided-assistant/personalized-plan/personalized-plan.component';
-import { NotFoundComponent } from './shared/not-found/not-found.component';
+import { NotFoundComponent } from './shared/error/not-found/not-found.component';
 
 const appRoutes: Routes = [
   { path: 'search', component: SearchResultsComponent },
