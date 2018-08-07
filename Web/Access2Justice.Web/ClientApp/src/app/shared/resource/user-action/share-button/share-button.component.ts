@@ -45,7 +45,6 @@ export class ShareButtonComponent implements OnInit {
       this.externalLogin();
     } else {
       this.checkPermaLink(template);
-      
     }
   }
 
@@ -79,6 +78,7 @@ export class ShareButtonComponent implements OnInit {
         if (response != undefined) {
           this.shareView = response;
           this.permaLink = this.getPermaLink();
+          this.showGenerateLink = false;
         }
       });
   }
