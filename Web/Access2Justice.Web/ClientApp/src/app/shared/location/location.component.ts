@@ -107,8 +107,10 @@ export class LocationComponent implements OnInit {
 
   ngOnInit() {
     this.showLocality = true;
-    if (this.mapType) {      
-      this.loadCurrentLocation();
+    if (this.mapType) {
+      if (!sessionStorage.getItem("globalMapLocation")) {
+        this.loadCurrentLocation();
+      }
     } else {
       this.showLocality = false;
     }
