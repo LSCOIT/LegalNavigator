@@ -23,6 +23,7 @@ export class PersonalizedPlanService {
   planDetailTags: any;
   tempPlanDetailTags: any;
   userId: string;
+  planDetails: any = [];
   planSessionKey: string= "bookmarkPlanId";
 
   constructor(private http: HttpClient, private arrayUtilityService: ArrayUtilityService) { }
@@ -114,6 +115,12 @@ export class PersonalizedPlanService {
 
   savePlanToSession(planId) {
     sessionStorage.setItem(this.planSessionKey, JSON.stringify(planId));
+  }
+
+  getPlanDetails(topics, planDetailTags): any {
+    this.topicsList = this.createTopicsList(this.topics);
+    this.planDetails = this.displayPlanDetails(planDetailTags, this.topicsList);
+    return this.planDetails;
   }
 
   createTopicsList(topics): Array<PersonalizedPlanTopic> {

@@ -30,17 +30,14 @@ export class PersonalizedPlanComponent implements OnInit {
             this.topics = plan.topics;
             this.planDetailTags = plan;
           }
-          this.getPlanDetails();
+          this.topicsList = this.personalizedPlanService.createTopicsList(this.topics);
+          this.planDetails = this.personalizedPlanService.getPlanDetails(this.topics, this.planDetailTags);
         });
     }
   }
 
-  getPlanDetails() {
-    this.topicsList = this.personalizedPlanService.createTopicsList(this.topics);
-    this.planDetails = this.personalizedPlanService.displayPlanDetails(this.planDetailTags, this.topicsList);
-  }
-
   filterPlan(topic) {
+    //this.planDetails = this.personalizedPlanService.getPlanDetails(this.topics, this.planDetailTags);
     this.tempTopicsList = this.topicsList;
     this.filterTopicsList(topic);
     this.planDetails = this.personalizedPlanService.displayPlanDetails(this.planDetailTags, this.topicsList);
@@ -60,7 +57,7 @@ export class PersonalizedPlanComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getTopics(); 
+    this.getTopics();
   }
 
 }
