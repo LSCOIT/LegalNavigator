@@ -1,7 +1,8 @@
 export interface Navigation {
-  id: string;
+  name: string;
+  location: Array<Location>;
   language: Language;
-  location: Location;
+  locationNavContent: LocationNavContent;
   privacyPromise: PrivacyPromise;
   helpAndFAQ: HelpAndFAQ;
   login: Login;
@@ -11,6 +12,13 @@ export interface Navigation {
   topicAndResources: TopicAndResources;
   about: About;
   search: Search;
+}
+
+export interface LocationNavContent {
+  text: string;
+  altText: string;
+  button: Button;
+  image: Image
 }
 
 export interface Button {
@@ -31,10 +39,12 @@ export interface Language {
 }
 
 export interface Location {
-  text: string;
-  altText: string;
-  button: Button;
-  image: Image;
+  state: string;
+  city: string;
+  county: string;
+  zipCode: string;
+  locality: string;
+  address: string;
 }
 
 export interface Logo {

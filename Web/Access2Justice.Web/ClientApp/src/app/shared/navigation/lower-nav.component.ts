@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular
 import { StaticResourceService } from '../../shared/static-resource.service';
 import { Navigation, Language, Location, Logo, Home, GuidedAssistant, TopicAndResources, About, Search, PrivacyPromise, HelpAndFAQ, Login } from './navigation';
 import { environment } from '../../../environments/environment';
+import { LocationService } from '../location/location.service';
 
 @Component({
   selector: 'app-lower-nav',
@@ -24,7 +25,7 @@ export class LowerNavComponent implements OnInit {
   navigation: Navigation;
   id: string = 'Navigation';
   language: Language;
-  location: Location;
+  location: any = Location;
   privacyPromise: PrivacyPromise;
   helpAndFAQ: HelpAndFAQ;
   login: Login;
@@ -34,10 +35,10 @@ export class LowerNavComponent implements OnInit {
   topicAndResources: TopicAndResources;
   about: About;
   search: Search;
-
+  subscription: any;
 
   constructor(
-    private staticResourceService: StaticResourceService
+    private staticResourceService: StaticResourceService, private locationService: LocationService
   ) { }
 
   openNav() {
@@ -66,7 +67,7 @@ export class LowerNavComponent implements OnInit {
 
   filterNavigationContent(): void {
     if (this.navigation) {
-      this.id = this.navigation.id;
+      this.id = this.navigation.name;
       this.language = this.navigation.language;
       this.location = this.navigation.location;
       this.privacyPromise = this.navigation.privacyPromise;
@@ -82,7 +83,8 @@ export class LowerNavComponent implements OnInit {
   }
 
   getNavigationContent(): void {
-    this.staticResourceService.getStaticContents(this.id)
+    let homePageRequest = { name: this.id, location: this.location };
+    this.staticResourceService.getStaticContent(homePageRequest)
       .subscribe(content => {
         this.navigation = content[0];
         this.filterNavigationContent();
@@ -91,5 +93,9 @@ export class LowerNavComponent implements OnInit {
 
   ngOnInit() {
     this.getNavigationContent();
+    this.subscription = this.locationService.notifyLocation
+      .subscribe((value) => {
+        this.getNavigationContent();
+      });
   }
 }

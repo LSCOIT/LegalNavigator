@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { MapLocation } from './location';
 import { Subject } from 'rxjs';
+import { HttpHeaders } from '@angular/common/http';
+import { api } from '../../../api/api';
 declare var Microsoft: any;
 
 @Injectable()
@@ -76,7 +78,7 @@ export class LocationService {
       this.notifyLocation.next(this.mapLocation);
     }
     else {
-      this.mapLocation = JSON.parse(sessionStorage.getItem("localSearchMapLocation"));      
+      this.mapLocation = JSON.parse(sessionStorage.getItem("localSearchMapLocation"));
       this.notifyLocalLocation.next(this.mapLocation);
     }
     return this.mapLocation;
@@ -134,3 +136,4 @@ function suggestionSelected(result) {
   let locationService = new LocationService();
   locationService.mapLocationDetails(result);
 }
+

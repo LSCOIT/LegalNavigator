@@ -31,9 +31,8 @@ export class HomeComponent implements OnInit {
   sponsorOverviewData: SponsorOverview;
   privacyData: Privacy;
 
-  constructor(
-    private staticResourceService: StaticResourceService, private locationService: LocationService
-  ) { }
+  constructor(private staticResourceService: StaticResourceService,
+    private locationService: LocationService) { }
 
   filterHomeContent(): void {
     if (this.homeContent) {
@@ -54,7 +53,8 @@ export class HomeComponent implements OnInit {
   }
 
   getHomePageContent(): void {
-    this.staticResourceService.getStaticContents(this.pageId)
+    let homePageRequest = { name: this.pageId, location: this.mapLocation };
+    this.staticResourceService.getStaticContent(homePageRequest)
       .subscribe(content => {
         this.homeContent = content[0];
         this.filterHomeContent();
@@ -62,13 +62,14 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getHomePageContent();
     this.loadStateName();
+    this.getHomePageContent();
     this.subscription = this.locationService.notifyLocation
       .subscribe((value) => {
         this.loadStateName();
+        this.getHomePageContent();
       });
-    
+
   }
 
   ngOnDestroy() {

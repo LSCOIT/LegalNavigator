@@ -27,6 +27,7 @@ export class LocationComponent implements OnInit {
   locationInputRequired: boolean;
   isError: boolean = false;
   showLocality: boolean = true;
+  subscription: any;
 
   constructor(private modalService: BsModalService, private locationService: LocationService,
               private mapResultsService: MapResultsService) {  }
@@ -116,5 +117,9 @@ export class LocationComponent implements OnInit {
       this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
       this.displayLocationDetails(this.mapLocation);
     }
+    this.subscription = this.locationService.notifyLocation
+      .subscribe((value) => {
+        this.displayLocationDetails(this.mapLocation);
+      });
   }
 }
