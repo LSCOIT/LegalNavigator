@@ -1,5 +1,5 @@
-import { Component, Input, TemplateRef } from '@angular/core';
-import { PlanTopic, PersonalizedPlan, PlanStep } from '../../../../guided-assistant/personalized-plan/personalized-plan';
+import { Component, Input, TemplateRef, EventEmitter, Output } from '@angular/core';
+import { PlanTopic, PersonalizedPlan, PlanStep, PersonalizedPlanTopic } from '../../../../guided-assistant/personalized-plan/personalized-plan';
 import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -14,6 +14,7 @@ import { Title } from '@angular/platform-browser/src/browser/title';
 })
 export class ActionPlansComponent implements OnChanges {
   @Input() planDetails;
+  @Input() topicsList
   displaySteps: boolean = false;
   updatedPlan: any;
   modalRef: BsModalRef;
@@ -27,8 +28,14 @@ export class ActionPlansComponent implements OnChanges {
   planTopic: PlanTopic = { topicId: '', steps: this.personalizedPlanSteps };
   planTopics: Array<PlanTopic>;
   resourceIds: Array<string>;
-  personalizedPlan: PersonalizedPlan = { id: '', topics: this.planTopics, isShared:false };
+  personalizedPlan: PersonalizedPlan = { id: '', topics: this.planTopics, isShared: false };
   selectedPlanDetails: any = { planDetails: [], topicId: '' };
+  topics: Array<any> = [];
+  filteredtopicsList: Array<PersonalizedPlanTopic> = [];
+  tempFilteredtopicsList: Array<PersonalizedPlanTopic> = [];
+  personalizedPlanTopic: PersonalizedPlanTopic = { topic: {}, isSelected: false };
+  @Output() notifyFilterTopics = new EventEmitter<object>();
+  removePlanDetails: any;
 
   constructor(private personalizedPlanService: PersonalizedPlanService,
     private modalService: BsModalService,
@@ -45,9 +52,9 @@ export class ActionPlansComponent implements OnChanges {
     this.planDetails = planDetails;
     if (planDetails.length === 0) {
       this.displaySteps = false;
-    } else if (this.planDetails.topics){
-        this.sortStepsByOrder(planDetails);
-        this.displaySteps = true;
+    } else if (this.planDetails.topics) {
+      this.sortStepsByOrder(planDetails);
+      this.displaySteps = true;
     }
   }
 
@@ -58,9 +65,20 @@ export class ActionPlansComponent implements OnChanges {
   }
 
   checkCompleted(event, topicId, stepId, template: TemplateRef<any>) {
-      this.isChecked = event.target.checked;
-      this.updateMarkCompleted(topicId, stepId, this.isChecked);
-      this.updateProfilePlan(this.isChecked, template);
+    this.isChecked = event.target.checked;
+    this.getPlanDetails(topicId, stepId, this.isChecked, template);
+  }
+
+  getPlanDetails(topicId, stepId, isChecked, template) {
+    this.personalizedPlanService.getActionPlanConditions(this.planDetails.id)
+      .subscribe(plan => {
+        if (plan) {
+          this.topics = plan.topics;
+        }
+        this.planDetails = this.personalizedPlanService.getPlanDetails(this.topics, plan);
+        this.updateMarkCompleted(topicId, stepId, isChecked);
+        this.updateProfilePlan(this.isChecked, template);
+      });
   }
 
   updateMarkCompleted(topicId, stepId, isChecked) {
@@ -123,6 +141,17 @@ export class ActionPlansComponent implements OnChanges {
     this.personalizedPlanService.userPlan(params)
       .subscribe(response => {
         if (response) {
+          this.filteredtopicsList = [];
+          response.topics.forEach(topic => {
+            for (let i = 0; i < this.tempFilteredtopicsList.length; i++) {
+              if (topic.topicId === this.tempFilteredtopicsList[i].topic.topicId) {
+                this.personalizedPlanTopic = { topic: topic, isSelected: this.tempFilteredtopicsList[i].isSelected };
+                this.filteredtopicsList.push(this.personalizedPlanTopic);
+              }
+            }
+          });
+          this.notifyFilterTopics.emit({ plan: response, topicsList: this.filteredtopicsList });
+          this.loadPersonalizedPlan();
           if (isChecked) {
             this.isCompleted = true;
           } else {
@@ -133,12 +162,17 @@ export class ActionPlansComponent implements OnChanges {
       });
   }
 
+  loadPersonalizedPlan() {
+    this.planDetails.topics = [];
+    this.filteredtopicsList.forEach(topic => {
+      if (topic.isSelected) {
+        this.planDetails.topics.push(topic);
+      }
+    });
+  }
+
   close() {
     this.modalRef.hide();
-    this.personalizedPlanService.getActionPlanConditions(this.planDetails.id).subscribe(items => {
-      this.updatedPlan = items;
-      this.getPersonalizedPlan(this.updatedPlan);
-    });
   }
 
   resourceUrl(url) {
@@ -153,24 +187,34 @@ export class ActionPlansComponent implements OnChanges {
   planTagOptions(topicId) {
     this.planTopics = [];
     this.planTopic = { topicId: '', steps: this.personalizedPlanSteps };
-    this.planDetails.topics.forEach(item => {
+    this.removePlanDetails = [];
+    this.getRemovePlanDetails();
+    this.removePlanDetails.forEach(item => {
       this.personalizedPlanSteps = [];
-      item.steps.forEach(step => {
+      item.topic.steps.forEach(step => {
         this.personalizedPlanStep = {
           stepId: step.stepId, title: step.title, description: step.description,
           order: step.order, isComplete: step.isComplete, resources: this.getResourceIds(step.resources), topicIds: []
         };
         this.personalizedPlanSteps.push(this.personalizedPlanStep);
       });
-      this.planTopic = { topicId: item.topicId, steps: this.personalizedPlanSteps };
+      this.planTopic = { topicId: item.topic.topicId, steps: this.personalizedPlanSteps };
       this.planTopics.push(this.planTopic);
     });
     this.personalizedPlan = { id: this.planDetails.id, topics: this.planTopics, isShared: this.planDetails.isShared };
     this.selectedPlanDetails = { planDetails: this.personalizedPlan, topicId: topicId };
   }
 
+  getRemovePlanDetails() {
+    this.removePlanDetails = [];
+    this.tempFilteredtopicsList.forEach(topic => {
+      this.removePlanDetails.push(topic);
+    });
+  }
+
   ngOnChanges() {
     this.getPersonalizedPlan(this.planDetails);
+    this.tempFilteredtopicsList = this.topicsList;
   }
 
   orderBy(items, field) {

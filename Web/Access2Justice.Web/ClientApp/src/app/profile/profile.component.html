@@ -43,7 +43,7 @@
             </ul>
           </div>
         </div>
-        <app-action-plans [planDetails]="planDetails"></app-action-plans>
+        <app-action-plans [planDetails]="planDetails" [topicsList]="topicsList" (notifyFilterTopics)='filterTopics($event)'></app-action-plans>
       </tab>
       <tab heading="My Saved Resources" (select)="getpersonalizedResources()">
         <app-search-results [fullPage]="true" [personalizedResources]="personalizedResources" [showRemove]="showRemove" *ngIf="isSavedResources"></app-search-results>

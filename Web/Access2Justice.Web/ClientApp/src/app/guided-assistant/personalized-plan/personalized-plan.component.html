@@ -39,7 +39,7 @@
 
       </div>
     </div>
-    <app-action-plans [planDetails]="planDetails"></app-action-plans>
+    <app-action-plans [planDetails]="planDetails" [topicsList]="topicsList" (notifyFilterTopics)='filterTopics($event)'></app-action-plans>
   </div>
 <div class="row">
   <app-service-org-sidebar [fullPage]="true"></app-service-org-sidebar>

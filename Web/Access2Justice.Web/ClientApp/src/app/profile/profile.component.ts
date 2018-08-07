@@ -54,14 +54,10 @@ export class ProfileComponent implements OnInit {
             this.topics = plan.topics;
             this.planDetailTags = plan;
           }
-          this.getPlanDetails();
+          this.topicsList = this.personalizedPlanService.createTopicsList(this.topics);
+          this.planDetails = this.personalizedPlanService.getPlanDetails(this.topics, this.planDetailTags);
         });
     }
-  }
-
-  getPlanDetails() {
-    this.topicsList = this.personalizedPlanService.createTopicsList(this.topics);
-    this.planDetails = this.personalizedPlanService.displayPlanDetails(this.planDetailTags, this.topicsList);
   }
 
   filterPlan(topic) {
@@ -81,6 +77,13 @@ export class ProfileComponent implements OnInit {
       }
       this.topicsList.push(this.planTopic);
     });
+  }
+
+  filterTopics(event) {
+    this.topics = event.plan.topics;
+    this.planDetailTags = event.plan;
+    this.topicsList = event.topicsList;
+    this.filterPlan("");
   }
 
   getpersonalizedResources() {
