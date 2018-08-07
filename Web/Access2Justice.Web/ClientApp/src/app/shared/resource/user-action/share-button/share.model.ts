@@ -8,3 +8,7 @@ export interface UnShare {
   ResourceId?: string;
   UserId?: string;
 }
+
+export interface ShareView {
+  PermaLink?: string;
+}
