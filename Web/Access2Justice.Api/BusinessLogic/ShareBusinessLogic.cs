@@ -42,8 +42,7 @@ namespace Access2Justice.Api.BusinessLogic
                 {
                     return new ShareViewModel
                     {
-                        PermaLink = GetPermaLink(resource.Select(a => a.PermaLink).First()),
-                        IsGenerated = false
+                        PermaLink = GetPermaLink(resource.Select(a => a.PermaLink).First())
                     };
                 }
             }
@@ -77,8 +76,7 @@ namespace Access2Justice.Api.BusinessLogic
                 var response = await UpdateUserProfileDataAsync(userProfile);
                 return new ShareViewModel
                 {
-                    PermaLink = dbShareSettings.PermaLinkMaxLength > 0 ? GetPermaLink(permaLink) : permaLink,
-                    IsGenerated = true
+                    PermaLink = dbShareSettings.PermaLinkMaxLength > 0 ? GetPermaLink(permaLink) : permaLink
                 };
             }
             catch

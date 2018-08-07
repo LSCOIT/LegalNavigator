@@ -9,14 +9,14 @@
     </button>
     <div class="text-center">
       <h4 class="modal-title pull-left">Share Link</h4>
-      <div class="row">
+      <div *ngIf="showGenerateLink" class="row">
         <!--hide if link has already been generated-->
         <p>Share this content with anyone using a link.</p>
         <button class="btn btn-primary" (click)="generateLink()">Generate Link</button>
       </div>
       <div>
         <!--ngIf the link has been generated-->
-        <input type="text" name="name" value="{{resourceUrl + shareView.permaLink}}" #userinput />
+        <input type="text" name="name" value="{{permaLink}}" #userinput />
         <button type="button" id="copy-btn" (click)="copyLink(userinput)">Copy Link</button>
         <span class="pxs">Note: Link will automatically expire after 12 months.</span>
         <div class="remove-share">

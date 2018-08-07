@@ -4,7 +4,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { ArrayUtilityService } from '../../../array-utility.service';
 import { api } from '../../../../../api/api';
 import { HttpClient } from '@angular/common/http';
-import { Share, UnShare, ShareView } from '../share-button/share.model';
+import { Share, UnShare } from '../share-button/share.model';
 import { ShareService } from '../share-button/share.service';
 import { ActivatedRoute } from '@angular/router';
 
@@ -21,9 +21,10 @@ export class ShareButtonComponent implements OnInit {
   sessionKey: string = "showModal";
   shareInput: Share = { ResourceId: '', UserId: '', Url: '' };
   unShareInput: UnShare = { ResourceId: '', UserId: '' };
-  shareView: ShareView = { PermaLink: '', IsGenerated: true };
-  permaLink: any;
-  hideGenerateLink: boolean = false;
+  shareView: any;
+  blank: string = "";
+  permaLink: string = "";
+  showGenerateLink: boolean = true;
   resourceUrl: string = window.location.protocol + "//" + window.location.host + "/share/";
   
   constructor(private modalService: BsModalService,
@@ -43,8 +44,8 @@ export class ShareButtonComponent implements OnInit {
       sessionStorage.setItem(this.sessionKey, "true");
       this.externalLogin();
     } else {
-      this.checkPermaLink();
-      this.modalRef = this.modalService.show(template);
+      this.checkPermaLink(template);
+      
     }
   }
 
@@ -52,7 +53,7 @@ export class ShareButtonComponent implements OnInit {
     this.modalRef.hide();
   }
 
-  checkPermaLink() {
+  checkPermaLink(template) {
     this.shareInput.ResourceId = this.getActiveParam();
     this.shareInput.Url = location.pathname;
     this.shareInput.UserId = this.userId;
@@ -60,6 +61,11 @@ export class ShareButtonComponent implements OnInit {
       .subscribe(response => {
         if (response != undefined) {
           this.shareView = response;
+          if (this.shareView.permaLink) {
+            this.showGenerateLink = false;
+            this.permaLink = this.getPermaLink();
+          }
+          this.modalRef = this.modalService.show(template);
         }
       });
   }
@@ -72,6 +78,7 @@ export class ShareButtonComponent implements OnInit {
       .subscribe(response => {
         if (response != undefined) {
           this.shareView = response;
+          this.permaLink = this.getPermaLink();
         }
       });
   }
@@ -83,6 +90,8 @@ export class ShareButtonComponent implements OnInit {
       .subscribe(response => {
         if (response != undefined) {
           this.close();
+          this.showGenerateLink = true;
+          this.permaLink = this.blank;
         }
       });
   }
@@ -100,6 +109,13 @@ export class ShareButtonComponent implements OnInit {
     inputElement.select();
     document.execCommand('copy');
     inputElement.setSelectionRange(0, 0);
+  }
+
+  getPermaLink() {
+    if (this.shareView.permaLink)
+      return this.resourceUrl + this.shareView.permaLink;
+    else
+      return this.blank;
   }
 
   externalLogin() {

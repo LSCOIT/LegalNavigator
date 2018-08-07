@@ -26,9 +26,12 @@ export class ShareButtonRouteComponent implements OnInit {
     this.shareService.getResourceLink(params)
       .subscribe(response => {
         if (response != undefined) {
-          console.log(response);
-          this.router.navigateByUrl(response[0]);
+          if (response.length > 0) {
+            this.router.navigateByUrl(response[0]);
+          }
         }
+        //ToDo - Once error branch code merged into develop branch will uncomment the below line
+        //this.router.navigateByUrl("/404");
       });
   }
 }

@@ -19,14 +19,12 @@ namespace Access2Justice.Api.BusinessLogic
         private readonly IDynamicQueries dbClient;
         private readonly ICosmosDbSettings dbSettings;
         private readonly IBackendDatabaseService dbService;
-        private readonly IShareSettings dbShareSettings;
         public UserProfileBusinessLogic(IDynamicQueries dynamicQueries, ICosmosDbSettings cosmosDbSettings,
-            IBackendDatabaseService backendDatabaseService, IShareSettings shareSettings)
+            IBackendDatabaseService backendDatabaseService)
         {
             dbClient = dynamicQueries;
             dbSettings = cosmosDbSettings;
             dbService = backendDatabaseService;
-            dbShareSettings = shareSettings;
         }
 
         public async Task<UserProfile> GetUserProfileDataAsync(string oId)

@@ -7,7 +7,7 @@ namespace Access2Justice.Api.ViewModels
 {
     public class ShareViewModel
     {
+        [JsonProperty(PropertyName = "permaLink")]
         public string PermaLink { get; set; }
-        public bool IsGenerated { get; set; }
     }
 }
