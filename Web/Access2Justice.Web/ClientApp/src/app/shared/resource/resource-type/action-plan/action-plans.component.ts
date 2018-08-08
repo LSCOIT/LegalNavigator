@@ -36,6 +36,7 @@ export class ActionPlansComponent implements OnChanges {
   personalizedPlanTopic: PersonalizedPlanTopic = { topic: {}, isSelected: false };
   @Output() notifyFilterTopics = new EventEmitter<object>();
   removePlanDetails: any;
+  plan: any;
 
   constructor(private personalizedPlanService: PersonalizedPlanService,
     private modalService: BsModalService,
@@ -75,7 +76,7 @@ export class ActionPlansComponent implements OnChanges {
         if (plan) {
           this.topics = plan.topics;
         }
-        this.planDetails = this.personalizedPlanService.getPlanDetails(this.topics, plan);
+        this.plan = this.personalizedPlanService.getPlanDetails(this.topics, plan);
         this.updateMarkCompleted(topicId, stepId, isChecked);
         this.updateProfilePlan(this.isChecked, template);
       });
@@ -85,7 +86,7 @@ export class ActionPlansComponent implements OnChanges {
     this.planTopics = [];
     this.personalizedPlanSteps = [];
     this.planTopic = { topicId: '', steps: this.personalizedPlanSteps };
-    this.planDetails.topics.forEach(item => {
+    this.plan.topics.forEach(item => {
       if (item.topicId === topicId) {
         this.personalizedPlanSteps = this.updateStepTagForMatchingTopicId(item, stepId, isChecked);
       } else {
@@ -150,16 +151,20 @@ export class ActionPlansComponent implements OnChanges {
               }
             }
           });
-          this.notifyFilterTopics.emit({ plan: response, topicsList: this.filteredtopicsList });
-          this.loadPersonalizedPlan();
-          if (isChecked) {
-            this.isCompleted = true;
-          } else {
-            this.isCompleted = false;
-          }
-          this.modalRef = this.modalService.show(template);
+          this.getUpdatedPersonalizedPlan(response, isChecked, template);
         }
       });
+  }
+
+  getUpdatedPersonalizedPlan(response, isChecked, template) {
+    this.notifyFilterTopics.emit({ plan: response, topicsList: this.filteredtopicsList });
+    this.loadPersonalizedPlan();
+    if (isChecked) {
+      this.isCompleted = true;
+    } else {
+      this.isCompleted = false;
+    }
+    this.modalRef = this.modalService.show(template);
   }
 
   loadPersonalizedPlan() {
