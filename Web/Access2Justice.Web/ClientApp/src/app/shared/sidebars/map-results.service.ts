@@ -5,7 +5,6 @@ import { LatitudeLongitude } from './map-results';
 declare var Microsoft: any;
 
 @Injectable()
-
 export class MapResultsService {
   latitudeLongitude: Array<LatitudeLongitude> = [];
   constructor(private http: HttpClient) {

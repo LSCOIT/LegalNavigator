@@ -67,14 +67,14 @@ namespace Access2Justice.Api
 
                         // Extract the user info object
                         var user = JObject.Parse(await response.Content.ReadAsStringAsync());
-                        UriCreateUserDetails(user);
+                        await UriCreateUserDetails(user);
                     }
                 };
             })
             .AddCookie(cookieOptions => cookieOptions.LoginPath = new PathString("/login"));
         }
 
-        private async void UriCreateUserDetails(dynamic userObject)
+        private async Task UriCreateUserDetails(dynamic userObject)
         {
             var resource = JsonConvert.SerializeObject(userObject);
             var userUIDocument = JsonConvert.DeserializeObject<dynamic>(resource);
