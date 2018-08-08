@@ -11,7 +11,7 @@ export class PrivacyPromiseComponent implements OnInit {
   privacyContent: PrivacyContent;
   informationData: Array<Details> = [];
   imageData: Image;
-  id: string = 'PrivacyPromisePage';
+  name: string = 'PrivacyPromisePage';
 
   constructor(
     private staticResourceService: StaticResourceService
@@ -25,7 +25,8 @@ export class PrivacyPromiseComponent implements OnInit {
   }
 
   getPrivacyPageContent(): void {
-    this.staticResourceService.getStaticContents(this.id)
+    let privacyPageRequest = { name: this.name };
+    this.staticResourceService.getStaticContent(privacyPageRequest)
       .subscribe(content => {
         this.privacyContent = content[0];
         this.filterPrivacyContent();

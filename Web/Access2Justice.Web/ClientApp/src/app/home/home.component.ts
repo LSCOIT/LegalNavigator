@@ -48,16 +48,9 @@ export class HomeComponent implements OnInit {
       this.privacyData = this.homeContent.privacy;
     }
   }
-
-  loadStateName() {
-    if (sessionStorage.getItem("globalMapLocation")) {
-      this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
-      this.state = this.mapLocation.address;
-    }
-  }
-
-  getHomePageContent(): void {
-    let homePageRequest = { name: this.pageId, location: this.mapLocation };
+  
+  getHomePageContent(): void {    
+    let homePageRequest = { name: this.pageId };
     this.staticResourceService.getStaticContent(homePageRequest)
       .subscribe(content => {
         this.homeContent = content[0];
@@ -66,14 +59,12 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadStateName();
     this.getHomePageContent();
     this.subscription = this.locationService.notifyLocation
       .subscribe((value) => {
         this.loadStateName();
         this.getHomePageContent();
       });
-
   }
 
   ngOnDestroy() {
@@ -82,6 +73,3 @@ export class HomeComponent implements OnInit {
     }
   }
 }
-
-
-

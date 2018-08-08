@@ -11,7 +11,7 @@ export class HelpFaqsComponent implements OnInit {
   helpAndFaqsContent: HelpAndFaqs;
   faqData: Array<Faq> = [];
   imageData: ImageUrl;
-  id: string = 'HelpAndFAQPage';
+  name: string = 'HelpAndFAQPage';
   constructor(
     private staticResourceService: StaticResourceService
   ) { }
@@ -24,7 +24,8 @@ export class HelpFaqsComponent implements OnInit {
   }
 
   getHelpFaqPageContent(id): void {
-    this.staticResourceService.getStaticContents(id)
+    let helpAndFAQPageRequest = { name: this.name };
+    this.staticResourceService.getStaticContent(helpAndFAQPageRequest)
       .subscribe(content => {
         this.helpAndFaqsContent = content[0];
         this.filterHelpAndFaqContent();

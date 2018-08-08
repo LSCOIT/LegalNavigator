@@ -12,7 +12,7 @@ export class LanguageComponent implements OnInit {
   
   blobUrl: any = environment.blobUrl;
   navigation: Navigation;
-  id: string = 'Navigation';
+  name: string = 'Navigation';
   language: Language;
   location: Location;
   
@@ -20,14 +20,13 @@ export class LanguageComponent implements OnInit {
 
   filterLanguagueNavigationContent(): void {
     if (this.navigation) {
-      this.id = this.navigation.name;
+      this.name = this.navigation.name;
       this.language = this.navigation.language;
     }
   }
 
-  getLanguagueNavigationContent(): void {
-    
-    let homePageRequest = { name: this.id, location: this.location };
+  getLanguagueNavigationContent(): void {    
+    let homePageRequest = { name: this.name };
     this.staticResourceService.getStaticContent(homePageRequest)
       .subscribe(content => {
         this.navigation = content[0];
@@ -38,5 +37,4 @@ export class LanguageComponent implements OnInit {
   ngOnInit() {
     this.getLanguagueNavigationContent();
   }
-
 }
