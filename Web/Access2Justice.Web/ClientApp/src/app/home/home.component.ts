@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit {
   loadStateName() {
     if (sessionStorage.getItem("globalMapLocation")) {
       this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
-      this.state = this.mapLocation.locality;
+      this.state = this.mapLocation.address;
     }
   }
 

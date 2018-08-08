@@ -7,10 +7,10 @@ namespace Access2Justice.Shared.Interfaces
 {
     public interface IStaticResourceBusinessLogic
     {
-        Task<dynamic> GetPageStaticResourceDataAsync(string name);
-        Task<dynamic> UpsertStaticHomePageDataAsync(HomeContent homePageContent);
-        Task<dynamic> UpsertStaticPrivacyPromisePageDataAsync(PrivacyPromiseContent privacyPromiseContent);
-        Task<dynamic> UpsertStaticHelpAndFAQPageDataAsync(HelpAndFaqsContent helpAndFAQPageContent);
-        Task<dynamic> UpsertStaticNavigationDataAsync(Navigation navigationContent);
+        Task<dynamic> GetPageStaticResourceDataAsync(string name, Location location);
+        Task<dynamic> UpsertStaticHomePageDataAsync(HomeContent homePageContent, Location location);
+        Task<dynamic> UpsertStaticPrivacyPromisePageDataAsync(PrivacyPromiseContent privacyPromiseContent, Location location);
+        Task<dynamic> UpsertStaticHelpAndFAQPageDataAsync(HelpAndFaqsContent helpAndFAQPageContent, Location location);
+        Task<dynamic> UpsertStaticNavigationDataAsync(Navigation navigationContent, Location location);
     }
 }
