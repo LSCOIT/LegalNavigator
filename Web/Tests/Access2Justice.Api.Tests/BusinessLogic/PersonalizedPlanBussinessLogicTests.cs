@@ -31,35 +31,35 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             personalizedPlan = new PersonalizedPlanBusinessLogic(dbSettings, dbService, dynamicQueries);
         }
 
-        [Fact]
-        public void GeneratePersonalizedPlanFromCuratedExperienceAnswers()
-        {
-            // Arrange
-            var curatedExperienceJson = JsonConvert.DeserializeObject<CuratedExperience>(
-                CuratedExperienceTestData.CuratedExperienceSampleSchema);
-            var answersDocId = Guid.Parse("2b45fg5b-a555-48e8-ad7b-90b99ebc5c96");
-            var expectedPersonalizedPlan = this.generatedPersonalizedPlan;
-            // Act
-             var actualPersonalizedPlan = personalizedPlan.GeneratePersonalizedPlan(curatedExperienceJson, answersDocId);
+        //[Fact]
+        //public void GeneratePersonalizedPlanFromCuratedExperienceAnswers()
+        //{
+        //    // Arrange
+        //    var curatedExperienceJson = JsonConvert.DeserializeObject<CuratedExperience>(
+        //        CuratedExperienceTestData.CuratedExperienceSampleSchema);
+        //    var answersDocId = Guid.Parse("2b45fg5b-a555-48e8-ad7b-90b99ebc5c96");
+        //    var expectedPersonalizedPlan = this.generatedPersonalizedPlan;
+        //    // Act
+        //     var actualPersonalizedPlan = personalizedPlan.GeneratePersonalizedPlan(curatedExperienceJson, answersDocId);
 
-            // Assert  
-             //Assert.Equal(expectedPersonalizedPlan, actualPersonalizedPlan);
-        }
+        //    // Assert  
+        //     //Assert.Equal(expectedPersonalizedPlan, actualPersonalizedPlan);
+        //}
 
-        [Fact]
-        public void GetTopicNameByTopicId()
-        {
-            //Arrange
-            var topicId = Guid.Parse("addf41e9-1a27-4aeb-bcbb-7959f95094ba");
-            var isTopicName = true;
-            var topicDetails = JsonConvert.DeserializeObject<List<TopicDetails>>(JsonConvert.SerializeObject(this.topicDetails));
-            var expectedTopicName = "Family";
+        //[Fact]
+        //public void GetTopicNameByTopicId()
+        //{
+        //    //Arrange
+        //    var topicId = Guid.Parse("addf41e9-1a27-4aeb-bcbb-7959f95094ba");
+        //    var isTopicName = true;
+        //    var topicDetails = JsonConvert.DeserializeObject<List<TopicDetails>>(JsonConvert.SerializeObject(this.topicDetails));
+        //    var expectedTopicName = "Family";
 
-            //Act
-            var actualTopicName = personalizedPlan.GetByTopicId(topicId, topicDetails, isTopicName);
+        //    //Act
+        //    var actualTopicName = personalizedPlan.GetByTopicId(topicId, topicDetails, isTopicName);
 
-            //Assert
-            Assert.Equal(actualTopicName, expectedTopicName);
-        }
+        //    //Assert
+        //    Assert.Equal(actualTopicName, expectedTopicName);
+        //}
     }
 }
