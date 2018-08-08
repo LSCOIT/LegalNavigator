@@ -23,7 +23,7 @@ export class HelpFaqsComponent implements OnInit {
     }
   }
 
-  getHelpFaqPageContent(id): void {
+  getHelpFaqPageContent(): void {
     let helpAndFAQPageRequest = { name: this.name };
     this.staticResourceService.getStaticContent(helpAndFAQPageRequest)
       .subscribe(content => {
@@ -32,6 +32,6 @@ export class HelpFaqsComponent implements OnInit {
       });
   }
   ngOnInit() {
-    this.getHelpFaqPageContent(this.id);
+    this.getHelpFaqPageContent();
   }
 }

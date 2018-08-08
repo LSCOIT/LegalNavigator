@@ -48,7 +48,13 @@ export class HomeComponent implements OnInit {
       this.privacyData = this.homeContent.privacy;
     }
   }
-  
+  loadStateName() {
+    if (sessionStorage.getItem("globalMapLocation")) {
+      this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+      this.state = this.mapLocation.address;
+    }
+  }
+
   getHomePageContent(): void {    
     let homePageRequest = { name: this.pageId };
     this.staticResourceService.getStaticContent(homePageRequest)
