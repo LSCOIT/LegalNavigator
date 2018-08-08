@@ -131,7 +131,7 @@ namespace Access2Justice.Api.BusinessLogic
             return PlanSteps;
         }
 
-        private PersonalizedPlanSteps ConvertPersonalizedPlanSteps(dynamic convObj)
+        public PersonalizedPlanSteps ConvertPersonalizedPlanSteps(dynamic convObj)
         {
             var serializedResult = JsonConvert.SerializeObject(convObj);
             List<PersonalizedPlanSteps> listPlanSteps = JsonConvert.DeserializeObject<List<PersonalizedPlanSteps>>(serializedResult);
@@ -143,6 +143,7 @@ namespace Access2Justice.Api.BusinessLogic
             }
             return personalizedPlanSteps;
         }
+
         public async Task<PersonalizedActionPlanViewModel> GetPlanDataAsync(string planId)
         {
             PersonalizedActionPlanViewModel personalizedPlan = new PersonalizedActionPlanViewModel();
@@ -268,7 +269,6 @@ namespace Access2Justice.Api.BusinessLogic
         {
             var personalizedPlanSteps = JsonConvert.DeserializeObject<object>(JsonConvert.SerializeObject(plan));
             var result = await dbService.UpdateItemAsync(plan.PersonalizedPlanId.ToString(), personalizedPlanSteps, dbSettings.PersonalizedActionPlanCollectionId);
-            //result = JsonConvert.DeserializeObject<PersonalizedPlanSteps>(JsonConvert.SerializeObject(result));
             var planId = JsonConvert.DeserializeObject<PersonalizedPlanSteps>(JsonConvert.SerializeObject(result)).PersonalizedPlanId;
             return await GetPlanDataAsync(planId.ToString());
         }
