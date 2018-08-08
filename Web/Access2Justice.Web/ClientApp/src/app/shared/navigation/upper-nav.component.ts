@@ -25,6 +25,7 @@ export class UpperNavComponent implements OnInit {
   helpAndFAQ: HelpAndFAQ;
   login: Login;
   subscription: any;
+  //button: Button={ buttonText: '', buttonAltText: '', buttonLink: '' }
   constructor(private http: HttpClient, private staticResourceService: StaticResourceService, private locationService: LocationService) { }
 
   externalLogin() {
@@ -50,6 +51,7 @@ export class UpperNavComponent implements OnInit {
       this.privacyPromise = this.navigation.privacyPromise;
       this.helpAndFAQ = this.navigation.helpAndFAQ;
       this.login = this.navigation.login;
+     // this.button = this.navigation.helpAndFAQ.button;
     }
   }
 

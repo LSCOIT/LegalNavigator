@@ -1,69 +1,69 @@
 export interface Hero {
-  heading: string;
-  description: Description;
-  image: Image;
+  heading?: string;
+  description?: Description;
+  image?: Image;
 }
 export interface Description {
-  text: string;
-  textWithLink: TextWithLink;
+  text?: string;
+  textWithLink?: TextWithLink;
 }
 export interface TextWithLink {
-  urlText: string;
-  url: string;
+  urlText?: string;
+  url?: string;
 }
 export interface Image {
-  source: string;
-  altText: string
+  source?: string;
+  altText?: string
 }
 export interface GuidedAssistantOverview {
-  heading: string;
-  description: DescriptionGuidedAssistant;
-  button: Button;
-  image: Image
+  heading?: string;
+  description?: DescriptionGuidedAssistant;
+  button?: Button;
+  image?: Image
 }
 export interface DescriptionGuidedAssistant {
-  steps: Array<Steps>;
-  text: string;
-  textWithLink: TextWithLink;
+  steps?: Array<Steps>;
+  text?: string;
+  textWithLink?: TextWithLink;
 }
 export interface Steps {
-  order: number;
-  descritpion: string
+  order?: number;
+  descritpion?: string
 }
 export interface Button {
-  buttonText: string;
-  buttonAltText: string;
-  buttonLink: string
+  buttonText?: string;
+  buttonAltText?: string;
+  buttonLink?: string
 }
 export interface TopicAndResources {
-  heading: string;
-  button: Button
+  heading?: string;
+  button?: Button
 }
 export interface Carousel {
-  slides: Array<Slides>
+  slides?: Array<Slides>
 }
 export interface Slides {
-  quote: string;
-  author: string;
-  location: string;
-  image: Image
+  quote?: string;
+  author?: string;
+  location?: string;
+  image?: Image
 }
 export interface SponsorOverview {
-  heading: string;
-  description: string;
-  sponsors: Array<Sponsors>
-  button: Button
+  heading?: string;
+  description?: string;
+  sponsors?: Array<Sponsors>
+  button?: Button
 }
 export interface Sponsors {
-  source: string;
-  altText: string
+  source?: string;
+  altText?: string
 }
 export interface Privacy {
-  heading: string;
-  description: string;
-  button: Button;
-  image: Image
+  heading?: string;
+  description?: string;
+  button?: Button;
+  image?: Image
 }
 export interface HelpText {
-  helpText: string
+  helpText?: string
 }

@@ -5,11 +5,11 @@
         <h2>{{heroData.heading}} {{state}}</h2>
         <p>
           {{heroData.description.text}}
-          <a class="link" [routerLink]="heroData.description.textWithLink.url">{{heroData.description.textWithLink.urlText}}</a>
+          <a class="link" [routerLink]="heroData?.description?.textWithLink?.url">{{heroData?.description?.textWithLink?.urlText}}</a>
         </p>
       </div>
       <div class="col-sm-6">
-        <img id="home-img" [src]="blobUrl + heroData.image.source" [alt]="heroData.image.altText">
+        <img id="home-img" [src]="blobUrl + heroData?.image?.source" [alt]="heroData?.image?.altText">
       </div>
     </div>
   </div>
@@ -17,28 +17,28 @@
     <div class="container">
       <div class="row">
         <div class="col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1">
-          <h3>{{guidedAssistantOverviewData.heading}}</h3>
+          <h3>{{guidedAssistantOverviewData?.heading}}</h3>
         </div>
       </div>
       <div class="row">
         <div class="col-sm-4 col-xs-12">
-          <img class="secondary-img" [src]="blobUrl + guidedAssistantOverviewData.image.source"
-               [alt]="guidedAssistantOverviewData.image.altText">
+          <img class="secondary-img" [src]="blobUrl + guidedAssistantOverviewData?.image?.source"
+               [alt]="guidedAssistantOverviewData?.image?.altText">
         </div>
         <div class="guided-assistant-steps col-sm-7 col-sm-offset-1">
-          <ul class="p" *ngFor="let steps of guidedAssistantOverviewData.description.steps">
-            <li><span>{{steps.order}}.</span>{{steps.description}}</li>
+          <ul class="p" *ngFor="let steps of guidedAssistantOverviewData?.description?.steps">
+            <li><span>{{steps?.order}}.</span>{{steps?.description}}</li>
           </ul>
           <p>
             {{guidedAssistantOverviewData.description.text}}
-            <a [routerLink]="guidedAssistantOverviewData.description.textWithLink.url">{{guidedAssistantOverviewData.description.textWithLink.urlText}}.</a>
+            <a [routerLink]="guidedAssistantOverviewData?.description?.textWithLink?.url">{{guidedAssistantOverviewData?.description?.textWithLink?.urlText}}.</a>
           </p>
         </div>
       </div>
       <div class="row">
         <div class="col-sm-12 text-center">
           <button type="button" class="btn btn-primary">
-            <a [routerLink]="guidedAssistantOverviewData.button.buttonLink">{{guidedAssistantOverviewData.button.buttonText}}</a>
+            <a [routerLink]="guidedAssistantOverviewData?.button?.buttonLink">{{guidedAssistantOverviewData?.button?.buttonText}}</a>
           </button>
         </div>
       </div>
@@ -47,7 +47,7 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-8 col-sm-offset-2 text-center">
-        <h3>{{topicAndResourcesData.heading}}</h3>
+        <h3>{{topicAndResourcesData?.heading}}</h3>
       </div>
     </div>
     <div class="row">
@@ -56,7 +56,7 @@
     <div class="row">
       <div class="col-sm-12 text-center">
         <button type="button" class="btn btn-primary">
-          <a [routerLink]="topicAndResourcesData.button.buttonLink"> {{topicAndResourcesData.button.buttonText}} </a>
+          <a [routerLink]="topicAndResourcesData?.button?.buttonLink"> {{topicAndResourcesData?.button?.buttonText}} </a>
         </button>
       </div>
     </div>
@@ -67,12 +67,12 @@
         <carousel>
           <slide *ngFor="let slide of carouselData.slides">
             <div>
-              <img [src]="slide.image.source" class="testimonial-img col-lg-3 col-sm-4" alt="slide.image.altText">
+              <img [src]="slide?.image?.source" class="testimonial-img col-lg-3 col-sm-4" alt="slide?.image?.altText">
               <div class="slide-content inline col-lg-9 col-sm-8">
                 <h5>{{slide.quote}}</h5>
                 <hr />
-                <p class="ps">{{slide.author}}</p>
-                <p class="ps">{{slide.location}}</p>
+                <p class="ps">{{slide?.author}}</p>
+                <p class="ps">{{slide?.location}}</p>
               </div>
             </div>
           </slide>
@@ -83,16 +83,17 @@
 </div>
 <div class="row text-center">
   <div class="col-md-6 col-md-offset-3">
-    <h4>{{sponsorOverviewData.heading}}</h4>
-    <p>{{sponsorOverviewData.description}}</p>
+    <h4>{{sponsorOverviewData?.heading}}</h4>
+    <p>{{sponsorOverviewData?.description}}</p>
     <div class="row">
-      <div class="col-sm-6" *ngFor="let sponsor of sponsorOverviewData.sponsors">
-        <img [src]="blobUrl + sponsor.source" [alt]="sponsor.altText">
-      </div>
+      <div class="col-sm-6" *ngFor="let sponsor of sponsors">
+        <img class="secondary-img" [src]="blobUrl + sponsor?.source"
+             [alt]="sponsor?.altText">
+      </div>     
     </div>
     <button class="btn btn-primary">
-      <a [routerLink]="sponsorOverviewData.button.buttonLink">
-        {{sponsorOverviewData.button.buttonText}}
+      <a [routerLink]="sponsorOverviewData?.button?.buttonLink">
+        {{sponsorOverviewData?.button?.buttonText}}
       </a>
     </button>
   </div>
@@ -101,15 +102,15 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-5">
-        <img [src]="blobUrl + privacyData.image.source" [alt]="privacyData.image.altText">
+        <img [src]="blobUrl + privacyData?.image?.source" [alt]="privacyData?.image?.altText">
       </div>
       <div class="col-sm-5 col-sm-offset-1">
-        <h3>{{privacyData.heading}}</h3>
-        <p>{{privacyData.description}}</p>
+        <h3>{{privacyData?.heading}}</h3>
+        <p>{{privacyData?.description}}</p>
         <div class="row">
           <button class="btn btn-secondary">
-            <a [routerLink]="privacyData.button.buttonLink">
-              {{privacyData.button.buttonText}}
+            <a [routerLink]="privacyData?.button?.buttonLink">
+              {{privacyData?.button?.buttonText}}
             </a>
           </button>
         </div>

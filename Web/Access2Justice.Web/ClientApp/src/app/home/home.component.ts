@@ -3,7 +3,7 @@ import { MapLocation } from '../shared/location/location';
 import { LocationService } from '../shared/location/location.service';
 import { environment } from '../../environments/environment';
 
-import { Hero, GuidedAssistantOverview, TopicAndResources, Carousel, SponsorOverview, Privacy } from './home';
+import { Hero, GuidedAssistantOverview, TopicAndResources, Carousel, SponsorOverview, Privacy, Sponsors } from './home';
 import { StaticResourceService } from '../shared/static-resource.service';
 
 @Component({
@@ -21,6 +21,8 @@ export class HomeComponent implements OnInit {
     { image: '' },
     { image: '' }
   ];
+  sponsors: Array<Sponsors>;
+  button: { buttonText: '', buttonAltText: '', buttonLink: '' }
   blobUrl: any = environment.blobUrl;
   pageId: any = 'HomePage';
   homeContent: any;
@@ -39,8 +41,10 @@ export class HomeComponent implements OnInit {
       this.heroData = this.homeContent.hero;
       this.guidedAssistantOverviewData = this.homeContent.guidedAssistantOverview;
       this.topicAndResourcesData = this.homeContent.topicAndResources;
-      this.carouselData = this.homeContent.carousel;
       this.sponsorOverviewData = this.homeContent.sponsorOverview;
+      this.sponsors = this.homeContent.sponsorOverview.sponsors;
+      this.button = this.homeContent.sponsorOverview.button;
+      this.carouselData = this.homeContent.carousel;
       this.privacyData = this.homeContent.privacy;
     }
   }
