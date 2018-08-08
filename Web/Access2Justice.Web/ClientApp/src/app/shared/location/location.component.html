@@ -1,12 +1,12 @@
 <div class="navbar-left edit-location pull-right" (click)="changeLocation(template)">
-  <img class="nav-icon" src="{{blobUrl}}{{locationNavContent.image.source}}" aria-hidden="true" />
+  <img class="nav-icon" src="{{blobUrl}}{{locationNavContent?.image?.source}}" aria-hidden="true" />
   <span *ngIf="showLocation; else elseBlock">
-    {{locationNavContent.text}}
+    {{locationNavContent?.text}}
   </span>
   <ng-template #elseBlock>
     <span *ngIf="!showLocality"> {{locality}}(</span><span>{{address}}</span><span *ngIf="!showLocality">)</span>
   </ng-template>
-  <button type="button" class="change-location-btn pxs mobile-hidden">{{locationNavContent.button.buttonText}}</button>
+  <button type="button" class="change-location-btn pxs mobile-hidden">{{locationNavContent?.button?.buttonText}}</button>
 </div>
 <ng-template #template>
   <div class="modal-body text-center container-fluid">

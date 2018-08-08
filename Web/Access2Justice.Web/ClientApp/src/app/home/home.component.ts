@@ -65,6 +65,7 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadStateName();
     this.getHomePageContent();
     this.subscription = this.locationService.notifyLocation
       .subscribe((value) => {
