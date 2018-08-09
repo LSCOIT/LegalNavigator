@@ -2,16 +2,19 @@
 using System;
 using System.Collections.Generic;
 
-namespace Access2Justice.Shared.Models.CuratedExperience
+namespace Access2Justice.Shared.Models
 {
     public class CuratedExperienceAnswers
     {
         [JsonProperty(PropertyName = "id")]
         public Guid AnswersDocId { get; set; }
+
         [JsonProperty(PropertyName = "curatedExperienceId")]
         public Guid CuratedExperienceId { get; set; }
+
         [JsonProperty(PropertyName = "answers")]
         public IList<Answer> Answers { get; set; }
+
         public CuratedExperienceAnswers()
         {
             Answers = new List<Answer>();
@@ -20,23 +23,22 @@ namespace Access2Justice.Shared.Models.CuratedExperience
 
     public class Answer
     {
-        [JsonProperty(PropertyName = "clickedButtonId")]
-        public Guid ClickedButtonId { get; set; }
-        [JsonProperty(PropertyName = "selectedItemsIds")]
-        public IList<Guid> SelectedItemsIds { get; set; }
-        [JsonProperty(PropertyName = "filledInTexts")]
-        public IList<FilledInText> FilledInTexts { get; set; }
+        [JsonProperty(PropertyName = "answerButtonId")]
+        public Guid AnswerButtonId { get; set; }
+
+        [JsonProperty(PropertyName = "answerFields")]
+        public IList<AnswerField> AnswerFields { get; set; }
         public Answer()
         {
-            SelectedItemsIds = new List<Guid>();
-            FilledInTexts = new List<FilledInText>();
+            AnswerFields = new List<AnswerField>();
         }
     }
 
-    public class FilledInText
+    public class AnswerField
     {
         [JsonProperty(PropertyName = "fieldId")]
         public string FieldId { get; set; }
+
         [JsonProperty(PropertyName = "value")]
         public string Value { get; set; }
     }

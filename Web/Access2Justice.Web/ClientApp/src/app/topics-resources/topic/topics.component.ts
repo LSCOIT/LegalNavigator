@@ -10,6 +10,7 @@ import { Topic } from '../shared/topic';
 export class TopicsComponent implements OnInit {
   topics: Topic;
   @Input() topicLength: number;
+  @Input() fullPage: true;
 
   getTopics(): void {
     this.topicService.getTopics()

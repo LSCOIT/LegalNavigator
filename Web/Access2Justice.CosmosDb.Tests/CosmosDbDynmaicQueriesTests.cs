@@ -110,6 +110,29 @@ namespace Access2Justice.CosmosDb.Tests
         }
 
         [Fact]
+        public void FindItemsWhereWithLocationAsyncShouldConstructValidSqlQueryWithLocationCondition()
+        {
+            // Arrange
+            string query = "SELECT * FROM c WHERE c.name='HomePage' AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\"},true))";
+
+            //Act
+            dynamicQueries.FindItemsWhereWithLocationAsync("StaticCollections", "name", "HomePage", new Location() { State = "Hawaii" });
+
+            // Assert
+            cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(), query);
+        }
+
+        [Fact]
+        public void FindItemsWhereWithLocationAsyncShouldThrowException()
+        {
+            //Act
+            var result = dynamicQueries.FindItemsWhereWithLocationAsync("StaticCollections", "", "HomePage", new Location() { State = "Hawaii" }).Exception;
+
+            // Assert
+            Assert.Contains("Parameters can not be null or empty spaces.", result.Message, StringComparison.InvariantCulture);
+        }
+
+        [Fact]
         public void FindItemsWhereArrayContainsWithAndClauseAsyncShouldVaildSqlQuery()
         {
             // Arrange
