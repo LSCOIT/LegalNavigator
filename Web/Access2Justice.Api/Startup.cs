@@ -48,6 +48,7 @@ namespace Access2Justice.Api
             services.AddSingleton<ICuratedExperienceBusinessLogic, CuratedExperienceBuisnessLogic>();
             services.AddTransient<IHttpClientService, HttpClientService>();
             services.AddSingleton<IUserProfileBusinessLogic, UserProfileBusinessLogic>();
+            services.AddSingleton<IPersonalizedPlanBusinessLogic, PersonalizedPlanBusinessLogic>();
             services.AddSingleton<IStaticResourceBusinessLogic, StaticResourceBusinessLogic>();
 
             ConfigureCosmosDb(services);
@@ -123,6 +124,5 @@ namespace Access2Justice.Api
             });
 
         }
-
     }
 }

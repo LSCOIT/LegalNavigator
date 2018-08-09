@@ -2,7 +2,7 @@
 using Access2Justice.Api.ViewModels;
 using Access2Justice.Shared.Extensions;
 using Access2Justice.Shared.Interfaces;
-using Access2Justice.Shared.Models.CuratedExperience;
+using Access2Justice.Shared.Models;
 using Microsoft.Azure.Documents;
 using System;
 using System.Collections.Generic;
@@ -111,39 +111,29 @@ namespace Access2Justice.Api.BusinessLogic
             return destinationComponent.ComponentId == default(Guid) ? null : destinationComponent;
         }
 
-        public int CalculateRemainingQuestions(CuratedExperience curatedExperience, CuratedExperienceComponent component)
+        public int CalculateRemainingQuestions(CuratedExperience curatedExperience, CuratedExperienceComponent currentComponent)
         {
-            var indexOfTheGivenQuestion = curatedExperience.Components.FindIndex(x => x.ComponentId == component.ComponentId);
+            // start calculating routes based on the current component location in the json tree.
+            var indexOfCurrentComponent = curatedExperience.Components.FindIndex(x => x.ComponentId == currentComponent.ComponentId);
 
-            // In any given component, max possible buttons is 3 as per the A2J Author system.
-            var button1RemainingQuestions = new List<CuratedExperienceComponent>();
-            var button2RemainingQuestions = new List<CuratedExperienceComponent>();
-            var button3RemainingQuestions = new List<CuratedExperienceComponent>();
+            // every curated experience has one or more components; every component has one or more buttons; every button has one or more destinations.
+            var possibleRoutes = new List<List<CuratedExperienceComponent>>();
 
-            foreach (var remainingComponent in curatedExperience.Components.Skip(indexOfTheGivenQuestion))
+            foreach (var component in curatedExperience.Components.Skip(indexOfCurrentComponent))
             {
-                foreach (var button in remainingComponent.Buttons)
+                for (int i = 0; i < component.Buttons.Count; i++)
                 {
-                    switch (remainingComponent.Buttons.IndexOf(button))
+                    if (possibleRoutes.Count <= i)
                     {
-                        case 0:
-                            button1RemainingQuestions.AddIfNotNull(FindDestinationComponent(curatedExperience, button.Id));
-                            break;
-                        case 1:
-                            button2RemainingQuestions.AddIfNotNull(FindDestinationComponent(curatedExperience, button.Id));
-                            break;
-                        case 2:
-                            button3RemainingQuestions.AddIfNotNull(FindDestinationComponent(curatedExperience, button.Id));
-                            break;
-                        default:
-                            return 0;
+                        possibleRoutes.Add(new List<CuratedExperienceComponent>());
                     }
+
+                    possibleRoutes[i].AddIfNotNull(FindDestinationComponent(curatedExperience, component.Buttons[i].Id));
                 }
             }
 
             // return the longest possible route
-            var allRemainingQuestions = new[] { button1RemainingQuestions, button2RemainingQuestions, button3RemainingQuestions };
-            return allRemainingQuestions.ToList().OrderByDescending(x => x.Count).First().Count;
+            return possibleRoutes.OrderByDescending(x => x.Count).First().Count;
         }
 
         private CuratedExperienceComponentViewModel MapComponentToViewModelComponent(CuratedExperience curatedExperience, CuratedExperienceComponent dbComponent, Guid answersDocId)
@@ -171,16 +161,10 @@ namespace Access2Justice.Api.BusinessLogic
 
         private CuratedExperienceAnswers MapViewModelAnswerToCuratedExperienceAnswer(CuratedExperienceAnswersViewModel viewModelAnswer)
         {
-            var selectedItemsIds = new List<Guid>();
-            foreach (var selectedFieldId in viewModelAnswer.MultiSelectionFieldIds)
-            {
-                selectedItemsIds.Add(selectedFieldId);
-            }
-
-            var filledInTexts = new List<FilledInText>();
+            var filledInTexts = new List<AnswerField>();
             foreach (var field in viewModelAnswer.Fields)
             {
-                filledInTexts.Add(new FilledInText
+                filledInTexts.Add(new AnswerField
                 {
                     FieldId = field.FieldId,
                     Value = field.Value
@@ -190,9 +174,8 @@ namespace Access2Justice.Api.BusinessLogic
             var collectAnswersList = new List<Answer>();
             collectAnswersList.Add(new Answer
             {
-                ClickedButtonId = viewModelAnswer.ButtonId,
-                FilledInTexts = filledInTexts,
-                SelectedItemsIds = selectedItemsIds
+                AnswerButtonId = viewModelAnswer.ButtonId,
+                AnswerFields = filledInTexts,
             });
 
             return new CuratedExperienceAnswers
