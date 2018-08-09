@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ServiceOrgService } from '../shared/sidebars/service-org.service';
+import { ShowMoreService } from '../shared/sidebars/show-more.service';
 
 @Component({
   selector: 'app-topics-resources',
@@ -8,10 +8,10 @@ import { ServiceOrgService } from '../shared/sidebars/service-org.service';
 })
 export class TopicsResourcesComponent implements OnInit {
 
-  constructor(private serviceOrgService: ServiceOrgService) { }
+  constructor(private showMoreService: ShowMoreService) { }
 
   clickSeeMoreOrganizationsFromTopic(resourceType: string) {
-    this.serviceOrgService.clickSeeMoreOrganizations(resourceType, undefined);
+    this.showMoreService.clickSeeMoreOrganizations(resourceType, undefined);
   }
   ngOnInit() {
   }

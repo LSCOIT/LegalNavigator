@@ -8,7 +8,7 @@ import { TopicsComponent } from './topic/topics.component';
 import { GuidedAssistantSidebarComponent } from '../shared/sidebars/guided-assistant-sidebar.component';
 import { ServiceOrgSidebarComponent } from '../shared/sidebars/service-org-sidebar.component';
 import { TopicService } from './shared/topic.service';
-import { ServiceOrgService } from '../shared/sidebars/service-org.service';
+import { ShowMoreService } from '../shared/sidebars/show-more.service';
 import { LocationService } from '../shared/location/location.service';
 
 describe('TopicsResourcesComponent', () => {
@@ -32,7 +32,7 @@ describe('TopicsResourcesComponent', () => {
       providers: [
         { provide: APP_BASE_HREF, useValue: '/' },
         TopicService,
-        ServiceOrgService,
+        ShowMoreService,
         LocationService
       ]
     })

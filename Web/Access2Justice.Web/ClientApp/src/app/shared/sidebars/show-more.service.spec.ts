@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs/Rx';
 import { api } from '../../../api/api';
 import { HttpHeaders, HttpClientModule } from '@angular/common/http';
-import { ServiceOrgService } from './service-org.service';
+import { ShowMoreService } from './show-more.service';
 import { NavigateDataService } from '../navigate-data.service';
 import { PaginationService } from '../search/pagination.service';
 import { TestBed } from '@angular/core/testing';
@@ -12,7 +12,7 @@ import { SubtopicsComponent } from '../../topics-resources/subtopic/subtopics.co
 import { IResourceFilter } from '../search/search-results/search-results.model';
 
 describe('Service:ServiceOrgService', () => {
-  let serviceOrgService: ServiceOrgService;
+  let showMoreService: ShowMoreService;
   let navigateDataService: NavigateDataService;
   let paginationService: PaginationService;
   let router: Router;
@@ -41,29 +41,29 @@ describe('Service:ServiceOrgService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        ServiceOrgService,
+        showMoreService,
         NavigateDataService,
         PaginationService]
     });
-    serviceOrgService = new ServiceOrgService(httpSpy, navigateDataService, router, paginationService);
+    showMoreService = new ShowMoreService(httpSpy, navigateDataService, router, paginationService);
     navigateDataService = new NavigateDataService();
     paginationService = new PaginationService(httpSpy);
   });
   it('should create service organization service component', () => {
-    expect(ServiceOrgService).toBeTruthy();
+    expect(ShowMoreService).toBeTruthy();
   });
 
   it('should define service organization service component', () => {
-    expect(ServiceOrgService).toBeDefined();
+    expect(ShowMoreService).toBeDefined();
   });
 
   it("should call clickSeeMoreOrganizations when See More button is clicked", () => {
     spyOn(paginationService, 'getPagedResources');
-    spyOn(serviceOrgService, 'clickSeeMoreOrganizations');
-    serviceOrgService.resourceFilter.TopicIds = mockTopicIds;
-    serviceOrgService.resourceFilter.Location = 'Test';
-    serviceOrgService.resourceFilter.IsResourceCountRequired = false;
-    serviceOrgService.clickSeeMoreOrganizations(mockResourceType, mockActiveId);
-    expect(serviceOrgService.clickSeeMoreOrganizations).toHaveBeenCalled();
+    spyOn(showMoreService, 'clickSeeMoreOrganizations');
+    showMoreService.resourceFilter.TopicIds = mockTopicIds;
+    showMoreService.resourceFilter.Location = 'Test';
+    showMoreService.resourceFilter.IsResourceCountRequired = false;
+    showMoreService.clickSeeMoreOrganizations(mockResourceType, mockActiveId);
+    expect(showMoreService.clickSeeMoreOrganizations).toHaveBeenCalled();
   });
 });

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ServiceOrgService } from '../../../sidebars/service-org.service';
+import { ShowMoreService } from '../../../sidebars/show-more.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -12,13 +12,13 @@ export class ArticlesComponent implements OnInit {
   activeResource: any;
 
   constructor(
-    private serviceOrgService: ServiceOrgService,
+    private showMoreService: ShowMoreService,
     private activeRoute: ActivatedRoute
   ) { }
 
   clickSeeMoreOrganizationsFromArticles(resourceType: string) {
     this.activeResource = this.activeRoute.snapshot.params['id'];
-    this.serviceOrgService.clickSeeMoreOrganizations(resourceType, this.activeResource);
+    this.showMoreService.clickSeeMoreOrganizations(resourceType, this.activeResource);
   }
   ngOnInit() {
   }

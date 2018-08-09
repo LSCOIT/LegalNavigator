@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ServiceOrgService } from '../sidebars/service-org.service';
 import { Organization } from '../sidebars/organization';
 import { LocationService } from '../location/location.service';
 import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
@@ -29,7 +28,6 @@ export class ServiceOrgSidebarComponent implements OnInit {
   constructor(
     private router: Router,
     private activeRoute: ActivatedRoute,
-    private serviceOrgService: ServiceOrgService,
     private locationService: LocationService,
     private navigateDataService: NavigateDataService,
     private paginationService: PaginationService

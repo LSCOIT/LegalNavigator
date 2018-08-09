@@ -9,7 +9,7 @@ import { TopicService } from '../shared/topic.service';
 import { NavigateDataService } from '../../shared/navigate-data.service';
 import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 import { BreadcrumbService } from '../shared/breadcrumb.service';
-import { ServiceOrgService } from '../../shared/sidebars/service-org.service';
+import { ShowMoreService } from '../../shared/sidebars/show-more.service';
 import { LocationService } from '../../shared/location/location.service';
 describe('SubtopicsComponent', () => {
   let component: SubtopicsComponent;
@@ -34,7 +34,7 @@ describe('SubtopicsComponent', () => {
         TopicService,
         NavigateDataService,
         BreadcrumbService,
-        ServiceOrgService,
+        ShowMoreService,
         LocationService
       ]
     })

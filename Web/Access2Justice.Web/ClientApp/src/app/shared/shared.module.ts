@@ -37,7 +37,7 @@ import { PaginationService } from './search/pagination.service';
 import { ActionPlansComponent } from './resource/resource-type/action-plan/action-plans.component';
 import { UserActionSidebarComponent } from './sidebars/user-action-sidebar.component';
 import { SettingButtonComponent } from './resource/user-action/setting-button.component';
-import { ServiceOrgService } from './sidebars/service-org.service';
+import { ShowMoreService } from './sidebars/show-more.service';
 import { ArrayUtilityService } from './array-utility.service';
 import { HelplineComponent } from './helpline/helpline.component';
 import { ButtonSelectedDirective } from './styling/button-selected.directive';
@@ -124,7 +124,7 @@ import { ResourceService } from './resource/resource.service';
     SearchService,
     MapResultsService,
     PaginationService,
-    ServiceOrgService,
+    ShowMoreService,
     ArrayUtilityService,
     EventUtilityService,
     ResourceService

@@ -7,7 +7,7 @@ import { ServiceOrgSidebarComponent } from './service-org-sidebar.component';
 import { NavigateDataService } from '../navigate-data.service';
 import { PaginationService } from '../search/pagination.service';
 import { LocationService } from '../location/location.service';
-import { ServiceOrgService } from './service-org.service';
+import { ShowMoreService } from './show-more.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IResourceFilter } from '../search/search-results/search-results.model';
 
@@ -20,7 +20,7 @@ describe('Component:ServiceOrgSidebar', () => {
   const mockRouter = new MockRouter();
   let router: Router;
   let activeRoute: ActivatedRoute;
-  let serviceorgservice: ServiceOrgService;
+  let showMoreService: ShowMoreService;
   let locationService: LocationService;
   let navigateDataService: NavigateDataService;
   let paginationService: PaginationService;
@@ -36,13 +36,6 @@ describe('Component:ServiceOrgSidebar', () => {
     locality: undefined,
     address: undefined
   };
-  let mockOrganizations =
-    {
-      "id": "19a02209-ca38-4b74-bd67-6ea941d41518",
-      "name": "Legal Help Organization",
-      "type": "Housing Law Services",
-      "description": "Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter. Solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter.", "resourceType": "Organizations", "externalUrl": "", "url": "websiteurl.com", "topicTags": [{ "id": "afabf032-72a8-4b04-81cb-c101bb1a0730" }, { "id": "3aa3a1be-8291-42b1-85c2-252f756febbc" }], "location": [{ "zipCode": "96741" }, { "state": "Hawaii", "city": "Haiku-Pauwela" }, { "state": "Alaska" }], "icon": "./assets/images/resources/resource.png", "address": "Honolulu, Hawaii 96813, United States", "telephone": "XXX-XXX-XXXX", "overview": "Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter. Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter.", "eligibilityInformation": "Copy describing eligibility qualification lorem ipsum dolor sit amet. ", "reviewedByCommunityMember": "Quote from community member consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.", "reviewerFullName": "", "reviewerTitle": "", "reviewerImage": "", "createdBy": "", "createdTimeStamp": "", "modifiedBy": "", "modifiedTimeStamp": "2018-04-01T04:18:00Z", "_rid": "mwoSAJdNlwIGAAAAAAAAAA==", "_self": "dbs/mwoSAA==/colls/mwoSAJdNlwI=/docs/mwoSAJdNlwIGAAAAAAAAAA==/", "_etag": "\"41000b36-0000-0000-0000-5b1e56600000\"", "_attachments": "attachments/", "_ts": 1528714848
-    };
   let mockTopicIds: string[] = [];
   let topIntent = 'test';
   let mockResourceType = 'Organizations';
@@ -68,7 +61,7 @@ describe('Component:ServiceOrgSidebar', () => {
       providers: [
         { provide: Router, useValue: mockRouter },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
-        ServiceOrgService,
+        ShowMoreService,
         LocationService,
         NavigateDataService,
         PaginationService
@@ -77,7 +70,7 @@ describe('Component:ServiceOrgSidebar', () => {
 
     fixture = TestBed.createComponent(ServiceOrgSidebarComponent);
     component = fixture.componentInstance;
-    serviceorgservice = TestBed.get(ServiceOrgService);
+    showMoreService = TestBed.get(ShowMoreService);
     locationService = TestBed.get(LocationService);
     navigateDataService = TestBed.get(NavigateDataService);
     paginationService = TestBed.get(PaginationService);

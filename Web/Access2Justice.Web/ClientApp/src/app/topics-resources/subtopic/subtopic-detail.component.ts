@@ -6,7 +6,7 @@ import { NavigateDataService } from '../../shared/navigate-data.service';
 import { IResourceFilter, ILuisInput } from "../../shared/search/search-results/search-results.model";
 import { SearchService } from '../../shared/search/search.service';
 import { PaginationService } from "../../shared/search/pagination.service";
-
+import { ShowMoreService } from "../../shared/sidebars/show-more.service";
 @Component({
   selector: 'app-subtopic-detail',
   templateUrl: './subtopic-detail.component.html',
@@ -37,7 +37,8 @@ export class SubtopicDetailComponent implements OnInit {
     private navigateDataService: NavigateDataService,
     private searchService: SearchService,
     private router: Router,
-    private paginationService: PaginationService 
+    private paginationService: PaginationService,
+    private showMoreService: ShowMoreService
   ) { }
 
   filterSubtopicDetail(): void {
@@ -81,23 +82,33 @@ export class SubtopicDetailComponent implements OnInit {
       );
   }
 
-  clickShowMore(resourceType: string) {
-    this.activeSubtopicParam = this.activeRoute.snapshot.params['topic'];
-    this.resourceFilter.ResourceType = resourceType;
-    this.resourceFilter.TopicIds.push(this.activeSubtopicParam);
-    this.resourceFilter.Location = JSON.parse(sessionStorage.getItem("globalMapLocation"));
-    this.resourceFilter.IsResourceCountRequired = true;
-    this.paginationService.getPagedResources(this.resourceFilter).subscribe(response => {
-      if (response != undefined) {
-        this.searchResults = response;
-        this.searchResults.topIntent = this.topIntent;
-        this.searchResults.resourceType = resourceType;
-        this.searchResults.isItFromTopicPage = true;
-        this.navigateDataService.setData(this.searchResults);
-        this.router.navigate(['/search']);
-      }
-    });
+  clickSeeMoreOrganizationsFromSubtopicDetails(resourceType: string) {
+    this.showMoreService.clickSeeMoreOrganizations(resourceType, this.activeSubtopicParam);
   }
+
+
+  //clickShowMore(resourceType: string) {
+
+  //  this.activeSubtopicParam = this.activeRoute.snapshot.params['topic'];
+
+  //  this.resourceFilter.ResourceType = resourceType;
+  //  this.resourceFilter.TopicIds.push(this.activeSubtopicParam);
+
+
+  //  this.resourceFilter.Location = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+  //  this.resourceFilter.IsResourceCountRequired = true;
+
+  //  this.paginationService.getPagedResources(this.resourceFilter).subscribe(response => {
+  //    if (response != undefined) {
+  //      this.searchResults = response;
+  //      this.searchResults.topIntent = this.topIntent;
+  //      this.searchResults.resourceType = resourceType;
+  //      this.searchResults.isItFromTopicPage = true;
+  //      this.navigateDataService.setData(this.searchResults);
+  //      this.router.navigate(['/search']);
+  //    }
+  //  });
+  //}
 
   ngOnInit() {
     this.activeRoute.url
