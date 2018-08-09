@@ -35,7 +35,7 @@ export class LocationComponent implements OnInit {
   navigation: Navigation;
   locationNavContent: LocationNavContent;
   location: Array<Location>;
-
+  detectLocation = false;
   name: string = 'Navigation';
 
   constructor(private modalService: BsModalService, private locationService: LocationService,
@@ -90,6 +90,7 @@ export class LocationComponent implements OnInit {
   }
 
   loadCurrentLocation() {
+    this.detectLocation = true;
     if (window.navigator && window.navigator.geolocation) {
       window.navigator.geolocation.getCurrentPosition(
         position => {
@@ -103,6 +104,7 @@ export class LocationComponent implements OnInit {
                 this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
                 this.displayLocationDetails(this.mapLocation);
               });
+          this.detectLocation = false;
         },
         error => {
           this.config = {
@@ -110,6 +112,7 @@ export class LocationComponent implements OnInit {
             keyboard: false
           };
           this.locationInputRequired = true;
+          this.detectLocation = false;
           this.openModal(this.templateref);
         });
     }
