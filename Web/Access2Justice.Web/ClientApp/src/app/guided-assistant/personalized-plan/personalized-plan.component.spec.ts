@@ -85,24 +85,24 @@ describe('Component:PersonalizedPlan', () => {
 
   it('should call getActionPlanConditions service method when  getTopics is called', () => {
     spyOn(component, 'getTopics');
-    spyOn(component, 'getPlanDetails');
+    //spyOn(component, 'getPlanDetails');
     spyOn(personalizedPlanService, 'getActionPlanConditions');
     component.activeActionPlan = mockactiveActionPlan;
     component.getTopics();
-    component.getPlanDetails();
+    //component.getPlanDetails();
     personalizedPlanService.getActionPlanConditions(mockactiveActionPlan);
     expect(personalizedPlanService.getActionPlanConditions).toHaveBeenCalled();
-    expect(component.getPlanDetails).toHaveBeenCalled();
+    //expect(component.getPlanDetails).toHaveBeenCalled();
   });
 
   it('should call createTopicsList service method when getplandetails method called', () => {
-    spyOn(component, 'getPlanDetails');
+    //spyOn(component, 'getPlanDetails');
     spyOn(personalizedPlanService, 'createTopicsList');
     spyOn(personalizedPlanService, 'displayPlanDetails');
     component.topics = mockTopics;
     component.planDetailTags = mockPlanDetailTags;
     component.topicsList = mockTopicList;
-    component.getPlanDetails();
+    //component.getPlanDetails();
     personalizedPlanService.createTopicsList(component.topics);
     personalizedPlanService.displayPlanDetails(mockPlanDetailTags, mockTopicList);
     expect(personalizedPlanService.createTopicsList).toHaveBeenCalled();
@@ -110,11 +110,11 @@ describe('Component:PersonalizedPlan', () => {
   });
 
   it('should call displayPlanDetails service method when getplandetails method called', () => {
-    spyOn(component, 'getPlanDetails');
+    //spyOn(component, 'getPlanDetails');
     spyOn(personalizedPlanService, 'displayPlanDetails');
     component.planDetailTags = mockPlanDetailTags;
     component.topicsList = mockTopicList;
-    component.getPlanDetails();
+    //component.getPlanDetails();
     personalizedPlanService.displayPlanDetails(mockPlanDetailTags, mockTopicList);
     expect(personalizedPlanService.displayPlanDetails).toHaveBeenCalled();
   });
