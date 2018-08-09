@@ -8,6 +8,8 @@ namespace Access2Justice.Shared
     {
         [Required]
         public Uri Url { get; set; }
+
+        public Guid UniqueId { get; set; }
     }
 
     public class UnShareInput

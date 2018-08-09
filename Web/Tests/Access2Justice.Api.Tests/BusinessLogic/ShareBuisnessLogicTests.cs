@@ -1,16 +1,12 @@
 ﻿using Access2Justice.Api.BusinessLogic;
 using Access2Justice.Api.Tests.TestData;
-using Access2Justice.Api.ViewModels;
 using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Microsoft.Azure.Documents;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using NSubstitute;
-using System;
 using System.IO;
-using System.Linq;
 using Xunit;
 
 namespace Access2Justice.Api.Tests.BusinessLogic
@@ -35,7 +31,6 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 
             dbSettings.UserProfileCollectionId.Returns("UserProfile");
             dbShareSettings.PermaLinkMaxLength.Returns(7);
-
         }
 
         [Theory]
@@ -52,36 +47,52 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             Assert.Equal(expectedResult, actualResult);
         }
 
-        [Fact]
-        public void ShareResourceDataAsyncShouldReturnResourceUrl()
+        [Theory]
+        [MemberData(nameof(ShareTestData.ShareGenerateInputData), MemberType = typeof(ShareTestData))]
+        public void ShareResourceDataAsyncShouldReturnResourceUrl(ShareInput shareInput, int permaLinkOutputLength, dynamic expectedResult)
         {
-            Document document = new Document();
-            JsonTextReader reader = new JsonTextReader(new StringReader(ShareTestData.userProfile));
-            document.LoadFrom(reader);
-
-            Document updatedDocument = new Document();
-            reader = new JsonTextReader(new StringReader(ShareTestData.userProfileWithSharedResource));
-            updatedDocument.LoadFrom(reader);
-
-            var profileResponse = userProfileBusinessLogic.GetUserProfileDataAsync(ShareTestData.oId);
+            var profileResponse = userProfileBusinessLogic.GetUserProfileDataAsync(shareInput.UserId);
             profileResponse.ReturnsForAnyArgs<UserProfile>(ShareTestData.UserProfileWithoutSharedResourceData);
 
+            dbShareSettings.PermaLinkMaxLength.Returns(permaLinkOutputLength);
+
+            Document updatedDocument = new Document();
+            JsonTextReader reader = new JsonTextReader(new StringReader(ShareTestData.userProfileWithSharedResource));
+            updatedDocument.LoadFrom(reader);
+
             dbService.UpdateItemAsync<UserProfile>(
-                ShareTestData.id,
-                ShareTestData.UserProfileWithoutSharedResourceData,
-                dbSettings.UserProfileCollectionId).ReturnsForAnyArgs<Document>(updatedDocument);
+               Arg.Any<string>(),
+               Arg.Any<UserProfile>(),
+               Arg.Any<string>()).ReturnsForAnyArgs<Document>(updatedDocument);
 
             //act
-            var response = shareBusinessLogic.ShareResourceDataAsync(ShareTestData.ShareInputSingleData);
-            var expectedResult = JsonConvert.SerializeObject(ShareTestData.UserProfileWithSharedResourceData);
-            var actualResult = JsonConvert.SerializeObject(response.Result);
+            var result = shareBusinessLogic.ShareResourceDataAsync(shareInput).Result;
+            //assert
+            Assert.Equal(expectedResult.PermaLink.Length, result.PermaLink.Length);
+        }
+
+        [Theory]
+        [MemberData(nameof(ShareTestData.UnShareInputData), MemberType = typeof(ShareTestData))]
+        public void UnshareResourceDataAsyncShouldReturnTrue(UnShareInput unShareInput, dynamic expectedResult)
+        {
+            var profileResponse = userProfileBusinessLogic.GetUserProfileDataAsync(unShareInput.UserId);
+            profileResponse.ReturnsForAnyArgs<UserProfile>(ShareTestData.UserProfileWithSharedResourceData);
+
+            Document updatedDocument = new Document();
+            JsonTextReader reader = new JsonTextReader(new StringReader(ShareTestData.userProfile));
+            updatedDocument.LoadFrom(reader);
+
+            dbService.UpdateItemAsync<UserProfile>(
+               Arg.Any<string>(),
+               Arg.Any<UserProfile>(),
+               Arg.Any<string>()).ReturnsForAnyArgs<Document>(updatedDocument);
+
+            //act
+            var result = shareBusinessLogic.UnshareResourceDataAsync(unShareInput).Result;
+            expectedResult = JsonConvert.SerializeObject(expectedResult);
+            var actualResult = JsonConvert.SerializeObject(result);
             //assert
             Assert.Equal(expectedResult, actualResult);
-        }
-        [Fact]
-        public void UnshareResourceDataAsyncShouldReturnTrue()
-        {
-
         }
 
         [Fact]
@@ -95,11 +106,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             //assert
             Assert.Equal(ShareTestData.ExpectedResourceData, response.Result);
         }
-        [Fact]
-        public void UpdateUserProfileDataAsyncShouldUpdateData()
-        {
-
-        }
+        
     }
 
 }

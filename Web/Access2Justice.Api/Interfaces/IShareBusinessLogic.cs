@@ -1,7 +1,5 @@
 ﻿using Access2Justice.Api.ViewModels;
 using Access2Justice.Shared;
-using Microsoft.Azure.Documents;
-using System;
 using System.Threading.Tasks;
 
 namespace Access2Justice.Api.Interfaces

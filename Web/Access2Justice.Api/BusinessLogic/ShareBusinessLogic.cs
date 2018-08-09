@@ -1,17 +1,13 @@
-﻿using Access2Justice.Shared.Interfaces;
-using Access2Justice.Shared.Models;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System;
-using System.Globalization;
-using Access2Justice.Shared;
-using Microsoft.Azure.Documents;
-using Microsoft.AspNetCore.Http;
-using System.Linq;
+﻿using Access2Justice.Api.Interfaces;
 using Access2Justice.Api.ViewModels;
-using Access2Justice.Api.Interfaces;
+using Access2Justice.Shared;
+using Access2Justice.Shared.Interfaces;
+using Access2Justice.Shared.Models;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Access2Justice.Api.BusinessLogic
 {
@@ -47,15 +43,16 @@ namespace Access2Justice.Api.BusinessLogic
         }
         public async Task<ShareViewModel> ShareResourceDataAsync(ShareInput shareInput)
         {
-            if(shareInput.Url == null || shareInput.UserId == null || shareInput.ResourceId == null)
+            if (shareInput.Url == null || shareInput.UserId == null || shareInput.ResourceId == null)
             {
                 return null;
             }
             UserProfile userProfile = await dbUserProfile.GetUserProfileDataAsync(shareInput.UserId);
-            var permaLink = Utilities.GenerateSHA256String(Guid.NewGuid() + shareInput.UserId + shareInput.ResourceId);
+            shareInput.UniqueId = shareInput.UniqueId != null ? shareInput.UniqueId : Guid.NewGuid();
+            var permaLink = Utilities.GenerateSHA256String(shareInput.UniqueId + shareInput.UserId + shareInput.ResourceId);
             var sharedResource = new SharedResource
             {
-                ExpirationDate = DateTime.UtcNow.AddYears(1),
+                ExpirationDate = DateTime.UtcNow.AddYears(Constants.ExpirationDateDurationInYears),
                 IsShared = true,
                 Url = new Uri(shareInput.Url.OriginalString, UriKind.Relative),
                 PermaLink = permaLink
@@ -72,7 +69,6 @@ namespace Access2Justice.Api.BusinessLogic
                 //plan.IsShared = true;
                 //UpdatePersonalizedPlan(plan);
             }
-            //var response = await UpdateUserProfileDataAsync(userProfile);
             var response = await dbService.UpdateItemAsync(userProfile.Id, userProfile, dbSettings.UserProfileCollectionId);
             return response == null ? null : new ShareViewModel
             {
@@ -82,19 +78,23 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<object> UnshareResourceDataAsync(UnShareInput unShareInput)
         {
+            if (unShareInput.UserId == null || unShareInput.ResourceId == null)
+            {
+                return null;
+            }
             UserProfile userProfile = await dbUserProfile.GetUserProfileDataAsync(unShareInput.UserId);
+            if (userProfile == null || userProfile.SharedResource == null || userProfile.SharedResource.Count == 0)
+            {
+                return null;
+            }
             var sharedResource = userProfile.SharedResource.FindAll(a => a.Url.OriginalString.Contains(Convert.ToString(unShareInput.ResourceId, CultureInfo.InvariantCulture)));
             if (sharedResource.Count == 0)
             {
                 return false;
             }
             userProfile.SharedResource.RemoveAll(a => a.Url.OriginalString.Contains(Convert.ToString(unShareInput.ResourceId, CultureInfo.InvariantCulture)));
-            var response = await UpdateUserProfileDataAsync(userProfile);
-            if (response == null)
-            {
-                return StatusCodes.Status500InternalServerError;
-            }
-            return true;
+            var response = await dbService.UpdateItemAsync(userProfile.Id, userProfile, dbSettings.UserProfileCollectionId);
+            return response == null ? false : true;
         }
 
 
@@ -102,11 +102,6 @@ namespace Access2Justice.Api.BusinessLogic
         {
             return string.IsNullOrEmpty(permaLink) ? null :
                 await dbClient.FindFieldWhereArrayContainsAsync(dbSettings.UserProfileCollectionId, Constants.SharedResource, Constants.Url, Constants.PermaLink, permaLink, Constants.ExpirationDate);
-        }
-
-        public async Task<object> UpdateUserProfileDataAsync(UserProfile userProfile)
-        {
-            return await dbService.UpdateItemAsync(userProfile.Id, JsonConvert.DeserializeObject<object>(JsonConvert.SerializeObject(userProfile)), dbSettings.UserProfileCollectionId);
         }
 
         private string GetPermaLink(string permaLink)
