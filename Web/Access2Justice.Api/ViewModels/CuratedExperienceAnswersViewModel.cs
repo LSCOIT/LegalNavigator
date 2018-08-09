@@ -8,17 +8,17 @@ namespace Access2Justice.Api.ViewModels
     {
         [JsonProperty(PropertyName = "curatedExperienceId")]
         public Guid CuratedExperienceId { get; set; }
+
         [JsonProperty(PropertyName = "answersDocId")]
         public Guid AnswersDocId { get; set; }
+
         [JsonProperty(PropertyName = "buttonId")]
         public Guid ButtonId { get; set; }
-        [JsonProperty(PropertyName = "multiSelectionFieldIds")]
-        public IList<Guid> MultiSelectionFieldIds { get; set; }
+
         [JsonProperty(PropertyName = "fields")]
         public IList<Field> Fields { get; set; }
         public CuratedExperienceAnswersViewModel()
         {
-            MultiSelectionFieldIds = new List<Guid>();
             Fields = new List<Field>();
         }
     }
@@ -27,6 +27,7 @@ namespace Access2Justice.Api.ViewModels
     {
         [JsonProperty(PropertyName = "fieldId")]
         public string FieldId { get; set; }
+
         [JsonProperty(PropertyName = "value")]
         public string Value { get; set; }
     }

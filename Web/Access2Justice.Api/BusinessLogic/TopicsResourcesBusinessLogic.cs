@@ -1,4 +1,6 @@
-﻿using Access2Justice.Shared.Interfaces;
+﻿using Access2Justice.Api.ViewModels;
+using Access2Justice.Shared;
+using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -33,7 +35,7 @@ namespace Access2Justice.Api.BusinessLogic
             return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourceCollectionId, Constants.TopicTags, Constants.Id, ids);
         }
 
-        public async Task<dynamic> GetTopicsAsync(string keyword,Location location)
+        public async Task<dynamic> GetTopicsAsync(string keyword, Location location)
         {
             return await dbClient.FindItemsWhereContainsWithLocationAsync(dbSettings.TopicCollectionId, "keywords", keyword, location);
         }
@@ -221,7 +223,7 @@ namespace Access2Justice.Api.BusinessLogic
                         zipCode = locs.Value.ToString();
                     }
                 }
-                locations.Add(new Location { State = state, County = county, City = city, ZipCode = zipCode });                
+                locations.Add(new Location { State = state, County = county, City = city, ZipCode = zipCode });
             }
             return locations;
         }
@@ -242,17 +244,17 @@ namespace Access2Justice.Api.BusinessLogic
                         {
                             if (conditionDetail.Name == "title")
                             {
-                                title=conditionDetail.Value.ToString();
+                                title = conditionDetail.Value.ToString();
                             }
                             else if (conditionDetail.Name == "description")
                             {
                                 description = conditionDetail.Value.ToString();
                             }
                         }
-                        conditionData.Add(new Condition {Title=title, ConditionDescription = description });
+                        conditionData.Add(new Condition { Title = title, ConditionDescription = description });
                     }
                 }
-                conditions.Add(new Conditions {ConditionDetail = conditionData });
+                conditions.Add(new Conditions { ConditionDetail = conditionData });
             }
             return conditions;
         }
@@ -274,7 +276,7 @@ namespace Access2Justice.Api.BusinessLogic
             }
             return ParentTopicIds;
         }
-        
+
         public async Task<IEnumerable<object>> CreateResourcesUploadAsync(string path)
         {
             using (StreamReader r = new StreamReader(path))
@@ -562,12 +564,12 @@ namespace Access2Justice.Api.BusinessLogic
             Topic topicdocuments = new Topic();
 
             foreach (var topicObject in topicObjects)
-            {                
-                    topicdocuments = CreateTopics(topicObject);
-                    var serializedResult = JsonConvert.SerializeObject(topicdocuments);
-                    var topicDocument = JsonConvert.DeserializeObject<object>(serializedResult);
-                    var result = await dbService.CreateItemAsync(topicDocument, dbSettings.TopicCollectionId);
-                    topics.Add(result);                
+            {
+                topicdocuments = CreateTopics(topicObject);
+                var serializedResult = JsonConvert.SerializeObject(topicdocuments);
+                var topicDocument = JsonConvert.DeserializeObject<object>(serializedResult);
+                var result = await dbService.CreateItemAsync(topicDocument, dbSettings.TopicCollectionId);
+                topics.Add(result);
             }
             return topics;
         }
@@ -595,23 +597,7 @@ namespace Access2Justice.Api.BusinessLogic
             };
             topics.Validate();
             return topics;
-        }
-
-        public async Task<dynamic> GetPlanDataAsync(string planId)
-        {
-            List<dynamic> procedureParams = new List<dynamic>() { planId };
-            var result = await dbService.ExecuteStoredProcedureAsync(dbSettings.ResourceCollectionId, Constants.PlanStoredProcedureName, procedureParams);
-            var planDetails = result.Response;
-            int indexOfTopicTags = 0;
-            foreach (var item in planDetails.planTags)
-            {
-                string topicId = item.topicId;
-                var topicData = await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.Id, topicId);
-                planDetails.planTags[indexOfTopicTags].id = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(topicData));
-                indexOfTopicTags++;
-            }
-            return planDetails;
-        }
+        }       
 
         public async Task<dynamic> GetPersonalizedResourcesAsync(ResourceFilter resourceFilter)
         {

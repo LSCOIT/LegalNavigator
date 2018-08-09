@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { PlanSteps, Resources, PersonalizedPlanTopic, PlanDetailTags } from './personalized-plan';
+import { Resources, PersonalizedPlanTopic, PersonalizedPlan } from './personalized-plan';
 import { api } from '../../../api/api';
 import { IResourceFilter } from '../../shared/search/search-results/search-results.model';
 import { ArrayUtilityService } from '../../shared/array-utility.service';
@@ -20,28 +20,40 @@ export class PersonalizedPlanService {
   planId: string;
   planTopic: PersonalizedPlanTopic = { topic: {}, isSelected: true };
   topicsList: Array<PersonalizedPlanTopic> = [];
-  planDetailTags: PlanDetailTags = { id: '', oId: '', planTags: [{}], type: '' };
-  tempPlanDetailTags: PlanDetailTags = { id: '', oId: '', planTags: [{}], type: '' };
-  tempPlanDetails: any;
-  planDetails: Array<PlanSteps> = [];
+  planDetailTags: any;
+  tempPlanDetailTags: any;
   userId: string;
+  planDetails: any = [];
+  planSessionKey: string= "bookmarkPlanId";
 
   constructor(private http: HttpClient, private arrayUtilityService: ArrayUtilityService) { }
 
   getActionPlanConditions(id): Observable<any> {
-    return this.http.get<PlanSteps>(api.planUrl + '/' + id);
+    return this.http.get<PersonalizedPlan>(api.planUrl + '/' + id);
   }
 
   getUserPlanId(oid): Observable<any> {
-    return this.http.get<PlanSteps>(api.getProfileUrl + '/' + oid);
+    return this.http.get<PersonalizedPlan>(api.getUserProfileUrl + '/' + oid);
+  }
+
+  getUserSavedResources(oid): Observable<any> {
+    return this.http.get<PersonalizedPlan>(api.getProfileUrl + '/' + oid);
   }
 
   getMarkCompletedUpdatedPlan(updatePlan) {
     return this.http.post(api.updatePlanUrl, updatePlan, httpOptions);
   }
 
-  userPlan(plan) {
-    return this.http.post(api.userPlanUrl, plan, httpOptions);
+  saveResources(resource) {
+    return this.http.post(api.userPlanUrl, resource, httpOptions);
+  }
+
+  userPlan(plan: PersonalizedPlan) {
+    return this.http.post<any>(api.updateUserPlanUrl, plan, httpOptions);
+  }
+
+  savePersonalizedPlanToProfile(params): Observable<any> {
+    return this.http.post(api.updateUserProfileUrl, params);
   }
 
   getBookmarkedData() {
@@ -101,6 +113,16 @@ export class PersonalizedPlanService {
     }
   }
 
+  savePlanToSession(planId) {
+    sessionStorage.setItem(this.planSessionKey, JSON.stringify(planId));
+  }
+
+  getPlanDetails(topics, planDetailTags): any {
+    this.topicsList = this.createTopicsList(this.topics);
+    this.planDetails = this.displayPlanDetails(planDetailTags, this.topicsList);
+    return this.planDetails;
+  }
+
   createTopicsList(topics): Array<PersonalizedPlanTopic> {
     this.topicsList = [];
     topics.forEach(topic => {
@@ -110,19 +132,17 @@ export class PersonalizedPlanService {
     return this.topicsList;
   }
 
-  displayPlanDetails(planDetailTags, topicsList): Array<PlanSteps> {
+  displayPlanDetails(planDetailTags, topicsList): any {
     this.planDetailTags = planDetailTags;
     this.topicsList = topicsList;
     this.tempPlanDetailTags = JSON.parse(JSON.stringify(this.planDetailTags));
     for (let index = 0, planTagIndex = 0; index < this.topicsList.length; index++ , planTagIndex++) {
       if (!this.topicsList[index].isSelected) {
-        this.tempPlanDetailTags.planTags.splice(planTagIndex, 1);
+        this.tempPlanDetailTags.topics.splice(planTagIndex, 1);
         planTagIndex--;
       }
     }
-    this.tempPlanDetails = this.tempPlanDetailTags;
-    this.planDetails = this.tempPlanDetails;
-    return this.planDetails;
+    return this.tempPlanDetailTags;
   }
 
 }

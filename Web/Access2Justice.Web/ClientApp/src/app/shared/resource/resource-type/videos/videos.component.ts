@@ -8,18 +8,18 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class VideosComponent implements OnInit {
   @Input() resource;
+  safeUrl: any;
   url: any;
 
   constructor(public sanitizer: DomSanitizer) {
     this.sanitizer = sanitizer;
   }
 
-  resourceUrl() {
-    this.url = this.sanitizer.bypassSecurityTrustResourceUrl(this.resource.url);
-    return this.url;
+  resourceUrl(url) {
+    this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
   ngOnInit() {
+    this.resourceUrl(this.resource.url);
   }
-
 }
