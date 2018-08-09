@@ -64,8 +64,8 @@ export class ShareButtonComponent implements OnInit {
             this.showGenerateLink = false;
             this.permaLink = this.getPermaLink();
           }
-          this.modalRef = this.modalService.show(template);
         }
+        this.modalRef = this.modalService.show(template);
       });
   }
 

@@ -23,7 +23,7 @@ namespace Access2Justice.Api.BusinessLogic
         private readonly IShareSettings dbShareSettings;
         private readonly IUserProfileBusinessLogic dbUserProfile;
         public ShareBusinessLogic(IDynamicQueries dynamicQueries, ICosmosDbSettings cosmosDbSettings,
-            IBackendDatabaseService backendDatabaseService, IShareSettings shareSettings,IUserProfileBusinessLogic userProfileBusinessLogic)
+            IBackendDatabaseService backendDatabaseService, IShareSettings shareSettings, IUserProfileBusinessLogic userProfileBusinessLogic)
         {
             dbClient = dynamicQueries;
             dbSettings = cosmosDbSettings;
@@ -35,55 +35,49 @@ namespace Access2Justice.Api.BusinessLogic
         public async Task<ShareViewModel> CheckPermaLinkDataAsync(ShareInput shareInput)
         {
             UserProfile userProfile = await dbUserProfile.GetUserProfileDataAsync(shareInput.UserId);
-            if (userProfile.SharedResource != null)
+            if (userProfile == null && userProfile.SharedResource == null)
             {
-                var resource = userProfile.SharedResource.FindAll(a => a.Url.OriginalString.Contains(Convert.ToString(shareInput.ResourceId, CultureInfo.InvariantCulture)));
-                if (resource.Count > 0)
-                {
-                    return new ShareViewModel
-                    {
-                        PermaLink = GetPermaLink(resource.Select(a => a.PermaLink).First())
-                    };
-                }
+                return null;
             }
-            return new ShareViewModel();
+            var resource = userProfile.SharedResource.FindAll(a => a.Url.OriginalString.Contains(Convert.ToString(shareInput.ResourceId, CultureInfo.InvariantCulture)) && a.ExpirationDate <= DateTime.UtcNow);
+            return resource.Count == 0 ? null : new ShareViewModel
+            {
+                PermaLink = GetPermaLink(resource.Select(a => a.PermaLink).First())
+            };
         }
         public async Task<ShareViewModel> ShareResourceDataAsync(ShareInput shareInput)
         {
-            try
+            if(shareInput.Url == null || shareInput.UserId == null || shareInput.ResourceId == null)
             {
-                UserProfile userProfile = await dbUserProfile.GetUserProfileDataAsync(shareInput.UserId);
-                var permaLink = Utilities.GenerateSHA256String(Guid.NewGuid() + shareInput.UserId + shareInput.ResourceId);
-                var sharedResource = new SharedResource
-                {
-                    ExpirationDate = DateTime.UtcNow.AddYears(1),
-                    IsShared = true,
-                    Url = new Uri(shareInput.Url.OriginalString, UriKind.Relative),
-                    PermaLink = permaLink
-                };
-                if (userProfile.SharedResource == null)
-                {
-                    userProfile.SharedResource = new List<SharedResource>();
-                }
-                userProfile.SharedResource.Add(sharedResource);
-                if (shareInput.Url.OriginalString.Contains("plan"))
-                {
-                    //ToDo - Update the IsShared flag in the personalized plan document when user share the plan 
-                    //PersonalizedPlanSteps plan = GetPersonalizedPlan(shareInput.ResourceId);
-                    //plan.IsShared = true;
-                    //UpdatePersonalizedPlan(plan);
-                }
-                var response = await UpdateUserProfileDataAsync(userProfile);
-                return new ShareViewModel
-                {
-                    PermaLink = dbShareSettings.PermaLinkMaxLength > 0 ? GetPermaLink(permaLink) : permaLink
-                };
-            }
-            catch
-            {
-                // log exception
                 return null;
             }
+            UserProfile userProfile = await dbUserProfile.GetUserProfileDataAsync(shareInput.UserId);
+            var permaLink = Utilities.GenerateSHA256String(Guid.NewGuid() + shareInput.UserId + shareInput.ResourceId);
+            var sharedResource = new SharedResource
+            {
+                ExpirationDate = DateTime.UtcNow.AddYears(1),
+                IsShared = true,
+                Url = new Uri(shareInput.Url.OriginalString, UriKind.Relative),
+                PermaLink = permaLink
+            };
+            if (userProfile.SharedResource == null)
+            {
+                userProfile.SharedResource = new List<SharedResource>();
+            }
+            userProfile.SharedResource.Add(sharedResource);
+            if (shareInput.Url.OriginalString.Contains("plan"))
+            {
+                //ToDo - Update the IsShared flag in the personalized plan document when user share the plan 
+                //PersonalizedPlanSteps plan = GetPersonalizedPlan(shareInput.ResourceId);
+                //plan.IsShared = true;
+                //UpdatePersonalizedPlan(plan);
+            }
+            //var response = await UpdateUserProfileDataAsync(userProfile);
+            var response = await dbService.UpdateItemAsync(userProfile.Id, userProfile, dbSettings.UserProfileCollectionId);
+            return response == null ? null : new ShareViewModel
+            {
+                PermaLink = dbShareSettings.PermaLinkMaxLength > 0 ? GetPermaLink(permaLink) : permaLink
+            };
         }
 
         public async Task<object> UnshareResourceDataAsync(UnShareInput unShareInput)
@@ -106,7 +100,8 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<object> GetPermaLinkDataAsync(string permaLink)
         {
-            return await dbClient.FindFieldWhereArrayContainsAsync(dbSettings.UserProfileCollectionId, Constants.StoredResource, Constants.Url, Constants.PermaLink, permaLink);
+            return string.IsNullOrEmpty(permaLink) ? null :
+                await dbClient.FindFieldWhereArrayContainsAsync(dbSettings.UserProfileCollectionId, Constants.SharedResource, Constants.Url, Constants.PermaLink, permaLink, Constants.ExpirationDate);
         }
 
         public async Task<object> UpdateUserProfileDataAsync(UserProfile userProfile)
