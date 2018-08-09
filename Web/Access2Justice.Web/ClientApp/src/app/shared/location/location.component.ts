@@ -105,18 +105,26 @@ export class LocationComponent implements OnInit {
     }
   }
 
+  setLocalMapLocation() {
+    if (!this.mapType && sessionStorage.getItem("searchedLocationMap")) {
+      this.mapLocation = JSON.parse(sessionStorage.getItem("searchedLocationMap"));      
+      this.displayLocationDetails(this.mapLocation);
+    }
+  }
+
   ngOnInit() {
     this.showLocality = true;
     if (this.mapType) {
       if (!sessionStorage.getItem("globalMapLocation")) {
         this.loadCurrentLocation();
       }
-    } else {
+    } else {      
       this.showLocality = false;
     }
     if (sessionStorage.getItem("globalMapLocation")) {      
       this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
       this.displayLocationDetails(this.mapLocation);
     }
+    this.setLocalMapLocation();
   }
 }

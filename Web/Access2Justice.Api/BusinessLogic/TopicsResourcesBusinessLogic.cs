@@ -136,7 +136,7 @@ namespace Access2Justice.Api.BusinessLogic
                       ResourceName = n.Key,
                       ResourceCount = n.Count()
                   }).OrderBy(n => n.ResourceName);
-            dynamic resourceList = groupedResourceType.Concat(allResources);
+            dynamic resourceList = groupedResourceType.Concat(allResources).Reverse();
             return resourceList;
         }
 

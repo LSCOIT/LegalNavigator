@@ -103,7 +103,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
       this.filterType = environment.All;
     }
     // need to revisit this logic..
-    this.resourceResults = this.searchResults.resourceTypeFilter.reverse();
+    this.resourceResults = this.searchResults.resourceTypeFilter;
     this.navigateDataService.setData(undefined);
     if (this.resourceTypeFilter != undefined) {
 
@@ -136,6 +136,9 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   cacheSearchResultsData() {
     sessionStorage.removeItem("cacheSearchResults");
     sessionStorage.setItem("cacheSearchResults", JSON.stringify(this.searchResults));
+    if (this.location) {
+      sessionStorage.setItem("searchedLocationMap", JSON.stringify(this.location));
+    }
   }
 
   updateCacheStorage(filterName: string) {
@@ -363,8 +366,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     this.notifyLocationChange();
     if (this.showRemove) {
       this.showRemoveOption = this.showRemove;
-    }
-    else {
+    } else {
       this.showRemoveOption = false;
     }
   }
