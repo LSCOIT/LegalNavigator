@@ -37,9 +37,7 @@
       </div>
       <div class="row">
         <div class="col-sm-12 text-center">
-          <button type="button" class="btn btn-primary">
-            <a [routerLink]="guidedAssistantOverviewData?.button?.buttonLink">{{guidedAssistantOverviewData?.button?.buttonText}}</a>
-          </button>
+           <a class="btn btn-primary" [routerLink]="guidedAssistantOverviewData?.button?.buttonLink">{{guidedAssistantOverviewData?.button?.buttonText}}</a>
         </div>
       </div>
     </div>
@@ -55,9 +53,7 @@
     </div>
     <div class="row">
       <div class="col-sm-12 text-center">
-        <button type="button" class="btn btn-primary">
-          <a [routerLink]="topicAndResourcesData?.button?.buttonLink"> {{topicAndResourcesData?.button?.buttonText}} </a>
-        </button>
+        <a class="btn btn-primary" [routerLink]="topicAndResourcesData?.button?.buttonLink"> {{topicAndResourcesData?.button?.buttonText}} </a>
       </div>
     </div>
   </div>
@@ -91,11 +87,9 @@
              [alt]="sponsor?.altText">
       </div>     
     </div>
-    <button class="btn btn-primary">
-      <a [routerLink]="sponsorOverviewData?.button?.buttonLink">
-        {{sponsorOverviewData?.button?.buttonText}}
-      </a>
-    </button>
+    <a class="btn btn-primary" [routerLink]="sponsorOverviewData?.button?.buttonLink">
+      {{sponsorOverviewData?.button?.buttonText}}
+    </a>
   </div>
 </div>
 <div class="privacy-promise text-center">
@@ -108,15 +102,12 @@
         <h3>{{privacyData?.heading}}</h3>
         <p>{{privacyData?.description}}</p>
         <div class="row">
-          <button class="btn btn-secondary">
-            <a [routerLink]="privacyData?.button?.buttonLink">
-              {{privacyData?.button?.buttonText}}
-            </a>
-          </button>
+          <a class="btn btn-secondary" [routerLink]="privacyData?.button?.buttonLink">
+            {{privacyData?.button?.buttonText}}
+          </a>
         </div>
       </div>
     </div>
   </div>
 </div>
 <app-helpline></app-helpline>
-

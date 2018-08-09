@@ -1,15 +1,13 @@
-
 <div class="row">
   <div class="col-md-12" id="privacy-img"></div>
 </div>
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
-    <p>{{privacyContent.description}}</p>
+    <p>{{privacyContent?.description}}</p>
   </div>
 </div>
-
 <div class="row">
-  <div class="col-md-8 col-md-offset-2" *ngFor="let content of privacyContent.details">
+  <div class="col-md-8 col-md-offset-2" *ngFor="let content of privacyContent?.details">
     <h2>{{content.title}}</h2>
     <p>{{content.description}}</p>
   </div>

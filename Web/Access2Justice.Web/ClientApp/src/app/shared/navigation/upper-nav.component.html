@@ -11,19 +11,19 @@
     <div class="navbar-right">
       <ul class="nav navbar-nav mobile-hidden pxs">
         <li>
-          <a [routerLink]="['/',privacyPromise?.button?.buttonLink]">
-            <img class="nav-icon" src="{{blobUrl}}{{privacyPromise?.image?.source}}" aria-hidden="true" />
+          <a [routerLink]="['/' + privacyPromise?.button?.buttonLink]">
+            <img class="nav-icon" [src]="blobUrl+privacyPromise?.image?.source" aria-hidden="true" />
             {{privacyPromise?.button?.buttonText}}
           </a>          
         </li>
         <li>
-          <a [routerLink]="['/', helpAndFAQ?.button?.buttonLink]">
-            <img class="nav-icon" src="{{blobUrl}}{{helpAndFAQ?.image?.source}}" aria-hidden="true" />
+          <a [routerLink]="['/' + helpAndFAQ?.button?.buttonLink]">
+            <img class="nav-icon" [src]="blobUrl+helpAndFAQ?.image?.source" aria-hidden="true" />
             {{helpAndFAQ?.button?.buttonText}}
           </a>
         </li>
         <li>
-          <a *ngIf="!isLoggedIn" (click)="externalLogin()" class="account-menu"><img class="nav-icon" src={{blobUrl}}{{login?.image?.source}} aria-hidden="true" />{{login?.button?.buttonText}}</a>
+          <a *ngIf="!isLoggedIn" (click)="externalLogin()" class="account-menu"><img class="nav-icon" [src]="blobUrl + login?.image?.source" aria-hidden="true" />{{login?.button?.buttonText}}</a>
           <div *ngIf="isLoggedIn" dropdown class="inline" id="signin-dropdown">
             <a dropdownToggle (click)="false">
               <img class="nav-icon" src="/assets/images/small-icons/profile.svg" aria-hidden="true" />
