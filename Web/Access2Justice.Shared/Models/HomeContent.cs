@@ -231,9 +231,10 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "image")]
         public Image Image { get; set; }
     }
+
     public class HomePageRequest
     {
-        public string name { get; set; }
-        public Location location { get; set; }
+        public string Name { get; set; }
+        public Location Location { get; set; }
     }
 }

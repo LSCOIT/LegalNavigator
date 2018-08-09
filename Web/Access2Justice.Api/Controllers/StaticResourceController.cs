@@ -24,7 +24,7 @@ namespace Access2Justice.Api.Controllers
         [Route("api/staticresource/getstaticresource")]
         public async Task<IActionResult> GetStaticResourceDataAsync([FromBody]HomePageRequest homePageRequest)
         {
-            var contents = await staticResourceBusinessLogic.GetPageStaticResourceDataAsync(homePageRequest.name, homePageRequest.location);
+            var contents = await staticResourceBusinessLogic.GetPageStaticResourceDataAsync(homePageRequest.Name, homePageRequest.Location);
             return Ok(contents);
         }
 
