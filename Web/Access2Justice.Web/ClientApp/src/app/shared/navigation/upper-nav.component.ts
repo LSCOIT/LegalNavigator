@@ -24,8 +24,7 @@ export class UpperNavComponent implements OnInit {
   privacyPromise: PrivacyPromise;
   helpAndFAQ: HelpAndFAQ;
   login: Login;
-  subscription: any;
-  //button: Button={ buttonText: '', buttonAltText: '', buttonLink: '' }
+  subscription: any;  
   constructor(private http: HttpClient, private staticResourceService: StaticResourceService, private locationService: LocationService) { }
 
   externalLogin() {
@@ -50,8 +49,7 @@ export class UpperNavComponent implements OnInit {
       this.id = this.navigation.name;
       this.privacyPromise = this.navigation.privacyPromise;
       this.helpAndFAQ = this.navigation.helpAndFAQ;
-      this.login = this.navigation.login;
-     // this.button = this.navigation.helpAndFAQ.button;
+      this.login = this.navigation.login;     
     }
   }
 
@@ -60,8 +58,7 @@ export class UpperNavComponent implements OnInit {
     this.staticResourceService.getStaticContent(homePageRequest)
       .subscribe(content => {
         this.navigation = content[0];
-        this.filterUpperNavigationContent();
-        console.log(content);
+        this.filterUpperNavigationContent();        
       });
   }
 
