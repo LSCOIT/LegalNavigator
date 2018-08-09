@@ -34,7 +34,7 @@ export class LocationComponent implements OnInit {
   blobUrl: any = environment.blobUrl;
   navigation: Navigation;
   locationNavContent: LocationNavContent;
-  location: Array<Location>// = { button: { buttonText: '', buttonAltText: '', buttonLink: '' }, navigationImage: { source: '', altText: '' }, dropDownImage: { source: '', altText: '' } };
+  location: Array<Location>;
 
   name: string = 'Navigation';
 
