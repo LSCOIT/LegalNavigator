@@ -1,3 +1,4 @@
+<div [ngClass]="{ 'dimmer': detectLocation, 'inline': !detectLocation  }"></div>
 <div class="navbar-left edit-location pull-right" (click)="changeLocation(template)">
   <img class="nav-icon" src="{{blobUrl}}{{locationNavContent?.image?.source}}" aria-hidden="true" />
   <span *ngIf="showLocation; else elseBlock">
