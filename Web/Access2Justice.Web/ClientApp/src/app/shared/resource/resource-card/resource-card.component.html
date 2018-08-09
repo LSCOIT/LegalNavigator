@@ -8,7 +8,7 @@
               role="menu">
             <li role="menuitem">
               <a class="dropdown-item">
-                <app-share-button [showIcon]=false></app-share-button>
+                <app-share-button [showIcon]=false [id]="resource.id" [type]="resource.resourceType"></app-share-button>
               </a>
             </li>
             <li role="menuitem" id="save-dropdown" *ngIf="!showRemoveOption">

@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, Input, ViewChild, ElementRef } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { ArrayUtilityService } from '../../../array-utility.service';
@@ -16,6 +16,8 @@ import { ActivatedRoute } from '@angular/router';
 export class ShareButtonComponent implements OnInit {
   @Input() showIcon = true;
   modalRef: BsModalRef;
+  @Input() id: string;//resource Id
+  @Input() type: string; //resource Type
   @ViewChild('template') public templateref: TemplateRef<any>;
   userId: string;
   sessionKey: string = "showModal";
@@ -53,9 +55,7 @@ export class ShareButtonComponent implements OnInit {
   }
 
   checkPermaLink(template) {
-    this.shareInput.ResourceId = this.getActiveParam();
-    this.shareInput.Url = location.pathname;
-    this.shareInput.UserId = this.userId;
+    this.buildParams();
     this.shareService.checkLink(this.shareInput)
       .subscribe(response => {
         if (response != undefined) {
@@ -70,9 +70,7 @@ export class ShareButtonComponent implements OnInit {
   }
 
   generateLink() {
-    this.shareInput.ResourceId = this.getActiveParam();
-    this.shareInput.Url = location.pathname;
-    this.shareInput.UserId = this.userId;
+    this.buildParams();
     this.shareService.generateLink(this.shareInput)
       .subscribe(response => {
         if (response != undefined) {
@@ -135,6 +133,30 @@ export class ShareButtonComponent implements OnInit {
       }
     }
 
+  }
+
+  buildParams() {
+    if (this.id) {
+      this.shareInput.Url = this.buildUrl() + this.id;
+      this.shareInput.ResourceId = this.id;
+    }
+    else {
+      this.shareInput.Url = location.pathname;
+      this.shareInput.ResourceId = this.getActiveParam();
+    }
+    this.shareInput.UserId = this.userId;
+  }
+  
+  buildUrl() {
+    if (this.type === 'Topics') {
+      return "/topics/";
+    }
+    if (this.type === 'Guided Assistant') {
+      return "/guidedassistant/";
+    }
+    else {
+      return "/resource/";
+    }
   }
 
 }
