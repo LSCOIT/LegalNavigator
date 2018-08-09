@@ -30,10 +30,10 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly dynamic planSteps = PersonalizedPlanTestData.planSteps;
         private readonly dynamic dynamicObject = PersonalizedPlanTestData.dynamicObject;
         private readonly dynamic convertedPersonalizedPlanSteps = PersonalizedPlanTestData.convertedPersonalizedPlanSteps;
-        //private readonly dynamic personalizedPlanView = PersonalizedPlanTestData.personalizedPlanView;
+        private readonly dynamic personalizedPlanView = PersonalizedPlanTestData.personalizedPlanView;
         private readonly dynamic quickLinks = PersonalizedPlanTestData.quickLinks;
-        //private readonly dynamic resourceDetails = PersonalizedPlanTestData.resourceDetails;
-        //private readonly dynamic planStepsWithResourceDetails = PersonalizedPlanTestData.planStepsWithResourceDetails;
+        private readonly dynamic resourceDetails = PersonalizedPlanTestData.resourceDetails;
+        private readonly dynamic planStepsWithResourceDetails = PersonalizedPlanTestData.planStepsWithResourceDetails;
         private readonly dynamic resourceIds = PersonalizedPlanTestData.resourceIds;
         private readonly dynamic resourceDetailsForResourceIds = PersonalizedPlanTestData.resourceDetailsForResourceIds;
         private readonly dynamic planStepsByTopicId = PersonalizedPlanTestData.planStepsByTopicId;
@@ -127,7 +127,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         {
             //Arrange
             var dynamicObject = this.dynamicObject;
-            PersonalizedPlanSteps expectedConvertedPlanSteps = JsonConvert.DeserializeObject<PersonalizedPlanSteps>(JsonConvert.SerializeObject(this.convertedPersonalizedPlanSteps));
+            PersonalizedPlanSteps expectedConvertedPlanSteps = JsonConvert.DeserializeObject<PersonalizedPlanSteps>(JsonConvert.SerializeObject(this.convertedPersonalizedPlanSteps.First));
 
             //Act
             var actualConvertedPlanSteps = personalizedPlan.ConvertPersonalizedPlanSteps(dynamicObject);
