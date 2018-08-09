@@ -22,4 +22,9 @@ export class QuestionService {
     };
     return this.http.post<Question>(api.saveAndGetNextUrl, params, httpOptions);
   }
+
+  getpersonalizedPlan(params): Observable<any> {
+    return this.http.get<any>(api.personalizedPlan + '?' + params);
+  }
+  
 }
