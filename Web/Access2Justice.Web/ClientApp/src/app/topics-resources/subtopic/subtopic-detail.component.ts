@@ -86,30 +86,6 @@ export class SubtopicDetailComponent implements OnInit {
     this.showMoreService.clickSeeMoreOrganizations(resourceType, this.activeSubtopicParam);
   }
 
-
-  //clickShowMore(resourceType: string) {
-
-  //  this.activeSubtopicParam = this.activeRoute.snapshot.params['topic'];
-
-  //  this.resourceFilter.ResourceType = resourceType;
-  //  this.resourceFilter.TopicIds.push(this.activeSubtopicParam);
-
-
-  //  this.resourceFilter.Location = JSON.parse(sessionStorage.getItem("globalMapLocation"));
-  //  this.resourceFilter.IsResourceCountRequired = true;
-
-  //  this.paginationService.getPagedResources(this.resourceFilter).subscribe(response => {
-  //    if (response != undefined) {
-  //      this.searchResults = response;
-  //      this.searchResults.topIntent = this.topIntent;
-  //      this.searchResults.resourceType = resourceType;
-  //      this.searchResults.isItFromTopicPage = true;
-  //      this.navigateDataService.setData(this.searchResults);
-  //      this.router.navigate(['/search']);
-  //    }
-  //  });
-  //}
-
   ngOnInit() {
     this.activeRoute.url
       .subscribe(routeParts => {
