@@ -79,5 +79,5 @@ namespace Access2Justice.Api.Controllers
             var contents = await staticResourceBusinessLogic.UpsertStaticNavigationDataAsync(navigationContent, location);
             return Ok(contents);
         }
-    }   
+    }
 }
