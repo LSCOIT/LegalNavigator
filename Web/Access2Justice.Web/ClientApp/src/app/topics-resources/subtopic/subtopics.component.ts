@@ -14,7 +14,9 @@ export class SubtopicsComponent implements OnInit {
   subtopics: any[];
   activeTopic: any;
   activeTopicId: string;
-  subtopicName: string;  
+  subtopicName: string;
+  topic: any;
+  icon: any;
 
   constructor(
     private topicService: TopicService,    
@@ -26,6 +28,12 @@ export class SubtopicsComponent implements OnInit {
 
   getSubtopics(): void {
     this.activeTopic = this.activeRoute.snapshot.params['topic'];
+    this.topicService.getDocumentData(this.activeTopic)
+      .subscribe(
+      topic => {
+        this.topic = topic[0];
+        this.icon = topic[0].icon;
+        });
     this.topicService.getSubtopics(this.activeTopic)
       .subscribe(
         subtopics => {

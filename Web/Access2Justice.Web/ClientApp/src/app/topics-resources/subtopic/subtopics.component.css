@@ -16,3 +16,18 @@
 .topic-img img {
   width: 100px;
 }
+
+.media-object {
+  width: 85px;
+  height: 85px;
+  margin-right: 15px;
+  margin-left: 10px;
+}
+
+.subtopics {
+  margin: 20px 0 30px 10px;
+}
+
+.media-body {
+  vertical-align: bottom;
+}

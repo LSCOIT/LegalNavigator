@@ -5,7 +5,7 @@
       <div class="media">
         <div class="media-left">
           <a href="#">
-            <img class="media-object" src="../../assets/images/topics/topic1.png" alt="...">
+            <img class="media-object" [src]='this.icon' alt="...">
           </a>
         </div>
         <div class="media-body">
@@ -13,7 +13,7 @@
           <p>Which topic would you like to learn more about?</p>
         </div>
       </div>
-      <div class="row subtopics">
+      <div class="subtopics">
         <ul *ngFor="let subtopic of subtopics">
           <li><a [routerLink]="['/topics', subtopic.id]">{{subtopic.name}}</a></li>
         </ul>
