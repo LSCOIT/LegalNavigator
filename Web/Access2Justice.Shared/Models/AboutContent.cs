@@ -11,15 +11,8 @@ using System.ComponentModel;
 
 namespace Access2Justice.Shared.Models
 {
-    public class AboutContent
+    public class AboutContent: NameLocation
     {
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "location")]
-        public IEnumerable<Location> Location { get; set; }
-
         [JsonProperty(PropertyName = "aboutImage")]
         public Image AboutImage { get; set; }
 
@@ -67,11 +60,11 @@ namespace Access2Justice.Shared.Models
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "guidedAssistantButton")]
-        public Button GuidedAssistantButton { get; set; }
+        public ButtonStaticContent GuidedAssistantButton { get; set; }
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "topicsAndResourcesButton")]
-        public Button TopicsAndResourcesButton { get; set; }
+        public ButtonStaticContent TopicsAndResourcesButton { get; set; }
     }
 
     public class PrivacyPromise
@@ -90,6 +83,6 @@ namespace Access2Justice.Shared.Models
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "privacyPromiseButton")]
-        public Button PrivacyPromiseButton { get; set; }
+        public ButtonStaticContent PrivacyPromiseButton { get; set; }
     }
 }

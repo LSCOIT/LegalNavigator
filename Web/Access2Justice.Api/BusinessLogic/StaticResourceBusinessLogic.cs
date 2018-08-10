@@ -18,23 +18,21 @@ namespace Access2Justice.Api.BusinessLogic
             dbSettings = cosmosDbSettings;
             dbService = backendDatabaseService;
         }
-        
+
         public async Task<dynamic> GetPageStaticResourceDataAsync(string name, Location location)
         {
             dynamic result = null;
-            var pageDBData = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourceCollectionId, Constants.Name, name, location);
-            if (pageDBData.Count == 0)
+            location.County = string.Empty;
+            location.City = string.Empty;
+            location.ZipCode = string.Empty;
+            if (!string.IsNullOrEmpty(location.State))
             {
-                location.State = "Default";
                 result = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourceCollectionId, Constants.Name, name, location);
             }
-            else
-            {
-                result = pageDBData;
-            }
-            return result;
+            location.State = "Default";
+            return result.Count > 0 ? result: await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourceCollectionId, Constants.Name, name, location);            
         }
-        
+
         public async Task<dynamic> UpsertStaticHomePageDataAsync(HomeContent homePageContent, Location location)
         {
             var serializedResult = JsonConvert.SerializeObject(homePageContent);
@@ -91,7 +89,7 @@ namespace Access2Justice.Api.BusinessLogic
             }
             return result;
         }
-                
+
         public async Task<dynamic> UpsertStaticNavigationDataAsync(Navigation navigationContent, Location location)
         {
             var serializedResult = JsonConvert.SerializeObject(navigationContent);
