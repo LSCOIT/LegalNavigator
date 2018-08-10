@@ -10,7 +10,7 @@ import { NavigateDataService } from '../../shared/navigate-data.service';
 import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 import { BreadcrumbService } from '../shared/breadcrumb.service';
 import { ShowMoreService } from '../../shared/sidebars/show-more.service';
-import { LocationService } from '../../shared/location/location.service';
+import { MapService } from '../../shared/map/map.service';
 describe('SubtopicsComponent', () => {
   let component: SubtopicsComponent;
   let fixture: ComponentFixture<SubtopicsComponent>;
@@ -35,7 +35,7 @@ describe('SubtopicsComponent', () => {
         NavigateDataService,
         BreadcrumbService,
         ShowMoreService,
-        LocationService
+        MapService
       ]
     })
     .compileComponents();

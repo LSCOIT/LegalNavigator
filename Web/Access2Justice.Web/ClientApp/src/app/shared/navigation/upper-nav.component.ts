@@ -4,7 +4,7 @@ import { api } from '../../../api/api';
 import { StaticResourceService } from '../../shared/static-resource.service';
 import { Navigation, Language, Location, Logo, Home, GuidedAssistant, TopicAndResources, About, Search, PrivacyPromise, HelpAndFAQ, Login } from './navigation';
 import { environment } from '../../../environments/environment';
-import { LocationService } from '../location/location.service';
+import { MapService } from '../map/map.service';
 
 @Component({
   selector: 'app-upper-nav',
@@ -25,7 +25,7 @@ export class UpperNavComponent implements OnInit {
   helpAndFAQ: HelpAndFAQ;
   login: Login;
   subscription: any;  
-  constructor(private http: HttpClient, private staticResourceService: StaticResourceService, private locationService: LocationService) { }
+  constructor(private http: HttpClient, private staticResourceService: StaticResourceService, private mapService: MapService) { }
 
   externalLogin() {
     var form = document.createElement('form');

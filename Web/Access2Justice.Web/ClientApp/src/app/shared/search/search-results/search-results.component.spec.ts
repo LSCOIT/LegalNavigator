@@ -19,8 +19,8 @@ import { IResourceFilter, ILuisInput } from './search-results.model';
 import { SearchFilterPipe } from '../search-filter.pipe';
 import { SearchService } from '../search.service';
 import { PaginationService } from '../pagination.service';
-import { ShowMoreService } from '../../sidebars/show-more.service';
-import { LocationService } from '../../location/location.service';
+import { ServiceOrgService } from '../../sidebars/service-org.service';
+import { MapService } from '../../map/map.service';
 import { JitCompiler } from '@angular/compiler/src/jit/compiler';
 import { Observable } from 'rxjs';
 
@@ -66,8 +66,8 @@ describe('SearchResultsComponent', () => {
       providers: [NavigateDataService,
         SearchService,
         PaginationService,
-        ShowMoreService,
-        LocationService,
+        ServiceOrgService,
+        MapService,
         { provide: APP_BASE_HREF, useValue: '/' }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]

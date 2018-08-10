@@ -1,8 +1,11 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MapService } from '../map/map.service'
+import { ServiceOrgSidebarComponent } from './service-org-sidebar.component';
+import { ServiceOrgService } from './service-org.service';
 import { HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { MapLocation } from '../location/location';
+import { MapLocation } from '../map/map';
 import { ServiceOrgSidebarComponent } from './service-org-sidebar.component';
 import { NavigateDataService } from '../navigate-data.service';
 import { PaginationService } from '../search/pagination.service';
@@ -21,7 +24,7 @@ describe('Component:ServiceOrgSidebar', () => {
   let router: Router;
   let activeRoute: ActivatedRoute;
   let showMoreService: ShowMoreService;
-  let locationService: LocationService;
+  let mapService: MapService;
   let navigateDataService: NavigateDataService;
   let paginationService: PaginationService;
   const fakeActivatedRoute = {
@@ -62,7 +65,7 @@ describe('Component:ServiceOrgSidebar', () => {
         { provide: Router, useValue: mockRouter },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         ShowMoreService,
-        LocationService,
+        MapService,
         NavigateDataService,
         PaginationService
       ]
@@ -70,10 +73,8 @@ describe('Component:ServiceOrgSidebar', () => {
 
     fixture = TestBed.createComponent(ServiceOrgSidebarComponent);
     component = fixture.componentInstance;
-    showMoreService = TestBed.get(ShowMoreService);
-    locationService = TestBed.get(LocationService);
-    navigateDataService = TestBed.get(NavigateDataService);
-    paginationService = TestBed.get(PaginationService);
+    mapService = TestBed.get(MapService);
+    serviceorgservice = TestBed.get(ServiceOrgService);
 
     let store = {};
     const mockSessionStorage = {

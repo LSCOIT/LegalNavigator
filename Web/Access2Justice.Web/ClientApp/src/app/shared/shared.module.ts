@@ -12,8 +12,6 @@ import { DownloadButtonComponent } from './resource/user-action/download-button.
 import { FooterComponent } from './footer/footer.component';
 import { GuidedAssistantSidebarComponent } from './sidebars/guided-assistant-sidebar.component';
 import { LanguageComponent } from './language/language.component';
-import { LocationComponent } from './location/location.component';
-import { LocationService } from './location/location.service';
 import { LowerNavComponent } from './navigation/lower-nav.component';
 import { NavigateDataService } from './navigate-data.service';
 import { PrintButtonComponent } from './resource/user-action/print-button.component';
@@ -49,6 +47,8 @@ import { ArticlesComponent } from './resource/resource-type/articles/articles.co
 import { OrganizationsComponent } from './resource/resource-type/organizations/organizations.component';
 import { VideosComponent } from './resource/resource-type/videos/videos.component';
 import { ResourceService } from './resource/resource.service';
+import { MapComponent } from './map/map.component';
+import { MapService } from './map/map.service';
 import { InternalErrorComponent } from './error/internal-error/internal-error.component';
 
 @NgModule({
@@ -71,8 +71,8 @@ import { InternalErrorComponent } from './error/internal-error/internal-error.co
     FooterComponent,
     GuidedAssistantSidebarComponent,
     LanguageComponent,
-    LocationComponent,
     LowerNavComponent,
+    MapComponent,
     PrintButtonComponent,
     ResourceCardComponent,
     ResourceCardDetailComponent,
@@ -97,6 +97,7 @@ import { InternalErrorComponent } from './error/internal-error/internal-error.co
     ArticlesComponent,
     OrganizationsComponent,
     VideosComponent,
+    MapComponent,
     InternalErrorComponent
   ],
   exports: [
@@ -107,8 +108,8 @@ import { InternalErrorComponent } from './error/internal-error/internal-error.co
     FooterComponent,
     GuidedAssistantSidebarComponent,
     LanguageComponent,
-    LocationComponent,
     LowerNavComponent,
+    MapComponent,
     PrintButtonComponent,
     ResourceCardComponent,
     ResourceCardDetailComponent,
@@ -127,7 +128,7 @@ import { InternalErrorComponent } from './error/internal-error/internal-error.co
   ],
   providers: [
     CuratedResourceService,
-    LocationService,
+    MapService,
     NavigateDataService,
     SearchService,
     MapResultsService,
