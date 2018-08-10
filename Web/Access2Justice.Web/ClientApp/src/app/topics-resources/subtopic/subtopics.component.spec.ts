@@ -9,11 +9,9 @@ import { TopicService } from '../shared/topic.service';
 import { NavigateDataService } from '../../shared/navigate-data.service';
 import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 import { BreadcrumbService } from '../shared/breadcrumb.service';
-import { ServiceOrgService } from '../../shared/sidebars/service-org.service';
-import { LocationService } from '../../shared/location/location.service';
-import { Observable } from 'rxjs/Observable';
-
-fdescribe('SubtopicsComponent', () => {
+import { ShowMoreService } from '../../shared/sidebars/show-more.service';
+import { MapService } from '../../shared/map/map.service';
+describe('SubtopicsComponent', () => {
   let component: SubtopicsComponent;
   let fixture: ComponentFixture<SubtopicsComponent>;
   let topicService: TopicService;
@@ -87,8 +85,8 @@ fdescribe('SubtopicsComponent', () => {
         TopicService,
         NavigateDataService,
         BreadcrumbService,
-        ServiceOrgService,
-        LocationService
+        ShowMoreService,
+        MapService
       ]
     })
     .compileComponents();

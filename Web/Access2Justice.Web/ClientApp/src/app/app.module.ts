@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
@@ -35,10 +35,13 @@ import { PersonalizedPlanComponent } from './guided-assistant/personalized-plan/
 import { ProfileComponent } from './profile/profile.component';
 import { BreadcrumbService } from './topics-resources/shared/breadcrumb.service';
 import { PersonalizedPlanService } from './guided-assistant/personalized-plan/personalized-plan.service';
-import { ServiceOrgService } from './shared/sidebars/service-org.service';
+import { ShowMoreService } from './shared/sidebars/show-more.service';
 import { DidYouKnowComponent } from './guided-assistant/did-you-know/did-you-know.component';
 import { ArticlesResourcesComponent } from './guided-assistant/articles-resources/articles-resources.component';
 import { CuratedExperienceComponent } from './guided-assistant/curated-experience/curated-experience.component';
+import { HomeService } from './home/home.service'
+import { StaticResourceService } from './shared/static-resource.service';
+import { ResponseInterceptor } from './response-interceptor';
 
 @NgModule({
   declarations: [
@@ -76,13 +79,20 @@ import { CuratedExperienceComponent } from './guided-assistant/curated-experienc
     TabsModule.forRoot()
   ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ResponseInterceptor,
+      multi: true
+    },
     TopicService,
     QuestionService,
     ProgressbarConfig,
     BreadcrumbService,
     PersonalizedPlanService,
     ProfileComponent,
-    PersonalizedPlanComponent
+    PersonalizedPlanComponent,
+    HomeService,
+    StaticResourceService
   ],
   bootstrap: [AppComponent]
 })

@@ -20,8 +20,19 @@ namespace Access2Justice.Api.BusinessLogic
         }
         
         public async Task<dynamic> GetPageStaticResourceDataAsync(string name, Location location)
-        {         
-            return await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourceCollectionId, Constants.Name, name, location);
+        {
+            dynamic result = null;
+            var pageDBData = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourceCollectionId, Constants.Name, name, location);
+            if (pageDBData.Count == 0)
+            {
+                location.State = "Default";
+                result = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourceCollectionId, Constants.Name, name, location);
+            }
+            else
+            {
+                result = pageDBData;
+            }
+            return result;
         }
         
         public async Task<dynamic> UpsertStaticHomePageDataAsync(HomeContent homePageContent, Location location)

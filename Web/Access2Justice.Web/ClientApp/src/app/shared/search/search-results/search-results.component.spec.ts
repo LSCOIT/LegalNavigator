@@ -20,7 +20,7 @@ import { SearchFilterPipe } from '../search-filter.pipe';
 import { SearchService } from '../search.service';
 import { PaginationService } from '../pagination.service';
 import { ServiceOrgService } from '../../sidebars/service-org.service';
-import { LocationService } from '../../location/location.service';
+import { MapService } from '../../map/map.service';
 import { JitCompiler } from '@angular/compiler/src/jit/compiler';
 import { Observable } from 'rxjs';
 
@@ -67,7 +67,7 @@ describe('SearchResultsComponent', () => {
         SearchService,
         PaginationService,
         ServiceOrgService,
-        LocationService,
+        MapService,
         { provide: APP_BASE_HREF, useValue: '/' }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
