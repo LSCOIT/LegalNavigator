@@ -19,6 +19,7 @@ import { ResourceCardDetailComponent } from
 './shared/resource/resource-card-detail/resource-card-detail.component';
 import { PersonalizedPlanComponent } from './guided-assistant/personalized-plan/personalized-plan.component';
 import { NotFoundComponent } from './shared/error/not-found/not-found.component';
+import { InternalErrorComponent } from './shared/error/internal-error/internal-error.component';
 
 const appRoutes: Routes = [
   { path: 'search', component: SearchResultsComponent },
@@ -38,6 +39,7 @@ const appRoutes: Routes = [
   { path: 'privacy', component: PrivacyPromiseComponent },
   { path: 'profile', component: ProfileComponent },
   { path: '', component: HomeComponent },
+  { path: 'error', component: InternalErrorComponent},
   { path: '404', component: NotFoundComponent },
   { path: '**', redirectTo: '/404' } 
 

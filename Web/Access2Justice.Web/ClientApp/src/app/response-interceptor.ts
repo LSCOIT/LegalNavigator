@@ -20,9 +20,14 @@ export class ResponseInterceptor implements HttpInterceptor {
         }
       }),
       catchError((response: HttpErrorResponse) => {
-          this.router.navigate(["/404"]);
-          return Observable.throw(response);
+        if (response.status == 500) {
+          this.router.navigate(["/error"]);
         }
+        else {
+          this.router.navigate(["/404"]);
+        }
+        return Observable.throw(response);
+      }
       )
     );
   }
