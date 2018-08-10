@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HelpAndFaqs, ImageUrl, Faq, } from '../help-faqs/help-faqs';
 import { StaticResourceService } from '../shared/static-resource.service';
+import { environment } from '../../environments/environment';
+
 @Component({
   selector: 'app-help-faqs',
   templateUrl: './help-faqs.component.html',
@@ -12,6 +14,8 @@ export class HelpFaqsComponent implements OnInit {
   faqData: Array<Faq> = [];
   imageData: ImageUrl;
   name: string = 'HelpAndFAQPage';
+  blobUrl: string = environment.blobUrl;
+
   constructor(
     private staticResourceService: StaticResourceService
   ) { }

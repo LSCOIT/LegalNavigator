@@ -11,11 +11,8 @@ using System.ComponentModel;
 
 namespace Access2Justice.Shared.Models
 {
-    public class HelpAndFaqsContent
+    public class HelpAndFaqsContent: NameLocation
     {
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
         [DefaultValue("")]
         [JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
