@@ -2,7 +2,6 @@ import { Component, OnInit, Input } from '@angular/core';
 import { MapResultsService } from './map-results.service';
 import { environment } from '../../../environments/environment';
 import { MapLocationResult, LatitudeLongitude } from './map-results';
-import { Resources } from '../../guided-assistant/personalized-plan/personalized-plan';
 import { ArrayUtilityService } from '../array-utility.service';
 
 @Component({
@@ -56,7 +55,7 @@ export class MapResultsComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
+  getCacheMapResults() {
     if (sessionStorage.getItem("cacheSearchResults") && JSON.parse(sessionStorage.getItem("cacheMapResults"))) {
       this.tempResourceStorage = JSON.parse(sessionStorage.getItem("cacheSearchResults"));
       if (this.tempResourceStorage && this.tempResourceStorage.resources.length > 0
@@ -71,6 +70,10 @@ export class MapResultsComponent implements OnInit {
         }
       }
     }
+  }
+
+  ngOnInit() {
+    this.getCacheMapResults();
     if (!this.isObjectExists) {
       this.getAddress();
     } else {

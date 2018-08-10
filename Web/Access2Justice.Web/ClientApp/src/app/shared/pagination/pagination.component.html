@@ -13,7 +13,7 @@
       <button>{{ pageNum }}</button>
     </li>
     <li>
-      <button class="next-btn" (click)="onNext(true)" [disabled]="lastPage()">Next</button>
+      <button class="next-btn" (click)="onNext(true)" [disabled]="lastPage()  || loading" [ngClass]="{ 'disabled': lastPage() || loading }">Next</button>
     </li>
   </ul>
 </div>

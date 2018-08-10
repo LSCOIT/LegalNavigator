@@ -360,7 +360,6 @@ export class SearchResultsComponent implements OnInit, OnChanges {
       this.navigateDataService.setData(JSON.parse(sessionStorage.getItem("cacheSearchResults")));      
     }
     this.bindData();
-    console.log(this.searchResults);
     this.notifyLocationChange();
     if (this.showRemove) {
       this.showRemoveOption = this.showRemove;

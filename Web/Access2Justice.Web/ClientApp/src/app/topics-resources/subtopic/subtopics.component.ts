@@ -2,7 +2,6 @@ import { Component, OnInit } from "@angular/core";
 import { TopicService } from '../shared/topic.service';
 import { ActivatedRoute,Router } from '@angular/router';
 import { NavigateDataService } from '../../shared/navigate-data.service';
-//import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-subtopics',
@@ -15,9 +14,6 @@ export class SubtopicsComponent implements OnInit {
   activeTopic: any;
   activeTopicId: string;
   subtopicName: string;
-  //blobUrl: any = environment.blobUrl;
-  topic: any;
-  icon: any;
 
   constructor(
     private topicService: TopicService,    
@@ -28,13 +24,6 @@ export class SubtopicsComponent implements OnInit {
 
   getSubtopics(): void {
     this.activeTopic = this.activeRoute.snapshot.params['topic'];
-    this.topicService.getDocumentData(this.activeTopic)
-      .subscribe(
-      topic => {
-        this.topic = topic[0];
-        //this.icon = this.blobUrl + topic[0].icon;
-        this.icon = topic[0].icon;
-        });
     this.topicService.getSubtopics(this.activeTopic)
       .subscribe(
         subtopics => {
