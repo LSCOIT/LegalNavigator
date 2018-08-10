@@ -13,22 +13,21 @@ import { ServiceOrgService } from '../../shared/sidebars/service-org.service';
 import { LocationService } from '../../shared/location/location.service';
 import { Observable } from 'rxjs/Observable';
 
-describe('SubtopicsComponent', () => {
+fdescribe('SubtopicsComponent', () => {
   let component: SubtopicsComponent;
   let fixture: ComponentFixture<SubtopicsComponent>;
   let topicService: TopicService;
   let navigateDataService: NavigateDataService;
-  let mockactiveTopic = "e1fdbbc6-d66a-4275-9cd2-2be84d303e12";
+  let mockactiveTopic = "123";
   let mockDocumentData = [
-
     {
       "name": "Family1",
       "parentTopicId": [
         {
-          "id": "addf41e9-1a27-4aeb-bcbb-7959f95094ba"
+          "id": "111"
         },
         {
-          "id": "f102bfae-362d-4659-aaef-956c391f79de"
+          "id": "222"
         }
       ],
       "keywords": "HOUSING",
@@ -38,64 +37,22 @@ describe('SubtopicsComponent', () => {
           "county": "Kalawao County",
           "city": "Kalawao",
           "zipCode": "96742"
-        },
-        {
-          "zipCode": "96742"
         }
 
       ],
-      "jsonContent": "jsonContent",
-      "icon": "./assets/images/topics/topic14.png",
-      "createdBy": "API",
-      "modifiedBy": "API"
-    },
-    {
-      "name": "Family2",
-      "parentTopicId": [
-        {
-          "id": "addf41e9-1a27-4aeb-bcbb-7959f95094ba"
-        },
-        {
-          "id": "f102bfae-362d-4659-aaef-956c391f79de"
-        }
-      ],
-      "keywords": "HOUSING",
-      "location": [
-        {
-          "state": "Hawaii",
-          "county": "Kalawao County",
-          "city": "Kalawao",
-          "zipCode": "96742"
-        },
-        {
-          "zipCode": "96742"
-        }
-
-      ],
-      "jsonContent": "jsonContent",
-      "icon": "./assets/images/topics/topic14.png",
-      "createdBy": "API",
-      "modifiedBy": "API"
+      "icon": "",
     }
-  ]
+  ];
+
   let mockSubTopics = [
     {
-      "id": "bdc07e7a-1f06-4517-88d8-9345bb87c3cf",
+      "id": "333",
       "name": "Custody / Visitation",
       "overview": "Overview of the Custody/Visitation topic",
-      "quickLinks": [
-        {
-          "text": "Child Support",
-          "url": "https://alaskalawhelp.org/resource/child-support?ref=sxZRw"
-        },
-        {
-          "text": "Common Questions About Child Custody",
-          "url": "https://alaskalawhelp.org/resource/common-questions-about-child-custody?ref=sxZRw"
-        }
-      ],
+      "quickLinks": [],
       "parentTopicId": [
         {
-          "id": "e1fdbbc6-d66a-4275-9cd2-2be84d303e12"
+          "id": "123"
         }
       ],
       "resourceType": "Topics",
@@ -105,71 +62,12 @@ describe('SubtopicsComponent', () => {
           "state": "Hawaii",
           "city": "Kalawao",
           "zipCode": "96761"
-        },
-        {
-          "state": "Hawaii",
-          "city": "Honolulu",
-          "zipCode": "96741"
-        },
-        {
-          "state": "Alaska",
-          "city": "Juneau",
-          "zipCode": "96815"
-        },
-        {
-          "state": "Alaska",
-          "city": "Anchorage",
-          "zipCode": "99507"
         }
       ],
-      "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/topics/housing.svg"
-    },
-    {
-      "id": "9c9a59cc-34ac-4a6f-80c4-90ac041abba7",
-      "name": "Adoption, Guardianship, and POA",
-      "overview": "Overview of the Adoption, Guardianship, and POA topic",
-      "quickLinks": [
-        {
-          "text": "Adoption and Guardianship: Making Permanent Plans for Children",
-          "url": "http://dhss.alaska.gov/ocs/Pages/adoptions/default.aspx"
-        },
-        {
-          "text": "Guardianship and Conservatorship -- What You Need to Know",
-          "url": "http://courts.alaska.gov/shc/guardian-conservator/index.htm"
-        }
-      ],
-      "parentTopicId": [
-        {
-          "id": "e1fdbbc6-d66a-4275-9cd2-2be84d303e12"
-        }
-      ],
-      "resourceType": "Topics",
-      "keywords": "Adoption | Guardianship | and POA",
-      "location": [
-        {
-          "state": "Hawaii",
-          "city": "Kalawao",
-          "zipCode": "96761"
-        },
-        {
-          "state": "Hawaii",
-          "city": "Honolulu",
-          "zipCode": "96741"
-        },
-        {
-          "state": "Alaska",
-          "city": "Juneau",
-          "zipCode": "96815"
-        },
-        {
-          "state": "Alaska",
-          "city": "Anchorage",
-          "zipCode": "99507"
-        }
-      ],
-      "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/topics/housing.svg"
+      "icon": ""
     }
-  ]
+  ];
+
   beforeEach(async(() => {   
     TestBed.configureTestingModule({
       declarations: [
