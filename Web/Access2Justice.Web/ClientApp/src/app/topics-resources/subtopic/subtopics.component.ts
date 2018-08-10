@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { TopicService } from '../shared/topic.service';
 import { ActivatedRoute,Router } from '@angular/router';
 import { NavigateDataService } from '../../shared/navigate-data.service';
+import { ShowMoreService } from "../../shared/sidebars/show-more.service";
 
 @Component({
   selector: 'app-subtopics',
@@ -19,7 +20,8 @@ export class SubtopicsComponent implements OnInit {
     private topicService: TopicService,    
     private activeRoute: ActivatedRoute,
     private router: Router,
-    private navigateDataService: NavigateDataService
+    private navigateDataService: NavigateDataService,
+    private showMoreService: ShowMoreService
   ) {}
 
   getSubtopics(): void {
@@ -35,6 +37,9 @@ export class SubtopicsComponent implements OnInit {
         });
   }
 
+  clickSeeMoreOrganizationsFromSubtopic(resourceType: string) {
+    this.showMoreService.clickSeeMoreOrganizations(resourceType, this.activeTopic);
+  }
   ngOnInit() {
     this.activeRoute.url
       .subscribe(routeParts => {

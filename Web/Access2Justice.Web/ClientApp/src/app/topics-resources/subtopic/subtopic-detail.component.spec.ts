@@ -13,7 +13,7 @@ import { ServiceOrgSidebarComponent } from '../../shared/sidebars/service-org-si
 import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 import { TopicService } from '../shared/topic.service';
 import { NavigateDataService } from '../../shared/navigate-data.service';
-import { ServiceOrgService } from '../../shared/sidebars/service-org.service';
+import { ShowMoreService } from '../../shared/sidebars/show-more.service';
 import { LocationService } from '../../shared/location/location.service';
 import { PaginationService } from '../../shared/search/pagination.service';
 import { SearchService } from '../../shared/search/search.service';
@@ -71,7 +71,7 @@ describe('SubtopicDetailComponent', () => {
         { provide: APP_BASE_HREF, useValue: '/' },
         TopicService,
         NavigateDataService,
-        ServiceOrgService,
+        ShowMoreService,
         LocationService,
         SearchService,
         PaginationService,
@@ -117,9 +117,9 @@ describe('SubtopicDetailComponent', () => {
     spyOn(navigateDataService, 'setData').and.callFake(() => {
       return Observable.from([result]);
     })
-    component.clickShowMore(resourceType);
+    component.clickSeeMoreOrganizationsFromSubtopicDetails(resourceType);
     expect(router.navigate).toHaveBeenCalledWith(['/search']);
-    expect(component.clickShowMore).toBeTruthy(['']);
+    expect(component.clickSeeMoreOrganizationsFromSubtopicDetails).toBeTruthy(['']);
   });
 
 });

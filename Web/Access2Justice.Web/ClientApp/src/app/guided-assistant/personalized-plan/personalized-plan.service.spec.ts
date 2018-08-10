@@ -4,7 +4,7 @@ import { PersonalizedPlanService } from './personalized-plan.service';
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { api } from '../../../api/api';
 import { Observable } from 'rxjs/Rx';
-import { ServiceOrgService } from '../../shared/sidebars/service-org.service';
+import { ShowMoreService } from '../../shared/sidebars/show-more.service';
 import { ArrayUtilityService } from '../../shared/array-utility.service';
 import { catchError } from 'rxjs/operators/catchError';
 

@@ -35,7 +35,7 @@ import { PersonalizedPlanComponent } from './guided-assistant/personalized-plan/
 import { ProfileComponent } from './profile/profile.component';
 import { BreadcrumbService } from './topics-resources/shared/breadcrumb.service';
 import { PersonalizedPlanService } from './guided-assistant/personalized-plan/personalized-plan.service';
-import { ServiceOrgService } from './shared/sidebars/service-org.service';
+import { ShowMoreService } from './shared/sidebars/show-more.service';
 import { DidYouKnowComponent } from './guided-assistant/did-you-know/did-you-know.component';
 import { ArticlesResourcesComponent } from './guided-assistant/articles-resources/articles-resources.component';
 import { CuratedExperienceComponent } from './guided-assistant/curated-experience/curated-experience.component';
