@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { MapResultsService } from './map-results.service';
 import { environment } from '../../../environments/environment';
 import { MapLocationResult, LatitudeLongitude } from './map-results';
+import { Resources } from '../../guided-assistant/personalized-plan/personalized-plan';
+import { ArrayUtilityService } from '../array-utility.service';
 
 @Component({
   selector: 'app-map-results',
@@ -13,11 +15,15 @@ export class MapResultsComponent implements OnInit {
   latitudeLongitude: Array<LatitudeLongitude> = [];
   latlong: LatitudeLongitude;
   @Input() searchResource: any;
+  tempResourceStorage: any = [];
+  isObjectExists: boolean = false;
 
-  constructor(private mapResultsService: MapResultsService) {
+  constructor(private mapResultsService: MapResultsService,
+    private arrayUtilityService: ArrayUtilityService) {
   }
 
   getAddress() {
+    sessionStorage.removeItem("cacheMapResults");
     if (this.searchResource) {
       if (this.searchResource.resources) {
         for (let i = 0; i < this.searchResource.resources.length; i++) {
@@ -42,6 +48,7 @@ export class MapResultsComponent implements OnInit {
           }
           this.latitudeLongitude.push(this.latlong);
           if (this.latitudeLongitude.length == this.addressList.length) {
+            sessionStorage.setItem("cacheMapResults", JSON.stringify(this.latitudeLongitude));
             this.mapResultsService.mapResults(this.latitudeLongitude);
           }
         });
@@ -50,7 +57,25 @@ export class MapResultsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getAddress();
+    if (sessionStorage.getItem("cacheSearchResults") && JSON.parse(sessionStorage.getItem("cacheMapResults"))) {
+      this.tempResourceStorage = JSON.parse(sessionStorage.getItem("cacheSearchResults"));
+      if (this.tempResourceStorage && this.tempResourceStorage.resources.length > 0
+        && this.tempResourceStorage.resources.length === this.searchResource.resources.length) {
+        if (this.tempResourceStorage.resources.length > 0) {
+          for (let index = 0; index < this.tempResourceStorage.resources.length; index++) {
+            this.isObjectExists = this.arrayUtilityService.checkObjectItemIdExistInArray(this.searchResource.resources, this.tempResourceStorage.resources[index].id);
+            if (!this.isObjectExists) {
+              return this.isObjectExists;
+            }
+          }
+        }
+      }
+    }
+    if (!this.isObjectExists) {
+      this.getAddress();
+    } else {
+      this.mapResultsService.mapResults(JSON.parse(sessionStorage.getItem("cacheMapResults")));
+    }
   }
 }
 
