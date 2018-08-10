@@ -4,7 +4,7 @@
       <img src="{{ topic.icon }}" alt="{{topic.name}}">
     </a>
     <a [routerLink]="['/topics', topic.id]">
-      <p>{{ topic.name }}</p>
+      <p [ngClass]="{ 'ps': !fullPage, 'p': fullPage }">{{ topic.name }}</p>
     </a>
   </li>
 </ul>

@@ -58,8 +58,9 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   bindData() {
     this.showDefaultMessage = false;
     this.showNoResultsMessage = false;
-    this.searchResults = this.navigateDataService.getData();
+    this.searchResults = this.navigateDataService.getData();    
     if (this.searchResults != undefined && this.personalizedResources === undefined) {
+      this.cacheSearchResultsData();
       this.isInternalResource = this.searchResults.resources;
       this.isWebResource = this.searchResults.webResources;
       if (this.isWebResource) {
@@ -67,7 +68,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
       }
       else {
         this.topIntent = this.searchResults.topIntent;
-        if (this.searchResults.resources.length > 0) {
+        if (this.searchResults.resources.length > 0) {          
           this.mapInternalResource();
         } else {
           this.isInternalResource = false;
@@ -97,16 +98,19 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     this.resourceTypeFilter = this.searchResults.resourceTypeFilter;
     if (this.searchResults.resourceType) {
       this.initialResourceFilter = this.searchResults.resourceType;
+      this.filterType = this.searchResults.resourceType;
+    } else {
+      this.filterType = environment.All;
     }
     // need to revisit this logic..
     this.resourceResults = this.searchResults.resourceTypeFilter.reverse();
-    this.filterType = environment.All;
+    this.navigateDataService.setData(undefined);
     if (this.resourceTypeFilter != undefined) {
 
       for (let index = 0; index < this.resourceTypeFilter.length; index++) {
         if ((this.searchResults.isItFromTopicPage &&
           this.resourceTypeFilter[index].ResourceName === this.searchResults.resourceType)
-          || (this.resourceTypeFilter[index].ResourceName === environment.All
+          || (this.resourceTypeFilter[index].ResourceName === this.filterType
             && !this.searchResults.isItFromTopicPage)) {
           this.resourceTypeFilter[index]["ResourceList"] = [{
             'resources': this.searchResults.resources,
@@ -129,6 +133,20 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     this.limit = environment.webResourceRecordsToDisplay;
   }
 
+  cacheSearchResultsData() {
+    sessionStorage.removeItem("cacheSearchResults");
+    sessionStorage.setItem("cacheSearchResults", JSON.stringify(this.searchResults));
+  }
+
+  updateCacheStorage(filterName: string) {
+    if (sessionStorage.getItem("cacheSearchResults")) {
+      let sessionData = JSON.parse(sessionStorage.getItem("cacheSearchResults"));
+      sessionData.resources = this.searchResults.resources;
+      sessionData.resourceType = filterName;
+      sessionStorage.setItem("cacheSearchResults", JSON.stringify(sessionData));
+    }
+  }
+
   filterSearchResults(event) {
     this.sortType = event;
     if (this.isInternalResource && event != undefined && event.filterParam != undefined) {
@@ -145,7 +163,6 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     }
     this.subscription = this.locationService.notifyLocalLocation.subscribe((value) => {
       this.location = value;
-      this.searchResults = this.navigateDataService.getData();
       if (this.searchResults.isItFromTopicPage) {
         this.filterResourceByTopicAndLocation();
       } else {
@@ -184,7 +201,8 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   }
 
   displayFetchedResources() {
-    this.navigateDataService.setData(this.searchResults);
+    this.navigateDataService.setData(this.searchResults);    
+    this.cacheSearchResultsData();
     this.isInternalResource = true;
     this.displayNoResultsMessage();
     this.mapInternalResource();
@@ -212,6 +230,9 @@ export class SearchResultsComponent implements OnInit, OnChanges {
       }
       this.paginationService.getPagedResources(this.resourceFilter).subscribe(response => {
         this.searchResults = response;
+        if (this.page == 1) {
+          this.updateCacheStorage(filterName);
+        }
         this.addResource(filterName);
       });
     }
@@ -224,6 +245,9 @@ export class SearchResultsComponent implements OnInit, OnChanges {
         && this.resourceTypeFilter[index].ResourceList[this.page - 1] != undefined) {
         this.total = this.resourceTypeFilter[index].ResourceCount;
         this.searchResults = this.resourceTypeFilter[index].ResourceList[this.page - 1];
+        if (this.page == 1) {
+          this.updateCacheStorage(this.filterType);
+        }
         this.isServiceCall = false;
         break;
       }
@@ -329,7 +353,12 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     }
   }
 
-  ngOnInit() {
+  ngOnInit() {    
+    if (!this.navigateDataService.getData()
+      && sessionStorage.getItem("cacheSearchResults")
+      && !this.personalizedResources) {
+      this.navigateDataService.setData(JSON.parse(sessionStorage.getItem("cacheSearchResults")));      
+    }
     this.bindData();
     this.notifyLocationChange();
     if (this.showRemove) {

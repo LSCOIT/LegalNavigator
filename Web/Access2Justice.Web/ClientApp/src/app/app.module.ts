@@ -39,6 +39,8 @@ import { ServiceOrgService } from './shared/sidebars/service-org.service';
 import { DidYouKnowComponent } from './guided-assistant/did-you-know/did-you-know.component';
 import { ArticlesResourcesComponent } from './guided-assistant/articles-resources/articles-resources.component';
 import { CuratedExperienceComponent } from './guided-assistant/curated-experience/curated-experience.component';
+import { HomeService } from './home/home.service'
+import { StaticResourceService } from './shared/static-resource.service';
 import { ResponseInterceptor } from './response-interceptor';
 
 @NgModule({
@@ -60,7 +62,7 @@ import { ResponseInterceptor } from './response-interceptor';
     ProfileComponent,
     DidYouKnowComponent,
     ArticlesResourcesComponent,
-    CuratedExperienceComponent    
+    CuratedExperienceComponent
   ],
   imports: [
     BrowserModule,
@@ -88,7 +90,9 @@ import { ResponseInterceptor } from './response-interceptor';
     BreadcrumbService,
     PersonalizedPlanService,
     ProfileComponent,
-    PersonalizedPlanComponent
+    PersonalizedPlanComponent,
+    HomeService,
+    StaticResourceService
   ],
   bootstrap: [AppComponent]
 })

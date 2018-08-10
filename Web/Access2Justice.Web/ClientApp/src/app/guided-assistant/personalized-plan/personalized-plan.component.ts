@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PersonalizedPlanService } from '../personalized-plan/personalized-plan.service';
-import { PlanSteps, PersonalizedPlanTopic, PlanDetailTags } from '../personalized-plan/personalized-plan';
+import { PersonalizedPlanTopic } from '../personalized-plan/personalized-plan';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -14,8 +14,8 @@ export class PersonalizedPlanComponent implements OnInit {
   planTopic: PersonalizedPlanTopic = { topic: {}, isSelected: true };
   topicsList: Array<PersonalizedPlanTopic> = [];
   tempTopicsList: Array<PersonalizedPlanTopic> = [];
-  planDetails: Array<PlanSteps> = [];
-  planDetailTags: PlanDetailTags = { id: '', oId: '', planTags: [{}], type: '' };
+  planDetails: any = [];
+  planDetailTags: any;
   isFiltered: boolean = false;
   type: string = "Plan";
 
@@ -27,17 +27,13 @@ export class PersonalizedPlanComponent implements OnInit {
       this.personalizedPlanService.getActionPlanConditions(this.activeActionPlan)
         .subscribe(plan => {
           if (plan) {
-            this.topics = plan.planTags;
+            this.topics = plan.topics;
             this.planDetailTags = plan;
           }
-          this.getPlanDetails();
+          this.topicsList = this.personalizedPlanService.createTopicsList(this.topics);
+          this.planDetails = this.personalizedPlanService.getPlanDetails(this.topics, this.planDetailTags);
         });
     }
-  }
-
-  getPlanDetails() {
-    this.topicsList = this.personalizedPlanService.createTopicsList(this.topics);
-    this.planDetails = this.personalizedPlanService.displayPlanDetails(this.planDetailTags, this.topicsList);
   }
 
   filterPlan(topic) {
@@ -50,7 +46,7 @@ export class PersonalizedPlanComponent implements OnInit {
     this.topicsList = [];
     this.tempTopicsList.forEach(topicDetail => {
       this.planTopic = { topic: {}, isSelected: true };
-      if (topicDetail.topic.id[0].name === topic) {
+      if (topicDetail.topic.name === topic) {
         this.planTopic = { topic: topicDetail.topic, isSelected: !topicDetail.isSelected };
       } else {
         this.planTopic = { topic: topicDetail.topic, isSelected: topicDetail.isSelected };
@@ -59,8 +55,15 @@ export class PersonalizedPlanComponent implements OnInit {
     });
   }
 
+  filterTopics(event) {
+    this.topics = event.plan.topics;
+    this.planDetailTags = event.plan;
+    this.topicsList = event.topicsList;
+    this.filterPlan("");
+  }
+
   ngOnInit() {
-    this.getTopics(); 
+    this.getTopics();
   }
 
 }

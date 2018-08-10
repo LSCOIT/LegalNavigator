@@ -13,8 +13,12 @@ namespace Access2Justice.Shared.Models
 {
     public class HomeContent
     {
-        [JsonProperty(PropertyName = "id")]
+        [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "location")]
+        public IEnumerable<Location> Location { get; set; }
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "hero")]
@@ -226,5 +230,11 @@ namespace Access2Justice.Shared.Models
         [DefaultValue("")]
         [JsonProperty(PropertyName = "image")]
         public Image Image { get; set; }
+    }
+
+    public class HomePageRequest
+    {
+        public string Name { get; set; }
+        public Location Location { get; set; }
     }
 }

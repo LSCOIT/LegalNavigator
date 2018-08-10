@@ -1,7 +1,7 @@
 ﻿using Access2Justice.Api.BusinessLogic;
 using Access2Justice.Api.Tests.TestData;
 using Access2Justice.Shared.Interfaces;
-using Access2Justice.Shared.Models.CuratedExperience;
+using Access2Justice.Shared.Models;
 using Newtonsoft.Json;
 using NSubstitute;
 using System;

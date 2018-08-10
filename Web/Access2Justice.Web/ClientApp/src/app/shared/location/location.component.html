@@ -1,12 +1,13 @@
+<div [ngClass]="{ 'dimmer': detectLocation, 'inline': !detectLocation  }"></div>
 <div class="navbar-left edit-location pull-right" (click)="changeLocation(template)">
-  <img class="nav-icon" src="/assets/images/small-icons/location.svg" aria-hidden="true" />
+  <img class="nav-icon" src="{{blobUrl}}{{locationNavContent?.image?.source}}" aria-hidden="true" />
   <span *ngIf="showLocation; else elseBlock">
-    Please Select Location
+    {{locationNavContent?.text}}
   </span>
   <ng-template #elseBlock>
     <span *ngIf="!showLocality"> {{locality}}(</span><span>{{address}}</span><span *ngIf="!showLocality">)</span>
   </ng-template>
-  <button type="button" class="change-location-btn pxs mobile-hidden">Change</button>
+  <button type="button" class="change-location-btn pxs mobile-hidden">{{locationNavContent?.button?.buttonText}}</button>
 </div>
 <ng-template #template>
   <div class="modal-body text-center container-fluid">
@@ -14,7 +15,7 @@
       <span aria-hidden="true">&times;</span>
     </button>
     <div class="row">
-      <img class="location-icon" src="/assets/images/small-icons/location.svg" aria-hidden="true" />
+      <img class="location-icon" src="{{blobUrl}}{{locationNavContent?.image?.source}}" aria-hidden="true" />
       <h4>Location</h4>
       <p class="ps">We currently support Alaska and Hawaii</p>
       <p class="ps">You can learn more about the states we support by visiting our

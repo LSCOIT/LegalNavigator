@@ -7,14 +7,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.environment = {
     production: false,
     apiUrl: 'http://localhost:4200/api',
-    bingmap_key: '',
+    bingmap_key: 'AqpcQxjuTmheUzCm8b5kUhV9UhjfsK66CtvV2uBvRmBJXZS9FoBvIrnifnZctuaB',
     map_type: false,
     internalResourcePagesToShow: 2,
     internalResourceRecordsToDisplay: 10,
     webResourcePagesToShow: 10,
     webResourceRecordsToDisplay: 10,
     userId: 'User Id',
-    blobUrl: '',
+    blobUrl: 'https://cs4892808efec24x447cx944.blob.core.windows.net',
     All: 'All'
 };
 //# sourceMappingURL=environment.js.map

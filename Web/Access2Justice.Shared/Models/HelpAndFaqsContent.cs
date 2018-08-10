@@ -10,10 +10,10 @@ using System.Text;
 using System.ComponentModel;
 
 namespace Access2Justice.Shared.Models
-{    
+{
     public class HelpAndFaqsContent
     {
-        [JsonProperty(PropertyName = "id")]
+        [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
         [DefaultValue("")]
