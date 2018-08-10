@@ -12,8 +12,6 @@ import { DownloadButtonComponent } from './resource/user-action/download-button.
 import { FooterComponent } from './footer/footer.component';
 import { GuidedAssistantSidebarComponent } from './sidebars/guided-assistant-sidebar.component';
 import { LanguageComponent } from './language/language.component';
-import { LocationComponent } from './location/location.component';
-import { LocationService } from './location/location.service';
 import { LowerNavComponent } from './navigation/lower-nav.component';
 import { NavigateDataService } from './navigate-data.service';
 import { PrintButtonComponent } from './resource/user-action/print-button.component';
@@ -48,6 +46,8 @@ import { ArticlesComponent } from './resource/resource-type/articles/articles.co
 import { OrganizationsComponent } from './resource/resource-type/organizations/organizations.component';
 import { VideosComponent } from './resource/resource-type/videos/videos.component';
 import { ResourceService } from './resource/resource.service';
+import { MapComponent } from './map/map.component';
+import { MapService } from './map/map.service';
 
 @NgModule({
   imports: [
@@ -69,8 +69,8 @@ import { ResourceService } from './resource/resource.service';
     FooterComponent,
     GuidedAssistantSidebarComponent,
     LanguageComponent,
-    LocationComponent,
     LowerNavComponent,
+    MapComponent,
     PrintButtonComponent,
     ResourceCardComponent,
     ResourceCardDetailComponent,
@@ -93,7 +93,8 @@ import { ResourceService } from './resource/resource.service';
     ButtonSelectedDirective,
     ArticlesComponent,
     OrganizationsComponent,
-    VideosComponent
+    VideosComponent,
+    MapComponent
   ],
   exports: [
     ActionPlansComponent,
@@ -103,8 +104,8 @@ import { ResourceService } from './resource/resource.service';
     FooterComponent,
     GuidedAssistantSidebarComponent,
     LanguageComponent,
-    LocationComponent,
     LowerNavComponent,
+    MapComponent,
     PrintButtonComponent,
     ResourceCardComponent,
     ResourceCardDetailComponent,
@@ -123,7 +124,7 @@ import { ResourceService } from './resource/resource.service';
   ],
   providers: [
     CuratedResourceService,
-    LocationService,
+    MapService,
     NavigateDataService,
     SearchService,
     MapResultsService,

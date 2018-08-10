@@ -2,7 +2,7 @@ import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular
 import { StaticResourceService } from '../../shared/static-resource.service';
 import { Navigation, Language, Location, Logo, Home, GuidedAssistant, TopicAndResources, About, Search, PrivacyPromise, HelpAndFAQ, Login } from './navigation';
 import { environment } from '../../../environments/environment';
-import { LocationService } from '../location/location.service';
+import { MapService } from '../map/map.service';
 
 @Component({
   selector: 'app-lower-nav',
@@ -38,7 +38,7 @@ export class LowerNavComponent implements OnInit {
   subscription: any;
 
   constructor(
-    private staticResourceService: StaticResourceService, private locationService: LocationService
+    private staticResourceService: StaticResourceService, private mapService: MapService
   ) { }
 
   openNav() {
@@ -93,7 +93,7 @@ export class LowerNavComponent implements OnInit {
 
   ngOnInit() {
     this.getNavigationContent();
-    this.subscription = this.locationService.notifyLocation
+    this.subscription = this.mapService.notifyLocation
       .subscribe((value) => {
         this.getNavigationContent();
       });

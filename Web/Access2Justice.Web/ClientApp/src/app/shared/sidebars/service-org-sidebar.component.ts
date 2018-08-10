@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ServiceOrgService } from '../sidebars/service-org.service';
 import { Organization } from '../sidebars/organization';
-import { LocationService } from '../location/location.service';
+import { MapService } from '../map/map.service';
 import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
-import { MapLocation } from '../location/location';
+import { MapLocation } from '../map/map';
 
 @Component({
   selector: 'app-service-org-sidebar',
@@ -18,7 +18,7 @@ export class ServiceOrgSidebarComponent implements OnInit {
 
   constructor(
     private serviceOrgService: ServiceOrgService,
-    private locationService: LocationService
+    private mapService: MapService
   ) { }
 
   getOrganizations(location) {
@@ -30,7 +30,7 @@ export class ServiceOrgSidebarComponent implements OnInit {
     if (sessionStorage.getItem("globalMapLocation")) {
       this.location = JSON.parse(sessionStorage.getItem("globalMapLocation"));
     }
-    this.subscription = this.locationService.notifyLocation
+    this.subscription = this.mapService.notifyLocation
       .subscribe((value) => {
         this.location = value;
         this.getOrganizations(this.location);

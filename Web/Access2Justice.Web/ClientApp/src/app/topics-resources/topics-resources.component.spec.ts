@@ -9,7 +9,7 @@ import { GuidedAssistantSidebarComponent } from '../shared/sidebars/guided-assis
 import { ServiceOrgSidebarComponent } from '../shared/sidebars/service-org-sidebar.component';
 import { TopicService } from './shared/topic.service';
 import { ServiceOrgService } from '../shared/sidebars/service-org.service';
-import { LocationService } from '../shared/location/location.service';
+import { MapService } from '../shared/map/map.service';
 
 describe('TopicsResourcesComponent', () => {
   let component: TopicsResourcesComponent;
@@ -33,7 +33,7 @@ describe('TopicsResourcesComponent', () => {
         { provide: APP_BASE_HREF, useValue: '/' },
         TopicService,
         ServiceOrgService,
-        LocationService
+        MapService
       ]
     })
       .compileComponents();

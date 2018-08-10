@@ -31,10 +31,10 @@ p {
   display: inline-block;
 }
 
-.location-icon ~ h4 {
-  display: inline-block;
-  margin: 0;
-}
+  .location-icon ~ h4 {
+    display: inline-block;
+    margin: 0;
+  }
 
 .change-location-btn {
   color: #0D3FB8;

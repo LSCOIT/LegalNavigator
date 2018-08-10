@@ -1,17 +1,17 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { LocationService } from '../location/location.service'
+import { MapService } from '../map/map.service'
 import { ServiceOrgSidebarComponent } from './service-org-sidebar.component';
 import { ServiceOrgService } from './service-org.service';
 import { HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Organization } from '../sidebars/organization';
-import { MapLocation } from '../location/location';
+import { MapLocation } from '../map/map';
 
 describe('ServiceOrgSidebarComponent',() =>
 {
   let component: ServiceOrgSidebarComponent;
   let fixture: ComponentFixture<ServiceOrgSidebarComponent>;
-  let locationService: LocationService;
+  let mapService: MapService;
   let serviceorgservice: ServiceOrgService;
   let subscription: any;
   let mockMapLocation: MapLocation = {
@@ -39,13 +39,13 @@ describe('ServiceOrgSidebarComponent',() =>
         declarations: [ServiceOrgSidebarComponent],
         providers: [
           ServiceOrgService,
-          LocationService
+          MapService
         ]
       });
     TestBed.compileComponents();
     fixture = TestBed.createComponent(ServiceOrgSidebarComponent);
     component = fixture.componentInstance;
-    locationService = TestBed.get(LocationService);
+      mapService = TestBed.get(MapService);
     serviceorgservice = TestBed.get(ServiceOrgService);
 
       let store = {};

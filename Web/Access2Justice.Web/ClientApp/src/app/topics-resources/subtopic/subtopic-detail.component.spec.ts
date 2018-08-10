@@ -14,11 +14,11 @@ import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 import { TopicService } from '../shared/topic.service';
 import { NavigateDataService } from '../../shared/navigate-data.service';
 import { ServiceOrgService } from '../../shared/sidebars/service-org.service';
-import { LocationService } from '../../shared/location/location.service';
+import { MapService } from '../../shared/map/map.service';
 import { PaginationService } from '../../shared/search/pagination.service';
 import { SearchService } from '../../shared/search/search.service';
 import { ActivatedRoute, Route, ActivatedRouteSnapshot, UrlSegment, Params, Data, Router } from '@angular/router';
-import { MapLocation } from '../../shared/location/location';
+import { MapLocation } from '../../shared/map/map';
 import 'rxjs/add/observable/from';
 import { Observable } from 'rxjs/Observable'; 
 
@@ -27,7 +27,7 @@ describe('SubtopicDetailComponent', () => {
   let fixture: ComponentFixture<SubtopicDetailComponent>;
   let topicService: TopicService;
   let activeRoute: ActivatedRoute;
-  let locationService: LocationService;
+  let mapService: MapService;
   let paginationService: PaginationService;
   let searchService: SearchService;
   let navigateDataService: NavigateDataService;
@@ -72,7 +72,7 @@ describe('SubtopicDetailComponent', () => {
         TopicService,
         NavigateDataService,
         ServiceOrgService,
-        LocationService,
+        MapService,
         SearchService,
         PaginationService,
         {
@@ -97,7 +97,7 @@ describe('SubtopicDetailComponent', () => {
     fixture = TestBed.createComponent(SubtopicDetailComponent);
     paginationService = TestBed.get(PaginationService);
     searchService = TestBed.get(SearchService);
-    locationService = TestBed.get(LocationService);
+    mapService = TestBed.get(MapService);
     navigateDataService = TestBed.get(NavigateDataService); 
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -109,7 +109,7 @@ describe('SubtopicDetailComponent', () => {
 
   it("should call clickShowMore when Show More button is clicked", () => {
     component.topIntent = 'test2';
-    spyOn(locationService, 'updateLocation').and.returnValue(mockMapLocation);
+    spyOn(mapService, 'updateLocation').and.returnValue(mockMapLocation);
     spyOn(paginationService, 'getPagedResources').and.callFake(() => {
       return Observable.from([searchResults]);
     })

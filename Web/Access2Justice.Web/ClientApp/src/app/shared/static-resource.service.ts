@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { api } from '../../api/api';
-import { MapLocation } from './location/location';
+import { MapLocation } from './map/map';
 
 @Injectable()
 export class StaticResourceService {
