@@ -25,7 +25,7 @@ describe('QuestionComponent', () => {
 
   beforeEach(() => {
     mockQuestionService = jasmine.createSpyObj(['getQuestion', 'getNextQuestion']);
-    component = new QuestionComponent(mockQuestionService);
+    component = new QuestionComponent(mockQuestionService, undefined, undefined);
 
   });
 
