@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
@@ -41,6 +41,7 @@ import { ArticlesResourcesComponent } from './guided-assistant/articles-resource
 import { CuratedExperienceComponent } from './guided-assistant/curated-experience/curated-experience.component';
 import { HomeService } from './home/home.service'
 import { StaticResourceService } from './shared/static-resource.service';
+import { ResponseInterceptor } from './response-interceptor';
 
 @NgModule({
   declarations: [
@@ -78,6 +79,11 @@ import { StaticResourceService } from './shared/static-resource.service';
     TabsModule.forRoot()
   ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ResponseInterceptor,
+      multi: true
+    },
     TopicService,
     QuestionService,
     ProgressbarConfig,
