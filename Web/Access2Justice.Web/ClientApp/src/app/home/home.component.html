@@ -1,14 +1,14 @@
 <div *ngIf="homeContent">
   <div class="container">
     <div class="row top-row">
-      <div class="col-sm-6 tagline text-center">
+      <div [ngClass]="{'col-sm-6': heroData.image.source, '': !heroData.image.source }" class="tagline text-center">
         <h2>{{heroData.heading}} {{state}}</h2>
         <p>
           {{heroData.description.text}}
           <a class="link" [routerLink]="heroData?.description?.textWithLink?.url">{{heroData?.description?.textWithLink?.urlText}}</a>
         </p>
       </div>
-      <div class="col-sm-6">
+      <div *ngIf="heroData.image.source" class="col-sm-6">
         <img id="home-img" [src]="blobUrl + heroData?.image?.source" [alt]="heroData?.image?.altText">
       </div>
     </div>
@@ -81,12 +81,12 @@
   <div class="col-md-6 col-md-offset-3">
     <h4>{{sponsorOverviewData?.heading}}</h4>
     <p>{{sponsorOverviewData?.description}}</p>
-    <div class="row">
+    <!--<div class="row">
       <div class="col-sm-6" *ngFor="let sponsor of sponsors">
         <img class="secondary-img" [src]="blobUrl + sponsor?.source"
              [alt]="sponsor?.altText">
       </div>     
-    </div>
+    </div>-->
     <a class="btn btn-primary" [routerLink]="sponsorOverviewData?.button?.buttonLink">
       {{sponsorOverviewData?.button?.buttonText}}
     </a>

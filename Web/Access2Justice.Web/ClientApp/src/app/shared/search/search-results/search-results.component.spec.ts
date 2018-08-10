@@ -19,7 +19,7 @@ import { IResourceFilter, ILuisInput } from './search-results.model';
 import { SearchFilterPipe } from '../search-filter.pipe';
 import { SearchService } from '../search.service';
 import { PaginationService } from '../pagination.service';
-import { ServiceOrgService } from '../../sidebars/service-org.service';
+import { ShowMoreService } from '../../sidebars/show-more.service';
 import { MapService } from '../../map/map.service';
 import { JitCompiler } from '@angular/compiler/src/jit/compiler';
 import { Observable } from 'rxjs';
@@ -66,7 +66,7 @@ describe('SearchResultsComponent', () => {
       providers: [NavigateDataService,
         SearchService,
         PaginationService,
-        ServiceOrgService,
+        ShowMoreService,
         MapService,
         { provide: APP_BASE_HREF, useValue: '/' }
       ],
@@ -173,7 +173,7 @@ describe('SearchResultsComponent', () => {
   it('should call Search Resource by offset', () => {
     spyOn(paginationService, 'searchByOffset').and.returnValue(Observable.of());
     component.searchText = mockSearchText;
-    component.offset = 1
+    component.offset = 1;
     component.searchResource(1);
     expect(paginationService.searchByOffset).toHaveBeenCalled();
   });

@@ -6,7 +6,7 @@ import { NavigateDataService } from '../navigate-data.service';
 import { PaginationService } from '../search/pagination.service';
 import { TestBed } from '@angular/core/testing';
 import { Router, RouterModule } from '@angular/router';
-import { MapLocation } from '../location/location';
+import { MapLocation } from '../map/map';
 import { TopicsResourcesComponent } from '../../topics-resources/topics-resources.component';
 import { SubtopicsComponent } from '../../topics-resources/subtopic/subtopics.component';
 import { IResourceFilter } from '../search/search-results/search-results.model';

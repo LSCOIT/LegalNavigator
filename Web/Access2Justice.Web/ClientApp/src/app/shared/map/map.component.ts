@@ -126,7 +126,7 @@ export class MapComponent implements OnInit {
     }
   }
 
-  getLoationNavigationContent(): void {
+  getLocationNavigationContent(): void {
     let homePageRequest = { name: this.name };
     this.staticResourceService.getStaticContent(homePageRequest)
       .subscribe(content => {
@@ -136,7 +136,7 @@ export class MapComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getLoationNavigationContent();
+    this.getLocationNavigationContent();
     this.showLocality = true;
     if (this.mapType) {
       if (!sessionStorage.getItem("globalMapLocation")) {

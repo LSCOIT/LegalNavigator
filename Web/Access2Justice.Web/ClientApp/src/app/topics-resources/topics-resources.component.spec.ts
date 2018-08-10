@@ -9,7 +9,7 @@ import { GuidedAssistantSidebarComponent } from '../shared/sidebars/guided-assis
 import { ServiceOrgSidebarComponent } from '../shared/sidebars/service-org-sidebar.component';
 import { TopicService } from './shared/topic.service';
 import { ShowMoreService } from '../shared/sidebars/show-more.service';
-import { MapService } from '../shared/location/location.service';
+import { MapService } from '../shared/map/map.service';
 
 describe('TopicsResourcesComponent', () => {
   let component: TopicsResourcesComponent;
