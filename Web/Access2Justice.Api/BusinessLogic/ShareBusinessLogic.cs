@@ -19,7 +19,8 @@ namespace Access2Justice.Api.BusinessLogic
         private readonly IShareSettings dbShareSettings;
         private readonly IUserProfileBusinessLogic dbUserProfile;
         public ShareBusinessLogic(IDynamicQueries dynamicQueries, ICosmosDbSettings cosmosDbSettings,
-            IBackendDatabaseService backendDatabaseService, IShareSettings shareSettings, IUserProfileBusinessLogic userProfileBusinessLogic)
+            IBackendDatabaseService backendDatabaseService, IShareSettings shareSettings, 
+            IUserProfileBusinessLogic userProfileBusinessLogic)
         {
             dbClient = dynamicQueries;
             dbSettings = cosmosDbSettings;
@@ -31,11 +32,16 @@ namespace Access2Justice.Api.BusinessLogic
         public async Task<ShareViewModel> CheckPermaLinkDataAsync(ShareInput shareInput)
         {
             UserProfile userProfile = await dbUserProfile.GetUserProfileDataAsync(shareInput.UserId);
-            if (userProfile == null && userProfile.SharedResource == null)
+            if (userProfile == null || userProfile.SharedResource == null)
             {
                 return null;
             }
-            var resource = userProfile.SharedResource.FindAll(a => a.Url.OriginalString.Contains(Convert.ToString(shareInput.ResourceId, CultureInfo.InvariantCulture)) && a.ExpirationDate <= DateTime.UtcNow);
+            //ToDo - Need to maintain ResourceId for each permalink in DB 
+            //for unique identification - Need to change below logic
+            var resource = userProfile.SharedResource.FindAll(a => a.Url.OriginalString.
+            Contains(shareInput.ResourceId.ToString("D", CultureInfo.InvariantCulture)) 
+            && DateTime.Compare(a.ExpirationDate, DateTime.UtcNow) >= 0);
+
             return resource.Count == 0 ? null : new ShareViewModel
             {
                 PermaLink = GetPermaLink(resource.Select(a => a.PermaLink).First())
@@ -49,12 +55,13 @@ namespace Access2Justice.Api.BusinessLogic
             }
             UserProfile userProfile = await dbUserProfile.GetUserProfileDataAsync(shareInput.UserId);
             shareInput.UniqueId = shareInput.UniqueId != null ? shareInput.UniqueId : Guid.NewGuid();
-            var permaLink = Utilities.GenerateSHA256String(shareInput.UniqueId + shareInput.UserId + shareInput.ResourceId);
+            var permaLink = Utilities.GenerateSHA256String(shareInput.UniqueId + shareInput.UserId + 
+                shareInput.ResourceId);
             var sharedResource = new SharedResource
             {
                 ExpirationDate = DateTime.UtcNow.AddYears(Constants.ExpirationDateDurationInYears),
                 IsShared = true,
-                Url = new Uri(shareInput.Url.OriginalString, UriKind.Relative),
+                Url = new Uri(shareInput.Url.OriginalString),
                 PermaLink = permaLink
             };
             if (userProfile.SharedResource == null)
@@ -69,7 +76,8 @@ namespace Access2Justice.Api.BusinessLogic
                 //plan.IsShared = true;
                 //UpdatePersonalizedPlan(plan);
             }
-            var response = await dbService.UpdateItemAsync(userProfile.Id, userProfile, dbSettings.UserProfileCollectionId);
+            var response = await dbService.UpdateItemAsync(userProfile.Id, userProfile, 
+                dbSettings.UserProfileCollectionId);
             return response == null ? null : new ShareViewModel
             {
                 PermaLink = dbShareSettings.PermaLinkMaxLength > 0 ? GetPermaLink(permaLink) : permaLink
@@ -87,13 +95,16 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 return null;
             }
-            var sharedResource = userProfile.SharedResource.FindAll(a => a.Url.OriginalString.Contains(Convert.ToString(unShareInput.ResourceId, CultureInfo.InvariantCulture)));
+            var sharedResource = userProfile.SharedResource.FindAll(a => a.Url.OriginalString.
+            Contains(unShareInput.ResourceId.ToString("D", CultureInfo.InvariantCulture)));
             if (sharedResource.Count == 0)
             {
                 return false;
             }
-            userProfile.SharedResource.RemoveAll(a => a.Url.OriginalString.Contains(Convert.ToString(unShareInput.ResourceId, CultureInfo.InvariantCulture)));
-            var response = await dbService.UpdateItemAsync(userProfile.Id, userProfile, dbSettings.UserProfileCollectionId);
+            userProfile.SharedResource.RemoveAll(a => a.Url.OriginalString.
+            Contains(unShareInput.ResourceId.ToString("D", CultureInfo.InvariantCulture)));
+            var response = await dbService.UpdateItemAsync(userProfile.Id, userProfile, 
+                dbSettings.UserProfileCollectionId);
             return response == null ? false : true;
         }
 
@@ -101,7 +112,8 @@ namespace Access2Justice.Api.BusinessLogic
         public async Task<object> GetPermaLinkDataAsync(string permaLink)
         {
             return string.IsNullOrEmpty(permaLink) ? null :
-                await dbClient.FindFieldWhereArrayContainsAsync(dbSettings.UserProfileCollectionId, Constants.SharedResource, Constants.Url, Constants.PermaLink, permaLink, Constants.ExpirationDate);
+                await dbClient.FindFieldWhereArrayContainsAsync(dbSettings.UserProfileCollectionId, 
+                Constants.SharedResource, Constants.Url, Constants.PermaLink, permaLink, Constants.ExpirationDate);
         }
 
         private string GetPermaLink(string permaLink)

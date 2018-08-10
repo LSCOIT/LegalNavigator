@@ -3,6 +3,7 @@ import { ShareService } from '../../share-button/share.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { api } from '../../../../../../api/api';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { window } from 'rxjs/operator/window';
 
 @Component({
   selector: 'app-share-button-route',
@@ -26,8 +27,11 @@ export class ShareButtonRouteComponent implements OnInit {
     this.shareService.getResourceLink(params)
       .subscribe(response => {
         if (response != undefined) {
-          if (response.length > 0) {
+          if (response.length > 0 && !response[0].startsWith("http" || "//")) {
             this.router.navigateByUrl(response[0]);
+          }
+          else {
+            location.href = response[0];
           }
         }
         //ToDo - Once error branch code merged into develop branch will uncomment the below line

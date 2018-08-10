@@ -18,6 +18,7 @@ export class ShareButtonComponent implements OnInit {
   modalRef: BsModalRef;
   @Input() id: string;//resource Id
   @Input() type: string; //resource Type
+  @Input() url: string; //resource Url
   @ViewChild('template') public templateref: TemplateRef<any>;
   userId: string;
   sessionKey: string = "showModal";
@@ -137,7 +138,7 @@ export class ShareButtonComponent implements OnInit {
 
   buildParams() {
     if (this.id) {
-      this.shareInput.Url = this.buildUrl() + this.id;
+      this.shareInput.Url = this.buildUrl() ;
       this.shareInput.ResourceId = this.id;
     }
     else {
@@ -149,13 +150,17 @@ export class ShareButtonComponent implements OnInit {
   
   buildUrl() {
     if (this.type === 'Topics') {
-      return "/topics/";
+      return "/topics/" + this.id;
     }
     if (this.type === 'Guided Assistant') {
-      return "/guidedassistant/";
+      return "/guidedassistant/" + this.id;
+    }
+    if (this.type === 'Forms' || this.type === 'Related Links')
+    {
+      return this.url;
     }
     else {
-      return "/resource/";
+      return "/resource/" + this.id;
     }
   }
 
