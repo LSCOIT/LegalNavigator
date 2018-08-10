@@ -2,6 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Access2Justice.Shared.Models;
+using System.Reflection.Metadata;
+using Access2Justice.Api.ViewModels;
+using Access2Justice.Shared;
 
 namespace Access2Justice.Api.Tests.TestData
 {
@@ -149,6 +153,78 @@ namespace Access2Justice.Api.Tests.TestData
   ]
 }]");
 
+        public static JArray userAnswers = JArray.Parse(@"[{
+  'id': '288af4da-06bb-4655-aa91-41314e248d6b',
+  'curatedExperienceId': '9a6a6131-657d-467d-b09b-c570b7dad242',
+  'answers': [
+    {
+      'answerButtonId': 'f3a1e369-edba-4152-bbc7-a52e8e77b56e',
+      'answerFields': []
+    },
+    {
+      'answerButtonId': '2b92e07b-a555-48e8-ad7b-90b99ebc5c96',
+      'answerFields': [
+        {
+          'fieldId': '22cbf2ac-a8d3-48c5-b230-297111e0e85c',
+          'value': 'gh'
+        },
+        {
+          'fieldId': '6c8312eb-131d-4cfb-a542-0e3f6d07a1d3',
+          'value': 'fgh'
+        },
+        {
+          'fieldId': 'd2a935b4-bb07-494f-9c59-f3115b19d002',
+          'value': 'gh'
+        }
+      ]
+    },
+    {
+      'answerButtonId': 'cafc4de0-91c5-4f67-a59f-bbffc2534236',
+      'answerFields': [
+        {
+          'fieldId': '78da510a-180c-4757-b75d-fd87f470ae76',
+          'value': 'fh'
+        },
+        {
+          'fieldId': '6a81a78e-7692-4256-88d6-651dc4e9ce0f',
+          'value': 'fh'
+        },
+        {
+          'fieldId': '9471103f-7868-47fd-b1ab-581cc3934493',
+          'value': '54'
+        }
+      ]
+    },
+    {
+      'answerButtonId': 'aa3777d0-e7dd-48dd-afb3-6d61fc172768',
+      'answerFields': [
+        {
+          'fieldId': 'd63e24a3-4a4d-4fec-a1aa-9c72b2fcab5e',
+          'value': '46'
+        }
+      ]
+    },
+    {
+      'answerButtonId': '5846cabb-1826-47bc-b2cd-6168f78fc4f2',
+      'answerFields': [
+        {
+          'fieldId': '0bc5ccb7-e1d2-40b6-b20c-4fbd6cb85de9',
+          'value': null
+        }
+      ]
+    },
+    {
+      'answerButtonId': '98613482-53ad-458f-988c-5b473358c7bf',
+      'answerFields': [
+        {
+          'fieldId': 'cfd6fd1d-2974-43ef-8e3c-6fb0e9a0d8cf',
+          'value': '546h'
+        }
+      ]
+    }
+  ]
+}]");
+
         public static JArray topicDetails = JArray.Parse(@"[
     {
       'id': 'e1fdbbc6-d66a-4275-9cd2-2be84d303e12',
@@ -156,13 +232,13 @@ namespace Access2Justice.Api.Tests.TestData
       'overview': 'Overview of the Family topic',
       'quickLinks': [
         {
-          'text': 'Family Law Self-Help Center',
-          'url': 'http://courts.alaska.gov/shc/family/selfhelp.htm'
+        'Text': 'Filing for Dissolution or Divorce - Ending Your Marriage',
+        'Url': 'http://courts.alaska.gov/shc/family/shcstart.htm#issues'
         },
         {
-          'text': 'Introduction to Family Law Video Series',
-          'url': 'https://alaskalawhelp.org/resource/introduction-to-family-law-video-series?ref=OEGQX'
-        }
+        'Text': 'Spousal Support (Alimony)',
+        'Url': 'https://alaskalawhelp.org/resource/spousal-support?ref=OEGQX'
+    }
       ],
       'parentTopicId': [],
       'resourceType': 'Topics',
@@ -188,13 +264,7 @@ namespace Access2Justice.Api.Tests.TestData
           'city': 'Anchorage',
           'zipCode': '99507'
         }
-      ],
-      'icon': 'https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/family.svg',
-      '_rid': 'ap9UAKOAU7IEAAAAAAAAAA==',
-      '_self': 'dbs/ap9UAA==/colls/ap9UAKOAU7I=/docs/ap9UAKOAU7IEAAAAAAAAAA==/',
-      '_etag': '\'570356b1-0000-0000-0000-5b64e6ab0000\'',
-      '_attachments': 'attachments/',
-      '_ts': 1533339307
+      ]
     },
     {
       'id': 'd1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef',
@@ -234,13 +304,7 @@ namespace Access2Justice.Api.Tests.TestData
           'city': 'Anchorage',
           'zipCode': '99507'
         }
-      ],
-      'icon': 'https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/topics/housing.svg',
-      '_rid': 'ap9UAKOAU7IGAAAAAAAAAA==',
-      '_self': 'dbs/ap9UAA==/colls/ap9UAKOAU7I=/docs/ap9UAKOAU7IGAAAAAAAAAA==/',
-      '_etag': '\'cc02b0aa-0000-0000-0000-5b6392a50000\'',
-      '_attachments': 'attachments/',
-      '_ts': 1533252261
+      ]
     }
 ]");
 
@@ -257,7 +321,7 @@ namespace Access2Justice.Api.Tests.TestData
       '49779468-1fe0-4183-850b-ff365e05893e'
     ],
 'topicIds': [
-            'd1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef'
+            'e1fdbbc6-d66a-4275-9cd2-2be84d303e12'
           ]
   },
   {
@@ -273,7 +337,7 @@ namespace Access2Justice.Api.Tests.TestData
       '2fe9f117-bfb5-469f-b80c-877640a29f75'
     ],
     'topicIds': [
-            'd1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef'
+            'e1fdbbc6-d66a-4275-9cd2-2be84d303e12'
           ]
   },
   {
@@ -290,7 +354,7 @@ namespace Access2Justice.Api.Tests.TestData
       'bbb88efb-3816-218b-5b38-1281e1b77f5a'
     ],
     'topicIds': [
-            'd1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef'
+            'e1fdbbc6-d66a-4275-9cd2-2be84d303e12'
           ]
   }
 ]");
@@ -959,7 +1023,7 @@ namespace Access2Justice.Api.Tests.TestData
   }
 ]");
 
-        public static JArray resourceDetails = JArray.Parse(@"[[
+        public static JArray resourceDetails = JArray.Parse(@"[
   {
     'id': '19a02209-ca38-4b74-bd67-6ea941d41518',
     'name': 'Alaska Law Help',
@@ -1446,8 +1510,8 @@ namespace Access2Justice.Api.Tests.TestData
     'modifiedBy': '',
     'modifiedTimeStamp': '2018-04-01T04:18:00Z'
   }
-]]");
-        public static JArray planStepsWithResourceDetails = JArray.Parse(@"[[
+]");
+        public static JArray planStepsWithResourceDetails = JArray.Parse(@"[
   {
     'stepId': '300ff138-a83f-4898-ab3a-d24cb48d357b',
     'type': 'steps',
@@ -1964,11 +2028,11 @@ namespace Access2Justice.Api.Tests.TestData
       }
     ]
   }
-]]");
+]");
 
         public static JArray resourceIds = JArray.Parse(@"[ '19a02209-ca38-4b74-bd67-6ea941d41518', '9ca4cf73-f6c0-4f63-a1e8-2a3774961df5', '49779468-1fe0-4183-850b-ff365e05893e' ]");
 
-        public static JArray resourceDetailsForResourceIds = JArray.Parse(@"[[
+        public static JArray resourceDetailsForResourceIds = JArray.Parse(@"[
   {
     'id': '19a02209-ca38-4b74-bd67-6ea941d41518',
     'name': 'Alaska Law Help',
@@ -2089,7 +2153,7 @@ namespace Access2Justice.Api.Tests.TestData
     'modifiedBy': '',
     'modifiedTimeStamp': '2018-04-01T04:18:00Z'
   }
-]
+
 ]");
 
         public static JArray planStepsByTopicId = JArray.Parse(@"[
@@ -2136,5 +2200,16 @@ namespace Access2Justice.Api.Tests.TestData
     'topicIds':[]
   }
 ]");
+
+
+        public static string TopicDetailsJArray
+        {
+            get
+            {
+                return "[\r\n    {\r\n      'id': 'e1fdbbc6-d66a-4275-9cd2-2be84d303e12',\r\n      'name': 'Family',\r\n      'overview': 'Overview of the Family topic',\r\n      'quickLinks': [\r\n        {\r\n          'text': 'Family Law Self-Help Center',\r\n          'url': 'http:////courts.alaska.gov//shc//family//selfhelp.htm'\r\n        },\r\n        {\r\n          'text': 'Introduction to Family Law Video Series',\r\n          'url': 'https:////alaskalawhelp.org/resource//introduction-to-family-law-video-series?ref=OEGQX'\r\n        }\r\n      ],\r\n      'parentTopicId': [],\r\n      'resourceType': 'Topics',\r\n      'keywords': 'Family',\r\n      'location': [\r\n        {\r\n          'state': 'Hawaii',\r\n          'city': 'Kalawao',\r\n          'zipCode': '96761'\r\n        },\r\n        {\r\n          'state': 'Hawaii',\r\n          'city': 'Honolulu',\r\n          'zipCode': '96741'\r\n        },\r\n        {\r\n          'state': 'Alaska',\r\n          'city': 'Juneau',\r\n          'zipCode': '96815'\r\n        },\r\n        {\r\n          'state': 'Alaska',\r\n          'city': 'Anchorage',\r\n          'zipCode': '99507'\r\n        }\r\n      ]";
+            }
+        }
     }
 }
+
+
