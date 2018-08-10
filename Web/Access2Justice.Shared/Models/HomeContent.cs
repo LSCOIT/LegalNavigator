@@ -232,7 +232,7 @@ namespace Access2Justice.Shared.Models
         public Image Image { get; set; }
     }
 
-    public class HomePageRequest
+    public class PageContentRequest
     {
         public string Name { get; set; }
         public Location Location { get; set; }

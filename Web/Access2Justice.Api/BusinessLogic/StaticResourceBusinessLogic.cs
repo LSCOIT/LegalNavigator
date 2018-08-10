@@ -110,5 +110,24 @@ namespace Access2Justice.Api.BusinessLogic
             }
             return result;
         }
+
+        public async Task<dynamic> UpsertStaticAboutPageDataAsync(AboutContent aboutPageContent, Location location)
+        {
+            var serializedResult = JsonConvert.SerializeObject(aboutPageContent);
+            var pageDocument = JsonConvert.DeserializeObject(serializedResult);
+            string name = aboutPageContent.Name;
+            dynamic result = null;
+            var pageDBData = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourceCollectionId, Constants.Name, name, location);
+            if (pageDBData.Count == 0)
+            {
+                result = await dbService.CreateItemAsync(pageDocument, dbSettings.StaticResourceCollectionId);
+            }
+            else
+            {
+                string id = pageDBData[0].id;
+                result = await dbService.UpdateItemAsync(id, pageDocument, dbSettings.StaticResourceCollectionId);
+            }
+            return result;
+        }
     }
 }
