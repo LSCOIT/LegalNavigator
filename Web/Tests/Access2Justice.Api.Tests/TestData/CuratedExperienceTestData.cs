@@ -169,7 +169,7 @@
             }
         }
 
-        public static string CuratedExperienceAswersSchema
+        public static string CuratedExperienceAnswersSchema
         {
             get {
                 return

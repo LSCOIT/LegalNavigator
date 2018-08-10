@@ -121,8 +121,8 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             JsonTextReader reader = new JsonTextReader(new StringReader(curatedExperience[0].ToString()));
             document.LoadFrom(reader);
 
-            var curatedExperienceAsnwersJson = JsonConvert.DeserializeObject<CuratedExperienceAnswers>(CuratedExperienceTestData.CuratedExperienceAswersSchema);
-            var test = CuratedExperienceTestData.CuratedExperienceAswersSchema;
+            var curatedExperienceAsnwersJson = JsonConvert.DeserializeObject<CuratedExperienceAnswers>(CuratedExperienceTestData.CuratedExperienceAnswersSchema);
+            var test = CuratedExperienceTestData.CuratedExperienceAnswersSchema;
             var userAnswers = dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.CuratedExperienceAnswersCollectionId).ReturnsForAnyArgs(test);
             var dbResponse = dbService.CreateItemAsync<dynamic>(curatedExperience, dbSettings.PersonalizedActionPlanCollectionId).ReturnsForAnyArgs(document);
             var curatedExperienceJson = JsonConvert.DeserializeObject<CuratedExperience>(CuratedExperienceTestData.CuratedExperienceSampleSchema);
