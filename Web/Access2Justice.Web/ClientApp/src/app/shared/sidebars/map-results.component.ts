@@ -13,8 +13,6 @@ export class MapResultsComponent implements OnChanges {
   latitudeLongitude: Array<LatitudeLongitude> = [];
   latlong: LatitudeLongitude;
   @Input() searchResource: any;
-  tempResourceStorage: any = [];
-  isObjectExists: boolean = false;
 
   constructor(private mapResultsService: MapResultsService) {
   }

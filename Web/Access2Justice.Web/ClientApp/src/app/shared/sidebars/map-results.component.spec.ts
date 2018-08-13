@@ -50,7 +50,8 @@ describe('MapResultsComponent', () => {
     () => {
       TestBed.configureTestingModule({
         imports: [HttpClientModule],
-        declarations: [MapResultsComponent]
+        declarations: [MapResultsComponent],
+        providers: [MapResultsService]
       });
       TestBed.compileComponents();
       fixture = TestBed.createComponent(MapResultsComponent);
