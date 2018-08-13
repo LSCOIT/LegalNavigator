@@ -11,18 +11,15 @@ using System.ComponentModel;
 
 namespace Access2Justice.Shared.Models
 {    
-    public class Navigation
+    public class Navigation: NameLocation
     {
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
         [DefaultValue("")]
         [JsonProperty(PropertyName = "language")]
         public Language Language { get; set; }
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "locationNavContent")]
-        public HeaderLocation Location { get; set; }
+        public HeaderLocation LocationNav { get; set; }
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "privacyPromise")]

@@ -1,4 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { ShowMoreService } from '../../../sidebars/show-more.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-articles',
@@ -7,9 +9,17 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ArticlesComponent implements OnInit {
   @Input() resource;
+  activeResource: any;
 
-  constructor() { }
+  constructor(
+    private showMoreService: ShowMoreService,
+    private activeRoute: ActivatedRoute
+  ) { }
 
+  clickSeeMoreOrganizationsFromArticles(resourceType: string) {
+    this.activeResource = this.activeRoute.snapshot.params['id'];
+    this.showMoreService.clickSeeMoreOrganizations(resourceType, this.activeResource);
+  }
   ngOnInit() {
   }
 

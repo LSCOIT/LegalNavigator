@@ -4,7 +4,7 @@ import { ResourceResult } from './search-result';
 import { SearchService } from '../search.service';
 import { PaginationService } from '../pagination.service';
 import { IResourceFilter, ILuisInput } from './search-results.model';
-import { LocationService } from '../../location/location.service';
+import { MapService } from '../../map/map.service';
 import { environment } from '../../../../environments/environment';
 
 @Component({
@@ -52,7 +52,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   constructor(
     private navigateDataService: NavigateDataService,
     private searchService: SearchService,
-    private locationService: LocationService,
+    private mapService: MapService,
     private paginationService: PaginationService) { }
 
   bindData() {
@@ -164,7 +164,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     if (sessionStorage.getItem("localSearchMapLocation")) {
       this.location = JSON.parse(sessionStorage.getItem("localSearchMapLocation"));
     }
-    this.subscription = this.locationService.notifyLocalLocation.subscribe((value) => {
+    this.subscription = this.mapService.notifyLocalLocation.subscribe((value) => {
       this.location = value;
       if (this.searchResults.isItFromTopicPage) {
         this.filterResourceByTopicAndLocation();
