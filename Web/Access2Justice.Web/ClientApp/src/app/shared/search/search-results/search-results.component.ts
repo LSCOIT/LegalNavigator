@@ -192,8 +192,8 @@ export class SearchResultsComponent implements OnInit, OnChanges {
 
   filterResourceByKeywordAndLocation() {
     this.luisInput.Location = this.location;
-    this.luisInput.LuisTopScoringIntent = this.searchResults.topIntent;
-    this.luisInput.Sentence = this.searchResults.topIntent;
+    this.luisInput.LuisTopScoringIntent = this.topIntent;
+    this.luisInput.Sentence = this.topIntent;
     this.searchService.search(this.luisInput)
       .subscribe(response => {
         if (response != undefined) {
