@@ -23,7 +23,7 @@ export class SearchComponent implements OnInit {
     this.luisInput.Sentence = searchForm.value.inputText;
     this.luisInput.Location = JSON.parse(sessionStorage.getItem("globalMapLocation"));
     sessionStorage.removeItem("cacheSearchResults");
-    sessionStorage.removeItem("cacheMapResults");
+
     this.searchService.search(this.luisInput)
       .subscribe(response => {
         if (response != undefined) {

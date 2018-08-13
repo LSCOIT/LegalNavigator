@@ -20,6 +20,7 @@ fdescribe('MapResultsComponent', () => {
     Address: "Address Text 2"
   };
 
+  let noItemsInAddressList: Array<MapLocationResult> = []
   let oneItemInAddressList: Array<MapLocationResult> = [sampleAddress1]
   let twoItemsInAddressList: Array<MapLocationResult> = [sampleAddress1, sampleAddress2]
 
@@ -69,9 +70,9 @@ fdescribe('MapResultsComponent', () => {
     expect(component).toBeDefined();
   });
 
-  it("should call getAddress on ngInit", () => {
+  it("should call getAddress on ngChanges", () => {
     spyOn(component, 'getAddress');
-    component.ngOnInit();
+    component.ngOnChanges();
     component.getAddress();
     expect(component.getAddress).toHaveBeenCalled();
   });
@@ -97,41 +98,47 @@ fdescribe('MapResultsComponent', () => {
     component.getAddress();
     expect(component.getMapResults).toHaveBeenCalled();
   });
-  
-  it("should call getMap of mapResultsService when getMapResults is called", () => {
+
+  it("should call getMap of mapResultsService when getMapResults is called with no address in addresslist", () => {
     spyOn(service, 'getMap');
-    component.getMapResults(oneItemInAddressList);
+    component.getMapResults(noItemsInAddressList);
     expect(service.getMap).toHaveBeenCalled();
   });
 
-  it("should call getLocationDetails of service when getMapResults is called", () => {
-    spyOn(service, 'getMap').and.returnValue(null);
-    spyOn(service, 'getLocationDetails').and.returnValue(Observable.of());
+  it("should call displayMapResults of when getMapResults is called with addresslist", () => {
+    spyOn(component, 'displayMapResults');
     component.getMapResults(oneItemInAddressList);
+    expect(component.displayMapResults).toHaveBeenCalled();
+  });
+
+  it("should call getLocationDetails of service when displayMapResults is called", () => {
+    spyOn(service, 'getLocationDetails').and.returnValue(Observable.of());
+    component.addressList = oneItemInAddressList;
+    component.displayMapResults();
     expect(service.getLocationDetails).toHaveBeenCalled();
   });
 
-  it("should push 1 item into latitudeLongitude when getMapResults is called", () => {
-    spyOn(service, 'getMap').and.returnValue(null);
+  it("should push 1 item into latitudeLongitude when displayMapResults is called", () => {
     spyOn(service, 'getLocationDetails').and.returnValue(Observable.of(onlyOneLocationCoordinates));
     spyOn(service, 'mapResults');
-    component.getMapResults(oneItemInAddressList);
+    component.addressList = oneItemInAddressList;
+    component.displayMapResults();
     expect(component.latitudeLongitude.length).toEqual(1);
   });
 
-  it("should push 2 item into latitudeLongitude(subscribe should be called twice) when getMapResults is called", () => {
-    spyOn(service, 'getMap').and.returnValue(null);
+  it("should push 2 item into latitudeLongitude(subscribe should be called twice) when displayMapResults is called", () => {
     spyOn(service, 'getLocationDetails').and.returnValue(Observable.of(onlyOneLocationCoordinates));
     spyOn(service, 'mapResults');
-    component.getMapResults(twoItemsInAddressList);
+    component.addressList = twoItemsInAddressList;
+    component.displayMapResults();
     expect(component.latitudeLongitude.length).toEqual(2);
   });
 
-  it("should call mapResults of mapResultsService when getMapResults is called", () => {
-    spyOn(service, 'getMap').and.returnValue(null);
+  it("should call mapResults of mapResultsService when displayMapResults is called", () => {
     spyOn(service, 'getLocationDetails').and.returnValue(Observable.of(onlyOneLocationCoordinates));
     spyOn(service, 'mapResults');
-    component.getMapResults(oneItemInAddressList);
+    component.addressList = oneItemInAddressList;
+    component.displayMapResults();
     expect(service.mapResults).toHaveBeenCalled();
   });
 

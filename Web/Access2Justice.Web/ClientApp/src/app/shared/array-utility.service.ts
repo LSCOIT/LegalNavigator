@@ -15,14 +15,4 @@ export class ArrayUtilityService {
     return isObjectExists;
   }
 
-  checkObjectItemIdExistInArray(objects, object): boolean {
-    let isObjectExists = false;
-    objects.forEach(item => {
-      if (JSON.stringify(item.id) === JSON.stringify(object)) {
-        isObjectExists = true;
-      }
-    });
-    return isObjectExists;
-  }
-
 }
