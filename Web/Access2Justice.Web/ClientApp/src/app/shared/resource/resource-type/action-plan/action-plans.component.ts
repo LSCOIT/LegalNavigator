@@ -1,4 +1,4 @@
-import { Component, Input, TemplateRef, EventEmitter, Output } from '@angular/core';
+import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { PlanTopic, PersonalizedPlan, PlanStep, PersonalizedPlanTopic } from '../../../../guided-assistant/personalized-plan/personalized-plan';
 import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
@@ -6,6 +6,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Title } from '@angular/platform-browser/src/browser/title';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-action-plans',
@@ -14,7 +15,7 @@ import { Title } from '@angular/platform-browser/src/browser/title';
 })
 export class ActionPlansComponent implements OnChanges {
   @Input() planDetails;
-  @Input() topicsList
+  @Input() topicsList;
   displaySteps: boolean = false;
   updatedPlan: any;
   modalRef: BsModalRef;
@@ -38,9 +39,11 @@ export class ActionPlansComponent implements OnChanges {
   removePlanDetails: any;
   plan: any;
 
-  constructor(private personalizedPlanService: PersonalizedPlanService,
-    private modalService: BsModalService,
-    public sanitizer: DomSanitizer) {
+  constructor(
+    private personalizedPlanService: PersonalizedPlanService,
+    public sanitizer: DomSanitizer,
+    private toastr: ToastrService
+  ) {
     this.sanitizer = sanitizer;
     let profileData = sessionStorage.getItem("profileData");
     if (profileData != undefined) {
@@ -65,12 +68,12 @@ export class ActionPlansComponent implements OnChanges {
     });
   }
 
-  checkCompleted(event, topicId, stepId, template: TemplateRef<any>) {
+  checkCompleted(event, topicId, stepId) {
     this.isChecked = event.target.checked;
-    this.getPlanDetails(topicId, stepId, this.isChecked, template);
+    this.getPlanDetails(topicId, stepId, this.isChecked);
   }
 
-  getPlanDetails(topicId, stepId, isChecked, template) {
+  getPlanDetails(topicId, stepId, isChecked) {
     this.personalizedPlanService.getActionPlanConditions(this.planDetails.id)
       .subscribe(plan => {
         if (plan) {
@@ -78,7 +81,7 @@ export class ActionPlansComponent implements OnChanges {
         }
         this.plan = this.personalizedPlanService.getPlanDetails(this.topics, plan);
         this.updateMarkCompleted(topicId, stepId, isChecked);
-        this.updateProfilePlan(this.isChecked, template);
+        this.updateProfilePlan(this.isChecked);
       });
   }
 
@@ -133,7 +136,7 @@ export class ActionPlansComponent implements OnChanges {
     return this.personalizedPlanSteps;
   }
 
-  updateProfilePlan(isChecked, template) {
+  updateProfilePlan(isChecked) {
     const params = {
       "id": this.personalizedPlan.id,
       "topics": this.personalizedPlan.topics,
@@ -151,20 +154,21 @@ export class ActionPlansComponent implements OnChanges {
               }
             }
           });
-          this.getUpdatedPersonalizedPlan(response, isChecked, template);
+          this.getUpdatedPersonalizedPlan(response, isChecked);
         }
       });
   }
 
-  getUpdatedPersonalizedPlan(response, isChecked, template) {
+  getUpdatedPersonalizedPlan(response, isChecked) {
     this.notifyFilterTopics.emit({ plan: response, topicsList: this.filteredtopicsList });
     this.loadPersonalizedPlan();
     if (isChecked) {
       this.isCompleted = true;
+      this.toastr.success("Step Completed.");
     } else {
       this.isCompleted = false;
+      this.toastr.success("Step Added Back");
     }
-    this.modalRef = this.modalService.show(template);
   }
 
   loadPersonalizedPlan() {
@@ -176,17 +180,9 @@ export class ActionPlansComponent implements OnChanges {
     });
   }
 
-  close() {
-    this.modalRef.hide();
-  }
-
   resourceUrl(url) {
     this.url = this.sanitizer.bypassSecurityTrustResourceUrl(url);
     return this.url;
-  }
-
-  openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template);
   }
 
   planTagOptions(topicId) {
@@ -234,4 +230,3 @@ export class ActionPlansComponent implements OnChanges {
     });
   }
 }
-
