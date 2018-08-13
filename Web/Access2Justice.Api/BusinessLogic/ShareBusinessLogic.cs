@@ -30,6 +30,10 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<ShareViewModel> CheckPermaLinkDataAsync(ShareInput shareInput)
         {
+            if (shareInput.UserId == null || shareInput.Url == null)
+            {
+                return null;
+            }
             UserProfile userProfile = await dbUserProfile.GetUserProfileDataAsync(shareInput.UserId);
             if (userProfile == null || userProfile.SharedResource == null)
             {

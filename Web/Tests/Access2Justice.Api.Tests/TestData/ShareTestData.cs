@@ -27,9 +27,9 @@ namespace Access2Justice.Api.Tests.TestData
                         new SharedResource
                         {
                             IsShared = true,
-                            ExpirationDate = DateTime.UtcNow,
+                            ExpirationDate = DateTime.UtcNow.AddYears(1),
                             PermaLink = "32803EFBBCA0D461EDA14F1BF56C5CA8C455AB6707F76A65026725F8DB7D3E8C",
-                            Url = new Uri("/topics/5c035d27-2fdb-9776-6236-70983a918431", UriKind.Relative)
+                            Url = new Uri("/topics/5c035d27-2fdb-9776-6236-70983a918431", UriKind.RelativeOrAbsolute)
                         }
                     }
             };
@@ -49,15 +49,15 @@ namespace Access2Justice.Api.Tests.TestData
         {
             yield return new object[] { new ShareInput { ResourceId = Guid.Empty, Url = null, UserId = null }, null };
             yield return new object[] { new ShareInput { ResourceId = Guid.NewGuid(), Url = null, UserId = "709709e7t0r7t96" }, null };
-            yield return new object[] { new ShareInput { ResourceId = Guid.Parse("5c035d27-2fdb-9776-6236-70983a918431"), Url = new Uri("/topics/5c035d27-2fdb-9776-6236-70983a918431", UriKind.Relative), UserId = "709709e7t0r7t96" }, new ShareViewModel() { PermaLink = "32803EF" } };
+            yield return new object[] { new ShareInput { ResourceId = Guid.Parse("5c035d27-2fdb-9776-6236-70983a918431"), Url = new Uri("/topics/5c035d27-2fdb-9776-6236-70983a918431", UriKind.RelativeOrAbsolute), UserId = "709709e7t0r7t96" }, new ShareViewModel() { PermaLink = "32803EF" } };
         }
 
         public static IEnumerable<object[]> UnShareInputData()
         {
             yield return new object[] { new ShareInput { ResourceId = Guid.Empty, UserId = null }, null };
-            yield return new object[] { new ShareInput { ResourceId = Guid.NewGuid(),  UserId = "709709e7t0r7t96" }, false };
-            yield return new object[] { new ShareInput { ResourceId = Guid.Parse("0693B88C-3866-4CCA-97C8-B8E3F3D1FF3C"), UserId = "709709e7t0r7t96" }, false };
-            yield return new object[] { new ShareInput { ResourceId = Guid.Parse("5c035d27-2fdb-9776-6236-70983a918431"), UserId = "709709e7t0r7t96" }, true };
+            yield return new object[] { new ShareInput { ResourceId = Guid.NewGuid(), Url = null, UserId = "709709e7t0r7t96" }, null };
+            yield return new object[] { new ShareInput { ResourceId = Guid.Parse("5c035d27-2fdb-9776-6236-70983a918431"), Url = new Uri("/topics/5c035d27-2fdb-9776-6236-70983a918431", UriKind.RelativeOrAbsolute), UserId = "709709e7t0r7t96" }, true };
+            yield return new object[] { new ShareInput { ResourceId = Guid.Parse("0693B88C-3866-4CCA-97C8-B8E3F3D1FF3C"), Url = new Uri("/topics/5c035d27-2fdb-9776-6236-70983a918431", UriKind.RelativeOrAbsolute), UserId = "709709e7t0r7t96" }, true };
         }
 
         public static IEnumerable<object[]> ShareGenerateInputData()
