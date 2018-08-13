@@ -18,6 +18,8 @@ import { TopicsResourcesComponent } from './topics-resources/topics-resources.co
 import { ResourceCardDetailComponent } from
 './shared/resource/resource-card-detail/resource-card-detail.component';
 import { PersonalizedPlanComponent } from './guided-assistant/personalized-plan/personalized-plan.component';
+import { NotFoundComponent } from './shared/error/not-found/not-found.component';
+import { InternalErrorComponent } from './shared/error/internal-error/internal-error.component';
 import { ShareButtonRouteComponent } from './shared/resource/user-action/share-button/share-button-route/share-button-route.component';
 
 const appRoutes: Routes = [
@@ -38,7 +40,11 @@ const appRoutes: Routes = [
   { path: 'login', component: LogInComponent },
   { path: 'privacy', component: PrivacyPromiseComponent },
   { path: 'profile', component: ProfileComponent },
-  { path: '', component: HomeComponent }
+  { path: '', component: HomeComponent },
+  { path: 'error', component: InternalErrorComponent},
+  { path: '404', component: NotFoundComponent },
+  { path: '**', redirectTo: '/404' } 
+
 ];
 
 @NgModule({

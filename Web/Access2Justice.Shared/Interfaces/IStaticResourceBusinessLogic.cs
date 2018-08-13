@@ -12,5 +12,6 @@ namespace Access2Justice.Shared.Interfaces
         Task<dynamic> UpsertStaticPrivacyPromisePageDataAsync(PrivacyPromiseContent privacyPromiseContent, Location location);
         Task<dynamic> UpsertStaticHelpAndFAQPageDataAsync(HelpAndFaqsContent helpAndFAQPageContent, Location location);
         Task<dynamic> UpsertStaticNavigationDataAsync(Navigation navigationContent, Location location);
+        Task<dynamic> UpsertStaticAboutPageDataAsync(AboutContent homePageContent, Location location);
     }
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { api } from '../../../../../api/api';
-import { Share, UnShare, ShareView } from '../share-button/share.model';
+import { Share, ShareView } from '../share-button/share.model';
 
 @Injectable()
 export class ShareService {
@@ -27,7 +27,7 @@ export class ShareService {
     return this.http.post<ShareView>(api.checkPermaLink, shareInput, httpOptions);
   }
 
-  removeLink(unShareInput: UnShare) {
+  removeLink(unShareInput: Share) {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };

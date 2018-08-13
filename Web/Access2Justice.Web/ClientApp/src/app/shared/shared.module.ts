@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from '../app-routing.module';
 import { FormsModule } from '@angular/forms';
 import { AccordionModule, BsDropdownModule, ModalModule, CarouselModule } from 'ngx-bootstrap';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
 import { ChatbotComponent } from './chatbot/chatbot.component';
 import { CuratedResourceComponent } from './search/search-results/curated-resource/curated-resource.component';
@@ -10,8 +12,6 @@ import { DownloadButtonComponent } from './resource/user-action/download-button.
 import { FooterComponent } from './footer/footer.component';
 import { GuidedAssistantSidebarComponent } from './sidebars/guided-assistant-sidebar.component';
 import { LanguageComponent } from './language/language.component';
-import { LocationComponent } from './location/location.component';
-import { LocationService } from './location/location.service';
 import { LowerNavComponent } from './navigation/lower-nav.component';
 import { NavigateDataService } from './navigate-data.service';
 import { PrintButtonComponent } from './resource/user-action/print-button.component';
@@ -37,15 +37,19 @@ import { PaginationService } from './search/pagination.service';
 import { ActionPlansComponent } from './resource/resource-type/action-plan/action-plans.component';
 import { UserActionSidebarComponent } from './sidebars/user-action-sidebar.component';
 import { SettingButtonComponent } from './resource/user-action/setting-button.component';
-import { ServiceOrgService } from './sidebars/service-org.service';
+import { ShowMoreService } from './sidebars/show-more.service';
 import { ArrayUtilityService } from './array-utility.service';
 import { HelplineComponent } from './helpline/helpline.component';
 import { ButtonSelectedDirective } from './styling/button-selected.directive';
 import { EventUtilityService } from './event-utility.service';
+import { NotFoundComponent } from './error/not-found/not-found.component';
 import { ArticlesComponent } from './resource/resource-type/articles/articles.component';
 import { OrganizationsComponent } from './resource/resource-type/organizations/organizations.component';
 import { VideosComponent } from './resource/resource-type/videos/videos.component';
 import { ResourceService } from './resource/resource.service';
+import { MapComponent } from './map/map.component';
+import { MapService } from './map/map.service';
+import { InternalErrorComponent } from './error/internal-error/internal-error.component';
 import { ShareService } from './resource/user-action/share-button/share.service';
 import { ShareButtonRouteComponent } from './resource/user-action/share-button/share-button-route/share-button-route.component';
 
@@ -57,7 +61,9 @@ import { ShareButtonRouteComponent } from './resource/user-action/share-button/s
     AccordionModule.forRoot(),
     BsDropdownModule.forRoot(),
     ModalModule.forRoot(),
-    CarouselModule.forRoot()
+    CarouselModule.forRoot(),
+    BrowserAnimationsModule,
+    ToastrModule.forRoot()
   ],
   declarations: [
     ActionPlansComponent,
@@ -67,8 +73,8 @@ import { ShareButtonRouteComponent } from './resource/user-action/share-button/s
     FooterComponent,
     GuidedAssistantSidebarComponent,
     LanguageComponent,
-    LocationComponent,
     LowerNavComponent,
+    MapComponent,
     PrintButtonComponent,
     ResourceCardComponent,
     ResourceCardDetailComponent,
@@ -89,9 +95,12 @@ import { ShareButtonRouteComponent } from './resource/user-action/share-button/s
     SettingButtonComponent,
     HelplineComponent,
     ButtonSelectedDirective,
+    NotFoundComponent,
     ArticlesComponent,
     OrganizationsComponent,
     VideosComponent,
+    MapComponent,
+    InternalErrorComponent,
     ShareButtonRouteComponent
   ],
   exports: [
@@ -102,8 +111,8 @@ import { ShareButtonRouteComponent } from './resource/user-action/share-button/s
     FooterComponent,
     GuidedAssistantSidebarComponent,
     LanguageComponent,
-    LocationComponent,
     LowerNavComponent,
+    MapComponent,
     PrintButtonComponent,
     ResourceCardComponent,
     ResourceCardDetailComponent,
@@ -122,12 +131,12 @@ import { ShareButtonRouteComponent } from './resource/user-action/share-button/s
   ],
   providers: [
     CuratedResourceService,
-    LocationService,
+    MapService,
     NavigateDataService,
     SearchService,
     MapResultsService,
     PaginationService,
-    ServiceOrgService,
+    ShowMoreService,
     ArrayUtilityService,
     EventUtilityService,
     ResourceService,

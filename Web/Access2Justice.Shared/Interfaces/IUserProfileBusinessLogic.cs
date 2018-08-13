@@ -1,10 +1,6 @@
 ﻿using Access2Justice.Shared.Models;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using System;
-using Microsoft.Azure.Documents;
 
 namespace Access2Justice.Shared.Interfaces
 {

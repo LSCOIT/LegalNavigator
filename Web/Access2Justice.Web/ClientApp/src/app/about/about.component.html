@@ -5,25 +5,25 @@
 <div class="container">
   <div class="row">
     <div class="col-md-6">
-      <h3>Our Mission</h3>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum eveniet beatae nam voluptatibus distinctio veritatis vel saepe nulla eum suscipit necessitatibus quae labore, quisquam ad, eius officia! Commodi, sapiente perferendis! Atque vitae natus quasi at culpa porro fugit eum laboriosam id earum quibusdam, explicabo nisi mollitia saepe tempora praesentium in sunt, exercitationem error, magni ratione ipsa numquam debitis consequatur. Repellendus asperiores dolor, quidem perspiciatis sapiente tenetur provident dolorem accusamus quibusdam eveniet placeat officiis, quod fugiat ullam minima rem. Molestias, quos inventore accusamus eligendi culpa necessitatibus rerum nostrum aspernatur eaque explicabo voluptatem architecto esse, debitis non earum autem, ipsam modi sit!</p>
+      <h3>{{aboutContentData?.mission.title}}</h3>
+      <p>{{aboutContentData?.mission.description}}</p>
     </div>
     <div class="col-md-6 section-img pull-right"></div>
   </div>
   <div class="row">
     <div class="col-md-6 pull-right">
-      <h3>Our Service</h3>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat dicta illo rerum voluptatibus magni molestias officiis totam minima ab quas quae dolorem aut laboriosam expedita atque dignissimos, sed maxime ratione consequatur optio nobis odit repellendus quos dolore! Sunt atque accusantium praesentium, culpa hic enim voluptas suscipit cumque odit deleniti animi reiciendis perspiciatis magnam exercitationem minus? Itaque exercitationem nostrum dignissimos eum tempore magnam, quasi alias voluptas sequi facere voluptate aperiam porro.</p>
-      <button class="btn btn-primary btn-sm"><a [routerLink]="['/guidedassistant']">Use our Guided Assistant</a></button>
-      <button class="btn btn-primary btn-sm"><a [routerLink]="['/topics']">Browse Topics &amp; Resources</a></button>
+      <h3>{{aboutContentData?.service.title}}</h3>
+      <p>{{aboutContentData?.service.description}}</p>
+      <button class="btn btn-primary btn-sm"><a [routerLink]="'/' + aboutContentData?.service.guidedAssistantButton.buttonLink">{{aboutContentData?.service.guidedAssistantButton.buttonText}}</a></button>
+      <button class="btn btn-primary btn-sm"><a [routerLink]="'/' + aboutContentData?.service.topicsAndResourcesButton.buttonLink">{{aboutContentData?.service.topicsAndResourcesButton.buttonText}}</a></button>
     </div>
     <div class="col-md-6 section-img pull-left"></div>
   </div>
   <div class="row">
     <div class="col-md-6">
-      <h3>Our Privacy Promise</h3>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus, nulla!</p>
-      <button class="btn btn-primary"><a href="#">View our privacy promise</a></button>
+      <h3>{{aboutContentData?.privacyPromise.title}}</h3>
+      <p>{{aboutContentData?.privacyPromise.description}}</p>
+      <button class="btn btn-primary"><a [routerLink]="'/' + aboutContentData?.privacyPromise.privacyPromiseButton.buttonLink">{{aboutContentData?.privacyPromise.privacyPromiseButton.buttonText}}</a></button>
     </div>
     <div class="col-md-6 section-img pull-right"></div>
   </div>

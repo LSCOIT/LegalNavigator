@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { MapLocation } from '../shared/location/location';
-import { LocationService } from '../shared/location/location.service';
+import { MapLocation } from '../shared/map/map';
+import { MapService } from '../shared/map/map.service';
+import { environment } from '../../environments/environment';
+
+import { Home, Hero, GuidedAssistantOverview, TopicAndResources, Carousel, SponsorOverview, Privacy, Sponsors } from './home';
+import { StaticResourceService } from '../shared/static-resource.service';
 
 @Component({
   selector: 'app-home',
@@ -17,9 +21,32 @@ export class HomeComponent implements OnInit {
     { image: '' },
     { image: '' }
   ];
+  sponsors: Array<Sponsors>;
+  button: { buttonText: '', buttonAltText: '', buttonLink: '' }
+  blobUrl: string = environment.blobUrl;
+  pageId: string = 'HomePage';
+  homeContent: Home;
+  heroData: Hero;
+  guidedAssistantOverviewData: GuidedAssistantOverview
+  topicAndResourcesData: TopicAndResources;
+  carouselData: Carousel;
+  sponsorOverviewData: SponsorOverview;
+  privacyData: Privacy;
 
-  constructor(private locationService: LocationService) { }
+  constructor(private staticResourceService: StaticResourceService,
+    private mapService: MapService) { }
 
+  filterHomeContent(): void {
+    if (this.homeContent) {
+      this.heroData = this.homeContent.hero;
+      this.guidedAssistantOverviewData = this.homeContent.guidedAssistantOverview;
+      this.topicAndResourcesData = this.homeContent.topicAndResources;
+      this.sponsorOverviewData = this.homeContent.sponsorOverview;
+      this.sponsors = this.homeContent.sponsorOverview.sponsors;
+      this.carouselData = this.homeContent.carousel;
+      this.privacyData = this.homeContent.privacy;
+    }
+  }
   loadStateName() {
     if (sessionStorage.getItem("globalMapLocation")) {
       this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
@@ -27,11 +54,22 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  getHomePageContent(): void {    
+    let homePageRequest = { name: this.pageId };
+    this.staticResourceService.getStaticContent(homePageRequest)
+      .subscribe(content => {
+        this.homeContent = content[0];
+        this.filterHomeContent();
+      });
+  }
+
   ngOnInit() {
     this.loadStateName();
-    this.subscription = this.locationService.notifyLocation
+    this.getHomePageContent();
+    this.subscription = this.mapService.notifyLocation
       .subscribe((value) => {
         this.loadStateName();
+        this.getHomePageContent();
       });
   }
 

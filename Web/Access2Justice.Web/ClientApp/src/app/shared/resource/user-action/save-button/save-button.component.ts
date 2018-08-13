@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap';
 import { api } from '../../../../../api/api';
 import { HttpParams } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-save-button',
@@ -32,11 +33,14 @@ export class SaveButtonComponent implements OnInit {
   resourceStorage: any;
   planStorage: any;
 
-  constructor(private router: Router,
+  constructor(
+    private router: Router,
     private activeRoute: ActivatedRoute,
     private personalizedPlanService: PersonalizedPlanService,
     private modalService: BsModalService,
-    private arrayUtilityService: ArrayUtilityService) {
+    private arrayUtilityService: ArrayUtilityService,
+    private toastr: ToastrService
+  ) {
     let profileData = sessionStorage.getItem("profileData");
     if (profileData != undefined) {
       profileData = JSON.parse(profileData);
@@ -52,12 +56,12 @@ export class SaveButtonComponent implements OnInit {
     form.submit();
   }
 
-  savePlanResources(template: TemplateRef<any>): void {
+  savePlanResources(): void {
     if (!this.userId) {
       this.savePlanResourcesPreLogin();
       this.externalLogin();
     } else {
-      this.savePlanResourcesPostLogin(template);
+      this.savePlanResourcesPostLogin();
     }
   }
 
@@ -70,27 +74,31 @@ export class SaveButtonComponent implements OnInit {
     }
   }
 
-  savePlanResourcesPostLogin(template) {
+  savePlanResourcesPostLogin() {
     if (this.type === "Plan") {
       this.planId = this.id;
-      this.savePlanToProfile(template);
+      this.savePlanToProfile();
     } else {
-      this.saveResourcesToProfile(template)
+      this.saveResourcesToProfile();
     }
   }
   
-  savePlanToProfile(template) {
+  savePlanToProfile() {
     let params = new HttpParams()
       .set("oId", this.userId)
       .set("planId", this.planId);
     this.personalizedPlanService.savePersonalizedPlanToProfile(params)
       .subscribe(() => {
         this.isSavedPlan = true;
-        this.modalRef = this.modalService.show(template);
+        this.showSuccess('Plan saved to profile');
       });
   }
 
-  saveResourcesToProfile(template) {
+  showSuccess(message) {
+    this.toastr.success(message);
+  }
+
+  saveResourcesToProfile() {
     this.profileResources.resourceTags = [];
     this.savedResources = { itemId: '', resourceType: '', resourceDetails: {} };
     this.personalizedPlanService.getUserSavedResources(this.userId)
@@ -100,35 +108,31 @@ export class SaveButtonComponent implements OnInit {
             if (property.resourceTags) {
               property.resourceTags.forEach(resource => {
                 this.profileResources.resourceTags.push(resource);
-              })
+              });
             }
           });
         }
         this.savedResources = { itemId: this.id, resourceType: this.type, resourceDetails: this.resourceDetails };
         if (!this.arrayUtilityService.checkObjectExistInArray(this.profileResources.resourceTags, this.savedResources)) {
           this.profileResources.resourceTags.push(this.savedResources);
-          this.saveResourceToProfile(this.profileResources.resourceTags, template);
+          this.saveResourceToProfile(this.profileResources.resourceTags);
         }
       });
   }
 
-  close() {
-    this.modalRef.hide();
-  }
-
-  saveResourceToProfile(resourceTags, template) {
+  saveResourceToProfile(resourceTags) {
     this.profileResources = { oId: this.userId, resourceTags: resourceTags, type: 'resources' };
     this.personalizedPlanService.saveResources(this.profileResources)
       .subscribe(() => {
         this.isSavedPlan = true;
-        this.modalRef = this.modalService.show(template);
+        this.showSuccess('Resource saved to profile');
       });
   }
   
   saveBookmarkedPlan() {
     this.planStorage = sessionStorage.getItem(this.planSessionKey);
     if (this.planStorage) {
-      this.savePlanResources(this.templateref);
+      this.savePlanResources();
       sessionStorage.removeItem(this.planSessionKey);
     }
   }
@@ -140,7 +144,7 @@ export class SaveButtonComponent implements OnInit {
       this.id = this.resourceStorage[0].itemId;
       this.type = this.resourceStorage[0].resourceType;
       this.resourceDetails = this.resourceStorage[0].resourceDetails;
-      this.savePlanResources(this.templateref);
+      this.savePlanResources();
       sessionStorage.removeItem(this.sessionKey);
     }
   }
@@ -151,6 +155,4 @@ export class SaveButtonComponent implements OnInit {
       this.saveBookmarkedPlan();
     }
   }
-
 }
-
