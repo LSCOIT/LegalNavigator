@@ -9,7 +9,12 @@ import { ArrayUtilityService } from '../../shared/array-utility.service';
 import { catchError } from 'rxjs/operators/catchError';
 import { PersonalizedPlan } from './personalized-plan';
 
-describe(' Service:PersonalizedPlan', () => {
+fdescribe(' Service:PersonalizedPlan', () => {
+  const mockHttpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  };
   let mockupdateplan = {
     "planId": "bf8d7e7e-2574-7b39-efc7-83cb94adae07",
     "oId": "User Id",
@@ -43,12 +48,57 @@ describe(' Service:PersonalizedPlan', () => {
       }
     ]
   };
+  let mockResourceInput = {
+    "ResourceType": "testtype",
+    "ContinuationToken": "",
+    "TopicIds": "",
+    "ResourceIds": "",
+    "PageNumber": 1,
+    "Location": "testlocation"
+  };
+  let mockProfileData = {
+    "planId": "bf8d7e7e-2574-7b39-efc7-83cb94adae07",
+    "oId": "User Id",
+    "type": "plans",
+    "planTags": [{
+      "topicId": "addf41e9-1a27-4aeb-bcbb-7959f95094ba",
+      "stepTags": [
+        {
+          "id": "6b230be1-302b-7090-6cb3-fc6aa084274c",
+          "order": 1,
+          "markCompleted": true
+        }]
+    }]
+  };
   let mockPlanDetailTags = [{
     "id": "393994-133-33",
     "oId": "93004kdf033keke;",
     "planTags": [{}],
     "type": "testtype"
-  }];
+  }]; 
+  let mockActiveRoute: ActivatedRoute;
+  let resoureStorage = sessionStorage.getItem(this.mockSessionKey);
+  let mockResponse = Observable.of(mockPlanDetailsJson);
+  let profileStorage = sessionStorage.getItem(this.mockProfileData);
+  let mockplan = {
+    "id": "bf8d7e7e-2574-7b39-efc7-83cb94adae07",
+    "oId": "User Id",
+    "type": "plans",
+    "planTags": [
+      {
+        "topicId": "addf41e9-1a27-4aeb-bcbb-7959f95094ba",
+        "stepTags": [
+          {
+            "id": "6b230be1-302b-7090-6cb3-fc6aa084274c",
+            "order": 1,
+            "markCompleted": false
+          }
+        ],
+        "id": "addf41e9-1a27-4aeb-bcbb-7959f95094ba"
+      }] 
+  }
+  let mockTopics = ["topic1", "topic2"];
+  let mockTopicsList = [{ topic: "topic1", isSelected: true }, { topic: "topic2", isSelected: true }];
   let mockUserPlan = {
     "id": "ba67afca-4236-4875-9b11-fbb8a113ecb2",
     "oId": "ACB833BB3F817C2FBE5A72CE37FE7AB9CD977E585",
@@ -64,16 +114,14 @@ describe(' Service:PersonalizedPlan', () => {
     "personalizedActionPlanId": "a97fc45d-cbbe-4222-9d14-2ec227229b92",
     "curatedExperienceAnswersId": "00000000-0000-0000-0000-000000000000"
   }
+  
+  
+
   let mockPersonalizedPlan: PersonalizedPlan = {
     "id": "bf8d7e7e-2574-7b39-efc7-83cb94adae07",
     "topics": [],
     "isShared": true
   }
-  let mockActiveRoute: ActivatedRoute;
-  let resoureStorage = sessionStorage.getItem(this.mockSessionKey);
-  let mockResponse = Observable.of(mockPlanDetailsJson);
-  let mockTopics = ["topic1", "topic2"];
-  let mockTopicsList = [{ topic: "topic1", isSelected: true }, { topic: "topic2", isSelected: true }];
   let mockPlanId = "993jfk3003j";
   let mockUserId = "11452111";
   let mockSessionKey = "883833";
@@ -85,10 +133,12 @@ describe(' Service:PersonalizedPlan', () => {
     .set("oId", mockUserId)
     .set("planId", mockPlanId);
 
+
+
   let service: PersonalizedPlanService;
   let arrayUtilityService: ArrayUtilityService;
   const httpSpy = jasmine.createSpyObj('http', ['get', 'post']);
-  var originalTimeout;
+  var originalTimeout;  
   let mockUserSavedResources = [
     {
       "oId": "ACB833BB3F817C2FBE5A72CE37FE7AB9CD977E58580B9832B91865E234A0A3D37C8F2C2A3B401CA64748F3098C9FE3374106B6F4A2B157FE091CA6332C88A89B",
@@ -153,11 +203,12 @@ describe(' Service:PersonalizedPlan', () => {
     expect(service).toBeDefined();
   });
   it('should retrieve plan steps when the id  value is id', (done) => {
+    const mockResponse = Observable.of(mockplan);
     httpSpy.get.and.returnValue(mockResponse);
     service.getActionPlanConditions(mockid).subscribe(plans => {
-      expect(httpSpy.get).toHaveBeenCalledWith(`${api.planUrl}` + '/' + mockid);
-      expect(service.getActionPlanConditions(mockid)).toEqual(mockResponse);
-      done();
+    expect(httpSpy.get).toHaveBeenCalledWith(`${api.planUrl}` + '/' + mockid);
+    expect(service.getActionPlanConditions(mockid)).toEqual(mockResponse);
+    done();
     });
   });
   it('should return user profile plan details when oid value is passed', (done) => {
@@ -166,7 +217,7 @@ describe(' Service:PersonalizedPlan', () => {
     service.getUserPlanId("mockOid").subscribe(userprofile => {
       expect(httpSpy.get).toHaveBeenCalledWith(`${api.getUserProfileUrl}/mockOid`);
       expect(userprofile).toEqual(mockUserPlan);
-      done();
+    done();
     });
   });
   it('should return user saved resources when oid value is passed', (done) => {
@@ -181,9 +232,9 @@ describe(' Service:PersonalizedPlan', () => {
   it('should return mark completed updated plan when passed value is update plan', (done) => {
     httpSpy.post.and.returnValue(mockResponse);
     service.getMarkCompletedUpdatedPlan(mockupdateplan).subscribe(updateplan => {
-      expect(httpSpy.post).toHaveBeenCalled();
-      expect(updateplan).toEqual(mockPlanDetailsJson);
-      done();
+    expect(httpSpy.post).toHaveBeenCalled();
+    expect(updateplan).toEqual(mockPlanDetailsJson);
+    done();
     });
   });
   it('should update userplan when plan details send to user plan method of service', (done) => {
