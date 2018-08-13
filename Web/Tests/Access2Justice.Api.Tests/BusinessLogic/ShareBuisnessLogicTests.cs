@@ -73,7 +73,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 
         [Theory]
         [MemberData(nameof(ShareTestData.UnShareInputData), MemberType = typeof(ShareTestData))]
-        public void UnshareResourceDataAsyncShouldReturnTrue(UnShareInput unShareInput, dynamic expectedResult)
+        public void UnshareResourceDataAsyncShouldReturnTrue(ShareInput unShareInput, dynamic expectedResult)
         {
             var profileResponse = userProfileBusinessLogic.GetUserProfileDataAsync(unShareInput.UserId);
             profileResponse.ReturnsForAnyArgs<UserProfile>(ShareTestData.UserProfileWithSharedResourceData);

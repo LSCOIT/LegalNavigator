@@ -5,7 +5,6 @@ using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -36,10 +35,8 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 return null;
             }
-            //ToDo - Need to maintain ResourceId for each permalink in DB 
-            //for unique identification - Need to change below logic
             var resource = userProfile.SharedResource.FindAll(a => a.Url.OriginalString.
-            Contains(shareInput.ResourceId.ToString("D", CultureInfo.InvariantCulture)) 
+            Contains(shareInput.Url.OriginalString) 
             && DateTime.Compare(a.ExpirationDate, DateTime.UtcNow) >= 0);
 
             return resource.Count == 0 ? null : new ShareViewModel
@@ -54,14 +51,17 @@ namespace Access2Justice.Api.BusinessLogic
                 return null;
             }
             UserProfile userProfile = await dbUserProfile.GetUserProfileDataAsync(shareInput.UserId);
-            shareInput.UniqueId = shareInput.UniqueId != null ? shareInput.UniqueId : Guid.NewGuid();
+
+            shareInput.UniqueId = shareInput.UniqueId != Guid.Empty ? shareInput.UniqueId : Guid.NewGuid();
+            shareInput.ResourceId = shareInput.ResourceId != Guid.Empty ? shareInput.ResourceId : Guid.NewGuid();
+
             var permaLink = Utilities.GenerateSHA256String(shareInput.UniqueId + shareInput.UserId + 
                 shareInput.ResourceId);
             var sharedResource = new SharedResource
             {
                 ExpirationDate = DateTime.UtcNow.AddYears(Constants.ExpirationDateDurationInYears),
                 IsShared = true,
-                Url = new Uri(shareInput.Url.OriginalString),
+                Url = new Uri(shareInput.Url.OriginalString, UriKind.RelativeOrAbsolute),
                 PermaLink = permaLink
             };
             if (userProfile.SharedResource == null)
@@ -84,9 +84,9 @@ namespace Access2Justice.Api.BusinessLogic
             };
         }
 
-        public async Task<object> UnshareResourceDataAsync(UnShareInput unShareInput)
+        public async Task<object> UnshareResourceDataAsync(ShareInput unShareInput)
         {
-            if (unShareInput.UserId == null || unShareInput.ResourceId == null)
+            if (unShareInput.UserId == null || unShareInput.ResourceId == null || unShareInput.Url == null)
             {
                 return null;
             }
@@ -96,13 +96,13 @@ namespace Access2Justice.Api.BusinessLogic
                 return null;
             }
             var sharedResource = userProfile.SharedResource.FindAll(a => a.Url.OriginalString.
-            Contains(unShareInput.ResourceId.ToString("D", CultureInfo.InvariantCulture)));
+            Contains(unShareInput.Url.OriginalString));
             if (sharedResource.Count == 0)
             {
                 return false;
             }
             userProfile.SharedResource.RemoveAll(a => a.Url.OriginalString.
-            Contains(unShareInput.ResourceId.ToString("D", CultureInfo.InvariantCulture)));
+            Contains(unShareInput.Url.OriginalString));
             var response = await dbService.UpdateItemAsync(userProfile.Id, userProfile, 
                 dbSettings.UserProfileCollectionId);
             return response == null ? false : true;

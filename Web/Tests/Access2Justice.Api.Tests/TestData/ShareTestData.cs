@@ -54,10 +54,10 @@ namespace Access2Justice.Api.Tests.TestData
 
         public static IEnumerable<object[]> UnShareInputData()
         {
-            yield return new object[] { new UnShareInput { ResourceId = Guid.Empty, UserId = null }, null };
-            yield return new object[] { new UnShareInput { ResourceId = Guid.NewGuid(),  UserId = "709709e7t0r7t96" }, false };
-            yield return new object[] { new UnShareInput { ResourceId = Guid.Parse("0693B88C-3866-4CCA-97C8-B8E3F3D1FF3C"), UserId = "709709e7t0r7t96" }, false };
-            yield return new object[] { new UnShareInput { ResourceId = Guid.Parse("5c035d27-2fdb-9776-6236-70983a918431"), UserId = "709709e7t0r7t96" }, true };
+            yield return new object[] { new ShareInput { ResourceId = Guid.Empty, UserId = null }, null };
+            yield return new object[] { new ShareInput { ResourceId = Guid.NewGuid(),  UserId = "709709e7t0r7t96" }, false };
+            yield return new object[] { new ShareInput { ResourceId = Guid.Parse("0693B88C-3866-4CCA-97C8-B8E3F3D1FF3C"), UserId = "709709e7t0r7t96" }, false };
+            yield return new object[] { new ShareInput { ResourceId = Guid.Parse("5c035d27-2fdb-9776-6236-70983a918431"), UserId = "709709e7t0r7t96" }, true };
         }
 
         public static IEnumerable<object[]> ShareGenerateInputData()

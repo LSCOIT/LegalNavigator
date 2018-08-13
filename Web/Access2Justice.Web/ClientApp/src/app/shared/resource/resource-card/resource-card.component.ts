@@ -13,7 +13,7 @@ export class ResourceCardComponent implements OnInit {
   @Input() isSearchResults: boolean;
   @Input() showRemoveOption: boolean;
   url: any;
-
+  
   constructor(public sanitizer: DomSanitizer) {
     this.sanitizer = sanitizer;
   }
@@ -33,5 +33,4 @@ export class ResourceCardComponent implements OnInit {
       this.resource.id = this.resource.itemId;
     }
   }
-
 }

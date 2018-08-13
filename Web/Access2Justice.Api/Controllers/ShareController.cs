@@ -1,11 +1,8 @@
-﻿using System.Threading.Tasks;
-using Access2Justice.Shared.Interfaces;
-using Access2Justice.Shared.Models;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using Access2Justice.Api.Interfaces;
 using Access2Justice.Shared;
 using Microsoft.AspNetCore.Http;
-using Access2Justice.Api.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -43,7 +40,7 @@ namespace Access2Justice.Api.Controllers
         }
 
         [HttpPost("RemovePermaLink")]
-        public async Task<IActionResult> UnshareAsync([FromBody] UnShareInput unShareInput)
+        public async Task<IActionResult> UnshareAsync([FromBody] ShareInput unShareInput)
         {
             if (unShareInput != null)
             {

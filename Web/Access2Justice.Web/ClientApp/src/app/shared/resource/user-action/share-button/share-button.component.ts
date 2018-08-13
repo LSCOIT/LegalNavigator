@@ -4,7 +4,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { ArrayUtilityService } from '../../../array-utility.service';
 import { api } from '../../../../../api/api';
 import { HttpClient } from '@angular/common/http';
-import { Share, UnShare } from '../share-button/share.model';
+import { Share } from '../share-button/share.model';
 import { ShareService } from '../share-button/share.service';
 import { ActivatedRoute } from '@angular/router';
 
@@ -19,17 +19,18 @@ export class ShareButtonComponent implements OnInit {
   @Input() id: string;//resource Id
   @Input() type: string; //resource Type
   @Input() url: string; //resource Url
+  @Input() webResourceUrl: string;//web resource Url
   @ViewChild('template') public templateref: TemplateRef<any>;
   userId: string;
   sessionKey: string = "showModal";
   shareInput: Share = { ResourceId: '', UserId: '', Url: '' };
-  unShareInput: UnShare = { ResourceId: '', UserId: '' };
   shareView: any;
   blank: string = "";
   permaLink: string = "";
   showGenerateLink: boolean = true;
   resourceUrl: string = window.location.protocol + "//" + window.location.host + "/share/";
-  
+  emptyId: string = "{00000000-0000-0000-0000-000000000000}";
+
   constructor(private modalService: BsModalService,
     private arrayUtilityService: ArrayUtilityService,
     private httpClient: HttpClient,
@@ -83,9 +84,8 @@ export class ShareButtonComponent implements OnInit {
   }
 
   removeLink(): void {
-    this.unShareInput.ResourceId = this.getActiveParam();
-    this.unShareInput.UserId = this.userId;
-    this.shareService.removeLink(this.unShareInput)
+    this.buildParams();
+    this.shareService.removeLink(this.shareInput)
       .subscribe(response => {
         if (response != undefined) {
           this.close();
@@ -137,8 +137,8 @@ export class ShareButtonComponent implements OnInit {
   }
 
   buildParams() {
-    if (this.id) {
-      this.shareInput.Url = this.buildUrl() ;
+    if (this.id || this.type === 'WebResources') {
+      this.shareInput.Url = this.buildUrl();
       this.shareInput.ResourceId = this.id;
     }
     else {
@@ -147,7 +147,7 @@ export class ShareButtonComponent implements OnInit {
     }
     this.shareInput.UserId = this.userId;
   }
-  
+
   buildUrl() {
     if (this.type === 'Topics') {
       return "/topics/" + this.id;
@@ -155,9 +155,16 @@ export class ShareButtonComponent implements OnInit {
     if (this.type === 'Guided Assistant') {
       return "/guidedassistant/" + this.id;
     }
-    if (this.type === 'Forms' || this.type === 'Related Links')
-    {
+    if (this.type === 'Forms' || this.type === 'Related Links') {
       return this.url;
+    }
+    if (this.type === 'WebResources') {
+      this.id = this.emptyId;
+      if (this.url) {
+        return this.url;
+      } else if (this.webResourceUrl) {
+        return this.webResourceUrl
+      }
     }
     else {
       return "/resource/" + this.id;

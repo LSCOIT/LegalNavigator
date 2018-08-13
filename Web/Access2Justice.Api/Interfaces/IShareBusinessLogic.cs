@@ -8,7 +8,7 @@ namespace Access2Justice.Api.Interfaces
     {
         Task<ShareViewModel> ShareResourceDataAsync(ShareInput shareInput);
         Task<ShareViewModel> CheckPermaLinkDataAsync(ShareInput shareInput);
-        Task<object> UnshareResourceDataAsync(UnShareInput shareInput);
+        Task<object> UnshareResourceDataAsync(ShareInput shareInput);
         Task<object> GetPermaLinkDataAsync(string permaLink);
     }
 }

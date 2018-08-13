@@ -7,7 +7,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.environment = {
     production: false,
     apiUrl: 'http://localhost:4200/api',
-    bingmap_key: '',
+    bingmap_key: 'AlyLqEyg06sSOQJUwYsqcsm69zWmVKYgmaGvqdBPISKCJ59IQqqfCCaQ42KgqTyG',
     map_type: false,
     internalResourcePagesToShow: 2,
     internalResourceRecordsToDisplay: 10,
