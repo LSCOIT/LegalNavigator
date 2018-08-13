@@ -2,7 +2,6 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { MapResultsService } from './map-results.service';
 import { environment } from '../../../environments/environment';
 import { MapLocationResult, LatitudeLongitude } from './map-results';
-import { ArrayUtilityService } from '../array-utility.service';
 
 @Component({
   selector: 'app-map-results',

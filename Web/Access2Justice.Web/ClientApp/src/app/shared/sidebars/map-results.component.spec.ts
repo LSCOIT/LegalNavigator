@@ -4,13 +4,11 @@ import { MapResultsService } from './map-results.service';
 import { HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { MapLocationResult } from './map-results';
-import { ArrayUtilityService } from '../array-utility.service';
 
-fdescribe('MapResultsComponent', () => {
+describe('MapResultsComponent', () => {
   let component: MapResultsComponent;
   let fixture: ComponentFixture<MapResultsComponent>;
   let service: MapResultsService;
-  let arrayUtilityService: ArrayUtilityService;
 
   let sampleAddress1: MapLocationResult = {
     Address: "Address Text"
@@ -52,14 +50,12 @@ fdescribe('MapResultsComponent', () => {
     () => {
       TestBed.configureTestingModule({
         imports: [HttpClientModule],
-        declarations: [MapResultsComponent],
-        providers: [MapResultsService, ArrayUtilityService]
+        declarations: [MapResultsComponent]
       });
       TestBed.compileComponents();
       fixture = TestBed.createComponent(MapResultsComponent);
       component = fixture.componentInstance;
       service = TestBed.get(MapResultsService);
-      arrayUtilityService = TestBed.get(ArrayUtilityService);
     });
 
   it("should create", () => {
