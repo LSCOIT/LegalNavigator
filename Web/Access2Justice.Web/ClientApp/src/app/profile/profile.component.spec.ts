@@ -94,7 +94,6 @@ describe('component:profile', () => {
       ]
     }
   }
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
@@ -161,7 +160,6 @@ describe('component:profile', () => {
     spyOn(personalizedplanservice, 'getUserSavedResources');
     personalizedplanservice.getUserSavedResources(mockuserid);
     expect(personalizedplanservice.getUserSavedResources).toHaveBeenCalled();
-
   });
 
   it('should call getpersonalizedresources service method when getsavedresource is called', () => {
@@ -176,5 +174,4 @@ describe('component:profile', () => {
     component.filterTopicsList(mocktopics);
     expect(component.filterTopicsList).toHaveBeenCalled();
   });
-
 });

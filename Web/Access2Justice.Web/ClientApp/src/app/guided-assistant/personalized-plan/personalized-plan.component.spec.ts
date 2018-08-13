@@ -92,7 +92,6 @@ describe('Component:PersonalizedPlan', () => {
   });
 
   it('should call createTopicsList service method when getplandetails method called', () => {
-
     spyOn(personalizedPlanService, 'createTopicsList');
     spyOn(personalizedPlanService, 'displayPlanDetails');
     component.topics = mockTopics;
@@ -133,5 +132,4 @@ describe('Component:PersonalizedPlan', () => {
     component.filterTopicsList(mockTopic);
     expect(component.topicsList.length).toEqual(1);
   });
-
 });

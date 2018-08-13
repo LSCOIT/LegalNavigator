@@ -9,7 +9,7 @@ import { ArrayUtilityService } from '../../shared/array-utility.service';
 import { catchError } from 'rxjs/operators/catchError';
 import { PersonalizedPlan } from './personalized-plan';
 
-describe(' Service:PersonalizedPlan', () => {
+describe('Service:PersonalizedPlan', () => {
   let mockupdateplan = {
     "planId": "bf8d7e7e-2574-7b39-efc7-83cb94adae07",
     "oId": "User Id",
