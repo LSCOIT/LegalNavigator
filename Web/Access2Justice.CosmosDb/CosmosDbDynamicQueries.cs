@@ -162,11 +162,11 @@ namespace Access2Justice.CosmosDb
             return await backendDatabaseService.QueryItemsAsync(collectionId, query);
         }
 
-        public async Task<dynamic> FindFieldWhereArrayContainsAsync(string collectionId, string arrayName, string outputfieldName, string propertyName, string value, string dateProperty)
+        public async Task<dynamic> FindFieldWhereArrayContainsAsync(string collectionId, string arrayName, string propertyName, string value, string dateProperty)
         {
             EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
             
-            var query = $"SELECT value(f.{outputfieldName}) FROM c JOIN f in c.{arrayName} WHERE CONTAINS(f.{propertyName}, '{value}') AND f.{dateProperty} > '{DateTime.UtcNow.ToString("o",CultureInfo.InvariantCulture)}'";
+            var query = $"SELECT c.firstName, c.lastName, c.oId, f.url FROM c JOIN f in c.{arrayName} WHERE CONTAINS(f.{propertyName}, '{value}') AND f.{dateProperty} > '{DateTime.UtcNow.ToString("o",CultureInfo.InvariantCulture)}'";
             return await backendDatabaseService.QueryItemsAsync(collectionId, query);
         }
 

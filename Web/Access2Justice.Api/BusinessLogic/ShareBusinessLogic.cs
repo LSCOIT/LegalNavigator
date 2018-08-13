@@ -3,6 +3,7 @@ using Access2Justice.Api.ViewModels;
 using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace Access2Justice.Api.BusinessLogic
         private readonly IShareSettings dbShareSettings;
         private readonly IUserProfileBusinessLogic dbUserProfile;
         public ShareBusinessLogic(IDynamicQueries dynamicQueries, ICosmosDbSettings cosmosDbSettings,
-            IBackendDatabaseService backendDatabaseService, IShareSettings shareSettings, 
+            IBackendDatabaseService backendDatabaseService, IShareSettings shareSettings,
             IUserProfileBusinessLogic userProfileBusinessLogic)
         {
             dbClient = dynamicQueries;
@@ -40,7 +41,7 @@ namespace Access2Justice.Api.BusinessLogic
                 return null;
             }
             var resource = userProfile.SharedResource.FindAll(a => a.Url.OriginalString.
-            Contains(shareInput.Url.OriginalString) 
+            Contains(shareInput.Url.OriginalString)
             && DateTime.Compare(a.ExpirationDate, DateTime.UtcNow) >= 0);
 
             return resource.Count == 0 ? null : new ShareViewModel
@@ -59,7 +60,7 @@ namespace Access2Justice.Api.BusinessLogic
             shareInput.UniqueId = shareInput.UniqueId != Guid.Empty ? shareInput.UniqueId : Guid.NewGuid();
             shareInput.ResourceId = shareInput.ResourceId != Guid.Empty ? shareInput.ResourceId : Guid.NewGuid();
 
-            var permaLink = Utilities.GenerateSHA256String(shareInput.UniqueId + shareInput.UserId + 
+            var permaLink = Utilities.GenerateSHA256String(shareInput.UniqueId + shareInput.UserId +
                 shareInput.ResourceId);
             var sharedResource = new SharedResource
             {
@@ -80,7 +81,7 @@ namespace Access2Justice.Api.BusinessLogic
                 //plan.IsShared = true;
                 //UpdatePersonalizedPlan(plan);
             }
-            var response = await dbService.UpdateItemAsync(userProfile.Id, userProfile, 
+            var response = await dbService.UpdateItemAsync(userProfile.Id, userProfile,
                 dbSettings.UserProfileCollectionId);
             return response == null ? null : new ShareViewModel
             {
@@ -107,7 +108,7 @@ namespace Access2Justice.Api.BusinessLogic
             }
             userProfile.SharedResource.RemoveAll(a => a.Url.OriginalString.
             Contains(unShareInput.Url.OriginalString));
-            var response = await dbService.UpdateItemAsync(userProfile.Id, userProfile, 
+            var response = await dbService.UpdateItemAsync(userProfile.Id, userProfile,
                 dbSettings.UserProfileCollectionId);
             return response == null ? false : true;
         }
@@ -115,9 +116,29 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<object> GetPermaLinkDataAsync(string permaLink)
         {
-            return string.IsNullOrEmpty(permaLink) ? null :
-                await dbClient.FindFieldWhereArrayContainsAsync(dbSettings.UserProfileCollectionId, 
-                Constants.SharedResource, Constants.Url, Constants.PermaLink, permaLink, Constants.ExpirationDate);
+            if (string.IsNullOrEmpty(permaLink))
+            {
+                return null;
+            }
+            var response = await dbClient.FindFieldWhereArrayContainsAsync(dbSettings.UserProfileCollectionId,
+                Constants.SharedResource, Constants.PermaLink, permaLink, Constants.ExpirationDate);
+            if (response == null)
+            {
+                return null;
+            }
+            List<ShareProfileResponse> shareProfileResponse = JsonConvert.DeserializeObject<List<ShareProfileResponse>>
+                (JsonConvert.SerializeObject(response));
+            ShareProfileViewModel profileViewModel = new ShareProfileViewModel();
+            foreach (var profile in shareProfileResponse)
+            {
+                if (profile.Url.OriginalString == Constants.ProfileLink)
+                {
+                    profileViewModel.UserName = profile.FistName + " " + profile.LastName;
+                    profileViewModel.UserId = profile.OId;
+                }
+                profileViewModel.ResourceLink = profile.Url.OriginalString;
+            }
+            return profileViewModel;
         }
 
         private string GetPermaLink(string permaLink)

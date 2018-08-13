@@ -29,5 +29,6 @@ namespace Access2Justice.Api
         public const string Url = "url";
         public const string ExpirationDate = "expirationDate";
         public const int ExpirationDateDurationInYears = 1;
+        public const string ProfileLink = "/profile";
     }
 }

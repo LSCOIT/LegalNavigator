@@ -6,4 +6,7 @@ export interface Share {
 
 export interface ShareView {
   PermaLink?: string;
+  UserId?: string;
+  UserName?: string;
+  ResourceUrl?: string;
 }

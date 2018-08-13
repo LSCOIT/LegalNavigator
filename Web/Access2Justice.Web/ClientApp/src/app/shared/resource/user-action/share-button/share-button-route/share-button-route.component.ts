@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { api } from '../../../../../../api/api';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { window } from 'rxjs/operator/window';
+import { ShareView } from '../../share-button/share.model';
 
 @Component({
   selector: 'app-share-button-route',
@@ -11,7 +12,7 @@ import { window } from 'rxjs/operator/window';
   styleUrls: ['./share-button-route.component.css']
 })
 export class ShareButtonRouteComponent implements OnInit {
-
+  profileData: ShareView = { UserId: '', UserName:'' };
   constructor(private httpClient: HttpClient,
     private shareService: ShareService,
     private router: Router,
@@ -26,16 +27,20 @@ export class ShareButtonRouteComponent implements OnInit {
       .set("permaLink", this.activeRoute.snapshot.params['id']);
     this.shareService.getResourceLink(params)
       .subscribe(response => {
-        if (response != undefined) {
-          if (response.length > 0 && !response[0].startsWith("http" || "//")) {
-            this.router.navigateByUrl(response[0]);
+        if (response) {
+          if (!response.resourceLink.startsWith("http" || "//")) {
+            if (response.userId && response.userName) {
+              this.profileData.UserId = response.userId;
+              this.profileData.UserName = response.userName;
+              sessionStorage.setItem("profileData", JSON.stringify(this.profileData));
+            }
+            return this.router.navigateByUrl(response.resourceLink);
           }
           else {
-            location.href = response[0];
+            return location.href = response.resourceLink;
           }
         }
-        //ToDo - Once error branch code merged into develop branch will uncomment the below line
-        //this.router.navigateByUrl("/404");
+        return this.router.navigateByUrl("/404");
       });
   }
 }

@@ -10,7 +10,7 @@ export class ShareService {
   constructor(private http: HttpClient) { }
 
   getResourceLink(params): Observable<any> {
-    return this.http.get(api.getResourceLink + "?" + params);
+    return this.http.get<ShareView>(api.getResourceLink + "?" + params);
   }
 
   generateLink(shareInput: Share) {
