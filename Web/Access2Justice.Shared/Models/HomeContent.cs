@@ -11,15 +11,8 @@ using System.ComponentModel;
 
 namespace Access2Justice.Shared.Models
 {
-    public class HomeContent
+    public class HomeContent: NameLocation
     {
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "location")]
-        public IEnumerable<Location> Location { get; set; }
-
         [DefaultValue("")]
         [JsonProperty(PropertyName = "hero")]
         public HeroContent Hero { get; set; }
@@ -98,7 +91,7 @@ namespace Access2Justice.Shared.Models
     {
         [DefaultValue("")]
         [JsonProperty(PropertyName = "slides")]
-        public IEnumerable<Slides> Overviewdetails { get; set; }        
+        public IEnumerable<Slides> Overviewdetails { get; set; }
     }
 
     public class SponsorsContent
@@ -133,7 +126,7 @@ namespace Access2Justice.Shared.Models
         [DefaultValue("")]
         [JsonProperty(PropertyName = "button")]
         public ButtonStaticContent Button { get; set; }
-        
+
         [DefaultValue("")]
         [JsonProperty(PropertyName = "image")]
         public Image Image { get; set; }
@@ -197,7 +190,7 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "descritption")]
         public string Descritption { get; set; }
     }
-    
+
     public class ButtonStaticContent
     {
         [DefaultValue("")]
@@ -230,5 +223,21 @@ namespace Access2Justice.Shared.Models
         [DefaultValue("")]
         [JsonProperty(PropertyName = "image")]
         public Image Image { get; set; }
+    }
+
+    public class PageContentRequest
+    {
+        public string Name { get; set; }
+        public Location Location { get; set; }
+    }
+
+    public class NameLocation
+    {
+        [JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "location")]
+        public IEnumerable<Location> Location { get; set; }
     }
 }

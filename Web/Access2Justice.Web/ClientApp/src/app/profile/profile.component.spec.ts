@@ -9,7 +9,7 @@ import { EventUtilityService } from '../shared/event-utility.service';
 import { Tree } from '@angular/router/src/utils/tree';
 import { IResourceFilter } from '../shared/search/search-results/search-results.model';
 
-xdescribe('profilecomponent', () => {
+describe('profilecomponent', () => {
   let component: ProfileComponent;
   let fixture: ComponentFixture<ProfileComponent>;
   let personalizedplanservice: PersonalizedPlanService;
@@ -124,7 +124,7 @@ xdescribe('profilecomponent', () => {
     expect(component.showRemove).toBe(mockshowremove);
   });
 
-  it('should call getactionplanconditions service method when get topics method called', () => {
+  xit('should call getactionplanconditions service method when get topics method called', () => {
     spyOn(personalizedplanservice, 'getActionPlanConditions').and.returnValue(mockplandetailsjson);
     personalizedplanservice.getPersonalizedPlan;
     component.planId = mockplanid;

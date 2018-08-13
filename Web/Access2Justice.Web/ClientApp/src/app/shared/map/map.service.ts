@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { MapLocation } from './location';
+import { MapLocation } from './map';
 import { Subject } from 'rxjs';
+import { HttpHeaders } from '@angular/common/http';
+import { api } from '../../../api/api';
 declare var Microsoft: any;
 
 @Injectable()
-export class LocationService {
+export class MapService {
   searchManager: any;
   map: any;
   locAddress: any;
@@ -42,8 +44,8 @@ export class LocationService {
             icon: '../../assets/images/location/poi_custom.png'
           });
 
-          let locationService = new LocationService();
-          locationService.mapLocationDetails(this.location);
+          let mapService = new MapService();
+          mapService.mapLocationDetails(this.location);
 
           this.map = new Microsoft.Maps.Map('#my-map',
             {
@@ -76,7 +78,7 @@ export class LocationService {
       this.notifyLocation.next(this.mapLocation);
     }
     else {
-      this.mapLocation = JSON.parse(sessionStorage.getItem("localSearchMapLocation"));      
+      this.mapLocation = JSON.parse(sessionStorage.getItem("localSearchMapLocation"));
       this.notifyLocalLocation.next(this.mapLocation);
     }
     return this.mapLocation;
@@ -131,6 +133,6 @@ function suggestionSelected(result) {
   });
   map.entities.push(pin);
   map.setView({ bounds: result.bestView, padding: 30 });
-  let locationService = new LocationService();
-  locationService.mapLocationDetails(result);
+  let mapService = new MapService();
+  mapService.mapLocationDetails(result);
 }

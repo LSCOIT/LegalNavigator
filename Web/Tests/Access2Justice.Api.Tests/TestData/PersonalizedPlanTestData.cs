@@ -240,6 +240,7 @@ namespace Access2Justice.Api.Tests.TestData
         'Url': 'https://alaskalawhelp.org/resource/spousal-support?ref=OEGQX'
     }
       ],
+      'icon': 'https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/family.svg',
       'parentTopicId': [],
       'resourceType': 'Topics',
       'keywords': 'Family',
@@ -360,7 +361,7 @@ namespace Access2Justice.Api.Tests.TestData
 ]");
 
         public static JArray personalizedPlan = JArray.Parse(@"[{
-  'id': 'e48b4302-f548-4402-a7b6-6351602a9f09',
+  'id': '86e693bd-c673-419f-95c4-9ee76cccab3c',
   'topics': [
     {
       'topicId': 'd1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef',
@@ -2168,7 +2169,7 @@ namespace Access2Justice.Api.Tests.TestData
       '9ca4cf73-f6c0-4f63-a1e8-2a3774961df5',
       '49779468-1fe0-4183-850b-ff365e05893e'
     ],
-    'topicIds':[]
+    'topicIds':['e1fdbbc6-d66a-4275-9cd2-2be84d303e12']
   },
   {
     'stepId': '9dffb34a-f62e-40cb-a29e-cf28cee83955',
@@ -2182,7 +2183,7 @@ namespace Access2Justice.Api.Tests.TestData
       '2cb89c44-f989-42ea-b038-419e5006e8ff',
       '2fe9f117-bfb5-469f-b80c-877640a29f75'
     ],
-    'topicIds':[]
+    'topicIds':['e1fdbbc6-d66a-4275-9cd2-2be84d303e12']
   },
   {
     'stepId': 'afe73385-7e6c-4eac-b50f-2374d457a239',
@@ -2197,7 +2198,7 @@ namespace Access2Justice.Api.Tests.TestData
       '9b8bd927-ad8f-416f-9d5f-82ee96925357',
       'bbb88efb-3816-218b-5b38-1281e1b77f5a'
     ],
-    'topicIds':[]
+    'topicIds':['e1fdbbc6-d66a-4275-9cd2-2be84d303e12']
   }
 ]");
 

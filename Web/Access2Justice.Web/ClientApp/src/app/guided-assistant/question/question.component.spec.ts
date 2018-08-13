@@ -1,6 +1,7 @@
 import { NgForm } from '@angular/forms';
 import { QuestionComponent } from './question.component';
 import { of } from 'rxjs/observable/of';
+import { Observable } from 'rxjs';
 
 describe('QuestionComponent', () => {
   let component: QuestionComponent;
