@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { MapResultsService } from './map-results.service';
 import { environment } from '../../../environments/environment';
 import { MapLocationResult, LatitudeLongitude } from './map-results';
@@ -8,7 +8,7 @@ import { MapLocationResult, LatitudeLongitude } from './map-results';
   templateUrl: './map-results.component.html',
   styleUrls: ['./map-results.component.css']
 })
-export class MapResultsComponent implements OnInit {
+export class MapResultsComponent implements OnChanges {
   addressList: Array<MapLocationResult> = [];
   latitudeLongitude: Array<LatitudeLongitude> = [];
   latlong: LatitudeLongitude;
@@ -18,6 +18,7 @@ export class MapResultsComponent implements OnInit {
   }
 
   getAddress() {
+    this.addressList = [];
     if (this.searchResource) {
       if (this.searchResource.resources) {
         for (let i = 0; i < this.searchResource.resources.length; i++) {
@@ -32,24 +33,30 @@ export class MapResultsComponent implements OnInit {
 
   getMapResults(address) {
     this.addressList = address;
-    this.mapResultsService.getMap();
-    if (this.addressList.length > 0) {
-      for (let i = 0, len = this.addressList.length; i < len; i++) {
-        this.mapResultsService.getLocationDetails(this.addressList[i], environment.bingmap_key).subscribe((locationCoordinates) => {
-          this.latlong = {
-            latitude: locationCoordinates.resourceSets[0].resources[0].point.coordinates[0],
-            longitude: locationCoordinates.resourceSets[0].resources[0].point.coordinates[1]
-          }
-          this.latitudeLongitude.push(this.latlong);
-          if (this.latitudeLongitude.length == this.addressList.length) {
-            this.mapResultsService.mapResults(this.latitudeLongitude);
-          }
-        });
-      }
+    this.latitudeLongitude = [];
+    if (this.addressList.length === 0) {
+      this.mapResultsService.getMap();
+    } else {
+      this.displayMapResults();
     }
   }
 
-  ngOnInit() {
+  displayMapResults() {
+    for (let index = 0, len = this.addressList.length; index < len; index++) {
+      this.mapResultsService.getLocationDetails(this.addressList[index], environment.bingmap_key).subscribe((locationCoordinates) => {
+        this.latlong = {
+          latitude: locationCoordinates.resourceSets[0].resources[0].point.coordinates[0],
+          longitude: locationCoordinates.resourceSets[0].resources[0].point.coordinates[1]
+        }
+        this.latitudeLongitude.push(this.latlong);
+        if (this.latitudeLongitude.length === this.addressList.length) {
+          this.mapResultsService.mapResults(this.latitudeLongitude);
+        }
+      });
+    }
+  }
+
+  ngOnChanges() {
     this.getAddress();
   }
 }
