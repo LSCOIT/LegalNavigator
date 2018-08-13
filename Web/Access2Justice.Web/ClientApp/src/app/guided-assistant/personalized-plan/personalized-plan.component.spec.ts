@@ -8,12 +8,13 @@ import { RouterModule } from '@angular/router';
 import { APP_BASE_HREF } from '@angular/common';
 import { ArrayUtilityService } from '../../shared/array-utility.service';
 
-fdescribe('Component:PersonalizedPlan', () => {
+describe('Component:PersonalizedPlan', () => {
   let component: PersonalizedPlanComponent;
   let fixture: ComponentFixture<PersonalizedPlanComponent>;
   let personalizedPlanService: PersonalizedPlanService;
   let mockactiveActionPlan = 'bd900039-2236-8c2c-8702-d31855c56b0f';
   let mockPlanDetailTags = { id: '773993', oId: 'rere', planTags: [{}], type: '' };
+  let mockTopics = [{ 'id': '3445', planTags: [{}] }];
   let mockTopicList = [{
     topic: 'test',
     isSelected: false
@@ -22,7 +23,6 @@ fdescribe('Component:PersonalizedPlan', () => {
     topic: '',
     isSelected: false
   }];
-  let mockTopics = [{ 'id': '3445', planTags: [{}] }];
   let mockTempTopicsList = [{
     topic: {
       "topicId": "addf41e9-1a27-4aeb-bcbb-7959f95094ba",
@@ -45,7 +45,6 @@ fdescribe('Component:PersonalizedPlan', () => {
     ],
     "id": "addf41e9-1a27-4aeb-bcbb-7959f95094ba"
   };
-  
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -93,7 +92,7 @@ fdescribe('Component:PersonalizedPlan', () => {
   });
 
   it('should call createTopicsList service method when getplandetails method called', () => {
-   
+
     spyOn(personalizedPlanService, 'createTopicsList');
     spyOn(personalizedPlanService, 'displayPlanDetails');
     component.topics = mockTopics;
@@ -105,7 +104,7 @@ fdescribe('Component:PersonalizedPlan', () => {
     expect(personalizedPlanService.displayPlanDetails).toHaveBeenCalled();
   });
 
-  it('should call displayPlanDetails service method when getplandetails method called', () => { 
+  it('should call displayPlanDetails service method when getplandetails method called', () => {
     spyOn(personalizedPlanService, 'displayPlanDetails');
     component.planDetailTags = mockPlanDetailTags;
     component.topicsList = mockTopicList;
