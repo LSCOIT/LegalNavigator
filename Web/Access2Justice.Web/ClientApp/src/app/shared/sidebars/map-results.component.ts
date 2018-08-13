@@ -42,14 +42,14 @@ export class MapResultsComponent implements OnChanges {
   }
 
   displayMapResults() {
-    for (let i = 0, len = this.addressList.length; i < len; i++) {
-      this.mapResultsService.getLocationDetails(this.addressList[i], environment.bingmap_key).subscribe((locationCoordinates) => {
+    for (let index = 0, len = this.addressList.length; index < len; index++) {
+      this.mapResultsService.getLocationDetails(this.addressList[index], environment.bingmap_key).subscribe((locationCoordinates) => {
         this.latlong = {
           latitude: locationCoordinates.resourceSets[0].resources[0].point.coordinates[0],
           longitude: locationCoordinates.resourceSets[0].resources[0].point.coordinates[1]
         }
         this.latitudeLongitude.push(this.latlong);
-        if (this.latitudeLongitude.length == this.addressList.length) {
+        if (this.latitudeLongitude.length === this.addressList.length) {
           this.mapResultsService.mapResults(this.latitudeLongitude);
         }
       });
