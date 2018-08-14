@@ -47,15 +47,17 @@ namespace Access2Justice.Api
                 threshold = ApplyThreshold(intentWithScore);
             }
 
-            switch (threshold)
-            {
-                case (int)LuisAccuracyThreshold.High:
-                    return await GetInternalResourcesAsync(intentWithScore?.TopScoringIntent ?? luisInput.LuisTopScoringIntent, luisInput.Location);
-                case (int)LuisAccuracyThreshold.Medium:
-                    return await GetWebResourcesAsync(intentWithScore?.TopScoringIntent);                
-                default:
-                    return await GetWebResourcesAsync(encodedSentence);
-            }
+            //switch (threshold)
+            //{
+            //    case (int)LuisAccuracyThreshold.High:
+            //        return await GetInternalResourcesAsync(intentWithScore?.TopScoringIntent ?? luisInput.LuisTopScoringIntent, luisInput.Location);
+            //    case (int)LuisAccuracyThreshold.Medium:
+            //        return await GetWebResourcesAsync(intentWithScore?.TopScoringIntent);                
+            //    default:
+            //        return await GetWebResourcesAsync(encodedSentence);
+            //}
+
+            return await GetWebResourcesAsync(encodedSentence);
         }
 
         public IntentWithScore ParseLuisIntent(string LuisResponse)
@@ -73,18 +75,20 @@ namespace Access2Justice.Api
 
         public int ApplyThreshold(IntentWithScore intentWithScore)
         {
-            if (intentWithScore.Score >= luisSettings.UpperThreshold && intentWithScore.TopScoringIntent.ToUpperInvariant() != "NONE")
-            {
-                return (int)LuisAccuracyThreshold.High;
-            }
-            else if (intentWithScore.Score <= luisSettings.LowerThreshold || intentWithScore.TopScoringIntent.ToUpperInvariant() == "NONE")
-            {
-                return (int)LuisAccuracyThreshold.Low;
-            }
-            else
-            {
-                return (int)LuisAccuracyThreshold.Medium;
-            }
+            //if (intentWithScore.Score >= luisSettings.UpperThreshold && intentWithScore.TopScoringIntent.ToUpperInvariant() != "NONE")
+            //{
+            //    return (int)LuisAccuracyThreshold.High;
+            //}
+            //else if (intentWithScore.Score <= luisSettings.LowerThreshold || intentWithScore.TopScoringIntent.ToUpperInvariant() == "NONE")
+            //{
+            //    return (int)LuisAccuracyThreshold.Low;
+            //}
+            //else
+            //{
+            //    return (int)LuisAccuracyThreshold.Medium;
+            //}
+
+            return 0;
         }
 
         public async Task<dynamic> GetInternalResourcesAsync(string keyword, Location location)
@@ -120,12 +124,13 @@ namespace Access2Justice.Api
             }
 
             JObject internalResources = new JObject {
+                { "topIntent", keyword },
+                { "relevantIntents", keyword },
                 { "topics", JsonConvert.DeserializeObject(serializedTopics) },
                 { "resources", JsonConvert.DeserializeObject(serializedResources) },
                 {"continuationToken", JsonConvert.DeserializeObject(serializedToken) },
                 {"topicIds" , JsonConvert.DeserializeObject(serializedTopicIds)},
-                { "resourceTypeFilter", JsonConvert.DeserializeObject(serializedGroupedResources) },
-                { "topIntent", keyword }
+                { "resourceTypeFilter", JsonConvert.DeserializeObject(serializedGroupedResources) }
             };
             return internalResources.ToString();
         }

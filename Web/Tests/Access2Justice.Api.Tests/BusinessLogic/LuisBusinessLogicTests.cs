@@ -55,7 +55,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         #endregion
 
 
-public LuisBusinessLogicTests()
+        public LuisBusinessLogicTests()
         {
             luisProxy = Substitute.For<ILuisProxy>();
             luisSettings = Substitute.For<ILuisSettings>();
@@ -67,8 +67,7 @@ public LuisBusinessLogicTests()
 
             luisSettings.Endpoint.Returns(new Uri("http://www.bing.com"));
             luisSettings.TopIntentsCount.Returns(3);
-            luisSettings.UpperThreshold.Returns(0.9M);
-            luisSettings.LowerThreshold.Returns(0.6M);
+            luisSettings.IntentAccuracyThreshold.Returns(0.1M);
             bingSettings.BingSearchUrl.Returns(new Uri("http://www.bing.com?{0}{1}{2}"));
             bingSettings.CustomConfigId.Returns("0");
             bingSettings.PageResultsCount.Returns((short)10);
@@ -196,7 +195,7 @@ public LuisBusinessLogicTests()
             PagedResources pagedResources = new PagedResources() { Results = resourcesData, ContinuationToken = "[]", TopicIds = topicIds };
             var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
             topicResponse.Returns(topicsData);
-            var resourceCount = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);            
+            var resourceCount = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
             resourceCount.ReturnsForAnyArgs<dynamic>(allResourcesCount);
             var paginationResult = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
             paginationResult.ReturnsForAnyArgs<dynamic>(pagedResources);
@@ -240,7 +239,7 @@ public LuisBusinessLogicTests()
 
             //assert            
             Assert.Contains(expectedTopicId, result);
-        }               
+        }
 
         [Fact]
         public void GetInternalResourcesAsyncTestsShouldReturnTopIntent()
@@ -260,7 +259,7 @@ public LuisBusinessLogicTests()
             //assert            
             Assert.Contains(keyword, result);
         }
-                
+
         [Fact]
         public void GetResourceBasedOnThresholdAsyncTestsShouldValidateLowScore()
         {
@@ -286,7 +285,7 @@ public LuisBusinessLogicTests()
             luisInput.Sentence = searchText;
             var luisResponse = luisProxy.GetIntents(searchText);
             luisResponse.ReturnsForAnyArgs(meduimScoreLuisResponse);
-            
+
             var webResponse = webSearchBusinessLogic.SearchWebResourcesAsync(bingSettings.BingSearchUrl);
             webResponse.ReturnsForAnyArgs<dynamic>(webData);
 
@@ -323,7 +322,7 @@ public LuisBusinessLogicTests()
         public void GetResourceBasedOnThresholdAsyncTestsWithoutLuisApiCall()
         {
             //arrange
-            luisInput.LuisTopScoringIntent = keyword;            
+            luisInput.LuisTopScoringIntent = keyword;
             var luisResponse = luisProxy.GetIntents(searchText);
             luisResponse.ReturnsForAnyArgs(properLuisResponse);
 
