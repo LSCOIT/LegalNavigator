@@ -19,20 +19,27 @@ export class LanguageComponent implements OnInit {
   
   constructor(private staticResourceService: StaticResourceService) { }
 
-  filterLanguagueNavigationContent(): void {
-    if (this.navigation) {
-      this.name = this.navigation.name;
-      this.language = this.navigation.language;
+  filterLanguagueNavigationContent(navigation): void {
+    if (navigation) {
+      this.name = navigation.name;
+      this.language = navigation.language;
     }
   }
 
-  getLanguagueNavigationContent(): void {    
+  getLanguagueNavigationContent(): void {
     let homePageRequest = { name: this.name };
-    this.staticResourceService.getStaticContent(homePageRequest)
-      .subscribe(content => {
-        this.navigation = content[0];
-        this.filterLanguagueNavigationContent();
-      });
+    if (!this.staticResourceService.navigation) {
+      this.staticResourceService.getStaticContent(homePageRequest)
+        .subscribe(content => {
+          this.navigation = content[0];
+          this.filterLanguagueNavigationContent(this.navigation);
+          this.staticResourceService.navigation = this.navigation;
+        });
+    }
+    else {
+      this.navigation = this.staticResourceService.navigation;
+      this.filterLanguagueNavigationContent(this.staticResourceService.navigation);
+    }
   }
 
   ngOnInit() {
