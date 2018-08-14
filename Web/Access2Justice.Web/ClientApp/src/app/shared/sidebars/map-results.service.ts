@@ -20,6 +20,11 @@ export class MapResultsService {
     return this.http.get(searchRequest);
   }
 
+  getStateFullName(state, credentials): any {
+    let searchRequest = 'http://dev.virtualearth.net/REST/v1/Locations?CountryRegion=US&adminDistrict=' + encodeURI(state) + '&key=' + credentials;
+    return this.http.get(searchRequest);
+  }
+
   getMap() {
     let map = new Microsoft.Maps.Map('#my-map-results',
       {

@@ -26,6 +26,8 @@ export class StaticResourceService {
       this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
       this.state = this.mapLocation.address;
       return this.mapLocation;
+    } else {
+      return {state:"Default"}
     }
   }
 
