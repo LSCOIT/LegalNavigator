@@ -20,12 +20,14 @@ import { ResourceCardDetailComponent } from
 import { PersonalizedPlanComponent } from './guided-assistant/personalized-plan/personalized-plan.component';
 import { NotFoundComponent } from './shared/error/not-found/not-found.component';
 import { InternalErrorComponent } from './shared/error/internal-error/internal-error.component';
+import { CuratedExperienceResultComponent } from './guided-assistant/curated-experience-result/curated-experience-result.component';
 
 const appRoutes: Routes = [
   { path: 'search', component: SearchResultsComponent },
   { path: 'searchRefresh', component: SearchResultsComponent },
   { path: 'guidedassistant/:id', component: CuratedExperienceComponent },
   { path: 'guidedassistant', component: GuidedAssistantComponent },
+  { path: 'guidedassistantSearch', component: CuratedExperienceResultComponent },
   { path: 'resource/:id', component: ResourceCardDetailComponent },
   { path: 'subtopics/:topic', component: SubtopicDetailComponent },
   { path: 'topics/:topic', component: SubtopicsComponent},

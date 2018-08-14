@@ -1,0 +1,36 @@
+<div class="container">
+  <div class="col-sm-8 col-sm-offset-2 text-center">
+    <h3>Are you looking for information on any of the following topics?</h3>
+    <form #gaForm="ngForm" (ngSubmit)="onSubmit(gaForm)">
+      <div class="button-container">
+        <ul>
+          <!--<li>
+    <input type="checkbox" [id]="field.id" [value]="field.label" name="multiSelectOptions" ngModel>
+    <label for={{field.id}}>{{field.label}}</label>
+    <div class="check"></div>
+  </li>-->
+          <li>
+            <input type="checkbox" name="multiSelectOptions" ngModel>
+            <label for="123">Eviction</label>
+            <div class="check"></div>
+          </li>
+          <li>
+            <input type="checkbox" name="multiSelectOptions" ngModel>
+            <label for="456">Child Custody</label>
+            <div class="check"></div>
+          </li>
+          <li>
+            <input type="checkbox" name="multiSelectOptions" ngModel>
+            <label for="789">Divorce</label>
+            <div class="check"></div>
+          </li>
+          <li>
+            <input type="checkbox" name="multiSelectOptions" ngModel>
+            <label for="789">None of the Above</label>
+            <div class="check"></div>
+          </li>
+        </ul>
+      </div>
+    </form>
+  </div>
+</div>
