@@ -5,7 +5,7 @@
   <div *ngIf="isInternalResource || displayMessage">
     <div class="panel-heading box-shadow">
       <span class="label-display mobile-hidden">Showing Information for </span>
-      <app-location #location [mapType]="false"></app-location>
+      <app-map #location [mapType]="false"></app-map>
     </div>
   </div>
   <div *ngIf="isWebResource">
@@ -58,7 +58,6 @@
       <div class="row guided-assistant">
         <app-guided-assistant-sidebar></app-guided-assistant-sidebar>
       </div>
-      <app-service-org-sidebar></app-service-org-sidebar>
     </div>
   </div>
 </div>

@@ -1,4 +1,8 @@
 import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
+import { StaticResourceService } from '../../shared/static-resource.service';
+import { Navigation, Language, Location, Logo, Home, GuidedAssistant, TopicAndResources, About, Search, PrivacyPromise, HelpAndFAQ, Login } from './navigation';
+import { environment } from '../../../environments/environment';
+import { MapService } from '../map/map.service';
 
 @Component({
   selector: 'app-lower-nav',
@@ -11,16 +15,34 @@ export class LowerNavComponent implements OnInit {
   showMenu = false;
   my_Class = '';
 
-  @ViewChild('sidenav') sidenav:ElementRef;
+  @ViewChild('sidenav') sidenav: ElementRef;
   @HostListener('window:resize')
-    onResize() {
+  onResize() {
     this.width = window.innerWidth;
   }
 
-  constructor() { }
-  
+  blobUrl: any = environment.blobUrl;
+  navigation: Navigation;
+  id: string = 'Navigation';
+  language: Language;
+  location: any = Location;
+  privacyPromise: PrivacyPromise;
+  helpAndFAQ: HelpAndFAQ;
+  login: Login;
+  logo: Logo;
+  home: Home;
+  guidedAssistant: GuidedAssistant;
+  topicAndResources: TopicAndResources;
+  about: About;
+  search: Search;
+  subscription: any;
+
+  constructor(
+    private staticResourceService: StaticResourceService, private mapService: MapService
+  ) { }
+
   openNav() {
-    this.my_Class="dimmer";
+    this.my_Class = "dimmer";
     if (this.width >= 768) {
       this.sidenav.nativeElement.style.width = "33.333%";
       this.sidenav.nativeElement.style.height = "100%";
@@ -29,20 +51,51 @@ export class LowerNavComponent implements OnInit {
       this.sidenav.nativeElement.style.width = "100%";
     }
   }
-  
+
   closeNav() {
-    this.my_Class="";
+    this.my_Class = "";
     if (this.width >= 768) {
       this.sidenav.nativeElement.style.width = "0";
     } else {
       this.sidenav.nativeElement.style.height = "0";
     }
   }
-  
+
   toggleSearch() {
     this.showSearch = !this.showSearch;
   }
 
+  filterNavigationContent(): void {
+    if (this.navigation) {
+      this.id = this.navigation.name;
+      this.language = this.navigation.language;
+      this.location = this.navigation.location;
+      this.privacyPromise = this.navigation.privacyPromise;
+      this.helpAndFAQ = this.navigation.helpAndFAQ;
+      this.login = this.navigation.login;
+      this.logo = this.navigation.logo;
+      this.home = this.navigation.home;
+      this.guidedAssistant = this.navigation.guidedAssistant;
+      this.topicAndResources = this.navigation.topicAndResources;
+      this.about = this.navigation.about;
+      this.search = this.navigation.search;
+    }
+  }
+
+  getNavigationContent(): void {
+    let homePageRequest = { name: this.id, location: this.location };
+    this.staticResourceService.getStaticContent(homePageRequest)
+      .subscribe(content => {
+        this.navigation = content[0];
+        this.filterNavigationContent();
+      });
+  }
+
   ngOnInit() {
+    this.getNavigationContent();
+    this.subscription = this.mapService.notifyLocation
+      .subscribe((value) => {
+        this.getNavigationContent();
+      });
   }
 }

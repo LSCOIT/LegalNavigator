@@ -11,7 +11,6 @@ export const environment = {
   internalResourceRecordsToDisplay: 10,
   webResourcePagesToShow: 10,
   webResourceRecordsToDisplay: 10,
-  userId: 'User Id',
-  blobUrl:'',
-  All: 'All' 
+  blobUrl: '',
+  All: 'All'
 };

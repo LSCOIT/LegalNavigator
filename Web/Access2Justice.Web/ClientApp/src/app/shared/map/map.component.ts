@@ -1,17 +1,19 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
-import { LocationService } from './location.service';
-import { MapLocation } from './location';
+import { MapService } from './map.service';
+import { MapLocation } from './map';
 import { environment } from '../../../environments/environment';
 import { MapResultsService } from '../../shared/sidebars/map-results.service';
+import { Navigation, Location, LocationNavContent } from '../navigation/navigation';
+import { StaticResourceService } from '../../shared/static-resource.service';
 
 @Component({
-  selector: 'app-location',
-  templateUrl: './location.component.html',
-  styleUrls: ['./location.component.css']
+  selector: 'app-map',
+  templateUrl: './map.component.html',
+  styleUrls: ['./map.component.css']
 })
-export class LocationComponent implements OnInit {
+export class MapComponent implements OnInit {
   @Input() mapType: boolean;
   modalRef: BsModalRef;
   locality: string;
@@ -27,11 +29,19 @@ export class LocationComponent implements OnInit {
   locationInputRequired: boolean;
   isError: boolean = false;
   showLocality: boolean = true;
+  subscription: any;
+  state: string;
+  blobUrl: any = environment.blobUrl;
+  navigation: Navigation;
+  locationNavContent: LocationNavContent;
+  location: Array<Location>;
+  detectLocation = false;
+  name: string = 'Navigation';
 
-  constructor(private modalService: BsModalService, private locationService: LocationService,
-              private mapResultsService: MapResultsService) {  }
-  
-   changeLocation(template) {
+  constructor(private modalService: BsModalService, private mapService: MapService,
+    private mapResultsService: MapResultsService, private staticResourceService: StaticResourceService) { }
+
+  changeLocation(template) {
     this.config = {
       ignoreBackdropClick: false,
       keyboard: true
@@ -39,22 +49,22 @@ export class LocationComponent implements OnInit {
     this.locationInputRequired = false;
     this.openModal(template);
   }
-  
+
   openModal(template: TemplateRef<any>) {
     this.isError = false;
     this.modalRef = this.modalService.show(template, this.config);
-    this.locationService.getMap(this.mapType);
+    this.mapService.getMap(this.mapType);
   }
 
   geocode() {
     this.query = document.getElementById('search-box');
     this.searchLocation = this.query["value"];
-    this.locationService.identifyLocation(this.searchLocation);
+    this.mapService.identifyLocation(this.searchLocation);
   }
 
   updateLocation() {
     this.isError = false;
-    this.mapLocation = this.locationService.updateLocation();
+    this.mapLocation = this.mapService.updateLocation();
     this.displayLocationDetails(this.mapLocation);
     if ((this.modalRef && this.mapLocation) || !this.mapType) {
       this.modalRef.hide();
@@ -80,6 +90,7 @@ export class LocationComponent implements OnInit {
   }
 
   loadCurrentLocation() {
+    this.detectLocation = true;
     if (window.navigator && window.navigator.geolocation) {
       window.navigator.geolocation.getCurrentPosition(
         position => {
@@ -88,11 +99,17 @@ export class LocationComponent implements OnInit {
               this.geolocationPosition.coords.longitude, environment.bingmap_key).subscribe(response => {
                 this.selectedAddress = response;
                 environment.map_type = true;
-                this.locationService.mapLocationDetails(this.selectedAddress.resourceSets[0].resources[0]);
-                this.locationService.updateLocation();
-                this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
-                this.displayLocationDetails(this.mapLocation);
+                //this.selectedAddress.resourceSets[0].resources[0].address.adminDistrict = "WA";
+                this.mapResultsService.getStateFullName(this.selectedAddress.resourceSets[0].resources[0].address.adminDistrict, environment.bingmap_key)
+                  .subscribe(stateFullName => {
+                    this.selectedAddress.resourceSets[0].resources[0].address.adminDistrict = stateFullName.resourceSets[0].resources[0].name;
+                    this.mapService.mapLocationDetails(this.selectedAddress.resourceSets[0].resources[0]);
+                    this.mapService.updateLocation();
+                    this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+                    this.displayLocationDetails(this.mapLocation);
+                  });
               });
+          this.detectLocation = false;
         },
         error => {
           this.config = {
@@ -100,12 +117,31 @@ export class LocationComponent implements OnInit {
             keyboard: false
           };
           this.locationInputRequired = true;
+          this.detectLocation = false;
           this.openModal(this.templateref);
         });
     }
   }
 
+  filterLocationNavigationContent(): void {
+    if (this.navigation) {
+      this.name = this.navigation.name;
+      this.location = this.navigation.location;
+      this.locationNavContent = this.navigation.locationNavContent;
+    }
+  }
+
+  getLocationNavigationContent(): void {
+    let homePageRequest = { name: this.name };
+    this.staticResourceService.getStaticContent(homePageRequest)
+      .subscribe(content => {
+        this.navigation = content[0];
+        this.filterLocationNavigationContent();
+      });
+  }
+
   ngOnInit() {
+    this.getLocationNavigationContent();
     this.showLocality = true;
     if (this.mapType) {
       if (!sessionStorage.getItem("globalMapLocation")) {
@@ -114,9 +150,13 @@ export class LocationComponent implements OnInit {
     } else {
       this.showLocality = false;
     }
-    if (sessionStorage.getItem("globalMapLocation")) {      
+    if (sessionStorage.getItem("globalMapLocation")) {
       this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
       this.displayLocationDetails(this.mapLocation);
     }
+    this.subscription = this.mapService.notifyLocation
+      .subscribe((value) => {
+        this.displayLocationDetails(this.mapLocation);
+      });
   }
 }

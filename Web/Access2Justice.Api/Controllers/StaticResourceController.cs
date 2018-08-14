@@ -20,11 +20,11 @@ namespace Access2Justice.Api.Controllers
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        [HttpGet]
-        [Route("api/staticresource/getstaticresource/{name}")]
-        public async Task<IActionResult> GetStaticResourceDataAsync(string name, Location location)
+        [HttpPost]
+        [Route("api/staticresource/getstaticresource")]
+        public async Task<IActionResult> GetStaticResourceDataAsync([FromBody]PageContentRequest pageContentRequest)
         {
-            var contents = await staticResourceBusinessLogic.GetPageStaticResourceDataAsync(name, location);
+            var contents = await staticResourceBusinessLogic.GetPageStaticResourceDataAsync(pageContentRequest.Name, pageContentRequest.Location);
             return Ok(contents);
         }
 
@@ -79,5 +79,18 @@ namespace Access2Justice.Api.Controllers
             var contents = await staticResourceBusinessLogic.UpsertStaticNavigationDataAsync(navigationContent, location);
             return Ok(contents);
         }
-    }   
+
+        /// <summary>
+        /// Insert and Update the about page static contents
+        /// </summary>
+        /// <param name="aboutContent"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("api/staticresource/upsertstaticaboutpage")]
+        public async Task<IActionResult> UpsertStaticAboutPageDataAsync(AboutContent aboutContent, Location location)
+        {
+            var contents = await staticResourceBusinessLogic.UpsertStaticAboutPageDataAsync(aboutContent, location);
+            return Ok(contents);
+        }
+    }
 }

@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { LocationComponent } from './location.component';
-import { LocationService } from './location.service';
+import { MapComponent } from './map.component';
+import { MapService } from './map.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { TemplateRef } from '@angular/core';
 import { ModalModule } from 'ngx-bootstrap';
-import { MapLocation } from './location';
+import { MapLocation } from './map';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MapResultsService } from '../sidebars/map-results.service';
@@ -18,12 +18,12 @@ class MockBsModalRef {
   }
 }
 
-describe('LocationComponent', () => {
-  let component: LocationComponent;
-  let fixture: ComponentFixture<LocationComponent>;
+describe('MapComponent', () => {
+  let component: MapComponent;
+  let fixture: ComponentFixture<MapComponent>;
   let modalService: BsModalService;
   let template: TemplateRef<any>;
-  let locationService: LocationService;
+  let mapService: MapService;
   let mockMapLocation: MapLocation = {
     state: 'Sample State',
     city: 'Sample City',
@@ -48,17 +48,17 @@ describe('LocationComponent', () => {
     () => {
       TestBed.configureTestingModule({
         imports: [HttpClientModule, RouterTestingModule, ModalModule.forRoot()],
-        declarations: [LocationComponent],
+        declarations: [MapComponent],
         providers: [
           BsModalService,
-          LocationService,
+          MapService,
           MapResultsService
         ]
       });
       TestBed.compileComponents();
-      fixture = TestBed.createComponent(LocationComponent);
+      fixture = TestBed.createComponent(MapComponent);
       component = fixture.componentInstance;
-      locationService = TestBed.get(LocationService);
+      mapService = TestBed.get(MapService);
       modalService = TestBed.get(BsModalService);
       mapResultsService = TestBed.get(MapResultsService);
       let store = {};
@@ -108,27 +108,27 @@ describe('LocationComponent', () => {
   });
 
   it("should call modalService show when openModal is called", () => {
-    spyOn(locationService, 'getMap');
+    spyOn(mapService, 'getMap');
     spyOn(modalService, 'show');
     component.openModal(template);
     expect(modalService.show).toHaveBeenCalled();
   });
 
-  it("should call locationService getMap when openModal is called", () => {
-    spyOn(locationService, 'getMap');
+  it("should call mapService getMap when openModal is called", () => {
+    spyOn(mapService, 'getMap');
     component.openModal(template);
-    expect(locationService.getMap).toHaveBeenCalled();
+    expect(mapService.getMap).toHaveBeenCalled();
   });
 
   it("should call update location of location service when update location of component is called", () => {
-    spyOn(locationService, 'updateLocation').and.returnValue(mockMapLocation);
+    spyOn(mapService, 'updateLocation').and.returnValue(mockMapLocation);
     spyOn(modalService, 'hide');
     component.updateLocation();
-    expect(locationService.updateLocation).toHaveBeenCalled();
+    expect(mapService.updateLocation).toHaveBeenCalled();
   });
 
   it("should call hide of modal ref when update location of component is called", () => {
-    spyOn(locationService, 'updateLocation').and.returnValue(mockMapLocation);
+    spyOn(mapService, 'updateLocation').and.returnValue(mockMapLocation);
     spyOn(modalService, 'hide');
     let modalRefInstance = new MockBsModalRef();
     component.modalRef = modalRefInstance;
@@ -137,7 +137,7 @@ describe('LocationComponent', () => {
   });
 
   it("should call displayLocationDetails when updateLocation is called", () => {
-    spyOn(locationService, 'updateLocation').and.returnValue(mockMapLocation);
+    spyOn(mapService, 'updateLocation').and.returnValue(mockMapLocation);
     spyOn(component, 'displayLocationDetails');
     spyOn(modalService, 'hide');
     component.updateLocation();
@@ -172,9 +172,9 @@ describe('LocationComponent', () => {
 
     spyOn(navigator.geolocation, "getCurrentPosition");
     spyOn(mapResultsService, "getAddressBasedOnPoints");
-    spyOn(locationService, "mapLocationDetails");
-    spyOn(locationService, "updateLocation");
-    spyOn(locationService, 'getMap');
+    spyOn(mapService, "mapLocationDetails");
+    spyOn(mapService, "updateLocation");
+    spyOn(mapService, 'getMap');
 
     let mockselectedAddress = mockResponse;
     let mockLocationInputRequired = true;
@@ -184,7 +184,7 @@ describe('LocationComponent', () => {
     expect(component.address).toEqual(mockMapLocation2.address);
     expect(component.locality).toEqual(mockMapLocation2.locality);
 
-    expect(locationService.updateLocation).toBeTruthy();
+    expect(mapService.updateLocation).toBeTruthy();
     mapResultsService.getAddressBasedOnPoints(mockGeolocationPositionLatiitude, mockGeolocationPositionLangitude, mockBingKey);
     component.loadCurrentLocation();
     expect(mapResultsService.getAddressBasedOnPoints).toBeTruthy();
@@ -195,9 +195,9 @@ describe('LocationComponent', () => {
 
     spyOn(navigator.geolocation, "getCurrentPosition");
     spyOn(mapResultsService, "getAddressBasedOnPoints");
-    spyOn(locationService, "mapLocationDetails");
-    spyOn(locationService, "updateLocation");
-    spyOn(locationService, 'getMap');
+    spyOn(mapService, "mapLocationDetails");
+    spyOn(mapService, "updateLocation");
+    spyOn(mapService, 'getMap');
     component.config = {
       ignoreBackdropClick: true,
       keyboard: false
@@ -216,7 +216,7 @@ describe('LocationComponent', () => {
         value: 'test'
       }
     });
-    spyOn(locationService, 'identifyLocation')
+    spyOn(mapService, 'identifyLocation')
     component.geocode();
     expect(component.searchLocation).toEqual('test');
   }));
@@ -227,7 +227,7 @@ describe('LocationComponent', () => {
         value: 'test'
       }
     });
-    spyOn(locationService, 'identifyLocation');
+    spyOn(mapService, 'identifyLocation');
     spyOn(component, 'geocode');
     component.geocode();
     expect(component.geocode).toHaveBeenCalled();
@@ -260,9 +260,9 @@ describe('LocationComponent', () => {
 
     spyOn(navigator.geolocation, "getCurrentPosition");
     spyOn(mapResultsService, "getAddressBasedOnPoints");
-    spyOn(locationService, "mapLocationDetails");
-    spyOn(locationService, "updateLocation");
-    spyOn(locationService, "getMap");
+    spyOn(mapService, "mapLocationDetails");
+    spyOn(mapService, "updateLocation");
+    spyOn(mapService, "getMap");
     spyOn(component, "displayLocationDetails");
     spyOn(component, "loadCurrentLocation");
 
