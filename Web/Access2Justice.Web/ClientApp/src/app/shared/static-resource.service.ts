@@ -7,6 +7,7 @@ import { About } from '../about/about';
 import { PrivacyContent } from '../privacy-promise/privacy-promise';
 import { HelpAndFaqs } from '../help-faqs/help-faqs';
 import { Navigation } from './navigation/navigation';
+import { Home } from '../home/home';
 
 @Injectable()
 export class StaticResourceService {
@@ -20,6 +21,7 @@ export class StaticResourceService {
   privacyContent: PrivacyContent;
   helpAndFaqsContent: HelpAndFaqs;
   navigation: Navigation;
+  homeContent: Home;
 
   loadStateName(): MapLocation {
     if (sessionStorage.getItem("globalMapLocation")) {
