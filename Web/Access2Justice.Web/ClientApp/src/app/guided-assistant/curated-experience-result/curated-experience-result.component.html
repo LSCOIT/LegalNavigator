@@ -4,32 +4,25 @@
     <form #gaForm="ngForm" (ngSubmit)="onSubmit(gaForm)">
       <div class="button-container">
         <ul>
-          <!--<li>
-    <input type="checkbox" [id]="field.id" [value]="field.label" name="multiSelectOptions" ngModel>
-    <label for={{field.id}}>{{field.label}}</label>
-    <div class="check"></div>
-  </li>-->
           <li>
-            <input type="checkbox" name="multiSelectOptions" ngModel>
-            <label for="123">Eviction</label>
+            <input type="checkbox" [id]="guidedAssistantResults.topIntent" [value]="guidedAssistantResults.topIntent"  name="multiSelectOptions" ngModel>
+            <label [for]="guidedAssistantResults.topIntent">{{guidedAssistantResults.topIntent}}</label>
+            <div class="check"></div>
+          </li>
+          <li *ngFor="let intent of relevantIntents">
+            <input type="checkbox"  [id]="intent" [value]="intent" name="multiSelectOptions" ngModel>
+            <label [for]="intent">{{intent}}</label>
             <div class="check"></div>
           </li>
           <li>
-            <input type="checkbox" name="multiSelectOptions" ngModel>
-            <label for="456">Child Custody</label>
-            <div class="check"></div>
-          </li>
-          <li>
-            <input type="checkbox" name="multiSelectOptions" ngModel>
-            <label for="789">Divorce</label>
-            <div class="check"></div>
-          </li>
-          <li>
-            <input type="checkbox" name="multiSelectOptions" ngModel>
-            <label for="789">None of the Above</label>
+            <input type="checkbox" id="None of the above" value="None of the above" name="multiSelectOptions" ngModel>
+            <label for="None of the above">None of the above</label>
             <div class="check"></div>
           </li>
         </ul>
+      </div>
+      <div class="row">
+        <button type="submit" class="btn btn-primary">Continue</button>
       </div>
     </form>
   </div>

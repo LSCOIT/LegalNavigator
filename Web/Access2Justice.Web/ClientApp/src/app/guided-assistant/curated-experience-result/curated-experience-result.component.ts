@@ -8,10 +8,18 @@ import { NavigateDataService } from '../../shared/navigate-data.service';
 })
 export class CuratedExperienceResultComponent implements OnInit {
   @Input() guidedAssistantResults;
+  relevantIntents: Array<string>;
+
   constructor(private navigateDataService: NavigateDataService) { }
+
+  filterIntent() {
+    this.relevantIntents = this.guidedAssistantResults.relevantIntents
+      .filter((resource) => resource.resourceType !== 'None');
+  }
 
   ngOnInit() {
     this.guidedAssistantResults = this.navigateDataService.getData();
+    this.filterIntent();
     console.log(this.guidedAssistantResults);
   }
 
