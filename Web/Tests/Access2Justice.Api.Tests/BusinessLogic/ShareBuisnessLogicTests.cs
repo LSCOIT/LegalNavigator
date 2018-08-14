@@ -1,10 +1,12 @@
 ﻿using Access2Justice.Api.BusinessLogic;
 using Access2Justice.Api.Tests.TestData;
+using Access2Justice.Api.ViewModels;
 using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Microsoft.Azure.Documents;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using NSubstitute;
 using System.IO;
 using Xunit;
@@ -95,16 +97,19 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             Assert.Equal(expectedResult, actualResult);
         }
 
-        [Fact]
-        public void GetPermaLinkDataAsyncShouldValidate()
+        [Theory]
+        [MemberData(nameof(ShareTestData.ShareProfileResponseData), MemberType = typeof(ShareTestData))]
+        public void GetPermaLinkDataAsyncShouldValidate(string permaLinkInput, JArray shareProfileResponse, dynamic expectedResult)
         {
             var dbResponse = dynamicQueries.FindFieldWhereArrayContainsAsync(dbSettings.UserProfileCollectionId, Constants.SharedResource,
-                        Constants.Url, Constants.PermaLink, ShareTestData.permalinkInputData, Constants.ExpirationDate);
-            dbResponse.ReturnsForAnyArgs<dynamic>(ShareTestData.ExpectedResourceData);
+                        Constants.PermaLink, permaLinkInput, Constants.ExpirationDate);
+            dbResponse.ReturnsForAnyArgs<dynamic>(shareProfileResponse);
 
-            var response = shareBusinessLogic.GetPermaLinkDataAsync(ShareTestData.permalinkInputData);
+            var response = shareBusinessLogic.GetPermaLinkDataAsync(permaLinkInput);
+            expectedResult = JsonConvert.SerializeObject(expectedResult);
+            var actualResult = JsonConvert.SerializeObject(response.Result);
             //assert
-            Assert.Equal(ShareTestData.ExpectedResourceData, response.Result);
+            Assert.Equal(expectedResult, actualResult);
         }
         
     }

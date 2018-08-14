@@ -9,9 +9,6 @@ namespace Access2Justice.Api.Tests.TestData
 {
     class ShareTestData
     {
-        public static string permalinkInputData = "32803EF";
-        public static JArray ExpectedResourceData = JArray.Parse("[\"/topics/5c035d27-2fdb-9776-6236-70983a918431\"]");
-
         public static UserProfile UserProfileWithSharedResourceData =>
 
             new UserProfile
@@ -28,7 +25,7 @@ namespace Access2Justice.Api.Tests.TestData
                         {
                             IsShared = true,
                             ExpirationDate = DateTime.UtcNow.AddYears(1),
-                            PermaLink = "32803EFBBCA0D461EDA14F1BF56C5CA8C455AB6707F76A65026725F8DB7D3E8C",
+                            PermaLink = "32803EFBBCA0D461EDA14F1BYTAC5CA8C455AB6707F89065026725F8DB7D3E8C",
                             Url = new Uri("/topics/5c035d27-2fdb-9776-6236-70983a918431", UriKind.RelativeOrAbsolute)
                         }
                     }
@@ -60,6 +57,40 @@ namespace Access2Justice.Api.Tests.TestData
             yield return new object[] { new ShareInput { ResourceId = Guid.Parse("0693B88C-3866-4CCA-97C8-B8E3F3D1FF3C"), Url = new Uri("/topics/5c035d27-2fdb-9776-6236-70983a918431", UriKind.RelativeOrAbsolute), UserId = "709709e7t0r7t96" }, true };
         }
 
+        public static IEnumerable<object[]> ShareProfileResponseData()
+        {
+            yield return new object[] {
+                "",
+                JArray.Parse("[]"),
+                null
+            };
+            yield return new object[] {
+                "32803EF",
+                JArray.Parse("[]"),
+                new ShareProfileViewModel { UserName = null, UserId=null, ResourceLink= null }
+            };
+            yield return new object[] {
+                "32803EF",
+                null,
+                null
+            };
+            yield return new object[] {
+                "32803EF",
+                JArray.Parse("[{\"firstName\":\"TestFirstName\",\"lastName\":\"TestLastName\",\"oId\":\"709709e7t0r7t96\",\"url\":\"/profile\"}]"),
+                new ShareProfileViewModel { UserName = "TestFirstName TestLastName", UserId="709709e7t0r7t96", ResourceLink= "/profile" }
+            };
+            yield return new object[] {
+                "32803EF",
+                JArray.Parse("[{\"firstName\":\"TestFirstName\",\"lastName\":\"TestLastName\",\"oId\":\"709709e7t0r7t96\",\"url\":\"/topics/5c035d27-2fdb-9776-6236-70983a918431\"}]"),
+                new ShareProfileViewModel { UserName = null, UserId=null, ResourceLink= "/topics/5c035d27-2fdb-9776-6236-70983a918431" }
+            };
+            yield return new object[] {
+                "32803EF",
+                JArray.Parse("[{\"firstName\":\"TestFirstName\",\"lastName\":\"TestLastName\",\"oId\":\"709709e7t0r7t96\",\"url\":\"https://www.microsoft.com\"}]"),
+                new ShareProfileViewModel { UserName = null, UserId=null, ResourceLink= "https://www.microsoft.com" }
+            };
+        }
+
         public static IEnumerable<object[]> ShareGenerateInputData()
         {
             yield return new object[] { new ShareInput { ResourceId = Guid.Parse("5c035d27-2fdb-9776-6236-70983a918431"),
@@ -68,7 +99,7 @@ namespace Access2Justice.Api.Tests.TestData
                 UniqueId = Guid.Parse("6D4826FD-24BB-41BA-9AD6-39AF7737C335")
             },
             0,//permalink Length param
-            new ShareViewModel() { PermaLink = "32803EFBBCA0D461EDA14F1BF56C5CA8C455AB6707F76A65026725F8DB7D3E8C" } };
+            new ShareViewModel() { PermaLink = "32803EFBBCA0D461EDA14F1BYTAC5CA8C455AB6707F89065026725F8DB7D3E8C" } };
 
             yield return new object[] { new ShareInput { ResourceId = Guid.Parse("5c035d27-2fdb-9776-6236-70983a918431"),
                 Url = new Uri("/topics/5c035d27-2fdb-9776-6236-70983a918431", UriKind.Relative),
