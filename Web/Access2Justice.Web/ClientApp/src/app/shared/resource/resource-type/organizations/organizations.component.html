@@ -3,7 +3,7 @@
 <div class="col-md-8 col-sm-12">
   <div class="expanded-image">
     <img *ngIf="currentImage else elseblock" [src]="currentImage" alt="Alternate Text" />
-    <img *ngIf="!currentImage" #elseblock src="https://www.w3schools.com/howto/img_snow.jpg" (click)="changeModalImage($event)" alt="Alternate Text" />
+    <img #elseblock src="https://www.w3schools.com/howto/img_snow.jpg" (click)="changeModalImage($event)" alt="Alternate Text" />
     <div class="thumbnails">
       <img src="https://www.w3schools.com/howto/img_snow.jpg" (click)="changeImage($event)" alt="Alternate Text" />
       <img src="https://www.w3schools.com/howto/img_mountains.jpg" (click)="changeImage($event)" alt="Alternate Text" />
