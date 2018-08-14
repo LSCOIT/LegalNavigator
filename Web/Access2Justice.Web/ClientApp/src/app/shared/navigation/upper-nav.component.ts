@@ -67,8 +67,10 @@ export class UpperNavComponent implements OnInit {
     let profileData = sessionStorage.getItem("profileData");
     if (profileData != undefined) {
       profileData = JSON.parse(profileData);
-      this.isLoggedIn = true;
-      this.userProfile = profileData["UserName"];
+      if (profileData["IsShared"] == undefined) {
+        this.isLoggedIn = true;
+        this.userProfile = profileData["UserName"];
+      }
     }
     
   }

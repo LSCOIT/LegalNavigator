@@ -138,6 +138,9 @@ export class MapComponent implements OnInit {
   ngOnInit() {
     this.getLocationNavigationContent();
     this.showLocality = true;
+    if (location.pathname.indexOf("/share/") != -1) {
+      return;
+    }
     if (this.mapType) {
       if (!sessionStorage.getItem("globalMapLocation")) {
         this.loadCurrentLocation();

@@ -32,9 +32,10 @@ export class ShareButtonRouteComponent implements OnInit {
             if (response.userId && response.userName) {
               this.profileData.UserId = response.userId;
               this.profileData.UserName = response.userName;
+              this.profileData.IsShared = true;
               sessionStorage.setItem("profileData", JSON.stringify(this.profileData));
             }
-            return this.router.navigateByUrl(response.resourceLink);
+            return this.router.navigateByUrl(response.resourceLink, { skipLocationChange: true });
           }
           else {
             return location.href = response.resourceLink;

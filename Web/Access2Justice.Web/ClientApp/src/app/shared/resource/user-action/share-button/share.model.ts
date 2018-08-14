@@ -8,5 +8,6 @@ export interface ShareView {
   PermaLink?: string;
   UserId?: string;
   UserName?: string;
+  IsShared?: boolean;
   ResourceUrl?: string;
 }
