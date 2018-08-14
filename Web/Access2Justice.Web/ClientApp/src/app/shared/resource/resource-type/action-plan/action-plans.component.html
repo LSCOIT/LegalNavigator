@@ -36,44 +36,22 @@
               <div accordion-heading>
                 <div class="col-sm-9 col-xs-12">
                   <div class="media">
-                    <div class="media-left">
-                      <img class="pull-left plan-icon accordion-img" src="./assets/images/small-icons/open_accordion.svg" alt="open accordion" />
+                    <div class="media-left accordion-img">
                     </div>
                     <div class="media-body">
                       <h3>Step {{step.order}}. {{step.title}}</h3>
                     </div>
                   </div>
                 </div>
+              </div>
+              <div class="col-xs-12 step-content">
                 <div class="col-sm-3 col-xs-12 btn-selected" id="complete-btn">
-                  <input id="checkBox" type="checkbox" (change)="checkCompleted($event,topic.topicId,step.stepId,template)"
+                  <input id="checkBox" type="checkbox" (change)="checkCompleted($event,topic.topicId,step.stepId)"
                          [ngModel]="step.isComplete">
                   <label class="ps">Completed</label>
                 </div>
-                <ng-template #template>
-                  <button type="button" class="close" aria-label="Close" (click)="close()">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                  <div class="row text-center" *ngIf="isCompleted && !isUser">
-                    <h3>Step Completed!</h3>
-                    <div> We've moved this step to the bottom of the list. You can still view it later.</div>
-                  </div>
-                  <div class="row text-center" *ngIf="!isCompleted && !isUser">
-                    <h3>Step Added!</h3>
-                    <div> We've moved this step to the top of the list. You can still view it later.</div>
-                  </div>
-                  <div class="row text-center" *ngIf="isUser">
-                    <h3>Please login to make modifications to your Plan</h3>
-                  </div>
-                  <div class="row text-center">
-                    <button type="button" (click)="close()" class="btn btn-primary">Close</button>
-                  </div>
-                </ng-template>
-              </div>
-              <div class="col-xs-12 step-content">
                 <div>
-                  <p>
-                    {{step.description}}
-                  </p>
+                  <p>{{step.description}}</p>
                 </div>
                 <div>
                   <ul>

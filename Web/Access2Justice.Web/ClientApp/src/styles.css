@@ -187,6 +187,18 @@ a.carousel-control .icon-next {
   border-top: none;
 }
 
+.accordion-img {
+  background-image: url("./assets/images/small-icons/open_accordion.svg");
+  background-repeat: no-repeat;
+  background-size: 20px;
+  padding-right: 30px;
+  background-position-y: 4px;
+}
+
+.panel-open .accordion-img {
+  background-image: url("./assets/images/small-icons/close_accordion.svg");
+  background-size: 20px 20px;
+}
 /*Topics & Resources Page - Accordion */
 .angle-bracket {
   padding: 0 5px;

@@ -19,6 +19,11 @@ namespace Access2Justice.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> GetAsync([FromBody]LuisInput luisInput)
         {
+            if (string.IsNullOrWhiteSpace(luisInput.Sentence))
+            {
+                return BadRequest("search term cannot be empty string.");
+            }
+
             var resources = await luisBusinessLogic.GetResourceBasedOnThresholdAsync(luisInput);
             return Content(resources);
         }

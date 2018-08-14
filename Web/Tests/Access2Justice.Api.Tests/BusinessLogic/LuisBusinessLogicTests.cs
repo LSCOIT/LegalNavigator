@@ -55,7 +55,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         #endregion
 
 
-public LuisBusinessLogicTests()
+        public LuisBusinessLogicTests()
         {
             luisProxy = Substitute.For<ILuisProxy>();
             luisSettings = Substitute.For<ILuisSettings>();
@@ -67,8 +67,7 @@ public LuisBusinessLogicTests()
 
             luisSettings.Endpoint.Returns(new Uri("http://www.bing.com"));
             luisSettings.TopIntentsCount.Returns(3);
-            luisSettings.UpperThreshold.Returns(0.9M);
-            luisSettings.LowerThreshold.Returns(0.6M);
+            luisSettings.IntentAccuracyThreshold.Returns(0.1M);
             bingSettings.BingSearchUrl.Returns(new Uri("http://www.bing.com?{0}{1}{2}"));
             bingSettings.CustomConfigId.Returns("0");
             bingSettings.PageResultsCount.Returns((short)10);
@@ -114,17 +113,17 @@ public LuisBusinessLogicTests()
             IntentWithScore intentWithScore = new IntentWithScore
             {
                 IsSuccessful = true,
-                Score = 0.96M,
+                Score = 0.1M,
                 TopScoringIntent = "eviction",
                 TopNIntents = topNIntents
             };
-            int expectedUpperthreshold = 2;
+            var expectedhreshold = true;
 
             //act 
-            int threshold = luisBusinessLogic.ApplyThreshold(intentWithScore);
+            var threshold = luisBusinessLogic.IsIntentAccurate(intentWithScore);
 
             //assert
-            Assert.Equal(expectedUpperthreshold, threshold);
+            Assert.Equal(expectedhreshold, threshold);
         }
 
         [Fact]
@@ -135,59 +134,20 @@ public LuisBusinessLogicTests()
             IntentWithScore intentWithScore = new IntentWithScore
             {
                 IsSuccessful = true,
-                Score = 0.81M,
+                Score = 0.01M,
                 TopScoringIntent = "eviction",
                 TopNIntents = topNIntents
             };
-            int expectedMediumthreshold = 1;
+            var expectedhreshold = false;
 
 
             //act 
-            int threshold = luisBusinessLogic.ApplyThreshold(intentWithScore);
+            var threshold = luisBusinessLogic.IsIntentAccurate(intentWithScore);
 
             //assert            
-            Assert.Equal(expectedMediumthreshold, threshold);
+            Assert.Equal(expectedhreshold, threshold);
         }
 
-        [Fact]
-        public void ApplyThresholdTestsShouldMatchLowerthreshold()
-        {
-            // arrange
-            List<string> topNIntents = new List<string> { "eviction", "child abuse", "traffic ticket", "divorce" };
-            IntentWithScore intentWithScore = new IntentWithScore
-            {
-                IsSuccessful = true,
-                Score = 0.59M,
-                TopScoringIntent = "eviction",
-                TopNIntents = topNIntents
-            };
-
-            //act 
-            int threshold = luisBusinessLogic.ApplyThreshold(intentWithScore);
-
-            //assert            
-            Assert.Equal(expectedLowerthreshold, threshold);
-        }
-
-        [Fact]
-        public void ApplyThresholdTestsShouldWithEmptyObject()
-        {
-            // arrange
-            List<string> topNIntents = new List<string> { "" };
-            IntentWithScore intentWithScore = new IntentWithScore
-            {
-                IsSuccessful = false,
-                Score = 0M,
-                TopScoringIntent = "",
-                TopNIntents = topNIntents
-            };
-
-            //act 
-            int threshold = luisBusinessLogic.ApplyThreshold(intentWithScore);
-
-            //assert
-            Assert.Equal(expectedLowerthreshold, threshold);
-        }
 
         [Fact]
         public void GetInternalResourcesAsyncTestsShouldReturnProperResult()
@@ -196,32 +156,18 @@ public LuisBusinessLogicTests()
             PagedResources pagedResources = new PagedResources() { Results = resourcesData, ContinuationToken = "[]", TopicIds = topicIds };
             var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
             topicResponse.Returns(topicsData);
-            var resourceCount = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);            
+            var resourceCount = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
             resourceCount.ReturnsForAnyArgs<dynamic>(allResourcesCount);
             var paginationResult = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
             paginationResult.ReturnsForAnyArgs<dynamic>(pagedResources);
 
             //act
-            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword, location).Result;
+            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword, location, Arg.Any<IEnumerable<string>>()).Result;
 
             //assert            
             Assert.Contains(expectedTopicId, result);
         }
 
-        [Fact]
-        public void GetInternalResourcesAsyncTestsShouldReturnEmptyTopics()
-        {
-            //arrange
-            PagedResources pagedResources = new PagedResources() { Results = resourcesData, ContinuationToken = "[]", TopicIds = topicIds };
-            var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
-            topicResponse.Returns(emptyTopicObject);
-
-            //act
-            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword, location).Result;
-
-            //assert            
-            Assert.Equal(expectedEmptyInternalResponse, result);
-        }
 
         [Fact]
         public void GetInternalResourcesAsyncTestsShouldReturnEmptyResources()
@@ -236,11 +182,11 @@ public LuisBusinessLogicTests()
             paginationResult.ReturnsForAnyArgs<dynamic>(pagedResources);
 
             //act
-            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword, location).Result;
+            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword, location, Arg.Any<IEnumerable<string>>()).Result;
 
             //assert            
             Assert.Contains(expectedTopicId, result);
-        }               
+        }
 
         [Fact]
         public void GetInternalResourcesAsyncTestsShouldReturnTopIntent()
@@ -255,50 +201,15 @@ public LuisBusinessLogicTests()
             paginationResult.ReturnsForAnyArgs<dynamic>(pagedResources);
 
             //act
-            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword, location).Result;
+            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword, location, Arg.Any<IEnumerable<string>>()).Result;
 
             //assert            
             Assert.Contains(keyword, result);
         }
-                
-        [Fact]
-        public void GetResourceBasedOnThresholdAsyncTestsShouldValidateLowScore()
-        {
-            //arrange
-            luisInput.Sentence = searchText;
-            var luisResponse = luisProxy.GetIntents(searchText);
-            luisResponse.Returns(lowScoreLuisResponse);
 
-            var webResponse = webSearchBusinessLogic.SearchWebResourcesAsync(bingSettings.BingSearchUrl);
-            webResponse.ReturnsForAnyArgs<dynamic>(webData);
-
-            //act
-            var result = luisBusinessLogic.GetResourceBasedOnThresholdAsync(luisInput).Result;
-
-            //assert
-            Assert.Contains(expectedWebResponse, result);
-        }
 
         [Fact]
-        public void GetResourceBasedOnThresholdAsyncTestsShouldValidateMediumScore()
-        {
-            //arrange
-            luisInput.Sentence = searchText;
-            var luisResponse = luisProxy.GetIntents(searchText);
-            luisResponse.ReturnsForAnyArgs(meduimScoreLuisResponse);
-            
-            var webResponse = webSearchBusinessLogic.SearchWebResourcesAsync(bingSettings.BingSearchUrl);
-            webResponse.ReturnsForAnyArgs<dynamic>(webData);
-
-            //act
-            var response = luisBusinessLogic.GetResourceBasedOnThresholdAsync(luisInput).Result;
-
-            //assert
-            Assert.Contains(expectedWebResponse, response);
-        }
-
-        [Fact]
-        public void GetResourceBasedOnThresholdAsyncTestsShouldValidateUpperScore()
+        public void GetResourceBasedOnThresholdAsyncTestsShouldValidateScoreAccuracy()
         {
             //arrange
             luisInput.Sentence = searchText;
@@ -308,7 +219,7 @@ public LuisBusinessLogicTests()
             var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
             topicResponse.ReturnsForAnyArgs<dynamic>(emptyTopicObject);
 
-            var internalResponse = luis.GetInternalResourcesAsync(keyword, location);
+            var internalResponse = luis.GetInternalResourcesAsync(keyword, location, Arg.Any<IEnumerable<string>>());
             internalResponse.ReturnsForAnyArgs<dynamic>(internalResponse);
 
             //act
@@ -323,14 +234,14 @@ public LuisBusinessLogicTests()
         public void GetResourceBasedOnThresholdAsyncTestsWithoutLuisApiCall()
         {
             //arrange
-            luisInput.LuisTopScoringIntent = keyword;            
+            luisInput.LuisTopScoringIntent = keyword;
             var luisResponse = luisProxy.GetIntents(searchText);
             luisResponse.ReturnsForAnyArgs(properLuisResponse);
 
             var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
             topicResponse.ReturnsForAnyArgs<dynamic>(emptyTopicObject);
 
-            var internalResponse = luis.GetInternalResourcesAsync(keyword, location);
+            var internalResponse = luis.GetInternalResourcesAsync(keyword, location, Arg.Any<IEnumerable<string>>());
             internalResponse.ReturnsForAnyArgs<dynamic>(internalResponse);
 
             //act

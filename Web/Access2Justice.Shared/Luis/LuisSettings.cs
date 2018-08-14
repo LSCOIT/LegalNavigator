@@ -12,8 +12,7 @@ namespace Access2Justice.Shared.Luis
             {
                 Endpoint = new Uri(configuration.GetSection("Endpoint").Value);
                 TopIntentsCount = int.Parse(configuration.GetSection("TopIntentsCount").Value, CultureInfo.InvariantCulture);
-                UpperThreshold = decimal.Parse(configuration.GetSection("UpperThreshold").Value, CultureInfo.InvariantCulture);
-                LowerThreshold = decimal.Parse(configuration.GetSection("LowerThreshold").Value, CultureInfo.InvariantCulture);
+                IntentAccuracyThreshold = decimal.Parse(configuration.GetSection("IntentAccuracyThreshold").Value, CultureInfo.InvariantCulture);
             }
             catch
             {
@@ -23,7 +22,6 @@ namespace Access2Justice.Shared.Luis
         
         public Uri Endpoint { get; set; }
         public int TopIntentsCount { get; set; }
-        public decimal UpperThreshold { get; set; }
-        public decimal LowerThreshold { get; set; }
+        public decimal IntentAccuracyThreshold { get; set; }
     }
 }
