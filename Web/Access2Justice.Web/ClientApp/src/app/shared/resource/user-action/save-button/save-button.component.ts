@@ -19,6 +19,7 @@ export class SaveButtonComponent implements OnInit {
   resources: Resources;
   savedResources: SavedResources;
   profileResources: ProfileResources = { oId: '', resourceTags: [], type: '' };
+  resourceTags: any = [];
   @Input() id: string;
   @Input() type: string;
   @Input() resourceDetails: any = {};
@@ -99,30 +100,33 @@ export class SaveButtonComponent implements OnInit {
   }
 
   saveResourcesToProfile() {
-    this.profileResources.resourceTags = [];
+    this.resourceTags = [];
     this.savedResources = { itemId: '', resourceType: '', resourceDetails: {} };
     this.personalizedPlanService.getUserSavedResources(this.userId)
       .subscribe(response => {
-        if (response != undefined) {
+        if (response) {
           response.forEach(property => {
             if (property.resourceTags) {
               property.resourceTags.forEach(resource => {
-                this.profileResources.resourceTags.push(resource);
+                this.resourceTags.push(resource);
               });
             }
           });
         }
         this.savedResources = { itemId: this.id, resourceType: this.type, resourceDetails: this.resourceDetails };
-        if (!this.arrayUtilityService.checkObjectExistInArray(this.profileResources.resourceTags, this.savedResources)) {
-          this.profileResources.resourceTags.push(this.savedResources);
-          this.saveResourceToProfile(this.profileResources.resourceTags);
+        if (!this.arrayUtilityService.checkObjectExistInArray(this.resourceTags, this.savedResources)) {
+          this.resourceTags.push(this.savedResources);
+          this.saveResourceToProfile(this.resourceTags);
         }
       });
   }
 
   saveResourceToProfile(resourceTags) {
-    this.profileResources = { oId: this.userId, resourceTags: resourceTags, type: 'resources' };
-    this.personalizedPlanService.saveResources(this.profileResources)
+    let params = new HttpParams()
+      .set("oId", this.userId)
+      .set("resourceTags", this.resourceTags);
+    //this.profileResources = { oId: this.userId, resourceTags: resourceTags, type: 'resources' };
+    this.personalizedPlanService.saveResources(params)
       .subscribe(() => {
         this.isSavedPlan = true;
         this.showSuccess('Resource saved to profile');
