@@ -1,13 +1,13 @@
 <div *ngIf="question" class="col-sm-8 col-sm-offset-2 text-center">
   <h4>{{question.text}}</h4>
   <form #gaForm="ngForm" (ngSubmit)="onSubmit(gaForm)">
-    <div *ngIf="question.fields" class="row">
+    <div *ngIf="question.fields">
       <div *ngFor="let field of question.fields">
-        <div class="button-container" *ngIf="field.type === 'radio' || field.type === 'checkbox'; else elseBlock">
+        <div class="button-container" *ngIf="field.type === 'radio' || field.type === 'list'; else elseBlock">
           <ul>
             <li>
               <input *ngIf="field.type === 'radio'" type="radio" [id]="field.id" [value]="field.id" name="radioOptions" ngModel>
-              <input *ngIf="field.type === 'checkbox'" type="checkbox" [id]="field.id" [value]="field.label" name="multiSelectOptions" ngModel>
+              <input *ngIf="field.type === 'list'" type="checkbox" [id]="field.id" [value]="field.label" name="multiSelectOptions" ngModel>
               <label for={{field.id}}>{{field.label}}</label>
               <div class="check"></div>
             </li>
@@ -44,10 +44,16 @@
       </div>
     </div>
     <div *ngIf="question.questionsRemaining >= 0 else viewPlanBlock">
-      <div class="row" *ngIf="question.buttons">
-        <div class="col-sm-6 col-sm-offset-3">
-          <button class="btn btn-primary">{{question.buttons[0].label}}</button>
+      <div class="row button-row" *ngIf="question.buttons">
+        <div *ngIf="question.buttons.length > 1" class="button-container">
+          <ul class="multi-button">
+            <li *ngFor="let button of question.buttons">
+              <input *ngIf="button.label !== 'Continue'" type="radio" [id]="button.id" [value]="button.id" name="buttonOptions" ngModel>
+              <label *ngIf="button.label !== 'Continue'" for={{button.id}}>{{button.label}}</label>
+            </li>
+          </ul>
         </div>
+        <button type="submit" class="btn btn-primary">Continue</button>
       </div>
       <div class="row">
         <div class="col-md-10 col-md-offset-1 col-sm-12 col-sm-offset-0">
