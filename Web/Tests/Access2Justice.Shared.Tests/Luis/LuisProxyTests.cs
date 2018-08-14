@@ -47,8 +47,7 @@ namespace Access2Justice.Shared.Tests.Luis
 
             luisSettings.Endpoint.Returns(new Uri("https://www.luis.ai/home"));
             luisSettings.TopIntentsCount.Returns(3);
-            luisSettings.UpperThreshold.Returns(0.9M);
-            luisSettings.LowerThreshold.Returns(0.6M);
+            luisSettings.IntentAccuracyThreshold.Returns(0.9M);
         }
 
         [Fact]
