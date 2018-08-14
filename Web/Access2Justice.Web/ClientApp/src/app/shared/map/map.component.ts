@@ -99,10 +99,15 @@ export class MapComponent implements OnInit {
               this.geolocationPosition.coords.longitude, environment.bingmap_key).subscribe(response => {
                 this.selectedAddress = response;
                 environment.map_type = true;
-                this.mapService.mapLocationDetails(this.selectedAddress.resourceSets[0].resources[0]);
-                this.mapService.updateLocation();
-                this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
-                this.displayLocationDetails(this.mapLocation);
+                //this.selectedAddress.resourceSets[0].resources[0].address.adminDistrict = "WA";
+                this.mapResultsService.getStateFullName(this.selectedAddress.resourceSets[0].resources[0].address.adminDistrict, environment.bingmap_key)
+                  .subscribe(stateFullName => {
+                    this.selectedAddress.resourceSets[0].resources[0].address.adminDistrict = stateFullName.resourceSets[0].resources[0].name;
+                    this.mapService.mapLocationDetails(this.selectedAddress.resourceSets[0].resources[0]);
+                    this.mapService.updateLocation();
+                    this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+                    this.displayLocationDetails(this.mapLocation);
+                  });
               });
           this.detectLocation = false;
         },
