@@ -1,6 +1,7 @@
 import { NgForm } from '@angular/forms';
 import { QuestionComponent } from './question.component';
 import { of } from 'rxjs/observable/of';
+import { Observable } from 'rxjs';
 
 describe('QuestionComponent', () => {
   let component: QuestionComponent;
@@ -25,7 +26,7 @@ describe('QuestionComponent', () => {
 
   beforeEach(() => {
     mockQuestionService = jasmine.createSpyObj(['getQuestion', 'getNextQuestion']);
-    component = new QuestionComponent(mockQuestionService, undefined);
+    component = new QuestionComponent(mockQuestionService, undefined, undefined);
 
   });
 
