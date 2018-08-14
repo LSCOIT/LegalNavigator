@@ -21,6 +21,8 @@ export class ShowMoreService {
   activeResource: any;
 
   clickSeeMoreOrganizations(resourceType: string, activeId: string) {
+    sessionStorage.removeItem("cacheSearchResults");
+    sessionStorage.removeItem("searchedLocationMap");
     this.resourceFilter.ResourceType = resourceType;
     this.resourceFilter.TopicIds = [];
     if (activeId) {

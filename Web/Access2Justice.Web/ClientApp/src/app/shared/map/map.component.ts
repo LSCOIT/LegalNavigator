@@ -140,6 +140,13 @@ export class MapComponent implements OnInit {
       });
   }
 
+  setLocalMapLocation() {
+    if (!this.mapType && sessionStorage.getItem("searchedLocationMap")) {
+      this.mapLocation = JSON.parse(sessionStorage.getItem("searchedLocationMap"));      
+      this.displayLocationDetails(this.mapLocation);
+    }
+  }
+
   ngOnInit() {
     this.getLocationNavigationContent();
     this.showLocality = true;
@@ -147,13 +154,14 @@ export class MapComponent implements OnInit {
       if (!sessionStorage.getItem("globalMapLocation")) {
         this.loadCurrentLocation();
       }
-    } else {
+    } else {      
       this.showLocality = false;
     }
     if (sessionStorage.getItem("globalMapLocation")) {
       this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
       this.displayLocationDetails(this.mapLocation);
     }
+    this.setLocalMapLocation();
     this.subscription = this.mapService.notifyLocation
       .subscribe((value) => {
         this.displayLocationDetails(this.mapLocation);
