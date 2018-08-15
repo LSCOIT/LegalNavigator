@@ -22,7 +22,8 @@ export class SearchComponent implements OnInit {
   onSubmit(searchForm: NgForm): void {
     this.luisInput.Sentence = searchForm.value.inputText;
     this.luisInput.Location = JSON.parse(sessionStorage.getItem("globalMapLocation"));
-    sessionStorage.removeItem("cacheSearchResults");
+    sessionStorage.removeItem("cacheSearchResults"); 
+    sessionStorage.removeItem("searchedLocationMap");
 
     this.searchService.search(this.luisInput)
       .subscribe(response => {
