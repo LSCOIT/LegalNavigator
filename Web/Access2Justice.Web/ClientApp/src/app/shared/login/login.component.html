@@ -7,7 +7,7 @@
     {{userProfile}}
     <img class="dropdown-icon" src="/assets/images/small-icons/dropdown_arrow.svg" alt="signin dropdown icon" />
   </a>
-  <ul *dropdownMenu class="dropdown-menu pull-right">
+  <ul (click)="onProfileOptionClick()" *dropdownMenu class="dropdown-menu pull-right">
     <li class="list-items">
       <a class="dropdown-item" [routerLink]="['/profile']">My Plan</a>
       <a class="dropdown-item" href="#">Account Settings</a>

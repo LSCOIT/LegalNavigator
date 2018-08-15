@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, ViewChild, Output, EventEmitter } from '@angular/core';
 import { api } from '../../../api/api';
 import { environment } from '../../../environments/environment';
 import { Login } from '../navigation/navigation';
@@ -14,8 +14,13 @@ export class LoginComponent implements OnInit {
   isLoggedIn: boolean = false;
   blobUrl: any = environment.blobUrl;
   @ViewChild('dropdownMenu') dropdown: ElementRef;
+  @Output() sendProfileOptionClickEvent = new EventEmitter<string>();
 
   constructor() { }
+
+  onProfileOptionClick() {
+    this.sendProfileOptionClickEvent.emit();
+  }
 
   toggleDropdown() {
     this.dropdown.nativeElement.style.display =
