@@ -34,22 +34,22 @@
         <li class="vertical-line"></li>
         <li><a [routerLink]="['/' + about?.button?.buttonLink]">{{about?.button?.buttonText}}</a></li>
       </ul>
-      <div class="bottom-menu" (click)="closeNav()">
+      <div class="bottom-menu">
         <ul>
-          <li>
+          <li (click)="closeNav()">
             <a [routerLink]="['/' + privacyPromise?.button?.buttonLink]">
               <img class="nav-icon" [src]="blobUrl + privacyPromise?.image?.source" aria-hidden="true" />
               {{privacyPromise?.button?.buttonText}}
             </a>
           </li>
-          <li>
+          <li (click)="closeNav()">
             <a [routerLink]="['/'+ helpAndFAQ?.button?.buttonLink]">
-              <span class="glyphicon glyphicon-question-sign nav-icon" aria-hidden="true"></span>
+              <img class="nav-icon" [src]="blobUrl + helpAndFAQ?.image?.source" aria-hidden="true" />
               {{helpAndFAQ?.button?.buttonText}}
             </a>
           </li>
           <li>
-            <a [routerLink]="['/'+ login?.button?.buttonLink]" class="account-menu">{{login?.button?.buttonText}}</a>
+            <app-login [login]="login"></app-login>
           </li>
         </ul>
       </div>

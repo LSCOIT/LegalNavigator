@@ -1,0 +1,17 @@
+<a *ngIf="!isLoggedIn && login" (click)="externalLogin()" class="account-menu">
+  <img class="nav-icon" [src]="blobUrl + login?.image?.source" aria-hidden="true"/>{{login?.button?.buttonText}}
+</a>
+<div *ngIf="isLoggedIn" dropdown class="inline" id="signin-dropdown">
+  <a dropdownToggle (click)="false">
+    <img class="nav-icon" src="/assets/images/small-icons/profile.svg" aria-hidden="true" />
+    {{userProfile}}
+    <img class="dropdown-icon" src="/assets/images/small-icons/dropdown_arrow.svg" alt="signin dropdown icon" />
+  </a>
+  <ul *dropdownMenu class="dropdown-menu pull-right">
+    <li class="list-items">
+      <a class="dropdown-item" [routerLink]="['/profile']">My Plan</a>
+      <a class="dropdown-item" href="#">Account Settings</a>
+      <a class="dropdown-item" (click)="logout()">Log Out</a>
+    </li>
+  </ul>
+</div>
