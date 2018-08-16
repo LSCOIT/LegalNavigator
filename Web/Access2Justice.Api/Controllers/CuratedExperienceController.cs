@@ -114,6 +114,27 @@ namespace Access2Justice.Api.Controllers
                 Topics = topics,
             });
         }
+
+        /// <summary>
+        /// This endpoint is just to demo the A2J Personalized Plan schema. Added to help testing.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("A2JPersonalizedPlan/FullTemplate")]
+        public async Task<IActionResult> GetA2JPersonalizedPlan()
+        {
+            return Ok(await a2jAuthorBuisnessLogic.GetA2JPersonalizedPlanStepsAsync());
+        }
+
+        /// <summary>
+        /// This endpoint is just to demo the A2J Personalized Plan schema. Added to help testing.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("A2JPersonalizedPlan/StepsInScope")]
+        public async Task<IActionResult> GetA2JPersonalizedPlanStepsInScope()
+        {
+            return Ok(await a2jAuthorBuisnessLogic.ExtractA2JPersonalizedPlanStepsInScopeAsync());
+        }
+
         #endregion
 
         [HttpPost("Import")]

@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Access2Justice.Api.BusinessLogic
 {
@@ -52,6 +53,20 @@ namespace Access2Justice.Api.BusinessLogic
             dbService.CreateItemAsync(resource, dbSettings.ResourceCollectionId);
 
             return cx;
+        }
+
+        // Todo:@Alaa remove - return full peronalized plan for demo
+        public async Task<A2JPersonalizedPlan> GetA2JPersonalizedPlanStepsAsync()
+        {
+            var temp = await dbService.GetItemAsync<A2JPersonalizedPlan>("432e7473-02df-4807-8d45-39ed821c5eb1", dbSettings.A2JAuthorTemplatesCollectionId);
+
+            return temp;
+        }
+
+        // Todo:@Alaa naming could be revisited
+        public async Task<A2JPersonalizedPlan> ExtractA2JPersonalizedPlanStepsInScopeAsync()
+        {
+            throw new NotImplementedException();
         }
 
         private Resource MapResourceProperties(IEnumerable<JProperty> a2jProperties, Guid curatedExperienceId)
