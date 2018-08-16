@@ -117,16 +117,18 @@ namespace Access2Justice.Api.Controllers
 
         /// <summary>
         /// This endpoint is just to demo the A2J Personalized Plan schema. Added to help testing.
+        /// It returns the Template.json as is when downloaded from A2J Author
         /// </summary>
         /// <returns></returns>
-        [HttpGet("A2JPersonalizedPlan/FullTemplate")]
+        [HttpGet("A2JPersonalizedPlan/OriginalAsIsTemplate")]
         public async Task<IActionResult> GetA2JPersonalizedPlan()
         {
             return Ok(await a2jAuthorBuisnessLogic.GetA2JPersonalizedPlanStepsAsync());
         }
 
         /// <summary>
-        /// This endpoint is just to demo the A2J Personalized Plan schema. Added to help testing.
+        /// This endpoint is just to demo the A2J Personalized Plan schema. Added to help testing. 
+        /// It is the computed output that returns the steps mapped to a user answer (which we are going to use to build our personalized plan).
         /// </summary>
         /// <returns></returns>
         [HttpGet("A2JPersonalizedPlan/StepsInScope")]
@@ -134,7 +136,6 @@ namespace Access2Justice.Api.Controllers
         {
             return Ok(await a2jAuthorBuisnessLogic.ExtractA2JPersonalizedPlanStepsInScopeAsync());
         }
-
         #endregion
 
         [HttpPost("Import")]

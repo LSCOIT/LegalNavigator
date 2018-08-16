@@ -43,6 +43,8 @@ namespace Access2Justice.Api.BusinessLogic
                     Help = pageProperties.GetValue("help"),
                     Learn = pageProperties.GetValue("learn"),
                     Text = pageProperties.GetValue("text"),
+                    CodeBefore = pageProperties.GetValue("codeBefore"),
+                    CodeAfter = pageProperties.GetValue("codeAfter"),
                     Fields = componentFields,
                     Buttons = componentButtons
                 });
@@ -55,12 +57,10 @@ namespace Access2Justice.Api.BusinessLogic
             return cx;
         }
 
-        // Todo:@Alaa remove - return full peronalized plan for demo
+        // Todo:@Alaa remove - returning full peronalized plan for demo and testing
         public async Task<A2JPersonalizedPlan> GetA2JPersonalizedPlanStepsAsync()
         {
-            var temp = await dbService.GetItemAsync<A2JPersonalizedPlan>("432e7473-02df-4807-8d45-39ed821c5eb1", dbSettings.A2JAuthorTemplatesCollectionId);
-
-            return temp;
+            return await dbService.GetItemAsync<A2JPersonalizedPlan>("432e7473-02df-4807-8d45-39ed821c5eb1", dbSettings.A2JAuthorTemplatesCollectionId);
         }
 
         // Todo:@Alaa naming could be revisited
@@ -97,6 +97,8 @@ namespace Access2Justice.Api.BusinessLogic
                     Id = Guid.NewGuid(),
                     Type = type.ToString(),
                     Label = field.GetValue("label"),
+                    Name = field.GetValue("name"),
+                    Value = field.GetValue("value"),
                     IsRequired = bool.Parse(field.GetValue("required")),
                     MinLength = field.GetValue("min"),
                     MaxLength = field.GetValue("max"),
@@ -119,7 +121,9 @@ namespace Access2Justice.Api.BusinessLogic
                 {
                     Id = Guid.NewGuid(),
                     Label = button.GetValue("label"),
-                    Destination = button.GetValue("next")
+                    Destination = button.GetValue("next"),
+                    Name = button.GetValue("name"),
+                    Value = button.GetValue("value")
                 });
             }
 

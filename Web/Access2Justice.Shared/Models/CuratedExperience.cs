@@ -47,6 +47,12 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "fields")]
         public List<Field> Fields { get; set; }
 
+        [JsonProperty(PropertyName = "codeBefore")]
+        public string CodeBefore { get; set; }
+
+        [JsonProperty(PropertyName = "codeAfter")]
+        public string CodeAfter { get; set; }
+
         public CuratedExperienceComponent()
         {
             Tags = new List<string>();
@@ -62,6 +68,12 @@ namespace Access2Justice.Shared.Models
 
         [JsonProperty(PropertyName = "label")]
         public string Label { get; set; }
+
+        [JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        [JsonProperty(PropertyName = "value")]
+        public string Value { get; set; }
 
         [JsonProperty(PropertyName = "destination")]
         public string Destination { get; set; }
@@ -95,6 +107,12 @@ namespace Access2Justice.Shared.Models
 
         [JsonProperty(PropertyName = "label")]
         public string Label { get; set; }
+
+        [JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        [JsonProperty(PropertyName = "value")]
+        public string Value { get; set; }
 
         [JsonProperty(PropertyName = "isRequired")]
         public bool IsRequired { get; set; }
