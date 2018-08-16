@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { api } from '../../../api/api';
 import { StaticResourceService } from '../../shared/static-resource.service';
 import { Navigation, Language, Location, Logo, Home, GuidedAssistant, TopicAndResources, About, Search, PrivacyPromise, HelpAndFAQ, Login } from './navigation';
 import { environment } from '../../../environments/environment';
@@ -13,9 +12,6 @@ import { MapService } from '../map/map.service';
 })
 
 export class UpperNavComponent implements OnInit {
-
-  userProfile: string;
-  isLoggedIn: boolean = false;
   blobUrl: any = environment.blobUrl;
   navigation: Navigation;
   name: string = 'Navigation';
@@ -26,23 +22,6 @@ export class UpperNavComponent implements OnInit {
   login: Login;
   subscription: any;
   constructor(private http: HttpClient, private staticResourceService: StaticResourceService, private mapService: MapService) { }
-
-  externalLogin() {
-    var form = document.createElement('form');
-    form.setAttribute('method', 'POST');
-    form.setAttribute('action', api.loginUrl);
-    document.body.appendChild(form);
-    form.submit();
-  }
-
-  logout() {
-    sessionStorage.removeItem("profileData");
-    let form = document.createElement('form');
-    form.setAttribute('method', 'POST');
-    form.setAttribute('action', api.logoutUrl);
-    document.body.appendChild(form);
-    form.submit();
-  }
 
   filterUpperNavigationContent(navigation): void {
     if (navigation) {
@@ -72,12 +51,5 @@ export class UpperNavComponent implements OnInit {
 
   ngOnInit() {
     this.getUpperNavigationContent();
-    let profileData = sessionStorage.getItem("profileData");
-    if (profileData != undefined) {
-      profileData = JSON.parse(profileData);
-      this.isLoggedIn = true;
-      this.userProfile = profileData["UserName"];
-    }
-    
   }
 }
