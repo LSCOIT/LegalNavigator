@@ -1,4 +1,4 @@
-<div [ngClass]="{ 'dimmer': detectLocation, 'inline': !detectLocation  }"></div>
+<div [ngClass]="{ 'dimmer': detectLocation, 'no-dimmer': !detectLocation  }"></div>
 <div *ngIf="locationNavContent" class="navbar-left edit-location pull-right" (click)="changeLocation(template)">
   <img *ngIf="locationNavContent.image.source" class="nav-icon" [src]="blobUrl + locationNavContent?.image?.source" aria-hidden="true" />
   <span *ngIf="showLocation; else elseBlock">
@@ -26,7 +26,7 @@
     </div>
     <div class="row">
       <div id="searchbox-container">
-        <input type="text" id="search-box" aria-label="search address box" autocomplete="off" placeholder="City, zip code, address" (input)="onSearchChange()" />
+        <input type="text" id="search-box" aria-label="search address box" autocomplete="off" placeholder="Enter your state" (input)="onSearchChange()" />
         <button type="button" class="search-btn" (click)="geocode()">Search</button>
         <span *ngIf="isError" class="alert alert-danger">
           Please select your location.
