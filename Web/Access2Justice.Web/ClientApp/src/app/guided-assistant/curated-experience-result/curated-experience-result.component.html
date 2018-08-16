@@ -1,29 +1,25 @@
 <div class="container">
-  <div class="col-sm-8 col-sm-offset-2 text-center">
-    <h3>Are you looking for information on any of the following topics?</h3>
-    <form #gaForm="ngForm" (ngSubmit)="onSubmit(gaForm)">
-      <div class="button-container">
-        <ul>
-          <li>
-            <input type="checkbox" [id]="guidedAssistantResults.topIntent" [value]="guidedAssistantResults.topIntent"  name="multiSelectOptions" ngModel>
-            <label [for]="guidedAssistantResults.topIntent">{{guidedAssistantResults.topIntent}}</label>
-            <div class="check"></div>
-          </li>
-          <li *ngFor="let intent of relevantIntents">
-            <input type="checkbox"  [id]="intent" [value]="intent" name="multiSelectOptions" ngModel>
-            <label [for]="intent">{{intent}}</label>
-            <div class="check"></div>
-          </li>
-          <li>
-            <input type="checkbox" id="None of the above" value="None of the above" name="multiSelectOptions" ngModel>
-            <label for="None of the above">None of the above</label>
-            <div class="check"></div>
-          </li>
-        </ul>
-      </div>
-      <div class="row">
-        <button type="submit" class="btn btn-primary">Continue</button>
-      </div>
-    </form>
+  <div class="col-sm-8 col-sm-offset-2 text-center top-intent">
+    <h3>We found a topic that matches your search:</h3>
+    <p>{{guidedAssistantResults.topIntent}}</p>
+    <button class="btn btn-primary">Start the Guided Assistant</button>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 relevant-intent">
+      <h5>You may also be interested in the following topic:</h5>
+      <form #gaForm="ngForm" (ngSubmit)="onSubmit(gaForm)">
+        <div class="button-container">
+          <ul>
+            <li *ngFor="let intent of relevantIntents">
+              <input type="checkbox" [id]="intent" [value]="intent" name="multiSelectOptions" ngModel>
+              <label [for]="intent">{{intent}}</label>
+              <div class="check"></div>
+              <p class="learn-more">Learn More</p>
+            </li>
+          </ul>
+        </div>
+        <button type="submit" class="btn btn-secondary" (click)="saveForLater()">Save topics for later</button>
+      </form>
+    </div>
   </div>
 </div>
