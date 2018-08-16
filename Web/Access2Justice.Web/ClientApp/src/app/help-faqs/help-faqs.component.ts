@@ -20,21 +20,29 @@ export class HelpFaqsComponent implements OnInit {
     private staticResourceService: StaticResourceService
   ) { }
 
-  filterHelpAndFaqContent(): void {
-    if (this.helpAndFaqsContent) {
-      this.faqData = this.helpAndFaqsContent.faqs;
-      this.imageData = this.helpAndFaqsContent.image;
+  filterHelpAndFaqContent(helpAndFaqsContent): void {
+    if (helpAndFaqsContent) {
+      this.helpAndFaqsContent = helpAndFaqsContent
+      this.faqData = helpAndFaqsContent.faqs;
+      this.imageData = helpAndFaqsContent.image;
     }
   }
 
   getHelpFaqPageContent(): void {
     let helpAndFAQPageRequest = { name: this.name };
-    this.staticResourceService.getStaticContent(helpAndFAQPageRequest)
-      .subscribe(content => {
-        this.helpAndFaqsContent = content[0];
-        this.filterHelpAndFaqContent();
-      });
+    if (this.staticResourceService.helpAndFaqsContent && (this.staticResourceService.helpAndFaqsContent.location[0].state == this.staticResourceService.getLocation())) {
+      this.helpAndFaqsContent = this.staticResourceService.helpAndFaqsContent;
+      this.filterHelpAndFaqContent(this.staticResourceService.helpAndFaqsContent);
+    } else {
+      this.staticResourceService.getStaticContent(helpAndFAQPageRequest)
+        .subscribe(content => {
+          this.helpAndFaqsContent = content[0];
+          this.filterHelpAndFaqContent(this.helpAndFaqsContent);
+          this.staticResourceService.helpAndFaqsContent = this.helpAndFaqsContent;
+        });
+    }
   }
+
   ngOnInit() {
     this.getHelpFaqPageContent();
   }

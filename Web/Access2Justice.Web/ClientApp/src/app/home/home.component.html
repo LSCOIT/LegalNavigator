@@ -63,7 +63,7 @@
         <carousel>
           <slide *ngFor="let slide of carouselData.slides">
             <div>
-              <img [src]="slide?.image?.source" class="testimonial-img col-lg-3 col-sm-4" alt="slide?.image?.altText">
+              <img [src]="blobUrl + slide?.image.source" class="testimonial-img col-lg-3 col-sm-4" alt="slide?.image.altText">
               <div class="slide-content inline col-lg-9 col-sm-8">
                 <h5>{{slide.quote}}</h5>
                 <hr />
