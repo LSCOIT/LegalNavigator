@@ -161,10 +161,10 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         public void GetTopicsAsyncTestsShouldReturnProperData()
         {
             //arrange
-            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.TopicCollectionId, query, "");
+            var dbResponse = dynamicQueries.FindItemsWhereWithLocationAsync(cosmosDbSettings.TopicCollectionId, query, "",location);
             dbResponse.ReturnsForAnyArgs<dynamic>(topicsData);
             //act
-            var response = topicsResourcesBusinessLogic.GetTopLevelTopicsAsync().Result;
+            var response = topicsResourcesBusinessLogic.GetTopLevelTopicsAsync(expectedLocationValue).Result;
             string result = JsonConvert.SerializeObject(response);
             //assert
             Assert.Contains(expectedTopicId, result, StringComparison.InvariantCulture);
@@ -174,11 +174,11 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         public void GetTopicsAsyncTestsShouldReturnEmptyData()
         {
             //arrange
-            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.TopicCollectionId, query, "");
+            var dbResponse = dynamicQueries.FindItemsWhereWithLocationAsync(cosmosDbSettings.TopicCollectionId, query, "",location);
             dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
 
             //act
-            var response = topicsResourcesBusinessLogic.GetTopLevelTopicsAsync();
+            var response = topicsResourcesBusinessLogic.GetTopLevelTopicsAsync(expectedLocationValue);
             string result = JsonConvert.SerializeObject(response);
 
             //assert
@@ -219,10 +219,10 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         public void GetSubTopicsAsyncTestsShouldReturnProperData()
         {
             //arrange
-            var dbResponse = dynamicQueries.FindItemsWhereArrayContainsAsync(cosmosDbSettings.TopicCollectionId, query, "", "");
+            var dbResponse = dynamicQueries.FindItemsWhereArrayContainsAsyncWithLocation(cosmosDbSettings.TopicCollectionId, query, "", "",location);
             dbResponse.ReturnsForAnyArgs<dynamic>(resourcesData);
             //act
-            var response = topicsResourcesBusinessLogic.GetSubTopicsAsync(topicId).Result;
+            var response = topicsResourcesBusinessLogic.GetSubTopicsAsync(topicId,expectedLocationValue).Result;
             string result = JsonConvert.SerializeObject(response);
             //assert
             Assert.Contains(expectedResourceId, result, StringComparison.InvariantCulture);
@@ -232,11 +232,11 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         public void GetSubTopicsAsyncTestsShouldReturnEmptyData()
         {
             //arrange
-            var dbResponse = dynamicQueries.FindItemsWhereArrayContainsAsync(cosmosDbSettings.TopicCollectionId, query, "", "");
+            var dbResponse = dynamicQueries.FindItemsWhereArrayContainsAsyncWithLocation(cosmosDbSettings.TopicCollectionId, query, "", "",location);
             dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
 
             //act
-            var response = topicsResourcesBusinessLogic.GetSubTopicsAsync(topicId);
+            var response = topicsResourcesBusinessLogic.GetSubTopicsAsync(topicId,expectedLocationValue);
             string result = JsonConvert.SerializeObject(response);
 
             //assert
@@ -247,10 +247,10 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         public void GetSubTopicDetailsAsyncTestsShouldReturnProperData()
         {
             //arrange
-            var dbResponse = dynamicQueries.FindItemsWhereArrayContainsAsync(cosmosDbSettings.ResourceCollectionId, "topicTags", "id", topicId);
+            var dbResponse = dynamicQueries.FindItemsWhereArrayContainsAsyncWithLocation(cosmosDbSettings.ResourceCollectionId, "topicTags", "id", topicId,location);
             dbResponse.ReturnsForAnyArgs<dynamic>(topicsData);
             //act
-            var response = topicsResourcesBusinessLogic.GetResourceAsync(topicId).Result;
+            var response = topicsResourcesBusinessLogic.GetResourceAsync(topicId,expectedLocationValue).Result;
             string result = JsonConvert.SerializeObject(response);
             //assert
             Assert.Contains(topicId, result, StringComparison.InvariantCulture);
@@ -260,11 +260,11 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         public void GetSubTopicDetailsAsyncTestsShouldReturnEmptyData()
         {
             //arrange
-            var dbResponse = dynamicQueries.FindItemsWhereArrayContainsAsync(cosmosDbSettings.ResourceCollectionId, "topicTags", "id", "");
+            var dbResponse = dynamicQueries.FindItemsWhereArrayContainsAsyncWithLocation(cosmosDbSettings.ResourceCollectionId, "topicTags", "id", "",location);
             dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
 
             //act
-            var response = topicsResourcesBusinessLogic.GetResourceAsync(topicId);
+            var response = topicsResourcesBusinessLogic.GetResourceAsync(topicId,expectedLocationValue);
             string result = JsonConvert.SerializeObject(response);
 
             //assert
