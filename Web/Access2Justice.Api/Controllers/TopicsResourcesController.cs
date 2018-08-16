@@ -52,9 +52,9 @@ namespace Access2Justice.Api.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("api/topics/getresource/{id}")]
-        public async Task<IActionResult> GetResource(string id)
+        public async Task<IActionResult> GetResource(string id,Location location)
         {
-            var resource = await topicsResourcesBusinessLogic.GetResourceByIdAsync(id);
+            var resource = await topicsResourcesBusinessLogic.GetResourceByIdAsync(id,location);
             return Ok(resource);
         }
 

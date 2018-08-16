@@ -50,9 +50,9 @@ namespace Access2Justice.Api.BusinessLogic
             return await dbClient.FindItemsWhereArrayContainsAsyncWithLocation(dbSettings.TopicCollectionId, Constants.ParentTopicId, Constants.Id, parentTopicId, location);
         }
 
-        public async Task<dynamic> GetResourceByIdAsync(string id)
+        public async Task<dynamic> GetResourceByIdAsync(string id,Location location)
         {
-            return await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, Constants.Id, id);
+            return await dbClient.FindItemsWhereWithLocationAsync(dbSettings.ResourceCollectionId, Constants.Id, id,location);
         }
 
         public async Task<dynamic> GetResourceAsync(string parentTopicId,Location location)
