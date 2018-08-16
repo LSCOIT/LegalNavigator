@@ -14,31 +14,37 @@ import { MapService } from '../map/map.service';
 export class UpperNavComponent implements OnInit {
   blobUrl: any = environment.blobUrl;
   navigation: Navigation;
-  id: string = 'Navigation';
+  name: string = 'Navigation';
   language: Language;
   location: Location;
   privacyPromise: PrivacyPromise;
   helpAndFAQ: HelpAndFAQ;
   login: Login;
-  subscription: any;  
+  subscription: any;
   constructor(private http: HttpClient, private staticResourceService: StaticResourceService, private mapService: MapService) { }
 
-  filterUpperNavigationContent(): void {
-    if (this.navigation) {
-      this.id = this.navigation.name;
-      this.privacyPromise = this.navigation.privacyPromise;
-      this.helpAndFAQ = this.navigation.helpAndFAQ;
-      this.login = this.navigation.login;     
+  filterUpperNavigationContent(navigation): void {
+    if (navigation) {
+      this.name = navigation.name;
+      this.privacyPromise = navigation.privacyPromise;
+      this.helpAndFAQ = navigation.helpAndFAQ;
+      this.login = navigation.login;
     }
   }
 
   getUpperNavigationContent(): void {
-    let homePageRequest = { name: this.id, location: this.location };
-    this.staticResourceService.getStaticContent(homePageRequest)
-      .subscribe(content => {
-        this.navigation = content[0];
-        this.filterUpperNavigationContent();        
-      });
+    let homePageRequest = { name: this.name };
+    if (this.staticResourceService.navigation && (this.staticResourceService.navigation.location[0].state == this.staticResourceService.getLocation())) {
+      this.navigation = this.staticResourceService.navigation;
+      this.filterUpperNavigationContent(this.navigation);
+    } else {
+      this.staticResourceService.getStaticContent(homePageRequest)
+        .subscribe(content => {
+          this.navigation = content[0];
+          this.filterUpperNavigationContent(this.navigation);
+          this.staticResourceService.navigation = this.navigation;
+        });
+    }
   }
 
   ngOnInit() {

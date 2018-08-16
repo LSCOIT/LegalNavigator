@@ -1,10 +1,12 @@
+import { Location } from "../about/about";
+
 export interface Home {
   carousel: Carousel;
   guidedAssistantOverview: GuidedAssistantOverview;
   helpText: HelpText;
   hero: Hero;
   id: string;
-  location: Location;
+  location: Array<Location>;
   privacy: Privacy;
   sponsorOverview: SponsorOverview;
   topicAndResources: TopicAndResources;
