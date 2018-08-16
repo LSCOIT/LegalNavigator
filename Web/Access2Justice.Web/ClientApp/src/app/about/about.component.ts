@@ -23,7 +23,7 @@ export class AboutComponent implements OnInit {
 
   getAboutPageContent(): void {
     let aboutPageRequest = { name: this.name };
-    if (this.staticResourceService.aboutContent && (this.staticResourceService.aboutContent.location[0].state == this.staticResourceService.loadStateName())) {
+    if (this.staticResourceService.aboutContent && (this.staticResourceService.aboutContent.location[0].state == this.staticResourceService.getLocation())) {
       this.aboutContent = this.staticResourceService.aboutContent;
       this.filterAboutContent(this.staticResourceService.aboutContent);
     } else {

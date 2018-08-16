@@ -33,6 +33,14 @@ export class StaticResourceService {
     }
   }
 
+  getLocation() {
+    let location = this.loadStateName().state;
+    if (!((location == "Alaska") || (location == "Hawaii"))) {
+      location = "Default";
+    }
+    return location;
+  }
+
   getStaticContent(pageRequest) {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })

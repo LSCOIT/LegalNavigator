@@ -34,7 +34,7 @@ export class UpperNavComponent implements OnInit {
 
   getUpperNavigationContent(): void {
     let homePageRequest = { name: this.name };
-    if (this.staticResourceService.navigation && (this.staticResourceService.navigation.location[0].state == this.staticResourceService.loadStateName())) {
+    if (this.staticResourceService.navigation && (this.staticResourceService.navigation.location[0].state == this.staticResourceService.getLocation())) {
       this.navigation = this.staticResourceService.navigation;
       this.filterUpperNavigationContent(this.navigation);
     } else {

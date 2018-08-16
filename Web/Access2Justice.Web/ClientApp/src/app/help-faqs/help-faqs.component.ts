@@ -30,7 +30,7 @@ export class HelpFaqsComponent implements OnInit {
 
   getHelpFaqPageContent(): void {
     let helpAndFAQPageRequest = { name: this.name };
-    if (this.staticResourceService.helpAndFaqsContent && (this.staticResourceService.helpAndFaqsContent.location[0].state == this.staticResourceService.loadStateName())) {
+    if (this.staticResourceService.helpAndFaqsContent && (this.staticResourceService.helpAndFaqsContent.location[0].state == this.staticResourceService.getLocation())) {
       this.helpAndFaqsContent = this.staticResourceService.helpAndFaqsContent;
       this.filterHelpAndFaqContent(this.staticResourceService.helpAndFaqsContent);
     } else {

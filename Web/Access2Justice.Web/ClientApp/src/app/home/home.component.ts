@@ -56,7 +56,7 @@ export class HomeComponent implements OnInit {
 
   getHomePageContent(): void {
     let homePageRequest = { name: this.name };
-    if (this.staticResourceService.homeContent && (this.staticResourceService.homeContent.location[0].state == this.staticResourceService.loadStateName())) {
+    if (this.staticResourceService.homeContent && (this.staticResourceService.homeContent.location[0].state == this.staticResourceService.getLocation())) {
       this.homeContent = this.staticResourceService.homeContent;
       this.filterHomeContent(this.staticResourceService.homeContent);
     } else {

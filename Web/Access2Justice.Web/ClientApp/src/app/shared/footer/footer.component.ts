@@ -34,7 +34,7 @@ export class FooterComponent implements OnInit {
 
   getNavigationContent(): void {
     let pageContentRequest = { name: this.name };
-    if (this.staticResourceService.navigation && (this.staticResourceService.navigation.location[0].state == this.staticResourceService.loadStateName())) {
+    if (this.staticResourceService.navigation && (this.staticResourceService.navigation.location[0].state == this.staticResourceService.getLocation())) {
       this.navigation = this.staticResourceService.navigation;
       this.filterNavigationContent(this.staticResourceService.navigation);
     } else {
