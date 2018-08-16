@@ -34,17 +34,16 @@ export class FooterComponent implements OnInit {
 
   getNavigationContent(): void {
     let pageContentRequest = { name: this.name };
-    if (!this.staticResourceService.navigation) {
+    if (this.staticResourceService.navigation && (this.staticResourceService.navigation.location[0].state == this.staticResourceService.loadStateName())) {
+      this.navigation = this.staticResourceService.navigation;
+      this.filterNavigationContent(this.staticResourceService.navigation);
+    } else {
       this.staticResourceService.getStaticContent(pageContentRequest)
         .subscribe(content => {
           this.navigation = content[0];
           this.filterNavigationContent(this.navigation);
           this.staticResourceService.navigation = this.navigation;
         });
-    }
-    else {
-      this.navigation = this.staticResourceService.navigation;
-      this.filterNavigationContent(this.staticResourceService.navigation);
     }
   }
 

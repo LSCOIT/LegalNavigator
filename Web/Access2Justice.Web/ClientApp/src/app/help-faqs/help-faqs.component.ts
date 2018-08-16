@@ -30,7 +30,10 @@ export class HelpFaqsComponent implements OnInit {
 
   getHelpFaqPageContent(): void {
     let helpAndFAQPageRequest = { name: this.name };
-    if (!this.staticResourceService.helpAndFaqsContent) {
+    if (this.staticResourceService.helpAndFaqsContent && (this.staticResourceService.helpAndFaqsContent.location[0].state == this.staticResourceService.loadStateName())) {
+      this.helpAndFaqsContent = this.staticResourceService.helpAndFaqsContent;
+      this.filterHelpAndFaqContent(this.staticResourceService.helpAndFaqsContent);
+    } else {
       this.staticResourceService.getStaticContent(helpAndFAQPageRequest)
         .subscribe(content => {
           this.helpAndFaqsContent = content[0];
@@ -38,11 +41,8 @@ export class HelpFaqsComponent implements OnInit {
           this.staticResourceService.helpAndFaqsContent = this.helpAndFaqsContent;
         });
     }
-    else {
-      this.helpAndFaqsContent = this.staticResourceService.helpAndFaqsContent;
-      this.filterHelpAndFaqContent(this.staticResourceService.helpAndFaqsContent);
-    }
   }
+
   ngOnInit() {
     this.getHelpFaqPageContent();
   }

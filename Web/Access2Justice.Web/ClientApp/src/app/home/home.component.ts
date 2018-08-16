@@ -56,17 +56,16 @@ export class HomeComponent implements OnInit {
 
   getHomePageContent(): void {
     let homePageRequest = { name: this.name };
-    if (!this.staticResourceService.homeContent) {
+    if (this.staticResourceService.homeContent && (this.staticResourceService.homeContent.location[0].state == this.staticResourceService.loadStateName())) {
+      this.homeContent = this.staticResourceService.homeContent;
+      this.filterHomeContent(this.staticResourceService.homeContent);
+    } else {
       this.staticResourceService.getStaticContent(homePageRequest)
         .subscribe(content => {
           this.homeContent = content[0];
           this.filterHomeContent(this.homeContent);
           this.staticResourceService.homeContent = this.homeContent;
         });
-    }
-    else {
-      this.homeContent = this.staticResourceService.homeContent;
-      this.filterHomeContent(this.staticResourceService.homeContent);
     }
   }
 

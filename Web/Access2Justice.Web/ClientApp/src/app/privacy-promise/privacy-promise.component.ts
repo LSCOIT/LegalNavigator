@@ -26,7 +26,10 @@ export class PrivacyPromiseComponent implements OnInit {
 
   getPrivacyPageContent(): void {
     let privacyPageRequest = { name: this.name };
-    if (!this.staticResourceService.privacyContent) {
+    if (this.staticResourceService.privacyContent && (this.staticResourceService.privacyContent.location[0].state == this.staticResourceService.loadStateName())) {
+      this.privacyContent = this.staticResourceService.privacyContent;
+      this.filterPrivacyContent(this.staticResourceService.privacyContent);
+    } else {
       this.staticResourceService.getStaticContent(privacyPageRequest)
         .subscribe(content => {
           this.privacyContent = content[0];
@@ -34,11 +37,8 @@ export class PrivacyPromiseComponent implements OnInit {
           this.staticResourceService.privacyContent = this.privacyContent;
         });
     }
-    else {
-      this.privacyContent = this.staticResourceService.privacyContent;
-      this.filterPrivacyContent(this.staticResourceService.privacyContent);
-    }
   }
+
   ngOnInit() {
     this.getPrivacyPageContent();
   }

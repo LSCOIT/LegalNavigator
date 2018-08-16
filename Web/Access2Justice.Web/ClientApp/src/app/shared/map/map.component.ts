@@ -133,17 +133,16 @@ export class MapComponent implements OnInit {
 
   getLocationNavigationContent(): void {
     let homePageRequest = { name: this.name };
-    if (!this.staticResourceService.navigation) {
+    if (this.staticResourceService.navigation && (this.staticResourceService.navigation.location[0].state == this.staticResourceService.loadStateName())) {
+      this.navigation = this.staticResourceService.navigation;
+      this.filterLocationNavigationContent(this.staticResourceService.navigation);
+    } else {
       this.staticResourceService.getStaticContent(homePageRequest)
         .subscribe(content => {
           this.navigation = content[0];
           this.filterLocationNavigationContent(this.navigation);
           this.staticResourceService.navigation = this.navigation;
         });
-    }
-    else {
-      this.navigation = this.staticResourceService.navigation;
-      this.filterLocationNavigationContent(this.staticResourceService.navigation);
     }
   }
 

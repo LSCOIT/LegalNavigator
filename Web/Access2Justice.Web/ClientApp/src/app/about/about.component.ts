@@ -23,17 +23,17 @@ export class AboutComponent implements OnInit {
 
   getAboutPageContent(): void {
     let aboutPageRequest = { name: this.name };
-    if (!this.staticResourceService.aboutContent) {
+    if (this.staticResourceService.aboutContent && (this.staticResourceService.aboutContent.location[0].state == this.staticResourceService.loadStateName())) {
+      this.aboutContent = this.staticResourceService.aboutContent;
+      this.filterAboutContent(this.staticResourceService.aboutContent);
+    } else {
       this.staticResourceService.getStaticContent(aboutPageRequest)
         .subscribe(content => {
           this.aboutContent = content[0];
           this.filterAboutContent(this.aboutContent);
           this.staticResourceService.aboutContent = this.aboutContent;
         });
-    }
-    else {
-      this.filterAboutContent(this.staticResourceService.aboutContent);
-    }
+    }   
   }
 
   ngOnInit() {
