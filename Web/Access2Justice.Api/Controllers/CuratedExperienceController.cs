@@ -2,13 +2,14 @@
 using Access2Justice.Api.ViewModels;
 using Access2Justice.Shared.Extensions;
 using Access2Justice.Shared.Interfaces;
-using Access2Justice.Shared.Models.CuratedExperience;
+using Access2Justice.Shared.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -17,11 +18,14 @@ namespace Access2Justice.Api.Controllers
     {
         private readonly IA2JAuthorBusinessLogic a2jAuthorBuisnessLogic;
         private readonly ICuratedExperienceBusinessLogic curatedExperienceBusinessLogic;
+        private readonly IPersonalizedPlanBusinessLogic personalizedPlanBusinessLogic;
 
-        public CuratedExperienceController(IA2JAuthorBusinessLogic a2jAuthorBuisnessLogic, ICuratedExperienceBusinessLogic curatedExperienceBusinessLogic)
+        public CuratedExperienceController(IA2JAuthorBusinessLogic a2jAuthorBuisnessLogic, ICuratedExperienceBusinessLogic curatedExperienceBusinessLogic,
+            IPersonalizedPlanBusinessLogic personalizedPlanBusinessLogic)
         {
             this.a2jAuthorBuisnessLogic = a2jAuthorBuisnessLogic;
             this.curatedExperienceBusinessLogic = curatedExperienceBusinessLogic;
+            this.personalizedPlanBusinessLogic = personalizedPlanBusinessLogic;
         }
 
         #region DEMO
@@ -46,6 +50,70 @@ namespace Access2Justice.Api.Controllers
             var json = "    {\r\n      \"id\": \"1ba7a445-7a2b-4d7b-b043-296bffef402a\",\r\n      \"name\": \"3-Address\",\r\n      \"text\": \"%%[Client first name TE]%% what is your address?&nbsp;\",\r\n      \"learn\": \"The UI will prompt the user to learn more.\",\r\n      \"help\": \"The UI will show help on this item.\",\r\n   \"tags\": [],\r\n      \"buttons\": [\r\n        {\r\n          \"id\": \"cafc4de0-91c5-4f67-a59f-bbffc2534236\",\r\n          \"label\": \"Continue\",\r\n          \"destination\": \"4-Phone number\"\r\n        }\r\n      ],\r\n      \"fields\": [\r\n        {\r\n          \"id\": \"78da510a-180c-4757-b75d-fd87f470ae76\",\r\n          \"type\": \"text\",\r\n          \"label\": \"Street\",\r\n          \"isRequired\": false,\r\n          \"min\": \"\",\r\n          \"max\": \"\",\r\n          \"invalidPrompt\": \"\"\r\n        },\r\n        {\r\n          \"id\": \"6a81a78e-7692-4256-88d6-651dc4e9ce0f\",\r\n          \"type\": \"text\",\r\n          \"label\": \"City\",\r\n          \"isRequired\": false,\r\n          \"min\": \"\",\r\n          \"max\": \"\",\r\n          \"invalidPrompt\": \"\"\r\n        },\r\n        {\r\n          \"id\": \"3a6180c3-d42c-400d-a2a7-d9b556a454af\",\r\n          \"type\": \"textpick\",\r\n          \"label\": \"State\",\r\n          \"isRequired\": false,\r\n          \"min\": \"\",\r\n          \"max\": \"\",\r\n          \"invalidPrompt\": \"\"\r\n        },\r\n        {\r\n          \"id\": \"9471103f-7868-47fd-b1ab-581cc3934493\",\r\n          \"type\": \"numberzip\",\r\n          \"label\": \"Zip code\",\r\n          \"isRequired\": false,\r\n          \"min\": \"\",\r\n          \"max\": \"\",\r\n          \"invalidPrompt\": \"\"\r\n        }\r\n      ]\r\n    }";
             return Content(JsonConvert.DeserializeObject(json).ToString());
         }
+
+        /// <summary>
+        /// This endpoint is just to demo the Curated Experience Personalized Plan schema. Added to help building the UI.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("PersonalizedPlan/Demo")]
+        public IActionResult GetDemoPersonalizedPlan()
+        {
+            //var locations = new List<PlanLocation>();
+            //locations.Add(new PlanLocation
+            //{
+            //    City = "test city",
+            //    State = "test state",
+            //    ZipCode = "11332"
+            //});
+            
+            var quicklinks = new List<PlanQuickLink>();
+            quicklinks.Add(new PlanQuickLink
+            {
+                Text = "Quick link to topic1",
+                Url = new Uri("http://localhost/topic1")
+            });
+
+            //var resources = new List<PlanResource>();
+            //resources.Add(new PlanResource
+            //{
+            //    Description = "Lorem ipsum dolor sit amet, usu soluta aliquid recusabo in, eloquentiam adversarium in vel.",
+            //    ExternalUrl = new Uri("http://localhost"),
+            //    Icon = "",
+            //    IsRecommended = false,
+            //    Location = locations,
+            //    Name = "Resource Name",
+            //    Overview = "Sale oratio tractatos duo et, pri harum senserit mediocritatem an. No eum aliquip menandri.",
+            //    ResourceId = Guid.NewGuid(),
+            //    Tags = new List<string>() { "Test", "Demo" },
+            //    Type = "Organization",
+            //});
+
+            var steps = new List<PlanStep>();
+            steps.Add(new PlanStep
+            {
+                StepId = Guid.NewGuid(),
+                Title = "Plan title",
+                Description = "test plan for building the UI",
+                Order = 1,
+                IsComplete = false,
+                //Resources = resources,
+                Type = "PersonalizedPlan"
+            });
+
+            var topics = new List<PlanTopic>();
+            topics.Add(new PlanTopic
+            {
+                TopicId = Guid.NewGuid(),
+                QuickLinks = quicklinks,
+                Steps = steps
+            });
+
+            return Ok(new PersonalizedActionPlanViewModel()
+            {
+                PersonalizedPlanId = Guid.NewGuid(),
+                Topics = topics,
+            });
+        }
         #endregion
 
         [HttpPost("Import")]
@@ -66,7 +134,7 @@ namespace Access2Justice.Api.Controllers
         public IActionResult GetFirstComponent(Guid curatedExperienceId)
         {
             var component = curatedExperienceBusinessLogic.GetComponent(RetrieveCachedCuratedExperience(curatedExperienceId), Guid.Empty);
-            if(component == null) return NotFound();
+            if (component == null) return NotFound();
 
             return Ok(component);
         }
@@ -93,6 +161,26 @@ namespace Access2Justice.Api.Controllers
             return Ok(curatedExperienceBusinessLogic.GetNextComponent(curatedExperience, component));
         }
 
+        [HttpGet("PersonalizedPlan")]
+        public async Task<IActionResult> GeneratePersonalizedPlan([FromQuery] Guid curatedExperienceId, [FromQuery] Guid answersDocId)
+        {
+            var personalizedPlan = await personalizedPlanBusinessLogic.GeneratePersonalizedPlan(
+                RetrieveCachedCuratedExperience(curatedExperienceId), answersDocId);
+            if (personalizedPlan == null)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+            return Ok(personalizedPlan);
+        }
+
+        [HttpPost("updateplan")]
+        public async Task<IActionResult> UpdateUserProfileDocumentAsync([FromBody]PersonalizedPlanSteps plan)
+        {
+            var personalizedPlan = await personalizedPlanBusinessLogic.UpdatePersonalizedPlan(plan);
+            return Ok(personalizedPlan);
+        }
+
         private CuratedExperience RetrieveCachedCuratedExperience(Guid id)
         {
             var cuExSession = HttpContext.Session.GetString(id.ToString());
@@ -103,6 +191,22 @@ namespace Access2Justice.Api.Controllers
             }
 
             return HttpContext.Session.GetObjectAsJson<CuratedExperience>(id.ToString());
+        }
+
+        [HttpGet]
+        [Route("getplandetails/{id}")]
+        public async Task<IActionResult> GetPlanDetailsAsync(string id)
+        {
+            var actionPlans = await personalizedPlanBusinessLogic.GetPlanDataAsync(id);
+            return Ok(actionPlans);
+        }
+
+        [HttpGet]
+        [Route("getplan/{id}")]
+        public async Task<IActionResult> GetPlanAsync(string id)
+        {
+            var actionPlans = await personalizedPlanBusinessLogic.GetPersonalizedPlan(id);
+            return Ok(actionPlans);
         }
     }
 }

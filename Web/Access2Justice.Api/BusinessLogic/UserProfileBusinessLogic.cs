@@ -1,9 +1,14 @@
-﻿using Access2Justice.Shared.Interfaces;
+﻿using Access2Justice.Shared;
+using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Globalization;
+using Microsoft.Azure.Documents;
+using Microsoft.AspNetCore.Http;
 
 namespace Access2Justice.Api.BusinessLogic
 {
@@ -18,7 +23,6 @@ namespace Access2Justice.Api.BusinessLogic
             dbSettings = cosmosDbSettings;
             dbService = backendDatabaseService;
         }
-
         public async Task<UserProfile> GetUserProfileDataAsync(string oId)
         {
             UserProfile userProfile = new UserProfile();
@@ -29,30 +33,6 @@ namespace Access2Justice.Api.BusinessLogic
         public async Task<dynamic> GetUserResourceProfileDataAsync(string oId)
         {
             return await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, Constants.OId, oId);
-        }
-        public async Task<int> CreateUserProfileDataAsync(UserProfile userProfile)
-        {
-            UserProfile resultUserProfile = await GetUserProfileDataAsync(userProfile.OId);
-            if (!(resultUserProfile.OId == userProfile.OId))
-            {
-                var result = await dbService.CreateItemAsync(ResourceDeserialized(userProfile), dbSettings.UserProfileCollectionId);
-                if (result.ToString().Contains(userProfile.OId)) return 1;
-            }
-            return 0;
-        }
-        public async Task<int> UpdateUserProfileDataAsync(UserProfile userProfile, string userIdGuid)
-        {
-            var resultUP = GetUserProfileDataAsync(userProfile.OId);
-            var userprofileObjects = JsonConvert.SerializeObject(resultUP);
-
-            if (userprofileObjects.Contains(userProfile.OId)) // condition to verify oId and update the details
-            {
-                userProfile.Id = userIdGuid; // guid id of the document
-
-                var result = await dbService.UpdateItemAsync(userIdGuid, ResourceDeserialized(userProfile), dbSettings.UserProfileCollectionId);
-                if (result.ToString().Contains(userProfile.OId)) return 1;
-            }
-            return 0;
         }
         private UserProfile ConvertUserProfile(dynamic convObj)
         {
@@ -71,42 +51,31 @@ namespace Access2Justice.Api.BusinessLogic
                 userProfile.CreatedTimeStamp = user.CreatedTimeStamp;
                 userProfile.ModifiedBy = user.ModifiedBy;
                 userProfile.ModifiedTimeStamp = user.ModifiedTimeStamp;
+                userProfile.PersonalizedActionPlanId = user.PersonalizedActionPlanId;
+                userProfile.CuratedExperienceAnswersId = user.CuratedExperienceAnswersId;
+                userProfile.SharedResource = user.SharedResource;
             }
             return userProfile;
+        }
+        public async Task<UserProfile> UpdateUserProfilePlanIdAsync(string oId, Guid planId)
+        {
+            var resultUP = await GetUserProfileDataAsync(oId);
+            resultUP.PersonalizedActionPlanId = planId;
+            var result = await dbService.UpdateItemAsync(resultUP.Id, ResourceDeserialized(resultUP), dbSettings.UserProfileCollectionId);
+            return JsonConvert.DeserializeObject<UserProfile>(JsonConvert.SerializeObject(result));
         }
         private object ResourceDeserialized(UserProfile userProfile)
         {
             var serializedResult = JsonConvert.SerializeObject(userProfile);
             return JsonConvert.DeserializeObject<object>(serializedResult);
         }
-        private object ResourceDynamicDeserialized(dynamic userProfile)
-        {
-            var serializedResult = JsonConvert.SerializeObject(userProfile);
-            return JsonConvert.DeserializeObject<object>(serializedResult);
-        }
-        public async Task<dynamic> UpsertUserPersonalizedPlanAsync(dynamic userData)
+        public async Task<dynamic> UpsertUserSavedResourcesAsync(dynamic userData)
         {
             var serializedResult = JsonConvert.SerializeObject(userData);
             var userDocument = JsonConvert.DeserializeObject(serializedResult);
             string oId = userDocument.oId;
             dynamic result = null;
-            if (userData.type == "plans")
-            {
-                string planId = userDocument.planId;
-                List<string> propertyNames = new List<string>() { Constants.OId, Constants.PlanId };
-                List<string> values = new List<string>() { oId, planId };
-                var userDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, propertyNames, values);
-                if (userDBData.Count == 0)
-                {
-                    result = CreateUserPersonalizedPlanAsync(userData);
-                }
-                else
-                {
-                    string id = userDBData[0].id;
-                    result = UpdateUserPersonalizedPlanAsync(id, userData);
-                }
-            }
-            else if (userData.type == "resources")
+            if (userData.type == "resources")
             {
                 string type = userData.type;
                 List<string> resourcesPropertyNames = new List<string>() { Constants.OId, Constants.Type };
@@ -124,49 +93,12 @@ namespace Access2Justice.Api.BusinessLogic
             }
             return result;
         }
-
-        public async Task<dynamic> CreateUserPersonalizedPlanAsync(dynamic userData)
-        {
-            var serializedResult = JsonConvert.SerializeObject(userData);
-            var userDocument = JsonConvert.DeserializeObject(serializedResult);
-            return await dbService.CreateItemAsync(userDocument, dbSettings.ResourceCollectionId);
-        }
-
-        public async Task<dynamic> UpdateUserPersonalizedPlanAsync(string id, dynamic userUIData)
-        {
-            var serializedResult = JsonConvert.SerializeObject(userUIData);
-            var userUIDocument = JsonConvert.DeserializeObject(serializedResult);
-            string oId = userUIDocument.oId;
-            string planId = userUIDocument.planId;
-            List<string> propertyNames = new List<string>() { Constants.OId, Constants.PlanId };
-            List<string> values = new List<string>() { oId, planId };
-            var userDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, propertyNames, values);
-            var serializedDBResult = JsonConvert.SerializeObject(userDBData[0]);
-            JObject dbObject = JObject.Parse(serializedDBResult);
-            JObject uiObject = JObject.Parse(serializedResult);
-
-            foreach (var prop in uiObject.Properties())
-            {
-                var targetProperty = dbObject.Property(prop.Name);
-                if (targetProperty == null)
-                {
-                    dbObject.Add(prop.Name, prop.Value);
-                }
-                else
-                {
-                    targetProperty.Value = prop.Value;
-                }
-            }
-            return await dbService.UpdateItemAsync(id, dbObject, dbSettings.ResourceCollectionId);
-        }
-
         public async Task<dynamic> CreateUserSavedResourcesAsync(dynamic userResources)
         {
             var serializedResult = JsonConvert.SerializeObject(userResources);
             var userDocument = JsonConvert.DeserializeObject(serializedResult);
             return await dbService.CreateItemAsync(userDocument, dbSettings.ResourceCollectionId);
         }
-
         public async Task<dynamic> UpdateUserSavedResourcesAsync(string id, dynamic userResources)
         {
             var serializedResult = JsonConvert.SerializeObject(userResources);
@@ -194,60 +126,56 @@ namespace Access2Justice.Api.BusinessLogic
             }
             return await dbService.UpdateItemAsync(id, dbObject, dbSettings.ResourceCollectionId);
         }
-
-        public async Task<dynamic> UpsertUserPlanAsync(dynamic userPlan)
+        public async Task<object> ShareResourceDataAsync(ShareInput shareInput)
         {
-            var serializedResult = JsonConvert.SerializeObject(userPlan);
-            var userDocument = JsonConvert.DeserializeObject(serializedResult);
-            string oId = userDocument.oId;
-            dynamic result = null;
-            string id = userDocument.id;
-            List<string> propertyNames = new List<string>() { Constants.OId, Constants.Id };
-            List<string> values = new List<string>() { oId, id };
-            var userDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, propertyNames, values);
-            if (userDBData.Count == 0)
+            UserProfile userProfile = await GetUserProfileDataAsync(shareInput.UserId);
+            var permaLink = Utilities.GenerateSHA256String(shareInput.UserId + shareInput.ResourceId);
+            var sharedResource = new SharedResource
             {
-                result = CreateUserPlanAsync(userPlan);
-            }
-            else
+                ExpirationDate = DateTime.UtcNow.AddYears(1),
+                IsShared = true,
+                Url = new Uri(shareInput.Url + "/" + shareInput.ResourceId.ToString("D", CultureInfo.InvariantCulture), UriKind.Relative),
+                PermaLink = permaLink
+            };
+            if (userProfile.SharedResource == null)
             {
-                result = UpdateUserPlanAsync(id, userPlan);
+                userProfile.SharedResource = new List<SharedResource>();
             }
-            return result;
+            userProfile.SharedResource.Add(sharedResource);
+            if (shareInput.Url.OriginalString.Contains("plan"))
+            {
+                //ToDo - Update the IsShared flag in the personalized plan document when user share the plan 
+                //PersonalizedPlanSteps plan = GetPersonalizedPlan(shareInput.ResourceId);
+                //plan.IsShared = true;
+                //UpdatePersonalizedPlan(plan);
+            }
+            var response = await UpdateUserProfileDataAsync(userProfile);
+            if (response == null)
+            {
+                return StatusCodes.Status500InternalServerError;
+            }
+            return permaLink;
         }
-
-        public async Task<dynamic> CreateUserPlanAsync(dynamic userData)
+        public async Task<object> UnshareResourceDataAsync(UnShareInput unShareInput)
         {
-            var serializedResult = JsonConvert.SerializeObject(userData);
-            var userDocument = JsonConvert.DeserializeObject(serializedResult);
-            return await dbService.CreateItemAsync(userDocument, dbSettings.ResourceCollectionId);
-        }
-
-        public async Task<dynamic> UpdateUserPlanAsync(string id, dynamic userUIData)
-        {
-            var serializedResult = JsonConvert.SerializeObject(userUIData);
-            var userUIDocument = JsonConvert.DeserializeObject(serializedResult);
-            string oId = userUIDocument.oId;
-            List<string> propertyNames = new List<string>() { Constants.OId, Constants.Id };
-            List<string> values = new List<string>() { oId, id };
-            var userDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, propertyNames, values);
-            var serializedDBResult = JsonConvert.SerializeObject(userDBData[0]);
-            JObject dbObject = JObject.Parse(serializedDBResult);
-            JObject uiObject = JObject.Parse(serializedResult);
-
-            foreach (var prop in uiObject.Properties())
+            UserProfile userProfile = await GetUserProfileDataAsync(unShareInput.UserId);
+            var permaLink = Utilities.GenerateSHA256String(unShareInput.UserId + unShareInput.ResourceId);
+            var sharedResource = userProfile.SharedResource.FindAll(a => a.PermaLink == permaLink);
+            if (sharedResource.Count == 0)
             {
-                var targetProperty = dbObject.Property(prop.Name);
-                if (targetProperty == null)
-                {
-                    dbObject.Add(prop.Name, prop.Value);
-                }
-                else
-                {
-                    targetProperty.Value = prop.Value;
-                }
+                return false;
             }
-            return await dbService.UpdateItemAsync(id, dbObject, dbSettings.ResourceCollectionId);
+            userProfile.SharedResource.RemoveAll(a => a.PermaLink == permaLink);
+            var response = await UpdateUserProfileDataAsync(userProfile);
+            if (response == null)
+            {
+                return StatusCodes.Status500InternalServerError;
+            }
+            return true;
+        }
+        public async Task<object> UpdateUserProfileDataAsync(UserProfile userProfile)
+        {
+            return await dbService.UpdateItemAsync(userProfile.Id, ResourceDeserialized(userProfile), dbSettings.UserProfileCollectionId);
         }
     }
 }

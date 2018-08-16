@@ -1,9 +1,9 @@
-<h2>Organization Name</h2>
-<p>Housing Services</p>
+<h2>{{resource.name}}</h2>
+<p>{{resource.type}}</p>
 <div class="col-md-8 col-sm-12">
   <div class="expanded-image">
     <img *ngIf="currentImage else elseblock" [src]="currentImage" alt="Alternate Text" />
-    <img *ngIf="!currentImage" #elseblock src="https://www.w3schools.com/howto/img_snow.jpg" (click)="changeModalImage($event)" alt="Alternate Text" />
+    <img #elseblock src="https://www.w3schools.com/howto/img_snow.jpg" (click)="changeModalImage($event)" alt="Alternate Text" />
     <div class="thumbnails">
       <img src="https://www.w3schools.com/howto/img_snow.jpg" (click)="changeImage($event)" alt="Alternate Text" />
       <img src="https://www.w3schools.com/howto/img_mountains.jpg" (click)="changeImage($event)" alt="Alternate Text" />
@@ -33,55 +33,53 @@
   <div class="box-no-shadow">
     <div class="resource-body">
       <div>
-        1234 Streetname Road N
-        Cityname, ST 12345
+        {{resource.address}}
       </div>
-      <div>XXX-XXX-XXXX</div>
-      <div>websiteurl.com</div>
+      <div>{{resource.telephone}}</div>
+      <div>{{resource.url}}</div>
     </div>
   </div>
   <div class="box-no-shadow">
     <div class="resource-body">
       <h4>Overview</h4>
-      <p>
-        Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter. Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter.
-      </p>
-      <p>
+      <p>{{resource.overview}}</p>
+      <!--<p>
         Please read our eligbility information before contacting.
-      </p>
-      <h5>Specialties</h5>
+      </p>-->
+      <!--<h5>Specialties</h5>
       <ul>
         <li>Lorem ipsum solor sit amet bibodem consecuter orem ipsum</li>
         <li>Ipsum solor sit amet bibodem consecuter orem ipsum</li>
         <li>Sapien elit in malesuada semper mi, id sollicitudin urna fermentum.</li>
         <li>Consectetur adipiscing elit fusce vel.</li>
         <li>Amet, consectetur adipiscing elit.</li>
-      </ul>
+      </ul>-->
     </div>
   </div>
   <div class="box-no-shadow">
     <div class="resource-body">
       <h4>Eligibility Information</h4>
-      <p>Copy describing eligibility qualification lorem ipsum dolor sit amet.</p>
-      <h5>Qualifications</h5>
+      <p>{{resource.eligibilityInformation}}</p>
+      <!--<h5>Qualifications</h5>
       <ul>
         <li>Lorem ipsum solor sit amet bibodem consecuter orem ipsum</li>
         <li>Ipsum solor sit amet bibodem consecuter orem ipsum</li>
         <li>Sapien elit in malesuada semper mi, id sollicitudin urna fermentum.</li>
         <li>Consectetur adipiscing elit fusce vel.</li>
         <li>Amet, consectetur adipiscing elit.</li>
-      </ul>
+      </ul>-->
     </div>
   </div>
   <div class="box-no-shadow">
     <div class="resource-body">
-      <h4>Reviewed by a mebmer of your community</h4>
-      <p>"Quote from community member consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."</p>
+      <h4>Reviewed by a member of your community</h4>
+      <p>"{{resource.reviewedByCommunityMember}}"</p>
+      <span>- {{resource.reviewerFullName}}</span><span>, {{resource.reviewerTitle}}</span>
     </div>
   </div>
 </div>
 <div class="col-md-3 pull-right">
-  <app-map-results></app-map-results>
+  <app-map-results [searchResource]="searchResource"></app-map-results>
   <div class="box-no-shadow">
     <div class="resource-body">
       <h5>Business Hours</h5>

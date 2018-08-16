@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { HttpParams } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { QuestionService } from './question.service';
 import { Question } from './question';
 import { Answer } from './answers';
@@ -16,13 +17,14 @@ export class QuestionComponent implements OnInit {
   question: Question;
   curatedExperienceId: string;
   fieldParam: Array<Object>;
-  buttonParam: Array<Object>;
+  buttonParam: string;
   @Output() sendQuestionsRemainingEvent = new EventEmitter<number>();
   @Output() sendTotalQuestionsEvent = new EventEmitter<number>();
 
   constructor(
     private questionService: QuestionService,
-    private activeRoute: ActivatedRoute
+      private activeRoute: ActivatedRoute,
+      private router: Router
   ) { }
 
   sendQuestionsRemaining(questionsRemaining) {
@@ -34,7 +36,6 @@ export class QuestionComponent implements OnInit {
   }
 
   getQuestion(): void {
-    
     this.curatedExperienceId = this.activeRoute.snapshot.params["id"];
     let params = new HttpParams()
       .set("curatedExperienceId", this.curatedExperienceId);
@@ -49,31 +50,37 @@ export class QuestionComponent implements OnInit {
     this.fieldParam = Object.keys(formValue.value)
       .filter(key => formValue.value[key] !== "")
       .map(key => {
-        if (key === "radioOptions" || key === "multiSelectOptions") {
-          return ({
-            fieldId: formValue.value[key]
-          });
-        } else {
-          return ({
-            fieldId: key,
-            value: formValue.value[key]
-          });
+        if (key !== "buttonOptions") {
+          if (key === "radioOptions" || key === "multiSelectOptions") {
+            return ({
+              fieldId: formValue.value[key]
+            });
+          } else {
+            return ({
+              fieldId: key,
+              value: formValue.value[key]
+            });
+          }
         }
       });
   }
 
   onSubmit(gaForm: NgForm) {
-    console.log(gaForm);
     if (gaForm.value) {
       this.createFieldParam(gaForm);
+      if (this.question.buttons.length > 1) {
+        this.buttonParam = gaForm.value.buttonOptions;
+      } else {
+        this.buttonParam = this.question.buttons[0].id;
+      }
     }
 
     window.scrollTo(0, 0);
-
+    //need to work on multiselect params
     const params = {
       "curatedExperienceId": this.question.curatedExperienceId,
       "answersDocId": this.question.answersDocId,
-      "buttonId": this.question.buttons[0].id,
+      "buttonId": this.buttonParam,
       "fields": this.fieldParam
     }
 
@@ -94,6 +101,19 @@ export class QuestionComponent implements OnInit {
         });
     }
   };
+
+  getActionPlan(): void {
+    let params = new HttpParams()
+      .set("curatedExperienceId", this.curatedExperienceId)
+      .set("answersDocId", this.question.answersDocId);
+    
+    this.questionService.getpersonalizedPlan(params)
+      .subscribe(response => {
+        if (response != undefined && response.id != undefined) {
+          this.router.navigate(['/plan', response.id]);
+        }
+      });
+  }
 
   ngOnInit() {
     this.getQuestion();

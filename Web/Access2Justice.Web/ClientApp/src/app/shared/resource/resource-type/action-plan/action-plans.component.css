@@ -20,11 +20,6 @@
 	cursor: pointer;
 }
 
-.accordion-img {
-	width: 20px;
-	margin-top: 5px;
-}
-
 .plan-steps .btn-selected {
 	padding: 10px;
 	width: 120px;
@@ -56,6 +51,9 @@
 #complete-btn {
 	float: left;
 	margin-bottom: 30px;
+  position: absolute;
+  right: 25px;
+  top: -74px;
 }
 
 .step-content div {
@@ -86,8 +84,12 @@ iframe {
   text-align: center;
 }
 
+.step-completed {
+  color: #ccc;
+}
+
 @media only screen and (min-width : 768px) {
-	.plan-spacing {
+  .plan-spacing {
     padding: 15px;
   }
 

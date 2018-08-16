@@ -3,15 +3,11 @@
   <p>Browse articles, videos, and directories organized by topic</p>
   <div class="col-md-8 col-sm-12 col-xs-12">
     <div class="row">
-      <app-topics></app-topics>
+      <app-topics [fullPage]="false"></app-topics>
     </div>
   </div>
   <div class="col-md-3 col-sm-12 col-xs-12 pull-right">
-    <div class="row">
-      <app-guided-assistant-sidebar></app-guided-assistant-sidebar>
-    </div>
-    <div class="row">
-      <app-service-org-sidebar></app-service-org-sidebar>
-    </div>
+    <app-guided-assistant-sidebar></app-guided-assistant-sidebar>
+    <app-service-org-sidebar (showMoreOrganizations)="clickSeeMoreOrganizationsFromTopic($event)"></app-service-org-sidebar>
   </div>
 </div>

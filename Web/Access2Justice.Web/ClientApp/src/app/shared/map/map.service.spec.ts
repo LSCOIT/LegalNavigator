@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
-import { LocationService } from './location.service';
+import { MapService } from './map.service';
 import { environment } from '../../../environments/environment';
 
-describe('LocationService', () => {
-  let service: LocationService;
+describe('MapService', () => {
+  let service: MapService;
   let mockMapType: boolean = false;
   const mockMapLocation = {
     state: "California",
@@ -30,9 +30,9 @@ describe('LocationService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [LocationService]
+      providers: [MapService]
     });
-    service = new LocationService();
+    service = new MapService();
 
     let store = {};
     const mockSessionStorage = {

@@ -5,7 +5,6 @@ import { LatitudeLongitude } from './map-results';
 declare var Microsoft: any;
 
 @Injectable()
-
 export class MapResultsService {
   latitudeLongitude: Array<LatitudeLongitude> = [];
   constructor(private http: HttpClient) {
@@ -18,6 +17,11 @@ export class MapResultsService {
 
   getAddressBasedOnPoints(latitude, longitude, credentials): any {
     let searchRequest = 'http://dev.virtualearth.net/REST/v1/Locations/' + encodeURI(latitude) + ',' + encodeURI(longitude) + '?key=' + credentials;
+    return this.http.get(searchRequest);
+  }
+
+  getStateFullName(countryRegion, state, credentials): any {
+    let searchRequest = 'http://dev.virtualearth.net/REST/v1/Locations?CountryRegion=' + encodeURI(countryRegion) + '&adminDistrict=' + encodeURI(state) + '&key=' + credentials;
     return this.http.get(searchRequest);
   }
 

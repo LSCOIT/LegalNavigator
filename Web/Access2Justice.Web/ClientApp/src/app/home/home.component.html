@@ -1,16 +1,15 @@
-<div>
+<div *ngIf="homeContent">
   <div class="container">
     <div class="row top-row">
-      <div class="col-sm-6 tagline text-center">
-        <h2>Get help with your legal questions in Alaska</h2>
-        <p>We will always protect your privacy. Read our
-          <a [routerLink]="['/privacy']" class="link">Privacy Promise</a>
+      <div [ngClass]="{'col-sm-6': heroData.image.source, '': !heroData.image.source }" class="tagline text-center">
+        <h2>{{heroData.heading}} {{state}}</h2>
+        <p>
+          {{heroData.description.text}}
+          <a class="link" [routerLink]="heroData?.description?.textWithLink?.url">{{heroData?.description?.textWithLink?.urlText}}</a>
         </p>
       </div>
-      <div class="col-sm-6">
-        <img id="home-img" 
-             src="/assets/images/primary-illustrations/hawaii.svg" 
-             alt="Guided Assistant Illustration">
+      <div *ngIf="heroData.image.source" class="col-sm-6">
+        <img id="home-img" [src]="blobUrl + heroData?.image?.source" [alt]="heroData?.image?.altText">
       </div>
     </div>
   </div>
@@ -18,30 +17,27 @@
     <div class="container">
       <div class="row">
         <div class="col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1">
-          <h3>Need a plan of action for your legal issue? Our Guided Assistant can help.
-          </h3>
+          <h3>{{guidedAssistantOverviewData?.heading}}</h3>
         </div>
       </div>
-      <div class="row">
+      <div *ngIf="guidedAssistantOverviewData.image.source" class="row">
         <div class="col-sm-4 col-xs-12">
-          <img class="secondary-img"          
-                src="/assets/images/secondary-illustrations/guided_assistant.svg" 
-                alt="Guided Assistant Illustration">
+          <img class="secondary-img" [src]="blobUrl + guidedAssistantOverviewData?.image?.source"
+               [alt]="guidedAssistantOverviewData?.image?.altText">
         </div>
         <div class="guided-assistant-steps col-sm-7 col-sm-offset-1">
-          <ul class="p">
-            <li><span>1.</span>Answer a few questions to help us understand your needs.</li>
-            <li><span>2.</span>We'll create a personalized plan with steps and resources.</li>
-            <li><span>3.</span>Share, print, or create a profile to save your plan.</li>
+          <ul class="p" *ngFor="let steps of guidedAssistantOverviewData?.description?.steps">
+            <li><span>{{steps?.order}}.</span>{{steps?.description}}</li>
           </ul>
-          <p>Free and no account necessary. We never share any information you provide.
-            <a [routerLink]="['/privacy']">Privacy Promise.</a>
+          <p>
+            {{guidedAssistantOverviewData.description.text}}
+            <a [routerLink]="guidedAssistantOverviewData?.description?.textWithLink?.url">{{guidedAssistantOverviewData?.description?.textWithLink?.urlText}}.</a>
           </p>
         </div>
       </div>
       <div class="row">
         <div class="col-sm-12 text-center">
-          <button type="button" class="btn btn-primary">Start the Guided Assistant</button>
+           <a class="btn btn-primary" [routerLink]="guidedAssistantOverviewData?.button?.buttonLink">{{guidedAssistantOverviewData?.button?.buttonText}}</a>
         </div>
       </div>
     </div>
@@ -49,7 +45,7 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-8 col-sm-offset-2 text-center">
-        <h3>More Information, Videos, and Links to Resources by Topic</h3>
+        <h3>{{topicAndResourcesData?.heading}}</h3>
       </div>
     </div>
     <div class="row">
@@ -57,7 +53,7 @@
     </div>
     <div class="row">
       <div class="col-sm-12 text-center">
-        <button [routerLink]="['/topics']" type="button" class="btn btn-primary">See More Topics</button>
+        <a class="btn btn-primary" [routerLink]="topicAndResourcesData?.button?.buttonLink"> {{topicAndResourcesData?.button?.buttonText}} </a>
       </div>
     </div>
   </div>
@@ -65,39 +61,14 @@
     <div class="container">
       <div class="row">
         <carousel>
-          <slide>
+          <slide *ngFor="let slide of carouselData.slides">
             <div>
-              <div class="testimonial-img col-lg-3 col-sm-4">
-              </div>
+              <img *ngIf="slide.image.source" [src]="blobUrl + slide?.image?.source" class="testimonial-img col-lg-3 col-sm-4" alt="slide?.image?.altText">
               <div class="slide-content inline col-lg-9 col-sm-8">
-                <h5>"Tincidunt integer eu augue augue nunc elit dolor, luctus placerat scelerisque euismod, iaculis eu lacus nunc mi elit, vehicula ut laoreet ac, aliquam sit amet justo nunc tempor, metus vel.."</h5>
+                <h5>{{slide.quote}}</h5>
                 <hr />
-                <p class="ps">Robbie</p>
-                <p class="ps">Anchorage, AK</p>
-              </div>
-            </div>
-          </slide>
-          <slide>
-            <div>
-              <div class="testimonial-img col-lg-3 col-sm-4">
-              </div>
-              <div class="slide-content inline col-lg-9 col-sm-8">
-                <h5>"Mi, id sollicitudin urna fermentum ut fusce varius nisl ac ipsum gravida vel pretium tellus."</h5> 
-                <hr />
-                <p class="ps">Robbie</p>
-                <p class="ps">Anchorage, AK</p>
-              </div>
-            </div>
-          </slide>
-          <slide>
-            <div>
-              <div class="testimonial-img col-lg-3 col-sm-4">
-              </div>
-              <div class="slide-content inline col-lg-9 col-sm-8">
-                <h5>"Ut fusce varius nisl ac ipsum gravida vel pretium tellus tincidunt integer eu augue augue nunc elit dolor, luctus placerat."</h5> 
-                <hr />
-                <p class="ps">Robbie</p>
-                <p class="ps">Anchorage, AK</p>
+                <p class="ps">{{slide?.author}}</p>
+                <p class="ps">{{slide?.location}}</p>
               </div>
             </div>
           </slide>
@@ -108,31 +79,35 @@
 </div>
 <div class="row text-center">
   <div class="col-md-6 col-md-offset-3">
-    <h4>Information you can trust</h4>
-    <p>This site is here to provide equal access to legal information and resources for everyone. Legal disclaimer lorem ipsum dolor amet. It is brought to you by partnership of these nonproffit organizations.</p>
-    <img src="" alt="">
-    <img src="" alt="">
-    <button class="btn btn-primary">Learn more</button>
+    <h4>{{sponsorOverviewData?.heading}}</h4>
+    <p>{{sponsorOverviewData?.description}}</p>
+    <div class="row">
+      <div class="col-sm-6" *ngFor="let sponsor of sponsors">
+        <img *ngIf="sponsor.source" class="secondary-img" [src]="blobUrl + sponsor?.source"
+             [alt]="sponsor?.altText">
+      </div>     
+    </div>
+    <a class="btn btn-primary" [routerLink]="sponsorOverviewData?.button?.buttonLink">
+      {{sponsorOverviewData?.button?.buttonText}}
+    </a>
   </div>
 </div>
-<div class="privacy-promise text-center">
+<div class="privacy-promise text-center" *ngIf="privacyData">
   <div class="container">
     <div class="row">
-      <div class="col-sm-5">
-        <img class="secondary-img" 
-             src="/assets/images/secondary-illustrations/privacy_promise.svg" 
-             alt="Guided Assistant Illustration">
+      <div *ngIf="privacyData.image.source" class="col-sm-5">
+        <img [src]="blobUrl + privacyData?.image?.source" [alt]="privacyData?.image?.altText">
       </div>
       <div class="col-sm-5 col-sm-offset-1">
-        <h3>Our Privacy Promise</h3>
-        <p>We value your privacy and will never share your personal information with anyone without your lorem ipsum dolor sit amet.</p>
+        <h3>{{privacyData?.heading}}</h3>
+        <p>{{privacyData?.description}}</p>
         <div class="row">
-          <button class="btn btn-secondary">Learn more</button>
+          <a class="btn btn-secondary" [routerLink]="privacyData?.button?.buttonLink">
+            {{privacyData?.button?.buttonText}}
+          </a>
         </div>
       </div>
     </div>
   </div>
 </div>
 <app-helpline></app-helpline>
-<!--<chatbot></chatbot>-->
-

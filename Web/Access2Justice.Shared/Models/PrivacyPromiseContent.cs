@@ -11,41 +11,29 @@ using System.ComponentModel;
 
 namespace Access2Justice.Shared.Models
 {    
-    public class PrivacyPromiseContent
+    public class PrivacyPromiseContent: NameLocation
     {
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "overview")]
-        public string Overview { get; set; }
-
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "image")]
-        public Image ImageUrl { get; set; }
-
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "details")]
-        public Detail Details { get; set; }
-    }
-
-    public class Detail
-    {
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "order")]
-        public int Order { get; set; }
-
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
         [DefaultValue("")]
         [JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "image")]
-        public Image ImageUrl { get; set; }
+        public Image Image { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "details")]
+        public IEnumerable<Detail> Details { get; set; }
+    }
+
+    public class Detail
+    {
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "title")]
+        public string Title { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
     }
 }

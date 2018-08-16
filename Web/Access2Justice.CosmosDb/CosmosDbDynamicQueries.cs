@@ -86,7 +86,26 @@ namespace Access2Justice.CosmosDb
             }
             return await backendDatabaseService.QueryItemsAsync(collectionId, query);
         }
-
+        public async Task<dynamic> FindItemsWhereWithLocationAsync(string collectionId, string propertyName, string value, Location location)
+        {
+            EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
+            string locationFilter = FindLocationWhereArrayContains(location);
+            var query = string.Empty;
+            if (string.IsNullOrEmpty(value))
+            {  
+                query = $"SELECT * FROM c WHERE c.{propertyName}=[{value}]";
+            }
+            else
+            {
+                query = $"SELECT * FROM c WHERE c.{propertyName}='{value}'";
+            }
+           
+            if (!string.IsNullOrEmpty(locationFilter))
+            {
+                query = query + " AND " + locationFilter;
+            }
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query);           
+        }
         public async Task<dynamic> FindItemsWhereArrayContainsWithAndClauseAsync(string arrayName, string propertyName, string andPropertyName, ResourceFilter resourceFilter, bool isResourceCountCall = false)
         {
             EnsureParametersAreNotNullOrEmpty(arrayName, propertyName, andPropertyName, resourceFilter.ResourceType);
@@ -97,12 +116,14 @@ namespace Access2Justice.CosmosDb
             }
             if (resourceFilter.ResourceType.ToUpperInvariant() != Constants.ResourceTypeAll && !isResourceCountCall)
             {
-                arrayContainsWithAndClause += $" AND c.{andPropertyName} = '" + resourceFilter.ResourceType + "'";
+                arrayContainsWithAndClause += string.IsNullOrEmpty(arrayContainsWithAndClause) ? $" c.{andPropertyName} = '" + resourceFilter.ResourceType + "'"
+                                             : $" AND c.{andPropertyName} = '" + resourceFilter.ResourceType + "'";
             }
             string locationFilter = FindLocationWhereArrayContains(resourceFilter.Location);
             if (!string.IsNullOrEmpty(locationFilter))
             {
-                arrayContainsWithAndClause = arrayContainsWithAndClause + " AND " + locationFilter;
+                arrayContainsWithAndClause = string.IsNullOrEmpty(arrayContainsWithAndClause) ? locationFilter
+                                          : arrayContainsWithAndClause + " AND " + locationFilter;
             }
 
             PagedResources pagedResources = new PagedResources();
@@ -187,7 +208,7 @@ namespace Access2Justice.CosmosDb
         private string ArrayContainsWithOrClause(string arrayName, string propertyName, IEnumerable<string> values)
         {
             string arrayContainsWithOrClause = string.Empty;
-            var lastItem = values.Last();
+            var lastItem = values?.Count() > 0 ? values.Last() : "";
             foreach (var value in values)
             {
                 arrayContainsWithOrClause += $" ARRAY_CONTAINS(c.{arrayName}, {{ '{propertyName}' : '" + value + "'})";
@@ -208,6 +229,20 @@ namespace Access2Justice.CosmosDb
                     throw new ArgumentException("Paramters can not be null or empty spaces.");
                 }
             }
+        }
+
+        public async Task<dynamic> FindItemsWhereArrayContainsAsyncWithLocation(string collectionId, string arrayName, string propertyName, string value, Location location)
+        {
+            EnsureParametersAreNotNullOrEmpty(collectionId, arrayName, propertyName);
+            string locationFilter = FindLocationWhereArrayContains(location);
+            var ids = new List<string> { value };
+            string arrayContainsClause = ArrayContainsWithOrClause(arrayName, propertyName, ids);
+            var query = $"SELECT * FROM c WHERE {arrayContainsClause}";
+            if (!string.IsNullOrEmpty(locationFilter))
+            {
+                query = query + " AND " + locationFilter;
+            }
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query);
         }
     }
 }

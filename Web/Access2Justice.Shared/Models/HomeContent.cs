@@ -11,76 +11,65 @@ using System.ComponentModel;
 
 namespace Access2Justice.Shared.Models
 {
-    public class HomeContent
+    public class HomeContent: NameLocation
     {
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
+        [DefaultValue("")]
         [JsonProperty(PropertyName = "hero")]
         public HeroContent Hero { get; set; }
 
-        [JsonProperty(PropertyName = "guidedAssistant")]
-        public GuidedAssistantContent GuidedAssistant { get; set; }
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "guidedAssistantOverview")]
+        public GuidedAssistantContent GuidedAssistantOverview { get; set; }
 
+        [DefaultValue("")]
         [JsonProperty(PropertyName = "topicAndResources")]
         public TopicAndResourcesContent TopicAndResources { get; set; }
 
+        [DefaultValue("")]
         [JsonProperty(PropertyName = "carousel")]
-        public IEnumerable<CarouselContent> Carousel { get; set; }
+        public CarouselContent Carousel { get; set; }
 
-        [JsonProperty(PropertyName = "information")]
-        public InformationContent Information { get; set; }
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "sponsorOverview")]
+        public SponsorsContent SponsorsContent { get; set; }
 
+        [DefaultValue("")]
         [JsonProperty(PropertyName = "privacy")]
         public PrivacyContent Privacy { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "helpText")]
+        public string HelpText { get; set; }
     }
 
     public class HeroContent
     {
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
         [DefaultValue("")]
-        [JsonProperty(PropertyName = "overview")]
-        public string Overview { get; set; }
+        [JsonProperty(PropertyName = "heading")]
+        public string Heading { get; set; }
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "description")]
-        public string Description { get; set; }
-
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "routerText")]
-        public string RouterText { get; set; }
-
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "routerLink")]
-        public string RouterLink { get; set; }
+        public Description Description { get; set; }
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "image")]
-        public Image ImageUrl { get; set; }
+        public Image Image { get; set; }
     }
 
     public class GuidedAssistantContent
     {
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
         [DefaultValue("")]
-        [JsonProperty(PropertyName = "overview")]
-        public string Overview { get; set; }
+        [JsonProperty(PropertyName = "heading")]
+        public string Heading { get; set; }
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "description")]
-        public string Description { get; set; }
+        public GADescription Description { get; set; }
 
         [DefaultValue("")]
-        [JsonProperty(PropertyName = "buttonText")]
-        public string ButtonText { get; set; }
-
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "buttonLink")]
-        public string ButtonLink { get; set; }
+        [JsonProperty(PropertyName = "button")]
+        public ButtonStaticContent Button { get; set; }
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "image")]
@@ -89,108 +78,166 @@ namespace Access2Justice.Shared.Models
 
     public class TopicAndResourcesContent
     {
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "heading")]
+        public string Heading { get; set; }
 
         [DefaultValue("")]
-        [JsonProperty(PropertyName = "overview")]
-        public string Overview { get; set; }
-
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "buttonText")]
-        public string ButtonText { get; set; }
-
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "buttonLink")]
-        public string ButtonLink { get; set; }
+        [JsonProperty(PropertyName = "button")]
+        public ButtonStaticContent Button { get; set; }
     }
 
-    public class CarouselContent  //Need to check feasibility for html
+    public class CarouselContent
     {
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
         [DefaultValue("")]
-        [JsonProperty(PropertyName = "overview")]
-        public string Overview { get; set; }
+        [JsonProperty(PropertyName = "slides")]
+        public IEnumerable<Slides> Overviewdetails { get; set; }
+    }
+
+    public class SponsorsContent
+    {
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "heading")]
+        public string Heading { get; set; }
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
 
         [DefaultValue("")]
-        [JsonProperty(PropertyName = "byName")]
-        public string ByName { get; set; }
+        [JsonProperty(PropertyName = "sponsors")]
+        public IEnumerable<Image> Sponsors { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "button")]
+        public ButtonStaticContent Button { get; set; }
+    }
+
+    public class PrivacyContent
+    {
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "heading")]
+        public string Heading { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "button")]
+        public ButtonStaticContent Button { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "image")]
+        public Image Image { get; set; }
+    }
+
+    public class Description
+    {
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "text")]
+        public string Text { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "textWithLink")]
+        public TextWithLink TextWithLink { get; set; }
+    }
+
+    public class TextWithLink
+    {
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "urlText")]
+        public string UrlsText { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "url")]
+        public string Urls { get; set; }
+    }
+
+    public class Image
+    {
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "source")]
+        public string Source { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "altText")]
+        public string AltText { get; set; }
+    }
+
+    public class GADescription
+    {
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "steps")]
+        public GADescriptionDetails GADescriptionDetails { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "text")]
+        public string Text { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "textWithLink")]
+        public TextWithLink TextWithLink { get; set; }
+    }
+
+    public class GADescriptionDetails
+    {
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "order")]
+        public int Order { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "descritption")]
+        public string Descritption { get; set; }
+    }
+
+    public class ButtonStaticContent
+    {
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "buttonText")]
+        public string ButtonText { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "buttonAltText")]
+        public string ButtonAltText { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "buttonLink")]
+        public string ButtonLink { get; set; }
+    }
+
+    public class Slides
+    {
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "quote")]
+        public string Quote { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "author")]
+        public string Author { get; set; }
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "location")]
         public string Location { get; set; }
 
         [DefaultValue("")]
-        [JsonProperty(PropertyName = "buttonText")]
-        public string ButtonText { get; set; }
-
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "buttonLink")]
-        public string ButtonLink { get; set; }
-
-        [DefaultValue("")]
         [JsonProperty(PropertyName = "image")]
-        public Image ImageUrl { get; set; }
+        public Image Image { get; set; }
     }
 
-    public class InformationContent
+    public class PageContentRequest
+    {
+        public string Name { get; set; }
+        public Location Location { get; set; }
+    }
+
+    public class NameLocation
     {
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
         [DefaultValue("")]
-        [JsonProperty(PropertyName = "overview")]
-        public string Overview { get; set; }
-
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "description")]
-        public string Description { get; set; }
-
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "buttonText")]
-        public string ButtonText { get; set; }
-
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "buttonLink")]
-        public string ButtonLink { get; set; }
-    }
-
-    public class PrivacyContent
-    {
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "overview")]
-        public string Overview { get; set; }
-
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "buttonText")]
-        public string ButtonText { get; set; }
-
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "buttonLink")]
-        public string ButtonLink { get; set; }
-
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "image")]
-        public Image ImageUrl { get; set; }
-    }
-
-    public class Image
-    {
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "id")]
-        public dynamic Id { get; set; }
-
-        [DefaultValue("")]
-        [JsonProperty(PropertyName = "path")]
-        public string Path { get; set; }
+        [JsonProperty(PropertyName = "location")]
+        public IEnumerable<Location> Location { get; set; }
     }
 }

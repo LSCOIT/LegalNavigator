@@ -8,9 +8,10 @@ namespace Access2Justice.Shared.Interfaces
     {
         Task<dynamic> GetTopicsAsync(string keyword, Location location);
         Task<dynamic> GetResourcesAsync(dynamic resourcesIds);
-        Task<dynamic> GetTopLevelTopicsAsync();
-        Task<dynamic> GetSubTopicsAsync(string parentTopicId);
-        Task<dynamic> GetResourceAsync(string parentTopicId);
+        Task<dynamic> GetTopLevelTopicsAsync(Location location);
+        Task<dynamic> GetSubTopicsAsync(string parentTopicId, Location location);
+        Task<dynamic> GetResourceByIdAsync(string id,Location location);
+        Task<dynamic> GetResourceAsync(string parentTopicId,Location location);
         Task<dynamic> GetDocumentAsync(string id);
         Task<dynamic> GetBreadcrumbDataAsync(string id);
         Task<dynamic> GetTopicDetailsAsync(string topicName);
@@ -34,7 +35,6 @@ namespace Access2Justice.Shared.Interfaces
         Task<dynamic> GetPagedResourceAsync(ResourceFilter resourceFilter);
         Task<dynamic> ApplyPaginationAsync(ResourceFilter resourceFilter);
         Task<dynamic> GetResourcesCountAsync(ResourceFilter resourceFilter);
-        Task<dynamic> GetPlanDataAsync(string planId);
         Task<dynamic> GetPersonalizedResourcesAsync(ResourceFilter resourceFilter);
         Task<dynamic> GetOrganizationsAsync(Location location);
     }
