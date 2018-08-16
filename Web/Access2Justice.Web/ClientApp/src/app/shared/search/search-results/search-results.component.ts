@@ -6,6 +6,7 @@ import { PaginationService } from '../pagination.service';
 import { IResourceFilter, ILuisInput } from './search-results.model';
 import { MapService } from '../../map/map.service';
 import { environment } from '../../../../environments/environment';
+import { PersonalizedPlanService } from '../../../guided-assistant/personalized-plan/personalized-plan.service';
 
 @Component({
   selector: 'app-search-results',
@@ -53,7 +54,8 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     private navigateDataService: NavigateDataService,
     private searchService: SearchService,
     private mapService: MapService,
-    private paginationService: PaginationService) { }
+    private paginationService: PaginationService,
+    private personalizedPlanService: PersonalizedPlanService) { }
 
   bindData() {
     this.showDefaultMessage = false;
@@ -364,7 +366,10 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     }
     this.bindData();
     this.notifyLocationChange();        
-      this.showRemoveOption = this.showRemove;    
+    this.showRemoveOption = this.showRemove;
+    if (sessionStorage.getItem("bookmarkedResource")) {
+      this.personalizedPlanService.saveResourcesToProfile();
+    }
   }
 
   ngOnDestroy() {

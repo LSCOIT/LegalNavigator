@@ -18,8 +18,8 @@ export class SaveButtonComponent implements OnInit {
   @Input() showIcon = true;
   resources: Resources;
   savedResources: SavedResources;
+  resourceTags: Array<SavedResources> = [];
   profileResources: ProfileResources = { oId: '', resourceTags: [], type: '' };
-  resourceTags: any = [];
   @Input() id: string;
   @Input() type: string;
   @Input() resourceDetails: any = {};
@@ -30,7 +30,7 @@ export class SaveButtonComponent implements OnInit {
   modalRef: BsModalRef;
   @ViewChild('template') public templateref: TemplateRef<any>;
   sessionKey: string = "bookmarkedResource";
-  planSessionKey: string= "bookmarkPlanId";
+  planSessionKey: string = "bookmarkPlanId";
   resourceStorage: any;
   planStorage: any;
 
@@ -83,7 +83,7 @@ export class SaveButtonComponent implements OnInit {
       this.saveResourcesToProfile();
     }
   }
-  
+
   savePlanToProfile() {
     let params = new HttpParams()
       .set("oId", this.userId)
@@ -106,13 +106,18 @@ export class SaveButtonComponent implements OnInit {
       .subscribe(response => {
         if (response) {
           response.forEach(property => {
-            if (property.resourceTags) {
-              property.resourceTags.forEach(resource => {
+            if (property.resources) {
+              property.resources.forEach(resource => {
                 this.resourceTags.push(resource);
               });
             }
           });
         }
+        //} else {
+        //  this.savedResources = { itemId: this.id, resourceType: this.type, resourceDetails: this.resourceDetails };
+        //  this.resourceTags.push(this.savedResources);
+        //  this.saveResourceToProfile(this.resourceTags);
+        //}
         this.savedResources = { itemId: this.id, resourceType: this.type, resourceDetails: this.resourceDetails };
         if (!this.arrayUtilityService.checkObjectExistInArray(this.resourceTags, this.savedResources)) {
           this.resourceTags.push(this.savedResources);
@@ -122,17 +127,17 @@ export class SaveButtonComponent implements OnInit {
   }
 
   saveResourceToProfile(resourceTags) {
-    let params = new HttpParams()
-      .set("oId", this.userId)
-      .set("resourceTags", this.resourceTags);
-    //this.profileResources = { oId: this.userId, resourceTags: resourceTags, type: 'resources' };
-    this.personalizedPlanService.saveResources(params)
+    //let params = new HttpParams()
+    //  .set("oId", this.userId)
+    //  .set("resourceTags", resourceTags);
+    this.profileResources = { oId: this.userId, resourceTags: resourceTags, type: 'resources' };
+    this.personalizedPlanService.saveResources(this.profileResources)
       .subscribe(() => {
         this.isSavedPlan = true;
         this.showSuccess('Resource saved to profile');
       });
   }
-  
+
   saveBookmarkedPlan() {
     this.planStorage = sessionStorage.getItem(this.planSessionKey);
     if (this.planStorage) {
@@ -148,8 +153,8 @@ export class SaveButtonComponent implements OnInit {
       this.id = this.resourceStorage[0].itemId;
       this.type = this.resourceStorage[0].resourceType;
       this.resourceDetails = this.resourceStorage[0].resourceDetails;
-      this.savePlanResources();
-      sessionStorage.removeItem(this.sessionKey);
+      //this.savePlanResources();
+      //sessionStorage.removeItem(this.sessionKey);
     }
   }
 

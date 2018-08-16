@@ -64,7 +64,7 @@ namespace Access2Justice.Api.Controllers
         /// <param name="parentTopicId"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("api/topics/getresourcedetails/{ParentTopicId}")]
+        [Route("api/topics/getresourcedetails/{parentTopicId}")]
         public async Task<IActionResult> GetResourceDetails(string parentTopicId)
         {
             var topics = await topicsResourcesBusinessLogic.GetResourceAsync(parentTopicId);

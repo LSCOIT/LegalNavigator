@@ -94,8 +94,8 @@ export class ProfileComponent implements OnInit {
       .subscribe(response => {
         if (response != undefined) {
           response.forEach(property => {
-            if (property.resourceTags != undefined) {
-              property.resourceTags.forEach(resource => {
+            if (property.resources != undefined) {
+              property.resources.forEach(resource => {
                 if (resource.resourceType === "Topics") {
                   this.topicIds.push(resource.itemId);
                 } else if (resource.resourceType === "WebResources") {

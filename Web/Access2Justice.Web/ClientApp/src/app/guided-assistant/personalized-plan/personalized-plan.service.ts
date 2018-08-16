@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { Resources, PersonalizedPlanTopic, PersonalizedPlan } from './personalized-plan';
+import { Resources, PersonalizedPlanTopic, PersonalizedPlan, ProfileResources, SavedResources } from './personalized-plan';
 import { api } from '../../../api/api';
 import { IResourceFilter } from '../../shared/search/search-results/search-results.model';
 import { ArrayUtilityService } from '../../shared/array-utility.service';
@@ -24,7 +24,10 @@ export class PersonalizedPlanService {
   tempPlanDetailTags: any;
   userId: string;
   planDetails: any = [];
-  planSessionKey: string= "bookmarkPlanId";
+  planSessionKey: string = "bookmarkPlanId";
+  profileResources: ProfileResources = { oId: '', resourceTags: [], type: '' };
+  savedResources: SavedResources;
+  resourceTags: Array<SavedResources> = [];
 
   constructor(private http: HttpClient, private arrayUtilityService: ArrayUtilityService) { }
 
@@ -44,7 +47,7 @@ export class PersonalizedPlanService {
     return this.http.post(api.updatePlanUrl, updatePlan, httpOptions);
   }
 
-  saveResources(resource) {
+  saveResources(resource: ProfileResources) {
     return this.http.post(api.userPlanUrl, resource, httpOptions);
   }
 
@@ -144,5 +147,53 @@ export class PersonalizedPlanService {
     }
     return this.tempPlanDetailTags;
   }
+
+  getUserId(): string {
+    let profileData = sessionStorage.getItem("profileData");
+    if (profileData != undefined) {
+      profileData = JSON.parse(profileData);
+      return profileData["UserId"];
+    }
+  }
+
+  saveResourcesToProfile() {
+    this.userId = this.getUserId();
+    this.profileResources.resourceTags = [];
+    this.savedResources = { itemId: '', resourceType: '', resourceDetails: {} };
+    this.getUserSavedResources(this.userId)
+      .subscribe(response => {
+        if (response) {
+          response.forEach(property => {
+            if (property.resources) {
+              property.resources.forEach(resource => {
+                this.resourceTags.push(resource);
+              });
+            }
+          });
+        }
+        this.resoureStorage = sessionStorage.getItem(this.sessionKey);
+        if (this.resoureStorage && this.resoureStorage.length > 0) {
+          this.resoureStorage = JSON.parse(this.resoureStorage);
+        }
+        this.savedResources = {
+          itemId: this.resoureStorage[0].id,
+          resourceType: this.resoureStorage[0].type, resourceDetails: this.resoureStorage[0].resourceDetails
+        };
+        if (!this.arrayUtilityService.checkObjectExistInArray(this.resourceTags, this.savedResources)) {
+          this.resourceTags.push(this.savedResources);
+          this.saveResourceToProfile(this.resourceTags);
+        }
+      });
+  }
+
+  saveResourceToProfile(resourceTags) {
+    this.profileResources = { oId: this.userId, resourceTags: resourceTags, type: 'resources' };
+    this.saveResources(this.profileResources)
+      .subscribe(() => {
+        //this.isSavedPlan = true;
+        console.log('Resource saved to profile');
+      });
+  }
+
 
 }
