@@ -1,7 +1,9 @@
 ﻿using Access2Justice.Api.BusinessLogic;
 using Access2Justice.Api.Tests.TestData;
+using Access2Justice.Shared.Interfaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NSubstitute;
 using System;
 using System.Linq;
 using Xunit;
@@ -11,9 +13,14 @@ namespace Access2Justice.Api.Tests.BusinessLogic
     public class A2JAuthorBusinessLogicTests
     {
         private readonly A2JAuthorBusinessLogic a2jAuthor;
+        private readonly IBackendDatabaseService dbService;
+        private readonly ICosmosDbSettings dbSettings;
+
         public A2JAuthorBusinessLogicTests()
         {
-            a2jAuthor = new A2JAuthorBusinessLogic();
+            dbService = Substitute.For<IBackendDatabaseService>();
+            dbSettings = Substitute.For<ICosmosDbSettings>();
+            a2jAuthor = new A2JAuthorBusinessLogic(dbSettings, dbService);
         }
 
         [Fact]
