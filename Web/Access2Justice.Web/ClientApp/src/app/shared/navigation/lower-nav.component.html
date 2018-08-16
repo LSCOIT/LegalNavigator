@@ -1,9 +1,9 @@
 <div [className]="my_Class"></div>
-<div class="navbar navbar-default lower-nav">
+<div *ngIf="search" class="navbar navbar-default lower-nav">
   <div class="container">
     <div class="pull-right">
       <span class="search-form" (click)="toggleSearch()" *ngIf="!showSearch">
-        <img class="search-icon" [src]="blobUrl + search?.image?.source" aria-hidden="true" />
+        <img *ngIf="search.image.source" class="search-icon" [src]="blobUrl + search?.image?.source" aria-hidden="true" />
         <span class="inline search-text">{{search?.button?.buttonText}}</span>
       </span>
       <span class="web-hidden pull-right" id="nav-bar-toggle" (click)="openNav()">&#9776;</span>
@@ -36,15 +36,15 @@
       </ul>
       <div class="bottom-menu">
         <ul>
-          <li (click)="closeNav()">
+          <li *ngIf="privcyPromise" (click)="closeNav()">
             <a [routerLink]="['/' + privacyPromise?.button?.buttonLink]">
-              <img class="nav-icon" [src]="blobUrl + privacyPromise?.image?.source" aria-hidden="true" />
+              <img *ngIf="privacyPromise.image.source" class="nav-icon" [src]="blobUrl + privacyPromise?.image?.source" aria-hidden="true" />
               {{privacyPromise?.button?.buttonText}}
             </a>
           </li>
-          <li (click)="closeNav()">
+          <li *ngIf="helpAndFAQ" (click)="closeNav()">
             <a [routerLink]="['/'+ helpAndFAQ?.button?.buttonLink]">
-              <img class="nav-icon" [src]="blobUrl + helpAndFAQ?.image?.source" aria-hidden="true" />
+              <img *ngIf="helpAndFAQ.image.source" class="nav-icon" [src]="blobUrl + helpAndFAQ?.image?.source" aria-hidden="true" />
               {{helpAndFAQ?.button?.buttonText}}
             </a>
           </li>
