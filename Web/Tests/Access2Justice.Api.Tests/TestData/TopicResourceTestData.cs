@@ -95,7 +95,7 @@ namespace Access2Justice.Api.Tests.TestData
                      JArray.Parse(@"[[{'id':''}],[{'state':'','county':'','city':'','zipCode':''}],[{'condition':[{'title':'','description':''}]}],[{'id':''}]]");
        public static string expectedTopicId = "addf41e9-1a27-4aeb-bcbb-7959f95094ba";
        public static string expectedResourceId = "77d301e7-6df2-612e-4704-c04edf271806";
-        public static Location expectedLocationValue= new Location() { State="Hawaii" };
+        public static Location expectedLocationValue= new Location() { State="Hawaii",County="",City= "Honolulu", ZipCode= "96741" };
         public static string expectedpagedResource = "{\"ContinuationToken\":\"[]\",\"Results\":[],\"TopicIds\":[]}";
        public static string expectedResourceCount = "{\"ResourceName\":\"Organizations\",\"ResourceCount\":4}";
        public static string expectedEmptyResourceCount = "{\"ResourceName\":\"All\",\"ResourceCount\":0}";
