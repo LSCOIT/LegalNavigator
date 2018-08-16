@@ -76,7 +76,6 @@ export class SubtopicDetailComponent implements OnInit {
       .subscribe(
         data => {
           this.subtopicDetails = data;
-          console.log(this.subtopicDetails);
           this.filterSubtopicDetail();
         }
       );

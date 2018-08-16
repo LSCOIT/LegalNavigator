@@ -2,6 +2,10 @@ h3 {
   margin-top: 0;
 }
 
+button {
+  margin: 15px 15px 15px 0;
+}
+
 #about-img {
   background-color: #f2f2f2;
   width: 100%;
@@ -15,9 +19,6 @@ h3 {
   margin-top: 20px;
 }
 
-.even-rows {
-  padding-left: 5%;
-}
 
 @media only screen and (min-width : 992px) {
   .row {
@@ -27,5 +28,9 @@ h3 {
   .section-img {
     margin-top: 50px;
     width: 45%;
+  }
+
+  .even-rows {
+    padding-left: 5%;
   }
 }
