@@ -14,6 +14,7 @@ describe('Component:PersonalizedPlan', () => {
   let personalizedPlanService: PersonalizedPlanService;
   let mockactiveActionPlan = 'bd900039-2236-8c2c-8702-d31855c56b0f';
   let mockPlanDetailTags = { id: '773993', oId: 'rere', planTags: [{}], type: '' };
+  let mockTopics = [{ 'id': '3445', planTags: [{}] }];
   let mockTopicList = [{
     topic: 'test',
     isSelected: false
@@ -22,7 +23,6 @@ describe('Component:PersonalizedPlan', () => {
     topic: '',
     isSelected: false
   }];
-  let mockTopics = [{ 'id': '3445', planTags: [{}] }];
   let mockTempTopicsList = [{
     topic: {
       "topicId": "addf41e9-1a27-4aeb-bcbb-7959f95094ba",
@@ -45,7 +45,6 @@ describe('Component:PersonalizedPlan', () => {
     ],
     "id": "addf41e9-1a27-4aeb-bcbb-7959f95094ba"
   };
-  
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -69,12 +68,6 @@ describe('Component:PersonalizedPlan', () => {
     fixture.detectChanges();
   });
 
-  it('should call getTopics method on ngOnInit', () => {
-    spyOn(component, 'getTopics');
-    component.ngOnInit();
-    expect(component.getTopics).toHaveBeenCalled();
-  });
-
   it('should create personalized plan component', () => {
     expect(component).toBeTruthy();
   });
@@ -83,26 +76,27 @@ describe('Component:PersonalizedPlan', () => {
     expect(component).toBeDefined();
   });
 
-  it('should call getActionPlanConditions service method when  getTopics is called', () => {
+  it('should call getTopics method on ngOnInit', () => {
     spyOn(component, 'getTopics');
-    spyOn(component, 'getPlanDetails');
+    component.ngOnInit();
+    expect(component.getTopics).toHaveBeenCalled();
+  });
+
+  it('should call getActionPlanConditions method of personalized serviced when gettopics of component called', () => {
+    spyOn(component, 'getTopics');
     spyOn(personalizedPlanService, 'getActionPlanConditions');
     component.activeActionPlan = mockactiveActionPlan;
     component.getTopics();
-    component.getPlanDetails();
     personalizedPlanService.getActionPlanConditions(mockactiveActionPlan);
     expect(personalizedPlanService.getActionPlanConditions).toHaveBeenCalled();
-    expect(component.getPlanDetails).toHaveBeenCalled();
   });
 
   it('should call createTopicsList service method when getplandetails method called', () => {
-    spyOn(component, 'getPlanDetails');
     spyOn(personalizedPlanService, 'createTopicsList');
     spyOn(personalizedPlanService, 'displayPlanDetails');
     component.topics = mockTopics;
     component.planDetailTags = mockPlanDetailTags;
     component.topicsList = mockTopicList;
-    component.getPlanDetails();
     personalizedPlanService.createTopicsList(component.topics);
     personalizedPlanService.displayPlanDetails(mockPlanDetailTags, mockTopicList);
     expect(personalizedPlanService.createTopicsList).toHaveBeenCalled();
@@ -110,11 +104,9 @@ describe('Component:PersonalizedPlan', () => {
   });
 
   it('should call displayPlanDetails service method when getplandetails method called', () => {
-    spyOn(component, 'getPlanDetails');
     spyOn(personalizedPlanService, 'displayPlanDetails');
     component.planDetailTags = mockPlanDetailTags;
     component.topicsList = mockTopicList;
-    component.getPlanDetails();
     personalizedPlanService.displayPlanDetails(mockPlanDetailTags, mockTopicList);
     expect(personalizedPlanService.displayPlanDetails).toHaveBeenCalled();
   });

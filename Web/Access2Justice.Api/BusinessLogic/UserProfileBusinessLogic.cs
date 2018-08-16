@@ -6,9 +6,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System;
 using System.Globalization;
-using Access2Justice.Shared;
 using Microsoft.Azure.Documents;
 using Microsoft.AspNetCore.Http;
 
@@ -25,7 +23,6 @@ namespace Access2Justice.Api.BusinessLogic
             dbSettings = cosmosDbSettings;
             dbService = backendDatabaseService;
         }
-
         public async Task<UserProfile> GetUserProfileDataAsync(string oId)
         {
             UserProfile userProfile = new UserProfile();
@@ -142,62 +139,6 @@ namespace Access2Justice.Api.BusinessLogic
             }
             return await dbService.UpdateItemAsync(id, dbObject, dbSettings.UserSavedResourcesCollectionId);
         }
-
-        public async Task<dynamic> UpsertUserPlanAsync(dynamic userPlan)
-        {
-            var serializedResult = JsonConvert.SerializeObject(userPlan);
-            var userDocument = JsonConvert.DeserializeObject(serializedResult);
-            string oId = userDocument.oId;
-            dynamic result = null;
-            string id = userDocument.id;
-            List<string> propertyNames = new List<string>() { Constants.OId, Constants.Id };
-            List<string> values = new List<string>() { oId, id };
-            var userDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, propertyNames, values);
-            if (userDBData.Count == 0)
-            {
-                result = CreateUserPlanAsync(userPlan);
-            }
-            else
-            {
-                result = UpdateUserPlanAsync(id, userPlan);
-            }
-            return result;
-        }
-
-        public async Task<dynamic> CreateUserPlanAsync(dynamic userData)
-        {
-            var serializedResult = JsonConvert.SerializeObject(userData);
-            var userDocument = JsonConvert.DeserializeObject(serializedResult);
-            return await dbService.CreateItemAsync(userDocument, dbSettings.ResourceCollectionId);
-        }
-
-        public async Task<dynamic> UpdateUserPlanAsync(string id, dynamic userUIData)
-        {
-            var serializedResult = JsonConvert.SerializeObject(userUIData);
-            var userUIDocument = JsonConvert.DeserializeObject(serializedResult);
-            string oId = userUIDocument.oId;
-            List<string> propertyNames = new List<string>() { Constants.OId, Constants.Id };
-            List<string> values = new List<string>() { oId, id };
-            var userDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, propertyNames, values);
-            var serializedDBResult = JsonConvert.SerializeObject(userDBData[0]);
-            JObject dbObject = JObject.Parse(serializedDBResult);
-            JObject uiObject = JObject.Parse(serializedResult);
-
-            foreach (var prop in uiObject.Properties())
-            {
-                var targetProperty = dbObject.Property(prop.Name);
-                if (targetProperty == null)
-                {
-                    dbObject.Add(prop.Name, prop.Value);
-                }
-                else
-                {
-                    targetProperty.Value = prop.Value;
-                }
-            }
-            return await dbService.UpdateItemAsync(id, dbObject, dbSettings.ResourceCollectionId);
-        }
-
         public async Task<object> ShareResourceDataAsync(ShareInput shareInput)
         {
             UserProfile userProfile = await GetUserProfileDataAsync(shareInput.UserId);
@@ -228,7 +169,6 @@ namespace Access2Justice.Api.BusinessLogic
             }
             return permaLink;
         }
-
         public async Task<object> UnshareResourceDataAsync(UnShareInput unShareInput)
         {
             UserProfile userProfile = await GetUserProfileDataAsync(unShareInput.UserId);
@@ -246,7 +186,6 @@ namespace Access2Justice.Api.BusinessLogic
             }
             return true;
         }
-
         public async Task<object> UpdateUserProfileDataAsync(UserProfile userProfile)
         {
             return await dbService.UpdateItemAsync(userProfile.Id, ResourceDeserialized(userProfile), dbSettings.UserProfileCollectionId);

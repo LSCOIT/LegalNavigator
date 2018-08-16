@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { APP_BASE_HREF } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { SubtopicsComponent } from './subtopics.component';
 import { ServiceOrgSidebarComponent } from '../../shared/sidebars/service-org-sidebar.component';
 import { GuidedAssistantSidebarComponent } from '../../shared/sidebars/guided-assistant-sidebar.component';

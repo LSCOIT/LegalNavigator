@@ -44,7 +44,7 @@ export class LowerNavComponent implements OnInit {
   openNav() {
     this.my_Class = "dimmer";
     if (this.width >= 768) {
-      this.sidenav.nativeElement.style.width = "33.333%";
+      this.sidenav.nativeElement.style.width = "400px";
       this.sidenav.nativeElement.style.height = "100%";
     } else {
       this.sidenav.nativeElement.style.height = "100%";

@@ -8,16 +8,16 @@
       <h3>{{aboutContentData?.mission.title}}</h3>
       <p>{{aboutContentData?.mission.description}}</p>
     </div>
-    <div class="col-md-6 section-img pull-right"></div>
+    <div class="col-md-5 section-img pull-right"></div>
   </div>
   <div class="row">
-    <div class="col-md-6 pull-right">
+    <div class="col-md-6 even-rows pull-right">
       <h3>{{aboutContentData?.service.title}}</h3>
       <p>{{aboutContentData?.service.description}}</p>
       <button class="btn btn-primary btn-sm"><a [routerLink]="'/' + aboutContentData?.service.guidedAssistantButton.buttonLink">{{aboutContentData?.service.guidedAssistantButton.buttonText}}</a></button>
       <button class="btn btn-primary btn-sm"><a [routerLink]="'/' + aboutContentData?.service.topicsAndResourcesButton.buttonLink">{{aboutContentData?.service.topicsAndResourcesButton.buttonText}}</a></button>
     </div>
-    <div class="col-md-6 section-img pull-left"></div>
+    <div class="col-md-5 section-img pull-left"></div>
   </div>
   <div class="row">
     <div class="col-md-6">
@@ -25,6 +25,6 @@
       <p>{{aboutContentData?.privacyPromise.description}}</p>
       <button class="btn btn-primary"><a [routerLink]="'/' + aboutContentData?.privacyPromise.privacyPromiseButton.buttonLink">{{aboutContentData?.privacyPromise.privacyPromiseButton.buttonText}}</a></button>
     </div>
-    <div class="col-md-6 section-img pull-right"></div>
+    <div class="col-md-5 section-img pull-right"></div>
   </div>
 </div>
