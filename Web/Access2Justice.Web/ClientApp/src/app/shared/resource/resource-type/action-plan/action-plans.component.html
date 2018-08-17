@@ -45,10 +45,12 @@
                 </div>
               </div>
               <div class="col-xs-12 step-content">
-                <div *ngIf="global.showMarkComplete" class="col-sm-3 col-xs-12 btn-selected" id="complete-btn">
-                  <input id="checkBox" type="checkbox" (change)="checkCompleted($event,topic.topicId,step.stepId)"
-                         [ngModel]="step.isComplete">
-                  <label class="ps">Completed</label>
+                <div [ngClass]="{'checkbox disabled':!global.showMarkComplete, '':global.showMarkComplete}" class="col-sm-3 col-xs-12 btn-selected" id="complete-btn">
+                  <label class="ps">
+                    <input id="checkBox" type="checkbox" (change)="checkCompleted($event,topic.topicId,step.stepId)"
+                           [ngModel]="step.isComplete" [disabled]="!global.showMarkComplete">
+                    Completed
+                  </label>
                 </div>
                 <div>
                   <p>{{step.description}}</p>

@@ -20,6 +20,7 @@ export class UserActionSidebarComponent implements OnInit {
   constructor(private global: Global) {
     if (global.role === UserStatus.Shared) {
       global.showShare = false;
+      global.showSetting = false;
     }
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ShareService } from '../../share-button/share.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { api } from '../../../../../../api/api';
@@ -6,6 +6,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { window } from 'rxjs/operator/window';
 import { ShareView } from '../../share-button/share.model';
 import { Global, UserStatus } from '../../../../../global';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 @Component({
   selector: 'app-share-button-route',
@@ -14,7 +16,13 @@ import { Global, UserStatus } from '../../../../../global';
 })
 export class ShareButtonRouteComponent implements OnInit {
   profileData: ShareView = { UserId: '', UserName: '' };
-  constructor(private httpClient: HttpClient,
+  modalRef: BsModalRef;
+  @ViewChild('template') template: TemplateRef<any>;
+
+  constructor(
+
+    private modalService: BsModalService,
+    private httpClient: HttpClient,
     private shareService: ShareService,
     private router: Router,
     private activeRoute: ActivatedRoute,
@@ -25,6 +33,16 @@ export class ShareButtonRouteComponent implements OnInit {
       global.showMarkComplete = false;
     }
 
+  }
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
+  }
+
+  close() {
+    //need to add validation and prevent from clicking out of modal until i agree has been checked
+    //do we need to send this agreement somewhere?
+    this.modalRef.hide();
   }
 
   ngOnInit() {
@@ -46,6 +64,7 @@ export class ShareButtonRouteComponent implements OnInit {
               sessionStorage.setItem("profileData", JSON.stringify(this.profileData));
             }
             this.global.role = UserStatus.Shared;
+            this.openModal(this.template);
             return this.router.navigateByUrl(response.resourceLink, { skipLocationChange: true });
           }
           else {
