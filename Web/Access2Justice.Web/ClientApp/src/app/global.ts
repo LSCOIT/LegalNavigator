@@ -7,6 +7,7 @@ export class Global {
   showRemove: boolean = true;
   showMarkComplete: boolean = true;
   showDropDown: boolean = true;
+  showSetting: boolean = true;
   shareRouteUrl: string = "/share";
 }
 

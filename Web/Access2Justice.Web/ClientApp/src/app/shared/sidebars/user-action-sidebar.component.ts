@@ -20,6 +20,7 @@ export class UserActionSidebarComponent implements OnInit {
   constructor(private global: Global) {
     if (global.role === UserStatus.Shared && location.pathname.indexOf(global.shareRouteUrl) >= 0) {
       global.showShare = false;
+      global.showSetting = false;
     }
     else {
       global.showShare = true;
