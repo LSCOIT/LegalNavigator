@@ -27,12 +27,6 @@ export class ShareButtonRouteComponent implements OnInit {
     private router: Router,
     private activeRoute: ActivatedRoute,
     private global: Global) {
-    if (global.role === UserStatus.Shared) {
-      global.showShare = false;
-      global.showRemove = false;
-      global.showMarkComplete = false;
-    }
-
   }
 
   openModal(template: TemplateRef<any>) {

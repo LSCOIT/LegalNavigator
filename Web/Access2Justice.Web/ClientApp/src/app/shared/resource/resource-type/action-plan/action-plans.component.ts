@@ -51,9 +51,13 @@ export class ActionPlansComponent implements OnChanges {
       profileData = JSON.parse(profileData);
       this.userId = profileData["UserId"];
     }
-    if (global.role === UserStatus.Shared) {
+    if (global.role === UserStatus.Shared && location.pathname.indexOf(global.shareRouteUrl) >= 0) {
       global.showMarkComplete = false;
       global.showDropDown = false;
+    }
+    else {
+      global.showMarkComplete = true;
+      global.showDropDown = true;
     }
   }
 

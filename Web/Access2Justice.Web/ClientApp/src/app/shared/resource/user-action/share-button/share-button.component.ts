@@ -43,10 +43,12 @@ export class ShareButtonComponent implements OnInit {
       profileData = JSON.parse(profileData);
       this.userId = profileData["UserId"];
     }
-    if (global.role === UserStatus.Shared) {
+    if (global.role === UserStatus.Shared && location.pathname.indexOf(global.shareRouteUrl) >= 0) {
       global.showShare = false;
     }
-
+    else {
+      global.showShare = true;
+    }
   }
 
   openModal(template: TemplateRef<any>) {
@@ -139,7 +141,6 @@ export class ShareButtonComponent implements OnInit {
         this.openModal(this.templateref);
       }
     }
-
   }
 
   buildParams() {

@@ -8,6 +8,7 @@ export class Global {
   showMarkComplete: boolean = true;
   showDropDown: boolean = true;
   showSetting: boolean = true;
+  shareRouteUrl: string = "/share";
 }
 
 export enum UserStatus {

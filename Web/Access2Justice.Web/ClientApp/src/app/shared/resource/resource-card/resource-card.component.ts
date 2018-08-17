@@ -18,11 +18,15 @@ export class ResourceCardComponent implements OnInit {
   constructor(public sanitizer: DomSanitizer,
     private global: Global) {
     this.sanitizer = sanitizer;
-    if (global.role === UserStatus.Shared) {
+    if (global.role === UserStatus.Shared && location.pathname.indexOf(global.shareRouteUrl) >= 0) {
       global.showShare = false;
       this.showRemoveOption = false;
       global.showDropDown = false;
-
+    }
+    else {
+      global.showShare = true;
+      this.showRemoveOption = true;
+      global.showDropDown = true;
     }
   }
 

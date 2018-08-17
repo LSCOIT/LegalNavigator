@@ -42,11 +42,12 @@ export class RemoveButtonComponent implements OnInit {
       profileData = JSON.parse(profileData);
       this.userId = profileData["UserId"];
     }
-
-    if (global.role === UserStatus.Shared) {
+    if (global.role === UserStatus.Shared && location.pathname.indexOf(global.shareRouteUrl) >= 0) {
       global.showRemove = false;
     }
-
+    else {
+      global.showRemove = true;
+    }
   }
 
   removeSavedResources(template: TemplateRef<any>) {
