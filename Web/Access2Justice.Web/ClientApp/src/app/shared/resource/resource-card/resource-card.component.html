@@ -1,14 +1,14 @@
 <div *ngIf="resource">
   <div class="box-no-shadow">
     <div class="resource-body">
-      <div class="pull-right">
+      <div class="pull-right" *ngIf="global.showDropDown">
         <div class="btn-group" dropdown>
           <img dropdownToggle type="button" class="more-menu dropdown-toggle" src="./assets/images/small-icons/more_menu.svg" alt="Menu" />
           <ul id="dropdown-disabled-item" *dropdownMenu class="dropdown-menu dropdown-menu-right"
               role="menu">
-            <li role="menuitem">
+            <li role="menuitem" *ngIf="global.showShare">
               <a class="dropdown-item">
-                <app-share-button [showIcon]=false [id]="resource.id" [type]="resource.resourceType" [url]="resource.url" [webResourceUrl]="resource.resourceDetails.url"></app-share-button>
+                <app-share-button [showIcon]=false [id]="resource.id" [type]="resource.resourceType" [url]="resource?.url" [webResourceUrl]="resource?.resourceDetails?.url"></app-share-button>
               </a>
             </li>
             <li role="menuitem" id="save-dropdown" *ngIf="!showRemoveOption">

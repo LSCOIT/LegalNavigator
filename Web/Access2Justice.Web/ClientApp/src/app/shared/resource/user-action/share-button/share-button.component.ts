@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { Share } from '../share-button/share.model';
 import { ShareService } from '../share-button/share.service';
 import { ActivatedRoute } from '@angular/router';
+import { Global, UserStatus } from '../../../../global';
 
 @Component({
   selector: 'app-share-button',
@@ -35,12 +36,17 @@ export class ShareButtonComponent implements OnInit {
     private arrayUtilityService: ArrayUtilityService,
     private httpClient: HttpClient,
     private shareService: ShareService,
-    private activeRoute: ActivatedRoute) {
+    private activeRoute: ActivatedRoute,
+    private global: Global) {
     let profileData = sessionStorage.getItem("profileData");
     if (profileData != undefined) {
       profileData = JSON.parse(profileData);
       this.userId = profileData["UserId"];
     }
+    if (global.role === UserStatus.Shared) {
+      global.showShare = false;
+    }
+
   }
 
   openModal(template: TemplateRef<any>) {

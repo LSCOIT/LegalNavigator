@@ -5,6 +5,7 @@ import { api } from '../../../../../../api/api';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { window } from 'rxjs/operator/window';
 import { ShareView } from '../../share-button/share.model';
+import { Global, UserStatus } from '../../../../../global';
 
 @Component({
   selector: 'app-share-button-route',
@@ -12,11 +13,19 @@ import { ShareView } from '../../share-button/share.model';
   styleUrls: ['./share-button-route.component.css']
 })
 export class ShareButtonRouteComponent implements OnInit {
-  profileData: ShareView = { UserId: '', UserName:'' };
+  profileData: ShareView = { UserId: '', UserName: '' };
   constructor(private httpClient: HttpClient,
     private shareService: ShareService,
     private router: Router,
-    private activeRoute: ActivatedRoute) { }
+    private activeRoute: ActivatedRoute,
+    private global: Global) {
+    if (global.role === UserStatus.Shared) {
+      global.showShare = false;
+      global.showRemove = false;
+      global.showMarkComplete = false;
+    }
+
+  }
 
   ngOnInit() {
     this.getResourceLink();
@@ -36,6 +45,7 @@ export class ShareButtonRouteComponent implements OnInit {
               this.profileData.IsShared = true;
               sessionStorage.setItem("profileData", JSON.stringify(this.profileData));
             }
+            this.global.role = UserStatus.Shared;
             return this.router.navigateByUrl(response.resourceLink, { skipLocationChange: true });
           }
           else {

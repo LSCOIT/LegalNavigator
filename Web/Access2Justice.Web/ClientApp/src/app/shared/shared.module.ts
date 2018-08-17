@@ -102,7 +102,7 @@ import { ShareButtonRouteComponent } from './resource/user-action/share-button/s
     VideosComponent,
     MapComponent,
     InternalErrorComponent,
-    LoginComponent    
+    LoginComponent,   
     ShareButtonRouteComponent
   ],
   exports: [

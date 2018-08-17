@@ -6,7 +6,7 @@
       <p>Access it later on a computer or phone. Your information will never be shared without your permission.</p>
       <a class="link" href=""><app-save-button></app-save-button></a>
     </div>
-    <div class="col-sm-4 sidebar-block">
+    <div class="col-sm-4 sidebar-block" *ngIf="global.showShare">
       <img src="./assets/images/secondary-illustrations/share.svg" alt="Share your Plan">
       <p class="pl">Share your plan</p>
       <p>Send a link to this information to a friend, family member, or advocate that is helping you. Such as a lawyer or social worker.</p>

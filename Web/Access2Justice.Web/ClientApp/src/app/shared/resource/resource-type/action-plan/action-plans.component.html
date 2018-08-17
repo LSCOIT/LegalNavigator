@@ -11,7 +11,7 @@
           </div>
         </div>
         <div class="col-xs-1">
-          <div class="btn-group pull-right more-menu" dropdown>
+          <div class="btn-group pull-right more-menu" dropdown *ngIf="global.showDropDown">
             <img id="button-basic" dropdownToggle type="button" aria-controls="dropdown-basic" src="./assets/images/small-icons/more_menu.svg" alt="plan menu" (click)="planTagOptions(topic.topicId,template)" />
             <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
                 role="menu" aria-labelledby="button-basic">
@@ -36,8 +36,7 @@
               <div accordion-heading>
                 <div class="col-sm-9 col-xs-12">
                   <div class="media">
-                    <div class="media-left">
-                      <img class="pull-left plan-icon accordion-img" src="./assets/images/small-icons/open_accordion.svg" alt="open accordion" />
+                    <div class="media-left accordion-img">
                     </div>
                     <div class="media-body">
                       <h3>Step {{step.order}}. {{step.title}}</h3>
@@ -46,7 +45,7 @@
                 </div>
               </div>
               <div class="col-xs-12 step-content">
-                <div class="col-sm-3 col-xs-12 btn-selected" id="complete-btn">
+                <div *ngIf="global.showMarkComplete" class="col-sm-3 col-xs-12 btn-selected" id="complete-btn">
                   <input id="checkBox" type="checkbox" (change)="checkCompleted($event,topic.topicId,step.stepId)"
                          [ngModel]="step.isComplete">
                   <label class="ps">Completed</label>
