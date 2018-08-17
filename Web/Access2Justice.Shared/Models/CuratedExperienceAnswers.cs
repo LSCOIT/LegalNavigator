@@ -64,5 +64,10 @@ namespace Access2Justice.Shared.Models
 
         [JsonProperty(PropertyName = "value")]
         public string Value { get; set; }
+
+        [JsonProperty(PropertyName = "text")]
+        public string Text { get; set; }
     }
 }
+
+ // Todo:@Alaa add 2 elements in each of ButtonAnswer and FieldAnswer >> Button & Logic... Field & Logic..

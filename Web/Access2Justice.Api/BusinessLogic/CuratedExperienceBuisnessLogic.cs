@@ -166,20 +166,32 @@ namespace Access2Justice.Api.BusinessLogic
             var filledInTexts = new List<AnswerField>();
             foreach (var field in viewModelAnswer.Fields)
             {
+                var fieldComponent = new CuratedExperienceComponent();
+                foreach (var component in curatedExperience.Components)
+                {
+                    if (component.Fields.Where(x => x.Id == Guid.Parse(field.FieldId)).Any())
+                    {
+                        var selectedField = component.Fields.Where(x => x.Id == Guid.Parse(field.FieldId)).FirstOrDefault();
+                        fieldComponent = curatedExperience.Components.Where(x => x.Fields.Contains(selectedField)).FirstOrDefault();
+                    }
+                }
+
                 filledInTexts.Add(new AnswerField
                 {
                     FieldId = field.FieldId,
-                    Value = field.Value
+                    Text = field.Value,
+                    Name = fieldComponent.Fields.Where(x => x.Id == Guid.Parse(field.FieldId)).FirstOrDefault().Name,
+                    Value = fieldComponent.Fields.Where(x => x.Id == Guid.Parse(field.FieldId)).FirstOrDefault().Value,
                 });
             }
 
-            var component = new CuratedExperienceComponent();
-            foreach (var com in curatedExperience.Components)
+            var buttonComponent = new CuratedExperienceComponent();
+            foreach (var component in curatedExperience.Components)
             {
-                if (com.Buttons.Where(x => x.Id == viewModelAnswer.ButtonId).Any())
+                if (component.Buttons.Where(x => x.Id == viewModelAnswer.ButtonId).Any())
                 {
-                    var button = com.Buttons.Where(x => x.Id == viewModelAnswer.ButtonId).FirstOrDefault();
-                    component = curatedExperience.Components.Where(x => x.Buttons.Contains(button)).FirstOrDefault();
+                    var button = component.Buttons.Where(x => x.Id == viewModelAnswer.ButtonId).FirstOrDefault();
+                    buttonComponent = curatedExperience.Components.Where(x => x.Buttons.Contains(button)).FirstOrDefault();
                 }
             }
 
@@ -191,13 +203,13 @@ namespace Access2Justice.Api.BusinessLogic
                     new AnswerButton()
                     {
                         ButtonId = viewModelAnswer.ButtonId,
-                        Name = component.Buttons.Where(x => x.Id == viewModelAnswer.ButtonId).FirstOrDefault().Name,
-                        Value = component.Buttons.Where(x => x.Id == viewModelAnswer.ButtonId).FirstOrDefault().Value,
+                        Name = buttonComponent.Buttons.Where(x => x.Id == viewModelAnswer.ButtonId).FirstOrDefault().Name,
+                        Value = buttonComponent.Buttons.Where(x => x.Id == viewModelAnswer.ButtonId).FirstOrDefault().Value,
                     }
                 },
                 AnswerFields = filledInTexts,
-                CodeBefore = component.CodeBefore,
-                CodeAfter = component.CodeAfter
+                CodeBefore = buttonComponent.CodeBefore,
+                CodeAfter = buttonComponent.CodeAfter
             });
 
             return new CuratedExperienceAnswers
