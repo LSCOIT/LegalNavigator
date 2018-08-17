@@ -103,7 +103,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
       this.filterType = environment.All;
     }
     // need to revisit this logic..
-    this.resourceResults = this.searchResults.resourceTypeFilter.reverse();
+    this.resourceResults = this.searchResults.resourceTypeFilter;
     this.navigateDataService.setData(undefined);
     if (this.resourceTypeFilter != undefined) {
 
@@ -136,6 +136,9 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   cacheSearchResultsData() {
     sessionStorage.removeItem("cacheSearchResults");
     sessionStorage.setItem("cacheSearchResults", JSON.stringify(this.searchResults));
+    if (this.location) {
+      sessionStorage.setItem("searchedLocationMap", JSON.stringify(this.location));
+    }
   }
 
   updateCacheStorage(filterName: string) {
@@ -189,8 +192,8 @@ export class SearchResultsComponent implements OnInit, OnChanges {
 
   filterResourceByKeywordAndLocation() {
     this.luisInput.Location = this.location;
-    this.luisInput.LuisTopScoringIntent = this.searchResults.topIntent;
-    this.luisInput.Sentence = this.searchResults.topIntent;
+    this.luisInput.LuisTopScoringIntent = this.topIntent;
+    this.luisInput.Sentence = this.topIntent;
     this.searchService.search(this.luisInput)
       .subscribe(response => {
         if (response != undefined) {
@@ -360,13 +363,8 @@ export class SearchResultsComponent implements OnInit, OnChanges {
       this.navigateDataService.setData(JSON.parse(sessionStorage.getItem("cacheSearchResults")));      
     }
     this.bindData();
-    this.notifyLocationChange();
-    if (this.showRemove) {
-      this.showRemoveOption = this.showRemove;
-    }
-    else {
-      this.showRemoveOption = false;
-    }
+    this.notifyLocationChange();        
+      this.showRemoveOption = this.showRemove;    
   }
 
   ngOnDestroy() {

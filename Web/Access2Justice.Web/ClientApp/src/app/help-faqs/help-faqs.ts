@@ -1,10 +1,11 @@
+import { Location } from "../about/about";
+
 export interface HelpAndFaqs {
   id: string;
   description: string;
   image: ImageUrl;
-  imageExpand: ImageUrl;
-  imageCollapse: ImageUrl;
   faqs: Array<Faq>;
+  location: Array<Location>;
 }
 export interface ImageUrl {
   source: string;

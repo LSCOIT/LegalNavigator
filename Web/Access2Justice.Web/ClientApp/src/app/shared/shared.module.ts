@@ -50,6 +50,7 @@ import { ResourceService } from './resource/resource.service';
 import { MapComponent } from './map/map.component';
 import { MapService } from './map/map.service';
 import { InternalErrorComponent } from './error/internal-error/internal-error.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   imports: [
@@ -98,7 +99,8 @@ import { InternalErrorComponent } from './error/internal-error/internal-error.co
     OrganizationsComponent,
     VideosComponent,
     MapComponent,
-    InternalErrorComponent
+    InternalErrorComponent,
+    LoginComponent
   ],
   exports: [
     ActionPlansComponent,
@@ -124,7 +126,8 @@ import { InternalErrorComponent } from './error/internal-error/internal-error.co
     BreadcrumbComponent,
     UserActionSidebarComponent,
     WebResourceComponent,
-    HelplineComponent
+    HelplineComponent,
+    LoginComponent
   ],
   providers: [
     CuratedResourceService,

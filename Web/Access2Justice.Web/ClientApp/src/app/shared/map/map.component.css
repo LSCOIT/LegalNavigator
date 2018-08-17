@@ -31,10 +31,10 @@ p {
   display: inline-block;
 }
 
-  .location-icon ~ h4 {
-    display: inline-block;
-    margin: 0;
-  }
+.location-icon ~ h4 {
+  display: inline-block;
+  margin: 0;
+}
 
 .change-location-btn {
   color: #0D3FB8;
@@ -70,6 +70,14 @@ p {
   background: rgba(0,0,0,0.6);
   z-index: 1;
   transition: background-color .5s;
+}
+
+.no-dimmer {
+  display: none;
+}
+
+#search-box {
+  padding: 5px;
 }
 
 @media only screen and (min-width : 768px) {

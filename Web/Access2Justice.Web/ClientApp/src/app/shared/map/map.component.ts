@@ -99,8 +99,8 @@ export class MapComponent implements OnInit {
               this.geolocationPosition.coords.longitude, environment.bingmap_key).subscribe(response => {
                 this.selectedAddress = response;
                 environment.map_type = true;
-                //this.selectedAddress.resourceSets[0].resources[0].address.adminDistrict = "WA";
-                this.mapResultsService.getStateFullName(this.selectedAddress.resourceSets[0].resources[0].address.adminDistrict, environment.bingmap_key)
+                this.mapResultsService.getStateFullName(this.selectedAddress.resourceSets[0].resources[0].address.countryRegion,
+                  this.selectedAddress.resourceSets[0].resources[0].address.adminDistrict, environment.bingmap_key)
                   .subscribe(stateFullName => {
                     this.selectedAddress.resourceSets[0].resources[0].address.adminDistrict = stateFullName.resourceSets[0].resources[0].name;
                     this.mapService.mapLocationDetails(this.selectedAddress.resourceSets[0].resources[0]);
@@ -123,21 +123,34 @@ export class MapComponent implements OnInit {
     }
   }
 
-  filterLocationNavigationContent(): void {
-    if (this.navigation) {
-      this.name = this.navigation.name;
-      this.location = this.navigation.location;
-      this.locationNavContent = this.navigation.locationNavContent;
+  filterLocationNavigationContent(navigation): void {
+    if (navigation) {
+      this.name = navigation.name;
+      this.location = navigation.location;
+      this.locationNavContent = navigation.locationNavContent;
     }
   }
 
   getLocationNavigationContent(): void {
     let homePageRequest = { name: this.name };
-    this.staticResourceService.getStaticContent(homePageRequest)
-      .subscribe(content => {
-        this.navigation = content[0];
-        this.filterLocationNavigationContent();
-      });
+    if (this.staticResourceService.navigation && (this.staticResourceService.navigation.location[0].state == this.staticResourceService.getLocation())) {
+      this.navigation = this.staticResourceService.navigation;
+      this.filterLocationNavigationContent(this.staticResourceService.navigation);
+    } else {
+      this.staticResourceService.getStaticContent(homePageRequest)
+        .subscribe(content => {
+          this.navigation = content[0];
+          this.filterLocationNavigationContent(this.navigation);
+          this.staticResourceService.navigation = this.navigation;
+        });
+    }
+  }
+
+  setLocalMapLocation() {
+    if (!this.mapType && sessionStorage.getItem("searchedLocationMap")) {
+      this.mapLocation = JSON.parse(sessionStorage.getItem("searchedLocationMap"));      
+      this.displayLocationDetails(this.mapLocation);
+    }
   }
 
   ngOnInit() {
@@ -147,13 +160,14 @@ export class MapComponent implements OnInit {
       if (!sessionStorage.getItem("globalMapLocation")) {
         this.loadCurrentLocation();
       }
-    } else {
+    } else {      
       this.showLocality = false;
     }
     if (sessionStorage.getItem("globalMapLocation")) {
       this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
       this.displayLocationDetails(this.mapLocation);
     }
+    this.setLocalMapLocation();
     this.subscription = this.mapService.notifyLocation
       .subscribe((value) => {
         this.displayLocationDetails(this.mapLocation);

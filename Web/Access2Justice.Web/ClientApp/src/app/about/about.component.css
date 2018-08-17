@@ -1,17 +1,36 @@
+h3 {
+  margin-top: 0;
+}
+
+button {
+  margin: 15px 15px 15px 0;
+}
+
 #about-img {
-    background-color: #f2f2f2;
-    width: 100%;
-    height: 300px;
+  background-color: #f2f2f2;
+  width: 100%;
+  height: 300px;
 }
 
 .section-img {
-    background-color: #f2f2f2;
-    width: 100%;
-    height: 300px; 
+  background-color: #f2f2f2;
+  width: 100%;
+  height: 300px;
+  margin-top: 20px;
 }
 
+
 @media only screen and (min-width : 992px) {
-    .section-img {
-        width: 45%;
-    }
+  .row {
+    margin: 40px auto;
+  }
+
+  .section-img {
+    margin-top: 50px;
+    width: 45%;
+  }
+
+  .even-rows {
+    padding-left: 5%;
+  }
 }

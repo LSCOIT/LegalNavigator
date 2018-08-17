@@ -57,7 +57,7 @@ ul.web-hidden {
   top: 40px;
   right: 0;
   background-color: #fff;
-  overflow: hidden;
+  overflow: scroll;
   transition: 0.5s;
 }
 
@@ -86,12 +86,6 @@ ul.web-hidden {
   text-align: center;
 }
 
-#sidenav .account-menu {
-  display: inline-block;
-  padding-left: 0;
-  padding-right: 0;
-}
-
 .sidenav-menu>li {
   margin-right: 10px;
 }
@@ -107,7 +101,7 @@ ul.web-hidden {
 }
 
 .bottom-menu>ul {
-  width: 225px;
+  width: 300px;
   margin: 15px auto;
   text-align: left;
   padding: 20px 0;
@@ -139,7 +133,7 @@ ul.web-hidden {
 li.vertical-line {
   border-bottom: 1px solid #f4f4f4;
   width: 100%;
-  margin: 15px auto;
+  margin: 10px auto;
 }
 
 @media only screen and (min-width : 768px) {

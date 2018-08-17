@@ -32,30 +32,15 @@ namespace Access2Justice.Api
 
         public async Task<dynamic> GetResourceBasedOnThresholdAsync(LuisInput luisInput)
         {
-            dynamic luisResponse = null;
-            dynamic intentWithScore = null;
-            int threshold = 2; string encodedSentence = string.Empty;
-            if (string.IsNullOrEmpty(luisInput.LuisTopScoringIntent))
+            var encodedSentence = HttpUtility.UrlEncode(luisInput.Sentence);
+            dynamic luisResponse = await luisProxy.GetIntents(encodedSentence);
+            dynamic luisTopIntents = ParseLuisIntent(luisResponse);
+
+            if (IsIntentAccurate(luisTopIntents))
             {
-                //Encoding search Text before sending it to external systems.
-                encodedSentence = HttpUtility.UrlEncode(luisInput.Sentence);
-
-                luisResponse = await luisProxy.GetIntents(encodedSentence);
-
-                intentWithScore = ParseLuisIntent(luisResponse);
-
-                threshold = ApplyThreshold(intentWithScore);
+                return await GetInternalResourcesAsync(luisTopIntents?.TopScoringIntent ?? luisInput.LuisTopScoringIntent, luisInput.Location, luisTopIntents.TopNIntents);
             }
-
-            switch (threshold)
-            {
-                case (int)LuisAccuracyThreshold.High:
-                    return await GetInternalResourcesAsync(intentWithScore?.TopScoringIntent ?? luisInput.LuisTopScoringIntent, luisInput.Location);
-                case (int)LuisAccuracyThreshold.Medium:
-                    return await GetWebResourcesAsync(intentWithScore?.TopScoringIntent);                
-                default:
-                    return await GetWebResourcesAsync(encodedSentence);
-            }
+            return await GetWebResourcesAsync(encodedSentence);
         }
 
         public IntentWithScore ParseLuisIntent(string LuisResponse)
@@ -71,23 +56,12 @@ namespace Access2Justice.Api
             };
         }
 
-        public int ApplyThreshold(IntentWithScore intentWithScore)
+        public bool IsIntentAccurate(IntentWithScore intentWithScore)
         {
-            if (intentWithScore.Score >= luisSettings.UpperThreshold && intentWithScore.TopScoringIntent.ToUpperInvariant() != "NONE")
-            {
-                return (int)LuisAccuracyThreshold.High;
-            }
-            else if (intentWithScore.Score <= luisSettings.LowerThreshold || intentWithScore.TopScoringIntent.ToUpperInvariant() == "NONE")
-            {
-                return (int)LuisAccuracyThreshold.Low;
-            }
-            else
-            {
-                return (int)LuisAccuracyThreshold.Medium;
-            }
+            return intentWithScore.Score >= luisSettings.IntentAccuracyThreshold && intentWithScore.TopScoringIntent.ToUpperInvariant() != "NONE";
         }
 
-        public async Task<dynamic> GetInternalResourcesAsync(string keyword, Location location)
+        public async Task<dynamic> GetInternalResourcesAsync(string keyword, Location location, IEnumerable<string> relevantIntents)
         {
             string topic = string.Empty, resource = string.Empty;
             var topics = await topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
@@ -104,6 +78,7 @@ namespace Access2Justice.Api
             dynamic serializedToken = "[]";
             dynamic serializedTopicIds = "[]";
             dynamic serializedGroupedResources = "[]";
+            dynamic serializedRelevantIntents = "[]";
             if (topicIds.Count > 0)
             {
                 ResourceFilter resourceFilter = new ResourceFilter { TopicIds = topicIds, PageNumber = 0, ResourceType = "ALL", Location = location };
@@ -117,15 +92,17 @@ namespace Access2Justice.Api
                 serializedToken = resources.ContinuationToken ?? "[]";
                 serializedTopicIds = JsonConvert.SerializeObject(topicIds);
                 serializedGroupedResources = JsonConvert.SerializeObject(groupedResourceType);
+                serializedRelevantIntents = JsonConvert.SerializeObject(relevantIntents);
             }
 
             JObject internalResources = new JObject {
+                { "topIntent", keyword },
+                { "relevantIntents", JsonConvert.DeserializeObject(serializedRelevantIntents)},
                 { "topics", JsonConvert.DeserializeObject(serializedTopics) },
                 { "resources", JsonConvert.DeserializeObject(serializedResources) },
                 {"continuationToken", JsonConvert.DeserializeObject(serializedToken) },
                 {"topicIds" , JsonConvert.DeserializeObject(serializedTopicIds)},
-                { "resourceTypeFilter", JsonConvert.DeserializeObject(serializedGroupedResources) },
-                { "topIntent", keyword }
+                { "resourceTypeFilter", JsonConvert.DeserializeObject(serializedGroupedResources) }
             };
             return internalResources.ToString();
         }

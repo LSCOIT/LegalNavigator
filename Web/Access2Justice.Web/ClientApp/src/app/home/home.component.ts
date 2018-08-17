@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit {
   sponsors: Array<Sponsors>;
   button: { buttonText: '', buttonAltText: '', buttonLink: '' }
   blobUrl: string = environment.blobUrl;
-  pageId: string = 'HomePage';
+  name: string = 'HomePage';
   homeContent: Home;
   heroData: Hero;
   guidedAssistantOverviewData: GuidedAssistantOverview
@@ -36,15 +36,15 @@ export class HomeComponent implements OnInit {
   constructor(private staticResourceService: StaticResourceService,
     private mapService: MapService) { }
 
-  filterHomeContent(): void {
-    if (this.homeContent) {
-      this.heroData = this.homeContent.hero;
-      this.guidedAssistantOverviewData = this.homeContent.guidedAssistantOverview;
-      this.topicAndResourcesData = this.homeContent.topicAndResources;
-      this.sponsorOverviewData = this.homeContent.sponsorOverview;
-      this.sponsors = this.homeContent.sponsorOverview.sponsors;
-      this.carouselData = this.homeContent.carousel;
-      this.privacyData = this.homeContent.privacy;
+  filterHomeContent(homeContent): void {
+    if (homeContent) {
+      this.heroData = homeContent.hero;
+      this.guidedAssistantOverviewData = homeContent.guidedAssistantOverview;
+      this.topicAndResourcesData = homeContent.topicAndResources;
+      this.sponsorOverviewData = homeContent.sponsorOverview;
+      this.sponsors = homeContent.sponsorOverview.sponsors;
+      this.carouselData = homeContent.carousel;
+      this.privacyData = homeContent.privacy;
     }
   }
   loadStateName() {
@@ -54,13 +54,19 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  getHomePageContent(): void {    
-    let homePageRequest = { name: this.pageId };
-    this.staticResourceService.getStaticContent(homePageRequest)
-      .subscribe(content => {
-        this.homeContent = content[0];
-        this.filterHomeContent();
-      });
+  getHomePageContent(): void {
+    let homePageRequest = { name: this.name };
+    if (this.staticResourceService.homeContent && (this.staticResourceService.homeContent.location[0].state == this.staticResourceService.getLocation())) {
+      this.homeContent = this.staticResourceService.homeContent;
+      this.filterHomeContent(this.staticResourceService.homeContent);
+    } else {
+      this.staticResourceService.getStaticContent(homePageRequest)
+        .subscribe(content => {
+          this.homeContent = content[0];
+          this.filterHomeContent(this.homeContent);
+          this.staticResourceService.homeContent = this.homeContent;
+        });
+    }
   }
 
   ngOnInit() {
