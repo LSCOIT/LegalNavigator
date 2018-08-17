@@ -76,7 +76,8 @@ namespace Access2Justice.Api.BusinessLogic
                 }
                 else
                 {
-                    savedAnswersDoc.Answers.Add(dbAnswers.Answers.First());
+                    savedAnswersDoc.ButtonComponents.AddRange(dbAnswers.ButtonComponents);
+                    savedAnswersDoc.FieldComponents.AddRange(dbAnswers.FieldComponents);
                     return await dbService.UpdateItemAsync(viewModelAnswer.AnswersDocId.ToString(), savedAnswersDoc, answersDbCollection);
                 }
             }
@@ -163,28 +164,6 @@ namespace Access2Justice.Api.BusinessLogic
         private CuratedExperienceAnswers MapViewModelAnswerToCuratedExperienceAnswer(CuratedExperienceAnswersViewModel viewModelAnswer,
             CuratedExperience curatedExperience)
         {
-            var filledInTexts = new List<AnswerField>();
-            foreach (var field in viewModelAnswer.Fields)
-            {
-                var fieldComponent = new CuratedExperienceComponent();
-                foreach (var component in curatedExperience.Components)
-                {
-                    if (component.Fields.Where(x => x.Id == Guid.Parse(field.FieldId)).Any())
-                    {
-                        var selectedField = component.Fields.Where(x => x.Id == Guid.Parse(field.FieldId)).FirstOrDefault();
-                        fieldComponent = curatedExperience.Components.Where(x => x.Fields.Contains(selectedField)).FirstOrDefault();
-                    }
-                }
-
-                filledInTexts.Add(new AnswerField
-                {
-                    FieldId = field.FieldId,
-                    Text = field.Value,
-                    Name = fieldComponent.Fields.Where(x => x.Id == Guid.Parse(field.FieldId)).FirstOrDefault().Name,
-                    Value = fieldComponent.Fields.Where(x => x.Id == Guid.Parse(field.FieldId)).FirstOrDefault().Value,
-                });
-            }
-
             var buttonComponent = new CuratedExperienceComponent();
             foreach (var component in curatedExperience.Components)
             {
@@ -195,28 +174,53 @@ namespace Access2Justice.Api.BusinessLogic
                 }
             }
 
-            var collectedAnswersList = new List<Answer>();
-            collectedAnswersList.Add(new Answer
+            var userSelectedButtons = new List<ButtonComponent>();
+            userSelectedButtons.Add(new ButtonComponent
             {
-                AnswerButtons = new List<AnswerButton>
-                {
-                    new AnswerButton()
-                    {
-                        ButtonId = viewModelAnswer.ButtonId,
-                        Name = buttonComponent.Buttons.Where(x => x.Id == viewModelAnswer.ButtonId).FirstOrDefault().Name,
-                        Value = buttonComponent.Buttons.Where(x => x.Id == viewModelAnswer.ButtonId).FirstOrDefault().Value,
-                    }
-                },
-                AnswerFields = filledInTexts,
+                ButtonId = viewModelAnswer.ButtonId,
+                Name = buttonComponent.Buttons.Where(x => x.Id == viewModelAnswer.ButtonId).FirstOrDefault().Name,
+                Value = buttonComponent.Buttons.Where(x => x.Id == viewModelAnswer.ButtonId).FirstOrDefault().Value,
+
                 CodeBefore = buttonComponent.CodeBefore,
                 CodeAfter = buttonComponent.CodeAfter
             });
+
+            var userSelectedFields = new List<FieldComponent>();
+            foreach (var answerField in viewModelAnswer.Fields)
+            {
+                var fieldComponent = new CuratedExperienceComponent();
+                foreach (var component in curatedExperience.Components)
+                {
+                    if (component.Fields.Where(x => x.Id == Guid.Parse(answerField.FieldId)).Any())
+                    {
+                        var selectedField = component.Fields.Where(x => x.Id == Guid.Parse(answerField.FieldId)).FirstOrDefault();
+                        fieldComponent = curatedExperience.Components.Where(x => x.Fields.Contains(selectedField)).FirstOrDefault();
+
+                        userSelectedFields.Add(new FieldComponent
+                        {
+                            CodeBefore = fieldComponent.CodeBefore,
+                            CodeAfter = fieldComponent.CodeAfter,
+                            Fields = new List<AnswerField>
+                            {
+                                new AnswerField
+                                {
+                                    FieldId = selectedField.Id,
+                                    Text = answerField.Value,
+                                    Name = selectedField.Name,
+                                    Value = selectedField.Value
+                                }
+                            }
+                        });
+                    }
+                }
+            }
 
             return new CuratedExperienceAnswers
             {
                 CuratedExperienceId = viewModelAnswer.CuratedExperienceId,
                 AnswersDocId = viewModelAnswer.AnswersDocId,
-                Answers = collectedAnswersList,
+                ButtonComponents = userSelectedButtons,
+                FieldComponents = userSelectedFields
             };
         }
     }

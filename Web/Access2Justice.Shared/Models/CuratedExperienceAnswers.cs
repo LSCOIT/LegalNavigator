@@ -12,37 +12,14 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "curatedExperienceId")]
         public Guid CuratedExperienceId { get; set; }
 
-        [JsonProperty(PropertyName = "answers")]
-        public List<Answer> Answers { get; set; }
+        [JsonProperty(PropertyName = "buttonComponents")]
+        public List<ButtonComponent> ButtonComponents { get; set; }
 
-        public CuratedExperienceAnswers()
-        {
-            Answers = new List<Answer>();
-        }
+        [JsonProperty(PropertyName = "fieldComponents")]
+        public List<FieldComponent> FieldComponents { get; set; }
     }
 
-    public class Answer
-    {
-        [JsonProperty(PropertyName = "answerButtons")]
-        public List<AnswerButton> AnswerButtons { get; set; }
-
-        [JsonProperty(PropertyName = "answerFields")]
-        public List<AnswerField> AnswerFields { get; set; }
-
-        [JsonProperty(PropertyName = "codeBefore")]
-        public string CodeBefore { get; set; }
-
-        [JsonProperty(PropertyName = "codeAfter")]
-        public string CodeAfter { get; set; }
-
-        public Answer()
-        {
-            AnswerButtons = new List<AnswerButton>();
-            AnswerFields = new List<AnswerField>();
-        }
-    }
-
-    public class AnswerButton
+    public class ButtonComponent
     {
         [JsonProperty(PropertyName = "buttonId")]
         public Guid ButtonId { get; set; }
@@ -52,12 +29,35 @@ namespace Access2Justice.Shared.Models
 
         [JsonProperty(PropertyName = "value")]
         public string Value { get; set; }
+
+        [JsonProperty(PropertyName = "codeBefore")]
+        public string CodeBefore { get; set; }
+
+        [JsonProperty(PropertyName = "codeAfter")]
+        public string CodeAfter { get; set; }
+    }
+
+    public class FieldComponent
+    {
+        public FieldComponent()
+        {
+            Fields = new List<AnswerField>();
+        }
+
+        [JsonProperty(PropertyName = "fields")]
+        public List<AnswerField> Fields { get; set; }
+
+        [JsonProperty(PropertyName = "codeBefore")]
+        public string CodeBefore { get; set; }
+
+        [JsonProperty(PropertyName = "codeAfter")]
+        public string CodeAfter { get; set; }
     }
 
     public class AnswerField
     {
         [JsonProperty(PropertyName = "fieldId")]
-        public string FieldId { get; set; }
+        public Guid FieldId { get; set; }
 
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
@@ -69,5 +69,3 @@ namespace Access2Justice.Shared.Models
         public string Text { get; set; }
     }
 }
-
- // Todo:@Alaa add 2 elements in each of ButtonAnswer and FieldAnswer >> Button & Logic... Field & Logic..
