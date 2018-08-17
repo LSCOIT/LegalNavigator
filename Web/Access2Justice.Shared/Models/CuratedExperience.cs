@@ -77,24 +77,6 @@ namespace Access2Justice.Shared.Models
 
         [JsonProperty(PropertyName = "destination")]
         public string Destination { get; set; }
-
-        [JsonProperty(PropertyName = "stepTitle")]
-        public string StepTitle { get; set; }
-
-        [JsonProperty(PropertyName = "stepDescription")]
-        public string StepDescription { get; set; }
-
-        [JsonProperty(PropertyName = "resourceIds")]
-        public List<Guid> ResourceIds { get; set; }
-
-        [JsonProperty(PropertyName = "topicIds")]
-        public List<Guid> TopicIds { get; set; }
-
-        public Button()
-        {
-            ResourceIds = new List<Guid>();
-            TopicIds = new List<Guid>();
-        }
     }
 
     public class Field
@@ -125,23 +107,5 @@ namespace Access2Justice.Shared.Models
 
         [JsonProperty(PropertyName = "invalidPrompt")]
         public string InvalidPrompt { get; set; }
-
-        [JsonProperty(PropertyName = "stepTitle")]
-        public string StepTitle { get; set; }
-
-        [JsonProperty(PropertyName = "stepDescription")]
-        public string StepDescription { get; set; }
-
-        [JsonProperty(PropertyName = "resourceIds")]
-        public List<Guid> ResourceIds { get; set; }
-
-        [JsonProperty(PropertyName = "topicIds")]
-        public List<Guid> TopicIds { get; set; }
-
-        public Field()
-        {
-            ResourceIds = new List<Guid>();
-            TopicIds = new List<Guid>();
-        }
     }
 }
