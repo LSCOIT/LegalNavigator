@@ -1,6 +1,13 @@
-import { Component, OnInit, TemplateRef, Input } from '@angular/core';
+import { Component, OnInit, TemplateRef, Input, ViewChild, ElementRef } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { ArrayUtilityService } from '../../../array-utility.service';
+import { api } from '../../../../../api/api';
+import { HttpClient } from '@angular/common/http';
+import { Share } from '../share-button/share.model';
+import { ShareService } from '../share-button/share.service';
+import { ActivatedRoute } from '@angular/router';
+import { Global, UserStatus } from '../../../../global';
 
 @Component({
   selector: 'app-share-button',
@@ -10,10 +17,97 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 export class ShareButtonComponent implements OnInit {
   @Input() showIcon = true;
   modalRef: BsModalRef;
-  constructor(private modalService: BsModalService) { }
+  @Input() id: string;//resource Id
+  @Input() type: string; //resource Type
+  @Input() url: string; //resource Url
+  @Input() webResourceUrl: string;//web resource Url
+  @ViewChild('template') public templateref: TemplateRef<any>;
+  userId: string;
+  sessionKey: string = "showModal";
+  shareInput: Share = { ResourceId: '', UserId: '', Url: '' };
+  shareView: any;
+  blank: string = "";
+  permaLink: string = "";
+  showGenerateLink: boolean = true;
+  resourceUrl: string = window.location.protocol + "//" + window.location.host + "/share/";
+  emptyId: string = "{00000000-0000-0000-0000-000000000000}";
+
+  constructor(private modalService: BsModalService,
+    private arrayUtilityService: ArrayUtilityService,
+    private httpClient: HttpClient,
+    private shareService: ShareService,
+    private activeRoute: ActivatedRoute,
+    private global: Global) {
+    let profileData = sessionStorage.getItem("profileData");
+    if (profileData != undefined) {
+      profileData = JSON.parse(profileData);
+      this.userId = profileData["UserId"];
+    }
+    if (global.role === UserStatus.Shared) {
+      global.showShare = false;
+    }
+
+  }
 
   openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template);
+    if (!this.userId) {
+      sessionStorage.setItem(this.sessionKey, "true");
+      this.externalLogin();
+    } else {
+      this.checkPermaLink(template);
+    }
+  }
+
+  close() {
+    this.modalRef.hide();
+  }
+
+  checkPermaLink(template) {
+    this.buildParams();
+    this.shareService.checkLink(this.shareInput)
+      .subscribe(response => {
+        if (response != undefined) {
+          this.shareView = response;
+          if (this.shareView.permaLink) {
+            this.showGenerateLink = false;
+            this.permaLink = this.getPermaLink();
+          }
+        }
+        this.modalRef = this.modalService.show(template);
+      });
+  }
+
+  generateLink() {
+    this.buildParams();
+    this.shareService.generateLink(this.shareInput)
+      .subscribe(response => {
+        if (response != undefined) {
+          this.shareView = response;
+          this.permaLink = this.getPermaLink();
+          this.showGenerateLink = false;
+        }
+      });
+  }
+
+  removeLink(): void {
+    this.buildParams();
+    this.shareService.removeLink(this.shareInput)
+      .subscribe(response => {
+        if (response != undefined) {
+          this.close();
+          this.showGenerateLink = true;
+          this.permaLink = this.blank;
+        }
+      });
+  }
+
+  getActiveParam() {
+    if (this.activeRoute.snapshot.params['topic'] != null) {
+      return this.activeRoute.snapshot.params['topic'];
+    };
+    if (this.activeRoute.snapshot.params['id'] != null) {
+      return this.activeRoute.snapshot.params['topic'];
+    };
   }
 
   copyLink(inputElement) {
@@ -22,7 +116,65 @@ export class ShareButtonComponent implements OnInit {
     inputElement.setSelectionRange(0, 0);
   }
 
+  getPermaLink() {
+    if (this.shareView.permaLink)
+      return this.resourceUrl + this.shareView.permaLink;
+    else
+      return this.blank;
+  }
+
+  externalLogin() {
+    var form = document.createElement('form');
+    form.setAttribute('method', 'GET');
+    form.setAttribute('action', api.loginUrl);
+    document.body.appendChild(form);
+    form.submit();
+  }
+
   ngOnInit() {
+    if (this.userId) {
+      let hasLoggedIn = sessionStorage.getItem(this.sessionKey);
+      if (hasLoggedIn) {
+        sessionStorage.removeItem(this.sessionKey);
+        this.openModal(this.templateref);
+      }
+    }
+
+  }
+
+  buildParams() {
+    if (this.id || this.type === 'WebResources') {
+      this.shareInput.Url = this.buildUrl();
+      this.shareInput.ResourceId = this.id;
+    }
+    else {
+      this.shareInput.Url = location.pathname;
+      this.shareInput.ResourceId = this.getActiveParam();
+    }
+    this.shareInput.UserId = this.userId;
+  }
+
+  buildUrl() {
+    if (this.type === 'Topics') {
+      return "/topics/" + this.id;
+    }
+    if (this.type === 'Guided Assistant') {
+      return "/guidedassistant/" + this.id;
+    }
+    if (this.type === 'Forms' || this.type === 'Related Links') {
+      return this.url;
+    }
+    if (this.type === 'WebResources') {
+      this.id = this.emptyId;
+      if (this.url) {
+        return this.url;
+      } else if (this.webResourceUrl) {
+        return this.webResourceUrl
+      }
+    }
+    else {
+      return "/resource/" + this.id;
+    }
   }
 
 }

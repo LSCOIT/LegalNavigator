@@ -7,6 +7,7 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap';
 import { Router } from '@angular/router';
 import { resource } from 'selenium-webdriver/http';
 import { EventUtilityService } from '../../../event-utility.service';
+import { Global, UserStatus } from '../../../../global';
 
 @Component({
   selector: 'app-remove-button',
@@ -33,13 +34,19 @@ export class RemoveButtonComponent implements OnInit {
     private personalizedPlanComponent: PersonalizedPlanComponent,
     private modalService: BsModalService,
     private router: Router,
-    private eventUtilityService: EventUtilityService
+    private eventUtilityService: EventUtilityService,
+    private global: Global
   ) {
-      let profileData = sessionStorage.getItem("profileData");
-      if (profileData != undefined) {
-        profileData = JSON.parse(profileData);
-        this.userId = profileData["UserId"];
+    let profileData = sessionStorage.getItem("profileData");
+    if (profileData != undefined) {
+      profileData = JSON.parse(profileData);
+      this.userId = profileData["UserId"];
     }
+
+    if (global.role === UserStatus.Shared) {
+      global.showRemove = false;
+    }
+
   }
 
   removeSavedResources(template: TemplateRef<any>) {
