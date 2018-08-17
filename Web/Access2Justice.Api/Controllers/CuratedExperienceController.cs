@@ -174,7 +174,7 @@ namespace Access2Justice.Api.Controllers
         public async Task<IActionResult> SaveAndGetNextComponent([FromBody] CuratedExperienceAnswersViewModel component)
         {
             var curatedExperience = RetrieveCachedCuratedExperience(component.CuratedExperienceId);
-            var document = await curatedExperienceBusinessLogic.SaveAnswers(component);
+            var document = await curatedExperienceBusinessLogic.SaveAnswers(component, curatedExperience);
             if (component == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);

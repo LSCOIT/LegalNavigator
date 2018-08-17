@@ -1,10 +1,8 @@
 ﻿using Access2Justice.Api.Interfaces;
 using Access2Justice.Api.ViewModels;
-using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,47 +25,49 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<PersonalizedPlanSteps> GeneratePersonalizedPlan(CuratedExperience curatedExperience, Guid answersDocId)
         {
-            var userAnswers = await dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.CuratedExperienceAnswersCollectionId);
-            CuratedExperienceAnswers curatedExperienceAnswers = new CuratedExperienceAnswers();
-            curatedExperienceAnswers = userAnswers;
-            var answerButtons = curatedExperienceAnswers.Answers.Select(x => x.AnswerButtonId.ToString()).ToList().Distinct();
-            var planSteps = new List<PersonalizedPlanStep>();
-            foreach (var component in curatedExperience.Components)
-            {
-                var answerButton = component.Buttons?.Where(x => x.Id == component.Buttons[0].Id).FirstOrDefault();
-                if (answerButton != null && answerButtons.Contains(answerButton.Id.ToString()))
-                {
-                    List<Guid> relevantResources = new List<Guid>();
-                    List<Guid> relevantTopics = new List<Guid>();
-                    if (answerButton.ResourceIds.Any())
-                    {
-                        relevantResources.AddRange(answerButton.ResourceIds);
-                    }
-                    if (answerButton.TopicIds.Any())
-                    {
-                        relevantTopics.AddRange(answerButton.TopicIds);
-                    }
-                    int stepOrder = 1;
-                    if (relevantResources.Count > 0)
-                    {
-                        planSteps.Add(new PersonalizedPlanStep()
-                        {
-                            StepId = Guid.NewGuid(),
-                            Title = answerButton.StepTitle,
-                            Description = answerButton.StepDescription,
-                            Order = stepOrder++,
-                            IsComplete = false,
-                            Resources = (relevantResources.Count > 0) ? relevantResources : new List<Guid>(),
-                            TopicIds = (relevantTopics.Count > 0) ? relevantTopics : new List<Guid>()
-                        });
-                    }
-                }
-            }
-            var personalizedPlan = new PersonalizedPlanSteps();
-            personalizedPlan = BuildPersonalizedPlan(planSteps);
-            personalizedPlan = JsonConvert.DeserializeObject<PersonalizedPlanSteps>(JsonConvert.SerializeObject(personalizedPlan));
-            var res = await dbService.CreateItemAsync((personalizedPlan), dbSettings.PersonalizedActionPlanCollectionId);
-            return personalizedPlan;
+             // Todo:@Alaa I commented this out to reimplement it based on the new Template logic that we got from A2J
+            throw new NotImplementedException();
+            //var userAnswers = await dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.CuratedExperienceAnswersCollectionId);
+            //CuratedExperienceAnswers curatedExperienceAnswers = new CuratedExperienceAnswers();
+            //curatedExperienceAnswers = userAnswers;
+            //var answerButtons = curatedExperienceAnswers.Answers.Select(x => x.AnswerButtonId.ToString()).ToList().Distinct();
+            //var planSteps = new List<PersonalizedPlanStep>();
+            //foreach (var component in curatedExperience.Components)
+            //{
+            //    var answerButton = component.Buttons?.Where(x => x.Id == component.Buttons[0].Id).FirstOrDefault();
+            //    if (answerButton != null && answerButtons.Contains(answerButton.Id.ToString()))
+            //    {
+            //        List<Guid> relevantResources = new List<Guid>();
+            //        List<Guid> relevantTopics = new List<Guid>();
+            //        if (answerButton.ResourceIds.Any())
+            //        {
+            //            relevantResources.AddRange(answerButton.ResourceIds);
+            //        }
+            //        if (answerButton.TopicIds.Any())
+            //        {
+            //            relevantTopics.AddRange(answerButton.TopicIds);
+            //        }
+            //        int stepOrder = 1;
+            //        if (relevantResources.Count > 0)
+            //        {
+            //            planSteps.Add(new PersonalizedPlanStep()
+            //            {
+            //                StepId = Guid.NewGuid(),
+            //                Title = answerButton.StepTitle,
+            //                Description = answerButton.StepDescription,
+            //                Order = stepOrder++,
+            //                IsComplete = false,
+            //                Resources = (relevantResources.Count > 0) ? relevantResources : new List<Guid>(),
+            //                TopicIds = (relevantTopics.Count > 0) ? relevantTopics : new List<Guid>()
+            //            });
+            //        }
+            //    }
+            //}
+            //var personalizedPlan = new PersonalizedPlanSteps();
+            //personalizedPlan = BuildPersonalizedPlan(planSteps);
+            //personalizedPlan = JsonConvert.DeserializeObject<PersonalizedPlanSteps>(JsonConvert.SerializeObject(personalizedPlan));
+            //var res = await dbService.CreateItemAsync((personalizedPlan), dbSettings.PersonalizedActionPlanCollectionId);
+            //return personalizedPlan;
         }
 
         public PersonalizedPlanSteps BuildPersonalizedPlan(List<PersonalizedPlanStep> planSteps)

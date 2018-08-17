@@ -58,7 +58,7 @@ namespace Access2Justice.Api.BusinessLogic
                 FindDestinationComponent(curatedExperience, component.ButtonId), component.AnswersDocId);
         }
 
-        public async Task<Document> SaveAnswers(CuratedExperienceAnswersViewModel viewModelAnswer)
+        public async Task<Document> SaveAnswers(CuratedExperienceAnswersViewModel viewModelAnswer, CuratedExperience curatedExperience)
         {
             try
             {
@@ -67,7 +67,7 @@ namespace Access2Justice.Api.BusinessLogic
                 // the next step. The caveat for this is that the users will need to repeat the survey from the
                 // beginning if the session expires which might be frustrating.
                 var answersDbCollection = dbSettings.CuratedExperienceAnswersCollectionId;
-                var dbAnswers = MapViewModelAnswerToCuratedExperienceAnswer(viewModelAnswer);
+                var dbAnswers = MapViewModelAnswerToCuratedExperienceAnswer(viewModelAnswer, curatedExperience);
 
                 var savedAnswersDoc = await dbService.GetItemAsync<CuratedExperienceAnswers>(viewModelAnswer.AnswersDocId.ToString(), answersDbCollection);
                 if (savedAnswersDoc == null)
@@ -159,7 +159,9 @@ namespace Access2Justice.Api.BusinessLogic
             };
         }
 
-        private CuratedExperienceAnswers MapViewModelAnswerToCuratedExperienceAnswer(CuratedExperienceAnswersViewModel viewModelAnswer)
+        //Todo:@Alaa could use some grooming
+        private CuratedExperienceAnswers MapViewModelAnswerToCuratedExperienceAnswer(CuratedExperienceAnswersViewModel viewModelAnswer,
+            CuratedExperience curatedExperience)
         {
             var filledInTexts = new List<AnswerField>();
             foreach (var field in viewModelAnswer.Fields)
@@ -171,18 +173,38 @@ namespace Access2Justice.Api.BusinessLogic
                 });
             }
 
-            var collectAnswersList = new List<Answer>();
-            collectAnswersList.Add(new Answer
+            var component = new CuratedExperienceComponent();
+            foreach (var com in curatedExperience.Components)
             {
-                AnswerButtonId = viewModelAnswer.ButtonId,
+                if (com.Buttons.Where(x => x.Id == viewModelAnswer.ButtonId).Any())
+                {
+                    var button = com.Buttons.Where(x => x.Id == viewModelAnswer.ButtonId).FirstOrDefault();
+                    component = curatedExperience.Components.Where(x => x.Buttons.Contains(button)).FirstOrDefault();
+                }
+            }
+
+            var collectedAnswersList = new List<Answer>();
+            collectedAnswersList.Add(new Answer
+            {
+                AnswerButtons = new List<AnswerButton>
+                {
+                    new AnswerButton()
+                    {
+                        ButtonId = viewModelAnswer.ButtonId,
+                        Name = component.Buttons.Where(x => x.Id == viewModelAnswer.ButtonId).FirstOrDefault().Name,
+                        Value = component.Buttons.Where(x => x.Id == viewModelAnswer.ButtonId).FirstOrDefault().Value,
+                    }
+                },
                 AnswerFields = filledInTexts,
+                CodeBefore = component.CodeBefore,
+                CodeAfter = component.CodeAfter
             });
 
             return new CuratedExperienceAnswers
             {
                 CuratedExperienceId = viewModelAnswer.CuratedExperienceId,
                 AnswersDocId = viewModelAnswer.AnswersDocId,
-                Answers = collectAnswersList,
+                Answers = collectedAnswersList,
             };
         }
     }

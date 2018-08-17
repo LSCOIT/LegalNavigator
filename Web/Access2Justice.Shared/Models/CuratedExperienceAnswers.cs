@@ -13,7 +13,7 @@ namespace Access2Justice.Shared.Models
         public Guid CuratedExperienceId { get; set; }
 
         [JsonProperty(PropertyName = "answers")]
-        public IList<Answer> Answers { get; set; }
+        public List<Answer> Answers { get; set; }
 
         public CuratedExperienceAnswers()
         {
@@ -23,21 +23,44 @@ namespace Access2Justice.Shared.Models
 
     public class Answer
     {
-        [JsonProperty(PropertyName = "answerButtonId")]
-        public Guid AnswerButtonId { get; set; }
+        [JsonProperty(PropertyName = "answerButtons")]
+        public List<AnswerButton> AnswerButtons { get; set; }
 
         [JsonProperty(PropertyName = "answerFields")]
-        public IList<AnswerField> AnswerFields { get; set; }
+        public List<AnswerField> AnswerFields { get; set; }
+
+        [JsonProperty(PropertyName = "codeBefore")]
+        public string CodeBefore { get; set; }
+
+        [JsonProperty(PropertyName = "codeAfter")]
+        public string CodeAfter { get; set; }
+
         public Answer()
         {
+            AnswerButtons = new List<AnswerButton>();
             AnswerFields = new List<AnswerField>();
         }
+    }
+
+    public class AnswerButton
+    {
+        [JsonProperty(PropertyName = "buttonId")]
+        public Guid ButtonId { get; set; }
+
+        [JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        [JsonProperty(PropertyName = "value")]
+        public string Value { get; set; }
     }
 
     public class AnswerField
     {
         [JsonProperty(PropertyName = "fieldId")]
         public string FieldId { get; set; }
+
+        [JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
 
         [JsonProperty(PropertyName = "value")]
         public string Value { get; set; }
