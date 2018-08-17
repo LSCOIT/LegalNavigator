@@ -97,7 +97,7 @@ export class PersonalizedPlanService {
     }
     return this.http.put(api.getPersonalizedResourcesUrl, resourceInput, httpOptions);
   }
-  
+
   getPlanDetails(topics, planDetailTags): any {
     this.topicsList = this.createTopicsList(this.topics);
     this.planDetails = this.displayPlanDetails(planDetailTags, this.topicsList);
@@ -161,7 +161,6 @@ export class PersonalizedPlanService {
             }
           });
         }
-
         if (!this.arrayUtilityService.checkObjectExistInArray(this.resourceTags, savedResources)) {
           this.resourceTags.push(savedResources);
           this.saveResourceToProfile(this.resourceTags);

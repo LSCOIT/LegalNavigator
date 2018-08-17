@@ -82,8 +82,6 @@ namespace Access2Justice.Api.BusinessLogic
             userDocument = JsonConvert.DeserializeObject<ProfileResources>(JsonConvert.SerializeObject(userData));
             string oId = userDocument.OId;
             dynamic result = null;
-            //if (userData.type == "resources")
-            //{
             string type = userData.Type;
             dynamic userResourcesDBData = null;
             var userProfile = await GetUserProfileDataAsync(oId);
@@ -103,7 +101,6 @@ namespace Access2Justice.Api.BusinessLogic
                 Guid id = Guid.Parse(userResourcesDBData[0].id);
                 result = await UpdateUserSavedResourcesAsync(id, userData);
             }
-            //}
             return result;
         }
         public async Task<dynamic> CreateUserSavedResourcesAsync(ProfileResources userResources)
