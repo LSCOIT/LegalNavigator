@@ -113,15 +113,28 @@ namespace Access2Justice.CosmosDb.Tests
         public void FindItemsWhereWithLocationAsyncShouldConstructValidSqlQueryWithLocationCondition()
         {
             // Arrange
-            string query = "SELECT * FROM c WHERE c.name='HomePage' AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\"},true))";
+            Location location = new Location { State = "Hawaii", City = "Honolulu", County = "Honolulu", ZipCode = "96801" };
+            string query = "SELECT * FROM c WHERE c.name='HomePage' AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\",\"county\":\"Honolulu\",\"city\":\"Honolulu\",\"zipCode\":\"96801\"},true))";
 
             //Act
-            dynamicQueries.FindItemsWhereWithLocationAsync("StaticCollections", "name", "HomePage", new Location() { State = "Hawaii" });
+            dynamicQueries.FindItemsWhereWithLocationAsync("StaticCollections", "name", "HomePage", location);
 
             // Assert
             cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(), query);
         }
+        [Fact]
+        public void FindItemsWhereWithLocationAsyncShouldConstructValidSqlQueryWithLocationConditionAndTopicsCollection()
+        {
+            // Arrange
+            Location location = new Location { State = "Hawaii", City = "Honolulu", County = "Honolulu", ZipCode = "96801" };
+            string query = "SELECT * FROM c WHERE c.name=[] AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\",\"county\":\"Honolulu\",\"city\":\"Honolulu\",\"zipCode\":\"96801\"},true))";
 
+            //Act
+            dynamicQueries.FindItemsWhereWithLocationAsync("TopicsCollection", "name", "", location);
+
+            // Assert
+            cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(), query);
+        }
         [Fact]
         public void FindItemsWhereWithLocationAsyncShouldThrowException()
         {
@@ -139,7 +152,6 @@ namespace Access2Justice.CosmosDb.Tests
             var ids = new List<string>() { "guid1" };
             ResourceFilter resourceFilter = new ResourceFilter { TopicIds = ids, PageNumber = 0, ResourceType = "All" };
             string query = @"SELECT * FROM c WHERE ( ARRAY_CONTAINS(c.topicTags, { 'id' : 'guid1'}))";
-
 
             //Act
             dynamicQueries.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter);
@@ -286,6 +298,21 @@ namespace Access2Justice.CosmosDb.Tests
 
             // Assert
             cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(), query);
+        }
+
+        [Fact]
+        public void FindItemsWhereArrayContainsAsyncWithLocation()
+        {       
+            // Arrange
+            Location location = new Location { State = "Hawaii", City = "Honolulu", County = "Honolulu", ZipCode = "96801" };
+            var ids = new List<string>() { "guid1", "guid2", "guid3" };
+            string query = "SELECT * FROM c WHERE  ARRAY_CONTAINS(c.topicTags, { 'id' : 'System.Collections.Generic.List`1[System.String]'}) AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\",\"county\":\"Honolulu\",\"city\":\"Honolulu\",\"zipCode\":\"96801\"},true))";
+          
+            // Act
+            dynamicQueries.FindItemsWhereArrayContainsAsyncWithLocation("TopicsCollections", "topicTags", "id", ids.ToString(), location);
+
+            // Assert
+            cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(),query);
         }
     }
 }

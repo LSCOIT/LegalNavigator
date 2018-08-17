@@ -1,93 +1,93 @@
 .top-row {
-    margin-top: 0;
+  margin-top: 0;
 }
 
 #home-img {
-    width: 100%;
-    margin-top: 10px;
+  width: 100%;
+  margin-top: 10px;
 }
 
 .outer-bg {
-    background-color: #f4f4f4;
-    /* margin: 0 -15%; */
+  background-color: #f4f4f4;
 }
 
 .secondary-img {
-    width: 65%;
-    margin: 20px auto;
-    float: none;
+  width: 65%;
+  margin: 20px auto;
+  float: none;
 }
 
 .slide-content {
-    text-align: center;
+  text-align: center;
 }
 
 .testimonial-img {
-    width: 200px; 
-    height: 200px; 
-    background-color: #333; 
-    border-radius: 10px; 
-    margin: 0 auto;
+  width: 200px; 
+  height: 200px; 
+  background-color: #333; 
+  border-radius: 10px; 
+  margin: 0 auto;
+  display: block;
 }
 
 ul>li {
-    padding-bottom: 15px;
+  padding-bottom: 15px;
 }
 
 ul>li>span {
-    display: block;
-    margin-right: 5px;
+  display: block;
+  margin-right: 5px;
 }
 
 .privacy-promise {
-    background-color: #0B2B78;
-    color: #F4F4F4;
-    padding: 40px 0;
-    margin-bottom: 0;
+  background-color: #0B2B78;
+  color: #F4F4F4;
+  padding: 40px 0;
+  margin-bottom: 0;
 }
 
 .privacy-promise button {
-    margin-left: 0;
+  margin-left: 0;
 }
 
 @media only screen and (min-width : 768px) {
-    .top-row {
-        margin-top: 20px;
-    }
+  .top-row {
+      margin-top: 20px;
+  }
 
-    .tagline {
-        margin-top: 10%;
-        padding: 0;
-        text-align: left;
-    }
-
-    #home-img {
-        width: 95%;
-        margin-top: 0;
-    }
-    
-    .secondary-img {
-        width: 80%;
-        margin-top: 0;
-        float: right;
-    }
-
-    .slide-content {
+  .tagline {
+      margin-top: 10%;
+      padding: 0;
       text-align: left;
-      padding-left: 8%;
-    }
+  }
 
-    .guided-assistant-steps {
-        text-align: left;
-    }
+  #home-img {
+      width: 95%;
+      margin-top: 0;
+  }
+    
+  .secondary-img {
+      width: 80%;
+      margin-top: 0;
+      float: right;
+  }
 
-    ul>li>span {
-        display: inline-block;
-    }
+  .slide-content {
+    text-align: left;
+    padding-left: 8%;
+  }
 
-    .privacy-promise {
-        text-align: left;
-    }
+  .guided-assistant-steps {
+      text-align: left;
+  }
+
+  ul>li>span {
+      display: inline-block;
+  }
+
+  .privacy-promise {
+      text-align: left;
+  }
 }
 
 @media only screen and (min-width : 992px) {
