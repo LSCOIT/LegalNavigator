@@ -23,7 +23,7 @@ export class LowerNavComponent implements OnInit {
 
   blobUrl: any = environment.blobUrl;
   navigation: Navigation;
-  id: string = 'Navigation';
+  name: string = 'Navigation';
   language: Language;
   location: any = Location;
   privacyPromise: PrivacyPromise;
@@ -44,7 +44,7 @@ export class LowerNavComponent implements OnInit {
   openNav() {
     this.my_Class = "dimmer";
     if (this.width >= 768) {
-      this.sidenav.nativeElement.style.width = "33.333%";
+      this.sidenav.nativeElement.style.width = "400px";
       this.sidenav.nativeElement.style.height = "100%";
     } else {
       this.sidenav.nativeElement.style.height = "100%";
@@ -65,30 +65,36 @@ export class LowerNavComponent implements OnInit {
     this.showSearch = !this.showSearch;
   }
 
-  filterNavigationContent(): void {
-    if (this.navigation) {
-      this.id = this.navigation.name;
-      this.language = this.navigation.language;
-      this.location = this.navigation.location;
-      this.privacyPromise = this.navigation.privacyPromise;
-      this.helpAndFAQ = this.navigation.helpAndFAQ;
-      this.login = this.navigation.login;
-      this.logo = this.navigation.logo;
-      this.home = this.navigation.home;
-      this.guidedAssistant = this.navigation.guidedAssistant;
-      this.topicAndResources = this.navigation.topicAndResources;
-      this.about = this.navigation.about;
-      this.search = this.navigation.search;
+  filterNavigationContent(navigation): void {
+    if (navigation) {
+      this.name = navigation.name;
+      this.language = navigation.language;
+      this.location = navigation.location;
+      this.privacyPromise = navigation.privacyPromise;
+      this.helpAndFAQ = navigation.helpAndFAQ;
+      this.login = navigation.login;
+      this.logo = navigation.logo;
+      this.home = navigation.home;
+      this.guidedAssistant = navigation.guidedAssistant;
+      this.topicAndResources = navigation.topicAndResources;
+      this.about = navigation.about;
+      this.search = navigation.search;
     }
   }
 
   getNavigationContent(): void {
-    let homePageRequest = { name: this.id, location: this.location };
-    this.staticResourceService.getStaticContent(homePageRequest)
-      .subscribe(content => {
-        this.navigation = content[0];
-        this.filterNavigationContent();
-      });
+    let homePageRequest = { name: this.name };
+    if (this.staticResourceService.navigation && (this.staticResourceService.navigation.location[0].state == this.staticResourceService.getLocation())) {
+      this.navigation = this.staticResourceService.navigation;
+      this.filterNavigationContent(this.staticResourceService.navigation);
+    } else {
+      this.staticResourceService.getStaticContent(homePageRequest)
+        .subscribe(content => {
+          this.navigation = content[0];
+          this.filterNavigationContent(this.navigation);
+          this.staticResourceService.navigation = this.navigation;
+        });
+    }
   }
 
   ngOnInit() {

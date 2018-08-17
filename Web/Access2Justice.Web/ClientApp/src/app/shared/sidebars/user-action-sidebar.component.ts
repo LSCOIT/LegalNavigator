@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Global, UserStatus } from '../../global';
 
 @Component({
   selector: 'app-user-action-sidebar',
@@ -16,7 +17,15 @@ export class UserActionSidebarComponent implements OnInit {
   resourceId: string;
   resourceType: string;
 
-  constructor() { }
+  constructor(private global: Global) {
+    if (global.role === UserStatus.Shared && location.pathname.indexOf(global.shareRouteUrl) >= 0) {
+      global.showShare = false;
+      global.showSetting = false;
+    }
+    else {
+      global.showShare = true;
+    }
+  }
 
   ngOnInit() {
     this.resourceId = this.id;

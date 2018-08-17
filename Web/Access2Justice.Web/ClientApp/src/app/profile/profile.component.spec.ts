@@ -1,489 +1,177 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ProfileComponent } from './profile.component';
-import { PersonalizedPlanService } from '../guided-assistant/personalized-plan/personalized-plan.service';
 import { HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { ProfileComponent } from './profile.component';
+import { PersonalizedPlanService } from '../guided-assistant/personalized-plan/personalized-plan.service';
 import { ArrayUtilityService } from '../shared/array-utility.service';
 import { EventUtilityService } from '../shared/event-utility.service';
+import { Tree } from '@angular/router/src/utils/tree';
+import { IResourceFilter } from '../shared/search/search-results/search-results.model';
 
-describe('Component:Profile', () => {
+describe('component:profile', () => {
   let component: ProfileComponent;
   let fixture: ComponentFixture<ProfileComponent>;
-  let personalizedPlanService: PersonalizedPlanService;
-  let sharedService: ArrayUtilityService;
+  let personalizedplanservice: PersonalizedPlanService;
+  let arrayutilityservice: ArrayUtilityService;
+  let eventutilityservice: EventUtilityService;
 
-  const mockTopicService = {
-    getTopics: () => { }
+  let mockplanid = "ba67afca-4236-4875";
+  let mockshowremove = true;
+  let mocktopic = "test";
+  let mockuserid = "38890303";
+  let mocktopicids: string[] = [];
+  let mockresourcetype = 'test';
+  let mockcontinuationtoken = 'test';
+  let mockresourceids = ['test'];
+  let mocklocation = 'test';
+  let mockUserProfileData = [{
+    "id": "ba67afca-4236-4875-9b11-fbb8a113ecb2",
+    "oId": "ACB833BB3F817C2FBE5A72CE3",
+    "firstName": "test name",
+    "lastName": "last name",
+    "eMail": "test@email.com",
+    "isActive": "Yes",
+    "createdBy": "full name",
+    "createdTimeStamp": "08/06/2018 11:42:39",
+    "modifiedBy": null,
+    "modifiedTimeStamp": null,
+    "sharedResource": null,
+    "personalizedActionPlanId": "a97fc45d-cbbe-4222-9d14-2ec227229b92",
+    "curatedExperienceAnswersId": "00000000-0000-0000-0000-000000000000"
+  }];
+  let mockresourceinput: IResourceFilter = {
+    ResourceType: mockresourcetype,
+    ContinuationToken: mockcontinuationtoken,
+    TopicIds: mocktopicids,
+    PageNumber: 1,
+    Location: mocklocation,
+    IsResourceCountRequired: false,
+    ResourceIds: mockresourceids,
   };
-  let mockPlanId = "dkk2k333";
-
-  let mockPlanDetailsJson = {
+  let mockplandetailsjson = {
     "id": "bf8d7e7e-2574-7b39-efc7-83cb94adae07",
-    "oId": "User Id",
+    "oid": "user id",
     "type": "plans",
-    "planTags": [
-      {
-        "topicId": "addf41e9-1a27-4aeb-bcbb-7959f95094ba",
-        "stepTags": [
-          {
-            "id": {
-              "id": "6b230be1-302b-7090-6cb3-fc6aa084274c",
-              "type": "steps",
-              "title": "Make sure your summons is real.",
-              "description": "Why you should do this dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo.",
-              "resourceTags": [
-                {
-                  "id": {
-                    "id": "9fc75d90-7ffa-4c26-9cb7-ba271f2007ad",
-                    "name": "Lorem ipsum dolor sit amet",
-                    "description": "Subhead lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem",
-                    "resourceType": "Videos",
-                    "externalUrl": "",
-                    "url": "https://channel9.msdn.com/Shows/Azure-Friday/Managing-costs-with-the-Azure-Budgets-API-and-Action-Groups/player",
-                    "topicTags": [
-                      {
-                        "id": "f102bfae-362d-4659-aaef-956c391f79de"
-                      },
-                      {
-                        "id": "afabf032-72a8-4b04-81cb-c101bb1a0730"
-                      },
-                      {
-                        "id": "3aa3a1be-8291-42b1-85c2-252f756febbc"
-                      },
-                      {
-                        "id": "addf41e9-1a27-4aeb-bcbb-7959f95094ba"
-                      },
-                      {
-                        "id": "bd900039-2236-8c2c-8702-d31855c56b0f"
-                      }
-                    ],
-                    "location": [
-                      {
-                        "state": "Hawaii",
-                        "city": "Kalawao",
-                        "zipCode": "96742"
-                      },
-                      {
-                        "zipCode": "96741"
-                      },
-                      {
-                        "state": "Hawaii",
-                        "city": "Honolulu"
-                      },
-                      {
-                        "state": "Alaska"
-                      },
-                      {
-                        "state": "New York",
-                        "city": "New York"
-                      }
-                    ],
-                    "icon": "./assets/images/resources/resource.png",
-                    "overview": "Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter. Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter.",
-                    "isRecommended": "",
-                    "createdBy": "",
-                    "createdTimeStamp": "",
-                    "modifiedBy": "",
-                    "modifiedTimeStamp": "2018-05-01T04:18:00Z",
-                    "_rid": "mwoSAJdNlwIFAAAAAAAAAA==",
-                    "_self": "dbs/mwoSAA==/colls/mwoSAJdNlwI=/docs/mwoSAJdNlwIFAAAAAAAAAA==/",
-                    "_etag": "\"0e009cd2-0000-0000-0000-5b3603830000\"",
-                    "_attachments": "attachments/",
-                    "_ts": 1530266499
-                  }
-                },
-                {
-                  "id": {
-                    "id": "19a02209-ca38-4b74-bd67-6ea941d41518",
-                    "name": "Organization Name 1",
-                    "type": "Housing Law Services",
-                    "description": "Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter. Solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter.",
-                    "resourceType": "Organizations",
-                    "externalUrl": "",
-                    "url": "websiteurl.com",
-                    "topicTags": [
-                      {
-                        "id": "afabf032-72a8-4b04-81cb-c101bb1a0730"
-                      },
-                      {
-                        "id": "3aa3a1be-8291-42b1-85c2-252f756febbc"
-                      }
-                    ],
-                    "location": [
-                      {
-                        "zipCode": "96741"
-                      },
-                      {
-                        "state": "Hawaii",
-                        "city": "Haiku-Pauwela"
-                      },
-                      {
-                        "state": "Alaska"
-                      }
-                    ],
-                    "icon": "./assets/images/resources/resource.png",
-                    "address": "Honolulu, Hawaii 96813, United States",
-                    "telephone": "000-000-0000",
-                    "overview": "Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter. Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter.",
-                    "eligibilityInformation": "Copy describing eligibility qualification lorem ipsum dolor sit amet. ",
-                    "reviewedByCommunityMember": "Quote from community member consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
-                    "reviewerFullName": "",
-                    "reviewerTitle": "",
-                    "reviewerImage": "",
-                    "createdBy": "",
-                    "createdTimeStamp": "",
-                    "modifiedBy": "",
-                    "modifiedTimeStamp": "2018-04-01T04:18:00Z",
-                    "_rid": "mwoSAJdNlwIGAAAAAAAAAA==",
-                    "_self": "dbs/mwoSAA==/colls/mwoSAJdNlwI=/docs/mwoSAJdNlwIGAAAAAAAAAA==/",
-                    "_etag": "\"14002777-0000-0000-0000-5b3b215b0000\"",
-                    "_attachments": "attachments/",
-                    "_ts": 1530601819
-                  }
-                }
-              ],
-              "_rid": "mwoSAJdNlwIyAAAAAAAAAA==",
-              "_self": "dbs/mwoSAA==/colls/mwoSAJdNlwI=/docs/mwoSAJdNlwIyAAAAAAAAAA==/",
-              "_etag": "\"cd00ed8e-0000-0000-0000-5b2cf6550000\"",
-              "_attachments": "attachments/",
-              "_ts": 1529673301
-            },
-            "order": 1,
-            "markCompleted": false
-          },
-          {
-            "id": {
-              "id": "d46aecee-8c79-df1b-4081-1ea02b5022df",
-              "type": "steps",
-              "title": "Try to resolve the issue with your landlord to see if you can come to an agreement",
-              "description": "Why you should do this dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo.",
-              "resourceTags": [],
-              "_rid": "mwoSAJdNlwIzAAAAAAAAAA==",
-              "_self": "dbs/mwoSAA==/colls/mwoSAJdNlwI=/docs/mwoSAJdNlwIzAAAAAAAAAA==/",
-              "_etag": "\"cd00e08e-0000-0000-0000-5b2cf6500000\"",
-              "_attachments": "attachments/",
-              "_ts": 1529673296
-            },
-            "order": 2,
-            "markCompleted": false
-          }
-        ],
-        "id": [
-          {
-            "id": "addf41e9-1a27-4aeb-bcbb-7959f95094ba",
-            "name": "Family",
-            "parentTopicID": "",
-            "resourceType": "Topics",
-            "keywords": "EVICTION",
-            "location": [
-              {
-                "state": "Hawaii",
-                "county": "Kalawao County",
-                "city": "Kalawao",
-                "zipCode": "96742"
-              },
-              {
-                "zipCode": "96741"
-              }
-            ],
-            "jsonContent": "",
-            "icon": "./assets/images/topics/topic14.png",
-            "createdBy": "",
-            "createdTimeStamp": "",
-            "modifiedBy": "",
-            "modifiedTimeStamp": "",
-            "_rid": "mwoSALHtpAEBAAAAAAAAAA==",
-            "_self": "dbs/mwoSAA==/colls/mwoSALHtpAE=/docs/mwoSALHtpAEBAAAAAAAAAA==/",
-            "_etag": "\"2700f297-0000-0000-0000-5b3366320000\"",
-            "_attachments": "attachments/",
-            "_ts": 1530095154
-          }
-        ]
-      },
-      {
-        "topicId": "932abb0a-c6bb-46da-a3d8-5f52c2c914a0",
-        "stepTags": [
-          {
-            "id": {
-              "id": "2705d544-6af7-bd69-4f19-a1b53e346da2",
-              "type": "steps",
-              "title": "Take to your partner to see if you can come to an agreement",
-              "description": "Why you should do this dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo.",
-              "resourceTags": [
-                {
-                  "id": {
-                    "id": "9fc75d90-7ffa-4c26-9cb7-ba271f2007ad",
-                    "name": "Lorem ipsum dolor sit amet",
-                    "description": "Subhead lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem",
-                    "resourceType": "Videos",
-                    "externalUrl": "",
-                    "url": "https://channel9.msdn.com/Shows/Azure-Friday/Managing-costs-with-the-Azure-Budgets-API-and-Action-Groups/player",
-                    "topicTags": [
-                      {
-                        "id": "f102bfae-362d-4659-aaef-956c391f79de"
-                      },
-                      {
-                        "id": "afabf032-72a8-4b04-81cb-c101bb1a0730"
-                      },
-                      {
-                        "id": "3aa3a1be-8291-42b1-85c2-252f756febbc"
-                      },
-                      {
-                        "id": "addf41e9-1a27-4aeb-bcbb-7959f95094ba"
-                      },
-                      {
-                        "id": "bd900039-2236-8c2c-8702-d31855c56b0f"
-                      }
-                    ],
-                    "location": [
-                      {
-                        "state": "Hawaii",
-                        "city": "Kalawao",
-                        "zipCode": "96742"
-                      },
-                      {
-                        "zipCode": "96741"
-                      }
-                    ],
-                    "icon": "./assets/images/resources/resource.png",
-                    "overview": "Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter. Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter.",
-                    "isRecommended": "",
-                    "createdBy": "",
-                    "createdTimeStamp": "",
-                    "modifiedBy": "",
-                    "modifiedTimeStamp": "2018-05-01T04:18:00Z",
-                    "_rid": "mwoSAJdNlwIFAAAAAAAAAA==",
-                    "_self": "dbs/mwoSAA==/colls/mwoSAJdNlwI=/docs/mwoSAJdNlwIFAAAAAAAAAA==/",
-                    "_etag": "\"0e009cd2-0000-0000-0000-5b3603830000\"",
-                    "_attachments": "attachments/",
-                    "_ts": 1530266499
-                  }
-                },
-                {
-                  "id": {
-                    "id": "19a02209-ca38-4b74-bd67-6ea941d41518",
-                    "name": "Organization Name 1",
-                    "type": "Housing Law Services",
-                    "description": "Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter. Solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter.",
-                    "resourceType": "Organizations",
-                    "externalUrl": "",
-                    "url": "websiteurl.com",
-                    "topicTags": [
-                      {
-                        "id": "afabf032-72a8-4b04-81cb-c101bb1a0730"
-                      },
-                      {
-                        "id": "3aa3a1be-8291-42b1-85c2-252f756febbc"
-                      }
-                    ],
-                    "location": [
-                      {
-                        "zipCode": "96741"
-                      },
-                      {
-                        "state": "Hawaii",
-                        "city": "Haiku-Pauwela"
-                      },
-                      {
-                        "state": "Alaska"
-                      }
-                    ],
-                    "icon": "./assets/images/resources/resource.png",
-                    "address": "Honolulu, Hawaii 96813, United States",
-                    "telephone": "000-000-0000",
-                    "overview": "Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter. Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter.",
-                    "eligibilityInformation": "Copy describing eligibility qualification lorem ipsum dolor sit amet. ",
-                    "reviewedByCommunityMember": "Quote from community member consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
-                    "reviewerFullName": "",
-                    "reviewerTitle": "",
-                    "reviewerImage": "",
-                    "createdBy": "",
-                    "createdTimeStamp": "",
-                    "modifiedBy": "",
-                    "modifiedTimeStamp": "2018-04-01T04:18:00Z",
-                    "_rid": "mwoSAJdNlwIGAAAAAAAAAA==",
-                    "_self": "dbs/mwoSAA==/colls/mwoSAJdNlwI=/docs/mwoSAJdNlwIGAAAAAAAAAA==/",
-                    "_etag": "\"14002777-0000-0000-0000-5b3b215b0000\"",
-                    "_attachments": "attachments/",
-                    "_ts": 1530601819
-                  }
-                }
-              ],
-              "_rid": "mwoSAJdNlwI0AAAAAAAAAA==",
-              "_self": "dbs/mwoSAA==/colls/mwoSAJdNlwI=/docs/mwoSAJdNlwI0AAAAAAAAAA==/",
-              "_etag": "\"cd00d98e-0000-0000-0000-5b2cf64b0000\"",
-              "_attachments": "attachments/",
-              "_ts": 1529673291
-            },
-            "order": 1,
-            "markCompleted": false
-          },
-          {
-            "id": {
-              "id": "3d64b676-cc4b-397d-a5bb-f4a0ea6d3040",
-              "type": "steps",
-              "title": "Submit a complaint for custody form",
-              "description": "Why you should do this dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo.",
-              "resourceTags": [
-                {
-                  "id": {
-                    "id": "19a02209-ca38-4b74-bd67-6ea941d41518",
-                    "name": "Organization Name 1",
-                    "type": "Housing Law Services",
-                    "description": "Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter. Solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter.",
-                    "resourceType": "Organizations",
-                    "externalUrl": "",
-                    "url": "websiteurl.com",
-                    "topicTags": [
-                      {
-                        "id": "afabf032-72a8-4b04-81cb-c101bb1a0730"
-                      },
-                      {
-                        "id": "3aa3a1be-8291-42b1-85c2-252f756febbc"
-                      }
-                    ],
-                    "location": [
-                      {
-                        "zipCode": "96741"
-                      },
-                      {
-                        "state": "Hawaii",
-                        "city": "Haiku-Pauwela"
-                      },
-                      {
-                        "state": "Alaska"
-                      }
-                    ],
-                    "icon": "./assets/images/resources/resource.png",
-                    "address": "Honolulu, Hawaii 96813, United States",
-                    "telephone": "000-000-0000",
-                    "overview": "Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter. Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter.",
-                    "eligibilityInformation": "Copy describing eligibility qualification lorem ipsum dolor sit amet. ",
-                    "reviewedByCommunityMember": "Quote from community member consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
-                    "reviewerFullName": "",
-                    "reviewerTitle": "",
-                    "reviewerImage": "",
-                    "createdBy": "",
-                    "createdTimeStamp": "",
-                    "modifiedBy": "",
-                    "modifiedTimeStamp": "2018-04-01T04:18:00Z",
-                    "_rid": "mwoSAJdNlwIGAAAAAAAAAA==",
-                    "_self": "dbs/mwoSAA==/colls/mwoSAJdNlwI=/docs/mwoSAJdNlwIGAAAAAAAAAA==/",
-                    "_etag": "\"14002777-0000-0000-0000-5b3b215b0000\"",
-                    "_attachments": "attachments/",
-                    "_ts": 1530601819
-                  }
-                }
-              ],
-              "_rid": "mwoSAJdNlwI2AAAAAAAAAA==",
-              "_self": "dbs/mwoSAA==/colls/mwoSAJdNlwI=/docs/mwoSAJdNlwI2AAAAAAAAAA==/",
-              "_etag": "\"0000dd93-0000-0000-0000-5b31ec230000\"",
-              "_attachments": "attachments/",
-              "_ts": 1529998371
-            },
-            "order": 2,
-            "markCompleted": false
-          }
-        ],
-        "id": [
-          {
-            "id": "932abb0a-c6bb-46da-a3d8-5f52c2c914a0",
-            "name": "DivorceWithChildren",
-            "parentTopicID": "f102bfae-362d-4659-aaef-956c391f79de",
-            "resourceType": "Topics",
-            "keywords": "CHILD ABUSE|CHILD CUSTODY",
-            "location": [
-              {
-                "state": "Hawaii",
-                "city": "Kalawao",
-                "zipCode": "96742"
-              },
-              {
-                "zipCode": "96741"
-              },
-              {
-                "state": "Hawaii",
-                "city": "Honolulu"
-              },
-              {
-                "state": "Hawaii",
-                "city": "Hawaiian Beaches"
-              },
-              {
-                "state": "Hawaii",
-                "city": "Haiku-Pauwela"
-              },
-              {
-                "state": "Alaska"
-              }
-            ],
-            "jsonContent": "",
-            "icon": "./assets/images/topics/topic14.png",
-            "createdBy": "",
-            "createdTimeStamp": "",
-            "modifiedBy": "",
-            "modifiedTimeStamp": "",
-            "_rid": "mwoSALHtpAELAAAAAAAAAA==",
-            "_self": "dbs/mwoSAA==/colls/mwoSALHtpAE=/docs/mwoSALHtpAELAAAAAAAAAA==/",
-            "_etag": "\"27006799-0000-0000-0000-5b3366420000\"",
-            "_attachments": "attachments/",
-            "_ts": 1530095170
-          }
-        ]
-      }
-    ],
-    "_rid": "mwoSAJdNlwIxAAAAAAAAAA==",
-    "_self": "dbs/mwoSAA==/colls/mwoSAJdNlwI=/docs/mwoSAJdNlwIxAAAAAAAAAA==/",
-    "_etag": "\"09009fe4-0000-0000-0000-5b4450b00000\"",
-    "_attachments": "attachments/",
-    "_ts": 1531203760
+    "plantags": [{
+      "topicid": "addf41e9-1a27-4aeb-bcbb-7959f95094ba",
+      "steptags": [
+        {
+          "id": "6b230be1-302b-7090-6cb3-fc6aa084274c",
+          "order": 1,
+          "markcompleted": false
+        },
+        {
+          "id": "d46aecee-8c79-df1b-4081-1ea02b5022df",
+          "order": 2,
+          "markcompleted": false
+        }
+      ],
+      "id": "addf41e9-1a27-4aeb-bcbb-7959f95094ba",
+    }
+    ]
   };
-
+  let mocktopics = {
+    "isselected": true,
+    "topic": {
+      "topicid": "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef",
+      "name": "divorce",
+      "quicklinks": [
+        {
+          "text": "filing for dissolution or divorce - ending your marriage",
+          "url": "http://courts.alaska.gov/shc/family/shcstart.htm#issues"
+        },
+        {
+          "text": "spousal support (alimony)",
+          "url": "https://alaskalawhelp.org/resource/spousal-support?ref=oegqx"
+        }
+      ],
+      "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/topics/housing.svg",
+      "steps": [
+        {
+          "stepid": "66a1e288-4ab1-480f-9d29-eb16abd3ae69"
+        }
+      ]
+    }
+  }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
       declarations: [ProfileComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [PersonalizedPlanService, ArrayUtilityService, EventUtilityService]
-    })
-      .compileComponents();
-  }));
+      providers: [PersonalizedPlanService, EventUtilityService, ArrayUtilityService]
+    }).compileComponents();
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(ProfileComponent);
     component = fixture.componentInstance;
-    personalizedPlanService = TestBed.get(PersonalizedPlanService);
+    personalizedplanservice = TestBed.get(PersonalizedPlanService);
+    arrayutilityservice = TestBed.get(ArrayUtilityService);
+    eventutilityservice = TestBed.get(EventUtilityService);
     fixture.detectChanges();
-  });
+  }));
 
   it('should create profile component', () => {
     expect(component).toBeTruthy();
   });
+
   it('should define profile component', () => {
     expect(component).toBeDefined();
   });
 
-  it('should call getActionPlanConditions service method when  getTopics is called', () => {
-    spyOn(component, 'getTopics');
-    component.planId = mockPlanId;
-    spyOn(personalizedPlanService, 'getActionPlanConditions');
-    component.getTopics();
-    expect(personalizedPlanService.getActionPlanConditions).toBeTruthy();
-  });
-
-  it('should call getPersonalizedPlan service method when getPersonalizedPlan is called', () => {
+  it('should call getpersonalizedplan method when component loaded first time in ngonit', () => {
+    component.ngOnInit();
     spyOn(component, 'getPersonalizedPlan');
     component.getPersonalizedPlan();
-    spyOn(personalizedPlanService, 'getPersonalizedPlan');
-    personalizedPlanService.getActionPlanConditions(mockPlanId);
-    expect(personalizedPlanService.getActionPlanConditions(mockPlanId)).toBeTruthy();
+    component.showRemove;
+    expect(component.getPersonalizedPlan).toHaveBeenCalled();
+    expect(component.showRemove).toBe(mockshowremove);
   });
-  it('should call getpersonalizedResources service method when getpersonalizedResources is called', () => {
-    spyOn(component, 'getpersonalizedResources');
+
+  it('should call getactionplanconditions service method when get topics method called', () => {
+    spyOn(personalizedplanservice, 'getActionPlanConditions').and.returnValue(mockplandetailsjson);
+    component.planId = mockplanid;
+    personalizedplanservice.getActionPlanConditions(mockplanid);
+    expect(personalizedplanservice.getActionPlanConditions).toHaveBeenCalled();
+  });
+
+  it('should call filterplan service method when  topic value is called', () => {
+    spyOn(personalizedplanservice, 'displayPlanDetails');
+    personalizedplanservice.displayPlanDetails(mockplandetailsjson, mocktopics);
+    spyOn(component, 'filterPlan');
+    component.filterPlan(mocktopic);
+    expect(component.filterPlan).toHaveBeenCalled();
+    expect(personalizedplanservice.displayPlanDetails).toHaveBeenCalled();
+  });
+
+  it('should call getpersonalizedplan service method when getpersonalizedplan is called', () => {
+    spyOn(personalizedplanservice, 'getPersonalizedPlan');
+    personalizedplanservice.getPersonalizedPlan();
+    expect(personalizedplanservice.getPersonalizedPlan).toHaveBeenCalled();
+  });
+
+  it('should call getUserPlanId service method when getpersonalizedplan method of component is called', () => {
+    spyOn(personalizedplanservice, 'getUserPlanId').and.returnValue(mockUserProfileData);;
+    personalizedplanservice.getUserPlanId(mockplanid);
+    expect(personalizedplanservice.getUserPlanId).toHaveBeenCalled();
+  });
+
+  it('should call getusersavedresources service method when getpersonalizedresources is called', () => {
     component.getpersonalizedResources();
-    spyOn(personalizedPlanService, 'getPersonalizedResources');
-    personalizedPlanService.getActionPlanConditions(mockPlanId);
-    expect(personalizedPlanService.getActionPlanConditions(mockPlanId)).toBeTruthy();
+    spyOn(personalizedplanservice, 'getUserSavedResources');
+    personalizedplanservice.getUserSavedResources(mockuserid);
+    expect(personalizedplanservice.getUserSavedResources).toHaveBeenCalled();
+  });
+
+  it('should call getpersonalizedresources service method when getsavedresource is called', () => {
+    component.getSavedResource(mockresourceinput);
+    spyOn(personalizedplanservice, 'getPersonalizedResources');
+    personalizedplanservice.getPersonalizedResources(mockresourceinput);
+    expect(personalizedplanservice.getPersonalizedResources).toHaveBeenCalled();
+  });
+
+  it('should call filtertopicslist when topic value is passed', () => {
+    spyOn(component, 'filterTopicsList');
+    component.filterTopicsList(mocktopics);
+    expect(component.filterTopicsList).toHaveBeenCalled();
   });
 });

@@ -42,6 +42,7 @@ import { CuratedExperienceComponent } from './guided-assistant/curated-experienc
 import { HomeService } from './home/home.service'
 import { StaticResourceService } from './shared/static-resource.service';
 import { ResponseInterceptor } from './response-interceptor';
+import { Global } from './global'
 import { CuratedExperienceResultComponent } from './guided-assistant/curated-experience-result/curated-experience-result.component';
 
 @NgModule({
@@ -94,7 +95,8 @@ import { CuratedExperienceResultComponent } from './guided-assistant/curated-exp
     ProfileComponent,
     PersonalizedPlanComponent,
     HomeService,
-    StaticResourceService
+    StaticResourceService,
+    Global
   ],
   bootstrap: [AppComponent]
 })

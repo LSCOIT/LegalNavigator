@@ -20,6 +20,7 @@ import { ResourceCardDetailComponent } from
 import { PersonalizedPlanComponent } from './guided-assistant/personalized-plan/personalized-plan.component';
 import { NotFoundComponent } from './shared/error/not-found/not-found.component';
 import { InternalErrorComponent } from './shared/error/internal-error/internal-error.component';
+import { ShareButtonRouteComponent } from './shared/resource/user-action/share-button/share-button-route/share-button-route.component';
 import { CuratedExperienceResultComponent } from './guided-assistant/curated-experience-result/curated-experience-result.component';
 
 const appRoutes: Routes = [
@@ -35,6 +36,7 @@ const appRoutes: Routes = [
   { path: 'about', component: AboutComponent },
   { path: 'createaccount', component: CreateAccountComponent },
   { path: 'plan/:id', component: PersonalizedPlanComponent },
+  { path: 'share/:id', component: ShareButtonRouteComponent },
   { path: 'help', component: HelpFaqsComponent },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LogInComponent },

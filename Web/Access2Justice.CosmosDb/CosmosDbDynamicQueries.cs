@@ -86,19 +86,26 @@ namespace Access2Justice.CosmosDb
             }
             return await backendDatabaseService.QueryItemsAsync(collectionId, query);
         }
-
         public async Task<dynamic> FindItemsWhereWithLocationAsync(string collectionId, string propertyName, string value, Location location)
         {
             EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
             string locationFilter = FindLocationWhereArrayContains(location);
-            var  query = $"SELECT * FROM c WHERE c.{propertyName}='{value}'";
+            var query = string.Empty;
+            if (string.IsNullOrEmpty(value))
+            {  
+                query = $"SELECT * FROM c WHERE c.{propertyName}=[{value}]";
+            }
+            else
+            {
+                query = $"SELECT * FROM c WHERE c.{propertyName}='{value}'";
+            }
+           
             if (!string.IsNullOrEmpty(locationFilter))
             {
                 query = query + " AND " + locationFilter;
             }
-            return await backendDatabaseService.QueryItemsAsync(collectionId, query);
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query);           
         }
-
         public async Task<dynamic> FindItemsWhereArrayContainsWithAndClauseAsync(string arrayName, string propertyName, string andPropertyName, ResourceFilter resourceFilter, bool isResourceCountCall = false)
         {
             EnsureParametersAreNotNullOrEmpty(arrayName, propertyName, andPropertyName, resourceFilter.ResourceType);
@@ -162,7 +169,13 @@ namespace Access2Justice.CosmosDb
             return await backendDatabaseService.QueryItemsAsync(collectionId, query);
         }
 
-
+        public async Task<dynamic> FindFieldWhereArrayContainsAsync(string collectionId, string arrayName, string propertyName, string value, string dateProperty)
+        {
+            EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
+            
+            var query = $"SELECT c.firstName, c.lastName, c.oId, f.url FROM c JOIN f in c.{arrayName} WHERE CONTAINS(f.{propertyName}, '{value}') AND f.{dateProperty} > '{DateTime.UtcNow.ToString("o",CultureInfo.InvariantCulture)}'";
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query);
+        }
 
         private dynamic FindLocationWhereArrayContains(Location location)
         {
@@ -222,6 +235,20 @@ namespace Access2Justice.CosmosDb
                     throw new ArgumentException("Paramters can not be null or empty spaces.");
                 }
             }
+        }
+
+        public async Task<dynamic> FindItemsWhereArrayContainsAsyncWithLocation(string collectionId, string arrayName, string propertyName, string value, Location location)
+        {
+            EnsureParametersAreNotNullOrEmpty(collectionId, arrayName, propertyName);
+            string locationFilter = FindLocationWhereArrayContains(location);
+            var ids = new List<string> { value };
+            string arrayContainsClause = ArrayContainsWithOrClause(arrayName, propertyName, ids);
+            var query = $"SELECT * FROM c WHERE {arrayContainsClause}";
+            if (!string.IsNullOrEmpty(locationFilter))
+            {
+                query = query + " AND " + locationFilter;
+            }
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query);
         }
     }
 }
