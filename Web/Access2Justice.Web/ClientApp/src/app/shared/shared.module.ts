@@ -51,6 +51,8 @@ import { MapComponent } from './map/map.component';
 import { MapService } from './map/map.service';
 import { InternalErrorComponent } from './error/internal-error/internal-error.component';
 import { LoginComponent } from './login/login.component';
+import { ShareService } from './resource/user-action/share-button/share.service';
+import { ShareButtonRouteComponent } from './resource/user-action/share-button/share-button-route/share-button-route.component';
 
 @NgModule({
   imports: [
@@ -100,7 +102,8 @@ import { LoginComponent } from './login/login.component';
     VideosComponent,
     MapComponent,
     InternalErrorComponent,
-    LoginComponent
+    LoginComponent,   
+    ShareButtonRouteComponent
   ],
   exports: [
     ActionPlansComponent,
@@ -139,7 +142,8 @@ import { LoginComponent } from './login/login.component';
     ShowMoreService,
     ArrayUtilityService,
     EventUtilityService,
-    ResourceService
+    ResourceService,
+    ShareService
   ]
 })
 export class SharedModule { }
