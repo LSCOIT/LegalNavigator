@@ -21,15 +21,15 @@ export class CuratedExperienceResultComponent implements OnInit {
   }
 
   filterIntent() {
-    this.relevantIntents = this.guidedAssistantResults.relevantIntents
-      .filter(resource => resource !== 'None');
-    console.log(this.relevantIntents);
+    if (this.guidedAssistantResults.relevantIntents) {
+      this.relevantIntents = this.guidedAssistantResults.relevantIntents
+        .filter(resource => resource !== 'None');
+    }
   }
 
   ngOnInit() {
     this.guidedAssistantResults = this.navigateDataService.getData();
     this.filterIntent();
-    console.log(this.guidedAssistantResults);
   }
 
 }

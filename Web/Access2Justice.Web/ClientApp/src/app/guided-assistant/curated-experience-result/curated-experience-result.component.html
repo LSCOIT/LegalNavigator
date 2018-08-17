@@ -1,25 +1,34 @@
-<div class="container">
-  <div class="col-sm-8 col-sm-offset-2 text-center top-intent">
-    <h3>We found a topic that matches your search:</h3>
-    <p>{{guidedAssistantResults.topIntent}}</p>
-    <button class="btn btn-primary">Start the Guided Assistant</button>
-  </div>
-  <div class="row">
-    <div class="col-sm-12 relevant-intent">
-      <h5>You may also be interested in the following topic:</h5>
-      <form #gaForm="ngForm" (ngSubmit)="onSubmit(gaForm)">
-        <div class="button-container">
-          <ul>
-            <li *ngFor="let intent of relevantIntents">
-              <input type="checkbox" [id]="intent" [value]="intent" name="multiSelectOptions" ngModel>
-              <label [for]="intent">{{intent}}</label>
-              <div class="check"></div>
-              <p class="learn-more">Learn More</p>
-            </li>
-          </ul>
-        </div>
-        <button type="submit" class="btn btn-secondary" (click)="saveForLater()">Save topics for later</button>
-      </form>
+<div class="container" *ngIf="guidedAssistantResults">
+  <div *ngIf="guidedAssistantResults.topIntent; else elseblock">
+    <div class="col-sm-8 col-sm-offset-2 text-center top-intent">
+      <h3>It looks like you are looking for information on:</h3>
+      <p class="text-capitalize">{{guidedAssistantResults.topIntent}}</p>
+      <button class="btn btn-primary" routerLink='/guidedassistant/9a6a6131-657d-467d-b09b-c570b7dad242'>Start the Guided Assistant</button>
+    </div>
+    <div class="row" *ngIf="guidedAssistantResults.relevantIntents">
+      <div class="col-sm-12 relevant-intent">
+        <h5>You may also be interested in the following topic:</h5>
+        <form #gaForm="ngForm" (ngSubmit)="onSubmit(gaForm)">
+          <div class="button-container">
+            <ul>
+              <li *ngFor="let intent of relevantIntents">
+                <input type="checkbox" [id]="intent" [value]="intent" name="multiSelectOptions" ngModel>
+                <label [for]="intent" class="text-capitalize">{{intent}}</label>
+                <div class="check"></div>
+                <a class="link" [routerLink]="['/topics/bdc07e7a-1f06-4517-88d8-9345bb87c3cf']">Learn More</a>
+              </li>
+            </ul>
+          </div>
+          <button type="submit" class="btn btn-secondary" (click)="saveForLater()">Save topics for later</button>
+        </form>
+      </div>
     </div>
   </div>
+  <ng-template #elseblock>
+    <div class="col-sm-8 col-sm-offset-2 text-center top-intent">
+      <h3>We did not find anything that matches your search. Please try searching again.</h3>
+    </div>
+  </ng-template>
 </div>
+
+

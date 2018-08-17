@@ -32,9 +32,12 @@
   display: block;
 }
 
-.learn-more {
+.link{
+  display: block;
   margin-left: 20px;
-  margin-top: 5px;
-  color: blue;
-  font-size: 14px;
+  margin-top: 20px;
+}
+
+input[type=checkbox]:checked ~ .check::before {
+  padding-left: 3px;
 }
