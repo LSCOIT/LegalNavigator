@@ -368,7 +368,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     this.notifyLocationChange();        
     this.showRemoveOption = this.showRemove;
     if (sessionStorage.getItem("bookmarkedResource")) {
-      this.personalizedPlanService.saveResourcesToProfile();
+      this.personalizedPlanService.saveResourcesToUserProfile();
     }
   }
 

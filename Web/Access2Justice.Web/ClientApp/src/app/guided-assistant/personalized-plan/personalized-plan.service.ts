@@ -5,6 +5,7 @@ import { Resources, PersonalizedPlanTopic, PersonalizedPlan, ProfileResources, S
 import { api } from '../../../api/api';
 import { IResourceFilter } from '../../shared/search/search-results/search-results.model';
 import { ArrayUtilityService } from '../../shared/array-utility.service';
+import { ToastrService } from 'ngx-toastr';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -29,7 +30,8 @@ export class PersonalizedPlanService {
   savedResources: SavedResources;
   resourceTags: Array<SavedResources> = [];
 
-  constructor(private http: HttpClient, private arrayUtilityService: ArrayUtilityService) { }
+  constructor(private http: HttpClient, private arrayUtilityService: ArrayUtilityService,
+    private toastr: ToastrService) { }
 
   getActionPlanConditions(id): Observable<any> {
     return this.http.get<PersonalizedPlan>(api.planUrl + '/' + id);
@@ -41,10 +43,6 @@ export class PersonalizedPlanService {
 
   getUserSavedResources(oid): Observable<any> {
     return this.http.get<PersonalizedPlan>(api.getProfileUrl + '/' + oid);
-  }
-
-  getMarkCompletedUpdatedPlan(updatePlan) {
-    return this.http.post(api.updatePlanUrl, updatePlan, httpOptions);
   }
 
   saveResources(resource: ProfileResources) {
@@ -99,27 +97,7 @@ export class PersonalizedPlanService {
     }
     return this.http.put(api.getPersonalizedResourcesUrl, resourceInput, httpOptions);
   }
-
-  //Below method need to be modified to store data in session if user is not logged in
-  saveResourcesToSession(resources) {
-    this.resoureStorage = sessionStorage.getItem(this.sessionKey);
-    if (this.resoureStorage && this.resoureStorage.length > 0) {
-      this.tempStorage = JSON.parse(this.resoureStorage);
-      this.isObjectExists = this.arrayUtilityService.checkObjectExistInArray(this.tempStorage, resources);
-      if (!this.isObjectExists) {
-        this.tempStorage.push(resources);
-        sessionStorage.setItem(this.sessionKey, JSON.stringify(this.tempStorage));
-      }
-    } else {
-      this.tempStorage = [resources];
-      sessionStorage.setItem(this.sessionKey, JSON.stringify(this.tempStorage));
-    }
-  }
-
-  savePlanToSession(planId) {
-    sessionStorage.setItem(this.planSessionKey, JSON.stringify(planId));
-  }
-
+  
   getPlanDetails(topics, planDetailTags): any {
     this.topicsList = this.createTopicsList(this.topics);
     this.planDetails = this.displayPlanDetails(planDetailTags, this.topicsList);
@@ -156,10 +134,22 @@ export class PersonalizedPlanService {
     }
   }
 
-  saveResourcesToProfile() {
-    this.userId = this.getUserId();
-    this.profileResources.resourceTags = [];
+  saveResourcesToUserProfile() {
     this.savedResources = { itemId: '', resourceType: '', resourceDetails: {} };
+    this.resoureStorage = sessionStorage.getItem(this.sessionKey);
+    if (this.resoureStorage && this.resoureStorage.length > 0) {
+      this.resoureStorage = JSON.parse(this.resoureStorage);
+    }
+    this.savedResources = {
+      itemId: this.resoureStorage.itemId,
+      resourceType: this.resoureStorage.resourceType, resourceDetails: this.resoureStorage.resourceDetails
+    };
+    this.saveResourcesToProfile(this.savedResources);
+  }
+
+  saveResourcesToProfile(savedResources) {
+    this.userId = this.getUserId();
+    this.resourceTags = [];
     this.getUserSavedResources(this.userId)
       .subscribe(response => {
         if (response) {
@@ -171,17 +161,13 @@ export class PersonalizedPlanService {
             }
           });
         }
-        this.resoureStorage = sessionStorage.getItem(this.sessionKey);
-        if (this.resoureStorage && this.resoureStorage.length > 0) {
-          this.resoureStorage = JSON.parse(this.resoureStorage);
-        }
-        this.savedResources = {
-          itemId: this.resoureStorage[0].id,
-          resourceType: this.resoureStorage[0].type, resourceDetails: this.resoureStorage[0].resourceDetails
-        };
-        if (!this.arrayUtilityService.checkObjectExistInArray(this.resourceTags, this.savedResources)) {
-          this.resourceTags.push(this.savedResources);
+
+        if (!this.arrayUtilityService.checkObjectExistInArray(this.resourceTags, savedResources)) {
+          this.resourceTags.push(savedResources);
           this.saveResourceToProfile(this.resourceTags);
+          sessionStorage.removeItem(this.sessionKey);
+        } else {
+          this.showWarning('Resource already saved to profile');
         }
       });
   }
@@ -190,10 +176,16 @@ export class PersonalizedPlanService {
     this.profileResources = { oId: this.userId, resourceTags: resourceTags, type: 'resources' };
     this.saveResources(this.profileResources)
       .subscribe(() => {
-        //this.isSavedPlan = true;
-        console.log('Resource saved to profile');
+        this.showSuccess('Resource saved to profile');
       });
   }
 
+  showSuccess(message) {
+    this.toastr.success(message);
+  }
+
+  showWarning(message) {
+    this.toastr.warning(message);
+  }
 
 }
