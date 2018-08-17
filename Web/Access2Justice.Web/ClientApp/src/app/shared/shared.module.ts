@@ -50,6 +50,7 @@ import { ResourceService } from './resource/resource.service';
 import { MapComponent } from './map/map.component';
 import { MapService } from './map/map.service';
 import { InternalErrorComponent } from './error/internal-error/internal-error.component';
+import { LoginComponent } from './login/login.component';
 import { ShareService } from './resource/user-action/share-button/share.service';
 import { ShareButtonRouteComponent } from './resource/user-action/share-button/share-button-route/share-button-route.component';
 
@@ -101,6 +102,7 @@ import { ShareButtonRouteComponent } from './resource/user-action/share-button/s
     VideosComponent,
     MapComponent,
     InternalErrorComponent,
+    LoginComponent    
     ShareButtonRouteComponent
   ],
   exports: [
@@ -127,7 +129,8 @@ import { ShareButtonRouteComponent } from './resource/user-action/share-button/s
     BreadcrumbComponent,
     UserActionSidebarComponent,
     WebResourceComponent,
-    HelplineComponent
+    HelplineComponent,
+    LoginComponent
   ],
   providers: [
     CuratedResourceService,

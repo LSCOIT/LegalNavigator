@@ -1,0 +1,44 @@
+a:hover {
+  color: #333;
+  text-decoration: none;
+}
+
+.account-menu {
+  cursor: pointer;
+  padding: 10px 0;
+  margin-right: 20px;
+}
+
+#signin-dropdown {
+  margin-top: 10px;
+  cursor: pointer;
+  width: 265px;
+  position: relative;
+}
+
+#signin-dropdown a:hover {
+  color: #333;
+  text-decoration: none;
+}
+
+.dropdown-menu {
+  position: absolute;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  background-color: #f4f4f4;
+}
+
+.dropdown-menu li a:hover {
+  background-color: #fff;
+}
+
+@media only screen and (min-width : 992px) {
+  .create-account {
+    margin-right: -25px;
+  }
+
+  .account-menu {
+    display: inline-block;
+  }
+}

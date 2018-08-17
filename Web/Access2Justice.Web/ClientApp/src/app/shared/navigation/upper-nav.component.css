@@ -23,21 +23,6 @@
   padding: 10px 0;
 }
 
-.account-menu {
-  cursor: pointer;
-}
-
-#signin-dropdown {
-  margin-top: 10px;
-  cursor: pointer;
-  width: 265px;
-}
-
-#signin-dropdown a:hover {
-  color: #333;
-  text-decoration: none;
-}
-
 @media only screen and (min-width : 768px) {
   #location {
     position: static;
@@ -46,14 +31,6 @@
 }
 
 @media only screen and (min-width : 992px) {
-  .create-account {
-    margin-right: -25px;
-  }
-
-  .account-menu {
-    display: inline-block;
-  }
-
   .left-menu {
     margin: 0;
   }
