@@ -11,8 +11,8 @@ export interface IResourceFilter {
 export interface ILuisInput {
   Sentence: string;
   Location: any;
-  TranslateFrom: string;
-  TranslateTo: string;
-  LuisTopScoringIntent: string;
+  TranslateFrom?: string;
+  TranslateTo?: string;
+  LuisTopScoringIntent?: string;
 }
 

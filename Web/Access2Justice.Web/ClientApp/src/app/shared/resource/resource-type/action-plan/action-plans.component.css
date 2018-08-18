@@ -52,12 +52,13 @@
 	float: left;
 	margin-bottom: 30px;
   position: absolute;
-  right: 25px;
-  top: -74px;
+  left: 0;
+  top: -15px;
 }
 
 .step-content div {
   margin-bottom: 20px;
+  margin-top: 30px;
 }
 
 .step-content div ul li {
@@ -88,7 +89,15 @@ iframe {
   color: #ccc;
 }
 
+.video-heading {
+  cursor: pointer;
+}
+
 @media only screen and (min-width : 768px) {
+  .step-content div {
+    margin-top: 0;
+  }
+
   .plan-spacing {
     padding: 15px;
   }
@@ -101,6 +110,9 @@ iframe {
   #complete-btn {
     float: right;
     margin-bottom: 0;
+    right: 36px;
+    left: auto;
+    top: -74px;
   }
 }
 

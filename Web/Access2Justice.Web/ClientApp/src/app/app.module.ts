@@ -43,6 +43,7 @@ import { HomeService } from './home/home.service'
 import { StaticResourceService } from './shared/static-resource.service';
 import { ResponseInterceptor } from './response-interceptor';
 import { Global } from './global'
+import { CuratedExperienceResultComponent } from './guided-assistant/curated-experience-result/curated-experience-result.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { Global } from './global'
     ProfileComponent,
     DidYouKnowComponent,
     ArticlesResourcesComponent,
-    CuratedExperienceComponent
+    CuratedExperienceComponent,
+    CuratedExperienceResultComponent
   ],
   imports: [
     BrowserModule,
