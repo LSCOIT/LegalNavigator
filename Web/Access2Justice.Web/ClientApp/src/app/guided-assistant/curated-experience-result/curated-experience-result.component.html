@@ -8,7 +8,7 @@
     <div class="row" *ngIf="guidedAssistantResults.relevantIntents">
       <div class="col-sm-12 relevant-intent">
         <h5>You may also be interested in the following topic:</h5>
-        <form #gaForm="ngForm" (ngSubmit)="onSubmit(gaForm)">
+        <form>
           <div class="button-container">
             <ul>
               <li *ngFor="let intent of relevantIntents">
@@ -26,7 +26,7 @@
   </div>
   <ng-template #elseblock>
     <div class="col-sm-8 col-sm-offset-2 text-center top-intent">
-      <h3>We did not find anything that matches your search. Please try searching again.</h3>
+      <h3>Sorry, we did not find anything that matches your search. Please try again with a different search term.</h3>
     </div>
   </ng-template>
 </div>

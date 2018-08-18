@@ -17,7 +17,7 @@ export class CuratedExperienceResultComponent implements OnInit {
   ) { }
 
   saveForLater() {
-    this.toastr.success("Topics added. You can view them once you've completed the guided assistant.");
+    this.toastr.success("Topics added. You can view them later once you've completed the guided assistant.");
   }
 
   filterIntent() {
