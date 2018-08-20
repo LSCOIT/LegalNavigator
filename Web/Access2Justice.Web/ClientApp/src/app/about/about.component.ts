@@ -15,19 +15,25 @@ export class AboutComponent implements OnInit {
   aboutContent: About;
   aboutContentData: About;
 
-  filterAboutContent(): void {
-    if (this.aboutContent) {
-      this.aboutContentData = this.aboutContent;
+  filterAboutContent(aboutContent): void {
+    if (aboutContent) {
+      this.aboutContentData = aboutContent;
     }
   }
 
   getAboutPageContent(): void {
     let aboutPageRequest = { name: this.name };
-    this.staticResourceService.getStaticContent(aboutPageRequest)
-      .subscribe(content => {
-        this.aboutContent = content[0];
-        this.filterAboutContent();
-      });
+    if (this.staticResourceService.aboutContent && (this.staticResourceService.aboutContent.location[0].state == this.staticResourceService.getLocation())) {
+      this.aboutContent = this.staticResourceService.aboutContent;
+      this.filterAboutContent(this.staticResourceService.aboutContent);
+    } else {
+      this.staticResourceService.getStaticContent(aboutPageRequest)
+        .subscribe(content => {
+          this.aboutContent = content[0];
+          this.filterAboutContent(this.aboutContent);
+          this.staticResourceService.aboutContent = this.aboutContent;
+        });
+    }   
   }
 
   ngOnInit() {

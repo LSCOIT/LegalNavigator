@@ -168,5 +168,13 @@
                     "   }\r\n            ]\r\n        }\r\n    ]\r\n}";
             }
         }
+
+        public static string CuratedExperienceAnswersSchema
+        {
+            get {
+                return
+                  " {\r\n  'id': '288af4da-06bb-4655-aa91-41314e248d6b',\r\n  'curatedExperienceId': '9a6a6131-657d-467d-b09b-c570b7dad242',\r\n  'answers': [\r\n    {\r\n      'answerButtonId': 'f3a1e369-edba-4152-bbc7-a52e8e77b56e',\r\n      'answerFields': []\r\n    },\r\n    {\r\n      'answerButtonId': '2b92e07b-a555-48e8-ad7b-90b99ebc5c96',\r\n      'answerFields': [\r\n        {\r\n          'fieldId': '22cbf2ac-a8d3-48c5-b230-297111e0e85c',\r\n          'value': 'gh'\r\n        },\r\n        {\r\n          'fieldId': '6c8312eb-131d-4cfb-a542-0e3f6d07a1d3',\r\n          'value': 'fgh'\r\n        },\r\n        {\r\n          'fieldId': 'd2a935b4-bb07-494f-9c59-f3115b19d002',\r\n          'value': 'gh'\r\n        }\r\n      ]\r\n    },\r\n    {\r\n      'answerButtonId': 'cafc4de0-91c5-4f67-a59f-bbffc2534236',\r\n      'answerFields': [\r\n        {\r\n          'fieldId': '78da510a-180c-4757-b75d-fd87f470ae76',\r\n          'value': 'fh'\r\n        },\r\n        {\r\n          'fieldId': '6a81a78e-7692-4256-88d6-651dc4e9ce0f',\r\n          'value': 'fh'\r\n        },\r\n        {\r\n          'fieldId': '9471103f-7868-47fd-b1ab-581cc3934493',\r\n          'value': '54'\r\n        }\r\n      ]\r\n    },\r\n    {\r\n      'answerButtonId': 'aa3777d0-e7dd-48dd-afb3-6d61fc172768',\r\n      'answerFields': [\r\n        {\r\n          'fieldId': 'd63e24a3-4a4d-4fec-a1aa-9c72b2fcab5e',\r\n          'value': '46'\r\n        }\r\n      ]\r\n    },\r\n    {\r\n      'answerButtonId': '5846cabb-1826-47bc-b2cd-6168f78fc4f2',\r\n      'answerFields': [\r\n        {\r\n          'fieldId': '0bc5ccb7-e1d2-40b6-b20c-4fbd6cb85de9',\r\n          'value': null\r\n        }\r\n      ]\r\n    },\r\n    {\r\n      'answerButtonId': '98613482-53ad-458f-988c-5b473358c7bf',\r\n      'answerFields': [\r\n        {\r\n          'fieldId': 'cfd6fd1d-2974-43ef-8e3c-6fb0e9a0d8cf',\r\n          'value': '546h'\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}";
+            }
+        }
     }
 }

@@ -1,0 +1,13 @@
+button {
+  display: block;
+  clear: both;
+  margin: 20px auto;
+}
+
+label {
+  margin-top: 10px;
+}
+
+textarea {
+  resize: none;
+}

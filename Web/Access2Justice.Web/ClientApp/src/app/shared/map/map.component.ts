@@ -7,6 +7,7 @@ import { environment } from '../../../environments/environment';
 import { MapResultsService } from '../../shared/sidebars/map-results.service';
 import { Navigation, Location, LocationNavContent } from '../navigation/navigation';
 import { StaticResourceService } from '../../shared/static-resource.service';
+import { Global } from '../../global';
 
 @Component({
   selector: 'app-map',
@@ -39,7 +40,8 @@ export class MapComponent implements OnInit {
   name: string = 'Navigation';
 
   constructor(private modalService: BsModalService, private mapService: MapService,
-    private mapResultsService: MapResultsService, private staticResourceService: StaticResourceService) { }
+    private mapResultsService: MapResultsService, private staticResourceService: StaticResourceService,
+    private global:Global) { }
 
   changeLocation(template) {
     this.config = {
@@ -123,21 +125,27 @@ export class MapComponent implements OnInit {
     }
   }
 
-  filterLocationNavigationContent(): void {
-    if (this.navigation) {
-      this.name = this.navigation.name;
-      this.location = this.navigation.location;
-      this.locationNavContent = this.navigation.locationNavContent;
+  filterLocationNavigationContent(navigation): void {
+    if (navigation) {
+      this.name = navigation.name;
+      this.location = navigation.location;
+      this.locationNavContent = navigation.locationNavContent;
     }
   }
 
   getLocationNavigationContent(): void {
     let homePageRequest = { name: this.name };
-    this.staticResourceService.getStaticContent(homePageRequest)
-      .subscribe(content => {
-        this.navigation = content[0];
-        this.filterLocationNavigationContent();
-      });
+    if (this.staticResourceService.navigation && (this.staticResourceService.navigation.location[0].state == this.staticResourceService.getLocation())) {
+      this.navigation = this.staticResourceService.navigation;
+      this.filterLocationNavigationContent(this.staticResourceService.navigation);
+    } else {
+      this.staticResourceService.getStaticContent(homePageRequest)
+        .subscribe(content => {
+          this.navigation = content[0];
+          this.filterLocationNavigationContent(this.navigation);
+          this.staticResourceService.navigation = this.navigation;
+        });
+    }
   }
 
   setLocalMapLocation() {
@@ -150,6 +158,9 @@ export class MapComponent implements OnInit {
   ngOnInit() {
     this.getLocationNavigationContent();
     this.showLocality = true;
+    if (location.pathname.indexOf(this.global.shareRouteUrl) != -1) {
+      return;
+    }
     if (this.mapType) {
       if (!sessionStorage.getItem("globalMapLocation")) {
         this.loadCurrentLocation();
