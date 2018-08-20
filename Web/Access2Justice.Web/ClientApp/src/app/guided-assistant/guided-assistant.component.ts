@@ -21,6 +21,7 @@ export class GuidedAssistantComponent implements OnInit {
   ) { }
 
   onSubmit(guidedAssistantForm) {
+    this.luisInput["IsFromCuratedExperience"] = true;
     this.luisInput["Sentence"] = guidedAssistantForm.value.searchText;
     this.luisInput["Location"] = JSON.parse(sessionStorage.getItem("globalMapLocation"));
     this.searchService.search(this.luisInput)

@@ -1,9 +1,9 @@
 <div class="container" *ngIf="guidedAssistantResults">
-  <div *ngIf="guidedAssistantResults.topIntent; else elseblock">
+  <div *ngIf="guidedAssistantResults.topIntent && guidedAssistantResults.resources.length > 0; else elseblock">
     <div class="col-sm-8 col-sm-offset-2 text-center top-intent">
       <h3>It looks like you are looking for information on:</h3>
       <p class="text-capitalize">{{guidedAssistantResults.topIntent}}</p>
-      <button class="btn btn-primary" routerLink='/guidedassistant/9a6a6131-657d-467d-b09b-c570b7dad242'>Start the Guided Assistant</button>
+      <button class="btn btn-primary" routerLink='/guidedassistant/{{guidedAssistantResults?.resources[0]?.externalUrl}}'>Start the Guided Assistant</button>
     </div>
     <div class="row" *ngIf="guidedAssistantResults.relevantIntents">
       <div class="col-sm-12 relevant-intent">

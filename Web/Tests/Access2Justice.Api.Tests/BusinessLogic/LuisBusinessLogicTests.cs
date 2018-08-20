@@ -162,7 +162,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             paginationResult.ReturnsForAnyArgs<dynamic>(pagedResources);
 
             //act
-            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword, location, Arg.Any<IEnumerable<string>>()).Result;
+            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword, location, Arg.Any<IEnumerable<string>>(), Api.Constants.All).Result;
 
             //assert            
             Assert.Contains(expectedTopicId, result);
@@ -182,7 +182,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             paginationResult.ReturnsForAnyArgs<dynamic>(pagedResources);
 
             //act
-            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword, location, Arg.Any<IEnumerable<string>>()).Result;
+            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword, location, Arg.Any<IEnumerable<string>>(), Api.Constants.All).Result;
 
             //assert            
             Assert.Contains(expectedTopicId, result);
@@ -201,7 +201,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             paginationResult.ReturnsForAnyArgs<dynamic>(pagedResources);
 
             //act
-            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword, location, Arg.Any<IEnumerable<string>>()).Result;
+            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword, location, Arg.Any<IEnumerable<string>>(),Api.Constants.All).Result;
 
             //assert            
             Assert.Contains(keyword, result);
@@ -219,7 +219,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
             topicResponse.ReturnsForAnyArgs<dynamic>(emptyTopicObject);
 
-            var internalResponse = luis.GetInternalResourcesAsync(keyword, location, Arg.Any<IEnumerable<string>>());
+            var internalResponse = luis.GetInternalResourcesAsync(keyword, location, Arg.Any<IEnumerable<string>>(),Api.Constants.All);
             internalResponse.ReturnsForAnyArgs<dynamic>(internalResponse);
 
             //act
@@ -241,7 +241,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
             topicResponse.ReturnsForAnyArgs<dynamic>(emptyTopicObject);
 
-            var internalResponse = luis.GetInternalResourcesAsync(keyword, location, Arg.Any<IEnumerable<string>>());
+            var internalResponse = luis.GetInternalResourcesAsync(keyword, location, Arg.Any<IEnumerable<string>>(),Api.Constants.All);
             internalResponse.ReturnsForAnyArgs<dynamic>(internalResponse);
 
             //act
