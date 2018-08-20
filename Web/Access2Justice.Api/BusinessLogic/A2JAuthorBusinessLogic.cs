@@ -64,8 +64,11 @@ namespace Access2Justice.Api.BusinessLogic
         }
 
         // Todo:@Alaa naming could be revisited
-        public async Task<A2JPersonalizedPlan> ExtractA2JPersonalizedPlanStepsInScopeAsync()
+        public async Task<A2JPersonalizedPlan> ExtractA2JPersonalizedPlanStepsInScopeAsync(A2JPersonalizedPlan a2JPersonalizedPlan, 
+            CuratedExperienceAnswers userAnswers)
         {
+
+            var breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
             throw new NotImplementedException();
         }
 

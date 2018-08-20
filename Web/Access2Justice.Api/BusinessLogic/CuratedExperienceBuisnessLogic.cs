@@ -161,7 +161,7 @@ namespace Access2Justice.Api.BusinessLogic
         }
 
         //Todo:@Alaa could use some grooming
-        private CuratedExperienceAnswers MapViewModelAnswerToCuratedExperienceAnswer(CuratedExperienceAnswersViewModel viewModelAnswer,
+        public CuratedExperienceAnswers MapViewModelAnswerToCuratedExperienceAnswer(CuratedExperienceAnswersViewModel viewModelAnswer,
             CuratedExperience curatedExperience)
         {
             var buttonComponent = new CuratedExperienceComponent();

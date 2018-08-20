@@ -131,10 +131,14 @@ namespace Access2Justice.Api.Controllers
         /// It is the computed output that returns the steps mapped to a user answer (which we are going to use to build our personalized plan).
         /// </summary>
         /// <returns></returns>
-        [HttpGet("A2JPersonalizedPlan/StepsInScope")]
-        public async Task<IActionResult> GetA2JPersonalizedPlanStepsInScope()
+        [HttpPost("A2JPersonalizedPlan/StepsInScope")]
+        public async Task<IActionResult> GetA2JPersonalizedPlanStepsInScope([FromBody] CuratedExperienceAnswersViewModel userAnswers)
         {
-            return Ok(await a2jAuthorBuisnessLogic.ExtractA2JPersonalizedPlanStepsInScopeAsync());
+            var curatedExperience = RetrieveCachedCuratedExperience(userAnswers.CuratedExperienceId);
+
+            return Ok(await a2jAuthorBuisnessLogic.ExtractA2JPersonalizedPlanStepsInScopeAsync(
+                await a2jAuthorBuisnessLogic.GetA2JPersonalizedPlanStepsAsync(), 
+                curatedExperienceBusinessLogic.MapViewModelAnswerToCuratedExperienceAnswer(userAnswers, curatedExperience)));
         }
         #endregion
 
