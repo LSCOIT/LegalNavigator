@@ -11,3 +11,7 @@ export interface Subtopic {
     subtopics: Array<object>;
 }
 
+export interface ITopicInput {
+  Id: string;
+  Location: any;
+}
