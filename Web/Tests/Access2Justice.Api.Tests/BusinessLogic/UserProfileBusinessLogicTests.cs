@@ -109,7 +109,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         {
             //arrange
             var userProfileSavedResources = this.userProfileSavedResourcesData;
-            var resource = JsonConvert.SerializeObject(userProfileSavedResources);
+            var resource = JsonConvert.DeserializeObject<ProfileResources>(JsonConvert.SerializeObject(userProfileSavedResources));
             Document document = new Document();
             JsonTextReader reader = new JsonTextReader(new StringReader(userProfileSavedResources[0].ToString()));
             document.LoadFrom(reader);
@@ -144,7 +144,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             backendDatabaseService.UpdateItemAsync<dynamic>(id, document, cosmosDbSettings.ResourceCollectionId).ReturnsForAnyArgs(document);
 
             //act
-            actualResult = userProfileBusinessLogic.UpdateUserSavedResourcesAsync(id, inputJson).Result;
+            actualResult = userProfileBusinessLogic.UpdateUserSavedResourcesAsync(Guid.Parse(id), inputJson).Result;
 
             //assert
             Assert.Equal(expectedUserProfileSavedResourcesUpdateData[0].ToString(), actualResult.ToString());

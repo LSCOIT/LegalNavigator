@@ -23,7 +23,9 @@ namespace Access2Justice.Api.Tests.TestData
                                     'order':'1','markCompleted':'false'},{'id':'d46aecee-8c79-df1b-4081-1ea02b5022df','order':'2','markCompleted':'false'}]},{'id':'932abb0a-c6bb-46da-a3d8-5f52c2c914a0','stepTags':[
                                     {'id':'2705d544-6af7-bd69-4f19-a1b53e346da2','order':'2','markCompleted':'false'},{'id':'3d64b676-cc4b-397d-a5bb-f4a0ea6d3040','order':'1','markCompleted':'false'}]}],'id':'f8d41156-4c7e-44c8-a543-b6c40f661900'}]");
         public static JArray userProfileSavedResourcesData =
-                    JArray.Parse(@"[{'resourcesId': 'd984fc20-ae28-4749-942a-16e2b10f0a20','oId': 'outlookoremailOId','type': 'resources','resourceTags': [{'id': 'addf41e9-1a27-4aeb-bcbb-7959f95094ba'},{'id': 'd46aecee-8c79-df1b-4081-1ea02b5022df'}]}]");
+                    JArray.Parse(@"[{'oId': 'outlookoremailOId','type': 'resources',
+                                'resourceTags': [{'itemId': 'addf41e9-1a27-4aeb-bcbb-7959f95094ba', 'resourceType':'Organizations','resourceDetails':{}},
+                                {'itemId': 'd46aecee-8c79-df1b-4081-1ea02b5022df', 'resourceType':'Articles','resourceDetails':{}}]}]");
         public static JArray expectedUserProfileSavedResourcesData =
             JArray.Parse(@"[{'resourcesId': 'd984fc20-ae28-4749-942a-16e2b10f0a20','oId': 'outlookoremailOId','type': 'resources','resourceTags': [{'id': 'addf41e9-1a27-4aeb-bcbb-7959f95094ba'},{'id': 'd46aecee-8c79-df1b-4081-1ea02b5022df'}]}]");
         public static JArray expectedUserProfileSavedResourcesUpdateData =
