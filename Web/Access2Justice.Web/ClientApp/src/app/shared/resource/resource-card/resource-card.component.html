@@ -103,8 +103,10 @@
         </div>
       </div>
       <div *ngIf="resource.resourceType === 'Forms' || resource.resourceType === 'Related Links'" class="media">
-        <div class="media-left">
-          <img class="media-object" src="/assets/images/icons/forms.svg" alt="Form">
+        <div class="no-print">
+          <div class="media-left">
+            <img class="media-object" src="/assets/images/icons/forms.svg" alt="Form">
+          </div>
         </div>
         <div class="media-body">
           <a [href]="resource.url"><h4 class="media-heading">{{resource.name}}</h4></a>

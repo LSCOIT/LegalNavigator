@@ -37,7 +37,7 @@ export class UserActionSidebarComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     if (this.activeTabData) {
-      console.log("User acrtion" + this.activeTabData);
+      console.log("User action" + this.activeTabData);
       this.printData = this.activeTabData;
       console.log("print data" + this.printData);
     }

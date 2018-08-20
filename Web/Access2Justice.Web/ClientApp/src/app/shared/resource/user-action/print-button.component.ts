@@ -30,7 +30,14 @@ export class PrintButtonComponent implements OnInit, OnChanges {
       this.printContents(this.template)
     }
 
+    else if (location.pathname.indexOf("/resource") >= 0) {
+      this.template = 'app-resource-card-detail'
+      this.printContents(this.template)
+    }
+
     else if (location.pathname.indexOf("/profile") >= 0) {
+      //TO DO - need to pick selector based on active tab out of My Plan or My Saved Resources.
+      //this.template = 'app-search-results';
       this.template = 'app-action-plans';
       this.printContents(this.template);
     }
@@ -42,75 +49,39 @@ export class PrintButtonComponent implements OnInit, OnChanges {
 
   printContents(template) {
     let printContents, popupWin;
-
-  printContents = document.getElementsByTagName(template)[0].innerHTML;
-  popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
-  popupWin.document.open();
-  popupWin.document.write(`
-      <html>
-        <head>
-          <style>
-              @media print {
-              .no-print, .no-print * {
-                display: none !important;
+    printContents = document.getElementsByTagName(template)[0].innerHTML;
+    popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
+    //popupWin.document.open();
+    popupWin.document.write(`
+        <html>
+          <head>
+            <style>
+                @media print {
+                .no-print, .no-print * {
+                  display: none !important;
+                }
+                .collapse {
+                    display: block !important;
+                    height: auto !important;
+                }
               }
-              .collapse {
-                  display: block !important;
-                  height: auto !important;
-              }
-            }
-          </style>
-        </head>
-    <body onload="window.print();window.close()">${printContents}</body>
-      </html>`
-  );
-  popupWin.document.close();
-}
-
-
-
-  //print() {
-  //  this.toggle();
-
-  //  window.print();
-
-  //  //var mywindow = window.open('', 'PRINT', 'height=400,width=600');
-  //  //let list = document.getElementsByTagName("selectorInput")[0].innerHTML;
-  //  //mywindow.document.write(document.getElementsByTagName("app-action-plans")[0].innerHTML);
-  //  //mywindow.print();
-  //  //mywindow.close();
-  //  //return true;
-
-  //  //mywindow.document.write('<html><head><title>' + document.title + '</title>');
-  //  //mywindow.document.write('</head><body >');
-  //  //mywindow.document.write('<h1>' + document.title + '</h1>');
-  //  //mywindow.document.write(document.getElementsByTagName("app-action-plans")[0].innerHTML);
-
-  //  //mywindow.document.write(document.getElementsByTagName("app-search-results")[0].innerHTML);
-  //  //mywindow.document.write('</body></html>');
-
-  //  //mywindow.document.close(); // necessary for IE >= 10
-  //  //mywindow.focus(); // necessary for IE >= 10*/
-
-
-  //}
-
-  printSection(): void {
-    let data = document.getElementsByClassName("Items-Container")[0].innerHTML;
-    let newWindow = window.open("data:text/html," + encodeURIComponent(data),
-      "_blank");
-    newWindow.focus();
+            </style>
+          </head>
+      <body onload="window.print();window.close()">${printContents}</body>
+        </html>`
+    );
+    popupWin.document.close();
   }
 
   ngOnInit() {
     if (this.printData) {
-      console.log("User acrtion" + this.printData);
+      console.log("User action" + this.printData);
     }
   }
 
   ngOnChanges() {
     if (this.printData) {
-      console.log("User acrtion" + this.printData);
+      console.log("User action" + this.printData);
     }
   }
 }
