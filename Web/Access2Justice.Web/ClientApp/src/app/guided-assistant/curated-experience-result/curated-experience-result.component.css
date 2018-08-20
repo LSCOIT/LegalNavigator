@@ -1,0 +1,43 @@
+.top-intent {
+  margin-top: 3%;
+  margin-bottom: 10%;
+}
+
+.top-intent p {
+  margin: 40px auto;
+  font-weight: 500;
+  font-size: 2em;
+}
+
+.button-container {
+  width: 100%;
+}
+
+.button-container ul li {
+  width: 30%;
+  margin: 15px;
+}
+
+.button-container ul li label {
+  padding: 14px 20px 10px 50px;
+}
+
+.relevant-intent {
+  padding: 10px;
+  border-top: 1px solid #ccc;
+}
+
+.relevant-intent button {
+  margin: 0 auto;
+  display: block;
+}
+
+.link{
+  display: block;
+  margin-left: 20px;
+  margin-top: 20px;
+}
+
+input[type=checkbox]:checked ~ .check::before {
+  padding-left: 3px;
+}

@@ -21,12 +21,14 @@ import { PersonalizedPlanComponent } from './guided-assistant/personalized-plan/
 import { NotFoundComponent } from './shared/error/not-found/not-found.component';
 import { InternalErrorComponent } from './shared/error/internal-error/internal-error.component';
 import { ShareButtonRouteComponent } from './shared/resource/user-action/share-button/share-button-route/share-button-route.component';
+import { CuratedExperienceResultComponent } from './guided-assistant/curated-experience-result/curated-experience-result.component';
 
 const appRoutes: Routes = [
   { path: 'search', component: SearchResultsComponent },
   { path: 'searchRefresh', component: SearchResultsComponent },
   { path: 'guidedassistant/:id', component: CuratedExperienceComponent },
   { path: 'guidedassistant', component: GuidedAssistantComponent },
+  { path: 'guidedassistantSearch', component: CuratedExperienceResultComponent },
   { path: 'resource/:id', component: ResourceCardDetailComponent },
   { path: 'subtopics/:topic', component: SubtopicDetailComponent },
   { path: 'topics/:topic', component: SubtopicsComponent},

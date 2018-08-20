@@ -16,11 +16,6 @@
             <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
                 role="menu" aria-labelledby="button-basic">
               <li role="menuitem">
-                <a class="dropdown-item" href="#">
-                  <app-share-button></app-share-button>
-                </a>
-              </li>
-              <li role="menuitem">
                 <a class="dropdown-item">
                   <app-remove-button [selectedPlanDetails]="selectedPlanDetails"></app-remove-button>
                 </a>
@@ -70,22 +65,22 @@
                   </ul>
                 </div>
                 <div *ngFor="let resource of step.resources">
-                  <div *ngIf="resource.resourceType === 'Videos'" class="row box-shadow">
+                  <div *ngIf="resource.resourceType === 'Videos'" class="row">
                     <div class="media-left">
                       <img class="media-object" src="../../../assets/images/icons/videos.svg" aria-hidden="True">
                     </div>
                     <div class="media-body">
-                      <h4 class="media-heading" (click)="openModal(vedioTemplate)">{{resource.name}}</h4>
+                      <h4 class="media-heading video-heading" (click)="openModal(videoTemplate)">{{resource.name}}</h4>
                       <p>{{resource.description}}</p>
                     </div>
-                    <ng-template #vedioTemplate>
+                    <ng-template #videoTemplate>
                       <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
                         <span aria-hidden="true">&times;</span>
                       </button>
                       <iframe title="{{resource.name}}" [src]='resourceUrl(resource.url)' frameborder="0" allowfullscreen></iframe>
                     </ng-template>
                   </div>
-                  <div *ngIf="resource.resourceType==='Organizations'">
+                  <div *ngIf="resource.resourceType==='Organizations' && resource.telephone">
                     <img src="./assets/images/small-icons/call.svg" alt="Phone number" class="nav-icon">
                     <span class="p">{{resource.telephone}}</span>
                   </div>

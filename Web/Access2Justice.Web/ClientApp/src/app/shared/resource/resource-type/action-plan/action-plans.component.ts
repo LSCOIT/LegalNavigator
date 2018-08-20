@@ -1,4 +1,4 @@
-import { Component, Input, EventEmitter, Output } from '@angular/core';
+import { Component, Input, EventEmitter, Output, TemplateRef } from '@angular/core';
 import { PlanTopic, PersonalizedPlan, PlanStep, PersonalizedPlanTopic } from '../../../../guided-assistant/personalized-plan/personalized-plan';
 import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
@@ -41,6 +41,7 @@ export class ActionPlansComponent implements OnChanges {
   plan: any;
 
   constructor(
+    private modalService: BsModalService,
     private personalizedPlanService: PersonalizedPlanService,
     public sanitizer: DomSanitizer,
     private toastr: ToastrService,
@@ -51,9 +52,13 @@ export class ActionPlansComponent implements OnChanges {
       profileData = JSON.parse(profileData);
       this.userId = profileData["UserId"];
     }
-    if (global.role === UserStatus.Shared) {
+    if (global.role === UserStatus.Shared && location.pathname.indexOf(global.shareRouteUrl) >= 0) {
       global.showMarkComplete = false;
       global.showDropDown = false;
+    }
+    else {
+      global.showMarkComplete = true;
+      global.showDropDown = true;
     }
   }
 
@@ -188,6 +193,10 @@ export class ActionPlansComponent implements OnChanges {
   resourceUrl(url) {
     this.url = this.sanitizer.bypassSecurityTrustResourceUrl(url);
     return this.url;
+  }
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
   }
 
   planTagOptions(topicId) {

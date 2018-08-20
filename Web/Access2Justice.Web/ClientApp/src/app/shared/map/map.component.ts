@@ -7,6 +7,7 @@ import { environment } from '../../../environments/environment';
 import { MapResultsService } from '../../shared/sidebars/map-results.service';
 import { Navigation, Location, LocationNavContent } from '../navigation/navigation';
 import { StaticResourceService } from '../../shared/static-resource.service';
+import { Global } from '../../global';
 
 @Component({
   selector: 'app-map',
@@ -39,7 +40,8 @@ export class MapComponent implements OnInit {
   name: string = 'Navigation';
 
   constructor(private modalService: BsModalService, private mapService: MapService,
-    private mapResultsService: MapResultsService, private staticResourceService: StaticResourceService) { }
+    private mapResultsService: MapResultsService, private staticResourceService: StaticResourceService,
+    private global:Global) { }
 
   changeLocation(template) {
     this.config = {
@@ -156,7 +158,7 @@ export class MapComponent implements OnInit {
   ngOnInit() {
     this.getLocationNavigationContent();
     this.showLocality = true;
-    if (location.pathname.indexOf("/share/") != -1) {
+    if (location.pathname.indexOf(this.global.shareRouteUrl) != -1) {
       return;
     }
     if (this.mapType) {
