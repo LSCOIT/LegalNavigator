@@ -6,7 +6,6 @@
 
 .search-icon {
   width: 20px;
-  margin-right: 9px;
   margin-bottom: 1px;
 }
 
@@ -17,6 +16,10 @@
   outline: none;
   border-bottom: 1px solid #ccc;
   margin-top: 3px;
+}
+
+.form-group {
+  margin-top: 5px;
 }
 
 .form-group>button {

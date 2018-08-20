@@ -104,7 +104,6 @@ describe('QuestionComponent', () => {
     };
     mockQuestion.questionsRemaining = 0;
     mockQuestionService.getNextQuestion.and.returnValue(of(mockQuestion));
-    console.log(mockQuestion.questionsRemaining);
     component.question = mockQuestion;
     component.onSubmit(formValue);
 

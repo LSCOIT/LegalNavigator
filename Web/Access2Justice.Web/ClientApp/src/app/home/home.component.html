@@ -20,7 +20,7 @@
           <h3>{{guidedAssistantOverviewData?.heading}}</h3>
         </div>
       </div>
-      <div class="row">
+      <div *ngIf="guidedAssistantOverviewData.image.source" class="row">
         <div class="col-sm-4 col-xs-12">
           <img class="secondary-img" [src]="blobUrl + guidedAssistantOverviewData?.image?.source"
                [alt]="guidedAssistantOverviewData?.image?.altText">
@@ -30,7 +30,7 @@
             <li><span>{{steps?.order}}.</span>{{steps?.description}}</li>
           </ul>
           <p>
-            {{guidedAssistantOverviewData.description.text}}
+            {{guidedAssistantOverviewData?.description?.text}}
             <a [routerLink]="guidedAssistantOverviewData?.description?.textWithLink?.url">{{guidedAssistantOverviewData?.description?.textWithLink?.urlText}}.</a>
           </p>
         </div>
@@ -57,13 +57,13 @@
       </div>
     </div>
   </div>
-  <div class="outer-bg">
+  <div *ngIf="carouselData.slide" class="outer-bg">
     <div class="container">
       <div class="row">
         <carousel>
           <slide *ngFor="let slide of carouselData.slides">
             <div>
-              <img [src]="slide?.image?.source" class="testimonial-img col-lg-3 col-sm-4" alt="slide?.image?.altText">
+              <img *ngIf="slide.image.source" [src]="blobUrl + slide?.image?.source" class="testimonial-img col-lg-3 col-sm-4" alt="slide?.image?.altText">
               <div class="slide-content inline col-lg-9 col-sm-8">
                 <h5>{{slide.quote}}</h5>
                 <hr />
@@ -77,25 +77,25 @@
     </div>
   </div>
 </div>
-<div class="row text-center">
+<div *ngIf="sponsorOverviewData" class="row text-center">
   <div class="col-md-6 col-md-offset-3">
     <h4>{{sponsorOverviewData?.heading}}</h4>
     <p>{{sponsorOverviewData?.description}}</p>
-    <!--<div class="row">
+    <div class="row">
       <div class="col-sm-6" *ngFor="let sponsor of sponsors">
-        <img class="secondary-img" [src]="blobUrl + sponsor?.source"
+        <img *ngIf="sponsor.source" class="secondary-img" [src]="blobUrl + sponsor?.source"
              [alt]="sponsor?.altText">
       </div>     
-    </div>-->
+    </div>
     <a class="btn btn-primary" [routerLink]="sponsorOverviewData?.button?.buttonLink">
       {{sponsorOverviewData?.button?.buttonText}}
     </a>
   </div>
 </div>
-<div class="privacy-promise text-center">
+<div class="privacy-promise text-center" *ngIf="privacyData">
   <div class="container">
     <div class="row">
-      <div class="col-sm-5">
+      <div *ngIf="privacyData.image.source" class="col-sm-5">
         <img [src]="blobUrl + privacyData?.image?.source" [alt]="privacyData?.image?.altText">
       </div>
       <div class="col-sm-5 col-sm-offset-1">
