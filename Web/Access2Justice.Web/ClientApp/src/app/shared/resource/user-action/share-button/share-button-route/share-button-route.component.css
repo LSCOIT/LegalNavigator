@@ -12,10 +12,6 @@ textarea {
   resize: none;
 }
 
-.no-error {
-  display: none;
-}
-
 .validation-error {
   display: block;
   color: red;

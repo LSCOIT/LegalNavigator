@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ShareService } from '../../share-button/share.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { api } from '../../../../../../api/api';
