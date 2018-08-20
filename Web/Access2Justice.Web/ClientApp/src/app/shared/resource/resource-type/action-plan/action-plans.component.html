@@ -69,8 +69,10 @@
                   </div>
                   <div *ngFor="let resource of step.resources">
                     <div *ngIf="resource.resourceType === 'Videos'" class="row">
-                      <div class="media-left">
-                        <img class="media-object" src="../../../assets/images/icons/videos.svg" aria-hidden="True">
+                      <div class="no-print">
+                        <div class="media-left">
+                          <img class="media-object" src="../../../assets/images/icons/videos.svg" aria-hidden="True">
+                        </div>
                       </div>
                       <div class="media-body">
                         <h4 class="media-heading video-heading" (click)="openModal(videoTemplate)">{{resource.name}}</h4>

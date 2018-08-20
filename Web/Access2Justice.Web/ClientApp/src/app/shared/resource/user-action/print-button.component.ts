@@ -22,7 +22,7 @@ export class PrintButtonComponent implements OnInit, OnChanges {
 
     if (location.pathname.indexOf("/topics") >= 0) {
       this.template = 'app-subtopic-detail';
-      window.print();
+      this.printContents(this.template)
     }
 
     else if (location.pathname.indexOf("/plan") >= 0) {
