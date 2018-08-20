@@ -29,6 +29,7 @@ export class PersonalizedPlanService {
   profileResources: ProfileResources = { oId: '', resourceTags: [], type: '' };
   savedResources: SavedResources;
   resourceTags: Array<SavedResources> = [];
+  resourceIds: Array<string>;
 
   constructor(private http: HttpClient, private arrayUtilityService: ArrayUtilityService,
     private toastr: ToastrService) { }
@@ -41,8 +42,8 @@ export class PersonalizedPlanService {
     return this.http.get<PersonalizedPlan>(api.getUserProfileUrl + '/' + oid);
   }
 
-  getUserSavedResources(oid): Observable<any> {
-    return this.http.get<PersonalizedPlan>(api.getProfileUrl + '/' + oid);
+  getUserSavedResources(params): Observable<any> {
+    return this.http.post<any>(api.getProfileUrl, params);
   }
 
   saveResources(resource: ProfileResources) {
@@ -81,11 +82,7 @@ export class PersonalizedPlanService {
   }
 
   getPersonalizedResources(resourceInput: IResourceFilter) {
-    let profileData = sessionStorage.getItem("profileData");
-    if (profileData != undefined) {
-      profileData = JSON.parse(profileData);
-      this.userId = profileData["UserId"];
-    }
+    this.userId = this.getUserId();
     if (this.userId === undefined) {
       this.getBookmarkedData();
       if (this.topics) {
@@ -150,7 +147,10 @@ export class PersonalizedPlanService {
   saveResourcesToProfile(savedResources) {
     this.userId = this.getUserId();
     this.resourceTags = [];
-    this.getUserSavedResources(this.userId)
+    let params = new HttpParams()
+      .set("oid", this.userId)
+      .set("type", "resources");
+    this.getUserSavedResources(params)
       .subscribe(response => {
         if (response) {
           response.forEach(property => {
@@ -161,13 +161,13 @@ export class PersonalizedPlanService {
             }
           });
         }
-        if (!this.arrayUtilityService.checkObjectExistInArray(this.resourceTags, savedResources)) {
+        if (this.arrayUtilityService.checkObjectExistInArray(this.resourceTags, savedResources)) {
+          this.showWarning('Resource already saved to profile');
+        } else {
           this.resourceTags.push(savedResources);
           this.saveResourceToProfile(this.resourceTags);
-          sessionStorage.removeItem(this.sessionKey);
-        } else {
-          this.showWarning('Resource already saved to profile');
         }
+        sessionStorage.removeItem(this.sessionKey);
       });
   }
 
@@ -177,6 +177,14 @@ export class PersonalizedPlanService {
       .subscribe(() => {
         this.showSuccess('Resource saved to profile');
       });
+  }
+
+  getResourceIds(resources): Array<string> {
+    this.resourceIds = [];
+    resources.forEach(resource => {
+      this.resourceIds.push(resource.id);
+    });
+    return this.resourceIds;
   }
 
   showSuccess(message) {

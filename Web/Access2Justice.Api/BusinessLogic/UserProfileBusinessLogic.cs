@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 
 namespace Access2Justice.Api.BusinessLogic
@@ -27,13 +28,17 @@ namespace Access2Justice.Api.BusinessLogic
             userProfile = ConvertUserProfile(resultUserData);
             return userProfile;
         }
-        public async Task<dynamic> GetUserResourceProfileDataAsync(string oId)
+        public async Task<dynamic> GetUserResourceProfileDataAsync(string oId, string type)
         {
             var userProfile = await GetUserProfileDataAsync(oId);
             dynamic userResourcesDBData = null;
-            if (userProfile?.savedResourcesId != null && userProfile?.savedResourcesId != Guid.Empty)
+            if (type == "resources" && userProfile?.SavedResourcesId != null && userProfile?.SavedResourcesId != Guid.Empty)
             {
-                userResourcesDBData = await dbClient.FindItemsWhereAsync(dbSettings.UserSavedResourcesCollectionId, Constants.Id, Convert.ToString(userProfile.savedResourcesId, CultureInfo.InvariantCulture));
+                userResourcesDBData = await dbClient.FindItemsWhereAsync(dbSettings.UserSavedResourcesCollectionId, Constants.Id, Convert.ToString(userProfile.SavedResourcesId, CultureInfo.InvariantCulture));
+            }
+            else if (type == "plan" && userProfile?.PersonalizedActionPlanId != null && userProfile?.PersonalizedActionPlanId != Guid.Empty)
+            {
+                userResourcesDBData = await dbClient.FindItemsWhereAsync(dbSettings.PersonalizedActionPlanCollectionId, Constants.Id, Convert.ToString(userProfile.PersonalizedActionPlanId, CultureInfo.InvariantCulture));
             }
             return userResourcesDBData;
         }
@@ -56,7 +61,7 @@ namespace Access2Justice.Api.BusinessLogic
                 userProfile.ModifiedTimeStamp = user.ModifiedTimeStamp;
                 userProfile.PersonalizedActionPlanId = user.PersonalizedActionPlanId;
                 userProfile.CuratedExperienceAnswersId = user.CuratedExperienceAnswersId;
-                userProfile.savedResourcesId = user.savedResourcesId;
+                userProfile.SavedResourcesId = user.SavedResourcesId;
                 userProfile.SharedResource = user.SharedResource;
             }
             return userProfile;
@@ -82,15 +87,15 @@ namespace Access2Justice.Api.BusinessLogic
             string type = userData.Type;
             dynamic userResourcesDBData = null;
             var userProfile = await GetUserProfileDataAsync(oId);
-            if (userProfile?.savedResourcesId != null && userProfile?.savedResourcesId != Guid.Empty)
+            if (userProfile?.SavedResourcesId != null && userProfile?.SavedResourcesId != Guid.Empty)
             {
-                userResourcesDBData = await dbClient.FindItemsWhereAsync(dbSettings.UserSavedResourcesCollectionId, Constants.Id, Convert.ToString(userProfile.savedResourcesId, CultureInfo.InvariantCulture));
+                userResourcesDBData = await dbClient.FindItemsWhereAsync(dbSettings.UserSavedResourcesCollectionId, Constants.Id, Convert.ToString(userProfile.SavedResourcesId, CultureInfo.InvariantCulture));
             }
             if (userResourcesDBData == null || userResourcesDBData?.Count == 0)
             {
                 result = await CreateUserSavedResourcesAsync(userData);
                 string savedResourcesId = result.Id;
-                userProfile.savedResourcesId = new Guid(savedResourcesId);
+                userProfile.SavedResourcesId = new Guid(savedResourcesId);
                 await dbService.UpdateItemAsync(userProfile.Id, userProfile, dbSettings.UserProfileCollectionId);
             }
             else
