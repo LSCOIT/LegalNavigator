@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Global, UserStatus } from './global';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit {
   title = 'app';
-    
+  
+  constructor(    
+    private global: Global) {
+  }
   getCookie(cookieName: string) {    
     let cookieNameEQ = cookieName + "=";
     let cookies = document.cookie.split(';');
@@ -37,7 +41,8 @@ export class AppComponent implements OnInit {
     if (profileData != undefined) {
       profileData = decodeURIComponent(profileData);
       sessionStorage.setItem("profileData", profileData);      
-      this.deleteCookie("profileData", "", -1);      
+      this.deleteCookie("profileData", "", -1);
+      this.global.role = UserStatus.Authorized;
     }
   }
 }

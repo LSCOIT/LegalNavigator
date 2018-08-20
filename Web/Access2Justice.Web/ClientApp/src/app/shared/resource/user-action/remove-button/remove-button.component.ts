@@ -5,6 +5,7 @@ import { ProfileComponent } from '../../../../profile/profile.component';
 import { PersonalizedPlanComponent } from '../../../../guided-assistant/personalized-plan/personalized-plan.component';
 import { Router } from '@angular/router';
 import { EventUtilityService } from '../../../event-utility.service';
+import { Global, UserStatus } from '../../../../global';
 
 @Component({
   selector: 'app-remove-button',
@@ -28,12 +29,19 @@ export class RemoveButtonComponent implements OnInit {
     private profileComponent: ProfileComponent,
     private personalizedPlanComponent: PersonalizedPlanComponent,
     private router: Router,
-    private eventUtilityService: EventUtilityService
+    private eventUtilityService: EventUtilityService,
+    private global: Global
   ) {
-      let profileData = sessionStorage.getItem("profileData");
-      if (profileData != undefined) {
-        profileData = JSON.parse(profileData);
-        this.userId = profileData["UserId"];
+    let profileData = sessionStorage.getItem("profileData");
+    if (profileData != undefined) {
+      profileData = JSON.parse(profileData);
+      this.userId = profileData["UserId"];
+    }
+    if (global.role === UserStatus.Shared && location.pathname.indexOf(global.shareRouteUrl) >= 0) {
+      global.showRemove = false;
+    }
+    else {
+      global.showRemove = true;
     }
   }
 

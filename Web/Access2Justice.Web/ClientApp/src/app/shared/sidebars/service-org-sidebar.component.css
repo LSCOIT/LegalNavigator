@@ -9,7 +9,7 @@
 }
 
 .btn-primary {
-  margin: 20px auto;
+  margin-bottom: 20px;
 }
 
 .link {
@@ -22,8 +22,12 @@
   width: 100%;
 }
 
+.sidebar-block ul {
+  margin-bottom: 20px;
+}
+
 .sidebar-img {
-  width: 100%;
+  width: 250px;
 }
 
 .full-page-img {
@@ -32,4 +36,10 @@
 
 .sidebar-block .col-sm-4 {
   margin: 15px 0;
+}
+
+@media only screen and (min-width : 992px) {
+  .sidebar-img {
+    width: 100%;
+  }
 }
