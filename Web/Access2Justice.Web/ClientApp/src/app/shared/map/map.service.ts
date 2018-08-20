@@ -114,6 +114,15 @@ export class MapService {
       sessionStorage.setItem("globalSearchMapLocation", JSON.stringify(this.mapLocation));
     }
     else {
+      if ((this.location.entitySubType != undefined &&
+        this.location.entitySubType.indexOf("Postcode") != -1)
+        || (this.location.entityType != undefined &&
+          this.location.entityType.indexOf("PostalAddress") != -1))
+      {
+        this.mapLocation.state = this.location.address.adminDistrict;
+        this.mapLocation.county = "";
+        this.mapLocation.city = "";
+      }
       sessionStorage.setItem("localSearchMapLocation", JSON.stringify(this.mapLocation));
     }
   }
