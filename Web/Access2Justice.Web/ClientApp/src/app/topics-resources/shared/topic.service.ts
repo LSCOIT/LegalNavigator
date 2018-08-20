@@ -9,9 +9,11 @@ import { Organization } from '../../shared/sidebars/organization';
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
+
 @Injectable()
 export class TopicService {
   constructor(private http: HttpClient) { }
+
   topicInput: ITopicInput = { Id:'', Location: '' };
   mapLocation: MapLocation = { state: '', city: '', county: '', zipCode: '' };
 
@@ -28,21 +30,18 @@ export class TopicService {
   getSubtopics(id): Observable<any> {
     this.topicInput.Id = id;
     this.topicInput.Location = this.loadStateName();
-
     return this.http.post<Topic>(api.subtopicUrl, JSON.stringify(this.topicInput), httpOptions);
   
   }
   getSubtopicDetail(id): Observable<any> {
     this.topicInput.Id = id;
     this.topicInput.Location = this.loadStateName();
-
     return this.http.post<Topic>(api.subtopicDetailUrl, JSON.stringify(this.topicInput), httpOptions);   
   }
 
   getDocumentData(id): Observable<any> {
     this.topicInput.Id = id;
     this.topicInput.Location = this.loadStateName();
-
     return this.http.post<Topic>(api.getDocumentUrl, JSON.stringify(this.topicInput), httpOptions);
   }
 }
