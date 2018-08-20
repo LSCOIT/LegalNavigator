@@ -1,14 +1,13 @@
 ﻿using Access2Justice.Shared.Extensions;
-using System;
+using Access2Justice.Shared.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Access2Justice.Api.BusinessLogic
 {
-    public class A2JAuthorLogicParserBusinessLogic
+    public class A2JAuthorParserBusinessLogic : IA2JAuthorParserBusinessLogic
     {
-        public static void Parse(string logic)
+        public Dictionary<string, string> Parse(string logic)
         {
             var IFstatements = logic.SplitAndReturnFullSentencesOn("END IF");
             var varsInScopeForPersonalizedPlan = new Dictionary<string, string>();
@@ -34,14 +33,12 @@ namespace Access2Justice.Api.BusinessLogic
                         varsInScopeForPersonalizedPlan.Add(computedLogicVar.Key, computedLogicVar.Value);
                     }
                 }
-
-                //var breakpoint1 = string.Empty;
             }
 
-            var breakpoint2 = string.Empty;
+            return varsInScopeForPersonalizedPlan;
         }
 
-        private static Dictionary<string, string> ComputeLogicText(Dictionary<string, bool> ANDvariables, Dictionary<string, bool> ORvariables,
+        public Dictionary<string, string> ComputeLogicText(Dictionary<string, bool> ANDvariables, Dictionary<string, bool> ORvariables,
             Dictionary<string, string> SETvariables)
         {
             if (!ANDvariables.Where(x => x.Value == false).Any() && !ORvariables.Where(x => x.Value == true).Any())

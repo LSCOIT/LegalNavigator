@@ -33,7 +33,6 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly JArray emptyData = JArray.Parse(@"[{}]");
         private readonly JArray topicsData = TopicResourceTestData.topicsData;
         private readonly JArray resourcesData = TopicResourceTestData.resourcesData;
-        private readonly JArray breadcrumbData = TopicResourceTestData.breadcrumbData;
         private readonly JArray resourceCountData = TopicResourceTestData.resourceCountData;
         private readonly ResourceFilter resourceFilter = TopicResourceTestData.resourceFilter;
         private readonly JArray formData = TopicResourceTestData.formData;

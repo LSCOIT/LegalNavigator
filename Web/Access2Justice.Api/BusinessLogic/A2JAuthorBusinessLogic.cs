@@ -64,7 +64,7 @@ namespace Access2Justice.Api.BusinessLogic
         }
 
         // Todo:@Alaa naming could be revisited
-        public async Task<A2JPersonalizedPlan> ExtractA2JPersonalizedPlanStepsInScopeAsync(A2JPersonalizedPlan a2JPersonalizedPlan, 
+        public A2JPersonalizedPlan ExtractA2JPersonalizedPlanStepsInScope(A2JPersonalizedPlan a2JPersonalizedPlan, 
             CuratedExperienceAnswers userAnswers)
         {
 

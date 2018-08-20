@@ -55,6 +55,7 @@ namespace Access2Justice.Api
             services.AddSingleton<IPersonalizedPlanBusinessLogic, PersonalizedPlanBusinessLogic>();
             services.AddSingleton<IStaticResourceBusinessLogic, StaticResourceBusinessLogic>();
             services.AddSingleton<IShareBusinessLogic, ShareBusinessLogic>();
+            services.AddSingleton<IA2JAuthorParserBusinessLogic, A2JAuthorParserBusinessLogic>();
 
             ConfigureCosmosDb(services);
 

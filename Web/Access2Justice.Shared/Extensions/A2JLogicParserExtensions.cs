@@ -1,12 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Access2Justice.Shared.Extensions
 {
     public static class A2JLogicParserExtensions
     {
+        public static string GetStringOnTheRightOf(this string inputText, string splitWord)
+        {
+            return inputText.Substring(inputText.IndexOf(splitWord) + splitWord.Length);
+        }
+
+        public static string GetStringOnTheLeftOf(this string inputText, string splitWord)
+        {
+            return inputText.Substring(0, inputText.IndexOf(splitWord));
+        }
+
+        public static string GetStringBetween(this string inputText, string firstWord, string secondWord)
+        {
+            int startTextIndex = inputText.IndexOf(firstWord) + firstWord.Count();
+            int sentenceLength = inputText.IndexOf(secondWord) - startTextIndex;
+
+            return inputText.Substring(startTextIndex, sentenceLength);
+        }
+
         public static List<string> SplitAndReturnFullSentencesOn(this string inputText, string splitWord)
         {
             var splittedSentences = inputText.Split(new string[] { splitWord }, StringSplitOptions.RemoveEmptyEntries);
@@ -26,26 +43,9 @@ namespace Access2Justice.Shared.Extensions
             return inputText.Split(new string[] { splitWord }, StringSplitOptions.RemoveEmptyEntries).ToList();
         }
 
-        public static string GetStringOnTheRightOf(this string inputText, string splitWord)
-        {
-            return inputText.Substring(inputText.IndexOf(splitWord) + splitWord.Length);
-        }
-
-        public static string GetStringOnTheLeftOf(this string inputText, string splitWord)
-        {
-            return inputText.Substring(0, inputText.IndexOf(splitWord));
-        }
-
-        public static string GetStringBetween(this string inputText, string firstWord, string secondWord)
-        {
-            int startTextIndex = inputText.IndexOf(firstWord) + firstWord.Count();
-            int sentenceLength = inputText.IndexOf(secondWord) - startTextIndex;
-
-            return inputText.Substring(startTextIndex, sentenceLength);
-        }
-
         public static Dictionary<string, bool> GetVariablesWithValues(this string inputText, string operand)
         {
+             // Todo:@Alaa extend this to allow extraction of other data types (beside true/fals), return a dic of <string, string>
             var varsValues = new Dictionary<string, bool>();
 
             if (inputText.ToUpperInvariant().Contains(operand))

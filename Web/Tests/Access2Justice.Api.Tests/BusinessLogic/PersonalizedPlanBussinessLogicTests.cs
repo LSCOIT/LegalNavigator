@@ -24,7 +24,6 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         
         //Mocked input data
         private readonly dynamic topicId = Guid.Parse("e1fdbbc6-d66a-4275-9cd2-2be84d303e12");
-        private readonly string planId = "e48b4302-f548-4402-a7b6-6351602a9f09";
         private readonly string mockPlanId1 = "86e693bd-c673-419f-95c4-9ee76cccab3c";
         private readonly dynamic answersDocId = Guid.Parse("288af4da-06bb-4655-aa91-41314e248d6b");
         private readonly string mockPlanId = "a9f6c0db-093b-4fa8-9cde-2495087b31f6";

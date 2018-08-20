@@ -136,7 +136,7 @@ namespace Access2Justice.Api.Controllers
         {
             var curatedExperience = RetrieveCachedCuratedExperience(userAnswers.CuratedExperienceId);
 
-            return Ok(await a2jAuthorBuisnessLogic.ExtractA2JPersonalizedPlanStepsInScopeAsync(
+            return Ok(a2jAuthorBuisnessLogic.ExtractA2JPersonalizedPlanStepsInScope(
                 await a2jAuthorBuisnessLogic.GetA2JPersonalizedPlanStepsAsync(), 
                 curatedExperienceBusinessLogic.MapViewModelAnswerToCuratedExperienceAnswer(userAnswers, curatedExperience)));
         }
