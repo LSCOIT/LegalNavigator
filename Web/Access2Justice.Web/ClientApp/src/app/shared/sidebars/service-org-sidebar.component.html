@@ -1,20 +1,22 @@
-<div *ngIf="organizations && organizations.length > 0" class="text-center row service-org">
-  <img [ngClass]="{ 'full-page-img': fullPage, 'sidebar-img': !fullPage }" src="./assets/images/secondary-illustrations/service_org.svg" alt="Service Organizations">
-  <div>
-    <h5>Service organizations in your community</h5>
-    <p>Free local services available to all.</p>
-    <div>
-      <div class="sidebar-block">
-        <ul
-          *ngFor="let organization of organizations"
-          [ngClass]="{ 'col-sm-4': fullPage, 'col-sm-12': !fullPage }">
-          <li><a class="link" href="#">{{organization.name}}</a></li>
-          <li><img class="nav-icon" src="./assets/images/small-icons/call.svg" alt="Phone number"/>{{organization.telephone}}</li>
-        </ul>
+<div class='no-print'>
+  <div *ngIf="organizations && organizations.length > 0" class="text-center row service-org">
+      <img [ngClass]="{ 'full-page-img': fullPage, 'sidebar-img': !fullPage }" src="./assets/images/secondary-illustrations/service_org.svg" alt="Service Organizations">
+      <div>
+        <h5>Service organizations in your community</h5>
+        <p>Free local services available to all.</p>
+        <div>
+          <div class="sidebar-block">
+            <ul
+                *ngFor="let organization of organizations"
+                [ngClass]="{ 'col-sm-4': fullPage, 'col-sm-12': !fullPage }">
+              <li><a class="link" href="#">{{organization.name}}</a></li>
+              <li><img class="nav-icon" src="./assets/images/small-icons/call.svg" alt="Phone number"/>{{organization.telephone}}</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-sm-12">
+          <button class="btn-sm btn-primary" (click)=" callOrganizations()">See more organizations</button>
+        </div>
       </div>
     </div>
-    <div class="col-sm-12">
-      <button class="btn-sm btn-primary" (click)=" callOrganizations()">See more organizations</button>
-    </div>
   </div>
-</div>

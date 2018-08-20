@@ -3,97 +3,101 @@
     <div class="row box-shadow">
       <div class="col-xs-12 plan-spacing plan-heading">
         <div class="col-xs-11">
-          <div class="main-icon col-sm-1 col-xs-2">
-            <img class="subtopic-icon" src="./assets/images/categories/housing.svg" alt="eviction icon" />
+          <div class="no-print">
+            <div class="main-icon col-sm-1 col-xs-2">
+              <img class="subtopic-icon" src="./assets/images/categories/housing.svg" alt="eviction icon" />
+            </div>
           </div>
           <div class="col-sm-11 col-xs-10">
             <h3 class="inline">{{topic.name}}</h3>
           </div>
         </div>
         <div class="col-xs-1">
-          <div class="btn-group pull-right more-menu" dropdown *ngIf="global.showDropDown">
-            <img id="button-basic" dropdownToggle type="button" aria-controls="dropdown-basic" src="./assets/images/small-icons/more_menu.svg" alt="plan menu" (click)="planTagOptions(topic.topicId,template)" />
-            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-                role="menu" aria-labelledby="button-basic">
-              <li role="menuitem">
-                <a class="dropdown-item">
-                  <app-remove-button [selectedPlanDetails]="selectedPlanDetails"></app-remove-button>
-                </a>
-              </li>
-            </ul>
+          <div class="no-print">
+            <div class="btn-group pull-right more-menu" dropdown *ngIf="global.showDropDown">
+              <img id="button-basic" dropdownToggle type="button" aria-controls="dropdown-basic" src="./assets/images/small-icons/more_menu.svg" alt="plan menu" (click)="planTagOptions(topic.topicId,template)" />
+              <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+                  role="menu" aria-labelledby="button-basic">
+                <li role="menuitem">
+                  <a class="dropdown-item">
+                    <app-remove-button [selectedPlanDetails]="selectedPlanDetails"></app-remove-button>
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
-      <div>
-        <div class="col-md-9 col-xs-12 pull-right plan-steps">
-          <accordion>
-            <accordion-group *ngFor="let step of topic.steps">
-              <div accordion-heading>
-                <div class="col-sm-9 col-xs-12">
-                  <div class="media">
-                    <div class="media-left accordion-img">
-                    </div>
-                    <div class="media-body">
-                      <h3>Step {{step.order}}. {{step.title}}</h3>
+        <div>
+          <div class="col-md-9 col-xs-12 pull-right plan-steps">
+            <accordion>
+              <accordion-group *ngFor="let step of topic.steps">
+                <div accordion-heading>
+                  <div class="col-sm-9 col-xs-12">
+                    <div class="media">
+                      <div class="media-left accordion-img">
+                      </div>
+                      <div class="media-body">
+                        <h3>Step {{step.order}}. {{step.title}}</h3>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="col-xs-12 step-content">
-                <div [ngClass]="{'checkbox disabled':!global.showMarkComplete, '':global.showMarkComplete}" class="col-sm-3 col-xs-12 btn-selected" id="complete-btn">
-                  <label class="ps">
-                    <input id="checkBox" type="checkbox" (change)="checkCompleted($event,topic.topicId,step.stepId)"
-                           [ngModel]="step.isComplete" [disabled]="!global.showMarkComplete">
-                    Completed
-                  </label>
-                </div>
-                <div>
-                  <p>{{step.description}}</p>
-                </div>
-                <div>
-                  <ul>
-                    <li class="pl">If the summons is real, prepare for your court date.</li>
-                    <li><a href="" class="link">Set up a reminder for your court date.</a></li>
-                    <li><a href="" class="link">Learn more about court appearances and what to expect.</a></li>
-                  </ul>
-                </div>
-                <div>
-                  <ul>
-                    <li class="pl">If the summons is not real, you should talk to your landlord.</li>
-                    <li><a href="" class="link">Set up a reminder for your court date.</a></li>
-                    <li><a href="" class="link">Learn more about court appearances and what to expect.</a></li>
-                  </ul>
-                </div>
-                <div *ngFor="let resource of step.resources">
-                  <div *ngIf="resource.resourceType === 'Videos'" class="row">
-                    <div class="media-left">
-                      <img class="media-object" src="../../../assets/images/icons/videos.svg" aria-hidden="True">
-                    </div>
-                    <div class="media-body">
-                      <h4 class="media-heading video-heading" (click)="openModal(videoTemplate)">{{resource.name}}</h4>
-                      <p>{{resource.description}}</p>
-                    </div>
-                    <ng-template #videoTemplate>
-                      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                      <iframe title="{{resource.name}}" [src]='resourceUrl(resource.url)' frameborder="0" allowfullscreen></iframe>
-                    </ng-template>
+                <div class="col-xs-12 step-content">
+                  <div [ngClass]="{'checkbox disabled':!global.showMarkComplete, '':global.showMarkComplete}" class="col-sm-3 col-xs-12 btn-selected" id="complete-btn">
+                    <label class="ps">
+                      <input id="checkBox" type="checkbox" (change)="checkCompleted($event,topic.topicId,step.stepId)"
+                             [ngModel]="step.isComplete" [disabled]="!global.showMarkComplete">
+                      Completed
+                    </label>
                   </div>
-                  <div *ngIf="resource.resourceType==='Organizations' && resource.telephone">
-                    <img src="./assets/images/small-icons/call.svg" alt="Phone number" class="nav-icon">
-                    <span class="p">{{resource.telephone}}</span>
+                  <div>
+                    <p>{{step.description}}</p>
+                  </div>
+                  <div>
+                    <ul>
+                      <li class="pl">If the summons is real, prepare for your court date.</li>
+                      <li><a href="" class="link">Set up a reminder for your court date.</a></li>
+                      <li><a href="" class="link">Learn more about court appearances and what to expect.</a></li>
+                    </ul>
+                  </div>
+                  <div>
+                    <ul>
+                      <li class="pl">If the summons is not real, you should talk to your landlord.</li>
+                      <li><a href="" class="link">Set up a reminder for your court date.</a></li>
+                      <li><a href="" class="link">Learn more about court appearances and what to expect.</a></li>
+                    </ul>
+                  </div>
+                  <div *ngFor="let resource of step.resources">
+                    <div *ngIf="resource.resourceType === 'Videos'" class="row">
+                      <div class="media-left">
+                        <img class="media-object" src="../../../assets/images/icons/videos.svg" aria-hidden="True">
+                      </div>
+                      <div class="media-body">
+                        <h4 class="media-heading video-heading" (click)="openModal(videoTemplate)">{{resource.name}}</h4>
+                        <p>{{resource.description}}</p>
+                      </div>
+                      <ng-template #videoTemplate>
+                        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                        <iframe title="{{resource.name}}" [src]='resourceUrl(resource.url)' frameborder="0" allowfullscreen></iframe>
+                      </ng-template>
+                    </div>
+                    <div *ngIf="resource.resourceType==='Organizations' && resource.telephone">
+                      <img src="./assets/images/small-icons/call.svg" alt="Phone number" class="nav-icon">
+                      <span class="p">{{resource.telephone}}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </accordion-group>
-          </accordion>
-        </div>
-        <div class="col-md-3 col-xs-12 quick-links">
-          <p>Quick Links</p>
-          <ul>
-            <li *ngFor="let quickLink of topic.quickLinks"> <a href={{quickLink.url}} class="link">{{quickLink.text}}</a></li>
-          </ul>
+              </accordion-group>
+            </accordion>
+          </div>
+          <div class="col-md-3 col-xs-12 quick-links">
+            <p>Quick Links</p>
+            <ul>
+              <li *ngFor="let quickLink of topic.quickLinks"> <a href={{quickLink.url}} class="link">{{quickLink.text}}</a></li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
