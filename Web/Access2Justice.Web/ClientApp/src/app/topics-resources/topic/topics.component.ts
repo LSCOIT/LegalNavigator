@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { TopicService } from '../shared/topic.service';
 import { Topic } from '../shared/topic';
+import { MapService } from '../../shared/map/map.service';
 
 @Component({
   selector: 'app-topics',
@@ -11,6 +12,10 @@ export class TopicsComponent implements OnInit {
   topics: Topic;
   @Input() topicLength: number;
   @Input() fullPage: true;
+  subscription: any;
+
+  constructor(private topicService: TopicService,
+    private mapService: MapService) { }
 
   getTopics(): void {
     this.topicService.getTopics()
@@ -19,10 +24,12 @@ export class TopicsComponent implements OnInit {
     );
   }
 
-  constructor(private topicService: TopicService) { }
-
   ngOnInit() {
     this.getTopics();
+    this.subscription = this.mapService.notifyLocation
+      .subscribe((value) => {
+        this.getTopics();
+      });
   }
 
 }
