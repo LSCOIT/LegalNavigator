@@ -1,28 +1,47 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { Topic } from './topic';
+import { Topic, ITopicInput } from './topic';
 import { api } from '../../../api/api';
+import { MapLocation } from '../../shared/map/map';
+import { Location } from '../.././shared/navigation/navigation';
+import { Organization } from '../../shared/sidebars/organization';
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
 
 @Injectable()
-
 export class TopicService {
-
   constructor(private http: HttpClient) { }
 
+  topicInput: ITopicInput = { Id:'', Location: '' };
+  mapLocation: MapLocation = { state: '', city: '', county: '', zipCode: '' };
+
+  loadStateName(): MapLocation {
+    if (sessionStorage.getItem("globalMapLocation")) {
+      this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+      return this.mapLocation;
+    }
+  }
   getTopics(): Observable<any> {
-    return this.http.get<Topic>(api.topicUrl);
+    this.mapLocation = this.loadStateName();
+    return this.http.post<Topic>(api.topicUrl, JSON.stringify(this.mapLocation), httpOptions);
   }
-
   getSubtopics(id): Observable<any> {
-    return this.http.get<Topic>(api.subtopicUrl + '/' + id);
+    this.topicInput.Id = id;
+    this.topicInput.Location = this.loadStateName();
+    return this.http.post<Topic>(api.subtopicUrl, JSON.stringify(this.topicInput), httpOptions);
+  
   }
-
   getSubtopicDetail(id): Observable<any> {
-    return this.http.get<Topic>(api.subtopicDetailUrl + '/' + id);
+    this.topicInput.Id = id;
+    this.topicInput.Location = this.loadStateName();
+    return this.http.post<Topic>(api.subtopicDetailUrl, JSON.stringify(this.topicInput), httpOptions);   
   }
 
   getDocumentData(id): Observable<any> {
-    return this.http.get<Topic>(api.getDocumentUrl + '/' + id);
+    this.topicInput.Id = id;
+    this.topicInput.Location = this.loadStateName();
+    return this.http.post<Topic>(api.getDocumentUrl, JSON.stringify(this.topicInput), httpOptions);
   }
 }
