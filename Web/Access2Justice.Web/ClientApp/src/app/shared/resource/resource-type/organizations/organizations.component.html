@@ -1,16 +1,17 @@
+<app-user-action-sidebar [mobile]=true></app-user-action-sidebar>
 <h2>{{resource.name}}</h2>
 <p>{{resource.type}}</p>
 <div class="col-md-8 col-sm-12">
-  <div class="expanded-image">
+  <div class="expanded-image no-print">
     <img *ngIf="currentImage else elseblock" [src]="currentImage" alt="Alternate Text" />
     <ng-template #elseblock>
       <img src="https://www.w3schools.com/howto/img_snow.jpg" (click)="changeModalImage($event)" alt="Alternate Text" />
     </ng-template>
     <div class="thumbnails">
-      <img src="https://www.w3schools.com/howto/img_snow.jpg" (click)="changeImage($event)" alt="Alternate Text" />
-      <img src="https://www.w3schools.com/howto/img_mountains.jpg" (click)="changeImage($event)" alt="Alternate Text" />
-      <img src="https://www.w3schools.com/howto/img_lights.jpg" (click)="changeImage($event)" alt="Alternate Text" />
-      <a (click)="openModal(template)">3 more photos</a>
+        <img src="https://www.w3schools.com/howto/img_snow.jpg" (click)="changeImage($event)" alt="Alternate Text" />
+        <img src="https://www.w3schools.com/howto/img_mountains.jpg" (click)="changeImage($event)" alt="Alternate Text" />
+        <img src="https://www.w3schools.com/howto/img_lights.jpg" (click)="changeImage($event)" alt="Alternate Text" />
+        <a (click)="openModal(template)">3 more photos</a>
       <ng-template #template>
         <div class="modal-header">
           <h4 class="modal-title pull-left">Organization Name's photo gallery</h4>
@@ -83,7 +84,9 @@
   </div>
 </div>
 <div class="col-md-3 pull-right">
-  <app-map-results [searchResource]="searchResource"></app-map-results>
+  <div class="no-print">
+    <app-map-results [searchResource]="searchResource"></app-map-results>
+  </div>
   <div class="box-no-shadow">
     <div class="resource-body">
       <h5>Business Hours</h5>
