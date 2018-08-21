@@ -13,11 +13,14 @@ namespace Access2Justice.Api.BusinessLogic
     {
         private readonly ICosmosDbSettings dbSettings;
         private readonly IBackendDatabaseService dbService;
+        private readonly IA2JAuthorParserBusinessLogic a2jParser;
 
-        public A2JAuthorBusinessLogic(ICosmosDbSettings cosmosDbSettings, IBackendDatabaseService backendDatabaseService)
+        public A2JAuthorBusinessLogic(ICosmosDbSettings cosmosDbSettings, IBackendDatabaseService backendDatabaseService, 
+            IA2JAuthorParserBusinessLogic a2JAuthorParserBusinessLogic)
         {
             dbSettings = cosmosDbSettings;
             dbService = backendDatabaseService;
+            a2jParser = a2JAuthorParserBusinessLogic;
         }
 
         public CuratedExperience ConvertA2JAuthorToCuratedExperience(JObject a2jSchema)
@@ -67,9 +70,32 @@ namespace Access2Justice.Api.BusinessLogic
         public A2JPersonalizedPlan ExtractA2JPersonalizedPlanStepsInScope(A2JPersonalizedPlan a2JPersonalizedPlan, 
             CuratedExperienceAnswers userAnswers)
         {
+            var answersVarDic = GetAnswerVarsDictionary(userAnswers);
+            var planInScopeVars = new Dictionary<string, string>();
 
-            var breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
-            throw new NotImplementedException();
+            foreach (var logic in userAnswers.ButtonComponents)
+            {
+                var parsedVars = a2jParser.Parse(logic.CodeAfter, answersVarDic);
+                foreach (var parsedVar in parsedVars)
+                {
+                    planInScopeVars.Add(parsedVar.Key, parsedVar.Value);
+                }
+            }
+
+            var planInScope = new A2JPersonalizedPlan();
+             // Todo:@Alaa initialize in constructor..
+            planInScope.RootNode = new RootNode();
+            planInScope.RootNode.Children = new List<Child>();
+
+            foreach (var child in a2JPersonalizedPlan.RootNode.Children)
+            {
+                if(planInScopeVars.Where(x => x.Key == child.State.LeftOperand).Any())
+                {
+                    planInScope.RootNode.Children.Add(child);
+                }
+            }
+
+            return planInScope;
         }
 
         private Resource MapResourceProperties(IEnumerable<JProperty> a2jProperties, Guid curatedExperienceId)
@@ -166,6 +192,26 @@ namespace Access2Justice.Api.BusinessLogic
                 default:
                     return CuratedExperienceQuestionType.Text;
             }
+        }
+
+        private Dictionary<string, string> GetAnswerVarsDictionary(CuratedExperienceAnswers userAnswers)
+        {
+            var varsDic = new Dictionary<string, string>();
+
+            foreach (var button in userAnswers.ButtonComponents)
+            {
+                varsDic.Add(button.Name, button.Value);
+            }
+
+            foreach (var fieldComponent in userAnswers.FieldComponents)
+            {
+                foreach (var field in fieldComponent.Fields)
+                {
+                    varsDic.Add(field.Name, field.Value);
+                }
+            }
+
+            return varsDic;
         }
     }
 }

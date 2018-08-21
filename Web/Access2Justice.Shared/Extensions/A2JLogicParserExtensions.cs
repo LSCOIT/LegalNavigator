@@ -43,10 +43,10 @@ namespace Access2Justice.Shared.Extensions
             return inputText.Split(new string[] { splitWord }, StringSplitOptions.RemoveEmptyEntries).ToList();
         }
 
-        public static Dictionary<string, bool> GetVariablesWithValues(this string inputText, string operand)
+        public static Dictionary<string, string> GetVariablesWithValues(this string inputText, string operand)
         {
              // Todo:@Alaa extend this to allow extraction of other data types (beside true/fals), return a dic of <string, string>
-            var varsValues = new Dictionary<string, bool>();
+            var varsValues = new Dictionary<string, string>();
 
             if (inputText.ToUpperInvariant().Contains(operand))
             {
@@ -55,11 +55,11 @@ namespace Access2Justice.Shared.Extensions
                 {
                     if (varialbe.ToUpperInvariant().Contains("TRUE"))
                     {
-                        varsValues.Add(varialbe.GetStringBetween("[", "]"), true);
+                        varsValues.Add(varialbe.GetStringBetween("[", "]"), "true");
                     }
                     else if (varialbe.ToUpperInvariant().Contains("FALSE"))
                     {
-                        varsValues.Add(varialbe.GetStringBetween("[", "]"), false);
+                        varsValues.Add(varialbe.GetStringBetween("[", "]"), "false");
                     }
                     // other 'else if' could be added here if we are dealing with more than true/false values
                 }
@@ -68,12 +68,12 @@ namespace Access2Justice.Shared.Extensions
             return varsValues;
         }
 
-        public static Dictionary<string, bool> GetANDvariables(this string inputText)
+        public static Dictionary<string, string> GetANDvariables(this string inputText)
         {
             return inputText.GetVariablesWithValues("AND");
         }
 
-        public static Dictionary<string, bool> GetORvariables(this string inputText)
+        public static Dictionary<string, string> GetORvariables(this string inputText)
         {
             return inputText.GetVariablesWithValues("OR");
         }

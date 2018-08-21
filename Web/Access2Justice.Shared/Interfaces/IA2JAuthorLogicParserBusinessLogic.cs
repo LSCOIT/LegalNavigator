@@ -4,7 +4,7 @@ namespace Access2Justice.Shared.Interfaces
 {
     public interface IA2JAuthorParserBusinessLogic
     {
-        Dictionary<string, string> ComputeLogicText(Dictionary<string, bool> ANDvariables, Dictionary<string, bool> ORvariables, Dictionary<string, string> SETvariables);
-        Dictionary<string, string> Parse(string logic);
+        Dictionary<string, string> Parse(string logic, Dictionary<string, string> inputVars);
+        bool IsConditionSatisfied(Dictionary<string, string> ANDvariables, Dictionary<string, string> ORvariables, Dictionary<string, string> inputVars);
     }
 }

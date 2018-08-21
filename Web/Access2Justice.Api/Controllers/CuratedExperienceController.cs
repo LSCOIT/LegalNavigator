@@ -132,13 +132,13 @@ namespace Access2Justice.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("A2JPersonalizedPlan/StepsInScope")]
-        public async Task<IActionResult> GetA2JPersonalizedPlanStepsInScope([FromBody] CuratedExperienceAnswersViewModel userAnswers)
+        public async Task<IActionResult> GetA2JPersonalizedPlanStepsInScope([FromBody] CuratedExperienceAnswers userAnswers)
         {
             var curatedExperience = RetrieveCachedCuratedExperience(userAnswers.CuratedExperienceId);
 
             return Ok(a2jAuthorBuisnessLogic.ExtractA2JPersonalizedPlanStepsInScope(
                 await a2jAuthorBuisnessLogic.GetA2JPersonalizedPlanStepsAsync(), 
-                curatedExperienceBusinessLogic.MapViewModelAnswerToCuratedExperienceAnswer(userAnswers, curatedExperience)));
+                userAnswers));
         }
         #endregion
 
