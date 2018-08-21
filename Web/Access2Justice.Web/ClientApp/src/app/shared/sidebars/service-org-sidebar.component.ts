@@ -69,7 +69,6 @@ export class ServiceOrgSidebarComponent implements OnInit {
         this.location = value;
         this.getOrganizations();
       });
-    this.getOrganizations();
   }
   ngOnDestroy() {
     if (this.subscription != undefined) {

@@ -91,7 +91,7 @@ namespace Access2Justice.CosmosDb
             EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
             string locationFilter = FindLocationWhereArrayContains(location);
             var query = string.Empty;
-            if (string.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(value) && (location != null))
             {  
                 query = $"SELECT * FROM c WHERE c.{propertyName}=[{value}]";
             }
