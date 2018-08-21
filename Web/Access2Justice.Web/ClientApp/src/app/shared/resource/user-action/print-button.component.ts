@@ -31,7 +31,7 @@ export class PrintButtonComponent implements OnInit {
     }
 
     else if (location.pathname.indexOf("/profile") >= 0) {
-      this.activeTab = document.getElementsByClassName("nav-link active")[0].innerText;
+      this.activeTab = document.getElementsByClassName("nav-link active")[0].firstElementChild.textContent;
 
       if (this.activeTab == "My Plan") {
         this.template = 'app-action-plans'
