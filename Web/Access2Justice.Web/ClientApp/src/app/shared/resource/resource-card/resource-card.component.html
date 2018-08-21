@@ -3,7 +3,7 @@
     <div class="resource-body">
       <div class="pull-right" *ngIf="global.showDropDown">
         <div class="btn-group" dropdown>
-          <img dropdownToggle type="button" class="more-menu dropdown-toggle" src="./assets/images/small-icons/more_menu.svg" alt="Menu" />
+          <img dropdownToggle type="button" class="more-menu dropdown-toggle no-print" src="./assets/images/small-icons/more_menu.svg" alt="Menu" />
           <ul id="dropdown-disabled-item" *dropdownMenu class="dropdown-menu dropdown-menu-right"
               role="menu">
             <li role="menuitem" *ngIf="global.showShare">
@@ -25,11 +25,12 @@
         </div>
       </div>
       <div *ngIf="resource.resourceType === 'Action Plans'" class="media">
-        <div class="media-left">
+        <div class="media-left no-print">
           <img class="media-object" src="/assets/images/icons/action_plans.svg" alt="Action Plan">
         </div>
-        <div class="media-body">
+        <div class="media-body">         
           <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}</h4></a>
+          <div class="web-hidden">{{applicationUrl+'/resource'+'/'+resource.id}}</div>
           <!--<a [routerLink]="['/personalizedplan', resource.id]"><h4 class="media-heading">{{resource.name}}</h4></a>-->
           <p>This action plan is for tenants who are facing Eviction and have experienced the following:</p>
           <ul>
@@ -46,53 +47,56 @@
         </div>
       </div>
       <div *ngIf="resource.resourceType === 'Articles'" class="media">
-        <div class="media-left">
+        <div class="media-left no-print">
           <img class="media-object" src="/assets/images/icons/articles.svg" alt="Article">
         </div>
         <div class="media-body">
           <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}</h4></a>
+          <div class="web-hidden">{{applicationUrl+'/resource'+'/'+resource.id}}</div>
           <p>{{resource.description}}</p>
         </div>
       </div>
       <div *ngIf="resource.resourceType === 'Organizations'" class="media">
-        <div class="media-left">
+        <div class="media-left no-print">
           <img class="media-object" src="/assets/images/icons/organizations.svg" aria-hidden="true">
         </div>
         <div class="media-body">
           <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}, {{resource.type}}</h4></a>
+          <div class="web-hidden">{{applicationUrl+'/resource'+'/'+resource.id}}</div>
           <p>{{resource.description}}</p>
           <div class="org-content span-text">
             <div class="col-sm-4" *ngIf="resource.address.length > 0">
-              <img src="./assets/images/small-icons/location.svg" alt="Address" class="nav-icon" />
+              <img src="./assets/images/small-icons/location.svg" alt="Address" class="nav-icon no-print" />
               <span>{{resource.address}}</span>
             </div>
             <div class="col-sm-4" *ngIf="resource.telephone.length > 0">
-              <img src="./assets/images/small-icons/call.svg" alt="Telephone" class="nav-icon" />
+              <img src="./assets/images/small-icons/call.svg" alt="Telephone" class="nav-icon no-print" />
               <span>{{resource.telephone}}</span>
             </div>
             <div class="col-sm-4 org-url" *ngIf="resource.url.length > 0">
-              <img src="./assets/images/small-icons/email.svg" alt="Email" class="nav-icon" />
+              <img src="./assets/images/small-icons/email.svg" alt="Email" class="nav-icon no-print" />
               <span>{{resource.url}}</span>
             </div>
           </div>
         </div>
       </div>
       <div *ngIf="resource.resourceType === 'Videos'" class="row">
-        <div class="media-left">
+        <div class="media-left no-print">
           <img class="media-object" src="/assets/images/icons/videos.svg" alt="Video">
         </div>
         <div class="media-body">
           <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}</h4></a>
+          <div class="web-hidden">{{applicationUrl+'/resource'+'/'+resource.id}}</div>
           <p>{{resource.description}}</p>
         </div>
       </div>
       <div *ngIf="resource.resourceType === 'Forms' || resource.resourceType === 'Related Links'" class="media">
-        <div class="media-left">
+        <div class="media-left no-print">
           <img class="media-object" src="/assets/images/icons/forms.svg" alt="Form">
         </div>
         <div class="media-body">
           <a [href]="resource.url"><h4 class="media-heading">{{resource.name}}</h4></a>
-          <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span><span class="span-text">External link</span>
+          <span class="glyphicon glyphicon-new-window no-print" aria-hidden="true"></span><span class="span-text no-print">External link</span>
           <p>{{resource.description}}</p>
         </div>
       </div>

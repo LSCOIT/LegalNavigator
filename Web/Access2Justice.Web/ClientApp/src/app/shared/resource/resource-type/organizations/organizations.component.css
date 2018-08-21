@@ -39,9 +39,10 @@
   padding: 20px;
 }
 
-.hours p {
+.hours span {
   width: 60px;
   display: inline-block;
+  margin: 5px 0;
 }
 
 .modal-thumbnails {
@@ -51,4 +52,18 @@
 
 .current-img {
   text-align: center;
+}
+
+h2 {
+  margin-top: 0;
+}
+
+.user-action {
+  margin-top: 20px;
+}
+
+@media only screen and (min-width : 768px) {
+  .user-action {
+    margin-top: 0;
+  }
 }
