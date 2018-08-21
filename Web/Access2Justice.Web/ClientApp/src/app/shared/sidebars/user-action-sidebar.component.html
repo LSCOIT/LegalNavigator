@@ -1,4 +1,4 @@
-<div *ngIf="!mobile" class="text-center sidebar col-sm-12">
+<div *ngIf="!mobile" class="text-center sidebar col-sm-12 no-print">
   <div class="container">
     <div class="col-sm-4 sidebar-block">
       <img src="./assets/images/secondary-illustrations/save.svg" alt="Save your Plan">
@@ -20,7 +20,7 @@
     </div>
   </div>
 </div>
-<ul *ngIf="mobile" class="user-action">
+<ul *ngIf="mobile" class="user-action no-print">
   <li *ngIf="showSave">
     <app-save-button  [id]="resourceId" [type]="resourceType"></app-save-button>
   </li>
@@ -28,7 +28,6 @@
     <app-share-button></app-share-button>
   </li>
   <li *ngIf="showPrint">
-    <img src="./assets/images/small-icons/print.svg" class="nav-icon" aria-hidden="true" />
     <app-print-button></app-print-button>
   </li>
   <li *ngIf="showDownload">    

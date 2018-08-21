@@ -12,7 +12,7 @@ namespace Access2Justice.Shared.Interfaces
         Task<dynamic> GetSubTopicsAsync(string parentTopicId, Location location);
         Task<dynamic> GetResourceByIdAsync(string id,Location location);
         Task<dynamic> GetResourceAsync(string parentTopicId,Location location);
-        Task<dynamic> GetDocumentAsync(string id);
+        Task<dynamic> GetDocumentAsync(string id,Location location);
         Task<dynamic> GetBreadcrumbDataAsync(string id);
         Task<dynamic> GetTopicDetailsAsync(string topicName);
         Task<dynamic> GetResourceDetailAsync(string resourceName, string resourceType);
