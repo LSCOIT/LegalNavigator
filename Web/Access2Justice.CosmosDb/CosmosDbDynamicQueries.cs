@@ -91,7 +91,7 @@ namespace Access2Justice.CosmosDb
             EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
             string locationFilter = FindLocationWhereArrayContains(location);
             var query = string.Empty;
-            if (string.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(value) && (location != null))
             {  
                 query = $"SELECT * FROM c WHERE c.{propertyName}=[{value}]";
             }
@@ -241,12 +241,21 @@ namespace Access2Justice.CosmosDb
         {
             EnsureParametersAreNotNullOrEmpty(collectionId, arrayName, propertyName);
             string locationFilter = FindLocationWhereArrayContains(location);
+            var query = string.Empty;
             var ids = new List<string> { value };
-            string arrayContainsClause = ArrayContainsWithOrClause(arrayName, propertyName, ids);
-            var query = $"SELECT * FROM c WHERE {arrayContainsClause}";
-            if (!string.IsNullOrEmpty(locationFilter))
-            {
-                query = query + " AND " + locationFilter;
+
+            if (location == null || (string.IsNullOrEmpty(location.State) && string.IsNullOrEmpty(location.County)
+                && string.IsNullOrEmpty(location.City) && string.IsNullOrEmpty(location.ZipCode)))
+                {
+                return "";
+            }
+            else {
+                string arrayContainsClause = ArrayContainsWithOrClause(arrayName, propertyName, ids);
+                 query = $"SELECT * FROM c WHERE {arrayContainsClause}";
+                if (!string.IsNullOrEmpty(locationFilter))
+                {
+                    query = query + " AND " + locationFilter;
+                }
             }
             return await backendDatabaseService.QueryItemsAsync(collectionId, query);
         }

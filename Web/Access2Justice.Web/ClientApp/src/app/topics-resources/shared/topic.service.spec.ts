@@ -4,8 +4,7 @@ import { api } from '../../../api/api';
 
 describe('TopicService', () => {
   let service: TopicService;
-  const httpSpy = jasmine.createSpyObj('http', ['get']);
-
+  const httpSpy = jasmine.createSpyObj('http', ['get', 'post']);
   beforeEach(() => {
     service = new TopicService(httpSpy);
     httpSpy.get.calls.reset();
@@ -19,14 +18,13 @@ describe('TopicService', () => {
     ];
 
     const mockResponse = Observable.of(mockTopics);
-
-    httpSpy.get.and.returnValue(mockResponse);
-
+    httpSpy.post.and.returnValue(mockResponse);
     service.getTopics().subscribe(topics => {
-      expect(httpSpy.get).toHaveBeenCalledWith(`${api.topicUrl}`);
+      expect(httpSpy.post).toHaveBeenCalled();
       expect(topics).toEqual(mockTopics);
       done();
     });
+
   });
 
   it('should return list of subtopics', (done) => {
@@ -38,13 +36,12 @@ describe('TopicService', () => {
           {subtopicId: "3", title:"Subtopic2 Name", icon:"./ assets / images / topics / topic3.png"}
         ]
     }
-
     const mockResponse = Observable.of(mockSubtopics);
 
-    httpSpy.get.and.returnValue(mockResponse);
+    httpSpy.post.and.returnValue(mockResponse);
 
     service.getSubtopics(1).subscribe(subtopics => {
-      expect(httpSpy.get).toHaveBeenCalledWith(`${api.subtopicUrl}/1`);
+      expect(httpSpy.post).toHaveBeenCalled();
       expect(subtopics).toEqual(mockSubtopics);
       done();
     });
@@ -60,10 +57,10 @@ describe('TopicService', () => {
 
     const mockResponse = Observable.of(mockSubtopicDetail);
 
-    httpSpy.get.and.returnValue(mockResponse);
+    httpSpy.post.and.returnValue(mockResponse);
 
     service.getSubtopicDetail(1).subscribe(subtopicDetail => {
-      expect(httpSpy.get).toHaveBeenCalledWith(`${api.subtopicDetailUrl}/1`);
+      expect(httpSpy.post).toHaveBeenCalled();
       expect(subtopicDetail).toEqual(mockSubtopicDetail);
       done();
     });
