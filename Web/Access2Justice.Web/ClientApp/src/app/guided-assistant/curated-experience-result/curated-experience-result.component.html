@@ -5,7 +5,7 @@
       <p class="text-capitalize">{{guidedAssistantResults.topIntent}}</p>
       <button class="btn btn-primary" routerLink='/guidedassistant/9a6a6131-657d-467d-b09b-c570b7dad242'>Start the Guided Assistant</button>
     </div>
-    <div class="row" *ngIf="guidedAssistantResults.relevantIntents">
+    <div class="row" *ngIf="relevantIntents.length > 0">
       <div class="col-sm-12 relevant-intent">
         <h5>You may also be interested in the following topic:</h5>
         <form>
