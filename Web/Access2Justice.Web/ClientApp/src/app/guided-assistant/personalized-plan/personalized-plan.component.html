@@ -1,14 +1,14 @@
 <div class="container">
   <div class="user-action upper-action mobile-hidden">
     <app-user-action-sidebar
-                             [mobile]=true
-                             [showDownload]=true [id]="activeActionPlan" [type]="type">
+      [mobile]=true
+      [showDownload]=true
+      [id]="activeActionPlan"
+      [type]="type">
     </app-user-action-sidebar>
   </div>
   <div class="row row-half-spacing">
-    <div class="no-print">
-      <img class="sec-illustration" src="./assets/images/secondary-illustrations/plan.svg" alt="action plan">
-    </div >
+    <img class="sec-illustration no-print" src="./assets/images/secondary-illustrations/plan.svg" alt="action plan">
     <h3 class="page-heading">Your Personalized Plan</h3>
   </div>
   <div class="row row-half-spacing">
@@ -16,29 +16,26 @@
       <p>The following information and resources are sponsored by the following organizations. Legal disclaimer lorem ipsum dolor amet.</p>
     </div>
   </div>
-  <div class='no-print'>
-    <div class="row plan-spacing filter-plan">
-      <span class="col-sm-1">Show:</span>
-      <!--web filtering-->
-      <div class="mobile-hidden col-sm-10">
-        <button *ngFor="let topic of topicsList" type="button" [ngClass]="{ 'btn-sm btn-primary': topic.isSelected, 'btn': !topic.isSelected  }"
-                (click)="filterPlan(topic.topic.name)">
-          {{topic.topic.name}}
-        </button>
-      </div>
-      <!--mobile filtering-->
-      <div class="btn-group web-hidden" dropdown>
-        <button id="button-basic" dropdownToggle type="button" class="btn btn-selected dropdown-toggle"
-                aria-controls="dropdown-basic">
-          All Topics <span class="caret"></span>
-        </button>
-
-        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-            role="menu" aria-labelledby="button-basic">
-          <li *ngFor="let topic of topicsList" role="menuitem" (click)="filterPlan(topic.topic.name)">
-            <a [ngClass]="{ 'selected-item dropdown-item': topic.isSelected, 'dropdown-item': !topic.isSelected  }"> {{topic.topic.name}} </a></li>
-        </ul>
-      </div>
+  <div class="row plan-spacing filter-plan no-print">
+    <span class="col-sm-1">Show:</span>
+    <!--web filtering-->
+    <div class="mobile-hidden col-sm-10">
+      <button *ngFor="let topic of topicsList" type="button" [ngClass]="{ 'btn-sm btn-primary': topic.isSelected, 'btn': !topic.isSelected  }"
+              (click)="filterPlan(topic.topic.name)">
+        {{topic.topic.name}}
+      </button>
+    </div>
+    <!--mobile filtering-->
+    <div class="btn-group web-hidden" dropdown>
+      <button id="button-basic" dropdownToggle type="button" class="btn btn-selected dropdown-toggle"
+              aria-controls="dropdown-basic">
+        All Topics <span class="caret"></span>
+      </button>
+      <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+          role="menu" aria-labelledby="button-basic">
+        <li *ngFor="let topic of topicsList" role="menuitem" (click)="filterPlan(topic.topic.name)">
+          <a [ngClass]="{ 'selected-item dropdown-item': topic.isSelected, 'dropdown-item': !topic.isSelected  }"> {{topic.topic.name}} </a></li>
+      </ul>
     </div>
   </div>
   <app-action-plans [planDetails]="planDetails" [topicsList]="topicsList" (notifyFilterTopics)='filterTopics($event)'></app-action-plans>
@@ -51,8 +48,8 @@
 </div>
 <div class="row user-action web-hidden text-center">
   <app-user-action-sidebar
-                           [mobile]=true
-                           [showPrint]=false
-                           [showDownload]=true>
+    [mobile]=true
+    [showPrint]=false
+    [showDownload]=true>
   </app-user-action-sidebar>
 </div>

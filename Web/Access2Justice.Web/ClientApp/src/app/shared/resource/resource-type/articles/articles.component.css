@@ -1,0 +1,13 @@
+h2 {
+  margin-top: 0;
+}
+
+.user-action {
+  margin-top: 20px;
+}
+
+@media only screen and (min-width : 768px) {
+  .user-action {
+    margin-top: 0;
+  }
+}

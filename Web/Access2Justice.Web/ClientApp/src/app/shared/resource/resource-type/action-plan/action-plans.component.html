@@ -3,28 +3,24 @@
     <div class="row box-shadow">
       <div class="col-xs-12 plan-spacing plan-heading">
         <div class="col-xs-11">
-          <div class="no-print">
-            <div class="main-icon col-sm-1 col-xs-2">
-              <img class="subtopic-icon" src="./assets/images/categories/housing.svg" alt="eviction icon" />
-            </div>
+          <div class="main-icon col-sm-1 col-xs-2 no-print">
+            <img class="subtopic-icon" src="./assets/images/categories/housing.svg" alt="eviction icon" />
           </div>
           <div class="col-sm-11 col-xs-10">
             <h3 class="inline">{{topic.name}}</h3>
           </div>
         </div>
-        <div class="col-xs-1">
-          <div class="no-print">
-            <div class="btn-group pull-right more-menu" dropdown *ngIf="global.showDropDown">
-              <img id="button-basic" dropdownToggle type="button" aria-controls="dropdown-basic" src="./assets/images/small-icons/more_menu.svg" alt="plan menu" (click)="planTagOptions(topic.topicId,template)" />
-              <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-                  role="menu" aria-labelledby="button-basic">
-                <li role="menuitem">
-                  <a class="dropdown-item">
-                    <app-remove-button [selectedPlanDetails]="selectedPlanDetails"></app-remove-button>
-                  </a>
-                </li>
-              </ul>
-            </div>
+        <div class="col-xs-1 no-print">
+          <div class="btn-group pull-right more-menu" dropdown *ngIf="global.showDropDown">
+            <img id="button-basic" dropdownToggle type="button" aria-controls="dropdown-basic" src="./assets/images/small-icons/more_menu.svg" alt="plan menu" (click)="planTagOptions(topic.topicId,template)" />
+            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+                role="menu" aria-labelledby="button-basic">
+              <li role="menuitem">
+                <a class="dropdown-item">
+                  <app-remove-button [selectedPlanDetails]="selectedPlanDetails"></app-remove-button>
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
         <div>
@@ -43,14 +39,12 @@
                   </div>
                 </div>
                 <div class="col-xs-12 step-content">
-                  <div class="no-print">
-                    <div [ngClass]="{'checkbox disabled':!global.showMarkComplete, '':global.showMarkComplete}" class="col-sm-3 col-xs-12 btn-selected" id="complete-btn">
-                      <label class="ps">
-                        <input id="checkBox" type="checkbox" (change)="checkCompleted($event,topic.topicId,step.stepId)"
-                               [ngModel]="step.isComplete" [disabled]="!global.showMarkComplete">
-                        Completed
-                      </label>
-                    </div>
+                  <div [ngClass]="{'checkbox disabled':!global.showMarkComplete, '':global.showMarkComplete}" class="col-sm-3 col-xs-12 btn-selected" id="complete-btn">
+                    <label class="ps">
+                      <input id="checkBox" type="checkbox" (change)="checkCompleted($event,topic.topicId,step.stepId)"
+                              [ngModel]="step.isComplete" [disabled]="!global.showMarkComplete">
+                      Completed
+                    </label>
                   </div>
                   <div>
                     <p>{{step.description}}</p>
@@ -71,10 +65,8 @@
                   </div>
                   <div *ngFor="let resource of step.resources">
                     <div *ngIf="resource.resourceType === 'Videos'" class="row">
-                      <div class="no-print">
-                        <div class="media-left">
-                          <img class="media-object" src="../../../assets/images/icons/videos.svg" aria-hidden="True">
-                        </div>
+                      <div class="media-left no-print">
+                        <img class="media-object" src="../../../assets/images/icons/videos.svg" aria-hidden="True">
                       </div>
                       <div class="media-body">
                         <h4 class="media-heading video-heading" (click)="openModal(videoTemplate)">{{resource.name}}</h4>

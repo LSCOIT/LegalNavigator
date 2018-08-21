@@ -2,8 +2,11 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-print-button',
-  template: `
-  <span (click)="print()">Print</span>
+  template:`
+  <span (click)="print()">
+      <img src="./assets/images/small-icons/print.svg" class="nav-icon" aria-hidden="true" />
+      Print
+</span>
  `
 })
 
@@ -17,29 +20,29 @@ export class PrintButtonComponent implements OnInit {
   print(): void {
     if (location.pathname.indexOf("/topics") >= 0) {
       this.template = 'app-subtopic-detail';
-      this.printContents(this.template)
+      this.printContents(this.template);
     }
 
     else if (location.pathname.indexOf("/plan") >= 0) {
-      this.template = 'app-personalized-plan'
-      this.printContents(this.template)
+      this.template = 'app-personalized-plan';
+      this.printContents(this.template);
     }
 
     else if (location.pathname.indexOf("/resource") >= 0) {
-      this.template = 'app-resource-card-detail'
-      this.printContents(this.template)
+      this.template = 'app-resource-card-detail';
+      this.printContents(this.template);
     }
 
     else if (location.pathname.indexOf("/profile") >= 0) {
       this.activeTab = document.getElementsByClassName("nav-link active")[0].firstElementChild.textContent;
 
       if (this.activeTab == "My Plan") {
-        this.template = 'app-action-plans'
+        this.template = 'app-action-plans';
         this.printContents(this.template);
       }
       else if (this.activeTab == "My Saved Resources") {
         this.template = 'app-search-results';
-        this.printContents(this.template)        
+        this.printContents(this.template);
       }
     }
 
@@ -67,6 +70,9 @@ export class PrintButtonComponent implements OnInit {
                 .collapse {
                     display: block !important;
                     height: auto !important;
+                }
+                .hours li span {
+                    margin-right: 10px;
                 }
               }
             </style>

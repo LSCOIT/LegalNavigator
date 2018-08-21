@@ -1,52 +1,43 @@
 <div class="container">
-  <div class='no-print'>
-    <div class="row user-action mobile-hidden">
-      <app-user-action-sidebar
-                               [mobile]=true
-                               [showSave]=false
-                               [showDownload]=true
-                               [showSetting]=true>
-      </app-user-action-sidebar>
-    </div>
-    <div class="row row-half-spacing">
-      <img class="sec-illustration" src="./assets/images/secondary-illustrations/profile.svg" alt="action plan">
-      <h3 class="page-heading capitalize">{{userName}}'s Profile</h3>
-    </div>
-    <div class="row row-half-spacing">
-      <div class="col-sm-12">
-        <p>We value your privacy and will never share your personal information with anyone without your lorem ipsum dolor sit amet. View our <a [routerLink]="['/privacy']" class="link">Privacy Promise</a>.</p>
-      </div>
+  <div class="row user-action mobile-hidden no-print">
+    <app-user-action-sidebar
+                              [mobile]=true
+                              [showSave]=false
+                              [showDownload]=true
+                              [showSetting]=true>
+    </app-user-action-sidebar>
+  </div>
+  <div class="row row-half-spacing no-print">
+    <img class="sec-illustration" src="./assets/images/secondary-illustrations/profile.svg" alt="action plan">
+    <h3 class="page-heading capitalize">{{userName}}'s Profile</h3>
+  </div>
+  <div class="row row-half-spacing no-print">
+    <div class="col-sm-12">
+      <p>We value your privacy and will never share your personal information with anyone without your lorem ipsum dolor sit amet. View our <a [routerLink]="['/privacy']" class="link">Privacy Promise</a>.</p>
     </div>
   </div>
   <div class="row row-half-spacing">
     <tabset>
       <tab heading="My Plan">
-        <div class="row plan-spacing filter-plan">
-          <!--need to use the filter component here instead once merged with develop-->
-          <div class='no-print'>
-            <span class="col-sm-1 col-xs-2">Show:</span>
-          </div>
-          <!--web filtering-->
+        <div class="row plan-spacing filter-plan no-print">
+          <span class="col-sm-1 col-xs-2">Show:</span>
           <div class="mobile-hidden col-sm-10">
             <button *ngFor="let topic of topicsList" type="button" [ngClass]="{ 'btn-sm btn-primary': topic.isSelected, 'btn': !topic.isSelected  }"
                     (click)="filterPlan(topic.topic.name)">
               {{topic.topic.name}}
             </button>
           </div>
-          <!--mobile filtering-->
-          <div class='no-print'>
-            <div class="btn-group web-hidden col-xs-9" dropdown>
-              <button id="button-basic" dropdownToggle type="button" class="btn btn-selected dropdown-toggle"
-                      aria-controls="dropdown-basic">
-                All Topics <span class="caret"></span>
-              </button>
-              <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-                  role="menu" aria-labelledby="button-basic">
-                <li *ngFor="let topic of topicsList" role="menuitem" (click)="filterPlan(topic.topic.name)">
-                  <a [ngClass]="{ 'selected-item dropdown-item': topic.isSelected, 'dropdown-item': !topic.isSelected  }"> {{topic.topic.name}} </a>
-                </li>
-              </ul>
-            </div>
+          <div class="btn-group web-hidden col-xs-9" dropdown>
+            <button id="button-basic" dropdownToggle type="button" class="btn btn-selected dropdown-toggle"
+                    aria-controls="dropdown-basic">
+              All Topics <span class="caret"></span>
+            </button>
+            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+                role="menu" aria-labelledby="button-basic">
+              <li *ngFor="let topic of topicsList" role="menuitem" (click)="filterPlan(topic.topic.name)">
+                <a [ngClass]="{ 'selected-item dropdown-item': topic.isSelected, 'dropdown-item': !topic.isSelected  }"> {{topic.topic.name}} </a>
+              </li>
+            </ul>
           </div>
         </div>
         <app-action-plans [planDetails]="planDetails" [topicsList]="topicsList" (notifyFilterTopics)='filterTopics($event)'></app-action-plans>
@@ -56,9 +47,7 @@
       </tab>
     </tabset>
   </div>
-  <div class='no-print'>
-    <div class="row user-action web-hidden text-center">
-      <app-user-action-sidebar [mobile]=true [showSave]=false [showPrint]=false [showDownload]=true [showSetting]=true></app-user-action-sidebar>
-    </div>
+  <div class="row user-action web-hidden text-center no-print">
+    <app-user-action-sidebar [mobile]=true [showSave]=false [showPrint]=false [showDownload]=true [showSetting]=true></app-user-action-sidebar>
   </div>
 </div>

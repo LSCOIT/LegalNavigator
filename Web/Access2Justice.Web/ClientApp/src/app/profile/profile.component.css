@@ -2,7 +2,6 @@
   background-color: #fff;
   margin: 20px 0 0 0;
   width: 100%;
-  text-align: right;
 }
   
 .row-half-spacing {
@@ -47,10 +46,6 @@
 
   .web-hidden {
     display: none;
-  }
-
-  .user-action {
-    float: right;
   }
 
   .filter-plan button {
