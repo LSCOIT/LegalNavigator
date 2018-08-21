@@ -111,7 +111,7 @@ export class ProfileComponent implements OnInit {
           });
         }
       });
-    this.activeTabData = "You clicked My saved resources tab";
+    this.activeTabData = "My Saved Resources";
   }
 
   getSavedResource(resourceFilter: IResourceFilter) {
@@ -138,7 +138,7 @@ export class ProfileComponent implements OnInit {
           this.getTopics();
         });
     }
-    this.activeTabData = "You clicked My Plan";
+    this.activeTabData = "My Plan";
   }
 
   ngOnInit() {

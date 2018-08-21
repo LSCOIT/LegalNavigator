@@ -1,6 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit, ElementRef, Renderer } from '@angular/core';
 import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 import { validateConfig } from '@angular/router/src/config';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-print-button',
@@ -10,16 +11,14 @@ import { validateConfig } from '@angular/router/src/config';
 })
 
 export class PrintButtonComponent implements OnInit, OnChanges {
-
   @Input()
   printData: any;
   template: string = '';
-
+  applicationUrl: any = environment.applicationUrl;
 
   constructor() { }
 
   print(): void {
-
     if (location.pathname.indexOf("/topics") >= 0) {
       this.template = 'app-subtopic-detail';
       this.printContents(this.template)
@@ -36,10 +35,15 @@ export class PrintButtonComponent implements OnInit, OnChanges {
     }
 
     else if (location.pathname.indexOf("/profile") >= 0) {
-      //TO DO - need to pick selector based on active tab out of My Plan or My Saved Resources.
-      //this.template = 'app-search-results';
-      this.template = 'app-action-plans';
-      this.printContents(this.template);
+      this.template = 'app-action-plans'
+      if (this.printData == "My Plan") {
+        this.template = 'app-action-plans'
+        this.printContents(this.template);
+      }
+      else if (this.printData == "My Saved Resources") {
+        this.template = 'app-search-results';
+        this.printContents(this.template)
+      }
     }
 
     else {
@@ -55,10 +59,14 @@ export class PrintButtonComponent implements OnInit, OnChanges {
     popupWin.document.write(`
         <html>
           <head>
+            <h2><title>Legal Assist https://a2jdevweb.azurewebsites.net/ </title></h2>
             <style>
                 @media print {
                 .no-print, .no-print * {
                   display: none !important;
+                }
+                .print-only * {
+                   display: block;
                 }
                 .collapse {
                     display: block !important;
@@ -74,9 +82,9 @@ export class PrintButtonComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    if (this.printData) {
-      console.log("User action" + this.printData);
-    }
+    //if (this.printData) {
+    //  //console.log("User action" + this.printData);
+    //}
   }
 
   ngOnChanges() {

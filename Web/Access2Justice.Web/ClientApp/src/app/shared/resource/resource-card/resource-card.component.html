@@ -32,8 +32,9 @@
             <img class="media-object" src="/assets/images/icons/action_plans.svg" alt="Action Plan">
           </div>
         </div>
-        <div class="media-body">
+        <div class="media-body">         
           <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}</h4></a>
+          <div class="web-hidden">{{applicationUrl+'resource'+'/'+resource.id}}</div>
           <!--<a [routerLink]="['/personalizedplan', resource.id]"><h4 class="media-heading">{{resource.name}}</h4></a>-->
           <p>This action plan is for tenants who are facing Eviction and have experienced the following:</p>
           <ul>
@@ -57,6 +58,7 @@
         </div>
         <div class="media-body">
           <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}</h4></a>
+          <div class="web-hidden">{{applicationUrl+'resource'+'/'+resource.id}}</div>
           <p>{{resource.description}}</p>
         </div>
       </div>
@@ -68,6 +70,7 @@
         </div>
         <div class="media-body">
           <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}, {{resource.type}}</h4></a>
+          <div class="web-hidden">{{applicationUrl+'resource'+'/'+resource.id}}</div>
           <p>{{resource.description}}</p>
           <div class="org-content span-text">
             <div class="col-sm-4" *ngIf="resource.address.length > 0">
@@ -99,6 +102,7 @@
         </div>
         <div class="media-body">
           <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}</h4></a>
+          <div class="web-hidden">{{applicationUrl+'resource'+'/'+resource.id}}</div>
           <p>{{resource.description}}</p>
         </div>
       </div>
