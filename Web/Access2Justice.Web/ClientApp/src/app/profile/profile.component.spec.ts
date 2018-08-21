@@ -149,12 +149,6 @@ describe('component:profile', () => {
     expect(personalizedplanservice.getPersonalizedPlan).toHaveBeenCalled();
   });
 
-  it('should call getUserPlanId service method when getpersonalizedplan method of component is called', () => {
-    spyOn(personalizedplanservice, 'getUserPlanId').and.returnValue(mockUserProfileData);;
-    personalizedplanservice.getUserPlanId(mockplanid);
-    expect(personalizedplanservice.getUserPlanId).toHaveBeenCalled();
-  });
-
   it('should call getusersavedresources service method when getpersonalizedresources is called', () => {
     component.getpersonalizedResources();
     spyOn(personalizedplanservice, 'getUserSavedResources');

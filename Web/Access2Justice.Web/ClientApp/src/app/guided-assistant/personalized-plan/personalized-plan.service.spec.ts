@@ -9,7 +9,7 @@ import { ArrayUtilityService } from '../../shared/array-utility.service';
 import { catchError } from 'rxjs/operators/catchError';
 import { PersonalizedPlan } from './personalized-plan';
 
-describe('Service:PersonalizedPlan', () => {
+fdescribe('Service:PersonalizedPlan', () => {
   let mockupdateplan = {
     "planId": "bf8d7e7e-2574-7b39-efc7-83cb94adae07",
     "oId": "User Id",
@@ -79,7 +79,7 @@ describe('Service:PersonalizedPlan', () => {
   let mockSessionKey = "883833";
   let mockObjects = false;
   let mockObject = false;
-  let mockOid = "ACB833BB3F817C2FBE5A72CE37FE7AB9CD977E58580B9832B91865E234A0A3D37C8F2C2A3B401CA64748F3098C9FE3374106B6F4A2B157FE091CA6332C88A89B";
+  let mockOid = "ACB833BB3F817C2FBE5A72CE37FE7AB9CD9";
   let mockid = "bf8d7e7e-2574-7b39-efc7-83cb94adae07";
   let mokParams = new HttpParams()
     .set("oId", mockUserId)
@@ -131,7 +131,7 @@ describe('Service:PersonalizedPlan', () => {
       imports: [HttpClientModule],
       providers: [PersonalizedPlanService, ArrayUtilityService]
     });
-    service = new PersonalizedPlanService(httpSpy, arrayUtilityService);
+    service = new PersonalizedPlanService(httpSpy, arrayUtilityService, undefined);
     arrayUtilityService = new ArrayUtilityService();
     httpSpy.get.calls.reset();
   });
@@ -164,31 +164,12 @@ describe('Service:PersonalizedPlan', () => {
     });
   });
 
-  it('should return user profile plan details when oid value is passed', (done) => {
-    const mockResponse = Observable.of(mockUserPlan);
-    httpSpy.get.and.returnValue(mockResponse);
-    service.getUserPlanId("mockOid").subscribe(userprofile => {
-      expect(httpSpy.get).toHaveBeenCalledWith(`${api.getUserProfileUrl}/mockOid`);
-      expect(userprofile).toEqual(mockUserPlan);
-      done();
-    });
-  });
-
   it('should return user saved resources when oid value is passed', (done) => {
     const mockResponse = Observable.of(mockUserSavedResources);
-    httpSpy.get.and.returnValue(mockResponse);
-    service.getUserSavedResources("userId").subscribe(savedresource => {
-      expect(httpSpy.get).toHaveBeenCalledWith(`${api.getProfileUrl}/userId`);
-      expect(savedresource).toEqual(mockUserSavedResources);
-      done();
-    });
-  });
-
-  it('should return mark completed updated plan when passed value is update plan', (done) => {
     httpSpy.post.and.returnValue(mockResponse);
-    service.getMarkCompletedUpdatedPlan(mockupdateplan).subscribe(updateplan => {
-      expect(httpSpy.post).toHaveBeenCalled();
-      expect(updateplan).toEqual(mockPlanDetailsJson);
+    service.getUserSavedResources("userId").subscribe(savedresource => {
+      expect(httpSpy.post).toHaveBeenCalledWith(`${api.getProfileUrl}`, "userId");
+      expect(savedresource).toEqual(mockUserSavedResources);
       done();
     });
   });
@@ -209,24 +190,6 @@ describe('Service:PersonalizedPlan', () => {
     expect(service.getPersonalizedResources).toBeDefined();
   });
 
-  it('should return resources when saveResourcesToSession method called', () => {
-    spyOn(service, 'saveResourcesToSession');
-    spyOn(arrayUtilityService, 'checkObjectExistInArray');
-    service.saveResourcesToSession(resoureStorage);
-    arrayUtilityService.checkObjectExistInArray(mockObjects, mockObject);
-    expect(service.saveResourcesToSession).toHaveBeenCalled();
-    expect(arrayUtilityService.checkObjectExistInArray).toHaveBeenCalled();
-  });
-
-  it('should update user personalized profile when savePersonalizedPlanToProfile method called', (done) => {
-    const mockResponse = Observable.of(mokParams);
-    httpSpy.post.and.returnValue(mockResponse);
-    service.savePersonalizedPlanToProfile(mokParams).subscribe(updateuserplan => {
-      expect(httpSpy.post).toHaveBeenCalled();
-      done();
-    });
-  });
-
   it('should return topics list when createTopicsList method called', () => {
     const mockResponse = Observable.of(mockTopicsList);
     spyOn(service, 'createTopicsList').and.returnValue(mockResponse);
@@ -240,15 +203,10 @@ describe('Service:PersonalizedPlan', () => {
     expect(service.getPlanDetails).toHaveBeenCalled();
   });
 
-  it('should save plan to the session when plan id is passed', () => {
-    spyOn(service, 'savePlanToSession');
-    service.savePlanToSession(mockPlanId);
-    expect(service.savePlanToSession).toHaveBeenCalled();
-  });
-
   it('should display plan details when plandetailtags and topics list passed to displayPlanDetails service method', () => {
     spyOn(service, 'displayPlanDetails');
     service.displayPlanDetails(mockPlanDetailTags, mockTopicsList);
     expect(service.displayPlanDetails).toHaveBeenCalled();
   });
+
 });
