@@ -30,18 +30,19 @@ export class DownloadButtonComponent implements OnInit {
 
     var options = {
       background: '#fff',
-      format: 'PNG',      
+      format: 'PNG',
       margin: {
         top: 0,
         bottom: 0
       },
       pagesplit: true,
-      'elementHandlers': specialElementHandlers,      
+      'elementHandlers': specialElementHandlers,
     };
     pdf_Object.internal.scaleFactor = 2.25;
     pdf_Object.addHTML(document.body, options, function () {
       pdf_Object.save('PersonalisedPlan-' + new Date() + '.pdf');
     });
+    
   }
 
   ngOnInit() {
