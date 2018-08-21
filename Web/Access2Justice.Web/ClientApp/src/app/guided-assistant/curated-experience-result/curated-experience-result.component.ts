@@ -30,6 +30,7 @@ export class CuratedExperienceResultComponent implements OnInit {
   ngOnInit() {
     this.guidedAssistantResults = this.navigateDataService.getData();
     this.filterIntent();
+    console.log(this.relevantIntents.length);
   }
 
 }

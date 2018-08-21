@@ -5,12 +5,13 @@
 export const environment = {
   production: false,
   apiUrl: 'http://localhost:4200/api',
-  bingmap_key: '',
+  bingmap_key: 'AlyLqEyg06sSOQJUwYsqcsm69zWmVKYgmaGvqdBPISKCJ59IQqqfCCaQ42KgqTyG',
   map_type: false,
   internalResourcePagesToShow: 2,
   internalResourceRecordsToDisplay: 10,
   webResourcePagesToShow: 10,
   webResourceRecordsToDisplay: 10,
-  blobUrl: '',
+  userId: 'User Id',
+  blobUrl: 'https://cs4892808efec24x447cx944.blob.core.windows.net',
   All: 'All'
 };
