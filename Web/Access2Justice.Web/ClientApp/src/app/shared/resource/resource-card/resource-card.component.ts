@@ -15,7 +15,7 @@ export class ResourceCardComponent implements OnInit {
   @Input() isSearchResults: boolean;
   @Input() showRemoveOption: boolean;
   url: any;
-  applicationUrl: any = environment.applicationUrl;
+  applicationUrl: any = window.location.host;
 
   constructor(public sanitizer: DomSanitizer,
     private global: Global) {

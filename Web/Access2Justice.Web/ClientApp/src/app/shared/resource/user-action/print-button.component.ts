@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, AfterViewInit, ElementRef, Renderer } from '@angular/core';
 import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 import { validateConfig } from '@angular/router/src/config';
-import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-print-button',
@@ -14,8 +13,8 @@ export class PrintButtonComponent implements OnInit, OnChanges {
   @Input()
   printData: any;
   template: string = '';
-  applicationUrl: any = environment.applicationUrl;
-
+  applicationUrl: any = window.location.host;
+  title: any = document.title;
   constructor() { }
 
   print(): void {
@@ -59,7 +58,7 @@ export class PrintButtonComponent implements OnInit, OnChanges {
     popupWin.document.write(`
         <html>
           <head>
-            <h2><title>Legal Assist https://a2jdevweb.azurewebsites.net/ </title></h2>
+            <title>Access to justice - https://a2jdevweb.azurewebsites.net/</title>
             <style>
                 @media print {
                 .no-print, .no-print * {
