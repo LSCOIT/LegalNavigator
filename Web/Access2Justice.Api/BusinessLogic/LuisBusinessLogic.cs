@@ -35,15 +35,10 @@ namespace Access2Justice.Api
             var encodedSentence = HttpUtility.UrlEncode(luisInput.Sentence);
             dynamic luisResponse = await luisProxy.GetIntents(encodedSentence);
             dynamic luisTopIntents = ParseLuisIntent(luisResponse);
-            string resourceType = Constants.All;
 
             if (IsIntentAccurate(luisTopIntents))
             {
-                if (luisInput.IsFromCuratedExperience)
-                {
-                    resourceType = Constants.GuidedAssistant;
-                }
-                return await GetInternalResourcesAsync(luisTopIntents?.TopScoringIntent ?? luisInput.LuisTopScoringIntent, luisInput.Location, luisTopIntents.TopNIntents, resourceType);
+                return await GetInternalResourcesAsync(luisTopIntents?.TopScoringIntent ?? luisInput.LuisTopScoringIntent, luisInput.Location, luisTopIntents.TopNIntents);
             }
             return await GetWebResourcesAsync(encodedSentence);
         }
@@ -66,7 +61,7 @@ namespace Access2Justice.Api
             return intentWithScore.Score >= luisSettings.IntentAccuracyThreshold && intentWithScore.TopScoringIntent.ToUpperInvariant() != "NONE";
         }
 
-        public async Task<dynamic> GetInternalResourcesAsync(string keyword, Location location, IEnumerable<string> relevantIntents, string resourceType)
+        public async Task<dynamic> GetInternalResourcesAsync(string keyword, Location location, IEnumerable<string> relevantIntents)
         {
             string topic = string.Empty, resource = string.Empty;
             var topics = await topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
@@ -84,13 +79,17 @@ namespace Access2Justice.Api
             dynamic serializedTopicIds = "[]";
             dynamic serializedGroupedResources = "[]";
             dynamic serializedRelevantIntents = "[]";
+            string  guidedAssistantId = string.Empty;
             if (topicIds.Count > 0)
             {
-                ResourceFilter resourceFilter = new ResourceFilter { TopicIds = topicIds, PageNumber = 0, ResourceType = resourceType, Location = location };
+                ResourceFilter resourceFilter = new ResourceFilter { TopicIds = topicIds, PageNumber = 0, ResourceType = Constants.All, Location = location };
                 var GetResourcesTask = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
                 var ApplyPaginationTask = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
-                await Task.WhenAll(GetResourcesTask, ApplyPaginationTask);
+                resourceFilter.ResourceType = Constants.GuidedAssistant;
+                var GetGuidedAssistantId = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
+                await Task.WhenAll(GetResourcesTask, ApplyPaginationTask, GetGuidedAssistantId);
                 var groupedResourceType = GetResourcesTask.Result;
+                PagedResources guidedAssistantResponse = GetGuidedAssistantId.Result;
                 PagedResources resources = ApplyPaginationTask.Result;
                 serializedTopics = JsonConvert.SerializeObject(topics);
                 serializedResources = JsonConvert.SerializeObject(resources.Results);
@@ -98,6 +97,12 @@ namespace Access2Justice.Api
                 serializedTopicIds = JsonConvert.SerializeObject(topicIds);
                 serializedGroupedResources = JsonConvert.SerializeObject(groupedResourceType);
                 serializedRelevantIntents = JsonConvert.SerializeObject(relevantIntents);
+                var guidedAssistantResult = JsonConvert.DeserializeObject<Resource>(
+                    JsonConvert.SerializeObject(guidedAssistantResponse.Results.FirstOrDefault()));
+                if (guidedAssistantResult != null)
+                {
+                    guidedAssistantId = guidedAssistantResult.ExternalUrls;
+                }
             }
 
             JObject internalResources = new JObject {
@@ -107,7 +112,8 @@ namespace Access2Justice.Api
                 { "resources", JsonConvert.DeserializeObject(serializedResources) },
                 {"continuationToken", JsonConvert.DeserializeObject(serializedToken) },
                 {"topicIds" , JsonConvert.DeserializeObject(serializedTopicIds)},
-                { "resourceTypeFilter", JsonConvert.DeserializeObject(serializedGroupedResources) }
+                { "resourceTypeFilter", JsonConvert.DeserializeObject(serializedGroupedResources) },
+                { "guidedAssistantId", guidedAssistantId }
             };
             return internalResources.ToString();
         }
