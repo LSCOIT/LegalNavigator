@@ -7,11 +7,12 @@ import { Observable } from 'rxjs';
 import { RouterModule } from '@angular/router';
 import { APP_BASE_HREF } from '@angular/common';
 import { ArrayUtilityService } from '../../shared/array-utility.service';
-
+import { ToastrService, ToastrModule, ToastPackage } from 'ngx-toastr';
 describe('Component:PersonalizedPlan', () => {
   let component: PersonalizedPlanComponent;
   let fixture: ComponentFixture<PersonalizedPlanComponent>;
   let personalizedPlanService: PersonalizedPlanService;
+  let toastrService: ToastrService;
   let mockactiveActionPlan = 'bd900039-2236-8c2c-8702-d31855c56b0f';
   let mockPlanDetailTags = { id: '773993', oId: 'rere', planTags: [{}], type: '' };
   let mockTopics = [{ 'id': '3445', planTags: [{}] }];
@@ -47,7 +48,7 @@ describe('Component:PersonalizedPlan', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
+      imports: [ToastrModule.forRoot(),
         RouterModule.forRoot([
           { path: 'plan /: id', component: PersonalizedPlanComponent }
         ]),
@@ -56,7 +57,7 @@ describe('Component:PersonalizedPlan', () => {
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: APP_BASE_HREF, useValue: '/' },
-        PersonalizedPlanService, ArrayUtilityService
+        PersonalizedPlanService, ArrayUtilityService, ToastrService,
       ]
     })
       .compileComponents();
@@ -65,6 +66,7 @@ describe('Component:PersonalizedPlan', () => {
     fixture = TestBed.createComponent(PersonalizedPlanComponent);
     component = fixture.componentInstance;
     personalizedPlanService = TestBed.get(PersonalizedPlanService);
+    toastrService = TestBed.get(ToastrService);
     fixture.detectChanges();
   });
 

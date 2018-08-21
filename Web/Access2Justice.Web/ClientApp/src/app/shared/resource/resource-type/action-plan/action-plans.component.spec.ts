@@ -21,7 +21,7 @@ const mockMarkCompletedUpdatedPlan = {
   getMarkCompletedUpdatedPlan: () => { return Observable.of(); }
 };
 
-fdescribe('ActionPlansComponent', () => {
+describe('ActionPlansComponent', () => {
   let component: ActionPlansComponent;
   let fixture: ComponentFixture<ActionPlansComponent>;
   let modalService: BsModalService;
@@ -294,7 +294,6 @@ fdescribe('ActionPlansComponent', () => {
     personalizedPlanService = TestBed.get(PersonalizedPlanService);
     modalService = TestBed.get(BsModalService);
     sharedService = TestBed.get(ArrayUtilityService);
-    toastrService = TestBed.get(ToastrService);
     toastrService = TestBed.get(ToastrService);
   });
 

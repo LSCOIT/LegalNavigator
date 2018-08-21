@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Organization } from '../sidebars/organization';
 import { MapService } from '../map/map.service';
 import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
 import { IResourceFilter } from '../search/search-results/search-results.model';
