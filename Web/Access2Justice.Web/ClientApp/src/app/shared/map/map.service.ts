@@ -114,14 +114,35 @@ export class MapService {
       sessionStorage.setItem("globalSearchMapLocation", JSON.stringify(this.mapLocation));
     }
     else {
+      //Zipcode
       if ((this.location.entitySubType != undefined &&
         this.location.entitySubType.indexOf("Postcode") != -1)
         || (this.location.entityType != undefined &&
-          this.location.entityType.indexOf("PostalAddress") != -1))
-      {
-        this.mapLocation.state = this.location.address.adminDistrict;
+          this.location.entityType.indexOf("PostalAddress") != -1)) {
+        this.mapLocation.state = "";
         this.mapLocation.county = "";
         this.mapLocation.city = "";
+      }
+      //State
+      else if (this.location.entitySubType != undefined &&
+        this.location.entitySubType.indexOf("AdminDivision1") != -1) {
+        this.mapLocation.county = "";
+        this.mapLocation.city = "";
+        this.mapLocation.zipCode = "";
+      }
+      //County
+      else if (this.location.entitySubType != undefined &&
+        this.location.entitySubType.indexOf("AdminDivision2") != -1) {
+        this.mapLocation.state = "";
+        this.mapLocation.city = "";
+        this.mapLocation.zipCode = "";
+      }
+      //City
+      else if (this.location.entitySubType != undefined &&
+        this.location.entitySubType.indexOf("PopulatedPlace") != -1) {
+        this.mapLocation.state = "";
+        this.mapLocation.county = "";
+        this.mapLocation.zipCode = "";
       }
       sessionStorage.setItem("localSearchMapLocation", JSON.stringify(this.mapLocation));
     }
