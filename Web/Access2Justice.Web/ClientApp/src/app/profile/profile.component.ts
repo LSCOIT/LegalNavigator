@@ -3,6 +3,7 @@ import { PersonalizedPlanService } from '../guided-assistant/personalized-plan/p
 import { PersonalizedPlanTopic } from '../guided-assistant/personalized-plan/personalized-plan';
 import { IResourceFilter } from '../shared/search/search-results/search-results.model';
 import { EventUtilityService } from '../shared/event-utility.service';
+import { Global } from '../global';
 
 @Component({
   selector: 'app-profile',
@@ -29,7 +30,8 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private personalizedPlanService: PersonalizedPlanService,
-    private eventUtilityService: EventUtilityService
+    private eventUtilityService: EventUtilityService,
+    private global:Global
   ) {
 
     eventUtilityService.resourceUpdated$.subscribe(response => {
@@ -43,6 +45,9 @@ export class ProfileComponent implements OnInit {
       profileData = JSON.parse(profileData);
       this.userId = profileData["UserId"];
       this.userName = profileData["UserName"];
+    }
+    else {
+      global.externalLogin();
     }
   }
 

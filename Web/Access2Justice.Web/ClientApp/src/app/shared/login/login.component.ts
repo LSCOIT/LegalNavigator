@@ -2,6 +2,8 @@ import { Component, OnInit, Input, ElementRef, ViewChild, Output, EventEmitter }
 import { api } from '../../../api/api';
 import { environment } from '../../../environments/environment';
 import { Login } from '../navigation/navigation';
+import { Router } from '@angular/router';
+import { Global, UserStatus } from '../../global';
 
 @Component({
   selector: 'app-login',
@@ -16,10 +18,20 @@ export class LoginComponent implements OnInit {
   @ViewChild('dropdownMenu') dropdown: ElementRef;
   @Output() sendProfileOptionClickEvent = new EventEmitter<string>();
 
-  constructor() { }
+  constructor(private router: Router, private global:Global) { }
 
   onProfileOptionClick() {
     this.sendProfileOptionClickEvent.emit();
+  }
+
+  profile() {
+    if (this.global.role === UserStatus.Shared
+      && location.pathname.indexOf(this.global.shareRouteUrl) >= 0) {
+      location.href = this.global.profileRouteUrl;
+    }
+    else {
+      this.router.navigate([this.global.profileRouteUrl]);
+    }
   }
 
   toggleDropdown() {
