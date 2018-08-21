@@ -1,27 +1,27 @@
-<span id="share" (click)="openModal(template)">
+<span id="share" (click)="openModal(template)" *ngIf="global.showShare">
   <img *ngIf="showIcon" src="./assets/images/small-icons/share.svg" class="nav-icon" aria-hidden="true" />
   Share
 </span>
 <ng-template #template>
   <div class="modal-body">
-    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+    <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
       <span aria-hidden="true">&times;</span>
     </button>
     <div class="text-center">
       <h4 class="modal-title pull-left">Share Link</h4>
-      <div class="row"> <!--hide if link has already been generated-->
+      <div *ngIf="showGenerateLink" class="row">
         <p>Share this content with anyone using a link.</p>
-        <button class="btn btn-primary">Generate Link</button>
+        <button class="btn btn-primary" (click)="generateLink()">Generate Link</button>
       </div>
-      <div><!--ngIf the link has been generated-->
-        <input type="type" name="name" value="" #userinput/>
+      <div *ngIf="!showGenerateLink">
+        <input type="text" name="name" value="{{permaLink}}" #userinput />
         <button type="button" id="copy-btn" (click)="copyLink(userinput)">Copy Link</button>
         <span class="pxs">Note: Link will automatically expire after 12 months.</span>
-        <div class="remove-share"> 
+        <div class="remove-share">
           <h4 class="modal-title pull-left">Disable Link</h4>
           <div class="row">
             <p>Clicking this button will make this content no longer viewable to anyone you share the link with.</p>
-            <button class="btn btn-primary" id="remove-btn">Remove Link</button>
+            <button class="btn btn-primary" id="remove-btn" (click)="removeLink()">Remove Link</button>
           </div>
         </div>
       </div>
