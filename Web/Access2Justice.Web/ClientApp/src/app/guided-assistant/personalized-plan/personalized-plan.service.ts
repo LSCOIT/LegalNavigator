@@ -33,13 +33,9 @@ export class PersonalizedPlanService {
 
   constructor(private http: HttpClient, private arrayUtilityService: ArrayUtilityService,
     private toastr: ToastrService) { }
-
-  getActionPlanConditions(id): Observable<any> {
-    return this.http.get<PersonalizedPlan>(api.planUrl + '/' + id);
-  }
-
-  getUserPlanId(oid): Observable<any> {
-    return this.http.get<PersonalizedPlan>(api.getUserProfileUrl + '/' + oid);
+  
+  getActionPlanConditions(planId): Observable<any> {
+    return this.http.get<PersonalizedPlan>(api.planUrl + '/' + planId);
   }
 
   getUserSavedResources(params): Observable<any> {
@@ -52,10 +48,6 @@ export class PersonalizedPlanService {
 
   userPlan(plan: PersonalizedPlan) {
     return this.http.post<any>(api.updateUserPlanUrl, plan, httpOptions);
-  }
-
-  savePersonalizedPlanToProfile(params): Observable<any> {
-    return this.http.post(api.updateUserProfileUrl, params);
   }
 
   getBookmarkedData() {

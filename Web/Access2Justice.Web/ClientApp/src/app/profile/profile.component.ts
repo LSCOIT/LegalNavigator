@@ -137,10 +137,13 @@ export class ProfileComponent implements OnInit {
       this.planId = this.personalizedPlanService.getPersonalizedPlan();
       this.getTopics();
     } else {
-      this.personalizedPlanService.getUserPlanId(this.userId)
+      let params = new HttpParams()
+        .set("oid", this.userId)
+        .set("type", "plan");
+      this.personalizedPlanService.getUserSavedResources(params)
         .subscribe(response => {
-          if (response.personalizedActionPlanId) {
-            this.planId = response.personalizedActionPlanId;
+          if (response[0].id) {
+            this.planId = response[0].id;
           }
           this.getTopics();
         });
