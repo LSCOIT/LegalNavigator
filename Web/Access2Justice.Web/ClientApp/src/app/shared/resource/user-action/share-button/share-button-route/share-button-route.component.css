@@ -11,3 +11,8 @@ label {
 textarea {
   resize: none;
 }
+
+.validation-error {
+  display: block;
+  color: red;
+}

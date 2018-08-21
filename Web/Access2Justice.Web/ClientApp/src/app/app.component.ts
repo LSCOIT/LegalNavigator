@@ -34,7 +34,12 @@ export class AppComponent implements OnInit {
       expires = "; expires=" + date.toUTCString();
     }
     document.cookie = name + "=" + value + expires + "; path=/";
-  } 
+  }
+
+  onActivate(event) {
+    window.scroll(0, 0);
+  }
+
 
   ngOnInit() {
     let profileData = this.getCookie("profileData");

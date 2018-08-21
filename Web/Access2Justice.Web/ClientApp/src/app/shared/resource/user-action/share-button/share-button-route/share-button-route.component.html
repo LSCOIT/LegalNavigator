@@ -1,19 +1,22 @@
 <ng-template #template>
-  <div class="modal-body">
-    <div class="text-center">
-      <h4 class="modal-title">Someone has shared their legal plan with you.</h4>
-      <div class="row">
-        <p>LegalNavigator provides education and plans of action for legal issues. Summary of plan in [location] has been shared with you lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum.</p>
+  <form #agreementForm="ngForm" (ngSubmit)="onSubmit(agreementForm)">>
+    <div class="modal-body">
+      <div class="text-center">
+        <h4 class="modal-title">{{profileData.UserName}} has shared their legal plan with you.</h4>
+        <div class="row">
+          <p>LegalNavigator provides education and plans of action for legal issues. Summary of plan in [location] has been shared with you lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum.</p>
+        </div>
+        <div class="row">
+          <p>Please read the privacy agreement below lorem ipsum dolor sit amet, consectetur adipiscing elit:</p>
+          <textarea class="form-control" rows="7" disabled>Privacy agreement sem ornare sit amet proin sem sapien, auctor vel faucibus id, aliquet vitae ipsum etiam auctor ultricies ante, at dapibus urna viverra sed nullam mi arcu, tempor vitae interdum a, sodales non urna vestibulum dignissim auctor mauris, ac elementum purus fermentum vitae duis placerat laoreet risus, sit amet eleifend tellus lobortis non vivamus iaculis dapibus leo a ornare cras vel sem at felis convallis mollis posuere ultrices dolor sed tellus arcu, accumsan a consectetur sit amet, volutpat eget lorem phasellus quis ipsum orci integer sodales tincidunt nibh a elementum ut ac libero nec orci euismod euismod nec at nulla duis malesuada faucibus porta aliquam nec consequat eros sed porttitor placerat dolor, accumsan imperdiet neque ornare in aenean non elit non leo porta mattis mauris non dolor nunc, id congue odio donec tellus nisl, semper id consectetur vitae, dapibus dictum nisl morbi sed augue purus sed dictum diam convallis tortor interdum volutpat phasellus dapibus arcu sit amet neque vulputate sed elementum orci fringilla in hac habitasse platea dictumst maecenas ut dui diam curabitur adipiscing vestibulum libero, nec varius dui pulvinar eget vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; aliquam dui neque, varius eu laoreet vel.</textarea>
+          <label>
+            <input type="checkbox" name="agreement" [ngModel] />
+            I agree
+          </label>
+          <span class="validation-error" *ngIf="!agreementForm.value.agreement && agreementForm.submitted">Please check agree to view plan</span>
+        </div>
       </div>
-      <div class="row">
-        <p>Please read the privacy agreement below lorem ipsum dolor sit amet, consectetur adipiscing elit:</p>
-        <textarea class="form-control" rows="7" disabled>Privacy agreement sem ornare sit amet proin sem sapien, auctor vel faucibus id, aliquet vitae ipsum etiam auctor ultricies ante, at dapibus urna viverra sed nullam mi arcu, tempor vitae interdum a, sodales non urna vestibulum dignissim auctor mauris, ac elementum purus fermentum vitae duis placerat laoreet risus, sit amet eleifend tellus lobortis non vivamus iaculis dapibus leo a ornare cras vel sem at felis convallis mollis posuere ultrices dolor sed tellus arcu, accumsan a consectetur sit amet, volutpat eget lorem phasellus quis ipsum orci integer sodales tincidunt nibh a elementum ut ac libero nec orci euismod euismod nec at nulla duis malesuada faucibus porta aliquam nec consequat eros sed porttitor placerat dolor, accumsan imperdiet neque ornare in aenean non elit non leo porta mattis mauris non dolor nunc, id congue odio donec tellus nisl, semper id consectetur vitae, dapibus dictum nisl morbi sed augue purus sed dictum diam convallis tortor interdum volutpat phasellus dapibus arcu sit amet neque vulputate sed elementum orci fringilla in hac habitasse platea dictumst maecenas ut dui diam curabitur adipiscing vestibulum libero, nec varius dui pulvinar eget vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; aliquam dui neque, varius eu laoreet vel.</textarea>
-        <label>
-          <input type="checkbox" name="name" value=""/>
-          I agree
-        </label>
-      </div>
+      <button type="submit" class="btn btn-primary">View Plan</button>
     </div>
-    <button class="btn btn-primary" (click)="close()">View Plan</button>
-  </div>
+  </form>
 </ng-template>
