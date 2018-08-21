@@ -1,6 +1,4 @@
-import { Component, OnInit, Input, AfterViewInit, ElementRef, Renderer } from '@angular/core';
-import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
-import { validateConfig } from '@angular/router/src/config';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-print-button',
@@ -9,12 +7,11 @@ import { validateConfig } from '@angular/router/src/config';
  `
 })
 
-export class PrintButtonComponent implements OnInit, OnChanges {
-  @Input()
-  printData: any;
+export class PrintButtonComponent implements OnInit {
   template: string = '';
   applicationUrl: any = window.location.host;
   title: any = document.title;
+  activeTab: string = '';
   constructor() { }
 
   print(): void {
@@ -34,14 +31,15 @@ export class PrintButtonComponent implements OnInit, OnChanges {
     }
 
     else if (location.pathname.indexOf("/profile") >= 0) {
-      this.template = 'app-action-plans'
-      if (this.printData == "My Plan") {
+      this.activeTab = document.getElementsByClassName("nav-link active")[0].innerText;
+
+      if (this.activeTab == "My Plan") {
         this.template = 'app-action-plans'
         this.printContents(this.template);
       }
-      else if (this.printData == "My Saved Resources") {
+      else if (this.activeTab == "My Saved Resources") {
         this.template = 'app-search-results';
-        this.printContents(this.template)
+        this.printContents(this.template)        
       }
     }
 
@@ -54,7 +52,6 @@ export class PrintButtonComponent implements OnInit, OnChanges {
     let printContents, popupWin;
     printContents = document.getElementsByTagName(template)[0].innerHTML;
     popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
-    //popupWin.document.open();
     popupWin.document.write(`
         <html>
           <head>
@@ -81,14 +78,5 @@ export class PrintButtonComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    //if (this.printData) {
-    //  //console.log("User action" + this.printData);
-    //}
-  }
-
-  ngOnChanges() {
-    if (this.printData) {
-      console.log("User action" + this.printData);
-    }
-  }
+  } 
 }

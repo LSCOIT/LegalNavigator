@@ -26,7 +26,6 @@ export class ProfileComponent implements OnInit {
   resourceIds: string[] = [];
   webResources: any[] = [];
   showRemove: boolean;
-  activeTabData: any = "Please print me";
 
   constructor(
     private personalizedPlanService: PersonalizedPlanService,
@@ -111,7 +110,6 @@ export class ProfileComponent implements OnInit {
           });
         }
       });
-    this.activeTabData = "My Saved Resources";
   }
 
   getSavedResource(resourceFilter: IResourceFilter) {
@@ -138,7 +136,6 @@ export class ProfileComponent implements OnInit {
           this.getTopics();
         });
     }
-    this.activeTabData = "My Plan";
   }
 
   ngOnInit() {
