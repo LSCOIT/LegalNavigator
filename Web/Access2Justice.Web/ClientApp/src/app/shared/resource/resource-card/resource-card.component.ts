@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Global, UserStatus } from '../../../global';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-resource-card',
@@ -14,7 +15,8 @@ export class ResourceCardComponent implements OnInit {
   @Input() isSearchResults: boolean;
   @Input() showRemoveOption: boolean;
   url: any;
-  
+  applicationUrl: any = window.location.host;
+
   constructor(public sanitizer: DomSanitizer,
     private global: Global) {
     this.sanitizer = sanitizer;

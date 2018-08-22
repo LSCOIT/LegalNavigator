@@ -32,37 +32,37 @@
         <div *ngFor="let resource of actionPlanData">
           <app-resource-card [resource]="resource" [showRemoveOption]="showRemoveOption"></app-resource-card>
         </div>
-        <button class="btn btn-primary" (click)="clickSeeMoreOrganizationsFromSubtopicDetails(actionPlanData[0].resourceType)">See more Action Plans</button>
+        <button class="btn btn-primary no-print" (click)="clickSeeMoreOrganizationsFromSubtopicDetails(actionPlanData[0].resourceType)">See more Action Plans</button>
       </div>
       <div *ngIf="articleData.length > 0" class="row">
         <h3>Articles</h3>
         <div *ngFor="let resource of articleData">
           <app-resource-card [resource]="resource" [showRemoveOption]="showRemoveOption"></app-resource-card>
         </div>
-        <button class="btn-sm btn-primary" (click)="clickSeeMoreOrganizationsFromSubtopicDetails(articleData[0].resourceType)">See more Articles</button>
-      </div>
+        <button class="btn-sm btn-primary no-print" (click)="clickSeeMoreOrganizationsFromSubtopicDetails(articleData[0].resourceType)">See more Articles</button>
+        </div>
       <div *ngIf="organizationData.length > 0" class="row">
         <h3>Organizations That May Be Able To Help</h3>
         <div *ngFor="let resource of organizationData">
           <app-resource-card [resource]="resource" [showRemoveOption]="showRemoveOption"></app-resource-card>
         </div>
-        <button class="btn-sm btn-primary" (click)="clickSeeMoreOrganizationsFromSubtopicDetails(organizationData[0].resourceType)">See more Organizations</button>
-      </div>
+        <button class="btn-sm btn-primary no-print" (click)="clickSeeMoreOrganizationsFromSubtopicDetails(organizationData[0].resourceType)">See more Organizations</button>
+        </div>
       <div *ngIf="videoData.length > 0" class="row">
         <h3>Videos</h3>
         <div *ngFor="let resource of videoData">
           <app-resource-card [resource]="resource" [showRemoveOption]="showRemoveOption"></app-resource-card>
         </div>
-        <button class="btn-sm btn-primary" (click)="clickSeeMoreOrganizationsFromSubtopicDetails(videoData[0].resourceType)">See more Videos</button>
-      </div>
+        <button class="btn-sm btn-primary no-print" (click)="clickSeeMoreOrganizationsFromSubtopicDetails(videoData[0].resourceType)">See more Videos</button>
+        </div>
       <div *ngIf="formData.length > 0" class="row">
         <h3>Forms</h3>
         <div *ngFor="let resource of formData">
           <app-resource-card [resource]="resource" [showRemoveOption]="showRemoveOption"></app-resource-card>
         </div>
-        <button class="btn-sm btn-primary" (click)="clickSeeMoreOrganizationsFromSubtopicDetails(formData[0].resourceType)">See more Forms</button>
+        <button class="btn-sm btn-primary no-print" (click)="clickSeeMoreOrganizationsFromSubtopicDetails(formData[0].resourceType)">See more Forms</button>
+        </div>
       </div>
-    </div>
     <div class="col-md-3 col-sm-12 pull-right">
       <app-guided-assistant-sidebar></app-guided-assistant-sidebar>
       <app-service-org-sidebar (showMoreOrganizations)="clickSeeMoreOrganizationsFromSubtopicDetails($event)"></app-service-org-sidebar>

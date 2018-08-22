@@ -31,5 +31,4 @@ export class UserActionSidebarComponent implements OnInit {
     this.resourceId = this.id;
     this.resourceType = this.type;
   }
-
 }
