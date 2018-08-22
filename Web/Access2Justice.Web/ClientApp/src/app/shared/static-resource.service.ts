@@ -22,6 +22,7 @@ export class StaticResourceService {
   helpAndFaqsContent: HelpAndFaqs;
   navigation: Navigation;
   homeContent: Home;
+  location: MapLocation;
 
   loadStateName(): MapLocation {
     if (sessionStorage.getItem("globalMapLocation")) {
@@ -47,5 +48,13 @@ export class StaticResourceService {
     };
     pageRequest.location = this.loadStateName();
     return this.httpClient.post(api.getContentUrl, pageRequest, httpOptions);
+  }
+
+  getStaticContents() {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    };
+    this.location = this.loadStateName();
+    return this.httpClient.post(api.getContentsUrl, location, httpOptions);
   }
 }

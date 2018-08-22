@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Global, UserStatus } from './global';
+import { StaticContentDataService } from './shared/static-content-data.service';
+import { StaticResourceService } from './shared/static-resource.service';
+import { MapService } from './shared/map/map.service';
 
 @Component({
   selector: 'app-root',
@@ -8,9 +11,14 @@ import { Global, UserStatus } from './global';
 })
 export class AppComponent implements OnInit {
   title = 'app';
+  staticContentResults: any;
+  subscription: any;
   
   constructor(    
-    private global: Global) {
+    private global: Global,
+    private staticContentDataService: StaticContentDataService,
+    private staticResourceService: StaticResourceService,
+    private mapService: MapService) {
   }
   getCookie(cookieName: string) {    
     let cookieNameEQ = cookieName + "=";
@@ -40,6 +48,13 @@ export class AppComponent implements OnInit {
     window.scroll(0, 0);
   }
 
+  setStaticContentData() {
+    this.staticResourceService.getStaticContents()
+      .subscribe(response => {
+        this.staticContentResults = response;
+        this.staticContentDataService.setData(this.staticContentResults);
+      });
+  }
 
   ngOnInit() {
     let profileData = this.getCookie("profileData");
@@ -49,5 +64,10 @@ export class AppComponent implements OnInit {
       this.deleteCookie("profileData", "", -1);
       this.global.role = UserStatus.Authorized;
     }
+    this.subscription = this.mapService.notifyLocation
+      .subscribe((value) => {
+        this.setStaticContentData();
+      });
+    this.setStaticContentData();
   }
 }

@@ -4,6 +4,7 @@ import { StaticResourceService } from '../../shared/static-resource.service';
 import { Navigation, Language, Location, Logo, Home, GuidedAssistant, TopicAndResources, About, Search, PrivacyPromise, HelpAndFAQ, Login } from './navigation';
 import { environment } from '../../../environments/environment';
 import { MapService } from '../map/map.service';
+import { StaticContentDataService } from '../static-content-data.service';
 
 @Component({
   selector: 'app-upper-nav',
@@ -21,7 +22,12 @@ export class UpperNavComponent implements OnInit {
   helpAndFAQ: HelpAndFAQ;
   login: Login;
   subscription: any;
-  constructor(private http: HttpClient, private staticResourceService: StaticResourceService, private mapService: MapService) { }
+  staticContent: any;
+
+  constructor(private http: HttpClient,
+    private staticResourceService: StaticResourceService,
+    private mapService: MapService,
+    private staticContentDataService: StaticContentDataService) { }
 
   filterUpperNavigationContent(navigation): void {
     if (navigation) {
@@ -38,12 +44,22 @@ export class UpperNavComponent implements OnInit {
       this.navigation = this.staticResourceService.navigation;
       this.filterUpperNavigationContent(this.navigation);
     } else {
-      this.staticResourceService.getStaticContent(homePageRequest)
-        .subscribe(content => {
-          this.navigation = content[0];
-          this.filterUpperNavigationContent(this.navigation);
-          this.staticResourceService.navigation = this.navigation;
+      //this.staticResourceService.getStaticContent(homePageRequest)
+      //  .subscribe(content => {
+      //    this.navigation = content[0];
+      //    this.filterUpperNavigationContent(this.navigation);
+      //    this.staticResourceService.navigation = this.navigation;
+      //  });
+      if (this.staticContentDataService.getData()) {
+        this.staticContent = this.staticContentDataService.getData();
+        this.staticContent.forEach(content => {
+          if (content.name === this.name) {
+            this.navigation = content;
+            this.filterUpperNavigationContent(this.navigation);
+            this.staticResourceService.navigation = this.navigation;
+          }
         });
+      }
     }
   }
 

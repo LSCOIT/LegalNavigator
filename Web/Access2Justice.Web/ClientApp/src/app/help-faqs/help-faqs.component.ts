@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HelpAndFaqs, ImageUrl, Faq, } from '../help-faqs/help-faqs';
 import { StaticResourceService } from '../shared/static-resource.service';
 import { environment } from '../../environments/environment';
+import { StaticContentDataService } from '../shared/static-content-data.service';
 
 @Component({
   selector: 'app-help-faqs',
@@ -15,9 +16,11 @@ export class HelpFaqsComponent implements OnInit {
   imageData: ImageUrl;
   name: string = 'HelpAndFAQPage';
   blobUrl: string = environment.blobUrl;
+  staticContent: any;
 
   constructor(
-    private staticResourceService: StaticResourceService
+    private staticResourceService: StaticResourceService,
+    private staticContentDataService: StaticContentDataService
   ) { }
 
   filterHelpAndFaqContent(helpAndFaqsContent): void {
@@ -34,12 +37,22 @@ export class HelpFaqsComponent implements OnInit {
       this.helpAndFaqsContent = this.staticResourceService.helpAndFaqsContent;
       this.filterHelpAndFaqContent(this.staticResourceService.helpAndFaqsContent);
     } else {
-      this.staticResourceService.getStaticContent(helpAndFAQPageRequest)
-        .subscribe(content => {
-          this.helpAndFaqsContent = content[0];
-          this.filterHelpAndFaqContent(this.helpAndFaqsContent);
-          this.staticResourceService.helpAndFaqsContent = this.helpAndFaqsContent;
+      //this.staticResourceService.getStaticContent(helpAndFAQPageRequest)
+      //  .subscribe(content => {
+      //    this.helpAndFaqsContent = content[0];
+      //    this.filterHelpAndFaqContent(this.helpAndFaqsContent);
+      //    this.staticResourceService.helpAndFaqsContent = this.helpAndFaqsContent;
+      //  });
+      if (this.staticContentDataService.getData()) {
+        this.staticContent = this.staticContentDataService.getData();
+        this.staticContent.forEach(content => {
+          if (content.name === this.name) {
+            this.helpAndFaqsContent = content;
+            this.filterHelpAndFaqContent(this.helpAndFaqsContent);
+            this.staticResourceService.helpAndFaqsContent = this.helpAndFaqsContent;
+          }
         });
+      }
     }
   }
 

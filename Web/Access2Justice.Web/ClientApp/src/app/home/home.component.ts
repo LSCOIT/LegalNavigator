@@ -5,6 +5,7 @@ import { environment } from '../../environments/environment';
 
 import { Home, Hero, GuidedAssistantOverview, TopicAndResources, Carousel, SponsorOverview, Privacy, Sponsors } from './home';
 import { StaticResourceService } from '../shared/static-resource.service';
+import { StaticContentDataService } from '../shared/static-content-data.service';
 
 @Component({
   selector: 'app-home',
@@ -32,9 +33,11 @@ export class HomeComponent implements OnInit {
   carouselData: Carousel;
   sponsorOverviewData: SponsorOverview;
   privacyData: Privacy;
+  staticContent: any;
 
   constructor(private staticResourceService: StaticResourceService,
-    private mapService: MapService) { }
+    private mapService: MapService,
+    private staticContentDataService: StaticContentDataService) { }
 
   filterHomeContent(homeContent): void {
     if (homeContent) {
@@ -60,12 +63,22 @@ export class HomeComponent implements OnInit {
       this.homeContent = this.staticResourceService.homeContent;
       this.filterHomeContent(this.staticResourceService.homeContent);
     } else {
-      this.staticResourceService.getStaticContent(homePageRequest)
-        .subscribe(content => {
-          this.homeContent = content[0];
-          this.filterHomeContent(this.homeContent);
-          this.staticResourceService.homeContent = this.homeContent;
+      //this.staticResourceService.getStaticContent(homePageRequest)
+      //  .subscribe(content => {
+      //    this.homeContent = content[0];
+      //    this.filterHomeContent(this.homeContent);
+      //    this.staticResourceService.homeContent = this.homeContent;
+      //  });
+      if (this.staticContentDataService.getData()) {
+        this.staticContent = this.staticContentDataService.getData();
+        this.staticContent.forEach(content => {
+          if (content.name === this.name) {
+            this.homeContent = content;
+            this.filterHomeContent(this.homeContent);
+            this.staticResourceService.homeContent = this.homeContent;
+          }
         });
+      }
     }
   }
 

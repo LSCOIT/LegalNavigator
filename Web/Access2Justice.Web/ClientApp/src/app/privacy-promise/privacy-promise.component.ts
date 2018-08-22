@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PrivacyContent, Image, Details } from '../privacy-promise/privacy-promise';
 import { StaticResourceService } from '../shared/static-resource.service';
+import { StaticContentDataService } from '../shared/static-content-data.service';
 
 @Component({
   selector: 'app-privacy-promise',
@@ -12,9 +13,11 @@ export class PrivacyPromiseComponent implements OnInit {
   informationData: Array<Details> = [];
   imageData: Image;
   name: string = 'PrivacyPromisePage';
+  staticContent: any;
 
   constructor(
-    private staticResourceService: StaticResourceService
+    private staticResourceService: StaticResourceService,
+    private staticContentDataService: StaticContentDataService
   ) { }
 
   filterPrivacyContent(privacyContent): void {
@@ -30,12 +33,22 @@ export class PrivacyPromiseComponent implements OnInit {
       this.privacyContent = this.staticResourceService.privacyContent;
       this.filterPrivacyContent(this.staticResourceService.privacyContent);
     } else {
-      this.staticResourceService.getStaticContent(privacyPageRequest)
-        .subscribe(content => {
-          this.privacyContent = content[0];
-          this.filterPrivacyContent(this.privacyContent);
-          this.staticResourceService.privacyContent = this.privacyContent;
+      //this.staticResourceService.getStaticContent(privacyPageRequest)
+      //  .subscribe(content => {
+      //    this.privacyContent = content[0];
+      //    this.filterPrivacyContent(this.privacyContent);
+      //    this.staticResourceService.privacyContent = this.privacyContent;
+      //  });
+      if (this.staticContentDataService.getData()) {
+        this.staticContent = this.staticContentDataService.getData();
+        this.staticContent.forEach(content => {
+          if (content.name === this.name) {
+            this.privacyContent = content;
+            this.filterPrivacyContent(this.privacyContent);
+            this.staticResourceService.privacyContent = this.privacyContent;
+          }
         });
+      }
     }
   }
 

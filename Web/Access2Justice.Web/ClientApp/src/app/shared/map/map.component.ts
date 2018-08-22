@@ -8,6 +8,7 @@ import { MapResultsService } from '../../shared/sidebars/map-results.service';
 import { Navigation, Location, LocationNavContent } from '../navigation/navigation';
 import { StaticResourceService } from '../../shared/static-resource.service';
 import { Global } from '../../global';
+import { StaticContentDataService } from '../static-content-data.service';
 
 @Component({
   selector: 'app-map',
@@ -38,10 +39,14 @@ export class MapComponent implements OnInit {
   location: Array<Location>;
   detectLocation = false;
   name: string = 'Navigation';
+  staticContent: any;
 
-  constructor(private modalService: BsModalService, private mapService: MapService,
-    private mapResultsService: MapResultsService, private staticResourceService: StaticResourceService,
-    private global:Global) { }
+  constructor(private modalService: BsModalService,
+    private mapService: MapService,
+    private mapResultsService: MapResultsService,
+    private staticResourceService: StaticResourceService,
+    private global: Global,
+    private staticContentDataService: StaticContentDataService) { }
 
   changeLocation(template) {
     this.config = {
@@ -139,12 +144,22 @@ export class MapComponent implements OnInit {
       this.navigation = this.staticResourceService.navigation;
       this.filterLocationNavigationContent(this.staticResourceService.navigation);
     } else {
-      this.staticResourceService.getStaticContent(homePageRequest)
-        .subscribe(content => {
-          this.navigation = content[0];
-          this.filterLocationNavigationContent(this.navigation);
-          this.staticResourceService.navigation = this.navigation;
+      //this.staticResourceService.getStaticContent(homePageRequest)
+      //  .subscribe(content => {
+      //    this.navigation = content[0];
+      //    this.filterLocationNavigationContent(this.navigation);
+      //    this.staticResourceService.navigation = this.navigation;
+      //  });
+      if (this.staticContentDataService.getData()) {
+        this.staticContent = this.staticContentDataService.getData();
+        this.staticContent.forEach(content => {
+          if (content.name === this.name) {
+            this.navigation = content;
+            this.filterLocationNavigationContent(this.navigation);
+            this.staticResourceService.navigation = this.navigation;
+          }
         });
+      }
     }
   }
 

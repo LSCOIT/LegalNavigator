@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { StaticResourceService } from '../static-resource.service';
 import { Navigation, PrivacyPromise, HelpAndFAQ, Home, GuidedAssistant, TopicAndResources, About} from '../navigation/navigation';
+import { StaticContentDataService } from '../static-content-data.service';
 
 @Component({
   selector: 'app-footer',
@@ -10,7 +11,8 @@ import { Navigation, PrivacyPromise, HelpAndFAQ, Home, GuidedAssistant, TopicAnd
 })
 export class FooterComponent implements OnInit {
 
-  constructor(private staticResourceService: StaticResourceService) { }
+  constructor(private staticResourceService: StaticResourceService,
+    private staticContentDataService: StaticContentDataService) { }
   blobUrl: any = environment.blobUrl;
   navigation: Navigation;
   name: string = 'Navigation';
@@ -20,6 +22,7 @@ export class FooterComponent implements OnInit {
   about: About;
   guidedAssistant: GuidedAssistant;
   topicAndResources: TopicAndResources;
+  staticContent: any;
 
   filterNavigationContent(navigation): void {
     if (navigation) {
@@ -38,12 +41,22 @@ export class FooterComponent implements OnInit {
       this.navigation = this.staticResourceService.navigation;
       this.filterNavigationContent(this.staticResourceService.navigation);
     } else {
-      this.staticResourceService.getStaticContent(pageContentRequest)
-        .subscribe(content => {
-          this.navigation = content[0];
-          this.filterNavigationContent(this.navigation);
-          this.staticResourceService.navigation = this.navigation;
+      //this.staticResourceService.getStaticContent(pageContentRequest)
+      //  .subscribe(content => {
+      //    this.navigation = content[0];
+      //    this.filterNavigationContent(this.navigation);
+      //    this.staticResourceService.navigation = this.navigation;
+      //  });
+      if (this.staticContentDataService.getData()) {
+        this.staticContent = this.staticContentDataService.getData();
+        this.staticContent.forEach(content => {
+          if (content.name === this.name) {
+            this.navigation = content;
+            this.filterNavigationContent(this.navigation);
+            this.staticResourceService.navigation = this.navigation;
+          }
         });
+      }
     }
   }
 

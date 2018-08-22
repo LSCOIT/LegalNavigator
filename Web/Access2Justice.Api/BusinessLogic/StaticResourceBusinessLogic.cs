@@ -33,6 +33,21 @@ namespace Access2Justice.Api.BusinessLogic
             return result.Count > 0 ? result: await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourceCollectionId, Constants.Name, name, location);            
         }
 
+        public async Task<dynamic> GetPageStaticResourcesDataAsync(Location location)
+        {
+            dynamic result = null;
+            location.County = string.Empty;
+            location.City = string.Empty;
+            location.ZipCode = string.Empty;
+            if (!string.IsNullOrEmpty(location.State))
+            {
+                result = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourceCollectionId, Constants.Name, location);
+            }
+            location.State = "Default";
+            result = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourceCollectionId, Constants.Name, location);
+            return result.Count > 0 ? result : await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourceCollectionId, Constants.Name, location);
+        }
+
         public async Task<dynamic> UpsertStaticHomePageDataAsync(HomeContent homePageContent, Location location)
         {
             var serializedResult = JsonConvert.SerializeObject(homePageContent);
