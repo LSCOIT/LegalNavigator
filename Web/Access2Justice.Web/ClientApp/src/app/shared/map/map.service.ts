@@ -45,6 +45,7 @@ export class MapService {
           });
 
           let mapService = new MapService();
+          this.location.address.adminDistrict = (this.location.address.locality ? this.location.address.locality : this.location.address.formattedAddress);
           mapService.mapLocationDetails(this.location);
 
           this.map = new Microsoft.Maps.Map('#my-map',
@@ -87,6 +88,7 @@ export class MapService {
   mapLocationDetails(location) {
     this.location = location;
     this.mapLocation = { state: '', city: '', county: '', zipCode: '', locality: '', address: '' };
+    this.location.address.adminDistrict = (this.location.address.adminDistrict ? this.location.address.adminDistrict : this.location.address.formattedAddress);
     this.mapLocation.state = this.location.address.adminDistrict;
     this.mapLocation.county = this.location.address.district;
     this.mapLocation.city = this.location.address.locality;
