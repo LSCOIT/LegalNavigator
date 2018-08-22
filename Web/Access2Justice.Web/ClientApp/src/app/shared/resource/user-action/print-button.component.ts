@@ -12,7 +12,7 @@ import { Component, OnInit } from '@angular/core';
 
 export class PrintButtonComponent implements OnInit {
   template: string = '';
-  applicationUrl: any = window.location.host;
+  applicationUrl: any = window.location.origin;
   title: any = document.title;
   activeTab: string = '';
   constructor() { }
@@ -58,7 +58,7 @@ export class PrintButtonComponent implements OnInit {
     popupWin.document.write(`
         <html>
           <head>
-            <title>Access to justice - https://a2jdevweb.azurewebsites.net/</title>
+            <title> ${this.title + ' - ' + this.applicationUrl}</title>
             <style>
                 @media print {
                 .no-print, .no-print * {
