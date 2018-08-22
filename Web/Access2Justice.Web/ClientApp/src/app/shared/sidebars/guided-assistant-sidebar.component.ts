@@ -15,6 +15,7 @@ export class GuidedAssistantSidebarComponent implements OnInit {
   location: MapLocation;
   activeTopic: any;
   @Input() guidedAssistantId: string;
+  @Input() showSidebar: boolean;
   resourceFilter: IResourceFilter = {
     ResourceType: '', ContinuationToken: '', TopicIds: [],
     ResourceIds: [], PageNumber: 0, Location: {}, IsResourceCountRequired: false

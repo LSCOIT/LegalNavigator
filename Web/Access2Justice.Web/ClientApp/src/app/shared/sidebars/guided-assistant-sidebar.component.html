@@ -1,11 +1,9 @@
-<div class='no-print'>
- <div class="sidebar-block text-center box-no-shadow">
+<div *ngIf="guidedAssistantId || showSidebar" class="sidebar-block text-center box-no-shadow no-print">
   <h5>Need help? Use our Guided Assistant to receive personalized recommendations.</h5>
   <p class="ps">No account necessary. We never share any information you provide. Read our <a routerLink='/privacy'>Privacy Promise</a>.</p>
   <button class="btn-sm btn-primary">
-    <a *ngIf="!guidedAssistantId" [routerLink]="['/guidedassistant/']">Start the Guided Assistant</a>
+    <a *ngIf="!guidedAssistantId" [routerLink]="['/guidedassistant']">Start the Guided Assistant</a>
     <a *ngIf="guidedAssistantId" [routerLink]="['/guidedassistant/',guidedAssistantId]">Start the Guided Assistant</a>
   </button>
- </div>
 </div>
 
