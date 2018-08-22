@@ -56,7 +56,7 @@
     <div *ngIf="isInternalResource" class="col-md-3 col-sm-12 pull-right">
       <app-map-results [searchResource]="searchResults"></app-map-results>
       <div class="row guided-assistant">
-        <app-guided-assistant-sidebar></app-guided-assistant-sidebar>
+        <app-guided-assistant-sidebar [guidedAssistantId]="guidedAssistantId"></app-guided-assistant-sidebar>
       </div>
     </div>
   </div>
