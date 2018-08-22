@@ -42,7 +42,6 @@ export class DownloadButtonComponent implements OnInit {
     pdf_Object.addHTML(document.body, options, function () {
       pdf_Object.save('PersonalisedPlan-' + new Date() + '.pdf');
     });
-    
   }
 
   ngOnInit() {
