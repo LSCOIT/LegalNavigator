@@ -3,6 +3,7 @@ import { PersonalizedPlanService } from '../guided-assistant/personalized-plan/p
 import { PersonalizedPlanTopic } from '../guided-assistant/personalized-plan/personalized-plan';
 import { IResourceFilter } from '../shared/search/search-results/search-results.model';
 import { EventUtilityService } from '../shared/event-utility.service';
+import { HttpParams } from '@angular/common/http';
 import { Global } from '../global';
 
 @Component({
@@ -93,12 +94,15 @@ export class ProfileComponent implements OnInit {
     this.topicIds = [];
     this.resourceIds = [];
     this.webResources = [];
-    this.personalizedPlanService.getUserSavedResources(this.userId)
+    let params = new HttpParams()
+      .set("oid", this.userId)
+      .set("type", "resources");
+    this.personalizedPlanService.getUserSavedResources(params)
       .subscribe(response => {
         if (response != undefined) {
           response.forEach(property => {
-            if (property.resourceTags != undefined) {
-              property.resourceTags.forEach(resource => {
+            if (property.resources != undefined) {
+              property.resources.forEach(resource => {
                 if (resource.resourceType === "Topics") {
                   this.topicIds.push(resource.itemId);
                 } else if (resource.resourceType === "WebResources") {
@@ -131,10 +135,13 @@ export class ProfileComponent implements OnInit {
       this.planId = this.personalizedPlanService.getPersonalizedPlan();
       this.getTopics();
     } else {
-      this.personalizedPlanService.getUserPlanId(this.userId)
+      let params = new HttpParams()
+        .set("oid", this.userId)
+        .set("type", "plan");
+      this.personalizedPlanService.getUserSavedResources(params)
         .subscribe(response => {
-          if (response.personalizedActionPlanId) {
-            this.planId = response.personalizedActionPlanId;
+          if (response[0].id) {
+            this.planId = response[0].id;
           }
           this.getTopics();
         });

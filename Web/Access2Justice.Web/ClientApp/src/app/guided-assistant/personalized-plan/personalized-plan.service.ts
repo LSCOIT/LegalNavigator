@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { Resources, PersonalizedPlanTopic, PersonalizedPlan } from './personalized-plan';
+import { Resources, PersonalizedPlanTopic, PersonalizedPlan, ProfileResources, SavedResources } from './personalized-plan';
 import { api } from '../../../api/api';
 import { IResourceFilter } from '../../shared/search/search-results/search-results.model';
 import { ArrayUtilityService } from '../../shared/array-utility.service';
+import { ToastrService } from 'ngx-toastr';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -24,36 +25,29 @@ export class PersonalizedPlanService {
   tempPlanDetailTags: any;
   userId: string;
   planDetails: any = [];
-  planSessionKey: string= "bookmarkPlanId";
+  planSessionKey: string = "bookmarkPlanId";
+  profileResources: ProfileResources = { oId: '', resourceTags: [], type: '' };
+  savedResources: SavedResources;
+  resourceTags: Array<SavedResources> = [];
+  resourceIds: Array<string>;
 
-  constructor(private http: HttpClient, private arrayUtilityService: ArrayUtilityService) { }
-
-  getActionPlanConditions(id): Observable<any> {
-    return this.http.get<PersonalizedPlan>(api.planUrl + '/' + id);
+  constructor(private http: HttpClient, private arrayUtilityService: ArrayUtilityService,
+    private toastr: ToastrService) { }
+  
+  getActionPlanConditions(planId): Observable<any> {
+    return this.http.get<PersonalizedPlan>(api.planUrl + '/' + planId);
   }
 
-  getUserPlanId(oid): Observable<any> {
-    return this.http.get<PersonalizedPlan>(api.getUserProfileUrl + '/' + oid);
+  getUserSavedResources(params): Observable<any> {
+    return this.http.post<any>(api.getProfileUrl, params);
   }
 
-  getUserSavedResources(oid): Observable<any> {
-    return this.http.get<PersonalizedPlan>(api.getProfileUrl + '/' + oid);
-  }
-
-  getMarkCompletedUpdatedPlan(updatePlan) {
-    return this.http.post(api.updatePlanUrl, updatePlan, httpOptions);
-  }
-
-  saveResources(resource) {
+  saveResources(resource: ProfileResources) {
     return this.http.post(api.userPlanUrl, resource, httpOptions);
   }
 
   userPlan(plan: PersonalizedPlan) {
     return this.http.post<any>(api.updateUserPlanUrl, plan, httpOptions);
-  }
-
-  savePersonalizedPlanToProfile(params): Observable<any> {
-    return this.http.post(api.updateUserProfileUrl, params);
   }
 
   getBookmarkedData() {
@@ -80,11 +74,7 @@ export class PersonalizedPlanService {
   }
 
   getPersonalizedResources(resourceInput: IResourceFilter) {
-    let profileData = sessionStorage.getItem("profileData");
-    if (profileData != undefined) {
-      profileData = JSON.parse(profileData);
-      this.userId = profileData["UserId"];
-    }
+    this.userId = this.getUserId();
     if (this.userId === undefined) {
       this.getBookmarkedData();
       if (this.topics) {
@@ -95,26 +85,6 @@ export class PersonalizedPlanService {
       }
     }
     return this.http.put(api.getPersonalizedResourcesUrl, resourceInput, httpOptions);
-  }
-
-  //Below method need to be modified to store data in session if user is not logged in
-  saveResourcesToSession(resources) {
-    this.resoureStorage = sessionStorage.getItem(this.sessionKey);
-    if (this.resoureStorage && this.resoureStorage.length > 0) {
-      this.tempStorage = JSON.parse(this.resoureStorage);
-      this.isObjectExists = this.arrayUtilityService.checkObjectExistInArray(this.tempStorage, resources);
-      if (!this.isObjectExists) {
-        this.tempStorage.push(resources);
-        sessionStorage.setItem(this.sessionKey, JSON.stringify(this.tempStorage));
-      }
-    } else {
-      this.tempStorage = [resources];
-      sessionStorage.setItem(this.sessionKey, JSON.stringify(this.tempStorage));
-    }
-  }
-
-  savePlanToSession(planId) {
-    sessionStorage.setItem(this.planSessionKey, JSON.stringify(planId));
   }
 
   getPlanDetails(topics, planDetailTags): any {
@@ -143,6 +113,78 @@ export class PersonalizedPlanService {
       }
     }
     return this.tempPlanDetailTags;
+  }
+
+  getUserId(): string {
+    let profileData = sessionStorage.getItem("profileData");
+    if (profileData != undefined) {
+      profileData = JSON.parse(profileData);
+      return profileData["UserId"];
+    }
+  }
+
+  saveResourcesToUserProfile() {
+    this.savedResources = { itemId: '', resourceType: '', resourceDetails: {} };
+    this.resoureStorage = sessionStorage.getItem(this.sessionKey);
+    if (this.resoureStorage && this.resoureStorage.length > 0) {
+      this.resoureStorage = JSON.parse(this.resoureStorage);
+    }
+    this.savedResources = {
+      itemId: this.resoureStorage.itemId,
+      resourceType: this.resoureStorage.resourceType, resourceDetails: this.resoureStorage.resourceDetails
+    };
+    this.saveResourcesToProfile(this.savedResources);
+  }
+
+  saveResourcesToProfile(savedResources) {
+    this.userId = this.getUserId();
+    this.resourceTags = [];
+    let params = new HttpParams()
+      .set("oid", this.userId)
+      .set("type", "resources");
+    this.getUserSavedResources(params)
+      .subscribe(response => {
+        if (response) {
+          response.forEach(property => {
+            if (property.resources) {
+              property.resources.forEach(resource => {
+                this.resourceTags.push(resource);
+              });
+            }
+          });
+        }
+        if (this.arrayUtilityService.checkObjectExistInArray(this.resourceTags, savedResources)) {
+          this.showWarning('Resource already saved to profile');
+        } else {
+          this.resourceTags.push(savedResources);
+          this.saveResourceToProfile(this.resourceTags);
+        }
+        sessionStorage.removeItem(this.sessionKey);
+      });
+  }
+
+  saveResourceToProfile(resourceTags) {
+    this.profileResources = { oId: this.userId, resourceTags: resourceTags, type: 'resources' };
+    this.saveResources(this.profileResources)
+      .subscribe(() => {
+        this.showSuccess('Resource saved to profile');
+      });
+  }
+
+  getResourceIds(resources): Array<string> {
+    this.resourceIds = [];
+    resources.forEach(resource => {
+      this.resourceIds.push(resource.id);
+    });
+    return this.resourceIds;
+  }
+
+  showSuccess(message) {
+    this.toastr.success(message);
+  }
+
+  showWarning(message) {
+    this.toastr.warning(message);
   }
 
 }

@@ -7,8 +7,8 @@ namespace Access2Justice.Shared.Interfaces
     public interface IUserProfileBusinessLogic
     {
         Task<UserProfile> GetUserProfileDataAsync(string oId);
-        Task<dynamic> GetUserResourceProfileDataAsync(string oId);
+        Task<dynamic> GetUserResourceProfileDataAsync(string oId, string type);
         Task<UserProfile> UpdateUserProfilePlanIdAsync(string oId, Guid planId);
-        Task<dynamic> UpsertUserSavedResourcesAsync(dynamic userData);
+        Task<dynamic> UpsertUserSavedResourcesAsync(ProfileResources userResources);
     }
 }
