@@ -1,35 +1,22 @@
-import { async, ComponentFixture, TestBed, ComponentFixtureNoNgZone } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActionPlansComponent } from './action-plans.component';
 import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ModalModule } from 'ngx-bootstrap';
-import { PlanTopic, PersonalizedPlan, PlanStep, PersonalizedPlanTopic } from '../../../../guided-assistant/personalized-plan/personalized-plan';
-import { assertNotNull } from '@angular/compiler/src/output/output_ast';
-import { Observable } from 'rxjs/Observable';
-import { TemplateRef } from '@angular/core';
+import { PlanStep } from '../../../../guided-assistant/personalized-plan/personalized-plan';
 import { ArrayUtilityService } from '../../../../shared/array-utility.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
-import { DomSanitizer } from '@angular/platform-browser';
-import { Title } from '@angular/platform-browser/src/browser/title';
 import { ToastrService, ToastrModule, ToastPackage } from 'ngx-toastr';
-import { Global, UserStatus } from '../../../../global';
-import { ComponentFactoryBoundToModule } from '@angular/core/src/linker/component_factory_resolver';
+import { Global } from '../../../../global';
 
-const mockMarkCompletedUpdatedPlan = {
-  getMarkCompletedUpdatedPlan: () => { return Observable.of(); }
-};
-
-describe('ActionPlansComponent', () => {
+fdescribe('ActionPlansComponent', () => {
   let component: ActionPlansComponent;
   let fixture: ComponentFixture<ActionPlansComponent>;
   let modalService: BsModalService;
   let sharedService: ArrayUtilityService;
   let toastrService: ToastrService;
   let personalizedPlanService: PersonalizedPlanService;
-  let globalService: Global;
-  let mockTemplate = "testTemplate";
   let mockIsChecked = true;
   let mockTopicId = "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef";
   let mockStepId = "f05ace00-c1cc-4618-a224-56aa4677d2aa";
@@ -209,68 +196,9 @@ describe('ActionPlansComponent', () => {
     ]
   };
   let mockPlanDetailsArray = [mockPlanDetailsJson];
-  let mockPlanSteps = [{
-    "stepTags": [
-      {
-        "id": {
-          "id": "6b230be1-302b-7090-6cb3-fc6aa084274c",
-          "type": "steps",
-          "title": "Make sure your summons is real.",
-          "description": "Why you should do this dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo.",
-        },
-        "order": 1,
-        "markCompleted": false
-      },
-      {
-        "id": {
-          "id": "d46aecee-8c79-df1b-4081-1ea02b5022df",
-          "type": "steps",
-          "title": "Try to resolve the issue with your landlord to see if you can come to an agreement",
-          "description": "Why you should do this dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo.",
-        },
-        "order": 2,
-        "markCompleted": false
-      }
-    ],
-    "topicId": "addf41e9-1a27-4aeb-bcbb-7959f95094ba",
-    "topicName": "Family"
-  },
-  {
-    "stepTags": [
-      {
-        "id": {
-          "id": "2705d544-6af7-bd69-4f19-a1b53e346da2",
-          "type": "steps",
-          "title": "Take to your partner to see if you can come to an agreement",
-          "description": "Why you should do this dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo.",
-        },
-        "order": 1,
-        "markCompleted": false
-      },
-      {
-        "id": {
-          "id": "3d64b676-cc4b-397d-a5bb-f4a0ea6d3040",
-          "type": "steps",
-          "title": "Submit a complaint for custody form",
-          "description": "Why you should do this dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo.",
-        },
-        "order": 2,
-        "markCompleted": false
-      }
-    ],
-    "topicId": "932abb0a-c6bb-46da-a3d8-5f52c2c914a0",
-    "topicName": "DivorceWithChildren"
-  }];
-  let template: TemplateRef<any>;
-  let mockplanSteps: Array<PlanStep>;
   let mockplanStep: PlanStep;
-  let mockdisplaySteps: boolean = false
-  let mockupdatePlan: PlanTopic;
-  let mockPlanTags = "testPlanTags";
-  let mockEventChecked = {
-    "target": { "checked": true }
-  }
- 
+  let mockdisplaySteps: boolean = false;
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -334,21 +262,21 @@ describe('ActionPlansComponent', () => {
   });
 
   it("should call orderBy method in getPersonalizedPlan", () => {
-    spyOn(component, 'sortStepsByOrder')
+    spyOn(component, 'sortStepsByOrder');
     component.sortStepsByOrder(mockPlanDetails);
     expect(component.sortStepsByOrder).toHaveBeenCalled();
   });
 
   it('should call checkCompleted', () => {
     spyOn(component, 'checkCompleted');
-    expect(component.checkCompleted).toHaveBeenCalled;
+    expect(component.checkCompleted).toHaveBeenCalled();
   });
 
   it('should call getPlanDetails method when checkCompleted called with values', () => {
     spyOn(component, 'getPlanDetails');
-    component.getPlanDetails(mockTopicId, mockStepId, mockIsChecked)
+    component.getPlanDetails(mockTopicId, mockStepId, mockIsChecked);
     component.checkCompleted;
-    expect(component.getPlanDetails).toHaveBeenCalled;
+    expect(component.getPlanDetails).toHaveBeenCalled();
   });
 
   it("should call getActionPlanConditions when getPlanDetails method called ", () => {

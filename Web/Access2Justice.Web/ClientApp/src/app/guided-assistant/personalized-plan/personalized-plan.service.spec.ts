@@ -1,30 +1,12 @@
-import { TestBed, inject } from '@angular/core/testing';
-import { HttpClientModule, HttpHeaders, HttpParams } from '@angular/common/http';
+import { TestBed } from '@angular/core/testing';
+import { HttpClientModule } from '@angular/common/http';
 import { PersonalizedPlanService } from './personalized-plan.service';
-import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { api } from '../../../api/api';
 import { Observable } from 'rxjs/Rx';
-import { ShowMoreService } from '../../shared/sidebars/show-more.service';
 import { ArrayUtilityService } from '../../shared/array-utility.service';
-import { catchError } from 'rxjs/operators/catchError';
 import { PersonalizedPlan } from './personalized-plan';
 
-fdescribe('Service:PersonalizedPlan', () => {
-  let mockupdateplan = {
-    "planId": "bf8d7e7e-2574-7b39-efc7-83cb94adae07",
-    "oId": "User Id",
-    "type": "plans",
-    "planTags": [
-      {
-        "topicId": "addf41e9-1a27-4aeb-bcbb-7959f95094ba",
-        "stepTags": [
-          {
-            "id": "6b230be1-302b-7090-6cb3-fc6aa084274c",
-            "order": 1,
-            "markCompleted": true
-          }]
-      }]
-  };
+describe('Service:PersonalizedPlan', () => {
   let mockPlanDetailsJson = {
     "id": "bf8d7e7e-2574-7b39-efc7-83cb94adae07",
     "oId": "User Id",
@@ -49,49 +31,25 @@ fdescribe('Service:PersonalizedPlan', () => {
     "planTags": [{}],
     "type": "testtype"
   }];
-  let mockUserPlan = {
-    "id": "ba67afca-4236-4875-9b11-fbb8a113ecb2",
-    "oId": "ACB833BB3F817C2FBE5A72CE37FE7AB9CD977E585",
-    "firstName": "testname",
-    "lastName": "testlastname",
-    "eMail": "testemail",
-    "isActive": "Yes",
-    "createdBy": "test createdby",
-    "createdTimeStamp": "08/06/2018 11:42:39",
-    "modifiedBy": null,
-    "modifiedTimeStamp": null,
-    "sharedResource": null,
-    "personalizedActionPlanId": "a97fc45d-cbbe-4222-9d14-2ec227229b92",
-    "curatedExperienceAnswersId": "00000000-0000-0000-0000-000000000000"
-  }
+
   let mockPersonalizedPlan: PersonalizedPlan = {
     "id": "bf8d7e7e-2574-7b39-efc7-83cb94adae07",
     "topics": [],
     "isShared": true
   }
-  let mockActiveRoute: ActivatedRoute;
-  let resoureStorage = sessionStorage.getItem(this.mockSessionKey);
+
   let mockResponse = Observable.of(mockPlanDetailsJson);
   let mockTopics = ["topic1", "topic2"];
   let mockTopicsList = [{ topic: "topic1", isSelected: true }, { topic: "topic2", isSelected: true }];
-  let mockPlanId = "993jfk3003j";
-  let mockUserId = "11452111";
-  let mockSessionKey = "883833";
-  let mockObjects = false;
-  let mockObject = false;
-  let mockOid = "ACB833BB3F817C2FBE5A72CE37FE7AB9CD9";
   let mockid = "bf8d7e7e-2574-7b39-efc7-83cb94adae07";
-  let mokParams = new HttpParams()
-    .set("oId", mockUserId)
-    .set("planId", mockPlanId);
-
   let service: PersonalizedPlanService;
   let arrayUtilityService: ArrayUtilityService;
   const httpSpy = jasmine.createSpyObj('http', ['get', 'post']);
   var originalTimeout;
   let mockUserSavedResources = [
     {
-      "oId": "ACB833BB3F817C2FBE5A72CE37FE7AB9CD977E58580B9832B91865E234A0A3D37C8F2C2A3B401CA64748F3098C9FE3374106B6F4A2B157FE091CA6332C88A89B",
+      "oId":
+        "ACB833BB3F817C2FBE5A72CE37FE7AB9CD977E58580B9832B91865E234A0A3D37C8F2C2A3B401CA64748F3098C9FE3374106B6F4A2B157FE091CA6332C88A89B",
       "resourceTags": [
         {
           "itemId": "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef",
@@ -104,7 +62,8 @@ fdescribe('Service:PersonalizedPlan', () => {
     },
     {
       "planId": "cf152275-32b2-b22c-de54-42de8fdfe778",
-      "oId": "ACB833BB3F817C2FBE5A72CE37FE7AB9CD977E58580B9832B91865E234A0A3D37C8F2C2A3B401CA64748F3098C9FE3374106B6F4A2B157FE091CA6332C88A89B",
+      "oId":
+        "ACB833BB3F817C2FBE5A72CE37FE7B",
       "type": "plans",
       "planTags": [
         {
@@ -125,7 +84,7 @@ fdescribe('Service:PersonalizedPlan', () => {
       ],
       "id": "06ba59fd-33b7-5a45-3f52-24adf3f487e4"
     }
-  ]
+  ];
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
@@ -134,9 +93,7 @@ fdescribe('Service:PersonalizedPlan', () => {
     service = new PersonalizedPlanService(httpSpy, arrayUtilityService, undefined);
     arrayUtilityService = new ArrayUtilityService();
     httpSpy.get.calls.reset();
-  });
-
-  beforeEach(function () {
+ 
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
     it('should call getBookmarkedData when getPersonalizedPlan called', (done) => {
@@ -208,5 +165,4 @@ fdescribe('Service:PersonalizedPlan', () => {
     service.displayPlanDetails(mockPlanDetailTags, mockTopicsList);
     expect(service.displayPlanDetails).toHaveBeenCalled();
   });
-
 });

@@ -3,11 +3,11 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { PersonalizedPlanComponent } from './personalized-plan.component';
 import { PersonalizedPlanService } from './personalized-plan.service';
 import { HttpClientModule } from '@angular/common/http';
-import { Observable } from 'rxjs';
 import { RouterModule } from '@angular/router';
 import { APP_BASE_HREF } from '@angular/common';
 import { ArrayUtilityService } from '../../shared/array-utility.service';
-import { ToastrService, ToastrModule, ToastPackage } from 'ngx-toastr';
+import { ToastrService, ToastrModule } from 'ngx-toastr';
+
 describe('Component:PersonalizedPlan', () => {
   let component: PersonalizedPlanComponent;
   let fixture: ComponentFixture<PersonalizedPlanComponent>;
@@ -46,6 +46,7 @@ describe('Component:PersonalizedPlan', () => {
     ],
     "id": "addf41e9-1a27-4aeb-bcbb-7959f95094ba"
   };
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ToastrModule.forRoot(),
@@ -57,18 +58,17 @@ describe('Component:PersonalizedPlan', () => {
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: APP_BASE_HREF, useValue: '/' },
-        PersonalizedPlanService, ArrayUtilityService, ToastrService,
+        PersonalizedPlanService, ArrayUtilityService, ToastrService
       ]
     })
       .compileComponents();
-  }));
-  beforeEach(() => {
+
     fixture = TestBed.createComponent(PersonalizedPlanComponent);
     component = fixture.componentInstance;
     personalizedPlanService = TestBed.get(PersonalizedPlanService);
     toastrService = TestBed.get(ToastrService);
     fixture.detectChanges();
-  });
+  }));
 
   it('should create personalized plan component', () => {
     expect(component).toBeTruthy();
