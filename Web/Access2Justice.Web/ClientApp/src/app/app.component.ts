@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Global, UserStatus } from './global';
-import { StaticContentDataService } from './shared/static-content-data.service';
 import { StaticResourceService } from './shared/static-resource.service';
 import { MapService } from './shared/map/map.service';
 
@@ -16,7 +15,6 @@ export class AppComponent implements OnInit {
   
   constructor(    
     private global: Global,
-    private staticContentDataService: StaticContentDataService,
     private staticResourceService: StaticResourceService,
     private mapService: MapService) {
   }
@@ -52,7 +50,7 @@ export class AppComponent implements OnInit {
     this.staticResourceService.getStaticContents()
       .subscribe(response => {
         this.staticContentResults = response;
-        this.staticContentDataService.setData(this.staticContentResults);
+        this.global.setData(this.staticContentResults);
       });
   }
 

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HelpAndFaqs, ImageUrl, Faq, } from '../help-faqs/help-faqs';
 import { StaticResourceService } from '../shared/static-resource.service';
 import { environment } from '../../environments/environment';
-import { StaticContentDataService } from '../shared/static-content-data.service';
+import { Global } from '../global';
 
 @Component({
   selector: 'app-help-faqs',
@@ -17,10 +17,11 @@ export class HelpFaqsComponent implements OnInit {
   name: string = 'HelpAndFAQPage';
   blobUrl: string = environment.blobUrl;
   staticContent: any;
+  staticContentSubcription: any;
 
   constructor(
     private staticResourceService: StaticResourceService,
-    private staticContentDataService: StaticContentDataService
+    private global: Global
   ) { }
 
   filterHelpAndFaqContent(helpAndFaqsContent): void {
@@ -43,8 +44,8 @@ export class HelpFaqsComponent implements OnInit {
       //    this.filterHelpAndFaqContent(this.helpAndFaqsContent);
       //    this.staticResourceService.helpAndFaqsContent = this.helpAndFaqsContent;
       //  });
-      if (this.staticContentDataService.getData()) {
-        this.staticContent = this.staticContentDataService.getData();
+      if (this.global.getData()) {
+        this.staticContent = this.global.getData();
         this.staticContent.forEach(content => {
           if (content.name === this.name) {
             this.helpAndFaqsContent = content;
@@ -58,5 +59,9 @@ export class HelpFaqsComponent implements OnInit {
 
   ngOnInit() {
     this.getHelpFaqPageContent();
+    this.staticContentSubcription = this.global.notifyStaticData
+      .subscribe((value) => {
+        this.getHelpFaqPageContent();
+      });
   }
 }

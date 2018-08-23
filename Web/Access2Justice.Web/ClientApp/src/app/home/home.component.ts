@@ -5,7 +5,7 @@ import { environment } from '../../environments/environment';
 
 import { Home, Hero, GuidedAssistantOverview, TopicAndResources, Carousel, SponsorOverview, Privacy, Sponsors } from './home';
 import { StaticResourceService } from '../shared/static-resource.service';
-import { StaticContentDataService } from '../shared/static-content-data.service';
+import { Global } from '../global';
 
 @Component({
   selector: 'app-home',
@@ -34,10 +34,11 @@ export class HomeComponent implements OnInit {
   sponsorOverviewData: SponsorOverview;
   privacyData: Privacy;
   staticContent: any;
+  staticContentSubcription: any;
 
   constructor(private staticResourceService: StaticResourceService,
     private mapService: MapService,
-    private staticContentDataService: StaticContentDataService) { }
+    private global: Global) { }
 
   filterHomeContent(homeContent): void {
     if (homeContent) {
@@ -69,8 +70,8 @@ export class HomeComponent implements OnInit {
       //    this.filterHomeContent(this.homeContent);
       //    this.staticResourceService.homeContent = this.homeContent;
       //  });
-      if (this.staticContentDataService.getData()) {
-        this.staticContent = this.staticContentDataService.getData();
+      if (this.global.getData()) {
+        this.staticContent = this.global.getData();
         this.staticContent.forEach(content => {
           if (content.name === this.name) {
             this.homeContent = content;
@@ -86,6 +87,11 @@ export class HomeComponent implements OnInit {
     this.loadStateName();
     this.getHomePageContent();
     this.subscription = this.mapService.notifyLocation
+      .subscribe((value) => {
+        this.loadStateName();
+        this.getHomePageContent();
+      });
+    this.staticContentSubcription = this.global.notifyStaticData
       .subscribe((value) => {
         this.loadStateName();
         this.getHomePageContent();

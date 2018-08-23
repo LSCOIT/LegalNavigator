@@ -8,7 +8,6 @@ import { MapResultsService } from '../../shared/sidebars/map-results.service';
 import { Navigation, Location, LocationNavContent } from '../navigation/navigation';
 import { StaticResourceService } from '../../shared/static-resource.service';
 import { Global } from '../../global';
-import { StaticContentDataService } from '../static-content-data.service';
 
 @Component({
   selector: 'app-map',
@@ -40,13 +39,13 @@ export class MapComponent implements OnInit {
   detectLocation = false;
   name: string = 'Navigation';
   staticContent: any;
+  staticContentSubcription: any;
 
   constructor(private modalService: BsModalService,
     private mapService: MapService,
     private mapResultsService: MapResultsService,
     private staticResourceService: StaticResourceService,
-    private global: Global,
-    private staticContentDataService: StaticContentDataService) { }
+    private global: Global) { }
 
   changeLocation(template) {
     this.config = {
@@ -150,8 +149,8 @@ export class MapComponent implements OnInit {
       //    this.filterLocationNavigationContent(this.navigation);
       //    this.staticResourceService.navigation = this.navigation;
       //  });
-      if (this.staticContentDataService.getData()) {
-        this.staticContent = this.staticContentDataService.getData();
+      if (this.global.getData()) {
+        this.staticContent = this.global.getData();
         this.staticContent.forEach(content => {
           if (content.name === this.name) {
             this.navigation = content;
@@ -191,6 +190,10 @@ export class MapComponent implements OnInit {
     this.subscription = this.mapService.notifyLocation
       .subscribe((value) => {
         this.displayLocationDetails(this.mapLocation);
+      });
+    this.staticContentSubcription = this.global.notifyStaticData
+      .subscribe((value) => {
+        this.getLocationNavigationContent();
       });
   }
 }

@@ -44,7 +44,6 @@ import { StaticResourceService } from './shared/static-resource.service';
 import { ResponseInterceptor } from './response-interceptor';
 import { Global } from './global'
 import { CuratedExperienceResultComponent } from './guided-assistant/curated-experience-result/curated-experience-result.component';
-import { StaticContentDataService } from './shared/static-content-data.service';
 
 @NgModule({
   declarations: [
@@ -97,8 +96,7 @@ import { StaticContentDataService } from './shared/static-content-data.service';
     PersonalizedPlanComponent,
     HomeService,
     StaticResourceService,
-    Global,
-    StaticContentDataService
+    Global
   ],
   bootstrap: [AppComponent]
 })

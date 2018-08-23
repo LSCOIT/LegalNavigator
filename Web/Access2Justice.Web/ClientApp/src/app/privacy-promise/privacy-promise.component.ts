@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PrivacyContent, Image, Details } from '../privacy-promise/privacy-promise';
 import { StaticResourceService } from '../shared/static-resource.service';
-import { StaticContentDataService } from '../shared/static-content-data.service';
+import { Global } from '../global';
 
 @Component({
   selector: 'app-privacy-promise',
@@ -14,10 +14,11 @@ export class PrivacyPromiseComponent implements OnInit {
   imageData: Image;
   name: string = 'PrivacyPromisePage';
   staticContent: any;
+  staticContentSubcription: any;
 
   constructor(
     private staticResourceService: StaticResourceService,
-    private staticContentDataService: StaticContentDataService
+    private global: Global
   ) { }
 
   filterPrivacyContent(privacyContent): void {
@@ -39,8 +40,8 @@ export class PrivacyPromiseComponent implements OnInit {
       //    this.filterPrivacyContent(this.privacyContent);
       //    this.staticResourceService.privacyContent = this.privacyContent;
       //  });
-      if (this.staticContentDataService.getData()) {
-        this.staticContent = this.staticContentDataService.getData();
+      if (this.global.getData()) {
+        this.staticContent = this.global.getData();
         this.staticContent.forEach(content => {
           if (content.name === this.name) {
             this.privacyContent = content;
@@ -54,5 +55,9 @@ export class PrivacyPromiseComponent implements OnInit {
 
   ngOnInit() {
     this.getPrivacyPageContent();
+    this.staticContentSubcription = this.global.notifyStaticData
+      .subscribe((value) => {
+        this.getPrivacyPageContent();
+      });
   }
 }

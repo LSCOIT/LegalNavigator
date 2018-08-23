@@ -55,6 +55,6 @@ export class StaticResourceService {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
     this.location = this.loadStateName();
-    return this.httpClient.post(api.getContentsUrl, location, httpOptions);
+    return this.httpClient.post(api.getContentsUrl, this.location, httpOptions);
   }
 }

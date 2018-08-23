@@ -4,7 +4,7 @@ import { StaticResourceService } from '../../shared/static-resource.service';
 import { Navigation, Language, Location, Logo, Home, GuidedAssistant, TopicAndResources, About, Search, PrivacyPromise, HelpAndFAQ, Login } from './navigation';
 import { environment } from '../../../environments/environment';
 import { MapService } from '../map/map.service';
-import { StaticContentDataService } from '../static-content-data.service';
+import { Global } from '../../global';
 
 @Component({
   selector: 'app-upper-nav',
@@ -23,11 +23,12 @@ export class UpperNavComponent implements OnInit {
   login: Login;
   subscription: any;
   staticContent: any;
+  staticContentSubcription: any;
 
   constructor(private http: HttpClient,
     private staticResourceService: StaticResourceService,
     private mapService: MapService,
-    private staticContentDataService: StaticContentDataService) { }
+    private global: Global) { }
 
   filterUpperNavigationContent(navigation): void {
     if (navigation) {
@@ -50,8 +51,8 @@ export class UpperNavComponent implements OnInit {
       //    this.filterUpperNavigationContent(this.navigation);
       //    this.staticResourceService.navigation = this.navigation;
       //  });
-      if (this.staticContentDataService.getData()) {
-        this.staticContent = this.staticContentDataService.getData();
+      if (this.global.getData()) {
+        this.staticContent = this.global.getData();
         this.staticContent.forEach(content => {
           if (content.name === this.name) {
             this.navigation = content;
@@ -65,5 +66,9 @@ export class UpperNavComponent implements OnInit {
 
   ngOnInit() {
     this.getUpperNavigationContent();
+    this.staticContentSubcription = this.global.notifyStaticData
+      .subscribe((value) => {
+        this.getUpperNavigationContent();
+      });
   }
 }

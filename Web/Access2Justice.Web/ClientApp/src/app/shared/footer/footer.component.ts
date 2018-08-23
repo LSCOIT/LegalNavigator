@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { StaticResourceService } from '../static-resource.service';
 import { Navigation, PrivacyPromise, HelpAndFAQ, Home, GuidedAssistant, TopicAndResources, About} from '../navigation/navigation';
-import { StaticContentDataService } from '../static-content-data.service';
+import { Global } from '../../global';
 
 @Component({
   selector: 'app-footer',
@@ -12,7 +12,7 @@ import { StaticContentDataService } from '../static-content-data.service';
 export class FooterComponent implements OnInit {
 
   constructor(private staticResourceService: StaticResourceService,
-    private staticContentDataService: StaticContentDataService) { }
+    private global: Global) { }
   blobUrl: any = environment.blobUrl;
   navigation: Navigation;
   name: string = 'Navigation';
@@ -23,6 +23,7 @@ export class FooterComponent implements OnInit {
   guidedAssistant: GuidedAssistant;
   topicAndResources: TopicAndResources;
   staticContent: any;
+  staticContentSubcription: any;
 
   filterNavigationContent(navigation): void {
     if (navigation) {
@@ -47,8 +48,8 @@ export class FooterComponent implements OnInit {
       //    this.filterNavigationContent(this.navigation);
       //    this.staticResourceService.navigation = this.navigation;
       //  });
-      if (this.staticContentDataService.getData()) {
-        this.staticContent = this.staticContentDataService.getData();
+      if (this.global.getData()) {
+        this.staticContent = this.global.getData();
         this.staticContent.forEach(content => {
           if (content.name === this.name) {
             this.navigation = content;
@@ -62,5 +63,9 @@ export class FooterComponent implements OnInit {
 
   ngOnInit() {
     this.getNavigationContent();
+    this.staticContentSubcription = this.global.notifyStaticData
+      .subscribe((value) => {
+        this.getNavigationContent();
+      });
   }
 }
