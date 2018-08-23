@@ -18,9 +18,9 @@ describe('MapResultsComponent', () => {
     Address: "Address Text 2"
   };
 
-  let noItemsInAddressList: Array<MapLocationResult> = []
-  let oneItemInAddressList: Array<MapLocationResult> = [sampleAddress1]
-  let twoItemsInAddressList: Array<MapLocationResult> = [sampleAddress1, sampleAddress2]
+  let noItemsInAddressList: Array<MapLocationResult> = [];
+  let oneItemInAddressList: Array<MapLocationResult> = [sampleAddress1];
+  let twoItemsInAddressList: Array<MapLocationResult> = [sampleAddress1, sampleAddress2];
 
   let onlyOneAddress = {
     resources: [{

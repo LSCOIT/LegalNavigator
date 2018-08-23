@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ShowMoreService } from '../../../sidebars/show-more.service';
+import { ShowMoreService } from '../../../sidebars/show-more/show-more.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -20,7 +20,6 @@ export class ArticlesComponent implements OnInit {
     this.activeResource = this.activeRoute.snapshot.params['id'];
     this.showMoreService.clickSeeMoreOrganizations(resourceType, this.activeResource);
   }
-  ngOnInit() {
-  }
 
+  ngOnInit() {}
 }

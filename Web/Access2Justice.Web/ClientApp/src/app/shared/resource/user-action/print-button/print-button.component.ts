@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-print-button',
   template:`
-  <span (click)="print()">
-      <img src="./assets/images/small-icons/print.svg" class="nav-icon" aria-hidden="true" />
+  <span (click)="print()" [ngClass]="{'link': addLinkClass, '': !addLinkClass}">
+      <img *ngIf="showIcon" src="./assets/images/small-icons/print.svg" class="nav-icon" aria-hidden="true" />
       Print
 </span>
  `
@@ -17,6 +17,8 @@ export class PrintButtonComponent implements OnInit {
   title: any = document.title;
   activeTab: string = '';
   activeRouteName: string = '';
+  @Input() showIcon: boolean = true;
+  @Input() addLinkClass: boolean = false;
 
   constructor(private activeRoute: ActivatedRoute) { }
 

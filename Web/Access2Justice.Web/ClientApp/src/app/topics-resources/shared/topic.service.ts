@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Topic, ITopicInput } from './topic';
 import { api } from '../../../api/api';
 import { MapLocation } from '../../shared/map/map';
-import { Location } from '../.././shared/navigation/navigation';
-import { Organization } from '../../shared/sidebars/organization';
+
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
