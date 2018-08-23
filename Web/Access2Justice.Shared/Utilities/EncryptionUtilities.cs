@@ -1,22 +1,11 @@
-﻿using Newtonsoft.Json;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Access2Justice.Shared
+namespace Access2Justice.Shared.Utilities
 {
-    public class Utilities
+    public class EncryptionUtilities
     {
-        public static JsonSerializerSettings JSONSanitizer()
-        {
-            //Ignoring Null and Default values, Default values which are set at model.
-            return new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore,
-                DefaultValueHandling = DefaultValueHandling.Ignore
-            };
-        }
-
         public static string GenerateSHA512String(string inputString)
         {
             SHA512 sha512 = SHA512Managed.Create();

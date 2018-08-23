@@ -2,6 +2,7 @@
 using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
+using Access2Justice.Shared.Utilities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OAuth;
@@ -110,7 +111,7 @@ namespace Access2Justice.Api
             string encryptedId = input;
             if (!string.IsNullOrEmpty(input))
             {
-                encryptedId = Utilities.GenerateSHA512String(input);
+                encryptedId = EncryptionUtilities.GenerateSHA512String(input);
             }
             return encryptedId;
         }
