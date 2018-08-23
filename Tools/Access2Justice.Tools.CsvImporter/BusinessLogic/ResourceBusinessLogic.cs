@@ -12,9 +12,9 @@ namespace Access2Justice.Tools.BusinessLogic
 {
     class ResourceBusinessLogic: IDisposable
     {
-        private readonly string EndpointUrl = "";
-        private readonly string PrimaryKey = "";
-        private readonly string Database = "access2justicedb";
+        private readonly string EndpointUrl = "https://access2justicedb.documents.azure.com:443/";
+        private readonly string PrimaryKey = "zOHFmt7MZoGPPLiBOL3pZ1ompDcPIn7qHrvHWvot6ScBaIWl4hJrIlvAQnlIwcqeqFODFg8o4SXL9OoFo6j49Q==";
+        private readonly string Database = "access2justicedb-tool";
         private readonly string ResourceCollection = "Resources";
         private readonly string TopicCollection = "Topics";
         private DocumentClient client;

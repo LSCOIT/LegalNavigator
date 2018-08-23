@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
+
 namespace Access2Justice.Tools.BusinessLogic
 {
     public class InsertTopics
@@ -13,7 +14,7 @@ namespace Access2Justice.Tools.BusinessLogic
         {
             // path to the schema file to be converted. Look at the included 
             // sample file in this same project 'SampleFiles/Topic_Data_tab.txt'.
-            string path = "";
+            string path = "C:\\Users\\v-sobhad\\Desktop\\EvolveDataTool\\Topic_Data_tab.txt";
             string textFilePath = path;
             const Int32 BufferSize = 128;
             int lineCount = File.ReadLines(path).Count();

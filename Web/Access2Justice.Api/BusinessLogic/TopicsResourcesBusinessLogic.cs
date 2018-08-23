@@ -560,7 +560,8 @@ namespace Access2Justice.Api.BusinessLogic
         {
             List<dynamic> results = new List<dynamic>();
             List<dynamic> topics = new List<dynamic>();
-            var topicObjects = JsonConvert.DeserializeObject<List<dynamic>>(topic);
+            var serializedTopics = JsonConvert.SerializeObject(topic);
+            var topicObjects = JsonConvert.DeserializeObject<List<dynamic>>(serializedTopics);
             Topic topicdocuments = new Topic();
 
             foreach (var topicObject in topicObjects)

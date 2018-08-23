@@ -8,24 +8,37 @@ using System.Threading.Tasks;
 using Access2Justice.Tools.Models;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 namespace Access2Justice.Tools.BusinessLogic
 {
     public class TopicBusinessLogic: IDisposable
     {
-        private readonly string EndpointUrl = "";
-        private readonly string PrimaryKey = "";
-        private readonly string Database = "access2justicedb";
+        private readonly string EndpointUrl = "https://access2justicedb.documents.azure.com:443/";
+        private readonly string PrimaryKey = "zOHFmt7MZoGPPLiBOL3pZ1ompDcPIn7qHrvHWvot6ScBaIWl4hJrIlvAQnlIwcqeqFODFg8o4SXL9OoFo6j49Q==";
+        private readonly string Database = "access2justicedb-tool";
         private readonly string TopicCollection = "Topics";
         private DocumentClient client;
+        static HttpClient clientHttp = new HttpClient();
+        
 
-        [Obsolete("This is deprecated. Please use the api endpoints to import Topics.")]
+        // Update port # in the following line.
+
+
+        //[Obsolete("This is deprecated. Please use the api endpoints to import Topics.")]
         public async Task<IEnumerable<Topic>> GetTopics()
         {
             this.client = new DocumentClient(new Uri(EndpointUrl), PrimaryKey);
-            await this.client.CreateDatabaseIfNotExistsAsync(new Database { Id = Database }).ConfigureAwait(true);
-            await this.client.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri(Database),
-            new DocumentCollection { Id = TopicCollection }).ConfigureAwait(true);
+            //await this.client.CreateDatabaseIfNotExistsAsync(new Database { Id = Database }).ConfigureAwait(true);
+            //await this.client.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri(Database),
+            //new DocumentCollection { Id = TopicCollection }).ConfigureAwait(true);
+
+            clientHttp.BaseAddress = new Uri("http://localhost:4200/");
+            clientHttp.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
 
             InsertTopics obj = new InsertTopics();
             var content = obj.CreateJsonFromCSV();
@@ -49,7 +62,11 @@ namespace Access2Justice.Tools.BusinessLogic
 
                 var serializedResult = JsonConvert.SerializeObject(topicList);
                 JObject result = (JObject)JsonConvert.DeserializeObject(serializedResult);
-                await this.CreateTopicDocumentIfNotExists(Database, TopicCollection, result).ConfigureAwait(true);
+                //await this.CreateTopicDocumentIfNotExists(Database, TopicCollection, result).ConfigureAwait(true);
+
+                HttpResponseMessage response = await clientHttp.PostAsJsonAsync("api/createtopicdocument", result).ConfigureAwait(false);
+                response.EnsureSuccessStatusCode();
+
             }
             var items = await this.GetItemsFromCollectionAsync().ConfigureAwait(true);
             return items;

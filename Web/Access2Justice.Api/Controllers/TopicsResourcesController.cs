@@ -262,13 +262,8 @@ namespace Access2Justice.Api.Controllers
         /// </summary>
         [HttpPost]
         [Route("api/createtopicdocument")]
-        public async Task<IActionResult> CreateTopicDocument(dynamic topic)
+        public async Task<IActionResult> CreateTopicDocument([FromBody]dynamic topic)
         {
-            string filePath = Path.Combine(Environment.CurrentDirectory, "SampleJsons\\TopicData.json");
-            using (StreamReader r = new StreamReader(filePath))
-            {
-                topic = r.ReadToEnd();
-            }
             var topics = await topicsResourcesBusinessLogic.CreateTopicDocumentAsync(topic);
             return Ok(topics);
         }
