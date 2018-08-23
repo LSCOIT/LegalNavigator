@@ -26,8 +26,6 @@ export const api = {
     logoutUrl: apiUrl + '/logout',
     questionUrl: curatedExperience + '/Start',
     saveAndGetNextUrl: curatedExperience + '/Component/SaveAndGetNext',
-    updateUserProfileUrl: userProfile + '/updateuserprofile',
-    getUserProfileUrl: userProfile + "/getuserprofiledata",
     updateUserPlanUrl: curatedExperience + "/updateplan",
     resourceUrl: topic + '/getresource',
     getContentUrl: contentUrl + '/getstaticresource',

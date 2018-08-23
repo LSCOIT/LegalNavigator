@@ -45,6 +45,9 @@ namespace Access2Justice.Shared.Models
 
         [JsonProperty(PropertyName = "curatedExperienceAnswersId")]
         public Guid CuratedExperienceAnswersId { get; set; }
+
+        [JsonProperty(PropertyName = "savedResourcesId")]
+        public Guid SavedResourcesId { get; set; }
     }
 
     public class SharedResource
