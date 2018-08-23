@@ -18,7 +18,7 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace Access2Justice.Api
+namespace Access2Justice.Web
 {
     public partial class Startup
     {
@@ -117,7 +117,7 @@ namespace Access2Justice.Api
 
         public void ConfigureRoutes(IApplicationBuilder app)
         {
-            app.Map("/api/login", builder =>
+            app.Map("/login", builder =>
             {
                 builder.Run(async context =>
                 {
@@ -127,7 +127,7 @@ namespace Access2Justice.Api
                 });
             });
 
-            app.Map("/api/logout", builder =>
+            app.Map("/logout", builder =>
             {
                 builder.Run(async context =>
                 {
@@ -139,7 +139,7 @@ namespace Access2Justice.Api
                     }
                     else
                     {
-                        context.Response.Redirect(Configuration["Api:Endpoint"]);
+                        context.Response.Redirect("/");
                     }
                 });
             });
