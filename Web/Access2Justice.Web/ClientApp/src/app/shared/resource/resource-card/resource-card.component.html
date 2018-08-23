@@ -96,6 +96,7 @@
         </div>
         <div class="media-body">
           <a [href]="resource.url"><h4 class="media-heading">{{resource.name}}</h4></a>
+          <div class="web-hidden">{{resource.url}}</div>
           <span class="glyphicon glyphicon-new-window no-print" aria-hidden="true"></span><span class="span-text no-print">External link</span>
           <p>{{resource.description}}</p>
         </div>
@@ -125,12 +126,18 @@
       <div *ngIf="resource.resourceType === 'WebResources'" class="media">
         <p class="ps">{{resource.resourceDetails.dateLastCrawled}}</p>
         <a href="{{resource.resourceDetails.url}}"><p class="pl">{{resource.name}}</p></a>
-        <a href="{{resource.resourceDetails.url}}"><span class="link">{{resource.resourceDetails.displayUrl}}</span></a>
+        <div class="no-print">
+          <a href="{{resource.resourceDetails.url}}"><span class="link">{{resource.resourceDetails.displayUrl}}</span></a>
+        </div>
+        <div class="web-hidden">{{resource.resourceDetails.url}}</div>
         <p>{{resource.resourceDetails.snippet}}</p>
         <div class="web-resource" *ngIf="resource.resourceDetails.deepLinks">
           <div *ngFor="let deepLink of resource.resourceDetails.deepLinks">
             <p class="ps">{{resource.resourceDetails.dateLastCrawled}}</p>
-            <a href="{{deepLink.url}}"><p class="pl">{{deepLink.name}}</p></a>
+            <div class="no-print">
+              <a href="{{deepLink.url}}"><p class="pl">{{deepLink.name}}</p></a>
+            </div>
+            <div class="web-hidden">{{deepLink.url}}</div>
             <a href="{{deepLink.url}}"><span class="link">{{deepLink.url}}</span></a>
             <p>{{deepLink.snippet}}</p>
           </div>
