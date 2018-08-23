@@ -42,14 +42,6 @@ export class StaticResourceService {
     return location;
   }
 
-  getStaticContent(pageRequest) {
-    const httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-    };
-    pageRequest.location = this.loadStateName();
-    return this.httpClient.post(api.getContentUrl, pageRequest, httpOptions);
-  }
-
   getStaticContents() {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })

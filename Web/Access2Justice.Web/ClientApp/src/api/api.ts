@@ -30,7 +30,6 @@ export const api = {
   getUserProfileUrl: userProfile + "/getuserprofiledata",
   updateUserPlanUrl: curatedExperience + "/updateplan",
   resourceUrl: topic + '/getresource',
-  getContentUrl: contentUrl + '/getstaticresource',
   getContentsUrl: contentUrl + '/getstaticresources',
   shareUrl: apiUrl + '/Share/GeneratePermaLink',
   unShareUrl: apiUrl + '/Share/RemovePermaLink',
