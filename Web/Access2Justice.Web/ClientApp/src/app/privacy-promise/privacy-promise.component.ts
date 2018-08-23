@@ -34,12 +34,6 @@ export class PrivacyPromiseComponent implements OnInit {
       this.privacyContent = this.staticResourceService.privacyContent;
       this.filterPrivacyContent(this.staticResourceService.privacyContent);
     } else {
-      //this.staticResourceService.getStaticContent(privacyPageRequest)
-      //  .subscribe(content => {
-      //    this.privacyContent = content[0];
-      //    this.filterPrivacyContent(this.privacyContent);
-      //    this.staticResourceService.privacyContent = this.privacyContent;
-      //  });
       if (this.global.getData()) {
         this.staticContent = this.global.getData();
         this.staticContent.forEach(content => {

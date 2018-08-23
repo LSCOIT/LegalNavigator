@@ -36,12 +36,6 @@ export class LanguageComponent implements OnInit {
         this.navigation = this.staticResourceService.navigation;
         this.filterLanguagueNavigationContent(this.staticResourceService.navigation);
     } else {
-      //this.staticResourceService.getStaticContent(homePageRequest)
-      //  .subscribe(content => {
-      //    this.navigation = content[0];
-      //    this.filterLanguagueNavigationContent(this.navigation);
-      //    this.staticResourceService.navigation = this.navigation;
-      //  });
       if (this.global.getData()) {
         this.staticContent = this.global.getData();
         this.staticContent.forEach(content => {

@@ -64,12 +64,6 @@ export class HomeComponent implements OnInit {
       this.homeContent = this.staticResourceService.homeContent;
       this.filterHomeContent(this.staticResourceService.homeContent);
     } else {
-      //this.staticResourceService.getStaticContent(homePageRequest)
-      //  .subscribe(content => {
-      //    this.homeContent = content[0];
-      //    this.filterHomeContent(this.homeContent);
-      //    this.staticResourceService.homeContent = this.homeContent;
-      //  });
       if (this.global.getData()) {
         this.staticContent = this.global.getData();
         this.staticContent.forEach(content => {

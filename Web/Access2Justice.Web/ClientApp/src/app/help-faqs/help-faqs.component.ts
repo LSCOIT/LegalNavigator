@@ -38,12 +38,6 @@ export class HelpFaqsComponent implements OnInit {
       this.helpAndFaqsContent = this.staticResourceService.helpAndFaqsContent;
       this.filterHelpAndFaqContent(this.staticResourceService.helpAndFaqsContent);
     } else {
-      //this.staticResourceService.getStaticContent(helpAndFAQPageRequest)
-      //  .subscribe(content => {
-      //    this.helpAndFaqsContent = content[0];
-      //    this.filterHelpAndFaqContent(this.helpAndFaqsContent);
-      //    this.staticResourceService.helpAndFaqsContent = this.helpAndFaqsContent;
-      //  });
       if (this.global.getData()) {
         this.staticContent = this.global.getData();
         this.staticContent.forEach(content => {

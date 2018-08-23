@@ -19,20 +19,6 @@ namespace Access2Justice.Api.BusinessLogic
             dbService = backendDatabaseService;
         }
 
-        public async Task<dynamic> GetPageStaticResourceDataAsync(string name, Location location)
-        {
-            dynamic result = null;
-            location.County = string.Empty;
-            location.City = string.Empty;
-            location.ZipCode = string.Empty;
-            if (!string.IsNullOrEmpty(location.State))
-            {
-                result = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourceCollectionId, Constants.Name, name, location);
-            }
-            location.State = "Default";
-            return result.Count > 0 ? result: await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourceCollectionId, Constants.Name, name, location);            
-        }
-
         public async Task<dynamic> GetPageStaticResourcesDataAsync(Location location)
         {
             dynamic result = null;
