@@ -109,7 +109,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         {
             //arrange
             var userProfileSavedResources = this.userProfileSavedResourcesData;
-            var resource = JsonConvert.SerializeObject(userProfileSavedResources);
+            var resource = JsonConvert.DeserializeObject<ProfileResources>(JsonConvert.SerializeObject(this.userProfileSavedResourcesData.First));
             Document document = new Document();
             JsonTextReader reader = new JsonTextReader(new StringReader(userProfileSavedResources[0].ToString()));
             document.LoadFrom(reader);
@@ -128,12 +128,13 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         {
             //arrange
             var userProfileSavedResources = this.userProfileSavedResourcesData;
-            var resource = JsonConvert.SerializeObject(userProfileSavedResources);
+            var resource = JsonConvert.SerializeObject(this.userProfileSavedResourcesData.First);
             var userUIDocument = JsonConvert.DeserializeObject<dynamic>(resource);
-            var inputJson = userUIDocument[0];
-            string id = userUIDocument[0].id;
-            string oId = userUIDocument[0].oId;
-            string type = userUIDocument[0].type;
+            var inputJson = userUIDocument;
+            inputJson = JsonConvert.DeserializeObject<ProfileResources>(JsonConvert.SerializeObject(inputJson));
+            string id = userUIDocument.id;
+            string oId = userUIDocument.oId;
+            string type = userUIDocument.type;
             List<string> resourcesPropertyNames = new List<string>() { Constants.OId, Constants.Type };
             List<string> resourcesValues = new List<string>() { oId, type };
             Document document = new Document();
@@ -144,7 +145,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             backendDatabaseService.UpdateItemAsync<dynamic>(id, document, cosmosDbSettings.ResourceCollectionId).ReturnsForAnyArgs(document);
 
             //act
-            actualResult = userProfileBusinessLogic.UpdateUserSavedResourcesAsync(id, inputJson).Result;
+            actualResult = userProfileBusinessLogic.UpdateUserSavedResourcesAsync(Guid.Parse(id), inputJson).Result;
 
             //assert
             Assert.Equal(expectedUserProfileSavedResourcesUpdateData[0].ToString(), actualResult.ToString());
@@ -157,14 +158,14 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.ResourceCollectionId, "oId", expectedUserId);
             dbResponse.ReturnsForAnyArgs<dynamic>(userProfilePersonalizedPlanData);
 
-
             //act
-            var response = userProfileBusinessLogic.GetUserResourceProfileDataAsync(expectedUserProfileId);
+            var response = userProfileBusinessLogic.GetUserResourceProfileDataAsync(expectedUserProfileId,"plan");
             string result = JsonConvert.SerializeObject(response);
 
             //assert
             Assert.Contains(expectedUserId, result, StringComparison.InvariantCulture);
         }
+
         [Fact]
         public void GetUserResourceProfileDataAsyncEmptyData()
         {
@@ -173,11 +174,11 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
 
             //act
-            var response = userProfileBusinessLogic.GetUserResourceProfileDataAsync(string.Empty);
+            var response = userProfileBusinessLogic.GetUserResourceProfileDataAsync(string.Empty, "resources");
             string result = JsonConvert.SerializeObject(response);
 
             //assert
-            Assert.Contains("[{}]", result, StringComparison.InvariantCultureIgnoreCase);
+            Assert.Contains("", result, StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }

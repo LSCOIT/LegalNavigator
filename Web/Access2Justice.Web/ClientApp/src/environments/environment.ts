@@ -11,7 +11,6 @@ export const environment = {
   internalResourceRecordsToDisplay: 10,
   webResourcePagesToShow: 10,
   webResourceRecordsToDisplay: 10,
-  userId: 'User Id',
   blobUrl: 'https://cs4892808efec24x447cx944.blob.core.windows.net',
   All: 'All'
 };
