@@ -39,7 +39,7 @@ const appRoutes: Routes = [
   { path: 'share/:id', component: ShareButtonRouteComponent },
   { path: 'help', component: HelpFaqsComponent },
   { path: 'home', component: HomeComponent },
-  //{ path: 'login', component: LogInComponent },
+  { path: 'login', component: LogInComponent },
   { path: 'privacy', component: PrivacyPromiseComponent },
   { path: 'profile', component: ProfileComponent },
   { path: '', component: HomeComponent },

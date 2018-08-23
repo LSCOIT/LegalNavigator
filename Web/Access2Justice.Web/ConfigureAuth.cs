@@ -49,7 +49,7 @@ namespace Access2Justice.Web
                         {
                             ApplicationUser user = new ApplicationUser();
                             var identity = context.Principal.Identity as ClaimsIdentity;
-                            user.UserName = identity.Name;                            
+                            user.UserName = identity.Name;
                             user.UserId = EncryptString(identity.Claims.Where(x => x.Type.Contains("nameidentifier")).Select(x => x.Value).FirstOrDefault());
                             context.Response.Cookies.Append("profileData", Newtonsoft.Json.JsonConvert.SerializeObject(user));
                             context.Response.Redirect(context.ReturnUri, true);
@@ -71,7 +71,7 @@ namespace Access2Justice.Web
                     }
                 };
             })
-            .AddCookie(cookieOptions => cookieOptions.LoginPath = new PathString("/login"));
+            .AddCookie();
         }
 
         private async Task UriCreateUserDetails(dynamic userObject)
@@ -117,7 +117,7 @@ namespace Access2Justice.Web
 
         public void ConfigureRoutes(IApplicationBuilder app)
         {
-            app.Map("/login", builder =>
+            app.Map("/signIn", builder =>
             {
                 builder.Run(async context =>
                 {
@@ -127,7 +127,7 @@ namespace Access2Justice.Web
                 });
             });
 
-            app.Map("/logout", builder =>
+            app.Map("/signOut", builder =>
             {
                 builder.Run(async context =>
                 {
