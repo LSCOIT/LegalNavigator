@@ -62,13 +62,13 @@ export class ServiceOrgSidebarComponent implements OnInit {
   ngOnInit() {
     if (sessionStorage.getItem("globalMapLocation")) {
       this.location = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+      this.getOrganizations();
     }
     this.subscription = this.mapService.notifyLocation
       .subscribe((value) => {
         this.location = value;
         this.getOrganizations();
       });
-    this.getOrganizations();
   }
   ngOnDestroy() {
     if (this.subscription != undefined) {

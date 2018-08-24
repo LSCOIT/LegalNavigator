@@ -49,6 +49,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   initialResourceFilter: string;
   showDefaultMessage: boolean = false;
   showNoResultsMessage: boolean = false;
+  guidedAssistantId: string;
 
   constructor(
     private navigateDataService: NavigateDataService,
@@ -62,6 +63,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     this.showNoResultsMessage = false;
     this.searchResults = this.navigateDataService.getData();    
     if (this.searchResults != undefined && this.personalizedResources === undefined) {
+      this.guidedAssistantId = this.searchResults.guidedAssistantId;
       this.cacheSearchResultsData();
       this.isInternalResource = this.searchResults.resources;
       this.isWebResource = this.searchResults.webResources;

@@ -28,11 +28,12 @@ export class ProfileComponent implements OnInit {
   resourceIds: string[] = [];
   webResources: any[] = [];
   showRemove: boolean;
+  profileData: any;
 
   constructor(
     private personalizedPlanService: PersonalizedPlanService,
     private eventUtilityService: EventUtilityService,
-    private global:Global
+    private global: Global
   ) {
 
     eventUtilityService.resourceUpdated$.subscribe(response => {
@@ -41,14 +42,11 @@ export class ProfileComponent implements OnInit {
       }
     });
 
-    let profileData = sessionStorage.getItem("profileData");
-    if (profileData != undefined) {
-      profileData = JSON.parse(profileData);
-      this.userId = profileData["UserId"];
-      this.userName = profileData["UserName"];
-    }
-    else {
-      global.externalLogin();
+    this.profileData = sessionStorage.getItem("profileData");
+    if (this.profileData != undefined) {
+      this.profileData = JSON.parse(this.profileData);
+      this.userId = this.profileData["UserId"];
+      this.userName = this.profileData["UserName"];
     }
   }
 
@@ -151,6 +149,10 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (this.profileData == undefined) {
+      this.global.externalLogin();
+    }
+
     this.getPersonalizedPlan();
     this.showRemove = true;
   }
