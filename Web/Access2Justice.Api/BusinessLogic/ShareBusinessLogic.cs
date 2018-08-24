@@ -3,6 +3,7 @@ using Access2Justice.Api.ViewModels;
 using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
+using Access2Justice.Shared.Utilities;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -60,7 +61,7 @@ namespace Access2Justice.Api.BusinessLogic
             shareInput.UniqueId = shareInput.UniqueId != Guid.Empty ? shareInput.UniqueId : Guid.NewGuid();
             shareInput.ResourceId = shareInput.ResourceId != Guid.Empty ? shareInput.ResourceId : Guid.NewGuid();
 
-            var permaLink = Utilities.GenerateSHA256String(shareInput.UniqueId + shareInput.UserId +
+            var permaLink = EncryptionUtilities.GenerateSHA256String(shareInput.UniqueId + shareInput.UserId +
                 shareInput.ResourceId);
             var sharedResource = new SharedResource
             {

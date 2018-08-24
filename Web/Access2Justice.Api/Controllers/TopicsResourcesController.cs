@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using Access2Justice.Api.ViewModels;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Microsoft.AspNetCore.Http;
@@ -24,9 +25,10 @@ namespace Access2Justice.Api.Controllers
         /// Get all topics in the collection
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
+      
         [Route("api/topics/gettopics")]
-        public async Task<IActionResult> GetTopics(Location location)
+        [HttpPost]
+        public async Task<IActionResult> GetTopics([FromBody]Location location)
         {
             var response = await topicsResourcesBusinessLogic.GetTopLevelTopicsAsync(location);
             return Ok(response);
@@ -36,12 +38,12 @@ namespace Access2Justice.Api.Controllers
         /// Get subtopics by the topic Id
         /// </summary>
         /// <param name="parentTopicId"></param>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("api/topics/getsubtopics/{parentTopicId}")]
-        public async Task<IActionResult> GetSubTopics(string parentTopicId,Location location)
+        /// <returns></returns> 
+        [Route("api/topics/getsubtopics")]
+        [HttpPost]
+        public async Task<IActionResult> GetSubTopics([FromBody]TopicInput topicInput)
         {
-            var topics = await topicsResourcesBusinessLogic.GetSubTopicsAsync(parentTopicId,location);
+            var topics = await topicsResourcesBusinessLogic.GetSubTopicsAsync(topicInput.Id, topicInput.Location);
             return Ok(topics);
         }
 
@@ -50,11 +52,11 @@ namespace Access2Justice.Api.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet]
-        [Route("api/topics/getresource/{id}")]
-        public async Task<IActionResult> GetResource(string id,Location location)
+        [HttpPost]
+        [Route("api/topics/getresource")]
+        public async Task<IActionResult> GetResource([FromBody]TopicInput topicInput)
         {
-            var resource = await topicsResourcesBusinessLogic.GetResourceByIdAsync(id,location);
+            var resource = await topicsResourcesBusinessLogic.GetResourceByIdAsync(topicInput.Id, topicInput.Location);
             return Ok(resource);
         }
 
@@ -63,11 +65,11 @@ namespace Access2Justice.Api.Controllers
         /// </summary>
         /// <param name="parentTopicId"></param>
         /// <returns></returns>
-        [HttpGet]
-        [Route("api/topics/getresourcedetails/{parentTopicId}")]
-        public async Task<IActionResult> GetResourceDetails(string parentTopicId, Location location)
+        [HttpPost]
+        [Route("api/topics/getresourcedetails")]
+        public async Task<IActionResult> GetResourceDetails([FromBody]TopicInput topicInput)
         {
-            var topics = await topicsResourcesBusinessLogic.GetResourceAsync(parentTopicId,location);
+            var topics = await topicsResourcesBusinessLogic.GetResourceAsync(topicInput.Id, topicInput.Location);
             return Ok(topics);
         }
 
@@ -76,11 +78,11 @@ namespace Access2Justice.Api.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet]
-        [Route("api/topics/getdocument/{id}")]
-        public async Task<IActionResult> GetDocumentDataAsync(string id)
+        [HttpPost]
+        [Route("api/topics/getdocument")]
+        public async Task<IActionResult> GetDocumentDataAsync([FromBody]TopicInput topicInput)
         {
-            var topics = await topicsResourcesBusinessLogic.GetDocumentAsync(id);
+            var topics = await topicsResourcesBusinessLogic.GetDocumentAsync(topicInput.Id, topicInput.Location);
             return Ok(topics);
         }
 

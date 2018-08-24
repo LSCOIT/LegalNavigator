@@ -30,5 +30,7 @@ namespace Access2Justice.Api
         public const string ExpirationDate = "expirationDate";
         public const int ExpirationDateDurationInYears = 1;
         public const string ProfileLink = "/profile";
+        public const string All = "ALL";
+        public const string GuidedAssistant = "Guided Assistant";
     }
 }

@@ -206,6 +206,7 @@ a.carousel-control .icon-next {
 
 .user-action {
   padding-left: 0;
+  text-align: center;
 }
 
 .user-action li {
@@ -316,6 +317,10 @@ a.carousel-control .icon-next {
 
   .mobile-hidden {
     display: inline-block;
+  }
+
+  .user-action {
+    text-align: right;
   }
 }
 
