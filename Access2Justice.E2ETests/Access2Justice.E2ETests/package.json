@@ -1,0 +1,28 @@
+{
+  "name": "access2-justice.e2-etests",
+  "version": "0.0.0",
+  "description": "Access2Justice.E2ETests",
+  "main": "app.js",
+  "author": {
+    "name": "xiao.lin"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "pretest": "npm run tsc",
+    "test": "protractor tmp/conf.js",
+    "debug": "node --inspect-brk ./node_modules/.bin/protractor asyncAwait/conf.js"
+  },
+  "devDependencies": {
+    "@types/jasmine": "^2.8.8",
+    "@types/jasminewd2": "^2.0.3",
+    "@types/node": "^6.0.87",
+    "@types/selenium-webdriver": "^3.0.10"
+  },
+  "dependencies": {
+    "protractor": "^5.4.0",
+    "protractor-cucumber-framework": "^6.0.0",
+    "selenium-webdriver": "^4.0.0-alpha.1",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.0.1"
+  }
+}
