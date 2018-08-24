@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Access2Justice.Tools.Models
@@ -20,20 +21,29 @@ namespace Access2Justice.Tools.Models
 
     public class Topic
     {
+        [Required(ErrorMessage = "Topic_Id is a required field.")]
         [JsonProperty(PropertyName = "id")]
         public dynamic Id { get; set; }
 
+        [Required(ErrorMessage = "Topic_Name is a required field.")]
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
-        [JsonProperty(PropertyName = "parentTopicID")]
-        public IEnumerable<ParentTopicID> ParentTopicID { get; set; }
+        [JsonProperty(PropertyName = "overview")]
+        public string Overview { get; set; }
 
+        [JsonProperty(PropertyName = "quickLinks")]
+        public IEnumerable<QuickLinks> QuickLinks { get; set; }
+
+        [JsonProperty(PropertyName = "parentTopicId")]
+        public IEnumerable<ParentTopicID> ParentTopicId { get; set; }
+
+        [JsonProperty(PropertyName = "resourceType")]
+        public string ResourceType { get; set; }
+
+        [Required(ErrorMessage = "Keywords is a required field.")]
         [JsonProperty(PropertyName = "keywords")]
         public string Keywords { get; set; }
-
-        [JsonProperty(PropertyName = "jsonContent")]
-        public string JsonContent { get; set; }
 
         [JsonProperty(PropertyName = "location")]
         public IEnumerable<Locations> Location { get; set; }
@@ -52,11 +62,40 @@ namespace Access2Justice.Tools.Models
 
         [JsonProperty(PropertyName = "modifiedTimeStamp")]
         public DateTime? ModifiedTimeStamp { get; set; } = DateTime.UtcNow;
+
+        public void Validate()
+        {
+            ValidationContext context = new ValidationContext(this, serviceProvider: null, items: null);
+            List<ValidationResult> results = new List<ValidationResult>();
+            bool isValid = Validator.TryValidateObject(this, context, results, true);
+
+            if (isValid == false)
+            {
+                StringBuilder sbrErrors = new StringBuilder();
+                {
+                    foreach (var validationResult in results)
+                    {
+                        sbrErrors.AppendLine(validationResult.ErrorMessage);
+                    }
+                    throw new ValidationException(sbrErrors.ToString());//TO DO - excpetions to be logged
+                }
+                //TO DO log errors
+            }
+        }
     }
 
     public class ParentTopicID
     {
         [JsonProperty(PropertyName = "id")]
         public dynamic ParentTopicId { get; set; }
+    }
+
+    public class QuickLinks
+    {
+        [JsonProperty(PropertyName = "text")]
+        public string Text { get; set; }
+
+        [JsonProperty(PropertyName = "url")]
+        public string Urls { get; set; }
     }
 }

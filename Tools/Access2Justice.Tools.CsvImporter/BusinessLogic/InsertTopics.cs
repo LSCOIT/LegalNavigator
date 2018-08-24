@@ -36,39 +36,88 @@ namespace Access2Justice.Tools.BusinessLogic
                     string[] partsb = line2.Split('\t');
                     ParentTopicID[] parentTopicIds = null;                    
                     List<Locations> locations = new List<Locations>();
+                    dynamic id = null; string name = string.Empty; string keywords = string.Empty;
+                    string state = string.Empty; string county = string.Empty; string city = string.Empty; string zipcode = string.Empty;
+                    string overview = string.Empty; dynamic essentialReadingText = null; dynamic essentialReadingUrl = null; string icon = string.Empty;
                     for (int iterationCounter = 0; iterationCounter < partsb.Length; iterationCounter++)
                     {
                         val = parts[iterationCounter];
-                        if (val.EndsWith("TopicId", StringComparison.CurrentCultureIgnoreCase))
+                        if (val.EndsWith("Topic_ID*", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            string parentId = partsb[iterationCounter];
+                            id = partsb[0];
+                        }
+
+                        else if (val.EndsWith("Topic_Name*", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            name = partsb[1];
+                        }
+
+                        else if (val.EndsWith("Parent_Topic*", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            string parentId = partsb[2];
                             parentTopicIds = GetParentId(parentId);
                         }
 
-                        else if (val.EndsWith("location", StringComparison.CurrentCultureIgnoreCase))
+                        else if (val.EndsWith("Keywords*", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            string locationId = partsb[iterationCounter];
-                            locations = GetLocations(locationId);
+                            keywords = partsb[3];
                         }
 
-                        else
+                        else if (val.EndsWith("Location_State*", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            value.Add(partsb[iterationCounter]);
+                            state = partsb[4];
                         }
+
+                        else if (val.EndsWith("Location_County", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            county = partsb[5];
+                        }
+
+                        else if (val.EndsWith("Location_City", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            city = partsb[6];
+                            
+                        }
+
+                        else if (val.EndsWith("Location_Zip", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            zipcode = partsb[7];
+                        }
+
+                        else if (val.EndsWith("Overview", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            overview = partsb[8];
+                        }
+
+                        else if (val.EndsWith("Essential_Reading_URL_text", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            essentialReadingText = partsb[9];
+                        }
+
+                        else if (val.EndsWith("Essential_Reading_URL_link", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            essentialReadingUrl = partsb[10];
+                        }
+                        
+                        else if (val.EndsWith("Icon", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            icon = partsb[11];
+                        }                        
                     }
-                    var newTopicId = Guid.NewGuid();
-                    parentTopics.Add(new ParentTopic() { DummyId = value[0], NewId = newTopicId });
+                    locations.Add(new Locations() { State=state, County=county, City = city, ZipCode=zipcode });
                     topicsList.Add(new Topic()
                     {
-                        Id = newTopicId,
-                        Name = value[1],
-                        ParentTopicID = parentTopicIds,
-                        Keywords = value[2],
-                        JsonContent = value[3],
+                        Id = id == "" ? Guid.NewGuid() : id,
+                        Name = name,
+                        Overview = overview,
+                        //QuickLinks = quickLinks;
+                        ParentTopicId = parentTopicIds,
+                        ResourceType = "Topics",
+                        Keywords = keywords,
                         Location = locations,
-                        Icon = value[4],
-                        CreatedBy = value[5],
-                        ModifiedBy = value[6]
+                        Icon = icon,
+                        CreatedBy = "Topic and Resources data tool",
+                        ModifiedBy = "Topic and Resources data tool"
                     });
                 }
             }
