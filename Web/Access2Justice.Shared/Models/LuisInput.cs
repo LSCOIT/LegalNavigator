@@ -15,5 +15,8 @@ namespace Access2Justice.Shared
         public string TranslateTo { get; set; }
 
         public string LuisTopScoringIntent { get; set; }
+
+        public bool IsFromCuratedExperience { get; set; } = false;
+        
     }
 }

@@ -111,20 +111,12 @@ export class ActionPlansComponent implements OnChanges {
     this.personalizedPlan = { id: this.planDetails.id, topics: this.planTopics, isShared: this.planDetails.isShared };
   }
 
-  getResourceIds(resources): Array<string> {
-    this.resourceIds = [];
-    resources.forEach(resource => {
-      this.resourceIds.push(resource.id);
-    });
-    return this.resourceIds;
-  }
-
   updateStepTagForMatchingTopicId(item, stepId, isChecked): Array<PlanStep> {
     this.personalizedPlanSteps = [];
     item.steps.forEach(step => {
       this.personalizedPlanStep = {
         stepId: step.stepId, title: step.title, description: step.description,
-        order: step.order, isComplete: step.isComplete, resources: this.getResourceIds(step.resources), topicIds: []
+        order: step.order, isComplete: step.isComplete, resources: this.personalizedPlanService.getResourceIds(step.resources), topicIds: []
       };
       if (step.stepId === stepId) {
         this.personalizedPlanStep.isComplete = isChecked;
@@ -139,7 +131,7 @@ export class ActionPlansComponent implements OnChanges {
     item.steps.forEach(step => {
       this.personalizedPlanStep = {
         stepId: step.stepId, title: step.title, description: step.description,
-        order: step.order, isComplete: step.isComplete, resources: this.getResourceIds(step.resources), topicIds: []
+        order: step.order, isComplete: step.isComplete, resources: this.personalizedPlanService.getResourceIds(step.resources), topicIds: []
       };
       this.personalizedPlanSteps.push(this.personalizedPlanStep);
     });
@@ -209,7 +201,7 @@ export class ActionPlansComponent implements OnChanges {
       item.topic.steps.forEach(step => {
         this.personalizedPlanStep = {
           stepId: step.stepId, title: step.title, description: step.description,
-          order: step.order, isComplete: step.isComplete, resources: this.getResourceIds(step.resources), topicIds: []
+          order: step.order, isComplete: step.isComplete, resources: this.personalizedPlanService.getResourceIds(step.resources), topicIds: []
         };
         this.personalizedPlanSteps.push(this.personalizedPlanStep);
       });

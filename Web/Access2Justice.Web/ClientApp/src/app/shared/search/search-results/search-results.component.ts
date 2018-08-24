@@ -6,6 +6,7 @@ import { PaginationService } from '../pagination.service';
 import { IResourceFilter, ILuisInput } from './search-results.model';
 import { MapService } from '../../map/map.service';
 import { environment } from '../../../../environments/environment';
+import { PersonalizedPlanService } from '../../../guided-assistant/personalized-plan/personalized-plan.service';
 
 @Component({
   selector: 'app-search-results',
@@ -48,18 +49,21 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   initialResourceFilter: string;
   showDefaultMessage: boolean = false;
   showNoResultsMessage: boolean = false;
+  guidedAssistantId: string;
 
   constructor(
     private navigateDataService: NavigateDataService,
     private searchService: SearchService,
     private mapService: MapService,
-    private paginationService: PaginationService) { }
+    private paginationService: PaginationService,
+    private personalizedPlanService: PersonalizedPlanService) { }
 
   bindData() {
     this.showDefaultMessage = false;
     this.showNoResultsMessage = false;
     this.searchResults = this.navigateDataService.getData();    
     if (this.searchResults != undefined && this.personalizedResources === undefined) {
+      this.guidedAssistantId = this.searchResults.guidedAssistantId;
       this.cacheSearchResultsData();
       this.isInternalResource = this.searchResults.resources;
       this.isWebResource = this.searchResults.webResources;
@@ -364,7 +368,10 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     }
     this.bindData();
     this.notifyLocationChange();        
-      this.showRemoveOption = this.showRemove;    
+    this.showRemoveOption = this.showRemove;
+    if (sessionStorage.getItem("bookmarkedResource")) {
+      this.personalizedPlanService.saveResourcesToUserProfile();
+    }
   }
 
   ngOnDestroy() {

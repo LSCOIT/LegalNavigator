@@ -15,17 +15,9 @@
        role="article" aria-labelledby="button-basic">
     <div class="articles-content">
       <div class="topic-section col-sm-6">
-        <h6 class="pl">Divorce</h6>
-        <ul>
-          <li class="link"><a href="">Amet, consectetur adipiscing elit.</a></li>
-          <li class="link"><a href="">Consectetur adipiscing elit fusce vel.</a></li>
-        </ul>
-      </div>
-      <div class="topic-section col-sm-6">
-        <h6 class="pl">Child Custody</h6>
-        <ul>
-          <li class="link"><a href="">Amet, consectetur adipiscing elit.</a></li>
-          <li class="link"><a href="">Consectetur adipiscing elit fusce vel.</a></li>
+        <h6 class="pl">{{guidedAssistantResults?.topIntent}}</h6>
+        <ul *ngFor="let resource of guidedAssistantResults?.resources">
+          <li class="link"><a href="/resource/{{resource.id}}">{{resource.name}}</a></li>
         </ul>
       </div>
     </div>
