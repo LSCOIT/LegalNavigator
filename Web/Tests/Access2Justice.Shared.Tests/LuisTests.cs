@@ -4,42 +4,20 @@ using NSubstitute;
 using Access2Justice.Shared.Luis;
 using System.Net.Http;
 using System.Net;
+using Access2Justice.Shared.Tests.TestData;
 
-namespace Access2Justice.Shared.Tests.Luis
+namespace Access2Justice.Shared.Tests
 {
-    public class LuisProxyTests
+    public class LuisTests
     {
-        #region variables
         private readonly ILuisSettings luisSettings;
         private readonly IHttpClientService httpClientService;
         private readonly LuisProxy luisProxy;
-        #endregion
 
-        #region Mocked Input Data
-        private readonly string query = "eviction";
-        private readonly string properLuisResponse =
-                   "{\r\n  \"query\": \"child abuse\",\r\n  \"topScoringIntent\": {\r\n    " +
-                   "\"intent\": \"eviction\",\r\n    \"score\": 0.919329442\r\n  },\r\n  \"intents\": [\r\n    {\r\n     " +
-                   " \"intent\": \"eviction\",\r\n      \"score\": 0.239329442\r\n    },\r\n    {\r\n      " +
-                   "\"intent\": \"child abuse\",\r\n      \"score\": 0.09217278\r\n    },\r\n    {\r\n      " +
-                   "\"intent\": \"child\",\r\n      \"score\": 0.06267241\r\n    },\r\n    {\r\n      " +
-                   "\"intent\": \"divorce\",\r\n      \"score\": 0.00997853652\r\n    },\r\n    {\r\n     " +
-                   " \"intent\": \"None\",\r\n      \"score\": 0.00248154555\r\n    }\r\n  ],\r\n  \"entities\": []\r\n}";
-        private readonly string noneLuisResponse =
-                   "{\r\n  \"query\": \"good bye\",\r\n  \"topScoringIntent\": {\r\n    " +
-                   "\"intent\": \"None\",\r\n    \"score\": 0.7257252\r\n  },\r\n  " +
-                   "\"intents\": [\r\n    {\r\n      \"intent\": \"None\",\r\n      " +
-                   "\"score\": 0.06429157\r\n    },\r\n    {\r\n      \"intent\": \"Divorce\",\r\n      " +
-                   "\"score\": 0.05946025\r\n    },\r\n    {\r\n      \"intent\": \"Eviction\",\r\n     " +
-                   "\"score\": 4.371685E-05\r\n    }\r\n  ],\r\n  \"entities\": []\r\n}";
-        #endregion
-
-        #region Mocked Output Data
         private readonly string expectedProperResult = "eviction";
         private readonly string expectedNoneResult = "None";
-        #endregion
 
-        public LuisProxyTests()
+        public LuisTests()
         {
             luisSettings = Substitute.For<ILuisSettings>();
             httpClientService = Substitute.For<IHttpClientService>();
@@ -57,14 +35,14 @@ namespace Access2Justice.Shared.Tests.Luis
             var responseq = new HttpResponseMessage();
             var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK)
             {
-                Content = new StringContent(properLuisResponse)
+                Content = new StringContent(LuisTestData.ProperLuisResponse)
             };
 
             var luisResponse = httpClientService.GetAsync(luisSettings.Endpoint);
             luisResponse.Returns(httpResponseMessage);
 
             //act
-            var result = luisProxy.GetIntents(query).Result;
+            var result = luisProxy.GetIntents(LuisTestData.Query).Result;
 
             //assert
             Assert.Contains(expectedProperResult, result,StringComparison.InvariantCulture);
@@ -77,14 +55,14 @@ namespace Access2Justice.Shared.Tests.Luis
             var responseq = new HttpResponseMessage();
             var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK)
             {
-                Content = new StringContent(noneLuisResponse)
+                Content = new StringContent(LuisTestData.NoneLuisResponse)
             };
 
             var luisResponse = httpClientService.GetAsync(luisSettings.Endpoint);
             luisResponse.Returns(httpResponseMessage);
 
             //act
-            var result = luisProxy.GetIntents(query).Result;
+            var result = luisProxy.GetIntents(LuisTestData.Query).Result;
 
             //assert
             Assert.Contains(expectedNoneResult, result, StringComparison.InvariantCultureIgnoreCase);
@@ -104,7 +82,7 @@ namespace Access2Justice.Shared.Tests.Luis
             luisResponse.Returns(httpResponseMessage);
 
             //act
-            var result = luisProxy.GetIntents(query).Result;
+            var result = luisProxy.GetIntents(LuisTestData.Query).Result;
 
             //assert
             Assert.Empty(result);
