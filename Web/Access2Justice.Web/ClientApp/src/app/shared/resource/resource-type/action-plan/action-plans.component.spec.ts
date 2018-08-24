@@ -6,38 +6,28 @@ import { HttpClientModule } from '@angular/common/http';
 import { ModalModule } from 'ngx-bootstrap';
 import { PlanStep } from '../../../../guided-assistant/personalized-plan/personalized-plan';
 import { ArrayUtilityService } from '../../../../shared/array-utility.service';
-import { BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService, ToastrModule, ToastPackage } from 'ngx-toastr';
 import { Global } from '../../../../global';
+import { Observable } from 'rxjs/Observable';
 
 fdescribe('ActionPlansComponent', () => {
   let component: ActionPlansComponent;
   let fixture: ComponentFixture<ActionPlansComponent>;
-  let modalService: BsModalService;
   let sharedService: ArrayUtilityService;
   let toastrService: ToastrService;
   let personalizedPlanService: PersonalizedPlanService;
   let mockIsChecked = true;
   let mockTopicId = "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef";
   let mockStepId = "f05ace00-c1cc-4618-a224-56aa4677d2aa";
-  let mockPlanId = "89cb57af-3d3b-49a9-990a-aa5f8d89a796";
+  let mockPlanId = "3bd5b8cb-69f3-42fc-a74c-a9fa1c94f805";
   let mockItems = {
     "topicId": "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef",
-    "name": "Divorce",
-    "quickLinks": [
-      {
-        "text": "Filing for Dissolution or Divorce - Ending Your Marriage",
-        "url": "http://courts.alaska.gov/shc/family/shcstart.htm#issues"
-      }
-    ],
-    "icon": "https://cs4892808efec24x447cx944.blob.core.windows…/static-resource/assets/images/topics/housing.svg",
     "steps": [
       {
         "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
-        "type": "steps",
         "title": "Jurisdiction",
         "description": "Jurisdiction is a very complicated subject and you…are some resources that could help you with this:",
-        "order": 2,
+        "order": 1,
         "isComplete": false,
         "resources": [
           {
@@ -47,168 +37,363 @@ fdescribe('ActionPlansComponent', () => {
             "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5"
           }
         ]
-      },
-      {
-        "description": "Jurisdiction is a very complicated subject and you should talk to an attorney to figure out where is the best place ot file your case. Here are some resources that could help you with this:",
-        "isComplete": true,
-        "order": 2,
-        "resources":
-          [
-            {
-              "id": "19a02209-ca38-4b74-bd67-6ea941d41518"
-            },
-            {
-              "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5"
-            }
-          ],
-        "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
-        "title": "Jurisdiction",
-        "type": "steps"
       }
     ]
   };
-  let mockPlanDetails = {};
-  let mockPlanDetailsJson = {
-    "id": "bf8d7e7e-2574-7b39-efc7-83cb94adae07",
-    "oId": "User Id",
-    "type": "plans",
-    "planTags": [
+  let mockUpdatedMatchingStep =
+    {
+      "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
+      "topicIds": [],
+      "title": "Jurisdiction",
+      "description": "Jurisdiction is a very complicated subject and you…are some resources that could help you with this:",
+      "order": 1,
+      "isComplete": true,
+      "resources": ["19a02209-ca38-4b74-bd67-6ea941d41518", "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5"]
+    };
+  let mockNonMatchingStep =
+    {
+      "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
+      "topicIds": [],
+      "title": "Jurisdiction",
+      "description": "Jurisdiction is a very complicated subject and you…are some resources that could help you with this:",
+      "order": 1,
+      "isComplete": false,
+      "resources": ["19a02209-ca38-4b74-bd67-6ea941d41518", "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5"]
+    };
+  let mockPlanDetails = {
+    "id": "3bd5b8cb-69f3-42fc-a74c-a9fa1c94f805",
+    "topics": [
       {
-        "topicId": "addf41e9-1a27-4aeb-bcbb-7959f95094ba",
-        "stepTags": [
+        "topicId": "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef",
+        "name": "Divorce",
+        "quickLinks": [
           {
-            "id": {
-              "id": "6b230be1-302b-7090-6cb3-fc6aa084274c",
-              "type": "steps",
-              "title": "Make sure your summons is real.",
-              "description": "Why you should do this dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo.",
-              "resourceTags": [
-                {
-                  "id": {
-                    "id": "9fc75d90-7ffa-4c26-9cb7-ba271f2007ad",
-                    "name": "Lorem ipsum dolor sit amet",
-                    "description": "Subhead lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem",
-                    "resourceType": "Videos",
-                    "externalUrl": "",
-                    "url": "https://channel9.msdn.com/Shows/Azure-Friday/Managing-costs-with-the-Azure-Budgets-API-and-Action-Groups/player",
-                    "topicTags": [
-                      {
-                        "id": "f102bfae-362d-4659-aaef-956c391f79de"
-                      }
-                    ],
-                    "location": [
-                      {
-                        "state": "Hawaii",
-                        "city": "Kalawao",
-                        "zipCode": "96742"
-                      },
-                      {
-                        "zipCode": "96741"
-                      }
-                    ],
-                    "icon": "./assets/images/resources/resource.png",
-                    "overview": "Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter. Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter.",
-                    "isRecommended": "",
-                    "createdBy": "",
-                    "createdTimeStamp": "",
-                    "modifiedBy": "",
-                    "modifiedTimeStamp": "2018-05-01T04:18:00Z"
-                  }
-                },
-                {
-                  "id": {
-                    "id": "19a02209-ca38-4b74-bd67-6ea941d41518",
-                    "name": "Organization Name 1",
-                    "type": "Housing Law Services",
-                    "description": "Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter. Solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter.",
-                    "resourceType": "Organizations",
-                    "externalUrl": "",
-                    "url": "websiteurl.com",
-                    "topicTags": [
-                      {
-                        "id": "afabf032-72a8-4b04-81cb-c101bb1a0730"
-                      },
-                      {
-                        "id": "3aa3a1be-8291-42b1-85c2-252f756febbc"
-                      }
-                    ],
-                    "location": [
-                      {
-                        "zipCode": "96741"
-                      },
-                      {
-                        "state": "Hawaii",
-                        "city": "Haiku-Pauwela"
-                      },
-                      {
-                        "state": "Alaska"
-                      }
-                    ],
-                    "icon": "./assets/images/resources/resource.png",
-                    "address": "Honolulu, Hawaii 96813, United States",
-                    "telephone": "000-000-0000",
-                    "overview": "Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter. Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter.",
-                    "eligibilityInformation": "Copy describing eligibility qualification lorem ipsum dolor sit amet. ",
-                    "reviewedByCommunityMember": "Quote from community member consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
-                    "reviewerFullName": "",
-                    "reviewerTitle": "",
-                    "reviewerImage": "",
-                    "createdBy": "",
-                    "createdTimeStamp": "",
-                    "modifiedBy": "",
-                    "modifiedTimeStamp": "2018-04-01T04:18:00Z"
-                  }
-                }
-              ]
-            },
-            "order": 1,
-            "markCompleted": false
+            "text": "Filing for Dissolution or Divorce - Ending Your Marriage",
+            "url": "http://courts.alaska.gov/shc/family/shcstart.htm#issues"
           }
         ],
-        "id": [
+        "icon": "https://cs4892808efec24x447cx944.blob.core.windows…/static-resource/assets/images/topics/housing.svg",
+        "steps": [
           {
-            "id": "addf41e9-1a27-4aeb-bcbb-7959f95094ba",
-            "name": "Family",
-            "parentTopicID": "",
-            "resourceType": "Topics",
-            "keywords": "EVICTION",
-            "location": [
+            "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
+            "title": "File a motion to modify if there has been a change of circumstances.",
+            "description": "The Motion and Affidavit for Post-Decree relief are used to request changes to a divorce or make sure the other side is followin gthe orders.",
+            "order": 1,
+            "isComplete": false,
+            "resources": [
               {
-                "state": "Hawaii",
-                "county": "Kalawao County",
-                "city": "Kalawao",
-                "zipCode": "96742"
+                "id": "19a02209-ca38-4b74-bd67-6ea941d41518",
+                "resourceType": "Organizations"
               },
               {
-                "zipCode": "96741"
+                "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5",
+                "resourceType": "Articles"
+              }
+            ]
+          },
+          {
+            "description": "Jurisdiction is a very complicated subject and you should talk to an attorney to figure out where is the best place ot file your case. Here are some resources that could help you with this:",
+            "isComplete": true,
+            "order": 2,
+            "resources": [
+              {
+                "id": "19a02209-ca38-4b74-bd67-6ea941d41518",
+                "resourceType": "Organizations"
+              },
+              {
+                "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5",
+                "resourceType": "Articles"
               }
             ],
-            "jsonContent": "",
-            "icon": "./assets/images/topics/topic14.png",
-            "createdBy": "",
-            "createdTimeStamp": "",
-            "modifiedBy": "",
-            "modifiedTimeStamp": ""
+            "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
+            "title": "Jurisdiction"
           }
         ]
       }
-
-    ]
+    ],
+    "isShared": false
   };
-  let mockPlanDetailsArray = [mockPlanDetailsJson];
-  let mockplanStep: PlanStep;
-  let mockdisplaySteps: boolean = false;
+  let mockupdatedPlanDetails = {
+    "id": "3bd5b8cb-69f3-42fc-a74c-a9fa1c94f805",
+    "topics": [
+      {
+        "topicId": "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef",
+        "name": "Divorce",
+        "quickLinks": [
+          {
+            "text": "Filing for Dissolution or Divorce - Ending Your Marriage",
+            "url": "http://courts.alaska.gov/shc/family/shcstart.htm#issues"
+          }
+        ],
+        "icon": "https://cs4892808efec24x447cx944.blob.core.windows…/static-resource/assets/images/topics/housing.svg",
+        "steps": [
+          {
+            "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
+            "title": "File a motion to modify if there has been a change of circumstances.",
+            "description": "The Motion and Affidavit for Post-Decree relief are used to request changes to a divorce or make sure the other side is followin gthe orders.",
+            "order": 1,
+            "isComplete": true,
+            "resources": [
+              {
+                "id": "19a02209-ca38-4b74-bd67-6ea941d41518",
+                "resourceType": "Organizations"
+              },
+              {
+                "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5",
+                "resourceType": "Articles"
+              }
+            ]
+          },
+          {
+            "description": "Jurisdiction is a very complicated subject and you should talk to an attorney to figure out where is the best place ot file your case. Here are some resources that could help you with this:",
+            "isComplete": true,
+            "order": 2,
+            "resources": [
+              {
+                "id": "19a02209-ca38-4b74-bd67-6ea941d41518",
+                "resourceType": "Organizations"
+              },
+              {
+                "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5",
+                "resourceType": "Articles"
+              }
+            ],
+            "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
+            "title": "Jurisdiction"
+          }
+        ]
+      }
+    ],
+    "isShared": false
+  };
+  let mockUpdatedPlanForMatchingTopic = {
+    "id": "3bd5b8cb-69f3-42fc-a74c-a9fa1c94f805",
+    "topics": [
+      {
+        "topicId": "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef",
+        "steps": [
+          {
+            "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
+            "title": "File a motion to modify if there has been a change of circumstances.",
+            "description": "The Motion and Affidavit for Post-Decree relief are used to request changes to a divorce or make sure the other side is followin gthe orders.",
+            "order": 1,
+            "isComplete": true,
+            "resources": [
+              {
+                "id": "19a02209-ca38-4b74-bd67-6ea941d41518",
+                "resourceType": "Organizations"
+              },
+              {
+                "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5",
+                "resourceType": "Articles"
+              }
+            ]
+          },
+          {
+            "description": "Jurisdiction is a very complicated subject and you should talk to an attorney to figure out where is the best place ot file your case. Here are some resources that could help you with this:",
+            "isComplete": true,
+            "order": 2,
+            "resources": [
+              {
+                "id": "19a02209-ca38-4b74-bd67-6ea941d41518",
+                "resourceType": "Organizations"
+              },
+              {
+                "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5",
+                "resourceType": "Articles"
+              }
+            ],
+            "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
+            "title": "Jurisdiction"
+          }
+        ]
+      }
+    ],
+    "isShared": false
+  };
+  let mockUpdatedPlanForNonMatchingTopic = {
+    "id": "3bd5b8cb-69f3-42fc-a74c-a9fa1c94f805",
+    "topics": [
+      {
+        "topicId": "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef",
+        "steps": [
+          {
+            "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
+            "title": "File a motion to modify if there has been a change of circumstances.",
+            "description": "The Motion and Affidavit for Post-Decree relief are used to request changes to a divorce or make sure the other side is followin gthe orders.",
+            "order": 1,
+            "isComplete": false,
+            "resources": [
+              {
+                "id": "19a02209-ca38-4b74-bd67-6ea941d41518",
+                "resourceType": "Organizations"
+              },
+              {
+                "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5",
+                "resourceType": "Articles"
+              }
+            ]
+          },
+          {
+            "description": "Jurisdiction is a very complicated subject and you should talk to an attorney to figure out where is the best place ot file your case. Here are some resources that could help you with this:",
+            "isComplete": true,
+            "order": 2,
+            "resources": [
+              {
+                "id": "19a02209-ca38-4b74-bd67-6ea941d41518",
+                "resourceType": "Organizations"
+              },
+              {
+                "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5",
+                "resourceType": "Articles"
+              }
+            ],
+            "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
+            "title": "Jurisdiction"
+          }
+        ]
+      }
+    ],
+    "isShared": false
+  };
+  let mockOrderedPlanDetails = {
+    "id": "3bd5b8cb-69f3-42fc-a74c-a9fa1c94f805",
+    "topics": [
+      {
+        "topicId": "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef",
+        "name": "Divorce",
+        "quickLinks": [
+          {
+            "text": "Filing for Dissolution or Divorce - Ending Your Marriage",
+            "url": "http://courts.alaska.gov/shc/family/shcstart.htm#issues"
+          }
+        ],
+        "icon": "https://cs4892808efec24x447cx944.blob.core.windows…/static-resource/assets/images/topics/housing.svg",
+        "steps": [
+          {
+            "description": "Jurisdiction is a very complicated subject and you should talk to an attorney to figure out where is the best place ot file your case. Here are some resources that could help you with this:",
+            "isComplete": true,
+            "order": 2,
+            "resources": [
+              {
+                "id": "19a02209-ca38-4b74-bd67-6ea941d41518"
+              },
+              {
+                "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5"
+              }
+            ],
+            "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
+            "title": "Jurisdiction"
+          },
+          {
+            "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
+            "title": "File a motion to modify if there has been a change of circumstances.",
+            "description": "The Motion and Affidavit for Post-Decree relief are used to request changes to a divorce or make sure the other side is followin gthe orders.",
+            "order": 1,
+            "isComplete": false,
+            "resources": [
+              {
+                "id": "19a02209-ca38-4b74-bd67-6ea941d41518"
+              },
+              {
+                "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "isShared": false
+  };
+  let mockTopicsList = [{
+    "isSelected": true,
+    "topic":
+      {
+        "topicId": "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef",
+        "name": "Divorce",
+        "quickLinks": [
+          {
+            "text": "Filing for Dissolution or Divorce - Ending Your Marriage",
+            "url": "http://courts.alaska.gov/shc/family/shcstart.htm#issues"
+          }
+        ],
+        "icon": "https://cs4892808efec24x447cx944.blob.core.windows…/static-resource/assets/images/topics/housing.svg",
+        "steps": [
+          {
+            "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
+            "title": "Jurisdiction",
+            "description": "Jurisdiction is a very complicated subject and you…are some resources that could help you with this:",
+            "order": 2,
+            "isComplete": false,
+            "resources": [
+              {
+                "id": "19a02209-ca38-4b74-bd67-6ea941d41518"
+              },
+              {
+                "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5"
+              }
+            ]
+          },
+          {
+            "description": "Jurisdiction is a very complicated subject and you should talk to an attorney to figure out where is the best place ot file your case. Here are some resources that could help you with this:",
+            "isComplete": true,
+            "order": 2,
+            "resources": [
+              {
+                "id": "19a02209-ca38-4b74-bd67-6ea941d41518"
+              },
+              {
+                "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5"
+              }
+            ],
+            "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
+            "title": "Jurisdiction"
+          }
+        ]
+      }
+  }];
+  let mockEvent = {
+    "target": { "checked": true }
+  }
+  let mockPersonalizedPlan = {
+    "id": "3bd5b8cb-69f3-42fc-a74c-a9fa1c94f805",
+    "topics": [
+      {
+        "topicId": "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef",
+        "steps": [
+          {
+            "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
+            "title": "File a motion to modify if there has been a change of circumstances.",
+            "description": "The Motion and Affidavit for Post-Decree relief are used to request changes to a divorce or make sure the other side is followin gthe orders.",
+            "order": 1,
+            "isComplete": true,
+            "resources": ["19a02209-ca38-4b74-bd67-6ea941d41518", "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5"],
+            "topicIds": []
+          },
+          {
+            "description": "Jurisdiction is a very complicated subject and you should talk to an attorney to figure out where is the best place ot file your case. Here are some resources that could help you with this:",
+            "isComplete": true,
+            "order": 2,
+            "resources": ["19a02209-ca38-4b74-bd67-6ea941d41518", "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5"],
+            "topicIds": [],
+            "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
+            "title": "Jurisdiction"
+          }
+        ]
+      }
+    ],
+    "isShared": false
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        HttpClientModule, ModalModule.forRoot(), ToastrModule.forRoot()
+        HttpClientModule, ToastrModule.forRoot()
       ],
       declarations: [ActionPlansComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         PersonalizedPlanService,
-        BsModalService,
         ArrayUtilityService,
         ToastrService,
         Global]
@@ -220,7 +405,7 @@ fdescribe('ActionPlansComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     personalizedPlanService = TestBed.get(PersonalizedPlanService);
-    modalService = TestBed.get(BsModalService);
+
     sharedService = TestBed.get(ArrayUtilityService);
     toastrService = TestBed.get(ToastrService);
   });
@@ -237,64 +422,141 @@ fdescribe('ActionPlansComponent', () => {
     spyOn(component, 'getPersonalizedPlan');
     component.ngOnChanges();
     component.getPersonalizedPlan(mockPlanDetails);
-    expect(component.getPersonalizedPlan).toHaveBeenCalled();
+    expect(component.getPersonalizedPlan).toHaveBeenCalledWith(mockPlanDetails);
   });
 
-  it("should assign values for planSteps and displaySteps if planDetails list is empty in getPersonalizedPlan method", () => {
-    spyOn(component, 'getPersonalizedPlan');
-    component.getPersonalizedPlan(mockPlanDetails);
-    expect(component.planDetails).toEqual(mockplanStep);
-    expect(component.displaySteps).toEqual(mockdisplaySteps);
+  it("should assign input topics list to tempFilteredtopicsList on ngChanges", () => {
+    component.topicsList = mockTopicsList;
+    component.planDetails = mockPlanDetails;
+    component.ngOnChanges();
+    expect(component.tempFilteredtopicsList).toEqual(mockTopicsList);
   });
 
-  it("should assign the array json value to the input plan Details in getPersonalizedPlan method", () => {
-    spyOn(component, 'getPersonalizedPlan');
-    component.planDetails = mockPlanDetailsArray;
-    component.getPersonalizedPlan(component.planDetails);
-    expect(component.getPersonalizedPlan).toHaveBeenCalled();
+  it("should assign values for planDetails and displaySteps if planDetails list is empty in getPersonalizedPlan method", () => {
+    let emptyPlanDetails = {};
+    component.getPersonalizedPlan(emptyPlanDetails);
+    expect(component.planDetails).toEqual(emptyPlanDetails);
+    expect(component.displaySteps).toBeFalsy();
   });
 
-  it("should assign values for planSteps and displaySteps in getPersonalizedPlan method", () => {
-    spyOn(component, 'getPersonalizedPlan');
-    component.getPersonalizedPlan(mockPlanDetailsJson);
-    expect(component.planDetails).not.toBeNull();
-    expect(component.displaySteps).not.toBe(true);
+  it("should assign values for planDetails and displaySteps if planDetails is not defined in getPersonalizedPlan method", () => {
+    let noPlanDetails = undefined;
+    component.getPersonalizedPlan(noPlanDetails);
+    expect(component.planDetails).toEqual(noPlanDetails);
+    expect(component.displaySteps).toBeFalsy();
   });
 
-  it("should call orderBy method in getPersonalizedPlan", () => {
+  it("should assign values for planDetails, displaySteps and call sortStepsByOrder if planDetails list is not empty in getPersonalizedPlan method", () => {
     spyOn(component, 'sortStepsByOrder');
+    component.getPersonalizedPlan(mockPlanDetails);
+    expect(component.planDetails).toEqual(mockPlanDetails);
+    expect(component.displaySteps).toBeTruthy();
+    expect(component.sortStepsByOrder).toHaveBeenCalledWith(component.planDetails);
+  });
+
+  it("should call orderBy in sortStepsByOrder method", () => {
+    spyOn(component, 'orderBy');
     component.sortStepsByOrder(mockPlanDetails);
-    expect(component.sortStepsByOrder).toHaveBeenCalled();
+    expect(component.orderBy).toHaveBeenCalled();
   });
 
-  it('should call checkCompleted', () => {
-    spyOn(component, 'checkCompleted');
-    expect(component.checkCompleted).toHaveBeenCalled();
+  //Need to check
+  xit("should order the plan details by isComplete in sortStepsByOrder method", () => {
+    //spyOn(component, 'orderBy');
+    component.sortStepsByOrder(mockPlanDetails);
+    expect(component.planDetails).toEqual(mockOrderedPlanDetails);
   });
 
-  it('should call getPlanDetails method when checkCompleted called with values', () => {
+  it("should call assign isChecked and call getPlanDetails in checkCompleted method", () => {
+    component.planDetails = mockPlanDetails;
     spyOn(component, 'getPlanDetails');
-    component.getPlanDetails(mockTopicId, mockStepId, mockIsChecked);
-    component.checkCompleted;
-    expect(component.getPlanDetails).toHaveBeenCalled();
+    component.checkCompleted(mockEvent, mockTopicId, mockStepId);
+    expect(component.isChecked).toBeTruthy();
+    expect(component.getPlanDetails).toHaveBeenCalledWith(mockTopicId, mockStepId, component.isChecked);
   });
 
-  it("should call getActionPlanConditions when getPlanDetails method called ", () => {
-    spyOn(personalizedPlanService, 'getActionPlanConditions');
-    personalizedPlanService.getActionPlanConditions(mockPlanId);
-    expect(personalizedPlanService.getActionPlanConditions).toHaveBeenCalled();
-  });
-
-  it("should call updateMarkCompleted when getPlanDetails method called ", () => {
+  it("should assign values to topics, plan and call updateMarkCompleted and updateProfilePlan methods", () => {
+    component.planDetails = mockPlanDetails;
+    component.isChecked = true;
+    spyOn(personalizedPlanService, 'getActionPlanConditions').and.callFake(() => {
+      return Observable.from([mockPlanDetails]);
+    });
+    spyOn(personalizedPlanService, 'getPlanDetails').and.returnValue(mockPlanDetails);
     spyOn(component, 'updateMarkCompleted');
-    component.updateMarkCompleted(mockPlanId, mockStepId, mockIsChecked);
-    expect(component.updateMarkCompleted).toHaveBeenCalled();
+    spyOn(component, 'updateProfilePlan');
+    component.getPlanDetails(mockTopicId, mockStepId, true);
+    expect(component.topics).toEqual(mockPlanDetails.topics);
+    expect(component.plan).toEqual(mockPlanDetails);
+    expect(component.updateMarkCompleted).toHaveBeenCalledWith(mockTopicId, mockStepId, true);
+    expect(component.updateProfilePlan).toHaveBeenCalledWith(component.isChecked);
   });
 
-  it("should call updateProfilePlan when getPlanDetails method called ", () => {
-    spyOn(component, 'updateProfilePlan');
+  it("should call updateStepTagForMatchingTopicId when topicId matches in updateMarkCompleted method", () => {
+    let mockSteps = mockUpdatedPlanForMatchingTopic.topics[0].steps;
+    component.plan = mockPlanDetails;
+    component.planDetails = mockPlanDetails;
+    //spyOn(component, 'updateStepTagForMatchingTopicId');
+    spyOn(component, 'stepTagForNonMatchingTopicId');
+    spyOn(component, 'updateStepTagForMatchingTopicId').and.callFake(() => {
+      return Observable.from([mockSteps]);
+    });
+    component.updateMarkCompleted(mockTopicId, mockStepId, true);
+    expect(component.updateStepTagForMatchingTopicId).toHaveBeenCalledTimes(1);
+    expect(component.stepTagForNonMatchingTopicId).toHaveBeenCalledTimes(0);
+    expect(component.updateStepTagForMatchingTopicId).toHaveBeenCalledWith(mockPlanDetails.topics[0], mockStepId, true);
+    //expect(component.personalizedPlan).toEqual(mockUpdatedPlanForMatchingTopic);
+  });
+
+  it("should call stepTagForNonMatchingTopicId when topicId matches in updateMarkCompleted method", () => {
+    let nonMatchingTopicId = "test";
+    component.plan = mockPlanDetails;
+    component.planDetails = mockPlanDetails;
+    spyOn(component, 'stepTagForNonMatchingTopicId');
+    spyOn(component, 'updateStepTagForMatchingTopicId');
+    component.updateMarkCompleted(nonMatchingTopicId, mockStepId, true);
+    expect(component.updateStepTagForMatchingTopicId).toHaveBeenCalledTimes(0);
+    expect(component.stepTagForNonMatchingTopicId).toHaveBeenCalledTimes(1);
+    expect(component.stepTagForNonMatchingTopicId).toHaveBeenCalledWith(mockPlanDetails.topics[0]);
+    //expect(component.personalizedPlan).toEqual(mockUpdatedPlanForNonMatchingTopic);
+  });
+
+  it('should return personalizedPlanSteps in updateStepTagForMatchingTopicId', () => {
+    let mockPersonalizedPlanSteps = [];
+    mockPersonalizedPlanSteps.push(mockUpdatedMatchingStep);
+    component.updateStepTagForMatchingTopicId(mockItems, mockStepId, true);
+    expect(component.personalizedPlanSteps).toEqual(mockPersonalizedPlanSteps);
+  });
+
+  it('should return personalizedPlanSteps in stepTagForNonMatchingTopicId', () => {
+    let mockPersonalizedPlanSteps = [];
+    mockPersonalizedPlanSteps.push(mockNonMatchingStep);
+    component.stepTagForNonMatchingTopicId(mockItems);
+    expect(component.personalizedPlanSteps).toEqual(mockPersonalizedPlanSteps);
+  });
+
+  it("should add topics to filteredtopicsList and call getUpdatedPersonalizedPlan in updateProfilePlan method", () => {
+    component.personalizedPlan = mockPersonalizedPlan;
+    component.tempFilteredtopicsList = mockTopicsList;
+    let mockFilteredTopicList = [{ "topic": mockupdatedPlanDetails.topics[0], "isSelected": true }];
+    let mockIsChecked = true;
+    spyOn(personalizedPlanService, 'userPlan').and.callFake(() => {
+      return Observable.from([mockupdatedPlanDetails]);
+    });
+    spyOn(component, 'getUpdatedPersonalizedPlan');
     component.updateProfilePlan(mockIsChecked);
-    expect(component.updateProfilePlan).toHaveBeenCalled();
+    expect(personalizedPlanService.userPlan).toHaveBeenCalled();
+    expect(component.filteredtopicsList).toEqual(mockFilteredTopicList);
+    expect(component.getUpdatedPersonalizedPlan).toHaveBeenCalledWith(mockupdatedPlanDetails, mockIsChecked);
+  });
+
+  it("should assign isCompleted to true and call loadPersonalizedPlan in getUpdatedPersonalizedPlan when isChecked is true", () => {
+    let mockIsChecked = true;
+    let mockFilteredTopicList = [{ "topic": mockupdatedPlanDetails.topics[0], "isSelected": true }];
+    component.filteredtopicsList = mockFilteredTopicList;
+    component.getUpdatedPersonalizedPlan(mockupdatedPlanDetails, mockIsChecked);
+    expect(component.loadPersonalizedPlan).toHaveBeenCalled();
+    expect(component.isChecked).toBeTruthy();
+    expect(toastrService.success).toHaveBeenCalledWith("Step Completed.");
   });
 
   it("should return personalizedPlanSteps when updateMarkCompleted method of component", () => {
@@ -321,16 +583,10 @@ fdescribe('ActionPlansComponent', () => {
     expect(personalizedPlanService.getResourceIds).toHaveBeenCalled();
   });
 
-  it('should update profile plan when isChecked value is passed',() => {
+  it('should update profile plan when isChecked value is passed', () => {
     spyOn(component, 'updateProfilePlan');
     component.updateProfilePlan(mockIsChecked);
     expect(component.updateProfilePlan).toHaveBeenCalled();
-  });
-
-  it('should call getUpdatedPersonalizedPlan method of component is called', () => {
-    spyOn(component, 'getUpdatedPersonalizedPlan');
-    component.getUpdatedPersonalizedPlan(mockPlanDetailsJson, mockIsChecked);
-    expect(component.getUpdatedPersonalizedPlan).toHaveBeenCalled();
   });
 
   it('should call loadPersonalizedPlan method when getUpdatedPersonalizedPlan method of component is called', () => {

@@ -1,9 +1,7 @@
-import { Component, Input, EventEmitter, Output, TemplateRef } from '@angular/core';
+import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { PlanTopic, PersonalizedPlan, PlanStep, PersonalizedPlanTopic } from '../../../../guided-assistant/personalized-plan/personalized-plan';
 import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
-import { BsModalService } from 'ngx-bootstrap/modal';
-import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Title } from '@angular/platform-browser/src/browser/title';
 import { ToastrService } from 'ngx-toastr';
@@ -19,7 +17,6 @@ export class ActionPlansComponent implements OnChanges {
   @Input() topicsList;
   displaySteps: boolean = false;
   updatedPlan: any;
-  modalRef: BsModalRef;
   url: any;
   userId: string;
   isCompleted: boolean = false;
@@ -41,7 +38,6 @@ export class ActionPlansComponent implements OnChanges {
   plan: any;
 
   constructor(
-    private modalService: BsModalService,
     private personalizedPlanService: PersonalizedPlanService,
     public sanitizer: DomSanitizer,
     private toastr: ToastrService,
@@ -64,7 +60,7 @@ export class ActionPlansComponent implements OnChanges {
 
   getPersonalizedPlan(planDetails): void {
     this.planDetails = planDetails;
-    if (planDetails.length === 0) {
+    if (!(planDetails) || planDetails.length === 0) {
       this.displaySteps = false;
     } else if (this.planDetails.topics) {
       this.sortStepsByOrder(planDetails);
@@ -174,9 +170,9 @@ export class ActionPlansComponent implements OnChanges {
   }
 
   loadPersonalizedPlan() {
-    this.planDetails.topics = [];
     this.filteredtopicsList.forEach(topic => {
       if (topic.isSelected) {
+        this.planDetails.topics = [];
         this.planDetails.topics.push(topic);
       }
     });
@@ -185,10 +181,6 @@ export class ActionPlansComponent implements OnChanges {
   resourceUrl(url) {
     this.url = this.sanitizer.bypassSecurityTrustResourceUrl(url);
     return this.url;
-  }
-
-  openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template);
   }
 
   planTagOptions(topicId) {
