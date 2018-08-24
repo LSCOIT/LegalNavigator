@@ -13,11 +13,11 @@ import { ActivatedRoute } from '@angular/router';
 
 export class PrintButtonComponent implements OnInit {
   template: string = '';
-  applicationUrl: any = window.location.host;
+  applicationUrl: any = window.location.origin;
   title: any = document.title;
   activeTab: string = '';
   activeRouteName: string = '';
-  
+
   constructor(private activeRoute: ActivatedRoute) { }
 
   print(): void {
@@ -69,7 +69,7 @@ export class PrintButtonComponent implements OnInit {
     popupWin.document.write(`
         <html>
           <head>
-            <title>Access to justice - https://a2jdevweb.azurewebsites.net/</title>
+            <title> ${this.title + ' - ' + this.applicationUrl}</title>
             <style>
                 @media print {
                 .no-print, .no-print * {

@@ -19,6 +19,7 @@
             <ul *ngFor="let resource of subtopicDetails">
               <li *ngIf="resource.resourceType === 'Related Links'">
                 <a class="link" href="{{resource.url}}">{{resource.name}}</a>
+                <div class="web-hidden">{{resource.url}}</div>
               </li>
             </ul>
           </div>
