@@ -22,74 +22,33 @@ export class DownloadButtonComponent implements OnInit {
     if (location.pathname.indexOf("/plan") >= 0) {
       this.template = 'app-personalized-plan';
       this.buildContent(this.template);
-      this.savePDF();
     }
-
   }
 
   buildContent(template) {
-
-    this.excludeItems();
-
     let printContents = document.getElementsByTagName(template)[0].innerHTML;
-
-    this.mainHTML = `
-        <html>
-          <head>
-            <title> ${this.title + ' - ' + this.applicationUrl}</title>
-            <style>
-                @media print {
-                .no-print, .no-print * {
-                  visibility: hidden;
-                  height: 0;
-                }
-                .print-only * {
-                   display: block;
-                }
-                .collapse {
-                    display: block !important;
-                    height: 0 !important;
-                }
-                .hours li span {
-                    margin-right: 10px;
-                }
-              }
-            </style>
-          </head>
-      <body >${printContents}.</body>
-        </html>`
-
+    let popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
+    popupWin.document.write(`${printContents}`);
+    this.excludeItems(popupWin);
+    this.savePDF(popupWin.document.body);
+    popupWin.close();
   };
 
-  savePDF() {
-
-    var specialElementHandlers = {
-      '#editor': function (element, renderer) {
-        return true;
-      }
-    };
-
-    var generatePDFDoc = new jsPDF();
-    var imgRegex = new RegExp('<img[^>]*?>', 'g');
-    var content = this.mainHTML.replace(this.mainHTML.match(imgRegex), "");
-
-    generatePDFDoc.fromHTML(content, 15, 15, {
-      'width': 170,
-      'elementHandlers': specialElementHandlers
-    }, function (dispose) {
+  savePDF(content) {
+    let generatePDFDoc = new jsPDF();
+    generatePDFDoc.fromHTML(content, 13, 1, {
+      'width': 180
+    }, (dispose) => {
       generatePDFDoc.save('PersonalizedPlan.pdf');
     });
-
   }
 
-  excludeItems() {
-    for (var i = document.images.length; i-- > 0;) {
-      document.images[i].parentNode.removeChild(document.images[i]);
+  excludeItems(newDoc) {
+    let images = newDoc.document.getElementsByClassName('no-print');
+    for (let i = 0; i < images.length; i++) {
+      images[i].src = '';
+      images[i].innerHTML = '';
     }
-    document.getElementsByTagName('app-share-button')[0].innerHTML = "";
-    document.getElementsByTagName('app-user-action-sidebar')[0].innerHTML = "";
-    document.getElementsByTagName('app-print-button')[0].innerHTML = "";
-    document.getElementsByTagName('app-download-button')[0].innerHTML = "";
   }
 
   ngOnInit() {
