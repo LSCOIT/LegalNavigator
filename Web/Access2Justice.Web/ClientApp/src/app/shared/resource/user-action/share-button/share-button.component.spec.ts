@@ -13,7 +13,7 @@ import { TemplateRef } from '@angular/core';
 import { empty } from 'rxjs/observable/empty';
 
 
-fdescribe('ShareButtonComponent', () => {  
+describe('ShareButtonComponent', () => {  
 
   class ActivateRouteStub {
     params: Observable<any> = Observable.empty();
@@ -48,9 +48,9 @@ fdescribe('ShareButtonComponent', () => {
   let mockIsGuidedAssistant = "Guided Assistant";
   let mockId = '6d7dd07a-c454-4b67-b2d8-ed844dadabd9';
   let mockResourceTopics = "/topics/6d7dd07a-c454-4b67-b2d8-ed844dadabd9";
-  let mockTopicActiveRoute = "/resource/6d7dd07a-c454-4b67-b2d8-ed844dadabd9";
   let mockGuidedAssistance = "/guidedassistant/6d7dd07a-c454-4b67-b2d8-ed844dadabd9";
   const mockResponse = Observable.of(mockPermaLink);
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],

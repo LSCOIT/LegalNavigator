@@ -5,7 +5,7 @@ import { FooterComponent } from './footer.component';
 import { StaticResourceService } from '../static-resource.service';
 import { HttpClientModule } from '@angular/common/http';
 
-fdescribe('FooterComponent', () => {
+describe('FooterComponent', () => {
   let component: FooterComponent;
   let fixture: ComponentFixture<FooterComponent>;
 
