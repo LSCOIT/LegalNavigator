@@ -1,0 +1,24 @@
+machine:
+  node:
+    version: 7.5
+  environment:
+    # Fix issue with selenium-server in containers.
+    # See http://github.com/SeleniumHQ/docker-selenium/issues/87
+    DBUS_SESSION_BUS_ADDRESS: /dev/null
+
+dependencies:
+  override:
+    - yarn
+  post:
+  # install latest google chrome
+    - curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    - sudo dpkg -i google-chrome.deb
+    - sleep 3
+    - yarn run build
+    - yarn run webdriver-update
+    - yarn run webdriver-start:
+          background: true
+test:
+  override:
+    - yarn test
+    
