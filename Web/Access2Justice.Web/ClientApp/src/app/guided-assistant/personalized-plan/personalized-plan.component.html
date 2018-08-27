@@ -1,10 +1,9 @@
 <div class="container">
   <div class="user-action upper-action mobile-hidden">
-    <app-user-action-sidebar
-      [mobile]=true
-      [showDownload]=true
-      [id]="activeActionPlan"
-      [type]="type">
+    <app-user-action-sidebar [mobile]=true
+                             [showDownload]=true
+                             [id]="activeActionPlan"
+                             [type]="type">
     </app-user-action-sidebar>
   </div>
   <div class="row row-half-spacing">
@@ -34,7 +33,8 @@
       <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
           role="menu" aria-labelledby="button-basic">
         <li *ngFor="let topic of topicsList" role="menuitem" (click)="filterPlan(topic.topic.name)">
-          <a [ngClass]="{ 'selected-item dropdown-item': topic.isSelected, 'dropdown-item': !topic.isSelected  }"> {{topic.topic.name}} </a></li>
+          <a [ngClass]="{ 'selected-item dropdown-item': topic.isSelected, 'dropdown-item': !topic.isSelected  }"> {{topic.topic.name}} </a>
+        </li>
       </ul>
     </div>
   </div>
@@ -47,9 +47,8 @@
   <app-user-action-sidebar [mobile]=false></app-user-action-sidebar>
 </div>
 <div class="row user-action web-hidden text-center">
-  <app-user-action-sidebar
-    [mobile]=true
-    [showPrint]=false
-    [showDownload]=true>
+  <app-user-action-sidebar [mobile]=true
+                           [showPrint]=false
+                           [showDownload]=true>
   </app-user-action-sidebar>
 </div>

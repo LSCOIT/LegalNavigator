@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-print-button',
@@ -12,28 +13,38 @@ import { Component, OnInit } from '@angular/core';
 
 export class PrintButtonComponent implements OnInit {
   template: string = '';
-  applicationUrl: any = window.location.host;
+  applicationUrl: any = window.location.origin;
   title: any = document.title;
   activeTab: string = '';
-  constructor() { }
+  activeRouteName: string = '';
+
+  constructor(private activeRoute: ActivatedRoute) { }
 
   print(): void {
-    if (location.pathname.indexOf("/topics") >= 0) {
+    this.activeRoute.url
+      .subscribe(routeParts => {
+        for (let i = 0; i < routeParts.length; i++) {
+          this.activeRouteName = routeParts[i].path;
+          break;
+        }
+      });
+
+    if (this.activeRouteName === "subtopics") {
       this.template = 'app-subtopic-detail';
       this.printContents(this.template);
     }
 
-    else if (location.pathname.indexOf("/plan") >= 0) {
+    else if (this.activeRouteName === "plan") {
       this.template = 'app-personalized-plan';
       this.printContents(this.template);
     }
 
-    else if (location.pathname.indexOf("/resource") >= 0) {
+    else if (this.activeRouteName === "resource") {
       this.template = 'app-resource-card-detail';
       this.printContents(this.template);
     }
 
-    else if (location.pathname.indexOf("/profile") >= 0) {
+    else if (this.activeRouteName === "profile") {
       this.activeTab = document.getElementsByClassName("nav-link active")[0].firstElementChild.textContent;
 
       if (this.activeTab == "My Plan") {
@@ -58,7 +69,7 @@ export class PrintButtonComponent implements OnInit {
     popupWin.document.write(`
         <html>
           <head>
-            <title>Access to justice - https://a2jdevweb.azurewebsites.net/</title>
+            <title> ${this.title + ' - ' + this.applicationUrl}</title>
             <style>
                 @media print {
                 .no-print, .no-print * {

@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 
 namespace Access2Justice.Api.BusinessLogic
@@ -27,9 +28,19 @@ namespace Access2Justice.Api.BusinessLogic
             userProfile = ConvertUserProfile(resultUserData);
             return userProfile;
         }
-        public async Task<dynamic> GetUserResourceProfileDataAsync(string oId)
+        public async Task<dynamic> GetUserResourceProfileDataAsync(string oId, string type)
         {
-            return await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, Constants.OId, oId);
+            var userProfile = await GetUserProfileDataAsync(oId);
+            dynamic userResourcesDBData = null;
+            if (type == "resources" && userProfile?.SavedResourcesId != null && userProfile?.SavedResourcesId != Guid.Empty)
+            {
+                userResourcesDBData = await dbClient.FindItemsWhereAsync(dbSettings.UserSavedResourcesCollectionId, Constants.Id, Convert.ToString(userProfile.SavedResourcesId, CultureInfo.InvariantCulture));
+            }
+            else if (type == "plan" && userProfile?.PersonalizedActionPlanId != null && userProfile?.PersonalizedActionPlanId != Guid.Empty)
+            {
+                userResourcesDBData = await dbClient.FindItemsWhereAsync(dbSettings.PersonalizedActionPlanCollectionId, Constants.Id, Convert.ToString(userProfile.PersonalizedActionPlanId, CultureInfo.InvariantCulture));
+            }
+            return userResourcesDBData;
         }
         private UserProfile ConvertUserProfile(dynamic convObj)
         {
@@ -50,6 +61,7 @@ namespace Access2Justice.Api.BusinessLogic
                 userProfile.ModifiedTimeStamp = user.ModifiedTimeStamp;
                 userProfile.PersonalizedActionPlanId = user.PersonalizedActionPlanId;
                 userProfile.CuratedExperienceAnswersId = user.CuratedExperienceAnswersId;
+                userProfile.SavedResourcesId = user.SavedResourcesId;
                 userProfile.SharedResource = user.SharedResource;
             }
             return userProfile;
@@ -66,62 +78,68 @@ namespace Access2Justice.Api.BusinessLogic
             var serializedResult = JsonConvert.SerializeObject(userProfile);
             return JsonConvert.DeserializeObject<object>(serializedResult);
         }
-        public async Task<dynamic> UpsertUserSavedResourcesAsync(dynamic userData)
+        public async Task<dynamic> UpsertUserSavedResourcesAsync(ProfileResources userData)
         {
-            var serializedResult = JsonConvert.SerializeObject(userData);
-            var userDocument = JsonConvert.DeserializeObject(serializedResult);
-            string oId = userDocument.oId;
+            var userDocument = new ProfileResources();
+            userDocument = JsonConvert.DeserializeObject<ProfileResources>(JsonConvert.SerializeObject(userData));
+            string oId = userDocument.OId;
             dynamic result = null;
-            if (userData.type == "resources")
+            string type = userData.Type;
+            dynamic userResourcesDBData = null;
+            var userProfile = await GetUserProfileDataAsync(oId);
+            if (userProfile?.SavedResourcesId != null && userProfile?.SavedResourcesId != Guid.Empty)
             {
-                string type = userData.type;
-                List<string> resourcesPropertyNames = new List<string>() { Constants.OId, Constants.Type };
-                List<string> resourcesValues = new List<string>() { oId, type };
-                var userResourcesDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, resourcesPropertyNames, resourcesValues);
-                if (userResourcesDBData.Count == 0)
-                {
-                    result = CreateUserSavedResourcesAsync(userData);
-                }
-                else
-                {
-                    string id = userResourcesDBData[0].id;
-                    result = UpdateUserSavedResourcesAsync(id, userData);
-                }
+                userResourcesDBData = await dbClient.FindItemsWhereAsync(dbSettings.UserSavedResourcesCollectionId, Constants.Id, Convert.ToString(userProfile.SavedResourcesId, CultureInfo.InvariantCulture));
+            }
+            if (userResourcesDBData == null || userResourcesDBData?.Count == 0)
+            {
+                result = await CreateUserSavedResourcesAsync(userData);
+                string savedResourcesId = result.Id;
+                userProfile.SavedResourcesId = new Guid(savedResourcesId);
+                await dbService.UpdateItemAsync(userProfile.Id, userProfile, dbSettings.UserProfileCollectionId);
+            }
+            else
+            {
+                Guid id = Guid.Parse(userResourcesDBData[0].id);
+                result = await UpdateUserSavedResourcesAsync(id, userData);
             }
             return result;
         }
-        public async Task<dynamic> CreateUserSavedResourcesAsync(dynamic userResources)
+        public async Task<dynamic> CreateUserSavedResourcesAsync(ProfileResources userResources)
         {
-            var serializedResult = JsonConvert.SerializeObject(userResources);
-            var userDocument = JsonConvert.DeserializeObject(serializedResult);
-            return await dbService.CreateItemAsync(userDocument, dbSettings.ResourceCollectionId);
-        }
-        public async Task<dynamic> UpdateUserSavedResourcesAsync(string id, dynamic userResources)
-        {
-            var serializedResult = JsonConvert.SerializeObject(userResources);
-            var userUIDocument = JsonConvert.DeserializeObject(serializedResult);
-            string oId = userUIDocument.oId;
-            string type = userUIDocument.type;
-            List<string> propertyNames = new List<string>() { Constants.OId, Constants.Type };
-            List<string> values = new List<string>() { oId, type };
-            var userDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, propertyNames, values);
-            var serializedDBResult = JsonConvert.SerializeObject(userDBData[0]);
-            JObject dbObject = JObject.Parse(serializedDBResult);
-            JObject uiObject = JObject.Parse(serializedResult);
-
-            foreach (var prop in uiObject.Properties())
+            var userDocument = new UserSavedResources()
             {
-                var targetProperty = dbObject.Property(prop.Name);
-                if (targetProperty == null)
+                SavedResourcesId = Guid.NewGuid(),
+                Resources = BuildResources(userResources)
+            };
+            userDocument = JsonConvert.DeserializeObject<UserSavedResources>(JsonConvert.SerializeObject(userDocument));
+            return await dbService.CreateItemAsync((userDocument), dbSettings.UserSavedResourcesCollectionId);
+        }
+
+        public List<SavedResource> BuildResources(ProfileResources userResources)
+        {
+            var savedResources = new List<SavedResource>();
+            foreach (var resource in userResources.Resources)
+            {
+                savedResources.Add(new SavedResource()
                 {
-                    dbObject.Add(prop.Name, prop.Value);
-                }
-                else
-                {
-                    targetProperty.Value = prop.Value;
-                }
+                    ResourceId = resource.ResourceId,
+                    ResourceType = resource.ResourceType,
+                    ResourceDetails = resource.ResourceDetails
+                });
             }
-            return await dbService.UpdateItemAsync(id, dbObject, dbSettings.ResourceCollectionId);
+            return savedResources;
+        }
+
+        public async Task<dynamic> UpdateUserSavedResourcesAsync(Guid id, ProfileResources userResources)
+        {
+            var userDocument = new UserSavedResources()
+            {
+                SavedResourcesId = id,
+                Resources = BuildResources(userResources)
+            };
+            userDocument = JsonConvert.DeserializeObject<UserSavedResources>(JsonConvert.SerializeObject(userDocument));
+            return await dbService.UpdateItemAsync(id.ToString(), userDocument, dbSettings.UserSavedResourcesCollectionId);
         }
     }
 }

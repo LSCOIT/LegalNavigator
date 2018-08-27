@@ -32,7 +32,7 @@
   display: block;
 }
 
-.link{
+.button-container .link{
   display: block;
   margin-left: 20px;
   margin-top: 20px;

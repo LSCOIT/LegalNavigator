@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NavigateDataService } from '../../shared/navigate-data.service';
 
 @Component({
   selector: 'app-articles-resources',
@@ -6,10 +7,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./articles-resources.component.css']
 })
 export class ArticlesResourcesComponent implements OnInit {
-
-  constructor() { }
+  guidedAssistantResults: any;
+  constructor(private navigateDataService: NavigateDataService) { }
 
   ngOnInit() {
+    //Todo - When user come from other pages need to pass the respective resource data & topic name.
+    if (this.navigateDataService != undefined) {
+      this.guidedAssistantResults = this.navigateDataService.getData();
+    }
   }
-
 }
