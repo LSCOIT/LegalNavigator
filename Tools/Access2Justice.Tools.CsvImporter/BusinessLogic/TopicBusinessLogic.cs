@@ -11,22 +11,15 @@ using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading.Tasks;
 
 namespace Access2Justice.Tools.BusinessLogic
 {
-    public class TopicBusinessLogic : IDisposable
+    public class TopicBusinessLogic: IDisposable
     {
-        private readonly string EndpointUrl = "https://access2justicedb.documents.azure.com:443/";
-        private readonly string PrimaryKey = "zOHFmt7MZoGPPLiBOL3pZ1ompDcPIn7qHrvHWvot6ScBaIWl4hJrIlvAQnlIwcqeqFODFg8o4SXL9OoFo6j49Q==";
-        private readonly string Database = "access2justicedb-tool";
-        private readonly string TopicCollection = "Topics";
-        private DocumentClient client;
         static HttpClient clientHttp = new HttpClient();
 
-        public async Task<IEnumerable<Topic>> GetTopics()
+        public async void GetTopics()
         {
-            this.client = new DocumentClient(new Uri(EndpointUrl), PrimaryKey);
             clientHttp.BaseAddress = new Uri("http://localhost:4200/");
             clientHttp.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -46,29 +39,9 @@ namespace Access2Justice.Tools.BusinessLogic
             }
             var serializedTopics = JsonConvert.SerializeObject(topicsList);
             var result = JsonConvert.DeserializeObject(serializedTopics);
-            HttpResponseMessage response = await clientHttp.PostAsJsonAsync("api/createtopicdocument", result).ConfigureAwait(false);
+            var response = await clientHttp.PostAsJsonAsync("api/createtopicdocument", result).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
-
-            var items = await this.GetItemsFromCollectionAsync().ConfigureAwait(true);
-            return items;
-        }
-
-        private async Task CreateTopicDocumentIfNotExists(string databaseName, string collectionName, object td)
-        {
-            await this.client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(databaseName, collectionName), td).ConfigureAwait(true);
-        }
-
-        public async Task<IEnumerable<Topic>> GetItemsFromCollectionAsync()
-        {
-            var documents = client.CreateDocumentQuery<Topic>(
-                  UriFactory.CreateDocumentCollectionUri(Database, TopicCollection),
-                  new FeedOptions { MaxItemCount = -1 }).AsDocumentQuery();
-            List<Topic> td = new List<Topic>();
-            while (documents.HasMoreResults)
-            {
-                td.AddRange(await documents.ExecuteNextAsync<Topic>().ConfigureAwait(true));
-            }
-            return td;
+            if (response.IsSuccessStatusCode == true) { };            
         }
 
         protected virtual void Dispose(bool disposing)

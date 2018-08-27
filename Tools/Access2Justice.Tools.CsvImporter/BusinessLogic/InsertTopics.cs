@@ -36,9 +36,10 @@ namespace Access2Justice.Tools.BusinessLogic
                     string[] partsb = line2.Split('\t');
                     ParentTopicID[] parentTopicIds = null;                    
                     List<Locations> locations = new List<Locations>();
+                    QuickLinks[] quickLinks = null;
                     dynamic id = null; string name = string.Empty; string keywords = string.Empty;
                     string state = string.Empty; string county = string.Empty; string city = string.Empty; string zipcode = string.Empty;
-                    string overview = string.Empty; dynamic essentialReadingText = null; dynamic essentialReadingUrl = null; string icon = string.Empty;
+                    string overview = string.Empty; dynamic quickLinkURLText = null; dynamic quickLinkURLLink = null; string icon = string.Empty;
                     for (int iterationCounter = 0; iterationCounter < partsb.Length; iterationCounter++)
                     {
                         val = parts[iterationCounter];
@@ -89,14 +90,14 @@ namespace Access2Justice.Tools.BusinessLogic
                             overview = partsb[8];
                         }
 
-                        else if (val.EndsWith("Essential_Reading_URL_text", StringComparison.CurrentCultureIgnoreCase))
+                        else if (val.EndsWith("Quick_Links_URL_text", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            essentialReadingText = partsb[9];
+                            quickLinkURLText = partsb[9];
                         }
 
-                        else if (val.EndsWith("Essential_Reading_URL_link", StringComparison.CurrentCultureIgnoreCase))
+                        else if (val.EndsWith("Quick_Links_URL_link", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            essentialReadingUrl = partsb[10];
+                            quickLinkURLLink = partsb[10];
                         }
                         
                         else if (val.EndsWith("Icon", StringComparison.CurrentCultureIgnoreCase))
@@ -105,19 +106,21 @@ namespace Access2Justice.Tools.BusinessLogic
                         }                        
                     }
                     locations.Add(new Locations() { State=state, County=county, City = city, ZipCode=zipcode });
+                    quickLinks = GetQuickLinks(quickLinkURLText, quickLinkURLLink);
+                    //quickLinks.Add(new QuickLinks() { Text = quickLinkURLText, Urls = quickLinkURLLink });
                     topicsList.Add(new Topic()
                     {
                         Id = id == "" ? Guid.NewGuid() : id,
                         Name = name,
                         Overview = overview,
-                        //QuickLinks = quickLinks;
+                        QuickLinks = quickLinks,
                         ParentTopicId = parentTopicIds,
                         ResourceType = "Topics",
                         Keywords = keywords,
                         Location = locations,
                         Icon = icon,
-                        CreatedBy = "Topic and Resources data tool",
-                        ModifiedBy = "Topic and Resources data tool"
+                        CreatedBy = "Admin Import tool",
+                        ModifiedBy = "Admin Import tool"
                     });
                 }
             }
@@ -126,46 +129,46 @@ namespace Access2Justice.Tools.BusinessLogic
             return topics;
         }
 
-        public dynamic GetLocations(string locationId)
-        {
-            List<Locations> locations = new List<Locations>();
-            string[] locsb = null;
-            locsb = locationId.Split('|');
-            for (int locationIterator = 0; locationIterator < locsb.Length; locationIterator++)
-            {
-                string tempLocationsId = locsb[locationIterator];
-                string[] locationsb = null;
-                locationsb = tempLocationsId.Split(';');
-                if (locationsb.Length == 4)
-                {
-                    int position = 0;
-                    var specificLocations = new Locations();
-                    string state = string.Empty, county = string.Empty, city = string.Empty, zipCode = string.Empty;
-                    foreach (var subLocations in tempLocationsId.Split(';'))
-                    {
-                        state = position == 0 && string.IsNullOrEmpty(state) ? subLocations : state;
-                        county = position == 1 && string.IsNullOrEmpty(county) ? subLocations : county;
-                        city = position == 2 && string.IsNullOrEmpty(city) ? subLocations : city;
-                        zipCode = position == 3 && string.IsNullOrEmpty(zipCode) ? subLocations : zipCode;
+        //public dynamic GetLocations(string locationId)
+        //{
+        //    List<Locations> locations = new List<Locations>();
+        //    string[] locsb = null;
+        //    locsb = locationId.Split('|');
+        //    for (int locationIterator = 0; locationIterator < locsb.Length; locationIterator++)
+        //    {
+        //        string tempLocationsId = locsb[locationIterator];
+        //        string[] locationsb = null;
+        //        locationsb = tempLocationsId.Split(';');
+        //        if (locationsb.Length == 4)
+        //        {
+        //            int position = 0;
+        //            var specificLocations = new Locations();
+        //            string state = string.Empty, county = string.Empty, city = string.Empty, zipCode = string.Empty;
+        //            foreach (var subLocations in tempLocationsId.Split(';'))
+        //            {
+        //                state = position == 0 && string.IsNullOrEmpty(state) ? subLocations : state;
+        //                county = position == 1 && string.IsNullOrEmpty(county) ? subLocations : county;
+        //                city = position == 2 && string.IsNullOrEmpty(city) ? subLocations : city;
+        //                zipCode = position == 3 && string.IsNullOrEmpty(zipCode) ? subLocations : zipCode;
 
-                        if (position == 3)
-                        {
-                            specificLocations = new Locations()
-                            {
-                                State = state,
-                                County = county,
-                                City = city,
-                                ZipCode = zipCode,
-                            };
-                        }
-                        position++;
-                    }
-                    locations.Add(specificLocations);
-                }
+        //                if (position == 3)
+        //                {
+        //                    specificLocations = new Locations()
+        //                    {
+        //                        State = state,
+        //                        County = county,
+        //                        City = city,
+        //                        ZipCode = zipCode,
+        //                    };
+        //                }
+        //                position++;
+        //            }
+        //            locations.Add(specificLocations);
+        //        }
 
-            }
-            return locations;
-        }
+        //    }
+        //    return locations;
+        //}
 
         public dynamic GetParentId(string parentId)
         {
@@ -177,10 +180,32 @@ namespace Access2Justice.Tools.BusinessLogic
             {
                 parentTopicIds[topicIdIterator] = new ParentTopicID()
                 {
-                    ParentTopicId = parentsb[topicIdIterator],
+                    ParentTopicId = (parentsb[topicIdIterator]).Trim(),
                 };
             }
             return parentTopicIds;
+        }
+
+        public QuickLinks[] GetQuickLinks(string quickLinkText, string quickLinkLink)
+        {
+            QuickLinks[] quickLinks = null;
+            string[] quickLinkTextsb = null;
+            string[] quickLinkUrlsb = null;
+            quickLinkTextsb = quickLinkText.Split('|');
+            quickLinkUrlsb = quickLinkLink.Split('|');
+            quickLinks = new QuickLinks[quickLinkTextsb.Length];
+            if (quickLinkTextsb.Length == quickLinkUrlsb.Length)
+            {
+                for (int quickLinkIterator = 0; quickLinkIterator < quickLinkTextsb.Length; quickLinkIterator++)
+                {
+                    quickLinks[quickLinkIterator] = new QuickLinks()
+                    {
+                        Text = (quickLinkTextsb[quickLinkIterator]).Trim(),
+                        Urls = (quickLinkUrlsb[quickLinkIterator]).Trim()
+                    };
+                }
+            }
+            return quickLinks;
         }
     }
 }
