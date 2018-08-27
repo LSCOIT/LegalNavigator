@@ -15,6 +15,7 @@ import { SubtopicsComponent } from './topics-resources/subtopic/subtopics.compon
 import { SubtopicDetailComponent } from './topics-resources/subtopic/subtopic-detail.component';
 import { TopicsResourcesComponent } from './topics-resources/topics-resources.component';
 import { TopicsComponent } from './topics-resources/topic/topics.component';
+import { Global } from './global';
 
 
 describe('AppComponent', () => {
@@ -39,6 +40,7 @@ describe('AppComponent', () => {
       imports: [
         FormsModule
       ],
+      providers: [Global],
       schemas: [
         NO_ERRORS_SCHEMA,
         CUSTOM_ELEMENTS_SCHEMA

@@ -2,6 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { FooterComponent } from './footer.component';
+import { StaticResourceService } from '../static-resource.service';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('FooterComponent', () => {
   let component: FooterComponent;
@@ -9,8 +11,10 @@ describe('FooterComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [HttpClientModule],
       declarations: [ FooterComponent ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [StaticResourceService]
     })
     .compileComponents();
   }));
