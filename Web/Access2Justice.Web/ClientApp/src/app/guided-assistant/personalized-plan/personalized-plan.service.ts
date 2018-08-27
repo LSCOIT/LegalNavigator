@@ -50,40 +50,7 @@ export class PersonalizedPlanService {
     return this.http.post<any>(api.updateUserPlanUrl, plan, httpOptions);
   }
 
-  getBookmarkedData() {
-    this.topics = [];
-    this.resources = [];
-    let resourceData = sessionStorage.getItem(this.sessionKey);
-    if (resourceData && resourceData.length > 0) {
-      this.tempStorage = JSON.parse(resourceData);
-      for (let index = 0; index < this.tempStorage.length; index++) {
-        if (this.tempStorage[index].type === "Topics") {
-          this.topics.push(this.tempStorage[index].itemId);
-        } else if (this.tempStorage[index].type === "Plan") {
-          this.planId = this.tempStorage[index].itemId;
-        } else {
-          this.resources.push(this.tempStorage[index].itemId);
-        }
-      }
-    }
-  }
-
-  getPersonalizedPlan(): string {
-    this.getBookmarkedData();
-    return this.planId;
-  }
-
   getPersonalizedResources(resourceInput: IResourceFilter) {
-    this.userId = this.getUserId();
-    if (this.userId === undefined) {
-      this.getBookmarkedData();
-      if (this.topics) {
-        resourceInput.TopicIds = this.topics;
-      }
-      if (this.resources) {
-        resourceInput.ResourceIds = this.resources;
-      }
-    }
     return this.http.put(api.getPersonalizedResourcesUrl, resourceInput, httpOptions);
   }
 

@@ -131,21 +131,16 @@ export class ProfileComponent implements OnInit {
   }
 
   getPersonalizedPlan() {
-    if (!this.userId) {
-      this.planId = this.personalizedPlanService.getPersonalizedPlan();
-      this.getTopics();
-    } else {
-      let params = new HttpParams()
-        .set("oid", this.userId)
-        .set("type", "plan");
-      this.personalizedPlanService.getUserSavedResources(params)
-        .subscribe(response => {
-          if (response[0].id) {
-            this.planId = response[0].id;
-          }
-          this.getTopics();
-        });
-    }
+    let params = new HttpParams()
+      .set("oid", this.userId)
+      .set("type", "plan");
+    this.personalizedPlanService.getUserSavedResources(params)
+      .subscribe(response => {
+        if (response) {
+          this.planId = response[0].id;
+        }
+        this.getTopics();
+      });
   }
 
   ngOnInit() {

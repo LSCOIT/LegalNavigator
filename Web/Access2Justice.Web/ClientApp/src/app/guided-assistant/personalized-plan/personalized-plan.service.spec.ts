@@ -4,9 +4,9 @@ import { PersonalizedPlanService } from './personalized-plan.service';
 import { api } from '../../../api/api';
 import { Observable } from 'rxjs/Rx';
 import { ArrayUtilityService } from '../../shared/array-utility.service';
-import { PersonalizedPlan } from './personalized-plan';
+import { PersonalizedPlan, ProfileResources } from './personalized-plan';
 
-describe('Service:PersonalizedPlan', () => {
+fdescribe('Service:PersonalizedPlan', () => {
   let mockPlanDetailsJson = {
     "id": "bf8d7e7e-2574-7b39-efc7-83cb94adae07",
     "oId": "User Id",
@@ -37,54 +37,353 @@ describe('Service:PersonalizedPlan', () => {
     "topics": [],
     "isShared": true
   }
-
-  let mockResponse = Observable.of(mockPlanDetailsJson);
-  let mockTopics = ["topic1", "topic2"];
-  let mockTopicsList = [{ topic: "topic1", isSelected: true }, { topic: "topic2", isSelected: true }];
-  let mockid = "bf8d7e7e-2574-7b39-efc7-83cb94adae07";
-  let service: PersonalizedPlanService;
-  let arrayUtilityService: ArrayUtilityService;
-  const httpSpy = jasmine.createSpyObj('http', ['get', 'post']);
-  var originalTimeout;
-  let mockUserSavedResources = [
+  let mockProfileResources: ProfileResources = {
+    "oId": "mockUserId",
+    "resourceTags": [],
+    "type": "resources"
+  }
+  let mockUserSavedResources = {
+    "id": "1fb1b006-a8bc-487d-98a0-2457d9d9f78d",
+    "resources": [
+      {
+        "itemId": "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef",
+        "resourceType": "Topics",
+        "resourceDetails": {}
+      },
+      {
+        "itemId": "1d7fc811-dabe-4468-a179-c55075bd22b6",
+        "resourceType": "Organizations",
+        "resourceDetails": {}
+      },
+      {
+        "itemId": "Pro Bono Innovation Fund Grants 2016 | LSC - Legal ...",
+        "resourceType": "WebResources",
+        "resourceDetails": {
+          "id": "https://api.cognitive.microsoft.com/api/v7/#WebPages.9",
+          "name": "Pro Bono Innovation Fund Grants 2016 | LSC - Legal ...",
+          "url": "https://www.lsc.gov/pro-bono-innovation-fund-grants-2016"
+        }
+      }
+    ]
+  }
+  let mockProfileSavedResources = {
+    "resources": [{ "id": "afbb8dc1-f721-485f-ab92-1bab60137e24", "address": "Girdwood, Anchorage, Hawii 99587", "resourceType": "Organizations" }],
+    "topics": [{
+      "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/money_debt.svg",
+      "id": "5970328f-ceea-4903-b4dc-1ea559623582", "resourceType": "Topics"
+    }]
+  };
+  let mockResourceInput = {
+    "ContinuationToken": null, "IsResourceCountRequired": false, "Location": null,
+    "PageNumber": 0, "ResourceIds": ["afbb8dc1-f721-485f-ab92-1bab60137e24"], "ResourceType": "ALL",
+    "TopicIds": ["5970328f-ceea-4903-b4dc-1ea559623582"]
+  };
+  let mockTopics = [
     {
-      "oId":
-        "ACB833BB3F817C2FBE5A72CE37FE7AB9CD977E58580B9832B91865E234A0A3D37C8F2C2A3B401CA64748F3098C9FE3374106B6F4A2B157FE091CA6332C88A89B",
-      "resourceTags": [
+      "topicId": "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef",
+      "name": "Divorce",
+      "quickLinks": [
         {
-          "itemId": "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef",
-          "resourceType": "Topics",
-          "resourceDetails": {}
+          "text": "Filing for Dissolution or Divorce - Ending Your Marriage",
+          "url": "http://courts.alaska.gov/shc/family/shcstart.htm#issues"
         }
       ],
-      "type": "resources",
-      "id": "54e6dafd-35dc-4a4e-a140-61e30abc8127"
-    },
-    {
-      "planId": "cf152275-32b2-b22c-de54-42de8fdfe778",
-      "oId":
-        "ACB833BB3F817C2FBE5A72CE37FE7B",
-      "type": "plans",
-      "planTags": [
+      "icon": "https://cs4892808efec24x447cx944.blob.core.windows…/static-resource/assets/images/topics/housing.svg",
+      "steps": [
         {
-          "topicId": "3e278591-ec50-479d-8e38-ae9a9d4cabd9",
-          "stepTags": [
+          "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
+          "title": "File a motion to modify if there has been a change of circumstances.",
+          "description": "The Motion and Affidavit for Post-Decree relief are used to request changes to a divorce or make sure the other side is followin gthe orders.",
+          "order": 1,
+          "isComplete": false,
+          "resources": [
             {
-              "id": "6b230be1-302b-7090-6cb3-fc6aa084274c",
-              "order": 1,
-              "markCompleted": true
+              "id": "19a02209-ca38-4b74-bd67-6ea941d41518",
+              "resourceType": "Organizations"
             },
             {
-              "id": "d46aecee-8c79-df1b-4081-1ea02b5022df",
-              "order": 2,
-              "markCompleted": false
+              "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5",
+              "resourceType": "Articles"
+            }
+          ]
+        },
+        {
+          "description": "Jurisdiction is a very complicated subject and you should talk to an attorney to figure out where is the best place ot file your case. Here are some resources that could help you with this:",
+          "isComplete": true,
+          "order": 2,
+          "resources": [
+            {
+              "id": "19a02209-ca38-4b74-bd67-6ea941d41518",
+              "resourceType": "Organizations"
+            },
+            {
+              "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5",
+              "resourceType": "Articles"
+            }
+          ],
+          "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
+          "title": "Jurisdiction"
+        }
+      ]
+    },
+    {
+      "topicId": "e1fdbbc6-d66a-4275-9cd2-2be84d303e12",
+      "name": "Eviction",
+      "quickLinks": [
+        {
+          "text": "Filing for Dissolution or Divorce - Ending Your Marriage",
+          "url": "http://courts.alaska.gov/shc/family/shcstart.htm#issues"
+        }
+      ],
+      "icon": "https://cs4892808efec24x447cx944.blob.core.windows…/static-resource/assets/images/topics/housing.svg",
+      "steps": [
+        {
+          "stepId": "f79305c1-8767-4485-9e9b-0b5a573ea7b3",
+          "title": "File a motion to modify if there has been a change of circumstances.",
+          "description": "The Motion and Affidavit for Post-Decree relief are used to request changes to a divorce or make sure the other side is followin gthe orders.",
+          "order": 1,
+          "isComplete": false,
+          "resources": [
+            {
+              "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5",
+              "resourceType": "Forms"
+            },
+            {
+              "id": "49779468-1fe0-4183-850b-ff365e05893e",
+              "resourceType": "Organizations"
+            }
+          ]
+        },
+        {
+          "stepId": "e9337765-81fc-4d10-8850-8e872cde4ee8",
+          "title": "Jurisdiction",
+          "description": "Jurisdiction is a very complicated subject and you should talk to an attorney to figure out where is the best place ot file your case. Here are some resources that could help you with this:",
+          "order": 2,
+          "isComplete": false,
+          "resources": [
+            {
+              "id": "be0cb3e1-7054-403a-baac-d119ea5be007",
+              "resourceType": "Articles"
+            },
+            {
+              "id": "2fe9f117-bfb5-469f-b80c-877640a29f75",
+              "resourceType": "Forms"
             }
           ]
         }
-      ],
-      "id": "06ba59fd-33b7-5a45-3f52-24adf3f487e4"
-    }
-  ];
+      ]
+    }];
+  let mockTopicsList = [
+    {
+      "isSelected": true,
+      "topic": {
+        "topicId": "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef",
+        "name": "Divorce",
+        "quickLinks": [
+          {
+            "text": "Filing for Dissolution or Divorce - Ending Your Marriage",
+            "url": "http://courts.alaska.gov/shc/family/shcstart.htm#issues"
+          }
+        ],
+        "icon": "https://cs4892808efec24x447cx944.blob.core.windows…/static-resource/assets/images/topics/housing.svg",
+        "steps": [
+          {
+            "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
+            "title": "File a motion to modify if there has been a change of circumstances.",
+            "description": "The Motion and Affidavit for Post-Decree relief are used to request changes to a divorce or make sure the other side is followin gthe orders.",
+            "order": 1,
+            "isComplete": false,
+            "resources": [
+              {
+                "id": "19a02209-ca38-4b74-bd67-6ea941d41518",
+                "resourceType": "Organizations"
+              },
+              {
+                "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5",
+                "resourceType": "Articles"
+              }
+            ]
+          },
+          {
+            "description": "Jurisdiction is a very complicated subject and you should talk to an attorney to figure out where is the best place ot file your case. Here are some resources that could help you with this:",
+            "isComplete": true,
+            "order": 2,
+            "resources": [
+              {
+                "id": "19a02209-ca38-4b74-bd67-6ea941d41518",
+                "resourceType": "Organizations"
+              },
+              {
+                "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5",
+                "resourceType": "Articles"
+              }
+            ],
+            "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
+            "title": "Jurisdiction"
+          }
+        ]
+      }
+    },
+    {
+      "isSelected": true,
+      "topic": {
+        "topicId": "e1fdbbc6-d66a-4275-9cd2-2be84d303e12",
+        "name": "Eviction",
+        "quickLinks": [
+          {
+            "text": "Filing for Dissolution or Divorce - Ending Your Marriage",
+            "url": "http://courts.alaska.gov/shc/family/shcstart.htm#issues"
+          }
+        ],
+        "icon": "https://cs4892808efec24x447cx944.blob.core.windows…/static-resource/assets/images/topics/housing.svg",
+        "steps": [
+          {
+            "stepId": "f79305c1-8767-4485-9e9b-0b5a573ea7b3",
+            "title": "File a motion to modify if there has been a change of circumstances.",
+            "description": "The Motion and Affidavit for Post-Decree relief are used to request changes to a divorce or make sure the other side is followin gthe orders.",
+            "order": 1,
+            "isComplete": false,
+            "resources": [
+              {
+                "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5",
+                "resourceType": "Forms"
+              },
+              {
+                "id": "49779468-1fe0-4183-850b-ff365e05893e",
+                "resourceType": "Organizations"
+              }
+            ]
+          },
+          {
+            "stepId": "e9337765-81fc-4d10-8850-8e872cde4ee8",
+            "title": "Jurisdiction",
+            "description": "Jurisdiction is a very complicated subject and you should talk to an attorney to figure out where is the best place ot file your case. Here are some resources that could help you with this:",
+            "order": 2,
+            "isComplete": false,
+            "resources": [
+              {
+                "id": "be0cb3e1-7054-403a-baac-d119ea5be007",
+                "resourceType": "Articles"
+              },
+              {
+                "id": "2fe9f117-bfb5-469f-b80c-877640a29f75",
+                "resourceType": "Forms"
+              }
+            ]
+          }
+        ]
+      }
+    }];
+  let mockPlanDetails = {
+    "id": "3bd5b8cb-69f3-42fc-a74c-a9fa1c94f805",
+    "topics": [
+      {
+        "topicId": "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef",
+        "name": "Divorce",
+        "quickLinks": [
+          {
+            "text": "Filing for Dissolution or Divorce - Ending Your Marriage",
+            "url": "http://courts.alaska.gov/shc/family/shcstart.htm#issues"
+          }
+        ],
+        "icon": "https://cs4892808efec24x447cx944.blob.core.windows…/static-resource/assets/images/topics/housing.svg",
+        "steps": [
+          {
+            "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
+            "title": "File a motion to modify if there has been a change of circumstances.",
+            "description": "The Motion and Affidavit for Post-Decree relief are used to request changes to a divorce or make sure the other side is followin gthe orders.",
+            "order": 1,
+            "isComplete": false,
+            "resources": [
+              {
+                "id": "19a02209-ca38-4b74-bd67-6ea941d41518",
+                "resourceType": "Organizations"
+              },
+              {
+                "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5",
+                "resourceType": "Articles"
+              }
+            ]
+          },
+          {
+            "description": "Jurisdiction is a very complicated subject and you should talk to an attorney to figure out where is the best place ot file your case. Here are some resources that could help you with this:",
+            "isComplete": true,
+            "order": 2,
+            "resources": [
+              {
+                "id": "19a02209-ca38-4b74-bd67-6ea941d41518",
+                "resourceType": "Organizations"
+              },
+              {
+                "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5",
+                "resourceType": "Articles"
+              }
+            ],
+            "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
+            "title": "Jurisdiction"
+          }
+        ]
+      },
+      {
+        "topicId": "e1fdbbc6-d66a-4275-9cd2-2be84d303e12",
+        "name": "Eviction",
+        "quickLinks": [
+          {
+            "text": "Filing for Dissolution or Divorce - Ending Your Marriage",
+            "url": "http://courts.alaska.gov/shc/family/shcstart.htm#issues"
+          }
+        ],
+        "icon": "https://cs4892808efec24x447cx944.blob.core.windows…/static-resource/assets/images/topics/housing.svg",
+        "steps": [
+          {
+            "stepId": "f79305c1-8767-4485-9e9b-0b5a573ea7b3",
+            "title": "File a motion to modify if there has been a change of circumstances.",
+            "description": "The Motion and Affidavit for Post-Decree relief are used to request changes to a divorce or make sure the other side is followin gthe orders.",
+            "order": 1,
+            "isComplete": false,
+            "resources": [
+              {
+                "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5",
+                "resourceType": "Forms"
+              },
+              {
+                "id": "49779468-1fe0-4183-850b-ff365e05893e",
+                "resourceType": "Organizations"
+              }
+            ]
+          },
+          {
+            "stepId": "e9337765-81fc-4d10-8850-8e872cde4ee8",
+            "title": "Jurisdiction",
+            "description": "Jurisdiction is a very complicated subject and you should talk to an attorney to figure out where is the best place ot file your case. Here are some resources that could help you with this:",
+            "order": 2,
+            "isComplete": false,
+            "resources": [
+              {
+                "id": "be0cb3e1-7054-403a-baac-d119ea5be007",
+                "resourceType": "Articles"
+              },
+              {
+                "id": "2fe9f117-bfb5-469f-b80c-877640a29f75",
+                "resourceType": "Forms"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "isShared": false
+  };
+
+  let mockResponse = Observable.of(mockPlanDetailsJson);
+  //let mockTopics = ["topic1", "topic2"];
+  //let mockTopicsList = [{ topic: "topic1", isSelected: true }, { topic: "topic2", isSelected: true }];
+  let mockid = "bf8d7e7e-2574-7b39-efc7-83cb94adae07";
+  let service: PersonalizedPlanService;
+  let arrayUtilityService: ArrayUtilityService;
+  const httpSpy = jasmine.createSpyObj('http', ['get', 'post', 'put']);
+  var originalTimeout;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
@@ -93,15 +392,9 @@ describe('Service:PersonalizedPlan', () => {
     service = new PersonalizedPlanService(httpSpy, arrayUtilityService, undefined);
     arrayUtilityService = new ArrayUtilityService();
     httpSpy.get.calls.reset();
- 
+
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
-    it('should call getBookmarkedData when getPersonalizedPlan called', (done) => {
-      spyOn(service, 'getBookmarkedData');
-      service.topics = mockTopics;
-      service.getBookmarkedData();
-      expect(service.getBookmarkedData).toBeDefined();
-    });
   });
 
   it('service should be created', () => {
@@ -131,6 +424,16 @@ describe('Service:PersonalizedPlan', () => {
     });
   });
 
+  it('should save resources and return updated data in saveResources service method', (done) => {
+    const mockResponse = Observable.of(mockUserSavedResources);
+    httpSpy.post.and.returnValue(mockResponse);
+    service.saveResources(mockProfileResources).subscribe(savedResource => {
+      expect(httpSpy.post).toHaveBeenCalled();
+      expect(savedResource).toEqual(mockUserSavedResources);
+      done();
+    });
+  });
+
   it('should update userplan when plan details send to user plan method of service', (done) => {
     const mockResponse = Observable.of(mockPersonalizedPlan);
     httpSpy.post.and.returnValue(mockResponse);
@@ -141,28 +444,71 @@ describe('Service:PersonalizedPlan', () => {
     });
   });
 
-  it('should call getPersonalizedResources when value is  resource input', () => {
-    spyOn(service, 'getBookmarkedData');
-    spyOn(service, 'getPersonalizedResources');
-    expect(service.getPersonalizedResources).toBeDefined();
+  it('should user Saved Resources in getPersonalizedResources method', (done) => {
+    const mockResponse = Observable.of(mockProfileSavedResources);
+    httpSpy.put.and.returnValue(mockResponse);
+    service.getPersonalizedResources(mockResourceInput).subscribe(userResources => {
+      expect(httpSpy.post).toHaveBeenCalled();
+      expect(userResources).toEqual(mockProfileSavedResources);
+      done();
+    });
+  });
+  
+  it('should return plan details when topics, planDetailTags passed to the getPlanDetails method', () => {
+    spyOn(service, 'createTopicsList').and.returnValue(mockTopicsList);
+    spyOn(service, 'displayPlanDetails').and.returnValue(mockPlanDetails);
+    service.getPlanDetails(mockTopics, mockPlanDetails);
+    expect(service.planDetails).toEqual(mockPlanDetails);
   });
 
   it('should return topics list when createTopicsList method called', () => {
-    const mockResponse = Observable.of(mockTopicsList);
-    spyOn(service, 'createTopicsList').and.returnValue(mockResponse);
-    service.createTopicsList(mockTopicsList);
-    expect(service.createTopicsList).toBeDefined();
+    service.createTopicsList(mockTopics);
+    expect(service.topicsList).toEqual(mockTopicsList);
   });
-
-  it('should return plan details when topics, planDetailTags passed to the getPlanDetails method', () => {
-    spyOn(service, 'getPlanDetails');
-    service.getPlanDetails(mockTopics, mockPlanDetailTags);
-    expect(service.getPlanDetails).toHaveBeenCalled();
-  });
-
+  
   it('should display plan details when plandetailtags and topics list passed to displayPlanDetails service method', () => {
-    spyOn(service, 'displayPlanDetails');
-    service.displayPlanDetails(mockPlanDetailTags, mockTopicsList);
-    expect(service.displayPlanDetails).toHaveBeenCalled();
+    service.displayPlanDetails(mockPlanDetails, mockTopicsList);
+    expect(service.tempPlanDetailTags).toEqual(mockPlanDetails);
+  });
+
+  it('should call showWarning if saved resources already exists in saveResourcesToProfile method', () => {
+    spyOn(service, 'getUserSavedResources').and.callFake(() => {
+      return Observable.from([mockUserSavedResources.resources]);
+    });
+    spyOn(service, 'showWarning');
+    let mockExists = true;
+    spyOn(arrayUtilityService, 'checkObjectExistInArray').and.callFake(() => {
+      return Observable.from([mockExists]);
+    });
+    //spyOn(arrayUtilityService, 'checkObjectExistInArray').and.returnValue(true);
+    let mockSavedResource = {
+      "itemId": "1d7fc811-dabe-4468-a179-c55075bd22b6",
+      "resourceType": "Organizations",
+      "resourceDetails": {}
+    };
+    sessionStorage.setItem(service.sessionKey,"test");
+    let mockUserId = "mockUserId";
+    service.userId = mockUserId;
+    service.saveResourcesToProfile(mockSavedResource);
+    expect(service.showWarning).toHaveBeenCalled();
+    expect(sessionStorage.getItem(service.sessionKey)).toBeNull;
+  });
+
+  it('should call showSuccess service method on saveResourceToProfile', () => {
+    service.userId = "mockUserId";
+    let mockResourceTags = [];
+    spyOn(service, 'showSuccess');
+    spyOn(service, 'saveResources').and.callFake(() => {
+      return Observable.from([mockUserSavedResources]);
+    });
+    service.saveResourceToProfile(mockResourceTags);
+    expect(service.showSuccess).toHaveBeenCalled();
+  });
+
+  it('should return resource ids from resources list', () => {
+    let mockResources = [{ "id": "resource1", "resourceType": "Organizations" }, { "id": "resource2", "resourceType": "Articles" }];
+    let mockResourceIds = ["resource1", "resource2"];
+    service.getResourceIds(mockResources);
+    expect(service.resourceIds).toEqual(mockResourceIds);
   });
 });
