@@ -1,4 +1,4 @@
-<span id="share" (click)="openModal(template)" *ngIf="global.showShare">
+<span id="share" (click)="openModal(template)" *ngIf="global.showShare"  [ngClass]="{'link': addLinkClass, '': !addLinkClass}">
   <img *ngIf="showIcon" src="./assets/images/small-icons/share.svg" class="nav-icon" aria-hidden="true" />
   Share
 </span>

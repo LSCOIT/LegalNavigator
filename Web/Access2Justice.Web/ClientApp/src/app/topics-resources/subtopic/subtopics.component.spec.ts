@@ -4,13 +4,14 @@ import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { SubtopicsComponent } from './subtopics.component';
-import { ServiceOrgSidebarComponent } from '../../shared/sidebars/service-org-sidebar.component';
-import { GuidedAssistantSidebarComponent } from '../../shared/sidebars/guided-assistant-sidebar.component';
+import { ServiceOrgSidebarComponent } from '../../shared/sidebars/service-org-sidebar/service-org-sidebar.component';
+import { GuidedAssistantSidebarComponent } from '../../shared/sidebars/guided-assistant-sidebar/guided-assistant-sidebar.component';
 import { TopicService } from '../shared/topic.service';
 import { NavigateDataService } from '../../shared/navigate-data.service';
 import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 import { BreadcrumbService } from '../shared/breadcrumb.service';
-import { ShowMoreService } from '../../shared/sidebars/show-more.service';
+import { ShowMoreService } from '../../shared/sidebars/show-more/show-more.service';
+
 import { MapService } from '../../shared/map/map.service';
 import { PaginationService } from '../../shared/search/pagination.service';
 describe('SubtopicsComponent', () => {

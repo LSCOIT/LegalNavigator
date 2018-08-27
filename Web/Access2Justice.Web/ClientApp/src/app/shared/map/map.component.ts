@@ -4,7 +4,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { MapService } from './map.service';
 import { MapLocation } from './map';
 import { environment } from '../../../environments/environment';
-import { MapResultsService } from '../../shared/sidebars/map-results.service';
+import { MapResultsService } from '../../shared/sidebars/map-results/map-results.service';
 import { Navigation, Location, LocationNavContent } from '../navigation/navigation';
 import { StaticResourceService } from '../../shared/static-resource.service';
 import { Global } from '../../global';

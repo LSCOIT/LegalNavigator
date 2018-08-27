@@ -1,12 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Organization } from '../sidebars/organization';
-import { MapService } from '../map/map.service';
-import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
-import { IResourceFilter } from '../search/search-results/search-results.model';
-import { NavigateDataService } from '../navigate-data.service';
-import { PaginationService } from '../search/pagination.service';
-import { MapLocation } from '../map/map';
+import { MapService } from '../../map/map.service';
+import { IResourceFilter } from '../../search/search-results/search-results.model';
+import { NavigateDataService } from '../../navigate-data.service';
+import { PaginationService } from '../../pagination/pagination.service';
+import { MapLocation } from '../../map/map';
 
 @Component({
   selector: 'app-service-org-sidebar',
@@ -57,9 +55,11 @@ export class ServiceOrgSidebarComponent implements OnInit {
       }
     });
   }
+
   callOrganizations() {
     this.showMoreOrganizations.emit("Organizations");
   }
+
   ngOnInit() {
     if (sessionStorage.getItem("globalMapLocation")) {
       this.location = JSON.parse(sessionStorage.getItem("globalMapLocation"));

@@ -5,10 +5,10 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { TopicsResourcesComponent } from './topics-resources.component';
 import { TopicsComponent } from './topic/topics.component';
-import { GuidedAssistantSidebarComponent } from '../shared/sidebars/guided-assistant-sidebar.component';
-import { ServiceOrgSidebarComponent } from '../shared/sidebars/service-org-sidebar.component';
+import { GuidedAssistantSidebarComponent } from '../shared/sidebars/guided-assistant-sidebar/guided-assistant-sidebar.component';
+import { ServiceOrgSidebarComponent } from '../shared/sidebars/service-org-sidebar/service-org-sidebar.component';
 import { TopicService } from './shared/topic.service';
-import { ShowMoreService } from '../shared/sidebars/show-more.service';
+import { ShowMoreService } from '../shared/sidebars/show-more/show-more.service';
 import { MapService } from '../shared/map/map.service';
 
 describe('TopicsResourcesComponent', () => {

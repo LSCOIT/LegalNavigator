@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { api } from '../../../api/api';
-import { ActivatedRoute, Router } from '@angular/router';
-import { NavigateDataService } from '../navigate-data.service';
-import { PaginationService } from '../search/pagination.service';
-import { IResourceFilter } from '../search/search-results/search-results.model';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { NavigateDataService } from '../../navigate-data.service';
+import { PaginationService } from '../../pagination/pagination.service';
+import { IResourceFilter } from '../../search/search-results/search-results.model';
 
 @Injectable()
 export class ShowMoreService {
