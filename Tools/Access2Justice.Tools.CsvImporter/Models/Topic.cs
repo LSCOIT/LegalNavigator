@@ -6,19 +6,6 @@ using System.Text;
 
 namespace Access2Justice.Tools.Models
 {
-    public class Topics
-    {
-        public string Id { get; set; }
-        public IEnumerable<Topic> TopicsList { get; set; }
-        public IEnumerable<ParentTopic> ParentTopicList { get; set; }
-    }
-
-    public class ParentTopic
-    {
-        public string DummyId { get; set; }
-        public Guid NewId { get; set; }
-    }
-
     public class Topic
     {
         [Required(ErrorMessage = "Topic_Id is a required field.")]
@@ -77,9 +64,8 @@ namespace Access2Justice.Tools.Models
                     {
                         sbrErrors.AppendLine(validationResult.ErrorMessage);
                     }
-                    throw new ValidationException(sbrErrors.ToString());//TO DO - excpetions to be logged
+                    throw new ValidationException(sbrErrors.ToString());
                 }
-                //TO DO log errors
             }
         }
     }
