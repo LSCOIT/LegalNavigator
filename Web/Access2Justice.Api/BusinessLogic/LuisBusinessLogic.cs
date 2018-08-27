@@ -32,6 +32,10 @@ namespace Access2Justice.Api
 
         public async Task<dynamic> GetResourceBasedOnThresholdAsync(LuisInput luisInput)
         {
+            if(!string.IsNullOrEmpty(luisInput.LuisTopScoringIntent))
+            {
+                return await GetInternalResourcesAsync(luisInput.LuisTopScoringIntent, luisInput.Location, null);
+            }
             var encodedSentence = HttpUtility.UrlEncode(luisInput.Sentence);
             dynamic luisResponse = await luisProxy.GetIntents(encodedSentence);
             dynamic luisTopIntents = ParseLuisIntent(luisResponse);
@@ -73,13 +77,13 @@ namespace Access2Justice.Api
                 topicIds.Add(topicId);
             }
 
-            dynamic serializedTopics = "[]";
-            dynamic serializedResources = "[]";
-            dynamic serializedToken = "[]";
-            dynamic serializedTopicIds = "[]";
-            dynamic serializedGroupedResources = "[]";
-            dynamic serializedRelevantIntents = "[]";
-            string  guidedAssistantId = string.Empty;
+            dynamic serializedTopics = Constants.EmptyArray;
+            dynamic serializedResources = Constants.EmptyArray;
+            dynamic serializedToken = Constants.EmptyArray;
+            dynamic serializedTopicIds = Constants.EmptyArray;
+            dynamic serializedGroupedResources = Constants.EmptyArray;
+            dynamic serializedRelevantIntents = Constants.EmptyArray;
+            string guidedAssistantId = string.Empty;
             if (topicIds.Count > 0)
             {
                 ResourceFilter resourceFilter = new ResourceFilter { TopicIds = topicIds, PageNumber = 0, ResourceType = Constants.All, Location = location };
@@ -93,10 +97,10 @@ namespace Access2Justice.Api
                 PagedResources resources = ApplyPaginationTask.Result;
                 serializedTopics = JsonConvert.SerializeObject(topics);
                 serializedResources = JsonConvert.SerializeObject(resources.Results);
-                serializedToken = resources.ContinuationToken ?? "[]";
+                serializedToken = resources.ContinuationToken ?? Constants.EmptyArray;
                 serializedTopicIds = JsonConvert.SerializeObject(topicIds);
                 serializedGroupedResources = JsonConvert.SerializeObject(groupedResourceType);
-                serializedRelevantIntents = JsonConvert.SerializeObject(relevantIntents);
+                serializedRelevantIntents = relevantIntents != null ? JsonConvert.SerializeObject(relevantIntents) : Constants.EmptyArray;
                 var guidedAssistantResult = JsonConvert.DeserializeObject<Resource>(
                     JsonConvert.SerializeObject(guidedAssistantResponse.Results.FirstOrDefault()));
                 if (guidedAssistantResult != null)
