@@ -33,13 +33,9 @@ export class AboutComponent implements OnInit {
     } else {
       if (this.global.getData()) {
         this.staticContent = this.global.getData();
-        this.staticContent.forEach(content => {
-          if (content.name === this.name) {
-            this.aboutContent = content;
-            this.filterAboutContent(this.aboutContent);
-            this.staticResourceService.aboutContent = this.aboutContent;
-          }
-        });
+        this.aboutContent = this.staticContent.find(x => x.name === this.name);
+        this.filterAboutContent(this.aboutContent);
+        this.staticResourceService.aboutContent = this.aboutContent;
       }
     }
   }

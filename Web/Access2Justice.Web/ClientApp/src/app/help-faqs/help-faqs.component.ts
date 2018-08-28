@@ -40,13 +40,9 @@ export class HelpFaqsComponent implements OnInit {
     } else {
       if (this.global.getData()) {
         this.staticContent = this.global.getData();
-        this.staticContent.forEach(content => {
-          if (content.name === this.name) {
-            this.helpAndFaqsContent = content;
-            this.filterHelpAndFaqContent(this.helpAndFaqsContent);
-            this.staticResourceService.helpAndFaqsContent = this.helpAndFaqsContent;
-          }
-        });
+        this.helpAndFaqsContent = this.staticContent.find(x => x.name === this.name);
+        this.filterHelpAndFaqContent(this.helpAndFaqsContent);
+        this.staticResourceService.helpAndFaqsContent = this.helpAndFaqsContent;
       }
     }
   }

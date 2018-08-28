@@ -145,13 +145,9 @@ export class MapComponent implements OnInit {
     } else {
       if (this.global.getData()) {
         this.staticContent = this.global.getData();
-        this.staticContent.forEach(content => {
-          if (content.name === this.name) {
-            this.navigation = content;
-            this.filterLocationNavigationContent(this.navigation);
-            this.staticResourceService.navigation = this.navigation;
-          }
-        });
+        this.navigation = this.staticContent.find(x => x.name === this.name);
+        this.filterLocationNavigationContent(this.navigation);
+        this.staticResourceService.navigation = this.navigation;
       }
     }
   }

@@ -66,13 +66,9 @@ export class HomeComponent implements OnInit {
     } else {
       if (this.global.getData()) {
         this.staticContent = this.global.getData();
-        this.staticContent.forEach(content => {
-          if (content.name === this.name) {
-            this.homeContent = content;
-            this.filterHomeContent(this.homeContent);
-            this.staticResourceService.homeContent = this.homeContent;
-          }
-        });
+        this.homeContent = this.staticContent.find(x => x.name === this.name);
+        this.filterHomeContent(this.homeContent);
+        this.staticResourceService.homeContent = this.homeContent;
       }
     }
   }
