@@ -576,19 +576,19 @@ namespace Access2Justice.Api.BusinessLogic
             return essentialReadings;
         }
 
-        public async Task<IEnumerable<object>> CreateTopicsUploadAsync(string path)
+        public async Task<IEnumerable<object>> UpsertTopicsUploadAsync(string path)
         {
             using (StreamReader r = new StreamReader(path))
             {
                 dynamic topics = null;
                 string json = r.ReadToEnd();
                 var topicObjects = JsonConvert.DeserializeObject<List<dynamic>>(json);
-                topics = await CreateTopicDocumentAsync(topicObjects);
+                topics = await UpsertTopicDocumentAsync(topicObjects);
                 return topics;
             }
         }
 
-        public async Task<IEnumerable<object>> CreateTopicDocumentAsync(dynamic topic)
+        public async Task<IEnumerable<object>> UpsertTopicDocumentAsync(dynamic topic)
         {
             List<dynamic> results = new List<dynamic>();
             List<dynamic> topics = new List<dynamic>();
@@ -598,16 +598,26 @@ namespace Access2Justice.Api.BusinessLogic
 
             foreach (var topicObject in topicObjects)
             {
-                topicdocuments = CreateTopics(topicObject);
+                string id = topicObject.id;
+                topicdocuments = UpsertTopics(topicObject);
                 var serializedResult = JsonConvert.SerializeObject(topicdocuments);
                 var topicDocument = JsonConvert.DeserializeObject<object>(serializedResult);
-                var result = await dbService.CreateItemAsync(topicDocument, dbSettings.TopicCollectionId);
-                topics.Add(result);
+                var topicDBData = await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.Id, id);
+                if (topicDBData.Count == 0)
+                {
+                    var result = await dbService.CreateItemAsync(topicDocument, dbSettings.TopicCollectionId);
+                    topics.Add(result);
+                }
+                else
+                {
+                    var result = await dbService.UpdateItemAsync(id, topicDocument, dbSettings.TopicCollectionId);
+                    topics.Add(result);
+                }                
             }
             return topics;
         }
 
-        public dynamic CreateTopics(dynamic topicObject)
+        public dynamic UpsertTopics(dynamic topicObject)
         {
             Topic topics = new Topic();
             List<ParentTopicId> parentTopicIds = new List<ParentTopicId>();

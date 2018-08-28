@@ -21,4 +21,10 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="SampleFiles\Topic_Data_tab.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

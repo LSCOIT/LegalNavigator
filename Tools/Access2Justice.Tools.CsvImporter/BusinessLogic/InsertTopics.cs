@@ -13,7 +13,7 @@ namespace Access2Justice.Tools.BusinessLogic
     {
         public dynamic CreateJsonFromCSV()
         {
-            string path = Path.Combine(Environment.CurrentDirectory, "SampleFiles\\Topic_Data_tab.txt");            
+            string path = Path.Combine(Environment.CurrentDirectory, "SampleFiles\\Topic_Data_tab.txt");
             string textFilePath = path;
             const Int32 BufferSize = 128;
             int recordNumber = 1;
@@ -194,9 +194,18 @@ namespace Access2Justice.Tools.BusinessLogic
                 }
                 else
                 {
-                    throw new Exception("Header mismatch." + "\n" + "Please make sure header contains below columns." + "\n" + expectedHeader[0] + "\n" + expectedHeader[1]
-                        + "\n" + expectedHeader[2] + "\n" + expectedHeader[3] + "\n" + expectedHeader[4] + "\n" + expectedHeader[5] + "\n" + expectedHeader[6]
-                        + "\n" + expectedHeader[7] + "\n" + expectedHeader[8] + "\n" + expectedHeader[9] + "\n" + expectedHeader[10] + "\n" + expectedHeader[11] + "\n");                 
+                    dynamic logHeader = null;
+                    int count = 0;
+                    foreach (var item in expectedHeader)
+                    {                        
+                        logHeader = logHeader + item;
+                        if (count < expectedHeader.Count()-1)
+                        {
+                            logHeader = logHeader + ", ";
+                            count++;
+                        }                        
+                    }
+                    throw new Exception("Expected header:" + "\n" + logHeader);
                 }
             }
             catch (Exception ex)

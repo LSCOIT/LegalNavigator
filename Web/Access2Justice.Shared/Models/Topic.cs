@@ -11,8 +11,7 @@ using System.Text;
 namespace Access2Justice.Shared.Models
 {
     public class Topic
-    {
-        
+    {        
         [JsonProperty(PropertyName = "id")]
         public dynamic Id { get; set; }
 

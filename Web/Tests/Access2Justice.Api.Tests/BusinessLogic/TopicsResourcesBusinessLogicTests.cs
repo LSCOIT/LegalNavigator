@@ -747,9 +747,9 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 
             //act
             var dbResponse = backendDatabaseService.CreateItemAsync<dynamic>(topic, cosmosDbSettings.TopicCollectionId).ReturnsForAnyArgs(document);
-            var dbResponseResource = topicsResourcesSettings.CreateTopicDocumentAsync(topics).ReturnsForAnyArgs(topic[0]);
+            var dbResponseResource = topicsResourcesSettings.UpsertTopicDocumentAsync(topics).ReturnsForAnyArgs(topic[0]);
             string filePath = Path.Combine(Environment.CurrentDirectory, "TestData\\TopicData.json");
-            var response = topicsResourcesBusinessLogic.CreateTopicsUploadAsync(filePath).Result;
+            var response = topicsResourcesBusinessLogic.UpsertTopicsUploadAsync(filePath).Result;
             
             foreach (var result in response)
             {
@@ -773,8 +773,8 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 
             //act
             var dbResponse = backendDatabaseService.CreateItemAsync<dynamic>(topic, cosmosDbSettings.TopicCollectionId).ReturnsForAnyArgs(document);
-            var dbResponseReferenceTag = topicsResourcesSettings.CreateTopics(topic[0]).ReturnsForAnyArgs<dynamic>(expectedTopicData[0]);
-            var response = topicsResourcesBusinessLogic.CreateTopicDocumentAsync(resource).Result;
+            var dbResponseReferenceTag = topicsResourcesSettings.UpsertTopics(topic[0]).ReturnsForAnyArgs<dynamic>(expectedTopicData[0]);
+            var response = topicsResourcesBusinessLogic.UpsertTopicDocumentAsync(resource).Result;
             foreach (var result in response)
             {
                 actualTopicData = result;
@@ -800,7 +800,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var dbResponseLocation = topicsResourcesSettings.GetLocations(location).ReturnsForAnyArgs<dynamic>(expectedReferenceLocationData);
             var dbResponseConditions = topicsResourcesSettings.GetConditions(condition).ReturnsForAnyArgs<dynamic>(expectedConditionData);
             var dbResponseParentTopicId = topicsResourcesSettings.GetParentTopicIds(parentTopic).ReturnsForAnyArgs<dynamic>(expectedParentTopicIdData);
-            var response = topicsResourcesBusinessLogic.CreateTopics(topic);
+            var response = topicsResourcesBusinessLogic.UpsertTopics(topic);
             var result = JsonConvert.SerializeObject(response);
             var topicResult = (JObject)JsonConvert.DeserializeObject(result);
             result = topicResult;
