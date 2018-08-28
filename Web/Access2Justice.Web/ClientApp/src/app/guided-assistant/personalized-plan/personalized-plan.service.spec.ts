@@ -25,13 +25,6 @@ fdescribe('Service:PersonalizedPlan', () => {
       }
     ]
   };
-  let mockPlanDetailTags = [{
-    "id": "393994-133-33",
-    "oId": "93004kdf033keke;",
-    "planTags": [{}],
-    "type": "testtype"
-  }];
-
   let mockPersonalizedPlan: PersonalizedPlan = {
     "id": "bf8d7e7e-2574-7b39-efc7-83cb94adae07",
     "topics": [],
@@ -374,10 +367,7 @@ fdescribe('Service:PersonalizedPlan', () => {
     ],
     "isShared": false
   };
-
   let mockResponse = Observable.of(mockPlanDetailsJson);
-  //let mockTopics = ["topic1", "topic2"];
-  //let mockTopicsList = [{ topic: "topic1", isSelected: true }, { topic: "topic2", isSelected: true }];
   let mockid = "bf8d7e7e-2574-7b39-efc7-83cb94adae07";
   let service: PersonalizedPlanService;
   let arrayUtilityService: ArrayUtilityService;
@@ -394,7 +384,7 @@ fdescribe('Service:PersonalizedPlan', () => {
     httpSpy.get.calls.reset();
 
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000000;
   });
 
   it('service should be created', () => {
@@ -472,25 +462,48 @@ fdescribe('Service:PersonalizedPlan', () => {
   });
 
   it('should call showWarning if saved resources already exists in saveResourcesToProfile method', () => {
+    let mockResponse = [mockUserSavedResources];
     spyOn(service, 'getUserSavedResources').and.callFake(() => {
-      return Observable.from([mockUserSavedResources.resources]);
+      return Observable.from([mockResponse]);
     });
     spyOn(service, 'showWarning');
     let mockExists = true;
     spyOn(arrayUtilityService, 'checkObjectExistInArray').and.callFake(() => {
       return Observable.from([mockExists]);
     });
-    //spyOn(arrayUtilityService, 'checkObjectExistInArray').and.returnValue(true);
     let mockSavedResource = {
       "itemId": "1d7fc811-dabe-4468-a179-c55075bd22b6",
       "resourceType": "Organizations",
       "resourceDetails": {}
     };
     sessionStorage.setItem(service.sessionKey,"test");
-    let mockUserId = "mockUserId";
+    let mockUserId = "mockUserId"; 
     service.userId = mockUserId;
     service.saveResourcesToProfile(mockSavedResource);
     expect(service.showWarning).toHaveBeenCalled();
+    expect(sessionStorage.getItem(service.sessionKey)).toBeNull;
+  });
+
+  it('should add resource by calling saveResourceToProfile if saved resources doesnot exists in saveResourcesToProfile method', () => {
+    let mockResponse = [mockUserSavedResources];
+    spyOn(service, 'getUserSavedResources').and.callFake(() => {
+      return Observable.from([mockResponse]);
+    });
+    spyOn(service, 'saveResourceToProfile');
+    let mockExists = false;
+    spyOn(arrayUtilityService, 'checkObjectExistInArray').and.callFake(() => {
+      return Observable.from([mockExists]);
+    });
+    let mockSavedResource = {
+      "itemId": "1d7fc811-dabe-4468-a179-c43435bd22b6",
+      "resourceType": "Articles",
+      "resourceDetails": {}
+    };
+    sessionStorage.setItem(service.sessionKey, "test");
+    let mockUserId = "mockUserId";
+    service.userId = mockUserId;
+    service.saveResourcesToProfile(mockSavedResource);
+    expect(service.saveResourceToProfile).toHaveBeenCalledWith(service.resourceTags);
     expect(sessionStorage.getItem(service.sessionKey)).toBeNull;
   });
 

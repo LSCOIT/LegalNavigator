@@ -7,7 +7,6 @@ import { ArrayUtilityService } from '../shared/array-utility.service';
 import { EventUtilityService } from '../shared/event-utility.service';
 import { IResourceFilter } from '../shared/search/search-results/search-results.model';
 import { ToastrService, ToastrModule } from 'ngx-toastr';
-import { HttpParams } from '@angular/common/http';
 import { Global } from '../global';
 
 describe('component:profile', () => {
@@ -16,7 +15,6 @@ describe('component:profile', () => {
   let personalizedplanservice: PersonalizedPlanService;
   let arrayutilityservice: ArrayUtilityService;
   let eventutilityservice: EventUtilityService;
-  let globalService: Global;
   let mockplanid = "ba67afca-4236-4875";
   let mockshowremove = true;
   let mocktopic = "test";
@@ -99,7 +97,6 @@ describe('component:profile', () => {
     personalizedplanservice = TestBed.get(PersonalizedPlanService);
     arrayutilityservice = TestBed.get(ArrayUtilityService);
     eventutilityservice = TestBed.get(EventUtilityService);
-    globalService = TestBed.get(Global);
     fixture.detectChanges();
   }));
 
@@ -107,7 +104,7 @@ describe('component:profile', () => {
     expect(component).toBeTruthy();
   });
 
-  xit('should define profile component', () => {
+  it('should define profile component', () => {
     expect(component).toBeDefined();
   });
 
