@@ -66,7 +66,7 @@ namespace Access2Justice.Api.BusinessLogic
             var personalizedPlan = new PersonalizedPlanSteps();
             personalizedPlan = BuildPersonalizedPlan(planSteps);
             personalizedPlan = JsonConvert.DeserializeObject<PersonalizedPlanSteps>(JsonConvert.SerializeObject(personalizedPlan));
-            var res = await dbService.CreateItemAsync((personalizedPlan), dbSettings.PersonalizedActionPlanCollectionId);
+            var res = await dbService.CreateItemAsync((personalizedPlan), dbSettings.UserResourceCollectionId);
             return personalizedPlan;
         }
 
@@ -148,7 +148,7 @@ namespace Access2Justice.Api.BusinessLogic
         {
             PersonalizedActionPlanViewModel personalizedPlan = new PersonalizedActionPlanViewModel();
             List<dynamic> procedureParams = new List<dynamic>() { planId };
-            var planDetails = await dynamicQueries.FindItemsWhereAsync(dbSettings.PersonalizedActionPlanCollectionId, Constants.Id, planId);
+            var planDetails = await dynamicQueries.FindItemsWhereAsync(dbSettings.UserResourceCollectionId, Constants.Id, planId);
             PersonalizedPlanSteps personalizedPlanSteps = new PersonalizedPlanSteps();
             personalizedPlanSteps = ConvertPersonalizedPlanSteps(planDetails);
             if (personalizedPlanSteps.Topics.Count>0)
@@ -260,7 +260,7 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<PersonalizedPlanSteps> GetPersonalizedPlan(string planId)
         {
-            var planDetails = await dynamicQueries.FindItemsWhereAsync(dbSettings.PersonalizedActionPlanCollectionId, Constants.Id, planId);
+            var planDetails = await dynamicQueries.FindItemsWhereAsync(dbSettings.UserResourceCollectionId, Constants.Id, planId);
             var personalizedPlan = JsonConvert.DeserializeObject<List<PersonalizedPlanSteps>>(JsonConvert.SerializeObject(planDetails));
             return personalizedPlan[0];
         }

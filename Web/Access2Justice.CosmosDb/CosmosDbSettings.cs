@@ -22,6 +22,7 @@ namespace Access2Justice.CosmosDb
                 CuratedExperienceAnswersCollectionId = configuration.GetSection("CuratedExperienceAnswersCollectionId").Value;
                 PersonalizedActionPlanCollectionId = configuration.GetSection("PersonalizedActionPlanCollectionId").Value;
                 StaticResourceCollectionId = configuration.GetSection("StaticResourceCollectionId").Value;
+                UserResourceCollectionId = configuration.GetSection("UserResourceCollectionId").Value;
             }
             catch
             {
@@ -39,5 +40,6 @@ namespace Access2Justice.CosmosDb
         public string CuratedExperienceAnswersCollectionId { get; private set; }
         public string PersonalizedActionPlanCollectionId { get; private set; }
         public string StaticResourceCollectionId { get; private set; }
+        public string UserResourceCollectionId { get; private set; }
     }
 }
