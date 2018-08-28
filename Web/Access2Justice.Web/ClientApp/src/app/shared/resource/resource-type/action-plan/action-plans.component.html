@@ -51,16 +51,26 @@
                   </div>
                   <div>
                     <ul>
-                      <li class="pl">If the summons is real, prepare for your court date.</li>
-                      <li><a href="" class="link">Set up a reminder for your court date.</a></li>
-                      <li><a href="" class="link">Learn more about court appearances and what to expect.</a></li>
+                      If the summons is real, prepare for your court date.
+                      <li>
+                        <a href="https://alaskalawhelp.org/" class="link">Set up a reminder for your court date.</a>
+                        <div class="print-only">https://alaskalawhelp.org/</div>
+                      </li>
+
+                      <li>
+                        <a href="https://alaskalawhelp.org/" class="link">Learn more about court appearances and what to expect.</a>
+                        <div class="print-only">https://alaskalawhelp.org/</div>
+                      </li>
                     </ul>
                   </div>
                   <div>
-                    <ul>
-                      <li class="pl">If the summons is not real, you should talk to your landlord.</li>
-                      <li><a href="" class="link">Set up a reminder for your court date.</a></li>
-                      <li><a href="" class="link">Learn more about court appearances and what to expect.</a></li>
+                    <ul>If the summons is not real, you should talk to your landlord.
+                      <li><a href="https://alaskalawhelp.org/" class="link">Set up a reminder for your court date.</a>
+                          <div class="print-only">https://alaskalawhelp.org/</div>
+                      </li>
+                      <li><a href="https://alaskalawhelp.org/" class="link">Learn more about court appearances and what to expect.</a>
+                          <div class="print-only">https://alaskalawhelp.org/</div>
+                      </li>                      
                     </ul>
                   </div>
                   <div *ngFor="let resource of step.resources">
@@ -91,7 +101,10 @@
           <div class="col-md-3 col-xs-12 quick-links">
             <p>Quick Links</p>
             <ul>
-              <li *ngFor="let quickLink of topic.quickLinks"> <a href={{quickLink.url}} class="link">{{quickLink.text}}</a></li>
+              <li *ngFor="let quickLink of topic.quickLinks">
+                <a href={{quickLink.url}} class="link">{{quickLink.text}}</a>
+                <div class="print-only">{{quickLink.url}}</div>
+              </li>              
             </ul>
           </div>
         </div>

@@ -5,8 +5,9 @@ import { Router } from '@angular/router';
 import { NavigateDataService } from '../../shared/navigate-data.service';
 import { IResourceFilter, ILuisInput } from "../../shared/search/search-results/search-results.model";
 import { SearchService } from '../../shared/search/search.service';
-import { PaginationService } from "../../shared/search/pagination.service";
-import { ShowMoreService } from "../../shared/sidebars/show-more.service";
+import { PaginationService } from "../../shared/pagination/pagination.service";
+import { ShowMoreService } from "../../shared/sidebars/show-more/show-more.service";
+
 @Component({
   selector: 'app-subtopic-detail',
   templateUrl: './subtopic-detail.component.html',
@@ -22,6 +23,7 @@ export class SubtopicDetailComponent implements OnInit {
   videoData: any;
   organizationData: any;
   formData: any;
+  relatedLinksData: any;
   subtopics: any;
   subtopic: any;
   topIntent: string; 
@@ -53,12 +55,13 @@ export class SubtopicDetailComponent implements OnInit {
         .filter((resource) => resource.resourceType === 'Organizations');
       this.formData = this.subtopicDetails
         .filter((resource) => resource.resourceType === 'Forms');
+      this.relatedLinksData = this.subtopicDetails
+        .filter((resource) => resource.resourceType === 'Related Links');
     }
   }
 
   getDataOnReload() {
     this.activeSubtopicParam = this.activeRoute.snapshot.params['topic'];
-    // Getting the sub topic name while routing from subtopic page.
     this.subtopics = this.navigateDataService.getData();
     if (this.subtopics) {
       this.topicService.getDocumentData(this.activeSubtopicParam)
@@ -80,7 +83,6 @@ export class SubtopicDetailComponent implements OnInit {
         }
       );
   }
-
   clickSeeMoreOrganizationsFromSubtopicDetails(resourceType: string) {
     this.showMoreService.clickSeeMoreOrganizations(resourceType, this.activeSubtopicParam);
   }

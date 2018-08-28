@@ -3,6 +3,7 @@ using Access2Justice.Api.ViewModels;
 using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
+using Access2Justice.Shared.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;

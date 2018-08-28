@@ -9,6 +9,7 @@ import { QuestionComponent } from './question/question.component';
 import { TopicService } from '../topics-resources/shared/topic.service';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { TopicsComponent } from '../topics-resources/topic/topics.component';
+import { SearchService } from '../shared/search/search.service';
 
 describe('GuidedAssistantComponent', () => {
   let component: GuidedAssistantComponent;
@@ -31,7 +32,8 @@ describe('GuidedAssistantComponent', () => {
       ],
       providers: [
         { provide: APP_BASE_HREF, useValue: '/' },
-        TopicService
+        TopicService,
+        SearchService
       ],
       schemas: [
         NO_ERRORS_SCHEMA,
