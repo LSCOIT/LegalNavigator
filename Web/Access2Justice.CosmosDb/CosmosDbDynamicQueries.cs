@@ -1,6 +1,7 @@
 ﻿using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
+using Access2Justice.Shared.Utilities;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -215,7 +216,7 @@ namespace Access2Justice.CosmosDb
 
         private string ArrayContainsWithMulitpleProperties(string propertyName, dynamic input)
         {
-            var jsonSettings = Utilities.JSONSanitizer();
+            var jsonSettings = JsonUtilities.JSONSanitizer();
 
             string arrayContainsClause = JsonConvert.SerializeObject(input, jsonSettings);
             string query = $" (ARRAY_CONTAINS(c.{propertyName},{{0}}))";

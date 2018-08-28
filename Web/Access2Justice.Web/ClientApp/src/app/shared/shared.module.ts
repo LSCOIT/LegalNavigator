@@ -7,14 +7,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 
 import { ChatbotComponent } from './chatbot/chatbot.component';
-import { CuratedResourceComponent } from './search/search-results/curated-resource/curated-resource.component';
-import { DownloadButtonComponent } from './resource/user-action/download-button.component';
+import { DownloadButtonComponent } from './resource/user-action/download-button/download-button.component';
 import { FooterComponent } from './footer/footer.component';
-import { GuidedAssistantSidebarComponent } from './sidebars/guided-assistant-sidebar.component';
+import { GuidedAssistantSidebarComponent } from './sidebars/guided-assistant-sidebar/guided-assistant-sidebar.component';
 import { LanguageComponent } from './language/language.component';
 import { LowerNavComponent } from './navigation/lower-nav.component';
 import { NavigateDataService } from './navigate-data.service';
-import { PrintButtonComponent } from './resource/user-action/print-button.component';
+import { PrintButtonComponent } from './resource/user-action/print-button/print-button.component';
 import { ResourceCardComponent } from './resource/resource-card/resource-card.component';
 import { ResourceCardDetailComponent } from './resource/resource-card-detail/resource-card-detail.component';
 import { RemoveButtonComponent } from './resource/user-action/remove-button/remove-button.component';
@@ -23,24 +22,22 @@ import { SearchComponent } from './search/search.component';
 import { SearchFilterComponent } from './search/search-filter/search-filter.component';
 import { SearchResultsComponent } from './search/search-results/search-results.component';
 import { SearchService } from './search/search.service';
-import { ServiceOrgSidebarComponent } from './sidebars/service-org-sidebar.component';
+import { ServiceOrgSidebarComponent } from './sidebars/service-org-sidebar/service-org-sidebar.component';
 import { ShareButtonComponent } from './resource/user-action/share-button/share-button.component';
 import { UpperNavComponent } from './navigation/upper-nav.component';
 import { WebResourceComponent } from './search/search-results/web-resource/web-resource.component';
-import { CuratedResourceService } from './search/search-results/curated-resource/curated-resource.service';
 import { SearchFilterPipe } from './search/search-filter.pipe';
 import { BreadcrumbComponent } from '../topics-resources/breadcrumb/breadcrumb.component';
-import { MapResultsComponent } from './sidebars/map-results.component';
-import { MapResultsService } from './sidebars/map-results.service';
+import { MapResultsComponent } from './sidebars/map-results/map-results.component';
+import { MapResultsService } from './sidebars/map-results/map-results.service';
 import { PaginationComponent } from './pagination/pagination.component';
-import { PaginationService } from './search/pagination.service';
+import { PaginationService } from './pagination/pagination.service';
 import { ActionPlansComponent } from './resource/resource-type/action-plan/action-plans.component';
-import { UserActionSidebarComponent } from './sidebars/user-action-sidebar.component';
-import { SettingButtonComponent } from './resource/user-action/setting-button.component';
-import { ShowMoreService } from './sidebars/show-more.service';
+import { UserActionSidebarComponent } from './sidebars/user-action-sidebar/user-action-sidebar.component';
+import { SettingButtonComponent } from './resource/user-action/setting-button/setting-button.component';
+import { ShowMoreService } from './sidebars/show-more/show-more.service';
 import { ArrayUtilityService } from './array-utility.service';
 import { HelplineComponent } from './helpline/helpline.component';
-import { ButtonSelectedDirective } from './styling/button-selected.directive';
 import { EventUtilityService } from './event-utility.service';
 import { NotFoundComponent } from './error/not-found/not-found.component';
 import { ArticlesComponent } from './resource/resource-type/articles/articles.component';
@@ -69,7 +66,6 @@ import { ShareButtonRouteComponent } from './resource/user-action/share-button/s
   declarations: [
     ActionPlansComponent,
     ChatbotComponent,
-    CuratedResourceComponent,
     DownloadButtonComponent,
     FooterComponent,
     GuidedAssistantSidebarComponent,
@@ -95,7 +91,6 @@ import { ShareButtonRouteComponent } from './resource/user-action/share-button/s
     UserActionSidebarComponent,
     SettingButtonComponent,
     HelplineComponent,
-    ButtonSelectedDirective,
     NotFoundComponent,
     ArticlesComponent,
     OrganizationsComponent,
@@ -108,7 +103,6 @@ import { ShareButtonRouteComponent } from './resource/user-action/share-button/s
   exports: [
     ActionPlansComponent,
     ChatbotComponent,
-    CuratedResourceComponent,
     DownloadButtonComponent,
     FooterComponent,
     GuidedAssistantSidebarComponent,
@@ -133,7 +127,6 @@ import { ShareButtonRouteComponent } from './resource/user-action/share-button/s
     LoginComponent
   ],
   providers: [
-    CuratedResourceService,
     MapService,
     NavigateDataService,
     SearchService,

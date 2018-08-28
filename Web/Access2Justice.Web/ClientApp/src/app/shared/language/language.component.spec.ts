@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LanguageComponent } from './language.component';
+import { StaticResourceService } from '../static-resource.service';
+import { HttpClientModule } from '@angular/common/http';
+
 
 describe('LanguageComponent', () => {
   let component: LanguageComponent;
@@ -8,7 +11,9 @@ describe('LanguageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-        declarations: [LanguageComponent]
+      imports: [HttpClientModule],
+      declarations: [LanguageComponent],
+      providers: [StaticResourceService]
       })
       .compileComponents();
   }));
