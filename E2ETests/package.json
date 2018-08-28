@@ -1,36 +1,20 @@
 {
-  "name": "protractor-typescript-cucumber",
+  "name": "a2j-e2e-testing",
   "version": "4.0.0",
-  "license": "MIT",
-  "description": "To demostrate protractor cucumber tests for angular/non angular apps with allure report framework",
+  "description": "Protracter E2E tests with Cucumber BDD framwork",
   "homepage": "https://github.com/igniteram/protractor-cucumber-typescript",
-  "keywords": [
-    "protractor",
-    "cucumber",
-    "typescript",
-    "angular",
-    "angularjs",
-    "testing",
-    "behaviour driven development",
-    "bdd",
-    "selenium",
-    "webdriverJS",
-    "gherkin",
-    "automation testing"
-  ],
   "main": "index.js",
   "scripts": {
     "build": "tsc",
     "clean": "rimraf typeScript/",
     "clean-build": "npm run clean && npm run build",
-    "init-contributors": "all-contributors init",
-    "add-contributors": "all-contributors add",
-    "generate-contributors": "all-contributors generate",
+    "lint": "jslint '**/*.js'",
+    "pretest": "npm run lint",
     "test": "protractor typeScript/config/config.js",
     "webdriver-update": "webdriver-manager update",
     "webdriver-start": "webdriver-manager start"
   },
-  "author": "Ram Pasala <ram.pasala7@gmail.com>",
+  "author": "Xiao Lin <xiao.lin@avanade.com>",
   "devDependencies": {
     "@types/cucumber": "^4.0.4",
     "@types/node": "^10.7.1",
@@ -40,6 +24,7 @@
     "chai-as-promised": "^7.1.1",
     "cucumber": "^4.2.1",
     "cucumber-html-reporter": "^4.0.3",
+    "jslint": "^0.12.0",
     "mkdirp": "^0.5.1",
     "protractor": "^5.4.0",
     "protractor-cucumber-framework": "^6.0.0",
@@ -47,5 +32,8 @@
     "ts-node": "^7.0.1",
     "typescript": "^3.0.1"
   },
-  "repository": "https://github.com/igniteram/protractor-cucumber-typescript"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Microsoft/Access2Justice/tree/feature415/setting_up_e2e_tests"
+  }
 }

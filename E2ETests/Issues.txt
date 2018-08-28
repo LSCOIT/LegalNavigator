@@ -1,0 +1,2 @@
+Cucumber HTML report doesn't launch on its own
+

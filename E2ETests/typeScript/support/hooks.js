@@ -1,4 +1,8 @@
 "use strict";
+/*
+ * Used to prepare and clean the environment
+ * before" and "after" each scenario is executed
+ */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -16,6 +20,7 @@ BeforeAll({ timeout: 100 * 1000 }, () => __awaiter(this, void 0, void 0, functio
 }));
 After(function (scenario) {
     return __awaiter(this, void 0, void 0, function* () {
+        // Take screenshot if scenario fails
         if (scenario.result.status === Status.FAILED) {
             // screenShot is a base-64 encoded PNG
             const screenShot = yield protractor_1.browser.takeScreenshot();

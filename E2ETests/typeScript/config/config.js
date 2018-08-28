@@ -1,4 +1,13 @@
 "use strict";
+/*
+ * Basic configuration to run cucumber feature files and step definitions with protractor
+ * For more info, check https://www.protractortest.org/#/frameworks
+ *
+ * To run this test suite (refer to package.json's scripts section):
+ * npm run webdriver-start (start selenium server)
+ * npm run build (transpile .ts files to .js and store it in the typeScript folder)
+ * npm test (launches Chrome Browser and runs the script)
+ */
 Object.defineProperty(exports, "__esModule", { value: true });
 const protractor_1 = require("protractor");
 const reporter_1 = require("../support/reporter");
@@ -6,7 +15,7 @@ const jsonReports = process.cwd() + "/reports/json";
 exports.config = {
     seleniumAddress: "http://127.0.0.1:4444/wd/hub",
     SELENIUM_PROMISE_MANAGER: false,
-    baseUrl: "https://www.google.com",
+    baseUrl: "https://www.google.com/",
     capabilities: {
         browserName: "chrome",
     },
@@ -17,7 +26,7 @@ exports.config = {
     ],
     onPrepare: () => {
         protractor_1.browser.ignoreSynchronization = true;
-        protractor_1.browser.manage().window().maximize();
+        protractor_1.browser.manage().window().maximize(); // maximize browser before executing feature files
         reporter_1.Reporter.createDirectory(jsonReports);
     },
     cucumberOpts: {

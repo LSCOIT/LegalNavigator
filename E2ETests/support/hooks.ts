@@ -1,3 +1,8 @@
+/* 
+ * Used to prepare and clean the environment 
+ * before" and "after" each scenario is executed
+ */
+
 const { BeforeAll, After, AfterAll, Status } = require("cucumber");
 import * as fs from "fs";
 import { browser } from "protractor";
@@ -7,8 +12,8 @@ BeforeAll({timeout: 100 * 1000}, async () => {
     await browser.get(config.baseUrl);
 });
 
-// Take screenshot if scenario fails
 After(async function(scenario) {
+    // Take screenshot if scenario fails
     if (scenario.result.status === Status.FAILED) {
         // screenShot is a base-64 encoded PNG
          const screenShot = await browser.takeScreenshot();
