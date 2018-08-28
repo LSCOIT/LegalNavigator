@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { TopicService } from '../shared/topic.service';
 import { ActivatedRoute,Router } from '@angular/router';
 import { NavigateDataService } from '../../shared/navigate-data.service';
-import { ShowMoreService } from "../../shared/sidebars/show-more.service";
+import { ShowMoreService } from "../../shared/sidebars/show-more/show-more.service";
 
 @Component({
   selector: 'app-subtopics',

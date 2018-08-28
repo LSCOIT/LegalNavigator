@@ -9,10 +9,8 @@
       <form #guidedAssistantSearchForm="ngForm" (ngSubmit)="onSubmit(guidedAssistantSearchForm)" aria-label="search box">
         <div class="form-group">
           <textarea class="form-control" rows="3"  autocomplete="off" aria-label="Search Box" name="searchText" [(ngModel)]="searchText"></textarea>
-          <div class="row">
-            <div class="col-sm-12 text-center">
-              <button class="btn btn-primary" type="submit" aria-label="search button">Continue</button>
-            </div>
+          <div class="col-sm-12 text-center">
+            <button class="btn btn-primary" type="submit" aria-label="search button">Continue</button>
           </div>
         </div>
       </form>

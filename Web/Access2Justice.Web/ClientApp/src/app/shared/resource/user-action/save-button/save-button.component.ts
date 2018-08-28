@@ -37,6 +37,7 @@ export class SaveButtonComponent implements OnInit {
   resourceIds: Array<string>;
   topicIds: Array<string>;
   stepIds: Array<string>;
+  @Input() addLinkClass: boolean = false;
 
   constructor(
     private personalizedPlanService: PersonalizedPlanService,

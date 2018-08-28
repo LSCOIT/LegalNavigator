@@ -19,6 +19,17 @@ button {
   margin-top: 20px;
 }
 
+.even-rows {
+  margin-top: 30px;
+}
+
+.even-rows + div {
+  margin-bottom: 30px;
+}
+
+p + .btn-sm {
+  margin-right: 20px;
+}
 
 @media only screen and (min-width : 992px) {
   .row {
