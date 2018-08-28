@@ -19,7 +19,7 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace Access2Justice.Api
+namespace Access2Justice.Web
 {
     public partial class Startup
     {
@@ -50,7 +50,7 @@ namespace Access2Justice.Api
                         {
                             ApplicationUser user = new ApplicationUser();
                             var identity = context.Principal.Identity as ClaimsIdentity;
-                            user.UserName = identity.Name;                            
+                            user.UserName = identity.Name;
                             user.UserId = EncryptString(identity.Claims.Where(x => x.Type.Contains("nameidentifier")).Select(x => x.Value).FirstOrDefault());
                             context.Response.Cookies.Append("profileData", Newtonsoft.Json.JsonConvert.SerializeObject(user));
                             context.Response.Redirect(context.ReturnUri, true);
@@ -72,7 +72,7 @@ namespace Access2Justice.Api
                     }
                 };
             })
-            .AddCookie(cookieOptions => cookieOptions.LoginPath = new PathString("/login"));
+            .AddCookie();
         }
 
         private async Task UriCreateUserDetails(dynamic userObject)
@@ -118,7 +118,7 @@ namespace Access2Justice.Api
 
         public void ConfigureRoutes(IApplicationBuilder app)
         {
-            app.Map("/api/login", builder =>
+            app.Map("/signIn", builder =>
             {
                 builder.Run(async context =>
                 {
@@ -128,7 +128,7 @@ namespace Access2Justice.Api
                 });
             });
 
-            app.Map("/api/logout", builder =>
+            app.Map("/signOut", builder =>
             {
                 builder.Run(async context =>
                 {
@@ -140,7 +140,7 @@ namespace Access2Justice.Api
                     }
                     else
                     {
-                        context.Response.Redirect(Configuration["Api:Endpoint"]);
+                        context.Response.Redirect("/");
                     }
                 });
             });

@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { MapResultsService } from './map-results.service';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 import { MapLocationResult, LatitudeLongitude } from './map-results';
 
 @Component({
@@ -60,7 +60,3 @@ export class MapResultsComponent implements OnChanges {
     this.getAddress();
   }
 }
-
-
-
-

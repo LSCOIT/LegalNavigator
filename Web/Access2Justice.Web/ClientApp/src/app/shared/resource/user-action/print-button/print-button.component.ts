@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-print-button',
   template:`
-  <span (click)="print()">
-      <img src="./assets/images/small-icons/print.svg" class="nav-icon" aria-hidden="true" />
+  <span (click)="print()" [ngClass]="{'link': addLinkClass, '': !addLinkClass}">
+      <img *ngIf="showIcon" src="./assets/images/small-icons/print.svg" class="nav-icon" aria-hidden="true" />
       Print
 </span>
  `
@@ -17,6 +17,8 @@ export class PrintButtonComponent implements OnInit {
   title: any = document.title;
   activeTab: string = '';
   activeRouteName: string = '';
+  @Input() showIcon: boolean = true;
+  @Input() addLinkClass: boolean = false;
 
   constructor(private activeRoute: ActivatedRoute) { }
 
@@ -32,32 +34,22 @@ export class PrintButtonComponent implements OnInit {
     if (this.activeRouteName === "subtopics") {
       this.template = 'app-subtopic-detail';
       this.printContents(this.template);
-    }
-
-    else if (this.activeRouteName === "plan") {
+    } else if (this.activeRouteName === "plan") {
       this.template = 'app-personalized-plan';
       this.printContents(this.template);
-    }
-
-    else if (this.activeRouteName === "resource") {
+    } else if (this.activeRouteName === "resource") {
       this.template = 'app-resource-card-detail';
       this.printContents(this.template);
-    }
-
-    else if (this.activeRouteName === "profile") {
+    } else if (this.activeRouteName === "profile") {
       this.activeTab = document.getElementsByClassName("nav-link active")[0].firstElementChild.textContent;
-
-      if (this.activeTab == "My Plan") {
+      if (this.activeTab === "My Plan") {
         this.template = 'app-action-plans';
         this.printContents(this.template);
-      }
-      else if (this.activeTab == "My Saved Resources") {
+      } else if (this.activeTab === "My Saved Resources") {
         this.template = 'app-search-results';
         this.printContents(this.template);
       }
-    }
-
-    else {
+    } else {
       window.print();
     }
   }
@@ -82,8 +74,14 @@ export class PrintButtonComponent implements OnInit {
                     display: block !important;
                     height: auto !important;
                 }
+                li {
+                  margin-bottom: 10px;
+                }
                 .hours li span {
-                    margin-right: 10px;
+                  margin-right: 10px;
+                }
+                a {
+                  text-decoration: none;
                 }
               }
             </style>

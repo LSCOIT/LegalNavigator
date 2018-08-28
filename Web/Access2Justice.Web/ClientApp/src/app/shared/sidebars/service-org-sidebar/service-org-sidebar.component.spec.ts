@@ -1,15 +1,14 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MapService } from '../map/map.service'
+import { MapService } from '../../map/map.service'
 import { ServiceOrgSidebarComponent } from './service-org-sidebar.component';
 import { HttpClientModule } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { MapLocation } from '../map/map';
-import { NavigateDataService } from '../navigate-data.service';
-import { PaginationService } from '../search/pagination.service';
-import { ShowMoreService } from './show-more.service';
+import { MapLocation } from '../../map/map';
+import { NavigateDataService } from '../../navigate-data.service';
+import { PaginationService } from '../../pagination/pagination.service';
+import { ShowMoreService } from '../show-more/show-more.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IResourceFilter } from '../search/search-results/search-results.model';
+import { IResourceFilter } from '../../search/search-results/search-results.model';
 
 describe('Component:ServiceOrgSidebar', () => {
   class MockRouter {
@@ -18,12 +17,8 @@ describe('Component:ServiceOrgSidebar', () => {
   let component: ServiceOrgSidebarComponent;
   let fixture: ComponentFixture<ServiceOrgSidebarComponent>;
   const mockRouter = new MockRouter();
-  let router: Router;
-  let activeRoute: ActivatedRoute;
   let showMoreService: ShowMoreService;
   let mapService: MapService;
-  let navigateDataService: NavigateDataService;
-  let paginationService: PaginationService;
   const fakeActivatedRoute = {
     snapshot: { data: {} }
   } as ActivatedRoute;
@@ -37,7 +32,6 @@ describe('Component:ServiceOrgSidebar', () => {
     address: undefined
   };
   let mockTopicIds: string[] = [];
-  let topIntent = 'test';
   let mockResourceType = 'Organizations';
   let mockContinuationToken = 'test';
   let mockResourceIds = ['test'];
@@ -124,8 +118,6 @@ describe('Component:ServiceOrgSidebar', () => {
     spyOn(component, 'getOrganizations');
     component.ngOnInit();
     sessionStorage.setItem("globalMapLocation", JSON.stringify(mockMapLocation));
-    let mockSessionMapLocation = JSON.parse(sessionStorage.getItem("mockGlobalMapLocation"));
     expect(component.getOrganizations).toHaveBeenCalled();
   });
 });
-

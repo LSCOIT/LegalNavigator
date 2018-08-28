@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Access2Justice.Web
 {
-    public class Startup
+    public partial class Startup
     {
         public Startup(IConfiguration configuration)
         {
@@ -18,6 +18,8 @@ namespace Access2Justice.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            ConfigureAuth(services);
+
             services.AddMvc();
 
             // In production, the Angular files will be served from this directory
@@ -38,10 +40,11 @@ namespace Access2Justice.Web
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
+            app.UseAuthentication();
+            ConfigureRoutes(app);
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
