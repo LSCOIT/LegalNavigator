@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PrivacyContent, Image, Details } from '../privacy-promise/privacy-promise';
 import { StaticResourceService } from '../shared/static-resource.service';
+import { Global } from '../global';
 
 @Component({
   selector: 'app-privacy-promise',
@@ -12,9 +13,12 @@ export class PrivacyPromiseComponent implements OnInit {
   informationData: Array<Details> = [];
   imageData: Image;
   name: string = 'PrivacyPromisePage';
+  staticContent: any;
+  staticContentSubcription: any;
 
   constructor(
-    private staticResourceService: StaticResourceService
+    private staticResourceService: StaticResourceService,
+    private global: Global
   ) { }
 
   filterPrivacyContent(privacyContent): void {
@@ -30,16 +34,20 @@ export class PrivacyPromiseComponent implements OnInit {
       this.privacyContent = this.staticResourceService.privacyContent;
       this.filterPrivacyContent(this.staticResourceService.privacyContent);
     } else {
-      this.staticResourceService.getStaticContent(privacyPageRequest)
-        .subscribe(content => {
-          this.privacyContent = content[0];
-          this.filterPrivacyContent(this.privacyContent);
-          this.staticResourceService.privacyContent = this.privacyContent;
-        });
+      if (this.global.getData()) {
+        this.staticContent = this.global.getData();
+        this.privacyContent = this.staticContent.find(x => x.name === this.name);
+        this.filterPrivacyContent(this.privacyContent);
+        this.staticResourceService.privacyContent = this.privacyContent;
+      }
     }
   }
 
   ngOnInit() {
     this.getPrivacyPageContent();
+    this.staticContentSubcription = this.global.notifyStaticData
+      .subscribe((value) => {
+        this.getPrivacyPageContent();
+      });
   }
 }
