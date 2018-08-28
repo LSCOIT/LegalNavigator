@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace Access2Justice.Api.BusinessLogic
 {
@@ -18,6 +19,7 @@ namespace Access2Justice.Api.BusinessLogic
         private readonly ICosmosDbSettings dbSettings;
         private readonly IBackendDatabaseService dbService;
         private readonly IDynamicQueries dynamicQueries;
+        private readonly UserProfileBusinessLogic userProfileBusinessLogic;
 
         public PersonalizedPlanBusinessLogic(ICosmosDbSettings cosmosDbSettings, IBackendDatabaseService backendDatabaseService, IDynamicQueries dynamicQueries)
         {
@@ -266,12 +268,50 @@ namespace Access2Justice.Api.BusinessLogic
             return personalizedPlan[0];
         }
 
-        public async Task<PersonalizedActionPlanViewModel> UpdatePersonalizedPlan(PersonalizedPlanSteps plan)
+        public async Task<PersonalizedActionPlanViewModel> UpdatePersonalizedPlan(UserPersonalizedPlan userPlan)
         {
-            var personalizedPlanSteps = JsonConvert.DeserializeObject<object>(JsonConvert.SerializeObject(plan));
-            var result = await dbService.UpdateItemAsync(plan.PersonalizedPlanId.ToString(), personalizedPlanSteps, dbSettings.PersonalizedActionPlanCollectionId);
-            var planId = JsonConvert.DeserializeObject<PersonalizedPlanSteps>(JsonConvert.SerializeObject(result)).PersonalizedPlanId;
-            return await GetPlanDataAsync(planId.ToString());
+            //var personalizedPlanSteps = JsonConvert.DeserializeObject<object>(JsonConvert.SerializeObject(plan));
+            //var result = await dbService.UpdateItemAsync(plan.PersonalizedPlanId.ToString(), personalizedPlanSteps, dbSettings.UserResourceCollectionId);
+            //var planId = JsonConvert.DeserializeObject<PersonalizedPlanSteps>(JsonConvert.SerializeObject(result)).PersonalizedPlanId;
+            //return await GetPlanDataAsync(planId.ToString());
+
+            var userPersonalizedPlan = new UserPersonalizedPlan();
+            userPersonalizedPlan = JsonConvert.DeserializeObject<UserPersonalizedPlan>(JsonConvert.SerializeObject(userPlan));
+            string oId = userPersonalizedPlan.OId;
+            dynamic result = null;
+            dynamic userPlanDBData = null;
+            var userProfile = await userProfileBusinessLogic.GetUserProfileDataAsync(oId);
+            if(userProfile?.PersonalizedActionPlanId!=null && userProfile?.PersonalizedActionPlanId!= Guid.Empty)
+            {
+                userPlanDBData = await dynamicQueries.FindItemsWhereAsync(dbSettings.UserResourceCollectionId, Constants.Id, Convert.ToString(userProfile.SavedResourcesId, CultureInfo.InvariantCulture));
+            }
+            if (userPlanDBData == null || userPlanDBData?.Count == 0)
+            {
+                result = await CreateUserPlanAsync(userPlan);
+                string personalizedPlanId = result.Id;
+                userProfile.PersonalizedActionPlanId = new Guid(personalizedPlanId);
+                await dbService.UpdateItemAsync(userProfile.Id, userProfile, dbSettings.UserProfileCollectionId);
+            }
+            else
+            {
+                Guid id = Guid.Parse(userPlanDBData[0].id);
+                result = await UpdateUserPlanAsync(id, userPlan);
+            }
+            return result;
+        }
+
+        public async Task<dynamic> CreateUserPlanAsync(UserPersonalizedPlan userPlan)
+        {
+            var userDocument = new PersonalizedPlanSteps();
+            userDocument = JsonConvert.DeserializeObject<PersonalizedPlanSteps>(JsonConvert.SerializeObject(userPlan.PersonalizedPlan));
+            return await dbService.CreateItemAsync((userDocument), dbSettings.UserResourceCollectionId);
+        }
+
+        public async Task<dynamic> UpdateUserPlanAsync(Guid id, UserPersonalizedPlan userPlan)
+        {
+            var userDocument = new PersonalizedPlanSteps();
+            userDocument = JsonConvert.DeserializeObject<PersonalizedPlanSteps>(JsonConvert.SerializeObject(userPlan.PersonalizedPlan));
+            return await dbService.UpdateItemAsync(id.ToString(), userDocument, dbSettings.UserResourceCollectionId);
         }
     }
 }
