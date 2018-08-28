@@ -29,8 +29,6 @@ namespace Access2Justice.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            ConfigureAuth(services);
-
             ConfigureSession(services);
 
             services.AddMvc();
@@ -82,10 +80,6 @@ namespace Access2Justice.Api
                         .AllowAnyOrigin()
                         .AllowAnyMethod()
                         .AllowAnyHeader());
-
-            app.UseAuthentication();
-
-            ConfigureRoutes(app);
 
             app.UseSession();
 
