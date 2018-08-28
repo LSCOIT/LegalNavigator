@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnDestroy, OnChanges, SimpleChanges, SimpleCh
 import { NavigateDataService } from '../../navigate-data.service';
 import { ResourceResult } from './search-result';
 import { SearchService } from '../search.service';
-import { PaginationService } from '../pagination.service';
+import { PaginationService } from '../../pagination/pagination.service';
 import { IResourceFilter, ILuisInput } from './search-results.model';
 import { MapService } from '../../map/map.service';
 import { environment } from '../../../../environments/environment';

@@ -31,6 +31,7 @@ export class ShareButtonComponent implements OnInit {
   showGenerateLink: boolean = true;
   resourceUrl: string = window.location.protocol + "//" + window.location.host + "/share/";
   emptyId: string = "{00000000-0000-0000-0000-000000000000}";
+  @Input() addLinkClass: boolean = false;
 
   constructor(private modalService: BsModalService,
     private arrayUtilityService: ArrayUtilityService,

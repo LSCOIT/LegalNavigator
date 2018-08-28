@@ -1,10 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { IResourceFilter } from '../search/search-results/search-results.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PaginationService } from '../search/pagination.service';
-import { MapService } from '../map/map.service';
-import { NavigateDataService } from '../navigate-data.service';
-import { MapLocation } from '../map/map';
+import { IResourceFilter } from '../../search/search-results/search-results.model';
+import { PaginationService } from '../../pagination/pagination.service';
+import { MapService } from '../../map/map.service';
+import { NavigateDataService } from '../../navigate-data.service';
+import { MapLocation } from '../../map/map';
 
 @Component({
   selector: 'app-guided-assistant-sidebar',

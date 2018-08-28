@@ -17,14 +17,12 @@
   </div>
   <div class="row plan-spacing filter-plan no-print">
     <span class="col-sm-1">Show:</span>
-    <!--web filtering-->
     <div class="mobile-hidden col-sm-10">
       <button *ngFor="let topic of topicsList" type="button" [ngClass]="{ 'btn-sm btn-primary': topic.isSelected, 'btn': !topic.isSelected  }"
               (click)="filterPlan(topic.topic.name)">
         {{topic.topic.name}}
       </button>
     </div>
-    <!--mobile filtering-->
     <div class="btn-group web-hidden" dropdown>
       <button id="button-basic" dropdownToggle type="button" class="btn btn-selected dropdown-toggle"
               aria-controls="dropdown-basic">

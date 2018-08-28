@@ -3,25 +3,21 @@ import { APP_BASE_HREF } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
-
 import { SearchResultsComponent } from './search-results.component';
 import { SearchFilterComponent } from '../search-filter/search-filter.component';
 import { ResourceCardComponent } from '../../resource/resource-card/resource-card.component';
-import { GuidedAssistantSidebarComponent } from '../../sidebars/guided-assistant-sidebar.component';
-import { ServiceOrgSidebarComponent } from '../../sidebars/service-org-sidebar.component';
+import { GuidedAssistantSidebarComponent } from '../../sidebars/guided-assistant-sidebar/guided-assistant-sidebar.component';
+import { ServiceOrgSidebarComponent } from '../../sidebars/service-org-sidebar/service-org-sidebar.component';
 import { SaveButtonComponent } from '../../resource/user-action/save-button/save-button.component';
 import { ShareButtonComponent } from '../../resource/user-action/share-button/share-button.component';
 import { NavigateDataService } from '../../navigate-data.service';
 import { WebResourceComponent } from './web-resource/web-resource.component';
 import { PaginationComponent } from '../../../shared/pagination/pagination.component';
-import { ResourceResult } from './search-result';
-import { IResourceFilter, ILuisInput } from './search-results.model';
 import { SearchFilterPipe } from '../search-filter.pipe';
 import { SearchService } from '../search.service';
-import { PaginationService } from '../pagination.service';
-import { ShowMoreService } from '../../sidebars/show-more.service';
+import { PaginationService } from '../../pagination/pagination.service';
+import { ShowMoreService } from '../../sidebars/show-more/show-more.service';
 import { MapService } from '../../map/map.service';
-import { JitCompiler } from '@angular/compiler/src/jit/compiler';
 import { Observable } from 'rxjs';
 
 describe('SearchResultsComponent', () => {
@@ -30,18 +26,25 @@ describe('SearchResultsComponent', () => {
   let searchService: SearchService;
   let paginationService: PaginationService;
   let navigateDataService: NavigateDataService;
-  let resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: '', IsResourceCountRequired: false }; 
   let currentPage: number = 0;
   let mockPageNumber: number = 0;
-  let mockResourceName = 'Videos'
-  let mockResourceNameUndifined = 'NoVideos'
+  let mockResourceName = 'Videos';
+  let mockResourceNameUndifined = 'NoVideos';
   let mockResourceTypeFilter = [{ ResourceName: "Videos", ResourceCount: 1 }, { ResourceName: "Organizations", ResourceCount: 2 }, { ResourceName: "Forms", ResourceCount: 1 }];
   let mockResourceTypeFilterTemp = [{ ResourceName: "test", ResourceCount: 1 }, { ResourceName: "test", ResourceCount: 2 }, { ResourceName: "test", ResourceCount: 1 }];
   let mockResourceListFilterAll = [{ ResourceCount: 10, ResourceList: [{ continuationToken: {}, resources: [{ address: "Houston County, Texas, United States", name: "Tenant Action Plan for Eviction" }, { address: "Houston County, Texas, United States", name: "Landlord Action Plan" }] }], ResourceName: "All" }];
   let mockResourceTypeFilterWithResourceList = [{ ResourceList: [{ continuationToken: [{ test: '2' }], resources: [{ address: "Houston County, Texas, United States", name: "Tenant Action Plan for Eviction" }, { address: "Houston County, Texas, United States", name: "Landlord Action Plan" }] }] }, { ResourceName: "Organizations", ResourceCount: 2 }, { ResourceName: "Forms", ResourceCount: 1 }];
   let mockResourceTypeFilter2 = [{ ResourceName: "Videos", ResourceCount: 1, ResourceList: [{ continuationToken: [{ test: '2' }], resources: [{ address: "Houston County, Texas, United States", name: "Tenant Action Plan for Eviction" }, { address: "Houston County, Texas, United States", name: "Landlord Action Plan" }] }] }, { ResourceName: "Organizations", ResourceCount: 2 }, { ResourceName: "Forms", ResourceCount: 1 }];
-  let mockSearchText = 'eviction'
-  let mockSearchResults2 = [{ continuationToken: [{ test: '2' }], resources: [{ address: "Houston County, Texas, United States", name: "Tenant Action Plan for Eviction" }, { address: "Houston County, Texas, United States", name: "Landlord Action Plan" }] }]
+  let mockSearchText = 'eviction';
+  let mockSearchResults2 = [
+    {
+      continuationToken: [{ test: '2' }],
+      resources: [
+        { address: "Houston County, Texas, United States", name: "Tenant Action Plan for Eviction" },
+        { address: "Houston County, Texas, United States", name: "Landlord Action Plan" }
+      ]
+    }
+  ];
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -80,8 +83,6 @@ describe('SearchResultsComponent', () => {
     fixture = TestBed.createComponent(SearchResultsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-
-    // SearchService provided to the TestBed
     searchService = TestBed.get(SearchService);
     paginationService = TestBed.get(PaginationService);
     navigateDataService = TestBed.get(NavigateDataService);
