@@ -13,131 +13,132 @@ namespace Access2Justice.Tools.BusinessLogic
     {
         public dynamic CreateJsonFromCSV()
         {
-            string path = "C:\\Users\\v-sobhad\\Desktop\\EvolveDataTool\\Topic_Data_tab.txt";
+            string path = Path.Combine(Environment.CurrentDirectory, "SampleFiles\\Topic_Data_tab.txt");            
             string textFilePath = path;
             const Int32 BufferSize = 128;
-            
+            int recordNumber = 1;
             Topic topic = new Topic();
             List<dynamic> topicsList = new List<dynamic>();
+            List<dynamic> topics = new List<dynamic>();
             try
             {
-                int lineCount = File.ReadLines(path).Count();
-                using (var fileStream = File.OpenRead(textFilePath))
-                
-                    using (var streamReader = new StreamReader(fileStream, Encoding.UTF8, true, BufferSize))
+                int lineCount = File.ReadLines(path).Count();                
+                using (var fileStream = File.OpenRead(textFilePath))                
+                using (var streamReader = new StreamReader(fileStream, Encoding.UTF8, true, BufferSize))
+                {
+                    String line1, line2;
+                    line1 = streamReader.ReadLine();
+                    string[] parts = line1.Split('\t');
+                    string val;
+
+                    if (ValidateTopicHeader(parts, 0) && (recordNumber < lineCount))
                     {
-                        String line1, line2;
-                        line1 = streamReader.ReadLine();
-                        string[] parts = line1.Split('\t');
-                        string val;
-
-                        if (ValidateTopicHeader(parts))
+                        while ((line2 = streamReader.ReadLine()) != null)
                         {
-                            while ((line2 = streamReader.ReadLine()) != null)
+                            List<string> value = new List<string>();
+                            string[] partsb = line2.Split('\t');
+                            ParentTopicID[] parentTopicIds = null;
+                            List<Locations> locations = new List<Locations>();
+                            QuickLinks[] quickLinks = null;
+                            dynamic id = null; string name = string.Empty; string keywords = string.Empty;
+                            string state = string.Empty; string county = string.Empty; string city = string.Empty; string zipcode = string.Empty;
+                            string overview = string.Empty; string quickLinkURLText = string.Empty; string quickLinkURLLink = string.Empty; string icon = string.Empty;
+                            for (int iterationCounter = 0; iterationCounter < partsb.Length; iterationCounter++)
                             {
-                                List<string> value = new List<string>();
-                                string[] partsb = line2.Split('\t');
-                                ParentTopicID[] parentTopicIds = null;
-                                List<Locations> locations = new List<Locations>();
-                                QuickLinks[] quickLinks = null;
-                                dynamic id = null; string name = string.Empty; string keywords = string.Empty;
-                                string state = string.Empty; string county = string.Empty; string city = string.Empty; string zipcode = string.Empty;
-                                string overview = string.Empty; string quickLinkURLText = string.Empty; string quickLinkURLLink = string.Empty; string icon = string.Empty;
-                                for (int iterationCounter = 0; iterationCounter < partsb.Length; iterationCounter++)
+                                val = parts[iterationCounter];
+                                if (val.EndsWith("Topic_ID*", StringComparison.CurrentCultureIgnoreCase))
                                 {
-                                    val = parts[iterationCounter];
-                                    if (val.EndsWith("Topic_ID*", StringComparison.CurrentCultureIgnoreCase))
-                                    {
-                                        id = partsb[0];
-                                    }
-
-                                    else if (val.EndsWith("Topic_Name*", StringComparison.CurrentCultureIgnoreCase))
-                                    {
-                                        name = partsb[1];
-                                    }
-
-                                    else if (val.EndsWith("Parent_Topic*", StringComparison.CurrentCultureIgnoreCase))
-                                    {
-                                        string parentId = partsb[2];
-                                        parentTopicIds = GetParentId(parentId);
-                                    }
-
-                                    else if (val.EndsWith("Keywords*", StringComparison.CurrentCultureIgnoreCase))
-                                    {
-                                        keywords = partsb[3];
-                                    }
-
-                                    else if (val.EndsWith("Location_State*", StringComparison.CurrentCultureIgnoreCase))
-                                    {
-                                        state = partsb[4];
-                                    }
-
-                                    else if (val.EndsWith("Location_County", StringComparison.CurrentCultureIgnoreCase))
-                                    {
-                                        county = partsb[5];
-                                    }
-
-                                    else if (val.EndsWith("Location_City", StringComparison.CurrentCultureIgnoreCase))
-                                    {
-                                        city = partsb[6];
-
-                                    }
-
-                                    else if (val.EndsWith("Location_Zip", StringComparison.CurrentCultureIgnoreCase))
-                                    {
-                                        zipcode = partsb[7];
-                                    }
-
-                                    else if (val.EndsWith("Overview", StringComparison.CurrentCultureIgnoreCase))
-                                    {
-                                        overview = partsb[8];
-                                    }
-
-                                    else if (val.EndsWith("Quick_Links_URL_text", StringComparison.CurrentCultureIgnoreCase))
-                                    {
-                                        quickLinkURLText = partsb[9];
-                                    }
-
-                                    else if (val.EndsWith("Quick_Links_URL_link", StringComparison.CurrentCultureIgnoreCase))
-                                    {
-                                        quickLinkURLLink = partsb[10];
-                                    }
-
-                                    else if (val.EndsWith("Icon", StringComparison.CurrentCultureIgnoreCase))
-                                    {
-                                        icon = partsb[11];
-                                    }
+                                    id = partsb[0];
                                 }
-                                locations.Add(new Locations() { State = state, County = county, City = city, ZipCode = zipcode });
-                                quickLinks = GetQuickLinks(quickLinkURLText, quickLinkURLLink);
-                                topic = new Topic()
+
+                                else if (val.EndsWith("Topic_Name*", StringComparison.CurrentCultureIgnoreCase))
                                 {
-                                    Id = id == "" ? Guid.NewGuid() : id,
-                                    Name = name,
-                                    Overview = overview,
-                                    QuickLinks = quickLinks,
-                                    ParentTopicId = parentTopicIds,
-                                    ResourceType = "Topics",
-                                    Keywords = keywords,
-                                    Location = locations,
-                                    Icon = icon,
-                                    CreatedBy = "Admin Import tool",
-                                    ModifiedBy = "Admin Import tool"
-                                };
-                                topic.Validate();
-                                topicsList.Add(topic);
+                                    name = partsb[1];
+                                }
+
+                                else if (val.EndsWith("Parent_Topic*", StringComparison.CurrentCultureIgnoreCase))
+                                {
+                                    string parentId = partsb[2];
+                                    parentTopicIds = GetParentId(parentId);
+                                }
+
+                                else if (val.EndsWith("Keywords*", StringComparison.CurrentCultureIgnoreCase))
+                                {
+                                    keywords = partsb[3];
+                                }
+
+                                else if (val.EndsWith("Location_State*", StringComparison.CurrentCultureIgnoreCase))
+                                {
+                                    state = partsb[4];
+                                }
+
+                                else if (val.EndsWith("Location_County", StringComparison.CurrentCultureIgnoreCase))
+                                {
+                                    county = partsb[5];
+                                }
+
+                                else if (val.EndsWith("Location_City", StringComparison.CurrentCultureIgnoreCase))
+                                {
+                                    city = partsb[6];
+
+                                }
+
+                                else if (val.EndsWith("Location_Zip", StringComparison.CurrentCultureIgnoreCase))
+                                {
+                                    zipcode = partsb[7];
+                                }
+
+                                else if (val.EndsWith("Overview", StringComparison.CurrentCultureIgnoreCase))
+                                {
+                                    overview = partsb[8];
+                                }
+
+                                else if (val.EndsWith("Quick_Links_URL_text", StringComparison.CurrentCultureIgnoreCase))
+                                {
+                                    quickLinkURLText = partsb[9];
+                                }
+
+                                else if (val.EndsWith("Quick_Links_URL_link", StringComparison.CurrentCultureIgnoreCase))
+                                {
+                                    quickLinkURLLink = partsb[10];
+                                }
+
+                                else if (val.EndsWith("Icon", StringComparison.CurrentCultureIgnoreCase))
+                                {
+                                    icon = partsb[11];
+                                }
                             }
-                        }
+                            locations.Add(new Locations() { State = state, County = county, City = city, ZipCode = zipcode });
+                            quickLinks = GetQuickLinks(quickLinkURLText, quickLinkURLLink);
+                            topic = new Topic()
+                            {
+                                Id = id == "" ? Guid.NewGuid() : id,
+                                Name = name,
+                                Overview = overview,
+                                QuickLinks = quickLinks,
+                                ParentTopicId = parentTopicIds,
+                                ResourceType = "Topics",
+                                Keywords = keywords,
+                                Location = locations,
+                                Icon = icon,
+                                CreatedBy = "Admin Import tool",
+                                ModifiedBy = "Admin Import tool"
+                            };
+                            topic.Validate();
+                            topicsList.Add(topic);
+                            recordNumber++;
+                        }                        
                     }                    
                 }
-
-                catch (Exception ex)
-                {
-                    ErrorLogging(ex);
-                    ReadError();
-                }
-
-            return topicsList;
+                topics = topicsList;
+            }
+            catch (Exception ex)
+            {
+                ErrorLogging(ex, recordNumber);
+                ReadError();
+                topics = null;
+            }
+            return topics;
         }
 
         public dynamic GetParentId(string parentId)
@@ -178,7 +179,7 @@ namespace Access2Justice.Tools.BusinessLogic
             return quickLinks;
         }
 
-        public static bool ValidateTopicHeader(string[] header)
+        public static bool ValidateTopicHeader(string[] header, int recordNumber)
         {
             bool correctHeader = false;
             IStructuralEquatable actualHeader = header;
@@ -193,21 +194,23 @@ namespace Access2Justice.Tools.BusinessLogic
                 }
                 else
                 {
-                    throw new Exception("Header mismatch. Please correct header errors.");
+                    throw new Exception("Header mismatch." + "\n" + "Please make sure header contains below columns." + "\n" + expectedHeader[0] + "\n" + expectedHeader[1]
+                        + "\n" + expectedHeader[2] + "\n" + expectedHeader[3] + "\n" + expectedHeader[4] + "\n" + expectedHeader[5] + "\n" + expectedHeader[6]
+                        + "\n" + expectedHeader[7] + "\n" + expectedHeader[8] + "\n" + expectedHeader[9] + "\n" + expectedHeader[10] + "\n" + expectedHeader[11] + "\n");                 
                 }
             }
             catch (Exception ex)
             {
-                ErrorLogging(ex);
+                ErrorLogging(ex, recordNumber);
                 ReadError();
             }
-
             return correctHeader;
         }
         
-        public static void ErrorLogging(Exception ex)
+        public static void ErrorLogging(Exception ex, int recordNumber)
         {
-            string strPath = @"C:\\Users\\v-sobhad\\Desktop\\EvolveDataTool\\Error.txt";
+            string strPath = Path.Combine(Environment.CurrentDirectory, "SampleFiles\\Error.txt");
+            Path.Combine(Environment.CurrentDirectory, "SampleFiles\\Topic_Data_tab.txt");
             if (!File.Exists(strPath))
             {
                 File.Create(strPath).Dispose();
@@ -216,7 +219,7 @@ namespace Access2Justice.Tools.BusinessLogic
             {
                 sw.WriteLine("=============Error Logging ===========");
                 sw.WriteLine("===========Start============= " + DateTime.Now);
-                sw.WriteLine("Error Message: " + ex.Message);
+                sw.WriteLine("Error Message: " + ex.Message + "\n" + "Please correct error at record number: " + recordNumber);
                 sw.WriteLine("Stack Trace: " + ex.StackTrace);
                 sw.WriteLine("===========End============= " + DateTime.Now);
                 sw.WriteLine();
@@ -225,7 +228,7 @@ namespace Access2Justice.Tools.BusinessLogic
 
         public static void ReadError()
         {
-            string strPath = @"C:\\Users\\v-sobhad\\Desktop\\EvolveDataTool\\Error.txt";
+            string strPath = Path.Combine(Environment.CurrentDirectory, "SampleFiles\\Error.txt");
             using (StreamReader sr = new StreamReader(strPath))
             {
                 string line;

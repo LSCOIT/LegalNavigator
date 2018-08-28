@@ -12,32 +12,47 @@ namespace Access2Justice.Tools.BusinessLogic
     {
         static HttpClient clientHttp = new HttpClient();
                 
-        public async void GetTopics()
+        public async static void GetTopics()
         {
             clientHttp.BaseAddress = new Uri("http://localhost:4200/");
             clientHttp.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            InsertTopics obj = new InsertTopics();
-            var topics = obj.CreateJsonFromCSV();
-            List<dynamic> topicsList = new List<dynamic>();
-
-            foreach (var topicList in topics)
+            try
             {
-                var serializedResult = JsonConvert.SerializeObject(topicList);
-                JObject jsonResult = (JObject)JsonConvert.DeserializeObject(serializedResult);
-                topicsList.Add(jsonResult);
-            }
-            var serializedTopics = JsonConvert.SerializeObject(topicsList);
-            var result = JsonConvert.DeserializeObject(serializedTopics);
-            var response = await clientHttp.PostAsJsonAsync("api/createtopicdocument", result).ConfigureAwait(false);
-            response.EnsureSuccessStatusCode();
-            if (response.IsSuccessStatusCode == true) {
-                Console.WriteLine("Topics created successfully"+ "\n"+ result);
-            }
+                InsertTopics obj = new InsertTopics();
+                List<dynamic> topicsList = new List<dynamic>();
+                var topics = obj.CreateJsonFromCSV();
+                if (topics == null || topics.Count==0)
+                {
+                    throw new Exception("Please check Error log file to correct errors");
+                }
 
-            else
+                else
+                {
+                    foreach (var topicList in topics)
+                    {
+                        var serializedResult = JsonConvert.SerializeObject(topicList);
+                        JObject jsonResult = (JObject)JsonConvert.DeserializeObject(serializedResult);
+                        topicsList.Add(jsonResult);
+                    }
+                    var serializedTopics = JsonConvert.SerializeObject(topicsList);
+                    var result = JsonConvert.DeserializeObject(serializedTopics);
+                    var response = await clientHttp.PostAsJsonAsync("api/createtopicdocument", result).ConfigureAwait(false);
+                    var json = response.Content.ReadAsStringAsync().Result;
+                    var documentsCreated = JsonConvert.DeserializeObject(json);
+                    response.EnsureSuccessStatusCode();
+                    if (response.IsSuccessStatusCode == true)
+                    {
+                        Console.WriteLine("Topics created successfully" + "\n" + documentsCreated);
+                    }
+                    else
+                    {
+                        throw new Exception("Please correct errors" + "\n" + response);
+                    }
+                }
+            }
+            catch(Exception ex)
             {
-                Console.WriteLine("Please correct errors" + "\n" + response);
+                Console.WriteLine(ex.Message);
             }
         }
 
