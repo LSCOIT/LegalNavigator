@@ -64,7 +64,7 @@ export class ActionPlansComponent implements OnChanges {
 
   getPersonalizedPlan(planDetails): void {
     this.planDetails = planDetails;
-    if (planDetails.length === 0) {
+    if (!(planDetails) || planDetails.length === 0) {
       this.displaySteps = false;
     } else if (this.planDetails.topics) {
       this.sortStepsByOrder(planDetails);
@@ -196,18 +196,20 @@ export class ActionPlansComponent implements OnChanges {
     this.planTopic = { topicId: '', steps: this.personalizedPlanSteps };
     this.removePlanDetails = [];
     this.getRemovePlanDetails();
-    this.removePlanDetails.forEach(item => {
-      this.personalizedPlanSteps = [];
-      item.topic.steps.forEach(step => {
-        this.personalizedPlanStep = {
-          stepId: step.stepId, title: step.title, description: step.description,
-          order: step.order, isComplete: step.isComplete, resources: this.personalizedPlanService.getResourceIds(step.resources), topicIds: []
-        };
-        this.personalizedPlanSteps.push(this.personalizedPlanStep);
+    if (this.removePlanDetails.length > 0) {
+      this.removePlanDetails.forEach(item => {
+        this.personalizedPlanSteps = [];
+        item.topic.steps.forEach(step => {
+          this.personalizedPlanStep = {
+            stepId: step.stepId, title: step.title, description: step.description,
+            order: step.order, isComplete: step.isComplete, resources: this.personalizedPlanService.getResourceIds(step.resources), topicIds: []
+          };
+          this.personalizedPlanSteps.push(this.personalizedPlanStep);
+        });
+        this.planTopic = { topicId: item.topic.topicId, steps: this.personalizedPlanSteps };
+        this.planTopics.push(this.planTopic);
       });
-      this.planTopic = { topicId: item.topic.topicId, steps: this.personalizedPlanSteps };
-      this.planTopics.push(this.planTopic);
-    });
+    }
     this.personalizedPlan = { id: this.planDetails.id, topics: this.planTopics, isShared: this.planDetails.isShared };
     this.selectedPlanDetails = { planDetails: this.personalizedPlan, topicId: topicId };
   }
