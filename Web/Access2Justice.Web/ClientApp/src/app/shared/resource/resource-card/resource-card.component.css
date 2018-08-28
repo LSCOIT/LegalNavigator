@@ -72,6 +72,14 @@ h4 {
   cursor: pointer;
 }
 
+.org-phone-detail {
+  margin-top: 10px;
+}
+
+.org-content .media-left {
+  padding-right: 3px;
+}
+
 @media only screen and (min-width : 768px) {
   h4 {
     padding-right: 20px;
@@ -86,4 +94,7 @@ h4 {
     height: 150px;
   }
 
+  .org-phone-detail {
+    margin-top: 0;
+  }
 }

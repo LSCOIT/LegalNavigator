@@ -47,15 +47,6 @@
     <Folder Include="Properties\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Access2Justice.CosmosDb\Access2Justice.CosmosDb.csproj" />
-    <ProjectReference Include="..\Access2Justice.Shared\Access2Justice.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <TypeScriptCompile Include="ClientApp\src\app\shared\sidebars\map-results.service.ts" />
-  </ItemGroup>
-
    <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">

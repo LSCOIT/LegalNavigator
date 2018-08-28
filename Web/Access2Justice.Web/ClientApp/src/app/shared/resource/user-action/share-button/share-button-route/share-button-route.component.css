@@ -8,10 +8,6 @@ label {
   margin-top: 10px;
 }
 
-textarea {
-  resize: none;
-}
-
 .validation-error {
   display: block;
   color: red;

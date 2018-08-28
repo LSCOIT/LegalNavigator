@@ -23,6 +23,7 @@ export class SubtopicDetailComponent implements OnInit {
   videoData: any;
   organizationData: any;
   formData: any;
+  relatedLinksData: any;
   subtopics: any;
   subtopic: any;
   topIntent: string; 
@@ -54,6 +55,8 @@ export class SubtopicDetailComponent implements OnInit {
         .filter((resource) => resource.resourceType === 'Organizations');
       this.formData = this.subtopicDetails
         .filter((resource) => resource.resourceType === 'Forms');
+      this.relatedLinksData = this.subtopicDetails
+        .filter((resource) => resource.resourceType === 'Related Links');
     }
   }
 
