@@ -149,9 +149,15 @@ namespace Access2Justice.Tools.BusinessLogic
             parentTopicIds = new ParentTopicID[parentsb.Length];
             for (int topicIdIterator = 0; topicIdIterator < parentsb.Length; topicIdIterator++)
             {
+                string trimParentTopicId = (parentsb[topicIdIterator]).Trim();
+                string parentTopicGuid = string.Empty;
+                if (trimParentTopicId.Length > 36)
+                {
+                    parentTopicGuid = trimParentTopicId.Substring(trimParentTopicId.Length - 36, 36);
+                }
                 parentTopicIds[topicIdIterator] = new ParentTopicID()
                 {
-                    ParentTopicId = (parentsb[topicIdIterator]).Trim(),
+                    ParentTopicId = parentTopicGuid
                 };
             }
             return parentTopicIds;
