@@ -7,6 +7,11 @@ namespace Access2Justice.Shared.Models
     // wanted to make sure we don't diverge far from their names to make it easier to compare/map.
     public class A2JPersonalizedPlan
     {
+        public A2JPersonalizedPlan()
+        {
+            RootNode = new RootNode();
+        }
+
         [JsonProperty(PropertyName = "title")]
         public string Title { get; set; }
 
@@ -43,6 +48,11 @@ namespace Access2Justice.Shared.Models
 
     public class RootNode
     {
+        public RootNode()
+        {
+            Children = new List<Child>();
+        }
+
         [JsonProperty(PropertyName = "tag")]
         public string Tag { get; set; }
 

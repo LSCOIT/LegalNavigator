@@ -66,30 +66,28 @@ namespace Access2Justice.Api.BusinessLogic
             return await dbService.GetItemAsync<A2JPersonalizedPlan>("432e7473-02df-4807-8d45-39ed821c5eb1", dbSettings.A2JAuthorTemplatesCollectionId);
         }
 
-        // Todo:@Alaa naming could be revisited
-        public A2JPersonalizedPlan ExtractA2JPersonalizedPlanStepsInScope(A2JPersonalizedPlan a2JPersonalizedPlan, 
+        public A2JPersonalizedPlan ExtractStepsInScopeFromA2JPersonalizedPlan(A2JPersonalizedPlan a2JPersonalizedPlan, 
             CuratedExperienceAnswers userAnswers)
         {
-            var answersVarDic = GetAnswerVarsDictionary(userAnswers);
-            var planInScopeVars = new Dictionary<string, string>();
+            var answersVarVales = GetVarsValuesFromUserAnswers(userAnswers);
+            var planInScopeVarsValues = new Dictionary<string, string>();
 
-            foreach (var logic in userAnswers.ButtonComponents)
+            foreach (var buttonComponent in userAnswers.ButtonComponents)
             {
-                var parsedVars = a2jParser.Parse(logic.CodeAfter, answersVarDic);
-                foreach (var parsedVar in parsedVars)
+                if (!string.IsNullOrWhiteSpace(buttonComponent.CodeAfter))
                 {
-                    planInScopeVars.Add(parsedVar.Key, parsedVar.Value);
+                    var parsedVars = a2jParser.Parse(buttonComponent.CodeAfter, answersVarVales);
+                    foreach (var parsedVar in parsedVars)
+                    {
+                        planInScopeVarsValues.Add(parsedVar.Key, parsedVar.Value);
+                    }
                 }
             }
 
             var planInScope = new A2JPersonalizedPlan();
-             // Todo:@Alaa initialize in constructor..
-            planInScope.RootNode = new RootNode();
-            planInScope.RootNode.Children = new List<Child>();
-
             foreach (var child in a2JPersonalizedPlan.RootNode.Children)
             {
-                if(planInScopeVars.Where(x => x.Key == child.State.LeftOperand).Any())
+                if(planInScopeVarsValues.Where(x => x.Key == child.State.LeftOperand).Any())
                 {
                     planInScope.RootNode.Children.Add(child);
                 }
@@ -194,7 +192,7 @@ namespace Access2Justice.Api.BusinessLogic
             }
         }
 
-        private Dictionary<string, string> GetAnswerVarsDictionary(CuratedExperienceAnswers userAnswers)
+        private Dictionary<string, string> GetVarsValuesFromUserAnswers(CuratedExperienceAnswers userAnswers)
         {
             var varsDic = new Dictionary<string, string>();
 
