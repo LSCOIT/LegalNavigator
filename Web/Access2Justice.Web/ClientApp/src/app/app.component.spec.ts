@@ -18,7 +18,7 @@ import { TopicsResourcesComponent } from './topics-resources/topics-resources.co
 import { MapService } from './shared/map/map.service';
 import { of } from 'rxjs/observable/of';
 
-describe('AppComponent', () => {
+fdescribe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
   let mockStaticResourceService;
@@ -91,21 +91,22 @@ describe('AppComponent', () => {
     }).compileComponents();
   }));
 
-  it('should create the app', async(() => {
+  beforeEach(() => {
     fixture = TestBed.createComponent(AppComponent);
-    component = fixture.debugElement.componentInstance;
+    component = fixture.componentInstance;
+    spyOn(component, 'ngOnInit');
+    fixture.detectChanges();
+  });
+
+  it('should create the app', async(() => {
     expect(component).toBeTruthy();
   }));
 
   it(`should have as title 'app'`, async(() => {
-    fixture = TestBed.createComponent(AppComponent);
-    component = fixture.debugElement.componentInstance;
     expect(component.title).toEqual('app');
   }));
 
   it('should set staticContent Result after calling getStaticContents', () => {
-    fixture = TestBed.createComponent(AppComponent);
-    component = fixture.componentInstance;
     mockStaticResourceService.getStaticContents.and.returnValue(of(staticContent));
     component.setStaticContentData();
     expect(component.staticContentResults).toEqual(staticContent);
