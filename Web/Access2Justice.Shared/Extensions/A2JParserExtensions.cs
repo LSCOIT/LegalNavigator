@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Access2Justice.Shared.A2JAuthor;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Access2Justice.Shared.Extensions
 {
-    public static class A2JLogicParserExtensions
+    public static class A2JParserExtensions
     {
         public static string GetStringOnTheRightOf(this string inputText, string splitWord)
         {
@@ -102,5 +103,15 @@ namespace Access2Justice.Shared.Extensions
 
             return varsValues;
         }
+
+        public static Dictionary<string, string> AND(this Dictionary<string, string> varDic1, Dictionary<string, string> varDic2)
+        {
+            return varDic1.Intersect(varDic2, new LogicalAndComparer()).ToDictionary(x => x.Key, x => x.Value);
+        }
+
+        //public static Dictionary<string, string> OR(this Dictionary<string, string> varDic1, Dictionary<string, string> varDic2, Dictionary<string, string> varDic3)
+        //{
+        //    return varDic1.Intersect(varDic2, new LogicalOrComparer()).ToDictionary(x => x.Key, x => x.Value);
+        //}
     }
 }

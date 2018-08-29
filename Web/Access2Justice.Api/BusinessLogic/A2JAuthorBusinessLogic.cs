@@ -13,10 +13,10 @@ namespace Access2Justice.Api.BusinessLogic
     {
         private readonly ICosmosDbSettings dbSettings;
         private readonly IBackendDatabaseService dbService;
-        private readonly IA2JAuthorParserBusinessLogic a2jParser;
+        private readonly IA2JAuthorParser a2jParser;
 
         public A2JAuthorBusinessLogic(ICosmosDbSettings cosmosDbSettings, IBackendDatabaseService backendDatabaseService, 
-            IA2JAuthorParserBusinessLogic a2JAuthorParserBusinessLogic)
+            IA2JAuthorParser a2JAuthorParserBusinessLogic)
         {
             dbSettings = cosmosDbSettings;
             dbService = backendDatabaseService;

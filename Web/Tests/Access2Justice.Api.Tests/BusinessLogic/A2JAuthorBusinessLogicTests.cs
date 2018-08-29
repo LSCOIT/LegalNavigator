@@ -15,13 +15,13 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly ICosmosDbSettings dbSettings;
         private readonly IBackendDatabaseService dbService;
         private readonly IA2JAuthorBusinessLogic a2jAuthor;
-        private readonly IA2JAuthorParserBusinessLogic a2jAuthorParser;
+        private readonly IA2JAuthorParser a2jAuthorParser;
 
         public A2JAuthorBusinessLogicTests()
         {
             dbSettings = Substitute.For<ICosmosDbSettings>();
             dbService = Substitute.For<IBackendDatabaseService>();
-            a2jAuthorParser = Substitute.For<IA2JAuthorParserBusinessLogic>();
+            a2jAuthorParser = Substitute.For<IA2JAuthorParser>();
             a2jAuthor = new A2JAuthorBusinessLogic(dbSettings, dbService, a2jAuthorParser);
         }
 

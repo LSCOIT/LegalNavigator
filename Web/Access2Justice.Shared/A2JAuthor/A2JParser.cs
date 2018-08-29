@@ -3,9 +3,9 @@ using Access2Justice.Shared.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Access2Justice.Api.BusinessLogic
+namespace Access2Justice.Shared.A2JAuthor
 {
-    public class A2JAuthorParserBusinessLogic : IA2JAuthorParserBusinessLogic
+    public class A2JParser : IA2JAuthorParser
     {
         public Dictionary<string, string> Parse(string logic, Dictionary<string, string> inputVars)
         {
@@ -25,7 +25,7 @@ namespace Access2Justice.Api.BusinessLogic
                 var SETvariables = rightOf.SetValueTOVar();
 
                 // COMPUTE RESULT
-               if (IsConditionSatisfied(ANDvariables, ORvariables, inputVars))
+                if (IsConditionSatisfied(ANDvariables, ORvariables, inputVars))
                 {
                     foreach (var SETvar in SETvariables)
                     {
