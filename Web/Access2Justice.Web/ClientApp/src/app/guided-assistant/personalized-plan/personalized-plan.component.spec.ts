@@ -9,7 +9,7 @@ import { ArrayUtilityService } from '../../shared/array-utility.service';
 import { ToastrService, ToastrModule } from 'ngx-toastr';
 import { Observable } from 'rxjs/Observable';
 
-fdescribe('Component:PersonalizedPlan', () => {
+describe('Component:PersonalizedPlan', () => {
   let component: PersonalizedPlanComponent;
   let fixture: ComponentFixture<PersonalizedPlanComponent>;
   let personalizedPlanService: PersonalizedPlanService;
