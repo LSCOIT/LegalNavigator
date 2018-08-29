@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { StaticResourceService } from '../../shared/static-resource.service';
 import { Navigation, Language, Location, Logo, Home, GuidedAssistant, TopicAndResources, About, Search, PrivacyPromise, HelpAndFAQ, Login } from '../../shared/navigation/navigation';
 import { environment } from '../../../environments/environment';
+import { Global } from '../../global';
 
 @Component({
   selector: 'app-language',
@@ -16,8 +17,11 @@ export class LanguageComponent implements OnInit {
   name: string = 'Navigation';
   language: Language;
   location: Location;
+  staticContent: any;
+  staticContentSubcription: any;
   
-  constructor(private staticResourceService: StaticResourceService) { }
+  constructor(private staticResourceService: StaticResourceService,
+    private global: Global) { }
 
   filterLanguagueNavigationContent(navigation): void {
     if (navigation) {
@@ -32,16 +36,20 @@ export class LanguageComponent implements OnInit {
         this.navigation = this.staticResourceService.navigation;
         this.filterLanguagueNavigationContent(this.staticResourceService.navigation);
     } else {
-      this.staticResourceService.getStaticContent(homePageRequest)
-        .subscribe(content => {
-          this.navigation = content[0];
-          this.filterLanguagueNavigationContent(this.navigation);
-          this.staticResourceService.navigation = this.navigation;
-        });
+      if (this.global.getData()) {
+        this.staticContent = this.global.getData();
+        this.navigation = this.staticContent.find(x => x.name === this.name);
+        this.filterLanguagueNavigationContent(this.navigation);
+        this.staticResourceService.navigation = this.navigation;
+      }
     }
   }
 
   ngOnInit() {
     this.getLanguagueNavigationContent();
+    this.staticContentSubcription = this.global.notifyStaticData
+      .subscribe((value) => {
+        this.getLanguagueNavigationContent();
+      });
   }
 }

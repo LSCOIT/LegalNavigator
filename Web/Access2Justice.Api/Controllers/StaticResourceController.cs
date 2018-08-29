@@ -16,15 +16,15 @@ namespace Access2Justice.Api.Controllers
         }
 
         /// <summary>
-        /// Get StaticResource by page name
+        /// Get StaticResources by Location
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("api/staticresource/getstaticresource")]
-        public async Task<IActionResult> GetStaticResourceDataAsync([FromBody]PageContentRequest pageContentRequest)
+        [Route("api/staticresource/getstaticresources")]
+        public async Task<IActionResult> GetStaticResourcesDataAsync([FromBody]Location location)
         {
-            var contents = await staticResourceBusinessLogic.GetPageStaticResourceDataAsync(pageContentRequest.Name, pageContentRequest.Location);
+            var contents = await staticResourceBusinessLogic.GetPageStaticResourcesDataAsync(location);
             return Ok(contents);
         }
 

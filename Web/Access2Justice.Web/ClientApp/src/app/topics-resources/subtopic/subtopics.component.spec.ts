@@ -13,7 +13,7 @@ import { BreadcrumbService } from '../shared/breadcrumb.service';
 import { ShowMoreService } from '../../shared/sidebars/show-more/show-more.service';
 
 import { MapService } from '../../shared/map/map.service';
-import { PaginationService } from '../../shared/search/pagination.service';
+import { PaginationService } from '../../shared/pagination/pagination.service';
 describe('SubtopicsComponent', () => {
   let component: SubtopicsComponent;
   let fixture: ComponentFixture<SubtopicsComponent>;

@@ -4,6 +4,7 @@ import { StaticResourceService } from '../../shared/static-resource.service';
 import { Navigation, Language, Location, Logo, Home, GuidedAssistant, TopicAndResources, About, Search, PrivacyPromise, HelpAndFAQ, Login } from './navigation';
 import { environment } from '../../../environments/environment';
 import { MapService } from '../map/map.service';
+import { Global } from '../../global';
 
 @Component({
   selector: 'app-upper-nav',
@@ -21,7 +22,13 @@ export class UpperNavComponent implements OnInit {
   helpAndFAQ: HelpAndFAQ;
   login: Login;
   subscription: any;
-  constructor(private http: HttpClient, private staticResourceService: StaticResourceService, private mapService: MapService) { }
+  staticContent: any;
+  staticContentSubcription: any;
+
+  constructor(private http: HttpClient,
+    private staticResourceService: StaticResourceService,
+    private mapService: MapService,
+    private global: Global) { }
 
   filterUpperNavigationContent(navigation): void {
     if (navigation) {
@@ -38,16 +45,20 @@ export class UpperNavComponent implements OnInit {
       this.navigation = this.staticResourceService.navigation;
       this.filterUpperNavigationContent(this.navigation);
     } else {
-      this.staticResourceService.getStaticContent(homePageRequest)
-        .subscribe(content => {
-          this.navigation = content[0];
-          this.filterUpperNavigationContent(this.navigation);
-          this.staticResourceService.navigation = this.navigation;
-        });
+      if (this.global.getData()) {
+        this.staticContent = this.global.getData();
+        this.navigation = this.staticContent.find(x => x.name === this.name);
+        this.filterUpperNavigationContent(this.navigation);
+        this.staticResourceService.navigation = this.navigation;
+      }
     }
   }
 
   ngOnInit() {
     this.getUpperNavigationContent();
+    this.staticContentSubcription = this.global.notifyStaticData
+      .subscribe((value) => {
+        this.getUpperNavigationContent();
+      });
   }
 }

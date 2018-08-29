@@ -19,7 +19,7 @@ namespace Access2Justice.Api.BusinessLogic
             dbService = backendDatabaseService;
         }
 
-        public async Task<dynamic> GetPageStaticResourceDataAsync(string name, Location location)
+        public async Task<dynamic> GetPageStaticResourcesDataAsync(Location location)
         {
             dynamic result = null;
             location.County = string.Empty;
@@ -27,10 +27,10 @@ namespace Access2Justice.Api.BusinessLogic
             location.ZipCode = string.Empty;
             if (!string.IsNullOrEmpty(location.State))
             {
-                result = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourceCollectionId, Constants.Name, name, location);
+                result = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourceCollectionId, Constants.Name, location);
             }
             location.State = "Default";
-            return result.Count > 0 ? result: await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourceCollectionId, Constants.Name, name, location);            
+            return result.Count > 0 ? result : await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourceCollectionId, Constants.Name, location);
         }
 
         public async Task<dynamic> UpsertStaticHomePageDataAsync(HomeContent homePageContent, Location location)

@@ -38,10 +38,14 @@ export class MapComponent implements OnInit {
   location: Array<Location>;
   detectLocation = false;
   name: string = 'Navigation';
+  staticContent: any;
+  staticContentSubcription: any;
 
-  constructor(private modalService: BsModalService, private mapService: MapService,
-    private mapResultsService: MapResultsService, private staticResourceService: StaticResourceService,
-    private global:Global) { }
+  constructor(private modalService: BsModalService,
+    private mapService: MapService,
+    private mapResultsService: MapResultsService,
+    private staticResourceService: StaticResourceService,
+    private global: Global) { }
 
   changeLocation(template) {
     this.config = {
@@ -139,12 +143,12 @@ export class MapComponent implements OnInit {
       this.navigation = this.staticResourceService.navigation;
       this.filterLocationNavigationContent(this.staticResourceService.navigation);
     } else {
-      this.staticResourceService.getStaticContent(homePageRequest)
-        .subscribe(content => {
-          this.navigation = content[0];
-          this.filterLocationNavigationContent(this.navigation);
-          this.staticResourceService.navigation = this.navigation;
-        });
+      if (this.global.getData()) {
+        this.staticContent = this.global.getData();
+        this.navigation = this.staticContent.find(x => x.name === this.name);
+        this.filterLocationNavigationContent(this.navigation);
+        this.staticResourceService.navigation = this.navigation;
+      }
     }
   }
 
@@ -176,6 +180,10 @@ export class MapComponent implements OnInit {
     this.subscription = this.mapService.notifyLocation
       .subscribe((value) => {
         this.displayLocationDetails(this.mapLocation);
+      });
+    this.staticContentSubcription = this.global.notifyStaticData
+      .subscribe((value) => {
+        this.getLocationNavigationContent();
       });
   }
 }
