@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ArticlesResourcesComponent } from './articles-resources.component';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NavigateDataService } from '../../shared/navigate-data.service';
 
 describe('ArticlesResourcesComponent', () => {
   let component: ArticlesResourcesComponent;
@@ -8,7 +8,8 @@ describe('ArticlesResourcesComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ArticlesResourcesComponent ]
+      declarations: [ ArticlesResourcesComponent ],
+      providers: [ NavigateDataService ]
     })
     .compileComponents();
   }));
