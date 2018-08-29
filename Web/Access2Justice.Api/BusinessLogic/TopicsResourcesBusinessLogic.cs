@@ -2,6 +2,7 @@
 using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
+using Access2Justice.Shared.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -592,17 +593,16 @@ namespace Access2Justice.Api.BusinessLogic
         {
             List<dynamic> results = new List<dynamic>();
             List<dynamic> topics = new List<dynamic>();
-            var serializedTopics = JsonConvert.SerializeObject(topic);
-            var topicObjects = JsonConvert.DeserializeObject<List<dynamic>>(serializedTopics);
-            Topic topicdocuments = new Topic();
+            var topicObjects = JsonUtilities.DeserializeDynamicObject<object>(topic);
+            Topic topicdocuments = new Topic();            
 
             foreach (var topicObject in topicObjects)
             {
                 string id = topicObject.id;
                 topicdocuments = UpsertTopics(topicObject);
-                var serializedResult = JsonConvert.SerializeObject(topicdocuments);
-                var topicDocument = JsonConvert.DeserializeObject<object>(serializedResult);
+                var topicDocument = JsonUtilities.DeserializeDynamicObject<object>(topicdocuments);
                 var topicDBData = await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.Id, id);
+
                 if (topicDBData.Count == 0)
                 {
                     var result = await dbService.CreateItemAsync(topicDocument, dbSettings.TopicCollectionId);
