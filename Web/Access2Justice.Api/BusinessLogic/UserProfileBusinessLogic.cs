@@ -62,7 +62,7 @@ namespace Access2Justice.Api.BusinessLogic
                 userProfile.PersonalizedActionPlanId = user.PersonalizedActionPlanId;
                 userProfile.CuratedExperienceAnswersId = user.CuratedExperienceAnswersId;
                 userProfile.SavedResourcesId = user.SavedResourcesId;
-                userProfile.SharedResource = user.SharedResource;
+                userProfile.SharedResourceId = user.SharedResourceId;
             }
             return userProfile;
         }

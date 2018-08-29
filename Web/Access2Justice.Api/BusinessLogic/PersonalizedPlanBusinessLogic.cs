@@ -19,13 +19,15 @@ namespace Access2Justice.Api.BusinessLogic
         private readonly ICosmosDbSettings dbSettings;
         private readonly IBackendDatabaseService dbService;
         private readonly IDynamicQueries dynamicQueries;
-        private readonly UserProfileBusinessLogic userProfileBusinessLogic;
+        private readonly IUserProfileBusinessLogic userProfileBusinessLogic;
 
-        public PersonalizedPlanBusinessLogic(ICosmosDbSettings cosmosDbSettings, IBackendDatabaseService backendDatabaseService, IDynamicQueries dynamicQueries)
+        public PersonalizedPlanBusinessLogic(ICosmosDbSettings cosmosDbSettings, IBackendDatabaseService backendDatabaseService,
+            IDynamicQueries dynamicQueries, IUserProfileBusinessLogic userProfileBusinessLogic)
         {
             dbSettings = cosmosDbSettings;
             dbService = backendDatabaseService;
             this.dynamicQueries = dynamicQueries;
+            this.userProfileBusinessLogic = userProfileBusinessLogic;
         }
 
         public async Task<PersonalizedPlanSteps> GeneratePersonalizedPlan(CuratedExperience curatedExperience, Guid answersDocId)
@@ -154,7 +156,7 @@ namespace Access2Justice.Api.BusinessLogic
             var planDetails = await dynamicQueries.FindItemsWhereAsync(dbSettings.UserResourceCollectionId, Constants.Id, planId);
             PersonalizedPlanSteps personalizedPlanSteps = new PersonalizedPlanSteps();
             personalizedPlanSteps = ConvertPersonalizedPlanSteps(planDetails);
-            if (personalizedPlanSteps.Topics.Count>0)
+            if (personalizedPlanSteps.Topics.Count > 0)
             {
                 var topicsList = personalizedPlanSteps.Topics.Select(x => x.TopicId).ToList().Distinct();
                 var resourcesList = personalizedPlanSteps.Topics.Select(x => x.PlanSteps).SelectMany(v => v.Select(c => c.Resources).SelectMany(r => r)).ToList().Distinct();
@@ -270,48 +272,72 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<PersonalizedActionPlanViewModel> UpdatePersonalizedPlan(UserPersonalizedPlan userPlan)
         {
-            //var personalizedPlanSteps = JsonConvert.DeserializeObject<object>(JsonConvert.SerializeObject(plan));
-            //var result = await dbService.UpdateItemAsync(plan.PersonalizedPlanId.ToString(), personalizedPlanSteps, dbSettings.UserResourceCollectionId);
-            //var planId = JsonConvert.DeserializeObject<PersonalizedPlanSteps>(JsonConvert.SerializeObject(result)).PersonalizedPlanId;
-            //return await GetPlanDataAsync(planId.ToString());
-
             var userPersonalizedPlan = new UserPersonalizedPlan();
             userPersonalizedPlan = JsonConvert.DeserializeObject<UserPersonalizedPlan>(JsonConvert.SerializeObject(userPlan));
             string oId = userPersonalizedPlan.OId;
-            dynamic result = null;
-            dynamic userPlanDBData = null;
-            var userProfile = await userProfileBusinessLogic.GetUserProfileDataAsync(oId);
-            if(userProfile?.PersonalizedActionPlanId!=null && userProfile?.PersonalizedActionPlanId!= Guid.Empty)
+            string planId = string.Empty;
+            if (oId != null)
             {
-                userPlanDBData = await dynamicQueries.FindItemsWhereAsync(dbSettings.UserResourceCollectionId, Constants.Id, Convert.ToString(userProfile.SavedResourcesId, CultureInfo.InvariantCulture));
-            }
-            if (userPlanDBData == null || userPlanDBData?.Count == 0)
-            {
-                result = await CreateUserPlanAsync(userPlan);
-                string personalizedPlanId = result.Id;
-                userProfile.PersonalizedActionPlanId = new Guid(personalizedPlanId);
-                await dbService.UpdateItemAsync(userProfile.Id, userProfile, dbSettings.UserProfileCollectionId);
+                planId = await UpdatePostLogInPersonalizedPlan(userPlan);
             }
             else
             {
-                Guid id = Guid.Parse(userPlanDBData[0].id);
-                result = await UpdateUserPlanAsync(id, userPlan);
+                planId = await UpdatePreLogInPersonalizedPlan(userPlan.PersonalizedPlan);
             }
-            return result;
+            return await GetPlanDataAsync(planId);
         }
 
-        public async Task<dynamic> CreateUserPlanAsync(UserPersonalizedPlan userPlan)
+        public async Task<string> UpdatePostLogInPersonalizedPlan(UserPersonalizedPlan userPlan)
         {
-            var userDocument = new PersonalizedPlanSteps();
-            userDocument = JsonConvert.DeserializeObject<PersonalizedPlanSteps>(JsonConvert.SerializeObject(userPlan.PersonalizedPlan));
-            return await dbService.CreateItemAsync((userDocument), dbSettings.UserResourceCollectionId);
+            string oId = userPlan.OId;
+            string planId = string.Empty;
+            dynamic userPlanDBData = null;
+            var userProfile = await this.userProfileBusinessLogic.GetUserProfileDataAsync(oId);
+            if (userProfile?.PersonalizedActionPlanId != null && userProfile?.PersonalizedActionPlanId != Guid.Empty)
+            {
+                if (userPlan.PersonalizedPlan.PersonalizedPlanId.ToString() == (userProfile?.PersonalizedActionPlanId.ToString()))
+                {
+                    userPlanDBData = await dynamicQueries.FindItemsWhereAsync(dbSettings.UserResourceCollectionId, Constants.Id, Convert.ToString(userProfile.PersonalizedActionPlanId, CultureInfo.InvariantCulture));
+                }
+                else
+                {
+                    planId = await UpdatePreLogInPersonalizedPlan(userPlan.PersonalizedPlan);
+                }
+            }
+            if (userPlanDBData == null || userPlanDBData?.Count == 0)
+            {
+                userProfile.PersonalizedActionPlanId = userPlan.PersonalizedPlan.PersonalizedPlanId;
+                await dbService.UpdateItemAsync(userProfile.Id, userProfile, dbSettings.UserProfileCollectionId);
+                planId = userProfile.PersonalizedActionPlanId.ToString();
+            }
+            else
+            {
+                await dbService.UpdateItemAsync(userPlan.PersonalizedPlan.PersonalizedPlanId.ToString(), userPlan.PersonalizedPlan, dbSettings.UserResourceCollectionId);
+                planId = userProfile.PersonalizedActionPlanId.ToString();
+            }
+            return planId;
         }
 
-        public async Task<dynamic> UpdateUserPlanAsync(Guid id, UserPersonalizedPlan userPlan)
+        public async Task<string> UpdatePreLogInPersonalizedPlan(PersonalizedPlanSteps personalizedPlan)
         {
-            var userDocument = new PersonalizedPlanSteps();
-            userDocument = JsonConvert.DeserializeObject<PersonalizedPlanSteps>(JsonConvert.SerializeObject(userPlan.PersonalizedPlan));
-            return await dbService.UpdateItemAsync(id.ToString(), userDocument, dbSettings.UserResourceCollectionId);
+            string planId = string.Empty;
+            dynamic userPlanDBData = null;
+            if (personalizedPlan?.PersonalizedPlanId != null && personalizedPlan?.PersonalizedPlanId != Guid.Empty)
+            {
+                userPlanDBData = await dynamicQueries.FindItemsWhereAsync(dbSettings.UserResourceCollectionId, Constants.Id, Convert.ToString(personalizedPlan.PersonalizedPlanId, CultureInfo.InvariantCulture));
+            }
+            if (userPlanDBData == null || userPlanDBData?.Count == 0)
+            {
+                await dbService.CreateItemAsync((personalizedPlan), dbSettings.UserResourceCollectionId);
+                planId = personalizedPlan.PersonalizedPlanId.ToString();
+            }
+            else
+            {
+
+                await dbService.UpdateItemAsync(personalizedPlan.PersonalizedPlanId.ToString(), personalizedPlan, dbSettings.UserResourceCollectionId);
+                planId = personalizedPlan.PersonalizedPlanId.ToString();
+            }
+            return planId;
         }
     }
 }
