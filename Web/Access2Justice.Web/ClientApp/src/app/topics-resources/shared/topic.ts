@@ -15,3 +15,9 @@ export interface ITopicInput {
   Id: string;
   Location: any;
 }
+
+export interface ISubtopicGuidedInput {
+  activeId: string;
+  name: string;
+}
+

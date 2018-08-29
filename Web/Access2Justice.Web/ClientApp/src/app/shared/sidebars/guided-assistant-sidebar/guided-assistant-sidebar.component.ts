@@ -5,6 +5,7 @@ import { PaginationService } from '../../pagination/pagination.service';
 import { MapService } from '../../map/map.service';
 import { NavigateDataService } from '../../navigate-data.service';
 import { MapLocation } from '../../map/map';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-guided-assistant-sidebar',
@@ -14,6 +15,7 @@ import { MapLocation } from '../../map/map';
 export class GuidedAssistantSidebarComponent implements OnInit {
   location: MapLocation;
   activeTopic: any;
+  @Input() activeSubTopic: any;
   @Input() guidedAssistantId: string;
   @Input() showSidebar: boolean;
   resourceFilter: IResourceFilter = {
@@ -24,6 +26,8 @@ export class GuidedAssistantSidebarComponent implements OnInit {
   resources: any;
   subscription: any;
   emptyResult: string = "";
+  guidedAssistantResults: any;
+  topIntent: string;
 
   constructor(
     private router: Router,
@@ -34,8 +38,7 @@ export class GuidedAssistantSidebarComponent implements OnInit {
   ) { }
 
   getGuidedAssistantResults() {
-    this.topicIds = [];
-    this.activeTopic = this.activeRoute.snapshot.params['topic'];
+    this.topicIds = [];    
     if (this.activeTopic) {
       this.topicIds.push(this.activeTopic);
       this.resourceFilter = {
@@ -59,15 +62,33 @@ export class GuidedAssistantSidebarComponent implements OnInit {
     this.guidedAssistantId = this.emptyResult;
   }
 
+  getTopicGuidedAssistantResult() {
+    this.resourceFilter = {
+      ResourceType: environment.All, TopicIds: this.topicIds, Location: this.location,
+      PageNumber: 0, ContinuationToken: '', IsResourceCountRequired: true, ResourceIds: []
+    }
+    this.paginationService.getPagedResources(this.resourceFilter).
+      subscribe(response => {
+        if (response != undefined) {
+          this.guidedAssistantResults = response;
+          this.guidedAssistantResults.topIntent = this.activeSubTopic.name;
+          this.navigateDataService.setData(this.guidedAssistantResults);
+          this.router.navigateByUrl('/guidedassistant/' + this.guidedAssistantId, { skipLocationChange: true });
+        }
+      });
+  }
+
   ngOnInit() {
     if (!this.guidedAssistantId) {
       if (sessionStorage.getItem("globalMapLocation")) {
         this.location = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+        this.activeTopic = this.activeRoute.snapshot.params['topic'];
         this.getGuidedAssistantResults();
       }
       this.subscription = this.mapService.notifyLocation
         .subscribe((value) => {
           this.location = value;
+          this.activeTopic = this.activeRoute.snapshot.params['topic'];
           this.getGuidedAssistantResults();
         });
     }
