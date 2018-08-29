@@ -16,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.Collections.Generic;
 
 namespace Access2Justice.Api
 {
@@ -56,6 +57,8 @@ namespace Access2Justice.Api
             services.AddSingleton<IShareBusinessLogic, ShareBusinessLogic>();
             services.AddSingleton<IA2JAuthorBusinessLogic, A2JAuthorBusinessLogic>();
             services.AddSingleton<IA2JAuthorParser, A2JParser>();
+            services.AddSingleton<IEqualityComparer<KeyValuePair<string, string>>, LogicalAndEvaluator>();
+            services.AddSingleton<IEqualityComparer<KeyValuePair<string, string>>, LogicalOrEvaluator>();
 
             ConfigureCosmosDb(services);
 

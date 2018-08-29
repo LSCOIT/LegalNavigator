@@ -7,6 +7,13 @@ namespace Access2Justice.Shared.A2JAuthor
 {
     public class A2JParser : IA2JAuthorParser
     {
+        private readonly IEnumerable<IEqualityComparer<KeyValuePair<string, string>>> evaluators;
+
+        public A2JParser(IEnumerable<IEqualityComparer<KeyValuePair<string, string>>> logicalEvaluators)
+        {
+            evaluators = logicalEvaluators;
+        }
+
         public Dictionary<string, string> Parse(string logic, Dictionary<string, string> inputVars)
         {
             var IFstatements = logic.SplitAndReturnFullSentencesOn("END IF");
@@ -40,10 +47,12 @@ namespace Access2Justice.Shared.A2JAuthor
         public bool IsConditionSatisfied(Dictionary<string, string> ANDvariables, Dictionary<string, string> ORvariables,
             Dictionary<string, string> inputVars)
         {
-            //if (!ANDvariables.Where(x => x.Value == false).Any() && !ORvariables.Where(x => x.Value == true).Any())
-            //{
-            //    return SETvariables;
-            //}
+            foreach (var evaluator in evaluators)
+            {
+                var test = inputVars.LogicEvaluator(ANDvariables, evaluator);
+            }
+            //var test = inputVars.LogicEvaluator(ANDvariables, evaluators.First());
+
 
             // Todo:@Alaa implement this logic
             // this is awfully simplistic at this point. only for a POC
