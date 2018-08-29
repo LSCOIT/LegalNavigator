@@ -2,6 +2,7 @@
 using Access2Justice.Api.Interfaces;
 using Access2Justice.CosmosDb;
 using Access2Justice.Shared;
+using Access2Justice.Shared.A2JAuthor;
 using Access2Justice.Shared.Bing;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Luis;
@@ -54,7 +55,7 @@ namespace Access2Justice.Api
             services.AddSingleton<IStaticResourceBusinessLogic, StaticResourceBusinessLogic>();
             services.AddSingleton<IShareBusinessLogic, ShareBusinessLogic>();
             services.AddSingleton<IA2JAuthorBusinessLogic, A2JAuthorBusinessLogic>();
-            services.AddSingleton<IA2JAuthorParser, A2JAuthorParserBusinessLogic>();
+            services.AddSingleton<IA2JAuthorParser, A2JParser>();
 
             ConfigureCosmosDb(services);
 
