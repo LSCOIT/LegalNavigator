@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <None Update="SampleFiles\Topic_Data_tab.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 

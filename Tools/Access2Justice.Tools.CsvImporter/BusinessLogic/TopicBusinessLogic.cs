@@ -36,13 +36,14 @@ namespace Access2Justice.Tools.BusinessLogic
                     }
                     var serializedTopics = JsonConvert.SerializeObject(topicsList);
                     var result = JsonConvert.DeserializeObject(serializedTopics);
-                    var response = await clientHttp.PostAsJsonAsync("api/createtopicdocument", result).ConfigureAwait(false);
+                    var response = await clientHttp.PostAsJsonAsync("api/upserttopicdocument", result).ConfigureAwait(false);
                     var json = response.Content.ReadAsStringAsync().Result;
                     var documentsCreated = JsonConvert.DeserializeObject(json);
                     response.EnsureSuccessStatusCode();
                     if (response.IsSuccessStatusCode == true)
                     {
                         Console.WriteLine("Topics created successfully" + "\n" + documentsCreated);
+                        Console.WriteLine("You may close the window now.");
                     }
                     else
                     {
