@@ -102,7 +102,13 @@ namespace Access2Justice.Api.Tests.TestData
             new ShareViewModel() { PermaLink = "32803EF" } };
         }
 
-        public static string userProfile = "{\"id\": \"0693B88C-3866-4CCA-97C8-B8E3F3D1FF3C\"," +
+		public static IEnumerable<object[]> UpdatePersonalizedPlanData()
+		{
+			yield return new object[] { "132d8f82-96df-4d9b-8023-4332a1924da4", true, true };
+			yield return new object[] { "132d8f82-96df-4d9b-8023-4332a1924da4", false, false };
+		}
+
+		public static string userProfile = "{\"id\": \"0693B88C-3866-4CCA-97C8-B8E3F3D1FF3C\"," +
                                                 "\"oId\": \"709709e7t0r7t96\"," +
                                                 "\"firstName\": \"TestFirstName\"," +
                                                   "\"lastName\": \"TestLastName\"," +
