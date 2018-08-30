@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IResourceFilter } from '../../search/search-results/search-results.model';
+import { IResourceFilter, ILuisInput } from '../../search/search-results/search-results.model';
 import { PaginationService } from '../../pagination/pagination.service';
 import { MapService } from '../../map/map.service';
 import { NavigateDataService } from '../../navigate-data.service';
@@ -18,10 +18,12 @@ export class GuidedAssistantSidebarComponent implements OnInit {
   @Input() activeSubTopic: any;
   @Input() guidedAssistantId: string;
   @Input() showSidebar: boolean;
+  @Input() searchResultsData: any;
   resourceFilter: IResourceFilter = {
     ResourceType: '', ContinuationToken: '', TopicIds: [],
     ResourceIds: [], PageNumber: 0, Location: {}, IsResourceCountRequired: false
   };
+  luisInput: ILuisInput = { Sentence: '', Location: '', TranslateFrom: '', TranslateTo: '', LuisTopScoringIntent: '' };
   topicIds: string[] = [];
   resources: any;
   subscription: any;
@@ -63,6 +65,11 @@ export class GuidedAssistantSidebarComponent implements OnInit {
   }
 
   getTopicGuidedAssistantResult() {
+    if (this.router.url.startsWith("/search")) {
+      this.navigateDataService.setData(this.searchResultsData);
+      this.router.navigateByUrl('/guidedassistant/' + this.guidedAssistantId);
+    }
+
     this.resourceFilter = {
       ResourceType: environment.All, TopicIds: this.topicIds, Location: this.location,
       PageNumber: 0, ContinuationToken: '', IsResourceCountRequired: true, ResourceIds: []
