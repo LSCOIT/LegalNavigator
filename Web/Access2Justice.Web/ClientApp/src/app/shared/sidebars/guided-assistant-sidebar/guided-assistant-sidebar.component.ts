@@ -64,7 +64,7 @@ export class GuidedAssistantSidebarComponent implements OnInit {
     this.guidedAssistantId = this.emptyResult;
   }
 
-  getTopicGuidedAssistantResult() {
+  getGuidedAssistantLinkResult() {
     if (this.router.url.startsWith("/search")) {
       this.navigateDataService.setData(this.searchResultsData);
       this.router.navigateByUrl('/guidedassistant/' + this.guidedAssistantId);
