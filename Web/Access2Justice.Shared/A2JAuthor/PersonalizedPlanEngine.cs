@@ -19,7 +19,10 @@ namespace Access2Justice.Shared.A2JAuthor
         public Dictionary<string, string> MatchAnswersVarsWithPersonalizedPlanVars(string logic, Dictionary<string, string> answerVars)
         {
             var temp = new IfElseParser();
-            return parser.OnIfStatements("").SET(new Dictionary<string, string>()).IF(new Dictionary<string, string>()).AND(new Dictionary<string, string>()).IsEqualTo(new Dictionary<string, string>());
+            return parser.OnIfStatements("")
+                .SET(new Dictionary<string, string>())
+                .IF(new Dictionary<string, string>()).AND(new Dictionary<string, string>()).AND(new Dictionary<string, string>())
+                .IsEqualTo(new Dictionary<string, string>());
         }
 
         public bool IsConditionSatisfied(Dictionary<string, string> ANDvariables, Dictionary<string, string> ORvariables,
