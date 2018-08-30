@@ -1,4 +1,5 @@
-﻿using Access2Justice.Shared.Extensions;
+﻿using Access2Justice.Shared;
+using Access2Justice.Shared.Extensions;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Newtonsoft.Json.Linq;
@@ -13,10 +14,10 @@ namespace Access2Justice.Api.BusinessLogic
     {
         private readonly ICosmosDbSettings dbSettings;
         private readonly IBackendDatabaseService dbService;
-        private readonly IA2JAuthorParser a2jParser;
+        private readonly IPersonalizedPlanEngine a2jParser;
 
-        public A2JAuthorBusinessLogic(ICosmosDbSettings cosmosDbSettings, IBackendDatabaseService backendDatabaseService, 
-            IA2JAuthorParser a2JAuthorParserBusinessLogic)
+        public A2JAuthorBusinessLogic(ICosmosDbSettings cosmosDbSettings, IBackendDatabaseService backendDatabaseService,
+            IPersonalizedPlanEngine a2JAuthorParserBusinessLogic)
         {
             dbSettings = cosmosDbSettings;
             dbService = backendDatabaseService;
@@ -72,26 +73,27 @@ namespace Access2Justice.Api.BusinessLogic
             var answersVarVales = GetVarsValuesFromUserAnswers(userAnswers);
             var planInScopeVarsValues = new Dictionary<string, string>();
 
-            foreach (var buttonComponent in userAnswers.ButtonComponents)
-            {
-                if (!string.IsNullOrWhiteSpace(buttonComponent.CodeAfter))
-                {
-                    var parsedVars = a2jParser.Parse(buttonComponent.CodeAfter, answersVarVales);
-                    foreach (var parsedVar in parsedVars)
-                    {
-                        planInScopeVarsValues.Add(parsedVar.Key, parsedVar.Value);
-                    }
-                }
-            }
+             // Todo:@Alaa this code must be modified after you added the new Parser
+                 //foreach (var buttonComponent in userAnswers.ButtonComponents)
+                 //{
+                 //    if (!string.IsNullOrWhiteSpace(buttonComponent.CodeAfter))
+                 //    {
+                 //        var parsedVars = a2jParser.Parse(buttonComponent.CodeAfter, answersVarVales);
+                 //        foreach (var parsedVar in parsedVars)
+                 //        {
+                 //            planInScopeVarsValues.Add(parsedVar.Key, parsedVar.Value);
+                 //        }
+                 //    }
+                 //}
 
             var planInScope = new A2JPersonalizedPlan();
-            foreach (var child in a2JPersonalizedPlan.RootNode.Children)
-            {
-                if(planInScopeVarsValues.Where(x => x.Key == child.State.LeftOperand).Any())
-                {
-                    planInScope.RootNode.Children.Add(child);
-                }
-            }
+            //foreach (var child in a2JPersonalizedPlan.RootNode.Children)
+            //{
+            //    if(planInScopeVarsValues.Where(x => x.Key == child.State.LeftOperand).Any())
+            //    {
+            //        planInScope.RootNode.Children.Add(child);
+            //    }
+            //}
 
             return planInScope;
         }

@@ -103,10 +103,5 @@ namespace Access2Justice.Shared.Extensions
 
             return varsValues;
         }
-
-        public static Dictionary<string, string> LogicEvaluator(this Dictionary<string, string> varDic1, Dictionary<string, string> varDic2, IEqualityComparer<KeyValuePair<string, string>> andComparer)
-        {          
-            return varDic1.Intersect(varDic2, andComparer).ToDictionary(x => x.Key, x => x.Value);
-        }
     }
 }

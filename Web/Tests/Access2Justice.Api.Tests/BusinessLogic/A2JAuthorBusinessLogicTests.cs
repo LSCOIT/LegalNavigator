@@ -1,5 +1,6 @@
 ﻿using Access2Justice.Api.BusinessLogic;
 using Access2Justice.Api.Tests.TestData;
+using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -15,14 +16,14 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly ICosmosDbSettings dbSettings;
         private readonly IBackendDatabaseService dbService;
         private readonly IA2JAuthorBusinessLogic a2jAuthor;
-        private readonly IA2JAuthorParser a2jAuthorParser;
+        private readonly IPersonalizedPlanEngine personalizedPlanEngine;
 
         public A2JAuthorBusinessLogicTests()
         {
             dbSettings = Substitute.For<ICosmosDbSettings>();
             dbService = Substitute.For<IBackendDatabaseService>();
-            a2jAuthorParser = Substitute.For<IA2JAuthorParser>();
-            a2jAuthor = new A2JAuthorBusinessLogic(dbSettings, dbService, a2jAuthorParser);
+            personalizedPlanEngine = Substitute.For<IPersonalizedPlanEngine>();
+            a2jAuthor = new A2JAuthorBusinessLogic(dbSettings, dbService, personalizedPlanEngine);
         }
 
         [Fact]

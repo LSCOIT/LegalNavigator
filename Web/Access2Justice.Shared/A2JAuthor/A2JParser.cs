@@ -5,11 +5,11 @@ using System.Linq;
 
 namespace Access2Justice.Shared.A2JAuthor
 {
-    public class A2JParser : IA2JAuthorParser
+    public class A2JParserXXX
     {
         private readonly IEnumerable<IEqualityComparer<KeyValuePair<string, string>>> evaluators;
 
-        public A2JParser(IEnumerable<IEqualityComparer<KeyValuePair<string, string>>> logicalEvaluators)
+        public A2JParserXXX(IEnumerable<IEqualityComparer<KeyValuePair<string, string>>> logicalEvaluators)
         {
             evaluators = logicalEvaluators;
         }
@@ -47,13 +47,6 @@ namespace Access2Justice.Shared.A2JAuthor
         public bool IsConditionSatisfied(Dictionary<string, string> ANDvariables, Dictionary<string, string> ORvariables,
             Dictionary<string, string> inputVars)
         {
-            foreach (var evaluator in evaluators)
-            {
-                var test = inputVars.LogicEvaluator(ANDvariables, evaluator);
-            }
-            //var test = inputVars.LogicEvaluator(ANDvariables, evaluators.First());
-
-
             // Todo:@Alaa implement this logic
             // this is awfully simplistic at this point. only for a POC
             foreach (var inputVar in inputVars)
