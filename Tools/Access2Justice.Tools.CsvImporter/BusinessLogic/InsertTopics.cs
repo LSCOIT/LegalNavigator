@@ -48,12 +48,12 @@ namespace Access2Justice.Tools.BusinessLogic
                                 val = parts[iterationCounter];
                                 if (val.EndsWith("Topic_ID*", StringComparison.CurrentCultureIgnoreCase))
                                 {
-                                    id = partsb[0];
+                                    id = (partsb[0]).Trim();
                                 }
 
                                 else if (val.EndsWith("Topic_Name*", StringComparison.CurrentCultureIgnoreCase))
                                 {
-                                    name = partsb[1];
+                                    name = (partsb[1]).Trim();
                                 }
 
                                 else if (val.EndsWith("Parent_Topic*", StringComparison.CurrentCultureIgnoreCase))
@@ -64,43 +64,43 @@ namespace Access2Justice.Tools.BusinessLogic
 
                                 else if (val.EndsWith("Keywords*", StringComparison.CurrentCultureIgnoreCase))
                                 {
-                                    keywords = partsb[3];
+                                    keywords = (partsb[3]).Trim();
                                 }
 
                                 else if (val.EndsWith("Location_State*", StringComparison.CurrentCultureIgnoreCase))
                                 {
-                                    state = partsb[4];
+                                    state = (partsb[4]).Trim();
                                 }
 
                                 else if (val.EndsWith("Location_County", StringComparison.CurrentCultureIgnoreCase))
                                 {
-                                    county = partsb[5];
+                                    county = (partsb[5]).Trim();
                                 }
 
                                 else if (val.EndsWith("Location_City", StringComparison.CurrentCultureIgnoreCase))
                                 {
-                                    city = partsb[6];
+                                    city = (partsb[6]).Trim();
 
                                 }
 
                                 else if (val.EndsWith("Location_Zip", StringComparison.CurrentCultureIgnoreCase))
                                 {
-                                    zipcode = partsb[7];
+                                    zipcode = (partsb[7]).Trim();
                                 }
 
                                 else if (val.EndsWith("Overview", StringComparison.CurrentCultureIgnoreCase))
                                 {
-                                    overview = partsb[8];
+                                    overview = (partsb[8]).Trim();
                                 }
 
                                 else if (val.EndsWith("Quick_Links_URL_text", StringComparison.CurrentCultureIgnoreCase))
                                 {
-                                    quickLinkURLText = partsb[9];
+                                    quickLinkURLText = (partsb[9]).Trim();
                                 }
 
                                 else if (val.EndsWith("Quick_Links_URL_link", StringComparison.CurrentCultureIgnoreCase))
                                 {
-                                    quickLinkURLLink = partsb[10];
+                                    quickLinkURLLink = (partsb[10]).Trim();
                                 }
 
                                 else if (val.EndsWith("Icon", StringComparison.CurrentCultureIgnoreCase))
@@ -108,8 +108,8 @@ namespace Access2Justice.Tools.BusinessLogic
                                     icon = partsb[11];
                                 }
                             }
-                            locations.Add(new Locations() { State = state, County = county, City = city, ZipCode = zipcode });
                             quickLinks = GetQuickLinks(quickLinkURLText, quickLinkURLLink);
+                            locations = GetLocations(state, county, city, zipcode);
                             topic = new Topic()
                             {
                                 Id = id == "" ? Guid.NewGuid() : id,
@@ -183,6 +183,34 @@ namespace Access2Justice.Tools.BusinessLogic
                 }
             }
             return quickLinks;
+        }
+
+        public dynamic GetLocations(string state, string county, string city, string zipcode)
+        {
+            List<Locations> location = new List<Locations>();
+            string[] statesb = null;
+            string[] countysb = null;
+            string[] citysb = null;
+            string[] zipcodesb = null;
+            statesb = state.Split('|');
+            countysb = county.Split('|');
+            citysb = city.Split('|');
+            zipcodesb = zipcode.Split('|');
+            if (statesb.Length == countysb.Length)
+            {
+                for (int locationIterator = 0; locationIterator < statesb.Length; locationIterator++)
+                {
+                    Locations locations = new Locations()
+                    {
+                        State = (statesb[locationIterator]).Trim(),
+                        County = (countysb[locationIterator]).Trim(),
+                        City = (citysb[locationIterator]).Trim(),
+                        ZipCode = (zipcodesb[locationIterator]).Trim()
+                    };                    
+                    location.Add(locations);
+                }
+            }
+            return location;
         }
 
         public static bool ValidateTopicHeader(string[] header, int recordNumber)
