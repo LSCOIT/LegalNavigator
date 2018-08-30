@@ -48,11 +48,11 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         public void GetStaticResourceDataAsyncTestsShouldReturnProperData()
         {
             //arrange
-            var dbResponse = dynamicQueries.FindItemsWhereWithLocationAsync(cosmosDbSettings.StaticResourceCollectionId, Constants.Name, expectedPageName, location);
+            var dbResponse = dynamicQueries.FindItemsWhereWithLocationAsync(cosmosDbSettings.StaticResourceCollectionId, Constants.Name, location);
             dbResponse.ReturnsForAnyArgs<dynamic>(homePageData);
 
             //act
-            var response = staticResourceBusinessLogic.GetPageStaticResourceDataAsync(expectedPageName, location);
+            var response = staticResourceBusinessLogic.GetPageStaticResourcesDataAsync(location);
             string result = JsonConvert.SerializeObject(response);
 
             //assert
@@ -63,11 +63,11 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         public void GetStaticResourceDataAsyncShouldReturnEmptyData()
         {
             //arrange      
-            var dbResponse = dynamicQueries.FindItemsWhereWithLocationAsync(cosmosDbSettings.StaticResourceCollectionId, Constants.Id, expectedPageName, location);
+            var dbResponse = dynamicQueries.FindItemsWhereWithLocationAsync(cosmosDbSettings.StaticResourceCollectionId, Constants.Id, location);
             dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
 
             //act
-            var response = staticResourceBusinessLogic.GetPageStaticResourceDataAsync(expectedPageName, location);
+            var response = staticResourceBusinessLogic.GetPageStaticResourcesDataAsync(location);
             string result = JsonConvert.SerializeObject(response);
 
             //assert

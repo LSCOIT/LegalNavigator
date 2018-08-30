@@ -36,7 +36,6 @@ import { PersonalizedPlanService } from './guided-assistant/personalized-plan/pe
 import { DidYouKnowComponent } from './guided-assistant/did-you-know/did-you-know.component';
 import { ArticlesResourcesComponent } from './guided-assistant/articles-resources/articles-resources.component';
 import { CuratedExperienceComponent } from './guided-assistant/curated-experience/curated-experience.component';
-import { HomeService } from './home/home.service'
 import { StaticResourceService } from './shared/static-resource.service';
 import { ResponseInterceptor } from './response-interceptor';
 import { Global } from './global'
@@ -89,7 +88,6 @@ import { CuratedExperienceResultComponent } from './guided-assistant/curated-exp
     PersonalizedPlanService,
     ProfileComponent,
     PersonalizedPlanComponent,
-    HomeService,
     StaticResourceService,
     Global
   ],

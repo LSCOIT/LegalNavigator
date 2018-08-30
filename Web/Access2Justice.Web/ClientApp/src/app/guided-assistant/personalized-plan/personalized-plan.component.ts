@@ -16,24 +16,21 @@ export class PersonalizedPlanComponent implements OnInit {
   tempTopicsList: Array<PersonalizedPlanTopic> = [];
   planDetails: any = [];
   planDetailTags: any;
-  isFiltered: boolean = false;
   type: string = "Plan";
 
   constructor(private personalizedPlanService: PersonalizedPlanService,
     private activeRoute: ActivatedRoute) { }
 
   getTopics(): void {
-    if (!this.isFiltered) {
-      this.personalizedPlanService.getActionPlanConditions(this.activeActionPlan)
-        .subscribe(plan => {
-          if (plan) {
-            this.topics = plan.topics;
-            this.planDetailTags = plan;
-          }
-          this.topicsList = this.personalizedPlanService.createTopicsList(this.topics);
-          this.planDetails = this.personalizedPlanService.getPlanDetails(this.topics, this.planDetailTags);
-        });
-    }
+    this.personalizedPlanService.getActionPlanConditions(this.activeActionPlan)
+      .subscribe(plan => {
+        if (plan) {
+          this.topics = plan.topics;
+          this.planDetailTags = plan;
+        }
+        this.topicsList = this.personalizedPlanService.createTopicsList(this.topics);
+        this.planDetails = this.personalizedPlanService.getPlanDetails(this.topics, this.planDetailTags);
+      });
   }
 
   filterPlan(topic) {

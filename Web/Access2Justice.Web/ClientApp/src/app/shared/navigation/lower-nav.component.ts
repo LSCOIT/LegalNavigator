@@ -3,6 +3,7 @@ import { StaticResourceService } from '../../shared/static-resource.service';
 import { Navigation, Language, Location, Logo, Home, GuidedAssistant, TopicAndResources, About, Search, PrivacyPromise, HelpAndFAQ, Login } from './navigation';
 import { environment } from '../../../environments/environment';
 import { MapService } from '../map/map.service';
+import { Global } from '../../global';
 
 @Component({
   selector: 'app-lower-nav',
@@ -14,6 +15,7 @@ export class LowerNavComponent implements OnInit {
   showSearch = false;
   showMenu = false;
   my_Class = '';
+  staticContentSubcription: any;
 
   @ViewChild('sidenav') sidenav: ElementRef;
   @HostListener('window:resize')
@@ -36,9 +38,12 @@ export class LowerNavComponent implements OnInit {
   about: About;
   search: Search;
   subscription: any;
+  staticContent: any;
 
   constructor(
-    private staticResourceService: StaticResourceService, private mapService: MapService
+    private staticResourceService: StaticResourceService,
+    private mapService: MapService,
+    private global: Global
   ) { }
 
   openNav() {
@@ -88,18 +93,22 @@ export class LowerNavComponent implements OnInit {
       this.navigation = this.staticResourceService.navigation;
       this.filterNavigationContent(this.staticResourceService.navigation);
     } else {
-      this.staticResourceService.getStaticContent(homePageRequest)
-        .subscribe(content => {
-          this.navigation = content[0];
-          this.filterNavigationContent(this.navigation);
-          this.staticResourceService.navigation = this.navigation;
-        });
+      if (this.global.getData()) {
+        this.staticContent = this.global.getData();
+        this.navigation = this.staticContent.find(x => x.name === this.name);
+        this.filterNavigationContent(this.navigation);
+        this.staticResourceService.navigation = this.navigation;
+      }
     }
   }
 
   ngOnInit() {
     this.getNavigationContent();
     this.subscription = this.mapService.notifyLocation
+      .subscribe((value) => {
+        this.getNavigationContent();
+      });
+    this.staticContentSubcription = this.global.notifyStaticData
       .subscribe((value) => {
         this.getNavigationContent();
       });
