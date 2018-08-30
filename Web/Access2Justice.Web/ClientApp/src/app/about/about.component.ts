@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { StaticResourceService } from '../shared/static-resource.service';
 import { About, Mission, Service, PrivacyPromise } from '../about/about';
 import { Image } from '../home/home';
+import { Global } from '../global';
 
 @Component({
   selector: 'app-about',
@@ -10,10 +11,13 @@ import { Image } from '../home/home';
 })
 export class AboutComponent implements OnInit {
 
-  constructor(private staticResourceService: StaticResourceService) { }
+  constructor(private staticResourceService: StaticResourceService,
+    private global:Global) { }
   name: string = 'AboutPage';
   aboutContent: About;
   aboutContentData: About;
+  staticContent: any;
+  staticContentSubcription: any;
 
   filterAboutContent(aboutContent): void {
     if (aboutContent) {
@@ -27,16 +31,20 @@ export class AboutComponent implements OnInit {
       this.aboutContent = this.staticResourceService.aboutContent;
       this.filterAboutContent(this.staticResourceService.aboutContent);
     } else {
-      this.staticResourceService.getStaticContent(aboutPageRequest)
-        .subscribe(content => {
-          this.aboutContent = content[0];
-          this.filterAboutContent(this.aboutContent);
-          this.staticResourceService.aboutContent = this.aboutContent;
-        });
-    }   
+      if (this.global.getData()) {
+        this.staticContent = this.global.getData();
+        this.aboutContent = this.staticContent.find(x => x.name === this.name);
+        this.filterAboutContent(this.aboutContent);
+        this.staticResourceService.aboutContent = this.aboutContent;
+      }
+    }
   }
 
   ngOnInit() {
     this.getAboutPageContent();
+    this.staticContentSubcription = this.global.notifyStaticData
+      .subscribe((value) => {
+        this.getAboutPageContent();
+      });
   }
 }

@@ -28,7 +28,7 @@ export const api = {
     saveAndGetNextUrl: curatedExperience + '/Component/SaveAndGetNext',
     updateUserPlanUrl: curatedExperience + "/updateplan",
     resourceUrl: topic + '/getresource',
-    getContentUrl: contentUrl + '/getstaticresource',
+    getContentsUrl: contentUrl + '/getstaticresources',
     shareUrl: apiUrl + '/Share/GeneratePermaLink',
     unShareUrl: apiUrl + '/Share/RemovePermaLink',
     getResourceLink: apiUrl + '/Share/GetPermalLinkResource',

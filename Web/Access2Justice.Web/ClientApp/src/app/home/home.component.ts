@@ -5,6 +5,7 @@ import { environment } from '../../environments/environment';
 
 import { Home, Hero, GuidedAssistantOverview, TopicAndResources, Carousel, SponsorOverview, Privacy, Sponsors } from './home';
 import { StaticResourceService } from '../shared/static-resource.service';
+import { Global } from '../global';
 
 @Component({
   selector: 'app-home',
@@ -32,9 +33,12 @@ export class HomeComponent implements OnInit {
   carouselData: Carousel;
   sponsorOverviewData: SponsorOverview;
   privacyData: Privacy;
+  staticContent: any;
+  staticContentSubcription: any;
 
   constructor(private staticResourceService: StaticResourceService,
-    private mapService: MapService) { }
+    private mapService: MapService,
+    private global: Global) { }
 
   filterHomeContent(homeContent): void {
     if (homeContent) {
@@ -60,12 +64,12 @@ export class HomeComponent implements OnInit {
       this.homeContent = this.staticResourceService.homeContent;
       this.filterHomeContent(this.staticResourceService.homeContent);
     } else {
-      this.staticResourceService.getStaticContent(homePageRequest)
-        .subscribe(content => {
-          this.homeContent = content[0];
-          this.filterHomeContent(this.homeContent);
-          this.staticResourceService.homeContent = this.homeContent;
-        });
+      if (this.global.getData()) {
+        this.staticContent = this.global.getData();
+        this.homeContent = this.staticContent.find(x => x.name === this.name);
+        this.filterHomeContent(this.homeContent);
+        this.staticResourceService.homeContent = this.homeContent;
+      }
     }
   }
 
@@ -73,6 +77,11 @@ export class HomeComponent implements OnInit {
     this.loadStateName();
     this.getHomePageContent();
     this.subscription = this.mapService.notifyLocation
+      .subscribe((value) => {
+        this.loadStateName();
+        this.getHomePageContent();
+      });
+    this.staticContentSubcription = this.global.notifyStaticData
       .subscribe((value) => {
         this.loadStateName();
         this.getHomePageContent();
