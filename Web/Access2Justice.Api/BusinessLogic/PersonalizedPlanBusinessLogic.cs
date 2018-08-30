@@ -70,7 +70,7 @@ namespace Access2Justice.Api.BusinessLogic
             }
             var personalizedPlan = new PersonalizedPlanSteps();
             personalizedPlan = BuildPersonalizedPlan(planSteps);
-            personalizedPlan = JsonConvert.DeserializeObject<PersonalizedPlanSteps>(JsonConvert.SerializeObject(personalizedPlan));
+            personalizedPlan = JsonUtilities.DeserializeDynamicObject<PersonalizedPlanSteps>(personalizedPlan);
             var res = await dbService.CreateItemAsync((personalizedPlan), dbSettings.UserResourceCollectionId);
             return personalizedPlan;
         }
@@ -138,8 +138,7 @@ namespace Access2Justice.Api.BusinessLogic
 
         public PersonalizedPlanSteps ConvertPersonalizedPlanSteps(dynamic convObj)
         {
-            var serializedResult = JsonConvert.SerializeObject(convObj);
-            List<PersonalizedPlanSteps> listPlanSteps = JsonConvert.DeserializeObject<List<PersonalizedPlanSteps>>(serializedResult);
+            List<PersonalizedPlanSteps> listPlanSteps = JsonUtilities.DeserializeDynamicObject<List<PersonalizedPlanSteps>>(convObj);
             PersonalizedPlanSteps personalizedPlanSteps = new PersonalizedPlanSteps();
             foreach (PersonalizedPlanSteps planSteps in listPlanSteps)
             {
@@ -163,9 +162,9 @@ namespace Access2Justice.Api.BusinessLogic
                 List<string> topicValues = topicsList.Select(x => x.ToString()).ToList();
                 List<string> resourceValues = resourcesList.Select(x => x.ToString()).ToList();
                 var topicsData = await dynamicQueries.FindItemsWhereInClauseAsync(dbSettings.TopicCollectionId, Constants.Id, topicValues);
-                List<TopicDetails> topicDetails = JsonConvert.DeserializeObject<List<TopicDetails>>(JsonConvert.SerializeObject(topicsData));
+                List<TopicDetails> topicDetails = JsonUtilities.DeserializeDynamicObject<List<TopicDetails>>(topicsData);
                 var resourceData = await dynamicQueries.FindItemsWhereInClauseAsync(dbSettings.ResourceCollectionId, Constants.Id, resourceValues);
-                List<Resource> resourceDetails = JsonConvert.DeserializeObject<List<Resource>>(JsonConvert.SerializeObject(resourceData));
+                List<Resource> resourceDetails = JsonUtilities.DeserializeDynamicObject<List<Resource>>(resourceData);
 
                 List<PlanTopic> planTopics = new List<PlanTopic>();
                 foreach (var item in personalizedPlanSteps.Topics)
@@ -265,15 +264,19 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<PersonalizedPlanSteps> GetPersonalizedPlan(string planId)
         {
+            dynamic personalizedPlan = null;
             var planDetails = await dynamicQueries.FindItemsWhereAsync(dbSettings.UserResourceCollectionId, Constants.Id, planId);
-            var personalizedPlan = JsonConvert.DeserializeObject<List<PersonalizedPlanSteps>>(JsonConvert.SerializeObject(planDetails));
-            return personalizedPlan[0];
+            if (planDetails != null)
+            {
+                personalizedPlan = JsonUtilities.DeserializeDynamicObject<List<PersonalizedPlanSteps>>(planDetails);
+            }
+            return personalizedPlan?[0];
         }
 
         public async Task<PersonalizedActionPlanViewModel> UpdatePersonalizedPlan(UserPersonalizedPlan userPlan)
         {
             var userPersonalizedPlan = new UserPersonalizedPlan();
-            userPersonalizedPlan = JsonConvert.DeserializeObject<UserPersonalizedPlan>(JsonConvert.SerializeObject(userPlan));
+            userPersonalizedPlan = JsonUtilities.DeserializeDynamicObject<UserPersonalizedPlan>(userPlan);
             string oId = userPersonalizedPlan.OId;
             string planId = string.Empty;
             if (oId != null)

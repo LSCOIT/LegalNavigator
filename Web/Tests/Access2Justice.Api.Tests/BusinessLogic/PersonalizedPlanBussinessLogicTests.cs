@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Access2Justice.Api.BusinessLogic;
+using Access2Justice.Api.Interfaces;
 using Access2Justice.Api.Tests.TestData;
 using Access2Justice.Api.ViewModels;
 using Access2Justice.Shared.Interfaces;
@@ -20,6 +21,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly IBackendDatabaseService dbService;
         private readonly ICosmosDbSettings dbSettings;
         private readonly IDynamicQueries dynamicQueries;
+        private readonly IUserProfileBusinessLogic userProfileBusinessLogic;
         private readonly PersonalizedPlanBusinessLogic personalizedPlan;
         
         //Mocked input data
@@ -48,8 +50,9 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             dbSettings = Substitute.For<ICosmosDbSettings>();
             dbService = Substitute.For<IBackendDatabaseService>();
             dynamicQueries = Substitute.For<IDynamicQueries>();
+            userProfileBusinessLogic = Substitute.For<IUserProfileBusinessLogic>();
 
-
+            personalizedPlan = new PersonalizedPlanBusinessLogic(dbSettings, dbService, dynamicQueries, userProfileBusinessLogic);
             dbSettings.AuthKey.Returns("dummykey");
             dbSettings.Endpoint.Returns(new System.Uri("https://bing.com"));
             dbSettings.DatabaseId.Returns("dbname");
@@ -60,9 +63,9 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             dbSettings.PersonalizedActionPlanCollectionId.Returns("PersonalizedActionPlan");
             dbSettings.CuratedExperienceCollectionId.Returns("CuratedExperience");
             dbSettings.CuratedExperienceAnswersCollectionId.Returns("CuratedExperienceAnswers");
-
-            //personalizedPlan = new PersonalizedPlanBusinessLogic(dbSettings, dbService, dynamicQueries);
+            dbSettings.UserResourceCollectionId.Returns("UserResource");
         }
+
         [Fact]
         public void GetTopicNameByTopicId()
         {

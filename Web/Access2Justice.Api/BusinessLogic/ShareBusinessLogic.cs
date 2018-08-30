@@ -20,15 +20,18 @@ namespace Access2Justice.Api.BusinessLogic
         private readonly IBackendDatabaseService dbService;
         private readonly IShareSettings dbShareSettings;
         private readonly IUserProfileBusinessLogic dbUserProfile;
+        private readonly IPersonalizedPlanBusinessLogic dbPersonalizedPlan;
+
         public ShareBusinessLogic(IDynamicQueries dynamicQueries, ICosmosDbSettings cosmosDbSettings,
             IBackendDatabaseService backendDatabaseService, IShareSettings shareSettings,
-            IUserProfileBusinessLogic userProfileBusinessLogic)
+            IUserProfileBusinessLogic userProfileBusinessLogic, IPersonalizedPlanBusinessLogic personalizedPlanBusinessLogic)
         {
             dbClient = dynamicQueries;
             dbSettings = cosmosDbSettings;
             dbService = backendDatabaseService;
             dbShareSettings = shareSettings;
             dbUserProfile = userProfileBusinessLogic;
+            dbPersonalizedPlan = personalizedPlanBusinessLogic;
         }
 
         public async Task<ShareViewModel> CheckPermaLinkDataAsync(ShareInput shareInput)
@@ -46,7 +49,10 @@ namespace Access2Justice.Api.BusinessLogic
             }
             else
             {
-                userSharedResourcesDBData = await dbClient.FindItemsWhereAsync(dbSettings.UserResourceCollectionId, Constants.Id, Convert.ToString(userProfile.SharedResourceId, CultureInfo.InvariantCulture));
+                if (userProfile?.SharedResourceId != null && userProfile.SharedResourceId != Guid.Empty)
+                {
+                    userSharedResourcesDBData = await dbClient.FindItemsWhereAsync(dbSettings.UserResourceCollectionId, Constants.Id, Convert.ToString(userProfile.SharedResourceId, CultureInfo.InvariantCulture));
+                }
                 if (userSharedResourcesDBData != null && userSharedResourcesDBData?.Count > 0)
                 {
                     userSharedResources = JsonUtilities.DeserializeDynamicObject<List<SharedResources>>(userSharedResourcesDBData);
@@ -67,8 +73,6 @@ namespace Access2Justice.Api.BusinessLogic
         }
         public async Task<ShareViewModel> ShareResourceDataAsync(ShareInput shareInput)
         {
-            dynamic userSharedResourcesDBData = null;
-            List<SharedResource> sharedResources = new List<SharedResource>();
             dynamic response = null;
             if (shareInput.Url == null || shareInput.UserId == null || shareInput.ResourceId == null)
             {
@@ -88,14 +92,32 @@ namespace Access2Justice.Api.BusinessLogic
                 Url = new Uri(shareInput.Url.OriginalString, UriKind.RelativeOrAbsolute),
                 PermaLink = permaLink
             };
+            response = await UpsertSharedResource(userProfile,sharedResource);
+            if (shareInput.Url.OriginalString.Contains("plan"))
+            {
+                string planId = shareInput.Url.OriginalString.Substring(6);
+                await UpdatePersonalizedPlan(planId, true);
+            }
+
+            return response == null ? null : new ShareViewModel
+            {
+                PermaLink = dbShareSettings.PermaLinkMaxLength > 0 ? GetPermaLink(permaLink) : permaLink
+            };
+        }
+
+        public  async Task<object> UpsertSharedResource(UserProfile userProfile, SharedResource sharedResource)
+        {
+            List<SharedResource> sharedResources = new List<SharedResource>();
+            dynamic userSharedResourcesDBData = null;
+            dynamic response = null;
             if (userProfile?.SharedResourceId != null && userProfile.SharedResourceId != Guid.Empty)
             {
                 userSharedResourcesDBData = await dbClient.FindItemsWhereAsync(dbSettings.UserResourceCollectionId, Constants.Id, Convert.ToString(userProfile.SharedResourceId, CultureInfo.InvariantCulture));
             }
-            if (userSharedResourcesDBData != null && userSharedResourcesDBData.Count>0)
+            if (userSharedResourcesDBData != null && userSharedResourcesDBData.Count > 0)
             {
                 var userSharedResources = new List<SharedResources>();
-                userSharedResources = JsonConvert.DeserializeObject<List<SharedResources>>(JsonConvert.SerializeObject(userSharedResourcesDBData));
+                userSharedResources = JsonUtilities.DeserializeDynamicObject<List<SharedResources>>(userSharedResourcesDBData);
                 userSharedResources[0].SharedResourceId = userProfile.SharedResourceId;
                 userSharedResources[0].SharedResource.Add(sharedResource);
                 response = await dbService.UpdateItemAsync(userProfile.SharedResourceId.ToString(), userSharedResources[0],
@@ -119,18 +141,21 @@ namespace Access2Justice.Api.BusinessLogic
                 dbSettings.UserProfileCollectionId);
                 response = await dbService.CreateItemAsync((userSharedResources), dbSettings.UserResourceCollectionId);
             }
-            if (shareInput.Url.OriginalString.Contains("plan"))
-            {
-                //ToDo - Update the IsShared flag in the personalized plan document when user share the plan 
-                //PersonalizedPlanSteps plan = GetPersonalizedPlan(shareInput.ResourceId);
-                //plan.IsShared = true;
-                //UpdatePersonalizedPlan(plan);
-            }
+            return response;
+        }
 
-            return response == null ? null : new ShareViewModel
+        public async Task UpdatePersonalizedPlan(string planId, bool isShared)
+        {
+            var plan = await dbPersonalizedPlan.GetPersonalizedPlan(planId);
+            if (plan != null)
             {
-                PermaLink = dbShareSettings.PermaLinkMaxLength > 0 ? GetPermaLink(permaLink) : permaLink
-            };
+                plan.IsShared = isShared;
+                UserPersonalizedPlan userPlan = new UserPersonalizedPlan
+                {
+                    PersonalizedPlan = plan
+                };
+                await dbPersonalizedPlan.UpdatePersonalizedPlan(userPlan);
+            }
         }
 
         public async Task<object> UnshareResourceDataAsync(ShareInput unShareInput)
@@ -152,7 +177,7 @@ namespace Access2Justice.Api.BusinessLogic
             }
             if (userSharedResourcesDBData != null)
             {
-                userSharedResources = JsonConvert.DeserializeObject<List<SharedResources>>(JsonConvert.SerializeObject(userSharedResourcesDBData));
+                userSharedResources = JsonUtilities.DeserializeDynamicObject<List<SharedResources>>(userSharedResourcesDBData);
             }
             var sharedResource = userSharedResources[0].SharedResource.FindAll(a => a.Url.OriginalString.
             Contains(unShareInput.Url.OriginalString));
@@ -164,6 +189,11 @@ namespace Access2Justice.Api.BusinessLogic
             Contains(unShareInput.Url.OriginalString));
             var response = await dbService.UpdateItemAsync(userSharedResources[0].SharedResourceId.ToString(), userSharedResources[0],
                 dbSettings.UserResourceCollectionId);
+            if (unShareInput.Url.OriginalString.Contains("plan"))
+            {
+                string planId = unShareInput.Url.OriginalString.Substring(6);
+                await UpdatePersonalizedPlan(planId, false);
+            }
             return response == null ? false : true;
         }
 
@@ -174,14 +204,13 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 return null;
             }
-            var response = await dbClient.FindFieldWhereArrayContainsAsync(dbSettings.UserProfileCollectionId,
+            var response = await dbClient.FindFieldWhereArrayContainsAsync(dbSettings.UserResourceCollectionId,
                 Constants.SharedResource, Constants.PermaLink, permaLink, Constants.ExpirationDate);
             if (response == null)
             {
                 return null;
             }
-            List<ShareProfileResponse> shareProfileResponse = JsonConvert.DeserializeObject<List<ShareProfileResponse>>
-                (JsonConvert.SerializeObject(response));
+            List<ShareProfileResponse> shareProfileResponse = JsonUtilities.DeserializeDynamicObject<List<ShareProfileResponse>>(response);
             ShareProfileViewModel profileViewModel = new ShareProfileViewModel();
             foreach (var profile in shareProfileResponse)
             {

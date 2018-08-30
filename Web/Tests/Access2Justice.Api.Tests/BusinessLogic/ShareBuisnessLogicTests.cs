@@ -1,4 +1,5 @@
 ﻿using Access2Justice.Api.BusinessLogic;
+using Access2Justice.Api.Interfaces;
 using Access2Justice.Api.Tests.TestData;
 using Access2Justice.Api.ViewModels;
 using Access2Justice.Shared;
@@ -8,6 +9,8 @@ using Microsoft.Azure.Documents;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NSubstitute;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using Xunit;
 
@@ -20,6 +23,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly IDynamicQueries dynamicQueries;
         private readonly IShareSettings dbShareSettings;
         private readonly IUserProfileBusinessLogic userProfileBusinessLogic;
+        private readonly IPersonalizedPlanBusinessLogic personalizedPlanBusinessLogic;
         private readonly ShareBusinessLogic shareBusinessLogic;
 
         public ShareBuisnessLogicTests()
@@ -29,9 +33,11 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             dynamicQueries = Substitute.For<IDynamicQueries>();
             dbShareSettings = Substitute.For<IShareSettings>();
             userProfileBusinessLogic = Substitute.For<IUserProfileBusinessLogic>();
-            shareBusinessLogic = new ShareBusinessLogic(dynamicQueries, dbSettings, dbService, dbShareSettings, userProfileBusinessLogic);
+            personalizedPlanBusinessLogic = Substitute.For<IPersonalizedPlanBusinessLogic>();
+            shareBusinessLogic = new ShareBusinessLogic(dynamicQueries, dbSettings, dbService, dbShareSettings, userProfileBusinessLogic, personalizedPlanBusinessLogic);
 
             dbSettings.UserProfileCollectionId.Returns("UserProfile");
+            dbSettings.UserResourceCollectionId.Returns("UserResource");
             dbShareSettings.PermaLinkMaxLength.Returns(7);
         }
 
@@ -41,6 +47,9 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         {
             var profileResponse = userProfileBusinessLogic.GetUserProfileDataAsync(shareInput.UserId);
             profileResponse.ReturnsForAnyArgs<UserProfile>(ShareTestData.UserProfileWithSharedResourceData);
+            var dbResponse = dynamicQueries.FindItemsWhereAsync(dbSettings.UserResourceCollectionId, "SharedResourceId", "0568B88C-3866-4CCA-97C8-B8E3F3D1FF3C");
+            dbResponse.ReturnsForAnyArgs(ShareTestData.sharedResourcesData);
+
             //act
             var response = shareBusinessLogic.CheckPermaLinkDataAsync(shareInput);
             expectedResult = JsonConvert.SerializeObject(expectedResult);
@@ -67,6 +76,10 @@ namespace Access2Justice.Api.Tests.BusinessLogic
                Arg.Any<UserProfile>(),
                Arg.Any<string>()).ReturnsForAnyArgs<Document>(updatedDocument);
 
+            dbService.CreateItemAsync<SharedResources>(
+               Arg.Any<SharedResources>(),
+               Arg.Any<string>()).ReturnsForAnyArgs<Document>(updatedDocument);
+
             //act
             var result = shareBusinessLogic.ShareResourceDataAsync(shareInput).Result;
             //assert
@@ -78,16 +91,18 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         public void UnshareResourceDataAsyncShouldReturnTrue(ShareInput unShareInput, dynamic expectedResult)
         {
             var profileResponse = userProfileBusinessLogic.GetUserProfileDataAsync(unShareInput.UserId);
-            profileResponse.ReturnsForAnyArgs<UserProfile>(ShareTestData.UserProfileWithSharedResourceData);
+            profileResponse.ReturnsForAnyArgs(ShareTestData.UserProfileWithSharedResourceData);
 
             Document updatedDocument = new Document();
-            JsonTextReader reader = new JsonTextReader(new StringReader(ShareTestData.userProfile));
+            JsonTextReader reader = new JsonTextReader(new StringReader(ShareTestData.updatedSharedResourcesData));
             updatedDocument.LoadFrom(reader);
 
-            dbService.UpdateItemAsync<UserProfile>(
+            dbService.UpdateItemAsync<SharedResources>(
                Arg.Any<string>(),
-               Arg.Any<UserProfile>(),
+               Arg.Any<SharedResources>(),
                Arg.Any<string>()).ReturnsForAnyArgs<Document>(updatedDocument);
+            var dbResponse = dynamicQueries.FindItemsWhereAsync(dbSettings.UserResourceCollectionId, "SharedResourceId", "0568B88C-3866-4CCA-97C8-B8E3F3D1FF3C");
+            dbResponse.ReturnsForAnyArgs(ShareTestData.sharedResourcesData);
 
             //act
             var result = shareBusinessLogic.UnshareResourceDataAsync(unShareInput).Result;
