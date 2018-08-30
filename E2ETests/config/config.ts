@@ -19,13 +19,13 @@ export const config: Config = {
 
     SELENIUM_PROMISE_MANAGER: false,
 
-    baseUrl: "https://www.google.com/",
+    baseUrl: "https://access2justicewebtesting.azurewebsites.net/",
 
     capabilities: {
         browserName: "chrome",
     },
 
-    framework: "custom",
+    framework: "custom", // Use a custom framework adapter and set its relative path
     frameworkPath: require.resolve("protractor-cucumber-framework"),
 
     specs: [
@@ -43,7 +43,7 @@ export const config: Config = {
         format: "json:./reports/json/cucumber_report.json", // Output format
         require: ["../../typeScript/stepdefinitions/*.js", "../../typeScript/support/*.js"], // Require step definition files before executing features
         strict: true,   // Fail if there are any undefined or pending steps
-        tags: "@CucumberScenario or @ProtractorScenario or @TypeScriptScenario or @OutlineScenario", // Only execute the features or scenario with those tags
+        tags: "@SearchScenario", // Only execute the features or scenario with those tags
     },
 
     onComplete: () => {

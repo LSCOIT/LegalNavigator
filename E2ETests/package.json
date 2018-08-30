@@ -35,5 +35,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/Microsoft/Access2Justice/tree/feature415/setting_up_e2e_tests"
+  },
+  "dependencies": {
+    "@types/chai": "^4.1.4"
   }
 }

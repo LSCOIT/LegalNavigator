@@ -1,2 +1,6 @@
 Cucumber HTML report doesn't launch on its own
 
+1. change url
+2. add page object
+3. add feature
+

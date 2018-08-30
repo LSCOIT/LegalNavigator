@@ -15,7 +15,7 @@ const jsonReports = process.cwd() + "/reports/json";
 exports.config = {
     seleniumAddress: "http://127.0.0.1:4444/wd/hub",
     SELENIUM_PROMISE_MANAGER: false,
-    baseUrl: "https://www.google.com/",
+    baseUrl: "https://access2justicewebtesting.azurewebsites.net/",
     capabilities: {
         browserName: "chrome",
     },
@@ -34,7 +34,7 @@ exports.config = {
         format: "json:./reports/json/cucumber_report.json",
         require: ["../../typeScript/stepdefinitions/*.js", "../../typeScript/support/*.js"],
         strict: true,
-        tags: "@CucumberScenario or @ProtractorScenario or @TypeScriptScenario or @OutlineScenario",
+        tags: "@SearchScenario",
     },
     onComplete: () => {
         reporter_1.Reporter.createHTMLReport();
