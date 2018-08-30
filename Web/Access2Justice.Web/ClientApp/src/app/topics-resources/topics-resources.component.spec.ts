@@ -1,15 +1,16 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { APP_BASE_HREF } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
-
-import { TopicsResourcesComponent } from './topics-resources.component';
-import { TopicsComponent } from './topic/topics.component';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { GuidedAssistantSidebarComponent } from '../shared/sidebars/guided-assistant-sidebar/guided-assistant-sidebar.component';
-import { ServiceOrgSidebarComponent } from '../shared/sidebars/service-org-sidebar/service-org-sidebar.component';
-import { TopicService } from './shared/topic.service';
-import { ShowMoreService } from '../shared/sidebars/show-more/show-more.service';
+import { HttpClientModule } from '@angular/common/http';
 import { MapService } from '../shared/map/map.service';
+import { NavigateDataService } from '../shared/navigate-data.service';
+import { RouterModule } from '@angular/router';
+import { ServiceOrgSidebarComponent } from '../shared/sidebars/service-org-sidebar/service-org-sidebar.component';
+import { ShowMoreService } from '../shared/sidebars/show-more/show-more.service';
+import { TopicsComponent } from './topic/topics.component';
+import { TopicService } from './shared/topic.service';
+import { TopicsResourcesComponent } from './topics-resources.component';
+import { PaginationService } from '../shared/pagination/pagination.service';
 
 describe('TopicsResourcesComponent', () => {
   let component: TopicsResourcesComponent;
@@ -33,7 +34,9 @@ describe('TopicsResourcesComponent', () => {
         { provide: APP_BASE_HREF, useValue: '/' },
         TopicService,
         ShowMoreService,
-        MapService
+        MapService,
+        NavigateDataService,
+        PaginationService
       ]
     })
       .compileComponents();

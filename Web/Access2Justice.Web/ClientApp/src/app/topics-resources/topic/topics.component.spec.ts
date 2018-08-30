@@ -10,7 +10,7 @@ import { GuidedAssistantSidebarComponent } from '../../shared/sidebars/guided-as
 import { ServiceOrgSidebarComponent } from '../../shared/sidebars/service-org-sidebar/service-org-sidebar.component';
 import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 import { BreadcrumbService } from '../shared/breadcrumb.service';
-
+import { MapService } from '../../shared/map/map.service';
 
 describe('TopicsComponent', () => {
   let component: TopicsComponent;
@@ -45,7 +45,8 @@ describe('TopicsComponent', () => {
         { provide: APP_BASE_HREF, useValue: '/' },
         { provide: TopicService, useValue: mockTopicService },
         { provide: RouterModule, useValue: mockRouter },
-        { provide: BreadcrumbService, useValue: mockTopicService }
+        { provide: BreadcrumbService, useValue: mockTopicService },
+        MapService
       ]
     })
     .compileComponents();

@@ -31,5 +31,4 @@ export class CuratedExperienceResultComponent implements OnInit {
     this.guidedAssistantResults = this.navigateDataService.getData();
     this.filterIntent();
   }
-
 }

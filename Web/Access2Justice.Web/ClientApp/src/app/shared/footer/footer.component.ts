@@ -11,8 +11,11 @@ import { Global } from '../../global';
 })
 export class FooterComponent implements OnInit {
 
-  constructor(private staticResourceService: StaticResourceService,
-    private global: Global) { }
+  constructor(
+    private staticResourceService: StaticResourceService,
+    private global: Global
+  ) { }
+
   blobUrl: any = environment.blobUrl;
   navigation: Navigation;
   name: string = 'Navigation';
@@ -37,7 +40,6 @@ export class FooterComponent implements OnInit {
   }
 
   getNavigationContent(): void {
-    let pageContentRequest = { name: this.name };
     if (this.staticResourceService.navigation && (this.staticResourceService.navigation.location[0].state == this.staticResourceService.getLocation())) {
       this.navigation = this.staticResourceService.navigation;
       this.filterNavigationContent(this.staticResourceService.navigation);

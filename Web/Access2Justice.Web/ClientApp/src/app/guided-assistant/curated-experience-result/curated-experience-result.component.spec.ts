@@ -14,15 +14,19 @@ describe('CuratedExperienceResultComponent', () => {
 
   beforeEach(async(() => { 
     mockNavigateDataService = jasmine.createSpyObj(['getData']);
+    mockToastr = jasmine.createSpyObj(['success']);
     mockGuidedAssistantResults = {
-      "topIntent": "Eviction",
+      "topIntent": "Divorce",
       "relevantIntents": [
         "Domestic Violence",
         "Tenant's rights",
         "None"
-      ]
+      ],
+      "topicIds":[  
+        "e1fdbbc6-d66a-4275-9cd2-2be84d303e12"
+     ],
+     "guidedAssistantId":"9a6a6131-657d-467d-b09b-c570b7dad242"
     }
-    mockNavigateDataService.getData.and.returnValue(mockGuidedAssistantResults);
     TestBed.configureTestingModule({
       declarations: [ CuratedExperienceResultComponent ],
       schemas: [ NO_ERRORS_SCHEMA ],
@@ -37,8 +41,9 @@ describe('CuratedExperienceResultComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CuratedExperienceResultComponent);
     component = fixture.componentInstance;
-    spyOn(component, 'ngOnInit');
-    component.guidedAssistantResults = mockGuidedAssistantResults;
+    mockNavigateDataService.getData.and.returnValue(mockGuidedAssistantResults);
+    component.ngOnInit();
+    fixture.detectChanges();
   });
   
   it('should create', () => {
@@ -55,19 +60,16 @@ describe('CuratedExperienceResultComponent', () => {
     )
   });
   
-  // it('should call toastr when Save for Later button is clicked', () => {
-  //   mockToastr = jasmine.createSpyObj(['success']);
-  //   component.relevantIntents = [
-  //     "Domestic Violence",
-  //     "Tenant's rights"
-  //   ];
-  //   fixture.detectChanges();
-  //   fixture.debugElement
-  //     .query(By.css('.btn-secondary'))
-  //     .triggerEventHandler('click', {stopPropogration: () => {}});
-  //   // const button = fixture.debugElement.query(By.css('.btn'));
-  //   // button.triggerEventHandler('click', {stopPropogration: () => {}});
-
-  //   // expect(mockToastr.success).toHaveBeenCalled();
-  // })
+  it('should call toastr when Save for Later button is clicked', () => {
+    component.relevantIntents = [
+      "Domestic Violence",
+      "Tenant's rights"
+    ];
+    fixture.debugElement
+      .query(By.css('.btn-secondary'))
+      .triggerEventHandler('click', {stopPropogration: () => {}});
+    const button = fixture.debugElement.query(By.css('.btn-secondary'));
+    button.triggerEventHandler('click', {stopPropogration: () => {}});
+    expect(mockToastr.success).toHaveBeenCalled();
+  });
 });
