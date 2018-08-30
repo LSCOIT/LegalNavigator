@@ -18,7 +18,7 @@ import { TopicsResourcesComponent } from './topics-resources/topics-resources.co
 import { MapService } from './shared/map/map.service';
 import { of } from 'rxjs/observable/of';
 
-fdescribe('AppComponent', () => {
+describe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
   let mockStaticResourceService;
