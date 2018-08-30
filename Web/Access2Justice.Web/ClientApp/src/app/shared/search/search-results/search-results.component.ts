@@ -7,6 +7,7 @@ import { IResourceFilter, ILuisInput } from './search-results.model';
 import { MapService } from '../../map/map.service';
 import { environment } from '../../../../environments/environment';
 import { PersonalizedPlanService } from '../../../guided-assistant/personalized-plan/personalized-plan.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-search-results',
@@ -56,7 +57,8 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     private searchService: SearchService,
     private mapService: MapService,
     private paginationService: PaginationService,
-    private personalizedPlanService: PersonalizedPlanService) { }
+    private personalizedPlanService: PersonalizedPlanService,
+    private spinner: NgxSpinnerService) { }
 
   bindData() {
     this.showDefaultMessage = false;
@@ -292,10 +294,12 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   }
 
   searchResource(offset: number): void {
+    this.spinner.show();
     this.paginationService.searchByOffset(this.searchText, offset)
       .subscribe(response => {
         if (response != undefined) {
           this.searchResults = response;
+          this.spinner.hide();
         }
       });
   }

@@ -15,6 +15,7 @@ import {
   ProgressbarConfig,
   TabsModule
 } from 'ngx-bootstrap';
+import { NgxSpinnerModule } from 'ngx-spinner'
 
 import { AppComponent } from './app.component';
 import { AboutComponent } from './about/about.component';
@@ -73,7 +74,8 @@ import { CuratedExperienceResultComponent } from './guided-assistant/curated-exp
     CollapseModule.forRoot(),
     ModalModule.forRoot(),
     ProgressbarModule.forRoot(),
-    TabsModule.forRoot()
+    TabsModule.forRoot(),
+    NgxSpinnerModule.forRoot()
   ],
   providers: [
     {
