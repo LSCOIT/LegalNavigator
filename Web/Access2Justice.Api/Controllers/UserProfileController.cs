@@ -68,17 +68,5 @@ namespace Access2Justice.Api.Controllers
             var users = await userProfileBusinessLogic.UpsertUserSavedResourcesAsync(profileResources);
             return Ok(users);
         }
-
-        ///// <summary>
-        ///// Insert and Update the user profile personalized plan
-        ///// </summary>
-        ///// <param name="userData"></param>
-        ///// <returns></returns>
-        //[HttpPost("updateplan")]
-        //public async Task<IActionResult> UpdateUserProfileDocumentAsync([FromBody]UserPersonalizedPlan userPlan)
-        //{
-        //    var personalizedPlan = await userProfileBusinessLogic.UpdatePersonalizedPlan(userPlan);
-        //    return Ok(personalizedPlan);
-        //}
     }
 }
