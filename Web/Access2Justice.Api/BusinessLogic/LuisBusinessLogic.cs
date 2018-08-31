@@ -1,7 +1,8 @@
-﻿using Access2Justice.Shared;
+﻿using Access2Justice.Api.ViewModels;
+using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
-using Access2Justice.Shared.Luis;
 using Access2Justice.Shared.Models;
+using Access2Justice.Shared.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -20,6 +21,7 @@ namespace Access2Justice.Api
         private readonly ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic;
         private readonly IWebSearchBusinessLogic webSearchBusinessLogic;
         private readonly IBingSettings bingSettings;
+        dynamic luisTopIntents = null;
 
         public LuisBusinessLogic(ILuisProxy luisProxy, ILuisSettings luisSettings, ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic, IWebSearchBusinessLogic webSearchBusinessLogic, IBingSettings bingSettings)
         {
@@ -32,17 +34,19 @@ namespace Access2Justice.Api
 
         public async Task<dynamic> GetResourceBasedOnThresholdAsync(LuisInput luisInput)
         {
-            if(!string.IsNullOrEmpty(luisInput.LuisTopScoringIntent))
-            {
-                return await GetInternalResourcesAsync(luisInput.LuisTopScoringIntent, luisInput.Location, null);
-            }
             var encodedSentence = HttpUtility.UrlEncode(luisInput.Sentence);
-            dynamic luisResponse = await luisProxy.GetIntents(encodedSentence);
-            dynamic luisTopIntents = ParseLuisIntent(luisResponse);
-
-            if (IsIntentAccurate(luisTopIntents))
+            if (string.IsNullOrEmpty(luisInput.LuisTopScoringIntent))
             {
-                return await GetInternalResourcesAsync(luisTopIntents?.TopScoringIntent ?? luisInput.LuisTopScoringIntent, luisInput.Location, luisTopIntents.TopNIntents);
+                dynamic luisResponse = await luisProxy.GetIntents(encodedSentence);
+                luisTopIntents = ParseLuisIntent(luisResponse);
+            }
+
+            if ((luisTopIntents != null && IsIntentAccurate(luisTopIntents)) || !string.IsNullOrEmpty(luisInput.LuisTopScoringIntent))
+            {
+                return await GetInternalResourcesAsync(
+                    luisTopIntents?.TopScoringIntent ?? luisInput.LuisTopScoringIntent,
+                    luisInput.Location,
+                    luisTopIntents != null && luisTopIntents.TopNIntents != null ? luisTopIntents.TopNIntents : null);
             }
             return await GetWebResourcesAsync(encodedSentence);
         }
@@ -77,49 +81,38 @@ namespace Access2Justice.Api
                 topicIds.Add(topicId);
             }
 
-            dynamic serializedTopics = Constants.EmptyArray;
-            dynamic serializedResources = Constants.EmptyArray;
-            dynamic serializedToken = Constants.EmptyArray;
-            dynamic serializedTopicIds = Constants.EmptyArray;
-            dynamic serializedGroupedResources = Constants.EmptyArray;
-            dynamic serializedRelevantIntents = Constants.EmptyArray;
-            string guidedAssistantId = string.Empty;
-            if (topicIds.Count > 0)
+            if (topicIds.Count == 0 || location == null)
             {
-                ResourceFilter resourceFilter = new ResourceFilter { TopicIds = topicIds, PageNumber = 0, ResourceType = Constants.All, Location = location };
-                var GetResourcesTask = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
-                var ApplyPaginationTask = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
-                resourceFilter.ResourceType = Constants.GuidedAssistant;
-                var GetGuidedAssistantId = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
-                await Task.WhenAll(GetResourcesTask, ApplyPaginationTask, GetGuidedAssistantId);
-                var groupedResourceType = GetResourcesTask.Result;
-                PagedResources guidedAssistantResponse = GetGuidedAssistantId.Result;
-                PagedResources resources = ApplyPaginationTask.Result;
-                serializedTopics = JsonConvert.SerializeObject(topics);
-                serializedResources = JsonConvert.SerializeObject(resources.Results);
-                serializedToken = resources.ContinuationToken ?? Constants.EmptyArray;
-                serializedTopicIds = JsonConvert.SerializeObject(topicIds);
-                serializedGroupedResources = JsonConvert.SerializeObject(groupedResourceType);
-                serializedRelevantIntents = relevantIntents != null ? JsonConvert.SerializeObject(relevantIntents) : Constants.EmptyArray;
-                var guidedAssistantResult = JsonConvert.DeserializeObject<Resource>(
-                    JsonConvert.SerializeObject(guidedAssistantResponse.Results.FirstOrDefault()));
-                if (guidedAssistantResult != null)
+                return JObject.FromObject(new LuisViewModel
                 {
-                    guidedAssistantId = guidedAssistantResult.ExternalUrls;
-                }
+                    TopIntent = keyword
+                }).ToString();
             }
 
-            JObject internalResources = new JObject {
-                { "topIntent", keyword },
-                { "relevantIntents", JsonConvert.DeserializeObject(serializedRelevantIntents)},
-                { "topics", JsonConvert.DeserializeObject(serializedTopics) },
-                { "resources", JsonConvert.DeserializeObject(serializedResources) },
-                {"continuationToken", JsonConvert.DeserializeObject(serializedToken) },
-                {"topicIds" , JsonConvert.DeserializeObject(serializedTopicIds)},
-                { "resourceTypeFilter", JsonConvert.DeserializeObject(serializedGroupedResources) },
-                { "guidedAssistantId", guidedAssistantId }
-            };
-            return internalResources.ToString();
+            ResourceFilter resourceFilter = new ResourceFilter { TopicIds = topicIds, PageNumber = 0, ResourceType = Constants.All, Location = location };
+            var GetResourcesTask = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
+            var ApplyPaginationTask = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
+            //To get guided assistant id
+            resourceFilter.ResourceType = Constants.GuidedAssistant;
+            var GetGuidedAssistantId = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
+            await Task.WhenAll(GetResourcesTask, ApplyPaginationTask, GetGuidedAssistantId);
+
+            var groupedResourceType = GetResourcesTask.Result;
+            PagedResources resources = ApplyPaginationTask.Result;
+            PagedResources guidedAssistantResponse = GetGuidedAssistantId.Result;
+            var guidedAssistantResult = JsonUtilities.DeserializeDynamicObject<Resource>(guidedAssistantResponse.Results.FirstOrDefault());
+            
+            return JObject.FromObject(new LuisViewModel
+            {
+                TopIntent = keyword,
+                RelevantIntents = relevantIntents != null ? JsonUtilities.DeserializeDynamicObject<dynamic>(relevantIntents) : JsonConvert.DeserializeObject(Constants.EmptyArray),
+                Topics = JsonUtilities.DeserializeDynamicObject<dynamic>(topics),
+                Resources = JsonUtilities.DeserializeDynamicObject<dynamic>(resources.Results),
+                ContinuationToken = resources.ContinuationToken != null ? JsonConvert.DeserializeObject(resources.ContinuationToken) : JsonConvert.DeserializeObject(Constants.EmptyArray),
+                TopicIds = JsonUtilities.DeserializeDynamicObject<dynamic>(topicIds),
+                ResourceTypeFilter = JsonUtilities.DeserializeDynamicObject<dynamic>(groupedResourceType),
+                GuidedAssistantId = guidedAssistantResult != null ? guidedAssistantResult.ExternalUrls : string.Empty
+            }).ToString();
         }
 
         public async Task<dynamic> GetWebResourcesAsync(string searchTerm)
