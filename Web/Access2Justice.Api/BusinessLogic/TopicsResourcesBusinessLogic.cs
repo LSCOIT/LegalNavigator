@@ -145,7 +145,7 @@ namespace Access2Justice.Api.BusinessLogic
 
         public dynamic GetReferences(dynamic resourceObject)
         {
-            List<ReferenceTag> referenceTags = new List<ReferenceTag>();
+            List<TopicTag> topicTags = new List<TopicTag>();
             List<Location> locations = new List<Location>();
             List<Conditions> conditions = new List<Conditions>();
             List<ParentTopicId> parentTopicIds = new List<ParentTopicId>();
@@ -153,9 +153,9 @@ namespace Access2Justice.Api.BusinessLogic
             List<dynamic> references = new List<dynamic>();
             foreach (JProperty field in resourceObject)
             {
-                if (field.Name == "referenceTags")
+                if (field.Name == "topicTags")
                 {
-                    referenceTags = GetReferenceTags(field.Value);
+                    topicTags = GetTopicTags(field.Value);
                 }
 
                 else if (field.Name == "location")
@@ -179,7 +179,7 @@ namespace Access2Justice.Api.BusinessLogic
                 }
             }
 
-            references.Add(referenceTags);
+            references.Add(topicTags);
             references.Add(locations);
             references.Add(conditions);
             references.Add(parentTopicIds);
@@ -188,9 +188,9 @@ namespace Access2Justice.Api.BusinessLogic
             return references;
         }
 
-        public dynamic GetReferenceTags(dynamic tagValues)
+        public dynamic GetTopicTags(dynamic tagValues)
         {
-            List<ReferenceTag> referenceTags = new List<ReferenceTag>();
+            List<TopicTag> topicTags = new List<TopicTag>();
             foreach (var referenceTag in tagValues)
             {
                 string id = string.Empty;
@@ -201,9 +201,9 @@ namespace Access2Justice.Api.BusinessLogic
                         id = tags.Value.ToString();
                     }
                 }
-                referenceTags.Add(new ReferenceTag { ReferenceTags = id });
+                topicTags.Add(new TopicTag { TopicTags = id });
             }
-            return referenceTags;
+            return topicTags;
         }
 
         public dynamic GetLocations(dynamic locationValues)
@@ -394,10 +394,10 @@ namespace Access2Justice.Api.BusinessLogic
         public dynamic CreateResourcesForms(dynamic resourceObject)
         {
             Form forms = new Form();
-            List<ReferenceTag> referenceTags = new List<ReferenceTag>();
+            List<TopicTag> topicTags = new List<TopicTag>();
             List<Location> locations = new List<Location>();
             dynamic references = GetReferences(resourceObject);
-            referenceTags = references[0];
+            topicTags = references[0];
             locations = references[1];
 
             forms = new Form()
@@ -408,7 +408,7 @@ namespace Access2Justice.Api.BusinessLogic
                 ResourceType = resourceObject.resourceType,
                 ExternalUrls = resourceObject.externalUrl,
                 Urls = resourceObject.url,
-                ReferenceTags = referenceTags,
+                TopicTags = topicTags,
                 Location = locations,
                 Icon = resourceObject.icon,
                 Overview = resourceObject.overview,
@@ -423,11 +423,11 @@ namespace Access2Justice.Api.BusinessLogic
         public dynamic CreateResourcesActionPlans(dynamic resourceObject)
         {
             ActionPlan actionPlans = new ActionPlan();
-            List<ReferenceTag> referenceTags = new List<ReferenceTag>();
+            List<TopicTag> topicTags = new List<TopicTag>();
             List<Location> locations = new List<Location>();
             List<Conditions> conditions = new List<Conditions>();
             dynamic references = GetReferences(resourceObject);
-            referenceTags = references[0];
+            topicTags = references[0];
             locations = references[1];
             conditions = references[2];
 
@@ -439,7 +439,7 @@ namespace Access2Justice.Api.BusinessLogic
                 ResourceType = resourceObject.resourceType,
                 ExternalUrls = resourceObject.externalUrl,
                 Urls = resourceObject.url,
-                ReferenceTags = referenceTags,
+                TopicTags = topicTags,
                 Location = locations,
                 Icon = resourceObject.icon,
                 Conditions = conditions,
@@ -453,10 +453,10 @@ namespace Access2Justice.Api.BusinessLogic
         public dynamic CreateResourcesArticles(dynamic resourceObject)
         {
             Article articles = new Article();
-            List<ReferenceTag> referenceTags = new List<ReferenceTag>();
+            List<TopicTag> topicTags = new List<TopicTag>();
             List<Location> locations = new List<Location>();
             dynamic references = GetReferences(resourceObject);
-            referenceTags = references[0];
+            topicTags = references[0];
             locations = references[1];
 
             articles = new Article()
@@ -467,7 +467,7 @@ namespace Access2Justice.Api.BusinessLogic
                 ResourceType = resourceObject.resourceType,
                 ExternalUrls = resourceObject.externalUrl,
                 Urls = resourceObject.url,
-                ReferenceTags = referenceTags,
+                TopicTags = topicTags,
                 Location = locations,
                 Icon = resourceObject.icon,
                 CreatedBy = resourceObject.createdBy,
@@ -484,10 +484,10 @@ namespace Access2Justice.Api.BusinessLogic
         public dynamic CreateResourcesVideos(dynamic resourceObject)
         {
             Video videos = new Video();
-            List<ReferenceTag> referenceTags = new List<ReferenceTag>();
+            List<TopicTag> topicTags = new List<TopicTag>();
             List<Location> locations = new List<Location>();
             dynamic references = GetReferences(resourceObject);
-            referenceTags = references[0];
+            topicTags = references[0];
             locations = references[1];
 
             videos = new Video()
@@ -498,7 +498,7 @@ namespace Access2Justice.Api.BusinessLogic
                 ResourceType = resourceObject.resourceType,
                 ExternalUrls = resourceObject.externalUrl,
                 Urls = resourceObject.url,
-                ReferenceTags = referenceTags,
+                TopicTags = topicTags,
                 Location = locations,
                 Icon = resourceObject.icon,
                 CreatedBy = resourceObject.createdBy,
@@ -514,10 +514,10 @@ namespace Access2Justice.Api.BusinessLogic
         public dynamic CreateResourcesOrganizations(dynamic resourceObject)
         {
             Organization organizations = new Organization();
-            List<ReferenceTag> referenceTags = new List<ReferenceTag>();
+            List<TopicTag> topicTags = new List<TopicTag>();
             List<Location> locations = new List<Location>();
             dynamic references = GetReferences(resourceObject);
-            referenceTags = references[0];
+            topicTags = references[0];
             locations = references[1];
 
             organizations = new Organization()
@@ -528,7 +528,7 @@ namespace Access2Justice.Api.BusinessLogic
                 ResourceType = resourceObject.resourceType,
                 ExternalUrls = resourceObject.externalUrl,
                 Urls = resourceObject.url,
-                ReferenceTags = referenceTags,
+                TopicTags = topicTags,
                 Location = locations,
                 Icon = resourceObject.icon,
                 CreatedBy = resourceObject.createdBy,
@@ -553,10 +553,10 @@ namespace Access2Justice.Api.BusinessLogic
         public dynamic CreateResourcesEssentialReadings(dynamic resourceObject)
         {
             EssentialReading essentialReadings = new EssentialReading();
-            List<ReferenceTag> referenceTags = new List<ReferenceTag>();
+            List<TopicTag> topicTags = new List<TopicTag>();
             List<Location> locations = new List<Location>();
             dynamic references = GetReferences(resourceObject);
-            referenceTags = references[0];
+            topicTags = references[0];
             locations = references[1];
 
             essentialReadings = new EssentialReading()
@@ -567,7 +567,7 @@ namespace Access2Justice.Api.BusinessLogic
                 ResourceType = resourceObject.resourceType,
                 ExternalUrls = resourceObject.externalUrl,
                 Urls = resourceObject.url,
-                ReferenceTags = referenceTags,
+                TopicTags = topicTags,
                 Location = locations,
                 Icon = resourceObject.icon,
                 CreatedBy = resourceObject.createdBy,

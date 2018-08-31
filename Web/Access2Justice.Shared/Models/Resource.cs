@@ -34,8 +34,8 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "url")]
         public string Urls { get; set; }
 
-        [JsonProperty(PropertyName = "referenceTags")]
-        public IEnumerable<ReferenceTag> ReferenceTags { get; set; }
+        [JsonProperty(PropertyName = "topicTags")]
+        public IEnumerable<TopicTag> TopicTags { get; set; }
 
         //[EnsureOneElementAttribute(ErrorMessage = "At least one location is required")]
         [JsonProperty(PropertyName = "location")]
@@ -78,10 +78,10 @@ namespace Access2Justice.Shared.Models
         }
     }
 
-    public class ReferenceTag
+    public class TopicTag
     {
         [JsonProperty(PropertyName = "id")]
-        public dynamic ReferenceTags { get; set; }
+        public dynamic TopicTags { get; set; }
     }
 
     public class ActionPlan : Resource

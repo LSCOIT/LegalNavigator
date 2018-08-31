@@ -506,7 +506,7 @@ namespace Access2Justice.Api.Tests.TestData
               'resourceType': 'Organizations',
               'externalUrl': null,
               'url': 'https://alaskalawhelp.org/',
-              'referenceTags': null,
+              'topicTags': null,
               'location': [
                 {
                   'state': 'Hawaii',
@@ -546,7 +546,7 @@ namespace Access2Justice.Api.Tests.TestData
               'resourceType': 'Organizations',
               'externalUrl': null,
               'url': 'https://alaskalawhelp.org/',
-              'referenceTags': null,
+              'topicTags': null,
               'location': [
                 {
                   'state': 'Hawaii',
@@ -586,7 +586,7 @@ namespace Access2Justice.Api.Tests.TestData
               'resourceType': 'Organizations',
               'externalUrl': null,
               'url': 'https://alaskalawhelp.org/',
-              'referenceTags': null,
+              'topicTags': null,
               'location': [
                 {
                   'state': 'Hawaii',
@@ -636,7 +636,7 @@ namespace Access2Justice.Api.Tests.TestData
               'resourceType': 'Articles',
               'externalUrl': null,
               'url': 'www.courtrecords.alaska.gov',
-              'referenceTags': null,
+              'topicTags': null,
               'location': [
                 {
                   'state': 'Hawaii',
@@ -676,7 +676,7 @@ namespace Access2Justice.Api.Tests.TestData
               'resourceType': 'Videos',
               'externalUrl': null,
               'url': 'https://www.youtube.com/embed/pCPGSTYsYoU',
-              'referenceTags': null,
+              'topicTags': null,
               'location': [
                 {
                   'state': 'Hawaii',
@@ -716,7 +716,7 @@ namespace Access2Justice.Api.Tests.TestData
               'resourceType': 'Articles',
               'externalUrl': null,
               'url': 'www.courtrecords.alaska.gov',
-              'referenceTags': null,
+              'topicTags': null,
               'location': [
                 {
                   'state': 'Hawaii',
@@ -756,7 +756,7 @@ namespace Access2Justice.Api.Tests.TestData
               'resourceType': 'Videos',
               'externalUrl': null,
               'url': 'https://www.youtube.com/embed/pCPGSTYsYoU',
-              'referenceTags': null,
+              'topicTags': null,
               'location': [
                 {
                   'state': 'Hawaii',
@@ -806,7 +806,7 @@ namespace Access2Justice.Api.Tests.TestData
               'resourceType': 'Related Links',
               'externalUrl': null,
               'url': 'https://alaskalawhelp.org/resource/common-questions-about-child-support?ref=vhU5v',
-              'referenceTags': null,
+              'topicTags': null,
               'location': [
                 {
                   'state': 'Hawaii',
@@ -846,7 +846,7 @@ namespace Access2Justice.Api.Tests.TestData
               'resourceType': 'Related Links',
               'externalUrl': null,
               'url': 'https://alaskalawhelp.org/resource/my-pfd-was-taken-for-child-support-but-i-have?ref=vhU5v',
-              'referenceTags': null,
+              'topicTags': null,
               'location': [
                 {
                   'state': 'Hawaii',
@@ -886,7 +886,7 @@ namespace Access2Justice.Api.Tests.TestData
               'resourceType': 'Related Links',
               'externalUrl': null,
               'url': 'https://alaskalawhelp.org/resource/how-do-i-establish-paternity-of-a-child?ref=vhU5v',
-              'referenceTags': null,
+              'topicTags': null,
               'location': [
                 {
                   'state': 'Hawaii',
@@ -926,7 +926,7 @@ namespace Access2Justice.Api.Tests.TestData
               'resourceType': 'Guided Assistant',
               'externalUrl': '9a6a6131-657d-467d-b09b-c570b7dad242',
               'url': null,
-              'referenceTags': null,
+              'topicTags': null,
               'location': [
                 {
                   'state': 'Hawaii',
@@ -984,7 +984,7 @@ namespace Access2Justice.Api.Tests.TestData
               'resourceType': 'Organizations',
               'externalUrl': null,
               'url': 'https://alaskalawhelp.org/',
-              'referenceTags': null,
+              'topicTags': null,
               'location': [
                 {
                   'state': 'Hawaii',
@@ -1032,7 +1032,7 @@ namespace Access2Justice.Api.Tests.TestData
     'resourceType': 'Organizations',
     'externalUrl': null,
     'url': 'https://alaskalawhelp.org/',
-    'referenceTags': null,
+    'topicTags': null,
     'location': [
       {
         'state': 'Hawaii',
@@ -1072,7 +1072,7 @@ namespace Access2Justice.Api.Tests.TestData
     'resourceType': 'Organizations',
     'externalUrl': null,
     'url': 'https://alaskalawhelp.org/',
-    'referenceTags': null,
+    'topicTags': null,
     'location': [
       {
         'state': 'Hawaii',
@@ -1112,7 +1112,7 @@ namespace Access2Justice.Api.Tests.TestData
     'resourceType': 'Organizations',
     'externalUrl': null,
     'url': 'https://alaskalawhelp.org/',
-    'referenceTags': null,
+    'topicTags': null,
     'location': [
       {
         'state': 'Hawaii',
@@ -1152,7 +1152,7 @@ namespace Access2Justice.Api.Tests.TestData
     'resourceType': 'Articles',
     'externalUrl': null,
     'url': 'www.courtrecords.alaska.gov',
-    'referenceTags': null,
+    'topicTags': null,
     'location': [
       {
         'state': 'Hawaii',
@@ -1192,7 +1192,7 @@ namespace Access2Justice.Api.Tests.TestData
     'resourceType': 'Articles',
     'externalUrl': null,
     'url': 'www.courtrecords.alaska.gov',
-    'referenceTags': null,
+    'topicTags': null,
     'location': [
       {
         'state': 'Hawaii',
@@ -1232,7 +1232,7 @@ namespace Access2Justice.Api.Tests.TestData
     'resourceType': 'Videos',
     'externalUrl': null,
     'url': 'https://www.youtube.com/embed/pCPGSTYsYoU',
-    'referenceTags': null,
+    'topicTags': null,
     'location': [
       {
         'state': 'Hawaii',
@@ -1272,7 +1272,7 @@ namespace Access2Justice.Api.Tests.TestData
     'resourceType': 'Videos',
     'externalUrl': null,
     'url': 'https://www.youtube.com/embed/pCPGSTYsYoU',
-    'referenceTags': null,
+    'topicTags': null,
     'location': [
       {
         'state': 'Hawaii',
@@ -1312,7 +1312,7 @@ namespace Access2Justice.Api.Tests.TestData
     'resourceType': 'Related Links',
     'externalUrl': null,
     'url': 'https://alaskalawhelp.org/resource/common-questions-about-child-support?ref=vhU5v',
-    'referenceTags': null,
+    'topicTags': null,
     'location': [
       {
         'state': 'Hawaii',
@@ -1352,7 +1352,7 @@ namespace Access2Justice.Api.Tests.TestData
     'resourceType': 'Related Links',
     'externalUrl': null,
     'url': 'https://alaskalawhelp.org/resource/my-pfd-was-taken-for-child-support-but-i-have?ref=vhU5v',
-    'referenceTags': null,
+    'topicTags': null,
     'location': [
       {
         'state': 'Hawaii',
@@ -1392,7 +1392,7 @@ namespace Access2Justice.Api.Tests.TestData
     'resourceType': 'Related Links',
     'externalUrl': null,
     'url': 'https://alaskalawhelp.org/resource/how-do-i-establish-paternity-of-a-child?ref=vhU5v',
-    'referenceTags': null,
+    'topicTags': null,
     'location': [
       {
         'state': 'Hawaii',
@@ -1432,7 +1432,7 @@ namespace Access2Justice.Api.Tests.TestData
     'resourceType': 'Guided Assistant',
     'externalUrl': '9a6a6131-657d-467d-b09b-c570b7dad242',
     'url': null,
-    'referenceTags': null,
+    'topicTags': null,
     'location': [
       {
         'state': 'Hawaii',
@@ -1490,7 +1490,7 @@ namespace Access2Justice.Api.Tests.TestData
     'resourceType': 'Organizations',
     'externalUrl': null,
     'url': 'https://alaskalawhelp.org/',
-    'referenceTags': null,
+    'topicTags': null,
     'location': [
       {
         'state': 'Hawaii',
@@ -1528,7 +1528,7 @@ namespace Access2Justice.Api.Tests.TestData
         'resourceType': 'Organizations',
         'externalUrl': null,
         'url': 'https://alaskalawhelp.org/',
-        'referenceTags': null,
+        'topicTags': null,
         'location': [
           {
             'state': 'Hawaii',
@@ -1568,7 +1568,7 @@ namespace Access2Justice.Api.Tests.TestData
         'resourceType': 'Organizations',
         'externalUrl': null,
         'url': 'https://alaskalawhelp.org/',
-        'referenceTags': null,
+        'topicTags': null,
         'location': [
           {
             'state': 'Hawaii',
@@ -1608,7 +1608,7 @@ namespace Access2Justice.Api.Tests.TestData
         'resourceType': 'Organizations',
         'externalUrl': null,
         'url': 'https://alaskalawhelp.org/',
-        'referenceTags': null,
+        'topicTags': null,
         'location': [
           {
             'state': 'Hawaii',
@@ -1658,7 +1658,7 @@ namespace Access2Justice.Api.Tests.TestData
         'resourceType': 'Articles',
         'externalUrl': null,
         'url': 'www.courtrecords.alaska.gov',
-        'referenceTags': null,
+        'topicTags': null,
         'location': [
           {
             'state': 'Hawaii',
@@ -1698,7 +1698,7 @@ namespace Access2Justice.Api.Tests.TestData
         'resourceType': 'Videos',
         'externalUrl': null,
         'url': 'https://www.youtube.com/embed/pCPGSTYsYoU',
-        'referenceTags': null,
+        'topicTags': null,
         'location': [
           {
             'state': 'Hawaii',
@@ -1738,7 +1738,7 @@ namespace Access2Justice.Api.Tests.TestData
         'resourceType': 'Articles',
         'externalUrl': null,
         'url': 'www.courtrecords.alaska.gov',
-        'referenceTags': null,
+        'topicTags': null,
         'location': [
           {
             'state': 'Hawaii',
@@ -1778,7 +1778,7 @@ namespace Access2Justice.Api.Tests.TestData
         'resourceType': 'Videos',
         'externalUrl': null,
         'url': 'https://www.youtube.com/embed/pCPGSTYsYoU',
-        'referenceTags': null,
+        'topicTags': null,
         'location': [
           {
             'state': 'Hawaii',
@@ -1828,7 +1828,7 @@ namespace Access2Justice.Api.Tests.TestData
         'resourceType': 'Related Links',
         'externalUrl': null,
         'url': 'https://alaskalawhelp.org/resource/common-questions-about-child-support?ref=vhU5v',
-        'referenceTags': null,
+        'topicTags': null,
         'location': [
           {
             'state': 'Hawaii',
@@ -1868,7 +1868,7 @@ namespace Access2Justice.Api.Tests.TestData
         'resourceType': 'Related Links',
         'externalUrl': null,
         'url': 'https://alaskalawhelp.org/resource/my-pfd-was-taken-for-child-support-but-i-have?ref=vhU5v',
-        'referenceTags': null,
+        'topicTags': null,
         'location': [
           {
             'state': 'Hawaii',
@@ -1908,7 +1908,7 @@ namespace Access2Justice.Api.Tests.TestData
         'resourceType': 'Related Links',
         'externalUrl': null,
         'url': 'https://alaskalawhelp.org/resource/how-do-i-establish-paternity-of-a-child?ref=vhU5v',
-        'referenceTags': null,
+        'topicTags': null,
         'location': [
           {
             'state': 'Hawaii',
@@ -1948,7 +1948,7 @@ namespace Access2Justice.Api.Tests.TestData
         'resourceType': 'Guided Assistant',
         'externalUrl': '9a6a6131-657d-467d-b09b-c570b7dad242',
         'url': null,
-        'referenceTags': null,
+        'topicTags': null,
         'location': [
           {
             'state': 'Hawaii',
@@ -2006,7 +2006,7 @@ namespace Access2Justice.Api.Tests.TestData
         'resourceType': 'Organizations',
         'externalUrl': null,
         'url': 'https://alaskalawhelp.org/',
-        'referenceTags': null,
+        'topicTags': null,
         'location': [
           {
             'state': 'Hawaii',
@@ -2041,7 +2041,7 @@ namespace Access2Justice.Api.Tests.TestData
     'resourceType': 'Organizations',
     'externalUrl': null,
     'url': 'https://alaskalawhelp.org/',
-    'referenceTags': null,
+    'topicTags': null,
     'location': [
       {
         'state': 'Hawaii',
@@ -2081,7 +2081,7 @@ namespace Access2Justice.Api.Tests.TestData
     'resourceType': 'Organizations',
     'externalUrl': null,
     'url': 'https://alaskalawhelp.org/',
-    'referenceTags': null,
+    'topicTags': null,
     'location': [
       {
         'state': 'Hawaii',
@@ -2121,7 +2121,7 @@ namespace Access2Justice.Api.Tests.TestData
     'resourceType': 'Organizations',
     'externalUrl': null,
     'url': 'https://alaskalawhelp.org/',
-    'referenceTags': null,
+    'topicTags': null,
     'location': [
       {
         'state': 'Hawaii',
