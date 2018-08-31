@@ -14,8 +14,10 @@ export class TopicsComponent implements OnInit {
   @Input() fullPage: true;
   subscription: any;
 
-  constructor(private topicService: TopicService,
-    private mapService: MapService) { }
+  constructor(
+    private topicService: TopicService,
+    private mapService: MapService
+  ) { }
 
   getTopics(): void {
     this.topicService.getTopics()

@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Rx';
 import { ArrayUtilityService } from '../../shared/array-utility.service';
 import { PersonalizedPlan, ProfileResources } from './personalized-plan';
 
-fdescribe('Service:PersonalizedPlan', () => {
+describe('Service:PersonalizedPlan', () => {
   let mockPlanDetailsJson = {
     "id": "bf8d7e7e-2574-7b39-efc7-83cb94adae07",
     "oId": "User Id",

@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { SearchService } from '../../search.service';
 
 @Component({
   selector: 'app-web-resource',
@@ -7,21 +6,9 @@ import { SearchService } from '../../search.service';
   styleUrls: ['./web-resource.component.css']
 })
 export class WebResourceComponent implements OnInit {
-
-  @Input()
-  searchResults: any;
-  @Input()
-  webResult: any;
-  type: string = "WebResources";
+  @Input() webResult: any;
   
-  constructor(private searchService: SearchService) { }
+  constructor() { }
 
-  ngOnInit() {
-    if (this.searchResults != undefined && this.searchResults.webResources != undefined) { 
-      this.searchResults = this.searchResults.webResources.webPages;
-
-    }
-  }
-
-
+  ngOnInit() {}
 }
