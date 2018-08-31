@@ -11,7 +11,7 @@ import { Global } from '../../../../global';
 import { Observable } from 'rxjs/Observable';
 import { BsModalService } from 'ngx-bootstrap/modal';
 
-fdescribe('ActionPlansComponent', () => {
+describe('ActionPlansComponent', () => {
   let component: ActionPlansComponent;
   let fixture: ComponentFixture<ActionPlansComponent>;
   let sharedService: ArrayUtilityService;

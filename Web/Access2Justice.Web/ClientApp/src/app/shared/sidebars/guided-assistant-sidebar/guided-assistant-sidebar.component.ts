@@ -32,10 +32,8 @@ export class GuidedAssistantSidebarComponent implements OnInit {
   topIntent: string;
 
   constructor(
-    private router: Router,
     private activeRoute: ActivatedRoute,
     private mapService: MapService,
-    private navigateDataService: NavigateDataService,
     private paginationService: PaginationService
   ) { }
 

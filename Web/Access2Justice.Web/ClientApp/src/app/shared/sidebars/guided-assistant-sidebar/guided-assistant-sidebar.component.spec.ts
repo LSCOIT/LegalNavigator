@@ -3,6 +3,8 @@ import { GuidedAssistantSidebarComponent } from './guided-assistant-sidebar.comp
 import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ModalModule, BsModalService } from 'ngx-bootstrap';
+import { MapService } from '../../map/map.service';
+import { PaginationService } from '../../pagination/pagination.service';
 
 describe('GuidedAssistantSidebarComponent', () => {
   let component: GuidedAssistantSidebarComponent;
@@ -13,7 +15,9 @@ describe('GuidedAssistantSidebarComponent', () => {
       imports: [HttpClientModule, RouterTestingModule, ModalModule.forRoot()],
       declarations: [GuidedAssistantSidebarComponent],
       providers: [
-        BsModalService       
+        BsModalService,
+        MapService,
+        PaginationService     
       ]
     })
     .compileComponents();
