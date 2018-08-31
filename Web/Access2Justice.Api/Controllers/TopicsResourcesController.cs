@@ -108,7 +108,6 @@ namespace Access2Justice.Api.Controllers
             return Ok(topics);
         }
 
-        //Added for Topic and Resource Tools API
         /// <summary>
         /// get topic details based on topic name
         /// </summary>
@@ -254,7 +253,7 @@ namespace Access2Justice.Api.Controllers
         public async Task<IActionResult> CreateTopics(IFormFile uploadedFile)
         {
             var path = uploadedFile.FileName;
-            var topics = await topicsResourcesBusinessLogic.CreateTopicsUploadAsync(path);
+            var topics = await topicsResourcesBusinessLogic.UpsertTopicsUploadAsync(path);
             return Ok(topics);
         }
 
@@ -262,15 +261,10 @@ namespace Access2Justice.Api.Controllers
         /// Create Topic Document
         /// </summary>
         [HttpPost]
-        [Route("api/createtopicdocument")]
-        public async Task<IActionResult> CreateTopicDocument(dynamic topic)
+        [Route("api/upserttopicdocument")]
+        public async Task<IActionResult> UpsertTopicDocument([FromBody]dynamic topic)
         {
-            string filePath = Path.Combine(Environment.CurrentDirectory, "SampleJsons\\TopicData.json");
-            using (StreamReader r = new StreamReader(filePath))
-            {
-                topic = r.ReadToEnd();
-            }
-            var topics = await topicsResourcesBusinessLogic.CreateTopicDocumentAsync(topic);
+            var topics = await topicsResourcesBusinessLogic.UpsertTopicDocumentAsync(topic);
             return Ok(topics);
         }
 

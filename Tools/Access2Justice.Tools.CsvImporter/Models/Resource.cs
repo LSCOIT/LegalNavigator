@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Access2Justice.Tools.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace Access2Justice.Tools.Models
 {
@@ -110,6 +111,7 @@ namespace Access2Justice.Tools.Models
 
     public class Locations
     {
+        [Required(ErrorMessage = "Location_State is a required field.")]
         [JsonProperty(PropertyName = "state")]
         public string State { get; set; }
 
