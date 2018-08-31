@@ -26,10 +26,8 @@ export class GuidedAssistantSidebarComponent implements OnInit {
   emptyResult: string = "";
 
   constructor(
-    private router: Router,
     private activeRoute: ActivatedRoute,
     private mapService: MapService,
-    private navigateDataService: NavigateDataService,
     private paginationService: PaginationService
   ) { }
 

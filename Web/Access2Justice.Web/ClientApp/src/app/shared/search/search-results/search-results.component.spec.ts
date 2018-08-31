@@ -1,24 +1,27 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { APP_BASE_HREF } from '@angular/common';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
-import { SearchResultsComponent } from './search-results.component';
-import { SearchFilterComponent } from '../search-filter/search-filter.component';
-import { ResourceCardComponent } from '../../resource/resource-card/resource-card.component';
 import { GuidedAssistantSidebarComponent } from '../../sidebars/guided-assistant-sidebar/guided-assistant-sidebar.component';
-import { ServiceOrgSidebarComponent } from '../../sidebars/service-org-sidebar/service-org-sidebar.component';
-import { SaveButtonComponent } from '../../resource/user-action/save-button/save-button.component';
-import { ShareButtonComponent } from '../../resource/user-action/share-button/share-button.component';
-import { NavigateDataService } from '../../navigate-data.service';
-import { WebResourceComponent } from './web-resource/web-resource.component';
-import { PaginationComponent } from '../../../shared/pagination/pagination.component';
-import { SearchFilterPipe } from '../search-filter.pipe';
-import { SearchService } from '../search.service';
-import { PaginationService } from '../../pagination/pagination.service';
-import { ShowMoreService } from '../../sidebars/show-more/show-more.service';
+import { HttpClientModule } from '@angular/common/http';
 import { MapService } from '../../map/map.service';
+import { NavigateDataService } from '../../navigate-data.service';
 import { Observable } from 'rxjs';
+import { PaginationComponent } from '../../../shared/pagination/pagination.component';
+import { PaginationService } from '../../pagination/pagination.service';
+import { ResourceCardComponent } from '../../resource/resource-card/resource-card.component';
+import { RouterModule } from '@angular/router';
+import { SaveButtonComponent } from '../../resource/user-action/save-button/save-button.component';
+import { SearchFilterComponent } from '../search-filter/search-filter.component';
+import { SearchFilterPipe } from '../search-filter.pipe';
+import { SearchResultsComponent } from './search-results.component';
+import { SearchService } from '../search.service';
+import { ServiceOrgSidebarComponent } from '../../sidebars/service-org-sidebar/service-org-sidebar.component';
+import { ShareButtonComponent } from '../../resource/user-action/share-button/share-button.component';
+import { ShowMoreService } from '../../sidebars/show-more/show-more.service';
+import { WebResourceComponent } from './web-resource/web-resource.component';
+import { PersonalizedPlanService } from '../../../guided-assistant/personalized-plan/personalized-plan.service';
+import { ArrayUtilityService } from '../../array-utility.service';
+import { ToastrService } from 'ngx-toastr';
 
 describe('SearchResultsComponent', () => {
   let component: SearchResultsComponent;
@@ -45,8 +48,10 @@ describe('SearchResultsComponent', () => {
       ]
     }
   ];
+  let mockToastr;
 
   beforeEach(async(() => {
+    mockToastr = jasmine.createSpyObj(['success']);
     TestBed.configureTestingModule({
       declarations: [
         SearchResultsComponent,
@@ -66,12 +71,16 @@ describe('SearchResultsComponent', () => {
         ]),
         HttpClientModule
       ],
-      providers: [NavigateDataService,
+      providers: [
+        NavigateDataService,
         SearchService,
         PaginationService,
         ShowMoreService,
         MapService,
-        { provide: APP_BASE_HREF, useValue: '/' }
+        { provide: APP_BASE_HREF, useValue: '/' },
+        PersonalizedPlanService,
+        ArrayUtilityService,
+        { provide: ToastrService, useValue: mockToastr }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
     })
