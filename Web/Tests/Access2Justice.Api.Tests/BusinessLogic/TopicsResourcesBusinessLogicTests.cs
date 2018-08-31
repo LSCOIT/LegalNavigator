@@ -31,6 +31,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly string topicName = "Family";
         private readonly string resourceName = "Action Plan";
         private readonly JArray emptyData = JArray.Parse(@"[{}]");
+        private readonly JArray emptyUpsertData = JArray.Parse(@"[]");
         private readonly JArray topicsData = TopicResourceTestData.topicsData;
         private readonly JArray resourcesData = TopicResourceTestData.resourcesData;
         private readonly JArray resourceCountData = TopicResourceTestData.resourceCountData;
@@ -43,10 +44,12 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly JArray organizationData = TopicResourceTestData.organizationData;
         private readonly JArray essentialReadingData = TopicResourceTestData.essentialReadingData;
         private readonly JArray topicData = TopicResourceTestData.topicData;
+        private readonly JArray topicUpsertData = TopicResourceTestData.topicUpsertData;
         private readonly JArray referenceTagData = TopicResourceTestData.referenceTagData;
         private readonly JArray parentTopicIdData = TopicResourceTestData.parentTopicIdData;
         private readonly JArray locationData = TopicResourceTestData.locationData;
         private readonly JArray conditionData = TopicResourceTestData.conditionData;
+        private readonly JArray quickLinksData = TopicResourceTestData.quickLinksData;
         private readonly JArray emptyResourceData = TopicResourceTestData.emptyResourceData;
 
         //Mocked result data.
@@ -54,6 +57,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly string emptyReferenceTagData = "";
         private readonly JArray emptyLocationData = TopicResourceTestData.emptyLocationData;
         private readonly JArray emptyConditionObject = TopicResourceTestData.emptyConditionObject;
+        private readonly JArray emptyQuickLinksData = TopicResourceTestData.emptyQuickLinksData;
         private readonly JArray EmptyReferences = TopicResourceTestData.EmptyReferences;
         private readonly string expectedTopicId = TopicResourceTestData.expectedTopicId;
         private readonly string expectedResourceId = TopicResourceTestData.expectedResourceId;
@@ -70,9 +74,11 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly JArray expectedTopicsData = TopicResourceTestData.expectedTopicsData;
         private readonly string expectedReferenceTagData = TopicResourceTestData.expectedReferenceTagData;
         private readonly string expectedParentTopicIdData = TopicResourceTestData.expectedParentTopicIdData;
+        private readonly JArray expectedQuickLinksData = TopicResourceTestData.expectedQuickLinksData;
         private readonly JArray expectedLocationData = TopicResourceTestData.expectedLocationData;
         private readonly JArray expectedReferenceLocationData = TopicResourceTestData.expectedReferenceLocationData;
         private readonly JArray expectedConditionData = TopicResourceTestData.expectedConditionData;
+        private readonly JArray expectedQuickLinkData = TopicResourceTestData.expectedQuickLinkData;
         private readonly JArray expectedResourceReferences = TopicResourceTestData.expectedResourceReferences;
         private readonly JArray expectedActionPlanReferences = TopicResourceTestData.expectedActionPlanReferences;
         private readonly JArray expectedReferencesData = TopicResourceTestData.expectedReferencesData;
@@ -348,12 +354,14 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var location = this.locationData;
             var condition = this.conditionData;
             var parentTopic = this.parentTopicIdData;
+            var quickLink = this.expectedQuickLinksData;
 
             //act
             var dbResponseReferenceTag = topicsResourcesSettings.GetReferenceTags(referenceTag).ReturnsForAnyArgs<dynamic>(expectedReferenceTagData);
             var dbResponseLocation = topicsResourcesSettings.GetLocations(location).ReturnsForAnyArgs<dynamic>(expectedReferenceLocationData);
             var dbResponseConditions = topicsResourcesSettings.GetConditions(condition).ReturnsForAnyArgs<dynamic>(expectedConditionData);
             var dbResponseParentTopicId = topicsResourcesSettings.GetParentTopicIds(parentTopic).ReturnsForAnyArgs<dynamic>(expectedParentTopicIdData);
+            var dbResponseQuickLinks = topicsResourcesSettings.GetQuickLinks(quickLink).ReturnsForAnyArgs<dynamic>(expectedQuickLinksData);
             var response = topicsResourcesBusinessLogic.GetReferences(referenceInput[0]);
             var expectedReferenceData = JsonConvert.SerializeObject(expectedReferencesData);
             var actualReferenceData = JsonConvert.SerializeObject(response);
@@ -371,12 +379,14 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var location = this.emptyLocationData;
             var conditon = this.emptyData;
             var parentTopic = this.emptyData;
+            var quickLink = this.emptyData;
 
             //act
             var dbResponseReferenceTag = topicsResourcesSettings.GetReferenceTags(referenceTag).ReturnsForAnyArgs<dynamic>(emptyReferenceTagData);
             var dbResponseLocation = topicsResourcesSettings.GetLocations(location).ReturnsForAnyArgs<dynamic>(emptyLocationData);
             var dbResponseCondition = topicsResourcesSettings.GetConditions(conditon).ReturnsForAnyArgs<dynamic>(emptyData);
             var dbResponseParentTopic = topicsResourcesSettings.GetParentTopicIds(parentTopic).ReturnsForAnyArgs<dynamic>(emptyData);
+            var dbResponseQuickLinks = topicsResourcesSettings.GetQuickLinks(quickLink).ReturnsForAnyArgs<dynamic>(emptyData);
             var response = topicsResourcesBusinessLogic.GetReferences(emptyResource[0]);
             var ActualReferenceData = JsonConvert.SerializeObject(response);
             var expectedReferencesData = JsonConvert.SerializeObject(EmptyReferences);
@@ -470,6 +480,37 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             //assert
             Assert.Equal(expectedCondition, actualCondition);
         }
+
+        [Fact]
+        public void GetQuickLinksTestsShouldReturnProperData()
+        {
+            //arrange
+            var quickLinks = this.quickLinksData;
+
+            //act
+            var response = topicsResourcesBusinessLogic.GetQuickLinks(quickLinks);
+            var actualQuickLinks = JsonConvert.SerializeObject(response);
+            var expectedQuickLinks = JsonConvert.SerializeObject(expectedQuickLinksData);
+
+            //assert
+            Assert.Equal(expectedQuickLinks, actualQuickLinks);
+        }
+
+        [Fact]
+        public void GetQuickLinksTestsShouldReturnEmptyData()
+        {
+            //arrange
+            var quickLinks = this.emptyData;
+
+            //act
+            var response = topicsResourcesBusinessLogic.GetQuickLinks(quickLinks);
+            var actualQuickLink = JsonConvert.SerializeObject(response);
+            var expectedQuickLink = JsonConvert.SerializeObject(emptyQuickLinksData);
+
+            //assert
+            Assert.Equal(expectedQuickLink, actualQuickLink);
+        }
+
 
         [Fact]
         public void CreateResourceUploadAsyncTestsShouldReturnProperData()
@@ -734,22 +775,31 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void CreateTopicUploadAsyncTestsShouldReturnProperData()
+        public void UpsertTopicUploadAsyncTestsShouldReturnProperData()
         {
             //arrange
             var topic = this.topicData;
+            string id = "f47a01e9-c5dc-48f1-993f-6a69324317e6";
             var topics = JsonConvert.SerializeObject(topic);
             Document document = new Document();
             JsonTextReader reader = new JsonTextReader(new StringReader(topic[0].ToString()));
             document.LoadFrom(reader);
             dynamic actualTopicData = null;
-
-            //act
-            var dbResponse = backendDatabaseService.CreateItemAsync<dynamic>(topic, cosmosDbSettings.TopicCollectionId).ReturnsForAnyArgs(document);
-            var dbResponseResource = topicsResourcesSettings.CreateTopicDocumentAsync(topics).ReturnsForAnyArgs(topic[0]);
+            object topicObjects = null;
             string filePath = Path.Combine(Environment.CurrentDirectory, "TestData\\TopicData.json");
-            var response = topicsResourcesBusinessLogic.CreateTopicsUploadAsync(filePath).Result;
+            using (StreamReader r = new StreamReader(filePath))
+            {
+                string json = r.ReadToEnd();
+                topicObjects = JsonConvert.DeserializeObject<List<dynamic>>(json);
+            }
             
+            //act            
+            var dbResponseFind = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.TopicCollectionId, Constants.Id, id).ReturnsForAnyArgs(topicObjects);
+            var dbResponse = backendDatabaseService.CreateItemAsync<dynamic>(topic, cosmosDbSettings.TopicCollectionId).ReturnsForAnyArgs(document);
+            var dbResponseUpdate = backendDatabaseService.UpdateItemAsync<dynamic>(id, topic, cosmosDbSettings.TopicCollectionId).ReturnsForAnyArgs(document);
+            var dbResponseResource = topicsResourcesSettings.UpsertTopicDocumentAsync(topics).ReturnsForAnyArgs(topic[0]);
+            var response = topicsResourcesBusinessLogic.UpsertTopicsUploadAsync(filePath).Result;
+
             foreach (var result in response)
             {
                 actualTopicData = result;
@@ -760,20 +810,25 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void CreateTopicDocumentAsyncTestsShouldReturnProperData()
+        public void UpsertTopicDocumentAsyncTestsShouldReturnProperData()
         {
             //arrange
             var topic = this.topicData;
-            var resource = JsonConvert.SerializeObject(topic);
+            var topics = this.topicUpsertData;
             Document document = new Document();
             JsonTextReader reader = new JsonTextReader(new StringReader(topic[0].ToString()));
             document.LoadFrom(reader);
             dynamic actualTopicData = null;
+            object topicArray = emptyUpsertData;
+            string json = topicArray.ToString();
+            var topicObjects = JsonConvert.DeserializeObject<List<dynamic>>(json);
+            string id = "f47a01e9-c5dc-48f1-993f-6a69324317e6";
 
             //act
+            var dbResponseFind = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.TopicCollectionId, Constants.Id, id).ReturnsForAnyArgs(topicObjects);
             var dbResponse = backendDatabaseService.CreateItemAsync<dynamic>(topic, cosmosDbSettings.TopicCollectionId).ReturnsForAnyArgs(document);
-            var dbResponseReferenceTag = topicsResourcesSettings.CreateTopics(topic[0]).ReturnsForAnyArgs<dynamic>(expectedTopicData[0]);
-            var response = topicsResourcesBusinessLogic.CreateTopicDocumentAsync(resource).Result;
+            var dbResponseReferenceTag = topicsResourcesSettings.UpsertTopics(topic[0]).ReturnsForAnyArgs<dynamic>(expectedTopicData[0]);
+            var response = topicsResourcesBusinessLogic.UpsertTopicDocumentAsync(topic).Result;
             foreach (var result in response)
             {
                 actualTopicData = result;
@@ -793,13 +848,15 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var location = this.locationData;
             var condition = this.conditionData;
             var parentTopic = this.parentTopicIdData;
+            var quickLink = this.expectedQuickLinksData;
 
             //act
             var dbResponseReferenceTag = topicsResourcesSettings.GetReferenceTags(referenceTag).ReturnsForAnyArgs<dynamic>(expectedReferenceTagData);
             var dbResponseLocation = topicsResourcesSettings.GetLocations(location).ReturnsForAnyArgs<dynamic>(expectedReferenceLocationData);
             var dbResponseConditions = topicsResourcesSettings.GetConditions(condition).ReturnsForAnyArgs<dynamic>(expectedConditionData);
             var dbResponseParentTopicId = topicsResourcesSettings.GetParentTopicIds(parentTopic).ReturnsForAnyArgs<dynamic>(expectedParentTopicIdData);
-            var response = topicsResourcesBusinessLogic.CreateTopics(topic);
+            var dbResponseQuickLinks = topicsResourcesSettings.GetQuickLinks(quickLink).ReturnsForAnyArgs<dynamic>(expectedQuickLinksData);
+            var response = topicsResourcesBusinessLogic.UpsertTopics(topic);
             var result = JsonConvert.SerializeObject(response);
             var topicResult = (JObject)JsonConvert.DeserializeObject(result);
             result = topicResult;

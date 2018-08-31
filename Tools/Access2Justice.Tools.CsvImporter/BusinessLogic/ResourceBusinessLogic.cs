@@ -14,9 +14,9 @@ namespace Access2Justice.Tools.BusinessLogic
     {
         private readonly string EndpointUrl = "";
         private readonly string PrimaryKey = "";
-        private readonly string Database = "access2justicedb";
-        private readonly string ResourceCollection = "Resources";
-        private readonly string TopicCollection = "Topics";
+        private readonly string Database = "";
+        private readonly string ResourceCollection = "";
+        private readonly string TopicCollection = "";
         private DocumentClient client;
 
         [Obsolete("This is deprecated. Please use the api endpoints to import Resources.")]

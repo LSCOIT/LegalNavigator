@@ -21,6 +21,7 @@ namespace Access2Justice.Shared.Interfaces
         dynamic GetLocations(dynamic locationValues);
         dynamic GetConditions(dynamic conditionValues);
         dynamic GetParentTopicIds(dynamic ParentTopicIdValues);
+        dynamic GetQuickLinks(dynamic quickLinksValues);
         Task<IEnumerable<object>> CreateResourcesUploadAsync(string path);
         Task<IEnumerable<object>> CreateResourceDocumentAsync(dynamic resource);
         dynamic CreateResourcesForms(dynamic resource);
@@ -29,9 +30,9 @@ namespace Access2Justice.Shared.Interfaces
         dynamic CreateResourcesVideos(dynamic resource);
         dynamic CreateResourcesOrganizations(dynamic resource);
         dynamic CreateResourcesEssentialReadings(dynamic resource);
-        Task<IEnumerable<object>> CreateTopicsUploadAsync(string path);
-        Task<IEnumerable<object>> CreateTopicDocumentAsync(dynamic topic);
-        dynamic CreateTopics(dynamic topic);
+        Task<IEnumerable<object>> UpsertTopicsUploadAsync(string path);
+        Task<IEnumerable<object>> UpsertTopicDocumentAsync(dynamic topic);
+        dynamic UpsertTopics(dynamic topic);
         Task<dynamic> GetPagedResourceAsync(ResourceFilter resourceFilter);
         Task<dynamic> ApplyPaginationAsync(ResourceFilter resourceFilter);
         Task<dynamic> GetResourcesCountAsync(ResourceFilter resourceFilter);

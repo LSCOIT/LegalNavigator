@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Global, UserStatus } from '../../../global';
-import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-resource-card',
@@ -17,8 +16,10 @@ export class ResourceCardComponent implements OnInit {
   url: any;
   applicationUrl: any = window.location.origin;
 
-  constructor(public sanitizer: DomSanitizer,
-    private global: Global) {
+  constructor(
+    public sanitizer: DomSanitizer,
+    private global: Global
+  ) {
     this.sanitizer = sanitizer;
     if (global.role === UserStatus.Shared && location.pathname.indexOf(global.shareRouteUrl) >= 0) {
       global.showShare = false;
