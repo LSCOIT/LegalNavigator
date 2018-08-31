@@ -23,11 +23,8 @@ export class HomePageObject {
     }
 
     public async getSearchResults() {
-        // Better than browser.sleep() since this might save time
-        var condition = until.elementsLocated(by.tagName("app-resource-card"));
-        browser.wait(condition, 15000);
+        await browser.wait(until.elementsLocated(by.tagName("app-resource-card")));
 
-        expect(await this.resources.isPresent()).to.equal(true);
         expect(await this.resources.count()).to.be.at.least(1);
     }
 

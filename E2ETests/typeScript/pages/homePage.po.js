@@ -34,10 +34,8 @@ class HomePageObject {
     }
     getSearchResults() {
         return __awaiter(this, void 0, void 0, function* () {
-            // Better than browser.sleep() since this might save time
-            var condition = protractor_1.until.elementsLocated(protractor_1.by.tagName("app-resource-card"));
-            protractor_1.browser.wait(condition, 15000);
-            expect(yield this.resources.isPresent()).to.equal(true);
+            yield protractor_1.browser.wait(protractor_1.until.elementsLocated(protractor_1.by.tagName("app-resource-card")));
+            //expect(await $("app-resource-card").isPresent()).to.equal(true);
             expect(yield this.resources.count()).to.be.at.least(1);
         });
     }

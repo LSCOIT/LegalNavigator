@@ -44,7 +44,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 341000000
+              "duration": 332000000
             }
           },
           {
@@ -57,7 +57,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 530000000
+              "duration": 369000000
             }
           },
           {
@@ -70,7 +70,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 65000000
+              "duration": 59000000
             }
           },
           {
@@ -80,8 +80,7 @@
               "location": "typeScript\\support\\hooks.js:21"
             },
             "result": {
-              "status": "passed",
-              "duration": 1000000
+              "status": "passed"
             }
           },
           {
