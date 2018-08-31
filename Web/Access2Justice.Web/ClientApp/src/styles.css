@@ -67,6 +67,11 @@ a {
 .box-no-shadow {
   border: 1px solid #ddd;
 }
+
+textarea {
+  resize: none;
+}
+
 /* Language Dropdown */
 .navbar-nav .open .dropdown-menu {
   position: absolute;
@@ -113,7 +118,7 @@ a {
 }
 
 .carousel-inner {
-  padding: 60px 0;
+  padding: 30px 0;
 }
 
 a.carousel-control {
@@ -275,6 +280,11 @@ a.carousel-control .icon-next {
   background-color: #0D3FBB;
 }
 
+/*Print & Download*/
+.print-only {
+  display: none;
+}
+
 @media only screen and (min-width : 768px) {
   .container {
     width: 90%;
@@ -299,6 +309,10 @@ a.carousel-control .icon-next {
 
   a.carousel-control {
     top: 282px;
+  }
+
+  .carousel-inner {
+    padding: 60px 0;
   }
 
   .modal-dialog {

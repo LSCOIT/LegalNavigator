@@ -6,18 +6,18 @@ import { HttpClientModule } from '@angular/common/http';
 import { SubtopicDetailComponent } from './subtopic-detail.component';
 import { SaveButtonComponent } from '../../shared/resource/user-action/save-button/save-button.component';
 import { ShareButtonComponent } from '../../shared/resource/user-action/share-button/share-button.component';
-import { PrintButtonComponent } from '../../shared/resource/user-action/print-button.component';
+import { PrintButtonComponent } from '../../shared/resource/user-action/print-button/print-button.component';
 import { ResourceCardComponent } from '../../shared/resource/resource-card/resource-card.component';
-import { GuidedAssistantSidebarComponent } from '../../shared/sidebars/guided-assistant-sidebar.component';
-import { ServiceOrgSidebarComponent } from '../../shared/sidebars/service-org-sidebar.component';
+import { GuidedAssistantSidebarComponent } from '../../shared/sidebars/guided-assistant-sidebar/guided-assistant-sidebar.component';
+import { ServiceOrgSidebarComponent } from '../../shared/sidebars/service-org-sidebar/service-org-sidebar.component';
 import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 import { TopicService } from '../shared/topic.service';
 import { NavigateDataService } from '../../shared/navigate-data.service';
-import { ShowMoreService } from '../../shared/sidebars/show-more.service';
+import { ShowMoreService } from '../../shared/sidebars/show-more/show-more.service';
 import { MapService } from '../../shared/map/map.service';
-import { PaginationService } from '../../shared/search/pagination.service';
+import { PaginationService } from '../../shared/pagination/pagination.service';
 import { SearchService } from '../../shared/search/search.service';
-import { ActivatedRoute, Route, ActivatedRouteSnapshot, UrlSegment, Params, Data, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { MapLocation } from '../../shared/map/map';
 import 'rxjs/add/observable/from';
 import { Observable } from 'rxjs/Observable'; 
@@ -25,8 +25,6 @@ import { Observable } from 'rxjs/Observable';
 describe('SubtopicDetailComponent', () => {
   let component: SubtopicDetailComponent;
   let fixture: ComponentFixture<SubtopicDetailComponent>;
-  let topicService: TopicService;
-  let activeRoute: ActivatedRoute;
   let mapService: MapService;
   let paginationService: PaginationService;
   let searchService: SearchService;
@@ -112,11 +110,11 @@ describe('SubtopicDetailComponent', () => {
     spyOn(mapService, 'updateLocation').and.returnValue(mockMapLocation);
     spyOn(paginationService, 'getPagedResources').and.callFake(() => {
       return Observable.from([searchResults]);
-    })
+    });
     const result = 'test';
     spyOn(navigateDataService, 'setData').and.callFake(() => {
       return Observable.from([result]);
-    })
+    });
     component.clickSeeMoreOrganizationsFromSubtopicDetails(resourceType);
     expect(router.navigate).toHaveBeenCalledWith(['/search']);
     expect(component.clickSeeMoreOrganizationsFromSubtopicDetails).toBeTruthy(['']);

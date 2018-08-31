@@ -3,11 +3,9 @@ import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { AboutComponent } from './about/about.component';
-import { CreateAccountComponent } from './account/create-account.component';
 import { GuidedAssistantComponent } from './guided-assistant/guided-assistant.component';
 import { HelpFaqsComponent } from './help-faqs/help-faqs.component';
 import { HomeComponent } from './home/home.component';
-import { LogInComponent } from './account/log-in.component';
 import { PrivacyPromiseComponent } from './privacy-promise/privacy-promise.component';
 import { QuestionComponent } from './guided-assistant/question/question.component';
 import { SearchComponent } from './shared/search/search.component';
@@ -15,6 +13,7 @@ import { SubtopicsComponent } from './topics-resources/subtopic/subtopics.compon
 import { SubtopicDetailComponent } from './topics-resources/subtopic/subtopic-detail.component';
 import { TopicsResourcesComponent } from './topics-resources/topics-resources.component';
 import { TopicsComponent } from './topics-resources/topic/topics.component';
+import { Global } from './global';
 
 
 describe('AppComponent', () => {
@@ -23,11 +22,9 @@ describe('AppComponent', () => {
       declarations: [
         AppComponent,
         AboutComponent,
-        CreateAccountComponent,
         GuidedAssistantComponent,
         HelpFaqsComponent,
         HomeComponent,
-        LogInComponent,
         PrivacyPromiseComponent,
         QuestionComponent,
         SearchComponent,
@@ -39,6 +36,7 @@ describe('AppComponent', () => {
       imports: [
         FormsModule
       ],
+      providers: [Global],
       schemas: [
         NO_ERRORS_SCHEMA,
         CUSTOM_ELEMENTS_SCHEMA

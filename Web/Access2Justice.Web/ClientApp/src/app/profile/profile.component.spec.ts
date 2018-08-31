@@ -8,6 +8,7 @@ import { ArrayUtilityService } from '../shared/array-utility.service';
 import { EventUtilityService } from '../shared/event-utility.service';
 import { Tree } from '@angular/router/src/utils/tree';
 import { IResourceFilter } from '../shared/search/search-results/search-results.model';
+import { Global } from '../global';
 
 describe('component:profile', () => {
   let component: ProfileComponent;
@@ -99,7 +100,7 @@ describe('component:profile', () => {
       imports: [HttpClientModule],
       declarations: [ProfileComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [PersonalizedPlanService, EventUtilityService, ArrayUtilityService]
+      providers: [PersonalizedPlanService, EventUtilityService, ArrayUtilityService, Global]
     }).compileComponents();
 
     fixture = TestBed.createComponent(ProfileComponent);
@@ -118,15 +119,6 @@ describe('component:profile', () => {
     expect(component).toBeDefined();
   });
 
-  it('should call getpersonalizedplan method when component loaded first time in ngonit', () => {
-    component.ngOnInit();
-    spyOn(component, 'getPersonalizedPlan');
-    component.getPersonalizedPlan();
-    component.showRemove;
-    expect(component.getPersonalizedPlan).toHaveBeenCalled();
-    expect(component.showRemove).toBe(mockshowremove);
-  });
-
   it('should call getactionplanconditions service method when get topics method called', () => {
     spyOn(personalizedplanservice, 'getActionPlanConditions').and.returnValue(mockplandetailsjson);
     component.planId = mockplanid;
@@ -141,18 +133,6 @@ describe('component:profile', () => {
     component.filterPlan(mocktopic);
     expect(component.filterPlan).toHaveBeenCalled();
     expect(personalizedplanservice.displayPlanDetails).toHaveBeenCalled();
-  });
-
-  it('should call getpersonalizedplan service method when getpersonalizedplan is called', () => {
-    spyOn(personalizedplanservice, 'getPersonalizedPlan');
-    personalizedplanservice.getPersonalizedPlan();
-    expect(personalizedplanservice.getPersonalizedPlan).toHaveBeenCalled();
-  });
-
-  it('should call getUserPlanId service method when getpersonalizedplan method of component is called', () => {
-    spyOn(personalizedplanservice, 'getUserPlanId').and.returnValue(mockUserProfileData);;
-    personalizedplanservice.getUserPlanId(mockplanid);
-    expect(personalizedplanservice.getUserPlanId).toHaveBeenCalled();
   });
 
   it('should call getusersavedresources service method when getpersonalizedresources is called', () => {

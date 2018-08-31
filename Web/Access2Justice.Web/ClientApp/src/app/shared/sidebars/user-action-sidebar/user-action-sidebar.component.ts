@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Global, UserStatus } from '../../global';
+import { Global, UserStatus } from '../../../global';
 
 @Component({
   selector: 'app-user-action-sidebar',

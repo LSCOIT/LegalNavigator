@@ -1,3 +1,11 @@
+ul {
+  font-size: 16px;
+}
+
+ul li {
+  font-size: 14px;
+}
+
 .plan-heading {
   border-bottom: 1px solid #ddd;
 }

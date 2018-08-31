@@ -7,8 +7,10 @@ import { ModalModule } from 'ngx-bootstrap';
 import { MapLocation } from './map';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MapResultsService } from '../sidebars/map-results.service';
+import { MapResultsService } from '../sidebars/map-results/map-results.service';
 import { Observable } from 'rxjs/Observable';
+import { StaticResourceService } from '../static-resource.service';
+import { Global } from '../../global';
 
 class MockBsModalRef {
   public isHideCalled = false;
@@ -52,7 +54,9 @@ describe('MapComponent', () => {
         providers: [
           BsModalService,
           MapService,
-          MapResultsService
+          MapResultsService,
+          StaticResourceService,
+          Global
         ]
       });
       TestBed.compileComponents();
