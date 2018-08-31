@@ -13,7 +13,7 @@ Given('I am on the Access2Justice website', () => {
 When(/^I type "(.*?)" into the search input field and click search button$/,
    async (text: string) => await search_homePage.enterSearchInput(text));
 
-Then('I can see search results', {timeout: 2 * 5000},
+Then('I can see search results', {timeout: 3 * 5000},
     async () => await search_homePage.getSearchResults());
 
 Then('I clear the search text',

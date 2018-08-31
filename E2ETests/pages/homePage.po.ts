@@ -1,5 +1,7 @@
 /*
  * For more info on locators, check https://www.protractortest.org/#/locators
+ * For more info on async/await, check https://www.protractortest.org/#/async-await
+ * For more info on debuggig Protractor tests, check https://www.protractortest.org/#/debugging#disabled-control-flow
  */
 
 import { $, $$, by, element, until, browser, protractor } from "protractor";
@@ -15,46 +17,21 @@ export class HomePageObject {
     public resources = $$("app-resource-card");  // all the resources
    
     public async enterSearchInput(text: string) {
-        // this.searchTab.isPresent().then((isPresent) => {
-        //     if (isPresent) {
-        //         assert.isFulfilled(this.searchTab.click(), null);// To reveal the search input field
-        //     }
-        // }).catch(() => {
-        //     console.log("why you toooooo");
-        // });
-
-        await this.searchTab.click();
-        
-        //expect(this.searchInputField.isPresent()).to.eventually.equal(true);
-        
+        await this.searchTab.click();    
         await this.searchInputField.sendKeys(text);
         await this.searchButton.click();
-
-        // return this.searchInputField.sendKeys(text).then(()=> {       
-        //     this.searchButton.click();      
-        // }).catch(() => {
-        //     console.log("whyyyyyyyyy fuck you ")
-        // });
     }
 
     public async getSearchResults() {
-        var condition = until.elementsLocated(by.tagName("app-search-results"));
-        browser.wait(condition);
+        // Better than browser.sleep() since this might save time
+        var condition = until.elementsLocated(by.tagName("app-resource-card"));
+        browser.wait(condition, 15000);
 
-        var count = until.elementsLocated(by.tagName("app-resource-card"));
-        browser.wait(count);
-
-        this.resources.then(function(elems){
-            var count = elems.length;
-            expect(count).to.equal(10);
-        }) 
-        
-        await browser.sleep(5000);
+        expect(await this.resources.isPresent()).to.equal(true);
+        expect(await this.resources.count()).to.be.at.least(1);
     }
 
     public async clearSearchInput() {
-        //expect(this.searchInputField.isPresent()).to.eventually.equal(true);
-
         await this.searchInputField.clear();
     }
 }

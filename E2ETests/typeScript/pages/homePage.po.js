@@ -1,6 +1,8 @@
 "use strict";
 /*
  * For more info on locators, check https://www.protractortest.org/#/locators
+ * For more info on async/await, check https://www.protractortest.org/#/async-await
+ * For more info on debuggig Protractor tests, check https://www.protractortest.org/#/debugging#disabled-control-flow
  */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -25,40 +27,22 @@ class HomePageObject {
     }
     enterSearchInput(text) {
         return __awaiter(this, void 0, void 0, function* () {
-            // this.searchTab.isPresent().then((isPresent) => {
-            //     if (isPresent) {
-            //         assert.isFulfilled(this.searchTab.click(), null);// To reveal the search input field
-            //     }
-            // }).catch(() => {
-            //     console.log("why you toooooo");
-            // });
             yield this.searchTab.click();
-            //expect(this.searchInputField.isPresent()).to.eventually.equal(true);
             yield this.searchInputField.sendKeys(text);
             yield this.searchButton.click();
-            // return this.searchInputField.sendKeys(text).then(()=> {       
-            //     this.searchButton.click();      
-            // }).catch(() => {
-            //     console.log("whyyyyyyyyy fuck you ")
-            // });
         });
     }
     getSearchResults() {
         return __awaiter(this, void 0, void 0, function* () {
-            var condition = protractor_1.until.elementsLocated(protractor_1.by.tagName("app-search-results"));
-            protractor_1.browser.wait(condition);
-            var count = protractor_1.until.elementsLocated(protractor_1.by.tagName("app-resource-card"));
-            protractor_1.browser.wait(count);
-            this.resources.then(function (elems) {
-                var count = elems.length;
-                expect(count).to.equal(10);
-            });
-            yield protractor_1.browser.sleep(5000);
+            // Better than browser.sleep() since this might save time
+            var condition = protractor_1.until.elementsLocated(protractor_1.by.tagName("app-resource-card"));
+            protractor_1.browser.wait(condition, 15000);
+            expect(yield this.resources.isPresent()).to.equal(true);
+            expect(yield this.resources.count()).to.be.at.least(1);
         });
     }
     clearSearchInput() {
         return __awaiter(this, void 0, void 0, function* () {
-            //expect(this.searchInputField.isPresent()).to.eventually.equal(true);
             yield this.searchInputField.clear();
         });
     }

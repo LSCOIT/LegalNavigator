@@ -18,5 +18,5 @@ cucumber_1.Given('I am on the Access2Justice website', () => {
     expect(protractor_1.browser.getTitle()).to.eventually.equal("Access to Justice");
 });
 cucumber_1.When(/^I type "(.*?)" into the search input field and click search button$/, (text) => __awaiter(this, void 0, void 0, function* () { return yield search_homePage.enterSearchInput(text); }));
-cucumber_1.Then('I can see search results', { timeout: 2 * 5000 }, () => __awaiter(this, void 0, void 0, function* () { return yield search_homePage.getSearchResults(); }));
+cucumber_1.Then('I can see search results', { timeout: 3 * 5000 }, () => __awaiter(this, void 0, void 0, function* () { return yield search_homePage.getSearchResults(); }));
 cucumber_1.Then('I clear the search text', () => __awaiter(this, void 0, void 0, function* () { return yield search_homePage.clearSearchInput(); }));
