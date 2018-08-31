@@ -32,8 +32,10 @@ export class GuidedAssistantSidebarComponent implements OnInit {
   topIntent: string;
 
   constructor(
+    private router: Router,
     private activeRoute: ActivatedRoute,
     private mapService: MapService,
+    private navigateDataService: NavigateDataService,
     private paginationService: PaginationService
   ) { }
 
@@ -67,7 +69,6 @@ export class GuidedAssistantSidebarComponent implements OnInit {
       this.navigateDataService.setData(this.searchResultsData);
       this.router.navigateByUrl('/guidedassistant/' + this.guidedAssistantId);
     }
-
     this.resourceFilter = {
       ResourceType: environment.All, TopicIds: this.topicIds, Location: this.location,
       PageNumber: 0, ContinuationToken: '', IsResourceCountRequired: true, ResourceIds: []
