@@ -5,7 +5,6 @@ namespace Access2Justice.Shared.Interfaces
 {
     public interface IIfElseParser
     {
-        IfElseParser OnIfStatements(string a2jLogic);
         IfElseParser SET(Dictionary<string, string> SETvars);
         IfElseParser IF(Dictionary<string, string> Ifvars);
         IfElseParser AND(Dictionary<string, string> ANDvars);

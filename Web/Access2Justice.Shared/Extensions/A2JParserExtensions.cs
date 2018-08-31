@@ -7,6 +7,29 @@ namespace Access2Justice.Shared.Extensions
 {
     public static class A2JParserExtensions
     {
+        public static List<string> IFstatements(this string logic)
+        {
+            return logic.SplitAndReturnFullSentencesOn("END IF");
+        }
+
+        public static Dictionary<string, string> SETvars(this string logic)
+        {
+            var rightOf = logic.GetStringBetween("SET", "END IF");
+            return rightOf.SetValueTOVar();
+        }
+
+        public static Dictionary<string, string> ANDvars(this string logic)
+        {
+            var leftCondition = logic.GetStringBetween("IF", "SET");
+            return leftCondition.GetVariablesWithValues("AND");
+        }
+
+        public static Dictionary<string, string> ORvars(this string logic)
+        {
+            var leftCondition = logic.GetStringBetween("IF", "SET");
+            return leftCondition.GetVariablesWithValues("OR");
+        }
+
         public static string GetStringOnTheRightOf(this string inputText, string splitWord)
         {
             return inputText.Substring(inputText.IndexOf(splitWord) + splitWord.Length);
@@ -46,7 +69,7 @@ namespace Access2Justice.Shared.Extensions
 
         public static Dictionary<string, string> GetVariablesWithValues(this string inputText, string operand)
         {
-             // Todo:@Alaa extend this to allow extraction of other data types (beside true/fals), return a dic of <string, string>
+            // Todo:@Alaa extend this to allow extraction of other data types (beside true/fals), return a dic of <string, string>
             var varsValues = new Dictionary<string, string>();
 
             if (inputText.ToUpperInvariant().Contains(operand))
@@ -67,16 +90,6 @@ namespace Access2Justice.Shared.Extensions
             }
 
             return varsValues;
-        }
-
-        public static Dictionary<string, string> GetANDvariables(this string inputText)
-        {
-            return inputText.GetVariablesWithValues("AND");
-        }
-
-        public static Dictionary<string, string> GetORvariables(this string inputText)
-        {
-            return inputText.GetVariablesWithValues("OR");
         }
 
         public static Dictionary<string, string> SetValueTOVar(this string inputText)

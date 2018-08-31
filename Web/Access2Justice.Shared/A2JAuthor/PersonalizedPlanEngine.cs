@@ -16,13 +16,17 @@ namespace Access2Justice.Shared.A2JAuthor
             parser = a2JParser;
         }
 
-        public Dictionary<string, string> MatchAnswersVarsWithPersonalizedPlanVars(string logic, Dictionary<string, string> answerVars)
+        public Dictionary<string, string> MatchAnswersVarsWithPersonalizedPlanVars(string logic, Dictionary<string, string> userAnswers)
         {
-            var temp = new IfElseParser();
-            return parser.OnIfStatements("")
-                .SET(new Dictionary<string, string>())
-                .IF(new Dictionary<string, string>()).AND(new Dictionary<string, string>()).AND(new Dictionary<string, string>())
-                .IsEqualTo(new Dictionary<string, string>());
+            var planVars = new Dictionary<string, string>();
+
+            foreach (var statement in logic.IFstatements())
+            {
+                var computedVars = parser.SET(statement.SETvars()).IF(statement.ANDvars()).AND(statement.ANDvars()).IsEqualTo(userAnswers);
+                planVars.AddRange(computedVars);
+            }
+            
+            return planVars;
         }
 
         public bool IsConditionSatisfied(Dictionary<string, string> ANDvariables, Dictionary<string, string> ORvariables,
