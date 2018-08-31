@@ -37,9 +37,6 @@ export class SubtopicDetailComponent implements OnInit {
     private topicService: TopicService,
     private activeRoute: ActivatedRoute,
     private navigateDataService: NavigateDataService,
-    private searchService: SearchService,
-    private router: Router,
-    private paginationService: PaginationService,
     private showMoreService: ShowMoreService
   ) { }
 

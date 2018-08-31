@@ -1,9 +1,9 @@
-import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
-import { StaticResourceService } from '../../shared/static-resource.service';
-import { Navigation, Language, Location, Logo, Home, GuidedAssistant, TopicAndResources, About, Search, PrivacyPromise, HelpAndFAQ, Login } from './navigation';
+import { About, GuidedAssistant, HelpAndFAQ, Home, Language, Location, Login, Logo,Navigation, PrivacyPromise, Search, TopicAndResources } from './navigation';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { MapService } from '../map/map.service';
 import { Global } from '../../global';
+import { MapService } from '../map/map.service';
+import { StaticResourceService } from '../../shared/static-resource.service';
 
 @Component({
   selector: 'app-lower-nav',
@@ -88,7 +88,6 @@ export class LowerNavComponent implements OnInit {
   }
 
   getNavigationContent(): void {
-    let homePageRequest = { name: this.name };
     if (this.staticResourceService.navigation && (this.staticResourceService.navigation.location[0].state == this.staticResourceService.getLocation())) {
       this.navigation = this.staticResourceService.navigation;
       this.filterNavigationContent(this.staticResourceService.navigation);
