@@ -2,6 +2,7 @@
 using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
+using Access2Justice.Shared.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -93,18 +94,18 @@ namespace Access2Justice.Api.BusinessLogic
             if (resourceFilter.IsResourceCountRequired)
             {
                 var groupedResourceType = await GetResourcesCountAsync(resourceFilter);
-                serializedGroupedResources = JsonConvert.SerializeObject(groupedResourceType);
+                serializedGroupedResources = JsonUtilities.DeserializeDynamicObject<dynamic>(groupedResourceType);
             }
             PagedResources pagedResources = await ApplyPaginationAsync(resourceFilter);
-            serializedResources = JsonConvert.SerializeObject(pagedResources?.Results);
+            serializedResources = JsonUtilities.DeserializeDynamicObject<dynamic>(pagedResources?.Results);
             dynamic serializedToken = pagedResources?.ContinuationToken ?? "[]";
-            serializedTopicIds = JsonConvert.SerializeObject(pagedResources?.TopicIds);
+            serializedTopicIds = JsonUtilities.DeserializeDynamicObject<dynamic>(pagedResources?.TopicIds);
 
             JObject internalResources = new JObject {
-                { "resources", JsonConvert.DeserializeObject(serializedResources) },
+                { "resources", serializedResources },
                 { "continuationToken", JsonConvert.DeserializeObject(serializedToken) },
-                { "resourceTypeFilter", JsonConvert.DeserializeObject(serializedGroupedResources) },
-                { "topicIds" , JsonConvert.DeserializeObject(serializedTopicIds)}
+                { "resourceTypeFilter", serializedGroupedResources },
+                { "topicIds" , serializedTopicIds}
             };
             return internalResources.ToString();
         }
