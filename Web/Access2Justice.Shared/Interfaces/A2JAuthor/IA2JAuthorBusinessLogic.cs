@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
 
-namespace Access2Justice.Shared.Interfaces
+namespace Access2Justice.Shared.Interfaces.A2JAuthor
 {
     public interface IA2JAuthorBusinessLogic
     {

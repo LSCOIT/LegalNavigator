@@ -5,6 +5,7 @@ using Access2Justice.Shared;
 using Access2Justice.Shared.A2JAuthor;
 using Access2Justice.Shared.Bing;
 using Access2Justice.Shared.Interfaces;
+using Access2Justice.Shared.Interfaces.A2JAuthor;
 using Access2Justice.Shared.Luis;
 using Access2Justice.Shared.Models;
 using Access2Justice.Shared.Share;
@@ -16,7 +17,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
-using System.Collections.Generic;
 
 namespace Access2Justice.Api
 {
@@ -58,6 +58,9 @@ namespace Access2Justice.Api
             services.AddSingleton<IA2JAuthorBusinessLogic, A2JAuthorBusinessLogic>();
             services.AddSingleton<IPersonalizedPlanEngine, PersonalizedPlanEngine>();
             services.AddSingleton<IIfElseParser, IfElseParser>();
+            services.AddSingleton<IParse, Parser>();
+            services.AddSingleton<IEvaluate, Evaluator>();
+            services.AddSingleton<ICompile, Compiler>();
 
             ConfigureCosmosDb(services);
 

@@ -1,19 +1,21 @@
 ﻿using Access2Justice.Shared.Extensions;
 using Access2Justice.Shared.Interfaces;
-using System;
+using Access2Justice.Shared.Interfaces.A2JAuthor;
+using Access2Justice.Shared.Models;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Access2Justice.Shared.A2JAuthor
 {
     public class PersonalizedPlanEngine : IPersonalizedPlanEngine
     {
-        private readonly IIfElseParser parser;
+        private readonly IIfElseParser parserOld;
+        private readonly IParse parser;
 
-        public PersonalizedPlanEngine(IIfElseParser a2JParser)
+        public PersonalizedPlanEngine(IIfElseParser a2JParser, IParse parser)
         {
-            parser = a2JParser;
+            parserOld = a2JParser;
+            this.parser = parser;
         }
 
         public Dictionary<string, string> MatchAnswersVarsWithPersonalizedPlanVars(string logic, Dictionary<string, string> userAnswers)
@@ -22,7 +24,7 @@ namespace Access2Justice.Shared.A2JAuthor
 
             foreach (var statement in logic.IFstatements())
             {
-                var computedVars = parser.SET(statement.SETvars()).IF(statement.ANDvars()).AND(statement.ANDvars()).IsEqualTo(userAnswers);
+                var computedVars = parserOld.SET(statement.SETvars()).IF(statement.ANDvars()).AND(statement.ANDvars()).IsEqualTo(userAnswers);
                 planVars.AddRange(computedVars);
             }
             
@@ -43,6 +45,17 @@ namespace Access2Justice.Shared.A2JAuthor
             }
 
             return false;
+        }
+
+
+        public void TestNewFluentLogic()
+        {
+            var personalizedPlan = new A2JPersonalizedPlan();
+            var userAnswers = new CuratedExperienceAnswers();
+
+            var evaluatedUserAnswers = parser.Evaluate(userAnswers);
+            var compiledUserPlan = parser.Compile(evaluatedUserAnswers);
+
         }
     }
 }

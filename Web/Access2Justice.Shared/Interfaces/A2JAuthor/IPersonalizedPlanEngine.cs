@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Access2Justice.Shared
+namespace Access2Justice.Shared.A2JAuthor
 {
     public interface IPersonalizedPlanEngine
     {

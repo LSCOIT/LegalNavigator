@@ -10,6 +10,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Access2Justice.Shared.Interfaces.A2JAuthor;
 
 namespace Access2Justice.Api.Controllers
 {
