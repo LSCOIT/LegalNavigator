@@ -144,5 +144,18 @@ namespace Access2Justice.Api.Tests.TestData
                      JArray.Parse(@"[[{'id':'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],[{'state':'Hawaii','county':'','city':'Haiku-Pauwela','zipCode':''},{'state':'Alaska','county':'','city':'','zipCode':''}],[{'condition':[{'title':'Take to your partner to see if you can come to an agreement','description':'Why you should do this dolor sit amet.'}]}]]");
         public static JArray expectedReferencesData =
                      JArray.Parse(@"[[{'id':'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],[{'state':'Hawaii','county':'','city':'Haiku-Pauwela','zipCode':''},{'state':'Alaska','county':'','city':'','zipCode':''}],[{'condition':[{'title':'Take to your partner to see if you can come to an agreement','description':'Why you should do this dolor sit amet.'}]}],[{'id':'349fa67b-164f-4a65-bb5d-a5b3dd2640a6'}]]");
+        public static Location expectedLocation = new Location
+        {
+            State = "Hawaii",
+            County = "",
+            City = "Haiku-Pauwela",
+            ZipCode = ""
+        };
+        public static TopicInput TopicInput = new TopicInput
+        {
+            Id = "addf41e9-1a27-4aeb-bcbb-7959f95094ba",
+            Location = expectedLocation,
+            IsShared = false
+        };
     }
 }

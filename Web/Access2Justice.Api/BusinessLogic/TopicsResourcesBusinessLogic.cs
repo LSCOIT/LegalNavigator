@@ -42,27 +42,55 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<dynamic> GetTopLevelTopicsAsync(Location location)
         {
-            return await dbClient.FindItemsWhereWithLocationAsync(dbSettings.TopicCollectionId, Constants.ParentTopicId, "",location);
+            return await dbClient.FindItemsWhereWithLocationAsync(dbSettings.TopicCollectionId, Constants.ParentTopicId, "", location);
         }
 
-        public async Task<dynamic> GetSubTopicsAsync(string parentTopicId,Location location)
+        public async Task<dynamic> GetSubTopicsAsync(TopicInput topicInput)
         {
-            return await dbClient.FindItemsWhereArrayContainsAsyncWithLocation(dbSettings.TopicCollectionId, Constants.ParentTopicId, Constants.Id, parentTopicId, location);
+            if (topicInput.IsShared)
+            {
+                return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.TopicCollectionId, Constants.ParentTopicId, Constants.Id, topicInput.Id);
+            }
+            else
+            {
+                return await dbClient.FindItemsWhereArrayContainsAsyncWithLocation(dbSettings.TopicCollectionId, Constants.ParentTopicId, Constants.Id, topicInput.Id, topicInput.Location);
+            }
         }
 
-        public async Task<dynamic> GetResourceByIdAsync(string id,Location location)
+        public async Task<dynamic> GetResourceByIdAsync(TopicInput topicInput)
         {
-            return await dbClient.FindItemsWhereWithLocationAsync(dbSettings.ResourceCollectionId, Constants.Id, id,location);
+            if (topicInput.IsShared)
+            {
+                return await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, Constants.Id, topicInput.Id);
+            }
+            else
+            {
+                return await dbClient.FindItemsWhereWithLocationAsync(dbSettings.ResourceCollectionId, Constants.Id, topicInput.Id, topicInput.Location);
+            }
         }
 
-        public async Task<dynamic> GetResourceAsync(string parentTopicId,Location location)
+        public async Task<dynamic> GetResourceAsync(TopicInput topicInput)
         {
-            return await dbClient.FindItemsWhereArrayContainsAsyncWithLocation(dbSettings.ResourceCollectionId, Constants.TopicTags, Constants.Id, parentTopicId, location);
+            if (topicInput.IsShared)
+            {
+                return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourceCollectionId, Constants.TopicTags, Constants.Id, topicInput.Id);
+            }
+            else
+            {
+                return await dbClient.FindItemsWhereArrayContainsAsyncWithLocation(dbSettings.ResourceCollectionId, Constants.TopicTags, Constants.Id, topicInput.Id, topicInput.Location);
+            }
         }
 
-        public async Task<dynamic> GetDocumentAsync(string id,Location location)
+        public async Task<dynamic> GetDocumentAsync(TopicInput topicInput)
         {
-            return await dbClient.FindItemsWhereWithLocationAsync(dbSettings.TopicCollectionId, Constants.Id, id,location);
+            if (topicInput.IsShared)
+            {
+                return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.Id, topicInput.Id);
+            }
+            else
+            {
+                return await dbClient.FindItemsWhereWithLocationAsync(dbSettings.TopicCollectionId, Constants.Id, topicInput.Id, topicInput.Location);
+            }
         }
 
         public async Task<dynamic> GetBreadcrumbDataAsync(string id)
@@ -137,7 +165,7 @@ namespace Access2Justice.Api.BusinessLogic
                   {
                       ResourceName = n.Key,
                       ResourceCount = n.Count()
-                  }).OrderBy(n => n.ResourceName);         
+                  }).OrderBy(n => n.ResourceName);
             dynamic resourceList = allResources.Concat(groupedResourceType);
             return resourceList;
         }
@@ -597,7 +625,7 @@ namespace Access2Justice.Api.BusinessLogic
             };
             topics.Validate();
             return topics;
-        }       
+        }
 
         public async Task<dynamic> GetPersonalizedResourcesAsync(ResourceFilter resourceFilter)
         {

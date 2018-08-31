@@ -222,7 +222,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var dbResponse = dynamicQueries.FindItemsWhereArrayContainsAsyncWithLocation(cosmosDbSettings.TopicCollectionId, query, "", "",location);
             dbResponse.ReturnsForAnyArgs<dynamic>(resourcesData);
             //act
-            var response = topicsResourcesBusinessLogic.GetSubTopicsAsync(topicId,expectedLocationValue).Result;
+            var response = topicsResourcesBusinessLogic.GetSubTopicsAsync(TopicResourceTestData.TopicInput).Result;
             string result = JsonConvert.SerializeObject(response);
             //assert
             Assert.Contains(expectedResourceId, result, StringComparison.InvariantCulture);
@@ -236,7 +236,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
 
             //act
-            var response = topicsResourcesBusinessLogic.GetSubTopicsAsync(topicId,expectedLocationValue);
+            var response = topicsResourcesBusinessLogic.GetSubTopicsAsync(TopicResourceTestData.TopicInput);
             string result = JsonConvert.SerializeObject(response);
 
             //assert
@@ -250,7 +250,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var dbResponse = dynamicQueries.FindItemsWhereArrayContainsAsyncWithLocation(cosmosDbSettings.ResourceCollectionId, "topicTags", "id", topicId,location);
             dbResponse.ReturnsForAnyArgs<dynamic>(topicsData);
             //act
-            var response = topicsResourcesBusinessLogic.GetResourceAsync(topicId,expectedLocationValue).Result;
+            var response = topicsResourcesBusinessLogic.GetResourceAsync(TopicResourceTestData.TopicInput).Result;
             string result = JsonConvert.SerializeObject(response);
             //assert
             Assert.Contains(topicId, result, StringComparison.InvariantCulture);
@@ -264,7 +264,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
 
             //act
-            var response = topicsResourcesBusinessLogic.GetResourceAsync(topicId,expectedLocationValue);
+            var response = topicsResourcesBusinessLogic.GetResourceAsync(TopicResourceTestData.TopicInput);
             string result = JsonConvert.SerializeObject(response);
 
             //assert
