@@ -11,12 +11,36 @@ import { TopicsComponent } from './topic/topics.component';
 import { TopicService } from './shared/topic.service';
 import { TopicsResourcesComponent } from './topics-resources.component';
 import { PaginationService } from '../shared/pagination/pagination.service';
+import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { of } from 'rxjs/observable/of';
 
 describe('TopicsResourcesComponent', () => {
   let component: TopicsResourcesComponent;
   let fixture: ComponentFixture<TopicsResourcesComponent>;
-
+  let mockTopicService;
+  let mockShowMoreService;
+  let mockTopics = [
+    {
+       "id":"e3bdf5d8-8755-46d9-b13b-e28546fcd27e",
+       "name":"Abuse & Harassment",
+       "parentTopicId":[
+ 
+       ],
+       "resourceType":"Topics",
+       "keywords":null,
+       "location":[
+          {
+             "state":"Hawaii",
+             "city":"Kalawao",
+             "zipCode":"96761"
+          }
+       ],
+       "icon":"www.test.com/static-resource/assets/images/categories/abuse.svg",
+    }
+ ]
   beforeEach(async(() => {
+    mockTopicService = jasmine.createSpyObj(['getTopics']);
+    mockTopicService.getTopics.and.returnValue(of(mockTopics));
     TestBed.configureTestingModule({
       declarations: [
         TopicsResourcesComponent,
@@ -32,12 +56,13 @@ describe('TopicsResourcesComponent', () => {
       ],
       providers: [
         { provide: APP_BASE_HREF, useValue: '/' },
-        TopicService,
-        ShowMoreService,
+        { provide: TopicService, useValue: mockTopicService},
+        { provide: ShowMoreService, useValue: mockShowMoreService },
         MapService,
         NavigateDataService,
         PaginationService
-      ]
+      ],
+      schemas: [ NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA ]
     })
       .compileComponents();
   }));

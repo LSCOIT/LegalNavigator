@@ -8,11 +8,11 @@ import { APP_BASE_HREF } from '@angular/common';
 import { ArrayUtilityService } from '../../shared/array-utility.service';
 import { ToastrService, ToastrModule } from 'ngx-toastr';
 import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 
 describe('Component:PersonalizedPlan', () => {
   let component: PersonalizedPlanComponent;
   let fixture: ComponentFixture<PersonalizedPlanComponent>;
-  let personalizedPlanService: PersonalizedPlanService;
   let toastrService: ToastrService;
   let mockactiveActionPlan = '3bd5b8cb-69f3-42fc-a74c-a9fa1c94f805';
   let mockPlanDetails = {
@@ -369,8 +369,11 @@ describe('Component:PersonalizedPlan', () => {
     topic: '',
     isSelected: false
   }];
+  let mockPersonalizedPlanService;
 
   beforeEach(async(() => {
+    mockPersonalizedPlanService = jasmine.createSpyObj(['getActionPlanConditions', 'createTopicsList', 'getPlanDetails', 'displayPlanDetails'])
+    mockPersonalizedPlanService.getActionPlanConditions.and.returnValue(of(mockPlanDetails));
     TestBed.configureTestingModule({
       imports: [ToastrModule.forRoot(),
         RouterModule.forRoot([
@@ -381,14 +384,15 @@ describe('Component:PersonalizedPlan', () => {
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: APP_BASE_HREF, useValue: '/' },
-        PersonalizedPlanService, ArrayUtilityService, ToastrService
+        { provide: PersonalizedPlanService, useValue: mockPersonalizedPlanService }, 
+        ArrayUtilityService, 
+        ToastrService
       ]
     })
-      .compileComponents();
-
+    .compileComponents();
+    
     fixture = TestBed.createComponent(PersonalizedPlanComponent);
     component = fixture.componentInstance;
-    personalizedPlanService = TestBed.get(PersonalizedPlanService);
     toastrService = TestBed.get(ToastrService);
     fixture.detectChanges();
   }));
@@ -409,16 +413,13 @@ describe('Component:PersonalizedPlan', () => {
 
   it('should call methods of personalized service and assing component values when gettopics is called', () => {
     component.activeActionPlan = mockactiveActionPlan;
-    spyOn(personalizedPlanService, 'getActionPlanConditions').and.callFake(() => {
-      return Observable.from([mockPlanDetails]);
-    });
-    spyOn(personalizedPlanService, 'createTopicsList').and.returnValue(mockTopicsList);
-    spyOn(personalizedPlanService, 'getPlanDetails').and.returnValue(mockPlanDetails);
+    mockPersonalizedPlanService.createTopicsList.and.returnValue(mockTopicsList);
+    mockPersonalizedPlanService.getPlanDetails.and.returnValue(mockPlanDetails);
     component.getTopics();
     expect(component.topics).toEqual(mockPlanDetails.topics);
     expect(component.planDetailTags).toEqual(mockPlanDetails);
-    expect(personalizedPlanService.createTopicsList).toHaveBeenCalledWith(mockPlanDetails.topics);
-    expect(personalizedPlanService.getPlanDetails).toHaveBeenCalledWith(mockPlanDetails.topics, mockPlanDetails);
+    expect(mockPersonalizedPlanService.createTopicsList).toHaveBeenCalledWith(mockPlanDetails.topics);
+    expect(mockPersonalizedPlanService.getPlanDetails).toHaveBeenCalledWith(mockPlanDetails.topics, mockPlanDetails);
     expect(component.topicsList).toEqual(mockTopicsList);
     expect(component.planDetails).toEqual(mockPlanDetails);
   });
@@ -427,10 +428,10 @@ describe('Component:PersonalizedPlan', () => {
     component.topicsList = mockFilteredTopicsList;
     component.planDetailTags = mockPlanDetails;
     spyOn(component, 'filterTopicsList');
-    spyOn(personalizedPlanService, 'displayPlanDetails').and.returnValue(mockFilteredPlanDetails);
+    mockPersonalizedPlanService.displayPlanDetails.and.returnValue(mockFilteredPlanDetails);
     component.filterPlan(mockFilterTopicName);
     expect(component.filterTopicsList).toHaveBeenCalledWith(mockFilterTopicName);
-    expect(personalizedPlanService.displayPlanDetails).toHaveBeenCalledWith(mockPlanDetails, mockFilteredTopicsList);
+    expect(mockPersonalizedPlanService.displayPlanDetails).toHaveBeenCalledWith(mockPlanDetails, mockFilteredTopicsList);
     expect(component.planDetails).toEqual(mockFilteredPlanDetails);
   });
 

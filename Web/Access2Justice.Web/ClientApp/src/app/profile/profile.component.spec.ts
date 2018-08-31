@@ -9,6 +9,7 @@
 // import { Tree } from '@angular/router/src/utils/tree';
 // import { IResourceFilter } from '../shared/search/search-results/search-results.model';
 // import { Global } from '../global';
+// import { ToastrModule } from 'ngx-toastr';
 
 // describe('component:profile', () => {
 //   let component: ProfileComponent;
@@ -95,12 +96,24 @@
 //       ]
 //     }
 //   }
+//   let mockGlobal;
 //   beforeEach(async(() => {
+//     mockGlobal = jasmine.createSpyObj(['externalLogin']);
 //     TestBed.configureTestingModule({
-//       imports: [HttpClientModule],
-//       declarations: [ProfileComponent],
+//       imports: [
+//           HttpClientModule,
+//           ToastrModule.forRoot()
+//       ],
+//       declarations: [
+//           ProfileComponent
+//       ],
 //       schemas: [NO_ERRORS_SCHEMA],
-//       providers: [PersonalizedPlanService, EventUtilityService, ArrayUtilityService, Global]
+//       providers: [
+//         PersonalizedPlanService, 
+//         EventUtilityService, 
+//         ArrayUtilityService, 
+//         { provide: Global, useValue: mockGlobal }
+//       ]
 //     }).compileComponents();
 
 //     fixture = TestBed.createComponent(ProfileComponent);

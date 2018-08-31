@@ -15,7 +15,8 @@ describe('ShareButtonRouteComponent', () => {
   let fixture: ComponentFixture<ShareButtonRouteComponent>;
   let mockRouter;
   let mockGlobal;
-
+  let mockShareService;
+  
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [BrowserModule,
@@ -25,7 +26,7 @@ describe('ShareButtonRouteComponent', () => {
       providers: [
         BsModalService,
         HttpClient,
-        ShareService,
+        { provide: ShareService, useValue: mockShareService },
         { provide: Router, useValue: mockRouter },
         { provide: ActivatedRoute,
           useValue: {snapshot: {params: {'id': '123'}}}
