@@ -513,45 +513,64 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
 
-        //[Fact]
-        //public void CreateResourceUploadAsyncTestsShouldReturnProperData()
-        //{
-        //    //arrange
-        //    var form = this.formData;
-        //    var resource = JsonConvert.SerializeObject(form);
-        //    Document document = new Document();
-        //    JsonTextReader reader = new JsonTextReader(new StringReader(form[0].ToString()));
-        //    document.LoadFrom(reader);
-        //    dynamic actualResourceData = null;
-
-        //    //act
-        //    var dbResponse = backendDatabaseService.CreateItemAsync<dynamic>(form, cosmosDbSettings.ResourceCollectionId).ReturnsForAnyArgs(document);
-        //    var dbResponseResource = topicsResourcesSettings.UpsertResourceDocumentAsync(resource).ReturnsForAnyArgs(form[0]);
-        //    string filePath = Path.Combine(Environment.CurrentDirectory, "TestData\\ResourceData.json");
-        //    var response = topicsResourcesBusinessLogic.UploadResourcesUploadAsync(filePath).Result;
-        //    foreach (var result in response)
-        //    {
-        //        actualResourceData = result;
-        //    }
-
-        //    //assert
-        //    Assert.Equal(expectedformData[0].ToString(), actualResourceData.ToString());
-        //}
-
         [Fact]
-        public void CreateResourceAsyncTestsShouldReturnProperData()
+        public void CreateResourceUploadAsyncTestsShouldReturnProperData()
         {
             //arrange
             var form = this.formData;
-            var resource = JsonConvert.SerializeObject(form);
+            var resource = form;
+            string id = "77d301e7-6df2-612e-4704-c04edf271806";
             Document document = new Document();
             JsonTextReader reader = new JsonTextReader(new StringReader(form[0].ToString()));
             document.LoadFrom(reader);
             dynamic actualResourceData = null;
+            object resourceObjects = null;
+            string filePath = Path.Combine(Environment.CurrentDirectory, "TestData\\FormsData.json");
+            using (StreamReader r = new StreamReader(filePath))
+            {
+                string json = r.ReadToEnd();
+                resourceObjects = JsonConvert.DeserializeObject<List<dynamic>>(json);
+            }
+            string resourceType = "Forms";
+            List<string> propertyNames = new List<string>() { Constants.Id, Constants.ResourceType };
+            List<string> values = new List<string>() { id, resourceType };
 
             //act
+            var dbResponseFind = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.ResourceCollectionId, propertyNames, values).ReturnsForAnyArgs(resourceObjects);
             var dbResponse = backendDatabaseService.CreateItemAsync<dynamic>(form, cosmosDbSettings.ResourceCollectionId).ReturnsForAnyArgs(document);
-            var dbResponseTopicTag = topicsResourcesSettings.UpsertResourcesForms(form[0]).ReturnsForAnyArgs<dynamic>(expectedformData[0]);
+            var dbResponseUpdate = backendDatabaseService.UpdateItemAsync<dynamic>(id, form, cosmosDbSettings.TopicCollectionId).ReturnsForAnyArgs(document);
+            var dbResponseResource = topicsResourcesSettings.UpsertResourceDocumentAsync(resource).ReturnsForAnyArgs(form[0]);
+            var response = topicsResourcesBusinessLogic.UpsertResourcesUploadAsync(filePath).Result;
+            foreach (var result in response)
+            {
+                actualResourceData = result;
+            }
+
+            //assert
+            Assert.Equal(expectedformData[0].ToString(), actualResourceData.ToString());
+        }
+
+        [Fact]
+        public void UpsertResourceAsyncTestsShouldReturnProperData()
+        {
+            //arrange
+            var resource = this.formData;
+            Document document = new Document();
+            JsonTextReader reader = new JsonTextReader(new StringReader(resource[0].ToString()));
+            document.LoadFrom(reader);
+            dynamic actualResourceData = null;
+            object resourceArray = emptyUpsertData;
+            string json = resourceArray.ToString();
+            var resourceObjects = JsonConvert.DeserializeObject<List<dynamic>>(json);
+            string id = "f47a01e9-c5dc-48f1-993f-6a69324317e6";
+            string resourceType = "Forms";
+            List<string> propertyNames = new List<string>() { Constants.Id, Constants.ResourceType };
+            List<string> values = new List<string>() { id, resourceType };
+
+            //act
+            var dbResponseFind = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.ResourceCollectionId, propertyNames, values).ReturnsForAnyArgs(resourceObjects);
+            var dbResponse = backendDatabaseService.CreateItemAsync<dynamic>(resource, cosmosDbSettings.ResourceCollectionId).ReturnsForAnyArgs(document);
+            var dbResponseTopicTag = topicsResourcesSettings.UpsertResourcesForms(resource[0]).ReturnsForAnyArgs<dynamic>(expectedformData[0]);
             var response = topicsResourcesBusinessLogic.UpsertResourceDocumentAsync(resource).Result;
             foreach (var result in response)
             {
@@ -563,7 +582,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void CreateResourcesFormsTestsShouldReturnProperData()  //To do - CreateFormsAsyncEmptyData after excpetion logging
+        public void UpsertResourcesFormsTestsShouldReturnProperData()  //To do - CreateFormsAsyncEmptyData after excpetion logging
         {
             //arrange
             var form = this.formData[0];
@@ -594,7 +613,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void CreateResourcesActionPlansTestsShouldReturnProperData()  //To do - CreateActionPlansAsyncEmptyData after excpetion logging
+        public void UpsertResourcesActionPlansTestsShouldReturnProperData()  //To do - CreateActionPlansAsyncEmptyData after excpetion logging
         {
             //arrange
             var actionPlan = this.actionPlanData[0];
@@ -626,7 +645,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void CreateResourcesArticlesTestsShouldReturnProperData()
+        public void UpsertResourcesArticlesTestsShouldReturnProperData()
         {
             //arrange
             var article = this.articleData[0];
@@ -657,7 +676,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void CreateResourcesVideosTestsShouldReturnProperData()
+        public void UpsertResourcesVideosTestsShouldReturnProperData()
         {
             //arrange
             var video = this.videoData[0];
@@ -688,7 +707,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void CreateResourcesOrganizationsTestsShouldReturnProperData()
+        public void UpsertResourcesOrganizationsTestsShouldReturnProperData()
         {
             //arrange
             var organization = this.organizationData[0];
@@ -719,7 +738,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void CreateResourcesEssentialReadingsTestsShouldReturnProperData()
+        public void UpsertResourcesEssentialReadingsTestsShouldReturnProperData()
         {
             //arrange
             var essentialReading = this.essentialReadingData[0];
@@ -840,7 +859,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void CreateTopicsTestsShouldReturnProperData()
+        public void UpsertTopicsTestsShouldReturnProperData()
         {
             //arrange
             var topic = this.topicData[0];
