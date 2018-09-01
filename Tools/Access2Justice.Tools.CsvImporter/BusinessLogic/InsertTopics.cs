@@ -1,4 +1,6 @@
 ﻿using Access2Justice.Tools.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,7 +15,8 @@ namespace Access2Justice.Tools.BusinessLogic
     {
         public dynamic CreateJsonFromCSV()
         {
-            string path = Path.Combine(Environment.CurrentDirectory, "SampleFiles\\Topic_Data_tab.txt");
+            //string path = Path.Combine(Environment.CurrentDirectory, "SampleFiles\\Topic_Data_tab.txt");
+            string path = @"C:\\Users\\v-sobhad\\Desktop\\EvolveDataTool\\Topic_Data_tab.txt";
             string textFilePath = path;
             const Int32 BufferSize = 128;
             int recordNumber = 1;
@@ -37,7 +40,8 @@ namespace Access2Justice.Tools.BusinessLogic
                         {
                             List<string> value = new List<string>();
                             string[] partsb = line2.Split('\t');
-                            ParentTopicID[] parentTopicIds = null;
+                            //ParentTopicID[] parentTopicIds = null;
+                            List<ParentTopicID> parentTopicIds = new List<ParentTopicID>();
                             List<Locations> locations = new List<Locations>();
                             QuickLinks[] quickLinks = null;
                             dynamic id = null; string name = string.Empty; string keywords = string.Empty;
@@ -108,6 +112,8 @@ namespace Access2Justice.Tools.BusinessLogic
                                     icon = partsb[11];
                                 }
                             }
+
+
                             quickLinks = GetQuickLinks(quickLinkURLText, quickLinkURLLink);
                             locations = GetLocations(state, county, city, zipcode);
                             topic = new Topic()
@@ -116,7 +122,7 @@ namespace Access2Justice.Tools.BusinessLogic
                                 Name = name,
                                 Overview = overview,
                                 QuickLinks = quickLinks,
-                                ParentTopicId = parentTopicIds,
+                                ParentTopicId = parentTopicIds.Count>0 ? parentTopicIds: null,
                                 ResourceType = "Topics",
                                 Keywords = keywords,
                                 Location = locations,
@@ -142,11 +148,10 @@ namespace Access2Justice.Tools.BusinessLogic
         }
 
         public dynamic GetParentId(string parentId)
-        {
-            ParentTopicID[] parentTopicIds = null;
+        {            
             string[] parentsb = null;
             parentsb = parentId.Split('|');
-            parentTopicIds = new ParentTopicID[parentsb.Length];
+            List<ParentTopicID> parentTopicIds = new List<ParentTopicID>();
             for (int topicIdIterator = 0; topicIdIterator < parentsb.Length; topicIdIterator++)
             {
                 string trimParentTopicId = (parentsb[topicIdIterator]).Trim();
@@ -154,11 +159,12 @@ namespace Access2Justice.Tools.BusinessLogic
                 if (trimParentTopicId.Length > 36)
                 {
                     parentTopicGuid = trimParentTopicId.Substring(trimParentTopicId.Length - 36, 36);
+
+                    parentTopicIds.Add(new ParentTopicID
+                    {
+                        ParentTopicId = parentTopicGuid
+                    });
                 }
-                parentTopicIds[topicIdIterator] = new ParentTopicID()
-                {
-                    ParentTopicId = parentTopicGuid
-                };
             }
             return parentTopicIds;
         }
