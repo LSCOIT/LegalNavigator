@@ -166,7 +166,6 @@ namespace Access2Justice.Shared.Models
 
     public class Form: Resource
     {
-        [Required(ErrorMessage = "Overview is a required field.")]
         [JsonProperty(PropertyName = "overview")]
         public string Overview { get; set; }
 

@@ -1,5 +1,6 @@
 ﻿using Access2Justice.Tools.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,153 +10,185 @@ namespace Access2Justice.Tools.BusinessLogic
 {
     class InsertResources
     {
-        public Resources CreateJsonFromCSV()
+        public dynamic CreateJsonFromCSV()
         {
-            // path to the schema file to be converted. Look at the included 
-            // sample file in this same project 'SampleFiles/Resource_Data_tab'.
-            string path = "";
+            //string path = Path.Combine(Environment.CurrentDirectory, "SampleFiles\\Resource_Data_tab.txt");
+            string path = @"C:\\Users\\v-sobhad\\Desktop\\EvolveDataTool\\Form_Data_tab.txt";
             string textFilePath = path;
             const Int32 BufferSize = 128;
-            int lineCount = File.ReadLines(path).Count();
-            List<Resource> ResourcesList = new List<Resource>();
-            Resources Resources = new Resources();
-            
-
-            using (var fileStream = File.OpenRead(textFilePath))
-            using (var streamReader = new StreamReader(fileStream, Encoding.UTF8, true, BufferSize))
+            int recordNumber = 1;
+            Resource resource = new Resource();
+            List<dynamic> ResourcesList = new List<dynamic>();
+            List<dynamic> Resources = new List<dynamic>();
+            try
             {
-                String line1, line2;
-                line1 = streamReader.ReadLine();
-                string[] parts = line1.Split('\t');
-                string val;
-
-                while ((line2 = streamReader.ReadLine()) != null)
+                int lineCount = File.ReadLines(path).Count();
+                using (var fileStream = File.OpenRead(textFilePath))
+                using (var streamReader = new StreamReader(fileStream, Encoding.UTF8, true, BufferSize))
                 {
-                    List<string> value = new List<string>();
-                    string[] partsb = line2.Split('\t');
-                    Conditions[] conditions = null;
-                    ReferenceTag[] referenceTags = null;
-                    List<Locations> locations = new List<Locations>();
+                    String line1, line2;
+                    line1 = streamReader.ReadLine();
+                    string[] parts = line1.Split('\t');
+                    string val;
+                    string tabName = "Forms";
 
-                    for (int iterationCounter = 0; iterationCounter < partsb.Length; iterationCounter++)
+                    if (tabName == "Forms")
                     {
-                        val = parts[iterationCounter];
-                        if (val.EndsWith("referenceTags", StringComparison.CurrentCultureIgnoreCase))
+                        Form form = new Form();
+                        if (ValidateFormHeader(parts, 0) && (recordNumber < lineCount))
                         {
-                            string referenceId = partsb[iterationCounter];
-                            referenceTags = GetReferenceTags(referenceId);
-                        }
+                            while ((line2 = streamReader.ReadLine()) != null)
+                            {
+                                List<string> value = new List<string>();
+                                string[] partsb = line2.Split('\t');
+                                //ParentTopicID[] ParentTopicIDs = null;
+                                List<TopicTag> topicTagIds = new List<TopicTag>();
+                                List<Locations> locations = new List<Locations>();
+                                dynamic id = null; string name = string.Empty; string type = string.Empty; string description = string.Empty; string url = string.Empty;
+                                string resourceType = string.Empty; string state = string.Empty; string county = string.Empty; string city = string.Empty; string zipcode = string.Empty;
+                                string overview = string.Empty; string icon = string.Empty;
+                                for (int iterationCounter = 0; iterationCounter < partsb.Length; iterationCounter++)
+                                {
+                                    val = parts[iterationCounter];
+                                    if (val.EndsWith("Id", StringComparison.CurrentCultureIgnoreCase))
+                                    {
+                                        id = (partsb[0]).Trim();
+                                    }
 
-                        else if (val.EndsWith("location", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            string locationId = partsb[iterationCounter];
-                            locations = GetLocations(locationId);
-                        }
+                                    else if (val.EndsWith("Name*", StringComparison.CurrentCultureIgnoreCase))
+                                    {
+                                        name = (partsb[1]).Trim();
+                                    }
 
-                        else if (val.EndsWith("conditions", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            string conditionId = partsb[iterationCounter];
-                            conditions = GetConditions(conditionId);
-                        }
+                                    else if (val.Equals("Type*", StringComparison.CurrentCultureIgnoreCase))
+                                    {
+                                        type = (partsb[2]).Trim();
+                                    }
 
-                        else
-                        {
-                            value.Add(partsb[iterationCounter]);
+                                    else if (val.EndsWith("Description*", StringComparison.CurrentCultureIgnoreCase))
+                                    {
+                                        description = (partsb[3]).Trim();
+                                    }
+
+                                    else if (val.Equals("Resource Type*", StringComparison.CurrentCultureIgnoreCase))
+                                    {
+                                        resourceType = (partsb[4]).Trim();
+                                    }
+
+                                    else if (val.EndsWith("URL*", StringComparison.CurrentCultureIgnoreCase))
+                                    {
+                                        url = (partsb[5]).Trim();
+                                    }
+
+                                    else if (val.EndsWith("Topic*", StringComparison.CurrentCultureIgnoreCase))
+                                    {
+                                        string topicTag = (partsb[6]).Trim();
+                                        topicTagIds = GetTopicTags(topicTag);
+                                    }
+
+                                    else if (val.EndsWith("Location_State*", StringComparison.CurrentCultureIgnoreCase))
+                                    {
+                                        state = (partsb[7]).Trim();
+                                    }
+
+                                    else if (val.EndsWith("Location_County", StringComparison.CurrentCultureIgnoreCase))
+                                    {
+                                        county = (partsb[8]).Trim();
+                                    }
+
+                                    else if (val.EndsWith("Location_City", StringComparison.CurrentCultureIgnoreCase))
+                                    {
+                                        city = (partsb[9]).Trim();
+                                    }
+
+                                    else if (val.EndsWith("Location_Zip", StringComparison.CurrentCultureIgnoreCase))
+                                    {
+                                        zipcode = (partsb[10]).Trim();
+                                    }
+
+                                    else if (val.EndsWith("Icon", StringComparison.CurrentCultureIgnoreCase))
+                                    {
+                                        icon = (partsb[11]).Trim();
+                                    }
+
+                                    else if (val.EndsWith("Overview", StringComparison.CurrentCultureIgnoreCase))
+                                    {
+                                        overview = (partsb[12]).Trim();
+                                    }
+                                }
+
+                                InsertTopics topic = new InsertTopics();
+                                locations = topic.GetLocations(state, county, city, zipcode);
+                                form = new Form()
+                                {
+                                    ResourceId = id == "" ? Guid.NewGuid() : id,
+                                    Name = name,
+                                    Type = type,
+                                    Description = description,
+                                    ResourceType = resourceType,
+                                    Urls = url,
+                                    TopicTags = topicTagIds,
+                                    Location = locations,
+                                    Icon = icon,
+                                    Overview = overview,
+                                    CreatedBy = "Admin Import tool",
+                                    ModifiedBy = "Admin Import tool"
+                                };
+                                form.Validate();
+                                ResourcesList.Add(form);
+                                recordNumber++;
+                            }
                         }
                     }
-                    var newResourceId = Guid.NewGuid();
-                    ResourcesList.Add(new Resource()
-                    {
-                        Name = value[1],
-                        Description = value[2],
-                        ResourceType = value[3],
-                        ExternalUrls = value[4],
-                        Urls = value[5],
-                        ReferenceTags = referenceTags,
-                        Location = locations,
-                        Icon = value[6],
-                        Condition = conditions,
-                        Overview = value[7],
-                        HeadLine1 = value[8],
-                        HeadLine2 = value[9],
-                        HeadLine3 = value[10],
-                        IsRecommended = value[11],
-                        SubService = value[12],
-                        Street = value[13],
-                        City = value[14],
-                        State = value[15],
-                        ZipCode = value[16],
-                        Telephone = value[17],
-                        EligibilityInformation = value[18],
-                        ReviewedByCommunityMember = value[19],
-                        ReviewerFullName = value[20],
-                        ReviewerTitle = value[21],
-                        ReviewerImage = value[22],
-                        FullDescription = value[23],
-                        CreatedBy = value[24],
-                        ModifiedBy = value[25]
-                    });
+                    else if(tabName == "Action Plans") { }
                 }
+                Resources = ResourcesList;
             }
-            Resources.ResourcesList = ResourcesList.ToList();
+            catch (Exception ex)
+            {
+                InsertTopics.ErrorLogging(ex, recordNumber);
+                InsertTopics.ReadError();
+                Resources = null;
+            }
             return Resources;
         }
 
-        public dynamic GetReferenceTags(string referenceId)
-        {
-            ReferenceTag[] referenceTags = null;
-            string[] referencesb = null;
-            referencesb = referenceId.Split('|');
-            referenceTags = new ReferenceTag[referencesb.Length];
-            for (int referenceTagIterator = 0; referenceTagIterator < referencesb.Length; referenceTagIterator++)
-            {
-                referenceTags[referenceTagIterator] = new ReferenceTag()
-                {
-                    ReferenceTags = referencesb[referenceTagIterator],
-                };
-            }
-            return referenceTags;
-        }
+        //public dynamic GetReferenceTags(string referenceId)
+        //{
+        //    ReferenceTag[] referenceTags = null;
+        //    string[] referencesb = null;
+        //    referencesb = referenceId.Split('|');
+        //    referenceTags = new ReferenceTag[referencesb.Length];
+        //    for (int referenceTagIterator = 0; referenceTagIterator < referencesb.Length; referenceTagIterator++)
+        //    {
+        //        referenceTags[referenceTagIterator] = new ReferenceTag()
+        //        {
+        //            ReferenceTags = referencesb[referenceTagIterator],
+        //        };
+        //    }
+        //    return referenceTags;
+        //}
 
-        public dynamic GetLocations(string locationId)
+        public dynamic GetTopicTags(string tagId)
         {
-            List<Locations> locations = new List<Locations>();
-            string[] locsb = null;
-            locsb = locationId.Split('|');
-            for (int locationIterator = 0; locationIterator < locsb.Length; locationIterator++)
+            string[] topicTagsb = null;
+            topicTagsb = tagId.Split('|');
+            List<TopicTag> topicTagIds = new List<TopicTag>();
+            for (int topicTagIterator = 0; topicTagIterator < topicTagsb.Length; topicTagIterator++)
             {
-                string tempLocationsId = locsb[locationIterator];
-                string[] locationsb = null;
-                locationsb = tempLocationsId.Split(';');
-                if (locationsb.Length == 4)
+                string trimTopicTagId = (topicTagsb[topicTagIterator]).Trim();
+                string topicTagGuid = string.Empty;
+                if (trimTopicTagId.Length > 36)
                 {
-                    int position = 0;
-                    var specificLocations = new Locations();
-                    string state = string.Empty, county = string.Empty, city = string.Empty, zipCode = string.Empty;
-                    foreach (var subLocations in tempLocationsId.Split(';'))
+                    topicTagGuid = trimTopicTagId.Substring(trimTopicTagId.Length - 36, 36);
+
+                    topicTagIds.Add(new TopicTag
                     {
-                        state = position == 0 && string.IsNullOrEmpty(state) ? subLocations : state;
-                        county = position == 1 && string.IsNullOrEmpty(county) ? subLocations : county;
-                        city = position == 2 && string.IsNullOrEmpty(city) ? subLocations : city;
-                        zipCode = position == 3 && string.IsNullOrEmpty(zipCode) ? subLocations : zipCode;
-
-                        if (position == 3)
-                        {
-                            specificLocations = new Locations()
-                            {
-                                State = state,
-                                County = county,
-                                City = city,
-                                ZipCode = zipCode,
-                            };
-                        }
-                        position++;
-                    }
-                    locations.Add(specificLocations);
+                        TopicTags = topicTagGuid
+                    });
                 }
-
             }
-            return locations;
+            return topicTagIds;
         }
 
         public dynamic GetConditions(string conditionId)
@@ -168,10 +201,47 @@ namespace Access2Justice.Tools.BusinessLogic
             {
                 conditions[conditionIterator] = new Conditions()
                 {
-                    Condition = conditionsb[conditionIterator],
+                    //Condition = conditionsb[conditionIterator],
                 };
             }
             return conditions;
+        }
+
+        public static bool ValidateFormHeader(string[] header, int recordNumber)
+        {
+            bool correctHeader = false;
+            IStructuralEquatable actualHeader = header;
+            string[] expectedHeader = {"Id", "Name*", "Type*", "Description*", "Resource Type*", "URL*", "Topic*", "Location_State*", "Location_County", "Location_City",
+                    "Location_Zip", "Icon", "Overview" };
+
+            try
+            {
+                if (actualHeader.Equals(expectedHeader, StructuralComparisons.StructuralEqualityComparer))
+                {
+                    correctHeader = true;
+                }
+                else
+                {
+                    dynamic logHeader = null;
+                    int count = 0;
+                    foreach (var item in expectedHeader)
+                    {
+                        logHeader = logHeader + item;
+                        if (count < expectedHeader.Count() - 1)
+                        {
+                            logHeader = logHeader + ", ";
+                            count++;
+                        }
+                    }
+                    throw new Exception("Expected header:" + "\n" + logHeader);
+                }
+            }
+            catch (Exception ex)
+            {
+                InsertTopics.ErrorLogging(ex, recordNumber);
+                InsertTopics.ReadError();
+            }
+            return correctHeader;
         }
     }
 }

@@ -289,25 +289,6 @@ namespace Access2Justice.Api.BusinessLogic
                     parentTopicIds.Add(new ParentTopicId { ParentTopicIds = id });
                 }
             }
-            //if (parentTopicIdValues[0].id.ToString() == "[]")
-            //{
-            //    parentTopicIds.Add(new ParentTopicId());
-            //}
-            //else
-            //{
-            //    foreach (var parentTopic in parentTopicIdValues)
-            //    {
-            //        string id = string.Empty;
-            //        foreach (JProperty parentId in parentTopic)
-            //        {
-            //            if (parentId.Name == "id")
-            //            {
-            //                id = parentId.Value.ToString();
-            //            }
-            //        }
-            //        parentTopicIds.Add(new ParentTopicId { ParentTopicIds = id });
-            //    }
-            //}
             return parentTopicIds;
         }
 
