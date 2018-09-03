@@ -173,7 +173,7 @@ fdescribe('GuidedAssistantSidebarComponent', () => {
     spyOn(paginationService, 'getPagedResources');
     paginationService.getPagedResources(mockresourceInput);
     expect(paginationService.getPagedResources).toHaveBeenCalled();
-    expect(component.guidedAssistantResults).toEqual("test");
+    expect(component.guidedAssistantId).toBeUndefined();
   });
 
 });
