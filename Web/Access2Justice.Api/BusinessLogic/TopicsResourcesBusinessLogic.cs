@@ -170,12 +170,12 @@ namespace Access2Justice.Api.BusinessLogic
 
                 else if (field.Name == "parentTopicId")
                 {
-                    parentTopicIds = GetParentTopicIds(field.Value);
+                    parentTopicIds = field.Value != null && field.Value.Count() > 0 ? GetParentTopicIds(field.Value) : null;
                 }
 
                 else if (field.Name == "quickLinks")
                 {
-                    quickLinks = GetQuickLinks(field.Value);
+                    quickLinks = field.Value != null && field.Value.Count() > 0 ? GetQuickLinks(field.Value) : null;
                 }
             }
 

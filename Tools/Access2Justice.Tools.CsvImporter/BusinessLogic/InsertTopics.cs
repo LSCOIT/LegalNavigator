@@ -1,13 +1,12 @@
 ﻿using Access2Justice.Tools.Models;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using DocumentFormat.OpenXml.Packaging;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
-
+using Spreadsheet = DocumentFormat.OpenXml.Spreadsheet;
 
 namespace Access2Justice.Tools.BusinessLogic
 {
@@ -15,105 +14,135 @@ namespace Access2Justice.Tools.BusinessLogic
     {
         public dynamic CreateJsonFromCSV()
         {
-            //string path = Path.Combine(Environment.CurrentDirectory, "SampleFiles\\Topic_Data_tab.txt");
-            string path = @"C:\\Users\\v-sobhad\\Desktop\\EvolveDataTool\\Topic_Data_tab.txt";
+            string path = Path.Combine(Environment.CurrentDirectory, "SampleFiles\\Topics_Import_Template_V4.xlsx");
             string textFilePath = path;
-            const Int32 BufferSize = 128;
             int recordNumber = 1;
             Topic topic = new Topic();
             List<dynamic> topicsList = new List<dynamic>();
             List<dynamic> topics = new List<dynamic>();
             try
             {
-                int lineCount = File.ReadLines(path).Count();                
-                using (var fileStream = File.OpenRead(textFilePath))                
-                using (var streamReader = new StreamReader(fileStream, Encoding.UTF8, true, BufferSize))
+                using (SpreadsheetDocument spreadsheetDocument =
+                    SpreadsheetDocument.Open(path, false))
                 {
-                    String line1, line2;
-                    line1 = streamReader.ReadLine();
-                    string[] parts = line1.Split('\t');
-                    string val;
-
-                    if (ValidateTopicHeader(parts, 0) && (recordNumber < lineCount))
+                    WorkbookPart workbookPart = spreadsheetDocument.WorkbookPart;
+                    WorksheetPart worksheetPart = workbookPart.WorksheetParts.First();
+                    Spreadsheet.SharedStringTable sharedStringTable = spreadsheetDocument.WorkbookPart.SharedStringTablePart.SharedStringTable;
+                    Spreadsheet.SheetData sheetData = worksheetPart.Worksheet.Elements<Spreadsheet.SheetData>().First();
+                    Dictionary<string, string> keyValuePairs = new Dictionary<string, string>();
+                    string cellValue;
+                    int counter = 0;
+                    foreach (Spreadsheet.Row row in sheetData.Elements<Spreadsheet.Row>())
                     {
-                        while ((line2 = streamReader.ReadLine()) != null)
+                        dynamic id = null; string name = string.Empty; string keywords = string.Empty;
+                        string state = string.Empty; string county = string.Empty; string city = string.Empty; string zipcode = string.Empty;
+                        string overview = string.Empty; string quickLinkURLText = string.Empty; string quickLinkURLLink = string.Empty; string icon = string.Empty;
+                        List<ParentTopicID> parentTopicIds = new List<ParentTopicID>();
+                        List<Locations> locations = new List<Locations>();
+                        List<QuickLinks> quickLinks = null;
+
+                        foreach (Spreadsheet.Cell cell in row.Elements<Spreadsheet.Cell>())
                         {
-                            List<string> value = new List<string>();
-                            string[] partsb = line2.Split('\t');
-                            //ParentTopicID[] parentTopicIds = null;
-                            List<ParentTopicID> parentTopicIds = new List<ParentTopicID>();
-                            List<Locations> locations = new List<Locations>();
-                            QuickLinks[] quickLinks = null;
-                            dynamic id = null; string name = string.Empty; string keywords = string.Empty;
-                            string state = string.Empty; string county = string.Empty; string city = string.Empty; string zipcode = string.Empty;
-                            string overview = string.Empty; string quickLinkURLText = string.Empty; string quickLinkURLLink = string.Empty; string icon = string.Empty;
-                            for (int iterationCounter = 0; iterationCounter < partsb.Length; iterationCounter++)
+                            cellValue = cell.InnerText;
+                            if (!string.IsNullOrEmpty(cellValue))
                             {
-                                val = parts[iterationCounter];
-                                if (val.EndsWith("Topic_ID*", StringComparison.CurrentCultureIgnoreCase))
+                                string cellActualValue = string.Empty;
+                                if (cell.DataType == Spreadsheet.CellValues.SharedString)
                                 {
-                                    id = (partsb[0]).Trim();
+                                    cellActualValue = sharedStringTable.ElementAt(Int32.Parse(cellValue,CultureInfo.InvariantCulture)).InnerText;
+                                }
+                                else
+                                {
+                                    cellActualValue = cellValue;
                                 }
 
-                                else if (val.EndsWith("Topic_Name*", StringComparison.CurrentCultureIgnoreCase))
+                                if (counter == 0)
                                 {
-                                    name = (partsb[1]).Trim();
+                                    keyValuePairs.Add(cellActualValue, cell.CellReference);
                                 }
-
-                                else if (val.EndsWith("Parent_Topic*", StringComparison.CurrentCultureIgnoreCase))
+                                else
                                 {
-                                    string parentId = partsb[2];
-                                    parentTopicIds = GetParentId(parentId);
-                                }
+                                    IEnumerable<string> keyValue = null;
+                                    if (cell.CellReference.Value.Length == 2)
+                                    {
+                                        keyValue = from a in keyValuePairs where a.Value.Take(1).First() == cell.CellReference.Value.Take(1).First() select a.Key;
+                                    }
+                                    else if (cell.CellReference.Value.Length == 3)
+                                    {
+                                        keyValue = from a in keyValuePairs where a.Value.Take(2).First() == cell.CellReference.Value.Take(2).First() select a.Key;
+                                    }
 
-                                else if (val.EndsWith("Keywords*", StringComparison.CurrentCultureIgnoreCase))
-                                {
-                                    keywords = (partsb[3]).Trim();
-                                }
+                                    if (keyValue.Count() > 0)
+                                    {
+                                        string val = keyValue.First();
+                                        if (val.EndsWith("Topic_ID*", StringComparison.CurrentCultureIgnoreCase))
+                                        {
+                                            id = cellActualValue.Trim();
+                                        }
 
-                                else if (val.EndsWith("Location_State*", StringComparison.CurrentCultureIgnoreCase))
-                                {
-                                    state = (partsb[4]).Trim();
-                                }
+                                        else if (val.EndsWith("Topic_Name*", StringComparison.CurrentCultureIgnoreCase))
+                                        {
+                                            name = cellActualValue.Trim();
+                                        }
 
-                                else if (val.EndsWith("Location_County", StringComparison.CurrentCultureIgnoreCase))
-                                {
-                                    county = (partsb[5]).Trim();
-                                }
+                                        else if (val.EndsWith("Parent_Topic*", StringComparison.CurrentCultureIgnoreCase))
+                                        {
+                                            string parentId = cellActualValue;
+                                            parentTopicIds = GetParentId(parentId);
+                                        }
 
-                                else if (val.EndsWith("Location_City", StringComparison.CurrentCultureIgnoreCase))
-                                {
-                                    city = (partsb[6]).Trim();
+                                        else if (val.EndsWith("Keywords*", StringComparison.CurrentCultureIgnoreCase))
+                                        {
+                                            keywords = (cellActualValue).Trim();
+                                        }
 
-                                }
+                                        else if (val.EndsWith("Location_State*", StringComparison.CurrentCultureIgnoreCase))
+                                        {
+                                            state = (cellActualValue).Trim();
+                                        }
 
-                                else if (val.EndsWith("Location_Zip", StringComparison.CurrentCultureIgnoreCase))
-                                {
-                                    zipcode = (partsb[7]).Trim();
-                                }
+                                        else if (val.EndsWith("Location_County", StringComparison.CurrentCultureIgnoreCase))
+                                        {
+                                            county = (cellActualValue).Trim();
+                                        }
 
-                                else if (val.EndsWith("Overview", StringComparison.CurrentCultureIgnoreCase))
-                                {
-                                    overview = (partsb[8]).Trim();
-                                }
+                                        else if (val.EndsWith("Location_City", StringComparison.CurrentCultureIgnoreCase))
+                                        {
+                                            city = (cellActualValue).Trim();
 
-                                else if (val.EndsWith("Quick_Links_URL_text", StringComparison.CurrentCultureIgnoreCase))
-                                {
-                                    quickLinkURLText = (partsb[9]).Trim();
-                                }
+                                        }
 
-                                else if (val.EndsWith("Quick_Links_URL_link", StringComparison.CurrentCultureIgnoreCase))
-                                {
-                                    quickLinkURLLink = (partsb[10]).Trim();
-                                }
+                                        else if (val.EndsWith("Location_Zip", StringComparison.CurrentCultureIgnoreCase))
+                                        {
+                                            zipcode = (cellActualValue).Trim();
+                                        }
 
-                                else if (val.EndsWith("Icon", StringComparison.CurrentCultureIgnoreCase))
-                                {
-                                    icon = partsb[11];
+                                        else if (val.EndsWith("Overview", StringComparison.CurrentCultureIgnoreCase))
+                                        {
+                                            overview = (cellActualValue).Trim();
+                                        }
+
+                                        else if (val.EndsWith("Quick_Links_URL_text", StringComparison.CurrentCultureIgnoreCase))
+                                        {
+                                            quickLinkURLText = (cellActualValue).Trim();
+                                        }
+
+                                        else if (val.EndsWith("Quick_Links_URL_link", StringComparison.CurrentCultureIgnoreCase))
+                                        {
+                                            quickLinkURLLink = (cellActualValue).Trim();
+                                        }
+
+                                        else if (val.EndsWith("Icon", StringComparison.CurrentCultureIgnoreCase))
+                                        {
+                                            icon = cellActualValue;
+                                        }
+                                    }
                                 }
                             }
+                        }
 
-
+                        if (counter > 0)
+                        {
                             quickLinks = GetQuickLinks(quickLinkURLText, quickLinkURLLink);
                             locations = GetLocations(state, county, city, zipcode);
                             topic = new Topic()
@@ -121,8 +150,8 @@ namespace Access2Justice.Tools.BusinessLogic
                                 Id = id == "" ? Guid.NewGuid() : id,
                                 Name = name,
                                 Overview = overview,
-                                QuickLinks = quickLinks,
-                                ParentTopicId = parentTopicIds.Count>0 ? parentTopicIds: null,
+                                QuickLinks = quickLinks.Count > 0 ? quickLinks : null,
+                                ParentTopicId = parentTopicIds.Count > 0 ? parentTopicIds : null,
                                 ResourceType = "Topics",
                                 Keywords = keywords,
                                 Location = locations,
@@ -132,9 +161,10 @@ namespace Access2Justice.Tools.BusinessLogic
                             };
                             topic.Validate();
                             topicsList.Add(topic);
-                            recordNumber++;
-                        }                        
-                    }                    
+                        }
+                        counter++;
+                        recordNumber++;
+                    }
                 }
                 topics = topicsList;
             }
@@ -148,7 +178,7 @@ namespace Access2Justice.Tools.BusinessLogic
         }
 
         public dynamic GetParentId(string parentId)
-        {            
+        {
             string[] parentsb = null;
             parentsb = parentId.Split('|');
             List<ParentTopicID> parentTopicIds = new List<ParentTopicID>();
@@ -169,23 +199,22 @@ namespace Access2Justice.Tools.BusinessLogic
             return parentTopicIds;
         }
 
-        public QuickLinks[] GetQuickLinks(string quickLinkText, string quickLinkLink)
+        public List<QuickLinks> GetQuickLinks(string quickLinkText, string quickLinkLink)
         {
-            QuickLinks[] quickLinks = null;
+            List<QuickLinks> quickLinks = new List<QuickLinks>();
             string[] quickLinkTextsb = null;
             string[] quickLinkUrlsb = null;
             quickLinkTextsb = quickLinkText.Split('|');
             quickLinkUrlsb = quickLinkLink.Split('|');
-            quickLinks = new QuickLinks[quickLinkTextsb.Length];
             if (quickLinkTextsb.Length == quickLinkUrlsb.Length)
             {
                 for (int quickLinkIterator = 0; quickLinkIterator < quickLinkTextsb.Length; quickLinkIterator++)
                 {
-                    quickLinks[quickLinkIterator] = new QuickLinks()
+                    quickLinks.Add(new QuickLinks
                     {
                         Text = (quickLinkTextsb[quickLinkIterator]).Trim(),
                         Urls = (quickLinkUrlsb[quickLinkIterator]).Trim()
-                    };
+                    });
                 }
             }
             return quickLinks;
@@ -212,7 +241,7 @@ namespace Access2Justice.Tools.BusinessLogic
                         County = (countysb[locationIterator]).Trim(),
                         City = (citysb[locationIterator]).Trim(),
                         ZipCode = (zipcodesb[locationIterator]).Trim()
-                    };                    
+                    };
                     location.Add(locations);
                 }
             }
@@ -237,13 +266,13 @@ namespace Access2Justice.Tools.BusinessLogic
                     dynamic logHeader = null;
                     int count = 0;
                     foreach (var item in expectedHeader)
-                    {                        
+                    {
                         logHeader = logHeader + item;
-                        if (count < expectedHeader.Count()-1)
+                        if (count < expectedHeader.Count() - 1)
                         {
                             logHeader = logHeader + ", ";
                             count++;
-                        }                        
+                        }
                     }
                     throw new Exception("Expected header:" + "\n" + logHeader);
                 }
@@ -255,7 +284,7 @@ namespace Access2Justice.Tools.BusinessLogic
             }
             return correctHeader;
         }
-        
+
         public static void ErrorLogging(Exception ex, int recordNumber)
         {
             string strPath = Path.Combine(Environment.CurrentDirectory, "SampleFiles\\Error.txt");
@@ -287,5 +316,6 @@ namespace Access2Justice.Tools.BusinessLogic
                 }
             }
         }
+
     }
 }
