@@ -13,7 +13,7 @@ import { IResourceFilter } from '../../search/search-results/search-results.mode
 import { RouterStateSnapshot } from '@angular/router/src/router_state';
 
 fdescribe('GuidedAssistantSidebarComponent', () => {
- 
+
   let component: GuidedAssistantSidebarComponent;
   let fixture: ComponentFixture<GuidedAssistantSidebarComponent>;
   let router: Router;
@@ -34,6 +34,7 @@ fdescribe('GuidedAssistantSidebarComponent', () => {
     locality: 'Sample Location',
     address: 'Sample Address'
   };
+
   let mockresourceInput: IResourceFilter = {
     ResourceType: mockResourceType,
     ContinuationToken: '',
@@ -60,8 +61,9 @@ fdescribe('GuidedAssistantSidebarComponent', () => {
       declarations: [GuidedAssistantSidebarComponent],
       providers: [
         BsModalService,
-        { provide: Router, useValue: { navigate: jasmine.createSpy('navigate') } },        
-        { provide: ActivatedRoute, 
+        { provide: Router, useValue: { navigate: jasmine.createSpy('navigate') } },
+        {
+          provide: ActivatedRoute,
           useValue: {
             snapshot: {
               params: { 'id': 'bd900039-2236-8c2c-8702-d31855c56b0f' }
@@ -166,28 +168,12 @@ fdescribe('GuidedAssistantSidebarComponent', () => {
     expect(component.guidedAssistantId).toBe(mockEmpty);
   });
 
-  xit('should return guidedAssistantLinkResults when getPagedResource method of pagination service called', () => {
-
-    component.searchResultsData = 'test';
-    component.guidedAssistantId = mockGuidedAssistantId;
-    router.url.startsWith("/search");
-    let mockRouterUrl = "/guidedassistant/" + mockGuidedAssistantId;
-    router.navigateByUrl(mockRouterUrl);
-    component.topicIds = [mockActivetopic];
-    component.location = mockMapLocation;
-    sessionStorage.setItem("globalMapLocation", JSON.stringify(mockMapLocation));
-    component.activeTopic = mockActivetopic;
-    component.activeSubTopic = { "name": "Family" };
-    let mockResponse = { "id": "test", "topIntent": "" };
-    let mockguidedAssistantResults = { "id": "test", "topIntent": "Family" };
-    spyOn(paginationService, 'getPagedResources').and.callFake(() => {
-      return Observable.from([mockResponse])
-    });
+  it('should return guidedAssistantLinkResults when getPagedResource method of pagination service called', () => {
     spyOn(navigateDataService, 'setData');
-    component.getGuidedAssistantLinkResult();
-    expect(component.resourceFilter).toEqual(mockresourcesInput);
-    expect(paginationService.getPagedResources).toHaveBeenCalledWith(mockresourcesInput);
-    expect(component.guidedAssistantResults).toEqual(mockResponse);
-    expect(navigateDataService.setData).toHaveBeenCalledWith(mockguidedAssistantResults);
+    spyOn(paginationService, 'getPagedResources');
+    paginationService.getPagedResources(mockresourceInput);
+    expect(paginationService.getPagedResources).toHaveBeenCalled();
+    expect(component.guidedAssistantResults).toEqual("test");
   });
+
 });
