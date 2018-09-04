@@ -31,7 +31,6 @@ namespace Access2Justice.Tools.BusinessLogic
             List<dynamic> ResourcesList = new List<dynamic>();
             List<dynamic> Resources = new List<dynamic>();
             string filePath = Path.Combine(Environment.CurrentDirectory, "SampleFiles\\HI_Resources_Import_Template_v4.xlsx");
-            //string filePath = @"C:\\Users\\v-sobhad\\Desktop\\EvolveDataTool\\HI_Resources_Import_Template_v4_InvalidHeader.xlsx";
             List<string> sheetNames = new List<string>() { "Organizations", "Brochures or Articles", "Videos", "Related Links", "Forms" };
 
             try
