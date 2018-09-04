@@ -155,7 +155,7 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 if (field.Name == "topicTags")
                 {
-                    topicTags = GetTopicTags(field.Value);
+                    topicTags = field.Value != null && field.Value.Count() > 0 ? GetTopicTags(field.Value) : null;
                 }
 
                 else if (field.Name == "location")
@@ -165,7 +165,7 @@ namespace Access2Justice.Api.BusinessLogic
 
                 else if (field.Name == "conditions")
                 {
-                    conditions = GetConditions(field.Value);
+                    conditions = field.Value != null && field.Value.Count() > 0 ? GetConditions(field.Value) : null;
                 }
 
                 else if (field.Name == "parentTopicId")
@@ -210,29 +210,29 @@ namespace Access2Justice.Api.BusinessLogic
         {
             List<Location> locations = new List<Location>();
             foreach (var loc in locationValues)
-            {
-                string state = string.Empty, county = string.Empty, city = string.Empty, zipCode = string.Empty;
-                foreach (JProperty locs in loc)
                 {
-                    if (locs.Name == "state")
+                    string state = string.Empty, county = string.Empty, city = string.Empty, zipCode = string.Empty;
+                    foreach (JProperty locs in loc)
                     {
-                        state = locs.Value.ToString();
+                        if (locs.Name == "state")
+                        {
+                            state = locs.Value.ToString();
+                        }
+                        else if (locs.Name == "county")
+                        {
+                            county = locs.Value.ToString();
+                        }
+                        else if (locs.Name == "city")
+                        {
+                            city = locs.Value.ToString();
+                        }
+                        else if (locs.Name == "zipCode")
+                        {
+                            zipCode = locs.Value.ToString();
+                        }
                     }
-                    else if (locs.Name == "county")
-                    {
-                        county = locs.Value.ToString();
-                    }
-                    else if (locs.Name == "city")
-                    {
-                        city = locs.Value.ToString();
-                    }
-                    else if (locs.Name == "zipCode")
-                    {
-                        zipCode = locs.Value.ToString();
-                    }
+                    locations.Add(new Location { State = state, County = county, City = city, ZipCode = zipCode });
                 }
-                locations.Add(new Location { State = state, County = county, City = city, ZipCode = zipCode });
-            }
             return locations;
         }
 
@@ -240,54 +240,47 @@ namespace Access2Justice.Api.BusinessLogic
         {
             List<Conditions> conditions = new List<Conditions>();
             foreach (var conditon in conditionsValues)
-            {
-                List<Condition> conditionData = new List<Condition>();
-                string title = string.Empty, description = string.Empty;
-                foreach (JProperty conditionJson in conditon)
                 {
-                    if (conditionJson.Name == "condition")
+                    List<Condition> conditionData = new List<Condition>();
+                    string title = string.Empty, description = string.Empty;
+                    foreach (JProperty conditionJson in conditon)
                     {
-                        var conditionDetails = conditionJson.Value;
-                        foreach (JProperty conditionDetail in conditionDetails)
+                        if (conditionJson.Name == "condition")
                         {
-                            if (conditionDetail.Name == "title")
+                            var conditionDetails = conditionJson.Value;
+                            foreach (JProperty conditionDetail in conditionDetails)
                             {
-                                title = conditionDetail.Value.ToString();
+                                if (conditionDetail.Name == "title")
+                                {
+                                    title = conditionDetail.Value.ToString();
+                                }
+                                else if (conditionDetail.Name == "description")
+                                {
+                                    description = conditionDetail.Value.ToString();
+                                }
                             }
-                            else if (conditionDetail.Name == "description")
-                            {
-                                description = conditionDetail.Value.ToString();
-                            }
+                            conditionData.Add(new Condition { Title = title, ConditionDescription = description });
                         }
-                        conditionData.Add(new Condition { Title = title, ConditionDescription = description });
                     }
+                    conditions.Add(new Conditions { ConditionDetail = conditionData });
                 }
-                conditions.Add(new Conditions { ConditionDetail = conditionData });
-            }
             return conditions;
         }
 
         public dynamic GetParentTopicIds(dynamic parentTopicIdValues)
         {
             List<ParentTopicId> parentTopicIds = new List<ParentTopicId>();
-            if (parentTopicIdValues.ToString()=="")
+            foreach (var parentTopic in parentTopicIdValues)
             {
-                parentTopicIds = null;
-            }
-            else
-            {
-                foreach (var parentTopic in parentTopicIdValues)
+                string id = string.Empty;
+                foreach (JProperty parentId in parentTopic)
                 {
-                    string id = string.Empty;
-                    foreach (JProperty parentId in parentTopic)
+                    if (parentId.Name == "id")
                     {
-                        if (parentId.Name == "id")
-                        {
-                            id = parentId.Value.ToString();
-                        }
+                        id = parentId.Value.ToString();
                     }
-                    parentTopicIds.Add(new ParentTopicId { ParentTopicIds = id });
                 }
+                parentTopicIds.Add(new ParentTopicId { ParentTopicIds = id });
             }
             return parentTopicIds;
         }
@@ -311,7 +304,7 @@ namespace Access2Justice.Api.BusinessLogic
                         url = quickLinkDetails.Value.ToString();
                     }
                 }
-                quickLinks.Add(new QuickLinks { Text = text, Urls= url });
+                quickLinks.Add(new QuickLinks { Text = text, Urls = url });
             }
             return quickLinks;
         }
