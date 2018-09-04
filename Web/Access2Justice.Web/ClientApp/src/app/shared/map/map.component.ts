@@ -162,21 +162,7 @@ export class MapComponent implements OnInit {
   ngOnInit() {
     this.getLocationNavigationContent();
     this.showLocality = true;
-    if (location.pathname.indexOf(this.global.shareRouteUrl) != -1) {
-      return;
-    }
-    if (this.mapType) {
-      if (!sessionStorage.getItem("globalMapLocation")) {
-        this.loadCurrentLocation();
-      }
-    } else {      
-      this.showLocality = false;
-    }
-    if (sessionStorage.getItem("globalMapLocation")) {
-      this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
-      this.displayLocationDetails(this.mapLocation);
-    }
-    this.setLocalMapLocation();
+    
     this.subscription = this.mapService.notifyLocation
       .subscribe((value) => {
         this.displayLocationDetails(this.mapLocation);
@@ -185,5 +171,21 @@ export class MapComponent implements OnInit {
       .subscribe((value) => {
         this.getLocationNavigationContent();
       });
+
+    if (location.pathname.indexOf(this.global.shareRouteUrl) != -1) {
+      return;
+    }
+    if (this.mapType) {
+      if (!sessionStorage.getItem("globalMapLocation")) {
+        this.loadCurrentLocation();
+      }
+    } else {
+      this.showLocality = false;
+    }
+    if (sessionStorage.getItem("globalMapLocation")) {
+      this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+      this.displayLocationDetails(this.mapLocation);
+    }
+    this.setLocalMapLocation();
   }
 }
