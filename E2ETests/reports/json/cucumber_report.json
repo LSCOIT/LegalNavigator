@@ -31,7 +31,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 2000000
+              "duration": 1000000
             }
           },
           {
@@ -44,7 +44,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 332000000
+              "duration": 320000000
             }
           },
           {
@@ -57,7 +57,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 369000000
+              "duration": 396000000
             }
           },
           {
@@ -70,7 +70,181 @@
             },
             "result": {
               "status": "passed",
-              "duration": 59000000
+              "duration": 39000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "typeScript\\support\\hooks.js:21"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "node_modules\\protractor-cucumber-framework\\lib\\resultsCapturer.js:25"
+            },
+            "result": {
+              "status": "passed"
+            }
+          }
+        ]
+      },
+      {
+        "id": "search-for-resources;type-in-a-search-term",
+        "keyword": "Scenario",
+        "line": 16,
+        "name": "Type in a search term",
+        "tags": [
+          {
+            "name": "@SearchScenario",
+            "line": 6
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "I am on the Access2Justice website",
+            "match": {
+              "location": "typeScript\\stepdefinitions\\search.steps.js:17"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "I type \"I am getting kicked out\" into the search input field and click search button",
+            "match": {
+              "location": "typeScript\\stepdefinitions\\search.steps.js:20"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 736000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 10,
+            "name": "I can see search results",
+            "match": {
+              "location": "typeScript\\stepdefinitions\\search.steps.js:21"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 18000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 11,
+            "name": "I clear the search text",
+            "match": {
+              "location": "typeScript\\stepdefinitions\\search.steps.js:22"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 24000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "typeScript\\support\\hooks.js:21"
+            },
+            "result": {
+              "status": "passed"
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "node_modules\\protractor-cucumber-framework\\lib\\resultsCapturer.js:25"
+            },
+            "result": {
+              "status": "passed"
+            }
+          }
+        ]
+      },
+      {
+        "id": "search-for-resources;type-in-a-search-term",
+        "keyword": "Scenario",
+        "line": 17,
+        "name": "Type in a search term",
+        "tags": [
+          {
+            "name": "@SearchScenario",
+            "line": 6
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "I am on the Access2Justice website",
+            "match": {
+              "location": "typeScript\\stepdefinitions\\search.steps.js:17"
+            },
+            "result": {
+              "status": "passed"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "I type \"I am facing workplace harassment\" into the search input field and click search button",
+            "match": {
+              "location": "typeScript\\stepdefinitions\\search.steps.js:20"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 394000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 10,
+            "name": "I can see search results",
+            "match": {
+              "location": "typeScript\\stepdefinitions\\search.steps.js:21"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 28000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 11,
+            "name": "I clear the search text",
+            "match": {
+              "location": "typeScript\\stepdefinitions\\search.steps.js:22"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 87000000
             }
           },
           {

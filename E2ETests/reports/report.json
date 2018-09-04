@@ -1,0 +1,72 @@
+[
+  {
+    "description": "  As a user\n  I need to search by a phrase\n  So that I can see the resources",
+    "keyword": "Feature",
+    "name": "Search for resources",
+    "line": 1,
+    "id": "search-for-resources",
+    "tags": [],
+    "uri": "features\\Search.feature",
+    "elements": [
+      {
+        "id": "search-for-resources;type-in-a-search-term",
+        "keyword": "Scenario",
+        "line": 17,
+        "name": "Type in a search term",
+        "tags": [
+          {
+            "name": "@debug",
+            "line": 6
+          },
+          {
+            "name": "@only",
+            "line": 7
+          },
+          {
+            "name": "@SearchScenario",
+            "line": 8
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 10,
+            "name": "I am on the Access2Justice website",
+            "result": {
+              "status": "undefined"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 11,
+            "name": "I type \"I am getting a divorce\" into the search input field and click search button",
+            "result": {
+              "status": "undefined"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 12,
+            "name": "I can see search results",
+            "result": {
+              "status": "undefined"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 13,
+            "name": "I clear the search text",
+            "result": {
+              "status": "undefined"
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

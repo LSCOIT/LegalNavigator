@@ -11,6 +11,7 @@
     "lint": "jslint '**/*.js'",
     "pretest": "npm run lint",
     "test": "protractor typeScript/config/config.js",
+    "debug": "node --inspect=1337 --debug-brk --nolazy node_modules/cucumber/bin/cucumber-js --tags @debug --format json:./reports/report.json",
     "webdriver-update": "webdriver-manager update",
     "webdriver-start": "webdriver-manager start"
   },

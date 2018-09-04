@@ -13,5 +13,7 @@ Scenario Outline: Type in a search term
   Examples:
     | word | 
     | I am getting a divorce |
+    | I am getting kicked out |
+    | I am facing workplace harassment |
 
   

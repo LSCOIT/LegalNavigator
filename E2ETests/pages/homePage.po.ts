@@ -8,24 +8,28 @@ import { $, $$, by, element, until, browser, protractor } from "protractor";
 const chai = require("chai").use(require("chai-as-promised"));
 const expect = chai.expect;
 const assert = chai.assert;
+var option = 0;
 
 export class HomePageObject {
     public searchTab = $("span[class='inline search-text']");
     public searchInputField =  $("#search");
     public searchButton = $("input ~ button");
-    public searchResults = $("app-search-results");
-    public resources = $$("app-resource-card");  // all the resources
+    public results = $$("app-resource-card"); 
    
     public async enterSearchInput(text: string) {
-        await this.searchTab.click();    
+        if (option == 0) {
+            await this.searchTab.click(); 
+        }
+           
         await this.searchInputField.sendKeys(text);
         await this.searchButton.click();
+        option++;
     }
 
     public async getSearchResults() {
+        // Wait till the results are loaded
         await browser.wait(until.elementsLocated(by.tagName("app-resource-card")));
-
-        expect(await this.resources.count()).to.be.at.least(1);
+        expect(await this.results.count()).to.be.at.least(1);
     }
 
     public async clearSearchInput() {
