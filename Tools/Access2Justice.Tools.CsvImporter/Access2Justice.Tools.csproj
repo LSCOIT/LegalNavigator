@@ -23,6 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="SampleFiles\Topics_Import_Template_V4.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="SampleFiles\Topic_Data_tab.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
