@@ -32,6 +32,7 @@ namespace Access2Justice.Tools.BusinessLogic
                     Dictionary<string, string> keyValuePairs = new Dictionary<string, string>();
                     string cellValue;
                     int counter = 0;
+                    bool isValidated = false;
                     foreach (Spreadsheet.Row row in sheetData.Elements<Spreadsheet.Row>())
                     {
                         dynamic id = null; string name = string.Empty; string keywords = string.Empty;
@@ -62,6 +63,19 @@ namespace Access2Justice.Tools.BusinessLogic
                                 }
                                 else
                                 {
+                                    var headerValues = from a in keyValuePairs select a.Key;
+                                    if (!isValidated)
+                                    {
+                                        if (!ValidateTopicHeader(headerValues.ToArray<string>(), recordNumber))
+                                        {
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            isValidated = true;
+                                        }
+                                    }
+                                    
                                     IEnumerable<string> keyValue = null;
                                     if (cell.CellReference.Value.Length == 2)
                                     {
