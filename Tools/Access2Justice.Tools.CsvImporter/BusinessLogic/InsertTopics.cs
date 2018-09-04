@@ -150,7 +150,7 @@ namespace Access2Justice.Tools.BusinessLogic
                                 Id = id == "" ? Guid.NewGuid() : id,
                                 Name = name,
                                 Overview = overview,
-                                QuickLinks = quickLinks.Count > 0 ? quickLinks : null,
+                                QuickLinks = quickLinks,
                                 ParentTopicId = parentTopicIds.Count > 0 ? parentTopicIds : null,
                                 ResourceType = "Topics",
                                 Keywords = keywords,
@@ -201,20 +201,28 @@ namespace Access2Justice.Tools.BusinessLogic
 
         public List<QuickLinks> GetQuickLinks(string quickLinkText, string quickLinkLink)
         {
+
             List<QuickLinks> quickLinks = new List<QuickLinks>();
-            string[] quickLinkTextsb = null;
-            string[] quickLinkUrlsb = null;
-            quickLinkTextsb = quickLinkText.Split('|');
-            quickLinkUrlsb = quickLinkLink.Split('|');
-            if (quickLinkTextsb.Length == quickLinkUrlsb.Length)
+            if (string.IsNullOrEmpty(quickLinkText) || string.IsNullOrEmpty(quickLinkLink))
             {
-                for (int quickLinkIterator = 0; quickLinkIterator < quickLinkTextsb.Length; quickLinkIterator++)
+                quickLinks = null;
+            }
+            else
+            {
+                string[] quickLinkTextsb = null;
+                string[] quickLinkUrlsb = null;
+                quickLinkTextsb = quickLinkText.Split('|');
+                quickLinkUrlsb = quickLinkLink.Split('|');
+                if (quickLinkTextsb.Length == quickLinkUrlsb.Length)
                 {
-                    quickLinks.Add(new QuickLinks
+                    for (int quickLinkIterator = 0; quickLinkIterator < quickLinkTextsb.Length; quickLinkIterator++)
                     {
-                        Text = (quickLinkTextsb[quickLinkIterator]).Trim(),
-                        Urls = (quickLinkUrlsb[quickLinkIterator]).Trim()
-                    });
+                        quickLinks.Add(new QuickLinks
+                        {
+                            Text = (quickLinkTextsb[quickLinkIterator]).Trim(),
+                            Urls = (quickLinkUrlsb[quickLinkIterator]).Trim()
+                        });
+                    }
                 }
             }
             return quickLinks;
