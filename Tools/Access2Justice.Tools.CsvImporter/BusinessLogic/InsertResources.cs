@@ -31,6 +31,7 @@ namespace Access2Justice.Tools.BusinessLogic
             List<dynamic> ResourcesList = new List<dynamic>();
             List<dynamic> Resources = new List<dynamic>();
             string filePath = Path.Combine(Environment.CurrentDirectory, "SampleFiles\\HI_Resources_Import_Template_v4.xlsx");
+            //string filePath = @"C:\\Users\\v-sobhad\\Desktop\\EvolveDataTool\\HI_Resources_Import_Template_v4_InvalidHeader.xlsx";
             List<string> sheetNames = new List<string>() { "Organizations", "Brochures or Articles", "Videos", "Related Links", "Forms" };
 
             try
@@ -485,7 +486,7 @@ namespace Access2Justice.Tools.BusinessLogic
                     overview = cellActualValue;
                 }
             }
-            
+
         }
 
         public static bool ValidateHeader(string[] header, int recordNumber, string resourceType)
@@ -507,123 +508,59 @@ namespace Access2Justice.Tools.BusinessLogic
             {
                 if (resourceType == Constants.FormsResourceType)
                 {
-                    if (actualHeader.Equals(expectedFormHeader, StructuralComparisons.StructuralEqualityComparer))
-                    {
-                        correctHeader = true;
-                    }
-                    else
-                    {
-                        dynamic logHeader = null;
-                        int count = 0;
-                        foreach (var item in expectedFormHeader)
-                        {
-                            logHeader = logHeader + item;
-                            if (count < expectedFormHeader.Count() - 1)
-                            {
-                                logHeader = logHeader + ", ";
-                                count++;
-                            }
-                        }
-                        throw new Exception("Expected header:" + "\n" + logHeader);
-                    }
+                    correctHeader = HeaderValidation(actualHeader, expectedFormHeader);
                 }
 
                 else if (resourceType == Constants.OrganizationResourceType)
                 {
-                    if (actualHeader.Equals(expectedOrganizationHeader, StructuralComparisons.StructuralEqualityComparer))
-                    {
-                        correctHeader = true;
-                    }
-                    else
-                    {
-                        dynamic logHeader = null;
-                        int count = 0;
-                        foreach (var item in expectedOrganizationHeader)
-                        {
-                            logHeader = logHeader + item;
-                            if (count < expectedOrganizationHeader.Count() - 1)
-                            {
-                                logHeader = logHeader + ", ";
-                                count++;
-                            }
-                        }
-                        throw new Exception("Expected header:" + "\n" + logHeader);
-                    }
+                    correctHeader = HeaderValidation(actualHeader, expectedOrganizationHeader);
                 }
 
                 else if (resourceType == Constants.ArticleResourceType)
                 {
-                    if (actualHeader.Equals(expectedArticleHeader, StructuralComparisons.StructuralEqualityComparer))
-                    {
-                        correctHeader = true;
-                    }
-                    else
-                    {
-                        dynamic logHeader = null;
-                        int count = 0;
-                        foreach (var item in expectedArticleHeader)
-                        {
-                            logHeader = logHeader + item;
-                            if (count < expectedArticleHeader.Count() - 1)
-                            {
-                                logHeader = logHeader + ", ";
-                                count++;
-                            }
-                        }
-                        throw new Exception("Expected header:" + "\n" + logHeader);
-                    }
+                    correctHeader = HeaderValidation(actualHeader, expectedArticleHeader);
                 }
 
                 else if (resourceType == Constants.VideoResourceType)
                 {
-                    if (actualHeader.Equals(expectedVideoHeader, StructuralComparisons.StructuralEqualityComparer))
-                    {
-                        correctHeader = true;
-                    }
-                    else
-                    {
-                        dynamic logHeader = null;
-                        int count = 0;
-                        foreach (var item in expectedVideoHeader)
-                        {
-                            logHeader = logHeader + item;
-                            if (count < expectedVideoHeader.Count() - 1)
-                            {
-                                logHeader = logHeader + ", ";
-                                count++;
-                            }
-                        }
-                        throw new Exception("Expected header:" + "\n" + logHeader);
-                    }
+                    correctHeader = HeaderValidation(actualHeader, expectedVideoHeader);
                 }
 
                 else if (resourceType == Constants.RelatedLinkResourceType)
                 {
-                    if (actualHeader.Equals(expectedRelatedLinkHeader, StructuralComparisons.StructuralEqualityComparer))
-                    {
-                        correctHeader = true;
-                    }
-                    else
-                    {
-                        dynamic logHeader = null;
-                        int count = 0;
-                        foreach (var item in expectedRelatedLinkHeader)
-                        {
-                            logHeader = logHeader + item;
-                            if (count < expectedRelatedLinkHeader.Count() - 1)
-                            {
-                                logHeader = logHeader + ", ";
-                                count++;
-                            }
-                        }
-                        throw new Exception("Expected header:" + "\n" + logHeader);
-                    }
+                    correctHeader = HeaderValidation(actualHeader, expectedRelatedLinkHeader);
                 }
             }
             catch (Exception ex)
             {
                 InsertTopics.ErrorLogging(ex, recordNumber);
                 InsertTopics.ReadError();
+            }
+            return correctHeader;
+        }
+
+        public static bool HeaderValidation(IStructuralEquatable header, string[] expectedHeader)
+        {
+            bool correctHeader = false;
+            IStructuralEquatable actualHeader = header;
+            if (actualHeader.Equals(expectedHeader, StructuralComparisons.StructuralEqualityComparer))
+            {
+                correctHeader = true;
+            }
+            else
+            {
+                dynamic logHeader = null;
+                int count = 0;
+                foreach (var item in expectedHeader)
+                {
+                    logHeader = logHeader + item;
+                    if (count < expectedHeader.Count() - 1)
+                    {
+                        logHeader = logHeader + ", ";
+                        count++;
+                    }
+                }
+                throw new Exception("Expected header:" + "\n" + logHeader);
             }
             return correctHeader;
         }
