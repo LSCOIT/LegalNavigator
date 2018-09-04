@@ -24,7 +24,7 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "type")]
         public string Type { get; set; }
 
-        [Required(ErrorMessage = "Description is a required field.")]
+        //[Required(ErrorMessage = "Description is a required field.")]
         [JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
 
