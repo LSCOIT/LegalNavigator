@@ -124,7 +124,7 @@ namespace Access2Justice.Api.Controllers
         [HttpGet("A2JPersonalizedPlan/OriginalAsIsTemplate")]
         public async Task<IActionResult> GetA2JPersonalizedPlan()
         {
-            return Ok(await a2jAuthorBuisnessLogic.GetA2JPersonalizedPlanStepsAsync());
+            return Ok(await a2jAuthorBuisnessLogic.GetA2JPersonalizedPlanAsync());
         }
 
         /// <summary>
@@ -135,11 +135,11 @@ namespace Access2Justice.Api.Controllers
         [HttpPost("A2JPersonalizedPlan/StepsInScope")]
         public async Task<IActionResult> GetA2JPersonalizedPlanStepsInScope([FromBody] CuratedExperienceAnswers userAnswers)
         {
+             // Todo:@Alaa validate and return proper status codes
             var curatedExperience = RetrieveCachedCuratedExperience(userAnswers.CuratedExperienceId);
+            var personalizedPlan = await a2jAuthorBuisnessLogic.GetA2JPersonalizedPlanAsync();
 
-            return Ok(a2jAuthorBuisnessLogic.ExtractStepsInScopeFromA2JPersonalizedPlan(
-                await a2jAuthorBuisnessLogic.GetA2JPersonalizedPlanStepsAsync(), 
-                userAnswers));
+            return Ok(a2jAuthorBuisnessLogic.MapA2JPersonalizedPlanToAccess2JusticeActionPlan(personalizedPlan, userAnswers));
         }
         #endregion
 

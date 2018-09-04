@@ -16,14 +16,14 @@ namespace Access2Justice.Api.BusinessLogic
     {
         private readonly ICosmosDbSettings dbSettings;
         private readonly IBackendDatabaseService dbService;
-        private readonly IPersonalizedPlanEngine a2jParser;
+        private readonly IPersonalizedPlanEngine personalizedPlanEngine;
 
         public A2JAuthorBusinessLogic(ICosmosDbSettings cosmosDbSettings, IBackendDatabaseService backendDatabaseService,
             IPersonalizedPlanEngine a2JAuthorParserBusinessLogic)
         {
             dbSettings = cosmosDbSettings;
             dbService = backendDatabaseService;
-            a2jParser = a2JAuthorParserBusinessLogic;
+            personalizedPlanEngine = a2JAuthorParserBusinessLogic;
         }
 
         public CuratedExperience ConvertA2JAuthorToCuratedExperience(JObject a2jSchema)
@@ -62,43 +62,22 @@ namespace Access2Justice.Api.BusinessLogic
 
             return cx;
         }
-
-        // Todo:@Alaa remove - returning full peronalized plan for demo and testing
-        public async Task<A2JPersonalizedPlan> GetA2JPersonalizedPlanStepsAsync()
+   
+        public async Task<A2JPersonalizedPlan> GetA2JPersonalizedPlanAsync()
         {
+            // Todo:@Alaa remove - we won't necessary have the id, this is good for testing but we need to implement some other way to get the
+            // personalized plan from the db. Maybe just ask the user to provide it in a param?
             return await dbService.GetItemAsync<A2JPersonalizedPlan>("432e7473-02df-4807-8d45-39ed821c5eb1", dbSettings.A2JAuthorTemplatesCollectionId);
         }
 
-        public A2JPersonalizedPlan ExtractStepsInScopeFromA2JPersonalizedPlan(A2JPersonalizedPlan a2JPersonalizedPlan,
+        public A2JPersonalizedPlan MapA2JPersonalizedPlanToAccess2JusticeActionPlan(A2JPersonalizedPlan a2JPersonalizedPlan,
             CuratedExperienceAnswers userAnswers)
         {
-            var answersVarVales = GetVarsValuesFromUserAnswers(userAnswers);
-            var planInScopeVarsValues = new Dictionary<string, string>();
+            var planInScopeVarsValues = personalizedPlanEngine.ExtractStepsInScope(a2JPersonalizedPlan, userAnswers);
 
-            a2jParser.MatchAnswersVarsWithPersonalizedPlanVarsV2(a2JPersonalizedPlan, userAnswers);
+             // Todo:@Alaa map scope in plan to our personalized plan html formal
 
-            foreach (var buttonComponent in userAnswers.ButtonComponents)
-            {
-                if (!string.IsNullOrWhiteSpace(buttonComponent.CodeAfter))
-                {
-                    var parsedVars = a2jParser.MatchAnswersVarsWithPersonalizedPlanVars(buttonComponent.CodeAfter, answersVarVales);
-                    foreach (var parsedVar in parsedVars)
-                    {
-                        planInScopeVarsValues.Add(parsedVar.Key, parsedVar.Value);
-                    }
-                }
-            }
-
-            var planInScope = new A2JPersonalizedPlan();
-            foreach (var child in a2JPersonalizedPlan.RootNode.Children)
-            {
-                if (planInScopeVarsValues.Where(x => x.Key == child.State.LeftOperand).Any())
-                {
-                    planInScope.RootNode.Children.Add(child);
-                }
-            }
-
-            return planInScope;
+            return planInScopeVarsValues;
         }
 
         private Resource MapResourceProperties(IEnumerable<JProperty> a2jProperties, Guid curatedExperienceId)

@@ -7,7 +7,7 @@ namespace Access2Justice.Shared.Interfaces.A2JAuthor
     public interface IA2JAuthorBusinessLogic
     {
         CuratedExperience ConvertA2JAuthorToCuratedExperience(JObject a2jSchema);
-        Task<A2JPersonalizedPlan> GetA2JPersonalizedPlanStepsAsync();
-        A2JPersonalizedPlan ExtractStepsInScopeFromA2JPersonalizedPlan(A2JPersonalizedPlan a2JPersonalizedPlan, CuratedExperienceAnswers userAnswers);
+        Task<A2JPersonalizedPlan> GetA2JPersonalizedPlanAsync();
+        A2JPersonalizedPlan MapA2JPersonalizedPlanToAccess2JusticeActionPlan(A2JPersonalizedPlan a2JPersonalizedPlan, CuratedExperienceAnswers userAnswers);
     }
 }
