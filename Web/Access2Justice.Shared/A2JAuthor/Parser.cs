@@ -38,27 +38,35 @@ namespace Access2Justice.Shared.A2JAuthor
             }
             // ----------
 
-            Dictionary<string, string> leftVarValues = new Dictionary<string, string>();
+            Dictionary<string, string> actionPlan = new Dictionary<string, string>();
+
             foreach (ButtonComponent answer in curatedExperienceAnswers.ButtonComponents)
             {
+                Dictionary<string, string> leftVarValues = new Dictionary<string, string>();
+
                 if (!string.IsNullOrWhiteSpace(answer.CodeAfter))
                 {
                     string leftLogic = answer.CodeAfter.GetStringOnTheLeftOf("SET");
+                     // Todo:@Alaa AND and OR must be treated differently
                     leftVarValues.AddRange(leftLogic.GetVariablesWithValues("AND")).AddRange(leftLogic.GetVariablesWithValues("OR"));
                 }
-            }
 
-            Dictionary<string, string> actionPlan = new Dictionary<string, string>();
-            foreach (KeyValuePair<string, string> leftVarValue in leftVarValues)
-            {
-                var plan = userAnswers.Where(x => x.Key == leftVarValue.Key && x.Value == leftVarValue.Value).FirstOrDefault();
 
-                if (!string.IsNullOrWhiteSpace(plan.Key))
+                //Dictionary<string, string> rightVarValues = new Dictionary<string, string>();
+                foreach (KeyValuePair<string, string> leftVarValue in leftVarValues)
                 {
-                    actionPlan.Add(plan.Key, plan.Value ?? string.Empty);
-                }
+                    var plan = userAnswers.Where(x => x.Key == leftVarValue.Key && x.Value == leftVarValue.Value).FirstOrDefault();
 
-                string breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
+                    if (!string.IsNullOrWhiteSpace(plan.Key))
+                    {
+                        // extract right to SET and set values
+                        string rightLogic = answer.CodeAfter.GetStringOnTheRightOf("SET");
+
+                        actionPlan.AddRange(rightLogic.SetValueTOVar());
+                    }
+
+                    string breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
+                }
             }
             /*
     2. Divide logic to left and right Dictionary<string, string>
