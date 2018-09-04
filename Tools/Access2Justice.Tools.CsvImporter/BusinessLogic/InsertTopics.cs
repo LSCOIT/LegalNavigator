@@ -14,7 +14,7 @@ namespace Access2Justice.Tools.BusinessLogic
     {
         public dynamic CreateJsonFromCSV()
         {
-            string path = Path.Combine(Environment.CurrentDirectory, "SampleFiles\\Topics_Import_Template_V4.xlsx");
+            string path = Path.Combine(Environment.CurrentDirectory, "SampleFiles\\HI_Topics_Import_Template_V4.xlsx");
             string textFilePath = path;
             int recordNumber = 1;
             Topic topic = new Topic();
@@ -253,20 +253,70 @@ namespace Access2Justice.Tools.BusinessLogic
             countysb = county.Split('|');
             citysb = city.Split('|');
             zipcodesb = zipcode.Split('|');
-            if (statesb.Length == countysb.Length)
+            List<Locations> states = new List<Locations>();
+            List<Locations> counties = new List<Locations>();
+            List<Locations> cities = new List<Locations>();
+            List<Locations> zipcodes = new List<Locations>();
+
+            if (statesb.Length > 0 && (!string.IsNullOrEmpty(statesb.ToString())))
             {
                 for (int locationIterator = 0; locationIterator < statesb.Length; locationIterator++)
                 {
-                    Locations locations = new Locations()
+                    states.Add(new Locations
                     {
-                        State = (statesb[locationIterator]).Trim(),
-                        County = (countysb[locationIterator]).Trim(),
-                        City = (citysb[locationIterator]).Trim(),
-                        ZipCode = (zipcodesb[locationIterator]).Trim()
-                    };
-                    location.Add(locations);
+                        State = (statesb[locationIterator]).Trim()
+                    });
+                }
+                foreach (var item in states)
+                {
+                    location.Add(item);
                 }
             }
+            else if (countysb.Length > 0 && (!string.IsNullOrEmpty(countysb.ToString())))
+            {
+                for (int locationIterator = 0; locationIterator < countysb.Length; locationIterator++)
+                {
+                    counties.Add(new Locations
+                    {
+                        County = (countysb[locationIterator]).Trim()
+                    });
+                }
+                foreach (var item in counties)
+                {
+                    location.Add(item);
+                }
+            }
+
+            else if (citysb.Length > 0 && (!string.IsNullOrEmpty(citysb.ToString())))
+            {
+                for (int locationIterator = 0; locationIterator < citysb.Length; locationIterator++)
+                {
+                    cities.Add(new Locations
+                    {
+                        City = (citysb[locationIterator]).Trim()
+                    });
+                }
+                foreach (var item in cities)
+                {
+                    location.Add(item);
+                }
+            }
+
+            else if (zipcodesb.Length > 0 && (!string.IsNullOrEmpty(zipcodesb.ToString())))
+            {
+                for (int locationIterator = 0; locationIterator < zipcodesb.Length; locationIterator++)
+                {
+                    zipcodes.Add(new Locations
+                    {
+                        ZipCode = (zipcodesb[locationIterator]).Trim()
+                    });
+                }
+                foreach (var item in zipcodes)
+                {
+                    location.Add(item);
+                }
+            }
+            
             return location;
         }
 

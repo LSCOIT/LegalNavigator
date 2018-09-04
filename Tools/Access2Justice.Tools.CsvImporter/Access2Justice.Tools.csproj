@@ -23,6 +23,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="SampleFiles\AK Resources Import Template v4.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SampleFiles\AK Topics Import Template v4.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SampleFiles\HI_Resources_Import_Template_v4.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SampleFiles\HI_Topics_Import_Template_V4.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="SampleFiles\Resources_Import_Template_v4.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

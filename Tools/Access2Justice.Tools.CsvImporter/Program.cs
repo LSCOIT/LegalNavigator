@@ -9,7 +9,7 @@ namespace Access2Justice.Tools
         static void Main(string[] args)
         {
             Console.WriteLine("Executing the script...");
-            //TopicBusinessLogic.GetTopics();
+            TopicBusinessLogic.GetTopics();
             ResourceBusinessLogic.GetResources();
             Console.ReadLine();
         }

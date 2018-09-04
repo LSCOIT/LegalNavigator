@@ -30,7 +30,7 @@ namespace Access2Justice.Tools.BusinessLogic
             Resource resource = new Resource();
             List<dynamic> ResourcesList = new List<dynamic>();
             List<dynamic> Resources = new List<dynamic>();
-            string filePath = Path.Combine(Environment.CurrentDirectory, "SampleFiles\\Resources_Import_Template_v4.xlsx");
+            string filePath = Path.Combine(Environment.CurrentDirectory, "SampleFiles\\HI_Resources_Import_Template_v4.xlsx");
             List<string> sheetNames = new List<string>() { "Organizations", "Brochures or Articles", "Videos", "Related Links", "Forms" };
 
             try
