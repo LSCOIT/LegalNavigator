@@ -24,31 +24,37 @@ namespace Access2Justice.Shared.A2JAuthor
 
             Dictionary<string, string> actionPlanKeyValuePairs = new Dictionary<string, string>();
 
+             // Todo:@Alaa one logic text could have more than one logical statements, code should accomodate for this.
             foreach (string logicStatement in logicStatements)
             {
                 Dictionary<string, string> leftVarValues = new Dictionary<string, string>();
 
-
                 string leftLogic = logicStatement.GetStringOnTheLeftOf("SET");
+
                 // Todo:@Alaa AND and OR must be treated differently
-                leftVarValues.AddRange(leftLogic.GetVariablesWithValues("AND")).AddRange(leftLogic.GetVariablesWithValues("OR"));
+                var ANDvars = leftLogic.GetVariablesWithValues("AND");
 
-
-                //Dictionary<string, string> rightVarValues = new Dictionary<string, string>();
-                foreach (KeyValuePair<string, string> leftVarValue in leftVarValues)
+                object[] keys = new object[ANDvars.Keys.Count];
+                ANDvars.Keys.CopyTo(keys, 0);
+                for (int i = 0; i < ANDvars.Keys.Count; i++)
                 {
-                    KeyValuePair<string, string> plan = userAnswersKeyValuePairs.Where(x => x.Key == leftVarValue.Key && x.Value == leftVarValue.Value).FirstOrDefault();
 
-                    if (!string.IsNullOrWhiteSpace(plan.Key))
-                    {
-                        // extract right to SET and set values
-                        string rightLogic = logicStatement.GetStringOnTheRightOf("SET");
 
-                        actionPlanKeyValuePairs.AddRange(rightLogic.SetValueTOVar());
-                    }
+                    var temp = userAnswersKeyValuePairs.Where(x => x.Key == (string)keys[i] && x.Value == (string)ANDvars[i]).Any() &&
+                        userAnswersKeyValuePairs.Where(x => x.Key == (string)keys[ANDvars.Keys.Count -1] && x.Value == (string)ANDvars[ANDvars.Keys.Count-1]).Any();
 
-                    string breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
+
+                    var breakpoint2 = string.Empty; // Todo:@Alaa - remove this temp code
                 }
+               
+
+
+                // extract right to SET and set values
+                string rightLogic = logicStatement.GetStringOnTheRightOf("SET");
+
+                    actionPlanKeyValuePairs.AddRange(rightLogic.SetValueTOVar());
+
+                string breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
             }
 
             return actionPlanKeyValuePairs;

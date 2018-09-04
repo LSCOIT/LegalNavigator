@@ -1,6 +1,7 @@
 ﻿using Access2Justice.Shared.A2JAuthor;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 
 namespace Access2Justice.Shared.Extensions
@@ -18,13 +19,13 @@ namespace Access2Justice.Shared.Extensions
             return rightOf.SetValueTOVar();
         }
 
-        public static Dictionary<string, string> ANDvars(this string logic)
+        public static OrderedDictionary ANDvars(this string logic)
         {
             var leftCondition = logic.GetStringBetween("IF", "SET");
             return leftCondition.GetVariablesWithValues("AND");
         }
 
-        public static Dictionary<string, string> ORvars(this string logic)
+        public static OrderedDictionary ORvars(this string logic)
         {
             var leftCondition = logic.GetStringBetween("IF", "SET");
             return leftCondition.GetVariablesWithValues("OR");
@@ -67,10 +68,10 @@ namespace Access2Justice.Shared.Extensions
             return inputText.Split(new string[] { splitWord }, StringSplitOptions.RemoveEmptyEntries).ToList();
         }
 
-        public static Dictionary<string, string> GetVariablesWithValues(this string inputText, string operand)
+        public static OrderedDictionary GetVariablesWithValues(this string inputText, string operand)
         {
             // Todo:@Alaa extend this to allow extraction of other data types (beside true/fals), return a dic of <string, string>
-            var varsValues = new Dictionary<string, string>();
+            var varsValues = new OrderedDictionary();
 
             if (inputText.ToUpperInvariant().Contains(operand))
             {
