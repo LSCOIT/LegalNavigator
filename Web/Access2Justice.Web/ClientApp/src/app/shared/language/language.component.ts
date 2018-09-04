@@ -46,7 +46,7 @@ export class LanguageComponent implements OnInit, AfterViewInit {
     }
   }
 
-  hideLanguageDropdown() {
+  addAttributes() {
     let languageOptions = document.querySelectorAll('select.goog-te-combo')[0];
     languageOptions["classList"].add('form-control');
     languageOptions["size"] = 15;
@@ -83,6 +83,6 @@ export class LanguageComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    setTimeout(() => this.hideLanguageDropdown(), 0);
+    setTimeout(() => this.addAttributes(), 0);
   }
 }
