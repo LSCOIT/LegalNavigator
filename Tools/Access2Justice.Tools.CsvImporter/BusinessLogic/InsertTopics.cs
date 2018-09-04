@@ -179,8 +179,8 @@ namespace Access2Justice.Tools.BusinessLogic
                         counter++;
                         recordNumber++;
                     }
+                    topics = topicsList;
                 }
-                topics = topicsList;
             }
             catch (Exception ex)
             {

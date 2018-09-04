@@ -1,648 +1,244 @@
 ﻿using Access2Justice.Tools.Models;
+using DocumentFormat.OpenXml.Packaging;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
+using Spreadsheet = DocumentFormat.OpenXml.Spreadsheet;
 
 namespace Access2Justice.Tools.BusinessLogic
 {
     class InsertResources
     {
+        #region Variables
+
+        dynamic id = null;
+        string name, type, description, url, resourceType, state, county, city, zipcode = string.Empty;
+        string overview, icon, address, telephone, eligibilityInformation = string.Empty;
+        string reviewedByCommunityMember, reviewerFullName, reviewerTitle, reviewerImage = string.Empty;
+        string headline1, content1, headline2, content2 = string.Empty;
+        List<TopicTag> topicTagIds = null;
+        List<Locations> locations = null;
+
+        #endregion Variables
+
         public dynamic CreateJsonFromCSV()
         {
-            //string path = Path.Combine(Environment.CurrentDirectory, "SampleFiles\\Resource_Data_tab.txt");
-            string pathForm = @"C:\\Users\\v-sobhad\\Desktop\\EvolveDataTool\\Form_Data_tab.txt";
-            string pathOrganization = @"C:\\Users\\v-sobhad\\Desktop\\EvolveDataTool\\Organization_Data_tab.txt";
-            string pathArticle = @"C:\\Users\\v-sobhad\\Desktop\\EvolveDataTool\\Article_Data_tab.txt";
-            string pathVideo = @"C:\\Users\\v-sobhad\\Desktop\\EvolveDataTool\\Video_Data_tab.txt";
-            string pathRelatedLink = @"C:\\Users\\v-sobhad\\Desktop\\EvolveDataTool\\RelatedLink_Data_tab.txt";
-            string[] pathResources = { pathForm, pathOrganization , pathArticle, pathVideo, pathRelatedLink };
+            int recordNumber = 1;
             Resource resource = new Resource();
             List<dynamic> ResourcesList = new List<dynamic>();
             List<dynamic> Resources = new List<dynamic>();
-            foreach (var path in pathResources)
+            string filePath = Path.Combine(Environment.CurrentDirectory, "SampleFiles\\Resources_Import_Template_v4.xlsx");
+            List<string> sheetNames = new List<string>() { "Organizations", "Brochures or Articles", "Videos", "Related Links", "Forms" };
+
+            try
             {
-                string textFilePath = path;
-                const Int32 BufferSize = 128;
-                int recordNumber = 1;
-                try
+                using (SpreadsheetDocument spreadsheetDocument =
+                        SpreadsheetDocument.Open(filePath, false))
                 {
-                    int lineCount = File.ReadLines(path).Count();
-                    using (var fileStream = File.OpenRead(textFilePath))
-                    using (var streamReader = new StreamReader(fileStream, Encoding.UTF8, true, BufferSize))
+                    WorkbookPart workbookPart = spreadsheetDocument.WorkbookPart;
+                    Spreadsheet.Sheets sheets = workbookPart.Workbook.GetFirstChild<Spreadsheet.Sheets>();
+                    foreach (Spreadsheet.Sheet sheet in sheets)
                     {
-                        String line1, line2;
-                        line1 = streamReader.ReadLine();
-                        string[] parts = line1.Split('\t');
-                        string val;
-                        if (path.Contains("Form"))
+                        if (sheet.Name.HasValue && sheetNames.Find(a => a == sheet.Name.Value) != null)
                         {
-                            Form form = new Form();
-                            if (ValidateHeader(parts, 0, "Forms") && (recordNumber < lineCount))
+                            Spreadsheet.Worksheet worksheet = ((WorksheetPart)workbookPart.GetPartById(sheet.Id)).Worksheet;
+                            Spreadsheet.SheetData sheetData = worksheet.Elements<Spreadsheet.SheetData>().First();
+                            Spreadsheet.SharedStringTable sharedStringTable = spreadsheetDocument.WorkbookPart.SharedStringTablePart.SharedStringTable;
+
+                            Dictionary<string, string> keyValuePairs = new Dictionary<string, string>();
+                            string cellValue;
+                            int counter = 0;
+                            bool isValidated = false;
+                            ClearVariableData();
+                            topicTagIds = new List<TopicTag>();
+                            locations = new List<Locations>();
+                            string resourceType = GetResourceType(sheet.Name.Value);
+                            foreach (Spreadsheet.Row row in sheetData.Elements<Spreadsheet.Row>())
                             {
-                                while ((line2 = streamReader.ReadLine()) != null)
+                                foreach (Spreadsheet.Cell cell in row.Elements<Spreadsheet.Cell>())
                                 {
-                                    List<string> value = new List<string>();
-                                    string[] partsb = line2.Split('\t');
-                                    List<TopicTag> topicTagIds = new List<TopicTag>();
-                                    List<Locations> locations = new List<Locations>();
-                                    dynamic id = null; string name = string.Empty; string type = string.Empty; string description = string.Empty; string url = string.Empty;
-                                    string resourceType = string.Empty; string state = string.Empty; string county = string.Empty; string city = string.Empty; string zipcode = string.Empty;
-                                    string overview = string.Empty; string icon = string.Empty;
-                                    for (int iterationCounter = 0; iterationCounter < partsb.Length; iterationCounter++)
+                                    cellValue = cell.InnerText;
+                                    if (!string.IsNullOrEmpty(cellValue))
                                     {
-                                        val = parts[iterationCounter];
-                                        if (val.EndsWith("Id", StringComparison.CurrentCultureIgnoreCase))
+                                        string cellActualValue = string.Empty;
+                                        if (cell.DataType == Spreadsheet.CellValues.SharedString)
                                         {
-                                            id = (partsb[0]).Trim();
+                                            cellActualValue = sharedStringTable.ElementAt(Int32.Parse(cellValue, CultureInfo.InvariantCulture)).InnerText;
+                                        }
+                                        else
+                                        {
+                                            cellActualValue = cellValue;
                                         }
 
-                                        else if (val.EndsWith("Name*", StringComparison.CurrentCultureIgnoreCase))
+                                        if (counter == 0)
                                         {
-                                            name = (partsb[1]).Trim();
+                                            keyValuePairs.Add(cellActualValue, cell.CellReference);
                                         }
-
-                                        else if (val.Equals("Type*", StringComparison.CurrentCultureIgnoreCase))
+                                        else
                                         {
-                                            type = (partsb[2]).Trim();
-                                        }
+                                            var headerValues = from a in keyValuePairs select a.Key;
+                                            if (!isValidated)
+                                            {
+                                                if (!ValidateHeader(headerValues.ToArray<string>(), recordNumber, resourceType))
+                                                {
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    isValidated = true;
+                                                }
+                                            }
 
-                                        else if (val.EndsWith("Description*", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            description = (partsb[3]).Trim();
-                                        }
+                                            IEnumerable<string> keyValue = null;
+                                            if (cell.CellReference.Value.Length == 2)
+                                            {
+                                                keyValue = from a in keyValuePairs where a.Value.Take(1).First() == cell.CellReference.Value.Take(1).First() select a.Key;
+                                            }
+                                            else if (cell.CellReference.Value.Length == 3)
+                                            {
+                                                keyValue = from a in keyValuePairs where a.Value.Take(2).First() == cell.CellReference.Value.Take(2).First() select a.Key;
+                                            }
 
-                                        else if (val.Equals("Resource Type*", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            resourceType = (partsb[4]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("URL*", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            url = (partsb[5]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Topic*", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            string topicTag = (partsb[6]).Trim();
-                                            topicTagIds = GetTopicTags(topicTag);
-                                        }
-
-                                        else if (val.EndsWith("Location_State*", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            state = (partsb[7]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Location_County", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            county = (partsb[8]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Location_City", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            city = (partsb[9]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Location_Zip", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            zipcode = (partsb[10]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Icon", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            icon = (partsb[11]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Overview", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            overview = (partsb[12]).Trim();
+                                            if (keyValue.Count() > 0)
+                                            {
+                                                UpdateFormData(keyValue, cellActualValue, resourceType);
+                                            }
                                         }
                                     }
-
-                                    InsertTopics topic = new InsertTopics();
-                                    locations = topic.GetLocations(state, county, city, zipcode);
-                                    form = new Form()
-                                    {
-                                        ResourceId = id == "" ? Guid.NewGuid() : id,
-                                        Name = name,
-                                        Type = type,
-                                        Description = description,
-                                        ResourceType = resourceType,
-                                        Urls = url,
-                                        TopicTags = topicTagIds,
-                                        Location = locations,
-                                        Icon = icon,
-                                        Overview = overview,
-                                        CreatedBy = "Admin Import tool",
-                                        ModifiedBy = "Admin Import tool"
-                                    };
-                                    form.Validate();
-                                    ResourcesList.Add(form);
-                                    recordNumber++;
                                 }
-                            }
-                        }
-                        else if (path.Contains("Organization"))
-                        {                            
-                            Organization organization = new Organization();
-                            if (ValidateHeader(parts, 0, "Organizations") && (recordNumber < lineCount))
-                            {
-                                while ((line2 = Regex.Replace(streamReader.ReadLine(), @"(\r\n|\n)", String.Empty)) != null)
+
+                                if (counter > 0)
                                 {
-                                    List<string> value = new List<string>();
-                                    string[] partsb = line2.Split('\t');
-                                    List<TopicTag> topicTagIds = new List<TopicTag>();
-                                    List<Locations> locations = new List<Locations>();
-                                    dynamic id = null; string name = string.Empty; string type = string.Empty; string description = string.Empty; string url = string.Empty;
-                                    string resourceType = string.Empty; string state = string.Empty; string county = string.Empty; string city = string.Empty; string zipcode = string.Empty;
-                                    string overview = string.Empty; string icon = string.Empty; string address = string.Empty; string telephone = string.Empty; string eligibilityInformation = string.Empty;
-                                    string reviewedByCommunityMember = string.Empty; string reviewerFullName = string.Empty; string reviewerTitle = string.Empty; string reviewerImage = string.Empty;
-                                    for (int iterationCounter = 0; iterationCounter < partsb.Length; iterationCounter++)
-                                    {
-                                        val = parts[iterationCounter];
-                                        if (val.EndsWith("Id", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            id = (partsb[0]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Name*", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            name = (partsb[1]).Trim();
-                                        }
-
-                                        else if (val.Equals("Type*", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            type = (partsb[2]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Description*", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            description = (partsb[3]).Trim();
-                                        }
-
-                                        else if (val.Equals("Resource Type*", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            resourceType = (partsb[4]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("URL*", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            url = (partsb[5]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Topic*", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            string topicTag = (partsb[6]).Trim();
-                                            topicTagIds = GetTopicTags(topicTag);
-                                        }
-
-                                        else if (val.EndsWith("Location_State*", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            state = (partsb[7]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Location_County", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            county = (partsb[8]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Location_City", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            city = (partsb[9]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Location_Zip", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            zipcode = (partsb[10]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Icon", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            icon = (partsb[11]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Org Address*", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            address = (partsb[12]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Phone*", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            telephone = (partsb[13]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Overview", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            overview = (partsb[14]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Eligibility Information", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            eligibilityInformation = (partsb[15]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Reviewed By Community Member", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            reviewedByCommunityMember = (partsb[16]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Reviewer Full Name", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            reviewerFullName = (partsb[17]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Reviewer Title", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            reviewerTitle = (partsb[18]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Reviewer Image", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            reviewerImage = (partsb[19]).Trim();
-                                        }
-                                    }
-
                                     InsertTopics topic = new InsertTopics();
                                     locations = topic.GetLocations(state, county, city, zipcode);
-                                    organization = new Organization()
+                                    if (resourceType == Constants.FormsResourceType)
                                     {
-                                        ResourceId = id == "" ? Guid.NewGuid() : id,
-                                        Name = name,
-                                        Type = type,
-                                        Description = description,
-                                        ResourceType = resourceType,
-                                        Urls = url,
-                                        TopicTags = topicTagIds,
-                                        Location = locations,
-                                        Icon = icon,
-                                        Address = address,
-                                        Telephone = telephone,
-                                        Overview = overview,
-                                        EligibilityInformation = eligibilityInformation,
-                                        ReviewedByCommunityMember = reviewedByCommunityMember,
-                                        ReviewerFullName = reviewerFullName,
-                                        ReviewerTitle = reviewerTitle,
-                                        ReviewerImage = reviewerImage,
-                                        CreatedBy = "Admin Import tool",
-                                        ModifiedBy = "Admin Import tool"
-                                    };
-                                    organization.Validate();
-                                    ResourcesList.Add(organization);
-                                    recordNumber++;
-                                }
-                            }
-                        }
-                        else if (path.Contains("Article"))
-                        {
-                            Article article = new Article();
-                            if (ValidateHeader(parts, 0, "Articles") && (recordNumber < lineCount))
-                            {
-                                while ((line2 = streamReader.ReadLine()) != null)
-                                {
-                                    List<string> value = new List<string>();
-                                    string[] partsb = line2.Split('\t');
-                                    List<TopicTag> topicTagIds = new List<TopicTag>();
-                                    List<Locations> locations = new List<Locations>();
-                                    dynamic id = null; string name = string.Empty; string type = string.Empty; string description = string.Empty; string url = string.Empty;
-                                    string resourceType = string.Empty; string state = string.Empty; string county = string.Empty; string city = string.Empty; string zipcode = string.Empty;
-                                    string overview = string.Empty; string icon = string.Empty; string headline1 = string.Empty; string content1 = string.Empty; string headline2 = string.Empty; string content2 = string.Empty;
-                                    for (int iterationCounter = 0; iterationCounter < partsb.Length; iterationCounter++)
-                                    {
-                                        val = parts[iterationCounter];
-                                        if (val.EndsWith("Id", StringComparison.CurrentCultureIgnoreCase))
+                                        Form form = new Form()
                                         {
-                                            id = (partsb[0]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Name*", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            name = (partsb[1]).Trim();
-                                        }
-
-                                        else if (val.Equals("Type*", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            type = (partsb[2]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Description*", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            description = (partsb[3]).Trim();
-                                        }
-
-                                        else if (val.Equals("Resource Type*", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            resourceType = (partsb[4]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("URL*", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            url = (partsb[5]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Topic*", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            string topicTag = (partsb[6]).Trim();
-                                            topicTagIds = GetTopicTags(topicTag);
-                                        }
-
-                                        else if (val.EndsWith("Location_State*", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            state = (partsb[7]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Location_County", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            county = (partsb[8]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Location_City", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            city = (partsb[9]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Location_Zip", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            zipcode = (partsb[10]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Icon", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            icon = (partsb[11]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Overview*", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            overview = (partsb[12]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Headline 1 (optional)", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            headline1 = (partsb[13]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Content 1 (Optional)", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            content1 = (partsb[14]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Headline 2 (optional)", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            headline2 = (partsb[15]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Content 2 (Optional)", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            content2 = (partsb[16]).Trim();
-                                        }
+                                            ResourceId = id == "" ? Guid.NewGuid() : id,
+                                            Name = name,
+                                            Type = type,
+                                            Description = description,
+                                            ResourceType = resourceType,
+                                            Urls = url,
+                                            TopicTags = topicTagIds,
+                                            Location = locations,
+                                            Icon = icon,
+                                            Overview = overview,
+                                            CreatedBy = Constants.Admin,
+                                            ModifiedBy = Constants.Admin
+                                        };
+                                        form.Validate();
+                                        ResourcesList.Add(form);
                                     }
-
-                                    InsertTopics topic = new InsertTopics();
-                                    locations = topic.GetLocations(state, county, city, zipcode);
-                                    article = new Article()
+                                    if (resourceType == Constants.OrganizationResourceType)
                                     {
-                                        ResourceId = id == "" ? Guid.NewGuid() : id,
-                                        Name = name,
-                                        Type = type,
-                                        Description = description,
-                                        ResourceType = resourceType,
-                                        Urls = url,
-                                        TopicTags = topicTagIds,
-                                        Location = locations,
-                                        Icon = icon,
-                                        Overview = overview,
-                                        HeadLine1=headline1,
-                                        Content1=content1,
-                                        HeadLine2=headline2,
-                                        Content2=content2,
-                                        CreatedBy = "Admin Import tool",
-                                        ModifiedBy = "Admin Import tool"
-                                    };
-                                    article.Validate();
-                                    ResourcesList.Add(article);
-                                    recordNumber++;
-                                }
-                            }
-                        }
-                        else if (path.Contains("Video"))
-                        {
-                            Video video = new Video();
-                            if (ValidateHeader(parts, 0, "Videos") && (recordNumber < lineCount))
-                            {
-                                while ((line2 = streamReader.ReadLine()) != null)
-                                {
-                                    List<string> value = new List<string>();
-                                    string[] partsb = line2.Split('\t');
-                                    List<TopicTag> topicTagIds = new List<TopicTag>();
-                                    List<Locations> locations = new List<Locations>();
-                                    dynamic id = null; string name = string.Empty; string type = string.Empty; string description = string.Empty; string url = string.Empty;
-                                    string resourceType = string.Empty; string state = string.Empty; string county = string.Empty; string city = string.Empty; string zipcode = string.Empty;
-                                    string overview = string.Empty; string icon = string.Empty;
-                                    for (int iterationCounter = 0; iterationCounter < partsb.Length; iterationCounter++)
-                                    {
-                                        val = parts[iterationCounter];
-                                        if (val.EndsWith("Id", StringComparison.CurrentCultureIgnoreCase))
+                                        Organization organization = new Organization()
                                         {
-                                            id = (partsb[0]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Name*", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            name = (partsb[1]).Trim();
-                                        }
-
-                                        else if (val.Equals("Type*", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            type = (partsb[2]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Description*", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            description = (partsb[3]).Trim();
-                                        }
-
-                                        else if (val.Equals("Resource Type*", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            resourceType = (partsb[4]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("URL*", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            url = (partsb[5]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Topic*", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            string topicTag = (partsb[6]).Trim();
-                                            topicTagIds = GetTopicTags(topicTag);
-                                        }
-
-                                        else if (val.EndsWith("Location_State*", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            state = (partsb[7]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Location_County", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            county = (partsb[8]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Location_City", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            city = (partsb[9]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Location_Zip", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            zipcode = (partsb[10]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Icon", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            icon = (partsb[11]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Overview", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            overview = (partsb[12]).Trim();
-                                        }
+                                            ResourceId = id == "" ? Guid.NewGuid() : id,
+                                            Name = name,
+                                            Type = type,
+                                            Description = description,
+                                            ResourceType = resourceType,
+                                            Urls = url,
+                                            TopicTags = topicTagIds,
+                                            Location = locations,
+                                            Icon = icon,
+                                            Address = address,
+                                            Telephone = telephone,
+                                            Overview = overview,
+                                            EligibilityInformation = eligibilityInformation,
+                                            ReviewedByCommunityMember = reviewedByCommunityMember,
+                                            ReviewerFullName = reviewerFullName,
+                                            ReviewerTitle = reviewerTitle,
+                                            ReviewerImage = reviewerImage,
+                                            CreatedBy = Constants.Admin,
+                                            ModifiedBy = Constants.Admin
+                                        };
+                                        organization.Validate();
+                                        ResourcesList.Add(organization);
                                     }
-
-                                    InsertTopics topic = new InsertTopics();
-                                    locations = topic.GetLocations(state, county, city, zipcode);
-                                    video = new Video()
+                                    if (resourceType == Constants.ArticleResourceType)
                                     {
-                                        ResourceId = id == "" ? Guid.NewGuid() : id,
-                                        Name = name,
-                                        Type = type,
-                                        Description = description,
-                                        ResourceType = resourceType,
-                                        Urls = url,
-                                        TopicTags = topicTagIds,
-                                        Location = locations,
-                                        Icon = icon,
-                                        Overview = overview,
-                                        CreatedBy = "Admin Import tool",
-                                        ModifiedBy = "Admin Import tool"
-                                    };
-                                    video.Validate();
-                                    ResourcesList.Add(video);
-                                    recordNumber++;
-                                }
-                            }
-                        }
-                        else if (path.Contains("RelatedLink"))
-                        {
-                            EssentialReading essentialReading = new EssentialReading();
-                            if (ValidateHeader(parts, 0, "Related Links") && (recordNumber < lineCount))
-                            {
-                                while ((line2 = streamReader.ReadLine()) != null)
-                                {
-                                    List<string> value = new List<string>();
-                                    string[] partsb = line2.Split('\t');
-                                    List<TopicTag> topicTagIds = new List<TopicTag>();
-                                    List<Locations> locations = new List<Locations>();
-                                    dynamic id = null; string name = string.Empty; string type = string.Empty; string description = string.Empty; string url = string.Empty;
-                                    string resourceType = string.Empty; string state = string.Empty; string county = string.Empty; string city = string.Empty; string zipcode = string.Empty; string icon = string.Empty;
-                                    for (int iterationCounter = 0; iterationCounter < partsb.Length; iterationCounter++)
-                                    {
-                                        val = parts[iterationCounter];
-                                        if (val.EndsWith("Id", StringComparison.CurrentCultureIgnoreCase))
+                                        Article article = new Article()
                                         {
-                                            id = (partsb[0]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Name*", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            name = (partsb[1]).Trim();
-                                        }
-
-                                        else if (val.Equals("Type*", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            type = (partsb[2]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Description*", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            description = (partsb[3]).Trim();
-                                        }
-
-                                        else if (val.Equals("Resource Type*", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            resourceType = (partsb[4]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("URL*", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            url = (partsb[5]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Topic*", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            string topicTag = (partsb[6]).Trim();
-                                            topicTagIds = GetTopicTags(topicTag);
-                                        }
-
-                                        else if (val.EndsWith("Location_State*", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            state = (partsb[7]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Location_County", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            county = (partsb[8]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Location_City", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            city = (partsb[9]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Location_Zip", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            zipcode = (partsb[10]).Trim();
-                                        }
-
-                                        else if (val.EndsWith("Icon", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            icon = (partsb[11]).Trim();
-                                        }
+                                            ResourceId = id == "" ? Guid.NewGuid() : id,
+                                            Name = name,
+                                            Type = type,
+                                            Description = description,
+                                            ResourceType = resourceType,
+                                            Urls = url,
+                                            TopicTags = topicTagIds,
+                                            Location = locations,
+                                            Icon = icon,
+                                            Overview = overview,
+                                            HeadLine1 = headline1,
+                                            Content1 = content1,
+                                            HeadLine2 = headline2,
+                                            Content2 = content2,
+                                            CreatedBy = Constants.Admin,
+                                            ModifiedBy = Constants.Admin
+                                        };
+                                        article.Validate();
+                                        ResourcesList.Add(article);
                                     }
-
-                                    InsertTopics topic = new InsertTopics();
-                                    locations = topic.GetLocations(state, county, city, zipcode);
-                                    essentialReading = new EssentialReading()
+                                    if (resourceType == Constants.VideoResourceType)
                                     {
-                                        ResourceId = id == "" ? Guid.NewGuid() : id,
-                                        Name = name,
-                                        Type = type,
-                                        Description = description,
-                                        ResourceType = resourceType,
-                                        Urls = url,
-                                        TopicTags = topicTagIds,
-                                        Location = locations,
-                                        Icon = icon,
-                                        CreatedBy = "Admin Import tool",
-                                        ModifiedBy = "Admin Import tool"
-                                    };
-                                    essentialReading.Validate();
-                                    ResourcesList.Add(essentialReading);
-                                    recordNumber++;
+                                        Video video = new Video()
+                                        {
+                                            ResourceId = id == "" ? Guid.NewGuid() : id,
+                                            Name = name,
+                                            Type = type,
+                                            Description = description,
+                                            ResourceType = resourceType,
+                                            Urls = url,
+                                            TopicTags = topicTagIds,
+                                            Location = locations,
+                                            Icon = icon,
+                                            Overview = overview,
+                                            CreatedBy = Constants.Admin,
+                                            ModifiedBy = Constants.Admin
+                                        };
+                                        video.Validate();
+                                        ResourcesList.Add(video);
+                                    }
+                                    if (resourceType == Constants.RelatedLinkResourceType)
+                                    {
+                                        EssentialReading essentialReading = new EssentialReading()
+                                        {
+                                            ResourceId = id == "" ? Guid.NewGuid() : id,
+                                            Name = name,
+                                            Type = type,
+                                            Description = description,
+                                            ResourceType = resourceType,
+                                            Urls = url,
+                                            TopicTags = topicTagIds,
+                                            Location = locations,
+                                            Icon = icon,
+                                            CreatedBy = Constants.Admin,
+                                            ModifiedBy = Constants.Admin
+                                        };
+                                        essentialReading.Validate();
+                                        ResourcesList.Add(essentialReading);
+                                    }
                                 }
+                                counter++;
+                                recordNumber++;
                             }
                         }
-                    }                    
+                    }
                 }
-                catch (Exception ex)
-                {
-                    InsertTopics.ErrorLogging(ex, recordNumber);
-                    InsertTopics.ReadError();
-                    Resources = null;
-                }
-                Resources = ResourcesList;
             }
+            catch (Exception ex)
+            {
+                InsertTopics.ErrorLogging(ex, recordNumber);
+                InsertTopics.ReadError();
+                Resources = null;
+            }
+            Resources = ResourcesList;
             return Resources;
         }
 
@@ -684,6 +280,214 @@ namespace Access2Justice.Tools.BusinessLogic
             return conditions;
         }
 
+        private void ClearVariableData()
+        {
+            id = null;
+            name = string.Empty;
+            type = string.Empty;
+            description = string.Empty;
+            url = string.Empty;
+            resourceType = string.Empty;
+            state = string.Empty;
+            county = string.Empty;
+            city = string.Empty;
+            zipcode = string.Empty;
+            overview = string.Empty;
+            icon = string.Empty;
+            address = string.Empty;
+            telephone = string.Empty;
+            eligibilityInformation = string.Empty;
+            reviewedByCommunityMember = string.Empty;
+            reviewerFullName = string.Empty;
+            reviewerTitle = string.Empty;
+            reviewerImage = string.Empty;
+            headline1 = string.Empty;
+            content1 = string.Empty;
+            headline2 = string.Empty;
+            content2 = string.Empty;
+        }
+        private static Spreadsheet.SharedStringItem GetSharedStringItemById(WorkbookPart workbookPart, int id)
+        {
+            return workbookPart.SharedStringTablePart.SharedStringTable.Elements<Spreadsheet.SharedStringItem>().ElementAt(id);
+        }
+        private static string GetResourceType(string sheetName)
+        {
+            switch (sheetName)
+            {
+                case "Organizations":
+                    return Constants.OrganizationResourceType;
+                case "Brochures or Articles":
+                    return Constants.ArticleResourceType;
+                case "Videos":
+                    return Constants.VideoResourceType;
+                case "Related Links":
+                    return Constants.RelatedLinkResourceType;
+                case "Forms":
+                    return Constants.FormsResourceType;
+                default:
+                    return string.Empty;
+            }
+        }
+
+        private void UpdateFormData(IEnumerable<string> keyValue, string cellActualValue, string resourceType)
+        {
+            string val = keyValue.First();
+            cellActualValue = cellActualValue.Trim();
+
+            #region Common field mapping
+
+            if (val.EndsWith("Id", StringComparison.CurrentCultureIgnoreCase))
+            {
+                id = cellActualValue;
+            }
+
+            else if (val.EndsWith("Name*", StringComparison.CurrentCultureIgnoreCase))
+            {
+                name = cellActualValue;
+            }
+
+            else if (val.Equals("Type*", StringComparison.CurrentCultureIgnoreCase))
+            {
+                type = cellActualValue;
+            }
+
+            else if (val.EndsWith("Description*", StringComparison.CurrentCultureIgnoreCase))
+            {
+                description = cellActualValue;
+            }
+
+            else if (val.Equals("Resource Type*", StringComparison.CurrentCultureIgnoreCase))
+            {
+                resourceType = cellActualValue;
+            }
+
+            else if (val.EndsWith("URL*", StringComparison.CurrentCultureIgnoreCase))
+            {
+                url = cellActualValue;
+            }
+
+            else if (val.EndsWith("Topic*", StringComparison.CurrentCultureIgnoreCase))
+            {
+                string topicTag = cellActualValue;
+                topicTagIds = GetTopicTags(topicTag);
+            }
+
+            else if (val.EndsWith("Location_State*", StringComparison.CurrentCultureIgnoreCase))
+            {
+                state = cellActualValue;
+            }
+
+            else if (val.EndsWith("Location_County", StringComparison.CurrentCultureIgnoreCase))
+            {
+                county = cellActualValue;
+            }
+
+            else if (val.EndsWith("Location_City", StringComparison.CurrentCultureIgnoreCase))
+            {
+                city = cellActualValue;
+            }
+
+            else if (val.EndsWith("Location_Zip", StringComparison.CurrentCultureIgnoreCase))
+            {
+                zipcode = cellActualValue;
+            }
+
+            else if (val.EndsWith("Icon", StringComparison.CurrentCultureIgnoreCase))
+            {
+                icon = cellActualValue;
+            }
+
+            #endregion Common field mapping
+
+            if (resourceType == Constants.FormsResourceType)
+            {
+                if (val.EndsWith("Overview", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    overview = cellActualValue;
+                }
+            }
+
+            if (resourceType == Constants.OrganizationResourceType)
+            {
+                if (val.EndsWith("Org Address*", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    address = cellActualValue;
+                }
+
+                else if (val.EndsWith("Phone*", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    telephone = cellActualValue;
+                }
+
+                else if (val.EndsWith("Overview", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    overview = cellActualValue;
+                }
+
+                else if (val.EndsWith("Eligibility Information", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    eligibilityInformation = cellActualValue;
+                }
+
+                else if (val.EndsWith("Reviewed By Community Member", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    reviewedByCommunityMember = cellActualValue;
+                }
+
+                else if (val.EndsWith("Reviewer Full Name", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    reviewerFullName = cellActualValue;
+                }
+
+                else if (val.EndsWith("Reviewer Title", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    reviewerTitle = cellActualValue;
+                }
+
+                else if (val.EndsWith("Reviewer Image", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    reviewerImage = cellActualValue;
+                }
+            }
+
+            if (resourceType == Constants.ArticleResourceType)
+            {
+                if (val.EndsWith("Overview*", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    overview = cellActualValue;
+                }
+
+                else if (val.EndsWith("Headline 1 (optional)", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    headline1 = cellActualValue;
+                }
+
+                else if (val.EndsWith("Content 1 (Optional)", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    content1 = cellActualValue;
+                }
+
+                else if (val.EndsWith("Headline 2 (optional)", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    headline2 = cellActualValue;
+                }
+
+                else if (val.EndsWith("Content 2 (Optional)", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    content2 = cellActualValue;
+                }
+            }
+
+            if (resourceType == Constants.VideoResourceType)
+            {
+                if (val.EndsWith("Overview", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    overview = cellActualValue;
+                }
+            }
+            
+        }
+
         public static bool ValidateHeader(string[] header, int recordNumber, string resourceType)
         {
             bool correctHeader = false;
@@ -701,7 +505,7 @@ namespace Access2Justice.Tools.BusinessLogic
 
             try
             {
-                if (resourceType == "Forms")
+                if (resourceType == Constants.FormsResourceType)
                 {
                     if (actualHeader.Equals(expectedFormHeader, StructuralComparisons.StructuralEqualityComparer))
                     {
@@ -724,7 +528,7 @@ namespace Access2Justice.Tools.BusinessLogic
                     }
                 }
 
-                else if (resourceType == "Organizations")
+                else if (resourceType == Constants.OrganizationResourceType)
                 {
                     if (actualHeader.Equals(expectedOrganizationHeader, StructuralComparisons.StructuralEqualityComparer))
                     {
@@ -747,7 +551,7 @@ namespace Access2Justice.Tools.BusinessLogic
                     }
                 }
 
-                else if (resourceType == "Articles")
+                else if (resourceType == Constants.ArticleResourceType)
                 {
                     if (actualHeader.Equals(expectedArticleHeader, StructuralComparisons.StructuralEqualityComparer))
                     {
@@ -770,7 +574,7 @@ namespace Access2Justice.Tools.BusinessLogic
                     }
                 }
 
-                else if (resourceType == "Videos")
+                else if (resourceType == Constants.VideoResourceType)
                 {
                     if (actualHeader.Equals(expectedVideoHeader, StructuralComparisons.StructuralEqualityComparer))
                     {
@@ -793,7 +597,7 @@ namespace Access2Justice.Tools.BusinessLogic
                     }
                 }
 
-                else if (resourceType == "Related Links")
+                else if (resourceType == Constants.RelatedLinkResourceType)
                 {
                     if (actualHeader.Equals(expectedRelatedLinkHeader, StructuralComparisons.StructuralEqualityComparer))
                     {
