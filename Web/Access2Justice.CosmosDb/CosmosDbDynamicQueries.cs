@@ -94,7 +94,7 @@ namespace Access2Justice.CosmosDb
             var query = string.Empty;
             if (string.IsNullOrEmpty(value) && (location != null))
             {  
-                query = $"SELECT * FROM c WHERE c.{propertyName}=[{value}]";
+                query = $"SELECT * FROM c WHERE c.{propertyName}=[{value}] OR c.{propertyName} = null";
             }
             else
             {
