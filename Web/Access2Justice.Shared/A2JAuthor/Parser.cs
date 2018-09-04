@@ -1,9 +1,9 @@
-﻿using Access2Justice.Shared.Interfaces;
+﻿using Access2Justice.Shared.Extensions;
 using Access2Justice.Shared.Interfaces.A2JAuthor;
 using Access2Justice.Shared.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace Access2Justice.Shared.A2JAuthor
 {
@@ -20,6 +20,46 @@ namespace Access2Justice.Shared.A2JAuthor
 
         public Dictionary<string, string> Evaluate(CuratedExperienceAnswers curatedExperienceAnswers)
         {
+            // from business logic 
+            // -------------
+            Dictionary<string, string> userAnswers = new Dictionary<string, string>();
+
+            foreach (ButtonComponent button in curatedExperienceAnswers.ButtonComponents)
+            {
+                userAnswers.Add(button.Name, button.Value);
+            }
+
+            foreach (FieldComponent fieldComponent in curatedExperienceAnswers.FieldComponents)
+            {
+                foreach (AnswerField field in fieldComponent.Fields)
+                {
+                    userAnswers.Add(field.Name, field.Value);
+                }
+            }
+            // ----------
+
+            Dictionary<string, string> leftVarValues = new Dictionary<string, string>();
+            foreach (ButtonComponent answer in curatedExperienceAnswers.ButtonComponents)
+            {
+                if (!string.IsNullOrWhiteSpace(answer.CodeAfter))
+                {
+                    string leftLogic = answer.CodeAfter.GetStringOnTheLeftOf("SET");
+                    leftVarValues.AddRange(leftLogic.GetVariablesWithValues("AND")).AddRange(leftLogic.GetVariablesWithValues("OR"));
+                }
+            }
+
+            Dictionary<string, string> actionPlan = new Dictionary<string, string>();
+            foreach (KeyValuePair<string, string> leftVarValue in leftVarValues)
+            {
+                var plan = userAnswers.Where(x => x.Key == leftVarValue.Key && x.Value == leftVarValue.Value).FirstOrDefault();
+
+                if (!string.IsNullOrWhiteSpace(plan.Key))
+                {
+                    actionPlan.Add(plan.Key, plan.Value ?? string.Empty);
+                }
+
+                string breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
+            }
             /*
     2. Divide logic to left and right Dictionary<string, string>
 	3. Loop through the left/right dic
@@ -29,14 +69,15 @@ namespace Access2Justice.Shared.A2JAuthor
     5.3. return this dic
              */
 
-            throw new NotImplementedException();
+            return actionPlan;
         }
 
         public A2JPersonalizedPlan Compile(Dictionary<string, string> evaluatedUserAnswers)
         {
-    // 1. PlanDictionary now has all the vars needed to loop through the template, loop through the children and extract those that match, return children that are in scope.
+            // 1. PlanDictionary now has all the vars needed to loop through the template, loop through the children and extract those that match, return children that are in scope.
+            var temp = evaluatedUserAnswers;
 
-            throw new NotImplementedException();
+            return null;
         }
     }
 }

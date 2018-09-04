@@ -48,11 +48,8 @@ namespace Access2Justice.Shared.A2JAuthor
         }
 
 
-        public void TestNewFluentLogic()
+        public void MatchAnswersVarsWithPersonalizedPlanVarsV2(A2JPersonalizedPlan personalizedPlan, CuratedExperienceAnswers userAnswers)
         {
-            var personalizedPlan = new A2JPersonalizedPlan();
-            var userAnswers = new CuratedExperienceAnswers();
-
             var evaluatedUserAnswers = parser.Evaluate(userAnswers);
             var compiledUserPlan = parser.Compile(evaluatedUserAnswers);
 

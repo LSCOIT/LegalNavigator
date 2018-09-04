@@ -75,6 +75,8 @@ namespace Access2Justice.Api.BusinessLogic
             var answersVarVales = GetVarsValuesFromUserAnswers(userAnswers);
             var planInScopeVarsValues = new Dictionary<string, string>();
 
+            a2jParser.MatchAnswersVarsWithPersonalizedPlanVarsV2(a2JPersonalizedPlan, userAnswers);
+
             foreach (var buttonComponent in userAnswers.ButtonComponents)
             {
                 if (!string.IsNullOrWhiteSpace(buttonComponent.CodeAfter))
