@@ -3,6 +3,7 @@ using DocumentFormat.OpenXml.Packaging;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -30,7 +31,8 @@ namespace Access2Justice.Tools.BusinessLogic
             Resource resource = new Resource();
             List<dynamic> ResourcesList = new List<dynamic>();
             List<dynamic> Resources = new List<dynamic>();
-            string filePath = Path.Combine(Environment.CurrentDirectory, "SampleFiles\\HI_Resources_Import_Template_v4.xlsx");
+            string appSettings = ConfigurationManager.AppSettings.Get("Resources");
+            string filePath = Path.Combine(Environment.CurrentDirectory, appSettings);
             List<string> sheetNames = new List<string>() { "Organizations", "Brochures or Articles", "Videos", "Related Links", "Forms" };
 
             try
@@ -507,27 +509,27 @@ namespace Access2Justice.Tools.BusinessLogic
             {
                 if (resourceType == Constants.FormsResourceType)
                 {
-                    correctHeader = HeaderValidation(actualHeader, expectedFormHeader);
+                    correctHeader = HeaderValidation(header, expectedFormHeader, Constants.FormsResourceType);
                 }
 
                 else if (resourceType == Constants.OrganizationResourceType)
                 {
-                    correctHeader = HeaderValidation(actualHeader, expectedOrganizationHeader);
+                    correctHeader = HeaderValidation(header, expectedOrganizationHeader, Constants.OrganizationResourceType);
                 }
 
                 else if (resourceType == Constants.ArticleResourceType)
                 {
-                    correctHeader = HeaderValidation(actualHeader, expectedArticleHeader);
+                    correctHeader = HeaderValidation(header, expectedArticleHeader, Constants.ArticleResourceType);
                 }
 
                 else if (resourceType == Constants.VideoResourceType)
                 {
-                    correctHeader = HeaderValidation(actualHeader, expectedVideoHeader);
+                    correctHeader = HeaderValidation(header, expectedVideoHeader, Constants.VideoResourceType);
                 }
 
                 else if (resourceType == Constants.RelatedLinkResourceType)
                 {
-                    correctHeader = HeaderValidation(actualHeader, expectedRelatedLinkHeader);
+                    correctHeader = HeaderValidation(header, expectedRelatedLinkHeader, Constants.RelatedLinkResourceType);
                 }
             }
             catch (Exception ex)
@@ -538,7 +540,7 @@ namespace Access2Justice.Tools.BusinessLogic
             return correctHeader;
         }
 
-        public static bool HeaderValidation(IStructuralEquatable header, string[] expectedHeader)
+        public static bool HeaderValidation(string[] header, string[] expectedHeader, string resourceType)
         {
             bool correctHeader = false;
             IStructuralEquatable actualHeader = header;
@@ -548,6 +550,15 @@ namespace Access2Justice.Tools.BusinessLogic
             }
             else
             {
+                string column = string.Empty;
+                for (var iterator = 0; iterator < expectedHeader.Length; iterator++)
+                {
+                    if (!(header[iterator] == expectedHeader[iterator]))
+                    {
+                        column = expectedHeader[iterator];
+                        break;
+                    }
+                }
                 dynamic logHeader = null;
                 int count = 0;
                 foreach (var item in expectedHeader)
@@ -559,7 +570,7 @@ namespace Access2Justice.Tools.BusinessLogic
                         count++;
                     }
                 }
-                throw new Exception("Expected header:" + "\n" + logHeader);
+                throw new Exception("Header Mismatch for " + resourceType + " at column " + column+ "\n" + "Expected header:" + "\n" + logHeader);
             }
             return correctHeader;
         }
