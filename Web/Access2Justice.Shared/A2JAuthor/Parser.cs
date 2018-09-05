@@ -8,18 +8,16 @@ using System.Linq;
 
 namespace Access2Justice.Shared.A2JAuthor
 {
-    public class Parser : IParse, IEvaluate, ICompile
+    public class Parser : IParse
     {
         private readonly IEvaluate evaluator;
-        private readonly ICompile compilePersonalizedPlan;
 
-        public Parser(IEvaluate evaluator, ICompile compilePersonalizedPlan)
+        public Parser(IEvaluate evaluator)
         {
             this.evaluator = evaluator;
-            this.compilePersonalizedPlan = compilePersonalizedPlan;
         }
 
-        public Dictionary<string, string> Evaluate(CuratedExperienceAnswers curatedExperienceAnswers)
+        public Dictionary<string, string> Parse(CuratedExperienceAnswers curatedExperienceAnswers)
         {
             Dictionary<string, string> userAnswersKeyValuePairs = ExtractAnswersVarValues(curatedExperienceAnswers);
             List<string> logicStatements = ExtractAnswersLogicalStatements(curatedExperienceAnswers);
@@ -44,8 +42,8 @@ namespace Access2Justice.Shared.A2JAuthor
 
 
                 //}
-                var temp4 = IsConditionSatisfiedV2(userAnswersKeyValuePairs, ANDvars, (x, y) => x && y);
-                var temp5 = IsConditionSatisfiedV2(userAnswersKeyValuePairs, ANDvars, (x, y) => x || y);
+                var temp4 = evaluator.Evaluate(userAnswersKeyValuePairs, ANDvars, (x, y) => x && y);
+                var temp5 = evaluator.Evaluate(userAnswersKeyValuePairs, ANDvars, (x, y) => x || y);
 
                 // extract right to SET and set values
                 string rightLogic = logicStatement.GetStringOnTheRightOf("SET");
@@ -56,40 +54,6 @@ namespace Access2Justice.Shared.A2JAuthor
             }
 
             return actionPlanKeyValuePairs;
-        }
-
-
-        public bool IsConditionSatisfiedV2(Dictionary<string, string> answersDic, OrderedDictionary logicDic, Func<bool, bool, bool> myFunc)
-        {
-            var result = false;
-            var final = false;
-
-            if(myFunc(true, false) == false)
-            {
-                final = true;
-            }
-
-            object[] keys = new object[logicDic.Keys.Count];
-            logicDic.Keys.CopyTo(keys, 0);
-            for (int i = 0; i < logicDic.Keys.Count - 1; i++)
-            {
-
-                var value1 = answersDic.Where(x => x.Key == (string)keys[i] && x.Value == (string)logicDic[i]).Any();
-                var value2 = answersDic.Where(x => x.Key == (string)keys[i + 1] && x.Value == (string)logicDic[i + 1]).Any();
-
-                result = myFunc(value1, value2);
-                final = myFunc(result, final);
-            }
-
-            return final;
-        }
-
-        public A2JPersonalizedPlan Compile(Dictionary<string, string> setVars)
-        {
-            // 1. PlanDictionary now has all the vars needed to loop through the template, loop through the children and extract those that match, return children that are in scope.
-            Dictionary<string, string> temp = setVars;
-
-            return null;
         }
 
         // Todo:@Alaa should we put these somewhere else?

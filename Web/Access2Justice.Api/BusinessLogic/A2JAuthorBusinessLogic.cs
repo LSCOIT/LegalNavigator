@@ -73,7 +73,7 @@ namespace Access2Justice.Api.BusinessLogic
         public A2JPersonalizedPlan MapA2JPersonalizedPlanToAccess2JusticeActionPlan(A2JPersonalizedPlan a2JPersonalizedPlan,
             CuratedExperienceAnswers userAnswers)
         {
-            var planInScopeVarsValues = personalizedPlanEngine.ExtractStepsInScope(a2JPersonalizedPlan, userAnswers);
+            var planInScopeVarsValues = personalizedPlanEngine.Build(a2JPersonalizedPlan, userAnswers);
 
              // Todo:@Alaa map scope in plan to our personalized plan html formal
 
