@@ -1,7 +1,9 @@
 ﻿using Access2Justice.Shared.Extensions;
 using Access2Justice.Shared.Interfaces.A2JAuthor;
 using Access2Justice.Shared.Models;
+using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 
 namespace Access2Justice.Shared.A2JAuthor
@@ -24,7 +26,7 @@ namespace Access2Justice.Shared.A2JAuthor
 
             Dictionary<string, string> actionPlanKeyValuePairs = new Dictionary<string, string>();
 
-             // Todo:@Alaa one logic text could have more than one logical statements, code should accomodate for this.
+            // Todo:@Alaa one logic text could have more than one logical statements, code should accomodate for this.
             foreach (string logicStatement in logicStatements)
             {
                 Dictionary<string, string> leftVarValues = new Dictionary<string, string>();
@@ -34,30 +36,68 @@ namespace Access2Justice.Shared.A2JAuthor
                 // Todo:@Alaa AND and OR must be treated differently
                 var ANDvars = leftLogic.GetVariablesWithValues("AND");
 
-                object[] keys = new object[ANDvars.Keys.Count];
-                ANDvars.Keys.CopyTo(keys, 0);
-                for (int i = 0; i < ANDvars.Keys.Count; i++)
-                {
+                var temp = IsConditionSatisfied(userAnswersKeyValuePairs, ANDvars, x => x && x);
 
-
-                    var temp = userAnswersKeyValuePairs.Where(x => x.Key == (string)keys[i] && x.Value == (string)ANDvars[i]).Any() &&
-                        userAnswersKeyValuePairs.Where(x => x.Key == (string)keys[ANDvars.Keys.Count -1] && x.Value == (string)ANDvars[ANDvars.Keys.Count-1]).Any();
-
-
-                    var breakpoint2 = string.Empty; // Todo:@Alaa - remove this temp code
-                }
-               
-
+                var temp4 = IsConditionSatisfiedV2(userAnswersKeyValuePairs, ANDvars, (x, y) => x && y);
+                var temp5 = IsConditionSatisfiedV2(userAnswersKeyValuePairs, ANDvars, (x, y) => x || y);
 
                 // extract right to SET and set values
                 string rightLogic = logicStatement.GetStringOnTheRightOf("SET");
 
-                    actionPlanKeyValuePairs.AddRange(rightLogic.SetValueTOVar());
+                actionPlanKeyValuePairs.AddRange(rightLogic.SetValueTOVar());
 
                 string breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
             }
 
             return actionPlanKeyValuePairs;
+        }
+
+        public bool IsConditionSatisfied(Dictionary<string, string> answersDic, OrderedDictionary logicDic, Func<bool, bool> myFunc)
+        {
+            object[] keys = new object[logicDic.Keys.Count];
+            logicDic.Keys.CopyTo(keys, 0);
+            for (int i = 0; i < logicDic.Keys.Count - 1; i++)
+            {
+                var temp3 = myFunc(false);
+                var temp4 = myFunc(true);
+
+                var temp = answersDic.Where(x => x.Key == (string)keys[i] && x.Value == (string)logicDic[i]).Any() &&
+                    answersDic.Where(x => x.Key == (string)keys[i + 1] && x.Value == (string)logicDic[i + 1]).Any();
+
+                var temp2 = answersDic.Where(x => x.Key == (string)keys[i] && x.Value == (string)logicDic[i]).Any() ||
+answersDic.Where(x => x.Key == (string)keys[i + 1] && x.Value == (string)logicDic[i + 1]).Any();
+
+                var breakpoint2 = string.Empty; // Todo:@Alaa - remove this temp code
+
+            }
+
+            return false;
+        }
+
+
+        public bool IsConditionSatisfiedV2(Dictionary<string, string> answersDic, OrderedDictionary logicDic, Func<bool, bool, bool> myFunc)
+        {
+            var temp = false;
+
+            object[] keys = new object[logicDic.Keys.Count];
+            logicDic.Keys.CopyTo(keys, 0);
+            for (int i = 0; i < logicDic.Keys.Count - 1; i++)
+            {
+
+                var value1 = answersDic.Where(x => x.Key == (string)keys[i] && x.Value == (string)logicDic[i]).Any();
+                var value2 = answersDic.Where(x => x.Key == (string)keys[i + 1] && x.Value == (string)logicDic[i + 1]).Any();
+
+                temp = myFunc(value1, value2);
+
+
+//                var temp2 = answersDic.Where(x => x.Key == (string)keys[i] && x.Value == (string)logicDic[i]).Any() ||
+//answersDic.Where(x => x.Key == (string)keys[i + 1] && x.Value == (string)logicDic[i + 1]).Any();
+
+//                var breakpoint2 = string.Empty; // Todo:@Alaa - remove this temp code
+
+            }
+
+            return temp;
         }
 
         public A2JPersonalizedPlan Compile(Dictionary<string, string> setVars)
