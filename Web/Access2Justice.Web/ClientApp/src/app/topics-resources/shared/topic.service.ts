@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Topic, ITopicInput } from './topic';
 import { api } from '../../../api/api';
 import { MapLocation } from '../../shared/map/map';
+import { Global } from '../../global';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -11,9 +12,9 @@ const httpOptions = {
 
 @Injectable()
 export class TopicService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,private global: Global) { }
 
-  topicInput: ITopicInput = { Id:'', Location: '' };
+  topicInput: ITopicInput = { Id: '', Location: '', IsShared: false  };
   mapLocation: MapLocation = { state: '', city: '', county: '', zipCode: '' };
 
   loadStateName(): MapLocation {
@@ -27,20 +28,25 @@ export class TopicService {
     return this.http.post<Topic>(api.topicUrl, JSON.stringify(this.mapLocation), httpOptions);
   }
   getSubtopics(id): Observable<any> {
-    this.topicInput.Id = id;
-    this.topicInput.Location = this.loadStateName();
+    this.buildParams(id);
     return this.http.post<Topic>(api.subtopicUrl, JSON.stringify(this.topicInput), httpOptions);
   
   }
   getSubtopicDetail(id): Observable<any> {
-    this.topicInput.Id = id;
-    this.topicInput.Location = this.loadStateName();
+    this.buildParams(id);
     return this.http.post<Topic>(api.subtopicDetailUrl, JSON.stringify(this.topicInput), httpOptions);   
   }
 
   getDocumentData(id): Observable<any> {
+    this.buildParams(id);
+    return this.http.post<Topic>(api.getDocumentUrl, JSON.stringify(this.topicInput), httpOptions);
+  }
+
+  buildParams(id) {
     this.topicInput.Id = id;
     this.topicInput.Location = this.loadStateName();
-    return this.http.post<Topic>(api.getDocumentUrl, JSON.stringify(this.topicInput), httpOptions);
+    if (location.pathname.indexOf(this.global.shareRouteUrl) >= 0) {
+      this.topicInput.IsShared = true;
+    }
   }
 }
