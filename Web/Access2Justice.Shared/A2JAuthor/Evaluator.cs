@@ -10,6 +10,15 @@ namespace Access2Justice.Shared.A2JAuthor
     {
         public bool Evaluate(Dictionary<string, string> answers, OrderedDictionary logic, Func<bool, bool, bool> answersLogicEvaluator)
         {
+            if(logic.Count == 0)
+            {
+                return false;
+            }
+            else if(logic.Count == 1)
+            {
+                return answers.Where(x => x.Key == (string)logic[0] && x.Value == (string)logic[0]).Any();
+            }
+
             var initialResult = false;
             var finalResult = false;
 

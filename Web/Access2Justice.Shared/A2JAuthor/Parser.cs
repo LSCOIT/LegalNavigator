@@ -22,22 +22,29 @@ namespace Access2Justice.Shared.A2JAuthor
             Dictionary<string, string> evaluatedAnswers = new Dictionary<string, string>();
 
             // Todo:@Alaa one logic text could have more than one logical statements, code should accomodate for this.
-            foreach (string logicStatement in logicStatements)
+            foreach (string logicalStatement in logicStatements)
             {
-                Dictionary<string, string> leftVarValues = new Dictionary<string, string>();
+                foreach (var ifStatement in logicalStatement.IFstatements())
+                {
+                    Dictionary<string, string> leftVarValues = new Dictionary<string, string>();
 
-                string leftLogic = logicStatement.GetStringOnTheLeftOf("SET");
+                    string leftLogic = ifStatement.GetStringOnTheLeftOf("SET");
+                    string rightLogic = ifStatement.GetStringOnTheRightOf("SET");
 
-                // Todo:@Alaa we need to extract AND, OR, simple var/values => maybe add an extention that returns var/values along with the operand?
-                var ANDvars = leftLogic.GetVariablesWithValues("AND");
+                    var ANDvars = leftLogic.GetVariablesWithValues("AND");
+                    if (evaluator.Evaluate(userAnswersKeyValuePairs, ANDvars, (x, y) => x && y))
+                    {                     
+                        evaluatedAnswers.AddRange(rightLogic.SetValueTOVar());
+                    }
 
-                var temp4 = evaluator.Evaluate(userAnswersKeyValuePairs, ANDvars, (x, y) => x && y);
-                var temp5 = evaluator.Evaluate(userAnswersKeyValuePairs, ANDvars, (x, y) => x || y);
+                    var ORvars = leftLogic.GetVariablesWithValues("OR");
+                    if(evaluator.Evaluate(userAnswersKeyValuePairs, ORvars, (x, y) => x || y))
+                    {
+                        evaluatedAnswers.AddRange(rightLogic.SetValueTOVar());
+                    }
 
-                string rightLogic = logicStatement.GetStringOnTheRightOf("SET");
-                evaluatedAnswers.AddRange(rightLogic.SetValueTOVar());
-
-                string breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
+                    string breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
+                }
             }
 
             return evaluatedAnswers;
