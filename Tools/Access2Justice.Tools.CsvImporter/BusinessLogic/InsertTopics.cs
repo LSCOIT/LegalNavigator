@@ -359,10 +359,17 @@ namespace Access2Justice.Tools.BusinessLogic
         public static void ErrorLogging(Exception ex, int recordNumber)
         {
             string strPath = Path.Combine(Environment.CurrentDirectory, "SampleFiles\\Error.txt");
-            if (!File.Exists(strPath))
+            if (File.Exists(strPath))
+            {
+                System.GC.Collect();
+                System.GC.WaitForPendingFinalizers();
+                File.Delete(strPath);
+            }
+            else
             {
                 File.Create(strPath).Dispose();
             }
+ 
             using (StreamWriter sw = File.AppendText(strPath))
             {
                 sw.WriteLine("=============Error Logging ===========");
