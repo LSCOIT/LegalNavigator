@@ -3,7 +3,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { ArrayUtilityService } from '../../../array-utility.service';
 import { api } from '../../../../../api/api';
-import { HttpClient } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { Share } from '../share-button/share.model';
 import { ShareService } from '../share-button/share.service';
 import { ActivatedRoute } from '@angular/router';
@@ -35,7 +35,7 @@ export class ShareButtonComponent implements OnInit {
 
   constructor(private modalService: BsModalService,
     private arrayUtilityService: ArrayUtilityService,
-    private httpClient: HttpClient,
+    private httpClient: HttpClientModule,
     private shareService: ShareService,
     private activeRoute: ActivatedRoute,
     private global: Global) {

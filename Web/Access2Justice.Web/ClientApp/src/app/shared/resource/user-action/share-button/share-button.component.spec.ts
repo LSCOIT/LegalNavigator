@@ -13,7 +13,7 @@ import { TemplateRef } from '@angular/core';
 import { empty } from 'rxjs/observable/empty';
 
 
-describe('ShareButtonComponent', () => {  
+describe('ShareButtonComponent', () => {
 
   class ActivateRouteStub {
     params: Observable<any> = Observable.empty();
@@ -33,7 +33,7 @@ describe('ShareButtonComponent', () => {
   let activeRoute: ActivatedRoute;
   let mockUserId = "7BAFDE5D6707167889AE7DBB3133CFF2CB4E06DA356F9E8982B9286F471799F18B631BD6BE3784501DE246AB9FF446E5437B48372C5BFEB170E6D11ACF6AB797";
   let mockSessionKey = "showModal";
-  let mockBlank= "";
+  let mockBlank = "";
   let mockURLWithPermaLink = "http://localhost:5150/share/1401C6D";
   let mockPermaLink = "1401C6D";
   let mockShowGenerateLink: boolean = false;
@@ -67,11 +67,10 @@ describe('ShareButtonComponent', () => {
       ]
     })
       .compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(ShareButtonComponent);
     component = fixture.componentInstance;
+    spyOn(component, 'ngOnInit');
     shareService = TestBed.get(ShareService);
     modalService = TestBed.get(BsModalService);
 
@@ -98,18 +97,18 @@ describe('ShareButtonComponent', () => {
       .and.callFake(mockSessionStorage.removeItem);
     spyOn(sessionStorage, 'clear')
       .and.callFake(mockSessionStorage.clear);
-  });
+  }));
 
   it('should create share button component', () => {
     expect(component).toBeTruthy();
   });
 
-  it(' should assign session storage details to when user id is available on ngInit', () => {  
+  it(' should assign session storage details to when user id is available on ngInit', () => {
     component.userId = mockUserId;
     sessionStorage.setItem("mockGetSession", JSON.stringify(mockSessionKey));
     let mockGetSession = JSON.parse(sessionStorage.getItem("mockGetSession"));
     component.ngOnInit();
-    expect(sessionStorage.getItem(this.sessionKey)).toBeNull();  
+    expect(sessionStorage.getItem(this.sessionKey)).toBeNull();
   });
 
   it('should hide model popup when close method of component called', () => {
@@ -164,7 +163,7 @@ describe('ShareButtonComponent', () => {
   it('should call getPermaLink method of component', () => {
     component.shareView = { permaLink: mockPermaLink };
     component.resourceUrl = mockResourceUrl;
-    let result  = component.getPermaLink();
+    let result = component.getPermaLink();
     expect(component.shareView.permaLink).not.toBeNull();
     expect(component.resourceUrl).toBe(mockResourceUrl);
     expect(result).toEqual(mockURLWithPermaLink);
@@ -195,5 +194,5 @@ describe('ShareButtonComponent', () => {
     let buidlurl = component.buildUrl();
     expect(buidlurl).toEqual(mockResourceTopics);
   });
-  
+
 });

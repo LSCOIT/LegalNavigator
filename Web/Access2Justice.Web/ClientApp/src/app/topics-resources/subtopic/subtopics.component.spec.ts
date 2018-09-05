@@ -13,12 +13,15 @@ import { ServiceOrgSidebarComponent } from '../../shared/sidebars/service-org-si
 import { ShowMoreService } from '../../shared/sidebars/show-more/show-more.service';
 import { SubtopicsComponent } from './subtopics.component';
 import { TopicService } from '../shared/topic.service';
+import { Observable } from 'rxjs/Observable';
+import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('SubtopicsComponent', () => {
   let component: SubtopicsComponent;
   let fixture: ComponentFixture<SubtopicsComponent>;
   let topicService: TopicService;
   let navigateDataService: NavigateDataService;
+  let showMoreService: ShowMoreService;
   let mockactiveTopic = "123";
   let mockDocumentData = [
     {
@@ -70,19 +73,20 @@ describe('SubtopicsComponent', () => {
   let mockTopicService;
   let mockNavigateDataService;
   let mockBreadcrumbService;
+  let mockShowMoreService;
 
   beforeEach(async(() => {
-    mockTopicService = jasmine.createSpyObj(['getDocumentData', 'getSubtopics']);
-    mockNavigateDataService = jasmine.createSpyObj(['getData', 'setData']);   
+    mockTopicService = jasmine.createSpyObj(['getDocumentData', 'getSubtopics']);    
+    mockNavigateDataService = jasmine.createSpyObj(['getData', 'setData']);
+    mockShowMoreService = jasmine.createSpyObj(['clickSeeMoreOrganizations']);
     mockTopicService.getDocumentData.and.returnValue(of(mockDocumentData));
     mockTopicService.getSubtopics.and.returnValue(of(mockSubTopics));
-    
+
     TestBed.configureTestingModule({
       declarations: [
         SubtopicsComponent,
         ServiceOrgSidebarComponent,
-        GuidedAssistantSidebarComponent,
-        BreadcrumbComponent
+        GuidedAssistantSidebarComponent
       ],
       imports: [
         RouterModule.forRoot([
@@ -105,14 +109,14 @@ describe('SubtopicsComponent', () => {
               { path: 'bd900039-2236-8c2c-8702-d31855c56b0f', params: {} }
             ])
           }
-        }, 
-        { provide: BreadcrumbService, useValue: mockBreadcrumbService },
+        },
         ShowMoreService,
         MapService,
         PaginationService
-      ]
+      ],
+      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
