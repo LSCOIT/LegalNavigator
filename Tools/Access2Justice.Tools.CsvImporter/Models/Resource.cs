@@ -1,10 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using Access2Justice.Tools.Models;
-using System.ComponentModel.DataAnnotations;
 using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Text;
 
 namespace Access2Justice.Tools.Models
 {

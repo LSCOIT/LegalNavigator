@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Access2Justice.Tools
+﻿namespace Access2Justice.Tools
 {
     public static class Constants
     {
