@@ -6,6 +6,7 @@ import { api } from '../../../api/api';
 import { IResourceFilter } from '../../shared/search/search-results/search-results.model';
 import { ArrayUtilityService } from '../../shared/array-utility.service';
 import { ToastrService } from 'ngx-toastr';
+import { IUserProfile } from '../../shared/login/user-profile.model';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -52,6 +53,10 @@ export class PersonalizedPlanService {
 
   getPersonalizedResources(resourceInput: IResourceFilter) {
     return this.http.put(api.getPersonalizedResourcesUrl, resourceInput, httpOptions);
+  }
+
+  upsertUserProfile(userProfile: IUserProfile) {
+    return this.http.post<any>(api.upsertUserProfileUrl, userProfile, httpOptions);
   }
 
   getPlanDetails(topics, planDetailTags): any {

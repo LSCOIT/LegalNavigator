@@ -15,7 +15,7 @@ import {
   ProgressbarConfig,
   TabsModule
 } from 'ngx-bootstrap';
-import { NgxSpinnerModule } from 'ngx-spinner'
+import { MsalModule } from '@azure/msal-angular';
 
 import { AppComponent } from './app.component';
 import { AboutComponent } from './about/about.component';
@@ -41,6 +41,7 @@ import { StaticResourceService } from './shared/static-resource.service';
 import { ResponseInterceptor } from './response-interceptor';
 import { Global } from './global'
 import { CuratedExperienceResultComponent } from './guided-assistant/curated-experience-result/curated-experience-result.component';
+import { MsalInterceptor } from '@azure/msal-angular';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,13 @@ import { CuratedExperienceResultComponent } from './guided-assistant/curated-exp
     ModalModule.forRoot(),
     ProgressbarModule.forRoot(),
     TabsModule.forRoot(),
-    NgxSpinnerModule.forRoot()
+    MsalModule.forRoot({
+      clientID: 'f0d077e6-f293-4c01-9cfb-b8327735533d',
+      authority:'https://login.microsoftonline.com/common/',
+      consentScopes: ["user.read"],
+      redirectUri: 'http://localhost:5150/',
+      navigateToLoginRequestUrl: false      
+    })
   ],
   providers: [
     {

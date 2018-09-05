@@ -1,5 +1,6 @@
 ﻿using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
+using Access2Justice.Shared.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -25,7 +26,8 @@ namespace Access2Justice.Api.BusinessLogic
         {
             UserProfile userProfile = new UserProfile();
             var resultUserData = await dbClient.FindItemsWhereAsync(dbSettings.UserProfileCollectionId, Constants.OId, oId);
-            userProfile = ConvertUserProfile(resultUserData);
+            var serializedResult = JsonConvert.SerializeObject(resultUserData);
+            userProfile = ConvertUserProfile(serializedResult);
             return userProfile;
         }
         public async Task<dynamic> GetUserResourceProfileDataAsync(string oId, string type)
@@ -43,22 +45,22 @@ namespace Access2Justice.Api.BusinessLogic
             return userResourcesDBData;
         }
         private UserProfile ConvertUserProfile(dynamic convObj)
-        {
-            var serializedResult = JsonConvert.SerializeObject(convObj);
-            List<UserProfile> listUserProfiles = JsonConvert.DeserializeObject<List<UserProfile>>(serializedResult);
+        {            
+            List<UserProfile> listUserProfiles = JsonConvert.DeserializeObject<List<UserProfile>>(convObj);
             UserProfile userProfile = new UserProfile();
             foreach (UserProfile user in listUserProfiles)
             {
-                userProfile.Id = user.Id;
+                //userProfile.Id = user.Id;
                 userProfile.OId = user.OId;
-                userProfile.FirstName = user.FirstName;
-                userProfile.LastName = user.LastName;
-                userProfile.EMail = user.EMail;
+                userProfile.Name = user.Name;
+                //userProfile.FirstName = user.FirstName;
+                //userProfile.LastName = user.LastName;
+                //userProfile.EMail = user.EMail;
                 userProfile.IsActive = user.IsActive;
-                userProfile.CreatedBy = user.CreatedBy;
-                userProfile.CreatedTimeStamp = user.CreatedTimeStamp;
-                userProfile.ModifiedBy = user.ModifiedBy;
-                userProfile.ModifiedTimeStamp = user.ModifiedTimeStamp;
+                //userProfile.CreatedBy = user.CreatedBy;
+                //userProfile.CreatedTimeStamp = user.CreatedTimeStamp;
+                //userProfile.ModifiedBy = user.ModifiedBy;
+                //userProfile.ModifiedTimeStamp = user.ModifiedTimeStamp;
                 userProfile.PersonalizedActionPlanId = user.PersonalizedActionPlanId;
                 userProfile.CuratedExperienceAnswersId = user.CuratedExperienceAnswersId;
                 userProfile.SavedResourcesId = user.SavedResourcesId;
@@ -140,6 +142,22 @@ namespace Access2Justice.Api.BusinessLogic
             };
             userDocument = JsonConvert.DeserializeObject<UserSavedResources>(JsonConvert.SerializeObject(userDocument));
             return await dbService.UpdateItemAsync(id.ToString(), userDocument, dbSettings.UserSavedResourcesCollectionId);
+        }
+
+        public async Task<UserProfile> UpsertUserProfileAsync(UserProfile userProfile)
+        {
+            if (userProfile == null || string.IsNullOrEmpty(userProfile?.OId))
+                throw new Exception("");
+                    
+            userProfile.OId = EncryptionUtilities.GenerateSHA512String(userProfile?.OId);
+            var resultUP = await GetUserProfileDataAsync(userProfile?.OId);
+            if (string.IsNullOrEmpty(resultUP.OId) || resultUP.Id == Guid.Empty)
+            {
+                var result = await dbService.CreateItemAsync(userProfile, dbSettings.UserProfileCollectionId);
+                var serializedResult = JsonConvert.SerializeObject(result);
+                resultUP = ConvertUserProfile("[" + result + "]");
+            }
+            return resultUP;
         }
     }
 }

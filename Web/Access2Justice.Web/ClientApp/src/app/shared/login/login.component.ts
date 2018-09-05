@@ -3,7 +3,11 @@ import { api } from '../../../api/api';
 import { environment } from '../../../environments/environment';
 import { Login } from '../navigation/navigation';
 import { Router } from '@angular/router';
+import { Subscription } from "rxjs/Subscription";
 import { Global, UserStatus } from '../../global';
+import { MsalService, BroadcastService } from '@azure/msal-angular';
+import { IUserProfile } from './user-profile.model';
+import { PersonalizedPlanService } from '../../guided-assistant/personalized-plan/personalized-plan.service';
 
 @Component({
   selector: 'app-login',
@@ -12,13 +16,20 @@ import { Global, UserStatus } from '../../global';
 })
 export class LoginComponent implements OnInit {
   @Input() login: Login;
-  userProfile: string;
+  userProfileName: string = "Just Testing";
   isLoggedIn: boolean = false;
   blobUrl: any = environment.blobUrl;
   @ViewChild('dropdownMenu') dropdown: ElementRef;
-  @Output() sendProfileOptionClickEvent = new EventEmitter<string>();
+  @Output() sendProfileOptionClickEvent = new EventEmitter<string>();  
+  private subscription: Subscription;
+  userProfile: IUserProfile;
+  isProfileSaved: boolean = false;
 
-  constructor(private router: Router, private global:Global) { }
+  constructor(private router: Router,
+              private global: Global,
+              private msalService: MsalService,
+              private broadcastService: BroadcastService,
+              private personalizedPlanService: PersonalizedPlanService) { }
 
   onProfileOptionClick() {
     this.sendProfileOptionClickEvent.emit();
@@ -40,28 +51,48 @@ export class LoginComponent implements OnInit {
   }
 
   externalLogin() {
-    var form = document.createElement('form');
-    form.setAttribute('method', 'POST');
-    form.setAttribute('action', api.loginUrl);
-    document.body.appendChild(form);
-    form.submit();
+    this.msalService.loginPopup(["user.read"]);    
   }
 
   logout() {
     sessionStorage.removeItem("profileData");
-    let form = document.createElement('form');
-    form.setAttribute('method', 'POST');
-    form.setAttribute('action', api.logoutUrl);
-    document.body.appendChild(form);
-    form.submit();
+    this.msalService.logout();
   }
 
   ngOnInit() {
-    let profileData = sessionStorage.getItem("profileData");
-    if (profileData != undefined) {
-      profileData = JSON.parse(profileData);
+
+    this.broadcastService.subscribe("msal:loginFailure", (payload) => {
+      console.log("login failure");
+      this.isLoggedIn = false;
+
+    });
+
+    this.broadcastService.subscribe("msal:loginSuccess", (payload) => {
+      console.log("login success");
       this.isLoggedIn = true;
-      this.userProfile = profileData["UserName"];
+      let userData = this.msalService.getUser();
+      this.userProfile = {
+        name: userData.idToken['name'], firstName: "", lastName: "", oId: userData.idToken['oid'], eMail: userData.idToken['preferred_username'], isActive: "Yes",
+        createdBy: userData.idToken['name'], createdTimeStamp: (new Date()).toUTCString(), modifiedBy: userData.idToken['name'], modifiedTimeStamp: (new Date()).toUTCString()
+      }
+      if (!this.isProfileSaved && payload.startsWith("idToken")) {
+        this.isProfileSaved = true;
+        this.personalizedPlanService.upsertUserProfile(this.userProfile)
+          .subscribe(response => {
+            if (response) {
+              let profileData = { UserId: response.oId, UserName: response.name }
+              this.userProfileName = response.name;
+              sessionStorage.setItem("profileData", JSON.stringify(profileData));
+            }
+          });
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.broadcastService.getMSALSubject().next(1);
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
   }
 

@@ -13,6 +13,9 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "oId")]
         public string OId { get; set; }
 
+        [JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
         [JsonProperty(PropertyName = "firstName")]
         public string FirstName { get; set; }
 

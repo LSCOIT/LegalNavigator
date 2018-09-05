@@ -68,5 +68,18 @@ namespace Access2Justice.Api.Controllers
             var users = await userProfileBusinessLogic.UpsertUserSavedResourcesAsync(profileResources);
             return Ok(users);
         }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <param name="userProfile"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("api/user/upsertuserprofile")]
+        public async Task<IActionResult> UpsertUserProfile([FromBody]UserProfile userProfile)
+        {
+            var users = await userProfileBusinessLogic.UpsertUserProfileAsync(userProfile);
+            return Ok(users);
+        }
     }
 }
