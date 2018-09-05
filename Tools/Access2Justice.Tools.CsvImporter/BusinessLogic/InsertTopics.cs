@@ -7,6 +7,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using Spreadsheet = DocumentFormat.OpenXml.Spreadsheet;
+using System.Configuration;
 
 namespace Access2Justice.Tools.BusinessLogic
 {
@@ -14,14 +15,16 @@ namespace Access2Justice.Tools.BusinessLogic
     {
         public dynamic CreateJsonFromCSV()
         {
-            string path = Path.Combine(Environment.CurrentDirectory, "SampleFiles\\HI_Topics_Import_Template_V4.xlsx");
-            string textFilePath = path;
             int recordNumber = 1;
             Topic topic = new Topic();
             List<dynamic> topicsList = new List<dynamic>();
             List<dynamic> topics = new List<dynamic>();
+            string appSettings = ConfigurationManager.AppSettings.Get("Topics");
+            string path = Path.Combine(Environment.CurrentDirectory, appSettings);
+
             try
             {
+                string textFilePath = path;
                 using (SpreadsheetDocument spreadsheetDocument =
                     SpreadsheetDocument.Open(path, false))
                 {
@@ -238,6 +241,28 @@ namespace Access2Justice.Tools.BusinessLogic
                         });
                     }
                 }
+                else if (quickLinkTextsb.Length < quickLinkUrlsb.Length)
+                {
+                    for (int quickLinkIterator = 0; quickLinkIterator < quickLinkTextsb.Length; quickLinkIterator++)
+                    {
+                        quickLinks.Add(new QuickLinks
+                        {
+                            Text = (quickLinkTextsb[quickLinkIterator]).Trim(),
+                            Urls = (quickLinkUrlsb[quickLinkIterator]).Trim()
+                        });
+                    }
+                }
+                else if (quickLinkUrlsb.Length < quickLinkTextsb.Length)
+                {
+                    for (int quickLinkIterator = 0; quickLinkIterator < quickLinkUrlsb.Length; quickLinkIterator++)
+                    {
+                        quickLinks.Add(new QuickLinks
+                        {
+                            Text = (quickLinkTextsb[quickLinkIterator]).Trim(),
+                            Urls = (quickLinkUrlsb[quickLinkIterator]).Trim()
+                        });
+                    }
+                }
             }
             return quickLinks;
         }
@@ -326,51 +351,42 @@ namespace Access2Justice.Tools.BusinessLogic
             IStructuralEquatable actualHeader = header;
             string[] expectedHeader = {"Topic_ID*", "Topic_Name*", "Parent_Topic*", "Keywords*", "Location_State*", "Location_County",
                 "Location_City", "Location_Zip", "Overview", "Quick_Links_URL_text", "Quick_Links_URL_link", "Icon" };
-
-            try
-            {
-                if (actualHeader.Equals(expectedHeader, StructuralComparisons.StructuralEqualityComparer))
-                {
-                    correctHeader = true;
-                }
-                else
-                {
-                    dynamic logHeader = null;
-                    int count = 0;
-                    foreach (var item in expectedHeader)
-                    {
-                        logHeader = logHeader + item;
-                        if (count < expectedHeader.Count() - 1)
-                        {
-                            logHeader = logHeader + ", ";
-                            count++;
-                        }
-                    }
-                    throw new Exception("Expected header:" + "\n" + logHeader);
-                }
-            }
-            catch (Exception ex)
-            {
-                ErrorLogging(ex, recordNumber);
-                ReadError();
-            }
+               
+            correctHeader = InsertResources.HeaderValidation(header, expectedHeader, "Topics");          
             return correctHeader;
         }
 
         public static void ErrorLogging(Exception ex, int recordNumber)
         {
             string strPath = Path.Combine(Environment.CurrentDirectory, "SampleFiles\\Error.txt");
-            Path.Combine(Environment.CurrentDirectory, "SampleFiles\\Topic_Data_tab.txt");
-            if (!File.Exists(strPath))
+            if (File.Exists(strPath))
+            {
+                System.GC.Collect();
+                System.GC.WaitForPendingFinalizers();
+                File.Delete(strPath);
+            }
+            else
             {
                 File.Create(strPath).Dispose();
             }
+ 
             using (StreamWriter sw = File.AppendText(strPath))
             {
                 sw.WriteLine("=============Error Logging ===========");
                 sw.WriteLine("===========Start============= " + DateTime.Now);
-                sw.WriteLine("Error Message: " + ex.Message + "\n" + "Please correct error at record number: " + recordNumber);
-                sw.WriteLine("Stack Trace: " + ex.StackTrace);
+                if (ex.Message == "Could not find document")
+                {
+                    sw.WriteLine("Error Message: " + ex.Message);
+                }
+                else if (ex.Message.Contains("Header"))
+                {
+                    sw.WriteLine("Error Message: " + ex.Message);
+                }
+                else
+                {
+                    sw.WriteLine("Error Message: " + ex.Message + "\n" + "Please correct error at record number: " + recordNumber);
+                    sw.WriteLine("Stack Trace: " + ex.StackTrace);
+                }
                 sw.WriteLine("===========End============= " + DateTime.Now);
                 sw.WriteLine();
             }
