@@ -9,16 +9,23 @@ import { DownloadButtonComponent } from '../../user-action/download-button/downl
 import { SettingButtonComponent } from '../../user-action/setting-button/setting-button.component';
 import { BsModalService } from 'ngx-bootstrap';
 import { Global } from '../../../../global';
+import { MapResultsService } from '../../../sidebars/map-results/map-results.service';
+import { HttpClientModule, HttpHandler } from '@angular/common/http';
 
 describe('OrganizationsComponent', () => {
   let component: OrganizationsComponent;
   let fixture: ComponentFixture<OrganizationsComponent>;
   let mockBsModalService;
+  let mockMapResultsService;
   let mockGlobal;
-  
+  let mockResource: { resource: { address: "2900 E Parks Hwy Wasilla, AK 99654" } };
+
   beforeEach(async(() => {
+    mockBsModalService = jasmine.createSpyObj(['show'])
+
     TestBed.configureTestingModule({
-      declarations: [ 
+      imports: [HttpClientModule],
+      declarations: [
         OrganizationsComponent,
         UserActionSidebarComponent,
         MapResultsComponent,
@@ -29,20 +36,26 @@ describe('OrganizationsComponent', () => {
         SettingButtonComponent
       ],
       providers: [
+        MapResultsService,
+        HttpClientModule,
+        HttpHandler,
         { provide: BsModalService, useValue: mockBsModalService },
-        { provide: Global, useValue: mockGlobal }
+        { provide: Global, useValue: { role: '', shareRouteUrl: '' } }
       ]
     })
-    .compileComponents();
-  }));
+      .compileComponents();
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(OrganizationsComponent);
     component = fixture.componentInstance;
+    component.resource = mockResource;
+    component.searchResource = {
+      resources: {}, webResources: { webPages: { value: {} } }, topIntent: ''
+    };
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component).toBeDefined();
   });
 });
+

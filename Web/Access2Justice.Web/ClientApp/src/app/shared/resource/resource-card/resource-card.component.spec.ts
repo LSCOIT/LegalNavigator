@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ResourceCardComponent } from './resource-card.component';
 import { SaveButtonComponent } from '../user-action/save-button/save-button.component';
 import { ShareButtonComponent } from '../user-action/share-button/share-button.component';
@@ -20,19 +20,20 @@ describe('ResourceCardComponent', () => {
         ResourceCardDetailComponent
       ],
       imports: [],
-      providers: [
-        { provide: Global, useValue: mockGlobal }
+      providers: [        
+        { provide: Global, useValue: { role: '', shareRouteUrl: '' } },
+        { provide: ResourceCardComponent, useValue: { id: '', resources: [{ itemId: '', resourceType: '', resourceDetails: {}}] }}
       ],
-      schemas: [ NO_ERRORS_SCHEMA ]
+      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA ]
     })
-    .compileComponents();
-  }));
+      .compileComponents();
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(ResourceCardComponent);
     component = fixture.componentInstance;
+    spyOn(component, 'ngOnInit');
     fixture.detectChanges();
-  });
+
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
