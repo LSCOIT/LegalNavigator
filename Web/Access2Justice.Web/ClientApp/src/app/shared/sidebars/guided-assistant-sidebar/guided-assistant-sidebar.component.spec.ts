@@ -168,12 +168,29 @@ describe('GuidedAssistantSidebarComponent', () => {
     expect(component.guidedAssistantId).toBe(mockEmpty);
   });
 
-  it('should return guidedAssistantLinkResults when getPagedResource method of pagination service called', () => {
+  xit('should return guidedAssistantLinkResults when getPagedResource method of pagination service called', () => {
+
+    component.searchResultsData = 'test';
+    component.guidedAssistantId = mockGuidedAssistantId;
+    router.url.startsWith("/search");
+    let mockRouterUrl = "/guidedassistant/" + mockGuidedAssistantId;
+    router.navigateByUrl(mockRouterUrl);
+    component.topicIds = [mockActivetopic];
+    component.location = mockMapLocation;
+    sessionStorage.setItem("globalMapLocation", JSON.stringify(mockMapLocation));
+    component.activeTopic = mockActivetopic;
+    component.activeSubTopic = { "name": "Family" };
+    let mockResponse = { "id": "test", "topIntent": "" };
+    let mockguidedAssistantResults = { "id": "test", "topIntent": "Family" };
+    spyOn(paginationService, 'getPagedResources').and.callFake(() => {
+      return Observable.from([mockResponse])
+    });
     spyOn(navigateDataService, 'setData');
-    spyOn(paginationService, 'getPagedResources');
-    paginationService.getPagedResources(mockresourceInput);
-    expect(paginationService.getPagedResources).toHaveBeenCalled();
-    expect(component.guidedAssistantId).toBeUndefined();
+    component.getGuidedAssistantLinkResult();
+    expect(component.resourceFilter).toEqual(mockresourcesInput);
+    expect(paginationService.getPagedResources).toHaveBeenCalledWith(mockresourcesInput);
+    expect(component.guidedAssistantResults).toEqual(mockResponse);
+    expect(navigateDataService.setData).toHaveBeenCalledWith(mockguidedAssistantResults);
   });
 
 });
