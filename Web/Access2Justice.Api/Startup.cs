@@ -57,7 +57,6 @@ namespace Access2Justice.Api
             services.AddSingleton<IShareBusinessLogic, ShareBusinessLogic>();
             services.AddSingleton<IA2JAuthorBusinessLogic, A2JAuthorBusinessLogic>();
             services.AddSingleton<IPersonalizedPlanEngine, PersonalizedPlanEngine>();
-            services.AddSingleton<IIfElseParser, IfElseParser>();
             services.AddSingleton<IParse, Parser>();
             services.AddSingleton<IEvaluate, Evaluator>();
             services.AddSingleton<ICompile, Compiler>();

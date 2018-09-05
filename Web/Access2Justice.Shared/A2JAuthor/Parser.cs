@@ -36,7 +36,14 @@ namespace Access2Justice.Shared.A2JAuthor
                 // Todo:@Alaa we need to extract AND, OR, simple var/values => maybe add an extention that returns var/values along with the operand?
                 var ANDvars = leftLogic.GetVariablesWithValues("AND");
 
+                //var varsWithOperands = new OrderedDictionary();
+                //varsWithOperands.Add("AND", ANDvars);
 
+                //foreach (var andVar in ANDvars)
+                //{
+
+
+                //}
                 var temp4 = IsConditionSatisfiedV2(userAnswersKeyValuePairs, ANDvars, (x, y) => x && y);
                 var temp5 = IsConditionSatisfiedV2(userAnswersKeyValuePairs, ANDvars, (x, y) => x || y);
 
@@ -55,6 +62,12 @@ namespace Access2Justice.Shared.A2JAuthor
         public bool IsConditionSatisfiedV2(Dictionary<string, string> answersDic, OrderedDictionary logicDic, Func<bool, bool, bool> myFunc)
         {
             var result = false;
+            var final = false;
+
+            if(myFunc(true, false) == false)
+            {
+                final = true;
+            }
 
             object[] keys = new object[logicDic.Keys.Count];
             logicDic.Keys.CopyTo(keys, 0);
@@ -65,10 +78,10 @@ namespace Access2Justice.Shared.A2JAuthor
                 var value2 = answersDic.Where(x => x.Key == (string)keys[i + 1] && x.Value == (string)logicDic[i + 1]).Any();
 
                 result = myFunc(value1, value2);
-
+                final = myFunc(result, final);
             }
 
-            return result;
+            return final;
         }
 
         public A2JPersonalizedPlan Compile(Dictionary<string, string> setVars)

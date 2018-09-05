@@ -8,7 +8,7 @@ namespace Access2Justice.Shared.A2JAuthor
     {
         private readonly IParse parser;
 
-        public PersonalizedPlanEngine(IIfElseParser a2JParser, IParse parser)
+        public PersonalizedPlanEngine(IParse parser)
         {
             this.parser = parser;
         }
