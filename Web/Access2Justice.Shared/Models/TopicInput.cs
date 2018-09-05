@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
-namespace Access2Justice.Api.ViewModels
+namespace Access2Justice.Shared.Models
 {
     public class TopicInput
     {
@@ -12,5 +12,8 @@ namespace Access2Justice.Api.ViewModels
 
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
+
+        [JsonProperty(PropertyName = "isShared")]
+        public bool IsShared { get; set; } = false;
     }
 }
