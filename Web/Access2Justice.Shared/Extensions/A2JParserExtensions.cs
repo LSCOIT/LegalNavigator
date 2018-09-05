@@ -1,11 +1,11 @@
-﻿using Access2Justice.Shared.A2JAuthor;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 
 namespace Access2Justice.Shared.Extensions
 {
+     // Todo:@Alaa use Tokens constants
     public static class A2JParserExtensions
     {
         public static List<string> IFstatements(this string logic)
