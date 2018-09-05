@@ -17,10 +17,14 @@
   position: absolute;
   top: -2px;
   right: 0;
-  width: 65%;
+  width: auto;
   background: #f4f4f4;
   height: 33px;
   padding: 10px 0;
+}
+
+#language {
+  margin-left: -10px;
 }
 
 @media only screen and (min-width : 768px) {

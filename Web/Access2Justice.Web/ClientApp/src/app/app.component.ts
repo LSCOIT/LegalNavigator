@@ -12,13 +12,13 @@ export class AppComponent implements OnInit {
   title = 'app';
   staticContentResults: any;
   subscription: any;
-  
-  constructor(    
+
+  constructor(
     private global: Global,
     private staticResourceService: StaticResourceService,
     private mapService: MapService) {
   }
-  getCookie(cookieName: string) {    
+  getCookie(cookieName: string) {
     let cookieNameEQ = cookieName + "=";
     let cookies = document.cookie.split(';');
     for (let i = 0; i < cookies.length; i++) {
@@ -58,10 +58,20 @@ export class AppComponent implements OnInit {
     let profileData = this.getCookie("profileData");
     if (profileData != undefined) {
       profileData = decodeURIComponent(profileData);
-      sessionStorage.setItem("profileData", profileData);      
+      sessionStorage.setItem("profileData", profileData);
       this.deleteCookie("profileData", "", -1);
       this.global.role = UserStatus.Authorized;
     }
+    else {
+      profileData = sessionStorage.getItem("profileData");
+      if (profileData != undefined) {
+        profileData = JSON.parse(profileData);
+        if (profileData["IsShared"]) {
+          sessionStorage.removeItem("profileData");
+        }
+      }
+    }
+
     this.subscription = this.mapService.notifyLocation
       .subscribe((value) => {
         this.setStaticContentData();

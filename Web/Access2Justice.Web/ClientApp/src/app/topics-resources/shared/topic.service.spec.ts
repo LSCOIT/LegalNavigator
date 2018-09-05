@@ -1,12 +1,14 @@
 import { TopicService } from './topic.service';
 import { Observable } from 'rxjs/Rx';
 import { api } from '../../../api/api';
+import { Global } from '../../global';
 
 describe('TopicService', () => {
   let service: TopicService;
+  let globalService: Global;
   const httpSpy = jasmine.createSpyObj('http', ['get', 'post']);
   beforeEach(() => {
-    service = new TopicService(httpSpy);
+    service = new TopicService(httpSpy, globalService);
     httpSpy.get.calls.reset();
   });
 
