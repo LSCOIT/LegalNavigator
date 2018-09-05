@@ -17,7 +17,7 @@ namespace Access2Justice.Shared.A2JAuthor
         public A2JPersonalizedPlan Build(A2JPersonalizedPlan personalizedPlan, CuratedExperienceAnswers userAnswers)
         {
             var evaluatedAnswers = parser.Parse(userAnswers);
-            var compiledPlan = compiler.Compile(evaluatedAnswers);
+            var compiledPlan = compiler.Compile(personalizedPlan, evaluatedAnswers);
 
              // Todo:@Alaa remove this
             return compiledPlan;

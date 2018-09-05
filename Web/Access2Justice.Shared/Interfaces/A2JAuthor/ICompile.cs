@@ -5,6 +5,6 @@ namespace Access2Justice.Shared.Interfaces.A2JAuthor
 {
     public interface ICompile
     {
-        A2JPersonalizedPlan Compile(Dictionary<string, string> evaluatedUserAnswers);
+        A2JPersonalizedPlan Compile(A2JPersonalizedPlan personalizedPlan, Dictionary<string, string> evaluatedUserAnswers);
     }
 }
