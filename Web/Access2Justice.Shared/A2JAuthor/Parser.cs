@@ -1,10 +1,7 @@
 ﻿using Access2Justice.Shared.Extensions;
 using Access2Justice.Shared.Interfaces.A2JAuthor;
 using Access2Justice.Shared.Models;
-using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
 
 namespace Access2Justice.Shared.A2JAuthor
 {
@@ -22,7 +19,7 @@ namespace Access2Justice.Shared.A2JAuthor
             Dictionary<string, string> userAnswersKeyValuePairs = ExtractAnswersVarValues(curatedExperienceAnswers);
             List<string> logicStatements = ExtractAnswersLogicalStatements(curatedExperienceAnswers);
 
-            Dictionary<string, string> actionPlanKeyValuePairs = new Dictionary<string, string>();
+            Dictionary<string, string> evaluatedAnswers = new Dictionary<string, string>();
 
             // Todo:@Alaa one logic text could have more than one logical statements, code should accomodate for this.
             foreach (string logicStatement in logicStatements)
@@ -34,29 +31,18 @@ namespace Access2Justice.Shared.A2JAuthor
                 // Todo:@Alaa we need to extract AND, OR, simple var/values => maybe add an extention that returns var/values along with the operand?
                 var ANDvars = leftLogic.GetVariablesWithValues("AND");
 
-                //var varsWithOperands = new OrderedDictionary();
-                //varsWithOperands.Add("AND", ANDvars);
-
-                //foreach (var andVar in ANDvars)
-                //{
-
-
-                //}
                 var temp4 = evaluator.Evaluate(userAnswersKeyValuePairs, ANDvars, (x, y) => x && y);
                 var temp5 = evaluator.Evaluate(userAnswersKeyValuePairs, ANDvars, (x, y) => x || y);
 
-                // extract right to SET and set values
                 string rightLogic = logicStatement.GetStringOnTheRightOf("SET");
-
-                actionPlanKeyValuePairs.AddRange(rightLogic.SetValueTOVar());
+                evaluatedAnswers.AddRange(rightLogic.SetValueTOVar());
 
                 string breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
             }
 
-            return actionPlanKeyValuePairs;
+            return evaluatedAnswers;
         }
 
-        // Todo:@Alaa should we put these somewhere else?
         private Dictionary<string, string> ExtractAnswersVarValues(CuratedExperienceAnswers curatedExperienceAnswers)
         {
             Dictionary<string, string> userAnswers = new Dictionary<string, string>();
@@ -79,7 +65,7 @@ namespace Access2Justice.Shared.A2JAuthor
 
         private List<string> ExtractAnswersLogicalStatements(CuratedExperienceAnswers curatedExperienceAnswers)
         {
-            // Todo:@Alaa in logical statements we have codeBefore and codeAfter, I consolidated them here but maybe
+            // in logical statements we have codeBefore and codeAfter, I consolidated them here but maybe
             // we should create a class with two properties of List<string> for each of these. We will check the need for this as
             // the implementation matures.
             List<string> statements = new List<string>();

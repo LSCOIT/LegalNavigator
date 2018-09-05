@@ -1,6 +1,4 @@
-﻿using Access2Justice.Shared;
-using Access2Justice.Shared.A2JAuthor;
-using Access2Justice.Shared.Extensions;
+﻿using Access2Justice.Shared.Extensions;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Interfaces.A2JAuthor;
 using Access2Justice.Shared.Models;
@@ -16,10 +14,10 @@ namespace Access2Justice.Api.BusinessLogic
     {
         private readonly ICosmosDbSettings dbSettings;
         private readonly IBackendDatabaseService dbService;
-        private readonly IPersonalizedPlanEngine personalizedPlanEngine;
+        private readonly IBuild personalizedPlanEngine;
 
         public A2JAuthorBusinessLogic(ICosmosDbSettings cosmosDbSettings, IBackendDatabaseService backendDatabaseService,
-            IPersonalizedPlanEngine a2JAuthorParserBusinessLogic)
+            IBuild a2JAuthorParserBusinessLogic)
         {
             dbSettings = cosmosDbSettings;
             dbService = backendDatabaseService;

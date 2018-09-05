@@ -1,5 +1,4 @@
 ﻿using Access2Justice.Shared.Interfaces.A2JAuthor;
-using Access2Justice.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -9,29 +8,29 @@ namespace Access2Justice.Shared.A2JAuthor
 {
     public class Evaluator : IEvaluate
     {
-        public bool Evaluate(Dictionary<string, string> answersDic, OrderedDictionary logicDic, Func<bool, bool, bool> myFunc)
+        public bool Evaluate(Dictionary<string, string> answers, OrderedDictionary logic, Func<bool, bool, bool> answersLogicEvaluator)
         {
-            var result = false;
-            var final = false;
+            var initialResult = false;
+            var finalResult = false;
 
-            if (myFunc(true, false) == false)
+            if (answersLogicEvaluator(true, false) == false)
             {
-                final = true;
+                finalResult = true;
             }
 
-            object[] keys = new object[logicDic.Keys.Count];
-            logicDic.Keys.CopyTo(keys, 0);
-            for (int i = 0; i < logicDic.Keys.Count - 1; i++)
+            object[] keys = new object[logic.Keys.Count];
+            logic.Keys.CopyTo(keys, 0);
+
+            for (int i = 0; i < logic.Keys.Count - 1; i++)
             {
+                var valueN = answers.Where(x => x.Key == (string)keys[i] && x.Value == (string)logic[i]).Any();
+                var valueNPlus1 = answers.Where(x => x.Key == (string)keys[i + 1] && x.Value == (string)logic[i + 1]).Any();
 
-                var value1 = answersDic.Where(x => x.Key == (string)keys[i] && x.Value == (string)logicDic[i]).Any();
-                var value2 = answersDic.Where(x => x.Key == (string)keys[i + 1] && x.Value == (string)logicDic[i + 1]).Any();
-
-                result = myFunc(value1, value2);
-                final = myFunc(result, final);
+                initialResult = answersLogicEvaluator(valueN, valueNPlus1);
+                finalResult = answersLogicEvaluator(initialResult, finalResult);
             }
 
-            return final;
+            return finalResult;
         }
     }
 }
