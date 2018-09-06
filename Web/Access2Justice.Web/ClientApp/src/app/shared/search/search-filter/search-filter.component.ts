@@ -43,7 +43,7 @@ export class SearchFilterComponent implements OnInit {
       });
   }
 
-  sendFilterCriteria(resourceType) {
+  sendFilterCriteria(event, resourceType) {
     this.resetButtonColor();
     event.target["classList"].add('button-highlight');
     this.filterParam = resourceType;
