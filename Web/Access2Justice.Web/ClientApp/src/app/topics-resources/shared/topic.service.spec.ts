@@ -2,12 +2,24 @@ import { TopicService } from './topic.service';
 import { Observable } from 'rxjs/Rx';
 import { api } from '../../../api/api';
 import { Global, UserStatus } from '../../global';
+import { Subject } from 'rxjs';
 
 describe('TopicService', () => {
   let service: TopicService;
-  let globalService = { 
+  let globalService: Global = { 
     role: UserStatus.Anonymous, 
-    shareRouteUrl: "/share"
+    shareRouteUrl: "/share",
+    showShare: false,
+    showRemove: false,
+    showMarkComplete: false,
+    showDropDown: false,
+    showSetting: false,
+    profileRouteUrl: "/profile",
+    data: "",
+    notifyStaticData: new Subject<any>(),
+    externalLogin: () => {},
+    getData: () => {},
+    setData: () => {}
   };
   const httpSpy = jasmine.createSpyObj('http', ['get', 'post']);
   beforeEach(() => {

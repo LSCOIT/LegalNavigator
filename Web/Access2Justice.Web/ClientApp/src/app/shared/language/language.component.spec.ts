@@ -64,7 +64,7 @@ describe('LanguageComponent', () => {
   it('should call addAttribute after view init', fakeAsync(() => {
     spyOn(component, 'addAttributes');
     component.ngAfterViewInit();
-    tick();
+    tick(1000);
     expect(component.addAttributes).toHaveBeenCalled();
   }));
 

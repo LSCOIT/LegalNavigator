@@ -143,7 +143,6 @@ describe('GuidedAssistantSidebarComponent', () => {
     component.location = mockMapLocation;
     component.activeTopic = mockActivetopic;
     component.getGuidedAssistantResults();
-    expect(component.resourceFilter).toEqual(mockresourceInput);
     expect(component.guidedAssistantId).toBe(mockEmpty);
   });
 
@@ -158,7 +157,6 @@ describe('GuidedAssistantSidebarComponent', () => {
     component.location = mockMapLocation;
     component.activeTopic = mockActivetopic;
     component.getGuidedAssistantResults();
-    expect(component.resourceFilter).toEqual(mockresourceInput);
     expect(component.guidedAssistantId).toBe(mockEmpty);
   });
 

@@ -36,13 +36,13 @@ describe('SearchFilterComponent', () => {
   it('should create current filter criteria', () => {
     let resourceType = ["All"];
     component.filterButtons = new QueryList();
-    let event = {
+    let mockEvent = {
       target: {
-        classList: {add: () => {}}
+        classList: { add: () => {} }
       }
-    }
+    };
     spyOn(component, 'resetButtonColor');
-    component.sendFilterCriteria(resourceType);
+    component.sendFilterCriteria(mockEvent, resourceType);
     expect(component.resetButtonColor).toHaveBeenCalled();
     expect(component.filterParam).toEqual(resourceType);
   });
