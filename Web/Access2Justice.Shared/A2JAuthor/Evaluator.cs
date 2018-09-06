@@ -20,12 +20,7 @@ namespace Access2Justice.Shared.A2JAuthor
             }
 
             var initialResult = false;
-            var finalResult = false;
-
-            if (answersLogicEvaluator(true, false) == false)
-            {
-                finalResult = true;
-            }
+            var finalResult = !answersLogicEvaluator(true, false);
 
             object[] keys = new object[logic.Keys.Count];
             logic.Keys.CopyTo(keys, 0);

@@ -11,6 +11,7 @@ using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Access2Justice.Shared.Interfaces.A2JAuthor;
+using Access2Justice.Shared.A2JAuthor;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -140,6 +141,16 @@ namespace Access2Justice.Api.Controllers
             var personalizedPlan = await a2jAuthorBuisnessLogic.GetA2JPersonalizedPlanAsync();
 
             return Ok(a2jAuthorBuisnessLogic.MapA2JPersonalizedPlanToAccess2JusticeActionPlan(personalizedPlan, userAnswers));
+        }
+
+        [HttpPost("A2JPersonalizedPlan/ParserTest")]
+        public async Task<IActionResult> TestA2JPersonalizedPlanParser([FromBody] CuratedExperienceAnswers userAnswers)
+        {
+            // Todo:@Alaa remove this endpoint, added it just to test the parser duing development
+            var parser = new Parser(new Evaluator());
+            var setVars = parser.Parse(userAnswers);
+
+            return Ok(setVars);
         }
         #endregion
 
