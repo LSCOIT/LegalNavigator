@@ -81,7 +81,7 @@ import { MsalInterceptor } from '@azure/msal-angular';
       authority:'https://login.microsoftonline.com/common/',
       consentScopes: ["user.read"],
       redirectUri: 'http://localhost:5150/',
-      navigateToLoginRequestUrl: false      
+      navigateToLoginRequestUrl: true
     })
   ],
   providers: [

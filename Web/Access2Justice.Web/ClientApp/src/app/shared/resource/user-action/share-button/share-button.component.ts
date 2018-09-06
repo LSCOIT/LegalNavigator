@@ -8,6 +8,7 @@ import { Share } from '../share-button/share.model';
 import { ShareService } from '../share-button/share.service';
 import { ActivatedRoute } from '@angular/router';
 import { Global, UserStatus } from '../../../../global';
+import { MsalService } from '@azure/msal-angular';
 
 @Component({
   selector: 'app-share-button',
@@ -38,7 +39,8 @@ export class ShareButtonComponent implements OnInit {
     private httpClient: HttpClient,
     private shareService: ShareService,
     private activeRoute: ActivatedRoute,
-    private global: Global) {
+    private global: Global,
+    private msalService: MsalService) {
     let profileData = sessionStorage.getItem("profileData");
     if (profileData != undefined) {
       profileData = JSON.parse(profileData);
@@ -127,11 +129,7 @@ export class ShareButtonComponent implements OnInit {
   }
 
   externalLogin() {
-    var form = document.createElement('form');
-    form.setAttribute('method', 'GET');
-    form.setAttribute('action', api.loginUrl);
-    document.body.appendChild(form);
-    form.submit();
+    this.global.externalLogin();
   }
 
   ngOnInit() {

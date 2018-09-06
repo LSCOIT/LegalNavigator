@@ -50,7 +50,7 @@ namespace Access2Justice.Api.BusinessLogic
             UserProfile userProfile = new UserProfile();
             foreach (UserProfile user in listUserProfiles)
             {
-                //userProfile.Id = user.Id;
+                userProfile.Id = user.Id;
                 userProfile.OId = user.OId;
                 userProfile.Name = user.Name;
                 //userProfile.FirstName = user.FirstName;
@@ -151,7 +151,7 @@ namespace Access2Justice.Api.BusinessLogic
                     
             userProfile.OId = EncryptionUtilities.GenerateSHA512String(userProfile?.OId);
             var resultUP = await GetUserProfileDataAsync(userProfile?.OId);
-            if (string.IsNullOrEmpty(resultUP.OId) || resultUP.Id == Guid.Empty)
+            if (string.IsNullOrEmpty(resultUP.OId))
             {
                 var result = await dbService.CreateItemAsync(userProfile, dbSettings.UserProfileCollectionId);
                 var serializedResult = JsonConvert.SerializeObject(result);

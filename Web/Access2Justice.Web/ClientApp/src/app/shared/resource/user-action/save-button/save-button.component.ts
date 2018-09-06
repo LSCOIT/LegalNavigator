@@ -8,6 +8,8 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap';
 import { api } from '../../../../../api/api';
 import { HttpParams } from '@angular/common/http';
 import { ActionPlansComponent } from '../../resource-type/action-plan/action-plans.component';
+import { MsalService } from '@azure/msal-angular';
+import { Global } from '../../../../global';
 
 @Component({
   selector: 'app-save-button',
@@ -41,8 +43,9 @@ export class SaveButtonComponent implements OnInit {
 
   constructor(
     private personalizedPlanService: PersonalizedPlanService,
-    private arrayUtilityService: ArrayUtilityService
-  ) {
+    private arrayUtilityService: ArrayUtilityService,
+    private msalService: MsalService,
+    private global: Global) {
     let profileData = sessionStorage.getItem("profileData");
     if (profileData != undefined) {
       profileData = JSON.parse(profileData);
@@ -51,15 +54,11 @@ export class SaveButtonComponent implements OnInit {
   }
 
   externalLogin() {
-    var form = document.createElement('form');
-    form.setAttribute('method', 'GET');
-    form.setAttribute('action', api.loginUrl);
-    document.body.appendChild(form);
-    form.submit();
+    this.global.externalLogin();    
   }
 
   savePlanResources(): void {
-    if (!this.userId) {
+    if (!this.msalService.getUser()) {
       this.savePlanResourcesPreLogin();
       this.externalLogin();
     } else {
@@ -236,15 +235,15 @@ export class SaveButtonComponent implements OnInit {
     this.resourceStorage = sessionStorage.getItem(this.sessionKey);
     if (this.resourceStorage && this.resourceStorage.length > 0) {
       this.resourceStorage = JSON.parse(this.resourceStorage);
-      this.id = this.resourceStorage[0].itemId;
-      this.type = this.resourceStorage[0].resourceType;
-      this.resourceDetails = this.resourceStorage[0].resourceDetails;
+      this.id = this.resourceStorage.itemId;
+      this.type = this.resourceStorage.resourceType;
+      this.resourceDetails = this.resourceStorage.resourceDetails;
     }
   }
 
   ngOnInit() {
     this.saveBookmarkedResource();
-    if (this.userId) {
+    if (this.msalService.getUser()) {
       this.saveBookmarkedPlan();
     }
   }

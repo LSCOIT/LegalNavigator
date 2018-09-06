@@ -16,13 +16,13 @@ import { PersonalizedPlanService } from '../../guided-assistant/personalized-pla
 })
 export class LoginComponent implements OnInit {
   @Input() login: Login;
-  userProfileName: string = "Just Testing";
+  userProfileName: string ;
   isLoggedIn: boolean = false;
   blobUrl: any = environment.blobUrl;
   @ViewChild('dropdownMenu') dropdown: ElementRef;
   @Output() sendProfileOptionClickEvent = new EventEmitter<string>();  
   private subscription: Subscription;
-  userProfile: IUserProfile;
+  userProfile: any;
   isProfileSaved: boolean = false;
 
   constructor(private router: Router,
@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
   }
 
   externalLogin() {
-    this.msalService.loginPopup(["user.read"]);    
+    this.global.externalLogin();
   }
 
   logout() {
@@ -60,40 +60,11 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    this.broadcastService.subscribe("msal:loginFailure", (payload) => {
-      console.log("login failure");
-      this.isLoggedIn = false;
-
-    });
-
-    this.broadcastService.subscribe("msal:loginSuccess", (payload) => {
-      console.log("login success");
+    this.userProfile = this.msalService.getUser();
+    if (this.userProfile) {
       this.isLoggedIn = true;
-      let userData = this.msalService.getUser();
-      this.userProfile = {
-        name: userData.idToken['name'], firstName: "", lastName: "", oId: userData.idToken['oid'], eMail: userData.idToken['preferred_username'], isActive: "Yes",
-        createdBy: userData.idToken['name'], createdTimeStamp: (new Date()).toUTCString(), modifiedBy: userData.idToken['name'], modifiedTimeStamp: (new Date()).toUTCString()
-      }
-      if (!this.isProfileSaved && payload.startsWith("idToken")) {
-        this.isProfileSaved = true;
-        this.personalizedPlanService.upsertUserProfile(this.userProfile)
-          .subscribe(response => {
-            if (response) {
-              let profileData = { UserId: response.oId, UserName: response.name }
-              this.userProfileName = response.name;
-              sessionStorage.setItem("profileData", JSON.stringify(profileData));
-            }
-          });
-      }
-    });
-  }
-
-  ngOnDestroy() {
-    this.broadcastService.getMSALSubject().next(1);
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+      this.userProfileName = this.userProfile.idToken['name'];
     }
-  }
 
+  }
 }

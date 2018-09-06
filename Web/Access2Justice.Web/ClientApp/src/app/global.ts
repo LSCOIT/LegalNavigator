@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { api } from '../api/api';
 import { Subject } from 'rxjs';
+import { MsalService } from '@azure/msal-angular';
 
 @Injectable()
 export class Global {
@@ -13,17 +14,13 @@ export class Global {
   shareRouteUrl: string = "/share";
   profileRouteUrl: string = "/profile";
   data: any;
-  notifyStaticData: Subject<any> = new Subject<any>();
+  notifyStaticData: Subject<any> = new Subject<any>();  
+
+  constructor(private msalService: MsalService) { }
 
   externalLogin() {
-    var form = document.createElement('form');
-    form.setAttribute('method', 'POST');
-    form.setAttribute('action', api.loginUrl);
-    document.body.appendChild(form);
-    form.submit();
+    this.msalService.loginRedirect(["user.read"]);
   }
-
-  constructor() { }
 
   getData() {
     return this.data;

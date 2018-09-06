@@ -5,6 +5,7 @@ import { IResourceFilter } from '../shared/search/search-results/search-results.
 import { EventUtilityService } from '../shared/event-utility.service';
 import { HttpParams } from '@angular/common/http';
 import { Global } from '../global';
+import { MsalService } from '@azure/msal-angular';
 
 @Component({
   selector: 'app-profile',
@@ -33,8 +34,8 @@ export class ProfileComponent implements OnInit {
   constructor(
     private personalizedPlanService: PersonalizedPlanService,
     private eventUtilityService: EventUtilityService,
-    private global: Global
-  ) {
+    private global: Global,
+    private msalService: MsalService) {
 
     eventUtilityService.resourceUpdated$.subscribe(response => {
       if (response) {
@@ -144,7 +145,7 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.profileData == undefined) {
+    if (!this.msalService.getUser()) {
       this.global.externalLogin();
     }
 

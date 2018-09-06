@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Global, UserStatus } from './global';
 import { StaticResourceService } from './shared/static-resource.service';
 import { MapService } from './shared/map/map.service';
+import { MsalService } from '@azure/msal-angular';
+import { PersonalizedPlanService } from './guided-assistant/personalized-plan/personalized-plan.service';
+import { IUserProfile } from './shared/login/user-profile.model';
 
 @Component({
   selector: 'app-root',
@@ -12,34 +15,29 @@ export class AppComponent implements OnInit {
   title = 'app';
   staticContentResults: any;
   subscription: any;
+  userProfile: IUserProfile;
   
   constructor(    
     private global: Global,
     private staticResourceService: StaticResourceService,
-    private mapService: MapService) {
-  }
-  getCookie(cookieName: string) {    
-    let cookieNameEQ = cookieName + "=";
-    let cookies = document.cookie.split(';');
-    for (let i = 0; i < cookies.length; i++) {
-      let cookie = cookies[i];
-      while (cookie.charAt(0) == ' ')
-        cookie = cookie.substring(1, cookie.length);
-      if (cookie.indexOf(cookieNameEQ) == 0) {
-        return cookie.substring(cookieNameEQ.length, cookie.length);
-      }
-    }
-    return null;
-  }
+    private msalService: MsalService,
+    private mapService: MapService,
+    private personalizedPlanService: PersonalizedPlanService) { }  
 
-  deleteCookie(name: string, value: string, days: number) {
-    let expires = "";
-    if (days) {
-      let date = new Date();
-      date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-      expires = "; expires=" + date.toUTCString();
+  createOrGetProfile() {
+    console.log("I'm into createOrGetProfile method..");
+    let userData = this.msalService.getUser();
+    this.userProfile = {
+      name: userData.idToken['name'], firstName: "", lastName: "", oId: userData.idToken['oid'], eMail: userData.idToken['preferred_username'], isActive: "Yes",
+      createdBy: userData.idToken['name'], createdTimeStamp: (new Date()).toUTCString(), modifiedBy: userData.idToken['name'], modifiedTimeStamp: (new Date()).toUTCString()
     }
-    document.cookie = name + "=" + value + expires + "; path=/";
+    this.personalizedPlanService.upsertUserProfile(this.userProfile)
+      .subscribe(response => {
+        if (response) {
+          let profileData = { UserId: response.oId, UserName: response.name }          
+          sessionStorage.setItem("profileData", JSON.stringify(profileData));
+        }
+      });
   }
 
   onActivate(event) {
@@ -55,12 +53,8 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    let profileData = this.getCookie("profileData");
-    if (profileData != undefined) {
-      profileData = decodeURIComponent(profileData);
-      sessionStorage.setItem("profileData", profileData);      
-      this.deleteCookie("profileData", "", -1);
-      this.global.role = UserStatus.Authorized;
+    if (this.msalService.getUser()) {      
+      this.createOrGetProfile();
     }
     this.subscription = this.mapService.notifyLocation
       .subscribe((value) => {
