@@ -31,11 +31,10 @@ exports.config = {
     },
     cucumberOpts: {
         compiler: "ts:ts-node/register",
-        timeout: 20000,
         format: "json:./reports/json/cucumber_report.json",
         require: ["../../typeScript/stepdefinitions/*.js", "../../typeScript/support/*.js"],
         strict: true,
-        tags: "@SearchScenario",
+        tags: "",
     },
     onComplete: () => {
         reporter_1.Reporter.createHTMLReport();

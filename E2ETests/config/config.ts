@@ -40,11 +40,10 @@ export const config: Config = {
 
     cucumberOpts: {
         compiler: "ts:ts-node/register",
-        timeout: 20000,
         format: "json:./reports/json/cucumber_report.json", // Output format
         require: ["../../typeScript/stepdefinitions/*.js", "../../typeScript/support/*.js"], // Require step definition files before executing features
         strict: true,   // Fail if there are any undefined or pending steps
-        tags: "@SearchScenario", // Only execute the features or scenario with those tags
+        tags: "", // Only execute the features or scenario with those tags
     },
 
     onComplete: () => {

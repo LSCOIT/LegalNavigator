@@ -8,7 +8,7 @@ import { $, $$, by, element, until, browser, protractor } from "protractor";
 const chai = require("chai").use(require("chai-as-promised"));
 const expect = chai.expect;
 const assert = chai.assert;
-var option = 0;
+var firstEntry = 0;
 
 export class HomePageObject {
     public searchTab = $("span[class='inline search-text']");
@@ -17,13 +17,13 @@ export class HomePageObject {
     public results = $$("app-resource-card"); 
    
     public async enterSearchInput(text: string) {
-        if (option == 0) {
+        if (firstEntry == 0) {
             await this.searchTab.click(); 
         }
            
         await this.searchInputField.sendKeys(text);
         await this.searchButton.click();
-        option++;
+        firstEntry++;
     }
 
     public async getSearchResults() {

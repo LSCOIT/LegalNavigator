@@ -17,7 +17,7 @@ const protractor_1 = require("protractor");
 const chai = require("chai").use(require("chai-as-promised"));
 const expect = chai.expect;
 const assert = chai.assert;
-var option = 0;
+var firstEntry = 0;
 class HomePageObject {
     constructor() {
         this.searchTab = protractor_1.$("span[class='inline search-text']");
@@ -27,12 +27,12 @@ class HomePageObject {
     }
     enterSearchInput(text) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (option == 0) {
+            if (firstEntry == 0) {
                 yield this.searchTab.click();
             }
             yield this.searchInputField.sendKeys(text);
             yield this.searchButton.click();
-            option++;
+            firstEntry++;
         });
     }
     getSearchResults() {

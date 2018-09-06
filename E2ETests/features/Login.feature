@@ -5,13 +5,12 @@ Feature: Login
 
 @LoginScenario
 Scenario Outline: Log into the application using the correct credentials
-  Given I am on the Access2Justice website
-  When I type "<word>" into the search input field and click search button
-  Then I can see search results
-  Then I clear the search text
+  Given I am on the Access2Justice website and I clicked the login tab
+  When I set the 'email' '<email>' and click Next button
+  When I set the 'password' '<password>' and click Sign In button
+  Then I am redirected to home page and shown as signed in with username '<userName>'
+  Then A session storage with name profileData is created with the UserName equal to '<userName>' and UserId equal to '<userId>'
 
   Examples:
-    | word | 
-    | I am getting a divorce |
-    | I am getting kicked out |
-    | I am facing workplace harassment |
+    | email | password | userName | userId |
+    | test-a2j@outlook.com | testa2j1234 | Random Tester | 109789E51F15…C5D280CCE370E6696D2DA52D3695C29D7CE56BECF8257B3 |

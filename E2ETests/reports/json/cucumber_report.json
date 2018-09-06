@@ -1,5 +1,117 @@
 [
   {
+    "description": "    As a user\n    I need to Login\n    So I can save my resources and plans",
+    "keyword": "Feature",
+    "name": "Login",
+    "line": 1,
+    "id": "login",
+    "tags": [],
+    "uri": "features\\Login.feature",
+    "elements": [
+      {
+        "id": "login;log-into-the-application-using-the-correct-credentials",
+        "keyword": "Scenario",
+        "line": 16,
+        "name": "Log into the application using the correct credentials",
+        "tags": [
+          {
+            "name": "@LoginScenario",
+            "line": 6
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "I am on the Access2Justice website and I clicked the login tab",
+            "match": {
+              "location": "typeScript\\stepdefinitions\\login.steps.js:22"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4890000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "I set the 'email' 'test-a2j@outlook.com' and click Next button",
+            "match": {
+              "location": "typeScript\\stepdefinitions\\login.steps.js:27"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2486000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 10,
+            "name": "I set the 'password' 'testa2j1234' and click Sign In button",
+            "match": {
+              "location": "typeScript\\stepdefinitions\\login.steps.js:28"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4994000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 11,
+            "name": "I am redirected to home page and shown as signed in with username 'Random Tester'",
+            "match": {
+              "location": "typeScript\\stepdefinitions\\login.steps.js:29"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 97000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 12,
+            "name": "A session storage with name profileData is created with the UserName equal to 'Random Tester' and UserId equal to '109789E51F15…C5D280CCE370E6696D2DA52D3695C29D7CE56BECF8257B3'",
+            "match": {
+              "location": "typeScript\\stepdefinitions\\login.steps.js:34"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "typeScript\\support\\hooks.js:21"
+            },
+            "result": {
+              "status": "passed"
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "node_modules\\protractor-cucumber-framework\\lib\\resultsCapturer.js:25"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1000000
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
     "description": "  As a user\n  I need to search by a phrase\n  So that I can see the resources",
     "keyword": "Feature",
     "name": "Search for resources",
@@ -44,7 +156,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 320000000
+              "duration": 341000000
             }
           },
           {
@@ -57,7 +169,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 396000000
+              "duration": 563000000
             }
           },
           {
@@ -70,7 +182,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 39000000
+              "duration": 65000000
             }
           },
           {
@@ -80,8 +192,7 @@
               "location": "typeScript\\support\\hooks.js:21"
             },
             "result": {
-              "status": "passed",
-              "duration": 1000000
+              "status": "passed"
             }
           },
           {
@@ -118,8 +229,7 @@
               "location": "typeScript\\stepdefinitions\\search.steps.js:17"
             },
             "result": {
-              "status": "passed",
-              "duration": 1000000
+              "status": "passed"
             }
           },
           {
@@ -132,7 +242,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 736000000
+              "duration": 244000000
             }
           },
           {
@@ -158,7 +268,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 24000000
+              "duration": 21000000
             }
           },
           {
@@ -168,7 +278,8 @@
               "location": "typeScript\\support\\hooks.js:21"
             },
             "result": {
-              "status": "passed"
+              "status": "passed",
+              "duration": 1000000
             }
           },
           {
@@ -178,7 +289,8 @@
               "location": "node_modules\\protractor-cucumber-framework\\lib\\resultsCapturer.js:25"
             },
             "result": {
-              "status": "passed"
+              "status": "passed",
+              "duration": 1000000
             }
           }
         ]
@@ -218,7 +330,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 394000000
+              "duration": 260000000
             }
           },
           {
@@ -231,7 +343,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 28000000
+              "duration": 23000000
             }
           },
           {
@@ -244,7 +356,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 87000000
+              "duration": 29000000
             }
           },
           {
@@ -264,8 +376,7 @@
               "location": "node_modules\\protractor-cucumber-framework\\lib\\resultsCapturer.js:25"
             },
             "result": {
-              "status": "passed",
-              "duration": 1000000
+              "status": "passed"
             }
           }
         ]
