@@ -10,13 +10,14 @@ import { PersonalizedPlanService } from '../../../../guided-assistant/personaliz
 import { ProfileComponent } from '../../../../profile/profile.component';
 import { RemoveButtonComponent } from './remove-button.component';
 import { ToastrService } from 'ngx-toastr';
+import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('RemoveButtonComponent', () => {
   let component: RemoveButtonComponent;
   let fixture: ComponentFixture<RemoveButtonComponent>;
   let mockToastr;
-  let mockGlobal;
-  let mockRouter;
+  let mockGlobal: Global;
+  let mockRouter; 
 
   beforeEach(async(() => {
     mockToastr = jasmine.createSpyObj(['success']);
@@ -31,12 +32,11 @@ describe('RemoveButtonComponent', () => {
         BsModalService,
         PersonalizedPlanComponent,
         { provide: ToastrService, useValue: mockToastr },
-        { provide: Global, useValue: mockGlobal },
-        { provide: ActivatedRoute,
-          useValue: {snapshot: {params: {'id': '123'}}}
-        },
+        { provide: Global, useValue: { role: '', shareRouteUrl:''} },
+        { provide: ActivatedRoute, useValue: {snapshot: {params: {'id': '123'}}} },
         { provide: Router, useValue: mockRouter }
-      ]
+      ],
+      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
   }));

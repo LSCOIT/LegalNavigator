@@ -37,6 +37,7 @@ describe('SearchResultsComponent', () => {
   let mockResourceTypeFilterTemp = [{ ResourceName: "test", ResourceCount: 1 }, { ResourceName: "test", ResourceCount: 2 }, { ResourceName: "test", ResourceCount: 1 }];
   let mockResourceListFilterAll = [{ ResourceCount: 10, ResourceList: [{ continuationToken: {}, resources: [{ address: "Houston County, Texas, United States", name: "Tenant Action Plan for Eviction" }, { address: "Houston County, Texas, United States", name: "Landlord Action Plan" }] }], ResourceName: "All" }];
   let mockResourceTypeFilterWithResourceList = [{ ResourceList: [{ continuationToken: [{ test: '2' }], resources: [{ address: "Houston County, Texas, United States", name: "Tenant Action Plan for Eviction" }, { address: "Houston County, Texas, United States", name: "Landlord Action Plan" }] }] }, { ResourceName: "Organizations", ResourceCount: 2 }, { ResourceName: "Forms", ResourceCount: 1 }];
+  let mockResourceTypeFilterWithResourceListUndefined = [{ ResourceList: undefined }, { ResourceName: "Organizations", ResourceCount: 2 }, { ResourceName: "Forms", ResourceCount: 1 }];
   let mockResourceTypeFilter2 = [{ ResourceName: "Videos", ResourceCount: 1, ResourceList: [{ continuationToken: [{ test: '2' }], resources: [{ address: "Houston County, Texas, United States", name: "Tenant Action Plan for Eviction" }, { address: "Houston County, Texas, United States", name: "Landlord Action Plan" }] }] }, { ResourceName: "Organizations", ResourceCount: 2 }, { ResourceName: "Forms", ResourceCount: 1 }];
   let mockSearchText = 'eviction';
   let mockSearchResults2 = [
@@ -134,15 +135,16 @@ describe('SearchResultsComponent', () => {
   });
 
   it('should call checkResource with resource name defined and resource list undefined', () => {
-    component.resourceTypeFilter = mockResourceTypeFilter;
+    component.resourceTypeFilter = mockResourceTypeFilterWithResourceListUndefined;
     component.currentPage = mockPageNumber;
     component.checkResource(mockResourceName, mockPageNumber);
-    expect(component.checkResource(mockResourceName, mockPageNumber)).toBeTruthy();
+    expect(component.checkResource(mockResourceName, mockPageNumber)).toBeUndefined();
   });
 
   it('should call checkResource with resource name undefined and resource list undefined', () => {
     component.resourceTypeFilter = mockResourceTypeFilterTemp;
-    component.currentPage = mockPageNumber;
+    component.page = mockPageNumber;
+    mockResourceName = undefined;
     component.checkResource(mockResourceName, mockPageNumber);
     expect(component.checkResource(mockResourceName, mockPageNumber)).toBeFalsy();
   });

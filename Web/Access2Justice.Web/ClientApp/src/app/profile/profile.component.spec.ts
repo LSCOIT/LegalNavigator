@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ProfileComponent } from './profile.component';
 import { PersonalizedPlanService } from '../guided-assistant/personalized-plan/personalized-plan.service';
@@ -121,6 +121,7 @@ describe('component:profile', () => {
 
     fixture = TestBed.createComponent(ProfileComponent);
     component = fixture.componentInstance;
+    spyOn(component, 'ngOnInit');
     fixture.detectChanges();
   }));
 

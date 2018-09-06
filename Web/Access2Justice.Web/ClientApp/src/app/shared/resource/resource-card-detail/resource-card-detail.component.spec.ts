@@ -18,6 +18,7 @@ import { ShowMoreService } from '../../sidebars/show-more/show-more.service';
 import { NavigateDataService } from '../../navigate-data.service';
 import { PaginationService } from '../../pagination/pagination.service';
 import { Global } from '../../../global';
+import { MapService } from '../../map/map.service';
 
 describe('ResourceCardDetailComponent', () => {
   let component: ResourceCardDetailComponent;
@@ -87,9 +88,11 @@ describe('ResourceCardDetailComponent', () => {
          }, 
          { provide: Router, useValue: mockRouter },
          { provide: Global, useValue: mockGlobal },
+         { provide: Global, useValue: { role: '', shareRouteUrl: '' } },         
          ShowMoreService,
          NavigateDataService,
-         PaginationService
+         PaginationService,
+         MapService
        ],
        imports: [ HttpClientModule ]
     })

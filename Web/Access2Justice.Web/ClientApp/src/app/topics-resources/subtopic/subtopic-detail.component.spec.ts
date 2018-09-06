@@ -20,7 +20,6 @@ import { ShareButtonComponent } from '../../shared/resource/user-action/share-bu
 import { ShowMoreService } from '../../shared/sidebars/show-more/show-more.service';
 import { SubtopicDetailComponent } from './subtopic-detail.component';
 import { TopicService } from '../shared/topic.service';
-import 'rxjs/add/observable/from';
 import { of } from 'rxjs/observable/of';
  
 
@@ -31,6 +30,7 @@ describe('SubtopicDetailComponent', () => {
   let paginationService: PaginationService;
   let searchService: SearchService;
   let navigateDataService: NavigateDataService;
+  let topicService: TopicService; 
   let resourceType: string = 'Action Plans';
   let mockMapLocation: MapLocation = {
     state: 'Sample State',
@@ -57,6 +57,7 @@ describe('SubtopicDetailComponent', () => {
     mockMapService = jasmine.createSpyObj(['updateLocation'])
     mockPaginationService = jasmine.createSpyObj(['getPagedResources'])
     mockNavigateDataService = jasmine.createSpyObj(['setData', 'getData'])
+    mockTopicService = jasmine.createSpyObj(['getSubtopicDetail','getDataOnReload'])
 
     TestBed.configureTestingModule({
       declarations: [
@@ -67,7 +68,7 @@ describe('SubtopicDetailComponent', () => {
         ResourceCardComponent,
         GuidedAssistantSidebarComponent,
         ServiceOrgSidebarComponent,
-        BreadcrumbComponent
+        BreadcrumbComponent       
       ],
       imports: [
         RouterModule.forRoot([
@@ -98,14 +99,13 @@ describe('SubtopicDetailComponent', () => {
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
-  }));
+      .compileComponents();
 
-  beforeEach(() => {
+    TestBed.compileComponents();
     fixture = TestBed.createComponent(SubtopicDetailComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -120,4 +120,5 @@ describe('SubtopicDetailComponent', () => {
     component.clickSeeMoreOrganizationsFromSubtopicDetails(resourceType);
     expect(component.clickSeeMoreOrganizationsFromSubtopicDetails).toBeTruthy(['']);
   });
+
 });
