@@ -36,7 +36,7 @@ describe('SearchFilterComponent', () => {
   it('should create current filter criteria', () => {
     let resourceType = ["All"];
     component.filterButtons = new QueryList();
-    event = {
+    let event = {
       target: {
         classList: {add: () => {}}
       }
