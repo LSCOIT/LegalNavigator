@@ -1,11 +1,14 @@
 import { TopicService } from './topic.service';
 import { Observable } from 'rxjs/Rx';
 import { api } from '../../../api/api';
-import { Global } from '../../global';
+import { Global, UserStatus } from '../../global';
 
 describe('TopicService', () => {
   let service: TopicService;
-  let globalService: Global;
+  let globalService = { 
+    role: UserStatus.Anonymous, 
+    shareRouteUrl: "/share"
+  };
   const httpSpy = jasmine.createSpyObj('http', ['get', 'post']);
   beforeEach(() => {
     service = new TopicService(httpSpy, globalService);

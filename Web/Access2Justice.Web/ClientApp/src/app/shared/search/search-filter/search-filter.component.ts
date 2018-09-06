@@ -35,6 +35,7 @@ export class SearchFilterComponent implements OnInit {
   }
 
   resetButtonColor() {
+    console.dir(this.filterButtons);
     this.filterButtons
       .forEach(filterButton => {
         if (filterButton.nativeElement.classList.contains('button-highlight')) {
