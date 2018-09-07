@@ -353,6 +353,6 @@ a.carousel-control .icon-next {
   }
 
   .container {
-    width: 80%
+    max-width: 1500px;
   }
 }
