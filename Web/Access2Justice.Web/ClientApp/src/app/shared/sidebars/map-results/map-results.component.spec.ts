@@ -3,13 +3,14 @@ import { MapResultsComponent } from './map-results.component';
 import { MapResultsService } from './map-results.service';
 import { HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { MapLocationResult } from './map-results';
+import { MapLocationResult, LatitudeLongitude } from './map-results';
+import { of } from 'rxjs/observable/of';
 
 describe('MapResultsComponent', () => {
   let component: MapResultsComponent;
   let fixture: ComponentFixture<MapResultsComponent>;
-  let service: MapResultsService;
-
+  let mockMapResultsService;
+    
   let sampleAddress1: MapLocationResult = {
     Address: "Address Text"
   };
@@ -46,18 +47,19 @@ describe('MapResultsComponent', () => {
     }]
   };
 
-  beforeEach(
-    () => {
-      TestBed.configureTestingModule({
-        imports: [HttpClientModule],
-        declarations: [MapResultsComponent],
-        providers: [MapResultsService]
-      });
-      TestBed.compileComponents();
-      fixture = TestBed.createComponent(MapResultsComponent);
-      component = fixture.componentInstance;
-      service = TestBed.get(MapResultsService);
+  beforeEach(() => {
+    mockMapResultsService = jasmine.createSpyObj(['getMap', 'getLocationDetails', 'mapResults']);
+    TestBed.configureTestingModule({
+      imports: [HttpClientModule],
+      declarations: [MapResultsComponent],
+      providers: [
+        { provide: MapResultsService, useValue: mockMapResultsService }
+      ]
     });
+    TestBed.compileComponents();
+    fixture = TestBed.createComponent(MapResultsComponent);
+    component = fixture.componentInstance;
+  });
 
   it("should create", () => {
     expect(component).toBeTruthy();
@@ -73,70 +75,71 @@ describe('MapResultsComponent', () => {
     component.getAddress();
     expect(component.getAddress).toHaveBeenCalled();
   });
-  
+
   it("should push 1 item into addressList when getAddress is called", () => {
-    spyOn(service, 'getMap').and.returnValue(null);
+    mockMapResultsService.getMap.and.returnValue(null);
+    spyOn(component, 'getMapResults').and.returnValue(of());
     component.searchResource = onlyOneAddress;
     component.getAddress();
     expect(component.addressList.length).toEqual(1);
   });
 
   it("should push 2 items into addressList when getAddress is called", () => {
-    spyOn(service, 'getMap').and.returnValue(null);
+    mockMapResultsService.getMap.and.returnValue(null);
+    spyOn(component, 'getMapResults').and.returnValue(of());
     component.searchResource = onlyTwoAddress;
     component.getAddress();
     expect(component.addressList.length).toEqual(2);
   });
 
   it("should call getMapResults of the component when getAddress is called", () => {
-    spyOn(service, 'getMap').and.returnValue(null);
-    spyOn(component, 'getMapResults').and.returnValue(Observable.of());
+    mockMapResultsService.getMap.and.returnValue(null);
+    spyOn(component, 'getMapResults').and.returnValue(of());
     component.searchResource = onlyTwoAddress;
     component.getAddress();
     expect(component.getMapResults).toHaveBeenCalled();
   });
 
   it("should call getMap of mapResultsService when getMapResults is called with no address in addresslist", () => {
-    spyOn(service, 'getMap');
     component.getMapResults(noItemsInAddressList);
-    expect(service.getMap).toHaveBeenCalled();
+    expect(mockMapResultsService.getMap).toHaveBeenCalled();
   });
 
   it("should call displayMapResults of when getMapResults is called with addresslist", () => {
-    spyOn(component, 'displayMapResults');
+    mockMapResultsService.getLocationDetails.and.returnValue(of());
+    component.addressList = oneItemInAddressList;
     component.getMapResults(oneItemInAddressList);
-    expect(component.displayMapResults).toHaveBeenCalled();
+    spyOn(component, 'getMapResults').and.returnValue(of());
+    component.displayMapResults();
+    expect(component.displayMapResults).toBeTruthy();
   });
 
   it("should call getLocationDetails of service when displayMapResults is called", () => {
-    spyOn(service, 'getLocationDetails').and.returnValue(Observable.of());
+    mockMapResultsService.getLocationDetails.and.returnValue(of());
     component.addressList = oneItemInAddressList;
     component.displayMapResults();
-    expect(service.getLocationDetails).toHaveBeenCalled();
+    expect(mockMapResultsService.getLocationDetails).toHaveBeenCalled();
   });
 
   it("should push 1 item into latitudeLongitude when displayMapResults is called", () => {
-    spyOn(service, 'getLocationDetails').and.returnValue(Observable.of(onlyOneLocationCoordinates));
-    spyOn(service, 'mapResults');
+    mockMapResultsService.getLocationDetails.and.returnValue(of(onlyOneLocationCoordinates));
     component.addressList = oneItemInAddressList;
     component.displayMapResults();
     expect(component.latitudeLongitude.length).toEqual(1);
   });
 
   it("should push 2 item into latitudeLongitude(subscribe should be called twice) when displayMapResults is called", () => {
-    spyOn(service, 'getLocationDetails').and.returnValue(Observable.of(onlyOneLocationCoordinates));
-    spyOn(service, 'mapResults');
+    mockMapResultsService.getLocationDetails.and.returnValue(of(onlyOneLocationCoordinates));
     component.addressList = twoItemsInAddressList;
     component.displayMapResults();
     expect(component.latitudeLongitude.length).toEqual(2);
   });
 
   it("should call mapResults of mapResultsService when displayMapResults is called", () => {
-    spyOn(service, 'getLocationDetails').and.returnValue(Observable.of(onlyOneLocationCoordinates));
-    spyOn(service, 'mapResults');
+    mockMapResultsService.getLocationDetails.and.returnValue(of(onlyOneLocationCoordinates));
     component.addressList = oneItemInAddressList;
     component.displayMapResults();
-    expect(service.mapResults).toHaveBeenCalled();
+    expect(mockMapResultsService.mapResults).toHaveBeenCalled();
   });
 
 });

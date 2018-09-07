@@ -2,6 +2,7 @@
 using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
+using Access2Justice.Shared.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -42,27 +43,55 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<dynamic> GetTopLevelTopicsAsync(Location location)
         {
-            return await dbClient.FindItemsWhereWithLocationAsync(dbSettings.TopicCollectionId, Constants.ParentTopicId, "",location);
+            return await dbClient.FindItemsWhereWithLocationAsync(dbSettings.TopicCollectionId, Constants.ParentTopicId, "", location);
         }
 
-        public async Task<dynamic> GetSubTopicsAsync(string parentTopicId,Location location)
+        public async Task<dynamic> GetSubTopicsAsync(TopicInput topicInput)
         {
-            return await dbClient.FindItemsWhereArrayContainsAsyncWithLocation(dbSettings.TopicCollectionId, Constants.ParentTopicId, Constants.Id, parentTopicId, location);
+            if (topicInput.IsShared)
+            {
+                return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.TopicCollectionId, Constants.ParentTopicId, Constants.Id, topicInput.Id);
+            }
+            else
+            {
+                return await dbClient.FindItemsWhereArrayContainsAsyncWithLocation(dbSettings.TopicCollectionId, Constants.ParentTopicId, Constants.Id, topicInput.Id, topicInput.Location);
+            }
         }
 
-        public async Task<dynamic> GetResourceByIdAsync(string id,Location location)
+        public async Task<dynamic> GetResourceByIdAsync(TopicInput topicInput)
         {
-            return await dbClient.FindItemsWhereWithLocationAsync(dbSettings.ResourceCollectionId, Constants.Id, id,location);
+            if (topicInput.IsShared)
+            {
+                return await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, Constants.Id, topicInput.Id);
+            }
+            else
+            {
+                return await dbClient.FindItemsWhereWithLocationAsync(dbSettings.ResourceCollectionId, Constants.Id, topicInput.Id, topicInput.Location);
+            }
         }
 
-        public async Task<dynamic> GetResourceAsync(string parentTopicId,Location location)
+        public async Task<dynamic> GetResourceAsync(TopicInput topicInput)
         {
-            return await dbClient.FindItemsWhereArrayContainsAsyncWithLocation(dbSettings.ResourceCollectionId, Constants.TopicTags, Constants.Id, parentTopicId, location);
+            if (topicInput.IsShared)
+            {
+                return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourceCollectionId, Constants.TopicTags, Constants.Id, topicInput.Id);
+            }
+            else
+            {
+                return await dbClient.FindItemsWhereArrayContainsAsyncWithLocation(dbSettings.ResourceCollectionId, Constants.TopicTags, Constants.Id, topicInput.Id, topicInput.Location);
+            }
         }
 
-        public async Task<dynamic> GetDocumentAsync(string id,Location location)
+        public async Task<dynamic> GetDocumentAsync(TopicInput topicInput)
         {
-            return await dbClient.FindItemsWhereWithLocationAsync(dbSettings.TopicCollectionId, Constants.Id, id,location);
+            if (topicInput.IsShared)
+            {
+                return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.Id, topicInput.Id);
+            }
+            else
+            {
+                return await dbClient.FindItemsWhereWithLocationAsync(dbSettings.TopicCollectionId, Constants.Id, topicInput.Id, topicInput.Location);
+            }
         }
 
         public async Task<dynamic> GetBreadcrumbDataAsync(string id)
@@ -87,26 +116,19 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<dynamic> GetPagedResourceAsync(ResourceFilter resourceFilter)
         {
-            dynamic serializedResources = "[]";
-            dynamic serializedTopicIds = "[]";
-            dynamic serializedGroupedResources = "[]";
+            PagedResourceViewModel pagedResourceViewModel = new PagedResourceViewModel();
             if (resourceFilter.IsResourceCountRequired)
             {
                 var groupedResourceType = await GetResourcesCountAsync(resourceFilter);
-                serializedGroupedResources = JsonConvert.SerializeObject(groupedResourceType);
+                pagedResourceViewModel.ResourceTypeFilter = JsonUtilities.DeserializeDynamicObject<dynamic>(groupedResourceType);
             }
             PagedResources pagedResources = await ApplyPaginationAsync(resourceFilter);
-            serializedResources = JsonConvert.SerializeObject(pagedResources?.Results);
-            dynamic serializedToken = pagedResources?.ContinuationToken ?? "[]";
-            serializedTopicIds = JsonConvert.SerializeObject(pagedResources?.TopicIds);
+            dynamic serializedToken = pagedResources?.ContinuationToken ?? Constants.EmptyArray;
+            pagedResourceViewModel.Resources = JsonUtilities.DeserializeDynamicObject<dynamic>(pagedResources?.Results);
+            pagedResourceViewModel.ContinuationToken = JsonConvert.DeserializeObject(serializedToken);
+            pagedResourceViewModel.TopicIds = JsonUtilities.DeserializeDynamicObject<dynamic>(pagedResources?.TopicIds);
 
-            JObject internalResources = new JObject {
-                { "resources", JsonConvert.DeserializeObject(serializedResources) },
-                { "continuationToken", JsonConvert.DeserializeObject(serializedToken) },
-                { "resourceTypeFilter", JsonConvert.DeserializeObject(serializedGroupedResources) },
-                { "topicIds" , JsonConvert.DeserializeObject(serializedTopicIds)}
-            };
-            return internalResources.ToString();
+            return JObject.FromObject(pagedResourceViewModel).ToString();
         }
 
         public async Task<dynamic> ApplyPaginationAsync(ResourceFilter resourceFilter)
@@ -137,7 +159,7 @@ namespace Access2Justice.Api.BusinessLogic
                   {
                       ResourceName = n.Key,
                       ResourceCount = n.Count()
-                  }).OrderBy(n => n.ResourceName);         
+                  }).OrderBy(n => n.ResourceName);
             dynamic resourceList = allResources.Concat(groupedResourceType);
             return resourceList;
         }
@@ -147,7 +169,8 @@ namespace Access2Justice.Api.BusinessLogic
             List<ReferenceTag> referenceTags = new List<ReferenceTag>();
             List<Location> locations = new List<Location>();
             List<Conditions> conditions = new List<Conditions>();
-            List<ParentTopicId> ParentTopicIds = new List<ParentTopicId>();
+            List<ParentTopicId> parentTopicIds = new List<ParentTopicId>();
+            List<QuickLinks> quickLinks = new List<QuickLinks>();
             List<dynamic> references = new List<dynamic>();
             foreach (JProperty field in resourceObject)
             {
@@ -168,14 +191,20 @@ namespace Access2Justice.Api.BusinessLogic
 
                 else if (field.Name == "parentTopicId")
                 {
-                    ParentTopicIds = GetParentTopicIds(field.Value);
+                    parentTopicIds = GetParentTopicIds(field.Value);
+                }
+
+                else if (field.Name == "quickLinks")
+                {
+                    quickLinks = GetQuickLinks(field.Value);
                 }
             }
 
             references.Add(referenceTags);
             references.Add(locations);
             references.Add(conditions);
-            references.Add(ParentTopicIds);
+            references.Add(parentTopicIds);
+            references.Add(quickLinks);
 
             return references;
         }
@@ -259,10 +288,10 @@ namespace Access2Justice.Api.BusinessLogic
             return conditions;
         }
 
-        public dynamic GetParentTopicIds(dynamic ParentTopicIdValues)
+        public dynamic GetParentTopicIds(dynamic parentTopicIdValues)
         {
-            List<ParentTopicId> ParentTopicIds = new List<ParentTopicId>();
-            foreach (var parentTopic in ParentTopicIdValues)
+            List<ParentTopicId> parentTopicIds = new List<ParentTopicId>();
+            foreach (var parentTopic in parentTopicIdValues)
             {
                 string id = string.Empty;
                 foreach (JProperty parentId in parentTopic)
@@ -272,9 +301,33 @@ namespace Access2Justice.Api.BusinessLogic
                         id = parentId.Value.ToString();
                     }
                 }
-                ParentTopicIds.Add(new ParentTopicId { ParentTopicIds = id });
+                parentTopicIds.Add(new ParentTopicId { ParentTopicIds = id });
             }
-            return ParentTopicIds;
+            return parentTopicIds;
+        }
+
+        public dynamic GetQuickLinks(dynamic quickLinksValues)
+        {
+            List<QuickLinks> quickLinks = new List<QuickLinks>();
+            foreach (var quickLink in quickLinksValues)
+            {
+                string text = string.Empty;
+                string url = string.Empty;
+                foreach (JProperty quickLinkDetails in quickLink)
+                {
+                    if (quickLinkDetails.Name == "text")
+                    {
+                        text = quickLinkDetails.Value.ToString();
+                    }
+
+                    else if (quickLinkDetails.Name == "url")
+                    {
+                        url = quickLinkDetails.Value.ToString();
+                    }
+                }
+                quickLinks.Add(new QuickLinks { Text = text, Urls= url });
+            }
+            return quickLinks;
         }
 
         public async Task<IEnumerable<object>> CreateResourcesUploadAsync(string path)
@@ -545,51 +598,66 @@ namespace Access2Justice.Api.BusinessLogic
             return essentialReadings;
         }
 
-        public async Task<IEnumerable<object>> CreateTopicsUploadAsync(string path)
+        public async Task<IEnumerable<object>> UpsertTopicsUploadAsync(string path)
         {
             using (StreamReader r = new StreamReader(path))
             {
                 dynamic topics = null;
                 string json = r.ReadToEnd();
-                topics = await CreateTopicDocumentAsync(json);
+                var topicObjects = JsonConvert.DeserializeObject<List<dynamic>>(json);
+                topics = await UpsertTopicDocumentAsync(topicObjects);
                 return topics;
             }
         }
 
-        public async Task<IEnumerable<object>> CreateTopicDocumentAsync(dynamic topic)
+        public async Task<IEnumerable<object>> UpsertTopicDocumentAsync(dynamic topic)
         {
             List<dynamic> results = new List<dynamic>();
             List<dynamic> topics = new List<dynamic>();
-            var topicObjects = JsonConvert.DeserializeObject<List<dynamic>>(topic);
-            Topic topicdocuments = new Topic();
+            var topicObjects = JsonUtilities.DeserializeDynamicObject<object>(topic);
+            Topic topicdocuments = new Topic();            
 
             foreach (var topicObject in topicObjects)
             {
-                topicdocuments = CreateTopics(topicObject);
-                var serializedResult = JsonConvert.SerializeObject(topicdocuments);
-                var topicDocument = JsonConvert.DeserializeObject<object>(serializedResult);
-                var result = await dbService.CreateItemAsync(topicDocument, dbSettings.TopicCollectionId);
-                topics.Add(result);
+                string id = topicObject.id;
+                topicdocuments = UpsertTopics(topicObject);
+                var topicDocument = JsonUtilities.DeserializeDynamicObject<object>(topicdocuments);
+                var topicDBData = await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.Id, id);
+
+                if (topicDBData.Count == 0)
+                {
+                    var result = await dbService.CreateItemAsync(topicDocument, dbSettings.TopicCollectionId);
+                    topics.Add(result);
+                }
+                else
+                {
+                    var result = await dbService.UpdateItemAsync(id, topicDocument, dbSettings.TopicCollectionId);
+                    topics.Add(result);
+                }                
             }
             return topics;
         }
 
-        public dynamic CreateTopics(dynamic topicObject)
+        public dynamic UpsertTopics(dynamic topicObject)
         {
             Topic topics = new Topic();
             List<ParentTopicId> parentTopicIds = new List<ParentTopicId>();
             List<Location> locations = new List<Location>();
+            List<QuickLinks> quickLinks = new List<QuickLinks>();
             dynamic references = GetReferences(topicObject);
             locations = references[1];
             parentTopicIds = references[3];
+            quickLinks = references[4];
 
             topics = new Topic()
             {
                 Id = topicObject.id == "" ? Guid.NewGuid() : topicObject.id,
                 Name = topicObject.name,
+                Overview = topicObject.overview,
+                QuickLinks = quickLinks,
                 ParentTopicId = parentTopicIds,
+                ResourceType = topicObject.resourceType,
                 Keywords = topicObject.keywords,
-                JsonContent = topicObject.jsonContent,
                 Location = locations,
                 Icon = topicObject.icon,
                 CreatedBy = topicObject.createdBy,
@@ -597,7 +665,7 @@ namespace Access2Justice.Api.BusinessLogic
             };
             topics.Validate();
             return topics;
-        }       
+        }
 
         public async Task<dynamic> GetPersonalizedResourcesAsync(ResourceFilter resourceFilter)
         {
@@ -620,8 +688,6 @@ namespace Access2Justice.Api.BusinessLogic
             };
             return personalizedResources.ToString();
         }
-
-
 
         public async Task<dynamic> GetOrganizationsAsync(Location location)
         {

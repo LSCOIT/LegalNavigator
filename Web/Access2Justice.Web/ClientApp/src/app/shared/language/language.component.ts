@@ -1,17 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef } from '@angular/core';
 import { StaticResourceService } from '../../shared/static-resource.service';
-import { Navigation, Language, Location, Logo, Home, GuidedAssistant, TopicAndResources, About, Search, PrivacyPromise, HelpAndFAQ, Login } from '../../shared/navigation/navigation';
+import { Navigation, Language, Location } from '../../shared/navigation/navigation';
 import { environment } from '../../../environments/environment';
 import { Global } from '../../global';
 
 @Component({
   selector: 'app-language',
   templateUrl: './language.component.html',
-  styleUrls: ['./language.component.css']
+  styleUrls: ['./language.component.css'],
+  host: {
+    '(document:click)': 'onClick($event)',
+  },
 })
-export class LanguageComponent implements OnInit {
-  items: string[] = [
-    'Afrikaans', 'Arabic', 'Bangla', 'Bosnian (Latin)', 'Bulgarian', 'Cantonese (Traditional)', 'Catalan', 'Chinese SimplifiedCS', 'Chinese TraditionalCS', 'Croatian', 'Czech', 'Danish', 'Dutch', 'English', 'Estonian', 'Fijian', 'Filipino', 'Finnish', 'French', 'German', 'German', 'Greek', 'Haitian Creole', 'Hebrew', 'Hindi', 'Hmong Daw', 'Hungarian', 'Indonesian', 'Italian', 'Japanese', 'Kiswahili', 'Klingon', 'Klingon (plqaD)', 'Korean', 'Latvian', 'Lithuanian', 'Malagasy', 'Malay', 'Maltese', 'Norwegian', 'Persian', 'Polish', 'Portuguese', 'Queretaro Otomi', 'Romanian', 'Russian', 'Samoan', 'Serbian (Cyrillic)', 'Serbian (Latin)', 'Slovak', 'Slovenian', 'Spanish', 'Swedish', 'Tahitian', 'Tamil', 'Thai', 'Tongan', 'Turkish', 'Ukrainian', 'Urdu', 'Vietnamese', 'Welsh', 'Yucatec Maya'];
+export class LanguageComponent implements OnInit, AfterViewInit {
   blobUrl: any = environment.blobUrl;
   navigation: Navigation;
   name: string = 'Navigation';
@@ -19,9 +20,37 @@ export class LanguageComponent implements OnInit {
   location: Location;
   staticContent: any;
   staticContentSubcription: any;
-  
-  constructor(private staticResourceService: StaticResourceService,
-    private global: Global) { }
+  showLanguage: boolean = false;
+  setBgColor: boolean = false;
+
+  constructor(
+    private staticResourceService: StaticResourceService,
+    private global: Global,
+    private elementRef: ElementRef
+  ) { }
+
+  onClick(event) {
+    let translator = document.getElementById('google_translate_element');
+    this.showLanguage = !this.showLanguage;
+    if (event.target.offsetParent && event.target.offsetParent.id === 'language') {
+      if (this.showLanguage) {
+        translator.style.display = 'block';
+        this.setBgColor = true;
+      } else {
+        translator.style.display = 'none';
+        this.setBgColor = false;
+      }
+    } else {
+      translator.style.display = 'none';
+      this.setBgColor = false;
+    }
+  }
+
+  addAttributes() {
+    let languageOptions = document.querySelectorAll('select.goog-te-combo')[0];
+    languageOptions["classList"].add('form-control');
+    languageOptions["size"] = 15;
+  }
 
   filterLanguagueNavigationContent(navigation): void {
     if (navigation) {
@@ -51,5 +80,9 @@ export class LanguageComponent implements OnInit {
       .subscribe((value) => {
         this.getLanguagueNavigationContent();
       });
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => this.addAttributes(), 1000);
   }
 }

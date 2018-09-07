@@ -99,25 +99,4 @@ describe('Component:ServiceOrgSidebar', () => {
   it("should define service organization sidebar componet", () => {
     expect(component).toBeDefined();
   });
-
-  it('should test the emitter with a Jasmine spy', () => {
-    spyOn(component.showMoreOrganizations, 'emit');
-    const button = fixture.nativeElement.querySelector('button');
-    button.click();
-    expect(component.showMoreOrganizations.emit).toHaveBeenCalledWith('Organizations');
-  });
-
-  it('should fire the event emitter when triggering an event', async(() => {
-    component.showMoreOrganizations.subscribe(d => {
-      expect(d).toBe('Organizations');
-    });
-    fixture.debugElement.triggerEventHandler('showMoreOrganizations', <Event>{});
-  }));
-
-  it("should assign session storage details to map location on ngInit", () => {
-    spyOn(component, 'getOrganizations');
-    component.ngOnInit();
-    sessionStorage.setItem("globalMapLocation", JSON.stringify(mockMapLocation));
-    expect(component.getOrganizations).toHaveBeenCalled();
-  });
 });

@@ -53,7 +53,7 @@ namespace Access2Justice.Api.Tests.TestData
                     'icon': './assets/images/resources/resource.png','createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]");
         public static JArray referencesInputData =
                     JArray.Parse(@"[{'conditions': [{'condition': {'title': 'Take to your partner to see if you can come to an agreement', 'description': 'Why you should do this dolor sit amet.'}}],
-                    'parentTopicId': [{'id': '349fa67b-164f-4a65-bb5d-a5b3dd2640a6'}],'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Action Plan','description': 'This action plan is for tenants who are facing eviction and have experienced the following:',
+                    'parentTopicId': [{'id': '349fa67b-164f-4a65-bb5d-a5b3dd2640a6'}], 'quickLinks':[{'text':'Divorce - Hawaii State Judiciary','url':'www.courts.state.hi.us/self-help/divorce'}],'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Action Plan','description': 'This action plan is for tenants who are facing eviction and have experienced the following:',
                     'resourceType': 'Action Plans','externalUrl': 'www.youtube.com','url': 'access2justice.com','referenceTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
                     'icon': './assets/images/resources/resource.png','createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]");
         public static JArray articleData =
@@ -74,31 +74,39 @@ namespace Access2Justice.Api.Tests.TestData
                     'resourceType': 'Essential Readings','externalUrl': 'www.youtube.com','url': 'access2justice.com','referenceTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
                     'icon': './assets/images/resources/resource.png','createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]");
         public static JArray topicData =
-                    JArray.Parse(@"[{'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Family','parentTopicId': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'keywords': 'HOUSING',
+                    JArray.Parse(@"[{'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Family','overview':'overview details','quickLinks': [{'text':'Divorce - Hawaii State Judiciary','url':'www.courts.state.hi.us/self-help/divorce'}],'parentTopicId': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'resourceType':'Topics','keywords': 'HOUSING',
                     'location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
                     'jsonContent':'jsonContent','icon': './assets/images/resources/resource.png','createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]");
+        public static JArray topicUpsertData =
+                    JArray.Parse(@"[[{'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Family','overview':'overview details','quickLinks': [{'text':'Divorce - Hawaii State Judiciary','url':'www.courts.state.hi.us/self-help/divorce'}],'parentTopicId': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'resourceType':'Topics','keywords': 'HOUSING',
+                    'location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
+                    'jsonContent':'jsonContent','icon': './assets/images/resources/resource.png','createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]]");
         public static JArray referenceTagData =
                      JArray.Parse(@"[{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}]");
         public static JArray parentTopicIdData =
                      JArray.Parse(@"[{'id': '349fa67b-164f-4a65-bb5d-a5b3dd2640a6'}]");
         public static JArray locationData =
                      JArray.Parse(@"[{'state':'Hawaii','county':'','city':'Haiku-Pauwela','zipCode':''},{'state':'Alaska','county':'','city':'','zipCode':''}]");
+        public static JArray quickLinksData =
+                     JArray.Parse(@"[{'text':'Divorce - Hawaii State Judiciary','url':'www.courts.state.hi.us/self-help/divorce'}]");
         public static JArray conditionData =
                      JArray.Parse(@"[{'condition': {'title': 'Take to your partner to see if you can come to an agreement','description': 'Why you should do this dolor sit amet'}}]");
-        public static JArray emptyResourceData = JArray.Parse(@"[{'referenceTags':[{'id': ''}],'location': [{'state': '','county':'','': '','zipCode':''}],'conditions': [{'condition': {'title': '','description': ''}}],'parentTopicId':[{'id':''}] }]");
+        public static JArray emptyResourceData = JArray.Parse(@"[{'referenceTags':[{'id': ''}],'location': [{'state': '','county':'','': '','zipCode':''}],'conditions': [{'condition': {'title': '','description': ''}}],'parentTopicId':[{'id':''}], 'quickLinks':[{'text':'','url':''}] }]");
         //Mcoked Data
-       public static JArray emptyLocationData =
+        public static JArray emptyLocationData =
                      JArray.Parse(@"[{'state':'','county':'','city':'','zipCode':''}]");
-       public static JArray emptyConditionObject =
+        public static JArray emptyConditionObject =
                      JArray.Parse(@"[{'condition':[]}]");
-       public static JArray EmptyReferences =
-                     JArray.Parse(@"[[{'id':''}],[{'state':'','county':'','city':'','zipCode':''}],[{'condition':[{'title':'','description':''}]}],[{'id':''}]]");
-       public static string expectedTopicId = "addf41e9-1a27-4aeb-bcbb-7959f95094ba";
-       public static string expectedResourceId = "77d301e7-6df2-612e-4704-c04edf271806";
+        public static JArray emptyQuickLinksData =
+                      JArray.Parse(@"[{'text':'','url':''}]");
+        public static JArray EmptyReferences =
+                     JArray.Parse(@"[[{'id':''}],[{'state':'','county':'','city':'','zipCode':''}],[{'condition':[{'title':'','description':''}]}],[{'id':''}],[{'text':'','url':''}]]");
+        public static string expectedTopicId = "addf41e9-1a27-4aeb-bcbb-7959f95094ba";
+        public static string expectedResourceId = "77d301e7-6df2-612e-4704-c04edf271806";
         public static Location expectedLocationValue= new Location() { State="Hawaii",County="",City= "Honolulu", ZipCode= "96741" };
         public static string expectedpagedResource = "{\"ContinuationToken\":\"[]\",\"Results\":[],\"TopicIds\":[]}";
-       public static string expectedResourceCount = "{\"ResourceName\":\"Organizations\",\"ResourceCount\":4}";
-       public static string expectedEmptyResourceCount = "{\"ResourceName\":\"All\",\"ResourceCount\":0}";
+        public static string expectedResourceCount = "{\"ResourceName\":\"Organizations\",\"ResourceCount\":4}";
+        public static string expectedEmptyResourceCount = "{\"ResourceName\":\"All\",\"ResourceCount\":0}";
         public static JArray expectedformData =
                      JArray.Parse(@"[{'overview': 'Form1','fullDescription': 'Below is the form you will need if you are looking to settle your child custody dispute in court. We have included helpful tips to guide you along the way.',
                     'id':'77d301e7-6df2-612e-4704-c04edf271806','name': 'Form1','description': 'Subhead lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem',
@@ -127,22 +135,39 @@ namespace Access2Justice.Api.Tests.TestData
                     'resourceType': 'Essential Readings','externalUrl': 'www.youtube.com','url': 'access2justice.com','referenceTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
                     'icon': './assets/images/resources/resource.png','createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]");
         public static JArray expectedTopicData =
-                    JArray.Parse(@"[{'id':'807f2e0d-c431-4f1c-b8c8-1223e6750bec','name':'Family','parentTopicId':[{'id':'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'keywords':'HOUSING','jsonContent':'jsonContent','location':[{'state':'Hawaii','county':'','city':'Haiku-Pauwela','zipCode':''},{'state':'Alaska','county':'','city':'','zipCode':''}],'icon':'./assets/images/resources/resource.png','createdBy':'API','createdTimeStamp':'','modifiedBy':'API','modifiedTimeStamp':''}]");
+                    JArray.Parse(@"[{  'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec',  'name': 'Family',  'overview': 'overview details',  'quickLinks': [    {      'text': 'Divorce - Hawaii State Judiciary',      'url': 'www.courts.state.hi.us/self-help/divorce'    }  ],  'parentTopicId': [    {      'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'    }  ],  'resourceType': 'Topics',  'keywords': 'HOUSING',  'location': [    {      'state': 'Hawaii',      'county': '',      'city': 'Haiku-Pauwela',      'zipCode': ''    },    {      'state': 'Alaska',      'county': '',      'city': '',      'zipCode': ''    }  ],  'icon': './assets/images/resources/resource.png',  'createdBy': 'API',  'createdTimeStamp': '',  'modifiedBy': 'API',  'modifiedTimeStamp': ''}]");
         public static JArray expectedTopicsData =
-                    JArray.Parse(@"[{'id':'807f2e0d-c431-4f1c-b8c8-1223e6750bec','name':'Family','parentTopicId':[{'id':'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'keywords':'HOUSING','location':[{'state':'Hawaii','county':'','city':'Haiku-Pauwela','zipCode':''},{'state':'Alaska','county':'','city':'','zipCode':''}],'jsonContent':'jsonContent','icon':'./assets/images/resources/resource.png','createdBy':'API','createdTimeStamp':'','modifiedBy':'API','modifiedTimeStamp':''}]");
+                    JArray.Parse(@"[{  'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec',  'name': 'Family',  'overview': 'overview details',  'quickLinks': [    {      'text': 'Divorce - Hawaii State Judiciary',      'url': 'www.courts.state.hi.us/self-help/divorce'    }  ],  'parentTopicId': [    {      'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'    }  ],  'resourceType': 'Topics',  'keywords': 'HOUSING',  'location': [    {      'state': 'Hawaii',      'county': '',      'city': 'Haiku-Pauwela',      'zipCode': ''    },    {      'state': 'Alaska',      'county': '',      'city': '',      'zipCode': ''    }  ],  'jsonContent': 'jsonContent',  'icon': './assets/images/resources/resource.png',  'createdBy': 'API',  'createdTimeStamp': '',  'modifiedBy': 'API',  'modifiedTimeStamp': ''}]");
         public static string expectedReferenceTagData = "aaa085ef-96fb-4fd0-bcd0-0472ede66512";
         public static string expectedParentTopicIdData = "349fa67b-164f-4a65-bb5d-a5b3dd2640a6";
+        public static JArray expectedQuickLinksData = 
+                     JArray.Parse(@"[{'text':'Divorce - Hawaii State Judiciary','url':'www.courts.state.hi.us/self-help/divorce'}]");
         public static JArray expectedLocationData =
                      JArray.Parse(@"[{'state':'Hawaii','county':'','city':'Haiku-Pauwela','zipCode':''},{'state':'Alaska','county':'','city':'','zipCode':''}]");
         public static JArray expectedReferenceLocationData =
                      JArray.Parse(@"[{'state': 'Hawaii','county':'','city': 'Haiku-Pauwela','zipCode':''}]");
         public static JArray expectedConditionData =
                      JArray.Parse(@"[{'condition':[{'title':'Take to your partner to see if you can come to an agreement', 'description':'Why you should do this dolor sit amet'}]}]");
+        public static JArray expectedQuickLinkData =
+             JArray.Parse(@"[{'text':'Divorce - Hawaii State Judiciary','url':'www.courts.state.hi.us/self-help/divorce'}]");
         public static JArray expectedResourceReferences =
                      JArray.Parse(@"[[{'id':'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],[{'state':'Hawaii','county':'','city':'Haiku-Pauwela','zipCode':''},{'state':'Alaska','county':'','city':'','zipCode':''}]]");
         public static JArray expectedActionPlanReferences =
                      JArray.Parse(@"[[{'id':'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],[{'state':'Hawaii','county':'','city':'Haiku-Pauwela','zipCode':''},{'state':'Alaska','county':'','city':'','zipCode':''}],[{'condition':[{'title':'Take to your partner to see if you can come to an agreement','description':'Why you should do this dolor sit amet.'}]}]]");
         public static JArray expectedReferencesData =
-                     JArray.Parse(@"[[{'id':'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],[{'state':'Hawaii','county':'','city':'Haiku-Pauwela','zipCode':''},{'state':'Alaska','county':'','city':'','zipCode':''}],[{'condition':[{'title':'Take to your partner to see if you can come to an agreement','description':'Why you should do this dolor sit amet.'}]}],[{'id':'349fa67b-164f-4a65-bb5d-a5b3dd2640a6'}]]");
+                     JArray.Parse(@"[[{'id':'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],[{'state':'Hawaii','county':'','city':'Haiku-Pauwela','zipCode':''},{'state':'Alaska','county':'','city':'','zipCode':''}],[{'condition':[{'title':'Take to your partner to see if you can come to an agreement','description':'Why you should do this dolor sit amet.'}]}],[{'id':'349fa67b-164f-4a65-bb5d-a5b3dd2640a6'}],[{'text':'Divorce - Hawaii State Judiciary','url':'www.courts.state.hi.us/self-help/divorce'}]]");
+        public static Location expectedLocation = new Location
+        {
+            State = "Hawaii",
+            County = "",
+            City = "Haiku-Pauwela",
+            ZipCode = ""
+        };
+        public static TopicInput TopicInput = new TopicInput
+        {
+            Id = "addf41e9-1a27-4aeb-bcbb-7959f95094ba",
+            Location = expectedLocation,
+            IsShared = false
+        };
     }
 }

@@ -29,7 +29,6 @@ export class PrivacyPromiseComponent implements OnInit {
   }
 
   getPrivacyPageContent(): void {
-    let privacyPageRequest = { name: this.name };
     if ((this.staticResourceService.privacyContent) && (this.staticResourceService.privacyContent.location[0].state == this.staticResourceService.getLocation())) {
       this.privacyContent = this.staticResourceService.privacyContent;
       this.filterPrivacyContent(this.staticResourceService.privacyContent);
