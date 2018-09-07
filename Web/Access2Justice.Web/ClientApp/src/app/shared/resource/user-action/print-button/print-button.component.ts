@@ -45,7 +45,7 @@ export class PrintButtonComponent implements OnInit {
         this.template = 'app-search-results';
       }
     } else {
-      window.print();
+      this.template = 'body';
     }
     this.printContents(this.template);
   }

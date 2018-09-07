@@ -34,6 +34,8 @@ export class DownloadButtonComponent implements OnInit {
       } else if (this.activeTab === "My Saved Resources") {
         this.template = 'app-search-results';
       }
+    } else {
+      this.template = 'body';
     }
     this.buildContent(this.template);
   }
