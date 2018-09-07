@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PersonalizedPlanService } from '../guided-assistant/personalized-plan/personalized-plan.service';
 import { PersonalizedPlanTopic } from '../guided-assistant/personalized-plan/personalized-plan';
 import { IResourceFilter } from '../shared/search/search-results/search-results.model';
@@ -12,7 +12,7 @@ import { MsalService } from '@azure/msal-angular';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent implements OnInit, OnDestroy {
+export class ProfileComponent implements OnInit {
     
   topics: string;
   planDetails: any = [];
@@ -30,7 +30,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
   resourceIds: string[] = [];
   webResources: any[] = [];
   showRemove: boolean;
-  profileData: any;
 
   constructor(
     private personalizedPlanService: PersonalizedPlanService,
@@ -151,14 +150,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     if (!this.msalService.getUser()) {
       this.global.externalLogin();
     }
-
     this.getPersonalizedPlan();
     this.showRemove = true;
   }
 
-  ngOnDestroy(): void {
-    if (this.profileData["IsShared"]) {
-      sessionStorage.removeItem("profileData");
-    }
-  }
 }

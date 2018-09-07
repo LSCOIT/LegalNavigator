@@ -232,6 +232,8 @@ export class SaveButtonComponent implements OnInit {
       this.id = this.resourceStorage.itemId;
       this.type = this.resourceStorage.resourceType;
       this.resourceDetails = this.resourceStorage.resourceDetails;
+      this.savePlanResources();
+      sessionStorage.removeItem(this.sessionKey);
     }
   }
 
