@@ -43,11 +43,13 @@ export class ProfileComponent implements OnInit {
       }
     });
 
-    this.profileData = sessionStorage.getItem("profileData");
-    if (this.profileData != undefined) {
-      this.profileData = JSON.parse(this.profileData);
-      this.userId = this.profileData["UserId"];
-      this.userName = this.profileData["UserName"];
+    if (global.isLoggedIn && !global.isShared) {
+      this.userId = global.userId;
+      this.userName = global.userName;
+    }
+    else if (global.isShared) {
+      this.userId = global.sharedUserId;
+      this.userName = global.sharedUserName;
     }
   }
 

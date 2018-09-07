@@ -14,12 +14,24 @@ export class Global {
   shareRouteUrl: string = "/share";
   profileRouteUrl: string = "/profile";
   data: any;
-  notifyStaticData: Subject<any> = new Subject<any>();  
+  notifyStaticData: Subject<any> = new Subject<any>();
+  userName: string;
+  userId: string;
+  sharedUserId: string;
+  sharedUserName: string;
+  isShared: boolean = false;
+  isLoggedIn: boolean = false;
 
   constructor(private msalService: MsalService) { }
 
   externalLogin() {
     this.msalService.loginRedirect(["user.read"]);
+  }
+
+  setProfileData(oId: string, name: string) {
+    this.userId = oId;
+    this.userName = name;
+    this.isLoggedIn = true;
   }
 
   getData() {

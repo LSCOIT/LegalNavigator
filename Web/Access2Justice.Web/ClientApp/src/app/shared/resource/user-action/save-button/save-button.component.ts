@@ -24,8 +24,7 @@ export class SaveButtonComponent implements OnInit {
   profileResources: ProfileResources = { oId: '', resourceTags: [], type: '' };
   @Input() id: string;
   @Input() type: string;
-  @Input() resourceDetails: any = {};
-  userId: string;
+  @Input() resourceDetails: any = {};  
   planId: string;
   sessionKey: string = "bookmarkedResource";
   planSessionKey: string = "bookmarkPlanId";
@@ -46,11 +45,6 @@ export class SaveButtonComponent implements OnInit {
     private arrayUtilityService: ArrayUtilityService,
     private msalService: MsalService,
     private global: Global) {
-    let profileData = sessionStorage.getItem("profileData");
-    if (profileData != undefined) {
-      profileData = JSON.parse(profileData);
-      this.userId = profileData["UserId"];
-    }
   }
 
   externalLogin() {
@@ -94,8 +88,8 @@ export class SaveButtonComponent implements OnInit {
   }
 
   savePlanToUserProfile(plan) {
-    let params = new HttpParams()
-      .set("oid", this.userId)
+    let params = new HttpParams()      
+      .set("oid", this.global.userId)
       .set("type", "plan");
     this.personalizedPlanService.getUserSavedResources(params)
       .subscribe(response => {

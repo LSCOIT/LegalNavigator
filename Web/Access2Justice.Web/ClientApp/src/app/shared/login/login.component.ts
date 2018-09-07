@@ -55,7 +55,6 @@ export class LoginComponent implements OnInit {
   }
 
   logout() {
-    sessionStorage.removeItem("profileData");
     this.msalService.logout();
   }
 
@@ -65,6 +64,5 @@ export class LoginComponent implements OnInit {
       this.isLoggedIn = true;
       this.userProfileName = this.userProfile.idToken['name'];
     }
-
   }
 }

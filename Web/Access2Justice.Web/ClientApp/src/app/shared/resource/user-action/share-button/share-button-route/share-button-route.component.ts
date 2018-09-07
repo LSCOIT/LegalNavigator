@@ -47,10 +47,9 @@ export class ShareButtonRouteComponent implements OnInit {
           if (response.resourceLink.indexOf("http") === -1
             || response.resourceLink.indexOf("//") === -1) {
             if (response.userId && response.userName) {
-              this.profileData.UserId = response.userId;
-              this.profileData.UserName = response.userName;
-              this.profileData.IsShared = true;
-              sessionStorage.setItem("profileData", JSON.stringify(this.profileData));
+              this.global.sharedUserId = response.userId;
+              this.global.sharedUserName = response.userName;
+              this.global.isShared = true;              
               this.openModal(this.template);
             }
             this.global.role = UserStatus.Shared;

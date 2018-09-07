@@ -34,8 +34,7 @@ export class AppComponent implements OnInit {
     this.personalizedPlanService.upsertUserProfile(this.userProfile)
       .subscribe(response => {
         if (response) {
-          let profileData = { UserId: response.oId, UserName: response.name }          
-          sessionStorage.setItem("profileData", JSON.stringify(profileData));
+          this.global.setProfileData(response.oId, response.name);          
         }
       });
   }
@@ -49,17 +48,21 @@ export class AppComponent implements OnInit {
       .subscribe(response => {
         this.staticContentResults = response;
         this.global.setData(this.staticContentResults);
+        console.log(this.global.isLoggedIn);
+        console.log(this.global.isShared);
       });
   }
 
-  ngOnInit() {
-    if (this.msalService.getUser()) {      
-      this.createOrGetProfile();
-    }
+  ngOnInit() {    
     this.subscription = this.mapService.notifyLocation
       .subscribe((value) => {
         this.setStaticContentData();
       });
     this.setStaticContentData();
+    if (this.msalService.getUser()) {
+      this.createOrGetProfile();
+    }
+    console.log(this.global.isLoggedIn);
+    console.log(this.global.isShared);
   }
 }

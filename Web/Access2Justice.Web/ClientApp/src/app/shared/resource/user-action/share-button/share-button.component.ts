@@ -40,12 +40,7 @@ export class ShareButtonComponent implements OnInit {
     private shareService: ShareService,
     private activeRoute: ActivatedRoute,
     private global: Global,
-    private msalService: MsalService) {
-    let profileData = sessionStorage.getItem("profileData");
-    if (profileData != undefined) {
-      profileData = JSON.parse(profileData);
-      this.userId = profileData["UserId"];
-    }
+    private msalService: MsalService) {    
     if (global.role === UserStatus.Shared && location.pathname.indexOf(global.shareRouteUrl) >= 0) {
       global.showShare = false;
     }
@@ -54,8 +49,8 @@ export class ShareButtonComponent implements OnInit {
     }
   }
 
-  openModal(template: TemplateRef<any>) {
-    if (!this.userId) {
+  openModal(template: TemplateRef<any>) {    
+    if (!this.global.userId) {
       sessionStorage.setItem(this.sessionKey, "true");
       this.externalLogin();
     } else {
@@ -133,7 +128,7 @@ export class ShareButtonComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.userId) {
+    if (this.global.userId) {
       let hasLoggedIn = sessionStorage.getItem(this.sessionKey);
       if (hasLoggedIn) {
         sessionStorage.removeItem(this.sessionKey);
@@ -151,7 +146,7 @@ export class ShareButtonComponent implements OnInit {
       this.shareInput.Url = location.pathname;
       this.shareInput.ResourceId = this.getActiveParam();
     }
-    this.shareInput.UserId = this.userId;
+    this.shareInput.UserId = this.global.userId;
   }
 
   buildUrl() {
