@@ -1,0 +1,401 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+  "parameters": {
+    "environmentName": {
+      "defaultValue": "",
+      "type": "string"
+    },
+    "prefix": {
+      "defaultValue": "a2j",
+      "type": "string"
+    },
+    "aadTenantId": {
+      "defaultValue": "314ac969-c933-4bfc-ac4b-d3341ceb2637",
+      "type": "string"
+    },
+    "keyVaultInitialAccessPolicyUser": {
+      "defaultValue": "d0a30e7a-27b4-4f72-89f6-f2a2aa141810",
+      "type": "string"
+    },
+    "secrets_BingMapKey_name": {
+      "defaultValue": "BingMapKey",
+      "type": "string"
+    },
+    "secrets_LUISEndpoint_name": {
+      "defaultValue": "LUISEndpoint",
+      "type": "string"
+    },
+    "secrets_BingSearchKey_name": {
+      "defaultValue": "BingSearchKey",
+      "type": "string"
+    },
+    "secrets_CosmosDbAuthKey_name": {
+      "defaultValue": "CosmosDbAuthKey",
+      "type": "string"
+    },
+    "secrets_oAuthClientSecretKey_name": {
+      "defaultValue": "oAuthClientSecretKey",
+      "type": "string"
+    }
+  },
+  "variables": {
+    "baseName": "[concat(toLower(parameters('prefix')), toLower(parameters('environmentName')))]",
+    "webAppName": "[concat(variables('baseName'), 'Web' )]",
+    "webAppFarmName": "[concat(variables('baseName'), 'WebFarm' )]",
+    "apiAppName": "[concat(variables('baseName'), 'Api' )]",
+    "apiAppFarmName": "[concat(variables('baseName'), 'ApiFarm' )]",
+    "apiManagementAppName": "[concat(variables('baseName'), 'ApiManagement' )]",
+    "searchAppName": "[concat(variables('baseName'), 'BingSearch' )]",
+    "documentDbAccountName": "[concat(variables('baseName'), 'dbaccount' )]",
+    "appInsightsName": "[concat(variables('baseName'), 'AppInsights' )]",
+    "keyVaultName": "[concat(variables('baseName'), 'KeyVault' )]",
+    "azureSearchServiceName": "[concat(variables('baseName'), 'azuresearch' )]",
+    "blobName": "[concat(variables('baseName'), 'Blob' )]"
+  },
+  "resources": [
+    {
+      "comments": "API Management",
+      "type": "Microsoft.ApiManagement/service",
+      "sku": {
+        "name": "Developer",
+        "capacity": 1
+      },
+      "name": "[variables('apiManagementAppName')]",
+      "apiVersion": "2018-01-01",
+      "location": "West US",
+      "tags": {},
+      "scale": null,
+      "properties": {
+        "publisherEmail": "xilin-a2j@outlook.com",
+        "publisherName": "Microsoft",
+        "notificationSenderEmail": "apimgmt-noreply@mail.windowsazure.com",
+        "hostnameConfigurations": []
+      },
+      "dependsOn": []
+    },
+    {
+      "comments": "Bing Search Service",
+      "type": "Microsoft.CognitiveServices/accounts",
+      "sku": {
+        "name": "S1"
+      },
+      "kind": "Bing.Search.v7",
+      "name": "[variables('searchAppName')]",
+      "apiVersion": "2016-02-01-preview",
+      "location": "global",
+      "scale": null,
+      "properties": {},
+      "dependsOn": []
+    },
+    {
+      "comments": "Document DB Account",
+      "type": "Microsoft.DocumentDB/databaseAccounts",
+      "kind": "GlobalDocumentDB",
+      "name": "[variables('documentDbAccountName')]",
+      "apiVersion": "2015-04-08",
+      "location": "Central US",
+      "tags": {
+        "defaultExperience": "DocumentDB"
+      },
+      "scale": null,
+      "properties": {
+        "databaseAccountOfferType": "Standard",
+        "consistencyPolicy": {
+          "defaultConsistencyLevel": "Session"
+        },
+        "name": "[variables('documentDbAccountName')]"
+      },
+      "dependsOn": []
+    },
+    {
+      "comments": "AppInsights'.",
+      "type": "Microsoft.Insights/components",
+      "kind": "web",
+      "name": "[variables('appInsightsName')]",
+      "apiVersion": "2015-05-01",
+      "location": "westus2",
+      "tags": {
+        "applicationType": "web"
+      },
+      "scale": null,
+      "properties": {
+        "Application_Type": "web"
+      },
+      "dependsOn": []
+    },
+    {
+      "comments": "Azure Search Service'.",
+      "type": "Microsoft.Search/searchServices",
+      "sku": {
+        "name": "basic"
+      },
+      "name": "[variables('azureSearchServiceName')]",
+      "apiVersion": "2015-08-19",
+      "location": "West US",
+      "scale": null,
+      "properties": {
+        "replicaCount": 1,
+        "partitionCount": 1,
+        "hostingMode": "default"
+      },
+      "dependsOn": []
+    },
+
+    {
+      "comments": "Server Farm",
+      "type": "Microsoft.Web/serverfarms",
+      "sku": {
+        "name": "F1",
+        "tier": "Free",
+        "size": "F1",
+        "family": "F",
+        "capacity": 0
+      },
+      "kind": "app",
+      "name": "[variables('webAppFarmName')]",
+      "apiVersion": "2016-09-01",
+      "location": "Central US",
+      "scale": null,
+      "properties": {
+        "name": "[variables('webAppFarmName')]",
+        "workerTierName": null,
+        "adminSiteName": null,
+        "hostingEnvironmentProfile": null,
+        "perSiteScaling": false,
+        "reserved": false,
+        "targetWorkerCount": 0,
+        "targetWorkerSizeId": 0
+      },
+      "dependsOn": []
+    },
+
+    {
+      "comments": "Api App",
+      "type": "Microsoft.Web/sites",
+      "kind": "app",
+      "name": "[variables('apiAppName')]",
+      "apiVersion": "2016-08-01",
+      "location": "Central US",
+      "tags": {
+      },
+      "scale": null,
+      "properties": {
+        "enabled": true,
+        "hostNameSslStates": [
+          {
+            "name": "[concat(variables('apiAppName'),'.azurewebsites.net')]",
+            "sslState": "Disabled",
+            "hostType": "Standard"
+          },
+          {
+            "name": "[concat(variables('apiAppName'),'.scm.azurewebsites.net')]",
+            "sslState": "Disabled",
+            "hostType": "Repository"
+          }
+        ],
+        "reserved": false,
+        "clientAffinityEnabled": true,
+        "clientCertEnabled": false,
+        "hostNamesDisabled": false,
+        "containerSize": 0,
+        "dailyMemoryTimeQuota": 0,
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('webAppFarmName'))]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('webAppFarmName'))]"
+      ]
+    },
+    {
+      "comments": "Web App",
+      "type": "Microsoft.Web/sites",
+      "kind": "app",
+      "name": "[variables('webAppName')]",
+      "apiVersion": "2016-08-01",
+      "location": "Central US",
+      "tags": {},
+      "scale": null,
+      "properties": {
+        "enabled": true,
+        "hostNameSslStates": [
+          {
+            "name": "[concat(variables('webAppName'),'.azurewebsites.net')]",
+            "sslState": "Disabled",
+            "hostType": "Standard"
+          },
+          {
+            "name": "[concat(variables('webAppName'),'.scm.azurewebsites.net')]",
+            "sslState": "Disabled",
+            "hostType": "Repository"
+          }
+        ],
+        "reserved": false,
+        "clientAffinityEnabled": true,
+        "clientCertEnabled": false,
+        "hostNamesDisabled": false,
+        "containerSize": 0,
+        "dailyMemoryTimeQuota": 0,
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('webAppFarmName'))]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('webAppFarmName'))]"
+      ]
+    },
+
+    {
+      "comments": "KeyVault",
+      "type": "Microsoft.KeyVault/vaults",
+      "name": "[variables('keyVaultName')]",
+      "apiVersion": "2016-10-01",
+      "location": "westus",
+      "tags": {},
+      "scale": null,
+      "properties": {
+        "sku": {
+          "family": "A",
+          "name": "standard"
+        },
+        "tenantId": "[parameters('aadTenantId')]",
+        "accessPolicies": [
+          {
+            "tenantId": "[parameters('aadTenantId')]",
+            "objectId": "[parameters('keyVaultInitialAccessPolicyUser')]",
+            "permissions": {
+              "keys": [
+                "Get",
+                "List",
+                "Update",
+                "Create",
+                "Import",
+                "Delete",
+                "Recover",
+                "Backup",
+                "Restore"
+              ],
+              "secrets": [
+                "Get",
+                "List",
+                "Set",
+                "Delete",
+                "Recover",
+                "Backup",
+                "Restore"
+              ],
+              "certificates": [
+                "Get",
+                "List",
+                "Update",
+                "Create",
+                "Import",
+                "Delete",
+                "Recover",
+                "ManageContacts",
+                "ManageIssuers",
+                "GetIssuers",
+                "ListIssuers",
+                "SetIssuers",
+                "DeleteIssuers"
+              ]
+            }
+          }
+        ],
+        "enabledForDeployment": false,
+        "enabledForDiskEncryption": false,
+        "enabledForTemplateDeployment": false
+      },
+      "dependsOn": []
+    },
+
+    {
+      "comments": "Secrets-LUISEndpoint'.",
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name": "[concat(variables('keyVaultName'), '/', parameters('secrets_LUISEndpoint_name'))]",
+      "apiVersion": "2016-10-01",
+      "location": "westus",
+      "scale": null,
+      "properties": {
+        "value": "placeholder",
+        "contentType": "string",
+        "attributes": {
+          "enabled": true
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]"
+      ]
+    },
+    {
+      "comments": "Secrets-oAuthClientSecretKey'.",
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name": "[concat(variables('keyVaultName'), '/', parameters('secrets_oAuthClientSecretKey_name'))]",
+      "apiVersion": "2016-10-01",
+      "location": "westus",
+      "scale": null,
+      "properties": {
+        "value": "placeholder",
+        "contentType": "string",
+        "attributes": {
+          "enabled": true
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]"
+      ]
+    },
+    {
+      "comments": "Secrets-BingMapKey'.",
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name": "[concat(variables('keyVaultName'), '/', parameters('secrets_BingMapKey_name'))]",
+      "apiVersion": "2016-10-01",
+      "location": "westus",
+      "scale": null,
+      "properties": {
+        "value": "placeholder",
+        "contentType": "string",
+        "attributes": {
+          "enabled": true
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]"
+      ]
+    },
+    {
+      "comments": "Secrets-BingSearchKey'.",
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name": "[concat(variables('keyVaultName'), '/', parameters('secrets_BingSearchKey_name'))]",
+      "apiVersion": "2016-10-01",
+      "location": "westus",
+      "scale": null,
+      "properties": {
+        "value": "placeholder",
+        "contentType": "string",
+        "attributes": {
+          "enabled": true
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]"
+      ]
+    },
+    {
+      "comments": "Secrets-CosmosDbAuthKey'.",
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name": "[concat(variables('keyVaultName'), '/', parameters('secrets_CosmosDbAuthKey_name'))]",
+      "apiVersion": "2016-10-01",
+      "location": "westus",
+      "scale": null,
+      "properties": {
+        "value": "placeholder",
+        "contentType": "string",
+        "attributes": {
+          "enabled": true
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]"
+      ]
+    }
+
+  ]
+}
