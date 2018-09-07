@@ -32,5 +32,6 @@ namespace Access2Justice.Api
         public const string ProfileLink = "/profile";
         public const string All = "ALL";
         public const string GuidedAssistant = "Guided Assistant";
+        public const string EmptyArray = "[]";
     }
 }

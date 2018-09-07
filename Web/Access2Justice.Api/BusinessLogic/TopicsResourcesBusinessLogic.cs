@@ -116,26 +116,19 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<dynamic> GetPagedResourceAsync(ResourceFilter resourceFilter)
         {
-            dynamic serializedResources = "[]";
-            dynamic serializedTopicIds = "[]";
-            dynamic serializedGroupedResources = "[]";
+            PagedResourceViewModel pagedResourceViewModel = new PagedResourceViewModel();
             if (resourceFilter.IsResourceCountRequired)
             {
                 var groupedResourceType = await GetResourcesCountAsync(resourceFilter);
-                serializedGroupedResources = JsonConvert.SerializeObject(groupedResourceType);
+                pagedResourceViewModel.ResourceTypeFilter = JsonUtilities.DeserializeDynamicObject<dynamic>(groupedResourceType);
             }
             PagedResources pagedResources = await ApplyPaginationAsync(resourceFilter);
-            serializedResources = JsonConvert.SerializeObject(pagedResources?.Results);
-            dynamic serializedToken = pagedResources?.ContinuationToken ?? "[]";
-            serializedTopicIds = JsonConvert.SerializeObject(pagedResources?.TopicIds);
+            dynamic serializedToken = pagedResources?.ContinuationToken ?? Constants.EmptyArray;
+            pagedResourceViewModel.Resources = JsonUtilities.DeserializeDynamicObject<dynamic>(pagedResources?.Results);
+            pagedResourceViewModel.ContinuationToken = JsonConvert.DeserializeObject(serializedToken);
+            pagedResourceViewModel.TopicIds = JsonUtilities.DeserializeDynamicObject<dynamic>(pagedResources?.TopicIds);
 
-            JObject internalResources = new JObject {
-                { "resources", JsonConvert.DeserializeObject(serializedResources) },
-                { "continuationToken", JsonConvert.DeserializeObject(serializedToken) },
-                { "resourceTypeFilter", JsonConvert.DeserializeObject(serializedGroupedResources) },
-                { "topicIds" , JsonConvert.DeserializeObject(serializedTopicIds)}
-            };
-            return internalResources.ToString();
+            return JObject.FromObject(pagedResourceViewModel).ToString();
         }
 
         public async Task<dynamic> ApplyPaginationAsync(ResourceFilter resourceFilter)
