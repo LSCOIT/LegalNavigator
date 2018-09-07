@@ -124,7 +124,6 @@
       },
       "dependsOn": []
     },
-
     {
       "comments": "Azure Search Service'.",
       "type": "Microsoft.Search/searchServices",
@@ -139,6 +138,34 @@
         "replicaCount": 1,
         "partitionCount": 1,
         "hostingMode": "default"
+      },
+      "dependsOn": []
+    },
+
+    {
+      "comments": "Server Farm",
+      "type": "Microsoft.Web/serverfarms",
+      "sku": {
+        "name": "F1",
+        "tier": "Free",
+        "size": "F1",
+        "family": "F",
+        "capacity": 0
+      },
+      "kind": "app",
+      "name": "[variables('webAppFarmName')]",
+      "apiVersion": "2016-09-01",
+      "location": "Central US",
+      "scale": null,
+      "properties": {
+        "name": "[variables('webAppFarmName')]",
+        "workerTierName": null,
+        "adminSiteName": null,
+        "hostingEnvironmentProfile": null,
+        "perSiteScaling": false,
+        "reserved": false,
+        "targetWorkerCount": 0,
+        "targetWorkerSizeId": 0
       },
       "dependsOn": []
     },
@@ -172,9 +199,12 @@
         "clientCertEnabled": false,
         "hostNamesDisabled": false,
         "containerSize": 0,
-        "dailyMemoryTimeQuota": 0
+        "dailyMemoryTimeQuota": 0,
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('webAppFarmName'))]"
       },
-      "dependsOn": []
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('webAppFarmName'))]"
+      ]
     },
     {
       "comments": "Web App",
@@ -204,9 +234,12 @@
         "clientCertEnabled": false,
         "hostNamesDisabled": false,
         "containerSize": 0,
-        "dailyMemoryTimeQuota": 0
+        "dailyMemoryTimeQuota": 0,
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('webAppFarmName'))]"
       },
-      "dependsOn": []
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('webAppFarmName'))]"
+      ]
     },
 
     {

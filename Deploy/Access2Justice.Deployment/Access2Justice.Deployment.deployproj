@@ -29,10 +29,10 @@
       <Visible>False</Visible>
     </None>
     <Content Include="Deploy-AzureResourceGroup.ps1" />
-    <Content Include="template_full.json" />
-    <Content Include="WebSite.json" />
-    <Content Include="WebSite.parameters.json" />
-    <Content Include="parameters.json" />
+    <Content Include="parameters-devSandbox.json" />
+    <Content Include="parameters-prod.json" />
+    <Content Include="parameters-stage.json" />
+    <Content Include="parameters-dev.json" />
     <Content Include="template.json" />
   </ItemGroup>
   <Target Name="GetReferenceAssemblyPaths" />
