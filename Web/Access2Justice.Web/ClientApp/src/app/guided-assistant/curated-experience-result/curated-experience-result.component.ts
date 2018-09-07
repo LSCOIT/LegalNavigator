@@ -8,7 +8,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./curated-experience-result.component.css']
 })
 export class CuratedExperienceResultComponent implements OnInit {
-  @Input() guidedAssistantResults;
+  guidedAssistantResults;
   relevantIntents: Array<string>;
 
   constructor(
@@ -30,7 +30,5 @@ export class CuratedExperienceResultComponent implements OnInit {
   ngOnInit() {
     this.guidedAssistantResults = this.navigateDataService.getData();
     this.filterIntent();
-    console.log(this.relevantIntents.length);
   }
-
 }

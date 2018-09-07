@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { PrintButtonComponent } from './print-button.component';
+import { ActivatedRoute } from '@angular/router';
 
 describe('PrintButtonComponent', () => {
   let component: PrintButtonComponent;
@@ -8,7 +8,12 @@ describe('PrintButtonComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PrintButtonComponent ]
+      declarations: [ PrintButtonComponent ],
+      providers: [
+        { provide: ActivatedRoute,
+          useValue: {snapshot: {params: {'id': '123'}}}
+        },
+      ]
     })
     .compileComponents();
   }));

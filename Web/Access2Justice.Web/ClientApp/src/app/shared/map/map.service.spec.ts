@@ -109,7 +109,7 @@ describe('MapService', () => {
     sessionStorage.setItem("localSearchMapLocation", JSON.stringify(mockMapLocation));
     environment.map_type = false;
     service.updateLocation();
-    expect(JSON.parse(sessionStorage.getItem("localSearchMapLocation"))).toBeNull();
+    expect(JSON.parse(sessionStorage.getItem("localSearchMapLocation"))).toEqual(mockMapLocation);
   });
 
   it("should set the variables of service when mapLocationDetails is called", () => {

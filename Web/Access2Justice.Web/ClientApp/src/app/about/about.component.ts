@@ -1,8 +1,7 @@
+import { About  } from '../about/about';
 import { Component, OnInit } from '@angular/core';
-import { StaticResourceService } from '../shared/static-resource.service';
-import { About, Mission, Service, PrivacyPromise } from '../about/about';
-import { Image } from '../home/home';
 import { Global } from '../global';
+import { StaticResourceService } from '../shared/static-resource.service';
 
 @Component({
   selector: 'app-about',
@@ -11,8 +10,11 @@ import { Global } from '../global';
 })
 export class AboutComponent implements OnInit {
 
-  constructor(private staticResourceService: StaticResourceService,
-    private global:Global) { }
+  constructor(
+    private staticResourceService: StaticResourceService,
+    private global:Global
+  ) { }
+  
   name: string = 'AboutPage';
   aboutContent: About;
   aboutContentData: About;
@@ -26,7 +28,6 @@ export class AboutComponent implements OnInit {
   }
 
   getAboutPageContent(): void {
-    let aboutPageRequest = { name: this.name };
     if (this.staticResourceService.aboutContent && (this.staticResourceService.aboutContent.location[0].state == this.staticResourceService.getLocation())) {
       this.aboutContent = this.staticResourceService.aboutContent;
       this.filterAboutContent(this.staticResourceService.aboutContent);
@@ -43,8 +44,8 @@ export class AboutComponent implements OnInit {
   ngOnInit() {
     this.getAboutPageContent();
     this.staticContentSubcription = this.global.notifyStaticData
-      .subscribe((value) => {
-        this.getAboutPageContent();
-      });
+      .subscribe(() => {
+          this.getAboutPageContent();
+        });
   }
 }

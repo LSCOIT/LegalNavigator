@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ProfileComponent } from './profile.component';
 import { PersonalizedPlanService } from '../guided-assistant/personalized-plan/personalized-plan.service';
@@ -9,6 +9,7 @@ import { EventUtilityService } from '../shared/event-utility.service';
 import { Tree } from '@angular/router/src/utils/tree';
 import { IResourceFilter } from '../shared/search/search-results/search-results.model';
 import { Global } from '../global';
+import { ToastrModule } from 'ngx-toastr';
 
 describe('component:profile', () => {
   let component: ProfileComponent;
@@ -95,19 +96,32 @@ describe('component:profile', () => {
       ]
     }
   }
+  let mockGlobal;
+  let mockPersonalizedPlanService;
   beforeEach(async(() => {
+    mockGlobal = jasmine.createSpyObj(['externalLogin']);
+    mockPersonalizedPlanService = jasmine.createSpyObj(['getActionPlanConditions', 'displayPlanDetails','getUserSavedResources']);
+
     TestBed.configureTestingModule({
-      imports: [HttpClientModule],
-      declarations: [ProfileComponent],
+      imports: [
+        HttpClientModule,
+        ToastrModule.forRoot()
+      ],
+      declarations: [
+        ProfileComponent
+      ],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [PersonalizedPlanService, EventUtilityService, ArrayUtilityService, Global]
+      providers: [
+        { provide: PersonalizedPlanService, useValue: mockPersonalizedPlanService }, 
+        EventUtilityService, 
+        ArrayUtilityService, 
+        { provide: Global, useValue: mockGlobal }
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(ProfileComponent);
     component = fixture.componentInstance;
-    personalizedplanservice = TestBed.get(PersonalizedPlanService);
-    arrayutilityservice = TestBed.get(ArrayUtilityService);
-    eventutilityservice = TestBed.get(EventUtilityService);
+    spyOn(component, 'ngOnInit');
     fixture.detectChanges();
   }));
 
@@ -117,41 +131,5 @@ describe('component:profile', () => {
 
   it('should define profile component', () => {
     expect(component).toBeDefined();
-  });
-
-  it('should call getactionplanconditions service method when get topics method called', () => {
-    spyOn(personalizedplanservice, 'getActionPlanConditions').and.returnValue(mockplandetailsjson);
-    component.planId = mockplanid;
-    personalizedplanservice.getActionPlanConditions(mockplanid);
-    expect(personalizedplanservice.getActionPlanConditions).toHaveBeenCalled();
-  });
-
-  it('should call filterplan service method when  topic value is called', () => {
-    spyOn(personalizedplanservice, 'displayPlanDetails');
-    personalizedplanservice.displayPlanDetails(mockplandetailsjson, mocktopics);
-    spyOn(component, 'filterPlan');
-    component.filterPlan(mocktopic);
-    expect(component.filterPlan).toHaveBeenCalled();
-    expect(personalizedplanservice.displayPlanDetails).toHaveBeenCalled();
-  });
-
-  it('should call getusersavedresources service method when getpersonalizedresources is called', () => {
-    component.getpersonalizedResources();
-    spyOn(personalizedplanservice, 'getUserSavedResources');
-    personalizedplanservice.getUserSavedResources(mockuserid);
-    expect(personalizedplanservice.getUserSavedResources).toHaveBeenCalled();
-  });
-
-  it('should call getpersonalizedresources service method when getsavedresource is called', () => {
-    component.getSavedResource(mockresourceinput);
-    spyOn(personalizedplanservice, 'getPersonalizedResources');
-    personalizedplanservice.getPersonalizedResources(mockresourceinput);
-    expect(personalizedplanservice.getPersonalizedResources).toHaveBeenCalled();
-  });
-
-  it('should call filtertopicslist when topic value is passed', () => {
-    spyOn(component, 'filterTopicsList');
-    component.filterTopicsList(mocktopics);
-    expect(component.filterTopicsList).toHaveBeenCalled();
   });
 });

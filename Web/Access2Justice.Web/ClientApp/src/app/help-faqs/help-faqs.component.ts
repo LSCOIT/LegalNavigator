@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { HelpAndFaqs, ImageUrl, Faq, } from '../help-faqs/help-faqs';
-import { StaticResourceService } from '../shared/static-resource.service';
 import { environment } from '../../environments/environment';
 import { Global } from '../global';
+import { StaticResourceService } from '../shared/static-resource.service';
+import { HelpAndFaqs, ImageUrl, Faq, } from '../help-faqs/help-faqs';
 
 @Component({
   selector: 'app-help-faqs',
@@ -33,7 +33,6 @@ export class HelpFaqsComponent implements OnInit {
   }
 
   getHelpFaqPageContent(): void {
-    let helpAndFAQPageRequest = { name: this.name };
     if (this.staticResourceService.helpAndFaqsContent && (this.staticResourceService.helpAndFaqsContent.location[0].state == this.staticResourceService.getLocation())) {
       this.helpAndFaqsContent = this.staticResourceService.helpAndFaqsContent;
       this.filterHelpAndFaqContent(this.staticResourceService.helpAndFaqsContent);

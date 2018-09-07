@@ -84,6 +84,7 @@ button, .btn {
 }
 
 .btn-secondary {
+  border: 1px solid #0D3FBB;
   color: #0D3FB8;
   background-color: #FFF;
 }

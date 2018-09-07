@@ -1,11 +1,17 @@
-import { NgForm } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { QuestionComponent } from './question.component';
 import { of } from 'rxjs/observable/of';
-import { Observable } from 'rxjs';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { ActivatedRoute, Router } from '@angular/router';
+import { QuestionService } from './question.service';
+import { HttpParams } from '@angular/common/http';
 
 describe('QuestionComponent', () => {
   let component: QuestionComponent;
+  let fixture: ComponentFixture<QuestionComponent>;
   let mockQuestionService;
+  let mockRouter;
   let mockQuestion = {
     curatedExperienceId: '123',
     answersDocId: '456',
@@ -23,19 +29,39 @@ describe('QuestionComponent', () => {
     }],
     fields: []
   }
-
-  beforeEach(() => {
+  beforeEach(async(() => { 
     mockQuestionService = jasmine.createSpyObj(['getQuestion', 'getNextQuestion']);
-    component = new QuestionComponent(mockQuestionService, undefined, undefined);
-
+    
+    TestBed.configureTestingModule({
+      imports: [ FormsModule ],
+      declarations: [ QuestionComponent ],
+      schemas: [ NO_ERRORS_SCHEMA ],
+      providers: [ 
+        { provide: ActivatedRoute,
+          useValue: {snapshot: {params: {'id': '123'}}}
+        },
+        { provide: QuestionService, useValue: mockQuestionService },
+        { provide: Router, useValue: mockRouter}
+      ]
+    })
+    .compileComponents();
+  }));
+  
+  beforeEach(() => {
+    fixture = TestBed.createComponent(QuestionComponent);
+    component = fixture.componentInstance;
   });
-
-  it('should get initial set of question', () => {
+  
+  it('should get initial set of question and send id as param', () => {
     mockQuestionService.getQuestion.and.returnValue(of(mockQuestion));
-    spyOn(component, 'sendTotalQuestions');
+    component.ngOnInit();
     component.getQuestion();
+    expect(component.curatedExperienceId).toBe("123");
+    spyOn(component, 'sendTotalQuestions');
     expect(component.question).toEqual(mockQuestion);
-    expect(component.sendTotalQuestions).toHaveBeenCalled();
+    let params = new HttpParams()
+      .set("curatedExperienceId", component.curatedExperienceId);
+    expect(mockQuestionService.getQuestion).toHaveBeenCalledWith(params);
   });
 
   it('should map input value to correct parameter', () => {
