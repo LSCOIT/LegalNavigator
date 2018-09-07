@@ -14,6 +14,10 @@
       "defaultValue": "314ac969-c933-4bfc-ac4b-d3341ceb2637",
       "type": "string"
     },
+    "keyVaultInitialAccessPolicyUser": {
+      "defaultValue": "d0a30e7a-27b4-4f72-89f6-f2a2aa141810",
+      "type": "string"
+    },
     "secrets_BingMapKey_name": {
       "defaultValue": "BingMapKey",
       "type": "string"
@@ -221,8 +225,8 @@
         "tenantId": "[parameters('aadTenantId')]",
         "accessPolicies": [
           {
-            "tenantId": "314ac969-c933-4bfc-ac4b-d3341ceb2637",
-            "objectId": "d0a30e7a-27b4-4f72-89f6-f2a2aa141810",
+            "tenantId": "[parameters('aadTenantId')]",
+            "objectId": "[parameters('keyVaultInitialAccessPolicyUser')]",
             "permissions": {
               "keys": [
                 "Get",
@@ -252,180 +256,6 @@
                 "Import",
                 "Delete",
                 "Recover",
-                "ManageContacts",
-                "ManageIssuers",
-                "GetIssuers",
-                "ListIssuers",
-                "SetIssuers",
-                "DeleteIssuers"
-              ]
-            }
-          },
-          {
-            "tenantId": "314ac969-c933-4bfc-ac4b-d3341ceb2637",
-            "objectId": "4d7beec6-c36f-4494-9823-fbfbba8d5700",
-            "permissions": {
-              "keys": [
-                "Get",
-                "List",
-                "Update",
-                "Create",
-                "Import",
-                "Delete",
-                "Recover",
-                "Backup",
-                "Restore",
-                "Decrypt",
-                "Encrypt"
-              ],
-              "secrets": [
-                "Get",
-                "List",
-                "Set",
-                "Delete",
-                "Recover",
-                "Backup",
-                "Restore"
-              ],
-              "certificates": [
-                "Get",
-                "List",
-                "Update",
-                "Create",
-                "Import",
-                "Delete",
-                "Recover",
-                "Backup",
-                "Restore",
-                "ManageContacts",
-                "ManageIssuers",
-                "GetIssuers",
-                "ListIssuers",
-                "SetIssuers",
-                "DeleteIssuers"
-              ]
-            }
-          },
-          {
-            "tenantId": "314ac969-c933-4bfc-ac4b-d3341ceb2637",
-            "objectId": "5bab3ebd-4a38-4e9e-a655-00371b114d32",
-            "permissions": {
-              "keys": [
-                "Get",
-                "List",
-                "Update",
-                "Create",
-                "Import",
-                "Delete",
-                "Recover",
-                "Backup",
-                "Restore"
-              ],
-              "secrets": [
-                "Get",
-                "List",
-                "Set",
-                "Delete",
-                "Recover",
-                "Backup",
-                "Restore"
-              ],
-              "certificates": [
-                "Get",
-                "List",
-                "Update",
-                "Create",
-                "Import",
-                "Delete",
-                "Recover",
-                "Backup",
-                "Restore",
-                "ManageContacts",
-                "ManageIssuers",
-                "GetIssuers",
-                "ListIssuers",
-                "SetIssuers",
-                "DeleteIssuers"
-              ]
-            }
-          },
-          {
-            "tenantId": "314ac969-c933-4bfc-ac4b-d3341ceb2637",
-            "objectId": "aed0b8d3-1153-435c-b0f3-26f9571d9e91",
-            "permissions": {
-              "keys": [
-                "Get",
-                "List",
-                "Update",
-                "Create",
-                "Import",
-                "Delete",
-                "Recover",
-                "Backup",
-                "Restore"
-              ],
-              "secrets": [
-                "Get",
-                "List",
-                "Set",
-                "Delete",
-                "Recover",
-                "Backup",
-                "Restore"
-              ],
-              "certificates": [
-                "Get",
-                "List",
-                "Update",
-                "Create",
-                "Import",
-                "Delete",
-                "Recover",
-                "Backup",
-                "Restore",
-                "ManageContacts",
-                "ManageIssuers",
-                "GetIssuers",
-                "ListIssuers",
-                "SetIssuers",
-                "DeleteIssuers"
-              ]
-            }
-          },
-          {
-            "tenantId": "314ac969-c933-4bfc-ac4b-d3341ceb2637",
-            "objectId": "57f6d9c5-807e-4c12-964b-1f790f6d919d",
-            "permissions": {
-              "keys": [
-                "Get",
-                "List",
-                "Update",
-                "Create",
-                "Import",
-                "Delete",
-                "Recover",
-                "Backup",
-                "Restore"
-              ],
-              "secrets": [
-                "Get",
-                "List",
-                "Set",
-                "Delete",
-                "Recover",
-                "Backup",
-                "Restore"
-              ],
-              "certificates": [
-                "Get",
-                "List",
-                "Update",
-                "Create",
-                "Import",
-                "Delete",
-                "Recover",
-                "Backup",
-                "Restore",
                 "ManageContacts",
                 "ManageIssuers",
                 "GetIssuers",
@@ -441,6 +271,97 @@
         "enabledForTemplateDeployment": false
       },
       "dependsOn": []
+    },
+
+    {
+      "comments": "Secrets-LUISEndpoint'.",
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name": "[concat(variables('keyVaultName'), '/', parameters('secrets_LUISEndpoint_name'))]",
+      "apiVersion": "2016-10-01",
+      "location": "westus",
+      "scale": null,
+      "properties": {
+        "value": "placeholder",
+        "contentType": "string",
+        "attributes": {
+          "enabled": true
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]"
+      ]
+    },
+    {
+      "comments": "Secrets-oAuthClientSecretKey'.",
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name": "[concat(variables('keyVaultName'), '/', parameters('secrets_oAuthClientSecretKey_name'))]",
+      "apiVersion": "2016-10-01",
+      "location": "westus",
+      "scale": null,
+      "properties": {
+        "value": "placeholder",
+        "contentType": "string",
+        "attributes": {
+          "enabled": true
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]"
+      ]
+    },
+    {
+      "comments": "Secrets-BingMapKey'.",
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name": "[concat(variables('keyVaultName'), '/', parameters('secrets_BingMapKey_name'))]",
+      "apiVersion": "2016-10-01",
+      "location": "westus",
+      "scale": null,
+      "properties": {
+        "value": "placeholder",
+        "contentType": "string",
+        "attributes": {
+          "enabled": true
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]"
+      ]
+    },
+    {
+      "comments": "Secrets-BingSearchKey'.",
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name": "[concat(variables('keyVaultName'), '/', parameters('secrets_BingSearchKey_name'))]",
+      "apiVersion": "2016-10-01",
+      "location": "westus",
+      "scale": null,
+      "properties": {
+        "value": "placeholder",
+        "contentType": "string",
+        "attributes": {
+          "enabled": true
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]"
+      ]
+    },
+    {
+      "comments": "Secrets-CosmosDbAuthKey'.",
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name": "[concat(variables('keyVaultName'), '/', parameters('secrets_CosmosDbAuthKey_name'))]",
+      "apiVersion": "2016-10-01",
+      "location": "westus",
+      "scale": null,
+      "properties": {
+        "value": "placeholder",
+        "contentType": "string",
+        "attributes": {
+          "enabled": true
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]"
+      ]
     }
 
   ]

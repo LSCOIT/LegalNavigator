@@ -6,10 +6,13 @@
       "value": "a2j"
     },
     "environmentName": {
-      "value": "stage22"
+      "value": "stage24"
     },
     "aadTenantId": {
       "value": "314ac969-c933-4bfc-ac4b-d3341ceb2637"
+    },
+    "keyVaultInitialAccessPolicyUser": {
+      "value": "d0a30e7a-27b4-4f72-89f6-f2a2aa141810"
     }
   }
   }
