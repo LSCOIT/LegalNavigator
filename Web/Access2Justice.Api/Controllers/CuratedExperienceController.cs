@@ -175,9 +175,9 @@ namespace Access2Justice.Api.Controllers
         }
 
         [HttpPost("updateplan")]
-        public async Task<IActionResult> UpdateUserProfileDocumentAsync([FromBody]PersonalizedPlanSteps plan)
+        public async Task<IActionResult> UpdateUserProfileDocumentAsync([FromBody]UserPersonalizedPlan userPlan)
         {
-            var personalizedPlan = await personalizedPlanBusinessLogic.UpdatePersonalizedPlan(plan);
+            var personalizedPlan = await personalizedPlanBusinessLogic.UpdatePersonalizedPlan(userPlan);
             return Ok(personalizedPlan);
         }
 

@@ -66,4 +66,13 @@ namespace Access2Justice.Shared.Models
             TopicIds = new List<Guid>();
         }
     }
+
+    public class UserPersonalizedPlan
+    {
+        [JsonProperty(PropertyName = "oId")]
+        public string OId { get; set; }
+
+        [JsonProperty(PropertyName = "plan")]
+        public PersonalizedPlanSteps PersonalizedPlan { get; set; }
+    }
 }
