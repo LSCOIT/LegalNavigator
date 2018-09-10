@@ -10,7 +10,7 @@ export class UserActionSidebarComponent implements OnInit {
   @Input() mobile = false;
   @Input() showSave = true;
   @Input() showPrint = true;
-  @Input() showDownload = false;
+  @Input() showDownload = true;
   @Input() showSetting = false;
   @Input() id: string = "";
   @Input() type: string = "";

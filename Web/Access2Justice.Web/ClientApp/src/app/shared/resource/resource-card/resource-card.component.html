@@ -107,12 +107,11 @@
       </div>
       <div *ngIf="resource.resourceType === 'Topics'" class="media">
         <div class="media-left no-print">
-          <a href="#">
-            <img class="media-object" src="{{resource.icon}}" alt="Other resource types">
-          </a>
+          <img class="media-object" src="{{resource.icon}}" alt="Other resource types">
         </div>
         <div class="media-body">
           <a [routerLink]="['/subtopics', resource.id]"><h4 class="media-heading">{{resource.name}}</h4></a>
+          <div class="print-only">{{applicationUrl+'/subtopics'+'/'+resource.id}}</div>
           <p>{{resource.overview}}</p>
         </div>
       </div>
@@ -122,6 +121,7 @@
         </div>
         <div class="media-body">
           <a [routerLink]="['/guidedassistant', resource.externalUrl]"><h4 class="media-heading">{{resource.name}}</h4></a>
+          <div class="print-only">{{applicationUrl+'/guidedassistant'+'/'+resource.externalUrl}}</div>
           <div class="media-body">
             <p>{{resource.description}}</p>
           </div>
@@ -133,7 +133,7 @@
         <div class="no-print">
           <a href="{{resource.resourceDetails.url}}"><span class="link">{{resource.resourceDetails.displayUrl}}</span></a>
         </div>
-        <div class="web-hidden">{{resource.resourceDetails.url}}</div>
+        <div class="print-only">{{resource.resourceDetails.url}}</div>
         <p>{{resource.resourceDetails.snippet}}</p>
         <div class="web-resource" *ngIf="resource.resourceDetails.deepLinks">
           <div *ngFor="let deepLink of resource.resourceDetails.deepLinks">
@@ -141,7 +141,7 @@
             <div class="no-print">
               <a href="{{deepLink.url}}"><p class="pl">{{deepLink.name}}</p></a>
             </div>
-            <div class="web-hidden">{{deepLink.url}}</div>
+            <div class="print-only">{{deepLink.url}}</div>
             <a href="{{deepLink.url}}"><span class="link">{{deepLink.url}}</span></a>
             <p>{{deepLink.snippet}}</p>
           </div>
