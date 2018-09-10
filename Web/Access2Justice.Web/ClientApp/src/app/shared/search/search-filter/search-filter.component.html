@@ -8,7 +8,7 @@
         #filterButtons
         *ngFor="let resource of resourceResults"
         class="btn btn-selected"
-        (click)="sendFilterCriteria(resource.ResourceName)">
+        (click)="sendFilterCriteria($event, resource.ResourceName)">
         {{resource.ResourceName}}({{resource.ResourceCount}})
       </button>
     </div>

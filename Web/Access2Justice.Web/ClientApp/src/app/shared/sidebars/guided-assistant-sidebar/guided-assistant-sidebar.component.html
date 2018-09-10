@@ -3,7 +3,7 @@
   <p class="ps">No account necessary. We never share any information you provide. Read our <a routerLink='/privacy'>Privacy Promise</a>.</p>
   <button class="btn-sm btn-primary">
     <a *ngIf="!guidedAssistantId" [routerLink]="['/guidedassistant']">Start the Guided Assistant</a>
-    <a *ngIf="guidedAssistantId" (click)=" getGuidedAssistantLinkResult()">Start the Guided Assistant</a>
+    <a *ngIf="guidedAssistantId" [routerLink]="['/guidedassistant/',guidedAssistantId]">Start the Guided Assistant</a>
   </button>
 </div>
 

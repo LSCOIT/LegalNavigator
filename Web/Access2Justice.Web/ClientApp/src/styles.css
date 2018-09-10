@@ -2,7 +2,8 @@
 
 /*Shared Resources*/
 body {
-  margin-top: 40px;
+  position: relative !important;
+  top: 40px !important;
 }
   
 [class*="col-"] {
@@ -73,37 +74,35 @@ textarea {
 }
 
 /* Language Dropdown */
-.navbar-nav .open .dropdown-menu {
-  position: absolute;
-  height: 360px;
-  overflow-y: scroll;
-  background-color: #fff;
-  border: 0;
-  border-radius: 0;
-  margin-top: 0;
-  margin-top: 13px;
-}
-
-.nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
-  background-color: #fff;
-  padding: 15px;
-}
-
-.dropdown-menu > li > a {
-  font-size: 13px;
-  padding: 3px 15px;
-}
-
 .dropdown-icon {
   width: 10px;
   margin-left: 5px;
 }
 
-/*Profile*/
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+
+.goog-te-combo option {
+  cursor: pointer;
+}
+
+.goog-te-combo option:hover {
+  background-color: #f4f4f4;
+}
+
+.left-menu .navbar-nav {
+  margin: 0;
+}
+
+/*Login Dropdown*/
+.nav .open > a, .nav .open > a:focus, .nav .open > a:hover {
+  background-color: #fff;
+}
+
 #signin-dropdown .dropdown-menu {
-  width: 259px;
-  margin-top: 12px;
-  margin-right: 3px;
+  width: auto;
+  margin-left:10px;
 }
 
 .nav-tabs > li > a:hover {
@@ -336,6 +335,12 @@ a.carousel-control .icon-next {
   .user-action {
     text-align: right;
   }
+
+  #signin-dropdown .dropdown-menu {
+    margin-top: -1px;
+    margin-left: 0;
+    text-align: right;
+  }
 }
 
 @media only screen and (min-width : 1224px) {
@@ -348,6 +353,6 @@ a.carousel-control .icon-next {
   }
 
   .container {
-    width: 80%
+    max-width: 1500px;
   }
 }
