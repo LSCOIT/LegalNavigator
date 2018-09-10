@@ -1,7 +1,16 @@
+#footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  height: 10px;
+  vertical-align: middle;
+}
+
 .footer-nav li {
   list-style: none;
   display: block;
-  padding: 10px 20px;
 }
 
 .footer-nav li.vertical-line {
@@ -10,9 +19,14 @@
   margin: 0 auto;
 }
 
+.footer-nav li:nth-child(odd) {
+  padding: 20px;
+}
+
 @media only screen and (min-width : 992px) {
   .footer-nav li {
     display: inline-block;
+    padding: 10px 20px;
   }
 
   .footer-nav li.vertical-line {
