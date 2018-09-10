@@ -93,10 +93,12 @@ export class SaveButtonComponent implements OnInit {
       .set("type", "plan");
     this.personalizedPlanService.getUserSavedResources(params)
       .subscribe(response => {
-        if (response) {
+        if (response && response.length > 0) {
           this.BuildUserPlan(response, plan);
           this.addRemainingTopicsToPlan(plan);
-          this.personalizedPlan = { id: response[0].id, topics: this.planTopics, isShared: false };
+          this.planId = response[0].id;
+        }
+        this.personalizedPlan = { id: this.planId, topics: this.planTopics, isShared: false };
           const params = {
             "id": this.personalizedPlan.id,
             "topics": this.personalizedPlan.topics,
@@ -108,7 +110,6 @@ export class SaveButtonComponent implements OnInit {
                 this.personalizedPlanService.showSuccess('Plan saved to profile');
               }
             });
-        }
       });
   }
 

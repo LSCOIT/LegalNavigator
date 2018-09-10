@@ -7,7 +7,8 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class WebResourceComponent implements OnInit {
   @Input() webResult: any;
-  
+  type: string = "WebResources";
+
   constructor() { }
 
   ngOnInit() {}

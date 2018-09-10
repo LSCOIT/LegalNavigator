@@ -134,7 +134,7 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 if (profile.Url.OriginalString == Constants.ProfileLink)
                 {
-                    profileViewModel.UserName = profile.FistName + " " + profile.LastName;
+                    profileViewModel.UserName = profile.Name;
                     profileViewModel.UserId = profile.OId;
                 }
                 profileViewModel.ResourceLink = profile.Url.OriginalString;

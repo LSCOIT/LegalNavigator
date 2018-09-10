@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { PersonalizedPlanService } from '../guided-assistant/personalized-plan/personalized-plan.service';
 import { PersonalizedPlanTopic } from '../guided-assistant/personalized-plan/personalized-plan';
 import { IResourceFilter } from '../shared/search/search-results/search-results.model';
@@ -12,8 +12,8 @@ import { MsalService } from '@azure/msal-angular';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent implements OnInit {
-    
+export class ProfileComponent implements OnInit, AfterViewInit {    
+  
   topics: string;
   planDetails: any = [];
   resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: [], PageNumber: 0, Location: '', ResourceIds: [], IsResourceCountRequired: false };
@@ -42,15 +42,6 @@ export class ProfileComponent implements OnInit {
         this.getpersonalizedResources();
       }
     });
-
-    if (global.isLoggedIn && !global.isShared) {
-      this.userId = global.userId;
-      this.userName = global.userName;
-    }
-    else if (global.isShared) {
-      this.userId = global.sharedUserId;
-      this.userName = global.sharedUserName;
-    }
   }
 
   getTopics(): void {
@@ -147,9 +138,20 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (!this.msalService.getUser()) {
+    if (!this.msalService.getUser() && !this.global.isShared) {
       this.global.externalLogin();
     }
+    if (this.global.isLoggedIn && !this.global.isShared) {
+      this.userId = this.global.userId;
+      this.userName = this.global.userName;
+    }
+    else if (this.global.isShared) {
+      this.userId = this.global.sharedUserId;
+      this.userName = this.global.sharedUserName;
+    }
+  }
+
+  ngAfterViewInit(): void {
     this.getPersonalizedPlan();
     this.showRemove = true;
   }
