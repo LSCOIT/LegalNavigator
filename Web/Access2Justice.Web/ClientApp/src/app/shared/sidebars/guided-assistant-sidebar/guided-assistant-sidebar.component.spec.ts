@@ -12,7 +12,7 @@ import { MapLocation } from '../../map/map';
 import { IResourceFilter } from '../../search/search-results/search-results.model';
 import { RouterStateSnapshot } from '@angular/router/src/router_state';
 
-fdescribe('GuidedAssistantSidebarComponent', () => {
+describe('GuidedAssistantSidebarComponent', () => {
   let component: GuidedAssistantSidebarComponent;
   let fixture: ComponentFixture<GuidedAssistantSidebarComponent>;
   let router: Router;
