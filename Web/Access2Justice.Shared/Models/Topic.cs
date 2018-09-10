@@ -31,7 +31,6 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "resourceType")]
         public string ResourceType { get; set; }
 
-        [Required(ErrorMessage = "Keywords is a required field.")]
         [JsonProperty(PropertyName = "keywords")]
         public string Keywords { get; set; }  
 
