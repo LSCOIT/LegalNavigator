@@ -54,9 +54,7 @@ describe('AboutComponent', () => {
   it('should set about content to static resource about content if it exists', () => {
     mockStaticResourceService.getLocation.and.returnValue('Default');
     mockStaticResourceService.aboutContent = aboutContent;
-    spyOn(component, 'filterAboutContent');
     component.getAboutPageContent();
     expect(component.aboutContent).toEqual(mockStaticResourceService.aboutContent);
-    expect(component.filterAboutContent).toHaveBeenCalledWith(mockStaticResourceService.aboutContent);
   });
 });
