@@ -14,10 +14,10 @@ namespace Access2Justice.Api.BusinessLogic
     {
         private readonly ICosmosDbSettings dbSettings;
         private readonly IBackendDatabaseService dbService;
-        private readonly IBuild personalizedPlanEngine;
+        private readonly IPersonalizedPlanFactory personalizedPlanEngine;
 
         public A2JAuthorBusinessLogic(ICosmosDbSettings cosmosDbSettings, IBackendDatabaseService backendDatabaseService,
-            IBuild a2JAuthorParserBusinessLogic)
+            IPersonalizedPlanFactory a2JAuthorParserBusinessLogic)
         {
             dbSettings = cosmosDbSettings;
             dbService = backendDatabaseService;

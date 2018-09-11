@@ -1,34 +1,34 @@
-﻿using System;
+﻿using Access2Justice.Shared.A2JAuthor;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 
 namespace Access2Justice.Shared.Extensions
 {
-     // Todo:@Alaa use Tokens constants
     public static class A2JParserExtensions
     {
         public static List<string> IFstatements(this string logic)
         {
-            return logic.SplitAndReturnFullSentencesOn("END IF");
+            return logic.SplitAndReturnFullSentencesOn(Tokens.ENDIF);
         }
 
         public static Dictionary<string, string> SETvars(this string logic)
         {
-            var rightOf = logic.GetStringBetween("SET", "END IF");
+            var rightOf = logic.GetStringBetween(Tokens.SET, Tokens.ENDIF);
             return rightOf.SetValueTOVar();
         }
 
         public static OrderedDictionary ANDvars(this string logic)
         {
-            var leftCondition = logic.GetStringBetween("IF", "SET");
-            return leftCondition.GetVariablesWithValues("AND");
+            var leftCondition = logic.GetStringBetween(Tokens.IF, Tokens.SET);
+            return leftCondition.GetVariablesWithValues(Tokens.AND);
         }
 
         public static OrderedDictionary ORvars(this string logic)
         {
-            var leftCondition = logic.GetStringBetween("IF", "SET");
-            return leftCondition.GetVariablesWithValues("OR");
+            var leftCondition = logic.GetStringBetween(Tokens.IF, Tokens.SET);
+            return leftCondition.GetVariablesWithValues(Tokens.OR);
         }
 
         public static string GetStringOnTheRightOf(this string inputText, string splitWord)
@@ -56,7 +56,7 @@ namespace Access2Justice.Shared.Extensions
             var sentences = new List<string>();
             foreach (var sentence in splittedSentences)
             {
-                var fullSentence = string.Concat(sentence + splitWord + " ");
+                var fullSentence = string.Concat(sentence + splitWord + Tokens.EmptySpace);
                 sentences.Add(fullSentence);
             }
 
@@ -78,13 +78,13 @@ namespace Access2Justice.Shared.Extensions
                 var variables = inputText.SplitOn(operand);
                 foreach (var varialbe in variables)
                 {
-                    if (varialbe.ToUpperInvariant().Contains("TRUE"))
+                    if (varialbe.ToUpperInvariant().Contains(Tokens.TrueTokens.TrueText))
                     {
-                        varsValues.Add(varialbe.GetStringBetween("[", "]"), "true");
+                        varsValues.Add(varialbe.GetStringBetween(Tokens.VarNameLeftSign, Tokens.VarNameRightSign), Tokens.TrueTokens.LogicalTrue);
                     }
-                    else if (varialbe.ToUpperInvariant().Contains("FALSE"))
+                    else if (varialbe.ToUpperInvariant().Contains(Tokens.FalseTokens.FalseText))
                     {
-                        varsValues.Add(varialbe.GetStringBetween("[", "]"), "false");
+                        varsValues.Add(varialbe.GetStringBetween(Tokens.VarNameLeftSign, Tokens.VarNameRightSign), Tokens.FalseTokens.LogicalFalse);
                     }
                     // other 'else if' could be added here if we are dealing with more than true/false values
                 }
@@ -96,18 +96,18 @@ namespace Access2Justice.Shared.Extensions
         public static Dictionary<string, string> SetValueTOVar(this string inputText)
         {
             var varsValues = new Dictionary<string, string>();
-            if (inputText.ToUpperInvariant().Contains("TO"))
+            if (inputText.ToUpperInvariant().Contains(Tokens.TO))
             {
-                var variableName = inputText.GetStringBetween("[", "]");
-                var valueString = inputText.GetStringOnTheRightOf("TO");
+                var variableName = inputText.GetStringBetween(Tokens.VarNameLeftSign, Tokens.VarNameRightSign);
+                var valueString = inputText.GetStringOnTheRightOf(Tokens.TO);
 
-                if (valueString.ToUpperInvariant().Contains("TRUE"))
+                if (valueString.ToUpperInvariant().Contains(Tokens.TrueTokens.TrueText))
                 {
-                    varsValues.Add(variableName, "TRUE");
+                    varsValues.Add(variableName, Tokens.TrueTokens.LogicalTrue);
                 }
-                else if (valueString.ToUpperInvariant().Contains("FALSE"))
+                else if (valueString.ToUpperInvariant().Contains(Tokens.FalseTokens.FalseText))
                 {
-                    varsValues.Add(variableName, "FALSE");
+                    varsValues.Add(variableName, Tokens.FalseTokens.LogicalFalse);
                 }
                 else
                 {

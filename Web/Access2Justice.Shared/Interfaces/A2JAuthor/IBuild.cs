@@ -2,7 +2,7 @@
 
 namespace Access2Justice.Shared.Interfaces.A2JAuthor
 {
-    public interface IBuild
+    public interface IPersonalizedPlanFactory
     {
         A2JPersonalizedPlan Build(A2JPersonalizedPlan personalizedPlan, CuratedExperienceAnswers userAnswers);
     }

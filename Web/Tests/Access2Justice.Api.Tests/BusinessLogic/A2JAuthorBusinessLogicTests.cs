@@ -17,13 +17,13 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly ICosmosDbSettings dbSettings;
         private readonly IBackendDatabaseService dbService;
         private readonly IA2JAuthorBusinessLogic a2jAuthor;
-        private readonly IBuild personalizedPlanEngine;
+        private readonly IPersonalizedPlanFactory personalizedPlanEngine;
 
         public A2JAuthorBusinessLogicTests()
         {
             dbSettings = Substitute.For<ICosmosDbSettings>();
             dbService = Substitute.For<IBackendDatabaseService>();
-            personalizedPlanEngine = Substitute.For<IBuild>();
+            personalizedPlanEngine = Substitute.For<IPersonalizedPlanFactory>();
             a2jAuthor = new A2JAuthorBusinessLogic(dbSettings, dbService, personalizedPlanEngine);
         }
 

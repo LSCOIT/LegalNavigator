@@ -3,12 +3,12 @@ using Access2Justice.Shared.Models;
 
 namespace Access2Justice.Shared.A2JAuthor
 {
-    public class Builder : IBuild
+    public class PersonalizedPlanFactory : IPersonalizedPlanFactory
     {
         private readonly IParse parser;
         private readonly ICompile compiler;
 
-        public Builder(IParse parser, ICompile compiler)
+        public PersonalizedPlanFactory(IParse parser, ICompile compiler)
         {
             this.parser = parser;
             this.compiler = compiler;
