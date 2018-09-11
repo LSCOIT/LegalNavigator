@@ -103,11 +103,11 @@ namespace Access2Justice.Shared.Extensions
 
                 if (valueString.ToUpperInvariant().Contains(Tokens.TrueTokens.TrueText))
                 {
-                    varsValues.Add(variableName, Tokens.TrueTokens.LogicalTrue);
+                    varsValues.Add(variableName, Tokens.TrueTokens.LogicalTrueText);
                 }
                 else if (valueString.ToUpperInvariant().Contains(Tokens.FalseTokens.FalseText))
                 {
-                    varsValues.Add(variableName, Tokens.FalseTokens.LogicalFalse);
+                    varsValues.Add(variableName, Tokens.FalseTokens.LogicalFalseText);
                 }
                 else
                 {

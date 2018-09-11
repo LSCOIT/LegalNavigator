@@ -16,15 +16,15 @@
         public class TrueTokens
         {
             public const string TrueText = "TRUE";
-            public const string IsTrueText = "ISTRUE";
             public const string LogicalTrue = "true";
+            public const string LogicalTrueText = "is-true";
         }
 
         public class FalseTokens
         {
             public const string FalseText = "FALSE";
-            public const string IsFalseText = "ISFALSE";
             public const string LogicalFalse = "false";
+            public const string LogicalFalseText = "is-false";
         }
     }
 }
