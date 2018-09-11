@@ -3,7 +3,7 @@ const chai = require("chai").use(require("chai-as-promised"));
 const expect = chai.expect;
 const assert = chai.assert;
 
-export class LoginObject {
+export class ResourcePage {
     public loginTab = $(".account-menu");
     public emailInput = $("#i0116"); // set by MS engineers
     public passwordInput = $("#i0118");
@@ -20,17 +20,5 @@ export class LoginObject {
         }    
         
         await this.nextButton.click();
-    }
-
-    public async checkSessionStorage(type: string, data: string) {
-        
-        var returnedprofileData =  browser.executeScript(
-            "return window.sessionStorage.getItem('profileData');"
-        );
-        console.log("returned: " + returnedprofileData);
-        var expectedProfileData = '{"UserName":"Random Tester","UserId":"109789E51F15EBE9C5918EF194954759EB0C8B44DE0E92C55AE433000D262EBFF9BCFC13B3C937534C5D280CCE370E6696D2DA52D3695C29D7CE56BECF8257B3"}';
-        expect(returnedprofileData).to.eventually.equal(expectedProfileData);
-
-    
     }
 } 

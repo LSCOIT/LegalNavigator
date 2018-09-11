@@ -1,23 +1,23 @@
 import { browser } from 'protractor';
 import { Given, When, Then } from 'cucumber';
-import { HomePageObject } from '../pages/homePage.po';
+import { SearchComponent } from '../pages/searchComponent.po';
 const chai = require('chai').use(require('chai-as-promised'));
 const expect = chai.expect;
 
-const search_homePage: HomePageObject = new HomePageObject();
+const search: SearchComponent = new SearchComponent();
 
 Given('I am on the Access2Justice website', () => {  
     expect(browser.getTitle()).to.eventually.equal("Access to Justice");
 });
 
 When(/^I type "(.*?)" into the search input field and click search button$/,
-   async (text: string) => await search_homePage.enterSearchInput(text)
+   async (text: string) => await search.enterSearchInput(text)
 );
 
 Then('I can see search results', {timeout: 3 * 5000},
-    async () => await search_homePage.getSearchResults()
+    async () => await search.getSearchResults()
 );
 
 Then('I clear the search text',
-    async () => await search_homePage.clearSearchInput()
+    async () => await search.clearSearchInput()
 );

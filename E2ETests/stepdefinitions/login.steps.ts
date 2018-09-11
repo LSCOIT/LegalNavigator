@@ -1,11 +1,11 @@
 import { browser, $ } from 'protractor';
 import { Given, When, Then, setDefaultTimeout } from 'cucumber';
-import { LoginObject } from '../pages/login.po';
+import { LoginComponent } from '../pages/loginComponent.po';
 import { config } from '../config/config';
 const chai = require('chai').use(require('chai-as-promised'));
 const expect = chai.expect;
 
-const login: LoginObject = new LoginObject();
+const login: LoginComponent = new LoginComponent();
 
 // By default, async functions timeout after 5000 ms
 // For more info on setting timeout, 
@@ -29,12 +29,10 @@ When(/^I set the '([^']*)' '([^']*)' and click Sign In button$/,
 );
 
 
-Then(/^I am redirected to home page and shown as signed in with username '([^']*)'$/, async (userName: string) => {
-    await browser.waitForAngular();
-    expect(await browser.getCurrentUrl()).to.equal(config.baseUrl);
-    expect(await $("#signin-dropdown a").getText()).to.have.string(userName);
-});
- 
-Then(/^A session storage with name profileData is created with the UserName equal to '([^']*)' and UserId equal to '([^']*)'$/, async (type: string, data: string) => {
-    await login.checkSessionStorage(type, data);
-});
+Then(/^I am redirected to home page and shown as signed in with username '([^']*)'$/, 
+    async (userName: string) => {
+        await browser.waitForAngular();
+        expect(await browser.getCurrentUrl()).to.equal(config.baseUrl);
+        expect(await $("#signin-dropdown a").getText()).to.have.string(userName);
+    }
+);

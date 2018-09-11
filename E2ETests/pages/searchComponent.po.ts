@@ -10,7 +10,7 @@ const expect = chai.expect;
 const assert = chai.assert;
 var firstEntry = 0;
 
-export class HomePageObject {
+export class SearchComponent {
     public searchTab = $("span[class='inline search-text']");
     public searchInputField =  $("#search");
     public searchButton = $("input ~ button");

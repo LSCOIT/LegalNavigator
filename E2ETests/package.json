@@ -38,6 +38,7 @@
     "url": "https://github.com/Microsoft/Access2Justice/tree/feature415/setting_up_e2e_tests"
   },
   "dependencies": {
-    "@types/chai": "^4.1.4"
+    "@types/chai": "^4.1.4",
+    "request-promise": "^4.2.2"
   }
 }

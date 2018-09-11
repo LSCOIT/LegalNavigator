@@ -10,13 +10,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const protractor_1 = require("protractor");
 const cucumber_1 = require("cucumber");
-const homePage_po_1 = require("../pages/homePage.po");
+const searchComponent_po_1 = require("../pages/searchComponent.po");
 const chai = require('chai').use(require('chai-as-promised'));
 const expect = chai.expect;
-const search_homePage = new homePage_po_1.HomePageObject();
+const search = new searchComponent_po_1.SearchComponent();
 cucumber_1.Given('I am on the Access2Justice website', () => {
     expect(protractor_1.browser.getTitle()).to.eventually.equal("Access to Justice");
 });
-cucumber_1.When(/^I type "(.*?)" into the search input field and click search button$/, (text) => __awaiter(this, void 0, void 0, function* () { return yield search_homePage.enterSearchInput(text); }));
-cucumber_1.Then('I can see search results', { timeout: 3 * 5000 }, () => __awaiter(this, void 0, void 0, function* () { return yield search_homePage.getSearchResults(); }));
-cucumber_1.Then('I clear the search text', () => __awaiter(this, void 0, void 0, function* () { return yield search_homePage.clearSearchInput(); }));
+cucumber_1.When(/^I type "(.*?)" into the search input field and click search button$/, (text) => __awaiter(this, void 0, void 0, function* () { return yield search.enterSearchInput(text); }));
+cucumber_1.Then('I can see search results', { timeout: 3 * 5000 }, () => __awaiter(this, void 0, void 0, function* () { return yield search.getSearchResults(); }));
+cucumber_1.Then('I clear the search text', () => __awaiter(this, void 0, void 0, function* () { return yield search.clearSearchInput(); }));
