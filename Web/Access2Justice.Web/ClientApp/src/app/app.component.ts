@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Global, UserStatus } from './global';
 import { StaticResourceService } from './shared/static-resource.service';
 import { MapService } from './shared/map/map.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-root',
@@ -16,8 +17,11 @@ export class AppComponent implements OnInit {
   constructor(
     private global: Global,
     private staticResourceService: StaticResourceService,
-    private mapService: MapService) {
-  }
+    private mapService: MapService,
+    private spinner: NgxSpinnerService
+  )
+  { }
+
   getCookie(cookieName: string) {
     let cookieNameEQ = cookieName + "=";
     let cookies = document.cookie.split(';');
@@ -47,10 +51,12 @@ export class AppComponent implements OnInit {
   }
 
   setStaticContentData() {
+    this.spinner.show();
     this.staticResourceService.getStaticContents()
       .subscribe(response => {
         this.staticContentResults = response;
         this.global.setData(this.staticContentResults);
+        this.spinner.hide();
       });
   }
 
