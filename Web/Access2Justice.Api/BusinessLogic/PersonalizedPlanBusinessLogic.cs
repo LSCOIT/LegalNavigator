@@ -9,29 +9,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Globalization;
+using Access2Justice.Shared.Interfaces.A2JAuthor;
 
 namespace Access2Justice.Api.BusinessLogic
 {
     public class PersonalizedPlanBusinessLogic : IPersonalizedPlanBusinessLogic
     {
-        private readonly ICosmosDbSettings dbSettings;
-        private readonly IBackendDatabaseService dbService;
+        private readonly ICosmosDbSettings cosmosDbSettings;
+        private readonly IBackendDatabaseService backendDatabaseService;
         private readonly IDynamicQueries dynamicQueries;
         private readonly IUserProfileBusinessLogic userProfileBusinessLogic;
+        private readonly IPersonalizedPlanEngine personalizedPlanEngine;
 
         public PersonalizedPlanBusinessLogic(ICosmosDbSettings cosmosDbSettings, IBackendDatabaseService backendDatabaseService,
-            IDynamicQueries dynamicQueries, IUserProfileBusinessLogic userProfileBusinessLogic)
+            IDynamicQueries dynamicQueries, IUserProfileBusinessLogic userProfileBusinessLogic, IPersonalizedPlanEngine personalizedPlanEngine)
         {
-            dbSettings = cosmosDbSettings;
-            dbService = backendDatabaseService;
+            this.cosmosDbSettings = cosmosDbSettings;
+            this.backendDatabaseService = backendDatabaseService;
             this.dynamicQueries = dynamicQueries;
             this.userProfileBusinessLogic = userProfileBusinessLogic;
+            this.personalizedPlanEngine = personalizedPlanEngine;
         }
 
         public async Task<PersonalizedPlanSteps> GeneratePersonalizedPlan(CuratedExperience curatedExperience, Guid answersDocId)
         {
-             // Todo:@Alaa need to implement this based on the new personalized plan logic
+            // Todo:@Alaa need to implement this based on the new personalized plan logic
+            //var planInScopeVarsValues = personalizedPlanEngine.Build(a2JPersonalizedPlan, userAnswers);
+
             throw new NotImplementedException();
+            //return planInScopeVarsValues;
             //var userAnswers = await dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.CuratedExperienceAnswersCollectionId);
             //CuratedExperienceAnswers curatedExperienceAnswers = new CuratedExperienceAnswers();
             //curatedExperienceAnswers = userAnswers;
@@ -152,7 +158,7 @@ namespace Access2Justice.Api.BusinessLogic
         {
             PersonalizedActionPlanViewModel personalizedPlan = new PersonalizedActionPlanViewModel();
             List<dynamic> procedureParams = new List<dynamic>() { planId };
-            var planDetails = await dynamicQueries.FindItemsWhereAsync(dbSettings.UserResourceCollectionId, Constants.Id, planId);
+            var planDetails = await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.UserResourceCollectionId, Constants.Id, planId);
             PersonalizedPlanSteps personalizedPlanSteps = new PersonalizedPlanSteps();
             personalizedPlanSteps = ConvertPersonalizedPlanSteps(planDetails);
             if (personalizedPlanSteps.Topics.Count > 0)
@@ -161,9 +167,9 @@ namespace Access2Justice.Api.BusinessLogic
                 var resourcesList = personalizedPlanSteps.Topics.Select(x => x.PlanSteps).SelectMany(v => v.Select(c => c.Resources).SelectMany(r => r)).ToList().Distinct();
                 List<string> topicValues = topicsList.Select(x => x.ToString()).ToList();
                 List<string> resourceValues = resourcesList.Select(x => x.ToString()).ToList();
-                var topicsData = await dynamicQueries.FindItemsWhereInClauseAsync(dbSettings.TopicCollectionId, Constants.Id, topicValues);
+                var topicsData = await dynamicQueries.FindItemsWhereInClauseAsync(cosmosDbSettings.TopicCollectionId, Constants.Id, topicValues);
                 List<TopicDetails> topicDetails = JsonUtilities.DeserializeDynamicObject<List<TopicDetails>>(topicsData);
-                var resourceData = await dynamicQueries.FindItemsWhereInClauseAsync(dbSettings.ResourceCollectionId, Constants.Id, resourceValues);
+                var resourceData = await dynamicQueries.FindItemsWhereInClauseAsync(cosmosDbSettings.ResourceCollectionId, Constants.Id, resourceValues);
                 List<Resource> resourceDetails = JsonUtilities.DeserializeDynamicObject<List<Resource>>(resourceData);
 
                 List<PlanTopic> planTopics = new List<PlanTopic>();
@@ -265,7 +271,7 @@ namespace Access2Justice.Api.BusinessLogic
         public async Task<PersonalizedPlanSteps> GetPersonalizedPlan(string planId)
         {
             dynamic personalizedPlan = null;
-            var planDetails = await dynamicQueries.FindItemsWhereAsync(dbSettings.UserResourceCollectionId, Constants.Id, planId);
+            var planDetails = await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.UserResourceCollectionId, Constants.Id, planId);
             if (planDetails != null)
             {
                 personalizedPlan = JsonUtilities.DeserializeDynamicObject<List<PersonalizedPlanSteps>>(planDetails);
@@ -300,7 +306,7 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 if (userPlan.PersonalizedPlan.PersonalizedPlanId.ToString() == (userProfile?.PersonalizedActionPlanId.ToString()))
                 {
-                    userPlanDBData = await dynamicQueries.FindItemsWhereAsync(dbSettings.UserResourceCollectionId, Constants.Id, Convert.ToString(userProfile.PersonalizedActionPlanId, CultureInfo.InvariantCulture));
+                    userPlanDBData = await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.UserResourceCollectionId, Constants.Id, Convert.ToString(userProfile.PersonalizedActionPlanId, CultureInfo.InvariantCulture));
                 }
                 else
                 {
@@ -310,12 +316,12 @@ namespace Access2Justice.Api.BusinessLogic
             if (userPlanDBData == null || userPlanDBData?.Count == 0)
             {
                 userProfile.PersonalizedActionPlanId = userPlan.PersonalizedPlan.PersonalizedPlanId;
-                await dbService.UpdateItemAsync(userProfile.Id, userProfile, dbSettings.UserProfileCollectionId);
+                await backendDatabaseService.UpdateItemAsync(userProfile.Id, userProfile, cosmosDbSettings.UserProfileCollectionId);
                 planId = userProfile.PersonalizedActionPlanId.ToString();
             }
             else
             {
-                await dbService.UpdateItemAsync(userPlan.PersonalizedPlan.PersonalizedPlanId.ToString(), userPlan.PersonalizedPlan, dbSettings.UserResourceCollectionId);
+                await backendDatabaseService.UpdateItemAsync(userPlan.PersonalizedPlan.PersonalizedPlanId.ToString(), userPlan.PersonalizedPlan, cosmosDbSettings.UserResourceCollectionId);
                 planId = userProfile.PersonalizedActionPlanId.ToString();
             }
             return planId;
@@ -327,17 +333,17 @@ namespace Access2Justice.Api.BusinessLogic
             dynamic userPlanDBData = null;
             if (personalizedPlan?.PersonalizedPlanId != null && personalizedPlan?.PersonalizedPlanId != Guid.Empty)
             {
-                userPlanDBData = await dynamicQueries.FindItemsWhereAsync(dbSettings.UserResourceCollectionId, Constants.Id, Convert.ToString(personalizedPlan.PersonalizedPlanId, CultureInfo.InvariantCulture));
+                userPlanDBData = await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.UserResourceCollectionId, Constants.Id, Convert.ToString(personalizedPlan.PersonalizedPlanId, CultureInfo.InvariantCulture));
             }
             if (userPlanDBData == null || userPlanDBData?.Count == 0)
             {
-                await dbService.CreateItemAsync((personalizedPlan), dbSettings.UserResourceCollectionId);
+                await backendDatabaseService.CreateItemAsync((personalizedPlan), cosmosDbSettings.UserResourceCollectionId);
                 planId = personalizedPlan.PersonalizedPlanId.ToString();
             }
             else
             {
 
-                await dbService.UpdateItemAsync(personalizedPlan.PersonalizedPlanId.ToString(), personalizedPlan, dbSettings.UserResourceCollectionId);
+                await backendDatabaseService.UpdateItemAsync(personalizedPlan.PersonalizedPlanId.ToString(), personalizedPlan, cosmosDbSettings.UserResourceCollectionId);
                 planId = personalizedPlan.PersonalizedPlanId.ToString();
             }
             return planId;

@@ -8,6 +8,7 @@ using Access2Justice.Api.Interfaces;
 using Access2Justice.Api.Tests.TestData;
 using Access2Justice.Api.ViewModels;
 using Access2Justice.Shared.Interfaces;
+using Access2Justice.Shared.Interfaces.A2JAuthor;
 using Access2Justice.Shared.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -23,7 +24,8 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly IDynamicQueries dynamicQueries;
         private readonly IUserProfileBusinessLogic userProfileBusinessLogic;
         private readonly PersonalizedPlanBusinessLogic personalizedPlan;
-        
+        private readonly IPersonalizedPlanEngine personalizedPlanEngine;
+
         //Mocked input data
         private readonly dynamic topicId = Guid.Parse("e1fdbbc6-d66a-4275-9cd2-2be84d303e12");
         private readonly string mockPlanId1 = "86e693bd-c673-419f-95c4-9ee76cccab3c";
@@ -44,16 +46,18 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly dynamic planStepsByTopicId = PersonalizedPlanTestData.planStepsByTopicId;
         private readonly JArray expectedPersonalizedPlanView = PersonalizedPlanTestData.personalizedPlanView;
         private readonly JArray expectedConvertedPersonalizedPlanSteps = PersonalizedPlanTestData.convertedPersonalizedPlanSteps;
+
         public PersonalizedPlanBussinessLogicTests()
         {
             dbSettings = Substitute.For<ICosmosDbSettings>();
             dbService = Substitute.For<IBackendDatabaseService>();
             dynamicQueries = Substitute.For<IDynamicQueries>();
             userProfileBusinessLogic = Substitute.For<IUserProfileBusinessLogic>();
+            personalizedPlanEngine = Substitute.For<IPersonalizedPlanEngine>();
 
-            personalizedPlan = new PersonalizedPlanBusinessLogic(dbSettings, dbService, dynamicQueries, userProfileBusinessLogic);
+            personalizedPlan = new PersonalizedPlanBusinessLogic(dbSettings, dbService, dynamicQueries, userProfileBusinessLogic, personalizedPlanEngine);
             dbSettings.AuthKey.Returns("dummykey");
-            dbSettings.Endpoint.Returns(new System.Uri("https://bing.com"));
+            dbSettings.Endpoint.Returns(new Uri("https://bing.com"));
             dbSettings.DatabaseId.Returns("dbname");
             dbSettings.TopicCollectionId.Returns("TopicCollection");
             dbSettings.ResourceCollectionId.Returns("ResourceCollection");

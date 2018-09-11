@@ -14,10 +14,10 @@ namespace Access2Justice.Api.BusinessLogic
     {
         private readonly ICosmosDbSettings dbSettings;
         private readonly IBackendDatabaseService dbService;
-        private readonly IPersonalizedPlanFactory personalizedPlanEngine;
+        private readonly IPersonalizedPlanEngine personalizedPlanEngine;
 
         public A2JAuthorBusinessLogic(ICosmosDbSettings cosmosDbSettings, IBackendDatabaseService backendDatabaseService,
-            IPersonalizedPlanFactory a2JAuthorParserBusinessLogic)
+            IPersonalizedPlanEngine a2JAuthorParserBusinessLogic)
         {
             dbSettings = cosmosDbSettings;
             dbService = backendDatabaseService;
@@ -68,12 +68,13 @@ namespace Access2Justice.Api.BusinessLogic
             return await dbService.GetItemAsync<A2JPersonalizedPlan>("432e7473-02df-4807-8d45-39ed821c5eb1", dbSettings.A2JAuthorTemplatesCollectionId);
         }
 
+        // Todo:@Alaa remove after done testing
         public A2JPersonalizedPlan MapA2JPersonalizedPlanToAccess2JusticeActionPlan(A2JPersonalizedPlan a2JPersonalizedPlan,
             CuratedExperienceAnswers userAnswers)
         {
             var planInScopeVarsValues = personalizedPlanEngine.Build(a2JPersonalizedPlan, userAnswers);
 
-             // Todo:@Alaa map scope in plan to our personalized plan html formal
+             // Todo:@Alaa remove after done testing
 
             return planInScopeVarsValues;
         }

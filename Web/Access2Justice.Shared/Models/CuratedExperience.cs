@@ -9,6 +9,9 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "id")]
         public Guid CuratedExperienceId { get; set; }
 
+        [JsonProperty(PropertyName = "a2jPersonalizedPlanId")]
+        public Guid A2jPersonalizedPlanId { get; set; }
+
         [JsonProperty(PropertyName = "title")]
         public string Title { get; set; }
 

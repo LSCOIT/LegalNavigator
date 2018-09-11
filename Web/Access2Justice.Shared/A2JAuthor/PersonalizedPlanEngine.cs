@@ -3,12 +3,12 @@ using Access2Justice.Shared.Models;
 
 namespace Access2Justice.Shared.A2JAuthor
 {
-    public class PersonalizedPlanFactory : IPersonalizedPlanFactory
+    public class PersonalizedPlanEngine : IPersonalizedPlanEngine
     {
         private readonly IParse parser;
         private readonly ICompile compiler;
 
-        public PersonalizedPlanFactory(IParse parser, ICompile compiler)
+        public PersonalizedPlanEngine(IParse parser, ICompile compiler)
         {
             this.parser = parser;
             this.compiler = compiler;
@@ -16,11 +16,17 @@ namespace Access2Justice.Shared.A2JAuthor
 
         public A2JPersonalizedPlan Build(A2JPersonalizedPlan personalizedPlan, CuratedExperienceAnswers userAnswers)
         {
-            var evaluatedAnswers = parser.Parse(userAnswers);
-            var compiledPlan = compiler.Compile(personalizedPlan, evaluatedAnswers);
+            return compiler.Compile(
+                personalizedPlan, 
+                parser.Parse(userAnswers));
+        }
 
-             // Todo:@Alaa remove this
-            return compiledPlan;
+        public PersonalizedPlanSteps Map(A2JPersonalizedPlan personalizedPlan)
+        {
+
+
+            var breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
+            return null;
         }
     }
 }

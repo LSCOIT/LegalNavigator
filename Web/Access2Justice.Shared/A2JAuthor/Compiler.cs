@@ -10,7 +10,8 @@ namespace Access2Justice.Shared.A2JAuthor
         public A2JPersonalizedPlan Compile(A2JPersonalizedPlan personalizedPlan, Dictionary<string, string> evaluatedUserAnswers)
         {
             var stepsInScope = new A2JPersonalizedPlan();
-            if(evaluatedUserAnswers.Any())
+
+            if (evaluatedUserAnswers.Any())
             {
                 stepsInScope.Active = personalizedPlan.Active;
                 stepsInScope.CreatedAt = personalizedPlan.CreatedAt;
@@ -26,6 +27,7 @@ namespace Access2Justice.Shared.A2JAuthor
                 stepsInScope.Title = personalizedPlan.Title;
                 stepsInScope.UpdatedAt = personalizedPlan.UpdatedAt;
             }
+
             foreach (var answer in evaluatedUserAnswers)
             {
                 foreach (var child in personalizedPlan.RootNode.Children)
