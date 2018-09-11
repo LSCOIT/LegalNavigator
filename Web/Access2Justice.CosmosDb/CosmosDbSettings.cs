@@ -23,6 +23,7 @@ namespace Access2Justice.CosmosDb
                 PersonalizedActionPlanCollectionId = configuration.GetSection("PersonalizedActionPlanCollectionId").Value;
                 StaticResourceCollectionId = configuration.GetSection("StaticResourceCollectionId").Value;
                 UserSavedResourcesCollectionId = configuration.GetSection("UserSavedResourcesCollectionId").Value;
+                UserResourceCollectionId = configuration.GetSection("UserResourceCollectionId").Value;
                 A2JAuthorTemplatesCollectionId = configuration.GetSection("A2JAuthorTemplatesCollectionId").Value;
             }
             catch
@@ -42,6 +43,7 @@ namespace Access2Justice.CosmosDb
         public string PersonalizedActionPlanCollectionId { get; private set; }
         public string StaticResourceCollectionId { get; private set; }
         public string UserSavedResourcesCollectionId { get; private set; }
+        public string UserResourceCollectionId { get; private set; }
         public string A2JAuthorTemplatesCollectionId { get; private set; }
     }
 }

@@ -16,6 +16,7 @@ namespace Access2Justice.Shared.Interfaces
         string PersonalizedActionPlanCollectionId { get; }
         string StaticResourceCollectionId { get; }
         string UserSavedResourcesCollectionId { get; }
+        string UserResourceCollectionId { get; }
         string A2JAuthorTemplatesCollectionId { get; }
     }
 }
