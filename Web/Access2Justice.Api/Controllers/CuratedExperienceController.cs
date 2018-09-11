@@ -87,7 +87,7 @@ namespace Access2Justice.Api.Controllers
         [HttpGet("PersonalizedPlan")]
         public async Task<IActionResult> GeneratePersonalizedPlan([FromQuery] Guid curatedExperienceId, [FromQuery] Guid answersDocId)
         {
-            var personalizedPlan = await personalizedPlanBusinessLogic.GeneratePersonalizedPlan(
+            var personalizedPlan = await personalizedPlanBusinessLogic.GeneratePersonalizedPlanAsync(
                 RetrieveCachedCuratedExperience(curatedExperienceId), answersDocId);
             if (personalizedPlan == null)
             {
@@ -116,13 +116,14 @@ namespace Access2Justice.Api.Controllers
             return HttpContext.Session.GetObjectAsJson<CuratedExperience>(id.ToString());
         }
 
-        [HttpGet]
-        [Route("getplandetails/{id}")]
-        public async Task<IActionResult> GetPlanDetailsAsync(string id)
-        {
-            var actionPlans = await personalizedPlanBusinessLogic.GetPlanDataAsync(id);
-            return Ok(actionPlans);
-        }
+         // Todo:@Alaa remove
+             //[HttpGet]
+             //[Route("getplandetails/{id}")]
+             //public async Task<IActionResult> GetPlanDetailsAsync(string id)
+             //{
+             //    var actionPlans = await personalizedPlanBusinessLogic.GetPlanDataAsync(id);
+             //    return Ok(actionPlans);
+             //}
 
         [HttpGet]
         [Route("getplan/{id}")]
