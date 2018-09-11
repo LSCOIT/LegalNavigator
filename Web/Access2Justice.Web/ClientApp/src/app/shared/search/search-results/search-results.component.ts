@@ -7,6 +7,8 @@ import { IResourceFilter, ILuisInput } from './search-results.model';
 import { MapService } from '../../map/map.service';
 import { environment } from '../../../../environments/environment';
 import { PersonalizedPlanService } from '../../../guided-assistant/personalized-plan/personalized-plan.service';
+import { ActivatedRoute } from '@angular/router';
+import { Global } from '../../../global';
 
 @Component({
   selector: 'app-search-results',
@@ -56,7 +58,20 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     private searchService: SearchService,
     private mapService: MapService,
     private paginationService: PaginationService,
-    private personalizedPlanService: PersonalizedPlanService) { }
+    private personalizedPlanService: PersonalizedPlanService,
+    private global: Global,
+    private route: ActivatedRoute) {
+
+    if (sessionStorage.getItem("bookmarkedResource")) {
+      this.route.data.map(data => data.cres)
+        .subscribe(response => {
+          if (response) {
+            this.global.setProfileData(response.oId, response.name);
+            this.personalizedPlanService.saveResourcesToUserProfile();
+          }
+        });
+    }
+  }
 
   bindData() {
     this.showDefaultMessage = false;
@@ -368,10 +383,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     }
     this.bindData();
     this.notifyLocationChange();        
-    this.showRemoveOption = this.showRemove;
-    if (sessionStorage.getItem("bookmarkedResource")) {
-      this.personalizedPlanService.saveResourcesToUserProfile();
-    }
+    this.showRemoveOption = this.showRemove;    
   }
 
   ngOnDestroy() {

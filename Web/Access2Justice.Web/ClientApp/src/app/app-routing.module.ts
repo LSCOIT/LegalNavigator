@@ -20,10 +20,11 @@ import { NotFoundComponent } from './shared/error/not-found/not-found.component'
 import { InternalErrorComponent } from './shared/error/internal-error/internal-error.component';
 import { ShareButtonRouteComponent } from './shared/resource/user-action/share-button/share-button-route/share-button-route.component';
 import { CuratedExperienceResultComponent } from './guided-assistant/curated-experience-result/curated-experience-result.component';
+import { ProfileResolverService } from './app-resolver/profile-resolver.service';
 
 const appRoutes: Routes = [
-  { path: 'search', component: SearchResultsComponent },
-  { path: 'searchRefresh', component: SearchResultsComponent },
+  { path: 'search', component: SearchResultsComponent, resolve: { cres: ProfileResolverService } },
+  { path: 'searchRefresh', component: SearchResultsComponent, resolve: { cres: ProfileResolverService } },
   { path: 'guidedassistant/:id', component: CuratedExperienceComponent },
   { path: 'guidedassistant', component: GuidedAssistantComponent },
   { path: 'guidedassistantSearch', component: CuratedExperienceResultComponent },

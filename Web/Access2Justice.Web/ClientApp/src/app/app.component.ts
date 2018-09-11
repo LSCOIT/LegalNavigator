@@ -24,8 +24,7 @@ export class AppComponent implements OnInit {
     private mapService: MapService,
     private personalizedPlanService: PersonalizedPlanService) { }  
 
-  createOrGetProfile() {
-    console.log("I'm into createOrGetProfile method..");
+  createOrGetProfile() {    
     let userData = this.msalService.getUser();
     this.userProfile = {
       name: userData.idToken['name'], firstName: "", lastName: "", oId: userData.idToken['oid'], eMail: userData.idToken['preferred_username'], isActive: "Yes",
@@ -47,9 +46,7 @@ export class AppComponent implements OnInit {
     this.staticResourceService.getStaticContents()
       .subscribe(response => {
         this.staticContentResults = response;
-        this.global.setData(this.staticContentResults);
-        console.log(this.global.isLoggedIn);
-        console.log(this.global.isShared);
+        this.global.setData(this.staticContentResults);       
       });
   }
 
@@ -62,7 +59,5 @@ export class AppComponent implements OnInit {
     if (this.msalService.getUser()) {
       this.createOrGetProfile();
     }
-    console.log(this.global.isLoggedIn);
-    console.log(this.global.isShared);
   }
 }
