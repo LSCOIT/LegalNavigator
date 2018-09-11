@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { Resources, PersonalizedPlanTopic, PersonalizedPlan, ProfileResources, SavedResources } from './personalized-plan';
+import { Resources, PersonalizedPlanTopic, PersonalizedPlan, ProfileResources, SavedResources, UserPlan } from './personalized-plan';
 import { api } from '../../../api/api';
 import { IResourceFilter } from '../../shared/search/search-results/search-results.model';
 import { ArrayUtilityService } from '../../shared/array-utility.service';
@@ -31,6 +31,8 @@ export class PersonalizedPlanService {
   savedResources: SavedResources;
   resourceTags: Array<SavedResources> = [];
   resourceIds: Array<string>;
+  personalizedPlan: PersonalizedPlan;
+  userPersonalizedPlan: UserPlan = { oId: '', plan: this.personalizedPlan };
 
   constructor(private http: HttpClient,
               private arrayUtilityService: ArrayUtilityService,
@@ -50,7 +52,8 @@ export class PersonalizedPlanService {
   }
 
   userPlan(plan: PersonalizedPlan) {
-    return this.http.post<any>(api.updateUserPlanUrl, plan, httpOptions);
+    this.userPersonalizedPlan = { oId: this.global.userId, plan: plan };
+    return this.http.post<any>(api.updateUserPlanUrl, this.userPersonalizedPlan, httpOptions);
   }
 
   getPersonalizedResources(resourceInput: IResourceFilter) {
