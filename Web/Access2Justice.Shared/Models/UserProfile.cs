@@ -40,8 +40,8 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "modifiedTimeStamp")]
         public string ModifiedTimeStamp { get; set; }
 
-        [JsonProperty(PropertyName = "sharedResource")]
-        public List<SharedResource> SharedResource { get; set; }
+        [JsonProperty(PropertyName = "sharedResourceId")]
+        public Guid SharedResourceId { get; set; }
 
         [JsonProperty(PropertyName = "personalizedActionPlanId")]
         public Guid PersonalizedActionPlanId { get; set; }
@@ -51,21 +51,7 @@ namespace Access2Justice.Shared.Models
 
         [JsonProperty(PropertyName = "savedResourcesId")]
         public Guid SavedResourcesId { get; set; }
+        
     }
-
-    public class SharedResource
-    {
-        [JsonProperty(PropertyName = "isShared")]
-        public bool IsShared { get; set; }
-
-        [JsonProperty(PropertyName = "expirationDate")]
-        public DateTime ExpirationDate { get; set; }
-
-        [JsonProperty(PropertyName = "permaLink")]
-        public string PermaLink { get; set; }
-
-        [JsonProperty(PropertyName = "url")]
-        public Uri Url { get; set; }
-    }
-
+    
 }

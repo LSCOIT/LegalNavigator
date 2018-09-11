@@ -39,10 +39,12 @@
                   </div>
                 </div>
                 <div class="col-xs-12 step-content">
+                  <h4 class="print-only" *ngIf="step.isComplete">Completed</h4>
+                  <h4 class="print-only" *ngIf="!step.isComplete">Not Completed</h4>
                   <div [ngClass]="{'checkbox disabled':!global.showMarkComplete, '':global.showMarkComplete}" class="col-sm-3 col-xs-12 btn-selected" id="complete-btn">
-                    <label class="ps">
-                      <input id="checkBox" type="checkbox" (change)="checkCompleted($event,topic.topicId,step.stepId)"
-                              [ngModel]="step.isComplete" [disabled]="!global.showMarkComplete">
+                    <label class="ps no-print">
+                      <input id="checkBox" class="no-print" type="checkbox" (change)="checkCompleted($event,topic.topicId,step.stepId)"
+                             [ngModel]="step.isComplete" [disabled]="!global.showMarkComplete">
                       Completed
                     </label>
                   </div>
@@ -64,13 +66,16 @@
                     </ul>
                   </div>
                   <div>
-                    <ul>If the summons is not real, you should talk to your landlord.
-                      <li><a href="https://alaskalawhelp.org/" class="link">Set up a reminder for your court date.</a>
-                          <div class="print-only">https://alaskalawhelp.org/</div>
+                    <ul>
+                      If the summons is not real, you should talk to your landlord.
+                      <li>
+                        <a href="https://alaskalawhelp.org/" class="link">Set up a reminder for your court date.</a>
+                        <div class="print-only">https://alaskalawhelp.org/</div>
                       </li>
-                      <li><a href="https://alaskalawhelp.org/" class="link">Learn more about court appearances and what to expect.</a>
-                          <div class="print-only">https://alaskalawhelp.org/</div>
-                      </li>                      
+                      <li>
+                        <a href="https://alaskalawhelp.org/" class="link">Learn more about court appearances and what to expect.</a>
+                        <div class="print-only">https://alaskalawhelp.org/</div>
+                      </li>
                     </ul>
                   </div>
                   <div *ngFor="let resource of step.resources">

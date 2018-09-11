@@ -1,8 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { TopicService } from '../shared/topic.service';
-import { ActivatedRoute,Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NavigateDataService } from '../../shared/navigate-data.service';
 import { ShowMoreService } from "../../shared/sidebars/show-more/show-more.service";
+import { ISubtopicGuidedInput } from "../shared/topic";
+import { Input } from "@angular/core/src/metadata/directives";
 
 @Component({
   selector: 'app-subtopics',
@@ -17,14 +19,15 @@ export class SubtopicsComponent implements OnInit {
   subtopicName: string;
   topic: any;
   icon: any;
-
+  guidedInput: ISubtopicGuidedInput = { activeId: '', name: '' };
   constructor(
-    private topicService: TopicService,    
+    private topicService: TopicService,
     private activeRoute: ActivatedRoute,
     private router: Router,
     private navigateDataService: NavigateDataService,
     private showMoreService: ShowMoreService
-  ) {}
+  ) { }
+
 
   getSubtopics(): void {
     this.activeTopic = this.activeRoute.snapshot.params['topic'];
@@ -33,16 +36,17 @@ export class SubtopicsComponent implements OnInit {
       topic => {
         this.topic = topic[0];
         this.icon = topic[0].icon;
-        });
+        this.guidedInput = { activeId: this.activeTopic, name: this.topic.name };
+      });
     this.topicService.getSubtopics(this.activeTopic)
       .subscribe(
-        subtopics => {
-          this.subtopics = subtopics;
-          this.navigateDataService.setData(this.subtopics);
-          if (this.subtopics.length === 0) {
-            this.router.navigateByUrl('/subtopics/' + this.activeTopic, { skipLocationChange: true });
-          }
-        });
+      subtopics => {
+        this.subtopics = subtopics;
+        this.navigateDataService.setData(this.subtopics);
+        if (this.subtopics.length === 0) {
+          this.router.navigateByUrl('/subtopics/' + this.activeTopic, { skipLocationChange: true });
+        }
+      });
   }
 
   clickSeeMoreOrganizationsFromSubtopic(resourceType: string) {

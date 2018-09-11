@@ -81,7 +81,7 @@
       </ul>
     </div>
   </div>
-  <div class="box-no-shadow">
+  <div class="box-no-shadow" *ngIf="resource?.reviewedByCommunityMember">
     <div class="resource-body">
       <h4>Reviewed by a member of your community</h4>
       <p>"{{resource.reviewedByCommunityMember}}"</p>
