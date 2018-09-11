@@ -38,7 +38,6 @@ export class QuestionComponent implements OnInit {
   }
 
   getQuestion(): void {
-    this.spinner.show();
     this.curatedExperienceId = this.activeRoute.snapshot.params["id"];
     let params = new HttpParams()
       .set("curatedExperienceId", this.curatedExperienceId);
@@ -46,7 +45,6 @@ export class QuestionComponent implements OnInit {
       .subscribe(question => {
         this.question = { ...question }
         this.sendTotalQuestions(this.question.questionsRemaining);
-        this.spinner.hide();
       });
   }
 
@@ -89,12 +87,10 @@ export class QuestionComponent implements OnInit {
     }
 
     if (this.question.questionsRemaining > 0) {
-      this.spinner.show();
       this.questionService.getNextQuestion(params)
         .subscribe(response => {
           this.question = { ...response }
           this.sendQuestionsRemaining(this.question.questionsRemaining);
-          this.spinner.hide();
         });
     } else {
       this.questionService.getNextQuestion(params)

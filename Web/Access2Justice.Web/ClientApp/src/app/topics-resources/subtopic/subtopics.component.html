@@ -18,7 +18,7 @@
           <li><a [routerLink]="['/topics', subtopic.id]">{{subtopic.name}}</a></li>
         </ul>
       </div>
-      <button class="btn btn-primary">Back to main topics</button>
+      <a [routerLink]="['/topics']" class="btn btn-primary">Back to main topics</a>
     </div>
     <div class="col-md-3 col-sm-12 col-xs-12">
       <app-guided-assistant-sidebar [activeSubTopic]="guidedInput"></app-guided-assistant-sidebar>

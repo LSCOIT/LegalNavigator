@@ -50,6 +50,9 @@ export class LanguageComponent implements OnInit, AfterViewInit {
     let languageOptions = document.querySelectorAll('select.goog-te-combo')[0];
     languageOptions["classList"].add('form-control');
     languageOptions["size"] = 15;
+
+    let translator = document.getElementById('google_translate_element');
+    translator.setAttribute("style", "display: none; position: absolute; top: 0; background: #fff; width: 225px; height: 330px; padding: 10px 20px 10px 35px; left: 68px; box-shadow: 0 6px 12px 3px #ddd");
   }
 
   filterLanguagueNavigationContent(navigation): void {
