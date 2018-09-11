@@ -24,8 +24,9 @@ cucumber_1.Given('I am on the Access2Justice website and I clicked the login tab
     expect(protractor_1.browser.getTitle()).to.eventually.equal("Access to Justice");
     yield login.loginTab.click();
 }));
-cucumber_1.When(/^I set the '([^']*)' '([^']*)' and click Next button$/, (type, email) => __awaiter(this, void 0, void 0, function* () { return yield login.enterData("email", email); }));
-cucumber_1.When(/^I set the '([^']*)' '([^']*)' and click Sign In button$/, (type, password) => __awaiter(this, void 0, void 0, function* () { return yield login.enterData("password", password); }));
+'I set the {string} {string} and click Next button';
+cucumber_1.When('I set the {string} {string} and click Next button', (type, email) => __awaiter(this, void 0, void 0, function* () { return yield login.enterData("email", email); }));
+cucumber_1.When('I set the {string} {string} and click Sign In button', (type, password) => __awaiter(this, void 0, void 0, function* () { return yield login.enterData("password", password); }));
 cucumber_1.Then(/^I am redirected to home page and shown as signed in with username '([^']*)'$/, (userName) => __awaiter(this, void 0, void 0, function* () {
     yield protractor_1.browser.waitForAngular();
     expect(yield protractor_1.browser.getCurrentUrl()).to.equal(config_1.config.baseUrl);

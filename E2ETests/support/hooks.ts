@@ -1,6 +1,7 @@
 /* 
  * Used to prepare and clean the environment 
  * before" and "after" each scenario is executed
+ * For more info, check https://github.com/cucumber/cucumber-js/blob/master/docs/support_files/hooks.md
  */
 
 const { BeforeAll, After, AfterAll, Status } = require("cucumber");
@@ -8,7 +9,7 @@ import * as fs from "fs";
 import { browser } from "protractor";
 import { config } from "../config/config";
 
-BeforeAll({timeout: 100 * 1000}, async () => {
+BeforeAll({tags: 'not @SaveToProfileScenario', timeout: 100 * 1000}, async () => {
     await browser.get(config.baseUrl);
 });
 

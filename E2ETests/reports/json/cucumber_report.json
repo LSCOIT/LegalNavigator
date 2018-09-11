@@ -3,20 +3,25 @@
     "description": "    As a user\n    I need to save a resource topic\n    So that I can review it later",
     "keyword": "Feature",
     "name": "Save to Profile",
-    "line": 1,
+    "line": 3,
     "id": "save-to-profile",
-    "tags": [],
+    "tags": [
+      {
+        "name": "@SaveToProfileScenario",
+        "line": 1
+      }
+    ],
     "uri": "features\\SaveToProfile.feature",
     "elements": [
       {
-        "id": "save-to-profile;save-a-resource-topic-to-profile",
+        "id": "save-to-profile;save-a-resource-topic-given-i've-signed-in-and-have-not-saved-the-same-resource-already",
         "keyword": "Scenario",
-        "line": 15,
-        "name": "Save a resource topic to profile",
+        "line": 8,
+        "name": "Save a resource topic given I've signed in and have not saved the same resource already",
         "tags": [
           {
             "name": "@SaveToProfileScenario",
-            "line": 6
+            "line": 1
           }
         ],
         "type": "scenario",
@@ -24,21 +29,99 @@
           {
             "arguments": [],
             "keyword": "Given ",
-            "line": 8,
-            "name": "I am on the resource page for \"Divorce\" at \"https://access2justicewebtesting.azurewebsites.net/topics/d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef\"",
+            "line": 9,
+            "name": "I am on the Access2Justice website and I clicked the login tab",
             "match": {
-              "location": "typeScript\\stepdefinitions\\saveToProfile.steps.js:22"
+              "location": "typeScript\\stepdefinitions\\login.steps.js:22"
             },
             "result": {
               "status": "passed",
-              "duration": 526000000
+              "duration": 4495000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "I set the 'email' \"test-a2j@outlook.com\" and click Next button",
+            "match": {
+              "location": "typeScript\\stepdefinitions\\login.steps.js:28"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2225000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 11,
+            "name": "I set the 'password' \"testa2j1234\" and click Sign In button",
+            "match": {
+              "location": "typeScript\\stepdefinitions\\login.steps.js:29"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4190000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 12,
+            "name": "I naviagte to the resource page for \"Divorce\" at \"https://access2justicewebtesting.azurewebsites.net/topics/d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef\"",
+            "match": {
+              "location": "typeScript\\stepdefinitions\\saveToProfile.steps.js:19"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2377000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 13,
+            "name": "I have not saved this resource topic before",
+            "match": {
+              "location": "typeScript\\stepdefinitions\\saveToProfile.steps.js:25"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 14,
+            "name": "I click the Save to profile button",
+            "match": {
+              "location": "typeScript\\stepdefinitions\\saveToProfile.steps.js:29"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5117000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 15,
+            "name": "I see a confirmation \"Resource saved to profile\"",
+            "match": {
+              "location": "typeScript\\stepdefinitions\\saveToProfile.steps.js:33"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5001000000
             }
           },
           {
             "keyword": "After",
             "hidden": true,
             "match": {
-              "location": "typeScript\\support\\hooks.js:21"
+              "location": "typeScript\\support\\hooks.js:22"
             },
             "result": {
               "status": "passed"
@@ -51,8 +134,7 @@
               "location": "node_modules\\protractor-cucumber-framework\\lib\\resultsCapturer.js:25"
             },
             "result": {
-              "status": "passed",
-              "duration": 1000000
+              "status": "passed"
             }
           }
         ]

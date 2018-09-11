@@ -10,30 +10,29 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const protractor_1 = require("protractor");
 const cucumber_1 = require("cucumber");
+const resourcePage_po_1 = require("../pages/resourcePage.po");
 const loginComponent_po_1 = require("../pages/loginComponent.po");
 const chai = require('chai').use(require('chai-as-promised'));
 const expect = chai.expect;
+const resourcePage = new resourcePage_po_1.ResourcePage();
 const login = new loginComponent_po_1.LoginComponent();
-// By default, async functions timeout after 5000 ms
-// For more info on setting timeout, 
-// check https://github.com/cucumber/cucumber-js/blob/master/docs/support_files/timeouts.md
-cucumber_1.setDefaultTimeout(20 * 1000);
-var urlRegex = "(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*))";
-cucumber_1.Given('I am on the resource page for {string} at {url}', (topic, link) => __awaiter(this, void 0, void 0, function* () {
+cucumber_1.Given('I naviagte to the resource page for {string} at {string}', (topic, link) => __awaiter(this, void 0, void 0, function* () {
     yield protractor_1.browser.get(link);
-    expect(protractor_1.browser.getCurrentUrl()).to.eventually.equal('https://access2justicewebtesting.azurewebsites.net/topics/d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef');
-    //expect($("h3").getText()).to.equal('Divorce');
+    yield protractor_1.browser.sleep(2000); // wait for page to load
+    expect(protractor_1.browser.getCurrentUrl()).to.eventually.equal(link);
+    expect(protractor_1.$(".subtopic-heading").getText()).to.eventually.equal(topic);
 }));
-// When(/^I set the '([^']*)' '([^']*)' and click Next button$/, 
-//     async (type: string, email: string) => await login.enterData("email", email)
-// ); 
-// When(/^I set the '([^']*)' '([^']*)' and click Sign In button$/, 
-//     async (type: string, password: string) => await login.enterData("password", password)
-// );
-// Then(/^I am redirected to home page and shown as signed in with username '([^']*)'$/, 
-//     async (userName: string) => {
-//         await browser.waitForAngular();
-//         expect(await browser.getCurrentUrl()).to.equal(config.baseUrl);
-//         expect(await $("#signin-dropdown a").getText()).to.have.string(userName);
-//     }
-// );
+cucumber_1.Given('I have not saved this resource topic before', () => {
+    // Might want to delete that resource if it exists
+    return true;
+});
+cucumber_1.When('I click the Save to profile button', () => __awaiter(this, void 0, void 0, function* () {
+    yield protractor_1.browser.sleep(5000);
+    yield resourcePage.saveButton.click();
+}));
+cucumber_1.Then('I see a confirmation "Resource saved to profile"', () => __awaiter(this, void 0, void 0, function* () {
+    expect(protractor_1.$("#toast-container").isDisplayed()).to.eventually.be.true;
+    yield protractor_1.browser.sleep(5000);
+}));
+cucumber_1.Then('And I can see the resource topic with "Divorce" listed in my profile', () => __awaiter(this, void 0, void 0, function* () {
+}));

@@ -19,12 +19,12 @@ Given('I am on the Access2Justice website and I clicked the login tab',
         await login.loginTab.click();
     }
 );
-
-When(/^I set the '([^']*)' '([^']*)' and click Next button$/, 
+'I set the {string} {string} and click Next button'
+When('I set the {string} {string} and click Next button', 
     async (type: string, email: string) => await login.enterData("email", email)
 ); 
 
-When(/^I set the '([^']*)' '([^']*)' and click Sign In button$/, 
+When('I set the {string} {string} and click Sign In button', 
     async (type: string, password: string) => await login.enterData("password", password)
 );
 

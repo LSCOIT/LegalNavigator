@@ -2,6 +2,7 @@
 /*
  * Used to prepare and clean the environment
  * before" and "after" each scenario is executed
+ * For more info, check https://github.com/cucumber/cucumber-js/blob/master/docs/support_files/hooks.md
  */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -15,7 +16,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const { BeforeAll, After, AfterAll, Status } = require("cucumber");
 const protractor_1 = require("protractor");
 const config_1 = require("../config/config");
-BeforeAll({ timeout: 100 * 1000 }, () => __awaiter(this, void 0, void 0, function* () {
+BeforeAll({ tags: 'not @SaveToProfileScenario', timeout: 100 * 1000 }, () => __awaiter(this, void 0, void 0, function* () {
     yield protractor_1.browser.get(config_1.config.baseUrl);
 }));
 After(function (scenario) {

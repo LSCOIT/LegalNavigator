@@ -1,34 +1,49 @@
 import { browser, $ } from 'protractor';
 import { Given, When, Then, setDefaultTimeout } from 'cucumber';
-import { LoginComponent } from '../pages/loginComponent.po';
 import { config } from '../config/config';
 import { link } from 'fs';
+import { ResourcePage } from '../pages/resourcePage.po';
+import { LoginComponent } from '../pages/loginComponent.po';
 const chai = require('chai').use(require('chai-as-promised'));
 const expect = chai.expect;
 
+const resourcePage: ResourcePage = new ResourcePage();
 const login: LoginComponent = new LoginComponent();
 
-Given('I am on the resource page for {string} at {url}',
-    async (topic, link) => {  
+Given('I naviagte to the resource page for {string} at {string}',
+    async (topic : string, link : string) => {
         await browser.get(link);
-        expect(browser.getCurrentUrl()).to.eventually.equal('https://access2justicewebtesting.azurewebsites.net/topics/d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef');
-        //expect($("h3").getText()).to.equal('Divorce');
+        await browser.sleep(2000);  // wait for page to load
+        expect(browser.getCurrentUrl()).to.eventually.equal(link);
+        expect($(".subtopic-heading").getText()).to.eventually.equal(topic);
     }
 );
 
-// When(/^I set the '([^']*)' '([^']*)' and click Next button$/, 
-//     async (type: string, email: string) => await login.enterData("email", email)
-// ); 
+Given('I have not saved this resource topic before', 
+    () => {
+        // Might want to delete that resource if it exists
+        return true;
+    }
+);
 
-// When(/^I set the '([^']*)' '([^']*)' and click Sign In button$/, 
-//     async (type: string, password: string) => await login.enterData("password", password)
-// );
+When('I click the Save to profile button', 
+    async () => {
+        await browser.sleep(5000);
+        await resourcePage.saveButton.click();
+    }
+); 
 
+Then('I see a confirmation "Resource saved to profile"',
+    async () => {
+        expect($("#toast-container").isDisplayed()).to.eventually.be.true;
+        // check text
+        
+        await browser.sleep(5000);
+    }
+);
 
-// Then(/^I am redirected to home page and shown as signed in with username '([^']*)'$/, 
-//     async (userName: string) => {
-//         await browser.waitForAngular();
-//         expect(await browser.getCurrentUrl()).to.equal(config.baseUrl);
-//         expect(await $("#signin-dropdown a").getText()).to.have.string(userName);
-//     }
-// );
+Then('And I can see the resource topic with "Divorce" listed in my profile',
+    async () => {
+
+    }
+);
