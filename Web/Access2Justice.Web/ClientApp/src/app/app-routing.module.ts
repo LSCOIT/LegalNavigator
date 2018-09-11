@@ -38,7 +38,7 @@ const appRoutes: Routes = [
   { path: 'help', component: HelpFaqsComponent },
   { path: 'home', component: HomeComponent },
   { path: 'privacy', component: PrivacyPromiseComponent },
-  { path: 'profile', component: ProfileComponent },
+  { path: 'profile', component: ProfileComponent, resolve: { cres: ProfileResolverService } },
   { path: '', component: HomeComponent },
   { path: 'error', component: InternalErrorComponent},
   { path: '404', component: NotFoundComponent },

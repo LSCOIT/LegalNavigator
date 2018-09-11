@@ -6,13 +6,14 @@ import { EventUtilityService } from '../shared/event-utility.service';
 import { HttpParams } from '@angular/common/http';
 import { Global } from '../global';
 import { MsalService } from '@azure/msal-angular';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent implements OnInit, AfterViewInit {    
+export class ProfileComponent implements OnInit {    
   
   topics: string;
   planDetails: any = [];
@@ -35,7 +36,18 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     private personalizedPlanService: PersonalizedPlanService,
     private eventUtilityService: EventUtilityService,
     private global: Global,
-    private msalService: MsalService) {
+    private msalService: MsalService,
+    private route: ActivatedRoute) {
+    if (this.msalService.getUser()) {
+      this.route.data.map(data => data.cres)
+        .subscribe(response => {
+          if (response) {
+            this.global.setProfileData(response.oId, response.name);
+            this.getPersonalizedPlan();
+            this.showRemove = true;
+          }
+        });
+    }
 
     eventUtilityService.resourceUpdated$.subscribe(response => {
       if (response) {
@@ -149,11 +161,6 @@ export class ProfileComponent implements OnInit, AfterViewInit {
       this.userId = this.global.sharedUserId;
       this.userName = this.global.sharedUserName;
     }
-  }
-
-  ngAfterViewInit(): void {
-    this.getPersonalizedPlan();
-    this.showRemove = true;
   }
 
 }
