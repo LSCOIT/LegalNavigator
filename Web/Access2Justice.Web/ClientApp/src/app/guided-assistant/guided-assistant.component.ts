@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./guided-assistant.component.css']
 })
 export class GuidedAssistantComponent implements OnInit {
+  searchText: string;
   topicLength = 12;
   luisInput: ILuisInput = { Sentence: '', Location: '', TranslateFrom: '', TranslateTo: '', LuisTopScoringIntent: '' };
   guidedAssistantResults: any;
