@@ -24,7 +24,7 @@ export class SaveButtonComponent implements OnInit {
   profileResources: ProfileResources = { oId: '', resourceTags: [], type: '' };
   @Input() id: string;
   @Input() type: string;
-  @Input() resourceDetails: any = {};  
+  @Input() resourceDetails: any = {};
   planId: string;
   sessionKey: string = "bookmarkedResource";
   planSessionKey: string = "bookmarkPlanId";
@@ -39,6 +39,9 @@ export class SaveButtonComponent implements OnInit {
   topicIds: Array<string>;
   stepIds: Array<string>;
   @Input() addLinkClass: boolean = false;
+  planStepCount: number = 0;
+  planStepIds: Array<string>;
+  planTopicIds: Array<string>;
 
   constructor(
     private personalizedPlanService: PersonalizedPlanService,
@@ -48,7 +51,7 @@ export class SaveButtonComponent implements OnInit {
   }
 
   externalLogin() {
-    this.global.externalLogin();    
+    this.global.externalLogin();
   }
 
   savePlanResources(): void {
@@ -88,7 +91,8 @@ export class SaveButtonComponent implements OnInit {
   }
 
   savePlanToUserProfile(plan) {
-    let params = new HttpParams()      
+    this.planStepCount = 0;
+    let params = new HttpParams()
       .set("oid", this.global.userId)
       .set("type", "plan");
     this.personalizedPlanService.getUserSavedResources(params)
@@ -99,17 +103,21 @@ export class SaveButtonComponent implements OnInit {
           this.planId = response[0].id;
         }
         this.personalizedPlan = { id: this.planId, topics: this.planTopics, isShared: false };
-          const params = {
-            "id": this.personalizedPlan.id,
-            "topics": this.personalizedPlan.topics,
-            "isShared": this.personalizedPlan.isShared
-          }
-          this.personalizedPlanService.userPlan(params)
-            .subscribe(response => {
-              if (response) {
+        const params = {
+          "id": this.personalizedPlan.id,
+          "topics": this.personalizedPlan.topics,
+          "isShared": this.personalizedPlan.isShared
+        }
+        this.personalizedPlanService.userPlan(params)
+          .subscribe(response => {
+            if (response) {
+              if (this.planStepCount > 0) {
                 this.personalizedPlanService.showSuccess('Plan saved to profile');
+              } else {
+                this.personalizedPlanService.showWarning('Plan already saved to profile');
               }
-            });
+            }
+          });
       });
   }
 
@@ -118,9 +126,14 @@ export class SaveButtonComponent implements OnInit {
       if (property.topics) {
         this.planTopics = [];
         this.planTopic = { topicId: '', steps: this.personalizedPlanSteps };
-        this.topicIds = this.getTopicIds(plan);
-        this.BuildUserPlanWithExistingTopics(property.topics,plan);
+        this.planTopicIds = this.getTopicIds(plan);
+        this.BuildUserPlanWithExistingTopics(property.topics, plan);
         this.topicIds = this.getTopicIds(property.topics);
+        this.planTopicIds.forEach(topicId => {
+          if (!this.arrayUtilityService.checkObjectExistInArray(this.topicIds, topicId)) {
+            this.planStepCount++;
+          }
+        });
       }
     });
   }
@@ -132,7 +145,7 @@ export class SaveButtonComponent implements OnInit {
         this.stepIds = [];
         this.BuildPlanStepsForExistingTopicId(planTopic, topic);
       });
-      if (this.arrayUtilityService.checkObjectExistInArray(this.topicIds, topic.topicId)) {
+      if (this.arrayUtilityService.checkObjectExistInArray(this.planTopicIds, topic.topicId)) {
         this.topicTagsForMatchingTopicId(topic);
       } else {
         this.topicTagsForNonMatchingTopicId(topic);
@@ -168,14 +181,22 @@ export class SaveButtonComponent implements OnInit {
   }
 
   topicTagsForMatchingTopicId(topic) {
+    this.planStepIds = [];
+    this.planStepCount = 0;
     topic.steps.forEach(step => {
+      this.planStepIds.push(step.stepId);
       if (!this.arrayUtilityService.checkObjectExistInArray(this.stepIds, step.stepId)) {
         this.buildPlanSteps(step);
       }
     });
+    this.stepIds.forEach(stepId => {
+      if (!this.arrayUtilityService.checkObjectExistInArray(this.planStepIds, stepId)) {
+        this.planStepCount++;
+      }
+    });
   }
 
-  topicTagsForNonMatchingTopicId(topic){
+  topicTagsForNonMatchingTopicId(topic) {
     topic.steps.forEach(step => {
       this.buildPlanSteps(step);
     });
@@ -215,7 +236,7 @@ export class SaveButtonComponent implements OnInit {
       };
       this.personalizedPlanSteps.push(this.personalizedPlanStep);
     });
-      return this.personalizedPlanSteps;
+    return this.personalizedPlanSteps;
   }
 
   saveBookmarkedPlan() {
