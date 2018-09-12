@@ -22,9 +22,9 @@ namespace Access2Justice.Shared.A2JAuthor
                 parser.Parse(userAnswers));
         }
 
-        //public PersonalizedPlanSteps Map(A2JPersonalizedPlan personalizedPlan)
+        //public ??? Map(??? personalizedPlan)
         //{
-        //    // Todo:@Alaa I want to breakdown the a2j personalized plan to an intermediary dto object (other than PersonalizedPlanSteps)
+        //    // Todo:@Alaa I want to breakdown the a2j personalized plan to an intermediary dto object (???)
         //    // to make it easier for the personalized plan business logic to map to PersonalizedActionPlanViewModel.
         //    throw new NotImplementedException();
         //}
