@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef, HostListener } from '@angular/core';
 import { StaticResourceService } from '../../shared/static-resource.service';
 import { Navigation, Language, Location } from '../../shared/navigation/navigation';
 import { environment } from '../../../environments/environment';
@@ -8,9 +8,6 @@ import { Global } from '../../global';
   selector: 'app-language',
   templateUrl: './language.component.html',
   styleUrls: ['./language.component.css'],
-  host: {
-    '(document:click)': 'onClick($event)',
-  },
 })
 export class LanguageComponent implements OnInit, AfterViewInit {
   blobUrl: any = environment.blobUrl;
@@ -22,13 +19,9 @@ export class LanguageComponent implements OnInit, AfterViewInit {
   staticContentSubcription: any;
   showLanguage: boolean = false;
   setBgColor: boolean = false;
+  width: number;
 
-  constructor(
-    private staticResourceService: StaticResourceService,
-    private global: Global,
-    private elementRef: ElementRef
-  ) { }
-
+  @HostListener('document:click', ['$event'])
   onClick(event) {
     let translator = document.getElementById('google_translate_element');
     this.showLanguage = !this.showLanguage;
@@ -46,6 +39,13 @@ export class LanguageComponent implements OnInit, AfterViewInit {
     }
   }
 
+  constructor(
+    private staticResourceService: StaticResourceService,
+    private global: Global,
+    private elementRef: ElementRef
+  ) { }
+
+
   addAttributes() {
     let languageOptions = document.querySelectorAll('select.goog-te-combo')[0];
     languageOptions["classList"].add('form-control');
@@ -60,7 +60,6 @@ export class LanguageComponent implements OnInit, AfterViewInit {
   }
 
   getLanguagueNavigationContent(): void {
-    let homePageRequest = { name: this.name };
     if (this.staticResourceService.navigation && (this.staticResourceService.navigation.location[0].state == this.staticResourceService.getLocation())) {
         this.navigation = this.staticResourceService.navigation;
         this.filterLanguagueNavigationContent(this.staticResourceService.navigation);

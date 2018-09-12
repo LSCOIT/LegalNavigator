@@ -101,7 +101,7 @@ ul.web-hidden {
 }
 
 .bottom-menu>ul {
-  width: 300px;
+  width: 265px;
   margin: 15px auto;
   text-align: left;
   padding: 20px 0;
@@ -149,7 +149,7 @@ li.vertical-line {
   }
 
   .bottom-menu>ul {
-    margin: 15px 5%;
+    margin: 15px 15%;
   }
 }
 
