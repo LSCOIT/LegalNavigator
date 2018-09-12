@@ -13,4 +13,6 @@ Scenario: Save a resource topic given I've signed in and have not saved the same
   And I have not saved this resource topic before
   When I click the Save to profile button
   Then I see a confirmation "Resource saved to profile"
-  # And I can see the resource topic with "Divorce" listed in my profile
+  And I can see the resource topic with "Divorce" listed in my profile
+
+  # remove divorce topic

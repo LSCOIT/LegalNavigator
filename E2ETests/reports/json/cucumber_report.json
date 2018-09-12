@@ -36,7 +36,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 4495000000
+              "duration": 4149000000
             }
           },
           {
@@ -45,11 +45,11 @@
             "line": 10,
             "name": "I set the 'email' \"test-a2j@outlook.com\" and click Next button",
             "match": {
-              "location": "typeScript\\stepdefinitions\\login.steps.js:28"
+              "location": "typeScript\\stepdefinitions\\login.steps.js:27"
             },
             "result": {
               "status": "passed",
-              "duration": 2225000000
+              "duration": 2197000000
             }
           },
           {
@@ -58,11 +58,11 @@
             "line": 11,
             "name": "I set the 'password' \"testa2j1234\" and click Sign In button",
             "match": {
-              "location": "typeScript\\stepdefinitions\\login.steps.js:29"
+              "location": "typeScript\\stepdefinitions\\login.steps.js:28"
             },
             "result": {
               "status": "passed",
-              "duration": 4190000000
+              "duration": 4377000000
             }
           },
           {
@@ -71,11 +71,11 @@
             "line": 12,
             "name": "I naviagte to the resource page for \"Divorce\" at \"https://access2justicewebtesting.azurewebsites.net/topics/d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef\"",
             "match": {
-              "location": "typeScript\\stepdefinitions\\saveToProfile.steps.js:19"
+              "location": "typeScript\\stepdefinitions\\saveToProfile.steps.js:20"
             },
             "result": {
               "status": "passed",
-              "duration": 2377000000
+              "duration": 2422000000
             }
           },
           {
@@ -84,11 +84,10 @@
             "line": 13,
             "name": "I have not saved this resource topic before",
             "match": {
-              "location": "typeScript\\stepdefinitions\\saveToProfile.steps.js:25"
+              "location": "typeScript\\stepdefinitions\\saveToProfile.steps.js:26"
             },
             "result": {
-              "status": "passed",
-              "duration": 1000000
+              "status": "passed"
             }
           },
           {
@@ -97,11 +96,11 @@
             "line": 14,
             "name": "I click the Save to profile button",
             "match": {
-              "location": "typeScript\\stepdefinitions\\saveToProfile.steps.js:29"
+              "location": "typeScript\\stepdefinitions\\saveToProfile.steps.js:30"
             },
             "result": {
               "status": "passed",
-              "duration": 5117000000
+              "duration": 4086000000
             }
           },
           {
@@ -110,11 +109,24 @@
             "line": 15,
             "name": "I see a confirmation \"Resource saved to profile\"",
             "match": {
-              "location": "typeScript\\stepdefinitions\\saveToProfile.steps.js:33"
+              "location": "typeScript\\stepdefinitions\\saveToProfile.steps.js:35"
             },
             "result": {
               "status": "passed",
-              "duration": 5001000000
+              "duration": 1000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 16,
+            "name": "I can see the resource topic with \"Divorce\" listed in my profile",
+            "match": {
+              "location": "typeScript\\stepdefinitions\\saveToProfile.steps.js:40"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5453000000
             }
           },
           {

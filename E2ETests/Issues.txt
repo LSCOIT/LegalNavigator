@@ -1,6 +1,7 @@
 Cucumber HTML report doesn't launch on its own
 
-1. change url
-2. add page object
-3. add feature
+Save to profile feature:
+Repetitive login step in save to profile feature
 
+Login feature:
+more than one element found for locator By(css selector, .account-menu) - the first result will be used

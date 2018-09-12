@@ -19,7 +19,7 @@ Given('I am on the Access2Justice website and I clicked the login tab',
         await login.loginTab.click();
     }
 );
-'I set the {string} {string} and click Next button'
+
 When('I set the {string} {string} and click Next button', 
     async (type: string, email: string) => await login.enterData("email", email)
 ); 
