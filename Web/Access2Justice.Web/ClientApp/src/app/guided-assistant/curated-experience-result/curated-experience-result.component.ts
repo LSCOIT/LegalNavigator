@@ -18,7 +18,6 @@ export class CuratedExperienceResultComponent implements OnInit {
 
   saveForLater() {
     this.toastr.success("Topics added. You can view them later once you've completed the guided assistant.");
-    console.log(document.getElementsByClassName("toastr-container")[0]);
   }
 
   filterIntent() {

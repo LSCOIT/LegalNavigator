@@ -10,6 +10,7 @@ import { Tree } from '@angular/router/src/utils/tree';
 import { IResourceFilter } from '../shared/search/search-results/search-results.model';
 import { Global } from '../global';
 import { ToastrModule } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 describe('component:profile', () => {
   let component: ProfileComponent;
@@ -115,7 +116,8 @@ describe('component:profile', () => {
         { provide: PersonalizedPlanService, useValue: mockPersonalizedPlanService }, 
         EventUtilityService, 
         ArrayUtilityService, 
-        { provide: Global, useValue: mockGlobal }
+        { provide: Global, useValue: mockGlobal },
+        NgxSpinnerService
       ]
     }).compileComponents();
 

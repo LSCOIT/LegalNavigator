@@ -39,11 +39,6 @@ export class LanguageComponent implements OnInit, AfterViewInit {
     }
   }
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event) {
-    this.width = event.target.innerWidth;
-  }
-
   constructor(
     private staticResourceService: StaticResourceService,
     private global: Global,
@@ -55,15 +50,6 @@ export class LanguageComponent implements OnInit, AfterViewInit {
     let languageOptions = document.querySelectorAll('select.goog-te-combo')[0];
     languageOptions["classList"].add('form-control');
     languageOptions["size"] = 15;
-
-    //let translator = document.getElementById('google_translate_element');
-    //translator.setAttribute("style", "display: none; position: absolute; top: 0; background: #fff; width: 225px; height: 330px; padding: 10px 20px 10px 35px; box-shadow: 0 6px 12px 3px #ddd");
-
-    //if (this.width >= 768) {
-    //  translator.style.left = '68px';
-    //} else {
-    //  translator.style.left = '0';
-    //}
   }
 
   filterLanguagueNavigationContent(navigation): void {

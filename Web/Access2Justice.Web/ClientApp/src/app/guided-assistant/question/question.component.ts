@@ -6,7 +6,6 @@ import { QuestionService } from './question.service';
 import { Question } from './question';
 import { Answer } from './answers';
 import { ActivatedRoute } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-question',
@@ -26,7 +25,6 @@ export class QuestionComponent implements OnInit {
     private questionService: QuestionService,
     private activeRoute: ActivatedRoute,
     private router: Router,
-    private spinner: NgxSpinnerService
   ) { }
 
   sendQuestionsRemaining(questionsRemaining) {

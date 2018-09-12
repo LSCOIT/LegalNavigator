@@ -17,6 +17,7 @@ import { TopicsComponent } from './topics-resources/topic/topics.component';
 import { TopicsResourcesComponent } from './topics-resources/topics-resources.component';
 import { MapService } from './shared/map/map.service';
 import { of } from 'rxjs/observable/of';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -82,7 +83,8 @@ describe('AppComponent', () => {
       providers: [
         { provide: StaticResourceService, useValue: mockStaticResourceService },
         { provide: Global, useValue: mockGlobal },
-        { provide: MapService, useValue: mockMapService }
+        { provide: MapService, useValue: mockMapService },
+        NgxSpinnerService
       ],
       schemas: [
         NO_ERRORS_SCHEMA,
