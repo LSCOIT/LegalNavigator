@@ -1,5 +1,6 @@
 ﻿using Access2Justice.Shared.Interfaces.A2JAuthor;
 using Access2Justice.Shared.Models;
+using Newtonsoft.Json.Linq;
 using System;
 
 namespace Access2Justice.Shared.A2JAuthor
@@ -15,7 +16,7 @@ namespace Access2Justice.Shared.A2JAuthor
             this.compiler = compiler;
         }
 
-        public A2JPersonalizedPlan Build(A2JPersonalizedPlan personalizedPlan, CuratedExperienceAnswers userAnswers)
+        public A2JPersonalizedPlan Build(JObject personalizedPlan, CuratedExperienceAnswers userAnswers)
         {
             return compiler.Compile(
                 personalizedPlan, 

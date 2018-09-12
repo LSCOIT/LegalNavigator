@@ -27,7 +27,7 @@ namespace Access2Justice.Api.BusinessLogic
         public CuratedExperience ConvertA2JAuthorToCuratedExperience(JObject a2jSchema)
         {
             var cx = new CuratedExperience();
-            var a2jProperties = (a2jSchema).Properties();
+            var a2jProperties = a2jSchema.Properties();
 
             cx.CuratedExperienceId = Guid.NewGuid();
             cx.Title = a2jProperties.GetValue("title");
@@ -66,17 +66,6 @@ namespace Access2Justice.Api.BusinessLogic
             // Todo:@Alaa remove - we won't necessary have the id, this is good for testing but we need to implement some other way to get the
             // personalized plan from the db. Maybe just ask the user to provide it in a param?
             return await dbService.GetItemAsync<A2JPersonalizedPlan>("432e7473-02df-4807-8d45-39ed821c5eb1", dbSettings.A2JAuthorTemplatesCollectionId);
-        }
-
-        // Todo:@Alaa remove after done testing
-        public A2JPersonalizedPlan MapA2JPersonalizedPlanToAccess2JusticeActionPlan(A2JPersonalizedPlan a2JPersonalizedPlan,
-            CuratedExperienceAnswers userAnswers)
-        {
-            var planInScopeVarsValues = personalizedPlanEngine.Build(a2JPersonalizedPlan, userAnswers);
-
-             // Todo:@Alaa remove after done testing
-
-            return planInScopeVarsValues;
         }
 
         private Resource MapResourceProperties(IEnumerable<JProperty> a2jProperties, Guid curatedExperienceId)

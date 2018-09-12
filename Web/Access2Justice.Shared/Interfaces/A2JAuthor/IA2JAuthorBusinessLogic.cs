@@ -8,6 +8,5 @@ namespace Access2Justice.Shared.Interfaces.A2JAuthor
     {
         CuratedExperience ConvertA2JAuthorToCuratedExperience(JObject a2jSchema);
         Task<A2JPersonalizedPlan> GetA2JPersonalizedPlanAsync();
-        A2JPersonalizedPlan MapA2JPersonalizedPlanToAccess2JusticeActionPlan(A2JPersonalizedPlan a2JPersonalizedPlan, CuratedExperienceAnswers userAnswers);
     }
 }

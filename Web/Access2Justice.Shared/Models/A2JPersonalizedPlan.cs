@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿// Todo:@Alaa remove! (seems like strong-typing this object is more the code more complicated than dealing with it as a dynmaic object, I'll use the dynamic approach.)
+
+using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace Access2Justice.Shared.Models

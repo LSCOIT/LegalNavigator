@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Globalization;
 using Access2Justice.Shared.Interfaces.A2JAuthor;
+using Newtonsoft.Json.Linq;
 
 namespace Access2Justice.Api.BusinessLogic
 {
@@ -35,13 +36,13 @@ namespace Access2Justice.Api.BusinessLogic
         {
             // Todo:@Alaa check if there is a built plan and return that if one exists
 
-            var a2jPersonalizedPlan = await backendDatabaseService.GetItemAsync<A2JPersonalizedPlan>(curatedExperience.A2jPersonalizedPlanId.ToString(),
-                cosmosDbSettings.A2JAuthorTemplatesCollectionId);
+            var a2jPersonalizedPlan = await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.A2JAuthorTemplatesCollectionId, "id", 
+                curatedExperience.A2jPersonalizedPlanId.ToString());
 
             var userAnswers = await backendDatabaseService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(),
                 cosmosDbSettings.CuratedExperienceAnswersCollectionId);
 
-            var personalizedPlanInScope = personalizedPlanEngine.Build(a2jPersonalizedPlan, userAnswers);
+            var personalizedPlanInScope = personalizedPlanEngine.Build((JObject)a2jPersonalizedPlan[0], userAnswers);
 
             var actionPlan = new PersonalizedActionPlanViewModel();
 
