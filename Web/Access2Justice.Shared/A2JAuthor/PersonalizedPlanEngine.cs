@@ -1,5 +1,6 @@
 ﻿using Access2Justice.Shared.Interfaces.A2JAuthor;
 using Access2Justice.Shared.Models;
+using System;
 
 namespace Access2Justice.Shared.A2JAuthor
 {
@@ -23,10 +24,9 @@ namespace Access2Justice.Shared.A2JAuthor
 
         public PersonalizedPlanSteps Map(A2JPersonalizedPlan personalizedPlan)
         {
-
-
-            var breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
-            return null;
+            // Todo:@Alaa I want to breakdown the a2j personalized plan to an intermediary dto object (other than PersonalizedPlanSteps)
+            // to make it easier for the personalized plan business logic to map to PersonalizedActionPlanViewModel.
+            throw new NotImplementedException();
         }
     }
 }

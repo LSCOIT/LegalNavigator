@@ -31,9 +31,28 @@ namespace Access2Justice.Api.BusinessLogic
             this.personalizedPlanEngine = personalizedPlanEngine;
         }
 
-        public Task<PersonalizedActionPlanViewModel> GeneratePersonalizedPlanAsync(CuratedExperience curatedExperience, Guid answersDocId)
+        public async Task<PersonalizedActionPlanViewModel> GeneratePersonalizedPlanAsync(CuratedExperience curatedExperience, Guid answersDocId)
         {
-            throw new NotImplementedException();
+            // Todo:@Alaa check if there is a built plan and return that if one exists
+
+            var a2jPersonalizedPlan = await backendDatabaseService.GetItemAsync<A2JPersonalizedPlan>(curatedExperience.A2jPersonalizedPlanId.ToString(),
+                cosmosDbSettings.A2JAuthorTemplatesCollectionId);
+
+            var userAnswers = await backendDatabaseService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(),
+                cosmosDbSettings.CuratedExperienceAnswersCollectionId);
+
+            var personalizedPlanInScope = personalizedPlanEngine.Build(a2jPersonalizedPlan, userAnswers);
+
+            var actionPlan = new PersonalizedActionPlanViewModel();
+
+            // map the 
+            actionPlan.PersonalizedPlanId = new Guid();
+            actionPlan.Topics.Add(new PlanTopic
+            {
+                TopicId = new Guid()
+            });
+
+            return actionPlan;
         }
         public List<PersonalizedPlanStep> GetPlanSteps(Guid topic, List<PersonalizedPlanStep> personalizedPlanSteps)
         {
