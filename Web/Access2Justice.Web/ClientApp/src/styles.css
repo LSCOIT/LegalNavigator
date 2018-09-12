@@ -96,6 +96,10 @@ textarea {
   margin: 0;
 }
 
+#google_translate_element {
+  left: 0 !important;
+}
+
 /*Login Dropdown*/
 .nav .open > a, .nav .open > a:focus, .nav .open > a:hover {
   background-color: #fff;
@@ -297,6 +301,10 @@ a.carousel-control .icon-next {
     margin-top: 1px;
     border: none;
     border-radius: 0;
+  }
+
+  #google_translate_element {
+    left: 5.5% !important;
   }
 
   .carousel.slide {
