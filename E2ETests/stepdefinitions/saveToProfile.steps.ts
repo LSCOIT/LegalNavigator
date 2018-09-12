@@ -51,7 +51,7 @@ Then('I can see the resource topic with {string} listed in my profile',
         await $$(".dropdown-item").get(0).click();
         expect(browser.getCurrentUrl()).to.eventually.equal('https://access2justicewebtesting.azurewebsites.net/profile');
         
-        await $$(".nav-link").get(1).click();
+        await $$(".nav-link").get(1).click( );
         await browser.sleep(5000);
         //var elem = await $$("h4").filter(elem => elem.innerHTML === 'Divorce').count();
         
@@ -61,5 +61,13 @@ Then('I can see the resource topic with {string} listed in my profile',
             });
         }).count();
         expect(count).to.equal(1);
+    }
+);
+
+Then('I delete the resource',
+    async () => {
+        await $$(".btn-group").get(3).click();  // will break if there is more than 1 saved resource
+        await browser.wait($("#dropdown-disabled-item").isDisplayed());
+        await $("a app-remove-button").click();
     }
 );

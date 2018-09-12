@@ -36,7 +36,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 4149000000
+              "duration": 3815000000
             }
           },
           {
@@ -49,7 +49,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 2197000000
+              "duration": 2207000000
             }
           },
           {
@@ -62,58 +62,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 4377000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 12,
-            "name": "I naviagte to the resource page for \"Divorce\" at \"https://access2justicewebtesting.azurewebsites.net/topics/d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef\"",
-            "match": {
-              "location": "typeScript\\stepdefinitions\\saveToProfile.steps.js:20"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 2422000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 13,
-            "name": "I have not saved this resource topic before",
-            "match": {
-              "location": "typeScript\\stepdefinitions\\saveToProfile.steps.js:26"
-            },
-            "result": {
-              "status": "passed"
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "When ",
-            "line": 14,
-            "name": "I click the Save to profile button",
-            "match": {
-              "location": "typeScript\\stepdefinitions\\saveToProfile.steps.js:30"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 4086000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Then ",
-            "line": 15,
-            "name": "I see a confirmation \"Resource saved to profile\"",
-            "match": {
-              "location": "typeScript\\stepdefinitions\\saveToProfile.steps.js:35"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 1000000
+              "duration": 4143000000
             }
           },
           {
@@ -126,7 +75,20 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5453000000
+              "duration": 5549000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 17,
+            "name": "I delete the resource",
+            "match": {
+              "location": "typeScript\\stepdefinitions\\saveToProfile.steps.js:55"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5196000000
             }
           },
           {

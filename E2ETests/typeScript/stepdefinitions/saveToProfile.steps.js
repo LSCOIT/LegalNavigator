@@ -50,15 +50,11 @@ cucumber_1.Then('I can see the resource topic with {string} listed in my profile
             return text === 'Divorce';
         });
     }).count();
-    console.log("count is : " + count);
     expect(count).to.equal(1);
-    // let arr = document.getElementsByClassName("media-heading");
-    // for(let i; i <= arr.length; i++) { 
-    //     if(arr.item(i).innerHTML === "Divorce") {
-    //       console.log("heyyyyy");
-    //       return true;
-    //     } 
-    // } 
-    //expect(document.querySelectorAll('.media-heading')).should.contain.text(['Divorce']);
-    //expect(element(by.cssContainingText('.media-heading', 'Divorce')).isPresent()).to.eventually.equal(true);
+}));
+cucumber_1.Then('I delete the resource', () => __awaiter(this, void 0, void 0, function* () {
+    yield protractor_1.$$(".btn-group").get(3).click(); // will break if there is more than 1 saved resource
+    yield protractor_1.browser.wait(protractor_1.$("#dropdown-disabled-item").isDisplayed());
+    yield protractor_1.browser.sleep(5000);
+    yield protractor_1.$("a app-remove-button").click();
 }));
