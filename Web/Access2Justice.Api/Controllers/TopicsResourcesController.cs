@@ -4,11 +4,13 @@ using System.Threading.Tasks;
 using Access2Justice.Api.ViewModels;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Access2Justice.Api.Controllers
 {
+    [Authorize]
     [Produces("application/json")]
     public class TopicsResourcesController : Controller
     {
