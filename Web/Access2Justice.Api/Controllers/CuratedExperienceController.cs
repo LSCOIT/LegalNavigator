@@ -1,17 +1,14 @@
 ﻿using Access2Justice.Api.Interfaces;
 using Access2Justice.Api.ViewModels;
+using Access2Justice.Shared.A2JAuthor;
 using Access2Justice.Shared.Extensions;
-using Access2Justice.Shared.Interfaces;
+using Access2Justice.Shared.Interfaces.A2JAuthor;
 using Access2Justice.Shared.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using Access2Justice.Shared.Interfaces.A2JAuthor;
-using Access2Justice.Shared.A2JAuthor;
 
 namespace Access2Justice.Api.Controllers
 {

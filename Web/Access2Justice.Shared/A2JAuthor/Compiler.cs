@@ -1,16 +1,14 @@
 ﻿using Access2Justice.Shared.Interfaces.A2JAuthor;
-using Access2Justice.Shared.Models;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Access2Justice.Shared.A2JAuthor
 {
     public class Compiler : ICompile
     {
-        public A2JPersonalizedPlan Compile(JObject personalizedPlan, Dictionary<string, string> evaluatedUserAnswers)
+        public JObject Compile(JObject personalizedPlan, Dictionary<string, string> evaluatedUserAnswers)
         {
-            var stepsInScope = new A2JPersonalizedPlan();
+            var stepsInScope = new JObject();
 
             //if (evaluatedUserAnswers.Any())
             //{

@@ -61,13 +61,6 @@ namespace Access2Justice.Api.BusinessLogic
             return cx;
         }
    
-        public async Task<A2JPersonalizedPlan> GetA2JPersonalizedPlanAsync()
-        {
-            // Todo:@Alaa remove - we won't necessary have the id, this is good for testing but we need to implement some other way to get the
-            // personalized plan from the db. Maybe just ask the user to provide it in a param?
-            return await dbService.GetItemAsync<A2JPersonalizedPlan>("432e7473-02df-4807-8d45-39ed821c5eb1", dbSettings.A2JAuthorTemplatesCollectionId);
-        }
-
         private Resource MapResourceProperties(IEnumerable<JProperty> a2jProperties, Guid curatedExperienceId)
         {
             return new Resource
