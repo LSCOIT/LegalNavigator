@@ -4,9 +4,7 @@
     <div class="col-md-9 col-sm-12 col-xs-12 topic-list">
       <div class="media">
         <div class="media-left">
-          <a href="#">
-            <img class="media-object" [src]='this.icon' alt="...">
-          </a>
+          <img *ngIf="icon"class="media-object" [src]="icon" [alt]="breadcrumb.activeTopicName + ' icon'">
         </div>
         <div class="media-body">
           <h4 class="media-heading text-capitalize">More Topics Related to {{breadcrumb.activeTopicName}}</h4>
