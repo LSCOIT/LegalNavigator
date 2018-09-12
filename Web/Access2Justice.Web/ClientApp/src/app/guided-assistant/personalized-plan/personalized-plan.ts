@@ -16,6 +16,11 @@ export interface ProfileResources {
   type: string;
 }
 
+export interface UserPlan {
+  oId: string;
+  plan: PersonalizedPlan;
+}
+
 export interface PersonalizedPlan {
   id: string;
   topics: Array<PlanTopic>;

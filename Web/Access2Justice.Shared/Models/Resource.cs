@@ -20,7 +20,11 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "Description is a required field.")]
+        [Required(ErrorMessage = "Type is a required field.")]
+        [JsonProperty(PropertyName = "type")]
+        public string Type { get; set; }
+
+        //[Required(ErrorMessage = "Description is a required field.")]
         [JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
 
@@ -34,8 +38,8 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "url")]
         public string Urls { get; set; }
 
-        [JsonProperty(PropertyName = "referenceTags")]
-        public IEnumerable<ReferenceTag> ReferenceTags { get; set; }
+        [JsonProperty(PropertyName = "topicTags")]
+        public IEnumerable<TopicTag> TopicTags { get; set; }
 
         //[EnsureOneElementAttribute(ErrorMessage = "At least one location is required")]
         [JsonProperty(PropertyName = "location")]
@@ -57,8 +61,7 @@ namespace Access2Justice.Shared.Models
         public DateTime? ModifiedTimeStamp { get; set; } = DateTime.UtcNow;
 
         public void Validate()
-        {
-            
+        {            
             ValidationContext context = new ValidationContext(this, serviceProvider: null, items: null);
             List<ValidationResult> results = new List<ValidationResult>();
             bool isValid = Validator.TryValidateObject(this, context, results, true);
@@ -78,10 +81,10 @@ namespace Access2Justice.Shared.Models
         }
     }
 
-    public class ReferenceTag
+    public class TopicTag
     {
         [JsonProperty(PropertyName = "id")]
-        public dynamic ReferenceTags { get; set; }
+        public dynamic TopicTags { get; set; }
     }
 
     public class ActionPlan : Resource
@@ -118,47 +121,32 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "headline1")]
         public string HeadLine1 { get; set; }
 
+        [JsonProperty(PropertyName = "content1")]
+        public string Content1 { get; set; }
+
         [JsonProperty(PropertyName = "headline2")]
         public string HeadLine2 { get; set; }
 
-        [JsonProperty(PropertyName = "headline3")]
-        public string HeadLine3 { get; set; }        
+        [JsonProperty(PropertyName = "content2")]
+        public string Content2 { get; set; }
     }
 
     public class Video: Resource
     {
         [JsonProperty(PropertyName = "overview")]
         public string Overview { get; set; }
-
-        [JsonProperty(PropertyName = "isRecommended")]
-        public string IsRecommended { get; set; }
-
-        [JsonProperty(PropertyName = "videoUrl")]
-        public string VideoUrls { get; set; }
     }
 
     public class Organization: Resource
     {
-        [JsonProperty(PropertyName = "overview")]
-        public string Overview { get; set; }
-
-        [JsonProperty(PropertyName = "subService")]
-        public string SubService { get; set; }
-
-        [JsonProperty(PropertyName = "street")]
-        public string Street { get; set; }
-
-        [JsonProperty(PropertyName = "city")]
-        public string City { get; set; }
-
-        [JsonProperty(PropertyName = "state")]
-        public string State { get; set; }
-
-        [JsonProperty(PropertyName = "zipCode")]
-        public string ZipCode { get; set; }
+        [JsonProperty(PropertyName = "address")]
+        public string Address { get; set; }
 
         [JsonProperty(PropertyName = "telephone")]
         public string Telephone { get; set; }
+
+        [JsonProperty(PropertyName = "overview")]
+        public string Overview { get; set; }
 
         [JsonProperty(PropertyName = "eligibilityInformation")]
         public string EligibilityInformation { get; set; }
@@ -178,12 +166,11 @@ namespace Access2Justice.Shared.Models
 
     public class Form: Resource
     {
-        [Required(ErrorMessage = "Overview is a required field.")]
         [JsonProperty(PropertyName = "overview")]
         public string Overview { get; set; }
 
         [JsonProperty(PropertyName = "fullDescription")]
-        public string FullDescription { get; set; }                
+        public string FullDescription { get; set; }
     }
 
     [AttributeUsage(AttributeTargets.Property)]

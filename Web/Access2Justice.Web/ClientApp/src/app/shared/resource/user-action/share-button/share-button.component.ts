@@ -38,7 +38,7 @@ export class ShareButtonComponent implements OnInit {
     private httpClient: HttpClient,
     private shareService: ShareService,
     private activeRoute: ActivatedRoute,
-    private global: Global) {
+    public global: Global) {
     let profileData = sessionStorage.getItem("profileData");
     if (profileData != undefined) {
       profileData = JSON.parse(profileData);

@@ -34,11 +34,11 @@ namespace Access2Justice.Api.BusinessLogic
             dynamic userResourcesDBData = null;
             if (type == "resources" && userProfile?.SavedResourcesId != null && userProfile?.SavedResourcesId != Guid.Empty)
             {
-                userResourcesDBData = await dbClient.FindItemsWhereAsync(dbSettings.UserSavedResourcesCollectionId, Constants.Id, Convert.ToString(userProfile.SavedResourcesId, CultureInfo.InvariantCulture));
+                userResourcesDBData = await dbClient.FindItemsWhereAsync(dbSettings.UserResourceCollectionId, Constants.Id, Convert.ToString(userProfile.SavedResourcesId, CultureInfo.InvariantCulture));
             }
             else if (type == "plan" && userProfile?.PersonalizedActionPlanId != null && userProfile?.PersonalizedActionPlanId != Guid.Empty)
             {
-                userResourcesDBData = await dbClient.FindItemsWhereAsync(dbSettings.PersonalizedActionPlanCollectionId, Constants.Id, Convert.ToString(userProfile.PersonalizedActionPlanId, CultureInfo.InvariantCulture));
+                userResourcesDBData = await dbClient.FindItemsWhereAsync(dbSettings.UserResourceCollectionId, Constants.Id, Convert.ToString(userProfile.PersonalizedActionPlanId, CultureInfo.InvariantCulture));
             }
             return userResourcesDBData;
         }
@@ -62,7 +62,7 @@ namespace Access2Justice.Api.BusinessLogic
                 userProfile.PersonalizedActionPlanId = user.PersonalizedActionPlanId;
                 userProfile.CuratedExperienceAnswersId = user.CuratedExperienceAnswersId;
                 userProfile.SavedResourcesId = user.SavedResourcesId;
-                userProfile.SharedResource = user.SharedResource;
+                userProfile.SharedResourceId = user.SharedResourceId;
             }
             return userProfile;
         }
@@ -89,7 +89,7 @@ namespace Access2Justice.Api.BusinessLogic
             var userProfile = await GetUserProfileDataAsync(oId);
             if (userProfile?.SavedResourcesId != null && userProfile?.SavedResourcesId != Guid.Empty)
             {
-                userResourcesDBData = await dbClient.FindItemsWhereAsync(dbSettings.UserSavedResourcesCollectionId, Constants.Id, Convert.ToString(userProfile.SavedResourcesId, CultureInfo.InvariantCulture));
+                userResourcesDBData = await dbClient.FindItemsWhereAsync(dbSettings.UserResourceCollectionId, Constants.Id, Convert.ToString(userProfile.SavedResourcesId, CultureInfo.InvariantCulture));
             }
             if (userResourcesDBData == null || userResourcesDBData?.Count == 0)
             {
@@ -113,7 +113,7 @@ namespace Access2Justice.Api.BusinessLogic
                 Resources = BuildResources(userResources)
             };
             userDocument = JsonConvert.DeserializeObject<UserSavedResources>(JsonConvert.SerializeObject(userDocument));
-            return await dbService.CreateItemAsync((userDocument), dbSettings.UserSavedResourcesCollectionId);
+            return await dbService.CreateItemAsync((userDocument), dbSettings.UserResourceCollectionId);
         }
 
         public List<SavedResource> BuildResources(ProfileResources userResources)
@@ -139,7 +139,7 @@ namespace Access2Justice.Api.BusinessLogic
                 Resources = BuildResources(userResources)
             };
             userDocument = JsonConvert.DeserializeObject<UserSavedResources>(JsonConvert.SerializeObject(userDocument));
-            return await dbService.UpdateItemAsync(id.ToString(), userDocument, dbSettings.UserSavedResourcesCollectionId);
+            return await dbService.UpdateItemAsync(id.ToString(), userDocument, dbSettings.UserResourceCollectionId);
         }
     }
 }
