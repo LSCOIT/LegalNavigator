@@ -33,6 +33,7 @@ export class SearchComponent implements OnInit {
 
     this.searchService.search(this.luisInput)
       .subscribe(response => {
+        this.spinner.hide();
         if (response != undefined) {
           this.searchResults = response;          
           this.navigateDataService.setData(this.searchResults);          
@@ -41,7 +42,9 @@ export class SearchComponent implements OnInit {
               this.router.navigate(['/search'])
             );
         }
+      }, error => {
         this.spinner.hide();
+        this.router.navigate(['/error']);
       });
   }
 

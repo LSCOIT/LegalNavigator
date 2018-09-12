@@ -3,6 +3,7 @@ import { Global, UserStatus } from './global';
 import { StaticResourceService } from './shared/static-resource.service';
 import { MapService } from './shared/map/map.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +19,8 @@ export class AppComponent implements OnInit {
     private global: Global,
     private staticResourceService: StaticResourceService,
     private mapService: MapService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private router: Router
   )
   { }
 
@@ -53,10 +55,14 @@ export class AppComponent implements OnInit {
   setStaticContentData() {
     this.spinner.show();
     this.staticResourceService.getStaticContents()
-      .subscribe(response => {
-        this.staticContentResults = response;
-        this.global.setData(this.staticContentResults);
-        this.spinner.hide();
+      .subscribe(
+        response => {
+          this.spinner.hide();
+          this.staticContentResults = response;
+          this.global.setData(this.staticContentResults);
+      }, error => {
+          this.spinner.hide();
+          this.router.navigate(['/error']);
       });
   }
 

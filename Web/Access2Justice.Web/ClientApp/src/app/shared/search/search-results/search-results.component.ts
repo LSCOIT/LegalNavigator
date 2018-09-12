@@ -8,6 +8,7 @@ import { MapService } from '../../map/map.service';
 import { environment } from '../../../../environments/environment';
 import { PersonalizedPlanService } from '../../../guided-assistant/personalized-plan/personalized-plan.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-search-results',
@@ -58,7 +59,8 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     private mapService: MapService,
     private paginationService: PaginationService,
     private personalizedPlanService: PersonalizedPlanService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private router: Router
   ) { }
 
   bindData() {
@@ -298,10 +300,13 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     this.spinner.show();
     this.paginationService.searchByOffset(this.searchText, offset)
       .subscribe(response => {
+        this.spinner.hide();
         if (response != undefined) {
           this.searchResults = response;
         }
-      this.spinner.hide();
+      }, error => {
+        this.spinner.hide();
+        this.router.navigate(['/error']);
       });
   }
 
