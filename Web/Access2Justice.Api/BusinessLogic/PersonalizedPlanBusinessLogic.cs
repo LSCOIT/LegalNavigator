@@ -1,9 +1,11 @@
 ﻿using Access2Justice.Api.Interfaces;
 using Access2Justice.Api.ViewModels;
+using Access2Justice.Shared.Extensions;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Interfaces.A2JAuthor;
 using Access2Justice.Shared.Models;
 using Access2Justice.Shared.Utilities;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -41,19 +43,32 @@ namespace Access2Justice.Api.BusinessLogic
             var userAnswers = await backendDatabaseService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(),
                 cosmosDbSettings.CuratedExperienceAnswersCollectionId);
 
-            var personalizedPlanInScope = personalizedPlanEngine.Build((JObject)a2jPersonalizedPlan[0], userAnswers);
+            var personalizedPlanStepsInScope = personalizedPlanEngine.Build((JObject)a2jPersonalizedPlan[0], userAnswers);
 
-            var actionPlan = new PersonalizedActionPlanViewModel();
-
-            // map the 
-            actionPlan.PersonalizedPlanId = new Guid();
-            actionPlan.Topics.Add(new PlanTopic
-            {
-                TopicId = new Guid()
-            });
-
-            return actionPlan;
+            return MapA2JPersonalizedPlanToActionPlanViewModel(personalizedPlanStepsInScope);
         }
+
+
+        private PersonalizedActionPlanViewModel MapA2JPersonalizedPlanToActionPlanViewModel(List<JToken> personalizedPlanStepsInScope)
+        {
+            foreach (var step in personalizedPlanStepsInScope)
+            {
+                var root = step.GetArrayValue("children");
+
+                var child = step.GetValue("children");
+                var ser = JsonConvert.SerializeObject(child);
+                var des = JsonConvert.DeserializeObject(child);
+
+                var stepo = step.GetValueAsArray("children");
+
+                var desser = JsonConvert.DeserializeObject(ser);
+
+                var breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
+            }
+
+            return null;
+        }
+
         public List<PersonalizedPlanStep> GetPlanSteps(Guid topic, List<PersonalizedPlanStep> personalizedPlanSteps)
         {
             List<PersonalizedPlanStep> PlanSteps = new List<PersonalizedPlanStep>();

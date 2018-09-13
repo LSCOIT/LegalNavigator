@@ -12,16 +12,11 @@ namespace Access2Justice.Shared.A2JAuthor
         {
             var stepsInScope = new List<JToken>();
 
-            var root = ((JObject)personalizedPlan
+            var root = personalizedPlan
                 .Properties()
-                .GetArrayValue("rootNode").FirstOrDefault())
-                .Properties();
+                .GetArrayValue("rootNode").FirstOrDefault();
 
-            var childrenRoot = root.GetArrayValue("children").ToList();
-
-            foreach (var children in childrenRoot)
-            {
-                foreach (var child in children)
+                foreach (var child in root.GetValueAsArray("children"))
                 {
                     var states = child.GetArrayValue("state");
                     foreach (var state in states)
@@ -35,7 +30,6 @@ namespace Access2Justice.Shared.A2JAuthor
                         }
                     }
                 }
-            }
 
             return stepsInScope;
         }

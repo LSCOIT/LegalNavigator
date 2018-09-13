@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,11 @@ namespace Access2Justice.Shared.Extensions
         public static string GetValue(this JToken jToken, string propertyName)
         {
             return ((JObject)jToken).Properties().GetValue(propertyName);
+        }
+
+        public static JArray GetValueAsArray(this JToken jToken, string propertyName)
+        {
+            return (JArray)JsonConvert.DeserializeObject(jToken.GetValue(propertyName));
         }
 
         public static IEnumerable<JToken> GetArrayValue(this IEnumerable<JProperty> jProperties, string propertyName)
