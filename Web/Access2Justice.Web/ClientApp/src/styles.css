@@ -74,6 +74,11 @@ textarea {
   resize: none;
 }
 
+.MicrosoftMap .as_container_search {
+  width: 80% !important;
+  margin: 0 5%;
+}
+
 /* Language Dropdown */
 .dropdown-icon {
   width: 10px;
@@ -98,6 +103,18 @@ textarea {
 
 #google_translate_element {
   left: 0 !important;
+}
+
+.static-img-container {
+  border-bottom: 1.5px solid #0D3FBB;
+}
+
+.static-img {
+  display: inline-block;
+  width: 15%;
+  margin-bottom: 20px;
+  margin-right: 20px;
+  min-width: 120px;
 }
 
 /*Login Dropdown*/
@@ -307,6 +324,15 @@ a.carousel-control .icon-next {
     left: 5.5% !important;
   }
 
+  .MicrosoftMap .as_container_search {
+    margin: 0 2.5% !important;
+  }
+
+  .static-img {
+    margin-bottom: 40px;
+    margin-right: 40px;
+  }
+
   .carousel.slide {
     height: 350px;
   }
@@ -363,5 +389,10 @@ a.carousel-control .icon-next {
 
   .container {
     max-width: 1500px;
+  }
+
+  .MicrosoftMap .as_container_search {
+    max-width: 475px !important;
+    margin: 0;
   }
 }
