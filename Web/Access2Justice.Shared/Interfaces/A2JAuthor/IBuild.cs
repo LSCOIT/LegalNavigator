@@ -1,11 +1,11 @@
 ﻿using Access2Justice.Shared.Models;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 
 namespace Access2Justice.Shared.Interfaces.A2JAuthor
 {
     public interface IPersonalizedPlanEngine
     {
-        JObject Build(JObject personalizedPlan, CuratedExperienceAnswers userAnswers);
-        //??? Map(??? personalizedPlan);
+        List<JToken> Build(JObject personalizedPlan, CuratedExperienceAnswers userAnswers);
     }
 }

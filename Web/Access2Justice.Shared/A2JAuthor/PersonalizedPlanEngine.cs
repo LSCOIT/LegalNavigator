@@ -1,6 +1,7 @@
 ﻿using Access2Justice.Shared.Interfaces.A2JAuthor;
 using Access2Justice.Shared.Models;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 
 namespace Access2Justice.Shared.A2JAuthor
 {
@@ -15,18 +16,9 @@ namespace Access2Justice.Shared.A2JAuthor
             this.compiler = compiler;
         }
 
-        public JObject Build(JObject personalizedPlan, CuratedExperienceAnswers userAnswers)
+        public List<JToken> Build(JObject personalizedPlan, CuratedExperienceAnswers userAnswers)
         {
-            return compiler.Compile(
-                personalizedPlan, 
-                parser.Parse(userAnswers));
+            return compiler.Compile(personalizedPlan, parser.Parse(userAnswers));
         }
-
-        //public ??? Map(??? personalizedPlan)
-        //{
-        //    // Todo:@Alaa I want to breakdown the a2j personalized plan to an intermediary dto object (???)
-        //    // to make it easier for the personalized plan business logic to map to PersonalizedActionPlanViewModel.
-        //    throw new NotImplementedException();
-        //}
     }
 }

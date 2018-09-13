@@ -12,9 +12,19 @@ namespace Access2Justice.Shared.Extensions
             return jProperties.Where(x => x.Name == propertyName).FirstOrDefault()?.Value.ToString();
         }
 
+        public static string GetValue(this JToken jToken, string propertyName)
+        {
+            return ((JObject)jToken).Properties().GetValue(propertyName);
+        }
+
         public static IEnumerable<JToken> GetArrayValue(this IEnumerable<JProperty> jProperties, string propertyName)
         {
             return jProperties.Where(x => x.Name == propertyName).FirstOrDefault()?.ToList();
+        }
+
+        public static IEnumerable<JToken> GetArrayValue(this JToken jToken, string propertyName)
+        {
+            return ((JObject)jToken).Properties().GetArrayValue(propertyName);
         }
 
         public static DateTime? GetDateOrNull(this IEnumerable<JProperty> jProperties, string propertyName)

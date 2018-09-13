@@ -5,6 +5,6 @@ namespace Access2Justice.Shared.Interfaces.A2JAuthor
 {
     public interface ICompile
     {
-        JObject Compile(JObject personalizedPlan, Dictionary<string, string> evaluatedUserAnswers);
+        List<JToken> Compile(JObject personalizedPlan, Dictionary<string, string> evaluatedUserAnswers);
     }
 }
