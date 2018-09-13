@@ -51,10 +51,9 @@ Then('I can see the resource topic with {string} listed in my profile',
         await $$(".dropdown-item").get(0).click();
         expect(browser.getCurrentUrl()).to.eventually.equal('https://access2justicewebtesting.azurewebsites.net/profile');
         
-        await $$(".nav-link").get(1).click( );
-        await browser.sleep(5000);
+        await $$(".nav-link").get(1).click( );  // My Saved Resources tab
         //var elem = await $$("h4").filter(elem => elem.innerHTML === 'Divorce').count();
-        
+        await browser.sleep(2000);
         var count = await $$("h4").filter(function(elem) {
             return elem.getText().then(function(text) {
                 return text === 'Divorce';

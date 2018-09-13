@@ -42,9 +42,9 @@ cucumber_1.Then('I can see the resource topic with {string} listed in my profile
     yield protractor_1.browser.wait(protractor_1.$(".dropdown-menu").isDisplayed());
     yield protractor_1.$$(".dropdown-item").get(0).click();
     expect(protractor_1.browser.getCurrentUrl()).to.eventually.equal('https://access2justicewebtesting.azurewebsites.net/profile');
-    yield protractor_1.$$(".nav-link").get(1).click();
-    yield protractor_1.browser.sleep(5000);
+    yield protractor_1.$$(".nav-link").get(1).click(); // My Saved Resources tab
     //var elem = await $$("h4").filter(elem => elem.innerHTML === 'Divorce').count();
+    yield protractor_1.browser.sleep(2000);
     var count = yield protractor_1.$$("h4").filter(function (elem) {
         return elem.getText().then(function (text) {
             return text === 'Divorce';
@@ -55,6 +55,5 @@ cucumber_1.Then('I can see the resource topic with {string} listed in my profile
 cucumber_1.Then('I delete the resource', () => __awaiter(this, void 0, void 0, function* () {
     yield protractor_1.$$(".btn-group").get(3).click(); // will break if there is more than 1 saved resource
     yield protractor_1.browser.wait(protractor_1.$("#dropdown-disabled-item").isDisplayed());
-    yield protractor_1.browser.sleep(5000);
     yield protractor_1.$("a app-remove-button").click();
 }));
