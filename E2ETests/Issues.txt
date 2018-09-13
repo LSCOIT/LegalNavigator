@@ -3,5 +3,7 @@ Cucumber HTML report doesn't launch on its own
 Save to profile feature:
 Repetitive login step in save to profile feature
 
-Login feature:
-more than one element found for locator By(css selector, .account-menu) - the first result will be used
+Tests currently can't be run together because the current website stores previous user login info even after user logs out
+
+
+

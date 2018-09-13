@@ -34,7 +34,7 @@ exports.config = {
         format: "json:./reports/json/cucumber_report.json",
         require: ["../../typeScript/stepdefinitions/*.js", "../../typeScript/support/*.js"],
         strict: true,
-        tags: "@SearchScenario",
+        tags: "@SetLocationOnEntry or @UpdateLocation",
     },
     onComplete: () => {
         reporter_1.Reporter.createHTMLReport();

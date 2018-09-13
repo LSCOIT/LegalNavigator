@@ -43,7 +43,7 @@ export const config: Config = {
         format: "json:./reports/json/cucumber_report.json", // Output format
         require: ["../../typeScript/stepdefinitions/*.js", "../../typeScript/support/*.js"], // Require step definition files before executing features
         strict: true,   // Fail if there are any undefined or pending steps
-        tags: "@SearchScenario", // Only execute the features or scenario with those tags
+        tags: "@SetLocationOnEntry or @UpdateLocation", // Only execute the features or scenario with those tags
     },
 
     onComplete: () => {
