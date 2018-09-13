@@ -1,3 +1,5 @@
+# Doesn't work when after you enter your email and password another screens comes up (mostly it doesn't happen)
+
 Feature: Login
     As a user
     I need to Login
@@ -9,6 +11,7 @@ Scenario Outline: Log into the application using the correct credentials
   When I set the 'email' '<email>' and click Next button
   When I set the 'password' '<password>' and click Sign In button
   Then I am redirected to home page and shown as signed in with username '<userName>'
+  Then I log out
 
   Examples:
     | email | password | userName |

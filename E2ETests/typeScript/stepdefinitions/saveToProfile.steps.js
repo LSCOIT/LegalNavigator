@@ -27,11 +27,17 @@ cucumber_1.Given('I have not saved this resource topic before', () => {
     // Might want to delete that resource if it exists
     return true;
 });
+cucumber_1.Given('I have not already signed in', () => {
+    expect(protractor_1.$$(".account-menu").get(0).getText()).to.eventually.have.string("Log in");
+});
 cucumber_1.When('I click the Save to profile button', () => __awaiter(this, void 0, void 0, function* () {
     yield protractor_1.browser.sleep(2000);
     yield resourcePage.saveButton.click();
     yield protractor_1.browser.sleep(2000);
 }));
+cucumber_1.Then('I should be prompted to sign in', () => {
+    expect(protractor_1.browser.getTitle()).to.eventually.equal("Sign in to your account");
+});
 cucumber_1.Then('I see a confirmation "Resource saved to profile"', () => {
     protractor_1.browser.wait(protractor_1.$(".toast-message").isDisplayed()).then(() => {
         expect(protractor_1.$(".toast-message").getText()).to.eventually.equal("Resource saved to profile");

@@ -14,7 +14,7 @@ const expect = chai.expect;
 const assert = chai.assert;
 class LoginComponent {
     constructor() {
-        this.loginTab = protractor_1.$(".account-menu");
+        this.loginTab = protractor_1.$$(".account-menu").get(0);
         this.emailInput = protractor_1.$("#i0116"); // set by MS engineers
         this.passwordInput = protractor_1.$("#i0118");
         this.nextButton = protractor_1.$("input[type='submit'][data-bind]");

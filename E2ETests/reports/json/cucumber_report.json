@@ -1,27 +1,22 @@
 [
   {
-    "description": "    As a user\n    I need to save a resource topic\n    So that I can review it later",
+    "description": "  As a user\n  I need to search by a phrase\n  So that I can see the resources",
     "keyword": "Feature",
-    "name": "Save to Profile",
-    "line": 3,
-    "id": "save-to-profile",
-    "tags": [
-      {
-        "name": "@SaveToProfileScenario",
-        "line": 1
-      }
-    ],
-    "uri": "features\\SaveToProfile.feature",
+    "name": "Search for resources",
+    "line": 1,
+    "id": "search-for-resources",
+    "tags": [],
+    "uri": "features\\Search.feature",
     "elements": [
       {
-        "id": "save-to-profile;save-a-resource-topic-given-i've-signed-in-and-have-not-saved-the-same-resource-already",
+        "id": "search-for-resources;type-in-a-search-term",
         "keyword": "Scenario",
-        "line": 8,
-        "name": "Save a resource topic given I've signed in and have not saved the same resource already",
+        "line": 15,
+        "name": "Type in a search term",
         "tags": [
           {
-            "name": "@SaveToProfileScenario",
-            "line": 1
+            "name": "@SearchScenario",
+            "line": 6
           }
         ],
         "type": "scenario",
@@ -29,117 +24,53 @@
           {
             "arguments": [],
             "keyword": "Given ",
-            "line": 9,
-            "name": "I am on the Access2Justice website and I clicked the login tab",
+            "line": 8,
+            "name": "I am on the Access2Justice website",
             "match": {
-              "location": "typeScript\\stepdefinitions\\login.steps.js:22"
+              "location": "typeScript\\stepdefinitions\\search.steps.js:17"
             },
             "result": {
               "status": "passed",
-              "duration": 3793000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 10,
-            "name": "I set the 'email' \"test-a2j@outlook.com\" and click Next button",
-            "match": {
-              "location": "typeScript\\stepdefinitions\\login.steps.js:27"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 2216000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 11,
-            "name": "I set the 'password' \"testa2j1234\" and click Sign In button",
-            "match": {
-              "location": "typeScript\\stepdefinitions\\login.steps.js:28"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 4013000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 12,
-            "name": "I naviagte to the resource page for \"Divorce\" at \"https://access2justicewebtesting.azurewebsites.net/topics/d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef\"",
-            "match": {
-              "location": "typeScript\\stepdefinitions\\saveToProfile.steps.js:20"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 2508000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 13,
-            "name": "I have not saved this resource topic before",
-            "match": {
-              "location": "typeScript\\stepdefinitions\\saveToProfile.steps.js:26"
-            },
-            "result": {
-              "status": "passed"
+              "duration": 2000000
             }
           },
           {
             "arguments": [],
             "keyword": "When ",
-            "line": 14,
-            "name": "I click the Save to profile button",
+            "line": 9,
+            "name": "I type \"I am getting a divorce\" into the search input field and click search button",
             "match": {
-              "location": "typeScript\\stepdefinitions\\saveToProfile.steps.js:30"
+              "location": "typeScript\\stepdefinitions\\search.steps.js:20"
             },
             "result": {
               "status": "passed",
-              "duration": 4090000000
+              "duration": 866000000
             }
           },
           {
             "arguments": [],
             "keyword": "Then ",
-            "line": 15,
-            "name": "I see a confirmation \"Resource saved to profile\"",
+            "line": 10,
+            "name": "I can see search results",
             "match": {
-              "location": "typeScript\\stepdefinitions\\saveToProfile.steps.js:35"
+              "location": "typeScript\\stepdefinitions\\search.steps.js:21"
             },
             "result": {
               "status": "passed",
-              "duration": 1000000
+              "duration": 718000000
             }
           },
           {
             "arguments": [],
-            "keyword": "And ",
-            "line": 16,
-            "name": "I can see the resource topic with \"Divorce\" listed in my profile",
+            "keyword": "Then ",
+            "line": 11,
+            "name": "I clear the search text",
             "match": {
-              "location": "typeScript\\stepdefinitions\\saveToProfile.steps.js:40"
+              "location": "typeScript\\stepdefinitions\\search.steps.js:22"
             },
             "result": {
               "status": "passed",
-              "duration": 2942000000
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 17,
-            "name": "I delete the resource",
-            "match": {
-              "location": "typeScript\\stepdefinitions\\saveToProfile.steps.js:55"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 203000000
+              "duration": 69000000
             }
           },
           {
@@ -149,7 +80,8 @@
               "location": "typeScript\\support\\hooks.js:22"
             },
             "result": {
-              "status": "passed"
+              "status": "passed",
+              "duration": 1000000
             }
           },
           {
@@ -159,26 +91,166 @@
               "location": "node_modules\\protractor-cucumber-framework\\lib\\resultsCapturer.js:25"
             },
             "result": {
-              "status": "passed"
+              "status": "passed",
+              "duration": 2000000
             }
           }
         ]
       },
       {
-        "id": "save-to-profile;save-a-resource-topic-given-i've-not-signed-in",
+        "id": "search-for-resources;type-in-a-search-term",
         "keyword": "Scenario",
-        "line": 19,
-        "name": "Save a resource topic given I've not signed in",
+        "line": 16,
+        "name": "Type in a search term",
         "tags": [
           {
-            "name": "@SaveToProfileScenario",
-            "line": 1
+            "name": "@SearchScenario",
+            "line": 6
           }
         ],
         "type": "scenario",
         "steps": [
           {
-            "keyword": "Before",
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "I am on the Access2Justice website",
+            "match": {
+              "location": "typeScript\\stepdefinitions\\search.steps.js:17"
+            },
+            "result": {
+              "status": "passed"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "I type \"I am getting kicked out\" into the search input field and click search button",
+            "match": {
+              "location": "typeScript\\stepdefinitions\\search.steps.js:20"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 218000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 10,
+            "name": "I can see search results",
+            "match": {
+              "location": "typeScript\\stepdefinitions\\search.steps.js:21"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 19000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 11,
+            "name": "I clear the search text",
+            "match": {
+              "location": "typeScript\\stepdefinitions\\search.steps.js:22"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 27000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "typeScript\\support\\hooks.js:22"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "node_modules\\protractor-cucumber-framework\\lib\\resultsCapturer.js:25"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "search-for-resources;type-in-a-search-term",
+        "keyword": "Scenario",
+        "line": 17,
+        "name": "Type in a search term",
+        "tags": [
+          {
+            "name": "@SearchScenario",
+            "line": 6
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "I am on the Access2Justice website",
+            "match": {
+              "location": "typeScript\\stepdefinitions\\search.steps.js:17"
+            },
+            "result": {
+              "status": "passed"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "I type \"I am facing workplace harassment\" into the search input field and click search button",
+            "match": {
+              "location": "typeScript\\stepdefinitions\\search.steps.js:20"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 306000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 10,
+            "name": "I can see search results",
+            "match": {
+              "location": "typeScript\\stepdefinitions\\search.steps.js:21"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 49000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 11,
+            "name": "I clear the search text",
+            "match": {
+              "location": "typeScript\\stepdefinitions\\search.steps.js:22"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 38000000
+            }
+          },
+          {
+            "keyword": "After",
             "hidden": true,
             "match": {
               "location": "typeScript\\support\\hooks.js:22"
@@ -188,7 +260,7 @@
             }
           },
           {
-            "keyword": "Before",
+            "keyword": "After",
             "hidden": true,
             "match": {
               "location": "node_modules\\protractor-cucumber-framework\\lib\\resultsCapturer.js:25"

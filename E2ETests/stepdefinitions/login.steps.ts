@@ -1,4 +1,4 @@
-import { browser, $ } from 'protractor';
+import { browser, $$, $ } from 'protractor';
 import { Given, When, Then, setDefaultTimeout } from 'cucumber';
 import { LoginComponent } from '../pages/loginComponent.po';
 import { config } from '../config/config';
@@ -36,3 +36,11 @@ Then(/^I am redirected to home page and shown as signed in with username '([^']*
         expect(await $("#signin-dropdown a").getText()).to.have.string(userName);
     }
 );
+
+Then('I log out', async () => {
+    await $("#signin-dropdown a").click();
+    await browser.wait($(".dropdown-menu").isDisplayed());
+    await $$(".dropdown-item").get(2).click();
+    await browser.sleep(2000);
+    expect($$(".account-menu").get(0).getText()).to.eventually.have.string("Log in");
+});

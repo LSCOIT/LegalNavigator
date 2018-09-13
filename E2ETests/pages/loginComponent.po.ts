@@ -4,7 +4,7 @@ const expect = chai.expect;
 const assert = chai.assert;
 
 export class LoginComponent {
-    public loginTab = $(".account-menu");
+    public loginTab = $$(".account-menu").get(0);
     public emailInput = $("#i0116"); // set by MS engineers
     public passwordInput = $("#i0118");
     public nextButton = $("input[type='submit'][data-bind]")

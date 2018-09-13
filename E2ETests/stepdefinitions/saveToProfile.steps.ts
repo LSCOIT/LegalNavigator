@@ -28,6 +28,12 @@ Given('I have not saved this resource topic before',
     }
 );
 
+Given('I have not already signed in',
+    () => {
+        expect($$(".account-menu").get(0).getText()).to.eventually.have.string("Log in");
+    }
+);
+
 When('I click the Save to profile button', 
     async () => {
         await browser.sleep(2000);
@@ -35,6 +41,10 @@ When('I click the Save to profile button',
         await browser.sleep(2000);
     }
 ); 
+
+Then('I should be prompted to sign in', () => {
+    expect(browser.getTitle()).to.eventually.equal("Sign in to your account");
+});
 
 Then('I see a confirmation "Resource saved to profile"',
     () => {

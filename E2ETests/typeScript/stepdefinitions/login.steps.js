@@ -31,3 +31,10 @@ cucumber_1.Then(/^I am redirected to home page and shown as signed in with usern
     expect(yield protractor_1.browser.getCurrentUrl()).to.equal(config_1.config.baseUrl);
     expect(yield protractor_1.$("#signin-dropdown a").getText()).to.have.string(userName);
 }));
+cucumber_1.Then('I log out', () => __awaiter(this, void 0, void 0, function* () {
+    yield protractor_1.$("#signin-dropdown a").click();
+    yield protractor_1.browser.wait(protractor_1.$(".dropdown-menu").isDisplayed());
+    yield protractor_1.$$(".dropdown-item").get(2).click();
+    yield protractor_1.browser.sleep(2000);
+    expect(protractor_1.$$(".account-menu").get(0).getText()).to.eventually.have.string("Log in");
+}));
