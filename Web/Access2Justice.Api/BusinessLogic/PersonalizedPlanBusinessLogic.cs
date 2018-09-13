@@ -51,22 +51,30 @@ namespace Access2Justice.Api.BusinessLogic
 
         private PersonalizedActionPlanViewModel MapA2JPersonalizedPlanToActionPlanViewModel(List<JToken> personalizedPlanStepsInScope)
         {
+            var actionPlan = new PersonalizedActionPlanViewModel();
+
             foreach (var step in personalizedPlanStepsInScope)
             {
-                var root = step.GetArrayValue("children");
+                foreach (var childrenRoot in step.GetValueAsArray<JArray>("children"))
+                {
+                    foreach (var child in childrenRoot.GetValueAsArray<JObject>("rootNode").GetValueAsArray<JArray>("children"))
+                    {
+                        var state = child.GetArrayValue("state").FirstOrDefault();
+                        var title = state.GetValue("title");
+                        var userContent = state.GetValue("userContent");
 
-                var child = step.GetValue("children");
-                var ser = JsonConvert.SerializeObject(child);
-                var des = JsonConvert.DeserializeObject(child);
+                        actionPlan.Topics.Add(new PlanTopic
+                        {
+                            TopicName = title,
+                        });
 
-                var stepo = step.GetValueAsArray("children");
-
-                var desser = JsonConvert.DeserializeObject(ser);
-
-                var breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
+                        var breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
+                    }
+                    
+                }
             }
 
-            return null;
+            return actionPlan;
         }
 
         public List<PersonalizedPlanStep> GetPlanSteps(Guid topic, List<PersonalizedPlanStep> personalizedPlanSteps)

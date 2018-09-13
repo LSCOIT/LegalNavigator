@@ -10,6 +10,11 @@ namespace Access2Justice.Shared.Extensions
     {
         public static string GetValue(this IEnumerable<JProperty> jProperties, string propertyName)
         {
+            if (!jProperties.Any())
+            {
+                return string.Empty;
+            }
+
             return jProperties.Where(x => x.Name == propertyName).FirstOrDefault()?.Value.ToString();
         }
 
@@ -18,9 +23,15 @@ namespace Access2Justice.Shared.Extensions
             return ((JObject)jToken).Properties().GetValue(propertyName);
         }
 
-        public static JArray GetValueAsArray(this JToken jToken, string propertyName)
+        public static T GetValueAsArray<T>(this JToken jToken, string propertyName) where T : new()
         {
-            return (JArray)JsonConvert.DeserializeObject(jToken.GetValue(propertyName));
+            var value = jToken.GetValue(propertyName);
+            if (jToken == null || string.IsNullOrEmpty(value))
+            {
+                return new T();
+            }
+
+            return (T)JsonConvert.DeserializeObject(value);
         }
 
         public static IEnumerable<JToken> GetArrayValue(this IEnumerable<JProperty> jProperties, string propertyName)

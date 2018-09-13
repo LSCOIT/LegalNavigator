@@ -16,7 +16,7 @@ namespace Access2Justice.Shared.A2JAuthor
                 .Properties()
                 .GetArrayValue("rootNode").FirstOrDefault();
 
-                foreach (var child in root.GetValueAsArray("children"))
+                foreach (var child in root.GetValueAsArray<JArray>("children"))
                 {
                     var states = child.GetArrayValue("state");
                     foreach (var state in states)
