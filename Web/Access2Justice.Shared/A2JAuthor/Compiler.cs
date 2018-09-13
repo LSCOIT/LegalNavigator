@@ -1,6 +1,9 @@
-﻿using Access2Justice.Shared.Interfaces.A2JAuthor;
+﻿using Access2Justice.Shared.Extensions;
+using Access2Justice.Shared.Interfaces.A2JAuthor;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Access2Justice.Shared.A2JAuthor
 {
@@ -8,8 +11,37 @@ namespace Access2Justice.Shared.A2JAuthor
     {
         public JObject Compile(JObject personalizedPlan, Dictionary<string, string> evaluatedUserAnswers)
         {
-            var stepsInScope = new JObject();
+            var stepsInScope = personalizedPlan.Properties();
+            var root = ((JObject)stepsInScope.GetArrayValue("rootNode").FirstOrDefault()).Properties();
+            var children = root.GetArrayValue("children").ToList();
 
+
+            foreach (var child in children)
+            {
+                foreach (var c in child)
+                {
+                    //var temp2 = c.Where(x => x. = "state");
+                    var temp3 = ((JObject)c).Properties().GetArrayValue("state").ToList();
+
+                    foreach (var state in temp3)
+                    {
+                        var temp5 = ((JObject)state).Properties().GetValue("operator");
+
+                        var breakpoint5 = string.Empty; // Todo:@Alaa - remove this temp code
+                    }
+                    //var temp4 = JsonConvert.DeserializeObject(temp3);
+
+                    
+                    var breakpoint3 = string.Empty; // Todo:@Alaa - remove this temp code
+                }
+
+                //((JObject)child).Properties().ToList();
+                var breakpoint2 = string.Empty; // Todo:@Alaa - remove this temp code
+            }
+            
+
+
+            var breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
             //if (evaluatedUserAnswers.Any())
             //{
             //    stepsInScope.Active = personalizedPlan.Active;
@@ -38,7 +70,7 @@ namespace Access2Justice.Shared.A2JAuthor
             //    }
             //}
 
-            return stepsInScope;
+            return null;
         }
     }
 }
