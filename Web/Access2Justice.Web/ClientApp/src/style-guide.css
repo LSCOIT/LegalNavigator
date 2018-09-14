@@ -168,8 +168,8 @@ ul li .check {
   -webkit-transition: border .25s linear;
 }
 
-input, textarea.form-control {
-  font-size: 16px;
+input, textarea.form-control, select option {
+  font-size: 16px !important;
 }
 
 input[type=radio] ~ .check {
