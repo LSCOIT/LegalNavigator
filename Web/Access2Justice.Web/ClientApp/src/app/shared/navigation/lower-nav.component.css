@@ -129,6 +129,7 @@ ul.web-hidden {
 .search-icon {
   width: 20px;
   margin-bottom: 5px;
+  cursor: pointer;
 }
 
 li.vertical-line {
@@ -140,6 +141,7 @@ li.vertical-line {
 @media only screen and (min-width : 768px) {
   #nav-bar-toggle {
     display: block;
+    margin-left: 20px;
   }
 
   #sidenav {
@@ -159,6 +161,10 @@ li.vertical-line {
     min-height: 65px;
   }
   
+  .nav>li>a {
+    padding: 15px 10px;
+  }
+
   #mobile-menu {
     display: none;
   }
@@ -168,7 +174,7 @@ li.vertical-line {
   }
 
   .navbar-header {
-    margin-right: 6%;
+    margin-right: 4%;
   }
 
   #nav-bar-toggle {
@@ -188,5 +194,15 @@ li.vertical-line {
   .search-icon {
     margin-right: 10px;
     margin-bottom: 0;
+  }
+}
+
+@media only screen and (min-width : 1124px) {
+  .nav>li>a {
+    padding: 15px 20px;
+  }
+
+  .navbar-header {
+    margin-right: 6%;
   }
 }

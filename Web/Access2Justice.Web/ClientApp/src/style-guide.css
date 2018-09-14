@@ -115,7 +115,7 @@ button, .btn {
   position: relative;
   margin: 20px auto;
   height: auto;
-  width: 60%;
+  width: 85%;
 }
 
 .button-container ul {
@@ -168,7 +168,7 @@ ul li .check {
   -webkit-transition: border .25s linear;
 }
 
-input {
+input, textarea.form-control {
   font-size: 16px;
 }
 
@@ -288,6 +288,10 @@ input[type=checkbox]:checked ~ .check::before {
   .pxl {
     font-size: 16px;
     line-height: 24px;
+  }
+
+  .button-container {
+    width: 65%;
   }
 }
 
