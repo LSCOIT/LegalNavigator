@@ -1,7 +1,7 @@
 .navbar-form {
   cursor: pointer;
   padding-right: 0;
-  margin-top: 8px;
+  margin-top: 0;
 }
 
 .search-icon {
@@ -10,7 +10,7 @@
 }
 
 #search {
-  width: 85%;
+  width: 82%;
   display: inline-block;
   border: none;
   outline: none;
@@ -31,5 +31,11 @@
 @media only screen and (min-width : 768px) {
   #search {
      width: 180px;
+  }
+}
+
+@media only screen and (min-width : 992px) {
+  .navbar-form {
+    margin-top: 8px;
   }
 }

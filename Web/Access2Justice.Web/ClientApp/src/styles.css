@@ -79,6 +79,18 @@ textarea {
   margin: 0 5%;
 }
 
+.static-img-container {
+  border-bottom: 1.5px solid #0D3FBB;
+}
+
+.static-img {
+  display: inline-block;
+  width: 15%;
+  margin-bottom: 20px;
+  margin-right: 20px;
+  min-width: 120px;
+}
+
 /* Language Dropdown */
 .dropdown-icon {
   width: 10px;
@@ -105,16 +117,8 @@ textarea {
   left: 0 !important;
 }
 
-.static-img-container {
-  border-bottom: 1.5px solid #0D3FBB;
-}
-
-.static-img {
-  display: inline-block;
-  width: 15%;
-  margin-bottom: 20px;
-  margin-right: 20px;
-  min-width: 120px;
+#goog-gt-tt {
+  visibility: hidden !important;
 }
 
 /*Login Dropdown*/
@@ -356,6 +360,10 @@ a.carousel-control .icon-next {
 
   .modal-content {
     height: auto;
+  }
+  
+  #goog-gt-tt {
+    visibility: visible !important;
   }
 }
 @media only screen and (min-width : 992px) {
