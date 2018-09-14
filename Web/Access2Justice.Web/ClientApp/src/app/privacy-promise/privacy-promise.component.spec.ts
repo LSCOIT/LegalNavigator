@@ -56,9 +56,7 @@ describe('HelpFaqsComponent', () => {
   it('should set help and faq content to static resource content if it exists', () => {
     mockStaticResourceService.getLocation.and.returnValue('Default');
     mockStaticResourceService.helpAndFaqsContent = privacyContent;
-    spyOn(component, 'filterPrivacyContent');
     component.getPrivacyPageContent();
     expect(component.privacyContent).toEqual(mockStaticResourceService.helpAndFaqsContent);
-    expect(component.filterPrivacyContent).toHaveBeenCalledWith(mockStaticResourceService.helpAndFaqsContent);
   });
 });

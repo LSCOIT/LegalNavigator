@@ -36,7 +36,7 @@
       </ul>
       <div class="bottom-menu">
         <ul>
-          <li *ngIf="privcyPromise" (click)="closeNav()">
+          <li *ngIf="privacyPromise" (click)="closeNav()">
             <a [routerLink]="['/' + privacyPromise?.button?.buttonLink]">
               <img *ngIf="privacyPromise.image.source" class="nav-icon" [src]="blobUrl + privacyPromise?.image?.source" aria-hidden="true" />
               {{privacyPromise?.button?.buttonText}}

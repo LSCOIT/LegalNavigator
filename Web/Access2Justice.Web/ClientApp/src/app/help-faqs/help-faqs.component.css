@@ -1,9 +1,3 @@
-#help-img {
-  background-color: #f2f2f2;
-  width: 100%;
-  height: 300px;
-}
-
 .media {
   border: 1px solid #777;
   margin-bottom: -31px;
@@ -18,4 +12,8 @@
 
 .accordion-img {
   background-position-y: 18px;
+}
+
+h2 {
+  margin-top: 5%;
 }
