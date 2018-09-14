@@ -10,7 +10,12 @@ fdescribe('PrintButtonComponent', () => {
   let fixture: ComponentFixture<PrintButtonComponent>;
   let activatedRoute: ActivatedRoute;
   let routeSpy;
-
+  let mockTitleAppSearchResults = 'app-search-results';
+  let mockTitleAppActionPlans = 'app-action-plans';
+  let mockTitleAppRresourceCardDetail = 'app-resource-card-detail';
+  let mockTitleAppSubtopicDetail = 'app-subtopic-detail';
+  let mockTitleTabMySavedResources = 'My Saved Resources';
+  let mockTitleTabMyPlans = 'My Plan';
   const routes = [
     { path: 'test/:id', component: PrintButtonComponent }
   ];
@@ -77,34 +82,34 @@ fdescribe('PrintButtonComponent', () => {
 
   it('should display the template name for subtopic: app-subtopic-detail', () => {
     component.activeRouteName = 'subtopics';
-    component.template = 'app-subtopic-detail';
+    component.template = mockTitleAppSubtopicDetail;
     fixture.detectChanges();
-    expect(component.template).toEqual('app-subtopic-detail');
+    expect(component.template).toEqual(mockTitleAppSubtopicDetail);
   });
 
   it('should display the template name for resource: app-resource-card-detail', () => {
     component.activeRouteName = 'resource';
-    component.template = 'app-resource-card-detail';
+    component.template = mockTitleAppRresourceCardDetail;
     fixture.detectChanges();
-    expect(component.template).toEqual('app-resource-card-detail');
+    expect(component.template).toEqual(mockTitleAppRresourceCardDetail);
   });
 
   it('should display the template name for profile: app-action-plans', () => {
     component.activeRouteName = 'profile';
-    component.activeTab = 'My Plan';
-    component.template = 'app-action-plans';
+    component.activeTab = mockTitleTabMyPlans;
+    component.template = mockTitleAppActionPlans;
     fixture.detectChanges();
-    expect(component.activeTab).toEqual('My Plan');
-    expect(component.template).toEqual('app-action-plans');
+    expect(component.activeTab).toEqual(mockTitleTabMyPlans);
+    expect(component.template).toEqual(mockTitleAppActionPlans);
   });
 
   it('should display the template name for profile: app-search-results', () => {
     component.activeRouteName = 'profile';
-    component.activeTab = 'My Saved Resources';
-    component.template = 'app-search-results'
+    component.activeTab = mockTitleTabMySavedResources;
+    component.template = mockTitleAppSearchResults;
     fixture.detectChanges();
-    expect(component.activeTab).toEqual('My Saved Resources');
-    expect(component.template).toEqual('app-search-results');
+    expect(component.activeTab).toEqual(mockTitleTabMySavedResources);
+    expect(component.template).toEqual(mockTitleAppSearchResults);
   });
 
 });

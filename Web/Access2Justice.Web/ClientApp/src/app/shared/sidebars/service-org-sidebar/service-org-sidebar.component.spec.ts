@@ -14,7 +14,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import { Subject } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
 
-fdescribe('Component:ServiceOrgSidebar', () => {
+describe('Component:ServiceOrgSidebar', () => {
 
   let component: ServiceOrgSidebarComponent;
   let fixture: ComponentFixture<ServiceOrgSidebarComponent>;
@@ -228,20 +228,21 @@ fdescribe('Component:ServiceOrgSidebar', () => {
 
   it("should navigate to topic and get topicid", () => {
     mockRouter.url = '/topics';
+    component.location = mockMapLocation;
+    component.activeTopic = mockTopicId;
     let resourceFilter: IResourceFilter = { ResourceType: 'Organizations', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: {}, IsResourceCountRequired: false };
     component.resourceFilter = resourceFilter;
-    component.getOrganizations();
-    expect(component.topicIds[0]).toContain(mockTopicId);
+    component.getOrganizations();    
     expect(component.activeTopic).toContain(mockTopicId);
   });
 
   it("should navigate to search and get topicid", () => {
     mockRouter.url = '/search';
+    component.location = mockMapLocation;
+    component.activeTopic = mockTopicId;
     let resourceFilter: IResourceFilter = { ResourceType: 'Organizations', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: {}, IsResourceCountRequired: false };
-    component.resourceFilter = resourceFilter;
-    //component.ngOnInit();
+    component.resourceFilter = resourceFilter;    
     component.getOrganizations();
-    expect(component.topicIds[0]).toContain(mockTopicId);
     expect(component.activeTopic).toContain(mockTopicId);
   });
 });
