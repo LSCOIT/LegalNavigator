@@ -48,11 +48,16 @@ namespace Access2Justice.Api.BusinessLogic
             return MapA2JPersonalizedPlanToActionPlanViewModel(personalizedPlanStepsInScope);
         }
 
-
         private PersonalizedActionPlanViewModel MapA2JPersonalizedPlanToActionPlanViewModel(List<JToken> personalizedPlanStepsInScope)
         {
             var actionPlan = new PersonalizedActionPlanViewModel();
 
+             // Todo:@Alaa these 2 properties must come from the curated experience and from the profile respectively:
+            actionPlan.PersonalizedPlanId = Guid.NewGuid();
+            actionPlan.IsShared = false;
+
+            var steps = new List<PlanStep>();
+            var stepOrder = 1;
             foreach (var step in personalizedPlanStepsInScope)
             {
                 foreach (var childrenRoot in step.GetValueAsArray<JArray>("children"))
@@ -63,16 +68,27 @@ namespace Access2Justice.Api.BusinessLogic
                         var title = state.GetValue("title");
                         var userContent = state.GetValue("userContent");
 
-                        actionPlan.Topics.Add(new PlanTopic
+                        
+                        steps.Add(new PlanStep
                         {
-                            TopicName = title,
+                            StepId = Guid.NewGuid(),
+                            Title = title,
+                            Description = userContent,
+                            Order = stepOrder++,
+                            IsComplete = false,
                         });
 
                         var breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
-                    }
-                    
+                    }                   
                 }
             }
+
+            actionPlan.Topics.Add(new PlanTopic
+            {
+                TopicId = Guid.NewGuid(),
+                TopicName = "New Personalized Plan Test",
+                Steps = steps
+            });
 
             return actionPlan;
         }
