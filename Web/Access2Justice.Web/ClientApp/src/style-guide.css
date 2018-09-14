@@ -77,10 +77,12 @@ button, .btn {
 .btn-primary {
   background-color: #0D3FBB;
   color: #fff;
+  cursor: pointer;
 }
 
 .btn-primary:hover {
   background-color: #0B2B78;
+  text-decoration: none;
 }
 
 .btn-secondary {

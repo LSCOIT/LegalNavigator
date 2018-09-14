@@ -5,6 +5,8 @@ import { IResourceFilter } from '../shared/search/search-results/search-results.
 import { EventUtilityService } from '../shared/event-utility.service';
 import { HttpParams } from '@angular/common/http';
 import { Global } from '../global';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -34,7 +36,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
   constructor(
     private personalizedPlanService: PersonalizedPlanService,
     private eventUtilityService: EventUtilityService,
-    private global: Global
+    private global: Global,
+    private spinner: NgxSpinnerService,
+    private router: Router
   ) {
 
     eventUtilityService.resourceUpdated$.subscribe(response => {
@@ -53,14 +57,19 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   getTopics(): void {
     if (this.planId) {
+      this.spinner.show();
       this.personalizedPlanService.getActionPlanConditions(this.planId)
         .subscribe(plan => {
+          this.spinner.hide();
           if (plan) {
             this.topics = plan.topics;
             this.planDetailTags = plan;
           }
           this.topicsList = this.personalizedPlanService.createTopicsList(this.topics);
           this.planDetails = this.personalizedPlanService.getPlanDetails(this.topics, this.planDetailTags);
+        }, error => {
+          this.spinner.hide();
+          this.router.navigate(['/error']);
         });
     }
   }

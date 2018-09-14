@@ -4,6 +4,7 @@
 body {
   position: relative !important;
   top: 40px !important;
+  min-height: 83% !important;
 }
   
 [class*="col-"] {
@@ -93,6 +94,10 @@ textarea {
 
 .left-menu .navbar-nav {
   margin: 0;
+}
+
+#google_translate_element {
+  left: 0 !important;
 }
 
 /*Login Dropdown*/
@@ -298,6 +303,10 @@ a.carousel-control .icon-next {
     border-radius: 0;
   }
 
+  #google_translate_element {
+    left: 5.5% !important;
+  }
+
   .carousel.slide {
     height: 350px;
   }
@@ -353,6 +362,6 @@ a.carousel-control .icon-next {
   }
 
   .container {
-    width: 80%
+    max-width: 1500px;
   }
 }

@@ -13,7 +13,6 @@ import { IResourceFilter } from '../../search/search-results/search-results.mode
 import { RouterStateSnapshot } from '@angular/router/src/router_state';
 
 describe('GuidedAssistantSidebarComponent', () => {
-
   let component: GuidedAssistantSidebarComponent;
   let fixture: ComponentFixture<GuidedAssistantSidebarComponent>;
   let router: Router;
@@ -22,7 +21,6 @@ describe('GuidedAssistantSidebarComponent', () => {
   let navigateDataService: NavigateDataService;
   let paginationService: PaginationService;
   let mockGuidedAssistantId = "9a6a6131-657d-467d-b09b-c570b7dad242";
-  let mockEmptyGuidedAssistantId = "";
   let mockResourceType = 'Guided Assistant';
   let mockActivetopic = "bd900039-2236-8c2c-8702-d31855c56b0f";
   let mockEmpty = "";
@@ -34,7 +32,6 @@ describe('GuidedAssistantSidebarComponent', () => {
     locality: 'Sample Location',
     address: 'Sample Address'
   };
-
   let mockresourceInput: IResourceFilter = {
     ResourceType: mockResourceType,
     ContinuationToken: '',
@@ -53,6 +50,10 @@ describe('GuidedAssistantSidebarComponent', () => {
     Location: mockMapLocation,
     IsResourceCountRequired: true
   };
+  let mockRouter = {
+    navigate:jasmine.createSpyObj('Router', ['navigateByUrl'])
+
+  }
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -61,9 +62,8 @@ describe('GuidedAssistantSidebarComponent', () => {
       declarations: [GuidedAssistantSidebarComponent],
       providers: [
         BsModalService,
-        { provide: Router, useValue: { navigate: jasmine.createSpy('navigate') } },
-        {
-          provide: ActivatedRoute,
+        { provide: Router, useValue: mockRouter },        
+        { provide: ActivatedRoute, 
           useValue: {
             snapshot: {
               params: { 'id': 'bd900039-2236-8c2c-8702-d31855c56b0f' }
@@ -121,7 +121,6 @@ describe('GuidedAssistantSidebarComponent', () => {
   });
 
   it('should assign session storage values in ngOnInit', () => {
-
     component.guidedAssistantId = undefined;
     sessionStorage.setItem("globalMapLocation", JSON.stringify(mockMapLocation));
     component.activeTopic = mockActivetopic;
@@ -143,6 +142,7 @@ describe('GuidedAssistantSidebarComponent', () => {
     component.location = mockMapLocation;
     component.activeTopic = mockActivetopic;
     component.getGuidedAssistantResults();
+    expect(component.resourceFilter).toEqual(mockresourceInput);
     expect(component.guidedAssistantId).toBe(mockEmpty);
   });
 
@@ -157,6 +157,7 @@ describe('GuidedAssistantSidebarComponent', () => {
     component.location = mockMapLocation;
     component.activeTopic = mockActivetopic;
     component.getGuidedAssistantResults();
+    expect(component.resourceFilter).toEqual(mockresourceInput);
     expect(component.guidedAssistantId).toBe(mockEmpty);
   });
 

@@ -31,6 +31,17 @@ p + .btn-sm {
   margin-right: 20px;
 }
 
+.media-object {
+  height: 100px;
+  width: 100px;
+  padding: 10px;
+}
+
+.btn-primary {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
 @media only screen and (min-width : 992px) {
   .row {
     margin: 40px auto;
@@ -43,5 +54,11 @@ p + .btn-sm {
 
   .even-rows {
     padding-left: 5%;
+  }
+
+  .media-object {
+    height: 120px;
+    width: 120px;
+    padding: 10px;
   }
 }
