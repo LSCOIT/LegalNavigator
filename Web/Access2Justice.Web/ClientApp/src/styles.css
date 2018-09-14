@@ -101,6 +101,10 @@ textarea {
   display: none !important;
 }
 
+.goog-te-combo {
+  font-size: 16px !important;
+}
+
 .goog-te-combo option {
   cursor: pointer;
 }
