@@ -3,6 +3,8 @@ Cucumber HTML report doesn't launch on its own
 Save to profile feature:
 Repetitive login step in save to profile feature
 
+Setting location in language feature is a repetitive step. Need to change later
+
 Tests currently can't be run together because the current website stores previous user login info even after user logs out
 
 

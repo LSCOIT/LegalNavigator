@@ -6,13 +6,14 @@ const chai = require('chai').use(require('chai-as-promised'));
 const expect = chai.expect;
 
 const location: LocationComponent = new LocationComponent();
-
+setDefaultTimeout(20 * 1000);
 Given('I am on the staged Access2Justice website', async () => {
-    await browser.get('http://a2jstageweb.azurewebsites.net/');
+    await browser.get('https://a2jstageweb.azurewebsites.net/');
     expect(browser.getTitle()).to.eventually.equal("Access to Justice");
 });
 
 Then('I am prompted to set my location', async () => {
+    await browser.sleep(5000);
     expect($('.modal-content').isDisplayed()).to.eventually.be.true;
     await $('#search-box').sendKeys("Alaska");
     await $('.search-btn').click();

@@ -14,11 +14,13 @@ const locationComponent_po_1 = require("../pages/locationComponent.po");
 const chai = require('chai').use(require('chai-as-promised'));
 const expect = chai.expect;
 const location = new locationComponent_po_1.LocationComponent();
+cucumber_1.setDefaultTimeout(20 * 1000);
 cucumber_1.Given('I am on the staged Access2Justice website', () => __awaiter(this, void 0, void 0, function* () {
-    yield protractor_1.browser.get('http://a2jstageweb.azurewebsites.net/');
+    yield protractor_1.browser.get('https://a2jstageweb.azurewebsites.net/');
     expect(protractor_1.browser.getTitle()).to.eventually.equal("Access to Justice");
 }));
 cucumber_1.Then('I am prompted to set my location', () => __awaiter(this, void 0, void 0, function* () {
+    yield protractor_1.browser.sleep(5000);
     expect(protractor_1.$('.modal-content').isDisplayed()).to.eventually.be.true;
     yield protractor_1.$('#search-box').sendKeys("Alaska");
     yield protractor_1.$('.search-btn').click();
