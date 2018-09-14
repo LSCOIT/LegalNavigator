@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://access2justiceapi.azurewebsites.net/api',
+  apiUrl: 'https://a2jstageapi.azurewebsites.net/api',
   bingmap_key: 'AlyLqEyg06sSOQJUwYsqcsm69zWmVKYgmaGvqdBPISKCJ59IQqqfCCaQ42KgqTyG',
   map_type: false,
   internalResourcePagesToShow: 2,

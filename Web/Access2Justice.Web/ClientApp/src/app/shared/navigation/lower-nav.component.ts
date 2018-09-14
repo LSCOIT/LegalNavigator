@@ -16,13 +16,6 @@ export class LowerNavComponent implements OnInit {
   showMenu = false;
   my_Class = '';
   staticContentSubcription: any;
-
-  @ViewChild('sidenav') sidenav: ElementRef;
-  @HostListener('window:resize')
-  onResize() {
-    this.width = window.innerWidth;
-  }
-
   blobUrl: any = environment.blobUrl;
   navigation: Navigation;
   name: string = 'Navigation';
@@ -39,7 +32,8 @@ export class LowerNavComponent implements OnInit {
   search: Search;
   subscription: any;
   staticContent: any;
-
+  @ViewChild('sidenav') sidenav: ElementRef;
+  
   constructor(
     private staticResourceService: StaticResourceService,
     private mapService: MapService,
@@ -47,8 +41,9 @@ export class LowerNavComponent implements OnInit {
   ) { }
 
   openNav() {
+    let windowWidth = window.innerWidth;
     this.my_Class = "dimmer";
-    if (this.width >= 768) {
+    if (windowWidth >= 768) {
       this.sidenav.nativeElement.style.width = "400px";
       this.sidenav.nativeElement.style.height = "100%";
     } else {
@@ -58,8 +53,9 @@ export class LowerNavComponent implements OnInit {
   }
 
   closeNav() {
+    let windowWidth = window.innerWidth;
     this.my_Class = "";
-    if (this.width >= 768) {
+    if (windowWidth >= 768) {
       this.sidenav.nativeElement.style.width = "0";
     } else {
       this.sidenav.nativeElement.style.height = "0";

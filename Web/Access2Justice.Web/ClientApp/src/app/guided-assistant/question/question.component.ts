@@ -23,8 +23,8 @@ export class QuestionComponent implements OnInit {
 
   constructor(
     private questionService: QuestionService,
-      private activeRoute: ActivatedRoute,
-      private router: Router
+    private activeRoute: ActivatedRoute,
+    private router: Router,
   ) { }
 
   sendQuestionsRemaining(questionsRemaining) {
