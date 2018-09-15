@@ -7,6 +7,7 @@ using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Luis;
 using Access2Justice.Shared.Models;
 using Access2Justice.Shared.Share;
+using Access2Justice.Shared.Utilities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Azure.Documents;
@@ -41,6 +42,10 @@ namespace Access2Justice.Api
 
             IShareSettings shareSettings = new ShareSettings(Configuration.GetSection("Share"));
             services.AddSingleton(shareSettings);
+
+            IKeyVaultSettings keyVaultSettings = new KeyVaultSettings(Configuration.GetSection("KeyVault"));
+            services.AddSingleton(keyVaultSettings);
+
 
             services.AddSingleton<ILuisProxy, LuisProxy>();
             services.AddSingleton<ILuisBusinessLogic, LuisBusinessLogic>();
