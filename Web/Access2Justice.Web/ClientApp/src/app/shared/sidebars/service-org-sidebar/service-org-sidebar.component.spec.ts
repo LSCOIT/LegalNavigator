@@ -15,7 +15,6 @@ import { Subject } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
 
 describe('Component:ServiceOrgSidebar', () => {
-
   let component: ServiceOrgSidebarComponent;
   let fixture: ComponentFixture<ServiceOrgSidebarComponent>;
   let mockMapService;

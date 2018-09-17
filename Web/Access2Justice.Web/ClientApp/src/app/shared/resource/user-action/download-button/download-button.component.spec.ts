@@ -1,21 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { DownloadButtonComponent } from './download-button.component';
-import { inject } from '@angular/core/src/render3';
-import { Window } from 'selenium-webdriver';
-import { elementClass } from '@angular/core/src/render3/instructions';
-import { DebugElement } from '@angular/core';
 import { HttpModule } from '@angular/http';
-import { By } from '@angular/platform-browser';
 
 describe('DownloadButtonComponent', () => {
   let component: DownloadButtonComponent;
   let fixture: ComponentFixture<DownloadButtonComponent>;
-  let mockDownloadButtonComponent: DownloadButtonComponent[]
-
   let mockApplicationUrl = 'testUrl';
   let mockTitle = 'Download';
-  let mockContent = 'TestContent';
   let mockappTemplateName = 'personalized-plan';
 
   beforeEach(async(() => {

@@ -16,7 +16,7 @@ import { TopicService } from '../shared/topic.service';
 import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
-fdescribe('SubtopicsComponent', () => {
+describe('SubtopicsComponent', () => {
   let component: SubtopicsComponent;
   let fixture: ComponentFixture<SubtopicsComponent>;
   let topicService: TopicService;

@@ -5,40 +5,16 @@ import { Observable } from 'rxjs/Observable';
 import { APP_BASE_HREF } from '@angular/common';
 import { of } from 'rxjs/observable/of';
 
-fdescribe('PrintButtonComponent', () => {
+describe('PrintButtonComponent', () => {
   let component: PrintButtonComponent;
   let fixture: ComponentFixture<PrintButtonComponent>;
   let activatedRoute: ActivatedRoute;
-  let routeSpy;
   let mockTitleAppSearchResults = 'app-search-results';
   let mockTitleAppActionPlans = 'app-action-plans';
   let mockTitleAppRresourceCardDetail = 'app-resource-card-detail';
   let mockTitleAppSubtopicDetail = 'app-subtopic-detail';
   let mockTitleTabMySavedResources = 'My Saved Resources';
   let mockTitleTabMyPlans = 'My Plan';
-  const routes = [
-    { path: 'test/:id', component: PrintButtonComponent }
-  ];
-
-  let mockAR: any = {
-    url: {
-      _value: [{
-        path: "subtopics", params: {
-          subscribe: function () {
-            Observable.of({ id: 'subtopics' });
-          }
-        }
-      }, {
-        path: "1d7fc811-dabe-4468-a179-c55075bd22b6", params: {
-          subscribe: function () {
-            Observable.of({ id: 'subtopics' });
-          }
-        }
-      }, { snapshot: { url: [{ path: 'subtopics' }] } },
-      ]
-    },
-
-  }
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
