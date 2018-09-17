@@ -30,10 +30,10 @@
                 <div accordion-heading>
                   <div class="col-sm-9 col-xs-12">
                     <div class="media">
-                      <div class="media-left accordion-img">
+                      <div class="media-left accordion-img" [ngClass]="{'accordion-img-grey':step.isComplete, '': !step.isComplete}">
                       </div>
                       <div class="media-body">
-                        <h3>Step {{step.order}}. {{step.title}}</h3>
+                        <h3 [ngClass]="{'header-completed':step.isComplete, '': !step.isComplete}">Step {{step.order}}. {{step.title}}</h3>
                       </div>
                     </div>
                   </div>
