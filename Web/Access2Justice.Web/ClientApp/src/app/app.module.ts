@@ -43,6 +43,9 @@ import { Global } from './global'
 import { CuratedExperienceResultComponent } from './guided-assistant/curated-experience-result/curated-experience-result.component';
 import { ProfileResolverService } from './app-resolver/profile-resolver.service';
 import { TokenInterceptor } from './token-interceptor.service';
+import { MsalInterceptor } from '@azure/msal-angular';
+
+export const protectedResourceMap: [string, string[]][] = [['http://localhost:4200/api/topics', ['api://f0d077e6-f293-4c01-9cfb-b8327735533d/access_as_user']]]
 
 @NgModule({
   declarations: [
@@ -80,9 +83,11 @@ import { TokenInterceptor } from './token-interceptor.service';
     MsalModule.forRoot({
       clientID: 'f0d077e6-f293-4c01-9cfb-b8327735533d',
       authority:'https://login.microsoftonline.com/common/',
-      consentScopes: ["user.read"],
+      consentScopes: ["user.read", 'api://f0d077e6-f293-4c01-9cfb-b8327735533d/access_as_user'],
       redirectUri: 'http://localhost:5150/',
-      navigateToLoginRequestUrl: true
+      navigateToLoginRequestUrl: true,
+      postLogoutRedirectUri: 'http://localhost:5150/',
+      protectedResourceMap: protectedResourceMap
     })
   ],
   providers: [
@@ -92,7 +97,7 @@ import { TokenInterceptor } from './token-interceptor.service';
       multi: true
     }, {
       provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptor,
+      useClass: MsalInterceptor,
       multi: true
     },
     TopicService,
