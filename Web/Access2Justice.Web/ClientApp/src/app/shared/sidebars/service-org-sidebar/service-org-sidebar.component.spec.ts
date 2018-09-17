@@ -15,13 +15,14 @@ import { Subject } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
 
 describe('Component:ServiceOrgSidebar', () => {
-
   let component: ServiceOrgSidebarComponent;
   let fixture: ComponentFixture<ServiceOrgSidebarComponent>;
   let mockMapService;
   let mockPaginationService;
   let mockNavigateDataService;
   let mockactiveTopic = "123";
+  let mockTopicId = 'bd900039-2236-8c2c-8702-d31855c56b0f';
+  let mockRouter = { url: "/topics" };
   let mockMapLocation: MapLocation = {
     state: 'teststate',
     city: 'testcity',
@@ -222,5 +223,25 @@ describe('Component:ServiceOrgSidebar', () => {
     sessionStorage.removeItem("mockGlobalMapLocation");
     component.ngOnInit();
     expect(component.location).toEqual(undefined);
+  });
+
+  it("should navigate to topic and get topicid", () => {
+    mockRouter.url = '/topics';
+    component.location = mockMapLocation;
+    component.activeTopic = mockTopicId;
+    let resourceFilter: IResourceFilter = { ResourceType: 'Organizations', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: {}, IsResourceCountRequired: false };
+    component.resourceFilter = resourceFilter;
+    component.getOrganizations();    
+    expect(component.activeTopic).toContain(mockTopicId);
+  });
+
+  it("should navigate to search and get topicid", () => {
+    mockRouter.url = '/search';
+    component.location = mockMapLocation;
+    component.activeTopic = mockTopicId;
+    let resourceFilter: IResourceFilter = { ResourceType: 'Organizations', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: {}, IsResourceCountRequired: false };
+    component.resourceFilter = resourceFilter;    
+    component.getOrganizations();
+    expect(component.activeTopic).toContain(mockTopicId);
   });
 });
