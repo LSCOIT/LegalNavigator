@@ -5,6 +5,8 @@ import { api } from '../../../api/api';
 import { Observable } from 'rxjs/Rx';
 import { ArrayUtilityService } from '../../shared/array-utility.service';
 import { PersonalizedPlan, ProfileResources } from './personalized-plan';
+import { ToastrService } from 'ngx-toastr';
+import { Global } from '../../global';
 
 describe('Service:PersonalizedPlan', () => {
   let mockPlanDetailsJson = {
@@ -372,6 +374,8 @@ describe('Service:PersonalizedPlan', () => {
   let service: PersonalizedPlanService;
   let arrayUtilityService: ArrayUtilityService;
   const httpSpy = jasmine.createSpyObj('http', ['get', 'post', 'put']);
+  let toastrService: ToastrService;
+  let global: Global;
   var originalTimeout;
 
   beforeEach(() => {
@@ -379,7 +383,7 @@ describe('Service:PersonalizedPlan', () => {
       imports: [HttpClientModule],
       providers: [PersonalizedPlanService, ArrayUtilityService]
     });
-    service = new PersonalizedPlanService(httpSpy, arrayUtilityService, undefined);
+    service = new PersonalizedPlanService(httpSpy, arrayUtilityService, toastrService, global);
     arrayUtilityService = new ArrayUtilityService();
     httpSpy.get.calls.reset();
 
@@ -478,7 +482,7 @@ describe('Service:PersonalizedPlan', () => {
     };
     sessionStorage.setItem(service.sessionKey,"test");
     let mockUserId = "mockUserId"; 
-    service.userId = mockUserId;
+    //service..userId = mockUserId;
     service.saveResourcesToProfile(mockSavedResource);
     expect(service.showWarning).toHaveBeenCalled();
     expect(sessionStorage.getItem(service.sessionKey)).toBeNull;
@@ -501,14 +505,14 @@ describe('Service:PersonalizedPlan', () => {
     };
     sessionStorage.setItem(service.sessionKey, "test");
     let mockUserId = "mockUserId";
-    service.userId = mockUserId;
+   // service.userId = mockUserId;
     service.saveResourcesToProfile(mockSavedResource);
     expect(service.saveResourceToProfile).toHaveBeenCalledWith(service.resourceTags);
     expect(sessionStorage.getItem(service.sessionKey)).toBeNull;
   });
 
   it('should call showSuccess service method on saveResourceToProfile', () => {
-    service.userId = "mockUserId";
+    //service.userId = "mockUserId";
     let mockResourceTags = [];
     spyOn(service, 'showSuccess');
     spyOn(service, 'saveResources').and.callFake(() => {

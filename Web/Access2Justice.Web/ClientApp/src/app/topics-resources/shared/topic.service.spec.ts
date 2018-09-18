@@ -3,27 +3,61 @@ import { Observable } from 'rxjs/Rx';
 import { api } from '../../../api/api';
 import { Global, UserStatus } from '../../global';
 import { Subject } from 'rxjs';
+import { MsalService } from '@azure/msal-angular';
 
 describe('TopicService', () => {
   let service: TopicService;
-  let globalService: Global = { 
-    role: UserStatus.Anonymous, 
-    shareRouteUrl: "/share",
-    showShare: false,
-    showRemove: false,
-    showMarkComplete: false,
-    showDropDown: false,
-    showSetting: false,
-    profileRouteUrl: "/profile",
-    data: "",
-    notifyStaticData: new Subject<any>(),
-    externalLogin: () => {},
-    getData: () => {},
-    setData: () => {}
-  };
+  let msalService: MsalService;
+  let mockGlobal;
+  let global: Global;
+    
+  //let globalService: Global = {
+  //  role: UserStatus.Anonymous,
+  //  showShare: true,
+  //  showRemove: true,
+  //  showMarkComplete: true,
+  //  showDropDown: true,
+  //  showSetting: true,
+  //  shareRouteUrl: "/share",
+  //  profileRouteUrl: "/profile",
+  //  data: "",
+  //  notifyStaticData: new Subject<any>(),
+  //  userName: "",
+  //  userId: "",
+  //  sharedUserId: "",
+  //  sharedUserName: "",
+  //  isShared: false,
+  //  isLoggedIn: false,
+  //  //msalService: MsalService,
+  //  externalLogin: () => { },
+  //  setProfileData: () => { },
+  //  getData: () => { }
+  //};
+  //let globalService: Global = { 
+  //  role: UserStatus.Anonymous, 
+  //  shareRouteUrl: "/share",
+  //  showShare: false,
+  //  showRemove: false,
+  //  showMarkComplete: false,
+  //  showDropDown: false,
+  //  showSetting: false,
+  //  profileRouteUrl: "/profile",
+  //  data: "",
+  //  notifyStaticData: new Subject<any>(),
+  //  userName: "",
+  //  userId: "",
+  //  sharedUserId: "",
+  //  sharedUserName: "",
+  //  isShared: false,
+  //  isLoggedIn: false,
+  //  externalLogin: () => {},
+  //  getData: () => {},
+  //  setData: () => { },
+  //  msalService: MsalService
+  //};
   const httpSpy = jasmine.createSpyObj('http', ['get', 'post']);
   beforeEach(() => {
-    service = new TopicService(httpSpy, globalService);
+    service = new TopicService(httpSpy, global);
     httpSpy.get.calls.reset();
   });
 
@@ -46,12 +80,12 @@ describe('TopicService', () => {
 
   it('should return list of subtopics', (done) => {
     let mockSubtopics = {
-        id: "1",
-        title: "Housing",
-        subtopics: [
-          {subtopicId: "2", title:"Subtopic1 Name", icon:"./ assets / images / topics / topic2.png"},
-          {subtopicId: "3", title:"Subtopic2 Name", icon:"./ assets / images / topics / topic3.png"}
-        ]
+      id: "1",
+      title: "Housing",
+      subtopics: [
+        { subtopicId: "2", title: "Subtopic1 Name", icon: "./ assets / images / topics / topic2.png" },
+        { subtopicId: "3", title: "Subtopic2 Name", icon: "./ assets / images / topics / topic3.png" }
+      ]
     }
     const mockResponse = Observable.of(mockSubtopics);
 
