@@ -45,8 +45,9 @@ import { CuratedExperienceResultComponent } from './guided-assistant/curated-exp
 import { ProfileResolverService } from './app-resolver/profile-resolver.service';
 import { TokenInterceptor } from './token-interceptor.service';
 import { MsalInterceptor } from '@azure/msal-angular';
+import { environment } from '../environments/environment';
 
-export const protectedResourceMap: [string, string[]][] = [['http://localhost:4200/api/topics', ['api://f0d077e6-f293-4c01-9cfb-b8327735533d/access_as_user']]]
+export const protectedResourceMap: [string, string[]][] = [[environment.topicUrl, [environment.apiScope]]]
 
 @NgModule({
   declarations: [
@@ -83,12 +84,12 @@ export const protectedResourceMap: [string, string[]][] = [['http://localhost:42
     TabsModule.forRoot(),
     NgxSpinnerModule,
     MsalModule.forRoot({
-      clientID: 'f0d077e6-f293-4c01-9cfb-b8327735533d',
-      authority:'https://login.microsoftonline.com/common/',
-      consentScopes: ["user.read", 'api://f0d077e6-f293-4c01-9cfb-b8327735533d/access_as_user'],
-      redirectUri: 'http://localhost:5150/',
-      navigateToLoginRequestUrl: true,
-      postLogoutRedirectUri: 'http://localhost:5150/',
+      clientID: environment.clientID,
+      authority: environment.authority,
+      consentScopes: environment.consentScopes,
+      redirectUri: environment.redirectUri,
+      navigateToLoginRequestUrl: environment.navigateToLoginRequestUrl,
+      postLogoutRedirectUri: environment.postLogoutRedirectUri,
       protectedResourceMap: protectedResourceMap
     })
   ],
