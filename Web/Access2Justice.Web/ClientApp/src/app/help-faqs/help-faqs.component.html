@@ -1,15 +1,17 @@
-<div class="row">
-  <div class="col-md-12" id="help-img">
-  </div>
-</div>
 <div class="container">
+  <div class="row static-img-container">
+    <div class="col-md-12 static-img">
+      <img *ngIf="helpAndFaqsContent?.image?.source" [src]="blobUrl + helpAndFaqsContent?.image?.source" alt="helpAndFaqsContent?.image?.altText" />
+    </div>
+    <h2 class="inline">Help & FAQs</h2>
+  </div>
   <div class="row">
-    <div class="col-md-8 col-md-offset-2 col-xs-offset-0 text-center">
+    <div class="col-md-12">
       <p>{{helpAndFaqsContent?.description}}</p>
     </div>
   </div>
   <div class="row">
-    <div class="col-md-8 col-md-offset-2 col-xs-offset-0">
+    <div class="col-md-10 col-md-offset-1 col-xs-offset-0">
       <accordion *ngFor="let content of faqData">
         <accordion-group>
           <div accordion-heading>

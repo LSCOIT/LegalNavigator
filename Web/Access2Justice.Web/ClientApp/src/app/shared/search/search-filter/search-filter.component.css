@@ -1,3 +1,7 @@
+li a {
+  cursor: pointer;
+}
+
 .filter {
   background: #f4f4f4;
   padding: 15px;
@@ -14,4 +18,34 @@
   padding: 5px;
   margin-right: 10px;
   margin-bottom: 10px;
+}
+
+.desktop-filter {
+  display: none;
+}
+
+.sort-type {
+  float: right;
+}
+
+.mobile-filter button {
+  min-width: 100px;
+}
+
+.button-highlight {
+  background-color: #FFF;
+}
+
+@media only screen and (min-width : 768px) {
+  .desktop-filter {
+    display: block;
+  }
+
+  .mobile-filter {
+    display: none;
+  }
+
+  .button-highlight {
+    background-color: #D9F2F8;
+  }
 }

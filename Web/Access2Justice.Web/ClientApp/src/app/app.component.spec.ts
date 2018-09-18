@@ -18,6 +18,7 @@ import { TopicsResourcesComponent } from './topics-resources/topics-resources.co
 import { MapService } from './shared/map/map.service';
 import { of } from 'rxjs/observable/of';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Router } from '@angular/router';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -26,7 +27,8 @@ describe('AppComponent', () => {
   let mockGlobal;
   let staticContent;
   let mockMapService;
-
+  let mockRouter;
+  
   beforeEach(async(() => {
     staticContent = [
       {
@@ -84,6 +86,7 @@ describe('AppComponent', () => {
         { provide: StaticResourceService, useValue: mockStaticResourceService },
         { provide: Global, useValue: mockGlobal },
         { provide: MapService, useValue: mockMapService },
+        { provide: Router, useValue: mockRouter },
         NgxSpinnerService
       ],
       schemas: [
