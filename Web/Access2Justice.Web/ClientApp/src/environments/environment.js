@@ -14,12 +14,6 @@ exports.environment = {
     webResourcePagesToShow: 10,
     webResourceRecordsToDisplay: 10,
     blobUrl: 'https://cs4892808efec24x447cx944.blob.core.windows.net',
-    clientID: 'f0d077e6-f293-4c01-9cfb-b8327735533d',
-    authority: 'https://login.microsoftonline.com/common/',
-    consentScopes: ["user.read", 'api://f0d077e6-f293-4c01-9cfb-b8327735533d/access_as_user'],
-    redirectUri: 'http://localhost:5150/',
-    navigateToLoginRequestUrl: true,
-    postLogoutRedirectUri: 'http://localhost:5150/',
     All: 'All'
 };
 //# sourceMappingURL=environment.js.map
