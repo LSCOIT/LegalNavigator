@@ -4,6 +4,7 @@
 body {
   position: relative !important;
   top: 40px !important;
+  min-height: 83% !important;
 }
   
 [class*="col-"] {
@@ -73,6 +74,23 @@ textarea {
   resize: none;
 }
 
+.MicrosoftMap .as_container_search {
+  width: 80% !important;
+  margin: 0 5%;
+}
+
+.static-img-container {
+  border-bottom: 1.5px solid #0D3FBB;
+}
+
+.static-img {
+  display: inline-block;
+  width: 15%;
+  margin-bottom: 20px;
+  margin-right: 20px;
+  min-width: 120px;
+}
+
 /* Language Dropdown */
 .dropdown-icon {
   width: 10px;
@@ -81,6 +99,10 @@ textarea {
 
 .goog-te-banner-frame.skiptranslate {
   display: none !important;
+}
+
+.goog-te-combo {
+  font-size: 16px !important;
 }
 
 .goog-te-combo option {
@@ -93,6 +115,14 @@ textarea {
 
 .left-menu .navbar-nav {
   margin: 0;
+}
+
+#google_translate_element {
+  left: 0 !important;
+}
+
+#goog-gt-tt {
+  visibility: hidden !important;
 }
 
 /*Login Dropdown*/
@@ -298,6 +328,19 @@ a.carousel-control .icon-next {
     border-radius: 0;
   }
 
+  #google_translate_element {
+    left: 5.5% !important;
+  }
+
+  .MicrosoftMap .as_container_search {
+    margin: 0 2.5% !important;
+  }
+
+  .static-img {
+    margin-bottom: 40px;
+    margin-right: 40px;
+  }
+
   .carousel.slide {
     height: 350px;
   }
@@ -321,6 +364,10 @@ a.carousel-control .icon-next {
 
   .modal-content {
     height: auto;
+  }
+  
+  #goog-gt-tt {
+    visibility: visible !important;
   }
 }
 @media only screen and (min-width : 992px) {
@@ -354,5 +401,10 @@ a.carousel-control .icon-next {
 
   .container {
     max-width: 1500px;
+  }
+
+  .MicrosoftMap .as_container_search {
+    max-width: 475px !important;
+    margin: 0;
   }
 }

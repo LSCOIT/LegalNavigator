@@ -11,6 +11,7 @@ import { ProfileComponent } from '../../../../profile/profile.component';
 import { RemoveButtonComponent } from './remove-button.component';
 import { ToastrService } from 'ngx-toastr';
 import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 describe('RemoveButtonComponent', () => {
   let component: RemoveButtonComponent;
@@ -31,6 +32,7 @@ describe('RemoveButtonComponent', () => {
         EventUtilityService, 
         BsModalService,
         PersonalizedPlanComponent,
+        NgxSpinnerService,
         { provide: ToastrService, useValue: mockToastr },
         { provide: Global, useValue: { role: '', shareRouteUrl:''} },
         { provide: ActivatedRoute, useValue: {snapshot: {params: {'id': '123'}}} },

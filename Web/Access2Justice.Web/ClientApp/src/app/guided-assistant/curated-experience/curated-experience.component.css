@@ -2,7 +2,61 @@
   margin-bottom: 0;
 }
 
-ul li {
-  display: inline-block;
-  padding: 0 15px;
+.steps {
+  text-align: center;
+}
+
+.part-two {
+  display: none;
+}
+
+.hide-part-one {
+  display: none;
+}
+
+.hide-part-two {
+  display: block !important;
+}
+
+.upper-action {
+  display: none;
+}
+
+.lower-action {
+  margin: 40px auto 15px auto;
+}
+
+@media only screen and (min-width : 768px) {
+  .hide-part-one {
+    display: block;
+  }
+
+  .part-two {
+    display: block;
+  }
+
+  .user-action li {
+    display: inline-block;
+    padding: 0 15px;
+    margin-top: 20px;
+  }
+  
+  .steps {
+    text-align: left;
+  }
+}
+
+@media only screen and (min-width : 992px) {
+  .lower-action {
+    display: none;
+    margin: 0;
+  }
+
+  .upper-action {
+    display: block;
+  }
+
+  .user-action li {
+    margin-top: 0;
+  }
 }

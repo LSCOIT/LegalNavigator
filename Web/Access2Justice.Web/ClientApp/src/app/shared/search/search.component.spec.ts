@@ -15,6 +15,7 @@ import { SearchFilterPipe } from './search-filter.pipe';
 import { SearchResultsComponent } from './search-results/search-results.component';
 import { SearchService } from './search.service';
 import { ShareButtonComponent } from '../../shared/resource/user-action/share-button/share-button.component';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
@@ -45,7 +46,9 @@ describe('SearchComponent', () => {
       providers: [
         { provide: APP_BASE_HREF, useValue: '/' },
         { provide: SearchService, useValue: mockSearchService },
-        NavigateDataService],
+        NavigateDataService,
+        NgxSpinnerService
+      ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents();

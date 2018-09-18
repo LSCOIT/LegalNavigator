@@ -67,19 +67,4 @@ describe('LanguageComponent', () => {
     tick(1000);
     expect(component.addAttributes).toHaveBeenCalled();
   }));
-
-  it('should toggle showLanguage and translator dropdown on click', fakeAsync(() => {
-    let event = {
-      target: {
-        offsetParent: {
-          id: "language"
-        }
-      }
-    };
-    let translator = document.getElementById('google_translate_element');
-    component.showLanguage = true;
-    component.onClick(event);
-    expect(component.showLanguage).toBe(false);
-    expect(translator.style.display).toEqual("none");
-  }));
 });

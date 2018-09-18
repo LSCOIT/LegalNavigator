@@ -22,6 +22,7 @@ import { WebResourceComponent } from './web-resource/web-resource.component';
 import { PersonalizedPlanService } from '../../../guided-assistant/personalized-plan/personalized-plan.service';
 import { ArrayUtilityService } from '../../array-utility.service';
 import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 describe('SearchResultsComponent', () => {
   let component: SearchResultsComponent;
@@ -78,9 +79,10 @@ describe('SearchResultsComponent', () => {
         PaginationService,
         ShowMoreService,
         MapService,
-        { provide: APP_BASE_HREF, useValue: '/' },
         PersonalizedPlanService,
         ArrayUtilityService,
+        NgxSpinnerService,
+        { provide: APP_BASE_HREF, useValue: '/' },
         { provide: ToastrService, useValue: mockToastr }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]

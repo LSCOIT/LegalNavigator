@@ -20,7 +20,7 @@ export class CuratedExperienceComponent implements OnInit {
 
   receiveTotalQuestions($event) {
     this.totalQuestions = $event;
-    this.maxProgress = Math.ceil(this.totalQuestions / 0.75);
+    this.maxProgress = Math.ceil(this.totalQuestions / 0.6);
   }
 
   calculateProgress() {
