@@ -20,5 +20,7 @@ export const environment = {
   navigateToLoginRequestUrl: true,
   postLogoutRedirectUri: 'http://localhost:5150/',
   topicUrl: 'http://localhost:4200/api/topics',
-  apiScope: 'api://f0d077e6-f293-4c01-9cfb-b8327735533d/access_as_user'
+  apiScope: 'api://f0d077e6-f293-4c01-9cfb-b8327735533d/access_as_user',
+  resourceUrl: 'http://localhost:4200/api/resources',
+  personalizedUrl:'http://localhost:4200/api/personalizedresources'
 };
