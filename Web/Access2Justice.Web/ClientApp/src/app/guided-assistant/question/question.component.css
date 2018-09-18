@@ -1,3 +1,7 @@
+.question {
+  margin-top: 40px;
+}
+
 .inputs {
   padding: 10px 0;
 }
@@ -15,10 +19,6 @@
   border: 1px solid #7E7E7E;
   padding: 10px;
   border-radius: 4px;
-}
-
-button-choice-row {
-  margin: 0 auto;
 }
 
 .button-choice {
@@ -40,3 +40,6 @@ button-choice-row {
   padding: 15px 20px;
 }
 
+.btn-primary {
+  margin-bottom: 20px;
+}

@@ -5,17 +5,21 @@
         <span class="text-nowrap"></span>
       </progressbar>
     </div>
-    <span class="col-sm-8 pxs">Part 1: Understanding your needs</span>
-    <span class="col-sm-2 pxs">Part 2: View Action plan</span>
-    <ul class="col-sm-2 pxs user-action">
-      <li>Save</li>
-      <li>Exit</li>
+    <span [ngClass]="{'hide-part-one': questionsRemaining < 0, '': questionsRemaining > 0}" class="col-md-7 col-sm-8 col-xs-12 pxs steps">Part 1: Understanding your needs</span>
+    <span [ngClass]="{'hide-part-two': questionsRemaining < 0, '': questionsRemaining > 0}" class="col-md-2 col-sm-4 col-xs-12 pxs steps part-two">Part 2: View Action plan</span>
+    <ul class="col-md-3 pxs user-action upper-action">
+      <li><img class="nav-icon" src="./assets/images/small-icons/save.svg" aria-hidden="true" />Save</li>
+      <li><img class="nav-icon" src="./assets/images/small-icons/close.svg" aria-hidden="true" />Exit</li>
     </ul>
   </div>
   <app-question
     (sendTotalQuestionsEvent)="receiveTotalQuestions($event)"
     (sendQuestionsRemainingEvent)="receiveQuestionsRemaining($event)">
   </app-question>
+  <ul class="col-md-3 pxs user-action lower-action">
+      <li><img class="nav-icon" src="./assets/images/small-icons/save.svg" aria-hidden="true" />Save</li>
+      <li><img class="nav-icon" src="./assets/images/small-icons/close.svg" aria-hidden="true" />Exit</li>
+    </ul>
 </div>
 <div class="row">
   <app-articles-resources></app-articles-resources>

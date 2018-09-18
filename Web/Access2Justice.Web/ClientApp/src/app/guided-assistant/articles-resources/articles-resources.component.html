@@ -14,10 +14,10 @@
   <div class="dropdown-menu" id="dropdown-basic" *dropdownMenu
        role="article" aria-labelledby="button-basic">
     <div class="articles-content">
-      <div class="topic-section col-sm-6">
+      <div class="topic-section">
         <h6 class="pl">{{guidedAssistantResults?.topIntent}}</h6>
-        <ul *ngFor="let resource of guidedAssistantResults?.resources">
-          <li class="link"><a href="/resource/{{resource.id}}">{{resource.name}}</a></li>
+        <ul>
+          <li class="link" *ngFor="let resource of guidedAssistantResults?.resources"><a href="/resource/{{resource.id}}">{{resource.name}}</a></li>
         </ul>
       </div>
     </div>
