@@ -65,6 +65,7 @@ namespace Access2Justice.Api.BusinessLogic
                 userProfile.CuratedExperienceAnswersId = user.CuratedExperienceAnswersId;
                 userProfile.SavedResourcesId = user.SavedResourcesId;
                 userProfile.SharedResourceId = user.SharedResourceId;
+                userProfile.RoleInformationId = user.RoleInformationId;
             }
             return userProfile;
         }

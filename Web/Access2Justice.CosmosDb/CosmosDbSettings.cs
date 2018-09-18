@@ -24,6 +24,7 @@ namespace Access2Justice.CosmosDb
                 StaticResourceCollectionId = configuration.GetSection("StaticResourceCollectionId").Value;
                 UserSavedResourcesCollectionId = configuration.GetSection("UserSavedResourcesCollectionId").Value;
                 UserResourceCollectionId = configuration.GetSection("UserResourceCollectionId").Value;
+                UserRoleCollectionId = configuration.GetSection("UserRoleCollectionId").Value;
             }
             catch
             {
@@ -43,5 +44,6 @@ namespace Access2Justice.CosmosDb
         public string StaticResourceCollectionId { get; private set; }
         public string UserSavedResourcesCollectionId { get; private set; }
         public string UserResourceCollectionId { get; private set; }
+        public string UserRoleCollectionId { get; private set; }
     }
 }

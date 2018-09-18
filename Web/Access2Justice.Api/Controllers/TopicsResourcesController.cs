@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Access2Justice.Api.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "AdminPolicy")]
     [Produces("application/json")]
     public class TopicsResourcesController : Controller
     {
@@ -41,6 +41,7 @@ namespace Access2Justice.Api.Controllers
         /// </summary>
         /// <param name="parentTopicId"></param>
         /// <returns></returns> 
+        [Authorize(Policy = "GlobalAdminPolicy")]
         [Route("api/topics/getsubtopics")]
         [HttpPost]
         public async Task<IActionResult> GetSubTopics([FromBody]TopicInput topicInput)

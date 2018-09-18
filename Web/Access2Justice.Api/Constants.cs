@@ -33,5 +33,8 @@ namespace Access2Justice.Api
         public const string All = "ALL";
         public const string GuidedAssistant = "Guided Assistant";
         public const string EmptyArray = "[]";
+        public const string UserRole = "UserRole";
+        public const string RoleName = "roleName";
+        public const string DefaultUser = "AnonymousUser";
     }
 }

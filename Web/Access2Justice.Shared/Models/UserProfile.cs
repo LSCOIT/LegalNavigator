@@ -51,7 +51,10 @@ namespace Access2Justice.Shared.Models
 
         [JsonProperty(PropertyName = "savedResourcesId")]
         public Guid SavedResourcesId { get; set; }
-        
+
+        [JsonProperty(PropertyName = "roleInformationId")]
+        public Guid RoleInformationId { get; set; }
+
     }
     
 }

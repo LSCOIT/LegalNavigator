@@ -1,4 +1,5 @@
 ﻿using Access2Justice.Api.Authentication;
+using Access2Justice.Api.Authorization;
 using Access2Justice.Api.BusinessLogic;
 using Access2Justice.Api.Interfaces;
 using Access2Justice.CosmosDb;
@@ -8,7 +9,9 @@ using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Luis;
 using Access2Justice.Shared.Models;
 using Access2Justice.Shared.Share;
+using Access2Justice.Shared.Utilities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Azure.Documents;
@@ -33,13 +36,8 @@ namespace Access2Justice.Api
         {
             ConfigureSession(services);
 
-            services.AddAuthentication(sharedOptions =>
-            {
-                sharedOptions.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddAzureAdBearer(options => Configuration.Bind("AzureAd", options));
-
             services.AddMvc();
-
+            string oId = string.Empty;
             ILuisSettings luisSettings = new LuisSettings(Configuration.GetSection("Luis"));
             services.AddSingleton(luisSettings);
 
@@ -60,7 +58,42 @@ namespace Access2Justice.Api
             services.AddSingleton<IPersonalizedPlanBusinessLogic, PersonalizedPlanBusinessLogic>();
             services.AddSingleton<IStaticResourceBusinessLogic, StaticResourceBusinessLogic>();
             services.AddSingleton<IShareBusinessLogic, ShareBusinessLogic>();
+            services.AddSingleton<IUserRoleBusinessLogic, UserRoleBusinessLogic>();
 
+            services.AddAuthentication(sharedOptions =>
+            {
+                sharedOptions.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddAzureAdBearer(options => Configuration.Bind("AzureAd", options));
+            oId = ValidateToken();
+            services.AddAuthorization(options =>
+            {
+                options.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
+                .RequireAuthenticatedUser()
+                .Build();
+
+                var AdminRolesPolicy = UserRoles.RoleEnum.GlobalAdmin.ToString() + "," +
+                UserRoles.RoleEnum.StateAdmin.ToString();
+
+                options.AddPolicy(UserRoles.PolicyEnum.GlobalAdminPolicy.ToString(), policy =>
+                policy.AddRequirements(new AuthorizeUser(oId, UserRoles.RoleEnum.GlobalAdmin.ToString())));
+
+                options.AddPolicy(UserRoles.PolicyEnum.StateAdminPolicy.ToString(), policy =>
+                policy.AddRequirements(new AuthorizeUser(oId, UserRoles.RoleEnum.StateAdmin.ToString())));
+
+                options.AddPolicy(UserRoles.PolicyEnum.DeveloperPolicy.ToString(), policy =>
+                policy.AddRequirements(new AuthorizeUser(oId, UserRoles.RoleEnum.Developer.ToString())));
+
+                options.AddPolicy(UserRoles.PolicyEnum.AuthenticatedPolicy.ToString(), policy =>
+                policy.AddRequirements(new AuthorizeUser(oId, UserRoles.RoleEnum.Authenticated.ToString())));
+
+                options.AddPolicy(UserRoles.PolicyEnum.AnonymousPolicy.ToString(), policy =>
+                policy.AddRequirements(new AuthorizeUser(oId, UserRoles.RoleEnum.Anonymous.ToString())));
+
+                options.AddPolicy(UserRoles.PolicyEnum.AdminPolicy.ToString(), policy =>
+                policy.AddRequirements(new AuthorizeUser(oId, AdminRolesPolicy)));
+
+            });
+            services.AddSingleton<IAuthorizationHandler, AuthorizeUserHandler>();
             ConfigureCosmosDb(services);
 
             services.AddSwaggerGen(c =>
@@ -130,6 +163,25 @@ namespace Access2Justice.Api
                 c.SwaggerEndpoint(Configuration.GetValue<string>("Api:VirtualPath") + "/swagger/v1/swagger.json", "Access2Justice API");
             });
 
+        }
+
+        private string ValidateToken() //Need to pass token
+        {
+            string encryptedOid = string.Empty;
+            Guid oId = new Guid("00000000-0000-0000-8f8b-cbb21fe0448c"); //State Admin
+            //new Guid("cb09b65a-43a6-4525-8b45-ede2c319c75f"); //Global Admin
+            encryptedOid = EncryptString(oId.ToString());
+            return encryptedOid;
+        }
+
+        private string EncryptString(string input)
+        {
+            string encryptedId = input;
+            if (!string.IsNullOrEmpty(input))
+            {
+                encryptedId = EncryptionUtilities.GenerateSHA512String(input);
+            }
+            return encryptedId;
         }
     }
 }
