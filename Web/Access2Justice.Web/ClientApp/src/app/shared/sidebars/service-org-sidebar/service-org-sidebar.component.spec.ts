@@ -14,7 +14,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import { Subject } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
 
-fdescribe('Component:ServiceOrgSidebar', () => {
+describe('Component:ServiceOrgSidebar', () => {
 
   let component: ServiceOrgSidebarComponent;
   let fixture: ComponentFixture<ServiceOrgSidebarComponent>;

@@ -22,7 +22,7 @@ import { ILuisInput } from './search-results/search-results.model';
 import { NgForm } from '@angular/forms/src/directives/ng_form';
 import { Input } from '@angular/core/src/metadata/directives';
 
-fdescribe('SearchComponent', () => {
+describe('SearchComponent', () => {
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
   let router: RouterModule;
@@ -160,13 +160,6 @@ fdescribe('SearchComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should check search term entered in textbox', () => { 
-    const inputDe = fixture.debugElement.query(By.css('input[name="inputText"]'));
-    const inputEl = inputDe.nativeElement;
-    inputEl.value = 'searchText';
-    expect(inputEl.value).toEqual('searchText');
   });
 
   it('should assign respose to searchresult property when search method of search service called', () => {
