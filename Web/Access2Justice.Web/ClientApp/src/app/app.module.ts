@@ -16,6 +16,7 @@ import {
   TabsModule
 } from 'ngx-bootstrap';
 import { MsalModule } from '@azure/msal-angular';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 import { AppComponent } from './app.component';
 import { AboutComponent } from './about/about.component';
@@ -79,7 +80,8 @@ export const protectedResourceMap: [string, string[]][] = [['http://localhost:42
     CollapseModule.forRoot(),
     ModalModule.forRoot(),
     ProgressbarModule.forRoot(),
-    TabsModule.forRoot(),    
+    TabsModule.forRoot(),
+    NgxSpinnerModule,
     MsalModule.forRoot({
       clientID: 'f0d077e6-f293-4c01-9cfb-b8327735533d',
       authority:'https://login.microsoftonline.com/common/',

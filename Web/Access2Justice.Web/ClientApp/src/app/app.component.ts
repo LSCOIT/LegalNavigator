@@ -5,6 +5,8 @@ import { MapService } from './shared/map/map.service';
 import { MsalService } from '@azure/msal-angular';
 import { PersonalizedPlanService } from './guided-assistant/personalized-plan/personalized-plan.service';
 import { IUserProfile } from './shared/login/user-profile.model';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -22,7 +24,9 @@ export class AppComponent implements OnInit {
     private staticResourceService: StaticResourceService,
     private msalService: MsalService,
     private mapService: MapService,
-    private personalizedPlanService: PersonalizedPlanService) { }  
+    private personalizedPlanService: PersonalizedPlanService,
+    private spinner: NgxSpinnerService,
+    private router: Router) { }  
 
   createOrGetProfile() {    
     let userData = this.msalService.getUser();
@@ -43,11 +47,17 @@ export class AppComponent implements OnInit {
   }
 
   setStaticContentData() {
+    this.spinner.show();
     this.staticResourceService.getStaticContents()
-      .subscribe(response => {
-        this.staticContentResults = response;
-        this.global.setData(this.staticContentResults);       
-      });
+      .subscribe(
+        response => {
+          this.spinner.hide();
+          this.staticContentResults = response;
+          this.global.setData(this.staticContentResults);
+        }, error => {
+          this.spinner.hide();
+          this.router.navigate(['/error']);
+        });
   }
 
   ngOnInit() {    

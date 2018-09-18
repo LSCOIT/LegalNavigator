@@ -9,6 +9,8 @@ import { environment } from '../../../../environments/environment';
 import { PersonalizedPlanService } from '../../../guided-assistant/personalized-plan/personalized-plan.service';
 import { ActivatedRoute } from '@angular/router';
 import { Global } from '../../../global';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-search-results',
@@ -60,7 +62,9 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     private paginationService: PaginationService,
     private personalizedPlanService: PersonalizedPlanService,
     private global: Global,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    private spinner: NgxSpinnerService,
+    private router: Router) {
 
     if (sessionStorage.getItem("bookmarkedResource")) {
       this.route.data.map(data => data.cres)
@@ -306,12 +310,17 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     }
   }
 
-  searchResource(offset: number): void {    
+  searchResource(offset: number): void {
+    this.spinner.show();
     this.paginationService.searchByOffset(this.searchText, offset)
       .subscribe(response => {
+        this.spinner.hide();
         if (response != undefined) {
-          this.searchResults = response;          
+          this.searchResults = response;
         }
+      }, error => {
+        this.spinner.hide();
+        this.router.navigate(['/error']);
       });
   }
 
