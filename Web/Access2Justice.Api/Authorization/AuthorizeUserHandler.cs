@@ -42,10 +42,7 @@ namespace Access2Justice.Api.Authorization
             }
             else
             {
-                if (requirement.Role == UserRoles.RoleEnum.Anonymous.ToString())
-                {
                     context.Succeed(requirement);
-                }
             }
         }
 
