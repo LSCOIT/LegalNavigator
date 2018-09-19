@@ -53,7 +53,7 @@
         <div class="media-body">
           <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}</h4></a>
           <div class="print-only">{{applicationUrl+'/resource'+'/'+resource.id}}</div>
-          <p>{{resource.description}}</p>
+          <app-read-more [text]="resource.description" [maxLength]="240"></app-read-more>
         </div>
       </div>
       <div *ngIf="resource.resourceType === 'Organizations'" class="media">
@@ -63,7 +63,7 @@
         <div class="media-body">
           <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}, {{resource.type}}</h4></a>
           <div class="print-only">{{applicationUrl+'/resource'+'/'+resource.id}}</div>
-          <p>{{resource.description}}</p>
+          <app-read-more [text]="resource.description" [maxLength]="240"></app-read-more>
           <div class="org-content span-text">
             <div class="col-sm-4" *ngIf="resource.address.length > 0">
               <div class="media-left no-print">
@@ -91,7 +91,7 @@
         <div class="media-body">
           <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}</h4></a>
           <div class="print-only">{{applicationUrl+'/resource'+'/'+resource.id}}</div>
-          <p>{{resource.description}}</p>
+          <app-read-more [text]="resource.description" [maxLength]="240"></app-read-more>
         </div>
       </div>
       <div *ngIf="resource.resourceType === 'Forms' || resource.resourceType === 'Related Links'" class="media">
@@ -101,8 +101,10 @@
         <div class="media-body">
           <a [href]="resource.url"><h4 class="media-heading">{{resource.name}}</h4></a>
           <div class="print-only">{{resource.url}}</div>
-          <span class="glyphicon glyphicon-new-window no-print" aria-hidden="true"></span><span class="span-text no-print">External link</span>
-          <p>{{resource.description}}</p>
+          <div class="external-link">
+            <span class="glyphicon glyphicon-new-window no-print" aria-hidden="true"></span><span class="span-text no-print">External link</span>
+          </div>
+          <app-read-more [text]="resource.description" [maxLength]="240"></app-read-more>
         </div>
       </div>
       <div *ngIf="resource.resourceType === 'Topics'" class="media">
@@ -123,7 +125,7 @@
           <a [routerLink]="['/guidedassistant', resource.externalUrl]"><h4 class="media-heading">{{resource.name}}</h4></a>
           <div class="print-only">{{applicationUrl+'/guidedassistant'+'/'+resource.externalUrl}}</div>
           <div class="media-body">
-            <p>{{resource.description}}</p>
+            <app-read-more [text]="resource.description" [maxLength]="240"></app-read-more>
           </div>
         </div>
       </div>
