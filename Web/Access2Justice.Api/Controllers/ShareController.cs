@@ -1,12 +1,14 @@
 ﻿using Access2Justice.Api.Interfaces;
 using Access2Justice.Shared;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace Access2Justice.Api.Controllers
 {
-    [Produces("application/json")]
+	[Authorize(Policy = "AuthenticatedUserPolicy")]
+	[Produces("application/json")]
     [Route("api/[controller]")]
     public class ShareController : Controller
     {

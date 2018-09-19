@@ -1,11 +1,13 @@
 ﻿using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
 namespace Access2Justice.Api.Controllers
 {
+	[Authorize(Policy = "AuthenticatedUserPolicy")]
     [Produces("application/json")]
     public class UserProfileController : Controller
     {

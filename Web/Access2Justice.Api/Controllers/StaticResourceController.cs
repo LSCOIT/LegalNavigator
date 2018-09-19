@@ -1,11 +1,13 @@
 ﻿using System.Threading.Tasks;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Access2Justice.Api.Controllers
 {
-    [Produces("application/json")]
+	[Authorize(Policy = "AdminRolesPolicy")]
+	[Produces("application/json")]
     public class StaticResourceController : Controller
     {
         private readonly IStaticResourceBusinessLogic staticResourceBusinessLogic;
@@ -15,12 +17,13 @@ namespace Access2Justice.Api.Controllers
             this.staticResourceBusinessLogic = staticResourceBusinessLogic;
         }
 
-        /// <summary>
-        /// Get StaticResources by Location
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        [HttpPost]
+		/// <summary>
+		/// Get StaticResources by Location
+		/// </summary>
+		/// <param name="name"></param>
+		/// <returns></returns>
+	    [Authorize(Policy = "AnonymousPolicy")]
+		[HttpPost]
         [Route("api/staticresource/getstaticresources")]
         public async Task<IActionResult> GetStaticResourcesDataAsync([FromBody]Location location)
         {

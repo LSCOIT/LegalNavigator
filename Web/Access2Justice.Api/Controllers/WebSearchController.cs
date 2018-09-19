@@ -2,13 +2,15 @@
 using System.Globalization;
 using System.Threading.Tasks;
 using Access2Justice.Shared.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Access2Justice.Api.Controllers
 {
-    [Produces("application/json")]
+	[Authorize(Policy = "AnonymousPolicy")]
+	[Produces("application/json")]
     [Route("api/websearch")]
     public class WebSearchController : Controller
     {

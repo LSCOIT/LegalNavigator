@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Access2Justice.Api.Controllers
 {
-    //[Authorize(Policy = "AdminPolicy")]
+    [Authorize(Policy = "AnonymousPolicy")]
     [Produces("application/json")]
     public class TopicsResourcesController : Controller
     {
@@ -41,7 +41,6 @@ namespace Access2Justice.Api.Controllers
         /// </summary>
         /// <param name="parentTopicId"></param>
         /// <returns></returns> 
-        [Authorize(Policy = "GlobalAdminPolicy")]
         [Route("api/topics/getsubtopics")]
         [HttpPost]
         public async Task<IActionResult> GetSubTopics([FromBody]TopicInput topicInput)
@@ -223,7 +222,8 @@ namespace Access2Justice.Api.Controllers
         /// <summary>
         /// Create Resource Documents using upload
         /// </summary>
-        [HttpPost]
+		[Authorize(Policy = "AdminRolesPolicy")]
+		[HttpPost]
         [Route("api/topics/createresources/upload")]
         public async Task<IActionResult> CreateResources(IFormFile uploadedFile)
         {
@@ -232,10 +232,11 @@ namespace Access2Justice.Api.Controllers
             return Ok(resources);
         }
 
-        /// <summary>
-        /// Create Resource Document
-        /// </summary>
-        [HttpPost]
+		/// <summary>
+		/// Create Resource Document
+		/// </summary>
+		[Authorize(Policy = "AdminRolesPolicy")]
+		[HttpPost]
         [Route("api/upsertresourcedocument")]
         public async Task<IActionResult> UpserResourceDocument([FromBody]dynamic resource)
         {
@@ -243,10 +244,11 @@ namespace Access2Justice.Api.Controllers
             return Ok(resources);
         }
 
-        /// <summary>
-        /// Create Topic Documents using upload 
-        /// </summary>
-        [HttpPost]
+		/// <summary>
+		/// Create Topic Documents using upload 
+		/// </summary>
+		[Authorize(Policy = "AdminRolesPolicy")]
+		[HttpPost]
         [Route("api/topics/createtopics/upload")]
         public async Task<IActionResult> CreateTopics(IFormFile uploadedFile)
         {
@@ -255,11 +257,11 @@ namespace Access2Justice.Api.Controllers
             return Ok(topics);
         }
 
-        /// <summary>
-        /// Create Topic Document
-        /// </summary>
-        [Authorize(Policy = "StateAdminPolicy")]
-        [HttpPost]
+		/// <summary>
+		/// Create Topic Document
+		/// </summary>
+		[Authorize(Policy = "AdminRolesPolicy")]
+		[HttpPost]
         [Route("api/upserttopicdocument")]
         public async Task<IActionResult> UpsertTopicDocument([FromBody]dynamic topic)
         {

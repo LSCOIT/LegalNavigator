@@ -28,13 +28,14 @@ namespace Access2Justice.Api.Authorization
                     string[] roles = requirement.Role.Split(',');
                     foreach (var role in roles)
                     {
-                        if (result.RoleName == role)
+						if (result.RoleName == role || requirement.Role == UserRoles.RoleEnum.Anonymous.ToString()
+							)
                         {
                             context.Succeed(requirement);
                         }
                     }
                 }
-                else if (result.RoleName == requirement.Role)
+                else if (result.RoleName == requirement.Role || requirement.Role == UserRoles.RoleEnum.Anonymous.ToString())
                 {
                     context.Succeed(requirement);
                 }

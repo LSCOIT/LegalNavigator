@@ -1,11 +1,13 @@
 ﻿using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace Access2Justice.Api.Controllers
 {
-    [Produces("application/json")]
+	[Authorize(Policy = "AnonymousPolicy")]
+	[Produces("application/json")]
     [Route("api/search")]
     public class SearchController : Controller
     {

@@ -18,12 +18,13 @@ namespace Access2Justice.Api.Authorization
 
         public enum PolicyEnum
         {
-            AdminPolicy,
             GlobalAdminPolicy,
             StateAdminPolicy,
             DeveloperPolicy,
             AuthenticatedPolicy,
-            AnonymousPolicy
+            AnonymousPolicy,
+			AdminRolesPolicy,
+			AuthenticatedUserPolicy
         }
 
         public enum PermissionEnum

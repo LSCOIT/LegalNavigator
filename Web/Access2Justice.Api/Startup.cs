@@ -74,7 +74,11 @@ namespace Access2Justice.Api
                 var AdminRolesPolicy = UserRoles.RoleEnum.GlobalAdmin.ToString() + "," +
                 UserRoles.RoleEnum.StateAdmin.ToString();
 
-                options.AddPolicy(UserRoles.PolicyEnum.GlobalAdminPolicy.ToString(), policy =>
+				var AuthenticatedUserPolicy = UserRoles.RoleEnum.GlobalAdmin.ToString() + "," +
+				UserRoles.RoleEnum.StateAdmin.ToString() + "," +
+				UserRoles.RoleEnum.Authenticated.ToString();
+
+				options.AddPolicy(UserRoles.PolicyEnum.GlobalAdminPolicy.ToString(), policy =>
                 policy.AddRequirements(new AuthorizeUser(oId, UserRoles.RoleEnum.GlobalAdmin.ToString())));
 
                 options.AddPolicy(UserRoles.PolicyEnum.StateAdminPolicy.ToString(), policy =>
@@ -89,10 +93,13 @@ namespace Access2Justice.Api
                 options.AddPolicy(UserRoles.PolicyEnum.AnonymousPolicy.ToString(), policy =>
                 policy.AddRequirements(new AuthorizeUser(oId, UserRoles.RoleEnum.Anonymous.ToString())));
 
-                options.AddPolicy(UserRoles.PolicyEnum.AdminPolicy.ToString(), policy =>
+                options.AddPolicy(UserRoles.PolicyEnum.AdminRolesPolicy.ToString(), policy =>
                 policy.AddRequirements(new AuthorizeUser(oId, AdminRolesPolicy)));
 
-            });
+				options.AddPolicy(UserRoles.PolicyEnum.AuthenticatedUserPolicy.ToString(), policy =>
+				policy.AddRequirements(new AuthorizeUser(oId, AuthenticatedUserPolicy)));
+
+			});
             services.AddSingleton<IAuthorizationHandler, AuthorizeUserHandler>();
             ConfigureCosmosDb(services);
 

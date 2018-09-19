@@ -10,6 +10,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -161,7 +162,8 @@ namespace Access2Justice.Api.Controllers
             return Ok(curatedExperienceBusinessLogic.GetNextComponent(curatedExperience, component));
         }
 
-        [HttpGet("PersonalizedPlan")]
+		[Authorize(Policy = "AnonymousPolicy")]
+		[HttpGet("PersonalizedPlan")]
         public async Task<IActionResult> GeneratePersonalizedPlan([FromQuery] Guid curatedExperienceId, [FromQuery] Guid answersDocId)
         {
             var personalizedPlan = await personalizedPlanBusinessLogic.GeneratePersonalizedPlan(
@@ -174,6 +176,7 @@ namespace Access2Justice.Api.Controllers
             return Ok(personalizedPlan);
         }
 
+		[Authorize(Policy = "AuthenticatedUserPolicy")]
         [HttpPost("updateplan")]
         public async Task<IActionResult> UpdateUserProfileDocumentAsync([FromBody]UserPersonalizedPlan userPlan)
         {
@@ -193,7 +196,8 @@ namespace Access2Justice.Api.Controllers
             return HttpContext.Session.GetObjectAsJson<CuratedExperience>(id.ToString());
         }
 
-        [HttpGet]
+		[Authorize(Policy = "AnonymousPolicy")]
+		[HttpGet]
         [Route("getplandetails/{id}")]
         public async Task<IActionResult> GetPlanDetailsAsync(string id)
         {
@@ -201,7 +205,8 @@ namespace Access2Justice.Api.Controllers
             return Ok(actionPlans);
         }
 
-        [HttpGet]
+		[Authorize(Policy = "AnonymousPolicy")]
+		[HttpGet]
         [Route("getplan/{id}")]
         public async Task<IActionResult> GetPlanAsync(string id)
         {
