@@ -42,7 +42,7 @@ exports.config = {
         format: "json:./reports/json/cucumber_report.json",
         require: ["../../typeScript/stepdefinitions/*.js", "../../typeScript/support/*.js"],
         strict: true,
-        tags: "@SetLocation or @UpdateLocation",
+        tags: "@SetAndUpdateLocation",
     },
     onComplete: () => {
         reporter_1.Reporter.createHTMLReport();

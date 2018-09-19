@@ -1,6 +1,5 @@
-# Using http://a2jstageweb.azurewebsites.net/ because location implementation has been updated there
-
-Feature: Set an update location
+@SetAndUpdateLocation
+Feature: Set and update location
     As a user
     I need to set and update location
     So I can see resources relevant for my state
@@ -8,11 +7,16 @@ Feature: Set an update location
 @SetLocation
 Scenario: Set location on entry
     Given I am on the staged Access2Justice website
-    Then I am prompted to set my location
-    And I can see my location on the upper navigation bar
+    When I am prompted to set my location
+    And I enter 'Alaska' as my state name
+    Then I can see "Alaska" on the upper navigation bar
 
 @UpdateLocation
 Scenario: Update location
-    Then I can update my location by clicking on the Change button the upper navigation bar
+    Given I am on the staged Access2Justice website
+    When I click on the Change button
+    And I enter 'Hawaii' as my state name
+    Then I can see "Hawaii" on the upper navigation bar
+    
 
 
