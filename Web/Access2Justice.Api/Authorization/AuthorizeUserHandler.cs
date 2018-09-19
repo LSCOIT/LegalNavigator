@@ -28,8 +28,7 @@ namespace Access2Justice.Api.Authorization
                     string[] roles = requirement.Role.Split(',');
                     foreach (var role in roles)
                     {
-						if (result.RoleName == role || requirement.Role == UserRoles.RoleEnum.Anonymous.ToString()
-							)
+						if (result.RoleName == role || requirement.Role == UserRoles.RoleEnum.Anonymous.ToString())
                         {
                             context.Succeed(requirement);
                         }
@@ -40,7 +39,7 @@ namespace Access2Justice.Api.Authorization
                     context.Succeed(requirement);
                 }
             }
-            else
+            else if(string.IsNullOrEmpty(requirement.OId) && requirement.Role == UserRoles.RoleEnum.Anonymous.ToString())
             {
                     context.Succeed(requirement);
             }

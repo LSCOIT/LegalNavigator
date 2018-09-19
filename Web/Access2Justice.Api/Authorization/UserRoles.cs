@@ -9,7 +9,7 @@ namespace Access2Justice.Api.Authorization
     {
         public enum RoleEnum
         {
-            GlobalAdmin,
+            GlobalAdmin=1,
             StateAdmin,
             Developer,
             Authenticated,
@@ -18,28 +18,13 @@ namespace Access2Justice.Api.Authorization
 
         public enum PolicyEnum
         {
-            GlobalAdminPolicy,
+            GlobalAdminPolicy =1,
             StateAdminPolicy,
             DeveloperPolicy,
             AuthenticatedPolicy,
             AnonymousPolicy,
 			AdminRolesPolicy,
 			AuthenticatedUserPolicy
-        }
-
-        public enum PermissionEnum
-        {
-            Topics,
-            Resources,
-            Articles
-        }
-
-        public enum AccessTypeEnum
-        {
-            Read,
-            Create,
-            Modify,
-            Delete
         }
     }
 }
