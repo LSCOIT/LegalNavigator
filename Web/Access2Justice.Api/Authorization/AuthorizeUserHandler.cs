@@ -39,6 +39,13 @@ namespace Access2Justice.Api.Authorization
                     context.Succeed(requirement);
                 }
             }
+            else
+            {
+                if (requirement.Role == UserRoles.RoleEnum.Anonymous.ToString())
+                {
+                    context.Succeed(requirement);
+                }
+            }
         }
 
         public async Task<dynamic> GetUserRole(string oId)

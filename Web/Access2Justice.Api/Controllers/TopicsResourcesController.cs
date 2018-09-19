@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Access2Justice.Api.Controllers
 {
-    [Authorize(Policy = "AdminPolicy")]
+    //[Authorize(Policy = "AdminPolicy")]
     [Produces("application/json")]
     public class TopicsResourcesController : Controller
     {
@@ -258,6 +258,7 @@ namespace Access2Justice.Api.Controllers
         /// <summary>
         /// Create Topic Document
         /// </summary>
+        [Authorize(Policy = "StateAdminPolicy")]
         [HttpPost]
         [Route("api/upserttopicdocument")]
         public async Task<IActionResult> UpsertTopicDocument([FromBody]dynamic topic)
