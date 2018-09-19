@@ -13,12 +13,19 @@ const cucumber_1 = require("cucumber");
 const languageComponent_po_1 = require("../pages/languageComponent.po");
 const chai = require('chai').use(require('chai-as-promised'));
 const expect = chai.expect;
+let EC = protractor_1.protractor.ExpectedConditions;
 const language = new languageComponent_po_1.LanguageComponent();
+cucumber_1.setDefaultTimeout(30 * 1000);
 cucumber_1.When('I select a language from the navigation bar', () => __awaiter(this, void 0, void 0, function* () {
-    //await browser.wait($('#language-dropdown').isDisplayed());
+    // var isClickable = EC.elementToBeClickable($('#language-dropdown'));
+    // await browser.wait(isClickable, 30000); 
+    //expect($('.modal-content').isDisplayed()).to.eventually.be.false;
+    //await expect($('.black-overlay').isDisplayed()).to.eventually.be.false;
+    // let ans = await $('.black-overlay').isDisplayed();
+    // console.log("displayed: " + ans);
     yield protractor_1.browser.sleep(5000);
+    expect(protractor_1.$('#language-dropdown').isDisplayed()).to.eventually.be.true;
     yield protractor_1.$('#language-dropdown').click();
-    yield protractor_1.browser.sleep(2000);
     // let first =await $$("option").filter(function(elem) {
     //     return elem.getText().then(function(text) {
     //         return text === 'Chinese (Simplified)';

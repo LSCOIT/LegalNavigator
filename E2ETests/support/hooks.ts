@@ -9,7 +9,7 @@ import * as fs from "fs";
 import { browser } from "protractor";
 import { config } from "../config/config";
 
-BeforeAll({tags: 'not @SaveToProfileScenario', timeout: 100 * 1000}, async () => {
+BeforeAll({timeout: 100 * 1000}, async () => {
     await browser.get(config.baseUrl);
 });
 

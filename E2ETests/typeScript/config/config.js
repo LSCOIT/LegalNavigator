@@ -7,6 +7,8 @@
  * npm run webdriver-start (start selenium server)
  * npm run build (transpile .ts files to .js and store it in the typeScript folder)
  * npm test (launches Chrome Browser and runs the script)
+ *
+ * For Chrome setting cheat sheet: check https://github.com/dinuduke/Selenium-chrome-firefox-tips
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 const protractor_1 = require("protractor");
@@ -15,9 +17,15 @@ const jsonReports = process.cwd() + "/reports/json";
 exports.config = {
     seleniumAddress: "http://127.0.0.1:4444/wd/hub",
     SELENIUM_PROMISE_MANAGER: false,
-    baseUrl: "https://access2justicewebtesting.azurewebsites.net/",
+    baseUrl: "https://a2jstageweb.azurewebsites.net/",
     capabilities: {
         browserName: "chrome",
+        chromeOptions: {
+            args: ['--incognito'],
+            prefs: {
+                'profile.managed_default_content_settings.geolocation': 2
+            }
+        }
     },
     framework: "custom",
     frameworkPath: require.resolve("protractor-cucumber-framework"),
@@ -34,7 +42,7 @@ exports.config = {
         format: "json:./reports/json/cucumber_report.json",
         require: ["../../typeScript/stepdefinitions/*.js", "../../typeScript/support/*.js"],
         strict: true,
-        tags: "@SetLanguage",
+        tags: "@SetLocation or @UpdateLocation",
     },
     onComplete: () => {
         reporter_1.Reporter.createHTMLReport();

@@ -6,6 +6,8 @@
  * npm run webdriver-start (start selenium server)
  * npm run build (transpile .ts files to .js and store it in the typeScript folder)
  * npm test (launches Chrome Browser and runs the script)
+ * 
+ * For Chrome setting cheat sheet: check https://github.com/dinuduke/Selenium-chrome-firefox-tips
  */
 
 import * as path from "path";
@@ -19,10 +21,16 @@ export const config: Config = {
 
     SELENIUM_PROMISE_MANAGER: false,
 
-    baseUrl: "https://access2justicewebtesting.azurewebsites.net/",
+    baseUrl: "https://a2jstageweb.azurewebsites.net/",
 
     capabilities: {
         browserName: "chrome",
+        chromeOptions: {
+            args: ['--incognito'],
+            prefs: {
+                'profile.managed_default_content_settings.geolocation': 2
+            }
+        }
     },
 
     framework: "custom", // Use a custom framework adapter and set its relative path
@@ -43,7 +51,7 @@ export const config: Config = {
         format: "json:./reports/json/cucumber_report.json", // Output format
         require: ["../../typeScript/stepdefinitions/*.js", "../../typeScript/support/*.js"], // Require step definition files before executing features
         strict: true,   // Fail if there are any undefined or pending steps
-        tags: "@SetLanguage", // Only execute the features or scenario with those tags
+        tags: "@SetLocation or @UpdateLocation", // Only execute the features or scenario with those tags
     },
 
     onComplete: () => {

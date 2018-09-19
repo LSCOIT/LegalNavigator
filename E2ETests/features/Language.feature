@@ -10,4 +10,4 @@ Feature: Set an update location
 Scenario: Set preferred language
     Given I am on the staged Access2Justice website
     When I select a language from the navigation bar
-   # Then I should see my page translated
+    Then I should see my page translated

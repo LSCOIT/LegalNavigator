@@ -20,6 +20,7 @@ const login = new loginComponent_po_1.LoginComponent();
 // check https://github.com/cucumber/cucumber-js/blob/master/docs/support_files/timeouts.md
 cucumber_1.setDefaultTimeout(20 * 1000);
 cucumber_1.Given('I am on the Access2Justice website and I clicked the login tab', () => __awaiter(this, void 0, void 0, function* () {
+    yield protractor_1.browser.get('https://access2justicewebtesting.azurewebsites.net/');
     yield protractor_1.browser.sleep(2000); // Wait for page to load
     expect(protractor_1.browser.getTitle()).to.eventually.equal("Access to Justice");
     yield login.loginTab.click();

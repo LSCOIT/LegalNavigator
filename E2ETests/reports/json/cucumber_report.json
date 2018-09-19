@@ -1,22 +1,22 @@
 [
   {
-    "description": "    As a user\n    I need to set my language \n    So I can understand the contents of the website ",
+    "description": "    As a user\n    I need to set and update location\n    So I can see resources relevant for my state",
     "keyword": "Feature",
     "name": "Set an update location",
-    "line": 4,
+    "line": 3,
     "id": "set-an-update-location",
     "tags": [],
-    "uri": "features\\Language.feature",
+    "uri": "features\\Location.feature",
     "elements": [
       {
-        "id": "set-an-update-location;set-preferred-language",
+        "id": "set-an-update-location;set-location-on-entry",
         "keyword": "Scenario",
-        "line": 10,
-        "name": "Set preferred language",
+        "line": 9,
+        "name": "Set location on entry",
         "tags": [
           {
-            "name": "@SetLanguage",
-            "line": 9
+            "name": "@SetLocation",
+            "line": 8
           }
         ],
         "type": "scenario",
@@ -24,34 +24,36 @@
           {
             "arguments": [],
             "keyword": "Given ",
-            "line": 11,
+            "line": 10,
             "name": "I am on the staged Access2Justice website",
             "match": {
-              "location": "typeScript\\stepdefinitions\\location.steps.js:18"
+              "location": "typeScript\\stepdefinitions\\location.steps.js:19"
             },
             "result": {
               "status": "passed",
-              "duration": 1627000000
+              "duration": 4000000
             }
           },
           {
             "arguments": [],
-            "keyword": "When ",
-            "line": 12,
-            "name": "I select a language from the navigation bar",
+            "keyword": "Then ",
+            "line": 11,
+            "name": "I am prompted to set my location",
             "match": {
-              "location": "typeScript\\stepdefinitions\\language.steps.js:17"
+              "location": "typeScript\\stepdefinitions\\location.steps.js:22"
             },
             "result": {
               "status": "passed",
-              "duration": 7261000000
+              "duration": 6938000000
             }
           },
           {
-            "keyword": "After",
-            "hidden": true,
+            "arguments": [],
+            "keyword": "And ",
+            "line": 12,
+            "name": "I can see my location on the upper navigation bar",
             "match": {
-              "location": "typeScript\\support\\hooks.js:22"
+              "location": "typeScript\\stepdefinitions\\location.steps.js:32"
             },
             "result": {
               "status": "passed",
@@ -62,11 +64,69 @@
             "keyword": "After",
             "hidden": true,
             "match": {
+              "location": "typeScript\\support\\hooks.js:22"
+            },
+            "result": {
+              "status": "passed"
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
               "location": "node_modules\\protractor-cucumber-framework\\lib\\resultsCapturer.js:25"
             },
             "result": {
               "status": "passed",
-              "duration": 2000000
+              "duration": 1000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "set-an-update-location;update-location",
+        "keyword": "Scenario",
+        "line": 15,
+        "name": "Update location",
+        "tags": [
+          {
+            "name": "@UpdateLocation",
+            "line": 14
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 16,
+            "name": "I can update my location by clicking on the Change button the upper navigation bar",
+            "match": {
+              "location": "typeScript\\stepdefinitions\\location.steps.js:36"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2927000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "typeScript\\support\\hooks.js:22"
+            },
+            "result": {
+              "status": "passed"
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "node_modules\\protractor-cucumber-framework\\lib\\resultsCapturer.js:25"
+            },
+            "result": {
+              "status": "passed"
             }
           }
         ]

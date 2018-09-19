@@ -14,6 +14,7 @@ setDefaultTimeout(20 * 1000);
 
 Given('I am on the Access2Justice website and I clicked the login tab',
     async () => {  
+        await browser.get('https://access2justicewebtesting.azurewebsites.net/');
         await browser.sleep(2000);  // Wait for page to load
         expect(browser.getTitle()).to.eventually.equal("Access to Justice");
         await login.loginTab.click();
