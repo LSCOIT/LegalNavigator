@@ -39,7 +39,7 @@ namespace Access2Justice.Api.Authorization
                     context.Succeed(requirement);
                 }
             }
-            else if(string.IsNullOrEmpty(requirement.OId) && requirement.Role == UserRoles.RoleEnum.Anonymous.ToString())
+            else if(string.IsNullOrEmpty(requirement.OId) || requirement.Role == UserRoles.RoleEnum.Anonymous.ToString())
             {
                     context.Succeed(requirement);
             }
