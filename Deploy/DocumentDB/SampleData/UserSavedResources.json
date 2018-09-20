@@ -1,0 +1,713 @@
+[
+  {
+    "id": "1b6996c0-aa2b-492c-bb53-4fa0f92a9f00",
+    "resources": [
+      {
+        "itemId": "38bcfaac-ea4a-4951-bad9-6b173114cfaf",
+        "resourceType": "Articles",
+        "resourceDetails": {}
+      }
+    ]
+  },
+  {
+    "id": "8ccb6bcd-2e58-4e91-baf6-a759bedb17de",
+    "resources": [
+      {
+        "itemId": "1370ccb7-3f0a-4b0f-920e-2d12660fafa7",
+        "resourceType": "Topics",
+        "resourceDetails": {}
+      }
+    ]
+  },
+  {
+    "id": "f413a499-5d3c-400b-9c9d-e0c01cca0080",
+    "resources": [
+      {
+        "itemId": "38bcfaac-ea4a-4951-bad9-6b173114cfaf",
+        "resourceType": "Articles",
+        "resourceDetails": {}
+      }
+    ]
+  },
+  {
+    "id": "9e3ae844-56a2-4f68-97c5-e906316817e4",
+    "resources": [
+      {
+        "itemId": "1370ccb7-3f0a-4b0f-920e-2d12660fafa7",
+        "resourceType": "Topics",
+        "resourceDetails": {}
+      }
+    ]
+  },
+  {
+    "id": "86a45301-d891-47c4-ae98-2e2bf4a2d1e9",
+    "resources": [
+      {
+        "itemId": "1370ccb7-3f0a-4b0f-920e-2d12660fafa7",
+        "resourceType": "Topics",
+        "resourceDetails": {}
+      }
+    ]
+  },
+  {
+    "id": "893df1a4-298d-424e-a41e-8f91d781eb4c",
+    "resources": [
+      {
+        "itemId": "afbb8dc1-f721-485f-ab92-1bab60137e24",
+        "resourceType": "Organizations",
+        "resourceDetails": {}
+      },
+      {
+        "itemId": "5970328f-ceea-4903-b4dc-1ea559623582",
+        "resourceType": "Topics",
+        "resourceDetails": {}
+      },
+      {
+        "itemId": "Employee Handbook (revised 12-1-14)",
+        "resourceType": "WebResources",
+        "resourceDetails": {
+          "id": "https://api.cognitive.microsoft.com/api/v7/#WebPages.0",
+          "name": "Employee Handbook (revised 12-1-14)",
+          "url": "https://www.lsc.gov/sites/default/files/eweb/pdfs/OHRPolicies_Employee%20_Handbook%28Revised_12-01-14%29.pdf",
+          "urlPingSuffix": "DevEx,5088.1",
+          "isFamilyFriendly": true,
+          "displayUrl": "https://www.lsc.gov/sites/default/files/eweb/pdfs/OHRPolicies...",
+          "snippet": "Harassment Policy Section 2.3: Policy Prohibiting Harassment, Including, but Not Limited to Sexual Harassment Superceded 7-22-14; replaced by Equal Opportunity, Non-Discrimination, and Anti-Harassment Policy Section 4: Section 4.3 Exempt and Non-exempt Employees Superceded 12-1-14 Section 5: Section 5.4 Outside Employment Policy Superceded 12-1-14 Section 9.9: Employee Insurance Benefits",
+          "deepLinks": [
+            {
+              "name": "LSC",
+              "url": "https://www.lsc.gov/sites/lsc.gov/files/LSC/pdfs/3.%20%20Appendix%20II%20-%203-VAWA%20CONF_Sample%20Protective%20Order_2009.pdf",
+              "urlPingSuffix": "DevEx,5081.1",
+              "snippet": "Empowering Survivors: Legal Rights of Immigrant Victims of Sexual Assault, Legal Momentum VAWA Confidentiality: History, Purpose and Violations; VAWA Confidentiality Protections"
+            },
+            {
+              "name": "Legal Services Corporation",
+              "url": "https://www.lsc.gov/sites/default/files/LSC/pdfs/2.%20%20Appendix%20I%20-2%20-%20VAWA%20CONF_Sample%20Motion%20in%20Limine_2009.pdf",
+              "urlPingSuffix": "DevEx,5082.1",
+              "snippet": "unlawfully threaten deportation or criminal action to the Plaintiff, causing harassment, intimidating, unnecessary delays, and increases in cost of litigation to argue frivolous claims that are not proper statements of law. ... [INSERT COURT NAME AND JURISDICTION] _____ [INSERT NAME OF PLAINTIFFS] ) ) Plaintiffs, ) ) v. ) Civil Action No.[DOCKET NUMBER] ) [INSERT NAME OF DEFENDANTS] ) ) Defendants. ) _____) ORDER Having considered this matter on the Plaintiffs’ Motion in ..."
+            }
+          ],
+          "dateLastCrawled": "2018-08-08T20:25:00Z",
+          "fixedPosition": false,
+          "language": "en",
+          "isNavigational": true
+        }
+      },
+      {
+        "itemId": "Pro Bono Net - Official Site",
+        "resourceType": "WebResources",
+        "resourceDetails": {
+          "id": "https://api.cognitive.microsoft.com/api/v7/#WebPages.2",
+          "name": "Pro Bono Net - Official Site",
+          "url": "https://www.probono.net/",
+          "urlPingSuffix": "DevEx,5118.1",
+          "about": [
+            {
+              "name": "Pro Bono Net"
+            },
+            {
+              "name": "Pro Bono Net"
+            }
+          ],
+          "isFamilyFriendly": true,
+          "displayUrl": "https://www.probono.net",
+          "snippet": "probono.net is an online membership site for pro bono lawyers, legal aid attorneys, law professors and students, courts and other legal advocates across the country.",
+          "dateLastCrawled": "2018-08-14T18:18:00Z",
+          "fixedPosition": false,
+          "language": "en",
+          "isNavigational": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "8eee74bc-fb96-457c-9324-601ebc5232a2",
+    "resources": [
+      {
+        "itemId": "363909be-bb87-4dba-9743-7f3849f0b80d",
+        "resourceType": "Topics",
+        "resourceDetails": {}
+      }
+    ]
+  },
+  {
+    "id": "5b994424-465e-4cc5-b654-3e421ee0f077",
+    "resources": [
+      {
+        "itemId": "9c9a59cc-34ac-4a6f-80c4-90ac041abba7",
+        "resourceType": "Topics",
+        "resourceDetails": {}
+      },
+      {
+        "itemId": "bdc07e7a-1f06-4517-88d8-9345bb87c3cf",
+        "resourceType": "Topics",
+        "resourceDetails": {}
+      }
+    ]
+  },
+  {
+    "id": "9de9fb91-29dd-4d02-a4b6-82a3e8087870",
+    "resources": [
+      {
+        "itemId": "4f327a5b-9a79-466e-98be-2542eb28bb28",
+        "resourceType": "Articles",
+        "resourceDetails": {}
+      },
+      {
+        "itemId": "2cb89c44-f989-42ea-b038-419e5006e8ff",
+        "resourceType": "Articles",
+        "resourceDetails": {}
+      },
+      {
+        "itemId": "861d6e77-8510-4d10-904b-14da9e4e7039",
+        "resourceType": "Articles",
+        "resourceDetails": {}
+      },
+      {
+        "itemId": "9c9a59cc-34ac-4a6f-80c4-90ac041abba7",
+        "resourceType": "Topics",
+        "resourceDetails": {}
+      },
+      {
+        "itemId": "1d7fc811-dabe-4468-a179-c55075bd22b6",
+        "resourceType": "Topics",
+        "resourceDetails": {}
+      }
+    ]
+  },
+  {
+    "id": "ed70cf15-6ef3-4605-b8b8-3b0e6131ce5f",
+    "resources": [
+      {
+        "itemId": "38bcfaac-ea4a-4951-bad9-6b173114cfaf",
+        "resourceType": "Articles",
+        "resourceDetails": {}
+      }
+    ]
+  },
+  {
+    "id": "b7407529-fdaa-4b2f-9729-01f33acce7be",
+    "resources": [
+      {
+        "itemId": "afbb8dc1-f721-485f-ab92-1bab60137e24",
+        "resourceType": "Organizations",
+        "resourceDetails": {}
+      },
+      {
+        "itemId": "38bcfaac-ea4a-4951-bad9-6b173114cfaf",
+        "resourceType": "Articles",
+        "resourceDetails": {}
+      },
+      {
+        "itemId": "afb06470-47b7-44d6-82fd-0afc17168803",
+        "resourceType": "Topics",
+        "resourceDetails": {}
+      }
+    ]
+  },
+  {
+    "id": "1fb1b006-a8bc-487d-98a0-2457d9d9f78d",
+    "resources": [
+      {
+        "itemId": "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef",
+        "resourceType": "Topics",
+        "resourceDetails": {}
+      },
+      {
+        "itemId": "1d7fc811-dabe-4468-a179-c55075bd22b6",
+        "resourceType": "Topics",
+        "resourceDetails": {}
+      },
+      {
+        "itemId": "Homeless Experience Legal Protection (H.E.L.P.) - National ...",
+        "resourceType": "WebResources",
+        "resourceDetails": {
+          "id": "https://api.cognitive.microsoft.com/api/v7/#WebPages.3",
+          "name": "Homeless Experience Legal Protection (H.E.L.P.) - National ...",
+          "url": "https://www.probono.net/oppsguide/organization.517397-Homeless_Experience_Legal_Protection_HELP",
+          "urlPingSuffix": "DevEx,5129.1",
+          "isFamilyFriendly": true,
+          "displayUrl": "https://www.probono.net/oppsguide/organization.517397-Homeless...",
+          "snippet": "Homeless Experience Legal Protection (H.E.L.P.) ... but also provide notary services to certify copies of driver licenses, identification cards, ...",
+          "dateLastCrawled": "2018-08-07T12:28:00Z",
+          "fixedPosition": false,
+          "language": "en",
+          "isNavigational": false
+        }
+      },
+      {
+        "itemId": "Pro Bono Innovation Fund Grants 2016 | LSC - Legal ...",
+        "resourceType": "WebResources",
+        "resourceDetails": {
+          "id": "https://api.cognitive.microsoft.com/api/v7/#WebPages.9",
+          "name": "Pro Bono Innovation Fund Grants 2016 | LSC - Legal ...",
+          "url": "https://www.lsc.gov/pro-bono-innovation-fund-grants-2016",
+          "urlPingSuffix": "DevEx,5214.1",
+          "isFamilyFriendly": true,
+          "displayUrl": "https://www.lsc.gov/pro-bono-innovation-fund-grants-2016",
+          "snippet": "Pro Bono Innovation Fund Grants 2016. ... we awarded the Pro Bono Innovation Fund grants to 11 organizations to support ... suspended driver’s licenses, ...",
+          "dateLastCrawled": "2018-07-05T20:30:00Z",
+          "fixedPosition": false,
+          "language": "en",
+          "isNavigational": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "efc054d7-5b33-40a4-966a-216bd4e90cff",
+    "resources": [
+      {
+        "itemId": "afbb8dc1-f721-485f-ab92-1bab60137e24",
+        "resourceType": "Organizations",
+        "resourceDetails": {}
+      },
+      {
+        "itemId": "861d6e77-8510-4d10-904b-14da9e4e7039",
+        "resourceType": "Articles",
+        "resourceDetails": {}
+      },
+      {
+        "itemId": "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef",
+        "resourceType": "Topics",
+        "resourceDetails": {}
+      },
+      {
+        "itemId": "Login - probono.net/dc",
+        "resourceType": null,
+        "resourceDetails": {
+          "id": "https://api.cognitive.microsoft.com/api/v7/#WebPages.1",
+          "name": "Login - probono.net/dc",
+          "url": "https://www.probono.net/dc/bankruptcy/library/",
+          "urlPingSuffix": "DevEx,5117.1",
+          "isFamilyFriendly": true,
+          "displayUrl": "https://www.probono.net/dc/bankruptcy/library",
+          "snippet": "Members' Area Login Required This area is restricted to members of the site. If you are a member, login using the form below. If you are not a member, please join this area today and your membership will be reviewed shortly.",
+          "dateLastCrawled": "2018-07-26T09:21:00Z",
+          "fixedPosition": false,
+          "language": "en",
+          "isNavigational": false
+        }
+      },
+      {
+        "itemId": "Consumer Bankruptcy Assistance Project - Pro Bono Net",
+        "resourceType": null,
+        "resourceDetails": {
+          "id": "https://api.cognitive.microsoft.com/api/v7/#WebPages.4",
+          "name": "Consumer Bankruptcy Assistance Project - Pro Bono Net",
+          "url": "https://www.probono.net/oppsguide/organization.133222-Consumer_Bankruptcy_Assistance_Project",
+          "urlPingSuffix": "DevEx,5162.1",
+          "isFamilyFriendly": true,
+          "displayUrl": "https://www.probono.net/oppsguide/organization.133222-Consumer...",
+          "snippet": "CBAP was created by a group of consumer and business bankruptcy lawyers, member of the Eastern District of Pennsylvania Bankruptcy Conference, Community Legal Services, Inc., and the Philadelphia BAR Association's VIP as a Pennsylvania non-profit organization.",
+          "dateLastCrawled": "2018-09-01T07:41:00Z",
+          "fixedPosition": false,
+          "language": "en",
+          "isNavigational": false
+        }
+      },
+      {
+        "itemId": "Consumer Bankruptcy Assistance Project - Pro Bono Net",
+        "resourceType": null,
+        "resourceDetails": {
+          "id": "https://api.cognitive.microsoft.com/api/v7/#WebPages.4",
+          "name": "Consumer Bankruptcy Assistance Project - Pro Bono Net",
+          "url": "https://www.probono.net/oppsguide/organization.133222-Consumer_Bankruptcy_Assistance_Project",
+          "urlPingSuffix": "DevEx,5162.1",
+          "isFamilyFriendly": true,
+          "displayUrl": "https://www.probono.net/oppsguide/organization.133222-Consumer...",
+          "snippet": "CBAP was created by a group of consumer and business bankruptcy lawyers, member of the Eastern District of Pennsylvania Bankruptcy Conference, Community Legal Services, Inc., and the Philadelphia BAR Association's VIP as a Pennsylvania non-profit organization.",
+          "dateLastCrawled": "2018-09-01T07:41:00Z",
+          "fixedPosition": false,
+          "language": "en",
+          "isNavigational": false
+        }
+      },
+      {
+        "itemId": "Consumer Bankruptcy Assistance Project - Pro Bono Net",
+        "resourceType": null,
+        "resourceDetails": {
+          "id": "https://api.cognitive.microsoft.com/api/v7/#WebPages.4",
+          "name": "Consumer Bankruptcy Assistance Project - Pro Bono Net",
+          "url": "https://www.probono.net/oppsguide/organization.133222-Consumer_Bankruptcy_Assistance_Project",
+          "urlPingSuffix": "DevEx,5162.1",
+          "isFamilyFriendly": true,
+          "displayUrl": "https://www.probono.net/oppsguide/organization.133222-Consumer...",
+          "snippet": "CBAP was created by a group of consumer and business bankruptcy lawyers, member of the Eastern District of Pennsylvania Bankruptcy Conference, Community Legal Services, Inc., and the Philadelphia BAR Association's VIP as a Pennsylvania non-profit organization.",
+          "dateLastCrawled": "2018-09-01T07:41:00Z",
+          "fixedPosition": false,
+          "language": "en",
+          "isNavigational": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "4cc64efb-f12a-4600-b7d5-ee7f8a70e4f8",
+    "resources": [
+      {
+        "itemId": "afbb8dc1-f721-485f-ab92-1bab60137e24",
+        "resourceType": "Organizations",
+        "resourceDetails": {}
+      },
+      {
+        "itemId": "19a02209-ca38-4b74-bd67-6ea941d41518",
+        "resourceType": "Organizations",
+        "resourceDetails": {}
+      }
+    ]
+  },
+  {
+    "id": "7391ae4a-bcf5-4877-a7c3-fa4ff1ee9727",
+    "resources": [
+      {
+        "itemId": "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef",
+        "resourceType": "Topics",
+        "resourceDetails": {}
+      },
+      {
+        "itemId": "4f327a5b-9a79-466e-98be-2542eb28bb28",
+        "resourceType": "Articles",
+        "resourceDetails": {}
+      },
+      {
+        "itemId": "bdc07e7a-1f06-4517-88d8-9345bb87c3cf",
+        "resourceType": "Topics",
+        "resourceDetails": {}
+      }
+    ]
+  },
+  {
+    "id": "f928be93-f34e-43c5-a314-6b0b5ccf3a8c",
+    "resources": [
+      {
+        "itemId": "afbb8dc1-f721-485f-ab92-1bab60137e24",
+        "resourceType": "Organizations",
+        "resourceDetails": {}
+      }
+    ]
+  },
+  {
+    "id": "2c951460-262e-4b02-8703-5f75e01334d3",
+    "resources": [
+      {
+        "itemId": "dde9fe6f-24e4-45d1-a8d8-f59a0430e6a0",
+        "resourceType": "Organizations",
+        "resourceDetails": {}
+      }
+    ]
+  },
+  {
+    "id": "6f4f8b20-1140-4903-afcd-ddf35cec0cac",
+    "resources": [
+      {
+        "itemId": "afbb8dc1-f721-485f-ab92-1bab60137e24",
+        "resourceType": "Organizations",
+        "resourceDetails": {}
+      }
+    ]
+  },
+  {
+    "id": "1037763a-08ee-464e-b9e1-18308d6b832d",
+    "resources": [
+      {
+        "itemId": "afbb8dc1-f721-485f-ab92-1bab60137e24",
+        "resourceType": "Organizations",
+        "resourceDetails": {}
+      }
+    ]
+  },
+  {
+    "id": "55baabe5-72ca-4cc7-88e7-4d0c5b8277c3",
+    "resources": [
+      {
+        "itemId": "afbb8dc1-f721-485f-ab92-1bab60137e24",
+        "resourceType": "Organizations",
+        "resourceDetails": {}
+      }
+    ]
+  },
+  {
+    "id": "44663f09-323b-4ebd-b239-c5e994e68ddd",
+    "resources": [
+      {
+        "itemId": "bdc07e7a-1f06-4517-88d8-9345bb87c3cf",
+        "resourceType": "Topics",
+        "resourceDetails": {}
+      },
+      {
+        "itemId": "9c9a59cc-34ac-4a6f-80c4-90ac041abba7",
+        "resourceType": "Topics",
+        "resourceDetails": {}
+      }
+    ]
+  },
+  {
+    "id": "dd0ae4ad-0375-4700-bfc1-919932fef603",
+    "resources": [
+      {
+        "itemId": "bdc07e7a-1f06-4517-88d8-9345bb87c3cf",
+        "resourceType": "Topics",
+        "resourceDetails": {}
+      }
+    ]
+  },
+  {
+    "id": "7d538dad-9271-4856-8720-f01cdfaaea24",
+    "resources": [
+      {
+        "itemId": "afbb8dc1-f721-485f-ab92-1bab60137e24",
+        "resourceType": "Organizations",
+        "resourceDetails": {}
+      }
+    ]
+  },
+  {
+    "id": "868ddf01-8d41-4b64-9a51-747118cccd74",
+    "resources": [
+      {
+        "itemId": "afbb8dc1-f721-485f-ab92-1bab60137e24",
+        "resourceType": "Organizations",
+        "resourceDetails": {}
+      }
+    ]
+  },
+  {
+    "id": "83fed56c-0df8-41f5-9da6-d5ac595fe743",
+    "resources": [
+      {
+        "itemId": "afbb8dc1-f721-485f-ab92-1bab60137e24",
+        "resourceType": "Organizations",
+        "resourceDetails": {}
+      }
+    ]
+  },
+  {
+    "id": "6a76d24c-bc6c-4007-a07e-22188824280e",
+    "resources": [
+      {
+        "itemId": "afbb8dc1-f721-485f-ab92-1bab60137e24",
+        "resourceType": "Organizations",
+        "resourceDetails": {}
+      },
+      {
+        "itemId": "9c9a59cc-34ac-4a6f-80c4-90ac041abba7",
+        "resourceType": "Topics",
+        "resourceDetails": {}
+      }
+    ]
+  },
+  {
+    "id": "02cdd3c0-07aa-421a-8072-13aa30e58b64",
+    "resources": [
+      {
+        "itemId": "1c288784-b6c1-4b41-b540-a135ef0f645a",
+        "resourceType": "Videos",
+        "resourceDetails": {}
+      }
+    ]
+  },
+  {
+    "id": "88132b8c-5cea-4191-9e23-0d66120c6df1",
+    "resources": [
+      {
+        "itemId": "4f327a5b-9a79-466e-98be-2542eb28bb28",
+        "resourceType": "Articles",
+        "resourceDetails": {}
+      }
+    ]
+  },
+  {
+    "id": "94429998-1ffe-42dc-bc37-e4b5e2e2c2e0",
+    "resources": [
+      {
+        "itemId": "dde9fe6f-24e4-45d1-a8d8-f59a0430e6a0",
+        "resourceType": "Organizations",
+        "resourceDetails": {}
+      },
+      {
+        "itemId": "NYC Pro Bono Center",
+        "resourceType": "WebResources",
+        "resourceDetails": {
+          "id": "https://api.cognitive.microsoft.com/api/v7/#WebPages.8",
+          "name": "NYC Pro Bono Center",
+          "url": "https://www.probono.net/ny/nyc/",
+          "urlPingSuffix": "DevEx,5229.1",
+          "isFamilyFriendly": true,
+          "displayUrl": "https://www.probono.net/ny/nyc",
+          "snippet": "Join the NYC Pro Bono Center. Join our network of over 9,000 civil legal aid attorneys, law firms, private attorneys and law students, committed to our shared vision of equal access to justice for everyone. Subscribe to receive updates of volunteer and training opportunities. The NYC Pro Bono Center is a joint initiative of the Legal Aid Society, City Bar Justice Center and Pro Bono Net. New to pro bono?",
+          "dateLastCrawled": "2018-08-14T04:00:00Z",
+          "fixedPosition": false,
+          "language": "en",
+          "isNavigational": false
+        }
+      },
+      {
+        "itemId": "861d6e77-8510-4d10-904b-14da9e4e7039",
+        "resourceType": "Articles",
+        "resourceDetails": {}
+      }
+    ]
+  },
+  {
+    "id": "f6151c9f-441e-4770-8974-2476a6eb0ef4",
+    "resources": [
+      {
+        "itemId": "afbb8dc1-f721-485f-ab92-1bab60137e24",
+        "resourceType": "Organizations",
+        "resourceDetails": {}
+      },
+      {
+        "itemId": "afbb8dc1-f721-485f-ab92-1bab60137e24",
+        "resourceType": "Organizations",
+        "resourceDetails": {}
+      },
+      {
+        "itemId": "afbb8dc1-f721-485f-ab92-1bab60137e24",
+        "resourceType": "Organizations",
+        "resourceDetails": {}
+      }
+    ]
+  },
+  {
+    "id": "f17d3dff-c5e2-4e49-84f7-259e387fb082",
+    "resources": [
+      {
+        "itemId": "38bcfaac-ea4a-4951-bad9-6b173114cfaf",
+        "resourceType": "Articles",
+        "resourceDetails": {}
+      }
+    ]
+  },
+  {
+    "id": "3d24dab4-2014-4451-94b2-1c4e43630cff",
+    "resources": [
+      {
+        "itemId": "afbb8dc1-f721-485f-ab92-1bab60137e24",
+        "resourceType": "Organizations",
+        "resourceDetails": {}
+      }
+    ]
+  },
+  {
+    "id": "2a2b11b7-68d0-498c-94a3-e9b348140663",
+    "resources": [
+      {
+        "itemId": "dde9fe6f-24e4-45d1-a8d8-f59a0430e6a0",
+        "resourceType": "Organizations",
+        "resourceDetails": {}
+      }
+    ]
+  },
+  {
+    "id": "249c87de-f69b-4fbd-9006-d09efacf2f65",
+    "resources": [
+      {
+        "itemId": "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef",
+        "resourceType": "Topics",
+        "resourceDetails": {}
+      }
+    ]
+  },
+  {
+    "id": "c48e1099-cba3-41dd-8f1c-1a68738b0bce",
+    "resources": [
+      {
+        "itemId": "1370ccb7-3f0a-4b0f-920e-2d12660fafa7",
+        "resourceType": "Topics",
+        "resourceDetails": {}
+      }
+    ]
+  },
+  {
+    "id": "cd7f54a0-6b52-4cb1-a129-fad4a524fc73",
+    "resources": [
+      {
+        "itemId": "afbb8dc1-f721-485f-ab92-1bab60137e24",
+        "resourceType": "Organizations",
+        "resourceDetails": {}
+      },
+      {
+        "itemId": "dde9fe6f-24e4-45d1-a8d8-f59a0430e6a0",
+        "resourceType": "Organizations",
+        "resourceDetails": {}
+      },
+      {
+        "itemId": "09bfc91b-b912-d119-a5f0-1d815a9bcd7a",
+        "resourceType": "Organizations",
+        "resourceDetails": {}
+      }
+    ]
+  },
+  {
+    "id": "b71af837-ab0a-4034-96b4-6b8bb21fce0f",
+    "resources": [
+      {
+        "itemId": "afbb8dc1-f721-485f-ab92-1bab60137e24",
+        "resourceType": "Organizations",
+        "resourceDetails": {}
+      }
+    ]
+  },
+  {
+    "id": "ef0a3f05-8a2d-455a-816e-8c9c0ff5a32d",
+    "resources": [
+      {
+        "itemId": "afbb8dc1-f721-485f-ab92-1bab60137e24",
+        "resourceType": "Organizations",
+        "resourceDetails": {}
+      },
+      {
+        "itemId": "dde9fe6f-24e4-45d1-a8d8-f59a0430e6a0",
+        "resourceType": "Organizations",
+        "resourceDetails": {}
+      },
+      {
+        "itemId": "probono.net/ny",
+        "resourceType": "WebResources",
+        "resourceDetails": {
+          "id": "https://api.cognitive.microsoft.com/api/v7/#WebPages.1",
+          "name": "probono.net/ny",
+          "url": "https://www.probono.net/ny/",
+          "urlPingSuffix": "DevEx,5103.1",
+          "about": [
+            {
+              "name": "Pro Bono Net"
+            }
+          ],
+          "isFamilyFriendly": true,
+          "displayUrl": "https://www.probono.net/ny",
+          "snippet": "Join our community of attorneys, legal professionals and law students, united to help low-income and disadvantaged New Yorkers. Subscribe to receive updates of volunteer and training opportunities.",
+          "dateLastCrawled": "2018-08-02T04:38:00Z",
+          "fixedPosition": false,
+          "language": "en"
+        }
+      },
+      {
+        "itemId": "Getting Started - New York",
+        "resourceType": "WebResources",
+        "resourceDetails": {
+          "id": "https://api.cognitive.microsoft.com/api/v7/#WebPages.2",
+          "name": "Getting Started - New York",
+          "url": "https://www.probono.net/ny/getstarted/",
+          "urlPingSuffix": "DevEx,5117.1",
+          "isFamilyFriendly": true,
+          "displayUrl": "https://www.probono.net/ny/getstarted",
+          "snippet": "New York lawyers serving the public good. Search this site. Advanced Search",
+          "dateLastCrawled": "2018-08-04T09:12:00Z",
+          "fixedPosition": false,
+          "language": "en"
+        }
+      },
+      {
+        "itemId": "ca67982b-21dd-459c-8ea4-84315f5bcd70",
+        "resourceType": "Topics",
+        "resourceDetails": {}
+      },
+      {
+        "itemId": "1c288784-b6c1-4b41-b540-a135ef0f645a",
+        "resourceType": "Videos",
+        "resourceDetails": {}
+      }
+    ]
+  }]

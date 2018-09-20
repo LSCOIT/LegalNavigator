@@ -1,0 +1,3751 @@
+[
+  {
+    "id": "e1fdbbc6-d66a-4275-9cd2-2be84d303e12",
+    "name": "Family",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/family.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:03.4347799Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:03.4347823Z"
+  },
+  {
+    "id": "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef",
+    "name": "Divorce",
+    "overview": "Divorce is the legal process that officially ends a marriage between a husband and a wife.",
+    "quickLinks": [
+      {
+        "text": "Divorce - Hawaii State Judiciary",
+        "url": "www.courts.state.hi.us/self-help/divorce"
+      },
+      {
+        "text": "Facts About Getting a Divorce in Hawaii",
+        "url": "www.courts.state.hi.us/self-help/divorce/divorce_facts"
+      },
+      {
+        "text": "Divorce Forms",
+        "url": "http://www.courts.state.hi.us/self-help/divorce/forms/divorce_forms"
+      },
+      {
+        "text": "Attend or Watch the Divorce Law in Hawaii Seminar",
+        "url": "http://www.courts.state.hi.us/self-help/divorce/divorce_law_in_hawaii"
+      }
+    ],
+    "parentTopicId": [
+      {
+        "id": "e1fdbbc6-d66a-4275-9cd2-2be84d303e12"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "Divorce | Dissolution | Separation | Annulment | Official Separation | Divorce Decree | Divorce Papers | Dissolve a Marriage | Division | Breakup | Split | End a marriage",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/family.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:05.8282867Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:05.8282888Z"
+  },
+  {
+    "id": "bdc07e7a-1f06-4517-88d8-9345bb87c3cf",
+    "name": "Custody / Visitation",
+    "overview": "Custody and visitation have to do with the rights and responsibilities between parents for taking care of their children. These issues usually come up in separation and divorce cases.",
+    "quickLinks": [
+      {
+        "text": "Paternity - General Information",
+        "url": "http://ag.hawaii.gov/csea/paternity/"
+      },
+      {
+        "text": "Parental Guidelines for Separation",
+        "url": "http://ag.hawaii.gov/cpja/mcch/publications/just-in-case-family-separation/"
+      },
+      {
+        "text": "Child Custody FAQs",
+        "url": "https://www.nolo.com/legal-encyclopedia/child-custody-faq.html"
+      },
+      {
+        "text": "International Parental Child Abuduction",
+        "url": "https://travel.state.gov/content/travel/en/International-Parental-Child-Abduction.html"
+      }
+    ],
+    "parentTopicId": [
+      {
+        "id": "e1fdbbc6-d66a-4275-9cd2-2be84d303e12"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "Child Abuse | Child Custody | Paternity | Joint Custody | Legal Custody | Parenting Plan | Visitation | Parenting Time | Time-Share | Physical Custody | Sole Custody | Supervised Visitation | Unsupervised Visitation | Joint Physical Custody | Joint Legal Custody | Custodial Rights | Visitation Rights | Parent-child Visitation | Shared Parenting | Virtual Visitation | Custodial Parent | Non-custodial Parent | Custody Order | Custodial Order | Temporary Custody | Parenting Schedule | Guardianship |Overnights | Overnight Visits | 60 40 Child Custody | 50 50 Custody | Custody Agreement | Custody Plan | Custodial Party",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/family.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:06.8233855Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:06.8233873Z"
+  },
+  {
+    "id": "567d4bb8-a228-4281-b7af-8acc61b89754",
+    "name": "Domestic Violence",
+    "overview": "Domestic violence and emotional abuse are behaviors used in an intimate or dating relationship to control the other. Partners may be married or not; heterosexual or gay, lesbian or transgendered; living together, separated or dating. Some common examples are hitting, shoving, kicking, slapping, threatening to harm, throwing objects, scaring the other person, name-calling, andstalking. \n\nIf you are in immediate danger, call 911. For domestic violence assistance, call the Domestic Violence Action Center legal helpline at 808-531-3771 or 1-800-690-6200 (Toll-free). It is available between 8:30am-4:30pm Mon-Fri. \n\n\nFor 24/7 assistance call:\nOahu: 808-841-0822 or 808-526-2200 or 808-528-0606\nKauai: 808-245-6362\nMaui: 808-579-9581 or 808-873-8624\nLanai: 808-565-6700\nMolokai: 808-567-6888\nHawaii Island: 808-959-8864 or 808-322-7233\nNational hotline: 1-800-799-7233",
+    "quickLinks": [
+      {
+        "text": "Domestic Violence - What it is",
+        "url": "https://www.thehotline.org/is-this-abuse/abuse-defined/"
+      },
+      {
+        "text": "Family Court - Request a Protective Order",
+        "url": "http://www.courts.state.hi.us/self-help/protective_orders/family/family_court_protective_orders"
+      },
+      {
+        "text": "Family Court - What to do if Your Projective Order is Violated",
+        "url": "http://www.courts.state.hi.us/self-help/protective_orders/violations/order_violations"
+      },
+      {
+        "text": "Safety Planning Tips",
+        "url": "https://www.thehotline.org/help/path-to-safety/"
+      }
+    ],
+    "parentTopicId": [
+      {
+        "id": "e1fdbbc6-d66a-4275-9cd2-2be84d303e12"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "Domestic Violence | Dating Violence | Abuse | Violence | Name-calling | Emotional Abuse | Verbal Abuse | Temporary Restraining Order | TRO | Threats | Sexual Abuse | Physical Abuse | Protection Order | Financial Abuse | Stalking | Sexual Assault | Safety Plan | Emergency Shelter",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/family.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:07.7172147Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:07.7172165Z"
+  },
+  {
+    "id": "9c9a59cc-34ac-4a6f-80c4-90ac041abba7",
+    "name": "Adoption, Guardianship, and POA",
+    "overview": "If you are caring for someone else’s child and\nneed to make decisions for that child, or if\nsomeone is caring for your child and needs to\nmake decisions for your child, three common\noptions are an adoption; a guardianship; a power of attorney.",
+    "quickLinks": [
+      {
+        "text": "Hawaii Adoption",
+        "url": "https://adoptionnetwork.com/hawaii-adoption"
+      },
+      {
+        "text": "Hawaii Foster and Adoption Guidelines",
+        "url": "https://www.adoptuskids.org/adoption-and-foster-care/how-to-adopt-and-foster/state-information/hawaii"
+      },
+      {
+        "text": "Guardianship - How it Works",
+        "url": "https://www.nolo.com/legal-encyclopedia/how-guardianships-work-faq.html"
+      }
+    ],
+    "parentTopicId": [
+      {
+        "id": "e1fdbbc6-d66a-4275-9cd2-2be84d303e12"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "Adoption | Guardianship | Power of Attorney | Guardian | Resource Caregiver | Foster | Adoptive| Foster Child | Foster Parent | Foster System | Child Welfare System| Child Welfare | Fostering |Fosterage | Taking in | Adopting | Adoption Process | Legal Guardianship | Legal Guardian | Ward | Legal Custody | Physical Custody |Primary Caretaker | Guardianship of a minor | Caretaker of a child | Agent | Attorney-in-fact | Custody of a child | Power of Attorney for Child Care and Custody | POA for Child | POA | Power of Attorney for a Minor | Medical Power of Attorney for Child | Temporary Delegation of Parental Authority | Temporary Power of Attorney for Minor | Grandparent Power of Attorney | Legal Authority",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/topics/housing.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:09.4799037Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:09.4799055Z"
+  },
+  {
+    "id": "1d7fc811-dabe-4468-a179-c55075bd22b6",
+    "name": "Child support",
+    "overview": "Both the court and the Child Support Service Division (CSSD) have the authority to issue child support orders.  However, the child support orders come about in different ways.  The court must issue a child support order when it decides a parenting plan ( the custody and visitation arrangement)  for a child in a case involving divorce, dissolution, or custody between unmarried parents.  The CSSD issues an order when one parent requests child support because the parents have split up and the parent taking care of the child(ren) wants the other parent to pay support for the child.  Sometimes a parent will have a CSSD support order and then file a custody case in court later.  If the court issues a child support order that is different from the CSSD order, the court’s child support order takes priority and replaces the CSSD order.",
+    "quickLinks": [
+      {
+        "text": "Child Support",
+        "url": "http://courts.alaska.gov/shc/family/support.htm"
+      }
+    ],
+    "parentTopicId": [
+      {
+        "id": "4ccde566-4c8f-4f52-b698-7f6e16b5a01f"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "child support   |  arrears   |  back support   |  non-custodial parent   |  custodian   |  CSSD   |  Child Support Services Division   |  modify   |  modification   |  paying too much   |  paying too little   |  not paying    |  child support order   |  administrative order   |  withholding   |  income   |  deductions   |  calculate   |  calculation   |  primary   |  shared   |  divided   |  hybrid   |  impute   |  assign   |  unemployed   |  underemployed   |  child support guidelines affidavit    |  deadbeat   |  application for services   |  hardship   |  foregive",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/family.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:55:48.0300501Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:55:48.0300519Z"
+  },
+  {
+    "id": "cd69a76e-a571-47ef-9dcb-2072a8a81215",
+    "name": "Other family or children related issues",
+    "overview": "Information about issues that affect children",
+    "quickLinks": [
+      {
+        "text": "Missing Children Center Hawaii",
+        "url": "http://ag.hawaii.gov/cpja/mcch/"
+      },
+      {
+        "text": "Medicaid for Adults and Families",
+        "url": "http://humanservices.hawaii.gov/mqd/"
+      },
+      {
+        "text": "Help with Child Care",
+        "url": "http://humanservices.hawaii.gov/bessd/child-care-program/ccch-subsidies/"
+      },
+      {
+        "text": "Children's Justice Centers",
+        "url": "http://www.courts.state.hi.us/services/hawaii_childrens_justice_centers/about_the_justice_centers"
+      }
+    ],
+    "parentTopicId": [
+      {
+        "id": "e1fdbbc6-d66a-4275-9cd2-2be84d303e12"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "Child Abuse |Missing Child | Child Health Insurance |Benefits for Children| Money for Kids",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/family.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:11.4240502Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:11.424052Z"
+  },
+  {
+    "id": "e3bdf5d8-8755-46d9-b13b-e28546fcd27e",
+    "name": "Abuse & Harassment",
+    "overview": "parents’ gross monthly incomes.",
+    "quickLinks": null,
+    "parentTopicId": [],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/abuse.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:12.2906932Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:12.290695Z"
+  },
+  {
+    "id": "25a38c36-a032-436d-b88a-e129119bb218",
+    "name": "Domestic Violence",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "e3bdf5d8-8755-46d9-b13b-e28546fcd27e"
+      },
+      {
+        "id": "e3bdf5d8-8755-46d9-b13b-e28546fcd27e"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "Domestic Violence | Dating Violence | Abuse | Violence | Name-calling | Emotional Abuse | Verbal Abuse | Temporary Restraining Order | TRO | Threats | Sexual Abuse | Physical Abuse | Protection Order | Financial Abuse | Stalking | Sexual Assault | Safety Plan | Emergency Shelter",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/abuse.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:13.2207602Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:13.220762Z"
+  },
+  {
+    "id": "9abad050-9e35-4f20-b378-9e9722e27f43",
+    "name": "Public Assault",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "e3bdf5d8-8755-46d9-b13b-e28546fcd27e"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "Public Assault | Assault | Physical Assualt | Sexual Assault | Harassment | Sexual Harassment | Temporary Restraining Order | TRO |Battery",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/abuse.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:13.9710068Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:13.9710086Z"
+  },
+  {
+    "id": "2899f70e-0592-4268-8cbc-e3e6b627a145",
+    "name": "Child Abuse",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "e3bdf5d8-8755-46d9-b13b-e28546fcd27e"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "Child Abuse | Child Exploitation | Child Trafficking | Sex Trafficking | Child Neglect | Child Welfare |Child Labor",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/abuse.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:14.7395629Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:14.7395648Z"
+  },
+  {
+    "id": "4c51c863-901d-4364-aa6f-84cb6ed7fcd1",
+    "name": "Victims of Crime",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "e3bdf5d8-8755-46d9-b13b-e28546fcd27e"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "Sexual Assault | Human Trafficking | Sex Trafficking |Assault | Trafficking | Domestic Violence |Violence | Abuse | Forced Labor",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/abuse.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:15.5356451Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:15.535647Z"
+  },
+  {
+    "id": "17009182-caa5-4988-8aff-84c12c82343b",
+    "name": "Elder Abuse",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "e3bdf5d8-8755-46d9-b13b-e28546fcd27e"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "Elder Abuse | Family Violence | Elder Mistreatment | Elder Abuse and Neglect | Elder Neglect | Physical Abuse | Sexual Abuse | Emotional Abuse | Psychological Abuse | Abandonment | Financial Abuse",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/abuse.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:16.4474566Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:16.4474584Z"
+  },
+  {
+    "id": "ca67982b-21dd-459c-8ea4-84315f5bcd70",
+    "name": "Discrimination",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/discrimination.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:18.0037818Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:18.0037836Z"
+  },
+  {
+    "id": "24006fdd-c031-42d0-bcdf-287cdbb60f1e",
+    "name": "Housing Discrimination",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "ca67982b-21dd-459c-8ea4-84315f5bcd70"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "Housing Discrimination | Disability | Discrimination | Emotional Support Animal | Service Animal | Service Dog | Fair Housing",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/discrimination.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:18.9511297Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:18.9511315Z"
+  },
+  {
+    "id": "558d0173-9ae8-45e8-aa9e-76eee1e9a994",
+    "name": "Violation of my rights",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "ca67982b-21dd-459c-8ea4-84315f5bcd70"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/discrimination.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:20.1516414Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:20.1516435Z"
+  },
+  {
+    "id": "399f1751-54d6-4c27-8cdb-8c84a9e88384",
+    "name": "Job Discrimination",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "ca67982b-21dd-459c-8ea4-84315f5bcd70"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/discrimination.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:20.8883771Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:20.888379Z"
+  },
+  {
+    "id": "7d905920-0793-4cb1-8749-0b586125653d",
+    "name": "Disability-Related Discrimination",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "ca67982b-21dd-459c-8ea4-84315f5bcd70"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/discrimination.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:21.5512655Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:21.5512673Z"
+  },
+  {
+    "id": "40a6333f-fe42-43a5-9ecd-840e230c68aa",
+    "name": "Public Benefits",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/public_benefits.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:22.2336695Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:22.2336713Z"
+  },
+  {
+    "id": "983af86a-f761-4c7f-806e-0cce1837ece9",
+    "name": "Social Security benefits",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "40a6333f-fe42-43a5-9ecd-840e230c68aa"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/public_benefits.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:22.9003331Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:22.9003349Z"
+  },
+  {
+    "id": "8054fc62-5a58-4455-b4dc-f52b47f2c7bf",
+    "name": "State welfare (cash benefits and food stamps)",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "40a6333f-fe42-43a5-9ecd-840e230c68aa"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/public_benefits.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:23.5881108Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:23.5881127Z"
+  },
+  {
+    "id": "48bc3790-7a64-488a-ade8-ece1cd76992e",
+    "name": "Unemployment benefits",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "40a6333f-fe42-43a5-9ecd-840e230c68aa"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/public_benefits.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:24.258405Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:24.2584068Z"
+  },
+  {
+    "id": "80309c1b-62b3-4730-b15d-01cc38cf26b0",
+    "name": "Health Benefits",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "40a6333f-fe42-43a5-9ecd-840e230c68aa"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/public_benefits.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:24.9214607Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:24.9214626Z"
+  },
+  {
+    "id": "082f881f-239b-4246-8665-d576cce337e5",
+    "name": "Other Public Benefits Related Issues",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "40a6333f-fe42-43a5-9ecd-840e230c68aa"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/public_benefits.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:25.6478727Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:25.647875Z"
+  },
+  {
+    "id": "62a93f03-8234-46f1-9c35-b3146a96ca8b",
+    "name": "Housing",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/housing.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:26.3490287Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:26.3490305Z"
+  },
+  {
+    "id": "1370ccb7-3f0a-4b0f-920e-2d12660fafa7",
+    "name": "Problems with my landlord, home, or apartment",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "62a93f03-8234-46f1-9c35-b3146a96ca8b"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/housing.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:27.0203404Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:27.0203424Z"
+  },
+  {
+    "id": "363909be-bb87-4dba-9743-7f3849f0b80d",
+    "name": "Public Housing & Section 8",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "62a93f03-8234-46f1-9c35-b3146a96ca8b"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/housing.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:27.7167524Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:27.7167542Z"
+  },
+  {
+    "id": "d901286b-afe1-4df3-9f81-1f29b977b493",
+    "name": "Foreclosure",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "62a93f03-8234-46f1-9c35-b3146a96ca8b"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/housing.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:28.9202953Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:28.9202971Z"
+  },
+  {
+    "id": "6d7dd07a-c454-4b67-b2d8-ed844dadabd9",
+    "name": "Housing Assistance",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "62a93f03-8234-46f1-9c35-b3146a96ca8b"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/housing.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:29.9376479Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:29.9376497Z"
+  },
+  {
+    "id": "64605152-fc6f-434b-88fe-2cde2d8b88ea",
+    "name": "Other Housing Issues & Information",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "62a93f03-8234-46f1-9c35-b3146a96ca8b"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/housing.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:31.0177136Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:31.0177159Z"
+  },
+  {
+    "id": "5970328f-ceea-4903-b4dc-1ea559623582",
+    "name": "Money & Debt",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/money_debt.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:31.7563681Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:31.75637Z"
+  },
+  {
+    "id": "6c1491f3-915d-4e1e-858f-0084759df946",
+    "name": "Debt Collection",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "5970328f-ceea-4903-b4dc-1ea559623582"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/money_debt.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:32.5270339Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:32.5270356Z"
+  },
+  {
+    "id": "ddfa11d8-37ac-474e-8f8c-c1d11c0506a1",
+    "name": "Bankruptcy",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "5970328f-ceea-4903-b4dc-1ea559623582"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/money_debt.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:33.2661192Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:33.266121Z"
+  },
+  {
+    "id": "0d19ea59-7782-43bd-8372-588633a3d067",
+    "name": "Student Loans & Financial Aid",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "5970328f-ceea-4903-b4dc-1ea559623582"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/money_debt.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:33.9714653Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:33.9714671Z"
+  },
+  {
+    "id": "ae1a1dea-a0c4-420f-94f4-fab7b242656f",
+    "name": "A Car I bought",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "5970328f-ceea-4903-b4dc-1ea559623582"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/money_debt.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:34.8268949Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:34.8268974Z"
+  },
+  {
+    "id": "1177dd90-bb20-427a-8804-08f696ac233e",
+    "name": "Foreclosure",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "5970328f-ceea-4903-b4dc-1ea559623582"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/money_debt.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:35.5103668Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:35.5103686Z"
+  },
+  {
+    "id": "2a88363e-e05d-42bb-bb77-ba785d10b862",
+    "name": "Taxes",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "5970328f-ceea-4903-b4dc-1ea559623582"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/money_debt.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:36.2034416Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:36.2034434Z"
+  },
+  {
+    "id": "650d6049-3bb5-494a-8456-8d962478a86a",
+    "name": "Wage Theft",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "5970328f-ceea-4903-b4dc-1ea559623582"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/money_debt.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:36.8795406Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:36.8795423Z"
+  },
+  {
+    "id": "9d76f043-014a-4884-8a90-52493022f935",
+    "name": "Other Money or Consumer issues",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "5970328f-ceea-4903-b4dc-1ea559623582"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/money_debt.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:37.5491035Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:37.5491053Z"
+  },
+  {
+    "id": "afb06470-47b7-44d6-82fd-0afc17168803",
+    "name": "Seniors & Life Planning",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/seniors_life_planning.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:38.2171892Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:38.2171909Z"
+  },
+  {
+    "id": "8f6aeeeb-d72a-4c31-b5d8-28ec608e136a",
+    "name": "Financial and Medical planning",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "afb06470-47b7-44d6-82fd-0afc17168803"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/seniors_life_planning.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:38.9041255Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:38.9041273Z"
+  },
+  {
+    "id": "34bb308c-66f0-450b-99df-6da5323e9fe1",
+    "name": "Legal Guardianship",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "afb06470-47b7-44d6-82fd-0afc17168803"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/seniors_life_planning.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:39.5914516Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:39.5914534Z"
+  },
+  {
+    "id": "4f334507-8453-44d2-98ac-fbbe7d435670",
+    "name": "Wills & Trusts",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "afb06470-47b7-44d6-82fd-0afc17168803"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/seniors_life_planning.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:40.2574225Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:40.2574243Z"
+  },
+  {
+    "id": "1dc9879e-bb66-4ff7-8705-cadd2f6398c7",
+    "name": "Public Benefits",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "afb06470-47b7-44d6-82fd-0afc17168803"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/seniors_life_planning.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:40.9462902Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:40.946292Z"
+  },
+  {
+    "id": "fcf9548f-7386-4b1d-8074-57edeb877480",
+    "name": "Health Coverage & Care",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "afb06470-47b7-44d6-82fd-0afc17168803"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/seniors_life_planning.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:41.6402511Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:41.6402536Z"
+  },
+  {
+    "id": "0f037c4a-7343-4141-839c-8c3ccc0a9e38",
+    "name": "Elder Abuse",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "afb06470-47b7-44d6-82fd-0afc17168803"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/seniors_life_planning.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:42.3140307Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:42.3140325Z"
+  },
+  {
+    "id": "f7dfb678-ab11-4bbf-b928-e26243cb6f06",
+    "name": "Other Seniors & Life Planning Issues",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "afb06470-47b7-44d6-82fd-0afc17168803"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/seniors_life_planning.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:43.0178197Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:43.0178215Z"
+  },
+  {
+    "id": "df5e95f5-186f-4a95-acac-e06143a5cc66",
+    "name": "Government Records & Documents",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/govt_records_docs.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:44.7659098Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:44.7659116Z"
+  },
+  {
+    "id": "a7f28f2f-6779-4c9b-b13f-4de5ba960036",
+    "name": "Vital Records and Identifying Documents",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "df5e95f5-186f-4a95-acac-e06143a5cc66"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/govt_records_docs.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:45.7612754Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:45.7612786Z"
+  },
+  {
+    "id": "d3e1b824-34de-41bf-be9b-4465f3ed9ccd",
+    "name": "Name Changes",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "df5e95f5-186f-4a95-acac-e06143a5cc66"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/govt_records_docs.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:46.5155568Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:46.5155586Z"
+  },
+  {
+    "id": "22263a17-0b7c-4311-8d34-9ab94f1e7dd9",
+    "name": "Civil Traffic Tickets and Bench Warrants",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "df5e95f5-186f-4a95-acac-e06143a5cc66"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/govt_records_docs.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:47.2666007Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:47.2666024Z"
+  },
+  {
+    "id": "0531db68-81da-432a-9da8-d433287e23f1",
+    "name": "Individual Rights",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/individual_rights.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:47.9579672Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:47.9579697Z"
+  },
+  {
+    "id": "d8050b73-66a3-4cc9-b6d1-048af02ec3b1",
+    "name": "Violation of my rights",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "0531db68-81da-432a-9da8-d433287e23f1"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/individual_rights.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:48.6341758Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:48.6341776Z"
+  },
+  {
+    "id": "58c56ab4-3f08-4d20-8f9d-0086f909a1f8",
+    "name": "Health Care Rights",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "0531db68-81da-432a-9da8-d433287e23f1"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/individual_rights.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:49.3621105Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:49.3621123Z"
+  },
+  {
+    "id": "c0fd73e5-9d94-4d90-bf63-1263dc68cd1b",
+    "name": "Protection from Abuse and Harassment",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "0531db68-81da-432a-9da8-d433287e23f1"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/individual_rights.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:50.0507301Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:50.0507318Z"
+  },
+  {
+    "id": "1708d80c-f6c6-4056-87ad-e0e1e39c4e69",
+    "name": "Protecting my Identity",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "0531db68-81da-432a-9da8-d433287e23f1"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/individual_rights.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:50.7444836Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:50.7444854Z"
+  },
+  {
+    "id": "c2b09fbc-df87-4a80-b160-b00afd0e7bb8",
+    "name": "Worker’s Rights",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "0531db68-81da-432a-9da8-d433287e23f1"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/individual_rights.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:51.4576958Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:51.4576976Z"
+  },
+  {
+    "id": "7e245ce0-8b09-4aa0-b618-ba879a8284f5",
+    "name": "Native Rights",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/native_rights.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:52.1498982Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:52.1499009Z"
+  },
+  {
+    "id": "2ace47b5-b3f1-4c00-ae5e-eaaf09958470",
+    "name": "Land Rights",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "7e245ce0-8b09-4aa0-b618-ba879a8284f5"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/native_rights.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:52.8231812Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:52.823183Z"
+  },
+  {
+    "id": "aa0e3be5-a117-4c45-9edf-977067e57787",
+    "name": "Other Native Hawaiian Issues",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "7e245ce0-8b09-4aa0-b618-ba879a8284f5"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/native_rights.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:53.5188459Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:53.5188476Z"
+  },
+  {
+    "id": "1e969120-4c8d-422e-b7d3-668c36b8a785",
+    "name": "Native Hawaiian Health Issues",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "7e245ce0-8b09-4aa0-b618-ba879a8284f5"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/native_rights.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:54.1983875Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:54.1983894Z"
+  },
+  {
+    "id": "eed4d835-feb0-446a-b821-1b21ec691b2e",
+    "name": "Immigration",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/immigration.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:54.8869011Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:54.8869029Z"
+  },
+  {
+    "id": "35358dca-881e-4a9b-9e79-13c4cfa5b940",
+    "name": "Victims of Crime",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "eed4d835-feb0-446a-b821-1b21ec691b2e"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/immigration.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:55.5954744Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:55.5954774Z"
+  },
+  {
+    "id": "8c2684b5-8ef0-49fc-b217-bb0bef7fba4b",
+    "name": "Green Cards \n(Visas and green cards)",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "eed4d835-feb0-446a-b821-1b21ec691b2e"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/immigration.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:56.3173894Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:56.3173912Z"
+  },
+  {
+    "id": "b68b16ab-b4b3-4224-bad1-8c05c392e354",
+    "name": "Becoming a U.S. Citizen \n(Citizenship)",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "eed4d835-feb0-446a-b821-1b21ec691b2e"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/immigration.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:57.0968393Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:57.0968413Z"
+  },
+  {
+    "id": "080ab904-bb78-4c2a-9438-8cc940efd8a8",
+    "name": "Deportation",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "eed4d835-feb0-446a-b821-1b21ec691b2e"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/immigration.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:57.8364547Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:57.8364565Z"
+  },
+  {
+    "id": "30898013-0c1e-4d6b-ab97-8fe298c5993d",
+    "name": "Immigrant Rights",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "eed4d835-feb0-446a-b821-1b21ec691b2e"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/immigration.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:58.5370689Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:58.5370707Z"
+  },
+  {
+    "id": "10fc6989-5a42-4350-879f-f2a97df6d4bc",
+    "name": "Arrival and Departure Records (I-94)",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "eed4d835-feb0-446a-b821-1b21ec691b2e"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/immigration.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:59.2119483Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:59.2119501Z"
+  },
+  {
+    "id": "6a1266b8-c7da-4671-8f26-12bdd5589ed2",
+    "name": "Veterans",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/veterans.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:53:59.8924889Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:53:59.8924909Z"
+  },
+  {
+    "id": "191d51b7-9b9f-4f74-82e7-c43d0fcea53d",
+    "name": "Compensation",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "6a1266b8-c7da-4671-8f26-12bdd5589ed2"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/veterans.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:54:00.6013391Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:54:00.6013409Z"
+  },
+  {
+    "id": "f89b201c-11b5-47cf-9a80-64dd9b2c937f",
+    "name": "Pension",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "6a1266b8-c7da-4671-8f26-12bdd5589ed2"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/veterans.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:54:01.2760796Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:54:01.2760814Z"
+  },
+  {
+    "id": "4ccde566-4c8f-4f52-b698-7f6e16b5a01f",
+    "name": "Family",
+    "overview": "Sometimes one side in the case does not follow the court order.  To get that person to comply, there are different options.  Generally the first step is to file a written request to the opposing party asking them to do what the order says by a specific date. Hopefully he/she will follow the order and you won't need to go back to court.  If he or she does not cooperate, the next step is to let the court know by filing a motion. The type of motion depends on the specifics of what the court ordered and what the opposing party did or didn't do about following the order. Your motion usually asks the court to issue an order telling the opposing party to do something specific.  There is a specific process to collect money that is ordered to be paid.",
+    "quickLinks": [
+      {
+        "text": "Enforcing Your Final Order",
+        "url": "http://courts.alaska.gov/shc/family/shcenforce.htm"
+      }
+    ],
+    "parentTopicId": [],
+    "resourceType": "Topics",
+    "keywords": "enforce |  comply |  violate  |  violation  |  follow the order |  won't follow the order |  noncompliance |  motion to enforce |  writ of assistance |  execute |  execution |",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/family.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:04.0658611Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:04.0658629Z"
+  },
+  {
+    "id": "0adcc4d1-4d40-4a6c-a7ed-a1c58b33bf10",
+    "name": "Divorce",
+    "overview": "A divorce is when a court ends the marriage of two people and divides their marital property and debts, orders a parenting plan when there are minor children and issues a child support order.  If both spouses agree on everything when they file, they may file for dissolution.  The end result is the same for a divorce or dissolution.",
+    "quickLinks": [
+      {
+        "text": "Ending Your Marriage - Filing for Divorce or Dissolution",
+        "url": "http://courts.alaska.gov/shc/family/shcstart.htm"
+      }
+    ],
+    "parentTopicId": [
+      {
+        "id": "4ccde566-4c8f-4f52-b698-7f6e16b5a01f"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "Divorce | Divorce with Children | Divorce without Children | Dissolution | Dissolution with Children | Dissolution without Children | Divorce with Kids  |  Divorce without Kids |  Separation | Legal Separation | marital property and debt | spousal support | spousal maintenance | alimony | assets | debts | domestic violence | retirement | refinance | disclosure | no-fault  | end marriage",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/family.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:55:43.9563695Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:55:43.9563712Z"
+  },
+  {
+    "id": "6ab8f9e7-7429-40c5-ade8-c31e6e98b33b",
+    "name": "Custody / Visitation",
+    "overview": "After a court issues a parenting plan or custody order, there could be a change of circumstances by one or both parents or the children that require modifying the parenting plan.  Also, the child support order may need to be modified if there is a change in the parenting plan or a change in one or both parents' incomes.  Parents can always modify the parenting plan by agreement but the court needs to find a change of circumstances to order a modification.  The court needs to modify the child support order if warranted.",
+    "quickLinks": [
+      {
+        "text": "Modifying Child Custody or Child Support",
+        "url": "http://courts.alaska.gov/shc/family/shcmodify.htm"
+      }
+    ],
+    "parentTopicId": [
+      {
+        "id": "4ccde566-4c8f-4f52-b698-7f6e16b5a01f"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "modify  |  modification  |  mod  | change  |  change of circumstances  |  substantial change of circumstances  |  child custody modificaion   |  child support  modification |  15%  |  change of custody  |  new job  |  lost my job  |  paying too much  |  not paying enough  |  moved  |  new job  |  in jail  |  isn't paying  |  incarcerated   |  no retroactive modification of child support  |  changed schedule  |  summer break  |  vacation  |  didn't return  |  won't send",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/family.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:02.7127578Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:02.7127595Z"
+  },
+  {
+    "id": "d984b27e-eba6-41b8-8725-464a01bfa4f1",
+    "name": "Topic name to be updated",
+    "overview": "If one spouse files a complaint for divorce, the other spouse needs to file a response which is called an answer within 20 days to participate in the divorce case.  If the other spouse does not file an answer, the spouse who started the divorce can ask the court to enter a default judgment which means the case will move ahead with the court considering only their requests.",
+    "quickLinks": [
+      {
+        "text": "Responding to a Complaint - Fiing Your Answer",
+        "url": "http://courts.alaska.gov/shc/family/answer.htm"
+      }
+    ],
+    "parentTopicId": [
+      {
+        "id": "4ccde566-4c8f-4f52-b698-7f6e16b5a01f"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "answer  | response | 20 days | counterclaim | afffirmative defense",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/family.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:55:45.3535706Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:55:45.3535724Z"
+  },
+  {
+    "id": "3cd9c903-d73c-44e7-8dda-1eae174ab710",
+    "name": "Domestic Violence",
+    "overview": "If you have a court case involving children such as a divorce or custody case between unmarried parents, it is important to understand that a history of domestic violence by one or both parents can impact the parenting plan that the court orders.  The law presumes that the parent who committed the domestic violence might not get custody and visitation unless he or she meets certain requirements. These may include completing a batterer’s intervention or substance abuse treatment program. To find domestic violence, the law does not require the existence of a protective order or criminal charges. The divorce or custody judge may ask about domestic violence.  If there has been domestic violence, talking to a lawyer can help you understand how this law will impact your case.",
+    "quickLinks": [
+      {
+        "text": "Domestic Violence and child custody",
+        "url": "http://courts.alaska.gov/shc/family/shcsafety.htm"
+      }
+    ],
+    "parentTopicId": [
+      {
+        "id": "4ccde566-4c8f-4f52-b698-7f6e16b5a01f"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "domestic violence | DV | DVPO| protective order | order of protection | protection order  | restraining  order |  no contact | domestic abuse | abuse | victim | perpetrator | batterer | no contact | stay away | violate | violation | shelter | medical bills | damage | advocate |  dissolve | stalking |  sexual assault   | harrass  | harrassment |threat | threaten | assault | hit | hurt | harm | choke | strangle | petitioner  | respondent  |  safe  |  unsafe  |  not safe   |  safety concern | danger | supervised visitation | batterer intervention | treatment | immediate danger | imminent danger  | emotion al abuse | physical abuse | sexual abuse | hurt pet | hurt dog | kill pet | broke in  |  DV presumption",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/family.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:55:46.0240818Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:55:46.0240854Z"
+  },
+  {
+    "id": "d824e9ca-800d-4f49-a1fc-a37e7c74b001",
+    "name": "Abuse & Harassment",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/abuse.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:55:50.5887476Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:55:50.5887495Z"
+  },
+  {
+    "id": "b4a7513b-de7a-4142-b31d-d57eb1503f20",
+    "name": "Other Family",
+    "overview": "After the paternity issue is resolved and the correct father is established, you can correct the birth certificate.  The Bureau of Vital Statitics is the agency that has forms that deal with birth certificates.",
+    "quickLinks": [
+      {
+        "text": "Birth Certificate",
+        "url": "http://courts.alaska.gov/shc/family/shcpaternity.htm#birth"
+      }
+    ],
+    "parentTopicId": [
+      {
+        "id": "4ccde566-4c8f-4f52-b698-7f6e16b5a01f"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "birth certificate | Bureau of Vital Statistics |correct father | wrong father",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/family.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:55:52.6298067Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:55:52.6298084Z"
+  },
+  {
+    "id": "33a906f9-3947-4924-851d-f136cd03223c",
+    "name": "Topic name to be updated",
+    "overview": "A formal trial is the way a trial traditionally happens.  Both sides present their arguments about what they want the judge to order and introduce supporting evidence.  There is a specific order to how the trial happens, including how witnesses are questioned and evidence introduced.  Everyone needs to follow the Rules of Evidence and understand the process of questioning witnesses including direct exam, cross-exam and redirect exam.  After hearing all of the evidence, the judge will make a decision.",
+    "quickLinks": [
+      {
+        "text": "Formal Trials",
+        "url": "http://courts.alaska.gov/shc/family/shctrial-formal.htm"
+      }
+    ],
+    "parentTopicId": [
+      {
+        "id": "4ccde566-4c8f-4f52-b698-7f6e16b5a01f"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "formal trial  |  Rules of Evidence  |  witnesses  |  testimony  |  exhibits  |  objection  |  overruled  |  sustained  |   direct exam  |  cross exam  |  redirect  |  direct examination  |  cross examination   |  rebuttal witness",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/family.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:55:57.4708187Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:55:57.4708206Z"
+  },
+  {
+    "id": "103281dd-8bdd-4bf7-9f6d-e32157978930",
+    "name": "Domestic Violence",
+    "overview": "A domestic violence protective order is a court order that prohibits someone from committing domestic violence against another person and often includes provisions to have no contact and stay away from their home, work place, school or other specified locations.  There is a process to request a protective order that involves filing a petition to request either a 20-day order  or a one-year order or commonly both types.  There is usually one or two hearings depending on whether both orders are requested.  If the court grants the orders, they will include restrictions on the other side, if they have children together may address temporary custody, visitation and child support and may address other financial issues such as paying medical bills or rent.",
+    "quickLinks": [
+      {
+        "text": "Domestic Violence Protective Order",
+        "url": "http://courts.alaska.gov/shc/shcdv.htm,"
+      }
+    ],
+    "parentTopicId": [
+      {
+        "id": "d824e9ca-800d-4f49-a1fc-a37e7c74b001"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "domestic violence |DV | DVPO| protective order | order of protection | protection order  | restraining order |ex parte |  ex parte hearing | ex parte order|20-day order | long term order | long-term protective order | 1-year order | emergency order | 72-hour order  | no contact order | domestic abuse | abuse | victim | perpetrator | batterer | no contact | stay away | household member | change | modify | modification | violate | violation | shelter | medical bills | damage | advocate | hearing | dismiss | dissolve | stalking |  sexual assault   | harrass  | harrassment |threat | threaten | assault | hit | hurt | harm | choke | strangle | petitioner  | respondent  | stalking or sexual assault protective order |  petition | 6-month order  |  safe  |  unsafe  |  not safe   |  safety concern | danger | supervised visitation | batterer intervention | treatment | immediate danger | imminent danger  | emotion al abuse | physical abuse | sexual abuse | hurt pet | hurt dog | kill pet | broke in  | medical bills  | advocate",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/abuse.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:06.2540429Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:06.2540447Z"
+  },
+  {
+    "id": "52e0dfc5-7a7d-435a-8cdf-82cd147524c1",
+    "name": "Child Abuse",
+    "overview": "The case is not over until the judge issues the final paperwork.  These documents are called Findings of Fact and Conclusions of Law and Final Decree and Judgment.  If there are children of the marriage, there will also be a parenting plan or custody and visitation plan and a child support order.  Sometimes the judge announces the decision at the end of the trial in the courtroom but the decision needs to be put in writing.  It is important to understand who is responsible to write up the final documents.  Usually the judge will write them up when people are representing themselves in the case.  If there are lawyers involved, the judge may ask one of the lawyers to write up the final documents according to what the judge said in court.  Sometimes the judge may ask one of the people representing themselves to write up the documents.  Before you leave the courtroom after the trial, make sure you understand what you are responsible to do, both to follow the order and to know if you are supposed to write up the final documents.",
+    "quickLinks": [
+      {
+        "text": "Finishing the Case",
+        "url": "http://courts.alaska.gov/shc/family/shcfinish.htm"
+      }
+    ],
+    "parentTopicId": [
+      {
+        "id": "d824e9ca-800d-4f49-a1fc-a37e7c74b001"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "final judgment  |  findings of fact and conclusions of law  |  decree  |  judgment  |  order  |  decision  |",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/abuse.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:07.4075638Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:07.4075655Z"
+  },
+  {
+    "id": "dbfe0703-def1-4ab4-9a22-8d3b9c484bbb",
+    "name": "Victims of Crime",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "d824e9ca-800d-4f49-a1fc-a37e7c74b001"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/abuse.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:08.0831817Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:08.0831836Z"
+  },
+  {
+    "id": "402016be-0219-48f1-b273-6bc3479c0249",
+    "name": "Elder Abuse",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "d824e9ca-800d-4f49-a1fc-a37e7c74b001"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/abuse.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:08.7629252Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:08.7629272Z"
+  },
+  {
+    "id": "ef55be0b-d0b3-4731-a9b2-601a8a4a8621",
+    "name": "Discrimination",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/discrimination.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:09.4657985Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:09.4658002Z"
+  },
+  {
+    "id": "2da8e921-3183-4125-8ff9-d7fab02f1807",
+    "name": "Housing Discrimination",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "ef55be0b-d0b3-4731-a9b2-601a8a4a8621"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/discrimination.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:10.1373669Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:10.1373688Z"
+  },
+  {
+    "id": "85aefe91-19c3-4d72-b35b-2949e24642d2",
+    "name": "Violation of my rights",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "ef55be0b-d0b3-4731-a9b2-601a8a4a8621"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/discrimination.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:10.808106Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:10.8081078Z"
+  },
+  {
+    "id": "907bc80d-ebfc-44a3-becd-9660bcde6e31",
+    "name": "Job Discrimination",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "ef55be0b-d0b3-4731-a9b2-601a8a4a8621"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/discrimination.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:11.4846092Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:11.4846109Z"
+  },
+  {
+    "id": "6ced8e64-ac17-4a0e-9101-c461a3cb1650",
+    "name": "Disability-Related Discrimination",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "ef55be0b-d0b3-4731-a9b2-601a8a4a8621"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/discrimination.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:12.1578154Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:12.1578171Z"
+  },
+  {
+    "id": "653ce98a-5c05-49ff-bf4b-3a1875514212",
+    "name": "Public Benefits",
+    "overview": "Sometimes one or both people in the case are unhappy with the final decision in the case. It is important to understand that judges make decisions according to legal factors that are set out in the law and previous decisions from the Alaska Supreme Court that interpret the law. If you think the judge made a mistake that caused the outcome, you may have options to file something in court to address the issue. Be aware that just not liking the outcome does not mean the judge made a mistake. Also be aware that there are deadlines to take most actions and if you do not file the appropriate document in time, you may be unable to file it. Read below to see the options and timelines.",
+    "quickLinks": null,
+    "parentTopicId": [],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/public_benefits.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:12.8444416Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:12.8444435Z"
+  },
+  {
+    "id": "d0e330b4-9859-4b34-8156-3c3e1d61d374",
+    "name": "Social Security benefits",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "653ce98a-5c05-49ff-bf4b-3a1875514212"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/public_benefits.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:13.5435139Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:13.5435156Z"
+  },
+  {
+    "id": "7304b1c2-23f3-46f5-b8aa-eeb3f5e166b8",
+    "name": "State welfare (cash benefits and food stamps)",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "653ce98a-5c05-49ff-bf4b-3a1875514212"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/public_benefits.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:14.2198027Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:14.2198233Z"
+  },
+  {
+    "id": "2aa7aaad-055d-40eb-a92d-b6e183e4fbaf",
+    "name": "Unemployment benefits",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "653ce98a-5c05-49ff-bf4b-3a1875514212"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/public_benefits.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:14.8982282Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:14.89823Z"
+  },
+  {
+    "id": "8705aee9-d023-4295-b86a-6faff3c4a04c",
+    "name": "Health Benefits",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "653ce98a-5c05-49ff-bf4b-3a1875514212"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/public_benefits.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:15.5938002Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:15.593802Z"
+  },
+  {
+    "id": "82eb60cd-aca2-46ee-a6da-ddc7f7622ed1",
+    "name": "Other Public Benefits Related Issues",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "653ce98a-5c05-49ff-bf4b-3a1875514212"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/public_benefits.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:16.2849393Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:16.2849411Z"
+  },
+  {
+    "id": "d12fab20-cff9-4fe0-aae6-a6e89632f1be",
+    "name": "Housing",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/housing.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:16.9658266Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:16.9658284Z"
+  },
+  {
+    "id": "edecaccb-6247-4bcb-88c0-b9480e19db08",
+    "name": "Problems with my landlord, home, or apartment",
+    "overview": "In Alaska, if a tenant is not paying rent or violating the terms of the lease, the landlord may bring an action to evict the tenant from the property.  This is called an eviction or FED (forcible, entry and detainer).  There are legal requirements that the landlord must follow according to the law.  The tenant can assert defenses if the landlord violated the law.  There is a court process to evict a tenant that has two stages:  the eviction hearing to remove the tenant from the propertty and the damages stage where the landlord can ask the court for money if the tenant damaged the property or didn't pay the rent.",
+    "quickLinks": [
+      {
+        "text": "Evictions",
+        "url": "http://courts.alaska.gov/shc/housing.htm"
+      }
+    ],
+    "parentTopicId": [
+      {
+        "id": "d12fab20-cff9-4fe0-aae6-a6e89632f1be"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "eviction | FED | forcible entry and detainer | damages | nonpayment| | rent| security deposit| lease| lease agreement  |  term| month to month | year lease | first month| last month| payment| landlord| tenant | tenancy  |  housing| apartment| storage | locks| heat| section 8 |  housing voucher| habitablility | violate | kick out | move out | leave | stuff | property | utilities | didn't return |didn't give back | kept my stuff | kept my property | roommate | notice  |  Notice to Quit  |  termination  |  eviction hearing  |  damages trial   |  summons  |  possession   |  house  |  change lock  |   unpaid rent  |  premises  |  Uniform Residential Landlord And Tenant Act   |  failure to pay rent  |  violation of lease agreement  |  dwelling  |  intentional damage  | ordinary wear and tear  |  illegal use of the premises  |  nonpayment of utilities   |  notice on front door  |  owner   |  Judgment for Possession  |  Writ of Assistance   |  cure the problem  |  back rent  |  return of personal property   |  failed to maintain fit premises  |  fair rental value  |  unlawfully removed or exclused  |  breach  |  retaliation  |  payment   |  repaiirs  |  restore essential services   |  clean  |  cleaning   |  unlawful entry   |  habitable dwelling  |  damages to premises",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/housing.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:17.6603858Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:17.6603875Z"
+  },
+  {
+    "id": "fc4c7c80-37e8-4410-bbb4-72953b47a015",
+    "name": "Public Housing & Section 8",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "d12fab20-cff9-4fe0-aae6-a6e89632f1be"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/housing.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:18.5826023Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:18.5826092Z"
+  },
+  {
+    "id": "a58daf58-a42c-4fc7-9245-b9e3c98831ae",
+    "name": "Foreclosure",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "d12fab20-cff9-4fe0-aae6-a6e89632f1be"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/housing.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:19.3322097Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:19.3322114Z"
+  },
+  {
+    "id": "f7bc4523-8045-4ed4-997f-c57e390bf2f2",
+    "name": "Housing Assistance",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "d12fab20-cff9-4fe0-aae6-a6e89632f1be"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/housing.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:20.0062927Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:20.0062945Z"
+  },
+  {
+    "id": "18889747-8aea-486a-86d6-8e656def08fd",
+    "name": "Other Housing Issues & Information",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "d12fab20-cff9-4fe0-aae6-a6e89632f1be"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/housing.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:20.7048418Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:20.7048436Z"
+  },
+  {
+    "id": "fa41c4d6-8649-48bf-b05c-fbaee8065691",
+    "name": "Money & Debt",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/money_debt.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:21.3989118Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:21.3989136Z"
+  },
+  {
+    "id": "b3e0c00c-4d8e-4d81-b5b5-f7acd44e0cca",
+    "name": "Debt Collection",
+    "overview": "In Alaska a person or entity who is owed money can sue the person who owes the money in court.  There are two kinds of cases to sue someone for a debt:  small claims and a civil case to collect a debt.  There are different court rules for each type of case and a $10,000 limit on the amount someone can sue for in a small claims case.  Small claims cases use informal rules and civil cases to collect a debt use formal rules of civil procedure and evidence.",
+    "quickLinks": [
+      {
+        "text": "Small Claims and Debt Collection",
+        "url": "https://public.courts.alaska.gov/web/forms/docs/sc-100.pdf"
+      }
+    ],
+    "parentTopicId": [
+      {
+        "id": "fa41c4d6-8649-48bf-b05c-fbaee8065691"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "small claims| debt collection | collect a debt | creditor| debtor| collections| collect| collection agency| owe| insufficient funds| bounced check | pay| payment plan| debt| contract| bill| invoice| medical bill| credit card| credit union| bank| financial institution| bill collector| harass| negotiate| settle| offer to pay| loan | terms | notice | offer",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/money_debt.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:22.0888428Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:22.0888445Z"
+  },
+  {
+    "id": "5a1a316d-f336-4370-8366-215565fa9834",
+    "name": "Bankruptcy",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "fa41c4d6-8649-48bf-b05c-fbaee8065691"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/money_debt.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:22.7893468Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:22.7893485Z"
+  },
+  {
+    "id": "dcf25e3c-2ccd-4e2f-8a7f-78ed8b21ab34",
+    "name": "Student Loans & Financial Aid",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "fa41c4d6-8649-48bf-b05c-fbaee8065691"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/money_debt.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:23.4700984Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:23.4701001Z"
+  },
+  {
+    "id": "ab4837f5-ee01-45a1-9921-e8783ce8dbfa",
+    "name": "A Car I bought",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "fa41c4d6-8649-48bf-b05c-fbaee8065691"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/money_debt.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:24.1577321Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:24.1577338Z"
+  },
+  {
+    "id": "cca3c950-539b-4e99-8abf-db79c2648d1d",
+    "name": "Foreclosure",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "fa41c4d6-8649-48bf-b05c-fbaee8065691"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/money_debt.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:24.8370584Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:24.8370602Z"
+  },
+  {
+    "id": "b6e56b37-49d7-40c3-b5b1-ec428f90fa15",
+    "name": "Taxes",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "fa41c4d6-8649-48bf-b05c-fbaee8065691"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/money_debt.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:25.5162509Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:25.5162527Z"
+  },
+  {
+    "id": "34d1636c-5e45-4015-b0b5-276cf573c26b",
+    "name": "Wage Theft",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "fa41c4d6-8649-48bf-b05c-fbaee8065691"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/money_debt.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:26.2005118Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:26.2005451Z"
+  },
+  {
+    "id": "eb8c3f1d-5acc-4f16-b090-9ab1a957c34e",
+    "name": "Other Money or Consumer issues",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "fa41c4d6-8649-48bf-b05c-fbaee8065691"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/money_debt.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:26.8873994Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:26.8874012Z"
+  },
+  {
+    "id": "df5de470-531a-40a0-a489-02ea20cfd93f",
+    "name": "Seniors & Life Planning",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/seniors_life_planning.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:27.5718926Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:27.5718948Z"
+  },
+  {
+    "id": "a93a6d2b-12d3-4526-9cd9-871329a04c43",
+    "name": "Financial and Medical planning",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "df5de470-531a-40a0-a489-02ea20cfd93f"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/seniors_life_planning.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:28.3425131Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:28.3425157Z"
+  },
+  {
+    "id": "Legal Guardianship  8d6f08b3-ec10-4a24-8f8d-b5abb5a45583",
+    "name": "Legal Guardianship",
+    "overview": "In Alaska, there is a court process called guardianship to appoint another person to make decisions when someone lacks capacity to make decisions themselves.  There is also a process called conservatorship to appoint someone to deal with the finances when someone is having trouble managing their money.  A full guardian has powers to make all decisions for another person including about their finances.  There are some limits on the types of decisions a guardian may make.",
+    "quickLinks": [
+      {
+        "text": "Guardianship and Conservatorship",
+        "url": "http://courts.alaska.gov/shc/guardian-conservator/index.htm"
+      }
+    ],
+    "parentTopicId": [
+      {
+        "id": "df5de470-531a-40a0-a489-02ea20cfd93f"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "guardianship | conservatorship | guardian | conservator | ward | protected person | lacks capacity | incapacity | petition | decision-making | decisions | court visitor | medical expert | public guardian | annual report | letters of guardianship | letters of conservatorship | guardianship plan | implementation report | rep payee | representative payee | Social Security | VA benefits | veteran's benefits | APA | Adult Public Assistance | respondent | petitioner | power of attorney | trust | Miller Trust | qualified income trust | QIT | trustee | interested parties | advanced directive | health care | living situation | assisted living | commingle | assets | report | reporting | three year review | three year report | bank accounts | bank statements | living will | native stock | native allotment | evaluation | exam | senior | elder | old | care coordinator | dementia | Alzheimers | TBI | traumatic brain injury | stroke | addiction | mental illness | mentally ill | can't take care of herself | can't take care of himself | doctor | physician | psychiatrist | psych eval | psychological evaluation | tests | evaluation | diagnosis | hospitalized | can't deal with money | can't manage money | giving money away | forgets everything | forgets | forgetful | needs help  | can't remember | protection | protect | financial abuse | ripped off | doesn't pay bills | doesn't clean | doesn't eat | doesn't cook | can't take care of house | disarray | loses everything | gets lost | decline | going downhill | full guardian | partial guardian | temporary guardian | emergency",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/seniors_life_planning.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:29.1121343Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:29.1121361Z"
+  },
+  {
+    "id": "6e0e9284-7092-4504-bb73-1441eaedccb2",
+    "name": "Topic name to be updated",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "df5de470-531a-40a0-a489-02ea20cfd93f"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/seniors_life_planning.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:30.0827698Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:30.0827735Z"
+  },
+  {
+    "id": "8271c526-2e52-4576-8033-ad135b7f67b7",
+    "name": "Public Benefits",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "df5de470-531a-40a0-a489-02ea20cfd93f"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/seniors_life_planning.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:30.7831341Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:30.7831359Z"
+  },
+  {
+    "id": "3ba1d282-54ed-4ec4-8fde-c2299167e2de",
+    "name": "Health Coverage & Care",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "df5de470-531a-40a0-a489-02ea20cfd93f"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/seniors_life_planning.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:31.4609157Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:31.4609175Z"
+  },
+  {
+    "id": "8af08211-aabf-449a-a175-efb4af16a17b",
+    "name": "Elder Abuse",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "df5de470-531a-40a0-a489-02ea20cfd93f"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/seniors_life_planning.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:32.1463909Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:32.1463927Z"
+  },
+  {
+    "id": "0b539714-e67d-4867-b7a6-d37ae8a1823c",
+    "name": "Other Seniors & Life Planning Issues",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "df5de470-531a-40a0-a489-02ea20cfd93f"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/seniors_life_planning.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:32.8290602Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:32.8290619Z"
+  },
+  {
+    "id": "0c3856b1-010a-4666-8294-5ef8e3c0c6f2",
+    "name": "Government Records & Documents",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/govt_records_docs.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:33.5239406Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:33.5239424Z"
+  },
+  {
+    "id": "182e2ded-9a67-493a-a2e7-66579bfe3b9e",
+    "name": "Vital Records and Identifying Documents",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "0c3856b1-010a-4666-8294-5ef8e3c0c6f2"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/govt_records_docs.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:34.2087638Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:34.2087656Z"
+  },
+  {
+    "id": "a3484396-1306-4d51-a6d2-3adfe5b89437",
+    "name": "Name Changes",
+    "overview": "In Alaska there is a court process and forms to change your name if you are an adult or a child.  For adults, you must follow the steps that notify the public of the new name and your current name by posting on the court's free legal notice website or another place if the court allows it.  If you are getting a divorce or dissolution, you can change your name to a maiden name through that case and do not need to file a separate name change case.  To change the name of a minor child, the process is more complex than for changing an adult's name.  The court must find a sufficient reason for the change  and either have both parents' consent or find good cause to move forward without the consent.",
+    "quickLinks": [
+      {
+        "text": "Changing Your Name",
+        "url": "http://courts.alaska.gov/shc/family/shcname.htm"
+      }
+    ],
+    "parentTopicId": [
+      {
+        "id": "0c3856b1-010a-4666-8294-5ef8e3c0c6f2"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "name change | change of name | new name | legal notice website | notice | post | publish | different name",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/govt_records_docs.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:34.8852288Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:34.8852308Z"
+  },
+  {
+    "id": "08b64e90-e3b2-48bd-853a-27dd53140946",
+    "name": "Civil Traffic Tickets and Bench Warrants",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "0c3856b1-010a-4666-8294-5ef8e3c0c6f2"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/govt_records_docs.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:35.5674906Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:35.5674923Z"
+  },
+  {
+    "id": "43f90b13-5368-496d-b0e1-972192b06d25",
+    "name": "Individual Rights",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/individual_rights.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:36.2617644Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:36.2617661Z"
+  },
+  {
+    "id": "a2214880-b9a1-469b-9184-ab59963979d6",
+    "name": "Violation of my rights",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "43f90b13-5368-496d-b0e1-972192b06d25"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/individual_rights.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:36.9399045Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:36.9399063Z"
+  },
+  {
+    "id": "95f4c89d-419c-41dd-ae75-e721a68c1b04",
+    "name": "Health Care Rights",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "43f90b13-5368-496d-b0e1-972192b06d25"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/individual_rights.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:37.6160387Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:37.6160404Z"
+  },
+  {
+    "id": "f083e705-ee20-49d0-b666-cd01af2c08db",
+    "name": "Protection from Abuse and Harassment",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "43f90b13-5368-496d-b0e1-972192b06d25"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/individual_rights.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:38.3126791Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:38.3126814Z"
+  },
+  {
+    "id": "5d2cebb0-a95a-4f11-b5f1-a2c5df0c6453",
+    "name": "Protecting my Identity",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "43f90b13-5368-496d-b0e1-972192b06d25"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/individual_rights.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:39.0044368Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:39.0044386Z"
+  },
+  {
+    "id": "98e53063-80ab-4842-8099-a959465b45e8",
+    "name": "Worker’s Rights",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "43f90b13-5368-496d-b0e1-972192b06d25"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/individual_rights.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:39.6932997Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:39.6933016Z"
+  },
+  {
+    "id": "52e66ae8-6230-4755-9e4f-c9834475d695",
+    "name": "Native Rights",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/native_rights.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:40.3903467Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:40.3903484Z"
+  },
+  {
+    "id": "f0ba9a94-36b1-4393-aa11-fa0d60171b2d",
+    "name": "Land Rights",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "52e66ae8-6230-4755-9e4f-c9834475d695"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/native_rights.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:41.0658392Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:41.0658409Z"
+  },
+  {
+    "id": "0778b461-4634-4030-9034-0439f7c71f1b",
+    "name": "Other Native Hawaiian Issues",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "52e66ae8-6230-4755-9e4f-c9834475d695"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/native_rights.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:41.7524475Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:41.7524493Z"
+  },
+  {
+    "id": "7d2aae13-79d9-46a0-90a8-eb56273b4b26",
+    "name": "Native Hawaiian Health Issues",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "52e66ae8-6230-4755-9e4f-c9834475d695"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/native_rights.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:42.4327033Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:42.432705Z"
+  },
+  {
+    "id": "33e272fd-14d8-4361-b9c3-fee94de1f93c",
+    "name": "Immigration",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/immigration.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:43.1147962Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:43.114798Z"
+  },
+  {
+    "id": "4a8aa2f3-8a73-4b5c-b2f9-4c46dbb299c5",
+    "name": "Victims of Crime",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "33e272fd-14d8-4361-b9c3-fee94de1f93c"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/immigration.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:43.8156884Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:43.815691Z"
+  },
+  {
+    "id": "d0aab90b-7f4e-4961-bdb3-9184c93421ab",
+    "name": "Green Cards \n(Visas and green cards)",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "33e272fd-14d8-4361-b9c3-fee94de1f93c"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/immigration.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:44.5030916Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:44.5030934Z"
+  },
+  {
+    "id": "c25501df-0843-49c5-91a8-eb802d31c21d",
+    "name": "Becoming a U.S. Citizen \n(Citizenship)",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "33e272fd-14d8-4361-b9c3-fee94de1f93c"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/immigration.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:45.1978121Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:45.1978147Z"
+  },
+  {
+    "id": "2a497e77-037c-4036-9f51-96ffe467b834",
+    "name": "Deportation",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "33e272fd-14d8-4361-b9c3-fee94de1f93c"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/immigration.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:45.8778691Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:45.8778709Z"
+  },
+  {
+    "id": "008afba9-e200-4882-82e0-047445a8c5d2",
+    "name": "Immigrant Rights",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "33e272fd-14d8-4361-b9c3-fee94de1f93c"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/immigration.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:46.5774637Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:46.5774654Z"
+  },
+  {
+    "id": "bba8666d-89d7-4cb0-a203-75fbf02890fa",
+    "name": "Arrival and Departure Records (I-94)",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "33e272fd-14d8-4361-b9c3-fee94de1f93c"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/immigration.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:47.2695513Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:47.2695531Z"
+  },
+  {
+    "id": "601b3064-3b75-433a-a27e-5d1d5f7b00f5",
+    "name": "Veterans",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/veterans.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:47.9733203Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:47.973322Z"
+  },
+  {
+    "id": "3ef01ed4-8c5e-4b9f-abec-eb7c366630ed",
+    "name": "Compensation",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "601b3064-3b75-433a-a27e-5d1d5f7b00f5"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/veterans.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:48.73211Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:48.7321117Z"
+  },
+  {
+    "id": "a5abe566-e0f2-47c0-8961-433ca40d6da8",
+    "name": "Pension",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "601b3064-3b75-433a-a27e-5d1d5f7b00f5"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/veterans.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:49.4484023Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:49.4484045Z"
+  },
+  {
+    "id": "aa87057e-a884-45f8-8072-68762fb13de9",
+    "name": "Other Veterans Issues",
+    "overview": "",
+    "quickLinks": null,
+    "parentTopicId": [
+      {
+        "id": "601b3064-3b75-433a-a27e-5d1d5f7b00f5"
+      }
+    ],
+    "resourceType": "Topics",
+    "keywords": "",
+    "location": [
+      {
+        "state": "Alaska",
+        "county": "",
+        "city": "",
+        "zipCode": ""
+      }
+    ],
+    "icon": "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/veterans.svg",
+    "createdBy": "Admin Import tool",
+    "createdTimeStamp": "2018-09-19T12:56:50.1233129Z",
+    "modifiedBy": "Admin Import tool",
+    "modifiedTimeStamp": "2018-09-19T12:56:50.1233146Z"
+  }]

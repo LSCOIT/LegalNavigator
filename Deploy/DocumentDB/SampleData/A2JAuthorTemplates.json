@@ -1,0 +1,1308 @@
+[
+  {
+    "id": "432e7473-02df-4807-8d45-39ed821c5eb1",
+    "title": "Personalized Plan",
+    "active": "true",
+    "header": "",
+    "hideHeaderOnFirstPage": "false",
+    "footer": "",
+    "hideFooterOnFirstPage": "false",
+    "rootNode": {
+      "tag": "a2j-template",
+      "state": {
+        "fontFamily": "times-new-roman",
+        "fontSize": "12",
+        "sectionCounter": "none",
+        "operator": "is-true",
+        "leftOperand": "",
+        "rightOperand": "",
+        "rightOperandType": "variable",
+        "hasConditionalLogic": "false"
+      },
+      "children": [
+        {
+          "tag": "a2j-rich-text",
+          "id": "cjk1e9dlt00013ab9twdop3z3",
+          "state": {
+            "userContent": "<p><strong>Personalized Plan</strong> for&nbsp;<a2j-variable name=\"Client first name TE\"></a2j-variable><a2j-variable name=\"Client last name TE\"></a2j-variable></p>\n",
+            "notes": ""
+          }
+        },
+        {
+          "tag": "a2j-conditional",
+          "id": "cjk1ea16g00033ab9muht5ke8",
+          "children": [
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk1ea16m00043ab9bys785en",
+                "children": [
+                  {
+                    "tag": "a2j-rich-text",
+                    "id": "cjk1ea6va00083ab9fai7ir8j",
+                    "state": {
+                      "userContent": "<p><u><strong>Motion to Modify</strong></u></p>\n\n<p>Step 1: File a motion to modify if there has been a change of circumstances. Learn more about modifying at&nbsp;<a href=\"http://courts.alaska.gov/shc/family/shcmodify.htm\">http://courts.alaska.gov/shc/family/shcmodify.htm</a></p>\n",
+                      "notes": ""
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk1ea16m00053ab94bq94g0z"
+              }
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk1ea16m00063ab9rj8ei7l4"
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk1ea16m00073ab9bnqitojd"
+            }
+          ],
+          "state": {
+            "operator": "is-true",
+            "elseClause": "false",
+            "leftOperand": "Alaskan motion to modify TF",
+            "rightOperand": "",
+            "leftOperandType": "variable",
+            "rightOperandType": "variable"
+          }
+        },
+        {
+          "tag": "a2j-conditional",
+          "id": "cjk1ei5zv00043ab8dc4xedct",
+          "children": [
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk1ei60200053ab82secqbj9",
+                "children": [
+                  {
+                    "tag": "a2j-rich-text",
+                    "id": "cjk1ejqzh00093ab8w74ydvat",
+                    "state": {
+                      "userContent": "<p><u><strong>Motion to Modify</strong></u></p>\n\n<p>The Motion and Affidavit for Post-Decree relief are used to request changes to a divorce or make sure the other side is followin gthe orders.&nbsp;</p>\n\n<p>Step 1: Read instructions on how to fill out a request for post-decree relief here:&nbsp;<a href=\"https://www.lawhelp.org/hi/resource/pre-and-post-decree-relief-forms-instructions?ref=zdt07\">https://www.lawhelp.org/hi/resource/pre-and-post-decree-relief-forms-instructions?ref=zdt07</a></p>\n\n<p>Step 2: Fill out the form and serve the other side with a copy.&nbsp;<a href=\"https://www.lawhelp.org/hi/resource/self-help-form-motion-for-post-decree-relief?ref=NKqSf\">https://www.lawhelp.org/hi/resource/self-help-form-motion-for-post-decree-relief?ref=NKqSf</a></p>\n\n<p>Either a family court clerk or a family court judge will sign the Order for Pre-Decree Relief depending on the types of relief being requested.&nbsp;</p>\n\n<p>Service Organizations in your communiyt that may be able to assist in filing a motion and affidavit for post-decree relief:&nbsp;</p>\n\n<ul>\n\t<li>VLSH</li>\n\t<li>LASH</li>\n\t<li>DVAC</li>\n\t<li>HOP Free Legal Answers</li>\n\t<li>HSBA Lawyer Referral Service&nbsp;</li>\n</ul>\n\n<p>&nbsp;</p>\n",
+                      "notes": ""
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk1ei60300063ab80rr4bt3j"
+              }
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk1ei60300073ab8b0jrobi4"
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk1ei60300083ab84wf4ue2q"
+            }
+          ],
+          "state": {
+            "operator": "is-true",
+            "elseClause": "false",
+            "leftOperand": "Hawaiian motion to modify TF",
+            "rightOperand": "",
+            "leftOperandType": "variable",
+            "rightOperandType": "variable"
+          }
+        },
+        {
+          "tag": "a2j-conditional",
+          "id": "cjk1jnrp800083ab83k7tmfkr",
+          "children": [
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk1jnrpe00093ab8drtlr6ik",
+                "children": [
+                  {
+                    "tag": "a2j-rich-text",
+                    "id": "cjk1jo84n000d3ab87dyz73qk",
+                    "state": {
+                      "userContent": "<p><u><strong>Motion and Affidavit for Post-Decree Relief</strong></u></p>\n\n<p>The Motion and Affidavit for Post-Decree relief are used to request changes to a divorce or make sure the other side is followin gthe orders.&nbsp;</p>\n\n<p>Step 1: Read instructions on how to fill out a request for post-decree relief here:&nbsp;<a href=\"https://www.lawhelp.org/hi/resource/pre-and-post-decree-relief-forms-instructions?ref=zdt07\">https://www.lawhelp.org/hi/resource/pre-and-post-decree-relief-forms-instructions?ref=zdt07</a></p>\n\n<p>Step 2: Fill out the form and serve the other side with a copy.&nbsp;<a href=\"https://www.lawhelp.org/hi/resource/self-help-form-motion-for-post-decree-relief?ref=NKqSf\">https://www.lawhelp.org/hi/resource/self-help-form-motion-for-post-decree-relief?ref=NKqSf</a></p>\n\n<p>Either a family court clerk or a family court judge will sign the Order for Pre-Decree Relief depending on the types of relief being requested.&nbsp;</p>\n\n<p>Service Organizations in your communiyt that may be able to assist in filing a motion and affidavit for post-decree relief:&nbsp;</p>\n\n<ul>\n\t<li>VLSH</li>\n\t<li>LASH</li>\n\t<li>DVAC</li>\n\t<li>HOP Free Legal Answers</li>\n\t<li>HSBA Lawyer Referral Service&nbsp;</li>\n</ul>\n\n<p>Links to &quot;<a href=\"https://www.lawhelp.org/hi/resource/modify-a-child-support-order?ref=Nmd8B\">How to Change a Child Support Order</a>&quot; and&nbsp;<a href=\"http://www.courts.state.hi.us/docs/1FP/1FP580.pdf\">http://www.courts.state.hi.us/docs/1FP/1FP580.pdf</a></p>\n",
+                      "notes": ""
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk1jnrpe000a3ab83vs5d1cp"
+              }
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk1jnrpe000b3ab83rtnbk6k"
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk1jnrpe000c3ab82gt3mvfl"
+            }
+          ],
+          "state": {
+            "operator": "is-true",
+            "elseClause": "false",
+            "leftOperand": "Hawaiian change parenting plan TF",
+            "rightOperand": "",
+            "leftOperandType": "variable",
+            "rightOperandType": "variable"
+          }
+        },
+        {
+          "tag": "a2j-conditional",
+          "id": "cjk1jqd81000e3ab8utci39bz",
+          "children": [
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk1jqd87000f3ab879jonf1l",
+                "children": [
+                  {
+                    "tag": "a2j-rich-text",
+                    "id": "cjk1jqkt7000j3ab8yhu0adtq",
+                    "state": {
+                      "userContent": "<p><u><strong>Motion and Affidavit for Post-Decree Relief</strong></u></p>\n\n<p>Step 1: File a motion to modify if there has been a change of circumstances. Learn more about modifying at&nbsp;<a href=\"http://courts.alaska.gov/shc/family/shcmodify.htm\">http://courts.alaska.gov/shc/family/shcmodify.htm</a></p>\n",
+                      "notes": ""
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk1jqd87000g3ab8ao9bex6s"
+              }
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk1jqd88000h3ab8k3l38xq4"
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk1jqd88000i3ab8skfobh1v"
+            }
+          ],
+          "state": {
+            "operator": "is-true",
+            "elseClause": "false",
+            "leftOperand": "Alaskan change parenting plan TF",
+            "rightOperand": "",
+            "leftOperandType": "variable",
+            "rightOperandType": "variable"
+          }
+        },
+        {
+          "tag": "a2j-conditional",
+          "id": "cjk1jyamc00183ab873bgz62x",
+          "children": [
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk1jyamh00193ab8ovotaecx",
+                "children": [
+                  {
+                    "tag": "a2j-rich-text",
+                    "id": "cjk1jygpp001d3ab8e4pylxie",
+                    "state": {
+                      "userContent": "<p><u><strong>Motion and Affidavit for Post-Decree Relief</strong></u></p>\n\n<p>The Motion and Affidavit for Post-Decree relief are used to request changes to a divorce or make sure the other side is followin gthe orders.&nbsp;</p>\n\n<p>Step 1: Read instructions on how to fill out a request for post-decree relief here:&nbsp;<a href=\"https://www.lawhelp.org/hi/resource/pre-and-post-decree-relief-forms-instructions?ref=zdt07\">https://www.lawhelp.org/hi/resource/pre-and-post-decree-relief-forms-instructions?ref=zdt07</a></p>\n\n<p>Step 2: Fill out the form and serve the other side with a copy.&nbsp;<a href=\"https://www.lawhelp.org/hi/resource/self-help-form-motion-for-post-decree-relief?ref=NKqSf\">https://www.lawhelp.org/hi/resource/self-help-form-motion-for-post-decree-relief?ref=NKqSf</a></p>\n\n<p>Either a family court clerk or a family court judge will sign the Order for Pre-Decree Relief depending on the types of relief being requested.&nbsp;</p>\n\n<p>Service Organizations in your communiyt that may be able to assist in filing a motion and affidavit for post-decree relief:&nbsp;</p>\n\n<ul>\n\t<li>VLSH</li>\n\t<li>LASH</li>\n\t<li>DVAC</li>\n\t<li>HOP Free Legal Answers</li>\n\t<li>HSBA Lawyer Referral Service&nbsp;</li>\n</ul>\n",
+                      "notes": ""
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk1jyami001a3ab8pgouu82i"
+              }
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk1jyami001b3ab8zkj8005w"
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk1jyami001c3ab8kdjq83wk"
+            }
+          ],
+          "state": {
+            "operator": "is-true",
+            "elseClause": "false",
+            "leftOperand": "Hawaiian enforce order TF",
+            "rightOperand": "",
+            "leftOperandType": "variable",
+            "rightOperandType": "variable"
+          }
+        },
+        {
+          "tag": "a2j-conditional",
+          "id": "cjk1lrjk900283ab8a5larksn",
+          "children": [
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk1lrjke00293ab8ujjal1js",
+                "children": [
+                  {
+                    "tag": "a2j-rich-text",
+                    "id": "cjk1lrrep002d3ab83g5l1y1q",
+                    "state": {
+                      "userContent": "<p><u><strong>Pregnant Spouse During Divorce Proceedings</strong></u></p>\n\n<p>Quick Links:&nbsp;<a href=\"http://www.courts.state.hi.us/self-help/divorce/divorce_law_in_hawaii\">Hawaiian Divorce Law</a></p>\n\n<p>Step 1:</p>\n\n<ul>\n\t<li>Establish Paternity through CSEA or family court</li>\n</ul>\n\n<p>Step 2</p>\n\n<ul>\n\t<li>Once Paternity is established, talk to your spouse to see if you can come to an agreement about divorce before filing. If you cannot come to an agreement, try mediation.&nbsp;</li>\n</ul>\n",
+                      "notes": ""
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk1lrjkf002a3ab8bpx5gonh"
+              }
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk1lrjkf002b3ab8l3kw29sy"
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk1lrjkf002c3ab867pb2xfd"
+            }
+          ],
+          "state": {
+            "operator": "is-true",
+            "elseClause": "false",
+            "leftOperand": "Hawaii pregnant wife TF",
+            "rightOperand": "",
+            "leftOperandType": "variable",
+            "rightOperandType": "variable"
+          }
+        },
+        {
+          "tag": "a2j-conditional",
+          "id": "cjk1nbxcq00323ab8mrllq99o",
+          "children": [
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk1nbxcv00333ab84er7sjl3",
+                "children": [
+                  {
+                    "tag": "a2j-rich-text",
+                    "id": "cjk1ncdwc00373ab80w66iidz",
+                    "state": {
+                      "userContent": "<p><u><strong>Filing for Dissolution or Divorce - Ending Your Marriage</strong></u></p>\n\n<p>Quick Links: Filing for Dissolution or Divorce - Ending Your Marriage</p>\n\n<p>Step 1: Make sure Alaska is the correct state to file your case in.&nbsp;</p>\n\n<p>Step 2: Decide which paperwork to file to end your marriage based on whether you and yoru spouse agree or disagree on all issues (ending the marriage, property and debt division, parenting plan, paternity of the children, income amouts used to calculate child support, which parent applies for the PFD, and who will take the children as dependents on federal tax returns). Find the forms that work for your situation at:&nbsp;<a href=\"http://www.courts.alaska.gov/shc/family/shcstart.htm#residency.\">http://www.courts.alaska.gov/shc/family/shcstart.htm#residency.</a></p>\n",
+                      "notes": ""
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk1nbxcv00343ab852mkjhwx",
+                "children": [
+                  {
+                    "tag": "a2j-rich-text",
+                    "id": "cjk1ncioa00383ab8vijmoe0r",
+                    "state": {
+                      "userContent": "<p><u><strong>Jurisdiction</strong></u></p>\n\n<p>Jurisdiction is a very complicated subject and you should talk to an attorney to figure out where is the best place ot file your case. If you think the Alaska courts do not have jurisdiction to move forward with filing to end your marriage, you have some options:</p>\n\n<ul>\n\t<li>do not file your case in Alaska and file in the more appropriate state where you or your spouse live depending on those state&#39;s requirements</li>\n\t<li>establish residency in Alaska and file in court</li>\n\t<li>have your spouse file the case if he/she lives in Alaska</li>\n</ul>\n",
+                      "notes": ""
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk1nbxcw00353ab88e4f0dfy"
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk1nbxcw00363ab8n4wur587"
+            }
+          ],
+          "state": {
+            "operator": "is-true",
+            "elseClause": "true",
+            "leftOperand": "Resident of Alaska TF",
+            "rightOperand": "",
+            "leftOperandType": "variable",
+            "rightOperandType": "variable"
+          }
+        },
+        {
+          "tag": "a2j-conditional",
+          "id": "cjk2mr5ur00573ab85mb0jr8y",
+          "children": [
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk2mr5ux00583ab8okng4kw0",
+                "children": [
+                  {
+                    "tag": "a2j-rich-text",
+                    "id": "cjk2mri4g005c3ab85h6pdsrl",
+                    "state": {
+                      "userContent": "<p><u><strong>Pre-Decree Relief</strong></u></p>\n\n<p>Quick Links:&nbsp;<a href=\"http://www.courts.state.hi.us/self-help/divorce/divorce_law_in_hawaii\">http://www.courts.state.hi.us/self-help/divorce/divorce_law_in_hawaii</a></p>\n\n<p>STEP 1: If you and your partner are not in agreement on certain key issues such as child custody or financial support, you may file a &quot;Motion and Affidavit for Pre-Decree Relief.&quot; It is a temporary request for every type of available relief before a divorce is ordered. ((LINK TO BE ADDED BY SME))</p>\n\n<p>STEP 2: After you have lived in Hawaii for 6 months and on the same island for 3 months, you may begin the court process.&nbsp;</p>\n\n<ul>\n\t<li>VIDEO- Divorce law in Hawaii ((TO BE ADDED))</li>\n\t<li>Flow chart of court process ((TO BE ADDED))</li>\n</ul>\n\n<p>Service organizations in your community that may be able to answer questiosn you may have before filing for divorce:</p>\n\n<ul>\n\t<li>Hawaii Online Pro Bono</li>\n\t<li>HSBA Legal Line</li>\n\t<li>LASH</li>\n</ul>\n",
+                      "notes": ""
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk2mr5ux00593ab86fhoxiuc"
+              }
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk2mr5ux005a3ab84zyp7q7s"
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk2mr5ux005b3ab8w86b9uj3"
+            }
+          ],
+          "state": {
+            "operator": "is-true",
+            "elseClause": "false",
+            "leftOperand": "Resident of Hawaii false TF",
+            "rightOperand": "",
+            "leftOperandType": "variable",
+            "rightOperandType": "variable"
+          }
+        },
+        {
+          "tag": "a2j-conditional",
+          "id": "cjk2n0h8p00693ab8obnbid6k",
+          "children": [
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk2n0h91006a3ab8cbia5n05",
+                "children": [
+                  {
+                    "tag": "a2j-rich-text",
+                    "id": "cjk2n0x60006e3ab8w5ro625g",
+                    "state": {
+                      "userContent": "<p><u><strong>Pre-Decree Relief</strong></u></p>\n\n<p>Quick Links:&nbsp;<a href=\"http://www.courts.state.hi.us/self-help/divorce/divorce_law_in_hawaii\">http://www.courts.state.hi.us/self-help/divorce/divorce_law_in_hawaii</a></p>\n\n<p>STEP 1: If you and your partner are not in agreement on certain key issues such as child custody or financial support, you may file a &quot;Motion and Affidavit for Pre-Decree Relief.&quot; It is a temporary request for every type of available relief before a divorce is ordered. ((LINK TO BE ADDED BY SME))</p>\n\n<p>STEP 2: After you have lived in Hawaii for 6 months and on the same island for 3 months, you may begin the court process.&nbsp;</p>\n\n<ul>\n\t<li>VIDEO- Divorce law in Hawaii ((TO BE ADDED))</li>\n\t<li>Flow chart of court process ((TO BE ADDED))</li>\n</ul>\n\n<p>Service organizations in your community that may be able to answer questiosn you may have before filing for divorce:</p>\n\n<ul>\n\t<li>Hawaii Online Pro Bono</li>\n\t<li>HSBA Legal Line</li>\n\t<li>LASH</li>\n</ul>\n",
+                      "notes": ""
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk2n0h91006b3ab82mtkzijb"
+              }
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk2n0h91006c3ab81abcr1o0"
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk2n0h92006d3ab8sjx6e0e7"
+            }
+          ],
+          "state": {
+            "operator": "is-true",
+            "elseClause": "false",
+            "leftOperand": "3 mo on island Hawaii false TF",
+            "rightOperand": "",
+            "leftOperandType": "variable",
+            "rightOperandType": "variable"
+          }
+        },
+        {
+          "tag": "a2j-conditional",
+          "id": "cjk2o74pi00103ab84brrj2lm",
+          "children": [
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk2o74po00113ab8xml3k9v1",
+                "children": [
+                  {
+                    "tag": "a2j-rich-text",
+                    "id": "cjk2ob2zv00153ab8fyyfmx74",
+                    "state": {
+                      "userContent": "<p><u><strong>Pre-Decree Relief</strong></u></p>\n\n<p>STEP 1: Read instructions on how to fill out a request for pre-decree relief.&nbsp;</p>\n\n<p><a href=\"https://www.lawhelp.org/hi/resource/pre-and-post-decree-relief-forms-instructions?ref=zdt07\">https://www.lawhelp.org/hi/resource/pre-and-post-decree-relief-forms-instructions?ref=zdt07</a></p>\n\n<p>STEP 2: Fill out the form and serve the other side with a copy.&nbsp;<a href=\"https://www.lawhelp.org/hi/resource/self-help-form-motion-and-declaration-for-pre-decree-relief?ref=zdt07\">https://www.lawhelp.org/hi/resource/self-help-form-motion-and-declaration-for-pre-decree-relief?ref=zdt07</a></p>\n\n<p>Either a family court clerk or a family court judge will sign the Order for Pre-Decree Relief depending on the types of relief being requested.&nbsp;</p>\n\n<p>Service Organizations in your community that may be able to assist in filing a motion and affidavit for pre-decree relief:&nbsp;</p>\n\n<ul>\n\t<li>VLSH</li>\n\t<li>LASH</li>\n\t<li>DVAC</li>\n\t<li>HOP Free Legal Answers</li>\n\t<li>HSBA Lawyer Referral Service</li>\n</ul>\n",
+                      "notes": ""
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk2o74pp00123ab8oh4ll829"
+              }
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk2o74pp00133ab8sb2jgtgh"
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk2o74pp00143ab8upj65u9k"
+            }
+          ],
+          "state": {
+            "operator": "is-true",
+            "elseClause": "false",
+            "leftOperand": "Need temp order HI TF",
+            "rightOperand": "",
+            "leftOperandType": "variable",
+            "rightOperandType": "variable"
+          }
+        },
+        {
+          "tag": "a2j-conditional",
+          "id": "cjk2ofafw00163ab8el01z976",
+          "children": [
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk2ofag300173ab88uxo29ik",
+                "children": [
+                  {
+                    "tag": "a2j-rich-text",
+                    "id": "cjk2ofgdo001b3ab8t0d4uemg",
+                    "state": {
+                      "userContent": "<p><u><strong>Temporary Order</strong></u></p>\n\n<p>STEP 1: Decide that you need a court order temporarily decide before the final decision is made.&nbsp;<a href=\"http://www.courts.alaska.gov/shc/family/motions.htm#order\">http://www.courts.alaska.gov/shc/family/motions.htm#order</a></p>\n\n<p>STEP 2: Fill out the form and serve the other side with a copy. Learn more about serving a motion here:&nbsp;<a href=\"http://www.courts.alaska.gov/shc/family/serve.htm#9\">http://www.courts.alaska.gov/shc/family/serve.htm#9</a></p>\n\n<p>STEP 3: Wait to see if your spouse files a response or opposition and if so, decide if you want to file a Reply to address whatever he or she raised. See&nbsp;<a href=\"http://www.courts.alaska.gov/shc/family/motions.htm#reply.\">http://www.courts.alaska.gov/shc/family/motions.htm#reply.</a></p>\n\n<p>&nbsp;</p>\n",
+                      "notes": ""
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk2ofag300183ab8gr8g5bet"
+              }
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk2ofag400193ab8gwirpb0i"
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk2ofag5001a3ab8ro67kmsr"
+            }
+          ],
+          "state": {
+            "operator": "is-true",
+            "elseClause": "false",
+            "leftOperand": "Need temp order AK TF",
+            "rightOperand": "",
+            "leftOperandType": "variable",
+            "rightOperandType": "variable"
+          }
+        },
+        {
+          "tag": "a2j-conditional",
+          "id": "cjk2typ2w005i3ab8tscl4iyg",
+          "children": [
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk2typ30005j3ab8i4xmuvs1",
+                "children": [
+                  {
+                    "tag": "a2j-rich-text",
+                    "id": "cjk2tyv0i005n3ab8pajzhtag",
+                    "state": {
+                      "userContent": "<p><u><strong>Uncontested Divorce</strong></u></p>\n\n<p>STEP 1: File for an Uncontested Divorce</p>\n\n<p>Complete and file stamp the following forms:</p>\n\n<ul>\n\t<li>Income and Expense Statement of Plaintiff/Defendant</li>\n\t<li>Asset and Debt Statement of Plaintiff/Defendant</li>\n\t<li>Child Support Guidelines worksheet (if with children depending on yes/no questions)</li>\n\t<li>Addifavit of Plaintiff</li>\n\t<li>Divorce Decree</li>\n\t<li>Income Withholding Order/Notice of Support</li>\n</ul>\n\n<p>Link to the above court forms:&nbsp;<a href=\"http://www.courts.state.hi.us/self-help/courts/forms/oahu/family_court_forms\">http://www.courts.state.hi.us/self-help/courts/forms/oahu/family_court_forms</a></p>\n\n<p>STEP 2: Place case on the court calendar</p>\n\n<p>Have UDA packet reviewed by the court service center staff and drop off at Window #5 with 2 self-addressed stamped envelopes at least 9 1/2&quot; x 4 1/4&quot; size on 1st floor of Kapolei Family Court House.&nbsp;</p>\n\n<p>After an answer is filed and because both parties are in agreement, the process will follow a series of predetermined next steps. See additional resources.&nbsp;</p>\n\n<p>Additional Resouces: ((TO BE ADDED))</p>\n\n<ul>\n\t<li>Flow chart of court process for divorce to show subsequent steps</li>\n\t<li>Legal info video on how to represent yourself</li>\n\t<li>Link to divorce seminar in Hawaii (judiciary/Divorce Law in Hawai&#39;i)</li>\n</ul>\n\n<p>Service Organizations in your community:</p>\n\n<p>referral to HSBA Lawyer Referral for private atty, HOP free legal answers, LASH, VLSH, DVAC (if applicable)</p>\n\n<p>&nbsp;</p>\n",
+                      "notes": ""
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk2typ30005k3ab861vfmkji"
+              }
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk2typ30005l3ab89yztfg00"
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk2typ30005m3ab84xmut5iv"
+            }
+          ],
+          "state": {
+            "operator": "is-true",
+            "elseClause": "false",
+            "leftOperand": "Uncontested divorce option HI TF",
+            "rightOperand": "",
+            "leftOperandType": "variable",
+            "rightOperandType": "variable"
+          }
+        },
+        {
+          "tag": "a2j-conditional",
+          "id": "cjk2u6qtb005o3ab8l1xdvvh5",
+          "children": [
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk2u6qth005p3ab83iqz8m1v",
+                "children": [
+                  {
+                    "tag": "a2j-rich-text",
+                    "id": "cjk2u73lc005t3ab8u1a3koau",
+                    "state": {
+                      "userContent": "<p><u><strong>Uncontested Divorce</strong></u></p>\n\n<p>STEP 1: File for an Uncontested Divorce</p>\n\n<p>Complete and file stamp the following forms:</p>\n\n<ul>\n\t<li>Income and Expense Statement of Plaintiff/Defendant</li>\n\t<li>Asset and Debt Statement of Plaintiff/Defendant</li>\n\t<li>Child Support Guidelines worksheet (if with children depending on yes/no questions)</li>\n\t<li>Addifavit of Plaintiff</li>\n\t<li>Divorce Decree</li>\n\t<li>Income Withholding Order/Notice of Support</li>\n</ul>\n\n<p>Link to the above court forms:&nbsp;<a href=\"http://courts.alaska.gov/shc/family/shcdefault.htm\">http://courts.alaska.gov/shc/family/shcdefault.htm</a></p>\n\n<p>STEP 2: Place case on the court calendar</p>\n\n<p>((NEED ALASKA STEPS))&nbsp;</p>\n\n<p>After an answer is filed and because both parties are in agreement, the process will follow a series of predetermined next steps. See additional resources.&nbsp;</p>\n\n<p>Additional Resouces: ((TO BE ADDED))</p>\n\n<p>Service Organizations in your community:</p>\n\n<p>(ADD IN LATER)</p>\n",
+                      "notes": ""
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk2u6qth005q3ab8uzk35qku"
+              }
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk2u6qth005r3ab8biobpw0r"
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk2u6qth005s3ab8lwq7xx8h"
+            }
+          ],
+          "state": {
+            "operator": "is-true",
+            "elseClause": "false",
+            "leftOperand": "Uncontested divorce option AK TF",
+            "rightOperand": "",
+            "leftOperandType": "variable",
+            "rightOperandType": "variable"
+          }
+        },
+        {
+          "tag": "a2j-conditional",
+          "id": "cjk2xb1ul001g3ab8aqbt7j6a",
+          "children": [
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk2xb1ux001h3ab8p4hdxbgb",
+                "children": [
+                  {
+                    "tag": "a2j-rich-text",
+                    "id": "cjk2xbgww001l3ab8ykjaypj3",
+                    "state": {
+                      "userContent": "<p><u><strong>Serving Your Spouse With Court Papers</strong></u></p>\n\n<p>Personal Service means that the required documents are personally hand-delivered to the other party. You cannot serve the other party yourself, but anyone else can as long as the person is 18 years or older. You can choose a reliable friend or relative OR hire a Process Server to deliver the papers.&nbsp;</p>\n\n<ol>\n\t<li>The servicer doesn&#39;t need to communicate with the other party. However, they do need to ensure that the documents are hand-delivered to them. Leaving the papers at the door or in the mailbox is not proper service.&nbsp;</li>\n\t<li>Ask the servicer to write down the place, date, and time of the service so that the Proof of Service form can be completed.&nbsp;</li>\n\t<li>Service by Process Server is another option if it would be inappropriate for a friend or relative to serve the other party. While the Department of Safety issues a list of civil process servers, a process server is hired independently and is NOT a law enforcement officer.&nbsp;</li>\n\t<li>Proof of Service is the court form that needs to be filled out after the documents have been delivered to the other party. The following must be included on a Proof of Service:&nbsp;\n\t<ul>\n\t\t<li>Name of the person served</li>\n\t\t<li>Date and time of service</li>\n\t\t<li>Exact address where the other party was served</li>\n\t\t<li>Signature of the servicer (the person who received the papers isn&#39;t required to sign)</li>\n\t</ul>\n\t</li>\n</ol>\n\n<p>What to expect next: After you server your spouse, they have 20 days to respon to the papers by filing an Answer. An Answer is a written response that your spouse writes and files with the Court. It tells the Court what they agree and disagree with in the Complaint for Divorce and what they want from the divorce. You should also get a copy of the Answer.</p>\n\n<p>&nbsp;</p>\n",
+                      "notes": ""
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk2xb1uy001i3ab83nyhebyj"
+              }
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk2xb1uz001j3ab80hs3q4k9"
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk2xb1v0001k3ab8t520411f"
+            }
+          ],
+          "state": {
+            "operator": "is-true",
+            "elseClause": "false",
+            "leftOperand": "Personal service explanation needed TF",
+            "rightOperand": "",
+            "leftOperandType": "variable",
+            "rightOperandType": "variable"
+          }
+        },
+        {
+          "tag": "a2j-conditional",
+          "id": "cjk2y4rjg00363ab8zorck0qt",
+          "children": [
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk2y4rjn00373ab8gp7ofkpc",
+                "children": [
+                  {
+                    "tag": "a2j-rich-text",
+                    "id": "cjk2y4xah003b3ab84v4mvafg",
+                    "state": {
+                      "userContent": "<p><u><strong>Service by Publication</strong></u></p>\n\n<p>This is used when you cannot find your spouse. ((ADD Additional explanation of how to do it))</p>\n\n<p><u><strong>Service by Mail in Lieu of Publication</strong></u></p>\n\n<p>This is used when you cannot find your spouse and you cannot afford publication.&nbsp;</p>\n\n<p>If you don&#39;t know a work or residential address where your spouse can be served, or your spouse lives in a different state, you may need to contact a legal professional.&nbsp;</p>\n",
+                      "notes": ""
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk2y4rjn00383ab884n9wipi"
+              }
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk2y4rjo00393ab81waukltc"
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk2y4rjo003a3ab82oxcjcv0"
+            }
+          ],
+          "state": {
+            "operator": "is-true",
+            "elseClause": "false",
+            "leftOperand": "Service by publication TF",
+            "rightOperand": "",
+            "leftOperandType": "variable",
+            "rightOperandType": "variable"
+          }
+        },
+        {
+          "tag": "a2j-conditional",
+          "id": "cjk2yd1z400503ab8b2gafsb9",
+          "children": [
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk2yd1ze00513ab8xs7715w4",
+                "children": [
+                  {
+                    "tag": "a2j-rich-text",
+                    "id": "cjk2ydb5u00553ab81mcq8hup",
+                    "state": {
+                      "userContent": "<p><u><strong>Waiting for an Answer from the Other Party</strong></u></p>\n\n<p>STEP 1: Wait for an Answer</p>\n\n<p>Your spouse (the Defendant) has 20 days to respond to the Complaint for Divorce by filing an Answer. An Answer is a written response that your spouse writes and files with the Court stating what they agree or disagree with in the Complaint and what they want from the divorce.&nbsp;</p>\n\n<p>If your spouse files an answer, the Court will schedule a hearing to discuss the case and possibly set a trial date. Wait for that notice.&nbsp;</p>\n\n<p>STEP 2: If you do not receive an Answer, you can file a default judgment asking the Court to make a decision based only on the information you provided.&nbsp;</p>\n\n<p>Here are the forms to complete and file stamp with the Court:</p>\n\n<ul>\n\t<li>Income and Expense Statement of Plaintiff (you)</li>\n\t<li>Asset and Debt Statement of Plaintiff</li>\n\t<li>Child Support Guidelines Worksheet</li>\n\t<li>Affidavit of Plaintiff</li>\n\t<li>Divorce Decree</li>\n\t<li>Income WIthholding Order/Notice of Support.&nbsp;</li>\n</ul>\n\n<p>You can find those forms here:</p>\n\n<p>Alaska:<a href=\"http://courts.alaska.gov/shc/family/shcdefault.htm\">&nbsp;http://courts.alaska.gov/shc/family/shcdefault.htm</a></p>\n\n<p>Hawaii:&nbsp;<a href=\"http://www.courts.state.hi.us/self-help/courts/forms/oahu/family_court_forms\">http://www.courts.state.hi.us/self-help/courts/forms/oahu/family_court_forms</a></p>\n\n<p>STEP 3: Place the case on the court calendar</p>\n",
+                      "notes": ""
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk2yd1ze00523ab8t3p381tz"
+              }
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk2yd1zf00533ab8gk5jqwxo"
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk2yd1zf00543ab87flwmj8j"
+            }
+          ],
+          "state": {
+            "operator": "is-true",
+            "elseClause": "false",
+            "leftOperand": "Waiting for answer TF",
+            "rightOperand": "",
+            "leftOperandType": "variable",
+            "rightOperandType": "variable"
+          }
+        },
+        {
+          "tag": "a2j-conditional",
+          "id": "cjk30r8zs001s3ab8eqm32m5z",
+          "children": [
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk30r908001t3ab8zm00yjwy",
+                "children": [
+                  {
+                    "tag": "a2j-rich-text",
+                    "id": "cjk30roro001x3ab813lwvsqe",
+                    "state": {
+                      "userContent": "<p><u><strong>If Mediation Has Failed to Resolve All Issues</strong></u></p>\n\n<p>STEP 1: Write down all the issues you agree on and sign the agreement form and file in court. See Uncontested Matters, Agreements, and Settlements ((Add - not in MindMeister)</p>\n\n<p>STEP 2: You have some options to deal with the other issues:</p>\n\n<ol>\n\t<li>The judge can decide the other issues at a trial.</li>\n\t<li>You can mediate the other issues to see if you can reach an agreement with assistance of a trained neutral mediator.</li>\n\t<li>You can ask for a settlement conference to go before a judge who can try to help resolve those issues by agreement.&nbsp;</li>\n</ol>\n",
+                      "notes": ""
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk30r909001u3ab8ig29wo4q"
+              }
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk30r909001v3ab8jkz5rjka"
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk30r909001w3ab8adw0a6go"
+            }
+          ],
+          "state": {
+            "operator": "is-true",
+            "elseClause": "false",
+            "leftOperand": "Mediator failed AK TF",
+            "rightOperand": "",
+            "leftOperandType": "variable",
+            "rightOperandType": "variable"
+          }
+        },
+        {
+          "tag": "a2j-conditional",
+          "id": "cjk30uj8n001y3ab8rk1t1y2j",
+          "children": [
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk30uj8r001z3ab82u4wopz8",
+                "children": [
+                  {
+                    "tag": "a2j-rich-text",
+                    "id": "cjk30uo9s00233ab80ds106eu",
+                    "state": {
+                      "userContent": "<p><u><strong>If Mediation has Failed to Resolve All Issues</strong></u></p>\n\n<p>STEP 1: Since both parties are having trouble reaching an agreement after the answer was filed, it seems like your case is contested. This means that this divorce may take a little longer to finalize. File for temporary orders while you look for help with your case.&nbsp;</p>\n\n<p>Links to pre-decree relief resources:&nbsp;</p>\n\n<p><a href=\"https://www.lawhelp.org/hi/resource/pre-and-post-decree-relief-forms-instructions?ref=zdt07\">https://www.lawhelp.org/hi/resource/pre-and-post-decree-relief-forms-instructions?ref=zdt0null7</a></p>\n\n<p><a href=\"https://www.lawhelp.org/hi/resource/self-help-form-motion-and-declaration-for-pre-decree-relief?ref=zdt07\">https://www.lawhelp.org/hi/resource/self-help-form-motion-and-declaration-for-pre-decree-relief?ref=zdt07</a></p>\n\n<p>STEP 2: Find an advocate who can represent you.&nbsp;</p>\n\n<p>((Referral to HSBA Lawyer Referral for private atty, HOP Free Legal Answers, LASH, VLSH, DVAC if applicable))</p>\n\n<p>Additional resources:</p>\n\n<ul>\n\t<li>Legal info video on how to represent yourself</li>\n\t<li>link to divorce seminar in Hawaii&nbsp;<a href=\"http://www.courts.state.hi.us/self-help/divorce/divorce_law_in_hawaii\">http://www.courts.state.hi.us/self-help/divorce/divorce_law_in_hawaii</a></li>\n</ul>\n",
+                      "notes": ""
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk30uj8s00203ab8i72borxl"
+              }
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk30uj8s00213ab8vvmt4sdv"
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk30uj8s00223ab8twdq2vr2"
+            }
+          ],
+          "state": {
+            "operator": "is-true",
+            "elseClause": "false",
+            "leftOperand": "Mediator failed HI TF",
+            "rightOperand": "",
+            "leftOperandType": "variable",
+            "rightOperandType": "variable"
+          }
+        },
+        {
+          "tag": "a2j-conditional",
+          "id": "cjk31jg4v00543ab87qsojcbk",
+          "children": [
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk31jg5600553ab87rqrsbbj",
+                "children": [
+                  {
+                    "tag": "a2j-rich-text",
+                    "id": "cjk31jokg00593ab8dzl035s2",
+                    "state": {
+                      "userContent": "<p><u><strong>Mediation Information</strong></u></p>\n\n<p>STEP 1: Set up an appointment with a professional from the Center for Alternative Dispute Resolution or a community mediation center who can help you reach an agreement.&nbsp;</p>\n\n<p>Links ((only to Hawaii)&nbsp;</p>\n\n<p><a href=\"http://www.courts.state.hi.us/services/alternative_dispute/alternative_dispute_resolution\">http://www.courts.state.hi.us/services/alternative_dispute/alternative_dispute_resolution</a></p>\n\n<p><a href=\"https://www.lawhelp.org/hi/resource/mediation-centers-of-hawaii?ref=R6OaN\">https://www.lawhelp.org/hi/resource/mediation-centers-of-hawaii?ref=R6OaN</a></p>\n\n<p>((Add any worksheets or plans (tools) to help guide mediation - parenting plan - copy of credit report to see all the assets that you have</p>\n\n<p>*Collaborative divorce: out of court settlement - no litigation (lawyer, therapist, financial planner)</p>\n\n<p>Referral to MCP/Community Mediation Center/ADR through the courts</p>\n\n<p>Referral to private HSBA Lawyer Referral for private atty))</p>\n",
+                      "notes": ""
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk31jg5700563ab8n0szj08k"
+              }
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk31jg5700573ab820v0ervd"
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk31jg5800583ab8x1uz1prs"
+            }
+          ],
+          "state": {
+            "operator": "is-true",
+            "elseClause": "false",
+            "leftOperand": "Mediator information TF",
+            "rightOperand": "",
+            "leftOperandType": "variable",
+            "rightOperandType": "variable"
+          }
+        },
+        {
+          "tag": "a2j-conditional",
+          "id": "cjk329xb5008g3ab89t6ws6d8",
+          "children": [
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk329xbg008h3ab8q9gb5ls8",
+                "children": [
+                  {
+                    "tag": "a2j-rich-text",
+                    "id": "cjk32a3es008l3ab804ev6qn6",
+                    "state": {
+                      "userContent": "<p><u><strong>In Agreement on All Issues</strong></u></p>\n\n<p>Several things can happen at this point.&nbsp;</p>\n\n<ol>\n\t<li>Nothing is filed. If you or your spouse do nothing else for about a year, the court may drop the case. The court will notify you of this at the address on your documents.</li>\n\t<li>Settlement: You and your spouse can decide to settle the issues in your divorce case outside of court. You can then submit this agreement to the court for its approval. This would be an uncontested divorce.&nbsp;</li>\n\t<li>Motion to Set: You or your spouse can file a Motion to Set. This form is available from the court, and it asks the court to set a trial date. Whoever files this form must attach additional information, including a position statement, an income/expense sheet, and asset/debt information.&nbsp;</li>\n\t<li>Motion for Default Judgment: Your spouse can file a Motion for Default Judgment if you have answered the complaint, but if you also do not seem to be contesting or disputing any issues in the divorce.&nbsp;</li>\n</ol>\n",
+                      "notes": ""
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjk329xbh008i3ab80edth2r2"
+              }
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk329xbi008j3ab8y8tuxox7"
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjk329xbi008k3ab89ik2l9n6"
+            }
+          ],
+          "state": {
+            "operator": "is-true",
+            "elseClause": "false",
+            "leftOperand": "In agreement TF",
+            "rightOperand": "",
+            "leftOperandType": "variable",
+            "rightOperandType": "variable"
+          }
+        },
+        {
+          "tag": "a2j-conditional",
+          "id": "cjkbowtw1004g3ab8egdjhfmo",
+          "children": [
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjkbowtw8004h3ab8qha78dx4",
+                "children": [
+                  {
+                    "tag": "a2j-rich-text",
+                    "id": "cjkbox6lx004l3ab8c3j3cpdn",
+                    "state": {
+                      "userContent": "<p><u><strong>Filing an Answer&nbsp;</strong></u></p>\n\n<p>STEP 1: File an Answer within 20 days of receiving the complaint.&nbsp;</p>\n\n<ul>\n\t<li>Use this interview to complete your answer&nbsp;</li>\n</ul>\n\n<p><a href=\"https://www.lawhelp.org/hi/resource/answer-for-complaint-for-divorce?ref=4eUYx\">https://www.lawhelp.org/hi/resource/answer-for-complaint-for-divorce?ref=4eUYx</a></p>\n\n<ul>\n\t<li>Link to Video:&nbsp;<a href=\"https://www.lawhelp.org/hi/resource/video-divorce-responding-to-a-divorce-complaint\">https://www.lawhelp.org/hi/resource/video-divorce-responding-to-a-divorce-complaint</a></li>\n\t<li>Link to Brochure:&nbsp;<a href=\"https://www.lawhelp.org/hi/resource/divorce-what-to-do-if-you-receive-divorce-pap\">https://www.lawhelp.org/hi/resource/divorce-what-to-do-if-you-receive-divorce-pap</a></li>\n</ul>\n\n<p>STEP 2:&nbsp;</p>\n\n<p>Several things can happen at this point.&nbsp;</p>\n\n<ol>\n\t<li>Nothing is filed: If you/your spouse do nothing else for about a year, the court may drop the case. The court will notify you of this at the address on your documents.&nbsp;</li>\n\t<li>Settlement: You and your spouse can decide to settle the issues in your divorce case outside of court. You can then submit this agreement to court for its approval. This would be an uncontested divorce.</li>\n\t<li>Motion to Set: You or your spouse can file a Motion to Set. This form is available from the court, and it asks the court to set a trial date. Whoever files this form must attach additional information including a position statement, an income/expense sheet, and asset/debt information.&nbsp;</li>\n\t<li>Motion for Default Judgment: Your spouse can file a Motion for Default Judgment if you have answered the complaint, but if you also do not seem to be contesting or disputing any issues in the divorce.&nbsp;</li>\n</ol>\n",
+                      "notes": ""
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "guideId": "",
+              "templateId": "",
+              "title": "Untitled Template",
+              "active": "true",
+              "header": "",
+              "hideHeaderOnFirstPage": "false",
+              "footer": "",
+              "hideFooterOnFirstPage": "false",
+              "rootNode": {
+                "tag": "a2j-template",
+                "id": "cjkbowtw8004i3ab8ze0b2906"
+              }
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjkbowtw8004j3ab8b2rzuflq"
+            },
+            {
+              "tag": "conditional-add-element",
+              "id": "cjkbowtw8004k3ab8mld5kvim"
+            }
+          ],
+          "state": {
+            "operator": "is-true",
+            "elseClause": "false",
+            "leftOperand": "Did not file answer AK TF",
+            "rightOperand": "",
+            "leftOperandType": "variable",
+            "rightOperandType": "variable"
+          }
+        }
+      ],
+      "id": "cjk1e9cdv00003ab935w31rd3"
+    },
+    "createdAt": "1532539141062",
+    "guideId": "6473",
+    "templateId": 1,
+    "updatedAt": 1533162209395
+  }]
