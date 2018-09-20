@@ -21,8 +21,12 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
 import { MsalService, BroadcastService } from '@azure/msal-angular';
 import { MSAL_CONFIG } from '@azure/msal-angular/dist/msal.service';
+import { PersonalizedPlanService } from './guided-assistant/personalized-plan/personalized-plan.service';
+import { HttpClientModule } from '@angular/common/http';
+import { ArrayUtilityService } from './shared/array-utility.service';
+import { ToastrService } from 'ngx-toastr';
 
-fdescribe('AppComponent', () => {
+describe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
   let mockStaticResourceService;
@@ -31,6 +35,7 @@ fdescribe('AppComponent', () => {
   let mockMapService;
   let mockRouter;
   let msalService;
+  let toastrService: ToastrService;
 
   beforeEach(async(() => {
     staticContent = [
@@ -66,7 +71,7 @@ fdescribe('AppComponent', () => {
       }
     ]
     mockStaticResourceService = jasmine.createSpyObj(['getStaticContents']);
-    //mockGlobal = jasmine.createSpyObj(['setData']);    
+    mockGlobal = jasmine.createSpyObj(['setData']);
     TestBed.configureTestingModule({
       declarations: [
         AppComponent,
@@ -80,19 +85,23 @@ fdescribe('AppComponent', () => {
         TopicsComponent,
         TopicsResourcesComponent,
         SubtopicDetailComponent,
-        SubtopicsComponent,
+        SubtopicsComponent
       ],
       imports: [
-        FormsModule
+        FormsModule,
+        HttpClientModule
+
       ],
-      providers: [MsalService,
+      providers: [AppComponent, PersonalizedPlanService, ArrayUtilityService, ToastrService,
+        { provide: MsalService, useValue: msalService },
         { provide: StaticResourceService, useValue: mockStaticResourceService },
         { provide: Global, useValue: mockGlobal },
         { provide: MapService, useValue: mockMapService },
         { provide: Router, useValue: mockRouter },
         { provide: MSAL_CONFIG, useValue: {} },
+        { provide: ToastrService, useValue: toastrService },
         NgxSpinnerService,
-        BroadcastService
+        BroadcastService,
       ],
       schemas: [
         NO_ERRORS_SCHEMA,
@@ -100,29 +109,17 @@ fdescribe('AppComponent', () => {
       ]
     }).compileComponents();
 
-    // create component and test fixture
-    //fixture = TestBed.createComponent(AppComponent);
-
-    // get test component from the fixture
-    //component = fixture.componentInstance;
+    //create component and test fixture
+    fixture = TestBed.createComponent(AppComponent);
 
     // UserService provided to the TestBed
     msalService = TestBed.get(MsalService);
-
-
+    component = TestBed.get(AppComponent);
+    toastrService = TestBed.get(ToastrService);
+    
   }));
 
-  //spyOn(component, 'ngOnInit');
-  // fixture.detectChanges();
-
-  //beforeEach(() => {
-  //  fixture = TestBed.createComponent(AppComponent);
-  //  component = fixture.componentInstance;
-  //  spyOn(component, 'ngOnInit');
-  //  fixture.detectChanges();
-  //});
-
-  it('should create the app', async(() => {
+   it('should create the app', async(() => {
     expect(component).toBeTruthy();
   }));
   it('should create the app', async(() => {
@@ -141,50 +138,3 @@ fdescribe('AppComponent', () => {
   });
 });
 
-
-//import { AppComponent } from "./app.component";
-//import { ComponentFixture, TestBed, async } from "@angular/core/testing";
-//import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
-//import { Global } from "./global";
-//import { MsalService, MSAL_CONFIG } from "@azure/msal-angular/dist/msal.service";
-//import { Router } from '@angular/router';
-//import { APP_BASE_HREF } from "@angular/common";
-
-
-//fdescribe('AppComponent', () => {
-//  let component: AppComponent;
-//  let fixture: ComponentFixture<AppComponent>;
-//  let mockRouter;
-//  let mockGlobal;
-
-//  beforeEach(() => {
-//    TestBed.configureTestingModule({
-//      imports: [
-//      ],
-//      providers: [MsalService, Router,
-//        { provide: Global, useValue: mockGlobal },
-//        { provide: MSAL_CONFIG, useValue: {} },
-//        { provide: APP_BASE_HREF, useValue: '/' },
-//        { provide: Router, useValue: mockRouter },        
-//      ],
-//      declarations: [AppComponent],
-//      schemas: [
-//        NO_ERRORS_SCHEMA,
-//        CUSTOM_ELEMENTS_SCHEMA
-//      ]
-//    }).compileComponents();
-
-//    fixture = TestBed.createComponent(AppComponent);
-//    component = fixture.componentInstance;
-//    spyOn(component, 'ngOnInit');
-//    fixture.detectChanges();
-
-//  });
-
-//  it('should create the app', async(() => {
-//    expect(component).toBeTruthy();
-//  }));
-//  it('should create the app', async(() => {
-//    expect(component).toBeDefined();
-//  }));
-//});
