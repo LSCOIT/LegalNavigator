@@ -8,7 +8,7 @@ import { PersonalizedPlan, ProfileResources } from './personalized-plan';
 import { ToastrService } from 'ngx-toastr';
 import { Global } from '../../global';
 
-fdescribe('Service:PersonalizedPlan', () => {
+describe('Service:PersonalizedPlan', () => {
   let mockPlanDetailsJson = {
     "id": "bf8d7e7e-2574-7b39-efc7-83cb94adae07",
     "oId": "User Id",

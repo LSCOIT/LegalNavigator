@@ -11,7 +11,8 @@ import { IResourceFilter } from '../shared/search/search-results/search-results.
 import { Global } from '../global';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { MsalService } from '@azure/msal-angular';
 
 describe('component:profile', () => {
   let component: ProfileComponent;
@@ -100,10 +101,15 @@ describe('component:profile', () => {
   }
   let mockGlobal;
   let mockPersonalizedPlanService;
+  let msalService;
+  class ActivateRouteStub {
+    params: Observable<any> = Observable.empty();
+  }
+  let activeRoute: ActivatedRoute;
   beforeEach(async(() => {
     mockGlobal = jasmine.createSpyObj(['externalLogin']);
-    mockPersonalizedPlanService = jasmine.createSpyObj(['getActionPlanConditions', 'displayPlanDetails','getUserSavedResources']);
-
+    mockPersonalizedPlanService = jasmine.createSpyObj(['getActionPlanConditions', 'displayPlanDetails', 'getUserSavedResources']);
+    msalService = jasmine.createSpyObj(['getUser']);
     TestBed.configureTestingModule({
       imports: [
         HttpClientModule,
@@ -119,10 +125,12 @@ describe('component:profile', () => {
         ArrayUtilityService, 
         { provide: Global, useValue: mockGlobal },
         NgxSpinnerService,
-        { provide: Router, useValue: mockRouter }
+        { provide: Router, useValue: mockRouter },
+        { provide: MsalService, useValue: msalService },
+        { provide: ActivatedRoute, useValue: ActivateRouteStub }
       ]
     }).compileComponents();
-
+    msalService = TestBed.get(MsalService);
     fixture = TestBed.createComponent(ProfileComponent);
     component = fixture.componentInstance;
     spyOn(component, 'ngOnInit');
