@@ -1,4 +1,4 @@
-h3.subtopic-heading {
+.subtopic-heading {
   display: inline-block;
   margin-top: 0;
 }
@@ -11,3 +11,8 @@ h3.subtopic-heading {
   padding-top: 15px;
 }
 
+@media only screen and (min-width : 992px) {
+  .sidebars {
+    float: right;
+  }
+}

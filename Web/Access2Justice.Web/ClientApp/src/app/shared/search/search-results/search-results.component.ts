@@ -318,6 +318,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
         if (response != undefined) {
           this.searchResults = response;
         }
+        window.scrollTo(0, 0);
       }, error => {
         this.spinner.hide();
         this.router.navigate(['/error']);
