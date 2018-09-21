@@ -18,30 +18,32 @@ namespace Access2Justice.Api.Authorization
 
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, AuthorizeUser requirement)
         {
-            //dynamic result = null;
-            //result = await GetUserRole(requirement.OId);
-            RolePermissionAccess result = await userRoleBusinessLogic.GetRoleInfo(requirement.OId);
-            if (result != null)
+            var RoleName = await userRoleBusinessLogic.GetRoleInfo(requirement.OId);
+            if (!(string.IsNullOrEmpty(RoleName)))
             {
                 if (requirement.Role.Contains(","))
                 {
                     string[] roles = requirement.Role.Split(',');
                     foreach (var role in roles)
                     {
-						if (result.RoleName == role || requirement.Role == UserRoles.RoleEnum.Anonymous.ToString())
+                        if (RoleName == role || requirement.Role == UserRoles.RoleEnum.Anonymous.ToString())
                         {
                             context.Succeed(requirement);
                         }
                     }
                 }
-                else if (result.RoleName == requirement.Role || requirement.Role == UserRoles.RoleEnum.Anonymous.ToString())
+                else if (RoleName == requirement.Role || requirement.Role == UserRoles.RoleEnum.Anonymous.ToString())
                 {
                     context.Succeed(requirement);
                 }
             }
-            else if(string.IsNullOrEmpty(requirement.OId) || requirement.Role == UserRoles.RoleEnum.Anonymous.ToString())
+            else if (string.IsNullOrEmpty(requirement.OId) || requirement.Role == UserRoles.RoleEnum.Anonymous.ToString())
             {
-                    context.Succeed(requirement);
+                context.Succeed(requirement);
+            }
+            else
+            {
+                context.Fail();
             }
         }
 
@@ -51,9 +53,9 @@ namespace Access2Justice.Api.Authorization
             return roleName;
         }
 
-        public async Task<RolePermissionAccess> GetRoleInfo(string oId)
+        public async Task<dynamic> GetRoleInfo(string oId)
         {
-            RolePermissionAccess roleInfo = await userRoleBusinessLogic.GetRoleInfo(oId);
+            dynamic roleInfo = await userRoleBusinessLogic.GetRoleInfo(oId);
             return roleInfo;
         }
 

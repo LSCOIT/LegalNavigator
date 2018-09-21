@@ -66,11 +66,26 @@ namespace Access2Justice.Api.BusinessLogic
             return userRole;
         }
 
-        public async Task<RolePermissionAccess> GetRoleInfo(string oId)
+        public async Task<string> GetRoleInfo(string oId)
         {
+            string roleName = string.Empty;
             List<UserRole> userRole = new List<UserRole>();
-            List<RolePermission> rolePermissions = new List<RolePermission>();
-            RolePermissionAccess rolePermissionAccess = null;
+            var userProfile = await dbUserProfile.GetUserProfileDataAsync(oId);
+            if (userProfile != null && userProfile?.RoleInformationId != Guid.Empty)
+            {
+                userRole = await GetUserRoleDataAsync(userProfile?.RoleInformationId.ToString());
+                if (userRole.Count() > 0)
+                {
+                    roleName = userRole[0].RoleName;
+                }
+            }
+            return roleName;
+        }
+
+        public async Task<List<string>> GetPermissionDataAsyn(string oId)
+        {
+            List<string> permissionPaths = new List<string>();
+            List<UserRole> userRole = new List<UserRole>();
             var userProfile = await dbUserProfile.GetUserProfileDataAsync(oId);
             if (userProfile != null && userProfile?.RoleInformationId != Guid.Empty)
             {
@@ -79,32 +94,43 @@ namespace Access2Justice.Api.BusinessLogic
                 {
                     if (userRole[0].Permissions.Count() > 0)
                     {
+                        List<Permission> permissions = await GetPermissionDetails();
                         foreach (var permission in userRole[0].Permissions)
                         {
-                            RolePermission rolePermission = await GetPermissionDataAsyn(permission.ToString());
-                            rolePermissions.Add(rolePermission);
+                            foreach (var perm in permissions)
+                            {
+                                if(permission == perm.PermissionId)
+                                {
+                                    permissionPaths.Add(perm.Path);
+                                }
+                            }
                         }
                     }
-                    rolePermissionAccess = new RolePermissionAccess
-                    {
-                        RoleName = userRole[0].RoleName,
-                        RolePermissions = rolePermissions
-                    };
                 }
             }
-            return rolePermissionAccess;
+            return permissionPaths;
         }
-
-        public async Task<RolePermission> GetPermissionDataAsyn(string permission)
+        public async Task<List<Permission>> GetPermissionDetails()
         {
-            RolePermission rolePermission = null;
-            var result = await dbClient.FindItemsWhereAsync(dbSettings.UserRoleCollectionId, Constants.Id, permission);
-            List<RolePermission> rolePermissions = JsonUtilities.DeserializeDynamicObject<List<RolePermission>>(result);
-            if (rolePermissions.Count() > 0)
+            List<Permission> permissions = new List<Permission>();
+            var result = await dbClient.FindItemsWhereAsync(dbSettings.UserRoleCollectionId, Constants.Type, Constants.PermissionDetails);
+            List<PermissionDetails> permissionDetails = JsonUtilities.DeserializeDynamicObject<List<PermissionDetails>>(result);
+            if (permissionDetails.Count() > 0)
             {
-                rolePermission = rolePermissions[0];
+                if (permissionDetails[0].Permissions.Count() > 0)
+                {
+                    foreach (var permission in permissionDetails[0].Permissions)
+                    {
+                        permissions.Add(new Permission()
+                        {
+                            PermissionId = permission.PermissionId,
+                            PermissionName = permission.PermissionName,
+                            Path = permission.Path
+                        });
+                    }
+                }
             }
-            return rolePermission;
+            return permissions;
         }
     }
 }

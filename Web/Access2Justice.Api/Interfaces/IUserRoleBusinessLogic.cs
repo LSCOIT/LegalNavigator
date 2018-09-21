@@ -11,6 +11,7 @@ namespace Access2Justice.Api.Interfaces
         Task<List<UserRole>> GetUserRoles();
         Task<UserRole> GetDefaultUserRole();
         Task<dynamic> GetRoleNameById(string oId);
-        Task<RolePermissionAccess> GetRoleInfo(string oId);
+        Task<string> GetRoleInfo(string oId);
+        Task<List<string>> GetPermissionDataAsyn(string oId);
     }
 }

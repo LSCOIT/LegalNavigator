@@ -40,69 +40,33 @@ namespace Access2Justice.Shared.Models
         }
     }
 
-    public class Permissions
+    public class Permission
     {
 
-        [JsonProperty(PropertyName = "id")]
-        public Guid RoleInformationId { get; set; }
+        [JsonProperty(PropertyName = "permissionId")]
+        public Guid PermissionId { get; set; }
 
         [JsonProperty(PropertyName = "permissionName")]
         public string PermissionName { get; set; }
+
+        [JsonProperty(PropertyName = "path")]
+        public string Path { get; set; }
+    }
+
+    public class PermissionDetails
+    {
+        [JsonProperty(PropertyName = "id")]
+        public Guid Id { get; set; }
 
         [JsonProperty(PropertyName = "type")]
-        public string Type { get; set; }
-
-        [JsonProperty(PropertyName = "accessType")]
-        public AccessType AccessType { get; set; }
-
-        [JsonProperty(PropertyName = "createdBy")]
-        public string CreatedBy { get; set; }
-
-        [JsonProperty(PropertyName = "createdTimeStamp")]
-        public DateTime? CreatedTimeStamp { get; set; } = DateTime.UtcNow;
-
-        [JsonProperty(PropertyName = "modifiedBy")]
-        public string ModifiedBy { get; set; }
-
-        [JsonProperty(PropertyName = "modifiedTimeStamp")]
-        public DateTime? ModifiedTimeStamp { get; set; } = DateTime.UtcNow;
-    }
-
-    public class AccessType
-    {
-        [JsonProperty(PropertyName = "read")]
-        public bool Read { get; set; }
-
-        [JsonProperty(PropertyName = "create")]
-        public bool Create { get; set; }
-
-        [JsonProperty(PropertyName = "modify")]
-        public bool Modify { get; set; }
-
-        [JsonProperty(PropertyName = "delete")]
-        public bool Delete { get; set; }
-    }
-
-    public class RolePermissionAccess
-    {
-        [JsonProperty(PropertyName = "roleName")]
-        public string RoleName { get; set; }
+        public string type { get; set; }
 
         [JsonProperty(PropertyName = "permissions")]
-        public List<RolePermission> RolePermissions { get; set; }
+        public List<Permission> Permissions { get; set; }
 
-        public RolePermissionAccess()
+        public PermissionDetails()
         {
-            RolePermissions = new List<RolePermission>();
+            Permissions = new List<Permission>();
         }
-    }
-
-    public class RolePermission
-    {
-        [JsonProperty(PropertyName = "permissionName")]
-        public string PermissionName { get; set; }
-
-        [JsonProperty(PropertyName = "accessType")]
-        public AccessType AccessType { get; set; }
     }
 }

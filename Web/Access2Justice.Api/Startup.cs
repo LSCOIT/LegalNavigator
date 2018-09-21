@@ -101,6 +101,7 @@ namespace Access2Justice.Api
 
 			});
             services.AddSingleton<IAuthorizationHandler, AuthorizeUserHandler>();
+            services.AddSingleton<IAuthorizationHandler, PermissionsHandler>();
             ConfigureCosmosDb(services);
 
             services.AddSwaggerGen(c =>
@@ -175,8 +176,8 @@ namespace Access2Justice.Api
         private string ValidateToken() //Need to pass token
         {
             string encryptedOid = string.Empty;
-            Guid oId =  new Guid("1803a665-8a5e-45a9-848a-1331ade5c152"); //Anonymous
-					//new Guid("00000000-0000-0000-8f8b-cbb21fe0448c"); //State Admin
+            Guid oId =  //new Guid("1803a665-8a5e-45a9-848a-1331ade5c152"); //Anonymous
+					new Guid("00000000-0000-0000-8f8b-cbb21fe0448c"); //State Admin
 																		  //new Guid("cb09b65a-43a6-4525-8b45-ede2c319c75f"); //Global Admin
 			encryptedOid = EncryptString(oId.ToString());
             return encryptedOid;
