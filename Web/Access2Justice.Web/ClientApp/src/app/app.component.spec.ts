@@ -116,10 +116,10 @@ describe('AppComponent', () => {
     msalService = TestBed.get(MsalService);
     component = TestBed.get(AppComponent);
     toastrService = TestBed.get(ToastrService);
-    
+
   }));
 
-   it('should create the app', async(() => {
+  it('should create the app', async(() => {
     expect(component).toBeTruthy();
   }));
   it('should create the app', async(() => {

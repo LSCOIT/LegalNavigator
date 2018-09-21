@@ -73,16 +73,26 @@ describe('TopicsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TopicsComponent);
     component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
-  // it('makes a call to getTopics Oninit', () => {
-  //   spyOn(component, 'getTopics');
-  //   component.ngOnInit();
-  //   expect(component.getTopics).toHaveBeenCalled();
-  // });
+  it('should create the app', async(() => {
+    expect(component).toBeTruthy();
+  }));
 
-  // it('should set topic variable to the response from topic service', () => {
-  //   component.getTopics();
-  //   expect(component.topics).toEqual(mockTopics);
-  // })
+  it('should create the app', async(() => {
+    expect(component).toBeDefined();
+  }));
+
+   it('makes a call to getTopics Oninit', () => {
+     spyOn(component, 'getTopics');
+     component.ngOnInit();
+     expect(component.getTopics).toHaveBeenCalled();
+   });
+
+   it('should set topic variable to the response from topic service', () => {
+     component.getTopics();
+     expect(mockTopicService.getTopics).toHaveBeenCalled();
+     expect(component.topics).toEqual(mockTopics);
+   })
 });

@@ -4,59 +4,20 @@ import { api } from '../../../api/api';
 import { Global, UserStatus } from '../../global';
 import { Subject } from 'rxjs';
 import { MsalService } from '@azure/msal-angular';
+import { TestBed } from '@angular/core/testing';
 
 describe('TopicService', () => {
   let service: TopicService;
-  let msalService: MsalService;
-  let mockGlobal;
+  let msalService: MsalService;  
   let global: Global;
-    
-  //let globalService: Global = {
-  //  role: UserStatus.Anonymous,
-  //  showShare: true,
-  //  showRemove: true,
-  //  showMarkComplete: true,
-  //  showDropDown: true,
-  //  showSetting: true,
-  //  shareRouteUrl: "/share",
-  //  profileRouteUrl: "/profile",
-  //  data: "",
-  //  notifyStaticData: new Subject<any>(),
-  //  userName: "",
-  //  userId: "",
-  //  sharedUserId: "",
-  //  sharedUserName: "",
-  //  isShared: false,
-  //  isLoggedIn: false,
-  //  //msalService: MsalService,
-  //  externalLogin: () => { },
-  //  setProfileData: () => { },
-  //  getData: () => { }
-  //};
-  //let globalService: Global = { 
-  //  role: UserStatus.Anonymous, 
-  //  shareRouteUrl: "/share",
-  //  showShare: false,
-  //  showRemove: false,
-  //  showMarkComplete: false,
-  //  showDropDown: false,
-  //  showSetting: false,
-  //  profileRouteUrl: "/profile",
-  //  data: "",
-  //  notifyStaticData: new Subject<any>(),
-  //  userName: "",
-  //  userId: "",
-  //  sharedUserId: "",
-  //  sharedUserName: "",
-  //  isShared: false,
-  //  isLoggedIn: false,
-  //  externalLogin: () => {},
-  //  getData: () => {},
-  //  setData: () => { },
-  //  msalService: MsalService
-  //};
   const httpSpy = jasmine.createSpyObj('http', ['get', 'post']);
+  global = jasmine.createSpyObj(['shareRouteUrl']);
+
   beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: Global, useValue: { role: '', shareRouteUrl: '/share', userId: 'UserId' } }]
+    });
     service = new TopicService(httpSpy, global);
     httpSpy.get.calls.reset();
   });

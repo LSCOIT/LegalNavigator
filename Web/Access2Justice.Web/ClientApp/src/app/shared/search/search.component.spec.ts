@@ -16,6 +16,7 @@ import { SearchResultsComponent } from './search-results/search-results.componen
 import { SearchService } from './search.service';
 import { ShareButtonComponent } from '../../shared/resource/user-action/share-button/share-button.component';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { MsalService } from '@azure/msal-angular';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
@@ -24,7 +25,7 @@ describe('SearchComponent', () => {
   let searchService: SearchService;
   let searchResults: any = {};
   let mockSearchService;
-
+  let msalService;
   beforeEach(async(() => {
     mockSearchService = jasmine.createSpyObj(['search']);
     TestBed.configureTestingModule({
@@ -46,6 +47,7 @@ describe('SearchComponent', () => {
       providers: [
         { provide: APP_BASE_HREF, useValue: '/' },
         { provide: SearchService, useValue: mockSearchService },
+        { provide: MsalService, useValue: msalService },
         NavigateDataService,
         NgxSpinnerService
       ],
@@ -63,4 +65,9 @@ describe('SearchComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should create', () => {
+    expect(component).toBeDefined();
+  });
+  
 });

@@ -48,18 +48,6 @@ describe('ProfileResolverService', () => {
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000000;
   });
  
-  //beforeEach(() => {
-  //  TestBed.configureTestingModule({
-  //    imports: [HttpClientTestingModule],
-  //    providers: [ProfileResolverService,
-  //     // HttpClientTestingModule,
-  //      MsalService,       
-  //      { provide: Global, useValue: mockGlobal }]
-  //  });
-  //  httpTestingController = TestBed.get(HttpTestingController);
-  //  profileResolverService = TestBed.get(ProfileResolverService);
-  //});
-
   it('should be created', inject([ProfileResolverService], (profileResolverService: ProfileResolverService) => {
     expect(profileResolverService).toBeDefined();
   }));
