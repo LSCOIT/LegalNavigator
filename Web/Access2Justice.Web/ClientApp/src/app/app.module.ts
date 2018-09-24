@@ -47,7 +47,7 @@ import { TokenInterceptor } from './token-interceptor.service';
 import { MsalInterceptor } from '@azure/msal-angular';
 import { environment } from '../environments/environment';
 
-export const protectedResourceMap: [string, string[]][] = [[environment.topicUrl, [environment.apiScope]]]
+export const protectedResourceMap: [string, string[]][] = [[environment.topicUrl, [environment.apiScope]], ['http://localhost:4200/api/user/upsertuserprofile', [environment.apiScope]]]
 
 @NgModule({
   declarations: [

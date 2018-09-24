@@ -42,22 +42,6 @@ namespace Access2Justice.Api.BusinessLogic
             return userRole[0];
         }
 
-        public async Task<dynamic> GetRoleNameById(string oId)
-        {
-            List<UserRole> userRole = new List<UserRole>();
-            dynamic roleName = null;
-            var userProfile = await dbUserProfile.GetUserProfileDataAsync(oId);
-            if (userProfile != null && userProfile?.RoleInformationId != Guid.Empty)
-            {
-                userRole = await GetUserRoleDataAsync(userProfile?.RoleInformationId.ToString());
-                if (userRole.Count() > 0)
-                {
-                    roleName = userRole[0]?.RoleName;
-                }
-            }
-            return roleName;
-        }
-
         public async Task<List<UserRole>> GetUserRoleDataAsync(string roleInformationId)
         {
             List<UserRole> userRole = new List<UserRole>();
@@ -70,6 +54,7 @@ namespace Access2Justice.Api.BusinessLogic
         {
             string roleName = string.Empty;
             List<UserRole> userRole = new List<UserRole>();
+            //var userProfile = await GetUserProfileDataAsync(oId);
             var userProfile = await dbUserProfile.GetUserProfileDataAsync(oId);
             if (userProfile != null && userProfile?.RoleInformationId != Guid.Empty)
             {
@@ -77,15 +62,25 @@ namespace Access2Justice.Api.BusinessLogic
                 if (userRole.Count() > 0)
                 {
                     roleName = userRole[0].RoleName;
+                    //roleDetails.Add(userRole[0].RoleName);
+                    //roleDetails.Add(userProfile.OId);
                 }
             }
             return roleName;
+        }
+
+        public async Task<UserProfile> GetUserProfileDataAsync(string userName)
+        {
+            var resultUserData = await dbClient.FindItemsWhereAsync(dbSettings.UserProfileCollectionId, Constants.UserName, userName);
+            List<UserProfile> userProfile = JsonUtilities.DeserializeDynamicObject<List<UserProfile>>(resultUserData);
+            return userProfile.Count() == 0 ? null : userProfile[0];
         }
 
         public async Task<List<string>> GetPermissionDataAsyn(string oId)
         {
             List<string> permissionPaths = new List<string>();
             List<UserRole> userRole = new List<UserRole>();
+            //var userProfile = await GetUserProfileDataAsync(userName);
             var userProfile = await dbUserProfile.GetUserProfileDataAsync(oId);
             if (userProfile != null && userProfile?.RoleInformationId != Guid.Empty)
             {
@@ -94,12 +89,14 @@ namespace Access2Justice.Api.BusinessLogic
                 {
                     if (userRole[0].Permissions.Count() > 0)
                     {
+                        permissionPaths.Add(userRole[0].RoleName);
+                        //permissionPaths.Add(userProfile.OId);
                         List<Permission> permissions = await GetPermissionDetails();
                         foreach (var permission in userRole[0].Permissions)
                         {
                             foreach (var perm in permissions)
                             {
-                                if(permission == perm.PermissionId)
+                                if (permission == perm.PermissionId)
                                 {
                                     permissionPaths.Add(perm.Path);
                                 }
