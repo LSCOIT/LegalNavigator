@@ -5,6 +5,7 @@ import { NavigateDataService } from '../../shared/navigate-data.service';
 import { ShowMoreService } from "../../shared/sidebars/show-more/show-more.service";
 import { ISubtopicGuidedInput } from "../shared/topic";
 import { Input } from "@angular/core/src/metadata/directives";
+import { MapService } from "../../shared/map/map.service";
 
 @Component({
   selector: 'app-subtopics',
@@ -20,12 +21,14 @@ export class SubtopicsComponent implements OnInit {
   topic: any;
   icon: any;
   guidedInput: ISubtopicGuidedInput = { activeId: '', name: '' };
+  subscription: any;
   constructor(
     private topicService: TopicService,
     private activeRoute: ActivatedRoute,
     private router: Router,
     private navigateDataService: NavigateDataService,
-    private showMoreService: ShowMoreService
+    private showMoreService: ShowMoreService,
+    private mapService: MapService
   ) { }
 
 
@@ -58,6 +61,10 @@ export class SubtopicsComponent implements OnInit {
         for (let i = 1; i < routeParts.length; i++) {
           this.getSubtopics();
         }
+      });
+    this.subscription = this.mapService.notifyLocation
+      .subscribe((value) => {
+        this.router.navigateByUrl('/topics')
       });
   }
 }
