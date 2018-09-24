@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Access2Justice.Api.Controllers
 {
-    [Authorize]
     [Produces("application/json")]
     public class TopicsResourcesController : Controller
     {

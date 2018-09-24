@@ -47,8 +47,7 @@ import { TokenInterceptor } from './token-interceptor.service';
 import { MsalInterceptor } from '@azure/msal-angular';
 import { environment } from '../environments/environment';
 
-export const protectedResourceMap: [string, string[]][] = [[environment.topicUrl, [environment.apiScope]], [environment.resourceUrl, [environment.apiScope]]
-  , [environment.personalizedUrl, [environment.apiScope]]]
+export const protectedResourceMap: [string, string[]][] = [[environment.userPersonalizedPlanUrl, [environment.apiScope]]]
 
 @NgModule({
   declarations: [

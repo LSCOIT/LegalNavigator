@@ -1,5 +1,6 @@
 ﻿using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -61,6 +62,7 @@ namespace Access2Justice.Api.Controllers
         /// </summary>
         /// <param name="userData"></param>
         /// <returns></returns>
+        [Authorize]
         [HttpPost]
         [Route("api/user/upsertuserpersonalizedplan")]
         public async Task<IActionResult> UpsertUserPersonalizedPlanAsync([FromBody]ProfileResources profileResources)
