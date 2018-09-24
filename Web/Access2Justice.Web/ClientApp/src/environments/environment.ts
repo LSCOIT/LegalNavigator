@@ -13,12 +13,12 @@ export const environment = {
   webResourceRecordsToDisplay: 10,
   blobUrl: 'https://cs4892808efec24x447cx944.blob.core.windows.net',
   All: 'All',
-  clientID: 'f0d077e6-f293-4c01-9cfb-b8327735533d',
+  clientID: '15c4cbff-86ef-4c76-9b08-874ce0b55c8a',
   authority: 'https://login.microsoftonline.com/common/',
-  consentScopes: ["user.read", 'api://f0d077e6-f293-4c01-9cfb-b8327735533d/access_as_user'],
+  consentScopes: ["user.read", 'api://15c4cbff-86ef-4c76-9b08-874ce0b55c8a/access_as_user'],
   redirectUri: 'http://localhost:5150/',
   navigateToLoginRequestUrl: true,
   postLogoutRedirectUri: 'http://localhost:5150/',
   topicUrl: 'http://localhost:4200/api/topics',
-  apiScope: 'api://f0d077e6-f293-4c01-9cfb-b8327735533d/access_as_user'
+  apiScope: 'api://15c4cbff-86ef-4c76-9b08-874ce0b55c8a/access_as_user'
 };

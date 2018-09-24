@@ -17,7 +17,7 @@ namespace Access2Justice.Api.Authorization
         }
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, AuthorizeUser requirement)
         {
-            List<string> permissions = await userRoleBusinessLogic.GetPermissionDataAsyn(requirement.OId);
+             List<string> permissions = await userRoleBusinessLogic.GetPermissionDataAsyn(requirement.OId);
             int permissionsCount = permissions.Count();
             if (permissionsCount > 0)
             {
