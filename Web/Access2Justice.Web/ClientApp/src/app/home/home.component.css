@@ -1,3 +1,7 @@
+h1 {
+  margin-top: 0;
+}
+
 .top-row {
   margin-top: 0;
 }
@@ -51,13 +55,24 @@ ul>li>span {
   margin-left: 0;
 }
 
+.panel-heading {
+  display: inline-block;
+  border-radius: 25px;
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+
+.label-display {
+  float: left;
+  padding-right: 10px;
+}
+
 @media only screen and (min-width : 768px) {
   .top-row {
       margin-top: 20px;
   }
 
   .tagline {
-      margin-top: 10%;
       padding: 0;
       text-align: left;
   }
@@ -92,6 +107,10 @@ ul>li>span {
 }
 
 @media only screen and (min-width : 992px) {
+  .tagline {
+    margin-top: 10%;
+  }
+
   .testimonial-img {
     width: 230px;
     height: 230px;

@@ -2,11 +2,16 @@
   <div class="container">
     <div class="row top-row">
       <div [ngClass]="{'col-sm-6': heroData.image.source, '': !heroData.image.source }" class="tagline text-center">
-        <h2>{{heroData.heading}} {{state}}</h2>
+        <h1>{{heroData.heading}} {{state}}</h1>
         <p>
           {{heroData.description.text}}
-          <a class="link" [routerLink]="heroData?.description?.textWithLink?.url">{{heroData?.description?.textWithLink?.urlText}}</a>
+          <a class="link" [routerLink]="heroData?.description?.textWithLink?.url">{{heroData?.description?.textWithLink?.urlText}}.</a>
         </p>
+        <div class="panel-heading box-shadow">
+          <span class="label-display mobile-hidden">Showing Information for </span>
+          <app-map [mapType]="true"></app-map>
+        </div>
+        <p class="ps">Add your state to get specific information for your location.</p>
       </div>
       <div *ngIf="heroData.image.source" class="col-sm-6">
         <img id="home-img" [src]="blobUrl + heroData?.image?.source" [alt]="heroData?.image?.altText">
