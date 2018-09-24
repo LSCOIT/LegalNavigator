@@ -14,7 +14,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MsalService } from '@azure/msal-angular';
 
-fdescribe('component:profile', () => {
+describe('component:profile', () => {
   let component: ProfileComponent;
   let fixture: ComponentFixture<ProfileComponent>;  
   let arrayutilityservice: ArrayUtilityService;

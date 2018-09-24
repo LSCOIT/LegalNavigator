@@ -23,7 +23,7 @@ import { NgForm } from '@angular/forms/src/directives/ng_form';
 import { Input } from '@angular/core/src/metadata/directives';
 import { MsalService } from '@azure/msal-angular';
 
-fdescribe('SearchComponent', () => {
+describe('SearchComponent', () => {
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
   let router: RouterModule;
