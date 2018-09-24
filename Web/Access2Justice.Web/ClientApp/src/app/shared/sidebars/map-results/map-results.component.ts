@@ -23,7 +23,13 @@ export class MapResultsComponent implements OnChanges {
       if (this.searchResource.resources) {
         for (let i = 0; i < this.searchResource.resources.length; i++) {
           if (this.searchResource.resources[i].address) {
-            this.addressList.push(this.searchResource.resources[i].address);
+            let addressList = this.searchResource.resources[i].address.split('|');
+            if (addressList.length == 1) {
+              this.addressList.push(addressList);
+            } else {
+
+              this.addressList = this.addressList.concat(addressList);
+            }
           }
         }
       }
