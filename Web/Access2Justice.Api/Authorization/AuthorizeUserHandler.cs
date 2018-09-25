@@ -28,71 +28,31 @@ namespace Access2Justice.Api.Authorization
                 if (context.User.Claims.FirstOrDefault() != null)
                 {
                     string oId = context.User.Claims.FirstOrDefault(c => c.Type == "http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
-                    requirement.OId = ValidateToken(oId);
-                }
-                var RoleName = await userRoleBusinessLogic.GetRoleInfo(requirement.OId);
-                if (!(string.IsNullOrEmpty(RoleName)))
-                {
-                    if (!string.IsNullOrEmpty(requirement.Role))
+                    requirement.OId = EncryptOid(oId);
+                    if (!(string.IsNullOrEmpty(requirement.OId)))
                     {
-                        string[] roles = requirement.Role.Split(',');
-                        if (roles.Contains(RoleName))
+                        var RoleName = await userRoleBusinessLogic.GetRoleInfo(requirement.OId);
+                        if (!(string.IsNullOrEmpty(RoleName)))
                         {
-                            context.Succeed(requirement);
+                            if (!string.IsNullOrEmpty(requirement.Role))
+                            {
+                                string[] roles = requirement.Role.Split(',');
+                                if (roles.Contains(RoleName))
+                                {
+                                    context.Succeed(requirement);
+                                }
+                            }
+                            //else
+                            //{
+                            //    context.Fail();
+                            //}
                         }
-                    }
-                    //else if (RoleName == requirement.Role)
-                    //{
-                    //    context.Succeed(requirement);
-                    //}
-                    //else if (string.IsNullOrEmpty(requirement.OId))
-                    //{
-                    //    context.Succeed(requirement);
-                    //}
-                    else
-                    {
-                        context.Fail();
                     }
                 }
             }
-
-
-            ///
-            //if (context.User.Claims.FirstOrDefault() != null)
-            //{
-            //    string oId = context.User.Claims.FirstOrDefault(c => c.Type == "http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
-            //    requirement.OId = ValidateToken(oId);
-            //}
-            //var RoleName = await userRoleBusinessLogic.GetRoleInfo(requirement.OId);
-            //if (!(string.IsNullOrEmpty(RoleName)))
-            //{
-            //    if (requirement.Role.Contains(","))
-            //    {
-            //        string[] roles = requirement.Role.Split(',');
-            //        foreach (var role in roles)
-            //        {
-            //            if (RoleName == role || requirement.Role == UserRoles.RoleEnum.Anonymous.ToString())
-            //            {
-            //                context.Succeed(requirement);
-            //            }
-            //        }
-            //    }
-            //    else if (RoleName == requirement.Role || requirement.Role == UserRoles.RoleEnum.Anonymous.ToString())
-            //    {
-            //        context.Succeed(requirement);
-            //    }
-            //}
-            //else if (string.IsNullOrEmpty(requirement.OId) || requirement.Role == UserRoles.RoleEnum.Anonymous.ToString())
-            //{
-            //    context.Succeed(requirement);
-            //}
-            //else
-            //{
-            //    context.Fail();
-            //}
         }
 
-        private string ValidateToken(string oId)
+        private string EncryptOid(string oId)
         {
             string encryptedOid = string.Empty;
             if (!string.IsNullOrEmpty(oId))

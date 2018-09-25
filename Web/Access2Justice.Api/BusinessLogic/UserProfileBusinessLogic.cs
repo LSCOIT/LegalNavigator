@@ -1,4 +1,5 @@
-﻿using Access2Justice.Shared.Interfaces;
+﻿using Access2Justice.Api.Interfaces;
+using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Access2Justice.Shared.Utilities;
 using Newtonsoft.Json;
@@ -6,6 +7,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Access2Justice.Api.BusinessLogic
@@ -154,11 +156,21 @@ namespace Access2Justice.Api.BusinessLogic
             var resultUP = await GetUserProfileDataAsync(userProfile?.OId);
             if (string.IsNullOrEmpty(resultUP.OId))
             {
+                userProfile.RoleInformationId = await GetDefaultUserRole();
                 var result = await dbService.CreateItemAsync(userProfile, dbSettings.UserProfileCollectionId);
                 var serializedResult = JsonConvert.SerializeObject(result);
                 resultUP = ConvertUserProfile("[" + result + "]");
             }
             return resultUP;
+        }
+
+        public async Task<Guid> GetDefaultUserRole()
+        {
+            List<string> propertyNames = new List<string>() { Constants.Type, Constants.RoleName };
+            List<string> values = new List<string>() { Constants.UserRole, Constants.DefaultUser };
+            var result = await dbClient.FindItemsWhereAsync(dbSettings.UserRoleCollectionId, propertyNames, values);
+            List<UserRole> userRole = JsonUtilities.DeserializeDynamicObject<List<UserRole>>(result);
+            return userRole.Count() == 0 ? Guid.Empty : userRole[0].RoleInformationId;
         }
     }
 }

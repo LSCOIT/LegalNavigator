@@ -11,5 +11,6 @@ namespace Access2Justice.Shared.Interfaces
         Task<UserProfile> UpdateUserProfilePlanIdAsync(string oId, Guid planId);
         Task<dynamic> UpsertUserSavedResourcesAsync(ProfileResources userResources);
         Task<UserProfile> UpsertUserProfileAsync(UserProfile userProfile);
+        Task<Guid> GetDefaultUserRole();
     }
 }
