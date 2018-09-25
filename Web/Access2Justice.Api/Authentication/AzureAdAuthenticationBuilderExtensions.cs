@@ -54,12 +54,11 @@ namespace Access2Justice.Api.Authentication
                 string[] parts = uri.AbsolutePath.Split('/');
                 if (parts.Length >= 2)
                 {
-                    Guid tenantId;
                     if (uri.Scheme != authorityUri.Scheme || uri.Authority != authorityUri.Authority)
                     {
                         throw new SecurityTokenInvalidIssuerException("Issuer has wrong authority");
                     }
-                    if (!Guid.TryParse(parts[1], out tenantId))
+                    if (!Guid.TryParse(parts[1], out Guid tenantId))
                     {
                         throw new SecurityTokenInvalidIssuerException("Cannot find the tenant GUID for the issuer");
                     }
