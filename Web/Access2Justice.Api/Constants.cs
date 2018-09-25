@@ -37,5 +37,7 @@ namespace Access2Justice.Api
         public const string RoleName = "roleName";
         public const string DefaultUser = "AnonymousUser";
         public const string PermissionDetails = "permissionDetails";
+        public const string GetProfileData = "getuserprofiledata";
+        public const string UserName = "eMail";
     }
 }

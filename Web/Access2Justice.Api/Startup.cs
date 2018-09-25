@@ -37,7 +37,6 @@ namespace Access2Justice.Api
             ConfigureSession(services);
 
             services.AddMvc();
-            string oId = string.Empty;
             ILuisSettings luisSettings = new LuisSettings(Configuration.GetSection("Luis"));
             services.AddSingleton(luisSettings);
 
@@ -64,7 +63,7 @@ namespace Access2Justice.Api
             {
                 sharedOptions.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddAzureAdBearer(options => Configuration.Bind("AzureAd", options));
-            oId = ValidateToken();
+
             services.AddAuthorization(options =>
             {
                 options.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
@@ -79,25 +78,25 @@ namespace Access2Justice.Api
 				UserRoles.RoleEnum.Authenticated.ToString();
 
 				options.AddPolicy(UserRoles.PolicyEnum.GlobalAdminPolicy.ToString(), policy =>
-                policy.AddRequirements(new AuthorizeUser(oId, UserRoles.RoleEnum.GlobalAdmin.ToString())));
+                policy.AddRequirements(new AuthorizeUser(UserRoles.RoleEnum.GlobalAdmin.ToString())));
 
                 options.AddPolicy(UserRoles.PolicyEnum.StateAdminPolicy.ToString(), policy =>
-                policy.AddRequirements(new AuthorizeUser(oId, UserRoles.RoleEnum.StateAdmin.ToString())));
+                policy.AddRequirements(new AuthorizeUser(UserRoles.RoleEnum.StateAdmin.ToString())));
 
                 options.AddPolicy(UserRoles.PolicyEnum.DeveloperPolicy.ToString(), policy =>
-                policy.AddRequirements(new AuthorizeUser(oId, UserRoles.RoleEnum.Developer.ToString())));
+                policy.AddRequirements(new AuthorizeUser(UserRoles.RoleEnum.Developer.ToString())));
 
                 options.AddPolicy(UserRoles.PolicyEnum.AuthenticatedPolicy.ToString(), policy =>
-                policy.AddRequirements(new AuthorizeUser(oId, UserRoles.RoleEnum.Authenticated.ToString())));
+                policy.AddRequirements(new AuthorizeUser(UserRoles.RoleEnum.Authenticated.ToString())));
 
 				options.AddPolicy(UserRoles.PolicyEnum.AnonymousPolicy.ToString(), policy =>
-				policy.AddRequirements(new AuthorizeUser(oId, UserRoles.RoleEnum.Anonymous.ToString())));
+				policy.AddRequirements(new AuthorizeUser(UserRoles.RoleEnum.Anonymous.ToString())));
 
 				options.AddPolicy(UserRoles.PolicyEnum.AdminRolesPolicy.ToString(), policy =>
-                policy.AddRequirements(new AuthorizeUser(oId, AdminRolesPolicy)));
+                policy.AddRequirements(new AuthorizeUser(AdminRolesPolicy)));
 
 				options.AddPolicy(UserRoles.PolicyEnum.AuthenticatedUserPolicy.ToString(), policy =>
-				policy.AddRequirements(new AuthorizeUser(oId, AuthenticatedUserPolicy)));
+				policy.AddRequirements(new AuthorizeUser(AuthenticatedUserPolicy)));
 
 			});
             services.AddSingleton<IAuthorizationHandler, AuthorizeUserHandler>();
@@ -171,26 +170,6 @@ namespace Access2Justice.Api
                 c.SwaggerEndpoint(Configuration.GetValue<string>("Api:VirtualPath") + "/swagger/v1/swagger.json", "Access2Justice API");
             });
 
-        }
-
-        private string ValidateToken() //Need to pass token
-        {
-            string encryptedOid = string.Empty;
-            Guid oId =  //new Guid("1803a665-8a5e-45a9-848a-1331ade5c152"); //Anonymous
-					new Guid("00000000-0000-0000-8f8b-cbb21fe0448c"); //State Admin
-																		  //new Guid("cb09b65a-43a6-4525-8b45-ede2c319c75f"); //Global Admin
-			encryptedOid = EncryptString(oId.ToString());
-            return encryptedOid;
-        }
-
-        private string EncryptString(string input)
-        {
-            string encryptedId = input;
-            if (!string.IsNullOrEmpty(input))
-            {
-                encryptedId = EncryptionUtilities.GenerateSHA512String(input);
-            }
-            return encryptedId;
         }
     }
 }

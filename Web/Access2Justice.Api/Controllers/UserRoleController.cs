@@ -18,20 +18,7 @@ namespace Access2Justice.Api.Controllers
         {
             this.userRoleBusinessLogic = userRoleBusinessLogic;
         }
-
-        /// <summary>
-        /// Get the user role by a user OId
-        /// </summary>
-        /// <param name="oid"></param>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("getUserRole")]
-        public async Task<IActionResult> GetUserRoleDataAsync(string oId)
-        {
-            var users = await userRoleBusinessLogic.GetRoleNameById(oId);
-            return Ok(users);
-        }
-
+        
         /// <summary>
         /// Get the user role by a user OId
         /// </summary>

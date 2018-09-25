@@ -15,12 +15,12 @@ namespace Access2Justice.Api.Authorization
 {
     public class AuthorizeUser : IAuthorizationRequirement
     {
-        public string OId { get; private set; }
+        public string OId { get; internal set; }
         public string Role { get; private set; }
 
-        public AuthorizeUser(string oId, string role)
+        public AuthorizeUser(string role)
         {
-            OId = oId;
+            OId = string.Empty;
             Role = role;
         }
     }
