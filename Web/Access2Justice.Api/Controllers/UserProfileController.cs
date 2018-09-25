@@ -79,7 +79,7 @@ namespace Access2Justice.Api.Controllers
         /// </summary>
         /// <param name="userProfile"></param>
         /// <returns></returns>
-        [Authorize(Policy = "AnonymousPolicy")]
+        //[Authorize(Policy = "AnonymousPolicy")]
         [HttpPost]
         [Route("api/user/upsertuserprofile")]
         public async Task<IActionResult> UpsertUserProfile([FromBody]UserProfile userProfile)

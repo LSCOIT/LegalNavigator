@@ -7,6 +7,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Access2Justice.Api.BusinessLogic
@@ -16,14 +17,12 @@ namespace Access2Justice.Api.BusinessLogic
         private readonly IDynamicQueries dbClient;
         private readonly ICosmosDbSettings dbSettings;
         private readonly IBackendDatabaseService dbService;
-        private readonly IUserRoleBusinessLogic dbUserRole;
         public UserProfileBusinessLogic(IDynamicQueries dynamicQueries, ICosmosDbSettings cosmosDbSettings,
-            IBackendDatabaseService backendDatabaseService, IUserRoleBusinessLogic userRole)
+            IBackendDatabaseService backendDatabaseService)
         {
             dbClient = dynamicQueries;
             dbSettings = cosmosDbSettings;
             dbService = backendDatabaseService;
-            dbUserRole = userRole;
         }
         public async Task<UserProfile> GetUserProfileDataAsync(string oId)
         {
@@ -157,12 +156,21 @@ namespace Access2Justice.Api.BusinessLogic
             var resultUP = await GetUserProfileDataAsync(userProfile?.OId);
             if (string.IsNullOrEmpty(resultUP.OId))
             {
-                userProfile.RoleInformationId = await dbUserRole.GetDefaultUserRole();
+                userProfile.RoleInformationId = await GetDefaultUserRole();
                 var result = await dbService.CreateItemAsync(userProfile, dbSettings.UserProfileCollectionId);
                 var serializedResult = JsonConvert.SerializeObject(result);
                 resultUP = ConvertUserProfile("[" + result + "]");
             }
             return resultUP;
+        }
+
+        public async Task<Guid> GetDefaultUserRole()
+        {
+            List<string> propertyNames = new List<string>() { Constants.Type, Constants.RoleName };
+            List<string> values = new List<string>() { Constants.UserRole, Constants.DefaultUser };
+            var result = await dbClient.FindItemsWhereAsync(dbSettings.UserRoleCollectionId, propertyNames, values);
+            List<UserRole> userRole = JsonUtilities.DeserializeDynamicObject<List<UserRole>>(result);
+            return userRole.Count() == 0 ? Guid.Empty : userRole[0].RoleInformationId;
         }
     }
 }
