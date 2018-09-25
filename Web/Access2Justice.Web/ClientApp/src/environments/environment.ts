@@ -20,5 +20,6 @@ export const environment = {
   navigateToLoginRequestUrl: true,
   postLogoutRedirectUri: 'http://localhost:5150/',
   topicUrl: 'http://localhost:4200/api/topics',
+  userPersonalizedPlanUrl: 'http://localhost:4200/api/user/upsertuserpersonalizedplan',
   apiScope: 'api://15c4cbff-86ef-4c76-9b08-874ce0b55c8a/access_as_user'
 };
