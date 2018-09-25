@@ -14,7 +14,7 @@ export class Global {
   profileRouteUrl: string = "/profile";
   data: any;
   notifyStaticData: Subject<any> = new Subject<any>();
-
+  topicsData: any;
   externalLogin() {
     var form = document.createElement('form');
     form.setAttribute('method', 'POST');
