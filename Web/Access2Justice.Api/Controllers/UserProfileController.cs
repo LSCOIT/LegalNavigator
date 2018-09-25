@@ -6,8 +6,7 @@ using System;
 using System.Threading.Tasks;
 
 namespace Access2Justice.Api.Controllers
-{
-	[Authorize(Policy = "AuthenticatedUserPolicy")]
+{	
     [Produces("application/json")]
     public class UserProfileController : Controller
     {
@@ -23,6 +22,7 @@ namespace Access2Justice.Api.Controllers
         /// </summary>
         /// <param name="oid"></param>
         /// <returns></returns>
+        [Authorize(Policy = "AuthenticatedUserPolicy")]
         [HttpPost]
         [Route("api/user/getuserprofile")]
         public async Task<IActionResult> GetUserDataAsync(string oid, string type)
@@ -36,6 +36,7 @@ namespace Access2Justice.Api.Controllers
         /// </summary>
         /// <param name="oid"></param>
         /// <returns></returns>
+        [Authorize(Policy = "AuthenticatedUserPolicy")]
         [HttpGet]
         [Route("api/user/getuserprofiledata/{oid}")]
         public async Task<IActionResult> GetUserProfileDataAsync(string oid)
@@ -50,6 +51,7 @@ namespace Access2Justice.Api.Controllers
         /// <param name="oId"></param>
         /// <param name="userProfile"></param>
         /// <returns>1-Success,0-Fail</returns>
+        [Authorize(Policy = "AuthenticatedUserPolicy")]
         [HttpPost]
         [Route("api/user/updateuserprofile")]
         public async Task<IActionResult> UpdateUserProfileDocumentAsync(string oId, Guid planId)
@@ -63,6 +65,7 @@ namespace Access2Justice.Api.Controllers
         /// </summary>
         /// <param name="userData"></param>
         /// <returns></returns>
+        [Authorize(Policy = "AuthenticatedUserPolicy")]
         [HttpPost]
         [Route("api/user/upsertuserpersonalizedplan")]
         public async Task<IActionResult> UpsertUserPersonalizedPlanAsync([FromBody]ProfileResources profileResources)
@@ -76,6 +79,7 @@ namespace Access2Justice.Api.Controllers
         /// </summary>
         /// <param name="userProfile"></param>
         /// <returns></returns>
+        [Authorize(Policy = "AnonymousPolicy")]
         [HttpPost]
         [Route("api/user/upsertuserprofile")]
         public async Task<IActionResult> UpsertUserProfile([FromBody]UserProfile userProfile)
