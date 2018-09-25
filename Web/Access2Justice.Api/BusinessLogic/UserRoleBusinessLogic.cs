@@ -32,14 +32,13 @@ namespace Access2Justice.Api.BusinessLogic
             return userRole;
         }
 
-        public async Task<UserRole> GetDefaultUserRole()
+        public async Task<Guid> GetDefaultUserRole()
         {
-            List<UserRole> userRole = new List<UserRole>();
             List<string> propertyNames = new List<string>() { Constants.Type, Constants.RoleName };
             List<string> values = new List<string>() { Constants.UserRole, Constants.DefaultUser };
             var result = await dbClient.FindItemsWhereAsync(dbSettings.UserRoleCollectionId, propertyNames, values);
-            userRole = JsonUtilities.DeserializeDynamicObject<List<UserRole>>(result);
-            return userRole[0];
+            List<UserRole> userRole = JsonUtilities.DeserializeDynamicObject<List<UserRole>>(result);
+            return userRole.Count() == 0 ? Guid.Empty : userRole[0].RoleInformationId;
         }
 
         public async Task<List<UserRole>> GetUserRoleDataAsync(string roleInformationId)
