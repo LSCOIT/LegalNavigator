@@ -3,7 +3,7 @@ import { environment } from '../environments/environment';
 const apiUrl = environment.apiUrl;
 const topic = apiUrl + '/topics';
 const userProfile = apiUrl + '/user';
-const curatedExperience = apiUrl + '/CuratedExperience';
+const curatedExperience = apiUrl + '/curatedexperience';
 const contentUrl = apiUrl + '/staticresource';
 
 export const api = {
@@ -15,7 +15,7 @@ export const api = {
     getResourceUrl: apiUrl + '/resources',
     searchOffsetUrl: apiUrl + '/websearch',
     breadcrumbsUrl: topic + '/getbreadcrumbs',
-    personalizedPlan: curatedExperience + '/PersonalizedPlan',
+    personalizedPlan: curatedExperience + '/personalizedplan',
     planUrl: curatedExperience + "/getplandetails",
     getPersonalizedResourcesUrl: apiUrl + '/personalizedresources',
     updatePlanUrl: userProfile + "/upsertuserplan",
@@ -24,13 +24,13 @@ export const api = {
     getOrganizationDetailsUrl: topic + '/getorganizationdetails',
     loginUrl: '/signIn',
     logoutUrl: '/signOut',
-    questionUrl: curatedExperience + '/Start',
-    saveAndGetNextUrl: curatedExperience + '/Component/SaveAndGetNext',
+    questionUrl: curatedExperience + '/start',
+    saveAndGetNextUrl: curatedExperience + '/component/saveandgetnext',
     updateUserPlanUrl: curatedExperience + "/updateplan",
     resourceUrl: topic + '/getresource',
     getContentsUrl: contentUrl + '/getstaticresources',
-    shareUrl: apiUrl + '/Share/GeneratePermaLink',
-    unShareUrl: apiUrl + '/Share/RemovePermaLink',
-    getResourceLink: apiUrl + '/Share/GetPermalLinkResource',
-    checkPermaLink: apiUrl + '/Share/CheckPermaLink'
+    shareUrl: apiUrl + '/share/generatepermalink',
+    unShareUrl: apiUrl + '/share/removepermalink',
+    getResourceLink: apiUrl + '/share/getpermalinkresource',
+    checkPermaLink: apiUrl + '/share/checkpermalink'
 }
