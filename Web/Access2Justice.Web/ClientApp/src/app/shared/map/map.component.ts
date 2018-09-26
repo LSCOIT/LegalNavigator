@@ -40,6 +40,7 @@ export class MapComponent implements OnInit {
   name: string = 'Navigation';
   staticContent: any;
   staticContentSubcription: any;
+  @Input() displayInitialModal: boolean = false;
 
   constructor(private modalService: BsModalService,
     private mapService: MapService,
@@ -88,11 +89,17 @@ export class MapComponent implements OnInit {
 
   displayLocationDetails(mapLocation) {
     this.mapLocation = mapLocation;
-    if (this.mapLocation) {
+    if (this.mapLocation && !this.mapType) {
       this.address = this.mapLocation.address;
       this.locality = this.mapLocation.locality;
-      this.showLocation = false;
+    } else {
+      if (JSON.parse(sessionStorage.getItem("globalMapLocation"))) {
+        let globalLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+        this.address = globalLocation.address;
+        this.locality = globalLocation.locality;
+      }
     }
+    this.showLocation = false;
   }
 
   loadCurrentLocation() {
@@ -124,7 +131,9 @@ export class MapComponent implements OnInit {
           };
           this.locationInputRequired = true;
           this.detectLocation = false;
-          this.openModal(this.templateref);
+          if (this.displayInitialModal) {
+            this.openModal(this.templateref);
+          }
         });
     }
   }
@@ -138,7 +147,6 @@ export class MapComponent implements OnInit {
   }
 
   getLocationNavigationContent(): void {
-    let homePageRequest = { name: this.name };
     if (this.staticResourceService.navigation && (this.staticResourceService.navigation.location[0].state == this.staticResourceService.getLocation())) {
       this.navigation = this.staticResourceService.navigation;
       this.filterLocationNavigationContent(this.staticResourceService.navigation);
@@ -167,14 +175,16 @@ export class MapComponent implements OnInit {
       .subscribe((value) => {
         this.displayLocationDetails(this.mapLocation);
       });
+
     this.staticContentSubcription = this.global.notifyStaticData
       .subscribe((value) => {
         this.getLocationNavigationContent();
       });
 
-    if (location.pathname.indexOf(this.global.shareRouteUrl) != -1) {
+    if (location.pathname.indexOf(this.global.shareRouteUrl) !== -1) {
       return;
     }
+
     if (this.mapType) {
       if (!sessionStorage.getItem("globalMapLocation")) {
         this.loadCurrentLocation();
@@ -182,10 +192,12 @@ export class MapComponent implements OnInit {
     } else {
       this.showLocality = false;
     }
+
     if (sessionStorage.getItem("globalMapLocation")) {
       this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
       this.displayLocationDetails(this.mapLocation);
     }
+
     this.setLocalMapLocation();
   }
 }
