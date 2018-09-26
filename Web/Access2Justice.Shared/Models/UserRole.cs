@@ -20,7 +20,7 @@ namespace Access2Justice.Shared.Models
         public string OrganizationalUnit { get; set; }
 
         [JsonProperty(PropertyName = "permissions")]
-        public List<Guid> Permissions { get; set; }
+        public List<string> Permissions { get; set; }
 
         [JsonProperty(PropertyName = "createdBy")]
         public string CreatedBy { get; set; }
@@ -36,7 +36,7 @@ namespace Access2Justice.Shared.Models
 
         public UserRole()
         {
-            Permissions = new List<Guid>();
+            Permissions = new List<string>();
         }
     }
 
@@ -59,7 +59,7 @@ namespace Access2Justice.Shared.Models
         public Guid Id { get; set; }
 
         [JsonProperty(PropertyName = "type")]
-        public string type { get; set; }
+        public string Type { get; set; }
 
         [JsonProperty(PropertyName = "permissions")]
         public List<Permission> Permissions { get; set; }

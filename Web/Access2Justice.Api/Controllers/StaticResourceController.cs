@@ -22,7 +22,7 @@ namespace Access2Justice.Api.Controllers
 		/// </summary>
 		/// <param name="name"></param>
 		/// <returns></returns>
-	    [Authorize(Policy = "AnonymousPolicy")]
+	    //[Authorize(Policy = "AnonymousPolicy")]
 		[HttpPost]
         [Route("api/staticresource/getstaticresources")]
         public async Task<IActionResult> GetStaticResourcesDataAsync([FromBody]Location location)
@@ -36,7 +36,7 @@ namespace Access2Justice.Api.Controllers
 		/// </summary>
 		/// <param name="pageContent"></param>
 		/// <returns></returns>
-		[Authorize(Policy = "AdminRolesPolicy")]
+		//[Authorize(Policy = "AdminRolesPolicy")]
 		[HttpPost]
         [Route("api/staticresource/upsertstatichomepage")]
         public async Task<IActionResult> UpsertStaticHomePageDataAsync(HomeContent homePageContent, Location location)
@@ -50,7 +50,7 @@ namespace Access2Justice.Api.Controllers
 		/// </summary>
 		/// <param name="pageContent"></param>
 		/// <returns></returns>
-		[Authorize(Policy = "AdminRolesPolicy")]
+		//[Authorize(Policy = "AdminRolesPolicy")]
 		[HttpPost]
         [Route("api/staticresource/upsertstaticprivacypage")]
         public async Task<IActionResult> UpsertStaticPrivacyPromisePageDataAsync(PrivacyPromiseContent privacyPromiseContent, Location location)
@@ -64,7 +64,7 @@ namespace Access2Justice.Api.Controllers
 		/// </summary>
 		/// <param name="pageContent"></param>
 		/// <returns></returns>
-		[Authorize(Policy = "AdminRolesPolicy")]
+		//[Authorize(Policy = "AdminRolesPolicy")]
 		[HttpPost]
         [Route("api/staticresource/upsertstatichelpandfaqpage")]
         public async Task<IActionResult> UpsertStaticHelpAndFAQPageDataAsync(HelpAndFaqsContent helpAndFAQPageContent, Location location)
@@ -78,7 +78,7 @@ namespace Access2Justice.Api.Controllers
 		/// </summary>
 		/// <param name="navigationContent"></param>
 		/// <returns></returns>
-		[Authorize(Policy = "AdminRolesPolicy")]
+		//[Authorize(Policy = "AdminRolesPolicy")]
 		[HttpPost]
         [Route("api/staticresource/upsertstaticnavigation")]
         public async Task<IActionResult> UpsertStaticNavigationDataAsync(Navigation navigationContent, Location location)
@@ -92,7 +92,7 @@ namespace Access2Justice.Api.Controllers
 		/// </summary>
 		/// <param name="aboutContent"></param>
 		/// <returns></returns>
-		[Authorize(Policy = "AdminRolesPolicy")]
+		//[Authorize(Policy = "AdminRolesPolicy")]
 		[HttpPost]
         [Route("api/staticresource/upsertstaticaboutpage")]
         public async Task<IActionResult> UpsertStaticAboutPageDataAsync(AboutContent aboutContent, Location location)

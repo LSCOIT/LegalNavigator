@@ -9,7 +9,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Access2Justice.Api.Controllers
 {
-	[Authorize(Policy = "AnonymousPolicy")]
+	//[Authorize(Policy = "AnonymousPolicy")]
 	[Produces("application/json")]
     [Route("api/websearch")]
     public class WebSearchController : Controller

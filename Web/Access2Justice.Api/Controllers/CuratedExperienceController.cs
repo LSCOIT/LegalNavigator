@@ -162,7 +162,7 @@ namespace Access2Justice.Api.Controllers
             return Ok(curatedExperienceBusinessLogic.GetNextComponent(curatedExperience, component));
         }
 
-		[Authorize(Policy = "AnonymousPolicy")]
+		//[Authorize(Policy = "AnonymousPolicy")]
 		[HttpGet("PersonalizedPlan")]
         public async Task<IActionResult> GeneratePersonalizedPlan([FromQuery] Guid curatedExperienceId, [FromQuery] Guid answersDocId)
         {
@@ -176,7 +176,7 @@ namespace Access2Justice.Api.Controllers
             return Ok(personalizedPlan);
         }
 
-		[Authorize(Policy = "AuthenticatedUserPolicy")]
+		//[Authorize(Policy = "AuthenticatedUserPolicy")]
         [HttpPost("updateplan")]
         public async Task<IActionResult> UpdateUserProfileDocumentAsync([FromBody]UserPersonalizedPlan userPlan)
         {
@@ -196,7 +196,7 @@ namespace Access2Justice.Api.Controllers
             return HttpContext.Session.GetObjectAsJson<CuratedExperience>(id.ToString());
         }
 
-		[Authorize(Policy = "AnonymousPolicy")]
+		//[Authorize(Policy = "AnonymousPolicy")]
 		[HttpGet]
         [Route("getplandetails/{id}")]
         public async Task<IActionResult> GetPlanDetailsAsync(string id)
@@ -205,7 +205,7 @@ namespace Access2Justice.Api.Controllers
             return Ok(actionPlans);
         }
 
-		[Authorize(Policy = "AnonymousPolicy")]
+		//[Authorize(Policy = "AnonymousPolicy")]
 		[HttpGet]
         [Route("getplan/{id}")]
         public async Task<IActionResult> GetPlanAsync(string id)

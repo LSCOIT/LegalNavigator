@@ -1,12 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using Access2Justice.Api.Authorization;
 using Access2Justice.Api.ViewModels;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using static Access2Justice.Api.Authorization.Permissions;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -22,12 +24,13 @@ namespace Access2Justice.Api.Controllers
             this.luisBusinessLogic = luisBusinessLogic;
         }
 
-		/// <summary>
-		/// Get all topics in the collection
-		/// </summary>
-		/// <returns></returns>
-		[Authorize(Policy = "AnonymousPolicy")]
-		[Route("api/topics/gettopics")]
+        /// <summary>
+        /// Get all topics in the collection
+        /// </summary>
+        /// <returns></returns>
+        //[Authorize(Policy = "AnonymousPolicy")]
+        [Permission(PermissionType.Restricted, PermissionName.gettopics)]
+        [Route("api/topics/gettopics")]
         [HttpPost]
         public async Task<IActionResult> GetTopics([FromBody]Location location)
         {
@@ -40,7 +43,7 @@ namespace Access2Justice.Api.Controllers
 		/// </summary>
 		/// <param name="parentTopicId"></param>
 		/// <returns></returns> 
-		[Authorize(Policy = "AnonymousPolicy")]
+		//[Authorize(Policy = "AnonymousPolicy")]
 		[Route("api/topics/getsubtopics")]
         [HttpPost]
         public async Task<IActionResult> GetSubTopics([FromBody]TopicInput topicInput)
@@ -54,7 +57,7 @@ namespace Access2Justice.Api.Controllers
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		[Authorize(Policy = "AnonymousPolicy")]
+		//[Authorize(Policy = "AnonymousPolicy")]
 		[HttpPost]
         [Route("api/topics/getresource")]
         public async Task<IActionResult> GetResource([FromBody]TopicInput topicInput)
@@ -68,7 +71,7 @@ namespace Access2Justice.Api.Controllers
 		/// </summary>
 		/// <param name="parentTopicId"></param>
 		/// <returns></returns>
-		[Authorize(Policy = "AnonymousPolicy")]
+		//[Authorize(Policy = "AnonymousPolicy")]
 		[HttpPost]
         [Route("api/topics/getresourcedetails")]
         public async Task<IActionResult> GetResourceDetails([FromBody]TopicInput topicInput)
@@ -82,7 +85,7 @@ namespace Access2Justice.Api.Controllers
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		[Authorize(Policy = "AnonymousPolicy")]
+		//[Authorize(Policy = "AnonymousPolicy")]
 		[HttpPost]
         [Route("api/topics/getdocument")]
         public async Task<IActionResult> GetDocumentDataAsync([FromBody]TopicInput topicInput)
@@ -91,7 +94,7 @@ namespace Access2Justice.Api.Controllers
             return Ok(topics);
         }
 
-		[Authorize(Policy = "AnonymousPolicy")]
+		//[Authorize(Policy = "AnonymousPolicy")]
 		[HttpPost]
         [Route("api/resources")]
         public async Task<IActionResult> GetPagedDataAsync([FromBody]ResourceFilter resourceInput)
@@ -105,7 +108,7 @@ namespace Access2Justice.Api.Controllers
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		[Authorize(Policy = "AnonymousPolicy")]
+		///[Authorize(Policy = "AnonymousPolicy")]
 		[HttpGet]
         [Route("api/topics/getbreadcrumbs/{id}")]
         public async Task<IActionResult> GetBreadcrumbAsync(string id)
@@ -119,7 +122,7 @@ namespace Access2Justice.Api.Controllers
 		/// </summary>
 		/// <param name="name"></param>
 		/// <returns></returns>
-		[Authorize(Policy = "AnonymousPolicy")]
+		//[Authorize(Policy = "AnonymousPolicy")]
 		[HttpGet]
         [Route("api/topics/gettopicdetails/{name}")]
         public async Task<IActionResult> GetTopicDetails(string name)
@@ -133,7 +136,7 @@ namespace Access2Justice.Api.Controllers
 		/// </summary>
 		/// <param name="name", "resourceType"></param>
 		/// <returns></returns>
-		[Authorize(Policy = "AnonymousPolicy")]
+		//[Authorize(Policy = "AnonymousPolicy")]
 		[HttpGet]
         [Route("api/topics/getresourcedetails/{name}/{type}")]
         public async Task<IActionResult> GetResourceDetails(string name, string type)
@@ -147,7 +150,7 @@ namespace Access2Justice.Api.Controllers
 		/// </summary>
 		/// <param name="location"></param>
 		/// <returns></returns>
-		[Authorize(Policy = "AnonymousPolicy")]
+		//[Authorize(Policy = "AnonymousPolicy")]
 		[HttpPost]
         [Route("api/topics/getorganizationdetails")]
         public async Task<IActionResult> GetOrganizationsWhenParamsValuePassed([FromBody]Location location)
@@ -158,7 +161,7 @@ namespace Access2Justice.Api.Controllers
 		/// <summary>
 		/// get topic schema
 		/// </summary>
-		[Authorize(Policy = "AnonymousPolicy")]
+		//[Authorize(Policy = "AnonymousPolicy")]
 		[HttpGet]
         [Route("api/topics/getschematopic")]
         public  Topic GetSchemaTopic()
@@ -169,7 +172,7 @@ namespace Access2Justice.Api.Controllers
 		/// <summary>
 		/// get action plan schema
 		/// </summary>
-		[Authorize(Policy = "AnonymousPolicy")]
+		//[Authorize(Policy = "AnonymousPolicy")]
 		[HttpGet]
         [Route("api/topics/getschemaactionplan")]
         public ActionPlan GetSchemaActionPlan()
@@ -180,7 +183,7 @@ namespace Access2Justice.Api.Controllers
 		/// <summary>
 		/// get article schema
 		/// </summary>
-		[Authorize(Policy = "AnonymousPolicy")]
+		//[Authorize(Policy = "AnonymousPolicy")]
 		[HttpGet]
         [Route("api/topics/getschemaarticle")]
         public Article GetSchemaArticle()
@@ -191,7 +194,7 @@ namespace Access2Justice.Api.Controllers
 		/// <summary>
 		/// get video schema
 		/// </summary>
-		[Authorize(Policy = "AnonymousPolicy")]
+		//[Authorize(Policy = "AnonymousPolicy")]
 		[HttpGet]
         [Route("api/topics/getschemavideo")]
         public Video GetSchemaVideo()
@@ -202,7 +205,7 @@ namespace Access2Justice.Api.Controllers
 		/// <summary>
 		/// get organizations schema
 		/// </summary>
-		[Authorize(Policy = "AnonymousPolicy")]
+		//[Authorize(Policy = "AnonymousPolicy")]
 		[HttpGet]
         [Route("api/topics/getschemaorganization")]
         public Organization GetSchemaOrganization()
@@ -213,7 +216,7 @@ namespace Access2Justice.Api.Controllers
 		/// <summary>
 		/// get form schema
 		/// </summary>
-		[Authorize(Policy = "AnonymousPolicy")]
+		//[Authorize(Policy = "AnonymousPolicy")]
 		[HttpGet]
         [Route("api/topics/getschemaform")]
         public Form GetSchemaForm()
@@ -224,7 +227,7 @@ namespace Access2Justice.Api.Controllers
 		/// <summary>
 		/// get essential reading schema
 		/// </summary>
-		[Authorize(Policy = "AnonymousPolicy")]
+		//[Authorize(Policy = "AnonymousPolicy")]
 		[HttpGet]
         [Route("api/topics/getschemaessentialreading")]
         public EssentialReading GetSchemaEssentialReading()
@@ -235,7 +238,7 @@ namespace Access2Justice.Api.Controllers
         /// <summary>
         /// Create Resource Documents using upload
         /// </summary>
-		[Authorize(Policy = "AdminRolesPolicy")]
+		//[Authorize(Policy = "AdminRolesPolicy")]
 		[HttpPost]
         [Route("api/topics/createresources/upload")]
         public async Task<IActionResult> CreateResources(IFormFile uploadedFile)
@@ -248,7 +251,7 @@ namespace Access2Justice.Api.Controllers
 		/// <summary>
 		/// Create Resource Document
 		/// </summary>
-		[Authorize(Policy = "AdminRolesPolicy")]
+		//[Authorize(Policy = "AdminRolesPolicy")]
 		[HttpPost]
         [Route("api/upsertresourcedocument")]
         public async Task<IActionResult> UpserResourceDocument([FromBody]dynamic resource)
@@ -260,7 +263,7 @@ namespace Access2Justice.Api.Controllers
 		/// <summary>
 		/// Create Topic Documents using upload 
 		/// </summary>
-		[Authorize(Policy = "AdminRolesPolicy")]
+		//[Authorize(Policy = "AdminRolesPolicy")]
 		[HttpPost]
         [Route("api/topics/createtopics/upload")]
         public async Task<IActionResult> CreateTopics(IFormFile uploadedFile)
@@ -273,7 +276,7 @@ namespace Access2Justice.Api.Controllers
 		/// <summary>
 		/// Create Topic Document
 		/// </summary>
-		[Authorize(Policy = "AdminRolesPolicy")]
+		//[Authorize(Policy = "AdminRolesPolicy")]
 		[HttpPost]
         [Route("api/upserttopicdocument")]
         public async Task<IActionResult> UpsertTopicDocument([FromBody]dynamic topic)
@@ -286,7 +289,7 @@ namespace Access2Justice.Api.Controllers
 		/// </summary>
 		/// <param name="parentTopicId"></param>
 		/// <returns></returns>
-		[Authorize(Policy = "AnonymousPolicy")]
+		//[Authorize(Policy = "AnonymousPolicy")]
 		[HttpPut]
         [Route("api/personalizedresources")]
         public async Task<IActionResult> GetPersonalizedDataAsync([FromBody]ResourceFilter resourceInput)

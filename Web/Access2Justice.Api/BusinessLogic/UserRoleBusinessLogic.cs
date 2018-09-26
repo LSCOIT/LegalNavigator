@@ -79,19 +79,20 @@ namespace Access2Justice.Api.BusinessLogic
                 {
                     if (userRole[0].Permissions.Count() > 0)
                     {
-                        permissionPaths.Add(userRole[0].RoleName);
-                        //permissionPaths.Add(userProfile.OId);
-                        List<Permission> permissions = await GetPermissionDetails();
-                        foreach (var permission in userRole[0].Permissions)
-                        {
-                            foreach (var perm in permissions)
-                            {
-                                if (permission == perm.PermissionId)
-                                {
-                                    permissionPaths.Add(perm.Path);
-                                }
-                            }
-                        }
+                        return userRole[0].Permissions;
+                        //permissionPaths.Add(userRole[0].RoleName);
+                        ////permissionPaths.Add(userProfile.OId);
+                        //List<Permission> permissions = await GetPermissionDetails();
+                        //foreach (var permission in userRole[0].Permissions)
+                        //{
+                        //    foreach (var perm in permissions)
+                        //    {
+                        //        if (permission == perm.PermissionId)
+                        //        {
+                        //            permissionPaths.Add(perm.Path);
+                        //        }
+                        //    }
+                        //}
                     }
                 }
             }

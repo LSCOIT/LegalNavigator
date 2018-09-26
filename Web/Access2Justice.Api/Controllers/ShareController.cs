@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Access2Justice.Api.Controllers
 {
-	[Authorize(Policy = "AuthenticatedUserPolicy")]
+	//[Authorize(Policy = "AuthenticatedUserPolicy")]
 	[Produces("application/json")]
     [Route("api/[controller]")]
     public class ShareController : Controller
