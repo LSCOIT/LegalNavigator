@@ -1,7 +1,8 @@
+import { About  } from '../about/about';
 import { Component, OnInit } from '@angular/core';
+import { Global } from '../global';
 import { StaticResourceService } from '../shared/static-resource.service';
-import { About, Mission, Service, PrivacyPromise } from '../about/about';
-import { Image } from '../home/home';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-about',
@@ -10,33 +11,34 @@ import { Image } from '../home/home';
 })
 export class AboutComponent implements OnInit {
 
-  constructor(private staticResourceService: StaticResourceService) { }
+  constructor(
+    private staticResourceService: StaticResourceService,
+    private global:Global
+  ) { }
+  
   name: string = 'AboutPage';
   aboutContent: About;
-  aboutContentData: About;
-
-  filterAboutContent(aboutContent): void {
-    if (aboutContent) {
-      this.aboutContentData = aboutContent;
-    }
-  }
+  staticContent: any;
+  staticContentSubcription: any;
+  blobUrl: string = environment.blobUrl;
 
   getAboutPageContent(): void {
-    let aboutPageRequest = { name: this.name };
     if (this.staticResourceService.aboutContent && (this.staticResourceService.aboutContent.location[0].state == this.staticResourceService.getLocation())) {
       this.aboutContent = this.staticResourceService.aboutContent;
-      this.filterAboutContent(this.staticResourceService.aboutContent);
     } else {
-      this.staticResourceService.getStaticContent(aboutPageRequest)
-        .subscribe(content => {
-          this.aboutContent = content[0];
-          this.filterAboutContent(this.aboutContent);
-          this.staticResourceService.aboutContent = this.aboutContent;
-        });
-    }   
+      if (this.global.getData()) {
+        this.staticContent = this.global.getData();
+        this.aboutContent = this.staticContent.find(x => x.name === this.name);
+        this.staticResourceService.aboutContent = this.aboutContent;
+      }
+    }
   }
 
   ngOnInit() {
     this.getAboutPageContent();
+    this.staticContentSubcription = this.global.notifyStaticData
+      .subscribe(() => {
+          this.getAboutPageContent();
+        });
   }
 }

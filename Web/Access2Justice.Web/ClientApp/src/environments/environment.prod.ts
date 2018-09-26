@@ -1,13 +1,12 @@
 export const environment = {
   production: true,
   apiUrl: 'https://access2justiceapi.azurewebsites.net/api',
-  bingmap_key: '',
+  bingmap_key: 'AlyLqEyg06sSOQJUwYsqcsm69zWmVKYgmaGvqdBPISKCJ59IQqqfCCaQ42KgqTyG',
   map_type: false,
   internalResourcePagesToShow: 2,
-  internalResourceRecordsToDisplay:5,
+  internalResourceRecordsToDisplay: 10,
   webResourcePagesToShow: 10,
   webResourceRecordsToDisplay: 10,
-  userId: 'User Id',
-  blobUrl: '',
+  blobUrl: 'https://cs4892808efec24x447cx944.blob.core.windows.net',
   All: 'All'
 };

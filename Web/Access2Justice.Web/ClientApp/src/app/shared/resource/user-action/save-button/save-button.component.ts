@@ -37,6 +37,7 @@ export class SaveButtonComponent implements OnInit {
   resourceIds: Array<string>;
   topicIds: Array<string>;
   stepIds: Array<string>;
+  @Input() addLinkClass: boolean = false;
 
   constructor(
     private personalizedPlanService: PersonalizedPlanService,
@@ -99,10 +100,12 @@ export class SaveButtonComponent implements OnInit {
       .set("type", "plan");
     this.personalizedPlanService.getUserSavedResources(params)
       .subscribe(response => {
-        if (response) {
-          this.BuildUserPlan(response, plan);
+        if (response && response.length > 0) {
+            this.BuildUserPlan(response, plan);
           this.addRemainingTopicsToPlan(plan);
-          this.personalizedPlan = { id: response[0].id, topics: this.planTopics, isShared: false };
+          this.planId = response[0].id;
+          }
+          this.personalizedPlan = { id: this.planId, topics: this.planTopics, isShared: false };
           const params = {
             "id": this.personalizedPlan.id,
             "topics": this.personalizedPlan.topics,
@@ -114,7 +117,6 @@ export class SaveButtonComponent implements OnInit {
                 this.personalizedPlanService.showSuccess('Plan saved to profile');
               }
             });
-        }
       });
   }
 
@@ -124,7 +126,7 @@ export class SaveButtonComponent implements OnInit {
         this.planTopics = [];
         this.planTopic = { topicId: '', steps: this.personalizedPlanSteps };
         this.topicIds = this.getTopicIds(plan);
-        this.BuildUserPlanWithExistingTopics(property.topics,plan);
+        this.BuildUserPlanWithExistingTopics(property.topics, plan);
         this.topicIds = this.getTopicIds(property.topics);
       }
     });
@@ -180,7 +182,7 @@ export class SaveButtonComponent implements OnInit {
     });
   }
 
-  topicTagsForNonMatchingTopicId(topic){
+  topicTagsForNonMatchingTopicId(topic) {
     topic.steps.forEach(step => {
       this.buildPlanSteps(step);
     });
@@ -198,7 +200,6 @@ export class SaveButtonComponent implements OnInit {
   getPlan(planId) {
     this.personalizedPlanService.getActionPlanConditions(planId)
       .subscribe((plan) => {
-        console.log(plan);
         this.planTopics = [];
         this.personalizedPlanSteps = [];
         this.planTopic = { topicId: '', steps: this.personalizedPlanSteps };
@@ -220,7 +221,7 @@ export class SaveButtonComponent implements OnInit {
       };
       this.personalizedPlanSteps.push(this.personalizedPlanStep);
     });
-      return this.personalizedPlanSteps;
+    return this.personalizedPlanSteps;
   }
 
   saveBookmarkedPlan() {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { Resources, PersonalizedPlanTopic, PersonalizedPlan, ProfileResources, SavedResources } from './personalized-plan';
+import { Resources, PersonalizedPlanTopic, PersonalizedPlan, ProfileResources, SavedResources, UserPlan } from './personalized-plan';
 import { api } from '../../../api/api';
 import { IResourceFilter } from '../../shared/search/search-results/search-results.model';
 import { ArrayUtilityService } from '../../shared/array-utility.service';
@@ -30,10 +30,12 @@ export class PersonalizedPlanService {
   savedResources: SavedResources;
   resourceTags: Array<SavedResources> = [];
   resourceIds: Array<string>;
+  personalizedPlan: PersonalizedPlan;
+  userPersonalizedPlan: UserPlan = { oId: '', plan: this.personalizedPlan };
 
   constructor(private http: HttpClient, private arrayUtilityService: ArrayUtilityService,
     private toastr: ToastrService) { }
-  
+
   getActionPlanConditions(planId): Observable<any> {
     return this.http.get<PersonalizedPlan>(api.planUrl + '/' + planId);
   }
@@ -47,43 +49,11 @@ export class PersonalizedPlanService {
   }
 
   userPlan(plan: PersonalizedPlan) {
-    return this.http.post<any>(api.updateUserPlanUrl, plan, httpOptions);
-  }
-
-  getBookmarkedData() {
-    this.topics = [];
-    this.resources = [];
-    let resourceData = sessionStorage.getItem(this.sessionKey);
-    if (resourceData && resourceData.length > 0) {
-      this.tempStorage = JSON.parse(resourceData);
-      for (let index = 0; index < this.tempStorage.length; index++) {
-        if (this.tempStorage[index].type === "Topics") {
-          this.topics.push(this.tempStorage[index].itemId);
-        } else if (this.tempStorage[index].type === "Plan") {
-          this.planId = this.tempStorage[index].itemId;
-        } else {
-          this.resources.push(this.tempStorage[index].itemId);
-        }
-      }
-    }
-  }
-
-  getPersonalizedPlan(): string {
-    this.getBookmarkedData();
-    return this.planId;
+    this.userPersonalizedPlan = { oId: this.getUserId(), plan: plan };
+    return this.http.post<any>(api.updateUserPlanUrl, this.userPersonalizedPlan, httpOptions);
   }
 
   getPersonalizedResources(resourceInput: IResourceFilter) {
-    this.userId = this.getUserId();
-    if (this.userId === undefined) {
-      this.getBookmarkedData();
-      if (this.topics) {
-        resourceInput.TopicIds = this.topics;
-      }
-      if (this.resources) {
-        resourceInput.ResourceIds = this.resources;
-      }
-    }
     return this.http.put(api.getPersonalizedResourcesUrl, resourceInput, httpOptions);
   }
 

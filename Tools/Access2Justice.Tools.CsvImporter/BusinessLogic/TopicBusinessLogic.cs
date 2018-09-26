@@ -1,76 +1,59 @@
-﻿using Microsoft.Azure.Documents;
-using Microsoft.Azure.Documents.Client;
-using Microsoft.Azure.Documents.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Access2Justice.Tools.Models;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace Access2Justice.Tools.BusinessLogic
 {
     public class TopicBusinessLogic: IDisposable
     {
-        private readonly string EndpointUrl = "";
-        private readonly string PrimaryKey = "";
-        private readonly string Database = "access2justicedb";
-        private readonly string TopicCollection = "Topics";
-        private DocumentClient client;
-
-        [Obsolete("This is deprecated. Please use the api endpoints to import Topics.")]
-        public async Task<IEnumerable<Topic>> GetTopics()
+        static HttpClient clientHttp = new HttpClient();
+                
+        public async static void GetTopics()
         {
-            this.client = new DocumentClient(new Uri(EndpointUrl), PrimaryKey);
-            await this.client.CreateDatabaseIfNotExistsAsync(new Database { Id = Database }).ConfigureAwait(true);
-            await this.client.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri(Database),
-            new DocumentCollection { Id = TopicCollection }).ConfigureAwait(true);
-
-            InsertTopics obj = new InsertTopics();
-            var content = obj.CreateJsonFromCSV();
-            
-            Topics topics = new Topics
+            clientHttp.BaseAddress = new Uri("http://localhost:4200/");
+            clientHttp.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            try
             {
-                TopicsList = content.TopicsList
-            };
-
-            foreach (var topicList in topics.TopicsList)
-            {
-                int count = topicList.ParentTopicID.Count();
-                foreach (var parentId in topicList.ParentTopicID)
+                InsertTopics obj = new InsertTopics();
+                List<dynamic> topicsList = new List<dynamic>();
+                var topics = obj.CreateJsonFromCSV();
+                if (topics == null || topics.Count==0)
                 {
-                    if (parentId.ParentTopicId != "")
-                    {
-                        var updatedId = from a in content.ParentTopicList where a.DummyId == parentId.ParentTopicId select a.NewId.ToString();
-                        parentId.ParentTopicId = updatedId.FirstOrDefault();
-                    }
+                    throw new Exception("Please check Error log file to correct errors");
                 }
 
-                var serializedResult = JsonConvert.SerializeObject(topicList);
-                JObject result = (JObject)JsonConvert.DeserializeObject(serializedResult);
-                await this.CreateTopicDocumentIfNotExists(Database, TopicCollection, result).ConfigureAwait(true);
+                else
+                {
+                    foreach (var topicList in topics)
+                    {
+                        var serializedResult = JsonConvert.SerializeObject(topicList);
+                        JObject jsonResult = (JObject)JsonConvert.DeserializeObject(serializedResult);
+                        topicsList.Add(jsonResult);
+                    }
+                    var serializedTopics = JsonConvert.SerializeObject(topicsList);
+                    var result = JsonConvert.DeserializeObject(serializedTopics);
+                    var response = await clientHttp.PostAsJsonAsync("api/upserttopicdocument", result).ConfigureAwait(false);
+                    var json = response.Content.ReadAsStringAsync().Result;
+                    var documentsCreated = JsonConvert.DeserializeObject(json);
+                    response.EnsureSuccessStatusCode();
+                    if (response.IsSuccessStatusCode == true)
+                    {
+                        Console.WriteLine("Topics created successfully" + "\n" + documentsCreated);
+                        Console.WriteLine("You may close the window now.");
+                    }
+                    else
+                    {
+                        throw new Exception("Please correct errors" + "\n" + response);
+                    }
+                }
             }
-            var items = await this.GetItemsFromCollectionAsync().ConfigureAwait(true);
-            return items;
-        }
-
-        private async Task CreateTopicDocumentIfNotExists(string databaseName, string collectionName, object td)
-        {
-            await this.client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(databaseName, collectionName), td).ConfigureAwait(true);
-        }
-
-        public async Task<IEnumerable<Topic>> GetItemsFromCollectionAsync()
-        {
-            var documents = client.CreateDocumentQuery<Topic>(
-                  UriFactory.CreateDocumentCollectionUri(Database, TopicCollection),
-                  new FeedOptions { MaxItemCount = -1 }).AsDocumentQuery();
-            List<Topic> td = new List<Topic>();
-            while (documents.HasMoreResults)
+            catch(Exception ex)
             {
-                td.AddRange(await documents.ExecuteNextAsync<Topic>().ConfigureAwait(true));
+                Console.WriteLine(ex.Message);
             }
-            return td;
         }
 
         protected virtual void Dispose(bool disposing)

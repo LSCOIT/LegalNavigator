@@ -1,3 +1,11 @@
+ul {
+  font-size: 16px;
+}
+
+ul li {
+  font-size: 14px;
+}
+
 .plan-heading {
   border-bottom: 1px solid #ddd;
 }
@@ -93,6 +101,14 @@ iframe {
   cursor: pointer;
 }
 
+.header-completed {
+  color: #ccc;
+}
+
+.accordion-img-grey {
+  background-image: url('../../../../../assets/images/small-icons/open_accordion_grey.svg');
+}
+
 @media only screen and (min-width : 768px) {
   .step-content div {
     margin-top: 0;
@@ -122,7 +138,7 @@ iframe {
   }
 
   .plan-steps {
-    border-left: 1px solid #ddd;
+    border-left: 1.5px solid #ddd;
   }
 
   .quick-links {

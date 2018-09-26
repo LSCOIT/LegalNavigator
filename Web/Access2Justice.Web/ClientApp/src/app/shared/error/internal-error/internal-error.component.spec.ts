@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { InternalErrorComponent } from './internal-error.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('InternalErrorComponent', () => {
   let component: InternalErrorComponent;
@@ -8,7 +8,8 @@ describe('InternalErrorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [InternalErrorComponent ]
+      declarations: [InternalErrorComponent ],
+      schemas: [ NO_ERRORS_SCHEMA ]
     })
     .compileComponents();
   }));

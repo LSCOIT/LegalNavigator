@@ -1,24 +1,43 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClientModule } from '@angular/common/http';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HomeComponent } from './home.component';
-import { TopicsComponent } from '../topics-resources/topic/topics.component';
-import { TopicService } from '../topics-resources/shared/topic.service';
+import { StaticResourceService } from '../shared/static-resource.service';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { Global } from '../global';
+import { MapService } from '../shared/map/map.service';
 
-
-describe('HomeComponent', () => {
+describe('HelpFaqsComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
+  let mockStaticResourceService;
+  let homeContent;
+  let mockGlobal;
+  let globalData;
 
   beforeEach(async(() => {
+    homeContent = {
+      name: "HomePage",
+      location: [
+        { state: "Default" }
+      ]
+    },
+    globalData = [{
+      name: "HomePage",
+      location: [
+        { state: "Default" }
+      ]
+    }]
+    mockStaticResourceService = jasmine.createSpyObj(['getLocation', 'getStaticContents']);
+    mockGlobal = jasmine.createSpyObj(['getData']);
+    mockGlobal.getData.and.returnValue(globalData);
+    
     TestBed.configureTestingModule({
-      declarations: [
-        HomeComponent,
-        TopicsComponent
+      declarations: [ HomeComponent ],
+      providers: [ 
+        { provide: StaticResourceService, useValue: mockStaticResourceService },
+        { provide: Global, useValue: mockGlobal },
+        MapService
       ],
-      imports: [HttpClientModule],
-      providers: [TopicService],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [ NO_ERRORS_SCHEMA ]
     })
     .compileComponents();
   }));
@@ -26,10 +45,20 @@ describe('HomeComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
+    spyOn(component, 'ngOnInit');
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should set help and faq content to static resource content if it exists', () => {
+    mockStaticResourceService.getLocation.and.returnValue('Default');
+    mockStaticResourceService.helpAndFaqsContent = homeContent;
+    spyOn(component, 'filterHomeContent');
+    component.getHomePageContent();
+    expect(component.homeContent).toEqual(mockStaticResourceService.helpAndFaqsContent);
+    expect(component.filterHomeContent).toHaveBeenCalledWith(mockStaticResourceService.helpAndFaqsContent);
   });
 });

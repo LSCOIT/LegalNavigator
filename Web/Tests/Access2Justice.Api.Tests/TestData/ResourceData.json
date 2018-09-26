@@ -1,11 +1,12 @@
 [
-  {    
+  {
     "name": "Form1",
+    "type": "form",
     "description": "Subhead lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem",
     "resourceType": "Forms",
     "externalUrl": "www.youtube.com",
     "url": "access2justice.com",
-    "referenceTags": [
+    "topicTags": [
       {
         "id": "aaa085ef-96fb-4fd0-bcd0-0472ede66512"
       },

@@ -30,7 +30,7 @@
         </div>
         <div class="media-body">         
           <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}</h4></a>
-          <div class="web-hidden">{{applicationUrl+'/resource'+'/'+resource.id}}</div>
+          <div class="print-only">{{applicationUrl+'/resource'+'/'+resource.id}}</div>
           <!--<a [routerLink]="['/personalizedplan', resource.id]"><h4 class="media-heading">{{resource.name}}</h4></a>-->
           <p>This action plan is for tenants who are facing Eviction and have experienced the following:</p>
           <ul>
@@ -52,8 +52,8 @@
         </div>
         <div class="media-body">
           <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}</h4></a>
-          <div class="web-hidden">{{applicationUrl+'/resource'+'/'+resource.id}}</div>
-          <p>{{resource.description}}</p>
+          <div class="print-only">{{applicationUrl+'/resource'+'/'+resource.id}}</div>
+          <app-read-more [text]="resource.description" [maxLength]="240"></app-read-more>
         </div>
       </div>
       <div *ngIf="resource.resourceType === 'Organizations'" class="media">
@@ -62,14 +62,18 @@
         </div>
         <div class="media-body">
           <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}, {{resource.type}}</h4></a>
-          <div class="web-hidden">{{applicationUrl+'/resource'+'/'+resource.id}}</div>
-          <p>{{resource.description}}</p>
+          <div class="print-only">{{applicationUrl+'/resource'+'/'+resource.id}}</div>
+          <app-read-more [text]="resource.description" [maxLength]="240"></app-read-more>
           <div class="org-content span-text">
             <div class="col-sm-4" *ngIf="resource.address.length > 0">
-              <img src="./assets/images/small-icons/location.svg" alt="Address" class="nav-icon no-print" />
-              <span>{{resource.address}}</span>
+              <div class="media-left no-print">
+                <img src="./assets/images/small-icons/location.svg" alt="Address" class="nav-icon no-print" />
+              </div>
+              <div class="media-body">
+                <span>{{resource.address}}</span>
+              </div>
             </div>
-            <div class="col-sm-4" *ngIf="resource.telephone.length > 0">
+            <div class="col-sm-3 org-phone-detail" *ngIf="resource.telephone.length > 0">
               <img src="./assets/images/small-icons/call.svg" alt="Telephone" class="nav-icon no-print" />
               <span>{{resource.telephone}}</span>
             </div>
@@ -86,8 +90,8 @@
         </div>
         <div class="media-body">
           <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}</h4></a>
-          <div class="web-hidden">{{applicationUrl+'/resource'+'/'+resource.id}}</div>
-          <p>{{resource.description}}</p>
+          <div class="print-only">{{applicationUrl+'/resource'+'/'+resource.id}}</div>
+          <app-read-more [text]="resource.description" [maxLength]="240"></app-read-more>
         </div>
       </div>
       <div *ngIf="resource.resourceType === 'Forms' || resource.resourceType === 'Related Links'" class="media">
@@ -96,20 +100,21 @@
         </div>
         <div class="media-body">
           <a [href]="resource.url"><h4 class="media-heading">{{resource.name}}</h4></a>
-          <div class="web-hidden">{{resource.url}}</div>
-          <span class="glyphicon glyphicon-new-window no-print" aria-hidden="true"></span><span class="span-text no-print">External link</span>
-          <p>{{resource.description}}</p>
+          <div class="print-only">{{resource.url}}</div>
+          <div class="external-link">
+            <span class="glyphicon glyphicon-new-window no-print" aria-hidden="true"></span><span class="span-text no-print">External link</span>
+          </div>
+          <app-read-more [text]="resource.description" [maxLength]="240"></app-read-more>
         </div>
       </div>
       <div *ngIf="resource.resourceType === 'Topics'" class="media">
-        <div class="media-left">
-          <a href="#">
-            <img class="media-object" src="{{resource.icon}}" alt="Other resource types">
-          </a>
+        <div class="media-left no-print">
+          <img class="media-object" src="{{resource.icon}}" alt="Other resource types">
         </div>
         <div class="media-body">
           <a [routerLink]="['/subtopics', resource.id]"><h4 class="media-heading">{{resource.name}}</h4></a>
-          <p>{{resource.description}}</p>
+          <div class="print-only">{{applicationUrl+'/subtopics'+'/'+resource.id}}</div>
+          <p>{{resource.overview}}</p>
         </div>
       </div>
       <div *ngIf="resource.resourceType === 'Guided Assistant'" class="media">
@@ -118,8 +123,9 @@
         </div>
         <div class="media-body">
           <a [routerLink]="['/guidedassistant', resource.externalUrl]"><h4 class="media-heading">{{resource.name}}</h4></a>
+          <div class="print-only">{{applicationUrl+'/guidedassistant'+'/'+resource.externalUrl}}</div>
           <div class="media-body">
-            <p>{{resource.description}}</p>
+            <app-read-more [text]="resource.description" [maxLength]="240"></app-read-more>
           </div>
         </div>
       </div>
@@ -129,7 +135,7 @@
         <div class="no-print">
           <a href="{{resource.resourceDetails.url}}"><span class="link">{{resource.resourceDetails.displayUrl}}</span></a>
         </div>
-        <div class="web-hidden">{{resource.resourceDetails.url}}</div>
+        <div class="print-only">{{resource.resourceDetails.url}}</div>
         <p>{{resource.resourceDetails.snippet}}</p>
         <div class="web-resource" *ngIf="resource.resourceDetails.deepLinks">
           <div *ngFor="let deepLink of resource.resourceDetails.deepLinks">
@@ -137,7 +143,7 @@
             <div class="no-print">
               <a href="{{deepLink.url}}"><p class="pl">{{deepLink.name}}</p></a>
             </div>
-            <div class="web-hidden">{{deepLink.url}}</div>
+            <div class="print-only">{{deepLink.url}}</div>
             <a href="{{deepLink.url}}"><span class="link">{{deepLink.url}}</span></a>
             <p>{{deepLink.snippet}}</p>
           </div>

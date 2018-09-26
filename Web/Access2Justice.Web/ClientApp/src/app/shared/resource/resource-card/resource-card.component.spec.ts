@@ -1,18 +1,15 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { APP_BASE_HREF } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ResourceCardComponent } from './resource-card.component';
 import { SaveButtonComponent } from '../user-action/save-button/save-button.component';
 import { ShareButtonComponent } from '../user-action/share-button/share-button.component';
 import { ResourceCardDetailComponent } from '../resource-card-detail/resource-card-detail.component';
-import { HttpClientModule } from '@angular/common/http';
-import { RouterTestingModule } from '@angular/router/testing';
-import { ModalModule } from 'ngx-bootstrap';
+import { Global } from '../../../global';
 
 describe('ResourceCardComponent', () => {
   let component: ResourceCardComponent;
   let fixture: ComponentFixture<ResourceCardComponent>;
+  let mockGlobal;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -22,25 +19,21 @@ describe('ResourceCardComponent', () => {
         ShareButtonComponent,
         ResourceCardDetailComponent
       ],
-      imports: [
-        RouterModule.forRoot([
-          { path: 'resource/:id', component: ResourceCardDetailComponent }          
-        ]),
-        [HttpClientModule, RouterTestingModule, ModalModule.forRoot()]
+      imports: [],
+      providers: [        
+        { provide: Global, useValue: { role: '', shareRouteUrl: '' } },
+        { provide: ResourceCardComponent, useValue: { id: '', resources: [{ itemId: '', resourceType: '', resourceDetails: {}}] }}
       ],
-      providers: [
-        { provide: APP_BASE_HREF, useValue: '/' }
-      ],
-      schemas: [ NO_ERRORS_SCHEMA ]
+      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA ]
     })
-    .compileComponents();
-  }));
+      .compileComponents();
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(ResourceCardComponent);
     component = fixture.componentInstance;
+    spyOn(component, 'ngOnInit');
     fixture.detectChanges();
-  });
+
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

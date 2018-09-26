@@ -14,8 +14,10 @@
 }
 
 .button-container ul li {
-  width: 30%;
-  margin: 15px;
+  width: 100%;
+  max-width: 300px;
+  min-width: 300px;
+  margin: 0 15px;
 }
 
 .button-container ul li label {
@@ -34,10 +36,20 @@
 
 .button-container .link{
   display: block;
-  margin-left: 20px;
-  margin-top: 20px;
+  margin: 10px 0 20px 10px;
 }
 
 input[type=checkbox]:checked ~ .check::before {
   padding-left: 3px;
+}
+
+@media only screen and (min-width : 768px) {
+  .button-container ul li {
+    width: 30%;
+  }
+
+  .button-container .link{
+    display: block;
+    margin: 20px 0 0 10px;
+  }
 }

@@ -1,21 +1,12 @@
-<div dropdown class="inline" id="language-dropdown">
-  <a dropdownToggle (click)="false">
-    <img
-      *ngIf="language && language.navigationImage.source"
-      class="nav-icon"
-      [src]="blobUrl + language?.navigationImage?.source"
-      aria-hidden="true"
-      alt="language?.navigationImage?.altText" />
-    English
-    <img
-      *ngIf="language && language.dropDownImage.source"
-      class="dropdown-icon"
-      [src]="blobUrl + language?.dropDownImage?.source"
-      [alt]="language?.dropDownImage?.source" />
-  </a>
-  <ul *dropdownMenu class="dropdown-menu pull-left">
-    <li class="list-items" *ngFor="let choice of items">
-      <a class="dropdown-item" href="#">{{choice}}</a>
-    </li>
-  </ul>
+<div class="inline language-display" [ngClass]="{'white-bg': setBgColor, '': !setBgColor}" id="language-dropdown">
+  <img *ngIf="language && language.navigationImage.source"
+        class="nav-icon language-display"
+        [src]="blobUrl + language?.navigationImage?.source"
+        aria-hidden="true"
+        alt="language?.navigationImage?.altText" />
+  <span class="language-display">Language</span>
+  <img *ngIf="language && language.dropDownImage.source"
+        class="dropdown-icon language-display"
+        [src]="blobUrl + language?.dropDownImage?.source"
+        [alt]="language?.dropDownImage?.source" />
 </div>

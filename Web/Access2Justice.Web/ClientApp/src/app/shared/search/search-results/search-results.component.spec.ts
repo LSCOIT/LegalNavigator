@@ -1,28 +1,28 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { APP_BASE_HREF } from '@angular/common';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { GuidedAssistantSidebarComponent } from '../../sidebars/guided-assistant-sidebar/guided-assistant-sidebar.component';
 import { HttpClientModule } from '@angular/common/http';
-
-import { SearchResultsComponent } from './search-results.component';
-import { SearchFilterComponent } from '../search-filter/search-filter.component';
-import { ResourceCardComponent } from '../../resource/resource-card/resource-card.component';
-import { GuidedAssistantSidebarComponent } from '../../sidebars/guided-assistant-sidebar.component';
-import { ServiceOrgSidebarComponent } from '../../sidebars/service-org-sidebar.component';
-import { SaveButtonComponent } from '../../resource/user-action/save-button/save-button.component';
-import { ShareButtonComponent } from '../../resource/user-action/share-button/share-button.component';
-import { NavigateDataService } from '../../navigate-data.service';
-import { WebResourceComponent } from './web-resource/web-resource.component';
-import { PaginationComponent } from '../../../shared/pagination/pagination.component';
-import { ResourceResult } from './search-result';
-import { IResourceFilter, ILuisInput } from './search-results.model';
-import { SearchFilterPipe } from '../search-filter.pipe';
-import { SearchService } from '../search.service';
-import { PaginationService } from '../pagination.service';
-import { ShowMoreService } from '../../sidebars/show-more.service';
 import { MapService } from '../../map/map.service';
-import { JitCompiler } from '@angular/compiler/src/jit/compiler';
+import { NavigateDataService } from '../../navigate-data.service';
 import { Observable } from 'rxjs';
+import { PaginationComponent } from '../../../shared/pagination/pagination.component';
+import { PaginationService } from '../../pagination/pagination.service';
+import { ResourceCardComponent } from '../../resource/resource-card/resource-card.component';
+import { RouterModule } from '@angular/router';
+import { SaveButtonComponent } from '../../resource/user-action/save-button/save-button.component';
+import { SearchFilterComponent } from '../search-filter/search-filter.component';
+import { SearchFilterPipe } from '../search-filter.pipe';
+import { SearchResultsComponent } from './search-results.component';
+import { SearchService } from '../search.service';
+import { ServiceOrgSidebarComponent } from '../../sidebars/service-org-sidebar/service-org-sidebar.component';
+import { ShareButtonComponent } from '../../resource/user-action/share-button/share-button.component';
+import { ShowMoreService } from '../../sidebars/show-more/show-more.service';
+import { WebResourceComponent } from './web-resource/web-resource.component';
+import { PersonalizedPlanService } from '../../../guided-assistant/personalized-plan/personalized-plan.service';
+import { ArrayUtilityService } from '../../array-utility.service';
+import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 describe('SearchResultsComponent', () => {
   let component: SearchResultsComponent;
@@ -30,20 +30,30 @@ describe('SearchResultsComponent', () => {
   let searchService: SearchService;
   let paginationService: PaginationService;
   let navigateDataService: NavigateDataService;
-  let resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: '', IsResourceCountRequired: false }; 
   let currentPage: number = 0;
   let mockPageNumber: number = 0;
-  let mockResourceName = 'Videos'
-  let mockResourceNameUndifined = 'NoVideos'
+  let mockResourceName = 'Videos';
+  let mockResourceNameUndifined = 'NoVideos';
   let mockResourceTypeFilter = [{ ResourceName: "Videos", ResourceCount: 1 }, { ResourceName: "Organizations", ResourceCount: 2 }, { ResourceName: "Forms", ResourceCount: 1 }];
   let mockResourceTypeFilterTemp = [{ ResourceName: "test", ResourceCount: 1 }, { ResourceName: "test", ResourceCount: 2 }, { ResourceName: "test", ResourceCount: 1 }];
   let mockResourceListFilterAll = [{ ResourceCount: 10, ResourceList: [{ continuationToken: {}, resources: [{ address: "Houston County, Texas, United States", name: "Tenant Action Plan for Eviction" }, { address: "Houston County, Texas, United States", name: "Landlord Action Plan" }] }], ResourceName: "All" }];
   let mockResourceTypeFilterWithResourceList = [{ ResourceList: [{ continuationToken: [{ test: '2' }], resources: [{ address: "Houston County, Texas, United States", name: "Tenant Action Plan for Eviction" }, { address: "Houston County, Texas, United States", name: "Landlord Action Plan" }] }] }, { ResourceName: "Organizations", ResourceCount: 2 }, { ResourceName: "Forms", ResourceCount: 1 }];
+  let mockResourceTypeFilterWithResourceListUndefined = [{ ResourceList: undefined }, { ResourceName: "Organizations", ResourceCount: 2 }, { ResourceName: "Forms", ResourceCount: 1 }];
   let mockResourceTypeFilter2 = [{ ResourceName: "Videos", ResourceCount: 1, ResourceList: [{ continuationToken: [{ test: '2' }], resources: [{ address: "Houston County, Texas, United States", name: "Tenant Action Plan for Eviction" }, { address: "Houston County, Texas, United States", name: "Landlord Action Plan" }] }] }, { ResourceName: "Organizations", ResourceCount: 2 }, { ResourceName: "Forms", ResourceCount: 1 }];
-  let mockSearchText = 'eviction'
-  let mockSearchResults2 = [{ continuationToken: [{ test: '2' }], resources: [{ address: "Houston County, Texas, United States", name: "Tenant Action Plan for Eviction" }, { address: "Houston County, Texas, United States", name: "Landlord Action Plan" }] }]
+  let mockSearchText = 'eviction';
+  let mockSearchResults2 = [
+    {
+      continuationToken: [{ test: '2' }],
+      resources: [
+        { address: "Houston County, Texas, United States", name: "Tenant Action Plan for Eviction" },
+        { address: "Houston County, Texas, United States", name: "Landlord Action Plan" }
+      ]
+    }
+  ];
+  let mockToastr;
 
   beforeEach(async(() => {
+    mockToastr = jasmine.createSpyObj(['success']);
     TestBed.configureTestingModule({
       declarations: [
         SearchResultsComponent,
@@ -63,12 +73,17 @@ describe('SearchResultsComponent', () => {
         ]),
         HttpClientModule
       ],
-      providers: [NavigateDataService,
+      providers: [
+        NavigateDataService,
         SearchService,
         PaginationService,
         ShowMoreService,
         MapService,
-        { provide: APP_BASE_HREF, useValue: '/' }
+        PersonalizedPlanService,
+        ArrayUtilityService,
+        NgxSpinnerService,
+        { provide: APP_BASE_HREF, useValue: '/' },
+        { provide: ToastrService, useValue: mockToastr }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
     })
@@ -80,8 +95,6 @@ describe('SearchResultsComponent', () => {
     fixture = TestBed.createComponent(SearchResultsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-
-    // SearchService provided to the TestBed
     searchService = TestBed.get(SearchService);
     paginationService = TestBed.get(PaginationService);
     navigateDataService = TestBed.get(NavigateDataService);
@@ -124,15 +137,16 @@ describe('SearchResultsComponent', () => {
   });
 
   it('should call checkResource with resource name defined and resource list undefined', () => {
-    component.resourceTypeFilter = mockResourceTypeFilter;
+    component.resourceTypeFilter = mockResourceTypeFilterWithResourceListUndefined;
     component.currentPage = mockPageNumber;
     component.checkResource(mockResourceName, mockPageNumber);
-    expect(component.checkResource(mockResourceName, mockPageNumber)).toBeTruthy();
+    expect(component.checkResource(mockResourceName, mockPageNumber)).toBeUndefined();
   });
 
   it('should call checkResource with resource name undefined and resource list undefined', () => {
     component.resourceTypeFilter = mockResourceTypeFilterTemp;
-    component.currentPage = mockPageNumber;
+    component.page = mockPageNumber;
+    mockResourceName = undefined;
     component.checkResource(mockResourceName, mockPageNumber);
     expect(component.checkResource(mockResourceName, mockPageNumber)).toBeFalsy();
   });

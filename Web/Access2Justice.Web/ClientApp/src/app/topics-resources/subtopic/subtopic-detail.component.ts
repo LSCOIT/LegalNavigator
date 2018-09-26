@@ -5,8 +5,10 @@ import { Router } from '@angular/router';
 import { NavigateDataService } from '../../shared/navigate-data.service';
 import { IResourceFilter, ILuisInput } from "../../shared/search/search-results/search-results.model";
 import { SearchService } from '../../shared/search/search.service';
-import { PaginationService } from "../../shared/search/pagination.service";
-import { ShowMoreService } from "../../shared/sidebars/show-more.service";
+import { PaginationService } from "../../shared/pagination/pagination.service";
+import { ShowMoreService } from "../../shared/sidebars/show-more/show-more.service";
+import { ISubtopicGuidedInput } from "../shared/topic";
+
 @Component({
   selector: 'app-subtopic-detail',
   templateUrl: './subtopic-detail.component.html',
@@ -22,12 +24,14 @@ export class SubtopicDetailComponent implements OnInit {
   videoData: any;
   organizationData: any;
   formData: any;
+  relatedLinksData: any;
   subtopics: any;
   subtopic: any;
   topIntent: string; 
   savedFrom: string = "subTopicDetails";
   type: string = "Topics";
   showRemoveOption: boolean;
+  guidedSutopicDetailsInput: ISubtopicGuidedInput = { activeId: '', name: '' };
   luisInput: ILuisInput = { Sentence: '', Location: '', TranslateFrom: '', TranslateTo: '', LuisTopScoringIntent: '' };
   resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: { "state": "", "county": "", "city": "", "zipCode": "" }, IsResourceCountRequired: true };
 
@@ -35,9 +39,6 @@ export class SubtopicDetailComponent implements OnInit {
     private topicService: TopicService,
     private activeRoute: ActivatedRoute,
     private navigateDataService: NavigateDataService,
-    private searchService: SearchService,
-    private router: Router,
-    private paginationService: PaginationService,
     private showMoreService: ShowMoreService
   ) { }
 
@@ -53,12 +54,13 @@ export class SubtopicDetailComponent implements OnInit {
         .filter((resource) => resource.resourceType === 'Organizations');
       this.formData = this.subtopicDetails
         .filter((resource) => resource.resourceType === 'Forms');
+      this.relatedLinksData = this.subtopicDetails
+        .filter((resource) => resource.resourceType === 'Related Links');
     }
   }
 
   getDataOnReload() {
     this.activeSubtopicParam = this.activeRoute.snapshot.params['topic'];
-    // Getting the sub topic name while routing from subtopic page.
     this.subtopics = this.navigateDataService.getData();
     if (this.subtopics) {
       this.topicService.getDocumentData(this.activeSubtopicParam)
@@ -66,6 +68,7 @@ export class SubtopicDetailComponent implements OnInit {
         data => {
           this.subtopics = data[0];
           this.topIntent = data[0].name;
+          this.guidedSutopicDetailsInput = { activeId: this.activeSubtopicParam, name: this.subtopics.name };
         }); 
     }
     this.getSubtopicDetail();
@@ -80,7 +83,6 @@ export class SubtopicDetailComponent implements OnInit {
         }
       );
   }
-
   clickSeeMoreOrganizationsFromSubtopicDetails(resourceType: string) {
     this.showMoreService.clickSeeMoreOrganizations(resourceType, this.activeSubtopicParam);
   }

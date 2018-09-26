@@ -1,17 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PersonalizedPlanService } from '../guided-assistant/personalized-plan/personalized-plan.service';
 import { PersonalizedPlanTopic } from '../guided-assistant/personalized-plan/personalized-plan';
 import { IResourceFilter } from '../shared/search/search-results/search-results.model';
 import { EventUtilityService } from '../shared/event-utility.service';
 import { HttpParams } from '@angular/common/http';
 import { Global } from '../global';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
+    
   topics: string;
   planDetails: any = [];
   resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: [], PageNumber: 0, Location: '', ResourceIds: [], IsResourceCountRequired: false };
@@ -33,7 +36,9 @@ export class ProfileComponent implements OnInit {
   constructor(
     private personalizedPlanService: PersonalizedPlanService,
     private eventUtilityService: EventUtilityService,
-    private global: Global
+    private global: Global,
+    private spinner: NgxSpinnerService,
+    private router: Router
   ) {
 
     eventUtilityService.resourceUpdated$.subscribe(response => {
@@ -52,14 +57,19 @@ export class ProfileComponent implements OnInit {
 
   getTopics(): void {
     if (this.planId) {
+      this.spinner.show();
       this.personalizedPlanService.getActionPlanConditions(this.planId)
         .subscribe(plan => {
+          this.spinner.hide();
           if (plan) {
             this.topics = plan.topics;
             this.planDetailTags = plan;
           }
           this.topicsList = this.personalizedPlanService.createTopicsList(this.topics);
           this.planDetails = this.personalizedPlanService.getPlanDetails(this.topics, this.planDetailTags);
+        }, error => {
+          this.spinner.hide();
+          this.router.navigate(['/error']);
         });
     }
   }
@@ -131,21 +141,16 @@ export class ProfileComponent implements OnInit {
   }
 
   getPersonalizedPlan() {
-    if (!this.userId) {
-      this.planId = this.personalizedPlanService.getPersonalizedPlan();
-      this.getTopics();
-    } else {
-      let params = new HttpParams()
-        .set("oid", this.userId)
-        .set("type", "plan");
-      this.personalizedPlanService.getUserSavedResources(params)
-        .subscribe(response => {
-          if (response[0].id) {
-            this.planId = response[0].id;
-          }
-          this.getTopics();
-        });
-    }
+    let params = new HttpParams()
+      .set("oid", this.userId)
+      .set("type", "plan");
+    this.personalizedPlanService.getUserSavedResources(params)
+      .subscribe(response => {
+        if (response) {
+          this.planId = response[0].id;
+        }
+        this.getTopics();
+      });
   }
 
   ngOnInit() {
@@ -155,5 +160,11 @@ export class ProfileComponent implements OnInit {
 
     this.getPersonalizedPlan();
     this.showRemove = true;
+  }
+
+  ngOnDestroy(): void {
+    if (this.profileData["IsShared"]) {
+      sessionStorage.removeItem("profileData");
+    }
   }
 }

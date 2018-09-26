@@ -25,12 +25,13 @@ namespace Access2Justice.Api
         public const string Type = "type";
         public const string Organization = "Organizations";
         public const string PermaLink = "permaLink";
-        public const string SharedResource = "sharedResource";
+        public const string SharedResource = "sharedResources";
         public const string Url = "url";
         public const string ExpirationDate = "expirationDate";
         public const int ExpirationDateDurationInYears = 1;
         public const string ProfileLink = "/profile";
         public const string All = "ALL";
         public const string GuidedAssistant = "Guided Assistant";
+        public const string EmptyArray = "[]";
     }
 }

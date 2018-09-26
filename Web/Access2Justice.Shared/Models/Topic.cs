@@ -11,8 +11,7 @@ using System.Text;
 namespace Access2Justice.Shared.Models
 {
     public class Topic
-    {
-        
+    {        
         [JsonProperty(PropertyName = "id")]
         public dynamic Id { get; set; }
 
@@ -20,15 +19,20 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
+        [JsonProperty(PropertyName = "overview")]
+        public string Overview { get; set; }
+
+        [JsonProperty(PropertyName = "quickLinks")]
+        public IEnumerable<QuickLinks> QuickLinks { get; set; }
+
         [JsonProperty(PropertyName = "parentTopicId")]
         public IEnumerable<ParentTopicId> ParentTopicId { get; set; }
 
-        [Required(ErrorMessage = "Keywords is a required field.")]
-        [JsonProperty(PropertyName = "keywords")]
-        public string Keywords { get; set; }
+        [JsonProperty(PropertyName = "resourceType")]
+        public string ResourceType { get; set; }
 
-        [JsonProperty(PropertyName = "jsonContent")]
-        public string JsonContent { get; set; }
+        [JsonProperty(PropertyName = "keywords")]
+        public string Keywords { get; set; }  
 
         [JsonProperty(PropertyName = "location")]
         public IEnumerable<Location> Location { get; set; }
@@ -74,5 +78,14 @@ namespace Access2Justice.Shared.Models
     {
         [JsonProperty(PropertyName = "id")]
         public dynamic ParentTopicIds { get; set; }
+    }
+
+    public class QuickLinks
+    {
+        [JsonProperty(PropertyName = "text")]
+        public string Text { get; set; }
+
+        [JsonProperty(PropertyName = "url")]
+        public string Urls { get; set; }
     }
 }

@@ -1,8 +1,9 @@
-import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
-import { StaticResourceService } from '../../shared/static-resource.service';
-import { Navigation, Language, Location, Logo, Home, GuidedAssistant, TopicAndResources, About, Search, PrivacyPromise, HelpAndFAQ, Login } from './navigation';
+import { About, GuidedAssistant, HelpAndFAQ, Home, Language, Location, Login, Logo,Navigation, PrivacyPromise, Search, TopicAndResources } from './navigation';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { environment } from '../../../environments/environment';
+import { Global } from '../../global';
 import { MapService } from '../map/map.service';
+import { StaticResourceService } from '../../shared/static-resource.service';
 
 @Component({
   selector: 'app-lower-nav',
@@ -14,13 +15,7 @@ export class LowerNavComponent implements OnInit {
   showSearch = false;
   showMenu = false;
   my_Class = '';
-
-  @ViewChild('sidenav') sidenav: ElementRef;
-  @HostListener('window:resize')
-  onResize() {
-    this.width = window.innerWidth;
-  }
-
+  staticContentSubcription: any;
   blobUrl: any = environment.blobUrl;
   navigation: Navigation;
   name: string = 'Navigation';
@@ -36,14 +31,19 @@ export class LowerNavComponent implements OnInit {
   about: About;
   search: Search;
   subscription: any;
-
+  staticContent: any;
+  @ViewChild('sidenav') sidenav: ElementRef;
+  
   constructor(
-    private staticResourceService: StaticResourceService, private mapService: MapService
+    private staticResourceService: StaticResourceService,
+    private mapService: MapService,
+    private global: Global
   ) { }
 
   openNav() {
+    let windowWidth = window.innerWidth;
     this.my_Class = "dimmer";
-    if (this.width >= 768) {
+    if (windowWidth >= 768) {
       this.sidenav.nativeElement.style.width = "400px";
       this.sidenav.nativeElement.style.height = "100%";
     } else {
@@ -53,8 +53,9 @@ export class LowerNavComponent implements OnInit {
   }
 
   closeNav() {
+    let windowWidth = window.innerWidth;
     this.my_Class = "";
-    if (this.width >= 768) {
+    if (windowWidth >= 768) {
       this.sidenav.nativeElement.style.width = "0";
     } else {
       this.sidenav.nativeElement.style.height = "0";
@@ -83,23 +84,26 @@ export class LowerNavComponent implements OnInit {
   }
 
   getNavigationContent(): void {
-    let homePageRequest = { name: this.name };
     if (this.staticResourceService.navigation && (this.staticResourceService.navigation.location[0].state == this.staticResourceService.getLocation())) {
       this.navigation = this.staticResourceService.navigation;
       this.filterNavigationContent(this.staticResourceService.navigation);
     } else {
-      this.staticResourceService.getStaticContent(homePageRequest)
-        .subscribe(content => {
-          this.navigation = content[0];
-          this.filterNavigationContent(this.navigation);
-          this.staticResourceService.navigation = this.navigation;
-        });
+      if (this.global.getData()) {
+        this.staticContent = this.global.getData();
+        this.navigation = this.staticContent.find(x => x.name === this.name);
+        this.filterNavigationContent(this.navigation);
+        this.staticResourceService.navigation = this.navigation;
+      }
     }
   }
 
   ngOnInit() {
     this.getNavigationContent();
     this.subscription = this.mapService.notifyLocation
+      .subscribe((value) => {
+        this.getNavigationContent();
+      });
+    this.staticContentSubcription = this.global.notifyStaticData
       .subscribe((value) => {
         this.getNavigationContent();
       });

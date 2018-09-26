@@ -1,0 +1,121 @@
+[
+  {
+    "id": "0505715c-dfc9-27dd-02a2-7cb30f4e3fd4",
+    "type": "permission",
+    "permissionName": "Update Topics",
+    "accessType": [
+      {
+        "Read": true
+      },
+      {
+        "Write": false
+      }
+    ]
+  },
+  {
+    "id": "9825eff3-3cb4-ff1d-fcc8-5bf59f2e5d64",
+    "type": "permission",
+    "permissionName": "Personalized Plan",
+    "accessType": [
+      {
+        "Read": true
+      },
+      {
+        "Write": true
+      }
+    ]
+  },
+  {
+    "id": "29f4e336-471f-50fb-bc5e-f5c2b3582087",
+    "type": "permission",
+    "permissionName": "Static Content",
+    "accessType": [
+      {
+        "Read": true
+      },
+      {
+        "Write": false
+      }
+    ]
+  },
+  {
+    "id": "5d7f7b68-1183-2882-d80e-f39ddbed8fe3",
+    "type": "permission",
+    "permissionName": "Static Content",
+    "accessType": [
+      {
+        "Read": true
+      },
+      {
+        "Write": true
+      }
+    ]
+  },
+  {
+    "id": "f3992cca-e2bd-a67f-a15c-d3e5516e33c8",
+    "roleInfo": {
+      "roleId": "925919e8-2711-a116-8f9e-9a72694372d3",
+      "location": {
+        "states": [
+          "Hawaii",
+          "Alaska"
+        ],
+        "territory": [
+          "US"
+        ]
+      }
+    }
+  },
+  {
+    "id": "6c3568de-d5f2-9d0c-0c8d-c453cbeb8528",
+    "type": "UserRole",
+    "roleName": "AnonymousUser",
+    "permissions": [
+      "0505715c-dfc9-27dd-02a2-7cb30f4e3fd4",
+      "29f4e336-471f-50fb-bc5e-f5c2b3582087",
+      "9825eff3-3cb4-ff1d-fcc8-5bf59f2e5d64"
+    ]
+  },
+  {
+    "id": "bcdbd688-9c82-4129-bd35-829e9633e124",
+    "type": "UserRole",
+    "roleName": "AuthUser",
+    "permissions": [
+      "0505715c-dfc9-27dd-02a2-7cb30f4e3fd4",
+      "29f4e336-471f-50fb-bc5e-f5c2b3582087",
+      "9825eff3-3cb4-ff1d-fcc8-5bf59f2e5d64"
+    ]
+  },
+  {
+    "id": "925919e8-2711-a116-8f9e-9a72694372d3",
+    "type": "UserRole",
+    "roleName": "StateAdmin",
+    "permissions": [
+      "f90f815d-c40b-636f-09b0-381c2ad0b3e2",
+      "5d7f7b68-1183-2882-d80e-f39ddbed8fe3",
+      "9825eff3-3cb4-ff1d-fcc8-5bf59f2e5d64"
+    ]
+  },
+  {
+    "id": "9b675807-c5d6-6614-5ce8-96c497ac20b6",
+    "type": "UserRole",
+    "roleName": "GlobalAdmin",
+    "permissions": [
+      "f90f815d-c40b-636f-09b0-381c2ad0b3e2",
+      "5d7f7b68-1183-2882-d80e-f39ddbed8fe3",
+      "9825eff3-3cb4-ff1d-fcc8-5bf59f2e5d64"
+    ]
+  },
+  {
+    "id": "f90f815d-c40b-636f-09b0-381c2ad0b3e2",
+    "type": "permission",
+    "permissionName": "Update Topics",
+    "accessType": [
+      {
+        "Read": true
+      },
+      {
+        "Write": true
+      }
+    ]
+  }]

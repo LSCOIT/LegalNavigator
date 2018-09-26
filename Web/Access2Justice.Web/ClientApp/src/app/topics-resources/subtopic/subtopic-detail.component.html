@@ -1,10 +1,10 @@
 <div *ngIf="subtopicDetails" class="container">
   <app-breadcrumb></app-breadcrumb>
   <div class="row">
-    <div class="col-sm-7">
+    <div class="col-md-6">
       <h3 *ngIf="subtopics.id == activeSubtopicParam" class="subtopic-heading text-capitalize">{{subtopics.name}}</h3>
     </div>
-    <div class="col-sm-5 user-action">
+    <div class="col-md-6 user-action">
       <app-user-action-sidebar [mobile]="true" [id]="activeSubtopicParam" [type]="type"></app-user-action-sidebar>
     </div>
   </div>
@@ -16,10 +16,10 @@
           <p>{{subtopics.overview}}</p>
           <div class="row">
             <h5>Essential Reading</h5>
-            <ul *ngFor="let resource of subtopicDetails">
-              <li *ngIf="resource.resourceType === 'Related Links'">
+            <ul>
+              <li *ngFor="let resource of relatedLinksData" >
                 <a class="link" href="{{resource.url}}">{{resource.name}}</a>
-                <div class="web-hidden">{{resource.url}}</div>
+                <div class="print-only">{{resource.url}}</div>
               </li>
             </ul>
           </div>
@@ -40,32 +40,32 @@
         <div *ngFor="let resource of articleData">
           <app-resource-card [resource]="resource" [showRemoveOption]="showRemoveOption"></app-resource-card>
         </div>
-        <button class="btn-sm btn-primary no-print" (click)="clickSeeMoreOrganizationsFromSubtopicDetails(articleData[0].resourceType)">See more Articles</button>
+        <button class="btn btn-primary no-print" (click)="clickSeeMoreOrganizationsFromSubtopicDetails(articleData[0].resourceType)">See more Articles</button>
         </div>
       <div *ngIf="organizationData.length > 0" class="row">
         <h3>Organizations That May Be Able To Help</h3>
         <div *ngFor="let resource of organizationData">
           <app-resource-card [resource]="resource" [showRemoveOption]="showRemoveOption"></app-resource-card>
         </div>
-        <button class="btn-sm btn-primary no-print" (click)="clickSeeMoreOrganizationsFromSubtopicDetails(organizationData[0].resourceType)">See more Organizations</button>
+        <button class="btn btn-primary no-print" (click)="clickSeeMoreOrganizationsFromSubtopicDetails(organizationData[0].resourceType)">See more Organizations</button>
         </div>
       <div *ngIf="videoData.length > 0" class="row">
         <h3>Videos</h3>
         <div *ngFor="let resource of videoData">
           <app-resource-card [resource]="resource" [showRemoveOption]="showRemoveOption"></app-resource-card>
         </div>
-        <button class="btn-sm btn-primary no-print" (click)="clickSeeMoreOrganizationsFromSubtopicDetails(videoData[0].resourceType)">See more Videos</button>
+        <button class="btn btn-primary no-print" (click)="clickSeeMoreOrganizationsFromSubtopicDetails(videoData[0].resourceType)">See more Videos</button>
         </div>
       <div *ngIf="formData.length > 0" class="row">
         <h3>Forms</h3>
         <div *ngFor="let resource of formData">
           <app-resource-card [resource]="resource" [showRemoveOption]="showRemoveOption"></app-resource-card>
         </div>
-        <button class="btn-sm btn-primary no-print" (click)="clickSeeMoreOrganizationsFromSubtopicDetails(formData[0].resourceType)">See more Forms</button>
+        <button class="btn btn-primary no-print" (click)="clickSeeMoreOrganizationsFromSubtopicDetails(formData[0].resourceType)">See more Forms</button>
         </div>
       </div>
-    <div class="col-md-3 col-sm-12 pull-right">
-      <app-guided-assistant-sidebar></app-guided-assistant-sidebar>
+    <div class="col-md-3 col-sm-12 sidebars">
+      <app-guided-assistant-sidebar [activeSubTopic]="guidedSutopicDetailsInput"></app-guided-assistant-sidebar>
       <app-service-org-sidebar (showMoreOrganizations)="clickSeeMoreOrganizationsFromSubtopicDetails($event)"></app-service-org-sidebar>
     </div>
   </div>

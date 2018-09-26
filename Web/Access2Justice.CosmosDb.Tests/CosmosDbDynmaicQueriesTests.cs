@@ -127,7 +127,7 @@ namespace Access2Justice.CosmosDb.Tests
         {
             // Arrange
             Location location = new Location { State = "Hawaii", City = "Honolulu", County = "Honolulu", ZipCode = "96801" };
-            string query = "SELECT * FROM c WHERE c.name=[] AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\",\"county\":\"Honolulu\",\"city\":\"Honolulu\",\"zipCode\":\"96801\"},true))";
+            string query = "SELECT * FROM c WHERE (c.name=[] OR c.name=null) AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\",\"county\":\"Honolulu\",\"city\":\"Honolulu\",\"zipCode\":\"96801\"},true))";
 
             //Act
             dynamicQueries.FindItemsWhereWithLocationAsync("TopicsCollection", "name", "", location);

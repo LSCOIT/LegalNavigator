@@ -4,7 +4,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
-
+import { NgxSpinnerModule } from 'ngx-spinner';
 import {
   AccordionModule,
   BsDropdownModule,
@@ -18,11 +18,9 @@ import {
 
 import { AppComponent } from './app.component';
 import { AboutComponent } from './about/about.component';
-import { CreateAccountComponent } from './account/create-account.component';
 import { GuidedAssistantComponent } from './guided-assistant/guided-assistant.component';
 import { HelpFaqsComponent } from './help-faqs/help-faqs.component';
 import { HomeComponent } from './home/home.component';
-import { LogInComponent } from './account/log-in.component';
 import { PrivacyPromiseComponent } from './privacy-promise/privacy-promise.component';
 import { QuestionComponent } from './guided-assistant/question/question.component';
 import { QuestionService } from './guided-assistant/question/question.service';
@@ -35,11 +33,9 @@ import { PersonalizedPlanComponent } from './guided-assistant/personalized-plan/
 import { ProfileComponent } from './profile/profile.component';
 import { BreadcrumbService } from './topics-resources/shared/breadcrumb.service';
 import { PersonalizedPlanService } from './guided-assistant/personalized-plan/personalized-plan.service';
-import { ShowMoreService } from './shared/sidebars/show-more.service';
 import { DidYouKnowComponent } from './guided-assistant/did-you-know/did-you-know.component';
 import { ArticlesResourcesComponent } from './guided-assistant/articles-resources/articles-resources.component';
 import { CuratedExperienceComponent } from './guided-assistant/curated-experience/curated-experience.component';
-import { HomeService } from './home/home.service'
 import { StaticResourceService } from './shared/static-resource.service';
 import { ResponseInterceptor } from './response-interceptor';
 import { Global } from './global'
@@ -49,11 +45,9 @@ import { CuratedExperienceResultComponent } from './guided-assistant/curated-exp
   declarations: [
     AppComponent,
     AboutComponent,
-    CreateAccountComponent,
     GuidedAssistantComponent,
     HelpFaqsComponent,
     HomeComponent,
-    LogInComponent,
     PrivacyPromiseComponent,
     QuestionComponent,
     TopicsComponent,
@@ -79,7 +73,8 @@ import { CuratedExperienceResultComponent } from './guided-assistant/curated-exp
     CollapseModule.forRoot(),
     ModalModule.forRoot(),
     ProgressbarModule.forRoot(),
-    TabsModule.forRoot()
+    TabsModule.forRoot(),
+    NgxSpinnerModule
   ],
   providers: [
     {
@@ -94,7 +89,6 @@ import { CuratedExperienceResultComponent } from './guided-assistant/curated-exp
     PersonalizedPlanService,
     ProfileComponent,
     PersonalizedPlanComponent,
-    HomeService,
     StaticResourceService,
     Global
   ],

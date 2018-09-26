@@ -10,6 +10,7 @@ export class SearchFilterComponent implements OnInit {
   resourceResults: any;
   @Output() notifyFilterCriteria = new EventEmitter<object>();
   selectedSortCriteria: string = 'Best Match';
+  selectedFilterCriteria: string = 'All';
   filterParam: string;
   sortParam: string;
   @ViewChildren('filterButtons') filterButtons: QueryList<any>;
@@ -43,11 +44,12 @@ export class SearchFilterComponent implements OnInit {
       });
   }
 
-  sendFilterCriteria(resourceType) {
+  sendFilterCriteria(event, resourceType) {
     this.resetButtonColor();
     event.target["classList"].add('button-highlight');
     this.filterParam = resourceType;
     this.notifyFilterCriteria.emit({ filterParam: this.filterParam, sortParam: this.sortParam });
+    this.selectedFilterCriteria = this.filterParam;
   }
 
   sendSortCriteria(value, resourceType) {

@@ -29,7 +29,7 @@ describe('CuratedExperienceComponent', () => {
 
   it('should receive total questions', () => {
     component.receiveTotalQuestions(9);
-    expect(component.maxProgress).toBe(12);
+    expect(component.maxProgress).toBe(15);
   });
 
   it('should calculate progress', () => {

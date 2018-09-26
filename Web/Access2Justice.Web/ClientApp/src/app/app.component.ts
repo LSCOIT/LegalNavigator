@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Global, UserStatus } from './global';
+import { StaticResourceService } from './shared/static-resource.service';
+import { MapService } from './shared/map/map.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -8,11 +12,19 @@ import { Global, UserStatus } from './global';
 })
 export class AppComponent implements OnInit {
   title = 'app';
-  
-  constructor(    
-    private global: Global) {
-  }
-  getCookie(cookieName: string) {    
+  staticContentResults: any;
+  subscription: any;
+
+  constructor(
+    private global: Global,
+    private staticResourceService: StaticResourceService,
+    private mapService: MapService,
+    private spinner: NgxSpinnerService,
+    private router: Router
+  )
+  { }
+
+  getCookie(cookieName: string) {
     let cookieNameEQ = cookieName + "=";
     let cookies = document.cookie.split(';');
     for (let i = 0; i < cookies.length; i++) {
@@ -40,14 +52,42 @@ export class AppComponent implements OnInit {
     window.scroll(0, 0);
   }
 
+  setStaticContentData() {
+    this.spinner.show();
+    this.staticResourceService.getStaticContents()
+      .subscribe(
+        response => {
+          this.spinner.hide();
+          this.staticContentResults = response;
+          this.global.setData(this.staticContentResults);
+      }, error => {
+          this.spinner.hide();
+          this.router.navigate(['/error']);
+      });
+  }
 
   ngOnInit() {
     let profileData = this.getCookie("profileData");
     if (profileData != undefined) {
       profileData = decodeURIComponent(profileData);
-      sessionStorage.setItem("profileData", profileData);      
+      sessionStorage.setItem("profileData", profileData);
       this.deleteCookie("profileData", "", -1);
       this.global.role = UserStatus.Authorized;
     }
+    else {
+      profileData = sessionStorage.getItem("profileData");
+      if (profileData != undefined) {
+        profileData = JSON.parse(profileData);
+        if (profileData["IsShared"]) {
+          sessionStorage.removeItem("profileData");
+        }
+      }
+    }
+
+    this.subscription = this.mapService.notifyLocation
+      .subscribe((value) => {
+        this.setStaticContentData();
+      });
+    this.setStaticContentData();
   }
 }

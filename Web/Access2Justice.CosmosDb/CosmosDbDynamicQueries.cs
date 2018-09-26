@@ -93,8 +93,8 @@ namespace Access2Justice.CosmosDb
             string locationFilter = FindLocationWhereArrayContains(location);
             var query = string.Empty;
             if (string.IsNullOrEmpty(value) && (location != null))
-            {  
-                query = $"SELECT * FROM c WHERE c.{propertyName}=[{value}]";
+            {
+                query = $"SELECT * FROM c WHERE (c.{propertyName}=[{value}] OR c.{propertyName}=null)";
             }
             else
             {
@@ -107,6 +107,21 @@ namespace Access2Justice.CosmosDb
             }
             return await backendDatabaseService.QueryItemsAsync(collectionId, query);           
         }
+
+        public async Task<dynamic> FindItemsWhereWithLocationAsync(string collectionId, string propertyName, Location location)
+        {
+            EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
+            string locationFilter = FindLocationWhereArrayContains(location);
+            var query = string.Empty;
+            query = $"SELECT * FROM c WHERE ";
+
+            if (!string.IsNullOrEmpty(locationFilter))
+            {
+                query = query + locationFilter;
+            }
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query);
+        }
+
         public async Task<dynamic> FindItemsWhereArrayContainsWithAndClauseAsync(string arrayName, string propertyName, string andPropertyName, ResourceFilter resourceFilter, bool isResourceCountCall = false)
         {
             EnsureParametersAreNotNullOrEmpty(arrayName, propertyName, andPropertyName, resourceFilter.ResourceType);
