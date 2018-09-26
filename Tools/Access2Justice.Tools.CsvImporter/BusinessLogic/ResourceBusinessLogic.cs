@@ -33,6 +33,24 @@ namespace Access2Justice.Tools.BusinessLogic
                         JObject jsonResult = (JObject)JsonConvert.DeserializeObject(serializedResult);
                         resourcesList.Add(jsonResult);
                     }
+
+                    foreach (var resourceList in resourcesList)
+                    {
+                        if (resourceList.topicTags != null)
+                        {
+                            for (int iterator = 0; iterator < resourceList.topicTags.Count; iterator++)
+                            {
+                                string name = resourceList.topicTags[iterator].id;
+                                string location = resourceList.location[0].state;
+                                var topicTag = await clientHttp.GetAsync("api/topics/gettopicdetails/" + name).ConfigureAwait(false);
+                                var topicResult = topicTag.Content.ReadAsStringAsync().Result;
+                                dynamic topicTagResult = JsonConvert.DeserializeObject(topicResult);
+                                var topicTagId = topicTagResult[iterator].id;
+                                resourceList.topicTags[iterator].id = topicTagId;
+                            }
+                        }
+                    }
+
                     var serializedResources = JsonConvert.SerializeObject(resourcesList);
                     var result = JsonConvert.DeserializeObject(serializedResources);
                     var response = await clientHttp.PostAsJsonAsync("api/upsertresourcedocument", result).ConfigureAwait(false);
@@ -48,7 +66,7 @@ namespace Access2Justice.Tools.BusinessLogic
                     {
                         throw new Exception("Please correct errors" + "\n" + response);
                     }
-                }
+                }          
             }
             catch (Exception ex)
             {
