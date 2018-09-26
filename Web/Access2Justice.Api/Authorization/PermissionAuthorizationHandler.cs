@@ -39,7 +39,7 @@ namespace Access2Justice.Api.Authorization
         }
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            bool isAuthorized = await MumboJumboFunction(context, item, action);
+            bool isAuthorized = await PermissionValidator(context, item, action);
 
             if (!isAuthorized)
             {
@@ -52,7 +52,7 @@ namespace Access2Justice.Api.Authorization
             }
         }
 
-        public async Task<bool> MumboJumboFunction(ActionExecutingContext context, PermissionType item, PermissionName action)
+        public async Task<bool> PermissionValidator(ActionExecutingContext context, PermissionType item, PermissionName action)
         {
             if (item == PermissionType.Anonymous)
             {                
