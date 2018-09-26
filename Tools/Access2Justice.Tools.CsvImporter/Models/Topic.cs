@@ -30,6 +30,10 @@ namespace Access2Justice.Tools.Models
         [JsonProperty(PropertyName = "keywords")]
         public string Keywords { get; set; }
 
+        [Required(ErrorMessage = "Organizational Unit is a required field.")]
+        [JsonProperty(PropertyName = "organizationalUnit")]
+        public string OrganizationalUnit { get; set; }
+
         [JsonProperty(PropertyName = "location")]
         public IEnumerable<Locations> Location { get; set; }
 

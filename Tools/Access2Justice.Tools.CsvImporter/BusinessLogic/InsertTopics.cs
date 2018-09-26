@@ -38,7 +38,7 @@ namespace Access2Justice.Tools.BusinessLogic
                     bool isValidated = false;
                     foreach (Spreadsheet.Row row in sheetData.Elements<Spreadsheet.Row>())
                     {
-                        dynamic id = null; string name = string.Empty; string keywords = string.Empty;
+                        dynamic id = null; string name = string.Empty; string keywords = string.Empty; string organizationalUnit = string.Empty;
                         string state = string.Empty; string county = string.Empty; string city = string.Empty; string zipcode = string.Empty;
                         string overview = string.Empty; string quickLinkURLText = string.Empty; string quickLinkURLLink = string.Empty; string icon = string.Empty;
                         List<ParentTopicID> parentTopicIds = new List<ParentTopicID>();
@@ -113,6 +113,11 @@ namespace Access2Justice.Tools.BusinessLogic
                                             keywords = (cellActualValue).Trim();
                                         }
 
+                                        else if (val.EndsWith("Organizational Unit", StringComparison.CurrentCultureIgnoreCase))
+                                        {
+                                            organizationalUnit = (cellActualValue).Trim();
+                                        }
+
                                         else if (val.EndsWith("Location_State", StringComparison.CurrentCultureIgnoreCase))
                                         {
                                             state = (cellActualValue).Trim();
@@ -171,6 +176,7 @@ namespace Access2Justice.Tools.BusinessLogic
                                 ParentTopicId = parentTopicIds.Count > 0 ? parentTopicIds : null,
                                 ResourceType = "Topics",
                                 Keywords = keywords,
+                                OrganizationalUnit = organizationalUnit,
                                 Location = locations,
                                 Icon = icon,
                                 CreatedBy = "Admin Import tool",
@@ -347,7 +353,7 @@ namespace Access2Justice.Tools.BusinessLogic
         {
             bool correctHeader = false;
             IStructuralEquatable actualHeader = header;
-            string[] expectedHeader = {"Topic_ID", "Topic_Name", "Parent_Topic", "Keywords", "Location_State", "Location_County",
+            string[] expectedHeader = {"Topic_ID", "Topic_Name", "Parent_Topic", "Keywords", "Organizational Unit", "Location_State", "Location_County",
                 "Location_City", "Location_Zip", "Overview", "Quick_Links_URL_text", "Quick_Links_URL_link", "Icon" };
                
             correctHeader = InsertResources.HeaderValidation(header, expectedHeader, "Topics");          
