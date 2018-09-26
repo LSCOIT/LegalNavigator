@@ -253,33 +253,17 @@ namespace Access2Justice.Tools.BusinessLogic
             {
                 string trimTopicTagId = (topicTagsb[topicTagIterator]).Trim();
                 string topicTagGuid = string.Empty;
-                if (trimTopicTagId.Length > 36)
+                if (trimTopicTagId.Length > 0)
                 {
-                    topicTagGuid = trimTopicTagId.Substring(trimTopicTagId.Length - 36, 36);
+                    //topicTagGuid = trimTopicTagId.Substring(trimTopicTagId.Length - 36, 36);
 
                     topicTagIds.Add(new TopicTag
                     {
-                        TopicTags = topicTagGuid
+                        TopicTags = trimTopicTagId
                     });
                 }
             }
             return topicTagIds;
-        }
-
-        public dynamic GetConditions(string conditionId)
-        {
-            Conditions[] conditions = null;
-            string[] conditionsb = null;
-            conditionsb = conditionId.Split('|');
-            conditions = new Conditions[conditionsb.Length];
-            for (int conditionIterator = 0; conditionIterator < conditionsb.Length; conditionIterator++)
-            {
-                conditions[conditionIterator] = new Conditions()
-                {
-                    //Condition = conditionsb[conditionIterator],
-                };
-            }
-            return conditions;
         }
 
         private void ClearVariableData()
@@ -348,7 +332,7 @@ namespace Access2Justice.Tools.BusinessLogic
                 name = cellActualValue;
             }
 
-            else if (val.Equals("Type*", StringComparison.CurrentCultureIgnoreCase))
+            else if (val.Equals("Type", StringComparison.CurrentCultureIgnoreCase))
             {
                 type = cellActualValue;
             }
@@ -494,15 +478,15 @@ namespace Access2Justice.Tools.BusinessLogic
         {
             bool correctHeader = false;
             IStructuralEquatable actualHeader = header;
-            string[] expectedFormHeader = {"Id", "Name*", "Type*", "Description*", "Resource Type*", "URL*", "Topic*", "Location_State*", "Location_County", "Location_City",
+            string[] expectedFormHeader = {"Id", "Name*", "Type", "Description*", "Resource Type*", "URL*", "Topic*", "Location_State*", "Location_County", "Location_City",
                     "Location_Zip", "Icon", "Overview" };
-            string[] expectedOrganizationHeader = {"Id", "Name*", "Type*", "Description*", "Resource Type*", "URL*", "Topic*", "Location_State*", "Location_County", "Location_City",
+            string[] expectedOrganizationHeader = {"Id", "Name*", "Type", "Description*", "Resource Type*", "URL*", "Topic*", "Location_State*", "Location_County", "Location_City",
                     "Location_Zip", "Icon", "Org Address*", "Phone*", "Overview", "Eligibility Information", "Reviewed By Community Member", "Reviewer Full Name", "Reviewer Title", "Reviewer Image" };
-            string[] expectedArticleHeader = {"Id", "Name*", "Type*", "Description*", "Resource Type*", "URL*", "Topic*", "Location_State*", "Location_County", "Location_City",
+            string[] expectedArticleHeader = {"Id", "Name*", "Type", "Description*", "Resource Type*", "URL*", "Topic*", "Location_State*", "Location_County", "Location_City",
                     "Location_Zip", "Icon", "Overview*", "Headline 1 (optional)", "Content 1 (Optional)", "Headline 2 (optional)", "Content 2 (Optional)" };
-            string[] expectedVideoHeader = {"Id", "Name*", "Type*", "Description*", "Resource Type*", "URL*", "Topic*", "Location_State*", "Location_County", "Location_City",
+            string[] expectedVideoHeader = {"Id", "Name*", "Type", "Description*", "Resource Type*", "URL*", "Topic*", "Location_State*", "Location_County", "Location_City",
                     "Location_Zip", "Icon", "Overview" };
-            string[] expectedRelatedLinkHeader = {"Id", "Name*", "Type*", "Description*", "Resource Type*", "URL*", "Topic*", "Location_State*", "Location_County", "Location_City",
+            string[] expectedRelatedLinkHeader = {"Id", "Name*", "Type", "Description*", "Resource Type*", "URL*", "Topic*", "Location_State*", "Location_County", "Location_City",
                     "Location_Zip", "Icon" };
 
             try

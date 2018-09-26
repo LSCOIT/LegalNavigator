@@ -8,7 +8,6 @@ namespace Access2Justice.Tools.Models
 {
     public class Topic
     {
-        [Required(ErrorMessage = "Topic_Id is a required field.")]
         [JsonProperty(PropertyName = "id")]
         public dynamic Id { get; set; }
 
