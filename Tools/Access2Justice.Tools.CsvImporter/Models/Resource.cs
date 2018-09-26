@@ -37,6 +37,10 @@ namespace Access2Justice.Tools.Models
         [JsonProperty(PropertyName = "topicTags")]
         public IEnumerable<TopicTag> TopicTags { get; set; }
 
+        [Required(ErrorMessage = "Organizational Unit is a required field.")]
+        [JsonProperty(PropertyName = "organizationalUnit")]
+        public string OrganizationalUnit { get; set; }
+
         //[EnsureOneElementAttribute(ErrorMessage = "At least one location is required")]
         [JsonProperty(PropertyName = "location")]
         public IEnumerable<Locations> Location { get; set; }

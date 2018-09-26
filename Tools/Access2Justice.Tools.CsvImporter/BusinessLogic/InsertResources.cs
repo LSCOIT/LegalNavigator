@@ -19,7 +19,7 @@ namespace Access2Justice.Tools.BusinessLogic
         string name, type, description, url, resourceType, state, county, city, zipcode = string.Empty;
         string overview, icon, address, telephone, eligibilityInformation = string.Empty;
         string reviewedByCommunityMember, reviewerFullName, reviewerTitle, reviewerImage = string.Empty;
-        string headline1, content1, headline2, content2 = string.Empty;
+        string headline1, content1, headline2, content2, organizationalUnit = string.Empty;
         List<TopicTag> topicTagIds = null;
         List<Locations> locations = null;
 
@@ -127,6 +127,7 @@ namespace Access2Justice.Tools.BusinessLogic
                                             ResourceType = resourceType,
                                             Urls = url,
                                             TopicTags = topicTagIds,
+                                            OrganizationalUnit = organizationalUnit,
                                             Location = locations,
                                             Icon = icon,
                                             Overview = overview,
@@ -147,6 +148,7 @@ namespace Access2Justice.Tools.BusinessLogic
                                             ResourceType = resourceType,
                                             Urls = url,
                                             TopicTags = topicTagIds,
+                                            OrganizationalUnit = organizationalUnit,
                                             Location = locations,
                                             Icon = icon,
                                             Address = address,
@@ -174,6 +176,7 @@ namespace Access2Justice.Tools.BusinessLogic
                                             ResourceType = resourceType,
                                             Urls = url,
                                             TopicTags = topicTagIds,
+                                            OrganizationalUnit = organizationalUnit,
                                             Location = locations,
                                             Icon = icon,
                                             Overview = overview,
@@ -198,6 +201,7 @@ namespace Access2Justice.Tools.BusinessLogic
                                             ResourceType = resourceType,
                                             Urls = url,
                                             TopicTags = topicTagIds,
+                                            OrganizationalUnit = organizationalUnit,
                                             Location = locations,
                                             Icon = icon,
                                             Overview = overview,
@@ -218,6 +222,7 @@ namespace Access2Justice.Tools.BusinessLogic
                                             ResourceType = resourceType,
                                             Urls = url,
                                             TopicTags = topicTagIds,
+                                            OrganizationalUnit = organizationalUnit,
                                             Location = locations,
                                             Icon = icon,
                                             CreatedBy = Constants.Admin,
@@ -291,6 +296,7 @@ namespace Access2Justice.Tools.BusinessLogic
             content1 = string.Empty;
             headline2 = string.Empty;
             content2 = string.Empty;
+            organizationalUnit = string.Empty;
         }
         private static Spreadsheet.SharedStringItem GetSharedStringItemById(WorkbookPart workbookPart, int id)
         {
@@ -356,6 +362,11 @@ namespace Access2Justice.Tools.BusinessLogic
             {
                 string topicTag = cellActualValue;
                 topicTagIds = GetTopicTags(topicTag);
+            }
+
+            else if (val.EndsWith("Organizational Unit", StringComparison.CurrentCultureIgnoreCase))
+            {
+                organizationalUnit = cellActualValue;
             }
 
             else if (val.EndsWith("Location_State*", StringComparison.CurrentCultureIgnoreCase))
@@ -478,15 +489,15 @@ namespace Access2Justice.Tools.BusinessLogic
         {
             bool correctHeader = false;
             IStructuralEquatable actualHeader = header;
-            string[] expectedFormHeader = {"Id", "Name*", "Type", "Description*", "Resource Type*", "URL*", "Topic*", "Location_State*", "Location_County", "Location_City",
+            string[] expectedFormHeader = {"Id", "Name*", "Type", "Description*", "Resource Type*", "URL*", "Topic*", "Organizational Unit", "Location_State*", "Location_County", "Location_City",
                     "Location_Zip", "Icon", "Overview" };
-            string[] expectedOrganizationHeader = {"Id", "Name*", "Type", "Description*", "Resource Type*", "URL*", "Topic*", "Location_State*", "Location_County", "Location_City",
+            string[] expectedOrganizationHeader = {"Id", "Name*", "Type", "Description*", "Resource Type*", "URL*", "Topic*", "Organizational Unit", "Location_State*", "Location_County", "Location_City",
                     "Location_Zip", "Icon", "Org Address*", "Phone*", "Overview", "Eligibility Information", "Reviewed By Community Member", "Reviewer Full Name", "Reviewer Title", "Reviewer Image" };
-            string[] expectedArticleHeader = {"Id", "Name*", "Type", "Description*", "Resource Type*", "URL*", "Topic*", "Location_State*", "Location_County", "Location_City",
+            string[] expectedArticleHeader = {"Id", "Name*", "Type", "Description*", "Resource Type*", "URL*", "Topic*", "Organizational Unit", "Location_State*", "Location_County", "Location_City",
                     "Location_Zip", "Icon", "Overview*", "Headline 1 (optional)", "Content 1 (Optional)", "Headline 2 (optional)", "Content 2 (Optional)" };
-            string[] expectedVideoHeader = {"Id", "Name*", "Type", "Description*", "Resource Type*", "URL*", "Topic*", "Location_State*", "Location_County", "Location_City",
+            string[] expectedVideoHeader = {"Id", "Name*", "Type", "Description*", "Resource Type*", "URL*", "Topic*", "Organizational Unit", "Location_State*", "Location_County", "Location_City",
                     "Location_Zip", "Icon", "Overview" };
-            string[] expectedRelatedLinkHeader = {"Id", "Name*", "Type", "Description*", "Resource Type*", "URL*", "Topic*", "Location_State*", "Location_County", "Location_City",
+            string[] expectedRelatedLinkHeader = {"Id", "Name*", "Type", "Description*", "Resource Type*", "URL*", "Topic*", "Organizational Unit", "Location_State*", "Location_County", "Location_City",
                     "Location_Zip", "Icon" };
 
             try
