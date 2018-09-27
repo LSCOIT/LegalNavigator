@@ -21,7 +21,7 @@ namespace Access2Justice.Api.Controllers
             this.luisBusinessLogic = luisBusinessLogic;
         }
 
-        [Permission(PermissionType.Anonymous , PermissionName.Search)]
+        //[Permission(PermissionType.Anonymous , PermissionName.Search)]
         //[Permission("GetAsync")]
         [HttpPost]
         public async Task<IActionResult> GetAsync([FromBody]LuisInput luisInput)

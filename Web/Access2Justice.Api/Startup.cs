@@ -71,10 +71,10 @@ namespace Access2Justice.Api
                 .RequireAuthenticatedUser()
                 .Build();
 
-                options.AddPolicy("Permission", policyBuilder =>
-                {
-                    policyBuilder.Requirements.Add(new PermissionAuthorizationRequirement());
-                });
+                //options.AddPolicy("Permission", policyBuilder =>
+                //{
+                //    policyBuilder.Requirements.Add(new PermissionAuthorizationRequirement());
+                //});
 
                 //var AdminRolesPolicy = UserRoles.RoleEnum.GlobalAdmin.ToString() + "," +
                 //UserRoles.RoleEnum.StateAdmin.ToString();

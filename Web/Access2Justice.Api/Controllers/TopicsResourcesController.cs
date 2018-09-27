@@ -29,7 +29,7 @@ namespace Access2Justice.Api.Controllers
         /// </summary>
         /// <returns></returns>
         //[Authorize(Policy = "AnonymousPolicy")]
-        [Permission(PermissionType.Restricted, PermissionName.gettopics)]
+        [Permission(PermissionName.gettopics)]
         [Route("api/topics/gettopics")]
         [HttpPost]
         public async Task<IActionResult> GetTopics([FromBody]Location location)
