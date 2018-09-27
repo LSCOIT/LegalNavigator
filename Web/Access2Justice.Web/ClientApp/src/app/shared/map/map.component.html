@@ -12,7 +12,7 @@
   <button type="button" class="change-location-btn pxs mobile-hidden">{{locationNavContent?.button?.buttonText}}</button>
 </div>
 <ng-template #template>
-  <form #mapForm="ngForm" (ngSubmit)="geocode(mapForm)">
+  <form>
     <div class="modal-body text-center container-fluid">
       <button *ngIf="!locationInputRequired" type="button" class="close" aria-label="Close" (click)="modalRef.hide()">
         <span aria-hidden="true">&times;</span>
@@ -52,7 +52,7 @@
         </p>
       </div>
       <div class="row">
-        <button type="submit" class="btn btn-primary" (click)="updateLocation(mapForm)" [disabled]="!locationInput">Update</button>
+        <button type="submit" class="btn btn-primary" (click)="updateLocation()" [disabled]="!locationInput">Update</button>
       </div>
     </div>
   </form>
