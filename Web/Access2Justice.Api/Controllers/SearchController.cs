@@ -8,8 +8,6 @@ using static Access2Justice.Api.Authorization.Permissions;
 
 namespace Access2Justice.Api.Controllers
 {
-    //[Authorize(Policy = "AnonymousPolicy")]
-    //[Permission("AnonymousUser")]
     [Produces("application/json")]
     [Route("api/search")]
     public class SearchController : Controller
@@ -20,9 +18,7 @@ namespace Access2Justice.Api.Controllers
         {
             this.luisBusinessLogic = luisBusinessLogic;
         }
-
-        //[Permission(PermissionType.Anonymous , PermissionName.Search)]
-        //[Permission("GetAsync")]
+        
         [HttpPost]
         public async Task<IActionResult> GetAsync([FromBody]LuisInput luisInput)
         {

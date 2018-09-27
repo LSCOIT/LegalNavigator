@@ -25,27 +25,39 @@ namespace Access2Justice.Api.Authorization
             {
                 context.Result = new UnauthorizedResult();
             }
-            else
-            {
-                await next();
-            }
+            else { await next(); }
         }
 
-        public async Task<bool> PermissionValidator(ActionExecutingContext context,PermissionName action)
+        public async Task<bool> PermissionValidator(ActionExecutingContext context, PermissionName action)
         {
-                if (context.HttpContext.User.Claims.FirstOrDefault() != null)
+            if (context.HttpContext.User.Claims.FirstOrDefault() != null)
+            {
+                string oId = context.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+                oId = EncryptOId(oId);
+                if (!(string.IsNullOrEmpty(oId)))
                 {
-                    string oId = context.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
-                    oId = EncryptOId(oId);
-                    if (!(string.IsNullOrEmpty(oId)))
+                    string requestPath = context.HttpContext.Request.Path.ToString();
+                    if (requestPath.Contains("getuserprofile"))
                     {
-                        if ((await userRoleBusinessLogic.GetPermissionDataAsyn(oId)).Contains(action.ToString())) {
-                            return true;
+                        if (requestPath.Contains(oId) || context.HttpContext.Request.QueryString.ToString().Contains(oId))
+                        {
+                            return await CheckPermissions(oId);
                         }
                         return false;
                     }
+                    return await CheckPermissions(oId);
                 }
-                return false;
+            }
+            return false;
+        }
+
+        public async Task<bool> CheckPermissions(string oId)
+        {
+            if ((await userRoleBusinessLogic.GetPermissionDataAsyn(oId)).Contains(action.ToString()))
+            {
+                return true;
+            }
+            return false;
         }
 
         private string EncryptOId(string oId)

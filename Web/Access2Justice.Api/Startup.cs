@@ -58,8 +58,7 @@ namespace Access2Justice.Api
             services.AddSingleton<IStaticResourceBusinessLogic, StaticResourceBusinessLogic>();
             services.AddSingleton<IShareBusinessLogic, ShareBusinessLogic>();
             services.AddSingleton<IUserRoleBusinessLogic, UserRoleBusinessLogic>();
-            //services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
-
+            
             services.AddAuthentication(sharedOptions =>
             {
                 sharedOptions.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -70,43 +69,7 @@ namespace Access2Justice.Api
                 options.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
                 .RequireAuthenticatedUser()
                 .Build();
-
-                //options.AddPolicy("Permission", policyBuilder =>
-                //{
-                //    policyBuilder.Requirements.Add(new PermissionAuthorizationRequirement());
-                //});
-
-                //var AdminRolesPolicy = UserRoles.RoleEnum.GlobalAdmin.ToString() + "," +
-                //UserRoles.RoleEnum.StateAdmin.ToString();
-
-                //var AuthenticatedUserPolicy = UserRoles.RoleEnum.GlobalAdmin.ToString() + "," +
-                //UserRoles.RoleEnum.StateAdmin.ToString() + "," +
-                //UserRoles.RoleEnum.Authenticated.ToString();
-
-                //options.AddPolicy(UserRoles.PolicyEnum.GlobalAdminPolicy.ToString(), policy =>
-                //policy.AddRequirements(new AuthorizeUser(UserRoles.RoleEnum.GlobalAdmin.ToString())));
-
-                //options.AddPolicy(UserRoles.PolicyEnum.StateAdminPolicy.ToString(), policy =>
-                //policy.AddRequirements(new AuthorizeUser(UserRoles.RoleEnum.StateAdmin.ToString())));
-
-                //options.AddPolicy(UserRoles.PolicyEnum.DeveloperPolicy.ToString(), policy =>
-                //policy.AddRequirements(new AuthorizeUser(UserRoles.RoleEnum.Developer.ToString())));
-
-                //options.AddPolicy(UserRoles.PolicyEnum.AuthenticatedPolicy.ToString(), policy =>
-                //policy.AddRequirements(new AuthorizeUser(UserRoles.RoleEnum.Authenticated.ToString())));
-
-                //options.AddPolicy(UserRoles.PolicyEnum.AnonymousPolicy.ToString(), policy =>
-                //policy.AddRequirements(new AuthorizeUser(UserRoles.RoleEnum.Anonymous.ToString())));
-
-                //options.AddPolicy(UserRoles.PolicyEnum.AdminRolesPolicy.ToString(), policy =>
-                //policy.AddRequirements(new AuthorizeUser(AdminRolesPolicy)));
-
-                //options.AddPolicy(UserRoles.PolicyEnum.AuthenticatedUserPolicy.ToString(), policy =>
-                //policy.AddRequirements(new AuthorizeUser(AuthenticatedUserPolicy)));
-
             });
-            //services.AddSingleton<IAuthorizationHandler, AuthorizeUserHandler>();
-            //services.AddSingleton<IAuthorizationHandler, PermissionsHandler>();
             ConfigureCosmosDb(services);
 
             services.AddSwaggerGen(c =>

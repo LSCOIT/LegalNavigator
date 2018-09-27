@@ -1,9 +1,11 @@
-﻿using Access2Justice.Shared.Interfaces;
+﻿using Access2Justice.Api.Authorization;
+using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using static Access2Justice.Api.Authorization.Permissions;
 
 namespace Access2Justice.Api.Controllers
 {	
@@ -21,8 +23,8 @@ namespace Access2Justice.Api.Controllers
         /// Get the user details by a user OId
         /// </summary>
         /// <param name="oid"></param>
-        /// <returns></returns>
-        //[Authorize(Policy = "AuthenticatedUserPolicy")]
+        /// <returns></returns> 
+        [Permission(PermissionName.getuserprofile)]
         [HttpPost]
         [Route("api/user/getuserprofile")]
         public async Task<IActionResult> GetUserDataAsync(string oid, string type)
@@ -36,7 +38,7 @@ namespace Access2Justice.Api.Controllers
         /// </summary>
         /// <param name="oid"></param>
         /// <returns></returns>
-        //[Authorize(Policy = "AuthenticatedUserPolicy")]
+        [Permission(PermissionName.getuserprofiledata)]
         [HttpGet]
         [Route("api/user/getuserprofiledata/{oid}")]
         public async Task<IActionResult> GetUserProfileDataAsync(string oid)
@@ -51,7 +53,7 @@ namespace Access2Justice.Api.Controllers
         /// <param name="oId"></param>
         /// <param name="userProfile"></param>
         /// <returns>1-Success,0-Fail</returns>
-       // [Authorize(Policy = "AuthenticatedUserPolicy")]
+        [Permission(PermissionName.updateuserprofile)]
         [HttpPost]
         [Route("api/user/updateuserprofile")]
         public async Task<IActionResult> UpdateUserProfileDocumentAsync(string oId, Guid planId)
@@ -65,7 +67,7 @@ namespace Access2Justice.Api.Controllers
         /// </summary>
         /// <param name="userData"></param>
         /// <returns></returns>
-        //[Authorize(Policy = "AuthenticatedUserPolicy")]
+        [Permission(PermissionName.upsertuserpersonalizedplan)]
         [HttpPost]
         [Route("api/user/upsertuserpersonalizedplan")]
         public async Task<IActionResult> UpsertUserPersonalizedPlanAsync([FromBody]ProfileResources profileResources)
@@ -79,7 +81,6 @@ namespace Access2Justice.Api.Controllers
         /// </summary>
         /// <param name="userProfile"></param>
         /// <returns></returns>
-        //[Authorize(Policy = "AnonymousPolicy")]
         [HttpPost]
         [Route("api/user/upsertuserprofile")]
         public async Task<IActionResult> UpsertUserProfile([FromBody]UserProfile userProfile)

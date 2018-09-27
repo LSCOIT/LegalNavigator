@@ -50,7 +50,7 @@ import { api } from '../api/api';
 
 export const protectedResourceMap: [string, string[]][] = [[api.checkPermaLink, [environment.apiScope]], [api.shareUrl, [environment.apiScope]]
   , [api.unShareUrl, [environment.apiScope]], [api.getResourceLink, [environment.apiScope]], [api.getProfileUrl, [environment.apiScope]]
-  , [api.userPlanUrl, [environment.apiScope]], [api.upsertUserProfileUrl, [environment.apiScope]]]
+  , [api.userPlanUrl, [environment.apiScope]]]
 
 @NgModule({
   declarations: [

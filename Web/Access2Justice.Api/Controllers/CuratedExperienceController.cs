@@ -11,6 +11,8 @@ using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
+using static Access2Justice.Api.Authorization.Permissions;
+using Access2Justice.Api.Authorization;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -116,7 +118,7 @@ namespace Access2Justice.Api.Controllers
             });
         }
         #endregion
-
+        [Permission(PermissionName.import)]
         [HttpPost("Import")]
         public IActionResult ConvertA2JAuthorToCuratedExperience([FromBody] JObject a2jSchema)
         {
@@ -161,8 +163,7 @@ namespace Access2Justice.Api.Controllers
 
             return Ok(curatedExperienceBusinessLogic.GetNextComponent(curatedExperience, component));
         }
-
-		//[Authorize(Policy = "AnonymousPolicy")]
+        
 		[HttpGet("PersonalizedPlan")]
         public async Task<IActionResult> GeneratePersonalizedPlan([FromQuery] Guid curatedExperienceId, [FromQuery] Guid answersDocId)
         {
@@ -176,7 +177,7 @@ namespace Access2Justice.Api.Controllers
             return Ok(personalizedPlan);
         }
 
-		//[Authorize(Policy = "AuthenticatedUserPolicy")]
+        [Permission(PermissionName.updateplan)]
         [HttpPost("updateplan")]
         public async Task<IActionResult> UpdateUserProfileDocumentAsync([FromBody]UserPersonalizedPlan userPlan)
         {
@@ -195,8 +196,7 @@ namespace Access2Justice.Api.Controllers
 
             return HttpContext.Session.GetObjectAsJson<CuratedExperience>(id.ToString());
         }
-
-		//[Authorize(Policy = "AnonymousPolicy")]
+        
 		[HttpGet]
         [Route("getplandetails/{id}")]
         public async Task<IActionResult> GetPlanDetailsAsync(string id)
@@ -204,8 +204,7 @@ namespace Access2Justice.Api.Controllers
             var actionPlans = await personalizedPlanBusinessLogic.GetPlanDataAsync(id);
             return Ok(actionPlans);
         }
-
-		//[Authorize(Policy = "AnonymousPolicy")]
+        
 		[HttpGet]
         [Route("getplan/{id}")]
         public async Task<IActionResult> GetPlanAsync(string id)
