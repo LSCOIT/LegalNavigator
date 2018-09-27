@@ -12,7 +12,7 @@
   <button type="button" class="change-location-btn pxs mobile-hidden">{{locationNavContent?.button?.buttonText}}</button>
 </div>
 <ng-template #template>
-  <form>
+  <form #mapForm="ngForm" (ngSubmit)="hideSearchPrediction()">
     <div class="modal-body text-center container-fluid">
       <button *ngIf="!locationInputRequired" type="button" class="close" aria-label="Close" (click)="modalRef.hide()">
         <span aria-hidden="true">&times;</span>

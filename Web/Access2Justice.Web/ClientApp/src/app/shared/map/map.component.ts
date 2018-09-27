@@ -167,6 +167,11 @@ export class MapComponent implements OnInit {
     }
   }
 
+  hideSearchPrediction() {
+    let searchPredictionContainer = document.getElementById("as_container");
+    searchPredictionContainer.style.visibility = "hidden";
+  }
+
   ngOnInit() {
     this.getLocationNavigationContent();
     this.showLocality = true;
