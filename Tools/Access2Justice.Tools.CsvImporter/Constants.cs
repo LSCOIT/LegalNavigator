@@ -7,6 +7,7 @@
         public const string ArticleResourceType = "Articles";
         public const string VideoResourceType = "Videos";
         public const string RelatedLinkResourceType = "Related Links";
+        public const string OrganizationReviews = "OrganizationReviews";
         public const string Admin = "Admin Import tool";
 
     }
