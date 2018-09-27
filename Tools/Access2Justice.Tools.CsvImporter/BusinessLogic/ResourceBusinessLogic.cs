@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Linq;
 
 namespace Access2Justice.Tools.BusinessLogic
 {
@@ -28,11 +29,22 @@ namespace Access2Justice.Tools.BusinessLogic
                 else
                 {
                     foreach (var resourceList in resources)
-                    {
+                    {                        
                         var serializedResult = JsonConvert.SerializeObject(resourceList);
                         JObject jsonResult = (JObject)JsonConvert.DeserializeObject(serializedResult);
                         resourcesList.Add(jsonResult);
                     }
+
+                    //var org = from organizations in resourcesList
+                    //           where organizations.resourceType = "Organizations"
+                    //           select organizations
+                    //           .FirstOrDefault();
+
+                    //var Resour = from organizations in resourcesList.Select(i => i["resourceType"]).ToList() group organizations by organizations;  //SelectMany(i => i["categories"]).Values<string>();
+                    //(org2).Items[0]).Values[0])).Root
+
+
+
 
                     foreach (var resourceList in resourcesList)
                     {

@@ -151,14 +151,32 @@ namespace Access2Justice.Tools.Models
         [JsonProperty(PropertyName = "eligibilityInformation")]
         public string EligibilityInformation { get; set; }
 
-        [JsonProperty(PropertyName = "reviewedByCommunityMember")]
-        public string ReviewedByCommunityMember { get; set; }
+        //[JsonProperty(PropertyName = "reviewedByCommunityMember")]
+        //public string ReviewedByCommunityMember { get; set; }
+
+        //[JsonProperty(PropertyName = "reviewerFullName")]
+        //public string ReviewerFullName { get; set; }
+
+        //[JsonProperty(PropertyName = "reviewerTitle")]
+        //public string ReviewerTitle { get; set; }
+
+        //[JsonProperty(PropertyName = "reviewerImage")]
+        //public string ReviewerImage { get; set; }
+    }
+
+    public class OrganizationReview
+    {
+        [JsonProperty(PropertyName = "organizationName")]
+        public string OrganizationName { get; set; }
 
         [JsonProperty(PropertyName = "reviewerFullName")]
         public string ReviewerFullName { get; set; }
 
         [JsonProperty(PropertyName = "reviewerTitle")]
         public string ReviewerTitle { get; set; }
+
+        [JsonProperty(PropertyName = "reviewText")]
+        public string ReviewText { get; set; }
 
         [JsonProperty(PropertyName = "reviewerImage")]
         public string ReviewerImage { get; set; }
