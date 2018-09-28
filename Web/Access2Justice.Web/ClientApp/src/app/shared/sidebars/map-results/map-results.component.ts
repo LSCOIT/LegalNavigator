@@ -68,12 +68,5 @@ export class MapResultsComponent implements OnChanges {
     this.getAddress();
   }
 
-  formatCommandline(c: string | string[]) {
-  if (typeof c === 'string') {
-    return c.trim();
-  }
-  else {
-    return c.join(' ');
-  }
 }
 }
