@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { MapLocationResult, LatitudeLongitude } from './map-results';
 import { of } from 'rxjs/observable/of';
+import { TrimPipe } from 'ngx-pipes';
 
 describe('MapResultsComponent', () => {
   let component: MapResultsComponent;
@@ -53,7 +54,8 @@ describe('MapResultsComponent', () => {
       imports: [HttpClientModule],
       declarations: [MapResultsComponent],
       providers: [
-        { provide: MapResultsService, useValue: mockMapResultsService }
+        { provide: MapResultsService, useValue: mockMapResultsService },
+        TrimPipe
       ]
     });
     TestBed.compileComponents();

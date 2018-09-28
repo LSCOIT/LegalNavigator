@@ -16,6 +16,7 @@ import { ShareService } from '../../user-action/share-button/share.service';
 import { ActivatedRoute } from '@angular/router';
 import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
 import { ToastrService } from 'ngx-toastr';
+import { TrimPipe } from 'ngx-pipes';
 
 describe('OrganizationsComponent', () => {
   let component: OrganizationsComponent;
@@ -78,7 +79,8 @@ describe('OrganizationsComponent', () => {
           useValue: { snapshot: { params: { 'id': '123' } } }
         },
         PersonalizedPlanService,
-        { provide: ToastrService, useValue: mockToastr }
+        { provide: ToastrService, useValue: mockToastr },
+        TrimPipe
       ]
     })
       .compileComponents();
@@ -86,9 +88,6 @@ describe('OrganizationsComponent', () => {
     fixture = TestBed.createComponent(OrganizationsComponent);
     component = fixture.componentInstance;
     component.resource = mockResource;
-    //component.searchResource = {
-    //  resources: {}, webResources: { webPages: { value: {} } }, topIntent: ''
-    //};
     fixture.detectChanges();
   }));
 
