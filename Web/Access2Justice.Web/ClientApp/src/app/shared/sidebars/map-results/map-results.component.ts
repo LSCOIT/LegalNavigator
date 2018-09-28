@@ -2,6 +2,8 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { MapResultsService } from './map-results.service';
 import { environment } from '../../../../environments/environment';
 import { MapLocationResult, LatitudeLongitude } from './map-results';
+import { TrimPipe } from 'ngx-pipes';
+
 
 @Component({
   selector: 'app-map-results',
@@ -13,8 +15,9 @@ export class MapResultsComponent implements OnChanges {
   latitudeLongitude: Array<LatitudeLongitude> = [];
   latlong: LatitudeLongitude;
   @Input() searchResource: any;
+  
+  constructor(private mapResultsService: MapResultsService, private trimPipe: TrimPipe) {
 
-  constructor(private mapResultsService: MapResultsService) {
   }
 
   getAddress() {
@@ -27,8 +30,7 @@ export class MapResultsComponent implements OnChanges {
             if (addressList.length == 1) {
               this.addressList.push(addressList);
             } else {
-
-              this.addressList = this.addressList.concat(addressList);
+              this.addressList = this.addressList.concat(addressList.map(res => (this.trimPipe.transform(res))));
             }
           }
         }
@@ -65,4 +67,13 @@ export class MapResultsComponent implements OnChanges {
   ngOnChanges() {
     this.getAddress();
   }
+
+  formatCommandline(c: string | string[]) {
+  if (typeof c === 'string') {
+    return c.trim();
+  }
+  else {
+    return c.join(' ');
+  }
+}
 }
