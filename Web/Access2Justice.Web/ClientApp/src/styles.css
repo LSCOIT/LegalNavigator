@@ -1,5 +1,3 @@
-@import url("style-guide.css");
-
 /*Shared Resources*/
 body {
   position: relative !important;
@@ -28,6 +26,10 @@ a {
   color: #333;
 }
 
+.container {
+  max-width: 100%;
+}
+
 .nav-icon {
   width: 15px;
   height: 15px;
@@ -51,6 +53,7 @@ a {
 
 .row {
   margin: 20px auto;
+  display: unset;
 }
 
 .center-align {
@@ -320,7 +323,7 @@ a.carousel-control .icon-next {
 
 @media only screen and (min-width : 768px) {
   .container {
-    width: 90%;
+    max-width: 95%;
   }
 
   .navbar-nav .open .dropdown-menu {
@@ -358,8 +361,9 @@ a.carousel-control .icon-next {
   }
 
   .modal-dialog {
-    width: 660px;
+    max-width: 660px;
     height: 570px;
+    margin: 0.75rem auto;
   }
 
   .modal-content {
@@ -375,6 +379,10 @@ a.carousel-control .icon-next {
   }
 }
 @media only screen and (min-width : 992px) {
+  .container {
+    max-width: 95%;
+  }
+
   .web-hidden {
     display: none;
   }
@@ -404,6 +412,7 @@ a.carousel-control .icon-next {
   }
 
   .container {
+    width: 90%;
     max-width: 1500px;
   }
 }

@@ -1,16 +1,30 @@
-.navbar-form {
-  cursor: pointer;
-  padding-right: 0;
-  margin-top: 0;
+button {
+  border: none;
+  background-color: #fff;
+  padding: 0;
+  float: right;
+}
+
+form {
+  display: inline-block;
+  width: 100%;
+  padding-bottom: 15px;
+  margin-top: 15px;
+}
+
+form > div {
+  margin-top: -5px;
+  padding-right: 10px;
 }
 
 .search-icon {
-  width: 20px;
-  margin-bottom: 1px;
+  width: 22px;
+  height: 22px;
+  margin-bottom: -2px;
 }
 
 #search {
-  width: 82%;
+  width: 90%;
   display: inline-block;
   border: none;
   outline: none;
@@ -18,23 +32,23 @@
   margin-top: 3px;
 }
 
-.form-group {
-  margin-top: 5px;
-}
-
-.form-group>button {
-  border: none;
-  background-color: #fff;
-}
-
 @media only screen and (min-width : 768px) {
-  #search {
-     width: 180px;
+  form {
+    float: right;
+    display: inline-block;
+    width: 265px;
+    padding-bottom: 0;
+    margin-top: 5px;
   }
 }
 
 @media only screen and (min-width : 992px) {
-  .navbar-form {
-    margin-top: 8px;
+  form {
+    width: 210px;
+    margin-top: 2px;
+  }
+
+  #search {
+    width: 80%;
   }
 }

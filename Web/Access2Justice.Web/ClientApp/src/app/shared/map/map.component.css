@@ -14,12 +14,13 @@ p {
 #my-map {
   position: relative;
   width: 90%;
-  margin: 60px auto 0 auto;
+  margin: 20px auto 0 auto;
   height: 250px;
 }
 
 #searchbox-container {
   margin-top: 10px;
+  height: 30px;
 }
 
 .location-icon {
@@ -50,7 +51,7 @@ p {
 
 .search-btn {
   background-color: #0D3FB8;
-  padding: 5px;
+  padding: 3px;
   border-radius: 0 5px 5px 0;
   color: #fff;
   margin-left: -5px;
@@ -79,6 +80,17 @@ p {
 
 #search-box {
   padding: 5px;
+}
+
+.btn-primary:disabled {
+  background-color: #DDDDDD;
+  color: #585858;
+  border: 1px solid #7E7E7E;
+  cursor: not-allowed;
+}
+
+.privacy {
+  margin: 10px auto;
 }
 
 @media only screen and (min-width : 768px) {

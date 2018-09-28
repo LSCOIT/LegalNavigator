@@ -1,15 +1,17 @@
-<div class="navbar navbar-fixed-top upper-nav no-print">
+<div class="fixed-top upper-nav no-print">
   <div class="container">
-    <div class="navbar-left left-menu pxs">
-      <ul class="nav navbar-nav">
-        <li class="inline" id="language"><app-language></app-language></li>
-        <li class="inline" id="location">
+    <div class="left-menu inline pxs">
+      <ul>
+        <li id="language">
+          <app-language></app-language>
+        </li>
+        <li id="location">
           <app-map [mapType]="true" [displayInitialModal]="true"></app-map>
         </li>
       </ul>
     </div>
-    <div class="navbar-right">
-      <ul class="nav navbar-nav mobile-hidden pxs">
+    <div class="right-menu">
+      <ul class="mobile-hidden pxs">
         <li *ngIf="privacyPromise">
           <a [routerLink]="['/' + privacyPromise?.button?.buttonLink]">
             <img *ngIf="privacyPromise.image.source" class="nav-icon" [src]="blobUrl + privacyPromise?.image?.source" aria-hidden="true" />
