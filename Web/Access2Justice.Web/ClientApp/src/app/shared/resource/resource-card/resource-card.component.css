@@ -30,6 +30,10 @@
   padding-left: 0;
 }
 
+.org-content .nav-icon {
+  margin-left: 0;
+}
+
 .address-content {
   display: inline-block;
 }
@@ -74,6 +78,7 @@ h4 {
 
 .org-phone-detail {
   margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .org-content .media-left {
@@ -96,6 +101,16 @@ h4 {
   .resource-video iframe {
     width: 200px;
     height: 150px;
+  }
+
+  .org-content .col-md-4:last-child {
+    padding-right: 20px;
+  }
+}
+
+@media only screen and (min-width : 992px) {
+  .org-content .col-md-4 {
+    padding-right: 20px;
   }
 
   .org-phone-detail {
