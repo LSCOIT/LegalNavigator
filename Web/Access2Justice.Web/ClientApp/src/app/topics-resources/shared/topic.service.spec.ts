@@ -17,9 +17,10 @@ describe('TopicService', () => {
     profileRouteUrl: "/profile",
     data: "",
     notifyStaticData: new Subject<any>(),
+    topicsData: "",
     externalLogin: () => {},
     getData: () => {},
-    setData: () => {}
+    setData: () => { }
   };
   const httpSpy = jasmine.createSpyObj('http', ['get', 'post']);
   beforeEach(() => {
