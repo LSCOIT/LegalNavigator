@@ -73,6 +73,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Location.feature</DependentUpon>
     </Compile>
+    <Compile Include="Features\Language.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Language.feature</DependentUpon>
+    </Compile>
     <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
@@ -86,6 +91,10 @@
     <None Include="Features\Location.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Location.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\Language.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Language.feature.cs</LastGenOutput>
     </None>
     <None Include="obj\Debug\Access2Justice.E2ETests.csproj.CoreCompileInputs.cache" />
     <None Include="obj\Debug\Access2Justice.E2ETests.csprojResolveAssemblyReference.cache" />

@@ -18,7 +18,7 @@ namespace Access2Justice.E2ETests.Features
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.4.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
-    public partial class LocationFeature
+    public partial class SetLocationFeature
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -44,7 +44,7 @@ namespace Access2Justice.E2ETests.Features
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Location", "\tAs a user\r\n    I need to set and update location\r\n    So I can see resources rel" +
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Set Location", "\tAs a user\r\n    I need to set and update location\r\n    So I can see resources rel" +
                     "evant for my state", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -60,9 +60,9 @@ namespace Access2Justice.E2ETests.Features
         public virtual void TestInitialize()
         {
             if (((testRunner.FeatureContext != null) 
-                        && (testRunner.FeatureContext.FeatureInfo.Title != "Location")))
+                        && (testRunner.FeatureContext.FeatureInfo.Title != "Set Location")))
             {
-                global::Access2Justice.E2ETests.Features.LocationFeature.FeatureSetup(null);
+                global::Access2Justice.E2ETests.Features.SetLocationFeature.FeatureSetup(null);
             }
         }
         
@@ -90,7 +90,7 @@ namespace Access2Justice.E2ETests.Features
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Set location on entry")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Location")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Set Location")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SmokeTest")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SetLocation")]
         public virtual void SetLocationOnEntry()
@@ -102,7 +102,7 @@ namespace Access2Justice.E2ETests.Features
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
 #line 8
- testRunner.Given("I am on the Access2Justice website", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I am on the Access2Justice website with location detection blocked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 9
  testRunner.And("I am prompted to set my location", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -119,6 +119,46 @@ this.ScenarioInitialize(scenarioInfo);
                         "Alaska"});
 #line 13
  testRunner.Then("I can see my state name on the upper navigation bar", ((string)(null)), table2, "Then ");
+#line 16
+ testRunner.And("I accomplished my task", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Change location")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Set Location")]
+        public virtual void ChangeLocation()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change location", null, ((string[])(null)));
+#line 18
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line hidden
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                        "State"});
+            table3.AddRow(new string[] {
+                        "Alaska"});
+#line 19
+ testRunner.Given("I am on the Access2Justice website with state set", ((string)(null)), table3, "Given ");
+#line 22
+ testRunner.When("I click on the Change button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                        "State"});
+            table4.AddRow(new string[] {
+                        "Hawaii"});
+#line 23
+    testRunner.And("I enter my state name", ((string)(null)), table4, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                        "State"});
+            table5.AddRow(new string[] {
+                        "Hawaii"});
+#line 26
+    testRunner.Then("I can see my state name on the upper navigation bar", ((string)(null)), table5, "Then ");
+#line 29
+ testRunner.And("I accomplished my task", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
