@@ -179,8 +179,8 @@ namespace Access2Justice.Tools.BusinessLogic
                                 OrganizationalUnit = organizationalUnit,
                                 Location = locations,
                                 Icon = icon,
-                                CreatedBy = "Admin Import tool",
-                                ModifiedBy = "Admin Import tool"
+                                CreatedBy = Constants.Admin,
+                                ModifiedBy = Constants.Admin
                             };
                             topic.Validate();
                             topicsList.Add(topic);
