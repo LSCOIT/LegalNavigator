@@ -35,17 +35,6 @@ namespace Access2Justice.Tools.BusinessLogic
                         resourcesList.Add(jsonResult);
                     }
 
-                    //var org = from organizations in resourcesList
-                    //           where organizations.resourceType = "Organizations"
-                    //           select organizations
-                    //           .FirstOrDefault();
-
-                    //var Resour = from organizations in resourcesList.Select(i => i["resourceType"]).ToList() group organizations by organizations;  //SelectMany(i => i["categories"]).Values<string>();
-                    //(org2).Items[0]).Values[0])).Root
-
-
-
-
                     foreach (var resourceList in resourcesList)
                     {
                         if (resourceList.topicTags != null)
@@ -54,11 +43,14 @@ namespace Access2Justice.Tools.BusinessLogic
                             {
                                 string name = resourceList.topicTags[iterator].id;
                                 string location = resourceList.location[0].state;
+                                //need to update logic to fetch topics using location name
                                 var topicTag = await clientHttp.GetAsync("api/topics/gettopicdetails/" + name).ConfigureAwait(false);
                                 var topicResult = topicTag.Content.ReadAsStringAsync().Result;
                                 dynamic topicTagResult = JsonConvert.DeserializeObject(topicResult);
-                                var topicTagId = topicTagResult[iterator].id;
-                                resourceList.topicTags[iterator].id = topicTagId;
+                                if (topicTagResult.Count > 0)
+                                {
+                                    resourceList.topicTags[iterator].id = topicTagResult[iterator].id;
+                                }
                             }
                         }
                     }

@@ -87,26 +87,26 @@ namespace Access2Justice.Tools.Models
         public dynamic TopicTags { get; set; }
     }
 
-    public class ActionPlan : Resource
-    {
-        [JsonProperty(PropertyName = "conditions")]
-        public IEnumerable<Conditions> Conditions { get; set; }
-    }
+    //public class ActionPlan : Resource
+    //{
+    //    [JsonProperty(PropertyName = "conditions")]
+    //    public IEnumerable<Conditions> Conditions { get; set; }
+    //}
 
-    public class Conditions
-    {
-        [JsonProperty(PropertyName = "condition")]
-        public IEnumerable<Condition> ConditionDetail { get; set; }
-    }
+    //public class Conditions
+    //{
+    //    [JsonProperty(PropertyName = "condition")]
+    //    public IEnumerable<Condition> ConditionDetail { get; set; }
+    //}
 
-    public class Condition
-    {
-        [JsonProperty(PropertyName = "title")]
-        public string Title { get; set; }
+    //public class Condition
+    //{
+    //    [JsonProperty(PropertyName = "title")]
+    //    public string Title { get; set; }
 
-        [JsonProperty(PropertyName = "description")]
-        public string ConditionDescription { get; set; }
-    }
+    //    [JsonProperty(PropertyName = "description")]
+    //    public string ConditionDescription { get; set; }
+    //}
 
     public class EssentialReading : Resource
     {
@@ -151,24 +151,30 @@ namespace Access2Justice.Tools.Models
         [JsonProperty(PropertyName = "eligibilityInformation")]
         public string EligibilityInformation { get; set; }
 
-        //[JsonProperty(PropertyName = "reviewedByCommunityMember")]
-        //public string ReviewedByCommunityMember { get; set; }
-
-        //[JsonProperty(PropertyName = "reviewerFullName")]
-        //public string ReviewerFullName { get; set; }
-
-        //[JsonProperty(PropertyName = "reviewerTitle")]
-        //public string ReviewerTitle { get; set; }
-
-        //[JsonProperty(PropertyName = "reviewerImage")]
-        //public string ReviewerImage { get; set; }
+        [JsonProperty(PropertyName = "reviewer")]
+        public IEnumerable<OrganizationReviewer> Reviewer { get; set; }        
     }
 
-    public class OrganizationReview
+    public class Reviewer
     {
         [JsonProperty(PropertyName = "organizationName")]
         public string OrganizationName { get; set; }
 
+        [JsonProperty(PropertyName = "reviewerFullName")]
+        public string ReviewerFullName { get; set; }
+
+        [JsonProperty(PropertyName = "reviewerTitle")]
+        public string ReviewerTitle { get; set; }
+
+        [JsonProperty(PropertyName = "reviewText")]
+        public string ReviewText { get; set; }
+
+        [JsonProperty(PropertyName = "reviewerImage")]
+        public string ReviewerImage { get; set; }
+    }
+
+    public class OrganizationReviewer
+    {
         [JsonProperty(PropertyName = "reviewerFullName")]
         public string ReviewerFullName { get; set; }
 

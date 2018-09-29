@@ -1,5 +1,7 @@
 ﻿using Access2Justice.Tools.Models;
 using DocumentFormat.OpenXml.Packaging;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,6 +24,12 @@ namespace Access2Justice.Tools.BusinessLogic
         string headline1, content1, headline2, content2, organizationalUnit = string.Empty;
         List<TopicTag> topicTagIds = null;
         List<Locations> locations = null;
+        List<Reviewer> reviewer = null;
+        List<string> orgNameList = new List<string>();
+        List<string> orgFullNameList = new List<string>();
+        List<string> orgTitleList = new List<string>();
+        List<string> orgReviewTextList = new List<string>();
+        List<string> orgReviewerImageList = new List<string>();
 
         #endregion Variables
 
@@ -30,6 +38,8 @@ namespace Access2Justice.Tools.BusinessLogic
             int recordNumber = 1;
             Resource resource = new Resource();
             List<dynamic> ResourcesList = new List<dynamic>();
+            List<dynamic> organizationsList = new List<dynamic>();
+            List<dynamic> organizationReviewsList = new List<dynamic>();
             List<dynamic> Resources = new List<dynamic>();
             string appSettings = ConfigurationManager.AppSettings.Get("Resources");
             string filePath = Path.Combine(Environment.CurrentDirectory, appSettings);
@@ -155,28 +165,20 @@ namespace Access2Justice.Tools.BusinessLogic
                                             Telephone = telephone,
                                             Overview = overview,
                                             EligibilityInformation = eligibilityInformation,
-                                            //ReviewedByCommunityMember = reviewedByCommunityMember,
-                                            //ReviewerFullName = reviewerFullName,
-                                            //ReviewerTitle = reviewerTitle,
-                                            //ReviewerImage = reviewerImage,
                                             CreatedBy = Constants.Admin,
                                             ModifiedBy = Constants.Admin
                                         };
                                         organization.Validate();
-                                        ResourcesList.Add(organization);
+                                        organizationsList.Add(organization);
                                     }
                                     if (resourceType == Constants.OrganizationReviews)
-                                    {
-                                        OrganizationReview organizationReview = new OrganizationReview()
-                                        {
-                                            OrganizationName = organizationName,
-                                            ReviewerFullName = reviewerFullName,
-                                            ReviewerTitle = reviewerTitle,
-                                            ReviewText = reviewText,
-                                            ReviewerImage = reviewerImage
-                                        };
-                                        //organizationReview.Validate();
-                                        ResourcesList.Add(organizationReview);
+                                    {                                      
+                                        orgNameList.Add(organizationName);
+                                        orgFullNameList.Add(reviewerFullName);
+                                        orgTitleList.Add(reviewerTitle);
+                                        orgReviewTextList.Add(reviewText);
+                                        orgReviewerImageList.Add(reviewerImage);
+                                        ClearVariableData();
                                     }
                                     if (resourceType == Constants.ArticleResourceType)
                                     {
@@ -251,6 +253,32 @@ namespace Access2Justice.Tools.BusinessLogic
                         }
                     }
                 }
+
+                foreach (var resourceList in organizationsList)
+                {
+                    List<OrganizationReviewer> organizationReviewer = new List<OrganizationReviewer>();
+                    OrganizationReviewer orgReviewer = new OrganizationReviewer();
+                    for (int iterator = 0; iterator < orgNameList.Count; iterator++)
+                    {
+                        var na = orgNameList[iterator];
+
+                        if (resourceList.Name == orgNameList[iterator])
+                        {
+                            orgReviewer = new OrganizationReviewer
+                            {
+                                ReviewerFullName = orgFullNameList[iterator],
+                                ReviewerTitle = orgTitleList[iterator],
+                                ReviewText = orgReviewTextList[iterator],
+                                ReviewerImage = orgReviewerImageList[iterator]
+                            };
+                            organizationReviewer.Add(orgReviewer);
+                        }
+                    }
+                    var serializedResult = JsonConvert.SerializeObject(organizationReviewer);
+                    var orgReviewData = JsonConvert.DeserializeObject(serializedResult);
+                    resourceList.Reviewer = organizationReviewer;
+                    ResourcesList.Add(resourceList);
+                }
             }
             catch (Exception ex)
             {
@@ -270,7 +298,6 @@ namespace Access2Justice.Tools.BusinessLogic
             for (int topicTagIterator = 0; topicTagIterator < topicTagsb.Length; topicTagIterator++)
             {
                 string trimTopicTagId = (topicTagsb[topicTagIterator]).Trim();
-                //string topicTagGuid = string.Empty;
                 if (trimTopicTagId.Length > 0)
                 {
                     topicTagIds.Add(new TopicTag
@@ -280,6 +307,22 @@ namespace Access2Justice.Tools.BusinessLogic
                 }
             }
             return topicTagIds;
+        }
+        
+        public dynamic GetReviewDetails(string organizationName, string reviewerFullName, string reviewerTitle, string reviewText, string reviewerImage)
+        {
+            List<Reviewer> reviewer = new List<Reviewer>();
+
+            Reviewer organizationReview = new Reviewer()
+            {
+                OrganizationName = organizationName,
+                ReviewerFullName = reviewerFullName,
+                ReviewerTitle = reviewerTitle,
+                ReviewText = reviewText,
+                ReviewerImage = reviewerImage
+            };
+            reviewer.Add(organizationReview);
+            return reviewer;
         }
 
         private void ClearVariableData()
@@ -299,7 +342,6 @@ namespace Access2Justice.Tools.BusinessLogic
             address = string.Empty;
             telephone = string.Empty;
             eligibilityInformation = string.Empty;
-            //reviewedByCommunityMember = string.Empty;
             reviewerFullName = string.Empty;
             reviewerTitle = string.Empty;
             reviewerImage = string.Empty;
@@ -308,6 +350,8 @@ namespace Access2Justice.Tools.BusinessLogic
             headline2 = string.Empty;
             content2 = string.Empty;
             organizationalUnit = string.Empty;
+            organizationName = string.Empty;
+            reviewText = string.Empty;
         }
         private static Spreadsheet.SharedStringItem GetSharedStringItemById(WorkbookPart workbookPart, int id)
         {
@@ -438,26 +482,6 @@ namespace Access2Justice.Tools.BusinessLogic
                 {
                     eligibilityInformation = cellActualValue;
                 }
-
-                //else if (val.EndsWith("Reviewed By Community Member", StringComparison.CurrentCultureIgnoreCase))
-                //{
-                //    reviewedByCommunityMember = cellActualValue;
-                //}
-
-                //else if (val.EndsWith("Reviewer Full Name", StringComparison.CurrentCultureIgnoreCase))
-                //{
-                //    reviewerFullName = cellActualValue;
-                //}
-
-                //else if (val.EndsWith("Reviewer Title", StringComparison.CurrentCultureIgnoreCase))
-                //{
-                //    reviewerTitle = cellActualValue;
-                //}
-
-                //else if (val.EndsWith("Reviewer Image", StringComparison.CurrentCultureIgnoreCase))
-                //{
-                //    reviewerImage = cellActualValue;
-                //}
             }
 
             if (resourceType == Constants.ArticleResourceType)
