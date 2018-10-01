@@ -17,13 +17,14 @@
         <span class="inline search-text">{{search?.button?.buttonText}}</span>
       </span>
       <div id="mobile-menu">
-        <span class="web-hidden" id="nav-bar-toggle" (click)="openNav()">&#9776;</span>
-        <span>Menu</span>
+        <span class="web-hidden" id="nav-bar-toggle" *ngIf="showMenu" (click)="openNav()">&#9776;</span>
+        <span *ngIf="showMenu">Menu</span>
+        <a *ngIf="!showMenu" class="closebtn" id="search-close" (click)="toggleSearch()">&times;</a>
       </div>
     </div>
     <app-search *ngIf="showSearch"></app-search>
     <div #sidenav id="sidenav">
-      <span class="search-form" (click)="toggleSearch()" *ngIf="!showSearch">
+      <span class="search-form" id="nav-search" (click)="toggleSearch(); closeNav()" *ngIf="!showSearch">
         <img *ngIf="search.image.source" class="search-icon" [src]="blobUrl + search?.image?.source" aria-hidden="true" />
         <span class="inline search-text">{{search?.button?.buttonText}}</span>
       </span>

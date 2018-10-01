@@ -56,6 +56,8 @@ ul.web-hidden {
 #nav-bar-toggle {
   display: block;
   color: #0D3FB8;
+  cursor: pointer;
+  font-size: 30px;
 }
 
 #nav-bar-toggle + span {
@@ -64,9 +66,11 @@ ul.web-hidden {
   display: block;
 }
 
-#nav-bar-toggle, .closebtn  {
-  font-size: 30px;
+.closebtn {
+  font-size: 55px;
   cursor: pointer;
+  color: #0D3FB8 !important;
+  line-height: 47px;
 }
 
 #sidenav {
@@ -82,7 +86,7 @@ ul.web-hidden {
 }
 
 #sidenav a {
-  padding: 8px 8px 8px 32px;
+  padding: 10px 8px 10px 32px;
   text-decoration: none;
   color: #333;
   display: block;
@@ -95,15 +99,13 @@ ul.web-hidden {
 
 #sidenav .closebtn {
   float: right;
-  margin-right: 20px;
-  font-size:40px;
+  margin-right: 18px;
   padding: 0;
-  color: #0D3FB8;
-
+  margin-top: 12px;
 }
 
 .sidenav-menu {
-  width: 225px;
+  width: 80%;
   margin: 0 auto;
   text-align: center;
 }
@@ -151,9 +153,15 @@ ul.web-hidden {
 }
 
 li.vertical-line {
-  border-bottom: 1px solid #f4f4f4;
+  border-bottom: 1.5px solid #f2f2f2;
   width: 100%;
   margin: 10px auto;
+}
+
+#nav-search {
+  position: absolute;
+  right: 61.5px;
+  top: 21px;
 }
 
 @media only screen and (min-width : 768px) {
@@ -174,6 +182,10 @@ li.vertical-line {
 
   .search-icon {
     margin-right: 8px;
+  }
+
+  #nav-search {
+    display: none;
   }
 }
 

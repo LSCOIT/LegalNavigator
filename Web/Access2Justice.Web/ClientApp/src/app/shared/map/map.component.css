@@ -57,6 +57,7 @@ p {
   margin-left: -5px;
   font-weight: 600;
   float: left;
+  height: 30px;
 }
 
 .close {
@@ -104,6 +105,6 @@ p {
   }
 
   #my-map {
-    height: 320px;
+    height: 265px;
   }
 }

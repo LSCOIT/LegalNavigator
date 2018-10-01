@@ -10,6 +10,7 @@ form {
   width: 100%;
   padding-bottom: 15px;
   margin-top: 15px;
+  height: 700px;
 }
 
 form > div {
@@ -39,6 +40,7 @@ form > div {
     width: 265px;
     padding-bottom: 0;
     margin-top: 5px;
+    height: auto;
   }
 }
 
