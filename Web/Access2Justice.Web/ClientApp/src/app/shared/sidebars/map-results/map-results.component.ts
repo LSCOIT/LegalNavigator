@@ -2,7 +2,6 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { MapResultsService } from './map-results.service';
 import { environment } from '../../../../environments/environment';
 import { MapLocationResult, LatitudeLongitude } from './map-results';
-import { TrimPipe } from 'ngx-pipes';
 
 
 @Component({
@@ -15,13 +14,13 @@ export class MapResultsComponent implements OnChanges {
   latitudeLongitude: Array<LatitudeLongitude> = [];
   latlong: LatitudeLongitude;
   @Input() searchResource: any;
-  
-  constructor(private mapResultsService: MapResultsService, private trimPipe: TrimPipe) {
+
+  constructor(private mapResultsService: MapResultsService) {
 
   }
 
   getAddress() {
-    this.addressList = [];
+    this.addressList = [];    
     if (this.searchResource) {
       if (this.searchResource.resources) {
         for (let i = 0; i < this.searchResource.resources.length; i++) {
@@ -30,7 +29,7 @@ export class MapResultsComponent implements OnChanges {
             if (addressList.length == 1) {
               this.addressList.push(addressList);
             } else {
-              this.addressList = this.addressList.concat(addressList.map(res => (this.trimPipe.transform(res))));
+              this.addressList = this.addressList.concat(addressList);
             }
           }
         }
@@ -38,7 +37,9 @@ export class MapResultsComponent implements OnChanges {
       this.getMapResults(this.addressList);
     }
   }
+  transform(wordTrans) {
 
+  }
   getMapResults(address) {
     this.addressList = address;
     this.latitudeLongitude = [];
@@ -51,7 +52,7 @@ export class MapResultsComponent implements OnChanges {
 
   displayMapResults() {
     for (let index = 0, len = this.addressList.length; index < len; index++) {
-      this.mapResultsService.getLocationDetails(this.addressList[index], environment.bingmap_key).subscribe((locationCoordinates) => {
+      this.mapResultsService.getLocationDetails(this.addressList[index].toString().trim(), environment.bingmap_key).subscribe((locationCoordinates) => {
         this.latlong = {
           latitude: locationCoordinates.resourceSets[0].resources[0].point.coordinates[0],
           longitude: locationCoordinates.resourceSets[0].resources[0].point.coordinates[1]
@@ -67,6 +68,4 @@ export class MapResultsComponent implements OnChanges {
   ngOnChanges() {
     this.getAddress();
   }
-
-}
 }
