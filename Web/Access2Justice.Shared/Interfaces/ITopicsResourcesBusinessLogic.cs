@@ -39,5 +39,6 @@ namespace Access2Justice.Shared.Interfaces
         Task<dynamic> GetPersonalizedResourcesAsync(ResourceFilter resourceFilter);
         Task<dynamic> GetOrganizationsAsync(Location location);
         Task<dynamic> GetAllTopics();
+        dynamic GetReviewer(dynamic reviewerValues);
     }
 }
