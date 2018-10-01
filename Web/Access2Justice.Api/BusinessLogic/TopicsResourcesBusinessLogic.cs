@@ -801,5 +801,9 @@ namespace Access2Justice.Api.BusinessLogic
             return await dbClient.FindItemsWhereContainsWithLocationAsync(dbSettings.ResourceCollectionId, Constants.ResourceType, Constants.Organization, location);
         }
 
+        public async Task<dynamic> GetAllTopics()
+        {
+            return await dbClient.FindItemsAllAsync(dbSettings.TopicCollectionId);
+        }
     }
 }
