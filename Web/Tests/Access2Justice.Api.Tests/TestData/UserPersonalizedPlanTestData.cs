@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Access2Justice.Shared.Models;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -40,5 +41,23 @@ namespace Access2Justice.Api.Tests.TestData
                    JArray.Parse(@"[{'id':'d984fc20-ae28-4749-942a-16e2b10f0a20','oId':'outlookoremailOId','type':'plans','planTags':[{'id':'addf41e9-1a27-4aeb-bcbb-7959f95094ba','stepTags':[{'id':'6b230be1-302b-7090-6cb3-fc6aa084274c',
                                     'order':'1','markCompleted':'false'},{'id':'d46aecee-8c79-df1b-4081-1ea02b5022df','order':'2','markCompleted':'false'}]},{'id':'932abb0a-c6bb-46da-a3d8-5f52c2c914a0','stepTags':[
                                     {'id':'2705d544-6af7-bd69-4f19-a1b53e346da2','order':'2','markCompleted':'false'},{'id':'3d64b676-cc4b-397d-a5bb-f4a0ea6d3040','order':'1','markCompleted':'false'}]}]}]");
+        public static IEnumerable<object[]> UserProfileResponseData()
+        {
+            yield return new object[] {
+                new UserProfile { Id = "08f68ff8-37ed-44e6-8f29-c8616a4c2d23", OId="7576F1E59E1296195ECD8A08614E4F904093B2DCD2F4D7F39973A957D33880C08BE648DA853B8350944862D45A7B7FD297C78467DD0579A9F4DECA4068AB9E6A", IsActive= "Yes", Name="TestFirstName TestLastName"},
+                JArray.Parse(@"[]"),
+                JArray.Parse(@"[{'id': '08f68ff8-37ed-44e6-8f29-c8616a4c2d23','oId': '7576F1E59E1296195ECD8A08614E4F904093B2DCD2F4D7F39973A957D33880C08BE648DA853B8350944862D45A7B7FD297C78467DD0579A9F4DECA4068AB9E6A','name':'TestFirstName TestLastName','firstName': 'TestFirstName',    'lastName': 'TestLastName',    'eMail': 'test@microsoft.com',    'isActive': 'Yes',    'createdBy': 'TestFirstName TestLastName',    'createdTimeStamp': '09/21/2018 11:04:46',    'modifiedBy': null,    'modifiedTimeStamp': null,    'sharedResourceId': '00000000-0000-0000-0000-000000000000',    'personalizedActionPlanId': '00000000-0000-0000-0000-000000000000',    'curatedExperienceAnswersId': '00000000-0000-0000-0000-000000000000',    'savedResourcesId': '00000000-0000-0000-0000-000000000000',    '_rid': 'ap9UAKM1MRNnAAAAAAAAAA==',    '_self': 'dbs/ap9UAA==/colls/ap9UAKM1MRM=/docs/ap9UAKM1MRNnAAAAAAAAAA==/',    '_etag': '\'00003b00-0000-0000-0000-5ba4d05e0000\'',    '_attachments': 'attachments/',    '_ts': 1537527902}]"),
+                JArray.Parse(@"[{'id':'08f68ff8-37ed-44e6-8f29-c8616a4c2d23','oId':'7576F1E59E1296195ECD8A08614E4F904093B2DCD2F4D7F39973A957D33880C08BE648DA853B8350944862D45A7B7FD297C78467DD0579A9F4DECA4068AB9E6A','name':'TestFirstName TestLastName','firstName':null,'lastName':null,'eMail':null,'isActive':'Yes','createdBy':null,'createdTimeStamp':null,'modifiedBy':null,'modifiedTimeStamp':null,'sharedResourceId':'00000000-0000-0000-0000-000000000000','personalizedActionPlanId':'00000000-0000-0000-0000-000000000000','curatedExperienceAnswersId':'00000000-0000-0000-0000-000000000000','savedResourcesId':'00000000-0000-0000-0000-000000000000'}]"),
+                "08f68ff8-37ed-44e6-8f29-c8616a4c2d23"
+            };
+
+            yield return new object[] {
+                new UserProfile { Id = "08f68ff8-37ed-44e6-8f29-c8616a4c2d23", OId="7576F1E59E1296195ECD8A08614E4F904093B2DCD2F4D7F39973A957D33880C08BE648DA853B8350944862D45A7B7FD297C78467DD0579A9F4DECA4068AB9E6A", IsActive= "Yes", Name="TestFirstName TestLastName", CuratedExperienceAnswersId= Guid.Parse("5c035d27-2fdb-9776-6236-70983a918431")},
+                JArray.Parse(@"[]"),
+                JArray.Parse(@"[{'id': '08f68ff8-37ed-44e6-8f29-c8616a4c2d23','oId': '7576F1E59E1296195ECD8A08614E4F904093B2DCD2F4D7F39973A957D33880C08BE648DA853B8350944862D45A7B7FD297C78467DD0579A9F4DECA4068AB9E6A','name':'TestFirstName TestLastName','firstName': 'TestFirstName',    'lastName': 'TestLastName',    'eMail': 'test@microsoft.com',    'isActive': 'Yes',    'createdBy': 'TestFirstName TestLastName',    'createdTimeStamp': '09/21/2018 11:04:46',    'modifiedBy': null,    'modifiedTimeStamp': null,    'sharedResourceId': '00000000-0000-0000-0000-000000000000',    'personalizedActionPlanId': '00000000-0000-0000-0000-000000000000',    'curatedExperienceAnswersId': '5c035d27-2fdb-9776-6236-70983a918431',    'savedResourcesId': '00000000-0000-0000-0000-000000000000',    '_rid': 'ap9UAKM1MRNnAAAAAAAAAA==',    '_self': 'dbs/ap9UAA==/colls/ap9UAKM1MRM=/docs/ap9UAKM1MRNnAAAAAAAAAA==/',    '_etag': '\'00003b00-0000-0000-0000-5ba4d05e0000\'',    '_attachments': 'attachments/',    '_ts': 1537527902}]"),
+                JArray.Parse(@"[{'id':'08f68ff8-37ed-44e6-8f29-c8616a4c2d23','oId':'7576F1E59E1296195ECD8A08614E4F904093B2DCD2F4D7F39973A957D33880C08BE648DA853B8350944862D45A7B7FD297C78467DD0579A9F4DECA4068AB9E6A','name':'TestFirstName TestLastName','firstName':null,'lastName':null,'eMail':null,'isActive':'Yes','createdBy':null,'createdTimeStamp':null,'modifiedBy':null,'modifiedTimeStamp':null,'sharedResourceId':'00000000-0000-0000-0000-000000000000','personalizedActionPlanId':'00000000-0000-0000-0000-000000000000','curatedExperienceAnswersId':'5c035d27-2fdb-9776-6236-70983a918431','savedResourcesId':'00000000-0000-0000-0000-000000000000'}]"),
+                "08f68ff8-37ed-44e6-8f29-c8616a4c2d23"
+            };
+        }
     }
 }
