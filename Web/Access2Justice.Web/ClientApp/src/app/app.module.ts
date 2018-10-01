@@ -43,7 +43,6 @@ import { ResponseInterceptor } from './response-interceptor';
 import { Global } from './global'
 import { CuratedExperienceResultComponent } from './guided-assistant/curated-experience-result/curated-experience-result.component';
 import { ProfileResolverService } from './app-resolver/profile-resolver.service';
-import { TokenInterceptor } from './token-interceptor.service';
 import { MsalInterceptor } from '@azure/msal-angular';
 import { environment } from '../environments/environment';
 
