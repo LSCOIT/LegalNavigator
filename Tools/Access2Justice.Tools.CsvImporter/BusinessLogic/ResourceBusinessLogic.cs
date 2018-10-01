@@ -42,14 +42,54 @@ namespace Access2Justice.Tools.BusinessLogic
                             for (int iterator = 0; iterator < resourceList.topicTags.Count; iterator++)
                             {
                                 string name = resourceList.topicTags[iterator].id;
-                                string location = resourceList.location[0].state;
-                                //need to update logic to fetch topics using location name
-                                var topicTag = await clientHttp.GetAsync("api/topics/gettopicdetails/" + name).ConfigureAwait(false);
+                                string state = resourceList.location[0].state;
+                                var topicTag = await clientHttp.GetAsync("api/topics/getalltopics").ConfigureAwait(false);
                                 var topicResult = topicTag.Content.ReadAsStringAsync().Result;
                                 dynamic topicTagResult = JsonConvert.DeserializeObject(topicResult);
                                 if (topicTagResult.Count > 0)
                                 {
-                                    resourceList.topicTags[iterator].id = topicTagResult[iterator].id;
+                                    foreach(var topic in topicTagResult)
+                                    {
+                                        dynamic topicName = null;
+                                        dynamic topicTagId = null;
+                                        dynamic locationValue = null;
+                                        foreach (JProperty field in topic)
+                                        {
+                                            if (field.Name == "name")
+                                            {
+                                                topicName = field.Value.ToString();
+                                            }
+
+                                            if (field.Name == "id")
+                                            {
+                                                topicTagId = field.Value.ToString();
+                                            }
+
+                                            if (name == topicName)
+                                            {
+                                                if (field.Name == "location")
+                                                {
+                                                    locationValue = field.Value.ToString();
+                                                    var location = JsonConvert.DeserializeObject(locationValue);
+                                                    foreach (var loc in location)
+                                                    {
+                                                        foreach (JProperty locationTopic in loc)
+                                                        {
+                                                            if (locationTopic.Name == "state")
+                                                            {
+                                                                if (state == locationTopic.Value.ToString())
+                                                                {
+                                                                    resourceList.topicTags[iterator].id = topicTagId;
+                                                                    break;                                                                 
+                                                                }
+                                                                break;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }                                                
+                                        }
+                                    }
                                 }
                             }
                         }
