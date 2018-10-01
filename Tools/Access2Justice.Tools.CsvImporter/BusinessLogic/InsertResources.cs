@@ -24,7 +24,6 @@ namespace Access2Justice.Tools.BusinessLogic
         string headline1, content1, headline2, content2, organizationalUnit = string.Empty;
         List<TopicTag> topicTagIds = null;
         List<Locations> locations = null;
-        List<Reviewer> reviewer = null;
         List<string> orgNameList = new List<string>();
         List<string> orgFullNameList = new List<string>();
         List<string> orgTitleList = new List<string>();
@@ -43,7 +42,7 @@ namespace Access2Justice.Tools.BusinessLogic
             List<dynamic> Resources = new List<dynamic>();
             string appSettings = ConfigurationManager.AppSettings.Get("Resources");
             string filePath = Path.Combine(Environment.CurrentDirectory, appSettings);
-            List<string> sheetNames = new List<string>() { "Brochures or Articles", "Videos", "Related Links", "Forms", "Organizations", "OrganizationReviews" };
+            List<string> sheetNames = new List<string>() { "Brochures or Articles", "Videos", "Related Links", "Forms", "Organizations", "OrganizationReviews (Optional)" };
 
             try
             {
@@ -146,6 +145,7 @@ namespace Access2Justice.Tools.BusinessLogic
                                         };
                                         form.Validate();
                                         ResourcesList.Add(form);
+                                        ClearVariableData();
                                     }
                                     if (resourceType == Constants.OrganizationResourceType)
                                     {
@@ -170,6 +170,7 @@ namespace Access2Justice.Tools.BusinessLogic
                                         };
                                         organization.Validate();
                                         organizationsList.Add(organization);
+                                        ClearVariableData();
                                     }
                                     if (resourceType == Constants.OrganizationReviews)
                                     {                                      
@@ -204,6 +205,7 @@ namespace Access2Justice.Tools.BusinessLogic
                                         };
                                         article.Validate();
                                         ResourcesList.Add(article);
+                                        ClearVariableData();
                                     }
                                     if (resourceType == Constants.VideoResourceType)
                                     {
@@ -225,6 +227,7 @@ namespace Access2Justice.Tools.BusinessLogic
                                         };
                                         video.Validate();
                                         ResourcesList.Add(video);
+                                        ClearVariableData();
                                     }
                                     if (resourceType == Constants.RelatedLinkResourceType)
                                     {
@@ -245,6 +248,7 @@ namespace Access2Justice.Tools.BusinessLogic
                                         };
                                         essentialReading.Validate();
                                         ResourcesList.Add(essentialReading);
+                                        ClearVariableData();
                                     }
                                 }
                                 counter++;
@@ -309,22 +313,6 @@ namespace Access2Justice.Tools.BusinessLogic
             return topicTagIds;
         }
         
-        public dynamic GetReviewDetails(string organizationName, string reviewerFullName, string reviewerTitle, string reviewText, string reviewerImage)
-        {
-            List<Reviewer> reviewer = new List<Reviewer>();
-
-            Reviewer organizationReview = new Reviewer()
-            {
-                OrganizationName = organizationName,
-                ReviewerFullName = reviewerFullName,
-                ReviewerTitle = reviewerTitle,
-                ReviewText = reviewText,
-                ReviewerImage = reviewerImage
-            };
-            reviewer.Add(organizationReview);
-            return reviewer;
-        }
-
         private void ClearVariableData()
         {
             id = null;
@@ -371,7 +359,7 @@ namespace Access2Justice.Tools.BusinessLogic
                     return Constants.FormsResourceType;
                 case "Organizations":
                     return Constants.OrganizationResourceType;
-                case "OrganizationReviews":
+                case "OrganizationReviews (Optional)":
                     return Constants.OrganizationReviews;
                 default:
                     return string.Empty;
@@ -569,7 +557,7 @@ namespace Access2Justice.Tools.BusinessLogic
             string[] expectedRelatedLinkHeader = {"Id", "Name*", "Description*", "Resource Type*", "URL*", "Topic*", "Organizational Unit", "Location_State*", "Location_County", "Location_City",
                     "Location_Zip", "Icon", "Resource Category" };
 
-            string[] expectedOrganizationReviewsHeader = { "Organization", "Reviewer Full Name", "Reviewer Title", "Review Text", "Reviewer Image" };
+            string[] expectedOrganizationReviewsHeader = { "Organization*", "Reviewer Full Name*", "Reviewer Title", "Review Text*", "Reviewer Image" };
             try
             {
                 if (resourceType == Constants.FormsResourceType)

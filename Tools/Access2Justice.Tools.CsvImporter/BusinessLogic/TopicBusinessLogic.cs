@@ -36,7 +36,6 @@ namespace Access2Justice.Tools.BusinessLogic
 
                     foreach (var topicList in topicsList)
                     {
-                        //var parentTopic = topicList.parentTopicId;
                         if (topicList.parentTopicId != null)
                         {                    
                             foreach (var topicData in topicsList)
