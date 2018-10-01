@@ -510,12 +510,12 @@ namespace Access2Justice.Tools.BusinessLogic
 
             if (resourceType == Constants.OrganizationReviews)
             {
-                if (val.EndsWith("Organization", StringComparison.CurrentCultureIgnoreCase))
+                if (val.EndsWith("Organization*", StringComparison.CurrentCultureIgnoreCase))
                 {
                     organizationName = cellActualValue;
                 }
 
-                else if (val.EndsWith("Reviewer Full Name", StringComparison.CurrentCultureIgnoreCase))
+                else if (val.EndsWith("Reviewer Full Name*", StringComparison.CurrentCultureIgnoreCase))
                 {
                     reviewerFullName = cellActualValue;
                 }
@@ -525,7 +525,7 @@ namespace Access2Justice.Tools.BusinessLogic
                     reviewerTitle = cellActualValue;
                 }
 
-                else if (val.EndsWith("Review Text", StringComparison.CurrentCultureIgnoreCase))
+                else if (val.EndsWith("Review Text*", StringComparison.CurrentCultureIgnoreCase))
                 {
                     reviewText = cellActualValue;
                 }
