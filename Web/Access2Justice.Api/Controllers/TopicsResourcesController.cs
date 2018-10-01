@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using Access2Justice.Api.Authorization;
+using Access2Justice.Api.Interfaces;
 using Access2Justice.Api.ViewModels;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
@@ -17,11 +18,14 @@ namespace Access2Justice.Api.Controllers
     {
         private readonly ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic;
         private readonly ILuisBusinessLogic luisBusinessLogic;
+        private readonly IUserRoleBusinessLogic userRoleBusinessLogic;
 
-        public TopicsResourcesController(ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic, ILuisBusinessLogic luisBusinessLogic)
+        public TopicsResourcesController(ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic, ILuisBusinessLogic luisBusinessLogic,
+            IUserRoleBusinessLogic userRoleBusinessLogic)
         {
             this.topicsResourcesBusinessLogic = topicsResourcesBusinessLogic;
             this.luisBusinessLogic = luisBusinessLogic;
+            this.userRoleBusinessLogic = userRoleBusinessLogic;
         }
 
         /// <summary>
@@ -264,8 +268,12 @@ namespace Access2Justice.Api.Controllers
         [Route("api/upserttopicdocument")]
         public async Task<IActionResult> UpsertTopicDocument([FromBody]dynamic topic)
         {
-            var topics = await topicsResourcesBusinessLogic.UpsertTopicDocumentAsync(topic);
-            return Ok(topics);
+            if (await userRoleBusinessLogic.GetOrganizationalUnit("", topic.OrganizationalUnit))
+            {
+                var topics = await topicsResourcesBusinessLogic.UpsertTopicDocumentAsync(topic);
+                return Ok(topics);
+            }
+            return Forbid("Cannot access unauthorized data");
         }
 
         /// <summary>

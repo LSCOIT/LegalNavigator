@@ -2,6 +2,7 @@
 using Access2Justice.Shared.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using static Access2Justice.Api.Authorization.Permissions;
@@ -33,13 +34,26 @@ namespace Access2Justice.Api.Authorization
             if (context.HttpContext.User.Claims.FirstOrDefault() != null)
             {
                 string oId = context.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
-                oId = EncryptOId(oId);
+                bool isOId = false;
                 if (!(string.IsNullOrEmpty(oId)))
                 {
+                    oId = EncryptionUtilities.GenerateSHA512String(oId);
                     string requestPath = context.HttpContext.Request.Path.ToString();
                     if (requestPath.Contains("getuserprofile"))
                     {
-                        if (requestPath.Contains(oId) || context.HttpContext.Request.QueryString.ToString().Contains(oId))
+                        if (context.ActionArguments.Count > 0)
+                        {
+                            //Dictionary<string, object> parameters = new Dictionary<string, object>();
+                            foreach (var param in context.ActionArguments)
+                            {
+                                //parameters.Add(param.Key, param.Value);
+                                if (param.Value.ToString() == oId)
+                                {
+                                    isOId = true;
+                                }
+                            }
+                        }
+                        if (requestPath.Contains(oId) || isOId)
                         {
                             return await CheckPermissions(oId);
                         }
@@ -58,15 +72,6 @@ namespace Access2Justice.Api.Authorization
                 return true;
             }
             return false;
-        }
-
-        private string EncryptOId(string oId)
-        {
-            if (!string.IsNullOrEmpty(oId))
-            {
-                return EncryptionUtilities.GenerateSHA512String(oId);
-            }
-            return "";
         }
     }
 }

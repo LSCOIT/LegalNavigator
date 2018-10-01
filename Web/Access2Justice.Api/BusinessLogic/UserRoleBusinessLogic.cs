@@ -2,6 +2,8 @@
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Access2Justice.Shared.Utilities;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +17,7 @@ namespace Access2Justice.Api.BusinessLogic
         private readonly ICosmosDbSettings dbSettings;
         private readonly IBackendDatabaseService dbService;
         private readonly IUserProfileBusinessLogic dbUserProfile;
+        private readonly ActionExecutingContext context;
 
         public UserRoleBusinessLogic(IDynamicQueries dynamicQueries, ICosmosDbSettings cosmosDbSettings,
             IBackendDatabaseService backendDatabaseService, IUserProfileBusinessLogic userProfileBusinessLogic)
@@ -102,6 +105,28 @@ namespace Access2Justice.Api.BusinessLogic
                 }
             }
             return permissions;
+        }
+
+        public async Task<bool> GetOrganizationalUnit(string oId, string ou)
+        {
+            string sdf = context.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+            //var username = _httpContextAccessor.HttpContext.User.Identity.Name;
+            if (string.IsNullOrEmpty(ou) || string.IsNullOrEmpty(oId))
+            {
+                return false;
+            }
+            string organizationalUnit = string.Empty;
+            List<UserRole> userRole = new List<UserRole>();
+            var userProfile = await dbUserProfile.GetUserProfileDataAsync(oId);
+            if (userProfile != null && userProfile?.RoleInformationId != Guid.Empty)
+            {
+                userRole = await GetUserRoleDataAsync(userProfile?.RoleInformationId.ToString());
+                if (userRole.Count() > 0)
+                {
+                    organizationalUnit = userRole[0].OrganizationalUnit;
+                }
+            }
+            return organizationalUnit == ou;
         }
     }
 }
