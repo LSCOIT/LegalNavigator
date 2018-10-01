@@ -1,0 +1,18 @@
+[
+  {
+    "id": "acd5880f-830d-406f-8c8b-87ea94ad6483",
+    "oId": "CB1DCF4C44CCF466D1D800D8BB60BC960EB3A9B7A42BD7733D107E65D1CCFD53CEF246B24271F7D222C52B7627A91D2BEB1AC6FFEA27502A7D5E0488AF116CE3",
+    "firstName": "John",
+    "lastName": "Doe",
+    "eMail": "someone@example.com",
+    "isActive": "Yes",
+    "createdBy": "John Doe",
+    "createdTimeStamp": "09/01/2018 06:34:35",
+    "modifiedBy": null,
+    "modifiedTimeStamp": null,
+    "sharedResourceId": "00000000-0000-0000-0000-000000000000",
+    "personalizedActionPlanId": "9d0c241e-78e7-4ef0-bf86-ae6f4eb73460",
+    "curatedExperienceAnswersId": "00000000-0000-0000-0000-000000000000",
+    "savedResourcesId": "38027cf7-100d-482c-9c99-5f3f3067362a"
+  }
+  ]
