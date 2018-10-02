@@ -106,8 +106,10 @@ this.ScenarioInitialize(scenarioInfo);
                         "Alaska"});
 #line 8
     testRunner.Given("I am on the Access2Justice website with state set", ((string)(null)), table1, "Given ");
-#line 13
- testRunner.Then("I accomplished my task", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 11
+    testRunner.When("I select a language from the navigation bar", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 12
+    testRunner.Then("I should see my page translated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

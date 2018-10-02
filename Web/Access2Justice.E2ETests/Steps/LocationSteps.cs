@@ -11,7 +11,6 @@
 
 using System;
 using TechTalk.SpecFlow;
-using SpecFlow.Assist.Dynamic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -20,34 +19,20 @@ using System.Collections.Generic;
 using System.Linq;
 
 
-namespace Access2Justice.E2ETests.Steps
+namespace Access2Justice.E2ETests.Steps 
 {
     [Binding]
-    public class LocationSteps
+    public class LocationSteps : TechTalk.SpecFlow.Steps
     {
-        IWebDriver driver;
+        private IWebDriver driver => ScenarioContext.Get<IWebDriver>("driver");
+        private DefaultWait<IWebDriver> fluentWait => ScenarioContext.Get<DefaultWait<IWebDriver>>("fluentWait");
         private dynamic _inputStateName;
         private dynamic _displayedStateName;
-        DefaultWait<IWebDriver> fluentWait;
 
         [Given(@"I am on the Access2Justice website with location detection blocked")]
         public void GivenIAmOnTheAccessJusticeWebsiteWithLocationDetectionBlocked()
         {
-            ChromeOptions options = new ChromeOptions();
-            // Start Chrome maximized
-            options.AddArguments("start-maximized");
-            // Disable the "Know your location" pop up
-            options.AddUserProfilePreference("profile.managed_default_content_settings.geolocation", 2);
-            driver = new ChromeDriver(options);
-            driver.Url = "http://localhost:5150/";
-            fluentWait = new DefaultWait<IWebDriver>(driver);
-            fluentWait.Timeout = TimeSpan.FromSeconds(20);
-            fluentWait.PollingInterval = TimeSpan.FromMilliseconds(200);
-            fluentWait.IgnoreExceptionTypes(typeof(WebDriverException));
-            fluentWait.IgnoreExceptionTypes(typeof(NoSuchElementException));
-            fluentWait.IgnoreExceptionTypes(typeof(TimeoutException));
-            fluentWait.IgnoreExceptionTypes(typeof(ElementNotVisibleException));
-            fluentWait.Message = "Why :(((((((";
+            Assert.IsTrue(true);
         }
 
         [Given(@"I am on the Access2Justice website with state set")]
@@ -72,7 +57,7 @@ namespace Access2Justice.E2ETests.Steps
 
             changeButton = fluentWait.Until(d =>
             {
-                IWebElement element = d.FindElement(By.CssSelector("button[test-id=change-location-button]"));
+                IWebElement element = d.FindElement(By.Id("change-location-button"));
                 //IWebElement element2 = d.FindElement(By.TagName("modal-container"));
                 // checking !modal.Displayed doesn't work (change button still get clicked)
                 // Checking modal == null produces NoSuchElementException error
@@ -85,10 +70,7 @@ namespace Access2Justice.E2ETests.Steps
                 return null;
             });
 
-        
             changeButton.Click();
-            
-            
         }
 
 
@@ -98,12 +80,13 @@ namespace Access2Justice.E2ETests.Steps
             _inputStateName = instance;
             IWebElement searchButton;
 
+            driver.FindElement(By.Id("search-box")).Clear();
             driver.FindElement(By.Id("search-box")).SendKeys(_inputStateName.State);
 
             // Wait till search button is clickable to bypass the overlay
             searchButton = fluentWait.Until(d =>
             {
-                IWebElement element = d.FindElement(By.CssSelector("button[test-id=search-location-button]"));
+                IWebElement element = d.FindElement(By.Id("search-location-button"));
                 if (element != null && element.Displayed && element.Displayed)
                 {
                     return element;
@@ -116,9 +99,9 @@ namespace Access2Justice.E2ETests.Steps
             // Fix this after Winnie makes update button unclickble until location has been set
             // Use ExpectedConditions instead
             System.Threading.Thread.Sleep(2000);
-            driver.FindElement(By.CssSelector("button[test-id=update-location-button]")).Click();
+            driver.FindElement(By.Id("update-location-button")).Click();
         }
-        
+
         [Then(@"I can see my state name on the upper navigation bar")]
         public void ThenICanSeeMyStateNameOnTheUpperNavigationBar(dynamic instance)
         {
@@ -127,15 +110,16 @@ namespace Access2Justice.E2ETests.Steps
 
             userLocation = fluentWait.Until(d =>
             {
-                IWebElement element = d.FindElement(By.CssSelector("span[test-id=user-location]"));
-                if (element.Displayed) {
+                IWebElement element = d.FindElement(By.Id("user-location"));
+                if (element.Displayed)
+                {
                     return element;
                 }
 
                 return null;
             });
 
-            Assert.IsTrue(userLocation.Text == _displayedStateName.State);           
+            Assert.IsTrue(userLocation.Text == _displayedStateName.State);
         }
 
         [Then(@"I accomplished my task")]
@@ -143,6 +127,5 @@ namespace Access2Justice.E2ETests.Steps
         {
             driver.Quit();
         }
-
     }
 }

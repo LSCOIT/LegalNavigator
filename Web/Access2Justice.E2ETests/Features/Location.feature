@@ -13,7 +13,6 @@ Scenario: Set location on entry
 	Then I can see my state name on the upper navigation bar
 	| State  |
 	| Alaska |
-	And I accomplished my task
 
 Scenario: Change location
 	Given I am on the Access2Justice website with state set
@@ -26,5 +25,4 @@ Scenario: Change location
     Then I can see my state name on the upper navigation bar
 	| State  |
 	| Hawaii |
-	And I accomplished my task
 

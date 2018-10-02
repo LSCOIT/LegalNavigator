@@ -119,8 +119,6 @@ this.ScenarioInitialize(scenarioInfo);
                         "Alaska"});
 #line 13
  testRunner.Then("I can see my state name on the upper navigation bar", ((string)(null)), table2, "Then ");
-#line 16
- testRunner.And("I accomplished my task", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -131,7 +129,7 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void ChangeLocation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change location", null, ((string[])(null)));
-#line 18
+#line 17
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
 #line hidden
@@ -139,26 +137,24 @@ this.ScenarioInitialize(scenarioInfo);
                         "State"});
             table3.AddRow(new string[] {
                         "Alaska"});
-#line 19
+#line 18
  testRunner.Given("I am on the Access2Justice website with state set", ((string)(null)), table3, "Given ");
-#line 22
+#line 21
  testRunner.When("I click on the Change button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "State"});
             table4.AddRow(new string[] {
                         "Hawaii"});
-#line 23
+#line 22
     testRunner.And("I enter my state name", ((string)(null)), table4, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "State"});
             table5.AddRow(new string[] {
                         "Hawaii"});
-#line 26
+#line 25
     testRunner.Then("I can see my state name on the upper navigation bar", ((string)(null)), table5, "Then ");
-#line 29
- testRunner.And("I accomplished my task", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
