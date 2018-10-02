@@ -109,13 +109,12 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<bool> GetOrganizationalUnit(string oId, string ou)
         {
-            string sdf = context.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
-            //var username = _httpContextAccessor.HttpContext.User.Identity.Name;
             if (string.IsNullOrEmpty(ou) || string.IsNullOrEmpty(oId))
             {
                 return false;
             }
-            string organizationalUnit = string.Empty;
+			oId = EncryptionUtilities.GenerateSHA512String(oId);
+			string organizationalUnit = string.Empty;
             List<UserRole> userRole = new List<UserRole>();
             var userProfile = await dbUserProfile.GetUserProfileDataAsync(oId);
             if (userProfile != null && userProfile?.RoleInformationId != Guid.Empty)
