@@ -24,14 +24,16 @@ namespace Access2Justice.Api.BusinessLogic
             dbSettings = cosmosDbSettings;
             dbService = backendDatabaseService;
         }
-        public async Task<UserProfile> GetUserProfileDataAsync(string oId)
+
+        public async Task<dynamic> GetUserProfileDataAsync(string oId, bool isProfileViewModel = false)
         {
-            UserProfile userProfile = new UserProfile();
             var resultUserData = await dbClient.FindItemsWhereAsync(dbSettings.UserProfileCollectionId, Constants.OId, oId);
-            var serializedResult = JsonConvert.SerializeObject(resultUserData);
-            userProfile = ConvertUserProfile(serializedResult);
-            return userProfile;
+            if (isProfileViewModel) {
+                return ConvertUserProfileViewModel(resultUserData);
+            }
+            return ConvertUserProfile(resultUserData);
         }
+
         public async Task<dynamic> GetUserResourceProfileDataAsync(string oId, string type)
         {
             var userProfile = await GetUserProfileDataAsync(oId);
@@ -46,43 +48,19 @@ namespace Access2Justice.Api.BusinessLogic
             }
             return userResourcesDBData;
         }
+
         private UserProfile ConvertUserProfile(dynamic convObj)
-        {            
-            List<UserProfile> listUserProfiles = JsonConvert.DeserializeObject<List<UserProfile>>(convObj);
-            UserProfile userProfile = new UserProfile();
-            foreach (UserProfile user in listUserProfiles)
-            {
-                userProfile.Id = user.Id;
-                userProfile.OId = user.OId;
-                userProfile.Name = user.Name;
-                userProfile.FirstName = user.FirstName;
-                userProfile.LastName = user.LastName;
-                userProfile.EMail = user.EMail;
-                userProfile.IsActive = user.IsActive;
-                userProfile.CreatedBy = user.CreatedBy;
-                userProfile.CreatedTimeStamp = user.CreatedTimeStamp;
-                userProfile.ModifiedBy = user.ModifiedBy;
-                userProfile.ModifiedTimeStamp = user.ModifiedTimeStamp;
-                userProfile.PersonalizedActionPlanId = user.PersonalizedActionPlanId;
-                userProfile.CuratedExperienceAnswersId = user.CuratedExperienceAnswersId;
-                userProfile.SavedResourcesId = user.SavedResourcesId;
-                userProfile.SharedResourceId = user.SharedResourceId;
-                userProfile.RoleInformationId = user.RoleInformationId;
-            }
-            return userProfile;
-        }
-        public async Task<UserProfile> UpdateUserProfilePlanIdAsync(string oId, Guid planId)
         {
-            var resultUP = await GetUserProfileDataAsync(oId);
-            resultUP.PersonalizedActionPlanId = planId;
-            var result = await dbService.UpdateItemAsync(resultUP.Id, ResourceDeserialized(resultUP), dbSettings.UserProfileCollectionId);
-            return JsonConvert.DeserializeObject<UserProfile>(JsonConvert.SerializeObject(result));
+            List<UserProfile> userProfile = JsonUtilities.DeserializeDynamicObject<List<UserProfile>>(convObj);
+            return userProfile.FirstOrDefault();
         }
-        private object ResourceDeserialized(UserProfile userProfile)
+
+        private UserProfileViewModel ConvertUserProfileViewModel(dynamic convObj)
         {
-            var serializedResult = JsonConvert.SerializeObject(userProfile);
-            return JsonConvert.DeserializeObject<object>(serializedResult);
+            List<UserProfileViewModel> userProfileViewModel = JsonUtilities.DeserializeDynamicObject<List<UserProfileViewModel>>(convObj);
+            return userProfileViewModel.FirstOrDefault();
         }
+
         public async Task<dynamic> UpsertUserSavedResourcesAsync(ProfileResources userData)
         {
             var userDocument = new ProfileResources();
@@ -147,19 +125,20 @@ namespace Access2Justice.Api.BusinessLogic
             return await dbService.UpdateItemAsync(id.ToString(), userDocument, dbSettings.UserResourceCollectionId);
         }
 
-        public async Task<UserProfile> UpsertUserProfileAsync(UserProfile userProfile)
+        public async Task<UserProfileViewModel> UpsertUserProfileAsync(UserProfile userProfile)
         {
             if (userProfile == null || string.IsNullOrEmpty(userProfile?.OId))
-                throw new Exception("");
+                throw new Exception("Please login into Application");
                     
             userProfile.OId = EncryptionUtilities.GenerateSHA512String(userProfile?.OId);
-            var resultUP = await GetUserProfileDataAsync(userProfile?.OId);
-            if (string.IsNullOrEmpty(resultUP.OId))
+            var resultUP = await GetUserProfileDataAsync(userProfile?.OId, true);
+            if (string.IsNullOrEmpty(resultUP?.OId))
             {
                 userProfile.RoleInformationId = await GetDefaultUserRole();
+                List<dynamic> profile = new List<dynamic>();
                 var result = await dbService.CreateItemAsync(userProfile, dbSettings.UserProfileCollectionId);
-                var serializedResult = JsonConvert.SerializeObject(result);
-                resultUP = ConvertUserProfile("[" + result + "]");
+                profile.Add(result);
+                resultUP = ConvertUserProfileViewModel(profile);
             }
             return resultUP;
         }

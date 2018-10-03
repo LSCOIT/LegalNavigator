@@ -120,7 +120,7 @@ namespace Access2Justice.Api.BusinessLogic
                     List<string> userOUs = userRole[0].OrganizationalUnit.Split(Constants.Delimiter).Select(p => p.Trim()).ToList();
                     foreach (var userOU in userOUs)
                     {
-                        if (!string.IsNullOrEmpty(userOU) && orgUnits.FirstOrDefault(x => x.Contains(userOU)) != null)
+                        if (!string.IsNullOrEmpty(userOU) && orgUnits.Find(x => x.Contains(userOU)) != null)
                         {
                             return true;
                         }

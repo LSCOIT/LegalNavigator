@@ -6,11 +6,10 @@ namespace Access2Justice.Shared.Interfaces
 {
     public interface IUserProfileBusinessLogic
     {
-        Task<UserProfile> GetUserProfileDataAsync(string oId);
-        Task<dynamic> GetUserResourceProfileDataAsync(string oId, string type);
-        Task<UserProfile> UpdateUserProfilePlanIdAsync(string oId, Guid planId);
+        Task<dynamic> GetUserProfileDataAsync(string oId, bool isProfileViewModel = false);
+        Task<dynamic> GetUserResourceProfileDataAsync(string oId, string type);        
         Task<dynamic> UpsertUserSavedResourcesAsync(ProfileResources userResources);
-        Task<UserProfile> UpsertUserProfileAsync(UserProfile userProfile);
+        Task<UserProfileViewModel> UpsertUserProfileAsync(UserProfile userProfile);
         Task<Guid> GetDefaultUserRole();
     }
 }

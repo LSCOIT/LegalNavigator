@@ -15,7 +15,7 @@ export const environment = {
   All: 'All',
   clientID: '15c4cbff-86ef-4c76-9b08-874ce0b55c8a',
   authority: 'https://login.microsoftonline.com/common/',
-  consentScopes: ["user.read", 'api://15c4cbff-86ef-4c76-9b08-874ce0b55c8a/access_as_user'],
+  consentScopes: ["api://15c4cbff-86ef-4c76-9b08-874ce0b55c8a/access_as_user"],
   redirectUri: 'http://localhost:5150/',
   navigateToLoginRequestUrl: true,
   postLogoutRedirectUri: 'http://localhost:5150/',

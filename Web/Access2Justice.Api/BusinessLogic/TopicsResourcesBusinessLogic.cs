@@ -171,6 +171,7 @@ namespace Access2Justice.Api.BusinessLogic
             List<Conditions> conditions = new List<Conditions>();
             List<ParentTopicId> parentTopicIds = new List<ParentTopicId>();
             List<QuickLinks> quickLinks = new List<QuickLinks>();
+            List<OrganizationReviewer> organizationReviewers = new List<OrganizationReviewer>();
             List<dynamic> references = new List<dynamic>();
             foreach (JProperty field in resourceObject)
             {
@@ -198,6 +199,11 @@ namespace Access2Justice.Api.BusinessLogic
                 {
                     quickLinks = field.Value != null && field.Value.Count() > 0 ? GetQuickLinks(field.Value) : null;
                 }
+
+                else if (field.Name == "reviewer")
+                {
+                    organizationReviewers = field.Value != null && field.Value.Count() > 0 ? GetReviewer(field.Value) : null;
+                }
             }
 
             references.Add(topicTags);
@@ -205,7 +211,7 @@ namespace Access2Justice.Api.BusinessLogic
             references.Add(conditions);
             references.Add(parentTopicIds);
             references.Add(quickLinks);
-
+            references.Add(organizationReviewers);
             return references;
         }
 
@@ -328,6 +334,36 @@ namespace Access2Justice.Api.BusinessLogic
                 quickLinks.Add(new QuickLinks { Text = text, Urls = url });
             }
             return quickLinks;
+        }
+
+        public dynamic GetReviewer(dynamic reviewerValues)
+        {
+            List<OrganizationReviewer> organizationReviewer = new List<OrganizationReviewer>();
+            foreach (var reviewerDetails in reviewerValues)
+            {
+                string reviewerFullName = string.Empty, reviewerTitle = string.Empty, reviewText = string.Empty, reviewerImage = string.Empty;
+                foreach (JProperty reviewer in reviewerDetails)
+                {
+                    if (reviewer.Name == "reviewerFullName")
+                    {
+                        reviewerFullName = reviewer.Value.ToString();
+                    }
+                    else if (reviewer.Name == "reviewerTitle")
+                    {
+                        reviewerTitle = reviewer.Value.ToString();
+                    }
+                    else if (reviewer.Name == "reviewText")
+                    {
+                        reviewText = reviewer.Value.ToString();
+                    }
+                    else if (reviewer.Name == "reviewerImage")
+                    {
+                        reviewerImage = reviewer.Value.ToString();
+                    }
+                }
+                organizationReviewer.Add(new OrganizationReviewer { ReviewerFullName = reviewerFullName, ReviewerTitle = reviewerTitle, ReviewText = reviewText, ReviewerImage = reviewerImage });
+            }
+            return organizationReviewer;
         }
 
         public async Task<IEnumerable<object>> UpsertResourcesUploadAsync(string path)
@@ -495,6 +531,7 @@ namespace Access2Justice.Api.BusinessLogic
                 ExternalUrls = resourceObject.externalUrl,
                 Urls = resourceObject.url,
                 TopicTags = topicTags,
+                OrganizationalUnit = resourceObject.organizationalUnit,
                 Location = locations,
                 Icon = resourceObject.icon,
                 Overview = resourceObject.overview,
@@ -527,6 +564,7 @@ namespace Access2Justice.Api.BusinessLogic
                 ExternalUrls = resourceObject.externalUrl,
                 Urls = resourceObject.url,
                 TopicTags = topicTags,
+                OrganizationalUnit = resourceObject.organizationalUnit,
                 Location = locations,
                 Icon = resourceObject.icon,
                 Conditions = conditions,
@@ -556,6 +594,7 @@ namespace Access2Justice.Api.BusinessLogic
                 ExternalUrls = resourceObject.externalUrl,
                 Urls = resourceObject.url,
                 TopicTags = topicTags,
+                OrganizationalUnit = resourceObject.organizationalUnit,
                 Location = locations,
                 Icon = resourceObject.icon,
                 CreatedBy = resourceObject.createdBy,
@@ -589,6 +628,7 @@ namespace Access2Justice.Api.BusinessLogic
                 ExternalUrls = resourceObject.externalUrl,
                 Urls = resourceObject.url,
                 TopicTags = topicTags,
+                OrganizationalUnit = resourceObject.organizationalUnit,
                 Location = locations,
                 Icon = resourceObject.icon,
                 CreatedBy = resourceObject.createdBy,
@@ -604,9 +644,11 @@ namespace Access2Justice.Api.BusinessLogic
             Organization organizations = new Organization();
             List<TopicTag> topicTags = new List<TopicTag>();
             List<Location> locations = new List<Location>();
+            List<OrganizationReviewer> organizationReviewers = new List<OrganizationReviewer>();
             dynamic references = GetReferences(resourceObject);
             topicTags = references[0];
             locations = references[1];
+            organizationReviewers = references[5];            
 
             organizations = new Organization()
             {
@@ -618,6 +660,7 @@ namespace Access2Justice.Api.BusinessLogic
                 ExternalUrls = resourceObject.externalUrl,
                 Urls = resourceObject.url,
                 TopicTags = topicTags,
+                OrganizationalUnit = resourceObject.organizationalUnit,
                 Location = locations,
                 Icon = resourceObject.icon,
                 CreatedBy = resourceObject.createdBy,
@@ -626,10 +669,7 @@ namespace Access2Justice.Api.BusinessLogic
                 Telephone = resourceObject.telephone,
                 Overview = resourceObject.overview,
                 EligibilityInformation = resourceObject.eligibilityInformation,
-                ReviewedByCommunityMember = resourceObject.reviewedByCommunityMember,
-                ReviewerFullName = resourceObject.reviewerFullName,
-                ReviewerTitle = resourceObject.reviewerTitle,
-                ReviewerImage = resourceObject.reviewerImage
+                Reviewer = organizationReviewers
             };
             organizations.Validate();
             return organizations;
@@ -654,6 +694,7 @@ namespace Access2Justice.Api.BusinessLogic
                 ExternalUrls = resourceObject.externalUrl,
                 Urls = resourceObject.url,
                 TopicTags = topicTags,
+                OrganizationalUnit = resourceObject.organizationalUnit,
                 Location = locations,
                 Icon = resourceObject.icon,
                 CreatedBy = resourceObject.createdBy,
@@ -723,6 +764,7 @@ namespace Access2Justice.Api.BusinessLogic
                 ParentTopicId = parentTopicIds,
                 ResourceType = topicObject.resourceType,
                 Keywords = topicObject.keywords,
+                OrganizationalUnit = topicObject.organizationalUnit,
                 Location = locations,
                 Icon = topicObject.icon,
                 CreatedBy = topicObject.createdBy,
@@ -759,5 +801,9 @@ namespace Access2Justice.Api.BusinessLogic
             return await dbClient.FindItemsWhereContainsWithLocationAsync(dbSettings.ResourceCollectionId, Constants.ResourceType, Constants.Organization, location);
         }
 
+        public async Task<dynamic> GetAllTopics()
+        {
+            return await dbClient.FindItemsAllAsync(dbSettings.TopicCollectionId);
+        }
     }
 }

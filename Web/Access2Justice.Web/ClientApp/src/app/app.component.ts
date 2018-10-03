@@ -3,7 +3,7 @@ import { Global, UserStatus } from './global';
 import { StaticResourceService } from './shared/static-resource.service';
 import { MapService } from './shared/map/map.service';
 import { MsalService } from '@azure/msal-angular';
-import { PersonalizedPlanService } from './guided-assistant/personalized-plan/personalized-plan.service';
+import { LoginService } from './shared/login/login.service';
 import { IUserProfile } from './shared/login/user-profile.model';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
     private staticResourceService: StaticResourceService,
     private msalService: MsalService,
     private mapService: MapService,
-    private personalizedPlanService: PersonalizedPlanService,
+    private loginService: LoginService,
     private spinner: NgxSpinnerService,
     private router: Router) { }  
 
@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
       name: userData.idToken['name'], firstName: "", lastName: "", oId: userData.idToken['oid'], eMail: userData.idToken['preferred_username'], isActive: "Yes",
       createdBy: userData.idToken['name'], createdTimeStamp: (new Date()).toUTCString(), modifiedBy: userData.idToken['name'], modifiedTimeStamp: (new Date()).toUTCString()
     }
-    this.personalizedPlanService.upsertUserProfile(this.userProfile)
+    this.loginService.upsertUserProfile(this.userProfile)
       .subscribe(response => {
         if (response) {
           this.global.setProfileData(response.oId, response.name);          
@@ -66,7 +66,7 @@ export class AppComponent implements OnInit {
         this.setStaticContentData();
       });
     this.setStaticContentData();
-    if (this.msalService.getUser()) {
+    if (this.msalService.getUser() && !this.global.userId) {
       this.createOrGetProfile();
     }
   }

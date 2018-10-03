@@ -41,6 +41,10 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "topicTags")]
         public IEnumerable<TopicTag> TopicTags { get; set; }
 
+        [Required(ErrorMessage = "Organizational Unit is a required field.")]
+        [JsonProperty(PropertyName = "organizationalUnit")]
+        public string OrganizationalUnit { get; set; }
+
         //[EnsureOneElementAttribute(ErrorMessage = "At least one location is required")]
         [JsonProperty(PropertyName = "location")]
         public IEnumerable<Location> Location { get; set; }
@@ -151,17 +155,23 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "eligibilityInformation")]
         public string EligibilityInformation { get; set; }
 
-        [JsonProperty(PropertyName = "reviewedByCommunityMember")]
-        public string ReviewedByCommunityMember { get; set; }
+        [JsonProperty(PropertyName = "reviewer")]
+        public IEnumerable<OrganizationReviewer> Reviewer { get; set; }
+    }
 
+    public class OrganizationReviewer
+    {
         [JsonProperty(PropertyName = "reviewerFullName")]
         public string ReviewerFullName { get; set; }
 
         [JsonProperty(PropertyName = "reviewerTitle")]
         public string ReviewerTitle { get; set; }
 
+        [JsonProperty(PropertyName = "reviewText")]
+        public string ReviewText { get; set; }
+
         [JsonProperty(PropertyName = "reviewerImage")]
-        public string ReviewerImage { get; set; }                
+        public string ReviewerImage { get; set; }
     }
 
     public class Form: Resource

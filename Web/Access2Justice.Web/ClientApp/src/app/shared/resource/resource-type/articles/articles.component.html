@@ -3,7 +3,7 @@
     <h2>{{resource.name}}</h2>
   </div>
   <div class="col-sm-6 user-action">
-    <app-user-action-sidebar [mobile]=true></app-user-action-sidebar>
+    <app-user-action-sidebar [mobile]=true [id]="resource.id" [type]="resource.resourceType"></app-user-action-sidebar>
   </div>
 </div>
 <div class="col-sm-8 col-sm-12">

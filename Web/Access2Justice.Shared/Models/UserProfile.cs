@@ -56,5 +56,36 @@ namespace Access2Justice.Shared.Models
         public Guid RoleInformationId { get; set; }
 
     }
-    
+
+    public class UserProfileViewModel
+    {
+        [JsonProperty(PropertyName = "oId")]
+        public string OId { get; set; }
+
+        [JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        [JsonProperty(PropertyName = "firstName")]
+        public string FirstName { get; set; }
+
+        [JsonProperty(PropertyName = "lastName")]
+        public string LastName { get; set; }
+
+        [JsonProperty(PropertyName = "isActive")]
+        public string IsActive { get; set; }
+
+        [JsonProperty(PropertyName = "sharedResourceId")]
+        public Guid SharedResourceId { get; set; }
+
+        [JsonProperty(PropertyName = "personalizedActionPlanId")]
+        public Guid PersonalizedActionPlanId { get; set; }
+
+        [JsonProperty(PropertyName = "curatedExperienceAnswersId")]
+        public Guid CuratedExperienceAnswersId { get; set; }
+
+        [JsonProperty(PropertyName = "savedResourcesId")]
+        public Guid SavedResourcesId { get; set; }
+
+    }
+
 }
