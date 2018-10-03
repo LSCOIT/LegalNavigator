@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow;
+//using TechTalk.SpecFlow.Assist;
+using SpecFlow.Assist.Dynamic;
 //using OpenQA.Selenium.Support.PageObjects;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
@@ -52,6 +54,11 @@ namespace Access2Justice.E2ETests.PageObjects
 
         [FindsBy(How = How.TagName, Using = "app-resource-card")]
         private IList<IWebElement> searchPhraseResults;
+
+        private class SearchPhrase
+        {
+            public string Content { get; set; }
+        }
 
         public HomePage()
         {
@@ -167,10 +174,8 @@ namespace Access2Justice.E2ETests.PageObjects
             Assert.AreEqual(driver.Title, "Access to Justice");
         }
 
-        public void searchByPhrase(dynamic phrase)
+        public void searchByPhrase(string phrase)
         {
-            string searchPhrase = Convert.ToString(phrase);
-           
             fluentWait.Until(d =>
             {
                 List<IWebElement> overlay = d.FindElements(By.ClassName("black-overlay")).ToList();
@@ -182,16 +187,15 @@ namespace Access2Justice.E2ETests.PageObjects
                 return false;
             });
             searchPhraseTab.Click();
-            searchPhraseInputField.SendKeys(searchPhrase);
+            searchPhraseInputField.SendKeys(phrase);
             searchPhraseButton.Click();
-            System.Threading.Thread.Sleep(5000);
         }
 
         public void confirmResults()
         {
             fluentWait.Until(d =>
             {
-                if (searchPhraseResults != null)
+                if (searchPhraseResults != null && searchPhraseResults.Count > 0)
                 {
                     return true;
                 }

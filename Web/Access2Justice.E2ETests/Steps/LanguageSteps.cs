@@ -16,9 +16,9 @@ namespace Access2Justice.E2ETests
         HomePage HomePage = new HomePage();
 
         [When(@"I select a language from the navigation bar")]
-        public void WhenISelectALanguageFromTheNavigationBar(dynamic instance)
+        public void WhenISelectALanguageFromTheNavigationBar(Table instance)
         {
-            HomePage.PickLanguage(instance.Language);        
+            HomePage.PickLanguage(instance);        
         }
         
         [Then(@"I should see my page translated")]
