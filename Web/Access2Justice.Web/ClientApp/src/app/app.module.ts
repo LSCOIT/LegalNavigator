@@ -38,7 +38,7 @@ import { ArticlesResourcesComponent } from './guided-assistant/articles-resource
 import { CuratedExperienceComponent } from './guided-assistant/curated-experience/curated-experience.component';
 import { StaticResourceService } from './shared/static-resource.service';
 import { ResponseInterceptor } from './response-interceptor';
-import { Global } from './global'
+import { Global } from './global';
 import { CuratedExperienceResultComponent } from './guided-assistant/curated-experience-result/curated-experience-result.component';
 
 @NgModule({
@@ -90,7 +90,7 @@ import { CuratedExperienceResultComponent } from './guided-assistant/curated-exp
     ProfileComponent,
     PersonalizedPlanComponent,
     StaticResourceService,
-    Global
+    Global    
   ],
   bootstrap: [AppComponent]
 })

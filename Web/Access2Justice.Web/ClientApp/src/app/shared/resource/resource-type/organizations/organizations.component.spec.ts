@@ -78,7 +78,7 @@ describe('OrganizationsComponent', () => {
           useValue: { snapshot: { params: { 'id': '123' } } }
         },
         PersonalizedPlanService,
-        { provide: ToastrService, useValue: mockToastr }
+        { provide: ToastrService, useValue: mockToastr }        
       ]
     })
       .compileComponents();
@@ -86,9 +86,6 @@ describe('OrganizationsComponent', () => {
     fixture = TestBed.createComponent(OrganizationsComponent);
     component = fixture.componentInstance;
     component.resource = mockResource;
-    //component.searchResource = {
-    //  resources: {}, webResources: { webPages: { value: {} } }, topIntent: ''
-    //};
     fixture.detectChanges();
   }));
 
