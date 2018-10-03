@@ -1,14 +1,11 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
-using Access2Justice.Api.Authorization;
+﻿using Access2Justice.Api.Authorization;
 using Access2Justice.Api.Interfaces;
-using Access2Justice.Api.ViewModels;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using System.Threading.Tasks;
 using static Access2Justice.Api.Authorization.Permissions;
 
 namespace Access2Justice.Api.Controllers
@@ -40,12 +37,12 @@ namespace Access2Justice.Api.Controllers
             return Ok(response);
         }
 
-		/// <summary>
-		/// Get subtopics by the topic Id
-		/// </summary>
-		/// <param name="parentTopicId"></param>
-		/// <returns></returns> 
-		[Route("api/topics/getsubtopics")]
+        /// <summary>
+        /// Get subtopics by the topic Id
+        /// </summary>
+        /// <param name="parentTopicId"></param>
+        /// <returns></returns> 
+        [Route("api/topics/getsubtopics")]
         [HttpPost]
         public async Task<IActionResult> GetSubTopics([FromBody]TopicInput topicInput)
         {
@@ -53,12 +50,12 @@ namespace Access2Justice.Api.Controllers
             return Ok(topics);
         }
 
-		/// <summary>
-		/// Get resource by resource id
-		/// </summary>
-		/// <param name="id"></param>
-		/// <returns></returns>
-		[HttpPost]
+        /// <summary>
+        /// Get resource by resource id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
         [Route("api/topics/getresource")]
         public async Task<IActionResult> GetResource([FromBody]TopicInput topicInput)
         {
@@ -66,12 +63,12 @@ namespace Access2Justice.Api.Controllers
             return Ok(resource);
         }
 
-		/// <summary>
-		/// Get the topic details by the document parent Id
-		/// </summary>
-		/// <param name="parentTopicId"></param>
-		/// <returns></returns>
-		[HttpPost]
+        /// <summary>
+        /// Get the topic details by the document parent Id
+        /// </summary>
+        /// <param name="parentTopicId"></param>
+        /// <returns></returns>
+        [HttpPost]
         [Route("api/topics/getresourcedetails")]
         public async Task<IActionResult> GetResourceDetails([FromBody]TopicInput topicInput)
         {
@@ -79,20 +76,20 @@ namespace Access2Justice.Api.Controllers
             return Ok(topics);
         }
 
-		/// <summary>
-		/// Get the document details by a document Id
-		/// </summary>
-		/// <param name="id"></param>
-		/// <returns></returns>
-		[HttpPost]
+        /// <summary>
+        /// Get the document details by a document Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
         [Route("api/topics/getdocument")]
         public async Task<IActionResult> GetDocumentDataAsync([FromBody]TopicInput topicInput)
         {
             var topics = await topicsResourcesBusinessLogic.GetDocumentAsync(topicInput);
             return Ok(topics);
         }
-        
-		[HttpPost]
+
+        [HttpPost]
         [Route("api/resources")]
         public async Task<IActionResult> GetPagedDataAsync([FromBody]ResourceFilter resourceInput)
         {
@@ -100,12 +97,12 @@ namespace Access2Justice.Api.Controllers
             return Content(response);
         }
 
-		/// <summary>
-		/// Get the parent topics by a topic id
-		/// </summary>
-		/// <param name="id"></param>
-		/// <returns></returns>
-		[HttpGet]
+        /// <summary>
+        /// Get the parent topics by a topic id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
         [Route("api/topics/getbreadcrumbs/{id}")]
         public async Task<IActionResult> GetBreadcrumbAsync(string id)
         {
@@ -113,12 +110,12 @@ namespace Access2Justice.Api.Controllers
             return Ok(topics);
         }
 
-		/// <summary>
-		/// get topic details based on topic name
-		/// </summary>
-		/// <param name="name"></param>
-		/// <returns></returns>
-		[HttpGet]
+        /// <summary>
+        /// get topic details based on topic name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        [HttpGet]
         [Route("api/topics/gettopicdetails/{name}")]
         public async Task<IActionResult> GetTopicDetails(string name)
         {
@@ -126,12 +123,12 @@ namespace Access2Justice.Api.Controllers
             return Ok(topics);
         }
 
-		/// <summary>
-		/// get resource details based on name and resource type
-		/// </summary>
-		/// <param name="name", "resourceType"></param>
-		/// <returns></returns>
-		[HttpGet]
+        /// <summary>
+        /// get resource details based on name and resource type
+        /// </summary>
+        /// <param name="name", "resourceType"></param>
+        /// <returns></returns>
+        [HttpGet]
         [Route("api/topics/getresourcedetails/{name}/{type}")]
         public async Task<IActionResult> GetResourceDetails(string name, string type)
         {
@@ -139,12 +136,12 @@ namespace Access2Justice.Api.Controllers
             return Ok(resources);
         }
 
-		/// <summary>
-		/// Get the organizations by the location
-		/// </summary>
-		/// <param name="location"></param>
-		/// <returns></returns>
-		[HttpPost]
+        /// <summary>
+        /// Get the organizations by the location
+        /// </summary>
+        /// <param name="location"></param>
+        /// <returns></returns>
+        [HttpPost]
         [Route("api/topics/getorganizationdetails")]
         public async Task<IActionResult> GetOrganizationsWhenParamsValuePassed([FromBody]Location location)
         {
@@ -152,70 +149,70 @@ namespace Access2Justice.Api.Controllers
             return Ok(organizations);
         }
 
-		/// <summary>
-		/// get topic schema
-		/// </summary>
-		[HttpGet]
+        /// <summary>
+        /// get topic schema
+        /// </summary>
+        [HttpGet]
         [Route("api/topics/getschematopic")]
-        public  Topic GetSchemaTopic()
+        public Topic GetSchemaTopic()
         {
             return new Topic();
         }
 
-		/// <summary>
-		/// get action plan schema
-		/// </summary>
-		[HttpGet]
+        /// <summary>
+        /// get action plan schema
+        /// </summary>
+        [HttpGet]
         [Route("api/topics/getschemaactionplan")]
         public ActionPlan GetSchemaActionPlan()
         {
             return new ActionPlan();
         }
 
-		/// <summary>
-		/// get article schema
-		/// </summary>
-		[HttpGet]
+        /// <summary>
+        /// get article schema
+        /// </summary>
+        [HttpGet]
         [Route("api/topics/getschemaarticle")]
         public Article GetSchemaArticle()
         {
             return new Article();
         }
 
-		/// <summary>
-		/// get video schema
-		/// </summary>
-		[HttpGet]
+        /// <summary>
+        /// get video schema
+        /// </summary>
+        [HttpGet]
         [Route("api/topics/getschemavideo")]
         public Video GetSchemaVideo()
         {
             return new Video();
         }
 
-		/// <summary>
-		/// get organizations schema
-		/// </summary>
-		[HttpGet]
+        /// <summary>
+        /// get organizations schema
+        /// </summary>
+        [HttpGet]
         [Route("api/topics/getschemaorganization")]
         public Organization GetSchemaOrganization()
         {
             return new Organization();
         }
 
-		/// <summary>
-		/// get form schema
-		/// </summary>
-		[HttpGet]
+        /// <summary>
+        /// get form schema
+        /// </summary>
+        [HttpGet]
         [Route("api/topics/getschemaform")]
         public Form GetSchemaForm()
         {
             return new Form();
         }
 
-		/// <summary>
-		/// get essential reading schema
-		/// </summary>
-		[HttpGet]
+        /// <summary>
+        /// get essential reading schema
+        /// </summary>
+        [HttpGet]
         [Route("api/topics/getschemaessentialreading")]
         public EssentialReading GetSchemaEssentialReading()
         {
@@ -268,12 +265,16 @@ namespace Access2Justice.Api.Controllers
         [Route("api/upserttopicdocument")]
         public async Task<IActionResult> UpsertTopicDocument([FromBody]dynamic topic)
         {
-            if (await userRoleBusinessLogic.GetOrganizationalUnit("", topic.OrganizationalUnit))
+            if (HttpContext.User.Claims.FirstOrDefault() != null)
             {
-                var topics = await topicsResourcesBusinessLogic.UpsertTopicDocumentAsync(topic);
-                return Ok(topics);
+                string oId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+                if (await userRoleBusinessLogic.GetOrganizationalUnit(oId, topic.OrganizationalUnit))
+                {
+                    var topics = await topicsResourcesBusinessLogic.UpsertTopicDocumentAsync(topic);
+                    return Ok(topics);
+                }
             }
-            return Forbid("Cannot access unauthorized data");
+            return StatusCode(403);
         }
 
         /// <summary>
