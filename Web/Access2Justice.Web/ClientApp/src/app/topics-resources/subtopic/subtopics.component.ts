@@ -6,6 +6,7 @@ import { ShowMoreService } from "../../shared/sidebars/show-more/show-more.servi
 import { ISubtopicGuidedInput } from "../shared/topic";
 import { Input } from "@angular/core/src/metadata/directives";
 import { MapService } from "../../shared/map/map.service";
+import { Global } from '../../global';
 
 @Component({
   selector: 'app-subtopics',
@@ -28,8 +29,8 @@ export class SubtopicsComponent implements OnInit {
     private router: Router,
     private navigateDataService: NavigateDataService,
     private showMoreService: ShowMoreService,
-    private mapService: MapService
-  ) { }
+    private mapService: MapService,
+    private global: Global) { }
 
 
   getSubtopics(): void {
@@ -55,6 +56,7 @@ export class SubtopicsComponent implements OnInit {
   clickSeeMoreOrganizationsFromSubtopic(resourceType: string) {
     this.showMoreService.clickSeeMoreOrganizations(resourceType, this.activeTopic);
   }
+
   ngOnInit() {
     this.activeRoute.url
       .subscribe(routeParts => {
@@ -63,8 +65,17 @@ export class SubtopicsComponent implements OnInit {
         }
       });
     this.subscription = this.mapService.notifyLocation
-      .subscribe((value) => {
-        this.router.navigateByUrl('/topics')
+      .subscribe((value) => {       
+        this.topicService.getTopics().subscribe(response => {
+          this.global.topicsData = response;
+          this.router.navigateByUrl('/topics');
+        });             
       });
+  }
+
+  ngOnDestroy() {
+    if (this.subscription != undefined) {
+      this.subscription.unsubscribe();
+    }
   }
 }

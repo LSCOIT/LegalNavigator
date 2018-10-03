@@ -32,12 +32,17 @@ export class TopicsComponent implements OnInit {
   ngOnInit() {
     if (!this.global.topicsData) {
       this.getTopics();
-    } else { this.topics = this.global.topicsData;}
+    } else { this.topics = this.global.topicsData; }
     this.subscription = this.mapService.notifyLocation
       .subscribe((value) => {
         this.global.topicsData = null;
         this.getTopics();
       });
   }
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  } 
 
 }

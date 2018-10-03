@@ -90,4 +90,10 @@ export class AppComponent implements OnInit {
       });
     this.setStaticContentData();
   }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  } 
 }
