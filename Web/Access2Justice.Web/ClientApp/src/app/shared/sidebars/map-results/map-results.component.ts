@@ -50,7 +50,7 @@ export class MapResultsComponent implements OnChanges {
 
   displayMapResults() {
     for (let index = 0, len = this.addressList.length; index < len; index++) {
-      this.mapResultsService.getLocationDetails(this.addressList[index].toString().trim(), environment.bingmap_key).subscribe((locationCoordinates) => {
+      this.mapResultsService.getLocationDetails(this.addressList[index].toString().replace('\n', ' ').trim(), environment.bingmap_key).subscribe((locationCoordinates) => {
         this.latlong = {
           latitude: locationCoordinates.resourceSets[0].resources[0].point.coordinates[0],
           longitude: locationCoordinates.resourceSets[0].resources[0].point.coordinates[1]
