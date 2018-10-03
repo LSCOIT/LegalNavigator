@@ -32,7 +32,7 @@ namespace Access2Justice.Api.Authentication
             public void Configure(string name, JwtBearerOptions options)
             {
                 options.Audience = _azureOptions.ClientId;
-                options.Authority = $"{_azureOptions.Instance}{_azureOptions.TenantId}/v2.0/";
+                options.Authority = $"{_azureOptions.Instance}{_azureOptions.TenantId}/{_azureOptions.TokenVersion}/";
                 options.TokenValidationParameters.ValidateIssuer = true;
                 options.TokenValidationParameters.IssuerValidator = ValidateIssuer;
             }
@@ -63,7 +63,7 @@ namespace Access2Justice.Api.Authentication
                     {
                         throw new SecurityTokenInvalidIssuerException("Cannot find the tenant GUID for the issuer");
                     }
-                    if (parts.Length > 2 && parts[2] != "v2.0")
+                    if (parts.Length > 2 && parts[2] != _azureOptions.TokenVersion)
                     {
                         throw new SecurityTokenInvalidIssuerException("Only accepted protocol versions are AAD v1.0 or V2.0");
                     }
