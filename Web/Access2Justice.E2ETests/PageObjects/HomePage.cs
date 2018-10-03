@@ -27,7 +27,7 @@ namespace Access2Justice.E2ETests.PageObjects
         private IWebElement changeLocationButton;
 
         [FindsBy(How = How.Id, Using = "search-box")]
-        private IWebElement searchInputBox;
+        private IWebElement searchLocationInputBox;
 
         [FindsBy(How = How.Id, Using = "search-location-button")]
         private IWebElement searchLocationButton;
@@ -40,6 +40,18 @@ namespace Access2Justice.E2ETests.PageObjects
 
         [FindsBy(How = How.TagName, Using = "modal-container")]
         private IWebElement modal;
+
+        [FindsBy(How = How.Id, Using = "search-phrase-tab")]
+        private IWebElement searchPhraseTab;
+
+        [FindsBy(How = How.Id, Using = "search")]
+        private IWebElement searchPhraseInputField;
+
+        [FindsBy(How = How.Id, Using = "search-phrase-button")]
+        private IWebElement searchPhraseButton;
+
+        [FindsBy(How = How.TagName, Using = "app-resource-card")]
+        private IList<IWebElement> searchPhraseResults;
 
         public HomePage()
         {
@@ -109,8 +121,8 @@ namespace Access2Justice.E2ETests.PageObjects
         {
             // Has to declare the string outside before putting it in SendKeys
             string stateName = Convert.ToString(state);
-            searchInputBox.Clear();
-            searchInputBox.SendKeys(stateName);
+            searchLocationInputBox.Clear();
+            searchLocationInputBox.SendKeys(stateName);
 
             // Wait till search button is clickable to bypass the overlay
             fluentWait.Until(d =>
@@ -153,6 +165,40 @@ namespace Access2Justice.E2ETests.PageObjects
         public void confirmPageTitle()
         {
             Assert.AreEqual(driver.Title, "Access to Justice");
+        }
+
+        public void searchByPhrase(dynamic phrase)
+        {
+            string searchPhrase = Convert.ToString(phrase);
+           
+            fluentWait.Until(d =>
+            {
+                List<IWebElement> overlay = d.FindElements(By.ClassName("black-overlay")).ToList();
+                if (searchPhraseTab != null && searchPhraseTab.Enabled && searchPhraseTab.Displayed && overlay.Count == 0)
+                {
+                    return true;
+                }
+
+                return false;
+            });
+            searchPhraseTab.Click();
+            searchPhraseInputField.SendKeys(searchPhrase);
+            searchPhraseButton.Click();
+            System.Threading.Thread.Sleep(5000);
+        }
+
+        public void confirmResults()
+        {
+            fluentWait.Until(d =>
+            {
+                if (searchPhraseResults != null)
+                {
+                    return true;
+                }
+
+                return false;
+            });
+            Assert.IsTrue(searchPhraseResults.Count > 0);
         }
     }
 }
