@@ -1,6 +1,7 @@
 ﻿
 using Access2Justice.Tools.BusinessLogic;
 using System;
+using System.Threading.Tasks;
 
 namespace Access2Justice.Tools
 {
@@ -9,8 +10,8 @@ namespace Access2Justice.Tools
         static void Main(string[] args)
         {
             Console.WriteLine("Executing the script...");
-            TopicBusinessLogic.GetTopics();
-            ResourceBusinessLogic.GetResources();
+            TopicBusinessLogic.GetTopics().Wait();
+            ResourceBusinessLogic.GetResources().Wait();
             Console.ReadLine();
         }
     }
