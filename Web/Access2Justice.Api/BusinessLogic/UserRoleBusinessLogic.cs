@@ -2,8 +2,6 @@
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Access2Justice.Shared.Utilities;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +15,6 @@ namespace Access2Justice.Api.BusinessLogic
         private readonly ICosmosDbSettings dbSettings;
         private readonly IBackendDatabaseService dbService;
         private readonly IUserProfileBusinessLogic dbUserProfile;
-        private readonly ActionExecutingContext context;
 
         public UserRoleBusinessLogic(IDynamicQueries dynamicQueries, ICosmosDbSettings cosmosDbSettings,
             IBackendDatabaseService backendDatabaseService, IUserProfileBusinessLogic userProfileBusinessLogic)
@@ -110,22 +107,27 @@ namespace Access2Justice.Api.BusinessLogic
         public async Task<bool> GetOrganizationalUnit(string oId, string ou)
         {
             if (string.IsNullOrEmpty(ou) || string.IsNullOrEmpty(oId))
-            {
                 return false;
-            }
-			oId = EncryptionUtilities.GenerateSHA512String(oId);
-			string organizationalUnit = string.Empty;
-            List<UserRole> userRole = new List<UserRole>();
+
+            oId = EncryptionUtilities.GenerateSHA512String(oId);
             var userProfile = await dbUserProfile.GetUserProfileDataAsync(oId);
-            if (userProfile != null && userProfile?.RoleInformationId != Guid.Empty)
+            if (userProfile?.RoleInformationId != Guid.Empty)
             {
-                userRole = await GetUserRoleDataAsync(userProfile?.RoleInformationId.ToString());
-                if (userRole.Count() > 0)
+                List<UserRole> userRole = await GetUserRoleDataAsync(userProfile.RoleInformationId.ToString());
+                if (userRole?.Count() > 0)
                 {
-                    organizationalUnit = userRole[0].OrganizationalUnit;
+                    List<string> orgUnits = ou.Split(Constants.Delimiter).Select(p => p.Trim()).ToList();
+                    List<string> userOUs = userRole[0].OrganizationalUnit.Split(Constants.Delimiter).Select(p => p.Trim()).ToList();
+                    foreach (var userOU in userOUs)
+                    {
+                        if (!string.IsNullOrEmpty(userOU) && orgUnits.FirstOrDefault(x => x.Contains(userOU)) != null)
+                        {
+                            return true;
+                        }
+                    }
                 }
             }
-            return organizationalUnit == ou;
+            return false;
         }
     }
 }

@@ -39,5 +39,6 @@ namespace Access2Justice.Api
         public const string PermissionDetails = "permissionDetails";
         public const string GetProfileData = "getuserprofiledata";
         public const string UserName = "eMail";
+        public const string Delimiter = "|";
     }
 }

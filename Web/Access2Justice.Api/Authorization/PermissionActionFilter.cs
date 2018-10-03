@@ -34,7 +34,6 @@ namespace Access2Justice.Api.Authorization
             if (context.HttpContext.User.Claims.FirstOrDefault() != null)
             {
                 string oId = context.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
-                bool isOId = false;
                 if (!(string.IsNullOrEmpty(oId)))
                 {
                     oId = EncryptionUtilities.GenerateSHA512String(oId);
@@ -43,19 +42,15 @@ namespace Access2Justice.Api.Authorization
                     {
                         if (context.ActionArguments.Count > 0)
                         {
-                            //Dictionary<string, object> parameters = new Dictionary<string, object>();
+                            Dictionary<string, object> parameters = new Dictionary<string, object>();
                             foreach (var param in context.ActionArguments)
                             {
-                                //parameters.Add(param.Key, param.Value);
+                                parameters.Add(param.Key, param.Value);
                                 if (param.Value.ToString() == oId)
                                 {
-                                    isOId = true;
+                                    return await CheckPermissions(oId);
                                 }
                             }
-                        }
-                        if (requestPath.Contains(oId) || isOId)
-                        {
-                            return await CheckPermissions(oId);
                         }
                         return false;
                     }

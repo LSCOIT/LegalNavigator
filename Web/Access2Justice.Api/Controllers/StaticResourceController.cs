@@ -1,17 +1,15 @@
-﻿using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using Access2Justice.Api.Authorization;
+﻿using Access2Justice.Api.Authorization;
 using Access2Justice.Api.Interfaces;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using System.Threading.Tasks;
 using static Access2Justice.Api.Authorization.Permissions;
 
 namespace Access2Justice.Api.Controllers
 {
-	[Produces("application/json")]
+    [Produces("application/json")]
 	public class StaticResourceController : Controller
 	{
 		private readonly IStaticResourceBusinessLogic staticResourceBusinessLogic;
@@ -42,7 +40,6 @@ namespace Access2Justice.Api.Controllers
 		/// <param name="pageContent"></param>
 		/// <returns></returns>
 		[Permission(PermissionName.upsertstatichomepage)]
-		//[OrganizationalUnit()]
 		[HttpPost]
 		[Route("api/staticresource/upsertstatichomepage")]
 		public async Task<IActionResult> UpsertStaticHomePageDataAsync([FromBody]HomeContent homePageContent, Location location)
@@ -52,7 +49,6 @@ namespace Access2Justice.Api.Controllers
 				string oId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
 				if (await userRoleBusinessLogic.GetOrganizationalUnit(oId, homePageContent.OrganizationalUnit))
 				{
-					var pathBase = HttpContext.Request.PathBase;
 					var contents = await staticResourceBusinessLogic.UpsertStaticHomePageDataAsync(homePageContent, location);
 					return Ok(contents);
 				}
