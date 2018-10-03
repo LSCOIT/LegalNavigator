@@ -3,12 +3,12 @@ import { MapResultsService } from './map-results.service';
 import { environment } from '../../../../environments/environment';
 import { MapLocationResult, LatitudeLongitude } from './map-results';
 
-
 @Component({
   selector: 'app-map-results',
   templateUrl: './map-results.component.html',
   styleUrls: ['./map-results.component.css']
 })
+
 export class MapResultsComponent implements OnChanges {
   addressList: Array<MapLocationResult> = [];
   latitudeLongitude: Array<LatitudeLongitude> = [];
@@ -16,11 +16,10 @@ export class MapResultsComponent implements OnChanges {
   @Input() searchResource: any;
 
   constructor(private mapResultsService: MapResultsService) {
-
   }
 
   getAddress() {
-    this.addressList = [];    
+    this.addressList = [];
     if (this.searchResource) {
       if (this.searchResource.resources) {
         for (let i = 0; i < this.searchResource.resources.length; i++) {

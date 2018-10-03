@@ -78,7 +78,7 @@ describe('OrganizationsComponent', () => {
           useValue: { snapshot: { params: { 'id': '123' } } }
         },
         PersonalizedPlanService,
-        { provide: ToastrService, useValue: mockToastr }        
+        { provide: ToastrService, useValue: mockToastr }
       ]
     })
       .compileComponents();
