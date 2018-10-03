@@ -19,7 +19,8 @@ import { MapService } from './shared/map/map.service';
 import { of } from 'rxjs/observable/of';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
-
+import { TopicService } from './topics-resources/shared/topic.service';
+import { HttpClientModule } from '@angular/common/http';
 describe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
@@ -80,13 +81,15 @@ describe('AppComponent', () => {
         SubtopicsComponent
       ],
       imports: [
-        FormsModule
+        FormsModule,
+        HttpClientModule
       ],
       providers: [
         { provide: StaticResourceService, useValue: mockStaticResourceService },
         { provide: Global, useValue: mockGlobal },
         { provide: MapService, useValue: mockMapService },
         { provide: Router, useValue: mockRouter },
+        TopicService,
         NgxSpinnerService
       ],
       schemas: [

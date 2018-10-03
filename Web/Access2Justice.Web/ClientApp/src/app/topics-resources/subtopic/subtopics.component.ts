@@ -29,8 +29,7 @@ export class SubtopicsComponent implements OnInit {
     private router: Router,
     private navigateDataService: NavigateDataService,
     private showMoreService: ShowMoreService,
-    private mapService: MapService,
-    private global: Global) { }
+   ) { }
 
 
   getSubtopics(): void {
@@ -64,18 +63,5 @@ export class SubtopicsComponent implements OnInit {
           this.getSubtopics();
         }
       });
-    this.subscription = this.mapService.notifyLocation
-      .subscribe((value) => {       
-        this.topicService.getTopics().subscribe(response => {
-          this.global.topicsData = response;
-          this.router.navigateByUrl('/topics');
-        });             
-      });
-  }
-
-  ngOnDestroy() {
-    if (this.subscription != undefined) {
-      this.subscription.unsubscribe();
-    }
   }
 }

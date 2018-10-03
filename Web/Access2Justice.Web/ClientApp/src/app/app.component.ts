@@ -4,6 +4,7 @@ import { StaticResourceService } from './shared/static-resource.service';
 import { MapService } from './shared/map/map.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
+import { TopicService } from './topics-resources/shared/topic.service';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +21,8 @@ export class AppComponent implements OnInit {
     private staticResourceService: StaticResourceService,
     private mapService: MapService,
     private spinner: NgxSpinnerService,
-    private router: Router
+    private router: Router,
+    private topicService: TopicService
   )
   { }
 
@@ -66,6 +68,15 @@ export class AppComponent implements OnInit {
       });
   }
 
+  getTopics() {
+    this.topicService.getTopics().subscribe(response => {
+      this.global.topicsData = response;
+      if (this.router.url.startsWith('/topics') || this.router.url.startsWith('/subtopics')) {
+        this.router.navigateByUrl('/topics');
+      }
+    });
+  }
+
   ngOnInit() {
     let profileData = this.getCookie("profileData");
     if (profileData != undefined) {
@@ -87,8 +98,10 @@ export class AppComponent implements OnInit {
     this.subscription = this.mapService.notifyLocation
       .subscribe((value) => {
         this.setStaticContentData();
+        this.getTopics();
       });
     this.setStaticContentData();
+    this.getTopics();
   }
 
   ngOnDestroy() {

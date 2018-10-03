@@ -8,6 +8,8 @@ import { SearchService } from '../../shared/search/search.service';
 import { PaginationService } from "../../shared/pagination/pagination.service";
 import { ShowMoreService } from "../../shared/sidebars/show-more/show-more.service";
 import { ISubtopicGuidedInput } from "../shared/topic";
+import { MapService } from "../../shared/map/map.service";
+import { Global } from "../../global";
 
 @Component({
   selector: 'app-subtopic-detail',
@@ -34,12 +36,11 @@ export class SubtopicDetailComponent implements OnInit {
   guidedSutopicDetailsInput: ISubtopicGuidedInput = { activeId: '', name: '' };
   luisInput: ILuisInput = { Sentence: '', Location: '', TranslateFrom: '', TranslateTo: '', LuisTopScoringIntent: '' };
   resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: { "state": "", "county": "", "city": "", "zipCode": "" }, IsResourceCountRequired: true };
-
   constructor(
     private topicService: TopicService,
     private activeRoute: ActivatedRoute,
     private navigateDataService: NavigateDataService,
-    private showMoreService: ShowMoreService
+    private showMoreService: ShowMoreService  
   ) { }
 
   filterSubtopicDetail(): void {
