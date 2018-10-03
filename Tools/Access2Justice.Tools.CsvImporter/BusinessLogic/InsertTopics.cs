@@ -38,7 +38,7 @@ namespace Access2Justice.Tools.BusinessLogic
                     bool isValidated = false;
                     foreach (Spreadsheet.Row row in sheetData.Elements<Spreadsheet.Row>())
                     {
-                        dynamic id = null; string name = string.Empty; string keywords = string.Empty;
+                        dynamic id = null; string name = string.Empty; string keywords = string.Empty; string organizationalUnit = string.Empty;
                         string state = string.Empty; string county = string.Empty; string city = string.Empty; string zipcode = string.Empty;
                         string overview = string.Empty; string quickLinkURLText = string.Empty; string quickLinkURLLink = string.Empty; string icon = string.Empty;
                         List<ParentTopicID> parentTopicIds = new List<ParentTopicID>();
@@ -92,28 +92,33 @@ namespace Access2Justice.Tools.BusinessLogic
                                     if (keyValue.Count() > 0)
                                     {
                                         string val = keyValue.First();
-                                        if (val.EndsWith("Topic_ID*", StringComparison.CurrentCultureIgnoreCase))
+                                        if (val.EndsWith("Topic_ID", StringComparison.CurrentCultureIgnoreCase))
                                         {
                                             id = cellActualValue.Trim();
                                         }
 
-                                        else if (val.EndsWith("Topic_Name*", StringComparison.CurrentCultureIgnoreCase))
+                                        else if (val.EndsWith("Topic_Name", StringComparison.CurrentCultureIgnoreCase))
                                         {
                                             name = cellActualValue.Trim();
                                         }
 
-                                        else if (val.EndsWith("Parent_Topic*", StringComparison.CurrentCultureIgnoreCase))
+                                        else if (val.EndsWith("Parent_Topic", StringComparison.CurrentCultureIgnoreCase))
                                         {
                                             string parentId = cellActualValue;
                                             parentTopicIds = GetParentId(parentId);
                                         }
 
-                                        else if (val.EndsWith("Keywords*", StringComparison.CurrentCultureIgnoreCase))
+                                        else if (val.EndsWith("Keywords", StringComparison.CurrentCultureIgnoreCase))
                                         {
                                             keywords = (cellActualValue).Trim();
                                         }
 
-                                        else if (val.EndsWith("Location_State*", StringComparison.CurrentCultureIgnoreCase))
+                                        else if (val.EndsWith("Organizational Unit", StringComparison.CurrentCultureIgnoreCase))
+                                        {
+                                            organizationalUnit = (cellActualValue).Trim();
+                                        }
+
+                                        else if (val.EndsWith("Location_State", StringComparison.CurrentCultureIgnoreCase))
                                         {
                                             state = (cellActualValue).Trim();
                                         }
@@ -164,17 +169,18 @@ namespace Access2Justice.Tools.BusinessLogic
                             locations = GetLocations(state, county, city, zipcode);
                             topic = new Topic()
                             {
-                                Id = id == "" ? Guid.NewGuid() : id,
+                                Id = (string.IsNullOrEmpty(id)|| string.IsNullOrWhiteSpace(id)) ? Guid.NewGuid() : id,
                                 Name = name,
                                 Overview = overview,
                                 QuickLinks = quickLinks,
                                 ParentTopicId = parentTopicIds.Count > 0 ? parentTopicIds : null,
                                 ResourceType = "Topics",
                                 Keywords = keywords,
+                                OrganizationalUnit = organizationalUnit,
                                 Location = locations,
                                 Icon = icon,
-                                CreatedBy = "Admin Import tool",
-                                ModifiedBy = "Admin Import tool"
+                                CreatedBy = Constants.Admin,
+                                ModifiedBy = Constants.Admin
                             };
                             topic.Validate();
                             topicsList.Add(topic);
@@ -203,13 +209,11 @@ namespace Access2Justice.Tools.BusinessLogic
             {
                 string trimParentTopicId = (parentsb[topicIdIterator]).Trim();
                 string parentTopicGuid = string.Empty;
-                if (trimParentTopicId.Length > 36)
+                if (trimParentTopicId.Length > 0)
                 {
-                    parentTopicGuid = trimParentTopicId.Substring(trimParentTopicId.Length - 36, 36);
-
                     parentTopicIds.Add(new ParentTopicID
                     {
-                        ParentTopicId = parentTopicGuid
+                        ParentTopicId = trimParentTopicId
                     });
                 }
             }
@@ -349,7 +353,7 @@ namespace Access2Justice.Tools.BusinessLogic
         {
             bool correctHeader = false;
             IStructuralEquatable actualHeader = header;
-            string[] expectedHeader = {"Topic_ID*", "Topic_Name*", "Parent_Topic*", "Keywords*", "Location_State*", "Location_County",
+            string[] expectedHeader = {"Topic_ID", "Topic_Name", "Parent_Topic", "Keywords", "Organizational Unit", "Location_State", "Location_County",
                 "Location_City", "Location_Zip", "Overview", "Quick_Links_URL_text", "Quick_Links_URL_link", "Icon" };
                
             correctHeader = InsertResources.HeaderValidation(header, expectedHeader, "Topics");          
