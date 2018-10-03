@@ -90,7 +90,7 @@ import { CuratedExperienceResultComponent } from './guided-assistant/curated-exp
     ProfileComponent,
     PersonalizedPlanComponent,
     StaticResourceService,
-    Global    
+    Global
   ],
   bootstrap: [AppComponent]
 })
