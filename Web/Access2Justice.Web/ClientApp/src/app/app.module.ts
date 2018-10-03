@@ -40,7 +40,6 @@ import { StaticResourceService } from './shared/static-resource.service';
 import { ResponseInterceptor } from './response-interceptor';
 import { Global } from './global';
 import { CuratedExperienceResultComponent } from './guided-assistant/curated-experience-result/curated-experience-result.component';
-import { TrimPipe } from 'ngx-pipes';
 
 @NgModule({
   declarations: [
@@ -91,8 +90,7 @@ import { TrimPipe } from 'ngx-pipes';
     ProfileComponent,
     PersonalizedPlanComponent,
     StaticResourceService,
-    Global,
-    TrimPipe
+    Global    
   ],
   bootstrap: [AppComponent]
 })

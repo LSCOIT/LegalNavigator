@@ -37,9 +37,7 @@ export class MapResultsComponent implements OnChanges {
       this.getMapResults(this.addressList);
     }
   }
-  transform(wordTrans) {
-
-  }
+  
   getMapResults(address) {
     this.addressList = address;
     this.latitudeLongitude = [];
