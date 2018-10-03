@@ -35,6 +35,7 @@ namespace Access2Justice.E2ETests
             fluentWait.Timeout = TimeSpan.FromSeconds(20);
             fluentWait.PollingInterval = TimeSpan.FromMilliseconds(200);
             fluentWait.IgnoreExceptionTypes(typeof(WebDriverException));
+
             fluentWait.IgnoreExceptionTypes(typeof(NoSuchElementException));
             fluentWait.IgnoreExceptionTypes(typeof(TimeoutException));
             fluentWait.IgnoreExceptionTypes(typeof(ElementNotVisibleException));

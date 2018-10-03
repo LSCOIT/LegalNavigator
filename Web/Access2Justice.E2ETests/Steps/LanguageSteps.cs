@@ -13,20 +13,18 @@ namespace Access2Justice.E2ETests
     [Binding]
     public class SetLanguageSteps : TechTalk.SpecFlow.Steps
     {
-        private IWebDriver driver => ScenarioContext.Get<IWebDriver>("driver");
-        private DefaultWait<IWebDriver> fluentWait => ScenarioContext.Get<DefaultWait<IWebDriver>>("fluentWait");
-        private HomePage HomePage;
+        HomePage HomePage = new HomePage();
 
         [When(@"I select a language from the navigation bar")]
-        public void WhenISelectALanguageFromTheNavigationBar()
+        public void WhenISelectALanguageFromTheNavigationBar(dynamic instance)
         {
-            
+            HomePage.PickLanguage(instance.Language);        
         }
         
         [Then(@"I should see my page translated")]
         public void ThenIShouldSeeMyPageTranslated()
         {
-            Assert.IsTrue(true);
+            HomePage.ConfirmPageTranslated();
         }
     }
 }

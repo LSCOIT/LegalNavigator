@@ -9,4 +9,6 @@ Scenario: Set preferred language
 	| State  |
 	| Alaska |
     When I select a language from the navigation bar
+	| Language |
+	| Chinese (Simplified) |
     Then I should see my page translated

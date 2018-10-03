@@ -106,9 +106,14 @@ this.ScenarioInitialize(scenarioInfo);
                         "Alaska"});
 #line 8
     testRunner.Given("I am on the Access2Justice website with state set", ((string)(null)), table1, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Language"});
+            table2.AddRow(new string[] {
+                        "Chinese (Simplified)"});
 #line 11
-    testRunner.When("I select a language from the navigation bar", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 12
+    testRunner.When("I select a language from the navigation bar", ((string)(null)), table2, "When ");
+#line 14
     testRunner.Then("I should see my page translated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
