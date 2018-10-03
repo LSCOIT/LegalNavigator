@@ -4,7 +4,7 @@
     <div class="pull-right">
       <span class="search-form" (click)="toggleSearch()" *ngIf="!showSearch">
         <img *ngIf="search.image.source" class="search-icon" [src]="blobUrl + search?.image?.source" aria-hidden="true" />
-        <span class="inline search-text">{{search?.button?.buttonText}}</span>
+        <span id="search-phrase-tab" class="inline search-text">{{search?.button?.buttonText}}</span>
       </span>
       <span class="web-hidden pull-right" id="nav-bar-toggle" (click)="openNav()">&#9776;</span>
     </div>
