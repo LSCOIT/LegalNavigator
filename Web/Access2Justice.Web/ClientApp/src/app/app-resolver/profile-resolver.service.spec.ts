@@ -14,16 +14,19 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { BroadcastService } from '@azure/msal-angular/dist/broadcast.service';
 import { ArrayUtilityService } from '../shared/array-utility.service';
 import { ToastrService } from 'ngx-toastr';
+import { LoginService } from '../shared/login/login.service';
 
 describe('ProfileResolverService', () => {
   let profileResolverService: ProfileResolverService;
   const httpSpy = jasmine.createSpyObj('http', ['get', 'post', 'put']);
   let global: Global;
   let msalService: MsalService;
+  let loginService: LoginService;
   let personalizedPlanService: PersonalizedPlanService;
   var originalTimeout;
   let arrayUtilityService: ArrayUtilityService;
   let mockToastr;
+
   beforeEach(() => {
     mockToastr = jasmine.createSpyObj(['success']);
     TestBed.configureTestingModule({
@@ -36,11 +39,11 @@ describe('ProfileResolverService', () => {
         ArrayUtilityService,
         ToastrService,
         { provide: MSAL_CONFIG, useValue: {} },
-        { provide: ToastrService, useValue: mockToastr }
-
+        { provide: ToastrService, useValue: mockToastr },
+        LoginService
       ]
     });
-    profileResolverService = new ProfileResolverService(global, httpSpy, msalService, personalizedPlanService);
+    profileResolverService = new ProfileResolverService(global, msalService, loginService);
     arrayUtilityService = new ArrayUtilityService();
     httpSpy.get.calls.reset();
 
@@ -51,6 +54,7 @@ describe('ProfileResolverService', () => {
   it('should be created', inject([ProfileResolverService], (profileResolverService: ProfileResolverService) => {
     expect(profileResolverService).toBeDefined();
   }));
+
   it('should be created', inject([ProfileResolverService], (profileResolverService: ProfileResolverService) => {
     expect(profileResolverService).toBeTruthy();
   }));
