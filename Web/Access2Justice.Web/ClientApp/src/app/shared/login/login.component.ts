@@ -5,9 +5,8 @@ import { Login } from '../navigation/navigation';
 import { Router } from '@angular/router';
 import { Subscription } from "rxjs/Subscription";
 import { Global, UserStatus } from '../../global';
-import { MsalService, BroadcastService } from '@azure/msal-angular';
+import { MsalService } from '@azure/msal-angular';
 import { IUserProfile } from './user-profile.model';
-import { PersonalizedPlanService } from '../../guided-assistant/personalized-plan/personalized-plan.service';
 
 @Component({
   selector: 'app-login',
@@ -27,9 +26,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private router: Router,
               private global: Global,
-              private msalService: MsalService,
-              private broadcastService: BroadcastService,
-              private personalizedPlanService: PersonalizedPlanService) { }
+              private msalService: MsalService) { }
 
   onProfileOptionClick() {
     this.sendProfileOptionClickEvent.emit();
@@ -62,7 +59,7 @@ export class LoginComponent implements OnInit {
     this.userProfile = this.msalService.getUser();
     if (this.userProfile) {
       this.isLoggedIn = true;
-      this.userProfileName = this.userProfile.idToken['name'];
+      this.userProfileName = this.userProfile.idToken['name'] ? this.userProfile.idToken['name'] : this.userProfile.idToken['preferred_username'];
     }
   }
 }

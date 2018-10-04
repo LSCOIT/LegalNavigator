@@ -36,8 +36,8 @@ export class AppComponent implements OnInit {
     }
     this.loginService.upsertUserProfile(this.userProfile)
       .subscribe(response => {
-        if (response) {
-          this.global.setProfileData(response.oId, response.name);          
+        if (response) {          
+          this.global.setProfileData(response.oId, response.name, response.eMail);          
         }
       });
   }
