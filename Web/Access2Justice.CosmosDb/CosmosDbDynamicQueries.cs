@@ -275,5 +275,11 @@ namespace Access2Justice.CosmosDb
             }
             return await backendDatabaseService.QueryItemsAsync(collectionId, query);
         }
+
+        public async Task<dynamic> FindItemsAllAsync(string collectionId)
+        {            
+            var query = $"SELECT * FROM c";            
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query);
+        }
     }
 }

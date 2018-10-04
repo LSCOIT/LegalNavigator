@@ -275,5 +275,16 @@ namespace Access2Justice.Api.Controllers
             return Content(response);
         }
 
+        /// Get all topics
+        /// </summary>
+        /// <param name=""></param>
+        /// <returns>all topics from cosmos db</returns>
+        [Route("api/topics/getalltopics")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllTopics()
+        {
+            var response = await topicsResourcesBusinessLogic.GetAllTopics();
+            return Ok(response);
+        }
     }
 }
