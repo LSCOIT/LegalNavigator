@@ -62,11 +62,7 @@ namespace Access2Justice.Api.Authorization
 
         public async Task<bool> CheckPermissions(string oId)
         {
-            if ((await userRoleBusinessLogic.GetPermissionDataAsyn(oId)).Contains(action.ToString()))
-            {
-                return true;
-            }
-            return false;
+            return ((await userRoleBusinessLogic.GetPermissionDataAsyn(oId)).Contains(action.ToString())) ? true : false;           
         }
     }
 }
