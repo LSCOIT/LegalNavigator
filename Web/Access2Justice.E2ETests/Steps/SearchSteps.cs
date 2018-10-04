@@ -13,13 +13,13 @@ namespace Access2Justice.E2ETests.Steps
         [When(@"I type (.*) into the search input field and click search button")]
         public void WhenITypeAPhraseIntoTheSearchInputFieldAndClickSearchButton(string phrase)
         {
-            HomePage.searchByPhrase(phrase);
+            HomePage.SearchByPhrase(phrase);
         }
         
         [Then(@"I can see search results")]
         public void ThenICanSeeSearchResults()
         {
-            HomePage.confirmResults();
+            HomePage.ConfirmResults();
         }
     }
 }

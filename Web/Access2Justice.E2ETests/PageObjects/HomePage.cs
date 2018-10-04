@@ -144,7 +144,7 @@ namespace Access2Justice.E2ETests.PageObjects
             updateLocationButton.Click();
         }
 
-        public void confirmStateNameHasBeenSet(dynamic state)
+        public void ConfirmStateNameHasBeenSet(dynamic state)
         {
             fluentWait.Until(d =>
             {    
@@ -159,17 +159,17 @@ namespace Access2Justice.E2ETests.PageObjects
             Assert.AreEqual(userLocation.Text, Convert.ToString(state));
         }
 
-        public void confirmModalPresent()
+        public void ConfirmModalPresent()
         {
             Assert.IsTrue(modal.Displayed);
         }
 
-        public void confirmPageTitle()
+        public void ConfirmPageTitle()
         {
             Assert.AreEqual(driver.Title, "Access to Justice");
         }
 
-        public void searchByPhrase(string phrase)
+        public void SearchByPhrase(string phrase)
         {
             fluentWait.Until(d =>
             {
@@ -186,7 +186,7 @@ namespace Access2Justice.E2ETests.PageObjects
             searchPhraseButton.Click();
         }
 
-        public void confirmResults()
+        public void ConfirmResults()
         {
             fluentWait.Until(d =>
             {
@@ -198,6 +198,28 @@ namespace Access2Justice.E2ETests.PageObjects
                 return false;
             });
             Assert.IsTrue(searchPhraseResults.Count > 0);
+        }
+
+        public void ClickButton(string buttonId)
+        {
+
+            IWebElement buttonToClick = fluentWait.Until(d =>
+            {
+                IWebElement button = driver.FindElement(By.Id(buttonId));
+                if (button != null && button.Displayed && button.Enabled)
+                {
+                    return button;
+                }
+
+                return null;
+            });
+
+            buttonToClick.Click();
+        }
+
+        public void ConfirmOnHomePage()
+        {
+            Assert.AreEqual(driver.Url, ScenarioContext.Current["baseUrl"]);
         }
     }
 }

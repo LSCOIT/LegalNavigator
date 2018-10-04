@@ -4,8 +4,10 @@
 	I want to be told the sum of two numbers
 
 @mytag
-Scenario: Add two numbers
-	Given I have entered 50 into the calculator
-	And I have entered 70 into the calculator
-	When I press add
-	Then the result should be 120 on the screen
+Scenario: Navigate to topics page from home page
+	Given I am on the Access2Justice website with state set
+	| State  |
+	| Alaska |
+	And I am on the home page
+	When I press See More Topics button in the section named More Information, Videos, and Links to Resources
+	Then I should directed to the Topics and Resources page

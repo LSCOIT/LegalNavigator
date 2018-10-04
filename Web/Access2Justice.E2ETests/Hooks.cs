@@ -21,13 +21,14 @@ namespace Access2Justice.E2ETests
     public sealed class Hooks : TechTalk.SpecFlow.Steps
     {
 
-        [BeforeScenario]
-        public void OutputScenario()
-        {
-            Debug.WriteLine("Feature: " + FeatureContext.Current.FeatureInfo.Title);
-            Debug.WriteLine(FeatureContext.Current.FeatureInfo.Description);
-            Debug.WriteLine("\r\nScenario: " + ScenarioContext.Current.ScenarioInfo.Title);
-        }
+        //[BeforeScenario]
+        //public void OutputScenario()
+        //{
+        //    Console.WriteLine("Feature: " + FeatureContext.Current.FeatureInfo.Title);
+        //    Console.ReadLine();
+        //    Console.WriteLine(FeatureContext.Current.FeatureInfo.Description);
+        //    Console.WriteLine("\r\nScenario: " + ScenarioContext.Current.ScenarioInfo.Title);
+        //}
 
         [BeforeScenario]
         public void OpenBrowser()
@@ -40,6 +41,7 @@ namespace Access2Justice.E2ETests
             IWebDriver driver = new ChromeDriver(options);
             driver.Url = "http://localhost:5150/";
             ScenarioContext.Add("driver", driver);
+            ScenarioContext.Add("baseUrl", driver.Url);
 
             DefaultWait<IWebDriver> fluentWait = new DefaultWait<IWebDriver>(driver);
             fluentWait.Timeout = TimeSpan.FromSeconds(20);

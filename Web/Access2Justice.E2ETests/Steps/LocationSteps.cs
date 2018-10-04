@@ -29,12 +29,13 @@ namespace Access2Justice.E2ETests.Steps
         [Given(@"I am on the Access2Justice website with location detection blocked")]
         public void GivenIAmOnTheAccessJusticeWebsiteWithLocationDetectionBlocked()
         {
-            HomePage.confirmPageTitle();
+            HomePage.ConfirmPageTitle();
         }
 
         [Given(@"I am on the Access2Justice website with state set")]
         public void GivenIAmOnTheAccessJusticeWebsiteWithStateSet(dynamic instance)
         {
+            HomePage.ConfirmPageTitle();
             GivenIAmPromptedToSetMyLocation();
             WhenIEnterMyStateName(instance);
             ThenICanSeeMyStateNameOnTheUpperNavigationBar(instance);
@@ -43,7 +44,7 @@ namespace Access2Justice.E2ETests.Steps
         [Given(@"I am prompted to set my location")]
         public void GivenIAmPromptedToSetMyLocation()
         {
-            HomePage.confirmModalPresent();
+            HomePage.ConfirmModalPresent();
         }
 
         [When(@"I click on the Change button")]
@@ -62,7 +63,7 @@ namespace Access2Justice.E2ETests.Steps
         [Then(@"I can see my state name on the upper navigation bar")]
         public void ThenICanSeeMyStateNameOnTheUpperNavigationBar(dynamic instance)
         {
-            HomePage.confirmStateNameHasBeenSet(instance.State);
+            HomePage.ConfirmStateNameHasBeenSet(instance.State);
         }
     }
 }

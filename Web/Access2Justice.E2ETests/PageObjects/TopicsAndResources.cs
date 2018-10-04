@@ -20,7 +20,12 @@ namespace Access2Justice.E2ETests.PageObjects
         private IWebDriver driver => ScenarioContext.Current.Get<IWebDriver>("driver");
         private DefaultWait<IWebDriver> fluentWait => ScenarioContext.Current.Get<DefaultWait<IWebDriver>>("fluentWait");
 
+        public void ConfirmOnTopicsAndResourcesPage()
+        {
+            StringAssert.Contains(driver.Url, "topics");
+        }
 
+        
 
     }
 }
