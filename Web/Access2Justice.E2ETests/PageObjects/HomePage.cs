@@ -55,11 +55,6 @@ namespace Access2Justice.E2ETests.PageObjects
         [FindsBy(How = How.TagName, Using = "app-resource-card")]
         private IList<IWebElement> searchPhraseResults;
 
-        private class SearchPhrase
-        {
-            public string Content { get; set; }
-        }
-
         public HomePage()
         {
             // Need to find another solution for PageFactory in the future: 

@@ -13,12 +13,22 @@ using TechTalk.SpecFlow;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
+using System.Diagnostics;
 
 namespace Access2Justice.E2ETests
 {
     [Binding]
     public sealed class Hooks : TechTalk.SpecFlow.Steps
     {
+
+        [BeforeScenario]
+        public void OutputScenario()
+        {
+            Debug.WriteLine("Feature: " + FeatureContext.Current.FeatureInfo.Title);
+            Debug.WriteLine(FeatureContext.Current.FeatureInfo.Description);
+            Debug.WriteLine("\r\nScenario: " + ScenarioContext.Current.ScenarioInfo.Title);
+        }
+
         [BeforeScenario]
         public void OpenBrowser()
         {
