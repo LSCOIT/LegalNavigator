@@ -70,7 +70,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
       this.route.data.map(data => data.cres)
         .subscribe(response => {
           if (response) {
-            this.global.setProfileData(response.oId, response.name);
+            this.global.setProfileData(response.oId, response.name, response.eMail);
             this.personalizedPlanService.saveResourcesToUserProfile();
           }
         });
