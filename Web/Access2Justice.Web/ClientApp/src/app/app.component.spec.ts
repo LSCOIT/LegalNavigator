@@ -25,6 +25,7 @@ import { PersonalizedPlanService } from './guided-assistant/personalized-plan/pe
 import { HttpClientModule } from '@angular/common/http';
 import { ArrayUtilityService } from './shared/array-utility.service';
 import { ToastrService } from 'ngx-toastr';
+import { LoginService } from './shared/login/login.service';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -102,6 +103,7 @@ describe('AppComponent', () => {
         { provide: ToastrService, useValue: toastrService },
         NgxSpinnerService,
         BroadcastService,
+        LoginService
       ],
       schemas: [
         NO_ERRORS_SCHEMA,
