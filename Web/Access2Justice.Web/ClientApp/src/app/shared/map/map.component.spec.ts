@@ -16,6 +16,7 @@ import { of } from 'rxjs/observable/of';
 import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
+import { FormsModule } from '@angular/forms';
 
 class MockBsModalRef {
   public isHideCalled = false;
@@ -52,7 +53,7 @@ describe('MapComponent', () => {
     msalService = jasmine.createSpyObj(['getUser']);
 
     TestBed.configureTestingModule({
-      imports: [HttpClientModule, RouterTestingModule, ModalModule.forRoot()],
+      imports: [HttpClientModule, RouterTestingModule, ModalModule.forRoot(), FormsModule],
       declarations: [MapComponent],
       providers: [
         BsModalService,
