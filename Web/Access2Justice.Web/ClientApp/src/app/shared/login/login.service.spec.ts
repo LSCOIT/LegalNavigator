@@ -43,7 +43,7 @@ describe('LoginService', () => {
     expect(service).toBeDefined();
   }));
 
-  it('should be Inerted the user profile details', (done) => {
+  it('should be upsert the user profile details', (done) => {
     httpSpy.post.and.returnValue(mockResponse);
     service.upsertUserProfile(userProfile).subscribe(updatedProfile => {
       expect(httpSpy.post).toHaveBeenCalled();
