@@ -66,6 +66,7 @@ button, .btn {
   border-radius: 24px;
   padding: 10px 40px;
   font-weight: 600;
+  margin: 20px auto;
 }
 
 .btn-sm {
@@ -339,5 +340,9 @@ input[type=checkbox]:checked ~ .check::before {
   .pxs {
     font-size: 12px;
     line-height: 20px;
+  }
+
+  .btn {
+    margin: 40px auto;
   }
 }

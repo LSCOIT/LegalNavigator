@@ -30,6 +30,14 @@ a:not([href]):not([tabindex]) {
   color: #0D3FBB;
 }
 
+.pull-right {
+  float: right;
+}
+
+.pull-left {
+  float: left;
+}
+
 /*Login Dropdown*/
 .nav .open > a, .nav .open > a:focus, .nav .open > a:hover {
   background-color: #fff;

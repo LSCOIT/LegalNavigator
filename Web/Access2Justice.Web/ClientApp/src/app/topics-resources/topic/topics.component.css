@@ -4,6 +4,7 @@
   border-right: 1px solid #ddd;
   cursor: pointer;
   height: 200px;
+  float: left;
 }
 
 .topic-list:nth-child(2n) {
@@ -69,5 +70,13 @@
 
   .topic-list:nth-last-child(-n+4) {
     border-bottom: none;
+  }
+
+  .half-size-list {
+    height: 200px;
+  }
+
+  .half-size-list a img {
+    margin-top: 20px;
   }
 }

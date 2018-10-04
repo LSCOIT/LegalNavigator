@@ -1,14 +1,10 @@
-<div class="container">
-  <div class="row">
-    <div class="text-center">
-      <h2>Tell us what's going on</h2>
-    </div>
-  </div>
+<div class="container text-center">
+  <h2>Tell us what's going on</h2>
   <div class="row">
     <div class="col-md-6 col-sm-8 col-md-offset-3 col-sm-offset-2">
       <form #guidedAssistantSearchForm="ngForm" (ngSubmit)="onSubmit(guidedAssistantSearchForm)" aria-label="search box">
         <div class="form-group">
-          <textarea class="form-control" rows="3"  autocomplete="off" aria-label="Search Box" name="searchText" [(ngModel)]="searchText"></textarea>
+          <textarea class="form-control" rows="3"  autocomplete="off" placeholder="Keyword or phrase" aria-label="Search Box" name="searchText" [(ngModel)]="searchText"></textarea>
           <div class="col-sm-12 text-center">
             <button class="btn btn-primary" type="submit" aria-label="search button">Continue</button>
           </div>
