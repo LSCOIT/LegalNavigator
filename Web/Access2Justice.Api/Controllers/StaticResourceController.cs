@@ -44,14 +44,10 @@ namespace Access2Justice.Api.Controllers
         [Route("api/staticresource/upsertstatichomepage")]
         public async Task<IActionResult> UpsertStaticHomePageDataAsync([FromBody]HomeContent homePageContent, Location location)
         {
-            if (HttpContext.User.Claims.FirstOrDefault() != null)
+            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(homePageContent.OrganizationalUnit))
             {
-                string oId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
-                if (await userRoleBusinessLogic.GetOrganizationalUnit(oId, homePageContent.OrganizationalUnit))
-                {
-                    var contents = await staticResourceBusinessLogic.UpsertStaticHomePageDataAsync(homePageContent, location);
-                    return Ok(contents);
-                }
+                var contents = await staticResourceBusinessLogic.UpsertStaticHomePageDataAsync(homePageContent, location);
+                return Ok(contents);
             }
             return StatusCode(403);
         }
@@ -66,14 +62,10 @@ namespace Access2Justice.Api.Controllers
         [Route("api/staticresource/upsertstaticprivacypage")]
         public async Task<IActionResult> UpsertStaticPrivacyPromisePageDataAsync([FromBody]PrivacyPromiseContent privacyPromiseContent, Location location)
         {
-            if (HttpContext.User.Claims.FirstOrDefault() != null)
+            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(privacyPromiseContent.OrganizationalUnit))
             {
-                string oId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
-                if (await userRoleBusinessLogic.GetOrganizationalUnit(oId, privacyPromiseContent.OrganizationalUnit))
-                {
-                    var contents = await staticResourceBusinessLogic.UpsertStaticPrivacyPromisePageDataAsync(privacyPromiseContent, location);
-                    return Ok(contents);
-                }
+                var contents = await staticResourceBusinessLogic.UpsertStaticPrivacyPromisePageDataAsync(privacyPromiseContent, location);
+                return Ok(contents);
             }
             return StatusCode(403);
         }
@@ -88,14 +80,10 @@ namespace Access2Justice.Api.Controllers
         [Route("api/staticresource/upsertstatichelpandfaqpage")]
         public async Task<IActionResult> UpsertStaticHelpAndFAQPageDataAsync([FromBody]HelpAndFaqsContent helpAndFAQPageContent, Location location)
         {
-            if (HttpContext.User.Claims.FirstOrDefault() != null)
+            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(helpAndFAQPageContent.OrganizationalUnit))
             {
-                string oId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
-                if (await userRoleBusinessLogic.GetOrganizationalUnit(oId, helpAndFAQPageContent.OrganizationalUnit))
-                {
-                    var contents = await staticResourceBusinessLogic.UpsertStaticHelpAndFAQPageDataAsync(helpAndFAQPageContent, location);
-                    return Ok(contents);
-                }
+                var contents = await staticResourceBusinessLogic.UpsertStaticHelpAndFAQPageDataAsync(helpAndFAQPageContent, location);
+                return Ok(contents);
             }
             return StatusCode(403);
         }
@@ -110,14 +98,10 @@ namespace Access2Justice.Api.Controllers
         [Route("api/staticresource/upsertstaticnavigation")]
         public async Task<IActionResult> UpsertStaticNavigationDataAsync([FromBody]Navigation navigationContent, Location location)
         {
-            if (HttpContext.User.Claims.FirstOrDefault() != null)
+            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(navigationContent.OrganizationalUnit))
             {
-                string oId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
-                if (await userRoleBusinessLogic.GetOrganizationalUnit(oId, navigationContent.OrganizationalUnit))
-                {
-                    var contents = await staticResourceBusinessLogic.UpsertStaticNavigationDataAsync(navigationContent, location);
-                    return Ok(contents);
-                }
+                var contents = await staticResourceBusinessLogic.UpsertStaticNavigationDataAsync(navigationContent, location);
+                return Ok(contents);
             }
             return StatusCode(403);
         }
@@ -132,14 +116,10 @@ namespace Access2Justice.Api.Controllers
         [Route("api/staticresource/upsertstaticaboutpage")]
         public async Task<IActionResult> UpsertStaticAboutPageDataAsync([FromBody]AboutContent aboutContent, Location location)
         {
-            if (HttpContext.User.Claims.FirstOrDefault() != null)
+            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(aboutContent.OrganizationalUnit))
             {
-                string oId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
-                if (await userRoleBusinessLogic.GetOrganizationalUnit(oId, aboutContent.OrganizationalUnit))
-                {
-                    var contents = await staticResourceBusinessLogic.UpsertStaticAboutPageDataAsync(aboutContent, location);
-                    return Ok(contents);
-                }
+                var contents = await staticResourceBusinessLogic.UpsertStaticAboutPageDataAsync(aboutContent, location);
+                return Ok(contents);
             }
             return StatusCode(403);
         }

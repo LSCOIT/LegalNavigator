@@ -265,14 +265,10 @@ namespace Access2Justice.Api.Controllers
         [Route("api/upserttopicdocument")]
         public async Task<IActionResult> UpsertTopicDocument([FromBody]dynamic topic)
         {
-            if (HttpContext.User.Claims.FirstOrDefault() != null)
+            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(topic.OrganizationalUnit))
             {
-                string oId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
-                if (await userRoleBusinessLogic.GetOrganizationalUnit(oId, topic.OrganizationalUnit))
-                {
-                    var topics = await topicsResourcesBusinessLogic.UpsertTopicDocumentAsync(topic);
-                    return Ok(topics);
-                }
+                var topics = await topicsResourcesBusinessLogic.UpsertTopicDocumentAsync(topic);
+                return Ok(topics);
             }
             return StatusCode(403);
         }

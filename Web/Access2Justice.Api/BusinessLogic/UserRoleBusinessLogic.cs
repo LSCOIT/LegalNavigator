@@ -2,6 +2,7 @@
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Access2Justice.Shared.Utilities;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,23 +14,17 @@ namespace Access2Justice.Api.BusinessLogic
     {
         private readonly IDynamicQueries dbClient;
         private readonly ICosmosDbSettings dbSettings;
-        private readonly IBackendDatabaseService dbService;
         private readonly IUserProfileBusinessLogic dbUserProfile;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
         public UserRoleBusinessLogic(IDynamicQueries dynamicQueries, ICosmosDbSettings cosmosDbSettings,
-            IBackendDatabaseService backendDatabaseService, IUserProfileBusinessLogic userProfileBusinessLogic)
+            IUserProfileBusinessLogic userProfileBusinessLogic,
+            IHttpContextAccessor httpContextAccessor)
         {
             dbClient = dynamicQueries;
             dbSettings = cosmosDbSettings;
-            dbService = backendDatabaseService;
             dbUserProfile = userProfileBusinessLogic;
-        }
-        public async Task<List<UserRole>> GetUserRoles()
-        {
-            List<UserRole> userRole = new List<UserRole>();
-            var result = await dbClient.FindItemsWhereAsync(dbSettings.UserRoleCollectionId, Constants.Type, Constants.UserRole);
-            userRole = JsonUtilities.DeserializeDynamicObject<List<UserRole>>(result);
-            return userRole;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<List<UserRole>> GetUserRoleDataAsync(string roleInformationId)
@@ -39,30 +34,7 @@ namespace Access2Justice.Api.BusinessLogic
             userRole = JsonUtilities.DeserializeDynamicObject<List<UserRole>>(result);
             return userRole;
         }
-
-        public async Task<string> GetRoleInfo(string oId)
-        {
-            string roleName = string.Empty;
-            List<UserRole> userRole = new List<UserRole>();
-            var userProfile = await dbUserProfile.GetUserProfileDataAsync(oId);
-            if (userProfile != null && userProfile?.RoleInformationId != Guid.Empty)
-            {
-                userRole = await GetUserRoleDataAsync(userProfile?.RoleInformationId.ToString());
-                if (userRole.Count() > 0)
-                {
-                    roleName = userRole[0].RoleName;
-                }
-            }
-            return roleName;
-        }
-
-        public async Task<UserProfile> GetUserProfileDataAsync(string userName)
-        {
-            var resultUserData = await dbClient.FindItemsWhereAsync(dbSettings.UserProfileCollectionId, Constants.UserName, userName);
-            List<UserProfile> userProfile = JsonUtilities.DeserializeDynamicObject<List<UserProfile>>(resultUserData);
-            return userProfile.Count() == 0 ? null : userProfile[0];
-        }
-
+        
         public async Task<List<string>> GetPermissionDataAsyn(string oId)
         {
             List<string> permissionPaths = new List<string>();
@@ -70,7 +42,7 @@ namespace Access2Justice.Api.BusinessLogic
             var userProfile = await dbUserProfile.GetUserProfileDataAsync(oId);
             if (userProfile != null && userProfile?.RoleInformationId != Guid.Empty)
             {
-                userRole = await GetUserRoleDataAsync(userProfile?.RoleInformationId.ToString());
+                userRole = await GetUserRoleDataAsync(userProfile.RoleInformationId.ToString());
                 if (userRole.Count() > 0)
                 {
                     if (userRole[0].Permissions.Count() > 0)
@@ -81,49 +53,28 @@ namespace Access2Justice.Api.BusinessLogic
             }
             return permissionPaths;
         }
-        public async Task<List<Permission>> GetPermissionDetails()
-        {
-            List<Permission> permissions = new List<Permission>();
-            var result = await dbClient.FindItemsWhereAsync(dbSettings.UserRoleCollectionId, Constants.Type, Constants.PermissionDetails);
-            List<PermissionDetails> permissionDetails = JsonUtilities.DeserializeDynamicObject<List<PermissionDetails>>(result);
-            if (permissionDetails.Count() > 0)
-            {
-                if (permissionDetails[0].Permissions.Count() > 0)
-                {
-                    foreach (var permission in permissionDetails[0].Permissions)
-                    {
-                        permissions.Add(new Permission()
-                        {
-                            PermissionId = permission.PermissionId,
-                            PermissionName = permission.PermissionName,
-                            Path = permission.Path
-                        });
-                    }
-                }
-            }
-            return permissions;
-        }
 
-        public async Task<bool> GetOrganizationalUnit(string oId, string ou)
+        public async Task<bool> ValidateOrganizationalUnit(string ou)
         {
+            string oId = string.Empty;
+            if (httpContextAccessor.HttpContext.User.Claims.FirstOrDefault() != null)
+            {
+                oId = httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+            }
             if (string.IsNullOrEmpty(ou) || string.IsNullOrEmpty(oId))
                 return false;
 
             oId = EncryptionUtilities.GenerateSHA512String(oId);
-            var userProfile = await dbUserProfile.GetUserProfileDataAsync(oId);
-            if (userProfile?.RoleInformationId != Guid.Empty)
+            UserProfile userProfile = await dbUserProfile.GetUserProfileDataAsync(oId);
+            if (!(string.IsNullOrEmpty(userProfile?.OrganizationalUnit)))
             {
-                List<UserRole> userRole = await GetUserRoleDataAsync(userProfile.RoleInformationId.ToString());
-                if (userRole?.Count() > 0)
+                List<string> orgUnits = ou.Split(Constants.Delimiter).Select(p => p.Trim()).ToList();
+                List<string> userOUs = userProfile.OrganizationalUnit.Split(Constants.Delimiter).Select(p => p.Trim()).ToList();
+                foreach (var userOU in userOUs)
                 {
-                    List<string> orgUnits = ou.Split(Constants.Delimiter).Select(p => p.Trim()).ToList();
-                    List<string> userOUs = userRole[0].OrganizationalUnit.Split(Constants.Delimiter).Select(p => p.Trim()).ToList();
-                    foreach (var userOU in userOUs)
+                    if (!string.IsNullOrEmpty(userOU) && orgUnits.Find(x => x.Contains(userOU)) != null)
                     {
-                        if (!string.IsNullOrEmpty(userOU) && orgUnits.Find(x => x.Contains(userOU)) != null)
-                        {
-                            return true;
-                        }
+                        return true;
                     }
                 }
             }

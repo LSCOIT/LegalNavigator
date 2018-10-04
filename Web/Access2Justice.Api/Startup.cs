@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Configuration;
@@ -58,7 +59,8 @@ namespace Access2Justice.Api
             services.AddSingleton<IStaticResourceBusinessLogic, StaticResourceBusinessLogic>();
             services.AddSingleton<IShareBusinessLogic, ShareBusinessLogic>();
             services.AddSingleton<IUserRoleBusinessLogic, UserRoleBusinessLogic>();
-            
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             services.AddAuthentication(sharedOptions =>
             {
                 sharedOptions.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;

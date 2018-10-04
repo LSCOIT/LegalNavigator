@@ -55,6 +55,9 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "roleInformationId")]
         public Guid RoleInformationId { get; set; }
 
+        [JsonProperty(PropertyName = "organizationalUnit")]
+        public string OrganizationalUnit { get; set; }
+
     }
 
     public class UserProfileViewModel
