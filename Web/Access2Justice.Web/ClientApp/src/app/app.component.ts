@@ -101,7 +101,6 @@ export class AppComponent implements OnInit {
         this.getTopics();
       });
     this.setStaticContentData();
-    this.getTopics();
   }
 
   ngOnDestroy() {

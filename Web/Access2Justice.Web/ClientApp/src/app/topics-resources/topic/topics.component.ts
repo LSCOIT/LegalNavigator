@@ -31,7 +31,16 @@ export class TopicsComponent implements OnInit {
 
   ngOnInit() {
     if (!this.global.topicsData) {
-      this.getTopics();
+      this.subscription = this.mapService.notifyLocation
+        .subscribe((value) => {
+          this.getTopics();
+        });
     } else { this.topics = this.global.topicsData; }
   }
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+
 }
