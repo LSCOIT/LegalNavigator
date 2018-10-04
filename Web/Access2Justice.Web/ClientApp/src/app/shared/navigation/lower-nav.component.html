@@ -18,7 +18,7 @@
       <ul class="nav navbar-nav mobile-hidden">
         <li><a [routerLink]="['/' + home?.button?.buttonLink]" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">{{home?.button?.buttonText}}</a></li>
         <li><a [routerLink]="['/' + guidedAssistant?.button?.buttonLink]" routerLinkActive="active">{{guidedAssistant?.button?.buttonText}}</a></li>
-        <li><a [routerLink]="['/' + topicAndResources?.button?.buttonLink]" routerLinkActive="active">{{topicAndResources?.button?.buttonText}}</a></li>
+        <li><a id="topics-and-resources-navigation-link" [routerLink]="['/' + topicAndResources?.button?.buttonLink]" routerLinkActive="active">{{topicAndResources?.button?.buttonText}}</a></li>
         <li><a [routerLink]="['/' + about?.button?.buttonLink]" routerLinkActive="active">{{about?.button?.buttonText}}</a></li>
       </ul>
     </div>

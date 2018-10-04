@@ -91,12 +91,10 @@ namespace Access2Justice.E2ETests.Features
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Navigate to topics page from home page")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "TopicsAndResources")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("mytag")]
         public virtual void NavigateToTopicsPageFromHomePage()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Navigate to topics page from home page", null, new string[] {
-                        "mytag"});
-#line 7
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Navigate to topics page from home page", null, ((string[])(null)));
+#line 6
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
 #line hidden
@@ -104,14 +102,38 @@ this.ScenarioInitialize(scenarioInfo);
                         "State"});
             table1.AddRow(new string[] {
                         "Alaska"});
-#line 8
+#line 7
  testRunner.Given("I am on the Access2Justice website with state set", ((string)(null)), table1, "Given ");
-#line 11
+#line 10
  testRunner.And("I am on the home page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 12
+#line 11
  testRunner.When("I press See More Topics button in the section named More Information, Videos, and" +
                     " Links to Resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 13
+#line 12
+ testRunner.Then("I should directed to the Topics and Resources page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Navigate to topics page by clicking on lower navigation bar")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "TopicsAndResources")]
+        public virtual void NavigateToTopicsPageByClickingOnLowerNavigationBar()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Navigate to topics page by clicking on lower navigation bar", null, ((string[])(null)));
+#line 14
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line hidden
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                        "State"});
+            table2.AddRow(new string[] {
+                        "Alaska"});
+#line 15
+ testRunner.Given("I am on the Access2Justice website with state set", ((string)(null)), table2, "Given ");
+#line 18
+ testRunner.When("I click on Topics & Resources on the lower navigation bar", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 19
  testRunner.Then("I should directed to the Topics and Resources page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
