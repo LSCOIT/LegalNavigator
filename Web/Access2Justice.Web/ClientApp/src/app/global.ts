@@ -29,9 +29,9 @@ export class Global {
     this.msalService.loginRedirect(environment.consentScopes);
   }
 
-  setProfileData(oId: string, name: string) {
+  setProfileData(oId: string, name: string, eMail: string) {
     this.userId = oId;
-    this.userName = name;
+    this.userName = name ? name : eMail;
     this.isLoggedIn = true;
   }
 

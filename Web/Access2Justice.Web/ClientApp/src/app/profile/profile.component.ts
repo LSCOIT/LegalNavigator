@@ -46,8 +46,8 @@ export class ProfileComponent implements OnInit {
       this.route.data.map(data => data.cres)
         .subscribe(response => {
           if (response) {
-            this.userId = response.oId
-            this.global.setProfileData(response.oId, response.name);
+            this.userId = response.oId;            
+            this.global.setProfileData(response.oId, response.name, response.eMail);
             this.getPersonalizedPlan();
             this.showRemove = true;
           }
