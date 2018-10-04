@@ -27,7 +27,6 @@ namespace Access2Justice.Api.Tests.BusinessLogic
                     'oId': '709709e7t0r7t96', 'firstName': 'family1.2.1', 'lastName': 'family1.2.2','email': 'test@email.com','IsActive': 'Yes','CreatedBy': 'vn','CreatedTimeStamp':'01/01/2018 10:00:00','ModifiedBy': 'vn','ModifiedTimeStamp':'01/01/2018 10:00:00'}]");
         private readonly string expectedUserProfileId = "709709e7t0r7t96";
         private readonly JArray emptyData = JArray.Parse(@"[{}]");
-        private readonly string updateUserProfileObjOId = "99889789";
         private readonly string expectedUserId = "outlookoremailOId";
 
         private readonly JArray userProfilePersonalizedPlanData = UserPersonalizedPlanTestData.userProfilePersonalizedPlanData;

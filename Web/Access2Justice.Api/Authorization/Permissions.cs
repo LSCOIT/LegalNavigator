@@ -24,8 +24,7 @@
             getuserprofile,
             getuserprofiledata,
             updateuserprofile,
-            upsertuserpersonalizedplan,
-            upsertuserprofile
+            upsertuserpersonalizedplan            
         }
     }
 }

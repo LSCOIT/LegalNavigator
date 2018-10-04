@@ -40,19 +40,12 @@ namespace Access2Justice.Api.BusinessLogic
         
         public async Task<List<string>> GetPermissionDataAsyn(string oId)
         {
-            List<string> permissionPaths = new List<string>();
-            List<UserRole> userRole = new List<UserRole>();
+            List<string> permissionPaths = new List<string>();            
             var userProfile = await dbUserProfile.GetUserProfileDataAsync(oId);
-            if (userProfile != null && userProfile?.RoleInformationId != Guid.Empty)
+            if (userProfile?.RoleInformationId != Guid.Empty)
             {
-                userRole = await GetUserRoleDataAsync(userProfile.RoleInformationId.ToString());
-                if (userRole.Count() > 0)
-                {
-                    if (userRole[0].Permissions.Count() > 0)
-                    {
-                        return userRole[0].Permissions;
-                    }
-                }
+                List<UserRole> userRole = await GetUserRoleDataAsync(userProfile.RoleInformationId.ToString());
+                return userRole.SelectMany(x => x.Permissions).ToList();
             }
             return permissionPaths;
         }
@@ -69,7 +62,7 @@ namespace Access2Justice.Api.BusinessLogic
 
             oId = EncryptionUtilities.GenerateSHA512String(oId);
             UserProfile userProfile = await dbUserProfile.GetUserProfileDataAsync(oId);
-            if (!(string.IsNullOrEmpty(userProfile?.OrganizationalUnit)))
+            if (!string.IsNullOrEmpty(userProfile?.OrganizationalUnit))
             {
                 List<string> orgUnits = ou.Split(Constants.Delimiter).Select(p => p.Trim()).ToList();
                 List<string> userOUs = userProfile.OrganizationalUnit.Split(Constants.Delimiter).Select(p => p.Trim()).ToList();
