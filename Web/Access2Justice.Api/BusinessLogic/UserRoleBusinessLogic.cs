@@ -30,11 +30,11 @@ namespace Access2Justice.Api.BusinessLogic
         public async Task<List<UserRole>> GetUserRoleDataAsync(string roleInformationId)
         {
             List<UserRole> userRole = new List<UserRole>();
-            var result = await dbClient.FindItemsWhereAsync(dbSettings.UserRoleCollectionId, Constants.Id, roleInformationId);
-            if (result != null)
-            {
-                userRole = JsonUtilities.DeserializeDynamicObject<List<UserRole>>(result);
-            }
+            //var result = await dbClient.FindItemsWhereAsync(dbSettings.UserRoleCollectionId, Constants.Id, roleInformationId);
+            //if (result != null)
+            //{
+            //    userRole = JsonUtilities.DeserializeDynamicObject<List<UserRole>>(result);
+            //}
             return userRole;
         }
         
@@ -44,8 +44,9 @@ namespace Access2Justice.Api.BusinessLogic
             var userProfile = await dbUserProfile.GetUserProfileDataAsync(oId);
             if (userProfile?.RoleInformationId != Guid.Empty)
             {
-                List<UserRole> userRole = await GetUserRoleDataAsync(userProfile.RoleInformationId.ToString());
-                return userRole.SelectMany(x => x.Permissions).ToList();
+				var result = await dbClient.FindItemsWhereAsync(dbSettings.UserRoleCollectionId, Constants.Id, userProfile.RoleInformationId);
+				List<UserRole> userRole = JsonUtilities.DeserializeDynamicObject<List<UserRole>>(result);
+				return userRole.SelectMany(x => x.Permissions).ToList();
             }
             return permissionPaths;
         }

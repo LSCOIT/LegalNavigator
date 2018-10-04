@@ -26,10 +26,13 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Theory]
-        [MemberData(nameof(UserRoleTestData.UserRoleData), MemberType = typeof(UserRoleTestData))]
+        [MemberData(nameof(UserRoleTestData.GetPermissionData), MemberType = typeof(UserRoleTestData))]
         public void GetUserRoleDataAsyncShouldValidate(string roleInformationId, dynamic expectedResult)
         {
-            var dbResponse = dbClient.FindItemsWhereAsync(dbSettings.UserRoleCollectionId, Constants.Id, roleInformationId);
+			var profileResponse = dbUserProfile.GetUserProfileDataAsync(roleInformationId);
+			profileResponse.ReturnsForAnyArgs(ShareTestData.UserProfileWithSharedResourceData);
+
+			var dbResponse = dbClient.FindItemsWhereAsync(dbSettings.UserRoleCollectionId, Constants.Id, roleInformationId);
             //dbResponse.ReturnsForAnyArgs(expectedResult);
 
             //act
