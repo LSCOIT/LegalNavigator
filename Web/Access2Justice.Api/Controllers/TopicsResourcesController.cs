@@ -4,6 +4,7 @@ using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using static Access2Justice.Api.Authorization.Permissions;
@@ -233,7 +234,7 @@ namespace Access2Justice.Api.Controllers
         }
 
         /// <summary>
-        /// Create Resource Document
+        /// Create Resources Documents - can upsert single or multiple resources
         /// </summary>
         [Permission(PermissionName.upsertresourcedocument)]
         [HttpPost]
@@ -258,20 +259,53 @@ namespace Access2Justice.Api.Controllers
         }
 
         /// <summary>
-        /// Create Topic Document
+        /// Create Topics Documents - can upsert single or multiple topics
         /// </summary>
         [Permission(PermissionName.upserttopicdocument)]
         [HttpPost]
         [Route("api/upserttopicdocument")]
         public async Task<IActionResult> UpsertTopicDocument([FromBody]dynamic topic)
         {
-            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(topic.OrganizationalUnit))
+            var topics = await topicsResourcesBusinessLogic.UpsertTopicDocumentAsync(topic);
+            return Ok(topics);
+        }
+
+        /// <summary>
+        /// Create Single Topic Document
+        /// </summary>
+        [Permission(PermissionName.upserttopic)]
+        [HttpPost]
+        [Route("api/upserttopic")]
+        public async Task<IActionResult> UpsertSingleTopicDocument([FromBody]dynamic topic)
+        {
+            List<dynamic> topicsList = new List<dynamic>();
+            topicsList.Add(topic);
+            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(topic.organizationalUnit))
             {
-                var topics = await topicsResourcesBusinessLogic.UpsertTopicDocumentAsync(topic);
+                var topics = await topicsResourcesBusinessLogic.UpsertTopicDocumentAsync(topicsList);
                 return Ok(topics);
             }
             return StatusCode(403);
         }
+
+        /// <summary>
+        /// Create Single Resource Document
+        /// </summary>
+        [Permission(PermissionName.upsertresource)]
+        [HttpPost]
+        [Route("api/upsertresource")]
+        public async Task<IActionResult> UpserSingleResourceDocument([FromBody]dynamic resource)
+        {
+            List<dynamic> resourcesList = new List<dynamic>();
+            resourcesList.Add(resource);
+            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(resource.organizationalUnit))
+            {
+                var resources = await topicsResourcesBusinessLogic.UpsertResourceDocumentAsync(resourcesList);
+                return Ok(resources);
+            }
+            return StatusCode(403);
+        }
+
 
         /// <summary>
 		/// Get the topic details by the document parent Id

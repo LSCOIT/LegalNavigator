@@ -16,9 +16,6 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "type")]
         public string Type { get; set; }
 
-        [JsonProperty(PropertyName = "organizationalUnit")]
-        public string OrganizationalUnit { get; set; }
-
         [JsonProperty(PropertyName = "permissions")]
         public List<string> Permissions { get; set; }
 

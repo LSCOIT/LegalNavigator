@@ -31,7 +31,10 @@ namespace Access2Justice.Api.BusinessLogic
         {
             List<UserRole> userRole = new List<UserRole>();
             var result = await dbClient.FindItemsWhereAsync(dbSettings.UserRoleCollectionId, Constants.Id, roleInformationId);
-            userRole = JsonUtilities.DeserializeDynamicObject<List<UserRole>>(result);
+            if (result != null)
+            {
+                userRole = JsonUtilities.DeserializeDynamicObject<List<UserRole>>(result);
+            }
             return userRole;
         }
         

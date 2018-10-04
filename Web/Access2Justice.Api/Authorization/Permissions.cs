@@ -13,6 +13,8 @@
             createresourcesupload,
             upsertresourcedocument,
             upserttopicdocument,
+            upserttopic,
+            upsertresource,
             import,
             updateplan,
             generatepermalink,
