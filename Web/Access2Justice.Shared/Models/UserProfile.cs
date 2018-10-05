@@ -62,12 +62,6 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
-        [JsonProperty(PropertyName = "firstName")]
-        public string FirstName { get; set; }
-
-        [JsonProperty(PropertyName = "lastName")]
-        public string LastName { get; set; }
-
         [JsonProperty(PropertyName = "eMail")]
         public string EMail { get; set; }
 
