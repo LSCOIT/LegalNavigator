@@ -48,24 +48,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             //assert
             Assert.Equal(expectedResult, actualResult);
         }
-
-        //[Theory]
-        //[MemberData(nameof(UserRoleTestData.ValidateOrganizationalUnitData), MemberType = typeof(UserRoleTestData))]
-        //public void ValidateOrganizationalUnitShouldValidate(UserProfile userProfile, JArray roleResponse, dynamic expectedResult)
-        //{
-            //dynamic profileResponse = dbUserProfile.GetUserProfileDataAsync(userProfile.OId).Returns<dynamic>(userProfile);
-            //var dbResponse = dbClient.FindItemsWhereAsync(dbSettings.UserRoleCollectionId, Constants.Id, userProfile.RoleInformationId.ToString());
-            //dbResponse.ReturnsForAnyArgs(roleResponse);
-
-            ////act
-            //var response = userRoleBusinessLogic.GetPermissionDataAsync(userProfile.OId);
-            //expectedResult = JsonConvert.SerializeObject(expectedResult);
-            //var actualResult = JsonConvert.SerializeObject(response.Result);
-
-            ////assert
-            //Assert.Equal(expectedResult, actualResult);
-        //}
-
+        
         [Theory]
         [MemberData(nameof(UserRoleTestData.ValidateOUForRole), MemberType = typeof(UserRoleTestData))]
         public void ValidateOUForRoleShouldValidate(string roleInformationId, string ou, JArray roleResponse, dynamic expectedResult)

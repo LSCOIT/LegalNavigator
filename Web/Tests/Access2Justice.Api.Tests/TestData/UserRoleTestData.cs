@@ -37,11 +37,6 @@ namespace Access2Justice.Api.Tests.TestData
                 new List<string>() };
         }
 
-        public static IEnumerable<object[]> ValidateOrganizationalUnitData()
-        {
-            yield return new object[] { "Alaska" };
-        }
-
         public static IEnumerable<object[]> ValidateOUForRole()
         {
             yield return new object[] { "400d79ef-3895-4eef-b7c7-c59fcfb42afe","Alaska | Hawaii",
