@@ -7,8 +7,13 @@ p {
 }
 
 .edit-location {
-  padding-right: 17px;
+  padding: 10px;
   cursor: pointer;
+  display: inline-block;
+}
+
+.edit-location:hover {
+  background-color: #fff;
 }
 
 #my-map {
@@ -94,6 +99,10 @@ p {
   margin: 10px auto;
 }
 
+.btn-primary {
+  margin: 20px auto;
+}
+
 @media only screen and (min-width : 768px) {
   .mobile-hidden {
     display: inline-block;
@@ -106,5 +115,9 @@ p {
 
   #my-map {
     height: 265px;
+  }
+
+  .edit-location {
+    padding: 15px;
   }
 }

@@ -1,10 +1,14 @@
 .container {
-  padding-top: 8%;
-  padding-bottom: 8%;
+  padding-top: 7%;
+  padding-bottom: 7%;
 }
 
 h1 {
   margin-top: 0;
+}
+
+hr {
+  border-top: 1.5px solid #ddd;
 }
 
 #home-img {
@@ -34,6 +38,7 @@ h1 {
 
 .secondary-img {
   width: 315px;
+  height: 315px;
   margin: 20px auto;
   float: none;
 }
@@ -68,6 +73,10 @@ ul>li>span {
   margin-right: 5px;
 }
 
+.sponsor-overview .btn {
+  margin-bottom: 0;
+}
+
 .privacy-promise {
   background-color: #0B2B78;
   color: #F4F4F4;
@@ -88,7 +97,6 @@ ul>li>span {
   border-radius: 25px;
   margin-top: 15px;
   margin-bottom: 10px;
-  padding: 10px;
   min-width: 250px;
   position: relative;
 }
@@ -142,10 +150,6 @@ ul>li>span {
     left: -9.6px;
   }
 
-  #guided-assistant-overview .container {
-    padding-bottom: 140px;
-  }
-
   .secondary-img {
     margin-top: 0;
     float: right;
@@ -191,23 +195,18 @@ ul>li>span {
 }
 
 @media only screen and (min-width : 992px) {
-  .container {
-    padding-top: 10%;
-    padding-bottom: 10%;
-  }
-
   h2 {
     margin: 0 19% 40px 19%;
   }
 
   .hero-content {
-    padding-top: 50px;
+    padding-top: 15px;
     padding-bottom: 100px;
   }
 
   .label-display {
     position: static;
-    padding-right: 10px;
+    padding: 15px 0 15px 15px;
   }
 
   .slide-content {
@@ -222,8 +221,8 @@ ul>li>span {
     min-width: 400px;
   }
 
-  #guided-assistant-overview .container {
-    padding-bottom: 105px;
+  .guided-assistant-steps .btn-primary {
+    margin-bottom: 0;
   }
 
   .testimonial-img img {
@@ -252,11 +251,11 @@ ul>li>span {
 
 @media only screen and (min-width : 1224px) {
   .outer-bg {
-    margin-top: -80px;
+    margin-top: -110px;
   }
 
   .topic-button {
-    margin-bottom: 85px;
+    margin-bottom: 100px;
   }
 }
 

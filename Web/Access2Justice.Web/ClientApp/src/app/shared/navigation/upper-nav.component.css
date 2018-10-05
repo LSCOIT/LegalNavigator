@@ -4,14 +4,11 @@ ul {
 
 li {
   display: inline-block;
+  cursor: pointer;
 }
 
-li a {
-  padding: 10px 15px;
-}
-
-li > a:hover {
-  background-color: #f4f4f4;
+li:hover {
+  background-color: #fff;
   color: #333;
 }
 
@@ -21,8 +18,17 @@ li > a:hover {
   min-height: 40px;
 }
 
+.left-menu {
+  margin-left: -10px;
+}
+
 .right-menu {
   float: right;
+  margin-right: -15px;
+}
+
+.right-menu li {
+  padding: 15px;
 }
 
 #location {
@@ -31,8 +37,6 @@ li > a:hover {
   right: 0;
   width: auto;
   background: #f4f4f4;
-  height: 33px;
-  padding: 10px 0;
 }
 
 #language {

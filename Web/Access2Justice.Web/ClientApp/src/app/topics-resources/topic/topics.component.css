@@ -1,10 +1,13 @@
+ul {
+  margin-top: -10px;
+}
+
 .topic-list {
   padding: 0 20px;
   border-bottom: 1px solid #ddd;
   border-right: 1px solid #ddd;
   cursor: pointer;
   height: 200px;
-  float: left;
 }
 
 .topic-list:nth-child(2n) {

@@ -3,8 +3,8 @@ import { Component, Input, ElementRef, OnChanges } from '@angular/core';
 @Component({
   selector: 'app-read-more',
   template: `
-  <div [innerHTML]="currentText"></div>
-  <a [class.hidden]="hideToggle" (click)="toggleView()">Read {{isCollapsed? 'more':'less'}}</a>`,
+  <div class="p" [innerHTML]="currentText"></div>
+  <a class="link p" [class.d-none]="hideToggle" (click)="toggleView()">Read {{isCollapsed? 'more':'less'}}</a>`,
   styles: [`
     a {
         cursor: pointer;

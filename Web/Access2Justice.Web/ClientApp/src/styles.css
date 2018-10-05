@@ -17,6 +17,10 @@ a {
   color: #333;
 }
 
+a:hover {
+  text-decoration: none;
+}
+
 .nav-icon {
   width: 20px;
   height: 20px;

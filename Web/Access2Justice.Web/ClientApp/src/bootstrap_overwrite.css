@@ -5,6 +5,7 @@
 [class*="col-"] {
   padding-left: 0;
   padding-right: 0;
+  float: left;
 }
 
 [class*="col-sm"] {
@@ -14,11 +15,28 @@
 
 .row {
   margin: 20px auto;
-  display: unset;
+  display: table;
+  width: 100%;
 }
 
-.col-xs-12 {
-  margin: 0 auto;
+.col-xs-1 {
+  width: 8.333333%
+}
+
+.col-xs-2 {
+  width: 16.666667%;
+}
+
+.col-xs-3 {
+  width: 25%;
+}
+
+.col-xs-4 {
+  width: 33.333333%;
+}
+
+.col-xs-5 {
+  width: 41.666667%;
 }
 
 .col-xs-6 {
@@ -26,8 +44,36 @@
   display: inline-block;
 }
 
+.col-xs-8 {
+  width: 66.666667%;
+}
+
+.col-xs-9 {
+  width: 75%;
+}
+
+.col-xs-10 {
+  width: 83.333333%
+}
+
+.col-xs-11 {
+  width: 91.666667%;
+}
+
+.col-xs-12 {
+  margin: 0 auto;
+}
+
 a:not([href]):not([tabindex]) {
   color: #0D3FBB;
+}
+
+[type=reset], [type=submit], button, html [type=button] {
+  -webkit-appearance: none;
+}
+
+.btn-group, .btn-group-vertical {
+  display: unset;
 }
 
 .pull-right {
@@ -36,6 +82,13 @@ a:not([href]):not([tabindex]) {
 
 .pull-left {
   float: left;
+}
+
+.media-left,
+.media-right,
+.media-body {
+  display: table-cell;
+  vertical-align: top;
 }
 
 /*Login Dropdown*/
@@ -60,37 +113,26 @@ a:not([href]):not([tabindex]) {
   margin-bottom: 40px;
 }
 
-a.carousel-control {
-  width: 0;
-  position: absolute;
+.carousel-control {
   top: 450px;
+  display: unset;
+  width: 40px;
   opacity: 1;
-  color: #0D3FBB;
-  font-size: 2em;
-  text-shadow: none;
-  z-index: 1;
   cursor: pointer;
 }
 
-a.carousel-control:hover {
-  color: #0D3FBB;
+a.carousel-control .icon-prev, a.carousel-control .icon-next {
+  background-image: url('assets/images/small-icons/arrow_down.svg');
+  width: 40px;
+  height: 40px;
 }
 
-a.carousel-control .icon-prev:before {
-  content: "\2190";
-  margin-left: 10px;
+.carousel-control-next-icon {
+  transform: rotate(-90deg);
 }
 
-a.carousel-control .icon-next:before {
-  content: "\2192";
-}
-
-a.carousel-control .icon-next {
-  margin-right: 70px;
-}
-
-.carousel-control-prev {
-  left: -15px;
+.carousel-control-prev-icon {
+  transform: rotate(90deg);
 }
 
 .carousel-indicators {
@@ -100,17 +142,17 @@ a.carousel-control .icon-next {
 
 .carousel-indicators .active {
   background-color: #0D3FBB;
-  width: .6em;
-  height: .6em;
+  width: 10px;
+  height: 10px;
   margin: 0 2px;
 }
 
 .carousel-indicators li {
   background-color: #7EB1ED;
-  margin: 0 2px;
+  margin: 0 5px;
   border: none;
-  width: .6em;
-  height: .6em;
+  width: 10px;
+  height: 10px;
   z-index: 1;
   border-radius: 5px;
 }
@@ -146,6 +188,7 @@ span.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chev
   background-size: 20px;
   padding-right: 30px;
   background-position-y: 4px;
+  height: 40px;
 }
 
 .panel-open .accordion-img {
@@ -194,6 +237,14 @@ span.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chev
     max-width: 95%;
   }
 
+  .col-sm-1 {
+    width: 8.333333%
+  }
+
+  .col-sm-2 {
+    width: 16.666667%;
+  }
+
   .col-sm-3 {
     width: 25%;
   }
@@ -226,6 +277,14 @@ span.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chev
     width: 83.333333%
   }
 
+  .col-sm-11 {
+    width: 91.666667%;
+  }
+
+  .col-sm-offest-2 {
+    margin-left: 16.666667%;
+  }
+
   .navbar-nav .open .dropdown-menu {
     width: 690px;
     height: auto;
@@ -239,12 +298,8 @@ span.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chev
     height: 340px;
   }
 
-  .carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chevron-right, .carousel-control .icon-next, .carousel-control .icon-prev {
-    font-size: 1.5em;
-  }
-
-  a.carousel-control {
-    top: 320px;
+  .carousel-control {
+    top: 340px;
   }
 
   .carousel-indicators {
@@ -267,6 +322,10 @@ span.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chev
     max-width: 95%;
   }
 
+  .col-md-2 {
+    width: 16.666667%;
+  }
+
   .col-md-3 {
     width: 25%;
   }
@@ -287,8 +346,30 @@ span.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chev
     width: 66.666667%;
   }
 
-  a.carousel-control {
-    top: 282px;
+  .col-md-10 {
+    width: 83.333333%;
+  }
+
+  .col-md-offset-1 {
+    margin-left: 8.333333%
+  }
+
+  .col-md-offset-2 {
+    margin-left: 16.666667%;
+  }
+
+  .col-md-offset-3 {
+    margin-left: 25%;
+  }
+
+  .carousel-control {
+    top: 330px;
+    width: 50px;
+  }
+
+  a.carousel-control .icon-prev, a.carousel-control .icon-next {
+    width: 50px;
+    height: 50px;
   }
 }
 
@@ -302,7 +383,7 @@ span.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chev
   }
 
   .container {
-    width: 90%;
+    width: 85%;
     max-width: 1500px;
   }
 
@@ -319,6 +400,6 @@ span.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chev
   }
 
   .carousel-indicators {
-    bottom: -22px;
+    bottom: -37px;
   }
 }

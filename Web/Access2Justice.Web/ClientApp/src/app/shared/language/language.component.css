@@ -1,17 +1,11 @@
 #language-dropdown {
-  min-height: 40px;
-  padding: 8px 10px;
-  cursor: pointer;
-  margin-left: -4px;
-  cursor: pointer;
+  padding: 10px;
 }
 
 #language-dropdown > a {
-  padding-left: 10px;
   color: #333;
   text-decoration: none;
   cursor: pointer;
-  margin-left: -5px;
 }
 
 .white-bg {
@@ -22,11 +16,6 @@
 
 @media only screen and (min-width : 768px) {
   #language-dropdown {
-    padding: 10px;
-    margin-left: 0;
-  }
-
-  .nav-icon {
-    margin-left: 0;
+    padding: 15px;
   }
 }

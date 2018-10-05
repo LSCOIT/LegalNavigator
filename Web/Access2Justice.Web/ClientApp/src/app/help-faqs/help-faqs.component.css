@@ -1,12 +1,13 @@
 .media {
   border: 1px solid #777;
-  margin-bottom: -31px;
-  margin-top: -10px;
+  margin-bottom: -14px;
+  margin-top: -12px;
   padding: 10px;
+  cursor: pointer;
 }
 
 .step-content {
-  padding: 40px 10px 0 10px;
+  padding: 0 10px;
   margin-bottom: -5px;
 }
 
@@ -20,4 +21,8 @@ h2 {
 
 .static-img-container {
   margin-top: 15px;
+}
+
+.col-md-10 {
+  margin-bottom: 10%;
 }

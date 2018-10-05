@@ -166,8 +166,8 @@ li.vertical-line {
 
 @media only screen and (min-width : 768px) {
   .lower-nav {
-    min-height: 85px;
-    padding-top: 30px;
+    min-height: 80px;
+    padding-top: 25px;
   }
 
   #mobile-menu {
@@ -207,7 +207,7 @@ li.vertical-line {
   }
 
   .left-menu li a {
-    padding: 27px 2px;
+    padding: 26px 2px;
     font-size: 14px;
   }
   

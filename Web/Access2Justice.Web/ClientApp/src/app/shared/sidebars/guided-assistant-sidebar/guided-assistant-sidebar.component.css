@@ -6,11 +6,17 @@
 
 .btn-primary {
   display: block;
-  max-width: 200px;
+  max-width: 250px;
+  margin: 0 auto;
+  font-size: 14px;
 }
 
 @media only screen and (min-width : 992px) {
   .sidebar-block {
     margin-top: 0;
+  }
+
+  .btn-primary {
+    font-size: 12px;
   }
 }
