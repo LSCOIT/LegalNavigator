@@ -9,8 +9,8 @@ namespace Access2Justice.Api.Interfaces
 {
     public interface IUserRoleBusinessLogic
     {
-        Task<List<UserRole>> GetUserRoleDataAsync(string roleInformationId);
-        Task<List<string>> GetPermissionDataAsyn(string oId);
+        Task<List<string>> GetPermissionDataAsync(string oId);
         Task<bool> ValidateOrganizationalUnit(string ou);
+        Task<bool> ValidateOUForRole(string roleInformationId, string ou);
     }
 }

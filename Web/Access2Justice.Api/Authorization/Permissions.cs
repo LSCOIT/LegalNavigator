@@ -26,5 +26,13 @@
             updateuserprofile,
             upsertuserpersonalizedplan            
         }
+
+        public enum Role
+        {
+            PortalAdmin=1,
+            StateAdmin,
+            Authenticated,
+            Developer
+        }
     }
 }

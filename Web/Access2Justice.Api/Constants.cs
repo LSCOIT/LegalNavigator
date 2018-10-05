@@ -34,10 +34,6 @@ namespace Access2Justice.Api
         public const string GuidedAssistant = "Guided Assistant";
         public const string EmptyArray = "[]";
         public const string UserRole = "Role";
-        public const string RoleName = "roleName";
-        public const string DefaultUser = "Authenticated";
-        public const string PermissionDetails = "permissionDetails";
-        public const string GetProfileData = "getuserprofiledata";
         public const string UserName = "eMail";
         public const string Delimiter = "|";
     }

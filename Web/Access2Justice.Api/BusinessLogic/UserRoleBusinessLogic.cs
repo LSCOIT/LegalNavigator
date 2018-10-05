@@ -1,4 +1,5 @@
-﻿using Access2Justice.Api.Interfaces;
+﻿using Access2Justice.Api.Authorization;
+using Access2Justice.Api.Interfaces;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Access2Justice.Shared.Utilities;
@@ -27,26 +28,15 @@ namespace Access2Justice.Api.BusinessLogic
             this.httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<List<UserRole>> GetUserRoleDataAsync(string roleInformationId)
+        public async Task<List<string>> GetPermissionDataAsync(string oId)
         {
-            List<UserRole> userRole = new List<UserRole>();
-            //var result = await dbClient.FindItemsWhereAsync(dbSettings.UserRoleCollectionId, Constants.Id, roleInformationId);
-            //if (result != null)
-            //{
-            //    userRole = JsonUtilities.DeserializeDynamicObject<List<UserRole>>(result);
-            //}
-            return userRole;
-        }
-        
-        public async Task<List<string>> GetPermissionDataAsyn(string oId)
-        {
-            List<string> permissionPaths = new List<string>();            
-            var userProfile = await dbUserProfile.GetUserProfileDataAsync(oId);
+            List<string> permissionPaths = new List<string>();
+            UserProfile userProfile = await dbUserProfile.GetUserProfileDataAsync(oId);
             if (userProfile?.RoleInformationId != Guid.Empty)
             {
-				var result = await dbClient.FindItemsWhereAsync(dbSettings.UserRoleCollectionId, Constants.Id, userProfile.RoleInformationId);
-				List<UserRole> userRole = JsonUtilities.DeserializeDynamicObject<List<UserRole>>(result);
-				return userRole.SelectMany(x => x.Permissions).ToList();
+                var result = await dbClient.FindItemsWhereAsync(dbSettings.UserRoleCollectionId, Constants.Id, userProfile.RoleInformationId.ToString());
+                List<Role> userRole = JsonUtilities.DeserializeDynamicObject<List<Role>>(result);
+                return userRole.SelectMany(x => x.Permissions).ToList();
             }
             return permissionPaths;
         }
@@ -60,19 +50,30 @@ namespace Access2Justice.Api.BusinessLogic
             }
             if (string.IsNullOrEmpty(ou) || string.IsNullOrEmpty(oId))
                 return false;
-
             oId = EncryptionUtilities.GenerateSHA512String(oId);
             UserProfile userProfile = await dbUserProfile.GetUserProfileDataAsync(oId);
-            if (!string.IsNullOrEmpty(userProfile?.OrganizationalUnit))
+            if (userProfile?.RoleInformationId != Guid.Empty)
             {
-                List<string> orgUnits = ou.Split(Constants.Delimiter).Select(p => p.Trim()).ToList();
-                List<string> userOUs = userProfile.OrganizationalUnit.Split(Constants.Delimiter).Select(p => p.Trim()).ToList();
-                foreach (var userOU in userOUs)
+                return await ValidateOUForRole(userProfile.RoleInformationId.ToString(), ou);
+            }
+            return false;
+        }
+
+        public async Task<bool> ValidateOUForRole(string roleInformationId, string ou)
+        {
+            var result = await dbClient.FindItemsWhereAsync(dbSettings.UserRoleCollectionId, Constants.Id, roleInformationId);
+            List<Role> userRole = JsonUtilities.DeserializeDynamicObject<List<Role>>(result);
+            if (userRole?.Count() > 0)
+            {
+                if (userRole[0].RoleName == Permissions.Role.PortalAdmin.ToString())
                 {
-                    if (!string.IsNullOrEmpty(userOU) && orgUnits.Find(x => x.Contains(userOU)) != null)
-                    {
-                        return true;
-                    }
+                    return true;
+                }
+                List<string> orgUnits = ou.Split(Constants.Delimiter).Select(p => p.Trim()).ToList();
+                string userOU = userRole[0].OrganizationalUnit;
+                if (!string.IsNullOrEmpty(userOU) && orgUnits.Find(x => x.Contains(userOU)) != null)
+                {
+                    return true;
                 }
             }
             return false;

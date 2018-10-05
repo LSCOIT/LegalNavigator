@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Access2Justice.Shared.Models
 {
-    public class UserRole
+    public class Role
     {
         [JsonProperty(PropertyName = "id")]
         public Guid RoleInformationId { get; set; }
@@ -15,6 +15,9 @@ namespace Access2Justice.Shared.Models
 
         [JsonProperty(PropertyName = "type")]
         public string Type { get; set; }
+        
+        [JsonProperty(PropertyName = "organizationalUnit")]
+        public string OrganizationalUnit { get; set; }
 
         [JsonProperty(PropertyName = "permissions")]
         public List<string> Permissions { get; set; }
@@ -31,39 +34,9 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "modifiedTimeStamp")]
         public DateTime? ModifiedTimeStamp { get; set; } = DateTime.UtcNow;
 
-        public UserRole()
+        public Role()
         {
             Permissions = new List<string>();
-        }
-    }
-
-    public class Permission
-    {
-
-        [JsonProperty(PropertyName = "permissionId")]
-        public Guid PermissionId { get; set; }
-
-        [JsonProperty(PropertyName = "permissionName")]
-        public string PermissionName { get; set; }
-
-        [JsonProperty(PropertyName = "path")]
-        public string Path { get; set; }
-    }
-
-    public class PermissionDetails
-    {
-        [JsonProperty(PropertyName = "id")]
-        public Guid Id { get; set; }
-
-        [JsonProperty(PropertyName = "type")]
-        public string Type { get; set; }
-
-        [JsonProperty(PropertyName = "permissions")]
-        public List<Permission> Permissions { get; set; }
-
-        public PermissionDetails()
-        {
-            Permissions = new List<Permission>();
         }
     }
 }

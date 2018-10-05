@@ -1,4 +1,5 @@
-﻿using Access2Justice.Api.Interfaces;
+﻿using Access2Justice.Api.Authorization;
+using Access2Justice.Api.Interfaces;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Access2Justice.Shared.Utilities;
@@ -145,8 +146,8 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<Guid> GetDefaultUserRole()
         {
-            var result = await dbClient.FindItemsWhereAsync(dbSettings.UserRoleCollectionId, Constants.UserRole, Constants.DefaultUser);
-            List<UserRole> userRole = JsonUtilities.DeserializeDynamicObject<List<UserRole>>(result);
+            var result = await dbClient.FindItemsWhereAsync(dbSettings.UserRoleCollectionId, Constants.UserRole, Permissions.Role.Authenticated.ToString());
+            List<Role> userRole = JsonUtilities.DeserializeDynamicObject<List<Role>>(result);
             return userRole.Select(x => x.RoleInformationId).FirstOrDefault();
         }
     }
