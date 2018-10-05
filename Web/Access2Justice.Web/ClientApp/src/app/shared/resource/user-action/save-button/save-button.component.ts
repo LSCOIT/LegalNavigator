@@ -213,8 +213,7 @@ export class SaveButtonComponent implements OnInit {
 
   getPlan(planId) {
     this.personalizedPlanService.getActionPlanConditions(planId)
-      .subscribe((plan) => {
-        console.log(plan);
+      .subscribe((plan) => {        
         this.planTopics = [];
         this.personalizedPlanSteps = [];
         this.planTopic = { topicId: '', steps: this.personalizedPlanSteps };
