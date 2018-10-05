@@ -9,7 +9,7 @@ import { LoginService } from '../shared/login/login.service';
 
 
 @Injectable()
-export class ProfileResolverService implements Resolve<any> {
+export class ProfileResolver implements Resolve<any> {
 
   userProfile: IUserProfile;
 
