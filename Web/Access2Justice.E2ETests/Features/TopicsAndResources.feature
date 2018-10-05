@@ -17,3 +17,21 @@ Scenario: Navigate to topics page by clicking on lower navigation bar
 	| Alaska |
 	When I click on Topics & Resources on the lower navigation bar
 	Then I should directed to the Topics and Resources page
+
+Scenario: Navigate to topics page from Guided Assistance Page
+	Given I am on the Access2Justice website with state set
+	| State  |
+	| Alaska |
+	And I am on the Guided Assistant page
+	When I click on the See More Topics button
+	Then I should directed to the Topics and Resources page
+
+Scenario: Navigate to a subtopic and see a list of resources
+	Given I am on the Access2Justice website with state set
+	| State  |
+	| Alaska |
+	And I am on the Topics & Resources page
+	When I click on the first main topic
+	And I click on the first subtopic
+	Then I should see a list of resources
+

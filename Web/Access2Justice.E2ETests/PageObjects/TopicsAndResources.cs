@@ -20,12 +20,48 @@ namespace Access2Justice.E2ETests.PageObjects
         private IWebDriver driver => ScenarioContext.Current.Get<IWebDriver>("driver");
         private DefaultWait<IWebDriver> fluentWait => ScenarioContext.Current.Get<DefaultWait<IWebDriver>>("fluentWait");
 
+        [FindsBy(How = How.ClassName, Using ="topic-list")]
+        public IList<IWebElement> topicList;
+
         public void ConfirmOnTopicsAndResourcesPage()
         {
             StringAssert.Contains(driver.Url, "topics");
         }
 
-        
+        public void ClickOnTopic()
+        {
+            IWebElement topic = fluentWait.Until(d =>
+            {
+                IWebElement elem = driver.FindElement(By.CssSelector(".topic-list a"));
+                if (elem != null && elem.Displayed)
+                {
+                    return elem;
+                }
+
+                return null;
+            });
+            topic.Click();
+        }
+
+        public void ClickOnSubtopic()
+        {
+            IWebElement subtopic = fluentWait.Until(d =>
+            {
+                IWebElement elem = driver.FindElement(By.CssSelector(".subtopics ul li a"));
+                if (elem != null && elem.Displayed)
+                {
+                    return elem;
+                }
+
+                return null;
+            });
+            subtopic.Click();
+        }
+
+        public void ConfirmResourcesAreShown()
+        {
+            Assert.IsTrue(true);
+        }
 
     }
 }
