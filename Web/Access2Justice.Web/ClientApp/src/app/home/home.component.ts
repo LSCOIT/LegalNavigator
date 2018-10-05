@@ -78,7 +78,7 @@ export class HomeComponent implements OnInit {
     this.getHomePageContent();
     this.subscription = this.mapService.notifyLocation
       .subscribe((value) => {
-        this.loadStateName();
+       this.loadStateName();
         this.getHomePageContent();
       });
     this.staticContentSubcription = this.global.notifyStaticData
@@ -89,8 +89,9 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    if (this.subscription != undefined) {
+    if (this.subscription != undefined && this.staticContentSubcription != undefined) {
       this.subscription.unsubscribe();
+      this.staticContentSubcription.unsubscribe();
     }
   }
 }

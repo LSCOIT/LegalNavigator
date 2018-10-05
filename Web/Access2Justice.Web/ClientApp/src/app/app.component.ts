@@ -67,16 +67,6 @@ export class AppComponent implements OnInit {
           this.router.navigate(['/error']);
       });
   }
-
-  getTopics() {
-    this.topicService.getTopics().subscribe(response => {
-      this.global.topicsData = response;
-      if (this.router.url.startsWith('/topics') || this.router.url.startsWith('/subtopics')) {
-        this.router.navigateByUrl('/topics');
-      }
-    });
-  }
-
   ngOnInit() {
     let profileData = this.getCookie("profileData");
     if (profileData != undefined) {
@@ -98,7 +88,6 @@ export class AppComponent implements OnInit {
     this.subscription = this.mapService.notifyLocation
       .subscribe((value) => {
         this.setStaticContentData();
-        this.getTopics();
       });
     this.setStaticContentData();
   }

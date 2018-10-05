@@ -108,4 +108,13 @@ export class LowerNavComponent implements OnInit {
         this.getNavigationContent();
       });
   }
+
+  ngOnDestroy() {
+    if (this.staticContentSubcription) {
+      this.staticContentSubcription.unsubscribe();
+    }
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  } 
 }

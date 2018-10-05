@@ -21,6 +21,7 @@ import { ShowMoreService } from '../../shared/sidebars/show-more/show-more.servi
 import { SubtopicDetailComponent } from './subtopic-detail.component';
 import { TopicService } from '../shared/topic.service';
 import { of } from 'rxjs/observable/of';
+import { Global } from '../../global';
  
 
 describe('SubtopicDetailComponent', () => {
@@ -95,7 +96,8 @@ describe('SubtopicDetailComponent', () => {
         },
         { provide: TopicService, useValue: mockTopicService },
         ShowMoreService,
-        SearchService
+        SearchService,
+        Global
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
     })
