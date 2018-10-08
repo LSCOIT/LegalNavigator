@@ -35,3 +35,10 @@ Scenario: Navigate to a subtopic and see a list of resources
 	And I click on the first subtopic
 	Then I should see a list of resources
 
+Scenario: View Service Organizations in Your Community pane in Family topic
+	Given I am on the Access2Justice website with state set
+	| State  |
+	| Alaska |
+	And I am on the Topics & Resources page
+	When I click on the first main topic
+	Then I should see the Service Organizations in Your Community pane to the right
