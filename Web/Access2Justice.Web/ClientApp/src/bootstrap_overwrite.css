@@ -61,6 +61,7 @@
 }
 
 .col-xs-12 {
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -110,7 +111,7 @@ a:not([href]):not([tabindex]) {
 .carousel.slide {
   height: 455px;
   background-color: #f4f4f4;
-  margin-bottom: 40px;
+  margin-bottom: 65px;
 }
 
 .carousel-control {
@@ -281,7 +282,11 @@ span.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chev
     width: 91.666667%;
   }
 
-  .col-sm-offest-2 {
+  .col-sm-offset-1 {
+    margin-left: 8.333333%
+  }
+
+  .col-sm-offset-2 {
     margin-left: 16.666667%;
   }
 
@@ -295,11 +300,11 @@ span.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chev
   }
 
   .carousel.slide {
-    height: 340px;
+    height: 360px;
   }
 
   .carousel-control {
-    top: 340px;
+    top: 360px;
   }
 
   .carousel-indicators {
@@ -346,6 +351,10 @@ span.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chev
     width: 66.666667%;
   }
 
+  .col-md-9 {
+    width: 75%;
+  }
+
   .col-md-10 {
     width: 83.333333%;
   }
@@ -363,7 +372,7 @@ span.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chev
   }
 
   .carousel-control {
-    top: 330px;
+    top: 350px;
     width: 50px;
   }
 

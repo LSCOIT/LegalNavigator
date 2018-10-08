@@ -25,7 +25,6 @@ export class LanguageComponent implements OnInit, AfterViewInit {
   onClick(event) {
     let translator = document.getElementById('google_translate_element');
     this.showLanguage = !this.showLanguage;
-    console.log(event);
     if (event.srcElement.parentElement.id === 'language-dropdown' || event.target.id === 'language-dropdown') {
       if (this.showLanguage) {
         translator.style.display = 'block';

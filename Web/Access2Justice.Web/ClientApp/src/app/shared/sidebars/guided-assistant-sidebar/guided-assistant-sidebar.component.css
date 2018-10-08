@@ -1,3 +1,11 @@
+a.btn-primary {
+  color: #fff;
+}
+
+a.btn-primary:hover {
+  color: #fff;
+}
+
 .sidebar-block {
   margin-bottom: 40px;
   width: 100%;

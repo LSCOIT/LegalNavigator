@@ -9,6 +9,9 @@ li {
 
 li:hover {
   background-color: #fff;
+}
+
+li a:hover {
   color: #333;
 }
 
