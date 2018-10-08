@@ -489,7 +489,7 @@ namespace Access2Justice.Api.BusinessLogic
                     }
                 }
 
-                else if (resourceObject.resourceType == "Related Links")
+                else if (resourceObject.resourceType == "Essential Readings")
                 {
                     essentialReadings = UpsertResourcesEssentialReadings(resourceObject);
                     var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(essentialReadings);
@@ -668,7 +668,10 @@ namespace Access2Justice.Api.BusinessLogic
                 Address = resourceObject.address,
                 Telephone = resourceObject.telephone,
                 Overview = resourceObject.overview,
+                Specialties = resourceObject.specialties,
                 EligibilityInformation = resourceObject.eligibilityInformation,
+                Qualifications = resourceObject.qualifications,
+                BusinessHours = resourceObject.businessHours,
                 Reviewer = organizationReviewers
             };
             organizations.Validate();

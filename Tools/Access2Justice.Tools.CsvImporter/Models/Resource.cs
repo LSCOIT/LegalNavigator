@@ -43,8 +43,8 @@ namespace Access2Justice.Tools.Models
         [JsonProperty(PropertyName = "location")]
         public IEnumerable<Locations> Location { get; set; }
 
-        [JsonProperty(PropertyName = "icon")]
-        public string Icon { get; set; }
+        //[JsonProperty(PropertyName = "icon")]
+        //public string Icon { get; set; }
 
         [JsonProperty(PropertyName = "createdBy")]
         public string CreatedBy { get; set; }
@@ -129,7 +129,16 @@ namespace Access2Justice.Tools.Models
         public string EligibilityInformation { get; set; }
 
         [JsonProperty(PropertyName = "reviewer")]
-        public IEnumerable<OrganizationReviewer> Reviewer { get; set; }        
+        public IEnumerable<OrganizationReviewer> Reviewer { get; set; }
+
+        [JsonProperty(PropertyName = "specialties")]
+        public string Specialties { get; set; }
+
+        [JsonProperty(PropertyName = "qualifications")]
+        public string Qualifications { get; set; }
+
+        [JsonProperty(PropertyName = "businessHours")]
+        public string BusinessHours { get; set; }
     }
 
     public class OrganizationReviewer

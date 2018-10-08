@@ -55,7 +55,7 @@ export class SubtopicDetailComponent implements OnInit {
       this.formData = this.subtopicDetails
         .filter((resource) => resource.resourceType === 'Forms');
       this.relatedLinksData = this.subtopicDetails
-        .filter((resource) => resource.resourceType === 'Related Links');
+        .filter((resource) => resource.resourceType === 'Essential Readings');
     }
   }
 

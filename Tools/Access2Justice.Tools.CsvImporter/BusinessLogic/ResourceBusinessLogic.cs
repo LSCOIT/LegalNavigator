@@ -35,6 +35,9 @@ namespace Access2Justice.Tools.BusinessLogic
                         resourcesList.Add(jsonResult);
                     }
 
+                    var topicTag = await clientHttp.GetAsync("api/topics/getalltopics").ConfigureAwait(false);
+                    var topicResult = topicTag.Content.ReadAsStringAsync().Result;
+                    dynamic topicTagResult = JsonConvert.DeserializeObject(topicResult);
                     foreach (var resourceList in resourcesList)
                     {
                         if (resourceList.topicTags != null)
@@ -43,9 +46,6 @@ namespace Access2Justice.Tools.BusinessLogic
                             {
                                 string name = resourceList.topicTags[iterator].id;
                                 string state = resourceList.location[0].state;
-                                var topicTag = await clientHttp.GetAsync("api/topics/getalltopics").ConfigureAwait(false);
-                                var topicResult = topicTag.Content.ReadAsStringAsync().Result;
-                                dynamic topicTagResult = JsonConvert.DeserializeObject(topicResult);
                                 if (topicTagResult.Count > 0)
                                 {
                                     foreach(var topic in topicTagResult)
