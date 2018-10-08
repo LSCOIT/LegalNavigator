@@ -10,6 +10,7 @@ import { HttpParams } from '@angular/common/http';
 import { ActionPlansComponent } from '../../resource-type/action-plan/action-plans.component';
 import { MsalService } from '@azure/msal-angular';
 import { Global } from '../../../../global';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-save-button',
@@ -51,7 +52,7 @@ export class SaveButtonComponent implements OnInit {
   }
 
   externalLogin() {
-    this.global.externalLogin();
+    this.msalService.loginRedirect(environment.consentScopes);
   }
 
   savePlanResources(): void {

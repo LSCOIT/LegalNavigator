@@ -42,13 +42,13 @@ import { StaticResourceService } from './shared/static-resource.service';
 import { ResponseInterceptor } from './response-interceptor';
 import { Global } from './global';
 import { CuratedExperienceResultComponent } from './guided-assistant/curated-experience-result/curated-experience-result.component';
-import { ProfileResolverService } from './app-resolver/profile-resolver.service';
+import { ProfileResolver } from './app-resolver/profile-resolver.service';
 import { MsalInterceptor } from '@azure/msal-angular';
 import { environment } from '../environments/environment';
 import { api } from '../api/api';
 
 export const protectedResourceMap: [string, string[]][] = [[api.checkPermaLink, [environment.apiScope]], [api.shareUrl, [environment.apiScope]]
-  , [api.unShareUrl, [environment.apiScope]], [api.getResourceLink, [environment.apiScope]], [api.getProfileUrl, [environment.apiScope]], [api.userPlanUrl, [environment.apiScope]]] 
+  , [api.unShareUrl, [environment.apiScope]], [api.getProfileUrl, [environment.apiScope]], [api.userPlanUrl, [environment.apiScope]]] 
 
 @NgModule({
   declarations: [
@@ -113,7 +113,7 @@ export const protectedResourceMap: [string, string[]][] = [[api.checkPermaLink, 
     PersonalizedPlanComponent,
     StaticResourceService,
     Global,
-    ProfileResolverService
+    ProfileResolver
   ],
   bootstrap: [AppComponent]
 })

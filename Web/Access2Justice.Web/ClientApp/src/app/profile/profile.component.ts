@@ -9,6 +9,7 @@ import { MsalService } from '@azure/msal-angular';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-profile',
@@ -160,8 +161,8 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (!this.msalService.getUser() && !this.global.isShared) {
-      this.global.externalLogin();
+    if (!this.msalService.getUser() && !this.global.isShared) {      
+      this.msalService.loginRedirect(environment.consentScopes);
     }
     if (this.global.isLoggedIn && !this.global.isShared) {
       this.userId = this.global.userId;
