@@ -93,8 +93,8 @@ namespace Access2Justice.CosmosDb
             string locationFilter = FindLocationWhereArrayContains(location);
             var query = string.Empty;
             if (string.IsNullOrEmpty(value) && (location != null))
-            {  
-                query = $"SELECT * FROM c WHERE c.{propertyName}=[{value}]";
+            {
+                query = $"SELECT * FROM c WHERE (c.{propertyName}=[{value}] OR c.{propertyName}=null)";
             }
             else
             {
@@ -273,6 +273,12 @@ namespace Access2Justice.CosmosDb
                     query = query + " AND " + locationFilter;
                 }
             }
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query);
+        }
+
+        public async Task<dynamic> FindItemsAllAsync(string collectionId)
+        {            
+            var query = $"SELECT * FROM c";            
             return await backendDatabaseService.QueryItemsAsync(collectionId, query);
         }
     }

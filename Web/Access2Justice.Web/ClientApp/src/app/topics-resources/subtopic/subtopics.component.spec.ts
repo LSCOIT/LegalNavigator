@@ -74,9 +74,11 @@ describe('SubtopicsComponent', () => {
   let mockNavigateDataService;
   let mockBreadcrumbService;
   let mockShowMoreService;
+  let mockTopic = "bd900039-2236-8c2c-8702-d31855c56b0f";
+  let mockResourceType = "Organizations";
 
   beforeEach(async(() => {
-    mockTopicService = jasmine.createSpyObj(['getDocumentData', 'getSubtopics']);    
+    mockTopicService = jasmine.createSpyObj(['getDocumentData', 'getSubtopics']);
     mockNavigateDataService = jasmine.createSpyObj(['getData', 'setData']);
     mockShowMoreService = jasmine.createSpyObj(['clickSeeMoreOrganizations']);
     mockTopicService.getDocumentData.and.returnValue(of(mockDocumentData));
@@ -110,7 +112,7 @@ describe('SubtopicsComponent', () => {
             ])
           }
         },
-        ShowMoreService,
+        { provide: ShowMoreService, useValue: mockShowMoreService },
         MapService,
         PaginationService
       ],
@@ -127,5 +129,40 @@ describe('SubtopicsComponent', () => {
 
   it('should create subtopics component', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should call getSubtopics method in ngOnInit', () => {
+    spyOn(component, 'getSubtopics');
+    component.ngOnInit();
+    expect(component.getSubtopics).toHaveBeenCalled();
+    expect(component.getSubtopics).toHaveBeenCalledTimes(1);
+  });
+
+  it('should return document data when getdoucmentdata method of topic service called', () => {
+    let mockGuidedInput = { activeId: mockTopic, name: mockDocumentData[0].name };
+    component.getSubtopics();
+    expect(component.activeTopic).toEqual(mockTopic);
+    expect(component.topic).toEqual(mockDocumentData[0]);
+    expect(component.icon).toEqual(mockDocumentData[0].icon);
+    expect(component.guidedInput).toEqual(mockGuidedInput);
+    expect(component.subtopics).toEqual(mockSubTopics);
+    expect(mockNavigateDataService.setData).toHaveBeenCalledWith(mockSubTopics);
+  });
+
+  it('should return document data when getdoucmentdata method of topic service called', () => {
+    let mockGuidedInput = { activeId: mockTopic, name: mockDocumentData[0].name };
+    component.getSubtopics();
+    expect(component.activeTopic).toEqual(mockTopic);
+    expect(component.topic).toEqual(mockDocumentData[0]);
+    expect(component.icon).toEqual(mockDocumentData[0].icon);
+    expect(component.guidedInput).toEqual(mockGuidedInput);
+    expect(component.subtopics).toEqual(mockSubTopics);
+    expect(mockNavigateDataService.setData).toHaveBeenCalledWith(mockSubTopics);
+  });
+
+  it('should call clickSeeMoreOrganizations method in clickSeeMoreOrganizationsFromSubtopic', () => {
+    component.activeTopic = mockactiveTopic;
+    component.clickSeeMoreOrganizationsFromSubtopic(mockResourceType);
+    expect(mockShowMoreService.clickSeeMoreOrganizations).toHaveBeenCalledWith(mockResourceType, mockactiveTopic);
   });
 });

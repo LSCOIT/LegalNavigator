@@ -31,9 +31,12 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "resourceType")]
         public string ResourceType { get; set; }
 
-        [Required(ErrorMessage = "Keywords is a required field.")]
         [JsonProperty(PropertyName = "keywords")]
-        public string Keywords { get; set; }  
+        public string Keywords { get; set; }
+        
+        [Required(ErrorMessage = "Organizational Unit is a required field.")]
+        [JsonProperty(PropertyName = "organizationalUnit")]
+        public string OrganizationalUnit { get; set; }
 
         [JsonProperty(PropertyName = "location")]
         public IEnumerable<Location> Location { get; set; }

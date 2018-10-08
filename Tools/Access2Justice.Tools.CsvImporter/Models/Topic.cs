@@ -8,7 +8,6 @@ namespace Access2Justice.Tools.Models
 {
     public class Topic
     {
-        [Required(ErrorMessage = "Topic_Id is a required field.")]
         [JsonProperty(PropertyName = "id")]
         public dynamic Id { get; set; }
 
@@ -24,13 +23,16 @@ namespace Access2Justice.Tools.Models
 
         [JsonProperty(PropertyName = "parentTopicId")]
         public IEnumerable<ParentTopicID> ParentTopicId { get; set; }
-
+        
         [JsonProperty(PropertyName = "resourceType")]
         public string ResourceType { get; set; }
 
-        [Required(ErrorMessage = "Keywords is a required field.")]
         [JsonProperty(PropertyName = "keywords")]
         public string Keywords { get; set; }
+
+        [Required(ErrorMessage = "Organizational Unit is a required field.")]
+        [JsonProperty(PropertyName = "organizationalUnit")]
+        public string OrganizationalUnit { get; set; }
 
         [JsonProperty(PropertyName = "location")]
         public IEnumerable<Locations> Location { get; set; }
@@ -74,6 +76,10 @@ namespace Access2Justice.Tools.Models
     {
         [JsonProperty(PropertyName = "id")]
         public dynamic ParentTopicId { get; set; }
+        //public ParentTopicID()
+        //{
+        //    ParentTopicId = JsonConvert.DeserializeObject("[]");
+        //}
     }
 
     public class QuickLinks

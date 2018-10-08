@@ -6,12 +6,6 @@ button {
   margin: 15px 15px 15px 0;
 }
 
-#about-img {
-  background-color: #f2f2f2;
-  width: 100%;
-  height: 300px;
-}
-
 .section-img {
   background-color: #f2f2f2;
   width: 100%;
@@ -21,6 +15,7 @@ button {
 
 .even-rows {
   margin-top: 30px;
+  float: left;
 }
 
 .even-rows + div {
@@ -29,6 +24,17 @@ button {
 
 p + .btn-sm {
   margin-right: 20px;
+}
+
+.media-object {
+  height: 100px;
+  width: 100px;
+  padding: 10px;
+}
+
+.btn-primary {
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 @media only screen and (min-width : 992px) {
@@ -43,5 +49,12 @@ p + .btn-sm {
 
   .even-rows {
     padding-left: 5%;
+    float: right;
+  }
+
+  .media-object {
+    height: 120px;
+    width: 120px;
+    padding: 10px;
   }
 }

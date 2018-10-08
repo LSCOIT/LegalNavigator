@@ -35,7 +35,6 @@ namespace Access2Justice.CosmosDb
                 StaticResourceCollectionId = configuration.GetSection("StaticResourceCollectionId").Value;
                 UserSavedResourcesCollectionId = configuration.GetSection("UserSavedResourcesCollectionId").Value;
                 UserResourceCollectionId = configuration.GetSection("UserResourceCollectionId").Value;
-
             }
             catch(Exception ex)
             {

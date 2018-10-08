@@ -1,112 +1,121 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Access2Justice.Tools.Models;
-using Microsoft.Azure.Documents.Client;
-using Microsoft.Azure.Documents;
-using Microsoft.Azure.Documents.Linq;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Linq;
 
 namespace Access2Justice.Tools.BusinessLogic
 {
-    class ResourceBusinessLogic: IDisposable
+    class ResourceBusinessLogic : IDisposable
     {
-        private readonly string EndpointUrl = "";
-        private readonly string PrimaryKey = "";
-        private readonly string Database = "";
-        private readonly string ResourceCollection = "";
-        private readonly string TopicCollection = "";
-        private DocumentClient client;
+        static HttpClient clientHttp = new HttpClient();
 
-        [Obsolete("This is deprecated. Please use the api endpoints to import Resources.")]
-        public async Task<IEnumerable<Models.Resource>> GetResources()
+        public async static void GetResources()
         {
-            this.client = new DocumentClient(new Uri(EndpointUrl), PrimaryKey);
-            await this.client.CreateDatabaseIfNotExistsAsync(new Database { Id = Database }).ConfigureAwait(true);
-            await this.client.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri(Database),
-            new DocumentCollection { Id = ResourceCollection }).ConfigureAwait(true);
-
-            InsertResources obj = new InsertResources();
-            var content = obj.CreateJsonFromCSV();
-            
-            Resources Resources = new Resources
+            clientHttp.BaseAddress = new Uri("http://localhost:4200/");
+            clientHttp.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            try
             {
-                ResourcesList = content.ResourcesList
-            };
-
-            foreach (var resourceList in Resources.ResourcesList)
-            {
-                var referenceTags = new List<ReferenceTag>();
-                foreach (var referenceId in resourceList.ReferenceTags)
+                InsertResources obj = new InsertResources();
+                List<dynamic> resourcesList = new List<dynamic>();
+                var resources = obj.CreateJsonFromCSV();
+                if (resources == null || resources.Count == 0)
                 {
-                    if (referenceId.ReferenceTags != "")
+                    throw new Exception("Please check Error log file to correct errors");
+                }
+
+                else
+                {
+                    foreach (var resourceList in resources)
+                    {                        
+                        var serializedResult = JsonConvert.SerializeObject(resourceList);
+                        JObject jsonResult = (JObject)JsonConvert.DeserializeObject(serializedResult);
+                        resourcesList.Add(jsonResult);
+                    }
+
+                    foreach (var resourceList in resourcesList)
                     {
-                        var referenceTagId = await this.GetTopicAsync(referenceId.ReferenceTags);
-                        foreach (var tag in referenceTagId)
+                        if (resourceList.topicTags != null)
                         {
-                            referenceTags.Add(new ReferenceTag { ReferenceTags = tag.id });
+                            for (int iterator = 0; iterator < resourceList.topicTags.Count; iterator++)
+                            {
+                                string name = resourceList.topicTags[iterator].id;
+                                string state = resourceList.location[0].state;
+                                var topicTag = await clientHttp.GetAsync("api/topics/getalltopics").ConfigureAwait(false);
+                                var topicResult = topicTag.Content.ReadAsStringAsync().Result;
+                                dynamic topicTagResult = JsonConvert.DeserializeObject(topicResult);
+                                if (topicTagResult.Count > 0)
+                                {
+                                    foreach(var topic in topicTagResult)
+                                    {
+                                        dynamic topicName = null;
+                                        dynamic topicTagId = null;
+                                        dynamic locationValue = null;
+                                        foreach (JProperty field in topic)
+                                        {
+                                            if (field.Name == "name")
+                                            {
+                                                topicName = field.Value.ToString();
+                                            }
+
+                                            if (field.Name == "id")
+                                            {
+                                                topicTagId = field.Value.ToString();
+                                            }
+
+                                            if (name == topicName)
+                                            {
+                                                if (field.Name == "location")
+                                                {
+                                                    locationValue = field.Value.ToString();
+                                                    var location = JsonConvert.DeserializeObject(locationValue);
+                                                    foreach (var loc in location)
+                                                    {
+                                                        foreach (JProperty locationTopic in loc)
+                                                        {
+                                                            if (locationTopic.Name == "state")
+                                                            {
+                                                                if (state == locationTopic.Value.ToString())
+                                                                {
+                                                                    resourceList.topicTags[iterator].id = topicTagId;
+                                                                    break;                                                                 
+                                                                }
+                                                                break;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }                                                
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
-                }
-                resourceList.ReferenceTags = referenceTags;
-                var serializedResult = JsonConvert.SerializeObject(resourceList);
-                JObject result = (JObject)JsonConvert.DeserializeObject(serializedResult);
 
-                await this.CreateResourceDocumentIfNotExists(Database, ResourceCollection, result).ConfigureAwait(true);
+                    var serializedResources = JsonConvert.SerializeObject(resourcesList);
+                    var result = JsonConvert.DeserializeObject(serializedResources);
+                    var response = await clientHttp.PostAsJsonAsync("api/upsertresourcedocument", result).ConfigureAwait(false);
+                    var json = response.Content.ReadAsStringAsync().Result;
+                    var documentsCreated = JsonConvert.DeserializeObject(json);
+                    response.EnsureSuccessStatusCode();
+                    if (response.IsSuccessStatusCode == true)
+                    {
+                        Console.WriteLine("Resources created successfully" + "\n" + documentsCreated);
+                        Console.WriteLine("You may close the window now.");
+                    }
+                    else
+                    {
+                        throw new Exception("Please correct errors" + "\n" + response);
+                    }
+                }          
             }
-
-            var items = await this.GetItemsFromCollectionAsync().ConfigureAwait(true);
-            return items;
-        }
-
-        private async Task CreateResourceDocumentIfNotExists(string databaseName, string collectionName, object td)
-        {
-            await this.client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(databaseName, collectionName), td).ConfigureAwait(true);
-        }
-
-        public async Task<IEnumerable<Models.Resource>> GetItemsFromCollectionAsync()
-        {
-            var documents = client.CreateDocumentQuery<Models.Resource>(
-                  UriFactory.CreateDocumentCollectionUri(Database, ResourceCollection),
-                  new FeedOptions { MaxItemCount = -1 }).AsDocumentQuery();
-            List<Models.Resource> td = new List<Models.Resource>();
-            while (documents.HasMoreResults)
+            catch (Exception ex)
             {
-                td.AddRange(await documents.ExecuteNextAsync<Models.Resource>().ConfigureAwait(true));
+                Console.WriteLine(ex.Message);
             }
-            return td;
-        }
-
-        private async Task<dynamic> GetTopicAsync(string topicName)
-        {
-            var _query = "SELECT c.id FROM c WHERE c.name = " + "\"" + topicName + "\"";
-            var result = await QueryTopicAsync(TopicCollection, _query).ConfigureAwait(true);
-            return result;            
-        }
-
-        //private void createCosmosDbInstance() {
-        //    IConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-        //    configurationBuilder.AddJsonFile("AppSettings.json");
-        //    IConfiguration configuration = configurationBuilder.Build();
-
-        //    CosmosDb.Interfaces.ICosmosDbSettings cosmosDbSettings = new CosmosDbSettings(configuration.GetSection("CosmosDb"));
-
-        //    IDocumentClient  documentClient= new DocumentClient(cosmosDbSettings.Endpoint, cosmosDbSettings.AuthKey);
-        //    CosmosDbService cosmosDbService = new CosmosDbService(documentClient, cosmosDbSettings);
-        //}
-
-        private async Task<dynamic> QueryTopicAsync(string TopicCollection, string query)
-        {
-            var docQuery = client.CreateDocumentQuery<dynamic>(
-                UriFactory.CreateDocumentCollectionUri(Database, TopicCollection), query).AsDocumentQuery();
-
-            var results = new List<dynamic>();
-            while (docQuery.HasMoreResults)
-            {
-                results.AddRange(await docQuery.ExecuteNextAsync().ConfigureAwait(true));
-            }
-            return results;
         }
 
         protected virtual void Dispose(bool disposing)

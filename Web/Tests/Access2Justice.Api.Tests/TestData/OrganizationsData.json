@@ -5,7 +5,7 @@
     "resourceType": "Organizations",
     "externalUrl": "www.youtube.com",
     "url": "access2justice.com",
-    "referenceTags": [
+    "topicTags": [
       {
         "id": "aaa085ef-96fb-4fd0-bcd0-0472ede66512"
       },
@@ -13,6 +13,7 @@
         "id": "2c0cc7b8-62b1-4efb-8568-b1f767f879bc"
       }
     ],
+    "organizationalUnit": "Alaska",
     "location": [
       {
         "state": "Hawaii",
@@ -46,7 +47,7 @@
     "resourceType": "Organizations",
     "externalUrl": "www.youtube.com",
     "url": "access2justice.com",
-    "referenceTags": [
+    "topicTags": [
       {
         "id": "aaa085ef-96fb-4fd0-bcd0-0472ede66512"
       },
@@ -54,6 +55,7 @@
         "id": "2c0cc7b8-62b1-4efb-8568-b1f767f879bc"
       }
     ],
+    "organizationalUnit": "Alaska",
     "location": [
       {
         "state": "Hawaii",

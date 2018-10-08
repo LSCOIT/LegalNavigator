@@ -8,6 +8,7 @@ import { MapLocationResult, LatitudeLongitude } from './map-results';
   templateUrl: './map-results.component.html',
   styleUrls: ['./map-results.component.css']
 })
+
 export class MapResultsComponent implements OnChanges {
   addressList: Array<MapLocationResult> = [];
   latitudeLongitude: Array<LatitudeLongitude> = [];
@@ -23,14 +24,19 @@ export class MapResultsComponent implements OnChanges {
       if (this.searchResource.resources) {
         for (let i = 0; i < this.searchResource.resources.length; i++) {
           if (this.searchResource.resources[i].address) {
-            this.addressList.push(this.searchResource.resources[i].address);
+            let addressList = this.searchResource.resources[i].address.split('|');
+            if (addressList.length == 1) {
+              this.addressList.push(addressList);
+            } else {
+              this.addressList = this.addressList.concat(addressList);
+            }
           }
         }
       }
       this.getMapResults(this.addressList);
     }
   }
-
+ 
   getMapResults(address) {
     this.addressList = address;
     this.latitudeLongitude = [];
@@ -43,7 +49,7 @@ export class MapResultsComponent implements OnChanges {
 
   displayMapResults() {
     for (let index = 0, len = this.addressList.length; index < len; index++) {
-      this.mapResultsService.getLocationDetails(this.addressList[index], environment.bingmap_key).subscribe((locationCoordinates) => {
+      this.mapResultsService.getLocationDetails(this.addressList[index].toString().replace('\n', ' ').trim(), environment.bingmap_key).subscribe((locationCoordinates) => {
         this.latlong = {
           latitude: locationCoordinates.resourceSets[0].resources[0].point.coordinates[0],
           longitude: locationCoordinates.resourceSets[0].resources[0].point.coordinates[1]

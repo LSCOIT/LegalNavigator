@@ -17,19 +17,19 @@ namespace Access2Justice.Shared.Interfaces
         Task<dynamic> GetTopicDetailsAsync(string topicName);
         Task<dynamic> GetResourceDetailAsync(string resourceName, string resourceType);
         dynamic GetReferences(dynamic resource);
-        dynamic GetReferenceTags(dynamic tagValues);
+        dynamic GetTopicTags(dynamic tagValues);
         dynamic GetLocations(dynamic locationValues);
         dynamic GetConditions(dynamic conditionValues);
         dynamic GetParentTopicIds(dynamic ParentTopicIdValues);
         dynamic GetQuickLinks(dynamic quickLinksValues);
-        Task<IEnumerable<object>> CreateResourcesUploadAsync(string path);
-        Task<IEnumerable<object>> CreateResourceDocumentAsync(dynamic resource);
-        dynamic CreateResourcesForms(dynamic resource);
-        dynamic CreateResourcesActionPlans(dynamic resource);
-        dynamic CreateResourcesArticles(dynamic resource);
-        dynamic CreateResourcesVideos(dynamic resource);
-        dynamic CreateResourcesOrganizations(dynamic resource);
-        dynamic CreateResourcesEssentialReadings(dynamic resource);
+        Task<IEnumerable<object>> UpsertResourcesUploadAsync(string path);
+        Task<IEnumerable<object>> UpsertResourceDocumentAsync(dynamic resource);
+        dynamic UpsertResourcesForms(dynamic resource);
+        dynamic UpsertResourcesActionPlans(dynamic resource);
+        dynamic UpsertResourcesArticles(dynamic resource);
+        dynamic UpsertResourcesVideos(dynamic resource);
+        dynamic UpsertResourcesOrganizations(dynamic resource);
+        dynamic UpsertResourcesEssentialReadings(dynamic resource);
         Task<IEnumerable<object>> UpsertTopicsUploadAsync(string path);
         Task<IEnumerable<object>> UpsertTopicDocumentAsync(dynamic topic);
         dynamic UpsertTopics(dynamic topic);
@@ -38,5 +38,7 @@ namespace Access2Justice.Shared.Interfaces
         Task<dynamic> GetResourcesCountAsync(ResourceFilter resourceFilter);
         Task<dynamic> GetPersonalizedResourcesAsync(ResourceFilter resourceFilter);
         Task<dynamic> GetOrganizationsAsync(Location location);
+        Task<dynamic> GetAllTopics();
+        dynamic GetReviewer(dynamic reviewerValues);
     }
 }

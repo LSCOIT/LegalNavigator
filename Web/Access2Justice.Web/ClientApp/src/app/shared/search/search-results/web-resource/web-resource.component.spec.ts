@@ -3,6 +3,7 @@ import { SaveButtonComponent } from '../../../resource/user-action/save-button/s
 import { WebResourceComponent } from './web-resource.component';
 import { ShareButtonComponent } from '../../../resource/user-action/share-button/share-button.component';
 import { HttpClientModule } from '@angular/common/http';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('WebResourceComponent', () => {
   let component: WebResourceComponent;
@@ -82,6 +83,9 @@ describe('WebResourceComponent', () => {
         WebResourceComponent,
         SaveButtonComponent,
         ShareButtonComponent
+      ],
+      schemas: [
+        CUSTOM_ELEMENTS_SCHEMA
       ]
     })
     .compileComponents();

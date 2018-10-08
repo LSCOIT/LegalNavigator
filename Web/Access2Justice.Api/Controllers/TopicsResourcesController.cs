@@ -225,7 +225,7 @@ namespace Access2Justice.Api.Controllers
         public async Task<IActionResult> CreateResources(IFormFile uploadedFile)
         {
             var path = uploadedFile.FileName;
-            var resources = await topicsResourcesBusinessLogic.CreateResourcesUploadAsync(path);
+            var resources = await topicsResourcesBusinessLogic.UpsertResourcesUploadAsync(path);
             return Ok(resources);
         }
 
@@ -233,15 +233,10 @@ namespace Access2Justice.Api.Controllers
         /// Create Resource Document
         /// </summary>
         [HttpPost]
-        [Route("api/createresourcedocument")]
-        public async Task<IActionResult> CreateResourceDocument(dynamic resource)
+        [Route("api/upsertresourcedocument")]
+        public async Task<IActionResult> UpserResourceDocument([FromBody]dynamic resource)
         {
-            string filePath = Path.Combine(Environment.CurrentDirectory, "SampleJsons\\EssentialReadingsData.json");
-            using (StreamReader r = new StreamReader(filePath))
-            {
-                resource = r.ReadToEnd();
-            }
-            var resources = await topicsResourcesBusinessLogic.CreateResourceDocumentAsync(resource);
+            var resources = await topicsResourcesBusinessLogic.UpsertResourceDocumentAsync(resource);
             return Ok(resources);
         }
 
@@ -280,5 +275,16 @@ namespace Access2Justice.Api.Controllers
             return Content(response);
         }
 
+        /// Get all topics
+        /// </summary>
+        /// <param name=""></param>
+        /// <returns>all topics from cosmos db</returns>
+        [Route("api/topics/getalltopics")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllTopics()
+        {
+            var response = await topicsResourcesBusinessLogic.GetAllTopics();
+            return Ok(response);
+        }
     }
 }

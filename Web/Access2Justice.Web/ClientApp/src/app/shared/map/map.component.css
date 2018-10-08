@@ -14,14 +14,12 @@ p {
 #my-map {
   position: relative;
   width: 90%;
-  margin: 0 auto;
-  height: 300px;
-  margin-top: 15px;
+  margin: 60px auto 0 auto;
+  height: 250px;
 }
 
 #searchbox-container {
-  max-width: 550px;
-  margin: 10px auto;
+  margin-top: 10px;
 }
 
 .location-icon {
@@ -45,7 +43,9 @@ p {
 
 #search-box {
   height: 30px;
-  width: 200px;
+  width: 45%;
+  float: left;
+  margin-left: 22%;
 }
 
 .search-btn {
@@ -55,6 +55,7 @@ p {
   color: #fff;
   margin-left: -5px;
   font-weight: 600;
+  float: left;
 }
 
 .close {
@@ -87,6 +88,7 @@ p {
 
   #search-box {
     width: 250px;
+    margin-left: 165px;
   }
 
   #my-map {

@@ -1,0 +1,1225 @@
+[
+  {
+    "id": "ab0ef241-5778-0147-062c-005e80946d38",
+    "name": "AboutPage",
+    "location": [
+      {
+        "state": "Alaska"
+      }
+    ],
+    "aboutImage": {
+      "source": "/static-resource/alaska/assets/images/secondary-illustrations/about.svg",
+      "altText": "About Page"
+    },
+    "mission": {
+      "title": "Our Mission",
+      "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum eveniet beatae nam voluptatibus distinctio veritatis vel saepe nulla eum suscipit necessitatibus quae labore, quisquam ad, eius officia! Commodi, sapiente perferendis! Atque vitae natus quasi at culpa porro fugit eum laboriosam id earum quibusdam, explicabo nisi mollitia saepe tempora praesentium in sunt, exercitationem error, magni ratione ipsa numquam debitis consequatur. Repellendus asperiores dolor, quidem perspiciatis sapiente tenetur provident dolorem accusamus quibusdam eveniet placeat officiis, quod fugiat ullam minima rem. Molestias, quos inventore accusamus eligendi culpa necessitatibus rerum nostrum aspernatur eaque explicabo voluptatem architecto esse, debitis non earum autem, ipsam modi sit!",
+      "sponsors": [
+        {
+          "source": "",
+          "altText": ""
+        },
+        {
+          "source": "",
+          "altText": ""
+        }
+      ]
+    },
+    "service": {
+      "title": "Our Service",
+      "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat dicta illo rerum voluptatibus magni molestias officiis totam minima ab quas quae dolorem aut laboriosam expedita atque dignissimos, sed maxime ratione consequatur optio nobis odit repellendus quos dolore! Sunt atque accusantium praesentium, culpa hic enim voluptas suscipit cumque odit deleniti animi reiciendis perspiciatis magnam exercitationem minus? Itaque exercitationem nostrum dignissimos eum tempore magnam, quasi alias voluptas sequi facere voluptate aperiam porro.",
+      "image": {
+        "source": "",
+        "altText": ""
+      },
+      "guidedAssistantButton": {
+        "buttonText": "Use our Guided Assistant",
+        "buttonAltText": "Use our Guided Assistant",
+        "buttonLink": "guidedassistant"
+      },
+      "topicsAndResourcesButton": {
+        "buttonText": "Browse Topics & Resources",
+        "buttonAltText": "Browse Topics & Resources",
+        "buttonLink": "topics"
+      }
+    },
+    "privacyPromise": {
+      "title": "Our Privacy Promise",
+      "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus, nulla!",
+      "image": {
+        "source": "",
+        "altText": ""
+      },
+      "privacyPromiseButton": {
+        "buttonText": "View our privacy promise",
+        "buttonAltText": "View our privacy promise",
+        "buttonLink": "privacy"
+      }
+    },
+    "inTheNews": {
+      "title": "In the News",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      "news": [
+        {
+          "title": "Lorem ipsum dolor sit amet",
+          "description": "Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter.",
+          "image": {
+            "source": "/static-resource/alaska/assets/images/sample-images/trees_0.JPG",
+            "altText": "sample image"
+          }
+        },
+        {
+          "title": "Lorem ipsum dolor sit amet",
+          "description": "Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter.",
+          "image": {
+            "source": "/static-resource/alaska/assets/images/sample-images/trees_1.JPG",
+            "altText": "sample image"
+          }
+        },
+        {
+          "title": "Lorem ipsum dolor sit amet",
+          "description": "Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter.",
+          "image": {
+            "source": "/static-resource/alaska/assets/images/sample-images/trees_2.JPG",
+            "altText": "sample image"
+          }
+        }
+      ]
+    },
+    "contactUs": {
+      "title": "Contact Us",
+      "description": "For general inqueries, please email us lorem ipsum dolor sit amet consectuter.",
+      "email": "email@emailaddress.com"
+    },
+    "mediaInquiries": {
+      "title": "Media Inquiries",
+      "description": "For media opportunities, please email our media department lorem ipsum dolor amet.",
+      "email": "email@emailaddress.com"
+    }
+  },
+  {
+    "id": "bd7fd551-c439-bd38-4ed2-8bcdb6fa2318",
+    "name": "Navigation",
+    "location": [
+      {
+        "state": "Default"
+      }
+    ],
+    "language": {
+      "button": {
+        "buttonText": "English",
+        "buttonAltText": "English",
+        "buttonLink": ""
+      },
+      "navigationImage": {
+        "source": "/static-resource/default/assets/images/small-icons/language.svg",
+        "altText": ""
+      },
+      "dropDownImage": {
+        "source": "/static-resource/default/assets/images/small-icons/dropdown_arrow.svg",
+        "altText": ""
+      }
+    },
+    "locationNavContent": {
+      "text": "Please Select Location",
+      "altText": "Please Select Location",
+      "button": {
+        "buttonText": "Change",
+        "buttonAltText": "Change",
+        "buttonLink": ""
+      },
+      "image": {
+        "source": "/static-resource/default/assets/images/small-icons/location.svg",
+        "altText": ""
+      }
+    },
+    "privacyPromise": {
+      "button": {
+        "buttonText": "Privacy Promise",
+        "buttonAltText": "Privacy Promise",
+        "buttonLink": "privacy"
+      },
+      "image": {
+        "source": "/static-resource/default/assets/images/small-icons/privacy.svg",
+        "altText": ""
+      }
+    },
+    "helpAndFAQ": {
+      "button": {
+        "buttonText": "Help & FAQs",
+        "buttonAltText": "Help & FAQs",
+        "buttonLink": "help"
+      },
+      "image": {
+        "source": "/static-resource/default/assets/images/small-icons/faq.svg",
+        "altText": ""
+      }
+    },
+    "login": {
+      "button": {
+        "buttonText": "Log in",
+        "buttonAltText": "Log in",
+        "buttonLink": "login"
+      },
+      "image": {
+        "source": "/static-resource/default/assets/images/small-icons/profile.svg",
+        "altText": ""
+      }
+    },
+    "logo": {
+      "firstLogo": "Legal",
+      "secondLogo": "Assist",
+      "link": ""
+    },
+    "home": {
+      "button": {
+        "buttonText": "Home",
+        "buttonAltText": "Home",
+        "buttonLink": ""
+      }
+    },
+    "guidedAssistant": {
+      "button": {
+        "buttonText": "Guided Assistant",
+        "buttonAltText": "Guided Assistant",
+        "buttonLink": "guidedassistant"
+      }
+    },
+    "topicAndResources": {
+      "button": {
+        "buttonText": "Topics & Resources",
+        "buttonAltText": "Topics & Resources",
+        "buttonLink": "topics"
+      }
+    },
+    "about": {
+      "button": {
+        "buttonText": "About",
+        "buttonAltText": "About",
+        "buttonLink": "about"
+      }
+    },
+    "search": {
+      "button": {
+        "buttonText": "Search",
+        "buttonAltText": "Search",
+        "buttonLink": ""
+      },
+      "image": {
+        "source": "/static-resource/default/assets/images/small-icons/search.svg",
+        "altText": ""
+      }
+    }
+  },
+  {
+    "id": "1ea905c9-5d37-5e9e-db15-34b2ffd300bc",
+    "name": "PrivacyPromisePage",
+    "location": [
+      {
+        "state": "Alaska"
+      }
+    ],
+    "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Asperiores illo totam iste rerum fuga sit facilis modi iusto sapiente saepe tenetur labore eaque esse quod alias maxime ut velit quisquam, doloremque perspiciatis harum omnis. Odit dolorem, reprehenderit cupiditate deleniti amet a aperiam voluptates quam facilis suscipit, vero error magnam voluptatum.",
+    "image": {
+      "source": "/static-resource/alaska/assets/images/secondary-illustrations/privacy_promise_dark.svg",
+      "altText": "Privacy Promise Page"
+    },
+    "details": [
+      {
+        "title": "Data Collection and Use",
+        "description": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Adipisci, distinctio possimus neque corrupti veritatis aspernatur odit quae sed voluptas minima, aliquam iste ex deleniti ut aliquid quaerat animi, similique accusamus?"
+      },
+      {
+        "title": "Personal Information",
+        "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quis earum ipsa dolore id sequi, dicta illum. Perspiciatis doloribus voluptas iure!"
+      },
+      {
+        "title": "Security",
+        "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad quod excepturi in illum aliquid hic sit porro unde doloribus facere, iste distinctio nisi, ea aperiam, id vero! Animi tempore odio expedita reprehenderit officiis suscipit, illo doloremque esse? Velit, dolor necessitatibus eveniet earum vel officiis expedita, voluptate quidem totam illum asperiores sapiente, quo ipsa tenetur labore tempore corporis dolore dolorem sunt."
+      }
+    ]
+  },
+  {
+    "id": "cbfbfc62-7e03-3758-e8c7-8dea951ce614",
+    "name": "AboutPage",
+    "location": [
+      {
+        "state": "Hawaii"
+      }
+    ],
+    "aboutImage": {
+      "source": "/static-resource/hawaii/assets/images/secondary-illustrations/about.svg",
+      "altText": "About Page"
+    },
+    "mission": {
+      "title": "Our Mission",
+      "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum eveniet beatae nam voluptatibus distinctio veritatis vel saepe nulla eum suscipit necessitatibus quae labore, quisquam ad, eius officia! Commodi, sapiente perferendis! Atque vitae natus quasi at culpa porro fugit eum laboriosam id earum quibusdam, explicabo nisi mollitia saepe tempora praesentium in sunt, exercitationem error, magni ratione ipsa numquam debitis consequatur. Repellendus asperiores dolor, quidem perspiciatis sapiente tenetur provident dolorem accusamus quibusdam eveniet placeat officiis, quod fugiat ullam minima rem. Molestias, quos inventore accusamus eligendi culpa necessitatibus rerum nostrum aspernatur eaque explicabo voluptatem architecto esse, debitis non earum autem, ipsam modi sit!",
+      "sponsors": [
+        {
+          "source": "",
+          "altText": ""
+        },
+        {
+          "source": "",
+          "altText": ""
+        }
+      ]
+    },
+    "service": {
+      "title": "Our Service",
+      "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat dicta illo rerum voluptatibus magni molestias officiis totam minima ab quas quae dolorem aut laboriosam expedita atque dignissimos, sed maxime ratione consequatur optio nobis odit repellendus quos dolore! Sunt atque accusantium praesentium, culpa hic enim voluptas suscipit cumque odit deleniti animi reiciendis perspiciatis magnam exercitationem minus? Itaque exercitationem nostrum dignissimos eum tempore magnam, quasi alias voluptas sequi facere voluptate aperiam porro.",
+      "image": {
+        "source": "",
+        "altText": ""
+      },
+      "guidedAssistantButton": {
+        "buttonText": "Use our Guided Assistant",
+        "buttonAltText": "Use our Guided Assistant",
+        "buttonLink": "guidedassistant"
+      },
+      "topicsAndResourcesButton": {
+        "buttonText": "Browse Topics & Resources",
+        "buttonAltText": "Browse Topics & Resources",
+        "buttonLink": "topics"
+      }
+    },
+    "privacyPromise": {
+      "title": "Our Privacy Promise",
+      "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus, nulla!",
+      "image": {
+        "source": "",
+        "altText": ""
+      },
+      "privacyPromiseButton": {
+        "buttonText": "View our privacy promise",
+        "buttonAltText": "View our privacy promise",
+        "buttonLink": "privacy"
+      }
+    },
+    "inTheNews": {
+      "title": "In the News",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      "news": [
+        {
+          "title": "Lorem ipsum dolor sit amet",
+          "description": "Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter.",
+          "image": {
+            "source": "/static-resource/alaska/assets/images/sample-images/trees_0.JPG",
+            "altText": "sample image"
+          }
+        },
+        {
+          "title": "Lorem ipsum dolor sit amet",
+          "description": "Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter.",
+          "image": {
+            "source": "/static-resource/alaska/assets/images/sample-images/trees_1.JPG",
+            "altText": "sample image"
+          }
+        },
+        {
+          "title": "Lorem ipsum dolor sit amet",
+          "description": "Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter.",
+          "image": {
+            "source": "/static-resource/alaska/assets/images/sample-images/trees_2.JPG",
+            "altText": "sample image"
+          }
+        }
+      ]
+    },
+    "contactUs": {
+      "title": "Contact Us",
+      "description": "For general inqueries, please email us lorem ipsum dolor sit amet consectuter.",
+      "email": "email@emailaddress.com"
+    },
+    "mediaInquiries": {
+      "title": "Media Inquiries",
+      "description": "For media opportunities, please email our media department lorem ipsum dolor amet.",
+      "email": "email@emailaddress.com"
+    }
+  },
+  {
+    "id": "d90168d4-e90e-82b1-0f4c-7338c0d271fd",
+    "name": "HelpAndFAQPage",
+    "location": [
+      {
+        "state": "Hawaii"
+      }
+    ],
+    "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. A non excepturi ullam magnam similique, nobis officiis cupiditate aperiam consectetur at labore commodi! Soluta, expedita fuga in quod corporis voluptatem reiciendis. ",
+    "image": {
+      "source": "/static-resource/hawaii/assets/images/secondary-illustrations/help_faqs.svg",
+      "altText": "Help and FAQs Page"
+    },
+    "faqs": [
+      {
+        "question": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias quo expedita, ab vero repellat voluptates molestiae? Ipsam, ducimus nam. Ducimus.",
+        "answer": [
+          {
+            "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat reprehenderit laborum dicta architecto iusto at sed iste fugit necessitatibus rem, fuga ad minima provident neque est autem dolore officiis, ab nihil? Consectetur, nostrum nam eligendi praesentium illo dignissimos magni maxime."
+          }
+        ]
+      },
+      {
+        "question": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae nam corporis laboriosam voluptate, neque eligendi?",
+        "answer": [
+          {
+            "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim iure cupiditate eius fugit eveniet sit deserunt velit esse repellendus totam quia, accusamus ipsum doloribus. Adipisci aliquam nostrum quibusdam similique alias itaque optio dolorum magni et eveniet architecto debitis quos inventore sit, quam non."
+          },
+          {
+            "description": "Sit hic cumque distinctio sunt temporibus, est quidem quos. Tempore tenetur, mollitia tempora nesciunt exercitationem alias eos, eligendi voluptas aperiam quasi veritatis dolorum ab blanditiis, soluta debitis!"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "9c3019e9-ee2d-11ad-befa-ea7bfd06603f",
+    "name": "HomePage",
+    "location": [
+      {
+        "state": "Alaska"
+      }
+    ],
+    "hero": {
+      "heading": "Get help with your legal questions in",
+      "description": {
+        "text": "We will always protect your privacy. Read our",
+        "textWithLink": {
+          "urlText": "Privacy Promise",
+          "url": "privacy"
+        }
+      },
+      "image": {
+        "source": "/static-resource/alaska/assets/images/primary-illustrations/alaska.svg",
+        "altText": "Illustration of Alaska"
+      }
+    },
+    "guidedAssistantOverview": {
+      "heading": "Need a plan of action for your legal issue? Our Guided Assistant can help.",
+      "description": {
+        "steps": [
+          {
+            "order": "1",
+            "description": "Answer a few questions to help us understand your needs."
+          },
+          {
+            "order": "2",
+            "description": "We'll create a personalized plan with steps and resources."
+          },
+          {
+            "order": "3",
+            "description": "Share, print, or create a profile to save your plan."
+          }
+        ],
+        "text": "Free and no account necessary. We never share any information you provide.",
+        "textWithLink": {
+          "urlText": "Privacy Promise",
+          "url": "privacy"
+        }
+      },
+      "button": {
+        "buttonText": "Start the Guided Assistant",
+        "buttonAltText": "Start the Guided Assistant",
+        "buttonLink": "guidedassistant"
+      },
+      "image": {
+        "source": "/static-resource/alaska/assets/images/secondary-illustrations/guided_assistant.svg",
+        "altText": "Guided Assistant Illustration"
+      }
+    },
+    "topicAndResources": {
+      "heading": "More Information, Videos, and Links to Resources by Topic",
+      "button": {
+        "buttonText": "See More Topics",
+        "buttonAltText": "Alt text",
+        "buttonLink": "topics"
+      }
+    },
+    "carousel": {
+      "slides": [
+        {
+          "quote": "Tincidunt integer eu augue augue nunc elit dolor, luctus placerat scelerisque euismod, iaculis eu lacus nunc mi elit, vehicula ut laoreet ac, aliquam sit amet justo nunc tempor, metus vel..",
+          "author": "Robbie",
+          "location": "Anchorage, AK",
+          "image": {
+            "source": "/static-resource/alaska/assets/images/sample-images/trees_0.JPG",
+            "altText": "Image not available"
+          }
+        },
+        {
+          "quote": "Ut fusce varius nisl ac ipsum gravida vel pretium tellus tincidunt integer eu augue augue nunc elit dolor, luctus placerat.",
+          "author": "Robbie",
+          "location": "Anchorage, AK",
+          "image": {
+            "source": "/static-resource/alaska/assets/images/sample-images/trees_1.JPG",
+            "altText": "Image not available"
+          }
+        },
+        {
+          "quote": "This site is here to provide equal access to legal information and resources for everyone. Legal disclaimer lorem ipsum dolor amet. It is brought to you by partnership of these nonproffit organizations.",
+          "author": "Robbie",
+          "location": "Anchorage, AK",
+          "image": {
+            "source": "/static-resource/alaska/assets/images/sample-images/trees_2.JPG",
+            "altText": "Image not available"
+          }
+        }
+      ]
+    },
+    "sponsorOverview": {
+      "heading": "Information you can trust",
+      "description": "This site is here to provide equal access to legal information and resources for everyone. Legal disclaimer lorem ipsum dolor amet. It is brought to you by partnership of these nonproffit organizations",
+      "sponsors": [
+        {
+          "source": "",
+          "altText": "Illustration of Hawaii"
+        },
+        {
+          "source": "",
+          "altText": "Illustration of Hawaii"
+        }
+      ],
+      "button": {
+        "buttonText": "Learn More",
+        "buttonAltText": "Learn More",
+        "buttonLink": "about"
+      }
+    },
+    "privacy": {
+      "heading": "Our Privacy Promise",
+      "description": "We value your privacy and will never share your personal information with anyone without your lorem ipsum dolor sit amet.",
+      "button": {
+        "buttonText": "Learn More",
+        "buttonAltText": "Alt text",
+        "buttonLink": "privacy"
+      },
+      "image": {
+        "source": "/static-resource/alaska/assets/images/secondary-illustrations/privacy_promise.svg",
+        "altText": "Privacy Illustration"
+      }
+    },
+    "helpText": "Are you safe? Call X-XXX-XXX-XXXX to get help."
+  },
+  {
+    "id": "1eb9b48f-744c-3bf0-b44b-5b2f038fcd54",
+    "name": "HomePage",
+    "location": [
+      {
+        "state": "Default"
+      }
+    ],
+    "hero": {
+      "heading": "Get help with your legal questions in",
+      "description": {
+        "text": "We will always protect your privacy. Read our",
+        "textWithLink": {
+          "urlText": "Privacy Promise",
+          "url": "privacy"
+        }
+      },
+      "image": {
+        "source": "",
+        "altText": ""
+      }
+    },
+    "language": {
+      "button": {
+        "buttonText": "English",
+        "buttonAltText": "English",
+        "buttonLink": ""
+      },
+      "navigationImage": {
+        "source": "/static-resource/hawaii/assets/images/small-icons/language.svg",
+        "altText": ""
+      },
+      "dropDownImage": {
+        "source": "/static-resource/hawaii/assets/images/small-icons/dropdown_arrow.svg",
+        "altText": ""
+      }
+    },
+    "guidedAssistantOverview": {
+      "heading": "Need a plan of action for your legal issue? Our Guided Assistant can help.",
+      "description": {
+        "steps": [
+          {
+            "order": "1",
+            "description": "Answer a few questions to help us understand your needs."
+          },
+          {
+            "order": "2",
+            "description": "We'll create a personalized plan with steps and resources."
+          },
+          {
+            "order": "3",
+            "description": "Share, print, or create a profile to save your plan."
+          }
+        ],
+        "text": "Free and no account necessary. We never share any information you provide.",
+        "textWithLink": {
+          "urlText": "Privacy Promise",
+          "url": "privacy"
+        }
+      },
+      "button": {
+        "buttonText": "Start the Guided Assistant",
+        "buttonAltText": "Start the Guided Assistant",
+        "buttonLink": "guidedassistant"
+      },
+      "image": {
+        "source": "/static-resource/default/assets/images/secondary-illustrations/guided_assistant.svg",
+        "altText": "Guided Assistant Illustration"
+      }
+    },
+    "topicAndResources": {
+      "heading": "More Information, Videos, and Links to Resources by Topic",
+      "button": {
+        "buttonText": "See More Topics",
+        "buttonAltText": "Alt text",
+        "buttonLink": "topics"
+      }
+    },
+    "carousel": {
+      "slides": [
+        {
+          "quote": "Tincidunt integer eu augue augue nunc elit dolor, luctus placerat scelerisque euismod, iaculis eu lacus nunc mi elit, vehicula ut laoreet ac, aliquam sit amet justo nunc tempor, metus vel..",
+          "author": "Robbie",
+          "location": "Anchorage, AK",
+          "image": {
+            "source": "",
+            "altText": "Image not available"
+          }
+        },
+        {
+          "quote": "Ut fusce varius nisl ac ipsum gravida vel pretium tellus tincidunt integer eu augue augue nunc elit dolor, luctus placerat.",
+          "author": "Robbie",
+          "location": "Anchorage, AK",
+          "image": {
+            "source": "",
+            "altText": "Image not available"
+          }
+        },
+        {
+          "quote": "This site is here to provide equal access to legal information and resources for everyone. Legal disclaimer lorem ipsum dolor amet. It is brought to you by partnership of these nonproffit organizations.",
+          "author": "Robbie",
+          "location": "Anchorage, AK",
+          "image": {
+            "source": "",
+            "altText": "Image not available"
+          }
+        }
+      ]
+    },
+    "sponsorOverview": {
+      "heading": "Information you can trust",
+      "description": "This site is here to provide equal access to legal information and resources for everyone. Legal disclaimer lorem ipsum dolor amet. It is brought to you by partnership of these nonproffit organizations",
+      "sponsors": [
+        {
+          "source": "",
+          "altText": ""
+        },
+        {
+          "source": "",
+          "altText": ""
+        }
+      ],
+      "button": {
+        "buttonText": "Learn More",
+        "buttonAltText": "Learn More",
+        "buttonLink": ""
+      }
+    },
+    "privacy": {
+      "heading": "Our Privacy Promise",
+      "description": "We value your privacy and will never share your personal information with anyone without your lorem ipsum dolor sit amet.",
+      "button": {
+        "buttonText": "Learn More",
+        "buttonAltText": "Alt text",
+        "buttonLink": "privacy"
+      },
+      "image": {
+        "source": "/static-resource/default/assets/images/secondary-illustrations/privacy_promise.svg",
+        "altText": "Privacy Illustration"
+      }
+    },
+    "helpText": "Are you safe? Call X-XXX-XXX-XXXX to get help."
+  },
+  {
+    "id": "e84dee21-d4d1-7f30-f4b6-b5bde92d4c94",
+    "name": "HelpAndFAQPage",
+    "location": [
+      {
+        "state": "Alaska"
+      }
+    ],
+    "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. A non excepturi ullam magnam similique, nobis officiis cupiditate aperiam consectetur at labore commodi! Soluta, expedita fuga in quod corporis voluptatem reiciendis. ",
+    "image": {
+      "source": "/static-resource/alaska/assets/images/secondary-illustrations/help_faqs.svg",
+      "altText": "Help and FAQs Page"
+    },
+    "faqs": [
+      {
+        "question": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias quo expedita, ab vero repellat voluptates molestiae? Ipsam, ducimus nam. Ducimus.",
+        "answer": [
+          {
+            "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat reprehenderit laborum dicta architecto iusto at sed iste fugit necessitatibus rem, fuga ad minima provident neque est autem dolore officiis, ab nihil? Consectetur, nostrum nam eligendi praesentium illo dignissimos magni maxime."
+          }
+        ]
+      },
+      {
+        "question": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae nam corporis laboriosam voluptate, neque eligendi?",
+        "answer": [
+          {
+            "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim iure cupiditate eius fugit eveniet sit deserunt velit esse repellendus totam quia, accusamus ipsum doloribus. Adipisci aliquam nostrum quibusdam similique alias itaque optio dolorum magni et eveniet architecto debitis quos inventore sit, quam non."
+          },
+          {
+            "description": "Sit hic cumque distinctio sunt temporibus, est quidem quos. Tempore tenetur, mollitia tempora nesciunt exercitationem alias eos, eligendi voluptas aperiam quasi veritatis dolorum ab blanditiis, soluta debitis!"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "7b58a732-2f77-1db9-dfdf-9798fb564d6c",
+    "name": "PrivacyPromisePage",
+    "location": [
+      {
+        "state": "Default"
+      }
+    ],
+    "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Asperiores illo totam iste rerum fuga sit facilis modi iusto sapiente saepe tenetur labore eaque esse quod alias maxime ut velit quisquam, doloremque perspiciatis harum omnis. Odit dolorem, reprehenderit cupiditate deleniti amet a aperiam voluptates quam facilis suscipit, vero error magnam voluptatum.",
+    "image": {
+      "source": "/static-resource/default/assets/images/secondary-illustrations/privacy_promise_dark.svg",
+      "altText": "Privacy Promise Page"
+    },
+    "details": [
+      {
+        "title": "Data Collection and Use",
+        "description": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Adipisci, distinctio possimus neque corrupti veritatis aspernatur odit quae sed voluptas minima, aliquam iste ex deleniti ut aliquid quaerat animi, similique accusamus?"
+      },
+      {
+        "title": "Personal Information",
+        "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quis earum ipsa dolore id sequi, dicta illum. Perspiciatis doloribus voluptas iure!"
+      },
+      {
+        "title": "Security",
+        "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad quod excepturi in illum aliquid hic sit porro unde doloribus facere, iste distinctio nisi, ea aperiam, id vero! Animi tempore odio expedita reprehenderit officiis suscipit, illo doloremque esse? Velit, dolor necessitatibus eveniet earum vel officiis expedita, voluptate quidem totam illum asperiores sapiente, quo ipsa tenetur labore tempore corporis dolore dolorem sunt."
+      }
+    ]
+  },
+  {
+    "id": "a9309eae-82e9-917d-bd5f-14f906ae10c5",
+    "name": "HomePage",
+    "location": [
+      {
+        "state": "Hawaii"
+      }
+    ],
+    "hero": {
+      "heading": "Get help with your legal questions in",
+      "description": {
+        "text": "We will always protect your privacy. Read our",
+        "textWithLink": {
+          "urlText": "Privacy Promise",
+          "url": "privacy"
+        }
+      },
+      "image": {
+        "source": "/static-resource/hawaii/assets/images/primary-illustrations/hawaii.svg",
+        "altText": "Illustration of Hawaii"
+      }
+    },
+    "guidedAssistantOverview": {
+      "heading": "Need a plan of action for your legal issue? Our Guided Assistant can help.",
+      "description": {
+        "steps": [
+          {
+            "order": "1",
+            "description": "Answer a few questions to help us understand your needs."
+          },
+          {
+            "order": "2",
+            "description": "We'll create a personalized plan with steps and resources."
+          },
+          {
+            "order": "3",
+            "description": "Share, print, or create a profile to save your plan."
+          }
+        ],
+        "text": "Free and no account necessary. We never share any information you provide.",
+        "textWithLink": {
+          "urlText": "Privacy Promise",
+          "url": "privacy"
+        }
+      },
+      "button": {
+        "buttonText": "Start the Guided Assistant",
+        "buttonAltText": "Start the Guided Assistant",
+        "buttonLink": "guidedassistant"
+      },
+      "image": {
+        "source": "/static-resource/hawaii/assets/images/secondary-illustrations/guided_assistant.svg",
+        "altText": "Guided Assistant Illustration"
+      }
+    },
+    "topicAndResources": {
+      "heading": "More Information, Videos, and Links to Resources by Topic",
+      "button": {
+        "buttonText": "See More Topics",
+        "buttonAltText": "Alt text",
+        "buttonLink": "topics"
+      }
+    },
+    "carousel": {
+      "slides": [
+        {
+          "quote": "Tincidunt integer eu augue augue nunc elit dolor, luctus placerat scelerisque euismod, iaculis eu lacus nunc mi elit, vehicula ut laoreet ac, aliquam sit amet justo nunc tempor, metus vel..",
+          "author": "Robbie",
+          "location": "Anchorage, AK",
+          "image": {
+            "source": "",
+            "altText": "Image not available"
+          }
+        },
+        {
+          "quote": "Ut fusce varius nisl ac ipsum gravida vel pretium tellus tincidunt integer eu augue augue nunc elit dolor, luctus placerat.",
+          "author": "Robbie",
+          "location": "Anchorage, AK",
+          "image": {
+            "source": "",
+            "altText": "Image not available"
+          }
+        },
+        {
+          "quote": "This site is here to provide equal access to legal information and resources for everyone. Legal disclaimer lorem ipsum dolor amet. It is brought to you by partnership of these nonproffit organizations.",
+          "author": "Robbie",
+          "location": "Anchorage, AK",
+          "image": {
+            "source": "",
+            "altText": "Image not available"
+          }
+        }
+      ]
+    },
+    "sponsorOverview": {
+      "heading": "Information you can trust",
+      "description": "This site is here to provide equal access to legal information and resources for everyone. Legal disclaimer lorem ipsum dolor amet. It is brought to you by partnership of these nonproffit organizations",
+      "sponsors": [
+        {
+          "source": "",
+          "altText": ""
+        },
+        {
+          "source": "",
+          "altText": ""
+        }
+      ],
+      "button": {
+        "buttonText": "Learn More",
+        "buttonAltText": "Learn More",
+        "buttonLink": "about"
+      }
+    },
+    "privacy": {
+      "heading": "Our Privacy Promise",
+      "description": "We value your privacy and will never share your personal information with anyone without your lorem ipsum dolor sit amet.",
+      "button": {
+        "buttonText": "Learn More",
+        "buttonAltText": "Alt text",
+        "buttonLink": "privacy"
+      },
+      "image": {
+        "source": "/static-resource/hawaii/assets/images/secondary-illustrations/privacy_promise.svg",
+        "altText": "Privacy Illustration"
+      }
+    },
+    "helpText": "Are you safe? Call X-XXX-XXX-XXXX to get help."
+  },
+  {
+    "id": "4268d7bb-a798-1826-80eb-cb8aa78f655d",
+    "name": "PrivacyPromisePage",
+    "location": [
+      {
+        "state": "Hawaii"
+      }
+    ],
+    "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Asperiores illo totam iste rerum fuga sit facilis modi iusto sapiente saepe tenetur labore eaque esse quod alias maxime ut velit quisquam, doloremque perspiciatis harum omnis. Odit dolorem, reprehenderit cupiditate deleniti amet a aperiam voluptates quam facilis suscipit, vero error magnam voluptatum.",
+    "image": {
+      "source": "/static-resource/hawaii/assets/images/secondary-illustrations/privacy_promise_dark.svg",
+      "altText": "Privacy Promise Page"
+    },
+    "details": [
+      {
+        "title": "Data Collection and Use",
+        "description": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Adipisci, distinctio possimus neque corrupti veritatis aspernatur odit quae sed voluptas minima, aliquam iste ex deleniti ut aliquid quaerat animi, similique accusamus?"
+      },
+      {
+        "title": "Personal Information",
+        "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quis earum ipsa dolore id sequi, dicta illum. Perspiciatis doloribus voluptas iure!"
+      },
+      {
+        "title": "Security",
+        "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad quod excepturi in illum aliquid hic sit porro unde doloribus facere, iste distinctio nisi, ea aperiam, id vero! Animi tempore odio expedita reprehenderit officiis suscipit, illo doloremque esse? Velit, dolor necessitatibus eveniet earum vel officiis expedita, voluptate quidem totam illum asperiores sapiente, quo ipsa tenetur labore tempore corporis dolore dolorem sunt."
+      }
+    ]
+  },
+  {
+    "id": "3b97ed48-48d4-7ab0-5406-050702c0ab1e",
+    "name": "Navigation",
+    "location": [
+      {
+        "state": "Alaska"
+      }
+    ],
+    "language": {
+      "button": {
+        "buttonText": "English",
+        "buttonAltText": "English",
+        "buttonLink": ""
+      },
+      "navigationImage": {
+        "source": "/static-resource/alaska/assets/images/small-icons/language.svg",
+        "altText": ""
+      },
+      "dropDownImage": {
+        "source": "/static-resource/alaska/assets/images/small-icons/dropdown_arrow.svg",
+        "altText": ""
+      }
+    },
+    "locationNavContent": {
+      "text": "Please Select Location",
+      "altText": "Please Select Location",
+      "button": {
+        "buttonText": "Change",
+        "buttonAltText": "Change",
+        "buttonLink": ""
+      },
+      "image": {
+        "source": "/static-resource/alaska/assets/images/small-icons/location.svg",
+        "altText": ""
+      }
+    },
+    "privacyPromise": {
+      "button": {
+        "buttonText": "Privacy Promise",
+        "buttonAltText": "Privacy Promise",
+        "buttonLink": "privacy"
+      },
+      "image": {
+        "source": "/static-resource/alaska/assets/images/small-icons/privacy.svg",
+        "altText": ""
+      }
+    },
+    "helpAndFAQ": {
+      "button": {
+        "buttonText": "Help & FAQs",
+        "buttonAltText": "Help & FAQs",
+        "buttonLink": "help"
+      },
+      "image": {
+        "source": "/static-resource/alaska/assets/images/small-icons/faq.svg",
+        "altText": ""
+      }
+    },
+    "login": {
+      "button": {
+        "buttonText": "Log in",
+        "buttonAltText": "Log in",
+        "buttonLink": "login"
+      },
+      "image": {
+        "source": "/static-resource/alaska/assets/images/small-icons/profile.svg",
+        "altText": ""
+      }
+    },
+    "logo": {
+      "firstLogo": "Legal",
+      "secondLogo": "Assist",
+      "link": ""
+    },
+    "home": {
+      "button": {
+        "buttonText": "Home",
+        "buttonAltText": "Home",
+        "buttonLink": ""
+      }
+    },
+    "guidedAssistant": {
+      "button": {
+        "buttonText": "Guided Assistant",
+        "buttonAltText": "Guided Assistant",
+        "buttonLink": "guidedassistant"
+      }
+    },
+    "topicAndResources": {
+      "button": {
+        "buttonText": "Topics & Resources",
+        "buttonAltText": "Topics & Resources",
+        "buttonLink": "topics"
+      }
+    },
+    "about": {
+      "button": {
+        "buttonText": "About",
+        "buttonAltText": "About",
+        "buttonLink": "about"
+      }
+    },
+    "search": {
+      "button": {
+        "buttonText": "Search",
+        "buttonAltText": "Search",
+        "buttonLink": ""
+      },
+      "image": {
+        "source": "/static-resource/alaska/assets/images/small-icons/search.svg",
+        "altText": ""
+      }
+    }
+  },
+  {
+    "id": "f9bf05f2-cd89-e11b-5278-1e8ed529f0d6",
+    "name": "AboutPage",
+    "location": [
+      {
+        "state": "Default"
+      }
+    ],
+    "aboutImage": {
+      "source": "/static-resource/default/assets/images/secondary-illustrations/about.svg",
+      "altText": "About Page"
+    },
+    "mission": {
+      "title": "Our Mission",
+      "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum eveniet beatae nam voluptatibus distinctio veritatis vel saepe nulla eum suscipit necessitatibus quae labore, quisquam ad, eius officia! Commodi, sapiente perferendis! Atque vitae natus quasi at culpa porro fugit eum laboriosam id earum quibusdam, explicabo nisi mollitia saepe tempora praesentium in sunt, exercitationem error, magni ratione ipsa numquam debitis consequatur. Repellendus asperiores dolor, quidem perspiciatis sapiente tenetur provident dolorem accusamus quibusdam eveniet placeat officiis, quod fugiat ullam minima rem. Molestias, quos inventore accusamus eligendi culpa necessitatibus rerum nostrum aspernatur eaque explicabo voluptatem architecto esse, debitis non earum autem, ipsam modi sit!",
+      "sponsors": [
+        {
+          "source": "",
+          "altText": ""
+        },
+        {
+          "source": "",
+          "altText": ""
+        }
+      ]
+    },
+    "service": {
+      "title": "Our Service",
+      "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat dicta illo rerum voluptatibus magni molestias officiis totam minima ab quas quae dolorem aut laboriosam expedita atque dignissimos, sed maxime ratione consequatur optio nobis odit repellendus quos dolore! Sunt atque accusantium praesentium, culpa hic enim voluptas suscipit cumque odit deleniti animi reiciendis perspiciatis magnam exercitationem minus? Itaque exercitationem nostrum dignissimos eum tempore magnam, quasi alias voluptas sequi facere voluptate aperiam porro.",
+      "image": {
+        "source": "",
+        "altText": ""
+      },
+      "guidedAssistantButton": {
+        "buttonText": "Use our Guided Assistant",
+        "buttonAltText": "Use our Guided Assistant",
+        "buttonLink": "guidedassistant"
+      },
+      "topicsAndResourcesButton": {
+        "buttonText": "Browse Topics & Resources",
+        "buttonAltText": "Browse Topics & Resources",
+        "buttonLink": "topics"
+      }
+    },
+    "privacyPromise": {
+      "title": "Our Privacy Promise",
+      "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus, nulla!",
+      "image": {
+        "source": "",
+        "altText": ""
+      },
+      "privacyPromiseButton": {
+        "buttonText": "View our privacy promise",
+        "buttonAltText": "View our privacy promise",
+        "buttonLink": "privacy"
+      }
+    },
+    "inTheNews": {
+      "title": "In the News",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      "news": [
+        {
+          "title": "Lorem ipsum dolor sit amet",
+          "description": "Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter.",
+          "image": {
+            "source": "/static-resource/alaska/assets/images/sample-images/trees_0.JPG",
+            "altText": "sample image"
+          }
+        },
+        {
+          "title": "Lorem ipsum dolor sit amet",
+          "description": "Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter.",
+          "image": {
+            "source": "/static-resource/alaska/assets/images/sample-images/trees_1.JPG",
+            "altText": "sample image"
+          }
+        },
+        {
+          "title": "Lorem ipsum dolor sit amet",
+          "description": "Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter.",
+          "image": {
+            "source": "/static-resource/alaska/assets/images/sample-images/trees_2.JPG",
+            "altText": "sample image"
+          }
+        }
+      ]
+    },
+    "contactUs": {
+      "title": "Contact Us",
+      "description": "For general inqueries, please email us lorem ipsum dolor sit amet consectuter.",
+      "email": "email@emailaddress.com"
+    },
+    "mediaInquiries": {
+      "title": "Media Inquiries",
+      "description": "For media opportunities, please email our media department lorem ipsum dolor amet.",
+      "email": "email@emailaddress.com"
+    }
+  },
+  {
+    "id": "e02ba613-5005-c024-98ec-a092857068ba",
+    "name": "Navigation",
+    "location": [
+      {
+        "state": "Hawaii"
+      }
+    ],
+    "language": {
+      "button": {
+        "buttonText": "English",
+        "buttonAltText": "English",
+        "buttonLink": ""
+      },
+      "navigationImage": {
+        "source": "/static-resource/hawaii/assets/images/small-icons/language.svg",
+        "altText": ""
+      },
+      "dropDownImage": {
+        "source": "/static-resource/hawaii/assets/images/small-icons/dropdown_arrow.svg",
+        "altText": ""
+      }
+    },
+    "locationNavContent": {
+      "text": "Please Select Location",
+      "altText": "Please Select Location",
+      "button": {
+        "buttonText": "Change",
+        "buttonAltText": "Change",
+        "buttonLink": ""
+      },
+      "image": {
+        "source": "/static-resource/hawaii/assets/images/small-icons/location.svg",
+        "altText": ""
+      }
+    },
+    "privacyPromise": {
+      "button": {
+        "buttonText": "Privacy Promise",
+        "buttonAltText": "Privacy Promise",
+        "buttonLink": "privacy"
+      },
+      "image": {
+        "source": "/static-resource/hawaii/assets/images/small-icons/privacy.svg",
+        "altText": ""
+      }
+    },
+    "helpAndFAQ": {
+      "button": {
+        "buttonText": "Help & FAQs",
+        "buttonAltText": "Help & FAQs",
+        "buttonLink": "help"
+      },
+      "image": {
+        "source": "/static-resource/hawaii/assets/images/small-icons/faq.svg",
+        "altText": ""
+      }
+    },
+    "login": {
+      "button": {
+        "buttonText": "Log in",
+        "buttonAltText": "Log in",
+        "buttonLink": "login"
+      },
+      "image": {
+        "source": "/static-resource/hawaii/assets/images/small-icons/profile.svg",
+        "altText": ""
+      }
+    },
+    "logo": {
+      "firstLogo": "Legal",
+      "secondLogo": "Assist",
+      "link": ""
+    },
+    "home": {
+      "button": {
+        "buttonText": "Home",
+        "buttonAltText": "Home",
+        "buttonLink": ""
+      }
+    },
+    "guidedAssistant": {
+      "button": {
+        "buttonText": "Guided Assistant",
+        "buttonAltText": "Guided Assistant",
+        "buttonLink": "guidedassistant"
+      }
+    },
+    "topicAndResources": {
+      "button": {
+        "buttonText": "Topics & Resources",
+        "buttonAltText": "Topics & Resources",
+        "buttonLink": "topics"
+      }
+    },
+    "about": {
+      "button": {
+        "buttonText": "About",
+        "buttonAltText": "About",
+        "buttonLink": "about"
+      }
+    },
+    "search": {
+      "button": {
+        "buttonText": "Search",
+        "buttonAltText": "Search",
+        "buttonLink": ""
+      },
+      "image": {
+        "source": "/static-resource/hawaii/assets/images/small-icons/search.svg",
+        "altText": ""
+      }
+    }
+  },
+  {
+    "id": "0643a9f5-ddb6-17e4-a0e9-e9a993744994",
+    "name": "HelpAndFAQPage",
+    "location": [
+      {
+        "state": "Default"
+      }
+    ],
+    "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. A non excepturi ullam magnam similique, nobis officiis cupiditate aperiam consectetur at labore commodi! Soluta, expedita fuga in quod corporis voluptatem reiciendis. ",
+    "image": {
+      "source": "/static-resource/default/assets/images/secondary-illustrations/help_faqs.svg",
+      "altText": "Help and FAQs Page"
+    },
+    "faqs": [
+      {
+        "question": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias quo expedita, ab vero repellat voluptates molestiae? Ipsam, ducimus nam. Ducimus.",
+        "answer": [
+          {
+            "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat reprehenderit laborum dicta architecto iusto at sed iste fugit necessitatibus rem, fuga ad minima provident neque est autem dolore officiis, ab nihil? Consectetur, nostrum nam eligendi praesentium illo dignissimos magni maxime."
+          }
+        ]
+      },
+      {
+        "question": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae nam corporis laboriosam voluptate, neque eligendi?",
+        "answer": [
+          {
+            "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim iure cupiditate eius fugit eveniet sit deserunt velit esse repellendus totam quia, accusamus ipsum doloribus. Adipisci aliquam nostrum quibusdam similique alias itaque optio dolorum magni et eveniet architecto debitis quos inventore sit, quam non."
+          },
+          {
+            "description": "Sit hic cumque distinctio sunt temporibus, est quidem quos. Tempore tenetur, mollitia tempora nesciunt exercitationem alias eos, eligendi voluptas aperiam quasi veritatis dolorum ab blanditiis, soluta debitis!"
+          }
+        ]
+      }
+    ]
+  }]
