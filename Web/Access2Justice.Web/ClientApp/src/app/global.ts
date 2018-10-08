@@ -15,6 +15,7 @@ export class Global {
   data: any;
   notifyStaticData: Subject<any> = new Subject<any>();
   topicsData: any;
+  organizationsData: any;
   externalLogin() {
     var form = document.createElement('form');
     form.setAttribute('method', 'POST');

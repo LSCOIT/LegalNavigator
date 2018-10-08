@@ -18,6 +18,7 @@ describe('TopicService', () => {
     data: "",
     notifyStaticData: new Subject<any>(),
     topicsData: "",
+    organizationsData:"",
     externalLogin: () => {},
     getData: () => {},
     setData: () => { }

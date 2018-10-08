@@ -89,8 +89,10 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    if (this.subscription != undefined && this.staticContentSubcription != undefined) {
+    if (this.subscription) {
       this.subscription.unsubscribe();
+    }
+    if (this.staticContentSubcription) {    
       this.staticContentSubcription.unsubscribe();
     }
   }
