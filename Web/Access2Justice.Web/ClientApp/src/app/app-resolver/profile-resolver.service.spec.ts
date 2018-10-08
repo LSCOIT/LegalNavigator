@@ -15,6 +15,7 @@ import { BroadcastService } from '@azure/msal-angular/dist/broadcast.service';
 import { ArrayUtilityService } from '../shared/array-utility.service';
 import { ToastrService } from 'ngx-toastr';
 import { LoginService } from '../shared/login/login.service';
+import { resolve } from 'q';
 
 describe('ProfileResolverService', () => {
   let profileResolverService: ProfileResolverService;
@@ -26,9 +27,14 @@ describe('ProfileResolverService', () => {
   var originalTimeout;
   let arrayUtilityService: ArrayUtilityService;
   let mockToastr;
-
+  let mockRoute: ActivatedRouteSnapshot;
+  let mockState: RouterStateSnapshot;
+  
   beforeEach(() => {
     mockToastr = jasmine.createSpyObj(['success']);
+    msalService = jasmine.createSpyObj(['getUser']);
+    loginService = jasmine.createSpyObj(['upsertUserProfile']);
+
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, HttpClientModule],
       providers: [ProfileResolverService,
@@ -46,11 +52,8 @@ describe('ProfileResolverService', () => {
     profileResolverService = new ProfileResolverService(global, msalService, loginService);
     arrayUtilityService = new ArrayUtilityService();
     httpSpy.get.calls.reset();
-
-    originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000000;
   });
- 
+
   it('should be created', inject([ProfileResolverService], (profileResolverService: ProfileResolverService) => {
     expect(profileResolverService).toBeDefined();
   }));
@@ -58,4 +61,12 @@ describe('ProfileResolverService', () => {
   it('should be created', inject([ProfileResolverService], (profileResolverService: ProfileResolverService) => {
     expect(profileResolverService).toBeTruthy();
   }));
+
+  it('should resolve be called', (done) => {
+    spyOn(profileResolverService, 'resolve');    
+    profileResolverService.resolve(mockRoute, mockState);
+    expect(profileResolverService.resolve).toHaveBeenCalled();
+    done();
+  });
+ 
 });
