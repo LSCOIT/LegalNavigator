@@ -26,6 +26,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ArrayUtilityService } from './shared/array-utility.service';
 import { ToastrService } from 'ngx-toastr';
 import { LoginService } from './shared/login/login.service';
+import { IUserProfile } from './shared/login/user-profile.model';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -37,6 +38,10 @@ describe('AppComponent', () => {
   let mockRouter;
   let msalService;
   let toastrService: ToastrService;
+  let mockLoginService: LoginService;
+  let userProfile: IUserProfile;
+  let mockUserName = 'testName';
+  let mockOid = '5645466';
 
   beforeEach(async(() => {
     staticContent = [
@@ -70,9 +75,26 @@ describe('AppComponent', () => {
           { "state": "Default" }
         ]
       }
-    ]
+    ];
+
+    userProfile = {
+      oId: '5645466',
+      name: 'testName',
+      firstName: 'fname',
+      lastName: 'lname',
+      eMail: 'fnln@email.com',
+      isActive: 'true',
+      createdBy: 'testuser',
+      createdTimeStamp: '20180910',
+      modifiedBy: 'testuser',
+      modifiedTimeStamp: '20180910'
+    };
+     
     mockStaticResourceService = jasmine.createSpyObj(['getStaticContents']);
-    mockGlobal = jasmine.createSpyObj(['setData']);
+    mockGlobal = jasmine.createSpyObj(['setData','setProfileData']);
+    msalService = jasmine.createSpyObj(['getUser']);
+    mockLoginService = jasmine.createSpyObj(['upsertUserProfile']);
+
     TestBed.configureTestingModule({
       declarations: [
         AppComponent,
@@ -101,9 +123,9 @@ describe('AppComponent', () => {
         { provide: Router, useValue: mockRouter },
         { provide: MSAL_CONFIG, useValue: {} },
         { provide: ToastrService, useValue: toastrService },
+        { provide: LoginService, useValue: mockLoginService },
         NgxSpinnerService,
-        BroadcastService,
-        LoginService
+        BroadcastService        
       ],
       schemas: [
         NO_ERRORS_SCHEMA,
@@ -137,6 +159,34 @@ describe('AppComponent', () => {
     component.setStaticContentData();
     expect(component.staticContentResults).toEqual(staticContent);
     expect(mockGlobal.setData).toHaveBeenCalledWith(component.staticContentResults);
+  });
+
+  it('should create the user profile by calling createOrGetProfile', () => {
+    spyOn(component, 'createOrGetProfile');
+    msalService.getUser.and.returnValue(of(userProfile));
+    component.userProfile = userProfile;
+    component.createOrGetProfile();
+    expect(component.createOrGetProfile).toHaveBeenCalled();
+    expect(component.userProfile.name).toContain(mockUserName);
+  });
+  
+  it('should create the user profile by calling createOrGetProfile', () => {
+    spyOn(component, 'createOrGetProfile');
+    msalService.getUser.and.returnValue(of(userProfile));
+    component.userProfile = userProfile;
+    component.createOrGetProfile();
+    expect(component.createOrGetProfile).toHaveBeenCalled();
+    expect(mockLoginService.upsertUserProfile).toBeTruthy();
+  });
+
+  it('should create the user profile by calling createOrGetProfile', () => {
+    spyOn(component, 'createOrGetProfile');
+    msalService.getUser.and.returnValue(of(userProfile));
+    component.userProfile = userProfile;
+    component.createOrGetProfile();
+    expect(component.createOrGetProfile).toHaveBeenCalled();
+    expect(component.userProfile.oId).toContain(mockOid);
+    expect(mockGlobal.setProfileData).toBeTruthy();
   });
 });
 
