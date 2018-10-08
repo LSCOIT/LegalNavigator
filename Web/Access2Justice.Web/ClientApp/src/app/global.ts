@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { api } from '../api/api';
 import { Subject } from 'rxjs';
-import { MsalService } from '@azure/msal-angular';
-import { environment } from '../environments/environment';
 
 @Injectable()
 export class Global {
@@ -23,11 +21,7 @@ export class Global {
   isShared: boolean = false;
   isLoggedIn: boolean = false;
 
-  constructor(private msalService: MsalService) { }
-
-  externalLogin() {
-    this.msalService.loginRedirect(environment.consentScopes);
-  }
+  constructor() { }
 
   setProfileData(oId: string, name: string, eMail: string) {
     this.userId = oId;
