@@ -7,11 +7,22 @@ namespace Access2Justice.CosmosDb
 {
     public class CosmosDbSettings : ICosmosDbSettings
     {
-        public CosmosDbSettings(IConfiguration configuration)
+        public CosmosDbSettings(IConfiguration configuration, IConfiguration kvConfiguration)
         {
             try
             {
-                AuthKey = configuration.GetSection("AuthKey").Value;
+                //if we get null from calling program, we will use config settings.
+                if (kvConfiguration != null)
+                {
+                    IKeyVaultSettings kv = new Access2Justice.Shared.Utilities.KeyVaultSettings(kvConfiguration);
+                    var kvSecret = kv.GetKeyVaultSecrets("CosmosDbAuthKey");                    
+                    kvSecret.Wait();                    
+                    AuthKey = kvSecret.Result;
+                }
+                else
+                {
+                    AuthKey = configuration.GetSection("AuthKey").Value;
+                }
                 Endpoint = new Uri(configuration.GetSection("Endpoint").Value);
                 DatabaseId = configuration.GetSection("DatabaseId").Value;
                 TopicCollectionId = configuration.GetSection("TopicCollectionId").Value;
@@ -23,10 +34,12 @@ namespace Access2Justice.CosmosDb
                 PersonalizedActionPlanCollectionId = configuration.GetSection("PersonalizedActionPlanCollectionId").Value;
                 StaticResourceCollectionId = configuration.GetSection("StaticResourceCollectionId").Value;
                 UserSavedResourcesCollectionId = configuration.GetSection("UserSavedResourcesCollectionId").Value;
+
+                
             }
-            catch
+            catch(Exception ex)
             {
-                throw new Exception("Invalid CosmosDB configurations");
+                throw new Exception("Invalid CosmosDB configurations or key vault error", ex.InnerException);
             }
         }
         public string AuthKey { get; private set; }
