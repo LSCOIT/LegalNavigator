@@ -51,12 +51,26 @@ describe('FooterComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should set about content to static resource about content if it exists', () => {
+  it('should set about content to static resource if about context exists', () => {
     mockStaticResourceService.getLocation.and.returnValue('Default');
     mockStaticResourceService.navigation = navigation;
     spyOn(component, 'filterNavigationContent');
     component.getNavigationContent();
     expect(component.navigation).toEqual(mockStaticResourceService.navigation);
     expect(component.filterNavigationContent).toHaveBeenCalledWith(mockStaticResourceService.navigation);
+  });
+
+  it('should get content if navigated', () => {
+    mockStaticResourceService.getLocation.and.returnValue('Default');
+    mockStaticResourceService.navigation = navigation;
+    component.getNavigationContent();
+    expect(component.navigation).toEqual(mockStaticResourceService.navigation);
+  });
+
+  it('should get content by :global.getData', () => {
+    mockStaticResourceService.getLocation.and.returnValue('Default');
+    mockStaticResourceService.navigation = 'testnode';    
+    component.getNavigationContent();
+    expect(component.navigation.name).toContain(globalData[0].name);
   });
 });

@@ -1,4 +1,5 @@
-﻿using Access2Justice.Api.BusinessLogic;
+﻿using Access2Justice.Api.Authentication;
+using Access2Justice.Api.BusinessLogic;
 using Access2Justice.Api.Interfaces;
 using Access2Justice.CosmosDb;
 using Access2Justice.Shared;
@@ -9,6 +10,7 @@ using Access2Justice.Shared.Interfaces.A2JAuthor;
 using Access2Justice.Shared.Luis;
 using Access2Justice.Shared.Models;
 using Access2Justice.Shared.Share;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Access2Justice.Shared.Utilities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -33,6 +35,11 @@ namespace Access2Justice.Api
         public void ConfigureServices(IServiceCollection services)
         {
             ConfigureSession(services);
+
+            services.AddAuthentication(sharedOptions =>
+            {
+                sharedOptions.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddAzureAdBearer(options => Configuration.Bind("AzureAd", options));
 
             services.AddMvc();
 
@@ -95,6 +102,7 @@ namespace Access2Justice.Api
 
             app.UseSession();
 
+            app.UseAuthentication();
             app.UseMvc();
 
             ConfigureSwagger(app);

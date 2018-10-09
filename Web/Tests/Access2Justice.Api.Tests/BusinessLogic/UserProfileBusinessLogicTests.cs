@@ -38,7 +38,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly JArray userPlanData = UserPersonalizedPlanTestData.userPlanData;
         private readonly JArray expectedUserPlanData = UserPersonalizedPlanTestData.expectedUserPlanData;
         private readonly JArray expectedUserPlanUpdateData = UserPersonalizedPlanTestData.expectedUserPlanUpdateData;
-
+        
         public UserProfileBusinessLogicTests()
         {
             dynamicQueries = Substitute.For<IDynamicQueries>();
@@ -178,6 +178,24 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 
             //assert
             Assert.Contains("", result, StringComparison.InvariantCultureIgnoreCase);
+        }             
+
+        [Theory]
+        [MemberData(nameof(UserPersonalizedPlanTestData.UserProfileResponseData), MemberType = typeof(UserPersonalizedPlanTestData))]
+        public void UpsertUserProfileAsyncShouldValidate(UserProfile inputJson, JArray findResponse, JArray createResponse, dynamic expectedResult, string id)
+        {
+            //arrange
+            Document document = new Document();
+            JsonTextReader reader = new JsonTextReader(new StringReader(createResponse[0].ToString()));
+            document.LoadFrom(reader);
+            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.UserProfileCollectionId, Constants.Id, id).ReturnsForAnyArgs<dynamic>(findResponse);
+            var dbResponseCreate = backendDatabaseService.CreateItemAsync<dynamic>(createResponse, cosmosDbSettings.UserProfileCollectionId).ReturnsForAnyArgs(document);
+            //act
+            var response = userProfileBusinessLogic.UpsertUserProfileAsync(inputJson);
+            expectedResult = JsonConvert.SerializeObject(expectedResult[0]);
+            var actualResult = JsonConvert.SerializeObject(response.Result);
+            //assert
+            Assert.Equal(expectedResult, actualResult);
         }
     }
 }

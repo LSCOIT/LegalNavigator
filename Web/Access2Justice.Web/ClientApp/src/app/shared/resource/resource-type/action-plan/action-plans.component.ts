@@ -21,7 +21,6 @@ export class ActionPlansComponent implements OnChanges {
   updatedPlan: any;
   modalRef: BsModalRef;
   url: any;
-  userId: string;
   isCompleted: boolean = false;
   isUser: boolean = false;
   isChecked: boolean = false;
@@ -46,12 +45,7 @@ export class ActionPlansComponent implements OnChanges {
     public sanitizer: DomSanitizer,
     private toastr: ToastrService,
     private global: Global) {
-    this.sanitizer = sanitizer;
-    let profileData = sessionStorage.getItem("profileData");
-    if (profileData != undefined) {
-      profileData = JSON.parse(profileData);
-      this.userId = profileData["UserId"];
-    }
+    this.sanitizer = sanitizer;    
     if (global.role === UserStatus.Shared && location.pathname.indexOf(global.shareRouteUrl) >= 0) {
       global.showMarkComplete = false;
       global.showDropDown = false;
