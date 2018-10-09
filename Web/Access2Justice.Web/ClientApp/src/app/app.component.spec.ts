@@ -39,9 +39,8 @@ describe('AppComponent', () => {
   let msalService;
   let toastrService: ToastrService;
   let mockLoginService: LoginService;
-  let userProfile: IUserProfile;
-  let mockUserName = 'testName';
-  let mockOid = '5645466';
+  let mockUserData;
+  let mockLoginResponse;
 
   beforeEach(async(() => {
     staticContent = [
@@ -77,19 +76,23 @@ describe('AppComponent', () => {
       }
     ];
 
-    userProfile = {
-      oId: '5645466',
-      name: 'testName',
-      firstName: 'fname',
-      lastName: 'lname',
-      eMail: 'fnln@email.com',
-      isActive: 'true',
-      createdBy: 'testuser',
-      createdTimeStamp: '20180910',
-      modifiedBy: 'testuser',
-      modifiedTimeStamp: '20180910'
-    };
-     
+    mockUserData = {
+      displayableId: "mockUser",
+      idToken: {
+        name: "mockUser",
+        preferred_username: "mockUser@microsoft.com"
+      },
+      identityProvider: "https://login.microsoftonline.com/123test",
+      name: "mockUser",
+      userIdentifier: "1234567890ABC"
+    }
+
+    mockLoginResponse = {
+      oId: "1234567890ABC",
+      name: "mockUser",
+      eMail: "mockUser@microsoft.com"
+    }
+
     mockStaticResourceService = jasmine.createSpyObj(['getStaticContents']);
     mockGlobal = jasmine.createSpyObj(['setData','setProfileData']);
     msalService = jasmine.createSpyObj(['getUser']);
@@ -162,31 +165,19 @@ describe('AppComponent', () => {
   });
 
   it('should create the user profile by calling createOrGetProfile', () => {
-    spyOn(component, 'createOrGetProfile');
-    msalService.getUser.and.returnValue(of(userProfile));
-    component.userProfile = userProfile;
+    msalService.getUser.and.returnValue(mockUserData);
+    mockLoginService.upsertUserProfile.and.returnValue(of(mockLoginResponse));
     component.createOrGetProfile();
-    expect(component.createOrGetProfile).toHaveBeenCalled();
-    expect(component.userProfile.name).toContain(mockUserName);
+    expect(component.userProfile.name).toEqual("mockUser");
+    expect(component.userProfile.firstName).toBe("");
+    expect(component.userProfile.eMail).toEqual("mockUser@microsoft.com");
   });
   
-  it('should create the user profile by calling createOrGetProfile', () => {
-    spyOn(component, 'createOrGetProfile');
-    msalService.getUser.and.returnValue(of(userProfile));
-    component.userProfile = userProfile;
+  it('should call setProfileData from global', () => {
+    msalService.getUser.and.returnValue(mockUserData);
+    mockLoginService.upsertUserProfile.and.returnValue(of(mockLoginResponse));
     component.createOrGetProfile();
-    expect(component.createOrGetProfile).toHaveBeenCalled();
-    expect(mockLoginService.upsertUserProfile).toBeTruthy();
-  });
-
-  it('should create the user profile by calling createOrGetProfile', () => {
-    spyOn(component, 'createOrGetProfile');
-    msalService.getUser.and.returnValue(of(userProfile));
-    component.userProfile = userProfile;
-    component.createOrGetProfile();
-    expect(component.createOrGetProfile).toHaveBeenCalled();
-    expect(component.userProfile.oId).toContain(mockOid);
-    expect(mockGlobal.setProfileData).toBeTruthy();
+    expect(mockGlobal.setProfileData).toHaveBeenCalledWith("1234567890ABC", "mockUser", "mockUser@microsoft.com");
   });
 });
 
