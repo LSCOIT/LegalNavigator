@@ -8,8 +8,8 @@
     </app-user-action-sidebar>
   </div>
   <div class="row row-half-spacing no-print">
-    <img class="sec-illustration" src="./assets/images/secondary-illustrations/profile.svg" alt="action plan">
-    <h3 class="page-heading capitalize">{{userName}}'s Profile</h3>
+    <img class="sec-illustration col-xs-2" src="./assets/images/secondary-illustrations/profile.svg" alt="action plan">
+    <h3 class="page-heading capitalize col-xs-9">{{userName}}'s Profile</h3>
   </div>
   <div class="row row-half-spacing no-print">
     <div class="col-sm-12">
@@ -22,7 +22,7 @@
         <div class="row plan-spacing filter-plan no-print">
           <span class="col-sm-1 col-xs-2">Show:</span>
           <div class="mobile-hidden col-sm-10">
-            <button *ngFor="let topic of topicsList" type="button" [ngClass]="{ 'btn-sm btn-primary': topic.isSelected, 'btn': !topic.isSelected  }"
+            <button *ngFor="let topic of topicsList" type="button" class="btn btn-selected" [ngClass]="{ 'highlighted': topic.isSelected, '': !topic.isSelected }"
                     (click)="filterPlan(topic.topic.name)">
               {{topic.topic.name}}
             </button>

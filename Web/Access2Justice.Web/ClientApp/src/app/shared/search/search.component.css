@@ -21,6 +21,7 @@ form > div {
   width: 22px;
   height: 22px;
   margin-bottom: -2px;
+  margin-right: -5px;
 }
 
 #search {

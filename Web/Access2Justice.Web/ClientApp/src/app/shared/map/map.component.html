@@ -14,9 +14,7 @@
 <ng-template #template>
   <form #mapForm="ngForm" (ngSubmit)="hideSearchPrediction()">
     <div class="modal-body text-center container-fluid">
-      <button *ngIf="!locationInputRequired" type="button" class="close" aria-label="Close" (click)="modalRef.hide()">
-        <span aria-hidden="true">&times;</span>
-      </button>
+      <img *ngIf="!locationInputRequired" type="button" class="nav-icon pull-right" src="./assets/images/small-icons/close.svg" aria-label="Close" (click)="modalRef.hide()">
       <div class="row">
         <img *ngIf="locationNavContent && locationNavContent.image.source" class="location-icon" [src]="blobUrl + locationNavContent?.image?.source" aria-hidden="true"/>
         <h4>Location</h4>

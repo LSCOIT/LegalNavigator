@@ -34,6 +34,10 @@ li a:hover {
   padding: 15px;
 }
 
+.right-menu li:last-child {
+  padding: 0;
+}
+
 #location {
   position: absolute;
   top: -2px;

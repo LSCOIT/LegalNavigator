@@ -14,10 +14,6 @@ p {
   margin-left: -4px;
 }
 
-.edit-location:hover {
-  background-color: #fff;
-}
-
 #my-map {
   position: relative;
   width: 90%;
@@ -68,10 +64,6 @@ p {
   height: 30px;
 }
 
-.close {
-  margin-top: -8px;
-}
-
 .dimmer {
   width: 100%;
   height: 100%;
@@ -109,7 +101,11 @@ p {
 @media only screen and (min-width : 768px) {
   .edit-location {
     padding: 15px;
-    height: 52px;
+    height: 53px;
+  }
+
+  .edit-location:hover {
+    background-color: #fff;
   }
 }
 

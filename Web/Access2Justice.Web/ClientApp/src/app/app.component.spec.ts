@@ -165,8 +165,9 @@ describe('AppComponent', () => {
   });
 
   it('should create the user profile by calling createOrGetProfile', () => {
+    spyOn(mockLoginService, 'upsertUserProfile').and.returnValue(of(mockLoginResponse));
     msalService.getUser.and.returnValue(mockUserData);
-    mockLoginService.upsertUserProfile.and.returnValue(of(mockLoginResponse));
+    //mockLoginService.upsertUserProfile(component.userProfile).and.returnValue(of(mockLoginResponse));
     component.createOrGetProfile();
     expect(component.userProfile.name).toEqual("mockUser");
     expect(component.userProfile.firstName).toBe("");
@@ -174,8 +175,9 @@ describe('AppComponent', () => {
   });
   
   it('should call setProfileData from global', () => {
+    spyOn(mockLoginService, 'upsertUserProfile').and.returnValue(of(mockLoginResponse));
     msalService.getUser.and.returnValue(mockUserData);
-    mockLoginService.upsertUserProfile.and.returnValue(of(mockLoginResponse));
+    //mockLoginService.upsertUserProfile(component.userProfile).and.returnValue(of(mockLoginResponse));
     component.createOrGetProfile();
     expect(mockGlobal.setProfileData).toHaveBeenCalledWith("1234567890ABC", "mockUser", "mockUser@microsoft.com");
   });

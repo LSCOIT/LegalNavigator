@@ -198,6 +198,10 @@ span.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chev
 }
 
 /* Personalized Plan */
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+  border-color: #0D3FBB #0D3FBB #fff;
+}
+
 .nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
   border: 1px solid #0D3FBB;
   border-bottom-color: transparent;

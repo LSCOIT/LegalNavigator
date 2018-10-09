@@ -19,7 +19,7 @@
       <div id="mobile-menu">
         <img src="./assets/images/small-icons/menu_bars.svg" class="web-hidden" id="nav-bar-toggle" *ngIf="showMenu" (click)="openNav()">
         <span *ngIf="showMenu">Menu</span>
-        <a *ngIf="!showMenu" class="closebtn" id="search-close" (click)="toggleSearch()">&times;</a>
+        <img *ngIf="!showMenu" src="./assets/images/small-icons/close.svg" class="nav-icon" id="search-close" (click)="toggleSearch()">
       </div>
     </div>
     <app-search *ngIf="showSearch"></app-search>
@@ -28,7 +28,7 @@
         <img *ngIf="search.image.source" class="search-icon" [src]="blobUrl + search?.image?.source" aria-hidden="true" />
         <span class="inline search-text">{{search?.button?.buttonText}}</span>
       </span>
-      <a class="closebtn" (click)="closeNav()">&times;</a>
+      <img class="nav-icon closebtn" src="./assets/images/small-icons/close.svg" (click)="closeNav()">
       <ul class="sidenav-menu" (click)="closeNav()">
         <li id="home-nav"><a [routerLink]="['/' + home?.button?.buttonLink]">{{home?.button?.buttonText}}</a></li>
         <li class="vertical-line"></li>
