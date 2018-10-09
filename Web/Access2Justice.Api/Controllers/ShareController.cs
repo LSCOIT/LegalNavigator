@@ -17,7 +17,7 @@ namespace Access2Justice.Api.Controllers
             this.shareBusinessLogic = shareBusinessLogic;
         }
 
-        [HttpPost("generatepermalink")]
+        [HttpPost("generate-permalink")]
         public async Task<IActionResult> ShareAsync([FromBody] ShareInput shareInput)
         {
             if (shareInput != null)
@@ -28,7 +28,7 @@ namespace Access2Justice.Api.Controllers
             return StatusCode(StatusCodes.Status412PreconditionFailed);
         }
 
-        [HttpPost("checkpermalink")]
+        [HttpPost("check-permalink")]
         public async Task<IActionResult> CheckDataAsync([FromBody] ShareInput shareInput)
         {
             if (shareInput != null)
@@ -39,7 +39,7 @@ namespace Access2Justice.Api.Controllers
             return StatusCode(StatusCodes.Status412PreconditionFailed);
         }
 
-        [HttpPost("removepermalink")]
+        [HttpPost("remove-permalink")]
         public async Task<IActionResult> UnshareAsync([FromBody] ShareInput unShareInput)
         {
             if (unShareInput != null)
@@ -50,7 +50,7 @@ namespace Access2Justice.Api.Controllers
             return StatusCode(StatusCodes.Status412PreconditionFailed);
         }
 
-        [HttpGet("getpermalinkresource")]
+        [HttpGet("get-permalink-resource")]
         public async Task<IActionResult> PermaLinkAsync([FromQuery] string permaLink)
         {
             if (permaLink != null)

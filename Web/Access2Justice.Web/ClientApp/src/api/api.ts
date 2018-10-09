@@ -3,34 +3,34 @@ import { environment } from '../environments/environment';
 const apiUrl = environment.apiUrl;
 const topic = apiUrl + '/topics';
 const userProfile = apiUrl + '/user';
-const curatedExperience = apiUrl + '/curatedexperience';
-const contentUrl = apiUrl + '/staticresource';
+const curatedExperience = apiUrl + '/curated-experience';
+const contentUrl = apiUrl + '/static-resource';
 
 export const api = {
-    topicUrl: topic + '/gettopics',
-    subtopicUrl: topic + '/getsubtopics',
-    subtopicDetailUrl: topic + '/getresourcedetails',
-    getDocumentUrl: topic + '/getdocument',
+    topicUrl: topic + '/get-topics',
+    subtopicUrl: topic + '/get-subtopics',
+    subtopicDetailUrl: topic + '/get-resource-details',
+    getDocumentUrl: topic + '/get-document',
     searchUrl: apiUrl + '/search',
     getResourceUrl: apiUrl + '/resources',
-    searchOffsetUrl: apiUrl + '/websearch',
-    breadcrumbsUrl: topic + '/getbreadcrumbs',
-    personalizedPlan: curatedExperience + '/personalizedplan',
-    planUrl: curatedExperience + "/getplandetails",
-    getPersonalizedResourcesUrl: apiUrl + '/personalizedresources',
-    updatePlanUrl: userProfile + "/upsertuserplan",
-    getProfileUrl: userProfile + "/getuserprofile",
-    userPlanUrl: userProfile + "/upsertuserpersonalizedplan",
-    getOrganizationDetailsUrl: topic + '/getorganizationdetails',
+    searchOffsetUrl: apiUrl + '/web-search',
+    breadcrumbsUrl: topic + '/get-breadcrumbs',
+    personalizedPlan: curatedExperience + '/personalized-plan',
+    planUrl: curatedExperience + "/get-plan-details",
+    getPersonalizedResourcesUrl: apiUrl + '/personalized-resources',
+    updatePlanUrl: userProfile + "/upsert-user-plan",
+    getProfileUrl: userProfile + "/get-user-profile",
+    userPlanUrl: userProfile + "/upsert-user-personalized-plan",
+    getOrganizationDetailsUrl: topic + '/get-organization-details',
     loginUrl: '/signIn',
     logoutUrl: '/signOut',
     questionUrl: curatedExperience + '/start',
-    saveAndGetNextUrl: curatedExperience + '/component/saveandgetnext',
-    updateUserPlanUrl: curatedExperience + "/updateplan",
-    resourceUrl: topic + '/getresource',
-    getContentsUrl: contentUrl + '/getstaticresources',
-    shareUrl: apiUrl + '/share/generatepermalink',
-    unShareUrl: apiUrl + '/share/removepermalink',
-    getResourceLink: apiUrl + '/share/getpermalinkresource',
-    checkPermaLink: apiUrl + '/share/checkpermalink'
+    saveAndGetNextUrl: curatedExperience + '/component/save-and-get-next',
+    updateUserPlanUrl: curatedExperience + "/update-plan",
+    resourceUrl: topic + '/get-resource',
+    getContentsUrl: contentUrl + '/get-static-resources',
+    shareUrl: apiUrl + '/share/generate-permalink',
+    unShareUrl: apiUrl + '/share/remove-permalink',
+    getResourceLink: apiUrl + '/share/get-permalink-resource',
+    checkPermaLink: apiUrl + '/share/check-permalink'
 }

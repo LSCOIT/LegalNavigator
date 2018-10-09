@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 namespace Access2Justice.Api.Controllers
 {
-    [Route("api/curatedexperience")]
+    [Route("api/curated-experience")]
     public class CuratedExperienceController : Controller
     {
         private readonly IA2JAuthorBusinessLogic a2jAuthorBuisnessLogic;
@@ -55,7 +55,7 @@ namespace Access2Justice.Api.Controllers
         /// This endpoint is just to demo the Curated Experience Personalized Plan schema. Added to help building the UI.
         /// </summary>
         /// <returns></returns>
-        [HttpGet("personalizedplan/demo")]
+        [HttpGet("personalized-plan/demo")]
         public IActionResult GetDemoPersonalizedPlan()
         {
             //var locations = new List<PlanLocation>();
@@ -148,7 +148,7 @@ namespace Access2Justice.Api.Controllers
             return Ok(component);
         }
 
-        [HttpPost("component/saveandgetnext")]
+        [HttpPost("component/save-and-get-next")]
         public async Task<IActionResult> SaveAndGetNextComponent([FromBody] CuratedExperienceAnswersViewModel component)
         {
             var curatedExperience = RetrieveCachedCuratedExperience(component.CuratedExperienceId);
@@ -161,7 +161,7 @@ namespace Access2Justice.Api.Controllers
             return Ok(curatedExperienceBusinessLogic.GetNextComponent(curatedExperience, component));
         }
 
-        [HttpGet("personalizedplan")]
+        [HttpGet("personalized-plan")]
         public async Task<IActionResult> GeneratePersonalizedPlan([FromQuery] Guid curatedExperienceId, [FromQuery] Guid answersDocId)
         {
             var personalizedPlan = await personalizedPlanBusinessLogic.GeneratePersonalizedPlan(
@@ -174,7 +174,7 @@ namespace Access2Justice.Api.Controllers
             return Ok(personalizedPlan);
         }
 
-        [HttpPost("updateplan")]
+        [HttpPost("update-plan")]
         public async Task<IActionResult> UpdateUserProfileDocumentAsync([FromBody]UserPersonalizedPlan userPlan)
         {
             var personalizedPlan = await personalizedPlanBusinessLogic.UpdatePersonalizedPlan(userPlan);
@@ -194,7 +194,7 @@ namespace Access2Justice.Api.Controllers
         }
 
         [HttpGet]
-        [Route("getplandetails/{id}")]
+        [Route("get-plan-details/{id}")]
         public async Task<IActionResult> GetPlanDetailsAsync(string id)
         {
             var actionPlans = await personalizedPlanBusinessLogic.GetPlanDataAsync(id);
@@ -202,7 +202,7 @@ namespace Access2Justice.Api.Controllers
         }
 
         [HttpGet]
-        [Route("getplan/{id}")]
+        [Route("get-plan/{id}")]
         public async Task<IActionResult> GetPlanAsync(string id)
         {
             var actionPlans = await personalizedPlanBusinessLogic.GetPersonalizedPlan(id);
