@@ -1,3 +1,7 @@
+a:not([href]):not([tabindex]) {
+  color: #333;
+}
+
 a:hover {
   color: #333;
   text-decoration: none;
@@ -5,8 +9,6 @@ a:hover {
 
 .account-menu {
   cursor: pointer;
-  padding: 10px 0;
-  margin-right: 20px;
 }
 
 #signin-dropdown {
@@ -37,10 +39,8 @@ a:hover {
     margin-right: -25px;
   }
 
-  .account-menu {
-    display: inline-block;
-    margin-left: 10px;
-    margin-right: 15px;
+  .account-menu, .account-menu img {
+    margin-left: 0;
   }
 
   .dropdown-menu {

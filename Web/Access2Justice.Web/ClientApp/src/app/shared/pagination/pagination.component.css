@@ -1,13 +1,14 @@
 .pagination-heading {
   font-weight: 600;
+  margin: 25px 0 10px 0;
 }
 
 li button {
   background-color: transparent;
   border: 1px solid #ddd;
-  color: #0D3FBB;
   padding: 5px 10px;
-  margin-right: -5px;
+  margin-right: -1px;
+  cursor: pointer;
 }
 
 .prev-btn {
@@ -21,4 +22,8 @@ li button {
 .active button {
   background-color: #0d3fbb;
   color: #fff;
+}
+
+.disabled {
+  color: #ddd;
 }

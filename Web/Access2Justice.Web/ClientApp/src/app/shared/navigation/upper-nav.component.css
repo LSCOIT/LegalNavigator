@@ -1,16 +1,37 @@
+ul {
+  margin-bottom: 0;
+}
+
+li {
+  display: inline-block;
+  cursor: pointer;
+}
+
+li:hover {
+  background-color: #fff;
+}
+
+li a:hover {
+  color: #333;
+}
+
 .upper-nav {
   background: #f4f4f4;
   color: #333;
   min-height: 40px;
 }
 
-.navbar-nav > li > a {
-  padding: 10px 15px;
+.left-menu {
+  margin-left: -10px;
 }
 
-.navbar-nav > li > a:hover {
-  background-color: #f4f4f4;
-  color: #333;
+.right-menu {
+  float: right;
+  margin-right: -15px;
+}
+
+.right-menu li {
+  padding: 15px;
 }
 
 #location {
@@ -19,8 +40,6 @@
   right: 0;
   width: auto;
   background: #f4f4f4;
-  height: 33px;
-  padding: 10px 0;
 }
 
 #language {
@@ -28,14 +47,12 @@
 }
 
 @media only screen and (min-width : 768px) {
+  .upper-nav {
+    min-height: 50px;
+  }
+
   #location {
     position: static;
     width: auto;
-  }
-}
-
-@media only screen and (min-width : 992px) {
-  .left-menu {
-    margin: 0;
   }
 }

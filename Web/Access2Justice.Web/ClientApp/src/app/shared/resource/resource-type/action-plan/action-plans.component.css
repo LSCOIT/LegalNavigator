@@ -11,7 +11,7 @@ ul li {
 }
 
 .plan-spacing {
-  padding: 10px;
+  padding: 20px;
 }
 
 .main-icon {
@@ -22,8 +22,13 @@ ul li {
   width: 45px;
 }
 
+h3.inline {
+  margin-bottom: 0;
+  margin-top: 25px;
+}
+
 .more-menu {
-	margin-top: 30px;
+	margin-top: 20px;
 	width: 30px;
 	cursor: pointer;
 }
@@ -47,21 +52,18 @@ ul li {
 }
 
 .plan-steps {
-	margin: 20px 0;
-	padding-right: 20px;
+	padding: 20px 0;
 }
 
 .media-body h3 {
 	margin-top: -3px;
-	margin-bottom: 30px;
+  cursor: pointer;
 }
 
 #complete-btn {
 	float: left;
-	margin-bottom: 30px;
   position: absolute;
-  left: 0;
-  top: -15px;
+  margin-top: -30px;
 }
 
 .step-content div {
@@ -115,7 +117,7 @@ iframe {
   }
 
   .plan-spacing {
-    padding: 15px;
+    padding: 15px 15px 25px 15px;
   }
 
   .step-content {
@@ -126,23 +128,28 @@ iframe {
   #complete-btn {
     float: right;
     margin-bottom: 0;
-    right: 36px;
+    right: 15px;
     left: auto;
-    top: -74px;
+    top: 40px;
   }
 }
 
 @media only screen and (min-width : 992px) {
   .plan-spacing {
-    padding: 10px 20px;
+    padding: 20px 20px 30px 20px;
   }
 
   .plan-steps {
     border-left: 1.5px solid #ddd;
+	  padding: 20px 20px 0 20px;
   }
 
   .quick-links {
     margin-top: 10px;
     padding-top: 20px;
+  }
+
+  h3.inline {
+    margin-top: 10px;
   }
 }

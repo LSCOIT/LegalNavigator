@@ -1,13 +1,15 @@
 <div class="container fluid">
-  <h3>Topics &amp; Resources</h3>
-  <p>Browse articles, videos, and directories organized by topic</p>
-  <div class="col-md-8 col-sm-12 col-xs-12">
-    <div class="row">
+  <div class="row">
+    <h3>Topics &amp; Resources</h3>
+    <p>Browse articles, videos, and directories organized by topic</p>
+  </div>
+  <div class="row">
+    <div class="col-md-8 col-sm-12 col-xs-12">
       <app-topics [fullPage]="false"></app-topics>
     </div>
-  </div>
-  <div class="col-md-3 col-sm-12 col-xs-12 pull-right">
-    <app-guided-assistant-sidebar [showSidebar]="true"></app-guided-assistant-sidebar>
-    <app-service-org-sidebar (showMoreOrganizations)="clickSeeMoreOrganizationsFromTopic($event)"></app-service-org-sidebar>
+    <div class="col-md-3 col-sm-12 col-xs-12 pull-right">
+      <app-guided-assistant-sidebar [showSidebar]="true"></app-guided-assistant-sidebar>
+      <app-service-org-sidebar (showMoreOrganizations)="clickSeeMoreOrganizationsFromTopic($event)"></app-service-org-sidebar>
+    </div>
   </div>
 </div>

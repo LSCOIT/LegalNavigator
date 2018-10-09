@@ -8,7 +8,7 @@
         <ul
             *ngFor="let organization of organizations"
             [ngClass]="{ 'col-sm-4': fullPage, 'col-sm-12': !fullPage }">
-          <li><a class="link" href="#">{{organization.name}}</a></li>
+          <li><a class="link" [routerLink]="['/resource', organization.id]">{{organization.name}}</a></li>
           <li><img class="nav-icon" src="./assets/images/small-icons/call.svg" alt="Phone number"/>{{organization.telephone}}</li>
         </ul>
       </div>

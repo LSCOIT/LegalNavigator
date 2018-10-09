@@ -10,8 +10,12 @@ li a {
 
 .filter-type {
   display: inline-block;
-  margin-right: 15px;
+  padding-right: 15px;
 
+}
+
+.btn {
+  margin: 0;
 }
 
 .btn-selected {
