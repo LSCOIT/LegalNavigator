@@ -35,20 +35,16 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<PersonalizedActionPlanViewModel> GeneratePersonalizedPlanAsync(CuratedExperience curatedExperience, Guid answersDocId)
         {
-            // Todo:@Alaa check if there is a built plan and return that if one exists
-
-            var a2jPersonalizedPlan = await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.A2JAuthorTemplatesCollectionId, "id", 
+            var a2jPersonalizedPlan = await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.A2JAuthorTemplatesCollectionId, "id",
                 curatedExperience.A2jPersonalizedPlanId.ToString());
-
             var userAnswers = await backendDatabaseService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(),
                 cosmosDbSettings.CuratedExperienceAnswersCollectionId);
-
             var personalizedPlanStepsInScope = personalizedPlanEngine.Build((JObject)a2jPersonalizedPlan[0], userAnswers);
 
-            return MapA2JPersonalizedPlanToActionPlanViewModel(personalizedPlanStepsInScope);
+            return MapViewModel(personalizedPlanStepsInScope);
         }
 
-        private PersonalizedActionPlanViewModel MapA2JPersonalizedPlanToActionPlanViewModel(List<JToken> personalizedPlanStepsInScope)
+        private PersonalizedActionPlanViewModel MapViewModel(UnprocessedPersonalizedPlan personalizedPlanStepsInScope)
         {
             var actionPlan = new PersonalizedActionPlanViewModel();
 
@@ -58,37 +54,37 @@ namespace Access2Justice.Api.BusinessLogic
 
             var steps = new List<PlanStep>();
             var stepOrder = 1;
-            foreach (var step in personalizedPlanStepsInScope)
-            {
-                foreach (var childrenRoot in step.GetValueAsArray<JArray>("children"))
-                {
-                    foreach (var child in childrenRoot.GetValueAsArray<JObject>("rootNode").GetValueAsArray<JArray>("children"))
-                    {
-                        var state = child.GetArrayValue("state").FirstOrDefault();
-                        var title = state.GetValue("title");
-                        var userContent = state.GetValue("userContent");
+            //foreach (var step in personalizedPlanStepsInScope)
+            //{
+            //    foreach (var childrenRoot in step.GetValueAsArray<JArray>("children"))
+            //    {
+            //        foreach (var child in childrenRoot.GetValueAsArray<JObject>("rootNode").GetValueAsArray<JArray>("children"))
+            //        {
+            //            var state = child.GetArrayValue("state").FirstOrDefault();
+            //            var title = state.GetValue("title");
+            //            var userContent = state.GetValue("userContent");
 
                         
-                        steps.Add(new PlanStep
-                        {
-                            StepId = Guid.NewGuid(),
-                            Title = title,
-                            Description = userContent,
-                            Order = stepOrder++,
-                            IsComplete = false,
-                        });
+            //            steps.Add(new PlanStep
+            //            {
+            //                StepId = Guid.NewGuid(),
+            //                Title = title,
+            //                Description = userContent,
+            //                Order = stepOrder++,
+            //                IsComplete = false,
+            //            });
 
-                        var breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
-                    }                   
-                }
-            }
+            //            var breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
+            //        }                   
+            //    }
+            //}
 
-            actionPlan.Topics.Add(new PlanTopic
-            {
-                TopicId = Guid.NewGuid(),
-                TopicName = "New Personalized Plan Test",
-                Steps = steps
-            });
+            //actionPlan.Topics.Add(new PlanTopic
+            //{
+            //    TopicId = Guid.NewGuid(),
+            //    TopicName = "New Personalized Plan Test",
+            //    Steps = steps
+            //});
 
             return actionPlan;
         }

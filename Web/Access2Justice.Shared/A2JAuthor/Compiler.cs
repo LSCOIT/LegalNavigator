@@ -1,5 +1,6 @@
 ﻿using Access2Justice.Shared.Extensions;
 using Access2Justice.Shared.Interfaces.A2JAuthor;
+using Access2Justice.Shared.Models;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ namespace Access2Justice.Shared.A2JAuthor
 {
     public class Compiler : ICompile
     {
-        public List<JToken> Compile(JObject personalizedPlan, Dictionary<string, string> evaluatedUserAnswers)
+        public UnprocessedPersonalizedPlan Compile(JObject personalizedPlan, Dictionary<string, string> evaluatedUserAnswers)
         {
             var stepsInScope = new List<JToken>();
 
@@ -31,7 +32,8 @@ namespace Access2Justice.Shared.A2JAuthor
                     }
                 }
 
-            return stepsInScope;
+            //return stepsInScope; 
+            return null;  // Todo:@Alaa fix this!
         }
     }
 }

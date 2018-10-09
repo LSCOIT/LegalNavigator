@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Access2Justice.Shared.Models
 {
-    public class CrudePersonalizedPlan
+    public class UnprocessedPersonalizedPlan
     {
         public Guid Id { get; set; }
         public List<CrudeTopic> CrudeTopics { get; set; }
