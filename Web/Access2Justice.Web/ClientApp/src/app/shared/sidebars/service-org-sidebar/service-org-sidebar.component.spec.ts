@@ -13,6 +13,7 @@ import { of } from 'rxjs/observable/of';
 import { APP_BASE_HREF } from '@angular/common';
 import { Subject } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
+import { Global } from '../../../global';
 
 describe('Component:ServiceOrgSidebar', () => {
   let component: ServiceOrgSidebarComponent;
@@ -143,7 +144,8 @@ describe('Component:ServiceOrgSidebar', () => {
         },
         MapService,
         { provide: NavigateDataService, useValue: mockNavigateDataService },
-        { provide: PaginationService, useValue: mockPaginationService }
+        { provide: PaginationService, useValue: mockPaginationService },
+        Global
 
       ],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]

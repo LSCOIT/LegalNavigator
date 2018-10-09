@@ -7,6 +7,7 @@ import { LoginService } from './shared/login/login.service';
 import { IUserProfile } from './shared/login/user-profile.model';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
+import { TopicService } from './topics-resources/shared/topic.service';
 
 @Component({
   selector: 'app-root',
@@ -26,7 +27,10 @@ export class AppComponent implements OnInit {
     private mapService: MapService,
     private loginService: LoginService,
     private spinner: NgxSpinnerService,
-    private router: Router) { }  
+    private router: Router,
+    private topicService: TopicService
+  )
+  { }
 
   createOrGetProfile() {    
     let userData = this.msalService.getUser();
@@ -70,4 +74,10 @@ export class AppComponent implements OnInit {
       this.createOrGetProfile();
     }
   }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  } 
 }

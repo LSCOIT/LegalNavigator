@@ -27,6 +27,7 @@ import { ArrayUtilityService } from './shared/array-utility.service';
 import { ToastrService } from 'ngx-toastr';
 import { LoginService } from './shared/login/login.service';
 import { IUserProfile } from './shared/login/user-profile.model';
+import { TopicService } from './topics-resources/shared/topic.service';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -116,7 +117,6 @@ describe('AppComponent', () => {
       imports: [
         FormsModule,
         HttpClientModule
-
       ],
       providers: [AppComponent, PersonalizedPlanService, ArrayUtilityService, ToastrService,
         { provide: MsalService, useValue: msalService },
