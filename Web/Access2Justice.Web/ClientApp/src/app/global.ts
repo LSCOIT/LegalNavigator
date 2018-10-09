@@ -29,12 +29,12 @@ export class Global {
     this.userId = oId;
     this.userName = name ? name : eMail;
     this.isLoggedIn = true;
-  
-  
+  }
 
   getData() {
     return this.data;
   }
+
   setData(data: any) {
     this.data = data;
     this.notifyStaticData.next(this.data);
