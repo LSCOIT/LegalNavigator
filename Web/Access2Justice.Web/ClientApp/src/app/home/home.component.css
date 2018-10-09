@@ -185,8 +185,6 @@ ul>li>span {
   
   .privacy-promise .privacy-content {
     text-align: left;
-    padding: 50px 20px 0 10px;
-    float: right;
   }
 
   .privacy-promise img {
@@ -235,7 +233,7 @@ ul>li>span {
   }
   
   .privacy-promise .privacy-content {
-    padding-top:9%;
+    padding-top: 5%;
   }
 }
 

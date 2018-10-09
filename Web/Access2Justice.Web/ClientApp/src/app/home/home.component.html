@@ -50,10 +50,10 @@
     <div class="row">
       <h2 class="text-center">{{topicAndResourcesData?.heading}}</h2>
     </div>
-    <div>
+    <div class="row">
       <app-topics [topicLength]="topicLength" [fullPage]="true"></app-topics>
     </div>
-    <div class="text-center topic-button">
+    <div class="text-center topic-button row">
       <a class="btn btn-primary" [routerLink]="topicAndResourcesData?.button?.buttonLink"> {{topicAndResourcesData?.button?.buttonText}} </a>
     </div>
   </div>
@@ -102,10 +102,10 @@
 <div class="privacy-promise text-center" *ngIf="privacyData">
   <div class="container">
     <div class="row">
-      <div *ngIf="privacyData.image.source" class="col-sm-5">
+      <div *ngIf="privacyData.image.source" class="col-sm-4 col-sm-offset-1">
         <img [src]="blobUrl + privacyData?.image?.source" [alt]="privacyData?.image?.altText">
       </div>
-      <div class="col-sm-6 privacy-content">
+      <div class="col-sm-5 col-sm-offset-1 privacy-content">
         <h2>{{privacyData?.heading}}</h2>
         <p>{{privacyData?.description}}</p>
         <div>

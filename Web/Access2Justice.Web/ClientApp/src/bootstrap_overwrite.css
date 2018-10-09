@@ -109,13 +109,13 @@ a:not([href]):not([tabindex]) {
 
 /*Home Page - Carousel*/
 .carousel.slide {
-  height: 455px;
+  height: 485px;
   background-color: #f4f4f4;
   margin-bottom: 65px;
 }
 
 .carousel-control {
-  top: 450px;
+  top: 480px;
   display: unset;
   width: 40px;
   opacity: 1;
@@ -145,7 +145,7 @@ a.carousel-control .icon-prev, a.carousel-control .icon-next {
   background-color: #0D3FBB;
   width: 10px;
   height: 10px;
-  margin: 0 2px;
+  margin: 0 5px;
 }
 
 .carousel-indicators li {

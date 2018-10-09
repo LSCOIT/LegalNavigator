@@ -39,9 +39,8 @@ a:hover {
     margin-right: -25px;
   }
 
-  .account-menu {
-    display: inline-block;
-    margin-left: 10px;
+  .account-menu, .account-menu img {
+    margin-left: 0;
   }
 
   .dropdown-menu {
