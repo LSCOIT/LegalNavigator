@@ -50,19 +50,49 @@ namespace Access2Justice.Shared.A2JAuthor
             {
                 foreach (var childrenRoot in step.GetValueAsArray<JArray>("children"))
                 {
-                    foreach (var child in childrenRoot.GetValueAsArray<JObject>("rootNode").GetValueAsArray<JArray>("children"))
+                    ////var tempchild2 = childrenRoot.GetValueAsArray<JObject>("rootNode").GetArrayValue("children");
+                    //var tempchild = childrenRoot.GetValueAsArray<JObject>("rootNode").GetValueAsArray<JArray>("children").FirstOrDefault();
+                    //var tempstate = tempchild.GetArrayValue("state").FirstOrDefault();
+
+                    ////var Title = tempstate.GetValue("title");
+                    ////var Description = tempstate.GetValue("userContent");
+                    
+
+                    var childern = childrenRoot.GetValueAsArray<JObject>("rootNode").GetValueAsArray<JArray>("children");
+                    var topic = new UnprocessedTopic();
+
+                    foreach (var child in childern)
                     {
-                        var topic = new UnprocessedTopic();
+                        
                         var state = child.GetArrayValue("state").FirstOrDefault();
                         topic.Id = Guid.NewGuid();
-                        topic.Title = state.GetValue("title");
-                        topic.Description = state.GetValue("userContent");
+
+                        if (!string.IsNullOrWhiteSpace(state.GetValue("title")))
+                        {
+                            topic.Title = state.GetValue("title");
+                            continue;
+                        }
+                        else
+                        {
+                            if (!string.IsNullOrWhiteSpace(state.GetValue("userContent")))
+                            {
+                                topic.Description = state.GetValue("userContent");
+                            }
+                        }
+
+                        topic.ResourceIds = ExtractResourceIds(state.GetValue("userContent"));
                         unprocessedPlan.UnprocessedTopics.Add(topic);
                     }
                 }
             }
 
             return unprocessedPlan;
+        }
+
+        private List<Guid> ExtractResourceIds(string v)
+        {
+             // Todo:@Alaa implement this
+            return null;
         }
     }
 }
