@@ -135,7 +135,7 @@ namespace Access2Justice.Api.BusinessLogic
             var resultUP = await GetUserProfileDataAsync(userProfile?.OId, true);
             if (string.IsNullOrEmpty(resultUP?.OId))
             {
-                userProfile.RoleInformationId = await GetDefaultUserRole();
+                userProfile.RoleInformationId.Add(await GetDefaultUserRole());
                 List<dynamic> profile = new List<dynamic>();
                 var result = await dbService.CreateItemAsync(userProfile, dbSettings.UserProfileCollectionId);
                 profile.Add(result);

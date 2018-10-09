@@ -11,6 +11,6 @@ namespace Access2Justice.Api.Interfaces
     {
         Task<List<string>> GetPermissionDataAsync(string oId);
         Task<bool> ValidateOrganizationalUnit(string ou);
-        Task<bool> ValidateOUForRole(string roleInformationId, string ou);
+        Task<bool> ValidateOUForRole(List<string> roleInformationId, string ou);
     }
 }

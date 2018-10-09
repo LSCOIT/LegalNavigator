@@ -8,6 +8,7 @@ using Newtonsoft.Json.Linq;
 using NSubstitute;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Text;
 using Xunit;
 
@@ -26,18 +27,19 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             dbSettings = Substitute.For<ICosmosDbSettings>();
             dbUserProfile = Substitute.For<IUserProfileBusinessLogic>();
             httpContextAccessor = Substitute.For<IHttpContextAccessor>();
-            userRoleBusinessLogic = new UserRoleBusinessLogic(dbClient,dbSettings, dbUserProfile, httpContextAccessor);
-            
+            userRoleBusinessLogic = new UserRoleBusinessLogic(dbClient, dbSettings, dbUserProfile, httpContextAccessor);
+
             dbSettings.UserRoleCollectionId.Returns("UserRole");
-            
+
         }
 
         [Theory]
         [MemberData(nameof(UserRoleTestData.GetPermissionData), MemberType = typeof(UserRoleTestData))]
-        public void GetUserRoleDataAsyncShouldValidate(UserProfile userProfile,JArray roleResponse, dynamic expectedResult)
+        public void GetUserRoleDataAsyncShouldValidate(UserProfile userProfile, JArray roleResponse, dynamic expectedResult)
         {
             dynamic profileResponse = dbUserProfile.GetUserProfileDataAsync(userProfile.OId).Returns<dynamic>(userProfile);
-            var dbResponse = dbClient.FindItemsWhereAsync(dbSettings.UserRoleCollectionId, Constants.Id, userProfile.RoleInformationId.ToString());
+            var ids = new List<string>() { "guid1" };
+            var dbResponse = dbClient.FindItemsWhereInClauseAsync(dbSettings.UserRoleCollectionId, Constants.Id, ids);
             dbResponse.ReturnsForAnyArgs(roleResponse);
 
             //act
@@ -48,16 +50,17 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             //assert
             Assert.Equal(expectedResult, actualResult);
         }
-        
+
         [Theory]
         [MemberData(nameof(UserRoleTestData.ValidateOUForRole), MemberType = typeof(UserRoleTestData))]
-        public void ValidateOUForRoleShouldValidate(string roleInformationId, string ou, JArray roleResponse, dynamic expectedResult)
+        public void ValidateOUForRoleShouldValidate(List<string> roleInformationId, string ou, JArray roleResponse, dynamic expectedResult)
         {
-            var dbResponse = dbClient.FindItemsWhereAsync(dbSettings.UserRoleCollectionId, Constants.Id, roleInformationId);
+            var ids = new List<string>() { "guid1" };
+            var dbResponse = dbClient.FindItemsWhereInClauseAsync(dbSettings.UserRoleCollectionId, Constants.Id, ids);
             dbResponse.ReturnsForAnyArgs(roleResponse);
 
             //act
-            var response = userRoleBusinessLogic.ValidateOUForRole(roleInformationId,ou);
+            var response = userRoleBusinessLogic.ValidateOUForRole(roleInformationId, ou);
             expectedResult = JsonConvert.SerializeObject(expectedResult);
             var actualResult = JsonConvert.SerializeObject(response.Result);
 

@@ -53,7 +53,12 @@ namespace Access2Justice.Shared.Models
         public Guid SavedResourcesId { get; set; }
 
         [JsonProperty(PropertyName = "roleInformationId")]
-        public Guid RoleInformationId { get; set; }
+        public List<Guid> RoleInformationId { get; set; }
+
+        public UserProfile()
+        {
+            RoleInformationId = new List<Guid>();
+        }
     }
 
     public class UserProfileViewModel

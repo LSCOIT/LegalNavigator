@@ -32,11 +32,12 @@ namespace Access2Justice.Api.BusinessLogic
         {
             List<string> permissionPaths = new List<string>();
             UserProfile userProfile = await dbUserProfile.GetUserProfileDataAsync(oId);
-            if (userProfile?.RoleInformationId != Guid.Empty)
+            if (userProfile?.RoleInformationId.Count() > 0)
             {
-                var result = await dbClient.FindItemsWhereAsync(dbSettings.UserRoleCollectionId, Constants.Id, userProfile.RoleInformationId.ToString());
-                List<Role> userRole = JsonUtilities.DeserializeDynamicObject<List<Role>>(result);
-                return userRole.SelectMany(x => x.Permissions).ToList();
+                var roleIdsList = userProfile.RoleInformationId.Select(x => x.ToString()).ToList().Distinct();
+                var permissionData = await dbClient.FindItemsWhereInClauseAsync(dbSettings.UserRoleCollectionId, Constants.Id, roleIdsList);
+                List<Role> userRole = JsonUtilities.DeserializeDynamicObject<List<Role>>(permissionData);
+                return userRole.SelectMany(x => x.Permissions).Distinct().ToList();
             }
             return permissionPaths;
         }
@@ -52,28 +53,33 @@ namespace Access2Justice.Api.BusinessLogic
                 return false;
             oId = EncryptionUtilities.GenerateSHA512String(oId);
             UserProfile userProfile = await dbUserProfile.GetUserProfileDataAsync(oId);
-            if (userProfile?.RoleInformationId != Guid.Empty)
+            if (userProfile?.RoleInformationId.Count() > 0)
             {
-                return await ValidateOUForRole(userProfile.RoleInformationId.ToString(), ou);
+                List<string> roleIdsList = userProfile.RoleInformationId.Select(x => x.ToString()).Distinct().ToList();
+                return await ValidateOUForRole(roleIdsList, ou);
             }
             return false;
         }
 
-        public async Task<bool> ValidateOUForRole(string roleInformationId, string ou)
+        public async Task<bool> ValidateOUForRole(List<string> roleInformationId, string ou)
         {
-            var result = await dbClient.FindItemsWhereAsync(dbSettings.UserRoleCollectionId, Constants.Id, roleInformationId);
-            List<Role> userRole = JsonUtilities.DeserializeDynamicObject<List<Role>>(result);
+            var roleData = await dbClient.FindItemsWhereInClauseAsync(dbSettings.UserRoleCollectionId, Constants.Id, roleInformationId);
+            List<Role> userRole = JsonUtilities.DeserializeDynamicObject<List<Role>>(roleData);
             if (userRole?.Count() > 0)
             {
-                if (userRole[0].RoleName == Permissions.Role.PortalAdmin.ToString())
+                List<string> roles = userRole.Select(x => x.RoleName).Distinct().ToList();
+                if (roles.Contains(Permissions.Role.PortalAdmin.ToString()))
                 {
                     return true;
                 }
+                List<string> userOUs = userRole.SelectMany(x => x.OrganizationalUnit.Split(Constants.Delimiter).Select(p => p.Trim())).Distinct().ToList();
                 List<string> orgUnits = ou.Split(Constants.Delimiter).Select(p => p.Trim()).ToList();
-                string userOU = userRole[0].OrganizationalUnit;
-                if (!string.IsNullOrEmpty(userOU) && orgUnits.Find(x => x.Contains(userOU)) != null)
+                foreach(var userOU in userOUs)
                 {
-                    return true;
+                    if (!string.IsNullOrEmpty(userOU) && orgUnits.Find(x => x.Contains(userOU)) != null)
+                    {
+                        return true;
+                    }
                 }
             }
             return false;
