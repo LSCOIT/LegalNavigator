@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 namespace Access2Justice.Tools.BusinessLogic
 {
@@ -11,7 +12,7 @@ namespace Access2Justice.Tools.BusinessLogic
     {
         static HttpClient clientHttp = new HttpClient();
                 
-        public async static void GetTopics()
+        public async static Task GetTopics()
         {
             clientHttp.BaseAddress = new Uri("http://localhost:4200/");
             clientHttp.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -33,6 +34,33 @@ namespace Access2Justice.Tools.BusinessLogic
                         JObject jsonResult = (JObject)JsonConvert.DeserializeObject(serializedResult);
                         topicsList.Add(jsonResult);
                     }
+
+                    foreach (var topicList in topicsList)
+                    {
+                        if (topicList.parentTopicId != null)
+                        {                    
+                            foreach (var topicData in topicsList)
+                            {
+                                for (int iterator=0; iterator < topicList.parentTopicId.Count; iterator++) {
+                                    if (topicList.parentTopicId[iterator].id == topicData.name)
+                                    {
+                                        for (int locationIteratortopicList = 0; locationIteratortopicList < topicList.location.Count; locationIteratortopicList++)
+                                        {
+                                            for (int locationIteratortopicData = 0; locationIteratortopicData < topicData.location.Count; locationIteratortopicData++)
+                                            {
+                                                if (topicList.location[locationIteratortopicList].state == topicData.location[locationIteratortopicData].state)
+                                                {
+                                                    topicList.parentTopicId[iterator].id = topicData.id;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                     var serializedTopics = JsonConvert.SerializeObject(topicsList);
                     var result = JsonConvert.DeserializeObject(serializedTopics);
                     var response = await clientHttp.PostAsJsonAsync("api/upserttopicdocument", result).ConfigureAwait(false);

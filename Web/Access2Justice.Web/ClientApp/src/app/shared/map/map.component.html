@@ -5,44 +5,55 @@
     {{locationNavContent?.text}}
   </span>
   <ng-template #elseBlock>
-    <span *ngIf="!showLocality"> {{locality}}(</span><span>{{address}}</span><span *ngIf="!showLocality">)</span>
+    <span *ngIf="!showLocality"> {{locality}}(</span>
+    <span>{{address}}</span>
+    <span *ngIf="!showLocality">)</span>
   </ng-template>
   <button type="button" class="change-location-btn pxs mobile-hidden">{{locationNavContent?.button?.buttonText}}</button>
 </div>
 <ng-template #template>
-  <div class="modal-body text-center container-fluid">
-    <button *ngIf="!locationInputRequired" type="button" class="close" aria-label="Close" (click)="modalRef.hide()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-    <div class="row">
-      <img *ngIf="locationNavContent && locationNavContent.image.source" class="location-icon" [src]="blobUrl + locationNavContent?.image?.source" aria-hidden="true" />
-      <h4>Location</h4>
-      <p class="ps">We currently support Alaska and Hawaii</p>
-      <p class="ps">
-        You can learn more about the states we support by visiting our
-        <a [routerLink]="['/about']" class="link">About</a>
-        page
-      </p>
-    </div>
-    <div class="row">
-      <div id="searchbox-container">
-        <input type="text" id="search-box" aria-label="search address box" autocomplete="off" placeholder="Enter your state" (input)="onSearchChange()" autofocus="autofocus"/>
-        <button type="button" class="search-btn" (click)="geocode()">Search</button>
-        <span *ngIf="isError" class="alert alert-danger">
-          Please select your location.
-        </span>
+  <form #mapForm="ngForm" (ngSubmit)="hideSearchPrediction()">
+    <div class="modal-body text-center container-fluid">
+      <button *ngIf="!locationInputRequired" type="button" class="close" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <div class="row">
+        <img *ngIf="locationNavContent && locationNavContent.image.source" class="location-icon" [src]="blobUrl + locationNavContent?.image?.source" aria-hidden="true"/>
+        <h4>Location</h4>
+        <p class="ps">We currently support Alaska and Hawaii</p>
+        <p class="ps">
+          You can learn more about the states we support by visiting our
+          <a [routerLink]="['/about']" class="link">About</a>
+          page
+        </p>
       </div>
-      <div id="my-map"></div>
+      <div class="row">
+        <div id="searchbox-container">
+          <input
+            type="text"
+            id="search-box"
+            aria-label="search address box"
+            autocomplete="off"
+            [placeholder]="address || 'Enter your state'"
+            (input)="onSearchChange()"
+            autofocus="autofocus"
+            name="locationInput"
+            [(ngModel)]='locationInput' />
+          <span *ngIf="inputError">Please enter a valid location</span>
+          <button type="submit" class="search-btn" (click)="geocode()">Search</button>
+        </div>
+        <div id="my-map"></div>
+      </div>
+      <div class="row">
+        <p class="ps">
+          We promise to never share your location. View our
+          <a class="link ps" [routerLink]="['/privacy']">Privacy Promise</a>
+          .
+        </p>
+      </div>
+      <div class="row">
+        <button type="submit" class="btn btn-primary" (click)="updateLocation()" [disabled]="!locationInput">Update</button>
+      </div>
     </div>
-    <div class="row">
-      <p class="ps">
-        We promise to never share your location. View our
-        <a class="link ps" [routerLink]="['/privacy']">Privacy Promise</a>
-        .
-      </p>
-    </div>
-    <div class="row">
-      <button type="submit" (click)="updateLocation()" class="btn btn-primary">Update</button>
-    </div>
-  </div>
+  </form>
 </ng-template>

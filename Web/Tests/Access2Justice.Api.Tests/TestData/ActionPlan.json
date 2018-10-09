@@ -1,5 +1,5 @@
 [
-  {    
+  {
     "name": "Action Plan 1",
     "description": "This action plan is for tenants who are facing eviction and have experienced the following:",
     "resourceType": "Action Plans",
@@ -13,6 +13,7 @@
         "id": "2c0cc7b8-62b1-4efb-8568-b1f767f879bc"
       }
     ],
+    "organizationalUnit": "Alaska",
     "location": [
       {
         "state": "Hawaii",
@@ -24,25 +25,25 @@
     ],
     "icon": "./assets/images/resources/resource.png",
     "conditions": [
-        {
-            "condition": {
-                "title": "Take to your partner to see if you can come to an agreement",
-                "description": "Why you should do this dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo."
-            }
-        },
-        {
-            "condition": {
-                "title": "Submit a complaint for custody form",
-                "description": "Why you should do this dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo."
-            }
+      {
+        "condition": {
+          "title": "Take to your partner to see if you can come to an agreement",
+          "description": "Why you should do this dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo."
         }
+      },
+      {
+        "condition": {
+          "title": "Submit a complaint for custody form",
+          "description": "Why you should do this dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo."
+        }
+      }
     ],
     "createdBy": "API",
     "createdTimeStamp": "",
     "modifiedBy": "API",
     "modifiedTimeStamp": ""
   },
-    {    
+  {
     "name": "Action Plan 2",
     "description": "This action plan is for tenants who are facing eviction and have experienced the following:",
     "resourceType": "Action Plans",
@@ -56,6 +57,7 @@
         "id": "2c0cc7b8-62b1-4efb-8568-b1f767f879bc"
       }
     ],
+    "organizationalUnit": "Alaska",
     "location": [
       {
         "state": "Hawaii",
@@ -67,18 +69,18 @@
     ],
     "icon": "./assets/images/resources/resource.png",
     "conditions": [
-        {
-            "condition": {
-                "title": "Take to your partner to see if you can come to an agreement",
-                "description": "Why you should do this dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo."
-            }
-        },
-        {
-            "condition": {
-                "title": "Submit a complaint for custody form",
-                "description": "Why you should do this dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo."
-            }
+      {
+        "condition": {
+          "title": "Take to your partner to see if you can come to an agreement",
+          "description": "Why you should do this dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo."
         }
+      },
+      {
+        "condition": {
+          "title": "Submit a complaint for custody form",
+          "description": "Why you should do this dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo."
+        }
+      }
     ],
     "createdBy": "API",
     "createdTimeStamp": "",
