@@ -525,7 +525,7 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 ResourceId = resourceObject.id == "" ? Guid.NewGuid() : resourceObject.id,
                 Name = resourceObject.name,
-                Type = resourceObject.type,
+                ResourceCategory = resourceObject.resourceCategory,
                 Description = resourceObject.description,
                 ResourceType = resourceObject.resourceType,
                 ExternalUrls = resourceObject.externalUrl,
@@ -558,7 +558,7 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 ResourceId = resourceObject.id == "" ? Guid.NewGuid() : resourceObject.id,
                 Name = resourceObject.name,
-                Type = resourceObject.type,
+                ResourceCategory = resourceObject.resourceCategory,
                 Description = resourceObject.description,
                 ResourceType = resourceObject.resourceType,
                 ExternalUrls = resourceObject.externalUrl,
@@ -588,7 +588,7 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 ResourceId = resourceObject.id == "" ? Guid.NewGuid() : resourceObject.id,
                 Name = resourceObject.name,
-                Type = resourceObject.type,
+                ResourceCategory = resourceObject.resourceCategory,
                 Description = resourceObject.description,
                 ResourceType = resourceObject.resourceType,
                 ExternalUrls = resourceObject.externalUrl,
@@ -622,7 +622,7 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 ResourceId = resourceObject.id == "" ? Guid.NewGuid() : resourceObject.id,
                 Name = resourceObject.name,
-                Type = resourceObject.type,
+                ResourceCategory = resourceObject.resourceCategory,
                 Description = resourceObject.description,
                 ResourceType = resourceObject.resourceType,
                 ExternalUrls = resourceObject.externalUrl,
@@ -654,7 +654,7 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 ResourceId = resourceObject.id == "" ? Guid.NewGuid() : resourceObject.id,
                 Name = resourceObject.name,
-                Type = resourceObject.type,
+                ResourceCategory = resourceObject.resourceCategory,
                 Description = resourceObject.description,                
                 ResourceType = resourceObject.resourceType,
                 ExternalUrls = resourceObject.externalUrl,
@@ -688,7 +688,7 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 ResourceId = resourceObject.id == "" ? Guid.NewGuid() : resourceObject.id,
                 Name = resourceObject.name,
-                Type = resourceObject.type,
+                ResourceCategory = resourceObject.resourceCategory,
                 Description = resourceObject.description,
                 ResourceType = resourceObject.resourceType,
                 ExternalUrls = resourceObject.externalUrl,

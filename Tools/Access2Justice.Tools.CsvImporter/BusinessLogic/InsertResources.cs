@@ -131,7 +131,7 @@ namespace Access2Justice.Tools.BusinessLogic
                                         {
                                             ResourceId = (string.IsNullOrEmpty(id) || string.IsNullOrWhiteSpace(id)) ? Guid.NewGuid() : id,
                                             Name = name,
-                                            Type = resourceCategory,
+                                            ResourceCategory = resourceCategory,
                                             Description = description,
                                             ResourceType = resourceType,
                                             Urls = url,
@@ -153,7 +153,7 @@ namespace Access2Justice.Tools.BusinessLogic
                                         {
                                             ResourceId = (string.IsNullOrEmpty(id) || string.IsNullOrWhiteSpace(id)) ? Guid.NewGuid() : id,
                                             Name = name,
-                                            Type = resourceCategory,
+                                            ResourceCategory = resourceCategory,
                                             Description = description,
                                             ResourceType = resourceType,
                                             Urls = url,
@@ -187,7 +187,7 @@ namespace Access2Justice.Tools.BusinessLogic
                                         {
                                             ResourceId = (string.IsNullOrEmpty(id) || string.IsNullOrWhiteSpace(id)) ? Guid.NewGuid() : id,
                                             Name = name,
-                                            Type = resourceCategory,
+                                            ResourceCategory = resourceCategory,
                                             Description = description,
                                             ResourceType = resourceType,
                                             Urls = url,
@@ -213,7 +213,7 @@ namespace Access2Justice.Tools.BusinessLogic
                                         {
                                             ResourceId = (string.IsNullOrEmpty(id) || string.IsNullOrWhiteSpace(id)) ? Guid.NewGuid() : id,
                                             Name = name,
-                                            Type = resourceCategory,
+                                            ResourceCategory = resourceCategory,
                                             Description = description,
                                             ResourceType = resourceType,
                                             Urls = url,
@@ -235,7 +235,7 @@ namespace Access2Justice.Tools.BusinessLogic
                                         {
                                             ResourceId = (string.IsNullOrEmpty(id) || string.IsNullOrWhiteSpace(id)) ? Guid.NewGuid() : id,
                                             Name = name,
-                                            Type = resourceCategory,
+                                            ResourceCategory = resourceCategory,
                                             Description = description,
                                             ResourceType = resourceType,
                                             Urls = url,

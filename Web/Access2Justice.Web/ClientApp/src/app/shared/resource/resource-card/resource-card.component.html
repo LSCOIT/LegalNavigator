@@ -61,7 +61,7 @@
           <img class="media-object" src="/assets/images/icons/organizations.svg" aria-hidden="true">
         </div>
         <div class="media-body">
-          <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}, {{resource.type}}</h4></a>
+          <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}, {{resource?.resourceCategory}}</h4></a>
           <div class="print-only">{{applicationUrl+'/resource'+'/'+resource.id}}</div>
           <app-read-more [text]="resource.description" [maxLength]="240"></app-read-more>
           <div class="org-content span-text">
