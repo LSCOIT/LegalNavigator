@@ -47,6 +47,10 @@ namespace Access2Justice.Api
             IShareSettings shareSettings = new ShareSettings(Configuration.GetSection("Share"));
             services.AddSingleton(shareSettings);
 
+            IKeyVaultSettings keyVaultSettings = new KeyVaultSettings(Configuration.GetSection("KeyVault"));
+            services.AddSingleton(keyVaultSettings);
+
+
             services.AddSingleton<ILuisProxy, LuisProxy>();
             services.AddSingleton<ILuisBusinessLogic, LuisBusinessLogic>();
             services.AddSingleton<ITopicsResourcesBusinessLogic, TopicsResourcesBusinessLogic>();
@@ -109,7 +113,7 @@ namespace Access2Justice.Api
 
         private void ConfigureCosmosDb(IServiceCollection services)
         {
-            ICosmosDbSettings cosmosDbSettings = new CosmosDbSettings(Configuration.GetSection("CosmosDb"));
+            ICosmosDbSettings cosmosDbSettings = new CosmosDbSettings(Configuration.GetSection("CosmosDb"), (Configuration.GetSection("KeyVault")));
             services.AddSingleton(cosmosDbSettings);
             services.AddSingleton<IDocumentClient>(x => new DocumentClient(cosmosDbSettings.Endpoint, cosmosDbSettings.AuthKey));
             services.AddSingleton<IBackendDatabaseService, CosmosDbService>();

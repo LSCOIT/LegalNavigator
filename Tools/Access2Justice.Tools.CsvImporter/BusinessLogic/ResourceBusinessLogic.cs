@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace Access2Justice.Tools.BusinessLogic
 {
@@ -12,7 +12,7 @@ namespace Access2Justice.Tools.BusinessLogic
     {
         static HttpClient clientHttp = new HttpClient();
 
-        public async static void GetResources()
+        public async static Task GetResources()
         {
             clientHttp.BaseAddress = new Uri("http://localhost:4200/");
             clientHttp.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

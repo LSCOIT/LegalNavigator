@@ -13,10 +13,11 @@ import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MsalService } from '@azure/msal-angular';
+import { of } from 'rxjs/observable/of';
 
 describe('component:profile', () => {
   let component: ProfileComponent;
-  let fixture: ComponentFixture<ProfileComponent>;  
+  let fixture: ComponentFixture<ProfileComponent>;
   let arrayutilityservice: ArrayUtilityService;
   let eventutilityservice: EventUtilityService;
   let mockRouter;
@@ -447,6 +448,32 @@ describe('component:profile', () => {
         ]
       }
     }];
+
+  let mockUserSavedResources = {
+    "id": "1fb1b006-a8bc-487d-98a0-2457d9d9f78d",
+    "resources": [
+      {
+        "itemId": "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef",
+        "resourceType": "Topics",
+        "resourceDetails": {}
+      },
+      {
+        "itemId": "1d7fc811-dabe-4468-a179-c55075bd22b6",
+        "resourceType": "Organizations",
+        "resourceDetails": {}
+      },
+      {
+        "itemId": "Pro Bono Innovation Fund Grants 2016 | LSC - Legal ...",
+        "resourceType": "WebResources",
+        "resourceDetails": {
+          "id": "https://api.cognitive.microsoft.com/api/v7/#WebPages.9",
+          "name": "Pro Bono Innovation Fund Grants 2016 | LSC - Legal ...",
+          "url": "https://www.lsc.gov/pro-bono-innovation-fund-grants-2016"
+        }
+      }
+    ]
+  }
+
   let mockTopicListBlank = [{
     topic: '',
     isSelected: false
@@ -542,6 +569,28 @@ describe('component:profile', () => {
     component.tempTopicsList = mockTopicsList;
     component.filterTopicsList(mockTopicListBlank);
     expect(component.topicsList).toEqual(mockTopicsList);
+  });
+
+  it('should call getpersonalizedResources', () => {
+    component.userId = 'testUser';
+    spyOn(component, 'getpersonalizedResources');
+    mockPersonalizedPlanService.getUserSavedResources.and.returnValue(of);
+    expect(component.getpersonalizedResources).toBeTruthy;
+  });
+
+  it('should call getpersonalizedResources', () => {
+    spyOn(component, 'getpersonalizedResources');
+    let mockResponse = [mockUserSavedResources];
+    mockPersonalizedPlanService.getUserSavedResources.and.callFake(() => {
+      return Observable.from([mockResponse]);
+    });
+    expect(component.getpersonalizedResources).toBeTruthy();
+  });
+
+  it('should call getSavedResource', () => {
+    component.userId = 'testUser';
+    spyOn(component, 'getSavedResource'); 
+    expect(component.getSavedResource).toBeTruthy();
   });
 
 });

@@ -29,7 +29,7 @@ describe('OrganizationsComponent', () => {
       {
         "id": "19a02209-ca38-4b74-bd67-6ea941d41518",
         "name": "Alaska Law Help",
-        "type": "Civil Legal Services",
+        "resourceCategory": "Civil Legal Services",
         "description": "",
         "url": "https://alaskalawhelp.org/",
         "topicTags": [

@@ -9,6 +9,7 @@ import { ShareService } from '../share-button/share.service';
 import { ActivatedRoute } from '@angular/router';
 import { Global, UserStatus } from '../../../../global';
 import { MsalService } from '@azure/msal-angular';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-share-button',
@@ -124,7 +125,7 @@ export class ShareButtonComponent implements OnInit {
   }
 
   externalLogin() {
-    this.global.externalLogin();
+    this.msalService.loginRedirect(environment.consentScopes);
   }
 
   ngOnInit() {

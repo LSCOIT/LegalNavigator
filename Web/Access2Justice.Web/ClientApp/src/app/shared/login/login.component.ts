@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
   }
 
   externalLogin() {
-    this.global.externalLogin();
+    this.msalService.loginRedirect(environment.consentScopes);
   }
 
   logout() {
