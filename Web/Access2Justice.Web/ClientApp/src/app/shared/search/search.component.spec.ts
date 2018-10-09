@@ -21,6 +21,7 @@ import { By } from '@angular/platform-browser';
 import { ILuisInput } from './search-results/search-results.model';
 import { NgForm } from '@angular/forms/src/directives/ng_form';
 import { Input } from '@angular/core/src/metadata/directives';
+import { MsalService } from '@azure/msal-angular';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
@@ -35,18 +36,18 @@ describe('SearchComponent', () => {
   let mockMapLocationParsed;
   let mockMapLocation;
   let store;
+  let msalService;
 
   beforeEach(async(() => {
-   
+
     mockNavigateDataService = jasmine.createSpyObj(['setData']);
-    mockSearchService = jasmine.createSpyObj(['search']);  
+    mockSearchService = jasmine.createSpyObj(['search']);
     mockRouter =
       {
         navigate: jasmine.createSpy('navigate'),
         navigateByUrl: jasmine.createSpy('navigateByUrl')
       };
- 
-   mockResponse =
+    mockResponse =
       {
         "webResources": {
           "_type": "SearchResponse",
@@ -126,12 +127,12 @@ describe('SearchComponent', () => {
       .and.callFake(mockSessionStorage.removeItem);
     TestBed.configureTestingModule({
       declarations: [
-        SearchComponent, 
+        SearchComponent,
         SearchResultsComponent,
         SaveButtonComponent,
         ShareButtonComponent,
         PrintButtonComponent,
-        SearchFilterComponent, 
+        SearchFilterComponent,
         ResourceCardComponent,
         SearchFilterPipe
       ],
@@ -145,9 +146,10 @@ describe('SearchComponent', () => {
         { provide: Router, useValue: mockRouter },
         { provide: SearchService, useValue: mockSearchService },
         { provide: NavigateDataService, useValue: mockNavigateDataService },
+        { provide: MsalService, useValue: msalService },
         NgxSpinnerService
       ],
-      schemas: [NO_ERRORS_SCHEMA,CUSTOM_ELEMENTS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents();
   }));
@@ -160,6 +162,10 @@ describe('SearchComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should create', () => {
+    expect(component).toBeDefined();
   });
 
   it('should assign respose to searchresult property when search method of search service called', () => {
@@ -178,7 +184,19 @@ describe('SearchComponent', () => {
     expect(component.luisInput["Location"]).toEqual(mockMapLocationParsed);
     expect(mockNavigateDataService.setData).toHaveBeenCalled();
     expect(component.searchResults).toEqual(mockResponse);
-    expect(mockRouter.navigateByUrl).toHaveBeenCalledWith('/searchRefresh', mocklocationchange );
+    expect(mockRouter.navigateByUrl).toHaveBeenCalledWith('/searchRefresh', mocklocationchange);
     expect(mockRouter.navigate).toHaveBeenCalledWith('/search');
+  });
+
+  it('should be respose be null  when search method of search service called', () => {
+    let mockSearchForm = <NgForm>{
+      value: {
+        inputText: "family"
+      }
+    }
+    mockRouter.navigateByUrl.and.returnValue(Promise.resolve(undefined));
+    mockSearchService.search.and.returnValue(of(undefined));
+    component.onSubmit(mockSearchForm);
+    expect(component.searchResults).not.toEqual(mockResponse);
   });
 });

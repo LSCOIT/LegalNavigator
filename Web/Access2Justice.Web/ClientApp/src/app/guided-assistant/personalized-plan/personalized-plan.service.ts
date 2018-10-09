@@ -6,6 +6,7 @@ import { api } from '../../../api/api';
 import { IResourceFilter } from '../../shared/search/search-results/search-results.model';
 import { ArrayUtilityService } from '../../shared/array-utility.service';
 import { ToastrService } from 'ngx-toastr';
+import { Global } from "../../global";
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -22,8 +23,7 @@ export class PersonalizedPlanService {
   planTopic: PersonalizedPlanTopic = { topic: {}, isSelected: true };
   topicsList: Array<PersonalizedPlanTopic> = [];
   planDetailTags: any;
-  tempPlanDetailTags: any;
-  userId: string;
+  tempPlanDetailTags: any;  
   planDetails: any = [];
   planSessionKey: string = "bookmarkPlanId";
   profileResources: ProfileResources = { oId: '', resourceTags: [], type: '' };
@@ -33,9 +33,11 @@ export class PersonalizedPlanService {
   personalizedPlan: PersonalizedPlan;
   userPersonalizedPlan: UserPlan = { oId: '', plan: this.personalizedPlan };
 
-  constructor(private http: HttpClient, private arrayUtilityService: ArrayUtilityService,
-    private toastr: ToastrService) { }
-
+  constructor(private http: HttpClient,
+              private arrayUtilityService: ArrayUtilityService,
+              private toastr: ToastrService,
+              private global: Global) { }
+  
   getActionPlanConditions(planId): Observable<any> {
     return this.http.get<PersonalizedPlan>(api.planUrl + '/' + planId);
   }
@@ -49,7 +51,7 @@ export class PersonalizedPlanService {
   }
 
   userPlan(plan: PersonalizedPlan) {
-    this.userPersonalizedPlan = { oId: this.getUserId(), plan: plan };
+    this.userPersonalizedPlan = { oId: this.global.userId, plan: plan };
     return this.http.post<any>(api.updateUserPlanUrl, this.userPersonalizedPlan, httpOptions);
   }
 
@@ -85,14 +87,6 @@ export class PersonalizedPlanService {
     return this.tempPlanDetailTags;
   }
 
-  getUserId(): string {
-    let profileData = sessionStorage.getItem("profileData");
-    if (profileData != undefined) {
-      profileData = JSON.parse(profileData);
-      return profileData["UserId"];
-    }
-  }
-
   saveResourcesToUserProfile() {
     this.savedResources = { itemId: '', resourceType: '', resourceDetails: {} };
     this.resoureStorage = sessionStorage.getItem(this.sessionKey);
@@ -106,11 +100,10 @@ export class PersonalizedPlanService {
     this.saveResourcesToProfile(this.savedResources);
   }
 
-  saveResourcesToProfile(savedResources) {
-    this.userId = this.getUserId();
+  saveResourcesToProfile(savedResources) {    
     this.resourceTags = [];
     let params = new HttpParams()
-      .set("oid", this.userId)
+      .set("oid", this.global.userId)
       .set("type", "resources");
     this.getUserSavedResources(params)
       .subscribe(response => {
@@ -134,7 +127,7 @@ export class PersonalizedPlanService {
   }
 
   saveResourceToProfile(resourceTags) {
-    this.profileResources = { oId: this.userId, resourceTags: resourceTags, type: 'resources' };
+    this.profileResources = { oId: this.global.userId, resourceTags: resourceTags, type: 'resources' };
     this.saveResources(this.profileResources)
       .subscribe(() => {
         this.showSuccess('Resource saved to profile');

@@ -30,7 +30,7 @@ describe('PaginationService', () => {
     Location: mockLocation,
     IsResourceCountRequired: false
   }; 
-
+  
   beforeEach(() => {
     service = new PaginationService(httpSpy);
     httpSpy.get.calls.reset();
@@ -65,6 +65,7 @@ describe('PaginationService', () => {
 
   it('should not fail PagedResources when the resource type is null in resourceInput', (done) => {
     httpSpy.post.and.returnValue(mockResponse);
+    resourceInput.ResourceType = '';
     service.getPagedResources(resourceInput).subscribe(pagedResource => {
       expect(httpSpy.post).toHaveBeenCalled();
       expect(pagedResource).toEqual(mockSearchText);
@@ -74,6 +75,7 @@ describe('PaginationService', () => {
 
   it('should not fail PagedResources when the ContinuationToken is null in resourceInput', (done) => {
     httpSpy.post.and.returnValue(mockResponse);
+    resourceInput.ContinuationToken = '';
     service.getPagedResources(resourceInput).subscribe(pagedResource => {
       expect(httpSpy.post).toHaveBeenCalled();
       expect(pagedResource).toEqual(mockSearchText);
@@ -83,6 +85,7 @@ describe('PaginationService', () => {
 
   it('should not fail PagedResources when the TopicIds are null in resourceInput', (done) => {
     httpSpy.post.and.returnValue(mockResponse);
+    resourceInput.TopicIds = [];
     service.getPagedResources(resourceInput).subscribe(pagedResource => {
       expect(httpSpy.post).toHaveBeenCalled();
       expect(pagedResource).toEqual(mockSearchText);
@@ -92,6 +95,7 @@ describe('PaginationService', () => {
 
   it('should not fail PagedResources when the ResourceIds are null in resourceInput', (done) => {
     httpSpy.post.and.returnValue(mockResponse);
+    resourceInput.ResourceIds = [];
     service.getPagedResources(resourceInput).subscribe(pagedResource => {
       expect(httpSpy.post).toHaveBeenCalled();
       expect(pagedResource).toEqual(mockSearchText);
@@ -101,6 +105,7 @@ describe('PaginationService', () => {
 
   it('should not fail PagedResources when the PageNumber is zero in resourceInput', (done) => {
     httpSpy.post.and.returnValue(mockResponse);
+    resourceInput.PageNumber = 0;
     service.getPagedResources(resourceInput).subscribe(pagedResource => {
       expect(httpSpy.post).toHaveBeenCalled();
       expect(pagedResource).toEqual(mockSearchText);
@@ -110,6 +115,7 @@ describe('PaginationService', () => {
 
   it('should not fail PagedResources when the Location is null in resourceInput', (done) => {
     httpSpy.post.and.returnValue(mockResponse);
+    resourceInput.Location = '';
     service.getPagedResources(resourceInput).subscribe(pagedResource => {
       expect(httpSpy.post).toHaveBeenCalled();
       expect(pagedResource).toEqual(mockSearchText);

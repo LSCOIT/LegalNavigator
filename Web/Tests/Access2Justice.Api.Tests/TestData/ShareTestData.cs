@@ -68,17 +68,17 @@ namespace Access2Justice.Api.Tests.TestData
             };
             yield return new object[] {
                 "32803EF",
-                JArray.Parse("[{\"firstName\":\"TestFirstName\",\"lastName\":\"TestLastName\",\"oId\":\"709709e7t0r7t96\",\"url\":\"/profile\"}]"),
+                JArray.Parse("[{\"name\":\"TestFirstName TestLastName\",\"oId\":\"709709e7t0r7t96\",\"url\":\"/profile\"}]"),
                 new ShareProfileViewModel { UserName = "TestFirstName TestLastName", UserId="709709e7t0r7t96", ResourceLink= "/profile" }
             };
             yield return new object[] {
                 "32803EF",
-                JArray.Parse("[{\"firstName\":\"TestFirstName\",\"lastName\":\"TestLastName\",\"oId\":\"709709e7t0r7t96\",\"url\":\"/topics/5c035d27-2fdb-9776-6236-70983a918431\"}]"),
+                JArray.Parse("[{\"name\":\"TestFirstName\",\"oId\":\"709709e7t0r7t96\",\"url\":\"/topics/5c035d27-2fdb-9776-6236-70983a918431\"}]"),
                 new ShareProfileViewModel { UserName = null, UserId=null, ResourceLink= "/topics/5c035d27-2fdb-9776-6236-70983a918431" }
             };
             yield return new object[] {
                 "32803EF",
-                JArray.Parse("[{\"firstName\":\"TestFirstName\",\"lastName\":\"TestLastName\",\"oId\":\"709709e7t0r7t96\",\"url\":\"https://www.microsoft.com\"}]"),
+                JArray.Parse("[{\"name\":\"TestFirstName\",\"oId\":\"709709e7t0r7t96\",\"url\":\"https://www.microsoft.com\"}]"),
                 new ShareProfileViewModel { UserName = null, UserId=null, ResourceLink= "https://www.microsoft.com" }
             };
         }

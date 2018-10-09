@@ -6,6 +6,7 @@ import { SearchService } from './search.service';
 import { NavigateDataService } from '../navigate-data.service';
 import { ILuisInput } from './search-results/search-results.model';
 
+
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -29,13 +30,12 @@ export class SearchComponent implements OnInit {
     this.luisInput.Sentence = searchForm.value.inputText;
     this.luisInput.Location = JSON.parse(sessionStorage.getItem("globalMapLocation"));
     sessionStorage.removeItem("cacheSearchResults"); 
-    sessionStorage.removeItem("searchedLocationMap");
-
+    sessionStorage.removeItem("searchedLocationMap");    
     this.searchService.search(this.luisInput)
       .subscribe(response => {
         this.spinner.hide();
         if (response != undefined) {
-          this.searchResults = response;          
+          this.searchResults = response;
           this.navigateDataService.setData(this.searchResults);          
           this.router.navigateByUrl('/searchRefresh', { skipLocationChange: true })
             .then(() =>
