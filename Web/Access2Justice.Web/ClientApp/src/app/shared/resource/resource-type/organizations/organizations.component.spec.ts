@@ -86,9 +86,6 @@ describe('OrganizationsComponent', () => {
     fixture = TestBed.createComponent(OrganizationsComponent);
     component = fixture.componentInstance;
     component.resource = mockResource;
-    //component.searchResource = {
-    //  resources: {}, webResources: { webPages: { value: {} } }, topIntent: ''
-    //};
     fixture.detectChanges();
   }));
 
