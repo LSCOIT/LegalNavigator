@@ -51,6 +51,7 @@ import { LoginComponent } from './login/login.component';
 import { ShareService } from './resource/user-action/share-button/share.service';
 import { ShareButtonRouteComponent } from './resource/user-action/share-button/share-button-route/share-button-route.component';
 import { ReadMoreComponent } from './read-more/read-more.component';
+import { LoginService } from './login/login.service';
 
 @NgModule({
   imports: [
@@ -137,7 +138,8 @@ import { ReadMoreComponent } from './read-more/read-more.component';
     ArrayUtilityService,
     EventUtilityService,
     ResourceService,
-    ShareService
+    ShareService,
+    LoginService
   ]
 })
 export class SharedModule { }

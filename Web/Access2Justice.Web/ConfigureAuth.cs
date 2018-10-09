@@ -89,7 +89,7 @@ namespace Access2Justice.Web
             userProfile.CreatedBy = ((JToken)userUIDocument).Root.SelectToken("displayName").Value<string>();
             userProfile.CreatedTimeStamp = Convert.ToString(DateTime.UtcNow, CultureInfo.InvariantCulture);
 
-            ICosmosDbSettings cosmosDbSettings = new CosmosDbSettings(Configuration.GetSection("CosmosDb"));
+            ICosmosDbSettings cosmosDbSettings = new CosmosDbSettings(Configuration.GetSection("CosmosDb"), Configuration.GetSection("KeyVault"));
 
             using (var client = new DocumentClient(new Uri(cosmosDbSettings.Endpoint.ToString()), cosmosDbSettings.AuthKey))
             {

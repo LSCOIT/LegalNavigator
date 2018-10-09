@@ -21,6 +21,7 @@ import { ShowMoreService } from '../../shared/sidebars/show-more/show-more.servi
 import { SubtopicDetailComponent } from './subtopic-detail.component';
 import { TopicService } from '../shared/topic.service';
 import { of } from 'rxjs/observable/of';
+import { MsalService } from '@azure/msal-angular';
 import { Global } from '../../global';
  
 
@@ -52,7 +53,7 @@ describe('SubtopicDetailComponent', () => {
   let mockMapService;
   let mockPaginationService;
   let mockNavigateDataService;
-  let mockTopicService; 
+  let mockTopicService, msalService; 
   
   beforeEach(async(() => {
     mockMapService = jasmine.createSpyObj(['updateLocation'])
@@ -95,6 +96,7 @@ describe('SubtopicDetailComponent', () => {
           }
         },
         { provide: TopicService, useValue: mockTopicService },
+        { provide: MsalService, useValue: msalService },
         ShowMoreService,
         SearchService,
         Global

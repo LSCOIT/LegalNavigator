@@ -3,29 +3,22 @@ import { Observable } from 'rxjs/Rx';
 import { api } from '../../../api/api';
 import { Global, UserStatus } from '../../global';
 import { Subject } from 'rxjs';
+import { MsalService } from '@azure/msal-angular';
+import { TestBed } from '@angular/core/testing';
 
 describe('TopicService', () => {
   let service: TopicService;
-  let globalService: Global = { 
-    role: UserStatus.Anonymous, 
-    shareRouteUrl: "/share",
-    showShare: false,
-    showRemove: false,
-    showMarkComplete: false,
-    showDropDown: false,
-    showSetting: false,
-    profileRouteUrl: "/profile",
-    data: "",
-    notifyStaticData: new Subject<any>(),
-    topicsData: "",
-    organizationsData:"",
-    externalLogin: () => {},
-    getData: () => {},
-    setData: () => { }
-  };
+  let msalService: MsalService;  
+  let global: Global;
   const httpSpy = jasmine.createSpyObj('http', ['get', 'post']);
+  global = jasmine.createSpyObj(['shareRouteUrl']);
+
   beforeEach(() => {
-    service = new TopicService(httpSpy, globalService);
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: Global, useValue: { role: '', shareRouteUrl: '/share', userId: 'UserId' } }]
+    });
+    service = new TopicService(httpSpy, global);
     httpSpy.get.calls.reset();
   });
 
@@ -48,12 +41,12 @@ describe('TopicService', () => {
 
   it('should return list of subtopics', (done) => {
     let mockSubtopics = {
-        id: "1",
-        title: "Housing",
-        subtopics: [
-          {subtopicId: "2", title:"Subtopic1 Name", icon:"./ assets / images / topics / topic2.png"},
-          {subtopicId: "3", title:"Subtopic2 Name", icon:"./ assets / images / topics / topic3.png"}
-        ]
+      id: "1",
+      title: "Housing",
+      subtopics: [
+        { subtopicId: "2", title: "Subtopic1 Name", icon: "./ assets / images / topics / topic2.png" },
+        { subtopicId: "3", title: "Subtopic2 Name", icon: "./ assets / images / topics / topic3.png" }
+      ]
     }
     const mockResponse = Observable.of(mockSubtopics);
 

@@ -1,5 +1,7 @@
 ﻿using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -43,29 +45,32 @@ namespace Access2Justice.Api.Controllers
         }
 
         /// <summary>
-        /// Update User Profile Document
-        /// </summary>
-        /// <param name="oId"></param>
-        /// <param name="userProfile"></param>
-        /// <returns>1-Success,0-Fail</returns>
-        [HttpPost]
-        [Route("api/user/updateuserprofile")]
-        public async Task<IActionResult> UpdateUserProfileDocumentAsync(string oId, Guid planId)
-        {
-            var profile = await userProfileBusinessLogic.UpdateUserProfilePlanIdAsync(oId, planId);
-            return Ok(profile);
-        }
-
-        /// <summary>
         /// Insert and Update the user profile personalized plan
         /// </summary>
         /// <param name="userData"></param>
         /// <returns></returns>
+        [Authorize]
         [HttpPost]
         [Route("api/user/upsertuserpersonalizedplan")]
         public async Task<IActionResult> UpsertUserPersonalizedPlanAsync([FromBody]ProfileResources profileResources)
         {
             var users = await userProfileBusinessLogic.UpsertUserSavedResourcesAsync(profileResources);
+            return Ok(users);
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <param name="userProfile"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("api/user/upsertuserprofile")]
+        public async Task<IActionResult> UpsertUserProfile([FromBody]UserProfile userProfile)
+        {
+            var users = await userProfileBusinessLogic.UpsertUserProfileAsync(userProfile);
+            if (users == null) {
+                return StatusCode(StatusCodes.Status404NotFound);
+            }
             return Ok(users);
         }
     }
