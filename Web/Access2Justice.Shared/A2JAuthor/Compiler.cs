@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Access2Justice.Shared.A2JAuthor
 {
-    public class Compiler : ICompile
+    public class Compiler : IPersonalizedPlanCompile
     {
         public UnprocessedPersonalizedPlan Compile(JObject personalizedPlan, Dictionary<string, string> evaluatedUserAnswers)
         {

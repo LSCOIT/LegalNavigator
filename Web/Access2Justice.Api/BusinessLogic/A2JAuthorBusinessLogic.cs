@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Access2Justice.Api.BusinessLogic
 {
-    public class A2JAuthorBusinessLogic : IA2JAuthorBusinessLogic
+    public class A2JAuthorBusinessLogic : ICuratedExperienceConvertor
     {
         private readonly ICosmosDbSettings dbSettings;
         private readonly IBackendDatabaseService dbService;

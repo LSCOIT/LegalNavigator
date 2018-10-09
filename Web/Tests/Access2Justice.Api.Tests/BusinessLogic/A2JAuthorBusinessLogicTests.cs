@@ -16,7 +16,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
     {
         private readonly ICosmosDbSettings dbSettings;
         private readonly IBackendDatabaseService dbService;
-        private readonly IA2JAuthorBusinessLogic a2jAuthor;
+        private readonly ICuratedExperienceConvertor a2jAuthor;
         private readonly IPersonalizedPlanEngine personalizedPlanEngine;
 
         public A2JAuthorBusinessLogicTests()

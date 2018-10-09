@@ -15,11 +15,11 @@ namespace Access2Justice.Api.Controllers
     [Route("api/[controller]")]
     public class CuratedExperienceController : Controller
     {
-        private readonly IA2JAuthorBusinessLogic a2jAuthorBuisnessLogic;
+        private readonly ICuratedExperienceConvertor a2jAuthorBuisnessLogic;
         private readonly ICuratedExperienceBusinessLogic curatedExperienceBusinessLogic;
         private readonly IPersonalizedPlanBusinessLogic personalizedPlanBusinessLogic;
 
-        public CuratedExperienceController(IA2JAuthorBusinessLogic a2jAuthorBuisnessLogic, ICuratedExperienceBusinessLogic curatedExperienceBusinessLogic,
+        public CuratedExperienceController(ICuratedExperienceConvertor a2jAuthorBuisnessLogic, ICuratedExperienceBusinessLogic curatedExperienceBusinessLogic,
             IPersonalizedPlanBusinessLogic personalizedPlanBusinessLogic)
         {
             this.a2jAuthorBuisnessLogic = a2jAuthorBuisnessLogic;

@@ -3,7 +3,7 @@ using Access2Justice.Shared.Models;
 
 namespace Access2Justice.Shared.Interfaces.A2JAuthor
 {
-    public interface IParse
+    public interface IPersonalizedPlanParse
     {
         Dictionary<string, string> Parse(CuratedExperienceAnswers curatedExperienceAnswers);
     }

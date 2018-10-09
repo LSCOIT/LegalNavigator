@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Access2Justice.Shared.Interfaces.A2JAuthor
 {
-    public interface ICompile
+    public interface IPersonalizedPlanCompile
     {
         UnprocessedPersonalizedPlan Compile(JObject personalizedPlan, Dictionary<string, string> evaluatedUserAnswers);
     }
