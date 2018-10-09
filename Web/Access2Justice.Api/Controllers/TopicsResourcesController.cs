@@ -234,7 +234,7 @@ namespace Access2Justice.Api.Controllers
         /// </summary>
         [HttpPost]
         [Route("api/upsert-resource-document")]
-        public async Task<IActionResult> UpserResourceDocument([FromBody]dynamic resource)
+        public async Task<IActionResult> UpsertResourceDocument([FromBody]dynamic resource)
         {
             var resources = await topicsResourcesBusinessLogic.UpsertResourceDocumentAsync(resource);
             return Ok(resources);
