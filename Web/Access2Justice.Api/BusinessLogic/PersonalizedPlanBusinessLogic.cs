@@ -1,11 +1,8 @@
 ﻿using Access2Justice.Api.Interfaces;
 using Access2Justice.Api.ViewModels;
-using Access2Justice.Shared.Extensions;
 using Access2Justice.Shared.Interfaces;
-using Access2Justice.Shared.Interfaces.A2JAuthor;
 using Access2Justice.Shared.Models;
 using Access2Justice.Shared.Utilities;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -24,7 +21,6 @@ namespace Access2Justice.Api.BusinessLogic
         private readonly IPersonalizedPlanEngine personalizedPlanEngine;
         private readonly IPersonalizedPlanViewModelMapper personalizedPlanViewModelMapper;
 
-         // Todo:@Alaa wow man! really! do i need all of these objects?!
         public PersonalizedPlanBusinessLogic(ICosmosDbSettings cosmosDbSettings, IBackendDatabaseService backendDatabaseService,
             IDynamicQueries dynamicQueries, IUserProfileBusinessLogic userProfileBusinessLogic, IPersonalizedPlanEngine personalizedPlanEngine, IPersonalizedPlanViewModelMapper personalizedPlanViewModelMapper)
         {
@@ -36,14 +32,15 @@ namespace Access2Justice.Api.BusinessLogic
             this.personalizedPlanViewModelMapper = personalizedPlanViewModelMapper;
         }
 
-        public async Task<PersonalizedActionPlanViewModel> GeneratePersonalizedPlanAsync(CuratedExperience curatedExperience, Guid answersDocId)
+        public async Task<PersonalizedPlanViewModel> GeneratePersonalizedPlanAsync(CuratedExperience curatedExperience, Guid answersDocId)
         {
+             // Todo:@Alaa do all quries return a list? create a new one maybe?
             var a2jPersonalizedPlan = await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.A2JAuthorTemplatesCollectionId, "id",
                 curatedExperience.A2jPersonalizedPlanId.ToString());
             var userAnswers = await backendDatabaseService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(),
                 cosmosDbSettings.CuratedExperienceAnswersCollectionId);
-            var unprocessedPlan = personalizedPlanEngine.Build((JObject)a2jPersonalizedPlan[0], userAnswers);
 
+            var unprocessedPlan = personalizedPlanEngine.Build((JObject)a2jPersonalizedPlan[0], userAnswers);
             return personalizedPlanViewModelMapper.MapViewModel(unprocessedPlan);
         }
 
@@ -170,7 +167,7 @@ namespace Access2Justice.Api.BusinessLogic
             return personalizedPlan?[0];
         }
 
-        public async Task<PersonalizedActionPlanViewModel> UpdatePersonalizedPlan(UserPersonalizedPlan userPlan)
+        public async Task<PersonalizedPlanViewModel> UpdatePersonalizedPlan(UserPersonalizedPlan userPlan)
         {
             var userPersonalizedPlan = new UserPersonalizedPlan();
             userPersonalizedPlan = JsonUtilities.DeserializeDynamicObject<UserPersonalizedPlan>(userPlan);
@@ -195,7 +192,7 @@ namespace Access2Justice.Api.BusinessLogic
             string oId = userPlan.OId;
             string planId = string.Empty;
             dynamic userPlanDBData = null;
-            var userProfile = await this.userProfileBusinessLogic.GetUserProfileDataAsync(oId);
+            var userProfile = await userProfileBusinessLogic.GetUserProfileDataAsync(oId);
             if (userProfile?.PersonalizedActionPlanId != null && userProfile?.PersonalizedActionPlanId != Guid.Empty)
             {
                 if (userPlan.PersonalizedPlan.PersonalizedPlanId.ToString() == (userProfile?.PersonalizedActionPlanId.ToString()))

@@ -3,6 +3,7 @@ using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Interfaces.A2JAuthor;
 using Access2Justice.Shared.Models;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -17,7 +18,6 @@ namespace Access2Justice.Shared.A2JAuthor
             this.parser = parser;
         }
 
-        // delete the compiler, map a2j author to the the UnprocessedPersonalizedPlan here
         public UnprocessedPersonalizedPlan Build(JObject personalizedPlan, CuratedExperienceAnswers userAnswers)
         {
             var stepsInScope = new List<JToken>();
@@ -43,8 +43,26 @@ namespace Access2Justice.Shared.A2JAuthor
                 }
             }
 
-            var breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
-            return null;
+            var unprocessedPlan = new UnprocessedPersonalizedPlan();
+            unprocessedPlan.Id = Guid.NewGuid();
+
+            foreach (var step in stepsInScope)
+            {
+                foreach (var childrenRoot in step.GetValueAsArray<JArray>("children"))
+                {
+                    foreach (var child in childrenRoot.GetValueAsArray<JObject>("rootNode").GetValueAsArray<JArray>("children"))
+                    {
+                        var topic = new UnprocessedTopic();
+                        var state = child.GetArrayValue("state").FirstOrDefault();
+                        topic.Id = Guid.NewGuid();
+                        topic.Title = state.GetValue("title");
+                        topic.Description = state.GetValue("userContent");
+                        unprocessedPlan.UnprocessedTopics.Add(topic);
+                    }
+                }
+            }
+
+            return unprocessedPlan;
         }
     }
 }

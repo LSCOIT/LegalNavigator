@@ -8,9 +8,9 @@ namespace Access2Justice.Api.BusinessLogic
 {
     public class PersonalizedPlanViewModelMapper : IPersonalizedPlanViewModelMapper
     {
-        public PersonalizedActionPlanViewModel MapViewModel(UnprocessedPersonalizedPlan personalizedPlanStepsInScope)
+        public PersonalizedPlanViewModel MapViewModel(UnprocessedPersonalizedPlan personalizedPlanStepsInScope)
         {
-            var actionPlan = new PersonalizedActionPlanViewModel();
+            var actionPlan = new PersonalizedPlanViewModel();
 
             // Todo:@Alaa these 2 properties must come from the curated experience and from the profile respectively:
             actionPlan.PersonalizedPlanId = Guid.NewGuid();

@@ -67,7 +67,7 @@ namespace Access2Justice.Api.BusinessLogic
                 // the next step. The caveat for this is that the users will need to repeat the survey from the
                 // beginning if the session expires which might be frustrating.
                 var answersDbCollection = dbSettings.CuratedExperienceAnswersCollectionId;
-                var dbAnswers = MapViewModelAnswerToCuratedExperienceAnswer(viewModelAnswer, curatedExperience);
+                var dbAnswers = MapViewModel(viewModelAnswer, curatedExperience);
 
                 var savedAnswersDoc = await dbService.GetItemAsync<CuratedExperienceAnswers>(viewModelAnswer.AnswersDocId.ToString(), answersDbCollection);
                 if (savedAnswersDoc == null)
@@ -160,8 +160,7 @@ namespace Access2Justice.Api.BusinessLogic
             };
         }
 
-        //Todo:@Alaa could use some grooming
-        public CuratedExperienceAnswers MapViewModelAnswerToCuratedExperienceAnswer(CuratedExperienceAnswersViewModel viewModelAnswer,
+        public CuratedExperienceAnswers MapViewModel(CuratedExperienceAnswersViewModel viewModelAnswer,
             CuratedExperience curatedExperience)
         {
             var buttonComponent = new CuratedExperienceComponent();
