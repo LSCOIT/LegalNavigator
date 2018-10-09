@@ -65,6 +65,7 @@ namespace Access2Justice.Api
             services.AddSingleton<IPersonalizedPlanParse, Parser>();
             services.AddSingleton<IPersonalizedPlanEvaluate, Evaluator>();
             services.AddSingleton<IPersonalizedPlanCompile, Compiler>();
+            services.AddSingleton<IPersonalizedPlanViewModelMapper, PersonalizedPlanViewModelMapper>();
 
             ConfigureCosmosDb(services);
 

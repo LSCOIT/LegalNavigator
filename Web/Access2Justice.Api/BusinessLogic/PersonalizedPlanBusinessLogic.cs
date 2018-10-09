@@ -22,15 +22,18 @@ namespace Access2Justice.Api.BusinessLogic
         private readonly IDynamicQueries dynamicQueries;
         private readonly IUserProfileBusinessLogic userProfileBusinessLogic;
         private readonly IPersonalizedPlanEngine personalizedPlanEngine;
+        private readonly IPersonalizedPlanViewModelMapper personalizedPlanViewModelMapper;
 
+         // Todo:@Alaa wow man! really! do i need all of these objects?!
         public PersonalizedPlanBusinessLogic(ICosmosDbSettings cosmosDbSettings, IBackendDatabaseService backendDatabaseService,
-            IDynamicQueries dynamicQueries, IUserProfileBusinessLogic userProfileBusinessLogic, IPersonalizedPlanEngine personalizedPlanEngine)
+            IDynamicQueries dynamicQueries, IUserProfileBusinessLogic userProfileBusinessLogic, IPersonalizedPlanEngine personalizedPlanEngine, IPersonalizedPlanViewModelMapper personalizedPlanViewModelMapper)
         {
             this.cosmosDbSettings = cosmosDbSettings;
             this.backendDatabaseService = backendDatabaseService;
             this.dynamicQueries = dynamicQueries;
             this.userProfileBusinessLogic = userProfileBusinessLogic;
             this.personalizedPlanEngine = personalizedPlanEngine;
+            this.personalizedPlanViewModelMapper = personalizedPlanViewModelMapper;
         }
 
         public async Task<PersonalizedActionPlanViewModel> GeneratePersonalizedPlanAsync(CuratedExperience curatedExperience, Guid answersDocId)
@@ -41,52 +44,7 @@ namespace Access2Justice.Api.BusinessLogic
                 cosmosDbSettings.CuratedExperienceAnswersCollectionId);
             var personalizedPlanStepsInScope = personalizedPlanEngine.Build((JObject)a2jPersonalizedPlan[0], userAnswers);
 
-            return MapViewModel(personalizedPlanStepsInScope);
-        }
-
-        private PersonalizedActionPlanViewModel MapViewModel(UnprocessedPersonalizedPlan personalizedPlanStepsInScope)
-        {
-            var actionPlan = new PersonalizedActionPlanViewModel();
-
-             // Todo:@Alaa these 2 properties must come from the curated experience and from the profile respectively:
-            actionPlan.PersonalizedPlanId = Guid.NewGuid();
-            actionPlan.IsShared = false;
-
-            var steps = new List<PlanStep>();
-            var stepOrder = 1;
-            //foreach (var step in personalizedPlanStepsInScope)
-            //{
-            //    foreach (var childrenRoot in step.GetValueAsArray<JArray>("children"))
-            //    {
-            //        foreach (var child in childrenRoot.GetValueAsArray<JObject>("rootNode").GetValueAsArray<JArray>("children"))
-            //        {
-            //            var state = child.GetArrayValue("state").FirstOrDefault();
-            //            var title = state.GetValue("title");
-            //            var userContent = state.GetValue("userContent");
-
-                        
-            //            steps.Add(new PlanStep
-            //            {
-            //                StepId = Guid.NewGuid(),
-            //                Title = title,
-            //                Description = userContent,
-            //                Order = stepOrder++,
-            //                IsComplete = false,
-            //            });
-
-            //            var breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
-            //        }                   
-            //    }
-            //}
-
-            //actionPlan.Topics.Add(new PlanTopic
-            //{
-            //    TopicId = Guid.NewGuid(),
-            //    TopicName = "New Personalized Plan Test",
-            //    Steps = steps
-            //});
-
-            return actionPlan;
+            return personalizedPlanViewModelMapper.MapViewModel(personalizedPlanStepsInScope);
         }
 
         public List<PersonalizedPlanStep> GetPlanSteps(Guid topic, List<PersonalizedPlanStep> personalizedPlanSteps)
