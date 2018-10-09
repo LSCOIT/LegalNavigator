@@ -42,9 +42,9 @@ namespace Access2Justice.Api.BusinessLogic
                 curatedExperience.A2jPersonalizedPlanId.ToString());
             var userAnswers = await backendDatabaseService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(),
                 cosmosDbSettings.CuratedExperienceAnswersCollectionId);
-            var personalizedPlanStepsInScope = personalizedPlanEngine.Build((JObject)a2jPersonalizedPlan[0], userAnswers);
+            var unprocessedPlan = personalizedPlanEngine.Build((JObject)a2jPersonalizedPlan[0], userAnswers);
 
-            return personalizedPlanViewModelMapper.MapViewModel(personalizedPlanStepsInScope);
+            return personalizedPlanViewModelMapper.MapViewModel(unprocessedPlan);
         }
 
         public List<PersonalizedPlanStep> GetPlanSteps(Guid topic, List<PersonalizedPlanStep> personalizedPlanSteps)

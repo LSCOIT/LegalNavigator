@@ -5,11 +5,11 @@ using System.Collections.Generic;
 
 namespace Access2Justice.Shared.A2JAuthor
 {
-    public class Parser : IPersonalizedPlanParse
+    public class PersonalizedPlanParser : IPersonalizedPlanParse
     {
         private readonly IPersonalizedPlanEvaluate evaluator;
 
-        public Parser(IPersonalizedPlanEvaluate evaluator)
+        public PersonalizedPlanParser(IPersonalizedPlanEvaluate evaluator)
         {
             this.evaluator = evaluator;
         }

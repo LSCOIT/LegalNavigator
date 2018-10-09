@@ -26,6 +26,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly IUserProfileBusinessLogic userProfileBusinessLogic;
         private readonly PersonalizedPlanBusinessLogic personalizedPlan;
         private readonly IPersonalizedPlanEngine personalizedPlanEngine;
+        private readonly IPersonalizedPlanViewModelMapper personalizedPlanViewModelMapper;
 
         //Mocked input data
         private readonly dynamic topicId = Guid.Parse("e1fdbbc6-d66a-4275-9cd2-2be84d303e12");
@@ -55,8 +56,9 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             dynamicQueries = Substitute.For<IDynamicQueries>();
             userProfileBusinessLogic = Substitute.For<IUserProfileBusinessLogic>();
             personalizedPlanEngine = Substitute.For<IPersonalizedPlanEngine>();
+            personalizedPlanViewModelMapper = Substitute.For<IPersonalizedPlanViewModelMapper>();
 
-            personalizedPlan = new PersonalizedPlanBusinessLogic(dbSettings, dbService, dynamicQueries, userProfileBusinessLogic, personalizedPlanEngine);
+            personalizedPlan = new PersonalizedPlanBusinessLogic(dbSettings, dbService, dynamicQueries, userProfileBusinessLogic, personalizedPlanEngine, personalizedPlanViewModelMapper);
             dbSettings.AuthKey.Returns("dummykey");
             dbSettings.Endpoint.Returns(new Uri("https://bing.com"));
             dbSettings.DatabaseId.Returns("dbname");

@@ -7,10 +7,10 @@ namespace Access2Justice.Shared.Models
     public class UnprocessedPersonalizedPlan
     {
         public Guid Id { get; set; }
-        public List<CrudeTopic> CrudeTopics { get; set; }
+        public List<UnprocessedTopic> CrudeTopics { get; set; }
     }
 
-    public class CrudeTopic
+    public class UnprocessedTopic
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
