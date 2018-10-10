@@ -9,6 +9,10 @@ li {
   list-style: none;
 }
 
+li label {
+  font-weight: 600;
+}
+
 ul {
   padding-left: 0;
 }
@@ -25,6 +29,7 @@ a:hover {
   width: 20px;
   height: 20px;
   margin: 0 5px 2px 5px;
+  cursor: pointer;
 }
 
 .inline {

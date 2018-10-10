@@ -77,6 +77,7 @@ ul {
 
   .half-size-list {
     height: 200px;
+    padding: 10px;
   }
 
   .half-size-list a img {

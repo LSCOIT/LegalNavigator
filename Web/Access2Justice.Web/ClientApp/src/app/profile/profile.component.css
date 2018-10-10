@@ -47,6 +47,11 @@
   margin: 0;
 }
 
+.sec-illustration {
+  width: 60px;
+  height: 60px;
+}
+
 @media only screen and (min-width : 768px) {
   .mobile-hidden {
     display: inline-block;
@@ -62,6 +67,10 @@
   
   .filter-plan span, .filter-plan .mobile-hidden {
     padding-top: 10px;
+  }
+
+  h3.capitalize {
+    vertical-align: bottom;
   }
 }
 
