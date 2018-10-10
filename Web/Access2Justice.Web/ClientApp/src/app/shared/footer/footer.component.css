@@ -14,13 +14,13 @@
 }
 
 .footer-nav li.vertical-line {
-  border-bottom: 1px solid #ccc;
-  width: 60%;
+  border-bottom: 1px solid #ddd;
+  width: 270px;
   margin: 0 auto;
 }
 
 .footer-nav li:nth-child(odd) {
-  padding: 20px;
+  padding: 25px;
 }
 
 @media only screen and (min-width : 992px) {

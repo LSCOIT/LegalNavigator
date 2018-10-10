@@ -8,6 +8,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { PaginationService } from '../../../pagination/pagination.service';
 import { ServiceOrgSidebarComponent } from '../../../sidebars/service-org-sidebar/service-org-sidebar.component';
 import { VideosComponent } from './videos.component';
+import { Global } from '../../../../global';
 
 describe('VideosComponent', () => {
   let component: VideosComponent;
@@ -54,7 +55,8 @@ describe('VideosComponent', () => {
         { provide: Router, userValue: mockRouter },
         MapService,
         NavigateDataService,
-        PaginationService
+        PaginationService,
+        Global
       ]
     })
     .compileComponents();

@@ -45,8 +45,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 		[MemberData(nameof(ShareTestData.ShareInputData), MemberType = typeof(ShareTestData))]
 		public void CheckPermaLinkDataAsyncShouldValidate(ShareInput shareInput, dynamic expectedResult)
 		{
-			var profileResponse = userProfileBusinessLogic.GetUserProfileDataAsync(shareInput.UserId);
-			profileResponse.ReturnsForAnyArgs<UserProfile>(ShareTestData.UserProfileWithSharedResourceData);
+            dynamic profileResponse = userProfileBusinessLogic.GetUserProfileDataAsync(shareInput.UserId, false).Returns<dynamic>(ShareTestData.UserProfileWithSharedResourceData);			
 			var dbResponse = dynamicQueries.FindItemsWhereAsync(dbSettings.UserResourceCollectionId, "SharedResourceId", "0568B88C-3866-4CCA-97C8-B8E3F3D1FF3C");
 			dbResponse.ReturnsForAnyArgs(ShareTestData.sharedResourcesData);
 
@@ -62,9 +61,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 		[MemberData(nameof(ShareTestData.ShareGenerateInputData), MemberType = typeof(ShareTestData))]
 		public void ShareResourceDataAsyncShouldReturnResourceUrl(ShareInput shareInput, int permaLinkOutputLength, dynamic expectedResult)
 		{
-			var profileResponse = userProfileBusinessLogic.GetUserProfileDataAsync(shareInput.UserId);
-			profileResponse.ReturnsForAnyArgs<UserProfile>(ShareTestData.UserProfileWithoutSharedResourceData);
-
+            dynamic profileResponse = userProfileBusinessLogic.GetUserProfileDataAsync(shareInput.UserId).Returns<dynamic>(ShareTestData.UserProfileWithoutSharedResourceData);
 			dbShareSettings.PermaLinkMaxLength.Returns(permaLinkOutputLength);
 
 			Document updatedDocument = new Document();

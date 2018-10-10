@@ -1,3 +1,7 @@
+.container > h2 {
+  margin: 40px auto;
+}
+
 .panel-heading {
   margin-right: 50%;
   background-color: lightgrey;
@@ -25,10 +29,6 @@
 
 .media .col-sm-10 {
   text-align: center;
-}
-
-.btn-primary {
-  margin: 20px auto;
 }
 
 .learn-more {

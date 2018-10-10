@@ -20,10 +20,11 @@ import { NotFoundComponent } from './shared/error/not-found/not-found.component'
 import { InternalErrorComponent } from './shared/error/internal-error/internal-error.component';
 import { ShareButtonRouteComponent } from './shared/resource/user-action/share-button/share-button-route/share-button-route.component';
 import { CuratedExperienceResultComponent } from './guided-assistant/curated-experience-result/curated-experience-result.component';
+import { ProfileResolver } from './app-resolver/profile-resolver.service';
 
 const appRoutes: Routes = [
-  { path: 'search', component: SearchResultsComponent },
-  { path: 'searchRefresh', component: SearchResultsComponent },
+  { path: 'search', component: SearchResultsComponent, resolve: { cres: ProfileResolver } },
+  { path: 'searchRefresh', component: SearchResultsComponent, resolve: { cres: ProfileResolver } },
   { path: 'guidedassistant/:id', component: CuratedExperienceComponent },
   { path: 'guidedassistant', component: GuidedAssistantComponent },
   { path: 'guidedassistantSearch', component: CuratedExperienceResultComponent },
@@ -37,7 +38,7 @@ const appRoutes: Routes = [
   { path: 'help', component: HelpFaqsComponent },
   { path: 'home', component: HomeComponent },
   { path: 'privacy', component: PrivacyPromiseComponent },
-  { path: 'profile', component: ProfileComponent },
+  { path: 'profile', component: ProfileComponent, resolve: { cres: ProfileResolver } },
   { path: '', component: HomeComponent },
   { path: 'error', component: InternalErrorComponent},
   { path: '404', component: NotFoundComponent },

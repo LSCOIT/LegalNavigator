@@ -60,4 +60,10 @@ export class UpperNavComponent implements OnInit {
         this.getUpperNavigationContent();
       });
   }
+
+  ngOnDestroy() {
+    if (this.staticContentSubcription) {
+      this.staticContentSubcription.unsubscribe();
+    }
+  } 
 }
