@@ -20,6 +20,8 @@ export class Global {
   sharedUserName: string;
   isShared: boolean = false;
   isLoggedIn: boolean = false;
+  topicsData: any;
+  organizationsData: any;
 
   constructor() { }
 
@@ -32,6 +34,7 @@ export class Global {
   getData() {
     return this.data;
   }
+
   setData(data: any) {
     this.data = data;
     this.notifyStaticData.next(this.data);

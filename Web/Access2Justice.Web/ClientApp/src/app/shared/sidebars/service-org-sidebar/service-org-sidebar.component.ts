@@ -5,7 +5,7 @@ import { IResourceFilter } from '../../search/search-results/search-results.mode
 import { NavigateDataService } from '../../navigate-data.service';
 import { PaginationService } from '../../pagination/pagination.service';
 import { MapLocation } from '../../map/map';
-
+import { Global } from '../../../global';
 @Component({
   selector: 'app-service-org-sidebar',
   templateUrl: './service-org-sidebar.component.html',
@@ -28,7 +28,8 @@ export class ServiceOrgSidebarComponent implements OnInit {
     private activeRoute: ActivatedRoute,
     private mapService: MapService,
     private navigateDataService: NavigateDataService,
-    private paginationService: PaginationService
+    private paginationService: PaginationService,
+    private global: Global
   ) { }
 
   getOrganizations() {
@@ -49,8 +50,10 @@ export class ServiceOrgSidebarComponent implements OnInit {
     this.paginationService.getPagedResources(this.resourceFilter).subscribe(response => {
       if (response != undefined) {
         this.organizations = response["resources"];
-        if (this.organizations.length > 3) {
-          this.organizations.splice(3, (this.organizations.length) - 1);
+        this.global.organizationsData = response["resources"];
+
+        if (this.global.organizationsData.length > 3) {
+          this.global.organizationsData.splice(3, (this.global.organizationsData.length) - 1);
         }
       }
     });
@@ -61,12 +64,18 @@ export class ServiceOrgSidebarComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (sessionStorage.getItem("globalMapLocation")) {
-      this.location = JSON.parse(sessionStorage.getItem("globalMapLocation"));
-      this.getOrganizations();
+    if (!this.global.organizationsData) {
+      if (sessionStorage.getItem("globalMapLocation")) {
+        this.location = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+        this.getOrganizations();
+      }
+    } else {
+      this.organizations = this.global.organizationsData;
     }
+
     this.subscription = this.mapService.notifyLocation
       .subscribe((value) => {
+        this.global.organizationsData = null;
         this.location = value;
         this.getOrganizations();
       });

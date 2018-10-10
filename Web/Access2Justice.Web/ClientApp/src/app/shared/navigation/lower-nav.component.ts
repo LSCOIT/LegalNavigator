@@ -13,7 +13,7 @@ import { StaticResourceService } from '../../shared/static-resource.service';
 export class LowerNavComponent implements OnInit {
   width = 0;
   showSearch = false;
-  showMenu = false;
+  showMenu = true;
   my_Class = '';
   staticContentSubcription: any;
   blobUrl: any = environment.blobUrl;
@@ -63,7 +63,11 @@ export class LowerNavComponent implements OnInit {
   }
 
   toggleSearch() {
-    this.showSearch = !this.showSearch;
+    let windowWidth = window.innerWidth;
+    this.showSearch = !this.showSearch; 
+    if (windowWidth < 768) {
+      this.showMenu = !this.showMenu;
+    }
   }
 
   filterNavigationContent(navigation): void {
@@ -108,4 +112,13 @@ export class LowerNavComponent implements OnInit {
         this.getNavigationContent();
       });
   }
+
+  ngOnDestroy() {
+    if (this.staticContentSubcription) {
+      this.staticContentSubcription.unsubscribe();
+    }
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  } 
 }

@@ -19,6 +19,7 @@
       "prefix": "app",
       "styles": [
         "style-guide.css",
+        "bootstrap_overwrite.css",
         "styles.css"
       ],
       "scripts": [ "../node_modules/jspdf/dist/jspdf.min.js" ],

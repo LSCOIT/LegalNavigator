@@ -1,13 +1,23 @@
 .panel-heading {
   display: inline-block;
   border-radius: 25px;
+  padding: 10px;
 }
 
 .label-display {
-  float: left;
-  padding-right: 10px;
+  padding-left: 15px;
 }
 
 .guided-assistant {
   margin-bottom: 0;
+}
+
+@media only screen and (min-width : 768px) {
+  .panel-heading {
+    padding: 0;
+  }
+
+  .label-display {
+    margin-right: -15px;
+  }
 }
