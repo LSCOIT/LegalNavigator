@@ -23,8 +23,6 @@ export const api = {
     userPlanUrl: userProfile + "/upsert-user-personalized-plan",
     upsertUserProfileUrl: userProfile +"/upsert-user-profile",
     getOrganizationDetailsUrl: topic + '/get-organization-details',
-    loginUrl: '/signIn',
-    logoutUrl: '/signOut',
     questionUrl: curatedExperience + '/start',
     saveAndGetNextUrl: curatedExperience + '/component/save-and-get-next',
     updateUserPlanUrl: curatedExperience + "/update-plan",
