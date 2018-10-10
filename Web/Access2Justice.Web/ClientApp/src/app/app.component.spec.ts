@@ -27,6 +27,7 @@ import { ArrayUtilityService } from './shared/array-utility.service';
 import { ToastrService } from 'ngx-toastr';
 import { LoginService } from './shared/login/login.service';
 import { IUserProfile } from './shared/login/user-profile.model';
+import { TopicService } from './topics-resources/shared/topic.service';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -38,11 +39,12 @@ describe('AppComponent', () => {
   let mockRouter;
   let msalService;
   let toastrService: ToastrService;
-  let mockLoginService: LoginService;
+  let mockLoginService;
   let mockUserData;
   let mockLoginResponse;
 
   beforeEach(async(() => {
+
     staticContent = [
       {
         "name": "HomePage",
@@ -116,7 +118,6 @@ describe('AppComponent', () => {
       imports: [
         FormsModule,
         HttpClientModule
-
       ],
       providers: [AppComponent, PersonalizedPlanService, ArrayUtilityService, ToastrService,
         { provide: MsalService, useValue: msalService },
@@ -128,7 +129,8 @@ describe('AppComponent', () => {
         { provide: ToastrService, useValue: toastrService },
         { provide: LoginService, useValue: mockLoginService },
         NgxSpinnerService,
-        BroadcastService        
+        BroadcastService,
+        TopicService
       ],
       schemas: [
         NO_ERRORS_SCHEMA,

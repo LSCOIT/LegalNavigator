@@ -6,18 +6,20 @@
     <app-user-action-sidebar [mobile]=true [id]="resource.id" [type]="resource.resourceType"></app-user-action-sidebar>
   </div>
 </div>
-<div class="col-sm-8 col-sm-12">
-  <p>{{resource.overview}}</p>
-  <div class="content">
-    <h4>{{resource.headline1}}</h4>
-    <p>{{resource.content1}}</p>
+<div class="row">
+  <div class="col-sm-8 col-sm-12">
+    <p>{{resource.overview}}</p>
+    <div class="content">
+      <h4>{{resource.headline1}}</h4>
+      <p>{{resource.content1}}</p>
+    </div>
+    <div class="content">
+      <h4>{{resource.headline2}}</h4>
+      <p>{{resource.content2}}</p>
+    </div>
   </div>
-  <div class="content">
-    <h4>{{resource.headline2}}</h4>
-    <p>{{resource.content2}}</p>
+  <div class="col-md-3 col-sm-12 pull-right">
+    <app-guided-assistant-sidebar></app-guided-assistant-sidebar>
+    <app-service-org-sidebar (showMoreOrganizations)="clickSeeMoreOrganizationsFromArticles($event)"></app-service-org-sidebar>
   </div>
-</div>
-<div class="col-md-3 col-sm-12 pull-right">
-  <app-guided-assistant-sidebar></app-guided-assistant-sidebar>
-  <app-service-org-sidebar (showMoreOrganizations)="clickSeeMoreOrganizationsFromArticles($event)"></app-service-org-sidebar>
 </div>

@@ -34,14 +34,17 @@ export class PaginationComponent {
 
   onPage(n: number): void {
     this.goPage.emit(n);
+    window.scroll(0, 0);
   }
 
   onPrev(): void {
     this.goPrev.emit(true);
+    window.scroll(0, 0);
   }
 
   onNext(next: boolean): void {
     this.goNext.emit(next);
+    window.scroll(0, 0);
   }
 
   totalPages(): number {

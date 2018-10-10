@@ -2,10 +2,6 @@
   padding: 0;
 }
 
-.topic-list .btn-primary {
-  margin-bottom: 30px;
-}
-
 .topics li {
   display: inline-block;
   width: 45%;

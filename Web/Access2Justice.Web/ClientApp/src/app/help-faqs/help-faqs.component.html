@@ -1,6 +1,6 @@
 <div class="container">
-  <div class="row static-img-container">
-    <div class="col-md-12 static-img">
+  <div class="static-img-container row">
+    <div class="static-img">
       <img *ngIf="helpAndFaqsContent?.image?.source" [src]="blobUrl + helpAndFaqsContent?.image?.source" alt="helpAndFaqsContent?.image?.altText" />
     </div>
     <h2 class="inline">Help & FAQs</h2>
@@ -11,7 +11,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-10 col-md-offset-1 col-xs-offset-0">
+    <div class="col-md-10 col-md-offset-1 col-sm-12">
       <accordion *ngFor="let content of faqData">
         <accordion-group>
           <div accordion-heading>
@@ -22,8 +22,10 @@
               </div>
             </div>
           </div>
-          <div class="col-xs-12 step-content" *ngFor="let answer of content.answer">
-            <p>{{answer.description}}</p>
+          <div class="row">
+            <div class="col-xs-12 step-content" *ngFor="let answer of content.answer">
+              <p>{{answer.description}}</p>
+            </div>
           </div>
         </accordion-group>
       </accordion>

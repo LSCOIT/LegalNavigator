@@ -1,7 +1,7 @@
 <div class="container">
   <app-breadcrumb #breadcrumb></app-breadcrumb>
   <div class="row topic-content">
-    <div class="col-md-9 col-sm-12 col-xs-12 topic-list">
+    <div class="col-md-8 col-sm-12 topic-list">
       <div class="media">
         <div class="media-left">
           <img *ngIf="icon"class="media-object" [src]="icon" [alt]="breadcrumb.activeTopicName + ' icon'">
@@ -18,7 +18,7 @@
       </div>
       <a [routerLink]="['/topics']" class="btn btn-primary">Back to main topics</a>
     </div>
-    <div class="col-md-3 col-sm-12 col-xs-12">
+    <div class="col-md-3 col-sm-12 pull-right">
       <app-guided-assistant-sidebar [activeSubTopic]="guidedInput"></app-guided-assistant-sidebar>
       <app-service-org-sidebar (showMoreOrganizations)="clickSeeMoreOrganizationsFromSubtopic($event)"></app-service-org-sidebar>
     </div>
