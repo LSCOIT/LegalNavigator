@@ -44,42 +44,21 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(propertyName: "tags")]
         public List<string> Tags { get; set; }
 
-        [JsonProperty(PropertyName = "buttons")]
-        public List<Button> Buttons { get; set; }
-
         [JsonProperty(PropertyName = "fields")]
         public List<Field> Fields { get; set; }
 
-        [JsonProperty(PropertyName = "codeBefore")]
-        public string CodeBefore { get; set; }
+        [JsonProperty(PropertyName = "buttons")]
+        public List<Button> Buttons { get; set; }
 
-        [JsonProperty(PropertyName = "codeAfter")]
-        public string CodeAfter { get; set; }
+        [JsonProperty(PropertyName = "code")]
+        public Code Code { get; set; }
 
         public CuratedExperienceComponent()
         {
             Tags = new List<string>();
-            Buttons = new List<Button>();
             Fields = new List<Field>();
+            Buttons = new List<Button>();
         }
-    }
-
-    public class Button
-    {
-        [JsonProperty(PropertyName = "id")]
-        public Guid Id { get; set; }
-
-        [JsonProperty(PropertyName = "label")]
-        public string Label { get; set; }
-
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; set; }
-
-        [JsonProperty(PropertyName = "value")]
-        public string Value { get; set; }
-
-        [JsonProperty(PropertyName = "destination")]
-        public string Destination { get; set; }
     }
 
     public class Field
@@ -110,5 +89,32 @@ namespace Access2Justice.Shared.Models
 
         [JsonProperty(PropertyName = "invalidPrompt")]
         public string InvalidPrompt { get; set; }
+    }
+
+    public class Button
+    {
+        [JsonProperty(PropertyName = "id")]
+        public Guid Id { get; set; }
+
+        [JsonProperty(PropertyName = "label")]
+        public string Label { get; set; }
+
+        [JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        [JsonProperty(PropertyName = "value")]
+        public string Value { get; set; }
+
+        [JsonProperty(PropertyName = "destination")]
+        public string Destination { get; set; }
+    }
+
+    public class Code
+    {
+        [JsonProperty(PropertyName = "codeBefore")]
+        public string CodeBefore { get; set; }
+
+        [JsonProperty(PropertyName = "codeAfter")]
+        public string CodeAfter { get; set; }
     }
 }

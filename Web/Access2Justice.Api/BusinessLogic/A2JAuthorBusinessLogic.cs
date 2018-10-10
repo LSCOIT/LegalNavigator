@@ -6,7 +6,6 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Access2Justice.Api.BusinessLogic
 {
@@ -39,6 +38,7 @@ namespace Access2Justice.Api.BusinessLogic
                 var pageProperties = ((JObject)page.FirstOrDefault()).Properties();
                 var componentFields = GetFields(pageProperties);
                 var componentButtons = GetButtons(pageProperties);
+                var componentCodes = GetCodes(pageProperties);
 
                 cx.Components.Add(new CuratedExperienceComponent
                 {
@@ -47,10 +47,9 @@ namespace Access2Justice.Api.BusinessLogic
                     Help = pageProperties.GetValue("help"),
                     Learn = pageProperties.GetValue("learn"),
                     Text = pageProperties.GetValue("text"),
-                    CodeBefore = pageProperties.GetValue("codeBefore"),
-                    CodeAfter = pageProperties.GetValue("codeAfter"),
                     Fields = componentFields,
-                    Buttons = componentButtons
+                    Buttons = componentButtons,
+                    Code = componentCodes
                 });
             }
 
@@ -60,7 +59,7 @@ namespace Access2Justice.Api.BusinessLogic
 
             return cx;
         }
-   
+
         private Resource MapResourceProperties(IEnumerable<JProperty> a2jProperties, Guid curatedExperienceId)
         {
             return new Resource
@@ -120,6 +119,15 @@ namespace Access2Justice.Api.BusinessLogic
             }
 
             return componentButtons;
+        }
+
+        private Code GetCodes(IEnumerable<JProperty> pageProperties)
+        {
+            return new Code
+            {
+                CodeBefore = pageProperties.GetValue("codeBefore"),
+                CodeAfter = pageProperties.GetValue("codeAfter")
+            };
         }
 
         private CuratedExperienceQuestionType MapA2JFieldTypeToCuratedExperienceQuestionType(string a2jAuthorFieldtype)

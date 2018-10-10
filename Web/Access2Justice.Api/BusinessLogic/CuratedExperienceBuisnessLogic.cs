@@ -180,8 +180,8 @@ namespace Access2Justice.Api.BusinessLogic
                 Name = buttonComponent.Buttons.Where(x => x.Id == viewModelAnswer.ButtonId).FirstOrDefault().Name,
                 Value = buttonComponent.Buttons.Where(x => x.Id == viewModelAnswer.ButtonId).FirstOrDefault().Value,
 
-                CodeBefore = buttonComponent.CodeBefore,
-                CodeAfter = buttonComponent.CodeAfter
+                CodeBefore = buttonComponent.Code.CodeBefore,
+                CodeAfter = buttonComponent.Code.CodeAfter
             });
 
             var userSelectedFields = new List<FieldComponent>();
@@ -190,15 +190,15 @@ namespace Access2Justice.Api.BusinessLogic
                 var fieldComponent = new CuratedExperienceComponent();
                 foreach (var component in curatedExperience.Components)
                 {
-                    if (component.Fields.Where(x => x.Id == Guid.Parse(answerField.FieldId)).Any())
+                    if (answerField != null && component.Fields.Where(x => x.Id == Guid.Parse(answerField.FieldId)).Any())
                     {
                         var selectedField = component.Fields.Where(x => x.Id == Guid.Parse(answerField.FieldId)).FirstOrDefault();
                         fieldComponent = curatedExperience.Components.Where(x => x.Fields.Contains(selectedField)).FirstOrDefault();
 
                         userSelectedFields.Add(new FieldComponent
                         {
-                            CodeBefore = fieldComponent.CodeBefore,
-                            CodeAfter = fieldComponent.CodeAfter,
+                            CodeBefore = fieldComponent.Code.CodeBefore,
+                            CodeAfter = fieldComponent.Code.CodeAfter,
                             Fields = new List<AnswerField>
                             {
                                 new AnswerField
