@@ -29,7 +29,7 @@ namespace Access2JusticeCode.DataImportTool
         }
 
         private void Button2_Click(object sender, EventArgs e)
-        {            
+        {
             if (userResponse?.AccessToken != null)
             {
                 OpenFileDialog openFileDialog1 = new OpenFileDialog();
