@@ -63,7 +63,7 @@ namespace Access2Justice.Tools.BusinessLogic
 
                     var serializedTopics = JsonConvert.SerializeObject(topicsList);
                     var result = JsonConvert.DeserializeObject(serializedTopics);
-                    var response = await clientHttp.PostAsJsonAsync("api/upserttopicdocument", result).ConfigureAwait(false);
+                    var response = await clientHttp.PostAsJsonAsync("api/upsert-topic-document", result).ConfigureAwait(false);
                     var json = response.Content.ReadAsStringAsync().Result;
                     var documentsCreated = JsonConvert.DeserializeObject(json);
                     response.EnsureSuccessStatusCode();
