@@ -19,6 +19,18 @@ namespace Access2Justice.Shared.Models
     {
         public UnprocessedTopic()
         {
+            UnprocessedSteps = new List<UnprocessedStep>();
+        }
+
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public List<UnprocessedStep> UnprocessedSteps { get; set; }
+    }
+
+    public class UnprocessedStep
+    {
+        public UnprocessedStep()
+        {
             ResourceIds = new List<Guid>();
         }
 

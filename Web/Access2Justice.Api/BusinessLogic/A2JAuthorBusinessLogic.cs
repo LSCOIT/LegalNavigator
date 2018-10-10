@@ -132,33 +132,33 @@ namespace Access2Justice.Api.BusinessLogic
 
         private CuratedExperienceQuestionType MapA2JFieldTypeToCuratedExperienceQuestionType(string a2jAuthorFieldtype)
         {
-            switch (a2jAuthorFieldtype)
+            switch (a2jAuthorFieldtype.ToUpperInvariant())
             {
-                case "text":
+                case "TEXT":
                     return CuratedExperienceQuestionType.Text;
-                case "textlong":
+                case "TEXTLONG":
                     return CuratedExperienceQuestionType.RichText;
-                case "textpick":
+                case "TEXTPICK":
                     return CuratedExperienceQuestionType.List;
-                case "number":
+                case "NUMBER":
                     return CuratedExperienceQuestionType.Number;
-                case "numberdollar":
+                case "NUMBERDOLLAR":
                     return CuratedExperienceQuestionType.Currency;
-                case "numberssn":
+                case "NUMBERSSN":
                     return CuratedExperienceQuestionType.Ssn;
-                case "numberphone":
+                case "NUMBERPHONE":
                     return CuratedExperienceQuestionType.Phone;
-                case "numberzip":
+                case "NUMBERZIP":
                     return CuratedExperienceQuestionType.ZipCode;
-                case "numberpick":
+                case "NUMBERPICK":
                     return CuratedExperienceQuestionType.List;
-                case "gender":
+                case "GENDER":
                     return CuratedExperienceQuestionType.RadioButton;
-                case "radio":
+                case "RADIOBUTTON":
                     return CuratedExperienceQuestionType.RadioButton;
-                case "checkbox":
+                case "CHECKBOX":
                     return CuratedExperienceQuestionType.CheckBox;
-                case "checkboxNOTA":
+                case "CHECKBOXNOTA":
                     return CuratedExperienceQuestionType.CheckBox;
                 default:
                     return CuratedExperienceQuestionType.Text;

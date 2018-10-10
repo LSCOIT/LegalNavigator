@@ -46,35 +46,39 @@ namespace Access2Justice.Shared.A2JAuthor
             var unprocessedPlan = new UnprocessedPersonalizedPlan();
             unprocessedPlan.Id = Guid.NewGuid();
 
+            var unprocessedTopic = new UnprocessedTopic();
+            unprocessedTopic.Id = Guid.NewGuid();
+            unprocessedTopic.Name = personalizedPlan.Properties().GetValue("title");
+
             foreach (var step in stepsInScope)
             {
                 foreach (var childrenRoot in step.GetValueAsArray<JArray>("children"))
                 {
-                    var topic = new UnprocessedTopic();
+                    var unprocessedStep = new UnprocessedStep();
                     foreach (var child in childrenRoot.GetValueAsArray<JObject>("rootNode").GetValueAsArray<JArray>("children"))
                     {
                         
                         var state = child.GetArrayValue("state").FirstOrDefault();
-                        topic.Id = Guid.NewGuid();
+                        unprocessedStep.Id = Guid.NewGuid();
 
                         if (!string.IsNullOrWhiteSpace(state.GetValue("title")))
                         {
-                            topic.Title = state.GetValue("title");
+                            unprocessedStep.Title = state.GetValue("title");
                             continue;
                         }
                         else
                         {
                             if (!string.IsNullOrWhiteSpace(state.GetValue("userContent")))
                             {
-                                topic.Description = state.GetValue("userContent");
-                                topic.ResourceIds = ExtractResourceIds(state.GetValue("userContent"));
+                                unprocessedStep.Description = state.GetValue("userContent");
+                                unprocessedStep.ResourceIds = ExtractResourceIds(state.GetValue("userContent"));
                             }
                         }
-                        unprocessedPlan.UnprocessedTopics.Add(topic);
-                    }    
+                        unprocessedTopic.UnprocessedSteps.Add(unprocessedStep);
+                    }
                 }
             }
-
+            unprocessedPlan.UnprocessedTopics.Add(unprocessedTopic);
             return unprocessedPlan;
         }
 
