@@ -45,7 +45,7 @@ namespace Access2JusticeCode.DataImportTool
             }
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void Button3_Click(object sender, EventArgs e)
         {   
             if (userResponse?.AccessToken != null)
             {

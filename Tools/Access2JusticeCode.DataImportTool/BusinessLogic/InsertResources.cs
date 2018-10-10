@@ -288,7 +288,6 @@ namespace Access2Justice.Tools.BusinessLogic
             catch (Exception ex)
             {
                 InsertTopics.ErrorLogging(ex, recordNumber);
-                InsertTopics.ReadError();
                 Resources = null;
             }
             Resources = ResourcesList;
@@ -608,7 +607,6 @@ namespace Access2Justice.Tools.BusinessLogic
             catch (Exception ex)
             {
                 InsertTopics.ErrorLogging(ex, recordNumber);
-                InsertTopics.ReadError();
             }
             return correctHeader;
         }

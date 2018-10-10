@@ -190,7 +190,6 @@ namespace Access2Justice.Tools.BusinessLogic
             catch (Exception ex)
             {
                 ErrorLogging(ex, recordNumber);
-                ReadError();
                 topics = null;
             }
             return topics;
@@ -358,7 +357,7 @@ namespace Access2Justice.Tools.BusinessLogic
 
         public static void ErrorLogging(Exception ex, int recordNumber)
         {
-            string strPath = Path.Combine(Environment.CurrentDirectory, "SampleFiles\\Error.txt");
+            string strPath = Path.Combine(Environment.CurrentDirectory, "..\\..\\SampleFiles\\Error.txt");
             if (File.Exists(strPath))
             {
                 System.GC.Collect();
@@ -389,19 +388,6 @@ namespace Access2Justice.Tools.BusinessLogic
                 }
                 sw.WriteLine("===========End============= " + DateTime.Now);
                 sw.WriteLine();
-            }
-        }
-
-        public static void ReadError()
-        {
-            string strPath = Path.Combine(Environment.CurrentDirectory, "SampleFiles\\Error.txt");
-            using (StreamReader sr = new StreamReader(strPath))
-            {
-                string line;
-                while ((line = sr.ReadLine()) != null)
-                {
-                    Console.WriteLine(line);
-                }
             }
         }
 
