@@ -120,7 +120,7 @@ namespace Access2Justice.Api.BusinessLogic
                     Value = string.Empty
                 });
 
-                var parsedCode = parser.Parse(answers);
+                var parsedCode = parser.Parse(answers, Tokens.ParserConfig.GoToQuestions);
 
                 var breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
             }

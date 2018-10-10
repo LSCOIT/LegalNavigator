@@ -1,6 +1,7 @@
 ﻿using Access2Justice.Api.BusinessLogic;
 using Access2Justice.Api.Tests.TestData;
 using Access2Justice.Shared.Interfaces;
+using Access2Justice.Shared.Interfaces.A2JAuthor;
 using Access2Justice.Shared.Models;
 using Newtonsoft.Json;
 using NSubstitute;
@@ -15,13 +16,15 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly IBackendDatabaseService dbService;
         private readonly ICosmosDbSettings dbSettings;
         private readonly CuratedExperienceBuisnessLogic curatedExperience;
+        private readonly IPersonalizedPlanParse parser;
 
         public CuratedExperienceBuisnessLogicTests()
         {
             dbService = Substitute.For<IBackendDatabaseService>();
             dbSettings = Substitute.For<ICosmosDbSettings>();
+            parser = Substitute.For<IPersonalizedPlanParse>();
 
-            curatedExperience = new CuratedExperienceBuisnessLogic(dbSettings, dbService);
+            curatedExperience = new CuratedExperienceBuisnessLogic(dbSettings, dbService, parser);
         }
 
         [Fact]

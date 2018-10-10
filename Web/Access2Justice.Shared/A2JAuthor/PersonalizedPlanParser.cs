@@ -14,7 +14,7 @@ namespace Access2Justice.Shared.A2JAuthor
             this.evaluator = evaluator;
         }
 
-        public Dictionary<string, string> Parse(CuratedExperienceAnswers curatedExperienceAnswers)
+        public Dictionary<string, string> Parse(CuratedExperienceAnswers curatedExperienceAnswers, string parserConfig)
         {
             Dictionary<string, string> userAnswersKeyValuePairs = ExtractAnswersVarValues(curatedExperienceAnswers);
             List<string> logicStatements = ExtractAnswersLogicalStatements(curatedExperienceAnswers);
@@ -25,9 +25,13 @@ namespace Access2Justice.Shared.A2JAuthor
                 foreach (var ifStatement in logicalStatement.IFstatements())
                 {
                     Dictionary<string, string> leftVarValues = new Dictionary<string, string>();
-                    string leftLogic = ifStatement.GetStringOnTheLeftOf(Tokens.SET);
-                    string rightLogic = ifStatement.GetStringOnTheRightOf(Tokens.SET);
-
+                    var leftLogic = string.Empty;
+                    var rightLogic = string.Empty;
+                    if (parserConfig == Tokens.ParserConfig.SetVariables)
+                    {
+                        leftLogic = ifStatement.GetStringOnTheLeftOf(Tokens.SET);
+                        rightLogic = ifStatement.GetStringOnTheRightOf(Tokens.SET);
+                    }
                     var ANDvars = leftLogic.GetVariablesWithValues(Tokens.AND);
                     if (evaluator.Evaluate(userAnswersKeyValuePairs, ANDvars, (x, y) => x && y))
                     {                     

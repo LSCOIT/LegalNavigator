@@ -27,5 +27,11 @@
             public const string LogicalFalse = "false";
             public const string LogicalFalseText = "is-false";
         }
+
+        public class ParserConfig
+        {
+            public const string SetVariables = "SET";
+            public const string GoToQuestions = "GOTO";
+        }
     }
 }

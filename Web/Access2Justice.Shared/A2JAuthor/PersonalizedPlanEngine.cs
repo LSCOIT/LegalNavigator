@@ -21,7 +21,7 @@ namespace Access2Justice.Shared.A2JAuthor
         public UnprocessedPersonalizedPlan Build(JObject personalizedPlan, CuratedExperienceAnswers userAnswers)
         {
             var stepsInScope = new List<JToken>();
-            var evaluatedUserAnswers = parser.Parse(userAnswers);
+            var evaluatedUserAnswers = parser.Parse(userAnswers, Tokens.ParserConfig.SetVariables);
 
             var root = personalizedPlan
                 .Properties()

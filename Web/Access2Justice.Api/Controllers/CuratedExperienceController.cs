@@ -32,7 +32,7 @@ namespace Access2Justice.Api.Controllers
         public async Task<IActionResult> TestA2JPersonalizedPlanParser([FromBody] CuratedExperienceAnswers userAnswers)
         {
             // Todo:@Alaa remove this endpoint, added it just to test the parser duing development
-            return Ok(new PersonalizedPlanParser(new PersonalizedPlanEvaluator()).Parse(userAnswers));
+            return Ok(new PersonalizedPlanParser(new PersonalizedPlanEvaluator()).Parse(userAnswers, Tokens.ParserConfig.SetVariables));
         }
         #endregion
 
