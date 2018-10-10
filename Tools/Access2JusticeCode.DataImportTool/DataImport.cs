@@ -29,11 +29,15 @@ namespace Access2JusticeCode.DataImportTool
         }
 
         private void Button2_Click(object sender, EventArgs e)
-        {
+        {            
             if (userResponse?.AccessToken != null)
             {
-                TopicBusinessLogic.GetTopics(userResponse.AccessToken).Wait();
-                ResourceBusinessLogic.GetResources(userResponse.AccessToken).Wait();
+                OpenFileDialog openFileDialog1 = new OpenFileDialog();
+                openFileDialog1.ShowDialog();
+                openFileDialog1.Filter = "*.xlsx|*.xls";
+                if (string.IsNullOrEmpty(openFileDialog1.FileName))
+                { MessageBox.Show("Please select proper excel file to process the Topics data"); }
+                else { TopicBusinessLogic.GetTopics(userResponse.AccessToken, openFileDialog1.FileName).Wait(); }
             }
             else
             {
@@ -41,9 +45,21 @@ namespace Access2JusticeCode.DataImportTool
             }
         }
 
-        private void DataImport_Load(object sender, EventArgs e)
-        {
-
+        private void button3_Click(object sender, EventArgs e)
+        {   
+            if (userResponse?.AccessToken != null)
+            {
+                OpenFileDialog openFileDialog1 = new OpenFileDialog();
+                openFileDialog1.ShowDialog();
+                openFileDialog1.Filter = "*.xlsx|*.xls";
+                if (string.IsNullOrEmpty(openFileDialog1.FileName))
+                { MessageBox.Show("Please select proper excel file to process the Resources data"); }
+                else { ResourceBusinessLogic.GetResources(userResponse.AccessToken, openFileDialog1.FileName).Wait(); }
+            }
+            else
+            {
+                MessageBox.Show("Please login, before we process the data");
+            }
         }
     }
 }

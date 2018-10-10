@@ -13,20 +13,16 @@ namespace Access2Justice.Tools.BusinessLogic
 {
     public class InsertTopics
     {
-        public dynamic CreateJsonFromCSV()
+        public dynamic CreateJsonFromCSV(string filePath)
         {
             int recordNumber = 1;
             Topic topic = new Topic();
             List<dynamic> topicsList = new List<dynamic>();
             List<dynamic> topics = new List<dynamic>();
-            string appSettings = ConfigurationManager.AppSettings.Get("Topics");
-            string path = Path.Combine(Environment.CurrentDirectory, appSettings);
-
             try
             {
-                string textFilePath = path;
                 using (SpreadsheetDocument spreadsheetDocument =
-                    SpreadsheetDocument.Open(path, false))
+                    SpreadsheetDocument.Open(filePath, false))
                 {
                     WorkbookPart workbookPart = spreadsheetDocument.WorkbookPart;
                     WorksheetPart worksheetPart = workbookPart.WorksheetParts.First();

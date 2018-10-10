@@ -147,6 +147,7 @@
     <Compile Include="DataImport.Designer.cs">
       <DependentUpon>DataImport.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helper\LogHelper.cs" />
     <Compile Include="Models\Resource.cs" />
     <Compile Include="Models\Topic.cs" />
     <Compile Include="Program.cs" />

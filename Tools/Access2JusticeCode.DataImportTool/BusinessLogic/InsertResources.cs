@@ -32,7 +32,7 @@ namespace Access2Justice.Tools.BusinessLogic
 
         #endregion Variables
 
-        public dynamic CreateJsonFromCSV()
+        public dynamic CreateJsonFromCSV(string filePath)
         {
             int recordNumber = 1;
             Resource resource = new Resource();
@@ -40,8 +40,6 @@ namespace Access2Justice.Tools.BusinessLogic
             List<dynamic> organizationsList = new List<dynamic>();
             List<dynamic> organizationReviewsList = new List<dynamic>();
             List<dynamic> Resources = new List<dynamic>();
-            string appSettings = ConfigurationManager.AppSettings.Get("Resources");
-            string filePath = Path.Combine(Environment.CurrentDirectory, appSettings);
             List<string> sheetNames = new List<string>() { "Brochures or Articles", "Videos", "Essential Readings", "Forms", "Organizations", "OrganizationReviews (Optional)" };
 
             try
