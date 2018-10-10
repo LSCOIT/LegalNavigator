@@ -4,7 +4,7 @@
 <div *ngIf="isLoggedIn" dropdown class="inline" id="signin-dropdown">
   <a dropdownToggle (click)="false">
     <img *ngIf="login?.image?.source" class="nav-icon" [src]="blobUrl + login?.image?.source" aria-hidden="true" />
-    {{userProfile}}
+    {{userProfileName}}
     <img class="dropdown-icon" src="/assets/images/small-icons/dropdown_arrow.svg" alt="signin dropdown icon" />
   </a>
   <ul (click)="onProfileOptionClick()" *dropdownMenu class="dropdown-menu">

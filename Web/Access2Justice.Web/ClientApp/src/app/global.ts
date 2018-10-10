@@ -14,20 +14,27 @@ export class Global {
   profileRouteUrl: string = "/profile";
   data: any;
   notifyStaticData: Subject<any> = new Subject<any>();
-
-  externalLogin() {
-    var form = document.createElement('form');
-    form.setAttribute('method', 'POST');
-    form.setAttribute('action', api.loginUrl);
-    document.body.appendChild(form);
-    form.submit();
-  }
+  userName: string;
+  userId: string;
+  sharedUserId: string;
+  sharedUserName: string;
+  isShared: boolean = false;
+  isLoggedIn: boolean = false;
+  topicsData: any;
+  organizationsData: any;
 
   constructor() { }
+
+  setProfileData(oId: string, name: string, eMail: string) {
+    this.userId = oId;
+    this.userName = name ? name : eMail;
+    this.isLoggedIn = true;
+  }
 
   getData() {
     return this.data;
   }
+
   setData(data: any) {
     this.data = data;
     this.notifyStaticData.next(this.data);

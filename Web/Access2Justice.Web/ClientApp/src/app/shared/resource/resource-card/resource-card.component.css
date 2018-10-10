@@ -1,3 +1,11 @@
+.media-left {
+  width: 50px;
+}
+
+.media-body {
+  padding: 0 20px;
+}
+
 .box-no-shadow {
   margin-bottom: 20px;
 }
@@ -67,10 +75,6 @@ h4 {
   padding-right: 10px;
 }
 
-#save-dropdown {
-  font-size: 13px;
-}
-
 .more-menu {
   width: 20px;
   cursor: pointer;
@@ -81,8 +85,8 @@ h4 {
   margin-bottom: 10px;
 }
 
-.org-content .media-left {
-  padding-right: 3px;
+.org-content img {
+  padding-right: 5px;
 }
 
 .external-link {
@@ -104,13 +108,13 @@ h4 {
   }
 
   .org-content .col-md-4:last-child {
-    padding-right: 20px;
+    padding-right: 0;
   }
 }
 
 @media only screen and (min-width : 992px) {
   .org-content .col-md-4 {
-    padding-right: 20px;
+    padding-right: 10px;
   }
 
   .org-phone-detail {

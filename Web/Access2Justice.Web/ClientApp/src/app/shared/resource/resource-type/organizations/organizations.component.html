@@ -7,104 +7,106 @@
     <app-user-action-sidebar [mobile]=true [id]="resource.id" [type]="resource.resourceType"></app-user-action-sidebar>
   </div>
 </div>
-<div class="col-md-8 col-sm-12">
-  <div class="expanded-image no-print">
-    <img *ngIf="currentImage else elseblock" [src]="currentImage" alt="Alternate Text" />
-    <ng-template #elseblock>
-      <img src="https://www.w3schools.com/howto/img_snow.jpg" (click)="changeModalImage($event)" alt="Alternate Text" />
-    </ng-template>
-    <div class="thumbnails">
-        <img src="https://www.w3schools.com/howto/img_snow.jpg" (click)="changeImage($event)" alt="Alternate Text" />
-        <img src="https://www.w3schools.com/howto/img_mountains.jpg" (click)="changeImage($event)" alt="Alternate Text" />
-        <img src="https://www.w3schools.com/howto/img_lights.jpg" (click)="changeImage($event)" alt="Alternate Text" />
-        <a (click)="openModal(template)">3 more photos</a>
-      <ng-template #template>
-        <div class="modal-header">
-          <h4 class="modal-title pull-left">Organization Name's photo gallery</h4>
-          <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="current-img">
-            <img *ngIf="currentModalImage else modalElseblock" [src]="currentModalImage" alt="Alternate Text" />
-            <ng-template #modalElseblock>
-              <img src="https://www.w3schools.com/howto/img_snow.jpg" (click)="changeModalImage($event)" alt="Alternate Text" />
-            </ng-template>
-          </div>
-          <div class="modal-thumbnails">
-            <img src="https://www.w3schools.com/howto/img_snow.jpg" (click)="changeModalImage($event)" alt="Alternate Text" />
-            <img src="https://www.w3schools.com/howto/img_mountains.jpg" (click)="changeModalImage($event)" alt="Alternate Text" />
-            <img src="https://www.w3schools.com/howto/img_lights.jpg" (click)="changeModalImage($event)" alt="Alternate Text" />
-          </div>
-        </div>
+<div class="row">
+  <div class="col-md-8 col-sm-12">
+    <div class="expanded-image no-print">
+      <img *ngIf="currentImage else elseblock" [src]="currentImage" alt="Alternate Text" />
+      <ng-template #elseblock>
+        <img src="https://www.w3schools.com/howto/img_snow.jpg" (click)="changeModalImage($event)" alt="Alternate Text" />
       </ng-template>
-    </div>
-  </div>
-  <div class="box-no-shadow">
-    <div class="resource-body">
-      <div>
-        {{resource.address}}
+      <div class="thumbnails">
+          <img src="https://www.w3schools.com/howto/img_snow.jpg" (click)="changeImage($event)" alt="Alternate Text" />
+          <img src="https://www.w3schools.com/howto/img_mountains.jpg" (click)="changeImage($event)" alt="Alternate Text" />
+          <img src="https://www.w3schools.com/howto/img_lights.jpg" (click)="changeImage($event)" alt="Alternate Text" />
+          <a (click)="openModal(template)">3 more photos</a>
+        <ng-template #template>
+          <div class="modal-header">
+            <h4 class="modal-title pull-left">Organization Name's photo gallery</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="current-img">
+              <img *ngIf="currentModalImage else modalElseblock" [src]="currentModalImage" alt="Alternate Text" />
+              <ng-template #modalElseblock>
+                <img src="https://www.w3schools.com/howto/img_snow.jpg" (click)="changeModalImage($event)" alt="Alternate Text" />
+              </ng-template>
+            </div>
+            <div class="modal-thumbnails">
+              <img src="https://www.w3schools.com/howto/img_snow.jpg" (click)="changeModalImage($event)" alt="Alternate Text" />
+              <img src="https://www.w3schools.com/howto/img_mountains.jpg" (click)="changeModalImage($event)" alt="Alternate Text" />
+              <img src="https://www.w3schools.com/howto/img_lights.jpg" (click)="changeModalImage($event)" alt="Alternate Text" />
+            </div>
+          </div>
+        </ng-template>
       </div>
-      <div>{{resource.telephone}}</div>
-      <div>{{resource.url}}</div>
+    </div>
+    <div class="box-no-shadow">
+      <div class="resource-body">
+        <div>
+          {{resource.address}}
+        </div>
+        <div>{{resource.telephone}}</div>
+        <div>{{resource.url}}</div>
+      </div>
+    </div>
+    <div class="box-no-shadow">
+      <div class="resource-body">
+        <h4>Overview</h4>
+        <p>{{resource.overview}}</p>
+        <p>
+          Please read our eligbility information before contacting.
+        </p>
+        <h5>Specialties</h5>
+        <ul>
+          <li>Lorem ipsum solor sit amet bibodem consecuter orem ipsum</li>
+          <li>Ipsum solor sit amet bibodem consecuter orem ipsum</li>
+          <li>Sapien elit in malesuada semper mi, id sollicitudin urna fermentum.</li>
+          <li>Consectetur adipiscing elit fusce vel.</li>
+          <li>Amet, consectetur adipiscing elit.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="box-no-shadow">
+      <div class="resource-body">
+        <h4>Eligibility Information</h4>
+        <p>{{resource.eligibilityInformation}}</p>
+        <h5>Qualifications</h5>
+        <ul>
+          <li>Lorem ipsum solor sit amet bibodem consecuter orem ipsum</li>
+          <li>Ipsum solor sit amet bibodem consecuter orem ipsum</li>
+          <li>Sapien elit in malesuada semper mi, id sollicitudin urna fermentum.</li>
+          <li>Consectetur adipiscing elit fusce vel.</li>
+          <li>Amet, consectetur adipiscing elit.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="box-no-shadow" *ngIf="resource?.reviewedByCommunityMember">
+      <div class="resource-body">
+        <h4>Reviewed by a member of your community</h4>
+        <p>"{{resource.reviewedByCommunityMember}}"</p>
+        <span>- {{resource.reviewerFullName}}</span><span>, {{resource.reviewerTitle}}</span>
+      </div>
     </div>
   </div>
-  <div class="box-no-shadow">
-    <div class="resource-body">
-      <h4>Overview</h4>
-      <p>{{resource.overview}}</p>
-      <p>
-        Please read our eligbility information before contacting.
-      </p>
-      <h5>Specialties</h5>
-      <ul>
-        <li>Lorem ipsum solor sit amet bibodem consecuter orem ipsum</li>
-        <li>Ipsum solor sit amet bibodem consecuter orem ipsum</li>
-        <li>Sapien elit in malesuada semper mi, id sollicitudin urna fermentum.</li>
-        <li>Consectetur adipiscing elit fusce vel.</li>
-        <li>Amet, consectetur adipiscing elit.</li>
-      </ul>
+  <div class="col-md-3 pull-right">
+    <div class="no-print">
+      <app-map-results [searchResource]="searchResource"></app-map-results>
     </div>
-  </div>
-  <div class="box-no-shadow">
-    <div class="resource-body">
-      <h4>Eligibility Information</h4>
-      <p>{{resource.eligibilityInformation}}</p>
-      <h5>Qualifications</h5>
-      <ul>
-        <li>Lorem ipsum solor sit amet bibodem consecuter orem ipsum</li>
-        <li>Ipsum solor sit amet bibodem consecuter orem ipsum</li>
-        <li>Sapien elit in malesuada semper mi, id sollicitudin urna fermentum.</li>
-        <li>Consectetur adipiscing elit fusce vel.</li>
-        <li>Amet, consectetur adipiscing elit.</li>
-      </ul>
-    </div>
-  </div>
-  <div class="box-no-shadow" *ngIf="resource?.reviewedByCommunityMember">
-    <div class="resource-body">
-      <h4>Reviewed by a member of your community</h4>
-      <p>"{{resource.reviewedByCommunityMember}}"</p>
-      <span>- {{resource.reviewerFullName}}</span><span>, {{resource.reviewerTitle}}</span>
-    </div>
-  </div>
-</div>
-<div class="col-md-3 pull-right">
-  <div class="no-print">
-    <app-map-results [searchResource]="searchResource"></app-map-results>
-  </div>
-  <div class="box-no-shadow">
-    <div class="resource-body">
-      <h5>Business Hours</h5>
-      <ul class="hours">
-        <li><span>Mon</span>8:00 AM - 5:00 PM</li>
-        <li><span>Tues</span>8:00 AM - 5:00 PM</li>
-        <li><span>Wed</span>8:00 AM - 5:00 PM</li>
-        <li><span>Thurs</span>8:00 AM - 5:00 PM</li>
-        <li><span>Fri</span>8:00 AM - 5:00 PM</li>
-        <li><span>Sat</span>8:00 AM - 5:00 PM</li>
-        <li><span>Sun</span>8:00 AM - 5:00 PM</li>
-      </ul>
+    <div class="box-no-shadow">
+      <div class="resource-body">
+        <h5>Business Hours</h5>
+        <ul class="hours">
+          <li><span>Mon</span>8:00 AM - 5:00 PM</li>
+          <li><span>Tues</span>8:00 AM - 5:00 PM</li>
+          <li><span>Wed</span>8:00 AM - 5:00 PM</li>
+          <li><span>Thurs</span>8:00 AM - 5:00 PM</li>
+          <li><span>Fri</span>8:00 AM - 5:00 PM</li>
+          <li><span>Sat</span>8:00 AM - 5:00 PM</li>
+          <li><span>Sun</span>8:00 AM - 5:00 PM</li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>

@@ -60,12 +60,18 @@ h1, h2, h3, h4, h5 {
 /* Buttons */
 button, .btn {
   border: none;
+  cursor: pointer;
+}
+
+button:focus {
+  outline: transparent;
 }
 
 .btn {
   border-radius: 24px;
   padding: 10px 40px;
   font-weight: 600;
+  margin: 20px auto;
 }
 
 .btn-sm {
@@ -93,6 +99,8 @@ button, .btn {
 
 .btn-secondary:hover {
   color: #0B2B78;
+  background-color: #FFF;
+  border-color: #0B2B78;
 }
 
 .btn-inactive {
@@ -107,6 +115,10 @@ button, .btn {
   background-color:  #fff;
   border-radius: 5px;
   padding: 10px 40px;
+}
+
+.btn-selected label {
+  font-weight: 600;
 }
 
 /*Button Selected Effect*/
@@ -199,8 +211,8 @@ input[type=checkbox] ~ .check::before {
   position: absolute;
   content: '';
   border-radius: 4px;
-  height: 18px;
-  width: 18px;
+  height: 20px;
+  width: 20px;
   top: 0;
   left: 0;
   margin: auto;
@@ -339,5 +351,9 @@ input[type=checkbox]:checked ~ .check::before {
   .pxs {
     font-size: 12px;
     line-height: 20px;
+  }
+
+  .btn {
+    margin: 40px auto;
   }
 }

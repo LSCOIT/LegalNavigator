@@ -12,6 +12,7 @@ import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 import { BreadcrumbService } from '../shared/breadcrumb.service';
 import { MapService } from '../../shared/map/map.service';
 import { of } from 'rxjs/observable/of';
+import { Global } from '../../global';
 
 describe('TopicsComponent', () => {
   let component: TopicsComponent;
@@ -19,32 +20,35 @@ describe('TopicsComponent', () => {
   let api: TopicService;
   let router: RouterModule;
   let mockTopicService;
+  let mockGlobal;
   let mockTopics = [
     {
-       "id":"e3bdf5d8-8755-46d9-b13b-e28546fcd27e",
-       "name":"Abuse & Harassment",
-       "parentTopicId":[
- 
-       ],
-       "resourceType":"Topics",
-       "keywords":null,
-       "location":[
-          {
-             "state":"Hawaii",
-             "city":"Kalawao",
-             "zipCode":"96761"
-          }
-       ],
-       "icon":"www.test.com/static-resource/assets/images/categories/abuse.svg",
+      "id": "e3bdf5d8-8755-46d9-b13b-e28546fcd27e",
+      "name": "Abuse & Harassment",
+      "parentTopicId": [
+      ],
+      "resourceType": "Topics",
+      "keywords": null,
+      "location": [
+        {
+          "state": "Hawaii",
+          "city": "Kalawao",
+          "zipCode": "96761"
+        }
+      ],
+      "icon": "www.test.com/static-resource/assets/images/categories/abuse.svg",
     }
- ]
+  ];
   const mockRouter = {
     navigate: () => { }
   };
 
   beforeEach(async(() => {
+
     mockTopicService = jasmine.createSpyObj(['getTopics']);
     mockTopicService.getTopics.and.returnValue(of(mockTopics));
+    mockGlobal = { };
+
     TestBed.configureTestingModule({
       declarations: [
         TopicsComponent,
@@ -64,25 +68,30 @@ describe('TopicsComponent', () => {
         { provide: TopicService, useValue: mockTopicService },
         { provide: RouterModule, useValue: mockRouter },
         BreadcrumbService,
-        MapService
+        MapService,
+        { provide: Global, useValue: mockGlobal }
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TopicsComponent);
     component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
-  // it('makes a call to getTopics Oninit', () => {
-  //   spyOn(component, 'getTopics');
-  //   component.ngOnInit();
-  //   expect(component.getTopics).toHaveBeenCalled();
-  // });
+  it('should create the app', async(() => {
+    expect(component).toBeTruthy();
+  }));
 
-  // it('should set topic variable to the response from topic service', () => {
-  //   component.getTopics();
-  //   expect(component.topics).toEqual(mockTopics);
-  // })
+  it('should define the app', async(() => {
+    expect(component).toBeDefined();
+  }));
+
+  //it('makes a call to getTopics Oninit', async() => {
+  //  spyOn(component, 'getTopics');
+  //  component.ngOnInit();
+  //  expect(component.getTopics).toHaveBeenCalled();
+  //});
 });

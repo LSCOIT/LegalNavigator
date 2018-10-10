@@ -23,6 +23,9 @@ namespace Access2Justice.Api.ViewModels
 
     public class ShareProfileResponse
     {
+        [JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
         [JsonProperty(PropertyName = "firstName")]
         public string FistName { get; set; }
 

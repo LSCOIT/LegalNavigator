@@ -16,12 +16,14 @@ import { ShareService } from '../../user-action/share-button/share.service';
 import { ActivatedRoute } from '@angular/router';
 import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
 import { ToastrService } from 'ngx-toastr';
+import { MsalService } from '@azure/msal-angular';
 
 describe('OrganizationsComponent', () => {
   let component: OrganizationsComponent;
   let fixture: ComponentFixture<OrganizationsComponent>;
   let mockBsModalService;
   let mockMapResultsService;
+  let msalService;
   let mockResource = {
     resources: [
       {
@@ -49,6 +51,7 @@ describe('OrganizationsComponent', () => {
     ]
   };
   let mockToastr;
+  msalService = jasmine.createSpyObj(['getUser']);
   beforeEach(async(() => {
     mockBsModalService = jasmine.createSpyObj(['show']);
     mockMapResultsService = jasmine.createSpyObj(['getMap']);
@@ -78,7 +81,8 @@ describe('OrganizationsComponent', () => {
           useValue: { snapshot: { params: { 'id': '123' } } }
         },
         PersonalizedPlanService,
-        { provide: ToastrService, useValue: mockToastr }
+        { provide: ToastrService, useValue: mockToastr },
+        { provide: MsalService, useValue: msalService },
       ]
     })
       .compileComponents();
