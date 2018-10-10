@@ -142,5 +142,16 @@ namespace Access2Justice.Api.Tests.TestData
                         JArray.Parse(@"[]"), false };
         }
 
+        public static IEnumerable<object[]> ValidateOrganizationalUnitData()
+        {
+            yield return new object[] {
+                "Alaska",
+                new UserProfile {
+                    Id = Guid.Parse("e3583076-bed6-497b-847e-c732adf56925").ToString(),
+                    OId ="userOId",
+                    RoleInformationId = new List<Guid>{new Guid("4bf9df8f-dfee-4b08-be4d-35cc053fa298"),
+                                                       new Guid("b4f63784-fe99-4774-ad28-ce7911986bea")} },
+                 true, true};
+        }
     }
 }

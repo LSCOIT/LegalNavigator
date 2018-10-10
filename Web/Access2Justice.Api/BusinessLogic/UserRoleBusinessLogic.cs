@@ -1,9 +1,11 @@
-﻿using Access2Justice.Api.Authorization;
+﻿using Access2Justice.Api.Authentication;
+using Access2Justice.Api.Authorization;
 using Access2Justice.Api.Interfaces;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Access2Justice.Shared.Utilities;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,15 +19,17 @@ namespace Access2Justice.Api.BusinessLogic
         private readonly ICosmosDbSettings dbSettings;
         private readonly IUserProfileBusinessLogic dbUserProfile;
         private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly AzureAdOptions azureOptions;
 
         public UserRoleBusinessLogic(IDynamicQueries dynamicQueries, ICosmosDbSettings cosmosDbSettings,
             IUserProfileBusinessLogic userProfileBusinessLogic,
-            IHttpContextAccessor httpContextAccessor)
+            IHttpContextAccessor httpContextAccessor, IOptions<AzureAdOptions> azureOptions)
         {
             dbClient = dynamicQueries;
             dbSettings = cosmosDbSettings;
             dbUserProfile = userProfileBusinessLogic;
             this.httpContextAccessor = httpContextAccessor;
+            this.azureOptions = azureOptions.Value;
         }
 
         public async Task<List<string>> GetPermissionDataAsync(string oId)
@@ -44,14 +48,9 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<bool> ValidateOrganizationalUnit(string ou)
         {
-            string oId = string.Empty;
-            if (httpContextAccessor.HttpContext.User.Claims.FirstOrDefault() != null)
-            {
-                oId = httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
-            }
+            string oId = await GetOId();
             if (string.IsNullOrEmpty(ou) || string.IsNullOrEmpty(oId))
                 return false;
-            oId = EncryptionUtilities.GenerateSHA512String(oId);
             UserProfile userProfile = await dbUserProfile.GetUserProfileDataAsync(oId);
             if (userProfile?.RoleInformationId.Count() > 0)
             {
@@ -59,6 +58,17 @@ namespace Access2Justice.Api.BusinessLogic
                 return await ValidateOUForRole(roleIdsList, ou);
             }
             return false;
+        }
+
+        public async Task<string> GetOId()
+        {
+            string oId = string.Empty;
+            if (httpContextAccessor.HttpContext.User.Claims.FirstOrDefault() != null)
+            {
+                oId = httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == azureOptions.UserClaimsUrl).Value;
+                oId = EncryptionUtilities.GenerateSHA512String(oId);
+            }
+            return oId;
         }
 
         public async Task<bool> ValidateOUForRole(List<string> roleInformationId, string ou)

@@ -1,13 +1,16 @@
-﻿using Access2Justice.Api.BusinessLogic;
+﻿using Access2Justice.Api.Authentication;
+using Access2Justice.Api.BusinessLogic;
 using Access2Justice.Api.Tests.TestData;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NSubstitute;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using Xunit;
@@ -21,13 +24,15 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly IUserProfileBusinessLogic dbUserProfile;
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly UserRoleBusinessLogic userRoleBusinessLogic;
+        private readonly IOptions<AzureAdOptions> azureOptions;
         public UserRoleBusinessLogicTests()
         {
             dbClient = Substitute.For<IDynamicQueries>();
             dbSettings = Substitute.For<ICosmosDbSettings>();
             dbUserProfile = Substitute.For<IUserProfileBusinessLogic>();
             httpContextAccessor = Substitute.For<IHttpContextAccessor>();
-            userRoleBusinessLogic = new UserRoleBusinessLogic(dbClient, dbSettings, dbUserProfile, httpContextAccessor);
+            azureOptions = Substitute.For<IOptions<AzureAdOptions>>();
+            userRoleBusinessLogic = new UserRoleBusinessLogic(dbClient, dbSettings, dbUserProfile, httpContextAccessor, azureOptions);
 
             dbSettings.UserRoleCollectionId.Returns("UserRole");
 
