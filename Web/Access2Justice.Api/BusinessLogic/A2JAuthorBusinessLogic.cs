@@ -135,33 +135,33 @@ namespace Access2Justice.Api.BusinessLogic
             switch (a2jAuthorFieldtype.ToUpperInvariant())
             {
                 case "TEXT":
-                    return CuratedExperienceQuestionType.Text;
+                    return CuratedExperienceQuestionType.text;
                 case "TEXTLONG":
-                    return CuratedExperienceQuestionType.RichText;
+                    return CuratedExperienceQuestionType.richText;
                 case "TEXTPICK":
-                    return CuratedExperienceQuestionType.List;
+                    return CuratedExperienceQuestionType.list;
                 case "NUMBER":
-                    return CuratedExperienceQuestionType.Number;
+                    return CuratedExperienceQuestionType.number;
                 case "NUMBERDOLLAR":
-                    return CuratedExperienceQuestionType.Currency;
+                    return CuratedExperienceQuestionType.currency;
                 case "NUMBERSSN":
-                    return CuratedExperienceQuestionType.Ssn;
+                    return CuratedExperienceQuestionType.ssn;
                 case "NUMBERPHONE":
-                    return CuratedExperienceQuestionType.Phone;
+                    return CuratedExperienceQuestionType.phone;
                 case "NUMBERZIP":
-                    return CuratedExperienceQuestionType.ZipCode;
+                    return CuratedExperienceQuestionType.zipCode;
                 case "NUMBERPICK":
-                    return CuratedExperienceQuestionType.List;
+                    return CuratedExperienceQuestionType.list;
                 case "GENDER":
-                    return CuratedExperienceQuestionType.RadioButton;
+                    return CuratedExperienceQuestionType.radioButton;
                 case "RADIOBUTTON":
-                    return CuratedExperienceQuestionType.RadioButton;
+                    return CuratedExperienceQuestionType.radioButton;
                 case "CHECKBOX":
-                    return CuratedExperienceQuestionType.CheckBox;
+                    return CuratedExperienceQuestionType.checkBox;
                 case "CHECKBOXNOTA":
-                    return CuratedExperienceQuestionType.CheckBox;
+                    return CuratedExperienceQuestionType.checkBox;
                 default:
-                    return CuratedExperienceQuestionType.Text;
+                    return CuratedExperienceQuestionType.text;
             }
         }
 

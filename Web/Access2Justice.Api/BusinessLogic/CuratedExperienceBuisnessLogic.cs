@@ -1,7 +1,9 @@
 ﻿using Access2Justice.Api.Interfaces;
 using Access2Justice.Api.ViewModels;
+using Access2Justice.Shared.A2JAuthor;
 using Access2Justice.Shared.Extensions;
 using Access2Justice.Shared.Interfaces;
+using Access2Justice.Shared.Interfaces.A2JAuthor;
 using Access2Justice.Shared.Models;
 using Microsoft.Azure.Documents;
 using System;
@@ -16,11 +18,14 @@ namespace Access2Justice.Api.BusinessLogic
     {
         private readonly ICosmosDbSettings dbSettings;
         private readonly IBackendDatabaseService dbService;
+        private readonly IPersonalizedPlanParse parser;
 
-        public CuratedExperienceBuisnessLogic(ICosmosDbSettings cosmosDbSettings, IBackendDatabaseService backendDatabaseService)
+        public CuratedExperienceBuisnessLogic(ICosmosDbSettings cosmosDbSettings, IBackendDatabaseService backendDatabaseService,
+            IPersonalizedPlanParse parser)
         {
             dbSettings = cosmosDbSettings;
             dbService = backendDatabaseService;
+            this.parser = parser;
         }
 
         public async Task<CuratedExperience> GetCuratedExperience(Guid id)
@@ -96,12 +101,30 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 if (button.Where(x => x.Id == buttonId).Any())
                 {
+                    //currentComponent = button.Where(x => x.Id == buttonId)
                     currentButton = button.Where(x => x.Id == buttonId).First();
                 }
             }
 
             var destinationComponent = new CuratedExperienceComponent();
-            if (!string.IsNullOrWhiteSpace(currentButton.Destination))
+            var currentComponent = curatedExperience.Components.Where(x => x.Buttons.Contains(currentButton)).FirstOrDefault();
+            if ((!string.IsNullOrWhiteSpace(currentComponent.Code.CodeBefore) && currentComponent.Code.CodeBefore.Contains(Tokens.GOTO)) ||
+                (!string.IsNullOrWhiteSpace(currentComponent.Code.CodeAfter) && currentComponent.Code.CodeAfter.Contains(Tokens.GOTO)))
+            {
+                var answers = new CuratedExperienceAnswers();
+                answers.ButtonComponents.Add(new ButtonComponent
+                {
+                    CodeBefore = currentComponent.Code.CodeBefore,
+                    CodeAfter = currentComponent.Code.CodeAfter,
+                    Name = string.Empty,
+                    Value = string.Empty
+                });
+
+                var parsedCode = parser.Parse(answers);
+
+                var breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
+            }
+            else if (!string.IsNullOrWhiteSpace(currentButton.Destination))
             {
                 if (curatedExperience.Components.Where(x => x.Name == currentButton.Destination).Any())
                 {

@@ -12,7 +12,7 @@ namespace Access2Justice.Api.BusinessLogic
         {
             var actionPlan = new PersonalizedPlanViewModel();
 
-            // Todo:@Alaa these 2 properties must come from the curated experience and from the profile respectively:
+            
             actionPlan.PersonalizedPlanId = Guid.NewGuid();
             actionPlan.IsShared = false;
 

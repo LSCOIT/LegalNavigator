@@ -6,6 +6,12 @@ namespace Access2Justice.Shared.Models
 {
     public class CuratedExperienceAnswers
     {
+        public CuratedExperienceAnswers()
+        {
+            ButtonComponents = new List<ButtonComponent>();
+            FieldComponents = new List<FieldComponent>();
+        }
+
         [JsonProperty(PropertyName = "id")]
         public Guid AnswersDocId { get; set; }
 
