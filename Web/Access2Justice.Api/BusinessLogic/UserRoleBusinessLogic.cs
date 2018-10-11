@@ -48,7 +48,7 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<bool> ValidateOrganizationalUnit(string ou)
         {
-            string oId = await GetOId();
+            string oId = GetOId();
             if (string.IsNullOrEmpty(ou) || string.IsNullOrEmpty(oId))
                 return false;
             UserProfile userProfile = await dbUserProfile.GetUserProfileDataAsync(oId);
@@ -60,7 +60,7 @@ namespace Access2Justice.Api.BusinessLogic
             return false;
         }
 
-        public async Task<string> GetOId()
+        private string GetOId()
         {
             string oId = string.Empty;
             if (httpContextAccessor.HttpContext.User.Claims.FirstOrDefault() != null)
