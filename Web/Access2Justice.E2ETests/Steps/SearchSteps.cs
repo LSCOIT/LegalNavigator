@@ -8,18 +8,18 @@ namespace Access2Justice.E2ETests.Steps
     [Binding]
     public class SearchSteps
     {
-        HomePage HomePage = new HomePage();
+        NavigationBar NavigationBar = new NavigationBar();
 
         [When(@"I type (.*) into the search input field and click search button")]
         public void WhenITypeAPhraseIntoTheSearchInputFieldAndClickSearchButton(string phrase)
         {
-            HomePage.SearchByPhrase(phrase);
+            NavigationBar.SearchByPhrase(phrase);
         }
         
         [Then(@"I can see search results")]
         public void ThenICanSeeSearchResults()
         {
-            HomePage.ConfirmResults();
+            NavigationBar.ConfirmSearchResults();
         }
     }
 }

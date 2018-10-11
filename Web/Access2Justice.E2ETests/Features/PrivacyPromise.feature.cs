@@ -18,14 +18,14 @@ namespace Access2Justice.E2ETests.Features
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.4.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
-    public partial class HelpAndFAQsFeature
+    public partial class PrivacyPromiseFeature
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private Microsoft.VisualStudio.TestTools.UnitTesting.TestContext _testContext;
         
-#line 1 "HelpAndFAQs.feature"
+#line 1 "PrivacyPromise.feature"
 #line hidden
         
         public virtual Microsoft.VisualStudio.TestTools.UnitTesting.TestContext TestContext
@@ -44,8 +44,8 @@ namespace Access2Justice.E2ETests.Features
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "HelpAndFAQs", "\tAs a user\r\n\tI need to view answers to frequently asked questions\r\n\tSo I know how" +
-                    " to better navigate the site and use the tools", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "PrivacyPromise", "\tAs a user\r\n\tI need to read the privacy promise\r\n\tSo I can know how a2j handles m" +
+                    "y data", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -60,9 +60,9 @@ namespace Access2Justice.E2ETests.Features
         public virtual void TestInitialize()
         {
             if (((testRunner.FeatureContext != null) 
-                        && (testRunner.FeatureContext.FeatureInfo.Title != "HelpAndFAQs")))
+                        && (testRunner.FeatureContext.FeatureInfo.Title != "PrivacyPromise")))
             {
-                global::Access2Justice.E2ETests.Features.HelpAndFAQsFeature.FeatureSetup(null);
+                global::Access2Justice.E2ETests.Features.PrivacyPromiseFeature.FeatureSetup(null);
             }
         }
         
@@ -89,11 +89,11 @@ namespace Access2Justice.E2ETests.Features
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Navigate to Help & FAQs page from home page")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "HelpAndFAQs")]
-        public virtual void NavigateToHelpFAQsPageFromHomePage()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Navigate to Privacy Promise page from home page")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PrivacyPromise")]
+        public virtual void NavigateToPrivacyPromisePageFromHomePage()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Navigate to Help & FAQs page from home page", null, ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Navigate to Privacy Promise page from home page", null, ((string[])(null)));
 #line 6
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -105,9 +105,9 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
  testRunner.Given("I am on the Access2Justice website with state set", ((string)(null)), table1, "Given ");
 #line 10
- testRunner.When("I click on the Help & FAQs link on the upper navigation bar", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I click on the Privacy Promise link on the upper navigation bar", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 11
- testRunner.Then("I should be directed to the Help & FAQs page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I should be directed to the Privacy Promise page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

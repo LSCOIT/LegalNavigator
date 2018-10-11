@@ -14,26 +14,14 @@ using SeleniumExtras.PageObjects;
 
 namespace Access2Justice.E2ETests.PageObjects
 {
-    class SharedObjects
+    class HelpAndFAQs
     {
         private IWebDriver driver => ScenarioContext.Current.Get<IWebDriver>("driver");
         private DefaultWait<IWebDriver> fluentWait => ScenarioContext.Current.Get<DefaultWait<IWebDriver>>("fluentWait");
 
-        public void ClickButton(string buttonId)
+        public void ConfirmOnFAQPage()
         {
-            IWebElement buttonToClick = driver.FindElement(By.Id(buttonId));
-
-            fluentWait.Until(d =>
-            {
-                List<IWebElement> overlay = d.FindElements(By.ClassName("labelCanvasId")).ToList();
-                if (buttonToClick != null && buttonToClick.Displayed && buttonToClick.Enabled && overlay.Count == 0)
-                {
-                    buttonToClick.Click();
-                    return true;
-                }
-
-                return false;
-            });
+            StringAssert.Contains(driver.Url, "help");
         }
     }
 }

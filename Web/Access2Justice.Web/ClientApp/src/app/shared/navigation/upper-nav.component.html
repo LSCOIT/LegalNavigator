@@ -11,13 +11,13 @@
     <div class="navbar-right">
       <ul class="nav navbar-nav mobile-hidden pxs">
         <li *ngIf="privacyPromise">
-          <a [routerLink]="['/' + privacyPromise?.button?.buttonLink]">
+          <a id="privacy-promise-navigation-link" [routerLink]="['/' + privacyPromise?.button?.buttonLink]">
             <img *ngIf="privacyPromise.image.source" class="nav-icon" [src]="blobUrl + privacyPromise?.image?.source" aria-hidden="true" />
             {{privacyPromise?.button?.buttonText}}
           </a>          
         </li>
         <li *ngIf="helpAndFAQ">
-          <a [routerLink]="['/' + helpAndFAQ?.button?.buttonLink]">
+          <a id="faq-navigation-link" [routerLink]="['/' + helpAndFAQ?.button?.buttonLink]">
             <img *ngIf="helpAndFAQ.image.source" class="nav-icon" [src]="blobUrl + helpAndFAQ?.image?.source" aria-hidden="true" />
             {{helpAndFAQ?.button?.buttonText}}
           </a>

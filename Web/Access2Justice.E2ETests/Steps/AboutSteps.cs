@@ -13,7 +13,7 @@ namespace Access2Justice.E2ETests.Steps
     [Binding]
     public class AboutSteps
     {
-        SharedObjects SharedObjects = new SharedObjects();
+        NavigationBar SharedObjects = new NavigationBar();
         About AboutPage = new About();
 
         [When(@"I click on the About link on the lower navigation bar")]

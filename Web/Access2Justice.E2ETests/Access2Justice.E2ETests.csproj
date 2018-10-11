@@ -85,6 +85,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>About.feature</DependentUpon>
     </Compile>
+    <Compile Include="Features\HelpAndFAQs.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HelpAndFAQs.feature</DependentUpon>
+    </Compile>
     <Compile Include="Features\Location.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -94,6 +99,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Language.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Features\PrivacyPromise.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PrivacyPromise.feature</DependentUpon>
     </Compile>
     <Compile Include="Features\Search.feature.cs">
       <AutoGen>True</AutoGen>
@@ -111,13 +121,17 @@
     <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
     <Compile Include="PageObjects\About.cs" />
     <Compile Include="PageObjects\GuidedAssistant.cs" />
+    <Compile Include="PageObjects\HelpAndFAQs.cs" />
     <Compile Include="PageObjects\HomePage.cs" />
-    <Compile Include="PageObjects\SharedObjects.cs" />
+    <Compile Include="PageObjects\PrivacyPromise.cs" />
+    <Compile Include="PageObjects\NavigationBar.cs" />
     <Compile Include="PageObjects\TopicsAndResources.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Steps\AboutSteps.cs" />
+    <Compile Include="Steps\HelpAndFAQsSteps.cs" />
     <Compile Include="Steps\LanguageSteps.cs" />
     <Compile Include="Steps\LocationSteps.cs" />
+    <Compile Include="Steps\PrivacyPromiseSteps.cs" />
     <Compile Include="Steps\SearchSteps.cs" />
     <Compile Include="Steps\TopicsAndResourcesSteps.cs" />
   </ItemGroup>
@@ -129,6 +143,10 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>About.feature.cs</LastGenOutput>
     </None>
+    <None Include="Features\HelpAndFAQs.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>HelpAndFAQs.feature.cs</LastGenOutput>
+    </None>
     <None Include="Features\Location.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Location.feature.cs</LastGenOutput>
@@ -136,6 +154,10 @@
     <None Include="Features\Language.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Language.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\PrivacyPromise.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>PrivacyPromise.feature.cs</LastGenOutput>
     </None>
     <None Include="Features\Search.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

@@ -25,6 +25,7 @@ namespace Access2Justice.E2ETests.Steps
     public class LocationSteps : TechTalk.SpecFlow.Steps
     {
         HomePage HomePage = new HomePage();
+        NavigationBar NavigationBar = new NavigationBar();
 
         [Given(@"I am on the Access2Justice website with location detection blocked")]
         public void GivenIAmOnTheAccessJusticeWebsiteWithLocationDetectionBlocked()
@@ -44,26 +45,25 @@ namespace Access2Justice.E2ETests.Steps
         [Given(@"I am prompted to set my location")]
         public void GivenIAmPromptedToSetMyLocation()
         {
-            HomePage.ConfirmModalPresent();
+            NavigationBar.ConfirmModalPresent();
         }
 
         [When(@"I click on the Change button")]
         public void WhenIClickOnTheChangeButton()
         {
-            HomePage.ClickChangeLocationButton();
+            NavigationBar.ClickChangeLocationButton();
         }
-
 
         [When(@"I enter my state name")]
         public void WhenIEnterMyStateName(dynamic instance)
         {
-            HomePage.EnterStateName(instance.State);
+            NavigationBar.EnterStateName(instance.State);
         }
 
         [Then(@"I can see my state name on the upper navigation bar")]
         public void ThenICanSeeMyStateNameOnTheUpperNavigationBar(dynamic instance)
         {
-            HomePage.ConfirmStateNameHasBeenSet(instance.State);
+            NavigationBar.ConfirmStateNameHasBeenSet(instance.State);
         }
     }
 }

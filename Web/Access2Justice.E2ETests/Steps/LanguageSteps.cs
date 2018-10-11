@@ -14,17 +14,18 @@ namespace Access2Justice.E2ETests
     public class SetLanguageSteps : TechTalk.SpecFlow.Steps
     {
         HomePage HomePage = new HomePage();
+        NavigationBar NavigationBar = new NavigationBar();
 
         [When(@"I select a language from the navigation bar")]
         public void WhenISelectALanguageFromTheNavigationBar(dynamic instance)
         {
-            HomePage.PickLanguage(instance.Language);        
+            NavigationBar.PickLanguage(instance.Language);        
         }
         
         [Then(@"I should see my page translated")]
         public void ThenIShouldSeeMyPageTranslated()
         {
-            HomePage.ConfirmPageTranslated();
+            NavigationBar.ConfirmPageTranslated();
         }
     }
 }
