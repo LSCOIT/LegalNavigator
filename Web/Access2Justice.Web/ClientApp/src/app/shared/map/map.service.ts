@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { MapLocation } from './map';
+import { MapLocation, LocationDetails } from './map';
 import { Subject } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
 import { api } from '../../../api/api';
@@ -13,9 +13,11 @@ export class MapService {
   locAddress: any;
   location: any;
   pin: any;
-  mapLocation: MapLocation;
+  mapLocation: MapLocation = { state: '', city: '', county: '', zipCode: '', locality: '', address:'' };
   notifyLocalLocation: Subject<MapLocation> = new Subject<MapLocation>();
   notifyLocation: Subject<MapLocation> = new Subject<MapLocation>();
+  state: string;
+  locationDetails: LocationDetails = { location: this.mapLocation, country: '', formattedAddress:'' }
   constructor() { }
 
   getMap(mapType) {
@@ -33,7 +35,7 @@ export class MapService {
     manager.attachAutosuggest('#search-box', '#searchbox-container', suggestionSelected);
     searchManager = new Microsoft.Maps.Search.SearchManager(map);
   }
-
+  
   identifyLocation(searchLocation) {
     let searchRequest = {
       where: searchLocation,
@@ -56,7 +58,7 @@ export class MapService {
           //Determine a bounding box to best view the results.
           let bounds = this.location.bestView;
           this.map.setView({ bounds: bounds, padding: 30 });
-        }
+         }
       },
       errorCallback: function (e) {
         console.log(e);
@@ -71,18 +73,20 @@ export class MapService {
     this.searchManager.geocode(searchRequest);
   }
 
-  updateLocation(): MapLocation {
+  updateLocation(): LocationDetails {
     if (environment.map_type) {
-      this.mapLocation = JSON.parse(sessionStorage.getItem("globalSearchMapLocation"));
-      sessionStorage.setItem("globalMapLocation", JSON.stringify(this.mapLocation));
+      this.locationDetails = JSON.parse(sessionStorage.getItem("globalSearchMapLocation"));
+      sessionStorage.setItem("globalMapLocation", JSON.stringify(this.locationDetails));
       sessionStorage.removeItem('globalSearchMapLocation');
+      this.mapLocation = this.locationDetails.location;
       this.notifyLocation.next(this.mapLocation);
     }
     else {
-      this.mapLocation = JSON.parse(sessionStorage.getItem("localSearchMapLocation"));
+      this.locationDetails = JSON.parse(sessionStorage.getItem("localSearchMapLocation"));
+      this.mapLocation = this.locationDetails.location;
       this.notifyLocalLocation.next(this.mapLocation);
     }
-    return this.mapLocation;
+    return this.locationDetails;
   }
 
   mapLocationDetails(location) {
@@ -93,6 +97,13 @@ export class MapService {
     this.mapLocation.county = this.location.address.district;
     this.mapLocation.city = this.location.address.locality;
     this.mapLocation.zipCode = this.location.address.postalCode;
+    let country: string;
+    let fullStateName = this.location.address.formattedAddress;
+    if (fullStateName.indexOf(',')) {
+      country= this.location.address.countryRegion;
+      this.state = fullStateName.slice(fullStateName.indexOf(',') + 2, fullStateName.length);
+      this.locationDetails = { country: country, formattedAddress: this.state };
+    }
 
     if (this.location.address.postalCode === undefined) {
       if (this.location.address.locality === undefined) {
@@ -112,8 +123,9 @@ export class MapService {
     }
     this.mapLocation.locality = this.locAddress;
     this.mapLocation.address = this.location.address.adminDistrict;
+    this.locationDetails = { location: this.mapLocation, country: country, formattedAddress: this.state }
     if (environment.map_type) {
-      sessionStorage.setItem("globalSearchMapLocation", JSON.stringify(this.mapLocation));
+      sessionStorage.setItem("globalSearchMapLocation", JSON.stringify(this.locationDetails));
     }
     else {
       //Zipcode
@@ -146,7 +158,8 @@ export class MapService {
         this.mapLocation.county = "";
         this.mapLocation.zipCode = "";
       }
-      sessionStorage.setItem("localSearchMapLocation", JSON.stringify(this.mapLocation));
+      this.locationDetails.location = this.mapLocation;
+      sessionStorage.setItem("localSearchMapLocation", JSON.stringify(this.locationDetails));
     }
   }
 

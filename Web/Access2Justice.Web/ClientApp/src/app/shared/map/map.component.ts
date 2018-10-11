@@ -2,7 +2,7 @@ import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core'
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { MapService } from './map.service';
-import { MapLocation } from './map';
+import { MapLocation, LocationDetails } from './map';
 import { environment } from '../../../environments/environment';
 import { MapResultsService } from '../../shared/sidebars/map-results/map-results.service';
 import { Navigation, Location, LocationNavContent } from '../navigation/navigation';
@@ -23,6 +23,7 @@ export class MapComponent implements OnInit {
   query: any;
   searchLocation: string;
   mapLocation: MapLocation;
+  locationDetails: LocationDetails;
   geolocationPosition: any;
   selectedAddress: any;
   @ViewChild('template') public templateref: TemplateRef<any>;
@@ -71,7 +72,15 @@ export class MapComponent implements OnInit {
 
   updateLocation() {
     this.isError = false;
-    this.mapLocation = this.mapService.updateLocation();
+    this.locationDetails = JSON.parse(sessionStorage.getItem("globalSearchMapLocation"));
+    if (this.locationDetails.formattedAddress.length < 3) {
+      this.mapResultsService.getStateFullName(this.locationDetails.country, this.locationDetails.formattedAddress, environment.bingmap_key)
+        .subscribe((location) => {
+          console.log(location);
+        });
+    }
+    this.locationDetails = this.mapService.updateLocation();
+    this.mapLocation = this.locationDetails.location;
     this.displayLocationDetails(this.mapLocation);
     if ((this.modalRef && this.mapLocation) || !this.mapType) {
       this.modalRef.hide();
