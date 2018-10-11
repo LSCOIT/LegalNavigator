@@ -8,6 +8,8 @@ import { SearchService } from '../../shared/search/search.service';
 import { PaginationService } from "../../shared/pagination/pagination.service";
 import { ShowMoreService } from "../../shared/sidebars/show-more/show-more.service";
 import { ISubtopicGuidedInput } from "../shared/topic";
+import { MapService } from "../../shared/map/map.service";
+import { Global } from "../../global";
 
 @Component({
   selector: 'app-subtopic-detail',
@@ -34,12 +36,15 @@ export class SubtopicDetailComponent implements OnInit {
   guidedSutopicDetailsInput: ISubtopicGuidedInput = { activeId: '', name: '' };
   luisInput: ILuisInput = { Sentence: '', Location: '', TranslateFrom: '', TranslateTo: '', LuisTopScoringIntent: '' };
   resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: { "state": "", "county": "", "city": "", "zipCode": "" }, IsResourceCountRequired: true };
-
+  subscription: any;
   constructor(
     private topicService: TopicService,
     private activeRoute: ActivatedRoute,
     private navigateDataService: NavigateDataService,
-    private showMoreService: ShowMoreService
+    private showMoreService: ShowMoreService,
+    private mapService: MapService,
+    private global: Global,
+    private router: Router
   ) { }
 
   filterSubtopicDetail(): void {
@@ -55,7 +60,7 @@ export class SubtopicDetailComponent implements OnInit {
       this.formData = this.subtopicDetails
         .filter((resource) => resource.resourceType === 'Forms');
       this.relatedLinksData = this.subtopicDetails
-        .filter((resource) => resource.resourceType === 'Related Links');
+        .filter((resource) => resource.resourceType === 'Essential Readings');
     }
   }
 
@@ -95,5 +100,16 @@ export class SubtopicDetailComponent implements OnInit {
         }
       });
     this.showRemoveOption = false;
+    this.subscription = this.mapService.notifyLocation
+      .subscribe((value) => {
+        this.topicService.getTopics().subscribe(response => {
+        if (response != undefined) {
+        this.global.topicsData = response;
+        if (this.router.url.startsWith('/topics') || this.router.url.startsWith('/subtopics')) {
+          this.router.navigateByUrl('/topics');
+        }
+        }
+        });
+      });
   }
 }

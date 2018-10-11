@@ -13,12 +13,13 @@ import { TopicsResourcesComponent } from './topics-resources.component';
 import { PaginationService } from '../shared/pagination/pagination.service';
 import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { of } from 'rxjs/observable/of';
+import { Global } from '../global';
 
 describe('TopicsResourcesComponent', () => {
   let component: TopicsResourcesComponent;
   let fixture: ComponentFixture<TopicsResourcesComponent>;
   let mockTopicService;
-  let mockShowMoreService;
+  let mockShowMoreService: ShowMoreService;
   let mockTopics = [
     {
        "id":"e3bdf5d8-8755-46d9-b13b-e28546fcd27e",
@@ -41,6 +42,7 @@ describe('TopicsResourcesComponent', () => {
   beforeEach(async(() => {
     mockTopicService = jasmine.createSpyObj(['getTopics']);
     mockTopicService.getTopics.and.returnValue(of(mockTopics));
+    mockShowMoreService = jasmine.createSpyObj(['clickSeeMoreOrganizations']);
     TestBed.configureTestingModule({
       declarations: [
         TopicsResourcesComponent,
@@ -58,6 +60,7 @@ describe('TopicsResourcesComponent', () => {
         { provide: APP_BASE_HREF, useValue: '/' },
         { provide: TopicService, useValue: mockTopicService},
         { provide: ShowMoreService, useValue: mockShowMoreService },
+        Global,
         MapService,
         NavigateDataService,
         PaginationService
@@ -75,5 +78,12 @@ describe('TopicsResourcesComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should call clickSeeMoreOrganizationsFromTopic', () => {    
+    let resourceType = 'test';
+    spyOn(component, 'clickSeeMoreOrganizationsFromTopic');
+    component.clickSeeMoreOrganizationsFromTopic(resourceType);
+    expect(component.clickSeeMoreOrganizationsFromTopic).toHaveBeenCalled();
   });
 });

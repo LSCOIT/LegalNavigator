@@ -61,7 +61,7 @@
           <img class="media-object" src="/assets/images/icons/organizations.svg" aria-hidden="true">
         </div>
         <div class="media-body">
-          <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}, {{resource.type}}</h4></a>
+          <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}, {{resource?.resourceCategory}}</h4></a>
           <div class="print-only">{{applicationUrl+'/resource'+'/'+resource.id}}</div>
           <app-read-more [text]="resource.description" [maxLength]="240"></app-read-more>
           <div class="org-content span-text">
@@ -92,7 +92,7 @@
           </div>
         </div>
       </div>
-      <div *ngIf="resource.resourceType === 'Videos'" class="row">
+      <div *ngIf="resource.resourceType === 'Videos'">
         <div class="media-left no-print">
           <img class="media-object" src="/assets/images/icons/videos.svg" alt="Video">
         </div>
@@ -102,7 +102,7 @@
           <app-read-more [text]="resource.description" [maxLength]="240"></app-read-more>
         </div>
       </div>
-      <div *ngIf="resource.resourceType === 'Forms' || resource.resourceType === 'Related Links'" class="media">
+      <div *ngIf="resource.resourceType === 'Forms' || resource.resourceType === 'Essential Readings'" class="media">
         <div class="media-left no-print">
           <img class="media-object" src="/assets/images/icons/forms.svg" alt="Form">
         </div>

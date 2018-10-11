@@ -23,6 +23,8 @@ import { PersonalizedPlanService } from '../../../guided-assistant/personalized-
 import { ArrayUtilityService } from '../../array-utility.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Global } from '../../../global';
+import { MsalService } from '@azure/msal-angular';
 
 describe('SearchResultsComponent', () => {
   let component: SearchResultsComponent;
@@ -51,6 +53,7 @@ describe('SearchResultsComponent', () => {
     }
   ];
   let mockToastr;
+  let msalService;
 
   beforeEach(async(() => {
     mockToastr = jasmine.createSpyObj(['success']);
@@ -83,7 +86,10 @@ describe('SearchResultsComponent', () => {
         ArrayUtilityService,
         NgxSpinnerService,
         { provide: APP_BASE_HREF, useValue: '/' },
-        { provide: ToastrService, useValue: mockToastr }
+        { provide: ToastrService, useValue: mockToastr },
+        SearchResultsComponent,
+        Global,
+        { provide: MsalService, useValue: msalService },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
     })

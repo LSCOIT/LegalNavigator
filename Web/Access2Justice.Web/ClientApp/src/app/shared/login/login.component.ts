@@ -3,7 +3,10 @@ import { api } from '../../../api/api';
 import { environment } from '../../../environments/environment';
 import { Login } from '../navigation/navigation';
 import { Router } from '@angular/router';
+import { Subscription } from "rxjs/Subscription";
 import { Global, UserStatus } from '../../global';
+import { MsalService } from '@azure/msal-angular';
+import { IUserProfile } from './user-profile.model';
 
 @Component({
   selector: 'app-login',
@@ -12,13 +15,18 @@ import { Global, UserStatus } from '../../global';
 })
 export class LoginComponent implements OnInit {
   @Input() login: Login;
-  userProfile: string;
+  userProfileName: string ;
   isLoggedIn: boolean = false;
   blobUrl: any = environment.blobUrl;
   @ViewChild('dropdownMenu') dropdown: ElementRef;
-  @Output() sendProfileOptionClickEvent = new EventEmitter<string>();
+  @Output() sendProfileOptionClickEvent = new EventEmitter<string>();  
+  private subscription: Subscription;
+  userProfile: any;
+  isProfileSaved: boolean = false;
 
-  constructor(private router: Router, private global:Global) { }
+  constructor(private router: Router,
+              private global: Global,
+              private msalService: MsalService) { }
 
   onProfileOptionClick() {
     this.sendProfileOptionClickEvent.emit();
@@ -40,29 +48,18 @@ export class LoginComponent implements OnInit {
   }
 
   externalLogin() {
-    var form = document.createElement('form');
-    form.setAttribute('method', 'POST');
-    form.setAttribute('action', api.loginUrl);
-    document.body.appendChild(form);
-    form.submit();
+    this.msalService.loginRedirect(environment.consentScopes);
   }
 
   logout() {
-    sessionStorage.removeItem("profileData");
-    let form = document.createElement('form');
-    form.setAttribute('method', 'POST');
-    form.setAttribute('action', api.logoutUrl);
-    document.body.appendChild(form);
-    form.submit();
+    this.msalService.logout();
   }
 
   ngOnInit() {
-    let profileData = sessionStorage.getItem("profileData");
-    if (profileData != undefined) {
-      profileData = JSON.parse(profileData);
+    this.userProfile = this.msalService.getUser();
+    if (this.userProfile) {
       this.isLoggedIn = true;
-      this.userProfile = profileData["UserName"];
+      this.userProfileName = this.userProfile.idToken['name'] ? this.userProfile.idToken['name'] : this.userProfile.idToken['preferred_username'];
     }
   }
-
 }

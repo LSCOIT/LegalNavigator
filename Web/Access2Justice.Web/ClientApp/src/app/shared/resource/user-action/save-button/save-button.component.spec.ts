@@ -10,6 +10,7 @@ import { PersonalizedPlanService } from '../../../../guided-assistant/personaliz
 import { ProfileComponent } from '../../../../profile/profile.component';
 import { SaveButtonComponent } from './save-button.component';
 import { ToastrService } from 'ngx-toastr';
+import { MsalService } from '@azure/msal-angular';
 
 describe('SaveButtonComponent', () => {
   let component: SaveButtonComponent;
@@ -17,24 +18,27 @@ describe('SaveButtonComponent', () => {
   let mockToastr;
   let mockGlobal;
   let mockRouter;
-
+  let msalService = jasmine.createSpyObj(['getUser']);
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
       declarations: [SaveButtonComponent],
       providers: [
-        PersonalizedPlanService, 
-        ArrayUtilityService, 
-        ProfileComponent, 
-        EventUtilityService, 
-        PersonalizedPlanComponent, 
+        PersonalizedPlanService,
+        ArrayUtilityService,
+        ProfileComponent,
+        EventUtilityService,
+        PersonalizedPlanComponent,
         BsModalService,
         { provide: ToastrService, useValue: mockToastr },
         { provide: Global, useValue: mockGlobal },
-        { provide: ActivatedRoute,
-          useValue: {snapshot: {params: {'id': '123'}}}
+        {
+          provide: ActivatedRoute,
+          useValue: { snapshot: { params: { 'id': '123' } } }
         },
-        { provide: Router, useValue: mockRouter }]
+        { provide: Router, useValue: mockRouter },
+        { provide: MsalService, useValue: msalService },
+      ]
     })
       .compileComponents();
   }));

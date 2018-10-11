@@ -189,7 +189,7 @@ namespace Access2Justice.CosmosDb
         {
             EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
             
-            var query = $"SELECT c.firstName, c.lastName, c.oId, f.url FROM c JOIN f in c.{arrayName} WHERE CONTAINS(f.{propertyName}, '{value}') AND f.{dateProperty} > '{DateTime.UtcNow.ToString("o",CultureInfo.InvariantCulture)}'";
+            var query = $"SELECT c.name, c.firstName, c.lastName, c.oId, f.url FROM c JOIN f in c.{arrayName} WHERE CONTAINS(f.{propertyName}, '{value}') AND f.{dateProperty} > '{DateTime.UtcNow.ToString("o",CultureInfo.InvariantCulture)}'";
             return await backendDatabaseService.QueryItemsAsync(collectionId, query);
         }
 

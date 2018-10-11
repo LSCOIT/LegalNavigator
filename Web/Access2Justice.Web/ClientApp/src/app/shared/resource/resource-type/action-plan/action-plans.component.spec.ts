@@ -10,6 +10,7 @@ import { ToastrService, ToastrModule, ToastPackage } from 'ngx-toastr';
 import { Global } from '../../../../global';
 import { Observable } from 'rxjs/Observable';
 import { BsModalService } from 'ngx-bootstrap/modal';
+import { MsalService } from '@azure/msal-angular';
 
 describe('ActionPlansComponent', () => {
   let component: ActionPlansComponent;
@@ -23,6 +24,7 @@ describe('ActionPlansComponent', () => {
   let mockTopicId = "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef";
   let mockStepId = "f05ace00-c1cc-4618-a224-56aa4677d2aa";
   let mockPlanId = "3bd5b8cb-69f3-42fc-a74c-a9fa1c94f805";
+  let msalService
   let mockItems = {
     "topicId": "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef",
     "steps": [
@@ -743,7 +745,8 @@ describe('ActionPlansComponent', () => {
         BsModalService,
         ArrayUtilityService,
         ToastrService,
-        Global]
+        Global,
+        { provide: MsalService, useValue: msalService },]
     })
       .compileComponents();
   }));
@@ -755,6 +758,7 @@ describe('ActionPlansComponent', () => {
     modalService = TestBed.get(BsModalService);
     sharedService = TestBed.get(ArrayUtilityService);
     toastrService = TestBed.get(ToastrService);
+    msalService = TestBed.get(MsalService);
   });
 
   it('should create', () => {

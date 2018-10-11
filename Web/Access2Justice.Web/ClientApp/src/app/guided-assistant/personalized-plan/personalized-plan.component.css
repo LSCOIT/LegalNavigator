@@ -5,6 +5,7 @@
 
 .upper-action {
   float: right;
+  margin-bottom: -30px;
 }
 
 .row-half-spacing {
@@ -23,6 +24,7 @@
 
 .filter-plan button {
   float: left;
+  font-weight: 600;
 }
 
 .filter-plan span {
@@ -36,10 +38,15 @@
 
 .web-hidden .btn-selected {
   padding: 10px 34px;
+  margin: 0;
 }
 
 .selected-item{
   background-color:#ddd;
+}
+
+.highlighted {
+  background-color: #D9F2F8;
 }
 
 @media only screen and (min-width : 768px) {

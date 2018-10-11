@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 namespace Access2Justice.Tools.BusinessLogic
 {
@@ -11,7 +12,7 @@ namespace Access2Justice.Tools.BusinessLogic
     {
         static HttpClient clientHttp = new HttpClient();
                 
-        public async static void GetTopics()
+        public async static Task GetTopics()
         {
             clientHttp.BaseAddress = new Uri("http://localhost:4200/");
             clientHttp.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -62,7 +63,7 @@ namespace Access2Justice.Tools.BusinessLogic
 
                     var serializedTopics = JsonConvert.SerializeObject(topicsList);
                     var result = JsonConvert.DeserializeObject(serializedTopics);
-                    var response = await clientHttp.PostAsJsonAsync("api/upserttopicdocument", result).ConfigureAwait(false);
+                    var response = await clientHttp.PostAsJsonAsync("api/upsert-topic-document", result).ConfigureAwait(false);
                     var json = response.Content.ReadAsStringAsync().Result;
                     var documentsCreated = JsonConvert.DeserializeObject(json);
                     response.EnsureSuccessStatusCode();

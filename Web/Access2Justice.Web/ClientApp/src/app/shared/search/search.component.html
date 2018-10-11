@@ -1,5 +1,5 @@
-<form #searchForm="ngForm" (ngSubmit)="onSubmit(searchForm)" class="navbar-form navbar-right" aria-label="search box">
-  <div class="form-group">
+<form #searchForm="ngForm" (ngSubmit)="onSubmit(searchForm)" aria-label="search box">
+  <div>
     <input type="text" name="inputText" aria-label="search text box" value="text" id="search" autocomplete="off" [(ngModel)]="inputText" />
     <button id="search-phrase-button" type="submit" aria-label="search button">
       <img class="search-icon" src="/assets/images/small-icons/search.svg" aria-hidden="true" />

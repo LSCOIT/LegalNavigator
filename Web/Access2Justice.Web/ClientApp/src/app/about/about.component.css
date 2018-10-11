@@ -32,11 +32,6 @@ p + .btn-sm {
   padding: 10px;
 }
 
-.btn-primary {
-  margin-top: 15px;
-  margin-bottom: 15px;
-}
-
 @media only screen and (min-width : 992px) {
   .row {
     margin: 40px auto;

@@ -11,6 +11,7 @@ import { Share } from './share.model';
 import { expand } from 'rxjs/operators';
 import { TemplateRef } from '@angular/core';
 import { empty } from 'rxjs/observable/empty';
+import { MsalService } from '@azure/msal-angular';
 
 
 describe('ShareButtonComponent', () => {
@@ -50,7 +51,7 @@ describe('ShareButtonComponent', () => {
   let mockResourceTopics = "/topics/6d7dd07a-c454-4b67-b2d8-ed844dadabd9";
   let mockGuidedAssistance = "/guidedassistant/6d7dd07a-c454-4b67-b2d8-ed844dadabd9";
   const mockResponse = Observable.of(mockPermaLink);
-
+  let msalService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
@@ -63,7 +64,8 @@ describe('ShareButtonComponent', () => {
         PositioningService,
         ArrayUtilityService,
         ShareService,
-        Global
+        Global,
+        { provide: MsalService, useValue: msalService },
       ]
     })
       .compileComponents();

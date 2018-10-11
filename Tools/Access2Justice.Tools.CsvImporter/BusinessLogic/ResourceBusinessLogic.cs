@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace Access2Justice.Tools.BusinessLogic
 {
@@ -12,7 +12,7 @@ namespace Access2Justice.Tools.BusinessLogic
     {
         static HttpClient clientHttp = new HttpClient();
 
-        public async static void GetResources()
+        public async static Task GetResources()
         {
             clientHttp.BaseAddress = new Uri("http://localhost:4200/");
             clientHttp.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -43,7 +43,7 @@ namespace Access2Justice.Tools.BusinessLogic
                             {
                                 string name = resourceList.topicTags[iterator].id;
                                 string state = resourceList.location[0].state;
-                                var topicTag = await clientHttp.GetAsync("api/topics/getalltopics").ConfigureAwait(false);
+                                var topicTag = await clientHttp.GetAsync("api/topics/get-all-topics").ConfigureAwait(false);
                                 var topicResult = topicTag.Content.ReadAsStringAsync().Result;
                                 dynamic topicTagResult = JsonConvert.DeserializeObject(topicResult);
                                 if (topicTagResult.Count > 0)
@@ -97,7 +97,7 @@ namespace Access2Justice.Tools.BusinessLogic
 
                     var serializedResources = JsonConvert.SerializeObject(resourcesList);
                     var result = JsonConvert.DeserializeObject(serializedResources);
-                    var response = await clientHttp.PostAsJsonAsync("api/upsertresourcedocument", result).ConfigureAwait(false);
+                    var response = await clientHttp.PostAsJsonAsync("api/upsert-resource-document", result).ConfigureAwait(false);
                     var json = response.Content.ReadAsStringAsync().Result;
                     var documentsCreated = JsonConvert.DeserializeObject(json);
                     response.EnsureSuccessStatusCode();

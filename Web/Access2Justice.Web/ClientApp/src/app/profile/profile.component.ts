@@ -1,20 +1,23 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PersonalizedPlanService } from '../guided-assistant/personalized-plan/personalized-plan.service';
 import { PersonalizedPlanTopic } from '../guided-assistant/personalized-plan/personalized-plan';
 import { IResourceFilter } from '../shared/search/search-results/search-results.model';
 import { EventUtilityService } from '../shared/event-utility.service';
 import { HttpParams } from '@angular/common/http';
 import { Global } from '../global';
+import { MsalService } from '@azure/msal-angular';
+import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent implements OnInit, OnDestroy {
-    
+export class ProfileComponent implements OnInit {    
+  
   topics: string;
   planDetails: any = [];
   resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: [], PageNumber: 0, Location: '', ResourceIds: [], IsResourceCountRequired: false };
@@ -31,28 +34,32 @@ export class ProfileComponent implements OnInit, OnDestroy {
   resourceIds: string[] = [];
   webResources: any[] = [];
   showRemove: boolean;
-  profileData: any;
 
   constructor(
     private personalizedPlanService: PersonalizedPlanService,
     private eventUtilityService: EventUtilityService,
     private global: Global,
     private spinner: NgxSpinnerService,
-    private router: Router
-  ) {
+    private router: Router,
+    private msalService: MsalService,
+    private route: ActivatedRoute) {
+    if (this.msalService.getUser()) {
+      this.route.data.map(data => data.cres)
+        .subscribe(response => {
+          if (response) {
+            this.userId = response.oId;            
+            this.global.setProfileData(response.oId, response.name, response.eMail);
+            this.getPersonalizedPlan();
+            this.showRemove = true;
+          }
+        });
+    }
 
     eventUtilityService.resourceUpdated$.subscribe(response => {
       if (response) {
         this.getpersonalizedResources();
       }
     });
-
-    this.profileData = sessionStorage.getItem("profileData");
-    if (this.profileData != undefined) {
-      this.profileData = JSON.parse(this.profileData);
-      this.userId = this.profileData["UserId"];
-      this.userName = this.profileData["UserName"];
-    }
   }
 
   getTopics(): void {
@@ -154,17 +161,17 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    if (this.profileData == undefined) {
-      this.global.externalLogin();
+    if (!this.msalService.getUser() && !this.global.isShared) {      
+      this.msalService.loginRedirect(environment.consentScopes);
     }
-
-    this.getPersonalizedPlan();
-    this.showRemove = true;
+    if (this.global.isLoggedIn && !this.global.isShared) {
+      this.userId = this.global.userId;
+      this.userName = this.global.userName;
+    }
+    else if (this.global.isShared) {
+      this.userId = this.global.sharedUserId;
+      this.userName = this.global.sharedUserName;
+    }
   }
 
-  ngOnDestroy(): void {
-    if (this.profileData["IsShared"]) {
-      sessionStorage.removeItem("profileData");
-    }
-  }
 }

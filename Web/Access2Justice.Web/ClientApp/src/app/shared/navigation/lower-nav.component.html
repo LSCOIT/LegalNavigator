@@ -1,30 +1,34 @@
 <div [className]="my_Class"></div>
-<div *ngIf="search" class="navbar navbar-default lower-nav no-print">
+<div *ngIf="search" class="lower-nav no-print">
   <div class="container">
-    <div class="pull-right">
-      <span class="search-form" (click)="toggleSearch()" *ngIf="!showSearch">
-        <img *ngIf="search.image.source" class="search-icon" [src]="blobUrl + search?.image?.source" aria-hidden="true" />
-        <span id="search-phrase-tab" class="inline search-text">{{search?.button?.buttonText}}</span>
-      </span>
-      <span class="web-hidden pull-right" id="nav-bar-toggle" (click)="openNav()">&#9776;</span>
+    <div id="logo">
     </div>
-    <div class="navbar-header">
-      <a [routerLink]="['/'+ logo?.link]">
-        <h3 class="inline logo" id="first-logo">{{logo?.firstLogo}}</h3>
-        <h3 class="inline logo">{{logo?.secondLogo}}</h3>
-      </a>
-    </div>
-    <div class="navbar-left">
-      <ul class="nav navbar-nav mobile-hidden">
+    <div class="left-menu">
+      <ul class="mobile-hidden">
         <li><a [routerLink]="['/' + home?.button?.buttonLink]" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">{{home?.button?.buttonText}}</a></li>
         <li><a [routerLink]="['/' + guidedAssistant?.button?.buttonLink]" routerLinkActive="active">{{guidedAssistant?.button?.buttonText}}</a></li>
         <li><a id="topics-and-resources-navigation-link" [routerLink]="['/' + topicAndResources?.button?.buttonLink]" routerLinkActive="active">{{topicAndResources?.button?.buttonText}}</a></li>
         <li><a [routerLink]="['/' + about?.button?.buttonLink]" routerLinkActive="active">{{about?.button?.buttonText}}</a></li>
       </ul>
     </div>
+    <div class="right-menu">
+      <span class="search-form" (click)="toggleSearch()" *ngIf="!showSearch">
+        <img *ngIf="search.image.source" class="search-icon" [src]="blobUrl + search?.image?.source" aria-hidden="true" />
+        <span class="inline search-text">{{search?.button?.buttonText}}</span>
+      </span>
+      <div id="mobile-menu">
+        <img src="./assets/images/small-icons/menu_bars.svg" class="web-hidden" id="nav-bar-toggle" *ngIf="showMenu" (click)="openNav()">
+        <span *ngIf="showMenu">Menu</span>
+        <img *ngIf="!showMenu" src="./assets/images/small-icons/close.svg" class="nav-icon" id="search-close" (click)="toggleSearch()">
+      </div>
+    </div>
     <app-search *ngIf="showSearch"></app-search>
     <div #sidenav id="sidenav">
-      <a class="closebtn" (click)="closeNav()">&times;</a>
+      <span class="search-form" id="nav-search" (click)="toggleSearch(); closeNav()" *ngIf="!showSearch">
+        <img *ngIf="search.image.source" class="search-icon" [src]="blobUrl + search?.image?.source" aria-hidden="true" />
+        <span id="search-phrase-tab" class="inline search-text">{{search?.button?.buttonText}}</span>
+      </span>
+      <img class="nav-icon closebtn" src="./assets/images/small-icons/close.svg" (click)="closeNav()">
       <ul class="sidenav-menu" (click)="closeNav()">
         <li id="home-nav"><a [routerLink]="['/' + home?.button?.buttonLink]">{{home?.button?.buttonText}}</a></li>
         <li class="vertical-line"></li>
@@ -38,13 +42,13 @@
         <ul>
           <li *ngIf="privacyPromise" (click)="closeNav()">
             <a [routerLink]="['/' + privacyPromise?.button?.buttonLink]">
-              <img *ngIf="privacyPromise.image.source" class="nav-icon" [src]="blobUrl + privacyPromise?.image?.source" aria-hidden="true" />
+              <img *ngIf="privacyPromise.image.source" class="nav-icon" [src]="blobUrl + privacyPromise?.image?.source" aria-hidden="true"/>
               {{privacyPromise?.button?.buttonText}}
             </a>
           </li>
           <li *ngIf="helpAndFAQ" (click)="closeNav()">
             <a [routerLink]="['/'+ helpAndFAQ?.button?.buttonLink]">
-              <img *ngIf="helpAndFAQ.image.source" class="nav-icon" [src]="blobUrl + helpAndFAQ?.image?.source" aria-hidden="true" />
+              <img *ngIf="helpAndFAQ.image.source" class="nav-icon" [src]="blobUrl + helpAndFAQ?.image?.source" aria-hidden="true"/>
               {{helpAndFAQ?.button?.buttonText}}
             </a>
           </li>
