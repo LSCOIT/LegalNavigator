@@ -13,7 +13,7 @@ namespace Access2Justice.Shared.Models
         phone,
         zipCode,
         date,
-        radioButton,
+        radio,
         checkBox
     }
 }

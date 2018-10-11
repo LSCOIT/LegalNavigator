@@ -3,11 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Access2Justice.Shared.Extensions
 {
     public static class A2JParserExtensions
     {
+        private static object text;
+
         public static List<string> IFstatements(this string logic)
         {
             return logic.SplitAndReturnFullSentencesOn(Tokens.ENDIF);
@@ -16,7 +19,7 @@ namespace Access2Justice.Shared.Extensions
         public static Dictionary<string, string> SETvars(this string logic)
         {
             var rightOf = logic.GetStringBetween(Tokens.SET, Tokens.ENDIF);
-            return rightOf.SetValueTOVar();
+            return rightOf.SetValue();
         }
 
         public static OrderedDictionary ANDvars(this string logic)
@@ -86,14 +89,17 @@ namespace Access2Justice.Shared.Extensions
                     {
                         varsValues.Add(varialbe.GetStringBetween(Tokens.VarNameLeftSign, Tokens.VarNameRightSign), Tokens.FalseTokens.LogicalFalse);
                     }
-                    // other 'else if' could be added here if we are dealing with more than true/false values
+                    else
+                    {
+                        // <BR/><BR/><BR/>IF [Final decision issue MC]= "Want to change something"<BR/>
+                    }
                 }
             }
 
             return varsValues;
         }
 
-        public static Dictionary<string, string> SetValueTOVar(this string inputText)
+        public static Dictionary<string, string> SetValue(this string inputText)
         {
             var varsValues = new Dictionary<string, string>();
             if (inputText.Contains(Tokens.TO))
@@ -116,7 +122,10 @@ namespace Access2Justice.Shared.Extensions
             }
             else
             {
-                //  "7-Want to change something"<BR/>END IF 
+                // todo: take this an extra step - double check the var you extracted matches some curated experience step name.
+                var matchedString = Regex.Matches(inputText, "\"([^\"]*)\"").FirstOrDefault().Value;
+                varsValues.Add(Tokens.NextStep + "-" + Guid.NewGuid(), matchedString.Replace("\"", "").
+                    Replace(Tokens.VarNameLeftSign, "").Replace(Tokens.VarNameRightSign, ""));
             }
 
             return varsValues;

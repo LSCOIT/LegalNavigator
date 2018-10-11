@@ -45,9 +45,9 @@ namespace Access2Justice.Api.BusinessLogic
                 {
                     ComponentId = Guid.NewGuid(),
                     Name = pageProperties.GetValue("name"),
-                    Help = pageProperties.GetValue("help"),
-                    Learn = pageProperties.GetValue("learn"),
-                    Text = text,
+                    Help = CleanHtmlTags(pageProperties.GetValue("help")),
+                    Learn = CleanHtmlTags(pageProperties.GetValue("learn")),
+                    Text = CleanHtmlTags(pageProperties.GetValue("text")),
                     Fields = componentFields,
                     Buttons = componentButtons,
                     Code = componentCodes
@@ -63,8 +63,33 @@ namespace Access2Justice.Api.BusinessLogic
 
         private string CleanHtmlTags(string htmlText)
         {
+            if(string.IsNullOrWhiteSpace(htmlText))
+            {
+                return string.Empty;
+            }
             // Remove HTML tags from the curated experience questions #568
-            return htmlText;
+            char[] array = new char[htmlText.Length];
+            int arrayIndex = 0;
+            bool isHtmlTag = false;
+            for (int index = 0; index < htmlText.Length; index++)
+            {
+                char let = htmlText[index];
+                if (let == '<')
+                {
+                    isHtmlTag = true; continue;
+                }
+                if (let == '>')
+                {
+                    isHtmlTag = false;
+                    continue;
+                }
+                if (!isHtmlTag)
+                {
+                    array[arrayIndex] = let;
+                    arrayIndex++;
+                }
+            }
+            return new string(array, 0, arrayIndex);
         }
 
         private Resource MapResourceProperties(IEnumerable<JProperty> a2jProperties, Guid curatedExperienceId)
@@ -94,7 +119,7 @@ namespace Access2Justice.Api.BusinessLogic
                 {
                     Id = Guid.NewGuid(),
                     Type = type.ToString(),
-                    Label = field.GetValue("label"),
+                    Label = CleanHtmlTags(field.GetValue("label")),
                     Name = field.GetValue("name"),
                     Value = field.GetValue("value"),
                     IsRequired = bool.Parse(field.GetValue("required")),
@@ -118,7 +143,7 @@ namespace Access2Justice.Api.BusinessLogic
                 componentButtons.Add(new Button
                 {
                     Id = Guid.NewGuid(),
-                    Label = button.GetValue("label"),
+                    Label = CleanHtmlTags(button.GetValue("label")),
                     Destination = button.GetValue("next"),
                     Name = button.GetValue("name"),
                     Value = button.GetValue("value")
@@ -160,9 +185,10 @@ namespace Access2Justice.Api.BusinessLogic
                 case "NUMBERPICK":
                     return CuratedExperienceQuestionType.list;
                 case "GENDER":
-                    return CuratedExperienceQuestionType.radioButton;
+                    return CuratedExperienceQuestionType.radio;
+                case "RADIO":
                 case "RADIOBUTTON":
-                    return CuratedExperienceQuestionType.radioButton;
+                    return CuratedExperienceQuestionType.radio;
                 case "CHECKBOX":
                     return CuratedExperienceQuestionType.checkBox;
                 case "CHECKBOXNOTA":

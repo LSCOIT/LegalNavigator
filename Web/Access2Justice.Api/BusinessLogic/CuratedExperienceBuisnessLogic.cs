@@ -108,27 +108,30 @@ namespace Access2Justice.Api.BusinessLogic
 
             var destinationComponent = new CuratedExperienceComponent();
             var currentComponent = curatedExperience.Components.Where(x => x.Buttons.Contains(currentButton)).FirstOrDefault();
-            if ((!string.IsNullOrWhiteSpace(currentComponent.Code.CodeBefore) && currentComponent.Code.CodeBefore.Contains(Tokens.GOTO)) ||
-                (!string.IsNullOrWhiteSpace(currentComponent.Code.CodeAfter) && currentComponent.Code.CodeAfter.Contains(Tokens.GOTO)))
-            {
-                var answers = new CuratedExperienceAnswers();
-                answers.ButtonComponents.Add(new ButtonComponent
-                {
-                    CodeBefore = currentComponent.Code.CodeBefore,
-                    CodeAfter = currentComponent.Code.CodeAfter,
-                    Name = string.Empty,
-                    Value = string.Empty
-                });
+            //if ((!string.IsNullOrWhiteSpace(currentComponent.Code.CodeBefore) && currentComponent.Code.CodeBefore.Contains(Tokens.GOTO)) ||
+            //    (!string.IsNullOrWhiteSpace(currentComponent.Code.CodeAfter) && currentComponent.Code.CodeAfter.Contains(Tokens.GOTO)))
+            //{
+            //    var answers = new CuratedExperienceAnswers();
+            //    answers.ButtonComponents.Add(new ButtonComponent
+            //    {
+            //        CodeBefore = currentComponent.Code.CodeBefore,
+            //        CodeAfter = currentComponent.Code.CodeAfter,
+            //        Name = string.Empty,
+            //        Value = string.Empty
+            //    });
 
-                var parsedCode = parser.Parse(answers, Tokens.ParserConfig.GoToQuestions);
+            //    var parsedCode = parser.Parse(answers, Tokens.ParserConfig.GoToQuestions);
+            //    var temp = parsedCode.Values.LastOrDefault();
+            //    destinationComponent = curatedExperience.Components.Where(x => x.Name.Contains(parsedCode.Values.LastOrDefault())).FirstOrDefault();
 
-                var breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
-            }
-            else if (!string.IsNullOrWhiteSpace(currentButton.Destination))
+            //    var breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
+            //}
+            //else 
+            if (!string.IsNullOrWhiteSpace(currentButton.Destination))
             {
                 if (curatedExperience.Components.Where(x => x.Name == currentButton.Destination).Any())
                 {
-                    destinationComponent = curatedExperience.Components.Where(x => x.Name == currentButton.Destination).First();
+                    destinationComponent = curatedExperience.Components.Where(x => x.Name == currentButton.Destination).FirstOrDefault();
                 }
             }
 

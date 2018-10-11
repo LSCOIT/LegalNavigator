@@ -13,6 +13,7 @@
         public const string VarNameLeftSign = "[";
         public const string VarNameRightSign = "]";
         public const string MacroSign = "%%";
+        public const string NextStep = "NEXTSTEP";
 
         public class TrueTokens
         {

@@ -40,18 +40,18 @@ namespace Access2Justice.Shared.A2JAuthor
                     var ANDvars = leftLogic.GetVariablesWithValues(Tokens.AND);
                     if (evaluator.Evaluate(userAnswersKeyValuePairs, ANDvars, (x, y) => x && y))
                     {                     
-                        evaluatedAnswers.AddRange(rightLogic.SetValueTOVar());
+                        evaluatedAnswers.AddRange(rightLogic.SetValue());
                     }
 
                     var ORvars = leftLogic.GetVariablesWithValues(Tokens.OR);
                     if(evaluator.Evaluate(userAnswersKeyValuePairs, ORvars, (x, y) => x || y))
                     {
-                        evaluatedAnswers.AddRange(rightLogic.SetValueTOVar());
+                        evaluatedAnswers.AddRange(rightLogic.SetValue());
                     }
 
                     if(ANDvars.Count == 0 && ORvars.Count == 0)
                     {
-                        evaluatedAnswers.AddRange(rightLogic.SetValueTOVar());
+                        evaluatedAnswers.AddRange(rightLogic.SetValue());
                     }
                 }
             }
