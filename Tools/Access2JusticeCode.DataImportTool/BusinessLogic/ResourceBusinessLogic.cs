@@ -1,10 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿using Access2JusticeCode.DataImportTool.Helper;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Access2Justice.Tools.BusinessLogic
 {
@@ -12,29 +15,32 @@ namespace Access2Justice.Tools.BusinessLogic
     {
         static HttpClient clientHttp = new HttpClient();
 
-        public async static Task GetResources()
+        public async static Task GetResources(string accessToken,string filePath)
         {
             clientHttp.BaseAddress = new Uri("http://localhost:4200/");
             clientHttp.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            clientHttp.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(accessToken);
             try
             {
                 InsertResources obj = new InsertResources();
                 List<dynamic> resourcesList = new List<dynamic>();
-                var resources = obj.CreateJsonFromCSV();
+                var resources = obj.CreateJsonFromCSV(filePath);
                 if (resources == null || resources.Count == 0)
                 {
-                    throw new Exception("Please check Error log file to correct errors");
+                    MessageBox.Show("Please check Error log file to correct errors");
                 }
-
                 else
                 {
                     foreach (var resourceList in resources)
-                    {                        
+                    {
                         var serializedResult = JsonConvert.SerializeObject(resourceList);
                         JObject jsonResult = (JObject)JsonConvert.DeserializeObject(serializedResult);
                         resourcesList.Add(jsonResult);
                     }
 
+                    var topicTag = await clientHttp.GetAsync("api/topics/get-all-topics").ConfigureAwait(false);
+                    var topicResult = topicTag.Content.ReadAsStringAsync().Result;
+                    dynamic topicTagResult = JsonConvert.DeserializeObject(topicResult);
                     foreach (var resourceList in resourcesList)
                     {
                         if (resourceList.topicTags != null)
@@ -43,12 +49,9 @@ namespace Access2Justice.Tools.BusinessLogic
                             {
                                 string name = resourceList.topicTags[iterator].id;
                                 string state = resourceList.location[0].state;
-                                var topicTag = await clientHttp.GetAsync("api/topics/get-all-topics").ConfigureAwait(false);
-                                var topicResult = topicTag.Content.ReadAsStringAsync().Result;
-                                dynamic topicTagResult = JsonConvert.DeserializeObject(topicResult);
                                 if (topicTagResult.Count > 0)
                                 {
-                                    foreach(var topic in topicTagResult)
+                                    foreach (var topic in topicTagResult)
                                     {
                                         dynamic topicName = null;
                                         dynamic topicTagId = null;
@@ -80,14 +83,14 @@ namespace Access2Justice.Tools.BusinessLogic
                                                                 if (state == locationTopic.Value.ToString())
                                                                 {
                                                                     resourceList.topicTags[iterator].id = topicTagId;
-                                                                    break;                                                                 
+                                                                    break;
                                                                 }
                                                                 break;
                                                             }
                                                         }
                                                     }
                                                 }
-                                            }                                                
+                                            }
                                         }
                                     }
                                 }
@@ -96,25 +99,25 @@ namespace Access2Justice.Tools.BusinessLogic
                     }
 
                     var serializedResources = JsonConvert.SerializeObject(resourcesList);
-                    var result = JsonConvert.DeserializeObject(serializedResources);
-                    var response = await clientHttp.PostAsJsonAsync("api/upsert-resource-document", result).ConfigureAwait(false);
+                    StringContent content = new StringContent(serializedResources, Encoding.UTF8, "application/json");
+                    var response = await clientHttp.PostAsync("api/upsert-resource-document", content).ConfigureAwait(false);
                     var json = response.Content.ReadAsStringAsync().Result;
-                    var documentsCreated = JsonConvert.DeserializeObject(json);
                     response.EnsureSuccessStatusCode();
                     if (response.IsSuccessStatusCode == true)
                     {
-                        Console.WriteLine("Resources created successfully" + "\n" + documentsCreated);
-                        Console.WriteLine("You may close the window now.");
+                        string fileName = $@"Resource{DateTime.Now.Ticks}.txt";
+                        LogHelper.DataLogging(json, fileName);
+                        MessageBox.Show("File got processed");
                     }
                     else
                     {
-                        throw new Exception("Please correct errors" + "\n" + response);
+                        MessageBox.Show("Please correct errors" + "\n" + response);
                     }
-                }          
+                }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message);
             }
         }
 

@@ -9,8 +9,8 @@ using Newtonsoft.Json.Linq;
 
 namespace Access2Justice.Api.Controllers
 {
-	[Produces("application/json")]
-    [Route("api/websearch")]
+    [Produces("application/json")]
+    [Route("api/web-search")]
     public class WebSearchController : Controller
     {
         private readonly IWebSearchBusinessLogic webSearchBusinessLogic;
@@ -22,7 +22,7 @@ namespace Access2Justice.Api.Controllers
             this.bingSettings = bingSettings;
         }
 
-        [HttpGet("{searchTerm}/{offset}")]
+        [HttpGet("{search-term}/{offset}")]
         public async Task<IActionResult> GetAsync(string searchTerm, Int16 offset)
         {
             var uri = string.Format(CultureInfo.InvariantCulture, bingSettings.BingSearchUrl.OriginalString, searchTerm, bingSettings.CustomConfigId, bingSettings.PageResultsCount, offset);

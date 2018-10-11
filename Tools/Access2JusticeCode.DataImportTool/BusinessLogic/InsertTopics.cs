@@ -13,20 +13,16 @@ namespace Access2Justice.Tools.BusinessLogic
 {
     public class InsertTopics
     {
-        public dynamic CreateJsonFromCSV()
+        public dynamic CreateJsonFromCSV(string filePath)
         {
             int recordNumber = 1;
             Topic topic = new Topic();
             List<dynamic> topicsList = new List<dynamic>();
             List<dynamic> topics = new List<dynamic>();
-            string appSettings = ConfigurationManager.AppSettings.Get("Topics");
-            string path = Path.Combine(Environment.CurrentDirectory, appSettings);
-
             try
             {
-                string textFilePath = path;
                 using (SpreadsheetDocument spreadsheetDocument =
-                    SpreadsheetDocument.Open(path, false))
+                    SpreadsheetDocument.Open(filePath, false))
                 {
                     WorkbookPart workbookPart = spreadsheetDocument.WorkbookPart;
                     WorksheetPart worksheetPart = workbookPart.WorksheetParts.First();
@@ -194,7 +190,6 @@ namespace Access2Justice.Tools.BusinessLogic
             catch (Exception ex)
             {
                 ErrorLogging(ex, recordNumber);
-                ReadError();
                 topics = null;
             }
             return topics;
@@ -362,7 +357,7 @@ namespace Access2Justice.Tools.BusinessLogic
 
         public static void ErrorLogging(Exception ex, int recordNumber)
         {
-            string strPath = Path.Combine(Environment.CurrentDirectory, "SampleFiles\\Error.txt");
+            string strPath = Path.Combine(Environment.CurrentDirectory, "..\\..\\SampleFiles\\Error.txt");
             if (File.Exists(strPath))
             {
                 System.GC.Collect();
@@ -393,19 +388,6 @@ namespace Access2Justice.Tools.BusinessLogic
                 }
                 sw.WriteLine("===========End============= " + DateTime.Now);
                 sw.WriteLine();
-            }
-        }
-
-        public static void ReadError()
-        {
-            string strPath = Path.Combine(Environment.CurrentDirectory, "SampleFiles\\Error.txt");
-            using (StreamReader sr = new StreamReader(strPath))
-            {
-                string line;
-                while ((line = sr.ReadLine()) != null)
-                {
-                    Console.WriteLine(line);
-                }
             }
         }
 

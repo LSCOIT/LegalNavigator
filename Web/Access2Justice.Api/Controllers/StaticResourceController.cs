@@ -27,7 +27,7 @@ namespace Access2Justice.Api.Controllers
         /// <param name="name"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("api/staticresource/getstaticresources")]
+        [Route("api/static-resource/get-static-resources")]
         public async Task<IActionResult> GetStaticResourcesDataAsync([FromBody]Location location)
         {
             var contents = await staticResourceBusinessLogic.GetPageStaticResourcesDataAsync(location);
@@ -41,7 +41,7 @@ namespace Access2Justice.Api.Controllers
         /// <returns></returns>
         [Permission(PermissionName.upsertstatichomepage)]
         [HttpPost]
-        [Route("api/staticresource/upsertstatichomepage")]
+        [Route("api/static-resource/upsert-static-home-page")]
         public async Task<IActionResult> UpsertStaticHomePageDataAsync([FromBody]HomeContent homePageContent, Location location)
         {
             if (await userRoleBusinessLogic.ValidateOrganizationalUnit(homePageContent.OrganizationalUnit))
@@ -59,7 +59,7 @@ namespace Access2Justice.Api.Controllers
         /// <returns></returns>
         [Permission(PermissionName.upsertstaticprivacypage)]
         [HttpPost]
-        [Route("api/staticresource/upsertstaticprivacypage")]
+        [Route("api/static-resource/upsert-static-privacy-page")]
         public async Task<IActionResult> UpsertStaticPrivacyPromisePageDataAsync([FromBody]PrivacyPromiseContent privacyPromiseContent, Location location)
         {
             if (await userRoleBusinessLogic.ValidateOrganizationalUnit(privacyPromiseContent.OrganizationalUnit))
@@ -77,8 +77,8 @@ namespace Access2Justice.Api.Controllers
         /// <returns></returns>
         [Permission(PermissionName.upsertstatichelpandfaqpage)]
         [HttpPost]
-        [Route("api/staticresource/upsertstatichelpandfaqpage")]
-        public async Task<IActionResult> UpsertStaticHelpAndFAQPageDataAsync([FromBody]HelpAndFaqsContent helpAndFAQPageContent, Location location)
+        [Route("api/static-resource/upsert-static-help-and-faq-page")]
+        public async Task<IActionResult> UpsertStaticHelpAndFAQPageDataAsync(HelpAndFaqsContent helpAndFAQPageContent, Location location)
         {
             if (await userRoleBusinessLogic.ValidateOrganizationalUnit(helpAndFAQPageContent.OrganizationalUnit))
             {
@@ -95,7 +95,7 @@ namespace Access2Justice.Api.Controllers
         /// <returns></returns>
         [Permission(PermissionName.upsertstaticnavigation)]
         [HttpPost]
-        [Route("api/staticresource/upsertstaticnavigation")]
+        [Route("api/static-resource/upsert-static-navigation")]
         public async Task<IActionResult> UpsertStaticNavigationDataAsync([FromBody]Navigation navigationContent, Location location)
         {
             if (await userRoleBusinessLogic.ValidateOrganizationalUnit(navigationContent.OrganizationalUnit))
@@ -113,7 +113,7 @@ namespace Access2Justice.Api.Controllers
         /// <returns></returns>
         [Permission(PermissionName.upsertstaticaboutpage)]
         [HttpPost]
-        [Route("api/staticresource/upsertstaticaboutpage")]
+        [Route("api/static-resource/upsert-static-about-page")]
         public async Task<IActionResult> UpsertStaticAboutPageDataAsync([FromBody]AboutContent aboutContent, Location location)
         {
             if (await userRoleBusinessLogic.ValidateOrganizationalUnit(aboutContent.OrganizationalUnit))

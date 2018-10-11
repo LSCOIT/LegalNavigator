@@ -1,31 +1,34 @@
-﻿using Newtonsoft.Json;
+﻿using Access2JusticeCode.DataImportTool.Helper;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Access2Justice.Tools.BusinessLogic
 {
     public class TopicBusinessLogic: IDisposable
     {
         static HttpClient clientHttp = new HttpClient();
-                
-        public async static Task GetTopics()
+
+        public async static Task GetTopics(string accessToken, string filePath)
         {
             clientHttp.BaseAddress = new Uri("http://localhost:4200/");
             clientHttp.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            clientHttp.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(accessToken);
             try
             {
                 InsertTopics obj = new InsertTopics();
                 List<dynamic> topicsList = new List<dynamic>();
-                var topics = obj.CreateJsonFromCSV();
-                if (topics == null || topics.Count==0)
+                var topics = obj.CreateJsonFromCSV(filePath);
+                if (topics == null || topics.Count == 0)
                 {
-                    throw new Exception("Please check Error log file to correct errors");
+                    MessageBox.Show("Please check Error log file to correct errors");
                 }
-
                 else
                 {
                     foreach (var topicList in topics)
@@ -38,10 +41,11 @@ namespace Access2Justice.Tools.BusinessLogic
                     foreach (var topicList in topicsList)
                     {
                         if (topicList.parentTopicId != null)
-                        {                    
+                        {
                             foreach (var topicData in topicsList)
                             {
-                                for (int iterator=0; iterator < topicList.parentTopicId.Count; iterator++) {
+                                for (int iterator = 0; iterator < topicList.parentTopicId.Count; iterator++)
+                                {
                                     if (topicList.parentTopicId[iterator].id == topicData.name)
                                     {
                                         for (int locationIteratortopicList = 0; locationIteratortopicList < topicList.location.Count; locationIteratortopicList++)
@@ -62,25 +66,25 @@ namespace Access2Justice.Tools.BusinessLogic
                     }
 
                     var serializedTopics = JsonConvert.SerializeObject(topicsList);
-                    var result = JsonConvert.DeserializeObject(serializedTopics);
-                    var response = await clientHttp.PostAsJsonAsync("api/upsert-topic-document", result).ConfigureAwait(false);
+                    StringContent content = new StringContent(serializedTopics, Encoding.UTF8, "application/json");
+                    var response = await clientHttp.PostAsync("api/upsert-topic-document", content).ConfigureAwait(false);
                     var json = response.Content.ReadAsStringAsync().Result;
-                    var documentsCreated = JsonConvert.DeserializeObject(json);
                     response.EnsureSuccessStatusCode();
                     if (response.IsSuccessStatusCode == true)
                     {
-                        Console.WriteLine("Topics created successfully" + "\n" + documentsCreated);
-                        Console.WriteLine("You may close the window now.");
+                        string fileName = $@"Topic{DateTime.Now.Ticks}.txt";
+                        LogHelper.DataLogging(json, fileName);                        
+                        MessageBox.Show("File got processed");
                     }
                     else
                     {
-                        throw new Exception("Please correct errors" + "\n" + response);
+                        MessageBox.Show("Please correct errors" + "\n" + response);
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message);
             }
         }
 

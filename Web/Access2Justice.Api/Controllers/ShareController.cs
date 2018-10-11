@@ -9,8 +9,8 @@ using static Access2Justice.Api.Authorization.Permissions;
 
 namespace Access2Justice.Api.Controllers
 {
-	[Produces("application/json")]
-    [Route("api/[controller]")]
+    [Produces("application/json")]
+    [Route("api/share")]
     public class ShareController : Controller
     {
         private readonly IShareBusinessLogic shareBusinessLogic;
@@ -21,7 +21,7 @@ namespace Access2Justice.Api.Controllers
         }
 
         [Permission(PermissionName.generatepermalink)]
-        [HttpPost("GeneratePermaLink")]
+        [HttpPost("generate-permalink")]
         public async Task<IActionResult> ShareAsync([FromBody] ShareInput shareInput)
         {
             if (shareInput != null)
@@ -33,7 +33,7 @@ namespace Access2Justice.Api.Controllers
         }
 
         [Permission(PermissionName.checkpermalink)]
-        [HttpPost("CheckPermaLink")]
+        [HttpPost("check-permalink")]
         public async Task<IActionResult> CheckDataAsync([FromBody] ShareInput shareInput)
         {
             if (shareInput != null)
@@ -45,7 +45,7 @@ namespace Access2Justice.Api.Controllers
         }
 
         [Permission(PermissionName.removepermalink)]
-        [HttpPost("RemovePermaLink")]
+        [HttpPost("remove-permalink")]
         public async Task<IActionResult> UnshareAsync([FromBody] ShareInput unShareInput)
         {
             if (unShareInput != null)
@@ -57,7 +57,7 @@ namespace Access2Justice.Api.Controllers
         }
 
         [Permission(PermissionName.getpermallinkresource)]
-        [HttpGet("GetPermalLinkResource")]
+        [HttpGet("get-permalink-resource")]
         public async Task<IActionResult> PermaLinkAsync([FromQuery] string permaLink)
         {
             if (permaLink != null)

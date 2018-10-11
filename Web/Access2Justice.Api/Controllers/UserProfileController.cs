@@ -27,7 +27,7 @@ namespace Access2Justice.Api.Controllers
         /// <returns></returns> 
         [Permission(PermissionName.getuserprofile)]
         [HttpPost]
-        [Route("api/user/getuserprofile")]
+        [Route("api/user/get-user-profile")]
         public async Task<IActionResult> GetUserDataAsync(string oid, string type)
         {
             var users = await userProfileBusinessLogic.GetUserResourceProfileDataAsync(oid, type);
@@ -41,7 +41,7 @@ namespace Access2Justice.Api.Controllers
         /// <returns></returns>
         [Permission(PermissionName.getuserprofiledata)]
         [HttpGet]
-        [Route("api/user/getuserprofiledata/{oid}")]
+        [Route("api/user/get-user-profile-data/{oid}")]
         public async Task<IActionResult> GetUserProfileDataAsync(string oid)
         {
             UserProfile users = await userProfileBusinessLogic.GetUserProfileDataAsync(oid);
@@ -55,8 +55,8 @@ namespace Access2Justice.Api.Controllers
         /// <returns></returns>
         [Permission(PermissionName.upsertuserpersonalizedplan)]
         [HttpPost]
-        [Route("api/user/upsertuserpersonalizedplan")]
-        public async Task<IActionResult> UpsertUserSavedResourcesAsync([FromBody]ProfileResources profileResources)
+        [Route("api/user/upsert-user-personalized-plan")]
+        public async Task<IActionResult> UpsertUserPersonalizedPlanAsync([FromBody]ProfileResources profileResources)
         {
             var users = await userProfileBusinessLogic.UpsertUserSavedResourcesAsync(profileResources);
             return Ok(users);
@@ -68,7 +68,7 @@ namespace Access2Justice.Api.Controllers
         /// <param name="userProfile"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("api/user/upsertuserprofile")]
+        [Route("api/user/upsert-user-profile")]
         public async Task<IActionResult> UpsertUserProfile([FromBody]UserProfile userProfile)
         {
             var users = await userProfileBusinessLogic.UpsertUserProfileAsync(userProfile);
