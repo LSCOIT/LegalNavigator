@@ -41,7 +41,7 @@ namespace Access2Justice.Api.BusinessLogic
                 cosmosDbSettings.CuratedExperienceAnswersCollectionId);
 
             var unprocessedPlan = personalizedPlanEngine.Build((JObject)a2jPersonalizedPlan[0], userAnswers);
-            return personalizedPlanViewModelMapper.MapViewModel(unprocessedPlan);
+            return await personalizedPlanViewModelMapper.MapViewModel(unprocessedPlan);
         }
 
         public List<PersonalizedPlanStep> GetPlanSteps(Guid topic, List<PersonalizedPlanStep> personalizedPlanSteps)

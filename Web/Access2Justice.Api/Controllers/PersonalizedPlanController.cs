@@ -24,10 +24,9 @@ namespace Access2Justice.Api.Controllers
         [HttpGet("test-personalized-plan-ui")]
         public async Task<IActionResult> GetPersonalizedPlan()
         {
-            var unprocessedPlan = await backendDatabaseService.GetItemAsync<UnprocessedPersonalizedPlan>("31aabd1e-db81-4079-ad8d-7b30f3f4fee1",
+            var unprocessedPlan = await backendDatabaseService.GetItemAsync<UnprocessedPersonalizedPlan>("ee9a0e48-1855-e236-9f45-485f388a53ae",
                 cosmosDbSettings.PersonalizedActionPlanCollectionId);
-
-            return Ok(personalizedPlanViewModelMapper.MapViewModel(unprocessedPlan));
+			return Ok(await personalizedPlanViewModelMapper.MapViewModel(unprocessedPlan));
         }
     }
 }
