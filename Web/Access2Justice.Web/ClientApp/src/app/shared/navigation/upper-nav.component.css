@@ -15,6 +15,10 @@ li a:hover {
   color: #333;
 }
 
+li a img {
+  margin-left: 0;
+}
+
 .upper-nav {
   background: #f4f4f4;
   color: #333;
