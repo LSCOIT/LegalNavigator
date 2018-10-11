@@ -39,6 +39,7 @@ namespace Access2Justice.Api.BusinessLogic
                 var componentFields = GetFields(pageProperties);
                 var componentButtons = GetButtons(pageProperties);
                 var componentCodes = GetCodes(pageProperties);
+                var text = CleanHtmlTags(pageProperties.GetValue("text"));
 
                 cx.Components.Add(new CuratedExperienceComponent
                 {
@@ -46,7 +47,7 @@ namespace Access2Justice.Api.BusinessLogic
                     Name = pageProperties.GetValue("name"),
                     Help = pageProperties.GetValue("help"),
                     Learn = pageProperties.GetValue("learn"),
-                    Text = pageProperties.GetValue("text"),
+                    Text = text,
                     Fields = componentFields,
                     Buttons = componentButtons,
                     Code = componentCodes
@@ -58,6 +59,12 @@ namespace Access2Justice.Api.BusinessLogic
             dbService.CreateItemAsync(resource, dbSettings.ResourceCollectionId);
 
             return cx;
+        }
+
+        private string CleanHtmlTags(string htmlText)
+        {
+            // Remove HTML tags from the curated experience questions #568
+            return htmlText;
         }
 
         private Resource MapResourceProperties(IEnumerable<JProperty> a2jProperties, Guid curatedExperienceId)
