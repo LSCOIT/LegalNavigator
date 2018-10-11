@@ -42,7 +42,7 @@ namespace Access2Justice.Api.Authorization
                 {
                     oId = EncryptionUtilities.GenerateSHA512String(oId);
                     string requestPath = context.HttpContext.Request.Path.ToString();
-                    if (requestPath.Contains("getuserprofile"))
+                    if (requestPath.Contains("get-user-profile"))
                     {
                         if (context.ActionArguments.Count > 0)
                         {
