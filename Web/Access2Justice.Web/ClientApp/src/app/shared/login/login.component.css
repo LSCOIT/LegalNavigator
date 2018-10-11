@@ -39,6 +39,14 @@ a:hover {
     margin-right: -25px;
   }
 
+  .account-menu {
+    padding: 20px 15px;
+  }
+
+  .account-menu:hover {
+    background-color: #fff;
+  }
+
   .account-menu, .account-menu img {
     margin-left: 0;
   }
