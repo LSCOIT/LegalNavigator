@@ -12,9 +12,8 @@ import { SaveButtonComponent } from './save-button.component';
 import { ToastrService } from 'ngx-toastr';
 import { MsalService } from '@azure/msal-angular';
 import { Observable } from 'rxjs/Observable';
-//import { environment } from '../../../../../environments/environment.prod';
 import { environment } from '../../../../../environments/environment';
-fdescribe('SaveButtonComponent', () => {
+describe('SaveButtonComponent', () => {
   let component: SaveButtonComponent;
   let fixture: ComponentFixture<SaveButtonComponent>;
   let mockToastr;
@@ -138,9 +137,14 @@ fdescribe('SaveButtonComponent', () => {
     userIdentifier: "1234567890ABC"
   }
   let mockUserDataEmpty = null;
-    
+  let mockPlanId = '1fb1b006-a8bc-487d-98a0-2457d9d9f78d';
+  let mockSavedResource = {
+    "itemId": "1d7fc811-dabe-4468-a179-c43435bd22b6",
+    "resourceType": "Articles",
+    "resourceDetails": {}
+  };
   beforeEach(async(() => {
-    mockPersonalizedPlanService = jasmine.createSpyObj(['getActionPlanConditions']);
+    mockPersonalizedPlanService = jasmine.createSpyObj(['getActionPlanConditions', 'saveResourcesToProfile']);
     msalService = jasmine.createSpyObj(['getUser']);
 
     TestBed.configureTestingModule({
@@ -170,6 +174,31 @@ fdescribe('SaveButtonComponent', () => {
     fixture = TestBed.createComponent(SaveButtonComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+
+    let store = {};
+    const mockSessionStorage = {
+      getItem: (key: string): string => {
+        return key in store ? store[key] : null;
+      },
+      setItem: (key: string, value: string) => {
+        store[key] = `${value}`;
+      },
+      removeItem: (key: string) => {
+        delete store[key];
+      },
+      clear: () => {
+        store = {};
+      }
+    };
+
+    spyOn(sessionStorage, 'getItem')
+      .and.callFake(mockSessionStorage.getItem);
+    spyOn(sessionStorage, 'setItem')
+      .and.callFake(mockSessionStorage.setItem);
+    spyOn(sessionStorage, 'removeItem')
+      .and.callFake(mockSessionStorage.removeItem);
+    spyOn(sessionStorage, 'clear')
+      .and.callFake(mockSessionStorage.clear);
   });
 
   it('should create', () => {
@@ -182,7 +211,6 @@ fdescribe('SaveButtonComponent', () => {
 
   it('should get no topics for the given plan', () => {
     spyOn(component, 'getPersonalizedPlanSteps');
-    let mockPlanId = '1fb1b006-a8bc-487d-98a0-2457d9d9f78d';
     component.getPlan(mockPlanId);
     mockPersonalizedPlanService.getActionPlanConditions.and.callFake(() => {
       return Observable.from([mockPlanDetails]);
@@ -191,6 +219,15 @@ fdescribe('SaveButtonComponent', () => {
   });
 
   it('should get called PlanResources post login', () => {
+    spyOn(component, 'getPersonalizedPlanSteps');
+    msalService.getUser.and.returnValue(mockUserData);
+    component.type = 'Plan'
+    component.id = mockPlanId;
+    component.savePlanResources();
+    expect(component.planId).toEqual(mockPlanId);
+  });
+
+  it('should get called PlanResources post login have been called', () => {
     spyOn(component, 'savePlanResourcesPostLogin');
     msalService.getUser.and.returnValue(mockUserData);
     component.savePlanResources();
@@ -203,6 +240,21 @@ fdescribe('SaveButtonComponent', () => {
     msalService.getUser.and.returnValue(mockUserDataEmpty);
     component.savePlanResources();
     expect(component.savePlanResourcesPreLogin).toHaveBeenCalled();
+  });
+
+  it('should set plan session key if plan type exists - savePlanResourcesPreLogin', () => {
+    component.type = 'Plan'
+    component.id = mockPlanId;
+    component.savePlanResourcesPreLogin();
+    expect(JSON.parse(sessionStorage.getItem("bookmarkPlanId"))).toEqual(mockPlanId);
+  });
+
+  it('should set plan session key if plan type not exists - savePlanResourcesPreLogin', () => {
+    component.type = 'NoPlan'
+    component.id = mockPlanId;
+    component.savePlanResourcesPreLogin();
+    expect(component.savedResources.itemId).toEqual(mockPlanId);
+    expect(component.savedResources.resourceType).toEqual('NoPlan');
   });
 
 });
