@@ -35,7 +35,7 @@ li a img {
 }
 
 .right-menu li {
-  padding: 15px;
+  padding: 15px 10px;
 }
 
 .right-menu li:last-child {
@@ -62,5 +62,10 @@ li a img {
   #location {
     position: static;
     width: auto;
+  }
+}
+@media only screen and (min-width : 1124px) {
+  .right-menu li {
+    padding: 15px;
   }
 }
