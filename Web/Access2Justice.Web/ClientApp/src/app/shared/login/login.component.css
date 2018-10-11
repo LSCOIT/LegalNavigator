@@ -15,6 +15,7 @@ a:hover {
   cursor: pointer;
   min-width: 300px;
   position: relative;
+  margin-top: 10px;
 }
 
 #signin-dropdown a:hover {
@@ -30,8 +31,18 @@ a:hover {
   background-color: #f4f4f4;
 }
 
+.dropdown-menu li a {
+  font-size: 14px;
+}
+
 .dropdown-menu li a:hover {
   background-color: #fff;
+}
+
+@media only screen and (min-width : 768px) {
+  .dropdown-menu li a {
+    font-size: 14px;
+  }
 }
 
 @media only screen and (min-width : 992px) {
@@ -43,13 +54,13 @@ a:hover {
     padding: 20px 15px;
   }
 
-  .account-menu:hover {
-    background-color: #fff;
-  }
+    .account-menu:hover {
+      background-color: #fff;
+    }
 
-  .account-menu, .account-menu img {
-    margin-left: 0;
-  }
+    .account-menu, .account-menu img {
+      margin-left: 0;
+    }
 
   .dropdown-menu {
     background-color: #fff;
@@ -62,8 +73,9 @@ a:hover {
     padding: 15px 10px;
     width: auto;
     min-width: 200px;
+    margin-top: 0;
   }
-  
+
   .open {
     background-color: #fff;
   }
