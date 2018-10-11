@@ -96,7 +96,7 @@ namespace Access2Justice.Shared.Extensions
         public static Dictionary<string, string> SetValueTOVar(this string inputText)
         {
             var varsValues = new Dictionary<string, string>();
-            if (inputText.ToUpperInvariant().Contains(Tokens.TO))
+            if (inputText.Contains(Tokens.TO))
             {
                 var variableName = inputText.GetStringBetween(Tokens.VarNameLeftSign, Tokens.VarNameRightSign);
                 var valueString = inputText.GetStringOnTheRightOf(Tokens.TO);
@@ -113,6 +113,10 @@ namespace Access2Justice.Shared.Extensions
                 {
                     varsValues.Add(variableName, valueString);
                 }
+            }
+            else
+            {
+                //  "7-Want to change something"<BR/>END IF 
             }
 
             return varsValues;

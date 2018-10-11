@@ -10,7 +10,17 @@ namespace Access2Justice.Api.BusinessLogic
     {
         public PersonalizedPlanViewModel MapViewModel(UnprocessedPersonalizedPlan personalizedPlanStepsInScope)
         {
+            // https://github.com/Microsoft/Access2Justice/issues/567
+
             var actionPlan = new PersonalizedPlanViewModel();
+
+            foreach (var topic in personalizedPlanStepsInScope.UnprocessedTopics)
+            {
+                actionPlan.Topics.Add(new PlanTopic
+                {
+                    TopicName = topic.Name
+                });
+            }
 
             
             actionPlan.PersonalizedPlanId = Guid.NewGuid();
