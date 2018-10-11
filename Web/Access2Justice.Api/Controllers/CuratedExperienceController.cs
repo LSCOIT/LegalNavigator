@@ -8,11 +8,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Access2Justice.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/curated-experience")]
     public class CuratedExperienceController : Controller
     {
         private readonly ICuratedExperienceConvertor a2jAuthorBuisnessLogic;
@@ -27,16 +28,79 @@ namespace Access2Justice.Api.Controllers
             this.personalizedPlanBusinessLogic = personalizedPlanBusinessLogic;
         }
 
-        #region DEMOS
-        [HttpPost("A2JPersonalizedPlan/ParserTest")]
+
+        /// <summary>
+        /// This endpoint is just to demo the Curated Experience Personalized Plan schema. Added to help building the UI.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("personalized-plan/demo")]
+        public IActionResult GetDemoPersonalizedPlan()
+        {
+            //var locations = new List<PlanLocation>();
+            //locations.Add(new PlanLocation
+            //{
+            //    City = "test city",
+            //    State = "test state",
+            //    ZipCode = "11332"
+            //});
+            
+            var quicklinks = new List<PlanQuickLink>();
+            quicklinks.Add(new PlanQuickLink
+            {
+                Text = "Quick link to topic1",
+                Url = new Uri("http://localhost/topic1")
+            });
+
+            //var resources = new List<PlanResource>();
+            //resources.Add(new PlanResource
+            //{
+            //    Description = "Lorem ipsum dolor sit amet, usu soluta aliquid recusabo in, eloquentiam adversarium in vel.",
+            //    ExternalUrl = new Uri("http://localhost"),
+            //    Icon = "",
+            //    IsRecommended = false,
+            //    Location = locations,
+            //    Name = "Resource Name",
+            //    Overview = "Sale oratio tractatos duo et, pri harum senserit mediocritatem an. No eum aliquip menandri.",
+            //    ResourceId = Guid.NewGuid(),
+            //    Tags = new List<string>() { "Test", "Demo" },
+            //    Type = "Organization",
+            //});
+
+            var steps = new List<PlanStep>();
+            steps.Add(new PlanStep
+            {
+                StepId = Guid.NewGuid(),
+                Title = "Plan title",
+                Description = "test plan for building the UI",
+                Order = 1,
+                IsComplete = false,
+                //Resources = resources,
+                Type = "PersonalizedPlan"
+            });
+
+            var topics = new List<PlanTopic>();
+            topics.Add(new PlanTopic
+            {
+                TopicId = Guid.NewGuid(),
+                QuickLinks = quicklinks,
+                Steps = steps
+            });
+
+            return Ok(new PersonalizedPlanViewModel()
+            {
+                PersonalizedPlanId = Guid.NewGuid(),
+                Topics = topics,
+            });
+        }
+
+        [HttpPost("a2j-personalized-plan/parser-test")]
         public async Task<IActionResult> TestA2JPersonalizedPlanParser([FromBody] CuratedExperienceAnswers userAnswers)
         {
             // Todo:@Alaa remove this endpoint, added it just to test the parser duing development
             return Ok(new PersonalizedPlanParser(new PersonalizedPlanEvaluator()).Parse(userAnswers, Tokens.ParserConfig.SetVariables));
         }
-        #endregion
 
-        [HttpPost("Import")]
+        [HttpPost("import")]
         public IActionResult ConvertA2JAuthorToCuratedExperience([FromBody] JObject a2jSchema)
         {
             try
@@ -50,7 +114,7 @@ namespace Access2Justice.Api.Controllers
             }
         }
 
-        [HttpGet("Start")]
+        [HttpGet("start")]
         public IActionResult GetFirstComponent(Guid curatedExperienceId)
         {
             var component = curatedExperienceBusinessLogic.GetComponent(RetrieveCachedCuratedExperience(curatedExperienceId), Guid.Empty);
@@ -59,7 +123,7 @@ namespace Access2Justice.Api.Controllers
             return Ok(component);
         }
 
-        [HttpGet("Component")]
+        [HttpGet("component")]
         public IActionResult GetSpecificComponent([FromQuery] Guid curatedExperienceId, [FromQuery] Guid componentId)
         {
             var component = curatedExperienceBusinessLogic.GetComponent(RetrieveCachedCuratedExperience(curatedExperienceId), componentId);
@@ -68,7 +132,7 @@ namespace Access2Justice.Api.Controllers
             return Ok(component);
         }
 
-        [HttpPost("Component/SaveAndGetNext")]
+        [HttpPost("component/save-and-get-next")]
         public async Task<IActionResult> SaveAndGetNextComponent([FromBody] CuratedExperienceAnswersViewModel component)
         {
             var curatedExperience = RetrieveCachedCuratedExperience(component.CuratedExperienceId);
@@ -81,7 +145,7 @@ namespace Access2Justice.Api.Controllers
             return Ok(curatedExperienceBusinessLogic.GetNextComponent(curatedExperience, component));
         }
 
-        [HttpGet("PersonalizedPlan")]
+        [HttpGet("personalized-plan")]
         public async Task<IActionResult> GeneratePersonalizedPlan([FromQuery] Guid curatedExperienceId, [FromQuery] Guid answersDocId)
         {
             var personalizedPlan = await personalizedPlanBusinessLogic.GeneratePersonalizedPlanAsync(
@@ -94,7 +158,7 @@ namespace Access2Justice.Api.Controllers
             return Ok(personalizedPlan);
         }
 
-        [HttpPost("updateplan")]
+        [HttpPost("update-plan")]
         public async Task<IActionResult> UpdateUserProfileDocumentAsync([FromBody]UserPersonalizedPlan userPlan)
         {
             var personalizedPlan = await personalizedPlanBusinessLogic.UpdatePersonalizedPlan(userPlan);
@@ -123,7 +187,7 @@ namespace Access2Justice.Api.Controllers
              //}
 
         [HttpGet]
-        [Route("getplan/{id}")]
+        [Route("get-plan/{id}")]
         public async Task<IActionResult> GetPlanAsync(string id)
         {
             var actionPlans = await personalizedPlanBusinessLogic.GetPersonalizedPlan(id);
