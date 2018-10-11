@@ -9,6 +9,7 @@
         public const string IF = "IF";
         public const string ENDIF = "END IF";
         public const string GOTO = "GOTO";
+        public const string EqualSign = "=";
         public const string EmptySpace = " ";
         public const string VarNameLeftSign = "[";
         public const string VarNameRightSign = "]";

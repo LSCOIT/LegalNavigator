@@ -6,6 +6,6 @@ namespace Access2Justice.Shared.Interfaces.A2JAuthor
 {
     public interface IPersonalizedPlanParse
     {
-        Dictionary<string, string> Parse(CuratedExperienceAnswers curatedExperienceAnswers, string parserConfig);
+        Dictionary<string, string> Parse(CuratedExperienceAnswers curatedExperienceAnswers);
     }
 }

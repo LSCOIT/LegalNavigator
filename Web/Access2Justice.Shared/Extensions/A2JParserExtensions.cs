@@ -36,12 +36,26 @@ namespace Access2Justice.Shared.Extensions
 
         public static string GetStringOnTheRightOf(this string inputText, string splitWord)
         {
-            return inputText.Substring(inputText.IndexOf(splitWord) + splitWord.Length);
+            if (inputText.IndexOf(splitWord) > 0)
+            {
+                return inputText.Substring(inputText.IndexOf(splitWord) + splitWord.Length);
+            }
+            else
+            {
+                return string.Empty;
+            }
         }
 
         public static string GetStringOnTheLeftOf(this string inputText, string splitWord)
         {
-            return inputText.Substring(0, inputText.IndexOf(splitWord));
+            if (inputText.IndexOf(splitWord) > 0)
+            {
+                return inputText.Substring(0, inputText.IndexOf(splitWord));
+            }
+            else
+            {
+                return string.Empty;
+            }
         }
 
         public static string GetStringBetween(this string inputText, string firstWord, string secondWord)
@@ -71,33 +85,71 @@ namespace Access2Justice.Shared.Extensions
             return inputText.Split(new string[] { splitWord }, StringSplitOptions.RemoveEmptyEntries).ToList();
         }
 
-        public static OrderedDictionary GetVariablesWithValues(this string inputText, string operand)
-        {
-            // Todo:@Alaa extend this to allow extraction of other data types (beside true/fals), return a dic of <string, string>
-            var varsValues = new OrderedDictionary();
 
+        public static OrderedDictionary GetVariablesWithValues(this string inputText, string operand = "")
+        {
+            var varsValues = new OrderedDictionary();
             if (inputText.ToUpperInvariant().Contains(operand))
             {
                 var variables = inputText.SplitOn(operand);
+
                 foreach (var varialbe in variables)
                 {
+                    var varValue = varialbe.GetStringBetween(Tokens.VarNameLeftSign, Tokens.VarNameRightSign);
+
                     if (varialbe.ToUpperInvariant().Contains(Tokens.TrueTokens.TrueText))
                     {
-                        varsValues.Add(varialbe.GetStringBetween(Tokens.VarNameLeftSign, Tokens.VarNameRightSign), Tokens.TrueTokens.LogicalTrue);
+                        varsValues.Add(varValue, Tokens.TrueTokens.LogicalTrue);
                     }
                     else if (varialbe.ToUpperInvariant().Contains(Tokens.FalseTokens.FalseText))
                     {
-                        varsValues.Add(varialbe.GetStringBetween(Tokens.VarNameLeftSign, Tokens.VarNameRightSign), Tokens.FalseTokens.LogicalFalse);
+                        varsValues.Add(varValue, Tokens.FalseTokens.LogicalFalse);
                     }
-                    else
+                    else if(varialbe.Contains(Tokens.EqualSign))
                     {
                         // <BR/><BR/><BR/>IF [Final decision issue MC]= "Want to change something"<BR/>
+                        var breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
+                        var matchedString = Regex.Matches(inputText, "\"([^\"]*)\"").FirstOrDefault().Value;
+                        varsValues.Add(Tokens.NextStep + "-" + Guid.NewGuid(), matchedString.Replace("\"", "").
+                            Replace(Tokens.VarNameLeftSign, "").Replace(Tokens.VarNameRightSign, ""));
+
+                        var breakpoin2 = string.Empty; // Todo:@Alaa - remove this temp code
                     }
                 }
             }
+           
 
             return varsValues;
         }
+
+
+        //public static OrderedDictionary GetVariablesWithValues(this string inputText, string operand)
+        //{
+        //    // Todo:@Alaa extend this to allow extraction of other data types (beside true/fals), return a dic of <string, string>
+        //    var varsValues = new OrderedDictionary();
+
+        //    if (inputText.ToUpperInvariant().Contains(operand))
+        //    {
+        //        var variables = inputText.SplitOn(operand);
+        //        foreach (var varialbe in variables)
+        //        {
+        //            if (varialbe.ToUpperInvariant().Contains(Tokens.TrueTokens.TrueText))
+        //            {
+        //                varsValues.Add(varialbe.GetStringBetween(Tokens.VarNameLeftSign, Tokens.VarNameRightSign), Tokens.TrueTokens.LogicalTrue);
+        //            }
+        //            else if (varialbe.ToUpperInvariant().Contains(Tokens.FalseTokens.FalseText))
+        //            {
+        //                varsValues.Add(varialbe.GetStringBetween(Tokens.VarNameLeftSign, Tokens.VarNameRightSign), Tokens.FalseTokens.LogicalFalse);
+        //            }
+        //            else
+        //            {
+        //                // <BR/><BR/><BR/>IF [Final decision issue MC]= "Want to change something"<BR/>
+        //            }
+        //        }
+        //    }
+
+        //    return varsValues;
+        //}
 
         public static Dictionary<string, string> SetValue(this string inputText)
         {

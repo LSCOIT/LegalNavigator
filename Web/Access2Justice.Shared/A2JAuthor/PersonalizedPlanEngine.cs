@@ -21,7 +21,7 @@ namespace Access2Justice.Shared.A2JAuthor
         public UnprocessedPersonalizedPlan Build(JObject personalizedPlan, CuratedExperienceAnswers userAnswers)
         {
             var stepsInScope = new List<JToken>();
-            var evaluatedUserAnswers = parser.Parse(userAnswers, Tokens.ParserConfig.SetVariables);
+            var evaluatedUserAnswers = parser.Parse(userAnswers);
 
             var root = personalizedPlan
                 .Properties()
@@ -47,7 +47,7 @@ namespace Access2Justice.Shared.A2JAuthor
             unprocessedPlan.Id = Guid.NewGuid();
 
             var unprocessedTopic = new UnprocessedTopic();
-            unprocessedTopic.Id = Guid.NewGuid();
+            unprocessedTopic.Id = Guid.NewGuid();  // Todo:@Alaa get topic guid using the topic name (aka "title" in a2j author)
             unprocessedTopic.Name = personalizedPlan.Properties().GetValue("title");
 
             foreach (var step in stepsInScope)

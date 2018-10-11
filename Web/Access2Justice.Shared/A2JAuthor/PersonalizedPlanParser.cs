@@ -14,12 +14,12 @@ namespace Access2Justice.Shared.A2JAuthor
             this.evaluator = evaluator;
         }
 
-        public Dictionary<string, string> Parse(CuratedExperienceAnswers curatedExperienceAnswers, string parserConfig)
+        public Dictionary<string, string> Parse(CuratedExperienceAnswers curatedExperienceAnswers)
         {
-            Dictionary<string, string> userAnswersKeyValuePairs = ExtractAnswersVarValues(curatedExperienceAnswers);
-            List<string> logicStatements = ExtractAnswersLogicalStatements(curatedExperienceAnswers);
+            var userAnswersKeyValuePairs = ExtractAnswersVarValues(curatedExperienceAnswers);
+            var logicStatements = ExtractAnswersLogicalStatements(curatedExperienceAnswers);
 
-            Dictionary<string, string> evaluatedAnswers = new Dictionary<string, string>();
+            var evaluatedAnswers = new Dictionary<string, string>();
             foreach (string logicalStatement in logicStatements)
             {
                 foreach (var ifStatement in logicalStatement.IFstatements())
@@ -27,31 +27,39 @@ namespace Access2Justice.Shared.A2JAuthor
                     Dictionary<string, string> leftVarValues = new Dictionary<string, string>();
                     var leftLogic = string.Empty;
                     var rightLogic = string.Empty;
-                    if (parserConfig == Tokens.ParserConfig.SetVariables)
+                    if (ifStatement.Contains(Tokens.ParserConfig.SetVariables))
                     {
                         leftLogic = ifStatement.GetStringOnTheLeftOf(Tokens.SET);
                         rightLogic = ifStatement.GetStringOnTheRightOf(Tokens.SET);
                     }
-                    else
+                    else if(ifStatement.Contains(Tokens.ParserConfig.GoToQuestions))
                     {
                         leftLogic = ifStatement.GetStringOnTheLeftOf(Tokens.GOTO);
                         rightLogic = ifStatement.GetStringOnTheRightOf(Tokens.GOTO);
                     }
-                    var ANDvars = leftLogic.GetVariablesWithValues(Tokens.AND);
-                    if (evaluator.Evaluate(userAnswersKeyValuePairs, ANDvars, (x, y) => x && y))
-                    {                     
-                        evaluatedAnswers.AddRange(rightLogic.SetValue());
-                    }
 
-                    var ORvars = leftLogic.GetVariablesWithValues(Tokens.OR);
-                    if(evaluator.Evaluate(userAnswersKeyValuePairs, ORvars, (x, y) => x || y))
+                    if (!string.IsNullOrWhiteSpace(leftLogic) && !string.IsNullOrWhiteSpace(rightLogic))
                     {
-                        evaluatedAnswers.AddRange(rightLogic.SetValue());
-                    }
+                        var ANDvars = leftLogic.GetVariablesWithValues(Tokens.AND);
+                        if (evaluator.Evaluate(userAnswersKeyValuePairs, ANDvars, (x, y) => x && y))
+                        {
+                            evaluatedAnswers.AddRange(rightLogic.SetValue());
+                        }
 
-                    if(ANDvars.Count == 0 && ORvars.Count == 0)
-                    {
-                        evaluatedAnswers.AddRange(rightLogic.SetValue());
+                        var ORvars = leftLogic.GetVariablesWithValues(Tokens.OR);
+                        if (evaluator.Evaluate(userAnswersKeyValuePairs, ORvars, (x, y) => x || y))
+                        {
+                            evaluatedAnswers.AddRange(rightLogic.SetValue());
+                        }
+
+                        if (ANDvars.Count == 0 && ORvars.Count == 0)
+                        {
+                            var oneVar = leftLogic.GetVariablesWithValues();
+                            if (evaluator.Evaluate(userAnswersKeyValuePairs, oneVar, (x, y) => x))
+                            {
+                                evaluatedAnswers.AddRange(rightLogic.SetValue());
+                            }
+                        }
                     }
                 }
             }
