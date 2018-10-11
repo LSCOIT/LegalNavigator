@@ -69,27 +69,22 @@ namespace Access2Justice.Tools.BusinessLogic
                     StringContent content = new StringContent(serializedTopics, Encoding.UTF8, "application/json");
                     var response = await clientHttp.PostAsync("api/upserttopicdocument", content).ConfigureAwait(false);
                     var json = response.Content.ReadAsStringAsync().Result;
-                    //var documentsCreated = JsonConvert.DeserializeObject(json);
                     response.EnsureSuccessStatusCode();
                     if (response.IsSuccessStatusCode == true)
                     {
                         string fileName = $@"Topic{DateTime.Now.Ticks}.txt";
-                        LogHelper.DataLogging(json, fileName);
-                        //Console.WriteLine("Topics created successfully" + "\n" + documentsCreated);
+                        LogHelper.DataLogging(json, fileName);                        
                         MessageBox.Show("File got processed");
-                        //Console.WriteLine("You may close the window now.");
                     }
                     else
                     {
                         MessageBox.Show("Please correct errors" + "\n" + response);
-                        //throw new Exception("Please correct errors" + "\n" + response);
                     }
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-                //Console.WriteLine(ex.Message);
             }
         }
 

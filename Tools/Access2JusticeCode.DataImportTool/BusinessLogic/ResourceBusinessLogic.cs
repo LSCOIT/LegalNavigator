@@ -28,7 +28,6 @@ namespace Access2Justice.Tools.BusinessLogic
                 if (resources == null || resources.Count == 0)
                 {
                     MessageBox.Show("Please check Error log file to correct errors");
-                    //throw new Exception("Please check Error log file to correct errors");
                 }
                 else
                 {
@@ -103,27 +102,22 @@ namespace Access2Justice.Tools.BusinessLogic
                     StringContent content = new StringContent(serializedResources, Encoding.UTF8, "application/json");
                     var response = await clientHttp.PostAsync("api/upsertresourcedocument", content).ConfigureAwait(false);
                     var json = response.Content.ReadAsStringAsync().Result;
-                    //var documentsCreated = JsonConvert.DeserializeObject(json);
                     response.EnsureSuccessStatusCode();
                     if (response.IsSuccessStatusCode == true)
                     {
                         string fileName = $@"Resource{DateTime.Now.Ticks}.txt";
                         LogHelper.DataLogging(json, fileName);
                         MessageBox.Show("File got processed");
-                        //Console.WriteLine("Resources created successfully" + "\n" + documentsCreated);
-                        //Console.WriteLine("You may close the window now.");
                     }
                     else
                     {
                         MessageBox.Show("Please correct errors" + "\n" + response);
-                        //throw new Exception("Please correct errors" + "\n" + response);
                     }
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-                //Console.WriteLine(ex.Message);
             }
         }
 
