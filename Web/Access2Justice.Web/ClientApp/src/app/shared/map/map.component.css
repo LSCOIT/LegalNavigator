@@ -7,19 +7,23 @@ p {
 }
 
 .edit-location {
-  padding-right: 17px;
+  padding: 15px 15px 10px 10px;
   cursor: pointer;
+  display: inline-block;
+  height: 44px;
+  margin-left: -4px;
 }
 
 #my-map {
   position: relative;
   width: 90%;
-  margin: 60px auto 0 auto;
+  margin: 20px auto 0 auto;
   height: 250px;
 }
 
 #searchbox-container {
   margin-top: 10px;
+  height: 30px;
 }
 
 .location-icon {
@@ -39,6 +43,7 @@ p {
   font-weight: 600;
   border: none;
   background-color: transparent;
+  cursor: pointer;
 }
 
 #search-box {
@@ -50,16 +55,13 @@ p {
 
 .search-btn {
   background-color: #0D3FB8;
-  padding: 5px;
+  padding: 3px;
   border-radius: 0 5px 5px 0;
   color: #fff;
   margin-left: -5px;
   font-weight: 600;
   float: left;
-}
-
-.close {
-  margin-top: -8px;
+  height: 30px;
 }
 
 .dimmer {
@@ -81,7 +83,33 @@ p {
   padding: 5px;
 }
 
+.btn-primary:disabled {
+  background-color: #DDDDDD;
+  color: #585858;
+  border: 1px solid #7E7E7E;
+  cursor: not-allowed;
+}
+
+.privacy {
+  margin: 10px auto;
+}
+
+.btn {
+  margin: 0 auto;
+}
+
 @media only screen and (min-width : 768px) {
+  .edit-location {
+    padding: 15px 10px;
+    height: 53px;
+  }
+
+  .edit-location:hover {
+    background-color: #fff;
+  }
+}
+
+@media only screen and (min-width : 992px) {
   .mobile-hidden {
     display: inline-block;
   }
@@ -92,6 +120,12 @@ p {
   }
 
   #my-map {
-    height: 320px;
+    height: 265px;
+  }
+}
+
+@media only screen and (min-width : 1124px) {
+  .edit-location {
+    padding: 15px;
   }
 }

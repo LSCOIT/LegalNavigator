@@ -1,24 +1,5 @@
-.button-wrapper {
-  margin-bottom: 0;
-}
-
-.verticle-line {
-  border-bottom: 1.5px solid #0D3FBB;
-  margin-bottom: 20px;
-}
-
-.show-articles {
-  border: 1.5px solid #0D3FBB;
-  border-bottom: none;
-  border-radius: 4px 4px 0 0;
-  background-color: #FFF;
-  margin-bottom: -1.5px;
-  padding: 10px;
-}
-
-.dropdown-icon {
-  width: 12px;
-  margin: 0 5px 2px 5px;
+button:after {
+  content: unset;
 }
 
 h5, span {
@@ -28,6 +9,31 @@ h5, span {
 
 li {
   margin: 10px 0;
+}
+
+.button-wrapper {
+  margin-bottom: 0;
+}
+
+.verticle-line {
+  border-bottom: 1.5px solid #0D3FBB;
+  margin-bottom: 20px;
+  height: 45px;
+}
+
+.show-articles {
+  border: 1.5px solid #0D3FBB;
+  border-bottom: none;
+  border-radius: 4px 4px 0 0;
+  background-color: #FFF;
+  margin-bottom: -1.5px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.dropdown-icon {
+  width: 12px;
+  margin: 0 5px 2px 5px;
 }
 
 .link {

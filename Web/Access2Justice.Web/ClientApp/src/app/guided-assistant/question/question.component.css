@@ -26,20 +26,12 @@
   margin: 0 20px;
 }
 
-.multi-button {
-  margin-bottom: 20px;
-}
-
 .multi-button li {
-  width: 40%;
-  margin: 10px;
+  width: 100%;
+  margin: 10px 0;
 }
 
 .multi-button li label {
   text-align: center;
   padding: 15px 20px;
-}
-
-.btn-primary {
-  margin-bottom: 20px;
 }

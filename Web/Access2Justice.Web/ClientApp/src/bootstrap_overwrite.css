@@ -1,0 +1,418 @@
+.container {
+  max-width: 100%;
+}
+
+[class*="col-"] {
+  padding-left: 0;
+  padding-right: 0;
+  float: left;
+}
+
+[class*="col-sm"] {
+  max-width: 100%;
+  display: block;
+}
+
+.row {
+  margin: 20px auto;
+  display: table;
+  width: 100%;
+}
+
+.col-xs-1 {
+  width: 8.333333%
+}
+
+.col-xs-2 {
+  width: 16.666667%;
+}
+
+.col-xs-3 {
+  width: 25%;
+}
+
+.col-xs-4 {
+  width: 33.333333%;
+}
+
+.col-xs-5 {
+  width: 41.666667%;
+}
+
+.col-xs-6 {
+  width: 50%;
+  display: inline-block;
+}
+
+.col-xs-8 {
+  width: 66.666667%;
+}
+
+.col-xs-9 {
+  width: 75%;
+}
+
+.col-xs-10 {
+  width: 83.333333%
+}
+
+.col-xs-11 {
+  width: 91.666667%;
+}
+
+.col-xs-12 {
+  width: 100%;
+  margin: 0 auto;
+}
+
+a:not([href]):not([tabindex]) {
+  color: #0D3FBB;
+}
+
+[type=reset], [type=submit], button, html [type=button] {
+  -webkit-appearance: none;
+}
+
+.btn-group, .btn-group-vertical {
+  display: unset;
+}
+
+.pull-right {
+  float: right;
+}
+
+.pull-left {
+  float: left;
+}
+
+.media-left,
+.media-right,
+.media-body {
+  display: table-cell;
+  vertical-align: top;
+}
+
+/*Login Dropdown*/
+.nav .open > a, .nav .open > a:focus, .nav .open > a:hover {
+  background-color: #fff;
+}
+
+#signin-dropdown .dropdown-menu {
+  width: auto;
+  margin-left: 10px;
+}
+
+.nav-tabs > li > a:hover {
+  background-color: transparent;
+  border: none;
+}
+
+/*Home Page - Carousel*/
+.carousel.slide {
+  height: 485px;
+  background-color: #f4f4f4;
+  margin-bottom: 65px;
+}
+
+.carousel-control {
+  top: 480px;
+  display: unset;
+  width: 40px;
+  opacity: 1;
+  cursor: pointer;
+}
+
+a.carousel-control .icon-prev, a.carousel-control .icon-next {
+  background-image: url('assets/images/small-icons/arrow_down.svg');
+  width: 40px;
+  height: 40px;
+}
+
+.carousel-control-next-icon {
+  transform: rotate(-90deg);
+}
+
+.carousel-control-prev-icon {
+  transform: rotate(90deg);
+}
+
+.carousel-indicators {
+  z-index: 1;
+  bottom: -35px;
+}
+
+.carousel-indicators .active {
+  background-color: #0D3FBB;
+  width: 10px;
+  height: 10px;
+  margin: 0 5px;
+}
+
+.carousel-indicators li {
+  background-color: #7EB1ED;
+  margin: 0 5px;
+  border: none;
+  width: 10px;
+  height: 10px;
+  z-index: 1;
+  border-radius: 5px;
+}
+
+span.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chevron-right, .carousel-control .icon-next, .carousel-control .icon-prev {
+  width: 0;
+}
+
+/*Help Page - Accordion */
+.panel {
+  box-shadow: none;
+  border: none;
+}
+
+.panel-group .panel + .panel {
+  margin-top: -2px;
+}
+
+.panel-default > .panel-heading {
+  background: #FFF;
+  border: none;
+  border-radius: 0;
+}
+
+.panel-default > .panel-heading + .panel-collapse > .panel-body,
+.panel-collapse .collapse .in .show {
+  border-top: none;
+}
+
+.accordion-img {
+  background-image: url("./assets/images/small-icons/open_accordion.svg");
+  background-repeat: no-repeat;
+  background-size: 20px;
+  padding-right: 30px;
+  background-position-y: 4px;
+  height: 40px;
+}
+
+.panel-open .accordion-img {
+  background-image: url("./assets/images/small-icons/close_accordion.svg");
+  background-size: 20px 20px;
+}
+
+/* Personalized Plan */
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+  border-color: #0D3FBB #0D3FBB #fff;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
+  border: 1px solid #0D3FBB;
+  border-bottom-color: transparent;
+}
+
+.nav-tabs {
+  border-bottom: 1px solid #0D3FBB;
+}
+
+.plan-steps accordion-group:after {
+  height: 3px;
+  display: block;
+  width: 90%;
+  margin: 0 auto 20px auto;
+  clear: both;
+  border-top: 1px solid #ddd;
+  content: '';
+}
+
+/*Location Modal*/
+.modal-content {
+  border-radius: 0;
+}
+
+.close {
+  font-size: 50px;
+  font-weight: 400;
+  color: #0D3FB8;
+  opacity: 1;
+}
+
+@media only screen and (min-width : 768px) {
+  [class*="col-"] {
+    display: inline-block;
+  }
+
+  .container {
+    max-width: 95%;
+  }
+
+  .col-sm-1 {
+    width: 8.333333%
+  }
+
+  .col-sm-2 {
+    width: 16.666667%;
+  }
+
+  .col-sm-3 {
+    width: 25%;
+  }
+
+  .col-sm-4 {
+    width: 33.333333%;
+  }
+
+  .col-sm-6 {
+    width: 50%;
+  }
+
+  .col-sm-5 {
+    width: 41.666667%;
+  }
+
+  .col-sm-7 {
+    width: 58.333333%;
+  }
+
+  .col-sm-8 {
+    width: 66.666667%;
+  }
+
+  .col-sm-9 {
+    width: 75%;
+  }
+
+  .col-sm-10 {
+    width: 83.333333%
+  }
+
+  .col-sm-11 {
+    width: 91.666667%;
+  }
+
+  .col-sm-offset-1 {
+    margin-left: 8.333333%
+  }
+
+  .col-sm-offset-2 {
+    margin-left: 16.666667%;
+  }
+
+  .navbar-nav .open .dropdown-menu {
+    width: 690px;
+    height: auto;
+    overflow: hidden;
+    margin-top: 1px;
+    border: none;
+    border-radius: 0;
+  }
+
+  .carousel.slide {
+    height: 360px;
+  }
+
+  .carousel-control {
+    top: 360px;
+  }
+
+  .carousel-indicators {
+    bottom: -42px;
+  }
+
+  .modal-dialog {
+    max-width: 660px;
+    height: 570px;
+    margin: 0.75rem auto;
+  }
+
+  .modal-content {
+    height: auto;
+  }
+}
+
+@media only screen and (min-width : 992px) {
+  .container {
+    max-width: 95%;
+  }
+
+  .col-md-2 {
+    width: 16.666667%;
+  }
+
+  .col-md-3 {
+    width: 25%;
+  }
+
+  .col-md-4 {
+    width: 33.333333%;
+  }
+
+  .col-md-6 {
+    width: 50%;
+  }
+
+  .col-md-7 {
+    width: 58.333333%;
+  }
+
+  .col-md-8 {
+    width: 66.666667%;
+  }
+
+  .col-md-9 {
+    width: 75%;
+  }
+
+  .col-md-10 {
+    width: 83.333333%;
+  }
+
+  .col-md-offset-1 {
+    margin-left: 8.333333%
+  }
+
+  .col-md-offset-2 {
+    margin-left: 16.666667%;
+  }
+
+  .col-md-offset-3 {
+    margin-left: 25%;
+  }
+
+  .carousel-control {
+    top: 350px;
+    width: 50px;
+  }
+
+  a.carousel-control .icon-prev, a.carousel-control .icon-next {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media only screen and (min-width : 1224px) {
+  .modal-dialog {
+    margin: 1% auto;
+  }
+
+  .row {
+    margin: 30px auto;
+  }
+
+  .container {
+    width: 85%;
+    max-width: 1500px;
+  }
+
+  .col-lg-3 {
+    width: 25%;
+  }
+
+  .col-lg-6 {
+    width: 50%;
+  }
+
+  .col-lg-9 {
+    width: 75%;
+  }
+
+  .carousel-indicators {
+    bottom: -37px;
+  }
+}

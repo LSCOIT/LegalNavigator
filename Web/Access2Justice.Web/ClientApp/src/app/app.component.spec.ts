@@ -19,6 +19,15 @@ import { MapService } from './shared/map/map.service';
 import { of } from 'rxjs/observable/of';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
+import { MsalService, BroadcastService } from '@azure/msal-angular';
+import { MSAL_CONFIG } from '@azure/msal-angular/dist/msal.service';
+import { PersonalizedPlanService } from './guided-assistant/personalized-plan/personalized-plan.service';
+import { HttpClientModule } from '@angular/common/http';
+import { ArrayUtilityService } from './shared/array-utility.service';
+import { ToastrService } from 'ngx-toastr';
+import { LoginService } from './shared/login/login.service';
+import { IUserProfile } from './shared/login/user-profile.model';
+import { TopicService } from './topics-resources/shared/topic.service';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -28,42 +37,69 @@ describe('AppComponent', () => {
   let staticContent;
   let mockMapService;
   let mockRouter;
-  
+  let msalService;
+  let toastrService: ToastrService;
+  let mockLoginService;
+  let mockUserData;
+  let mockLoginResponse;
+
   beforeEach(async(() => {
+
     staticContent = [
       {
-        "name":"HomePage",
-        "location":[
-          {"state":"Default"}
+        "name": "HomePage",
+        "location": [
+          { "state": "Default" }
         ]
       },
       {
-        "name":"PrivacyPromisePage",
-        "location":[
-          {"state":"Default"}
+        "name": "PrivacyPromisePage",
+        "location": [
+          { "state": "Default" }
         ]
       },
       {
-        "name":"HelpAndFAQPage",
-        "location":[
-          {"state":"Default"}
+        "name": "HelpAndFAQPage",
+        "location": [
+          { "state": "Default" }
         ]
       },
       {
-        "name":"Navigation",
-        "location":[
-          {"state":"Default"}
+        "name": "Navigation",
+        "location": [
+          { "state": "Default" }
         ]
       },
       {
-        "name":"AboutPage",
-        "location":[
-          {"state":"Default"}
+        "name": "AboutPage",
+        "location": [
+          { "state": "Default" }
         ]
       }
-    ]
+    ];
+
+    mockUserData = {
+      displayableId: "mockUser",
+      idToken: {
+        name: "mockUser",
+        preferred_username: "mockUser@microsoft.com"
+      },
+      identityProvider: "https://login.microsoftonline.com/123test",
+      name: "mockUser",
+      userIdentifier: "1234567890ABC"
+    }
+
+    mockLoginResponse = {
+      oId: "1234567890ABC",
+      name: "mockUser",
+      eMail: "mockUser@microsoft.com"
+    }
+
     mockStaticResourceService = jasmine.createSpyObj(['getStaticContents']);
-    mockGlobal = jasmine.createSpyObj(['setData']);
+    mockGlobal = jasmine.createSpyObj(['setData','setProfileData']);
+    msalService = jasmine.createSpyObj(['getUser']);
+    mockLoginService = jasmine.createSpyObj(['upsertUserProfile']);
+
     TestBed.configureTestingModule({
       declarations: [
         AppComponent,
@@ -80,31 +116,43 @@ describe('AppComponent', () => {
         SubtopicsComponent
       ],
       imports: [
-        FormsModule
+        FormsModule,
+        HttpClientModule
       ],
-      providers: [
+      providers: [AppComponent, PersonalizedPlanService, ArrayUtilityService, ToastrService,
+        { provide: MsalService, useValue: msalService },
         { provide: StaticResourceService, useValue: mockStaticResourceService },
         { provide: Global, useValue: mockGlobal },
         { provide: MapService, useValue: mockMapService },
         { provide: Router, useValue: mockRouter },
-        NgxSpinnerService
+        { provide: MSAL_CONFIG, useValue: {} },
+        { provide: ToastrService, useValue: toastrService },
+        { provide: LoginService, useValue: mockLoginService },
+        NgxSpinnerService,
+        BroadcastService,
+        TopicService
       ],
       schemas: [
         NO_ERRORS_SCHEMA,
         CUSTOM_ELEMENTS_SCHEMA
       ]
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
+    //create component and test fixture
     fixture = TestBed.createComponent(AppComponent);
-    component = fixture.componentInstance;
-    spyOn(component, 'ngOnInit');
-    fixture.detectChanges();
-  });
+
+    // UserService provided to the TestBed
+    msalService = TestBed.get(MsalService);
+    component = TestBed.get(AppComponent);
+    toastrService = TestBed.get(ToastrService);
+
+  }));
 
   it('should create the app', async(() => {
     expect(component).toBeTruthy();
+  }));
+  it('should create the app', async(() => {
+    expect(component).toBeDefined();
   }));
 
   it(`should have as title 'app'`, async(() => {
@@ -117,4 +165,21 @@ describe('AppComponent', () => {
     expect(component.staticContentResults).toEqual(staticContent);
     expect(mockGlobal.setData).toHaveBeenCalledWith(component.staticContentResults);
   });
+
+  it('should create the user profile by calling createOrGetProfile', () => {
+    msalService.getUser.and.returnValue(mockUserData);
+    mockLoginService.upsertUserProfile.and.returnValue(of(mockLoginResponse));
+    component.createOrGetProfile();
+    expect(component.userProfile.name).toEqual("mockUser");
+    expect(component.userProfile.firstName).toBe("");
+    expect(component.userProfile.eMail).toEqual("mockUser@microsoft.com");
+  });
+  
+  it('should call setProfileData from global', () => {
+    msalService.getUser.and.returnValue(mockUserData);
+    mockLoginService.upsertUserProfile.and.returnValue(of(mockLoginResponse));
+    component.createOrGetProfile();
+    expect(mockGlobal.setProfileData).toHaveBeenCalledWith("1234567890ABC", "mockUser", "mockUser@microsoft.com");
+  });
 });
+

@@ -216,4 +216,9 @@ export class MapComponent implements OnInit {
 
     this.setLocalMapLocation();
   }
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  } 
 }

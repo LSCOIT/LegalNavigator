@@ -1,12 +1,12 @@
-<div class="inline language-display" [ngClass]="{'white-bg': setBgColor, '': !setBgColor}" id="language-dropdown">
+<div class="inline" [ngClass]="{'white-bg': setBgColor, '': !setBgColor}" id="language-dropdown">
   <img *ngIf="language && language.navigationImage.source"
-        class="nav-icon language-display"
+        class="nav-icon"
         [src]="blobUrl + language?.navigationImage?.source"
         aria-hidden="true"
         alt="language?.navigationImage?.altText" />
-  <span class="language-display">Language</span>
+  <span>Language</span>
   <img *ngIf="language && language.dropDownImage.source"
-        class="dropdown-icon language-display"
+        class="dropdown-icon"
         [src]="blobUrl + language?.dropDownImage?.source"
         [alt]="language?.dropDownImage?.source" />
 </div>

@@ -1,14 +1,35 @@
+.container {
+  padding-top: 7%;
+  padding-bottom: 7%;
+}
+
 h1 {
   margin-top: 0;
 }
 
-.top-row {
-  margin-top: 0;
+hr {
+  border-top: 1.5px solid #ddd;
 }
 
 #home-img {
   width: 100%;
-  margin-top: 10px;
+  max-width: 450px;
+}
+
+.tagline {
+  text-align: center;
+}
+
+.hero-content {
+  text-align: center;
+}
+
+.hero-description {
+  margin: 20px auto 55px auto;
+}
+
+#dropdown-arrow {
+  display: none;
 }
 
 .outer-bg {
@@ -17,6 +38,7 @@ h1 {
 
 .secondary-img {
   width: 65%;
+  height: 65%;
   margin: 20px auto;
   float: none;
 }
@@ -26,16 +48,23 @@ h1 {
 }
 
 .testimonial-img {
-  width: 200px;
-  height: 200px;
-  background-color: #333;
-  border-radius: 10px;
-  margin: 0 auto;
-  display: block;
   margin-bottom: 15px;
+  text-align: center;
 }
 
-ul>li {
+.testimonial-img img {
+  max-width: 150px;
+  max-height: 150px;
+  border-radius: 10px;
+}
+
+.slide-content-bottom {
+  padding-top: 10px;
+  clear: both;
+  text-align: center;
+}
+
+ul > li {
   padding-bottom: 15px;
 }
 
@@ -44,15 +73,23 @@ ul>li>span {
   margin-right: 5px;
 }
 
-.privacy-promise {
-  background-color: #0B2B78;
-  color: #F4F4F4;
-  padding: 40px 0;
+.sponsor-overview .btn {
   margin-bottom: 0;
 }
 
-.privacy-promise button {
-  margin-left: 0;
+.privacy-promise {
+  background-color: #0B2B78;
+  color: #F4F4F4;
+  margin-bottom: 0;
+}
+
+.privacy-promise h2 {
+  margin: 20px 0;
+  color: #f4f4f4;
+}
+
+.privacy-promise img {
+  width: 65%;
 }
 
 .panel-heading {
@@ -60,59 +97,169 @@ ul>li>span {
   border-radius: 25px;
   margin-top: 15px;
   margin-bottom: 10px;
+  min-width: 250px;
+  position: relative;
 }
 
 .label-display {
-  float: left;
-  padding-right: 10px;
+  position: absolute;
+  top: -35px;
+  left: 0;
+  right: 0;
 }
 
 @media only screen and (min-width : 768px) {
-  .top-row {
-      margin-top: 20px;
+  h2 {
+    margin: 0 15% 20px 15%;
   }
 
-  .tagline {
-      padding: 0;
-      text-align: left;
+  .hero-content {
+    padding-top: 50px;
+    padding-bottom: 65px;
+  }
+
+  .hero-description {
+    margin-bottom: 40px;
   }
 
   #home-img {
-      width: 95%;
-      margin-top: 0;
+    max-width: 750px;
   }
-    
+
+  .tagline {
+    float: left;
+    padding: 0;
+    text-align: left;
+    padding-right: 20px;
+  }
+
+  .label-display {
+    float: left;
+    right: auto;
+  }
+
+  .add-state {
+    padding-right: 45px;
+  }
+
+  #dropdown-arrow {
+    display: block;
+    width: 20px;
+    top: 100%;
+    position: absolute;
+    left: -9.6px;
+  }
+
   .secondary-img {
-      width: 80%;
-      margin-top: 0;
-      float: right;
+    margin-top: 0;
+    float: right;
+  }
+
+  .guided-assistant-steps {
+    text-align: left;
+    float: right;
+  }
+
+  ul>li>span {
+    display: inline-block;
   }
 
   .slide-content {
     text-align: left;
-    padding-left: 8%;
+    padding-left: 10%;
+    padding-top: 5%
   }
 
-  .guided-assistant-steps {
-      text-align: left;
+  .testimonial-img {
+    float: left;
   }
 
-  ul>li>span {
-      display: inline-block;
+  .testimonial-img img {
+    max-width: 215px;
+    max-height: 215px;
   }
 
   .privacy-promise {
-      text-align: left;
+    text-align: left;
+  }
+  
+  .privacy-promise .privacy-content {
+    text-align: left;
+  }
+
+  .privacy-promise img {
+    width: 100%;
   }
 }
 
 @media only screen and (min-width : 992px) {
+  h2 {
+    margin: 0 19% 40px 19%;
+  }
+
+  .hero-content {
+    padding-top: 15px;
+    padding-bottom: 100px;
+  }
+
+  .label-display {
+    position: static;
+    padding: 15px 0 15px 15px;
+  }
+
+  .slide-content {
+    padding-left: 10%;
+  }
+
+  .slide-content .mobile-hidden {
+    text-align: left;
+  }
+
+  .panel-heading {
+    min-width: 400px;
+  }
+
+  .guided-assistant-steps .btn-primary {
+    margin-bottom: 0;
+  }
+
+  .testimonial-img img {
+    max-width: 300px;
+    max-height: 300px;
+  }
+
+  .mobile-hidden {
+    display: block;
+  }
+  
+  .privacy-promise .privacy-content {
+    padding-top: 5%;
+  }
+}
+
+@media only screen and (min-width : 1124px) {
   .tagline {
     margin-top: 10%;
   }
 
-  .testimonial-img {
-    width: 230px;
-    height: 230px;
+  .slide-content {
+    padding-left: 7%;
+  }
+}
+
+@media only screen and (min-width : 1224px) {
+  .outer-bg {
+    margin-top: -110px;
+  }
+
+  .topic-button {
+    margin-bottom: 100px;
+  }
+}
+
+@media only screen and (min-width : 1824px) {
+  .container {
+    padding-top: 100px;
+    padding-bottom: 100px;
   }
 }

@@ -4,7 +4,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
-import { NgxSpinnerModule } from 'ngx-spinner';
+
 import {
   AccordionModule,
   BsDropdownModule,
@@ -15,6 +15,8 @@ import {
   ProgressbarConfig,
   TabsModule
 } from 'ngx-bootstrap';
+import { MsalModule } from '@azure/msal-angular';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 import { AppComponent } from './app.component';
 import { AboutComponent } from './about/about.component';
@@ -40,6 +42,13 @@ import { StaticResourceService } from './shared/static-resource.service';
 import { ResponseInterceptor } from './response-interceptor';
 import { Global } from './global';
 import { CuratedExperienceResultComponent } from './guided-assistant/curated-experience-result/curated-experience-result.component';
+import { ProfileResolver } from './app-resolver/profile-resolver.service';
+import { MsalInterceptor } from '@azure/msal-angular';
+import { environment } from '../environments/environment';
+import { api } from '../api/api';
+
+export const protectedResourceMap: [string, string[]][] = [[api.checkPermaLink, [environment.apiScope]], [api.shareUrl, [environment.apiScope]]
+  , [api.unShareUrl, [environment.apiScope]], [api.getProfileUrl, [environment.apiScope]], [api.userPlanUrl, [environment.apiScope]]] 
 
 @NgModule({
   declarations: [
@@ -74,12 +83,25 @@ import { CuratedExperienceResultComponent } from './guided-assistant/curated-exp
     ModalModule.forRoot(),
     ProgressbarModule.forRoot(),
     TabsModule.forRoot(),
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    MsalModule.forRoot({
+      clientID: environment.clientID,
+      authority: environment.authority,
+      consentScopes: environment.consentScopes,
+      redirectUri: environment.redirectUri,
+      navigateToLoginRequestUrl: environment.navigateToLoginRequestUrl,
+      postLogoutRedirectUri: environment.postLogoutRedirectUri,
+      protectedResourceMap: protectedResourceMap
+    })
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ResponseInterceptor,
+      multi: true
+    }, {
+      provide: HTTP_INTERCEPTORS,
+      useClass: MsalInterceptor,
       multi: true
     },
     TopicService,
@@ -90,7 +112,8 @@ import { CuratedExperienceResultComponent } from './guided-assistant/curated-exp
     ProfileComponent,
     PersonalizedPlanComponent,
     StaticResourceService,
-    Global
+    Global,
+    ProfileResolver
   ],
   bootstrap: [AppComponent]
 })

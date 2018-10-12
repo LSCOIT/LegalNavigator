@@ -6,6 +6,7 @@ import { ShowMoreService } from "../../shared/sidebars/show-more/show-more.servi
 import { ISubtopicGuidedInput } from "../shared/topic";
 import { Input } from "@angular/core/src/metadata/directives";
 import { MapService } from "../../shared/map/map.service";
+import { Global } from '../../global';
 
 @Component({
   selector: 'app-subtopics',
@@ -28,8 +29,9 @@ export class SubtopicsComponent implements OnInit {
     private router: Router,
     private navigateDataService: NavigateDataService,
     private showMoreService: ShowMoreService,
-    private mapService: MapService
-  ) { }
+    private mapService: MapService,
+    private global: Global
+   ) { }
 
 
   getSubtopics(): void {
@@ -44,6 +46,7 @@ export class SubtopicsComponent implements OnInit {
     this.topicService.getSubtopics(this.activeTopic)
       .subscribe(
       subtopics => {
+        this.sortAlphabetically(subtopics);
         this.subtopics = subtopics;
         this.navigateDataService.setData(this.subtopics);
         if (this.subtopics.length === 0) {
@@ -55,6 +58,15 @@ export class SubtopicsComponent implements OnInit {
   clickSeeMoreOrganizationsFromSubtopic(resourceType: string) {
     this.showMoreService.clickSeeMoreOrganizations(resourceType, this.activeTopic);
   }
+
+  sortAlphabetically(subtopics) {
+    subtopics.sort((a, b) =>
+        a.name.toLowerCase() !== b.name.toLowerCase() ?
+          a.name.toLowerCase() < b.name.toLowerCase() ?
+            -1 : 1 : 0
+    );
+  }
+
   ngOnInit() {
     this.activeRoute.url
       .subscribe(routeParts => {
@@ -64,7 +76,20 @@ export class SubtopicsComponent implements OnInit {
       });
     this.subscription = this.mapService.notifyLocation
       .subscribe((value) => {
-        this.router.navigateByUrl('/topics')
+        this.topicService.getTopics().subscribe(response => {
+          if (response != undefined) {
+            this.global.topicsData = response;
+            if (this.router.url.startsWith('/topics') || this.router.url.startsWith('/subtopics')) {
+              this.router.navigateByUrl('/topics');
+            }
+          }
+        });
       });
   }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  } 
 }

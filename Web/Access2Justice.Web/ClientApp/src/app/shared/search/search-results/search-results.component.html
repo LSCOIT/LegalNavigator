@@ -1,10 +1,10 @@
 <div [ngClass]="{ 'no-container': fullPage, 'container': !fullPage }">
-  <div *ngIf="isInternalResource || displayMessage">
+  <div class="row" *ngIf="isInternalResource || displayMessage">
     <h2>Results for {{topIntent}}.</h2>
   </div>
   <div *ngIf="isInternalResource || displayMessage">
     <div class="panel-heading box-shadow">
-      <span class="label-display mobile-hidden">Showing Information for </span>
+      <span class="label-display">Showing Information for </span>
       <app-map #location [mapType]="false"></app-map>
     </div>
   </div>
@@ -29,7 +29,7 @@
       <app-search-filter (notifyFilterCriteria)='filterSearchResults($event)' [resourceResults]="resourceResults" [initialResourceFilter]="initialResourceFilter"></app-search-filter>
     </div>
   </div>
-  <div>
+  <div class="row">
     <div [ngClass]="{ 'col-sm-12': fullPage, 'col-md-8 col-sm-12': !fullPage }">
       <div *ngIf="isInternalResource || isPersonalizedresource">
         <div *ngFor="let searchResource of searchResults.resources | searchFilter:{ filter : sortType, source : 'internal'} ">

@@ -23,95 +23,95 @@
             </ul>
           </div>
         </div>
-        <div>
-          <div class="col-md-9 col-xs-12 pull-right plan-steps">
-            <accordion>
-              <accordion-group *ngFor="let step of topic.steps">
-                <div accordion-heading>
-                  <div class="col-sm-9 col-xs-12">
-                    <div class="media">
-                      <div class="media-left accordion-img" [ngClass]="{'accordion-img-grey':step.isComplete, '': !step.isComplete}">
-                      </div>
-                      <div class="media-body">
-                        <h3 [ngClass]="{'header-completed':step.isComplete, '': !step.isComplete}">Step {{step.order}}. {{step.title}}</h3>
-                      </div>
+      </div>
+      <div class="col-md-12">
+        <div class="col-md-9 col-sm-12 pull-right plan-steps">
+          <accordion>
+            <accordion-group *ngFor="let step of topic.steps">
+              <div accordion-heading>
+                <div class="col-sm-9 col-xs-12">
+                  <div class="media">
+                    <div class="media-left accordion-img" [ngClass]="{'accordion-img-grey':step.isComplete, '': !step.isComplete}">
+                    </div>
+                    <div class="media-body">
+                      <h3 [ngClass]="{'header-completed':step.isComplete, '': !step.isComplete}">Step {{step.order}}. {{step.title}}</h3>
                     </div>
                   </div>
                 </div>
-                <div class="col-xs-12 step-content">
-                  <h4 class="print-only" *ngIf="step.isComplete">Completed</h4>
-                  <h4 class="print-only" *ngIf="!step.isComplete">Not Completed</h4>
-                  <div [ngClass]="{'checkbox disabled':!global.showMarkComplete, '':global.showMarkComplete}" class="col-sm-3 col-xs-12 btn-selected" id="complete-btn">
-                    <label class="ps no-print">
-                      <input id="checkBox" class="no-print" type="checkbox" (change)="checkCompleted($event,topic.topicId,step.stepId)"
-                             [ngModel]="step.isComplete" [disabled]="!global.showMarkComplete">
-                      Completed
-                    </label>
-                  </div>
-                  <div>
-                    <p>{{step.description}}</p>
-                  </div>
-                  <div>
-                    <ul>
-                      If the summons is real, prepare for your court date.
-                      <li>
-                        <a href="https://alaskalawhelp.org/" class="link">Set up a reminder for your court date.</a>
-                        <div class="print-only">https://alaskalawhelp.org/</div>
-                      </li>
+              </div>
+              <div class="col-xs-12 step-content">
+                <h4 class="print-only" *ngIf="step.isComplete">Completed</h4>
+                <h4 class="print-only" *ngIf="!step.isComplete">Not Completed</h4>
+                <div [ngClass]="{'checkbox disabled':!global.showMarkComplete, '':global.showMarkComplete}" class="col-sm-3 col-xs-12 btn-selected" id="complete-btn">
+                  <label class="ps no-print">
+                    <input id="checkBox" class="no-print" type="checkbox" (change)="checkCompleted($event,topic.topicId,step.stepId)"
+                            [ngModel]="step.isComplete" [disabled]="!global.showMarkComplete">
+                    Completed
+                  </label>
+                </div>
+                <div>
+                  <p>{{step.description}}</p>
+                </div>
+                <div>
+                  <ul>
+                    If the summons is real, prepare for your court date.
+                    <li>
+                      <a href="https://alaskalawhelp.org/" class="link">Set up a reminder for your court date.</a>
+                      <div class="print-only">https://alaskalawhelp.org/</div>
+                    </li>
 
-                      <li>
-                        <a href="https://alaskalawhelp.org/" class="link">Learn more about court appearances and what to expect.</a>
-                        <div class="print-only">https://alaskalawhelp.org/</div>
-                      </li>
-                    </ul>
-                  </div>
-                  <div>
-                    <ul>
-                      If the summons is not real, you should talk to your landlord.
-                      <li>
-                        <a href="https://alaskalawhelp.org/" class="link">Set up a reminder for your court date.</a>
-                        <div class="print-only">https://alaskalawhelp.org/</div>
-                      </li>
-                      <li>
-                        <a href="https://alaskalawhelp.org/" class="link">Learn more about court appearances and what to expect.</a>
-                        <div class="print-only">https://alaskalawhelp.org/</div>
-                      </li>
-                    </ul>
-                  </div>
-                  <div *ngFor="let resource of step.resources">
-                    <div *ngIf="resource.resourceType === 'Videos'" class="row">
-                      <div class="media-left no-print">
-                        <img class="media-object" src="../../../assets/images/icons/videos.svg" aria-hidden="True">
-                      </div>
-                      <div class="media-body">
-                        <h4 class="media-heading video-heading" (click)="openModal(videoTemplate)">{{resource.name}}</h4>
-                        <p>{{resource.description}}</p>
-                      </div>
-                      <ng-template #videoTemplate>
-                        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                        <iframe title="{{resource.name}}" [src]='resourceUrl(resource.url)' frameborder="0" allowfullscreen></iframe>
-                      </ng-template>
+                    <li>
+                      <a href="https://alaskalawhelp.org/" class="link">Learn more about court appearances and what to expect.</a>
+                      <div class="print-only">https://alaskalawhelp.org/</div>
+                    </li>
+                  </ul>
+                </div>
+                <div>
+                  <ul>
+                    If the summons is not real, you should talk to your landlord.
+                    <li>
+                      <a href="https://alaskalawhelp.org/" class="link">Set up a reminder for your court date.</a>
+                      <div class="print-only">https://alaskalawhelp.org/</div>
+                    </li>
+                    <li>
+                      <a href="https://alaskalawhelp.org/" class="link">Learn more about court appearances and what to expect.</a>
+                      <div class="print-only">https://alaskalawhelp.org/</div>
+                    </li>
+                  </ul>
+                </div>
+                <div *ngFor="let resource of step.resources">
+                  <div *ngIf="resource.resourceType === 'Videos'" class="row">
+                    <div class="media-left no-print">
+                      <img class="media-object" src="../../../assets/images/icons/videos.svg" aria-hidden="True">
                     </div>
-                    <div *ngIf="resource.resourceType==='Organizations' && resource.telephone">
-                      <img src="./assets/images/small-icons/call.svg" alt="Phone number" class="nav-icon">
-                      <span class="p">{{resource.telephone}}</span>
+                    <div class="media-body">
+                      <h4 class="media-heading video-heading" (click)="openModal(videoTemplate)">{{resource.name}}</h4>
+                      <p>{{resource.description}}</p>
                     </div>
+                    <ng-template #videoTemplate>
+                      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                      <iframe title="{{resource.name}}" [src]='resourceUrl(resource.url)' frameborder="0" allowfullscreen></iframe>
+                    </ng-template>
+                  </div>
+                  <div *ngIf="resource.resourceType==='Organizations' && resource.telephone">
+                    <img src="./assets/images/small-icons/call.svg" alt="Phone number" class="nav-icon">
+                    <span class="p">{{resource.telephone}}</span>
                   </div>
                 </div>
-              </accordion-group>
-            </accordion>
-          </div>
-          <div class="col-md-3 col-xs-12 quick-links">
-            <p>Quick Links</p>
-            <ul>
-              <li *ngFor="let quickLink of topic.quickLinks">
-                <a href={{quickLink.url}} class="link">{{quickLink.text}}</a>
-                <div class="print-only">{{quickLink.url}}</div>
-              </li>              
-            </ul>
-          </div>
+              </div>
+            </accordion-group>
+          </accordion>
+        </div>
+        <div class="col-md-3 col-sm-12 quick-links">
+          <p>Quick Links</p>
+          <ul>
+            <li *ngFor="let quickLink of topic.quickLinks">
+              <a href={{quickLink.url}} class="link">{{quickLink.text}}</a>
+              <div class="print-only">{{quickLink.url}}</div>
+            </li>              
+          </ul>
         </div>
       </div>
     </div>

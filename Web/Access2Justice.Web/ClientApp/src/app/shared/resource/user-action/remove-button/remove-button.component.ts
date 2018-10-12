@@ -16,8 +16,7 @@ export class RemoveButtonComponent implements OnInit {
   @Input() resourceId;
   @Input() resourceType;
   @Input() personalizedResources;
-  @Input() selectedPlanDetails;
-  userId: string;
+  @Input() selectedPlanDetails;  
   removeResource: SavedResources;
   profileResources: ProfileResources = { oId: '', resourceTags: [], type: '' };
   isRemovedPlan: boolean = false;
@@ -30,13 +29,7 @@ export class RemoveButtonComponent implements OnInit {
     private personalizedPlanComponent: PersonalizedPlanComponent,
     private router: Router,
     private eventUtilityService: EventUtilityService,
-    private global: Global
-  ) {
-    let profileData = sessionStorage.getItem("profileData");
-    if (profileData != undefined) {
-      profileData = JSON.parse(profileData);
-      this.userId = profileData["UserId"];
-    }
+    private global: Global) {    
     if (global.role === UserStatus.Shared && location.pathname.indexOf(global.shareRouteUrl) >= 0) {
       global.showRemove = false;
     }
@@ -80,7 +73,7 @@ export class RemoveButtonComponent implements OnInit {
     this.personalizedPlanService.userPlan(params)
       .subscribe(response => {
         if (response) {
-          if (this.userId) {
+          if (this.global.userId) {
             this.profileComponent.getPersonalizedPlan();
           } else {
             this.personalizedPlanComponent.getTopics();
@@ -131,7 +124,7 @@ export class RemoveButtonComponent implements OnInit {
   }
 
   saveResourceToProfile(resourceTags) {
-    this.profileResources = { oId: this.userId, resourceTags: resourceTags, type: 'resources' };
+    this.profileResources = { oId: this.global.userId, resourceTags: resourceTags, type: 'resources' };
     this.personalizedPlanService.saveResources(this.profileResources)
       .subscribe(response => {
         if (response != undefined) {

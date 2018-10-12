@@ -24,9 +24,8 @@ describe('ResourceCardDetailComponent', () => {
   let component: ResourceCardDetailComponent;
   let fixture: ComponentFixture<ResourceCardDetailComponent>;
   let mockResourceService;
-  let mockResource;
-  let mockRouter;
-  let mockGlobal;
+  let mockResource, mockRouter, mockGlobal;
+  let mockActivatedRoute = ActivatedRoute
 
   beforeEach(async(() => {
     mockResource = [
@@ -107,5 +106,13 @@ describe('ResourceCardDetailComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+  
+  it('should call getResource ', function () {
+    spyOn(component, 'getResource');
+    component.resourceId = component.resource.id;
+    mockResourceService.getResource();
+    component.getResource();
+    expect(component.resourceId).toEqual(mockResource[0].id);
   });
 });

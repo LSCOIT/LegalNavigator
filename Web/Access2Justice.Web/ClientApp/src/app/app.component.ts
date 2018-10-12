@@ -2,8 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Global, UserStatus } from './global';
 import { StaticResourceService } from './shared/static-resource.service';
 import { MapService } from './shared/map/map.service';
+import { MsalService } from '@azure/msal-angular';
+import { LoginService } from './shared/login/login.service';
+import { IUserProfile } from './shared/login/user-profile.model';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
+import { TopicService } from './topics-resources/shared/topic.service';
 
 @Component({
   selector: 'app-root',
@@ -14,38 +18,32 @@ export class AppComponent implements OnInit {
   title = 'app';
   staticContentResults: any;
   subscription: any;
-
-  constructor(
+  userProfile: IUserProfile;
+  
+  constructor(    
     private global: Global,
     private staticResourceService: StaticResourceService,
+    private msalService: MsalService,
     private mapService: MapService,
+    private loginService: LoginService,
     private spinner: NgxSpinnerService,
-    private router: Router
+    private router: Router,
+    private topicService: TopicService
   )
   { }
 
-  getCookie(cookieName: string) {
-    let cookieNameEQ = cookieName + "=";
-    let cookies = document.cookie.split(';');
-    for (let i = 0; i < cookies.length; i++) {
-      let cookie = cookies[i];
-      while (cookie.charAt(0) == ' ')
-        cookie = cookie.substring(1, cookie.length);
-      if (cookie.indexOf(cookieNameEQ) == 0) {
-        return cookie.substring(cookieNameEQ.length, cookie.length);
-      }
+  createOrGetProfile() {    
+    let userData = this.msalService.getUser();
+    this.userProfile = {
+      name: userData.idToken['name'], firstName: "", lastName: "", oId: userData.idToken['oid'], eMail: userData.idToken['preferred_username'], isActive: "Yes",
+      createdBy: userData.idToken['name'], createdTimeStamp: (new Date()).toUTCString(), modifiedBy: userData.idToken['name'], modifiedTimeStamp: (new Date()).toUTCString()
     }
-    return null;
-  }
-
-  deleteCookie(name: string, value: string, days: number) {
-    let expires = "";
-    if (days) {
-      let date = new Date();
-      date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-      expires = "; expires=" + date.toUTCString();
-    }
-    document.cookie = name + "=" + value + expires + "; path=/";
+    this.loginService.upsertUserProfile(this.userProfile)
+      .subscribe(response => {
+        if (response) {          
+          this.global.setProfileData(response.oId, response.name, response.eMail);          
+        }
+      });
   }
 
   onActivate(event) {
@@ -60,34 +58,26 @@ export class AppComponent implements OnInit {
           this.spinner.hide();
           this.staticContentResults = response;
           this.global.setData(this.staticContentResults);
-      }, error => {
+        }, error => {
           this.spinner.hide();
           this.router.navigate(['/error']);
-      });
+        });
   }
 
-  ngOnInit() {
-    let profileData = this.getCookie("profileData");
-    if (profileData != undefined) {
-      profileData = decodeURIComponent(profileData);
-      sessionStorage.setItem("profileData", profileData);
-      this.deleteCookie("profileData", "", -1);
-      this.global.role = UserStatus.Authorized;
-    }
-    else {
-      profileData = sessionStorage.getItem("profileData");
-      if (profileData != undefined) {
-        profileData = JSON.parse(profileData);
-        if (profileData["IsShared"]) {
-          sessionStorage.removeItem("profileData");
-        }
-      }
-    }
-
+  ngOnInit() {    
     this.subscription = this.mapService.notifyLocation
       .subscribe((value) => {
         this.setStaticContentData();
       });
     this.setStaticContentData();
+    if (this.msalService.getUser() && !this.global.userId) {
+      this.createOrGetProfile();
+    }
   }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  } 
 }
