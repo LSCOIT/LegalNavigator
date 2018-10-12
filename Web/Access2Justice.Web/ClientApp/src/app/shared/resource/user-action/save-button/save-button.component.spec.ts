@@ -13,7 +13,8 @@ import { ToastrService } from 'ngx-toastr';
 import { MsalService } from '@azure/msal-angular';
 import { Observable } from 'rxjs/Observable';
 import { environment } from '../../../../../environments/environment';
-describe('SaveButtonComponent', () => {
+import { Mock } from 'protractor/built/driverProviders';
+fdescribe('SaveButtonComponent', () => {
   let component: SaveButtonComponent;
   let fixture: ComponentFixture<SaveButtonComponent>;
   let mockToastr;
@@ -126,6 +127,7 @@ describe('SaveButtonComponent', () => {
   {
     stepId: '', title: '', description: '', order: 2, isComplete: false, resources: ['d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef'], topicIds: ['d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef']
   }];
+  let mockPlanSteps = { stepId: 'testStepId', title: 'testStepTitle', description: 'testdescription', order: 1, isComplete: false, resources: ['d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef'], topicIds: ['d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef'] };
   let mockUserData = {
     displayableId: "mockUser",
     idToken: {
@@ -257,4 +259,9 @@ describe('SaveButtonComponent', () => {
     expect(component.savedResources.resourceType).toEqual('NoPlan');
   });
 
-});
+  it('should get topic ids from plan or topics', () => {
+    component.getTopicIds(mockPlanDetails.topics);
+    expect(component.topicIds).toContain('d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef');
+  });
+
+ });
