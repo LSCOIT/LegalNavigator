@@ -73,14 +73,20 @@ namespace Access2Justice.Shared.A2JAuthor
 
             foreach (ButtonComponent button in curatedExperienceAnswers.ButtonComponents)
             {
-                userAnswers.Add(button.Name, button.Value);
+                if (!string.IsNullOrWhiteSpace(button.Name) && !string.IsNullOrWhiteSpace(button.Value))
+                {
+                    userAnswers.Add(button.Name, button.Value);
+                }
             }
 
             foreach (FieldComponent fieldComponent in curatedExperienceAnswers.FieldComponents)
             {
                 foreach (AnswerField field in fieldComponent.Fields)
                 {
-                    userAnswers.Add(field.Name, field.Value);
+                    if (!string.IsNullOrWhiteSpace(field.Name) && !string.IsNullOrWhiteSpace(field.Value))
+                    {
+                        userAnswers.Add(field.Name, field.Value);
+                    }
                 }
             }
 

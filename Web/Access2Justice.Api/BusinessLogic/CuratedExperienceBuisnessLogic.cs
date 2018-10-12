@@ -108,25 +108,41 @@ namespace Access2Justice.Api.BusinessLogic
 
             var destinationComponent = new CuratedExperienceComponent();
             var currentComponent = curatedExperience.Components.Where(x => x.Buttons.Contains(currentButton)).FirstOrDefault();
-            if ((!string.IsNullOrWhiteSpace(currentComponent.Code.CodeBefore) && currentComponent.Code.CodeBefore.Contains(Tokens.GOTO)) ||
-                (!string.IsNullOrWhiteSpace(currentComponent.Code.CodeAfter) && currentComponent.Code.CodeAfter.Contains(Tokens.GOTO)))
-            {
-                var answers = new CuratedExperienceAnswers();
-                answers.ButtonComponents.Add(new ButtonComponent
-                {
-                    CodeBefore = currentComponent.Code.CodeBefore,
-                    CodeAfter = currentComponent.Code.CodeAfter,
-                    Name = string.Empty,
-                    Value = string.Empty
-                });
+            //if ((!string.IsNullOrWhiteSpace(currentComponent.Code.CodeBefore) && currentComponent.Code.CodeBefore.Contains(Tokens.GOTO)) ||
+            //    (!string.IsNullOrWhiteSpace(currentComponent.Code.CodeAfter) && currentComponent.Code.CodeAfter.Contains(Tokens.GOTO)))
+            //{
+            //    var answers = new CuratedExperienceAnswers();
+            //    //answers.ButtonComponents.Add(new ButtonComponent
+            //    //{
+            //    //    CodeBefore = currentComponent.Code.CodeBefore,
+            //    //    CodeAfter = currentComponent.Code.CodeAfter,
+            //    //    Name = currentComponent.Name,
+            //    //    Value = currentComponent.Buttons.FirstOrDefault().,
+            //    //});
+            //    var tempParser = new Dictionary<string, string>();
+            //    foreach(var button in currentComponent.Buttons)
+            //    {
+            //        if(!string.IsNullOrWhiteSpace(button.Name) && !string.IsNullOrWhiteSpace(button.Value))
+            //        answers.ButtonComponents.Add(new ButtonComponent
+            //        {
+            //            CodeBefore = currentComponent.Code.CodeBefore,
+            //            CodeAfter = currentComponent.Code.CodeAfter,
+            //            Name = button.Name,
+            //            Value = button.Value,
+            //        });
 
-                var parsedCode = parser.Parse(answers);
-                var temp = parsedCode.Values.LastOrDefault();
-                destinationComponent = curatedExperience.Components.Where(x => x.Name.Contains(parsedCode.Values.LastOrDefault())).FirstOrDefault();
+            //        var parsedCode = parser.Parse(answers);
+            //        tempParser = parser.Parse(answers);
+            //        var temp = parsedCode.Values.LastOrDefault();
+            //        destinationComponent = curatedExperience.Components.Where(x => x.Name.Contains(parsedCode.Values.LastOrDefault())).FirstOrDefault();
+            //    }
 
-                var breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
-            }
-            else if (!string.IsNullOrWhiteSpace(currentButton.Destination))
+            //    destinationComponent = curatedExperience.Components.Where(x => x.Name.Contains(tempParser.Values.LastOrDefault())).FirstOrDefault();
+
+            //    var breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
+            //}
+            //else 
+            if (!string.IsNullOrWhiteSpace(currentButton.Destination))
             {
                 if (curatedExperience.Components.Where(x => x.Name == currentButton.Destination).Any())
                 {

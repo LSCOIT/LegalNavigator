@@ -105,19 +105,19 @@ namespace Access2Justice.Shared.Extensions
                     {
                         varsValues.Add(varValue, Tokens.FalseTokens.LogicalFalse);
                     }
-                    else if(varialbe.Contains(Tokens.EqualSign))
+                    else
                     {
-                        // <BR/><BR/><BR/>IF [Final decision issue MC]= "Want to change something"<BR/>
-                        var breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
-                        var matchedString = Regex.Matches(inputText, "\"([^\"]*)\"").FirstOrDefault().Value;
-                        varsValues.Add(Tokens.NextStep + "-" + Guid.NewGuid(), matchedString.Replace("\"", "").
-                            Replace(Tokens.VarNameLeftSign, "").Replace(Tokens.VarNameRightSign, ""));
-
-                        var breakpoin2 = string.Empty; // Todo:@Alaa - remove this temp code
+                        var matchQuotes = Regex.Matches(inputText, "\"([^\"]*)\"");
+                        var matchedString = string.Empty;
+                        if (matchQuotes.Any())
+                        {
+                            matchedString = matchQuotes.FirstOrDefault().Value.Replace("\"", "");
+                        }
+                        varsValues.Add(varValue, matchedString.Replace(Tokens.VarNameLeftSign, "").Replace(Tokens.VarNameRightSign, ""));
                     }
                 }
             }
-           
+
 
             return varsValues;
         }
