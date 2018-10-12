@@ -46,6 +46,7 @@ export class SubtopicsComponent implements OnInit {
     this.topicService.getSubtopics(this.activeTopic)
       .subscribe(
       subtopics => {
+        this.sortAlphabetically(subtopics);
         this.subtopics = subtopics;
         this.navigateDataService.setData(this.subtopics);
         if (this.subtopics.length === 0) {
@@ -56,6 +57,14 @@ export class SubtopicsComponent implements OnInit {
 
   clickSeeMoreOrganizationsFromSubtopic(resourceType: string) {
     this.showMoreService.clickSeeMoreOrganizations(resourceType, this.activeTopic);
+  }
+
+  sortAlphabetically(subtopics) {
+    subtopics.sort((a, b) =>
+        a.name.toLowerCase() !== b.name.toLowerCase() ?
+          a.name.toLowerCase() < b.name.toLowerCase() ?
+            -1 : 1 : 0
+    );
   }
 
   ngOnInit() {

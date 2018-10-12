@@ -73,10 +73,11 @@ ul.web-hidden {
   background-color: #fff;
   overflow: scroll;
   transition: 0.5s;
+  font-size: 14px;
 }
 
 #sidenav a {
-  padding: 10px 8px 10px 32px;
+  padding: 20px 8px 20px 32px;
   text-decoration: none;
   color: #333;
   display: block;
@@ -119,10 +120,6 @@ ul.web-hidden {
   margin: 15px auto;
   text-align: left;
   padding: 20px 0;
-}
-
-.bottom-menu>ul>li {
-  margin-bottom: 15px;
 }
 
 .bottom-menu>ul>li:last-child {
@@ -169,18 +166,32 @@ li.vertical-line {
     width: 0;
     top: 0;
     padding-top: 40px;
+    font-size: 16px;
+  }
+
+  #sidenav a {
+    padding: 30px 8px 30px 32px;
   }
 
   .bottom-menu>ul {
-    margin: 15px 15%;
+    margin: 15px 5%;
   }
 
   .search-icon {
     margin-right: 8px;
   }
 
+  #sidenav .closebtn {
+    margin-top: 40px;
+  }
+
   #nav-search {
-    display: none;
+    right: 75px;
+    top: 75px;
+  }
+
+  #home-nav {
+    padding-top: 45px;
   }
 }
 

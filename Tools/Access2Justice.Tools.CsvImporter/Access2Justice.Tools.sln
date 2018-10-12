@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27428.2037
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Access2Justice.Tools", "Access2Justice.Tools.csproj", "{28D4B83E-FC4D-434F-99F8-967D16A2673F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Access2JusticeCode.DataImportTool", "..\Access2JusticeCode.DataImportTool\Access2JusticeCode.DataImportTool.csproj", "{A964EB69-8D7E-47B4-8AB9-F43F31DBC8DB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{28D4B83E-FC4D-434F-99F8-967D16A2673F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28D4B83E-FC4D-434F-99F8-967D16A2673F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28D4B83E-FC4D-434F-99F8-967D16A2673F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A964EB69-8D7E-47B4-8AB9-F43F31DBC8DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A964EB69-8D7E-47B4-8AB9-F43F31DBC8DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A964EB69-8D7E-47B4-8AB9-F43F31DBC8DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A964EB69-8D7E-47B4-8AB9-F43F31DBC8DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

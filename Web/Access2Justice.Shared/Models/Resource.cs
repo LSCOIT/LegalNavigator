@@ -155,6 +155,15 @@ namespace Access2Justice.Shared.Models
 
         [JsonProperty(PropertyName = "reviewer")]
         public IEnumerable<OrganizationReviewer> Reviewer { get; set; }
+
+        [JsonProperty(PropertyName = "specialties")]
+        public string Specialties { get; set; }
+
+        [JsonProperty(PropertyName = "qualifications")]
+        public string Qualifications { get; set; }
+
+        [JsonProperty(PropertyName = "businessHours")]
+        public string BusinessHours { get; set; }
     }
 
     public class OrganizationReviewer

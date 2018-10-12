@@ -30,8 +30,22 @@ a:hover {
   background-color: #f4f4f4;
 }
 
+.dropdown-menu li a {
+  font-size: 14px;
+}
+
 .dropdown-menu li a:hover {
   background-color: #fff;
+}
+
+@media only screen and (min-width : 768px) {
+  .dropdown-menu li a {
+    font-size: 14px;
+  }
+
+  #signin-dropdown {
+    margin-top: 0;
+  }
 }
 
 @media only screen and (min-width : 992px) {
@@ -39,9 +53,17 @@ a:hover {
     margin-right: -25px;
   }
 
-  .account-menu, .account-menu img {
-    margin-left: 0;
+  .account-menu {
+    padding: 20px 15px;
   }
+
+    .account-menu:hover {
+      background-color: #fff;
+    }
+
+    .account-menu, .account-menu img {
+      margin-left: 0;
+    }
 
   .dropdown-menu {
     background-color: #fff;
@@ -51,12 +73,19 @@ a:hover {
   }
 
   #signin-dropdown {
-    padding: 15px;
+    padding: 15px 10px;
     width: auto;
     min-width: 200px;
+    margin-top: 0;
   }
-  
+
   .open {
     background-color: #fff;
+  }
+}
+
+@media only screen and (min-width : 1124px) {
+  #signin-dropdown {
+    padding: 15px;
   }
 }

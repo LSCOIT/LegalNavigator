@@ -92,66 +92,66 @@ namespace Access2Justice.Tools.BusinessLogic
                                     if (keyValue.Count() > 0)
                                     {
                                         string val = keyValue.First();
-                                        if (val.EndsWith("Topic_ID", StringComparison.CurrentCultureIgnoreCase))
+                                        if (val.EndsWith("Topic_ID*", StringComparison.CurrentCultureIgnoreCase))
                                         {
                                             id = cellActualValue.Trim();
                                         }
 
-                                        else if (val.EndsWith("Topic_Name", StringComparison.CurrentCultureIgnoreCase))
+                                        else if (val.EndsWith("Topic_Name*", StringComparison.CurrentCultureIgnoreCase))
                                         {
                                             name = cellActualValue.Trim();
                                         }
 
-                                        else if (val.EndsWith("Parent_Topic", StringComparison.CurrentCultureIgnoreCase))
+                                        else if (val.EndsWith("Parent_Topic*", StringComparison.CurrentCultureIgnoreCase))
                                         {
                                             string parentId = cellActualValue;
                                             parentTopicIds = GetParentId(parentId);
                                         }
 
-                                        else if (val.EndsWith("Keywords", StringComparison.CurrentCultureIgnoreCase))
+                                        else if (val.EndsWith("Keywords*", StringComparison.CurrentCultureIgnoreCase))
                                         {
-                                            keywords = (cellActualValue).Trim();
+                                            keywords = FormatData(cellActualValue);
                                         }
 
-                                        else if (val.EndsWith("Organizational Unit", StringComparison.CurrentCultureIgnoreCase))
+                                        else if (val.EndsWith("Organizational_Unit*", StringComparison.CurrentCultureIgnoreCase))
                                         {
-                                            organizationalUnit = (cellActualValue).Trim();
+                                            organizationalUnit = FormatData(cellActualValue);
                                         }
 
-                                        else if (val.EndsWith("Location_State", StringComparison.CurrentCultureIgnoreCase))
+                                        else if (val.EndsWith("Location_State*", StringComparison.CurrentCultureIgnoreCase))
                                         {
-                                            state = (cellActualValue).Trim();
+                                            state = FormatData(cellActualValue);
                                         }
 
                                         else if (val.EndsWith("Location_County", StringComparison.CurrentCultureIgnoreCase))
                                         {
-                                            county = (cellActualValue).Trim();
+                                            county = FormatData(cellActualValue);
                                         }
 
                                         else if (val.EndsWith("Location_City", StringComparison.CurrentCultureIgnoreCase))
                                         {
-                                            city = (cellActualValue).Trim();
+                                            city = FormatData(cellActualValue);
 
                                         }
 
                                         else if (val.EndsWith("Location_Zip", StringComparison.CurrentCultureIgnoreCase))
                                         {
-                                            zipcode = (cellActualValue).Trim();
+                                            zipcode = FormatData(cellActualValue);
                                         }
 
-                                        else if (val.EndsWith("Overview", StringComparison.CurrentCultureIgnoreCase))
+                                        else if (val.EndsWith("Overview*", StringComparison.CurrentCultureIgnoreCase))
                                         {
-                                            overview = (cellActualValue).Trim();
+                                            overview = FormatData(cellActualValue);
                                         }
 
                                         else if (val.EndsWith("Quick_Links_URL_text", StringComparison.CurrentCultureIgnoreCase))
                                         {
-                                            quickLinkURLText = (cellActualValue).Trim();
+                                            quickLinkURLText = FormatData(cellActualValue);
                                         }
 
                                         else if (val.EndsWith("Quick_Links_URL_link", StringComparison.CurrentCultureIgnoreCase))
                                         {
-                                            quickLinkURLLink = (cellActualValue).Trim();
+                                            quickLinkURLLink = FormatData(cellActualValue);
                                         }
 
                                         else if (val.EndsWith("Icon", StringComparison.CurrentCultureIgnoreCase))
@@ -353,8 +353,8 @@ namespace Access2Justice.Tools.BusinessLogic
         {
             bool correctHeader = false;
             IStructuralEquatable actualHeader = header;
-            string[] expectedHeader = {"Topic_ID", "Topic_Name", "Parent_Topic", "Keywords", "Organizational Unit", "Location_State", "Location_County",
-                "Location_City", "Location_Zip", "Overview", "Quick_Links_URL_text", "Quick_Links_URL_link", "Icon" };
+            string[] expectedHeader = {"Topic_ID*", "Topic_Name*", "Parent_Topic*", "Keywords*", "Organizational_Unit*", "Location_State*", "Location_County",
+                "Location_City", "Location_Zip", "Overview*", "Quick_Links_URL_text", "Quick_Links_URL_link", "Icon" };
                
             correctHeader = InsertResources.HeaderValidation(header, expectedHeader, "Topics");          
             return correctHeader;
@@ -407,6 +407,12 @@ namespace Access2Justice.Tools.BusinessLogic
                     Console.WriteLine(line);
                 }
             }
+        }
+
+        public static dynamic FormatData(string inputText)
+        {
+            var inputTrimmed = inputText.Trim();
+            return inputTrimmed.Replace("_x000D_\n", "\n");
         }
 
     }
