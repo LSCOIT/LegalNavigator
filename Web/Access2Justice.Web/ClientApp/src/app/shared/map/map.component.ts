@@ -73,11 +73,13 @@ export class MapComponent implements OnInit {
   updateLocation() {
     this.isError = false;
     this.locationDetails = JSON.parse(sessionStorage.getItem("globalSearchMapLocation"));
-    if (this.locationDetails.formattedAddress.length < 3) {
-      this.mapResultsService.getStateFullName(this.locationDetails.country, this.locationDetails.formattedAddress, environment.bingmap_key)
-        .subscribe((location) => {
-          console.log(location);
-        });
+    if (this.locationDetails.formattedAddress) {
+      if (this.locationDetails.formattedAddress.length < 3) {
+        this.mapResultsService.getStateFullName(this.locationDetails.country, this.locationDetails.formattedAddress, environment.bingmap_key)
+          .subscribe((location) => {
+            console.log(location);
+          });
+      }
     }
     this.locationDetails = this.mapService.updateLocation();
     this.mapLocation = this.locationDetails.location;

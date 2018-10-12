@@ -13,11 +13,11 @@ export class MapService {
   locAddress: any;
   location: any;
   pin: any;
-  mapLocation: MapLocation = { state: '', city: '', county: '', zipCode: '', locality: '', address:'' };
+  mapLocation: MapLocation = { state: '', city: '', county: '', zipCode: '', locality: '', address: '' };
   notifyLocalLocation: Subject<MapLocation> = new Subject<MapLocation>();
   notifyLocation: Subject<MapLocation> = new Subject<MapLocation>();
   state: string;
-  locationDetails: LocationDetails = { location: this.mapLocation, country: '', formattedAddress:'' }
+  locationDetails: LocationDetails = { location: this.mapLocation, country: '', formattedAddress: '' }
   constructor() { }
 
   getMap(mapType) {
@@ -35,7 +35,7 @@ export class MapService {
     manager.attachAutosuggest('#search-box', '#searchbox-container', suggestionSelected);
     searchManager = new Microsoft.Maps.Search.SearchManager(map);
   }
-  
+
   identifyLocation(searchLocation) {
     let searchRequest = {
       where: searchLocation,
@@ -58,7 +58,7 @@ export class MapService {
           //Determine a bounding box to best view the results.
           let bounds = this.location.bestView;
           this.map.setView({ bounds: bounds, padding: 30 });
-         }
+        }
       },
       errorCallback: function (e) {
         console.log(e);
@@ -99,8 +99,8 @@ export class MapService {
     this.mapLocation.zipCode = this.location.address.postalCode;
     let country: string;
     let fullStateName = this.location.address.formattedAddress;
-    if (fullStateName.indexOf(',')) {
-      country= this.location.address.countryRegion;
+    if (fullStateName.indexOf(',') > 0) {
+      country = this.location.address.countryRegion;
       this.state = fullStateName.slice(fullStateName.indexOf(',') + 2, fullStateName.length);
       this.locationDetails = { country: country, formattedAddress: this.state };
     }
