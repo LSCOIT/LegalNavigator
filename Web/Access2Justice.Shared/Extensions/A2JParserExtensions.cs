@@ -118,38 +118,8 @@ namespace Access2Justice.Shared.Extensions
                 }
             }
 
-
             return varsValues;
         }
-
-
-        //public static OrderedDictionary GetVariablesWithValues(this string inputText, string operand)
-        //{
-        //    // Todo:@Alaa extend this to allow extraction of other data types (beside true/fals), return a dic of <string, string>
-        //    var varsValues = new OrderedDictionary();
-
-        //    if (inputText.ToUpperInvariant().Contains(operand))
-        //    {
-        //        var variables = inputText.SplitOn(operand);
-        //        foreach (var varialbe in variables)
-        //        {
-        //            if (varialbe.ToUpperInvariant().Contains(Tokens.TrueTokens.TrueText))
-        //            {
-        //                varsValues.Add(varialbe.GetStringBetween(Tokens.VarNameLeftSign, Tokens.VarNameRightSign), Tokens.TrueTokens.LogicalTrue);
-        //            }
-        //            else if (varialbe.ToUpperInvariant().Contains(Tokens.FalseTokens.FalseText))
-        //            {
-        //                varsValues.Add(varialbe.GetStringBetween(Tokens.VarNameLeftSign, Tokens.VarNameRightSign), Tokens.FalseTokens.LogicalFalse);
-        //            }
-        //            else
-        //            {
-        //                // <BR/><BR/><BR/>IF [Final decision issue MC]= "Want to change something"<BR/>
-        //            }
-        //        }
-        //    }
-
-        //    return varsValues;
-        //}
 
         public static Dictionary<string, string> SetValue(this string inputText)
         {
@@ -181,6 +151,18 @@ namespace Access2Justice.Shared.Extensions
             }
 
             return varsValues;
+        }
+
+        public static string RemoveQuotes(string inputText)
+        {
+            var matchQuotes = Regex.Matches(inputText, "\"([^\"]*)\"");
+            var matchedString = string.Empty;
+            if (matchQuotes.Any())
+            {
+                matchedString = matchQuotes.FirstOrDefault().Value.Replace("\"", "");
+            }
+
+            return matchedString;
         }
     }
 }

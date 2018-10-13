@@ -142,6 +142,7 @@ namespace Access2Justice.Api.BusinessLogic
             //    var breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
             //}
             //else 
+
             if (!string.IsNullOrWhiteSpace(currentButton.Destination))
             {
                 if (curatedExperience.Components.Where(x => x.Name == currentButton.Destination).Any())
