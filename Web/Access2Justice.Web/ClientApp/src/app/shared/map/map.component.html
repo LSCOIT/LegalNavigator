@@ -32,14 +32,14 @@
             id="search-box"
             aria-label="search address box"
             autocomplete="off"
-            [placeholder]="address || 'Enter your state'"
+            placeholder="Enter a state name"
             (input)="onSearchChange()"
             autofocus="autofocus"
             name="locationInput"
             [(ngModel)]='locationInput' />
-          <span *ngIf="inputError">Please enter a valid location</span>
           <button type="submit" class="search-btn" (click)="geocode()">Search</button>
         </div>
+        <span *ngIf="locationError" class="validation-error">Please enter a valid location</span>
         <div id="my-map"></div>
       </div>
       <div class="row">

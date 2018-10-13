@@ -98,6 +98,11 @@ p {
   margin: 0 auto;
 }
 
+.validation-error {
+  font-size: 14px;
+  color: #ca3636;
+}
+
 @media only screen and (min-width : 768px) {
   .edit-location {
     padding: 15px 10px;

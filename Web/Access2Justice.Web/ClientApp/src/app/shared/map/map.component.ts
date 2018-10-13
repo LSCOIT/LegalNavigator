@@ -41,6 +41,9 @@ export class MapComponent implements OnInit {
   staticContent: any;
   staticContentSubcription: any;
   @Input() displayInitialModal: boolean = false;
+  errorSubscription: any;
+  locationError: boolean;
+  successSubscription: any;
 
   constructor(private modalService: BsModalService,
     private mapService: MapService,
@@ -70,16 +73,23 @@ export class MapComponent implements OnInit {
   }
 
   updateLocation() {
-    this.isError = false;
-    this.mapLocation = this.mapService.updateLocation();
-    this.displayLocationDetails(this.mapLocation);
-    if ((this.modalRef && this.mapLocation) || !this.mapType) {
-      this.modalRef.hide();
+    if (this.locationError === undefined) {
+      this.geocode();
+    } else if (!this.locationError) {
+      this.isError = false;
+      this.locationError = undefined;
+      this.mapLocation = this.mapService.updateLocation();
+      this.displayLocationDetails(this.mapLocation);
+      if ((this.modalRef && this.mapLocation) || !this.mapType) {
+        this.modalRef.hide();
+      } else {
+        this.isError = true;
+      }
+      if (!this.mapType) {
+        this.showLocality = false;
+      }
     } else {
-      this.isError = true;
-    }
-    if (!this.mapType) {
-      this.showLocality = false;
+      this.geocode();
     }
   }
 
@@ -175,7 +185,18 @@ export class MapComponent implements OnInit {
   ngOnInit() {
     this.getLocationNavigationContent();
     this.showLocality = true;
-    
+
+    this.errorSubscription = this.mapService.notifyLocationError
+      .subscribe((value) => {
+        this.locationError = true;
+      });
+
+    this.successSubscription = this.mapService.notifyLocationSuccess
+      .subscribe((value) => {
+        this.locationError = false;
+      });
+
+
     this.subscription = this.mapService.notifyLocation
       .subscribe((value) => {
         this.displayLocationDetails(this.mapLocation);
