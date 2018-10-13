@@ -15,6 +15,10 @@ li a:hover {
   color: #333;
 }
 
+li a img {
+  margin-left: 0;
+}
+
 .upper-nav {
   background: #f4f4f4;
   color: #333;
@@ -31,7 +35,7 @@ li a:hover {
 }
 
 .right-menu li {
-  padding: 15px;
+  padding: 15px 10px;
 }
 
 .right-menu li:last-child {
@@ -58,5 +62,10 @@ li a:hover {
   #location {
     position: static;
     width: auto;
+  }
+}
+@media only screen and (min-width : 1124px) {
+  .right-menu li {
+    padding: 15px;
   }
 }

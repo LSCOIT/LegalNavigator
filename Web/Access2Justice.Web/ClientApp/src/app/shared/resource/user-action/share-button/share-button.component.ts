@@ -40,7 +40,7 @@ export class ShareButtonComponent implements OnInit {
     private httpClient: HttpClient,
     private shareService: ShareService,
     private activeRoute: ActivatedRoute,
-    private global: Global,
+    public global: Global,
     private msalService: MsalService) {    
     if (global.role === UserStatus.Shared && location.pathname.indexOf(global.shareRouteUrl) >= 0) {
       global.showShare = false;
@@ -157,7 +157,7 @@ export class ShareButtonComponent implements OnInit {
     if (this.type === 'Guided Assistant') {
       return "/guidedassistant/" + this.id;
     }
-    if (this.type === 'Forms' || this.type === 'Related Links') {
+    if (this.type === 'Forms' || this.type === 'Essential Readings') {
       return this.url;
     }
     if (this.type === 'WebResources') {
