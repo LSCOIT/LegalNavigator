@@ -15,6 +15,14 @@ export class ResourceCardComponent implements OnInit {
   @Input() showRemoveOption: boolean;
   url: any;
   applicationUrl: any = window.location.origin;
+  resourceTypeList = [
+    'Forms',
+    'Guided Assistant',
+    'Organizations',
+    'Videos',
+    'Topics',
+    'WebResources'
+    ];
 
   constructor(
     public sanitizer: DomSanitizer,
