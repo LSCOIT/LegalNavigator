@@ -83,7 +83,7 @@ namespace Access2Justice.E2ETests.PageObjects
             languageOptions.SelectByText(Convert.ToString(language));
         }
 
-        public void ConfirmPageTranslated()
+        public void ConfirmPageTranslated(dynamic language)
         {
             fluentWait.Until(d =>
             {
@@ -97,7 +97,7 @@ namespace Access2Justice.E2ETests.PageObjects
             });
 
             // Need to change this later to make it dynamic
-            Assert.IsTrue(driver.FindElement(By.TagName("html")).GetAttribute("lang") == "zh-CN");
+            Assert.IsTrue(driver.FindElement(By.TagName("html")).GetAttribute("lang") == language);
         }
 
         public void ClickChangeLocationButton()
@@ -174,11 +174,11 @@ namespace Access2Justice.E2ETests.PageObjects
             fluentWait.Until(d =>
             {
                 List<IWebElement> overlay = d.FindElements(By.ClassName("black-overlay")).ToList();
-                if (searchPhraseTab != null && searchPhraseTab.Enabled && searchPhraseTab.Displayed && overlay.Count == 0)
+                List<IWebElement> modal = d.FindElements(By.TagName("modal-container")).ToList();
+                if (searchPhraseTab != null && searchPhraseTab.Enabled && searchPhraseTab.Displayed && overlay.Count == 0 && modal.Count == 0)
                 {
                     return true;
                 }
-
                 return false;
             });
             searchPhraseTab.Click();
@@ -205,8 +205,9 @@ namespace Access2Justice.E2ETests.PageObjects
 
             IWebElement buttonToClick = fluentWait.Until(d =>
             {
+                IWebElement modal = driver.FindElement(By.TagName("modal-container"));
                 IWebElement button = driver.FindElement(By.Id(buttonId));
-                if (button != null && button.Displayed && button.Enabled)
+                if (button != null && button.Displayed && button.Enabled && modal != null)
                 {
                     return button;
                 }

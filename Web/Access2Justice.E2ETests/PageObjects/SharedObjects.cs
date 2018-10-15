@@ -25,8 +25,9 @@ namespace Access2Justice.E2ETests.PageObjects
             IWebElement buttonToClick = fluentWait.Until(d =>
             {
                 IWebElement button = driver.FindElement(By.Id(buttonId));
-                List<IWebElement> overlay = d.FindElements(By.ClassName("labelCanvasId")).ToList();
-                if (button != null && button.Displayed && button.Enabled && overlay.Count == 0)
+                List<IWebElement> canvas = d.FindElements(By.Id("labelCanvasId")).ToList();
+                List<IWebElement> overlay = d.FindElements(By.ClassName("black-overlay")).ToList();
+                if (button != null && button.Displayed && button.Enabled && canvas.Count == 0 && overlay.Count == 0)
                 {
                     return button;
                 }

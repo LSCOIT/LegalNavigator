@@ -18,13 +18,13 @@ namespace Access2Justice.E2ETests
         [When(@"I select a language from the navigation bar")]
         public void WhenISelectALanguageFromTheNavigationBar(dynamic instance)
         {
-            HomePage.PickLanguage(instance.Language);        
+            HomePage.PickLanguage(instance.SelectedLanguage);        
         }
         
         [Then(@"I should see my page translated")]
-        public void ThenIShouldSeeMyPageTranslated()
+        public void ThenIShouldSeeMyPageTranslated(dynamic instance)
         {
-            HomePage.ConfirmPageTranslated();
+            HomePage.ConfirmPageTranslated(instance.ExpectedLanguage);
         }
     }
 }
