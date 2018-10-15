@@ -30,6 +30,7 @@ namespace Access2Justice.Shared.Interfaces
         dynamic UpsertResourcesVideos(dynamic resource);
         dynamic UpsertResourcesOrganizations(dynamic resource);
         dynamic UpsertResourcesEssentialReadings(dynamic resource);
+        dynamic UpsertResourcesExternalLinks(dynamic resource);
         Task<IEnumerable<object>> UpsertTopicsUploadAsync(string path);
         Task<IEnumerable<object>> UpsertTopicDocumentAsync(dynamic topic);
         dynamic UpsertTopics(dynamic topic);
@@ -40,5 +41,6 @@ namespace Access2Justice.Shared.Interfaces
         Task<dynamic> GetOrganizationsAsync(Location location);
         Task<dynamic> GetAllTopics();
         dynamic GetReviewer(dynamic reviewerValues);
+        dynamic GetSections(dynamic sectionValues);
     }
 }
