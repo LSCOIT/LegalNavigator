@@ -78,6 +78,11 @@ namespace Access2Justice.E2ETests.Steps
             TopicsAndResources.ConfirmResourcesAreShown();
         }
 
+        [Then(@"I should see the Service Organizations in Your Community pane to the right")]
+        public void ThenIShouldSeeTheServiceOrganizationsInYourCommunityPaneToTheRight()
+        {
+            TopicsAndResources.ConfirmServiceOrganizationSideBarIsDisplayed();
+        }
 
     }
 }

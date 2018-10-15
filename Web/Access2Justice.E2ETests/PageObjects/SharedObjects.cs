@@ -21,21 +21,21 @@ namespace Access2Justice.E2ETests.PageObjects
 
         public void ClickButton(string buttonId)
         {
+            IWebElement buttonToClick = driver.FindElement(By.Id(buttonId));
 
-            IWebElement buttonToClick = fluentWait.Until(d =>
+            fluentWait.Until(d =>
             {
-                IWebElement button = driver.FindElement(By.Id(buttonId));
                 List<IWebElement> canvas = d.FindElements(By.Id("labelCanvasId")).ToList();
                 List<IWebElement> overlay = d.FindElements(By.ClassName("black-overlay")).ToList();
-                if (button != null && button.Displayed && button.Enabled && canvas.Count == 0 && overlay.Count == 0)
+
+                if (buttonToClick != null && buttonToClick.Displayed && buttonToClick.Enabled && canvas.Count == 0 && overlay.Count == 0)
                 {
-                    return button;
+                    buttonToClick.Click();
+                    return true;
                 }
 
-                return null;
+                return false;
             });
-
-            buttonToClick.Click();
         }
     }
 }

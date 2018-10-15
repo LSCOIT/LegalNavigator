@@ -20,9 +20,6 @@ namespace Access2Justice.E2ETests.PageObjects
         private IWebDriver driver => ScenarioContext.Current.Get<IWebDriver>("driver");
         private DefaultWait<IWebDriver> fluentWait => ScenarioContext.Current.Get<DefaultWait<IWebDriver>>("fluentWait");
 
-        [FindsBy(How = How.ClassName, Using ="topic-list")]
-        public IList<IWebElement> topicList;
-
         public void ConfirmOnTopicsAndResourcesPage()
         {
             StringAssert.Contains(driver.Url, "topics");
@@ -60,8 +57,24 @@ namespace Access2Justice.E2ETests.PageObjects
 
         public void ConfirmResourcesAreShown()
         {
-            Assert.IsTrue(true);
+            List<IWebElement> resources; 
+            resources = fluentWait.Until(d =>
+            {
+                List<IWebElement> elements = driver.FindElements(By.TagName("app-resource-card")).ToList();
+                if (elements != null && elements.Count > 0)
+                {
+                    return elements;
+                }
+
+                return null;
+            });
+            
+            Assert.IsTrue(resources.Count > 0);
         }
 
+        public void ConfirmServiceOrganizationSideBarIsDisplayed()
+        {
+            Assert.IsTrue(driver.FindElement(By.TagName("app-service-org-sidebar")).Displayed);
+        }
     }
 }
