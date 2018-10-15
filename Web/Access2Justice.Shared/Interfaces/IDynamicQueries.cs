@@ -18,6 +18,7 @@ namespace Access2Justice.Shared.Interfaces
         Task<dynamic> FindItemsWhereInClauseAsync(string collectionId, string propertyName, IEnumerable<string> values);
         Task<dynamic> FindItemsWhereArrayContainsAsyncWithLocation(string collectionId, string arrayName, string propertyName, string value, Location location); 
         Task<dynamic> FindFieldWhereArrayContainsAsync(string collectionId, string arrayName, string propertyName, string value, string dateProperty);
+        Task<dynamic> FindFieldWhereArrayContainsAsync(string collectionId, string propertyName, string value);
         Task<dynamic> FindItemsAllAsync(string collectionId);
     }
 }
