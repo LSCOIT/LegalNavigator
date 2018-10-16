@@ -123,7 +123,7 @@ namespace Access2Justice.Api.Controllers
         [HttpGet("start")]
         public async Task<IActionResult> GetFirstComponent(Guid curatedExperienceId)
         {
-            var component = await curatedExperienceBusinessLogic.GetComponentAsync(RetrieveCachedCuratedExperience(curatedExperienceId), Guid.Empty);
+            var component = curatedExperienceBusinessLogic.GetComponent(RetrieveCachedCuratedExperience(curatedExperienceId), Guid.Empty);
             if (component == null) return NotFound();
 
             return Ok(component);
@@ -132,7 +132,7 @@ namespace Access2Justice.Api.Controllers
         [HttpGet("component")]
         public IActionResult GetSpecificComponent([FromQuery] Guid curatedExperienceId, [FromQuery] Guid componentId)
         {
-            var component = curatedExperienceBusinessLogic.GetComponentAsync(RetrieveCachedCuratedExperience(curatedExperienceId), componentId);
+            var component = curatedExperienceBusinessLogic.GetComponent(RetrieveCachedCuratedExperience(curatedExperienceId), componentId);
             if (component == null) return NotFound();
 
             return Ok(component);
