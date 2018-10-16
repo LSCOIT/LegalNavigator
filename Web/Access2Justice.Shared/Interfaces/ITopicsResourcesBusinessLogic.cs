@@ -41,6 +41,6 @@ namespace Access2Justice.Shared.Interfaces
         Task<dynamic> GetOrganizationsAsync(Location location);
         Task<dynamic> GetAllTopics();
         dynamic GetReviewer(dynamic reviewerValues);
-        dynamic GetSections(dynamic sectionValues);
+        dynamic GetContents(dynamic contentValues);
     }
 }

@@ -120,17 +120,17 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "overview")]
         public string Overview { get; set; }
 
-        [JsonProperty(PropertyName = "sections")]
-        public IEnumerable<ArticleSections> Sections { get; set; }
+        [JsonProperty(PropertyName = "contents")]
+        public IEnumerable<ArticleContents> Contents { get; set; }
     }
 
-    public class ArticleSections
+    public class ArticleContents
     {
-        [JsonProperty(PropertyName = "sectionHeadline")]
-        public string SectionHeadline { get; set; }
+        [JsonProperty(PropertyName = "headline")]
+        public string Headline { get; set; }
 
-        [JsonProperty(PropertyName = "sectionContent")]
-        public string SectionContent { get; set; }
+        [JsonProperty(PropertyName = "content")]
+        public string Content { get; set; }
     }
 
     public class Video: Resource
@@ -190,7 +190,7 @@ namespace Access2Justice.Shared.Models
         public string FullDescription { get; set; }
     }
 
-    public class ExternalLinks : Resource
+    public class ExternalLink : Resource
     {
         //for now there are no unique properties to external links
     }

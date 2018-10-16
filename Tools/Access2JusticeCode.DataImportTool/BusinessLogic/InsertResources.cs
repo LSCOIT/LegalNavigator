@@ -21,7 +21,7 @@ namespace Access2Justice.Tools.BusinessLogic
         string name, resourceCategory, description, url, resourceType, state, county, city, zipcode = string.Empty;
         string overview, icon, address, telephone, eligibilityInformation, specialties, qualifications, businessHours = string.Empty;
         string organizationName, reviewerFullName, reviewerTitle, reviewText, reviewerImage = string.Empty;
-        string articleName, sectionHeadline, sectionContent, organizationalUnit = string.Empty;
+        string articleName, headline, content, organizationalUnit = string.Empty;
         List<TopicTag> topicTagIds = null;
         List<Locations> locations = null;
         List<string> orgNameList = new List<string>();
@@ -30,8 +30,8 @@ namespace Access2Justice.Tools.BusinessLogic
         List<string> orgReviewTextList = new List<string>();
         List<string> orgReviewerImageList = new List<string>();
         List<string> articleNameList = new List<string>();
-        List<string> sectionHeadlineList = new List<string>();
-        List<string> sectionContentList = new List<string>();
+        List<string> headlineList = new List<string>();
+        List<string> contentList = new List<string>();
 
         #endregion Variables
 
@@ -140,7 +140,6 @@ namespace Access2Justice.Tools.BusinessLogic
                                             TopicTags = topicTagIds,
                                             OrganizationalUnit = organizationalUnit,
                                             Location = locations,
-                                            //Icon = icon,
                                             Overview = overview,
                                             CreatedBy = Constants.Admin,
                                             ModifiedBy = Constants.Admin
@@ -162,7 +161,6 @@ namespace Access2Justice.Tools.BusinessLogic
                                             TopicTags = topicTagIds,
                                             OrganizationalUnit = organizationalUnit,
                                             Location = locations,
-                                            //Icon = icon,
                                             Address = address,
                                             Telephone = telephone,
                                             Overview = overview,
@@ -199,7 +197,6 @@ namespace Access2Justice.Tools.BusinessLogic
                                             TopicTags = topicTagIds,
                                             OrganizationalUnit = organizationalUnit,
                                             Location = locations,
-                                            //Icon = icon,
                                             Overview = overview,
                                             CreatedBy = Constants.Admin,
                                             ModifiedBy = Constants.Admin
@@ -208,11 +205,11 @@ namespace Access2Justice.Tools.BusinessLogic
                                         articlesList.Add(article);
                                         ClearVariableData();
                                     }
-                                    if (resourceType == Constants.ArticleSections)
+                                    if (resourceType == Constants.ArticleContents)
                                     {
                                         articleNameList.Add(articleName);
-                                        sectionHeadlineList.Add(sectionHeadline);
-                                        sectionContentList.Add(sectionContent);
+                                        headlineList.Add(headline);
+                                        contentList.Add(content);
                                         ClearVariableData();
                                     }
                                     if (resourceType == Constants.VideoResourceType)
@@ -228,7 +225,6 @@ namespace Access2Justice.Tools.BusinessLogic
                                             TopicTags = topicTagIds,
                                             OrganizationalUnit = organizationalUnit,
                                             Location = locations,
-                                            //Icon = icon,
                                             Overview = overview,
                                             CreatedBy = Constants.Admin,
                                             ModifiedBy = Constants.Admin
@@ -250,7 +246,6 @@ namespace Access2Justice.Tools.BusinessLogic
                                             TopicTags = topicTagIds,
                                             OrganizationalUnit = organizationalUnit,
                                             Location = locations,
-                                            //Icon = icon,
                                             CreatedBy = Constants.Admin,
                                             ModifiedBy = Constants.Admin
                                         };
@@ -258,9 +253,9 @@ namespace Access2Justice.Tools.BusinessLogic
                                         ResourcesList.Add(essentialReading);
                                         ClearVariableData();
                                     }
-                                    if (resourceType == Constants.ExternalLinks)
+                                    if (resourceType == Constants.ExternalLinkResourceType)
                                     {
-                                        ExternalLinks externalLinks = new ExternalLinks()
+                                        ExternalLink externalLink = new ExternalLink()
                                         {
                                             ResourceId = (string.IsNullOrEmpty(id) || string.IsNullOrWhiteSpace(id)) ? Guid.NewGuid() : id,
                                             Name = name,
@@ -274,8 +269,8 @@ namespace Access2Justice.Tools.BusinessLogic
                                             CreatedBy = Constants.Admin,
                                             ModifiedBy = Constants.Admin
                                         };
-                                        externalLinks.Validate();
-                                        ResourcesList.Add(externalLinks);
+                                        externalLink.Validate();
+                                        ResourcesList.Add(externalLink);
                                         ClearVariableData();
                                     }
                                 }
@@ -314,25 +309,25 @@ namespace Access2Justice.Tools.BusinessLogic
                 
                 foreach (var articleList in articlesList)
                 {
-                    List<ArticleSections> articleSection = new List<ArticleSections>();
-                    ArticleSections articleSections = new ArticleSections();
+                    List<ArticleContents> articleContentList = new List<ArticleContents>();
+                    ArticleContents articleContents = new ArticleContents();
                     for (int iterator = 0; iterator < articleNameList.Count; iterator++)
                     {
                         var na = articleNameList[iterator];
 
                         if (articleList.Name == articleNameList[iterator])
                         {
-                            articleSections = new ArticleSections
+                            articleContents = new ArticleContents
                             {
-                                SectionHeadline = sectionHeadlineList[iterator],
-                                SectionContent = sectionContentList[iterator],
+                                Headline = headlineList[iterator],
+                                Content = contentList[iterator],
                             };
-                            articleSection.Add(articleSections);
+                            articleContentList.Add(articleContents);
                         }
                     }
-                    var serializedResult = JsonConvert.SerializeObject(articleSection);
-                    var articleSectionData = JsonConvert.DeserializeObject(serializedResult);
-                    articleList.Sections = articleSection;
+                    var serializedResult = JsonConvert.SerializeObject(articleContentList);
+                    var articleContentData = JsonConvert.DeserializeObject(serializedResult);
+                    articleList.Contents = articleContentList;
                     ResourcesList.Add(articleList);
                 }
             }
@@ -385,8 +380,8 @@ namespace Access2Justice.Tools.BusinessLogic
             reviewerTitle = string.Empty;
             reviewerImage = string.Empty;
             articleName = string.Empty;
-            sectionHeadline = string.Empty;
-            sectionContent = string.Empty;
+            headline = string.Empty;
+            content = string.Empty;
             organizationalUnit = string.Empty;
             organizationName = string.Empty;
             reviewText = string.Empty;
@@ -412,9 +407,9 @@ namespace Access2Justice.Tools.BusinessLogic
                 case "OrganizationReviews (Optional)":
                     return Constants.OrganizationReviews;
                 case "Article Sections":
-                    return Constants.ArticleSections;
+                    return Constants.ArticleContents;
                 case "External Links":
-                    return Constants.ExternalLinks;
+                    return Constants.ExternalLinkResourceType;
                 default:
                     return string.Empty;
             }
@@ -549,7 +544,7 @@ namespace Access2Justice.Tools.BusinessLogic
                 }
             }
 
-            if (resourceType == Constants.ArticleSections)
+            if (resourceType == Constants.ArticleContents)
             {
                 if (val.EndsWith("Article", StringComparison.CurrentCultureIgnoreCase))
                 {
@@ -558,12 +553,12 @@ namespace Access2Justice.Tools.BusinessLogic
 
                 else if (val.EndsWith("Section_Headline", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    sectionHeadline = InsertTopics.FormatData(cellActualValue);
+                    headline = InsertTopics.FormatData(cellActualValue);
                 }
 
                 else if (val.EndsWith("Section_Content", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    sectionContent = InsertTopics.FormatData(cellActualValue);
+                    content = InsertTopics.FormatData(cellActualValue);
                 }
             }
 
@@ -625,9 +620,9 @@ namespace Access2Justice.Tools.BusinessLogic
 
             string[] expectedOrganizationReviewsHeader = { "Organization*", "Reviewer_Full_Name*", "Reviewer_Title", "Review_Text*", "Reviewer_Image_URL" };
 
-            string[] expectedArticleSectionsHeader = { "Article", "Section_Headline", "Section_Content" };
+            string[] expectedArticleContentsHeader = { "Article", "Section_Headline", "Section_Content" };
 
-            string[] expectedExternalLinksHeader = {"Id", "Name*", "Description*", "Resource_Type*", "URL*", "Topic*", "Organizational_Unit*", "Location_State*", "Location_County", "Location_City",
+            string[] expectedExternalLinkHeader = {"Id", "Name*", "Description*", "Resource_Type*", "URL*", "Topic*", "Organizational_Unit*", "Location_State*", "Location_County", "Location_City",
                     "Location_Zip" };
             try
             {
@@ -646,9 +641,9 @@ namespace Access2Justice.Tools.BusinessLogic
                     correctHeader = HeaderValidation(header, expectedArticleHeader, Constants.ArticleResourceType);
                 }
 
-                else if (resourceType == Constants.ArticleSections)
+                else if (resourceType == Constants.ArticleContents)
                 {
-                    correctHeader = HeaderValidation(header, expectedArticleSectionsHeader, Constants.ArticleSections);
+                    correctHeader = HeaderValidation(header, expectedArticleContentsHeader, Constants.ArticleContents);
                 }
                 
                 else if (resourceType == Constants.VideoResourceType)
@@ -666,9 +661,9 @@ namespace Access2Justice.Tools.BusinessLogic
                     correctHeader = HeaderValidation(header, expectedOrganizationReviewsHeader, Constants.OrganizationReviews);
                 }
 
-                else if (resourceType == Constants.ExternalLinks)
+                else if (resourceType == Constants.ExternalLinkResourceType)
                 {
-                    correctHeader = HeaderValidation(header, expectedExternalLinksHeader, Constants.ExternalLinks);
+                    correctHeader = HeaderValidation(header, expectedExternalLinkHeader, Constants.ExternalLinkResourceType);
                 }
             }
             catch (Exception ex)
