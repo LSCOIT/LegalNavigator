@@ -40,7 +40,7 @@ export class SubtopicsComponent implements OnInit {
       .subscribe(
       topic => {
         this.topic = topic[0];
-        this.icon = topic[0].icon;
+        this.icon = topic[0].icon == "" ? "../../../assets/images/topics/topic1.png" : topic[0].icon;
         this.guidedInput = { activeId: this.activeTopic, name: this.topic.name };
       });
     this.topicService.getSubtopics(this.activeTopic)

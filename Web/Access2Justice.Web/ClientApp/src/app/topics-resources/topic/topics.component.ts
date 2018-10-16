@@ -26,6 +26,9 @@ export class TopicsComponent implements OnInit {
       .subscribe(topics => {
         this.topics = topics;
         this.global.topicsData = topics;
+        for (var iterator = 0; iterator < topics.length; iterator++) {
+          this.global.topicsData[iterator].icon = topics[iterator].icon == "" ? "../../../assets/images/topics/topic1.png" : topics[iterator].icon;
+        }
       });
   }
 
