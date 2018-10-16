@@ -25,16 +25,19 @@ export class TopicService {
   }
   getTopics(): Observable<any> {
     this.mapLocation = this.loadStateName();
-      return this.http.post<Topic>(api.topicUrl, JSON.stringify(this.mapLocation), httpOptions);
+    this.mapLocation.city = "";
+    this.mapLocation.county = "";
+    this.mapLocation.zipCode = "";
+    return this.http.post<Topic>(api.topicUrl, JSON.stringify(this.mapLocation), httpOptions);
   }
   getSubtopics(id): Observable<any> {
     this.buildParams(id);
     return this.http.post<Topic>(api.subtopicUrl, JSON.stringify(this.topicInput), httpOptions);
-  
+
   }
   getSubtopicDetail(id): Observable<any> {
     this.buildParams(id);
-    return this.http.post<Topic>(api.subtopicDetailUrl, JSON.stringify(this.topicInput), httpOptions);   
+    return this.http.post<Topic>(api.subtopicDetailUrl, JSON.stringify(this.topicInput), httpOptions);
   }
 
   getDocumentData(id): Observable<any> {
