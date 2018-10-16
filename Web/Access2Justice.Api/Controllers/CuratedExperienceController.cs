@@ -10,6 +10,9 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
+using static Access2Justice.Api.Authorization.Permissions;
+using Access2Justice.Api.Authorization;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -115,7 +118,7 @@ namespace Access2Justice.Api.Controllers
             });
         }
         #endregion
-
+        [Permission(PermissionName.import)]
         [HttpPost("import")]
         public IActionResult ConvertA2JAuthorToCuratedExperience([FromBody] JObject a2jSchema)
         {
@@ -174,6 +177,7 @@ namespace Access2Justice.Api.Controllers
             return Ok(personalizedPlan);
         }
 
+        [Permission(PermissionName.updateplan)]
         [HttpPost("update-plan")]
         public async Task<IActionResult> UpdateUserProfileDocumentAsync([FromBody]UserPersonalizedPlan userPlan)
         {
