@@ -14,7 +14,7 @@ export class ResourceCardComponent implements OnInit {
   @Input() isSearchResults: boolean;
   @Input() showRemoveOption: boolean;
   url: any;
-  urlOrigin: any;
+  urlOrigin: string;
   applicationUrl: any = window.location.origin;
   resourceTypeList = [
     'Forms',
