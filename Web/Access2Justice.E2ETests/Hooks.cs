@@ -5,16 +5,12 @@
  * Example repo: https://github.com/LirazShay/SpecFlowDemo/blob/master/src/SpecFlowDemo/Steps/LoginPageSteps.cs
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TechTalk.SpecFlow;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
+using System;
 using System.Configuration;
-using OpenQA.Selenium.Remote;
+using TechTalk.SpecFlow;
 
 namespace Access2Justice.E2ETests
 {
@@ -49,7 +45,7 @@ namespace Access2Justice.E2ETests
         {
             ChromeOptions options = new ChromeOptions();
             // Start Chrome maximized
-            
+            //options.AddArguments("start-maximized");
             options.AddArguments("--disable-gpu");
             // Disable the "Know your location" pop up
             options.AddUserProfilePreference("profile.managed_default_content_settings.geolocation", 2);

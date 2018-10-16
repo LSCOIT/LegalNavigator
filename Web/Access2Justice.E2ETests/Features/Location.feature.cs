@@ -91,33 +91,29 @@ namespace Access2Justice.E2ETests.Features
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Set location on entry")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Set Location")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SmokeTest")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("SetLocation")]
         public virtual void SetLocationOnEntry()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Set location on entry", null, new string[] {
-                        "SmokeTest",
-                        "SetLocation"});
-#line 7
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Set location on entry", null, ((string[])(null)));
+#line 6
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
+#line 7
+ testRunner.Given("I am on the Access2Justice website", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 8
- testRunner.Given("I am on the Access2Justice website with location detection blocked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 9
  testRunner.And("I am prompted to set my location", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "State"});
             table1.AddRow(new string[] {
                         "Alaska"});
-#line 10
+#line 9
  testRunner.When("I enter my state name", ((string)(null)), table1, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "State"});
             table2.AddRow(new string[] {
                         "Alaska"});
-#line 13
+#line 12
  testRunner.Then("I can see my state name on the upper navigation bar", ((string)(null)), table2, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -129,16 +125,18 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void ChangeLocation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change location", null, ((string[])(null)));
-#line 17
+#line 16
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
+#line 17
+ testRunner.Given("I am on the Access2Justice website", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         "State"});
             table3.AddRow(new string[] {
                         "Alaska"});
 #line 18
- testRunner.Given("I am on the Access2Justice website with state set", ((string)(null)), table3, "Given ");
+ testRunner.And("current state is set to", ((string)(null)), table3, "And ");
 #line 21
  testRunner.When("I click on the Change button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden

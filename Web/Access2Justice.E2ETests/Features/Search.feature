@@ -4,7 +4,8 @@
 	So that I can see the resources
 
 Scenario Outline: Search by phrase
-	Given I am on the Access2Justice website with state set
+	Given I am on the Access2Justice website
+	And current state is set to
 	| State  |
 	| Alaska |
 	When I type <Phrase> into the search input field and click search button

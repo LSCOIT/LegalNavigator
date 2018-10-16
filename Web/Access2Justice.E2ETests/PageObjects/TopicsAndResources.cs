@@ -1,80 +1,57 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TechTalk.SpecFlow;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 //using TechTalk.SpecFlow.Assist;
-using SpecFlow.Assist.Dynamic;
 //using OpenQA.Selenium.Support.PageObjects;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.PageObjects;
 using OpenQA.Selenium.Support.UI;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SeleniumExtras.PageObjects;
+using System.Collections.Generic;
+using System.Linq;
+using TechTalk.SpecFlow;
 
 
 namespace Access2Justice.E2ETests.PageObjects
 {
     class TopicsAndResources
     {
-        private IWebDriver driver => ScenarioContext.Current.Get<IWebDriver>("driver");
-        private DefaultWait<IWebDriver> fluentWait => ScenarioContext.Current.Get<DefaultWait<IWebDriver>>("fluentWait");
+        #region
+        private IWebDriver Driver => ScenarioContext.Current.Get<IWebDriver>("driver");
+        private DefaultWait<IWebDriver> FluentWait => ScenarioContext.Current.Get<DefaultWait<IWebDriver>>("fluentWait");
+        #endregion
 
-        public void ConfirmOnTopicsAndResourcesPage()
+        public void ClickOnTopicByCssSelector(string cssSelector)
         {
-            StringAssert.Contains(driver.Url, "topics");
-        }
-
-        public void ClickOnTopic()
-        {
-            IWebElement topic = fluentWait.Until(d =>
+            FluentWait.Until(d =>
             {
-                IWebElement elem = driver.FindElement(By.CssSelector(".topic-list a"));
-                if (elem != null && elem.Displayed)
+                IWebElement topic = Driver.FindElement(By.CssSelector(cssSelector));
+                if (topic != null && topic.Displayed)
                 {
-                    return elem;
+                    topic.Click();
+                    return true;
                 }
 
-                return null;
+                return false;
             });
-            topic.Click();
-        }
-
-        public void ClickOnSubtopic()
-        {
-            IWebElement subtopic = fluentWait.Until(d =>
-            {
-                IWebElement elem = driver.FindElement(By.CssSelector(".subtopics ul li a"));
-                if (elem != null && elem.Displayed)
-                {
-                    return elem;
-                }
-
-                return null;
-            });
-            subtopic.Click();
         }
 
         public void ConfirmResourcesAreShown()
         {
-            List<IWebElement> resources; 
-            resources = fluentWait.Until(d =>
+            FluentWait.Until(d =>
             {
-                List<IWebElement> elements = driver.FindElements(By.TagName("app-resource-card")).ToList();
-                if (elements != null && elements.Count > 0)
+                IList<IWebElement> resources = Driver.FindElements(By.TagName("app-resource-card"));
+                if (resources != null && resources.Count > 0)
                 {
-                    return elements;
+                    Assert.IsTrue(resources.Count > 0);
+                    return true;
                 }
 
-                return null;
+                return false;
             });
-            
-            Assert.IsTrue(resources.Count > 0);
         }
 
         public void ConfirmServiceOrganizationSideBarIsDisplayed()
         {
-            Assert.IsTrue(driver.FindElement(By.TagName("app-service-org-sidebar")).Displayed);
+            IWebElement organizationSideBar = Driver.FindElement(By.TagName("app-service-org-sidebar"));
+            Assert.IsTrue(organizationSideBar.Displayed);
         }
     }
 }

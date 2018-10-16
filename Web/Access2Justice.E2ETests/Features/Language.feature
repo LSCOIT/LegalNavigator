@@ -3,9 +3,9 @@
     I need to set my language 
     So I can understand the contents of the website 
 
-@SmokeTest
 Scenario: Set preferred language
-    Given I am on the Access2Justice website with state set
+	Given I am on the Access2Justice website
+	And current state is set to
 	| State  |
 	| Alaska |
     When I select a language from the navigation bar

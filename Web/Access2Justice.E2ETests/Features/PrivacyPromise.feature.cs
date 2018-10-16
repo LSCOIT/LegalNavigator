@@ -18,14 +18,14 @@ namespace Access2Justice.E2ETests.Features
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.4.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
-    public partial class SetLanguageFeature
+    public partial class PrivacyPromiseFeature
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private Microsoft.VisualStudio.TestTools.UnitTesting.TestContext _testContext;
         
-#line 1 "Language.feature"
+#line 1 "PrivacyPromise.feature"
 #line hidden
         
         public virtual Microsoft.VisualStudio.TestTools.UnitTesting.TestContext TestContext
@@ -44,8 +44,8 @@ namespace Access2Justice.E2ETests.Features
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Set language", "    As a user\r\n    I need to set my language \r\n    So I can understand the conten" +
-                    "ts of the website ", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "PrivacyPromise", "\tAs a user\r\n\tI need to read the privacy promise\r\n\tSo I can know how a2j handles m" +
+                    "y data", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -60,9 +60,9 @@ namespace Access2Justice.E2ETests.Features
         public virtual void TestInitialize()
         {
             if (((testRunner.FeatureContext != null) 
-                        && (testRunner.FeatureContext.FeatureInfo.Title != "Set language")))
+                        && (testRunner.FeatureContext.FeatureInfo.Title != "PrivacyPromise")))
             {
-                global::Access2Justice.E2ETests.Features.SetLanguageFeature.FeatureSetup(null);
+                global::Access2Justice.E2ETests.Features.PrivacyPromiseFeature.FeatureSetup(null);
             }
         }
         
@@ -89,11 +89,11 @@ namespace Access2Justice.E2ETests.Features
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Set preferred language")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Set language")]
-        public virtual void SetPreferredLanguage()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Navigate to Privacy Promise page from home page")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PrivacyPromise")]
+        public virtual void NavigateToPrivacyPromisePageFromHomePage()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Set preferred language", null, ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Navigate to Privacy Promise page from home page", null, ((string[])(null)));
 #line 6
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -106,20 +106,10 @@ this.ScenarioInitialize(scenarioInfo);
                         "Alaska"});
 #line 8
  testRunner.And("current state is set to", ((string)(null)), table1, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Selected Language"});
-            table2.AddRow(new string[] {
-                        "Chinese (Simplified)"});
 #line 11
-    testRunner.When("I select a language from the navigation bar", ((string)(null)), table2, "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Expected Language"});
-            table3.AddRow(new string[] {
-                        "zh-CN"});
-#line 14
-    testRunner.Then("I should see my page translated", ((string)(null)), table3, "Then ");
+ testRunner.When("I click on the Privacy Promise link on the upper navigation bar", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 12
+ testRunner.Then("I should be directed to the Privacy Promise page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

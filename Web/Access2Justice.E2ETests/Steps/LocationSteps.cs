@@ -8,34 +8,27 @@
  * Wait till element is clickable: https://stackoverflow.com/questions/16057031/webdriver-how-to-wait-until-the-element-is-clickable-in-webdriver-c-sharp
  */
 
-using System;
-using TechTalk.SpecFlow;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support.UI;
-using System.Collections.Generic;
-using System.Linq;
 using Access2Justice.E2ETests.PageObjects;
+using TechTalk.SpecFlow;
 
 
-namespace Access2Justice.E2ETests.Steps 
+namespace Access2Justice.E2ETests.Steps
 {
     [Binding]
     public class LocationSteps : TechTalk.SpecFlow.Steps
     {
-        HomePage HomePage = new HomePage();
+        BaseClass BaseClass = new BaseClass();
+        NavigationBar NavigationBar = new NavigationBar();
 
-        [Given(@"I am on the Access2Justice website with location detection blocked")]
-        public void GivenIAmOnTheAccessJusticeWebsiteWithLocationDetectionBlocked()
+        [Given(@"I am on the Access2Justice website")]
+        public void GivenIAmOnTheAccessJusticeWebsite()
         {
-            HomePage.ConfirmPageTitle();
+            BaseClass.ConfirmSiteIsA2J();
         }
 
-        [Given(@"I am on the Access2Justice website with state set")]
-        public void GivenIAmOnTheAccessJusticeWebsiteWithStateSet(dynamic instance)
+        [Given(@"current state is set to")]
+        public void GivenCurrentStateIsSetTo(dynamic instance)
         {
-            HomePage.ConfirmPageTitle();
             GivenIAmPromptedToSetMyLocation();
             WhenIEnterMyStateName(instance);
             ThenICanSeeMyStateNameOnTheUpperNavigationBar(instance);
@@ -44,26 +37,25 @@ namespace Access2Justice.E2ETests.Steps
         [Given(@"I am prompted to set my location")]
         public void GivenIAmPromptedToSetMyLocation()
         {
-            HomePage.ConfirmModalPresent();
+            NavigationBar.ConfirmModalPresent();
         }
 
         [When(@"I click on the Change button")]
         public void WhenIClickOnTheChangeButton()
         {
-            HomePage.ClickChangeLocationButton();
+            BaseClass.ClickOnControl("change-location-button");
         }
-
 
         [When(@"I enter my state name")]
         public void WhenIEnterMyStateName(dynamic instance)
         {
-            HomePage.EnterStateName(instance.State);
+            NavigationBar.EnterStateName(instance.State);
         }
 
         [Then(@"I can see my state name on the upper navigation bar")]
         public void ThenICanSeeMyStateNameOnTheUpperNavigationBar(dynamic instance)
         {
-            HomePage.ConfirmStateNameHasBeenSet(instance.State);
+            NavigationBar.ConfirmStateNameHasBeenSet(instance.State);
         }
     }
 }

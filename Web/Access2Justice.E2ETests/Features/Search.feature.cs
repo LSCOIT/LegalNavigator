@@ -93,16 +93,18 @@ namespace Access2Justice.E2ETests.Features
 #line 6
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
+#line 7
+ testRunner.Given("I am on the Access2Justice website", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "State"});
             table1.AddRow(new string[] {
                         "Alaska"});
-#line 7
- testRunner.Given("I am on the Access2Justice website with state set", ((string)(null)), table1, "Given ");
-#line 10
- testRunner.When(string.Format("I type {0} into the search input field and click search button", phrase), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 8
+ testRunner.And("current state is set to", ((string)(null)), table1, "And ");
 #line 11
+ testRunner.When(string.Format("I type {0} into the search input field and click search button", phrase), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 12
  testRunner.Then("I can see search results", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

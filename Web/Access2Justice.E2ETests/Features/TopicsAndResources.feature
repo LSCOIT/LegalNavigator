@@ -4,7 +4,8 @@
 	I want to be told the sum of two numbers
 
 Scenario: Navigate to topics page from home page
-	Given I am on the Access2Justice website with state set
+	Given I am on the Access2Justice website
+	And current state is set to
 	| State  |
 	| Alaska |
 	And I am on the home page
@@ -12,14 +13,16 @@ Scenario: Navigate to topics page from home page
 	Then I should directed to the Topics and Resources page
 
 Scenario: Navigate to topics page by clicking on lower navigation bar
-	Given I am on the Access2Justice website with state set
+	Given I am on the Access2Justice website
+	And current state is set to
 	| State  |
 	| Alaska |
 	When I click on Topics & Resources on the lower navigation bar
 	Then I should directed to the Topics and Resources page
 
 Scenario: Navigate to topics page from Guided Assistance Page
-	Given I am on the Access2Justice website with state set
+	Given I am on the Access2Justice website
+	And current state is set to
 	| State  |
 	| Alaska |
 	And I am on the Guided Assistant page
@@ -27,7 +30,8 @@ Scenario: Navigate to topics page from Guided Assistance Page
 	Then I should directed to the Topics and Resources page
 
 Scenario: Navigate to a subtopic and see a list of resources
-	Given I am on the Access2Justice website with state set
+	Given I am on the Access2Justice website
+	And current state is set to
 	| State  |
 	| Alaska |
 	And I am on the Topics & Resources page
@@ -36,7 +40,8 @@ Scenario: Navigate to a subtopic and see a list of resources
 	Then I should see a list of resources
 
 Scenario: View Service Organizations in Your Community pane in Family topic
-	Given I am on the Access2Justice website with state set
+	Given I am on the Access2Justice website
+	And current state is set to
 	| State  |
 	| Alaska |
 	And I am on the Topics & Resources page

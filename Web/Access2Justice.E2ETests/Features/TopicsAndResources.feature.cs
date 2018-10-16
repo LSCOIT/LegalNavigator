@@ -97,19 +97,21 @@ namespace Access2Justice.E2ETests.Features
 #line 6
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
+#line 7
+ testRunner.Given("I am on the Access2Justice website", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "State"});
             table1.AddRow(new string[] {
                         "Alaska"});
-#line 7
- testRunner.Given("I am on the Access2Justice website with state set", ((string)(null)), table1, "Given ");
-#line 10
- testRunner.And("I am on the home page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 8
+ testRunner.And("current state is set to", ((string)(null)), table1, "And ");
 #line 11
+ testRunner.And("I am on the home page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 12
  testRunner.When("I press See More Topics button in the section named More Information, Videos, and" +
                     " Links to Resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 12
+#line 13
  testRunner.Then("I should directed to the Topics and Resources page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -121,19 +123,21 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void NavigateToTopicsPageByClickingOnLowerNavigationBar()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Navigate to topics page by clicking on lower navigation bar", null, ((string[])(null)));
-#line 14
+#line 15
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
+#line 16
+ testRunner.Given("I am on the Access2Justice website", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "State"});
             table2.AddRow(new string[] {
                         "Alaska"});
-#line 15
- testRunner.Given("I am on the Access2Justice website with state set", ((string)(null)), table2, "Given ");
-#line 18
+#line 17
+ testRunner.And("current state is set to", ((string)(null)), table2, "And ");
+#line 20
  testRunner.When("I click on Topics & Resources on the lower navigation bar", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 19
+#line 21
  testRunner.Then("I should directed to the Topics and Resources page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -145,21 +149,23 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void NavigateToTopicsPageFromGuidedAssistancePage()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Navigate to topics page from Guided Assistance Page", null, ((string[])(null)));
-#line 21
+#line 23
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
+#line 24
+ testRunner.Given("I am on the Access2Justice website", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         "State"});
             table3.AddRow(new string[] {
                         "Alaska"});
-#line 22
- testRunner.Given("I am on the Access2Justice website with state set", ((string)(null)), table3, "Given ");
 #line 25
+ testRunner.And("current state is set to", ((string)(null)), table3, "And ");
+#line 28
  testRunner.And("I am on the Guided Assistant page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 26
+#line 29
  testRunner.When("I click on the See More Topics button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 27
+#line 30
  testRunner.Then("I should directed to the Topics and Resources page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -171,23 +177,25 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void NavigateToASubtopicAndSeeAListOfResources()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Navigate to a subtopic and see a list of resources", null, ((string[])(null)));
-#line 29
+#line 32
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
+#line 33
+ testRunner.Given("I am on the Access2Justice website", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "State"});
             table4.AddRow(new string[] {
                         "Alaska"});
-#line 30
- testRunner.Given("I am on the Access2Justice website with state set", ((string)(null)), table4, "Given ");
-#line 33
- testRunner.And("I am on the Topics & Resources page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 34
+ testRunner.And("current state is set to", ((string)(null)), table4, "And ");
+#line 37
+ testRunner.And("I am on the Topics & Resources page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 38
  testRunner.When("I click on the first main topic", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 35
+#line 39
  testRunner.And("I click on the first subtopic", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 36
+#line 40
  testRunner.Then("I should see a list of resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -199,21 +207,23 @@ this.ScenarioInitialize(scenarioInfo);
         public virtual void ViewServiceOrganizationsInYourCommunityPaneInFamilyTopic()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("View Service Organizations in Your Community pane in Family topic", null, ((string[])(null)));
-#line 38
+#line 42
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
+#line 43
+ testRunner.Given("I am on the Access2Justice website", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "State"});
             table5.AddRow(new string[] {
                         "Alaska"});
-#line 39
- testRunner.Given("I am on the Access2Justice website with state set", ((string)(null)), table5, "Given ");
-#line 42
- testRunner.And("I am on the Topics & Resources page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 43
- testRunner.When("I click on the first main topic", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 44
+ testRunner.And("current state is set to", ((string)(null)), table5, "And ");
+#line 47
+ testRunner.And("I am on the Topics & Resources page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 48
+ testRunner.When("I click on the first main topic", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 49
  testRunner.Then("I should see the Service Organizations in Your Community pane to the right", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
