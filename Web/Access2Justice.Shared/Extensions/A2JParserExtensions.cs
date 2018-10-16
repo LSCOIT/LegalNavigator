@@ -140,7 +140,7 @@ namespace Access2Justice.Shared.Extensions
             else
             {
                 // todo: take this an extra step - double check the var you extracted matches some curated experience step name.
-                varsValues.Add(variableName, inputText.RemoveQuotes());
+                varsValues.Add(Tokens.GOTO + "-" + Guid.NewGuid(), inputText.RemoveQuotes());
             }
 
             return varsValues;
