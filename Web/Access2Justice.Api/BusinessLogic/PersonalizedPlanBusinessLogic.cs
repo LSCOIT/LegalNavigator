@@ -32,7 +32,7 @@ namespace Access2Justice.Api.BusinessLogic
             this.personalizedPlanViewModelMapper = personalizedPlanViewModelMapper;
         }
 
-        public async Task<PersonalizedPlanViewModel> GeneratePersonalizedPlanAsync(CuratedExperience curatedExperience, Guid answersDocId)
+        public async Task<dynamic> GeneratePersonalizedPlanAsync(CuratedExperience curatedExperience, Guid answersDocId)
         {
             // // Todo:@Alaa do all quries return a list? create a new one maybe?
             //var a2jPersonalizedPlan = await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.A2JAuthorTemplatesCollectionId, "id",
@@ -44,7 +44,7 @@ namespace Access2Justice.Api.BusinessLogic
             //return personalizedPlanViewModelMapper.MapViewModel(unprocessedPlan);
 
             // Todo:@Alaa implement this. I'm adding this placeholder for testing
-            return await backendDatabaseService.GetItemAsync<PersonalizedPlanViewModel>("aa14d33c-9c9d-484f-8af3-4282cfc696f0", cosmosDbSettings.PersonalizedActionPlanCollectionId);
+            return await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.PersonalizedActionPlanCollectionId, "id", "aa14d33c-9c9d-484f-8af3-4282cfc696f0");
         }
 
         public List<PersonalizedPlanStep> GetPlanSteps(Guid topic, List<PersonalizedPlanStep> personalizedPlanSteps)

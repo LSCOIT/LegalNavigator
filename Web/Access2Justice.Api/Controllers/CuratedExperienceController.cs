@@ -161,7 +161,7 @@ namespace Access2Justice.Api.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
-            return Ok();
+            return Ok(personalizedPlan);
         }
 
         [Permission(PermissionName.updateplan)]
