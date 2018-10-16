@@ -25,9 +25,6 @@ export class TopicService {
   }
   getTopics(): Observable<any> {
     this.mapLocation = this.loadStateName();
-    this.mapLocation.city = "";
-    this.mapLocation.county = "";
-    this.mapLocation.zipCode = "";
     return this.http.post<Topic>(api.topicUrl, JSON.stringify(this.mapLocation), httpOptions);
   }
   getSubtopics(id): Observable<any> {
