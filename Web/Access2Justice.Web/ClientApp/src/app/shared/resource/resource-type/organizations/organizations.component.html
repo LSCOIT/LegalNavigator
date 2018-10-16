@@ -15,10 +15,10 @@
         <img src="https://www.w3schools.com/howto/img_snow.jpg" (click)="changeModalImage($event)" alt="Alternate Text" />
       </ng-template>
       <div class="thumbnails">
-          <img src="https://www.w3schools.com/howto/img_snow.jpg" (click)="changeImage($event)" alt="Alternate Text" />
-          <img src="https://www.w3schools.com/howto/img_mountains.jpg" (click)="changeImage($event)" alt="Alternate Text" />
-          <img src="https://www.w3schools.com/howto/img_lights.jpg" (click)="changeImage($event)" alt="Alternate Text" />
-          <a (click)="openModal(template)">3 more photos</a>
+        <img src="https://www.w3schools.com/howto/img_snow.jpg" (click)="changeImage($event)" alt="Alternate Text" />
+        <img src="https://www.w3schools.com/howto/img_mountains.jpg" (click)="changeImage($event)" alt="Alternate Text" />
+        <img src="https://www.w3schools.com/howto/img_lights.jpg" (click)="changeImage($event)" alt="Alternate Text" />
+        <a (click)="openModal(template)">3 more photos</a>
         <ng-template #template>
           <div class="modal-header">
             <h4 class="modal-title pull-left">Organization Name's photo gallery</h4>
@@ -48,7 +48,7 @@
           {{resource.address}}
         </div>
         <div>{{resource.telephone}}</div>
-        <div>{{resource.url}}</div>
+        <div *ngIf="resource.url"> <a href={{resource.url}}>{{resource.url}}</a></div>
       </div>
     </div>
     <div class="box-no-shadow">
@@ -60,11 +60,7 @@
         </p>
         <h5>Specialties</h5>
         <ul>
-          <li>Lorem ipsum solor sit amet bibodem consecuter orem ipsum</li>
-          <li>Ipsum solor sit amet bibodem consecuter orem ipsum</li>
-          <li>Sapien elit in malesuada semper mi, id sollicitudin urna fermentum.</li>
-          <li>Consectetur adipiscing elit fusce vel.</li>
-          <li>Amet, consectetur adipiscing elit.</li>
+          <li>{{resource.specialties}}</li>
         </ul>
       </div>
     </div>
@@ -74,21 +70,22 @@
         <p>{{resource.eligibilityInformation}}</p>
         <h5>Qualifications</h5>
         <ul>
-          <li>Lorem ipsum solor sit amet bibodem consecuter orem ipsum</li>
-          <li>Ipsum solor sit amet bibodem consecuter orem ipsum</li>
-          <li>Sapien elit in malesuada semper mi, id sollicitudin urna fermentum.</li>
-          <li>Consectetur adipiscing elit fusce vel.</li>
-          <li>Amet, consectetur adipiscing elit.</li>
+          <li>{{resource.qualifications}}</li>
         </ul>
       </div>
     </div>
-    <div class="box-no-shadow" *ngIf="resource?.reviewedByCommunityMember">
+    <div class="box-no-shadow">
       <div class="resource-body">
-        <h4>Reviewed by a member of your community</h4>
-        <p>"{{resource.reviewedByCommunityMember}}"</p>
-        <span>- {{resource.reviewerFullName}}</span><span>, {{resource.reviewerTitle}}</span>
+        <h4>Reviewed by a member of your community</h4>  
+        <div *ngFor="let resource of resource.reviewer">
+          <p>"{{resource.reviewText}}"</p>
+          <div>
+            <img [src]="resource.reviewerImage" alt="{{resource.reviewerFullName}}"/>
+            <p>{{resource.reviewerFullName}}, {{resource.reviewerTitle}}</p>
+          </div>
+          </div>
+        </div>
       </div>
-    </div>
   </div>
   <div class="col-md-3 pull-right">
     <div class="no-print">
@@ -98,13 +95,7 @@
       <div class="resource-body">
         <h5>Business Hours</h5>
         <ul class="hours">
-          <li><span>Mon</span>8:00 AM - 5:00 PM</li>
-          <li><span>Tues</span>8:00 AM - 5:00 PM</li>
-          <li><span>Wed</span>8:00 AM - 5:00 PM</li>
-          <li><span>Thurs</span>8:00 AM - 5:00 PM</li>
-          <li><span>Fri</span>8:00 AM - 5:00 PM</li>
-          <li><span>Sat</span>8:00 AM - 5:00 PM</li>
-          <li><span>Sun</span>8:00 AM - 5:00 PM</li>
+          <li><span>{{resource.businessHours}}</span></li>
         </ul>
       </div>
     </div>

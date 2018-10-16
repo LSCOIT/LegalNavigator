@@ -100,7 +100,7 @@
                   <img src="./assets/images/small-icons/email.svg" alt="Email" class="nav-icon no-print" />
                 </div>
                 <div class="col-md-10 col-sm-11 col-xs-11">
-                  <span>{{resource.url}}</span>
+                  <span *ngIf="resource.url"> <a href={{resource.url}}>{{resource.url}}</a></span>
                 </div>
               </div>
             </div>
