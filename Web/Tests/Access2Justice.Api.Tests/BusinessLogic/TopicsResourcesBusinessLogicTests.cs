@@ -54,7 +54,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly JArray quickLinksData = TopicResourceTestData.quickLinksData;
         private readonly JArray emptyResourceData = TopicResourceTestData.emptyResourceData;
         private readonly JArray reviewerData = TopicResourceTestData.reviewerData;
-        private readonly JArray sectionData = TopicResourceTestData.sectionData;
+        private readonly JArray contentData = TopicResourceTestData.contentData;
 
         //Mocked result data.
         private readonly string expectedEmptyArrayObject = "[{}]";
@@ -64,7 +64,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly JArray emptyQuickLinksData = TopicResourceTestData.emptyQuickLinksData;
         private readonly JArray EmptyReferences = TopicResourceTestData.EmptyReferences;
         private readonly JArray emptyReviewerData = TopicResourceTestData.emptyReviewerData;
-        private readonly JArray emptySectionData = TopicResourceTestData.emptySectionData;
+        private readonly JArray emptyContentData = TopicResourceTestData.emptyContentData;
         private readonly string expectedTopicId = TopicResourceTestData.expectedTopicId;
         private readonly string expectedResourceId = TopicResourceTestData.expectedResourceId;
         private readonly string expectedpagedResource = TopicResourceTestData.expectedpagedResource;
@@ -91,7 +91,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly JArray expectedReferencesData = TopicResourceTestData.expectedReferencesData;
         private readonly Location expectedLocationValue = TopicResourceTestData.expectedLocationValue;
         private readonly JArray expectedReviewerData = TopicResourceTestData.expectedReviewerData;
-        private readonly JArray expectedSectionData = TopicResourceTestData.expectedSectionData;
+        private readonly JArray expectedContentData = TopicResourceTestData.expectedContentData;
 
         public TopicsResourcesBusinessLogicTests()
         {
@@ -366,7 +366,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var parentTopic = this.parentTopicIdData;
             var quickLink = this.expectedQuickLinksData;
             var reviewer = this.reviewerData;
-            var section = this.sectionData;
+            var content = this.contentData;
 
             //act
             var dbResponseTopicTag = topicsResourcesSettings.GetTopicTags(referenceTag).ReturnsForAnyArgs<dynamic>(expectedTopicTagData);
@@ -375,7 +375,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var dbResponseParentTopicId = topicsResourcesSettings.GetParentTopicIds(parentTopic).ReturnsForAnyArgs<dynamic>(expectedParentTopicIdData);
             var dbResponseQuickLinks = topicsResourcesSettings.GetQuickLinks(quickLink).ReturnsForAnyArgs<dynamic>(expectedQuickLinksData);
             var dbResponseReviwer = topicsResourcesSettings.GetReviewer(reviewer).ReturnsForAnyArgs<dynamic>(expectedReviewerData);
-            var dbResponseSection = topicsResourcesSettings.GetSections(section).ReturnsForAnyArgs<dynamic>(expectedSectionData);
+            var dbResponseContent = topicsResourcesSettings.GetContents(content).ReturnsForAnyArgs<dynamic>(expectedContentData);
             var response = topicsResourcesBusinessLogic.GetReferences(referenceInput[0]);
             var expectedReferenceData = JsonConvert.SerializeObject(expectedReferencesData);
             var actualReferenceData = JsonConvert.SerializeObject(response);
@@ -395,7 +395,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var parentTopic = this.emptyData;
             var quickLink = this.emptyData;
             var reviewer = this.emptyData;
-            var section = this.emptyData;
+            var content = this.emptyData;
 
             //act
             var dbResponseTopicTag = topicsResourcesSettings.GetTopicTags(referenceTag).ReturnsForAnyArgs<dynamic>(emptyTopicTagData);
@@ -404,7 +404,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var dbResponseParentTopic = topicsResourcesSettings.GetParentTopicIds(parentTopic).ReturnsForAnyArgs<dynamic>(emptyData);
             var dbResponseQuickLinks = topicsResourcesSettings.GetQuickLinks(quickLink).ReturnsForAnyArgs<dynamic>(emptyData);
             var dbResponseReviewer = topicsResourcesSettings.GetReviewer(reviewer).ReturnsForAnyArgs<dynamic>(emptyData);
-            var dbResponseSection = topicsResourcesSettings.GetSections(section).ReturnsForAnyArgs<dynamic>(emptyData);
+            var dbResponseContent = topicsResourcesSettings.GetContents(content).ReturnsForAnyArgs<dynamic>(emptyData);
             var response = topicsResourcesBusinessLogic.GetReferences(emptyResource[0]);
             var ActualReferenceData = JsonConvert.SerializeObject(response);
             var expectedReferencesData = JsonConvert.SerializeObject(EmptyReferences);
@@ -500,33 +500,33 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void GetSectionTestsShouldReturnProperData()
+        public void GetContentsTestsShouldReturnProperData()
         {
             //arrange
-            var section = this.sectionData;
+            var content = this.contentData;
 
             //act
-            var response = topicsResourcesBusinessLogic.GetSections(section);
-            var actualSection = JsonConvert.SerializeObject(response);
-            var expectedSection = JsonConvert.SerializeObject(expectedSectionData);
+            var response = topicsResourcesBusinessLogic.GetContents(content);
+            var actualContent = JsonConvert.SerializeObject(response);
+            var expectedContent = JsonConvert.SerializeObject(expectedContentData);
 
             //assert
-            Assert.Equal(expectedSection, actualSection);
+            Assert.Equal(expectedContent, actualContent);
         }
 
         [Fact]
-        public void GetSectionTestsShouldReturnEmptyData()
+        public void GetContentsTestsShouldReturnEmptyData()
         {
             //arrange
-            var section = this.emptyData;
+            var content = this.emptyData;
 
             //act
-            var response = topicsResourcesBusinessLogic.GetSections(section);
-            var actualSection = JsonConvert.SerializeObject(response);
-            var expectedSection = JsonConvert.SerializeObject(emptySectionData);
+            var response = topicsResourcesBusinessLogic.GetContents(content);
+            var actualContent = JsonConvert.SerializeObject(response);
+            var expectedContent = JsonConvert.SerializeObject(emptyContentData);
 
             //assert
-            Assert.Equal(expectedSection, actualSection);
+            Assert.Equal(expectedContent, actualContent);
         }
 
 

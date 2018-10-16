@@ -172,7 +172,7 @@ namespace Access2Justice.Api.BusinessLogic
             List<ParentTopicId> parentTopicIds = new List<ParentTopicId>();
             List<QuickLinks> quickLinks = new List<QuickLinks>();
             List<OrganizationReviewer> organizationReviewers = new List<OrganizationReviewer>();
-            List<ArticleSections> articleSections = new List<ArticleSections>();
+            List<ArticleContents> articleContents = new List<ArticleContents>();
             List<dynamic> references = new List<dynamic>();
             foreach (JProperty field in resourceObject)
             {
@@ -206,9 +206,9 @@ namespace Access2Justice.Api.BusinessLogic
                     organizationReviewers = field.Value != null && field.Value.Count() > 0 ? GetReviewer(field.Value) : null;
                 }
 
-                else if (field.Name == "sections")
+                else if (field.Name == "contents")
                 {
-                    articleSections = field.Value != null && field.Value.Count() > 0 ? GetSections(field.Value) : null;
+                    articleContents = field.Value != null && field.Value.Count() > 0 ? GetContents(field.Value) : null;
                 }
             }
 
@@ -218,7 +218,7 @@ namespace Access2Justice.Api.BusinessLogic
             references.Add(parentTopicIds);
             references.Add(quickLinks);
             references.Add(organizationReviewers);
-            references.Add(articleSections);
+            references.Add(articleContents);
             return references;
         }
 
@@ -373,26 +373,26 @@ namespace Access2Justice.Api.BusinessLogic
             return organizationReviewer;
         }
 
-        public dynamic GetSections(dynamic sectionValues)
+        public dynamic GetContents(dynamic contentValues)
         {
-            List<ArticleSections> articleSections = new List<ArticleSections>();
-            foreach (var sectionDetails in sectionValues)
+            List<ArticleContents> articleContents = new List<ArticleContents>();
+            foreach (var contentDetails in contentValues)
             {
-                string sectionHeadline = string.Empty, sectionContent = string.Empty;
-                foreach (JProperty section in sectionDetails)
+                string headline = string.Empty, content = string.Empty;
+                foreach (JProperty contentData in contentDetails)
                 {
-                    if (section.Name == "sectionHeadline")
+                    if (contentData.Name == "headline")
                     {
-                        sectionHeadline = section.Value.ToString();
+                        headline = contentData.Value.ToString();
                     }
-                    else if (section.Name == "sectionContent")
+                    else if (contentData.Name == "content")
                     {
-                        sectionContent = section.Value.ToString();
+                        content = contentData.Value.ToString();
                     }
                 }
-                articleSections.Add(new ArticleSections { SectionHeadline = sectionHeadline, SectionContent = sectionContent });
+                articleContents.Add(new ArticleContents { Headline = headline, Content = content });
             }
-            return articleSections;
+            return articleContents;
         }
 
         public async Task<IEnumerable<object>> UpsertResourcesUploadAsync(string path)
@@ -418,7 +418,7 @@ namespace Access2Justice.Api.BusinessLogic
             Video videos = new Video();
             Organization organizations = new Organization();
             EssentialReading essentialReadings = new EssentialReading();
-            ExternalLinks externalLinks = new ExternalLinks();
+            ExternalLink externalLinks = new ExternalLink();
 
             foreach (var resourceObject in resourceObjects)
             {
@@ -629,11 +629,11 @@ namespace Access2Justice.Api.BusinessLogic
             Article articles = new Article();
             List<TopicTag> topicTags = new List<TopicTag>();
             List<Location> locations = new List<Location>();
-            List<ArticleSections> articleSections = new List<ArticleSections>();
+            List<ArticleContents> articleContents = new List<ArticleContents>();
             dynamic references = GetReferences(resourceObject);
             topicTags = references[0];
             locations = references[1];
-            articleSections = references[6];
+            articleContents = references[6];
 
             articles = new Article()
             {
@@ -651,7 +651,7 @@ namespace Access2Justice.Api.BusinessLogic
                 CreatedBy = resourceObject.createdBy,
                 ModifiedBy = resourceObject.modifiedBy,
                 Overview = resourceObject.overview,
-                Sections = articleSections
+                Contents = articleContents
             };
             articles.Validate();
             return articles;
@@ -757,14 +757,14 @@ namespace Access2Justice.Api.BusinessLogic
 
         public dynamic UpsertResourcesExternalLinks(dynamic resourceObject)
         {
-            ExternalLinks externalLinks = new ExternalLinks();
+            ExternalLink externalLink = new ExternalLink();
             List<TopicTag> topicTags = new List<TopicTag>();
             List<Location> locations = new List<Location>();
             dynamic references = GetReferences(resourceObject);
             topicTags = references[0];
             locations = references[1];
 
-            externalLinks = new ExternalLinks()
+            externalLink = new ExternalLink()
             {
                 ResourceId = resourceObject.id == "" ? Guid.NewGuid() : resourceObject.id,
                 Name = resourceObject.name,
@@ -780,8 +780,8 @@ namespace Access2Justice.Api.BusinessLogic
                 CreatedBy = resourceObject.createdBy,
                 ModifiedBy = resourceObject.modifiedBy
             };
-            externalLinks.Validate();
-            return externalLinks;
+            externalLink.Validate();
+            return externalLink;
         }
 
         public async Task<IEnumerable<object>> UpsertTopicsUploadAsync(string path)
