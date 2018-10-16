@@ -214,15 +214,15 @@ namespace Access2Justice.Api.BusinessLogic
                 List<ShareProfileResponse> shareProfileResponse = JsonUtilities.DeserializeDynamicObject<List<ShareProfileResponse>>(userprofileResponse);
                 if (shareProfileResponse?.Count > 0)
                 {
-                    shareProfileResponse[0].link = shareProfileDetails[0].link;
+                    shareProfileResponse[0].Link = shareProfileDetails.FirstOrDefault().Link;
                     foreach (var profile in shareProfileResponse)
                     {
-                        if (profile.link == Constants.ProfileLink)
+                        if (profile.Link == Constants.ProfileLink)
                         {
                             profileViewModel.UserName = profile.Name;
                             profileViewModel.UserId = profile.OId;
                         }
-                        profileViewModel.ResourceLink = profile.link;
+                        profileViewModel.ResourceLink = profile.Link;
                     }
                 }
             }

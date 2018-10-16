@@ -27,7 +27,7 @@ namespace Access2Justice.Api.ViewModels
         public string Id { get; set; }
 
         [JsonProperty(PropertyName = "url")]
-        public string link { get; set; }
+        public string Link { get; set; }
     }
 
     public class ShareProfileResponse
@@ -45,6 +45,6 @@ namespace Access2Justice.Api.ViewModels
         public string OId { get; set; }
 
         [JsonProperty(PropertyName = "url")]
-        public string link { get; set; }
+        public string Link { get; set; }
     }
 }
