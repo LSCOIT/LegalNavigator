@@ -137,7 +137,8 @@ namespace Access2Justice.Api.BusinessLogic
 
                     // todo: we need to find a better way to match var name with component (child) name. A2J Author childern names are appended with 
                     // numbers so this must be taken into account.
-                    destinationComponent = curatedExperience.Components.Where(x => x.Name.Contains(parsedCode.Values.LastOrDefault())).FirstOrDefault();
+                    
+                // destinationComponent = curatedExperience.Components.Where(x => x.Name.Contains(parsedCode.Values.LastOrDefault())).FirstOrDefault();
                 }
             }
             else if (!string.IsNullOrWhiteSpace(currentButton.Destination))

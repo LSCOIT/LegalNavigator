@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
+using static Access2Justice.Api.Authorization.Permissions;
+using Access2Justice.Api.Authorization;
 using System.Threading.Tasks;
 
 namespace Access2Justice.Api.Controllers
@@ -158,6 +161,7 @@ namespace Access2Justice.Api.Controllers
             return Ok();
         }
 
+        [Permission(PermissionName.updateplan)]
         [HttpPost("update-plan")]
         public async Task<IActionResult> UpdateUserProfileDocumentAsync([FromBody]UserPersonalizedPlan userPlan)
         {

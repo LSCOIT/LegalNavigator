@@ -1,13 +1,15 @@
-﻿using Access2Justice.Shared.Interfaces;
+﻿using Access2Justice.Api.Authorization;
+using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using static Access2Justice.Api.Authorization.Permissions;
 
 namespace Access2Justice.Api.Controllers
-{
+{	
     [Produces("application/json")]
     public class UserProfileController : Controller
     {
@@ -22,7 +24,8 @@ namespace Access2Justice.Api.Controllers
         /// Get the user details by a user OId
         /// </summary>
         /// <param name="oid"></param>
-        /// <returns></returns>
+        /// <returns></returns> 
+        [Permission(PermissionName.getuserprofile)]
         [HttpPost]
         [Route("api/user/get-user-profile")]
         public async Task<IActionResult> GetUserDataAsync(string oid, string type)
@@ -36,6 +39,7 @@ namespace Access2Justice.Api.Controllers
         /// </summary>
         /// <param name="oid"></param>
         /// <returns></returns>
+        [Permission(PermissionName.getuserprofiledata)]
         [HttpGet]
         [Route("api/user/get-user-profile-data/{oid}")]
         public async Task<IActionResult> GetUserProfileDataAsync(string oid)
@@ -49,7 +53,7 @@ namespace Access2Justice.Api.Controllers
         /// </summary>
         /// <param name="userData"></param>
         /// <returns></returns>
-        [Authorize]
+        [Permission(PermissionName.upsertuserpersonalizedplan)]
         [HttpPost]
         [Route("api/user/upsert-user-personalized-plan")]
         public async Task<IActionResult> UpsertUserPersonalizedPlanAsync([FromBody]ProfileResources profileResources)
