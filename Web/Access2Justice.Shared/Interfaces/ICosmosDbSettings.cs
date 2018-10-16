@@ -17,5 +17,6 @@ namespace Access2Justice.Shared.Interfaces
         string StaticResourceCollectionId { get; }
         string UserSavedResourcesCollectionId { get; }
         string UserResourceCollectionId { get; }
+        string UserRoleCollectionId { get; }
     }
 }

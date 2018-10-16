@@ -1,8 +1,11 @@
-﻿using Access2Justice.Api.Interfaces;
+﻿using Access2Justice.Api.Authorization;
+using Access2Justice.Api.Interfaces;
 using Access2Justice.Shared;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using static Access2Justice.Api.Authorization.Permissions;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -17,6 +20,7 @@ namespace Access2Justice.Api.Controllers
             this.shareBusinessLogic = shareBusinessLogic;
         }
 
+        [Permission(PermissionName.generatepermalink)]
         [HttpPost("generate-permalink")]
         public async Task<IActionResult> ShareAsync([FromBody] ShareInput shareInput)
         {
@@ -28,6 +32,7 @@ namespace Access2Justice.Api.Controllers
             return StatusCode(StatusCodes.Status412PreconditionFailed);
         }
 
+        [Permission(PermissionName.checkpermalink)]
         [HttpPost("check-permalink")]
         public async Task<IActionResult> CheckDataAsync([FromBody] ShareInput shareInput)
         {
@@ -39,6 +44,7 @@ namespace Access2Justice.Api.Controllers
             return StatusCode(StatusCodes.Status412PreconditionFailed);
         }
 
+        [Permission(PermissionName.removepermalink)]
         [HttpPost("remove-permalink")]
         public async Task<IActionResult> UnshareAsync([FromBody] ShareInput unShareInput)
         {
@@ -50,6 +56,7 @@ namespace Access2Justice.Api.Controllers
             return StatusCode(StatusCodes.Status412PreconditionFailed);
         }
 
+        [Permission(PermissionName.getpermallinkresource)]
         [HttpGet("get-permalink-resource")]
         public async Task<IActionResult> PermaLinkAsync([FromQuery] string permaLink)
         {

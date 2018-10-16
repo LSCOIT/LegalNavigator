@@ -55,6 +55,10 @@ namespace Access2Justice.Shared.Models
         [DefaultValue("")]
         [JsonProperty(PropertyName = "search")]
         public ButtonImage Search { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "organizationalUnit")]
+        public string OrganizationalUnit { get; set; }
     }
 
     public class Language
