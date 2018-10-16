@@ -20,6 +20,7 @@ describe('TopicsComponent', () => {
   let api: TopicService;
   let router: RouterModule;
   let mockTopicService;
+  let service: MapService;
   let mockGlobal;
   let mockTopics = [
     {
@@ -41,6 +42,15 @@ describe('TopicsComponent', () => {
   ];
   const mockRouter = {
     navigate: () => { }
+  };
+
+  const mockMapLocation = {
+    state: "California",
+    city: "Riverside County",
+    county: "Indio",
+    zipCode: "92201",
+    locality: "Indio",
+    address: "92201"
   };
 
   beforeEach(async(() => {
@@ -67,8 +77,7 @@ describe('TopicsComponent', () => {
         { provide: APP_BASE_HREF, useValue: '/' },
         { provide: TopicService, useValue: mockTopicService },
         { provide: RouterModule, useValue: mockRouter },
-        BreadcrumbService,
-        MapService,
+        BreadcrumbService, MapService,
         { provide: Global, useValue: mockGlobal }
       ]
     })
@@ -89,9 +98,18 @@ describe('TopicsComponent', () => {
     expect(component).toBeDefined();
   }));
 
-  //it('makes a call to getTopics Oninit', async() => {
-  //  spyOn(component, 'getTopics');
-  //  component.ngOnInit();
-  //  expect(component.getTopics).toHaveBeenCalled();
-  //});
+  it('Bind data topics property from cached topics Data Oninit', async() => {    
+    component.ngOnInit();
+    expect(component.topics).toEqual(mockTopics);
+  });
+
+  it('makes a call to getTopics Oninit', async () => {
+    
+    mockGlobal.topicsData = undefined;
+    spyOn(component, 'getTopics');
+    component.subscription.next(1);
+    component.ngOnInit();
+    expect(component.getTopics).toHaveBeenCalled();
+  });
+
 });
