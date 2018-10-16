@@ -153,10 +153,10 @@ namespace Access2Justice.Api.BusinessLogic
             return destinationComponent.ComponentId == default(Guid) ? null : destinationComponent;
         }
 
-        public int CalculateRemainingQuestions(CuratedExperience curatedExperience, CuratedExperienceComponent currentComponent, Guid answersDocId)
+        private int CalculateRemainingQuestions(CuratedExperience curatedExperience, CuratedExperienceComponent currentComponent)
         {
-            try
-            {
+            //try
+            //{
                 // start calculating routes based on the current component location in the json tree.
                 var indexOfCurrentComponent = curatedExperience.Components.FindIndex(x => x.ComponentId == currentComponent.ComponentId);
 
@@ -178,13 +178,13 @@ namespace Access2Justice.Api.BusinessLogic
 
                 // return the longest possible route
                 return possibleRoutes.OrderByDescending(x => x.Count).First().Count;
-            }
-            catch
-            {
-                // Todo:@Alaa fix this method
-                var breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
-                return 5;
-            }
+            //}
+            //catch
+            //{
+            //    // Todo:@Alaa fix this method
+            //    var breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
+            //    return 0;
+            //}
         }
 
         private CuratedExperienceComponentViewModel MapComponentToViewModelComponent(CuratedExperience curatedExperience, CuratedExperienceComponent dbComponent, Guid answersDocId)
@@ -195,11 +195,12 @@ namespace Access2Justice.Api.BusinessLogic
             }
 
             var answerDocId = answersDocId == default(Guid) ? Guid.NewGuid() : answersDocId;
+            var remainingQuestions = CalculateRemainingQuestions(curatedExperience, dbComponent);
             return new CuratedExperienceComponentViewModel
             {
                 CuratedExperienceId = curatedExperience.CuratedExperienceId,
                 AnswersDocId = answerDocId,
-                QuestionsRemaining = CalculateRemainingQuestions(curatedExperience, dbComponent, answerDocId),
+                QuestionsRemaining = remainingQuestions,
                 ComponentId = dbComponent.ComponentId,
                 Name = dbComponent.Name,
                 Text = dbComponent.Text,

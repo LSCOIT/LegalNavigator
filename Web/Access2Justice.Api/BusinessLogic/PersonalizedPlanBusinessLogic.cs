@@ -34,14 +34,17 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<PersonalizedPlanViewModel> GeneratePersonalizedPlanAsync(CuratedExperience curatedExperience, Guid answersDocId)
         {
-             // Todo:@Alaa do all quries return a list? create a new one maybe?
-            var a2jPersonalizedPlan = await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.A2JAuthorTemplatesCollectionId, "id",
-                curatedExperience.A2jPersonalizedPlanId.ToString());
-            var userAnswers = await backendDatabaseService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(),
-                cosmosDbSettings.CuratedExperienceAnswersCollectionId);
+            // // Todo:@Alaa do all quries return a list? create a new one maybe?
+            //var a2jPersonalizedPlan = await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.A2JAuthorTemplatesCollectionId, "id",
+            //    curatedExperience.A2jPersonalizedPlanId.ToString());
+            //var userAnswers = await backendDatabaseService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(),
+            //    cosmosDbSettings.CuratedExperienceAnswersCollectionId);
 
-            var unprocessedPlan = personalizedPlanEngine.Build((JObject)a2jPersonalizedPlan[0], userAnswers);
-            return personalizedPlanViewModelMapper.MapViewModel(unprocessedPlan);
+            //var unprocessedPlan = personalizedPlanEngine.Build((JObject)a2jPersonalizedPlan[0], userAnswers);
+            //return personalizedPlanViewModelMapper.MapViewModel(unprocessedPlan);
+
+            // Todo:@Alaa implement this. I'm adding this placeholder for testing
+            return await backendDatabaseService.GetItemAsync<PersonalizedPlanViewModel>("aa14d33c-9c9d-484f-8af3-4282cfc696f0", cosmosDbSettings.PersonalizedActionPlanCollectionId);
         }
 
         public List<PersonalizedPlanStep> GetPlanSteps(Guid topic, List<PersonalizedPlanStep> personalizedPlanSteps)

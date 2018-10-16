@@ -154,12 +154,12 @@ namespace Access2Justice.Api.Controllers
         [HttpGet("personalized-plan")]
         public async Task<IActionResult> GeneratePersonalizedPlan([FromQuery] Guid curatedExperienceId, [FromQuery] Guid answersDocId)
         {
-            //var personalizedPlan = await personalizedPlanBusinessLogic.GeneratePersonalizedPlanAsync(
-            //    RetrieveCachedCuratedExperience(curatedExperienceId), answersDocId);
-            //if (personalizedPlan == null)
-            //{
-            //    return StatusCode(StatusCodes.Status500InternalServerError);
-            //}
+            var personalizedPlan = await personalizedPlanBusinessLogic.GeneratePersonalizedPlanAsync(
+                RetrieveCachedCuratedExperience(curatedExperienceId), answersDocId);
+            if (personalizedPlan == null)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
 
             return Ok();
         }
