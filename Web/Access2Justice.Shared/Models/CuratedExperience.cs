@@ -51,7 +51,7 @@ namespace Access2Justice.Shared.Models
         public List<Button> Buttons { get; set; }
 
         [JsonProperty(PropertyName = "code")]
-        public Code Code { get; set; }
+        public PersonalizedPlanEvaluator Code { get; set; }
 
         public CuratedExperienceComponent()
         {
@@ -109,7 +109,7 @@ namespace Access2Justice.Shared.Models
         public string Destination { get; set; }
     }
 
-    public class Code
+    public class PersonalizedPlanEvaluator
     {
         [JsonProperty(PropertyName = "codeBefore")]
         public string CodeBefore { get; set; }

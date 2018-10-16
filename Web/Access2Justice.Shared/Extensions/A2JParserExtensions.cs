@@ -107,13 +107,7 @@ namespace Access2Justice.Shared.Extensions
                     }
                     else
                     {
-                        var matchQuotes = Regex.Matches(inputText, "\"([^\"]*)\"");
-                        var matchedString = string.Empty;
-                        if (matchQuotes.Any())
-                        {
-                            matchedString = matchQuotes.FirstOrDefault().Value.Replace("\"", "");
-                        }
-                        varsValues.Add(varValue, matchedString.Replace(Tokens.VarNameLeftSign, "").Replace(Tokens.VarNameRightSign, ""));
+                        varsValues.Add(varValue, inputText.RemoveQuotes());
                     }
                 }
             }
@@ -124,9 +118,10 @@ namespace Access2Justice.Shared.Extensions
         public static Dictionary<string, string> SetValue(this string inputText)
         {
             var varsValues = new Dictionary<string, string>();
+            var variableName = string.Empty;
             if (inputText.Contains(Tokens.TO))
             {
-                var variableName = inputText.GetStringBetween(Tokens.VarNameLeftSign, Tokens.VarNameRightSign);
+                variableName = inputText.GetStringBetween(Tokens.VarNameLeftSign, Tokens.VarNameRightSign);
                 var valueString = inputText.GetStringOnTheRightOf(Tokens.TO);
 
                 if (valueString.ToUpperInvariant().Contains(Tokens.TrueTokens.TrueText))
@@ -145,15 +140,13 @@ namespace Access2Justice.Shared.Extensions
             else
             {
                 // todo: take this an extra step - double check the var you extracted matches some curated experience step name.
-                var matchedString = Regex.Matches(inputText, "\"([^\"]*)\"").FirstOrDefault().Value;
-                varsValues.Add(Tokens.NextStep + "-" + Guid.NewGuid(), matchedString.Replace("\"", "").
-                    Replace(Tokens.VarNameLeftSign, "").Replace(Tokens.VarNameRightSign, ""));
+                varsValues.Add(variableName, inputText.RemoveQuotes());
             }
 
             return varsValues;
         }
 
-        public static string RemoveQuotes(string inputText)
+        public static string RemoveQuotes(this string inputText)
         {
             var matchQuotes = Regex.Matches(inputText, "\"([^\"]*)\"");
             var matchedString = string.Empty;

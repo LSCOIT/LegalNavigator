@@ -115,9 +115,9 @@ namespace Access2Justice.Api.Controllers
         }
 
         [HttpGet("start")]
-        public IActionResult GetFirstComponent(Guid curatedExperienceId)
+        public async Task<IActionResult> GetFirstComponent(Guid curatedExperienceId)
         {
-            var component = curatedExperienceBusinessLogic.GetComponent(RetrieveCachedCuratedExperience(curatedExperienceId), Guid.Empty);
+            var component = await curatedExperienceBusinessLogic.GetComponentAsync(RetrieveCachedCuratedExperience(curatedExperienceId), Guid.Empty);
             if (component == null) return NotFound();
 
             return Ok(component);
@@ -126,7 +126,7 @@ namespace Access2Justice.Api.Controllers
         [HttpGet("component")]
         public IActionResult GetSpecificComponent([FromQuery] Guid curatedExperienceId, [FromQuery] Guid componentId)
         {
-            var component = curatedExperienceBusinessLogic.GetComponent(RetrieveCachedCuratedExperience(curatedExperienceId), componentId);
+            var component = curatedExperienceBusinessLogic.GetComponentAsync(RetrieveCachedCuratedExperience(curatedExperienceId), componentId);
             if (component == null) return NotFound();
 
             return Ok(component);
@@ -136,26 +136,26 @@ namespace Access2Justice.Api.Controllers
         public async Task<IActionResult> SaveAndGetNextComponent([FromBody] CuratedExperienceAnswersViewModel component)
         {
             var curatedExperience = RetrieveCachedCuratedExperience(component.CuratedExperienceId);
-            var document = await curatedExperienceBusinessLogic.SaveAnswers(component, curatedExperience);
+            var document = await curatedExperienceBusinessLogic.SaveAnswersAsync(component, curatedExperience);
             if (component == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
-            return Ok(curatedExperienceBusinessLogic.GetNextComponent(curatedExperience, component));
+            return Ok(await curatedExperienceBusinessLogic.GetNextComponentAsync(curatedExperience, component));
         }
 
         [HttpGet("personalized-plan")]
         public async Task<IActionResult> GeneratePersonalizedPlan([FromQuery] Guid curatedExperienceId, [FromQuery] Guid answersDocId)
         {
-            var personalizedPlan = await personalizedPlanBusinessLogic.GeneratePersonalizedPlanAsync(
-                RetrieveCachedCuratedExperience(curatedExperienceId), answersDocId);
-            if (personalizedPlan == null)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
+            //var personalizedPlan = await personalizedPlanBusinessLogic.GeneratePersonalizedPlanAsync(
+            //    RetrieveCachedCuratedExperience(curatedExperienceId), answersDocId);
+            //if (personalizedPlan == null)
+            //{
+            //    return StatusCode(StatusCodes.Status500InternalServerError);
+            //}
 
-            return Ok(personalizedPlan);
+            return Ok();
         }
 
         [HttpPost("update-plan")]
@@ -170,7 +170,7 @@ namespace Access2Justice.Api.Controllers
             var cuExSession = HttpContext.Session.GetString(id.ToString());
             if (string.IsNullOrWhiteSpace(cuExSession))
             {
-                var rawCuratedExperience = curatedExperienceBusinessLogic.GetCuratedExperience(id).Result;
+                var rawCuratedExperience = curatedExperienceBusinessLogic.GetCuratedExperienceAsync(id).Result;
                 HttpContext.Session.SetObjectAsJson(id.ToString(), rawCuratedExperience);
             }
 

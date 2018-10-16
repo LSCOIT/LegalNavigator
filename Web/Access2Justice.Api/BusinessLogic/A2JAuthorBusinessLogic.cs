@@ -153,9 +153,9 @@ namespace Access2Justice.Api.BusinessLogic
             return componentButtons;
         }
 
-        private Code GetCodes(IEnumerable<JProperty> pageProperties)
+        private PersonalizedPlanEvaluator GetCodes(IEnumerable<JProperty> pageProperties)
         {
-            return new Code
+            return new PersonalizedPlanEvaluator
             {
                 CodeBefore = pageProperties.GetValue("codeBefore"),
                 CodeAfter = pageProperties.GetValue("codeAfter")
