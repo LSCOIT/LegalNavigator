@@ -100,6 +100,9 @@ namespace Access2Justice.Api.Controllers
         public async Task<IActionResult> TestA2JPersonalizedPlanParser([FromBody] CuratedExperienceAnswers userAnswers)
         {
             // Todo:@Alaa remove this endpoint, added it just to test the parser duing development
+            var des = curatedExperienceBusinessLogic.FindDestinationComponentAsync(
+                RetrieveCachedCuratedExperience(Guid.Parse("93bcabe2-8afc-4044-b4da-59f7b94510c4")), Guid.Parse("49989209-f89a-4991-86c4-bba41ac2d2d3"), userAnswers.AnswersDocId);
+
             return Ok(new A2JLogicParser(new A2JLogicInterpreter()).Parse(userAnswers));
         }
 

@@ -13,5 +13,8 @@ namespace Access2Justice.Api.Interfaces
         Task<CuratedExperienceComponentViewModel> GetNextComponentAsync(CuratedExperience curatedExperience, CuratedExperienceAnswersViewModel component);
         Task<Document> SaveAnswersAsync(CuratedExperienceAnswersViewModel component, CuratedExperience curatedExperience);
         Task<CuratedExperienceAnswers> MapViewModelAsync(CuratedExperienceAnswersViewModel viewModelAnswer, CuratedExperience curatedExperience);
+
+        // Todo:@Alaa remove
+        Task<CuratedExperienceComponent> FindDestinationComponentAsync(CuratedExperience curatedExperience, Guid buttonId, Guid answersDocId);
     }
 }

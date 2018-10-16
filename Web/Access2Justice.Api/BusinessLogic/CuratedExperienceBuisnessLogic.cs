@@ -108,37 +108,19 @@ namespace Access2Justice.Api.BusinessLogic
 
             var destinationComponent = new CuratedExperienceComponent();
             var currentComponent = curatedExperience.Components.Where(x => x.Buttons.Contains(currentButton)).FirstOrDefault();
-            if ((!string.IsNullOrWhiteSpace(currentComponent.Code.CodeBefore) && currentComponent.Code.CodeBefore.Contains(Tokens.GOTO)) ||
-                (!string.IsNullOrWhiteSpace(currentComponent.Code.CodeAfter) && currentComponent.Code.CodeAfter.Contains(Tokens.GOTO)))
+            if (!string.IsNullOrWhiteSpace(currentComponent.Code.CodeAfter) && currentComponent.Code.CodeAfter.Contains(Tokens.GOTO))
             {
+                var answers = await dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.CuratedExperienceAnswersCollectionId);
                 // get the answers so far - done
                 // get all the code in all the curated experience - to be done
-                var personalizedPlanEvaluator = ExtractCode(curatedExperience);
-                var answers = await dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.CuratedExperienceAnswersCollectionId);
-                if (answers != null)
+                var currentComponentLogic = ExtractCode(currentComponent, answers);
+                if (currentComponentLogic != null)
                 {
-                    var tempParser = new Dictionary<string, string>();
-                    foreach (var button in currentComponent.Buttons)
+                    var parsedCode = parser.Parse(currentComponentLogic);
+                    if (parsedCode.Any())
                     {
-                        if (!string.IsNullOrWhiteSpace(button.Name) && !string.IsNullOrWhiteSpace(button.Value))
-                            answers.ButtonComponents.Add(new ButtonComponent
-                            {
-                                CodeBefore = currentComponent.Code.CodeBefore,
-                                CodeAfter = currentComponent.Code.CodeAfter,
-                                Name = button.Name,
-                                Value = button.Value,
-                            });
-
-                        var parsedCode = parser.Parse(answers);
-                        tempParser = parser.Parse(answers);
-                        var temp = parsedCode.Values.LastOrDefault();
                         destinationComponent = curatedExperience.Components.Where(x => x.Name.Contains(parsedCode.Values.LastOrDefault())).FirstOrDefault();
                     }
-
-                    // todo: we need to find a better way to match var name with component (child) name. A2J Author childern names are appended with 
-                    // numbers so this must be taken into account.
-                    
-                // destinationComponent = curatedExperience.Components.Where(x => x.Name.Contains(parsedCode.Values.LastOrDefault())).FirstOrDefault();
                 }
             }
             else if (!string.IsNullOrWhiteSpace(currentButton.Destination))
@@ -148,33 +130,59 @@ namespace Access2Justice.Api.BusinessLogic
                     destinationComponent = curatedExperience.Components.Where(x => x.Name == currentButton.Destination).FirstOrDefault();
                 }
             }
-
+             // Todo:@Alaa must be refactored, making it like this during dev/test to make it easy to debug.
+            if(!string.IsNullOrWhiteSpace(destinationComponent.Code.CodeBefore) && destinationComponent.Code.CodeBefore.Contains(Tokens.GOTO))
+            {
+                var answers = await dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.CuratedExperienceAnswersCollectionId);
+                // get the answers so far - done
+                // get all the code in all the curated experience - to be done
+                var currentComponentLogic = ExtractCode(destinationComponent, answers);
+                if (currentComponentLogic != null)
+                {
+                    var parsedCode = parser.Parse(currentComponentLogic);
+                    if (parsedCode.Any())
+                    {
+                        destinationComponent = curatedExperience.Components.Where(x => x.Name.Contains(parsedCode.Values.LastOrDefault())).FirstOrDefault();
+                    }
+                }
+            }
             return destinationComponent.ComponentId == default(Guid) ? null : destinationComponent;
         }
 
         public async Task<int> CalculateRemainingQuestionsAsync(CuratedExperience curatedExperience, CuratedExperienceComponent currentComponent, Guid answersDocId)
         {
-            // start calculating routes based on the current component location in the json tree.
-            var indexOfCurrentComponent = curatedExperience.Components.FindIndex(x => x.ComponentId == currentComponent.ComponentId);
+            // Todo:@Alaa fix this
+            return 5;
+                 //try
+                 //{
+                 //    // start calculating routes based on the current component location in the json tree.
+                 //    var indexOfCurrentComponent = curatedExperience.Components.FindIndex(x => x.ComponentId == currentComponent.ComponentId);
 
-            // every curated experience has one or more components; every component has one or more buttons; every button has one or more destinations.
-            var possibleRoutes = new List<List<CuratedExperienceComponent>>();
+            //    // every curated experience has one or more components; every component has one or more buttons; every button has one or more destinations.
+            //    var possibleRoutes = new List<List<CuratedExperienceComponent>>();
 
-            foreach (var component in curatedExperience.Components.Skip(indexOfCurrentComponent))
-            {
-                for (int i = 0; i < component.Buttons.Count; i++)
-                {
-                    if (possibleRoutes.Count <= i)
-                    {
-                        possibleRoutes.Add(new List<CuratedExperienceComponent>());
-                    }
+            //    foreach (var component in curatedExperience.Components.Skip(indexOfCurrentComponent))
+            //    {
+            //        for (int i = 0; i < component.Buttons.Count; i++)
+            //        {
+            //            if (possibleRoutes.Count <= i)
+            //            {
+            //                possibleRoutes.Add(new List<CuratedExperienceComponent>());
+            //            }
 
-                    possibleRoutes[i].AddIfNotNull(await FindDestinationComponentAsync(curatedExperience, component.Buttons[i].Id, answersDocId));
-                }
-            }
+            //            possibleRoutes[i].AddIfNotNull(await FindDestinationComponentAsync(curatedExperience, component.Buttons[i].Id, answersDocId));
+            //        }
+            //    }
 
-            // return the longest possible route
-            return possibleRoutes.OrderByDescending(x => x.Count).First().Count;
+            //    // return the longest possible route
+            //    return possibleRoutes.OrderByDescending(x => x.Count).First().Count;
+            //}
+            //catch
+            //{
+            //     // Todo:@Alaa fix this method
+            //    var breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
+            //    return 5;
+            //}
         }
 
         private async Task<CuratedExperienceComponentViewModel> MapComponentToViewModelComponentAsync(CuratedExperience curatedExperience, CuratedExperienceComponent dbComponent, Guid answersDocId)
@@ -220,7 +228,7 @@ namespace Access2Justice.Api.BusinessLogic
                 Name = buttonComponent.Buttons.Where(x => x.Id == viewModelAnswer.ButtonId).FirstOrDefault().Name,
                 Value = buttonComponent.Buttons.Where(x => x.Id == viewModelAnswer.ButtonId).FirstOrDefault().Value,
 
-                CodeBefore =  buttonComponent.Code.CodeBefore,
+                CodeBefore = buttonComponent.Code.CodeBefore,
                 CodeAfter = buttonComponent.Code.CodeAfter
             });
 
@@ -233,7 +241,7 @@ namespace Access2Justice.Api.BusinessLogic
                     if (answerField != null && component.Fields.Where(x => x.Id == Guid.Parse(answerField.FieldId)).Any())
                     {
                         var selectedField = component.Fields.Where(x => x.Id == Guid.Parse(answerField.FieldId)).FirstOrDefault();
-                        fieldComponent = curatedExperience.Components.Where(x => x.Fields.Contains(selectedField)).FirstOrDefault();            
+                        fieldComponent = curatedExperience.Components.Where(x => x.Fields.Contains(selectedField)).FirstOrDefault();
                         userSelectedFields.Add(new FieldComponent
                         {
                             CodeBefore = userSelectedButtons.Any(x => x.CodeBefore == fieldComponent.Code.CodeBefore) ? string.Empty : fieldComponent.Code.CodeBefore,
@@ -262,18 +270,29 @@ namespace Access2Justice.Api.BusinessLogic
             };
         }
 
-        private CuratedExperienceAnswers ExtractCode(CuratedExperience curatedExperience)
+        private CuratedExperienceAnswers ExtractCode(CuratedExperienceComponent component, CuratedExperienceAnswers answers)
         {
-            var answers = new CuratedExperienceAnswers();
-            foreach (var component in curatedExperience.Components)
+            // when dealing with finding next destination of the current component we need to remove all logic
+            // except the specific GOTO statement that comes in the current component. That is why I'm setting all logic to string.Empty.
+            foreach (var answer in answers.ButtonComponents)
             {
-                if (!string.IsNullOrWhiteSpace(component.Code.CodeBefore) || !string.IsNullOrWhiteSpace(component.Code.CodeAfter))
-                {
-                    var button = new ButtonComponent();
-                    button.CodeBefore = component.Code.CodeBefore;
-                    button.CodeAfter = component.Code.CodeAfter;
-                    answers.ButtonComponents.Add(button);
-                }
+                answer.CodeBefore = string.Empty;
+                answer.CodeAfter = string.Empty;
+            }
+            foreach (var answer in answers.FieldComponents)
+            {
+                answer.CodeBefore = string.Empty;
+                answer.CodeAfter = string.Empty;
+            }
+            if (!string.IsNullOrWhiteSpace(component.Code.CodeBefore) || !string.IsNullOrWhiteSpace(component.Code.CodeAfter))
+            {
+                var button = new ButtonComponent();
+                button.ButtonId = Guid.NewGuid();
+                button.Name = string.Empty;
+                button.Value = string.Empty;
+                button.CodeBefore = component.Code.CodeBefore;
+                button.CodeAfter = component.Code.CodeAfter;
+                answers.ButtonComponents.Add(button);
             }
 
             return answers;
