@@ -36,10 +36,11 @@
             (input)="onSearchChange()"
             autofocus="autofocus"
             name="locationInput"
-            [(ngModel)]='locationInput' />
+            [(ngModel)]='locationInput'
+            (keyup)="hideLocationError()"/>
           <button type="submit" class="search-btn" (click)="geocode()">Search</button>
         </div>
-        <span *ngIf="locationError" class="validation-error">Please enter a valid location</span>
+        <span *ngIf="locationError" id="validation-error">Please enter a valid location</span>
         <div id="my-map"></div>
       </div>
       <div class="row">

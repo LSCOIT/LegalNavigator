@@ -73,9 +73,7 @@ export class MapComponent implements OnInit {
   }
 
   updateLocation() {
-    if (this.locationError === undefined) {
-      this.geocode();
-    } else if (!this.locationError) {
+    if (this.locationError === false || sessionStorage.getItem("globalSearchMapLocation") || sessionStorage.getItem("localSearchMapLocation") ) {
       this.isError = false;
       this.locationError = undefined;
       this.mapLocation = this.mapService.updateLocation();
@@ -182,9 +180,14 @@ export class MapComponent implements OnInit {
     searchPredictionContainer.style.visibility = "hidden";
   }
 
+  hideLocationError() {
+    this.locationError = false;
+  }
+
   ngOnInit() {
     this.getLocationNavigationContent();
     this.showLocality = true;
+    this.locationError = undefined;
 
     this.errorSubscription = this.mapService.notifyLocationError
       .subscribe((value) => {
@@ -195,7 +198,6 @@ export class MapComponent implements OnInit {
       .subscribe((value) => {
         this.locationError = false;
       });
-
 
     this.subscription = this.mapService.notifyLocation
       .subscribe((value) => {
@@ -226,9 +228,18 @@ export class MapComponent implements OnInit {
 
     this.setLocalMapLocation();
   }
+
   ngOnDestroy() {
     if (this.subscription) {
       this.subscription.unsubscribe();
+    }
+
+    if (this.errorSubscription) {
+      this.errorSubscription.unsubscribe();
+    }
+
+    if (this.successSubscription) {
+      this.successSubscription.unsubscribe();
     }
   } 
 }

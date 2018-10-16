@@ -98,7 +98,7 @@ p {
   margin: 0 auto;
 }
 
-.validation-error {
+#validation-error {
   font-size: 14px;
   color: #ca3636;
 }

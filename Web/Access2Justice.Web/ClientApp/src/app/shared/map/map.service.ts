@@ -19,13 +19,11 @@ export class MapService {
   notifyLocationError: Subject<any> = new Subject<any>();
   notifyLocationSuccess: Subject<any> = new Subject<any>();
 
-
   constructor() { }
 
   getMap(mapType) {
     environment.map_type = mapType;
     Microsoft.Maps.loadModule(['Microsoft.Maps.AutoSuggest', 'Microsoft.Maps.Search'], this.loadSearchManager);
-    this.notifyLocationSuccess.next("success");
   }
 
   loadSearchManager() {
