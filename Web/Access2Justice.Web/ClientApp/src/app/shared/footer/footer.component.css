@@ -14,7 +14,7 @@
 }
 
 .footer-nav li.vertical-line {
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1.5px solid #ddd;
   width: 270px;
   margin: 0 auto;
 }
