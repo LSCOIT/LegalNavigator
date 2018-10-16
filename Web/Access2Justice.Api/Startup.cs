@@ -4,8 +4,10 @@ using Access2Justice.Api.BusinessLogic;
 using Access2Justice.Api.Interfaces;
 using Access2Justice.CosmosDb;
 using Access2Justice.Shared;
+using Access2Justice.Shared.A2JAuthor;
 using Access2Justice.Shared.Bing;
 using Access2Justice.Shared.Interfaces;
+using Access2Justice.Shared.Interfaces.A2JAuthor;
 using Access2Justice.Shared.Luis;
 using Access2Justice.Shared.Models;
 using Access2Justice.Shared.Share;
@@ -55,13 +57,18 @@ namespace Access2Justice.Api
             services.AddSingleton<ILuisBusinessLogic, LuisBusinessLogic>();
             services.AddSingleton<ITopicsResourcesBusinessLogic, TopicsResourcesBusinessLogic>();
             services.AddSingleton<IWebSearchBusinessLogic, WebSearchBusinessLogic>();
-            services.AddSingleton<IA2JAuthorBusinessLogic, A2JAuthorBusinessLogic>();
+            services.AddSingleton<ICuratedExperienceConvertor, A2JAuthorBusinessLogic>();
             services.AddSingleton<ICuratedExperienceBusinessLogic, CuratedExperienceBuisnessLogic>();
             services.AddTransient<IHttpClientService, HttpClientService>();
             services.AddSingleton<IUserProfileBusinessLogic, UserProfileBusinessLogic>();
             services.AddSingleton<IPersonalizedPlanBusinessLogic, PersonalizedPlanBusinessLogic>();
             services.AddSingleton<IStaticResourceBusinessLogic, StaticResourceBusinessLogic>();
             services.AddSingleton<IShareBusinessLogic, ShareBusinessLogic>();
+            services.AddSingleton<ICuratedExperienceConvertor, A2JAuthorBusinessLogic>();
+            services.AddSingleton<IPersonalizedPlanEngine, A2JAuthorPersonalizedPlanEngine>();
+            services.AddSingleton<IPersonalizedPlanParse, A2JLogicParser>();
+            services.AddSingleton<IPersonalizedPlanEvaluate, A2JLogicInterpreter>();
+            services.AddSingleton<IPersonalizedPlanViewModelMapper, PersonalizedPlanViewModelMapper>();
             services.AddSingleton<IUserRoleBusinessLogic, UserRoleBusinessLogic>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -125,7 +132,8 @@ namespace Access2Justice.Api
             services.AddDistributedMemoryCache();
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromMinutes(
+                 // Todo:@Alaa change this to minutes
+                options.IdleTimeout = TimeSpan.FromMilliseconds(
                     Configuration.GetValue<int>("Api:SessionDurationInMinutes"));
                 options.Cookie.HttpOnly = true;
             });

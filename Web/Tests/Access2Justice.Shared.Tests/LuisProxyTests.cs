@@ -8,7 +8,7 @@ using Access2Justice.Shared.Tests.TestData;
 
 namespace Access2Justice.Shared.Tests
 {
-    public class LuisTests
+    public class LuisProxyTests
     {
         private readonly ILuisSettings luisSettings;
         private readonly IHttpClientService httpClientService;
@@ -17,7 +17,7 @@ namespace Access2Justice.Shared.Tests
         private readonly string expectedProperResult = "eviction";
         private readonly string expectedNoneResult = "None";
 
-        public LuisTests()
+        public LuisProxyTests()
         {
             luisSettings = Substitute.For<ILuisSettings>();
             httpClientService = Substitute.For<IHttpClientService>();
