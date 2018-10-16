@@ -108,37 +108,39 @@ namespace Access2Justice.Api.BusinessLogic
 
             var destinationComponent = new CuratedExperienceComponent();
             var currentComponent = curatedExperience.Components.Where(x => x.Buttons.Contains(currentButton)).FirstOrDefault();
-            //if ((!string.IsNullOrWhiteSpace(currentComponent.Code.CodeBefore) && currentComponent.Code.CodeBefore.Contains(Tokens.GOTO)) ||
-            //    (!string.IsNullOrWhiteSpace(currentComponent.Code.CodeAfter) && currentComponent.Code.CodeAfter.Contains(Tokens.GOTO)))
-            //{
-            //    var answers = await dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.CuratedExperienceAnswersCollectionId);
-            //    if (answers != null)
-            //    {
-            //        var tempParser = new Dictionary<string, string>();
-            //        foreach (var button in currentComponent.Buttons)
-            //        {
-            //            if (!string.IsNullOrWhiteSpace(button.Name) && !string.IsNullOrWhiteSpace(button.Value))
-            //                answers.ButtonComponents.Add(new ButtonComponent
-            //                {
-            //                    CodeBefore = currentComponent.Code.CodeBefore,
-            //                    CodeAfter = currentComponent.Code.CodeAfter,
-            //                    Name = button.Name,
-            //                    Value = button.Value,
-            //                });
+            if ((!string.IsNullOrWhiteSpace(currentComponent.Code.CodeBefore) && currentComponent.Code.CodeBefore.Contains(Tokens.GOTO)) ||
+                (!string.IsNullOrWhiteSpace(currentComponent.Code.CodeAfter) && currentComponent.Code.CodeAfter.Contains(Tokens.GOTO)))
+            {
+                // get the answers so far - done
+                // get all the code in all the curated experience - to be done
+                var personalizedPlanEvaluator = ExtractCode(curatedExperience);
+                var answers = await dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.CuratedExperienceAnswersCollectionId);
+                if (answers != null)
+                {
+                    var tempParser = new Dictionary<string, string>();
+                    foreach (var button in currentComponent.Buttons)
+                    {
+                        if (!string.IsNullOrWhiteSpace(button.Name) && !string.IsNullOrWhiteSpace(button.Value))
+                            answers.ButtonComponents.Add(new ButtonComponent
+                            {
+                                CodeBefore = currentComponent.Code.CodeBefore,
+                                CodeAfter = currentComponent.Code.CodeAfter,
+                                Name = button.Name,
+                                Value = button.Value,
+                            });
 
-            //            var parsedCode = parser.Parse(answers);
-            //            tempParser = parser.Parse(answers);
-            //            var temp = parsedCode.Values.LastOrDefault();
-            //            destinationComponent = curatedExperience.Components.Where(x => x.Name.Contains(parsedCode.Values.LastOrDefault())).FirstOrDefault();
-            //        }
+                        var parsedCode = parser.Parse(answers);
+                        tempParser = parser.Parse(answers);
+                        var temp = parsedCode.Values.LastOrDefault();
+                        destinationComponent = curatedExperience.Components.Where(x => x.Name.Contains(parsedCode.Values.LastOrDefault())).FirstOrDefault();
+                    }
 
-            //        // todo: we need to find a better way to match var name with component (child) name. A2J Author childern names are appended with 
-            //        // numbers so this must be taken into account.
-            //        destinationComponent = curatedExperience.Components.Where(x => x.Name.Contains(parsedCode.Values.LastOrDefault())).FirstOrDefault();
-            //    }
-            //}
-            //else
-            if (!string.IsNullOrWhiteSpace(currentButton.Destination))
+                    // todo: we need to find a better way to match var name with component (child) name. A2J Author childern names are appended with 
+                    // numbers so this must be taken into account.
+                    destinationComponent = curatedExperience.Components.Where(x => x.Name.Contains(parsedCode.Values.LastOrDefault())).FirstOrDefault();
+                }
+            }
+            else if (!string.IsNullOrWhiteSpace(currentButton.Destination))
             {
                 if (curatedExperience.Components.Where(x => x.Name == currentButton.Destination).Any())
                 {
@@ -257,6 +259,23 @@ namespace Access2Justice.Api.BusinessLogic
                 ButtonComponents = userSelectedButtons,
                 FieldComponents = userSelectedFields
             };
+        }
+
+        private CuratedExperienceAnswers ExtractCode(CuratedExperience curatedExperience)
+        {
+            var answers = new CuratedExperienceAnswers();
+            foreach (var component in curatedExperience.Components)
+            {
+                if (!string.IsNullOrWhiteSpace(component.Code.CodeBefore) || !string.IsNullOrWhiteSpace(component.Code.CodeAfter))
+                {
+                    var button = new ButtonComponent();
+                    button.CodeBefore = component.Code.CodeBefore;
+                    button.CodeAfter = component.Code.CodeAfter;
+                    answers.ButtonComponents.Add(button);
+                }
+            }
+
+            return answers;
         }
     }
 }
