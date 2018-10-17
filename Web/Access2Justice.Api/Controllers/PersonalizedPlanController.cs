@@ -14,13 +14,13 @@ namespace Access2Justice.Api.Controllers
     [Route("api/personalized-plan")]
     public class PersonalizedPlanController : Controller
     {
-        private readonly IPersonalizedPlanBusinessLogic personalizedPlan;
-        private readonly ICuratedExperienceBusinessLogic curatedExperience;
+        private readonly IPersonalizedPlanBusinessLogic personalizedPlanBusinessLogic;
+        private readonly ICuratedExperienceBusinessLogic curatedExperienceBusinessLogic;
 
         public PersonalizedPlanController(IPersonalizedPlanBusinessLogic personalizedPlan, ICuratedExperienceBusinessLogic curatedExperience)
         {
-            this.personalizedPlan = personalizedPlan;
-            this.curatedExperience = curatedExperience;
+            this.personalizedPlanBusinessLogic = personalizedPlan;
+            this.curatedExperienceBusinessLogic = curatedExperience;
         }
 
         [HttpPost("parser-test")]
@@ -34,9 +34,8 @@ namespace Access2Justice.Api.Controllers
         [HttpGet("generate")]
         public async Task<IActionResult> GeneratePersonalizedPlan([FromQuery] Guid curatedExperienceId, [FromQuery] Guid answersDocId)
         {
-            var personalizedPlan = new object();
-                //await personalizedPlanBusinessLogic.GeneratePersonalizedPlanAsync(
-                // RetrieveCachedCuratedExperience(curatedExperienceId), answersDocId);
+            var personalizedPlan = await personalizedPlanBusinessLogic.GeneratePersonalizedPlanAsync(
+                RetrieveCachedCuratedExperience(curatedExperienceId), answersDocId);
             if (personalizedPlan == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
@@ -50,8 +49,7 @@ namespace Access2Justice.Api.Controllers
         [HttpPost("update-plan")]
         public async Task<IActionResult> UpdateUserProfileDocumentAsync([FromBody]UserPersonalizedPlan userPlan)
         {
-            var personalizedPlan = await this.personalizedPlan.UpdatePersonalizedPlan(userPlan);
-            return Ok(personalizedPlan);
+            return Ok(await personalizedPlanBusinessLogic.UpdatePersonalizedPlan(userPlan));
         }
 
         private CuratedExperience RetrieveCachedCuratedExperience(Guid id)
@@ -60,7 +58,7 @@ namespace Access2Justice.Api.Controllers
             var cuExSession = HttpContext.Session.GetString(id.ToString());
             if (string.IsNullOrWhiteSpace(cuExSession))
             {
-                var rawCuratedExperience = curatedExperience.GetCuratedExperienceAsync(id).Result;
+                var rawCuratedExperience = curatedExperienceBusinessLogic.GetCuratedExperienceAsync(id).Result;
                 HttpContext.Session.SetObjectAsJson(id.ToString(), rawCuratedExperience);
             }
 

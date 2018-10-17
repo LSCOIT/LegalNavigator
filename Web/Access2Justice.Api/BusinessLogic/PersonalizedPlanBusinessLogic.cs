@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace Access2Justice.Api.BusinessLogic
 {
+    // Todo:@Alaa this class has many methods that will become obsolete soon, remove them after refactoring is done
     public class PersonalizedPlanBusinessLogic : IPersonalizedPlanBusinessLogic
     {
         private readonly ICosmosDbSettings cosmosDbSettings;
@@ -32,7 +33,7 @@ namespace Access2Justice.Api.BusinessLogic
             this.personalizedPlanViewModelMapper = personalizedPlanViewModelMapper;
         }
 
-        public async Task<dynamic> GeneratePersonalizedPlanAsync(CuratedExperience curatedExperience, Guid answersDocId)
+        public async Task<PersonalizedPlanViewModel> GeneratePersonalizedPlanAsync(CuratedExperience curatedExperience, Guid answersDocId)
         {
             // Todo:@Alaa do all quries return a list? create a new one maybe?
             var a2jPersonalizedPlan = await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.A2JAuthorTemplatesCollectionId, "id",
@@ -41,10 +42,7 @@ namespace Access2Justice.Api.BusinessLogic
                 cosmosDbSettings.CuratedExperienceAnswersCollectionId);
 
             var unprocessedPlan = personalizedPlanEngine.Build((JObject)a2jPersonalizedPlan[0], userAnswers);
-            return personalizedPlanViewModelMapper.MapViewModel(unprocessedPlan);
-
-            //var unprocessedPlan = personalizedPlanEngine.Build((JObject)a2jPersonalizedPlan[0], userAnswers);
-            //return await personalizedPlanViewModelMapper.MapViewModel(unprocessedPlan);
+            return await personalizedPlanViewModelMapper.MapViewModel(unprocessedPlan);
         }
 
         public List<PersonalizedPlanStep> GetPlanSteps(Guid topic, List<PersonalizedPlanStep> personalizedPlanSteps)
