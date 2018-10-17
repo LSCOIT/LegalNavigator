@@ -24,7 +24,7 @@ namespace Access2Justice.Api.Controllers
         }
 
         [HttpPost("import")]
-        public IActionResult ConvertA2JAuthorToCuratedExperience([FromBody] JObject a2jSchema)
+        public IActionResult ImportA2JAuthorGuidedInterview([FromBody] JObject a2jSchema)
         {
             try
             {
@@ -46,15 +46,6 @@ namespace Access2Justice.Api.Controllers
             return Ok(component);
         }
 
-        [HttpGet("component")]
-        public IActionResult GetSpecificComponent([FromQuery] Guid curatedExperienceId, [FromQuery] Guid componentId)
-        {
-            var component = curatedExperienceBusinessLogic.GetComponent(RetrieveCachedCuratedExperience(curatedExperienceId), componentId);
-            if (component == null) return NotFound();
-
-            return Ok(component);
-        }
-
         [HttpPost("component/save-and-get-next")]
         public async Task<IActionResult> SaveAndGetNextComponent([FromBody] CuratedExperienceAnswersViewModel component)
         {
@@ -66,6 +57,15 @@ namespace Access2Justice.Api.Controllers
             }
 
             return Ok(await curatedExperienceBusinessLogic.GetNextComponentAsync(curatedExperience, component));
+        }
+
+        [HttpGet("component")]
+        public IActionResult GetSpecificComponent([FromQuery] Guid curatedExperienceId, [FromQuery] Guid componentId)
+        {
+            var component = curatedExperienceBusinessLogic.GetComponent(RetrieveCachedCuratedExperience(curatedExperienceId), componentId);
+            if (component == null) return NotFound();
+
+            return Ok(component);
         }
 
         private CuratedExperience RetrieveCachedCuratedExperience(Guid id)

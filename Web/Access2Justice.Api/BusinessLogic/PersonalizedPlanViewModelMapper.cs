@@ -23,9 +23,9 @@ namespace Access2Justice.Api.BusinessLogic
 
 		public async Task<PersonalizedPlanViewModel> MapViewModel(UnprocessedPersonalizedPlan personalizedPlanStepsInScope)
 		{
-			// https://github.com/Microsoft/Access2Justice/issues/567
+            // https://github.com/Microsoft/Access2Justice/issues/567
 
-			PersonalizedPlanViewModel actionPlan = new PersonalizedPlanViewModel();
+            PersonalizedPlanViewModel actionPlan = new PersonalizedPlanViewModel();
 			
 			foreach (var topic in personalizedPlanStepsInScope.UnprocessedTopics)
 			{

@@ -132,8 +132,7 @@ namespace Access2Justice.Api
             services.AddDistributedMemoryCache();
             services.AddSession(options =>
             {
-                 // Todo:@Alaa change this to minutes
-                options.IdleTimeout = TimeSpan.FromMilliseconds(
+                options.IdleTimeout = TimeSpan.FromMinutes(
                     Configuration.GetValue<int>("Api:SessionDurationInMinutes"));
                 options.Cookie.HttpOnly = true;
             });
