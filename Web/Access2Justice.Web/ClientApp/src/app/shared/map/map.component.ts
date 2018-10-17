@@ -70,6 +70,7 @@ export class MapComponent implements OnInit {
   }
 
   updateLocation() {
+    sessionStorage.removeItem('searchTextResults');
     this.isError = false;
     this.mapLocation = this.mapService.updateLocation();
     this.displayLocationDetails(this.mapLocation);
