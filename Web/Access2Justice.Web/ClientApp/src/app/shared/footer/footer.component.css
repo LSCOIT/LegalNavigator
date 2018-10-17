@@ -3,9 +3,14 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: #fff;
+  background-color: transparent;
   height: 10px;
   vertical-align: middle;
+}
+
+.footer-nav {
+  border-top: 1px solid #ddd;
+  margin-top: 40px;
 }
 
 .footer-nav li {
@@ -15,12 +20,17 @@
 
 .footer-nav li.vertical-line {
   border-bottom: 1.5px solid #ddd;
-  width: 270px;
+  width: 185px;
   margin: 0 auto;
 }
 
 .footer-nav li:nth-child(odd) {
   padding: 25px;
+}
+@media only screen and (min-width : 768px) {
+  .footer-nav li.vertical-line {
+    width: 250px;
+  }
 }
 
 @media only screen and (min-width : 992px) {
