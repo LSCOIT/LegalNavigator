@@ -11,9 +11,9 @@ namespace Access2Justice.Shared.A2JAuthor
 {
     public class A2JAuthorPersonalizedPlanEngine : IPersonalizedPlanEngine
     {
-        private readonly IPersonalizedPlanParse parser;
+        private readonly IA2JAuthorLogicParser parser;
 
-        public A2JAuthorPersonalizedPlanEngine(IPersonalizedPlanParse parser)
+        public A2JAuthorPersonalizedPlanEngine(IA2JAuthorLogicParser parser)
         {
             this.parser = parser;
         }

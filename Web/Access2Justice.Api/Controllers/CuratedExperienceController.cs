@@ -103,7 +103,7 @@ namespace Access2Justice.Api.Controllers
             var des = curatedExperienceBusinessLogic.FindDestinationComponentAsync(
                 RetrieveCachedCuratedExperience(Guid.Parse("93bcabe2-8afc-4044-b4da-59f7b94510c4")), Guid.Parse("49989209-f89a-4991-86c4-bba41ac2d2d3"), userAnswers.AnswersDocId);
 
-            return Ok(new A2JLogicParser(new A2JLogicInterpreter()).Parse(userAnswers));
+            return Ok(new A2JAuthorLogicParser(new A2JAuthorLogicInterpreter()).Parse(userAnswers));
         }
 
         [HttpPost("import")]
@@ -184,14 +184,20 @@ namespace Access2Justice.Api.Controllers
             return HttpContext.Session.GetObjectAsJson<CuratedExperience>(id.ToString());
         }
 
-         // Todo:@Alaa remove
-             //[HttpGet]
-             //[Route("getplandetails/{id}")]
-             //public async Task<IActionResult> GetPlanDetailsAsync(string id)
-             //{
-             //    var actionPlans = await personalizedPlanBusinessLogic.GetPlanDataAsync(id);
-             //    return Ok(actionPlans);
-             //}
+        // Todo:@Alaa remove
+        [HttpGet]
+        [Route("get-plan-details/{id}")]
+        public async Task<IActionResult> GetPlanDetailsAsync([FromQuery] Guid curatedExperienceId, [FromQuery] Guid answersDocId)
+        {
+            var personalizedPlan = await personalizedPlanBusinessLogic.GeneratePersonalizedPlanAsync(
+                RetrieveCachedCuratedExperience(curatedExperienceId), answersDocId);
+            if (personalizedPlan == null)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+            return Ok(personalizedPlan);
+        }
 
         [HttpGet]
         [Route("get-plan/{id}")]

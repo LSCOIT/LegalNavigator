@@ -66,8 +66,8 @@ namespace Access2Justice.Api
             services.AddSingleton<IShareBusinessLogic, ShareBusinessLogic>();
             services.AddSingleton<ICuratedExperienceConvertor, A2JAuthorBusinessLogic>();
             services.AddSingleton<IPersonalizedPlanEngine, A2JAuthorPersonalizedPlanEngine>();
-            services.AddSingleton<IPersonalizedPlanParse, A2JLogicParser>();
-            services.AddSingleton<IPersonalizedPlanEvaluate, A2JLogicInterpreter>();
+            services.AddSingleton<IA2JAuthorLogicParser, A2JAuthorLogicParser>();
+            services.AddSingleton<IA2JAuthorLogicInterpreter, A2JAuthorLogicInterpreter>();
             services.AddSingleton<IPersonalizedPlanViewModelMapper, PersonalizedPlanViewModelMapper>();
             services.AddSingleton<IUserRoleBusinessLogic, UserRoleBusinessLogic>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
