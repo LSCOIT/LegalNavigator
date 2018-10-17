@@ -1,66 +1,85 @@
 ﻿using Access2Justice.Api.Interfaces;
 using Access2Justice.Api.ViewModels;
+using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
+using Access2Justice.Shared.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Access2Justice.Api.BusinessLogic
 {
-    public class PersonalizedPlanViewModelMapper : IPersonalizedPlanViewModelMapper
-    {
-        public PersonalizedPlanViewModel MapViewModel(UnprocessedPersonalizedPlan personalizedPlanStepsInScope)
-        {
-            // https://github.com/Microsoft/Access2Justice/issues/567
+	public class PersonalizedPlanViewModelMapper : IPersonalizedPlanViewModelMapper
+	{
+		private readonly ICosmosDbSettings cosmosDbSettings;
+		private readonly IDynamicQueries dynamicQueries;
 
-            var actionPlan = new PersonalizedPlanViewModel();
+		public PersonalizedPlanViewModelMapper(ICosmosDbSettings cosmosDbSettings, IDynamicQueries dynamicQueries)
+		{
+			this.cosmosDbSettings = cosmosDbSettings;
+			this.dynamicQueries = dynamicQueries;
+		}
 
-            foreach (var topic in personalizedPlanStepsInScope.UnprocessedTopics)
-            {
-                actionPlan.Topics.Add(new PlanTopic
-                {
-                    TopicName = topic.Name
-                });
-            }
+		public async Task<PersonalizedPlanViewModel> MapViewModel(UnprocessedPersonalizedPlan personalizedPlanStepsInScope)
+		{
+			// https://github.com/Microsoft/Access2Justice/issues/567
 
-            
-            actionPlan.PersonalizedPlanId = Guid.NewGuid();
-            actionPlan.IsShared = false;
+			PersonalizedPlanViewModel actionPlan = new PersonalizedPlanViewModel();
+			
+			foreach (var topic in personalizedPlanStepsInScope.UnprocessedTopics)
+			{
+				var resourceIDs = topic.UnprocessedSteps.SelectMany(x => x.ResourceIds);
+				List<string> resourceValues = resourceIDs.Select(x => x.ToString()).Distinct().ToList();
+				var resourceData = await dynamicQueries.FindItemsWhereInClauseAsync(cosmosDbSettings.ResourceCollectionId, Constants.Id, resourceValues);
+				List<Resource> resourceDetails = JsonUtilities.DeserializeDynamicObject<List<Resource>>(resourceData);
 
-            var steps = new List<PlanStep>();
-            var stepOrder = 1;
-            //foreach (var step in personalizedPlanStepsInScope)
-            //{
-            //    foreach (var childrenRoot in step.GetValueAsArray<JArray>("children"))
-            //    {
-            //        foreach (var child in childrenRoot.GetValueAsArray<JObject>("rootNode").GetValueAsArray<JArray>("children"))
-            //        {
-            //            var state = child.GetArrayValue("state").FirstOrDefault();
-            //            var title = state.GetValue("title");
-            //            var userContent = state.GetValue("userContent");
+				actionPlan.Topics.Add(new PlanTopic
+				{
+					TopicName = topic.Name,
+					TopicId = topic.Id,
+					Steps = GetPlanSteps(topic.UnprocessedSteps, resourceDetails)
+				});
+			}
+			actionPlan.PersonalizedPlanId = Guid.NewGuid(); //personalizedPlanStepsInScope.Id;
+			actionPlan.IsShared = false;
+			return actionPlan;
+		}
 
+		public List<PlanStep> GetPlanSteps(List<UnprocessedStep> unprocessedSteps, List<Resource> resourceDetails)
+		{
+			int orderIndex = 1;
+			List<PlanStep> planSteps = new List<PlanStep>();
+			foreach (var unprocessedStep in unprocessedSteps)
+			{
+				planSteps.Add(new PlanStep
+				{
+					StepId = unprocessedStep.Id,
+					Type = "steps",
+					Title = unprocessedStep.Title,
+					Description = unprocessedStep.Description,
+					Order = orderIndex++,
+					IsComplete = false, //when plan is loaded for first time, by default setting it to false
+					Resources = GetResources(unprocessedStep.ResourceIds, resourceDetails)
+				});
+			}
+			return planSteps;
+		}
 
-            //            steps.Add(new PlanStep
-            //            {
-            //                StepId = Guid.NewGuid(),
-            //                Title = title,
-            //                Description = userContent,
-            //                Order = stepOrder++,
-            //                IsComplete = false,
-            //            });
-
-            //            var breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
-            //        }                   
-            //    }
-            //}
-
-            //actionPlan.Topics.Add(new PlanTopic
-            //{
-            //    TopicId = Guid.NewGuid(),
-            //    TopicName = "New Personalized Plan Test",
-            //    Steps = steps
-            //});
-
-            return actionPlan;
-        }
-    }
+		public List<Resource> GetResources(List<Guid> resourceIds, List<Resource> resourceDetails)
+		{
+			List<Resource> resources = new List<Resource>();
+			foreach (var resourceId in resourceIds)
+			{
+				foreach (var resource in resourceDetails)
+				{
+					if (resource.ResourceId == resourceId.ToString())
+					{
+						resources.Add(resource);
+					}
+				}
+			}
+			return resources;
+		}
+	}
 }
