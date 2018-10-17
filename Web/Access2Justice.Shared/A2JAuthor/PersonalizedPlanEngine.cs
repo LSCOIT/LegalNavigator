@@ -84,8 +84,8 @@ namespace Access2Justice.Shared.A2JAuthor
 
         private List<Guid> ExtractResourceIds(string v)
         {
-             // Todo:@Alaa implement this
-            return null;
+            // Todo:@Alaa implement this
+            return new List<Guid> { Guid.NewGuid() };
         }
     }
 }

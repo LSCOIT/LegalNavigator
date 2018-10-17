@@ -29,11 +29,14 @@ namespace Access2Justice.Api.BusinessLogic
 			
 			foreach (var topic in personalizedPlanStepsInScope.UnprocessedTopics)
 			{
-				var resourceIDs = topic.UnprocessedSteps.SelectMany(x => x.ResourceIds);
-				List<string> resourceValues = resourceIDs.Select(x => x.ToString()).Distinct().ToList();
-				var resourceData = await dynamicQueries.FindItemsWhereInClauseAsync(cosmosDbSettings.ResourceCollectionId, Constants.Id, resourceValues);
-				List<Resource> resourceDetails = JsonUtilities.DeserializeDynamicObject<List<Resource>>(resourceData);
-
+                var resourceDetails = new List<Resource>();
+                var resourceIDs = topic.UnprocessedSteps.SelectMany(x => x.ResourceIds);
+                if (resourceIDs != null || resourceIDs.Any())
+                {
+                    var resourceValues = resourceIDs.Select(x => x.ToString()).Distinct().ToList();
+                    var resourceData = await dynamicQueries.FindItemsWhereInClauseAsync(cosmosDbSettings.ResourceCollectionId, Constants.Id, resourceValues);
+                    resourceDetails = JsonUtilities.DeserializeDynamicObject<List<Resource>>(resourceData);
+                }
 				actionPlan.Topics.Add(new PlanTopic
 				{
 					TopicName = topic.Name,
