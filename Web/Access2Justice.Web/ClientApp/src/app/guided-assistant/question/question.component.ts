@@ -84,22 +84,11 @@ export class QuestionComponent implements OnInit {
       "fields": this.fieldParam
     }
 
-    if (this.question.questionsRemaining > 0) {
-      this.questionService.getNextQuestion(params)
-        .subscribe(response => {
-          this.question = { ...response }
-          this.sendQuestionsRemaining(this.question.questionsRemaining);
-        });
-    } else {
-      this.questionService.getNextQuestion(params)
-        .subscribe(response => {
-          this.question.text =
-            "Thanks for answering the questions which created an action plan to help with your eviction issue. Let’s view you personalized plan.";
-          this.question.questionsRemaining = -1;
-          this.question.fields = [];
-          this.sendQuestionsRemaining(this.question.questionsRemaining);
-        });
-    }
+    this.questionService.getNextQuestion(params)
+      .subscribe(response => {
+        this.question = { ...response }
+        this.sendQuestionsRemaining(this.question.questionsRemaining);
+      });
   };
 
   getActionPlan(): void {

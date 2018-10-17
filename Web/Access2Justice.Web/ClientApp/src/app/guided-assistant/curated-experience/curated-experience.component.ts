@@ -24,7 +24,7 @@ export class CuratedExperienceComponent implements OnInit {
   }
 
   calculateProgress() {
-    if (this.questionsRemaining >= 0) {
+    if (this.questionsRemaining > 1) {
       this.questionProgress = this.totalQuestions - this.questionsRemaining;
     } else {
       this.questionProgress = this.maxProgress;
