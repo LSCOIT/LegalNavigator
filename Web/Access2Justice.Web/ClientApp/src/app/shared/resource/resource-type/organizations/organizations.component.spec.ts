@@ -15,7 +15,7 @@ import { ArrayUtilityService } from '../../../array-utility.service';
 import { ShareService } from '../../user-action/share-button/share.service';
 import { ActivatedRoute } from '@angular/router';
 import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
-import { ToastrService, ComponentPortal } from 'ngx-toastr';
+import { ToastrService } from 'ngx-toastr';
 import { MsalService } from '@azure/msal-angular';
 
 describe('OrganizationsComponent', () => {
