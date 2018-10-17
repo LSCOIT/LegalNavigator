@@ -1,7 +1,10 @@
-﻿using Access2Justice.Shared;
+﻿using Access2Justice.Api.Authorization;
+using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using static Access2Justice.Api.Authorization.Permissions;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -15,7 +18,7 @@ namespace Access2Justice.Api.Controllers
         {
             this.luisBusinessLogic = luisBusinessLogic;
         }
-
+        
         [HttpPost]
         public async Task<IActionResult> GetAsync([FromBody]LuisInput luisInput)
         {
