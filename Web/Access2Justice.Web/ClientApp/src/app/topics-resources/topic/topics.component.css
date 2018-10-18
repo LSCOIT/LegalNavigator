@@ -30,13 +30,17 @@ ul {
 .topic-list a img {
   width: 90px;
   height: 70px;
-  margin: 20px;
+  margin: 20px auto;
 }
 
 @media only screen and (min-width : 768px) {
   .topic-list {
     padding: 15px 20px;
     height: 235px;
+  }
+
+  .topic-list a img {
+    margin: 35px auto;
   }
 
   .topic-list:nth-child(2n) {
@@ -56,13 +60,6 @@ ul {
   .topic-list {
     padding: 45px 20px;
     height: 290px;
-  }
-
-  .topic-list a img {
-    width: 120px;
-    height: 100px;
-    padding: 10px;
-    margin: 35px auto;
   }
 
   .topic-list:nth-child(2n) {
