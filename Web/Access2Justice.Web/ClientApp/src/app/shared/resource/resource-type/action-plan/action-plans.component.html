@@ -50,36 +50,9 @@
                   </label>
                 </div>
                 <div>
-                  <p>{{step.description}}</p>
+                  <p [innerHTML]="step.description"></p>
                 </div>
-                <div>
-                  <ul>
-                    If the summons is real, prepare for your court date.
-                    <li>
-                      <a href="https://alaskalawhelp.org/" class="link">Set up a reminder for your court date.</a>
-                      <div class="print-only">https://alaskalawhelp.org/</div>
-                    </li>
-
-                    <li>
-                      <a href="https://alaskalawhelp.org/" class="link">Learn more about court appearances and what to expect.</a>
-                      <div class="print-only">https://alaskalawhelp.org/</div>
-                    </li>
-                  </ul>
-                </div>
-                <div>
-                  <ul>
-                    If the summons is not real, you should talk to your landlord.
-                    <li>
-                      <a href="https://alaskalawhelp.org/" class="link">Set up a reminder for your court date.</a>
-                      <div class="print-only">https://alaskalawhelp.org/</div>
-                    </li>
-                    <li>
-                      <a href="https://alaskalawhelp.org/" class="link">Learn more about court appearances and what to expect.</a>
-                      <div class="print-only">https://alaskalawhelp.org/</div>
-                    </li>
-                  </ul>
-                </div>
-                <div *ngFor="let resource of step.resources">
+                <!--<div *ngFor="let resource of step.resources">
                   <div *ngIf="resource.resourceType === 'Videos'" class="row">
                     <div class="media-left no-print">
                       <img class="media-object" src="../../../assets/images/icons/videos.svg" aria-hidden="True">
@@ -99,7 +72,7 @@
                     <img src="./assets/images/small-icons/call.svg" alt="Phone number" class="nav-icon">
                     <span class="p">{{resource.telephone}}</span>
                   </div>
-                </div>
+                </div>-->
               </div>
             </accordion-group>
           </accordion>
