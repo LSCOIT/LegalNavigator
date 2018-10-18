@@ -110,6 +110,11 @@ h4 {
   .org-content .col-md-4:last-child {
     padding-right: 0;
   }
+
+  .org-phone-detail {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
 }
 
 @media only screen and (min-width : 992px) {
