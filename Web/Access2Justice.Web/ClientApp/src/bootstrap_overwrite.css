@@ -376,7 +376,7 @@ span.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chev
   }
 
   .carousel-control {
-    top: 350px;
+    top: 370px;
     width: 50px;
   }
 
@@ -413,6 +413,6 @@ span.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chev
   }
 
   .carousel-indicators {
-    bottom: -37px;
+    bottom: -55px;
   }
 }
