@@ -16,6 +16,10 @@ namespace Access2Justice.Shared.Utilities
 
         public static T DeserializeDynamicObject<T>(dynamic dynamicObject)
         {
+            if(dynamicObject == null)
+            {
+                return default(T);
+            }
             return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(dynamicObject));
         }
     }

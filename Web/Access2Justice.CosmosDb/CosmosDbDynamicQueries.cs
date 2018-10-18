@@ -167,10 +167,15 @@ namespace Access2Justice.CosmosDb
 
         public async Task<dynamic> FindItemsWhereInClauseAsync(string collectionId, string propertyName, IEnumerable<string> values)
         {
+            if(values == null || !values.Any())
+            {
+                return Constants.EmptyArray;
+            }
+
             EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
 
             var inClause = string.Empty;
-            var lastItem = values.Last();
+            var lastItem = values.LastOrDefault();
 
             foreach (var value in values)
             {
