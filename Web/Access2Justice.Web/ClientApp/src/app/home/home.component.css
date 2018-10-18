@@ -49,6 +49,7 @@ hr {
 
 .slide-content {
   text-align: center;
+  margin-top: 15px;
 }
 
 .testimonial-img {
@@ -57,8 +58,8 @@ hr {
 }
 
 .testimonial-img img {
-  max-width: 150px;
-  max-height: 150px;
+  max-width: 165px;
+  max-height: 165px;
   border-radius: 10px;
 }
 
