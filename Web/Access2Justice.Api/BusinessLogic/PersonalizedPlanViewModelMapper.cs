@@ -45,6 +45,7 @@ namespace Access2Justice.Api.BusinessLogic
 					Steps = GetPlanSteps(topic.UnprocessedSteps, resourceDetails)
 				});
 			}
+
 			actionPlan.PersonalizedPlanId = Guid.NewGuid(); //personalizedPlanStepsInScope.Id;
 			actionPlan.IsShared = false;
 			return actionPlan;

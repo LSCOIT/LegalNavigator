@@ -16,7 +16,7 @@ namespace Access2Justice.Shared.Utilities
 
         public static T DeserializeDynamicObject<T>(dynamic dynamicObject)
         {
-            if(dynamicObject == null || ((string)dynamicObject == Constants.EmptyArray))
+            if(dynamicObject == null || (dynamicObject.ToString() == Constants.EmptyArray))
             {
                 return default(T);
             }

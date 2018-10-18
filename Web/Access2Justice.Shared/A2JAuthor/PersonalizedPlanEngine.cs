@@ -2,7 +2,7 @@
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Interfaces.A2JAuthor;
 using Access2Justice.Shared.Models;
-using Microsoft.Azure.Documents;
+using Access2Justice.Shared.Utilities;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -34,8 +34,6 @@ namespace Access2Justice.Shared.A2JAuthor
                 .GetArrayValue("rootNode")
                 .FirstOrDefault();
 
-            var topics = GetTopicId(personalizedPlan.Properties().GetValue("title"));
-
             foreach (var child in root.GetValueAsArray<JArray>("children"))
             {
                 var states = child.GetArrayValue("state");
@@ -54,54 +52,59 @@ namespace Access2Justice.Shared.A2JAuthor
             var unprocessedPlan = new UnprocessedPersonalizedPlan();
             unprocessedPlan.Id = Guid.NewGuid();
 
-            var unprocessedTopic = new UnprocessedTopic();
-            unprocessedTopic.Id = Guid.NewGuid(); // Todo:@Alaa map topic id
-            unprocessedTopic.Name = personalizedPlan.Properties().GetValue("title");
-
-            foreach (var step in stepsInScope)
+            foreach (var dynamicTopic in await GetTopics(personalizedPlan.Properties().GetValue("title")))
             {
-                foreach (var childrenRoot in step.GetValueAsArray<JArray>("children"))
+                var unprocessedTopic = new UnprocessedTopic();
+                Topic topic = JsonUtilities.DeserializeDynamicObject<Topic>(dynamicTopic);
+
+                unprocessedTopic.Id = Guid.Parse(topic.Id);
+                unprocessedTopic.Name = personalizedPlan.Properties().GetValue("title");
+
+                foreach (var step in stepsInScope)
                 {
-                    var unprocessedStep = new UnprocessedStep();
-                    foreach (var child in childrenRoot.GetValueAsArray<JObject>("rootNode").GetValueAsArray<JArray>("children"))
+                    foreach (var childrenRoot in step.GetValueAsArray<JArray>("children"))
                     {
-
-                        var state = child.GetArrayValue("state").FirstOrDefault();
-                        unprocessedStep.Id = Guid.NewGuid();
-
-                        if (!string.IsNullOrWhiteSpace(state.GetValue("title")))
+                        var unprocessedStep = new UnprocessedStep();
+                        foreach (var child in childrenRoot.GetValueAsArray<JObject>("rootNode").GetValueAsArray<JArray>("children"))
                         {
-                            unprocessedStep.Title = state.GetValue("title");
-                            continue;
-                        }
-                        else
-                        {
-                            if (!string.IsNullOrWhiteSpace(state.GetValue("userContent")))
+
+                            var state = child.GetArrayValue("state").FirstOrDefault();
+                            unprocessedStep.Id = Guid.NewGuid();
+
+                            if (!string.IsNullOrWhiteSpace(state.GetValue("title")))
                             {
-                                unprocessedStep.Description = state.GetValue("userContent");
-                                unprocessedStep.ResourceIds = ExtractResourceIds(state.GetValue("userContent"));
+                                unprocessedStep.Title = state.GetValue("title");
+                                continue;
                             }
+                            else
+                            {
+                                if (!string.IsNullOrWhiteSpace(state.GetValue("userContent")))
+                                {
+                                    unprocessedStep.Description = state.GetValue("userContent");
+                                    unprocessedStep.ResourceIds = ExtractResourceIds(state.GetValue("userContent"));
+                                }
+                            }
+                            unprocessedTopic.UnprocessedSteps.Add(unprocessedStep);
                         }
-                        unprocessedTopic.UnprocessedSteps.Add(unprocessedStep);
                     }
                 }
+                unprocessedPlan.UnprocessedTopics.Add(unprocessedTopic);
             }
-            unprocessedPlan.UnprocessedTopics.Add(unprocessedTopic);
+
             return unprocessedPlan;
         }
 
-        private async Task<List<Document>> GetTopicId(string topicName)
+        private async Task<List<dynamic>> GetTopics(string topicName)
         {
             try
             {
-                var topic = await dynamicQueries.FindItemWhereAsync<Document>(cosmosDbSettings.TopicCollectionId, Constants.Name, topicName);
-                if (Guid.TryParse(topic.Id, out var guid))
-                {
-                    return new List<Document> { topic };
-                }
-
-                List<Document> topics = await dynamicQueries.FindItemsWhereContainsAsync(cosmosDbSettings.TopicCollectionId, Constants.Name, topicName);
+                List<dynamic> topics = null;
+                topics = await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.TopicCollectionId, Constants.Name, topicName);
                 if (topics == null || !topics.Any())
+                {
+                    topics = await dynamicQueries.FindItemsWhereContainsAsync(cosmosDbSettings.TopicCollectionId, Constants.Name, topicName);
+                }
+                if (!topics.Any())
                 {
                     throw new Exception($"No topic found with this name: {topicName}");
                 }
