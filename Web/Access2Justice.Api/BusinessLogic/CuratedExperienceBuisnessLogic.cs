@@ -46,7 +46,7 @@ namespace Access2Justice.Api.BusinessLogic
                 {
                     dbComponent = curatedExperience.Components.Where(x => x.ComponentId == componentId).FirstOrDefault();
                 }
-                return MapComponentToViewModelComponent(curatedExperience, dbComponent, answersDocId: Guid.Empty); // In future, instead of sending an empty Guid
+                return MapComponentViewModel(curatedExperience, dbComponent, answersDocId: Guid.Empty); // In future, instead of sending an empty Guid
                 // for the answersDocId, we could pass the actual Id of the answers document (if any) so that we could return not only the component but also the
                 // answers associated with it.
             }
@@ -59,7 +59,7 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<CuratedExperienceComponentViewModel> GetNextComponentAsync(CuratedExperience curatedExperience, CuratedExperienceAnswersViewModel component)
         {
-            return MapComponentToViewModelComponent(curatedExperience,
+            return MapComponentViewModel(curatedExperience,
                 await FindDestinationComponentAsync(curatedExperience, component.ButtonId, component.AnswersDocId), component.AnswersDocId);
         }
 
@@ -72,7 +72,7 @@ namespace Access2Justice.Api.BusinessLogic
                 // the next step. The caveat for this is that the users will need to repeat the survey from the
                 // beginning if the session expires which might be frustrating.
                 var answersDbCollection = dbSettings.CuratedExperienceAnswersCollectionId;
-                var dbAnswers = MapViewModel(viewModelAnswer, curatedExperience);
+                var dbAnswers = MapCuratedExperienceViewModel(viewModelAnswer, curatedExperience);
 
                 var savedAnswersDoc = await dbService.GetItemAsync<CuratedExperienceAnswers>(viewModelAnswer.AnswersDocId.ToString(), answersDbCollection);
                 if (savedAnswersDoc == null)
@@ -176,7 +176,7 @@ namespace Access2Justice.Api.BusinessLogic
             return possibleRoutes.OrderByDescending(x => x.Count).First().Count;
         }
 
-        private CuratedExperienceComponentViewModel MapComponentToViewModelComponent(CuratedExperience curatedExperience, CuratedExperienceComponent dbComponent, Guid answersDocId)
+        private CuratedExperienceComponentViewModel MapComponentViewModel(CuratedExperience curatedExperience, CuratedExperienceComponent dbComponent, Guid answersDocId)
         {
             if (dbComponent == null || dbComponent.ComponentId == default(Guid))
             {
@@ -201,7 +201,7 @@ namespace Access2Justice.Api.BusinessLogic
             };
         }
 
-        public CuratedExperienceAnswers MapViewModel(CuratedExperienceAnswersViewModel viewModelAnswer, CuratedExperience curatedExperience)
+        public CuratedExperienceAnswers MapCuratedExperienceViewModel(CuratedExperienceAnswersViewModel viewModelAnswer, CuratedExperience curatedExperience)
         {
             var buttonComponent = new CuratedExperienceComponent();
             foreach (var component in curatedExperience.Components)

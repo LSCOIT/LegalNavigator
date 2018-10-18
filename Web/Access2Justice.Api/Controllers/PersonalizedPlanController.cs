@@ -52,9 +52,9 @@ namespace Access2Justice.Api.Controllers
             return Ok(await personalizedPlanBusinessLogic.UpdatePersonalizedPlan(userPlan));
         }
 
+        // Todo:@Alaa must refactor this, i copied it from the CuratedExperience controller for now to finish an end-to-end personalized plan
         private CuratedExperience RetrieveCachedCuratedExperience(Guid id)
         {
-            // Todo:@Alaa remove this method or factor it out, i copied it from the CuratedExperience controller for now to finish an end-to-end personalized plan
             var cuExSession = HttpContext.Session.GetString(id.ToString());
             if (string.IsNullOrWhiteSpace(cuExSession))
             {

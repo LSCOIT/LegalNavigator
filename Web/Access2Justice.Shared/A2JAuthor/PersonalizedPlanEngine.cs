@@ -2,23 +2,29 @@
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Interfaces.A2JAuthor;
 using Access2Justice.Shared.Models;
+using Microsoft.Azure.Documents;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Access2Justice.Shared.A2JAuthor
 {
     public class A2JAuthorPersonalizedPlanEngine : IPersonalizedPlanEngine
     {
         private readonly IA2JAuthorLogicParser parser;
+        private readonly IDynamicQueries dynamicQueries;
+        private readonly ICosmosDbSettings cosmosDbSettings;
 
-        public A2JAuthorPersonalizedPlanEngine(IA2JAuthorLogicParser parser)
+        public A2JAuthorPersonalizedPlanEngine(IA2JAuthorLogicParser parser, IDynamicQueries dynamicQueries, ICosmosDbSettings cosmosDbSettings)
         {
             this.parser = parser;
+            this.dynamicQueries = dynamicQueries;
+            this.cosmosDbSettings = cosmosDbSettings;
         }
 
-        public UnprocessedPersonalizedPlan Build(JObject personalizedPlan, CuratedExperienceAnswers userAnswers)
+        public async Task<UnprocessedPersonalizedPlan> Build(JObject personalizedPlan, CuratedExperienceAnswers userAnswers)
         {
             var stepsInScope = new List<JToken>();
             var evaluatedUserAnswers = parser.Parse(userAnswers);
@@ -27,6 +33,8 @@ namespace Access2Justice.Shared.A2JAuthor
                 .Properties()
                 .GetArrayValue("rootNode")
                 .FirstOrDefault();
+
+            var topics = GetTopicId(personalizedPlan.Properties().GetValue("title"));
 
             foreach (var child in root.GetValueAsArray<JArray>("children"))
             {
@@ -47,7 +55,7 @@ namespace Access2Justice.Shared.A2JAuthor
             unprocessedPlan.Id = Guid.NewGuid();
 
             var unprocessedTopic = new UnprocessedTopic();
-            unprocessedTopic.Id = Guid.NewGuid();  // Todo:@Alaa get topic guid using the topic name (aka "title" in a2j author)
+            unprocessedTopic.Id = Guid.NewGuid(); // Todo:@Alaa map topic id
             unprocessedTopic.Name = personalizedPlan.Properties().GetValue("title");
 
             foreach (var step in stepsInScope)
@@ -57,7 +65,7 @@ namespace Access2Justice.Shared.A2JAuthor
                     var unprocessedStep = new UnprocessedStep();
                     foreach (var child in childrenRoot.GetValueAsArray<JObject>("rootNode").GetValueAsArray<JArray>("children"))
                     {
-                        
+
                         var state = child.GetArrayValue("state").FirstOrDefault();
                         unprocessedStep.Id = Guid.NewGuid();
 
@@ -82,10 +90,49 @@ namespace Access2Justice.Shared.A2JAuthor
             return unprocessedPlan;
         }
 
-        private List<Guid> ExtractResourceIds(string v)
+        private async Task<List<Document>> GetTopicId(string topicName)
         {
-            // Todo:@Alaa implement this
-            return new List<Guid> { Guid.NewGuid() };
+            try
+            {
+                var topic = await dynamicQueries.FindItemWhereAsync<Document>(cosmosDbSettings.TopicCollectionId, Constants.Name, topicName);
+                if (Guid.TryParse(topic.Id, out var guid))
+                {
+                    return new List<Document> { topic };
+                }
+
+                List<Document> topics = await dynamicQueries.FindItemsWhereContainsAsync(cosmosDbSettings.TopicCollectionId, Constants.Name, topicName);
+                if (topics == null || !topics.Any())
+                {
+                    throw new Exception($"No topic found with this name: {topicName}");
+                }
+
+                return topics;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        private List<Guid> ExtractResourceIds(string html)
+        {
+            var matched = new List<Guid>();
+            int indexStart = 0, indexEnd = 0;
+            bool exit = false;
+            while (!exit)
+            {
+                indexStart = html.IndexOf(Tokens.CustomHtmlTag);
+                indexEnd = html.IndexOf(Tokens.CustomHtmlClosingTag);
+                if (indexStart != -1 && indexEnd != -1)
+                {
+                    matched.Add(new Guid(html.Substring(indexStart + Tokens.CustomHtmlTag.Length,
+                        indexEnd - indexStart - Tokens.CustomHtmlTag.Length)));
+                    html = html.Substring(indexEnd + Tokens.CustomHtmlClosingTag.Length);
+                }
+                else
+                    exit = true;
+            }
+            return matched;
         }
     }
 }

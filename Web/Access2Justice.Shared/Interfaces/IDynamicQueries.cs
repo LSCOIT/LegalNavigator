@@ -6,6 +6,8 @@ namespace Access2Justice.Shared.Interfaces
 {
     public interface IDynamicQueries
     {
+        Task<T> FindItemWhereAsync<T>(string collectionId, string propertyName, string value);
+        Task<T> FindItemWhereContainsAsync<T>(string collectionId, string propertyName, string value);
         Task<dynamic> FindItemsWhereAsync(string collectionId, string propertyName, string value);
         Task<dynamic> FindItemsWhereAsync(string collectionId, List<string> propertyNames, List<string> values);
         Task<dynamic> FindItemsWhereContainsAsync(string collectionId, string propertyName, string value);
