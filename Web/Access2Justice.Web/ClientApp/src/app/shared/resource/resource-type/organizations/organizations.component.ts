@@ -31,6 +31,10 @@ export class OrganizationsComponent implements OnInit {
 
   ngOnInit() {
     this.searchResource.resources.push(this.resource);
-    this.urlOrigin = new URL(this.resource.url).origin
+    try {
+      this.urlOrigin = new URL(this.resource.url).origin
+    } catch (e) {
+      this.urlOrigin = this.resource.url;
+    }
   }
 }
