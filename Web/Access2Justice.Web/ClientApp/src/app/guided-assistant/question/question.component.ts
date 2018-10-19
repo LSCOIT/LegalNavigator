@@ -7,6 +7,7 @@ import { Question } from './question';
 import { Answer } from './answers';
 import { ActivatedRoute } from '@angular/router';
 import { NavigateDataService } from '../../shared/navigate-data.service';
+import { PersonalizedPlan } from '../personalized-plan/personalized-plan';
 
 @Component({
   selector: 'app-question',
@@ -21,7 +22,7 @@ export class QuestionComponent implements OnInit {
   buttonParam: string;
   @Output() sendQuestionsRemainingEvent = new EventEmitter<number>();
   @Output() sendTotalQuestionsEvent = new EventEmitter<number>();
-  generatedPersonalizedPlan: any;
+  generatedPersonalizedPlan: PersonalizedPlan;
 
   constructor(
     private questionService: QuestionService,
