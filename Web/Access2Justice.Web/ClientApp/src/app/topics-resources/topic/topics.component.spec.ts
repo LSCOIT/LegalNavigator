@@ -21,7 +21,7 @@ describe('TopicsComponent', () => {
   let router: RouterModule;
   let mockTopicService;
   let mockGlobal;
-  let mockTopics = [
+  let mockTopics: any = [
     {
       "id": "e3bdf5d8-8755-46d9-b13b-e28546fcd27e",
       "name": "Abuse & Harassment",
@@ -47,7 +47,7 @@ describe('TopicsComponent', () => {
 
     mockTopicService = jasmine.createSpyObj(['getTopics']);
     mockTopicService.getTopics.and.returnValue(of(mockTopics));
-    mockGlobal = { };
+    mockGlobal = {};
 
     TestBed.configureTestingModule({
       declarations: [
@@ -89,9 +89,16 @@ describe('TopicsComponent', () => {
     expect(component).toBeDefined();
   }));
 
-  //it('makes a call to getTopics Oninit', async() => {
-  //  spyOn(component, 'getTopics');
-  //  component.ngOnInit();
-  //  expect(component.getTopics).toHaveBeenCalled();
-  //});
+  it('Bind data topics property from cached topics Data Oninit', async () => {
+    component.ngOnInit();
+    expect(component.topics).toEqual(mockTopics);
+  });
+
+  it('makes a call to getTopics Oninit', async () => {
+    mockGlobal.topicsData = undefined;
+    spyOn(component, 'getTopics');
+    component.subscription.next(1);
+    component.ngOnInit();
+    expect(component.getTopics).toHaveBeenCalled();
+  });
 });

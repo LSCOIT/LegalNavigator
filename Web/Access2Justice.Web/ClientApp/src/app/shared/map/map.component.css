@@ -7,7 +7,7 @@ p {
 }
 
 .edit-location {
-  padding: 15px 15px 10px 10px;
+  padding: 10px 15px 10px 10px;
   cursor: pointer;
   display: inline-block;
   height: 44px;
@@ -96,6 +96,11 @@ p {
 
 .btn {
   margin: 0 auto;
+}
+
+#validation-error {
+  font-size: 14px;
+  color: #ca3636;
 }
 
 @media only screen and (min-width : 768px) {

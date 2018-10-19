@@ -28,6 +28,10 @@ hr {
   margin: 20px auto 55px auto;
 }
 
+.add-state {
+  padding: 10px 0;
+}
+
 #dropdown-arrow {
   display: none;
 }
