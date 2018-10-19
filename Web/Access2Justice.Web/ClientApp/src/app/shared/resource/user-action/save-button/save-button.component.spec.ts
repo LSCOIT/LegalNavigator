@@ -5,16 +5,12 @@ import { BsModalService } from 'ngx-bootstrap';
 import { EventUtilityService } from '../../../event-utility.service';
 import { Global } from '../../../../global';
 import { HttpClientModule } from '@angular/common/http';
-import { PersonalizedPlanComponent } from '../../../../guided-assistant/personalized-plan/personalized-plan.component';
 import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
-import { ProfileComponent } from '../../../../profile/profile.component';
 import { SaveButtonComponent } from './save-button.component';
 import { ToastrService } from 'ngx-toastr';
 import { MsalService } from '@azure/msal-angular';
-import { Observable } from 'rxjs/Observable';
-import { environment } from '../../../../../environments/environment';
-import { Mock } from 'protractor/built/driverProviders';
 import { of } from 'rxjs/observable/of';
+
 describe('SaveButtonComponent', () => {
   let component: SaveButtonComponent;
   let fixture: ComponentFixture<SaveButtonComponent>;
@@ -22,7 +18,6 @@ describe('SaveButtonComponent', () => {
   let mockGlobal;
   let mockRouter;
   let msalService;
-  let loginService;
   let mockPersonalizedPlanService;
   let mockUserId = "testuserid";
   let mockTopicID = 'e1fdbbc6-d66a-4275-9cd2-2be84d303e12';
@@ -126,11 +121,6 @@ describe('SaveButtonComponent', () => {
     ],
     "isShared": false
   };
-  let mockPersonalizedPlanSteps = [{ stepId: '', title: '', description: '', order: 1, isComplete: false, resources: [], topicIds: [] },
-  {
-    stepId: '', title: '', description: '', order: 2, isComplete: false, resources: ['d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef'], topicIds: ['d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef']
-    }];
-  let mockPlanSteps = { stepId: 'testStepId', title: 'testStepTitle', description: 'testdescription', order: 1, isComplete: false, resources: ['d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef'], topicIds: ['d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef'] };
   let mockUserData = {
     displayableId: "mockUser",
     idToken: {
@@ -144,11 +134,7 @@ describe('SaveButtonComponent', () => {
   let mockUserDataEmpty = null;
   let mockPlanId = '1fb1b006-a8bc-487d-98a0-2457d9d9f78d';
   let mockEmptyResult = [];
-  let mockSavedResource = {
-    "itemId": "1d7fc811-dabe-4468-a179-c43435bd22b6",
-    "resourceType": "Articles",
-    "resourceDetails": {}
-  };
+
   beforeEach(async(() => {
     mockPersonalizedPlanService = jasmine.createSpyObj(['getActionPlanConditions', 'saveResourcesToProfile', 'getUserSavedResources', 'userPlan','showSuccess', 'showWarning' ]);
     msalService = jasmine.createSpyObj(['getUser']);
@@ -224,7 +210,7 @@ describe('SaveButtonComponent', () => {
   it('should get called PlanResources post login', () => {
     spyOn(component, 'getPersonalizedPlanSteps');
     msalService.getUser.and.returnValue(mockUserData);
-    component.type = 'Plan'
+    component.type = 'Plan';
     component.id = mockPlanId;
     component.savePlanResources();
     expect(component.planId).toEqual(mockPlanId);
@@ -245,14 +231,14 @@ describe('SaveButtonComponent', () => {
   });
 
   it('should set plan session key if plan type exists - savePlanResourcesPreLogin', () => {
-    component.type = 'Plan'
+    component.type = 'Plan';
     component.id = mockPlanId;
     component.savePlanResourcesPreLogin();
     expect(JSON.parse(sessionStorage.getItem("bookmarkPlanId"))).toEqual(mockPlanId);
   });
 
   it('should set plan session key if plan type not exists - savePlanResourcesPreLogin', () => {
-    component.type = 'NoPlan'
+    component.type = 'NoPlan';
     component.id = mockPlanId;
     component.savePlanResourcesPreLogin();
     expect(component.savedResources.itemId).toEqual(mockPlanId);
@@ -263,5 +249,4 @@ describe('SaveButtonComponent', () => {
     component.getTopicIds(mockPlanDetails.topics);
     expect(component.topicIds).toContain('d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef');
   });
-
  });

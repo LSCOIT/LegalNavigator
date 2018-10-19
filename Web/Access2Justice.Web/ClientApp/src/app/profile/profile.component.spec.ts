@@ -335,14 +335,14 @@ describe('component:profile', () => {
   });
 
   it('should not call loginRedirect msal service method and assign values of logged in user details in ngOninit', () => {
-    msalService.getUser.and.callFake(function () { return null });
+    msalService.getUser.and.returnValue(of(null));
     component.ngOnInit();
     expect(component.userId).toEqual(mockUserId);
     expect(component.userName).toEqual(mockUserName);
   });
 
   it('should call loginRedirect msal service method and assign values of logged in user details in ngOninit', () => {
-    msalService.getUser.and.callFake(function () { return mockUserData });
+    msalService.getUser.and.returnValue(of(mockUserData));
     component.ngOnInit();
     mockIsShared = true;
     expect(msalService.loginRedirect).toHaveBeenCalled();
@@ -351,7 +351,7 @@ describe('component:profile', () => {
   });
 
   it('should not call loginRedirect msal service method and assign values of logged in user details in ngOninit', () => {
-    msalService.getUser.and.callFake(function () { return mockUserData });
+    msalService.getUser.and.returnValue(of(mockUserData));
     component.ngOnInit();
     expect(component.userId).toEqual(mockSharedUserId);
     expect(component.userName).toEqual(mockSharedUserName);
@@ -359,9 +359,7 @@ describe('component:profile', () => {
 
   it('should assign component values in getSavedResource method', () => {
     component.webResources = mockwebresources;
-    mockPersonalizedPlanService.getPersonalizedResources.and.callFake(() => {
-      return Observable.from([mockresponse]);
-    });
+    mockPersonalizedPlanService.getPersonalizedResources.and.returnValue(of(mockresponse));
     component.getSavedResource(mockresourceinput);
     expect(component.personalizedResources).toEqual(mockPersonalizedPlanResources);
     expect(component.isSavedResources).toBeTruthy();
@@ -369,21 +367,15 @@ describe('component:profile', () => {
 
   it('should assign component values in getpersonalizedResources method', () => {    
     spyOn(component, 'getSavedResource');
-    mockPersonalizedPlanService.getUserSavedResources.and.callFake(() => {
-      return Observable.from([mockUserSavedResources]);
-    });
+    mockPersonalizedPlanService.getUserSavedResources.and.returnValue(of(mockUserSavedResources));
     component.getpersonalizedResources();
     expect(component.resourceFilter).toEqual(mockresourceinput);
     expect(component.getSavedResource).toHaveBeenCalledWith(mockresourceinput);
   });
 
-  it('should get topics for personalized plan of a user', () => {        
-    mockPersonalizedPlanService.getUserSavedResources.and.callFake(() => {
-      return Observable.from([mockUserSavedResources]);
-    });
-    mockPersonalizedPlanService.getActionPlanConditions.and.callFake(() => {
-      return Observable.from([mockPlanDetails]);
-    });
+  it('should get topics for personalized plan of a user', () => {
+    mockPersonalizedPlanService.getUserSavedResources.and.returnValue(of(mockUserSavedResources));
+    mockPersonalizedPlanService.getActionPlanConditions.and.returnValue(of(mockPlanDetails));
     component.getPersonalizedPlan();    
     mockPersonalizedPlanService.createTopicsList.and.returnValue(mockTopicsList);
     mockPersonalizedPlanService.getPlanDetails.and.returnValue(mockPlanDetails);
@@ -392,5 +384,4 @@ describe('component:profile', () => {
     expect(component.topics[0]['topicId']).toEqual(mockPlanDetails.topics[0].topicId);
     expect(component.planDetailTags).toEqual(mockPlanDetails);
   });
-
 });

@@ -36,7 +36,7 @@ describe('TopicsComponent', () => {
           "zipCode": "96761"
         }
       ],
-      "icon": "www.test.com/static-resource/assets/images/categories/abuse.svg",
+      "icon": "",
     }
   ];
   const mockRouter = {
