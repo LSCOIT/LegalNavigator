@@ -19,7 +19,10 @@ export class ResourceCardDetailComponent implements OnInit {
   getResource() {
     this.resourceId = this.activeRoute.snapshot.params["id"];
     this.resourceService.getResource(this.resourceId)
-      .subscribe(resource => this.resource = resource[0]);
+      .subscribe(resource => {
+        this.resource = resource[0];
+        console.log(this.resource);
+      });
   };
 
   ngOnInit() {

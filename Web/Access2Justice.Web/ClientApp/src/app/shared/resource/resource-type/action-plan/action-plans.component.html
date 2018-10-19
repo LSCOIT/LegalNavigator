@@ -52,27 +52,34 @@
                 <div>
                   <p [innerHTML]="step.description"></p>
                 </div>
-                <!--<div *ngFor="let resource of step.resources">
-                  <div *ngIf="resource.resourceType === 'Videos'" class="row">
-                    <div class="media-left no-print">
-                      <img class="media-object" src="../../../assets/images/icons/videos.svg" aria-hidden="True">
+                <div>
+                  <h4>Additional Resources</h4>
+                  <div *ngFor="let resource of step.resources" id="additional-resource" class="row">
+                    <div *ngIf="resourceTypeList.includes(resource.resourceType); else otherResourceType" class="media-left no-print">
+                      <img *ngIf="resource.resourceType === 'Videos'" class="nav-icon" src="../../../assets/images/icons/videos.svg" aria-label="Video">
+                      <img *ngIf="resource.resourceType === 'Forms'" class="nav-icon" src="../../../assets/images/icons/forms.svg" aria-label="Forms">
+                      <img *ngIf="resource.resourceType === 'Organizations'" class="nav-icon" src="../../../assets/images/icons/organizations.svg" aria-label="Organizations">
+                      <img *ngIf="resource.resourceType === 'Guided Assistant'" class="nav-icon" src="../../../assets/images/icons/action-plans.svg" aria-label="Video">
+                      <img *ngIf="resource.resourceType === 'Articles'" class="nav-icon" src="../../../assets/images/icons/videos.svg" aria-label="Artiles">
                     </div>
                     <div class="media-body">
-                      <h4 class="media-heading video-heading" (click)="openModal(videoTemplate)">{{resource.name}}</h4>
-                      <p>{{resource.description}}</p>
+                      <a *ngIf="resource.resourceType === 'Videos'" class="link" (click)="openModal(videoTemplate)">{{resource.name}}</a>
+                      <a *ngIf="resource.resourceType === 'Forms'" [href]="resource.url" class="link">{{resource.name}}<img class="nav-icon" src="../../../assets/images/small-icons/external_link.svg"/></a>
+                      <a *ngIf="resource.resourceType !== 'Forms' && resource.resourceType !== 'Videos'" [routerLink]="['/resource', resource.id]" class="link">{{resource.name}}</a>
                     </div>
                     <ng-template #videoTemplate>
                       <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-                        <span aria-hidden="true">&times;</span>
+                        <img src="../../../assets/images/small-icons/close.svg"  class="nav-icon" alt="Close modal" />
                       </button>
                       <iframe title="{{resource.name}}" [src]='resourceUrl(resource.url)' frameborder="0" allowfullscreen></iframe>
                     </ng-template>
+                    <ng-template #otherResourceType>
+                      <div class="media-left no-print">
+                        <img class="nav-icon" src="../../../assets/images/icons/articles.svg" aria-label="Miscellaneous Resource Type">
+                      </div>
+                    </ng-template>
                   </div>
-                  <div *ngIf="resource.resourceType==='Organizations' && resource.telephone">
-                    <img src="./assets/images/small-icons/call.svg" alt="Phone number" class="nav-icon">
-                    <span class="p">{{resource.telephone}}</span>
-                  </div>
-                </div>-->
+                </div>
               </div>
             </accordion-group>
           </accordion>
