@@ -6,6 +6,10 @@ ul li {
   font-size: 14px;
 }
 
+.box-shadow {
+  margin: 20px 0 40px 0;
+}
+
 .plan-heading {
   border-bottom: 1px solid #ddd;
 }
@@ -76,8 +80,9 @@ h3.inline {
 }
 
 iframe {
-  width: 100%;
+  width: 86%;
   height: 325px;
+  margin: 9% 7% 5% 7%;
 }
 
 .resource-video iframe {
@@ -109,6 +114,19 @@ iframe {
 
 .accordion-img-grey {
   background-image: url('../../../../../assets/images/small-icons/open_accordion_grey.svg');
+}
+
+#additional-resource .media-left {
+  width: 50px;
+}
+
+#additional-resource .media-left img {
+  width: 30px;
+  height: 30px;
+}
+
+.link {
+  cursor: pointer;
 }
 
 @media only screen and (min-width : 768px) {

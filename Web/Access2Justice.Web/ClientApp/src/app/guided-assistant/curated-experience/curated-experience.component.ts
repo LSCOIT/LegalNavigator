@@ -10,6 +10,8 @@ export class CuratedExperienceComponent implements OnInit {
   totalQuestions: number;
   maxProgress: number;
   questionProgress: number;
+  prevQuestionProgress: number = 0;
+  newQuestionProgress: number;
 
   constructor() { }
 
@@ -25,10 +27,16 @@ export class CuratedExperienceComponent implements OnInit {
 
   calculateProgress() {
     if (this.questionsRemaining > 1) {
-      this.questionProgress = this.totalQuestions - this.questionsRemaining;
+      this.newQuestionProgress = this.totalQuestions - this.questionsRemaining;
+      if (this.newQuestionProgress > this.prevQuestionProgress) {
+        this.questionProgress = this.newQuestionProgress;
+      } else {
+        this.questionProgress = this.prevQuestionProgress;
+      }
     } else {
       this.questionProgress = this.maxProgress;
     }
+    this.prevQuestionProgress = this.questionProgress;
   }
 
   ngOnInit() {

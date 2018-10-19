@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PersonalizedPlanService } from '../personalized-plan/personalized-plan.service';
 import { PersonalizedPlanTopic } from '../personalized-plan/personalized-plan';
 import { ActivatedRoute } from '@angular/router';
+import { NavigateDataService } from '../../shared/navigate-data.service';
 
 @Component({
   selector: 'app-personalized-plan',
@@ -18,8 +19,11 @@ export class PersonalizedPlanComponent implements OnInit {
   planDetailTags: any;
   type: string = "Plan";
 
-  constructor(private personalizedPlanService: PersonalizedPlanService,
-    private activeRoute: ActivatedRoute) { }
+  constructor(
+    private personalizedPlanService: PersonalizedPlanService,
+    private activeRoute: ActivatedRoute,
+    private navigateDataService: NavigateDataService
+  ) { }
 
   getTopics(): void {
     this.personalizedPlanService.getActionPlanConditions(this.activeActionPlan)
@@ -60,7 +64,14 @@ export class PersonalizedPlanComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getTopics();
+    let generatedPersonalizedPlan = this.navigateDataService.getData();
+    if (generatedPersonalizedPlan != undefined) {
+      this.topics = generatedPersonalizedPlan.topics;
+      this.planDetailTags = generatedPersonalizedPlan;
+      this.topicsList = this.personalizedPlanService.createTopicsList(this.topics);
+      this.planDetails = this.personalizedPlanService.getPlanDetails(this.topics, this.planDetailTags);
+    } else {
+      this.getTopics();
+    }
   }
-
 }
