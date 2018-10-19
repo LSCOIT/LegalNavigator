@@ -14,7 +14,8 @@ import { MsalService } from '@azure/msal-angular';
 import { Observable } from 'rxjs/Observable';
 import { environment } from '../../../../../environments/environment';
 import { Mock } from 'protractor/built/driverProviders';
-fdescribe('SaveButtonComponent', () => {
+import { of } from 'rxjs/observable/of';
+describe('SaveButtonComponent', () => {
   let component: SaveButtonComponent;
   let fixture: ComponentFixture<SaveButtonComponent>;
   let mockToastr;
@@ -23,6 +24,8 @@ fdescribe('SaveButtonComponent', () => {
   let msalService;
   let loginService;
   let mockPersonalizedPlanService;
+  let mockUserId = "testuserid";
+  let mockTopicID = 'e1fdbbc6-d66a-4275-9cd2-2be84d303e12';
   let mockPlanDetails = {
     "id": "1fb1b006-a8bc-487d-98a0-2457d9d9f78d",
     "topics": [
@@ -126,7 +129,7 @@ fdescribe('SaveButtonComponent', () => {
   let mockPersonalizedPlanSteps = [{ stepId: '', title: '', description: '', order: 1, isComplete: false, resources: [], topicIds: [] },
   {
     stepId: '', title: '', description: '', order: 2, isComplete: false, resources: ['d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef'], topicIds: ['d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef']
-  }];
+    }];
   let mockPlanSteps = { stepId: 'testStepId', title: 'testStepTitle', description: 'testdescription', order: 1, isComplete: false, resources: ['d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef'], topicIds: ['d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef'] };
   let mockUserData = {
     displayableId: "mockUser",
@@ -140,31 +143,32 @@ fdescribe('SaveButtonComponent', () => {
   }
   let mockUserDataEmpty = null;
   let mockPlanId = '1fb1b006-a8bc-487d-98a0-2457d9d9f78d';
+  let mockEmptyResult = [];
   let mockSavedResource = {
     "itemId": "1d7fc811-dabe-4468-a179-c43435bd22b6",
     "resourceType": "Articles",
     "resourceDetails": {}
   };
   beforeEach(async(() => {
-    mockPersonalizedPlanService = jasmine.createSpyObj(['getActionPlanConditions', 'saveResourcesToProfile']);
+    mockPersonalizedPlanService = jasmine.createSpyObj(['getActionPlanConditions', 'saveResourcesToProfile', 'getUserSavedResources', 'userPlan','showSuccess', 'showWarning' ]);
     msalService = jasmine.createSpyObj(['getUser']);
-
+    mockPersonalizedPlanService.getActionPlanConditions.and.returnValue(of(mockPlanDetails));
+    mockPersonalizedPlanService.getUserSavedResources.and.returnValue(of(mockEmptyResult));
+    mockPersonalizedPlanService.saveResourcesToProfile.and.returnValue(of(mockEmptyResult));
+    mockPersonalizedPlanService.userPlan.and.returnValue(of(mockEmptyResult));
+    msalService.getUser.and.returnValue(mockUserData);
+   
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
       declarations: [SaveButtonComponent],
       providers: [
-        PersonalizedPlanService,
+        { provide: PersonalizedPlanService, useValue: mockPersonalizedPlanService },
         ArrayUtilityService,
-        ProfileComponent,
         EventUtilityService,
-        PersonalizedPlanComponent,
         BsModalService,
         { provide: ToastrService, useValue: mockToastr },
-        { provide: Global, useValue: mockGlobal },
-        {
-          provide: ActivatedRoute,
-          useValue: { snapshot: { params: { 'id': '123' } } }
-        },
+        { provide: Global, useValue: { mockGlobal, userid : mockUserId}},
+        {provide: ActivatedRoute,useValue: { snapshot: { params: { 'id': '123' } } }},
         { provide: Router, useValue: mockRouter },
         { provide: MsalService, useValue: msalService },
       ]
@@ -211,13 +215,10 @@ fdescribe('SaveButtonComponent', () => {
     expect(component).toBeDefined();
   });
 
-  it('should get no topics for the given plan', () => {
+  it('should get topics for the given plan', () => {
     spyOn(component, 'getPersonalizedPlanSteps');
     component.getPlan(mockPlanId);
-    mockPersonalizedPlanService.getActionPlanConditions.and.callFake(() => {
-      return Observable.from([mockPlanDetails]);
-    });
-    expect(component.planTopic.topicId).toEqual('');
+    expect(component.planTopic.topicId).toEqual(mockTopicID);
   });
 
   it('should get called PlanResources post login', () => {
@@ -231,7 +232,6 @@ fdescribe('SaveButtonComponent', () => {
 
   it('should get called PlanResources post login have been called', () => {
     spyOn(component, 'savePlanResourcesPostLogin');
-    msalService.getUser.and.returnValue(mockUserData);
     component.savePlanResources();
     expect(component.savePlanResourcesPostLogin).toHaveBeenCalled();
   });
