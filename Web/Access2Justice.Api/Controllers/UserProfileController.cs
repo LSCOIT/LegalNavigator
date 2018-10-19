@@ -19,10 +19,15 @@ namespace Access2Justice.Api.Controllers
         }
 
         /// <summary>
-        /// Get the user details by a user OId
+        /// Get the user resource and plan details by a user OId
         /// </summary>
+        /// <remarks>
+        /// Helps to get user resource and plan details by user id
+        /// </remarks>
         /// <param name="oid"></param>
-        /// <returns></returns>
+        /// <param name="type"></param>
+        /// <response code="200">Get user resource and plan details for given id</response>
+        /// <response code="500">Failure</response>
         [HttpPost]
         [Route("api/user/get-user-profile")]
         public async Task<IActionResult> GetUserDataAsync(string oid, string type)
@@ -34,8 +39,12 @@ namespace Access2Justice.Api.Controllers
         /// <summary>
         /// Get the user details by a user OId
         /// </summary>
+        /// <remarks>
+        /// Helps to get user details by user id
+        /// </remarks>
         /// <param name="oid"></param>
-        /// <returns></returns>
+        /// <response code="200">Get user details for given id</response>
+        /// <response code="500">Failure</response>
         [HttpGet]
         [Route("api/user/get-user-profile-data/{oid}")]
         public async Task<IActionResult> GetUserProfileDataAsync(string oid)
@@ -47,8 +56,12 @@ namespace Access2Justice.Api.Controllers
         /// <summary>
         /// Insert and Update the user profile personalized plan
         /// </summary>
-        /// <param name="userData"></param>
-        /// <returns></returns>
+        /// <remarks>
+        /// Helps to create and update user profile personalized plans
+        /// </remarks>
+        /// <param name="profileResources"></param>
+        /// <response code="200">Get user personalized plan created or updated</response>
+        /// <response code="500">Failure</response>
         [Authorize]
         [HttpPost]
         [Route("api/user/upsert-user-personalized-plan")]
@@ -59,10 +72,15 @@ namespace Access2Justice.Api.Controllers
         }
 
         /// <summary>
-        ///  
+        ///  Upsert user profile
         /// </summary>
+        /// <remarks>
+        /// Helps to upsert user profile
+        /// </remarks>
         /// <param name="userProfile"></param>
-        /// <returns></returns>
+        /// <response code="200">Get user profile</response>
+        /// <response code="404">Nor found</response>
+        /// <response code="500">Failure</response>
         [HttpPost]
         [Route("api/user/upsert-user-profile")]
         public async Task<IActionResult> UpsertUserProfile([FromBody]UserProfile userProfile)

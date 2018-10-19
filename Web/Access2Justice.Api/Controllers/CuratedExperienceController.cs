@@ -116,6 +116,15 @@ namespace Access2Justice.Api.Controllers
         }
         #endregion
 
+        /// <summary>
+        /// Convert A2JAuthor to curated experience
+        /// </summary>
+        /// <remarks>
+        /// Helps to get A2JAuthor to curated experience converted 
+        /// </remarks>
+        /// <param name="a2jSchema"></param>
+        /// <response code="200">Returns converted JSON </response>
+        /// <response code="500">Failure</response>
         [HttpPost("import")]
         public IActionResult ConvertA2JAuthorToCuratedExperience([FromBody] JObject a2jSchema)
         {
