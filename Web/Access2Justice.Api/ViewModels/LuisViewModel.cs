@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using System.ComponentModel;
+using Access2Justice.Shared;
 
 namespace Access2Justice.Api.ViewModels
 {

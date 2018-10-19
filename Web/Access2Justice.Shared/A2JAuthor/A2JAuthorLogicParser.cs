@@ -5,13 +5,13 @@ using System.Collections.Generic;
 
 namespace Access2Justice.Shared.A2JAuthor
 {
-    public class A2JLogicParser : IPersonalizedPlanParse
+    public class A2JAuthorLogicParser : IA2JAuthorLogicParser
     {
-        private readonly IPersonalizedPlanEvaluate evaluator;
+        private readonly IA2JAuthorLogicInterpreter interpreter;
 
-        public A2JLogicParser(IPersonalizedPlanEvaluate evaluator)
+        public A2JAuthorLogicParser(IA2JAuthorLogicInterpreter interpreter)
         {
-            this.evaluator = evaluator;
+            this.interpreter = interpreter;
         }
 
         public Dictionary<string, string> Parse(CuratedExperienceAnswers curatedExperienceAnswers)
@@ -41,13 +41,13 @@ namespace Access2Justice.Shared.A2JAuthor
                     if (!string.IsNullOrWhiteSpace(leftLogic) && !string.IsNullOrWhiteSpace(rightLogic))
                     {
                         var ANDvars = leftLogic.GetVariablesWithValues(Tokens.AND);
-                        if (evaluator.Evaluate(userAnswersKeyValuePairs, ANDvars, (x, y) => x && y))
+                        if (interpreter.Interpret(userAnswersKeyValuePairs, ANDvars, (x, y) => x && y))
                         {
                             evaluatedAnswers.AddRange(rightLogic.SetValue());
                         }
 
                         var ORvars = leftLogic.GetVariablesWithValues(Tokens.OR);
-                        if (evaluator.Evaluate(userAnswersKeyValuePairs, ORvars, (x, y) => x || y))
+                        if (interpreter.Interpret(userAnswersKeyValuePairs, ORvars, (x, y) => x || y))
                         {
                             evaluatedAnswers.AddRange(rightLogic.SetValue());
                         }
@@ -55,7 +55,7 @@ namespace Access2Justice.Shared.A2JAuthor
                         if (ANDvars.Count == 0 && ORvars.Count == 0)
                         {
                             var oneVar = leftLogic.GetVariablesWithValues();
-                            if (evaluator.Evaluate(userAnswersKeyValuePairs, oneVar, (x, y) => x))
+                            if (interpreter.Interpret(userAnswersKeyValuePairs, oneVar, (x, y) => x))
                             {
                                 evaluatedAnswers.AddRange(rightLogic.SetValue());
                             }

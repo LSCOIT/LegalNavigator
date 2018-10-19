@@ -1,6 +1,7 @@
 ﻿using Access2Justice.Api.Authentication;
 using Access2Justice.Api.Authorization;
 using Access2Justice.Api.Interfaces;
+using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Access2Justice.Shared.Utilities;

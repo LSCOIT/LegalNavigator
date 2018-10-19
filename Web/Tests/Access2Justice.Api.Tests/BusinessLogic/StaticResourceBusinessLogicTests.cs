@@ -1,5 +1,6 @@
 ﻿using Access2Justice.Api.BusinessLogic;
 using Access2Justice.Api.Tests.TestData;
+using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Microsoft.Azure.Documents;
