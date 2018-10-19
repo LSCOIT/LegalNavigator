@@ -45,7 +45,7 @@ describe('SubtopicsComponent', () => {
         }
 
       ],
-      "icon": "",
+      "icon": "../../../assets/images/categories/topic.svg",
     }
   ];
   let mockSubTopics = [

@@ -13,12 +13,15 @@ import { ToastrService } from 'ngx-toastr';
 import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MsalService } from '@azure/msal-angular/dist/msal.service';
+import { NavigateDataService } from '../../../navigate-data.service';
 
 describe('RemoveButtonComponent', () => {
   let component: RemoveButtonComponent;
   let fixture: ComponentFixture<RemoveButtonComponent>;
   let mockToastr, mockRouter, msalService;
   let mockGlobal: Global;
+  let mockNavigateDataService;
+
   msalService = jasmine.createSpyObj(['getUser']);
 
   beforeEach(async(() => {
@@ -38,7 +41,8 @@ describe('RemoveButtonComponent', () => {
         { provide: Global, useValue: { role: '', shareRouteUrl: '' } },
         { provide: ActivatedRoute, useValue: { snapshot: { params: { 'id': '123' } } } },
         { provide: Router, useValue: mockRouter },
-        { provide: MsalService, useValue: msalService }
+        { provide: MsalService, useValue: msalService },
+        { provide: NavigateDataService, useValue: mockNavigateDataService }
       ],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
     })

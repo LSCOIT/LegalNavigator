@@ -1,7 +1,11 @@
 ﻿using Access2Justice.Api.BusinessLogic;
 using Access2Justice.Api.Tests.TestData;
+using Access2Justice.Shared.A2JAuthor;
+using Access2Justice.Shared.Interfaces;
+using Access2Justice.Shared.Interfaces.A2JAuthor;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NSubstitute;
 using System;
 using System.Linq;
 using Xunit;
@@ -10,10 +14,17 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 {
     public class A2JAuthorBusinessLogicTests
     {
-        private readonly A2JAuthorBusinessLogic a2jAuthor;
+        private readonly ICosmosDbSettings dbSettings;
+        private readonly IBackendDatabaseService dbService;
+        private readonly ICuratedExperienceConvertor a2jAuthor;
+        private readonly IPersonalizedPlanEngine personalizedPlanEngine;
+
         public A2JAuthorBusinessLogicTests()
         {
-            a2jAuthor = new A2JAuthorBusinessLogic();
+            dbSettings = Substitute.For<ICosmosDbSettings>();
+            dbService = Substitute.For<IBackendDatabaseService>();
+            personalizedPlanEngine = Substitute.For<IPersonalizedPlanEngine>();
+            a2jAuthor = new A2JAuthorBusinessLogic(dbSettings, dbService, personalizedPlanEngine);
         }
 
         [Fact]

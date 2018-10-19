@@ -9,13 +9,9 @@
 <div class="row">
   <div class="col-sm-8 col-sm-12">
     <p>{{resource.overview}}</p>
-    <div class="content">
-      <h4>{{resource.headline1}}</h4>
-      <p>{{resource.content1}}</p>
-    </div>
-    <div class="content">
-      <h4>{{resource.headline2}}</h4>
-      <p>{{resource.content2}}</p>
+    <div class="content" *ngFor="let content of resource.contents">
+      <h4>{{content.headline}}</h4>
+      <p>{{content.content}}</p>
     </div>
   </div>
   <div class="col-md-3 col-sm-12 pull-right">

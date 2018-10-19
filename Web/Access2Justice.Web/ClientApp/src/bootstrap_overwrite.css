@@ -221,6 +221,16 @@ span.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chev
   content: '';
 }
 
+.panel-body a {
+  color: #0D3FB8;
+  font-weight: 600;
+}
+
+.panel-body li {
+  list-style: disc;
+  margin-left: 30px;
+}
+
 /*Location Modal*/
 .modal-content {
   border-radius: 0;
@@ -292,6 +302,10 @@ span.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chev
 
   .col-sm-offset-2 {
     margin-left: 16.666667%;
+  }
+
+  .col-sm-offset-3 {
+    margin-left: 25%;
   }
 
   .navbar-nav .open .dropdown-menu {
