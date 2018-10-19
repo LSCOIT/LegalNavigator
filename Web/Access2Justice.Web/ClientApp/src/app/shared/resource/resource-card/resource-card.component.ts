@@ -56,6 +56,10 @@ export class ResourceCardComponent implements OnInit {
     if (this.resource.itemId) {
       this.resource.id = this.resource.itemId;
     }
-    this.urlOrigin = new URL(this.resource.url).origin
+    try {
+      this.urlOrigin = new URL(this.resource.url).origin;
+    } catch (e) {
+      this.urlOrigin = this.resource.url;
+    }    
   }
 }
