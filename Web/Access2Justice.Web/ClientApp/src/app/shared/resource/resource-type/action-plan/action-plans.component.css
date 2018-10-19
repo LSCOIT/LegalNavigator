@@ -6,6 +6,10 @@ ul li {
   font-size: 14px;
 }
 
+.box-shadow {
+  margin: 20px 0 40px 0;
+}
+
 .plan-heading {
   border-bottom: 1px solid #ddd;
 }
@@ -119,7 +123,10 @@ iframe {
 #additional-resource .media-left img {
   width: 30px;
   height: 30px;
+}
 
+.link {
+  cursor: pointer;
 }
 
 @media only screen and (min-width : 768px) {

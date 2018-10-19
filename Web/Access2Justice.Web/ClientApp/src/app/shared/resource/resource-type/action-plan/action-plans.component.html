@@ -1,6 +1,6 @@
 <div *ngIf="displaySteps">
   <div *ngFor="let topic of planDetails.topics">
-    <div class="row box-shadow">
+    <div class="col-sm-12 box-shadow">
       <div class="col-xs-12 plan-spacing plan-heading">
         <div class="col-xs-11">
           <div class="main-icon col-sm-1 col-xs-2 no-print">
@@ -52,7 +52,7 @@
                 <div>
                   <p [innerHTML]="step.description"></p>
                 </div>
-                <div>
+                <div *ngIf="step.resources != null">
                   <h4>Additional Resources</h4>
                   <div *ngFor="let resource of step.resources" id="additional-resource" class="row">
                     <div *ngIf="resourceTypeList.includes(resource.resourceType); else otherResourceType" class="media-left no-print">
