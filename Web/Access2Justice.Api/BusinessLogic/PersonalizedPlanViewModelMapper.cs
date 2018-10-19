@@ -24,34 +24,75 @@ namespace Access2Justice.Api.BusinessLogic
 
 		public async Task<PersonalizedPlanViewModel> MapViewModel(UnprocessedPersonalizedPlan personalizedPlanStepsInScope)
 		{
-            // https://github.com/Microsoft/Access2Justice/issues/567
-
-            PersonalizedPlanViewModel actionPlan = new PersonalizedPlanViewModel();
-			
-			foreach (var topic in personalizedPlanStepsInScope.UnprocessedTopics)
+            var actionPlan = new PersonalizedPlanViewModel();
+            
+			foreach (var unprocessedTopic in personalizedPlanStepsInScope.UnprocessedTopics)
 			{
                 var resourceDetails = new List<Resource>();
-                var resourceIDs = topic.UnprocessedSteps.SelectMany(x => x.ResourceIds);
+                var resourceIDs = unprocessedTopic.UnprocessedSteps.SelectMany(x => x.ResourceIds);
                 if (resourceIDs != null || resourceIDs.Any())
                 {
                     var resourceValues = resourceIDs.Select(x => x.ToString()).Distinct().ToList();
                     var resourceData = await dynamicQueries.FindItemsWhereInClauseAsync(cosmosDbSettings.ResourceCollectionId, Constants.Id, resourceValues);
                     resourceDetails = JsonUtilities.DeserializeDynamicObject<List<Resource>>(resourceData);
                 }
+
+                var topic = await GetTopic(unprocessedTopic.Name);
 				actionPlan.Topics.Add(new PlanTopic
 				{
-					TopicName = topic.Name,
-					TopicId = topic.Id,
-					Steps = GetPlanSteps(topic.UnprocessedSteps, resourceDetails)
+                    TopicId = Guid.Parse(topic.Id),
+                    TopicName = topic.Name,
+                    Icon = topic.Icon,
+                    QuickLinks = GetQuickLinks(topic.QuickLinks),
+                    Steps = GetSteps(unprocessedTopic.UnprocessedSteps, resourceDetails)
 				});
 			}
 
-			actionPlan.PersonalizedPlanId = Guid.NewGuid(); //personalizedPlanStepsInScope.Id;
+			actionPlan.PersonalizedPlanId = Guid.NewGuid();
 			actionPlan.IsShared = false;
 			return actionPlan;
 		}
 
-		public List<PlanStep> GetPlanSteps(List<UnprocessedStep> unprocessedSteps, List<Resource> resourceDetails)
+        private async Task<Topic> GetTopic(string topicName)
+        {
+            try
+            {
+                List<dynamic> topics = null;
+                topics = await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.TopicCollectionId, Constants.Name, topicName);
+                if (topics == null || !topics.Any())
+                {
+                    topics = await dynamicQueries.FindItemsWhereContainsAsync(cosmosDbSettings.TopicCollectionId, Constants.Name, topicName);
+                }
+                if (!topics.Any())
+                {
+                    throw new Exception($"No topic found with this name: {topicName}");
+                }
+
+                return JsonUtilities.DeserializeDynamicObject<Topic>(topics.FirstOrDefault()); // Todo:@Alaa we shouldn't return multiple topics, maybe return the latest one if many exist
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        private List<PlanQuickLink> GetQuickLinks(IEnumerable<QuickLinks> quickLinks)
+        {
+            var planQuickLinks = new List<PlanQuickLink>();
+            foreach (var link in quickLinks)
+            {
+                Uri.TryCreate(link.Urls, UriKind.RelativeOrAbsolute, out var url);
+                planQuickLinks.Add(new PlanQuickLink
+                {
+                    Text = link.Text,
+                    Url = url
+                });
+            }
+
+            return planQuickLinks;
+        }
+
+        private List<PlanStep> GetSteps(List<UnprocessedStep> unprocessedSteps, List<Resource> resourceDetails)
 		{
 			int orderIndex = 1;
 			List<PlanStep> planSteps = new List<PlanStep>();
@@ -64,14 +105,14 @@ namespace Access2Justice.Api.BusinessLogic
 					Title = unprocessedStep.Title,
 					Description = unprocessedStep.Description,
 					Order = orderIndex++,
-					IsComplete = false, //when plan is loaded for first time, by default setting it to false
-					Resources = GetResources(unprocessedStep.ResourceIds, resourceDetails)
+                    IsComplete = false,  // Todo:@Alaa check if step complete
+                    Resources = GetResources(unprocessedStep.ResourceIds, resourceDetails)
 				});
 			}
 			return planSteps;
 		}
 
-		public List<Resource> GetResources(List<Guid> resourceIds, List<Resource> resourceDetails)
+		private List<Resource> GetResources(List<Guid> resourceIds, List<Resource> resourceDetails)
 		{
 			List<Resource> resources = new List<Resource>();
 			foreach (var resourceId in resourceIds)
@@ -86,5 +127,5 @@ namespace Access2Justice.Api.BusinessLogic
 			}
 			return resources;
 		}
-	}
+    }
 }

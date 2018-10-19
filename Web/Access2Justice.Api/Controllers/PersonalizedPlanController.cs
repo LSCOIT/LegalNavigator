@@ -36,6 +36,8 @@ namespace Access2Justice.Api.Controllers
         {
             var personalizedPlan = await personalizedPlanBusinessLogic.GeneratePersonalizedPlanAsync(
                 RetrieveCachedCuratedExperience(curatedExperienceId), answersDocId);
+
+             // Todo:@Alaa save/add the unprocessed plan to the existing one if the user is logged in
             if (personalizedPlan == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);

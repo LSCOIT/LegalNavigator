@@ -52,69 +52,41 @@ namespace Access2Justice.Shared.A2JAuthor
             var unprocessedPlan = new UnprocessedPersonalizedPlan();
             unprocessedPlan.Id = Guid.NewGuid();
 
-            foreach (var dynamicTopic in await GetTopics(personalizedPlan.Properties().GetValue("title")))
+
+            var unprocessedTopic = new UnprocessedTopic();
+            unprocessedTopic.Name = personalizedPlan.Properties().GetValue("title");
+
+            foreach (var step in stepsInScope)
             {
-                var unprocessedTopic = new UnprocessedTopic();
-                Topic topic = JsonUtilities.DeserializeDynamicObject<Topic>(dynamicTopic);
-
-                unprocessedTopic.Id = Guid.Parse(topic.Id);
-                unprocessedTopic.Name = personalizedPlan.Properties().GetValue("title");
-
-                foreach (var step in stepsInScope)
+                foreach (var childrenRoot in step.GetValueAsArray<JArray>("children"))
                 {
-                    foreach (var childrenRoot in step.GetValueAsArray<JArray>("children"))
+                    var unprocessedStep = new UnprocessedStep();
+                    foreach (var child in childrenRoot.GetValueAsArray<JObject>("rootNode").GetValueAsArray<JArray>("children"))
                     {
-                        var unprocessedStep = new UnprocessedStep();
-                        foreach (var child in childrenRoot.GetValueAsArray<JObject>("rootNode").GetValueAsArray<JArray>("children"))
+
+                        var state = child.GetArrayValue("state").FirstOrDefault();
+                        unprocessedStep.Id = Guid.NewGuid();
+
+                        if (!string.IsNullOrWhiteSpace(state.GetValue("title")))
                         {
-
-                            var state = child.GetArrayValue("state").FirstOrDefault();
-                            unprocessedStep.Id = Guid.NewGuid();
-
-                            if (!string.IsNullOrWhiteSpace(state.GetValue("title")))
-                            {
-                                unprocessedStep.Title = state.GetValue("title");
-                                continue;
-                            }
-                            else
-                            {
-                                if (!string.IsNullOrWhiteSpace(state.GetValue("userContent")))
-                                {
-                                    unprocessedStep.Description = state.GetValue("userContent");
-                                    unprocessedStep.ResourceIds = ExtractResourceIds(state.GetValue("userContent"));
-                                }
-                            }
-                            unprocessedTopic.UnprocessedSteps.Add(unprocessedStep);
+                            unprocessedStep.Title = state.GetValue("title");
+                            continue;
                         }
+                        else
+                        {
+                            if (!string.IsNullOrWhiteSpace(state.GetValue("userContent")))
+                            {
+                                unprocessedStep.Description = state.GetValue("userContent");
+                                unprocessedStep.ResourceIds = ExtractResourceIds(state.GetValue("userContent"));
+                            }
+                        }
+                        unprocessedTopic.UnprocessedSteps.Add(unprocessedStep);
                     }
                 }
-                unprocessedPlan.UnprocessedTopics.Add(unprocessedTopic);
             }
 
+            unprocessedPlan.UnprocessedTopics.Add(unprocessedTopic);
             return unprocessedPlan;
-        }
-
-        private async Task<List<dynamic>> GetTopics(string topicName)
-        {
-            try
-            {
-                List<dynamic> topics = null;
-                topics = await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.TopicCollectionId, Constants.Name, topicName);
-                if (topics == null || !topics.Any())
-                {
-                    topics = await dynamicQueries.FindItemsWhereContainsAsync(cosmosDbSettings.TopicCollectionId, Constants.Name, topicName);
-                }
-                if (!topics.Any())
-                {
-                    throw new Exception($"No topic found with this name: {topicName}");
-                }
-
-                return topics;
-            }
-            catch
-            {
-                throw;
-            }
         }
 
         private List<Guid> ExtractResourceIds(string html)
