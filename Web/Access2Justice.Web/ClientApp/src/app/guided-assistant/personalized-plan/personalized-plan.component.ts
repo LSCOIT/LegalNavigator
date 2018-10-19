@@ -65,7 +65,6 @@ export class PersonalizedPlanComponent implements OnInit {
 
   ngOnInit() {
     let generatedPersonalizedPlan = this.navigateDataService.getData();
-    console.log(generatedPersonalizedPlan);
     if (generatedPersonalizedPlan != undefined) {
       this.topics = generatedPersonalizedPlan.topics;
       this.planDetailTags = generatedPersonalizedPlan;

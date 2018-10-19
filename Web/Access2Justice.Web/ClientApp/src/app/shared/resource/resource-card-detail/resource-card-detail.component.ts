@@ -21,7 +21,6 @@ export class ResourceCardDetailComponent implements OnInit {
     this.resourceService.getResource(this.resourceId)
       .subscribe(resource => {
         this.resource = resource[0];
-        console.log(this.resource);
       });
   };
 
