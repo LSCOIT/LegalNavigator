@@ -15,7 +15,7 @@ export const api = {
     getResourceUrl: apiUrl + '/resources',
     searchOffsetUrl: apiUrl + '/web-search',
     breadcrumbsUrl: topic + '/get-breadcrumbs',
-    personalizedPlan: curatedExperience + '/personalized-plan/generate',
+    personalizedPlan: apiUrl + '/personalized-plan/generate',
     planUrl: curatedExperience + "/get-plan-details",
     getPersonalizedResourcesUrl: apiUrl + '/personalized-resources',
     updatePlanUrl: userProfile + "/upsert-user-plan",
