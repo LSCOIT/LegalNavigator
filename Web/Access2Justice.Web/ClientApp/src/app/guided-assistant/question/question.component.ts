@@ -97,12 +97,8 @@ export class QuestionComponent implements OnInit {
 
   getActionPlan(): void {
     let params = new HttpParams()
-      //.set("curatedExperienceId", this.curatedExperienceId)
-      //.set("answersDocId", this.question.answersDocId);
-
-    //temporarily hardcoding params for testing
-      .set("curatedExperienceId", '93bcabe2-8afc-4044-b4da-59f7b94510c4')
-      .set("answersDocId", '93a461fb-e9e3-4e6f-b9fd-49a185aa0da0');
+      .set("curatedExperienceId", this.curatedExperienceId)
+      .set("answersDocId", this.question.answersDocId);
     
     this.questionService.getpersonalizedPlan(params)
       .subscribe(response => {
