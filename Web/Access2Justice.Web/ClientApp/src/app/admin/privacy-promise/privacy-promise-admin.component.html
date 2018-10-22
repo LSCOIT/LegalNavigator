@@ -1,0 +1,13 @@
+<div class="container" *ngIf="privacyContent">
+  <form action="/" method="post">
+    <h1>Heading</h1>
+    <input type="text" value="Privacy" class="form-control" />
+    <textarea class="form-control" [value]="privacyContent?.description"></textarea>
+    <h1>Sections</h1>
+      <div class="row" *ngFor="let content of privacyContent?.details">
+        <input class="form-control" [value]="content.title"/>
+        <textarea class="form-control" [value]="content.description"></textarea>
+      </div>
+  </form>
+</div>
+

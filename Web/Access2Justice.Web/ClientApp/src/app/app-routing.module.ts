@@ -21,6 +21,8 @@ import { InternalErrorComponent } from './shared/error/internal-error/internal-e
 import { ShareButtonRouteComponent } from './shared/resource/user-action/share-button/share-button-route/share-button-route.component';
 import { CuratedExperienceResultComponent } from './guided-assistant/curated-experience-result/curated-experience-result.component';
 import { ProfileResolver } from './app-resolver/profile-resolver.service';
+import { PrivacyPromiseAdminComponent } from './admin/privacy-promise/privacy-promise-admin.component';
+import { AdminComponent } from './admin/admin.component';
 
 const appRoutes: Routes = [
   { path: 'search', component: SearchResultsComponent, resolve: { cres: ProfileResolver } },
@@ -38,6 +40,8 @@ const appRoutes: Routes = [
   { path: 'help', component: HelpFaqsComponent },
   { path: 'home', component: HomeComponent },
   { path: 'privacy', component: PrivacyPromiseComponent },
+  { path: 'admin', component: AdminComponent },
+  { path: 'admin/privacy', component: PrivacyPromiseAdminComponent },
   { path: 'profile', component: ProfileComponent, resolve: { cres: ProfileResolver } },
   { path: '', component: HomeComponent },
   { path: 'error', component: InternalErrorComponent},

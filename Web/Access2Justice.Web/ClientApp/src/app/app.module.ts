@@ -4,6 +4,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
+import { AdminModule } from './admin/admin.module';
 
 import {
   AccordionModule,
@@ -47,8 +48,11 @@ import { MsalInterceptor } from '@azure/msal-angular';
 import { environment } from '../environments/environment';
 import { api } from '../api/api';
 
-export const protectedResourceMap: [string, string[]][] = [[api.checkPermaLink, [environment.apiScope]], [api.shareUrl, [environment.apiScope]]
-  , [api.unShareUrl, [environment.apiScope]], [api.getProfileUrl, [environment.apiScope]], [api.userPlanUrl, [environment.apiScope]]] 
+export const protectedResourceMap: [string, string[]][] = [
+  [api.checkPermaLink, [environment.apiScope]], [api.shareUrl, [environment.apiScope]],
+  [api.unShareUrl, [environment.apiScope]], [api.getProfileUrl, [environment.apiScope]],
+  [api.userPlanUrl, [environment.apiScope]]
+];
 
 @NgModule({
   declarations: [
@@ -76,6 +80,7 @@ export const protectedResourceMap: [string, string[]][] = [[api.checkPermaLink, 
     HttpClientModule,
     AppRoutingModule,
     SharedModule,
+    AdminModule,
     AccordionModule.forRoot(),
     BsDropdownModule.forRoot(),
     CarouselModule.forRoot(),
