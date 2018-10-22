@@ -62,10 +62,10 @@
       <carousel>
         <slide *ngFor="let slide of carouselData.slides">
           <div class="row">
-            <div class="col-sm-3 testimonial-img">
+            <div class="col-sm-4 testimonial-img">
               <img *ngIf="slide.image.source" [src]="blobUrl + slide?.image?.source" alt="slide?.image?.altText">
             </div>
-            <div class="slide-content col-sm-9">
+            <div class="slide-content col-sm-8">
               <h4>{{slide.quote}}</h4>
               <div class="mobile-hidden">
                 <hr/>
