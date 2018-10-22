@@ -46,6 +46,8 @@ import { ProfileResolver } from './app-resolver/profile-resolver.service';
 import { MsalInterceptor } from '@azure/msal-angular';
 import { environment } from '../environments/environment';
 import { api } from '../api/api';
+import { AdminComponent } from './admin/admin.component';
+import { UploadCuratedExperienceTemplateComponent } from './admin/upload-curated-experience-template/upload-curated-experience-template.component';
 
 export const protectedResourceMap: [string, string[]][] = [[api.checkPermaLink, [environment.apiScope]], [api.shareUrl, [environment.apiScope]]
   , [api.unShareUrl, [environment.apiScope]], [api.getProfileUrl, [environment.apiScope]], [api.userPlanUrl, [environment.apiScope]]] 
@@ -68,7 +70,9 @@ export const protectedResourceMap: [string, string[]][] = [[api.checkPermaLink, 
     DidYouKnowComponent,
     ArticlesResourcesComponent,
     CuratedExperienceComponent,
-    CuratedExperienceResultComponent
+    CuratedExperienceResultComponent,
+    AdminComponent,
+    UploadCuratedExperienceTemplateComponent
   ],
   imports: [
     BrowserModule,

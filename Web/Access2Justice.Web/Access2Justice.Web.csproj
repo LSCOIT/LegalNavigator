@@ -46,6 +46,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ClientApp\src\app\admin\" />
     <Folder Include="ClientApp\src\app\shared\search\" />
     <Folder Include="Properties\" />
   </ItemGroup>

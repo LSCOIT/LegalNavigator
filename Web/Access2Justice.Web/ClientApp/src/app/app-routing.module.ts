@@ -21,6 +21,7 @@ import { InternalErrorComponent } from './shared/error/internal-error/internal-e
 import { ShareButtonRouteComponent } from './shared/resource/user-action/share-button/share-button-route/share-button-route.component';
 import { CuratedExperienceResultComponent } from './guided-assistant/curated-experience-result/curated-experience-result.component';
 import { ProfileResolver } from './app-resolver/profile-resolver.service';
+import { AdminComponent } from './admin/admin.component';
 
 const appRoutes: Routes = [
   { path: 'search', component: SearchResultsComponent, resolve: { cres: ProfileResolver } },
@@ -39,11 +40,11 @@ const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'privacy', component: PrivacyPromiseComponent },
   { path: 'profile', component: ProfileComponent, resolve: { cres: ProfileResolver } },
+  { path: 'admin', component: AdminComponent },
   { path: '', component: HomeComponent },
   { path: 'error', component: InternalErrorComponent},
   { path: '404', component: NotFoundComponent },
-  { path: '**', redirectTo: '/404' } 
-
+  { path: '**', redirectTo: '/404' }
 ];
 
 @NgModule({
