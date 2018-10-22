@@ -87,9 +87,9 @@ export class MapService {
   updateLocation(): LocationDetails {
     if (environment.map_type) {
       this.locationDetails = JSON.parse(sessionStorage.getItem("globalSearchMapLocation"));
-      sessionStorage.setItem("globalMapLocation", JSON.stringify(this.locationDetails));
-      sessionStorage.removeItem('globalSearchMapLocation');
       this.mapLocation = this.locationDetails.location;
+      sessionStorage.setItem("globalMapLocation", JSON.stringify(this.mapLocation));
+      sessionStorage.removeItem('globalSearchMapLocation');
       this.notifyLocation.next(this.mapLocation);
     }
     else {

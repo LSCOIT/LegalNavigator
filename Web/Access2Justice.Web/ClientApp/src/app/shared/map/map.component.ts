@@ -74,30 +74,50 @@ export class MapComponent implements OnInit {
   }
 
   updateLocation() {
-    if (this.locationError === false || sessionStorage.getItem("globalSearchMapLocation") || sessionStorage.getItem("localSearchMapLocation") ) {
+    if (this.locationError === false || sessionStorage.getItem("globalSearchMapLocation") || sessionStorage.getItem("localSearchMapLocation")) {
       this.isError = false;
-        this.locationError = undefined;
-        this.locationDetails = JSON.parse(sessionStorage.getItem("globalSearchMapLocation"));
-        if (this.locationDetails.formattedAddress) {
-            if (this.locationDetails.formattedAddress.length < 3) {
-                this.mapResultsService.getStateFullName(this.locationDetails.country, this.locationDetails.formattedAddress, environment.bingmap_key)
-                    .subscribe((location) => {
-                        console.log(location);
-                    });
-            }
-        }
-      this.mapLocation = this.mapService.updateLocation();
-      this.displayLocationDetails(this.mapLocation);
-      if ((this.modalRef && this.mapLocation) || !this.mapType) {
-        this.modalRef.hide();
-      } else {
-        this.isError = true;
-      }
-      if (!this.mapType) {
-        this.showLocality = false;
-      }
+      this.locationError = undefined;
+      this.getLocationDetails();
     } else {
       this.geocode();
+    }
+  }
+
+  getLocationDetails() {
+    this.locationDetails = environment.map_type ? JSON.parse(sessionStorage.getItem("globalSearchMapLocation"))
+      : JSON.parse(sessionStorage.getItem("localSearchMapLocation"));
+    if (this.locationDetails.formattedAddress) {
+      if (this.locationDetails.formattedAddress.length < 3) {
+        this.mapResultsService.getStateFullName(this.locationDetails.country, this.locationDetails.formattedAddress, environment.bingmap_key)
+          .subscribe((location) => {
+            this.locationDetails.location.state = location.resourceSets[0].resources[0].name;
+            this.locationDetails.location.address = location.resourceSets[0].resources[0].name;
+            if (environment.map_type) {
+              sessionStorage.setItem("globalSearchMapLocation", JSON.stringify(this.locationDetails));
+            } else {
+              sessionStorage.setItem("localSearchMapLocation", JSON.stringify(this.locationDetails));
+            }
+            this.updateLocationDetails();
+          });
+      } else {
+        this.updateLocationDetails();
+      }
+    } else {
+      this.updateLocationDetails();
+    }
+  }
+
+  updateLocationDetails() {
+    this.locationDetails = this.mapService.updateLocation();
+    this.mapLocation = this.locationDetails.location;
+    this.displayLocationDetails(this.mapLocation);
+    if ((this.modalRef && this.mapLocation) || !this.mapType) {
+      this.modalRef.hide();
+    } else {
+      this.isError = true;
+    }
+    if (!this.mapType) {
+      this.showLocality = false;
     }
   }
 
@@ -180,7 +200,7 @@ export class MapComponent implements OnInit {
 
   setLocalMapLocation() {
     if (!this.mapType && sessionStorage.getItem("searchedLocationMap")) {
-      this.mapLocation = JSON.parse(sessionStorage.getItem("searchedLocationMap"));      
+      this.mapLocation = JSON.parse(sessionStorage.getItem("searchedLocationMap"));
       this.displayLocationDetails(this.mapLocation);
     }
   }
@@ -251,5 +271,5 @@ export class MapComponent implements OnInit {
     if (this.successSubscription) {
       this.successSubscription.unsubscribe();
     }
-  } 
+  }
 }
