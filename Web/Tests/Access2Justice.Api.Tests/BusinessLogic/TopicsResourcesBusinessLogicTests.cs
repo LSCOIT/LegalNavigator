@@ -44,7 +44,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly JArray videoData = TopicResourceTestData.videoData;
         private readonly JArray organizationData = TopicResourceTestData.organizationData;
         private readonly JArray essentialReadingData = TopicResourceTestData.essentialReadingData;
-        private readonly JArray externalLinkData = TopicResourceTestData.externalLinkData;
+        private readonly JArray relatedLinkData = TopicResourceTestData.relatedLinkData;
         private readonly JArray topicData = TopicResourceTestData.topicData;
         private readonly JArray topicUpsertData = TopicResourceTestData.topicUpsertData;
         private readonly JArray referenceTagData = TopicResourceTestData.referenceTagData;
@@ -76,7 +76,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly JArray expectedVideoData = TopicResourceTestData.expectedVideoData;
         private readonly JArray expectedOrganizationData = TopicResourceTestData.expectedOrganizationData;
         private readonly JArray expectedEssentialReadingData = TopicResourceTestData.expectedEssentialReadingData;
-        private readonly JArray expectedExternalLinkData = TopicResourceTestData.expectedExternalLinkData;
+        private readonly JArray expectedRelatedLinkData = TopicResourceTestData.expectedRelatedLinkData;
         private readonly JArray expectedTopicData = TopicResourceTestData.expectedTopicData;
         private readonly JArray expectedTopicsData = TopicResourceTestData.expectedTopicsData;
         private readonly string expectedTopicTagData = TopicResourceTestData.expectedTopicTagData;
@@ -364,7 +364,6 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var location = this.locationData;
             var condition = this.conditionData;
             var parentTopic = this.parentTopicIdData;
-            var quickLink = this.expectedQuickLinksData;
             var reviewer = this.reviewerData;
             var content = this.contentData;
 
@@ -373,7 +372,6 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var dbResponseLocation = topicsResourcesSettings.GetLocations(location).ReturnsForAnyArgs<dynamic>(expectedReferenceLocationData);
             var dbResponseConditions = topicsResourcesSettings.GetConditions(condition).ReturnsForAnyArgs<dynamic>(expectedConditionData);
             var dbResponseParentTopicId = topicsResourcesSettings.GetParentTopicIds(parentTopic).ReturnsForAnyArgs<dynamic>(expectedParentTopicIdData);
-            //var dbResponseQuickLinks = topicsResourcesSettings.GetQuickLinks(quickLink).ReturnsForAnyArgs<dynamic>(expectedQuickLinksData);
             var dbResponseReviwer = topicsResourcesSettings.GetReviewer(reviewer).ReturnsForAnyArgs<dynamic>(expectedReviewerData);
             var dbResponseContent = topicsResourcesSettings.GetContents(content).ReturnsForAnyArgs<dynamic>(expectedContentData);
             var response = topicsResourcesBusinessLogic.GetReferences(referenceInput[0]);
@@ -393,7 +391,6 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var location = this.emptyLocationData;
             var conditon = this.emptyData;
             var parentTopic = this.emptyData;
-            var quickLink = this.emptyData;
             var reviewer = this.emptyData;
             var content = this.emptyData;
 
@@ -402,7 +399,6 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var dbResponseLocation = topicsResourcesSettings.GetLocations(location).ReturnsForAnyArgs<dynamic>(emptyLocationData);
             var dbResponseCondition = topicsResourcesSettings.GetConditions(conditon).ReturnsForAnyArgs<dynamic>(emptyData);
             var dbResponseParentTopic = topicsResourcesSettings.GetParentTopicIds(parentTopic).ReturnsForAnyArgs<dynamic>(emptyData);
-            //var dbResponseQuickLinks = topicsResourcesSettings.GetQuickLinks(quickLink).ReturnsForAnyArgs<dynamic>(emptyData);
             var dbResponseReviewer = topicsResourcesSettings.GetReviewer(reviewer).ReturnsForAnyArgs<dynamic>(emptyData);
             var dbResponseContent = topicsResourcesSettings.GetContents(content).ReturnsForAnyArgs<dynamic>(emptyData);
             var response = topicsResourcesBusinessLogic.GetReferences(emptyResource[0]);
@@ -850,16 +846,16 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         public void UpsertResourcesExternalLinksTestsShouldReturnProperData()
         {
             //arrange
-            var externalLinkData = this.externalLinkData[0];
+            var relatedlLinkData = this.relatedLinkData[0];
 
             //act
             var dbResponseTopicTag = topicsResourcesSettings.GetTopicTags(referenceTagData).ReturnsForAnyArgs<dynamic>(expectedTopicTagData);
             var dbResponseLocation = topicsResourcesSettings.GetLocations(locationData).ReturnsForAnyArgs<dynamic>(expectedReferenceLocationData);
-            var dbResponse = topicsResourcesSettings.GetReferences(externalLinkData).ReturnsForAnyArgs<dynamic>(expectedResourceReferences);
-            var response = topicsResourcesBusinessLogic.UpsertResourcesRelatedLinks(externalLinkData);
+            var dbResponse = topicsResourcesSettings.GetReferences(relatedlLinkData).ReturnsForAnyArgs<dynamic>(expectedResourceReferences);
+            var response = topicsResourcesBusinessLogic.UpsertResourcesRelatedLinks(relatedlLinkData);
             var result = JsonConvert.SerializeObject(response);
-            var externalLinkResult = (JObject)JsonConvert.DeserializeObject(result);
-            result = externalLinkResult;
+            var relatedlLinkResult = (JObject)JsonConvert.DeserializeObject(result);
+            result = relatedlLinkResult;
             foreach (JProperty field in result)
             {
                 if (field.Name == "createdTimeStamp")
@@ -874,7 +870,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             }
 
             //assert
-            Assert.Equal(externalLinkData.ToString(), result.ToString());
+            Assert.Equal(relatedlLinkData.ToString(), result.ToString());
         }
 
         [Fact]
@@ -977,14 +973,12 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var location = this.locationData;
             var condition = this.conditionData;
             var parentTopic = this.parentTopicIdData;
-            var quickLink = this.expectedQuickLinksData;
 
             //act
             var dbResponseTopicTag = topicsResourcesSettings.GetTopicTags(referenceTag).ReturnsForAnyArgs<dynamic>(expectedTopicTagData);
             var dbResponseLocation = topicsResourcesSettings.GetLocations(location).ReturnsForAnyArgs<dynamic>(expectedReferenceLocationData);
             var dbResponseConditions = topicsResourcesSettings.GetConditions(condition).ReturnsForAnyArgs<dynamic>(expectedConditionData);
             var dbResponseParentTopicId = topicsResourcesSettings.GetParentTopicIds(parentTopic).ReturnsForAnyArgs<dynamic>(expectedParentTopicIdData);
-            //var dbResponseQuickLinks = topicsResourcesSettings.GetQuickLinks(quickLink).ReturnsForAnyArgs<dynamic>(expectedQuickLinksData);
             var response = topicsResourcesBusinessLogic.UpsertTopics(topic);
             var result = JsonConvert.SerializeObject(response);
             var topicResult = (JObject)JsonConvert.DeserializeObject(result);
