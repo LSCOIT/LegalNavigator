@@ -18,10 +18,10 @@ namespace Access2Justice.Api.BusinessLogic
     {
         private readonly ICosmosDbSettings dbSettings;
         private readonly IBackendDatabaseService dbService;
-        private readonly IPersonalizedPlanParse parser;
+        private readonly IA2JAuthorLogicParser parser;
 
         public CuratedExperienceBuisnessLogic(ICosmosDbSettings cosmosDbSettings, IBackendDatabaseService backendDatabaseService,
-            IPersonalizedPlanParse parser)
+            IA2JAuthorLogicParser parser)
         {
             dbSettings = cosmosDbSettings;
             dbService = backendDatabaseService;
@@ -46,7 +46,7 @@ namespace Access2Justice.Api.BusinessLogic
                 {
                     dbComponent = curatedExperience.Components.Where(x => x.ComponentId == componentId).FirstOrDefault();
                 }
-                return MapComponentToViewModelComponent(curatedExperience, dbComponent, answersDocId: Guid.Empty); // In future, instead of sending an empty Guid
+                return MapComponentViewModel(curatedExperience, dbComponent, answersDocId: Guid.Empty); // In future, instead of sending an empty Guid
                 // for the answersDocId, we could pass the actual Id of the answers document (if any) so that we could return not only the component but also the
                 // answers associated with it.
             }
@@ -59,7 +59,7 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<CuratedExperienceComponentViewModel> GetNextComponentAsync(CuratedExperience curatedExperience, CuratedExperienceAnswersViewModel component)
         {
-            return MapComponentToViewModelComponent(curatedExperience,
+            return MapComponentViewModel(curatedExperience,
                 await FindDestinationComponentAsync(curatedExperience, component.ButtonId, component.AnswersDocId), component.AnswersDocId);
         }
 
@@ -72,7 +72,7 @@ namespace Access2Justice.Api.BusinessLogic
                 // the next step. The caveat for this is that the users will need to repeat the survey from the
                 // beginning if the session expires which might be frustrating.
                 var answersDbCollection = dbSettings.CuratedExperienceAnswersCollectionId;
-                var dbAnswers = MapViewModel(viewModelAnswer, curatedExperience);
+                var dbAnswers = MapCuratedExperienceViewModel(viewModelAnswer, curatedExperience);
 
                 var savedAnswersDoc = await dbService.GetItemAsync<CuratedExperienceAnswers>(viewModelAnswer.AnswersDocId.ToString(), answersDbCollection);
                 if (savedAnswersDoc == null)
@@ -138,8 +138,6 @@ namespace Access2Justice.Api.BusinessLogic
                 {
                     answers = await dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.CuratedExperienceAnswersCollectionId);
                 }
-                // get the answers so far - done
-                // get all the code in all the curated experience - to be done
                 var currentComponentLogic = ExtractCode(destinationComponent, answers);
                 if (currentComponentLogic != null)
                 {
@@ -155,39 +153,30 @@ namespace Access2Justice.Api.BusinessLogic
 
         private int CalculateRemainingQuestions(CuratedExperience curatedExperience, CuratedExperienceComponent currentComponent)
         {
-            //try
-            //{
-                // start calculating routes based on the current component location in the json tree.
-                var indexOfCurrentComponent = curatedExperience.Components.FindIndex(x => x.ComponentId == currentComponent.ComponentId);
+            // start calculating routes based on the current component location in the json tree.
+            var indexOfCurrentComponent = curatedExperience.Components.FindIndex(x => x.ComponentId == currentComponent.ComponentId);
 
-                // every curated experience has one or more components; every component has one or more buttons; every button has one or more destinations.
-                var possibleRoutes = new List<List<CuratedExperienceComponent>>();
+            // every curated experience has one or more components; every component has one or more buttons; every button has one or more destinations.
+            var possibleRoutes = new List<List<CuratedExperienceComponent>>();
 
-                foreach (var component in curatedExperience.Components.Skip(indexOfCurrentComponent))
+            foreach (var component in curatedExperience.Components.Skip(indexOfCurrentComponent))
+            {
+                for (int i = 0; i < component.Buttons.Count; i++)
                 {
-                    for (int i = 0; i < component.Buttons.Count; i++)
+                    if (possibleRoutes.Count <= i)
                     {
-                        if (possibleRoutes.Count <= i)
-                        {
-                            possibleRoutes.Add(new List<CuratedExperienceComponent>());
-                        }
-
-                        possibleRoutes[i].AddIfNotNull(RemainingQuestions(curatedExperience, component.Buttons[i].Id));
+                        possibleRoutes.Add(new List<CuratedExperienceComponent>());
                     }
-                }
 
-                // return the longest possible route
-                return possibleRoutes.OrderByDescending(x => x.Count).First().Count;
-            //}
-            //catch
-            //{
-            //    // Todo:@Alaa fix this method
-            //    var breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
-            //    return 0;
-            //}
+                    possibleRoutes[i].AddIfNotNull(RemainingQuestions(curatedExperience, component.Buttons[i].Id));
+                }
+            }
+
+            // return the longest possible route
+            return possibleRoutes.OrderByDescending(x => x.Count).First().Count;
         }
 
-        private CuratedExperienceComponentViewModel MapComponentToViewModelComponent(CuratedExperience curatedExperience, CuratedExperienceComponent dbComponent, Guid answersDocId)
+        private CuratedExperienceComponentViewModel MapComponentViewModel(CuratedExperience curatedExperience, CuratedExperienceComponent dbComponent, Guid answersDocId)
         {
             if (dbComponent == null || dbComponent.ComponentId == default(Guid))
             {
@@ -212,7 +201,7 @@ namespace Access2Justice.Api.BusinessLogic
             };
         }
 
-        public CuratedExperienceAnswers MapViewModel(CuratedExperienceAnswersViewModel viewModelAnswer, CuratedExperience curatedExperience)
+        public CuratedExperienceAnswers MapCuratedExperienceViewModel(CuratedExperienceAnswersViewModel viewModelAnswer, CuratedExperience curatedExperience)
         {
             var buttonComponent = new CuratedExperienceComponent();
             foreach (var component in curatedExperience.Components)
@@ -273,7 +262,7 @@ namespace Access2Justice.Api.BusinessLogic
             };
         }
 
-         // Todo:@Alaa move this to an html extention
+        // Todo:@Alaa move this to an html extention
         private CuratedExperienceAnswers ExtractCode(CuratedExperienceComponent component, CuratedExperienceAnswers answers)
         {
             // when dealing with finding next destination of the current component we need to remove all logic
@@ -311,7 +300,6 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 if (button.Where(x => x.Id == buttonId).Any())
                 {
-                    //currentComponent = button.Where(x => x.Id == buttonId)
                     currentButton = button.Where(x => x.Id == buttonId).First();
                 }
             }

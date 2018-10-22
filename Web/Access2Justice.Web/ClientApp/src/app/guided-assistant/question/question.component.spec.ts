@@ -6,6 +6,7 @@ import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuestionService } from './question.service';
 import { HttpParams } from '@angular/common/http';
+import { NavigateDataService } from '../../shared/navigate-data.service';
 
 describe('QuestionComponent', () => {
   let component: QuestionComponent;
@@ -22,26 +23,38 @@ describe('QuestionComponent', () => {
     learn: '',
     help: '',
     tags: [],
-    buttons: [{
-      id: "111",
-      label: "Continue",
-      destination: ""
-    }],
+    buttons: [
+      {
+        id: "111",
+        label: "Continue",
+        destination: ""
+      }
+    ],
     fields: []
   }
+  let mockNavigateDataService;
+
   beforeEach(async(() => { 
     mockQuestionService = jasmine.createSpyObj(['getQuestion', 'getNextQuestion']);
-    
+    mockNavigateDataService = jasmine.createSpyObj((['setData']));
+
     TestBed.configureTestingModule({
       imports: [ FormsModule ],
       declarations: [ QuestionComponent ],
       schemas: [ NO_ERRORS_SCHEMA ],
       providers: [ 
         { provide: ActivatedRoute,
-          useValue: {snapshot: {params: {'id': '123'}}}
+          useValue: {
+            snapshot: {
+              params: {
+                'id': '123'
+              }
+            }
+          }
         },
         { provide: QuestionService, useValue: mockQuestionService },
-        { provide: Router, useValue: mockRouter}
+        { provide: Router, useValue: mockRouter },
+        { provide: NavigateDataService, useValue: mockNavigateDataService }
       ]
     })
     .compileComponents();

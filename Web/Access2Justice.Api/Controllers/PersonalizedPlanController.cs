@@ -1,33 +1,70 @@
-﻿using Access2Justice.Api.Interfaces;
-using Access2Justice.Shared.Interfaces;
+﻿using Access2Justice.Api.Authorization;
+using Access2Justice.Api.Interfaces;
+using Access2Justice.Shared.A2JAuthor;
+using Access2Justice.Shared.Extensions;
 using Access2Justice.Shared.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
+using static Access2Justice.Api.Authorization.Permissions;
 
 namespace Access2Justice.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/personalized-plan")]
     public class PersonalizedPlanController : Controller
     {
-        private readonly ICosmosDbSettings cosmosDbSettings;
-        private readonly IBackendDatabaseService backendDatabaseService;
-        private readonly IPersonalizedPlanViewModelMapper personalizedPlanViewModelMapper;
+        private readonly IPersonalizedPlanBusinessLogic personalizedPlanBusinessLogic;
+        private readonly ICuratedExperienceBusinessLogic curatedExperienceBusinessLogic;
 
-        public PersonalizedPlanController(ICosmosDbSettings cosmosDbSettings, IBackendDatabaseService backendDatabaseService, 
-            IPersonalizedPlanViewModelMapper personalizedPlanViewModelMapper)
+        public PersonalizedPlanController(IPersonalizedPlanBusinessLogic personalizedPlan, ICuratedExperienceBusinessLogic curatedExperience)
         {
-            this.cosmosDbSettings = cosmosDbSettings;
-            this.backendDatabaseService = backendDatabaseService;
-            this.personalizedPlanViewModelMapper = personalizedPlanViewModelMapper;
+            this.personalizedPlanBusinessLogic = personalizedPlan;
+            this.curatedExperienceBusinessLogic = curatedExperience;
         }
 
-        [HttpGet("test-personalized-plan-ui")]
-        public async Task<IActionResult> GetPersonalizedPlan()
+        [HttpPost("parser-test")]
+        public async Task<IActionResult> TestA2JAuthorLogicParser([FromBody] CuratedExperienceAnswers userAnswers)
         {
-            var unprocessedPlan = await backendDatabaseService.GetItemAsync<UnprocessedPersonalizedPlan>("31aabd1e-db81-4079-ad8d-7b30f3f4fee1",
-                cosmosDbSettings.PersonalizedActionPlanCollectionId);
+            // Todo:@Alaa remove this endpoint, added it just to test the parser duing development
+            return Ok(new A2JAuthorLogicParser(new A2JAuthorLogicInterpreter()).Parse(userAnswers));
+        }
 
-            return Ok(personalizedPlanViewModelMapper.MapViewModel(unprocessedPlan));
+
+        [HttpGet("generate")]
+        public async Task<IActionResult> GeneratePersonalizedPlan([FromQuery] Guid curatedExperienceId, [FromQuery] Guid answersDocId)
+        {
+            var personalizedPlan = await personalizedPlanBusinessLogic.GeneratePersonalizedPlanAsync(
+                RetrieveCachedCuratedExperience(curatedExperienceId), answersDocId);
+
+             // Todo:@Alaa save/add the unprocessed plan to the existing one if the user is logged in
+            if (personalizedPlan == null)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+            return Ok(personalizedPlan);
+        }
+
+
+        [Permission(PermissionName.updateplan)]
+        [HttpPost("update-plan")]
+        public async Task<IActionResult> UpdateUserProfileDocumentAsync([FromBody]UserPersonalizedPlan userPlan)
+        {
+            return Ok(await personalizedPlanBusinessLogic.UpdatePersonalizedPlan(userPlan));
+        }
+
+        // Todo:@Alaa must refactor this, i copied it from the CuratedExperience controller for now to finish an end-to-end personalized plan
+        private CuratedExperience RetrieveCachedCuratedExperience(Guid id)
+        {
+            var cuExSession = HttpContext.Session.GetString(id.ToString());
+            if (string.IsNullOrWhiteSpace(cuExSession))
+            {
+                var rawCuratedExperience = curatedExperienceBusinessLogic.GetCuratedExperienceAsync(id).Result;
+                HttpContext.Session.SetObjectAsJson(id.ToString(), rawCuratedExperience);
+            }
+
+            return HttpContext.Session.GetObjectAsJson<CuratedExperience>(id.ToString());
         }
     }
 }

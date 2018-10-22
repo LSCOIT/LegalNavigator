@@ -6,6 +6,8 @@ import { QuestionService } from './question.service';
 import { Question } from './question';
 import { Answer } from './answers';
 import { ActivatedRoute } from '@angular/router';
+import { NavigateDataService } from '../../shared/navigate-data.service';
+import { PersonalizedPlan } from '../personalized-plan/personalized-plan';
 
 @Component({
   selector: 'app-question',
@@ -20,11 +22,13 @@ export class QuestionComponent implements OnInit {
   buttonParam: string;
   @Output() sendQuestionsRemainingEvent = new EventEmitter<number>();
   @Output() sendTotalQuestionsEvent = new EventEmitter<number>();
+  generatedPersonalizedPlan: PersonalizedPlan;
 
   constructor(
     private questionService: QuestionService,
     private activeRoute: ActivatedRoute,
     private router: Router,
+    private navigateDataService: NavigateDataService
   ) { }
 
   sendQuestionsRemaining(questionsRemaining) {
@@ -93,12 +97,18 @@ export class QuestionComponent implements OnInit {
 
   getActionPlan(): void {
     let params = new HttpParams()
-      .set("curatedExperienceId", this.curatedExperienceId)
-      .set("answersDocId", this.question.answersDocId);
+      //.set("curatedExperienceId", this.curatedExperienceId)
+      //.set("answersDocId", this.question.answersDocId);
+
+    //temporarily hardcoding params for testing
+      .set("curatedExperienceId", '93bcabe2-8afc-4044-b4da-59f7b94510c4')
+      .set("answersDocId", '93a461fb-e9e3-4e6f-b9fd-49a185aa0da0');
     
     this.questionService.getpersonalizedPlan(params)
       .subscribe(response => {
         if (response != undefined && response.id != undefined) {
+          this.generatedPersonalizedPlan = response;
+          this.navigateDataService.setData(this.generatedPersonalizedPlan);
           this.router.navigate(['/plan', response.id]);
         }
       });

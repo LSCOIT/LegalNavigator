@@ -1,5 +1,6 @@
 ﻿using Access2Justice.Api.Interfaces;
 using Access2Justice.Api.ViewModels;
+using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Access2Justice.Shared.Utilities;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace Access2Justice.Api.BusinessLogic
 {
+    // Todo:@Alaa this class has many methods that will become obsolete soon, remove them after refactoring is done
     public class PersonalizedPlanBusinessLogic : IPersonalizedPlanBusinessLogic
     {
         private readonly ICosmosDbSettings cosmosDbSettings;
@@ -32,21 +34,42 @@ namespace Access2Justice.Api.BusinessLogic
             this.personalizedPlanViewModelMapper = personalizedPlanViewModelMapper;
         }
 
-        public async Task<dynamic> GeneratePersonalizedPlanAsync(CuratedExperience curatedExperience, Guid answersDocId)
+        public async Task<PersonalizedPlanViewModel> GeneratePersonalizedPlanAsync(CuratedExperience curatedExperience, Guid answersDocId)
         {
-            // // Todo:@Alaa do all quries return a list? create a new one maybe?
-            //var a2jPersonalizedPlan = await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.A2JAuthorTemplatesCollectionId, "id",
-            //    curatedExperience.A2jPersonalizedPlanId.ToString());
-            //var userAnswers = await backendDatabaseService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(),
-            //    cosmosDbSettings.CuratedExperienceAnswersCollectionId);
+            var a2jPersonalizedPlan = await dynamicQueries.FindItemWhereAsync<JObject>(cosmosDbSettings.A2JAuthorTemplatesCollectionId, "id",
+                curatedExperience.A2jPersonalizedPlanId.ToString());
 
-            //var unprocessedPlan = personalizedPlanEngine.Build((JObject)a2jPersonalizedPlan[0], userAnswers);
-            //return personalizedPlanViewModelMapper.MapViewModel(unprocessedPlan);
+            var userAnswers = await backendDatabaseService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(),
+                cosmosDbSettings.CuratedExperienceAnswersCollectionId);
 
-            // Todo:@Alaa implement this. I'm adding this placeholder for testing
-            return await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.PersonalizedActionPlanCollectionId, "id", "aa14d33c-9c9d-484f-8af3-4282cfc696f0");
+            var unprocessedPlan = await personalizedPlanEngine.Build(a2jPersonalizedPlan, userAnswers);
+            return await personalizedPlanViewModelMapper.MapViewModel(unprocessedPlan);
         }
 
+        public async Task<PersonalizedPlanViewModel> UpdatePersonalizedPlan(UserPersonalizedPlan userPlan)
+        {
+            var userPersonalizedPlan = new UserPersonalizedPlan();
+            userPersonalizedPlan = JsonUtilities.DeserializeDynamicObject<UserPersonalizedPlan>(userPlan);
+            string oId = userPersonalizedPlan.OId;
+            string planId = string.Empty;
+            if (oId != null)
+            {
+                planId = await UpdatePostLogInPersonalizedPlan(userPlan);
+            }
+            else
+            {
+                planId = await UpdatePreLogInPersonalizedPlan(userPlan.PersonalizedPlan);
+            }
+            // Todo:@Alaa reconsider using the plan generator here, it is too expensive,
+            // this is the old code: return await GetPlanDataAsync(planId);
+            // return GeneratePersonalizedPlanAsync()
+            return null;
+        }
+
+
+
+
+         // Todo:@Alaa old code - to be removed or refactored
         public List<PersonalizedPlanStep> GetPlanSteps(Guid topic, List<PersonalizedPlanStep> personalizedPlanSteps)
         {
             List<PersonalizedPlanStep> PlanSteps = new List<PersonalizedPlanStep>();
@@ -168,26 +191,6 @@ namespace Access2Justice.Api.BusinessLogic
                 personalizedPlan = JsonUtilities.DeserializeDynamicObject<List<PersonalizedPlanSteps>>(planDetails);
             }
             return personalizedPlan?[0];
-        }
-
-        public async Task<PersonalizedPlanViewModel> UpdatePersonalizedPlan(UserPersonalizedPlan userPlan)
-        {
-            var userPersonalizedPlan = new UserPersonalizedPlan();
-            userPersonalizedPlan = JsonUtilities.DeserializeDynamicObject<UserPersonalizedPlan>(userPlan);
-            string oId = userPersonalizedPlan.OId;
-            string planId = string.Empty;
-            if (oId != null)
-            {
-                planId = await UpdatePostLogInPersonalizedPlan(userPlan);
-            }
-            else
-            {
-                planId = await UpdatePreLogInPersonalizedPlan(userPlan.PersonalizedPlan);
-            }
-            // Todo:@Alaa reconsider using the plan generator here, it is too expensive,
-            // this is the old code: return await GetPlanDataAsync(planId);
-            // return GeneratePersonalizedPlanAsync()
-            return null;
         }
 
         public async Task<string> UpdatePostLogInPersonalizedPlan(UserPersonalizedPlan userPlan)

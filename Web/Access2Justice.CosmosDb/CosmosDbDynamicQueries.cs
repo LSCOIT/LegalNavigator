@@ -20,6 +20,18 @@ namespace Access2Justice.CosmosDb
             this.backendDatabaseService = backendDatabaseService;
         }
 
+        public async Task<T> FindItemWhereAsync<T>(string collectionId, string propertyName, string value)
+        {
+            var result = await FindItemsWhereAsync(collectionId, propertyName, value);
+            return (T)result[0];
+        }
+
+        public async Task<T> FindItemWhereContainsAsync<T>(string collectionId, string propertyName, string value)
+        {
+            var result = await FindItemsWhereContainsAsync(collectionId, propertyName, value);
+            return (T)result[0];
+        }
+
         public async Task<dynamic> FindItemsWhereAsync(string collectionId, string propertyName, string value)
         {
             EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
@@ -87,6 +99,7 @@ namespace Access2Justice.CosmosDb
             }
             return await backendDatabaseService.QueryItemsAsync(collectionId, query);
         }
+
         public async Task<dynamic> FindItemsWhereWithLocationAsync(string collectionId, string propertyName, string value, Location location)
         {
             EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
@@ -167,10 +180,15 @@ namespace Access2Justice.CosmosDb
 
         public async Task<dynamic> FindItemsWhereInClauseAsync(string collectionId, string propertyName, IEnumerable<string> values)
         {
+            if(values == null || !values.Any())
+            {
+                return Constants.EmptyArray;
+            }
+
             EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
 
             var inClause = string.Empty;
-            var lastItem = values.Last();
+            var lastItem = values.LastOrDefault();
 
             foreach (var value in values)
             {

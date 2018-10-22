@@ -6,9 +6,9 @@ using System.Linq;
 
 namespace Access2Justice.Shared.A2JAuthor
 {
-    public class A2JLogicInterpreter : IPersonalizedPlanEvaluate
+    public class A2JAuthorLogicInterpreter : IA2JAuthorLogicInterpreter
     {
-        public bool Evaluate(Dictionary<string, string> answers, OrderedDictionary logic, Func<bool, bool, bool> answersLogicEvaluator)
+        public bool Interpret(Dictionary<string, string> answers, OrderedDictionary logic, Func<bool, bool, bool> answersLogicEvaluator)
         {
             if (logic.Count == 0)
             {

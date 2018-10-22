@@ -4,8 +4,8 @@ using System.Collections.Specialized;
 
 namespace Access2Justice.Shared.Interfaces.A2JAuthor
 {
-    public interface IPersonalizedPlanEvaluate
+    public interface IA2JAuthorLogicInterpreter
     {
-        bool Evaluate(Dictionary<string, string> answers, OrderedDictionary logic, Func<bool, bool, bool> answersLogicEvaluator);
+        bool Interpret(Dictionary<string, string> answers, OrderedDictionary logic, Func<bool, bool, bool> answersLogicEvaluator);
     }
 }
