@@ -6,7 +6,8 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./did-you-know.component.css']
 })
 export class DidYouKnowComponent implements OnInit {
-  @Input() learn: any;
+  @Input() didYouKnowHeading: string;
+  @Input() didYouKnowBody: string;
 
   constructor() { }
 
