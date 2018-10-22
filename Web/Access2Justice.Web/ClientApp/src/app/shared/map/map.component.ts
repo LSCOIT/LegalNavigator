@@ -42,6 +42,9 @@ export class MapComponent implements OnInit {
   staticContent: any;
   staticContentSubcription: any;
   @Input() displayInitialModal: boolean = false;
+  errorSubscription: any;
+  locationError: boolean;
+  successSubscription: any;
 
   constructor(private modalService: BsModalService,
     private mapService: MapService,
@@ -71,26 +74,30 @@ export class MapComponent implements OnInit {
   }
 
   updateLocation() {
-    this.isError = false;
-    this.locationDetails = JSON.parse(sessionStorage.getItem("globalSearchMapLocation"));
-    if (this.locationDetails.formattedAddress) {
-      if (this.locationDetails.formattedAddress.length < 3) {
-        this.mapResultsService.getStateFullName(this.locationDetails.country, this.locationDetails.formattedAddress, environment.bingmap_key)
-          .subscribe((location) => {
-            console.log(location);
-          });
+    if (this.locationError === false || sessionStorage.getItem("globalSearchMapLocation") || sessionStorage.getItem("localSearchMapLocation") ) {
+      this.isError = false;
+        this.locationError = undefined;
+        this.locationDetails = JSON.parse(sessionStorage.getItem("globalSearchMapLocation"));
+        if (this.locationDetails.formattedAddress) {
+            if (this.locationDetails.formattedAddress.length < 3) {
+                this.mapResultsService.getStateFullName(this.locationDetails.country, this.locationDetails.formattedAddress, environment.bingmap_key)
+                    .subscribe((location) => {
+                        console.log(location);
+                    });
+            }
+        }
+      this.mapLocation = this.mapService.updateLocation();
+      this.displayLocationDetails(this.mapLocation);
+      if ((this.modalRef && this.mapLocation) || !this.mapType) {
+        this.modalRef.hide();
+      } else {
+        this.isError = true;
       }
-    }
-    this.locationDetails = this.mapService.updateLocation();
-    this.mapLocation = this.locationDetails.location;
-    this.displayLocationDetails(this.mapLocation);
-    if ((this.modalRef && this.mapLocation) || !this.mapType) {
-      this.modalRef.hide();
+      if (!this.mapType) {
+        this.showLocality = false;
+      }
     } else {
-      this.isError = true;
-    }
-    if (!this.mapType) {
-      this.showLocality = false;
+      this.geocode();
     }
   }
 
@@ -183,10 +190,25 @@ export class MapComponent implements OnInit {
     searchPredictionContainer.style.visibility = "hidden";
   }
 
+  hideLocationError() {
+    this.locationError = false;
+  }
+
   ngOnInit() {
     this.getLocationNavigationContent();
     this.showLocality = true;
-    
+    this.locationError = undefined;
+
+    this.errorSubscription = this.mapService.notifyLocationError
+      .subscribe((value) => {
+        this.locationError = true;
+      });
+
+    this.successSubscription = this.mapService.notifyLocationSuccess
+      .subscribe((value) => {
+        this.locationError = false;
+      });
+
     this.subscription = this.mapService.notifyLocation
       .subscribe((value) => {
         this.displayLocationDetails(this.mapLocation);
@@ -216,9 +238,18 @@ export class MapComponent implements OnInit {
 
     this.setLocalMapLocation();
   }
+
   ngOnDestroy() {
     if (this.subscription) {
       this.subscription.unsubscribe();
+    }
+
+    if (this.errorSubscription) {
+      this.errorSubscription.unsubscribe();
+    }
+
+    if (this.successSubscription) {
+      this.successSubscription.unsubscribe();
     }
   } 
 }

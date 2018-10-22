@@ -16,6 +16,9 @@ export class MapService {
   mapLocation: MapLocation = { state: '', city: '', county: '', zipCode: '', locality: '', address: '' };
   notifyLocalLocation: Subject<MapLocation> = new Subject<MapLocation>();
   notifyLocation: Subject<MapLocation> = new Subject<MapLocation>();
+  notifyLocationError: Subject<any> = new Subject<any>();
+  notifyLocationSuccess: Subject<any> = new Subject<any>();
+
   state: string;
   locationDetails: LocationDetails = { location: this.mapLocation, country: '', formattedAddress: '' }
   constructor() { }
@@ -39,31 +42,12 @@ export class MapService {
   identifyLocation(searchLocation) {
     let searchRequest = {
       where: searchLocation,
-      callback: function (r) {
-        if (r && r.results && r.results.length > 0) {
-          this.location = r.results[0];
-          this.pin = new Microsoft.Maps.Pushpin(this.location.location, {
-            icon: '../../assets/images/location/poi_custom.png'
-          });
-
-          let mapService = new MapService();
-          this.location.address.adminDistrict = (this.location.address.locality ? this.location.address.locality : this.location.address.formattedAddress);
-          mapService.mapLocationDetails(this.location);
-
-          this.map = new Microsoft.Maps.Map('#my-map',
-            {
-              credentials: environment.bingmap_key
-            });
-          this.map.entities.push(this.pin);
-          //Determine a bounding box to best view the results.
-          let bounds = this.location.bestView;
-          this.map.setView({ bounds: bounds, padding: 30 });
-        }
-      },
-      errorCallback: function (e) {
-        console.log(e);
+      callback: r => this.onGeoCodeSuccess(r),
+      errorCallback: e => {
+        this.onGeocodeError(e);
       }
     };
+
     //Make the geocode request.
     let map = new Microsoft.Maps.Map('#my-map',
       {
@@ -71,6 +55,33 @@ export class MapService {
       });
     this.searchManager = new Microsoft.Maps.Search.SearchManager(map);
     this.searchManager.geocode(searchRequest);
+  }
+
+  onGeoCodeSuccess(r) {
+    if (r && r.results && r.results.length > 0) {
+      this.location = r.results[0];
+      this.pin = new Microsoft.Maps.Pushpin(this.location.location, {
+        icon: '../../assets/images/location/poi_custom.png'
+      });
+
+      let mapService = new MapService();
+      this.location.address.adminDistrict = (this.location.address.locality ? this.location.address.locality : this.location.address.formattedAddress);
+      mapService.mapLocationDetails(this.location);
+
+      this.map = new Microsoft.Maps.Map('#my-map',
+        {
+          credentials: environment.bingmap_key
+        });
+      this.map.entities.push(this.pin);
+      //Determine a bounding box to best view the results.
+      let bounds = this.location.bestView;
+      this.map.setView({ bounds: bounds, padding: 30 });
+      this.notifyLocationSuccess.next("success");
+    }
+  }
+
+  onGeocodeError(event) {
+    this.notifyLocationError.next(event);
   }
 
   updateLocation(): LocationDetails {

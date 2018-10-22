@@ -1,4 +1,5 @@
-﻿using Access2Justice.Api.BusinessLogic;
+﻿using Access2Justice.Api.Authorization;
+using Access2Justice.Api.BusinessLogic;
 using Access2Justice.Api.Tests.TestData;
 using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
@@ -28,6 +29,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly string expectedUserProfileId = "709709e7t0r7t96";
         private readonly JArray emptyData = JArray.Parse(@"[{}]");
         private readonly string expectedUserId = "outlookoremailOId";
+        private readonly string expectedDefaultRole = "4bf9df8f-dfee-4b08-be4d-35cc053fa298";
 
         private readonly JArray userProfilePersonalizedPlanData = UserPersonalizedPlanTestData.userProfilePersonalizedPlanData;
         private readonly JArray expectedUserProfilePersonalizedPlanData = UserPersonalizedPlanTestData.expectedUserProfilePersonalizedPlanData;
@@ -38,6 +40,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly JArray userPlanData = UserPersonalizedPlanTestData.userPlanData;
         private readonly JArray expectedUserPlanData = UserPersonalizedPlanTestData.expectedUserPlanData;
         private readonly JArray expectedUserPlanUpdateData = UserPersonalizedPlanTestData.expectedUserPlanUpdateData;
+        private readonly JArray userRoleData = UserPersonalizedPlanTestData.expectedUserRoleData;
         
         public UserProfileBusinessLogicTests()
         {
@@ -196,6 +199,21 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var actualResult = JsonConvert.SerializeObject(response.Result);
             //assert
             Assert.Equal(expectedResult, actualResult);
+        }
+
+        [Fact]
+        public void GetDefaultUserRole()
+        {
+            //arrange
+            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.UserRoleCollectionId, Constants.UserRole, Permissions.Role.Authenticated.ToString());
+            dbResponse.ReturnsForAnyArgs<dynamic>(userRoleData);
+
+            //act
+            var response = userProfileBusinessLogic.GetDefaultUserRole();
+            string result = JsonConvert.SerializeObject(response);
+
+            //assert
+            Assert.Contains(expectedDefaultRole, result, StringComparison.InvariantCulture);
         }
     }
 }

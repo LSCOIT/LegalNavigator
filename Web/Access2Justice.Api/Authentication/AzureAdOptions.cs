@@ -8,5 +8,6 @@ namespace Access2Justice.Api.Authentication
         public string Instance { get; set; }        
         public string TenantId { get; set; }
         public string TokenVersion { get; set; }
+        public string UserClaimsUrl { get; set; }
     }
 }

@@ -140,12 +140,12 @@ namespace Access2Justice.Tools.BusinessLogic
                                             overview = FormatData(cellActualValue);
                                         }
 
-                                        else if (val.EndsWith("Quick_Links_URL_text", StringComparison.CurrentCultureIgnoreCase))
+                                        else if (val.EndsWith("Personalized_Plan_Quick_Links_URL_text", StringComparison.CurrentCultureIgnoreCase))
                                         {
                                             quickLinkURLText = FormatData(cellActualValue);
                                         }
 
-                                        else if (val.EndsWith("Quick_Links_URL_link", StringComparison.CurrentCultureIgnoreCase))
+                                        else if (val.EndsWith("Personalized_Plan_Quick_Links_URL_link", StringComparison.CurrentCultureIgnoreCase))
                                         {
                                             quickLinkURLLink = FormatData(cellActualValue);
                                         }
@@ -349,7 +349,7 @@ namespace Access2Justice.Tools.BusinessLogic
             bool correctHeader = false;
             IStructuralEquatable actualHeader = header;
             string[] expectedHeader = {"Topic_ID*", "Topic_Name*", "Parent_Topic*", "Keywords*", "Organizational_Unit*", "Location_State*", "Location_County",
-                "Location_City", "Location_Zip", "Overview*", "Quick_Links_URL_text", "Quick_Links_URL_link", "Icon" };
+                "Location_City", "Location_Zip", "Overview*", "Personalized_Plan_Quick_Links_URL_text", "Personalized_Plan_Quick_Links_URL_link", "Icon" };
                
             correctHeader = InsertResources.HeaderValidation(header, expectedHeader, "Topics");          
             return correctHeader;

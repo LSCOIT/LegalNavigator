@@ -10,6 +10,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 export class OrganizationsComponent implements OnInit {
   currentImage: string;
   currentModalImage: string;
+  urlOrigin: string;
   modalRef: BsModalRef;
   @Input() resource;
   @Input() searchResource: any = { resources: [] };
@@ -30,5 +31,10 @@ export class OrganizationsComponent implements OnInit {
 
   ngOnInit() {
     this.searchResource.resources.push(this.resource);
+    try {
+      this.urlOrigin = new URL(this.resource.url).origin;
+    } catch (e) {
+      this.urlOrigin = this.resource.url;
+    }
   }
 }

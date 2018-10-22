@@ -27,6 +27,10 @@ namespace Access2Justice.Shared.Models
         [DefaultValue("")]
         [JsonProperty(PropertyName = "privacyPromise")]
         public PrivacyPromise PrivacyPromise { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "organizationalUnit")]
+        public string OrganizationalUnit { get; set; }
     }
 
     public class Mission
