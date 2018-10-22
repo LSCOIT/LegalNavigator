@@ -20,11 +20,17 @@ export class TopicService {
   loadStateName(): MapLocation {
     if (sessionStorage.getItem("globalMapLocation")) {
       this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+      
       return this.mapLocation;
     }
   }
   getTopics(): Observable<any> {
     this.mapLocation = this.loadStateName();
+    if (this.mapLocation) {
+      this.mapLocation.city = "";
+      this.mapLocation.county = "";
+      this.mapLocation.zipCode = "";
+    }
     return this.http.post<Topic>(api.topicUrl, JSON.stringify(this.mapLocation), httpOptions);
   }
   getSubtopics(id): Observable<any> {
