@@ -7,7 +7,6 @@ import { MsalService } from '@azure/msal-angular';
 import { TestBed } from '@angular/core/testing';
 import { MapLocation } from '../../shared/map/map';
 import { serializePath } from '@angular/router/src/url_tree';
-import { exec } from 'child_process';
 
 describe('TopicService', () => {
   let service: TopicService;
@@ -37,25 +36,25 @@ describe('TopicService', () => {
     spyOn(sessionStorage, 'setItem')
       .and.callFake(mockSessionStorage.setItem);
   });
-  //it('should return list of topics', (done) => {
-  //  let mockTopics = [
-  //    { id: '1', title: 'Housing', icon: '' },
-  //    { id: '2', title: 'Family', icon: '' },
-  //    { id: '3', title: 'Public Benefit', icon: '' }
-  //  ];
-  //  let mockMapLocation: MapLocation = { state: 'test', city: '', county: '', zipCode: '' };
-  //  sessionStorage.setItem("globalMapLocation", JSON.stringify(mockMapLocation));
-  //  const mockResponse = Observable.of(mockTopics);
-  //  httpSpy.post.and.returnValue(mockResponse);
-  //  service.getTopics().subscribe(topics => {
-  //    service.loadStateName();
-  //    expect(httpSpy.post).toHaveBeenCalled();
-  //    expect(topics).toEqual(mockTopics);
-  //    expect(service.mapLocation).toEqual(mockMapLocation);
-  //    done();
-  //  });
+  it('should return list of topics', (done) => {
+   let mockTopics = [
+     { id: '1', title: 'Housing', icon: '' },
+     { id: '2', title: 'Family', icon: '' },
+     { id: '3', title: 'Public Benefit', icon: '' }
+   ];
+   let mockMapLocation: MapLocation = { state: 'test', city: '', county: '', zipCode: '' };
+   sessionStorage.setItem("globalMapLocation", JSON.stringify(mockMapLocation));
+   const mockResponse = Observable.of(mockTopics);
+   httpSpy.post.and.returnValue(mockResponse);
+   service.getTopics().subscribe(topics => {
+     service.loadStateName();
+     expect(httpSpy.post).toHaveBeenCalled();
+     expect(topics).toEqual(mockTopics);
+     expect(service.mapLocation).toEqual(mockMapLocation);
+     done();
+   });
 
-  //});
+  });
 
   it('should return list of subtopics', (done) => {
     let mockSubtopics = {
