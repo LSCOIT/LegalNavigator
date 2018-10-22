@@ -90,9 +90,10 @@ export class MapComponent implements OnInit {
       if (this.locationDetails.formattedAddress.length < 3) {
         this.mapResultsService.getStateFullName(this.locationDetails.country, this.locationDetails.formattedAddress, environment.bingmap_key)
           .subscribe((location) => {
-            this.locationDetails.location.state = location.resourceSets[0].resources[0].name;
+            //this.locationDetails.location.state = location.resourceSets[0].resources[0].name;
             this.locationDetails.location.address = location.resourceSets[0].resources[0].name;
             if (environment.map_type) {
+              this.locationDetails.location.state = location.resourceSets[0].resources[0].name;
               sessionStorage.setItem("globalSearchMapLocation", JSON.stringify(this.locationDetails));
             } else {
               sessionStorage.setItem("localSearchMapLocation", JSON.stringify(this.locationDetails));
