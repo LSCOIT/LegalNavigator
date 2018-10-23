@@ -39,7 +39,6 @@ namespace Access2Justice.Api.BusinessLogic
                 var componentFields = GetFields(pageProperties);
                 var componentButtons = GetButtons(pageProperties);
                 var componentCodes = GetCodes(pageProperties);
-                var text = CleanHtmlTags(pageProperties.GetValue("text"));
 
                 cx.Components.Add(new CuratedExperienceComponent
                 {
@@ -68,29 +67,50 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 return string.Empty;
             }
+            string sanitizedHtmlString = SanitizeString(htmlText, "<", ">");
+            return SanitizeString(sanitizedHtmlString, "%%", "%%");
             // Remove HTML tags from the curated experience questions #568
-            char[] array = new char[htmlText.Length];
-            int arrayIndex = 0;
-            bool isHtmlTag = false;
-            for (int index = 0; index < htmlText.Length; index++)
+            //char[] array = new char[htmlText.Length];
+            //int arrayIndex = 0;
+            //bool isHtmlTag = false;
+            //for (int index = 0; index < htmlText.Length; index++)
+            //{
+            //    char let = htmlText[index];
+            //    if (let == '<')
+            //    {
+            //        isHtmlTag = true; continue;
+            //    }
+            //    if (let == '>')
+            //    {
+            //        isHtmlTag = false;
+            //        continue;
+            //    }
+            //    if (!isHtmlTag)
+            //    {
+            //        array[arrayIndex] = let;
+            //        arrayIndex++;
+            //    }
+            //}
+            //return SanitizeString(new string(array, 0, arrayIndex), "%%", "%%");
+        }
+
+        private static string SanitizeString(string text, string startString, string endString)
+        {
+            int indexStart = 0, indexEnd = 0;
+            bool exit = false;
+            while (!exit)
             {
-                char let = htmlText[index];
-                if (let == '<')
+                indexStart = text.IndexOf(startString);
+                indexEnd = text.IndexOf(endString, indexStart + 1);
+                if (indexStart != -1 && indexEnd != -1)
                 {
-                    isHtmlTag = true; continue;
+                    string truncateText = text.Substring(indexStart, indexEnd - indexStart + endString.Length);
+                    text = text.Replace(truncateText, "");                    
                 }
-                if (let == '>')
-                {
-                    isHtmlTag = false;
-                    continue;
-                }
-                if (!isHtmlTag)
-                {
-                    array[arrayIndex] = let;
-                    arrayIndex++;
-                }
+                else
+                    exit = true;
             }
-            return new string(array, 0, arrayIndex);
+            return text;
         }
 
         private Resource MapResourceProperties(IEnumerable<JProperty> a2jProperties, Guid curatedExperienceId)
