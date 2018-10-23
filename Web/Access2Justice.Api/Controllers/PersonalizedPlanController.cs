@@ -23,6 +23,15 @@ namespace Access2Justice.Api.Controllers
             this.curatedExperienceBusinessLogic = curatedExperience;
         }
 
+        /// <summary>
+        /// Parser test
+        /// </summary>
+        /// <remarks>
+        /// Helps to parse user answers
+        /// </remarks>
+        /// <param name="userAnswers"></param>
+        /// <response code="200">Returns parsed user answers</response>
+        /// <response code="500">Failure</response>
         [HttpPost("parser-test")]
         public async Task<IActionResult> TestA2JAuthorLogicParser([FromBody] CuratedExperienceAnswers userAnswers)
         {
@@ -31,6 +40,16 @@ namespace Access2Justice.Api.Controllers
         }
 
 
+        /// <summary>
+        /// Generate personalized plan for curated experience
+        /// </summary>
+        /// <remarks>
+        /// Helps to generate personalized plan for curated experience
+        /// </remarks>
+        /// <param name="curatedExperienceId"></param>
+        /// <param name="answersDocId"></param>
+        /// <response code="200">Returns personalized plan for curated experience </response>
+        /// <response code="500">Failure</response>
         [HttpGet("generate")]
         public async Task<IActionResult> GeneratePersonalizedPlan([FromQuery] Guid curatedExperienceId, [FromQuery] Guid answersDocId)
         {
@@ -46,7 +65,15 @@ namespace Access2Justice.Api.Controllers
             return Ok(personalizedPlan);
         }
 
-
+        /// <summary>
+        /// Update user profile document
+        /// </summary>
+        /// <remarks>
+        /// Helps to updatae user profile document
+        /// </remarks>
+        /// <param name="userPlan"></param>
+        /// <response code="200">Returns updated personalized plan for curated experience </response>
+        /// <response code="500">Failure</response>
         [Permission(PermissionName.updateplan)]
         [HttpPost("update-plan")]
         public async Task<IActionResult> UpdateUserProfileDocumentAsync([FromBody]UserPersonalizedPlan userPlan)

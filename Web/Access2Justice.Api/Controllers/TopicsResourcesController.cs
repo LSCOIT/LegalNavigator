@@ -413,7 +413,7 @@ namespace Access2Justice.Api.Controllers
             }
             return StatusCode(403);
         }
-
+        ///<summary>
         /// Get the topic details by the document parent Id
         /// </summary>
         /// <remarks>
