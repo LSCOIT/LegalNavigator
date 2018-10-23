@@ -38,6 +38,13 @@ export class ActionPlansComponent implements OnChanges {
   @Output() notifyFilterTopics = new EventEmitter<object>();
   removePlanDetails: any;
   plan: any;
+  resourceTypeList = [
+    'Forms',
+    'Guided Assistant',
+    'Organizations',
+    'Videos',
+    'Articles'
+  ];
 
   constructor(
     private modalService: BsModalService,

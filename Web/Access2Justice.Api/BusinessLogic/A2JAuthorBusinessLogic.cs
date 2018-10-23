@@ -61,6 +61,7 @@ namespace Access2Justice.Api.BusinessLogic
             return cx;
         }
 
+        // Todo:@Alaa move this to an html extention
         private string CleanHtmlTags(string htmlText)
         {
             if(string.IsNullOrWhiteSpace(htmlText))

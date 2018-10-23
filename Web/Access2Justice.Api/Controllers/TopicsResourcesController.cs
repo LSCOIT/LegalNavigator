@@ -237,7 +237,7 @@ namespace Access2Justice.Api.Controllers
         /// <summary>
         /// Create Resources Documents - can upsert single or multiple resources
         /// </summary>
-        [Permission(PermissionName.upsertresourcedocument)]
+        //[Permission(PermissionName.upsertresourcedocument)]
         [HttpPost]
         [Route("api/upsert-resource-document")]
         public async Task<IActionResult> UpsertResourceDocument([FromBody]dynamic resource)
@@ -262,7 +262,7 @@ namespace Access2Justice.Api.Controllers
         /// <summary>
         /// Create Topics Documents - can upsert single or multiple topics
         /// </summary>
-        [Permission(PermissionName.upserttopicdocument)]
+        //[Permission(PermissionName.upserttopicdocument)]
         [HttpPost]
         [Route("api/upsert-topic-document")]
         public async Task<IActionResult> UpsertTopicDocument([FromBody]dynamic topic)

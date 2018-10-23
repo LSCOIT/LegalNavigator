@@ -22,7 +22,7 @@ namespace Access2Justice.Api.Controllers
             this.bingSettings = bingSettings;
         }
 
-        [HttpGet("{search-term}/{offset}")]
+        [HttpGet("{searchTerm}/{offset}")]
         public async Task<IActionResult> GetAsync(string searchTerm, Int16 offset)
         {
             var uri = string.Format(CultureInfo.InvariantCulture, bingSettings.BingSearchUrl.OriginalString, searchTerm, bingSettings.CustomConfigId, bingSettings.PageResultsCount, offset);

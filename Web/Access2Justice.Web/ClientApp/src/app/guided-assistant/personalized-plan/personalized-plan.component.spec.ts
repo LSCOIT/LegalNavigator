@@ -9,6 +9,7 @@ import { ArrayUtilityService } from '../../shared/array-utility.service';
 import { ToastrService, ToastrModule } from 'ngx-toastr';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
+import { NavigateDataService } from '../../shared/navigate-data.service';
 
 describe('Component:PersonalizedPlan', () => {
   let component: PersonalizedPlanComponent;
@@ -370,10 +371,27 @@ describe('Component:PersonalizedPlan', () => {
     isSelected: false
   }];
   let mockPersonalizedPlanService;
+  let mockNavigateDataService;
+  let mockGeneratedPersonalizedPlan = {
+    id: "test12345",
+    isShared: false,
+    topics: [
+      {
+        icon: "",
+        name: "Divorce",
+        quickLinks: [],
+        steps: []
+      }
+    ]
+  }
 
   beforeEach(async(() => {
-    mockPersonalizedPlanService = jasmine.createSpyObj(['getActionPlanConditions', 'createTopicsList', 'getPlanDetails', 'displayPlanDetails'])
+    mockPersonalizedPlanService = jasmine.createSpyObj([
+      'getActionPlanConditions', 'createTopicsList', 'getPlanDetails', 'displayPlanDetails'
+    ]);
     mockPersonalizedPlanService.getActionPlanConditions.and.returnValue(of(mockPlanDetails));
+    mockNavigateDataService = jasmine.createSpyObj(['getData']);
+
     TestBed.configureTestingModule({
       imports: [ToastrModule.forRoot(),
         RouterModule.forRoot([
@@ -386,7 +404,8 @@ describe('Component:PersonalizedPlan', () => {
         { provide: APP_BASE_HREF, useValue: '/' },
         { provide: PersonalizedPlanService, useValue: mockPersonalizedPlanService }, 
         ArrayUtilityService, 
-        ToastrService
+        ToastrService,
+        { provide: NavigateDataService, useValue: mockNavigateDataService}
       ]
     })
     .compileComponents();
@@ -394,6 +413,7 @@ describe('Component:PersonalizedPlan', () => {
     fixture = TestBed.createComponent(PersonalizedPlanComponent);
     component = fixture.componentInstance;
     toastrService = TestBed.get(ToastrService);
+    component.ngOnInit();
     fixture.detectChanges();
   }));
 
@@ -463,4 +483,12 @@ describe('Component:PersonalizedPlan', () => {
     expect(component.filterPlan).toHaveBeenCalledWith("");
   });
 
+  it('should not call getTopics if generate plan is defined and set component variables', () => {
+    mockNavigateDataService.getData.and.returnValue(mockGeneratedPersonalizedPlan);
+    spyOn(component, 'getTopics');
+    component.ngOnInit();
+    expect(component.topics).toEqual(mockGeneratedPersonalizedPlan.topics);
+    expect(component.planDetailTags).toEqual(mockGeneratedPersonalizedPlan);
+    expect(component.getTopics).toHaveBeenCalledTimes(0);
+  });
 });

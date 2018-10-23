@@ -3,7 +3,7 @@ ul {
 }
 
 .topic-list {
-  padding: 0 10px;
+  padding: 20px 10px;
   border-bottom: 1px solid #ddd;
   border-right: 1px solid #ddd;
   cursor: pointer;
@@ -28,16 +28,19 @@ ul {
 }
 
 .topic-list a img {
-  width: 100px;
-  height: 100px;
-  padding: 10px;
-  margin-top: 40px;
+  width: 90px;
+  height: 70px;
+  margin: 20px auto;
 }
 
 @media only screen and (min-width : 768px) {
   .topic-list {
     padding: 15px 20px;
     height: 235px;
+  }
+
+  .topic-list a img {
+    margin: 35px auto;
   }
 
   .topic-list:nth-child(2n) {
@@ -55,8 +58,8 @@ ul {
 
 @media only screen and (min-width : 992px) {
   .topic-list {
-    padding: 15px 20px;
-    height: 265px;
+    padding: 45px 20px;
+    height: 290px;
   }
 
   .topic-list:nth-child(2n) {

@@ -9,6 +9,6 @@ namespace Access2Justice.Api.Interfaces
 {
     public interface IPersonalizedPlanViewModelMapper
     {
-        PersonalizedPlanViewModel MapViewModel(UnprocessedPersonalizedPlan personalizedPlanStepsInScope);
+        Task<PersonalizedPlanViewModel> MapViewModel(UnprocessedPersonalizedPlan personalizedPlanStepsInScope);
     }
 }

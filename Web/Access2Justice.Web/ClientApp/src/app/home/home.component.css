@@ -28,6 +28,10 @@ hr {
   margin: 20px auto 55px auto;
 }
 
+.add-state {
+  padding: 10px 0;
+}
+
 #dropdown-arrow {
   display: none;
 }
@@ -45,6 +49,7 @@ hr {
 
 .slide-content {
   text-align: center;
+  margin-top: 15px;
 }
 
 .testimonial-img {
@@ -53,8 +58,8 @@ hr {
 }
 
 .testimonial-img img {
-  max-width: 150px;
-  max-height: 150px;
+  max-width: 165px;
+  max-height: 165px;
   border-radius: 10px;
 }
 
@@ -113,9 +118,13 @@ ul>li>span {
     margin: 0 15% 20px 15%;
   }
 
+  .container {
+    padding-top: 5%;
+    padding-bottom: 5%;
+  }
+
   .hero-content {
-    padding-top: 50px;
-    padding-bottom: 65px;
+    padding-bottom: 0;
   }
 
   .hero-description {
@@ -151,6 +160,8 @@ ul>li>span {
   }
 
   .secondary-img {
+    width: 100%;
+    height: 100%;
     margin-top: 0;
     float: right;
   }
@@ -166,8 +177,7 @@ ul>li>span {
 
   .slide-content {
     text-align: left;
-    padding-left: 10%;
-    padding-top: 5%
+    padding-top: 3%
   }
 
   .testimonial-img {
@@ -175,8 +185,9 @@ ul>li>span {
   }
 
   .testimonial-img img {
-    max-width: 215px;
-    max-height: 215px;
+    float: left;
+    max-width: 205px;
+    max-height: 205px;
   }
 
   .privacy-promise {
@@ -207,10 +218,6 @@ ul>li>span {
     padding: 15px 0 15px 15px;
   }
 
-  .slide-content {
-    padding-left: 10%;
-  }
-
   .slide-content .mobile-hidden {
     text-align: left;
   }
@@ -224,8 +231,8 @@ ul>li>span {
   }
 
   .testimonial-img img {
-    max-width: 300px;
-    max-height: 300px;
+    max-width: 280px;
+    max-height: 280px;
   }
 
   .mobile-hidden {
@@ -235,25 +242,28 @@ ul>li>span {
   .privacy-promise .privacy-content {
     padding-top: 5%;
   }
-}
 
-@media only screen and (min-width : 1124px) {
-  .tagline {
-    margin-top: 10%;
-  }
-
-  .slide-content {
-    padding-left: 7%;
+  .outer-bg {
+    margin-top: -100px;
   }
 }
 
 @media only screen and (min-width : 1224px) {
+  .tagline {
+    margin-top: 10%;
+  }
+
   .outer-bg {
     margin-top: -110px;
   }
 
   .topic-button {
     margin-bottom: 100px;
+  }
+
+  .testimonial-img img {
+    max-width: 300px;
+    max-height: 300px;
   }
 }
 

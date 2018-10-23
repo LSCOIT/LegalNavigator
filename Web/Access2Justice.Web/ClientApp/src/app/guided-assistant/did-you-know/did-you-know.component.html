@@ -1,9 +1,9 @@
-<div class="media">
+<div class="media" *ngIf="didYouKnowHeading && didYouKnowBody">
   <div class="media-left media-middle">
-    <img class="media-object" src="./assets/images/icons/did_you_know.svg" alt="light bulb">
+    <img class="media-object" src="./assets/images/icons/did_you_know.svg" alt="Did you know section">
   </div>
   <div class="media-body">
-    <h5 class="media-heading">Did you know?</h5>
-    <p class="pxs">Tincidunt integer eu augue augue nunc elit dolor, luctus placerat scelerisque euismod, iaculis eu lacus nunc mi elit, vehicula ut laoreet ac, aliquam sit amet justo nunc tempor, metus vel.</p>
+    <h5 class="media-heading">{{didYouKnowHeading}}</h5>
+    <p class="pxs">{{didYouKnowBody}}</p>
   </div>
 </div>

@@ -16,13 +16,13 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly IBackendDatabaseService dbService;
         private readonly ICosmosDbSettings dbSettings;
         private readonly CuratedExperienceBuisnessLogic curatedExperience;
-        private readonly IPersonalizedPlanParse parser;
+        private readonly IA2JAuthorLogicParser parser;
 
         public CuratedExperienceBuisnessLogicTests()
         {
             dbService = Substitute.For<IBackendDatabaseService>();
             dbSettings = Substitute.For<ICosmosDbSettings>();
-            parser = Substitute.For<IPersonalizedPlanParse>();
+            parser = Substitute.For<IA2JAuthorLogicParser>();
 
             curatedExperience = new CuratedExperienceBuisnessLogic(dbSettings, dbService, parser);
         }
