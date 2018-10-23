@@ -254,6 +254,10 @@ export class MapComponent implements OnInit {
 
     if (sessionStorage.getItem("globalMapLocation")) {
       this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+      this.mapLocation.locality = this.mapLocation.address;
+      this.mapLocation.city = "";
+      this.mapLocation.county = "";
+      this.mapLocation.zipCode = "";
       this.displayLocationDetails(this.mapLocation);
     }
 

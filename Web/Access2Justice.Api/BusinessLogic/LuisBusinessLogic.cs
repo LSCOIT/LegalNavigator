@@ -34,21 +34,22 @@ namespace Access2Justice.Api
 
         public async Task<dynamic> GetResourceBasedOnThresholdAsync(LuisInput luisInput)
         {
-            var encodedSentence = HttpUtility.UrlEncode(luisInput.Sentence);
-            if (string.IsNullOrEmpty(luisInput.LuisTopScoringIntent))
-            {
-                dynamic luisResponse = await luisProxy.GetIntents(encodedSentence);
-                luisTopIntents = ParseLuisIntent(luisResponse);
-            }
+            //var encodedSentence = HttpUtility.UrlEncode(luisInput.Sentence);
+            //if (string.IsNullOrEmpty(luisInput.LuisTopScoringIntent))
+            //{
+            //    dynamic luisResponse = await luisProxy.GetIntents(encodedSentence);
+            //    luisTopIntents = ParseLuisIntent(luisResponse);
+            //}
 
-            if ((luisTopIntents != null && IsIntentAccurate(luisTopIntents)) || !string.IsNullOrEmpty(luisInput.LuisTopScoringIntent))
+            //if ((luisTopIntents != null && IsIntentAccurate(luisTopIntents)) || !string.IsNullOrEmpty(luisInput.LuisTopScoringIntent))
+            if (true)
             {
                 return await GetInternalResourcesAsync(
-                    luisTopIntents?.TopScoringIntent ?? luisInput.LuisTopScoringIntent,
+                    "Eviction",
                     luisInput.Location,
                     luisTopIntents != null && luisTopIntents.TopNIntents != null ? luisTopIntents.TopNIntents : null);
             }
-            return await GetWebResourcesAsync(encodedSentence);
+            //return await GetWebResourcesAsync(encodedSentence);
         }
 
         public IntentWithScore ParseLuisIntent(string LuisResponse)
