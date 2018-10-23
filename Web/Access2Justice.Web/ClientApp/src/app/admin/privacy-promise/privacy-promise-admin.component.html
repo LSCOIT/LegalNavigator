@@ -1,13 +1,33 @@
-<div class="container" *ngIf="privacyContent">
+<div class="container">
+  <h1>Privacy Promise Edit</h1>
   <form action="/" method="post">
-    <h1>Heading</h1>
-    <input type="text" value="Privacy" class="form-control" />
-    <textarea class="form-control" [value]="privacyContent?.description"></textarea>
-    <h1>Sections</h1>
-      <div class="row" *ngFor="let content of privacyContent?.details">
-        <input class="form-control" [value]="content.title"/>
-        <textarea class="form-control" [value]="content.description"></textarea>
+    <div>
+      <h3>Heading</h3>
+      <div>
+        <label>Page Title</label>
+        <input type="text" value="Privacy" class="form-control"/>
       </div>
+      <div>
+        <label>Description</label>
+        <textarea class="form-control" [value]="privacyContent?.description"></textarea>
+      </div>
+    </div>
+    <div>
+      <h3>Sections</h3>
+      <div class="sections" *ngFor="let content of privacyContent?.details">
+        <div>
+          <label>Section Title</label>
+          <input class="form-control" [value]="content.title"/>
+        </div>
+        <div>
+          <label>Section Description</label>
+          <textarea class="form-control" [value]="content.description"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <button class="btn btn-primary pull-right">Save Changes</button>
+    </div>
   </form>
 </div>
 

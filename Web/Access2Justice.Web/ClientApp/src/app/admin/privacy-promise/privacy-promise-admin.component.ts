@@ -5,7 +5,7 @@ import { Global } from "../../global";
 @Component({
   selector: 'app-privacy-promise-admin',
   templateUrl: './privacy-promise-admin.component.html',
-  styleUrls: ['../../privacy-promise/privacy-promise.component.css']
+  styleUrls: ['../admin-styles.css']
 })
 
 export class PrivacyPromiseAdminComponent implements OnInit {
