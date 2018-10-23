@@ -29,10 +29,15 @@ namespace Access2Justice.Api.Controllers
         }
 
         #region DEMO
+
         /// <summary>
-        /// This endpoint is just to demo the Guided Assistance. It is a sample schema imported from A2J Author.
+        /// Demo guided assistance
         /// </summary>
-        /// <returns></returns>
+        /// <remarks>
+        /// This endpoint is just to demo the Guided Assistance. It is a sample schema imported from A2J Author.
+        /// </remarks>
+        /// <response code="200">Returns content JSON </response>
+        /// <response code="500">Failure</response>
         [HttpGet("demo")]
         public IActionResult GetDemoSchema()
         {
@@ -41,9 +46,13 @@ namespace Access2Justice.Api.Controllers
         }
 
         /// <summary>
-        /// This endpoint is just to demo the Curated Experience. It is a sample component payload for the UI.
+        /// Demo curated experience
         /// </summary>
-        /// <returns></returns>
+        /// <remarks>
+        /// This endpoint is just to demo the Curated Experience. It is a sample component payload for the UI.
+        /// </remarks>
+        /// <response code="200">Returns content JSON </response>
+        /// <response code="500">Failure</response>
         [HttpGet("component/demo")]
         public IActionResult GetDemoComponent()
         {
@@ -52,9 +61,13 @@ namespace Access2Justice.Api.Controllers
         }
 
         /// <summary>
-        /// This endpoint is just to demo the Curated Experience Personalized Plan schema. Added to help building the UI.
+        /// Demo curated experience personalized plan
         /// </summary>
-        /// <returns></returns>
+        /// <remarks>
+        /// This endpoint is just to demo the Curated Experience Personalized Plan schema. Added to help building the UI.
+        /// </remarks>
+        /// <response code="200">Returns personalized plans</response>
+        /// <response code="500">Failure</response>
         [HttpGet("personalized-plan/demo")]
         public IActionResult GetDemoPersonalizedPlan()
         {
@@ -139,6 +152,16 @@ namespace Access2Justice.Api.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Get first component for curated experience
+        /// </summary>
+        /// <remarks>
+        /// Helps to get first component for curated experience 
+        /// </remarks>
+        /// <param name="curatedExperienceId"></param>
+        /// <response code="200">Returns first component for curated experience </response>
+        /// <response code="500">Failure</response>
         [HttpGet("start")]
         public IActionResult GetFirstComponent(Guid curatedExperienceId)
         {
@@ -148,6 +171,16 @@ namespace Access2Justice.Api.Controllers
             return Ok(component);
         }
 
+        /// <summary>
+        /// Get specific component for curated experience
+        /// </summary>
+        /// <remarks>
+        /// Helps to get specific component for curated experience 
+        /// </remarks>
+        /// <param name="curatedExperienceId"></param>
+        /// <param name="componentId"></param>
+        /// <response code="200">Returns specific component for curated experience </response>
+        /// <response code="500">Failure</response>
         [HttpGet("component")]
         public IActionResult GetSpecificComponent([FromQuery] Guid curatedExperienceId, [FromQuery] Guid componentId)
         {
@@ -157,6 +190,16 @@ namespace Access2Justice.Api.Controllers
             return Ok(component);
         }
 
+
+        /// <summary>
+        /// Save component saved and get next for curated experience
+        /// </summary>
+        /// <remarks>
+        /// Helps to Save component saved and get next for curated experience
+        /// </remarks>
+        /// <param name="component"></param>
+        /// <response code="200">Returns next component for curated experience </response>
+        /// <response code="500">Failure</response>
         [HttpPost("component/save-and-get-next")]
         public async Task<IActionResult> SaveAndGetNextComponent([FromBody] CuratedExperienceAnswersViewModel component)
         {
@@ -170,6 +213,16 @@ namespace Access2Justice.Api.Controllers
             return Ok(curatedExperienceBusinessLogic.GetNextComponent(curatedExperience, component));
         }
 
+        /// <summary>
+        /// Generate personalized plan for curated experience
+        /// </summary>
+        /// <remarks>
+        /// Helps to generate personalized plan for curated experience
+        /// </remarks>
+        /// <param name="curatedExperienceId"></param>
+        /// <param name="answersDocId"></param>
+        /// <response code="200">Returns personalized plan for curated experience </response>
+        /// <response code="500">Failure</response>
         [HttpGet("personalized-plan")]
         public async Task<IActionResult> GeneratePersonalizedPlan([FromQuery] Guid curatedExperienceId, [FromQuery] Guid answersDocId)
         {
@@ -183,6 +236,15 @@ namespace Access2Justice.Api.Controllers
             return Ok(personalizedPlan);
         }
 
+        /// <summary>
+        /// Update personalized plan for curated experience
+        /// </summary>
+        /// <remarks>
+        /// Helps to update personalized plan for curated experience
+        /// </remarks>
+        /// <param name="userPlan"></param>
+        /// <response code="200">Returns updated personalized plan for curated experience </response>
+        /// <response code="500">Failure</response>
         [HttpPost("update-plan")]
         public async Task<IActionResult> UpdateUserProfileDocumentAsync([FromBody]UserPersonalizedPlan userPlan)
         {
@@ -202,6 +264,15 @@ namespace Access2Justice.Api.Controllers
             return HttpContext.Session.GetObjectAsJson<CuratedExperience>(id.ToString());
         }
 
+        /// <summary>
+        /// Get personalized plan details for curated experience
+        /// </summary>
+        /// <remarks>
+        /// Helps to get personalized plan details for curated experience
+        /// </remarks>
+        /// <param name="id"></param>
+        /// <response code="200">Returns personalized plan details for curated experience </response>
+        /// <response code="500">Failure</response>
         [HttpGet]
         [Route("get-plan-details/{id}")]
         public async Task<IActionResult> GetPlanDetailsAsync(string id)
@@ -210,6 +281,15 @@ namespace Access2Justice.Api.Controllers
             return Ok(actionPlans);
         }
 
+        /// <summary>
+        /// Get personalized plan for curated experience
+        /// </summary>
+        /// <remarks>
+        /// Helps to get personalized plan for curated experience
+        /// </remarks>
+        /// <param name="id"></param>
+        /// <response code="200">Returns personalized plan for curated experience </response>
+        /// <response code="500">Failure</response>
         [HttpGet]
         [Route("get-plan/{id}")]
         public async Task<IActionResult> GetPlanAsync(string id)
