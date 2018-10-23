@@ -1,9 +1,9 @@
 ﻿using Access2Justice.Shared.Models;
 using Newtonsoft.Json.Linq;
 
-namespace Access2Justice.Shared.Interfaces
+namespace Access2Justice.Shared.Interfaces.A2JAuthor
 {
-    public interface IA2JAuthorBusinessLogic
+    public interface ICuratedExperienceConvertor
     {
         CuratedExperience ConvertA2JAuthorToCuratedExperience(JObject a2jSchema);
     }

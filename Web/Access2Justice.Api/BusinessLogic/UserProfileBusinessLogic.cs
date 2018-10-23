@@ -1,4 +1,7 @@
-﻿using Access2Justice.Shared.Interfaces;
+﻿using Access2Justice.Api.Authorization;
+using Access2Justice.Api.Interfaces;
+using Access2Justice.Shared;
+using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Access2Justice.Shared.Utilities;
 using Newtonsoft.Json;
@@ -133,12 +136,20 @@ namespace Access2Justice.Api.BusinessLogic
             var resultUP = await GetUserProfileDataAsync(userProfile?.OId, true);
             if (string.IsNullOrEmpty(resultUP?.OId))
             {
+                userProfile.RoleInformationId.Add(await GetDefaultUserRole());
                 List<dynamic> profile = new List<dynamic>();
                 var result = await dbService.CreateItemAsync(userProfile, dbSettings.UserProfileCollectionId);
                 profile.Add(result);
                 resultUP = ConvertUserProfileViewModel(profile);
             }
             return resultUP;
+        }
+
+        public async Task<Guid> GetDefaultUserRole()
+        {
+            var result = await dbClient.FindItemsWhereAsync(dbSettings.UserRoleCollectionId, Constants.UserRole, Permissions.Role.Authenticated.ToString());
+            List<Role> userRole = JsonUtilities.DeserializeDynamicObject<List<Role>>(result);
+            return userRole.Select(x => x.RoleInformationId).FirstOrDefault();
         }
     }
 }

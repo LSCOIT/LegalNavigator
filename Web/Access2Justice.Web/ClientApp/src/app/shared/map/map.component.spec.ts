@@ -130,8 +130,9 @@ describe('MapComponent', () => {
     expect(mapService.getMap).toHaveBeenCalled();
   });
 
-  it("should call update location of location service when update location of component is called", () => {    
+  it("should call update location of location service when location error is false", () => {    
     component.modalRef = modalRefInstance;
+    component.locationError = false;
     component.updateLocation();
     expect(mapService.updateLocation).toHaveBeenCalled();
     expect(component.isError).toBe(false);
@@ -139,6 +140,7 @@ describe('MapComponent', () => {
 
   it("should call hide of modal ref when update location of component is called", () => {    
     component.modalRef = modalRefInstance;
+    component.locationError = false;
     component.updateLocation();
     expect(modalRefInstance.isHideCalled).toBeTruthy();
     expect(component.mapLocation.state).toBe('Sample State');
@@ -147,6 +149,7 @@ describe('MapComponent', () => {
   it("should call displayLocationDetails when updateLocation is called", () => {    
     component.modalRef = modalRefInstance;
     spyOn(component, 'displayLocationDetails');
+    component.locationError = false;
     component.updateLocation();    
     expect(component.displayLocationDetails).toHaveBeenCalled();
   });

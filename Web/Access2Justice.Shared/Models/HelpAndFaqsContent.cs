@@ -32,6 +32,10 @@ namespace Access2Justice.Shared.Models
         [DefaultValue("")]
         [JsonProperty(PropertyName = "faqs")]
         public IEnumerable<HelpDetails> HelpDetails { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "organizationalUnit")]
+        public string OrganizationalUnit { get; set; }
     }
 
     public class HelpDetails

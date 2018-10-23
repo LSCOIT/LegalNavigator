@@ -18,8 +18,6 @@ namespace Access2Justice.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            ConfigureAuth(services);
-
             services.AddMvc();
 
             // In production, the Angular files will be served from this directory
@@ -42,9 +40,7 @@ namespace Access2Justice.Web
             }
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
-
-            app.UseAuthentication();
-            ConfigureRoutes(app);
+            
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

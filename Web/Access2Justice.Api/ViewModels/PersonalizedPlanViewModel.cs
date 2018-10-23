@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Access2Justice.Api.ViewModels
 {
-    public class PersonalizedActionPlanViewModel
+    public class PersonalizedPlanViewModel
     {
         [JsonProperty(PropertyName = "id")]
         public Guid PersonalizedPlanId { get; set; }
@@ -16,7 +16,7 @@ namespace Access2Justice.Api.ViewModels
         [JsonProperty(PropertyName = "isShared")]
         public bool IsShared { get; set; }
 
-        public PersonalizedActionPlanViewModel()
+        public PersonalizedPlanViewModel()
         {
             Topics = new List<PlanTopic>();
         }
