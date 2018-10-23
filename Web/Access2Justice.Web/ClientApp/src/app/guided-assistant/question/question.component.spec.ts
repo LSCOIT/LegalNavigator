@@ -6,6 +6,7 @@ import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuestionService } from './question.service';
 import { HttpParams } from '@angular/common/http';
+import { NavigateDataService } from '../../shared/navigate-data.service';
 
 describe('QuestionComponent', () => {
   let component: QuestionComponent;
@@ -22,26 +23,38 @@ describe('QuestionComponent', () => {
     learn: '',
     help: '',
     tags: [],
-    buttons: [{
-      id: "111",
-      label: "Continue",
-      destination: ""
-    }],
+    buttons: [
+      {
+        id: "111",
+        label: "Continue",
+        destination: ""
+      }
+    ],
     fields: []
   }
+  let mockNavigateDataService;
+
   beforeEach(async(() => { 
     mockQuestionService = jasmine.createSpyObj(['getQuestion', 'getNextQuestion']);
-    
+    mockNavigateDataService = jasmine.createSpyObj((['setData']));
+
     TestBed.configureTestingModule({
       imports: [ FormsModule ],
       declarations: [ QuestionComponent ],
       schemas: [ NO_ERRORS_SCHEMA ],
       providers: [ 
         { provide: ActivatedRoute,
-          useValue: {snapshot: {params: {'id': '123'}}}
+          useValue: {
+            snapshot: {
+              params: {
+                'id': '123'
+              }
+            }
+          }
         },
         { provide: QuestionService, useValue: mockQuestionService },
-        { provide: Router, useValue: mockRouter}
+        { provide: Router, useValue: mockRouter },
+        { provide: NavigateDataService, useValue: mockNavigateDataService }
       ]
     })
     .compileComponents();
@@ -92,7 +105,7 @@ describe('QuestionComponent', () => {
     expect(component.fieldParam).toEqual(mockFieldParam);
   });
 
-  it('should call getNextQuestion if remaining question is greater than 0', () => {
+  it('should call getNextQuestion if remaining question is greater than 1', () => {
     spyOn(component, 'sendQuestionsRemaining');
     let formValue = <NgForm>{
       value: {
@@ -117,36 +130,5 @@ describe('QuestionComponent', () => {
     });
 
     expect(component.sendQuestionsRemaining).toHaveBeenCalled();
-  });
-
-  it('should call getNextQuestion if remaining question is equal 0', () => {
-    spyOn(component, 'sendQuestionsRemaining');
-    let formValue = <NgForm>{
-      value: {
-        "111": "abc",
-        "222": "def",
-        "333": "ghi"
-      }
-    };
-    mockQuestion.questionsRemaining = 0;
-    mockQuestionService.getNextQuestion.and.returnValue(of(mockQuestion));
-    component.question = mockQuestion;
-    component.onSubmit(formValue);
-
-    expect(mockQuestionService.getNextQuestion).toHaveBeenCalledWith({
-      "curatedExperienceId": "123",
-      "answersDocId": "456",
-      "buttonId": "111",
-      "fields": [
-        { "fieldId": "111", "value": "abc" },
-        { "fieldId": "222", "value": "def" },
-        { "fieldId": "333", "value": "ghi" }
-      ]
-    });
-
-    expect(component.sendQuestionsRemaining).toHaveBeenCalled();
-    expect(component.question.text).toContain("Thanks for answering the questions");
-    expect(component.question.questionsRemaining).toBe(-1);
-    expect(component.question.fields).toEqual([]);
   });
 });

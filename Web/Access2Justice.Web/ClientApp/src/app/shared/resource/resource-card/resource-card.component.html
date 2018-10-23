@@ -79,28 +79,28 @@
             <div class="print-only">{{applicationUrl+'/resource'+'/'+resource.id}}</div>
             <app-read-more [text]="resource.description" [maxLength]="240"></app-read-more>
             <div class="org-content span-text">
-              <div class="col-md-4 col-xs-12" *ngIf="resource.address.length > 0">
-                <div class="col-md-2 col-sm-1 col-xs-1">
+              <div class="col-sm-4 col-xs-12" *ngIf="resource.address.length > 0">
+                <div class="col-sm-2 col-xs-2">
                   <img src="./assets/images/small-icons/location.svg" alt="Address" class="nav-icon no-print" />
                 </div>
-                <div class="col-md-10 col-sm-11 col-xs-11">
-                  <span>{{resource.address}}</span>
+                <div class="col-sm-9 col-xs-9">
+                  <a [routerLink]="['/resource', resource.id]" class="link pxs">{{resource.address}}</a>
                 </div>
               </div>
-              <div class="col-md-4 col-xs-12 org-phone-detail" *ngIf="resource.telephone.length > 0">
-                <div class="col-md-2 col-sm-1 col-xs-1">
+              <div class="col-sm-4 col-xs-12 org-phone-detail" *ngIf="resource.telephone.length > 0">
+                <div class="col-sm-2 col-xs-2">
                   <img src="./assets/images/small-icons/call.svg" alt="Telephone" class="nav-icon no-print" />
                 </div>
-                <div class="col-md-10 col-sm-11 col-xs-11">
-                  <span>{{resource.telephone}}</span>
+                <div class="col-sm-9 col-xs-9">
+                  <a class="link pxs" [href]="'tel:' + resource.telephone">{{resource.telephone}}</a>
                 </div>
               </div>
-              <div class="col-md-4 col-xs-12" *ngIf="resource.url.length > 0">
-                <div class="col-md-2 col-sm-1 col-xs-1">
-                  <img src="./assets/images/small-icons/email.svg" alt="Email" class="nav-icon no-print" />
+              <div class="col-sm-4 col-xs-12" *ngIf="resource.url.length > 0">
+                <div class="col-sm-2 col-xs-2">
+                  <img src="./assets/images/small-icons/url.svg" alt="Email" class="nav-icon no-print" />
                 </div>
-                <div class="col-md-10 col-sm-11 col-xs-11">
-                  <span>{{resource.url}}</span>
+                <div class="col-sm-9 col-xs-9">
+                  <a class="link pxs" *ngIf="resource.url" [href]="resource.url">{{urlOrigin}}</a>
                 </div>
               </div>
             </div>

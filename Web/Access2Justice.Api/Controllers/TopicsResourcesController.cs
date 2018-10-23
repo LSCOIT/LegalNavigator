@@ -1,12 +1,13 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
-using Access2Justice.Api.ViewModels;
+﻿using Access2Justice.Api.Authorization;
+using Access2Justice.Api.Interfaces;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using static Access2Justice.Api.Authorization.Permissions;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -15,11 +16,14 @@ namespace Access2Justice.Api.Controllers
     {
         private readonly ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic;
         private readonly ILuisBusinessLogic luisBusinessLogic;
+        private readonly IUserRoleBusinessLogic userRoleBusinessLogic;
 
-        public TopicsResourcesController(ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic, ILuisBusinessLogic luisBusinessLogic)
+        public TopicsResourcesController(ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic, ILuisBusinessLogic luisBusinessLogic,
+            IUserRoleBusinessLogic userRoleBusinessLogic)
         {
             this.topicsResourcesBusinessLogic = topicsResourcesBusinessLogic;
             this.luisBusinessLogic = luisBusinessLogic;
+            this.userRoleBusinessLogic = userRoleBusinessLogic;
         }
 
         /// <summary>
@@ -54,7 +58,6 @@ namespace Access2Justice.Api.Controllers
         public async Task<IActionResult> GetSubTopics([FromBody]TopicInput topicInput)
         {
             var topics = await topicsResourcesBusinessLogic.GetSubTopicsAsync(topicInput);
-
             return Ok(topics);
         }
 
@@ -195,6 +198,7 @@ namespace Access2Justice.Api.Controllers
             var organizations = await topicsResourcesBusinessLogic.GetOrganizationsAsync(location);
             return Ok(organizations);
         }
+
         /// <summary>
         /// Get topic schema
         /// </summary>
@@ -309,6 +313,7 @@ namespace Access2Justice.Api.Controllers
         /// <param name="uploadedFile"></param>
         /// <response code="200">Returns created resources </response>
         /// <response code="500">Failure</response>
+        [Permission(PermissionName.createresourcesupload)]
         [HttpPost]
         [Route("api/topics/create-resources/upload")]
         public async Task<IActionResult> CreateResources(IFormFile uploadedFile)
@@ -319,7 +324,7 @@ namespace Access2Justice.Api.Controllers
         }
 
         /// <summary>
-        /// Create Resource Document
+        /// Create Resources Documents - can upsert single or multiple resources
         /// </summary>
         /// <remarks>
         /// Helps to get the resouce created by given input.
@@ -327,6 +332,7 @@ namespace Access2Justice.Api.Controllers
         /// <param name="resource"></param>
         /// <response code="200">Returns created resources </response>
         /// <response code="500">Failure</response>
+        //[Permission(PermissionName.upsertresourcedocument)]
         [HttpPost]
         [Route("api/upsert-resource-document")]
         public async Task<IActionResult> UpsertResourceDocument([FromBody]dynamic resource)
@@ -344,6 +350,7 @@ namespace Access2Justice.Api.Controllers
         /// <param name="uploadedFile"></param>
         /// <response code="200">Returns created topics </response>
         /// <response code="500">Failure</response>
+        [Permission(PermissionName.createtopicsupload)]
         [HttpPost]
         [Route("api/topics/create-topics/upload")]
         public async Task<IActionResult> CreateTopics(IFormFile uploadedFile)
@@ -362,6 +369,7 @@ namespace Access2Justice.Api.Controllers
         /// <param name="topic"></param>
         /// <response code="200">Returns created topic document</response>
         /// <response code="500">Failure</response>
+        //[Permission(PermissionName.upserttopicdocument)]
         [HttpPost]
         [Route("api/upsert-topic-document")]
         public async Task<IActionResult> UpsertTopicDocument([FromBody]dynamic topic)
@@ -371,7 +379,42 @@ namespace Access2Justice.Api.Controllers
         }
 
         /// <summary>
-        /// Get topic details by parent id
+        /// Create Single Topic Document
+        /// </summary>
+        [Permission(PermissionName.upserttopic)]
+        [HttpPost]
+        [Route("api/upserttopic")]
+        public async Task<IActionResult> UpsertSingleTopicDocument([FromBody]dynamic topic)
+        {
+            List<dynamic> topicsList = new List<dynamic>();
+            topicsList.Add(topic);
+            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(topic.organizationalUnit))
+            {
+                var topics = await topicsResourcesBusinessLogic.UpsertTopicDocumentAsync(topicsList);
+                return Ok(topics);
+            }
+            return StatusCode(403);
+        }
+
+        /// <summary>
+        /// Create Single Resource Document
+        /// </summary>
+        [Permission(PermissionName.upsertresource)]
+        [HttpPost]
+        [Route("api/upsertresource")]
+        public async Task<IActionResult> UpserSingleResourceDocument([FromBody]dynamic resource)
+        {
+            List<dynamic> resourcesList = new List<dynamic>();
+            resourcesList.Add(resource);
+            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(resource.organizationalUnit))
+            {
+                var resources = await topicsResourcesBusinessLogic.UpsertResourceDocumentAsync(resourcesList);
+                return Ok(resources);
+            }
+            return StatusCode(403);
+        }
+
+        /// Get the topic details by the document parent Id
         /// </summary>
         /// <remarks>
         /// Helps to get the topic details by the document parent Id

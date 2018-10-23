@@ -95,17 +95,17 @@ namespace Access2Justice.Tools.Models
         [JsonProperty(PropertyName = "overview")]
         public string Overview { get; set; }
 
-        [JsonProperty(PropertyName = "headline1")]
-        public string HeadLine1 { get; set; }
+        [JsonProperty(PropertyName = "contents")]
+        public IEnumerable<ArticleContents> Contents { get; set; }
+    }
 
-        [JsonProperty(PropertyName = "content1")]
-        public string Content1 { get; set; }
+    public class ArticleContents
+    {
+        [JsonProperty(PropertyName = "headline")]
+        public string Headline { get; set; }
 
-        [JsonProperty(PropertyName = "headline2")]
-        public string HeadLine2 { get; set; }
-
-        [JsonProperty(PropertyName = "content2")]
-        public string Content2 { get; set; }
+        [JsonProperty(PropertyName = "content")]
+        public string Content { get; set; }
     }
 
     public class Video : Resource
@@ -163,6 +163,11 @@ namespace Access2Justice.Tools.Models
 
         [JsonProperty(PropertyName = "fullDescription")]
         public string FullDescription { get; set; }
+    }
+
+    public class RelatedLink : Resource
+    {
+        //for now there are no unique properties to related links
     }
 
     [AttributeUsage(AttributeTargets.Property)]

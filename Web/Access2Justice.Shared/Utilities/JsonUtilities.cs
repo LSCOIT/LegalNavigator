@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 
 namespace Access2Justice.Shared.Utilities
 {
@@ -16,6 +17,10 @@ namespace Access2Justice.Shared.Utilities
 
         public static T DeserializeDynamicObject<T>(dynamic dynamicObject)
         {
+            if(dynamicObject == null || (dynamicObject.ToString() == Constants.EmptyArray))
+            {
+                return Activator.CreateInstance<T>();
+            }
             return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(dynamicObject));
         }
     }

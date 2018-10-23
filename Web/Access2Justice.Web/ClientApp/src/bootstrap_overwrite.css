@@ -115,7 +115,7 @@ a:not([href]):not([tabindex]) {
 }
 
 .carousel-control {
-  top: 480px;
+  top: 500px;
   display: unset;
   width: 40px;
   opacity: 1;
@@ -138,7 +138,7 @@ a.carousel-control .icon-prev, a.carousel-control .icon-next {
 
 .carousel-indicators {
   z-index: 1;
-  bottom: -35px;
+  bottom: -55px;
 }
 
 .carousel-indicators .active {
@@ -221,6 +221,16 @@ span.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chev
   content: '';
 }
 
+.panel-body a {
+  color: #0D3FB8;
+  font-weight: 600;
+}
+
+.panel-body li {
+  list-style: disc;
+  margin-left: 30px;
+}
+
 /*Location Modal*/
 .modal-content {
   border-radius: 0;
@@ -292,6 +302,10 @@ span.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chev
 
   .col-sm-offset-2 {
     margin-left: 16.666667%;
+  }
+
+  .col-sm-offset-3 {
+    margin-left: 25%;
   }
 
   .navbar-nav .open .dropdown-menu {
@@ -376,7 +390,7 @@ span.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chev
   }
 
   .carousel-control {
-    top: 350px;
+    top: 370px;
     width: 50px;
   }
 
@@ -413,6 +427,6 @@ span.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chev
   }
 
   .carousel-indicators {
-    bottom: -37px;
+    bottom: -55px;
   }
 }

@@ -40,6 +40,10 @@ namespace Access2Justice.Shared.Models
         [DefaultValue("")]
         [JsonProperty(PropertyName = "helpText")]
         public string HelpText { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "organizationalUnit")]
+        public string OrganizationalUnit { get; set; }
     }
 
     public class HeroContent

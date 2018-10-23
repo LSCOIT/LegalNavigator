@@ -170,8 +170,9 @@ namespace Access2Justice.Api.BusinessLogic
             List<Location> locations = new List<Location>();
             List<Conditions> conditions = new List<Conditions>();
             List<ParentTopicId> parentTopicIds = new List<ParentTopicId>();
-            List<QuickLinks> quickLinks = new List<QuickLinks>();
+            //List<QuickLinks> quickLinks = new List<QuickLinks>();
             List<OrganizationReviewer> organizationReviewers = new List<OrganizationReviewer>();
+            List<ArticleContents> articleContents = new List<ArticleContents>();
             List<dynamic> references = new List<dynamic>();
             foreach (JProperty field in resourceObject)
             {
@@ -195,14 +196,19 @@ namespace Access2Justice.Api.BusinessLogic
                     parentTopicIds = field.Value != null && field.Value.Count() > 0 ? GetParentTopicIds(field.Value) : null;
                 }
 
-                else if (field.Name == "quickLinks")
-                {
-                    quickLinks = field.Value != null && field.Value.Count() > 0 ? GetQuickLinks(field.Value) : null;
-                }
+                //else if (field.Name == "quickLinks")
+                //{
+                //    quickLinks = field.Value != null && field.Value.Count() > 0 ? GetQuickLinks(field.Value) : null;
+                //}
 
                 else if (field.Name == "reviewer")
                 {
                     organizationReviewers = field.Value != null && field.Value.Count() > 0 ? GetReviewer(field.Value) : null;
+                }
+
+                else if (field.Name == "contents")
+                {
+                    articleContents = field.Value != null && field.Value.Count() > 0 ? GetContents(field.Value) : null;
                 }
             }
 
@@ -210,8 +216,9 @@ namespace Access2Justice.Api.BusinessLogic
             references.Add(locations);
             references.Add(conditions);
             references.Add(parentTopicIds);
-            references.Add(quickLinks);
+            //references.Add(quickLinks);
             references.Add(organizationReviewers);
+            references.Add(articleContents);
             return references;
         }
 
@@ -312,29 +319,29 @@ namespace Access2Justice.Api.BusinessLogic
             return parentTopicIds;
         }
 
-        public dynamic GetQuickLinks(dynamic quickLinksValues)
-        {
-            List<QuickLinks> quickLinks = new List<QuickLinks>();
-            foreach (var quickLink in quickLinksValues)
-            {
-                string text = string.Empty;
-                string url = string.Empty;
-                foreach (JProperty quickLinkDetails in quickLink)
-                {
-                    if (quickLinkDetails.Name == "text")
-                    {
-                        text = quickLinkDetails.Value.ToString();
-                    }
+        //public dynamic GetQuickLinks(dynamic quickLinksValues)
+        //{
+        //    List<QuickLinks> quickLinks = new List<QuickLinks>();
+        //    foreach (var quickLink in quickLinksValues)
+        //    {
+        //        string text = string.Empty;
+        //        string url = string.Empty;
+        //        foreach (JProperty quickLinkDetails in quickLink)
+        //        {
+        //            if (quickLinkDetails.Name == "text")
+        //            {
+        //                text = quickLinkDetails.Value.ToString();
+        //            }
 
-                    else if (quickLinkDetails.Name == "url")
-                    {
-                        url = quickLinkDetails.Value.ToString();
-                    }
-                }
-                quickLinks.Add(new QuickLinks { Text = text, Urls = url });
-            }
-            return quickLinks;
-        }
+        //            else if (quickLinkDetails.Name == "url")
+        //            {
+        //                url = quickLinkDetails.Value.ToString();
+        //            }
+        //        }
+        //        quickLinks.Add(new QuickLinks { Text = text, Urls = url });
+        //    }
+        //    return quickLinks;
+        //}
 
         public dynamic GetReviewer(dynamic reviewerValues)
         {
@@ -366,6 +373,28 @@ namespace Access2Justice.Api.BusinessLogic
             return organizationReviewer;
         }
 
+        public dynamic GetContents(dynamic contentValues)
+        {
+            List<ArticleContents> articleContents = new List<ArticleContents>();
+            foreach (var contentDetails in contentValues)
+            {
+                string headline = string.Empty, content = string.Empty;
+                foreach (JProperty contentData in contentDetails)
+                {
+                    if (contentData.Name == "headline")
+                    {
+                        headline = contentData.Value.ToString();
+                    }
+                    else if (contentData.Name == "content")
+                    {
+                        content = contentData.Value.ToString();
+                    }
+                }
+                articleContents.Add(new ArticleContents { Headline = headline, Content = content });
+            }
+            return articleContents;
+        }
+
         public async Task<IEnumerable<object>> UpsertResourcesUploadAsync(string path)
         {
             using (StreamReader r = new StreamReader(path))
@@ -389,6 +418,7 @@ namespace Access2Justice.Api.BusinessLogic
             Video videos = new Video();
             Organization organizations = new Organization();
             EssentialReading essentialReadings = new EssentialReading();
+            RelatedLink relatedLinks = new RelatedLink();
 
             foreach (var resourceObject in resourceObjects)
             {
@@ -508,6 +538,25 @@ namespace Access2Justice.Api.BusinessLogic
                     }
                 }
 
+                else if (resourceObject.resourceType == "Related Links")
+                {
+                    relatedLinks = UpsertResourcesRelatedLinks(resourceObject);
+                    var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(relatedLinks);
+                    List<string> propertyNames = new List<string>() { Constants.Id, Constants.ResourceType };
+                    List<string> values = new List<string>() { id, resourceType };
+                    var resourceDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, propertyNames, values);
+                    if (resourceDBData.Count == 0)
+                    {
+                        var result = await dbService.CreateItemAsync(resourceDocument, dbSettings.ResourceCollectionId);
+                        resources.Add(result);
+                    }
+                    else
+                    {
+                        var result = await dbService.UpdateItemAsync(id, resourceDocument, dbSettings.ResourceCollectionId);
+                        resources.Add(result);
+                    }
+                }
+
             }
             return resources;
         }
@@ -580,9 +629,11 @@ namespace Access2Justice.Api.BusinessLogic
             Article articles = new Article();
             List<TopicTag> topicTags = new List<TopicTag>();
             List<Location> locations = new List<Location>();
+            List<ArticleContents> articleContents = new List<ArticleContents>();
             dynamic references = GetReferences(resourceObject);
             topicTags = references[0];
             locations = references[1];
+            articleContents = references[5];
 
             articles = new Article()
             {
@@ -600,10 +651,7 @@ namespace Access2Justice.Api.BusinessLogic
                 CreatedBy = resourceObject.createdBy,
                 ModifiedBy = resourceObject.modifiedBy,
                 Overview = resourceObject.overview,
-                HeadLine1 = resourceObject.headline1,
-                Content1 = resourceObject.content1,
-                HeadLine2 = resourceObject.headline2,
-                Content2 = resourceObject.content2
+                Contents = articleContents
             };
             articles.Validate();
             return articles;
@@ -648,7 +696,7 @@ namespace Access2Justice.Api.BusinessLogic
             dynamic references = GetReferences(resourceObject);
             topicTags = references[0];
             locations = references[1];
-            organizationReviewers = references[5];            
+            organizationReviewers = references[4];            
 
             organizations = new Organization()
             {
@@ -707,6 +755,35 @@ namespace Access2Justice.Api.BusinessLogic
             return essentialReadings;
         }
 
+        public dynamic UpsertResourcesRelatedLinks(dynamic resourceObject)
+        {
+            RelatedLink relatedLink = new RelatedLink();
+            List<TopicTag> topicTags = new List<TopicTag>();
+            List<Location> locations = new List<Location>();
+            dynamic references = GetReferences(resourceObject);
+            topicTags = references[0];
+            locations = references[1];
+
+            relatedLink = new RelatedLink()
+            {
+                ResourceId = resourceObject.id == "" ? Guid.NewGuid() : resourceObject.id,
+                Name = resourceObject.name,
+                ResourceCategory = resourceObject.resourceCategory,
+                Description = resourceObject.description,
+                ResourceType = resourceObject.resourceType,
+                ExternalUrls = resourceObject.externalUrl,
+                Urls = resourceObject.url,
+                TopicTags = topicTags,
+                OrganizationalUnit = resourceObject.organizationalUnit,
+                Location = locations,
+                Icon = resourceObject.icon,
+                CreatedBy = resourceObject.createdBy,
+                ModifiedBy = resourceObject.modifiedBy
+            };
+            relatedLink.Validate();
+            return relatedLink;
+        }
+
         public async Task<IEnumerable<object>> UpsertTopicsUploadAsync(string path)
         {
             using (StreamReader r = new StreamReader(path))
@@ -752,18 +829,15 @@ namespace Access2Justice.Api.BusinessLogic
             Topic topics = new Topic();
             List<ParentTopicId> parentTopicIds = new List<ParentTopicId>();
             List<Location> locations = new List<Location>();
-            List<QuickLinks> quickLinks = new List<QuickLinks>();
             dynamic references = GetReferences(topicObject);
             locations = references[1];
             parentTopicIds = references[3];
-            quickLinks = references[4];
 
             topics = new Topic()
             {
                 Id = topicObject.id == "" ? Guid.NewGuid() : topicObject.id,
                 Name = topicObject.name,
                 Overview = topicObject.overview,
-                QuickLinks = quickLinks,
                 ParentTopicId = parentTopicIds,
                 ResourceType = topicObject.resourceType,
                 Keywords = topicObject.keywords,

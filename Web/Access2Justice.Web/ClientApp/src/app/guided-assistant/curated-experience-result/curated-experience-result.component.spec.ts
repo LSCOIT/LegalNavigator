@@ -5,6 +5,7 @@ import { NavigateDataService } from '../../shared/navigate-data.service';
 import { ToastrService } from 'ngx-toastr';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { MapService } from '../../shared/map/map.service';
 
 describe('CuratedExperienceResultComponent', () => {
   let component: CuratedExperienceResultComponent;
@@ -35,7 +36,7 @@ describe('CuratedExperienceResultComponent', () => {
       providers: [ 
         { provide: NavigateDataService, useValue: mockNavigateDataService},
         { provide: ToastrService, useValue: mockToastr },
-        { provide: Router, useValue: mockRouter }
+        { provide: Router, useValue: mockRouter }, MapService
       ]
     })
     .compileComponents();

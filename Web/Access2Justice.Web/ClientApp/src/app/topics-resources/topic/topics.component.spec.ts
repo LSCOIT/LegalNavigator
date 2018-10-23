@@ -20,9 +20,8 @@ describe('TopicsComponent', () => {
   let api: TopicService;
   let router: RouterModule;
   let mockTopicService;
-  let service: MapService;
   let mockGlobal;
-  let mockTopics = [
+  let mockTopics: any = [
     {
       "id": "e3bdf5d8-8755-46d9-b13b-e28546fcd27e",
       "name": "Abuse & Harassment",
@@ -37,27 +36,18 @@ describe('TopicsComponent', () => {
           "zipCode": "96761"
         }
       ],
-      "icon": "www.test.com/static-resource/assets/images/categories/abuse.svg",
+      "icon": "",
     }
   ];
   const mockRouter = {
     navigate: () => { }
   };
 
-  const mockMapLocation = {
-    state: "California",
-    city: "Riverside County",
-    county: "Indio",
-    zipCode: "92201",
-    locality: "Indio",
-    address: "92201"
-  };
-
   beforeEach(async(() => {
 
     mockTopicService = jasmine.createSpyObj(['getTopics']);
     mockTopicService.getTopics.and.returnValue(of(mockTopics));
-    mockGlobal = { };
+    mockGlobal = {};
 
     TestBed.configureTestingModule({
       declarations: [
@@ -77,7 +67,8 @@ describe('TopicsComponent', () => {
         { provide: APP_BASE_HREF, useValue: '/' },
         { provide: TopicService, useValue: mockTopicService },
         { provide: RouterModule, useValue: mockRouter },
-        BreadcrumbService, MapService,
+        BreadcrumbService,
+        MapService,
         { provide: Global, useValue: mockGlobal }
       ]
     })
@@ -98,18 +89,16 @@ describe('TopicsComponent', () => {
     expect(component).toBeDefined();
   }));
 
-  it('Bind data topics property from cached topics Data Oninit', async() => {    
+  it('Bind data topics property from cached topics Data Oninit', async () => {
     component.ngOnInit();
     expect(component.topics).toEqual(mockTopics);
   });
 
   it('makes a call to getTopics Oninit', async () => {
-    
     mockGlobal.topicsData = undefined;
     spyOn(component, 'getTopics');
     component.subscription.next(1);
     component.ngOnInit();
     expect(component.getTopics).toHaveBeenCalled();
   });
-
 });

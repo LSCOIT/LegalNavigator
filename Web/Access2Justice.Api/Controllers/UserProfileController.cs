@@ -1,13 +1,15 @@
-﻿using Access2Justice.Shared.Interfaces;
+﻿using Access2Justice.Api.Authorization;
+using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using static Access2Justice.Api.Authorization.Permissions;
 
 namespace Access2Justice.Api.Controllers
-{
+{	
     [Produces("application/json")]
     public class UserProfileController : Controller
     {
@@ -28,6 +30,7 @@ namespace Access2Justice.Api.Controllers
         /// <param name="type"></param>
         /// <response code="200">Get user resource and plan details for given id</response>
         /// <response code="500">Failure</response>
+        [Permission(PermissionName.getuserprofile)]
         [HttpPost]
         [Route("api/user/get-user-profile")]
         public async Task<IActionResult> GetUserDataAsync(string oid, string type)
@@ -45,6 +48,7 @@ namespace Access2Justice.Api.Controllers
         /// <param name="oid"></param>
         /// <response code="200">Get user details for given id</response>
         /// <response code="500">Failure</response>
+        [Permission(PermissionName.getuserprofiledata)]
         [HttpGet]
         [Route("api/user/get-user-profile-data/{oid}")]
         public async Task<IActionResult> GetUserProfileDataAsync(string oid)
@@ -62,7 +66,7 @@ namespace Access2Justice.Api.Controllers
         /// <param name="profileResources"></param>
         /// <response code="200">Get user personalized plan created or updated</response>
         /// <response code="500">Failure</response>
-        [Authorize]
+        [Permission(PermissionName.upsertuserpersonalizedplan)]
         [HttpPost]
         [Route("api/user/upsert-user-personalized-plan")]
         public async Task<IActionResult> UpsertUserPersonalizedPlanAsync([FromBody]ProfileResources profileResources)

@@ -1,5 +1,6 @@
 ﻿using Access2Justice.Shared.Extensions;
 using Access2Justice.Shared.Interfaces;
+using Access2Justice.Shared.Interfaces.A2JAuthor;
 using Access2Justice.Shared.Models;
 using Newtonsoft.Json.Linq;
 using System;
@@ -8,12 +9,24 @@ using System.Linq;
 
 namespace Access2Justice.Api.BusinessLogic
 {
-    public class A2JAuthorBusinessLogic : IA2JAuthorBusinessLogic
+    public class A2JAuthorBusinessLogic : ICuratedExperienceConvertor
     {
+        private readonly ICosmosDbSettings dbSettings;
+        private readonly IBackendDatabaseService dbService;
+        private readonly IPersonalizedPlanEngine personalizedPlanEngine;
+
+        public A2JAuthorBusinessLogic(ICosmosDbSettings cosmosDbSettings, IBackendDatabaseService backendDatabaseService,
+            IPersonalizedPlanEngine a2JAuthorParserBusinessLogic)
+        {
+            dbSettings = cosmosDbSettings;
+            dbService = backendDatabaseService;
+            personalizedPlanEngine = a2JAuthorParserBusinessLogic;
+        }
+
         public CuratedExperience ConvertA2JAuthorToCuratedExperience(JObject a2jSchema)
         {
             var cx = new CuratedExperience();
-            var a2jProperties = (a2jSchema).Properties();
+            var a2jProperties = a2jSchema.Properties();
 
             cx.CuratedExperienceId = Guid.NewGuid();
             cx.Title = a2jProperties.GetValue("title");
@@ -25,24 +38,59 @@ namespace Access2Justice.Api.BusinessLogic
                 var pageProperties = ((JObject)page.FirstOrDefault()).Properties();
                 var componentFields = GetFields(pageProperties);
                 var componentButtons = GetButtons(pageProperties);
+                var componentCodes = GetCodes(pageProperties);
+                var text = CleanHtmlTags(pageProperties.GetValue("text"));
 
                 cx.Components.Add(new CuratedExperienceComponent
                 {
                     ComponentId = Guid.NewGuid(),
                     Name = pageProperties.GetValue("name"),
-                    Help = pageProperties.GetValue("help"),
-                    Learn = pageProperties.GetValue("learn"),
-                    Text = pageProperties.GetValue("text"),
+                    Help = CleanHtmlTags(pageProperties.GetValue("help")),
+                    Learn = CleanHtmlTags(pageProperties.GetValue("learn")),
+                    Text = CleanHtmlTags(pageProperties.GetValue("text")),
                     Fields = componentFields,
-                    Buttons = componentButtons
+                    Buttons = componentButtons,
+                    Code = componentCodes
                 });
             }
 
-            // Todo:@Alaa persist the curated experience and the resource
-            // save curated experience
-            // save resources
+            // Todo: we should figure a way to do upsert, we currently can't do that because we don't have an identifier 
+            dbService.CreateItemAsync(cx, dbSettings.CuratedExperienceCollectionId);
+            dbService.CreateItemAsync(resource, dbSettings.ResourceCollectionId);
 
             return cx;
+        }
+
+        // Todo:@Alaa move this to an html extention
+        private string CleanHtmlTags(string htmlText)
+        {
+            if(string.IsNullOrWhiteSpace(htmlText))
+            {
+                return string.Empty;
+            }
+            // Remove HTML tags from the curated experience questions #568
+            char[] array = new char[htmlText.Length];
+            int arrayIndex = 0;
+            bool isHtmlTag = false;
+            for (int index = 0; index < htmlText.Length; index++)
+            {
+                char let = htmlText[index];
+                if (let == '<')
+                {
+                    isHtmlTag = true; continue;
+                }
+                if (let == '>')
+                {
+                    isHtmlTag = false;
+                    continue;
+                }
+                if (!isHtmlTag)
+                {
+                    array[arrayIndex] = let;
+                    arrayIndex++;
+                }
+            }
+            return new string(array, 0, arrayIndex);
         }
 
         private Resource MapResourceProperties(IEnumerable<JProperty> a2jProperties, Guid curatedExperienceId)
@@ -72,7 +120,9 @@ namespace Access2Justice.Api.BusinessLogic
                 {
                     Id = Guid.NewGuid(),
                     Type = type.ToString(),
-                    Label = field.GetValue("label"),
+                    Label = CleanHtmlTags(field.GetValue("label")),
+                    Name = field.GetValue("name"),
+                    Value = field.GetValue("value"),
                     IsRequired = bool.Parse(field.GetValue("required")),
                     MinLength = field.GetValue("min"),
                     MaxLength = field.GetValue("max"),
@@ -94,47 +144,79 @@ namespace Access2Justice.Api.BusinessLogic
                 componentButtons.Add(new Button
                 {
                     Id = Guid.NewGuid(),
-                    Label = button.GetValue("label"),
-                    Destination = button.GetValue("next")
+                    Label = CleanHtmlTags(button.GetValue("label")),
+                    Destination = button.GetValue("next"),
+                    Name = button.GetValue("name"),
+                    Value = button.GetValue("value")
                 });
             }
 
             return componentButtons;
         }
 
+        private PersonalizedPlanEvaluator GetCodes(IEnumerable<JProperty> pageProperties)
+        {
+            return new PersonalizedPlanEvaluator
+            {
+                CodeBefore = pageProperties.GetValue("codeBefore"),
+                CodeAfter = pageProperties.GetValue("codeAfter")
+            };
+        }
+
         private CuratedExperienceQuestionType MapA2JFieldTypeToCuratedExperienceQuestionType(string a2jAuthorFieldtype)
         {
-            switch (a2jAuthorFieldtype)
+            switch (a2jAuthorFieldtype.ToUpperInvariant())
             {
-                case "text":
-                    return CuratedExperienceQuestionType.Text;
-                case "textlong":
-                    return CuratedExperienceQuestionType.RichText;
-                case "textpick":
-                    return CuratedExperienceQuestionType.List;
-                case "number":
-                    return CuratedExperienceQuestionType.Number;
-                case "numberdollar":
-                    return CuratedExperienceQuestionType.Currency;
-                case "numberssn":
-                    return CuratedExperienceQuestionType.Ssn;
-                case "numberphone":
-                    return CuratedExperienceQuestionType.Phone;
-                case "numberzip":
-                    return CuratedExperienceQuestionType.ZipCode;
-                case "numberpick":
-                    return CuratedExperienceQuestionType.List;
-                case "gender":
-                    return CuratedExperienceQuestionType.RadioButton;
-                case "radio":
-                    return CuratedExperienceQuestionType.RadioButton;
-                case "checkbox":
-                    return CuratedExperienceQuestionType.CheckBox;
-                case "checkboxNOTA":
-                    return CuratedExperienceQuestionType.CheckBox;
+                case "TEXT":
+                    return CuratedExperienceQuestionType.text;
+                case "TEXTLONG":
+                    return CuratedExperienceQuestionType.richText;
+                case "TEXTPICK":
+                    return CuratedExperienceQuestionType.list;
+                case "NUMBER":
+                    return CuratedExperienceQuestionType.number;
+                case "NUMBERDOLLAR":
+                    return CuratedExperienceQuestionType.currency;
+                case "NUMBERSSN":
+                    return CuratedExperienceQuestionType.ssn;
+                case "NUMBERPHONE":
+                    return CuratedExperienceQuestionType.phone;
+                case "NUMBERZIP":
+                    return CuratedExperienceQuestionType.zipCode;
+                case "NUMBERPICK":
+                    return CuratedExperienceQuestionType.list;
+                case "GENDER":
+                    return CuratedExperienceQuestionType.radio;
+                case "RADIO":
+                case "RADIOBUTTON":
+                    return CuratedExperienceQuestionType.radio;
+                case "CHECKBOX":
+                    return CuratedExperienceQuestionType.checkBox;
+                case "CHECKBOXNOTA":
+                    return CuratedExperienceQuestionType.checkBox;
                 default:
-                    return CuratedExperienceQuestionType.Text;
+                    return CuratedExperienceQuestionType.text;
             }
+        }
+
+        private Dictionary<string, string> GetVarsValuesFromUserAnswers(CuratedExperienceAnswers userAnswers)
+        {
+            var varsDic = new Dictionary<string, string>();
+
+            foreach (var button in userAnswers.ButtonComponents)
+            {
+                varsDic.Add(button.Name, button.Value);
+            }
+
+            foreach (var fieldComponent in userAnswers.FieldComponents)
+            {
+                foreach (var field in fieldComponent.Fields)
+                {
+                    varsDic.Add(field.Name, field.Value);
+                }
+            }
+
+            return varsDic;
         }
     }
 }

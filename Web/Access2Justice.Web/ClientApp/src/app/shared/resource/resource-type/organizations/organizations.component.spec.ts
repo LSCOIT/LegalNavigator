@@ -25,7 +25,7 @@ describe('OrganizationsComponent', () => {
   let mockMapResultsService;
   let msalService;
   let mockResource = {
-    resources: [
+    resources:
       {
         "id": "19a02209-ca38-4b74-bd67-6ea941d41518",
         "name": "Alaska Law Help",
@@ -47,9 +47,10 @@ describe('OrganizationsComponent', () => {
         "icon": "./assets/images/resources/resource.png",
         "address": "2900 E Parks Hwy Wasilla, AK 99654",
         "telephone": "907-279-2457"
-      }
-    ]
+      },
+    "url": "https://alaskalawhelp.org/"
   };
+  let mockUrl = "https://www.microsoft.com/en-in/windows";
   let mockToastr;
   msalService = jasmine.createSpyObj(['getUser']);
   beforeEach(async(() => {
@@ -90,6 +91,7 @@ describe('OrganizationsComponent', () => {
     fixture = TestBed.createComponent(OrganizationsComponent);
     component = fixture.componentInstance;
     component.resource = mockResource;
+    component.urlOrigin = mockUrl;
     fixture.detectChanges();
   }));
 
@@ -97,4 +99,3 @@ describe('OrganizationsComponent', () => {
     expect(component).toBeDefined();
   });
 });
-

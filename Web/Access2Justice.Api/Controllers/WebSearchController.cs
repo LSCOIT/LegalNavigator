@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Threading.Tasks;
 using Access2Justice.Shared.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
