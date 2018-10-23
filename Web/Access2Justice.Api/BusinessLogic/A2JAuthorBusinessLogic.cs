@@ -39,7 +39,6 @@ namespace Access2Justice.Api.BusinessLogic
                 var componentFields = GetFields(pageProperties);
                 var componentButtons = GetButtons(pageProperties);
                 var componentCodes = GetCodes(pageProperties);
-                var text = CleanHtmlTags(pageProperties.GetValue("text"));
 
                 cx.Components.Add(new CuratedExperienceComponent
                 {
@@ -89,7 +88,26 @@ namespace Access2Justice.Api.BusinessLogic
                     arrayIndex++;
                 }
             }
-            return new string(array, 0, arrayIndex);
+            return SanitizeString(new string(array, 0, arrayIndex), "%%", "%%");
+        }
+
+        private static string SanitizeString(string text, string startString, string endString)
+        {
+            int indexStart = 0, indexEnd = 0;
+            bool exit = false;
+            while (!exit)
+            {
+                indexStart = text.IndexOf(startString);
+                indexEnd = text.IndexOf(endString, indexStart + 1);
+                if (indexStart != -1 && indexEnd != -1)
+                {
+                    string truncateText = text.Substring(indexStart, indexEnd - indexStart + endString.Length);
+                    text = text.Replace(truncateText, "");                    
+                }
+                else
+                    exit = true;
+            }
+            return text;
         }
 
         private Resource MapResourceProperties(IEnumerable<JProperty> a2jProperties, Guid curatedExperienceId)
