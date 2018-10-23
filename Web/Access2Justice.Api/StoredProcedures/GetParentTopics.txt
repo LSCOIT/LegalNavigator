@@ -1,0 +1,52 @@
+//Do not delete
+//This stored procedure is used to get the parent topic details 
+//based on the topic id and which we have used to render Bredcrumb at fronend side 
+function getParentTopics(prefix) {
+    var collection = getContext().getCollection();
+    var response = getContext().getResponse();
+    var document = [];
+    var result = getData(prefix, collection,document);
+    response.setBody(result);
+}
+
+function getData(prefix, collection, document) {
+    var query = 'SELECT * FROM root c where c.id="' + prefix + '"';
+    var queryCallbackFunction = (err, feed, options) => {
+        if (err) throw err;
+        // Check the feed and if empty, set the body to 'no docs found', 
+        // else take 1st element from feed
+        if (!feed || !feed.length > 0) {
+            document.push({
+            id: prefix,
+            name:feed[0].name.toLowerCase()});
+        }
+        else {
+
+            if(feed[0].parentTopicId==null||feed[0].parentTopicId==undefined) {
+                document.push({
+                    id: prefix,
+                    name:feed[0].name.toLowerCase()});
+            }
+            else if (feed[0].parentTopicId.length > 0) {
+                document.push({
+                    id: prefix,
+                    parentId: feed[0].parentTopicId[0].id,
+                    name:feed[0].name.toLowerCase()
+                    });
+                getData(feed[0].parentTopicId[0].id, collection, document);
+            }
+            else {
+                document.push({
+                    id: prefix,
+                    name:feed[0].name.toLowerCase()});
+            }
+        }
+    };
+    collection.queryDocuments(
+        collection.getSelfLink(),
+        query,
+        queryCallbackFunction
+    );
+
+    return document;
+}
