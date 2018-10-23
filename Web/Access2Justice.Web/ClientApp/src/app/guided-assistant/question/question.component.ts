@@ -23,6 +23,7 @@ export class QuestionComponent implements OnInit {
   @Output() sendQuestionsRemainingEvent = new EventEmitter<number>();
   @Output() sendTotalQuestionsEvent = new EventEmitter<number>();
   generatedPersonalizedPlan: PersonalizedPlan;
+  answersDocId: string;
 
   constructor(
     private questionService: QuestionService,
@@ -47,6 +48,7 @@ export class QuestionComponent implements OnInit {
       .subscribe(question => {
         this.question = { ...question }
         this.sendTotalQuestions(this.question.questionsRemaining);
+        this.answersDocId = this.question.answersDocId;
       });
   }
 
@@ -81,9 +83,10 @@ export class QuestionComponent implements OnInit {
 
     window.scrollTo(0, 0);
     //need to work on multiselect params
+
     const params = {
       "curatedExperienceId": this.question.curatedExperienceId,
-      "answersDocId": this.question.answersDocId,
+      "answersDocId": this.answersDocId,
       "buttonId": this.buttonParam,
       "fields": this.fieldParam
     }
@@ -98,7 +101,7 @@ export class QuestionComponent implements OnInit {
   getActionPlan(): void {
     let params = new HttpParams()
       .set("curatedExperienceId", this.curatedExperienceId)
-      .set("answersDocId", this.question.answersDocId);
+      .set("answersDocId", this.answersDocId);
     
     this.questionService.getpersonalizedPlan(params)
       .subscribe(response => {
