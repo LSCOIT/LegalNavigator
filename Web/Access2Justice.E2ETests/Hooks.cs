@@ -44,8 +44,6 @@ namespace Access2Justice.E2ETests
         public void SetUpBrowser()
         {
             ChromeOptions options = new ChromeOptions();
-            // Start Chrome maximized
-            //options.AddArguments("start-maximized");
             options.AddArguments("--disable-gpu");
             // Disable the "Know your location" pop up
             options.AddUserProfilePreference("profile.managed_default_content_settings.geolocation", 2);
