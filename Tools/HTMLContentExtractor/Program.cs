@@ -13,9 +13,9 @@ namespace HTMLContentExtractor
             // Pass Json file path name including filename ex: C:\Users\v-turake\Documents\My Received Files\template3.json
             string path = Console.ReadLine();
             string text = LoadJson(path);
-            var guids = ExtractFromString(text, "<legal-nav-resource-id>", "</legal-nav-resource-id>");
+            var curatedExperienceContent = ExtractFromString(text, "<legal-nav-resource-id>", "</legal-nav-resource-id>");
 
-            foreach (var guid in guids)
+            foreach (var guid in curatedExperienceContent.ResourceIds)
             {
                 Console.WriteLine(guid);
             }
