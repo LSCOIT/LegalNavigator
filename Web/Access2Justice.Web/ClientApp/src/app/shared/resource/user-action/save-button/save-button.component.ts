@@ -43,6 +43,7 @@ export class SaveButtonComponent implements OnInit {
   planStepCount: number = 0;
   planStepIds: Array<string>;
   planTopicIds: Array<string>;
+  tempResourceStorage: any = [];
 
   constructor(
     private personalizedPlanService: PersonalizedPlanService,
@@ -58,7 +59,7 @@ export class SaveButtonComponent implements OnInit {
   savePlanResources(): void {
     if (!this.msalService.getUser()) {
       this.savePlanResourcesPreLogin();
-      this.externalLogin();
+      //this.externalLogin();
     } else {
       this.savePlanResourcesPostLogin();
     }
@@ -248,9 +249,15 @@ export class SaveButtonComponent implements OnInit {
   }
 
   saveBookmarkedResource() {
+    this.tempResourceStorage = sessionStorage.getItem("tempResourceStorage");
     this.resourceStorage = sessionStorage.getItem(this.sessionKey);
     if (this.resourceStorage && this.resourceStorage.length > 0) {
+      this.tempResourceStorage = JSON.parse(this.tempResourceStorage);
       this.resourceStorage = JSON.parse(this.resourceStorage);
+      if (this.resourceStorage) {
+        this.tempResourceStorage.push(this.resourceStorage);
+      }
+      sessionStorage.setItem("tempResourceStorage", JSON.stringify(this.tempResourceStorage));
       this.id = this.resourceStorage.itemId;
       this.type = this.resourceStorage.resourceType;
       this.resourceDetails = this.resourceStorage.resourceDetails;

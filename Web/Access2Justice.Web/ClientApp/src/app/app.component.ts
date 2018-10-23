@@ -8,6 +8,9 @@ import { IUserProfile } from './shared/login/user-profile.model';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
 import { TopicService } from './topics-resources/shared/topic.service';
+import { SavedResources } from './guided-assistant/personalized-plan/personalized-plan';
+import { PersonalizedPlanService } from './guided-assistant/personalized-plan/personalized-plan.service';
+import { ArrayUtilityService } from './shared/array-utility.service';
 
 @Component({
   selector: 'app-root',
@@ -19,8 +22,19 @@ export class AppComponent implements OnInit {
   staticContentResults: any;
   subscription: any;
   userProfile: IUserProfile;
-  
-  constructor(    
+  sessionKey: string = "bookmarkedResource";
+  planSessionKey: string = "bookmarkPlanId";
+  planStorage: any;
+  resourceStorage: any;
+  tempStorage: any;
+  isObjectExists: boolean;
+
+  id: string;
+  type: string;
+  resourceDetails: any = {};
+  savedResources: SavedResources;
+
+  constructor(
     private global: Global,
     private staticResourceService: StaticResourceService,
     private msalService: MsalService,
@@ -28,11 +42,12 @@ export class AppComponent implements OnInit {
     private loginService: LoginService,
     private spinner: NgxSpinnerService,
     private router: Router,
-    private topicService: TopicService
-  )
-  { }
+    private topicService: TopicService,
+    private personalizedPlanService: PersonalizedPlanService,
+    private arrayUtilityService: ArrayUtilityService
+  ) { }
 
-  createOrGetProfile() {    
+  createOrGetProfile() {
     let userData = this.msalService.getUser();
     this.userProfile = {
       name: userData.idToken['name'], firstName: "", lastName: "", oId: userData.idToken['oid'], eMail: userData.idToken['preferred_username'], isActive: "Yes",
@@ -40,10 +55,39 @@ export class AppComponent implements OnInit {
     }
     this.loginService.upsertUserProfile(this.userProfile)
       .subscribe(response => {
-        if (response) {          
-          this.global.setProfileData(response.oId, response.name, response.eMail);          
+        if (response) {
+          this.global.setProfileData(response.oId, response.name, response.eMail);
+          //this.saveBookmarkedPlan();
+          //this.saveBookmarkedResource();
         }
       });
+  }
+
+  saveBookmarkedPlan() {
+    this.planStorage = sessionStorage.getItem(this.planSessionKey);
+    if (this.planStorage) {
+      //this.savePlanResources();
+      sessionStorage.removeItem(this.planSessionKey);
+    }
+  }
+
+  saveBookmarkedResource() {
+    this.resourceStorage = sessionStorage.getItem(this.sessionKey);
+    if (this.resourceStorage && this.resourceStorage.length > 0) {
+      this.tempStorage = JSON.parse(this.resourceStorage);
+      this.id = this.resourceStorage.itemId;
+      this.type = this.resourceStorage.resourceType;
+      this.resourceDetails = this.resourceStorage.resourceDetails;
+      this.isObjectExists = this.arrayUtilityService.checkObjectExistInArray(this.tempStorage, this.resourceDetails);
+      if (!this.isObjectExists) {
+
+      }
+
+      //this.savePlanResources();
+      this.savedResources = { itemId: this.id, resourceType: this.type, resourceDetails: this.resourceDetails };
+      this.personalizedPlanService.saveResourcesToProfile(this.savedResources);
+      sessionStorage.removeItem(this.sessionKey);
+    }
   }
 
   onActivate(event) {
@@ -54,17 +98,17 @@ export class AppComponent implements OnInit {
     this.spinner.show();
     this.staticResourceService.getStaticContents()
       .subscribe(
-        response => {
-          this.spinner.hide();
-          this.staticContentResults = response;
-          this.global.setData(this.staticContentResults);
-        }, error => {
-          this.spinner.hide();
-          this.router.navigate(['/error']);
-        });
+      response => {
+        this.spinner.hide();
+        this.staticContentResults = response;
+        this.global.setData(this.staticContentResults);
+      }, error => {
+        this.spinner.hide();
+        this.router.navigate(['/error']);
+      });
   }
 
-  ngOnInit() {    
+  ngOnInit() {
     this.subscription = this.mapService.notifyLocation
       .subscribe((value) => {
         this.setStaticContentData();
@@ -79,5 +123,5 @@ export class AppComponent implements OnInit {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
-  } 
+  }
 }
