@@ -170,7 +170,7 @@ namespace Access2Justice.Api.BusinessLogic
             List<Location> locations = new List<Location>();
             List<Conditions> conditions = new List<Conditions>();
             List<ParentTopicId> parentTopicIds = new List<ParentTopicId>();
-            List<QuickLinks> quickLinks = new List<QuickLinks>();
+            //List<QuickLinks> quickLinks = new List<QuickLinks>();
             List<OrganizationReviewer> organizationReviewers = new List<OrganizationReviewer>();
             List<ArticleContents> articleContents = new List<ArticleContents>();
             List<dynamic> references = new List<dynamic>();
@@ -196,10 +196,10 @@ namespace Access2Justice.Api.BusinessLogic
                     parentTopicIds = field.Value != null && field.Value.Count() > 0 ? GetParentTopicIds(field.Value) : null;
                 }
 
-                else if (field.Name == "quickLinks")
-                {
-                    quickLinks = field.Value != null && field.Value.Count() > 0 ? GetQuickLinks(field.Value) : null;
-                }
+                //else if (field.Name == "quickLinks")
+                //{
+                //    quickLinks = field.Value != null && field.Value.Count() > 0 ? GetQuickLinks(field.Value) : null;
+                //}
 
                 else if (field.Name == "reviewer")
                 {
@@ -216,7 +216,7 @@ namespace Access2Justice.Api.BusinessLogic
             references.Add(locations);
             references.Add(conditions);
             references.Add(parentTopicIds);
-            references.Add(quickLinks);
+            //references.Add(quickLinks);
             references.Add(organizationReviewers);
             references.Add(articleContents);
             return references;
@@ -319,29 +319,29 @@ namespace Access2Justice.Api.BusinessLogic
             return parentTopicIds;
         }
 
-        public dynamic GetQuickLinks(dynamic quickLinksValues)
-        {
-            List<QuickLinks> quickLinks = new List<QuickLinks>();
-            foreach (var quickLink in quickLinksValues)
-            {
-                string text = string.Empty;
-                string url = string.Empty;
-                foreach (JProperty quickLinkDetails in quickLink)
-                {
-                    if (quickLinkDetails.Name == "text")
-                    {
-                        text = quickLinkDetails.Value.ToString();
-                    }
+        //public dynamic GetQuickLinks(dynamic quickLinksValues)
+        //{
+        //    List<QuickLinks> quickLinks = new List<QuickLinks>();
+        //    foreach (var quickLink in quickLinksValues)
+        //    {
+        //        string text = string.Empty;
+        //        string url = string.Empty;
+        //        foreach (JProperty quickLinkDetails in quickLink)
+        //        {
+        //            if (quickLinkDetails.Name == "text")
+        //            {
+        //                text = quickLinkDetails.Value.ToString();
+        //            }
 
-                    else if (quickLinkDetails.Name == "url")
-                    {
-                        url = quickLinkDetails.Value.ToString();
-                    }
-                }
-                quickLinks.Add(new QuickLinks { Text = text, Urls = url });
-            }
-            return quickLinks;
-        }
+        //            else if (quickLinkDetails.Name == "url")
+        //            {
+        //                url = quickLinkDetails.Value.ToString();
+        //            }
+        //        }
+        //        quickLinks.Add(new QuickLinks { Text = text, Urls = url });
+        //    }
+        //    return quickLinks;
+        //}
 
         public dynamic GetReviewer(dynamic reviewerValues)
         {
@@ -418,7 +418,7 @@ namespace Access2Justice.Api.BusinessLogic
             Video videos = new Video();
             Organization organizations = new Organization();
             EssentialReading essentialReadings = new EssentialReading();
-            ExternalLink externalLinks = new ExternalLink();
+            RelatedLink relatedLinks = new RelatedLink();
 
             foreach (var resourceObject in resourceObjects)
             {
@@ -538,10 +538,10 @@ namespace Access2Justice.Api.BusinessLogic
                     }
                 }
 
-                else if (resourceObject.resourceType == "External Links")
+                else if (resourceObject.resourceType == "Related Links")
                 {
-                    externalLinks = UpsertResourcesExternalLinks(resourceObject);
-                    var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(externalLinks);
+                    relatedLinks = UpsertResourcesRelatedLinks(resourceObject);
+                    var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(relatedLinks);
                     List<string> propertyNames = new List<string>() { Constants.Id, Constants.ResourceType };
                     List<string> values = new List<string>() { id, resourceType };
                     var resourceDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, propertyNames, values);
@@ -633,7 +633,7 @@ namespace Access2Justice.Api.BusinessLogic
             dynamic references = GetReferences(resourceObject);
             topicTags = references[0];
             locations = references[1];
-            articleContents = references[6];
+            articleContents = references[5];
 
             articles = new Article()
             {
@@ -696,7 +696,7 @@ namespace Access2Justice.Api.BusinessLogic
             dynamic references = GetReferences(resourceObject);
             topicTags = references[0];
             locations = references[1];
-            organizationReviewers = references[5];            
+            organizationReviewers = references[4];            
 
             organizations = new Organization()
             {
@@ -755,16 +755,16 @@ namespace Access2Justice.Api.BusinessLogic
             return essentialReadings;
         }
 
-        public dynamic UpsertResourcesExternalLinks(dynamic resourceObject)
+        public dynamic UpsertResourcesRelatedLinks(dynamic resourceObject)
         {
-            ExternalLink externalLink = new ExternalLink();
+            RelatedLink relatedLink = new RelatedLink();
             List<TopicTag> topicTags = new List<TopicTag>();
             List<Location> locations = new List<Location>();
             dynamic references = GetReferences(resourceObject);
             topicTags = references[0];
             locations = references[1];
 
-            externalLink = new ExternalLink()
+            relatedLink = new RelatedLink()
             {
                 ResourceId = resourceObject.id == "" ? Guid.NewGuid() : resourceObject.id,
                 Name = resourceObject.name,
@@ -780,8 +780,8 @@ namespace Access2Justice.Api.BusinessLogic
                 CreatedBy = resourceObject.createdBy,
                 ModifiedBy = resourceObject.modifiedBy
             };
-            externalLink.Validate();
-            return externalLink;
+            relatedLink.Validate();
+            return relatedLink;
         }
 
         public async Task<IEnumerable<object>> UpsertTopicsUploadAsync(string path)
@@ -829,18 +829,15 @@ namespace Access2Justice.Api.BusinessLogic
             Topic topics = new Topic();
             List<ParentTopicId> parentTopicIds = new List<ParentTopicId>();
             List<Location> locations = new List<Location>();
-            List<QuickLinks> quickLinks = new List<QuickLinks>();
             dynamic references = GetReferences(topicObject);
             locations = references[1];
             parentTopicIds = references[3];
-            quickLinks = references[4];
 
             topics = new Topic()
             {
                 Id = topicObject.id == "" ? Guid.NewGuid() : topicObject.id,
                 Name = topicObject.name,
                 Overview = topicObject.overview,
-                QuickLinks = quickLinks,
                 ParentTopicId = parentTopicIds,
                 ResourceType = topicObject.resourceType,
                 Keywords = topicObject.keywords,
