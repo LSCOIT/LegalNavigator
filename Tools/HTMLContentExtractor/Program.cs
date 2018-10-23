@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Access2Justice.HTMLContentExtractor;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -38,10 +39,10 @@ namespace HTMLContentExtractor
         /// <param name="startString"></param>
         /// <param name="endString"></param>
         /// <returns></returns>
-        private static List<Guid> ExtractFromString(string text, string startString, string endString)
+        private static CuratedExperienceContent ExtractFromString(string text, string startString, string endString)
         {
-            List<Guid> matched = new List<Guid>();
             int indexStart = 0, indexEnd = 0;
+            CuratedExperienceContent curatedExperienceContent = new CuratedExperienceContent();
             bool exit = false;
             while (!exit)
             {
@@ -49,14 +50,16 @@ namespace HTMLContentExtractor
                 indexEnd = text.IndexOf(endString);
                 if (indexStart != -1 && indexEnd != -1)
                 {
-                    matched.Add(new Guid(text.Substring(indexStart + startString.Length,
-                        indexEnd - indexStart - startString.Length)));
-                    text = text.Substring(indexEnd + endString.Length);
+                    curatedExperienceContent.ResourceIds.Add(new Guid(text.Substring(indexStart + startString.Length,
+                                                                      indexEnd - indexStart - startString.Length)));
+                    string truncateText = text.Substring(indexStart, indexEnd - indexStart + endString.Length);
+                    text = text.Replace(truncateText, "");
+                    curatedExperienceContent.SanitizedString = text;
                 }
                 else
                     exit = true;
             }
-            return matched;
+            return curatedExperienceContent;
         }
 
     }
