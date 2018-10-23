@@ -107,7 +107,15 @@ namespace Access2Justice.Shared.Extensions
                     }
                     else
                     {
-                        varsValues.Add(varValue, inputText.RemoveQuotes());
+                         // Todo:@Alaa factor out this code (it is being used in muliple locatoins by now)
+                        if (!varsValues.Contains(varValue))
+                        {
+                            varsValues.Add(varValue, inputText.RemoveQuotes());
+                        }
+                        else
+                        {
+                            varsValues[varValue] = inputText.RemoveQuotes();
+                        }
                     }
                 }
             }
