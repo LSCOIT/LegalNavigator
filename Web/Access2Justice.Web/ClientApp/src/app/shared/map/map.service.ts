@@ -108,6 +108,39 @@ export class MapService {
     this.mapLocation.county = this.location.address.district;
     this.mapLocation.city = this.location.address.locality;
     this.mapLocation.zipCode = this.location.address.postalCode;
+    if ((this.location.entitySubType != undefined &&
+      this.location.entitySubType.indexOf("Postcode") != -1)
+      || (this.location.entityType != undefined &&
+        this.location.entityType.indexOf("PostalAddress") != -1)) {
+      //this.mapLocation.state = "";
+      this.mapLocation.county = "";
+      this.mapLocation.city = "";
+    }
+    //State
+    else if ((this.location.entitySubType != undefined &&
+      this.location.entitySubType.indexOf("AdminDivision1") != -1)
+      || (this.location.entityType != undefined &&
+        this.location.entityType.indexOf("AdminDivision1") != -1)) {
+      this.mapLocation.county = "";
+      this.mapLocation.city = "";
+      this.mapLocation.zipCode = "";
+    }
+    //County
+    else if (this.location.entitySubType != undefined &&
+      this.location.entitySubType.indexOf("AdminDivision2") != -1) {
+      //this.mapLocation.state = "";
+      this.mapLocation.city = "";
+      this.mapLocation.zipCode = "";
+    }
+    //City
+    else if ((this.location.entitySubType != undefined &&
+      this.location.entitySubType.indexOf("PopulatedPlace") != -1)
+      || (this.location.entityType != undefined &&
+        this.location.entityType.indexOf("PopulatedPlace") != -1)) {
+      //this.mapLocation.state = "";
+      this.mapLocation.county = "";
+      this.mapLocation.zipCode = "";
+    }
     let country: string;
     let fullStateName = this.location.address.formattedAddress;
     if (fullStateName.indexOf(',') > 0) {
