@@ -75,7 +75,14 @@ namespace Access2Justice.Shared.A2JAuthor
             {
                 if (!string.IsNullOrWhiteSpace(button.Name) && !string.IsNullOrWhiteSpace(button.Value))
                 {
-                    userAnswers.Add(button.Name, button.Value);
+                    if (!userAnswers.ContainsKey(button.Name))
+                    {
+                        userAnswers.Add(button.Name, button.Value);
+                    }
+                    else
+                    {
+                        userAnswers[button.Name] = button.Value;
+                    }
                 }
             }
 
@@ -85,7 +92,14 @@ namespace Access2Justice.Shared.A2JAuthor
                 {
                     if (!string.IsNullOrWhiteSpace(field.Name) && !string.IsNullOrWhiteSpace(field.Value))
                     {
-                        userAnswers.Add(field.Name, field.Value);
+                        if (!userAnswers.ContainsKey(field.Name))
+                        {
+                            userAnswers.Add(field.Name, field.Value);
+                        }
+                        else
+                        {
+                            userAnswers[field.Name] = field.Value;
+                        }
                     }
                 }
             }

@@ -58,6 +58,7 @@ namespace Access2Justice.Shared.Models
             Tags = new List<string>();
             Fields = new List<Field>();
             Buttons = new List<Button>();
+            Code = new PersonalizedPlanEvaluator();
         }
     }
 
