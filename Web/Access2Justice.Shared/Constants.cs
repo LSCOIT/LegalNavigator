@@ -32,5 +32,6 @@
         public const string UserRole = "roleName";
         public const string UserName = "eMail";
         public const string Delimiter = "|";
+        public const string sharedResourceId = "sharedResourceId";
     }
 }
