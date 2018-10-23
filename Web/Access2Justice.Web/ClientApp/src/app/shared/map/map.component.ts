@@ -94,6 +94,7 @@ export class MapComponent implements OnInit {
             this.locationDetails.location.address = location.resourceSets[0].resources[0].name;
             if (environment.map_type) {
               this.locationDetails.location.state = location.resourceSets[0].resources[0].name;
+              this.locationDetails.location.locality = location.resourceSets[0].resources[0].name;
               sessionStorage.setItem("globalSearchMapLocation", JSON.stringify(this.locationDetails));
             } else {
               sessionStorage.setItem("localSearchMapLocation", JSON.stringify(this.locationDetails));
