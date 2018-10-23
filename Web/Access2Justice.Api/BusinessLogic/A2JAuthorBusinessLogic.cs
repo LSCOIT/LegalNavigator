@@ -66,29 +66,31 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 return string.Empty;
             }
+            string sanitizedHtmlString = SanitizeString(htmlText, "<", ">");
+            return SanitizeString(sanitizedHtmlString, "%%", "%%");
             // Remove HTML tags from the curated experience questions #568
-            char[] array = new char[htmlText.Length];
-            int arrayIndex = 0;
-            bool isHtmlTag = false;
-            for (int index = 0; index < htmlText.Length; index++)
-            {
-                char let = htmlText[index];
-                if (let == '<')
-                {
-                    isHtmlTag = true; continue;
-                }
-                if (let == '>')
-                {
-                    isHtmlTag = false;
-                    continue;
-                }
-                if (!isHtmlTag)
-                {
-                    array[arrayIndex] = let;
-                    arrayIndex++;
-                }
-            }
-            return SanitizeString(new string(array, 0, arrayIndex), "%%", "%%");
+            //char[] array = new char[htmlText.Length];
+            //int arrayIndex = 0;
+            //bool isHtmlTag = false;
+            //for (int index = 0; index < htmlText.Length; index++)
+            //{
+            //    char let = htmlText[index];
+            //    if (let == '<')
+            //    {
+            //        isHtmlTag = true; continue;
+            //    }
+            //    if (let == '>')
+            //    {
+            //        isHtmlTag = false;
+            //        continue;
+            //    }
+            //    if (!isHtmlTag)
+            //    {
+            //        array[arrayIndex] = let;
+            //        arrayIndex++;
+            //    }
+            //}
+            //return SanitizeString(new string(array, 0, arrayIndex), "%%", "%%");
         }
 
         private static string SanitizeString(string text, string startString, string endString)
