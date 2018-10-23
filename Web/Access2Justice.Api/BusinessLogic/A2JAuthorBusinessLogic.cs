@@ -44,9 +44,9 @@ namespace Access2Justice.Api.BusinessLogic
                 {
                     ComponentId = Guid.NewGuid(),
                     Name = pageProperties.GetValue("name"),
-                    Help = CleanHtmlTags(pageProperties.GetValue("help")),
-                    Learn = CleanHtmlTags(pageProperties.GetValue("learn")),
-                    Text = CleanHtmlTags(pageProperties.GetValue("text")),
+                    Help = pageProperties.GetValue("help").RemoveHtmlTags(),
+                    Learn = pageProperties.GetValue("learn").RemoveHtmlTags(),
+                    Text = pageProperties.GetValue("text").RemoveHtmlTags().RemoveCustomA2JFunctions(),
                     Fields = componentFields,
                     Buttons = componentButtons,
                     Code = componentCodes
@@ -60,58 +60,6 @@ namespace Access2Justice.Api.BusinessLogic
             return cx;
         }
 
-        // Todo:@Alaa move this to an html extention
-        private string CleanHtmlTags(string htmlText)
-        {
-            if(string.IsNullOrWhiteSpace(htmlText))
-            {
-                return string.Empty;
-            }
-            string sanitizedHtmlString = SanitizeString(htmlText, "<", ">");
-            return SanitizeString(sanitizedHtmlString, "%%", "%%");
-            // Remove HTML tags from the curated experience questions #568
-            //char[] array = new char[htmlText.Length];
-            //int arrayIndex = 0;
-            //bool isHtmlTag = false;
-            //for (int index = 0; index < htmlText.Length; index++)
-            //{
-            //    char let = htmlText[index];
-            //    if (let == '<')
-            //    {
-            //        isHtmlTag = true; continue;
-            //    }
-            //    if (let == '>')
-            //    {
-            //        isHtmlTag = false;
-            //        continue;
-            //    }
-            //    if (!isHtmlTag)
-            //    {
-            //        array[arrayIndex] = let;
-            //        arrayIndex++;
-            //    }
-            //}
-            //return SanitizeString(new string(array, 0, arrayIndex), "%%", "%%");
-        }
-
-        private static string SanitizeString(string text, string startString, string endString)
-        {
-            int indexStart = 0, indexEnd = 0;
-            bool exit = false;
-            while (!exit)
-            {
-                indexStart = text.IndexOf(startString);
-                indexEnd = text.IndexOf(endString, indexStart + 1);
-                if (indexStart != -1 && indexEnd != -1)
-                {
-                    string truncateText = text.Substring(indexStart, indexEnd - indexStart + endString.Length);
-                    text = text.Replace(truncateText, "");                    
-                }
-                else
-                    exit = true;
-            }
-            return text;
-        }
 
         private Resource MapResourceProperties(IEnumerable<JProperty> a2jProperties, Guid curatedExperienceId)
         {
@@ -140,7 +88,7 @@ namespace Access2Justice.Api.BusinessLogic
                 {
                     Id = Guid.NewGuid(),
                     Type = type.ToString(),
-                    Label = CleanHtmlTags(field.GetValue("label")),
+                    Label = field.GetValue("label").RemoveHtmlTags(),
                     Name = field.GetValue("name"),
                     Value = field.GetValue("value"),
                     IsRequired = bool.Parse(field.GetValue("required")),
@@ -164,7 +112,7 @@ namespace Access2Justice.Api.BusinessLogic
                 componentButtons.Add(new Button
                 {
                     Id = Guid.NewGuid(),
-                    Label = CleanHtmlTags(button.GetValue("label")),
+                    Label = button.GetValue("label").RemoveHtmlTags(),
                     Destination = button.GetValue("next"),
                     Name = button.GetValue("name"),
                     Value = button.GetValue("value")
