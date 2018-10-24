@@ -33,16 +33,16 @@ namespace Access2Justice.Api.BusinessLogic
             this.personalizedPlanViewModelMapper = personalizedPlanViewModelMapper;
         }
 
-        public async Task<PersonalizedPlanViewModel> GeneratePersonalizedPlanAsync(CuratedExperience curatedExperience, Guid answersDocId)
+        public async Task<PersonalizedPlanViewModel> GeneratePersonalizedPlanAsync(CuratedExperience curatedExperience, Guid answersDocId, Location location)
         {
-            var a2jPersonalizedPlan = await dynamicQueries.FindItemWhereAsync<JObject>(cosmosDbSettings.A2JAuthorTemplatesCollectionId, "id",
+            var a2jPersonalizedPlan = await dynamicQueries.FindItemWhereAsync<JObject>(cosmosDbSettings.A2JAuthorTemplatesCollectionId, Constants.Id,
                 curatedExperience.A2jPersonalizedPlanId.ToString());
 
             var userAnswers = await backendDatabaseService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(),
                 cosmosDbSettings.CuratedExperienceAnswersCollectionId);
 
             var unprocessedPlan = await personalizedPlanEngine.Build(a2jPersonalizedPlan, userAnswers);
-            return await personalizedPlanViewModelMapper.MapViewModel(unprocessedPlan);
+            return await personalizedPlanViewModelMapper.MapViewModel(unprocessedPlan, location);
         }
 
          // Todo:@Alaa test this method working
@@ -58,7 +58,7 @@ namespace Access2Justice.Api.BusinessLogic
             return personalizedPlan?[0];
         }
 
-        public async Task<PersonalizedPlanViewModel> UpdatePersonalizedPlan(PersonalizedPlanViewModel personalizedPlan)
+        public async Task<PersonalizedPlanViewModel> UpdatePersonalizedPlan(PersonalizedPlanViewModel personalizedPlan, string userId)
         {
 
             var breakpoint = string.Empty; // Todo:@Alaa - remove this temp code

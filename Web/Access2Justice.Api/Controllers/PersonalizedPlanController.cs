@@ -33,10 +33,10 @@ namespace Access2Justice.Api.Controllers
 
 
         [HttpGet("generate")]
-        public async Task<IActionResult> GeneratePersonalizedPlan([FromQuery] Guid curatedExperienceId, [FromQuery] Guid answersDocId)
+        public async Task<IActionResult> GeneratePersonalizedPlan([FromQuery] Guid curatedExperienceId, [FromQuery] Guid answersDocId, [FromBody] Location location)
         {
             var personalizedPlan = await personalizedPlanBusinessLogic.GeneratePersonalizedPlanAsync(
-                RetrieveCachedCuratedExperience(curatedExperienceId), answersDocId);
+                RetrieveCachedCuratedExperience(curatedExperienceId), answersDocId, location);
 
             if (personalizedPlan == null)
             {
@@ -46,14 +46,14 @@ namespace Access2Justice.Api.Controllers
             return Ok(personalizedPlan);
         }
 
-
-        [Permission(PermissionName.updateplan)]
+         // Todo:@Alaa check user is logged in
+             // [Permission(PermissionName.)]
         [HttpPost("update")]
-        public async Task<IActionResult> UpdateUserProfileDocumentAsync()
+        public async Task<IActionResult> UpdateUserProfileDocumentAsync(PersonalizedPlanViewModel personalizedPlan, string userId)
         {
-            // Todo:@Alaa save/add the unprocessed plan to the existing one if the user already has one
+            // Todo:@Alaa remove
             var user = HttpContext.User;
-            return Ok(/*await personalizedPlanBusinessLogic.UpdatePersonalizedPlan(personalizedPlan)*/);
+            return Ok(await personalizedPlanBusinessLogic.UpdatePersonalizedPlan(personalizedPlan, userId));
         }
 
         // Todo:@Alaa must refactor this, i copied it from the CuratedExperience controller for now to finish an end-to-end personalized plan
