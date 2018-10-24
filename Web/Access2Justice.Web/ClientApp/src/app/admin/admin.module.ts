@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from '../app-routing.module';
 import { AdminComponent } from './admin.component';
 import { PrivacyPromiseAdminComponent } from './privacy-promise/privacy-promise-admin.component';
+import { AdminService } from './admin.service';
 
 @NgModule({
   imports: [
@@ -18,6 +19,9 @@ import { PrivacyPromiseAdminComponent } from './privacy-promise/privacy-promise-
   exports: [
     AdminComponent,
     PrivacyPromiseAdminComponent
+  ],
+  providers: [
+    AdminService
   ]
 })
 export class AdminModule { }

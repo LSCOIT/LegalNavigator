@@ -4,6 +4,10 @@ import { Global } from "../../global";
 import { NgForm } from '@angular/forms';
 import { environment } from '../../../environments/environment';
 import { StaticResourceService } from '../../shared/static-resource.service';
+import { AdminService } from '../admin.service';
+import { MapLocation } from '../../shared/map/map';
+import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-privacy-promise-admin',
@@ -20,10 +24,16 @@ export class PrivacyPromiseAdminComponent implements OnInit {
   staticContent: any;
   staticContentSubcription: any;
   blobUrl: string = environment.blobUrl;
+  location: MapLocation;
+  mapLocation: MapLocation;
+  state: string;
 
   constructor(
     private staticResourceService: StaticResourceService,
-    private global: Global
+    private global: Global,
+    private adminService: AdminService,
+    private spinner: NgxSpinnerService,
+    private router: Router
   ) { }
 
   mapSectionDescription(form) {
@@ -39,12 +49,31 @@ export class PrivacyPromiseAdminComponent implements OnInit {
   }
 
   onSubmit(privacyForm: NgForm) {
+    this.spinner.show();
     this.newPrivacyContent = privacyForm.value;
     this.mapSectionDescription(privacyForm.value);
+    if (sessionStorage.getItem("globalMapLocation")) {
+      this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+    }
     let params = {
       "description": privacyForm.value.pageDescription,
-      "details": this.detailParams
+      "details": this.detailParams,
+      // Need to pass proper name, currently i have tested with name just to make sure not updating any proper data.
+      "name": "PrivacyPromisePageDummy3",
+      // need to check on this, Will there be any content mapped to multiple states.
+      "location": [this.mapLocation],
+      "image": this.privacyContent.image,
+      "organizationalUnit": this.privacyContent.organizationalUnit
     }
+    this.adminService.savePrivacyData(params).subscribe(
+      response => {
+        this.spinner.hide();
+        if (response) {
+          this.privacyContent.description = response["description"];
+          this.privacyContent.details = response["details"];
+          this.router.navigate(['/admin']);
+        }
+      });
     console.log(params);
   }
 

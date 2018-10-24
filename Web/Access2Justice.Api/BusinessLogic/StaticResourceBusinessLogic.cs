@@ -1,9 +1,9 @@
 ﻿using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
+using Access2Justice.Shared.Utilities;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Access2Justice.Api.BusinessLogic
@@ -53,20 +53,20 @@ namespace Access2Justice.Api.BusinessLogic
             return result;
         }
 
-        public async Task<dynamic> UpsertStaticPrivacyPromisePageDataAsync(PrivacyPromiseContent privacyPromisePageContent, Location location)
+        public async Task<dynamic> UpsertStaticPrivacyPromisePageDataAsync(PrivacyPromiseContent privacyPromisePageContent)
         {
-            var serializedResult = JsonConvert.SerializeObject(privacyPromisePageContent);
-            var pageDocument = JsonConvert.DeserializeObject(serializedResult);
-            string name = privacyPromisePageContent.Name;
             dynamic result = null;
-            var pageDBData = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourceCollectionId, Constants.Name, name, location);
+            var pageDBData = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourceCollectionId, Constants.Name, privacyPromisePageContent.Name, privacyPromisePageContent.Location.FirstOrDefault());
             if (pageDBData.Count == 0)
             {
+                var pageDocument = JsonUtilities.DeserializeDynamicObject<object>(privacyPromisePageContent);
                 result = await dbService.CreateItemAsync(pageDocument, dbSettings.StaticResourceCollectionId);
             }
             else
             {
                 string id = pageDBData[0].id;
+                privacyPromisePageContent.Id = id;
+                var pageDocument = JsonUtilities.DeserializeDynamicObject<object>(privacyPromisePageContent);
                 result = await dbService.UpdateItemAsync(id, pageDocument, dbSettings.StaticResourceCollectionId);
             }
             return result;

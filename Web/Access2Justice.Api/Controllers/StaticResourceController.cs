@@ -57,17 +57,19 @@ namespace Access2Justice.Api.Controllers
         /// </summary>
         /// <param name="pageContent"></param>
         /// <returns></returns>
-        [Permission(PermissionName.upsertstaticprivacypage)]
+        //TO DO : Need to uncomment this to implement authorization for this method
+        //[Permission(PermissionName.upsertstaticprivacypage)]
         [HttpPost]
         [Route("api/static-resource/upsert-static-privacy-page")]
-        public async Task<IActionResult> UpsertStaticPrivacyPromisePageDataAsync([FromBody]PrivacyPromiseContent privacyPromiseContent, Location location)
+        public async Task<IActionResult> UpsertStaticPrivacyPromisePageDataAsync([FromBody]PrivacyPromiseContent privacyPromiseContent)
         {
-            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(privacyPromiseContent.OrganizationalUnit))
-            {
-                var contents = await staticResourceBusinessLogic.UpsertStaticPrivacyPromisePageDataAsync(privacyPromiseContent, location);
-                return Ok(contents);
-            }
-            return StatusCode(403);
+            //TO DO : Need to uncomment this logic to validate organizationalUnit while updating data.
+            //if (await userRoleBusinessLogic.ValidateOrganizationalUnit(privacyPromiseContent.OrganizationalUnit))
+            //{
+            var contents = await staticResourceBusinessLogic.UpsertStaticPrivacyPromisePageDataAsync(privacyPromiseContent);
+            return Ok(contents);
+            //   }
+            //return StatusCode(403);            
         }
 
         /// <summary>
