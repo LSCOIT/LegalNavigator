@@ -2,7 +2,6 @@
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Interfaces.A2JAuthor;
 using Access2Justice.Shared.Models;
-using Access2Justice.Shared.Utilities;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -76,8 +75,8 @@ namespace Access2Justice.Shared.A2JAuthor
                         {
                             if (!string.IsNullOrWhiteSpace(state.GetValue("userContent")))
                             {
-                                unprocessedStep.Description = state.GetValue("userContent");
-                                unprocessedStep.ResourceIds = ExtractResourceIds(state.GetValue("userContent"));
+                                unprocessedStep.Description = state.GetValue("userContent").ExtractIdsRemoveCustomA2JTags().SanitizedHtml;
+                                unprocessedStep.ResourceIds = state.GetValue("userContent").ExtractIdsRemoveCustomA2JTags().ResourceIds;
                             }
                         }
                         unprocessedTopic.UnprocessedSteps.Add(unprocessedStep);
@@ -87,27 +86,6 @@ namespace Access2Justice.Shared.A2JAuthor
 
             unprocessedPlan.UnprocessedTopics.Add(unprocessedTopic);
             return unprocessedPlan;
-        }
-
-        private List<Guid> ExtractResourceIds(string html)
-        {
-            var matched = new List<Guid>();
-            int indexStart = 0, indexEnd = 0;
-            bool exit = false;
-            while (!exit)
-            {
-                indexStart = html.IndexOf(Tokens.CustomHtmlTag);
-                indexEnd = html.IndexOf(Tokens.CustomHtmlClosingTag);
-                if (indexStart != -1 && indexEnd != -1)
-                {
-                    matched.Add(new Guid(html.Substring(indexStart + Tokens.CustomHtmlTag.Length,
-                        indexEnd - indexStart - Tokens.CustomHtmlTag.Length)));
-                    html = html.Substring(indexEnd + Tokens.CustomHtmlClosingTag.Length);
-                }
-                else
-                    exit = true;
-            }
-            return matched;
         }
     }
 }

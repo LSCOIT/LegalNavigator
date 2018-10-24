@@ -30,7 +30,6 @@ namespace Access2Justice.Api.Controllers
         /// <param name="type"></param>
         /// <response code="200">Get user resource and plan details for given id</response>
         /// <response code="500">Failure</response>
-        [Permission(PermissionName.getuserprofile)]
         [HttpPost]
         [Route("api/user/get-user-profile")]
         public async Task<IActionResult> GetUserDataAsync(string oid, string type)

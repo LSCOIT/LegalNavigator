@@ -6,6 +6,11 @@ namespace Access2Justice.Shared.Models
 {
     public class CuratedExperience
     {
+        public CuratedExperience()
+        {
+            Components = new List<CuratedExperienceComponent>();
+        }
+
         [JsonProperty(PropertyName = "id")]
         public Guid CuratedExperienceId { get; set; }
 
@@ -17,15 +22,18 @@ namespace Access2Justice.Shared.Models
 
         [JsonProperty(PropertyName = "components")]
         public List<CuratedExperienceComponent> Components { get; set; }
-
-        public CuratedExperience()
-        {
-            Components = new List<CuratedExperienceComponent>();
-        }
     }
 
     public class CuratedExperienceComponent
     {
+        public CuratedExperienceComponent()
+        {
+            Tags = new List<string>();
+            Fields = new List<Field>();
+            Buttons = new List<Button>();
+            Code = new PersonalizedPlanEvaluator();
+        }
+
         [JsonProperty(PropertyName = "componentId")]
         public Guid ComponentId { get; set; }
 
@@ -52,13 +60,6 @@ namespace Access2Justice.Shared.Models
 
         [JsonProperty(PropertyName = "code")]
         public PersonalizedPlanEvaluator Code { get; set; }
-
-        public CuratedExperienceComponent()
-        {
-            Tags = new List<string>();
-            Fields = new List<Field>();
-            Buttons = new List<Button>();
-        }
     }
 
     public class Field

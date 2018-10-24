@@ -201,21 +201,31 @@ namespace Access2Justice.Api.BusinessLogic
 			}
 			var response = await dbClient.FindFieldWhereArrayContainsAsync(dbSettings.UserResourceCollectionId,
 				Constants.SharedResource, Constants.PermaLink, permaLink, Constants.ExpirationDate);
-			if (response == null)
-			{
-				return null;
-			}
-			List<ShareProfileResponse> shareProfileResponse = JsonUtilities.DeserializeDynamicObject<List<ShareProfileResponse>>(response);
-			ShareProfileViewModel profileViewModel = new ShareProfileViewModel();
-			foreach (var profile in shareProfileResponse)
-			{
-				if (profile.Url.OriginalString == Constants.ProfileLink)
-				{
-					profileViewModel.UserName = profile.Name;
-					profileViewModel.UserId = profile.OId;
-				}
-				profileViewModel.ResourceLink = profile.Url.OriginalString;
-			}
+            if (response == null)
+            {
+                return null;
+            }
+            List<ShareProfileDetails> shareProfileDetails = JsonUtilities.DeserializeDynamicObject<List<ShareProfileDetails>>(response);
+            ShareProfileViewModel profileViewModel = new ShareProfileViewModel();
+
+            if (shareProfileDetails.Count() > 0)
+            {
+                var userprofileResponse = await dbClient.FindFieldWhereArrayContainsAsync(dbSettings.UserProfileCollectionId, Constants.sharedResourceId, shareProfileDetails[0].Id);
+                List<ShareProfileResponse> shareProfileResponse = JsonUtilities.DeserializeDynamicObject<List<ShareProfileResponse>>(userprofileResponse);
+                if (shareProfileResponse?.Count > 0)
+                {
+                    shareProfileResponse[0].Link = shareProfileDetails.FirstOrDefault().Link;
+                    foreach (var profile in shareProfileResponse)
+                    {
+                        if (profile.Link == Constants.ProfileLink)
+                        {
+                            profileViewModel.UserName = profile.Name;
+                            profileViewModel.UserId = profile.OId;
+                        }
+                        profileViewModel.ResourceLink = profile.Link;
+                    }
+                }
+            }
 			return profileViewModel;
 		}
 		private string GetPermaLink(string permaLink)
