@@ -22,8 +22,13 @@ export class Global {
   isLoggedIn: boolean = false;
   topicsData: any;
   organizationsData: any;
+  notifyScreenSizeChange: Subject<any> = new Subject<any>();
 
-  constructor() { }
+  constructor() {
+    window.addEventListener('resize', (event) => {
+      this.notifyScreenSizeChange.next(event.target["innerWidth"]);
+    });
+  }
 
   setProfileData(oId: string, name: string, eMail: string) {
     this.userId = oId;
