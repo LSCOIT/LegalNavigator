@@ -1,5 +1,6 @@
 ﻿using Access2Justice.Api.Interfaces;
 using Access2Justice.Api.ViewModels;
+using Access2Justice.Shared;
 using Access2Justice.Shared.Extensions;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Interfaces.A2JAuthor;
@@ -15,6 +16,7 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Globalization;
 
 
 namespace Access2Justice.Api.BusinessLogic
@@ -26,144 +28,156 @@ namespace Access2Justice.Api.BusinessLogic
         private readonly IBackendDatabaseService backendDatabaseService;
         private readonly IHostingEnvironment hostingEnvironment;
         private readonly ICuratedExperienceConvertor a2jAuthorBuisnessLogic;
+        private readonly IAdminSettings adminSettings;
 
         public AdminBusinessLogic(IDynamicQueries dynamicQueries, ICosmosDbSettings cosmosDbSettings,
             IBackendDatabaseService backendDatabaseService, IHostingEnvironment hostingEnvironment,
-            ICuratedExperienceConvertor a2jAuthorBuisnessLogic)
+            ICuratedExperienceConvertor a2jAuthorBuisnessLogic,IAdminSettings adminSettings)
         {
             this.dynamicQueries = dynamicQueries;
             this.cosmosDbSettings = cosmosDbSettings;
             this.backendDatabaseService = backendDatabaseService;
             this.hostingEnvironment = hostingEnvironment;
             this.a2jAuthorBuisnessLogic = a2jAuthorBuisnessLogic;
+            this.adminSettings = adminSettings;
         }
 
-        public async Task<object> UploadCuratedContentPackage(IFormFile file)
+        public async Task<object> UploadCuratedContentPackage(List<IFormFile> files)
         {
             try
             {
-                string folderName = "Upload";
                 string webRootPath = hostingEnvironment.WebRootPath;
-                string newPath = string.Empty;
+                string uploadPath = string.Empty;
                 if (webRootPath != null)
                 {
-                    newPath = Path.Combine(webRootPath, folderName);
+                    uploadPath = Path.Combine(webRootPath, adminSettings.UploadFolderName);
                 }
                 else
                 {
-                    newPath = Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot"), folderName);
+                    uploadPath = Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), adminSettings.WebRootFolderName), 
+                        adminSettings.UploadFolderName);
                 }
-                if (!Directory.Exists(newPath))
+                if (!Directory.Exists(uploadPath))
                 {
-                    Directory.CreateDirectory(newPath);
+                    Directory.CreateDirectory(uploadPath);
                 }
-                if (file.Length > 0)
+                foreach (IFormFile file in files)
                 {
-                    string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                    string fullPath = Path.Combine(newPath, fileName);
-                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    if (file.Length > 0)
                     {
-                        file.CopyTo(stream);
-                    }
-
-                    if (!newPath.EndsWith(Path.DirectorySeparatorChar))
-                        newPath += Path.DirectorySeparatorChar;
-
-                    var templateOrder = new List<JToken>();
-                    List<CuratedExperiencePackageTemplateModel> templateModel = new
-                        List<CuratedExperiencePackageTemplateModel>();
-
-                    using (ZipArchive archive = ZipFile.OpenRead(fullPath))
-                    {
-                        string destinationPath = string.Empty;
-                        foreach (ZipArchiveEntry entry in archive.Entries)
+                        string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                        string fullPath = Path.Combine(uploadPath, fileName);
+                        using (var stream = new FileStream(fullPath, FileMode.Create))
                         {
-                            if (entry.FullName.Equals("templates.json"))
+                            file.CopyTo(stream);
+                        }
+
+                        if (!uploadPath.EndsWith(Path.DirectorySeparatorChar))
+                            uploadPath += Path.DirectorySeparatorChar;
+
+                        var templateOrder = new List<JToken>();
+                        List<CuratedExperiencePackageTemplateModel> templateModel = new
+                            List<CuratedExperiencePackageTemplateModel>();
+
+                        using (ZipArchive archive = ZipFile.OpenRead(fullPath))
+                        {
+                            string destinationPath = string.Empty;
+                            foreach (ZipArchiveEntry entry in archive.Entries)
                             {
-                                destinationPath = Path.GetFullPath(Path.Combine(newPath, entry.FullName));
-
-                                if (destinationPath.StartsWith(newPath, StringComparison.Ordinal))
-                                    entry.ExtractToFile(destinationPath);
-
-                                using (StreamReader reader = new StreamReader(destinationPath))
+                                if (entry.FullName.Equals(adminSettings.BaseTemplateFileFullName))
                                 {
-                                    string json = reader.ReadToEnd();
-                                    var parser = JObject.Parse(json);
-                                    templateOrder = parser.Properties().GetArrayValue("templateIds")
-                                           .FirstOrDefault().ToList();
-                                }
-                                //Delete uploaded json file
-                                DeleteFile(destinationPath);
-                            }
+                                    destinationPath = Path.GetFullPath(Path.Combine(uploadPath, entry.FullName));
 
-                            Match match = Regex.Match(entry.FullName,@"(template([0-9\-]+)\.json$)|(Guide\.json)",
-                                        RegexOptions.IgnoreCase);
+                                    if (destinationPath.StartsWith(uploadPath, StringComparison.Ordinal))
+                                        entry.ExtractToFile(destinationPath);
 
-                            if (match.Success)
-                            {
-                                destinationPath = Path.GetFullPath(Path.Combine(newPath, entry.FullName));
-
-                                if (destinationPath.StartsWith(newPath, StringComparison.Ordinal))
-                                    entry.ExtractToFile(destinationPath);
-
-                                using (StreamReader reader = new StreamReader(destinationPath))
-                                {
-                                    string json = reader.ReadToEnd();
-                                    templateModel.Add(new CuratedExperiencePackageTemplateModel
+                                    using (StreamReader reader = new StreamReader(destinationPath))
                                     {
-                                        TemplateName = Path.GetFileNameWithoutExtension(entry.FullName).Replace("template", ""),
-                                        Template = JObject.Parse(json)
-                                    });
+                                        string json = reader.ReadToEnd();
+                                        var parser = JObject.Parse(json);
+                                        templateOrder = parser.Properties().GetArrayValue(adminSettings.BaseTemplatePropertyForTemplateOrder)
+                                               .FirstOrDefault().ToList();
+                                    }
+                                    //Delete uploaded json file
+                                    DeleteFile(destinationPath);
                                 }
-                                //Delete uploaded json file
-                                DeleteFile(destinationPath);
+
+                                Match match = Regex.Match(entry.FullName, @"(" + adminSettings.TemplateFileName + 
+                                    @"([0-9\-]+)\.json$)|(" + adminSettings.GuideTemplateFileName  + @"\.json)",
+                                    RegexOptions.IgnoreCase);
+
+                                if (match.Success)
+                                {
+                                    destinationPath = Path.GetFullPath(Path.Combine(uploadPath, entry.FullName));
+
+                                    if (destinationPath.StartsWith(uploadPath, StringComparison.Ordinal))
+                                        entry.ExtractToFile(destinationPath);
+
+                                    using (StreamReader reader = new StreamReader(destinationPath))
+                                    {
+                                        string json = reader.ReadToEnd();
+                                        templateModel.Add(new CuratedExperiencePackageTemplateModel
+                                        {
+                                            TemplateName = Path.GetFileNameWithoutExtension(entry.FullName).
+                                            Replace(adminSettings.TemplateFileName, ""),
+                                            Template = JObject.Parse(json)
+                                        });
+                                    }
+                                    //Delete uploaded json file
+                                    DeleteFile(destinationPath);
+                                }
                             }
                         }
-                    }
 
-                    //Delete uploaded zip file
-                    DeleteFile(fullPath);
+                        //Delete uploaded zip file
+                        DeleteFile(fullPath);
 
-                    var parentTemplateId = templateOrder.FirstOrDefault().ToString();
-                    JObject mainTemplate = null;
-                    JArray mainTemplateChildren = null;
-                    JObject GuideTemplate = null;
+                        var parentTemplateId = templateOrder.FirstOrDefault().ToString();
+                        JObject mainTemplate = null;
+                        JArray mainTemplateChildren = null;
+                        JObject GuideTemplate = null;
 
-                    foreach (var model in templateModel)
-                    {
-                        if (model.TemplateName == parentTemplateId)
+                        foreach (var model in templateModel)
                         {
-                            mainTemplate = model.Template;
-                            JObject rootNode = (JObject)mainTemplate["rootNode"];
-                            mainTemplateChildren = (JArray)rootNode["children"];
-                        }
-                        else if (model.TemplateName != parentTemplateId && model.TemplateName != "Guide")
-                        {
-                            JObject childTemplate = model.Template;
-                            JObject childRootNode = (JObject)childTemplate["rootNode"];
-                            JArray childrenNode = (JArray)childRootNode["children"];
-                            foreach (var child in childrenNode)
+                            if (model.TemplateName == parentTemplateId)
                             {
-                                mainTemplateChildren.Add(child);
+                                mainTemplate = model.Template;
+                                JObject rootNode = (JObject)mainTemplate[adminSettings.RootNode];
+                                mainTemplateChildren = (JArray)rootNode[adminSettings.ChildrenNode];
+                            }
+                            else if (model.TemplateName != parentTemplateId && model.TemplateName.ToUpperInvariant() != adminSettings.GuideTemplateFileName.ToUpperInvariant())
+                            {
+                                JObject childTemplate = model.Template;
+                                JObject childRootNode = (JObject)childTemplate[adminSettings.RootNode];
+                                JArray childrenNode = (JArray)childRootNode[adminSettings.ChildrenNode];
+                                foreach (var child in childrenNode)
+                                {
+                                    mainTemplateChildren.Add(child);
+                                }
+                            }
+                            else if (model.TemplateName.ToUpperInvariant() == adminSettings.GuideTemplateFileName.ToUpperInvariant())
+                            {
+                                GuideTemplate = model.Template;
                             }
                         }
-                        else if(model.TemplateName == "Guide")
+                        var newTemplateId = Guid.NewGuid();
+                        mainTemplate.AddFirst(new JProperty(Constants.Id, newTemplateId));
+                        var response = await backendDatabaseService.CreateItemAsync(mainTemplate, 
+                            cosmosDbSettings.A2JAuthorTemplatesCollectionId);
+                        if (response != null && response.Id != null)
                         {
-                            GuideTemplate = model.Template;
+                            var curatedExprienceJson = a2jAuthorBuisnessLogic.ConvertA2JAuthorToCuratedExperience(GuideTemplate);
+                            curatedExprienceJson.A2jPersonalizedPlanId = newTemplateId;
+                            await backendDatabaseService.UpdateItemAsync(curatedExprienceJson.CuratedExperienceId.ToString(), 
+                                JObject.FromObject(curatedExprienceJson), cosmosDbSettings.CuratedExperienceCollectionId);
                         }
                     }
-                    var newTemplateId = Guid.NewGuid();
-                    mainTemplate.AddFirst(new JProperty("id", newTemplateId));
-                    var response = await backendDatabaseService.CreateItemAsync(mainTemplate, cosmosDbSettings.A2JAuthorTemplatesCollectionId);
-                    if (response != null && response.Id != null)
+                    else
                     {
-                        var curatedExprienceJson = a2jAuthorBuisnessLogic.ConvertA2JAuthorToCuratedExperience(GuideTemplate);
-                        curatedExprienceJson.A2jPersonalizedPlanId = newTemplateId;
-                        await backendDatabaseService.UpdateItemAsync(curatedExprienceJson.CuratedExperienceId.ToString(), JObject.FromObject(curatedExprienceJson), cosmosDbSettings.CuratedExperienceCollectionId);
+                        return "Provide the file to upload.";
                     }
-                    return "Upload Successful.";
                 }
-                return "Provide the file to upload.";
+                return "Upload Successful.";
             }
             catch (System.Exception ex)
             {

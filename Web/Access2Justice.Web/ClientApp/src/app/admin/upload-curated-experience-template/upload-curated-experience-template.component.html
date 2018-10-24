@@ -1,2 +1,16 @@
-<input #file type="file" multiple (change)="upload(file.files)" />
+<form>
+  <div class="form-group">
+    <div class="col-md-10">
+      <p>Upload one or more files using this form:</p>
+      <input #file type="file" name="files" multiple />
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-md-10">
+      <!--<input type="submit" value="Upload" />-->
+      <button class="btn btn-primary" id="upload-btn" (click)="upload()">Upload</button>
+    </div>
+  </div>
+  <span>{{message}}</span>
+</form>
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { HttpClient, HttpRequest, HttpEventType, HttpResponse } from '@angular/common/http'
 import { api } from '../../../api/api';
 
@@ -10,18 +10,19 @@ import { api } from '../../../api/api';
 export class UploadCuratedExperienceTemplateComponent implements OnInit {
   progress: number;
   message: string;
+  @ViewChild('file') file: ElementRef;
+
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
   }
-
-  upload(files) {
-    if (files.length === 0)
-      return;
+ 
+  upload() {
     const formData = new FormData();
 
-    for (let file of files)
+    for (let file of this.file.nativeElement.files) {
       formData.append(file.name, file);
+    }
 
     const uploadReq = new HttpRequest('POST', api.uploadCuratedExperienceTemplateUrl, formData, {
       reportProgress: true,
@@ -34,5 +35,4 @@ export class UploadCuratedExperienceTemplateComponent implements OnInit {
         this.message = event.body.toString();
     });
   }
-
 }
