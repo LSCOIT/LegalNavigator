@@ -17,6 +17,7 @@ import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 import { FormsModule } from '@angular/forms';
+import { environment } from '../../../environments/environment';
 
 class MockBsModalRef {
   public isHideCalled = false;
@@ -26,7 +27,7 @@ class MockBsModalRef {
   }
 }
 
-describe('MapComponent', () => {
+fdescribe('MapComponent', () => {
   let component: MapComponent;
   let fixture: ComponentFixture<MapComponent>;
   let modalService: BsModalService;
@@ -40,7 +41,20 @@ describe('MapComponent', () => {
   let mockType = true;
   let mockResponse = { authenticationResultCode: "ValidCredentials", brandLogoUri: "http://dev.virtualearth.net/Branding/logo_powered_by.png", copyright: "Copyright © 2018 Microsoft and its suppliers. All …ss written permission from Microsoft Corporation.", resourceSets: Array(1), statusCode: 200, };
   let mockMapLocationDetails = '{authenticationResultCode:  "ValidCredentials"  brandLogoUri  :  "http://dev.virtualearth.net/Branding/logo_powered_by.png"  copyright  :  "Copyright © 2018 Microsoft and its suppliers. All rights reserved. This API cannot be accessed and the content and any results may not be used, reproduced or transmitted in any manner without express written permission from Microsoft Corporation."  resourceSets  :  Array(1)  0:  { estimatedTotal: 1, resources: Array(1) }  length  :  1  __proto__  :  Array(0)  statusCode  :  200  statusDescription  :  "OK"  traceId  :  "39bbf89d6d2b4691a1cfeb1d8a504eac|HK20240360|7.7.0.0|HK01EAP000001D3"  __proto__  :  Object}';
-  let mockMapLocation2 = { "state": "UP", "city": "Noida", "zipCode": "201303", "locality": "201303", "address": "UP" }
+  let mockMapLocation2 = { "state": "UP", "city": "Noida", "zipCode": "201303", "locality": "201303", "address": "UP" };
+  let mockMapLocationWithFormatAddressGlobal = { "state": "UP", "city": "Sample City", "county": "Sample County", "zipCode": "1009203", "locality": "UP", "address": "UP" };
+  let mockMapLocationWithFormatAddressLocal = { "state": "Sample State", "city": "Sample City", "county": "Sample County", "zipCode": "1009203", "locality": "Sample Location", "address": "UP" };
+  let mockLocationDetailsWithFormatAddress = {
+    location: mockMapLocation,
+    country: "United States",
+    formattedAddress: "AK"
+  };
+  let mockMapResultsLocation = { "resourceSets": [{ "resources": [{"name":"UP"}]}]};
+  let mockLocationDetailsWithOutFormatAddress = {
+    location: mockMapLocation,
+    country: "United States",
+    formattedAddress: "Hjorth St, Indio, California 92201, United States"
+  };
   let mockConfig = { ignoreBackdropClick: false, keyboard: true };
   let mockPositionError = { code: 1, message: "User denied Geolocation" };
   let mapService, msalService;
@@ -49,9 +63,8 @@ describe('MapComponent', () => {
 
   beforeEach(() => {
     mapService = jasmine.createSpyObj(['getMap', 'updateLocation', 'mapLocationDetails', 'identifyLocation']);
-    mapService.updateLocation.and.returnValue(mockMapLocation);
     msalService = jasmine.createSpyObj(['getUser']);
-
+    
     TestBed.configureTestingModule({
       imports: [HttpClientModule, RouterTestingModule, ModalModule.forRoot(), FormsModule],
       declarations: [MapComponent],
@@ -87,9 +100,7 @@ describe('MapComponent', () => {
         store = {};
       }
     };
-
-    spyOn(sessionStorage, 'getItem')
-      .and.callFake(mockSessionStorage.getItem);
+    
     spyOn(sessionStorage, 'setItem')
       .and.callFake(mockSessionStorage.setItem);
     spyOn(sessionStorage, 'removeItem')
@@ -133,25 +144,81 @@ describe('MapComponent', () => {
   it("should call update location of location service when location error is false", () => {    
     component.modalRef = modalRefInstance;
     component.locationError = false;
+    spyOn(component,'getLocationDetails');
     component.updateLocation();
-    expect(mapService.updateLocation).toHaveBeenCalled();
-    expect(component.isError).toBe(false);
+    expect(component.isError).toBeFalsy();
+    expect(component.locationError).toBeUndefined;
+  });
+  
+  it("should call geocode when showlocation is true in updateLocation method", () => {
+    spyOn(component, 'geocode');
+    spyOn(sessionStorage, 'getItem');
+    component.locationError = true;
+    component.updateLocation();
+    expect(component.geocode).toHaveBeenCalled();
   });
 
-  it("should call hide of modal ref when update location of component is called", () => {    
+  it("should call getStateFullName mapresults service method with formataddress for global map", () => {
+    spyOn(component, 'updateLocationDetails');
+    spyOn(mapResultsService, 'getStateFullName').and.callFake(() => {
+      return Observable.from([mockMapResultsLocation]);
+    });
+    spyOn(sessionStorage, 'getItem')
+      .and.returnValue(JSON.stringify(mockLocationDetailsWithFormatAddress));
+    environment.map_type = true;
+    component.getLocationDetails();
+    expect(mapResultsService.getStateFullName).toHaveBeenCalled();
+    expect(component.locationDetails.location).toEqual(mockMapLocationWithFormatAddressGlobal);
+    expect(component.updateLocationDetails).toHaveBeenCalled();
+  });
+
+  it("should call getStateFullName mapresults service method with formataddress for local map", () => {
+    spyOn(component, 'updateLocationDetails');
+    spyOn(mapResultsService, 'getStateFullName').and.callFake(() => {
+      return Observable.from([mockMapResultsLocation]);
+    });
+    spyOn(sessionStorage, 'getItem')
+      .and.returnValue(JSON.stringify(mockLocationDetailsWithFormatAddress));
+    environment.map_type = false;
+    component.getLocationDetails();
+    expect(mapResultsService.getStateFullName).toHaveBeenCalled();
+    expect(component.locationDetails.location).toEqual(mockMapLocationWithFormatAddressLocal);
+    expect(component.updateLocationDetails).toHaveBeenCalled();
+  });
+
+  it("should call updateLocationDetails method without formataddress", () => {
+    spyOn(component, 'updateLocationDetails');
+    spyOn(mapResultsService, 'getStateFullName').and.callFake(() => {
+      return Observable.from([mockMapResultsLocation]);
+    });
+    spyOn(sessionStorage, 'getItem')
+      .and.returnValue(JSON.stringify(mockLocationDetailsWithOutFormatAddress));
+    environment.map_type = true;
+    component.getLocationDetails();
+    expect(component.updateLocationDetails).toHaveBeenCalled();
+  });
+
+  it("should call hide of modal ref when updateLocationDetails of component is called", () => {    
     component.modalRef = modalRefInstance;
-    component.locationError = false;
-    component.updateLocation();
+    component.mapType = false;
+    mapService.updateLocation.and.returnValue(mockLocationDetailsWithFormatAddress);
+    spyOn(component,'displayLocationDetails');
+    component.updateLocationDetails();
     expect(modalRefInstance.isHideCalled).toBeTruthy();
-    expect(component.mapLocation.state).toBe('Sample State');
+    expect(component.showLocality).toBeFalsy();
   });
 
   it("should call displayLocationDetails when updateLocation is called", () => {    
     component.modalRef = modalRefInstance;
+    let mockLocation = {
+      location: null,
+      country: "United States",
+      formattedAddress: "Hjorth St, Indio, California 92201, United States"}
+    mapService.updateLocation.and.returnValue(mockLocation);
+    component.mapType = true;
     spyOn(component, 'displayLocationDetails');
-    component.locationError = false;
-    component.updateLocation();    
-    expect(component.displayLocationDetails).toHaveBeenCalled();
+    component.updateLocationDetails();
+    expect(component.isError).toBeTruthy();
   });
 
   it("should set the address,locality and showLocation variables of component when displayLocationDetails is called", () => {
@@ -181,13 +248,12 @@ describe('MapComponent', () => {
   });
 
   it('should load all components for current location - getAddressBasedOnPoints', () => {
-
     spyOn(navigator.geolocation, "getCurrentPosition");
     spyOn(mapResultsService, "getAddressBasedOnPoints");
     let mockselectedAddress = mockResponse;
     let mockLocationInputRequired = true;
     component.openModal(template);
-
+    mapService.updateLocation.and.returnValue(mockLocationDetailsWithFormatAddress);
     component.displayLocationDetails(mockMapLocation2);
     expect(component.address).toEqual(mockMapLocation2.address);
     expect(component.locality).toEqual(mockMapLocation2.locality);
@@ -200,7 +266,6 @@ describe('MapComponent', () => {
   });
 
   it('should not load current location and throw error', () => {
-
     spyOn(navigator.geolocation, "getCurrentPosition");
     spyOn(mapResultsService, "getAddressBasedOnPoints");
     component.config = {
