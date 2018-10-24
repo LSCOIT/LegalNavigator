@@ -90,7 +90,6 @@ export class MapComponent implements OnInit {
       if (this.locationDetails.formattedAddress.length < 3) {
         this.mapResultsService.getStateFullName(this.locationDetails.country, this.locationDetails.formattedAddress, environment.bingmap_key)
           .subscribe((location) => {
-            //this.locationDetails.location.state = location.resourceSets[0].resources[0].name;
             this.locationDetails.location.address = location.resourceSets[0].resources[0].name;
             if (environment.map_type) {
               this.locationDetails.location.state = location.resourceSets[0].resources[0].name;
@@ -256,9 +255,6 @@ export class MapComponent implements OnInit {
     if (sessionStorage.getItem("globalMapLocation")) {
       this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
       this.mapLocation.locality = this.mapLocation.address;
-      this.mapLocation.city = "";
-      this.mapLocation.county = "";
-      this.mapLocation.zipCode = "";
       this.displayLocationDetails(this.mapLocation);
     }
 
