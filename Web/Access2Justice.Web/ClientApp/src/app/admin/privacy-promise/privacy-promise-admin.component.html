@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="privacyContent">
   <h1>Privacy Promise Page</h1>
   <form #privacyForm="ngForm" (ngSubmit)="onSubmit(privacyForm)">
     <div class="box-shadow">
@@ -15,11 +15,11 @@
       <div class="row sections" *ngFor="let content of privacyContent?.details; let i = index">
         <div>
           <label class="col-md-2 col-sm-3">Section Title</label>
-          <input class="form-control col-md-10 col-sm-9" [(ngModel)]="content.title" [name]="'sectionTitle'+i"/>
+          <input class="form-control col-md-10 col-sm-9" [(ngModel)]="content.title" [name]="'title'+i"/>
         </div>
         <div class="description col-sm-12">
           <label class="col-md-2 col-sm-3">Section Description</label>
-          <textarea class="form-control col-md-10 col-sm-9" [(ngModel)]="content.description" [name]="'sectionDescription'+i"></textarea>
+          <textarea class="form-control col-md-10 col-sm-9" [(ngModel)]="content.description" [name]="'description'+i"></textarea>
         </div>
       </div>
     </div>
