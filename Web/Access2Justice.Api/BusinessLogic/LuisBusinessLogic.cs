@@ -40,15 +40,19 @@ namespace Access2Justice.Api
                 dynamic luisResponse = await luisProxy.GetIntents(encodedSentence);
                 luisTopIntents = ParseLuisIntent(luisResponse);
             }
-
+            LuisViewModel luisViewModel = null;
             if ((luisTopIntents != null && IsIntentAccurate(luisTopIntents)) || !string.IsNullOrEmpty(luisInput.LuisTopScoringIntent))
             {
-                return await GetInternalResourcesAsync(
-                    luisTopIntents?.TopScoringIntent ?? luisInput.LuisTopScoringIntent,
-                    luisInput.Location,
-                    luisTopIntents != null && luisTopIntents.TopNIntents != null ? luisTopIntents.TopNIntents : null);
+                luisViewModel = await GetInternalResourcesAsync(
+                   luisTopIntents?.TopScoringIntent ?? luisInput.LuisTopScoringIntent,
+                   luisInput.Location,
+                   luisTopIntents != null && luisTopIntents.TopNIntents != null ? luisTopIntents.TopNIntents : null);
             }
-            return await GetWebResourcesAsync(encodedSentence);
+            //Will fetch web links only when there are no mapping LUIS Intent or no mapping resources to specific LUIS Intent
+            return luisViewModel != null && luisViewModel.Resources != null &&
+                ((JContainer)(luisViewModel.Resources)).Count > 0 ?
+                JObject.FromObject(luisViewModel).ToString() :
+            await GetWebResourcesAsync(encodedSentence);
         }
 
         public IntentWithScore ParseLuisIntent(string LuisResponse)
@@ -83,10 +87,10 @@ namespace Access2Justice.Api
 
             if (topicIds.Count == 0 || location == null)
             {
-                return JObject.FromObject(new LuisViewModel
+                return new LuisViewModel
                 {
                     TopIntent = keyword
-                }).ToString();
+                };
             }
 
             ResourceFilter resourceFilter = new ResourceFilter { TopicIds = topicIds, PageNumber = 0, ResourceType = Constants.All, Location = location };
@@ -100,19 +104,19 @@ namespace Access2Justice.Api
             var groupedResourceType = GetResourcesTask.Result;
             PagedResources resources = ApplyPaginationTask.Result;
             PagedResources guidedAssistantResponse = GetGuidedAssistantId.Result;
-            var guidedAssistantResult = JsonUtilities.DeserializeDynamicObject<Resource>(guidedAssistantResponse.Results.FirstOrDefault());
-            
-            return JObject.FromObject(new LuisViewModel
+            var guidedAssistantResult = guidedAssistantResponse != null ? JsonUtilities.DeserializeDynamicObject<Resource>(guidedAssistantResponse.Results.FirstOrDefault()) : null;
+
+            return new LuisViewModel
             {
                 TopIntent = keyword,
                 RelevantIntents = relevantIntents != null ? JsonUtilities.DeserializeDynamicObject<dynamic>(relevantIntents) : JsonConvert.DeserializeObject(Constants.EmptyArray),
-                Topics = JsonUtilities.DeserializeDynamicObject<dynamic>(topics),
-                Resources = JsonUtilities.DeserializeDynamicObject<dynamic>(resources.Results),
-                ContinuationToken = resources.ContinuationToken != null ? JsonConvert.DeserializeObject(resources.ContinuationToken) : JsonConvert.DeserializeObject(Constants.EmptyArray),
-                TopicIds = JsonUtilities.DeserializeDynamicObject<dynamic>(topicIds),
-                ResourceTypeFilter = JsonUtilities.DeserializeDynamicObject<dynamic>(groupedResourceType),
+                Topics = topics != null ? JsonUtilities.DeserializeDynamicObject<dynamic>(topics) : JsonConvert.DeserializeObject(Constants.EmptyArray),
+                Resources = resources != null ? JsonUtilities.DeserializeDynamicObject<dynamic>(resources.Results) : JsonConvert.DeserializeObject(Constants.EmptyArray),
+                ContinuationToken = resources != null && resources.ContinuationToken != null ? JsonConvert.DeserializeObject(resources.ContinuationToken) : JsonConvert.DeserializeObject(Constants.EmptyArray),
+                TopicIds = topicIds != null ? JsonUtilities.DeserializeDynamicObject<dynamic>(topicIds) : JsonConvert.DeserializeObject(Constants.EmptyArray),
+                ResourceTypeFilter = groupedResourceType != null ? JsonUtilities.DeserializeDynamicObject<dynamic>(groupedResourceType) : JsonConvert.DeserializeObject(Constants.EmptyArray),
                 GuidedAssistantId = guidedAssistantResult != null ? guidedAssistantResult.ExternalUrls : string.Empty
-            }).ToString();
+            };
         }
 
         public async Task<dynamic> GetWebResourcesAsync(string searchTerm)
