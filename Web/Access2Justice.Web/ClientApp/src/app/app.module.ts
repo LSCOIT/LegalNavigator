@@ -48,11 +48,8 @@ import { MsalInterceptor } from '@azure/msal-angular';
 import { environment } from '../environments/environment';
 import { api } from '../api/api';
 
-export const protectedResourceMap: [string, string[]][] = [
-  [api.checkPermaLink, [environment.apiScope]], [api.shareUrl, [environment.apiScope]],
-  [api.unShareUrl, [environment.apiScope]], [api.getProfileUrl, [environment.apiScope]],
-  [api.userPlanUrl, [environment.apiScope]]
-];
+export const protectedResourceMap: [string, string[]][] = [[api.checkPermaLink, [environment.apiScope]], [api.shareUrl, [environment.apiScope]]
+  , [api.unShareUrl, [environment.apiScope]], [api.userPlanUrl, [environment.apiScope]]] 
 
 @NgModule({
   declarations: [

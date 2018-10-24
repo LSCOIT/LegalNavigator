@@ -56,7 +56,6 @@ namespace Access2Justice.Api.Controllers
             return StatusCode(StatusCodes.Status412PreconditionFailed);
         }
 
-        [Permission(PermissionName.getpermallinkresource)]
         [HttpGet("get-permalink-resource")]
         public async Task<IActionResult> PermaLinkAsync([FromQuery] string permaLink)
         {
