@@ -111,13 +111,16 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 
 		[Theory]
 		[MemberData(nameof(ShareTestData.ShareProfileResponseData), MemberType = typeof(ShareTestData))]
-		public void GetPermaLinkDataAsyncShouldValidate(string permaLinkInput, JArray shareProfileResponse, dynamic expectedResult)
+		public void GetPermaLinkDataAsyncShouldValidate(string permaLinkInput,string planId,JArray shareProfileDetails,JArray shareProfileResponse, dynamic expectedResult)
 		{
 			var dbResponse = dynamicQueries.FindFieldWhereArrayContainsAsync(dbSettings.UserProfileCollectionId, Constants.SharedResource,
 						Constants.PermaLink, permaLinkInput, Constants.ExpirationDate);
-			dbResponse.ReturnsForAnyArgs<dynamic>(shareProfileResponse);
+			dbResponse.ReturnsForAnyArgs(shareProfileDetails);
 
-			var response = shareBusinessLogic.GetPermaLinkDataAsync(permaLinkInput);
+            var profileResponse = dynamicQueries.FindFieldWhereArrayContainsAsync(dbSettings.UserProfileCollectionId, Constants.sharedResourceId, planId);
+            profileResponse.ReturnsForAnyArgs(shareProfileResponse);
+
+            var response = shareBusinessLogic.GetPermaLinkDataAsync(permaLinkInput);
 			expectedResult = JsonConvert.SerializeObject(expectedResult);
 			var actualResult = JsonConvert.SerializeObject(response.Result);
 			//assert

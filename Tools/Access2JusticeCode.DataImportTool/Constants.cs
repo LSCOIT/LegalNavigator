@@ -9,7 +9,7 @@
         public const string EssentialReadingResourceType = "Essential Readings";
         public const string OrganizationReviews = "OrganizationReviews (Optional)";
         public const string ArticleContents = "Article Sections";
-        public const string ExternalLinkResourceType = "External Links";
+        public const string RelatedLinkResourceType = "Related Links";
         public const string Admin = "Admin Import tool";
     }
 }

@@ -24,8 +24,7 @@ namespace Access2Justice.Api.Controllers
         /// Get the user details by a user OId
         /// </summary>
         /// <param name="oid"></param>
-        /// <returns></returns> 
-        [Permission(PermissionName.getuserprofile)]
+        /// <returns></returns>         
         [HttpPost]
         [Route("api/user/get-user-profile")]
         public async Task<IActionResult> GetUserDataAsync(string oid, string type)

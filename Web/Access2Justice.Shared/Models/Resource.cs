@@ -190,9 +190,9 @@ namespace Access2Justice.Shared.Models
         public string FullDescription { get; set; }
     }
 
-    public class ExternalLink : Resource
+    public class RelatedLink : Resource
     {
-        //for now there are no unique properties to external links
+        //for now there are no unique properties to related links
     }
 
     [AttributeUsage(AttributeTargets.Property)]

@@ -30,7 +30,6 @@ export class SearchComponent implements OnInit {
   onSubmit(searchForm: NgForm): void {
     this.spinner.show();
     this.luisInput.Sentence = searchForm.value.inputText;
-    //this.luisInput.Location = JSON.parse(sessionStorage.getItem("globalMapLocation"));
     if (sessionStorage.getItem("globalMapLocation")) {
       this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
       this.mapLocation.city = "";

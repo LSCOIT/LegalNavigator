@@ -43,7 +43,7 @@ namespace Access2Justice.Api.BusinessLogic
                     TopicId = Guid.Parse(topic.Id),
                     TopicName = topic.Name,
                     Icon = topic.Icon,
-                    QuickLinks = GetQuickLinks(topic.QuickLinks),
+                    //QuickLinks = GetQuickLinks(topic.QuickLinks), //Topic schema has changed, quick links should be displayed based on 'Essential Readings' resourceType.
                     Steps = GetSteps(unprocessedTopic.UnprocessedSteps, resourceDetails)
 				});
 			}

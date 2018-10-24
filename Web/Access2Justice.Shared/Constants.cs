@@ -7,7 +7,7 @@
         public const string PlanStoredProcedureName = "GetPlanDetails";
         public const string TopicTags = "topicTags";
         public const string Id = "id";
-        public const string ParentTopicId = "parentTopicID";
+        public const string ParentTopicId = "parentTopicId";
         public const string Keywords = "keywords";
         public const string LuisResponse = "luisResponse";
         public const string Topics = "topics";
@@ -32,5 +32,9 @@
         public const string UserRole = "roleName";
         public const string UserName = "eMail";
         public const string Delimiter = "|";
+        public const string sharedResourceId = "sharedResourceId";
+        public const string HtmlRightBracket = ">";
+        public const string HtmlLeftBracket = "<";
+        public const string A2JAuthorCustomFunctionTags = "%%";
     }
 }
