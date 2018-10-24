@@ -13,13 +13,12 @@ export class GuidedAssistantComponent implements OnInit {
   searchText: string;
   topicLength = 12;
   luisInput: ILuisInput = { Sentence: '', Location: '', TranslateFrom: '', TranslateTo: '', LuisTopScoringIntent: '' };
-  guidedAssistantResults: any;
+  guidedAssistantResults: any;  
 
   constructor(
     private searchService: SearchService,
     private router: Router,
-    private navigateDataService: NavigateDataService
-  ) { }
+    private navigateDataService: NavigateDataService) { }
 
   onSubmit(guidedAssistantForm) {
     this.luisInput["Sentence"] = guidedAssistantForm.value.searchText;
@@ -28,9 +27,21 @@ export class GuidedAssistantComponent implements OnInit {
       .subscribe(response => {
         this.guidedAssistantResults = response;
         this.navigateDataService.setData(this.guidedAssistantResults);
+        if (this.guidedAssistantResults.guidedAssistantId && this.guidedAssistantResults.topicIds.length > 0)
+        sessionStorage.setItem("searchTextResults", JSON.stringify(response));
         this.router.navigateByUrl('/guidedassistantSearch', { skipLocationChange: true });
       });
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    
+    if (JSON.parse(sessionStorage.getItem("searchTextResults")) != null) {
+      this.navigateDataService.setData(JSON.parse(sessionStorage.getItem("searchTextResults")));
+      this.router.navigateByUrl('/guidedassistantSearch', { skipLocationChange: true });
+    }
+    else {
+      this.router.navigateByUrl('/guidedassistant');
+    }
+  }
+
 }
