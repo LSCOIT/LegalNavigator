@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 
 namespace Access2Justice.Api.BusinessLogic
 {
-    // Todo:@Alaa this class has many methods that will become obsolete soon, remove them after refactoring is done
     public class PersonalizedPlanBusinessLogic : IPersonalizedPlanBusinessLogic
     {
         private readonly ICosmosDbSettings cosmosDbSettings;
@@ -46,207 +45,228 @@ namespace Access2Justice.Api.BusinessLogic
             return await personalizedPlanViewModelMapper.MapViewModel(unprocessedPlan);
         }
 
-        public async Task<PersonalizedPlanViewModel> UpdatePersonalizedPlan(UserPersonalizedPlan userPlan)
-        {
-            var userPersonalizedPlan = new UserPersonalizedPlan();
-            userPersonalizedPlan = JsonUtilities.DeserializeDynamicObject<UserPersonalizedPlan>(userPlan);
-            string oId = userPersonalizedPlan.OId;
-            string planId = string.Empty;
-            if (oId != null)
-            {
-                planId = await UpdatePostLogInPersonalizedPlan(userPlan);
-            }
-            else
-            {
-                planId = await UpdatePreLogInPersonalizedPlan(userPlan.PersonalizedPlan);
-            }
-            // Todo:@Alaa reconsider using the plan generator here, it is too expensive,
-            // this is the old code: return await GetPlanDataAsync(planId);
-            // return GeneratePersonalizedPlanAsync()
-            return null;
-        }
-
-
-
-
-         // Todo:@Alaa old code - to be removed or refactored
-        public List<PersonalizedPlanStep> GetPlanSteps(Guid topic, List<PersonalizedPlanStep> personalizedPlanSteps)
-        {
-            List<PersonalizedPlanStep> PlanSteps = new List<PersonalizedPlanStep>();
-            int stepOrder = 1;
-            foreach (var personalizedPlanStep in personalizedPlanSteps)
-            {
-                var topicId = personalizedPlanStep.TopicIds?.Where(x => x == personalizedPlanStep.TopicIds.FirstOrDefault()).FirstOrDefault(); //To do: multiple topics cannot be mapped to same step
-                if (topicId == topic)
-                {
-                    PlanSteps.Add(new PersonalizedPlanStep
-                    {
-                        StepId = personalizedPlanStep.StepId,
-                        Title = personalizedPlanStep.Title,
-                        Description = personalizedPlanStep.Description,
-                        Order = stepOrder++,
-                        IsComplete = personalizedPlanStep.IsComplete,
-                        Resources = personalizedPlanStep.Resources
-                    });
-                }
-            }
-
-            return PlanSteps;
-        }
-
-        public PersonalizedPlanSteps ConvertPersonalizedPlanSteps(dynamic convObj)
-        {
-            List<PersonalizedPlanSteps> listPlanSteps = JsonUtilities.DeserializeDynamicObject<List<PersonalizedPlanSteps>>(convObj);
-            PersonalizedPlanSteps personalizedPlanSteps = new PersonalizedPlanSteps();
-            foreach (PersonalizedPlanSteps planSteps in listPlanSteps)
-            {
-                personalizedPlanSteps.PersonalizedPlanId = planSteps.PersonalizedPlanId;
-                personalizedPlanSteps.Topics = planSteps.Topics;
-            }
-            return personalizedPlanSteps;
-        }
-
-        public string GetByTopicId(Guid topicId, List<TopicDetails> topicDetails, bool isTopicName)
-        {
-            string topicNameOrIcon = string.Empty;
-            foreach (var topic in topicDetails)
-            {
-                if (topic.TopicId == topicId)
-                {
-                    if (isTopicName)
-                    {
-                        topicNameOrIcon = topic.TopicName;
-                    }
-                    else
-                    {
-                        topicNameOrIcon = topic.Icon;
-                    }
-                }
-            }
-            return topicNameOrIcon;
-        }
-
-        public List<PlanQuickLink> GetQuickLinksForTopic(Guid topicId, List<TopicDetails> topicDetails)
-        {
-            var quicklinks = new List<PlanQuickLink>();
-
-            foreach (var topic in topicDetails)
-            {
-                if (topic.TopicId == topicId && topic.QuickLinks.Count > 0)
-                {
-                    foreach (var quickLink in topic.QuickLinks)
-                    {
-                        quicklinks.Add(new PlanQuickLink
-                        {
-                            Text = quickLink.Text,
-                            Url = new Uri(quickLink.Url.ToString())
-                        });
-                    }
-                }
-            }
-            return quicklinks;
-        }
-
-        public List<PlanStep> ConvertToPlanSteps(List<PersonalizedPlanStep> personalizedPlanSteps, List<Resource> resourceDetails)
-        {
-            List<PlanStep> planSteps = new List<PlanStep>();
-            foreach (var personalizedPlanStep in personalizedPlanSteps)
-            {
-                planSteps.Add(new PlanStep
-                {
-                    StepId = personalizedPlanStep.StepId,
-                    Type = "steps",
-                    Title = personalizedPlanStep.Title,
-                    Description = personalizedPlanStep.Description,
-                    Order = personalizedPlanStep.Order,
-                    IsComplete = personalizedPlanStep.IsComplete,
-                    Resources = GetResources(personalizedPlanStep.Resources, resourceDetails)
-                });
-            }
-            return planSteps;
-        }
-
-        public List<Resource> GetResources(List<Guid> resourceIds, List<Resource> resourceDetails)
-        {
-            List<Resource> resources = new List<Resource>();
-            foreach (var resourceId in resourceIds)
-            {
-                foreach (var resource in resourceDetails)
-                {
-                    if (resource.ResourceId == resourceId.ToString())
-                    {
-                        resources.Add(resource);
-                    }
-                }
-            }
-            return resources;
-        }
-
-        public async Task<PersonalizedPlanSteps> GetPersonalizedPlan(string planId)
+         // Todo:@Alaa test this method working
+        public async Task<PersonalizedPlanViewModel> GetPersonalizedPlan(Guid personalizedPlanId)
         {
             dynamic personalizedPlan = null;
-            var planDetails = await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.UserResourceCollectionId, Constants.Id, planId);
+             // Todo:@Alaa use the generic version of the FindItemsWhereAsync
+            var planDetails = await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.UserResourceCollectionId, Constants.Id, personalizedPlanId.ToString());
             if (planDetails != null)
             {
-                personalizedPlan = JsonUtilities.DeserializeDynamicObject<List<PersonalizedPlanSteps>>(planDetails);
+                personalizedPlan = JsonUtilities.DeserializeDynamicObject<List<PersonalizedPlanViewModel>>(planDetails);
             }
             return personalizedPlan?[0];
         }
 
-        public async Task<string> UpdatePostLogInPersonalizedPlan(UserPersonalizedPlan userPlan)
+        public async Task<PersonalizedPlanViewModel> UpdatePersonalizedPlan(PersonalizedPlanViewModel personalizedPlan)
         {
-            string oId = userPlan.OId;
-            string planId = string.Empty;
-            dynamic userPlanDBData = null;
-            var userProfile = await userProfileBusinessLogic.GetUserProfileDataAsync(oId);
-            if (userProfile?.PersonalizedActionPlanId != null && userProfile?.PersonalizedActionPlanId != Guid.Empty)
-            {
-                if (userPlan.PersonalizedPlan.PersonalizedPlanId.ToString() == (userProfile?.PersonalizedActionPlanId.ToString()))
-                {
-                    userPlanDBData = await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.UserResourceCollectionId, Constants.Id, Convert.ToString(userProfile.PersonalizedActionPlanId, CultureInfo.InvariantCulture));
-                }
-                else
-                {
-                    planId = await UpdatePreLogInPersonalizedPlan(userPlan.PersonalizedPlan);
-                }
-            }
-            if (userPlanDBData == null || userPlanDBData?.Count == 0)
-            {
-                userProfile.PersonalizedActionPlanId = userPlan.PersonalizedPlan.PersonalizedPlanId;
-                await backendDatabaseService.UpdateItemAsync(userProfile.Id, userProfile, cosmosDbSettings.UserProfileCollectionId);
-                planId = userProfile.PersonalizedActionPlanId.ToString();
-            }
-            else
-            {
-                await backendDatabaseService.UpdateItemAsync(userPlan.PersonalizedPlan.PersonalizedPlanId.ToString(), userPlan.PersonalizedPlan, cosmosDbSettings.UserResourceCollectionId);
-                planId = userProfile.PersonalizedActionPlanId.ToString();
-            }
-            return planId;
+
+            var breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
+
+            return null;
         }
 
-        public async Task<string> UpdatePreLogInPersonalizedPlan(PersonalizedPlanSteps personalizedPlan)
-        {
-            string planId = string.Empty;
-            dynamic userPlanDBData = null;
-            if (personalizedPlan?.PersonalizedPlanId != null && personalizedPlan?.PersonalizedPlanId != Guid.Empty)
-            {
-                userPlanDBData = await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.UserResourceCollectionId, Constants.Id, Convert.ToString(personalizedPlan.PersonalizedPlanId, CultureInfo.InvariantCulture));
-            }
-            if (userPlanDBData == null || userPlanDBData?.Count == 0)
-            {
-                await backendDatabaseService.CreateItemAsync((personalizedPlan), cosmosDbSettings.UserResourceCollectionId);
-                planId = personalizedPlan.PersonalizedPlanId.ToString();
-            }
-            else
-            {
+        
+        
+        
+        
+        // Todo:@Alaa old code - to be removed or refactored
 
-                await backendDatabaseService.UpdateItemAsync(personalizedPlan.PersonalizedPlanId.ToString(), personalizedPlan, cosmosDbSettings.UserResourceCollectionId);
-                planId = personalizedPlan.PersonalizedPlanId.ToString();
-            }
-            return planId;
-        }
+        //public async Task<PersonalizedPlanViewModel> UpdatePersonalizedPlan(UserPersonalizedPlan userPlan)
+        //{
+        //    var userPersonalizedPlan = new UserPersonalizedPlan();
+        //    userPersonalizedPlan = JsonUtilities.DeserializeDynamicObject<UserPersonalizedPlan>(userPlan);
+        //    string oId = userPersonalizedPlan.OId;
+        //    string planId = string.Empty;
+        //    if (oId != null)
+        //    {
+        //        planId = await UpdatePostLogInPersonalizedPlan(userPlan);
+        //    }
+        //    else
+        //    {
+        //        planId = await UpdatePreLogInPersonalizedPlan(userPlan.PersonalizedPlan);
+        //    }
+        //    // Todo:@Alaa reconsider using the plan generator here, it is too expensive,
+        //    // this is the old code: return await GetPlanDataAsync(planId);
+        //    // return GeneratePersonalizedPlanAsync()
+        //    return null;
+        //}
+        //public List<PersonalizedPlanStep> GetPlanSteps(Guid topic, List<PersonalizedPlanStep> personalizedPlanSteps)
+        //{
+        //    List<PersonalizedPlanStep> PlanSteps = new List<PersonalizedPlanStep>();
+        //    int stepOrder = 1;
+        //    foreach (var personalizedPlanStep in personalizedPlanSteps)
+        //    {
+        //        var topicId = personalizedPlanStep.TopicIds?.Where(x => x == personalizedPlanStep.TopicIds.FirstOrDefault()).FirstOrDefault(); //To do: multiple topics cannot be mapped to same step
+        //        if (topicId == topic)
+        //        {
+        //            PlanSteps.Add(new PersonalizedPlanStep
+        //            {
+        //                StepId = personalizedPlanStep.StepId,
+        //                Title = personalizedPlanStep.Title,
+        //                Description = personalizedPlanStep.Description,
+        //                Order = stepOrder++,
+        //                IsComplete = personalizedPlanStep.IsComplete,
+        //                Resources = personalizedPlanStep.Resources
+        //            });
+        //        }
+        //    }
 
-        // Todo:@Alaa remove this region after new implementation is done
+        //    return PlanSteps;
+        //}
+
+        //public PersonalizedPlanSteps ConvertPersonalizedPlanSteps(dynamic convObj)
+        //{
+        //    List<PersonalizedPlanSteps> listPlanSteps = JsonUtilities.DeserializeDynamicObject<List<PersonalizedPlanSteps>>(convObj);
+        //    PersonalizedPlanSteps personalizedPlanSteps = new PersonalizedPlanSteps();
+        //    foreach (PersonalizedPlanSteps planSteps in listPlanSteps)
+        //    {
+        //        personalizedPlanSteps.PersonalizedPlanId = planSteps.PersonalizedPlanId;
+        //        personalizedPlanSteps.Topics = planSteps.Topics;
+        //    }
+        //    return personalizedPlanSteps;
+        //}
+
+        //public string GetByTopicId(Guid topicId, List<TopicDetails> topicDetails, bool isTopicName)
+        //{
+        //    string topicNameOrIcon = string.Empty;
+        //    foreach (var topic in topicDetails)
+        //    {
+        //        if (topic.TopicId == topicId)
+        //        {
+        //            if (isTopicName)
+        //            {
+        //                topicNameOrIcon = topic.TopicName;
+        //            }
+        //            else
+        //            {
+        //                topicNameOrIcon = topic.Icon;
+        //            }
+        //        }
+        //    }
+        //    return topicNameOrIcon;
+        //}
+
+        //public List<PlanQuickLink> GetQuickLinksForTopic(Guid topicId, List<TopicDetails> topicDetails)
+        //{
+        //    var quicklinks = new List<PlanQuickLink>();
+
+        //    foreach (var topic in topicDetails)
+        //    {
+        //        if (topic.TopicId == topicId && topic.QuickLinks.Count > 0)
+        //        {
+        //            foreach (var quickLink in topic.QuickLinks)
+        //            {
+        //                quicklinks.Add(new PlanQuickLink
+        //                {
+        //                    Text = quickLink.Text,
+        //                    Url = new Uri(quickLink.Url.ToString())
+        //                });
+        //            }
+        //        }
+        //    }
+        //    return quicklinks;
+        //}
+
+        //public List<PlanStep> ConvertToPlanSteps(List<PersonalizedPlanStep> personalizedPlanSteps, List<Resource> resourceDetails)
+        //{
+        //    List<PlanStep> planSteps = new List<PlanStep>();
+        //    foreach (var personalizedPlanStep in personalizedPlanSteps)
+        //    {
+        //        planSteps.Add(new PlanStep
+        //        {
+        //            StepId = personalizedPlanStep.StepId,
+        //            Type = "steps",
+        //            Title = personalizedPlanStep.Title,
+        //            Description = personalizedPlanStep.Description,
+        //            Order = personalizedPlanStep.Order,
+        //            IsComplete = personalizedPlanStep.IsComplete,
+        //            Resources = GetResources(personalizedPlanStep.Resources, resourceDetails)
+        //        });
+        //    }
+        //    return planSteps;
+        //}
+
+        //public List<Resource> GetResources(List<Guid> resourceIds, List<Resource> resourceDetails)
+        //{
+        //    List<Resource> resources = new List<Resource>();
+        //    foreach (var resourceId in resourceIds)
+        //    {
+        //        foreach (var resource in resourceDetails)
+        //        {
+        //            if (resource.ResourceId == resourceId.ToString())
+        //            {
+        //                resources.Add(resource);
+        //            }
+        //        }
+        //    }
+        //    return resources;
+        //}
+
+        //public async Task<PersonalizedPlanSteps> GetPersonalizedPlan(string planId)
+        //{
+        //    dynamic personalizedPlan = null;
+        //    var planDetails = await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.UserResourceCollectionId, Constants.Id, planId);
+        //    if (planDetails != null)
+        //    {
+        //        personalizedPlan = JsonUtilities.DeserializeDynamicObject<List<PersonalizedPlanSteps>>(planDetails);
+        //    }
+        //    return personalizedPlan?[0];
+        //}
+
+        //public async Task<string> UpdatePostLogInPersonalizedPlan(UserPersonalizedPlan userPlan)
+        //{
+        //    string oId = userPlan.OId;
+        //    string planId = string.Empty;
+        //    dynamic userPlanDBData = null;
+        //    var userProfile = await userProfileBusinessLogic.GetUserProfileDataAsync(oId);
+        //    if (userProfile?.PersonalizedActionPlanId != null && userProfile?.PersonalizedActionPlanId != Guid.Empty)
+        //    {
+        //        if (userPlan.PersonalizedPlan.PersonalizedPlanId.ToString() == (userProfile?.PersonalizedActionPlanId.ToString()))
+        //        {
+        //            userPlanDBData = await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.UserResourceCollectionId, Constants.Id, Convert.ToString(userProfile.PersonalizedActionPlanId, CultureInfo.InvariantCulture));
+        //        }
+        //        else
+        //        {
+        //            planId = await UpdatePreLogInPersonalizedPlan(userPlan.PersonalizedPlan);
+        //        }
+        //    }
+        //    if (userPlanDBData == null || userPlanDBData?.Count == 0)
+        //    {
+        //        userProfile.PersonalizedActionPlanId = userPlan.PersonalizedPlan.PersonalizedPlanId;
+        //        await backendDatabaseService.UpdateItemAsync(userProfile.Id, userProfile, cosmosDbSettings.UserProfileCollectionId);
+        //        planId = userProfile.PersonalizedActionPlanId.ToString();
+        //    }
+        //    else
+        //    {
+        //        await backendDatabaseService.UpdateItemAsync(userPlan.PersonalizedPlan.PersonalizedPlanId.ToString(), userPlan.PersonalizedPlan, cosmosDbSettings.UserResourceCollectionId);
+        //        planId = userProfile.PersonalizedActionPlanId.ToString();
+        //    }
+        //    return planId;
+        //}
+
+        //public async Task<string> UpdatePreLogInPersonalizedPlan(PersonalizedPlanSteps personalizedPlan)
+        //{
+        //    string planId = string.Empty;
+        //    dynamic userPlanDBData = null;
+        //    if (personalizedPlan?.PersonalizedPlanId != null && personalizedPlan?.PersonalizedPlanId != Guid.Empty)
+        //    {
+        //        userPlanDBData = await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.UserResourceCollectionId, Constants.Id, Convert.ToString(personalizedPlan.PersonalizedPlanId, CultureInfo.InvariantCulture));
+        //    }
+        //    if (userPlanDBData == null || userPlanDBData?.Count == 0)
+        //    {
+        //        await backendDatabaseService.CreateItemAsync((personalizedPlan), cosmosDbSettings.UserResourceCollectionId);
+        //        planId = personalizedPlan.PersonalizedPlanId.ToString();
+        //    }
+        //    else
+        //    {
+
+        //        await backendDatabaseService.UpdateItemAsync(personalizedPlan.PersonalizedPlanId.ToString(), personalizedPlan, cosmosDbSettings.UserResourceCollectionId);
+        //        planId = personalizedPlan.PersonalizedPlanId.ToString();
+        //    }
+        //    return planId;
+        //}
+
         #region Old PersonalizedPlan code
         //public async Task<PersonalizedPlanSteps> GeneratePersonalizedPlan(CuratedExperience curatedExperience, Guid answersDocId)
         //{

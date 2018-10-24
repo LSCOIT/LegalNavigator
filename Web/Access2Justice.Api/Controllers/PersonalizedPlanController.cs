@@ -1,5 +1,6 @@
 ﻿using Access2Justice.Api.Authorization;
 using Access2Justice.Api.Interfaces;
+using Access2Justice.Api.ViewModels;
 using Access2Justice.Shared.A2JAuthor;
 using Access2Justice.Shared.Extensions;
 using Access2Justice.Shared.Models;
@@ -37,7 +38,6 @@ namespace Access2Justice.Api.Controllers
             var personalizedPlan = await personalizedPlanBusinessLogic.GeneratePersonalizedPlanAsync(
                 RetrieveCachedCuratedExperience(curatedExperienceId), answersDocId);
 
-             // Todo:@Alaa save/add the unprocessed plan to the existing one if the user is logged in
             if (personalizedPlan == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
@@ -48,10 +48,12 @@ namespace Access2Justice.Api.Controllers
 
 
         [Permission(PermissionName.updateplan)]
-        [HttpPost("update-plan")]
-        public async Task<IActionResult> UpdateUserProfileDocumentAsync([FromBody]UserPersonalizedPlan userPlan)
+        [HttpPost("update")]
+        public async Task<IActionResult> UpdateUserProfileDocumentAsync()
         {
-            return Ok(await personalizedPlanBusinessLogic.UpdatePersonalizedPlan(userPlan));
+            // Todo:@Alaa save/add the unprocessed plan to the existing one if the user already has one
+            var user = HttpContext.User;
+            return Ok(/*await personalizedPlanBusinessLogic.UpdatePersonalizedPlan(personalizedPlan)*/);
         }
 
         // Todo:@Alaa must refactor this, i copied it from the CuratedExperience controller for now to finish an end-to-end personalized plan

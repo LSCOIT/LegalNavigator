@@ -68,7 +68,8 @@ namespace Access2Justice.Api.BusinessLogic
                     throw new Exception($"No topic found with this name: {topicName}");
                 }
 
-                return JsonUtilities.DeserializeDynamicObject<Topic>(topics.FirstOrDefault()); // Todo:@Alaa we shouldn't return multiple topics, maybe return the latest one if many exist
+                // Todo: return the latest topic instead of returing the first one
+                return JsonUtilities.DeserializeDynamicObject<Topic>(topics.FirstOrDefault());
             }
             catch
             {

@@ -114,7 +114,7 @@ namespace Access2Justice.Api.BusinessLogic
                 answers = await dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.CuratedExperienceAnswersCollectionId);
                 // get the answers so far - done
                 // get all the code in all the curated experience - to be done
-                var currentComponentLogic = ExtractCode(currentComponent, answers);
+                var currentComponentLogic = ExtractLogic(currentComponent, answers);
                 if (currentComponentLogic != null)
                 {
                     var parsedCode = parser.Parse(currentComponentLogic);
@@ -138,7 +138,7 @@ namespace Access2Justice.Api.BusinessLogic
                 {
                     answers = await dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.CuratedExperienceAnswersCollectionId);
                 }
-                var currentComponentLogic = ExtractCode(destinationComponent, answers);
+                var currentComponentLogic = ExtractLogic(destinationComponent, answers);
                 if (currentComponentLogic != null)
                 {
                     var parsedCode = parser.Parse(currentComponentLogic);
@@ -262,8 +262,7 @@ namespace Access2Justice.Api.BusinessLogic
             };
         }
 
-        // Todo:@Alaa move this to an html extention
-        private CuratedExperienceAnswers ExtractCode(CuratedExperienceComponent component, CuratedExperienceAnswers answers)
+        private CuratedExperienceAnswers ExtractLogic(CuratedExperienceComponent component, CuratedExperienceAnswers answers)
         {
             // when dealing with finding next destination of the current component we need to remove all logic
             // except the specific GOTO statement that comes in the current component. That is why I'm setting all logic to string.Empty.
