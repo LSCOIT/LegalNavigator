@@ -2,8 +2,10 @@
 using Access2Justice.Api.ViewModels;
 using Access2Justice.Shared.Extensions;
 using Access2Justice.Shared.Interfaces;
+using Access2Justice.Shared.Interfaces.A2JAuthor;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -19,18 +21,21 @@ namespace Access2Justice.Api.BusinessLogic
 {
     public class AdminBusinessLogic : IAdminBusinessLogic
     {
-        private readonly IDynamicQueries dbClient;
-        private readonly ICosmosDbSettings dbSettings;
-        private readonly IBackendDatabaseService dbService;
+        private readonly IDynamicQueries dynamicQueries;
+        private readonly ICosmosDbSettings cosmosDbSettings;
+        private readonly IBackendDatabaseService backendDatabaseService;
         private readonly IHostingEnvironment hostingEnvironment;
+        private readonly ICuratedExperienceConvertor a2jAuthorBuisnessLogic;
 
         public AdminBusinessLogic(IDynamicQueries dynamicQueries, ICosmosDbSettings cosmosDbSettings,
-            IBackendDatabaseService backendDatabaseService, IHostingEnvironment webHostingEnvironment)
+            IBackendDatabaseService backendDatabaseService, IHostingEnvironment hostingEnvironment,
+            ICuratedExperienceConvertor a2jAuthorBuisnessLogic)
         {
-            dbClient = dynamicQueries;
-            dbSettings = cosmosDbSettings;
-            dbService = backendDatabaseService;
-            hostingEnvironment = webHostingEnvironment;
+            this.dynamicQueries = dynamicQueries;
+            this.cosmosDbSettings = cosmosDbSettings;
+            this.backendDatabaseService = backendDatabaseService;
+            this.hostingEnvironment = hostingEnvironment;
+            this.a2jAuthorBuisnessLogic = a2jAuthorBuisnessLogic;
         }
 
         public async Task<object> UploadCuratedContentPackage(IFormFile file)
@@ -91,7 +96,7 @@ namespace Access2Justice.Api.BusinessLogic
                                 DeleteFile(destinationPath);
                             }
 
-                            Match match = Regex.Match(entry.FullName, @"template([0-9\-]+)\.json$",
+                            Match match = Regex.Match(entry.FullName,@"(template([0-9\-]+)\.json$)|(Guide\.json)",
                                         RegexOptions.IgnoreCase);
 
                             if (match.Success)
@@ -119,9 +124,10 @@ namespace Access2Justice.Api.BusinessLogic
                     //Delete uploaded zip file
                     DeleteFile(fullPath);
 
-                    var parentTemplateId = templateModel.FirstOrDefault().TemplateName;
+                    var parentTemplateId = templateOrder.FirstOrDefault().ToString();
                     JObject mainTemplate = null;
                     JArray mainTemplateChildren = null;
+                    JObject GuideTemplate = null;
 
                     foreach (var model in templateModel)
                     {
@@ -131,7 +137,7 @@ namespace Access2Justice.Api.BusinessLogic
                             JObject rootNode = (JObject)mainTemplate["rootNode"];
                             mainTemplateChildren = (JArray)rootNode["children"];
                         }
-                        else if (model.TemplateName != parentTemplateId)
+                        else if (model.TemplateName != parentTemplateId && model.TemplateName != "Guide")
                         {
                             JObject childTemplate = model.Template;
                             JObject childRootNode = (JObject)childTemplate["rootNode"];
@@ -141,10 +147,20 @@ namespace Access2Justice.Api.BusinessLogic
                                 mainTemplateChildren.Add(child);
                             }
                         }
+                        else if(model.TemplateName == "Guide")
+                        {
+                            GuideTemplate = model.Template;
+                        }
                     }
                     var newTemplateId = Guid.NewGuid();
                     mainTemplate.AddFirst(new JProperty("id", newTemplateId));
-                    await dbService.CreateItemAsync(mainTemplate, dbSettings.A2JAuthorTemplatesCollectionId);
+                    var response = await backendDatabaseService.CreateItemAsync(mainTemplate, cosmosDbSettings.A2JAuthorTemplatesCollectionId);
+                    if (response != null && response.Id != null)
+                    {
+                        var curatedExprienceJson = a2jAuthorBuisnessLogic.ConvertA2JAuthorToCuratedExperience(GuideTemplate);
+                        curatedExprienceJson.A2jPersonalizedPlanId = newTemplateId;
+                        await backendDatabaseService.UpdateItemAsync(curatedExprienceJson.CuratedExperienceId.ToString(), JObject.FromObject(curatedExprienceJson), cosmosDbSettings.CuratedExperienceCollectionId);
+                    }
                     return "Upload Successful.";
                 }
                 return "Provide the file to upload.";
