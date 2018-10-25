@@ -263,7 +263,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             var result = luisBusinessLogic.GetResourceBasedOnThresholdAsync(luisInput).Result;
 
             //assert
-            Assert.Contains(expectedWebResponse, result);
+            Assert.Contains(expectedInternalResponse, result);
         }
 
     }

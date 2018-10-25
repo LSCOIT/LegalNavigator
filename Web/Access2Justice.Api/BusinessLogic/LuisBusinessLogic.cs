@@ -49,8 +49,9 @@ namespace Access2Justice.Api
                    luisTopIntents != null && luisTopIntents.TopNIntents != null ? luisTopIntents.TopNIntents : null);
             }
             //Will fetch web links only when there are no mapping LUIS Intent or no mapping resources to specific LUIS Intent
-            return luisViewModel != null && luisViewModel.Resources != null &&
-                ((JContainer)(luisViewModel.Resources)).Count > 0 ?
+            return (luisViewModel != null && luisViewModel.Resources != null &&
+                ((JContainer)(luisViewModel.Resources)).Count > 0) 
+                || !string.IsNullOrEmpty(luisInput.LuisTopScoringIntent) ?
                 JObject.FromObject(luisViewModel).ToString() :
             await GetWebResourcesAsync(encodedSentence);
         }
