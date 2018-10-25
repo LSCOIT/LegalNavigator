@@ -10,7 +10,7 @@ import { ServiceOrgSidebarComponent } from '../../../sidebars/service-org-sideba
 import { VideosComponent } from './videos.component';
 import { Global } from '../../../../global';
 
-describe('VideosComponent', () => {
+fdescribe('VideosComponent', () => {
   let component: VideosComponent;
   let fixture: ComponentFixture<VideosComponent>;
   let mockRouter;
@@ -21,7 +21,7 @@ describe('VideosComponent', () => {
       "type": "Evictions and Tenant Issues",
       "description": "Conversations about Landlord Tenant Law in Alaska",
       "resourceType": "Videos",
-      "url": "https://www.youtube.com/embed/pCPGSTYsYoU",
+      "url": "https://www.youtube.com/watch?v=3g1Tu2Ulrk0",
       "topicTags": [
         {
           "id": "62a93f03-8234-46f1-9c35-b3146a96ca8b"
@@ -37,8 +37,6 @@ describe('VideosComponent', () => {
       "icon": "./assets/images/resources/resource.png",
       "overview": "This video covers some issues everyone should think about when moving into a new rental housing."
     };
-  let mockUrl = "https://www.youtube.com/watch?v=3g1Tu2Ulrk0";
-  let embedUrl; 
   
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -68,11 +66,21 @@ describe('VideosComponent', () => {
   fixture = TestBed.createComponent(VideosComponent);
   component = fixture.componentInstance;
   component.resource = mockResource;
-  embedUrl = mockUrl.replace("watch?v=", "embed/");
   });
 
   it('should create', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
+  });
+
+  it('should call resourceUrl on ngOnInit', () => {
+    spyOn(component, 'resourceUrl');
+    component.ngOnInit();
+    expect(component.resourceUrl).toHaveBeenCalledWith("https://www.youtube.com/watch?v=3g1Tu2Ulrk0");
+  });
+
+  it('should derive a new url for YouTube videos', () => {
+    component.resourceUrl(mockResource.url);
+    expect(component.url).toEqual("https://www.youtube.com/embed/3g1Tu2Ulrk0");
   });
 });
