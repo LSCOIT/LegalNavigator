@@ -107,6 +107,7 @@ describe('QuestionComponent', () => {
 
   it('should call getNextQuestion if remaining question is greater than 1', () => {
     spyOn(component, 'sendQuestionsRemaining');
+    component.answersDocId = "456";
     let formValue = <NgForm>{
       value: {
         "111": "abc",
