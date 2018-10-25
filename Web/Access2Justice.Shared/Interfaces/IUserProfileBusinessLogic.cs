@@ -1,5 +1,6 @@
 ﻿using Access2Justice.Shared.Models;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Access2Justice.Shared.Interfaces
@@ -11,5 +12,6 @@ namespace Access2Justice.Shared.Interfaces
         Task<dynamic> UpsertUserSavedResourcesAsync(ProfileResources userResources);
         Task<UserProfileViewModel> UpsertUserProfileAsync(UserProfile userProfile);
         Task<Guid> GetDefaultUserRole();
+        Task<List<Role>> GetRoleDetailsAsync(List<string> roleInformationId);
     }
 }

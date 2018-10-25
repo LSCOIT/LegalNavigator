@@ -133,7 +133,7 @@ namespace Access2Justice.Api.BusinessLogic
                 throw new Exception("Please login into Application");
                     
             userProfile.OId = EncryptionUtilities.GenerateSHA512String(userProfile?.OId);
-            var resultUP = await GetUserProfileDataAsync(userProfile?.OId, true);
+            UserProfileViewModel resultUP = await GetUserProfileDataAsync(userProfile?.OId, true);
             if (string.IsNullOrEmpty(resultUP?.OId))
             {
                 userProfile.RoleInformationId.Add(await GetDefaultUserRole());
@@ -141,7 +141,22 @@ namespace Access2Justice.Api.BusinessLogic
                 var result = await dbService.CreateItemAsync(userProfile, dbSettings.UserProfileCollectionId);
                 profile.Add(result);
                 resultUP = ConvertUserProfileViewModel(profile);
+                resultUP.RoleInformation.Add(new RoleViewModel { RoleName = Permissions.Role.Authenticated.ToString(), OrganizationalUnit = string.Empty });
             }
+            else
+            {
+                List<Role> userRoles = await GetRoleDetailsAsync(resultUP.RoleInformationId);
+                if (userRoles?.Count() > 0)
+                {
+                    List<RoleViewModel> roleViewModels = new List<RoleViewModel>();
+                    foreach (var userRole in userRoles)
+                    {
+                        roleViewModels.Add(new RoleViewModel { RoleName = userRole.RoleName, OrganizationalUnit = userRole.OrganizationalUnit });
+                    }
+                    resultUP.RoleInformation = roleViewModels;
+                }
+            }
+            resultUP.RoleInformationId = null;
             return resultUP;
         }
 
@@ -150,6 +165,17 @@ namespace Access2Justice.Api.BusinessLogic
             var result = await dbClient.FindItemsWhereAsync(dbSettings.UserRoleCollectionId, Constants.UserRole, Permissions.Role.Authenticated.ToString());
             List<Role> userRole = JsonUtilities.DeserializeDynamicObject<List<Role>>(result);
             return userRole.Select(x => x.RoleInformationId).FirstOrDefault();
+        }
+
+        public async Task<List<Role>> GetRoleDetailsAsync(List<string> roleInformationId)
+        {
+            List<Role> userRole = new List<Role>();
+            if (roleInformationId.Count() > 0)
+            {
+                var roleData = await dbClient.FindItemsWhereInClauseAsync(dbSettings.UserRoleCollectionId, Constants.Id, roleInformationId);
+                userRole = JsonUtilities.DeserializeDynamicObject<List<Role>>(roleData);
+            }
+            return userRole;
         }
     }
 }

@@ -59,11 +59,11 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 
         [Theory]
         [MemberData(nameof(UserRoleTestData.ValidateOUForRole), MemberType = typeof(UserRoleTestData))]
-        public void ValidateOUForRoleShouldValidate(List<string> roleInformationId, string ou, JArray roleResponse, dynamic expectedResult)
+        public void ValidateOUForRoleShouldValidate(List<string> roleInformationId, string ou, List<Role> roleResponse, dynamic expectedResult)
         {
-            var ids = new List<string>() { "guid1" };
-            var dbResponse = dbClient.FindItemsWhereInClauseAsync(dbSettings.UserRoleCollectionId, Constants.Id, ids);
-            dbResponse.ReturnsForAnyArgs(roleResponse);
+            var ids = new List<string>() { "guid1" };            
+            var Response = dbUserProfile.GetRoleDetailsAsync(roleInformationId);
+            Response.ReturnsForAnyArgs(roleResponse);
 
             //act
             var response = userRoleBusinessLogic.ValidateOUForRole(roleInformationId, ou);
