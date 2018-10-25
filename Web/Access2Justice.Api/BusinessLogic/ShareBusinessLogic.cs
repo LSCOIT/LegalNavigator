@@ -51,7 +51,7 @@ namespace Access2Justice.Api.BusinessLogic
 			{
 				if (userProfile?.SharedResourceId != null && userProfile.SharedResourceId != Guid.Empty)
 				{
-					userSharedResourcesDBData = await dbClient.FindItemsWhereAsync(dbSettings.UserResourceCollectionId, Constants.Id, Convert.ToString(userProfile.SharedResourceId, CultureInfo.InvariantCulture));
+					userSharedResourcesDBData = await dbClient.FindItemsWhereAsync(dbSettings.UserResourcesCollectionId, Constants.Id, Convert.ToString(userProfile.SharedResourceId, CultureInfo.InvariantCulture));
 				}
 				if (userSharedResourcesDBData != null && userSharedResourcesDBData?.Count > 0)
 				{
@@ -111,7 +111,7 @@ namespace Access2Justice.Api.BusinessLogic
 			dynamic response = null;
 			if (userProfile?.SharedResourceId != null && userProfile.SharedResourceId != Guid.Empty)
 			{
-				userSharedResourcesDBData = await dbClient.FindItemsWhereAsync(dbSettings.UserResourceCollectionId, Constants.Id, Convert.ToString(userProfile.SharedResourceId, CultureInfo.InvariantCulture));
+				userSharedResourcesDBData = await dbClient.FindItemsWhereAsync(dbSettings.UserResourcesCollectionId, Constants.Id, Convert.ToString(userProfile.SharedResourceId, CultureInfo.InvariantCulture));
 			}
 			if (userSharedResourcesDBData != null && userSharedResourcesDBData.Count > 0)
 			{
@@ -120,7 +120,7 @@ namespace Access2Justice.Api.BusinessLogic
 				userSharedResources[0].SharedResourceId = userProfile.SharedResourceId;
 				userSharedResources[0].SharedResource.Add(sharedResource);
 				response = await dbService.UpdateItemAsync(userProfile.SharedResourceId.ToString(), userSharedResources[0],
-				dbSettings.UserResourceCollectionId);
+				dbSettings.UserResourcesCollectionId);
 			}
 			else
 			{
@@ -137,8 +137,8 @@ namespace Access2Justice.Api.BusinessLogic
 				userSharedResources.SharedResource = sharedResources;
 				userProfile.SharedResourceId = userSharedResources.SharedResourceId;
 				await dbService.UpdateItemAsync(userProfile.Id, userProfile,
-				dbSettings.UserProfileCollectionId);
-				response = await dbService.CreateItemAsync((userSharedResources), dbSettings.UserResourceCollectionId);
+				dbSettings.UserProfilesCollectionId);
+				response = await dbService.CreateItemAsync((userSharedResources), dbSettings.UserResourcesCollectionId);
 			}
 			return response;
 		}
@@ -170,7 +170,7 @@ namespace Access2Justice.Api.BusinessLogic
 			}
 			if (userProfile?.SharedResourceId != null && userProfile.SharedResourceId != Guid.Empty)
 			{
-				userSharedResourcesDBData = await dbClient.FindItemsWhereAsync(dbSettings.UserResourceCollectionId, Constants.Id, Convert.ToString(userProfile.SharedResourceId, CultureInfo.InvariantCulture));
+				userSharedResourcesDBData = await dbClient.FindItemsWhereAsync(dbSettings.UserResourcesCollectionId, Constants.Id, Convert.ToString(userProfile.SharedResourceId, CultureInfo.InvariantCulture));
 			}
 			if (userSharedResourcesDBData != null)
 			{
@@ -185,7 +185,7 @@ namespace Access2Justice.Api.BusinessLogic
 			userSharedResources[0].SharedResource.RemoveAll(a => a.Url.OriginalString.
 			Contains(unShareInput.Url.OriginalString));
 			var response = await dbService.UpdateItemAsync(userSharedResources[0].SharedResourceId.ToString(), userSharedResources[0],
-				dbSettings.UserResourceCollectionId);
+				dbSettings.UserResourcesCollectionId);
 			if (unShareInput.Url.OriginalString.Contains("plan"))
 			{
 				string planId = unShareInput.Url.OriginalString.Substring(6);
@@ -199,7 +199,7 @@ namespace Access2Justice.Api.BusinessLogic
 			{
 				return null;
 			}
-			var response = await dbClient.FindFieldWhereArrayContainsAsync(dbSettings.UserResourceCollectionId,
+			var response = await dbClient.FindFieldWhereArrayContainsAsync(dbSettings.UserResourcesCollectionId,
 				Constants.SharedResource, Constants.PermaLink, permaLink, Constants.ExpirationDate);
             if (response == null)
             {
@@ -210,7 +210,7 @@ namespace Access2Justice.Api.BusinessLogic
 
             if (shareProfileDetails.Count() > 0)
             {
-                var userprofileResponse = await dbClient.FindFieldWhereArrayContainsAsync(dbSettings.UserProfileCollectionId, Constants.sharedResourceId, shareProfileDetails[0].Id);
+                var userprofileResponse = await dbClient.FindFieldWhereArrayContainsAsync(dbSettings.UserProfilesCollectionId, Constants.sharedResourceId, shareProfileDetails[0].Id);
                 List<ShareProfileResponse> shareProfileResponse = JsonUtilities.DeserializeDynamicObject<List<ShareProfileResponse>>(userprofileResponse);
                 if (shareProfileResponse?.Count > 0)
                 {

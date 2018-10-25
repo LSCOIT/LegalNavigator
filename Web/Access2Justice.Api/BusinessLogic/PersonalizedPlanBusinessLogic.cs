@@ -185,7 +185,7 @@ namespace Access2Justice.Api.BusinessLogic
         public async Task<PersonalizedPlanSteps> GetPersonalizedPlan(string planId)
         {
             dynamic personalizedPlan = null;
-            var planDetails = await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.UserResourceCollectionId, Constants.Id, planId);
+            var planDetails = await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.UserResourcesCollectionId, Constants.Id, planId);
             if (planDetails != null)
             {
                 personalizedPlan = JsonUtilities.DeserializeDynamicObject<List<PersonalizedPlanSteps>>(planDetails);
@@ -203,7 +203,7 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 if (userPlan.PersonalizedPlan.PersonalizedPlanId.ToString() == (userProfile?.PersonalizedActionPlanId.ToString()))
                 {
-                    userPlanDBData = await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.UserResourceCollectionId, Constants.Id, Convert.ToString(userProfile.PersonalizedActionPlanId, CultureInfo.InvariantCulture));
+                    userPlanDBData = await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.UserResourcesCollectionId, Constants.Id, Convert.ToString(userProfile.PersonalizedActionPlanId, CultureInfo.InvariantCulture));
                 }
                 else
                 {
@@ -213,12 +213,12 @@ namespace Access2Justice.Api.BusinessLogic
             if (userPlanDBData == null || userPlanDBData?.Count == 0)
             {
                 userProfile.PersonalizedActionPlanId = userPlan.PersonalizedPlan.PersonalizedPlanId;
-                await backendDatabaseService.UpdateItemAsync(userProfile.Id, userProfile, cosmosDbSettings.UserProfileCollectionId);
+                await backendDatabaseService.UpdateItemAsync(userProfile.Id, userProfile, cosmosDbSettings.UserProfilesCollectionId);
                 planId = userProfile.PersonalizedActionPlanId.ToString();
             }
             else
             {
-                await backendDatabaseService.UpdateItemAsync(userPlan.PersonalizedPlan.PersonalizedPlanId.ToString(), userPlan.PersonalizedPlan, cosmosDbSettings.UserResourceCollectionId);
+                await backendDatabaseService.UpdateItemAsync(userPlan.PersonalizedPlan.PersonalizedPlanId.ToString(), userPlan.PersonalizedPlan, cosmosDbSettings.UserResourcesCollectionId);
                 planId = userProfile.PersonalizedActionPlanId.ToString();
             }
             return planId;
@@ -230,17 +230,17 @@ namespace Access2Justice.Api.BusinessLogic
             dynamic userPlanDBData = null;
             if (personalizedPlan?.PersonalizedPlanId != null && personalizedPlan?.PersonalizedPlanId != Guid.Empty)
             {
-                userPlanDBData = await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.UserResourceCollectionId, Constants.Id, Convert.ToString(personalizedPlan.PersonalizedPlanId, CultureInfo.InvariantCulture));
+                userPlanDBData = await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.UserResourcesCollectionId, Constants.Id, Convert.ToString(personalizedPlan.PersonalizedPlanId, CultureInfo.InvariantCulture));
             }
             if (userPlanDBData == null || userPlanDBData?.Count == 0)
             {
-                await backendDatabaseService.CreateItemAsync((personalizedPlan), cosmosDbSettings.UserResourceCollectionId);
+                await backendDatabaseService.CreateItemAsync((personalizedPlan), cosmosDbSettings.UserResourcesCollectionId);
                 planId = personalizedPlan.PersonalizedPlanId.ToString();
             }
             else
             {
 
-                await backendDatabaseService.UpdateItemAsync(personalizedPlan.PersonalizedPlanId.ToString(), personalizedPlan, cosmosDbSettings.UserResourceCollectionId);
+                await backendDatabaseService.UpdateItemAsync(personalizedPlan.PersonalizedPlanId.ToString(), personalizedPlan, cosmosDbSettings.UserResourcesCollectionId);
                 planId = personalizedPlan.PersonalizedPlanId.ToString();
             }
             return planId;
