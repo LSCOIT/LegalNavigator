@@ -34,8 +34,8 @@
   margin: 15px 0;
 }
 
-.btn-primary {
-  font-size: 14px;
+a.btn-primary, a.btn-primary:hover {
+  color: #fff;
 }
 
 @media only screen and (min-width : 992px) {
@@ -45,6 +45,13 @@
   }
 
   .btn-primary {
-    font-size: 12px;
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+}
+
+@media only screen and (min-width : 1224px) {
+  .btn-primary {
+    font-size: 16px;
   }
 }

@@ -50,14 +50,14 @@ export class TopicsComponent implements OnInit {
       } else {
         this.setBottomBorder(this.bottomRowTopics);
       }
-    } else if (this.windowWidth >= 768 && window.innerWidth < 992) {
+    } else if (this.windowWidth >= 768 && window.innerWidth < 992 || !this.fullPage && this.windowWidth >= 768) {
       this.bottomRowTopics = this.topicList.length % 3;
       if (this.bottomRowTopics === 0) {
         this.setBottomBorder(3);
       } else {
         this.setBottomBorder(this.bottomRowTopics);
       }
-    } else {
+    } else if (this.windowWidth > 992 && this.fullPage) {
       this.bottomRowTopics = this.topicList.length % 4;
       if (this.bottomRowTopics === 0) {
         this.setBottomBorder( 4);

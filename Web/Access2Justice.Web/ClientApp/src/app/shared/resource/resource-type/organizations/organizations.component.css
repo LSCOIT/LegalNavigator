@@ -1,3 +1,7 @@
+.org-sections {
+  margin-bottom: 20px;
+}
+
 .expanded-image {
   position: relative;
 }
@@ -68,3 +72,10 @@ h2 {
     margin-top: 10px;
   }
 }
+
+@media only screen and (min-width : 992px) {
+  .col-md-4 {
+    padding-left: 5%;
+  }
+}
+
