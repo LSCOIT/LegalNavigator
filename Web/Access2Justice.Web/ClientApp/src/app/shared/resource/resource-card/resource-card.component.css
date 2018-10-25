@@ -1,3 +1,7 @@
+.col-sm-4 {
+  word-wrap: break-word;
+}
+
 .media-left {
   width: 50px;
 }
