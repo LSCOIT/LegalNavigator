@@ -100,10 +100,6 @@ export class TopicsComponent implements OnInit {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
-
-    if (this.windowResizeSubscription) {
-      this.windowResizeSubscription.unsubscribe();
-    }
   }
 
 }
