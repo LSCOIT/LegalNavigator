@@ -54,7 +54,7 @@
       <app-topics [topicLength]="topicLength" [fullPage]="true"></app-topics>
     </div>
     <div class="text-center topic-button row">
-      <a class="btn btn-primary" [routerLink]="topicAndResourcesData?.button?.buttonLink"> {{topicAndResourcesData?.button?.buttonText}} </a>
+      <a id="see-more-topics-button" class="btn btn-primary" [routerLink]="topicAndResourcesData?.button?.buttonLink"> {{topicAndResourcesData?.button?.buttonText}} </a>
     </div>
   </div>
   <div *ngIf="carouselData.slides.length > 0" class="outer-bg">

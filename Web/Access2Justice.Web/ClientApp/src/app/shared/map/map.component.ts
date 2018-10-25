@@ -75,6 +75,7 @@ export class MapComponent implements OnInit {
   updateLocation() {
     if (this.locationError === false || sessionStorage.getItem("globalSearchMapLocation") || sessionStorage.getItem("localSearchMapLocation") ) {
       this.isError = false;
+      sessionStorage.removeItem('searchTextResults');
       this.locationError = undefined;
       this.mapLocation = this.mapService.updateLocation();
       this.displayLocationDetails(this.mapLocation);
