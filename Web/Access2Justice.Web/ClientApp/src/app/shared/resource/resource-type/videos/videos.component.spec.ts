@@ -14,62 +14,65 @@ describe('VideosComponent', () => {
   let component: VideosComponent;
   let fixture: ComponentFixture<VideosComponent>;
   let mockRouter;
-  let mockResource =[
+  let mockResource =
     {
-       "id":"6f6511e3-4c15-4664-9125-4d025ec52cf5",
-       "name":"Moving In",
-       "type":"Evictions and Tenant Issues",
-       "description":"Conversations about Landlord Tenant Law in Alaska",
-       "resourceType":"Videos",
-       "url":"https://www.youtube.com/embed/pCPGSTYsYoU",
-       "topicTags":[
-          {
-             "id":"62a93f03-8234-46f1-9c35-b3146a96ca8b"
-          }
-       ],
-       "location":[
-          {
-             "state":"Hawaii",
-             "city":"Kalawao",
-             "zipCode":"96761"
-          }
-       ],
-       "icon":"./assets/images/resources/resource.png",
-       "overview":"This video covers some issues everyone should think about when moving into a new rental housing."
-    }
- ]
+      "id": "6f6511e3-4c15-4664-9125-4d025ec52cf5",
+      "name": "Moving In",
+      "type": "Evictions and Tenant Issues",
+      "description": "Conversations about Landlord Tenant Law in Alaska",
+      "resourceType": "Videos",
+      "url": "https://www.youtube.com/embed/pCPGSTYsYoU",
+      "topicTags": [
+        {
+          "id": "62a93f03-8234-46f1-9c35-b3146a96ca8b"
+        }
+      ],
+      "location": [
+        {
+          "state": "Hawaii",
+          "city": "Kalawao",
+          "zipCode": "96761"
+        }
+      ],
+      "icon": "./assets/images/resources/resource.png",
+      "overview": "This video covers some issues everyone should think about when moving into a new rental housing."
+    };
+  let mockUrl = "https://www.youtube.com/watch?v=3g1Tu2Ulrk0";
+  let embedUrl; 
   
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ HttpClientModule ],
-      declarations: [ 
+      imports: [HttpClientModule],
+      declarations: [
         VideosComponent,
         GuidedAssistantSidebarComponent,
-        ServiceOrgSidebarComponent 
+        ServiceOrgSidebarComponent
       ],
-      schemas: [ NO_ERRORS_SCHEMA ],
+      schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        { provide: ActivatedRoute,
-          useValue: {snapshot: {params: {'id': '123'}}}
-        }, 
+        {
+          provide: ActivatedRoute,
+          useValue: { snapshot: { params: { 'id': '123' } } }
+        },
         { provide: Router, userValue: mockRouter },
         MapService,
         NavigateDataService,
         PaginationService,
         Global
       ]
-    })
-    .compileComponents();
+    });
+    TestBed.compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(VideosComponent);
-    component = fixture.componentInstance;
-    component.resource = mockResource;
-    fixture.detectChanges();
+  fixture = TestBed.createComponent(VideosComponent);
+  component = fixture.componentInstance;
+  component.resource = mockResource;
+  embedUrl = mockUrl.replace("watch?v=", "embed/");
   });
 
   it('should create', () => {
+    fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 });
