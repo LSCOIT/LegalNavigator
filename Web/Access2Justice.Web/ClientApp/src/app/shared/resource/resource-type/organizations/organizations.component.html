@@ -79,18 +79,20 @@
         </div>
       </div>
     </div>
-    <div class="box-no-shadow" *ngIf="resource.reviewer != null">
+    <div class="box-no-shadow org-review" *ngIf="resource.reviewer != null">
       <div class="resource-body">
         <h4>Reviewed by a member of your community</h4>  
-        <div *ngFor="let resource of resource.reviewer">
+        <div *ngFor="let reviewer of resource.reviewer">
           <p>"{{resource.reviewText}}"</p>
-          <div>
-            <img [src]="resource.reviewerImage" alt="{{resource.reviewerFullName}}"/>
-            <p>{{resource.reviewerFullName}}, {{resource.reviewerTitle}}</p>
+          <div class="media-left" *ngIf="reviewer.reviewerImage">
+            <img class="media-object" [src]="reviewer.reviewerImage" [alt]="reviewer.reviewerFullName">
           </div>
+          <div class="media-body" *ngIf="reviewer.reviewerImage">
+            <p>{{resource.reviewerFullName}}, {{resource.reviewerTitle}}</p>
           </div>
         </div>
       </div>
+    </div>
   </div>
   <div class="col-md-4 col-sm-12 pull-right">
     <div class="no-print">
