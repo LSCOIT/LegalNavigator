@@ -40,6 +40,7 @@ namespace Access2Justice.Api.BusinessLogic
         {
             var userProfile = await GetUserProfileDataAsync(oId);
             dynamic userResourcesDBData = null;
+            // Todo: create a constant for these strings
             if (type == "resources" && userProfile?.SavedResourcesId != null && userProfile?.SavedResourcesId != Guid.Empty)
             {
                 userResourcesDBData = await dbClient.FindItemsWhereAsync(dbSettings.UserResourceCollectionId, Constants.Id, Convert.ToString(userProfile.SavedResourcesId, CultureInfo.InvariantCulture));

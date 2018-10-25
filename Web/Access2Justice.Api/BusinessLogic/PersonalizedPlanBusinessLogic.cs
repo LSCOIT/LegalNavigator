@@ -4,11 +4,10 @@ using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Access2Justice.Shared.Utilities;
+using Microsoft.Azure.Documents;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Access2Justice.Api.BusinessLogic
@@ -23,7 +22,8 @@ namespace Access2Justice.Api.BusinessLogic
         private readonly IPersonalizedPlanViewModelMapper personalizedPlanViewModelMapper;
 
         public PersonalizedPlanBusinessLogic(ICosmosDbSettings cosmosDbSettings, IBackendDatabaseService backendDatabaseService,
-            IDynamicQueries dynamicQueries, IUserProfileBusinessLogic userProfileBusinessLogic, IPersonalizedPlanEngine personalizedPlanEngine, IPersonalizedPlanViewModelMapper personalizedPlanViewModelMapper)
+            IDynamicQueries dynamicQueries, IUserProfileBusinessLogic userProfileBusinessLogic, IPersonalizedPlanEngine personalizedPlanEngine,
+            IPersonalizedPlanViewModelMapper personalizedPlanViewModelMapper)
         {
             this.cosmosDbSettings = cosmosDbSettings;
             this.backendDatabaseService = backendDatabaseService;
@@ -45,11 +45,11 @@ namespace Access2Justice.Api.BusinessLogic
             return await personalizedPlanViewModelMapper.MapViewModel(unprocessedPlan, location);
         }
 
-         // Todo:@Alaa test this method working
+        // Todo:@Alaa test this method working
         public async Task<PersonalizedPlanViewModel> GetPersonalizedPlan(Guid personalizedPlanId)
         {
             dynamic personalizedPlan = null;
-             // Todo:@Alaa use the generic version of the FindItemsWhereAsync
+            // Todo:@Alaa use the generic version of the FindItemsWhereAsync
             var planDetails = await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.UserResourceCollectionId, Constants.Id, personalizedPlanId.ToString());
             if (planDetails != null)
             {
@@ -58,18 +58,36 @@ namespace Access2Justice.Api.BusinessLogic
             return personalizedPlan?[0];
         }
 
-        public async Task<PersonalizedPlanViewModel> UpdatePersonalizedPlan(PersonalizedPlanViewModel personalizedPlan, string userId)
+        public async Task<Document> UpsertPersonalizedPlan(PersonalizedPlanViewModel personalizedPlan)
         {
+            try
+            {
+                var userPersonalizedPlan = await backendDatabaseService.
+                    GetItemAsync<PersonalizedPlanViewModel>(personalizedPlan.PersonalizedPlanId.ToString(), cosmosDbSettings.UserResourceCollectionId);
 
-            var breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
-
-            return null;
+                if (userPersonalizedPlan == null)
+                {
+                    var newPlan = await backendDatabaseService.CreateItemAsync(personalizedPlan, cosmosDbSettings.UserResourceCollectionId);
+                    // Todo:@Alaa delete answer file
+                    return newPlan;
+                }
+                else
+                {
+                    return await backendDatabaseService.UpdateItemAsync(
+                        personalizedPlan.PersonalizedPlanId.ToString(), personalizedPlan, cosmosDbSettings.UserResourceCollectionId);
+                }
+            }
+            catch
+            {
+                // Todo: log exception
+                return null;
+            }
         }
 
-        
-        
-        
-        
+
+
+
+
         // Todo:@Alaa old code - to be removed or refactored
 
         //public async Task<PersonalizedPlanViewModel> UpdatePersonalizedPlan(UserPersonalizedPlan userPlan)
