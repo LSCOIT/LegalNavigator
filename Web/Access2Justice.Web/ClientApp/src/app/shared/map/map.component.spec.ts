@@ -27,7 +27,7 @@ class MockBsModalRef {
   }
 }
 
-fdescribe('MapComponent', () => {
+describe('MapComponent', () => {
   let component: MapComponent;
   let fixture: ComponentFixture<MapComponent>;
   let modalService: BsModalService;
@@ -115,12 +115,6 @@ fdescribe('MapComponent', () => {
 
   it("should define component", () => {
     expect(component).toBeDefined();
-  });
-
-  it("should assign session storage details to map location on ngInit", () => {
-    sessionStorage.setItem("mockGlobalMapLocation", JSON.stringify(mockMapLocation));
-    component.mapLocation = JSON.parse(sessionStorage.getItem("mockGlobalMapLocation"));
-    expect(component.mapLocation.state).toBe('Sample State');
   });
 
   it("should call displayLocationDetails on ngInit", () => {
