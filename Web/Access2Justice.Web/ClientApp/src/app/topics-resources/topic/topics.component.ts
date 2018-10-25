@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnInit, Input, QueryList, ViewChildren, HostListener } from '@angular/core';
 import { TopicService } from '../shared/topic.service';
 import { Topic } from '../shared/topic';
 import { MapService } from '../../shared/map/map.service';
@@ -20,6 +20,13 @@ export class TopicsComponent implements OnInit {
   newTopicList = [];
   windowResizeSubscription;
   windowWidth: number = window.innerWidth;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.windowWidth = event.target.innerWidth;
+    this.addBorder();
+    this.findBottomRowTopics();
+  }
 
   constructor(
     private topicService: TopicService,
@@ -86,13 +93,6 @@ export class TopicsComponent implements OnInit {
       .subscribe((value) => {
         this.global.topicsData = null;
         this.getTopics();
-      });
-
-    this.windowResizeSubscription = this.global.notifyScreenSizeChange
-      .subscribe((value) => {
-        this.windowWidth = value;
-        this.addBorder();
-        this.findBottomRowTopics();
       });
   }
 
