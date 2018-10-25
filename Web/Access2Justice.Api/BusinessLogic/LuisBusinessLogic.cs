@@ -100,7 +100,7 @@ namespace Access2Justice.Api
             var groupedResourceType = GetResourcesTask.Result;
             PagedResources resources = ApplyPaginationTask.Result;
             PagedResources guidedAssistantResponse = GetGuidedAssistantId.Result;
-            var guidedAssistantResult = JsonUtilities.DeserializeDynamicObject<Resource>(guidedAssistantResponse.Results.FirstOrDefault());
+            var guidedAssistantResult = JsonUtilities.DeserializeDynamicObject<GuidedAssistant>(guidedAssistantResponse.Results.FirstOrDefault());
             
             return JObject.FromObject(new LuisViewModel
             {
@@ -111,7 +111,7 @@ namespace Access2Justice.Api
                 ContinuationToken = resources.ContinuationToken != null ? JsonConvert.DeserializeObject(resources.ContinuationToken) : JsonConvert.DeserializeObject(Constants.EmptyArray),
                 TopicIds = JsonUtilities.DeserializeDynamicObject<dynamic>(topicIds),
                 ResourceTypeFilter = JsonUtilities.DeserializeDynamicObject<dynamic>(groupedResourceType),
-                GuidedAssistantId = guidedAssistantResult != null ? guidedAssistantResult.ExternalUrls : string.Empty
+                GuidedAssistantId = guidedAssistantResult != null ? guidedAssistantResult.CuratedExperienceId : string.Empty
             }).ToString();
         }
 

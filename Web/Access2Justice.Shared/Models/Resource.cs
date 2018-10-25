@@ -190,6 +190,12 @@ namespace Access2Justice.Shared.Models
         public string FullDescription { get; set; }
     }
 
+    public class GuidedAssistant : Resource
+    {
+        [JsonProperty(PropertyName = "curatedExperienceId")]
+        public string CuratedExperienceId { get; set; }
+    }
+
     public class ExternalLink : Resource
     {
         //for now there are no unique properties to external links
