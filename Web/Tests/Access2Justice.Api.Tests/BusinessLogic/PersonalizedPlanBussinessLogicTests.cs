@@ -63,14 +63,14 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             dbSettings.AuthKey.Returns("dummykey");
             dbSettings.Endpoint.Returns(new Uri("https://bing.com"));
             dbSettings.DatabaseId.Returns("dbname");
-            dbSettings.TopicCollectionId.Returns("TopicCollection");
-            dbSettings.ResourceCollectionId.Returns("ResourceCollection");
-            dbSettings.UserProfileCollectionId.Returns("UserProfile");
-            dbSettings.StaticResourceCollectionId.Returns("StaticResource");
-            dbSettings.PersonalizedActionPlanCollectionId.Returns("PersonalizedActionPlan");
-            dbSettings.CuratedExperienceCollectionId.Returns("CuratedExperience");
+            dbSettings.TopicsCollectionId.Returns("TopicCollection");
+            dbSettings.ResourcesCollectionId.Returns("ResourceCollection");
+            dbSettings.UserProfilesCollectionId.Returns("UserProfile");
+            dbSettings.StaticResourcesCollectionId.Returns("StaticResource");
+            dbSettings.PersonalizedActionsPlanCollectionId.Returns("PersonalizedActionPlan");
+            dbSettings.CuratedExperiencesCollectionId.Returns("CuratedExperience");
             dbSettings.CuratedExperienceAnswersCollectionId.Returns("CuratedExperienceAnswers");
-            dbSettings.UserResourceCollectionId.Returns("UserResource");
+            dbSettings.UserResourcesCollectionId.Returns("UserResource");
         }
 
         [Fact]
@@ -194,7 +194,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         {
             //Arrange
             string planId = this.mockPlanId1;
-            var dbResponse = dynamicQueries.FindItemsWhereAsync(dbSettings.PersonalizedActionPlanCollectionId, "id", planId);
+            var dbResponse = dynamicQueries.FindItemsWhereAsync(dbSettings.PersonalizedActionsPlanCollectionId, "id", planId);
             List<PersonalizedPlanSteps> expectedPlan = JsonConvert.DeserializeObject<List<PersonalizedPlanSteps>>(JsonConvert.SerializeObject(this.generatedPersonalizedPlan));
             dbResponse.ReturnsForAnyArgs<dynamic>(expectedPlan);
 
@@ -218,7 +218,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             string id = userUIDocument[0].id;
             string planId = userUIDocument[0].PlanId;
             string type = userUIDocument[0].type;
-            dbSettings.PersonalizedActionPlanCollectionId.Returns("PersonalizedActionPlan");
+            dbSettings.PersonalizedActionsPlanCollectionId.Returns("PersonalizedActionPlan");
             List<string> resourcesPropertyNames = new List<string>() { Constants.PlanId, Constants.Type };
             List<string> resourcesValues = new List<string>() { planId, type };
             Microsoft.Azure.Documents.Document document = new Microsoft.Azure.Documents.Document();
@@ -226,8 +226,8 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             document.LoadFrom(reader);
             dynamic actualResult = null;
 
-            dynamicQueries.FindItemsWhereAsync(dbSettings.PersonalizedActionPlanCollectionId, resourcesPropertyNames, resourcesValues).ReturnsForAnyArgs(expectedConvertedPersonalizedPlanSteps);
-            dbService.UpdateItemAsync<dynamic>(id, document, dbSettings.PersonalizedActionPlanCollectionId).ReturnsForAnyArgs(document);
+            dynamicQueries.FindItemsWhereAsync(dbSettings.PersonalizedActionsPlanCollectionId, resourcesPropertyNames, resourcesValues).ReturnsForAnyArgs(expectedConvertedPersonalizedPlanSteps);
+            dbService.UpdateItemAsync<dynamic>(id, document, dbSettings.PersonalizedActionsPlanCollectionId).ReturnsForAnyArgs(document);
 
             //Act
             PersonalizedPlanSteps expectedConvertedPlanSteps = JsonConvert.DeserializeObject<PersonalizedPlanSteps>(JsonConvert.SerializeObject(this.convertedPersonalizedPlanSteps.First));

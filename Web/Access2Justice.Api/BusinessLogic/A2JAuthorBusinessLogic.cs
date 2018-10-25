@@ -54,8 +54,8 @@ namespace Access2Justice.Api.BusinessLogic
             }
 
             // Todo: we should figure a way to do upsert, we currently can't do that because we don't have an identifier 
-            dbService.CreateItemAsync(cx, dbSettings.CuratedExperienceCollectionId);
-            dbService.CreateItemAsync(resource, dbSettings.ResourceCollectionId);
+            dbService.CreateItemAsync(cx, dbSettings.CuratedExperiencesCollectionId);
+            dbService.CreateItemAsync(resource, dbSettings.ResourcesCollectionId);
 
             return cx;
         }

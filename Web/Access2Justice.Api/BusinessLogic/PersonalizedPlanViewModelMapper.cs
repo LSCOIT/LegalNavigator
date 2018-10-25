@@ -33,7 +33,7 @@ namespace Access2Justice.Api.BusinessLogic
                 if (resourceIDs != null || resourceIDs.Any())
                 {
                     var resourceValues = resourceIDs.Select(x => x.ToString()).Distinct().ToList();
-                    var resourceData = await dynamicQueries.FindItemsWhereInClauseAsync(cosmosDbSettings.ResourceCollectionId, Constants.Id, resourceValues);
+                    var resourceData = await dynamicQueries.FindItemsWhereInClauseAsync(cosmosDbSettings.ResourcesCollectionId, Constants.Id, resourceValues);
                     resourceDetails = JsonUtilities.DeserializeDynamicObject<List<Resource>>(resourceData);
                 }
 
@@ -58,10 +58,10 @@ namespace Access2Justice.Api.BusinessLogic
             try
             {
                 List<dynamic> topics = null;
-                topics = await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.TopicCollectionId, Constants.Name, topicName);
+                topics = await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.TopicsCollectionId, Constants.Name, topicName);
                 if (topics == null || !topics.Any())
                 {
-                    topics = await dynamicQueries.FindItemsWhereContainsAsync(cosmosDbSettings.TopicCollectionId, Constants.Name, topicName);
+                    topics = await dynamicQueries.FindItemsWhereContainsAsync(cosmosDbSettings.TopicsCollectionId, Constants.Name, topicName);
                 }
                 if (!topics.Any())
                 {
