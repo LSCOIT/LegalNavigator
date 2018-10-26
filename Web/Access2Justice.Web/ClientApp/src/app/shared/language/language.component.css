@@ -4,6 +4,7 @@
   background-repeat: no-repeat;
   background-position: 88% 50%;
   background-size: 12px;
+  height: 49px;
 }
 
 #language-dropdown > a {
@@ -18,4 +19,16 @@
   z-index: 1;
   background-image: url('../../../assets/images/small-icons/dropup_arrow.svg') !important;
 
+}
+
+@media only screen and (min-width : 768px) {
+  #language-dropdown {
+    height: 51px;
+  }
+}
+
+@media only screen and (min-width : 992px) {
+  #language-dropdown {
+    height: 53px;
+  }
 }

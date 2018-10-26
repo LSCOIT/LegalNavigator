@@ -10,7 +10,7 @@ p {
   padding: 20px 15px 10px 10px;
   cursor: pointer;
   display: inline-block;
-  height: 54px;
+  height: 51px;
   margin-left: -4px;
 }
 
@@ -106,11 +106,14 @@ p {
 @media only screen and (min-width : 768px) {
   .edit-location {
     padding: 15px 10px;
-    height: 52px;
   }
 }
 
 @media only screen and (min-width : 992px) {
+  .edit-location {
+    height: 53px;
+  }
+
   .mobile-hidden {
     display: inline-block;
   }
