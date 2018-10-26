@@ -34,6 +34,7 @@ export class PersonalizedPlanService {
   personalizedPlan: PersonalizedPlan;
   userPersonalizedPlan: UserPlan = { oId: '', plan: this.personalizedPlan };
   resourceIndex: number;
+  tempResourceStorage: any = [];
 
   constructor(private http: HttpClient,
               private arrayUtilityService: ArrayUtilityService,
@@ -142,16 +143,16 @@ export class PersonalizedPlanService {
       });
   }
 
-  saveBookmarkedResource() {
+  saveBookmarkedResource(savedResource) {
     this.tempResourceStorage = [];
     let tempStorage = sessionStorage.getItem(this.sessionKey);
     if (tempStorage && tempStorage.length > 0) {
       tempStorage = JSON.parse(tempStorage);
       this.tempResourceStorage = tempStorage;
     }
-    if (this.savedResources) {
+    if (savedResource) {
       if (!this.arrayUtilityService.checkObjectExistInArray(this.tempResourceStorage, this.savedResources)) {
-        this.tempResourceStorage.push(this.savedResources);
+        this.tempResourceStorage.push(savedResource);
       }
     }
     if (this.tempResourceStorage.length > 0) {

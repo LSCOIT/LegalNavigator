@@ -7,8 +7,6 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap';
   styleUrls: ['./browser-tab-close.component.css']
 })
 export class BrowserTabCloseComponent implements OnInit {
-  //@ViewChild('alertTemplate') public templateref: TemplateRef<any>;
-  //modalRef: BsModalRef;
   modalRef: BsModalRef;
   @ViewChild('template') public templateref: TemplateRef<any>;
 
@@ -20,6 +18,10 @@ export class BrowserTabCloseComponent implements OnInit {
 
   saveToProfile() {
 
+  }
+
+  close() {
+    this.modalRef.hide();
   }
 
   ngOnInit() {

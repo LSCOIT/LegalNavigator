@@ -104,6 +104,12 @@ export class AppComponent implements OnInit {
   @HostListener('window:beforeunload', ['$event'])
   beforeUnloadHander(event) {
     this.showAlert = true;
-    alert('Are you really want to perform the action?');
+    if (sessionStorage.getItem(this.sessionKey) || sessionStorage.getItem(this.planSessionKey)) {
+      if (confirm("You have unsaved changes! If you leave, your changes will be lost.")) {
+        return true;
+      } else {
+        return false;
+      }
+    }
   }
 }

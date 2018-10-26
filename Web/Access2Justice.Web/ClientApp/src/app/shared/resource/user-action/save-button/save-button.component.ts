@@ -69,7 +69,7 @@ export class SaveButtonComponent implements OnInit {
       sessionStorage.setItem(this.planSessionKey, JSON.stringify(this.id));
     } else {
       this.savedResources = { itemId: this.id, resourceType: this.type, resourceDetails: this.resourceDetails };
-      this.personalizedPlanService.saveBookmarkedResource();
+      this.personalizedPlanService.saveBookmarkedResource(this.savedResources);
     }
   }
 
