@@ -39,17 +39,17 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             cosmosDbSettings.AuthKey.Returns("dummykey");
             cosmosDbSettings.Endpoint.Returns(new System.Uri("https://bing.com"));
             cosmosDbSettings.DatabaseId.Returns("dbname");
-            cosmosDbSettings.TopicCollectionId.Returns("TopicCollection");
-            cosmosDbSettings.ResourceCollectionId.Returns("ResourceCollection");
-            cosmosDbSettings.UserProfileCollectionId.Returns("UserProfile");
-            cosmosDbSettings.StaticResourceCollectionId.Returns("StaticResource");
+            cosmosDbSettings.TopicsCollectionId.Returns("TopicCollection");
+            cosmosDbSettings.ResourcesCollectionId.Returns("ResourceCollection");
+            cosmosDbSettings.ProfilesCollectionId.Returns("UserProfile");
+            cosmosDbSettings.StaticResourcesCollectionId.Returns("StaticResource");
         }
 
         [Fact]
         public void GetStaticResourceDataAsyncTestsShouldReturnProperData()
         {
             //arrange
-            var dbResponse = dynamicQueries.FindItemsWhereWithLocationAsync(cosmosDbSettings.StaticResourceCollectionId, Constants.Name, location);
+            var dbResponse = dynamicQueries.FindItemsWhereWithLocationAsync(cosmosDbSettings.StaticResourcesCollectionId, Constants.Name, location);
             dbResponse.ReturnsForAnyArgs<dynamic>(homePageData);
 
             //act
@@ -64,7 +64,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         public void GetStaticResourceDataAsyncShouldReturnEmptyData()
         {
             //arrange      
-            var dbResponse = dynamicQueries.FindItemsWhereWithLocationAsync(cosmosDbSettings.StaticResourceCollectionId, Constants.Id, location);
+            var dbResponse = dynamicQueries.FindItemsWhereWithLocationAsync(cosmosDbSettings.StaticResourcesCollectionId, Constants.Id, location);
             dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
 
             //act

@@ -30,7 +30,7 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<CuratedExperience> GetCuratedExperienceAsync(Guid id)
         {
-            return await dbService.GetItemAsync<CuratedExperience>(id.ToString(), dbSettings.CuratedExperienceCollectionId);
+            return await dbService.GetItemAsync<CuratedExperience>(id.ToString(), dbSettings.CuratedExperiencesCollectionId);
         }
 
         public CuratedExperienceComponentViewModel GetComponent(CuratedExperience curatedExperience, Guid componentId)
@@ -71,7 +71,7 @@ namespace Access2Justice.Api.BusinessLogic
                 // answers the last question. This will save us a trip to the database each time the user moves to
                 // the next step. The caveat for this is that the users will need to repeat the survey from the
                 // beginning if the session expires which might be frustrating.
-                var answersDbCollection = dbSettings.CuratedExperienceAnswersCollectionId;
+                var answersDbCollection = dbSettings.UserResourcesCollectionId;
                 var dbAnswers = MapCuratedExperienceViewModel(viewModelAnswer, curatedExperience);
 
                 var savedAnswersDoc = await dbService.GetItemAsync<CuratedExperienceAnswers>(viewModelAnswer.AnswersDocId.ToString(), answersDbCollection);
@@ -111,7 +111,7 @@ namespace Access2Justice.Api.BusinessLogic
             var currentComponent = curatedExperience.Components.Where(x => x.Buttons.Contains(currentButton)).FirstOrDefault();
             if (!string.IsNullOrWhiteSpace(currentComponent.Code.CodeAfter) && currentComponent.Code.CodeAfter.Contains(Tokens.GOTO))
             {
-                answers = await dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.CuratedExperienceAnswersCollectionId);
+                answers = await dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.UserResourcesCollectionId);
                 // get the answers so far - done
                 // get all the code in all the curated experience - to be done
                 var currentComponentLogic = ExtractLogic(currentComponent, answers);
@@ -136,7 +136,7 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 if (answers.AnswersDocId == default(Guid))
                 {
-                    answers = await dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.CuratedExperienceAnswersCollectionId);
+                    answers = await dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.UserResourcesCollectionId);
                 }
                 var currentComponentLogic = ExtractLogic(destinationComponent, answers);
                 if (currentComponentLogic != null)

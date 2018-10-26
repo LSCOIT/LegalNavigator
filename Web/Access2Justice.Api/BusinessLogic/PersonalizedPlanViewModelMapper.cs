@@ -36,11 +36,11 @@ namespace Access2Justice.Api.BusinessLogic
                 if (resourceIDs != null || resourceIDs.Any())
                 {
                     var resourceValues = resourceIDs.Select(x => x.ToString()).Distinct().ToList();
-                    var resourceData = await dynamicQueries.FindItemsWhereInClauseAsync(cosmosDbSettings.ResourceCollectionId, Constants.Id, resourceValues);
+                    var resourceData = await dynamicQueries.FindItemsWhereInClauseAsync(cosmosDbSettings.ResourcesCollectionId, Constants.Id, resourceValues);
                     resourceDetails = JsonUtilities.DeserializeDynamicObject<List<Resource>>(resourceData);
                 }
 
-                var topic = await GetTopic(unprocessedTopic.Name);  // Todo:@Alaa replace it with the business logic method
+                var topic = await topicsResourcesBusinessLogic.GetTopic(unprocessedTopic.Name, location);
                 actionPlan.Topics.Add(new PlanTopic
 				{
                     TopicId = Guid.Parse(topic.Id),
@@ -107,30 +107,5 @@ namespace Access2Justice.Api.BusinessLogic
 			}
 			return resources;
 		}
-
-        // Todo:@Alaa remove after the GetTopic in Topics business logic is fixed
-        private async Task<Topic> GetTopic(string topicName)
-        {
-            try
-            {
-                List<dynamic> topics = null;
-                topics = await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.TopicCollectionId, Constants.Name, topicName);
-                if (topics == null || !topics.Any())
-                {
-                    topics = await dynamicQueries.FindItemsWhereContainsAsync(cosmosDbSettings.TopicCollectionId, Constants.Name, topicName);
-                }
-                if (!topics.Any())
-                {
-                    throw new Exception($"No topic found with this name: {topicName}");
-                }
-
-                // Todo: return the latest topic instead of returing the first one
-                return JsonUtilities.DeserializeDynamicObject<Topic>(topics.FirstOrDefault());
-            }
-            catch
-            {
-                throw;
-            }
-        }
     }
 }
