@@ -13,12 +13,11 @@ import { BreadcrumbService } from '../shared/breadcrumb.service';
 import { MapService } from '../../shared/map/map.service';
 import { of } from 'rxjs/observable/of';
 import { Global } from '../../global';
+import { QueryList } from '@angular/core';
 
 describe('TopicsComponent', () => {
   let component: TopicsComponent;
   let fixture: ComponentFixture<TopicsComponent>;
-  let api: TopicService;
-  let router: RouterModule;
   let mockTopicService;
   let mockGlobal;
   let mockTopics: any = [
@@ -100,5 +99,13 @@ describe('TopicsComponent', () => {
     component.subscription.next(1);
     component.ngOnInit();
     expect(component.getTopics).toHaveBeenCalled();
+  });
+
+  it('should calculate call setBottomBorder with correct parameter when findBottomRowTopics is called', () => {
+    spyOn(component, 'setBottomBorder');
+    component.windowWidth = 777;
+    component.bottomRowTopics = 1;
+    component.findBottomRowTopics();
+    expect(component.setBottomBorder).toHaveBeenCalledWith(1);
   });
 });

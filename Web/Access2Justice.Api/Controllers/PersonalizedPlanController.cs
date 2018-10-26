@@ -1,5 +1,6 @@
 ﻿using Access2Justice.Api.Authorization;
 using Access2Justice.Api.Interfaces;
+using Access2Justice.Api.ViewModels;
 using Access2Justice.Shared.A2JAuthor;
 using Access2Justice.Shared.Extensions;
 using Access2Justice.Shared.Models;
@@ -51,12 +52,11 @@ namespace Access2Justice.Api.Controllers
         /// <response code="200">Returns personalized plan for curated experience </response>
         /// <response code="500">Failure</response>
         [HttpGet("generate")]
-        public async Task<IActionResult> GeneratePersonalizedPlan([FromQuery] Guid curatedExperienceId, [FromQuery] Guid answersDocId)
+        public async Task<IActionResult> GeneratePersonalizedPlan([FromQuery] Guid curatedExperienceId, [FromQuery] Guid answersDocId, [FromBody] Location location)
         {
             var personalizedPlan = await personalizedPlanBusinessLogic.GeneratePersonalizedPlanAsync(
-                RetrieveCachedCuratedExperience(curatedExperienceId), answersDocId);
+                RetrieveCachedCuratedExperience(curatedExperienceId), answersDocId, location);
 
-             // Todo:@Alaa save/add the unprocessed plan to the existing one if the user is logged in
             if (personalizedPlan == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
@@ -73,12 +73,20 @@ namespace Access2Justice.Api.Controllers
         /// </remarks>
         /// <param name="userPlan"></param>
         /// <response code="200">Returns updated personalized plan for curated experience </response>
-        /// <response code="500">Failure</response>
-        [Permission(PermissionName.updateplan)]
-        [HttpPost("update-plan")]
-        public async Task<IActionResult> UpdateUserProfileDocumentAsync([FromBody]UserPersonalizedPlan userPlan)
+        /// <response code="500">Failure</response> 
+        // Todo:@Alaa check user is logged in
+        // [Permission(PermissionName.)]
+        [HttpPost("update")]
+        public async Task<IActionResult> UpdateUserProfileDocumentAsync([FromBody] PersonalizedPlanViewModel personalizedPlan)
         {
-            return Ok(await personalizedPlanBusinessLogic.UpdatePersonalizedPlan(userPlan));
+            var newPlan = await personalizedPlanBusinessLogic.UpsertPersonalizedPlan(personalizedPlan);
+
+            if (newPlan == null)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+            return Ok(newPlan);
         }
 
         // Todo:@Alaa must refactor this, i copied it from the CuratedExperience controller for now to finish an end-to-end personalized plan

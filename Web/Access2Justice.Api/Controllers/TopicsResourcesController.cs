@@ -36,6 +36,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="200">Get all topics for given location</response>
         /// <response code="500">Failure</response>
 
+        
         [Route("api/topics/get-topics")]
         [HttpPost]
         public async Task<IActionResult> GetTopics([FromBody]Location location)
