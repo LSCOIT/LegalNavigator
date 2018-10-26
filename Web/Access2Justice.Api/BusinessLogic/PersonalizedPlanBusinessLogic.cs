@@ -45,17 +45,9 @@ namespace Access2Justice.Api.BusinessLogic
             return await personalizedPlanViewModelMapper.MapViewModel(unprocessedPlan, location);
         }
 
-        // Todo:@Alaa test this method working
         public async Task<PersonalizedPlanViewModel> GetPersonalizedPlan(Guid personalizedPlanId)
         {
-            dynamic personalizedPlan = null;
-            // Todo:@Alaa use the generic version of the FindItemsWhereAsync
-            var planDetails = await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.UserResourcesCollectionId, Constants.Id, personalizedPlanId.ToString());
-            if (planDetails != null)
-            {
-                personalizedPlan = JsonUtilities.DeserializeDynamicObject<List<PersonalizedPlanViewModel>>(planDetails);
-            }
-            return personalizedPlan?[0];
+            return await backendDatabaseService.GetItemAsync<PersonalizedPlanViewModel>(personalizedPlanId.ToString(), cosmosDbSettings.ActionPlansCollectionId);
         }
 
         public async Task<Document> UpsertPersonalizedPlan(PersonalizedPlanViewModel personalizedPlan)
@@ -63,18 +55,18 @@ namespace Access2Justice.Api.BusinessLogic
             try
             {
                 var userPersonalizedPlan = await backendDatabaseService.
-                    GetItemAsync<PersonalizedPlanViewModel>(personalizedPlan.PersonalizedPlanId.ToString(), cosmosDbSettings.ActionsPlanCollectionId);
+                    GetItemAsync<PersonalizedPlanViewModel>(personalizedPlan.PersonalizedPlanId.ToString(), cosmosDbSettings.ActionPlansCollectionId);
 
                 if (userPersonalizedPlan == null)
                 {
-                    var newPlan = await backendDatabaseService.CreateItemAsync(personalizedPlan, cosmosDbSettings.ActionsPlanCollectionId);
+                    var newPlan = await backendDatabaseService.CreateItemAsync(personalizedPlan, cosmosDbSettings.ActionPlansCollectionId);
                     // Todo:@Alaa delete answer file
                     return newPlan;
                 }
                 else
                 {
                     return await backendDatabaseService.UpdateItemAsync(
-                        personalizedPlan.PersonalizedPlanId.ToString(), personalizedPlan, cosmosDbSettings.ActionsPlanCollectionId);
+                        personalizedPlan.PersonalizedPlanId.ToString(), personalizedPlan, cosmosDbSettings.ActionPlansCollectionId);
                 }
             }
             catch

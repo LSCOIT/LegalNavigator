@@ -66,6 +66,33 @@ namespace Access2Justice.Api.Controllers
         }
 
         /// <summary>
+        /// Get personalized plan
+        /// </summary>
+        /// <remarks>
+        /// Use to get the personalized plan by personalized plan Id
+        /// </remarks>
+        /// <param name="personalizedPlanId"></param>
+        /// <response code="200">Returns personalized plan for curated experience </response>
+        /// <response code="500">Failure</response>
+        [HttpGet("get-plan")]
+        public async Task<IActionResult> GeneratePersonalizedPlan([FromQuery] Guid personalizedPlanId)
+        {
+            var personalizedPlan = await personalizedPlanBusinessLogic.GetPersonalizedPlan(personalizedPlanId);
+
+            if (personalizedPlan.PersonalizedPlanId == default(Guid))
+            {
+                return StatusCode(StatusCodes.Status404NotFound, $"Could not find a plan with this Id {personalizedPlanId}");
+            }
+
+            if (personalizedPlan == null)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+            return Ok(personalizedPlan);
+        }
+
+        /// <summary>
         /// Update user profile document
         /// </summary>
         /// <remarks>
@@ -73,12 +100,14 @@ namespace Access2Justice.Api.Controllers
         /// </remarks>
         /// <param name="userPlan"></param>
         /// <response code="200">Returns updated personalized plan for curated experience </response>
-        /// <response code="500">Failure</response> 
+        /// <response code="500">Failure</response>
+        
         // Todo:@Alaa check user is logged in
         // [Permission(PermissionName.)]
         [HttpPost("update")]
         public async Task<IActionResult> UpdateUserProfileDocumentAsync([FromBody] PersonalizedPlanViewModel personalizedPlan)
         {
+             // Todo:@Alaa i need the user claims here so i could update the user profile of the logged in user.
             var newPlan = await personalizedPlanBusinessLogic.UpsertPersonalizedPlan(personalizedPlan);
 
             if (newPlan == null)
