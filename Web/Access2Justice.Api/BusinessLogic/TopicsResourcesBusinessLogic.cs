@@ -27,38 +27,15 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<Topic> GetTopic(string topicName, Location location)
         {
-             // Todo:@Alaa fix or remove this!!
             try
             {
-                List<dynamic> topics = null;
-                topics = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.TopicsCollectionId, Constants.Name, topicName, location);
-                if (topics == null || !topics.Any())
-                {
-                    topics = await dbClient.FindItemsWhereContainsWithLocationAsync(dbSettings.TopicsCollectionId, Constants.Name, topicName, location);
-                }
+                List<dynamic> topics = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.TopicsCollectionId, Constants.Name, topicName, location);
+
                 if (!topics.Any())
                 {
                     throw new Exception($"No topic found with this name: {topicName}");
                 }
 
-                //// Todo: return the latest topic instead of returing the first one
-                //var temp = JsonConvert.SerializeObject(topics);
-
-                //var temp6 = JsonConvert.DeserializeObject(topics.FirstOrDefault().ToString());
-
-                //if (JsonConvert.DeserializeObject(topics.FirstOrDefault().ToString()).StartsWith("{{"))
-                //{
-
-                //    var breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
-                //}
-                //    if (topics.FirstOrDefault().ToString().StartsWith("{{"))
-                //{
-                //    var temp4 = topics.FirstOrDefault().ToString().Substring(0, 1);
-                //    var temp5 = temp4.Substring(temp4.Length - 1);
-                //}
-
-                //var temp2 = JsonConvert.DeserializeObject(temp);
-                //var temp3 = JsonUtilities.DeserializeDynamicObject<Topic>(temp2);
                 return JsonUtilities.DeserializeDynamicObject<Topic>(topics.FirstOrDefault());
             }
             catch

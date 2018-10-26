@@ -6,24 +6,19 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Access2Justice.Shared.A2JAuthor
 {
     public class A2JAuthorPersonalizedPlanEngine : IPersonalizedPlanEngine
     {
         private readonly IA2JAuthorLogicParser parser;
-        private readonly IDynamicQueries dynamicQueries;
-        private readonly ICosmosDbSettings cosmosDbSettings;
 
-        public A2JAuthorPersonalizedPlanEngine(IA2JAuthorLogicParser parser, IDynamicQueries dynamicQueries, ICosmosDbSettings cosmosDbSettings)
+        public A2JAuthorPersonalizedPlanEngine(IA2JAuthorLogicParser parser)
         {
             this.parser = parser;
-            this.dynamicQueries = dynamicQueries;
-            this.cosmosDbSettings = cosmosDbSettings;
         }
 
-        public async Task<UnprocessedPersonalizedPlan> Build(JObject personalizedPlan, CuratedExperienceAnswers userAnswers)
+        public UnprocessedPersonalizedPlan Build(JObject personalizedPlan, CuratedExperienceAnswers userAnswers)
         {
             var stepsInScope = new List<JToken>();
             var evaluatedUserAnswers = parser.Parse(userAnswers);

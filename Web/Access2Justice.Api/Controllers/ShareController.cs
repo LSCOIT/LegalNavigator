@@ -1,7 +1,6 @@
 ﻿using Access2Justice.Api.Authorization;
 using Access2Justice.Api.Interfaces;
 using Access2Justice.Shared;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -107,7 +106,5 @@ namespace Access2Justice.Api.Controllers
             }
             return StatusCode(StatusCodes.Status412PreconditionFailed);
         }
-
-
     }
 }

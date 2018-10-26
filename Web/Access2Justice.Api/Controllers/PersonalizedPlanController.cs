@@ -40,19 +40,18 @@ namespace Access2Justice.Api.Controllers
             return Ok(new A2JAuthorLogicParser(new A2JAuthorLogicInterpreter()).Parse(userAnswers));
         }
 
-
         /// <summary>
         /// Generate personalized plan for curated experience
         /// </summary>
         /// <remarks>
-        /// Helps to generate personalized plan for curated experience
+        /// Use to generate personalized plan for a curated experience
         /// </remarks>
         /// <param name="curatedExperienceId"></param>
         /// <param name="answersDocId"></param>
         /// <response code="200">Returns personalized plan for curated experience </response>
         /// <response code="500">Failure</response>
         [HttpGet("generate")]
-        public async Task<IActionResult> GeneratePersonalizedPlan([FromQuery] Guid curatedExperienceId, [FromQuery] Guid answersDocId, [FromBody] Location location)
+        public async Task<IActionResult> GeneratePersonalizedPlanAsync([FromQuery] Guid curatedExperienceId, [FromQuery] Guid answersDocId, [FromBody] Location location)
         {
             var personalizedPlan = await personalizedPlanBusinessLogic.GeneratePersonalizedPlanAsync(
                 RetrieveCachedCuratedExperience(curatedExperienceId), answersDocId, location);
@@ -75,9 +74,9 @@ namespace Access2Justice.Api.Controllers
         /// <response code="200">Returns personalized plan for curated experience </response>
         /// <response code="500">Failure</response>
         [HttpGet("get-plan")]
-        public async Task<IActionResult> GeneratePersonalizedPlan([FromQuery] Guid personalizedPlanId)
+        public async Task<IActionResult> GetPersonalizedPlanAsync([FromQuery] Guid personalizedPlanId)
         {
-            var personalizedPlan = await personalizedPlanBusinessLogic.GetPersonalizedPlan(personalizedPlanId);
+            var personalizedPlan = await personalizedPlanBusinessLogic.GetPersonalizedPlanAsync(personalizedPlanId);
 
             if (personalizedPlan.PersonalizedPlanId == default(Guid))
             {
@@ -93,22 +92,21 @@ namespace Access2Justice.Api.Controllers
         }
 
         /// <summary>
-        /// Update user profile document
+        /// Update personalized plan
         /// </summary>
         /// <remarks>
-        /// Helps to updatae user profile document
+        /// Use to insert/update a personalized plan
         /// </remarks>
         /// <param name="userPlan"></param>
-        /// <response code="200">Returns updated personalized plan for curated experience </response>
-        /// <response code="500">Failure</response>
-        
-        // Todo:@Alaa check user is logged in
+        /// <response code="200">Returns the updated personalized plan </response>
+        /// <response code="500">Failure</response>      
+        // Todo:@Alaa check user is authorized and logged in
         // [Permission(PermissionName.)]
-        [HttpPost("update")]
-        public async Task<IActionResult> UpdateUserProfileDocumentAsync([FromBody] PersonalizedPlanViewModel personalizedPlan)
+        [HttpPost("save")]
+        public async Task<IActionResult> SavePersonalizedPlanAsync([FromBody] PersonalizedPlanViewModel personalizedPlan)
         {
              // Todo:@Alaa i need the user claims here so i could update the user profile of the logged in user.
-            var newPlan = await personalizedPlanBusinessLogic.UpsertPersonalizedPlan(personalizedPlan);
+            var newPlan = await personalizedPlanBusinessLogic.UpsertPersonalizedPlanAsync(personalizedPlan);
 
             if (newPlan == null)
             {

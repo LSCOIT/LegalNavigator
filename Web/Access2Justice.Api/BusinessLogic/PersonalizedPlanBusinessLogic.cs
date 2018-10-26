@@ -3,11 +3,9 @@ using Access2Justice.Api.ViewModels;
 using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
-using Access2Justice.Shared.Utilities;
 using Microsoft.Azure.Documents;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Access2Justice.Api.BusinessLogic
@@ -41,21 +39,32 @@ namespace Access2Justice.Api.BusinessLogic
             var userAnswers = await backendDatabaseService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(),
                 cosmosDbSettings.UserResourcesCollectionId);
 
-            var unprocessedPlan = await personalizedPlanEngine.Build(a2jPersonalizedPlan, userAnswers);
-            return await personalizedPlanViewModelMapper.MapViewModel(unprocessedPlan, location);
+            if (a2jPersonalizedPlan == null || userAnswers == null || userAnswers.AnswersDocId == default(Guid))
+            {
+                return null;
+            }
+
+            var actionPlan = await personalizedPlanViewModelMapper.MapViewModel(personalizedPlanEngine.Build(a2jPersonalizedPlan, userAnswers), location);
+            var document = await backendDatabaseService.CreateItemAsync(actionPlan, cosmosDbSettings.ActionPlansCollectionId);
+
+            if (!Guid.TryParse(document.Id, out Guid guid))
+            {
+                return null;
+            }
+
+            return actionPlan;
         }
 
-        public async Task<PersonalizedPlanViewModel> GetPersonalizedPlan(Guid personalizedPlanId)
+        public async Task<PersonalizedPlanViewModel> GetPersonalizedPlanAsync(Guid personalizedPlanId)
         {
             return await backendDatabaseService.GetItemAsync<PersonalizedPlanViewModel>(personalizedPlanId.ToString(), cosmosDbSettings.ActionPlansCollectionId);
         }
 
-        public async Task<Document> UpsertPersonalizedPlan(PersonalizedPlanViewModel personalizedPlan)
+        public async Task<Document> UpsertPersonalizedPlanAsync(PersonalizedPlanViewModel personalizedPlan)
         {
             try
             {
-                var userPersonalizedPlan = await backendDatabaseService.
-                    GetItemAsync<PersonalizedPlanViewModel>(personalizedPlan.PersonalizedPlanId.ToString(), cosmosDbSettings.ActionPlansCollectionId);
+                var userPersonalizedPlan = await GetPersonalizedPlanAsync(personalizedPlan.PersonalizedPlanId);
 
                 if (userPersonalizedPlan == null)
                 {
@@ -75,9 +84,6 @@ namespace Access2Justice.Api.BusinessLogic
                 return null;
             }
         }
-
-
-
 
 
         // Todo:@Alaa old code - to be removed or refactored
@@ -276,8 +282,6 @@ namespace Access2Justice.Api.BusinessLogic
         //    }
         //    return planId;
         //}
-
-        #region Old PersonalizedPlan code
         //public async Task<PersonalizedPlanSteps> GeneratePersonalizedPlan(CuratedExperience curatedExperience, Guid answersDocId)
         //{
         //    var userAnswers = await dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.CuratedExperienceAnswersCollectionId);
@@ -397,6 +401,5 @@ namespace Access2Justice.Api.BusinessLogic
         //    };
         //    return personalizedPlan;
         //}
-        #endregion
     }
 }
