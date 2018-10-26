@@ -7,6 +7,7 @@ import { IResourceFilter } from '../../shared/search/search-results/search-resul
 import { ArrayUtilityService } from '../../shared/array-utility.service';
 import { ToastrService } from 'ngx-toastr';
 import { Global } from "../../global";
+import { resource } from 'selenium-webdriver/http';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -94,11 +95,11 @@ export class PersonalizedPlanService {
     if (this.resoureStorage && this.resoureStorage.length > 0) {
       this.resoureStorage = JSON.parse(this.resoureStorage);
     }
-    this.savedResources = {
-      itemId: this.resoureStorage.itemId,
-      resourceType: this.resoureStorage.resourceType, resourceDetails: this.resoureStorage.resourceDetails
-    };
-    this.saveResourcesToProfile(this.savedResources);
+    this.resourceTags = [];
+    this.resoureStorage.forEach(resource => {
+      this.resourceTags.push(resource);
+    });
+    this.saveResourcesToProfile(this.resourceTags);
   }
 
   saveResourcesToProfile(savedResources) {
@@ -139,6 +140,23 @@ export class PersonalizedPlanService {
       .subscribe(() => {
         this.showSuccess('Resource saved to profile');
       });
+  }
+
+  saveBookmarkedResource() {
+    this.tempResourceStorage = [];
+    let tempStorage = sessionStorage.getItem(this.sessionKey);
+    if (tempStorage && tempStorage.length > 0) {
+      tempStorage = JSON.parse(tempStorage);
+      this.tempResourceStorage = tempStorage;
+    }
+    if (this.savedResources) {
+      if (!this.arrayUtilityService.checkObjectExistInArray(this.tempResourceStorage, this.savedResources)) {
+        this.tempResourceStorage.push(this.savedResources);
+      }
+    }
+    if (this.tempResourceStorage.length > 0) {
+      sessionStorage.setItem(this.sessionKey, JSON.stringify(this.tempResourceStorage));
+    }
   }
 
   getResourceIds(resources): Array<string> {

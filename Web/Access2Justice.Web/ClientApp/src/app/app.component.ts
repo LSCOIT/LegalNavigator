@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Global, UserStatus } from './global';
 import { StaticResourceService } from './shared/static-resource.service';
 import { MapService } from './shared/map/map.service';
@@ -8,6 +8,7 @@ import { IUserProfile } from './shared/login/user-profile.model';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
 import { TopicService } from './topics-resources/shared/topic.service';
+import { PersonalizedPlanService } from './guided-assistant/personalized-plan/personalized-plan.service';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +20,10 @@ export class AppComponent implements OnInit {
   staticContentResults: any;
   subscription: any;
   userProfile: IUserProfile;
+  sessionKey: string = "bookmarkedResource";
+  planSessionKey: string = "bookmarkPlanId";
+  resoureStorage: any = [];
+  showAlert: boolean = false;
 
   constructor(
     private global: Global,
@@ -28,7 +33,8 @@ export class AppComponent implements OnInit {
     private loginService: LoginService,
     private spinner: NgxSpinnerService,
     private router: Router,
-    private topicService: TopicService
+    private topicService: TopicService,
+    private personalizedPlanService: PersonalizedPlanService
   ) { }
 
   createOrGetProfile() {
@@ -41,8 +47,18 @@ export class AppComponent implements OnInit {
       .subscribe(response => {
         if (response) {
           this.global.setProfileData(response.oId, response.name, response.eMail);
+          this.saveBookmarkedPlan();
+          this.saveBookmarkedResource();
         }
       });
+  }
+
+  saveBookmarkedPlan() {
+
+  }
+
+  saveBookmarkedResource() {
+    this.personalizedPlanService.saveResourcesToUserProfile();
   }
 
   onActivate(event) {
@@ -78,5 +94,16 @@ export class AppComponent implements OnInit {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+  }
+
+  @HostListener('window:unload', ['$event'])
+  unloadHandler(event) {
+    alert('Are you really want to perform the action?');
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  beforeUnloadHander(event) {
+    this.showAlert = true;
+    alert('Are you really want to perform the action?');
   }
 }

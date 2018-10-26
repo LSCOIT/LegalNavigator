@@ -69,7 +69,7 @@ export class SaveButtonComponent implements OnInit {
       sessionStorage.setItem(this.planSessionKey, JSON.stringify(this.id));
     } else {
       this.savedResources = { itemId: this.id, resourceType: this.type, resourceDetails: this.resourceDetails };
-      this.saveBookmarkedResource();
+      this.personalizedPlanService.saveBookmarkedResource();
     }
   }
 
@@ -249,25 +249,8 @@ export class SaveButtonComponent implements OnInit {
     }
   }
 
-  saveBookmarkedResource() {
-    this.tempResourceStorage = [];
-    let tempStorage = sessionStorage.getItem(this.sessionKey);
-    if (tempStorage && tempStorage.length > 0) {
-      tempStorage = JSON.parse(tempStorage);
-      this.tempResourceStorage = tempStorage;
-    }
-    if (this.savedResources) {
-      if (!this.arrayUtilityService.checkObjectExistInArray(this.tempResourceStorage, this.savedResources)) {
-        this.tempResourceStorage.push(this.savedResources);
-      }
-    }
-    if (this.tempResourceStorage.length > 0) {
-      sessionStorage.setItem(this.sessionKey, JSON.stringify(this.tempResourceStorage));
-    }
-  }
-
   ngOnInit() {
-    this.saveBookmarkedResource();
+    //this.saveBookmarkedResource();
     if (this.msalService.getUser()) {
       this.saveBookmarkedPlan();
     }

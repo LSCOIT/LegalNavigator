@@ -52,6 +52,7 @@ import { ShareService } from './resource/user-action/share-button/share.service'
 import { ShareButtonRouteComponent } from './resource/user-action/share-button/share-button-route/share-button-route.component';
 import { ReadMoreComponent } from './read-more/read-more.component';
 import { LoginService } from './login/login.service';
+import { BrowserTabCloseComponent } from './browser-tab-close/browser-tab-close.component';
 
 @NgModule({
   imports: [
@@ -97,10 +98,9 @@ import { LoginService } from './login/login.service';
     ArticlesComponent,
     OrganizationsComponent,
     VideosComponent,
-    MapComponent,
     InternalErrorComponent,
     LoginComponent,   
-    ShareButtonRouteComponent, ReadMoreComponent
+    ShareButtonRouteComponent, ReadMoreComponent, BrowserTabCloseComponent
   ],
   exports: [
     ActionPlansComponent,
@@ -126,7 +126,8 @@ import { LoginService } from './login/login.service';
     UserActionSidebarComponent,
     WebResourceComponent,
     HelplineComponent,
-    LoginComponent
+    LoginComponent,
+    BrowserTabCloseComponent
   ],
   providers: [
     MapService,
