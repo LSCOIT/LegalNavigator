@@ -108,10 +108,6 @@ p {
     padding: 15px 10px;
     height: 52px;
   }
-
-  .edit-location:hover {
-    background-color: #fff;
-  }
 }
 
 @media only screen and (min-width : 992px) {
