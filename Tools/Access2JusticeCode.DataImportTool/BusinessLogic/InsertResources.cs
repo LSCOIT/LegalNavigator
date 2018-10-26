@@ -70,13 +70,32 @@ namespace Access2Justice.Tools.BusinessLogic
                             ClearVariableData();
                             topicTagIds = new List<TopicTag>();
                             locations = new List<Locations>();
+                            string resourceIdCell = string.Empty;
                             string resourceType = GetResourceType(sheet.Name.Value);
                             foreach (Spreadsheet.Row row in sheetData.Elements<Spreadsheet.Row>())
                             {
+                                if (counter == 1)
+                                {
+                                    var resourceIdColumn = from a in keyValuePairs where a.Key == "Id" select a.Value.First().ToString();
+                                    if (resourceIdColumn.Count() > 0)
+                                    {
+                                        resourceIdCell = resourceIdColumn.First();
+                                    }
+                                }
+
                                 foreach (Spreadsheet.Cell cell in row.Elements<Spreadsheet.Cell>())
                                 {
                                     cellValue = cell.InnerText;
-                                    if (!string.IsNullOrEmpty(cellValue))
+                                    if (string.IsNullOrEmpty(cellValue))
+                                    {
+                                        if (!string.IsNullOrEmpty(resourceIdCell) && cell.CellReference == string.Concat(resourceIdCell + row.RowIndex))
+                                        {
+                                            cell.CellValue = new CellValue(Guid.NewGuid().ToString());
+                                            cell.DataType = new EnumValue<CellValues>(CellValues.String);
+                                            workbookPart.Workbook.Save();
+                                        }
+                                    }
+                                    else if (!string.IsNullOrEmpty(cellValue))
                                     {
                                         string cellActualValue = string.Empty;
                                         if (cell.DataType == Spreadsheet.CellValues.SharedString)
@@ -118,19 +137,8 @@ namespace Access2Justice.Tools.BusinessLogic
                                             }
 
                                             if (keyValue.Count() > 0)
-                                            {                                                
-                                                if (keyValue.First().Equals("Id"))
-                                                {
-                                                    id = cellActualValue;
-                                                    if ((string.IsNullOrEmpty(id) || string.IsNullOrWhiteSpace(id)) || (id == "dummy"))
-                                                    {
-                                                        id = (string.IsNullOrEmpty(id) || string.IsNullOrWhiteSpace(id)) || (id == "dummy") ? Guid.NewGuid() : id;                                                     
-                                                        cell.CellValue = new CellValue(id.ToString());                                             
-                                                        cell.DataType = new EnumValue<CellValues>(CellValues.String);
-                                                        id = id.ToString();
-                                                        workbookPart.Workbook.Save();
-                                                    }
-                                                }
+                                            {
+
                                                 UpdateFormData(keyValue, cellActualValue, resourceType);
                                             }
                                         }
@@ -288,7 +296,7 @@ namespace Access2Justice.Tools.BusinessLogic
                         }
                     }
                 }
-                
+
                 foreach (var resourceList in organizationsList)
                 {
                     List<OrganizationReviewer> organizationReviewer = new List<OrganizationReviewer>();
@@ -433,13 +441,10 @@ namespace Access2Justice.Tools.BusinessLogic
 
             #region Common field mapping
 
-            //if (val.EndsWith("Id", StringComparison.CurrentCultureIgnoreCase))
-            //{
-            //    id = cellActualValue;
-            //    //if ((string.IsNullOrEmpty(id) || string.IsNullOrWhiteSpace(id)) || (id=="dummy")) {
-            //    //    id = (string.IsNullOrEmpty(id) || string.IsNullOrWhiteSpace(id)) || (id == "dummy") ? Guid.NewGuid() : id;
-            //    //}
-            //}
+            if (val.EndsWith("Id", StringComparison.CurrentCultureIgnoreCase))
+            {
+                id = cellActualValue;
+            }
 
             if (val.EndsWith("Name*", StringComparison.CurrentCultureIgnoreCase))
             {
@@ -715,6 +720,6 @@ namespace Access2Justice.Tools.BusinessLogic
                 throw new Exception("Header Mismatch for " + resourceType + " at column " + column + "\n" + "Expected header:" + "\n" + logHeader);
             }
             return correctHeader;
-        }       
+        }
     }
 }
