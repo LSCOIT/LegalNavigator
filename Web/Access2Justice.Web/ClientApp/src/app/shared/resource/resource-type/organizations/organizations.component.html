@@ -51,13 +51,13 @@
         <div *ngIf="resource.url"> <a href={{resource.url}}>{{urlOrigin}}</a></div>
       </div>
     </div>
-    <div class="box-no-shadow">
+    <div class="box-no-shadow" *ngIf="!(resource.overview == '' && resource.specialties == '')">
       <div class="resource-body">
-        <div class="org-sections" *ngIf="resource.overview != null">
+        <div class="org-sections" *ngIf="resource.overview">
           <h4>Overview</h4>
           <p>{{resource.overview}}</p>
         </div>
-        <div class="org-sections" *ngIf="resource.specialties != null">
+        <div class="org-sections" *ngIf="resource.specialties">
           <h5>Specialties</h5>
           <ul>
             <li>{{resource.specialties}}</li>
@@ -65,7 +65,7 @@
         </div>
       </div>
     </div>
-    <div class="box-no-shadow" *ngIf="resource.eligibilityInformation != null || resource.qualifications != null">
+    <div class="box-no-shadow" *ngIf="!(resource.eligibilityInformation == '' && resource.qualifications == '')">
       <div class="resource-body">
         <div  class="org-sections" *ngIf="resource.eligibilityInformation">
           <h4>Eligibility Information</h4>
@@ -79,7 +79,7 @@
         </div>
       </div>
     </div>
-    <div class="box-no-shadow org-review" *ngIf="resource.reviewer != null">
+    <div class="box-no-shadow org-review" *ngIf="!resource.reviewer ==''">
       <div class="resource-body">
         <h4>Reviewed by a member of your community</h4>  
         <div *ngFor="let reviewer of resource.reviewer">
@@ -98,7 +98,7 @@
     <div class="no-print">
       <app-map-results [searchResource]="searchResource"></app-map-results>
     </div>
-    <div class="box-no-shadow" *ngIf="resource.businessHours != null">
+    <div class="box-no-shadow" *ngIf="resource.businessHours">
       <div class="resource-body">
         <h5>Business Hours</h5>
         <ul class="hours">
