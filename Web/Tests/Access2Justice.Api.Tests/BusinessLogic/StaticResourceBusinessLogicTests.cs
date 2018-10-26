@@ -41,7 +41,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             cosmosDbSettings.DatabaseId.Returns("dbname");
             cosmosDbSettings.TopicsCollectionId.Returns("TopicCollection");
             cosmosDbSettings.ResourcesCollectionId.Returns("ResourceCollection");
-            cosmosDbSettings.UserProfilesCollectionId.Returns("UserProfile");
+            cosmosDbSettings.ProfilesCollectionId.Returns("UserProfile");
             cosmosDbSettings.StaticResourcesCollectionId.Returns("StaticResource");
         }
 

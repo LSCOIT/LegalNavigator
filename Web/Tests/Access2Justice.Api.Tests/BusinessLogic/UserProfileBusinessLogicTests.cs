@@ -55,7 +55,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             cosmosDbSettings.DatabaseId.Returns("dbname");
             cosmosDbSettings.TopicsCollectionId.Returns("TopicCollection");
             cosmosDbSettings.ResourcesCollectionId.Returns("ResourceCollection");
-            cosmosDbSettings.UserProfilesCollectionId.Returns("UserProfile");
+            cosmosDbSettings.ProfilesCollectionId.Returns("UserProfile");
 
             //mock user data
             userProfileObj.Id = "4589592f-3312-eca7-64ed-f3561bbb7398";
@@ -74,7 +74,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         public void GetUserProfileDataAsyncShouldReturnEmptyData()
         {
             //arrange      
-            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.UserProfilesCollectionId, "oId", expectedUserProfileId);
+            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.ProfilesCollectionId, "oId", expectedUserProfileId);
             dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
 
             //act
@@ -89,7 +89,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         public void GetUserProfileDataAsyncTestsShouldReturnProperData()
         {
             //arrange      
-            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.UserProfilesCollectionId, "oId", expectedUserProfileId);
+            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.ProfilesCollectionId, "oId", expectedUserProfileId);
             dbResponse.ReturnsForAnyArgs<dynamic>(userProfile);
 
             //act
@@ -191,8 +191,8 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             Document document = new Document();
             JsonTextReader reader = new JsonTextReader(new StringReader(createResponse[0].ToString()));
             document.LoadFrom(reader);
-            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.UserProfilesCollectionId, Constants.Id, id).ReturnsForAnyArgs<dynamic>(findResponse);
-            var dbResponseCreate = backendDatabaseService.CreateItemAsync<dynamic>(createResponse, cosmosDbSettings.UserProfilesCollectionId).ReturnsForAnyArgs(document);
+            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.ProfilesCollectionId, Constants.Id, id).ReturnsForAnyArgs<dynamic>(findResponse);
+            var dbResponseCreate = backendDatabaseService.CreateItemAsync<dynamic>(createResponse, cosmosDbSettings.ProfilesCollectionId).ReturnsForAnyArgs(document);
             //act
             var response = userProfileBusinessLogic.UpsertUserProfileAsync(inputJson);
             expectedResult = JsonConvert.SerializeObject(expectedResult[0]);
@@ -205,7 +205,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         public void GetDefaultUserRole()
         {
             //arrange
-            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.UserRolesCollectionId, Constants.UserRole, Permissions.Role.Authenticated.ToString());
+            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.RolesCollectionId, Constants.UserRole, Permissions.Role.Authenticated.ToString());
             dbResponse.ReturnsForAnyArgs<dynamic>(userRoleData);
 
             //act

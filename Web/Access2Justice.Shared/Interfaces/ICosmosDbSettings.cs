@@ -9,15 +9,14 @@ namespace Access2Justice.Shared.Interfaces
         string DatabaseId { get; }
         string TopicsCollectionId { get; }
         string ResourcesCollectionId { get; }
-        string UserProfilesCollectionId { get; }
+        string ProfilesCollectionId { get; }
         int PageResultsCount { get; }
         string CuratedExperiencesCollectionId { get; }
-        string CuratedExperienceAnswersCollectionId { get; }
-        string PersonalizedActionsPlanCollectionId { get; }
+        string ActionsPlanCollectionId { get; }
         string StaticResourcesCollectionId { get; }
-        string UserSavedResourcesCollectionId { get; }
+        //string UserSavedResourcesCollectionId { get; }
         string UserResourcesCollectionId { get; }
-        string A2JAuthorTemplatesCollectionId { get; }
-        string UserRolesCollectionId { get; }
+        string A2JAuthorDocsCollectionId { get; }
+        string RolesCollectionId { get; }
     }
 }

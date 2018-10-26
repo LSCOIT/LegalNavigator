@@ -35,7 +35,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             azureOptions = Substitute.For<IOptions<AzureAdOptions>>();
             userRoleBusinessLogic = new UserRoleBusinessLogic(dbClient, dbSettings, dbUserProfile, httpContextAccessor, azureOptions);
 
-            dbSettings.UserRolesCollectionId.Returns("UserRole");
+            dbSettings.RolesCollectionId.Returns("UserRole");
 
         }
 
@@ -45,7 +45,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         {
             dynamic profileResponse = dbUserProfile.GetUserProfileDataAsync(userProfile.OId).Returns<dynamic>(userProfile);
             var ids = new List<string>() { "guid1" };
-            var dbResponse = dbClient.FindItemsWhereInClauseAsync(dbSettings.UserRolesCollectionId, Constants.Id, ids);
+            var dbResponse = dbClient.FindItemsWhereInClauseAsync(dbSettings.RolesCollectionId, Constants.Id, ids);
             dbResponse.ReturnsForAnyArgs(roleResponse);
 
             //act
@@ -62,7 +62,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         public void ValidateOUForRoleShouldValidate(List<string> roleInformationId, string ou, JArray roleResponse, dynamic expectedResult)
         {
             var ids = new List<string>() { "guid1" };
-            var dbResponse = dbClient.FindItemsWhereInClauseAsync(dbSettings.UserRolesCollectionId, Constants.Id, ids);
+            var dbResponse = dbClient.FindItemsWhereInClauseAsync(dbSettings.RolesCollectionId, Constants.Id, ids);
             dbResponse.ReturnsForAnyArgs(roleResponse);
 
             //act

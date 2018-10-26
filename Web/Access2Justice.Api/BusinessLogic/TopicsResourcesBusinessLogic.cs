@@ -25,15 +25,46 @@ namespace Access2Justice.Api.BusinessLogic
             dbService = backendDatabaseService;
         }
 
-        public async Task<dynamic> GetResourcesAsync(dynamic topics)
+        public async Task<Topic> GetTopic(string topicName, Location location)
         {
-            var ids = new List<string>();
-            foreach (var topic in topics)
+             // Todo:@Alaa fix or remove this!!
+            try
             {
-                string topicId = topic.id;
-                ids.Add(topicId);
+                List<dynamic> topics = null;
+                topics = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.TopicsCollectionId, Constants.Name, topicName, location);
+                if (topics == null || !topics.Any())
+                {
+                    topics = await dbClient.FindItemsWhereContainsWithLocationAsync(dbSettings.TopicsCollectionId, Constants.Name, topicName, location);
+                }
+                if (!topics.Any())
+                {
+                    throw new Exception($"No topic found with this name: {topicName}");
+                }
+
+                //// Todo: return the latest topic instead of returing the first one
+                //var temp = JsonConvert.SerializeObject(topics);
+
+                //var temp6 = JsonConvert.DeserializeObject(topics.FirstOrDefault().ToString());
+
+                //if (JsonConvert.DeserializeObject(topics.FirstOrDefault().ToString()).StartsWith("{{"))
+                //{
+
+                //    var breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
+                //}
+                //    if (topics.FirstOrDefault().ToString().StartsWith("{{"))
+                //{
+                //    var temp4 = topics.FirstOrDefault().ToString().Substring(0, 1);
+                //    var temp5 = temp4.Substring(temp4.Length - 1);
+                //}
+
+                //var temp2 = JsonConvert.DeserializeObject(temp);
+                //var temp3 = JsonUtilities.DeserializeDynamicObject<Topic>(temp2);
+                return JsonUtilities.DeserializeDynamicObject<Topic>(topics.FirstOrDefault());
             }
-            return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourcesCollectionId, Constants.TopicTags, Constants.Id, ids);
+            catch
+            {
+                throw;
+            }
         }
 
         public async Task<dynamic> GetTopicsAsync(string keyword, Location location)
@@ -80,6 +111,17 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 return await dbClient.FindItemsWhereArrayContainsAsyncWithLocation(dbSettings.ResourcesCollectionId, Constants.TopicTags, Constants.Id, topicInput.Id, topicInput.Location);
             }
+        }
+
+        public async Task<dynamic> GetResourcesAsync(dynamic topics)
+        {
+            var ids = new List<string>();
+            foreach (var topic in topics)
+            {
+                string topicId = topic.id;
+                ids.Add(topicId);
+            }
+            return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourcesCollectionId, Constants.TopicTags, Constants.Id, ids);
         }
 
         public async Task<dynamic> GetDocumentAsync(TopicInput topicInput)
@@ -318,30 +360,6 @@ namespace Access2Justice.Api.BusinessLogic
             }
             return parentTopicIds;
         }
-
-        //public dynamic GetQuickLinks(dynamic quickLinksValues)
-        //{
-        //    List<QuickLinks> quickLinks = new List<QuickLinks>();
-        //    foreach (var quickLink in quickLinksValues)
-        //    {
-        //        string text = string.Empty;
-        //        string url = string.Empty;
-        //        foreach (JProperty quickLinkDetails in quickLink)
-        //        {
-        //            if (quickLinkDetails.Name == "text")
-        //            {
-        //                text = quickLinkDetails.Value.ToString();
-        //            }
-
-        //            else if (quickLinkDetails.Name == "url")
-        //            {
-        //                url = quickLinkDetails.Value.ToString();
-        //            }
-        //        }
-        //        quickLinks.Add(new QuickLinks { Text = text, Urls = url });
-        //    }
-        //    return quickLinks;
-        //}
 
         public dynamic GetReviewer(dynamic reviewerValues)
         {

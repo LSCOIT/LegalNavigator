@@ -29,7 +29,7 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<dynamic> GetUserProfileDataAsync(string oId, bool isProfileViewModel = false)
         {
-            var resultUserData = await dbClient.FindItemsWhereAsync(dbSettings.UserProfilesCollectionId, Constants.OId, oId);
+            var resultUserData = await dbClient.FindItemsWhereAsync(dbSettings.ProfilesCollectionId, Constants.OId, oId);
             if (isProfileViewModel) {
                 return ConvertUserProfileViewModel(resultUserData);
             }
@@ -40,6 +40,7 @@ namespace Access2Justice.Api.BusinessLogic
         {
             var userProfile = await GetUserProfileDataAsync(oId);
             dynamic userResourcesDBData = null;
+            // Todo: create a constant for these strings
             if (type == "resources" && userProfile?.SavedResourcesId != null && userProfile?.SavedResourcesId != Guid.Empty)
             {
                 userResourcesDBData = await dbClient.FindItemsWhereAsync(dbSettings.UserResourcesCollectionId, Constants.Id, Convert.ToString(userProfile.SavedResourcesId, CultureInfo.InvariantCulture));
@@ -81,7 +82,7 @@ namespace Access2Justice.Api.BusinessLogic
                 result = await CreateUserSavedResourcesAsync(userData);
                 string savedResourcesId = result.Id;
                 userProfile.SavedResourcesId = new Guid(savedResourcesId);
-                await dbService.UpdateItemAsync(userProfile.Id, userProfile, dbSettings.UserProfilesCollectionId);
+                await dbService.UpdateItemAsync(userProfile.Id, userProfile, dbSettings.ProfilesCollectionId);
             }
             else
             {
@@ -138,7 +139,7 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 userProfile.RoleInformationId.Add(await GetDefaultUserRole());
                 List<dynamic> profile = new List<dynamic>();
-                var result = await dbService.CreateItemAsync(userProfile, dbSettings.UserProfilesCollectionId);
+                var result = await dbService.CreateItemAsync(userProfile, dbSettings.ProfilesCollectionId);
                 profile.Add(result);
                 resultUP = ConvertUserProfileViewModel(profile);
             }
@@ -147,7 +148,7 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<Guid> GetDefaultUserRole()
         {
-            var result = await dbClient.FindItemsWhereAsync(dbSettings.UserRolesCollectionId, Constants.UserRole, Permissions.Role.Authenticated.ToString());
+            var result = await dbClient.FindItemsWhereAsync(dbSettings.RolesCollectionId, Constants.UserRole, Permissions.Role.Authenticated.ToString());
             List<Role> userRole = JsonUtilities.DeserializeDynamicObject<List<Role>>(result);
             return userRole.Select(x => x.RoleInformationId).FirstOrDefault();
         }

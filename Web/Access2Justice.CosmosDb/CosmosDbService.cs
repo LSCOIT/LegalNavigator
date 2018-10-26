@@ -223,13 +223,13 @@ namespace Access2Justice.CosmosDb
         public async Task<Document> CreateUserProfileAsync<T>(T item)
         {
             return await documentClient.CreateDocumentAsync(
-                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.UserProfilesCollectionId), item);
+                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.ProfilesCollectionId), item);
         }
 
         public async Task<Document> UpdateUserProfileAsync<T>(string id, T item)
         {
             return await documentClient.ReplaceDocumentAsync(
-                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.UserProfilesCollectionId, id), item);
+                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.ProfilesCollectionId, id), item);
         }
     }
 }
