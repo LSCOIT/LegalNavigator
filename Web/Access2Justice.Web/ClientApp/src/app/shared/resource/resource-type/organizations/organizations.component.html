@@ -79,7 +79,7 @@
         </div>
       </div>
     </div>
-    <div class="box-no-shadow org-review" *ngIf="!resource.reviewer ==''">
+    <div class="box-no-shadow org-review" *ngIf="!resource.reviewer">
       <div class="resource-body">
         <h4>Reviewed by a member of your community</h4>  
         <div *ngFor="let reviewer of resource.reviewer">
