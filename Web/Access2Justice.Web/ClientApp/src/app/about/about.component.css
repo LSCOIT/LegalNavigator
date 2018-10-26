@@ -33,7 +33,7 @@ p + .btn-sm {
 
 .box-no-shadow {
   padding: 20px;
-  margin-bottom: -1px;
+  margin-bottom: 20px;
 }
 
 @media only screen and (min-width : 992px) {
