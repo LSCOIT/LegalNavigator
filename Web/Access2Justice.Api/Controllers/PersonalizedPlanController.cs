@@ -41,7 +41,7 @@ namespace Access2Justice.Api.Controllers
         }
 
         /// <summary>
-        /// Generate personalized plan for curated experience
+        /// Generate personalized plan
         /// </summary>
         /// <remarks>
         /// Use to generate personalized plan for a curated experience
@@ -92,7 +92,7 @@ namespace Access2Justice.Api.Controllers
         }
 
         /// <summary>
-        /// Update personalized plan
+        /// Insert or update a personalized plan
         /// </summary>
         /// <remarks>
         /// Use to insert/update a personalized plan

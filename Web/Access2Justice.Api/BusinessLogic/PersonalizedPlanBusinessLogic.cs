@@ -61,7 +61,11 @@ namespace Access2Justice.Api.BusinessLogic
                 if (userPersonalizedPlan == null)
                 {
                     var newPlan = await backendDatabaseService.CreateItemAsync(personalizedPlan, cosmosDbSettings.ActionPlansCollectionId);
-                    // Todo:@Alaa delete answer file
+                    if (!Guid.TryParse(newPlan.Id, out Guid guid))
+                    {
+                        return null;
+                    }
+                     // Todo:@Alaa delete answer file (pending till auth claims get passed to this method..)
                     return newPlan;
                 }
                 else
