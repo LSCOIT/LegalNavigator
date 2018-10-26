@@ -1,5 +1,20 @@
 li a {
   cursor: pointer;
+  padding: 10px;
+  color: #333;
+  font-weight: 600;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+}
+
+li:last-child a {
+  border-bottom: none;
+}
+
+li a:hover {
+  -webkit-box-shadow: 0 4px 10px 0 rgba(0,0,0,0.2);
+  -moz-box-shadow: 0 4px 10px 0 rgba(0,0,0,0.2);
+  box-shadow: 0 4px 10px 0 rgba(0,0,0,0.2);
 }
 
 .filter {
@@ -11,7 +26,43 @@ li a {
 .filter-type {
   display: inline-block;
   padding-right: 15px;
+}
 
+.dropdown-toggle:after {
+  border: none;
+}
+
+.btn.focus, .btn:focus {
+  box-shadow: none;
+}
+
+#button-basic {
+  margin-bottom: 0;
+  margin-right: 0;
+  text-align: left;
+  width: 145px;
+  font-size: 14px;
+  background-size: 13px;
+  background-repeat: no-repeat;
+  background-position: 90% 50%;
+}
+
+#button-basic, #button-basic[aria-expanded=false] {
+  background-image: url(../../../../assets/images/small-icons/dropdown_arrow.svg);
+}
+
+#button-basic[aria-expanded=true] {
+  background-image: url('../../../../assets/images/small-icons/dropup_arrow.svg');
+}
+
+.dropdown-menu {
+  border: 1px solid #7E7E7E;
+  border-radius: 0 0 5px 5px;
+  width: 145px;
+  top: 86% !important;
+  border-top: 1px solid #ddd;
+  padding: 0;
+  min-width: 145px;
 }
 
 .btn {
@@ -19,7 +70,7 @@ li a {
 }
 
 .btn-selected {
-  padding: 5px;
+  padding: 10px 20px;
   margin-right: 10px;
   margin-bottom: 10px;
 }
@@ -40,7 +91,22 @@ li a {
   background-color: #FFF;
 }
 
-@media only screen and (min-width : 768px) {
+@media only screen and (min-width : 992px) {
+  li a {
+    padding: 5px 20px;
+    font-size: 16px;
+  }
+
+  #button-basic {
+    width: 190px;
+    font-size: 16px;
+    background-size: 15px;
+  }
+
+  .dropdown-menu {
+    width: 190px;
+  }
+
   .desktop-filter {
     display: block;
   }
