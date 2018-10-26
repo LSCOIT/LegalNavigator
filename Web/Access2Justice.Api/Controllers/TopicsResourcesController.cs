@@ -31,6 +31,7 @@ namespace Access2Justice.Api.Controllers
         /// </summary>
         /// <returns></returns>
 
+        
         [Route("api/topics/get-topics")]
         [HttpPost]
         public async Task<IActionResult> GetTopics([FromBody]Location location)

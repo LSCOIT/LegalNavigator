@@ -15,14 +15,17 @@ namespace Access2Justice.Api.BusinessLogic
 	{
 		private readonly ICosmosDbSettings cosmosDbSettings;
 		private readonly IDynamicQueries dynamicQueries;
+        private readonly ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic;
 
-		public PersonalizedPlanViewModelMapper(ICosmosDbSettings cosmosDbSettings, IDynamicQueries dynamicQueries)
+        public PersonalizedPlanViewModelMapper(ICosmosDbSettings cosmosDbSettings, IDynamicQueries dynamicQueries, 
+            ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic)
 		{
 			this.cosmosDbSettings = cosmosDbSettings;
 			this.dynamicQueries = dynamicQueries;
-		}
+            this.topicsResourcesBusinessLogic = topicsResourcesBusinessLogic;
+        }
 
-		public async Task<PersonalizedPlanViewModel> MapViewModel(UnprocessedPersonalizedPlan personalizedPlanStepsInScope)
+		public async Task<PersonalizedPlanViewModel> MapViewModel(UnprocessedPersonalizedPlan personalizedPlanStepsInScope, Location location)
 		{
             var actionPlan = new PersonalizedPlanViewModel();
             
@@ -33,12 +36,12 @@ namespace Access2Justice.Api.BusinessLogic
                 if (resourceIDs != null || resourceIDs.Any())
                 {
                     var resourceValues = resourceIDs.Select(x => x.ToString()).Distinct().ToList();
-                    var resourceData = await dynamicQueries.FindItemsWhereInClauseAsync(cosmosDbSettings.ResourceCollectionId, Constants.Id, resourceValues);
+                    var resourceData = await dynamicQueries.FindItemsWhereInClauseAsync(cosmosDbSettings.ResourcesCollectionId, Constants.Id, resourceValues);
                     resourceDetails = JsonUtilities.DeserializeDynamicObject<List<Resource>>(resourceData);
                 }
 
-                var topic = await GetTopic(unprocessedTopic.Name);
-				actionPlan.Topics.Add(new PlanTopic
+                var topic = await topicsResourcesBusinessLogic.GetTopic(unprocessedTopic.Name, location);
+                actionPlan.Topics.Add(new PlanTopic
 				{
                     TopicId = Guid.Parse(topic.Id),
                     TopicName = topic.Name,
@@ -52,29 +55,6 @@ namespace Access2Justice.Api.BusinessLogic
 			actionPlan.IsShared = false;
 			return actionPlan;
 		}
-
-        private async Task<Topic> GetTopic(string topicName)
-        {
-            try
-            {
-                List<dynamic> topics = null;
-                topics = await dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.TopicCollectionId, Constants.Name, topicName);
-                if (topics == null || !topics.Any())
-                {
-                    topics = await dynamicQueries.FindItemsWhereContainsAsync(cosmosDbSettings.TopicCollectionId, Constants.Name, topicName);
-                }
-                if (!topics.Any())
-                {
-                    throw new Exception($"No topic found with this name: {topicName}");
-                }
-
-                return JsonUtilities.DeserializeDynamicObject<Topic>(topics.FirstOrDefault()); // Todo:@Alaa we shouldn't return multiple topics, maybe return the latest one if many exist
-            }
-            catch
-            {
-                throw;
-            }
-        }
 
         private List<PlanQuickLink> GetQuickLinks(IEnumerable<QuickLinks> quickLinks)
         {

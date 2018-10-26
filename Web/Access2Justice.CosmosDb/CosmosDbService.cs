@@ -72,7 +72,7 @@ namespace Access2Justice.CosmosDb
         public async Task<Document> UpdateItemAsync<T>(string id, T item)
         {
             return await documentClient.ReplaceDocumentAsync(
-                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId, id), item);
+                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicsCollectionId, id), item);
         }
         public async Task<Document> UpdateItemAsync<T>(string id, T item, string collectionId)
         {
@@ -150,7 +150,7 @@ namespace Access2Justice.CosmosDb
                     MaxItemCount = cosmosDbSettings.PageResultsCount
                 };
             }
-            var result = await QueryItemsPaginationAsync(cosmosDbSettings.ResourceCollectionId, query, feedOptions);
+            var result = await QueryItemsPaginationAsync(cosmosDbSettings.ResourcesCollectionId, query, feedOptions);
 
             return result;
         }
@@ -163,7 +163,7 @@ namespace Access2Justice.CosmosDb
                 RequestContinuation = continuationToken
             };
 
-            var result = await QueryItemsPaginationAsync(cosmosDbSettings.ResourceCollectionId, query, feedOptions);
+            var result = await QueryItemsPaginationAsync(cosmosDbSettings.ResourcesCollectionId, query, feedOptions);
 
             return result;
         }
@@ -198,7 +198,7 @@ namespace Access2Justice.CosmosDb
             try
             {
                 await documentClient.ReadDocumentCollectionAsync(
-                    UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicCollectionId));
+                    UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicsCollectionId));
             }
             catch (DocumentClientException e)
             {
@@ -208,7 +208,7 @@ namespace Access2Justice.CosmosDb
                         UriFactory.CreateDatabaseUri(cosmosDbSettings.DatabaseId),
                         new DocumentCollection
                         {
-                            Id = cosmosDbSettings.TopicCollectionId
+                            Id = cosmosDbSettings.TopicsCollectionId
                         },
                         new RequestOptions { OfferThroughput = 400 });
                 }
@@ -223,13 +223,13 @@ namespace Access2Justice.CosmosDb
         public async Task<Document> CreateUserProfileAsync<T>(T item)
         {
             return await documentClient.CreateDocumentAsync(
-                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.UserProfileCollectionId), item);
+                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.ProfilesCollectionId), item);
         }
 
         public async Task<Document> UpdateUserProfileAsync<T>(string id, T item)
         {
             return await documentClient.ReplaceDocumentAsync(
-                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.UserProfileCollectionId, id), item);
+                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.ProfilesCollectionId, id), item);
         }
     }
 }
