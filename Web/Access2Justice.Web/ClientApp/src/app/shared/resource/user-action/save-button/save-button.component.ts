@@ -43,7 +43,7 @@ export class SaveButtonComponent implements OnInit {
   planStepCount: number = 0;
   planStepIds: Array<string>;
   planTopicIds: Array<string>;
-  tempResourceStorage: any = [];
+  tempResourceStorage: any;
 
   constructor(
     private personalizedPlanService: PersonalizedPlanService,
@@ -59,7 +59,6 @@ export class SaveButtonComponent implements OnInit {
   savePlanResources(): void {
     if (!this.msalService.getUser()) {
       this.savePlanResourcesPreLogin();
-      //this.externalLogin();
     } else {
       this.savePlanResourcesPostLogin();
     }
@@ -70,7 +69,7 @@ export class SaveButtonComponent implements OnInit {
       sessionStorage.setItem(this.planSessionKey, JSON.stringify(this.id));
     } else {
       this.savedResources = { itemId: this.id, resourceType: this.type, resourceDetails: this.resourceDetails };
-      sessionStorage.setItem(this.sessionKey, JSON.stringify(this.savedResources));
+      this.saveBookmarkedResource();
     }
   }
 
@@ -80,7 +79,9 @@ export class SaveButtonComponent implements OnInit {
       this.getPlan(this.planId);
     } else {
       this.savedResources = { itemId: this.id, resourceType: this.type, resourceDetails: this.resourceDetails };
-      this.personalizedPlanService.saveResourcesToProfile(this.savedResources);
+      this.tempResourceStorage = [];
+      this.tempResourceStorage.push(this.savedResources);
+      this.personalizedPlanService.saveResourcesToProfile(this.tempResourceStorage);
     }
   }
 
@@ -215,7 +216,7 @@ export class SaveButtonComponent implements OnInit {
 
   getPlan(planId) {
     this.personalizedPlanService.getActionPlanConditions(planId)
-      .subscribe((plan) => {        
+      .subscribe((plan) => {
         this.planTopics = [];
         this.personalizedPlanSteps = [];
         this.planTopic = { topicId: '', steps: this.personalizedPlanSteps };
@@ -249,20 +250,19 @@ export class SaveButtonComponent implements OnInit {
   }
 
   saveBookmarkedResource() {
-    this.tempResourceStorage = sessionStorage.getItem("tempResourceStorage");
-    this.resourceStorage = sessionStorage.getItem(this.sessionKey);
-    if (this.resourceStorage && this.resourceStorage.length > 0) {
-      this.tempResourceStorage = JSON.parse(this.tempResourceStorage);
-      this.resourceStorage = JSON.parse(this.resourceStorage);
-      if (this.resourceStorage) {
-        this.tempResourceStorage.push(this.resourceStorage);
+    this.tempResourceStorage = [];
+    let tempStorage = sessionStorage.getItem(this.sessionKey);
+    if (tempStorage && tempStorage.length > 0) {
+      tempStorage = JSON.parse(tempStorage);
+      this.tempResourceStorage = tempStorage;
+    }
+    if (this.savedResources) {
+      if (!this.arrayUtilityService.checkObjectExistInArray(this.tempResourceStorage, this.savedResources)) {
+        this.tempResourceStorage.push(this.savedResources);
       }
-      sessionStorage.setItem("tempResourceStorage", JSON.stringify(this.tempResourceStorage));
-      this.id = this.resourceStorage.itemId;
-      this.type = this.resourceStorage.resourceType;
-      this.resourceDetails = this.resourceStorage.resourceDetails;
-      this.savePlanResources();
-      sessionStorage.removeItem(this.sessionKey);
+    }
+    if (this.tempResourceStorage.length > 0) {
+      sessionStorage.setItem(this.sessionKey, JSON.stringify(this.tempResourceStorage));
     }
   }
 

@@ -32,6 +32,7 @@ export class PersonalizedPlanService {
   resourceIds: Array<string>;
   personalizedPlan: PersonalizedPlan;
   userPersonalizedPlan: UserPlan = { oId: '', plan: this.personalizedPlan };
+  resourceIndex: number;
 
   constructor(private http: HttpClient,
               private arrayUtilityService: ArrayUtilityService,
@@ -100,7 +101,8 @@ export class PersonalizedPlanService {
     this.saveResourcesToProfile(this.savedResources);
   }
 
-  saveResourcesToProfile(savedResources) {    
+  saveResourcesToProfile(savedResources) {
+    this.resourceIndex = 0;
     this.resourceTags = [];
     let params = new HttpParams()
       .set("oid", this.global.userId)
@@ -116,12 +118,17 @@ export class PersonalizedPlanService {
             }
           });
         }
-        if (this.arrayUtilityService.checkObjectExistInArray(this.resourceTags, savedResources)) {
-          this.showWarning('Resource already saved to profile');
-        } else {
-          this.resourceTags.push(savedResources);
-          this.saveResourceToProfile(this.resourceTags);
-        }
+        savedResources.forEach(savedResource => {
+          if (this.arrayUtilityService.checkObjectExistInArray(this.resourceTags, savedResource)) {
+            this.showWarning('Resource already saved to profile');
+          } else {
+            this.resourceIndex++;
+            this.resourceTags.push(savedResource);
+          }
+          if (this.resourceIndex > 0) {
+            this.saveResourceToProfile(this.resourceTags);
+          }
+        });
         sessionStorage.removeItem(this.sessionKey);
       });
   }

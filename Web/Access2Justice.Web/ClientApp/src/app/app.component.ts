@@ -8,9 +8,6 @@ import { IUserProfile } from './shared/login/user-profile.model';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
 import { TopicService } from './topics-resources/shared/topic.service';
-import { SavedResources } from './guided-assistant/personalized-plan/personalized-plan';
-import { PersonalizedPlanService } from './guided-assistant/personalized-plan/personalized-plan.service';
-import { ArrayUtilityService } from './shared/array-utility.service';
 
 @Component({
   selector: 'app-root',
@@ -22,17 +19,6 @@ export class AppComponent implements OnInit {
   staticContentResults: any;
   subscription: any;
   userProfile: IUserProfile;
-  sessionKey: string = "bookmarkedResource";
-  planSessionKey: string = "bookmarkPlanId";
-  planStorage: any;
-  resourceStorage: any;
-  tempStorage: any;
-  isObjectExists: boolean;
-
-  id: string;
-  type: string;
-  resourceDetails: any = {};
-  savedResources: SavedResources;
 
   constructor(
     private global: Global,
@@ -42,9 +28,7 @@ export class AppComponent implements OnInit {
     private loginService: LoginService,
     private spinner: NgxSpinnerService,
     private router: Router,
-    private topicService: TopicService,
-    private personalizedPlanService: PersonalizedPlanService,
-    private arrayUtilityService: ArrayUtilityService
+    private topicService: TopicService
   ) { }
 
   createOrGetProfile() {
@@ -57,37 +41,8 @@ export class AppComponent implements OnInit {
       .subscribe(response => {
         if (response) {
           this.global.setProfileData(response.oId, response.name, response.eMail);
-          //this.saveBookmarkedPlan();
-          //this.saveBookmarkedResource();
         }
       });
-  }
-
-  saveBookmarkedPlan() {
-    this.planStorage = sessionStorage.getItem(this.planSessionKey);
-    if (this.planStorage) {
-      //this.savePlanResources();
-      sessionStorage.removeItem(this.planSessionKey);
-    }
-  }
-
-  saveBookmarkedResource() {
-    this.resourceStorage = sessionStorage.getItem(this.sessionKey);
-    if (this.resourceStorage && this.resourceStorage.length > 0) {
-      this.tempStorage = JSON.parse(this.resourceStorage);
-      this.id = this.resourceStorage.itemId;
-      this.type = this.resourceStorage.resourceType;
-      this.resourceDetails = this.resourceStorage.resourceDetails;
-      this.isObjectExists = this.arrayUtilityService.checkObjectExistInArray(this.tempStorage, this.resourceDetails);
-      if (!this.isObjectExists) {
-
-      }
-
-      //this.savePlanResources();
-      this.savedResources = { itemId: this.id, resourceType: this.type, resourceDetails: this.resourceDetails };
-      this.personalizedPlanService.saveResourcesToProfile(this.savedResources);
-      sessionStorage.removeItem(this.sessionKey);
-    }
   }
 
   onActivate(event) {

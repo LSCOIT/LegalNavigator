@@ -276,7 +276,7 @@ namespace Access2Justice.Api.Controllers
         /// </summary>
         [Permission(PermissionName.upserttopic)]
         [HttpPost]
-        [Route("api/upserttopic")]
+        [Route("api/upsert-topic")]
         public async Task<IActionResult> UpsertSingleTopicDocument([FromBody]dynamic topic)
         {
             List<dynamic> topicsList = new List<dynamic>();
@@ -294,7 +294,7 @@ namespace Access2Justice.Api.Controllers
         /// </summary>
         [Permission(PermissionName.upsertresource)]
         [HttpPost]
-        [Route("api/upsertresource")]
+        [Route("api/upsert-resource")]
         public async Task<IActionResult> UpserSingleResourceDocument([FromBody]dynamic resource)
         {
             List<dynamic> resourcesList = new List<dynamic>();
