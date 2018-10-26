@@ -1,16 +1,9 @@
-﻿using Access2Justice.Tools.BusinessLogic;
+﻿using Access2Justice.DataImportTool.BusinessLogic;
 using Microsoft.Identity.Client;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Access2JusticeCode.DataImportTool
+namespace Access2Justice.DataImportTool
 {
     public partial class DataImport : Form
     {

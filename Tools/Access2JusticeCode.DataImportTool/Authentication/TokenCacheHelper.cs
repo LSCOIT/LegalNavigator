@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using Microsoft.Identity.Client;
 
-namespace Access2JusticeCode.DataImportTool.Authentication
+namespace Access2Justice.DataImportTool.Authentication
 {
     static class TokenCacheHelper
     {

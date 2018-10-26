@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace Access2JusticeCode.DataImportTool.Helper
+namespace Access2Justice.DataImportTool.Helper
 {
     public class LogHelper
     {
