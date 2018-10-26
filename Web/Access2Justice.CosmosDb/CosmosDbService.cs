@@ -44,7 +44,7 @@ namespace Access2Justice.CosmosDb
             {
                 if (e.StatusCode == System.Net.HttpStatusCode.NotFound)
                 {
-                    return default(T);
+                    return Activator.CreateInstance<T>();
                 }
                 else
                 {
