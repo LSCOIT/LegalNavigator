@@ -24,7 +24,12 @@ export class QuestionService {
   }
 
   getpersonalizedPlan(params): Observable<any> {
-    return this.http.get<any>(api.personalizedPlan + '?' + params);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.get<any>(api.personalizedPlan + '?' + params, httpOptions);
   }
   
 }
