@@ -7,7 +7,7 @@ li {
   cursor: pointer;
 }
 
-li:hover {
+li:hover, #location:hover {
   background-color: #fff;
 }
 

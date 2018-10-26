@@ -23,12 +23,20 @@ li {
 
 .show-articles {
   border: 1.5px solid #0D3FBB;
-  border-bottom: none;
+  border-bottom: 1px solid #fff;
   border-radius: 4px 4px 0 0;
   background-color: #FFF;
   margin-bottom: -1.5px;
-  padding: 10px;
+  padding: 10px 40px 10px 10px;
   cursor: pointer;
+  background-repeat: no-repeat;
+  background-position: 94% 50%;
+  background-size: 12px;
+  background-image: url('../../../assets/images/small-icons/dropdown_arrow.svg');
+}
+
+.open .show-articles {
+  background-image: url('../../../assets/images/small-icons/dropup_arrow.svg');
 }
 
 .dropdown-icon {
@@ -60,6 +68,10 @@ li {
 }
 
 @media only screen and (min-width : 992px) {
+  .show-articles {
+    padding-bottom: 9px;
+  }
+
   .link {
     width: 50%;
     display: inline-block;

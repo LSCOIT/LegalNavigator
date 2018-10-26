@@ -1,8 +1,4 @@
-a.btn-primary {
-  color: #fff;
-}
-
-a.btn-primary:hover {
+a.btn-primary, a.btn-primary:hover {
   color: #fff;
 }
 
@@ -12,19 +8,19 @@ a.btn-primary:hover {
   margin-top: 30px;
 }
 
-.btn-primary {
-  display: block;
-  max-width: 250px;
-  margin: 0 auto;
-  font-size: 14px;
-}
-
 @media only screen and (min-width : 992px) {
   .sidebar-block {
     margin-top: 0;
   }
 
   .btn-primary {
-    font-size: 12px;
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+}
+
+@media only screen and (min-width : 1224px) {
+  .btn-primary {
+    font-size: 16px;
   }
 }
