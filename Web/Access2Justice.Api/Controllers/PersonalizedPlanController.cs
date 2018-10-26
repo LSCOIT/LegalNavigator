@@ -1,5 +1,6 @@
 ﻿using Access2Justice.Api.Authorization;
 using Access2Justice.Api.Interfaces;
+using Access2Justice.Api.ViewModels;
 using Access2Justice.Shared.A2JAuthor;
 using Access2Justice.Shared.Extensions;
 using Access2Justice.Shared.Models;
@@ -31,13 +32,12 @@ namespace Access2Justice.Api.Controllers
         }
 
 
-        [HttpGet("generate")]
-        public async Task<IActionResult> GeneratePersonalizedPlan([FromQuery] Guid curatedExperienceId, [FromQuery] Guid answersDocId)
+        [HttpPost("generate")]
+        public async Task<IActionResult> GeneratePersonalizedPlan([FromQuery] Guid curatedExperienceId, [FromQuery] Guid answersDocId, [FromBody] Location location)
         {
             var personalizedPlan = await personalizedPlanBusinessLogic.GeneratePersonalizedPlanAsync(
-                RetrieveCachedCuratedExperience(curatedExperienceId), answersDocId);
+                RetrieveCachedCuratedExperience(curatedExperienceId), answersDocId, location);
 
-             // Todo:@Alaa save/add the unprocessed plan to the existing one if the user is logged in
             if (personalizedPlan == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
@@ -46,12 +46,19 @@ namespace Access2Justice.Api.Controllers
             return Ok(personalizedPlan);
         }
 
-
-        [Permission(PermissionName.updateplan)]
-        [HttpPost("update-plan")]
-        public async Task<IActionResult> UpdateUserProfileDocumentAsync([FromBody]UserPersonalizedPlan userPlan)
+         // Todo:@Alaa check user is logged in
+             // [Permission(PermissionName.)]
+        [HttpPost("update")]
+        public async Task<IActionResult> UpdateUserProfileDocumentAsync([FromBody] PersonalizedPlanViewModel personalizedPlan)
         {
-            return Ok(await personalizedPlanBusinessLogic.UpdatePersonalizedPlan(userPlan));
+            var newPlan = await personalizedPlanBusinessLogic.UpsertPersonalizedPlan(personalizedPlan);
+
+            if (newPlan == null)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+            return Ok(newPlan);
         }
 
         // Todo:@Alaa must refactor this, i copied it from the CuratedExperience controller for now to finish an end-to-end personalized plan

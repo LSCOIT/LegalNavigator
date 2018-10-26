@@ -28,10 +28,10 @@ namespace Access2Justice.Api.BusinessLogic
             location.ZipCode = string.Empty;
             if (!string.IsNullOrEmpty(location.State))
             {
-                result = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourceCollectionId, Constants.Name, location);
+                result = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourcesCollectionId, Constants.Name, location);
             }
             location.State = "Default";
-            return result.Count > 0 ? result : await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourceCollectionId, Constants.Name, location);
+            return result.Count > 0 ? result : await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourcesCollectionId, Constants.Name, location);
         }
 
         public async Task<dynamic> UpsertStaticHomePageDataAsync(HomeContent homePageContent, Location location)
@@ -40,15 +40,15 @@ namespace Access2Justice.Api.BusinessLogic
             var pageDocument = JsonConvert.DeserializeObject(serializedResult);
             string name = homePageContent.Name;
             dynamic result = null;
-            var pageDBData = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourceCollectionId, Constants.Name, name, location);
+            var pageDBData = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourcesCollectionId, Constants.Name, name, location);
             if (pageDBData.Count == 0)
             {
-                result = await dbService.CreateItemAsync(pageDocument, dbSettings.StaticResourceCollectionId);
+                result = await dbService.CreateItemAsync(pageDocument, dbSettings.StaticResourcesCollectionId);
             }
             else
             {
                 string id = pageDBData[0].id;
-                result = await dbService.UpdateItemAsync(id, pageDocument, dbSettings.StaticResourceCollectionId);
+                result = await dbService.UpdateItemAsync(id, pageDocument, dbSettings.StaticResourcesCollectionId);
             }
             return result;
         }
@@ -59,15 +59,15 @@ namespace Access2Justice.Api.BusinessLogic
             var pageDocument = JsonConvert.DeserializeObject(serializedResult);
             string name = privacyPromisePageContent.Name;
             dynamic result = null;
-            var pageDBData = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourceCollectionId, Constants.Name, name, location);
+            var pageDBData = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourcesCollectionId, Constants.Name, name, location);
             if (pageDBData.Count == 0)
             {
-                result = await dbService.CreateItemAsync(pageDocument, dbSettings.StaticResourceCollectionId);
+                result = await dbService.CreateItemAsync(pageDocument, dbSettings.StaticResourcesCollectionId);
             }
             else
             {
                 string id = pageDBData[0].id;
-                result = await dbService.UpdateItemAsync(id, pageDocument, dbSettings.StaticResourceCollectionId);
+                result = await dbService.UpdateItemAsync(id, pageDocument, dbSettings.StaticResourcesCollectionId);
             }
             return result;
         }
@@ -78,15 +78,15 @@ namespace Access2Justice.Api.BusinessLogic
             var pageDocument = JsonConvert.DeserializeObject(serializedResult);
             string name = helpAndFAQPageContent.Name;
             dynamic result = null;
-            var pageDBData = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourceCollectionId, Constants.Name, name, location);
+            var pageDBData = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourcesCollectionId, Constants.Name, name, location);
             if (pageDBData.Count == 0)
             {
-                result = await dbService.CreateItemAsync(pageDocument, dbSettings.StaticResourceCollectionId);
+                result = await dbService.CreateItemAsync(pageDocument, dbSettings.StaticResourcesCollectionId);
             }
             else
             {
                 string id = pageDBData[0].id;
-                result = await dbService.UpdateItemAsync(id, pageDocument, dbSettings.StaticResourceCollectionId);
+                result = await dbService.UpdateItemAsync(id, pageDocument, dbSettings.StaticResourcesCollectionId);
             }
             return result;
         }
@@ -97,15 +97,15 @@ namespace Access2Justice.Api.BusinessLogic
             var pageDocument = JsonConvert.DeserializeObject(serializedResult);
             string name = navigationContent.Name;
             dynamic result = null;
-            var pageDBData = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourceCollectionId, Constants.Name, name, location);
+            var pageDBData = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourcesCollectionId, Constants.Name, name, location);
             if (pageDBData.Count == 0)
             {
-                result = await dbService.CreateItemAsync(pageDocument, dbSettings.StaticResourceCollectionId);
+                result = await dbService.CreateItemAsync(pageDocument, dbSettings.StaticResourcesCollectionId);
             }
             else
             {
                 string id = pageDBData[0].id;
-                result = await dbService.UpdateItemAsync(id, pageDocument, dbSettings.StaticResourceCollectionId);
+                result = await dbService.UpdateItemAsync(id, pageDocument, dbSettings.StaticResourcesCollectionId);
             }
             return result;
         }
@@ -116,15 +116,15 @@ namespace Access2Justice.Api.BusinessLogic
             var pageDocument = JsonConvert.DeserializeObject(serializedResult);
             string name = aboutPageContent.Name;
             dynamic result = null;
-            var pageDBData = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourceCollectionId, Constants.Name, name, location);
+            var pageDBData = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourcesCollectionId, Constants.Name, name, location);
             if (pageDBData.Count == 0)
             {
-                result = await dbService.CreateItemAsync(pageDocument, dbSettings.StaticResourceCollectionId);
+                result = await dbService.CreateItemAsync(pageDocument, dbSettings.StaticResourcesCollectionId);
             }
             else
             {
                 string id = pageDBData[0].id;
-                result = await dbService.UpdateItemAsync(id, pageDocument, dbSettings.StaticResourceCollectionId);
+                result = await dbService.UpdateItemAsync(id, pageDocument, dbSettings.StaticResourcesCollectionId);
             }
             return result;
         }

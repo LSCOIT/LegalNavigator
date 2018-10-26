@@ -1,5 +1,4 @@
-﻿using Access2Justice.Shared;
-using Access2Justice.Shared.Models;
+﻿using Access2Justice.Shared.Models;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 
@@ -120,13 +119,19 @@ namespace Access2Justice.Api.Tests.TestData
                    "\"language\": \"en\"\r\n        }\r\n      ]\r\n    },\r\n    \"rankingResponse\": {\r\n      \"mainline\": {\r\n        " +
                    "\"items\": [\r\n          {\r\n            \"answerType\": \"WebPages\",\r\n            \"resultIndex\": 0,\r\n            " +
                    "\"value\": {\r\n              \"id\": \"https://api.cognitive.microsoft.com/api/v7/#WebPages.0\"\r\n            }\r\n          " +
-                   "}\r\n        ]\r\n      }\r\n    }\r\n  }\r\n}";        
+                   "}\r\n        ]\r\n      }\r\n    }\r\n  }\r\n}";
         public static ResourceFilter resourceFilter = new ResourceFilter { TopicIds = new List<string> { "addf41e9-1a27-4aeb-bcbb-7959f95094ba" }, PageNumber = 0, ResourceType = "ALL", Location = new Location() };
         public static List<dynamic> allResourcesCount = new List<dynamic> {  new {  ResourceName = "All", ResourceCount = 10     },
             new {  ResourceName = "Action Plans", ResourceCount = 2 },
             new {  ResourceName = "Articles", ResourceCount = 6 },
             new {   ResourceName = "Forms", ResourceCount = 2 } };
         public static List<string> topicIds = new List<string> { "addf41e9-1a27-4aeb-bcbb-7959f95094ba" };
+        public static Location location = new Location {
+            City= "Kalawao",
+            County= "Kalawao County",
+            State= "Hawaii",
+            ZipCode="96742"
+        };
         #endregion
 
         #region Mocked Output Data         
