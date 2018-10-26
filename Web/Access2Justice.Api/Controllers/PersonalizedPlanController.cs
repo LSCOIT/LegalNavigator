@@ -100,7 +100,7 @@ namespace Access2Justice.Api.Controllers
         /// <param name="userPlan"></param>
         /// <response code="200">Returns the updated personalized plan </response>
         /// <response code="500">Failure</response>      
-        // Todo:@Alaa check user is authorized and logged in
+        // Todo:@Alaa check user is authorized
         // [Permission(PermissionName.)]
         [HttpPost("save")]
         public async Task<IActionResult> SavePersonalizedPlanAsync([FromBody] PersonalizedPlanViewModel personalizedPlan)
