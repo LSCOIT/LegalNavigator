@@ -3,7 +3,7 @@ ul {
 }
 
 .topic-list {
-  padding: 0 10px;
+  padding: 20px 10px;
   border-bottom: 1px solid #ddd;
   border-right: 1px solid #ddd;
   cursor: pointer;
@@ -12,10 +12,6 @@ ul {
 
 .topic-list:nth-child(2n) {
   border-right: none;
-}
-
-.topic-list:nth-last-child(-n+2) {
-  border-bottom: none;
 }
 
 .topic-list a:hover {
@@ -28,16 +24,19 @@ ul {
 }
 
 .topic-list a img {
-  width: 100px;
-  height: 80px;
-  padding: 10px;
-  margin-top: 40px;
+  width: 90px;
+  height: 70px;
+  margin: 20px auto;
 }
 
 @media only screen and (min-width : 768px) {
   .topic-list {
     padding: 15px 20px;
     height: 235px;
+  }
+
+  .topic-list a img {
+    margin: 35px auto;
   }
 
   .topic-list:nth-child(2n) {
@@ -47,16 +46,12 @@ ul {
   .topic-list:nth-child(3n) {
     border-right: none;
   }
-
-  .topic-list:nth-last-child(-n+3) {
-    border-bottom: none;
-  }
 }
 
 @media only screen and (min-width : 992px) {
   .topic-list {
-    padding: 15px 20px;
-    height: 265px;
+    padding: 45px 20px;
+    height: 290px;
   }
 
   .topic-list:nth-child(2n) {
@@ -71,16 +66,21 @@ ul {
     border-right: none;
   }
 
-  .topic-list:nth-last-child(-n+4) {
-    border-bottom: none;
-  }
-
   .half-size-list {
+    width: 33.3333%;
     height: 200px;
     padding: 10px;
   }
 
   .half-size-list a img {
     margin-top: 20px;
+  }
+
+  .half-size-list:nth-child(4n) {
+    border-right: 1px solid #ddd;
+  }
+
+  .half-size-list:nth-child(3n) {
+    border-right: none;
   }
 }

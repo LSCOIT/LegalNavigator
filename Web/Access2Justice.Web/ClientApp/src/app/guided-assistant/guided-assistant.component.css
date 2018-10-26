@@ -40,6 +40,16 @@
   margin: 0 auto 20px auto;
 }
 
+textarea {
+  position: relative;
+}
+
+.nav-icon {
+  position: absolute;
+  top: 50px;
+  right: 10px;
+}
+
 @media only screen and (min-width : 768px) {
   .media {
     padding: 40px;
