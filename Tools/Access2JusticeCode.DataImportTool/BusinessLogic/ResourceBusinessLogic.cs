@@ -1,4 +1,4 @@
-﻿using Access2JusticeCode.DataImportTool.Helper;
+﻿using Access2Justice.DataImportTool.Helper;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Access2Justice.Tools.BusinessLogic
+namespace Access2Justice.DataImportTool.BusinessLogic
 {
     class ResourceBusinessLogic : IDisposable
     {

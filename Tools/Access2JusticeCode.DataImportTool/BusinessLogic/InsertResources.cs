@@ -1,19 +1,16 @@
-﻿using Access2Justice.Tools.Models;
-using DocumentFormat.OpenXml.Packaging;
+﻿using DocumentFormat.OpenXml.Packaging;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using Spreadsheet = DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Spreadsheet;
+using Access2Justice.DataImportTool.Models;
 
-namespace Access2Justice.Tools.BusinessLogic
+namespace Access2Justice.DataImportTool.BusinessLogic
 {
     class InsertResources
     {

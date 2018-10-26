@@ -1,4 +1,4 @@
-﻿namespace Access2Justice.Tools
+﻿namespace Access2Justice.DataImportTool
 {
     public static class Constants
     {

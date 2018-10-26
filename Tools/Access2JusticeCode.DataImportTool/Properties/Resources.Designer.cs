@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Access2JusticeCode.DataImportTool.Properties
+namespace Access2Justice.DataImportTool.Properties
 {
 
 
@@ -44,7 +44,7 @@ namespace Access2JusticeCode.DataImportTool.Properties
             {
                 if ((resourceMan == null))
                 {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Access2JusticeCode.DataImportTool.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Access2Justice.DataImportTool.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
