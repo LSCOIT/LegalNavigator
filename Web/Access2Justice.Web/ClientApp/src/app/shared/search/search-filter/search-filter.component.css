@@ -28,6 +28,10 @@ li a:hover {
   padding-right: 15px;
 }
 
+.filter-type .col-md-1 {
+  margin-right: 40px;
+}
+
 .dropdown-toggle:after {
   border: none;
 }
@@ -70,7 +74,7 @@ li a:hover {
 }
 
 .btn-selected {
-  padding: 10px 20px;
+  padding: 10px;
   margin-right: 10px;
   margin-bottom: 10px;
 }
@@ -93,8 +97,16 @@ li a:hover {
 
 @media only screen and (min-width : 992px) {
   li a {
-    padding: 5px 20px;
+    padding: 7px 20px;
     font-size: 16px;
+  }
+
+  .filter-type .col-md-1 {
+    margin-right: 10px;
+  }
+
+  .btn-selected {
+    padding: 10px 20px;
   }
 
   #button-basic {
