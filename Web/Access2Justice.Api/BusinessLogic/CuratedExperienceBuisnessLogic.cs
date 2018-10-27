@@ -67,29 +67,21 @@ namespace Access2Justice.Api.BusinessLogic
         {
             try
             {
-                // We could store the answers doc in the session and persist it to the db when the user
-                // answers the last question. This will save us a trip to the database each time the user moves to
-                // the next step. The caveat for this is that the users will need to repeat the survey from the
-                // beginning if the session expires which might be frustrating.
-                var answersDbCollection = dbSettings.UserResourcesCollectionId;
                 var dbAnswers = MapCuratedExperienceViewModel(viewModelAnswer, curatedExperience);
+                var savedAnswersDoc = await dbService.GetItemAsync<CuratedExperienceAnswers>(viewModelAnswer.AnswersDocId.ToString(), dbSettings.UserResourcesCollectionId);
+                if (savedAnswersDoc == null || savedAnswersDoc.AnswersDocId == default(Guid))
+                {
+                    return await dbService.CreateItemAsync(dbAnswers, dbSettings.UserResourcesCollectionId);
+                }
 
-                var savedAnswersDoc = await dbService.GetItemAsync<CuratedExperienceAnswers>(viewModelAnswer.AnswersDocId.ToString(), answersDbCollection);
-                if (savedAnswersDoc == null)
-                {
-                    return await dbService.CreateItemAsync(dbAnswers, answersDbCollection);
-                }
-                else
-                {
-                    savedAnswersDoc.ButtonComponents.AddRange(dbAnswers.ButtonComponents);
-                    savedAnswersDoc.FieldComponents.AddRange(dbAnswers.FieldComponents);
-                    return await dbService.UpdateItemAsync(viewModelAnswer.AnswersDocId.ToString(), savedAnswersDoc, answersDbCollection);
-                }
+                savedAnswersDoc.ButtonComponents.AddRange(dbAnswers.ButtonComponents);
+                savedAnswersDoc.FieldComponents.AddRange(dbAnswers.FieldComponents);
+                return await dbService.UpdateItemAsync(viewModelAnswer.AnswersDocId.ToString(), savedAnswersDoc, dbSettings.UserResourcesCollectionId);
             }
             catch
             {
                 // log exception
-                return null;
+                throw;
             }
         }
 
