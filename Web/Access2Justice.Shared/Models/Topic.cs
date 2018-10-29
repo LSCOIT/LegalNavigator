@@ -22,9 +22,6 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "overview")]
         public string Overview { get; set; }
 
-        //[JsonProperty(PropertyName = "quickLinks")]
-        //public IEnumerable<QuickLinks> QuickLinks { get; set; }
-
         [JsonProperty(PropertyName = "parentTopicId")]
         public IEnumerable<ParentTopicId> ParentTopicId { get; set; }
 
@@ -84,12 +81,4 @@ namespace Access2Justice.Shared.Models
         public dynamic ParentTopicIds { get; set; }
     }
 
-    public class QuickLinks
-    {
-        [JsonProperty(PropertyName = "text")]
-        public string Text { get; set; }
-
-        [JsonProperty(PropertyName = "url")]
-        public string Urls { get; set; }
-    }
 }
