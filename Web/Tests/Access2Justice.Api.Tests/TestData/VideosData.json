@@ -2,8 +2,7 @@
   {
     "name": "Video1",
     "description": "Subhead lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem",
-    "resourceType": "Videos",
-    "externalUrl": "www.youtube.com",
+    "resourceType": "Videos",    
     "url": "access2justice.com",
     "topicTags": [
       {
@@ -35,8 +34,7 @@
   {
     "name": "Video2",
     "description": "Subhead lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem",
-    "resourceType": "Videos",
-    "externalUrl": "www.youtube.com",
+    "resourceType": "Videos",    
     "url": "access2justice.com",
     "topicTags": [
       {

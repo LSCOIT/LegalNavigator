@@ -23,6 +23,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.Reflection;
+using System.IO;
 
 namespace Access2Justice.Api
 {
@@ -84,15 +86,18 @@ namespace Access2Justice.Api
                 .Build();
             });
             ConfigureCosmosDb(services);
-
+        
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "Access2Justice API", Version = "v1" });
+                c.SwaggerDoc("v1", new Info { Title = "Access2Justice API", Version = "1.0.0" , Description ="List of all APIs for Access2Justice", TermsOfService = "None"});
                 c.TagActionsBy(api => api.GroupName);
                 c.DescribeAllEnumsAsStrings();
                 c.OrderActionsBy((apiDesc) => $"{apiDesc.RelativePath}_{apiDesc.HttpMethod}");
                 c.OperationFilter<FileUploadOperation>(); //Register File Upload Operation Filter
                 c.OperationFilter<FileUploadOperationResource>();
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
         }
 

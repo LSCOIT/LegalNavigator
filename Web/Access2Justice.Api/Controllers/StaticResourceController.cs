@@ -22,10 +22,14 @@ namespace Access2Justice.Api.Controllers
         }
 
         /// <summary>
-        /// Get StaticResources by Location
+        /// Get static resources by location
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
+        /// <remarks>
+        /// Helps to get static resources by location
+        /// </remarks>
+        /// <param name="location"></param>
+        /// <response code="200">Get static resources by location for given input</response>
+        /// <response code="500">Failure</response>
         [HttpPost]
         [Route("api/static-resource/get-static-resources")]
         public async Task<IActionResult> GetStaticResourcesDataAsync([FromBody]Location location)
@@ -37,8 +41,13 @@ namespace Access2Justice.Api.Controllers
         /// <summary>
         /// Insert and Update the home page static contents
         /// </summary>
-        /// <param name="pageContent"></param>
-        /// <returns></returns>
+        /// <remarks>
+        /// Helps to get home page static contents inserted or updated
+        /// </remarks>
+        /// <param name="homePageContent"></param>
+        /// <param name="location"></param>
+        /// <response code="200">Get home page static contents inserted or updated</response>
+        /// <response code="500">Failure</response>
         [Permission(PermissionName.upsertstatichomepage)]
         [HttpPost]
         [Route("api/static-resource/upsert-static-home-page")]
@@ -55,8 +64,13 @@ namespace Access2Justice.Api.Controllers
         /// <summary>
         /// Insert and Update the privacy promise page static contents
         /// </summary>
-        /// <param name="pageContent"></param>
-        /// <returns></returns>
+        /// <remarks>
+        /// Helps to get privacy page static contents inserted or updated
+        /// </remarks>
+        /// <param name="privacyPromiseContent"></param>
+        /// <param name="location"></param>
+        /// <response code="200">Get home privacy static contents inserted or updated</response>
+        /// <response code="500">Failure</response>
         [Permission(PermissionName.upsertstaticprivacypage)]
         [HttpPost]
         [Route("api/static-resource/upsert-static-privacy-page")]
@@ -73,8 +87,13 @@ namespace Access2Justice.Api.Controllers
         /// <summary>
         /// Insert and Update the helpAndFAQ page static contents
         /// </summary>
-        /// <param name="pageContent"></param>
-        /// <returns></returns>
+        /// <remarks>
+        /// Helps to get helpAndFAQ page static contents inserted or updated
+        /// </remarks>
+        /// <param name="helpAndFAQPageContent"></param>
+        /// <param name="location"></param>
+        /// <response code="200">Get helpAndFAQ page static contents inserted or updated</response>
+        /// <response code="500">Failure</response>
         [Permission(PermissionName.upsertstatichelpandfaqpage)]
         [HttpPost]
         [Route("api/static-resource/upsert-static-help-and-faq-page")]
@@ -91,8 +110,14 @@ namespace Access2Justice.Api.Controllers
         /// <summary>
         /// Insert and Update the navigation static contents
         /// </summary>
+        /// 
+        /// <remarks>
+        /// Helps to get navigation page static contents inserted or updated
+        /// </remarks>
         /// <param name="navigationContent"></param>
-        /// <returns></returns>
+        /// <param name="location"></param>
+        /// <response code="200">Get navigation page static contents inserted or updated</response>
+        /// <response code="500">Failure</response>
         [Permission(PermissionName.upsertstaticnavigation)]
         [HttpPost]
         [Route("api/static-resource/upsert-static-navigation")]
@@ -109,8 +134,13 @@ namespace Access2Justice.Api.Controllers
         /// <summary>
         /// Insert and Update the about page static contents
         /// </summary>
+        /// <remarks>
+        /// Helps to get about page static contents inserted or updated
+        /// </remarks>
         /// <param name="aboutContent"></param>
-        /// <returns></returns>
+        /// <param name="location"></param>
+        /// <response code="200">Get about page static contents inserted or updated</response>
+        /// <response code="500">Failure</response>
         [Permission(PermissionName.upsertstaticaboutpage)]
         [HttpPost]
         [Route("api/static-resource/upsert-static-about-page")]

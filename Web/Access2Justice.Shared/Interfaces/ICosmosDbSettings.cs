@@ -12,9 +12,8 @@ namespace Access2Justice.Shared.Interfaces
         string ProfilesCollectionId { get; }
         int PageResultsCount { get; }
         string CuratedExperiencesCollectionId { get; }
-        string ActionsPlanCollectionId { get; }
+        string ActionPlansCollectionId { get; }
         string StaticResourcesCollectionId { get; }
-        //string UserSavedResourcesCollectionId { get; }
         string UserResourcesCollectionId { get; }
         string A2JAuthorDocsCollectionId { get; }
         string RolesCollectionId { get; }
