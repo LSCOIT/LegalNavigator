@@ -81,4 +81,12 @@ namespace Access2Justice.Shared.Models
         public dynamic ParentTopicIds { get; set; }
     }
 
+    public class QuickLinks
+    {
+        [JsonProperty(PropertyName = "text")]
+        public string Text { get; set; }
+
+        [JsonProperty(PropertyName = "url")]
+        public string Urls { get; set; }
+    }
 }

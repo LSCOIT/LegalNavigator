@@ -400,8 +400,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
         public static dynamic FormatData(string inputText)
         {
             var inputTrimmed = inputText.Trim();
-            return inputTrimmed.Replace("_x000D_\n", "\n");
+            return inputTrimmed.Replace("_x000D_", "");
         }
-
     }
 }

@@ -18,7 +18,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
 
         dynamic id = null;
         string name, resourceCategory, description, url, resourceType, state, county, city, zipcode = string.Empty;
-        string overview, icon, address, telephone, eligibilityInformation, specialties, qualifications, businessHours = string.Empty;
+        string overview, address, telephone, eligibilityInformation, specialties, qualifications, businessHours = string.Empty;
         string organizationName, reviewerFullName, reviewerTitle, reviewText, reviewerImage = string.Empty;
         string articleName, headline, content, organizationalUnit = string.Empty;
         List<TopicTag> topicTagIds = null;
@@ -385,7 +385,6 @@ namespace Access2Justice.DataImportTool.BusinessLogic
             city = string.Empty;
             zipcode = string.Empty;
             overview = string.Empty;
-            icon = string.Empty;
             address = string.Empty;
             telephone = string.Empty;
             eligibilityInformation = string.Empty;
