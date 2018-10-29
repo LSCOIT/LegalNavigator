@@ -4,27 +4,28 @@ import { environment } from '../../../../environments/environment';
 import { LatitudeLongitude } from './map-results';
 declare var Microsoft: any;
 
+const virtualEarthUrl = environment.virtualEarthUrl;
 @Injectable()
 export class MapResultsService {
   latitudeLongitude: Array<LatitudeLongitude> = [];
+   
   constructor(private http: HttpClient) {
   }
-
   getLocationDetails(address, credentials): any {
     //Since we are seeing this ↵ character in address field in console and couldn't find the same on 
     // mouse over. that's the reason we are replacing %0A(new line) with %20(space). BugId #464.
     let cleanAddress = encodeURI(address).replace('%0A', '%20');
-    let searchRequest = 'https://dev.virtualearth.net/REST/v1/Locations/' + cleanAddress + '?output=json&key=' + credentials;
+    let searchRequest = virtualEarthUrl + cleanAddress + '?output=json&key=' + credentials;
     return this.http.get(searchRequest);
   }
 
   getAddressBasedOnPoints(latitude, longitude, credentials): any {
-    let searchRequest = 'https://dev.virtualearth.net/REST/v1/Locations/' + encodeURI(latitude) + ',' + encodeURI(longitude) + '?key=' + credentials;
+    let searchRequest = virtualEarthUrl + encodeURI(latitude) + ',' + encodeURI(longitude) + '?key=' + credentials;
     return this.http.get(searchRequest);
   }
 
   getStateFullName(countryRegion, state, credentials): any {
-    let searchRequest = 'https://dev.virtualearth.net/REST/v1/Locations?CountryRegion=' + encodeURI(countryRegion) + '&adminDistrict=' + encodeURI(state) + '&key=' + credentials;
+    let searchRequest = virtualEarthUrl +'?CountryRegion='+ encodeURI(countryRegion) + '&adminDistrict=' + encodeURI(state) + '&key=' + credentials;
     return this.http.get(searchRequest);
   }
 
