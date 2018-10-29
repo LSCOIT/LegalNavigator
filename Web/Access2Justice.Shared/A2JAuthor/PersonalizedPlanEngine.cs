@@ -48,7 +48,7 @@ namespace Access2Justice.Shared.A2JAuthor
 
 
             var unprocessedTopic = new UnprocessedTopic();
-            unprocessedTopic.Name = personalizedPlan.Properties().GetValue("title");
+            unprocessedTopic.Name = personalizedPlan.Properties().GetValue("title");  // Todo:@Alaa convert the title to Sentence Case before mapping it
 
             foreach (var step in stepsInScope)
             {
