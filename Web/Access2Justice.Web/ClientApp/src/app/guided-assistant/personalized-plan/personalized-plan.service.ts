@@ -16,7 +16,6 @@ const httpOptions = {
 export class PersonalizedPlanService {
   tempStorage: Array<Resources> = [];
   resoureStorage: any = [];
-  sessionKey: string = "bookmarkedResource";
   isObjectExists: boolean = false;
   topics: string[] = [];
   resources: string[] = [];
@@ -26,7 +25,6 @@ export class PersonalizedPlanService {
   planDetailTags: any;
   tempPlanDetailTags: any;  
   planDetails: any = [];
-  planSessionKey: string = "bookmarkPlanId";
   profileResources: ProfileResources = { oId: '', resourceTags: [], type: '' };
   savedResources: SavedResources;
   resourceTags: Array<SavedResources> = [];
@@ -91,8 +89,9 @@ export class PersonalizedPlanService {
   }
 
   saveResourcesToUserProfile() {
+    this.resoureStorage = [];
     this.savedResources = { itemId: '', resourceType: '', resourceDetails: {} };
-    this.resoureStorage = sessionStorage.getItem(this.sessionKey);
+    this.resoureStorage = sessionStorage.getItem(this.global.sessionKey);
     if (this.resoureStorage && this.resoureStorage.length > 0) {
       this.resoureStorage = JSON.parse(this.resoureStorage);
     }
@@ -131,7 +130,7 @@ export class PersonalizedPlanService {
             this.saveResourceToProfile(this.resourceTags);
           }
         });
-        sessionStorage.removeItem(this.sessionKey);
+        sessionStorage.removeItem(this.global.sessionKey);
       });
   }
 
@@ -145,18 +144,21 @@ export class PersonalizedPlanService {
 
   saveBookmarkedResource(savedResource) {
     this.tempResourceStorage = [];
-    let tempStorage = sessionStorage.getItem(this.sessionKey);
+    let tempStorage = sessionStorage.getItem(this.global.sessionKey);
     if (tempStorage && tempStorage.length > 0) {
       tempStorage = JSON.parse(tempStorage);
-      this.tempResourceStorage = tempStorage;
+      this.tempResourceStorage =  tempStorage;
     }
     if (savedResource) {
-      if (!this.arrayUtilityService.checkObjectExistInArray(this.tempResourceStorage, this.savedResources)) {
+      if (!this.arrayUtilityService.checkObjectExistInArray(this.tempResourceStorage, savedResource)) {
         this.tempResourceStorage.push(savedResource);
+        this.showSuccess('Resource saved to session');
+      } else {
+        this.showWarning('Resource already saved to session');
       }
     }
     if (this.tempResourceStorage.length > 0) {
-      sessionStorage.setItem(this.sessionKey, JSON.stringify(this.tempResourceStorage));
+      sessionStorage.setItem(this.global.sessionKey, JSON.stringify(this.tempResourceStorage));
     }
   }
 

@@ -20,8 +20,6 @@ export class AppComponent implements OnInit {
   staticContentResults: any;
   subscription: any;
   userProfile: IUserProfile;
-  sessionKey: string = "bookmarkedResource";
-  planSessionKey: string = "bookmarkPlanId";
   resoureStorage: any = [];
   showAlert: boolean = false;
 
@@ -54,11 +52,15 @@ export class AppComponent implements OnInit {
   }
 
   saveBookmarkedPlan() {
-
+    if (sessionStorage.getItem(this.global.planSessionKey)) {
+      this.personalizedPlanService.saveResourcesToUserProfile();
+    }
   }
 
   saveBookmarkedResource() {
-    this.personalizedPlanService.saveResourcesToUserProfile();
+    if (sessionStorage.getItem(this.global.sessionKey)) {
+      this.personalizedPlanService.saveResourcesToUserProfile();
+    }
   }
 
   onActivate(event) {
@@ -96,15 +98,12 @@ export class AppComponent implements OnInit {
     }
   }
 
-  @HostListener('window:unload', ['$event'])
-  unloadHandler(event) {
-    alert('Are you really want to perform the action?');
-  }
-
   @HostListener('window:beforeunload', ['$event'])
   beforeUnloadHander(event) {
-    this.showAlert = true;
-    if (sessionStorage.getItem(this.sessionKey) || sessionStorage.getItem(this.planSessionKey)) {
+    if ((sessionStorage.getItem(this.global.sessionKey)
+      || sessionStorage.getItem(this.global.planSessionKey))
+      && (!this.global.isLoginRedirect) && !(this.global.userId)) {
+      this.showAlert = true;
       if (confirm("You have unsaved changes! If you leave, your changes will be lost.")) {
         return true;
       } else {
