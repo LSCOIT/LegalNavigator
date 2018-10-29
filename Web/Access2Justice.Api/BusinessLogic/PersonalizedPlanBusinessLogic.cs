@@ -37,7 +37,7 @@ namespace Access2Justice.Api.BusinessLogic
                 curatedExperience.A2jPersonalizedPlanId.ToString());
 
             var userAnswers = await backendDatabaseService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(),
-                cosmosDbSettings.UserResourcesCollectionId);
+                cosmosDbSettings.GuidedAssistantAnswersCollectionId);
 
             if (a2jPersonalizedPlan == null || userAnswers == null || userAnswers.AnswersDocId == default(Guid))
             {
@@ -65,7 +65,6 @@ namespace Access2Justice.Api.BusinessLogic
                     {
                         return null;
                     }
-                     // Todo:@Alaa delete answer file (pending till auth claims get passed to this method..)
                     return newPlan;
                 }
                 else
