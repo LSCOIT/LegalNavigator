@@ -1,24 +1,25 @@
 <div class="container">
-  <form #uploadForm="ngForm" (ngSubmit)="onSubmit(uploadForm)">
+  <form #uploadForm="ngForm" (ngSubmit)="onSubmit(uploadForm)" enctype="multipart/form-data">
     <div class="row">
       <p>Upload curated experience template file using this form:</p>
     </div>
-    <div class="row">
+    <div class="form-group">
       <label>Name: </label>
-      <input type="text" name="guidedAssistantName" placeholder="name" [ngModel] />
+      <input type="text" class="form-control" name="name" placeholder="name" [ngModel] />
     </div>
-    <div class="row">
+    <div class="form-group">
       <label>Description: </label>
-      <input type="text" multiple placeholder="description" name="guidedAssistantDescription" [ngModel] />
+      <input type="text" multiple class="form-control" placeholder="description" name="description" [ngModel] />
     </div>
-    <div class="row">
+    <div class="form-group">
       <label>Select Template: </label>
-      <input #file type="file" name="uploadFile" />
+      <input #file type="file" class="form-control" name="file" [ngModel] />
     </div>
-    <div class="row">
-        <button type="submit" class="btn btn-primary" id="upload-btn" (click)="upload()">Upload</button>
-        <span class="validation-error">{{message}}</span>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary" id="upload-btn">Upload</button><!--(click)="upload()"-->
+      <span class="validation-error">{{message}}</span>
     </div>
   </form>
 </div>
+
 

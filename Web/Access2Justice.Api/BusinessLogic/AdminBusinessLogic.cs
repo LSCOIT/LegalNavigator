@@ -17,7 +17,8 @@ using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Globalization;
-
+using Access2Justice.Shared.Models;
+using Access2Justice.Shared.Utilities;
 
 namespace Access2Justice.Api.BusinessLogic
 {
@@ -29,10 +30,12 @@ namespace Access2Justice.Api.BusinessLogic
         private readonly IHostingEnvironment hostingEnvironment;
         private readonly ICuratedExperienceConvertor a2jAuthorBuisnessLogic;
         private readonly IAdminSettings adminSettings;
+        private readonly ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic;
 
         public AdminBusinessLogic(IDynamicQueries dynamicQueries, ICosmosDbSettings cosmosDbSettings,
             IBackendDatabaseService backendDatabaseService, IHostingEnvironment hostingEnvironment,
-            ICuratedExperienceConvertor a2jAuthorBuisnessLogic,IAdminSettings adminSettings)
+            ICuratedExperienceConvertor a2jAuthorBuisnessLogic, IAdminSettings adminSettings,
+            ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic)
         {
             this.dynamicQueries = dynamicQueries;
             this.cosmosDbSettings = cosmosDbSettings;
@@ -40,12 +43,17 @@ namespace Access2Justice.Api.BusinessLogic
             this.hostingEnvironment = hostingEnvironment;
             this.a2jAuthorBuisnessLogic = a2jAuthorBuisnessLogic;
             this.adminSettings = adminSettings;
+            this.topicsResourcesBusinessLogic = topicsResourcesBusinessLogic;
         }
 
-        public async Task<object> UploadCuratedContentPackage(List<IFormFile> files)
+        public async Task<object> UploadCuratedContentPackage(CuratedTemplate curatedTemplate)
         {
             try
             {
+                if (curatedTemplate.TemplateFile.Count() == 0)
+                    return "Please select the file to upload!";
+
+                List<IFormFile> files = curatedTemplate.TemplateFile;
                 string webRootPath = hostingEnvironment.WebRootPath;
                 string uploadPath = string.Empty;
                 if (webRootPath != null)
@@ -54,7 +62,7 @@ namespace Access2Justice.Api.BusinessLogic
                 }
                 else
                 {
-                    uploadPath = Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), adminSettings.WebRootFolderName), 
+                    uploadPath = Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), adminSettings.WebRootFolderName),
                         adminSettings.UploadFolderName);
                 }
                 if (!Directory.Exists(uploadPath))
@@ -102,8 +110,8 @@ namespace Access2Justice.Api.BusinessLogic
                                     DeleteFile(destinationPath);
                                 }
 
-                                Match match = Regex.Match(entry.FullName, @"(" + adminSettings.TemplateFileName + 
-                                    @"([0-9\-]+)\.json$)|(" + adminSettings.GuideTemplateFileName  + @"\.json)",
+                                Match match = Regex.Match(entry.FullName, @"(" + adminSettings.TemplateFileName +
+                                    @"([0-9\-]+)\.json$)|(" + adminSettings.GuideTemplateFileName + @"\.json)",
                                     RegexOptions.IgnoreCase);
 
                                 if (match.Success)
@@ -136,12 +144,14 @@ namespace Access2Justice.Api.BusinessLogic
                         JObject mainTemplate = null;
                         JArray mainTemplateChildren = null;
                         JObject GuideTemplate = null;
+                        string resourceTitle = string.Empty;
 
                         foreach (var model in templateModel)
                         {
                             if (model.TemplateName == parentTemplateId)
                             {
                                 mainTemplate = model.Template;
+                                resourceTitle = mainTemplate.GetValue("title").ToString();
                                 JObject rootNode = (JObject)mainTemplate[adminSettings.RootNode];
                                 mainTemplateChildren = (JArray)rootNode[adminSettings.ChildrenNode];
                             }
@@ -162,14 +172,68 @@ namespace Access2Justice.Api.BusinessLogic
                         }
                         var newTemplateId = Guid.NewGuid();
                         mainTemplate.AddFirst(new JProperty(Constants.Id, newTemplateId));
-                        var response = await backendDatabaseService.CreateItemAsync(mainTemplate, 
+                        var response = await backendDatabaseService.CreateItemAsync(mainTemplate,
                             cosmosDbSettings.A2JAuthorTemplatesCollectionId);
                         if (response != null && response.Id != null)
                         {
-                            var curatedExprienceJson = a2jAuthorBuisnessLogic.ConvertA2JAuthorToCuratedExperience(GuideTemplate);
-                            curatedExprienceJson.A2jPersonalizedPlanId = newTemplateId;
-                            await backendDatabaseService.UpdateItemAsync(curatedExprienceJson.CuratedExperienceId.ToString(), 
-                                JObject.FromObject(curatedExprienceJson), cosmosDbSettings.CuratedExperienceCollectionId);
+                            var resourceDetails = await topicsResourcesBusinessLogic.GetResourceDetailAsync(resourceTitle, Constants.GuidedAssistant);
+                            List<GuidedAssistant> resources = JsonUtilities.DeserializeDynamicObject<List<GuidedAssistant>>(resourceDetails);
+                            float maxVersion = default(float);
+                            foreach(var resource in resources)
+                            {
+                                var resourceDetail = JsonUtilities.DeserializeDynamicObject<GuidedAssistant>(resource);
+                                if(resourceDetail.Version == default(float))
+                                {
+                                    resourceDetail.Version = IncrementMajorVersion(default(float));
+                                }
+                                else
+                                {
+                                    resourceDetail.Version = IncrementMinorVersion(resourceDetail.Version);
+                                }
+                                if (maxVersion.CompareTo(resourceDetail.Version) < 0)
+                                    maxVersion = resourceDetail.Version;
+                                resourceDetail.IsActive = false;
+                                
+                                await backendDatabaseService.UpdateItemAsync(resourceDetail.ResourceId.ToString(),
+                                    JObject.FromObject(resourceDetail), cosmosDbSettings.ResourceCollectionId);
+                            }
+
+                            var topicDetails = await topicsResourcesBusinessLogic.GetTopicDetailsAsync(resourceTitle);
+                            List<Topic> topics = JsonUtilities.DeserializeDynamicObject<List<Topic>>(topicDetails);
+                            if (topics.Count > 0)
+                            {
+                                var guidedAssistantResource = new GuidedAssistant();
+                                List<TopicTag> topicTags = new List<TopicTag>();
+                                List<Location> locations = new List<Location>();
+
+                                foreach (var topic in topics)
+                                {
+                                    topicTags.Add(new TopicTag { TopicTags = topic.Id });
+                                    foreach (var location in topic.Location)
+                                    {
+                                        locations.Add(location);
+                                    }
+                                }
+                                
+                                var curatedExprienceJson = a2jAuthorBuisnessLogic.ConvertA2JAuthorToCuratedExperience(GuideTemplate, true);
+                                curatedExprienceJson.A2jPersonalizedPlanId = newTemplateId;
+
+                                guidedAssistantResource.ResourceId = Guid.NewGuid();
+                                guidedAssistantResource.Name = curatedTemplate.Name;
+                                guidedAssistantResource.Description = curatedTemplate.Description;
+                                guidedAssistantResource.TopicTags = topicTags;
+                                guidedAssistantResource.Location = locations;
+                                guidedAssistantResource.Version = IncrementMajorVersion(maxVersion);
+                                guidedAssistantResource.IsActive = true;
+                                guidedAssistantResource.ResourceType = Constants.GuidedAssistant;
+                                guidedAssistantResource.CuratedExperienceId = curatedExprienceJson.CuratedExperienceId.ToString();
+
+                                await backendDatabaseService.UpdateItemAsync(curatedExprienceJson.CuratedExperienceId.ToString(),
+                                    JObject.FromObject(curatedExprienceJson), cosmosDbSettings.CuratedExperienceCollectionId);
+
+                                await backendDatabaseService.CreateItemAsync(guidedAssistantResource, cosmosDbSettings.ResourceCollectionId);
+                            }
+                            return string.Format(CultureInfo.InvariantCulture, "Import failed: {0} Topic document is not available in the system. Please create/import the topic document before importing curated experience template.",resourceTitle);
                         }
                     }
                     else
@@ -191,6 +255,16 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 File.Delete(filePath);
             }
+        }
+
+        private float IncrementMajorVersion(float version)
+        {
+            return version + 1.0F;
+        }
+
+        private float IncrementMinorVersion(float version)
+        {
+            return version + 0.1F;
         }
     }
 }

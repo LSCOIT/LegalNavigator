@@ -1,7 +1,9 @@
-﻿using Access2Justice.Shared.Extensions;
+﻿using Access2Justice.Shared;
+using Access2Justice.Shared.Extensions;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Interfaces.A2JAuthor;
 using Access2Justice.Shared.Models;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -23,14 +25,19 @@ namespace Access2Justice.Api.BusinessLogic
             personalizedPlanEngine = a2JAuthorParserBusinessLogic;
         }
 
-        public CuratedExperience ConvertA2JAuthorToCuratedExperience(JObject a2jSchema)
+        public CuratedExperience ConvertA2JAuthorToCuratedExperience(JObject a2jSchema, bool isFromAdminImport = false)
         {
             var cx = new CuratedExperience();
             var a2jProperties = a2jSchema.Properties();
+            GuidedAssistant resource = null;
 
             cx.CuratedExperienceId = Guid.NewGuid();
             cx.Title = a2jProperties.GetValue("title");
-            var resource = MapResourceProperties(a2jProperties, cx.CuratedExperienceId);
+            if (!isFromAdminImport)
+            { 
+                resource = MapResourceProperties(a2jProperties, cx.CuratedExperienceId);
+                dbService.CreateItemAsync(resource, dbSettings.ResourceCollectionId);
+            }
 
             var pages = ((JObject)a2jProperties.Where(x => x.Name == "pages").FirstOrDefault()?.Value).Properties();
             foreach (var page in pages)
@@ -56,8 +63,6 @@ namespace Access2Justice.Api.BusinessLogic
 
             // Todo: we should figure a way to do upsert, we currently can't do that because we don't have an identifier 
             dbService.CreateItemAsync(cx, dbSettings.CuratedExperienceCollectionId);
-            dbService.CreateItemAsync(resource, dbSettings.ResourceCollectionId);
-
             return cx;
         }
 
@@ -218,5 +223,7 @@ namespace Access2Justice.Api.BusinessLogic
 
             return varsDic;
         }
+
+        
     }
 }

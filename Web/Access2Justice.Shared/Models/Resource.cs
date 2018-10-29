@@ -194,6 +194,12 @@ namespace Access2Justice.Shared.Models
     {
         [JsonProperty(PropertyName = "curatedExperienceId")]
         public string CuratedExperienceId { get; set; }
+
+        [JsonProperty(PropertyName = "version")]
+        public float Version { get; set; }
+
+        [JsonProperty(PropertyName = "isActive")]
+        public bool IsActive { get; set; }
     }
 
     public class ExternalLink : Resource

@@ -8,6 +8,6 @@ namespace Access2Justice.Api.Interfaces
 {
     public interface IAdminBusinessLogic
     {
-        Task<object> UploadCuratedContentPackage(List<IFormFile> file);
+        Task<object> UploadCuratedContentPackage(CuratedTemplate curatedTemplate);
     }
 }
