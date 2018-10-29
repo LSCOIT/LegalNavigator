@@ -11,7 +11,10 @@ export class MapResultsService {
   }
 
   getLocationDetails(address, credentials): any {
-    let searchRequest = 'https://dev.virtualearth.net/REST/v1/Locations/' + encodeURI(address) + '?output=json&key=' + credentials;
+    //Since we are seeing this ↵ character in address field in console and couldn't find the same on 
+    // mouse over. that's the reason we are replacing %0A(new line) with %20(space). BugId #464.
+    let cleanAddress = encodeURI(address).replace('%0A', '%20');
+    let searchRequest = 'https://dev.virtualearth.net/REST/v1/Locations/' + cleanAddress + '?output=json&key=' + credentials;
     return this.http.get(searchRequest);
   }
 
