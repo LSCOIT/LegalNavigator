@@ -60,13 +60,12 @@ namespace Access2Justice.Api.BusinessLogic
             return cx;
         }
 
-
-        private Resource MapResourceProperties(IEnumerable<JProperty> a2jProperties, Guid curatedExperienceId)
+        private GuidedAssistant MapResourceProperties(IEnumerable<JProperty> a2jProperties, Guid curatedExperienceId)
         {
-            return new Resource
+            return new GuidedAssistant
             {
                 ResourceId = Guid.NewGuid(),
-                ExternalUrls = curatedExperienceId.ToString(),
+                CuratedExperienceId = curatedExperienceId.ToString(),
                 Name = a2jProperties.GetValue("subjectarea"),
                 Description = a2jProperties.GetValue("description"),
                 CreatedTimeStamp = a2jProperties.GetDateOrNull("createdate"),

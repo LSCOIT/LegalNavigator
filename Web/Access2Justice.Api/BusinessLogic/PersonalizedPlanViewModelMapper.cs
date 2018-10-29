@@ -50,8 +50,8 @@ namespace Access2Justice.Api.BusinessLogic
                     Steps = GetSteps(unprocessedTopic.UnprocessedSteps, resourceDetails)
 				});
 			}
-
-			actionPlan.PersonalizedPlanId = Guid.NewGuid();
+             // Todo:@Alaa any user profile work should be done here?
+            actionPlan.PersonalizedPlanId = Guid.NewGuid();
 			actionPlan.IsShared = false;
 			return actionPlan;
 		}
@@ -81,8 +81,8 @@ namespace Access2Justice.Api.BusinessLogic
 				planSteps.Add(new PlanStep
 				{
 					StepId = unprocessedStep.Id,
-					Type = "steps",
-					Title = unprocessedStep.Title,
+                    Type = "steps",  // Todo:@Alaa do we still need this?
+                    Title = unprocessedStep.Title,
 					Description = unprocessedStep.Description,
 					Order = orderIndex++,
                     IsComplete = false,  // Todo:@Alaa check if step complete

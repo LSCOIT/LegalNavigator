@@ -23,6 +23,15 @@ namespace Access2Justice.Api.Controllers
             this.curatedExperienceBusinessLogic = curatedExperienceBusinessLogic;
         }
 
+        /// <summary>
+        /// Convert A2JAuthor to curated experience
+        /// </summary>
+        /// <remarks>
+        /// Helps to get A2JAuthor to curated experience converted 
+        /// </remarks>
+        /// <param name="a2jSchema"></param>
+        /// <response code="200">Returns converted JSON </response>
+        /// <response code="500">Failure</response>
         [HttpPost("import")]
         public IActionResult ImportA2JAuthorGuidedInterview([FromBody] JObject a2jSchema)
         {
@@ -37,6 +46,15 @@ namespace Access2Justice.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// Get first component for curated experience
+        /// </summary>
+        /// <remarks>
+        /// Helps to get first component for curated experience 
+        /// </remarks>
+        /// <param name="curatedExperienceId"></param>
+        /// <response code="200">Returns first component for curated experience </response>
+        /// <response code="500">Failure</response>
         [HttpGet("start")]
         public async Task<IActionResult> GetFirstComponent(Guid curatedExperienceId)
         {
@@ -46,6 +64,15 @@ namespace Access2Justice.Api.Controllers
             return Ok(component);
         }
 
+        /// <summary>
+        /// Save component saved and get next for curated experience
+        /// </summary>
+        /// <remarks>
+        /// Helps to Save component saved and get next for curated experience
+        /// </remarks>
+        /// <param name="component"></param>
+        /// <response code="200">Returns next component for curated experience </response>
+        /// <response code="500">Failure</response>
         [HttpPost("component/save-and-get-next")]
         public async Task<IActionResult> SaveAndGetNextComponent([FromBody] CuratedExperienceAnswersViewModel component)
         {
@@ -59,6 +86,16 @@ namespace Access2Justice.Api.Controllers
             return Ok(await curatedExperienceBusinessLogic.GetNextComponentAsync(curatedExperience, component));
         }
 
+        /// <summary>
+        /// Get specific component for curated experience
+        /// </summary>
+        /// <remarks>
+        /// Helps to get specific component for curated experience 
+        /// </remarks>
+        /// <param name="curatedExperienceId"></param>
+        /// <param name="componentId"></param>
+        /// <response code="200">Returns specific component for curated experience </response>
+        /// <response code="500">Failure</response>
         [HttpGet("component")]
         public IActionResult GetSpecificComponent([FromQuery] Guid curatedExperienceId, [FromQuery] Guid componentId)
         {

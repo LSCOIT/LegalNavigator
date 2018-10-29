@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Access2Justice.Tools.Models
+namespace Access2Justice.DataImportTool.Models
 {
     public class Resource
     {

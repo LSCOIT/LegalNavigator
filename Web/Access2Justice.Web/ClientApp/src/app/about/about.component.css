@@ -14,7 +14,6 @@ button {
 }
 
 .even-rows {
-  margin-top: 30px;
   float: left;
 }
 
@@ -32,14 +31,19 @@ p + .btn-sm {
   padding: 10px;
 }
 
+.box-no-shadow {
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
 @media only screen and (min-width : 992px) {
   .row {
-    margin: 40px auto;
+    margin: 60px auto;
   }
 
   .section-img {
-    margin-top: 50px;
     width: 45%;
+    margin-top: 0;
   }
 
   .even-rows {

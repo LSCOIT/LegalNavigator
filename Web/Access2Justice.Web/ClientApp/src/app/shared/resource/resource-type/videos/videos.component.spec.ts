@@ -10,7 +10,7 @@ import { ServiceOrgSidebarComponent } from '../../../sidebars/service-org-sideba
 import { VideosComponent } from './videos.component';
 import { Global } from '../../../../global';
 
-fdescribe('VideosComponent', () => {
+describe('VideosComponent', () => {
   let component: VideosComponent;
   let fixture: ComponentFixture<VideosComponent>;
   let mockRouter;
