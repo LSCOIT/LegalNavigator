@@ -88,53 +88,49 @@ namespace Access2Justice.E2ETests.Features
             testRunner.CollectScenarioErrors();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Navigate to topics page from home page")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "TopicsAndResources")]
-        public virtual void NavigateToTopicsPageFromHomePage()
+        public virtual void NavigateToTopicsPageFromHomePage(string state, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Navigate to topics page from home page", null, ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Navigate to topics page from home page", null, exampleTags);
 #line 6
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
 #line 7
  testRunner.Given("I am on the Access2Justice website", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                        "State"});
-            table1.AddRow(new string[] {
-                        "Alaska"});
 #line 8
- testRunner.And("current state is set to", ((string)(null)), table1, "And ");
-#line 11
+ testRunner.And(string.Format("current state is set to {0}", state), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 9
  testRunner.And("I am on the home page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 12
+#line 10
  testRunner.When("I press See More Topics button in the section named More Information, Videos, and" +
                     " Links to Resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 13
+#line 11
  testRunner.Then("I should directed to the Topics and Resources page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Navigate to topics page by clicking on lower navigation bar")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Navigate to topics page from home page: Hawaii")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "TopicsAndResources")]
-        public virtual void NavigateToTopicsPageByClickingOnLowerNavigationBar()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Hawaii")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:State", "Hawaii")]
+        public virtual void NavigateToTopicsPageFromHomePage_Hawaii()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Navigate to topics page by clicking on lower navigation bar", null, ((string[])(null)));
-#line 15
+#line 6
+this.NavigateToTopicsPageFromHomePage("Hawaii", ((string[])(null)));
+#line hidden
+        }
+        
+        public virtual void NavigateToTopicsPageByClickingOnLowerNavigationBar(string state, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Navigate to topics page by clicking on lower navigation bar", null, exampleTags);
+#line 17
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 16
+#line 18
  testRunner.Given("I am on the Access2Justice website", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
-                        "State"});
-            table2.AddRow(new string[] {
-                        "Alaska"});
-#line 17
- testRunner.And("current state is set to", ((string)(null)), table2, "And ");
+#line 19
+ testRunner.And(string.Format("current state is set to {0}", state), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 20
  testRunner.When("I click on Topics & Resources on the lower navigation bar", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 21
@@ -144,89 +140,113 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Navigate to topics page from Guided Assistance Page")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Navigate to topics page by clicking on lower navigation bar: Hawaii")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "TopicsAndResources")]
-        public virtual void NavigateToTopicsPageFromGuidedAssistancePage()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Hawaii")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:State", "Hawaii")]
+        public virtual void NavigateToTopicsPageByClickingOnLowerNavigationBar_Hawaii()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Navigate to topics page from Guided Assistance Page", null, ((string[])(null)));
-#line 23
+#line 17
+this.NavigateToTopicsPageByClickingOnLowerNavigationBar("Hawaii", ((string[])(null)));
+#line hidden
+        }
+        
+        public virtual void NavigateToTopicsPageFromGuidedAssistancePage(string state, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Navigate to topics page from Guided Assistance Page", null, exampleTags);
+#line 27
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 24
- testRunner.Given("I am on the Access2Justice website", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
-                        "State"});
-            table3.AddRow(new string[] {
-                        "Alaska"});
-#line 25
- testRunner.And("current state is set to", ((string)(null)), table3, "And ");
 #line 28
- testRunner.And("I am on the Guided Assistant page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I am on the Access2Justice website", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 29
- testRunner.When("I click on the See More Topics button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And(string.Format("current state is set to {0}", state), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 30
+ testRunner.And("I am on the Guided Assistant page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 31
+ testRunner.When("I click on the See More Topics button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 32
  testRunner.Then("I should directed to the Topics and Resources page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Navigate to a subtopic and see a list of resources")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Navigate to topics page from Guided Assistance Page: Hawaii")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "TopicsAndResources")]
-        public virtual void NavigateToASubtopicAndSeeAListOfResources()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Hawaii")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:State", "Hawaii")]
+        public virtual void NavigateToTopicsPageFromGuidedAssistancePage_Hawaii()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Navigate to a subtopic and see a list of resources", null, ((string[])(null)));
-#line 32
+#line 27
+this.NavigateToTopicsPageFromGuidedAssistancePage("Hawaii", ((string[])(null)));
+#line hidden
+        }
+        
+        public virtual void NavigateToASubtopicAndSeeAListOfResources(string state, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Navigate to a subtopic and see a list of resources", null, exampleTags);
+#line 38
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 33
- testRunner.Given("I am on the Access2Justice website", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
-                        "State"});
-            table4.AddRow(new string[] {
-                        "Alaska"});
-#line 34
- testRunner.And("current state is set to", ((string)(null)), table4, "And ");
-#line 37
- testRunner.And("I am on the Topics & Resources page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 38
- testRunner.When("I click on the first main topic", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 39
- testRunner.And("I click on the first subtopic", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I am on the Access2Justice website", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 40
+ testRunner.And(string.Format("current state is set to {0}", state), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 41
+ testRunner.And("I am on the Topics & Resources page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 42
+ testRunner.When("I click on the first main topic", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 43
+ testRunner.And("I click on the first subtopic", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 44
  testRunner.Then("I should see a list of resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("View Service Organizations in Your Community pane in Family topic")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Navigate to a subtopic and see a list of resources: Hawaii")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "TopicsAndResources")]
-        public virtual void ViewServiceOrganizationsInYourCommunityPaneInFamilyTopic()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Hawaii")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:State", "Hawaii")]
+        public virtual void NavigateToASubtopicAndSeeAListOfResources_Hawaii()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("View Service Organizations in Your Community pane in Family topic", null, ((string[])(null)));
-#line 42
+#line 38
+this.NavigateToASubtopicAndSeeAListOfResources("Hawaii", ((string[])(null)));
+#line hidden
+        }
+        
+        public virtual void ViewServiceOrganizationsInYourCommunityPaneInFamilyTopic(string state, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("View Service Organizations in Your Community pane in Family topic", null, exampleTags);
+#line 50
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 43
+#line 51
  testRunner.Given("I am on the Access2Justice website", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
-                        "State"});
-            table5.AddRow(new string[] {
-                        "Alaska"});
-#line 44
- testRunner.And("current state is set to", ((string)(null)), table5, "And ");
-#line 47
+#line 52
+ testRunner.And(string.Format("current state is set to {0}", state), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 53
  testRunner.And("I am on the Topics & Resources page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 48
+#line 54
  testRunner.When("I click on the first main topic", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 49
+#line 55
  testRunner.Then("I should see the Service Organizations in Your Community pane to the right", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("View Service Organizations in Your Community pane in Family topic: Hawaii")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "TopicsAndResources")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Hawaii")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:State", "Hawaii")]
+        public virtual void ViewServiceOrganizationsInYourCommunityPaneInFamilyTopic_Hawaii()
+        {
+#line 50
+this.ViewServiceOrganizationsInYourCommunityPaneInFamilyTopic("Hawaii", ((string[])(null)));
+#line hidden
         }
     }
 }
