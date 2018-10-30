@@ -50,8 +50,8 @@ import { AdminComponent } from './admin/admin.component';
 import { UploadCuratedExperienceTemplateComponent } from './admin/upload-curated-experience-template/upload-curated-experience-template.component';
 
 export const protectedResourceMap: [string, string[]][] = [[api.checkPermaLink, [environment.apiScope]], [api.shareUrl, [environment.apiScope]]
-    , [api.unShareUrl, [environment.apiScope]], [api.userPlanUrl, [environment.apiScope]]]
-//[api.uploadCuratedExperienceTemplateUrl, [environment.apiScope]]
+    , [api.unShareUrl, [environment.apiScope]], [api.userPlanUrl, [environment.apiScope]],
+[api.uploadCuratedExperienceTemplateUrl, [environment.apiScope]]]
 
 @NgModule({
   declarations: [

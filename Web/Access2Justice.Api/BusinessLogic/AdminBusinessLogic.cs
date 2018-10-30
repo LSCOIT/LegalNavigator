@@ -173,7 +173,7 @@ namespace Access2Justice.Api.BusinessLogic
                         var newTemplateId = Guid.NewGuid();
                         mainTemplate.AddFirst(new JProperty(Constants.Id, newTemplateId));
                         var response = await backendDatabaseService.CreateItemAsync(mainTemplate,
-                            cosmosDbSettings.A2JAuthorTemplatesCollectionId);
+                            cosmosDbSettings.A2JAuthorDocsCollectionId);
                         if (response != null && response.Id != null)
                         {
                             var resourceDetails = await topicsResourcesBusinessLogic.GetResourceDetailAsync(resourceTitle, Constants.GuidedAssistant);
@@ -195,7 +195,7 @@ namespace Access2Justice.Api.BusinessLogic
                                 resourceDetail.IsActive = false;
                                 
                                 await backendDatabaseService.UpdateItemAsync(resourceDetail.ResourceId.ToString(),
-                                    JObject.FromObject(resourceDetail), cosmosDbSettings.ResourceCollectionId);
+                                    JObject.FromObject(resourceDetail), cosmosDbSettings.ResourcesCollectionId);
                             }
 
                             var topicDetails = await topicsResourcesBusinessLogic.GetTopicDetailsAsync(resourceTitle);
@@ -229,9 +229,9 @@ namespace Access2Justice.Api.BusinessLogic
                                 guidedAssistantResource.CuratedExperienceId = curatedExprienceJson.CuratedExperienceId.ToString();
 
                                 await backendDatabaseService.UpdateItemAsync(curatedExprienceJson.CuratedExperienceId.ToString(),
-                                    JObject.FromObject(curatedExprienceJson), cosmosDbSettings.CuratedExperienceCollectionId);
+                                    JObject.FromObject(curatedExprienceJson), cosmosDbSettings.CuratedExperiencesCollectionId);
 
-                                await backendDatabaseService.CreateItemAsync(guidedAssistantResource, cosmosDbSettings.ResourceCollectionId);
+                                await backendDatabaseService.CreateItemAsync(guidedAssistantResource, cosmosDbSettings.ResourcesCollectionId);
                             }
                             return string.Format(CultureInfo.InvariantCulture, "Import failed: {0} Topic document is not available in the system. Please create/import the topic document before importing curated experience template.",resourceTitle);
                         }
