@@ -51,10 +51,10 @@ namespace Access2Justice.Api.Controllers
         /// <response code="200">Returns personalized plan for curated experience </response>
         /// <response code="500">Failure</response>
         [HttpGet("generate")]
-        public async Task<IActionResult> GeneratePersonalizedPlanAsync([FromQuery] Guid curatedExperienceId, [FromQuery] Guid answersDocId, [FromBody] Location location)
+        public async Task<IActionResult> GeneratePersonalizedPlanAsync([FromQuery] Guid curatedExperienceId, [FromQuery] Guid answersDocId)
         {
             var personalizedPlan = await personalizedPlanBusinessLogic.GeneratePersonalizedPlanAsync(
-               sessionManager.RetrieveCachedCuratedExperience(curatedExperienceId, HttpContext), answersDocId, location);
+               sessionManager.RetrieveCachedCuratedExperience(curatedExperienceId, HttpContext), answersDocId);
 
             if (personalizedPlan == null)
             {

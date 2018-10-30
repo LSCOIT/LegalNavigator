@@ -25,11 +25,11 @@ namespace Access2Justice.Api.BusinessLogic
             dbService = backendDatabaseService;
         }
 
-        public async Task<Topic> GetTopic(string topicName, Location location)
+        public async Task<Topic> GetTopic(string topicName)
         {
             try
             {
-                List<dynamic> topics = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.TopicsCollectionId, Constants.Name, topicName, location);
+                List<dynamic> topics = await dbClient.FindItemsWhereAsync(dbSettings.TopicsCollectionId, Constants.Name, topicName);
 
                 if (!topics.Any())
                 {

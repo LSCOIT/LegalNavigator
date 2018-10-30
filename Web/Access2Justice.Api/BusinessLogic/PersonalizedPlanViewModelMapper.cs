@@ -25,7 +25,8 @@ namespace Access2Justice.Api.BusinessLogic
             this.topicsResourcesBusinessLogic = topicsResourcesBusinessLogic;
         }
 
-		public async Task<PersonalizedPlanViewModel> MapViewModel(UnprocessedPersonalizedPlan personalizedPlanStepsInScope, Location location)
+         // Todo:@Alaa remove location
+        public async Task<PersonalizedPlanViewModel> MapViewModel(UnprocessedPersonalizedPlan personalizedPlanStepsInScope)
 		{
             var actionPlan = new PersonalizedPlanViewModel();
             
@@ -40,13 +41,13 @@ namespace Access2Justice.Api.BusinessLogic
                     resourceDetails = JsonUtilities.DeserializeDynamicObject<List<Resource>>(resourceData);
                 }
 
-                var topic = await topicsResourcesBusinessLogic.GetTopic(unprocessedTopic.Name, location);
+                var topic = await topicsResourcesBusinessLogic.GetTopic(unprocessedTopic.Name);
                 actionPlan.Topics.Add(new PlanTopic
 				{
                     TopicId = Guid.Parse(topic.Id),
                     TopicName = topic.Name,
                     Icon = topic.Icon,
-                    //QuickLinks = GetQuickLinks(topic.QuickLinks), //Topic schema has changed, quick links should be displayed based on 'Essential Readings' resourceType.
+                    // QuickLinks = GetQuickLinks(topic.QuickLinks), //Topic schema has changed, quick links should be displayed based on 'Essential Readings' resourceType.
                     Steps = GetSteps(unprocessedTopic.UnprocessedSteps, resourceDetails)
 				});
 			}
@@ -81,11 +82,10 @@ namespace Access2Justice.Api.BusinessLogic
 				planSteps.Add(new PlanStep
 				{
 					StepId = unprocessedStep.Id,
-                    Type = "steps",  // Todo:@Alaa do we still need this?
                     Title = unprocessedStep.Title,
 					Description = unprocessedStep.Description,
 					Order = orderIndex++,
-                    IsComplete = false,  // Todo:@Alaa check if step complete
+                    IsComplete = false,
                     Resources = GetResources(unprocessedStep.ResourceIds, resourceDetails)
 				});
 			}
