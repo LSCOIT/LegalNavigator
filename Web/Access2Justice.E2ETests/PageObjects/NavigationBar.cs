@@ -44,6 +44,9 @@ namespace Access2Justice.E2ETests.PageObjects
         [FindsBy(How = How.TagName, Using = "app-resource-card")]
         private IList<IWebElement> searchPhraseResults;
 
+        [FindsBy(How = How.TagName, Using = "app-web-resource")]
+        private IList<IWebElement> searchPhraseWebResults;
+
         [FindsBy(How = How.TagName, Using = "html")]
         private IWebElement html;
         #endregion
@@ -57,7 +60,7 @@ namespace Access2Justice.E2ETests.PageObjects
             PageFactory.InitElements(Driver, this);
         }
 
-        public void PickLanguage(dynamic language)
+        public void PickLanguage(string language)
         {
             FluentWait.Until(d =>
             {
@@ -73,10 +76,10 @@ namespace Access2Justice.E2ETests.PageObjects
             Assert.IsTrue(languageDropDown.Displayed);
 
             SelectElement languageOptions = new SelectElement(languageDropDown);
-            languageOptions.SelectByText(Convert.ToString(language));
+            languageOptions.SelectByText(language);
         }
 
-        public void ConfirmPageTranslated(dynamic language)
+        public void ConfirmPageTranslated(string language)
         {
             FluentWait.Until(d =>
             {
@@ -137,14 +140,14 @@ namespace Access2Justice.E2ETests.PageObjects
         {
             FluentWait.Until(d =>
             {
-                if (searchPhraseResults != null && searchPhraseResults.Count > 0)
+                if (searchPhraseResults != null && (searchPhraseResults.Count > 0 || searchPhraseWebResults.Count > 0))
                 {
                     return true;
                 }
 
                 return false;
             });
-            Assert.IsTrue(searchPhraseResults.Count > 0);
+            Assert.IsTrue(searchPhraseResults.Count > 0 || searchPhraseWebResults.Count > 0);
         }
     }
 }

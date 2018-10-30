@@ -88,12 +88,9 @@ namespace Access2Justice.E2ETests.Features
             testRunner.CollectScenarioErrors();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Set location on entry")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Set Location")]
-        public virtual void SetLocationOnEntry()
+        public virtual void SetLocationOnEntry(string state, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Set location on entry", null, ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Set location on entry", null, exampleTags);
 #line 6
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
@@ -101,60 +98,57 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.Given("I am on the Access2Justice website", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 8
  testRunner.And("I am prompted to set my location", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                        "State"});
-            table1.AddRow(new string[] {
-                        "Alaska"});
 #line 9
- testRunner.When("I enter my state name", ((string)(null)), table1, "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
-                        "State"});
-            table2.AddRow(new string[] {
-                        "Alaska"});
-#line 12
- testRunner.Then("I can see my state name on the upper navigation bar", ((string)(null)), table2, "Then ");
+ testRunner.When(string.Format("I enter my state name as {0}", state), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 10
+ testRunner.Then(string.Format("I can see my state name {0} on the upper navigation bar", state), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Change location")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Set location on entry: Hawaii")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Set Location")]
-        public virtual void ChangeLocation()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Hawaii")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:State", "Hawaii")]
+        public virtual void SetLocationOnEntry_Hawaii()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change location", null, ((string[])(null)));
+#line 6
+this.SetLocationOnEntry("Hawaii", ((string[])(null)));
+#line hidden
+        }
+        
+        public virtual void ChangeLocation(string oldState, string newState, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change location", null, exampleTags);
 #line 16
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
 #line 17
  testRunner.Given("I am on the Access2Justice website", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
-                        "State"});
-            table3.AddRow(new string[] {
-                        "Alaska"});
 #line 18
- testRunner.And("current state is set to", ((string)(null)), table3, "And ");
-#line 21
+ testRunner.And(string.Format("current state is set to {0}", oldState), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 19
  testRunner.When("I click on the Change button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
-                        "State"});
-            table4.AddRow(new string[] {
-                        "Hawaii"});
-#line 22
-    testRunner.And("I enter my state name", ((string)(null)), table4, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
-                        "State"});
-            table5.AddRow(new string[] {
-                        "Hawaii"});
-#line 25
-    testRunner.Then("I can see my state name on the upper navigation bar", ((string)(null)), table5, "Then ");
+#line 20
+    testRunner.And(string.Format("I enter my state name as {0}", newState), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 21
+    testRunner.Then(string.Format("I can see my state name {0} on the upper navigation bar", newState), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Change location: Hawaii")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Set Location")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Hawaii")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Old State", "Hawaii")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:New State", "Alaska")]
+        public virtual void ChangeLocation_Hawaii()
+        {
+#line 16
+this.ChangeLocation("Hawaii", "Alaska", ((string[])(null)));
+#line hidden
         }
     }
 }
