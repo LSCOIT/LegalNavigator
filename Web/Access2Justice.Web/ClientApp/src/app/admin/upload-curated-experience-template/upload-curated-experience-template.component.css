@@ -2,3 +2,8 @@
   display: block;
   color: red;
 }
+
+.validation-success {
+  display: block;
+  color: green;
+}
