@@ -14,6 +14,7 @@ export class Global {
   profileRouteUrl: string = "/profile";
   data: any;
   notifyStaticData: Subject<any> = new Subject<any>();
+  notifyRoleInformation: Subject<any> = new Subject<any>();
   userName: string;
   userId: string;
   sharedUserId: string;
@@ -31,6 +32,7 @@ export class Global {
     this.userName = name ? name : eMail;
     this.roleInformation = roleInformation;
     this.isLoggedIn = true;
+    this.notifyRoleInformation.next(this.roleInformation);
   }
 
   getData() {

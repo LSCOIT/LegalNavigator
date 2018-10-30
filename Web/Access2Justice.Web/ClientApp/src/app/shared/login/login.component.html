@@ -10,7 +10,7 @@
     <li class="list-items">
       <a class="dropdown-item" (click)="profile()">My Plan</a>
       <a class="dropdown-item" href="#">Account Settings</a>
-      <a class="dropdown-item" [routerLink]="['/admin']">Admin Portal</a>
+      <a *ngIf="isAdmin" class="dropdown-item" [routerLink]="['/admin']">Admin Portal</a>
       <a class="dropdown-item" (click)="logout()">Log Out</a>
     </li>
   </ul>
