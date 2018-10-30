@@ -6,3 +6,9 @@ export interface MapLocation {
   locality?: string;
   address?: string;
 }
+
+export interface LocationDetails {
+  location?: MapLocation;
+  country?: string;
+  formattedAddress?: string;
+}

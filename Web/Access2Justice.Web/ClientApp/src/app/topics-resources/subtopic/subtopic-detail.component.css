@@ -19,4 +19,8 @@
   .sidebars {
     float: right;
   }
+
+  .col-md-4 {
+    padding-left: 5%;
+  }
 }

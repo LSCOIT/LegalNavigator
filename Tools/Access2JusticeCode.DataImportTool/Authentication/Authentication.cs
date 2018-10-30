@@ -1,14 +1,12 @@
 ﻿using Microsoft.Identity.Client;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Access2JusticeCode.DataImportTool.Authentication
+namespace Access2Justice.DataImportTool.Authentication
 {
     public class Authentication
     {

@@ -1,9 +1,9 @@
 <div class="filter row no-print">
-  <div class="filter-type col-sm-9 col-xs-6">
-    <div class="col-sm-1 p">
+  <div class="filter-type col-md-8 col-sm-6 col-xs-6">
+    <div class="col-md-1 p">
       Show:
     </div>   
-    <div class="col-sm-10 desktop-filter">
+    <div class="col-md-10 desktop-filter">
       <button
         #filterButtons
         *ngFor="let resource of resourceResults"
@@ -12,9 +12,9 @@
         {{resource.ResourceName}}({{resource.ResourceCount}})
       </button>
     </div>
-    <div class="btn-group col-sm-8 col-xs-6 mobile-filter" dropdown>
+    <div class="btn-group col-md-8 col-sm-6 col-xs-6 mobile-filter" dropdown>
       <button id="button-basic" dropdownToggle type="button" class="btn btn-selected dropdown-toggle" aria-controls="button-basic">
-        {{selectedFilterCriteria}} <span class="caret"></span>
+        {{selectedFilterCriteria}}
       </button>
       <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
           role="menu" aria-labelledby="button-basic">
@@ -22,11 +22,11 @@
       </ul>
     </div>
   </div>
-  <div class="col-sm-3 col-xs-6 sort-type">
-    <div class="col-sm-4 p">Sort:</div>
-    <div class="btn-group col-sm-8" dropdown>
+  <div class="col-md-4 col-sm-6 col-xs-6 sort-type">
+    <div class="col-md-1 col-sm-2 p">Sort:</div>
+    <div class="btn-group col-md-10" dropdown>
       <button id="button-basic" dropdownToggle type="button" class="btn btn-selected dropdown-toggle" aria-controls="button-basic">
-        {{selectedSortCriteria}} <span class="caret"></span>
+        {{selectedSortCriteria}}
       </button>
       <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
           role="menu" aria-labelledby="button-basic">

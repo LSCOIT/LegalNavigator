@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Access2Justice.Tools.Models
+namespace Access2Justice.DataImportTool.Models
 {
     public class Topic
     {
@@ -18,8 +18,8 @@ namespace Access2Justice.Tools.Models
         [JsonProperty(PropertyName = "overview")]
         public string Overview { get; set; }
 
-        [JsonProperty(PropertyName = "quickLinks")]
-        public IEnumerable<QuickLinks> QuickLinks { get; set; }
+        //[JsonProperty(PropertyName = "quickLinks")]
+        //public IEnumerable<QuickLinks> QuickLinks { get; set; }
 
         [JsonProperty(PropertyName = "parentTopicId")]
         public IEnumerable<ParentTopicID> ParentTopicId { get; set; }

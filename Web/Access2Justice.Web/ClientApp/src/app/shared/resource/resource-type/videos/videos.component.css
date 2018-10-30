@@ -13,5 +13,10 @@ iframe {
   iframe {
     height: 400px;
     max-width: 800px;
+    margin-top: 20px;
+  }
+
+  .col-md-4 {
+    padding-left: 5%;
   }
 }

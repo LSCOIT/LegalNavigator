@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { MapLocation } from './map';
+import { MapLocation, LocationDetails } from './map';
 import { Subject } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
 import { api } from '../../../api/api';
@@ -13,12 +13,14 @@ export class MapService {
   locAddress: any;
   location: any;
   pin: any;
-  mapLocation: MapLocation;
+  mapLocation: MapLocation = { state: '', city: '', county: '', zipCode: '', locality: '', address: '' };
   notifyLocalLocation: Subject<MapLocation> = new Subject<MapLocation>();
   notifyLocation: Subject<MapLocation> = new Subject<MapLocation>();
   notifyLocationError: Subject<any> = new Subject<any>();
   notifyLocationSuccess: Subject<any> = new Subject<any>();
 
+  state: string;
+  locationDetails: LocationDetails = { location: this.mapLocation, country: '', formattedAddress: '' }
   constructor() { }
 
   getMap(mapType) {
@@ -82,18 +84,20 @@ export class MapService {
     this.notifyLocationError.next(event);
   }
 
-  updateLocation(): MapLocation {
+  updateLocation(): LocationDetails {
     if (environment.map_type) {
-      this.mapLocation = JSON.parse(sessionStorage.getItem("globalSearchMapLocation"));
+      this.locationDetails = JSON.parse(sessionStorage.getItem("globalSearchMapLocation"));
+      this.mapLocation = this.locationDetails.location;
       sessionStorage.setItem("globalMapLocation", JSON.stringify(this.mapLocation));
       sessionStorage.removeItem('globalSearchMapLocation');
       this.notifyLocation.next(this.mapLocation);
     }
     else {
-      this.mapLocation = JSON.parse(sessionStorage.getItem("localSearchMapLocation"));
+      this.locationDetails = JSON.parse(sessionStorage.getItem("localSearchMapLocation"));
+      this.mapLocation = this.locationDetails.location;
       this.notifyLocalLocation.next(this.mapLocation);
     }
-    return this.mapLocation;
+    return this.locationDetails;
   }
 
   mapLocationDetails(location) {
@@ -105,6 +109,13 @@ export class MapService {
     this.mapLocation.city = this.location.address.locality;
     this.mapLocation.zipCode = this.location.address.postalCode;
 
+    let country: string;
+    let fullStateName = this.location.address.formattedAddress;
+    if (fullStateName.indexOf(',') > 0) {
+      country = this.location.address.countryRegion;
+      this.state = fullStateName.slice(fullStateName.indexOf(',') + 2, fullStateName.length);
+      this.locationDetails = { country: country, formattedAddress: this.state };
+    }
     if (this.location.address.postalCode === undefined) {
       if (this.location.address.locality === undefined) {
         if (this.location.address.district === undefined) {
@@ -123,8 +134,9 @@ export class MapService {
     }
     this.mapLocation.locality = this.locAddress;
     this.mapLocation.address = this.location.address.adminDistrict;
+    this.locationDetails = { location: this.mapLocation, country: country, formattedAddress: this.state }
     if (environment.map_type) {
-      sessionStorage.setItem("globalSearchMapLocation", JSON.stringify(this.mapLocation));
+      sessionStorage.setItem("globalSearchMapLocation", JSON.stringify(this.locationDetails));
     }
     else {
       //Zipcode
@@ -137,8 +149,10 @@ export class MapService {
         this.mapLocation.city = "";
       }
       //State
-      else if (this.location.entitySubType != undefined &&
-        this.location.entitySubType.indexOf("AdminDivision1") != -1) {
+      else if ((this.location.entitySubType != undefined &&
+        this.location.entitySubType.indexOf("AdminDivision1") != -1)
+        || (this.location.entityType != undefined &&
+        this.location.entityType.indexOf("AdminDivision1") != -1)) {
         this.mapLocation.county = "";
         this.mapLocation.city = "";
         this.mapLocation.zipCode = "";
@@ -151,13 +165,16 @@ export class MapService {
         this.mapLocation.zipCode = "";
       }
       //City
-      else if (this.location.entitySubType != undefined &&
-        this.location.entitySubType.indexOf("PopulatedPlace") != -1) {
+      else if ((this.location.entitySubType != undefined &&
+        this.location.entitySubType.indexOf("PopulatedPlace") != -1)
+        || (this.location.entityType != undefined &&
+        this.location.entityType.indexOf("PopulatedPlace") != -1)) {
         this.mapLocation.state = "";
         this.mapLocation.county = "";
         this.mapLocation.zipCode = "";
       }
-      sessionStorage.setItem("localSearchMapLocation", JSON.stringify(this.mapLocation));
+      this.locationDetails.location = this.mapLocation;
+      sessionStorage.setItem("localSearchMapLocation", JSON.stringify(this.locationDetails));
     }
   }
 

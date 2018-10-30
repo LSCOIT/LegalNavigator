@@ -1,13 +1,14 @@
-﻿using Xunit;
-using NSubstitute;
-using System.Collections.Generic;
+﻿using Access2Justice.Api;
+using Access2Justice.Api.Tests.TestData;
 using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
-using Access2Justice.Api;
-using Newtonsoft.Json.Linq;
 using Access2Justice.Shared.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using NSubstitute;
 using System;
-using Access2Justice.Api.Tests.TestData;
+using System.Collections.Generic;
+using Xunit;
 
 namespace Access2Justice.Tests.ServiceUnitTestCases
 {
@@ -42,6 +43,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         private readonly ResourceFilter resourceFilter = LuisBusinessLogicTestData.resourceFilter;
         private readonly List<dynamic> allResourcesCount = LuisBusinessLogicTestData.allResourcesCount;
         private readonly List<string> topicIds = LuisBusinessLogicTestData.topicIds;
+        private readonly Location locationInput = LuisBusinessLogicTestData.location;
         #endregion
 
         #region Mocked Output Data         
@@ -163,6 +165,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
 
             //act
             var result = luisBusinessLogic.GetInternalResourcesAsync(keyword, location, Arg.Any<IEnumerable<string>>()).Result;
+            result = JsonConvert.SerializeObject(result);
 
             //assert            
             Assert.Contains(expectedTopicId, result);
@@ -183,6 +186,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
 
             //act
             var result = luisBusinessLogic.GetInternalResourcesAsync(keyword, location, Arg.Any<IEnumerable<string>>()).Result;
+            result = JsonConvert.SerializeObject(result);
 
             //assert            
             Assert.Contains(expectedTopicId, result);
@@ -202,6 +206,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
 
             //act
             var result = luisBusinessLogic.GetInternalResourcesAsync(keyword, location, Arg.Any<IEnumerable<string>>()).Result;
+            result = JsonConvert.SerializeObject(result);
 
             //assert            
             Assert.Contains(keyword, result);
@@ -209,15 +214,22 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
 
 
         [Fact]
-        public void GetResourceBasedOnThresholdAsyncTestsShouldValidateScoreAccuracy()
+        public void GetResourceBasedOnThresholdAsyncTestsShouldValidateInternalResources()
         {
             //arrange
             luisInput.Sentence = searchText;
+            luisInput.Location = locationInput;
             var luisResponse = luisProxy.GetIntents(searchText);
             luisResponse.ReturnsForAnyArgs(properLuisResponse);
 
-            var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
-            topicResponse.ReturnsForAnyArgs<dynamic>(emptyTopicObject);
+            //arrange
+            PagedResources pagedResources = new PagedResources() { Results = resourcesData, ContinuationToken = "[]", TopicIds = topicIds };
+            var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, locationInput);
+            topicResponse.Returns(topicsData);
+            var resourceCount = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
+            resourceCount.ReturnsForAnyArgs<dynamic>(allResourcesCount);
+            var paginationResult = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
+            paginationResult.ReturnsForAnyArgs<dynamic>(pagedResources);
 
             var internalResponse = luis.GetInternalResourcesAsync(keyword, location, Arg.Any<IEnumerable<string>>());
             internalResponse.ReturnsForAnyArgs<dynamic>(internalResponse);
@@ -226,12 +238,12 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             var result = luisBusinessLogic.GetResourceBasedOnThresholdAsync(luisInput).Result;
 
             //assert
-            Assert.Contains(expectedInternalResponse, result);
+            Assert.Contains(expectedInternalResponse, result.ToString());
 
         }
 
         [Fact]
-        public void GetResourceBasedOnThresholdAsyncTestsWithoutLuisApiCall()
+        public void GetResourceBasedOnThresholdAsyncTestsShouldValidateWebResources()
         {
             //arrange
             luisInput.LuisTopScoringIntent = keyword;
@@ -243,6 +255,9 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
 
             var internalResponse = luis.GetInternalResourcesAsync(keyword, location, Arg.Any<IEnumerable<string>>());
             internalResponse.ReturnsForAnyArgs<dynamic>(internalResponse);
+
+            var webResponse = webSearchBusinessLogic.SearchWebResourcesAsync(new Uri("http://www.bing.com"));
+            webResponse.ReturnsForAnyArgs<dynamic>(webData);
 
             //act
             var result = luisBusinessLogic.GetResourceBasedOnThresholdAsync(luisInput).Result;

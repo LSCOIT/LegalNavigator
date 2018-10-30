@@ -56,8 +56,8 @@
         <button type="submit" class="btn btn-primary">Continue</button>
       </div>
       <div class="row">
-        <div class="col-md-10 col-md-offset-1 col-sm-12">
-          <app-did-you-know></app-did-you-know>
+        <div class="col-md-10 col-md-offset-1 col-sm-12 col-sm-offset-0">
+          <app-did-you-know [didYouKnowHeading]="question.learn" [didYouKnowBody]="question.help"></app-did-you-know>
         </div>
       </div>
     </div>

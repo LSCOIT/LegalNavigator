@@ -30,9 +30,6 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "resourceType")]
         public string ResourceType { get; set; }
 
-        [JsonProperty(PropertyName = "externalUrl")]
-        public string ExternalUrls { get; set; }
-
         [JsonProperty(PropertyName = "url")]
         public string Urls { get; set; }
 
@@ -190,21 +187,9 @@ namespace Access2Justice.Shared.Models
         public string FullDescription { get; set; }
     }
 
-    public class GuidedAssistant : Resource
+    public class RelatedLink : Resource
     {
-        [JsonProperty(PropertyName = "curatedExperienceId")]
-        public string CuratedExperienceId { get; set; }
-
-        [JsonProperty(PropertyName = "version")]
-        public float Version { get; set; }
-
-        [JsonProperty(PropertyName = "isActive")]
-        public bool IsActive { get; set; }
-    }
-
-    public class ExternalLink : Resource
-    {
-        //for now there are no unique properties to external links
+        //for now there are no unique properties to related links
     }
 
     [AttributeUsage(AttributeTargets.Property)]
@@ -219,5 +204,17 @@ namespace Access2Justice.Shared.Models
             }
             return false;
         }
+    }
+
+    public class GuidedAssistant : Resource
+    {
+        [JsonProperty(PropertyName = "curatedExperienceId")]
+        public string CuratedExperienceId { get; set; }
+
+        [JsonProperty(PropertyName = "version")]
+        public float Version { get; set; }
+
+        [JsonProperty(PropertyName = "isActive")]
+        public bool IsActive { get; set; }
     }
 }

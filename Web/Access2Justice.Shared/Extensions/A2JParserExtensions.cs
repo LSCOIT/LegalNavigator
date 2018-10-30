@@ -107,7 +107,14 @@ namespace Access2Justice.Shared.Extensions
                     }
                     else
                     {
-                        varsValues.Add(varValue, inputText.RemoveQuotes());
+                        if (!varsValues.Contains(varValue))
+                        {
+                            varsValues.Add(varValue, inputText.RemoveQuotes());
+                        }
+                        else
+                        {
+                            varsValues[varValue] = inputText.RemoveQuotes();
+                        }
                     }
                 }
             }

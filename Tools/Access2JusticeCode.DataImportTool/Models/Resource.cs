@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Access2Justice.Tools.Models
+namespace Access2Justice.DataImportTool.Models
 {
     public class Resource
     {
@@ -96,7 +96,7 @@ namespace Access2Justice.Tools.Models
         public string Overview { get; set; }
 
         [JsonProperty(PropertyName = "contents")]
-        public IEnumerable<ArticleContents> Contents { get; set; }        
+        public IEnumerable<ArticleContents> Contents { get; set; }
     }
 
     public class ArticleContents
@@ -165,9 +165,9 @@ namespace Access2Justice.Tools.Models
         public string FullDescription { get; set; }
     }
 
-    public class ExternalLink : Resource
+    public class RelatedLink : Resource
     {
-        //for now there are no unique properties to external links
+        //for now there are no unique properties to related links
     }
 
     [AttributeUsage(AttributeTargets.Property)]

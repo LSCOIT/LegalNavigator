@@ -23,6 +23,8 @@ export class QuestionComponent implements OnInit {
   @Output() sendQuestionsRemainingEvent = new EventEmitter<number>();
   @Output() sendTotalQuestionsEvent = new EventEmitter<number>();
   generatedPersonalizedPlan: PersonalizedPlan;
+  answersDocId: string;
+  location = sessionStorage.getItem("globalMapLocation");
 
   constructor(
     private questionService: QuestionService,
@@ -47,6 +49,7 @@ export class QuestionComponent implements OnInit {
       .subscribe(question => {
         this.question = { ...question }
         this.sendTotalQuestions(this.question.questionsRemaining);
+        this.answersDocId = this.question.answersDocId;
       });
   }
 
@@ -81,9 +84,10 @@ export class QuestionComponent implements OnInit {
 
     window.scrollTo(0, 0);
     //need to work on multiselect params
+
     const params = {
       "curatedExperienceId": this.question.curatedExperienceId,
-      "answersDocId": this.question.answersDocId,
+      "answersDocId": this.answersDocId,
       "buttonId": this.buttonParam,
       "fields": this.fieldParam
     }
@@ -96,13 +100,11 @@ export class QuestionComponent implements OnInit {
   };
 
   getActionPlan(): void {
+    console.log(this.location);
     let params = new HttpParams()
-      //.set("curatedExperienceId", this.curatedExperienceId)
-      //.set("answersDocId", this.question.answersDocId);
-
-    //temporarily hardcoding params for testing
-      .set("curatedExperienceId", '93bcabe2-8afc-4044-b4da-59f7b94510c4')
-      .set("answersDocId", '93a461fb-e9e3-4e6f-b9fd-49a185aa0da0');
+      .set("curatedExperienceId", this.curatedExperienceId)
+      .set("answersDocId", this.answersDocId)
+      .set("location", this.location);
     
     this.questionService.getpersonalizedPlan(params)
       .subscribe(response => {

@@ -7,10 +7,10 @@ p {
 }
 
 .edit-location {
-  padding: 10px 15px 10px 10px;
+  padding: 20px 15px 10px 10px;
   cursor: pointer;
   display: inline-block;
-  height: 44px;
+  height: 51px;
   margin-left: -4px;
 }
 
@@ -106,15 +106,14 @@ p {
 @media only screen and (min-width : 768px) {
   .edit-location {
     padding: 15px 10px;
-    height: 53px;
-  }
-
-  .edit-location:hover {
-    background-color: #fff;
   }
 }
 
 @media only screen and (min-width : 992px) {
+  .edit-location {
+    height: 53px;
+  }
+
   .mobile-hidden {
     display: inline-block;
   }

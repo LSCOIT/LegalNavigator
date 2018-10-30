@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Access2JusticeCode.DataImportTool
+namespace Access2Justice.DataImportTool
 {
     static class Program
     {

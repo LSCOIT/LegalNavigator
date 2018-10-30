@@ -1,4 +1,4 @@
-﻿using Access2JusticeCode.DataImportTool.Helper;
+﻿using Access2Justice.DataImportTool.Helper;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Access2Justice.Tools.BusinessLogic
+namespace Access2Justice.DataImportTool.BusinessLogic
 {
     public class TopicBusinessLogic: IDisposable
     {
@@ -19,7 +19,7 @@ namespace Access2Justice.Tools.BusinessLogic
         {
             clientHttp.BaseAddress = new Uri("http://localhost:4200/");
             clientHttp.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            clientHttp.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(accessToken);
+            clientHttp.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             try
             {
                 InsertTopics obj = new InsertTopics();

@@ -6,6 +6,7 @@ namespace Access2Justice.Shared.Interfaces
 {
     public interface ITopicsResourcesBusinessLogic
     {
+        Task<Topic> GetTopic(string topicName, Location location);
         Task<dynamic> GetTopicsAsync(string keyword, Location location);
         Task<dynamic> GetResourcesAsync(dynamic resourcesIds);
         Task<dynamic> GetTopLevelTopicsAsync(Location location);
@@ -21,7 +22,7 @@ namespace Access2Justice.Shared.Interfaces
         dynamic GetLocations(dynamic locationValues);
         dynamic GetConditions(dynamic conditionValues);
         dynamic GetParentTopicIds(dynamic ParentTopicIdValues);
-        dynamic GetQuickLinks(dynamic quickLinksValues);
+        //dynamic GetQuickLinks(dynamic quickLinksValues);
         Task<IEnumerable<object>> UpsertResourcesUploadAsync(string path);
         Task<IEnumerable<object>> UpsertResourceDocumentAsync(dynamic resource);
         dynamic UpsertResourcesForms(dynamic resource);
@@ -30,7 +31,7 @@ namespace Access2Justice.Shared.Interfaces
         dynamic UpsertResourcesVideos(dynamic resource);
         dynamic UpsertResourcesOrganizations(dynamic resource);
         dynamic UpsertResourcesEssentialReadings(dynamic resource);
-        dynamic UpsertResourcesExternalLinks(dynamic resource);
+        dynamic UpsertResourcesRelatedLinks(dynamic resource);
         Task<IEnumerable<object>> UpsertTopicsUploadAsync(string path);
         Task<IEnumerable<object>> UpsertTopicDocumentAsync(dynamic topic);
         dynamic UpsertTopics(dynamic topic);

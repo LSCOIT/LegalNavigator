@@ -6,15 +6,15 @@
     <div class="left-menu">
       <ul class="mobile-hidden">
         <li><a [routerLink]="['/' + home?.button?.buttonLink]" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">{{home?.button?.buttonText}}</a></li>
-        <li><a [routerLink]="['/' + guidedAssistant?.button?.buttonLink]" routerLinkActive="active">{{guidedAssistant?.button?.buttonText}}</a></li>
-        <li><a [routerLink]="['/' + topicAndResources?.button?.buttonLink]" routerLinkActive="active">{{topicAndResources?.button?.buttonText}}</a></li>
-        <li><a [routerLink]="['/' + about?.button?.buttonLink]" routerLinkActive="active">{{about?.button?.buttonText}}</a></li>
+        <li><a id="guided-assistant-navigation-link" [routerLink]="['/' + guidedAssistant?.button?.buttonLink]" routerLinkActive="active">{{guidedAssistant?.button?.buttonText}}</a></li>
+        <li><a id="topics-and-resources-navigation-link" [routerLink]="['/' + topicAndResources?.button?.buttonLink]" routerLinkActive="active">{{topicAndResources?.button?.buttonText}}</a></li>
+        <li><a id="about-navigation-link" [routerLink]="['/' + about?.button?.buttonLink]" routerLinkActive="active">{{about?.button?.buttonText}}</a></li>
       </ul>
     </div>
     <div class="right-menu">
       <span class="search-form" (click)="toggleSearch()" *ngIf="!showSearch">
         <img *ngIf="search.image.source" class="search-icon" [src]="blobUrl + search?.image?.source" aria-hidden="true" />
-        <span class="inline search-text">{{search?.button?.buttonText}}</span>
+        <span id="search-phrase-tab" class="inline search-text">{{search?.button?.buttonText}}</span>
       </span>
       <div id="mobile-menu">
         <img src="./assets/images/small-icons/menu_bars.svg" class="web-hidden" id="nav-bar-toggle" *ngIf="showMenu" (click)="openNav()">
@@ -26,7 +26,7 @@
     <div #sidenav id="sidenav">
       <span class="search-form" id="nav-search" (click)="toggleSearch(); closeNav()" *ngIf="!showSearch">
         <img *ngIf="search.image.source" class="search-icon" [src]="blobUrl + search?.image?.source" aria-hidden="true" />
-        <span class="inline search-text">{{search?.button?.buttonText}}</span>
+        <span id="search-phrase-tab" class="inline search-text">{{search?.button?.buttonText}}</span>
       </span>
       <img class="nav-icon closebtn" src="./assets/images/small-icons/close.svg" (click)="closeNav()">
       <ul class="sidenav-menu" (click)="closeNav()">
