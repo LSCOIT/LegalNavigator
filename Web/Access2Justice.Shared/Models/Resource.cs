@@ -30,9 +30,6 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "resourceType")]
         public string ResourceType { get; set; }
 
-        [JsonProperty(PropertyName = "externalUrl")]
-        public string ExternalUrls { get; set; }
-
         [JsonProperty(PropertyName = "url")]
         public string Urls { get; set; }
 
@@ -207,5 +204,11 @@ namespace Access2Justice.Shared.Models
             }
             return false;
         }
+    }
+
+    public class GuidedAssistant : Resource
+    {
+        [JsonProperty(PropertyName = "curatedExperienceId")]
+        public string CuratedExperienceId { get; set; }
     }
 }

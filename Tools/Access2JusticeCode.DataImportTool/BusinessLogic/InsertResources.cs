@@ -1,17 +1,16 @@
-﻿using Access2Justice.Tools.Models;
-using DocumentFormat.OpenXml.Packaging;
+﻿using DocumentFormat.OpenXml.Packaging;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using Spreadsheet = DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Spreadsheet;
+using Access2Justice.DataImportTool.Models;
 
-namespace Access2Justice.Tools.BusinessLogic
+namespace Access2Justice.DataImportTool.BusinessLogic
 {
     class InsertResources
     {
@@ -49,7 +48,7 @@ namespace Access2Justice.Tools.BusinessLogic
             try
             {
                 using (SpreadsheetDocument spreadsheetDocument =
-                        SpreadsheetDocument.Open(filePath, false))
+                        SpreadsheetDocument.Open(filePath, true))
                 {
                     WorkbookPart workbookPart = spreadsheetDocument.WorkbookPart;
                     Spreadsheet.Sheets sheets = workbookPart.Workbook.GetFirstChild<Spreadsheet.Sheets>();
@@ -68,13 +67,32 @@ namespace Access2Justice.Tools.BusinessLogic
                             ClearVariableData();
                             topicTagIds = new List<TopicTag>();
                             locations = new List<Locations>();
+                            string resourceIdCell = string.Empty;
                             string resourceType = GetResourceType(sheet.Name.Value);
                             foreach (Spreadsheet.Row row in sheetData.Elements<Spreadsheet.Row>())
                             {
+                                if (counter == 1)
+                                {
+                                    var resourceIdColumn = from a in keyValuePairs where a.Key == "Id" select a.Value.First().ToString();
+                                    if (resourceIdColumn.Count() > 0)
+                                    {
+                                        resourceIdCell = resourceIdColumn.First();
+                                    }
+                                }
+
                                 foreach (Spreadsheet.Cell cell in row.Elements<Spreadsheet.Cell>())
                                 {
                                     cellValue = cell.InnerText;
-                                    if (!string.IsNullOrEmpty(cellValue))
+                                    if (string.IsNullOrEmpty(cellValue))
+                                    {
+                                        if (!string.IsNullOrEmpty(resourceIdCell) && cell.CellReference == string.Concat(resourceIdCell + row.RowIndex))
+                                        {
+                                            cell.CellValue = new CellValue(Guid.NewGuid().ToString());
+                                            cell.DataType = new EnumValue<CellValues>(CellValues.String);
+                                            workbookPart.Workbook.Save();
+                                        }
+                                    }
+                                    else if (!string.IsNullOrEmpty(cellValue))
                                     {
                                         string cellActualValue = string.Empty;
                                         if (cell.DataType == Spreadsheet.CellValues.SharedString)
@@ -117,6 +135,7 @@ namespace Access2Justice.Tools.BusinessLogic
 
                                             if (keyValue.Count() > 0)
                                             {
+
                                                 UpdateFormData(keyValue, cellActualValue, resourceType);
                                             }
                                         }
@@ -138,7 +157,7 @@ namespace Access2Justice.Tools.BusinessLogic
                                             Urls = url,
                                             TopicTags = topicTagIds,
                                             OrganizationalUnit = organizationalUnit,
-                                            Location = locations,                                            
+                                            Location = locations,
                                             CreatedBy = Constants.Admin,
                                             ModifiedBy = Constants.Admin
                                         };
@@ -162,7 +181,7 @@ namespace Access2Justice.Tools.BusinessLogic
                                             Address = address,
                                             Telephone = telephone,
                                             Overview = overview,
-                                            Specialties= specialties,
+                                            Specialties = specialties,
                                             EligibilityInformation = eligibilityInformation,
                                             Qualifications = qualifications,
                                             BusinessHours = businessHours,
@@ -174,7 +193,7 @@ namespace Access2Justice.Tools.BusinessLogic
                                         ClearVariableData();
                                     }
                                     if (resourceType == Constants.OrganizationReviews)
-                                    {                                      
+                                    {
                                         orgNameList.Add(organizationName);
                                         orgFullNameList.Add(reviewerFullName);
                                         orgTitleList.Add(reviewerTitle);
@@ -300,7 +319,7 @@ namespace Access2Justice.Tools.BusinessLogic
                     resourceList.Reviewer = organizationReviewer;
                     ResourcesList.Add(resourceList);
                 }
-                
+
                 foreach (var articleList in articlesList)
                 {
                     List<ArticleContents> articleContentList = new List<ArticleContents>();
@@ -352,7 +371,7 @@ namespace Access2Justice.Tools.BusinessLogic
             }
             return topicTagIds;
         }
-        
+
         private void ClearVariableData()
         {
             id = null;
@@ -370,6 +389,9 @@ namespace Access2Justice.Tools.BusinessLogic
             address = string.Empty;
             telephone = string.Empty;
             eligibilityInformation = string.Empty;
+            specialties = string.Empty;
+            qualifications = string.Empty;
+            businessHours = string.Empty;
             reviewerFullName = string.Empty;
             reviewerTitle = string.Empty;
             reviewerImage = string.Empty;
@@ -421,7 +443,7 @@ namespace Access2Justice.Tools.BusinessLogic
                 id = cellActualValue;
             }
 
-            else if (val.EndsWith("Name*", StringComparison.CurrentCultureIgnoreCase))
+            if (val.EndsWith("Name*", StringComparison.CurrentCultureIgnoreCase))
             {
                 name = cellActualValue;
             }
@@ -471,11 +493,6 @@ namespace Access2Justice.Tools.BusinessLogic
             {
                 zipcode = cellActualValue;
             }
-
-            //else if (val.EndsWith("Icon", StringComparison.CurrentCultureIgnoreCase))
-            //{
-            //    icon = cellActualValue;
-            //}
 
             else if (val.Equals("Resource_Category", StringComparison.CurrentCultureIgnoreCase))
             {
@@ -639,7 +656,7 @@ namespace Access2Justice.Tools.BusinessLogic
                 {
                     correctHeader = HeaderValidation(header, expectedArticleContentsHeader, Constants.ArticleContents);
                 }
-                
+
                 else if (resourceType == Constants.VideoResourceType)
                 {
                     correctHeader = HeaderValidation(header, expectedVideoHeader, Constants.VideoResourceType);
@@ -697,7 +714,7 @@ namespace Access2Justice.Tools.BusinessLogic
                         count++;
                     }
                 }
-                throw new Exception("Header Mismatch for " + resourceType + " at column " + column+ "\n" + "Expected header:" + "\n" + logHeader);
+                throw new Exception("Header Mismatch for " + resourceType + " at column " + column + "\n" + "Expected header:" + "\n" + logHeader);
             }
             return correctHeader;
         }

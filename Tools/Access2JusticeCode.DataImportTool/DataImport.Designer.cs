@@ -1,4 +1,4 @@
-﻿namespace Access2JusticeCode.DataImportTool
+﻿namespace Access2Justice.DataImportTool
 {
     partial class DataImport
     {

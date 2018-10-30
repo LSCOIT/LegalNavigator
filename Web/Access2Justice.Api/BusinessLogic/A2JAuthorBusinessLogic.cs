@@ -54,19 +54,18 @@ namespace Access2Justice.Api.BusinessLogic
             }
 
             // Todo: we should figure a way to do upsert, we currently can't do that because we don't have an identifier 
-            dbService.CreateItemAsync(cx, dbSettings.CuratedExperienceCollectionId);
-            dbService.CreateItemAsync(resource, dbSettings.ResourceCollectionId);
+            dbService.CreateItemAsync(cx, dbSettings.CuratedExperiencesCollectionId);
+            dbService.CreateItemAsync(resource, dbSettings.ResourcesCollectionId);
 
             return cx;
         }
 
-
-        private Resource MapResourceProperties(IEnumerable<JProperty> a2jProperties, Guid curatedExperienceId)
+        private GuidedAssistant MapResourceProperties(IEnumerable<JProperty> a2jProperties, Guid curatedExperienceId)
         {
-            return new Resource
+            return new GuidedAssistant
             {
                 ResourceId = Guid.NewGuid(),
-                ExternalUrls = curatedExperienceId.ToString(),
+                CuratedExperienceId = curatedExperienceId.ToString(),
                 Name = a2jProperties.GetValue("subjectarea"),
                 Description = a2jProperties.GetValue("description"),
                 CreatedTimeStamp = a2jProperties.GetDateOrNull("createdate"),
