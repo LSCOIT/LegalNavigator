@@ -68,15 +68,15 @@ namespace Access2Justice.Api.BusinessLogic
             try
             {
                 var dbAnswers = MapCuratedExperienceViewModel(viewModelAnswer, curatedExperience);
-                var savedAnswersDoc = await dbService.GetItemAsync<CuratedExperienceAnswers>(viewModelAnswer.AnswersDocId.ToString(), dbSettings.UserResourcesCollectionId);
+                var savedAnswersDoc = await dbService.GetItemAsync<CuratedExperienceAnswers>(viewModelAnswer.AnswersDocId.ToString(), dbSettings.GuidedAssistantAnswersCollectionId);
                 if (savedAnswersDoc == null || savedAnswersDoc.AnswersDocId == default(Guid))
                 {
-                    return await dbService.CreateItemAsync(dbAnswers, dbSettings.UserResourcesCollectionId);
+                    return await dbService.CreateItemAsync(dbAnswers, dbSettings.GuidedAssistantAnswersCollectionId);
                 }
 
                 savedAnswersDoc.ButtonComponents.AddRange(dbAnswers.ButtonComponents);
                 savedAnswersDoc.FieldComponents.AddRange(dbAnswers.FieldComponents);
-                return await dbService.UpdateItemAsync(viewModelAnswer.AnswersDocId.ToString(), savedAnswersDoc, dbSettings.UserResourcesCollectionId);
+                return await dbService.UpdateItemAsync(viewModelAnswer.AnswersDocId.ToString(), savedAnswersDoc, dbSettings.GuidedAssistantAnswersCollectionId);
             }
             catch
             {
@@ -103,7 +103,7 @@ namespace Access2Justice.Api.BusinessLogic
             var currentComponent = curatedExperience.Components.Where(x => x.Buttons.Contains(currentButton)).FirstOrDefault();
             if (!string.IsNullOrWhiteSpace(currentComponent.Code.CodeAfter) && currentComponent.Code.CodeAfter.Contains(Tokens.GOTO))
             {
-                answers = await dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.UserResourcesCollectionId);
+                answers = await dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.GuidedAssistantAnswersCollectionId);
                 // get the answers so far - done
                 // get all the code in all the curated experience - to be done
                 var currentComponentLogic = ExtractLogic(currentComponent, answers);
@@ -128,7 +128,7 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 if (answers.AnswersDocId == default(Guid))
                 {
-                    answers = await dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.UserResourcesCollectionId);
+                    answers = await dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.GuidedAssistantAnswersCollectionId);
                 }
                 var currentComponentLogic = ExtractLogic(destinationComponent, answers);
                 if (currentComponentLogic != null)
