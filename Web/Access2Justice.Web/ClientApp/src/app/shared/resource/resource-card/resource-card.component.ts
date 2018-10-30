@@ -17,9 +17,8 @@ export class ResourceCardComponent implements OnInit {
   urlOrigin: string;
   applicationUrl: any = window.location.origin;
   resourceTypeList = [
+    'Articles',
     'Forms',
-    'Related Links',
-    'Essential Readings', 
     'Guided Assistant',
     'Organizations',
     'Videos',
