@@ -18,6 +18,8 @@ export class ResourceCardComponent implements OnInit {
   applicationUrl: any = window.location.origin;
   resourceTypeList = [
     'Forms',
+    'Related Links',
+    'Essential Readings', 
     'Guided Assistant',
     'Organizations',
     'Videos',

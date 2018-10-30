@@ -38,6 +38,24 @@
             <app-read-more [text]="resource.description" [maxLength]="240"></app-read-more>
           </div>
         </div>
+        <div *ngIf="resource.resourceType === 'Related Links'" class="media">
+          <div class="media-left no-print">
+            <img class="media-object" src="/assets/images/icons/related-links.svg" [alt]="resource.resourceType">
+          </div>
+          <div class="media-body">
+            <a [href]="resource.url"><h4 class="media-heading">{{resource.name}}</h4></a>
+            <div class="print-only">{{resource.url}}</div>
+          </div>
+        </div>
+        <div *ngIf="resource.resourceType === 'Essential Readings'" class="media">
+          <div class="media-left no-print">
+            <img class="media-object" src="/assets/images/icons/essential_readings.svg" [alt]="resource.resourceType">
+          </div>
+          <div class="media-body">
+            <a [href]="resource.url"><h4 class="media-heading">{{resource.name}}</h4></a>
+            <div class="print-only">{{resource.url}}</div>
+          </div>
+        </div>
         <div *ngIf="resource.resourceType === 'Topics'" class="media">
           <div class="media-left no-print">
             <img class="media-object" src="{{resource.icon}}" [alt]=resource.resourceType>
