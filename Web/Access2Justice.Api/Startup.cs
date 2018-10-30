@@ -73,6 +73,7 @@ namespace Access2Justice.Api
             services.AddSingleton<IPersonalizedPlanViewModelMapper, PersonalizedPlanViewModelMapper>();
             services.AddSingleton<IUserRoleBusinessLogic, UserRoleBusinessLogic>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<ISessionManager, SessionManager>();
 
             services.AddAuthentication(sharedOptions =>
             {

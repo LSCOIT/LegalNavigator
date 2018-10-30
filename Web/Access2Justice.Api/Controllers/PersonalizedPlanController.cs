@@ -1,14 +1,11 @@
-﻿using Access2Justice.Api.Authorization;
-using Access2Justice.Api.Interfaces;
+﻿using Access2Justice.Api.Interfaces;
 using Access2Justice.Api.ViewModels;
 using Access2Justice.Shared.A2JAuthor;
-using Access2Justice.Shared.Extensions;
 using Access2Justice.Shared.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using static Access2Justice.Api.Authorization.Permissions;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -17,11 +14,14 @@ namespace Access2Justice.Api.Controllers
     {
         private readonly IPersonalizedPlanBusinessLogic personalizedPlanBusinessLogic;
         private readonly ICuratedExperienceBusinessLogic curatedExperienceBusinessLogic;
+        private readonly ISessionManager sessionManager;
 
-        public PersonalizedPlanController(IPersonalizedPlanBusinessLogic personalizedPlan, ICuratedExperienceBusinessLogic curatedExperience)
+        public PersonalizedPlanController(IPersonalizedPlanBusinessLogic personalizedPlan, ICuratedExperienceBusinessLogic curatedExperience,
+            ISessionManager sessionManager)
         {
             this.personalizedPlanBusinessLogic = personalizedPlan;
             this.curatedExperienceBusinessLogic = curatedExperience;
+            this.sessionManager = sessionManager;
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Access2Justice.Api.Controllers
         public async Task<IActionResult> GeneratePersonalizedPlanAsync([FromQuery] Guid curatedExperienceId, [FromQuery] Guid answersDocId, [FromBody] Location location)
         {
             var personalizedPlan = await personalizedPlanBusinessLogic.GeneratePersonalizedPlanAsync(
-                RetrieveCachedCuratedExperience(curatedExperienceId), answersDocId, location);
+               sessionManager.RetrieveCachedCuratedExperience(curatedExperienceId, HttpContext), answersDocId, location);
 
             if (personalizedPlan == null)
             {
@@ -105,7 +105,7 @@ namespace Access2Justice.Api.Controllers
         [HttpPost("save")]
         public async Task<IActionResult> SavePersonalizedPlanAsync([FromBody] PersonalizedPlanViewModel personalizedPlan)
         {
-             // Todo:@Alaa i need the user claims here so i could update the user profile of the logged in user.
+            // Todo:@Alaa i need the user claims here so i could update the user profile of the logged in user.
             var newPlan = await personalizedPlanBusinessLogic.UpsertPersonalizedPlanAsync(personalizedPlan);
 
             if (newPlan == null)
@@ -114,19 +114,6 @@ namespace Access2Justice.Api.Controllers
             }
 
             return Ok(newPlan);
-        }
-
-        // Todo:@Alaa must refactor this, i copied it from the CuratedExperience controller for now to finish an end-to-end personalized plan
-        private CuratedExperience RetrieveCachedCuratedExperience(Guid id)
-        {
-            var cuExSession = HttpContext.Session.GetString(id.ToString());
-            if (string.IsNullOrWhiteSpace(cuExSession))
-            {
-                var rawCuratedExperience = curatedExperienceBusinessLogic.GetCuratedExperienceAsync(id).Result;
-                HttpContext.Session.SetObjectAsJson(id.ToString(), rawCuratedExperience);
-            }
-
-            return HttpContext.Session.GetObjectAsJson<CuratedExperience>(id.ToString());
         }
     }
 }
