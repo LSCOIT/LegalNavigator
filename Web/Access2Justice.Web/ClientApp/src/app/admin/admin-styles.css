@@ -3,7 +3,7 @@ h1 {
   border-bottom: 1px solid #0D3FBB;
 }
 
-h3 {
+h2 {
   background-color: #f4f4f4;
   padding: 20px 5px;
 }
@@ -22,8 +22,16 @@ textarea {
   min-height: 100px;
 }
 
+.sections {
+  border-bottom: 1px solid #7e7e7e;
+}
+
 .sections:last-child {
   border-bottom: none;
+}
+
+.subsections {
+  padding-bottom: 20px;
 }
 
 .box-shadow {
@@ -34,6 +42,10 @@ textarea {
 .description {
   margin-top: 20px;
   margin-bottom: 40px;
+}
+
+.upload-img {
+  padding: 3px;
 }
 
 @media only screen and (min-width : 768px) {

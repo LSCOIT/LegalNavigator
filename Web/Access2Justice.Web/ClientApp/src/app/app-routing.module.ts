@@ -23,6 +23,7 @@ import { CuratedExperienceResultComponent } from './guided-assistant/curated-exp
 import { ProfileResolver } from './app-resolver/profile-resolver.service';
 import { PrivacyPromiseAdminComponent } from './admin/privacy-promise/privacy-promise-admin.component';
 import { AdminComponent } from './admin/admin.component';
+import { AboutAdminComponent } from './admin/about/about-admin.component';
 
 const appRoutes: Routes = [
   { path: 'search', component: SearchResultsComponent, resolve: { cres: ProfileResolver } },
@@ -41,6 +42,7 @@ const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'privacy', component: PrivacyPromiseComponent },
   { path: 'admin', component: AdminComponent },
+  { path: 'admin/about', component: AboutAdminComponent },
   { path: 'admin/privacy', component: PrivacyPromiseAdminComponent },
   { path: 'profile', component: ProfileComponent, resolve: { cres: ProfileResolver } },
   { path: '', component: HomeComponent },
