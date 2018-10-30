@@ -16,16 +16,17 @@ namespace Access2Justice.Api.BusinessLogic
 		private readonly ICosmosDbSettings cosmosDbSettings;
 		private readonly IDynamicQueries dynamicQueries;
         private readonly ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic;
+        private readonly IBackendDatabaseService backendDatabaseService;
 
         public PersonalizedPlanViewModelMapper(ICosmosDbSettings cosmosDbSettings, IDynamicQueries dynamicQueries, 
-            ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic)
+            ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic, IBackendDatabaseService backendDatabaseService)
 		{
 			this.cosmosDbSettings = cosmosDbSettings;
 			this.dynamicQueries = dynamicQueries;
             this.topicsResourcesBusinessLogic = topicsResourcesBusinessLogic;
+            this.backendDatabaseService = backendDatabaseService;
         }
 
-         // Todo:@Alaa remove location
         public async Task<PersonalizedPlanViewModel> MapViewModel(UnprocessedPersonalizedPlan personalizedPlanStepsInScope)
 		{
             var actionPlan = new PersonalizedPlanViewModel();
@@ -47,30 +48,31 @@ namespace Access2Justice.Api.BusinessLogic
                     TopicId = Guid.Parse(topic.Id),
                     TopicName = topic.Name,
                     Icon = topic.Icon,
-                    // QuickLinks = GetQuickLinks(topic.QuickLinks), //Topic schema has changed, quick links should be displayed based on 'Essential Readings' resourceType.
+                    QuickLinks = await GetQuickLinks(topic.Id),
                     Steps = GetSteps(unprocessedTopic.UnprocessedSteps, resourceDetails)
 				});
 			}
-             // Todo:@Alaa any user profile work should be done here?
             actionPlan.PersonalizedPlanId = Guid.NewGuid();
 			actionPlan.IsShared = false;
 			return actionPlan;
 		}
 
-        private List<PlanQuickLink> GetQuickLinks(IEnumerable<QuickLinks> quickLinks)
+        private async Task<List<PlanQuickLink>> GetQuickLinks(string topicId)
         {
-            var planQuickLinks = new List<PlanQuickLink>();
-            foreach (var link in quickLinks)
+            var essentialReadings = await backendDatabaseService.GetItemsAsync<EssentialReading>(x => x.ResourceType == Constants.ReasourceTypes.EssentialReadings &&
+            x.TopicTags.Contains(new TopicTag { TopicTags = topicId }), cosmosDbSettings.ResourcesCollectionId);
+
+            var quickLinks = new List<PlanQuickLink>();
+            foreach (var item in essentialReadings)
             {
-                Uri.TryCreate(link.Urls, UriKind.RelativeOrAbsolute, out var url);
-                planQuickLinks.Add(new PlanQuickLink
+                quickLinks.Add(new PlanQuickLink
                 {
-                    Text = link.Text,
-                    Url = url
+                    Text = item.Name,
+                    Url = item.Url,
                 });
             }
 
-            return planQuickLinks;
+            return quickLinks;
         }
 
         private List<PlanStep> GetSteps(List<UnprocessedStep> unprocessedSteps, List<Resource> resourceDetails)
