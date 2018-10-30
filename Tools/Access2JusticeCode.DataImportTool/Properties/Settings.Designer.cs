@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Access2JusticeCode.DataImportTool.Properties
+namespace Access2Justice.DataImportTool.Properties
 {
 
 

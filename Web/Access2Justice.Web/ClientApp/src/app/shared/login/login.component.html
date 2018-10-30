@@ -5,7 +5,6 @@
   <a dropdownToggle (click)="false">
     <img *ngIf="login?.image?.source" class="nav-icon" [src]="blobUrl + login?.image?.source" aria-hidden="true" />
     {{userProfileName}}
-    <img class="dropdown-icon" src="/assets/images/small-icons/dropdown_arrow.svg" alt="signin dropdown icon" />
   </a>
   <ul (click)="onProfileOptionClick()" *dropdownMenu class="dropdown-menu">
     <li class="list-items">

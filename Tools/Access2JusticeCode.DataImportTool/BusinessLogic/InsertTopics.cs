@@ -1,5 +1,4 @@
-﻿using Access2Justice.Tools.Models;
-using DocumentFormat.OpenXml.Packaging;
+﻿using DocumentFormat.OpenXml.Packaging;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,22 +6,24 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using Spreadsheet = DocumentFormat.OpenXml.Spreadsheet;
-using System.Configuration;
+using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml;
+using Access2Justice.DataImportTool.Models;
 
-namespace Access2Justice.Tools.BusinessLogic
+namespace Access2Justice.DataImportTool.BusinessLogic
 {
     public class InsertTopics
     {
         public dynamic CreateJsonFromCSV(string filePath)
         {
             int recordNumber = 1;
-            Topic topic = new Topic();
+            Models.Topic topic = new Models.Topic();
             List<dynamic> topicsList = new List<dynamic>();
             List<dynamic> topics = new List<dynamic>();
             try
             {
                 using (SpreadsheetDocument spreadsheetDocument =
-                    SpreadsheetDocument.Open(filePath, false))
+                    SpreadsheetDocument.Open(filePath, true))
                 {
                     WorkbookPart workbookPart = spreadsheetDocument.WorkbookPart;
                     WorksheetPart worksheetPart = workbookPart.WorksheetParts.First();
@@ -39,12 +40,29 @@ namespace Access2Justice.Tools.BusinessLogic
                         string overview = string.Empty; string icon = string.Empty;
                         List<ParentTopicID> parentTopicIds = new List<ParentTopicID>();
                         List<Locations> locations = new List<Locations>();
-                        //List<QuickLinks> quickLinks = null;
+                        string topicIdCell = string.Empty;
+                        if (counter > 0)
+                        {
+                            var topicIdColumn = from a in keyValuePairs where a.Key == "Topic_ID*" select a.Value.First().ToString();
+                            if (topicIdColumn.Count() > 0)
+                            {
+                                topicIdCell = topicIdColumn.First();
+                            }
+                        }
 
                         foreach (Spreadsheet.Cell cell in row.Elements<Spreadsheet.Cell>())
                         {
                             cellValue = cell.InnerText;
-                            if (!string.IsNullOrEmpty(cellValue))
+                            if (string.IsNullOrEmpty(cellValue))
+                            {
+                                if (!string.IsNullOrEmpty(topicIdCell) && cell.CellReference == string.Concat(topicIdCell + row.RowIndex))
+                                {
+                                    cell.CellValue = new CellValue(Guid.NewGuid().ToString());
+                                    cell.DataType = new EnumValue<CellValues>(CellValues.String);
+                                    workbookPart.Workbook.Save();
+                                }
+                            }
+                            else if (!string.IsNullOrEmpty(cellValue))
                             {
                                 string cellActualValue = string.Empty;
                                 if (cell.DataType == Spreadsheet.CellValues.SharedString)
@@ -139,17 +157,7 @@ namespace Access2Justice.Tools.BusinessLogic
                                         {
                                             overview = FormatData(cellActualValue);
                                         }
-
-                                        //else if (val.EndsWith("Personalized_Plan_Quick_Links_URL_text", StringComparison.CurrentCultureIgnoreCase))
-                                        //{
-                                        //    quickLinkURLText = FormatData(cellActualValue);
-                                        //}
-
-                                        //else if (val.EndsWith("Personalized_Plan_Quick_Links_URL_link", StringComparison.CurrentCultureIgnoreCase))
-                                        //{
-                                        //    quickLinkURLLink = FormatData(cellActualValue);
-                                        //}
-
+                                        
                                         else if (val.EndsWith("Icon", StringComparison.CurrentCultureIgnoreCase))
                                         {
                                             icon = cellActualValue;
@@ -161,14 +169,12 @@ namespace Access2Justice.Tools.BusinessLogic
 
                         if (counter > 0)
                         {
-                            //quickLinks = GetQuickLinks(quickLinkURLText, quickLinkURLLink);
                             locations = GetLocations(state, county, city, zipcode);
-                            topic = new Topic()
+                            topic = new Models.Topic()
                             {
                                 Id = (string.IsNullOrEmpty(id)|| string.IsNullOrWhiteSpace(id)) ? Guid.NewGuid() : id,
                                 Name = name,
                                 Overview = overview,
-                                //QuickLinks = quickLinks,
                                 ParentTopicId = parentTopicIds.Count > 0 ? parentTopicIds : null,
                                 ResourceType = "Topics",
                                 Keywords = keywords,

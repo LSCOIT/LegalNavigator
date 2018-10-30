@@ -22,12 +22,14 @@ export class Global {
   isLoggedIn: boolean = false;
   topicsData: any;
   organizationsData: any;
+  roleInformation: any;
 
   constructor() { }
 
-  setProfileData(oId: string, name: string, eMail: string) {
+  setProfileData(oId: string, name: string, eMail: string, roleInformation: any) {
     this.userId = oId;
     this.userName = name ? name : eMail;
+    this.roleInformation = roleInformation;
     this.isLoggedIn = true;
   }
 

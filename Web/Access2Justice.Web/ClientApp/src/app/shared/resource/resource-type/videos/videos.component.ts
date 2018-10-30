@@ -16,7 +16,8 @@ export class VideosComponent implements OnInit {
   }
 
   resourceUrl(url) {
-    this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    this.url = url.replace("watch?v=", "embed/");
+    this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.url);
   }
 
   ngOnInit() {

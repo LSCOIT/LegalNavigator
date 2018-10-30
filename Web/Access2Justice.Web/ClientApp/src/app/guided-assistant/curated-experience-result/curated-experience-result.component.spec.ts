@@ -4,6 +4,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NavigateDataService } from '../../shared/navigate-data.service';
 import { ToastrService } from 'ngx-toastr';
 import { By } from '@angular/platform-browser';
+import { Router } from '@angular/router';
+import { MapService } from '../../shared/map/map.service';
 
 describe('CuratedExperienceResultComponent', () => {
   let component: CuratedExperienceResultComponent;
@@ -11,10 +13,11 @@ describe('CuratedExperienceResultComponent', () => {
   let mockToastr;
   let mockNavigateDataService;
   let mockGuidedAssistantResults;
-
+  let mockRouter;
   beforeEach(async(() => { 
     mockNavigateDataService = jasmine.createSpyObj(['getData']);
     mockToastr = jasmine.createSpyObj(['success']);
+    mockRouter = jasmine.createSpyObj(['navigateByUrl']);
     mockGuidedAssistantResults = {
       "topIntent": "Divorce",
       "relevantIntents": [
@@ -32,7 +35,8 @@ describe('CuratedExperienceResultComponent', () => {
       schemas: [ NO_ERRORS_SCHEMA ],
       providers: [ 
         { provide: NavigateDataService, useValue: mockNavigateDataService},
-        { provide: ToastrService, useValue: mockToastr }
+        { provide: ToastrService, useValue: mockToastr },
+        { provide: Router, useValue: mockRouter }, MapService
       ]
     })
     .compileComponents();

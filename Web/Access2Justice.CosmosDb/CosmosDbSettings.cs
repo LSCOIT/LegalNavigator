@@ -15,8 +15,8 @@ namespace Access2Justice.CosmosDb
                 if (kvConfiguration != null)
                 {
                     IKeyVaultSettings kv = new Access2Justice.Shared.Utilities.KeyVaultSettings(kvConfiguration);
-                    var kvSecret = kv.GetKeyVaultSecrets("CosmosDbAuthKey");                    
-                    kvSecret.Wait();                    
+                    var kvSecret = kv.GetKeyVaultSecrets("CosmosDbAuthKey");
+                    kvSecret.Wait();          
                     AuthKey = kvSecret.Result;
                 }
                 else
@@ -25,18 +25,17 @@ namespace Access2Justice.CosmosDb
                 }
                 Endpoint = new Uri(configuration.GetSection("Endpoint").Value);
                 DatabaseId = configuration.GetSection("DatabaseId").Value;
-                TopicCollectionId = configuration.GetSection("TopicCollectionId").Value;
-                ResourceCollectionId = configuration.GetSection("ResourceCollectionId").Value;
-                UserProfileCollectionId = configuration.GetSection("UserProfileCollectionId").Value;
+                TopicsCollectionId = configuration.GetSection("TopicsCollectionId").Value;
+                ResourcesCollectionId = configuration.GetSection("ResourcesCollectionId").Value;
+                ProfilesCollectionId = configuration.GetSection("ProfilesCollectionId").Value;
                 PageResultsCount = int.Parse(configuration.GetSection("PageResultsCount").Value, CultureInfo.InvariantCulture);
-                CuratedExperienceCollectionId = configuration.GetSection("CuratedExperienceCollectionId").Value;
-                CuratedExperienceAnswersCollectionId = configuration.GetSection("CuratedExperienceAnswersCollectionId").Value;
-                PersonalizedActionPlanCollectionId = configuration.GetSection("PersonalizedActionPlanCollectionId").Value;
-                StaticResourceCollectionId = configuration.GetSection("StaticResourceCollectionId").Value;
-                UserSavedResourcesCollectionId = configuration.GetSection("UserSavedResourcesCollectionId").Value;
-                UserResourceCollectionId = configuration.GetSection("UserResourceCollectionId").Value;
-                A2JAuthorTemplatesCollectionId = configuration.GetSection("A2JAuthorTemplatesCollectionId").Value;
-                UserRoleCollectionId = configuration.GetSection("UserRoleCollectionId").Value;
+                CuratedExperiencesCollectionId = configuration.GetSection("CuratedExperiencesCollectionId").Value;
+                ActionPlansCollectionId = configuration.GetSection("ActionPlansCollectionId").Value;
+                StaticResourcesCollectionId = configuration.GetSection("StaticResourcesCollectionId").Value;
+                UserResourcesCollectionId = configuration.GetSection("UserResourcesCollectionId").Value;
+                A2JAuthorDocsCollectionId = configuration.GetSection("A2JAuthorDocsCollectionId").Value;
+                RolesCollectionId = configuration.GetSection("RolesCollectionId").Value;
+                GuidedAssistantAnswersCollectionId = configuration.GetSection("GuidedAssistantAnswersCollectionId").Value;
             }
             catch(Exception ex)
             {
@@ -46,17 +45,19 @@ namespace Access2Justice.CosmosDb
         public string AuthKey { get; private set; }
         public Uri Endpoint { get; private set; }
         public string DatabaseId { get; private set; }
-        public string TopicCollectionId { get; private set; }
-        public string ResourceCollectionId { get; private set; }
+        public string TopicsCollectionId { get; private set; }
+        public string ResourcesCollectionId { get; private set; }
         public int PageResultsCount { get; private set; }
-        public string UserProfileCollectionId { get; private set; }
-        public string CuratedExperienceCollectionId { get; private set; }
+        public string ProfilesCollectionId { get; private set; }
+        public string CuratedExperiencesCollectionId { get; private set; }
         public string CuratedExperienceAnswersCollectionId { get; private set; }
-        public string PersonalizedActionPlanCollectionId { get; private set; }
-        public string StaticResourceCollectionId { get; private set; }
+        public string ActionPlansCollectionId { get; private set; }
+        public string StaticResourcesCollectionId { get; private set; }
         public string UserSavedResourcesCollectionId { get; private set; }
-        public string UserResourceCollectionId { get; private set; }
-        public string A2JAuthorTemplatesCollectionId { get; private set; }
-        public string UserRoleCollectionId { get; private set; }
+        public string UserResourcesCollectionId { get; private set; }
+        public string A2JAuthorDocsCollectionId { get; private set; }
+        public string RolesCollectionId { get; private set; }
+        public string GuidedAssistantAnswersCollectionId { get; private set; }
+        
     }
 }

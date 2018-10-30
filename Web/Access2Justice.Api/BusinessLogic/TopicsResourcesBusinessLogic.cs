@@ -25,6 +25,71 @@ namespace Access2Justice.Api.BusinessLogic
             dbService = backendDatabaseService;
         }
 
+        public async Task<Topic> GetTopic(string topicName, Location location)
+        {
+            try
+            {
+                List<dynamic> topics = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.TopicsCollectionId, Constants.Name, topicName, location);
+
+                if (!topics.Any())
+                {
+                    throw new Exception($"No topic found with this name: {topicName}");
+                }
+
+                return JsonUtilities.DeserializeDynamicObject<Topic>(topics.FirstOrDefault());
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task<dynamic> GetTopicsAsync(string keyword, Location location)
+        {
+            return await dbClient.FindItemsWhereContainsWithLocationAsync(dbSettings.TopicsCollectionId, "keywords", keyword, location);
+        }
+
+        public async Task<dynamic> GetTopLevelTopicsAsync(Location location)
+        {
+            return await dbClient.FindItemsWhereWithLocationAsync(dbSettings.TopicsCollectionId, Constants.ParentTopicId, "", location);
+        }
+
+        public async Task<dynamic> GetSubTopicsAsync(TopicInput topicInput)
+        {
+            if (topicInput.IsShared)
+            {
+                return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.TopicsCollectionId, Constants.ParentTopicId, Constants.Id, topicInput.Id);
+            }
+            else
+            {
+                return await dbClient.FindItemsWhereArrayContainsAsyncWithLocation(dbSettings.TopicsCollectionId, Constants.ParentTopicId, Constants.Id, topicInput.Id, topicInput.Location);
+            }
+        }
+
+        public async Task<dynamic> GetResourceByIdAsync(TopicInput topicInput)
+        {
+            if (topicInput.IsShared)
+            {
+                return await dbClient.FindItemsWhereAsync(dbSettings.ResourcesCollectionId, Constants.Id, topicInput.Id);
+            }
+            else
+            {
+                return await dbClient.FindItemsWhereWithLocationAsync(dbSettings.ResourcesCollectionId, Constants.Id, topicInput.Id, topicInput.Location);
+            }
+        }
+
+        public async Task<dynamic> GetResourceAsync(TopicInput topicInput)
+        {
+            if (topicInput.IsShared)
+            {
+                return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourcesCollectionId, Constants.TopicTags, Constants.Id, topicInput.Id);
+            }
+            else
+            {
+                return await dbClient.FindItemsWhereArrayContainsAsyncWithLocation(dbSettings.ResourcesCollectionId, Constants.TopicTags, Constants.Id, topicInput.Id, topicInput.Location);
+            }
+        }
+
         public async Task<dynamic> GetResourcesAsync(dynamic topics)
         {
             var ids = new List<string>();
@@ -33,76 +98,30 @@ namespace Access2Justice.Api.BusinessLogic
                 string topicId = topic.id;
                 ids.Add(topicId);
             }
-            return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourceCollectionId, Constants.TopicTags, Constants.Id, ids);
-        }
-
-        public async Task<dynamic> GetTopicsAsync(string keyword, Location location)
-        {
-            return await dbClient.FindItemsWhereContainsWithLocationAsync(dbSettings.TopicCollectionId, "keywords", keyword, location);
-        }
-
-        public async Task<dynamic> GetTopLevelTopicsAsync(Location location)
-        {
-            return await dbClient.FindItemsWhereWithLocationAsync(dbSettings.TopicCollectionId, Constants.ParentTopicId, "", location);
-        }
-
-        public async Task<dynamic> GetSubTopicsAsync(TopicInput topicInput)
-        {
-            if (topicInput.IsShared)
-            {
-                return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.TopicCollectionId, Constants.ParentTopicId, Constants.Id, topicInput.Id);
-            }
-            else
-            {
-                return await dbClient.FindItemsWhereArrayContainsAsyncWithLocation(dbSettings.TopicCollectionId, Constants.ParentTopicId, Constants.Id, topicInput.Id, topicInput.Location);
-            }
-        }
-
-        public async Task<dynamic> GetResourceByIdAsync(TopicInput topicInput)
-        {
-            if (topicInput.IsShared)
-            {
-                return await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, Constants.Id, topicInput.Id);
-            }
-            else
-            {
-                return await dbClient.FindItemsWhereWithLocationAsync(dbSettings.ResourceCollectionId, Constants.Id, topicInput.Id, topicInput.Location);
-            }
-        }
-
-        public async Task<dynamic> GetResourceAsync(TopicInput topicInput)
-        {
-            if (topicInput.IsShared)
-            {
-                return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourceCollectionId, Constants.TopicTags, Constants.Id, topicInput.Id);
-            }
-            else
-            {
-                return await dbClient.FindItemsWhereArrayContainsAsyncWithLocation(dbSettings.ResourceCollectionId, Constants.TopicTags, Constants.Id, topicInput.Id, topicInput.Location);
-            }
+            return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourcesCollectionId, Constants.TopicTags, Constants.Id, ids);
         }
 
         public async Task<dynamic> GetDocumentAsync(TopicInput topicInput)
         {
             if (topicInput.IsShared)
             {
-                return await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.Id, topicInput.Id);
+                return await dbClient.FindItemsWhereAsync(dbSettings.TopicsCollectionId, Constants.Id, topicInput.Id);
             }
             else
             {
-                return await dbClient.FindItemsWhereWithLocationAsync(dbSettings.TopicCollectionId, Constants.Id, topicInput.Id, topicInput.Location);
+                return await dbClient.FindItemsWhereWithLocationAsync(dbSettings.TopicsCollectionId, Constants.Id, topicInput.Id, topicInput.Location);
             }
         }
 
         public async Task<dynamic> GetBreadcrumbDataAsync(string id)
         {
             List<dynamic> procedureParams = new List<dynamic>() { id };
-            return await dbService.ExecuteStoredProcedureAsync(dbSettings.TopicCollectionId, Constants.BreadcrumbStoredProcedureName, procedureParams);
+            return await dbService.ExecuteStoredProcedureAsync(dbSettings.TopicsCollectionId, Constants.BreadcrumbStoredProcedureName, procedureParams);
         }
 
         public async Task<dynamic> GetTopicDetailsAsync(string topicName)
         {
-            var result = await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.Name, topicName);
+            var result = await dbClient.FindItemsWhereAsync(dbSettings.TopicsCollectionId, Constants.Name, topicName);
             return result;
         }
 
@@ -110,7 +129,7 @@ namespace Access2Justice.Api.BusinessLogic
         {
             List<string> propertyNames = new List<string>() { Constants.Name, Constants.ResourceType };
             List<string> values = new List<string>() { resourceName, resourceType };
-            var result = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, propertyNames, values);
+            var result = await dbClient.FindItemsWhereAsync(dbSettings.ResourcesCollectionId, propertyNames, values);
             return result;
         }
 
@@ -319,30 +338,6 @@ namespace Access2Justice.Api.BusinessLogic
             return parentTopicIds;
         }
 
-        //public dynamic GetQuickLinks(dynamic quickLinksValues)
-        //{
-        //    List<QuickLinks> quickLinks = new List<QuickLinks>();
-        //    foreach (var quickLink in quickLinksValues)
-        //    {
-        //        string text = string.Empty;
-        //        string url = string.Empty;
-        //        foreach (JProperty quickLinkDetails in quickLink)
-        //        {
-        //            if (quickLinkDetails.Name == "text")
-        //            {
-        //                text = quickLinkDetails.Value.ToString();
-        //            }
-
-        //            else if (quickLinkDetails.Name == "url")
-        //            {
-        //                url = quickLinkDetails.Value.ToString();
-        //            }
-        //        }
-        //        quickLinks.Add(new QuickLinks { Text = text, Urls = url });
-        //    }
-        //    return quickLinks;
-        //}
-
         public dynamic GetReviewer(dynamic reviewerValues)
         {
             List<OrganizationReviewer> organizationReviewer = new List<OrganizationReviewer>();
@@ -430,15 +425,15 @@ namespace Access2Justice.Api.BusinessLogic
                     var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(forms);
                     List<string> propertyNames = new List<string>() { Constants.Id, Constants.ResourceType };
                     List<string> values = new List<string>() { id, resourceType };
-                    var resourceDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, propertyNames, values);
+                    var resourceDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourcesCollectionId, propertyNames, values);
                     if (resourceDBData.Count == 0)
                     {
-                        var result = await dbService.CreateItemAsync(resourceDocument, dbSettings.ResourceCollectionId);
+                        var result = await dbService.CreateItemAsync(resourceDocument, dbSettings.ResourcesCollectionId);
                         resources.Add(result);
                     }
                     else
                     {
-                        var result = await dbService.UpdateItemAsync(id, resourceDocument, dbSettings.ResourceCollectionId);
+                        var result = await dbService.UpdateItemAsync(id, resourceDocument, dbSettings.ResourcesCollectionId);
                         resources.Add(result);
                     }
                 }
@@ -449,15 +444,15 @@ namespace Access2Justice.Api.BusinessLogic
                     var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(actionPlans);
                     List<string> propertyNames = new List<string>() { Constants.Id, Constants.ResourceType };
                     List<string> values = new List<string>() { id, resourceType };
-                    var resourceDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, propertyNames, values);
+                    var resourceDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourcesCollectionId, propertyNames, values);
                     if (resourceDBData.Count == 0)
                     {
-                        var result = await dbService.CreateItemAsync(resourceDocument, dbSettings.ResourceCollectionId);
+                        var result = await dbService.CreateItemAsync(resourceDocument, dbSettings.ResourcesCollectionId);
                         resources.Add(result);
                     }
                     else
                     {
-                        var result = await dbService.UpdateItemAsync(id, resourceDocument, dbSettings.ResourceCollectionId);
+                        var result = await dbService.UpdateItemAsync(id, resourceDocument, dbSettings.ResourcesCollectionId);
                         resources.Add(result);
                     }
                 }
@@ -468,15 +463,15 @@ namespace Access2Justice.Api.BusinessLogic
                     var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(articles);
                     List<string> propertyNames = new List<string>() { Constants.Id, Constants.ResourceType };
                     List<string> values = new List<string>() { id, resourceType };
-                    var resourceDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, propertyNames, values);
+                    var resourceDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourcesCollectionId, propertyNames, values);
                     if (resourceDBData.Count == 0)
                     {
-                        var result = await dbService.CreateItemAsync(resourceDocument, dbSettings.ResourceCollectionId);
+                        var result = await dbService.CreateItemAsync(resourceDocument, dbSettings.ResourcesCollectionId);
                         resources.Add(result);
                     }
                     else
                     {
-                        var result = await dbService.UpdateItemAsync(id, resourceDocument, dbSettings.ResourceCollectionId);
+                        var result = await dbService.UpdateItemAsync(id, resourceDocument, dbSettings.ResourcesCollectionId);
                         resources.Add(result);
                     }
                 }
@@ -487,15 +482,15 @@ namespace Access2Justice.Api.BusinessLogic
                     var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(videos);
                     List<string> propertyNames = new List<string>() { Constants.Id, Constants.ResourceType };
                     List<string> values = new List<string>() { id, resourceType };
-                    var resourceDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, propertyNames, values);
+                    var resourceDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourcesCollectionId, propertyNames, values);
                     if (resourceDBData.Count == 0)
                     {
-                        var result = await dbService.CreateItemAsync(resourceDocument, dbSettings.ResourceCollectionId);
+                        var result = await dbService.CreateItemAsync(resourceDocument, dbSettings.ResourcesCollectionId);
                         resources.Add(result);
                     }
                     else
                     {
-                        var result = await dbService.UpdateItemAsync(id, resourceDocument, dbSettings.ResourceCollectionId);
+                        var result = await dbService.UpdateItemAsync(id, resourceDocument, dbSettings.ResourcesCollectionId);
                         resources.Add(result);
                     }
                 }
@@ -506,15 +501,15 @@ namespace Access2Justice.Api.BusinessLogic
                     var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(organizations);
                     List<string> propertyNames = new List<string>() { Constants.Id, Constants.ResourceType };
                     List<string> values = new List<string>() { id, resourceType };
-                    var resourceDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, propertyNames, values);
+                    var resourceDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourcesCollectionId, propertyNames, values);
                     if (resourceDBData.Count == 0)
                     {
-                        var result = await dbService.CreateItemAsync(resourceDocument, dbSettings.ResourceCollectionId);
+                        var result = await dbService.CreateItemAsync(resourceDocument, dbSettings.ResourcesCollectionId);
                         resources.Add(result);
                     }
                     else
                     {
-                        var result = await dbService.UpdateItemAsync(id, resourceDocument, dbSettings.ResourceCollectionId);
+                        var result = await dbService.UpdateItemAsync(id, resourceDocument, dbSettings.ResourcesCollectionId);
                         resources.Add(result);
                     }
                 }
@@ -525,15 +520,15 @@ namespace Access2Justice.Api.BusinessLogic
                     var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(essentialReadings);
                     List<string> propertyNames = new List<string>() { Constants.Id, Constants.ResourceType };
                     List<string> values = new List<string>() { id, resourceType };
-                    var resourceDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, propertyNames, values);
+                    var resourceDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourcesCollectionId, propertyNames, values);
                     if (resourceDBData.Count == 0)
                     {
-                        var result = await dbService.CreateItemAsync(resourceDocument, dbSettings.ResourceCollectionId);
+                        var result = await dbService.CreateItemAsync(resourceDocument, dbSettings.ResourcesCollectionId);
                         resources.Add(result);
                     }
                     else
                     {
-                        var result = await dbService.UpdateItemAsync(id, resourceDocument, dbSettings.ResourceCollectionId);
+                        var result = await dbService.UpdateItemAsync(id, resourceDocument, dbSettings.ResourcesCollectionId);
                         resources.Add(result);
                     }
                 }
@@ -544,15 +539,15 @@ namespace Access2Justice.Api.BusinessLogic
                     var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(relatedLinks);
                     List<string> propertyNames = new List<string>() { Constants.Id, Constants.ResourceType };
                     List<string> values = new List<string>() { id, resourceType };
-                    var resourceDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourceCollectionId, propertyNames, values);
+                    var resourceDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourcesCollectionId, propertyNames, values);
                     if (resourceDBData.Count == 0)
                     {
-                        var result = await dbService.CreateItemAsync(resourceDocument, dbSettings.ResourceCollectionId);
+                        var result = await dbService.CreateItemAsync(resourceDocument, dbSettings.ResourcesCollectionId);
                         resources.Add(result);
                     }
                     else
                     {
-                        var result = await dbService.UpdateItemAsync(id, resourceDocument, dbSettings.ResourceCollectionId);
+                        var result = await dbService.UpdateItemAsync(id, resourceDocument, dbSettings.ResourcesCollectionId);
                         resources.Add(result);
                     }
                 }
@@ -577,7 +572,6 @@ namespace Access2Justice.Api.BusinessLogic
                 ResourceCategory = resourceObject.resourceCategory,
                 Description = resourceObject.description,
                 ResourceType = resourceObject.resourceType,
-                ExternalUrls = resourceObject.externalUrl,
                 Urls = resourceObject.url,
                 TopicTags = topicTags,
                 OrganizationalUnit = resourceObject.organizationalUnit,
@@ -610,7 +604,6 @@ namespace Access2Justice.Api.BusinessLogic
                 ResourceCategory = resourceObject.resourceCategory,
                 Description = resourceObject.description,
                 ResourceType = resourceObject.resourceType,
-                ExternalUrls = resourceObject.externalUrl,
                 Urls = resourceObject.url,
                 TopicTags = topicTags,
                 OrganizationalUnit = resourceObject.organizationalUnit,
@@ -642,7 +635,6 @@ namespace Access2Justice.Api.BusinessLogic
                 ResourceCategory = resourceObject.resourceCategory,
                 Description = resourceObject.description,
                 ResourceType = resourceObject.resourceType,
-                ExternalUrls = resourceObject.externalUrl,
                 Urls = resourceObject.url,
                 TopicTags = topicTags,
                 OrganizationalUnit = resourceObject.organizationalUnit,
@@ -673,7 +665,6 @@ namespace Access2Justice.Api.BusinessLogic
                 ResourceCategory = resourceObject.resourceCategory,
                 Description = resourceObject.description,
                 ResourceType = resourceObject.resourceType,
-                ExternalUrls = resourceObject.externalUrl,
                 Urls = resourceObject.url,
                 TopicTags = topicTags,
                 OrganizationalUnit = resourceObject.organizationalUnit,
@@ -705,7 +696,6 @@ namespace Access2Justice.Api.BusinessLogic
                 ResourceCategory = resourceObject.resourceCategory,
                 Description = resourceObject.description,                
                 ResourceType = resourceObject.resourceType,
-                ExternalUrls = resourceObject.externalUrl,
                 Urls = resourceObject.url,
                 TopicTags = topicTags,
                 OrganizationalUnit = resourceObject.organizationalUnit,
@@ -742,7 +732,6 @@ namespace Access2Justice.Api.BusinessLogic
                 ResourceCategory = resourceObject.resourceCategory,
                 Description = resourceObject.description,
                 ResourceType = resourceObject.resourceType,
-                ExternalUrls = resourceObject.externalUrl,
                 Urls = resourceObject.url,
                 TopicTags = topicTags,
                 OrganizationalUnit = resourceObject.organizationalUnit,
@@ -771,7 +760,6 @@ namespace Access2Justice.Api.BusinessLogic
                 ResourceCategory = resourceObject.resourceCategory,
                 Description = resourceObject.description,
                 ResourceType = resourceObject.resourceType,
-                ExternalUrls = resourceObject.externalUrl,
                 Urls = resourceObject.url,
                 TopicTags = topicTags,
                 OrganizationalUnit = resourceObject.organizationalUnit,
@@ -808,16 +796,16 @@ namespace Access2Justice.Api.BusinessLogic
                 string id = topicObject.id;
                 topicdocuments = UpsertTopics(topicObject);
                 var topicDocument = JsonUtilities.DeserializeDynamicObject<object>(topicdocuments);
-                var topicDBData = await dbClient.FindItemsWhereAsync(dbSettings.TopicCollectionId, Constants.Id, id);
+                var topicDBData = await dbClient.FindItemsWhereAsync(dbSettings.TopicsCollectionId, Constants.Id, id);
 
                 if (topicDBData.Count == 0)
                 {
-                    var result = await dbService.CreateItemAsync(topicDocument, dbSettings.TopicCollectionId);
+                    var result = await dbService.CreateItemAsync(topicDocument, dbSettings.TopicsCollectionId);
                     topics.Add(result);
                 }
                 else
                 {
-                    var result = await dbService.UpdateItemAsync(id, topicDocument, dbSettings.TopicCollectionId);
+                    var result = await dbService.UpdateItemAsync(id, topicDocument, dbSettings.TopicsCollectionId);
                     topics.Add(result);
                 }                
             }
@@ -857,11 +845,11 @@ namespace Access2Justice.Api.BusinessLogic
             dynamic Resources = Array.Empty<string>();
             if (resourceFilter.TopicIds != null && resourceFilter.TopicIds.Count() > 0)
             {
-                Topics = await dbClient.FindItemsWhereInClauseAsync(dbSettings.TopicCollectionId, "id", resourceFilter.TopicIds) ?? Array.Empty<string>();
+                Topics = await dbClient.FindItemsWhereInClauseAsync(dbSettings.TopicsCollectionId, "id", resourceFilter.TopicIds) ?? Array.Empty<string>();
             }
             if (resourceFilter.ResourceIds != null && resourceFilter.ResourceIds.Count() > 0)
             {
-                Resources = await dbClient.FindItemsWhereInClauseAsync(dbSettings.ResourceCollectionId, "id", resourceFilter.ResourceIds) ?? Array.Empty<string>();
+                Resources = await dbClient.FindItemsWhereInClauseAsync(dbSettings.ResourcesCollectionId, "id", resourceFilter.ResourceIds) ?? Array.Empty<string>();
             }
             Topics = JsonConvert.SerializeObject(Topics);
             Resources = JsonConvert.SerializeObject(Resources);
@@ -875,12 +863,12 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<dynamic> GetOrganizationsAsync(Location location)
         {
-            return await dbClient.FindItemsWhereContainsWithLocationAsync(dbSettings.ResourceCollectionId, Constants.ResourceType, Constants.Organization, location);
+            return await dbClient.FindItemsWhereContainsWithLocationAsync(dbSettings.ResourcesCollectionId, Constants.ResourceType, Constants.Organization, location);
         }
 
         public async Task<dynamic> GetAllTopics()
         {
-            return await dbClient.FindItemsAllAsync(dbSettings.TopicCollectionId);
+            return await dbClient.FindItemsAllAsync(dbSettings.TopicsCollectionId);
         }
     }
 }

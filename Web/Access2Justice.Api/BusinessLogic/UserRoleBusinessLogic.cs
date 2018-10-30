@@ -40,7 +40,7 @@ namespace Access2Justice.Api.BusinessLogic
             if (userProfile?.RoleInformationId.Count() > 0)
             {
                 var roleIdsList = userProfile.RoleInformationId.Select(x => x.ToString()).ToList().Distinct();
-                var permissionData = await dbClient.FindItemsWhereInClauseAsync(dbSettings.UserRoleCollectionId, Constants.Id, roleIdsList);
+                var permissionData = await dbClient.FindItemsWhereInClauseAsync(dbSettings.RolesCollectionId, Constants.Id, roleIdsList);
                 List<Role> userRole = JsonUtilities.DeserializeDynamicObject<List<Role>>(permissionData);
                 return userRole.SelectMany(x => x.Permissions).Distinct().ToList();
             }
@@ -74,8 +74,7 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<bool> ValidateOUForRole(List<string> roleInformationId, string ou)
         {
-            var roleData = await dbClient.FindItemsWhereInClauseAsync(dbSettings.UserRoleCollectionId, Constants.Id, roleInformationId);
-            List<Role> userRole = JsonUtilities.DeserializeDynamicObject<List<Role>>(roleData);
+            List<Role> userRole = await dbUserProfile.GetRoleDetailsAsync(roleInformationId);
             if (userRole?.Count() > 0)
             {
                 List<string> roles = userRole.Select(x => x.RoleName).Distinct().ToList();

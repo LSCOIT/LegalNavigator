@@ -1,10 +1,10 @@
 <div class="row">
+  <h2>{{resource.name}}</h2>
+  <p>{{resource.overview}}</p>
   <div class="col-md-8 col-sm-12">
-    <h2>{{resource.name}}</h2>
-    <p>{{resource.overview}}</p>
     <iframe [src]='this.safeUrl' frameborder="0" allowfullscreen></iframe>
   </div>
-  <div class="col-md-3 pull-right">
+  <div class="col-md-4 col-sm-12 pull-right">
     <div class="row">
       <app-guided-assistant-sidebar></app-guided-assistant-sidebar>
       <app-service-org-sidebar></app-service-org-sidebar>

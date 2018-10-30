@@ -11,7 +11,7 @@ export class AdminService {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
-    return this.httpClient.post(api.updatePrivacyData, input, httpOptions);
+    return this.httpClient.post(api.updatePrivacyDataUrl, input, httpOptions);
   }
 
 }

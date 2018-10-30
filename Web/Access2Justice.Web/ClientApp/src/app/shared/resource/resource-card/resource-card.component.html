@@ -53,8 +53,8 @@
             <img class="media-object" src="/assets/images/icons/action_plans.svg" [alt]=resource.resourceType>
           </div>
           <div class="media-body">
-            <a [routerLink]="['/guidedassistant', resource.externalUrl]"><h4 class="media-heading">{{resource.name}}</h4></a>
-            <div class="print-only">{{applicationUrl+'/guidedassistant'+'/'+resource.externalUrl}}</div>
+            <a [routerLink]="['/guidedassistant', resource.curatedExperienceId]"><h4 class="media-heading">{{resource.name}}</h4></a>
+            <div class="print-only">{{applicationUrl+'/guidedassistant'+'/'+resource.curatedExperienceId}}</div>
             <div class="media-body">
               <app-read-more [text]="resource.description" [maxLength]="240"></app-read-more>
             </div>
