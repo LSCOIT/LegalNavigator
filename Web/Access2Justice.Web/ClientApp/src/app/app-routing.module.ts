@@ -41,7 +41,7 @@ const appRoutes: Routes = [
   { path: 'help', component: HelpFaqsComponent },
   { path: 'home', component: HomeComponent },
   { path: 'privacy', component: PrivacyPromiseComponent },
-  { path: 'admin', component: AdminComponent },
+  { path: 'admin', component: AdminComponent, resolve: { cres: ProfileResolver } },
   { path: 'admin/about', component: AboutAdminComponent },
   { path: 'admin/privacy', component: PrivacyPromiseAdminComponent },
   { path: 'profile', component: ProfileComponent, resolve: { cres: ProfileResolver } },

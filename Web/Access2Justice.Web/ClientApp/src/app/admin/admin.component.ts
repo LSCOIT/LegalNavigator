@@ -22,6 +22,7 @@ export class AdminComponent implements OnInit {
   checkIfStateAdmin(roleInformation) {
     roleInformation.forEach(role => {
       if (role.roleName === 'StateAdmin') {
+        console.log("check if state admin");
         this.isStateAdmin = true;
         this.stateList.push(role.organizationalUnit);
       }
@@ -37,11 +38,7 @@ export class AdminComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.roleInformationSubscription =
-      this.global.notifyRoleInformation
-      .subscribe(value => {
-        this.checkIfStateAdmin(value);
-      });
+    this.checkIfStateAdmin(this.global.roleInformation);
   }
 
 }
