@@ -43,13 +43,10 @@ import { ResponseInterceptor } from './response-interceptor';
 import { Global } from './global';
 import { CuratedExperienceResultComponent } from './guided-assistant/curated-experience-result/curated-experience-result.component';
 import { ProfileResolver } from './app-resolver/profile-resolver.service';
-//import { MsalInterceptor } from '@azure/msal-angular';
+import { TokenInterceptor } from './token-interceptor';
 import { environment } from '../environments/environment';
 import { api } from '../api/api';
-import { TokenInterceptor } from './token-interceptor';
 
-//export const protectedResourceMap: [string, string[]][] = [[api.checkPermaLink, [environment.apiScope]], [api.shareUrl, [environment.apiScope]]
-//  , [api.unShareUrl, [environment.apiScope]], [api.userPlanUrl, [environment.apiScope]]] 
 
 @NgModule({
   declarations: [
@@ -91,8 +88,7 @@ import { TokenInterceptor } from './token-interceptor';
       consentScopes: environment.consentScopes,
       redirectUri: environment.redirectUri,
       navigateToLoginRequestUrl: environment.navigateToLoginRequestUrl,
-      postLogoutRedirectUri: environment.postLogoutRedirectUri
-      //protectedResourceMap: protectedResourceMap
+      postLogoutRedirectUri: environment.postLogoutRedirectUri      
     })
   ],
   providers: [
