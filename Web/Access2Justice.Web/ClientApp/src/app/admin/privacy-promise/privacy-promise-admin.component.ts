@@ -58,9 +58,7 @@ export class PrivacyPromiseAdminComponent implements OnInit {
     let params = {
       "description": privacyForm.value.pageDescription,
       "details": this.detailParams,
-      // Need to pass proper name, currently i have tested with name just to make sure not updating any proper data.
-      "name": "PrivacyPromisePageDummy3",
-      // need to check on this, Will there be any content mapped to multiple states.
+      "name": "PrivacyPromisePage",
       "location": [this.mapLocation],
       "image": this.privacyContent.image,
       "organizationalUnit": this.privacyContent.organizationalUnit

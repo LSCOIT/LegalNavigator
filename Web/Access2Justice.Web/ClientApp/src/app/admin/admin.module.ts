@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from '../app-routing.module';
+import { BsDropdownModule } from 'ngx-bootstrap';
 import { AdminComponent } from './admin.component';
 import { PrivacyPromiseAdminComponent } from './privacy-promise/privacy-promise-admin.component';
 import { AdminService } from './admin.service';
@@ -12,7 +13,8 @@ import { AboutAdminComponent } from './about/about-admin.component';
     CommonModule,
     FormsModule,
     AppRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BsDropdownModule.forRoot()
   ],
   declarations: [
     AdminComponent,
