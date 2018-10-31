@@ -59,7 +59,7 @@ export class UploadCuratedExperienceTemplateComponent implements OnInit {
             this.errorMessage = error
           }
           console.log(error);
-        );
+        });
     }
   }
 }
