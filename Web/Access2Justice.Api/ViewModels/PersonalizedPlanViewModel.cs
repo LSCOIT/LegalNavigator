@@ -49,16 +49,13 @@ namespace Access2Justice.Api.ViewModels
     public class PlanQuickLink
     {
         public string Text { get; set; }
-        public Uri Url { get; set; }
+        public string Url { get; set; }
     }
 
     public class PlanStep
     {
         [JsonProperty(PropertyName = "stepId")]
         public Guid StepId { get; set; }
-
-        [JsonProperty(PropertyName = "type")]
-        public string Type { get; set; }  // Todo: create an enum
 
         [JsonProperty(PropertyName = "title")]
         public string Title { get; set; }
