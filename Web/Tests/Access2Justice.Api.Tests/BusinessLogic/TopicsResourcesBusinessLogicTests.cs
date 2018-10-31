@@ -555,38 +555,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             //assert
             Assert.Equal(expectedCondition, actualCondition);
         }
-
-        //[Fact]
-        //public void GetQuickLinksTestsShouldReturnProperData()
-        //{
-        //    //arrange
-        //    var quickLinks = this.quickLinksData;
-
-        //    //act
-        //    var response = topicsResourcesBusinessLogic.GetQuickLinks(quickLinks);
-        //    var actualQuickLinks = JsonConvert.SerializeObject(response);
-        //    var expectedQuickLinks = JsonConvert.SerializeObject(expectedQuickLinksData);
-
-        //    //assert
-        //    Assert.Equal(expectedQuickLinks, actualQuickLinks);
-        //}
-
-        //[Fact]
-        //public void GetQuickLinksTestsShouldReturnEmptyData()
-        //{
-        //    //arrange
-        //    var quickLinks = this.emptyData;
-
-        //    //act
-        //    var response = topicsResourcesBusinessLogic.GetQuickLinks(quickLinks);
-        //    var actualQuickLink = JsonConvert.SerializeObject(response);
-        //    var expectedQuickLink = JsonConvert.SerializeObject(emptyQuickLinksData);
-
-        //    //assert
-        //    Assert.Equal(expectedQuickLink, actualQuickLink);
-        //}
-
-
+        
         [Fact]
         public void CreateResourceUploadAsyncTestsShouldReturnProperData()
         {
@@ -843,7 +812,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void UpsertResourcesExternalLinksTestsShouldReturnProperData()
+        public void UpsertResourcesRelatedLinksTestsShouldReturnProperData()
         {
             //arrange
             var relatedlLinkData = this.relatedLinkData[0];

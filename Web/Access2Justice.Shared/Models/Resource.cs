@@ -44,9 +44,6 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "location")]
         public IEnumerable<Location> Location { get; set; }
 
-        [JsonProperty(PropertyName = "icon")]
-        public string Icon { get; set; }
-
         [JsonProperty(PropertyName = "createdBy")]
         public string CreatedBy { get; set; }
 

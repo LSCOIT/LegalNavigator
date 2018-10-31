@@ -87,7 +87,7 @@ namespace Access2Justice.E2ETests.Features
             testRunner.CollectScenarioErrors();
         }
         
-        public virtual void SearchByPhrase(string phrase, string[] exampleTags)
+        public virtual void SearchByPhrase(string phrase, string state, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search by phrase", null, exampleTags);
 #line 6
@@ -95,16 +95,11 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
 #line 7
  testRunner.Given("I am on the Access2Justice website", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                        "State"});
-            table1.AddRow(new string[] {
-                        "Alaska"});
 #line 8
- testRunner.And("current state is set to", ((string)(null)), table1, "And ");
-#line 11
+ testRunner.And(string.Format("current state is set to {0}", state), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 9
  testRunner.When(string.Format("I type {0} into the search input field and click search button", phrase), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 12
+#line 10
  testRunner.Then("I can see search results", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -115,10 +110,11 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Search")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "I am getting a divorce")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Phrase", "I am getting a divorce")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:State", "Hawaii")]
         public virtual void SearchByPhrase_IAmGettingADivorce()
         {
 #line 6
-this.SearchByPhrase("I am getting a divorce", ((string[])(null)));
+this.SearchByPhrase("I am getting a divorce", "Hawaii", ((string[])(null)));
 #line hidden
         }
         
@@ -127,10 +123,11 @@ this.SearchByPhrase("I am getting a divorce", ((string[])(null)));
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Search")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "I am getting kicked out")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Phrase", "I am getting kicked out")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:State", "Hawaii")]
         public virtual void SearchByPhrase_IAmGettingKickedOut()
         {
 #line 6
-this.SearchByPhrase("I am getting kicked out", ((string[])(null)));
+this.SearchByPhrase("I am getting kicked out", "Hawaii", ((string[])(null)));
 #line hidden
         }
     }
