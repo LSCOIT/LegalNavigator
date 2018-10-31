@@ -28,6 +28,7 @@ import { ToastrService } from 'ngx-toastr';
 import { LoginService } from './shared/login/login.service';
 import { IUserProfile } from './shared/login/user-profile.model';
 import { TopicService } from './topics-resources/shared/topic.service';
+import { SaveButtonService } from './shared/resource/user-action/save-button/save-button.service';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -42,6 +43,8 @@ describe('AppComponent', () => {
   let mockLoginService;
   let mockUserData;
   let mockLoginResponse;
+  let mockPersonalizedPlanService;
+  let mockSaveButtonService;
 
   beforeEach(async(() => {
 
@@ -99,6 +102,8 @@ describe('AppComponent', () => {
     mockGlobal = jasmine.createSpyObj(['setData','setProfileData']);
     msalService = jasmine.createSpyObj(['getUser']);
     mockLoginService = jasmine.createSpyObj(['upsertUserProfile']);
+    mockPersonalizedPlanService = jasmine.createSpyObj(['saveResourcesToUserProfile']);
+    mockSaveButtonService = jasmine.createSpyObj(['getPlan']);
 
     TestBed.configureTestingModule({
       declarations: [
@@ -128,6 +133,8 @@ describe('AppComponent', () => {
         { provide: MSAL_CONFIG, useValue: {} },
         { provide: ToastrService, useValue: toastrService },
         { provide: LoginService, useValue: mockLoginService },
+        { provide: PersonalizedPlanService, useValue: mockPersonalizedPlanService },
+        { provide: SaveButtonService, useValue: mockSaveButtonService },
         NgxSpinnerService,
         BroadcastService,
         TopicService

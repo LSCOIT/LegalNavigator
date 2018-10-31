@@ -40,7 +40,7 @@ export class PersonalizedPlanService {
               private global: Global) { }
   
   getActionPlanConditions(planId): Observable<any> {
-    return this.http.get<PersonalizedPlan>(api.planUrl, planId);
+    return this.http.get<any>(api.planUrl, planId);
   }
 
   getUserSavedResources(params): Observable<any> {

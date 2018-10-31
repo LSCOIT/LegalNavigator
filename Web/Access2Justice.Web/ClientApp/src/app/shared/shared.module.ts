@@ -53,6 +53,7 @@ import { ShareButtonRouteComponent } from './resource/user-action/share-button/s
 import { ReadMoreComponent } from './read-more/read-more.component';
 import { LoginService } from './login/login.service';
 import { BrowserTabCloseComponent } from './browser-tab-close/browser-tab-close.component';
+import { SaveButtonService } from './resource/user-action/save-button/save-button.service';
 
 @NgModule({
   imports: [

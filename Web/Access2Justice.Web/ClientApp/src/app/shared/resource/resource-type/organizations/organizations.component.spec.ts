@@ -17,6 +17,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
 import { ToastrService } from 'ngx-toastr';
 import { MsalService } from '@azure/msal-angular';
+import { SaveButtonService } from '../../user-action/save-button/save-button.service';
 
 describe('OrganizationsComponent', () => {
   let component: OrganizationsComponent;
@@ -52,6 +53,7 @@ describe('OrganizationsComponent', () => {
   };
   let mockUrl = "https://www.microsoft.com/en-in/windows";
   let mockToastr;
+  let mockSaveButtonService;
   msalService = jasmine.createSpyObj(['getUser']);
   beforeEach(async(() => {
     mockBsModalService = jasmine.createSpyObj(['show']);
@@ -84,6 +86,7 @@ describe('OrganizationsComponent', () => {
         PersonalizedPlanService,
         { provide: ToastrService, useValue: mockToastr },
         { provide: MsalService, useValue: msalService },
+        { provide: SaveButtonService, useValue: mockSaveButtonService }
       ]
     })
       .compileComponents();

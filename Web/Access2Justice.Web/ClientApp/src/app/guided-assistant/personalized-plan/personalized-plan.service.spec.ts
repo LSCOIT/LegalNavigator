@@ -7,6 +7,7 @@ import { ArrayUtilityService } from '../../shared/array-utility.service';
 import { PersonalizedPlan, ProfileResources } from './personalized-plan';
 import { ToastrService } from 'ngx-toastr';
 import { Global } from '../../global';
+import { of } from 'rxjs/observable/of';
 
 describe('Service:PersonalizedPlan', () => {
   let mockPlanDetailsJson = {
@@ -383,7 +384,7 @@ describe('Service:PersonalizedPlan', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
       providers: [PersonalizedPlanService, ArrayUtilityService,
-        { provide: Global, useValue: { role: '', shareRouteUrl: '', userId:'UserId' } }]
+        { provide: Global, useValue: { global, role: '', shareRouteUrl: '', userId:'UserId' } }]
     });
     service = new PersonalizedPlanService(httpSpy, arrayUtilityService, toastrService, global);
     global = TestBed.get(Global);
@@ -405,7 +406,7 @@ describe('Service:PersonalizedPlan', () => {
   it('should retrieve plan steps when the id  value is id', (done) => {
     httpSpy.get.and.returnValue(mockResponse);
     service.getActionPlanConditions(mockid).subscribe(plans => {
-      expect(httpSpy.get).toHaveBeenCalledWith(`${api.planUrl}` + '/' + mockid);
+      expect(httpSpy.get).toHaveBeenCalledWith(`${api.planUrl}`, mockid);
       expect(service.getActionPlanConditions(mockid)).toEqual(mockResponse);
       done();
     });
@@ -485,12 +486,12 @@ describe('Service:PersonalizedPlan', () => {
       "resourceType": "Organizations",
       "resourceDetails": {}
     };
-    sessionStorage.setItem(service.sessionKey, "test");
+    sessionStorage.setItem(global.sessionKey, "test");
     let mockUserId = "mockUserId";
     spyOn(service, 'saveResourcesToProfile');
     service.saveResourcesToProfile(mockSavedResource);
     expect(service.showWarning).toBeTruthy();
-    expect(sessionStorage.getItem(service.sessionKey)).toBeNull;
+    expect(sessionStorage.getItem(global.sessionKey)).toBeNull;
   });
 
   it('should add resource by calling saveResourceToProfile if saved resources doesnot exists in saveResourcesToProfile method', () => {
@@ -508,10 +509,11 @@ describe('Service:PersonalizedPlan', () => {
       "resourceType": "Articles",
       "resourceDetails": {}
     };
-    sessionStorage.setItem(service.sessionKey, "test");
+    global.userId = "userId";
+    sessionStorage.setItem(global.sessionKey, "test");
     service.saveResourcesToProfile(mockSavedResource);
     expect(service.saveResourceToProfile).toHaveBeenCalledWith(service.resourceTags);
-    expect(sessionStorage.getItem(service.sessionKey)).toBeNull;
+    expect(sessionStorage.getItem(global.sessionKey)).toBeNull;
   });
 
   it('should call showSuccess service method on saveResourceToProfile', () => {

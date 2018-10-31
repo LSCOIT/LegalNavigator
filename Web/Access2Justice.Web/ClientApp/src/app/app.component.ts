@@ -93,6 +93,11 @@ export class AppComponent implements OnInit {
     if (this.msalService.getUser() && !this.global.userId) {
       this.createOrGetProfile();
     }
+    if ((sessionStorage.getItem(this.global.sessionKey)
+      || sessionStorage.getItem(this.global.planSessionKey))
+      && (!this.global.isLoginRedirect) && !(this.global.userId)) {
+      this.showAlert = true;
+    }
   }
 
   ngOnDestroy() {
