@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -21,7 +22,7 @@ namespace Access2Justice.Api
         private readonly ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic;
         private readonly IWebSearchBusinessLogic webSearchBusinessLogic;
         private readonly IBingSettings bingSettings;
-        dynamic luisTopIntents = null;
+        private dynamic luisTopIntents = null;
 
         public LuisBusinessLogic(ILuisProxy luisProxy, ILuisSettings luisSettings, ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic, IWebSearchBusinessLogic webSearchBusinessLogic, IBingSettings bingSettings)
         {
@@ -49,8 +50,8 @@ namespace Access2Justice.Api
                    luisTopIntents != null && luisTopIntents.TopNIntents != null ? luisTopIntents.TopNIntents : null);
             }
             //Will fetch web links only when there are no mapping LUIS Intent or no mapping resources to specific LUIS Intent
-            return (luisViewModel != null && luisViewModel.Resources != null &&
-                ((JContainer)(luisViewModel.Resources)).Count > 0) 
+            return ((luisViewModel != null && luisViewModel.Resources != null &&
+                ((JContainer)(luisViewModel.Resources)).Count > 0))
                 || !string.IsNullOrEmpty(luisInput.LuisTopScoringIntent) ?
                 JObject.FromObject(luisViewModel).ToString() :
             await GetWebResourcesAsync(encodedSentence);
@@ -76,8 +77,10 @@ namespace Access2Justice.Api
 
         public async Task<dynamic> GetInternalResourcesAsync(string keyword, Location location, IEnumerable<string> relevantIntents)
         {
-            string topic = string.Empty, resource = string.Empty;
-            var topics = await topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
+            CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
+            TextInfo textInfo = cultureInfo.TextInfo;
+
+            var topics = await topicsResourcesBusinessLogic.GetTopicsAsync(textInfo.ToTitleCase(keyword), location);
 
             List<string> topicIds = new List<string>();
             foreach (var item in topics)
