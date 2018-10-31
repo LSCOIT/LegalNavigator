@@ -9,6 +9,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
 import { TopicService } from './topics-resources/shared/topic.service';
 import { PersonalizedPlanService } from './guided-assistant/personalized-plan/personalized-plan.service';
+import { SaveButtonService } from './shared/resource/user-action/save-button/save-button.service';
 
 @Component({
   selector: 'app-root',
@@ -32,7 +33,8 @@ export class AppComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private router: Router,
     private topicService: TopicService,
-    private personalizedPlanService: PersonalizedPlanService
+    private personalizedPlanService: PersonalizedPlanService,
+    private saveButtonService: SaveButtonService
   ) { }
 
   createOrGetProfile() {
@@ -53,7 +55,8 @@ export class AppComponent implements OnInit {
 
   saveBookmarkedPlan() {
     if (sessionStorage.getItem(this.global.planSessionKey)) {
-      this.personalizedPlanService.saveResourcesToUserProfile();
+      let planId = JSON.parse(sessionStorage.getItem(this.global.planSessionKey));
+      this.saveButtonService.getPlan(planId);
     }
   }
 

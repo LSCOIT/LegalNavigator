@@ -8,6 +8,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Title } from '@angular/platform-browser/src/browser/title';
 import { ToastrService } from 'ngx-toastr';
 import { Global, UserStatus } from '../../../../global';
+import { HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-action-plans',
@@ -85,7 +86,9 @@ export class ActionPlansComponent implements OnChanges {
   }
 
   getPlanDetails(topicId, stepId, isChecked) {
-    this.personalizedPlanService.getActionPlanConditions(this.planDetails.id)
+    let params = new HttpParams()
+      .set("personalizedPlanId", this.planDetails.id);
+    this.personalizedPlanService.getActionPlanConditions(params)
       .subscribe(plan => {
         if (plan) {
           this.topics = plan.topics;

@@ -65,7 +65,9 @@ export class ProfileComponent implements OnInit {
   getTopics(): void {
     if (this.planId) {
       this.spinner.show();
-      this.personalizedPlanService.getActionPlanConditions(this.planId)
+      let params = new HttpParams()
+        .set("personalizedPlanId", this.planId);
+      this.personalizedPlanService.getActionPlanConditions(params)
         .subscribe(plan => {
           this.spinner.hide();
           if (plan) {

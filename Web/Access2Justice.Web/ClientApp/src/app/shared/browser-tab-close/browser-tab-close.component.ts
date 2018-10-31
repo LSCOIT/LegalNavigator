@@ -20,20 +20,22 @@ export class BrowserTabCloseComponent implements OnInit {
     private global: Global) { }
 
   saveToProfile() {
-    if (sessionStorage.getItem(this.global.sessionKey) ||
-      sessionStorage.getItem(this.global.planSessionKey)) {
+    if (sessionStorage.getItem(this.global.sessionKey)
+      || sessionStorage.getItem(this.global.planSessionKey)) {
       this.global.isLoginRedirect = true;
       this.msalService.loginRedirect(environment.consentScopes);
     }
   }
 
   close() {
+    sessionStorage.removeItem(this.global.sessionKey);
+    sessionStorage.removeItem(this.global.planSessionKey);
     this.modalRef.hide();
   }
 
   ngOnInit() {
-    if (sessionStorage.getItem(this.global.sessionKey) ||
-      sessionStorage.getItem(this.global.planSessionKey)) {
+    if (sessionStorage.getItem(this.global.sessionKey)
+      || sessionStorage.getItem(this.global.planSessionKey)) {
       this.modalRef = this.modalService.show(this.templateref);
     }
   }

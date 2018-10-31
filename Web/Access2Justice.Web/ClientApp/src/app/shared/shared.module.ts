@@ -140,7 +140,8 @@ import { BrowserTabCloseComponent } from './browser-tab-close/browser-tab-close.
     EventUtilityService,
     ResourceService,
     ShareService,
-    LoginService
+    LoginService,
+    SaveButtonService
   ]
 })
 export class SharedModule { }
