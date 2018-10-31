@@ -70,6 +70,16 @@
             <app-read-more [text]="resource.description" [maxLength]="240"></app-read-more>
           </div>
         </div>
+        <div *ngIf="resource.resourceType === 'Articles'" class="media">
+          <div class="media-left no-print">
+            <img class="media-object" src="/assets/images/icons/articles.svg" [alt]="resource.resourceType">
+          </div>
+          <div class="media-body">
+            <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}</h4></a>
+            <div class="print-only">{{applicationUrl+'/resource'+'/'+resource.id}}</div>
+            <app-read-more [text]="resource.description" [maxLength]="240"></app-read-more>
+          </div>
+        </div>
         <div *ngIf="resource.resourceType === 'Organizations'" class="media">
           <div class="media-left no-print">
             <img class="media-object" src="/assets/images/icons/organizations.svg" aria-hidden="true">
@@ -133,8 +143,8 @@
             <img class="media-object" src="/assets/images/icons/articles.svg" [alt]=resource.resourceType>
           </div>
           <div class="media-body">
-            <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}</h4></a>
-            <div class="print-only">{{applicationUrl+'/resource'+'/'+resource.id}}</div>
+            <a [href]="resource.url"><h4 class="media-heading">{{resource.name}}</h4></a>
+            <div class="print-only">{{resource.url}}</div>
             <app-read-more [text]="resource.description" [maxLength]="240"></app-read-more>
           </div>
         </div>

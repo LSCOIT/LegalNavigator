@@ -8,7 +8,7 @@ using System.Linq;
 using Spreadsheet = DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Spreadsheet;
-using Access2Justice.DataImportTool.Models;
+using Access2Justice.Shared.Models;
 
 namespace Access2Justice.DataImportTool.BusinessLogic
 {
@@ -18,11 +18,11 @@ namespace Access2Justice.DataImportTool.BusinessLogic
 
         dynamic id = null;
         string name, resourceCategory, description, url, resourceType, state, county, city, zipcode = string.Empty;
-        string overview, icon, address, telephone, eligibilityInformation, specialties, qualifications, businessHours = string.Empty;
+        string overview, address, telephone, eligibilityInformation, specialties, qualifications, businessHours = string.Empty;
         string organizationName, reviewerFullName, reviewerTitle, reviewText, reviewerImage = string.Empty;
         string articleName, headline, content, organizationalUnit = string.Empty;
         List<TopicTag> topicTagIds = null;
-        List<Locations> locations = null;
+        List<Shared.Models.Location> locations = null;
         List<string> orgNameList = new List<string>();
         List<string> orgFullNameList = new List<string>();
         List<string> orgTitleList = new List<string>();
@@ -66,7 +66,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                             bool isValidated = false;
                             ClearVariableData();
                             topicTagIds = new List<TopicTag>();
-                            locations = new List<Locations>();
+                            locations = new List<Shared.Models.Location>();
                             string resourceIdCell = string.Empty;
                             string resourceType = GetResourceType(sheet.Name.Value);
                             foreach (Spreadsheet.Row row in sheetData.Elements<Spreadsheet.Row>())
@@ -385,7 +385,6 @@ namespace Access2Justice.DataImportTool.BusinessLogic
             city = string.Empty;
             zipcode = string.Empty;
             overview = string.Empty;
-            icon = string.Empty;
             address = string.Empty;
             telephone = string.Empty;
             eligibilityInformation = string.Empty;

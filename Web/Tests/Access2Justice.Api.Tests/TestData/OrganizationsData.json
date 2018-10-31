@@ -23,7 +23,6 @@
         "state": "Alaska"
       }
     ],
-    "icon": "./assets/images/resources/resource.png",
     "createdBy": "API",
     "createdTimeStamp": "",
     "modifiedBy": "API",
@@ -65,7 +64,6 @@
         "state": "Alaska"
       }
     ],
-    "icon": "./assets/images/resources/resource.png",
     "createdBy": "API",
     "createdTimeStamp": "",
     "modifiedBy": "API",

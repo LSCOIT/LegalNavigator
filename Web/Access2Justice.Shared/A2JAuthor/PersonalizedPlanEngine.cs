@@ -5,7 +5,9 @@ using Access2Justice.Shared.Models;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 
 namespace Access2Justice.Shared.A2JAuthor
 {
@@ -48,7 +50,9 @@ namespace Access2Justice.Shared.A2JAuthor
 
 
             var unprocessedTopic = new UnprocessedTopic();
-            unprocessedTopic.Name = personalizedPlan.Properties().GetValue("title");  // Todo:@Alaa convert the title to Sentence Case before mapping it
+            CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
+            TextInfo textInfo = cultureInfo.TextInfo;
+            unprocessedTopic.Name = textInfo.ToTitleCase(personalizedPlan.Properties().GetValue("title"));
 
             foreach (var step in stepsInScope)
             {
