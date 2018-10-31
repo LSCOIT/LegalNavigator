@@ -1,7 +1,9 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http'
-import { api } from '../../../api/api';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { MsalService } from '@azure/msal-angular';
+import { api } from '../../../api/api';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-upload-curated-experience-template',
@@ -13,9 +15,12 @@ export class UploadCuratedExperienceTemplateComponent implements OnInit {
   errorMessage: string;
   @ViewChild('file') file: ElementRef;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private msalService: MsalService) { }
 
   ngOnInit() {
+    if (!this.msalService.getUser()) {
+      this.msalService.loginRedirect(environment.consentScopes);
+    }
   }
 
   onSubmit(uploadForm: NgForm) {
@@ -37,17 +42,23 @@ export class UploadCuratedExperienceTemplateComponent implements OnInit {
         params: params
       };
 
-      this.http.post(api.uploadCuratedExperienceTemplateUrl, formData, options)
+      this.http.post(api.uploadCuratedExperienceTemplateUrl, formData, { params, responseType: 'text'})
         .subscribe(
           response => {
             uploadForm.reset();
-            this.successMessage = "Upload successfull.";
+            this.successMessage = response;
           },
-          error => {
-            uploadForm.reset();
-            this.errorMessage = error.error == undefined ? error : error.error;
-            console.log(error);
+        error => {
+          if (error.error) {
+            this.errorMessage = error.error;
           }
+          else if (error.statusText) {
+            this.errorMessage = error.statusText;
+          }
+          else {
+            this.errorMessage = error
+          }
+          console.log(error);
         );
     }
   }

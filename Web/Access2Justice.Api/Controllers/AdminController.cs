@@ -2,6 +2,7 @@
 using Access2Justice.Api.Interfaces;
 using Access2Justice.Shared;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Documents;
 using System;
 using System.Threading.Tasks;
 using static Access2Justice.Api.Authorization.Permissions;
@@ -12,10 +13,12 @@ namespace Access2Justice.Api.Controllers
     public class AdminController : Controller
     {
         private IAdminBusinessLogic adminBusinessLogic;
+        private IAdminSettings adminSettings;
 
-        public AdminController(IAdminBusinessLogic adminBusinessLogic)
+        public AdminController(IAdminBusinessLogic adminBusinessLogic, IAdminSettings adminSettings)
         {
             this.adminBusinessLogic = adminBusinessLogic;
+            this.adminSettings = adminSettings;
         }
 
         [Permission(PermissionName.importa2jtemplate)]
@@ -27,17 +30,17 @@ namespace Access2Justice.Api.Controllers
                 if (TryValidateModel(curatedTemplate))
                 {
                     var response = await adminBusinessLogic.UploadCuratedContentPackage(curatedTemplate);
-                    if (response != null)
-                        return Ok();
+                    if (response != null && response.ToString() == adminSettings.SuccessMessage)
+                        return Ok(response);
                     else
-                        return BadRequest("Upload failed.");
+                        return BadRequest(response);
                 }
-                return BadRequest("Please provide the required fields.");
+                return BadRequest(adminSettings.ValidationMessage);
                 
             }
             catch (Exception ex)
             {
-                return BadRequest("Upload failed" + ex.Message);
+                return BadRequest(adminSettings.FailureMessage + ex.Message);
             }
         }
     }

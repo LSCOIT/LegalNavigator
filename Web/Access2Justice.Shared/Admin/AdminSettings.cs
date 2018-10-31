@@ -20,6 +20,12 @@ namespace Access2Justice.Shared.Admin
                 ChildrenNode = configuration.GetSection("CuratedExpImport:ChildrenNode").Value;
                 UploadFolderName = configuration.GetSection("CuratedExpImport:UploadFolderName").Value;
                 WebRootFolderName = configuration.GetSection("CuratedExpImport:WebRootFolderName").Value;
+                SuccessMessage = configuration.GetSection("CuratedExpImport:SuccessMessage").Value;
+                FailureMessage = configuration.GetSection("CuratedExpImport:FailureMessage").Value;
+                FileExtensionMessage = configuration.GetSection("CuratedExpImport:FileExtensionMessage").Value;
+                ValidationMessage = configuration.GetSection("CuratedExpImport:ValidationMessage").Value;
+                NameValidationMessage = configuration.GetSection("CuratedExpImport:NameValidationMessage").Value;
+                MissingTopicMessage = configuration.GetSection("CuratedExpImport:MissingTopicMessage").Value;
             }
             catch
             {
@@ -43,5 +49,17 @@ namespace Access2Justice.Shared.Admin
         public string UploadFolderName { get; set; }
 
         public string WebRootFolderName { get; set; }
+
+        public string SuccessMessage { get; set; }
+
+        public string FailureMessage { get; set; }
+
+        public string FileExtensionMessage { get; set; }
+
+        public string NameValidationMessage { get; set; }
+
+        public string MissingTopicMessage { get; set; }
+
+        public string ValidationMessage { get; set; }
     }
 }

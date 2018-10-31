@@ -212,7 +212,7 @@ namespace Access2Justice.Shared.Models
         public string CuratedExperienceId { get; set; }
 
         [JsonProperty(PropertyName = "version")]
-        public float Version { get; set; }
+        public Int64 Version { get; set; }
 
         [JsonProperty(PropertyName = "isActive")]
         public bool IsActive { get; set; }

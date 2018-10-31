@@ -74,8 +74,10 @@ namespace Access2Justice.Api.BusinessLogic
                         }
                     }
                 }
+                else
+                    return adminSettings.NameValidationMessage;
             }
-            return null;
+            return adminSettings.FileExtensionMessage;
         }
 
         private void GetTemplates(List<JToken> templateOrder, List<CuratedExperiencePackageTemplateModel> templateModel,
@@ -135,18 +137,18 @@ namespace Access2Justice.Api.BusinessLogic
         {
             var resourceDetails = await topicsResourcesBusinessLogic.GetResourceDetailAsync(resourceTitle, Constants.GuidedAssistant);
             List<GuidedAssistant> resources = JsonUtilities.DeserializeDynamicObject<List<GuidedAssistant>>(resourceDetails);
-            float maxVersion = default(float);
+            Int64 maxVersion = default(Int64);
             foreach (var resource in resources)
             {
                 var resourceDetail = JsonUtilities.DeserializeDynamicObject<GuidedAssistant>(resource);
-                if (resourceDetail.Version == default(float))
+                if (resourceDetail.Version == default(Int64))
                 {
-                    resourceDetail.Version = IncrementMajorVersion(default(float));
+                    resourceDetail.Version = IncrementVersion(default(Int64));
                 }
-                else
-                {
-                    resourceDetail.Version = IncrementMinorVersion(resourceDetail.Version);
-                }
+                //else
+                //{
+                //    resourceDetail.Version = IncrementVersion(resourceDetail.Version);
+                //}
                 if (maxVersion.CompareTo(resourceDetail.Version) < 0)
                     maxVersion = resourceDetail.Version;
                 resourceDetail.IsActive = false;
@@ -177,15 +179,15 @@ namespace Access2Justice.Api.BusinessLogic
                 guidedAssistantResource.Description = curatedTemplate.Description;
                 guidedAssistantResource.TopicTags = topicTags;
                 guidedAssistantResource.Location = locations;
-                guidedAssistantResource.Version = IncrementMajorVersion(maxVersion);
+                guidedAssistantResource.Version = IncrementVersion(maxVersion);
                 guidedAssistantResource.IsActive = true;
                 guidedAssistantResource.ResourceType = Constants.GuidedAssistant;
                 guidedAssistantResource.CuratedExperienceId = curatedExperienceId;
 
-                return await backendDatabaseService.CreateItemAsync(guidedAssistantResource, cosmosDbSettings.ResourcesCollectionId);
+                await backendDatabaseService.CreateItemAsync(guidedAssistantResource, cosmosDbSettings.ResourcesCollectionId);
+                return adminSettings.SuccessMessage;
             }
-            return string.Format(CultureInfo.InvariantCulture, "Import failed: {0} Topic document is not available in the system. " +
-                "Please create/import the topic document before importing curated experience template.", resourceTitle);
+            return string.Format(CultureInfo.InvariantCulture, adminSettings.MissingTopicMessage, resourceTitle);
         }
 
         private void GetFilePath(IFormFile file, out string fullPath, out string uploadPath)
@@ -289,14 +291,9 @@ namespace Access2Justice.Api.BusinessLogic
             }
         }
 
-        private float IncrementMajorVersion(float version)
+        private Int64 IncrementVersion(Int64 version)
         {
-            return version + 1.0F;
-        }
-
-        private float IncrementMinorVersion(float version)
-        {
-            return version + 0.1F;
+            return version + 1;
         }
     }
 }

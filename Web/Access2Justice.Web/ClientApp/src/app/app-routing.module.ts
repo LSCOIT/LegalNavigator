@@ -40,7 +40,7 @@ const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'privacy', component: PrivacyPromiseComponent },
   { path: 'profile', component: ProfileComponent, resolve: { cres: ProfileResolver } },
-  { path: 'admin', component: AdminComponent },
+  { path: 'admin', component: AdminComponent, resolve: { cres: ProfileResolver } },
   { path: '', component: HomeComponent },
   { path: 'error', component: InternalErrorComponent},
   { path: '404', component: NotFoundComponent },

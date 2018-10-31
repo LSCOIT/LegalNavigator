@@ -13,5 +13,12 @@ namespace Access2Justice.Shared
         string ChildrenNode { get; }
         string UploadFolderName { get; }
         string WebRootFolderName { get; }
+        string SuccessMessage { get; }
+        string FailureMessage { get; }
+        string FileExtensionMessage { get; }
+        string ValidationMessage { get; }
+        string NameValidationMessage { get; }
+        string MissingTopicMessage { get; }
+
     }
 }
