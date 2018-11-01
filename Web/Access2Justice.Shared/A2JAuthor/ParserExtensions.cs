@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Access2Justice.Shared.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -93,17 +94,17 @@ namespace Access2Justice.Shared.A2JAuthor
                 {
                     var varValue = varialbe.GetStringBetween(Tokens.VarNameLeftSign, Tokens.VarNameRightSign);
 
-                    if (varialbe.ToUpperInvariant().Contains(Tokens.TrueTokens.TrueText))
+                    if (varialbe.ToUpperInvariant().Contains(Tokens.TrueTokens.True))
                     {
-                        varsValues.Add(varValue, Tokens.TrueTokens.LogicalTrue);
+                        varsValues.Add(varValue, Tokens.TrueTokens.True.ToLower());
                     }
-                    else if (varialbe.ToUpperInvariant().Contains(Tokens.FalseTokens.FalseText))
+                    else if (varialbe.ToUpperInvariant().Contains(Tokens.FalseTokens.False))
                     {
-                        varsValues.Add(varValue, Tokens.FalseTokens.LogicalFalse);
+                        varsValues.Add(varValue, Tokens.FalseTokens.False.ToLower());
                     }
                     else
                     {
-                        varsValues.AddWithNoDuplicates(varValue, inputText.RemoveQuotes());
+                        varsValues.AddDistinctKeyValue(varValue, inputText.RemoveQuotes());
                     }
                 }
             }
@@ -120,13 +121,13 @@ namespace Access2Justice.Shared.A2JAuthor
                 variableName = inputText.GetStringBetween(Tokens.VarNameLeftSign, Tokens.VarNameRightSign);
                 var valueString = inputText.GetStringOnTheRightOf(Tokens.TO);
 
-                if (valueString.ToUpperInvariant().Contains(Tokens.TrueTokens.TrueText))
+                if (valueString.ToUpperInvariant().Contains(Tokens.TrueTokens.True))
                 {
-                    varsValues.Add(variableName, Tokens.TrueTokens.LogicalTrueText);
+                    varsValues.Add(variableName, Tokens.TrueTokens.True.ToLower());
                 }
-                else if (valueString.ToUpperInvariant().Contains(Tokens.FalseTokens.FalseText))
+                else if (valueString.ToUpperInvariant().Contains(Tokens.FalseTokens.False))
                 {
-                    varsValues.Add(variableName, Tokens.FalseTokens.LogicalFalseText);
+                    varsValues.Add(variableName, Tokens.FalseTokens.False.ToLower());
                 }
                 else
                 {
@@ -141,20 +142,6 @@ namespace Access2Justice.Shared.A2JAuthor
             }
 
             return varsValues;
-        }
-
-        public static OrderedDictionary AddWithNoDuplicates(this OrderedDictionary dictionary, string key, string value)
-        {
-            if (!dictionary.Contains(key))
-            {
-                dictionary.Add(key, value);
-            }
-            else
-            {
-                dictionary[key] = value;
-            }
-
-            return dictionary;
         }
 
         public static string RemoveQuotes(this string inputText)

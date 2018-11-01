@@ -24,7 +24,7 @@ namespace Access2Justice.Shared.A2JAuthor
             {
                 foreach (var ifStatement in logicalStatement.IFstatements())
                 {
-                    Dictionary<string, string> leftVarValues = new Dictionary<string, string>();
+                    var leftVarValues = new Dictionary<string, string>();
                     var leftLogic = string.Empty;
                     var rightLogic = string.Empty;
                     if (ifStatement.Contains(Tokens.ParserConfig.SetVariables))
@@ -43,13 +43,13 @@ namespace Access2Justice.Shared.A2JAuthor
                         var ANDvars = leftLogic.GetVariablesWithValues(Tokens.AND);
                         if (interpreter.Interpret(userAnswersKeyValuePairs, ANDvars, (x, y) => x && y))
                         {
-                            evaluatedAnswers.AddRange(rightLogic.SetValue());
+                            evaluatedAnswers.AddDistinctRange(rightLogic.SetValue());
                         }
 
                         var ORvars = leftLogic.GetVariablesWithValues(Tokens.OR);
                         if (interpreter.Interpret(userAnswersKeyValuePairs, ORvars, (x, y) => x || y))
                         {
-                            evaluatedAnswers.AddRange(rightLogic.SetValue());
+                            evaluatedAnswers.AddDistinctRange(rightLogic.SetValue());
                         }
 
                         if (ANDvars.Count == 0 && ORvars.Count == 0)
@@ -57,21 +57,19 @@ namespace Access2Justice.Shared.A2JAuthor
                             var oneVar = leftLogic.GetVariablesWithValues();
                             if (interpreter.Interpret(userAnswersKeyValuePairs, oneVar, (x, y) => x))
                             {
-                                evaluatedAnswers.AddRange(rightLogic.SetValue());
+                                evaluatedAnswers.AddDistinctRange(rightLogic.SetValue());
                             }
                         }
                     }
                 }
             }
 
-            evaluatedAnswers.AddRange(userAnswersKeyValuePairs);
-
-            return evaluatedAnswers;
+            return evaluatedAnswers.AddDistinctRange(userAnswersKeyValuePairs);
         }
 
         private Dictionary<string, string> ExtractAnswersVarValues(CuratedExperienceAnswers curatedExperienceAnswers)
         {
-            Dictionary<string, string> userAnswers = new Dictionary<string, string>();
+            var userAnswers = new Dictionary<string, string>();
 
             foreach (ButtonComponent button in curatedExperienceAnswers.ButtonComponents)
             {
