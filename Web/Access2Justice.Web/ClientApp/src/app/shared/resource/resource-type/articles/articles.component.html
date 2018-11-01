@@ -1,6 +1,7 @@
 <div class="row">
   <div class="col-sm-6">
     <h2>{{resource.name}}</h2>
+    <p *ngIf="resource.resourceCategory">{{resource?.resourceCategory}}</p>
   </div>
   <div class="col-sm-6 user-action">
     <app-user-action-sidebar [mobile]=true [id]="resource.id" [type]="resource.resourceType"></app-user-action-sidebar>
@@ -8,7 +9,7 @@
 </div>
 <div class="row">
   <div class="col-sm-8 col-sm-12">
-    <p>{{resource.overview}}</p>
+    <p *ngIf="resource.overview">{{resource.overview}}</p>
     <div class="content" *ngFor="let content of resource.contents">
       <h4>{{content.headline}}</h4>
       <p>{{content.content}}</p>

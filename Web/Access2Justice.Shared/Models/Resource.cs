@@ -1,13 +1,9 @@
-﻿using Microsoft.AspNetCore.JsonPatch.Operations;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Swashbuckle.AspNetCore.Swagger;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using System.Globalization;
 using System.Text;
-using System.Collections;
 
 namespace Access2Justice.Shared.Models
 {
@@ -31,10 +27,10 @@ namespace Access2Justice.Shared.Models
         public string ResourceType { get; set; }
 
         [JsonProperty(PropertyName = "url")]
-        public string Urls { get; set; }
+        public string Url { get; set; }
 
         [JsonProperty(PropertyName = "topicTags")]
-        public IEnumerable<TopicTag> TopicTags { get; set; }
+        public List<TopicTag> TopicTags { get; set; }
 
         [Required(ErrorMessage = "Organizational Unit is a required field.")]
         [JsonProperty(PropertyName = "organizationalUnit")]
@@ -42,7 +38,7 @@ namespace Access2Justice.Shared.Models
 
         //[EnsureOneElementAttribute(ErrorMessage = "At least one location is required")]
         [JsonProperty(PropertyName = "location")]
-        public IEnumerable<Location> Location { get; set; }
+        public List<Location> Location { get; set; }
 
         [JsonProperty(PropertyName = "createdBy")]
         public string CreatedBy { get; set; }
@@ -86,13 +82,13 @@ namespace Access2Justice.Shared.Models
     public class ActionPlan : Resource
     {
         [JsonProperty(PropertyName = "conditions")]
-        public IEnumerable<Conditions> Conditions { get; set; }
+        public List<Conditions> Conditions { get; set; }
     }
 
     public class Conditions
     {
         [JsonProperty(PropertyName = "condition")]
-        public IEnumerable<Condition> ConditionDetail { get; set; }
+        public List<Condition> ConditionDetail { get; set; }
     }
 
     public class Condition
@@ -115,7 +111,7 @@ namespace Access2Justice.Shared.Models
         public string Overview { get; set; }
 
         [JsonProperty(PropertyName = "contents")]
-        public IEnumerable<ArticleContents> Contents { get; set; }
+        public List<ArticleContents> Contents { get; set; }
     }
 
     public class ArticleContents
@@ -148,7 +144,7 @@ namespace Access2Justice.Shared.Models
         public string EligibilityInformation { get; set; }
 
         [JsonProperty(PropertyName = "reviewer")]
-        public IEnumerable<OrganizationReviewer> Reviewer { get; set; }
+        public List<OrganizationReviewer> Reviewer { get; set; }
 
         [JsonProperty(PropertyName = "specialties")]
         public string Specialties { get; set; }

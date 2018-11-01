@@ -9,16 +9,16 @@ namespace Access2Justice.Api.Tests.TestData
         #region Mocked Input Data
         public static string properLuisResponse =
                    "{\r\n  \"query\": \"child abuse\",\r\n  \"topScoringIntent\": {\r\n    " +
-                   "\"intent\": \"eviction\",\r\n    \"score\": 0.919329442\r\n  },\r\n  \"intents\": [\r\n    {\r\n     " +
-                   " \"intent\": \"eviction\",\r\n      \"score\": 0.239329442\r\n    },\r\n    {\r\n      " +
+                   "\"intent\": \"Eviction\",\r\n    \"score\": 0.919329442\r\n  },\r\n  \"intents\": [\r\n    {\r\n     " +
+                   " \"intent\": \"Eviction\",\r\n      \"score\": 0.239329442\r\n    },\r\n    {\r\n      " +
                    "\"intent\": \"child abuse\",\r\n      \"score\": 0.09217278\r\n    },\r\n    {\r\n      " +
                    "\"intent\": \"child\",\r\n      \"score\": 0.06267241\r\n    },\r\n    {\r\n      " +
                    "\"intent\": \"divorce\",\r\n      \"score\": 0.00997853652\r\n    },\r\n    {\r\n     " +
                    " \"intent\": \"None\",\r\n      \"score\": 0.00248154555\r\n    }\r\n  ],\r\n  \"entities\": []\r\n}";
         public static string lowScoreLuisResponse =
                    "{\r\n  \"query\": \"child abuse\",\r\n  \"topScoringIntent\": {\r\n    " +
-                   "\"intent\": \"eviction\",\r\n    \"score\": 0.269329442\r\n  },\r\n  \"intents\": [\r\n    {\r\n     " +
-                   " \"intent\": \"eviction\",\r\n      \"score\": 0.239329442\r\n    },\r\n    {\r\n      " +
+                   "\"intent\": \"Eviction\",\r\n    \"score\": 0.269329442\r\n  },\r\n  \"intents\": [\r\n    {\r\n     " +
+                   " \"intent\": \"Eviction\",\r\n      \"score\": 0.239329442\r\n    },\r\n    {\r\n      " +
                    "\"intent\": \"child abuse\",\r\n      \"score\": 0.09217278\r\n    },\r\n    {\r\n      " +
                    "\"intent\": \"child\",\r\n      \"score\": 0.06267241\r\n    },\r\n    {\r\n      " +
                    "\"intent\": \"divorce\",\r\n      \"score\": 0.00997853652\r\n    },\r\n    {\r\n     " +
@@ -38,17 +38,17 @@ namespace Access2Justice.Api.Tests.TestData
                    "\"score\": 0.06429157\r\n    },\r\n    {\r\n      \"intent\": \"Divorce\",\r\n      " +
                    "\"score\": 0.05946025\r\n    },\r\n    {\r\n      \"intent\": \"Eviction\",\r\n     " +
                    "\"score\": 4.371685E-05\r\n    }\r\n  ],\r\n  \"entities\": []\r\n}";
-        public static string keyword = "eviction";
+        public static string keyword = "Eviction";
         public static JArray topicsData =
                    JArray.Parse(@"[{'id':'addf41e9-1a27-4aeb-bcbb-7959f95094ba','name':'Family',
-                   'parentTopicID':'','keywords':'eviction','location':[{'state':'Hawaii','county':'Kalawao County','city':'Kalawao',
+                   'parentTopicID':'','keywords':'Eviction','location':[{'state':'Hawaii','county':'Kalawao County','city':'Kalawao',
                     'zipCode':'96742'},{'zipCode':'96741'},{'state':'Hawaii','county':'Honolulu County','city':'Honolulu'},{'state':
                    'Hawaii','city':'Hawaiian Beaches'},{'state':'Hawaii','city':'Haiku-Pauwela'},{'state':'Alaska'}],'jsonContent':'',
                    'icon':'./assets/images/topics/topic14.png','createdBy':'','createdTimeStamp':'','modifiedBy':'','modifiedTimeStamp':'
                    ','_rid':'mwoSALHtpAEBAAAAAAAAAA==','_self':'dbs/mwoSAA==/colls/mwoSALHtpAE=/docs/mwoSALHtpAEBAAAAAAAAAA==/',
                     '_etag':'\'05008e57-0000-0000-0000-5b0797c10000\'','_attachments':'attachments/','_ts':1527224257},
                     {'id':'3aa3a1be-8291-42b1-85c2-252f756febbc','name':'Family',
-                   'parentTopicID':'','keywords':'eviction','location':[{'state':'Hawaii','county':'Kalawao County','city':'Kalawao',
+                   'parentTopicID':'','keywords':'Eviction','location':[{'state':'Hawaii','county':'Kalawao County','city':'Kalawao',
                     'zipCode':'96742'},{'zipCode':'96741'},{'state':'Hawaii','county':'Honolulu County','city':'Honolulu'},{'state':
                    'Hawaii','city':'Hawaiian Beaches'},{'state':'Hawaii','city':'Haiku-Pauwela'},{'state':'Alaska'}],'jsonContent':'',
                    'icon':'./assets/images/topics/topic14.png','createdBy':'','createdTimeStamp':'','modifiedBy':'','modifiedTimeStamp':'
@@ -56,14 +56,14 @@ namespace Access2Justice.Api.Tests.TestData
                     '_etag':'\'05008e57-0000-0000-0000-5b0797c10000\'','_attachments':'attachments/','_ts':1527224257}]");
         public static JArray resourcesData =
                     JArray.Parse(@"[{'id':'77d301e7-6df2-612e-4704-c04edf271806','name':'Tenant Action Plan 
-                    for Eviction','description':'This action plan is for tenants who are facing eviction and have experienced the following:',
+                    for Eviction','description':'This action plan is for tenants who are facing Eviction and have experienced the following:',
                     'resourceType':'Action','externalUrl':'','url':'','topicTags':[{'id':'f102bfae-362d-4659-aaef-956c391f79de'},
                     {'id':'2c0cc7b8-62b1-4efb-8568-b1f767f879bc'},{'id':'3aa3a1be-8291-42b1-85c2-252f756febbc'}],'location':[{'state':'Hawaii',
                     'city':'Kalawao','zipCode':'96742'},{'zipCode':'96741'},{'state':'Alaska'}],'icon':'./assets/images/resources/resource.png',
                     'createdBy':'','createdTimeStamp':'','modifiedBy':'','modifiedTimeStamp':'','_rid':'mwoSAJdNlwIBAAAAAAAAAA==',
                     '_self':'dbs/mwoSAA==/colls/mwoSAJdNlwI=/docs/mwoSAJdNlwIBAAAAAAAAAA==/','_etag':'\'040007b5-0000-0000-0000-5b0792260000\'',
                     '_attachments':'attachments/','_ts':1527222822},{'id':'19a02209-ca38-4b74-bd67-6ea941d41518','name':'Legal Help Organization',
-                    'description':'This action plan is for tenants who are facing eviction and have experienced the following:','resourceType':'Organization'
+                    'description':'This action plan is for tenants who are facing Eviction and have experienced the following:','resourceType':'Organization'
                     ,'externalUrl':'','url':'','topicTags':[{'id':'f102bfae-362d-4659-aaef-956c391f79de'},{'id':'3aa3a1be-8291-42b1-85c2-252f756febbc'}],
                     'location':[{'state':'Hawaii','city':'Kalawao','zipCode':'96742'}],'icon':'./assets/images/resources/resource.png','createdBy':'',
                     'createdTimeStamp':'','modifiedBy':'','modifiedTimeStamp':'','_rid':'mwoSAJdNlwIBAAAAAAAAAA==','_self':
@@ -137,12 +137,12 @@ namespace Access2Justice.Api.Tests.TestData
         #region Mocked Output Data         
         public static string expectedLuisNoneIntent = "None";
         public static int expectedLowerthreshold = 0;
-        public static string expectedLuisTopIntent = "eviction";
+        public static string expectedLuisTopIntent = "Eviction";
         public static string expectedTopicId = "addf41e9-1a27-4aeb-bcbb-7959f95094ba";
         public static string expectedInternalResponse = "topics";
         public static string expectedWebResponse = "webResources";
         public static string expectedEmptyInternalResponse = "{\r\n  \"topics\": [],\r\n  \"resources\": [],\r\n  \"continuationToken\": [],\r\n  " +
-                   "\"topicIds\": [],\r\n  \"resourceTypeFilter\": [],\r\n  \"topIntent\": \"eviction\"\r\n}";
+                   "\"topicIds\": [],\r\n  \"resourceTypeFilter\": [],\r\n  \"topIntent\": \"Eviction\"\r\n}";
 
         #endregion
     }
