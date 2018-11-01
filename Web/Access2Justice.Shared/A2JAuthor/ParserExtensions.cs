@@ -9,30 +9,25 @@ namespace Access2Justice.Shared.A2JAuthor
 {
     public static class ParserExtensions
     {
-        public static List<string> IFstatements(this string logic)
-        {
-            return logic.SplitAndReturnFullSentencesOn(Tokens.ENDIF);
-        }
-
-        public static Dictionary<string, string> SETvars(this string logic)
+        public static Dictionary<string, string> GetSETvars(this string logic)
         {
             var rightOf = logic.GetStringBetween(Tokens.SET, Tokens.ENDIF);
-            return rightOf.SetValue();
+            return rightOf.AddValue();
         }
 
-        public static OrderedDictionary ANDvars(this string logic)
+        public static OrderedDictionary GetANDvars(this string logic)
         {
             var leftCondition = logic.GetStringBetween(Tokens.IF, Tokens.SET);
             return leftCondition.GetVariablesWithValues(Tokens.AND);
         }
 
-        public static OrderedDictionary ORvars(this string logic)
+        public static OrderedDictionary GetORvars(this string logic)
         {
             var leftCondition = logic.GetStringBetween(Tokens.IF, Tokens.SET);
             return leftCondition.GetVariablesWithValues(Tokens.OR);
         }
 
-        public static string GetStringOnTheRightOf(this string inputText, string splitWord)
+        public static string GetStringRightSide(this string inputText, string splitWord)
         {
             if (inputText.IndexOf(splitWord) > 0)
             {
@@ -44,7 +39,7 @@ namespace Access2Justice.Shared.A2JAuthor
             }
         }
 
-        public static string GetStringOnTheLeftOf(this string inputText, string splitWord)
+        public static string GetStringLeftSide(this string inputText, string splitWord)
         {
             if (inputText.IndexOf(splitWord) > 0)
             {
@@ -62,6 +57,11 @@ namespace Access2Justice.Shared.A2JAuthor
             int sentenceLength = inputText.IndexOf(secondWord) - startTextIndex;
 
             return inputText.Substring(startTextIndex, sentenceLength);
+        }
+
+        public static List<string> SplitOnIFstatements(this string logic)
+        {
+            return logic.SplitAndReturnFullSentencesOn(Tokens.ENDIF);
         }
 
         public static List<string> SplitAndReturnFullSentencesOn(this string inputText, string splitWord)
@@ -112,14 +112,14 @@ namespace Access2Justice.Shared.A2JAuthor
             return varsValues;
         }
 
-        public static Dictionary<string, string> SetValue(this string inputText)
+        public static Dictionary<string, string> AddValue(this string inputText)
         {
             var varsValues = new Dictionary<string, string>();
             var variableName = string.Empty;
             if (inputText.Contains(Tokens.TO))
             {
                 variableName = inputText.GetStringBetween(Tokens.VarNameLeftSign, Tokens.VarNameRightSign);
-                var valueString = inputText.GetStringOnTheRightOf(Tokens.TO);
+                var valueString = inputText.GetStringRightSide(Tokens.TO);
 
                 if (valueString.ToUpperInvariant().Contains(Tokens.TrueTokens.True))
                 {

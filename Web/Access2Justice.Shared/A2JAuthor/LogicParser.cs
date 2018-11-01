@@ -22,20 +22,20 @@ namespace Access2Justice.Shared.A2JAuthor
             var evaluatedAnswers = new Dictionary<string, string>();
             foreach (string logicalStatement in logicStatements)
             {
-                foreach (var ifStatement in logicalStatement.IFstatements())
+                foreach (var ifStatement in logicalStatement.SplitOnIFstatements())
                 {
                     var leftVarValues = new Dictionary<string, string>();
                     var leftLogic = string.Empty;
                     var rightLogic = string.Empty;
                     if (ifStatement.Contains(Tokens.ParserConfig.SetVariables))
                     {
-                        leftLogic = ifStatement.GetStringOnTheLeftOf(Tokens.SET);
-                        rightLogic = ifStatement.GetStringOnTheRightOf(Tokens.SET);
+                        leftLogic = ifStatement.GetStringLeftSide(Tokens.SET);
+                        rightLogic = ifStatement.GetStringRightSide(Tokens.SET);
                     }
                     else if (ifStatement.Contains(Tokens.ParserConfig.GoToQuestions))
                     {
-                        leftLogic = ifStatement.GetStringOnTheLeftOf(Tokens.GOTO);
-                        rightLogic = ifStatement.GetStringOnTheRightOf(Tokens.GOTO);
+                        leftLogic = ifStatement.GetStringLeftSide(Tokens.GOTO);
+                        rightLogic = ifStatement.GetStringRightSide(Tokens.GOTO);
                     }
 
                     if (!string.IsNullOrWhiteSpace(leftLogic) && !string.IsNullOrWhiteSpace(rightLogic))
@@ -43,13 +43,13 @@ namespace Access2Justice.Shared.A2JAuthor
                         var ANDvars = leftLogic.GetVariablesWithValues(Tokens.AND);
                         if (interpreter.Interpret(userAnswersKeyValuePairs, ANDvars, (x, y) => x && y))
                         {
-                            evaluatedAnswers.AddDistinctRange(rightLogic.SetValue());
+                            evaluatedAnswers.AddDistinctRange(rightLogic.AddValue());
                         }
 
                         var ORvars = leftLogic.GetVariablesWithValues(Tokens.OR);
                         if (interpreter.Interpret(userAnswersKeyValuePairs, ORvars, (x, y) => x || y))
                         {
-                            evaluatedAnswers.AddDistinctRange(rightLogic.SetValue());
+                            evaluatedAnswers.AddDistinctRange(rightLogic.AddValue());
                         }
 
                         if (ANDvars.Count == 0 && ORvars.Count == 0)
@@ -57,7 +57,7 @@ namespace Access2Justice.Shared.A2JAuthor
                             var oneVar = leftLogic.GetVariablesWithValues();
                             if (interpreter.Interpret(userAnswersKeyValuePairs, oneVar, (x, y) => x))
                             {
-                                evaluatedAnswers.AddDistinctRange(rightLogic.SetValue());
+                                evaluatedAnswers.AddDistinctRange(rightLogic.AddValue());
                             }
                         }
                     }
