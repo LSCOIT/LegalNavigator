@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Global } from '../global';
-import { StaticResourceService } from "../shared/static-resource.service";
+import { Global } from '../../global';
+import { StaticResourceService } from "../../shared/static-resource.service";
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
-  styleUrls: ['./admin-styles.css']
+  styleUrls: ['../admin-styles.css']
 })
 export class AdminComponent implements OnInit {
   roleInformationSubscription;
