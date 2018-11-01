@@ -8,6 +8,7 @@ import { PrivacyPromiseAdminComponent } from './privacy-promise/privacy-promise-
 import { AdminService } from './admin.service';
 import { AboutAdminComponent } from './about/about-admin.component';
 import { AdminAuthGuard } from './admin-auth/admin-auth.guard';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 
 @NgModule({
   imports: [
@@ -20,7 +21,8 @@ import { AdminAuthGuard } from './admin-auth/admin-auth.guard';
   declarations: [
     AdminComponent,
     PrivacyPromiseAdminComponent,
-    AboutAdminComponent
+    AboutAdminComponent,
+    AdminDashboardComponent
   ],
   exports: [
     AdminComponent,

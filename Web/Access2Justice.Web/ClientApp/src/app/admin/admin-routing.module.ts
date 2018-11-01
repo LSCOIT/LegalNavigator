@@ -3,8 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { AdminComponent } from './admin/admin.component';
 import { AboutAdminComponent } from './about/about-admin.component';
 import { PrivacyPromiseAdminComponent } from './privacy-promise/privacy-promise-admin.component';
-import { ProfileResolver } from '../app-resolver/profile-resolver.service';
 import { AdminAuthGuard } from './admin-auth/admin-auth.guard';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 
 const adminRoutes: Routes = [
   {
@@ -16,7 +16,8 @@ const adminRoutes: Routes = [
         path: '',
         children: [
           { path: 'about', component: AboutAdminComponent },
-          { path: 'privacy', component: PrivacyPromiseAdminComponent }
+          { path: 'privacy', component: PrivacyPromiseAdminComponent },
+          { path: '', component: AdminDashboardComponent }
         ]
       }
     ]

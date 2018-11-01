@@ -80,4 +80,8 @@ export class LoginComponent implements OnInit {
         this.checkIfAdmin(value);
       });
   }
+
+  ngOnDestroy() {
+    this.global.notifyRoleInformation.unsubscribe();
+  }
 }
