@@ -32,7 +32,7 @@ namespace Access2Justice.Shared.A2JAuthor
                         leftLogic = ifStatement.GetStringOnTheLeftOf(Tokens.SET);
                         rightLogic = ifStatement.GetStringOnTheRightOf(Tokens.SET);
                     }
-                    else if(ifStatement.Contains(Tokens.ParserConfig.GoToQuestions))
+                    else if (ifStatement.Contains(Tokens.ParserConfig.GoToQuestions))
                     {
                         leftLogic = ifStatement.GetStringOnTheLeftOf(Tokens.GOTO);
                         rightLogic = ifStatement.GetStringOnTheRightOf(Tokens.GOTO);
@@ -63,6 +63,8 @@ namespace Access2Justice.Shared.A2JAuthor
                     }
                 }
             }
+
+            evaluatedAnswers.AddRange(userAnswersKeyValuePairs);
 
             return evaluatedAnswers;
         }
