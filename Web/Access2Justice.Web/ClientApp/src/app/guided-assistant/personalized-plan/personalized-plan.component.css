@@ -100,8 +100,16 @@ li a.selected-item {
   min-width: 145px;
 }
 
+.dropdown-menu.show {
+  top: 93% !important;
+}
+
 .dropdown-toggle:after {
   border: none;
+}
+
+.open .dropdown-toggle {
+  border-radius: 5px 5px 0 0;
 }
 
 .btn-selected {
