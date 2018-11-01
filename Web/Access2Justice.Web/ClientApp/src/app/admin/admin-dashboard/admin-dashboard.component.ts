@@ -33,7 +33,6 @@ export class AdminDashboardComponent implements OnInit {
     this.staticResourceService.getStaticContents(location).subscribe(response => {
       this.staticResource = response;
       this.showStaticContentPage = true;
-      console.log(this.staticResource);
     });
   }
 

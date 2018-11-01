@@ -22,7 +22,6 @@ export class AdminComponent implements OnInit {
   checkIfStateAdmin(roleInformation) {
     roleInformation.forEach(role => {
       if (role.roleName === 'StateAdmin') {
-        console.log("check if state admin");
         this.isStateAdmin = true;
         this.stateList.push(role.organizationalUnit);
       }
