@@ -17,7 +17,9 @@ export class AdminAuthGuard implements CanActivate {
     state: RouterStateSnapshot):Observable<any> {
     let url: string = state.url;
     return this.checkAdminStatus(url).map(value => {
-      console.log(value);
+      if (!value) {
+        this.router.navigate(['/error']);
+      }
       return value;
     });
   }

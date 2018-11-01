@@ -35,7 +35,7 @@ export class AppComponent implements OnInit {
   createOrGetProfile() {    
     this.loginService.getUserProfile()
       .subscribe(response => {
-        if (response) {          
+        if (response) {
           this.global.setProfileData(response.oId, response.name, response.eMail, response.roleInformation);
         }
       });

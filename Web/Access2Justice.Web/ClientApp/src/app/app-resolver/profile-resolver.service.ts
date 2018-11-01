@@ -14,8 +14,9 @@ export class ProfileResolver implements Resolve<any> {
   userProfile: IUserProfile;
 
   constructor(private global: Global,
-              private msalService: MsalService,
-              private loginService: LoginService) { }
+    private msalService: MsalService,
+    private loginService: LoginService) {
+  }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     return this.loginService.getUserProfile();
