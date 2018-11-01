@@ -23,7 +23,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly ITopicsResourcesBusinessLogic topicsResourcesSettings;
 
         //Mocked input data.
-        private readonly string keyword = "eviction";
+        private readonly string keyword = "Eviction";
         private readonly string query = "select * from t";
         private readonly string procedureName = "GetParentTopics";
         private readonly string topicId = "addf41e9-1a27-4aeb-bcbb-7959f95094ba";
