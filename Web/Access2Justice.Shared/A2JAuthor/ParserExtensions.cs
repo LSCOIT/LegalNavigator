@@ -1,16 +1,13 @@
-﻿using Access2Justice.Shared.A2JAuthor;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Access2Justice.Shared.Extensions
+namespace Access2Justice.Shared.A2JAuthor
 {
-    public static class A2JParserExtensions
+    public static class ParserExtensions
     {
-        private static object text;
-
         public static List<string> IFstatements(this string logic)
         {
             return logic.SplitAndReturnFullSentencesOn(Tokens.ENDIF);
@@ -85,7 +82,6 @@ namespace Access2Justice.Shared.Extensions
             return inputText.Split(new string[] { splitWord }, StringSplitOptions.RemoveEmptyEntries).ToList();
         }
 
-
         public static OrderedDictionary GetVariablesWithValues(this string inputText, string operand = "")
         {
             var varsValues = new OrderedDictionary();
@@ -107,14 +103,7 @@ namespace Access2Justice.Shared.Extensions
                     }
                     else
                     {
-                        if (!varsValues.Contains(varValue))
-                        {
-                            varsValues.Add(varValue, inputText.RemoveQuotes());
-                        }
-                        else
-                        {
-                            varsValues[varValue] = inputText.RemoveQuotes();
-                        }
+                        varsValues.AddWithNoDuplicates(varValue, inputText.RemoveQuotes());
                     }
                 }
             }
@@ -146,11 +135,26 @@ namespace Access2Justice.Shared.Extensions
             }
             else
             {
-                // todo: take this an extra step - double check the var you extracted matches some curated experience step name.
+                // todo: you could take this an extra step by double checking the var you extracted 
+                // matches some curated experience step name.
                 varsValues.Add(Tokens.GOTO + "-" + Guid.NewGuid(), inputText.RemoveQuotes());
             }
 
             return varsValues;
+        }
+
+        public static OrderedDictionary AddWithNoDuplicates(this OrderedDictionary dictionary, string key, string value)
+        {
+            if (!dictionary.Contains(key))
+            {
+                dictionary.Add(key, value);
+            }
+            else
+            {
+                dictionary[key] = value;
+            }
+
+            return dictionary;
         }
 
         public static string RemoveQuotes(this string inputText)

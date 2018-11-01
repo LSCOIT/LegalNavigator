@@ -5,11 +5,11 @@ using System.Collections.Generic;
 
 namespace Access2Justice.Shared.A2JAuthor
 {
-    public class A2JAuthorLogicParser : IA2JAuthorLogicParser
+    public class LogicParser : IA2JAuthorLogicParser
     {
         private readonly IA2JAuthorLogicInterpreter interpreter;
 
-        public A2JAuthorLogicParser(IA2JAuthorLogicInterpreter interpreter)
+        public LogicParser(IA2JAuthorLogicInterpreter interpreter)
         {
             this.interpreter = interpreter;
         }
