@@ -7,6 +7,8 @@ import { AdminComponent } from './admin/admin.component';
 import { PrivacyPromiseAdminComponent } from './privacy-promise/privacy-promise-admin.component';
 import { AdminService } from './admin.service';
 import { AboutAdminComponent } from './about/about-admin.component';
+import { AdminAuthGuard } from './admin-auth/admin-auth.guard';
+import { AdminAuthService } from './admin-auth/admin-auth.service';
 
 @NgModule({
   imports: [
@@ -26,7 +28,9 @@ import { AboutAdminComponent } from './about/about-admin.component';
     PrivacyPromiseAdminComponent
   ],
   providers: [
-    AdminService
+    AdminService,
+    AdminAuthGuard,
+    AdminAuthService
   ]
 })
 export class AdminModule { }
