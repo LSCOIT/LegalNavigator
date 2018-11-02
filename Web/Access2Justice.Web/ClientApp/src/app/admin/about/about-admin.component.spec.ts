@@ -27,6 +27,7 @@ describe('AboutAdminComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AboutAdminComponent);
     component = fixture.componentInstance;
+    spyOn(component, 'ngOnInit');
     fixture.detectChanges();
   });
 

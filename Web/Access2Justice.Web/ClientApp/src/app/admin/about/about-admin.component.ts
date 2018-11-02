@@ -134,11 +134,11 @@ export class AboutAdminComponent implements OnInit {
   //}
 
   ngOnInit() {
-    //this.getAboutPageContent();
-    //this.staticContentSubcription = this.global.notifyStaticData
-    //  .subscribe(() => {
-    //    this.getAboutPageContent();
-    //  });
+    this.getAboutPageContent();
+    this.staticContentSubcription = this.global.notifyStaticData
+      .subscribe(() => {
+        this.getAboutPageContent();
+      });
   }
 }
 

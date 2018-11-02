@@ -1,50 +1,47 @@
-import { TestBed, async, inject } from '@angular/core/testing';
+import { TestBed, async, inject, fakeAsync, tick } from '@angular/core/testing';
 import { AdminAuthGuard } from './admin-auth.guard';
-import { Router, ActivatedRouteSnapshot } from '@angular/router';
+import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { LoginService } from '../../shared/login/login.service';
 import { of } from 'rxjs/observable/of';
 import { MsalService } from '@azure/msal-angular';
+import { pipe } from 'rxjs';
 
-class MockRouter {
-  navigate(path) { }
-}
-
-fdescribe('AdminAuthGuard', () => {
-  let mockLoginService;
+describe('AdminAuthGuard', () => {
   let adminAuthGuard: AdminAuthGuard;
+  let mockLoginService;
   let mockRouter;
-  let route: ActivatedRouteSnapshot;
-  let mockUserProfile = [
-    {
-      roleInformation: [
-        { roleName: "Developer" }
-      ]
-    }
-  ];
+  let mockUserProfile;
+
   beforeEach(() => {
-    //mockLoginService = jasmine.createSpyObj((['getUserProfile']));
-    //mockLoginService.getUserProfile.returnValue(of(mockUserProfile));
-    
+    mockLoginService = jasmine.createSpyObj(['getUserProfile']);
 
     TestBed.configureTestingModule({
       providers: [
         AdminAuthGuard,
         { provide: Router, useValue: mockRouter },
-        ActivatedRouteSnapshot
+        { provide: LoginService, useValue: mockLoginService }
       ]
     });
+    adminAuthGuard = new AdminAuthGuard(mockRouter, mockLoginService);
   });
 
-  //it('should be truthy', inject([AdminAuthGuard], (guard: AdminAuthGuard) => {
-  //  expect(guard).toBeTruthy();
-  //}));
+  it('should be truthy', inject([AdminAuthGuard], (guard: AdminAuthGuard) => {
+    expect(guard).toBeTruthy();
+  }));
 
-  it('should checkAdminStatus and return true', () => {
-    adminAuthGuard = new AdminAuthGuard(mockLoginService, mockRouter);
-    mockRouter = new MockRouter();
-    mockLoginService = { getUserProfile: () => mockUserProfile };
-    route = TestBed.get(ActivatedRouteSnapshot);
-    spyOnProperty(route, 'data', 'get').and.returnValue({ roles: ['admin'] });
-    expect(adminAuthGuard.canActivate(null, route)).toEqual(of(true));
-  });
+  it('should checkAdminStatus and return true', fakeAsync(() => {
+    mockRouter = {
+      navigate: () => { },
+      url: '/admin'
+    }
+
+    mockUserProfile = {
+      roleInformation: [
+        { roleName: "Admin" }
+      ]
+    };
+    mockLoginService.getUserProfile.and.returnValue(of(mockUserProfile));
+    adminAuthGuard.canActivate(mockRouter, mockLoginService);
+    expect(adminAuthGuard.canActivate(mockRouter, mockLoginService)).toBeTruthy();
+  }));
 });
