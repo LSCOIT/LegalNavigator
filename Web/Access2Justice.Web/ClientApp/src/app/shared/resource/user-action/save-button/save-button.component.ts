@@ -30,14 +30,14 @@ export class SaveButtonComponent implements OnInit {
   planId: string;
   resourceStorage: any;
   planStorage: any;
-  personalizedPlanStep: PlanStep = { stepId: '', title: '', description: '', order: 1, isComplete: false, resources: [], topicIds: [] };
-  personalizedPlanSteps: Array<PlanStep>;
-  planTopic: PlanTopic = { topicId: '', steps: this.personalizedPlanSteps };
-  planTopics: Array<PlanTopic>;
-  personalizedPlan: PersonalizedPlan = { id: '', topics: this.planTopics, isShared: false };
-  resourceIds: Array<string>;
-  topicIds: Array<string>;
-  stepIds: Array<string>;
+  //personalizedPlanStep: PlanStep = { stepId: '', title: '', description: '', order: 1, isComplete: false, resources: [], topicIds: [] };
+  //personalizedPlanSteps: Array<PlanStep>;
+  ////planTopic: PlanTopic = { topicId: '', steps: this.personalizedPlanSteps };
+  //planTopics: Array<PlanTopic>;
+  //personalizedPlan: PersonalizedPlan = { id: '', topics: this.planTopics, isShared: false };
+  //resourceIds: Array<string>;
+  //topicIds: Array<string>;
+  //stepIds: Array<string>;
   @Input() addLinkClass: boolean = false;
   planStepCount: number = 0;
   planStepIds: Array<string>;
@@ -75,15 +75,15 @@ export class SaveButtonComponent implements OnInit {
 
   savePlanResourcesPostLogin() {
     if (this.type === "Plan") {
-      this.planId = this.id;
-      let generatedPersonalizedPlan = this.navigateDataService.getData();
+      //this.planId = this.id;
+      //let generatedPersonalizedPlan = this.navigateDataService.getData();
       //if (generatedPersonalizedPlan != undefined) {
       //  this.topics = generatedPersonalizedPlan.topics;
       //  this.planDetailTags = generatedPersonalizedPlan;
       //  this.topicsList = this.personalizedPlanService.createTopicsList(this.topics);
       //  this.planDetails = this.personalizedPlanService.getPlanDetails(this.topics, this.planDetailTags);
       //}
-      this.saveButtonService.savePlanToUserProfile(generatedPersonalizedPlan);
+      this.saveButtonService.savePlanToUserProfile(this.plan);
       //this.saveButtonService.getPlan(this.planId);
     } else {
       this.savedResources = { itemId: this.id, resourceType: this.type, resourceDetails: this.resourceDetails };

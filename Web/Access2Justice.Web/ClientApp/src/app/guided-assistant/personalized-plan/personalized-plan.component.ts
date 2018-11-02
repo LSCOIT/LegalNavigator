@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PersonalizedPlanService } from '../personalized-plan/personalized-plan.service';
-import { PersonalizedPlanTopic } from '../personalized-plan/personalized-plan';
+import { PersonalizedPlanTopic, PersonalizedPlan } from '../personalized-plan/personalized-plan';
 import { ActivatedRoute } from '@angular/router';
 import { NavigateDataService } from '../../shared/navigate-data.service';
 
@@ -11,6 +11,8 @@ import { NavigateDataService } from '../../shared/navigate-data.service';
 })
 export class PersonalizedPlanComponent implements OnInit {
   activeActionPlan = this.activeRoute.snapshot.params['id'];
+  personalizedPlan: PersonalizedPlan;
+
   topics: Array<any> = [];
   planTopic: PersonalizedPlanTopic = { topic: {}, isSelected: true };
   topicsList: Array<PersonalizedPlanTopic> = [];
@@ -64,10 +66,10 @@ export class PersonalizedPlanComponent implements OnInit {
   }
 
   ngOnInit() {
-    let generatedPersonalizedPlan = this.navigateDataService.getData();
-    if (generatedPersonalizedPlan != undefined) {
-      this.topics = generatedPersonalizedPlan.topics;
-      this.planDetailTags = generatedPersonalizedPlan;
+    this.personalizedPlan = this.navigateDataService.getData();
+    if (this.personalizedPlan != undefined) {
+      this.topics = this.personalizedPlan.topics;
+      this.planDetailTags = this.personalizedPlan;
       this.topicsList = this.personalizedPlanService.createTopicsList(this.topics);
       this.planDetails = this.personalizedPlanService.getPlanDetails(this.topics, this.planDetailTags);
     } else {
