@@ -30,7 +30,7 @@ namespace Access2Justice.Api.ViewModels
         [JsonProperty(PropertyName = "name")]
         public string TopicName { get; set; }
 
-        [JsonProperty(PropertyName = "essentialReadings")]
+        [JsonProperty(PropertyName = "quickLinks")]  // Todo:@Alaa put back to essentialReadings
         public List<EssentialReadings> EssentialReadings { get; set; }
 
         [JsonProperty(PropertyName = "icon")]
