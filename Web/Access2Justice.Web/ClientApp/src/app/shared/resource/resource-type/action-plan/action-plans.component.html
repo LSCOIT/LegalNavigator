@@ -52,7 +52,7 @@
                 <div>
                   <p [innerHTML]="step.description"></p>
                 </div>
-                <div *ngIf="step.resources != null">
+                <div *ngIf="step.resources.length">
                   <h4>Additional Resources</h4>
                   <div *ngFor="let resource of step.resources" id="additional-resource" class="row">
                     <div *ngIf="resourceTypeList.includes(resource.resourceType); else otherResourceType" class="media-left no-print">
