@@ -20,9 +20,6 @@ namespace Access2Justice.CosmosDb
         {
             this.documentClient = documentClient;
             this.cosmosDbSettings = cosmosDbSettings;
-
-            CreateDatabaseIfNotExistsAsync().Wait();
-            CreateCollectionIfNotExistsAsync().Wait();
         }
 
         public async Task<Document> CreateItemAsync<T>(T item, string collectionId)
@@ -74,6 +71,7 @@ namespace Access2Justice.CosmosDb
             return await documentClient.ReplaceDocumentAsync(
                 UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicsCollectionId, id), item);
         }
+
         public async Task<Document> UpdateItemAsync<T>(string id, T item, string collectionId)
         {
             return await documentClient.ReplaceDocumentAsync(
@@ -171,65 +169,6 @@ namespace Access2Justice.CosmosDb
         public async Task<dynamic> ExecuteStoredProcedureAsync(string collectionId, string storedProcName, params dynamic[] procedureParams)
         {
             return await documentClient.ExecuteStoredProcedureAsync<dynamic>(UriFactory.CreateStoredProcedureUri(cosmosDbSettings.DatabaseId, collectionId, storedProcName), procedureParams);
-        }
-
-        private async Task CreateDatabaseIfNotExistsAsync()
-        {
-            try
-            {
-                await documentClient.ReadDatabaseAsync(UriFactory.CreateDatabaseUri(cosmosDbSettings.DatabaseId));
-            }
-            catch (DocumentClientException e)
-            {
-                if (e.StatusCode == System.Net.HttpStatusCode.NotFound)
-                {
-                    await documentClient.CreateDatabaseAsync(new Database { Id = cosmosDbSettings.DatabaseId });
-                }
-                else
-                {
-                    // todo: log error
-                    throw;
-                }
-            }
-        }
-
-        private async Task CreateCollectionIfNotExistsAsync()
-        {
-            try
-            {
-                await documentClient.ReadDocumentCollectionAsync(
-                    UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.TopicsCollectionId));
-            }
-            catch (DocumentClientException e)
-            {
-                if (e.StatusCode == System.Net.HttpStatusCode.NotFound)
-                {
-                    await documentClient.CreateDocumentCollectionAsync(
-                        UriFactory.CreateDatabaseUri(cosmosDbSettings.DatabaseId),
-                        new DocumentCollection
-                        {
-                            Id = cosmosDbSettings.TopicsCollectionId
-                        },
-                        new RequestOptions { OfferThroughput = 400 });
-                }
-                else
-                {
-                    // todo: log error
-                    throw;
-                }
-            }
-        }
-
-        public async Task<Document> CreateUserProfileAsync<T>(T item)
-        {
-            return await documentClient.CreateDocumentAsync(
-                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.ProfilesCollectionId), item);
-        }
-
-        public async Task<Document> UpdateUserProfileAsync<T>(string id, T item)
-        {
-            return await documentClient.ReplaceDocumentAsync(
-                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, cosmosDbSettings.ProfilesCollectionId, id), item);
         }
     }
 }

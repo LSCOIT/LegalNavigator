@@ -37,7 +37,7 @@ namespace Access2Justice.Api.Controllers
         public async Task<IActionResult> TestA2JAuthorLogicParser([FromBody] CuratedExperienceAnswers userAnswers)
         {
             // Todo:@Alaa remove this endpoint, added it just to test the parser duing development
-            return Ok(new A2JAuthorLogicParser(new A2JAuthorLogicInterpreter()).Parse(userAnswers));
+            return Ok(new LogicParser(new LogicInterpreter()).Parse(userAnswers));
         }
 
         /// <summary>
@@ -51,10 +51,10 @@ namespace Access2Justice.Api.Controllers
         /// <response code="200">Returns personalized plan for curated experience </response>
         /// <response code="500">Failure</response>
         [HttpGet("generate")]
-        public async Task<IActionResult> GeneratePersonalizedPlanAsync([FromQuery] Guid curatedExperienceId, [FromQuery] Guid answersDocId, [FromBody] Location location)
+        public async Task<IActionResult> GeneratePersonalizedPlanAsync([FromQuery] Guid curatedExperienceId, [FromQuery] Guid answersDocId)
         {
             var personalizedPlan = await personalizedPlanBusinessLogic.GeneratePersonalizedPlanAsync(
-               sessionManager.RetrieveCachedCuratedExperience(curatedExperienceId, HttpContext), answersDocId, location);
+               sessionManager.RetrieveCachedCuratedExperience(curatedExperienceId, HttpContext), answersDocId);
 
             if (personalizedPlan == null)
             {
@@ -100,14 +100,11 @@ namespace Access2Justice.Api.Controllers
         /// <param name="userPlan"></param>
         /// <response code="200">Returns the updated personalized plan </response>
         /// <response code="500">Failure</response>      
-        // Todo:@Alaa check user is authorized
         //[Permission(PermissionName.updateplan)]
         [HttpPost("save")]
         public async Task<IActionResult> SavePersonalizedPlanAsync([FromBody] PersonalizedPlanViewModel personalizedPlan)
         {
-            // Todo:@Alaa i need the user claims here so i could update the user profile of the logged in user.
             var newPlan = await personalizedPlanBusinessLogic.UpsertPersonalizedPlanAsync(personalizedPlan);
-
             if (newPlan == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);

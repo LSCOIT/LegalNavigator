@@ -19,16 +19,14 @@
 
         public class TrueTokens
         {
-            public const string TrueText = "TRUE";
-            public const string LogicalTrue = "true";
-            public const string LogicalTrueText = "is-true";
+            public const string True = "TRUE";
+            public const string A2JLogicalTrue = "is-true";
         }
 
         public class FalseTokens
         {
-            public const string FalseText = "FALSE";
-            public const string LogicalFalse = "false";
-            public const string LogicalFalseText = "is-false";
+            public const string False = "FALSE";
+            public const string A2JLogicalFalse = "is-false";
         }
 
         public class ParserConfig

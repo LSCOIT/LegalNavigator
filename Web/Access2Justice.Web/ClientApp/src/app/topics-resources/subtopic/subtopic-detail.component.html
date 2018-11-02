@@ -2,7 +2,7 @@
   <app-breadcrumb></app-breadcrumb>
   <div class="row">
     <div class="col-md-6">
-      <h3 *ngIf="subtopics.id == activeSubtopicParam" class="subtopic-heading text-capitalize">{{subtopics.name}}</h3>
+      <h3 *ngIf="subtopics.id == activeSubtopicParam" class="subtopic-heading">{{subtopics.name}}</h3>
     </div>
     <div class="col-md-6 user-action">
       <app-user-action-sidebar [mobile]="true" [id]="activeSubtopicParam" [type]="type"></app-user-action-sidebar>

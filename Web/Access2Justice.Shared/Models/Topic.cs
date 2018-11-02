@@ -1,11 +1,7 @@
-﻿using Microsoft.AspNetCore.JsonPatch.Operations;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Swashbuckle.AspNetCore.Swagger;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using System.Globalization;
 using System.Text;
 
 namespace Access2Justice.Shared.Models
@@ -79,14 +75,5 @@ namespace Access2Justice.Shared.Models
     {
         [JsonProperty(PropertyName = "id")]
         public dynamic ParentTopicIds { get; set; }
-    }
-
-    public class QuickLinks
-    {
-        [JsonProperty(PropertyName = "text")]
-        public string Text { get; set; }
-
-        [JsonProperty(PropertyName = "url")]
-        public string Urls { get; set; }
     }
 }
