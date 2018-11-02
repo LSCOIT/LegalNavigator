@@ -27,7 +27,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             curatedExperience = new CuratedExperienceBuisnessLogic(dbSettings, dbService, parser);
         }
 
-         // Todo:@Alaa fix these tests
+        // Todo: fix these tests
 
         //[Fact]
         //public void FindDestinationComponentShouldReturnTheNextComponentInLine()

@@ -25,11 +25,11 @@ namespace Access2Justice.Api.BusinessLogic
             dbService = backendDatabaseService;
         }
 
-        public async Task<Topic> GetTopic(string topicName, Location location)
+        public async Task<Topic> GetTopic(string topicName)
         {
             try
             {
-                List<dynamic> topics = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.TopicsCollectionId, Constants.Name, topicName, location);
+                List<dynamic> topics = await dbClient.FindItemsWhereAsync(dbSettings.TopicsCollectionId, Constants.Name, topicName);
 
                 if (!topics.Any())
                 {
@@ -189,7 +189,6 @@ namespace Access2Justice.Api.BusinessLogic
             List<Location> locations = new List<Location>();
             List<Conditions> conditions = new List<Conditions>();
             List<ParentTopicId> parentTopicIds = new List<ParentTopicId>();
-            //List<QuickLinks> quickLinks = new List<QuickLinks>();
             List<OrganizationReviewer> organizationReviewers = new List<OrganizationReviewer>();
             List<ArticleContents> articleContents = new List<ArticleContents>();
             List<dynamic> references = new List<dynamic>();
@@ -215,11 +214,6 @@ namespace Access2Justice.Api.BusinessLogic
                     parentTopicIds = field.Value != null && field.Value.Count() > 0 ? GetParentTopicIds(field.Value) : null;
                 }
 
-                //else if (field.Name == "quickLinks")
-                //{
-                //    quickLinks = field.Value != null && field.Value.Count() > 0 ? GetQuickLinks(field.Value) : null;
-                //}
-
                 else if (field.Name == "reviewer")
                 {
                     organizationReviewers = field.Value != null && field.Value.Count() > 0 ? GetReviewer(field.Value) : null;
@@ -235,7 +229,6 @@ namespace Access2Justice.Api.BusinessLogic
             references.Add(locations);
             references.Add(conditions);
             references.Add(parentTopicIds);
-            //references.Add(quickLinks);
             references.Add(organizationReviewers);
             references.Add(articleContents);
             return references;
@@ -572,11 +565,10 @@ namespace Access2Justice.Api.BusinessLogic
                 ResourceCategory = resourceObject.resourceCategory,
                 Description = resourceObject.description,
                 ResourceType = resourceObject.resourceType,
-                Urls = resourceObject.url,
+                Url = resourceObject.url,
                 TopicTags = topicTags,
                 OrganizationalUnit = resourceObject.organizationalUnit,
                 Location = locations,
-                Icon = resourceObject.icon,
                 Overview = resourceObject.overview,
                 FullDescription = resourceObject.fullDescription,
                 CreatedBy = resourceObject.createdBy,
@@ -604,11 +596,10 @@ namespace Access2Justice.Api.BusinessLogic
                 ResourceCategory = resourceObject.resourceCategory,
                 Description = resourceObject.description,
                 ResourceType = resourceObject.resourceType,
-                Urls = resourceObject.url,
+                Url = resourceObject.url,
                 TopicTags = topicTags,
                 OrganizationalUnit = resourceObject.organizationalUnit,
                 Location = locations,
-                Icon = resourceObject.icon,
                 Conditions = conditions,
                 CreatedBy = resourceObject.createdBy,
                 ModifiedBy = resourceObject.modifiedBy
@@ -635,11 +626,10 @@ namespace Access2Justice.Api.BusinessLogic
                 ResourceCategory = resourceObject.resourceCategory,
                 Description = resourceObject.description,
                 ResourceType = resourceObject.resourceType,
-                Urls = resourceObject.url,
+                Url = resourceObject.url,
                 TopicTags = topicTags,
                 OrganizationalUnit = resourceObject.organizationalUnit,
                 Location = locations,
-                Icon = resourceObject.icon,
                 CreatedBy = resourceObject.createdBy,
                 ModifiedBy = resourceObject.modifiedBy,
                 Overview = resourceObject.overview,
@@ -665,11 +655,10 @@ namespace Access2Justice.Api.BusinessLogic
                 ResourceCategory = resourceObject.resourceCategory,
                 Description = resourceObject.description,
                 ResourceType = resourceObject.resourceType,
-                Urls = resourceObject.url,
+                Url = resourceObject.url,
                 TopicTags = topicTags,
                 OrganizationalUnit = resourceObject.organizationalUnit,
                 Location = locations,
-                Icon = resourceObject.icon,
                 CreatedBy = resourceObject.createdBy,
                 ModifiedBy = resourceObject.modifiedBy,
                 Overview = resourceObject.overview
@@ -696,11 +685,10 @@ namespace Access2Justice.Api.BusinessLogic
                 ResourceCategory = resourceObject.resourceCategory,
                 Description = resourceObject.description,                
                 ResourceType = resourceObject.resourceType,
-                Urls = resourceObject.url,
+                Url = resourceObject.url,
                 TopicTags = topicTags,
                 OrganizationalUnit = resourceObject.organizationalUnit,
                 Location = locations,
-                Icon = resourceObject.icon,
                 CreatedBy = resourceObject.createdBy,
                 ModifiedBy = resourceObject.modifiedBy,                
                 Address = resourceObject.address,
@@ -732,11 +720,10 @@ namespace Access2Justice.Api.BusinessLogic
                 ResourceCategory = resourceObject.resourceCategory,
                 Description = resourceObject.description,
                 ResourceType = resourceObject.resourceType,
-                Urls = resourceObject.url,
+                Url = resourceObject.url,
                 TopicTags = topicTags,
                 OrganizationalUnit = resourceObject.organizationalUnit,
                 Location = locations,
-                Icon = resourceObject.icon,
                 CreatedBy = resourceObject.createdBy,
                 ModifiedBy = resourceObject.modifiedBy
             };
@@ -760,11 +747,10 @@ namespace Access2Justice.Api.BusinessLogic
                 ResourceCategory = resourceObject.resourceCategory,
                 Description = resourceObject.description,
                 ResourceType = resourceObject.resourceType,
-                Urls = resourceObject.url,
+                Url = resourceObject.url,
                 TopicTags = topicTags,
                 OrganizationalUnit = resourceObject.organizationalUnit,
                 Location = locations,
-                Icon = resourceObject.icon,
                 CreatedBy = resourceObject.createdBy,
                 ModifiedBy = resourceObject.modifiedBy
             };

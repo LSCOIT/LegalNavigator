@@ -31,7 +31,7 @@ namespace Access2Justice.Api.BusinessLogic
             this.personalizedPlanViewModelMapper = personalizedPlanViewModelMapper;
         }
 
-        public async Task<PersonalizedPlanViewModel> GeneratePersonalizedPlanAsync(CuratedExperience curatedExperience, Guid answersDocId, Location location)
+        public async Task<PersonalizedPlanViewModel> GeneratePersonalizedPlanAsync(CuratedExperience curatedExperience, Guid answersDocId)
         {
             var a2jPersonalizedPlan = await dynamicQueries.FindItemWhereAsync<JObject>(cosmosDbSettings.A2JAuthorDocsCollectionId, Constants.Id,
                 curatedExperience.A2jPersonalizedPlanId.ToString());
@@ -44,7 +44,7 @@ namespace Access2Justice.Api.BusinessLogic
                 return null;
             }
 
-            return await personalizedPlanViewModelMapper.MapViewModel(personalizedPlanEngine.Build(a2jPersonalizedPlan, userAnswers), location);
+            return await personalizedPlanViewModelMapper.MapViewModel(personalizedPlanEngine.Build(a2jPersonalizedPlan, userAnswers));
         }
 
         public async Task<PersonalizedPlanViewModel> GetPersonalizedPlanAsync(Guid personalizedPlanId)

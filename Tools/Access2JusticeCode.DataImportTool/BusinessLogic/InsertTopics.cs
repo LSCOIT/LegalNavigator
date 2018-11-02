@@ -8,7 +8,7 @@ using System.Linq;
 using Spreadsheet = DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml;
-using Access2Justice.DataImportTool.Models;
+using Access2Justice.Shared.Models;
 
 namespace Access2Justice.DataImportTool.BusinessLogic
 {
@@ -17,7 +17,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
         public dynamic CreateJsonFromCSV(string filePath)
         {
             int recordNumber = 1;
-            Models.Topic topic = new Models.Topic();
+            Shared.Models.Topic topic = new Shared.Models.Topic();
             List<dynamic> topicsList = new List<dynamic>();
             List<dynamic> topics = new List<dynamic>();
             try
@@ -38,8 +38,8 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                         dynamic id = null; string name = string.Empty; string keywords = string.Empty; string organizationalUnit = string.Empty;
                         string state = string.Empty; string county = string.Empty; string city = string.Empty; string zipcode = string.Empty;
                         string overview = string.Empty; string icon = string.Empty;
-                        List<ParentTopicID> parentTopicIds = new List<ParentTopicID>();
-                        List<Locations> locations = new List<Locations>();
+                        List<ParentTopicId> parentTopicIds = new List<ParentTopicId>();
+                        List<Shared.Models.Location> locations = new List<Shared.Models.Location>();
                         string topicIdCell = string.Empty;
                         if (counter > 0)
                         {
@@ -170,7 +170,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                         if (counter > 0)
                         {
                             locations = GetLocations(state, county, city, zipcode);
-                            topic = new Models.Topic()
+                            topic = new Shared.Models.Topic()
                             {
                                 Id = (string.IsNullOrEmpty(id)|| string.IsNullOrWhiteSpace(id)) ? Guid.NewGuid() : id,
                                 Name = name,
@@ -205,16 +205,16 @@ namespace Access2Justice.DataImportTool.BusinessLogic
         {
             string[] parentsb = null;
             parentsb = parentId.Split('|');
-            List<ParentTopicID> parentTopicIds = new List<ParentTopicID>();
+            List<ParentTopicId> parentTopicIds = new List<ParentTopicId>();
             for (int topicIdIterator = 0; topicIdIterator < parentsb.Length; topicIdIterator++)
             {
                 string trimParentTopicId = (parentsb[topicIdIterator]).Trim();
                 string parentTopicGuid = string.Empty;
                 if (trimParentTopicId.Length > 0)
                 {
-                    parentTopicIds.Add(new ParentTopicID
+                    parentTopicIds.Add(new ParentTopicId
                     {
-                        ParentTopicId = trimParentTopicId
+                        ParentTopicIds = trimParentTopicId
                     });
                 }
             }
@@ -274,7 +274,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
 
         public dynamic GetLocations(string state, string county, string city, string zipcode)
         {
-            List<Locations> location = new List<Locations>();
+            List<Shared.Models.Location> location = new List<Shared.Models.Location>();
             string[] statesb = null;
             string[] countysb = null;
             string[] citysb = null;
@@ -283,16 +283,16 @@ namespace Access2Justice.DataImportTool.BusinessLogic
             countysb = county.Split('|');
             citysb = city.Split('|');
             zipcodesb = zipcode.Split('|');
-            List<Locations> states = new List<Locations>();
-            List<Locations> counties = new List<Locations>();
-            List<Locations> cities = new List<Locations>();
-            List<Locations> zipcodes = new List<Locations>();
+            List<Shared.Models.Location> states = new List<Shared.Models.Location>();
+            List<Shared.Models.Location> counties = new List<Shared.Models.Location>();
+            List<Shared.Models.Location> cities = new List<Shared.Models.Location>();
+            List<Shared.Models.Location> zipcodes = new List<Shared.Models.Location>();
 
             if (statesb.Length > 0 && (!string.IsNullOrEmpty(statesb.ToString())))
             {
                 for (int locationIterator = 0; locationIterator < statesb.Length; locationIterator++)
                 {
-                    states.Add(new Locations
+                    states.Add(new Shared.Models.Location
                     {
                         State = (statesb[locationIterator]).Trim()
                     });
@@ -306,7 +306,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
             {
                 for (int locationIterator = 0; locationIterator < countysb.Length; locationIterator++)
                 {
-                    counties.Add(new Locations
+                    counties.Add(new Shared.Models.Location
                     {
                         County = (countysb[locationIterator]).Trim()
                     });
@@ -321,7 +321,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
             {
                 for (int locationIterator = 0; locationIterator < citysb.Length; locationIterator++)
                 {
-                    cities.Add(new Locations
+                    cities.Add(new Shared.Models.Location
                     {
                         City = (citysb[locationIterator]).Trim()
                     });
@@ -336,7 +336,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
             {
                 for (int locationIterator = 0; locationIterator < zipcodesb.Length; locationIterator++)
                 {
-                    zipcodes.Add(new Locations
+                    zipcodes.Add(new Shared.Models.Location
                     {
                         ZipCode = (zipcodesb[locationIterator]).Trim()
                     });
@@ -400,8 +400,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
         public static dynamic FormatData(string inputText)
         {
             var inputTrimmed = inputText.Trim();
-            return inputTrimmed.Replace("_x000D_\n", "\n");
+            return inputTrimmed.Replace("_x000D_", "");
         }
-
     }
 }

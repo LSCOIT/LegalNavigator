@@ -88,30 +88,34 @@ namespace Access2Justice.E2ETests.Features
             testRunner.CollectScenarioErrors();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Navigate to Help & FAQs page from home page")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "HelpAndFAQs")]
-        public virtual void NavigateToHelpFAQsPageFromHomePage()
+        public virtual void NavigateToHelpFAQsPageFromHomePage(string state, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Navigate to Help & FAQs page from home page", null, ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Navigate to Help & FAQs page from home page", null, exampleTags);
 #line 6
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
 #line 7
  testRunner.Given("I am on the Access2Justice website", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                        "State"});
-            table1.AddRow(new string[] {
-                        "Alaska"});
 #line 8
- testRunner.And("current state is set to", ((string)(null)), table1, "And ");
-#line 11
+ testRunner.And(string.Format("current state is set to {0}", state), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 9
  testRunner.When("I click on the Help & FAQs link on the upper navigation bar", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 12
+#line 10
  testRunner.Then("I should be directed to the Help & FAQs page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Navigate to Help & FAQs page from home page: Hawaii")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "HelpAndFAQs")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Hawaii")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:State", "Hawaii")]
+        public virtual void NavigateToHelpFAQsPageFromHomePage_Hawaii()
+        {
+#line 6
+this.NavigateToHelpFAQsPageFromHomePage("Hawaii", ((string[])(null)));
+#line hidden
         }
     }
 }
