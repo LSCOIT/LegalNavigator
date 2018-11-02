@@ -65,80 +65,80 @@ export class AboutAdminComponent implements OnInit {
     }
   }
 
-  onSubmit(aboutForm: NgForm) {
-    if (sessionStorage.getItem("globalMapLocation")) {
-      this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
-    }
+  //onSubmit(aboutForm: NgForm) {
+  //  if (sessionStorage.getItem("globalMapLocation")) {
+  //    this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+  //  }
 
-    let aboutParams = {
-      contactUs: {
-        title: this.aboutContent["contactUs"].title,
-        description: aboutForm.value.contactUsDescription,
-        email: aboutForm.value.contactUsEmail
-      },
-      inTheNews: {
-        title: this.aboutContent["inTheNews"].title,
-        description: aboutForm.value.inTheNewsDescription,
-        news: [] //need to add this
-      },
-      location: [this.mapLocation],
-      mediaInquiries: {
-        description: aboutForm.value.mediaInquiriesDescription,
-        email: aboutForm.value.mediaInquiriesEmail,
-        title: "Media Inquiries"
-      },
-      mission: {
-        title: "Our Mission",
-        description: "",
-        sponsors: []
-      },
-      name: "AboutPage",
-      organizationalUnit: "Hawaii",
-      privacyPromise: {
-        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus, nulla!",
-        image: {
-          source: "",
-          altText: ""
-        },
-        altText: "",
-        source: "",
-        privacyPromiseButton: {
-          buttonText: "View our privacy promise",
-          buttonAltText: "View our privacy promise",
-          buttonLink: "privacy"
-        },
-        title: "Our Privacy Promise"
-      },
-      service: {
-        description:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat dicta illo rerum voluptatibus magni molestias officiis totam minima ab quas quae dolorem aut laboriosam expedita atque dignissimos, sed maxime ratione consequatur optio nobis odit repellendus quos dolore! Sunt atque accusantium praesentium, culpa hic enim voluptas suscipit cumque odit deleniti animi reiciendis perspiciatis magnam exercitationem minus? Itaque exercitationem nostrum dignissimos eum tempore magnam, quasi alias voluptas sequi facere voluptate aperiam porro.",
-        guidedAssistantButton: {
-          buttonText: "Use our Guided Assistant",
-          buttonAltText: "Use our Guided Assistant",
-          buttonLink: "guidedassistant"
-        },
-        image: {
-          source: "",
-          altText: ""
-        },
-        altText: "",
-        source: "",
-        title: "Our Service",
-        topicsAndResourcesButton: {
-          buttonText: "Browse Topics & Resources",
-          buttonAltText: "Browse Topics & Resources",
-          buttonLink: "topics"
-        }
-      }
-    }
-  }
+  //  let aboutParams = {
+  //    contactUs: {
+  //      title: this.aboutContent["contactUs"].title,
+  //      description: aboutForm.value.contactUsDescription,
+  //      email: aboutForm.value.contactUsEmail
+  //    },
+  //    inTheNews: {
+  //      title: this.aboutContent["inTheNews"].title,
+  //      description: aboutForm.value.inTheNewsDescription,
+  //      news: [] //need to add this
+  //    },
+  //    location: [this.mapLocation],
+  //    mediaInquiries: {
+  //      description: aboutForm.value.mediaInquiriesDescription,
+  //      email: aboutForm.value.mediaInquiriesEmail,
+  //      title: "Media Inquiries"
+  //    },
+  //    mission: {
+  //      title: "Our Mission",
+  //      description: "",
+  //      sponsors: []
+  //    },
+  //    name: "AboutPage",
+  //    organizationalUnit: "Hawaii",
+  //    privacyPromise: {
+  //      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus, nulla!",
+  //      image: {
+  //        source: "",
+  //        altText: ""
+  //      },
+  //      altText: "",
+  //      source: "",
+  //      privacyPromiseButton: {
+  //        buttonText: "View our privacy promise",
+  //        buttonAltText: "View our privacy promise",
+  //        buttonLink: "privacy"
+  //      },
+  //      title: "Our Privacy Promise"
+  //    },
+  //    service: {
+  //      description:
+  //        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat dicta illo rerum voluptatibus magni molestias officiis totam minima ab quas quae dolorem aut laboriosam expedita atque dignissimos, sed maxime ratione consequatur optio nobis odit repellendus quos dolore! Sunt atque accusantium praesentium, culpa hic enim voluptas suscipit cumque odit deleniti animi reiciendis perspiciatis magnam exercitationem minus? Itaque exercitationem nostrum dignissimos eum tempore magnam, quasi alias voluptas sequi facere voluptate aperiam porro.",
+  //      guidedAssistantButton: {
+  //        buttonText: "Use our Guided Assistant",
+  //        buttonAltText: "Use our Guided Assistant",
+  //        buttonLink: "guidedassistant"
+  //      },
+  //      image: {
+  //        source: "",
+  //        altText: ""
+  //      },
+  //      altText: "",
+  //      source: "",
+  //      title: "Our Service",
+  //      topicsAndResourcesButton: {
+  //        buttonText: "Browse Topics & Resources",
+  //        buttonAltText: "Browse Topics & Resources",
+  //        buttonLink: "topics"
+  //      }
+  //    }
+  //  }
+  //}
 
   ngOnInit() {
-    this.getAboutPageContent();
-    this.staticContentSubcription = this.global.notifyStaticData
-      .subscribe(() => {
-        this.getAboutPageContent();
-      });
+    //this.getAboutPageContent();
+    //this.staticContentSubcription = this.global.notifyStaticData
+    //  .subscribe(() => {
+    //    this.getAboutPageContent();
+    //  });
   }
 }
 
