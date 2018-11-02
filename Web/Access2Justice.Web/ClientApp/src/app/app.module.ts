@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { AdminModule } from './admin/admin.module';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
 
@@ -47,6 +48,8 @@ import { TokenInterceptor } from './token-interceptor';
 import { environment } from '../environments/environment';
 import { api } from '../api/api';
 
+export const protectedResourceMap: [string, string[]][] = [[api.checkPermaLink, [environment.apiScope]], [api.shareUrl, [environment.apiScope]]
+  , [api.unShareUrl, [environment.apiScope]], [api.userPlanUrl, [environment.apiScope]], [api.updatePrivacyDataUrl, [environment.apiScope]]] 
 
 @NgModule({
   declarations: [
@@ -72,6 +75,7 @@ import { api } from '../api/api';
     BrowserModule,
     FormsModule,
     HttpClientModule,
+    AdminModule,
     AppRoutingModule,
     SharedModule,
     AccordionModule.forRoot(),

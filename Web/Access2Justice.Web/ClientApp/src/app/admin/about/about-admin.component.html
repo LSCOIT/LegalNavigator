@@ -1,0 +1,86 @@
+<div class="container" *ngIf="aboutContent">
+  <h1>About Page</h1>
+  <form #aboutForm="ngForm" (ngSubmit)="onSubmit(aboutForm)">
+    <div class="box-shadow">
+      <h2>Heading</h2>
+      <div class="row">
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Our Mission</label>
+          <textarea class="form-control col-md-10 col-sm-9" name="pageDescription" [(ngModel)]="aboutContent.mission.description"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="box-shadow">
+      <h2>Sections</h2>
+      <div class="row sections">
+        <h3>Our Service</h3>
+        <div>
+          <label class="col-md-2 col-sm-3">Description</label>
+          <textarea class="form-control col-md-10 col-sm-9" [(ngModel)]="aboutContent.service.description" name="serviceDescription"></textarea>
+        </div>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Image</label>
+          <input class="form-control upload-img col-md-10 col-sm-9 " type="file" name="serviceImage" accept="image/*" (change)="encode('serviceImage')" ngModel/>
+        </div>
+      </div>
+      <div class="row sections">
+        <h3>Our Privacy Promise</h3>
+        <div>
+          <label class="col-md-2 col-sm-3">Description</label>
+          <textarea class="form-control col-md-10 col-sm-9" [(ngModel)]="aboutContent.privacyPromise.description" name="privacyPromiseDescription"></textarea>
+        </div>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Image</label>
+          <input class="form-control upload-img col-md-10 col-sm-9" (change)="encode('privacyPromiseImage')" type="file" name="privacyPromiseImage" accept="image/*" ngModel />
+        </div>
+      </div>
+    </div>
+    <div class="box-shadow">
+      <h2>In the News</h2>
+      <div class="row sections">
+        <div class="row subsections">
+          <label class="col-md-2 col-sm-3">Description</label>
+          <textarea class="form-control col-md-10 col-sm-9" [(ngModel)]="aboutContent.inTheNews.description" name="inTheNewsDescription"></textarea>
+        </div>
+        <div class="row subsections" *ngFor="let news of aboutContent.inTheNews.news; let i=index">
+          <div>
+            <label class="col-md-2 col-sm-3">News Title {{i+1}}</label>
+            <input class="form-control col-md-10 col-sm-9" type="text" [(ngModel)]="news.title" name="'newsTitle'+i"/>
+          </div>
+          <div class="description col-sm-12">
+            <label class="col-md-2 col-sm-3">News Description {{i+1}}</label>
+            <textarea class="form-control col-md-10 col-sm-9" [(ngModel)]="news.description" name="'news'+i"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="box-shadow">
+      <h2>Contacts</h2>
+      <div class="row sections">
+        <h3>Contact Us</h3>
+        <div>
+          <label class="col-md-2 col-sm-3">Description</label>
+          <textarea class="form-control col-md-10 col-sm-9" [(ngModel)]="aboutContent.contactUs.description" name="contactUsDescription"></textarea>
+        </div>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Email</label>
+          <input class="form-control upload-img col-md-10 col-sm-9" type="text" name="contactUsEmail" [(ngModel)]="aboutContent.contactUs.email" />
+        </div>
+      </div>
+      <div class="row sections">
+        <h3>Media Inquiries</h3>
+        <div>
+          <label class="col-md-2 col-sm-3">Description</label>
+          <textarea class="form-control col-md-10 col-sm-9" [(ngModel)]="aboutContent.mediaInquiries.description" name="mediaInquiriesDescription"></textarea>
+        </div>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Email</label>
+          <input class="form-control upload-img col-md-10 col-sm-9" type="text" name="mediaInquiriesEmail" [(ngModel)]="aboutContent.mediaInquiries.email" />
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <button type="submit" class="btn btn-primary">Save Changes</button>
+    </div>
+  </form>
+</div>
