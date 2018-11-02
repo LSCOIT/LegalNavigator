@@ -7,6 +7,8 @@ import { PersonalizedPlanService } from '../../guided-assistant/personalized-pla
 import { HttpClientModule } from '@angular/common/http';
 import { ArrayUtilityService } from '../array-utility.service';
 import { ToastrService } from 'ngx-toastr';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { LoginService } from './login.service';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -15,8 +17,10 @@ describe('LoginComponent', () => {
   let mockGlobal;
   let msalService;
   let mockToastr;
+  let mockLoginService;
   msalService = jasmine.createSpyObj(['getUser']);
   beforeEach(async(() => {
+    mockGlobal = jasmine.createSpyObj(['notifyRoleInformation']);
     TestBed.configureTestingModule({
       declarations: [LoginComponent],
       imports: [HttpClientModule],
@@ -25,10 +29,12 @@ describe('LoginComponent', () => {
         { provide: Global, useValue: mockGlobal },
         { provide: MsalService, useValue: msalService },
         { provide: ToastrService, useValue: mockToastr },
+        { provide: LoginService, useValue: mockLoginService },
         BroadcastService,
         PersonalizedPlanService,
         ArrayUtilityService
-      ]
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
   }));
@@ -36,10 +42,21 @@ describe('LoginComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
+    spyOn(component, 'ngOnInit');
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should checkAdmin role', () => {
+    let mockRoleInformation = [
+      {
+        roleName: "Authenticated"
+      }
+    ];
+    component.checkIfAdmin(mockRoleInformation);
+    expect(component.isAdmin).toBe(false);
   });
 });

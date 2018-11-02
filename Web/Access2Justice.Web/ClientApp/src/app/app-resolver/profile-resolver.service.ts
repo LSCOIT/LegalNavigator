@@ -7,16 +7,10 @@ import { Observable } from 'rxjs/Observable';
 import { api } from '../../api/api';
 import { LoginService } from '../shared/login/login.service';
 
-
 @Injectable()
 export class ProfileResolver implements Resolve<any> {
 
-  userProfile: IUserProfile;
-
-  constructor(private global: Global,
-    private msalService: MsalService,
-    private loginService: LoginService) {
-  }
+  constructor(private loginService: LoginService) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     return this.loginService.getUserProfile();
