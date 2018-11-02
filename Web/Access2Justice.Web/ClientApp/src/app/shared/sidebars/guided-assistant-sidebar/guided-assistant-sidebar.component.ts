@@ -53,7 +53,7 @@ export class GuidedAssistantSidebarComponent implements OnInit {
           if (response != undefined) {
             this.resources = response["resources"];
             if (this.resources.length > 0) {
-              this.guidedAssistantId = this.resources[0].externalUrl;
+              this.guidedAssistantId = this.resources[0].curatedExperienceId;
             }
           }
           else {

@@ -30,8 +30,8 @@ namespace Access2Justice.Api.ViewModels
         [JsonProperty(PropertyName = "name")]
         public string TopicName { get; set; }
 
-        [JsonProperty(PropertyName = "quickLinks")]
-        public List<PlanQuickLink> QuickLinks { get; set; }
+        [JsonProperty(PropertyName = "quickLinks")]  // Todo:@Alaa put back to essentialReadings
+        public List<EssentialReadings> EssentialReadings { get; set; }
 
         [JsonProperty(PropertyName = "icon")]
         public string Icon { get; set; }
@@ -41,12 +41,12 @@ namespace Access2Justice.Api.ViewModels
 
         public PlanTopic()
         {
-            QuickLinks = new List<PlanQuickLink>();
+            EssentialReadings = new List<EssentialReadings>();
             Steps = new List<PlanStep>();
         }
     }
 
-    public class PlanQuickLink
+    public class EssentialReadings
     {
         public string Text { get; set; }
         public string Url { get; set; }
@@ -90,10 +90,10 @@ namespace Access2Justice.Api.ViewModels
         public string Icon { get; set; }
 
         [JsonProperty(PropertyName = "quickLinks")]
-        public List<PlanQuickLink> QuickLinks { get; set; }
+        public List<EssentialReadings> QuickLinks { get; set; }
         public TopicDetails()
         {
-            QuickLinks = new List<PlanQuickLink>();
+            QuickLinks = new List<EssentialReadings>();
         }
     }
 }
