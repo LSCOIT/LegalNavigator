@@ -186,13 +186,9 @@ textarea {
   */
 .js-focus-visible :focus:not(.focus-visible) {
   outline: none;
+  background-color: none;
 }
 
-/*
-  Optionally: Define a strong focus indicator for keyboard focus.
-  If you choose to skip this step then the browser's default focus
-  indicator will be displayed instead.
-*/
 .js-focus-visible .focus-visible {
   outline: 2px solid #0D3FB8;
 }

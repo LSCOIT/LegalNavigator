@@ -8,15 +8,15 @@
   height: 49px;
 }
 
-#language-dropdown:hover, #language-dropdown:focus {
-  background-color: #FFF;
-}
-
 .white-bg {
   position: relative;
   background-color: #FFF !important;
   z-index: 1;
   background-image: url('../../../assets/images/small-icons/language.svg'), url('../../../assets/images/small-icons/dropup_arrow.svg') !important;
+}
+
+#language-dropdown:hover {
+  background-color: #FFF;
 }
 
 @media only screen and (min-width : 768px) {
