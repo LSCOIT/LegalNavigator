@@ -75,12 +75,8 @@ namespace Access2Justice.Shared.A2JAuthor
                         {
                             if (!string.IsNullOrWhiteSpace(state.GetValue("userContent")))
                             {
-
-                                var temp = state.GetValue("userContent");
-                                var breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
-
                                 unprocessedStep.Description = state.GetValue("userContent").ExtractIdsRemoveCustomA2JTags().SanitizedHtml;
-                                unprocessedStep.ResourceIds = new List<Guid>();// state.GetValue("userContent").ExtractIdsRemoveCustomA2JTags().ResourceIds;
+                                unprocessedStep.ResourceIds = state.GetValue("userContent").ExtractIdsRemoveCustomA2JTags().ResourceIds;
                             }
                         }
                         unprocessedTopic.UnprocessedSteps.Add(unprocessedStep);
