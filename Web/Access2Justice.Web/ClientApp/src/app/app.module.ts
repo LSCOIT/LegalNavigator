@@ -44,7 +44,7 @@ import { ResponseInterceptor } from './response-interceptor';
 import { Global } from './global';
 import { CuratedExperienceResultComponent } from './guided-assistant/curated-experience-result/curated-experience-result.component';
 import { ProfileResolver } from './app-resolver/profile-resolver.service';
-import { MsalInterceptor } from '@azure/msal-angular';
+import { TokenInterceptor } from './token-interceptor';
 import { environment } from '../environments/environment';
 import { api } from '../api/api';
 
@@ -92,8 +92,7 @@ export const protectedResourceMap: [string, string[]][] = [[api.checkPermaLink, 
       consentScopes: environment.consentScopes,
       redirectUri: environment.redirectUri,
       navigateToLoginRequestUrl: environment.navigateToLoginRequestUrl,
-      postLogoutRedirectUri: environment.postLogoutRedirectUri,
-      protectedResourceMap: protectedResourceMap
+      postLogoutRedirectUri: environment.postLogoutRedirectUri      
     })
   ],
   providers: [
@@ -103,7 +102,7 @@ export const protectedResourceMap: [string, string[]][] = [[api.checkPermaLink, 
       multi: true
     }, {
       provide: HTTP_INTERCEPTORS,
-      useClass: MsalInterceptor,
+      useClass: TokenInterceptor,
       multi: true
     },
     TopicService,
