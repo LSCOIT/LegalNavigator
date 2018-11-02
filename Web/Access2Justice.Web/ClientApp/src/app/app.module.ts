@@ -48,9 +48,6 @@ import { TokenInterceptor } from './token-interceptor';
 import { environment } from '../environments/environment';
 import { api } from '../api/api';
 
-export const protectedResourceMap: [string, string[]][] = [[api.checkPermaLink, [environment.apiScope]], [api.shareUrl, [environment.apiScope]]
-  , [api.unShareUrl, [environment.apiScope]], [api.userPlanUrl, [environment.apiScope]], [api.updatePrivacyDataUrl, [environment.apiScope]]] 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -82,7 +79,7 @@ export const protectedResourceMap: [string, string[]][] = [[api.checkPermaLink, 
     BsDropdownModule.forRoot(),
     CarouselModule.forRoot(),
     CollapseModule.forRoot(),
-    ModalModule.forRoot(),
+    ModalModule.forRoot(),task
     ProgressbarModule.forRoot(),
     TabsModule.forRoot(),
     NgxSpinnerModule,
