@@ -65,7 +65,7 @@ export class SaveButtonService {
           this.addRemainingTopicsToPlan(plan);
           this.planId = response[0].id;
         }
-        this.personalizedPlan = { id: this.planId, topics: this.planTopics, isShared: false };
+        this.personalizedPlan = { id: plan.id, topics: plan.topics, isShared: plan.isShared };
         const params = {
           "id": this.personalizedPlan.id,
           "topics": this.personalizedPlan.topics,

@@ -11,6 +11,7 @@ import { MsalService } from '@azure/msal-angular';
 import { Global } from '../../../../global';
 import { environment } from '../../../../../environments/environment';
 import { SaveButtonService } from './save-button.service';
+import { NavigateDataService } from '../../../navigate-data.service';
 
 @Component({
   selector: 'app-save-button',
@@ -47,7 +48,8 @@ export class SaveButtonComponent implements OnInit {
     private personalizedPlanService: PersonalizedPlanService,
     private msalService: MsalService,
     private global: Global,
-    private saveButtonService: SaveButtonService) {
+    private saveButtonService: SaveButtonService,
+    private navigateDataService: NavigateDataService) {
   }
 
   externalLogin() {
@@ -74,7 +76,15 @@ export class SaveButtonComponent implements OnInit {
   savePlanResourcesPostLogin() {
     if (this.type === "Plan") {
       this.planId = this.id;
-      this.saveButtonService.getPlan(this.planId);
+      let generatedPersonalizedPlan = this.navigateDataService.getData();
+      //if (generatedPersonalizedPlan != undefined) {
+      //  this.topics = generatedPersonalizedPlan.topics;
+      //  this.planDetailTags = generatedPersonalizedPlan;
+      //  this.topicsList = this.personalizedPlanService.createTopicsList(this.topics);
+      //  this.planDetails = this.personalizedPlanService.getPlanDetails(this.topics, this.planDetailTags);
+      //}
+      this.saveButtonService.savePlanToUserProfile(generatedPersonalizedPlan);
+      //this.saveButtonService.getPlan(this.planId);
     } else {
       this.savedResources = { itemId: this.id, resourceType: this.type, resourceDetails: this.resourceDetails };
       this.tempResourceStorage = [];

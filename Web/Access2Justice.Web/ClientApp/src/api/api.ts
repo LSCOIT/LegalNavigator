@@ -25,7 +25,7 @@ export const api = {
   getOrganizationDetailsUrl: topic + '/get-organization-details',
   questionUrl: curatedExperience + '/start',
   saveAndGetNextUrl: curatedExperience + '/component/save-and-get-next',
-  updateUserPlanUrl: curatedExperience + "/update-plan",
+  updateUserPlanUrl: apiUrl + '/personalized-plan/save',
   resourceUrl: topic + '/get-resource',
   getContentsUrl: contentUrl + '/get-static-resources',
   shareUrl: apiUrl + '/share/generate-permalink',
