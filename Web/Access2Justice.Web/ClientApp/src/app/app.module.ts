@@ -79,7 +79,7 @@ import { api } from '../api/api';
     BsDropdownModule.forRoot(),
     CarouselModule.forRoot(),
     CollapseModule.forRoot(),
-    ModalModule.forRoot(),task
+    ModalModule.forRoot(),
     ProgressbarModule.forRoot(),
     TabsModule.forRoot(),
     NgxSpinnerModule,
