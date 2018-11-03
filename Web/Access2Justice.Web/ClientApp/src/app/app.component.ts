@@ -72,7 +72,8 @@ export class AppComponent implements OnInit {
 
   setStaticContentData() {
     this.spinner.show();
-    this.staticResourceService.getStaticContents()
+    let location = this.staticResourceService.loadStateName();
+    this.staticResourceService.getStaticContents(location)
       .subscribe(
       response => {
         this.spinner.hide();

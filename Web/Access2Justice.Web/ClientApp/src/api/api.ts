@@ -31,5 +31,6 @@ export const api = {
   shareUrl: apiUrl + '/share/generate-permalink',
   unShareUrl: apiUrl + '/share/remove-permalink',
   getResourceLink: apiUrl + '/share/get-permalink-resource',
-  checkPermaLink: apiUrl + '/share/check-permalink'
+  checkPermaLink: apiUrl + '/share/check-permalink',
+  updatePrivacyDataUrl: apiUrl + '/static-resource/upsert-static-privacy-page'
 }

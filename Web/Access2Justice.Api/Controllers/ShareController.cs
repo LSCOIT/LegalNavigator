@@ -94,8 +94,7 @@ namespace Access2Justice.Api.Controllers
         /// <param name="permaLink"></param>
         /// <response code="200">Get permalink for given input</response>
         /// <response code="500">Failure</response>
-        /// <response code="412">Precondtion fails</response>
-        [Permission(PermissionName.getpermallinkresource)]
+        /// <response code="412">Precondtion fails</response>        
         [HttpGet("get-permalink-resource")]
         public async Task<IActionResult> PermaLinkAsync([FromQuery] string permaLink)
         {

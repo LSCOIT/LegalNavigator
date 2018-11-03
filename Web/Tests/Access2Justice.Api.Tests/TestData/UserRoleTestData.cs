@@ -80,66 +80,38 @@ namespace Access2Justice.Api.Tests.TestData
         public static IEnumerable<object[]> ValidateOUForRole()
         {
             yield return new object[] { new List<string>{"4bf9df8f-dfee-4b08-be4d-35cc053fa298"} ,"",
-                        JArray.Parse(@"[{
-                                    'id': '4bf9df8f-dfee-4b08-be4d-35cc053fa298',
-                                    'roleName': 'PortalAdmin',
-                                    'type': 'Role',
-                                    'permissions': [ 'upsertstatichomepage', 'upsertstaticprivacypage', 'upsertstatichelpandfaqpage', 'upsertstaticnavigation']
-                                    }]"), true };
+                new List<Role>{ new Role { RoleInformationId = new Guid("4bf9df8f-dfee-4b08-be4d-35cc053fa298"),RoleName = "PortalAdmin",
+                Type = "Role", Permissions = new List<string>{ "upsertstatichomepage", "upsertstaticprivacypage", "upsertstatichelpandfaqpage" } } },                        
+                true };
 
             yield return new object[] { new List<string>{"4bf9df8f-dfee-4b08-be4d-35cc053fa298",
                 "b4f63784-fe99-4774-ad28-ce7911986bea"} ,"Alaska | Hawaii",
-                        JArray.Parse(@"[{
-                                    'id': '4bf9df8f-dfee-4b08-be4d-35cc053fa298',
-                                    'roleName': 'StateAdmin',
-                                    'type': 'Role',
-                                    'organizationalUnit': 'Alaska',
-                                    'permissions': [ 'upsertstatichomepage', 'upsertstaticprivacypage', 'upsertstatichelpandfaqpage', 'upsertstaticnavigation']
-                                    },
-                                  {
-                                    'id': 'b4f63784-fe99-4774-ad28-ce7911986bea',
-                                    'roleName': 'StateAdmin',
-                                    'type': 'Role',
-                                    'organizationalUnit': 'Hawaii | Florida',
-                                    'permissions': [ 'upsertstatichomepage', 'upsertstaticprivacypage', 'upsertstatichelpandfaqpage', 'upsertstaticnavigation']
-                                  }]"), true };
+                new List<Role>{ new Role { RoleInformationId = new Guid("4bf9df8f-dfee-4b08-be4d-35cc053fa298"),RoleName = "StateAdmin",OrganizationalUnit="Alaska",
+                Type = "Role", Permissions = new List<string>{ "upsertstatichomepage", "upsertstaticprivacypage", "upsertstatichelpandfaqpage" } },
+                new Role { RoleInformationId = new Guid("b4f63784-fe99-4774-ad28-ce7911986bea"),RoleName = "StateAdmin",OrganizationalUnit="Hawaii",
+                Type = "Role", Permissions = new List<string>{ "upsertstatichomepage", "upsertstaticnavigation", "upsertstatichelpandfaqpage" } } },                        
+                true };
             yield return new object[] { new List<string>{"4bf9df8f-dfee-4b08-be4d-35cc053fa298",
                                                        "b4f63784-fe99-4774-ad28-ce7911986bea"} ,"Alaska | Hawaii",
-                        JArray.Parse(@"[{
-                                    'id': '4bf9df8f-dfee-4b08-be4d-35cc053fa298',
-                                    'roleName': 'StateAdmin',
-                                    'type': 'Role',
-                                    'organizationalUnit': 'Alaska',
-                                    'permissions': [ 'upsertstatichomepage', 'upsertstaticprivacypage', 'upsertstatichelpandfaqpage', 'upsertstaticnavigation']
-                                    },
-                                  {
-                                    'id': 'b4f63784-fe99-4774-ad28-ce7911986bea',
-                                    'roleName': 'StateAdmin',
-                                    'type': 'Role',
-                                    'organizationalUnit': 'Hawaii',
-                                    'permissions': [ 'upsertstatichomepage', 'upsertstaticprivacypage', 'upsertstatichelpandfaqpage', 'upsertstaticnavigation']
-                                  }]"), true };
+                                                       new List<Role>{ new Role { RoleInformationId = new Guid("4bf9df8f-dfee-4b08-be4d-35cc053fa298"),RoleName = "StateAdmin",OrganizationalUnit="Alaska",
+                Type = "Role", Permissions = new List<string>{ "upsertstatichomepage", "upsertstaticprivacypage", "upsertstatichelpandfaqpage" } },
+                new Role { RoleInformationId = new Guid("b4f63784-fe99-4774-ad28-ce7911986bea"),RoleName = "StateAdmin",OrganizationalUnit="Hawaii",
+                Type = "Role", Permissions = new List<string>{ "upsertstatichomepage", "upsertstaticnavigation", "upsertstatichelpandfaqpage" } } },                        
+                true };
 
             yield return new object[] { new List<string>{"4bf9df8f-dfee-4b08-be4d-35cc053fa298"} ,"Hawaii",
-                        JArray.Parse(@"[{
-                                    'id': '4bf9df8f-dfee-4b08-be4d-35cc053fa298',
-                                    'roleName': 'StateAdmin',
-                                    'type': 'Role',
-                                    'organizationalUnit': 'Alaska',
-                                    'permissions': [ 'upsertstatichomepage', 'upsertstaticprivacypage', 'upsertstatichelpandfaqpage', 'upsertstaticnavigation']
-                                    }]"), false };
+                new List<Role>{new Role { RoleInformationId = new Guid("b4f63784-fe99-4774-ad28-ce7911986bea"),RoleName = "StateAdmin",OrganizationalUnit="Alaska",
+                Type = "Role", Permissions = new List<string>{ "upsertstatichomepage", "upsertstaticnavigation", "upsertstatichelpandfaqpage" } } },                        
+                false };
 
             yield return new object[] { new List<string>{"4bf9df8f-dfee-4b08-be4d-35cc053fa298"} ,"Alaska",
-                        JArray.Parse(@"[{
-                                    'id': '4bf9df8f-dfee-4b08-be4d-35cc053fa298',
-                                    'roleName': 'StateAdmin',
-                                    'type': 'Role',
-                                    'organizationalUnit': '',
-                                    'permissions': [ 'upsertstatichomepage', 'upsertstaticprivacypage', 'upsertstatichelpandfaqpage', 'upsertstaticnavigation']
-                                    }]"), false };
+                new List<Role>{new Role { RoleInformationId = new Guid("b4f63784-fe99-4774-ad28-ce7911986bea"),RoleName = "StateAdmin",OrganizationalUnit="",
+                Type = "Role", Permissions = new List<string>{ "upsertstatichomepage", "upsertstaticnavigation", "upsertstatichelpandfaqpage" } } },                        
+                false };
 
             yield return new object[] { new List<string>{"4bf9df8f-dfee-4b08-be4d-35cc053fa298"} ,"Alaska | Hawaii",
-                        JArray.Parse(@"[]"), false };
+                new List<Role>(),
+                false };
         }
 
         public static IEnumerable<object[]> ValidateOrganizationalUnitData()

@@ -6,6 +6,7 @@ export interface PrivacyContent {
   image: Image;
   details: Array<Details>;
   location: Array<Location>;
+  organizationalUnit: string;
 }
 export interface Image {
   source: string;

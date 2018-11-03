@@ -48,7 +48,7 @@ export class ProfileComponent implements OnInit {
         .subscribe(response => {
           if (response) {
             this.userId = response.oId;            
-            this.global.setProfileData(response.oId, response.name, response.eMail);
+            this.global.setProfileData(response.oId, response.name, response.eMail, response.roleInformation);
             this.getPersonalizedPlan();
             this.showRemove = true;
           }

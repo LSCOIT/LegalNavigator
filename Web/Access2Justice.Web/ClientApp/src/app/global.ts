@@ -14,6 +14,7 @@ export class Global {
   profileRouteUrl: string = "/profile";
   data: any;
   notifyStaticData: Subject<any> = new Subject<any>();
+  notifyRoleInformation: Subject<any> = new Subject<any>();
   userName: string;
   userId: string;
   sharedUserId: string;
@@ -24,14 +25,16 @@ export class Global {
   organizationsData: any;
   isLoginRedirect: boolean = false;
   sessionKey: string = "bookmarkedResource";
-  planSessionKey: string = "bookmarkPlanId";
+  planSessionKey: string = "bookmarkPlan";
 
   constructor() { }
 
-  setProfileData(oId: string, name: string, eMail: string) {
+  setProfileData(oId: string, name: string, eMail: string, roleInformation: any) {
     this.userId = oId;
     this.userName = name ? name : eMail;
+    this.roleInformation = roleInformation;
     this.isLoggedIn = true;
+    this.notifyRoleInformation.next(this.roleInformation);
   }
 
   getData() {
