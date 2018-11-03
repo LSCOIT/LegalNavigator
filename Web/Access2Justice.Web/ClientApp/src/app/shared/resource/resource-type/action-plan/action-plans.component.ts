@@ -9,6 +9,7 @@ import { Title } from '@angular/platform-browser/src/browser/title';
 import { ToastrService } from 'ngx-toastr';
 import { Global, UserStatus } from '../../../../global';
 import { HttpParams } from '@angular/common/http';
+import { NavigateDataService } from '../../../navigate-data.service';
 
 @Component({
   selector: 'app-action-plans',
@@ -52,8 +53,9 @@ export class ActionPlansComponent implements OnChanges {
     private personalizedPlanService: PersonalizedPlanService,
     public sanitizer: DomSanitizer,
     private toastr: ToastrService,
-    private global: Global) {
-    this.sanitizer = sanitizer;    
+    private global: Global,
+    private navigateDataService: NavigateDataService) {
+    this.sanitizer = sanitizer;
     if (global.role === UserStatus.Shared && location.pathname.indexOf(global.shareRouteUrl) >= 0) {
       global.showMarkComplete = false;
       global.showDropDown = false;
@@ -89,8 +91,15 @@ export class ActionPlansComponent implements OnChanges {
             step.isComplete = this.isChecked;
           }
         });
+        topic.steps = this.orderBy(topic.steps, "isComplete");
       }
     });
+    this.navigateDataService.setData(this.planDetails);
+    if (this.isChecked) {
+      this.personalizedPlanService.showSuccess("Step Completed");
+    } else {
+      this.personalizedPlanService.showSuccess("Step Added Back");
+    }
     //this.getPlanDetails(topicId, stepId, this.isChecked);
   }
 

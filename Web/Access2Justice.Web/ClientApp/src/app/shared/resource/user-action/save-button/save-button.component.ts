@@ -27,7 +27,7 @@ export class SaveButtonComponent implements OnInit {
   @Input() id: string;
   @Input() type: string;
   @Input() resourceDetails: any = {};
-  planId: string;
+  plan: string;
   resourceStorage: any;
   planStorage: any;
   //personalizedPlanStep: PlanStep = { stepId: '', title: '', description: '', order: 1, isComplete: false, resources: [], topicIds: [] };
@@ -66,7 +66,8 @@ export class SaveButtonComponent implements OnInit {
 
   savePlanResourcesPreLogin() {
     if (this.type === "Plan") {
-      sessionStorage.setItem(this.global.planSessionKey, JSON.stringify(this.id));
+      sessionStorage.setItem(this.global.planSessionKey, JSON.stringify(this.navigateDataService.getData()));
+      this.personalizedPlanService.showSuccess("Plan Added to Session");
     } else {
       this.savedResources = { itemId: this.id, resourceType: this.type, resourceDetails: this.resourceDetails };
       this.personalizedPlanService.saveBookmarkedResource(this.savedResources);
@@ -83,7 +84,7 @@ export class SaveButtonComponent implements OnInit {
       //  this.topicsList = this.personalizedPlanService.createTopicsList(this.topics);
       //  this.planDetails = this.personalizedPlanService.getPlanDetails(this.topics, this.planDetailTags);
       //}
-      this.saveButtonService.savePlanToUserProfile(this.plan);
+      this.saveButtonService.savePlanToUserProfile(this.id);
       //this.saveButtonService.getPlan(this.planId);
     } else {
       this.savedResources = { itemId: this.id, resourceType: this.type, resourceDetails: this.resourceDetails };
@@ -93,17 +94,17 @@ export class SaveButtonComponent implements OnInit {
     }
   }
 
-  saveBookmarkedPlan() {
-    this.planStorage = sessionStorage.getItem(this.global.planSessionKey);
-    if (this.planStorage) {
-      this.savePlanResources();
-      sessionStorage.removeItem(this.global.planSessionKey);
-    }
-  }
+  //saveBookmarkedPlan() {
+  //  this.planStorage = sessionStorage.getItem(this.global.planSessionKey);
+  //  if (this.planStorage) {
+  //    this.savePlanResources();
+  //    sessionStorage.removeItem(this.global.planSessionKey);
+  //  }
+  //}
 
   ngOnInit() {
-    if (this.msalService.getUser()) {
-      this.saveBookmarkedPlan();
-    }
+    //if (this.msalService.getUser()) {
+    //  this.saveBookmarkedPlan();
+    //}
   }
 }

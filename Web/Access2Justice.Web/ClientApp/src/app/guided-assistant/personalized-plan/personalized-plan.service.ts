@@ -52,8 +52,7 @@ export class PersonalizedPlanService {
   }
 
   userPlan(plan: PersonalizedPlan) {
-    this.userPersonalizedPlan = { oId: this.global.userId, plan: plan };
-    return this.http.post<any>(api.updateUserPlanUrl, this.userPersonalizedPlan, httpOptions);
+    return this.http.post<any>(api.updateUserPlanUrl, plan, httpOptions);
   }
 
   getPersonalizedResources(resourceInput: IResourceFilter) {

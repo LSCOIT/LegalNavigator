@@ -25,7 +25,8 @@ export class Global {
   organizationsData: any;
   isLoginRedirect: boolean = false;
   sessionKey: string = "bookmarkedResource";
-  planSessionKey: string = "bookmarkPlan";
+  planSessionKey: string = "bookmarkedPlan";
+  roleInformation: any;
 
   constructor() { }
 

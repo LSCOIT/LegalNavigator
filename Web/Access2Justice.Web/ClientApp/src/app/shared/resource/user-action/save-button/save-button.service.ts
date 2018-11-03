@@ -23,7 +23,7 @@ export class SaveButtonService {
     private global: Global,
     private arrayUtilityService: ArrayUtilityService) { }
 
-  getPlan(planId) {
+  //getPlan(plan) {
     //this.planId = planId;
     //let params = new HttpParams()
     //  .set("personalizedPlanId", planId);
@@ -39,7 +39,7 @@ export class SaveButtonService {
     //    });
     //    this.savePlanToUserProfile(this.planTopics);
     //  });
-  }
+  //}
 
   //getPersonalizedPlanSteps(steps): Array<PlanStep> {
   //  this.personalizedPlanSteps = [];
@@ -70,17 +70,13 @@ export class SaveButtonService {
   //        "id": this.personalizedPlan.id,
   //        "topics": this.personalizedPlan.topics,
   //        "isShared": this.personalizedPlan.isShared
-  //      }
-  //      this.personalizedPlanService.userPlan(params)
-  //        .subscribe(response => {
-  //          if (response) {
-  //            if (this.planStepCount > 0) {
-  //              this.personalizedPlanService.showSuccess('Plan saved to profile');
-  //            } else {
-  //              this.personalizedPlanService.showWarning('Plan already saved to profile');
-  //            }
-  //          }
-  //        });
+    //      }
+    this.personalizedPlanService.userPlan(plan)
+          .subscribe(response => {
+            if (response) {
+                this.personalizedPlanService.showSuccess('Plan saved to profile');
+              } 
+          });
   //    });
   }
 

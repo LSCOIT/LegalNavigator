@@ -38,15 +38,10 @@ export class AppComponent implements OnInit {
   ) { }
 
   createOrGetProfile() {
-    let userData = this.msalService.getUser();
-    this.userProfile = {
-      name: userData.idToken['name'], firstName: "", lastName: "", oId: userData.idToken['oid'], eMail: userData.idToken['preferred_username'], isActive: "Yes",
-      createdBy: userData.idToken['name'], createdTimeStamp: (new Date()).toUTCString(), modifiedBy: userData.idToken['name'], modifiedTimeStamp: (new Date()).toUTCString()
-    }
-    this.loginService.upsertUserProfile(this.userProfile)
+    this.loginService.getUserProfile()
       .subscribe(response => {
         if (response) {
-          this.global.setProfileData(response.oId, response.name, response.eMail);
+          this.global.setProfileData(response.oId, response.name, response.eMail, response.roleInformation);
           this.saveBookmarkedPlan();
           this.saveBookmarkedResource();
         }
@@ -55,8 +50,8 @@ export class AppComponent implements OnInit {
 
   saveBookmarkedPlan() {
     if (sessionStorage.getItem(this.global.planSessionKey)) {
-      let planId = JSON.parse(sessionStorage.getItem(this.global.planSessionKey));
-      this.saveButtonService.getPlan(planId);
+      let plan = JSON.parse(sessionStorage.getItem(this.global.planSessionKey));
+      this.saveButtonService.savePlanToUserProfile(plan);
     }
   }
 
