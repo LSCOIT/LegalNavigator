@@ -145,10 +145,6 @@ namespace Access2Justice.Api.BusinessLogic
                 {
                     resourceDetail.Version = IncrementVersion(default(Int64));
                 }
-                //else
-                //{
-                //    resourceDetail.Version = IncrementVersion(resourceDetail.Version);
-                //}
                 if (maxVersion.CompareTo(resourceDetail.Version) < 0)
                     maxVersion = resourceDetail.Version;
                 resourceDetail.IsActive = false;

@@ -1,9 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { MsalService } from '@azure/msal-angular';
 import { api } from '../../../api/api';
-import { environment } from '../../../environments/environment';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
@@ -16,14 +14,10 @@ export class UploadCuratedExperienceTemplateComponent implements OnInit {
   errorMessage: string;
   @ViewChild('file') file: ElementRef;
 
-  constructor(private http: HttpClient, private msalService: MsalService,
+  constructor(private http: HttpClient, 
     private spinner: NgxSpinnerService) { }
 
-  ngOnInit() {
-    if (!this.msalService.getUser()) {
-      this.msalService.loginRedirect(environment.consentScopes);
-    }
-  }
+  ngOnInit() { }
 
   onSubmit(uploadForm: NgForm) {
     this.spinner.show();
