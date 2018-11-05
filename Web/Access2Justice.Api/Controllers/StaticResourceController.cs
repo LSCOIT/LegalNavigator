@@ -74,14 +74,14 @@ namespace Access2Justice.Api.Controllers
         [Permission(PermissionName.upsertstaticprivacypage)]
         [HttpPost]
         [Route("api/static-resource/upsert-static-privacy-page")]
-        public async Task<IActionResult> UpsertStaticPrivacyPromisePageDataAsync([FromBody]PrivacyPromiseContent privacyPromiseContent, Location location)
+        public async Task<IActionResult> UpsertStaticPrivacyPromisePageDataAsync([FromBody]PrivacyPromiseContent privacyPromiseContent)
         {
-            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(privacyPromiseContent.OrganizationalUnit))
-            {
-                var contents = await staticResourceBusinessLogic.UpsertStaticPrivacyPromisePageDataAsync(privacyPromiseContent, location);
+            //if (await userRoleBusinessLogic.ValidateOrganizationalUnit(privacyPromiseContent.OrganizationalUnit))
+            //{
+                var contents = await staticResourceBusinessLogic.UpsertStaticPrivacyPromisePageDataAsync(privacyPromiseContent);
                 return Ok(contents);
-            }
-            return StatusCode(403);
+            //}
+            //return StatusCode(403);
         }
 
         /// <summary>

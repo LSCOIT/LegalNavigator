@@ -53,11 +53,11 @@
     </div>
     <div class="box-no-shadow" *ngIf="!(resource.overview == '' && resource.specialties == '')">
       <div class="resource-body">
-        <div class="org-sections" *ngIf="resource.overview">
+        <div class="resource-sections" *ngIf="resource.overview">
           <h4>Overview</h4>
           <p>{{resource.overview}}</p>
         </div>
-        <div class="org-sections" *ngIf="resource.specialties">
+        <div class="resource-sections" *ngIf="resource.specialties">
           <h5>Specialties</h5>
           <ul>
             <li>{{resource.specialties}}</li>
@@ -67,11 +67,11 @@
     </div>
     <div class="box-no-shadow" *ngIf="!(resource.eligibilityInformation == '' && resource.qualifications == '')">
       <div class="resource-body">
-        <div  class="org-sections" *ngIf="resource.eligibilityInformation">
+        <div  class="resource-sections" *ngIf="resource.eligibilityInformation">
           <h4>Eligibility Information</h4>
           <p>{{resource.eligibilityInformation}}</p>
         </div>
-        <div class="org-sections" *ngIf="resource.qualifications">
+        <div class="resource-sections" *ngIf="resource.qualifications">
           <h5>Qualifications</h5>
           <ul>
             <li>{{resource.qualifications}}</li>

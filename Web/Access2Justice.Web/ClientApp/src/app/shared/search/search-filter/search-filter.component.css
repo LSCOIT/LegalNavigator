@@ -40,6 +40,10 @@ li a:hover {
   box-shadow: none;
 }
 
+.open .dropdown-toggle {
+  border-radius: 5px 5px 0 0;
+}
+
 #button-basic {
   margin-bottom: 0;
   margin-right: 0;
@@ -67,6 +71,10 @@ li a:hover {
   border-top: 1px solid #ddd;
   padding: 0;
   min-width: 145px;
+}
+
+.dropdown-menu.show {
+  top: 93% !important;
 }
 
 .btn {

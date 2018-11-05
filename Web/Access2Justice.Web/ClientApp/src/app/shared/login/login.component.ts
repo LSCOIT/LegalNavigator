@@ -7,6 +7,7 @@ import { Subscription } from "rxjs/Subscription";
 import { Global, UserStatus } from '../../global';
 import { MsalService } from '@azure/msal-angular';
 import { IUserProfile } from './user-profile.model';
+import { LoginService } from './login.service';
 
 @Component({
   selector: 'app-login',
@@ -23,10 +24,13 @@ export class LoginComponent implements OnInit {
   private subscription: Subscription;
   userProfile: any;
   isProfileSaved: boolean = false;
+  isAdmin: boolean = false;
+  roleInformationSubscription;
 
   constructor(private router: Router,
               private global: Global,
-              private msalService: MsalService) { }
+              private msalService: MsalService,
+              private loginService: LoginService) { }
 
   onProfileOptionClick() {
     this.sendProfileOptionClickEvent.emit();
@@ -55,11 +59,29 @@ export class LoginComponent implements OnInit {
     this.msalService.logout();
   }
 
+  checkIfAdmin(roleInformation) {
+    roleInformation.forEach(role => {
+      if (role.roleName.includes("Admin") || role.roleName === 'Developer') {
+        this.isAdmin = true;
+      }
+    });
+  }
+
   ngOnInit() {
     this.userProfile = this.msalService.getUser();
     if (this.userProfile) {
       this.isLoggedIn = true;
       this.userProfileName = this.userProfile.idToken['name'] ? this.userProfile.idToken['name'] : this.userProfile.idToken['preferred_username'];
     }
+
+    this.roleInformationSubscription = 
+      this.global.notifyRoleInformation
+      .subscribe(value => {
+        this.checkIfAdmin(value);
+      });
+  }
+
+  ngOnDestroy() {
+    this.global.notifyRoleInformation.unsubscribe();
   }
 }

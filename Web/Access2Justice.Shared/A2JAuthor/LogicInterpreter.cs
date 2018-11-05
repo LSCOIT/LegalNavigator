@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Access2Justice.Shared.A2JAuthor
 {
-    public class A2JAuthorLogicInterpreter : IA2JAuthorLogicInterpreter
+    public class LogicInterpreter : IA2JAuthorLogicInterpreter
     {
         public bool Interpret(Dictionary<string, string> answers, OrderedDictionary logic, Func<bool, bool, bool> answersLogicEvaluator)
         {
