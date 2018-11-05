@@ -14,7 +14,7 @@ export class PersonalizedPlanComponent implements OnInit {
   personalizedPlan: PersonalizedPlan;
 
   topics: Array<any> = [];
-  planTopic: PersonalizedPlanTopic = { topic: {}, isSelected: true };
+  planTopic: PersonalizedPlanTopic;
   topicsList: Array<PersonalizedPlanTopic> = [];
   tempTopicsList: Array<PersonalizedPlanTopic> = [];
   planDetails: any = [];
@@ -28,15 +28,23 @@ export class PersonalizedPlanComponent implements OnInit {
   ) { }
 
   getTopics(): void {
-    this.personalizedPlanService.getActionPlanConditions(this.activeActionPlan)
-      .subscribe(plan => {
-        if (plan) {
-          this.topics = plan.topics;
-          this.planDetailTags = plan;
-        }
-        this.topicsList = this.personalizedPlanService.createTopicsList(this.topics);
-        this.planDetails = this.personalizedPlanService.getPlanDetails(this.topics, this.planDetailTags);
-      });
+    this.personalizedPlan = this.navigateDataService.getData();
+    if (this.personalizedPlan != undefined) {
+      this.topics = this.personalizedPlan.topics;
+      this.planDetailTags = this.personalizedPlan;
+      this.topicsList = this.personalizedPlanService.createTopicsList(this.topics);
+      this.planDetails = this.personalizedPlanService.getPlanDetails(this.topics, this.planDetailTags);
+    } else {
+      this.personalizedPlanService.getActionPlanConditions(this.activeActionPlan)
+        .subscribe(plan => {
+          if (plan) {
+            this.topics = plan.topics;
+            this.planDetailTags = plan;
+          }
+          this.topicsList = this.personalizedPlanService.createTopicsList(this.topics);
+          this.planDetails = this.personalizedPlanService.getPlanDetails(this.topics, this.planDetailTags);
+        });
+    }
   }
 
   filterPlan(topic) {
@@ -48,7 +56,6 @@ export class PersonalizedPlanComponent implements OnInit {
   filterTopicsList(topic) {
     this.topicsList = [];
     this.tempTopicsList.forEach(topicDetail => {
-      this.planTopic = { topic: {}, isSelected: true };
       if (topicDetail.topic.name === topic) {
         this.planTopic = { topic: topicDetail.topic, isSelected: !topicDetail.isSelected };
       } else {
@@ -66,14 +73,6 @@ export class PersonalizedPlanComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.personalizedPlan = this.navigateDataService.getData();
-    if (this.personalizedPlan != undefined) {
-      this.topics = this.personalizedPlan.topics;
-      this.planDetailTags = this.personalizedPlan;
-      this.topicsList = this.personalizedPlanService.createTopicsList(this.topics);
-      this.planDetails = this.personalizedPlanService.getPlanDetails(this.topics, this.planDetailTags);
-    } else {
-      this.getTopics();
-    }
+    this.getTopics();
   }
 }

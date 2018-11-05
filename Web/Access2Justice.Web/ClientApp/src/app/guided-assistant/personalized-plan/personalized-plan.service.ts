@@ -20,7 +20,7 @@ export class PersonalizedPlanService {
   topics: string[] = [];
   resources: string[] = [];
   planId: string;
-  planTopic: PersonalizedPlanTopic = { topic: {}, isSelected: true };
+  planTopic: PersonalizedPlanTopic;
   topicsList: Array<PersonalizedPlanTopic> = [];
   planDetailTags: any;
   tempPlanDetailTags: any;  

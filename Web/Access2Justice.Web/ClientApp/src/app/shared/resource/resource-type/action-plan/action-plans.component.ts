@@ -29,13 +29,13 @@ export class ActionPlansComponent implements OnChanges {
   //personalizedPlanStep: PlanStep = { stepId: '', title: '', description: '', order: 1, isComplete: false, resources: [], topicIds: [] };
   //personalizedPlanSteps: Array<PlanStep>;
   ////planTopic: PlanTopic = { topicId: '', steps: this.personalizedPlanSteps };
-  //planTopics: Array<PlanTopic>;
+  planTopics: Array<PlanTopic>;
   //resourceIds: Array<string>;
-  //personalizedPlan: PersonalizedPlan = { id: '', topics: this.planTopics, isShared: false };
-  //selectedPlanDetails: any = { planDetails: [], topicId: '' };
+  personalizedPlan: PersonalizedPlan = { id: '', topics: this.planTopics, isShared: false };
+  selectedPlanDetails: any;
   //topics: Array<any> = [];
   //filteredtopicsList: Array<PersonalizedPlanTopic> = [];
-  //tempFilteredtopicsList: Array<PersonalizedPlanTopic> = [];
+  tempFilteredtopicsList: Array<PersonalizedPlanTopic> = [];
   //personalizedPlanTopic: PersonalizedPlanTopic = { topic: {}, isSelected: false };
   @Output() notifyFilterTopics = new EventEmitter<object>();
   removePlanDetails: any;
@@ -209,43 +209,48 @@ export class ActionPlansComponent implements OnChanges {
     return this.url;
   }
 
-  //openModal(template: TemplateRef<any>) {
-  //  this.modalRef = this.modalService.show(template);
-  //}
+  planTagOptions(topicId) {
+    this.getRemovePlanDetails();
+    this.planTopics = [];
+    if (this.removePlanDetails.length > 0) {
+      this.removePlanDetails.forEach(planTopic => {
+        this.planTopics.push(planTopic);
+      });
+    }
+    this.personalizedPlan = { id: this.planDetails.id, topics: this.planTopics, isShared: this.planDetails.isShared };
+    this.selectedPlanDetails = { planDetails: this.personalizedPlan, topicId: topicId };
+    //  this.planTopics = [];
+    //  //this.planTopic = { topicId: '', steps: this.personalizedPlanSteps };
+    //  this.removePlanDetails = [];
+    //  this.getRemovePlanDetails();
+    //  if (this.removePlanDetails.length > 0) {
+    //    this.removePlanDetails.forEach(item => {
+    //      this.personalizedPlanSteps = [];
+    //      item.topic.steps.forEach(step => {
+    //        this.personalizedPlanStep = {
+    //          stepId: step.stepId, title: step.title, description: step.description,
+    //          order: step.order, isComplete: step.isComplete, resources: this.personalizedPlanService.getResourceIds(step.resources), topicIds: []
+    //        };
+    //        this.personalizedPlanSteps.push(this.personalizedPlanStep);
+    //      });
+    //      //this.planTopic = { topicId: item.topic.topicId, steps: this.personalizedPlanSteps };
+    //      //this.planTopics.push(this.planTopic);
+    //    });
+    //  }
+    //  this.personalizedPlan = { id: this.planDetails.id, topics: this.planTopics, isShared: this.planDetails.isShared };
+    //  this.selectedPlanDetails = { planDetails: this.personalizedPlan, topicId: topicId };
+  }
 
-  //planTagOptions(topicId) {
-  //  this.planTopics = [];
-  //  //this.planTopic = { topicId: '', steps: this.personalizedPlanSteps };
-  //  this.removePlanDetails = [];
-  //  this.getRemovePlanDetails();
-  //  if (this.removePlanDetails.length > 0) {
-  //    this.removePlanDetails.forEach(item => {
-  //      this.personalizedPlanSteps = [];
-  //      item.topic.steps.forEach(step => {
-  //        this.personalizedPlanStep = {
-  //          stepId: step.stepId, title: step.title, description: step.description,
-  //          order: step.order, isComplete: step.isComplete, resources: this.personalizedPlanService.getResourceIds(step.resources), topicIds: []
-  //        };
-  //        this.personalizedPlanSteps.push(this.personalizedPlanStep);
-  //      });
-  //      //this.planTopic = { topicId: item.topic.topicId, steps: this.personalizedPlanSteps };
-  //      //this.planTopics.push(this.planTopic);
-  //    });
-  //  }
-  //  this.personalizedPlan = { id: this.planDetails.id, topics: this.planTopics, isShared: this.planDetails.isShared };
-  //  this.selectedPlanDetails = { planDetails: this.personalizedPlan, topicId: topicId };
-  //}
-
-  //getRemovePlanDetails() {
-  //  this.removePlanDetails = [];
-  //  this.tempFilteredtopicsList.forEach(topic => {
-  //    this.removePlanDetails.push(topic);
-  //  });
-  //}
+  getRemovePlanDetails() {
+    this.removePlanDetails = [];
+    this.tempFilteredtopicsList.forEach(topic => {
+      this.removePlanDetails.push(topic);
+    });
+  }
 
   ngOnChanges() {
     this.getPersonalizedPlan(this.planDetails);
-    //this.tempFilteredtopicsList = this.topicsList;
+    this.tempFilteredtopicsList = this.topicsList;
   }
 
   orderBy(items, field) {

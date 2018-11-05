@@ -6,6 +6,7 @@ import { PersonalizedPlanComponent } from '../../../../guided-assistant/personal
 import { Router } from '@angular/router';
 import { EventUtilityService } from '../../../event-utility.service';
 import { Global, UserStatus } from '../../../../global';
+import { NavigateDataService } from '../../../navigate-data.service';
 
 @Component({
   selector: 'app-remove-button',
@@ -16,7 +17,7 @@ export class RemoveButtonComponent implements OnInit {
   @Input() resourceId;
   @Input() resourceType;
   @Input() personalizedResources;
-  @Input() selectedPlanDetails;  
+  @Input() selectedPlanDetails;
   removeResource: SavedResources;
   profileResources: ProfileResources = { oId: '', resourceTags: [], type: '' };
   isRemovedPlan: boolean = false;
@@ -29,7 +30,8 @@ export class RemoveButtonComponent implements OnInit {
     private personalizedPlanComponent: PersonalizedPlanComponent,
     private router: Router,
     private eventUtilityService: EventUtilityService,
-    private global: Global) {    
+    private global: Global,
+    private navigateDataService: NavigateDataService) {
     if (global.role === UserStatus.Shared && location.pathname.indexOf(global.shareRouteUrl) >= 0) {
       global.showRemove = false;
     }
@@ -65,22 +67,27 @@ export class RemoveButtonComponent implements OnInit {
   }
 
   removePersonalizedPlan() {
-    const params = {
-      "id": this.selectedPlanDetails.planDetails.id,
-      "topics": this.selectedPlanDetails.planDetails.topics,
-      "isShared": this.selectedPlanDetails.planDetails.isShared
-    }
-    this.personalizedPlanService.userPlan(params)
-      .subscribe(response => {
-        if (response) {
-          if (this.global.userId) {
+    if (!this.global.userId) {
+    //  if (sessionStorage.getItem(this.global.planSessionKey)) {
+    //    sessionStorage.setItem(this.global.sessionKey, JSON.stringify(this.selectedPlanDetails.planDetails));
+    //  }
+      this.navigateDataService.setData(this.selectedPlanDetails.planDetails);
+      this.personalizedPlanComponent.getTopics();
+      this.personalizedPlanService.showSuccess("Removed from Plan successfully");
+    } else {
+      const params = {
+        "id": this.selectedPlanDetails.planDetails.id,
+        "topics": this.selectedPlanDetails.planDetails.topics,
+        "isShared": this.selectedPlanDetails.planDetails.isShared
+      }
+      this.personalizedPlanService.userPlan(params)
+        .subscribe(response => {
+          if (response) {
             this.profileComponent.getPersonalizedPlan();
-          } else {
-            this.personalizedPlanComponent.getTopics();
+            this.personalizedPlanService.showSuccess('Removed from plan successfully');
           }
-          this.personalizedPlanService.showSuccess('Removed from plan successfully');
-        }
-      });
+        });
+    }
   }
 
   removedSavedResource() {

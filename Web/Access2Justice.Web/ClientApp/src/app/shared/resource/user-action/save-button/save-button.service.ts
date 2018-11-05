@@ -4,6 +4,7 @@ import { HttpParams } from '@angular/common/http';
 import { PlanStep, PlanTopic, PersonalizedPlan } from '../../../../guided-assistant/personalized-plan/personalized-plan';
 import { Global } from '../../../../global';
 import { ArrayUtilityService } from '../../../array-utility.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class SaveButtonService {
@@ -21,7 +22,8 @@ export class SaveButtonService {
 
   constructor(private personalizedPlanService: PersonalizedPlanService,
     private global: Global,
-    private arrayUtilityService: ArrayUtilityService) { }
+    private arrayUtilityService: ArrayUtilityService,
+    private router: Router) { }
 
   //getPlan(plan) {
     //this.planId = planId;
@@ -74,7 +76,9 @@ export class SaveButtonService {
     this.personalizedPlanService.userPlan(plan)
           .subscribe(response => {
             if (response) {
-                this.personalizedPlanService.showSuccess('Plan saved to profile');
+              this.personalizedPlanService.showSuccess('Plan saved to profile');
+              sessionStorage.removeItem(this.global.planSessionKey);
+              this.router.navigate(['/profile']);
               } 
           });
   //    });

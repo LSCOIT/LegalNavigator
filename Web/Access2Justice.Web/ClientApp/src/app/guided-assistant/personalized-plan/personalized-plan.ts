@@ -50,6 +50,6 @@ export interface PlanStep {
 }
 
 export interface PersonalizedPlanTopic {
-  topic: any;
+  topic: PlanTopic;
   isSelected: boolean;
 }

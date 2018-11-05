@@ -58,7 +58,7 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 var userPersonalizedPlan = await GetPersonalizedPlanAsync(personalizedPlan.PersonalizedPlanId);
 
-                if (userPersonalizedPlan == null)
+                if (userPersonalizedPlan == null || userPersonalizedPlan?.PersonalizedPlanId == Guid.Empty)
                 {
                     var newPlan = await backendDatabaseService.CreateItemAsync(personalizedPlan, cosmosDbSettings.ActionPlansCollectionId);
                     if (!Guid.TryParse(newPlan.Id, out Guid guid))
