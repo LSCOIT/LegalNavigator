@@ -9,6 +9,7 @@ import { AdminService } from './admin.service';
 import { AboutAdminComponent } from './about/about-admin.component';
 import { AdminAuthGuard } from './admin-auth/admin-auth.guard';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { UploadCuratedExperienceTemplateComponent } from './upload-curated-experience-template/upload-curated-experience-template.component';
 
 @NgModule({
   imports: [
@@ -22,11 +23,13 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
     AdminComponent,
     PrivacyPromiseAdminComponent,
     AboutAdminComponent,
-    AdminDashboardComponent
+    AdminDashboardComponent,
+    UploadCuratedExperienceTemplateComponent
   ],
   exports: [
     AdminComponent,
-    PrivacyPromiseAdminComponent
+    PrivacyPromiseAdminComponent,
+    UploadCuratedExperienceTemplateComponent
   ],
   providers: [
     AdminService,

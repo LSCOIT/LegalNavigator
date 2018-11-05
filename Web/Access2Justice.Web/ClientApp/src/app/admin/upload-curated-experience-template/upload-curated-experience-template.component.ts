@@ -4,6 +4,7 @@ import { NgForm } from '@angular/forms';
 import { MsalService } from '@azure/msal-angular';
 import { api } from '../../../api/api';
 import { environment } from '../../../environments/environment';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-upload-curated-experience-template',
@@ -15,7 +16,8 @@ export class UploadCuratedExperienceTemplateComponent implements OnInit {
   errorMessage: string;
   @ViewChild('file') file: ElementRef;
 
-  constructor(private http: HttpClient, private msalService: MsalService) { }
+  constructor(private http: HttpClient, private msalService: MsalService,
+    private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
     if (!this.msalService.getUser()) {
@@ -24,6 +26,7 @@ export class UploadCuratedExperienceTemplateComponent implements OnInit {
   }
 
   onSubmit(uploadForm: NgForm) {
+    this.spinner.show();
     if (uploadForm.form.value) {
       this.successMessage = "";
       this.errorMessage = "";
@@ -44,11 +47,13 @@ export class UploadCuratedExperienceTemplateComponent implements OnInit {
 
       this.http.post(api.uploadCuratedExperienceTemplateUrl, formData, { params, responseType: 'text'})
         .subscribe(
-          response => {
+        response => {
+          this.spinner.hide();
             uploadForm.reset();
             this.successMessage = response;
           },
         error => {
+          this.spinner.hide();
           if (error.error) {
             this.errorMessage = error.error;
           }
