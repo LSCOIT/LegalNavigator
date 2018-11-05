@@ -24,8 +24,8 @@ import { ProfileResolver } from './app-resolver/profile-resolver.service';
 import { AdminComponent } from './admin/admin.component';
 
 const appRoutes: Routes = [
-  { path: 'search', component: SearchResultsComponent, resolve: { cres: ProfileResolver } },
-  { path: 'searchRefresh', component: SearchResultsComponent, resolve: { cres: ProfileResolver } },
+  { path: 'search', component: SearchResultsComponent },
+  { path: 'searchRefresh', component: SearchResultsComponent },
   { path: 'guidedassistant/:id', component: CuratedExperienceComponent },
   { path: 'guidedassistant', component: GuidedAssistantComponent },
   { path: 'guidedassistantSearch', component: CuratedExperienceResultComponent },

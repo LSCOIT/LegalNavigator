@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { AdminModule } from './admin/admin.module';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
 
@@ -43,15 +44,9 @@ import { ResponseInterceptor } from './response-interceptor';
 import { Global } from './global';
 import { CuratedExperienceResultComponent } from './guided-assistant/curated-experience-result/curated-experience-result.component';
 import { ProfileResolver } from './app-resolver/profile-resolver.service';
-import { MsalInterceptor } from '@azure/msal-angular';
+import { TokenInterceptor } from './token-interceptor';
 import { environment } from '../environments/environment';
 import { api } from '../api/api';
-import { AdminComponent } from './admin/admin.component';
-import { UploadCuratedExperienceTemplateComponent } from './admin/upload-curated-experience-template/upload-curated-experience-template.component';
-
-export const protectedResourceMap: [string, string[]][] = [[api.checkPermaLink, [environment.apiScope]], [api.shareUrl, [environment.apiScope]]
-    , [api.unShareUrl, [environment.apiScope]], [api.userPlanUrl, [environment.apiScope]],
-[api.uploadCuratedExperienceTemplateUrl, [environment.apiScope]]]
 
 @NgModule({
   declarations: [
@@ -71,14 +66,12 @@ export const protectedResourceMap: [string, string[]][] = [[api.checkPermaLink, 
     DidYouKnowComponent,
     ArticlesResourcesComponent,
     CuratedExperienceComponent,
-    CuratedExperienceResultComponent,
-    AdminComponent,
-    UploadCuratedExperienceTemplateComponent
-  ],
+    CuratedExperienceResultComponent],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
+    AdminModule,
     AppRoutingModule,
     SharedModule,
     AccordionModule.forRoot(),
@@ -95,8 +88,7 @@ export const protectedResourceMap: [string, string[]][] = [[api.checkPermaLink, 
       consentScopes: environment.consentScopes,
       redirectUri: environment.redirectUri,
       navigateToLoginRequestUrl: environment.navigateToLoginRequestUrl,
-      postLogoutRedirectUri: environment.postLogoutRedirectUri,
-      protectedResourceMap: protectedResourceMap
+      postLogoutRedirectUri: environment.postLogoutRedirectUri      
     })
   ],
   providers: [
@@ -106,7 +98,7 @@ export const protectedResourceMap: [string, string[]][] = [[api.checkPermaLink, 
       multi: true
     }, {
       provide: HTTP_INTERCEPTORS,
-      useClass: MsalInterceptor,
+      useClass: TokenInterceptor,
       multi: true
     },
     TopicService,

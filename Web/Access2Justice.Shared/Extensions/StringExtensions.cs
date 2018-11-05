@@ -67,11 +67,13 @@ namespace Access2Justice.Shared.Extensions
 
                     var truncateText = text.Substring(indexStart, indexEnd - indexStart + Tokens.CustomHtmlClosingTag.Length);
                     text = text.Replace(truncateText, "");
-                    curatedExperienceContent.SanitizedHtml = text;
                 }
                 else
+                {
                     exit = true;
+                }
             }
+            curatedExperienceContent.SanitizedHtml = text;
             return curatedExperienceContent;
         }
 
