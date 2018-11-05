@@ -177,6 +177,16 @@ describe('SearchResultsComponent', () => {
     expect(JSON.stringify(component.resourceFilter.Location)).toEqual(JSON.stringify(mockMapLocation));
   });
 
+  it('should call getInternalResource with isServiceCall true and assign globalMapLocation value to request model', () => {
+    spyOn(component, 'checkResource');
+    spyOn(component, 'addResource');
+    spyOn(sessionStorage, 'getItem').and.returnValue(null);
+    spyOn(paginationService, 'getPagedResources').and.returnValue(Observable.of());
+    component.isServiceCall = true;
+    component.getInternalResource("", 1);
+    expect(component.resourceFilter.Location).toEqual(null);
+  });
+
   it('should call checkResource with resource name defined and resource list undefined', () => {
     component.resourceTypeFilter = mockResourceTypeFilterWithResourceListUndefined;
     component.currentPage = mockPageNumber;
