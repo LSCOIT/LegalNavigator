@@ -26,20 +26,14 @@ export class ActionPlansComponent implements OnChanges {
   isCompleted: boolean = false;
   isUser: boolean = false;
   isChecked: boolean = false;
-  //personalizedPlanStep: PlanStep = { stepId: '', title: '', description: '', order: 1, isComplete: false, resources: [], topicIds: [] };
-  //personalizedPlanSteps: Array<PlanStep>;
-  ////planTopic: PlanTopic = { topicId: '', steps: this.personalizedPlanSteps };
   planTopics: Array<PlanTopic>;
-  //resourceIds: Array<string>;
   personalizedPlan: PersonalizedPlan = { id: '', topics: this.planTopics, isShared: false };
   selectedPlanDetails: any;
-  //topics: Array<any> = [];
-  //filteredtopicsList: Array<PersonalizedPlanTopic> = [];
   tempFilteredtopicsList: Array<PersonalizedPlanTopic> = [];
-  //personalizedPlanTopic: PersonalizedPlanTopic = { topic: {}, isSelected: false };
   @Output() notifyFilterTopics = new EventEmitter<object>();
   removePlanDetails: any;
   plan: any;
+  sortOrder: Array<string> = ["isComplete", "order"];
   resourceTypeList = [
     'Forms',
     'Guided Assistant',
@@ -78,7 +72,7 @@ export class ActionPlansComponent implements OnChanges {
 
   sortStepsByOrder(planDetails) {
     planDetails.topics.forEach(topic => {
-      topic.steps = this.orderBy(topic.steps, "isComplete");
+      topic.steps = this.orderBy(topic.steps, this.sortOrder);
     });
   }
 
@@ -91,7 +85,7 @@ export class ActionPlansComponent implements OnChanges {
             step.isComplete = this.isChecked;
           }
         });
-        topic.steps = this.orderBy(topic.steps, "isComplete");
+        topic.steps = this.orderBy(topic.steps, this.sortOrder);
       }
     });
     this.navigateDataService.setData(this.planDetails);
@@ -100,109 +94,7 @@ export class ActionPlansComponent implements OnChanges {
     } else {
       this.personalizedPlanService.showSuccess("Step Added Back");
     }
-    //this.getPlanDetails(topicId, stepId, this.isChecked);
   }
-
-  //getPlanDetails(topicId, stepId, isChecked) {
-  //  let params = new HttpParams()
-  //    .set("personalizedPlanId", this.planDetails.id);
-  //  this.personalizedPlanService.getActionPlanConditions(params)
-  //    .subscribe(plan => {
-  //      if (plan) {
-  //        this.topics = plan.topics;
-  //      }
-  //      this.plan = this.personalizedPlanService.getPlanDetails(this.topics, plan);
-  //      this.updateMarkCompleted(topicId, stepId, isChecked);
-  //      this.updateProfilePlan(this.isChecked);
-  //    });
-  //}
-
-  //updateMarkCompleted(topicId, stepId, isChecked) {
-  //  this.planTopics = [];
-  //  this.personalizedPlanSteps = [];
-  //  //this.planTopic = { topicId: '', steps: this.personalizedPlanSteps };
-  //  this.plan.topics.forEach(item => {
-  //    if (item.topicId === topicId) {
-  //      this.personalizedPlanSteps = this.updateStepTagForMatchingTopicId(item, stepId, isChecked);
-  //    } else {
-  //      this.personalizedPlanSteps = this.stepTagForNonMatchingTopicId(item);
-  //    }
-  //    //this.planTopic = { topicId: item.topicId, steps: this.personalizedPlanSteps };
-  //    //this.planTopics.push(this.planTopic);
-  //  });
-  //  this.personalizedPlan = { id: this.planDetails.id, topics: this.planTopics, isShared: this.planDetails.isShared };
-  //}
-
-  //updateStepTagForMatchingTopicId(item, stepId, isChecked): Array<PlanStep> {
-  //  this.personalizedPlanSteps = [];
-  //  item.steps.forEach(step => {
-  //    this.personalizedPlanStep = {
-  //      stepId: step.stepId, title: step.title, description: step.description,
-  //      order: step.order, isComplete: step.isComplete, resources: this.personalizedPlanService.getResourceIds(step.resources), topicIds: []
-  //    };
-  //    if (step.stepId === stepId) {
-  //      this.personalizedPlanStep.isComplete = isChecked;
-  //    }
-  //    this.personalizedPlanSteps.push(this.personalizedPlanStep);
-  //  });
-  //  return this.personalizedPlanSteps;
-  //}
-
-  //stepTagForNonMatchingTopicId(item): Array<PlanStep> {
-  //  this.personalizedPlanSteps = [];
-  //  item.steps.forEach(step => {
-  //    this.personalizedPlanStep = {
-  //      stepId: step.stepId, title: step.title, description: step.description,
-  //      order: step.order, isComplete: step.isComplete, resources: this.personalizedPlanService.getResourceIds(step.resources), topicIds: []
-  //    };
-  //    this.personalizedPlanSteps.push(this.personalizedPlanStep);
-  //  });
-  //  return this.personalizedPlanSteps;
-  //}
-
-  //updateProfilePlan(isChecked) {
-  //  const params = {
-  //    "id": this.personalizedPlan.id,
-  //    "topics": this.personalizedPlan.topics,
-  //    "isShared": this.personalizedPlan.isShared
-  //  }
-  //  this.personalizedPlanService.userPlan(params)
-  //    .subscribe(response => {
-  //      if (response) {
-  //        this.filteredtopicsList = [];
-  //        response.topics.forEach(topic => {
-  //          for (let i = 0; i < this.tempFilteredtopicsList.length; i++) {
-  //            if (topic.topicId === this.tempFilteredtopicsList[i].topic.topicId) {
-  //              this.personalizedPlanTopic = { topic: topic, isSelected: this.tempFilteredtopicsList[i].isSelected };
-  //              this.filteredtopicsList.push(this.personalizedPlanTopic);
-  //            }
-  //          }
-  //        });
-  //        this.getUpdatedPersonalizedPlan(response, isChecked);
-  //      }
-  //    });
-  //}
-
-  //getUpdatedPersonalizedPlan(response, isChecked) {
-  //  this.notifyFilterTopics.emit({ plan: response, topicsList: this.filteredtopicsList });
-  //  this.loadPersonalizedPlan();
-  //  if (isChecked) {
-  //    this.isCompleted = true;
-  //    this.toastr.success("Step Completed.");
-  //  } else {
-  //    this.isCompleted = false;
-  //    this.toastr.success("Step Added Back");
-  //  }
-  //}
-
-  //loadPersonalizedPlan() {
-  //  this.planDetails.topics = [];
-  //  this.filteredtopicsList.forEach(topic => {
-  //    if (topic.isSelected) {
-  //      this.planDetails.topics.push(topic);
-  //    }
-  //  });
-  //}
 
   resourceUrl(url) {
     this.url = this.sanitizer.bypassSecurityTrustResourceUrl(url);
@@ -214,31 +106,11 @@ export class ActionPlansComponent implements OnChanges {
     this.planTopics = [];
     if (this.removePlanDetails.length > 0) {
       this.removePlanDetails.forEach(planTopic => {
-        this.planTopics.push(planTopic);
+        this.planTopics.push(planTopic.topic);
       });
     }
     this.personalizedPlan = { id: this.planDetails.id, topics: this.planTopics, isShared: this.planDetails.isShared };
     this.selectedPlanDetails = { planDetails: this.personalizedPlan, topicId: topicId };
-    //  this.planTopics = [];
-    //  //this.planTopic = { topicId: '', steps: this.personalizedPlanSteps };
-    //  this.removePlanDetails = [];
-    //  this.getRemovePlanDetails();
-    //  if (this.removePlanDetails.length > 0) {
-    //    this.removePlanDetails.forEach(item => {
-    //      this.personalizedPlanSteps = [];
-    //      item.topic.steps.forEach(step => {
-    //        this.personalizedPlanStep = {
-    //          stepId: step.stepId, title: step.title, description: step.description,
-    //          order: step.order, isComplete: step.isComplete, resources: this.personalizedPlanService.getResourceIds(step.resources), topicIds: []
-    //        };
-    //        this.personalizedPlanSteps.push(this.personalizedPlanStep);
-    //      });
-    //      //this.planTopic = { topicId: item.topic.topicId, steps: this.personalizedPlanSteps };
-    //      //this.planTopics.push(this.planTopic);
-    //    });
-    //  }
-    //  this.personalizedPlan = { id: this.planDetails.id, topics: this.planTopics, isShared: this.planDetails.isShared };
-    //  this.selectedPlanDetails = { planDetails: this.personalizedPlan, topicId: topicId };
   }
 
   getRemovePlanDetails() {
@@ -252,16 +124,22 @@ export class ActionPlansComponent implements OnChanges {
     this.getPersonalizedPlan(this.planDetails);
     this.tempFilteredtopicsList = this.topicsList;
   }
-
+  
   orderBy(items, field) {
     return items.sort((a, b) => {
-      if (a[field] < b[field]) {
+      if (a[field[0]] < b[field[0]]) {
         return -1;
-      } else if (a[field] > b[field]) {
+      } else if (a[field[0]] > b[field[0]]) {
         return 1;
       } else {
+        if (a[field[1]] < b[field[1]]) {
+          return -1;
+        } else if (a[field[1]] > b[field[1]]) {
+          return 1;
+        }
         return 0;
       }
     });
   }
+
 }

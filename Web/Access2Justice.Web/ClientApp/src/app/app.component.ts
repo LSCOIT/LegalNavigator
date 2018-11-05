@@ -42,8 +42,8 @@ export class AppComponent implements OnInit {
       .subscribe(response => {
         if (response) {
           this.global.setProfileData(response.oId, response.name, response.eMail, response.roleInformation);
-          this.saveBookmarkedPlan();
           this.saveBookmarkedResource();
+          this.saveBookmarkedPlan();
         }
       });
   }

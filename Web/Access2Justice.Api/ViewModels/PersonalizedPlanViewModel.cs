@@ -98,4 +98,13 @@ namespace Access2Justice.Api.ViewModels
             QuickLinks = new List<EssentialReadings>();
         }
     }
+
+	public class UserPlanModel
+	{
+		[JsonProperty(PropertyName = "personalizedPlan")]
+		public PersonalizedPlanViewModel PersonalizedPlan { get; set; }
+
+		[JsonProperty(PropertyName = "oId")]
+		public string UserId { get; set; }
+	}
 }

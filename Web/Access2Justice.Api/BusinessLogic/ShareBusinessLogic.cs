@@ -152,7 +152,7 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 plan.IsShared = isShared;
             }
-            return await dbPersonalizedPlan.UpsertPersonalizedPlanAsync(plan);
+            return await dbPersonalizedPlan.UpsertPersonalizedPlanAsync(plan, ""); //To do need to pass the oID of the user who shared plan
         }
 
         public async Task<object> UnshareResourceDataAsync(ShareInput unShareInput)

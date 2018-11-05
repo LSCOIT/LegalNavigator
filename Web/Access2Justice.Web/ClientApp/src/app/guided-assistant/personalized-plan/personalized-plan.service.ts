@@ -7,7 +7,6 @@ import { IResourceFilter } from '../../shared/search/search-results/search-resul
 import { ArrayUtilityService } from '../../shared/array-utility.service';
 import { ToastrService } from 'ngx-toastr';
 import { Global } from "../../global";
-import { resource } from 'selenium-webdriver/http';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -51,7 +50,7 @@ export class PersonalizedPlanService {
     return this.http.post(api.userPlanUrl, resource, httpOptions);
   }
 
-  userPlan(plan: PersonalizedPlan) {
+  userPlan(plan): Observable<any> {
     return this.http.post<any>(api.updateUserPlanUrl, plan, httpOptions);
   }
 

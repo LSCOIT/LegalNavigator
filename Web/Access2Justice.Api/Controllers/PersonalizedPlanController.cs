@@ -102,9 +102,9 @@ namespace Access2Justice.Api.Controllers
         /// <response code="500">Failure</response>      
         //[Permission(PermissionName.updateplan)]
         [HttpPost("save")]
-        public async Task<IActionResult> SavePersonalizedPlanAsync([FromBody] PersonalizedPlanViewModel personalizedPlan)
+        public async Task<IActionResult> SavePersonalizedPlanAsync([FromBody] UserPlanModel personalizedPlan)
         {
-            var newPlan = await personalizedPlanBusinessLogic.UpsertPersonalizedPlanAsync(personalizedPlan);
+            var newPlan = await personalizedPlanBusinessLogic.UpsertPersonalizedPlanAsync(personalizedPlan.PersonalizedPlan, personalizedPlan.UserId);
             if (newPlan == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);

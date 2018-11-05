@@ -88,8 +88,8 @@ export class ProfileComponent implements OnInit {
       this.planDetailTags = this.plan;
       this.topicsList = this.personalizedPlanService.createTopicsList(this.topics);
       this.planDetails = this.personalizedPlanService.getPlanDetails(this.topics, this.planDetailTags);
-      this.spinner.hide();
     }
+    this.spinner.hide();
   }
 
   filterPlan(topic) {

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Resources, ProfileResources, SavedResources, PersonalizedPlan, PlanTopic, PlanStep } from '../../../../guided-assistant/personalized-plan/personalized-plan';
+import { SavedResources, PersonalizedPlan, PlanTopic, PlanStep } from '../../../../guided-assistant/personalized-plan/personalized-plan';
 import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
 import { Subject } from 'rxjs';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap';
@@ -20,24 +20,14 @@ import { NavigateDataService } from '../../../navigate-data.service';
 })
 export class SaveButtonComponent implements OnInit {
   @Input() showIcon = true;
-  resources: Resources;
   savedResources: SavedResources;
   resourceTags: Array<SavedResources> = [];
-  profileResources: ProfileResources = { oId: '', resourceTags: [], type: '' };
   @Input() id: string;
   @Input() type: string;
   @Input() resourceDetails: any = {};
   plan: string;
   resourceStorage: any;
   planStorage: any;
-  //personalizedPlanStep: PlanStep = { stepId: '', title: '', description: '', order: 1, isComplete: false, resources: [], topicIds: [] };
-  //personalizedPlanSteps: Array<PlanStep>;
-  ////planTopic: PlanTopic = { topicId: '', steps: this.personalizedPlanSteps };
-  //planTopics: Array<PlanTopic>;
-  //personalizedPlan: PersonalizedPlan = { id: '', topics: this.planTopics, isShared: false };
-  //resourceIds: Array<string>;
-  //topicIds: Array<string>;
-  //stepIds: Array<string>;
   @Input() addLinkClass: boolean = false;
   planStepCount: number = 0;
   planStepIds: Array<string>;

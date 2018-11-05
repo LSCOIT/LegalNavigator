@@ -67,18 +67,14 @@ export class RemoveButtonComponent implements OnInit {
   }
 
   removePersonalizedPlan() {
-    if (!this.global.userId) {
-    //  if (sessionStorage.getItem(this.global.planSessionKey)) {
-    //    sessionStorage.setItem(this.global.sessionKey, JSON.stringify(this.selectedPlanDetails.planDetails));
-    //  }
+    if (this.router.url.indexOf("/plan") !== -1) {
       this.navigateDataService.setData(this.selectedPlanDetails.planDetails);
       this.personalizedPlanComponent.getTopics();
       this.personalizedPlanService.showSuccess("Removed from Plan successfully");
     } else {
       const params = {
-        "id": this.selectedPlanDetails.planDetails.id,
-        "topics": this.selectedPlanDetails.planDetails.topics,
-        "isShared": this.selectedPlanDetails.planDetails.isShared
+        "personalizedPlan": this.selectedPlanDetails.planDetails,
+        "oId": this.global.userId
       }
       this.personalizedPlanService.userPlan(params)
         .subscribe(response => {

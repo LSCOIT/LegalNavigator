@@ -12,7 +12,6 @@ import { NavigateDataService } from '../../shared/navigate-data.service';
 export class PersonalizedPlanComponent implements OnInit {
   activeActionPlan = this.activeRoute.snapshot.params['id'];
   personalizedPlan: PersonalizedPlan;
-
   topics: Array<any> = [];
   planTopic: PersonalizedPlanTopic;
   topicsList: Array<PersonalizedPlanTopic> = [];
