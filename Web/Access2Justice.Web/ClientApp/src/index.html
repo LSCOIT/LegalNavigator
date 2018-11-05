@@ -20,5 +20,71 @@
   <div id="google_translate_element"></div>
   <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=Element.prototype.classList"></script>
   <script src="https://unpkg.com/focus-visible"></script>
+  <script>
+
+    //function addListener(languages, i) {
+    //  languages[i].addEventListener("keypress", function onEvent(e) {
+
+    //    console.log("pressed" + e.key);
+
+    //  });
+    //}
+
+    document.addEventListener("DOMContentLoaded", function () {
+    //  var languages = document.getElementsByTagName("option");
+    //  console.log(languages);
+
+    //  for (let i = 0; i < languages.length; i++) {
+
+    //    addListener(languages, i);
+
+    //    //(function () {
+    //    //  console.log("in for loop");
+    //    //  var option = languages[i];
+    //    //  option.addEventListener("keypress", function onEvent(e) {
+           
+    //    //    console.log("pressed" + e.key);
+            
+    //    //  })
+    //    //}());
+        
+    //  }
+
+
+      var test = document.getElementById("google_translate_element");
+      console.log(test);
+      if (test) {
+        console.log("hi");
+        test.addEventListener('keypress', function onEvent(e) {
+          if (e.key === "Enter") {
+            //test.style.display = 'none';
+            document.getElementById("language-dropdown").click();
+            document.getElementById("language-dropdown").focus();
+          }
+            
+          
+        })
+      }
+    });
+   // document.getElementsByClassName("goog-te-combo").addEventListener("keyup",
+      //function (e) {
+      //  if (e.which == 13) {
+      //    var selectBox = document.getElementsByClassName("goog-te-combo").item(0);
+      //    //var userChoice = selectBox.options[selectBox.selectedIndex].value;
+      //    selectBox.options[selectBox.selectedIndex].trigger('click');
+      //    return true;
+      //  }
+      //}
+
+    
+
+
+      //function (e) {
+      //  if (e.key === 13) {
+      //    console.log("enter key is pressed");
+      //  }
+      //}
+    //);
+  </script>
 </body>
 </html>

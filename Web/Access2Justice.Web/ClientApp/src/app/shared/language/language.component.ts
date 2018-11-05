@@ -29,6 +29,7 @@ export class LanguageComponent implements OnInit, AfterViewInit {
       if (this.showLanguage) {
         translator.style.display = 'block';
         this.setBgColor = true;
+        document.getElementsByTagName("select").item(0).focus();
       } else {
         translator.style.display = 'none';
         this.setBgColor = false;
