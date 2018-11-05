@@ -333,10 +333,10 @@ namespace Access2Justice.Api.Controllers
         /// <param name="resource"></param>
         /// <response code="200">Returns created resources </response>
         /// <response code="500">Failure</response>
-        //[Permission(PermissionName.upsertresourcedocument)]
+        [Permission(PermissionName.upsertresourcedocuments)]
         [HttpPost]
-        [Route("api/upsert-resource-document")]
-        public async Task<IActionResult> UpsertResourceDocument([FromBody]dynamic resource)
+        [Route("api/topics/upsert-resource-documents")]
+        public async Task<IActionResult> UpsertResourceDocuments([FromBody]dynamic resource)
         {
             var resources = await topicsResourcesBusinessLogic.UpsertResourceDocumentAsync(resource);
             return Ok(resources);
@@ -362,18 +362,18 @@ namespace Access2Justice.Api.Controllers
         }
 
         /// <summary>
-        /// Create topic document
+        /// Create topic documents - - can upsert single or multiple topics
         /// </summary>
         /// /// <remarks>
-        /// Helps to create topic document given a topic name.
+        /// Helps to create topic documents given a topics json.
         /// </remarks>
         /// <param name="topic"></param>
-        /// <response code="200">Returns created topic document</response>
+        /// <response code="200">Returns created topic documents</response>
         /// <response code="500">Failure</response>
-        //[Permission(PermissionName.upserttopicdocument)]
+        [Permission(PermissionName.upserttopicdocuments)]
         [HttpPost]
-        [Route("api/upsert-topic-document")]
-        public async Task<IActionResult> UpsertTopicDocument([FromBody]dynamic topic)
+        [Route("api/topics/upsert-topic-documents")]
+        public async Task<IActionResult> UpsertTopicDocuments([FromBody]dynamic topic)
         {
             var topics = await topicsResourcesBusinessLogic.UpsertTopicDocumentAsync(topic);
             return Ok(topics);
@@ -382,10 +382,10 @@ namespace Access2Justice.Api.Controllers
         /// <summary>
         /// Create Single Topic Document
         /// </summary>
-        [Permission(PermissionName.upserttopic)]
+        [Permission(PermissionName.upserttopicdocument)]
         [HttpPost]
-        [Route("api/upserttopic")]
-        public async Task<IActionResult> UpsertSingleTopicDocument([FromBody]dynamic topic)
+        [Route("api/topics/upsert-topic-document")]
+        public async Task<IActionResult> UpsertTopicDocument([FromBody]dynamic topic)
         {
             List<dynamic> topicsList = new List<dynamic>();
             topicsList.Add(topic);
@@ -400,10 +400,10 @@ namespace Access2Justice.Api.Controllers
         /// <summary>
         /// Create Single Resource Document
         /// </summary>
-        [Permission(PermissionName.upsertresource)]
+        [Permission(PermissionName.upsertresourcedocument)]
         [HttpPost]
-        [Route("api/upsertresource")]
-        public async Task<IActionResult> UpserSingleResourceDocument([FromBody]dynamic resource)
+        [Route("api/topics/upsert-resource-document")]
+        public async Task<IActionResult> UpsertResourceDocument([FromBody]dynamic resource)
         {
             List<dynamic> resourcesList = new List<dynamic>();
             resourcesList.Add(resource);

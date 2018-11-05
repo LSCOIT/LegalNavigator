@@ -100,7 +100,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
 
                     var serializedResources = JsonConvert.SerializeObject(resourcesList);
                     StringContent content = new StringContent(serializedResources, Encoding.UTF8, "application/json");
-                    var response = await clientHttp.PostAsync("api/upsert-resource-document", content).ConfigureAwait(false);
+                    var response = await clientHttp.PostAsync("api/topics/upsert-resource-documents", content).ConfigureAwait(false);
                     var json = response.Content.ReadAsStringAsync().Result;
                     response.EnsureSuccessStatusCode();
                     if (response.IsSuccessStatusCode == true)
