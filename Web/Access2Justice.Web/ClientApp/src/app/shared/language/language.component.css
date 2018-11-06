@@ -1,9 +1,6 @@
 #language-dropdown {
   padding: 15px 40px 15px 15px;
-  background-image: url('../../../assets/images/small-icons/dropdown_arrow.svg');
-  background-repeat: no-repeat;
   background-position: 88% 50%;
-  background-size: 12px;
   height: 49px;
 }
 
@@ -17,8 +14,6 @@
   position: relative;
   background-color: #FFF;
   z-index: 1;
-  background-image: url('../../../assets/images/small-icons/dropup_arrow.svg') !important;
-
 }
 
 @media only screen and (min-width : 768px) {

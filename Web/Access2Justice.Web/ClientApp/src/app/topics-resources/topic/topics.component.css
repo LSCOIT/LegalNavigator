@@ -73,7 +73,7 @@ ul {
   }
 
   .half-size-list a img {
-    margin-top: 20px;
+    margin: 40px auto 20px auto;
   }
 
   .half-size-list:nth-child(4n) {

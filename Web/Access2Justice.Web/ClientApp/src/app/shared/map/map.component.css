@@ -2,6 +2,14 @@ p {
   margin-bottom: 0;
 }
 
+.pxs {
+  font-size: 12px;
+}
+
+p.pxs {
+  margin-top: 10px
+}
+
 .row {
   margin: 5px auto;
 }
@@ -17,8 +25,8 @@ p {
 #my-map {
   position: relative;
   width: 90%;
-  margin: 20px auto 0 auto;
-  height: 250px;
+  margin: 30px auto 0 auto;
+  height: 280px;
 }
 
 #searchbox-container {
@@ -47,10 +55,10 @@ p {
 }
 
 #search-box {
-  height: 30px;
-  width: 45%;
+  height: 40px;
+  width: 75%;
   float: left;
-  margin-left: 22%;
+  margin-left: 6%;
 }
 
 .search-btn {
@@ -61,7 +69,7 @@ p {
   margin-left: -5px;
   font-weight: 600;
   float: left;
-  height: 30px;
+  height: 40px;
 }
 
 .dimmer {
@@ -106,6 +114,11 @@ p {
 @media only screen and (min-width : 768px) {
   .edit-location {
     padding: 15px 10px;
+  }
+
+  .search-box {
+    width: 45%;
+    margin-left: 22%;
   }
 }
 

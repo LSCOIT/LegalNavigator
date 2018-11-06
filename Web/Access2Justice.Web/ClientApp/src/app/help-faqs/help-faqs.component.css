@@ -1,13 +1,11 @@
 .media {
-  border: 1px solid #777;
   margin-bottom: -14px;
   margin-top: -12px;
-  padding: 10px;
+  padding: 30px 10px 30px 0;
   cursor: pointer;
 }
 
 .step-content {
-  padding: 0 10px;
   margin-bottom: -5px;
 }
 
@@ -23,7 +21,7 @@ h1 {
   margin-top: 40px;
 }
 
-.col-md-10 {
+.faqs .col-md-10 {
   margin-bottom: 10%;
 }
 
