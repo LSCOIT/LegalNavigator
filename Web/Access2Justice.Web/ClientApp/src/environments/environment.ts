@@ -4,7 +4,7 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:4200/api',
+  apiUrl: 'https://access2justiceapi.azurewebsites.net/api',
   bingmap_key: 'AlyLqEyg06sSOQJUwYsqcsm69zWmVKYgmaGvqdBPISKCJ59IQqqfCCaQ42KgqTyG',
   map_type: false,
   internalResourcePagesToShow: 2,
