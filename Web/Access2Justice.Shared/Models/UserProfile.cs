@@ -85,8 +85,19 @@ namespace Access2Justice.Shared.Models
         public Guid CuratedExperienceAnswersId { get; set; }
 
         [JsonProperty(PropertyName = "savedResourcesId")]
-        public Guid SavedResourcesId { get; set; }
+        public Guid SavedResourcesId { get; set; }        
 
+        [JsonProperty(PropertyName = "roleInformationId")]        
+        public List<string> RoleInformationId { get; set; }
+
+        [JsonProperty(PropertyName = "roleInformation")]
+        public List<RoleViewModel> RoleInformation { get; set; }        
+
+        public UserProfileViewModel()
+        {
+            RoleInformationId = new List<string>();
+            RoleInformation = new List<RoleViewModel>();
+        }
     }
 
 }
