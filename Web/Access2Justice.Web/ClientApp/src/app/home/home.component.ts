@@ -54,7 +54,7 @@ export class HomeComponent implements OnInit {
   loadStateName() {
     if (sessionStorage.getItem("globalMapLocation")) {
       this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
-      this.state = this.mapLocation.address;
+      this.state = this.global.state;
     }
   }
 

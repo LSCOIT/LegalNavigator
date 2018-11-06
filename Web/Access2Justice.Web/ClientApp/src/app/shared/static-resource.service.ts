@@ -8,12 +8,14 @@ import { PrivacyContent } from '../privacy-promise/privacy-promise';
 import { HelpAndFaqs } from '../help-faqs/help-faqs';
 import { Navigation } from './navigation/navigation';
 import { Home } from '../home/home';
+import { Global } from '../global';
 
 @Injectable()
 export class StaticResourceService {
 
   name: any;
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient,
+    private global: Global) { }
 
   mapLocation: MapLocation;
   state: string;
@@ -27,7 +29,7 @@ export class StaticResourceService {
   loadStateName(): MapLocation {
     if (sessionStorage.getItem("globalMapLocation")) {
       this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
-      this.state = this.mapLocation.address;
+      this.state = this.global.state;
       return this.mapLocation;
     } else {
       return {state:"Default"}

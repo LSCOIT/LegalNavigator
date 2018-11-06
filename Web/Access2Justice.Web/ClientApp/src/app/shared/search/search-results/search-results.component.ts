@@ -160,6 +160,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     sessionStorage.removeItem("cacheSearchResults");
     sessionStorage.setItem("cacheSearchResults", JSON.stringify(this.searchResults));
     if (this.location) {
+      this.location = sessionStorage.setItem("localSearchMapLocation", JSON.stringify(this.location));
       sessionStorage.setItem("searchedLocationMap", JSON.stringify(this.location));
     }
   }
@@ -184,8 +185,8 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   }
 
   notifyLocationChange() {
-    if (sessionStorage.getItem("localSearchMapLocation")) {
-      this.location = JSON.parse(sessionStorage.getItem("localSearchMapLocation"));
+    if (sessionStorage.getItem("localMapLocation")) {
+      this.location = JSON.parse(sessionStorage.getItem("localMapLocation"));
     }
     this.subscription = this.mapService.notifyLocalLocation.subscribe((value) => {
       this.location = value;
@@ -251,8 +252,8 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   getInternalResource(filterName, pageNumber): void {
     this.checkResource(filterName, pageNumber);
     if (this.isServiceCall) {
-      if (sessionStorage.getItem("localSearchMapLocation")) {
-        this.resourceFilter.Location = JSON.parse(sessionStorage.getItem("localSearchMapLocation"));
+      if (sessionStorage.getItem("localMapLocation")) {
+        this.resourceFilter.Location = JSON.parse(sessionStorage.getItem("localMapLocation"));
       }
       this.paginationService.getPagedResources(this.resourceFilter).subscribe(response => {
         this.searchResults = response;
@@ -397,7 +398,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   }
 
   ngOnDestroy() {
-    sessionStorage.removeItem("localSearchMapLocation");
+    sessionStorage.removeItem("localMapLocation");
     if (this.subscription != undefined) {
       this.subscription.unsubscribe();
     }
