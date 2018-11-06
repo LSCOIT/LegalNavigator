@@ -111,10 +111,10 @@ namespace Access2Justice.Shared.Models
         public string Overview { get; set; }
 
         [JsonProperty(PropertyName = "contents")]
-        public List<ArticleContents> Contents { get; set; }
+        public List<ArticleContent> Contents { get; set; }
     }
 
-    public class ArticleContents
+    public class ArticleContent
     {
         [JsonProperty(PropertyName = "headline")]
         public string Headline { get; set; }
