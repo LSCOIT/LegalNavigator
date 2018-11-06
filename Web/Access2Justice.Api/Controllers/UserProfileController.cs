@@ -11,6 +11,7 @@ using static Access2Justice.Api.Authorization.Permissions;
 namespace Access2Justice.Api.Controllers
 {	
     [Produces("application/json")]
+    [Route("api/user")]
     public class UserProfileController : Controller
     {
         private readonly IUserProfileBusinessLogic userProfileBusinessLogic;
@@ -31,7 +32,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="200">Get user resource and plan details for given id</response>
         /// <response code="500">Failure</response>
         [HttpPost]
-        [Route("api/user/get-user-profile")]
+        [Route("profile")]
         public async Task<IActionResult> GetUserDataAsync(string oid, string type)
         {
             var users = await userProfileBusinessLogic.GetUserResourceProfileDataAsync(oid, type);
@@ -49,7 +50,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="500">Failure</response>
         [Permission(PermissionName.getuserprofiledata)]
         [HttpGet]
-        [Route("api/user/get-user-profile-data/{oid}")]
+        [Route("profile/{oid}")]
         public async Task<IActionResult> GetUserProfileDataAsync(string oid)
         {
             UserProfile users = await userProfileBusinessLogic.GetUserProfileDataAsync(oid);
@@ -67,7 +68,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="500">Failure</response>
         [Permission(PermissionName.upsertuserpersonalizedplan)]
         [HttpPost]
-        [Route("api/user/upsert-user-personalized-plan")]
+        [Route("personalized-plan/upsert")]
         public async Task<IActionResult> UpsertUserPersonalizedPlanAsync([FromBody]ProfileResources profileResources)
         {
             var users = await userProfileBusinessLogic.UpsertUserSavedResourcesAsync(profileResources);
@@ -85,7 +86,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="404">Nor found</response>
         /// <response code="500">Failure</response>
         [HttpPost]
-        [Route("api/user/upsert-user-profile")]
+        [Route("profile/upsert")]
         public async Task<IActionResult> UpsertUserProfile([FromBody]UserProfile userProfile)
         {
             var users = await userProfileBusinessLogic.UpsertUserProfileAsync(userProfile);

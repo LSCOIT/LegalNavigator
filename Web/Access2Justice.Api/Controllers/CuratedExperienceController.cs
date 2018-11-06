@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Access2Justice.Api.Controllers
 {
-    [Route("api/curated-experience")]
+    [Route("api/curated-experiences")]
     public class CuratedExperienceController : Controller
     {
         private readonly ICuratedExperienceConvertor a2jAuthorBuisnessLogic;
@@ -76,7 +76,7 @@ namespace Access2Justice.Api.Controllers
         /// <param name="component"></param>
         /// <response code="200">Returns next component for curated experience </response>
         /// <response code="500">Failure</response>
-        [HttpPost("component/save-and-get-next")]
+        [HttpPost("components/save-and-get-next")]
         public async Task<IActionResult> SaveAndGetNextComponent([FromBody] CuratedExperienceAnswersViewModel component)
         {
             var curatedExperience = sessionManager.RetrieveCachedCuratedExperience(component.CuratedExperienceId, HttpContext);
@@ -99,7 +99,7 @@ namespace Access2Justice.Api.Controllers
         /// <param name="componentId"></param>
         /// <response code="200">Returns specific component for curated experience </response>
         /// <response code="500">Failure</response>
-        [HttpGet("component")]
+        [HttpGet("components")]
         public IActionResult GetSpecificComponent([FromQuery] Guid curatedExperienceId, [FromQuery] Guid componentId)
         {
             var component = curatedExperienceBusinessLogic.GetComponent(sessionManager.RetrieveCachedCuratedExperience(curatedExperienceId, HttpContext), componentId);

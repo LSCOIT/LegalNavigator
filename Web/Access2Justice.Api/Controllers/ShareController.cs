@@ -30,7 +30,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="500">Failure</response>
         /// <response code="412">Precondtion fails</response>
         [Permission(PermissionName.generatepermalink)]
-        [HttpPost("generate-permalink")]
+        [HttpPost("permalink/generate")]
         public async Task<IActionResult> ShareAsync([FromBody] ShareInput shareInput)
         {
             if (shareInput != null)
@@ -52,7 +52,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="500">Failure</response>
         /// <response code="412">Precondtion fails</response>
         [Permission(PermissionName.checkpermalink)]
-        [HttpPost("check-permalink")]
+        [HttpPost("permalink/check")]
         public async Task<IActionResult> CheckDataAsync([FromBody] ShareInput shareInput)
         {
             if (shareInput != null)
@@ -74,7 +74,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="500">Failure</response>
         /// <response code="412">Precondtion fails</response>
         [Permission(PermissionName.removepermalink)]
-        [HttpPost("remove-permalink")]
+        [HttpPost("permalink/remove")]
         public async Task<IActionResult> UnshareAsync([FromBody] ShareInput unShareInput)
         {
             if (unShareInput != null)
@@ -95,7 +95,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="200">Get permalink for given input</response>
         /// <response code="500">Failure</response>
         /// <response code="412">Precondtion fails</response>        
-        [HttpGet("get-permalink-resource")]
+        [HttpGet("permalink/resource")]
         public async Task<IActionResult> PermaLinkAsync([FromQuery] string permaLink)
         {
             if (permaLink != null)
