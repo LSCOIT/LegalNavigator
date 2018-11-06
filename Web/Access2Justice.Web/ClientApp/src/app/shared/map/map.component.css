@@ -2,6 +2,14 @@ p {
   margin-bottom: 0;
 }
 
+.pxs {
+  font-size: 12px;
+}
+
+p.pxs {
+  margin-top: 10px
+}
+
 .row {
   margin: 5px auto;
 }
@@ -48,9 +56,9 @@ p {
 
 #search-box {
   height: 40px;
-  width: 45%;
+  width: 75%;
   float: left;
-  margin-left: 22%;
+  margin-left: 6%;
 }
 
 .search-btn {
@@ -106,6 +114,11 @@ p {
 @media only screen and (min-width : 768px) {
   .edit-location {
     padding: 15px 10px;
+  }
+
+  .search-box {
+    width: 45%;
+    margin-left: 22%;
   }
 }
 
