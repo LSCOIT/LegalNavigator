@@ -163,6 +163,7 @@ namespace Access2Justice.Shared.Models
         public string BusinessHours { get; set; }
     }
 
+
     public class OrganizationReviewer
     {
         [JsonProperty(PropertyName = "reviewerFullName")]
