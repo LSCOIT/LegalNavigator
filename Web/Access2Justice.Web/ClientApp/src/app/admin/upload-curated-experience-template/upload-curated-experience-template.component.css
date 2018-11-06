@@ -7,3 +7,7 @@
   display: block;
   color: green;
 }
+
+.required-star{
+  color:red;
+}

@@ -10,6 +10,7 @@ import { AboutAdminComponent } from './about/about-admin.component';
 import { AdminAuthGuard } from './admin-auth/admin-auth.guard';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { UploadCuratedExperienceTemplateComponent } from './upload-curated-experience-template/upload-curated-experience-template.component';
+import { CuratedExperienceAuthGuard } from './curated-experience-auth/curated-experience-auth.guard';
 
 @NgModule({
   imports: [
@@ -33,7 +34,8 @@ import { UploadCuratedExperienceTemplateComponent } from './upload-curated-exper
   ],
   providers: [
     AdminService,
-    AdminAuthGuard
+    AdminAuthGuard,
+    CuratedExperienceAuthGuard
   ]
 })
 export class AdminModule { }

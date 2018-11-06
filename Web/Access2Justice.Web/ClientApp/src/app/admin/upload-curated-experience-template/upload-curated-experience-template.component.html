@@ -4,16 +4,16 @@
       <p>Upload curated experience template file using this form:</p>
     </div>
     <div class="form-group">
-      <label>Name: </label>
-      <input type="text" class="form-control" name="name" placeholder="name" [ngModel] />
+      <label>Name<span class="required-star">*</span>: </label>
+      <input type="text" class="form-control" name="name" placeholder="name" required [ngModel] />
     </div>
     <div class="form-group">
-      <label>Description: </label>
-      <input type="text" multiple class="form-control" placeholder="description" name="description" [ngModel] />
+      <label>Description<span class="required-star">*</span>: </label>
+      <input type="text" multiple class="form-control" placeholder="description" name="description" required [ngModel] />
     </div>
     <div class="form-group">
-      <label>Select Template: </label>
-      <input #file type="file" class="form-control" name="file" [ngModel] />
+      <label>Select Template<span class="required-star">*</span>: </label>
+      <input #file type="file" class="form-control" name="file" required [ngModel] />
     </div>
     <div class="form-group">
       <span class="validation-success">{{successMessage}}</span>
