@@ -3,6 +3,7 @@ body {
   position: relative !important;
   top: 40px !important;
   min-height: 83% !important;
+  word-wrap: break-word;
 }
 
 li {
