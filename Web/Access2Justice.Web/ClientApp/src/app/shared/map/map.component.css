@@ -1,3 +1,7 @@
+input:focus {
+  outline: none;
+}
+
 p {
   margin-bottom: 0;
   font-weight: 400;
