@@ -143,6 +143,10 @@ p.ps {
   .nav-icon.mobile-margin {
     margin: 20px;
   }
+
+  .web-hidden {
+    display: none;
+  }
 }
 
 @media only screen and (min-width : 768px) {
