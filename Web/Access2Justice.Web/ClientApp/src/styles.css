@@ -181,6 +181,13 @@ textarea {
   background-color: #0D3FBB;
 }
 
+#question-text a {
+  color: #0D3FB8;
+  font-weight: 600;
+  margin-left: 10px;
+  font-size: 21px;
+}
+
 /*Print & Download*/
 .print-only {
   display: none;
