@@ -1,12 +1,9 @@
 p {
   margin-bottom: 0;
+  font-weight: 400;
 }
 
-.pxs {
-  font-size: 12px;
-}
-
-p.pxs {
+p.ps {
   margin-top: 10px
 }
 
@@ -56,20 +53,23 @@ p.pxs {
 
 #search-box {
   height: 40px;
-  width: 75%;
+  width: 60%;
   float: left;
-  margin-left: 6%;
+  margin-left: 10%;
 }
 
 .search-btn {
   background-color: #0D3FB8;
-  padding: 3px;
+  padding: 5px;
   border-radius: 0 5px 5px 0;
   color: #fff;
   margin-left: -5px;
   font-weight: 600;
   float: left;
   height: 40px;
+  font-size: 12px;
+  width: 20%;
+  max-width: 70px;
 }
 
 .dimmer {
@@ -111,14 +111,25 @@ p.pxs {
   color: #ca3636;
 }
 
+@media only screen and (min-width : 540px) {
+  #search-box {
+    margin-left: 15%;
+    max-width: 300px;
+  }
+}
+
 @media only screen and (min-width : 768px) {
   .edit-location {
     padding: 15px 10px;
   }
 
-  .search-box {
-    width: 45%;
-    margin-left: 22%;
+  #search-box {
+    margin-left: 132px;
+  }
+
+  .search-btn {
+    padding: 10px;
+    font-size: 14px;
   }
 }
 
@@ -129,11 +140,6 @@ p.pxs {
 
   .mobile-hidden {
     display: inline-block;
-  }
-
-  #search-box {
-    width: 250px;
-    margin-left: 165px;
   }
 
   #my-map {

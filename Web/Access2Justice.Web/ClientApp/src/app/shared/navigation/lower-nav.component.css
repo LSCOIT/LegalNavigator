@@ -9,12 +9,12 @@ li > a:hover {
   box-shadow: 0 4px 10px 0 rgba(0,0,0,0.1);
   min-height: 75px;
   margin-bottom: 4px;
-  padding-top: 20px;
+  padding-top: 29px;
 }
 
 #logo {
   background-image: url('../../../assets/images/logo/one-word-logo.svg');
-  width: 255px;
+  width: 220px;
   height: 45px;
   background-repeat: no-repeat;
   float: left;
@@ -155,6 +155,10 @@ li.vertical-line {
   .lower-nav {
     min-height: 80px;
     padding-top: 25px;
+  }
+
+  #logo {
+    width: 255px;
   }
 
   #mobile-menu {

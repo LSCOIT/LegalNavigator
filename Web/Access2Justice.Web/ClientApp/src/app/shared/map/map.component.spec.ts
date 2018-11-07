@@ -18,6 +18,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 import { FormsModule } from '@angular/forms';
 import { environment } from '../../../environments/environment';
+import { EventUtilityService } from '../event-utility.service';
 
 class MockBsModalRef {
   public isHideCalled = false;
@@ -75,6 +76,7 @@ describe('MapComponent', () => {
         Global,
         { provide: MsalService, useValue: msalService },
         { provide: MapService, useValue: mapService },
+        EventUtilityService
       ]
     });
 
