@@ -65,6 +65,7 @@ export class MapComponent implements OnInit {
     this.isError = false;
     this.modalRef = this.modalService.show(template, this.config);
     this.mapService.getMap(this.mapType);
+    document.getElementById("search-box").focus();
   }
 
   geocode() {
@@ -115,6 +116,7 @@ export class MapComponent implements OnInit {
     this.displayLocationDetails(this.mapLocation);
     if ((this.modalRef && this.mapLocation) || !this.mapType) {
       this.modalRef.hide();
+      document.getElementById("change-location-button").focus();
     } else {
       this.isError = true;
     }
