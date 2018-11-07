@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Access2Justice.Shared.Models
+namespace Access2Justice.Shared.Models.Integration
 {
     public enum ConditionDataType
     {
