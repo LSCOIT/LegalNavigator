@@ -190,7 +190,7 @@ namespace Access2Justice.Api.BusinessLogic
             List<Conditions> conditions = new List<Conditions>();
             List<ParentTopicId> parentTopicIds = new List<ParentTopicId>();
             List<OrganizationReviewer> organizationReviewers = new List<OrganizationReviewer>();
-            List<ArticleContents> articleContents = new List<ArticleContents>();
+            List<ArticleContent> articleContents = new List<ArticleContent>();
             List<dynamic> references = new List<dynamic>();
             foreach (JProperty field in resourceObject)
             {
@@ -363,7 +363,7 @@ namespace Access2Justice.Api.BusinessLogic
 
         public dynamic GetContents(dynamic contentValues)
         {
-            List<ArticleContents> articleContents = new List<ArticleContents>();
+            List<ArticleContent> articleContents = new List<ArticleContent>();
             foreach (var contentDetails in contentValues)
             {
                 string headline = string.Empty, content = string.Empty;
@@ -378,7 +378,7 @@ namespace Access2Justice.Api.BusinessLogic
                         content = contentData.Value.ToString();
                     }
                 }
-                articleContents.Add(new ArticleContents { Headline = headline, Content = content });
+                articleContents.Add(new ArticleContent { Headline = headline, Content = content });
             }
             return articleContents;
         }
@@ -613,7 +613,7 @@ namespace Access2Justice.Api.BusinessLogic
             Article articles = new Article();
             List<TopicTag> topicTags = new List<TopicTag>();
             List<Location> locations = new List<Location>();
-            List<ArticleContents> articleContents = new List<ArticleContents>();
+            List<ArticleContent> articleContents = new List<ArticleContent>();
             dynamic references = GetReferences(resourceObject);
             topicTags = references[0];
             locations = references[1];

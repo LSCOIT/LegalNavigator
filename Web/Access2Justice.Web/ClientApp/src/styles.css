@@ -238,12 +238,6 @@ textarea {
     text-align: right;
   }
 
-  #signin-dropdown .dropdown-menu {
-    margin-top: -1px;
-    margin-left: 0;
-    text-align: right;
-  }
-
   #google_translate_element {
     left: 7.1%;
   }
