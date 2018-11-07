@@ -151,6 +151,17 @@ li.vertical-line {
   top: 21px;
 }
 
+#search-phrase-tab {
+  background-image: url('../../../assets/images/small-icons/search.svg');
+  background-repeat: no-repeat;
+  background-position: 0% 50%;
+  background-size: 22px 22px;
+  background-color: white;
+  width: 120px;
+  margin-top: 5px;
+  outline-offset: 21px;
+}
+
 @media only screen and (min-width : 768px) {
   .lower-nav {
     min-height: 80px;
@@ -221,15 +232,14 @@ li.vertical-line {
     display: none;
   }
 
-  .search-text {
+  /*.search-text {
     display: inline-block;
     font-size: 14px;
-  }
-
-  .search-icon {
+  }*/
+  /*.search-icon {
     margin-right: 10px;
     margin-bottom: 0;
-  }
+  }*/
 }
 
 @media only screen and (min-width : 1124px) {

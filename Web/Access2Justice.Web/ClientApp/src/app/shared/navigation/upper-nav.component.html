@@ -19,7 +19,6 @@
         </li>
         <li *ngIf="helpAndFAQ">
           <a id="faq-navigation-link" [routerLink]="['/' + helpAndFAQ?.button?.buttonLink]">
-            <img *ngIf="helpAndFAQ.image.source" class="nav-icon" [src]="blobUrl + helpAndFAQ?.image?.source" aria-hidden="true" />
             {{helpAndFAQ?.button?.buttonText}}
           </a>
         </li>

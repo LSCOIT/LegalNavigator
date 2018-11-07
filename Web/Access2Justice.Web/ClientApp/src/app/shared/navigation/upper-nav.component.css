@@ -58,7 +58,19 @@ li a img {
   background-image: url('../../../assets/images/small-icons/privacy.svg');
   background-repeat: no-repeat;
   background-position: 0% 50%;
-  padding-left: 25px;
+  background-size: 20px 20px;
+  padding-left: 28px;
+  padding-bottom: 2px;
+  outline-offset: 15px;
+  display: block;
+}
+
+#faq-navigation-link {
+  background-image: url('../../../assets/images/small-icons/faq.svg');
+  background-repeat: no-repeat;
+  background-position: 0% 50%;
+  background-size: 20px 20px;
+  padding-left: 28px;
   padding-bottom: 2px;
   outline-offset: 15px;
   display: block;
