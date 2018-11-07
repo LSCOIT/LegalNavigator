@@ -4,6 +4,7 @@ import { environment } from '../../../environments/environment';
 import { Global } from '../../global';
 import { MapService } from '../map/map.service';
 import { StaticResourceService } from '../../shared/static-resource.service';
+import { EventUtilityService } from '../event-utility.service';
 
 @Component({
   selector: 'app-lower-nav',
@@ -33,12 +34,17 @@ export class LowerNavComponent implements OnInit {
   subscription: any;
   staticContent: any;
   @ViewChild('sidenav') sidenav: ElementRef;
-  
+
   constructor(
     private staticResourceService: StaticResourceService,
     private mapService: MapService,
-    private global: Global
-  ) { }
+    private global: Global,
+    private eventUtilityService: EventUtilityService
+  ) {
+    eventUtilityService.upperNavClicked$.subscribe(response => {
+      this.closeNav();
+    });
+  }
 
   openNav() {
     let windowWidth = window.innerWidth;
