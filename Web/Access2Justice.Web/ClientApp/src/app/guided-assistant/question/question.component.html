@@ -1,5 +1,5 @@
 <div *ngIf="question" class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 text-center question">
-  <h4>{{question.text}}</h4>
+  <h4 id="question-text" [innerHTML]="question.text"></h4>
   <form #gaForm="ngForm" (ngSubmit)="onSubmit(gaForm)">
     <div *ngIf="question.fields">
       <div *ngFor="let field of question.fields">

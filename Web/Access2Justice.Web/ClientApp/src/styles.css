@@ -3,6 +3,7 @@ body {
   position: relative !important;
   top: 40px !important;
   min-height: 83% !important;
+  word-wrap: break-word;
 }
 
 li {
@@ -180,6 +181,13 @@ textarea {
   background-color: #0D3FBB;
 }
 
+#question-text a {
+  color: #0D3FB8;
+  font-weight: 600;
+  margin-left: 10px;
+  font-size: 21px;
+}
+
 /*Print & Download*/
 .print-only {
   display: none;
@@ -187,6 +195,26 @@ textarea {
 
 .MicrosoftMap .as_container_search {
   margin: 30px 6.5% !important;
+}
+
+.modal-dialog {
+  height: 1185px;
+  margin: 0;
+  background-color: #fff;
+}
+
+.modal-content {
+  height: auto;
+  border: none;
+}
+
+@media only screen and (min-width : 540px) {
+  .modal-dialog {
+    height: 570px;
+    margin: 0.75rem auto;
+    width: 540px;
+    max-width: 660px;
+  }
 }
 
 @media only screen and (min-width : 768px) {
@@ -211,6 +239,10 @@ textarea {
   .MicrosoftMap .as_container_search {
     margin: 30px 7.5% !important;
   }
+
+  .modal-dialog {
+    width: 660px;
+  }
 }
 @media only screen and (min-width : 992px) {
   .web-hidden {
@@ -222,12 +254,6 @@ textarea {
   }
 
   .user-action {
-    text-align: right;
-  }
-
-  #signin-dropdown .dropdown-menu {
-    margin-top: -1px;
-    margin-left: 0;
     text-align: right;
   }
 

@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { MapComponent } from './map.component';
 import { MapService } from './map.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { TemplateRef } from '@angular/core';
+import { TemplateRef, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ModalModule } from 'ngx-bootstrap';
 import { MapLocation } from './map';
 import { HttpClientModule } from '@angular/common/http';
@@ -18,6 +18,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 import { FormsModule } from '@angular/forms';
 import { environment } from '../../../environments/environment';
+import { EventUtilityService } from '../event-utility.service';
 
 class MockBsModalRef {
   public isHideCalled = false;
@@ -75,6 +76,10 @@ describe('MapComponent', () => {
         Global,
         { provide: MsalService, useValue: msalService },
         { provide: MapService, useValue: mapService },
+        EventUtilityService
+      ],
+      schemas: [
+        CUSTOM_ELEMENTS_SCHEMA
       ]
     });
 

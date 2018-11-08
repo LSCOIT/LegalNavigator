@@ -52,6 +52,11 @@ p, .p {
   line-height: 20px;
 }
 
+.pxs {
+  font-size: 12px;
+  line-height: 20px;
+}
+
 h1, h2, h3, h4, h5 {
   color: #0B2B78;
   font-family: Georgia, serif;
@@ -346,11 +351,6 @@ input[type=checkbox]:checked ~ .check::before {
   .ps {
     font-size: 14px;
     line-height: 22px;
-  }
-
-  .pxs {
-    font-size: 12px;
-    line-height: 20px;
   }
 
   .btn {
