@@ -49,7 +49,6 @@ ul.web-hidden {
 #mobile-menu {
   float: right;
   margin-top: -2px;
-  margin-left: 15px;
 }
 
 #nav-bar-toggle {
@@ -152,13 +151,8 @@ li.vertical-line {
 }
 
 #search-phrase-tab {
-  background-image: url('../../../assets/images/small-icons/search.svg');
-  background-repeat: no-repeat;
-  background-position: 0% 50%;
-  background-size: 22px 22px;
   background-color: white;
-  width: 120px;
-  margin-top: 5px;
+  margin-right: 6px;
   outline-offset: 21px;
 }
 
@@ -236,14 +230,14 @@ li.vertical-line {
     display: none;
   }
 
-  /*.search-text {
+  .search-text {
     display: inline-block;
     font-size: 14px;
-  }*/
-  /*.search-icon {
+  }
+  .search-icon {
     margin-right: 10px;
     margin-bottom: 0;
-  }*/
+  }
 }
 
 @media only screen and (min-width : 1124px) {

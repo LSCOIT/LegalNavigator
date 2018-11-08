@@ -13,7 +13,8 @@
     </div>
     <div class="right-menu">
       <button id="search-phrase-tab" class="search-form" (click)="toggleSearch()" *ngIf="!showSearch">
-        {{search?.button?.buttonText}}
+        <img *ngIf="search.image.source" class="search-icon" [src]="blobUrl + search?.image?.source" aria-hidden="true" />
+        <span class="inline search-text">{{search?.button?.buttonText}}</span>
       </button>
       <div id="mobile-menu">
         <img src="./assets/images/small-icons/menu_bars.svg" class="web-hidden" id="nav-bar-toggle" *ngIf="showMenu" (click)="openNav()">
