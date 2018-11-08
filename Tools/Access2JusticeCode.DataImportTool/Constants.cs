@@ -2,14 +2,22 @@
 {
     public static class Constants
     {
-        public const string FormsResourceType = "Forms";
+        public const string FormResourceType = "Forms";
         public const string OrganizationResourceType = "Organizations";
         public const string ArticleResourceType = "Articles";
         public const string VideoResourceType = "Videos";
         public const string EssentialReadingResourceType = "Essential Readings";
-        public const string OrganizationReviews = "OrganizationReviews (Optional)";
-        public const string ArticleContents = "Article Sections";
+        public const string OrganizationReview = "OrganizationReviews (Optional)";
+        public const string ArticleContent = "Article Sections";
         public const string RelatedLinkResourceType = "Related Links";
+        public const string FormSheetName = "Forms";
+        public const string OrganizationSheetName = "Organizations";
+        public const string ArticleSheetName = "Articles";
+        public const string VideoSheetName = "Videos";
+        public const string EssentialReadingSheetName = "EssentialReadings & QuickLinks";
+        public const string OrganizationReviewSheetName = "OrganizationReviews (Optional)";
+        public const string ArticleSectionSheetName = "Article Sections";
+        public const string RelatedLinkSheetName = "Related Links";
         public const string Admin = "Admin Import tool";
     }
 }

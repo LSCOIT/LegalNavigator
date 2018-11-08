@@ -4,6 +4,7 @@ import { StaticResourceService } from '../../shared/static-resource.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Global } from '../../global';
 import { MapService } from '../map/map.service';
+import { EventUtilityService } from '../event-utility.service';
 
 describe('LowerNavComponent', () => {
   let component: LowerNavComponent;
@@ -25,7 +26,7 @@ describe('LowerNavComponent', () => {
       location: [
         { state: "Default" }
       ]
-    }]
+    }];
     mockStaticResourceService = jasmine.createSpyObj(['getLocation', 'getStaticContents']);
     mockGlobal = jasmine.createSpyObj(['getData']);
     mockGlobal.getData.and.returnValue(globalData);
@@ -35,7 +36,8 @@ describe('LowerNavComponent', () => {
       providers: [ 
         { provide: StaticResourceService, useValue: mockStaticResourceService },
         { provide: Global, useValue: mockGlobal },
-        MapService
+        MapService,
+        EventUtilityService
       ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })

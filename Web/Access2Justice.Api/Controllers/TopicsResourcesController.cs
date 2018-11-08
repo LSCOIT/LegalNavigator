@@ -333,7 +333,7 @@ namespace Access2Justice.Api.Controllers
         /// <param name="resource"></param>
         /// <response code="200">Returns created resources </response>
         /// <response code="500">Failure</response>
-        //[Permission(PermissionName.upsertresourcedocument)]
+        [Permission(PermissionName.upsertresourcedocument)]
         [HttpPost]
         [Route("api/upsert-resource-document")]
         public async Task<IActionResult> UpsertResourceDocument([FromBody]dynamic resource)
@@ -370,7 +370,7 @@ namespace Access2Justice.Api.Controllers
         /// <param name="topic"></param>
         /// <response code="200">Returns created topic document</response>
         /// <response code="500">Failure</response>
-        //[Permission(PermissionName.upserttopicdocument)]
+        [Permission(PermissionName.upserttopicdocument)]
         [HttpPost]
         [Route("api/upsert-topic-document")]
         public async Task<IActionResult> UpsertTopicDocument([FromBody]dynamic topic)

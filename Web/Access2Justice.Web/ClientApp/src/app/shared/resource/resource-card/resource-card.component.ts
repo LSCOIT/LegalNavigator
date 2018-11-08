@@ -21,8 +21,8 @@ export class ResourceCardComponent implements OnInit {
     'Forms',
     'Guided Assistant',
     'Organizations',
-    'Videos',
     'Topics',
+    'Videos',
     'WebResources'
     ];
 

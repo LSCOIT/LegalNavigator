@@ -34,7 +34,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="200">Returns parsed user answers</response>
         /// <response code="500">Failure</response>
         [HttpPost("parser-test")]
-        public async Task<IActionResult> TestA2JAuthorLogicParser([FromBody] CuratedExperienceAnswers userAnswers)
+        public IActionResult TestA2JAuthorLogicParser([FromBody] CuratedExperienceAnswers userAnswers)
         {
             // Todo:@Alaa remove this endpoint, added it just to test the parser duing development
             return Ok(new LogicParser(new LogicInterpreter()).Parse(userAnswers));
