@@ -215,10 +215,6 @@ textarea {
     width: 540px;
     max-width: 660px;
   }
-
-  .web-hidden {
-    display: none;
-  }
 }
 
 @media only screen and (min-width : 768px) {
