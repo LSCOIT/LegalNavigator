@@ -10,6 +10,6 @@ namespace Access2Justice.Api.Interfaces
     {
         Task<PersonalizedPlanViewModel> GeneratePersonalizedPlanAsync(CuratedExperience curatedExperience, Guid answersDocId);
         Task<PersonalizedPlanViewModel> GetPersonalizedPlanAsync(Guid personalizedPlanId);
-        Task<Document> UpsertPersonalizedPlanAsync(PersonalizedPlanViewModel personalizedPlan, string oId);
+        Task<Document> UpsertPersonalizedPlanAsync(UserPlanModel userPlanModel);
     }
 }

@@ -106,5 +106,9 @@ namespace Access2Justice.Api.ViewModels
 
 		[JsonProperty(PropertyName = "oId")]
 		public string UserId { get; set; }
-	}
+
+
+        [JsonProperty(PropertyName = "saveActionPlan")]
+        public bool saveActionPlan { get; set; } = false;
+    }
 }

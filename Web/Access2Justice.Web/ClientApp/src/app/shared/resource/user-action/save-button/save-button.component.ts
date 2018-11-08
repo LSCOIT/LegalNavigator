@@ -1,17 +1,12 @@
-import { Component, OnInit, Input, TemplateRef, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { SavedResources, PersonalizedPlan, PlanTopic, PlanStep } from '../../../../guided-assistant/personalized-plan/personalized-plan';
-import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
-import { Subject } from 'rxjs';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap';
-import { api } from '../../../../../api/api';
-import { HttpParams } from '@angular/common/http';
-import { ActionPlansComponent } from '../../resource-type/action-plan/action-plans.component';
+import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { MsalService } from '@azure/msal-angular';
-import { Global } from '../../../../global';
 import { environment } from '../../../../../environments/environment';
-import { SaveButtonService } from './save-button.service';
+import { Global } from '../../../../global';
+import { SavedResources } from '../../../../guided-assistant/personalized-plan/personalized-plan';
+import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
 import { NavigateDataService } from '../../../navigate-data.service';
+import { SaveButtonService } from './save-button.service';
 
 @Component({
   selector: 'app-save-button',
@@ -39,7 +34,8 @@ export class SaveButtonComponent implements OnInit {
     private msalService: MsalService,
     private global: Global,
     private saveButtonService: SaveButtonService,
-    private navigateDataService: NavigateDataService) {
+    private navigateDataService: NavigateDataService,
+    private router: Router) {
   }
 
   externalLogin() {
@@ -55,17 +51,33 @@ export class SaveButtonComponent implements OnInit {
   }
 
   savePlanResourcesPreLogin() {
-    if (this.type === "Plan") {
+    if (this.router.url.indexOf("/plan") !== -1) {
       sessionStorage.setItem(this.global.planSessionKey, JSON.stringify(this.navigateDataService.getData()));
-      this.personalizedPlanService.showSuccess("Plan Added to Session");
+      this.savePersonalizationPlan();
     } else {
       this.savedResources = { itemId: this.id, resourceType: this.type, resourceDetails: this.resourceDetails };
       this.personalizedPlanService.saveBookmarkedResource(this.savedResources);
     }
   }
 
+  savePersonalizationPlan() {
+    if (this.router.url.indexOf("/plan") !== -1) {
+      const params = {
+        "personalizedPlan": this.navigateDataService.getData(),
+        "oId": this.global.userId,
+        "saveActionPlan": true
+      }
+      this.personalizedPlanService.userPlan(params)
+        .subscribe(response => {
+          if (response) {
+            this.personalizedPlanService.showSuccess("Plan Added to Session");
+          }
+        });
+    }
+  }
+
   savePlanResourcesPostLogin() {
-    if (this.type === "Plan") {
+    if (this.router.url.indexOf("/plan") !== -1) {
       //this.planId = this.id;
       //let generatedPersonalizedPlan = this.navigateDataService.getData();
       //if (generatedPersonalizedPlan != undefined) {
@@ -74,7 +86,7 @@ export class SaveButtonComponent implements OnInit {
       //  this.topicsList = this.personalizedPlanService.createTopicsList(this.topics);
       //  this.planDetails = this.personalizedPlanService.getPlanDetails(this.topics, this.planDetailTags);
       //}
-      this.saveButtonService.savePlanToUserProfile(this.id);
+      this.saveButtonService.savePlanToUserProfile(this.navigateDataService.getData());
       //this.saveButtonService.getPlan(this.planId);
     } else {
       this.savedResources = { itemId: this.id, resourceType: this.type, resourceDetails: this.resourceDetails };

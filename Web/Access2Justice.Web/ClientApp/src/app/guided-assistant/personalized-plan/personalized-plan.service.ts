@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { Resources, PersonalizedPlanTopic, PersonalizedPlan, ProfileResources, SavedResources, UserPlan } from './personalized-plan';
-import { api } from '../../../api/api';
-import { IResourceFilter } from '../../shared/search/search-results/search-results.model';
-import { ArrayUtilityService } from '../../shared/array-utility.service';
+import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs/Observable';
+import { api } from '../../../api/api';
 import { Global } from "../../global";
+import { ArrayUtilityService } from '../../shared/array-utility.service';
+import { IResourceFilter } from '../../shared/search/search-results/search-results.model';
+import { PersonalizedPlan, PersonalizedPlanTopic, ProfileResources, Resources, SavedResources, UserPlan } from './personalized-plan';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -39,7 +39,9 @@ export class PersonalizedPlanService {
               private global: Global) { }
   
   getActionPlanConditions(planId): Observable<any> {
-    return this.http.get<any>(api.planUrl, planId);
+    let params = new HttpParams()
+      .set("personalizedPlanId", planId);
+    return this.http.get<any>(api.planUrl + '?' + params, httpOptions);
   }
 
   getUserSavedResources(params): Observable<any> {

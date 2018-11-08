@@ -1,15 +1,14 @@
-import { Component, OnInit, TemplateRef, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MsalService } from '@azure/msal-angular';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
-import { ArrayUtilityService } from '../../../array-utility.service';
-import { api } from '../../../../../api/api';
-import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../../environments/environment';
+import { Global, UserStatus } from '../../../../global';
+import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
+import { NavigateDataService } from '../../../navigate-data.service';
 import { Share } from '../share-button/share.model';
 import { ShareService } from '../share-button/share.service';
-import { ActivatedRoute } from '@angular/router';
-import { Global, UserStatus } from '../../../../global';
-import { MsalService } from '@azure/msal-angular';
-import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-share-button',
@@ -36,12 +35,14 @@ export class ShareButtonComponent implements OnInit {
   @Input() addLinkClass: boolean = false;
 
   constructor(private modalService: BsModalService,
-    private arrayUtilityService: ArrayUtilityService,
-    private httpClient: HttpClient,
     private shareService: ShareService,
     private activeRoute: ActivatedRoute,
     public global: Global,
-    private msalService: MsalService) {    
+    private msalService: MsalService,
+    private navigateDataService: NavigateDataService,
+    private router: Router,
+    private personalizedPlanService: PersonalizedPlanService
+  ) {
     if (global.role === UserStatus.Shared && location.pathname.indexOf(global.shareRouteUrl) >= 0) {
       global.showShare = false;
     }
@@ -50,8 +51,9 @@ export class ShareButtonComponent implements OnInit {
     }
   }
 
-  openModal(template: TemplateRef<any>) {    
+  openModal(template: TemplateRef<any>) {
     if (!this.global.userId) {
+      this.savePersonalizationPlan();
       sessionStorage.setItem(this.sessionKey, "true");
       this.externalLogin();
     } else {
@@ -78,7 +80,24 @@ export class ShareButtonComponent implements OnInit {
       });
   }
 
+  savePersonalizationPlan() {
+    if (this.router.url.indexOf("/plan") !== -1) {
+      const params = {
+        "personalizedPlan": this.navigateDataService.getData(),
+        "oId": this.global.userId,
+        "saveActionPlan": true
+      }
+      this.personalizedPlanService.userPlan(params)
+        .subscribe(response => {
+          if (response) {
+            this.personalizedPlanService.showSuccess("Plan Added to Session");
+          }
+        });
+    }
+  }
+
   generateLink() {
+
     this.buildParams();
     this.shareService.generateLink(this.shareInput)
       .subscribe(response => {

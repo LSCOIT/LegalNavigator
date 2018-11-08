@@ -97,14 +97,14 @@ namespace Access2Justice.Api.Controllers
         /// <remarks>
         /// Use to insert/update a personalized plan
         /// </remarks>
-        /// <param name="userPlan"></param>
+        ///<param name="userPlanModel"></param>
         /// <response code="200">Returns the updated personalized plan </response>
         /// <response code="500">Failure</response>      
         //[Permission(PermissionName.updateplan)]
         [HttpPost("save")]
-        public async Task<IActionResult> SavePersonalizedPlanAsync([FromBody] UserPlanModel personalizedPlan)
+        public async Task<IActionResult> SavePersonalizedPlanAsync([FromBody] UserPlanModel userPlanModel)
         {
-            var newPlan = await personalizedPlanBusinessLogic.UpsertPersonalizedPlanAsync(personalizedPlan.PersonalizedPlan, personalizedPlan.UserId);
+            var newPlan = await personalizedPlanBusinessLogic.UpsertPersonalizedPlanAsync(userPlanModel);
             if (newPlan == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
