@@ -242,6 +242,10 @@ namespace Access2Justice.Shared.Models
             Location = new List<Location>();
         }
 
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 

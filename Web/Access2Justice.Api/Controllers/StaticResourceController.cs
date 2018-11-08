@@ -44,18 +44,17 @@ namespace Access2Justice.Api.Controllers
         /// <remarks>
         /// Helps to get home page static contents inserted or updated
         /// </remarks>
-        /// <param name="homePageContent"></param>
-        /// <param name="location"></param>
+        /// <param name="homePageContent"></param>        
         /// <response code="200">Get home page static contents inserted or updated</response>
         /// <response code="500">Failure</response>
         [Permission(PermissionName.upsertstatichomepage)]
         [HttpPost]
         [Route("api/static-resource/upsert-static-home-page")]
-        public async Task<IActionResult> UpsertStaticHomePageDataAsync([FromBody]HomeContent homePageContent, Location location)
+        public async Task<IActionResult> UpsertStaticHomePageDataAsync([FromBody]HomeContent homePageContent)
         {
             if (await userRoleBusinessLogic.ValidateOrganizationalUnit(homePageContent.OrganizationalUnit))
             {
-                var contents = await staticResourceBusinessLogic.UpsertStaticHomePageDataAsync(homePageContent, location);
+                var contents = await staticResourceBusinessLogic.UpsertStaticHomePageDataAsync(homePageContent);
                 return Ok(contents);
             }
             return StatusCode(403);
@@ -89,18 +88,17 @@ namespace Access2Justice.Api.Controllers
         /// <remarks>
         /// Helps to get helpAndFAQ page static contents inserted or updated
         /// </remarks>
-        /// <param name="helpAndFAQPageContent"></param>
-        /// <param name="location"></param>
+        /// <param name="helpAndFAQPageContent"></param>        
         /// <response code="200">Get helpAndFAQ page static contents inserted or updated</response>
         /// <response code="500">Failure</response>
         [Permission(PermissionName.upsertstatichelpandfaqpage)]
         [HttpPost]
         [Route("api/static-resource/upsert-static-help-and-faq-page")]
-        public async Task<IActionResult> UpsertStaticHelpAndFAQPageDataAsync(HelpAndFaqsContent helpAndFAQPageContent, Location location)
+        public async Task<IActionResult> UpsertStaticHelpAndFAQPageDataAsync([FromBody]HelpAndFaqsContent helpAndFAQPageContent)
         {
             if (await userRoleBusinessLogic.ValidateOrganizationalUnit(helpAndFAQPageContent.OrganizationalUnit))
             {
-                var contents = await staticResourceBusinessLogic.UpsertStaticHelpAndFAQPageDataAsync(helpAndFAQPageContent, location);
+                var contents = await staticResourceBusinessLogic.UpsertStaticHelpAndFAQPageDataAsync(helpAndFAQPageContent);
                 return Ok(contents);
             }
             return StatusCode(403);
@@ -113,18 +111,17 @@ namespace Access2Justice.Api.Controllers
         /// <remarks>
         /// Helps to get navigation page static contents inserted or updated
         /// </remarks>
-        /// <param name="navigationContent"></param>
-        /// <param name="location"></param>
+        /// <param name="navigationContent"></param>        
         /// <response code="200">Get navigation page static contents inserted or updated</response>
         /// <response code="500">Failure</response>
         [Permission(PermissionName.upsertstaticnavigation)]
         [HttpPost]
         [Route("api/static-resource/upsert-static-navigation")]
-        public async Task<IActionResult> UpsertStaticNavigationDataAsync([FromBody]Navigation navigationContent, Location location)
+        public async Task<IActionResult> UpsertStaticNavigationDataAsync([FromBody]Navigation navigationContent)
         {
             if (await userRoleBusinessLogic.ValidateOrganizationalUnit(navigationContent.OrganizationalUnit))
             {
-                var contents = await staticResourceBusinessLogic.UpsertStaticNavigationDataAsync(navigationContent, location);
+                var contents = await staticResourceBusinessLogic.UpsertStaticNavigationDataAsync(navigationContent);
                 return Ok(contents);
             }
             return StatusCode(403);
@@ -136,18 +133,17 @@ namespace Access2Justice.Api.Controllers
         /// <remarks>
         /// Helps to get about page static contents inserted or updated
         /// </remarks>
-        /// <param name="aboutContent"></param>
-        /// <param name="location"></param>
+        /// <param name="aboutContent"></param>        
         /// <response code="200">Get about page static contents inserted or updated</response>
         /// <response code="500">Failure</response>
         [Permission(PermissionName.upsertstaticaboutpage)]
         [HttpPost]
         [Route("api/static-resource/upsert-static-about-page")]
-        public async Task<IActionResult> UpsertStaticAboutPageDataAsync([FromBody]AboutContent aboutContent, Location location)
+        public async Task<IActionResult> UpsertStaticAboutPageDataAsync([FromBody]AboutContent aboutContent)
         {
             if (await userRoleBusinessLogic.ValidateOrganizationalUnit(aboutContent.OrganizationalUnit))
             {
-                var contents = await staticResourceBusinessLogic.UpsertStaticAboutPageDataAsync(aboutContent, location);
+                var contents = await staticResourceBusinessLogic.UpsertStaticAboutPageDataAsync(aboutContent);
                 return Ok(contents);
             }
             return StatusCode(403);

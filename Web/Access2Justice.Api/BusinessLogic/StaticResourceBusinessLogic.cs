@@ -34,20 +34,20 @@ namespace Access2Justice.Api.BusinessLogic
             return result.Count > 0 ? result : await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourcesCollectionId, Constants.Name, location);
         }
 
-        public async Task<dynamic> UpsertStaticHomePageDataAsync(HomeContent homePageContent, Location location)
+        public async Task<dynamic> UpsertStaticHomePageDataAsync(HomeContent homePageContent)
         {
-            var serializedResult = JsonConvert.SerializeObject(homePageContent);
-            var pageDocument = JsonConvert.DeserializeObject(serializedResult);
-            string name = homePageContent.Name;
             dynamic result = null;
-            var pageDBData = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourcesCollectionId, Constants.Name, name, location);
+            var pageDBData = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourcesCollectionId, Constants.Name, homePageContent.Name, homePageContent.Location.FirstOrDefault());
             if (pageDBData.Count == 0)
             {
+                var pageDocument = JsonUtilities.DeserializeDynamicObject<object>(homePageContent);
                 result = await dbService.CreateItemAsync(pageDocument, dbSettings.StaticResourcesCollectionId);
             }
             else
             {
                 string id = pageDBData[0].id;
+                homePageContent.Id = id;
+                var pageDocument = JsonUtilities.DeserializeDynamicObject<object>(homePageContent);
                 result = await dbService.UpdateItemAsync(id, pageDocument, dbSettings.StaticResourcesCollectionId);
             }
             return result;
@@ -72,58 +72,58 @@ namespace Access2Justice.Api.BusinessLogic
             return result;
         }
 
-        public async Task<dynamic> UpsertStaticHelpAndFAQPageDataAsync(HelpAndFaqsContent helpAndFAQPageContent, Location location)
+        public async Task<dynamic> UpsertStaticHelpAndFAQPageDataAsync(HelpAndFaqsContent helpAndFAQPageContent)
         {
-            var serializedResult = JsonConvert.SerializeObject(helpAndFAQPageContent);
-            var pageDocument = JsonConvert.DeserializeObject(serializedResult);
-            string name = helpAndFAQPageContent.Name;
             dynamic result = null;
-            var pageDBData = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourcesCollectionId, Constants.Name, name, location);
+            var pageDBData = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourcesCollectionId, Constants.Name, helpAndFAQPageContent.Name, helpAndFAQPageContent.Location.FirstOrDefault());
             if (pageDBData.Count == 0)
             {
+                var pageDocument = JsonUtilities.DeserializeDynamicObject<object>(helpAndFAQPageContent);
                 result = await dbService.CreateItemAsync(pageDocument, dbSettings.StaticResourcesCollectionId);
             }
             else
             {
                 string id = pageDBData[0].id;
+                helpAndFAQPageContent.Id = id;
+                var pageDocument = JsonUtilities.DeserializeDynamicObject<object>(helpAndFAQPageContent);
                 result = await dbService.UpdateItemAsync(id, pageDocument, dbSettings.StaticResourcesCollectionId);
             }
             return result;
         }
 
-        public async Task<dynamic> UpsertStaticNavigationDataAsync(Navigation navigationContent, Location location)
+        public async Task<dynamic> UpsertStaticNavigationDataAsync(Navigation navigationContent)
         {
-            var serializedResult = JsonConvert.SerializeObject(navigationContent);
-            var pageDocument = JsonConvert.DeserializeObject(serializedResult);
-            string name = navigationContent.Name;
             dynamic result = null;
-            var pageDBData = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourcesCollectionId, Constants.Name, name, location);
+            var pageDBData = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourcesCollectionId, Constants.Name, navigationContent.Name, navigationContent.Location.FirstOrDefault());
             if (pageDBData.Count == 0)
             {
+                var pageDocument = JsonUtilities.DeserializeDynamicObject<object>(navigationContent);
                 result = await dbService.CreateItemAsync(pageDocument, dbSettings.StaticResourcesCollectionId);
             }
             else
             {
                 string id = pageDBData[0].id;
+                navigationContent.Id = id;
+                var pageDocument = JsonUtilities.DeserializeDynamicObject<object>(navigationContent);
                 result = await dbService.UpdateItemAsync(id, pageDocument, dbSettings.StaticResourcesCollectionId);
             }
             return result;
         }
 
-        public async Task<dynamic> UpsertStaticAboutPageDataAsync(AboutContent aboutPageContent, Location location)
+        public async Task<dynamic> UpsertStaticAboutPageDataAsync(AboutContent aboutPageContent)
         {
-            var serializedResult = JsonConvert.SerializeObject(aboutPageContent);
-            var pageDocument = JsonConvert.DeserializeObject(serializedResult);
-            string name = aboutPageContent.Name;
             dynamic result = null;
-            var pageDBData = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourcesCollectionId, Constants.Name, name, location);
+            var pageDBData = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourcesCollectionId, Constants.Name, aboutPageContent.Name, aboutPageContent.Location.FirstOrDefault());
             if (pageDBData.Count == 0)
             {
+                var pageDocument = JsonUtilities.DeserializeDynamicObject<object>(aboutPageContent);
                 result = await dbService.CreateItemAsync(pageDocument, dbSettings.StaticResourcesCollectionId);
             }
             else
             {
                 string id = pageDBData[0].id;
+                aboutPageContent.Id = id;
+                var pageDocument = JsonUtilities.DeserializeDynamicObject<object>(aboutPageContent);
                 result = await dbService.UpdateItemAsync(id, pageDocument, dbSettings.StaticResourcesCollectionId);
             }
             return result;
