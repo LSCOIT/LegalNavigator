@@ -3,6 +3,7 @@ body {
   position: relative !important;
   top: 40px !important;
   min-height: 83% !important;
+  word-wrap: break-word;
 }
 
 li {
@@ -180,6 +181,13 @@ textarea {
   background-color: #0D3FBB;
 }
 
+#question-text a {
+  color: #0D3FB8;
+  font-weight: 600;
+  margin-left: 10px;
+  font-size: 21px;
+}
+
 /*Print & Download*/
 .print-only {
   display: none;
@@ -200,6 +208,26 @@ textarea {
 
 .js-focus-visible .focus-visible {
   outline: 2px solid #0D3FB8;
+}
+
+.modal-dialog {
+  height: 1185px;
+  margin: 0;
+  background-color: #fff;
+}
+
+.modal-content {
+  height: auto;
+  border: none;
+}
+
+@media only screen and (min-width : 540px) {
+  .modal-dialog {
+    height: 570px;
+    margin: 0.75rem auto;
+    width: 540px;
+    max-width: 660px;
+  }
 }
 
 @media only screen and (min-width : 768px) {
@@ -223,6 +251,10 @@ textarea {
 
   .MicrosoftMap .as_container_search {
     margin: 30px 7.5% !important;
+  }
+
+  .modal-dialog {
+    width: 660px;
   }
 }
 @media only screen and (min-width : 992px) {

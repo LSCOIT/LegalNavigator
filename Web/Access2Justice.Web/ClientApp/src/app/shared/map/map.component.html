@@ -12,12 +12,12 @@
 <ng-template #template>
   <form #mapForm="ngForm" (ngSubmit)="hideSearchPrediction()">
     <div class="modal-body text-center container-fluid">
-      <img *ngIf="!locationInputRequired" type="button" class="nav-icon pull-right" src="./assets/images/small-icons/close.svg" aria-label="Close" (click)="modalRef.hide()">
+      <img *ngIf="!locationInputRequired" type="button" class="nav-icon pull-right mobile-margin" src="./assets/images/small-icons/close.svg" aria-label="Close" (click)="modalRef.hide()">
       <div class="row">
         <img *ngIf="locationNavContent && locationNavContent.image.source" class="location-icon" [src]="blobUrl + locationNavContent?.image?.source" aria-hidden="true"/>
         <h4>Location</h4>
-        <p>We currently support Alaska and Hawaii</p>
-        <p class="pxs">
+        <p class="pl">We currently support Alaska and Hawaii</p>
+        <p class="ps">
           You can learn more about the states we support by visiting our
           <a [routerLink]="['/about']" class="link">About</a>
           page
@@ -41,7 +41,7 @@
         <div id="my-map"></div>
       </div>
       <div class="row">
-        <p class="privacy">
+        <p class="privacy ps mobile-margin">
           We promise to never share your location. View our
           <a class="link" [routerLink]="['/privacy']">Privacy Promise</a>
           .
@@ -52,4 +52,7 @@
       </div>
     </div>
   </form>
+  <div class="web-hidden" (click)="modalRef.hide()">
+    <app-footer></app-footer>
+  </div>
 </ng-template>

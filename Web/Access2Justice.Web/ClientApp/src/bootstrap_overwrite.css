@@ -353,16 +353,6 @@ span.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chev
   .carousel-indicators {
     bottom: -42px;
   }
-
-  .modal-dialog {
-    max-width: 660px;
-    height: 570px;
-    margin: 0.75rem auto;
-  }
-
-  .modal-content {
-    height: auto;
-  }
 }
 
 @media only screen and (min-width : 992px) {
