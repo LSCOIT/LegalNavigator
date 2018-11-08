@@ -154,8 +154,8 @@ namespace Access2Justice.CosmosDb
             }
             else
             {
-                arrayContainsWithAndClause += string.IsNullOrEmpty(arrayContainsWithAndClause) ? $" c.resourceType != '{Constants.GuidedAssistant}' OR (c.resourceType = '{Constants.GuidedAssistant}' AND c.isActive = true)"
-                    : $" AND c.resourceType != '{Constants.GuidedAssistant}' OR (c.resourceType = '{Constants.GuidedAssistant}' AND c.isActive = true)";
+                arrayContainsWithAndClause += string.IsNullOrEmpty(arrayContainsWithAndClause) ? $" (c.resourceType != '{Constants.GuidedAssistant}' OR (c.resourceType = '{Constants.GuidedAssistant}' AND c.isActive = true))"
+                    : $" AND (c.resourceType != '{Constants.GuidedAssistant}' OR (c.resourceType = '{Constants.GuidedAssistant}' AND c.isActive = true))";
             }
             string locationFilter = FindLocationWhereArrayContains(resourceFilter.Location);
             if (!string.IsNullOrEmpty(locationFilter))
