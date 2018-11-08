@@ -14,15 +14,6 @@ ul {
   border-right: none;
 }
 
-.topic-list a:hover {
-  text-decoration: none;
-  color: #333;
-}
-
-.topic-list:hover {
-  box-shadow: 0 0 5px 3px #ddd;
-}
-
 .topic-list a img {
   width: 90px;
   height: 70px;
@@ -33,6 +24,15 @@ ul {
   .topic-list {
     padding: 15px 20px;
     height: 235px;
+  }
+
+  .topic-list:hover {
+    box-shadow: 0 0 5px 3px #ddd;
+  }
+  
+  .topic-list a:hover {
+    text-decoration: none;
+    color: #333;
   }
 
   .topic-list a img {
@@ -73,7 +73,7 @@ ul {
   }
 
   .half-size-list a img {
-    margin-top: 20px;
+    margin: 40px auto 20px auto;
   }
 
   .half-size-list:nth-child(4n) {

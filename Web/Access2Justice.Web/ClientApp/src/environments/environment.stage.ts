@@ -10,13 +10,14 @@ export const environment = {
   blobUrl: 'https://cs4892808efec24x447cx944.blob.core.windows.net',
   virtualEarthUrl: 'https://dev.virtualearth.net/REST/v1/Locations/',
   All: 'All',
-  clientID: '15c4cbff-86ef-4c76-9b08-874ce0b55c8a',
+  clientID: 'e76e78e9-c7b7-45d6-afca-d08afde552fa',
   authority: 'https://login.microsoftonline.com/common/',
-  consentScopes: ["api://15c4cbff-86ef-4c76-9b08-874ce0b55c8a/access_as_user"],
-  redirectUri: 'http://localhost:5150/',
+  consentScopes: ["api://e76e78e9-c7b7-45d6-afca-d08afde552fa/access_as_user"],
+  redirectUri: 'https://a2jstageweb.azurewebsites.net',
   navigateToLoginRequestUrl: true,
-  postLogoutRedirectUri: 'http://localhost:5150/',
-  topicUrl: 'http://localhost:4200/api/topics',
-  userPersonalizedPlanUrl: 'http://localhost:4200/api/user/upsertuserpersonalizedplan',
-  apiScope: 'api://15c4cbff-86ef-4c76-9b08-874ce0b55c8a/access_as_user'
+  postLogoutRedirectUri: 'https://a2jstageweb.azurewebsites.net',
+  topicUrl: 'https://a2jstageapi.azurewebsites.net/api/topics',
+  userPersonalizedPlanUrl: 'https://a2jstageapi.azurewebsites.net/api/user/upsertuserpersonalizedplan',
+  apiScope: 'api://e76e78e9-c7b7-45d6-afca-d08afde552fa/access_as_user'
 };
+

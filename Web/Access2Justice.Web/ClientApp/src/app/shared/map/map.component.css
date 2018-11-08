@@ -1,9 +1,22 @@
+input:focus {
+  outline: none;
+}
+
 p {
   margin-bottom: 0;
+  font-weight: 400;
+}
+
+p.ps {
+  margin-top: 10px
 }
 
 .row {
   margin: 5px auto;
+}
+
+.modal-body {
+  padding: 0;
 }
 
 .edit-location {
@@ -16,9 +29,9 @@ p {
 
 #my-map {
   position: relative;
-  width: 90%;
-  margin: 20px auto 0 auto;
-  height: 250px;
+  width: 100%;
+  margin: 30px auto 0 auto;
+  height: 280px;
 }
 
 #searchbox-container {
@@ -47,21 +60,24 @@ p {
 }
 
 #search-box {
-  height: 30px;
-  width: 45%;
+  height: 40px;
+  width: 60%;
   float: left;
-  margin-left: 22%;
+  margin-left: 13%;
 }
 
 .search-btn {
   background-color: #0D3FB8;
-  padding: 3px;
+  padding: 5px;
   border-radius: 0 5px 5px 0;
   color: #fff;
   margin-left: -5px;
   font-weight: 600;
   float: left;
-  height: 30px;
+  height: 40px;
+  font-size: 12px;
+  width: 20%;
+  max-width: 70px;
 }
 
 .dimmer {
@@ -95,7 +111,7 @@ p {
 }
 
 .btn {
-  margin: 0 auto;
+  margin: 20px auto;
 }
 
 #validation-error {
@@ -103,9 +119,52 @@ p {
   color: #ca3636;
 }
 
+.mobile-margin {
+  margin: 15px;
+}
+
+@media only screen and (min-width : 540px) {
+  .modal-body {
+    padding: 15px;
+  }
+
+  #my-map {
+    width: 90%;
+  }
+
+  #search-box {
+    max-width: 300px;
+  }
+  
+  .mobile-margin {
+    margin: 0;
+  }
+
+  .nav-icon.mobile-margin {
+    margin: 20px;
+  }
+
+  .web-hidden {
+    display: none;
+  }
+}
+
 @media only screen and (min-width : 768px) {
   .edit-location {
     padding: 15px 10px;
+  }
+
+  #search-box {
+    margin-left: 21%;
+  }
+
+  .search-btn {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .nav-icon.mobile-margin {
+    margin: 0;
   }
 }
 
@@ -116,11 +175,6 @@ p {
 
   .mobile-hidden {
     display: inline-block;
-  }
-
-  #search-box {
-    width: 250px;
-    margin-left: 165px;
   }
 
   #my-map {
