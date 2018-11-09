@@ -233,10 +233,6 @@ li.vertical-line {
 }
 
 @media only screen and (min-width : 1124px) {
-  #logo {
-    width: 255px;
-  }
-
   .left-menu {
     display: inline-block;
     padding: 5px;
@@ -250,6 +246,7 @@ li.vertical-line {
   #logo {
     background-position: -10px -7px;
     margin-right: 3%;
+    width: 255px;
   }
 
   .search-text {
