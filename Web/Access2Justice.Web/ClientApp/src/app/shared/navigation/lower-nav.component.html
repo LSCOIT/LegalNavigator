@@ -1,8 +1,7 @@
 <div [className]="my_Class" id="dimmer"></div>
 <div *ngIf="search" class="lower-nav no-print">
   <div class="container">
-    <div id="logo">
-    </div>
+    <a id="logo" [routerLink]="['/']"></a>
     <div class="left-menu">
       <ul class="mobile-hidden">
         <li><a [routerLink]="['/' + home?.button?.buttonLink]" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">{{home?.button?.buttonText}}</a></li>

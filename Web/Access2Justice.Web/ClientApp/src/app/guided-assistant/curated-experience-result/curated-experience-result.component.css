@@ -43,6 +43,10 @@ input[type=checkbox]:checked ~ .check::before {
   padding-left: 3px;
 }
 
+.link {
+  cursor: pointer;
+}
+
 @media only screen and (min-width : 768px) {
   .button-container ul li {
     width: 30%;
