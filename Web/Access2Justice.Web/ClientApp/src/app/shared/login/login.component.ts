@@ -82,6 +82,8 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.global.notifyRoleInformation.unsubscribe();
+    if (this.roleInformationSubscription) {
+      this.roleInformationSubscription.unsubscribe();
+    }
   }
 }

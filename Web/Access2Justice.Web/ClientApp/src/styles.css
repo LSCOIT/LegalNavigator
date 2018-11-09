@@ -2,7 +2,7 @@
 body {
   position: relative !important;
   top: 40px !important;
-  min-height: 83% !important;
+  min-height: 85% !important;
   word-wrap: break-word;
 }
 
@@ -201,6 +201,7 @@ textarea {
   height: 1185px;
   margin: 0;
   background-color: #fff;
+  padding-top: 30px;
 }
 
 .modal-content {
