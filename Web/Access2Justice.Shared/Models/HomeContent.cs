@@ -171,6 +171,7 @@ namespace Access2Justice.Shared.Models
 
     public class GADescription
     {
+        //TO DO Need to work on this...
         [DefaultValue("")]
         [JsonProperty(PropertyName = "steps")]
         public GADescriptionDetails GADescriptionDetails { get; set; }
