@@ -1,5 +1,4 @@
 li a {
-  cursor: pointer;
   padding: 10px;
   color: #333;
   font-weight: 600;
@@ -9,12 +8,6 @@ li a {
 
 li:last-child a {
   border-bottom: none;
-}
-
-li a:hover {
-  -webkit-box-shadow: 0 4px 10px 0 rgba(0,0,0,0.2);
-  -moz-box-shadow: 0 4px 10px 0 rgba(0,0,0,0.2);
-  box-shadow: 0 4px 10px 0 rgba(0,0,0,0.2);
 }
 
 .filter {
@@ -32,12 +25,16 @@ li a:hover {
   margin-right: 40px;
 }
 
-.dropdown-toggle:after {
+.dropdown-btn:after {
   border: none;
 }
 
 .btn.focus, .btn:focus {
   box-shadow: none;
+}
+
+.open .dropdown-btn {
+  border-radius: 5px 5px 0 0;
 }
 
 #button-basic {
@@ -47,16 +44,7 @@ li a:hover {
   width: 145px;
   font-size: 14px;
   background-size: 13px;
-  background-repeat: no-repeat;
   background-position: 90% 50%;
-}
-
-#button-basic, #button-basic[aria-expanded=false] {
-  background-image: url(../../../../assets/images/small-icons/dropdown_arrow.svg);
-}
-
-#button-basic[aria-expanded=true] {
-  background-image: url('../../../../assets/images/small-icons/dropup_arrow.svg');
 }
 
 .dropdown-menu {
@@ -67,6 +55,10 @@ li a:hover {
   border-top: 1px solid #ddd;
   padding: 0;
   min-width: 145px;
+}
+
+.dropdown-menu.show {
+  top: 93% !important;
 }
 
 .btn {

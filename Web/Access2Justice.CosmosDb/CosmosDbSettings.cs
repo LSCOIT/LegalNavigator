@@ -35,6 +35,7 @@ namespace Access2Justice.CosmosDb
                 UserResourcesCollectionId = configuration.GetSection("UserResourcesCollectionId").Value;
                 A2JAuthorDocsCollectionId = configuration.GetSection("A2JAuthorDocsCollectionId").Value;
                 RolesCollectionId = configuration.GetSection("RolesCollectionId").Value;
+                GuidedAssistantAnswersCollectionId = configuration.GetSection("GuidedAssistantAnswersCollectionId").Value;
             }
             catch(Exception ex)
             {
@@ -56,5 +57,7 @@ namespace Access2Justice.CosmosDb
         public string UserResourcesCollectionId { get; private set; }
         public string A2JAuthorDocsCollectionId { get; private set; }
         public string RolesCollectionId { get; private set; }
+        public string GuidedAssistantAnswersCollectionId { get; private set; }
+        
     }
 }

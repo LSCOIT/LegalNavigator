@@ -8,6 +8,7 @@ export const environment = {
   webResourcePagesToShow: 10,
   webResourceRecordsToDisplay: 10,
   blobUrl: 'https://cs4892808efec24x447cx944.blob.core.windows.net',
+  virtualEarthUrl: 'https://dev.virtualearth.net/REST/v1/Locations/',
   All: 'All',
   clientID: '15c4cbff-86ef-4c76-9b08-874ce0b55c8a',
   authority: 'https://login.microsoftonline.com/common/',

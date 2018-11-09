@@ -16,16 +16,18 @@ namespace Access2Justice.Api.BusinessLogic
 		private readonly ICosmosDbSettings cosmosDbSettings;
 		private readonly IDynamicQueries dynamicQueries;
         private readonly ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic;
+        private readonly IBackendDatabaseService backendDatabaseService;
 
         public PersonalizedPlanViewModelMapper(ICosmosDbSettings cosmosDbSettings, IDynamicQueries dynamicQueries, 
-            ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic)
+            ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic, IBackendDatabaseService backendDatabaseService)
 		{
 			this.cosmosDbSettings = cosmosDbSettings;
 			this.dynamicQueries = dynamicQueries;
             this.topicsResourcesBusinessLogic = topicsResourcesBusinessLogic;
+            this.backendDatabaseService = backendDatabaseService;
         }
 
-		public async Task<PersonalizedPlanViewModel> MapViewModel(UnprocessedPersonalizedPlan personalizedPlanStepsInScope, Location location)
+        public async Task<PersonalizedPlanViewModel> MapViewModel(UnprocessedPersonalizedPlan personalizedPlanStepsInScope)
 		{
             var actionPlan = new PersonalizedPlanViewModel();
             
@@ -40,36 +42,37 @@ namespace Access2Justice.Api.BusinessLogic
                     resourceDetails = JsonUtilities.DeserializeDynamicObject<List<Resource>>(resourceData);
                 }
 
-                var topic = await topicsResourcesBusinessLogic.GetTopic(unprocessedTopic.Name, location);
+                var topic = await topicsResourcesBusinessLogic.GetTopic(unprocessedTopic.Name);
                 actionPlan.Topics.Add(new PlanTopic
 				{
                     TopicId = Guid.Parse(topic.Id),
                     TopicName = topic.Name,
                     Icon = topic.Icon,
-                    //QuickLinks = GetQuickLinks(topic.QuickLinks), //Topic schema has changed, quick links should be displayed based on 'Essential Readings' resourceType.
+                    EssentialReadings = await GetEssentialReadings(topic.Id),
                     Steps = GetSteps(unprocessedTopic.UnprocessedSteps, resourceDetails)
 				});
 			}
-
-			actionPlan.PersonalizedPlanId = Guid.NewGuid();
+            actionPlan.PersonalizedPlanId = Guid.NewGuid();
 			actionPlan.IsShared = false;
 			return actionPlan;
 		}
 
-        private List<PlanQuickLink> GetQuickLinks(IEnumerable<QuickLinks> quickLinks)
+        private async Task<List<EssentialReadings>> GetEssentialReadings(string topicId)
         {
-            var planQuickLinks = new List<PlanQuickLink>();
-            foreach (var link in quickLinks)
+            var essentialReadings = await backendDatabaseService.GetItemsAsync<EssentialReading>(x => x.ResourceType == Constants.ReasourceTypes.EssentialReadings &&
+            x.TopicTags.Contains(new TopicTag { TopicTags = topicId }), cosmosDbSettings.ResourcesCollectionId);
+
+            var essentialReadingsUrls = new List<EssentialReadings>();
+            foreach (var item in essentialReadings)
             {
-                Uri.TryCreate(link.Urls, UriKind.RelativeOrAbsolute, out var url);
-                planQuickLinks.Add(new PlanQuickLink
+                essentialReadingsUrls.Add(new EssentialReadings
                 {
-                    Text = link.Text,
-                    Url = url
+                    Text = item.Name,
+                    Url = item.Url,
                 });
             }
 
-            return planQuickLinks;
+            return essentialReadingsUrls;
         }
 
         private List<PlanStep> GetSteps(List<UnprocessedStep> unprocessedSteps, List<Resource> resourceDetails)
@@ -81,11 +84,10 @@ namespace Access2Justice.Api.BusinessLogic
 				planSteps.Add(new PlanStep
 				{
 					StepId = unprocessedStep.Id,
-					Type = "steps",
-					Title = unprocessedStep.Title,
+                    Title = unprocessedStep.Title,
 					Description = unprocessedStep.Description,
 					Order = orderIndex++,
-                    IsComplete = false,  // Todo:@Alaa check if step complete
+                    IsComplete = false,
                     Resources = GetResources(unprocessedStep.ResourceIds, resourceDetails)
 				});
 			}

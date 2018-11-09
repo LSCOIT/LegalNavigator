@@ -52,7 +52,7 @@
                 <div>
                   <p [innerHTML]="step.description"></p>
                 </div>
-                <div *ngIf="step.resources != null">
+                <div *ngIf="step.resources.length">
                   <h4>Additional Resources</h4>
                   <div *ngFor="let resource of step.resources" id="additional-resource" class="row">
                     <div *ngIf="resourceTypeList.includes(resource.resourceType); else otherResourceType" class="media-left no-print">
@@ -85,11 +85,11 @@
           </accordion>
         </div>
         <div class="col-md-3 col-sm-12 quick-links">
-          <p>Quick Links</p>
+          <p>Essential Readings</p>
           <ul>
-            <li *ngFor="let quickLink of topic.quickLinks">
-              <a href={{quickLink.url}} class="link">{{quickLink.text}}</a>
-              <div class="print-only">{{quickLink.url}}</div>
+            <li *ngFor="let essentialReading of topic.essentialReadings">
+              <a href={{essentialReading.url}} class="link">{{essentialReading.text}}</a>
+              <div class="print-only">{{essentialReading.url}}</div>
             </li>              
           </ul>
         </div>

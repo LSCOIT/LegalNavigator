@@ -36,5 +36,11 @@
         public const string HtmlRightBracket = ">";
         public const string HtmlLeftBracket = "<";
         public const string A2JAuthorCustomFunctionTags = "%%";
+
+        public static class ReasourceTypes
+        {
+            public const string EssentialReadings = "Essential Readings";
+        }
     }
 }
+

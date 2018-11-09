@@ -68,20 +68,19 @@ namespace Access2Justice.Api.Controllers
         /// Helps to get privacy page static contents inserted or updated
         /// </remarks>
         /// <param name="privacyPromiseContent"></param>
-        /// <param name="location"></param>
         /// <response code="200">Get home privacy static contents inserted or updated</response>
         /// <response code="500">Failure</response>
         [Permission(PermissionName.upsertstaticprivacypage)]
         [HttpPost]
         [Route("api/static-resource/upsert-static-privacy-page")]
-        public async Task<IActionResult> UpsertStaticPrivacyPromisePageDataAsync([FromBody]PrivacyPromiseContent privacyPromiseContent, Location location)
+        public async Task<IActionResult> UpsertStaticPrivacyPromisePageDataAsync([FromBody]PrivacyPromiseContent privacyPromiseContent)
         {
-            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(privacyPromiseContent.OrganizationalUnit))
-            {
-                var contents = await staticResourceBusinessLogic.UpsertStaticPrivacyPromisePageDataAsync(privacyPromiseContent, location);
+            //if (await userRoleBusinessLogic.ValidateOrganizationalUnit(privacyPromiseContent.OrganizationalUnit))
+            //{
+                var contents = await staticResourceBusinessLogic.UpsertStaticPrivacyPromisePageDataAsync(privacyPromiseContent);
                 return Ok(contents);
-            }
-            return StatusCode(403);
+            //}
+            //return StatusCode(403);
         }
 
         /// <summary>

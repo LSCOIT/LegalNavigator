@@ -8,7 +8,7 @@ using System.Linq;
 using Spreadsheet = DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Spreadsheet;
-using Access2Justice.DataImportTool.Models;
+using Access2Justice.Shared.Models;
 
 namespace Access2Justice.DataImportTool.BusinessLogic
 {
@@ -18,11 +18,11 @@ namespace Access2Justice.DataImportTool.BusinessLogic
 
         dynamic id = null;
         string name, resourceCategory, description, url, resourceType, state, county, city, zipcode = string.Empty;
-        string overview, icon, address, telephone, eligibilityInformation, specialties, qualifications, businessHours = string.Empty;
+        string overview, address, telephone, eligibilityInformation, specialties, qualifications, businessHours = string.Empty;
         string organizationName, reviewerFullName, reviewerTitle, reviewText, reviewerImage = string.Empty;
         string articleName, headline, content, organizationalUnit = string.Empty;
         List<TopicTag> topicTagIds = null;
-        List<Locations> locations = null;
+        List<Shared.Models.Location> locations = null;
         List<string> orgNameList = new List<string>();
         List<string> orgFullNameList = new List<string>();
         List<string> orgTitleList = new List<string>();
@@ -43,7 +43,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
             List<dynamic> articlesList = new List<dynamic>();
             List<dynamic> organizationReviewsList = new List<dynamic>();
             List<dynamic> Resources = new List<dynamic>();
-            List<string> sheetNames = new List<string>() { "Articles", "Article Sections", "Videos", "EssentialReadings & QuickLinks", "Forms", "Organizations", "OrganizationReviews (Optional)", "Related Links" };
+            List<string> sheetNames = new List<string>() { Constants.ArticleSheetName, Constants.ArticleSectionSheetName, Constants.VideoSheetName, Constants.EssentialReadingSheetName, Constants.FormSheetName, Constants.OrganizationSheetName, Constants.OrganizationReviewSheetName, Constants.RelatedLinkSheetName };
 
             try
             {
@@ -66,7 +66,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                             bool isValidated = false;
                             ClearVariableData();
                             topicTagIds = new List<TopicTag>();
-                            locations = new List<Locations>();
+                            locations = new List<Shared.Models.Location>();
                             string resourceIdCell = string.Empty;
                             string resourceType = GetResourceType(sheet.Name.Value);
                             foreach (Spreadsheet.Row row in sheetData.Elements<Spreadsheet.Row>())
@@ -146,7 +146,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                 {
                                     InsertTopics topic = new InsertTopics();
                                     locations = topic.GetLocations(state, county, city, zipcode);
-                                    if (resourceType == Constants.FormsResourceType)
+                                    if (resourceType == Constants.FormResourceType)
                                     {
                                         Form form = new Form()
                                         {
@@ -154,7 +154,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                             Name = name,
                                             Description = description,
                                             ResourceType = resourceType,
-                                            Urls = url,
+                                            Url = url,
                                             TopicTags = topicTagIds,
                                             OrganizationalUnit = organizationalUnit,
                                             Location = locations,
@@ -174,7 +174,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                             ResourceCategory = resourceCategory,
                                             Description = description,
                                             ResourceType = resourceType,
-                                            Urls = url,
+                                            Url = url,
                                             TopicTags = topicTagIds,
                                             OrganizationalUnit = organizationalUnit,
                                             Location = locations,
@@ -192,7 +192,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                         organizationsList.Add(organization);
                                         ClearVariableData();
                                     }
-                                    if (resourceType == Constants.OrganizationReviews)
+                                    if (resourceType == Constants.OrganizationReview)
                                     {
                                         orgNameList.Add(organizationName);
                                         orgFullNameList.Add(reviewerFullName);
@@ -220,7 +220,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                         articlesList.Add(article);
                                         ClearVariableData();
                                     }
-                                    if (resourceType == Constants.ArticleContents)
+                                    if (resourceType == Constants.ArticleContent)
                                     {
                                         articleNameList.Add(articleName);
                                         headlineList.Add(headline);
@@ -236,7 +236,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                             ResourceCategory = resourceCategory,
                                             Description = description,
                                             ResourceType = resourceType,
-                                            Urls = url,
+                                            Url = url,
                                             TopicTags = topicTagIds,
                                             OrganizationalUnit = organizationalUnit,
                                             Location = locations,
@@ -256,7 +256,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                             Name = name,
                                             //Description = description,
                                             ResourceType = resourceType,
-                                            Urls = url,
+                                            Url = url,
                                             TopicTags = topicTagIds,
                                             OrganizationalUnit = organizationalUnit,
                                             Location = locations,
@@ -275,7 +275,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                             Name = name,
                                             Description = description,
                                             ResourceType = resourceType,
-                                            Urls = url,
+                                            Url = url,
                                             TopicTags = topicTagIds,
                                             OrganizationalUnit = organizationalUnit,
                                             Location = locations,
@@ -322,15 +322,15 @@ namespace Access2Justice.DataImportTool.BusinessLogic
 
                 foreach (var articleList in articlesList)
                 {
-                    List<ArticleContents> articleContentList = new List<ArticleContents>();
-                    ArticleContents articleContents = new ArticleContents();
+                    List<ArticleContent> articleContentList = new List<ArticleContent>();
+                    ArticleContent articleContents = new ArticleContent();
                     for (int iterator = 0; iterator < articleNameList.Count; iterator++)
                     {
                         var na = articleNameList[iterator];
 
                         if (articleList.Name == articleNameList[iterator])
                         {
-                            articleContents = new ArticleContents
+                            articleContents = new ArticleContent
                             {
                                 Headline = headlineList[iterator],
                                 Content = contentList[iterator],
@@ -385,7 +385,6 @@ namespace Access2Justice.DataImportTool.BusinessLogic
             city = string.Empty;
             zipcode = string.Empty;
             overview = string.Empty;
-            icon = string.Empty;
             address = string.Empty;
             telephone = string.Empty;
             eligibilityInformation = string.Empty;
@@ -410,21 +409,21 @@ namespace Access2Justice.DataImportTool.BusinessLogic
         {
             switch (sheetName)
             {
-                case "Articles":
+                case Constants.ArticleSheetName:
                     return Constants.ArticleResourceType;
-                case "Videos":
+                case Constants.VideoSheetName:
                     return Constants.VideoResourceType;
-                case "EssentialReadings & QuickLinks":
+                case Constants.EssentialReadingSheetName:
                     return Constants.EssentialReadingResourceType;
-                case "Forms":
-                    return Constants.FormsResourceType;
-                case "Organizations":
+                case Constants.FormSheetName:
+                    return Constants.FormResourceType;
+                case Constants.OrganizationSheetName:
                     return Constants.OrganizationResourceType;
-                case "OrganizationReviews (Optional)":
-                    return Constants.OrganizationReviews;
-                case "Article Sections":
-                    return Constants.ArticleContents;
-                case "Related Links":
+                case Constants.OrganizationReviewSheetName:
+                    return Constants.OrganizationReview;
+                case Constants.ArticleSectionSheetName:
+                    return Constants.ArticleContent;
+                case Constants.RelatedLinkSheetName:
                     return Constants.RelatedLinkResourceType;
                 default:
                     return string.Empty;
@@ -501,7 +500,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
 
             #endregion Common field mapping
 
-            if (resourceType == Constants.FormsResourceType)
+            if (resourceType == Constants.FormResourceType)
             {
                 if (val.EndsWith("Overview", StringComparison.CurrentCultureIgnoreCase))
                 {
@@ -555,7 +554,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                 }
             }
 
-            if (resourceType == Constants.ArticleContents)
+            if (resourceType == Constants.ArticleContent)
             {
                 if (val.EndsWith("Article*", StringComparison.CurrentCultureIgnoreCase))
                 {
@@ -581,7 +580,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                 }
             }
 
-            if (resourceType == Constants.OrganizationReviews)
+            if (resourceType == Constants.OrganizationReview)
             {
                 if (val.EndsWith("Organization*", StringComparison.CurrentCultureIgnoreCase))
                 {
@@ -629,7 +628,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
             string[] expectedEssentialReadingHeader = {"Id", "Name*", "Resource_Type*", "URL*", "Topic*", "Organizational_Unit*", "Location_State*", "Location_County", "Location_City",
                     "Location_Zip"};
 
-            string[] expectedOrganizationReviewsHeader = { "Organization*", "Reviewer_Full_Name*", "Reviewer_Title", "Review_Text*", "Reviewer_Image_URL" };
+            string[] expectedOrganizationReviewHeader = { "Organization*", "Reviewer_Full_Name*", "Reviewer_Title", "Review_Text*", "Reviewer_Image_URL" };
 
             string[] expectedArticleContentsHeader = { "Article*", "Section_Headline", "Section_Content" };
 
@@ -637,9 +636,9 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                     "Location_Zip" };
             try
             {
-                if (resourceType == Constants.FormsResourceType)
+                if (resourceType == Constants.FormResourceType)
                 {
-                    correctHeader = HeaderValidation(header, expectedFormHeader, Constants.FormsResourceType);
+                    correctHeader = HeaderValidation(header, expectedFormHeader, Constants.FormResourceType);
                 }
 
                 else if (resourceType == Constants.OrganizationResourceType)
@@ -652,9 +651,9 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                     correctHeader = HeaderValidation(header, expectedArticleHeader, Constants.ArticleResourceType);
                 }
 
-                else if (resourceType == Constants.ArticleContents)
+                else if (resourceType == Constants.ArticleContent)
                 {
-                    correctHeader = HeaderValidation(header, expectedArticleContentsHeader, Constants.ArticleContents);
+                    correctHeader = HeaderValidation(header, expectedArticleContentsHeader, Constants.ArticleContent);
                 }
 
                 else if (resourceType == Constants.VideoResourceType)
@@ -667,9 +666,9 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                     correctHeader = HeaderValidation(header, expectedEssentialReadingHeader, Constants.EssentialReadingResourceType);
                 }
 
-                else if (resourceType == Constants.OrganizationReviews)
+                else if (resourceType == Constants.OrganizationReview)
                 {
-                    correctHeader = HeaderValidation(header, expectedOrganizationReviewsHeader, Constants.OrganizationReviews);
+                    correctHeader = HeaderValidation(header, expectedOrganizationReviewHeader, Constants.OrganizationReview);
                 }
 
                 else if (resourceType == Constants.RelatedLinkResourceType)

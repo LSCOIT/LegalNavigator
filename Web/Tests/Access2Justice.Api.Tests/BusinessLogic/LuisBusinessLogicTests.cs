@@ -27,7 +27,6 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
 
         #region Mocked Input Data
         private readonly string properLuisResponse = LuisBusinessLogicTestData.properLuisResponse;
-        private readonly string lowScoreLuisResponse = LuisBusinessLogicTestData.lowScoreLuisResponse;
         private readonly string meduimScoreLuisResponse = LuisBusinessLogicTestData.meduimScoreLuisResponse;
         private readonly string emptyLuisResponse = LuisBusinessLogicTestData.emptyLuisResponse;
         private readonly string noneLuisResponse = LuisBusinessLogicTestData.noneLuisResponse;
@@ -111,12 +110,12 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         public void ApplyThresholdTestsShouldMatchUpperthreshold()
         {
             // arrange
-            List<string> topNIntents = new List<string> { "eviction", "child abuse", "traffic ticket", "divorce" };
+            List<string> topNIntents = new List<string> { "Eviction", "child abuse", "traffic ticket", "divorce" };
             IntentWithScore intentWithScore = new IntentWithScore
             {
                 IsSuccessful = true,
                 Score = 0.1M,
-                TopScoringIntent = "eviction",
+                TopScoringIntent = "Eviction",
                 TopNIntents = topNIntents
             };
             var expectedhreshold = true;
@@ -132,12 +131,12 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         public void ApplyThresholdTestsShouldMatchMediumthreshold()
         {
             // arrange
-            List<string> topNIntents = new List<string> { "eviction", "child abuse", "traffic ticket", "divorce" };
+            List<string> topNIntents = new List<string> { "Eviction", "child abuse", "traffic ticket", "divorce" };
             IntentWithScore intentWithScore = new IntentWithScore
             {
                 IsSuccessful = true,
                 Score = 0.01M,
-                TopScoringIntent = "eviction",
+                TopScoringIntent = "Eviction",
                 TopNIntents = topNIntents
             };
             var expectedhreshold = false;

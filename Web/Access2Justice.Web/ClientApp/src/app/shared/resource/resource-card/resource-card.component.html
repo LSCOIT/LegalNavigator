@@ -33,9 +33,10 @@
             <a [href]="resource.url"><h4 class="media-heading">{{resource.name}}</h4></a>
             <div class="print-only">{{resource.url}}</div>
             <div class="external-link">
-              <span class="glyphicon glyphicon-new-window no-print" aria-hidden="true"></span><span class="span-text no-print">External link</span>
+              <img src="./assets/images/small-icons/external_link.svg" alt="external link" class="nav-icon"/>
+              External Link
             </div>
-            <app-read-more [text]="resource.description" [maxLength]="240"></app-read-more>
+            <app-read-more *ngIf="resource.description" [text]="resource?.description" [maxLength]="240"></app-read-more>
           </div>
         </div>
         <div *ngIf="resource.resourceType === 'Topics'" class="media">
@@ -56,7 +57,7 @@
             <a [routerLink]="['/guidedassistant', resource.curatedExperienceId]"><h4 class="media-heading">{{resource.name}}</h4></a>
             <div class="print-only">{{applicationUrl+'/guidedassistant'+'/'+resource.curatedExperienceId}}</div>
             <div class="media-body">
-              <app-read-more [text]="resource.description" [maxLength]="240"></app-read-more>
+              <app-read-more *ngIf="resource.description" [text]="resource?.description" [maxLength]="240"></app-read-more>
             </div>
           </div>
         </div>
@@ -67,7 +68,17 @@
           <div class="media-body">
             <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}</h4></a>
             <div class="print-only">{{applicationUrl+'/resource'+'/'+resource.id}}</div>
-            <app-read-more [text]="resource.description" [maxLength]="240"></app-read-more>
+            <app-read-more *ngIf="resource.description" [text]="resource?.description" [maxLength]="240"></app-read-more>
+          </div>
+        </div>
+        <div *ngIf="resource.resourceType === 'Articles'" class="media">
+          <div class="media-left no-print">
+            <img class="media-object" src="/assets/images/icons/articles.svg" [alt]="resource.resourceType">
+          </div>
+          <div class="media-body">
+            <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}</h4></a>
+            <div class="print-only">{{applicationUrl+'/resource'+'/'+resource.id}}</div>
+            <app-read-more *ngIf="resource.description" [text]="resource?.description" [maxLength]="240"></app-read-more>
           </div>
         </div>
         <div *ngIf="resource.resourceType === 'Organizations'" class="media">
@@ -75,9 +86,9 @@
             <img class="media-object" src="/assets/images/icons/organizations.svg" aria-hidden="true">
           </div>
           <div class="media-body">
-            <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}, {{resource?.resourceCategory}}</h4></a>
+            <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}</h4></a>
             <div class="print-only">{{applicationUrl+'/resource'+'/'+resource.id}}</div>
-            <app-read-more [text]="resource.description" [maxLength]="240"></app-read-more>
+            <app-read-more *ngIf="resource.description" [text]="resource?.description" [maxLength]="240"></app-read-more>
             <div class="org-content span-text">
               <div class="col-sm-4 col-xs-12" *ngIf="resource.address.length > 0">
                 <div class="col-sm-2 col-xs-2">
@@ -133,9 +144,13 @@
             <img class="media-object" src="/assets/images/icons/articles.svg" [alt]=resource.resourceType>
           </div>
           <div class="media-body">
-            <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}</h4></a>
-            <div class="print-only">{{applicationUrl+'/resource'+'/'+resource.id}}</div>
-            <app-read-more [text]="resource.description" [maxLength]="240"></app-read-more>
+            <a [href]="resource.url"><h4 class="media-heading">{{resource.name}}</h4></a>
+            <div class="external-link">
+              <img src="./assets/images/small-icons/external_link.svg" alt="external link" class="nav-icon" />
+              External Link
+            </div>
+            <div class="print-only">{{resource.url}}</div>
+            <app-read-more *ngIf="resource.description" [text]="resource?.description" [maxLength]="240"></app-read-more>
           </div>
         </div>
       </ng-template>

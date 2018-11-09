@@ -1,6 +1,9 @@
 <div class="row">
   <h2>{{resource.name}}</h2>
-  <p>{{resource.overview}}</p>
+  <p>{{resource?.resourceCategory}}</p>
+  <div *ngIf="resource.overview" class="row">
+    <p>{{resource.overview}}</p>
+  </div>
   <div class="col-md-8 col-sm-12">
     <iframe [src]='this.safeUrl' frameborder="0" allowfullscreen></iframe>
   </div>

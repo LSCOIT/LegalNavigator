@@ -29,8 +29,15 @@
 
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Compile Remove="ClientApp\src\app\admin\NewFolder\**" />
     <Content Remove="$(SpaRoot)**" />
+    <Content Remove="ClientApp\src\app\admin\NewFolder\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="ClientApp\src\app\admin\NewFolder\**" />
+    <None Remove="ClientApp\src\app\admin\NewFolder\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -48,11 +55,6 @@
   <ItemGroup>
     <Folder Include="ClientApp\src\app\shared\search\" />
     <Folder Include="Properties\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Access2Justice.CosmosDb\Access2Justice.CosmosDb.csproj" />
-    <ProjectReference Include="..\Access2Justice.Shared\Access2Justice.Shared.csproj" />
   </ItemGroup>
 
    <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

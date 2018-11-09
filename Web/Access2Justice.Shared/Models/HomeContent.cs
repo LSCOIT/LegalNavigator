@@ -237,11 +237,16 @@ namespace Access2Justice.Shared.Models
 
     public class NameLocation
     {
+        public NameLocation()
+        {
+            Location = new List<Location>();
+        }
+
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "location")]
-        public IEnumerable<Location> Location { get; set; }
+        public List<Location> Location { get; set; }
     }
 }

@@ -24,7 +24,6 @@ export class QuestionComponent implements OnInit {
   @Output() sendTotalQuestionsEvent = new EventEmitter<number>();
   generatedPersonalizedPlan: PersonalizedPlan;
   answersDocId: string;
-  location = sessionStorage.getItem("globalMapLocation");
 
   constructor(
     private questionService: QuestionService,
@@ -100,11 +99,9 @@ export class QuestionComponent implements OnInit {
   };
 
   getActionPlan(): void {
-    console.log(this.location);
     let params = new HttpParams()
       .set("curatedExperienceId", this.curatedExperienceId)
-      .set("answersDocId", this.answersDocId)
-      .set("location", this.location);
+      .set("answersDocId", this.answersDocId);
     
     this.questionService.getpersonalizedPlan(params)
       .subscribe(response => {

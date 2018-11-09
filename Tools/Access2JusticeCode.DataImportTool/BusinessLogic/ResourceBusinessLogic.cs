@@ -8,6 +8,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Configuration;
 
 namespace Access2Justice.DataImportTool.BusinessLogic
 {
@@ -17,7 +18,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
 
         public async static Task GetResources(string accessToken,string filePath)
         {
-            clientHttp.BaseAddress = new Uri("http://localhost:4200/");
+            clientHttp.BaseAddress = new Uri(ConfigurationManager.AppSettings["apiUrl"]);
             clientHttp.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             clientHttp.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             try

@@ -46,14 +46,13 @@ namespace Access2Justice.Api.BusinessLogic
                     Name = pageProperties.GetValue("name"),
                     Help = pageProperties.GetValue("help").RemoveHtmlTags(),
                     Learn = pageProperties.GetValue("learn").RemoveHtmlTags(),
-                    Text = pageProperties.GetValue("text").RemoveHtmlTags().RemoveCustomA2JFunctions(),
+                    Text = pageProperties.GetValue("text").RemoveHtmlTags(keepTextFormatingTags: true, keepHyperlinkTags: true).RemoveCustomA2JFunctions(),
                     Fields = componentFields,
                     Buttons = componentButtons,
                     Code = componentCodes
                 });
             }
 
-            // Todo: we should figure a way to do upsert, we currently can't do that because we don't have an identifier 
             dbService.CreateItemAsync(cx, dbSettings.CuratedExperiencesCollectionId);
             dbService.CreateItemAsync(resource, dbSettings.ResourcesCollectionId);
 

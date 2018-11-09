@@ -15,7 +15,7 @@
 
 .row {
   margin: 20px auto;
-  display: table;
+  display: inline-block;
   width: 100%;
 }
 
@@ -90,21 +90,6 @@ a:not([href]):not([tabindex]) {
 .media-body {
   display: table-cell;
   vertical-align: top;
-}
-
-/*Login Dropdown*/
-.nav .open > a, .nav .open > a:focus, .nav .open > a:hover {
-  background-color: #fff;
-}
-
-#signin-dropdown .dropdown-menu {
-  width: auto;
-  margin-left: 10px;
-}
-
-.nav-tabs > li > a:hover {
-  background-color: transparent;
-  border: none;
 }
 
 /*Home Page - Carousel*/
@@ -197,6 +182,19 @@ span.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chev
   background-size: 20px 20px;
 }
 
+.faqs .panel-body.card-block.card-body {
+  padding: 0 20px 40px 30px;
+  border-bottom: 1px solid #ddd;
+}
+
+.faqs .card-header {
+  padding-left: 0;
+}
+
+.panel-collapse.collapse.in.show {
+  width: 100%;
+}
+
 /* Personalized Plan */
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
   border-color: #0D3FBB #0D3FBB #fff;
@@ -241,6 +239,39 @@ span.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chev
   font-weight: 400;
   color: #0D3FB8;
   opacity: 1;
+}
+
+/*Dropdowns*/
+.dropdown-btn,
+#language-dropdown {
+  background-image: url('./assets/images/small-icons/dropdown_arrow.svg');
+  cursor: pointer;
+  background-size: 12px;
+  background-repeat: no-repeat;
+}
+
+.open [aria-expanded="true"],
+.white-bg {
+  background-image: url('./assets/images/small-icons/dropup_arrow.svg') !important;
+  background-repeat: no-repeat;
+}
+
+.dropdown-menu li a {
+  cursor: pointer;
+  text-align: left;
+}
+
+.dropdown-menu li a:hover {
+  -webkit-box-shadow: 0 4px 10px 0 rgba(0,0,0,0.2);
+  -moz-box-shadow: 0 4px 10px 0 rgba(0,0,0,0.2);
+  box-shadow: 0 4px 10px 0 rgba(0,0,0,0.2);
+  text-decoration: none;
+}
+
+@media only screen and (min-width : 540px) {
+  .row {
+    display: table;
+  }
 }
 
 @media only screen and (min-width : 768px) {
@@ -327,16 +358,6 @@ span.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chev
 
   .carousel-indicators {
     bottom: -42px;
-  }
-
-  .modal-dialog {
-    max-width: 660px;
-    height: 570px;
-    margin: 0.75rem auto;
-  }
-
-  .modal-content {
-    height: auto;
   }
 }
 

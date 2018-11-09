@@ -39,4 +39,14 @@ namespace Access2Justice.Shared.Models
             Permissions = new List<string>();
         }
     }
+
+    public class RoleViewModel
+    {
+        [JsonProperty(PropertyName = "roleName")]
+        public string RoleName { get; set; }
+
+        [JsonProperty(PropertyName = "organizationalUnit")]
+        public string OrganizationalUnit { get; set; }
+    }
+
 }
