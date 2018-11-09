@@ -126,11 +126,11 @@ namespace Access2Justice.CosmosDb
             EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
             string locationFilter = FindLocationWhereArrayContains(location);
             var query = string.Empty;
-            query = $"SELECT * FROM c WHERE ";
+            query = $"SELECT * FROM c";
 
             if (!string.IsNullOrEmpty(locationFilter))
             {
-                query = query + locationFilter;
+                query += " WHERE " + locationFilter;
             }
             return await backendDatabaseService.QueryItemsAsync(collectionId, query);
         }
