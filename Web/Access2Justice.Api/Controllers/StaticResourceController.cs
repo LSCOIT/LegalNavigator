@@ -69,7 +69,6 @@ namespace Access2Justice.Api.Controllers
         /// Helps to get privacy page static contents inserted or updated
         /// </remarks>
         /// <param name="privacyPromiseContent"></param>
-        /// <param name="location"></param>
         /// <response code="200">Get home privacy static contents inserted or updated</response>
         /// <response code="500">Failure</response>
         [Permission(PermissionName.upsertstaticprivacypage)]

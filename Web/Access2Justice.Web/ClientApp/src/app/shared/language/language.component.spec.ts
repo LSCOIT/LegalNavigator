@@ -4,6 +4,7 @@ import { StaticResourceService } from '../../shared/static-resource.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Global } from '../../global';
 import { By } from '@angular/platform-browser';
+import { EventUtilityService } from '../event-utility.service';
 
 describe('LanguageComponent', () => {
   let component: LanguageComponent;
@@ -34,7 +35,8 @@ describe('LanguageComponent', () => {
       declarations: [ LanguageComponent ],
       providers: [ 
         { provide: StaticResourceService, useValue: mockStaticResourceService },
-        { provide: Global, useValue: mockGlobal }
+        { provide: Global, useValue: mockGlobal },
+        EventUtilityService
       ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })

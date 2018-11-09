@@ -59,7 +59,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="200">Returns first component for curated experience </response>
         /// <response code="500">Failure</response>
         [HttpGet("start")]
-        public async Task<IActionResult> GetFirstComponent(Guid curatedExperienceId)
+        public IActionResult GetFirstComponent(Guid curatedExperienceId)
         {
             var component = curatedExperienceBusinessLogic.GetComponent(sessionManager.RetrieveCachedCuratedExperience(curatedExperienceId, HttpContext), Guid.Empty);
             if (component == null) return NotFound();

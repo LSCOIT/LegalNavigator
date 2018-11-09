@@ -15,7 +15,7 @@ namespace Access2Justice.Shared.Extensions
                 return string.Empty;
             }
 
-            var sanitizer = new HtmlSanitizer();
+            var sanitizer = HtmlSanitizer.SimpleHtml5Sanitizer();
 
             if (keepTextFormatingTags)
             {
@@ -35,9 +35,12 @@ namespace Access2Justice.Shared.Extensions
                     .CheckAttribute("href", HtmlSanitizerCheckType.Url)
                     .RemoveEmpty();
             }
-
-            string cleanHtml = sanitizer.Sanitize(Regex.Unescape(text));
-            return HttpUtility.HtmlDecode(cleanHtml);
+            // For some reason, the Vereyon.Web nuget is not sanitizing <p> <blockquote> tags. so
+            // I'm renaming them to <div> and santizing the html again - rename then remove.
+            sanitizer.Tag("p").Rename("div");
+            sanitizer.Tag("blockquote").Rename("div");
+            string sanitizedHtmlExceptPTag = sanitizer.Sanitize(Regex.Unescape(text));
+            return HttpUtility.HtmlDecode(sanitizer.Sanitize(sanitizedHtmlExceptPTag));
         }
 
         public static string RemoveCustomA2JFunctions(this string text)

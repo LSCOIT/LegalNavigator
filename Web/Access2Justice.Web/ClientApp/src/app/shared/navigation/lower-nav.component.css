@@ -8,13 +8,13 @@ li > a:hover {
   border: none;
   box-shadow: 0 4px 10px 0 rgba(0,0,0,0.1);
   min-height: 75px;
-  margin-bottom: 10px;
-  padding-top: 20px;
+  margin-bottom: 4px;
+  padding-top: 29px;
 }
 
 #logo {
   background-image: url('../../../assets/images/logo/one-word-logo.svg');
-  width: 255px;
+  width: 220px;
   height: 45px;
   background-repeat: no-repeat;
   float: left;
@@ -244,9 +244,9 @@ li.vertical-line {
   }
 
   #logo {
-    width: 250px;
     background-position: -10px -7px;
     margin-right: 3%;
+    width: 255px;
   }
 
   .search-text {

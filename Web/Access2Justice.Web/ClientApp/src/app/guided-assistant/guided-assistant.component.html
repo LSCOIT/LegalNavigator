@@ -1,20 +1,21 @@
 <div class="container text-center">
   <h2>Tell us what's going on</h2>
-  <div class="row">
-    <div class="col-md-6 col-sm-8 col-md-offset-3 col-sm-offset-2">
-      <form #guidedAssistantSearchForm="ngForm" (ngSubmit)="onSubmit(guidedAssistantSearchForm)" aria-label="search box">
-        <div class="form-group">
-          <textarea class="form-control" rows="3"  autocomplete="off" placeholder="Keyword or phrase" aria-label="Search Box" name="searchText" [(ngModel)]="searchText"></textarea>
-          <img src="./assets/images/small-icons/microphone.svg" class="nav-icon" alt="voice search" />
-          <div class="col-sm-12 text-center">
-            <button class="btn btn-primary" type="submit" aria-label="search button">Continue</button>
-          </div>
-        </div>
-      </form>
+  <form #guidedAssistantSearchForm="ngForm" (ngSubmit)="onSubmit(guidedAssistantSearchForm)" aria-label="search box">
+    <div class="row">
+      <div class="col-md-6 col-sm-8 col-md-offset-3 col-sm-offset-2 form-group">
+        <textarea class="form-control" rows="3"  autocomplete="off" placeholder="Keyword or phrase" aria-label="Search Box" name="searchText" [(ngModel)]="searchText"></textarea>
+        <img src="./assets/images/small-icons/microphone.svg" class="nav-icon" alt="voice search" />
+      </div>
+      <div class="col-sm-10 col-sm-offset-1">
+        <p class="pxs">Please provide information for the subject areas for which you are seeking assistance, there is no need to provide personal information in the search field. This portal will not store any information you enter, however, any data you submit may otherwise be accessed or transferred.</p>
+      </div>
+      <div class="col-sm-12 text-center">
+        <button class="btn btn-primary" type="submit" aria-label="search button">Continue</button>
+      </div>
     </div>
-  </div>
+  </form>
   <div class="row">
-    <div class="col-md-6 col-md-offset-3 text-center">
+    <div class="col-md-6 col-md-offset-3 col-sm-12 text-center">
       <h3>Or start with a topic</h3>
     </div>
   </div>
