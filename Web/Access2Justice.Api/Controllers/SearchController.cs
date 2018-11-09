@@ -32,17 +32,6 @@ namespace Access2Justice.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> GetAsync([FromBody]LuisInput luisInput)
         {
-             // Todo:@Alaa remove this testing code, added to test AppInsights
-             try
-            {
-                var temp = string.Empty;
-                throw new Exception("this is a test exception created to test AppInsights");
-            }
-            catch
-            {
-                var temp2 = string.Empty;
-            }
-
             if (string.IsNullOrWhiteSpace(luisInput.Sentence))
             {
                 return BadRequest("search term cannot be empty string.");

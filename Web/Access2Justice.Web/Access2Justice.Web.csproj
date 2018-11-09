@@ -13,9 +13,12 @@
     <BuildServerSideRenderer>false</BuildServerSideRenderer>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <UserSecretsId>f42be599-a3e0-45e7-b6e3-3f6dd3cf99a3</UserSecretsId>
+    <ApplicationInsightsResourceId>/subscriptions/892808ef-ec24-447c-9441-2a832d7a3d04/resourcegroups/A2J-develop-rg/providers/microsoft.insights/components/Access2JusticeApiAppInsights</ApplicationInsightsResourceId>
+    <ApplicationInsightsAnnotationResourceId>/subscriptions/892808ef-ec24-447c-9441-2a832d7a3d04/resourcegroups/A2J-develop-rg/providers/microsoft.insights/components/Access2JusticeApiAppInsights</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.0.0" />
     <PackageReference Include="Microsoft.Azure.KeyVault" Version="3.0.0" />
@@ -55,6 +58,10 @@
   <ItemGroup>
     <Folder Include="ClientApp\src\app\shared\search\" />
     <Folder Include="Properties\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
    <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
