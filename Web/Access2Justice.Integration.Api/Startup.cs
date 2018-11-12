@@ -12,7 +12,6 @@ using Access2Justice.Shared.Interfaces;
 using Access2Justice.CosmosDb;
 using Microsoft.Azure.Documents;
 using Access2Justice.Shared.Utilities;
-//using Access2Justice.Api.BusinessLogic;
 
 namespace Access2Justice.Integration.Api
 {
@@ -35,7 +34,6 @@ namespace Access2Justice.Integration.Api
             services.AddSingleton(keyVaultSettings);
             services.AddSingleton<IServiceProvidersBusinessLogic, ServiceProvidersBusinessLogic>();
             ConfigureCosmosDb(services);
-            //services.AddSingleton<ITopicsResourcesBusinessLogic, TopicsResourcesBusinessLogic>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Access2Justice Integration API", Version = "1.0.0", Description = "Access2Justice APIs for integration with external partners.", TermsOfService = "None" });

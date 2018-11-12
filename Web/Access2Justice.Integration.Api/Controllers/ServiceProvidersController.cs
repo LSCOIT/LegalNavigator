@@ -37,7 +37,7 @@ namespace Access2Justice.Integration.Api.Controllers
         [HttpPost("upsert")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> UpsertServiceProviders([FromBody]ServiceProvider serviceProvider)
+        public async Task<IActionResult> UpsertServiceProviders([FromBody]dynamic serviceProvider)
         {
             var response = await serviceProvidersBusinessLogic.UpsertServiceProviderDocumentAsync(serviceProvider).ConfigureAwait(false);
             return Ok(response);

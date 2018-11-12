@@ -8,7 +8,6 @@ using Access2Justice.Shared;
 using Access2Justice.Shared.Utilities;
 using Access2Justice.Shared.Models.Integration;
 using Access2Justice.Shared.Models;
-//using Access2Justice.Api.BusinessLogic;
 
 namespace Access2Justice.Integration.Api.BusinessLogic
 {
@@ -17,7 +16,6 @@ namespace Access2Justice.Integration.Api.BusinessLogic
         private readonly IDynamicQueries dbClient;
         private readonly ICosmosDbSettings dbSettings;
         private readonly IBackendDatabaseService dbService;
-        private readonly ITopicsResourcesBusinessLogic topicsResources;
         public ServiceProvidersBusinessLogic(IDynamicQueries dynamicQueries, ICosmosDbSettings cosmosDbSettings, IBackendDatabaseService backendDatabaseService)
         {
             dbClient = dynamicQueries;
@@ -70,13 +68,17 @@ namespace Access2Justice.Integration.Api.BusinessLogic
             List<TopicTag> topicTags = new List<TopicTag>();
             List<Location> locations = new List<Location>();
             List<OrganizationReviewer> organizationReviewers = new List<OrganizationReviewer>();
-            //dynamic references = topicsResources.GetReferences(ServiceProvider);
-            //topicTags = references[0];
-            //locations = references[1];
-            //organizationReviewers = references[4];
+            Availability availability = new Availability();
+            SharedReferences sharedReferences = new SharedReferences();
+            dynamic references = sharedReferences.GetReferences(ServiceProvider);
+            topicTags = references[0];
+            locations = references[1];
+            organizationReviewers = references[4];
+            availability = references[6];
 
             serviceProvider = new ServiceProvider()
             {
+                Availability = availability,
                 ResourceId = ServiceProvider.id == "" ? Guid.NewGuid() : ServiceProvider.id,
                 Name = ServiceProvider.name,
                 ResourceCategory = ServiceProvider.resourceCategory,
