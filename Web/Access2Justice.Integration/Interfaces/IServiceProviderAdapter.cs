@@ -11,6 +11,6 @@ namespace Access2Justice.Integration.Interfaces
     {
         Task<IEnumerable<ServiceProvider>> GetServiceProviders(string organizationalUnit, Topic topic);
 
-        Task<ServiceProvider> GetServiceProviderDetails(string id);
+        ServiceProvider GetServiceProviderDetails(string id);
     }
 }

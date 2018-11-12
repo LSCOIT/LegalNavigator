@@ -1,5 +1,8 @@
-﻿using Access2Justice.Shared.Models.Integration;
+﻿using Access2Justice.Shared.Models;
+using Access2Justice.Shared.Models.Integration;
 using Microsoft.AspNetCore.Mvc;
+using Access2Justice.Integration.Api;
+using Access2Justice.Integration.Adapters;
 
 namespace Access2Justice.Integration.Api.Controllers
 {
@@ -20,7 +23,7 @@ namespace Access2Justice.Integration.Api.Controllers
             var serviceProvider = new ServiceProvider();
             return Ok(serviceProvider);
         }
-        
+
         /// <summary>
         /// Upserts a service provider
         /// </summary>
@@ -31,6 +34,22 @@ namespace Access2Justice.Integration.Api.Controllers
         public void Post([FromBody]ServiceProvider serviceProvider)
         {
             return;
+        }
+
+        /// <summary>
+        /// Retrieves service provider by Id
+        /// </summary>
+        /// <param name="organizationalUnit"></param>
+        /// <param name="topic"></param>
+        /// <returns></returns>
+        [HttpGet("{id}", Name = "Get")]
+        [ProducesResponseType(typeof(ServiceProvider), 200)]
+        [ProducesResponseType(404)]
+        public IActionResult GetServiceProviders(string organizationalUnit, Topic topic)
+        {
+            ServiceProviderAdaptee serviceProviderAdaptee = new ServiceProviderAdaptee();
+            var serviceProvider = serviceProviderAdaptee.GetServiceProviders(organizationalUnit, topic);
+            return Ok(serviceProvider);
         }
     }
 }
