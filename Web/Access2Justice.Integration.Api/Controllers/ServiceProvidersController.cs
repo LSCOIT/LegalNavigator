@@ -39,7 +39,8 @@ namespace Access2Justice.Integration.Api.Controllers
         [ProducesResponseType(400)]
         public async Task<IActionResult> UpsertServiceProviders([FromBody]ServiceProvider serviceProvider)
         {
-            return Ok(serviceProvider);
+            var response = await serviceProvidersBusinessLogic.UpsertServiceProviderDocumentAsync(serviceProvider).ConfigureAwait(false);
+            return Ok(response);
         }
     }
 }
