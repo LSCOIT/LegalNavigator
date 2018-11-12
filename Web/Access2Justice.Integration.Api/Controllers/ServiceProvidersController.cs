@@ -1,12 +1,21 @@
 ﻿using Access2Justice.Shared.Models.Integration;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using Access2Justice.Integration.Api.Interfaces;
+using System;
 
 namespace Access2Justice.Integration.Api.Controllers
 {
     [Produces("application/json")]
-    [Route("api/ServiceProviders")]
+    [Route("api/service-providers")]
     public class ServiceProvidersController : Controller
     {
+        private readonly IServiceProvidersBusinessLogic serviceProvidersBusinessLogic;
+        public ServiceProvidersController(IServiceProvidersBusinessLogic serviceProvidersBusinessLogic)
+        {
+            this.serviceProvidersBusinessLogic = serviceProvidersBusinessLogic;
+        }
+
         /// <summary>
         /// Retrieves service provider by Id
         /// </summary>
@@ -15,9 +24,9 @@ namespace Access2Justice.Integration.Api.Controllers
         [HttpGet("{id}", Name = "Get")]
         [ProducesResponseType(typeof(ServiceProvider), 200)]
         [ProducesResponseType(404)]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> GetServiceProviderAsync(string id)
         {
-            var serviceProvider = new ServiceProvider();
+            var serviceProvider = await serviceProvidersBusinessLogic.GetServiceProviderDocumentAsync(id).ConfigureAwait(false);
             return Ok(serviceProvider);
         }
         
@@ -25,12 +34,12 @@ namespace Access2Justice.Integration.Api.Controllers
         /// Upserts a service provider
         /// </summary>
         /// <param name="serviceProvider"></param>
-        [HttpPost]
+        [HttpPost("upsert")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public void Post([FromBody]ServiceProvider serviceProvider)
+        public async Task<IActionResult> UpsertServiceProviders([FromBody]ServiceProvider serviceProvider)
         {
-            return;
+            return Ok(serviceProvider);
         }
     }
 }
