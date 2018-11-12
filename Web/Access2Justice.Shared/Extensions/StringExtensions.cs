@@ -35,9 +35,10 @@ namespace Access2Justice.Shared.Extensions
                     .CheckAttribute("href", HtmlSanitizerCheckType.Url)
                     .RemoveEmpty();
             }
-            // For some reason, the Vereyon.Web nuget is not sanitizing <p> tags. so
-            // I'm renaming <p> to <div> and santizing the html twice - rename then remove.
+            // For some reason, the Vereyon.Web nuget is not sanitizing <p> <blockquote> tags. so
+            // I'm renaming them to <div> and santizing the html again - rename then remove.
             sanitizer.Tag("p").Rename("div");
+            sanitizer.Tag("blockquote").Rename("div");
             string sanitizedHtmlExceptPTag = sanitizer.Sanitize(Regex.Unescape(text));
             return HttpUtility.HtmlDecode(sanitizer.Sanitize(sanitizedHtmlExceptPTag));
         }
