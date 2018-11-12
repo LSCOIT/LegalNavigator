@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Access2Justice.Shared.Models;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -99,6 +100,51 @@ namespace Access2Justice.Api.Tests.TestData
                         '_etag': '\'fc005f34-0000-0000-0000-5b5ac3b50000\'',
                         '_attachments': 'attachments/',
                         '_ts': 1532674997
-                    }]");      
+                    }]");
+
+        public static string updatedStaticNavigationContent = " {\"name\": \"Navigation\"," +
+            "\"location\": [ { \"state\": \"Hawaii\" } ]," +
+            "\"organizationalUnit\": \"Hawaii\"," +
+            "\"locationNavContent\": {\"text\": \"Please Select Location\"," +
+            "\"altText\": \"Please Select Location\"," +
+            "\"button\": {\"buttonText\": \"Change\"," +
+            "\"buttonAltText\": \"Change\"," +
+            "\"buttonLink\": \"asd\"}}," +
+            "\"id\":\"e02ba613-5005-c024-98ec-a092857068ba\"}";
+
+
+        public static JArray staticNavigationContent = JArray.Parse(@"[  {
+    'name': 'Navigation',
+    'location': [ { 'state': 'Hawaii' } ],
+    'organizationalUnit': 'Hawaii',
+    'locationNavContent': {
+      'text': 'Please Select Location',
+      'altText': 'Please Select Location',
+      'button': {
+        'buttonText': 'Change',
+        'buttonAltText': 'Change',
+        'buttonLink': ''
+      }},'id': 'e02ba613-5005-c024-98ec-a092857068ba'
+  }]");
+
+
+        public static IEnumerable<object[]> UpsertNavigationContent()
+        {
+            yield return new object[] { new Navigation { Location = new List<Location>{new Location(){ State="Hawaii"} }, Name = "Navigation", OrganizationalUnit = "Hawaii" },
+             JArray.Parse(@"[  {
+    'name': 'Navigation',
+    'location': [ { 'state': 'Hawaii' } ],
+    'organizationalUnit': 'Hawaii',
+    'locationNavContent': {
+      'text': 'Please Select Location',
+      'altText': 'Please Select Location',
+      'button': {
+        'buttonText': 'Change',
+        'buttonAltText': 'Change',
+        'buttonLink': ''
+      }},'id': 'e02ba613-5005-c024-98ec-a092857068ba'
+  }]") };
+        }
     }
+
 }

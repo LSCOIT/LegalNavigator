@@ -74,5 +74,31 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             //assert
             Assert.DoesNotContain(expectedPageName, result, StringComparison.InvariantCultureIgnoreCase);
         }
+
+        [Theory]
+        [MemberData(nameof(StaticResourceTestData.UpsertNavigationContent), MemberType = typeof(StaticResourceTestData))]
+        public void UpsertStaticNavigationDataAsyncShouldValidate(Navigation navigationInput, dynamic expectedResult)
+        {
+            var dbResponse = dynamicQueries.FindItemsWhereWithLocationAsync(cosmosDbSettings.StaticResourcesCollectionId, Constants.Name, navigationInput.Name, new Location());
+            dbResponse.ReturnsForAnyArgs(StaticResourceTestData.staticNavigationContent);
+
+            //var pageDocument = JsonUtilities.DeserializeDynamicObject<object>(navigationInput);
+            
+            Document updatedDocument = new Document();
+            JsonTextReader reader = new JsonTextReader(new StringReader(StaticResourceTestData.updatedStaticNavigationContent));
+            updatedDocument.LoadFrom(reader);
+
+            backendDatabaseService.UpdateItemAsync<Navigation>(
+               Arg.Any<string>(),
+               Arg.Any<Navigation>(),
+               Arg.Any<string>()).ReturnsForAnyArgs<Document>(updatedDocument);
+
+            //act
+            var response = staticResourceBusinessLogic.UpsertStaticNavigationDataAsync(navigationInput);
+            expectedResult = JsonConvert.SerializeObject(expectedResult);
+            var actualResult = JsonConvert.SerializeObject(response.Result);
+            //assert
+            Assert.Equal(expectedResult, actualResult);
+        }
     }
 }
