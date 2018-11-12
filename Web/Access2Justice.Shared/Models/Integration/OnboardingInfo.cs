@@ -6,6 +6,6 @@ namespace Access2Justice.Shared.Models.Integration
 {
     public class OnboardingInfo
     {
-        Field [] UserFields { get; set; }
+        public IEnumerable<Field> UserFields { get; set; }
     }
 }

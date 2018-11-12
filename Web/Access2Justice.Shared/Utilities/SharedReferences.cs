@@ -187,6 +187,54 @@ namespace Access2Justice.Shared.Utilities
             return schedules;
         }
 
+        public dynamic GetAcceptanceCriteria(dynamic acceptanceCriteriaValues)
+        {
+            AcceptanceCriteria acceptanceCriteria = new AcceptanceCriteria();
+
+            string description = string.Empty;
+            dynamic evaluatedRequirements = null;
+            description = acceptanceCriteriaValues.description.ToString();
+            evaluatedRequirements = GetEvaluatedRequirements(acceptanceCriteriaValues.evaluatedRequirements);
+            acceptanceCriteria = new AcceptanceCriteria { Description = description, EvaluatedRequirements = evaluatedRequirements };
+            return acceptanceCriteria;
+        }
+
+        public dynamic GetEvaluatedRequirements(dynamic evaluatedRequirements)
+        {
+            List<Expression> expressions = new List<Expression>();
+            Expression expression = new Expression();            
+            Models.Integration.Condition condition = new Models.Integration.Condition();
+            Operator operators = new Operator();
+            foreach (var evaluatedRequirement in evaluatedRequirements)
+            {
+                var displayLabel = evaluatedRequirement.condition.displayLabel;
+                var data = evaluatedRequirement.condition.data;
+                ConditionDataType dataType = evaluatedRequirement.condition.dataType;
+                //Operator operatorData = evaluatedRequirement.operator;
+                string variableData = evaluatedRequirement.variable.ToString();
+                condition = new Models.Integration.Condition { DisplayLabel = displayLabel, Data = data, DataType = dataType };             
+                expression = (new Expression { Condition = condition, Operator = operators, Variable = variableData });
+                expressions.Add(expression);
+            }          
+            return expressions;
+        }
+
+        public dynamic GetOnboardingInfo(dynamic onboardingInfoValues)
+        {
+            OnboardingInfo onboardingInfo = new OnboardingInfo();
+            Models.Integration.Field field = new Models.Integration.Field();            
+            List<Models.Integration.Field> fields = new List<Models.Integration.Field>();
+            foreach (var onboardingInfoValue in onboardingInfoValues)
+            {
+                var name = onboardingInfoValue.name;
+                var value = onboardingInfoValue.value;                
+                field = new Models.Integration.Field { Name = name, Value = value };
+                fields.Add(field);
+            }
+            onboardingInfo = new OnboardingInfo { UserFields = fields };
+            return onboardingInfo;
+        }
+
         public dynamic GetReferences(dynamic resourceObject)
         {
             List<TopicTag> topicTags = new List<TopicTag>();
@@ -196,6 +244,8 @@ namespace Access2Justice.Shared.Utilities
             List<OrganizationReviewer> organizationReviewers = new List<OrganizationReviewer>();
             List<ArticleContent> articleContents = new List<ArticleContent>();
             Availability availability = new Availability();
+            AcceptanceCriteria acceptanceCriteria = new AcceptanceCriteria();
+            OnboardingInfo onboardingInfo = new OnboardingInfo();
             List<dynamic> references = new List<dynamic>();
             foreach (JProperty field in resourceObject)
             {
@@ -233,6 +283,16 @@ namespace Access2Justice.Shared.Utilities
                 {
                     availability = field.Value != null && field.Value.Count() > 0 ? GetAvailability(field.Value) : null;
                 }
+
+                else if (field.Name == "acceptanceCriteria")
+                {
+                    acceptanceCriteria = field.Value != null && field.Value.Count() > 0 ? GetAcceptanceCriteria(field.Value) : null;
+                }
+
+                else if (field.Name == "onboardingInfo")
+                {
+                    onboardingInfo = field.Value != null && field.Value.Count() > 0 ? GetOnboardingInfo(field.Value) : null;
+                }
             }
 
             references.Add(topicTags);
@@ -242,6 +302,8 @@ namespace Access2Justice.Shared.Utilities
             references.Add(organizationReviewers);
             references.Add(articleContents);
             references.Add(availability);
+            references.Add(acceptanceCriteria);
+            references.Add(onboardingInfo);
             return references;
         }
     }

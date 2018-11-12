@@ -26,7 +26,7 @@ namespace Access2Justice.Integration.Api.BusinessLogic
         public async Task<dynamic> GetServiceProviderDocumentAsync(string topicName)
         {
 
-            var result = await dbClient.FindItemsWhereAsync(dbSettings.ResourcesCollectionId, Constants.Name, topicName);
+            var result = await dbClient.FindItemsWhereAsync(dbSettings.ResourcesCollectionId, Constants.Name, topicName).ConfigureAwait(false);
             return result;
         }
 
@@ -36,7 +36,6 @@ namespace Access2Justice.Integration.Api.BusinessLogic
             List<dynamic> resources = new List<dynamic>();
             var serviceProviderObjects = JsonUtilities.DeserializeDynamicObject<List<dynamic>>(serviceProviders);
             ServiceProvider serviceProvider = new ServiceProvider();
-
             foreach (var serviceProviderObject in serviceProviderObjects)
             {
                 string id = serviceProviderObject.id;
@@ -45,15 +44,15 @@ namespace Access2Justice.Integration.Api.BusinessLogic
                 var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(serviceProvider);
                 List<string> propertyNames = new List<string>() { Constants.Id, Constants.ResourceType };
                 List<string> values = new List<string>() { id, resourceType };
-                var serviceProviderDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourcesCollectionId, propertyNames, values);
+                var serviceProviderDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourcesCollectionId, propertyNames, values).ConfigureAwait(false);
                 if (serviceProviderDBData.Count == 0)
                 {
-                    var result = await dbService.CreateItemAsync(resourceDocument, dbSettings.ResourcesCollectionId);
+                    var result = await dbService.CreateItemAsync(resourceDocument, dbSettings.ResourcesCollectionId).ConfigureAwait(false);
                     resources.Add(result);
                 }
                 else
                 {
-                    var result = await dbService.UpdateItemAsync(id, resourceDocument, dbSettings.ResourcesCollectionId);
+                    var result = await dbService.UpdateItemAsync(id, resourceDocument, dbSettings.ResourcesCollectionId).ConfigureAwait(false);
                     resources.Add(result);
                 }                
             }
@@ -69,16 +68,22 @@ namespace Access2Justice.Integration.Api.BusinessLogic
             List<Location> locations = new List<Location>();
             List<OrganizationReviewer> organizationReviewers = new List<OrganizationReviewer>();
             Availability availability = new Availability();
+            AcceptanceCriteria acceptanceCriteria = new AcceptanceCriteria();
+            OnboardingInfo onboardingInfo = new OnboardingInfo(); 
             SharedReferences sharedReferences = new SharedReferences();
             dynamic references = sharedReferences.GetReferences(ServiceProvider);
             topicTags = references[0];
             locations = references[1];
             organizationReviewers = references[4];
             availability = references[6];
+            acceptanceCriteria = references[7];
+            onboardingInfo = references[8];
 
             serviceProvider = new ServiceProvider()
             {
                 Availability = availability,
+                AcceptanceCriteria = acceptanceCriteria,
+                OnboardingInfo = onboardingInfo,
                 ResourceId = ServiceProvider.id == "" ? Guid.NewGuid() : ServiceProvider.id,
                 Name = ServiceProvider.name,
                 ResourceCategory = ServiceProvider.resourceCategory,

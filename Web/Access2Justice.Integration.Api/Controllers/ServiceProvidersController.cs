@@ -42,5 +42,6 @@ namespace Access2Justice.Integration.Api.Controllers
             var response = await serviceProvidersBusinessLogic.UpsertServiceProviderDocumentAsync(serviceProvider).ConfigureAwait(false);
             return Ok(response);
         }
+
     }
 }
