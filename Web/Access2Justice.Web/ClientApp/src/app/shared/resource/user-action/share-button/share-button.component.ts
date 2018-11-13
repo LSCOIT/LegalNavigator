@@ -52,8 +52,8 @@ export class ShareButtonComponent implements OnInit {
   }
 
   openModal(template: TemplateRef<any>) {
+    this.savePersonalizationPlan();
     if (!this.global.userId) {
-      this.savePersonalizationPlan();
       sessionStorage.setItem(this.sessionKey, "true");
       this.externalLogin();
     } else {
@@ -90,7 +90,7 @@ export class ShareButtonComponent implements OnInit {
       this.personalizedPlanService.userPlan(params)
         .subscribe(response => {
           if (response) {
-            this.personalizedPlanService.showSuccess("Plan Added to Session");
+            console.log("Plan Added to Session");
           }
         });
     }
