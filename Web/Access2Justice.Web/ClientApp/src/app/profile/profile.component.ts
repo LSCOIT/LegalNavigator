@@ -183,6 +183,8 @@ export class ProfileComponent implements OnInit {
     else if (this.global.isShared) {
       this.userId = this.global.sharedUserId;
       this.userName = this.global.sharedUserName;
+      this.getPersonalizedPlan();
+      this.showRemove = true;
     }
   }
 
