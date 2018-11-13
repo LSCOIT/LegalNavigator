@@ -52,7 +52,11 @@ export class SaveButtonComponent implements OnInit {
 
   savePlanResourcesPreLogin() {
     if (this.router.url.indexOf("/plan") !== -1) {
-      sessionStorage.setItem(this.global.planSessionKey, JSON.stringify(this.navigateDataService.getData()));
+      if (this.navigateDataService.getData()) {
+        sessionStorage.setItem(this.global.planSessionKey, JSON.stringify(this.navigateDataService.getData()));
+      } else if (document.URL.indexOf("/share/") !== -1) {
+        sessionStorage.setItem(this.global.planSessionKey, JSON.stringify(this.personalizedPlanService.planDetails));
+      }
       this.savePersonalizationPlan();
     } else {
       this.savedResources = { itemId: this.id, resourceType: this.type, resourceDetails: this.resourceDetails };
@@ -63,7 +67,7 @@ export class SaveButtonComponent implements OnInit {
   savePersonalizationPlan() {
     if (this.router.url.indexOf("/plan") !== -1) {
       const params = {
-        "personalizedPlan": this.navigateDataService.getData(),
+        "personalizedPlan": this.navigateDataService.getData() ? this.navigateDataService.getData() : this.personalizedPlanService.planDetails,
         "oId": this.global.userId,
         "saveActionPlan": true
       }
