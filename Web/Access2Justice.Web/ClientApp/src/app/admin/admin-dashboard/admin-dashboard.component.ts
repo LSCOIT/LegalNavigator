@@ -10,6 +10,7 @@ import { StaticResourceService } from '../../shared/static-resource.service';
 export class AdminDashboardComponent implements OnInit {
   roleInformationSubscription;
   isStateAdmin: boolean = false;
+  isPortalAdmin: boolean = false;
   stateList: Array<string> = [];
   staticResource: any;
   showStaticContentPage: boolean = false;
@@ -24,6 +25,9 @@ export class AdminDashboardComponent implements OnInit {
       if (role.roleName === 'StateAdmin') {
         this.isStateAdmin = true;
         this.stateList.push(role.organizationalUnit);
+      }
+      if (role.roleName === 'PortalAdmin') {
+        this.isPortalAdmin = true;
       }
     });
   }
