@@ -6,34 +6,36 @@ import { environment } from '../../../environments/environment';
 import { StaticResourceService } from '../../shared/static-resource.service';
 import { AdminService } from '../admin.service';
 import { MapLocation } from '../../shared/map/map';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { NavigateDataService } from '../../shared/navigate-data.service';
 
 @Component({
-  selector: 'app-privacy-promise-admin',
-  templateUrl: './privacy-promise-admin.component.html',
+  selector: 'app-privacy-promise-template',
+  templateUrl: './privacy-promise-template.component.html',
   styleUrls: ['../admin-styles.css']
 })
 
-export class PrivacyPromiseAdminComponent implements OnInit {
+export class PrivacyPromiseTemplateComponent implements OnInit {
   detailParams: any;
   newPrivacyContent: any;
   privacyContent: PrivacyContent;
-  informationData: Array<Details> = [];
   name: string = 'PrivacyPromisePage';
   staticContent: any;
-  staticContentSubcription: any;
   blobUrl: string = environment.blobUrl;
-  location: MapLocation;
-  mapLocation: MapLocation;
   state: string;
+  location: MapLocation = {
+    state: this.activeRoute.snapshot.queryParams["state"]
+  }
 
   constructor(
     private staticResourceService: StaticResourceService,
     private global: Global,
     private adminService: AdminService,
     private spinner: NgxSpinnerService,
-    private router: Router
+    private router: Router,
+    private activeRoute: ActivatedRoute,
+    private navigateDataService: NavigateDataService
   ) { }
 
   mapSectionDescription(form) {
@@ -52,14 +54,12 @@ export class PrivacyPromiseAdminComponent implements OnInit {
     this.spinner.show();
     this.newPrivacyContent = privacyForm.value;
     this.mapSectionDescription(privacyForm.value);
-    if (sessionStorage.getItem("globalMapLocation")) {
-      this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
-    }
+
     let params = {
       "description": privacyForm.value.pageDescription,
       "details": this.detailParams,
       "name": "PrivacyPromisePage",
-      "location": [this.mapLocation],
+      "location": [this.location],
       "image": this.privacyContent.image,
       "organizationalUnit": this.privacyContent.organizationalUnit
     }
@@ -69,29 +69,24 @@ export class PrivacyPromiseAdminComponent implements OnInit {
         if (response) {
           this.privacyContent.description = response["description"];
           this.privacyContent.details = response["details"];
-          this.router.navigate(['/admin']);
+          this.router.navigate(['/privacy']);
         }
       });
-    console.log(params);
   }
 
   getPrivacyPageContent(): void {
-    if ((this.staticResourceService.privacyContent) && (this.staticResourceService.privacyContent.location[0].state == this.staticResourceService.getLocation())) {
-      this.privacyContent = this.staticResourceService.privacyContent;
+    if (this.navigateDataService.getData()) {
+      this.staticContent = this.navigateDataService.getData();
+      this.privacyContent = this.staticContent.find(x => x.name === "PrivacyPromisePage");
     } else {
-      if (this.global.getData()) {
-        this.staticContent = this.global.getData();
-        this.privacyContent = this.staticContent.find(x => x.name === this.name);
-        this.staticResourceService.privacyContent = this.privacyContent;
-      }
+      console.log(this.location);
+      this.staticResourceService.getStaticContents(this.location).subscribe(
+        response => this.privacyContent = response.find(x => x.name === "PrivacyPromisePage"),
+        error => this.router.navigateByUrl('error'));
     }
   }
 
   ngOnInit() {
     this.getPrivacyPageContent();
-    this.staticContentSubcription = this.global.notifyStaticData
-      .subscribe((value) => {
-        this.getPrivacyPageContent();
-      });
   }
 }

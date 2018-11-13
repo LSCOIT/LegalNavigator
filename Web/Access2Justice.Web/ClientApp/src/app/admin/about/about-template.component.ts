@@ -6,11 +6,11 @@ import { environment } from '../../../environments/environment';
 import { NgForm, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-about-admin',
-  templateUrl: './about-admin.component.html',
+  selector: 'app-about-template',
+  templateUrl: './about-template.component.html',
   styleUrls: ['../admin-styles.css']
 })
-export class AboutAdminComponent implements OnInit {
+export class AboutTemplateComponent implements OnInit {
   name: string = 'AboutPage';
   aboutContent: About;
   staticContent: any;
