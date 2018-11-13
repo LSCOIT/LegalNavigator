@@ -32,6 +32,10 @@
   vertical-align: bottom;
 }
 
+.btn-primary {
+  margin-bottom: 40px;
+}
+
 @media only screen and (min-width : 992px) {
   .col-md-4 {
     padding-left: 5%;

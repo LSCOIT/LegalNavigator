@@ -112,4 +112,10 @@ export class SubtopicDetailComponent implements OnInit {
         });
       });
   }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
 }

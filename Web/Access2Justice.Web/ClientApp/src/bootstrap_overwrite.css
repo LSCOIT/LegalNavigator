@@ -15,7 +15,7 @@
 
 .row {
   margin: 20px auto;
-  display: table;
+  display: inline-block;
   width: 100%;
 }
 
@@ -266,6 +266,12 @@ span.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chev
   -moz-box-shadow: 0 4px 10px 0 rgba(0,0,0,0.2);
   box-shadow: 0 4px 10px 0 rgba(0,0,0,0.2);
   text-decoration: none;
+}
+
+@media only screen and (min-width : 540px) {
+  .row {
+    display: table;
+  }
 }
 
 @media only screen and (min-width : 768px) {

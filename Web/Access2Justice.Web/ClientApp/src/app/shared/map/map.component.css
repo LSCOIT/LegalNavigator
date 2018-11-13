@@ -123,6 +123,10 @@ p.ps {
   margin: 15px;
 }
 
+.close {
+  margin-right: 15px;
+}
+
 @media only screen and (min-width : 540px) {
   .modal-body {
     padding: 15px;
@@ -138,10 +142,6 @@ p.ps {
   
   .mobile-margin {
     margin: 0;
-  }
-
-  .nav-icon.mobile-margin {
-    margin: 20px;
   }
 
   .web-hidden {
