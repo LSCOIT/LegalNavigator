@@ -38,4 +38,9 @@
     <!--<button class="btn btn-selected" [routerLink]="['/admin/privacy']">Privacy Promise</button>
     <button class="btn btn-selected" [routerLink]="['/admin/about']">About</button>-->
   </div>
+  <div class="row" *ngIf="isPortalAdmin">
+    <a class="btn btn-secondary" routerLink="curated-experience">
+      Upload Curated Experience
+    </a>
+  </div>
 </div>
