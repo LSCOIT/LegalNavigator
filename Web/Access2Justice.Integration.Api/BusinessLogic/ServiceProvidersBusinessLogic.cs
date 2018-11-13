@@ -41,18 +41,14 @@ namespace Access2Justice.Integration.Api.BusinessLogic
         /// <summary>
         /// upserts service provider
         /// </summary>
-        public async Task<IEnumerable<object>> UpsertServiceProviderDocumentAsync(dynamic serviceProviderJson, dynamic providerDetailJson, dynamic topicNameJson)
+        public async Task<IEnumerable<object>> UpsertServiceProviderDocumentAsync(dynamic serviceProviderJson, dynamic providerDetailJson, dynamic topic)
         {
             List<dynamic> results = new List<dynamic>();
             List<dynamic> resources = new List<dynamic>();
             var serviceProviderObjects = JsonUtilities.DeserializeDynamicObject<List<dynamic>>(serviceProviderJson);
             var providerDetailObjects = JsonUtilities.DeserializeDynamicObject<List<dynamic>>(providerDetailJson);
             string topicName = string.Empty;
-            var topicObjects = JsonUtilities.DeserializeDynamicObject<List<dynamic>>(topicNameJson);
-            foreach (var topic in topicObjects)
-            {
-                topicName = topic.topicName.ToString();
-            }
+            topicName = topic.ToString();
             ServiceProvider serviceProvider = new ServiceProvider();
             foreach (var serviceProviderObject in serviceProviderObjects)
             {
@@ -60,7 +56,9 @@ namespace Access2Justice.Integration.Api.BusinessLogic
                 {                    
                     string siteId = site.ID;
                     string resourceType = Constants.ServiceProviderResourceType;
-                    var topicTag = await GetServiceProviderTopicTagsAsync(topicName).ConfigureAwait(false);
+                    var topicDBData = await dbClient.FindItemsWhereAsync(dbSettings.TopicsCollectionId, Constants.Name, topicName).ConfigureAwait(false);
+                    var id = topicDBData[0].id;
+                    var topicTag = GetServiceProviderTopicTags(id);
                     serviceProvider = UpsertServiceProvider(site, topicTag);
                     var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(serviceProvider);
                     List<string> propertyNames = new List<string>() { Constants.SiteId, Constants.ResourceType };
@@ -73,8 +71,8 @@ namespace Access2Justice.Integration.Api.BusinessLogic
                     }
                     else
                     {
-                        string id = serviceProviderDBData.id;
-                        var result = await dbService.UpdateItemAsync(id, resourceDocument, dbSettings.ResourcesCollectionId).ConfigureAwait(false);
+                        string serviceProviderId = serviceProviderDBData.id;
+                        var result = await dbService.UpdateItemAsync(serviceProviderId, resourceDocument, dbSettings.ResourcesCollectionId).ConfigureAwait(false);
                         resources.Add(result);
                     }
                 }                
@@ -191,12 +189,10 @@ namespace Access2Justice.Integration.Api.BusinessLogic
         /// <summary>
         /// returns topic tags
         /// </summary>
-        /// <param name="topicName"></param>
+        /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<dynamic> GetServiceProviderTopicTagsAsync(string topicName)
+        public dynamic GetServiceProviderTopicTags(dynamic id)
         {
-            var topicDBData = await dbClient.FindItemsWhereAsync(dbSettings.TopicsCollectionId, Constants.Name, topicName).ConfigureAwait(false);
-            var id = topicDBData[0].id;
             List<TopicTag> topicTags = new List<TopicTag>();
             topicTags.Add(new TopicTag { TopicTags = id });
             return topicTags;
