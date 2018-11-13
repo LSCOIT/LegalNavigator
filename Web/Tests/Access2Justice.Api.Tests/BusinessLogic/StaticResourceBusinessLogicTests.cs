@@ -77,28 +77,118 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 
         [Theory]
         [MemberData(nameof(StaticResourceTestData.UpsertNavigationContent), MemberType = typeof(StaticResourceTestData))]
-        public void UpsertStaticNavigationDataAsyncShouldValidate(Navigation navigationInput, dynamic expectedResult)
+        public void UpsertStaticNavigationDataAsyncShouldValidate(Navigation navigationInput, JArray navigationDBData, dynamic expectedResult)
         {
+            var expectedName = "Navigation";
             var dbResponse = dynamicQueries.FindItemsWhereWithLocationAsync(cosmosDbSettings.StaticResourcesCollectionId, Constants.Name, navigationInput.Name, new Location());
-            dbResponse.ReturnsForAnyArgs(StaticResourceTestData.staticNavigationContent);
-
-            //var pageDocument = JsonUtilities.DeserializeDynamicObject<object>(navigationInput);
+            dbResponse.ReturnsForAnyArgs(navigationDBData);
             
             Document updatedDocument = new Document();
             JsonTextReader reader = new JsonTextReader(new StringReader(StaticResourceTestData.updatedStaticNavigationContent));
             updatedDocument.LoadFrom(reader);
 
-            backendDatabaseService.UpdateItemAsync<Navigation>(
-               Arg.Any<string>(),
+            backendDatabaseService.CreateItemAsync<dynamic>(
                Arg.Any<Navigation>(),
                Arg.Any<string>()).ReturnsForAnyArgs<Document>(updatedDocument);
 
+            backendDatabaseService.UpdateItemAsync<dynamic>(
+               Arg.Any<string>(),
+               Arg.Any<Navigation>(),
+               Arg.Any<string>()).ReturnsForAnyArgs<Document>(updatedDocument);
+            
             //act
             var response = staticResourceBusinessLogic.UpsertStaticNavigationDataAsync(navigationInput);
             expectedResult = JsonConvert.SerializeObject(expectedResult);
             var actualResult = JsonConvert.SerializeObject(response.Result);
             //assert
-            Assert.Equal(expectedResult, actualResult);
+            Assert.Contains(expectedName, expectedResult);
+        }
+
+        [Theory]
+        [MemberData(nameof(StaticResourceTestData.UpsertPrivacyPromiseContent), MemberType = typeof(StaticResourceTestData))]
+        public void UpsertStaticPrivacyPromisePageDataAsyncShouldValidate(PrivacyPromiseContent privacyPromiseInput, JArray privacyPromiseDBData, dynamic expectedResult)
+        {
+            var expectedName = "PrivacyPromisePage";
+            var dbResponse = dynamicQueries.FindItemsWhereWithLocationAsync(cosmosDbSettings.StaticResourcesCollectionId, Constants.Name, privacyPromiseInput.Name, new Location());
+            dbResponse.ReturnsForAnyArgs(privacyPromiseDBData);
+
+            Document updatedDocument = new Document();
+            JsonTextReader reader = new JsonTextReader(new StringReader(StaticResourceTestData.updatedStaticNavigationContent));
+            updatedDocument.LoadFrom(reader);
+
+            backendDatabaseService.CreateItemAsync<dynamic>(
+               Arg.Any<PrivacyPromiseContent>(),
+               Arg.Any<string>()).ReturnsForAnyArgs<Document>(updatedDocument);
+
+            backendDatabaseService.UpdateItemAsync<dynamic>(
+               Arg.Any<string>(),
+               Arg.Any<PrivacyPromiseContent>(),
+               Arg.Any<string>()).ReturnsForAnyArgs<Document>(updatedDocument);
+
+            //act
+            var response = staticResourceBusinessLogic.UpsertStaticPrivacyPromisePageDataAsync(privacyPromiseInput);
+            expectedResult = JsonConvert.SerializeObject(expectedResult);
+            var actualResult = JsonConvert.SerializeObject(response.Result);
+            //assert
+            Assert.Contains(expectedName, expectedResult);
+        }
+
+        [Theory]
+        [MemberData(nameof(StaticResourceTestData.UpsertHelpAndFAQPageContent), MemberType = typeof(StaticResourceTestData))]
+        public void UpsertStaticHelpAndFAQPageDataAsyncShouldValidate(HelpAndFaqsContent helpAndFaqsInput, JArray helpAndFaqsDBData, dynamic expectedResult)
+        {
+            var expectedName = "HelpAndFAQPage";
+            var dbResponse = dynamicQueries.FindItemsWhereWithLocationAsync(cosmosDbSettings.StaticResourcesCollectionId, Constants.Name, helpAndFaqsInput.Name, new Location());
+            dbResponse.ReturnsForAnyArgs(helpAndFaqsDBData);
+
+            Document updatedDocument = new Document();
+            JsonTextReader reader = new JsonTextReader(new StringReader(StaticResourceTestData.updatedHelpAndFAQContent));
+            updatedDocument.LoadFrom(reader);
+
+            backendDatabaseService.CreateItemAsync<dynamic>(
+               Arg.Any<HelpAndFaqsContent>(),
+               Arg.Any<string>()).ReturnsForAnyArgs<Document>(updatedDocument);
+
+            backendDatabaseService.UpdateItemAsync<dynamic>(
+               Arg.Any<string>(),
+               Arg.Any<HelpAndFaqsContent>(),
+               Arg.Any<string>()).ReturnsForAnyArgs<Document>(updatedDocument);
+
+            //act
+            var response = staticResourceBusinessLogic.UpsertStaticHelpAndFAQPageDataAsync(helpAndFaqsInput);
+            expectedResult = JsonConvert.SerializeObject(expectedResult);
+            var actualResult = JsonConvert.SerializeObject(response.Result);
+            //assert
+            Assert.Contains(expectedName, expectedResult);
+        }
+
+        [Theory]
+        [MemberData(nameof(StaticResourceTestData.UpsertAboutPageContent), MemberType = typeof(StaticResourceTestData))]
+        public void UpsertStaticAboutPageDataAsyncShouldValidate(AboutContent aboutInput, JArray aboutDBData, dynamic expectedResult)
+        {
+            var expectedName = "AboutPage";
+            var dbResponse = dynamicQueries.FindItemsWhereWithLocationAsync(cosmosDbSettings.StaticResourcesCollectionId, Constants.Name, aboutInput.Name, new Location());
+            dbResponse.ReturnsForAnyArgs(aboutDBData);
+
+            Document updatedDocument = new Document();
+            JsonTextReader reader = new JsonTextReader(new StringReader(StaticResourceTestData.updatedHelpAndFAQContent));
+            updatedDocument.LoadFrom(reader);
+
+            backendDatabaseService.CreateItemAsync<dynamic>(
+               Arg.Any<AboutContent>(),
+               Arg.Any<string>()).ReturnsForAnyArgs<Document>(updatedDocument);
+
+            backendDatabaseService.UpdateItemAsync<dynamic>(
+               Arg.Any<string>(),
+               Arg.Any<AboutContent>(),
+               Arg.Any<string>()).ReturnsForAnyArgs<Document>(updatedDocument);
+
+            //act
+            var response = staticResourceBusinessLogic.UpsertStaticAboutPageDataAsync(aboutInput);
+            expectedResult = JsonConvert.SerializeObject(expectedResult);
+            var actualResult = JsonConvert.SerializeObject(response.Result);
+            //assert
+            Assert.Contains(expectedName, expectedResult);
         }
     }
 }

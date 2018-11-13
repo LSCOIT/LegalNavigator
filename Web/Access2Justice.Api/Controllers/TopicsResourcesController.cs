@@ -389,7 +389,7 @@ namespace Access2Justice.Api.Controllers
         {
             List<dynamic> topicsList = new List<dynamic>();
             topicsList.Add(topic);
-            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(topic.organizationalUnit))
+            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(topic?.organizationalUnit))
             {
                 var topics = await topicsResourcesBusinessLogic.UpsertTopicDocumentAsync(topicsList);
                 return Ok(topics);
@@ -407,7 +407,7 @@ namespace Access2Justice.Api.Controllers
         {
             List<dynamic> resourcesList = new List<dynamic>();
             resourcesList.Add(resource);
-            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(resource.organizationalUnit))
+            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(resource?.organizationalUnit))
             {
                 var resources = await topicsResourcesBusinessLogic.UpsertResourceDocumentAsync(resourcesList);
                 return Ok(resources);

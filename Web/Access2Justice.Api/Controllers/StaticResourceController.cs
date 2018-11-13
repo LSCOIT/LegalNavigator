@@ -52,7 +52,7 @@ namespace Access2Justice.Api.Controllers
         [Route("api/static-resource/upsert-static-home-page")]
         public async Task<IActionResult> UpsertStaticHomePageDataAsync([FromBody]HomeContent homePageContent)
         {
-            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(homePageContent.OrganizationalUnit))
+            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(homePageContent?.OrganizationalUnit))
             {
                 var contents = await staticResourceBusinessLogic.UpsertStaticHomePageDataAsync(homePageContent);
                 return Ok(contents);
@@ -74,12 +74,12 @@ namespace Access2Justice.Api.Controllers
         [Route("api/static-resource/upsert-static-privacy-page")]
         public async Task<IActionResult> UpsertStaticPrivacyPromisePageDataAsync([FromBody]PrivacyPromiseContent privacyPromiseContent)
         {
-            //if (await userRoleBusinessLogic.ValidateOrganizationalUnit(privacyPromiseContent.OrganizationalUnit))
-            //{
+            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(privacyPromiseContent?.OrganizationalUnit))
+            {
                 var contents = await staticResourceBusinessLogic.UpsertStaticPrivacyPromisePageDataAsync(privacyPromiseContent);
                 return Ok(contents);
-            //}
-            //return StatusCode(403);
+            }
+            return StatusCode(403);
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace Access2Justice.Api.Controllers
         [Route("api/static-resource/upsert-static-help-and-faq-page")]
         public async Task<IActionResult> UpsertStaticHelpAndFAQPageDataAsync([FromBody]HelpAndFaqsContent helpAndFAQPageContent)
         {
-            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(helpAndFAQPageContent.OrganizationalUnit))
+            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(helpAndFAQPageContent?.OrganizationalUnit))
             {
                 var contents = await staticResourceBusinessLogic.UpsertStaticHelpAndFAQPageDataAsync(helpAndFAQPageContent);
                 return Ok(contents);
@@ -119,7 +119,7 @@ namespace Access2Justice.Api.Controllers
         [Route("api/static-resource/upsert-static-navigation")]
         public async Task<IActionResult> UpsertStaticNavigationDataAsync([FromBody]Navigation navigationContent)
         {
-            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(navigationContent.OrganizationalUnit))
+            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(navigationContent?.OrganizationalUnit))
             {
                 var contents = await staticResourceBusinessLogic.UpsertStaticNavigationDataAsync(navigationContent);
                 return Ok(contents);
@@ -141,7 +141,7 @@ namespace Access2Justice.Api.Controllers
         [Route("api/static-resource/upsert-static-about-page")]
         public async Task<IActionResult> UpsertStaticAboutPageDataAsync([FromBody]AboutContent aboutContent)
         {
-            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(aboutContent.OrganizationalUnit))
+            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(aboutContent?.OrganizationalUnit))
             {
                 var contents = await staticResourceBusinessLogic.UpsertStaticAboutPageDataAsync(aboutContent);
                 return Ok(contents);
