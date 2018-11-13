@@ -190,5 +190,34 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             //assert
             Assert.Contains(expectedName, expectedResult);
         }
+
+        [Theory]
+        [MemberData(nameof(StaticResourceTestData.UpsertHomePageContent), MemberType = typeof(StaticResourceTestData))]
+        public void UpsertStaticHomePageDataAsyncShouldValidate(HomeContent homeInput, JArray homeDBData, dynamic expectedResult)
+        {
+            var expectedName = "HomePage";
+            var dbResponse = dynamicQueries.FindItemsWhereWithLocationAsync(cosmosDbSettings.StaticResourcesCollectionId, Constants.Name, homeInput.Name, new Location());
+            dbResponse.ReturnsForAnyArgs(homeDBData);
+
+            Document updatedDocument = new Document();
+            JsonTextReader reader = new JsonTextReader(new StringReader(StaticResourceTestData.updatedHomeContent));
+            updatedDocument.LoadFrom(reader);
+
+            backendDatabaseService.CreateItemAsync<dynamic>(
+               Arg.Any<HomeContent>(),
+               Arg.Any<string>()).ReturnsForAnyArgs<Document>(updatedDocument);
+
+            backendDatabaseService.UpdateItemAsync<dynamic>(
+               Arg.Any<string>(),
+               Arg.Any<HomeContent>(),
+               Arg.Any<string>()).ReturnsForAnyArgs<Document>(updatedDocument);
+
+            //act
+            var response = staticResourceBusinessLogic.UpsertStaticHomePageDataAsync(homeInput);
+            expectedResult = JsonConvert.SerializeObject(expectedResult);
+            var actualResult = JsonConvert.SerializeObject(response.Result);
+            //assert
+            Assert.Contains(expectedName, expectedResult);
+        }
     }
 }

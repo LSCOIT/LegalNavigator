@@ -235,6 +235,155 @@ namespace Access2Justice.Api.Tests.TestData
     'id': 'ab0ef241-5778-0147-062c-005e80946d38'
   }]");
 
+        public static string updatedHomeContent = "{\"hero\":{\"heading\":\"Get help with your legal questions in\",\"description\":{\"text\":\"We will always protect your privacy. Read our\",\"textWithLink\":{\"urlText\":\"Privacy Promise\",\"url\":\"privacy\"}}," +
+    "\"image\":{\"source\":\"/static-resource/alaska/assets/images/primary-illustrations/alaska.svg\",\"altText\":\"Illustration of Alaska\"}},\"guidedAssistantOverview\":{\"heading\":\"Need a plan of action for your legal issue? Our Guided Assistant can help.\"," +
+    "\"description\":{\"steps\":[{\"order\":1,\"description\":\"Answer a few questions to help us understand your needs.\"},{\"order\":2,\"description\":\"We'll create a personalized plan with steps and resources.\"}," +
+    "{\"order\":3,\"description\":\"Share, print, or create a profile to save your plan.\"}],\"text\":\"Free and no account necessary. We never share any information you provide.\",\"textWithLink\":{\"urlText\":\"Privacy Promise\"," +
+    "\"url\":\"privacy\"}},\"button\":{\"buttonText\":\"Start the Guided Assistant\",\"buttonAltText\":\"Start the Guided Assistant\",\"buttonLink\":\"guidedassistant\"},\"image\":{\"source\":\"/static-resource/alaska/assets/images/secondary-illustrations/guided_assistant.svg\"," +
+    "\"altText\":\"Guided Assistant Illustration\"}},\"topicAndResources\":{\"heading\":\"More Information, Videos, and Links to Resources by Topic\",\"button\":{\"buttonText\":\"See More Topics\",\"buttonAltText\":\"Alt text\"," +
+    "\"buttonLink\":\"topics\"}},\"carousel\":{\"slides\":[{\"quote\":\"Tincidunt integer eu augue augue nunc elit dolor, luctus placerat scelerisque euismod, iaculis eu lacus nunc mi elit, vehicula ut laoreet ac, aliquam sit amet justo nunc tempor, metus vel..\"," +
+    "\"author\":\"Robbie\",\"location\":\"Anchorage, AK\",\"image\":{\"source\":\"/static-resource/alaska/assets/images/sample-images/trees_0.JPG\",\"altText\":\"Image not available\"}},{\"quote\":\"Ut fusce varius nisl ac ipsum gravida vel pretium tellus tincidunt integer eu augue augue nunc elit dolor, luctus placerat.\"," +
+    "\"author\":\"Robbie\",\"location\":\"Anchorage, AK\",\"image\":{\"source\":\"/static-resource/alaska/assets/images/sample-images/trees_1.JPG\",\"altText\":\"Image not available\"}},{\"quote\":\"This site is here to provide equal access to legal information and resources for everyone. Legal disclaimer lorem ipsum dolor amet. It is brought to you by partnership of these nonproffit organizations.\"," +
+    "\"author\":\"Robbie\",\"location\":\"Anchorage, AK\",\"image\":{\"source\":\"/static-resource/alaska/assets/images/sample-images/trees_2.JPG\",\"altText\":\"Image not available\"}}]},\"sponsorOverview\":{\"heading\":\"Information you can trust\",\"description\":\"This site is here to provide equal access to legal information and resources for everyone. Legal disclaimer lorem ipsum dolor amet. It is brought to you by partnership of these nonproffit organizations\"," +
+    "\"sponsors\":[{\"source\":\"\",\"altText\":\"Illustration of Hawaii\"},{\"source\":\"\",\"altText\":\"Illustration of Hawaii\"}],\"button\":{\"buttonText\":\"Learn More\",\"buttonAltText\":\"Learn More\",\"buttonLink\":\"about\"}},\"privacy\":{\"heading\":\"Our Privacy Promise\",\"description\":\"We value your privacy and will never share your personal information with anyone without your lorem ipsum dolor sit amet.\"," +
+    "\"button\":{\"buttonText\":\"Learn More\",\"buttonAltText\":\"Alt text\",\"buttonLink\":\"privacy\"},\"image\":{\"source\":\"/static-resource/alaska/assets/images/secondary-illustrations/privacy_promise.svg\",\"altText\":\"Privacy Illustration\"}},\"helpText\":\"Are you safe? Call X-XXX-XXX-XXXX to get help.\"," +
+    "\"organizationalUnit\":\"Alaska\",\"id\":null,\"name\":\"HomePage\"," +
+    "\"location\":[{\"state\":\"Alaska\",\"county\":null,\"city\":null,\"zipCode\":null}]}";
+
+        public static JArray staticHomeContent = JArray.Parse(@"[  {
+    'hero': {
+      'heading': 'Get help with your legal questions in',
+      'description': {
+        'text': 'We will always protect your privacy. Read our',
+        'textWithLink': {
+          'urlText': 'Privacy Promise',
+          'url': 'privacy'
+        }
+      },
+      'image': {
+        'source': '/static-resource/alaska/assets/images/primary-illustrations/alaska.svg',
+        'altText': 'Illustration of Alaska'
+      }
+    },
+    'guidedAssistantOverview': {
+      'heading': 'Need a plan of action for your legal issue? Our Guided Assistant can help.',
+      'description': {
+        'steps': [
+          {
+            'order': 1,
+            'description': 'Answer a few questions to help us understand your needs.'
+          },
+          {
+            'order': 2,
+            'description': 'We will create a personalized plan with steps and resources.'
+          },
+          {
+            'order': 3,
+            'description': 'Share, print, or create a profile to save your plan.'
+          }
+        ],
+        'text': 'Free and no account necessary. We never share any information you provide.',
+        'textWithLink': {
+          'urlText': 'Privacy Promise',
+          'url': 'privacy'
+        }
+      },
+      'button': {
+        'buttonText': 'Start the Guided Assistant',
+        'buttonAltText': 'Start the Guided Assistant',
+        'buttonLink': 'guidedassistant'
+      },
+      'image': {
+        'source': '/static-resource/alaska/assets/images/secondary-illustrations/guided_assistant.svg',
+        'altText': 'Guided Assistant Illustration'
+      }
+    },
+    'topicAndResources': {
+      'heading': 'More Information, Videos, and Links to Resources by Topic',
+      'button': {
+        'buttonText': 'See More Topics',
+        'buttonAltText': 'Alt text',
+        'buttonLink': 'topics'
+      }
+    },
+    'carousel': {
+      'slides': [
+        {
+          'quote': 'Tincidunt integer eu augue augue nunc elit dolor, luctus placerat scelerisque euismod, iaculis eu lacus nunc mi elit, vehicula ut laoreet ac, aliquam sit amet justo nunc tempor, metus vel..',
+          'author': 'Robbie',
+          'location': 'Anchorage, AK',
+          'image': {
+            'source': '/static-resource/alaska/assets/images/sample-images/trees_0.JPG',
+            'altText': 'Image not available'
+          }
+        },
+        {
+          'quote': 'Ut fusce varius nisl ac ipsum gravida vel pretium tellus tincidunt integer eu augue augue nunc elit dolor, luctus placerat.',
+          'author': 'Robbie',
+          'location': 'Anchorage, AK',
+          'image': {
+            'source': '/static-resource/alaska/assets/images/sample-images/trees_1.JPG',
+            'altText': 'Image not available'
+          }
+        },
+        {
+          'quote': 'This site is here to provide equal access to legal information and resources for everyone. Legal disclaimer lorem ipsum dolor amet. It is brought to you by partnership of these nonproffit organizations.',
+          'author': 'Robbie',
+          'location': 'Anchorage, AK',
+          'image': {
+            'source': '/static-resource/alaska/assets/images/sample-images/trees_2.JPG',
+            'altText': 'Image not available'
+          }
+        }
+      ]
+    },
+    'sponsorOverview': {
+      'heading': 'Information you can trust',
+      'description': 'This site is here to provide equal access to legal information and resources for everyone. Legal disclaimer lorem ipsum dolor amet. It is brought to you by partnership of these nonproffit organizations',
+      'sponsors': [
+        {
+          'source': '',
+          'altText': 'Illustration of Hawaii'
+        },
+        {
+          'source': '',
+          'altText': 'Illustration of Hawaii'
+        }
+      ],
+      'button': {
+        'buttonText': 'Learn More',
+        'buttonAltText': 'Learn More',
+        'buttonLink': 'about'
+      }
+    },
+    'privacy': {
+      'heading': 'Our Privacy Promise',
+      'description': 'We value your privacy and will never share your personal information with anyone without your lorem ipsum dolor sit amet.',
+      'button': {
+        'buttonText': 'Learn More',
+        'buttonAltText': 'Alt text',
+        'buttonLink': 'privacy'
+      },
+      'image': {
+        'source': '/static-resource/alaska/assets/images/secondary-illustrations/privacy_promise.svg',
+        'altText': 'Privacy Illustration'
+      }
+    },
+    'helpText': 'Are you safe? Call X-XXX-XXX-XXXX to get help.',
+    'organizationalUnit': 'Alaska',
+    'id': 'c586534a-9d6e-4434-ad30-f7457804c51a',
+    'name': 'HomePage',
+    'location': [
+      {
+        'state': 'Alaska',
+        'county': null,
+        'city': null,
+        'zipCode': null
+      }
+    ]
+  }]");
+
+
 
         public static IEnumerable<object[]> UpsertNavigationContent()
         {
@@ -267,6 +416,14 @@ namespace Access2Justice.Api.Tests.TestData
             yield return new object[] { new AboutContent { Location = new List<Location>{new Location(){ State="Alaska"} }, Name = "AboutPage", OrganizationalUnit = "Alaska" },
              JArray.Parse(@"[]"), staticAboutContent};
         }
+        public static IEnumerable<object[]> UpsertHomePageContent()
+        {
+            yield return new object[] { new HomeContent { Location = new List<Location>{new Location(){ State="Alaska"} }, Name = "HomePage", OrganizationalUnit = "Alaska" },
+             staticHomeContent, staticHomeContent };
+            yield return new object[] { new HomeContent { Location = new List<Location>{new Location(){ State="Alaska"} }, Name = "HomePage", OrganizationalUnit = "Alaska" },
+             JArray.Parse(@"[]"), staticHomeContent};
+        }
+
     }
 
 }
