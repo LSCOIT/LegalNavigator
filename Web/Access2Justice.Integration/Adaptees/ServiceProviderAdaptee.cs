@@ -19,11 +19,11 @@ namespace Access2Justice.Integration.Adapters
         private readonly IRtmSettings rtmSettings;
         private readonly IWebSearchBusinessLogic webSearchBusinessLogic;
 
-        //public ServiceProviderAdaptee(IRtmSettings rtmSettings, IWebSearchBusinessLogic webSearchBusinessLogic)
-        //{
-        //    this.rtmSettings = rtmSettings;
-        //    this.webSearchBusinessLogic = webSearchBusinessLogic;
-        //}
+        public ServiceProviderAdaptee(IRtmSettings rtmSettings, IWebSearchBusinessLogic webSearchBusinessLogic)
+        {
+            this.rtmSettings = rtmSettings;
+            this.webSearchBusinessLogic = webSearchBusinessLogic;
+        }
 
         public async Task<IEnumerable<ServiceProvider>> GetServiceProviders(string organizationalUnit, Topic topic)
         {
