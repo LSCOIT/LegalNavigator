@@ -11,11 +11,18 @@ using Access2Justice.Shared.Models;
 
 namespace Access2Justice.Integration.Api.BusinessLogic
 {
+    /// <summary>
+    /// Business logic for service provider
+    /// </summary>
     public class ServiceProvidersBusinessLogic : IServiceProvidersBusinessLogic
     {
         private readonly IDynamicQueries dbClient;
         private readonly ICosmosDbSettings dbSettings;
         private readonly IBackendDatabaseService dbService;
+
+        /// <summary>
+        /// Dependency Injection
+        /// </summary>
         public ServiceProvidersBusinessLogic(IDynamicQueries dynamicQueries, ICosmosDbSettings cosmosDbSettings, IBackendDatabaseService backendDatabaseService)
         {
             dbClient = dynamicQueries;
@@ -23,13 +30,17 @@ namespace Access2Justice.Integration.Api.BusinessLogic
             dbService = backendDatabaseService;
         }
 
-        public async Task<dynamic> GetServiceProviderDocumentAsync(string topicName)
+        /// <summary>
+        /// returns service provider based on id
+        /// </summary>
+        public async Task<dynamic> GetServiceProviderDocumentAsync(string id)
         {
-
-            var result = await dbClient.FindItemsWhereAsync(dbSettings.ResourcesCollectionId, Constants.Name, topicName).ConfigureAwait(false);
-            return result;
+            return await dbClient.FindItemsWhereAsync(dbSettings.ResourcesCollectionId, Constants.Id, id).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// upserts service provider
+        /// </summary>
         public async Task<IEnumerable<object>> UpsertServiceProviderDocumentAsync(dynamic serviceProviders)
         {
             List<dynamic> results = new List<dynamic>();
@@ -59,7 +70,58 @@ namespace Access2Justice.Integration.Api.BusinessLogic
             return resources;
         }
 
+        /// <summary>
+        /// upserts service provider
+        /// </summary>
         public dynamic UpsertServiceProvider(dynamic ServiceProvider)
+        {
+            ServiceProvider serviceProvider = new ServiceProvider();
+            Organization organizations = new Organization();
+            List<TopicTag> topicTags = new List<TopicTag>();
+            List<Location> locations = new List<Location>();
+            List<OrganizationReviewer> organizationReviewers = new List<OrganizationReviewer>();
+            Availability availability = new Availability();
+            AcceptanceCriteria acceptanceCriteria = new AcceptanceCriteria();
+            OnboardingInfo onboardingInfo = new OnboardingInfo();
+            SharedReferences sharedReferences = new SharedReferences();
+            dynamic references = sharedReferences.GetReferences(ServiceProvider);
+            topicTags = references[0];
+            locations = references[1];
+            organizationReviewers = references[4];
+            availability = references[6];
+            acceptanceCriteria = references[7];
+            onboardingInfo = references[8];
+
+            serviceProvider = new ServiceProvider()
+            {
+                Availability = availability,
+                AcceptanceCriteria = acceptanceCriteria,
+                OnboardingInfo = onboardingInfo,
+                ResourceId = ServiceProvider.id == "" ? Guid.NewGuid() : ServiceProvider.id,
+                Name = ServiceProvider.name,
+                ResourceCategory = ServiceProvider.resourceCategory,
+                Description = ServiceProvider.description,
+                ResourceType = Constants.ServiceProviderResourceType,
+                Url = ServiceProvider.url,
+                TopicTags = topicTags,
+                OrganizationalUnit = ServiceProvider.organizationalUnit,
+                Location = locations,
+                CreatedBy = ServiceProvider.createdBy,
+                ModifiedBy = ServiceProvider.modifiedBy,
+                Address = ServiceProvider.address,
+                Telephone = ServiceProvider.telephone,
+                Overview = ServiceProvider.overview,
+                Specialties = ServiceProvider.specialties,
+                EligibilityInformation = ServiceProvider.eligibilityInformation,
+                Qualifications = ServiceProvider.qualifications,
+                BusinessHours = ServiceProvider.businessHours,
+                Reviewer = organizationReviewers
+            };
+            //serviceProvider.Validate();
+            return serviceProvider;
+        }
+
+        public dynamic UpsertServiceProviders(dynamic ServiceProvider)
         {
             ServiceProvider serviceProvider = new ServiceProvider();
 
@@ -88,7 +150,7 @@ namespace Access2Justice.Integration.Api.BusinessLogic
                 Name = ServiceProvider.name,
                 ResourceCategory = ServiceProvider.resourceCategory,
                 Description = ServiceProvider.description,
-                ResourceType = ServiceProvider.resourceType,
+                ResourceType = Constants.ServiceProviderResourceType,
                 Url = ServiceProvider.url,
                 TopicTags = topicTags,
                 OrganizationalUnit = ServiceProvider.organizationalUnit,

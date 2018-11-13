@@ -204,16 +204,15 @@ namespace Access2Justice.Shared.Utilities
             List<Expression> expressions = new List<Expression>();
             Expression expression = new Expression();            
             Models.Integration.Condition condition = new Models.Integration.Condition();
-            Operator operators = new Operator();
             foreach (var evaluatedRequirement in evaluatedRequirements)
             {
                 var displayLabel = evaluatedRequirement.condition.displayLabel;
                 var data = evaluatedRequirement.condition.data;
                 ConditionDataType dataType = evaluatedRequirement.condition.dataType;
-                //Operator operatorData = evaluatedRequirement.operator;
+                Operator operatorData = evaluatedRequirement.operatorName;
                 string variableData = evaluatedRequirement.variable.ToString();
                 condition = new Models.Integration.Condition { DisplayLabel = displayLabel, Data = data, DataType = dataType };             
-                expression = (new Expression { Condition = condition, Operator = operators, Variable = variableData });
+                expression = (new Expression { Condition = condition, Operator = operatorData, Variable = variableData });
                 expressions.Add(expression);
             }          
             return expressions;

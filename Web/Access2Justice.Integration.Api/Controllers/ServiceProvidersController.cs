@@ -6,11 +6,17 @@ using System;
 
 namespace Access2Justice.Integration.Api.Controllers
 {
+    /// <summary>
+    /// Service Provider Controller
+    /// </summary>
     [Produces("application/json")]
     [Route("api/service-providers")]
     public class ServiceProvidersController : Controller
     {
         private readonly IServiceProvidersBusinessLogic serviceProvidersBusinessLogic;
+        /// <summary>
+        /// Constructor call
+        /// </summary>
         public ServiceProvidersController(IServiceProvidersBusinessLogic serviceProvidersBusinessLogic)
         {
             this.serviceProvidersBusinessLogic = serviceProvidersBusinessLogic;
@@ -42,6 +48,5 @@ namespace Access2Justice.Integration.Api.Controllers
             var response = await serviceProvidersBusinessLogic.UpsertServiceProviderDocumentAsync(serviceProvider).ConfigureAwait(false);
             return Ok(response);
         }
-
     }
 }
