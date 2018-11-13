@@ -14,9 +14,21 @@ a:hover {
 #helpline {
   background: #0D3FB8;
   padding: 25px;
-  margin-bottom: -30px;
+  margin-bottom: -47px;
 }
 
 #helpline h2 {
   color: #FFF;
+}
+
+@media only screen and (min-width : 540px) {
+  #helpline {
+    margin-bottom: -20px;
+  }
+}
+
+@media only screen and (min-width : 1224px) {
+  #helpline {
+    margin-bottom: -30px;
+  }
 }

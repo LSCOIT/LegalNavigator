@@ -25,40 +25,17 @@ namespace Access2Justice.Api.BusinessLogic
             dbService = backendDatabaseService;
         }
 
-        public async Task<Topic> GetTopic(string topicName, Location location)
+        public async Task<Topic> GetTopic(string topicName)
         {
-             // Todo:@Alaa fix or remove this!!
             try
             {
-                List<dynamic> topics = null;
-                topics = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.TopicsCollectionId, Constants.Name, topicName, location);
-                if (topics == null || !topics.Any())
-                {
-                    topics = await dbClient.FindItemsWhereContainsWithLocationAsync(dbSettings.TopicsCollectionId, Constants.Name, topicName, location);
-                }
+                List<dynamic> topics = await dbClient.FindItemsWhereAsync(dbSettings.TopicsCollectionId, Constants.Name, topicName);
+
                 if (!topics.Any())
                 {
                     throw new Exception($"No topic found with this name: {topicName}");
                 }
 
-                //// Todo: return the latest topic instead of returing the first one
-                //var temp = JsonConvert.SerializeObject(topics);
-
-                //var temp6 = JsonConvert.DeserializeObject(topics.FirstOrDefault().ToString());
-
-                //if (JsonConvert.DeserializeObject(topics.FirstOrDefault().ToString()).StartsWith("{{"))
-                //{
-
-                //    var breakpoint = string.Empty; // Todo:@Alaa - remove this temp code
-                //}
-                //    if (topics.FirstOrDefault().ToString().StartsWith("{{"))
-                //{
-                //    var temp4 = topics.FirstOrDefault().ToString().Substring(0, 1);
-                //    var temp5 = temp4.Substring(temp4.Length - 1);
-                //}
-
-                //var temp2 = JsonConvert.DeserializeObject(temp);
-                //var temp3 = JsonUtilities.DeserializeDynamicObject<Topic>(temp2);
                 return JsonUtilities.DeserializeDynamicObject<Topic>(topics.FirstOrDefault());
             }
             catch
@@ -212,9 +189,8 @@ namespace Access2Justice.Api.BusinessLogic
             List<Location> locations = new List<Location>();
             List<Conditions> conditions = new List<Conditions>();
             List<ParentTopicId> parentTopicIds = new List<ParentTopicId>();
-            //List<QuickLinks> quickLinks = new List<QuickLinks>();
             List<OrganizationReviewer> organizationReviewers = new List<OrganizationReviewer>();
-            List<ArticleContents> articleContents = new List<ArticleContents>();
+            List<ArticleContent> articleContents = new List<ArticleContent>();
             List<dynamic> references = new List<dynamic>();
             foreach (JProperty field in resourceObject)
             {
@@ -238,11 +214,6 @@ namespace Access2Justice.Api.BusinessLogic
                     parentTopicIds = field.Value != null && field.Value.Count() > 0 ? GetParentTopicIds(field.Value) : null;
                 }
 
-                //else if (field.Name == "quickLinks")
-                //{
-                //    quickLinks = field.Value != null && field.Value.Count() > 0 ? GetQuickLinks(field.Value) : null;
-                //}
-
                 else if (field.Name == "reviewer")
                 {
                     organizationReviewers = field.Value != null && field.Value.Count() > 0 ? GetReviewer(field.Value) : null;
@@ -258,7 +229,6 @@ namespace Access2Justice.Api.BusinessLogic
             references.Add(locations);
             references.Add(conditions);
             references.Add(parentTopicIds);
-            //references.Add(quickLinks);
             references.Add(organizationReviewers);
             references.Add(articleContents);
             return references;
@@ -393,7 +363,7 @@ namespace Access2Justice.Api.BusinessLogic
 
         public dynamic GetContents(dynamic contentValues)
         {
-            List<ArticleContents> articleContents = new List<ArticleContents>();
+            List<ArticleContent> articleContents = new List<ArticleContent>();
             foreach (var contentDetails in contentValues)
             {
                 string headline = string.Empty, content = string.Empty;
@@ -408,7 +378,7 @@ namespace Access2Justice.Api.BusinessLogic
                         content = contentData.Value.ToString();
                     }
                 }
-                articleContents.Add(new ArticleContents { Headline = headline, Content = content });
+                articleContents.Add(new ArticleContent { Headline = headline, Content = content });
             }
             return articleContents;
         }
@@ -595,11 +565,10 @@ namespace Access2Justice.Api.BusinessLogic
                 ResourceCategory = resourceObject.resourceCategory,
                 Description = resourceObject.description,
                 ResourceType = resourceObject.resourceType,
-                Urls = resourceObject.url,
+                Url = resourceObject.url,
                 TopicTags = topicTags,
                 OrganizationalUnit = resourceObject.organizationalUnit,
                 Location = locations,
-                Icon = resourceObject.icon,
                 Overview = resourceObject.overview,
                 FullDescription = resourceObject.fullDescription,
                 CreatedBy = resourceObject.createdBy,
@@ -627,11 +596,10 @@ namespace Access2Justice.Api.BusinessLogic
                 ResourceCategory = resourceObject.resourceCategory,
                 Description = resourceObject.description,
                 ResourceType = resourceObject.resourceType,
-                Urls = resourceObject.url,
+                Url = resourceObject.url,
                 TopicTags = topicTags,
                 OrganizationalUnit = resourceObject.organizationalUnit,
                 Location = locations,
-                Icon = resourceObject.icon,
                 Conditions = conditions,
                 CreatedBy = resourceObject.createdBy,
                 ModifiedBy = resourceObject.modifiedBy
@@ -645,7 +613,7 @@ namespace Access2Justice.Api.BusinessLogic
             Article articles = new Article();
             List<TopicTag> topicTags = new List<TopicTag>();
             List<Location> locations = new List<Location>();
-            List<ArticleContents> articleContents = new List<ArticleContents>();
+            List<ArticleContent> articleContents = new List<ArticleContent>();
             dynamic references = GetReferences(resourceObject);
             topicTags = references[0];
             locations = references[1];
@@ -658,11 +626,10 @@ namespace Access2Justice.Api.BusinessLogic
                 ResourceCategory = resourceObject.resourceCategory,
                 Description = resourceObject.description,
                 ResourceType = resourceObject.resourceType,
-                Urls = resourceObject.url,
+                Url = resourceObject.url,
                 TopicTags = topicTags,
                 OrganizationalUnit = resourceObject.organizationalUnit,
                 Location = locations,
-                Icon = resourceObject.icon,
                 CreatedBy = resourceObject.createdBy,
                 ModifiedBy = resourceObject.modifiedBy,
                 Overview = resourceObject.overview,
@@ -688,11 +655,10 @@ namespace Access2Justice.Api.BusinessLogic
                 ResourceCategory = resourceObject.resourceCategory,
                 Description = resourceObject.description,
                 ResourceType = resourceObject.resourceType,
-                Urls = resourceObject.url,
+                Url = resourceObject.url,
                 TopicTags = topicTags,
                 OrganizationalUnit = resourceObject.organizationalUnit,
                 Location = locations,
-                Icon = resourceObject.icon,
                 CreatedBy = resourceObject.createdBy,
                 ModifiedBy = resourceObject.modifiedBy,
                 Overview = resourceObject.overview
@@ -719,11 +685,10 @@ namespace Access2Justice.Api.BusinessLogic
                 ResourceCategory = resourceObject.resourceCategory,
                 Description = resourceObject.description,                
                 ResourceType = resourceObject.resourceType,
-                Urls = resourceObject.url,
+                Url = resourceObject.url,
                 TopicTags = topicTags,
                 OrganizationalUnit = resourceObject.organizationalUnit,
                 Location = locations,
-                Icon = resourceObject.icon,
                 CreatedBy = resourceObject.createdBy,
                 ModifiedBy = resourceObject.modifiedBy,                
                 Address = resourceObject.address,
@@ -755,11 +720,10 @@ namespace Access2Justice.Api.BusinessLogic
                 ResourceCategory = resourceObject.resourceCategory,
                 Description = resourceObject.description,
                 ResourceType = resourceObject.resourceType,
-                Urls = resourceObject.url,
+                Url = resourceObject.url,
                 TopicTags = topicTags,
                 OrganizationalUnit = resourceObject.organizationalUnit,
                 Location = locations,
-                Icon = resourceObject.icon,
                 CreatedBy = resourceObject.createdBy,
                 ModifiedBy = resourceObject.modifiedBy
             };
@@ -783,11 +747,10 @@ namespace Access2Justice.Api.BusinessLogic
                 ResourceCategory = resourceObject.resourceCategory,
                 Description = resourceObject.description,
                 ResourceType = resourceObject.resourceType,
-                Urls = resourceObject.url,
+                Url = resourceObject.url,
                 TopicTags = topicTags,
                 OrganizationalUnit = resourceObject.organizationalUnit,
                 Location = locations,
-                Icon = resourceObject.icon,
                 CreatedBy = resourceObject.createdBy,
                 ModifiedBy = resourceObject.modifiedBy
             };

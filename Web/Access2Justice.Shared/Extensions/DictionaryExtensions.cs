@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 
 namespace Access2Justice.Shared.Extensions
 {
-    public static class CollectionsExtensions
+    public static class DictionaryExtensions
     {
         public static List<T> AddIfNotNull<T>(this List<T> list, T objectToAdd)
         {
-            if(objectToAdd != null)
+            if (objectToAdd != null)
             {
                 list.Add(objectToAdd);
             }
@@ -16,7 +16,21 @@ namespace Access2Justice.Shared.Extensions
             return list;
         }
 
-        public static Dictionary<T, T> AddRange<T>(this Dictionary<T, T> originalDic, Dictionary<T, T> newDic)
+        public static OrderedDictionary AddDistinctKeyValue(this OrderedDictionary dictionary, string key, string value)
+        {
+            if (!dictionary.Contains(key))
+            {
+                dictionary.Add(key, value);
+            }
+            else
+            {
+                dictionary[key] = value;
+            }
+
+            return dictionary;
+        }
+
+        public static Dictionary<T, T> AddDistinctRange<T>(this Dictionary<T, T> originalDic, Dictionary<T, T> newDic)
         {
             if (originalDic == null)
             {

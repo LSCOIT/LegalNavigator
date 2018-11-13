@@ -8,16 +8,16 @@ namespace Access2Justice.E2ETests
     {
         NavigationBar NavigationBar = new NavigationBar();
 
-        [When(@"I select a language from the navigation bar")]
-        public void WhenISelectALanguageFromTheNavigationBar(dynamic instance)
+        [When(@"I select a language (.*) from the navigation bar")]
+        public void WhenISelectALanguageFromTheNavigationBar(string language)
         {
-            NavigationBar.PickLanguage(instance.SelectedLanguage);
+            NavigationBar.PickLanguage(language);
         }
         
-        [Then(@"I should see my page translated")]
-        public void ThenIShouldSeeMyPageTranslated(dynamic instance)
+        [Then(@"I should see my page translated as (.*)")]
+        public void ThenIShouldSeeMyPageTranslated(string language)
         {
-            NavigationBar.ConfirmPageTranslated(instance.ExpectedLanguage);
+            NavigationBar.ConfirmPageTranslated(language);
         }
     }
 }

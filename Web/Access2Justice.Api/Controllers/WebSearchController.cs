@@ -32,7 +32,7 @@ namespace Access2Justice.Api.Controllers
         /// <param name="offset"></param>
         /// <response code="200">Get web resource based on given search term</response>
         /// <response code="500">Failure</response>
-        [HttpGet("{search-term}/{offset}")]
+        [HttpGet("{searchTerm}/{offset}")]
         public async Task<IActionResult> GetAsync(string searchTerm, Int16 offset)
         {
             var uri = string.Format(CultureInfo.InvariantCulture, bingSettings.BingSearchUrl.OriginalString, searchTerm, bingSettings.CustomConfigId, bingSettings.PageResultsCount, offset);

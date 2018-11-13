@@ -6,6 +6,12 @@ using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.IO;
 using System.Reflection;
+using Access2Justice.Integration.Api.Interfaces;
+using Access2Justice.Integration.Api.BusinessLogic;
+using Access2Justice.Shared.Interfaces;
+using Access2Justice.CosmosDb;
+using Microsoft.Azure.Documents;
+using Access2Justice.Shared.Utilities;
 
 namespace Access2Justice.Integration.Api
 {
@@ -24,7 +30,10 @@ namespace Access2Justice.Integration.Api
             ConfigureSession(services);
 
             services.AddMvc();
-
+            IKeyVaultSettings keyVaultSettings = new KeyVaultSettings(Configuration.GetSection("KeyVault"));
+            services.AddSingleton(keyVaultSettings);
+            services.AddSingleton<IServiceProvidersBusinessLogic, ServiceProvidersBusinessLogic>();
+            ConfigureCosmosDb(services);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Access2Justice Integration API", Version = "1.0.0", Description = "Access2Justice APIs for integration with external partners.", TermsOfService = "None" });
@@ -57,6 +66,15 @@ namespace Access2Justice.Integration.Api
             app.UseAuthentication();
             app.UseMvc();
             ConfigureSwagger(app);
+        }
+
+        private void ConfigureCosmosDb(IServiceCollection services)
+        {
+            ICosmosDbSettings cosmosDbSettings = new CosmosDbSettings(Configuration.GetSection("CosmosDb"), (Configuration.GetSection("KeyVault")));
+            services.AddSingleton(cosmosDbSettings);
+            services.AddSingleton<IDocumentClient>(x => new Microsoft.Azure.Documents.Client.DocumentClient(cosmosDbSettings.Endpoint, cosmosDbSettings.AuthKey));
+            services.AddSingleton<IBackendDatabaseService, CosmosDbService>();
+            services.AddSingleton<IDynamicQueries, CosmosDbDynamicQueries>();
         }
 
         private void ConfigureSession(IServiceCollection services)

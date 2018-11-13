@@ -4,6 +4,7 @@ using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Access2Justice.Shared.Utilities;
+using Microsoft.Azure.Documents;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -96,7 +97,7 @@ namespace Access2Justice.Api.BusinessLogic
             if (shareInput.Url.OriginalString.Contains("plan"))
             {
                 string planId = shareInput.Url.OriginalString.Substring(6);
-                await UpdatePersonalizedPlan(planId, true);
+                await UpdatePlanIsSharedStatus(planId, true);
             }
 
             return response == null ? null : new ShareViewModel
@@ -144,20 +145,14 @@ namespace Access2Justice.Api.BusinessLogic
             return response;
         }
 
-        // Todo:@Alaa fix this
-        public async Task UpdatePersonalizedPlan(string planId, bool isShared)
+        public async Task<Document> UpdatePlanIsSharedStatus(string planId, bool isShared)
         {
-            Task.FromResult(true);
-            //var plan = await dbPersonalizedPlan.GetPersonalizedPlan(planId);
-            //if (plan != null)
-            //{
-            //    plan.IsShared = isShared;
-            //    UserPersonalizedPlan userPlan = new UserPersonalizedPlan
-            //    {
-            //        PersonalizedPlan = plan
-            //    };
-            //    await dbPersonalizedPlan.UpdatePersonalizedPlan(userPlan);
-            //}
+            var plan = await dbPersonalizedPlan.GetPersonalizedPlanAsync(Guid.Parse(planId));
+            if (plan != null)
+            {
+                plan.IsShared = isShared;
+            }
+            return await dbPersonalizedPlan.UpsertPersonalizedPlanAsync(plan);
         }
 
         public async Task<object> UnshareResourceDataAsync(ShareInput unShareInput)
@@ -194,7 +189,7 @@ namespace Access2Justice.Api.BusinessLogic
             if (unShareInput.Url.OriginalString.Contains("plan"))
             {
                 string planId = unShareInput.Url.OriginalString.Substring(6);
-                await UpdatePersonalizedPlan(planId, false);
+                await UpdatePlanIsSharedStatus(planId, false);
             }
             return response == null ? false : true;
         }

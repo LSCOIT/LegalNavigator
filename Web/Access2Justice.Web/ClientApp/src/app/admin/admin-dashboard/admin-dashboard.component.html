@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="static-img-container row">
+    <div class="col-md-12 static-img">
+      <img src="./assets/images/secondary-illustrations/admin.svg"/>
+    </div>
+    <h1 class="inline">Admin Portal</h1>
+  </div>
+  <div class="row" *ngIf="isStateAdmin">
+    <h3>Edit Pages</h3>
+    <div class="row">
+      <label class="col-md-2">State:</label>
+      <div class="btn-group col-md-10" dropdown>
+        <button id="button-basic" dropdownToggle type="button" class="btn btn-selected dropdown-toggle" aria-controls="button-basic">
+          Select State
+        </button>
+        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+            role="menu" aria-labelledby="button-basic">
+          <li role="menuitem" *ngFor="let state of stateList">
+            <a class="dropdown-item" (click)="displayStatePage($event)">{{state}}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div *ngIf="showStaticContentPage" class="row">
+      <label class="col-md-2">Select page to edit:</label>
+      <div class="btn-group col-md-10" dropdown>
+        <button id="button-basic" dropdownToggle type="button" class="btn btn-selected dropdown-toggle" aria-controls="button-basic">
+          Page
+        </button>
+        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+            role="menu" aria-labelledby="button-basic">
+          <li role="menuitem" *ngFor="let page of staticResource">
+            <a class="dropdown-item" [routerLink]="['./privacy']">{{page.name}}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!--<button class="btn btn-selected" [routerLink]="['/admin/privacy']">Privacy Promise</button>
+    <button class="btn btn-selected" [routerLink]="['/admin/about']">About</button>-->
+  </div>
+</div>

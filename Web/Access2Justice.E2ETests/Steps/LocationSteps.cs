@@ -26,12 +26,12 @@ namespace Access2Justice.E2ETests.Steps
             BaseClass.ConfirmSiteIsA2J();
         }
 
-        [Given(@"current state is set to")]
-        public void GivenCurrentStateIsSetTo(dynamic instance)
+        [Given(@"current state is set to (.*)")]
+        public void GivenCurrentStateIsSetTo(string state)
         {
             GivenIAmPromptedToSetMyLocation();
-            WhenIEnterMyStateName(instance);
-            ThenICanSeeMyStateNameOnTheUpperNavigationBar(instance);
+            WhenIEnterMyStateName(state);
+            ThenICanSeeMyStateNameOnTheUpperNavigationBar(state);
         }
 
         [Given(@"I am prompted to set my location")]
@@ -46,16 +46,16 @@ namespace Access2Justice.E2ETests.Steps
             BaseClass.ClickOnControl("change-location-button");
         }
 
-        [When(@"I enter my state name")]
-        public void WhenIEnterMyStateName(dynamic instance)
+        [When(@"I enter my state name as (.*)")]
+        public void WhenIEnterMyStateName(string state)
         {
-            NavigationBar.EnterStateName(instance.State);
+            NavigationBar.EnterStateName(state);
         }
 
-        [Then(@"I can see my state name on the upper navigation bar")]
-        public void ThenICanSeeMyStateNameOnTheUpperNavigationBar(dynamic instance)
+        [Then(@"I can see my state name (.*) on the upper navigation bar")]
+        public void ThenICanSeeMyStateNameOnTheUpperNavigationBar(string state)
         {
-            NavigationBar.ConfirmStateNameHasBeenSet(instance.State);
+            NavigationBar.ConfirmStateNameHasBeenSet(state);
         }
     }
 }

@@ -23,7 +23,6 @@
         "state": "Alaska"
       }
     ],
-    "icon": "./assets/images/resources/resource.png",
     "overview": "Overview",
     "headline1": "HL1",
     "headline2": "HL2",
@@ -57,7 +56,6 @@
         "state": "Hawaii"
       }
     ],
-    "icon": "./assets/images/resources/resource.png",
     "overview": "Overview",
     "headline1": "HL1",
     "headline2": "HL2",
