@@ -4,6 +4,7 @@ body {
   top: 40px !important;
   min-height: 85% !important;
   word-wrap: break-word;
+  padding: 0 !important;
 }
 
 li {
@@ -211,6 +212,7 @@ textarea {
     margin: 0.75rem auto;
     width: 540px;
     max-width: 660px;
+    padding-top: 0;
   }
 
   .MicrosoftMap .as_container_search {
