@@ -66,8 +66,7 @@ import { api } from '../api/api';
     DidYouKnowComponent,
     ArticlesResourcesComponent,
     CuratedExperienceComponent,
-    CuratedExperienceResultComponent
-  ],
+    CuratedExperienceResultComponent],
   imports: [
     BrowserModule,
     FormsModule,
