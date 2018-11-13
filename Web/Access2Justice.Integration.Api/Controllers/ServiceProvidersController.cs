@@ -45,7 +45,10 @@ namespace Access2Justice.Integration.Api.Controllers
         [ProducesResponseType(400)]
         public async Task<IActionResult> UpsertServiceProviders([FromBody]dynamic serviceProvider)
         {
-            var response = await serviceProvidersBusinessLogic.UpsertServiceProviderDocumentAsync(serviceProvider).ConfigureAwait(false);
+            var serviceProviderJson = serviceProvider[0];
+            var providerDetailJson = serviceProvider[1];
+            var topicName = serviceProvider[2];
+            var response = await serviceProvidersBusinessLogic.UpsertServiceProviderDocumentAsync(serviceProviderJson, providerDetailJson, topicName).ConfigureAwait(false);
             return Ok(response);
         }
     }

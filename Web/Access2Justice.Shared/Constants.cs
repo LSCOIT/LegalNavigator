@@ -37,6 +37,8 @@
         public const string HtmlLeftBracket = "<";
         public const string A2JAuthorCustomFunctionTags = "%%";
         public const string ServiceProviderResourceType = "Service Providers";
+        public const string IntegrationAPI = "Integration API";
+        public const string SiteId = "siteId";
 
         public static class ReasourceTypes
         {

@@ -17,6 +17,6 @@ namespace Access2Justice.Integration.Api.Interfaces
         /// <summary>
         /// upserts service provider
         /// </summary>
-        Task<IEnumerable<object>> UpsertServiceProviderDocumentAsync(dynamic serviceProvider);
+        Task<IEnumerable<object>> UpsertServiceProviderDocumentAsync(dynamic serviceProviderJson, dynamic providerDetailJson, dynamic topicName);
     }
 }

@@ -8,6 +8,12 @@ namespace Access2Justice.Shared.Models.Integration
 
     public class ServiceProvider : Organization
     {
+        [JsonProperty(PropertyName = "siteId")]
+        public int SiteId { get; set; }
+
+        [JsonProperty(PropertyName = "email")]
+        public string Email { get; set; }
+
         [JsonProperty(PropertyName = "availability")]
         public Availability Availability { get; set; }
 
