@@ -251,48 +251,39 @@ namespace Access2Justice.Shared.Utilities
                 {
                     topicTags = field.Value != null && field.Value.Count() > 0 ? GetTopicTags(field.Value) : null;
                 }
-
                 else if (field.Name == "location")
                 {
                     locations = GetLocations(field.Value);
                 }
-
                 else if (field.Name == "conditions")
                 {
                     conditions = field.Value != null && field.Value.Count() > 0 ? GetConditions(field.Value) : null;
                 }
-
                 else if (field.Name == "parentTopicId")
                 {
                     parentTopicIds = field.Value != null && field.Value.Count() > 0 ? GetParentTopicIds(field.Value) : null;
                 }
-
                 else if (field.Name == "reviewer")
                 {
                     organizationReviewers = field.Value != null && field.Value.Count() > 0 ? GetReviewer(field.Value) : null;
                 }
-
                 else if (field.Name == "contents")
                 {
                     articleContents = field.Value != null && field.Value.Count() > 0 ? GetContents(field.Value) : null;
                 }
-
                 else if (field.Name == "availability")
                 {
                     availability = field.Value != null && field.Value.Count() > 0 ? GetAvailability(field.Value) : null;
                 }
-
                 else if (field.Name == "acceptanceCriteria")
                 {
                     acceptanceCriteria = field.Value != null && field.Value.Count() > 0 ? GetAcceptanceCriteria(field.Value) : null;
                 }
-
                 else if (field.Name == "onboardingInfo")
                 {
                     onboardingInfo = field.Value != null && field.Value.Count() > 0 ? GetOnboardingInfo(field.Value) : null;
                 }
             }
-
             references.Add(topicTags);
             references.Add(locations);
             references.Add(conditions);

@@ -132,7 +132,7 @@ namespace Access2Justice.Integration.Api.BusinessLogic
         }
 
         /// <summary>
-        /// Creates service provider address
+        /// returns service provider address
         /// </summary>
         /// <param name="siteAddress"></param>
         /// <returns></returns>
@@ -150,7 +150,7 @@ namespace Access2Justice.Integration.Api.BusinessLogic
         }
 
         /// <summary>
-        /// Forms full address
+        /// returns formatted address
         /// </summary>
         /// <param name="address"></param>
         /// <returns></returns>
@@ -186,7 +186,7 @@ namespace Access2Justice.Integration.Api.BusinessLogic
         }
 
         /// <summary>
-        /// return organizational unit
+        /// returns organizational unit
         /// </summary>
         /// <param name="siteAddress"></param>
         /// <returns></returns>
@@ -204,7 +204,7 @@ namespace Access2Justice.Integration.Api.BusinessLogic
         }
 
         /// <summary>
-        /// Retrieves phone numbers
+        /// returns phone numbers
         /// </summary>
         /// <param name="sitePhone"></param>
         /// <returns></returns>
