@@ -41,4 +41,10 @@ export class AboutComponent implements OnInit {
           this.getAboutPageContent();
         });
   }
+
+  ngOnDestroy() {
+    if (this.staticContentSubcription) {
+      this.staticContentSubcription.unsubscribe();
+    }
+  }
 }

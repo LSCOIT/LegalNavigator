@@ -137,5 +137,11 @@ export class AboutTemplateComponent implements OnInit {
         this.getAboutPageContent();
       });
   }
+
+  ngOnDestroy() {
+    if (this.staticContentSubcription) {
+      this.staticContentSubcription.unsubscribe();
+    }
+  }
 }
 

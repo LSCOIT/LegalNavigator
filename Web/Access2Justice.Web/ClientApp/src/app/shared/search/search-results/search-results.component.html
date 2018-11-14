@@ -53,7 +53,7 @@
                         [count]="total"></app-pagination>
       </div>
     </div>
-    <div *ngIf="isInternalResource" class="col-md-3 col-sm-12 pull-right">
+    <div *ngIf="isInternalResource" class="col-md-4 col-sm-12 pull-right">
       <app-map-results [searchResource]="searchResults"></app-map-results>
       <div class="row guided-assistant">
         <app-guided-assistant-sidebar [guidedAssistantId]="guidedAssistantId" [searchResultsData]="searchResults"></app-guided-assistant-sidebar>

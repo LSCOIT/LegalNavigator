@@ -89,4 +89,10 @@ export class PrivacyPromiseTemplateComponent implements OnInit {
   ngOnInit() {
     this.getPrivacyPageContent();
   }
+
+  ngOnDestroy() {
+    if (this.staticContentSubcription) {
+      this.staticContentSubcription.unsubscribe();
+    }
+  }
 }
