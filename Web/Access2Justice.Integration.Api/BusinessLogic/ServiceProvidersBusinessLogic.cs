@@ -49,21 +49,22 @@ namespace Access2Justice.Integration.Api.BusinessLogic
             var providerDetailObjects = JsonUtilities.DeserializeDynamicObject<List<dynamic>>(providerDetailJson);
             string topicName = string.Empty;
             topicName = topic.ToString();
-            ServiceProvider serviceProvider = new ServiceProvider();
+            ServiceProvider serviceProvider = new ServiceProvider();            
             foreach (var serviceProviderObject in serviceProviderObjects)
             {
                 foreach (var site in serviceProviderObject.Sites)
-                {                    
-                    string siteId = site.ID;
+                {
+                    string siteId = site.ID.ToString();
                     string resourceType = Constants.ServiceProviderResourceType;
-                    var topicDBData = await dbClient.FindItemsWhereAsync(dbSettings.TopicsCollectionId, Constants.Name, topicName).ConfigureAwait(false);
-                    var id = topicDBData[0].id;
-                    var topicTag = GetServiceProviderTopicTags(id);
-                    serviceProvider = UpsertServiceProvider(site, topicTag);
-                    var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(serviceProvider);
                     List<string> propertyNames = new List<string>() { Constants.SiteId, Constants.ResourceType };
                     List<string> values = new List<string>() { siteId, resourceType };
-                    var serviceProviderDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourcesCollectionId, propertyNames, values).ConfigureAwait(false);                    
+                    var description = GetServiceProviderDescription(providerDetailObjects, siteId);
+                    var topicDBData = await dbClient.FindItemsWhereAsync(dbSettings.TopicsCollectionId, Constants.Name, topicName).ConfigureAwait(false);
+                    var topicTag = GetServiceProviderTopicTags(topicDBData[0].id);
+                    var serviceProviderDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourcesCollectionId, propertyNames, values).ConfigureAwait(false);
+                    string id = serviceProviderDBData.Count > 0 ? serviceProviderDBData[0].id.ToString() : string.Empty;
+                    serviceProvider = UpsertServiceProvider(site, id, topicTag, description);
+                    var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(serviceProvider);
                     if (serviceProviderDBData.Count == 0)
                     {
                         var result = await dbService.CreateItemAsync(resourceDocument, dbSettings.ResourcesCollectionId).ConfigureAwait(false);
@@ -71,8 +72,7 @@ namespace Access2Justice.Integration.Api.BusinessLogic
                     }
                     else
                     {
-                        string serviceProviderId = serviceProviderDBData.id;
-                        var result = await dbService.UpdateItemAsync(serviceProviderId, resourceDocument, dbSettings.ResourcesCollectionId).ConfigureAwait(false);
+                        var result = await dbService.UpdateItemAsync(id, resourceDocument, dbSettings.ResourcesCollectionId).ConfigureAwait(false);
                         resources.Add(result);
                     }
                 }                
@@ -83,11 +83,10 @@ namespace Access2Justice.Integration.Api.BusinessLogic
         /// <summary>
         /// upserts service provider
         /// </summary>
-        public dynamic UpsertServiceProvider(dynamic site, dynamic topicTag)
+        public dynamic UpsertServiceProvider(dynamic site, string id, dynamic topicTag, string description)
         {
             ServiceProvider serviceProvider = new ServiceProvider();
             Organization organizations = new Organization();
-            List<Location> locations = new List<Location>();
             List<OrganizationReviewer> organizationReviewers = new List<OrganizationReviewer>();
             Availability availability = new Availability();
             AcceptanceCriteria acceptanceCriteria = new AcceptanceCriteria();
@@ -95,9 +94,9 @@ namespace Access2Justice.Integration.Api.BusinessLogic
             SharedReferences sharedReferences = new SharedReferences();
             var address = GetServiceProviderAddress(site.Address);
             var phone = GetServiceProviderPhone(site.Phones);
-            var topicTagData = topicTag;
+            var locations = GetServiceProviderLocation(site.Address);
+            var organizationUnit = GetServiceProviderOrgUnit(site.Address);
             dynamic references = sharedReferences.GetReferences(site);
-            locations = references[1];
             organizationReviewers = references[4];
             availability = references[6];
             acceptanceCriteria = references[7];
@@ -109,14 +108,14 @@ namespace Access2Justice.Integration.Api.BusinessLogic
                 Availability = availability,
                 AcceptanceCriteria = acceptanceCriteria,
                 OnboardingInfo = onboardingInfo,
-                ResourceId = site.id == "" ? Guid.NewGuid() : site.id,
+                ResourceId = string.IsNullOrEmpty(id)||string.IsNullOrWhiteSpace(id) ? Guid.NewGuid().ToString() : id,
                 Name = site.Name,
                 ResourceCategory = site.resourceCategory,
-                Description = site.description,
+                Description = description,
                 ResourceType = Constants.ServiceProviderResourceType,
                 Url = site.URL,
-                TopicTags = topicTagData,
-                OrganizationalUnit = site.organizationalUnit,
+                TopicTags = topicTag,
+                OrganizationalUnit = organizationUnit,
                 Location = locations,
                 CreatedBy = Constants.IntegrationAPI,
                 ModifiedBy = Constants.IntegrationAPI,
@@ -166,6 +165,45 @@ namespace Access2Justice.Integration.Api.BusinessLogic
         }
 
         /// <summary>
+        /// return location
+        /// </summary>
+        /// <param name="siteAddress"></param>
+        /// <returns></returns>
+        public dynamic GetServiceProviderLocation(dynamic siteAddress)
+        {
+            string city, county, state, zip = string.Empty;
+            List<Location> locations = new List<Location>();
+            foreach (var address in siteAddress)
+            {
+                city = address.City.ToString();
+                county = address.County.ToString();
+                state = address.State.ToString();
+                zip = address.Zip.ToString();
+                Location location = new Location { State = state, County = county, City = city, ZipCode = zip };
+                locations.Add(location);
+            }
+            return locations;
+        }
+
+        /// <summary>
+        /// return organizational unit
+        /// </summary>
+        /// <param name="siteAddress"></param>
+        /// <returns></returns>
+        public static dynamic GetServiceProviderOrgUnit(dynamic siteAddress)
+        {
+            string serviceProviderOrgUnit = string.Empty;
+            string orgUnit = string.Empty;
+            foreach (var address in siteAddress)
+            {
+                orgUnit = address.State.ToString();
+                serviceProviderOrgUnit = serviceProviderOrgUnit + orgUnit;
+                serviceProviderOrgUnit = serviceProviderOrgUnit + " | ";
+            }
+            return serviceProviderOrgUnit.Remove(serviceProviderOrgUnit.Length - 3);
+        }
+
+        /// <summary>
         /// Retrieves phone numbers
         /// </summary>
         /// <param name="sitePhone"></param>
@@ -193,9 +231,38 @@ namespace Access2Justice.Integration.Api.BusinessLogic
         /// <returns></returns>
         public dynamic GetServiceProviderTopicTags(dynamic id)
         {
-            List<TopicTag> topicTags = new List<TopicTag>();
-            topicTags.Add(new TopicTag { TopicTags = id });
+            List<TopicTag> topicTags = new List<TopicTag>
+            {
+                new TopicTag { TopicTags = id }
+            };
             return topicTags;
+        }
+
+        /// <summary>
+        /// return description
+        /// </summary>
+        /// <param name="providerDetailObjects"></param>
+        /// <param name="siteId"></param>
+        /// <returns></returns>
+        public static string GetServiceProviderDescription(dynamic providerDetailObjects, string siteId)
+        {
+            string description = string.Empty;
+            foreach (var provider in providerDetailObjects)
+            {
+                if (siteId == provider.SiteKey.ToString())
+                {
+                    foreach (var detailText in provider.DetailText)
+                    {
+                        if (detailText.Label.ToString() == "SERVICE DESCRIPTION")
+                        {
+                            description = detailText.Text.ToString();
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+            return description;
         }
     }          
 }

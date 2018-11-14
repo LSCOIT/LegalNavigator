@@ -190,7 +190,6 @@ namespace Access2Justice.Shared.Utilities
         public dynamic GetAcceptanceCriteria(dynamic acceptanceCriteriaValues)
         {
             AcceptanceCriteria acceptanceCriteria = new AcceptanceCriteria();
-
             string description = string.Empty;
             dynamic evaluatedRequirements = null;
             description = acceptanceCriteriaValues.description.ToString();
