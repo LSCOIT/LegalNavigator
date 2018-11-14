@@ -5,6 +5,7 @@ const topic = apiUrl + '/topics-resources';
 const userProfile = apiUrl + '/user';
 const curatedExperience = apiUrl + '/curated-experiences';
 const contentUrl = apiUrl + '/static-resources';
+const adminUrl = apiUrl + '/admin';
 
 export const api = {
     topicUrl: topic + '/topics',
@@ -31,6 +32,7 @@ export const api = {
     shareUrl: apiUrl + '/share/permalink/generate',
     unShareUrl: apiUrl + '/share/permalink/remove',
     getResourceLink: apiUrl + '/share/permalink/resource',
-    checkPermaLink: apiUrl + '/share/permalink/check',  
-    updatePrivacyDataUrl: contentUrl + '/privacy/upsert'  
+    checkPermaLink: apiUrl + '/share/permalink/check',
+    updatePrivacyDataUrl: contentUrl + '/privacy/upsert',
+    uploadCuratedExperienceTemplateUrl: adminUrl + '/upload-curated-experience-template'    
 }
