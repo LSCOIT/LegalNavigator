@@ -12,6 +12,7 @@ using static Access2Justice.Api.Authorization.Permissions;
 namespace Access2Justice.Api.Controllers
 {
     [Produces("application/json")]
+    [Route("api/topics-resources")]
     public class TopicsResourcesController : Controller
     {
         private readonly ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic;
@@ -37,7 +38,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="500">Failure</response>
 
         
-        [Route("api/topics/get-topics")]
+        [Route("topics")]
         [HttpPost]
         public async Task<IActionResult> GetTopics([FromBody]Location location)
         {
@@ -54,7 +55,7 @@ namespace Access2Justice.Api.Controllers
         /// <param name="topicInput"></param>
         /// <response code="200">Get all sub topics for given topic</response>
         /// <response code="500">Failure</response>
-        [Route("api/topics/get-subtopics")]
+        [Route("subtopics")]
         [HttpPost]
         public async Task<IActionResult> GetSubTopics([FromBody]TopicInput topicInput)
         {
@@ -72,7 +73,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="200">Get all resources for given resource id</response>
         /// <response code="500">Failure</response>
         [HttpPost]
-        [Route("api/topics/get-resource")]
+        [Route("resources")]
         public async Task<IActionResult> GetResource([FromBody]TopicInput topicInput)
         {
             var resource = await topicsResourcesBusinessLogic.GetResourceByIdAsync(topicInput);
@@ -89,7 +90,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="200">Get all resource details for given topic</response>
         /// <response code="500">Failure</response>
         [HttpPost]
-        [Route("api/topics/get-resource-details")]
+        [Route("resources/details")]
         public async Task<IActionResult> GetResourceDetails([FromBody]TopicInput topicInput)
         {
             var topics = await topicsResourcesBusinessLogic.GetResourceAsync(topicInput);
@@ -106,7 +107,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="200">Get all document for given topic</response>
         /// <response code="500">Failure</response>
         [HttpPost]
-        [Route("api/topics/get-document")]
+        [Route("topics/document")]
         public async Task<IActionResult> GetDocumentDataAsync([FromBody]TopicInput topicInput)
         {
             var topics = await topicsResourcesBusinessLogic.GetDocumentAsync(topicInput);
@@ -123,7 +124,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="200">Get all paged resource data</response>
         /// <response code="500">Failure</response>
         [HttpPost]
-        [Route("api/resources")]
+        [Route("paged-resources")]
         public async Task<IActionResult> GetPagedDataAsync([FromBody]ResourceFilter resourceInput)
         {
             var response = await topicsResourcesBusinessLogic.GetPagedResourceAsync(resourceInput);
@@ -140,7 +141,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="200">Get parent topics by a topic id for breadcrumb</response>
         /// <response code="500">Failure</response>
         [HttpGet]
-        [Route("api/topics/get-breadcrumbs/{id}")]
+        [Route("topics/breadcrumbs/{id}")]
         public async Task<IActionResult> GetBreadcrumbAsync(string id)
         {
             var topics = await topicsResourcesBusinessLogic.GetBreadcrumbDataAsync(id);
@@ -157,7 +158,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="200">Get topic details based on topic name</response>
         /// <response code="500">Failure</response>
         [HttpGet]
-        [Route("api/topics/get-topic-details/{name}")]
+        [Route("topics/{name}")]
         public async Task<IActionResult> GetTopicDetails(string name)
         {
             var topics = await topicsResourcesBusinessLogic.GetTopicDetailsAsync(name);
@@ -175,7 +176,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="200">Get resource details based on name and resource type</response>
         /// <response code="500">Failure</response>
         [HttpGet]
-        [Route("api/topics/get-resource-details/{name}/{type}")]
+        [Route("resources/{name}/{type}")]
         public async Task<IActionResult> GetResourceDetails(string name, string type)
         {
             var resources = await topicsResourcesBusinessLogic.GetResourceDetailAsync(name, type);
@@ -193,7 +194,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="500">Failure</response>
 
         [HttpPost]
-        [Route("api/topics/get-organization-details")]
+        [Route("organizations")]
         public async Task<IActionResult> GetOrganizationsWhenParamsValuePassed([FromBody]Location location)
         {
             var organizations = await topicsResourcesBusinessLogic.GetOrganizationsAsync(location);
@@ -209,7 +210,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="200">Get the topic schema</response>
         /// <response code="500">Failure</response>
         [HttpGet]
-        [Route("api/topics/get-schema-topic")]
+        [Route("topics/schema")]
         public  Topic GetSchemaTopic()
         {
             return new Topic();
@@ -224,7 +225,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="200">Get the action plan schema</response>
         /// <response code="500">Failure</response>
         [HttpGet]
-        [Route("api/topics/get-schema-action-plan")]
+        [Route("action-plan/schema")]
         public ActionPlan GetSchemaActionPlan()
         {
             return new ActionPlan();
@@ -239,7 +240,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="200">Get the article schema</response>
         /// <response code="500">Failure</response>
         [HttpGet]
-        [Route("api/topics/get-schema-article")]
+        [Route("article/schema")]
         public Article GetSchemaArticle()
         {
             return new Article();
@@ -254,7 +255,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="200">Get the video schema</response>
         /// <response code="500">Failure</response>
         [HttpGet]
-        [Route("api/topics/get-schema-video")]
+        [Route("video/schema")]
         public Video GetSchemaVideo()
         {
             return new Video();
@@ -269,7 +270,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="200">Get the organizations schema</response>
         /// <response code="500">Failure</response>
         [HttpGet]
-        [Route("api/topics/get-schema-organization")]
+        [Route("organization/schema")]
         public Organization GetSchemaOrganization()
         {
             return new Organization();
@@ -284,7 +285,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="200">Get the form schema</response>
         /// <response code="500">Failure</response>
         [HttpGet]
-        [Route("api/topics/get-schema-form")]
+        [Route("form/schema")]
         public Form GetSchemaForm()
         {
             return new Form();
@@ -299,7 +300,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="200">Returns essential reading content</response>
         /// <response code="500">Failure</response>
         [HttpGet]
-        [Route("api/topics/get-schema-essential-reading")]
+        [Route("essential-reading/schema")]
         public EssentialReading GetSchemaEssentialReading()
         {
             return new EssentialReading();
@@ -316,7 +317,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="500">Failure</response>
         [Permission(PermissionName.createresourcesupload)]
         [HttpPost]
-        [Route("api/topics/create-resources/upload")]
+        [Route("resources/upload")]
         public async Task<IActionResult> CreateResources(IFormFile uploadedFile)
         {
             var path = uploadedFile.FileName;
@@ -333,10 +334,10 @@ namespace Access2Justice.Api.Controllers
         /// <param name="resource"></param>
         /// <response code="200">Returns created resources </response>
         /// <response code="500">Failure</response>
-        [Permission(PermissionName.upsertresourcedocument)]
+        [Permission(PermissionName.upsertresourcedocuments)]
         [HttpPost]
-        [Route("api/upsert-resource-document")]
-        public async Task<IActionResult> UpsertResourceDocument([FromBody]dynamic resource)
+        [Route("resources/documents/upsert")]
+        public async Task<IActionResult> UpsertResourceDocuments([FromBody]dynamic resource)
         {
             var resources = await topicsResourcesBusinessLogic.UpsertResourceDocumentAsync(resource);
             return Ok(resources);
@@ -353,7 +354,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="500">Failure</response>
         [Permission(PermissionName.createtopicsupload)]
         [HttpPost]
-        [Route("api/topics/create-topics/upload")]
+        [Route("topics/upload")]
         public async Task<IActionResult> CreateTopics(IFormFile uploadedFile)
         {
             var path = uploadedFile.FileName;
@@ -362,18 +363,18 @@ namespace Access2Justice.Api.Controllers
         }
 
         /// <summary>
-        /// Create topic document
+        /// Create topic documents - - can upsert single or multiple topics
         /// </summary>
         /// /// <remarks>
-        /// Helps to create topic document given a topic name.
+        /// Helps to create topic documents given a topics json.
         /// </remarks>
         /// <param name="topic"></param>
-        /// <response code="200">Returns created topic document</response>
+        /// <response code="200">Returns created topic documents</response>
         /// <response code="500">Failure</response>
-        [Permission(PermissionName.upserttopicdocument)]
+        [Permission(PermissionName.upserttopicdocuments)]
         [HttpPost]
-        [Route("api/upsert-topic-document")]
-        public async Task<IActionResult> UpsertTopicDocument([FromBody]dynamic topic)
+        [Route("topics/documents/upsert")]
+        public async Task<IActionResult> UpsertTopicDocuments([FromBody]dynamic topic)
         {
             var topics = await topicsResourcesBusinessLogic.UpsertTopicDocumentAsync(topic);
             return Ok(topics);
@@ -382,10 +383,10 @@ namespace Access2Justice.Api.Controllers
         /// <summary>
         /// Create Single Topic Document
         /// </summary>
-        [Permission(PermissionName.upserttopic)]
+        [Permission(PermissionName.upserttopicdocument)]
         [HttpPost]
-        [Route("api/upsert-topic")]
-        public async Task<IActionResult> UpsertSingleTopicDocument([FromBody]dynamic topic)
+        [Route("topics/document/upsert")]
+        public async Task<IActionResult> UpsertTopicDocument([FromBody]dynamic topic)
         {
             List<dynamic> topicsList = new List<dynamic>();
             topicsList.Add(topic);
@@ -400,10 +401,10 @@ namespace Access2Justice.Api.Controllers
         /// <summary>
         /// Create Single Resource Document
         /// </summary>
-        [Permission(PermissionName.upsertresource)]
+        [Permission(PermissionName.upsertresourcedocument)]
         [HttpPost]
-        [Route("api/upsert-resource")]
-        public async Task<IActionResult> UpserSingleResourceDocument([FromBody]dynamic resource)
+        [Route("resources/document/upsert")]
+        public async Task<IActionResult> UpsertResourceDocument([FromBody]dynamic resource)
         {
             List<dynamic> resourcesList = new List<dynamic>();
             resourcesList.Add(resource);
@@ -424,7 +425,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="200">Get personalized data for given input</response>
         /// <response code="500">Failure</response>
         [HttpPut]
-        [Route("api/personalized-resources")]
+        [Route("personalized-resources")]
         public async Task<IActionResult> GetPersonalizedDataAsync([FromBody]ResourceFilter resourceInput)
         {
             var response = await topicsResourcesBusinessLogic.GetPersonalizedResourcesAsync(resourceInput);
@@ -438,7 +439,7 @@ namespace Access2Justice.Api.Controllers
         /// <returns>all topics from cosmos db</returns>
         /// <response code="200">Returns all topics from DB</response>
         /// <response code="500">Failure</response>
-        [Route("api/topics/get-all-topics")]
+        [Route("topics/all")]
         [HttpGet]
         public async Task<IActionResult> GetAllTopics()
         {

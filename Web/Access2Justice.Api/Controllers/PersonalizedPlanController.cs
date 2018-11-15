@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Access2Justice.Api.Controllers
 {
-    [Route("api/personalized-plan")]
+    [Route("api/personalized-plans")]
     public class PersonalizedPlanController : Controller
     {
         private readonly IPersonalizedPlanBusinessLogic personalizedPlanBusinessLogic;

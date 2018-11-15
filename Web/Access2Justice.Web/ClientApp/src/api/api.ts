@@ -1,38 +1,38 @@
 import { environment } from '../environments/environment';
 
 const apiUrl = environment.apiUrl;
-const topic = apiUrl + '/topics';
+const topic = apiUrl + '/topics-resources';
 const userProfile = apiUrl + '/user';
-const curatedExperience = apiUrl + '/curated-experience';
-const contentUrl = apiUrl + '/static-resource';
+const curatedExperience = apiUrl + '/curated-experiences';
+const contentUrl = apiUrl + '/static-resources';
 const adminUrl = apiUrl + '/admin';
 
 export const api = {
-  topicUrl: topic + '/get-topics',
-  subtopicUrl: topic + '/get-subtopics',
-  subtopicDetailUrl: topic + '/get-resource-details',
-  getDocumentUrl: topic + '/get-document',
-  searchUrl: apiUrl + '/search',
-  getResourceUrl: apiUrl + '/resources',
-  searchOffsetUrl: apiUrl + '/web-search',
-  breadcrumbsUrl: topic + '/get-breadcrumbs',
-  personalizedPlan: apiUrl + '/personalized-plan/generate',
-  planUrl: apiUrl + '/personalized-plan/get-plan',
-  getPersonalizedResourcesUrl: apiUrl + '/personalized-resources',
-  updatePlanUrl: userProfile + "/upsert-user-plan",
-  getProfileUrl: userProfile + "/get-user-profile",
-  userPlanUrl: userProfile + "/upsert-user-personalized-plan",
-  upsertUserProfileUrl: userProfile + "/upsert-user-profile",
-  getOrganizationDetailsUrl: topic + '/get-organization-details',
-  questionUrl: curatedExperience + '/start',
-  saveAndGetNextUrl: curatedExperience + '/component/save-and-get-next',
-  updateUserPlanUrl: apiUrl + '/personalized-plan/save',
-  resourceUrl: topic + '/get-resource',
-  getContentsUrl: contentUrl + '/get-static-resources',
-  shareUrl: apiUrl + '/share/generate-permalink',
-  unShareUrl: apiUrl + '/share/remove-permalink',
-  getResourceLink: apiUrl + '/share/get-permalink-resource',
-  checkPermaLink: apiUrl + '/share/check-permalink',
-  updatePrivacyDataUrl: apiUrl + '/static-resource/upsert-static-privacy-page',
-  uploadCuratedExperienceTemplateUrl: adminUrl + '/upload-curated-experience-template'
+    topicUrl: topic + '/topics',
+    subtopicUrl: topic + '/subtopics',
+    subtopicDetailUrl: topic + '/resources/details',
+    getDocumentUrl: topic + '/topics/document',
+    searchUrl: apiUrl + '/search',
+    getResourceUrl: topic + '/paged-resources',
+    searchOffsetUrl: apiUrl + '/web-search',
+    breadcrumbsUrl: topic + '/topics/breadcrumbs',
+    personalizedPlan: apiUrl + '/personalized-plans/generate',
+    planUrl: apiUrl + '/personalized-plans/get-plan',
+    getPersonalizedResourcesUrl: topic + '/personalized-resources',
+    updatePlanUrl: userProfile + "/upsert-user-plan",//this route doesn't exist in any controller
+    getProfileUrl: userProfile + "/profile",
+    userPlanUrl: userProfile + "/personalized-plan/upsert",
+    upsertUserProfileUrl: userProfile +"/profile/upsert",
+    getOrganizationDetailsUrl: topic + '/organizations',
+    questionUrl: curatedExperience + '/start',
+    saveAndGetNextUrl: curatedExperience + '/components/save-and-get-next',
+    updateUserPlanUrl: apiUrl + '/personalized-plans/save',
+    resourceUrl: topic + '/resources',
+    getContentsUrl: contentUrl,
+    shareUrl: apiUrl + '/share/permalink/generate',
+    unShareUrl: apiUrl + '/share/permalink/remove',
+    getResourceLink: apiUrl + '/share/permalink/resource',
+    checkPermaLink: apiUrl + '/share/permalink/check',
+    updatePrivacyDataUrl: contentUrl + '/privacy/upsert',
+    uploadCuratedExperienceTemplateUrl: adminUrl + '/curated-experience'    
 }

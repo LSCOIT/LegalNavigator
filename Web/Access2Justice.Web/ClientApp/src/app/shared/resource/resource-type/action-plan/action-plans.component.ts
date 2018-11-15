@@ -110,7 +110,7 @@ export class ActionPlansComponent implements OnChanges {
       });
     }
     this.personalizedPlan = { id: this.planDetails.id, topics: this.planTopics, isShared: this.planDetails.isShared };
-    this.selectedPlanDetails = { planDetails: this.personalizedPlan, topicId: topicId };
+    this.selectedPlanDetails = { planDetails: this.personalizedPlan, topic: topicId };
   }
 
   getRemovePlanDetails() {

@@ -62,10 +62,7 @@ namespace Access2Justice.Api.BusinessLogic
                 PersonalizedPlanViewModel personalizedPlan = userPlanModel.PersonalizedPlan;
                 string oId = userPlanModel.UserId;
                 dynamic response = null;
-                if (personalizedPlan.Topics.Count() == 0)
-                {
-                    return response;
-                }
+
                 var userPersonalizedPlan = await GetPersonalizedPlanAsync(personalizedPlan.PersonalizedPlanId);
 
                 if (userPersonalizedPlan == null || userPersonalizedPlan?.PersonalizedPlanId == Guid.Empty)

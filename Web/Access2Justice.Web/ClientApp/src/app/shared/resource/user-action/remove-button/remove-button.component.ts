@@ -59,7 +59,7 @@ export class RemoveButtonComponent implements OnInit {
   createRemovePlanTag() {
     this.topicIndex = 0;
     this.selectedPlanDetails.planDetails.topics.forEach(topic => {
-      if (topic.topicId === this.selectedPlanDetails.topicId) {
+      if (topic.name === this.selectedPlanDetails.topic) {
         this.selectedPlanDetails.planDetails.topics.splice(this.topicIndex, 1);
       }
       this.topicIndex++;
