@@ -51,6 +51,10 @@ namespace Access2Justice.Integration.Api.BusinessLogic
             {
                 message = "Record deleted successfully";
             }
+            else
+            {
+                message = "Record not deleted";
+            }
             return message;
         }
 
