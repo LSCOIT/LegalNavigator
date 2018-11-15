@@ -27,6 +27,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Access2Justice.Integration"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Access2Justice.Integration.Api", "Access2Justice.Integration.Api\Access2Justice.Integration.Api.csproj", "{AA113BC5-E5F1-4E80-9BDC-BDA929FECE1E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Access2Justice.WebJob", "Access2Justice.WebJob\Access2Justice.WebJob.csproj", "{1C808702-FCCB-4DC9-95C9-AF6692CC2F2E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,10 @@ Global
 		{AA113BC5-E5F1-4E80-9BDC-BDA929FECE1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA113BC5-E5F1-4E80-9BDC-BDA929FECE1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA113BC5-E5F1-4E80-9BDC-BDA929FECE1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C808702-FCCB-4DC9-95C9-AF6692CC2F2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C808702-FCCB-4DC9-95C9-AF6692CC2F2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C808702-FCCB-4DC9-95C9-AF6692CC2F2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C808702-FCCB-4DC9-95C9-AF6692CC2F2E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
