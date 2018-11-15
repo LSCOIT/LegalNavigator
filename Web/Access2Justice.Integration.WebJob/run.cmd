@@ -1,1 +1,0 @@
-dotnet Access2Justice.Integration.WebJob.dll

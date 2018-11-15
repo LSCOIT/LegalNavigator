@@ -27,8 +27,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Access2Justice.Integration"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Access2Justice.Integration.Api", "Access2Justice.Integration.Api\Access2Justice.Integration.Api.csproj", "{AA113BC5-E5F1-4E80-9BDC-BDA929FECE1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Access2Justice.Integration.WebJob", "Access2Justice.Integration.WebJob\Access2Justice.Integration.WebJob.csproj", "{7EA0D72E-EF67-4AE8-AA82-EB4074413F78}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,10 +77,6 @@ Global
 		{AA113BC5-E5F1-4E80-9BDC-BDA929FECE1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA113BC5-E5F1-4E80-9BDC-BDA929FECE1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA113BC5-E5F1-4E80-9BDC-BDA929FECE1E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7EA0D72E-EF67-4AE8-AA82-EB4074413F78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7EA0D72E-EF67-4AE8-AA82-EB4074413F78}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7EA0D72E-EF67-4AE8-AA82-EB4074413F78}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7EA0D72E-EF67-4AE8-AA82-EB4074413F78}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
