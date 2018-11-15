@@ -27,7 +27,7 @@ namespace Access2Justice.Integration.Api.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}", Name = "get")]
         [ProducesResponseType(typeof(ServiceProvider), 200)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetServiceProviderAsync(string id)
@@ -57,7 +57,7 @@ namespace Access2Justice.Integration.Api.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpDelete("{id}", Name = "Delete")]
+        [HttpDelete("{id}", Name = "delete")]
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
