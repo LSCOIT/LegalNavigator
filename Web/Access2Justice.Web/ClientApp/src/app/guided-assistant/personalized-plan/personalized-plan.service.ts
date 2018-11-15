@@ -61,7 +61,7 @@ export class PersonalizedPlanService {
   }
 
   getPlanDetails(topics, planDetailTags): any {
-    this.topicsList = this.createTopicsList(this.topics);
+    this.topicsList = this.createTopicsList(topics);
     this.planDetails = this.displayPlanDetails(planDetailTags, this.topicsList);
     return this.planDetails;
   }
