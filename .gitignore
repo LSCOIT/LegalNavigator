@@ -286,9 +286,3 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
-/Web/Access2Justice.Web/wwwroot/dist/main-client.js
-/Web/Access2Justice.Web/wwwroot/dist/vendor.js
-/Web/Access2Justice.Web/wwwroot/dist/vendor.css
-/Web/Access2Justice.Web/wwwroot/dist/vendor-manifest.json
-/Web/Access2Justice.Web/wwwroot/dist/89889688147bd7575d6327160d64e760.svg
-/Web/Access2Justice.Web/wwwroot/dist/main-client.js.map
