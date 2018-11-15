@@ -99,10 +99,10 @@ export class PersonalizedPlanService {
     this.resoureStorage.forEach(resource => {
       this.resourceTags.push(resource);
     });
-    this.saveResourcesToProfile(this.resourceTags);
+    this.compareResources(this.resourceTags);
   }
 
-  saveResourcesToProfile(savedResources) {
+  compareResources(savedResources) {
     this.resourceIndex = 0;
     this.resourceTags = [];
     let params = new HttpParams()
@@ -119,22 +119,26 @@ export class PersonalizedPlanService {
             }
           });
         }
-        savedResources.forEach(savedResource => {
-          if (this.arrayUtilityService.checkObjectExistInArray(this.resourceTags, savedResource)) {
-            this.showWarning('Resource already saved to profile');
-          } else {
-            this.resourceIndex++;
-            this.resourceTags.push(savedResource);
-          }
-          if (this.resourceIndex > 0) {
-            this.saveResourceToProfile(this.resourceTags);
-          }
-        });
-        sessionStorage.removeItem(this.global.sessionKey);
+        this.checkExistingSavedResources(savedResources);
       });
   }
 
-  saveResourceToProfile(resourceTags) {
+  checkExistingSavedResources(savedResources) {
+    savedResources.forEach(savedResource => {
+      if (this.arrayUtilityService.checkObjectExistInArray(this.resourceTags, savedResource)) {
+        this.showWarning('Resource already saved to profile');
+      } else {
+        this.resourceIndex++;
+        this.resourceTags.push(savedResource);
+      }
+      if (this.resourceIndex > 0) {
+        this.saveResourcesToProfile(this.resourceTags);
+      }
+    });
+    sessionStorage.removeItem(this.global.sessionKey);
+  }
+
+  saveResourcesToProfile(resourceTags) {
     this.profileResources = { oId: this.global.userId, resourceTags: resourceTags, type: 'resources' };
     this.saveResources(this.profileResources)
       .subscribe(() => {

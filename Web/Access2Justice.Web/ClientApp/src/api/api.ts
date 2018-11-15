@@ -19,7 +19,6 @@ export const api = {
     personalizedPlan: apiUrl + '/personalized-plans/generate',
     planUrl: apiUrl + '/personalized-plans',
     getPersonalizedResourcesUrl: topic + '/personalized-resources',
-    updatePlanUrl: userProfile + "/upsert-user-plan",//this route doesn't exist in any controller
     getProfileUrl: userProfile + "/profile",
     userPlanUrl: userProfile + "/personalized-plan/upsert",
     upsertUserProfileUrl: userProfile +"/profile/upsert",
