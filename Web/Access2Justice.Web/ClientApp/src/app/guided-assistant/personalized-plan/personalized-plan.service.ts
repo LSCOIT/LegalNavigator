@@ -22,7 +22,7 @@ export class PersonalizedPlanService {
   planTopic: PersonalizedPlanTopic;
   topicsList: Array<PersonalizedPlanTopic> = [];
   planDetailTags: any;
-  tempPlanDetailTags: any;  
+  tempPlanDetailTags: any;
   planDetails: any = [];
   profileResources: ProfileResources = { oId: '', resourceTags: [], type: '' };
   savedResources: SavedResources;
@@ -34,10 +34,10 @@ export class PersonalizedPlanService {
   tempResourceStorage: any = [];
 
   constructor(private http: HttpClient,
-              private arrayUtilityService: ArrayUtilityService,
-              private toastr: ToastrService,
-              private global: Global) { }
-  
+    private arrayUtilityService: ArrayUtilityService,
+    private toastr: ToastrService,
+    private global: Global) { }
+
   getActionPlanConditions(planId): Observable<any> {
     let params = new HttpParams()
       .set("personalizedPlanId", planId);
@@ -147,7 +147,7 @@ export class PersonalizedPlanService {
     let tempStorage = sessionStorage.getItem(this.global.sessionKey);
     if (tempStorage && tempStorage.length > 0) {
       tempStorage = JSON.parse(tempStorage);
-      this.tempResourceStorage =  tempStorage;
+      this.tempResourceStorage = tempStorage;
     }
     if (savedResource) {
       if (!this.arrayUtilityService.checkObjectExistInArray(this.tempResourceStorage, savedResource)) {

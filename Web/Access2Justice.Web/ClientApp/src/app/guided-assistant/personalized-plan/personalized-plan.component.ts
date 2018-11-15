@@ -31,8 +31,7 @@ export class PersonalizedPlanComponent implements OnInit {
     if (this.personalizedPlan != undefined) {
       this.topics = this.personalizedPlan.topics;
       this.planDetailTags = this.personalizedPlan;
-      this.topicsList = this.personalizedPlanService.createTopicsList(this.topics);
-      this.planDetails = this.personalizedPlanService.getPlanDetails(this.topics, this.planDetailTags);
+      this.setPlan();
     } else {
       this.personalizedPlanService.getActionPlanConditions(this.activeActionPlan)
         .subscribe(plan => {
@@ -40,10 +39,14 @@ export class PersonalizedPlanComponent implements OnInit {
             this.topics = plan.topics;
             this.planDetailTags = plan;
           }
-          this.topicsList = this.personalizedPlanService.createTopicsList(this.topics);
-          this.planDetails = this.personalizedPlanService.getPlanDetails(this.topics, this.planDetailTags);
+          this.setPlan();
         });
     }
+  }
+
+  setPlan() {
+    this.topicsList = this.personalizedPlanService.createTopicsList(this.topics);
+    this.planDetails = this.personalizedPlanService.getPlanDetails(this.topics, this.planDetailTags);
   }
 
   filterPlan(topic) {

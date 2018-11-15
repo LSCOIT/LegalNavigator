@@ -24,6 +24,20 @@ export class AppComponent implements OnInit {
   resoureStorage: any = [];
   showAlert: boolean = false;
 
+  @HostListener('window:beforeunload', ['$event'])
+  beforeUnloadHander(event) {
+    if ((sessionStorage.getItem(this.global.sessionKey)
+      || sessionStorage.getItem(this.global.planSessionKey))
+      && (!this.global.isLoginRedirect) && !(this.global.userId)) {
+      this.showAlert = true;
+      if (confirm("You have unsaved changes! If you leave, your changes will be lost.")) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
   constructor(
     private global: Global,
     private staticResourceService: StaticResourceService,
@@ -94,20 +108,6 @@ export class AppComponent implements OnInit {
   ngOnDestroy() {
     if (this.subscription) {
       this.subscription.unsubscribe();
-    }
-  }
-
-  @HostListener('window:beforeunload', ['$event'])
-  beforeUnloadHander(event) {
-    if ((sessionStorage.getItem(this.global.sessionKey)
-      || sessionStorage.getItem(this.global.planSessionKey))
-      && (!this.global.isLoginRedirect) && !(this.global.userId)) {
-      this.showAlert = true;
-      if (confirm("You have unsaved changes! If you leave, your changes will be lost.")) {
-        return true;
-      } else {
-        return false;
-      }
     }
   }
 }

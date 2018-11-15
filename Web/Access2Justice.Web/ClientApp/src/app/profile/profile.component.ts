@@ -64,24 +64,6 @@ export class ProfileComponent implements OnInit {
   }
 
   getTopics(): void {
-    //if (this.planId) {
-    //  this.spinner.show();
-    //  let params = new HttpParams()
-    //    .set("personalizedPlanId", this.planId);
-    //  this.personalizedPlanService.getActionPlanConditions(params)
-    //    .subscribe(plan => {
-    //      this.spinner.hide();
-    //      if (plan) {
-    //        this.topics = plan.topics;
-    //        this.planDetailTags = plan;
-    //      }
-    //      this.topicsList = this.personalizedPlanService.createTopicsList(this.topics);
-    //      this.planDetails = this.personalizedPlanService.getPlanDetails(this.topics, this.planDetailTags);
-    //    }, error => {
-    //      this.spinner.hide();
-    //      this.router.navigate(['/error']);
-    //    });
-    //}
     this.spinner.show();
     if (this.plan) {
       this.topics = this.plan.topics;
@@ -101,7 +83,6 @@ export class ProfileComponent implements OnInit {
   filterTopicsList(topic) {
     this.topicsList = [];
     this.tempTopicsList.forEach(topicDetail => {
-      //this.planTopic = { topic: {}, isSelected: true };
       if (topicDetail.topic.name === topic) {
         this.planTopic = { topic: topicDetail.topic, isSelected: !topicDetail.isSelected };
       } else {

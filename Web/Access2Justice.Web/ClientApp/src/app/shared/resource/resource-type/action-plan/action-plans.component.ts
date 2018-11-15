@@ -23,6 +23,7 @@ export class ActionPlansComponent implements OnChanges {
   updatedPlan: any;
   modalRef: BsModalRef;
   url: any;
+  safeUrl: any;
   isCompleted: boolean = false;
   isUser: boolean = false;
   isChecked: boolean = false;
@@ -97,8 +98,13 @@ export class ActionPlansComponent implements OnChanges {
   }
 
   resourceUrl(url) {
-    this.url = this.sanitizer.bypassSecurityTrustResourceUrl(url);
-    return this.url;
+    this.url = url.replace("watch?v=", "embed/");
+    this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.url);
+    return this.safeUrl;
+  }
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
   }
 
   planTagOptions(topicId) {

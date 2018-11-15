@@ -65,52 +65,47 @@ export class SaveButtonComponent implements OnInit {
   }
 
   savePersonalizationPlan() {
+    const params = {
+      "personalizedPlan": this.navigateDataService.getData() ? this.navigateDataService.getData() : this.personalizedPlanService.planDetails,
+      "oId": this.global.userId,
+      "saveActionPlan": true
+    }
+    this.personalizedPlanService.userPlan(params)
+      .subscribe(response => {
+        if (response) {
+          this.personalizedPlanService.showSuccess("Plan Added to Session");
+        }
+      });
+  }
+
+  savePlanResourcesPostLogin() {
     if (this.router.url.indexOf("/plan") !== -1) {
-      const params = {
-        "personalizedPlan": this.navigateDataService.getData() ? this.navigateDataService.getData() : this.personalizedPlanService.planDetails,
-        "oId": this.global.userId,
-        "saveActionPlan": true
-      }
-      this.personalizedPlanService.userPlan(params)
-        .subscribe(response => {
-          if (response) {
-            this.personalizedPlanService.showSuccess("Plan Added to Session");
+      this.savePlanPostLogin();
+    } else {
+      this.saveResourcesPostLogin();
+    }
+  }
+
+  savePlanPostLogin() {
+    if (this.navigateDataService.getData()) {
+      this.saveButtonService.savePlanToUserProfile(this.navigateDataService.getData());
+    } else {
+      this.personalizedPlanService.getActionPlanConditions(this.id)
+        .subscribe(plan => {
+          if (plan) {
+            this.saveButtonService.savePlanToUserProfile(plan);
           }
         });
     }
   }
 
-  savePlanResourcesPostLogin() {
-    if (this.router.url.indexOf("/plan") !== -1) {
-      //this.planId = this.id;
-      //let generatedPersonalizedPlan = this.navigateDataService.getData();
-      //if (generatedPersonalizedPlan != undefined) {
-      //  this.topics = generatedPersonalizedPlan.topics;
-      //  this.planDetailTags = generatedPersonalizedPlan;
-      //  this.topicsList = this.personalizedPlanService.createTopicsList(this.topics);
-      //  this.planDetails = this.personalizedPlanService.getPlanDetails(this.topics, this.planDetailTags);
-      //}
-      this.saveButtonService.savePlanToUserProfile(this.navigateDataService.getData());
-      //this.saveButtonService.getPlan(this.planId);
-    } else {
-      this.savedResources = { itemId: this.id, resourceType: this.type, resourceDetails: this.resourceDetails };
-      this.tempResourceStorage = [];
-      this.tempResourceStorage.push(this.savedResources);
-      this.personalizedPlanService.saveResourcesToProfile(this.tempResourceStorage);
-    }
+  saveResourcesPostLogin() {
+    this.savedResources = { itemId: this.id, resourceType: this.type, resourceDetails: this.resourceDetails };
+    this.tempResourceStorage = [];
+    this.tempResourceStorage.push(this.savedResources);
+    this.personalizedPlanService.saveResourcesToProfile(this.tempResourceStorage);
   }
 
-  //saveBookmarkedPlan() {
-  //  this.planStorage = sessionStorage.getItem(this.global.planSessionKey);
-  //  if (this.planStorage) {
-  //    this.savePlanResources();
-  //    sessionStorage.removeItem(this.global.planSessionKey);
-  //  }
-  //}
-
   ngOnInit() {
-    //if (this.msalService.getUser()) {
-    //  this.saveBookmarkedPlan();
-    //}
   }
 }
