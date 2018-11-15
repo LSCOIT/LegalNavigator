@@ -11,7 +11,7 @@ namespace Access2Justice.Shared.Interfaces
     public interface IBackendDatabaseService
     {
         Task<Document> CreateItemAsync<T>(T item, string collectionId);
-        Task DeleteItemAsync(string id, string collectionId);
+        Task<dynamic> DeleteItemAsync(string id, string collectionId);
         Task<T> GetItemAsync<T>(string id, string collectionId);
         Task<IEnumerable<T>> GetItemsAsync<T>(Expression<Func<T, bool>> predicate,string collectionId);
         Task<dynamic> QueryItemsAsync(string collectionId, string query);

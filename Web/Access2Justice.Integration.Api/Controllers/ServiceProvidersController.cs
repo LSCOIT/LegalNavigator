@@ -15,7 +15,7 @@ namespace Access2Justice.Integration.Api.Controllers
     {
         private readonly IServiceProvidersBusinessLogic serviceProvidersBusinessLogic;
         /// <summary>
-        /// Constructor call
+        /// Service Provider Constructor
         /// </summary>
         public ServiceProvidersController(IServiceProvidersBusinessLogic serviceProvidersBusinessLogic)
         {
@@ -49,6 +49,21 @@ namespace Access2Justice.Integration.Api.Controllers
             var providerDetailJson = serviceProvider[1];
             var topicName = serviceProvider[2];
             var response = await serviceProvidersBusinessLogic.UpsertServiceProviderDocumentAsync(serviceProviderJson, providerDetailJson, topicName).ConfigureAwait(false);
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// Deletes service provider by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("{id}", Name = "Delete")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> DeleteSerivceProviderAsync(string id)
+        {
+            var response = await serviceProvidersBusinessLogic.DeleteServiceProviderDocumentAsync(id).ConfigureAwait(false);
             return Ok(response);
         }
     }

@@ -39,6 +39,22 @@ namespace Access2Justice.Integration.Api.BusinessLogic
         }
 
         /// <summary>
+        /// deletes service provider based on id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<dynamic> DeleteServiceProviderDocumentAsync(string id)
+        {
+            var response = await dbService.DeleteItemAsync(id, dbSettings.ResourcesCollectionId).ConfigureAwait(false);
+            string message = string.Empty;
+            if(response.ToString()== "NoContent")
+            {
+                message = "Record deleted successfully";
+            }
+            return message;
+        }
+
+        /// <summary>
         /// upserts service provider
         /// </summary>
         public async Task<IEnumerable<object>> UpsertServiceProviderDocumentAsync(dynamic serviceProviderJson, dynamic providerDetailJson, dynamic topic)

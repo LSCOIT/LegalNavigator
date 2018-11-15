@@ -18,5 +18,11 @@ namespace Access2Justice.Integration.Api.Interfaces
         /// upserts service provider
         /// </summary>
         Task<IEnumerable<object>> UpsertServiceProviderDocumentAsync(dynamic serviceProviderJson, dynamic providerDetailJson, dynamic topicName);
+        /// <summary>
+        /// deletes service provider based on id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<dynamic> DeleteServiceProviderDocumentAsync(string id);
     }
 }
