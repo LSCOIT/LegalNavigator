@@ -53,7 +53,7 @@ namespace Access2Justice.Integration.Api.BusinessLogic
             }
             else
             {
-                message = "Record not deleted";
+                message = response.ToString();
             }
             return message;
         }
