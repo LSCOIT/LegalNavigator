@@ -3,7 +3,12 @@ import { StaticResourceService } from '../../shared/static-resource.service';
 import { Global } from '../../global';
 import { About } from '../../about/about';
 import { environment } from '../../../environments/environment';
-import { NgForm, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NgForm, FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { MapLocation } from '../../shared/map/map';
+import { Router, ActivatedRoute } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { NavigateDataService } from '../../shared/navigate-data.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-about-template',
@@ -17,11 +22,23 @@ export class AboutTemplateComponent implements OnInit {
   staticContentSubcription: any;
   blobUrl: string = environment.blobUrl;
   form: FormGroup;
+  detailParams: any;
+  newAboutContent: any;
+  state: string;
+  location: MapLocation = {
+    state: this.activeRoute.snapshot.queryParams["state"]
+  }
+  newsImage;
 
   constructor(
     private staticResourceService: StaticResourceService,
     private global: Global,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private spinner: NgxSpinnerService,
+    private router: Router,
+    private activeRoute: ActivatedRoute,
+    private navigateDataService: NavigateDataService,
+    private toastr: ToastrService,
   ) {
     this.createForm();
   }
@@ -29,31 +46,22 @@ export class AboutTemplateComponent implements OnInit {
   createForm() {
     this.form = this.fb.group({
       serviceImage: null,
-      privacyPromiseImage: null
+      privacyPromiseImage: null,
+      newsImage1: null,
+      newsImage2: null,
+      newsImage3: null
     });
   }
 
-  getAboutPageContent(): void {
-    if (this.staticResourceService.aboutContent && (this.staticResourceService.aboutContent.location[0].state == this.staticResourceService.getLocation())) {
-      this.aboutContent = this.staticResourceService.aboutContent;
-    } else {
-      if (this.global.getData()) {
-        this.staticContent = this.global.getData();
-        this.aboutContent = this.staticContent.find(x => x.name === this.name);
-        this.staticResourceService.aboutContent = this.aboutContent;
-      }
-    }
-  }
-
-  encode(image) {
+  encode(image, index) {
+    index = index || '';
+    console.log(index);
     let reader = new FileReader();
-    console.log(event);
-    console.log(image);
     if (event.target["files"] && event.target["files"].length > 0) {
       let file = event.target["files"][0];
       reader.readAsDataURL(file);
       reader.onload = () => {
-        this.form.get(image).setValue({
+        this.form.get(image+index).setValue({
           filename: file.name,
           filetype: file.type,
           value: reader.result.split(',')[1]
@@ -62,86 +70,109 @@ export class AboutTemplateComponent implements OnInit {
     }
   }
 
-  //onSubmit(aboutForm: NgForm) {
-  //  if (sessionStorage.getItem("globalMapLocation")) {
-  //    this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
-  //  }
+  onSubmit(aboutForm: NgForm) {
+    this.newAboutContent = {
+      contactUs: {
+        title: this.aboutContent["contactUs"].title,
+        description: aboutForm.value.contactUsDescription,
+        email: aboutForm.value.contactUsEmail
+      },
+      inTheNews: {
+        title: this.aboutContent["inTheNews"].title,
+        description: aboutForm.value.inTheNewsDescription,
+        news: [
+          {
+            title: aboutForm.value.newsTitle1,
+            description: aboutForm.value.newsDescription1,
+            image: {
+              source: this.form.value.newsImage1.value,
+              altText: aboutForm.value.newsImageAltText1
+            },
+            url: aboutForm.value.newsUrl1
+          },
+          {
+            title: aboutForm.value.newsTitle2,
+            description: aboutForm.value.newsDescription2,
+            image: {
+              source: this.form.value.newsImage2.value,
+              altText: aboutForm.value.newsImageAltText2
+            },
+            url: aboutForm.value.newsUrl2
+          },
+          {
+            title: aboutForm.value.newsTitle3,
+            description: aboutForm.value.newsDescription3,
+            image: {
+              source: this.form.value.newsImage3.value,
+              altText: aboutForm.value.newsImageAltText3
+            },
+            url: aboutForm.value.newsUrl3
+          }
+        ]
+      },
+      location: [this.location],
+      mediaInquiries: {
+        title: "Media Inquiries",
+        description: aboutForm.value.mediaInquiriesDescription,
+        email: aboutForm.value.mediaInquiriesEmail,
+      },
+      mission: {
+        title: "Our Mission",
+        description: aboutForm.value.aboutMission,
+        sponsors: []
+      },
+      name: "AboutPage",
+      organizationalUnit: this.location,
+      privacyPromise: {
+        description: aboutForm.value.privacyPromiseDescription,
+        image: {
+          source: this.form.value.privacyPromiseImage.value,
+          altText: aboutForm.value.privacyPromiseImageAltText
+        },
+        privacyPromiseButton: {
+          buttonText: "View our privacy promise",
+          buttonAltText: "View our privacy promise",
+          buttonLink: "privacy"
+        },
+        title: "Our Privacy Promise"
+      },
+      service: {
+        description: aboutForm.value.serviceDescription,
+        guidedAssistantButton: {
+          buttonText: "Use our Guided Assistant",
+          buttonAltText: "Use our Guided Assistant",
+          buttonLink: "guidedassistant"
+        },
+        image: {
+          source: this.form.value.serviceImage.value,
+          altText: aboutForm.value.serviceImageAltText
+        },
+        title: "Our Service",
+        topicsAndResourcesButton: {
+          buttonText: "Browse Topics & Resources",
+          buttonAltText: "Browse Topics & Resources",
+          buttonLink: "topics"
+        }
+      }
+    }
+  }
 
-  //  let aboutParams = {
-  //    contactUs: {
-  //      title: this.aboutContent["contactUs"].title,
-  //      description: aboutForm.value.contactUsDescription,
-  //      email: aboutForm.value.contactUsEmail
-  //    },
-  //    inTheNews: {
-  //      title: this.aboutContent["inTheNews"].title,
-  //      description: aboutForm.value.inTheNewsDescription,
-  //      news: [] //need to add this
-  //    },
-  //    location: [this.mapLocation],
-  //    mediaInquiries: {
-  //      description: aboutForm.value.mediaInquiriesDescription,
-  //      email: aboutForm.value.mediaInquiriesEmail,
-  //      title: "Media Inquiries"
-  //    },
-  //    mission: {
-  //      title: "Our Mission",
-  //      description: "",
-  //      sponsors: []
-  //    },
-  //    name: "AboutPage",
-  //    organizationalUnit: "Hawaii",
-  //    privacyPromise: {
-  //      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus, nulla!",
-  //      image: {
-  //        source: "",
-  //        altText: ""
-  //      },
-  //      altText: "",
-  //      source: "",
-  //      privacyPromiseButton: {
-  //        buttonText: "View our privacy promise",
-  //        buttonAltText: "View our privacy promise",
-  //        buttonLink: "privacy"
-  //      },
-  //      title: "Our Privacy Promise"
-  //    },
-  //    service: {
-  //      description:
-  //        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat dicta illo rerum voluptatibus magni molestias officiis totam minima ab quas quae dolorem aut laboriosam expedita atque dignissimos, sed maxime ratione consequatur optio nobis odit repellendus quos dolore! Sunt atque accusantium praesentium, culpa hic enim voluptas suscipit cumque odit deleniti animi reiciendis perspiciatis magnam exercitationem minus? Itaque exercitationem nostrum dignissimos eum tempore magnam, quasi alias voluptas sequi facere voluptate aperiam porro.",
-  //      guidedAssistantButton: {
-  //        buttonText: "Use our Guided Assistant",
-  //        buttonAltText: "Use our Guided Assistant",
-  //        buttonLink: "guidedassistant"
-  //      },
-  //      image: {
-  //        source: "",
-  //        altText: ""
-  //      },
-  //      altText: "",
-  //      source: "",
-  //      title: "Our Service",
-  //      topicsAndResourcesButton: {
-  //        buttonText: "Browse Topics & Resources",
-  //        buttonAltText: "Browse Topics & Resources",
-  //        buttonLink: "topics"
-  //      }
-  //    }
-  //  }
-  //}
+
+  getAboutPageContent(): void {
+    if (this.navigateDataService.getData()) {
+      this.staticContent = this.navigateDataService.getData();
+      this.aboutContent = this.staticContent.find(x => x.name === this.name);
+    } else {
+      this.staticResourceService.getStaticContents(this.location).subscribe(
+        response => {
+          this.staticContent = response;
+          this.aboutContent = this.staticContent.find(x => x.name === this.name);
+        },
+        error => this.router.navigateByUrl('error'));
+    }
+  }
 
   ngOnInit() {
     this.getAboutPageContent();
-    this.staticContentSubcription = this.global.notifyStaticData
-      .subscribe(() => {
-        this.getAboutPageContent();
-      });
-  }
-
-  ngOnDestroy() {
-    if (this.staticContentSubcription) {
-      this.staticContentSubcription.unsubscribe();
-    }
   }
 }
-

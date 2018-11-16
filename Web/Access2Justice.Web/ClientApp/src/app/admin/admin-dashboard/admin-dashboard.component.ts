@@ -17,6 +17,7 @@ export class AdminDashboardComponent implements OnInit {
   staticResource: any;
   showStaticContentPage: boolean = false;
   location;
+  stateDropdown = "Select State";
 
   constructor(
     private global: Global,
@@ -38,6 +39,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   displayStatePage(event) {
+    this.stateDropdown = event.target.innerText;
     this.location = { state: event.target.innerText };
     this.staticResourceService.getStaticContents(this.location).subscribe(response => {
       this.staticResource = response;
@@ -50,20 +52,20 @@ export class AdminDashboardComponent implements OnInit {
     this.navigateDataService.setData(this.staticResource);
     switch (pageName) {
       case 'HomePage':
-        this.router.navigate(['/admin/home', this.location.state]);
+        this.router.navigate(['/admin/home'], { queryParams: { state: this.location.state } });
         break;
       case 'PrivacyPromisePage':
         this.router.navigate(['/admin/privacy'], { queryParams: { state: this.location.state } });
         break;
       case 'AboutPage':
-        this.router.navigateByUrl('/admin/about');
+        this.router.navigate(['/admin/about'], { queryParams: { state: this.location.state } });
         break;
       case 'HelpAndFAQPage':
-        this.router.navigateByUrl('/admin/help');
+        this.router.navigate(['/admin/help'], { queryParams: { state: this.location.state } });
         break;
-      case 'Navigation':
-        this.router.navigateByUrl('/admin/navigation');
-        break;
+      //case 'Navigation':
+      //  this.router.navigate(['/admin/navigation'], { queryParams: { state: this.location.state } });
+      //  break;
     }
   }
     

@@ -6,6 +6,8 @@ import { PrivacyPromiseTemplateComponent } from './privacy-promise/privacy-promi
 import { AdminAuthGuard } from './admin-auth/admin-auth.guard';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { CuratedExperienceTemplateComponent } from './curated-experience/curated-experience-template.component';
+import { HomeTemplateComponent } from './home/home-template.component';
+import { HelpFaqsTemplateComponent } from './help-faqs/help-faqs-template.component';
 
 const adminRoutes: Routes = [
   {
@@ -17,6 +19,8 @@ const adminRoutes: Routes = [
         path: '',
         children: [
           { path: 'about', component: AboutTemplateComponent, canActivateChild: [AdminAuthGuard] },
+          { path: 'home', component: HomeTemplateComponent, canActivateChild: [AdminAuthGuard] },
+          { path: 'help', component: HelpFaqsTemplateComponent, canActivateChild: [AdminAuthGuard] },
           { path: 'privacy', component: PrivacyPromiseTemplateComponent, canActivateChild: [AdminAuthGuard] },
           { path: 'curated-experience', component: CuratedExperienceTemplateComponent, canActivateChild: [AdminAuthGuard] },
           { path: '', component: AdminDashboardComponent }

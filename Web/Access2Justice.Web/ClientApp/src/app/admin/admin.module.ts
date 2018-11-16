@@ -11,6 +11,8 @@ import { AdminAuthGuard } from './admin-auth/admin-auth.guard';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { CuratedExperienceTemplateComponent } from './curated-experience/curated-experience-template.component';
 import { NavigateDataService } from '../shared/navigate-data.service';
+import { HomeTemplateComponent } from './home/home-template.component';
+import { HelpFaqsTemplateComponent } from './help-faqs/help-faqs-template.component';
 
 @NgModule({
   imports: [
@@ -26,7 +28,9 @@ import { NavigateDataService } from '../shared/navigate-data.service';
     PrivacyPromiseTemplateComponent,
     AboutTemplateComponent,
     AdminDashboardComponent,
-    CuratedExperienceTemplateComponent
+    CuratedExperienceTemplateComponent,
+    HomeTemplateComponent,
+    HelpFaqsTemplateComponent
   ],
   exports: [
     AdminComponent,

@@ -25,14 +25,12 @@ export class AdminAuthGuard implements CanActivate {
       let findAdmin = this.global.roleInformation.find(role => {
         return this.adminRoles.includes(role.roleName);
       });
-      console.log(findAdmin);
       if (!findAdmin) {
         this.router.navigate(['/401']);
       } else {
         return of(true);
       }
     } else {
-      console.log("going into else statement");
       return this.checkAdminStatus(url, this.adminRoles).map(value => {
         if (!value) {
           this.router.navigate(['/401']);
@@ -50,7 +48,6 @@ export class AdminAuthGuard implements CanActivate {
       let findPortalAdmin = this.global.roleInformation.find(role => {
         return role.roleName === "PortalAdmin";
       });
-      console.log(findPortalAdmin);
       if (!findPortalAdmin) {
         this.router.navigate(['/401']);
       } else {
@@ -74,7 +71,6 @@ export class AdminAuthGuard implements CanActivate {
         let findAdmin = response.roleInformation.find(role => {
             return admin.includes(role.roleName);
         });
-        console.log(findAdmin);
         if (findAdmin) {
           subject.next(true);
         } else {

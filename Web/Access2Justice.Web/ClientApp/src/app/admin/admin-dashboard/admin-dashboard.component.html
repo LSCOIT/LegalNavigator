@@ -13,8 +13,7 @@
         <div class="row">
           <label class="col-md-2">State:</label>
           <div class="btn-group col-md-10" dropdown>
-            <button id="button-basic" dropdownToggle type="button" class="btn btn-selected dropdown-toggle" aria-controls="button-basic">
-              Select State
+            <button id="button-basic" dropdownToggle type="button" class="btn btn-selected dropdown-toggle" aria-controls="button-basic"> {{stateDropdown}}
             </button>
             <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
                 role="menu" aria-labelledby="button-basic">
@@ -35,7 +34,7 @@
             <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
                 role="menu" aria-labelledby="button-basic">
               <li role="menuitem" *ngFor="let page of staticResource">
-                <a class="dropdown-item" (click)="navigateToPage($event)">{{page.name}}</a>
+                <a *ngIf="page.name !== 'Navigation'" class="dropdown-item" (click)="navigateToPage($event)">{{page.name}}</a>
               </li>
             </ul>
           </div>

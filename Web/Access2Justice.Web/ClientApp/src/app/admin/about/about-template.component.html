@@ -6,7 +6,7 @@
       <div class="row">
         <div class="description col-sm-12">
           <label class="col-md-2 col-sm-3">Our Mission</label>
-          <textarea class="form-control col-md-10 col-sm-9" name="pageDescription" [(ngModel)]="aboutContent.mission.description"></textarea>
+          <textarea class="form-control col-md-10 col-sm-9" name="aboutMission" [value]="aboutContent.mission.description" [(ngModel)]="aboutContent.mission.description"></textarea>
         </div>
       </div>
     </div>
@@ -20,7 +20,11 @@
         </div>
         <div class="description col-sm-12">
           <label class="col-md-2 col-sm-3">Image</label>
-          <input class="form-control upload-img col-md-10 col-sm-9 " type="file" name="serviceImage" accept="image/*" (change)="encode('serviceImage')" ngModel/>
+          <input class="form-control upload-img col-md-10 col-sm-9 " type="file" name="serviceImage" accept="image/*" (change)="encode('serviceImage')" ngModel />
+        </div>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Image Alt Text (for accessibility)</label>
+          <input class="form-control col-md-10 col-sm-9" type="text" name="serviceImageAltText" [(ngModel)]="aboutContent.service.image.altText" />
         </div>
       </div>
       <div class="row sections">
@@ -32,6 +36,10 @@
         <div class="description col-sm-12">
           <label class="col-md-2 col-sm-3">Image</label>
           <input class="form-control upload-img col-md-10 col-sm-9" (change)="encode('privacyPromiseImage')" type="file" name="privacyPromiseImage" accept="image/*" ngModel />
+        </div>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Image Alt Text (for accessibility)</label>
+          <input class="form-control col-md-10 col-sm-9" type="text" name="privacyPromiseImageAltText" [(ngModel)]="aboutContent.privacyPromise.image.altText" />
         </div>
       </div>
     </div>
@@ -45,11 +53,23 @@
         <div class="row subsections" *ngFor="let news of aboutContent.inTheNews.news; let i=index">
           <div>
             <label class="col-md-2 col-sm-3">News Title {{i+1}}</label>
-            <input class="form-control col-md-10 col-sm-9" type="text" [(ngModel)]="news.title" name="'newsTitle'+i"/>
+            <input class="form-control col-md-10 col-sm-9" type="text" [(ngModel)]="news.title" [name]="'newsTitle'+i" />
           </div>
           <div class="description col-sm-12">
             <label class="col-md-2 col-sm-3">News Description {{i+1}}</label>
-            <textarea class="form-control col-md-10 col-sm-9" [(ngModel)]="news.description" name="'news'+i"></textarea>
+            <textarea class="form-control col-md-10 col-sm-9" [(ngModel)]="news.description" [name]="'newsDescription'+i"></textarea>
+          </div>
+          <div class="description col-sm-12">
+            <label class="col-md-2 col-sm-3">News Image {{i+1}}</label>
+            <input class="form-control upload-img col-md-10 col-sm-9 " type="file" [name]="'newsImage' + i" accept="image/*" (change)="encode('newsImage', i+1)" ngModel />
+          </div>
+          <div class="description col-sm-12">
+            <label class="col-md-2 col-sm-3">Image Alt Text {{i+1}}</label>
+            <input class="form-control col-md-10 col-sm-9" type="text" name="newsImageAltText{{i+1}}" [(ngModel)]="news.image.altText" />
+          </div>
+          <div class="description col-sm-12">
+            <label class="col-md-2 col-sm-3">Url {{i+1}}</label>
+            <input class="form-control col-md-10 col-sm-9" type="text" name="newsUrl{{i+1}}" [(ngModel)]="news.url" />
           </div>
         </div>
       </div>

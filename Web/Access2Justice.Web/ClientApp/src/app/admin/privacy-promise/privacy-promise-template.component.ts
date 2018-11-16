@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PrivacyContent, Details} from "../../privacy-promise/privacy-promise";
+import { PrivacyContent } from "../../privacy-promise/privacy-promise";
 import { Global } from "../../global";
 import { NgForm } from '@angular/forms';
 import { environment } from '../../../environments/environment';
@@ -9,6 +9,7 @@ import { MapLocation } from '../../shared/map/map';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NavigateDataService } from '../../shared/navigate-data.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-privacy-promise-template',
@@ -18,8 +19,8 @@ import { NavigateDataService } from '../../shared/navigate-data.service';
 
 export class PrivacyPromiseTemplateComponent implements OnInit {
   detailParams: any;
-  newPrivacyContent: any;
   privacyContent: PrivacyContent;
+  newPrivacyContent;
   name: string = 'PrivacyPromisePage';
   staticContent: any;
   blobUrl: string = environment.blobUrl;
@@ -35,7 +36,8 @@ export class PrivacyPromiseTemplateComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private router: Router,
     private activeRoute: ActivatedRoute,
-    private navigateDataService: NavigateDataService
+    private navigateDataService: NavigateDataService,
+    private toastr: ToastrService,
   ) { }
 
   mapSectionDescription(form) {
@@ -52,10 +54,9 @@ export class PrivacyPromiseTemplateComponent implements OnInit {
 
   onSubmit(privacyForm: NgForm) {
     this.spinner.show();
-    this.newPrivacyContent = privacyForm.value;
     this.mapSectionDescription(privacyForm.value);
 
-    let params = {
+    this.newPrivacyContent = {
       "description": privacyForm.value.pageDescription,
       "details": this.detailParams,
       "name": "PrivacyPromisePage",
@@ -63,13 +64,13 @@ export class PrivacyPromiseTemplateComponent implements OnInit {
       "image": this.privacyContent.image,
       "organizationalUnit": this.privacyContent.organizationalUnit
     }
-    this.adminService.savePrivacyData(params).subscribe(
+    this.adminService.savePrivacyData(this.newPrivacyContent).subscribe(
       response => {
         this.spinner.hide();
         if (response) {
           this.privacyContent.description = response["description"];
           this.privacyContent.details = response["details"];
-          this.router.navigate(['/privacy']);
+          this.toastr.success("Page updated successfully");
         }
       });
   }
@@ -79,20 +80,16 @@ export class PrivacyPromiseTemplateComponent implements OnInit {
       this.staticContent = this.navigateDataService.getData();
       this.privacyContent = this.staticContent.find(x => x.name === "PrivacyPromisePage");
     } else {
-      console.log(this.location);
       this.staticResourceService.getStaticContents(this.location).subscribe(
-        response => this.privacyContent = response.find(x => x.name === "PrivacyPromisePage"),
+        response => {
+          this.staticContent = response;
+          this.privacyContent = this.staticContent.find(x => x.name === "PrivacyPromisePage");
+        },
         error => this.router.navigateByUrl('error'));
     }
   }
 
   ngOnInit() {
     this.getPrivacyPageContent();
-  }
-
-  ngOnDestroy() {
-    if (this.staticContentSubcription) {
-      this.staticContentSubcription.unsubscribe();
-    }
   }
 }
