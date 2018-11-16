@@ -124,7 +124,7 @@ export class AboutTemplateComponent implements OnInit {
         sponsors: []
       },
       name: "AboutPage",
-      organizationalUnit: this.location,
+      organizationalUnit: this.location.state,
       privacyPromise: {
         description: aboutForm.value.privacyPromiseDescription,
         image: {

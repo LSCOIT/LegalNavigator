@@ -51,7 +51,7 @@ namespace Access2Justice.Api.Controllers
         [Permission(PermissionName.upsertstatichomepage)]
         [HttpPost]
         [Route("home/upsert")]
-        public async Task<IActionResult> UpsertStaticHomePageDataAsync([FromBody]HomeContent homePageContent, Location location)
+        public async Task<IActionResult> UpsertStaticHomePageDataAsync([FromBody]HomeContent homePageContent)
         {
             if (await userRoleBusinessLogic.ValidateOrganizationalUnit(homePageContent?.OrganizationalUnit))
             {
@@ -95,7 +95,7 @@ namespace Access2Justice.Api.Controllers
         [Permission(PermissionName.upsertstatichelpandfaqpage)]
         [HttpPost]
         [Route("help-and-faq/upsert")]
-        public async Task<IActionResult> UpsertStaticHelpAndFAQPageDataAsync(HelpAndFaqsContent helpAndFAQPageContent, Location location)
+        public async Task<IActionResult> UpsertStaticHelpAndFAQPageDataAsync(HelpAndFaqsContent helpAndFAQPageContent)
         {
             if (await userRoleBusinessLogic.ValidateOrganizationalUnit(helpAndFAQPageContent?.OrganizationalUnit))
             {
@@ -118,7 +118,7 @@ namespace Access2Justice.Api.Controllers
         [Permission(PermissionName.upsertstaticnavigation)]
         [HttpPost]
         [Route("navigation/upsert")]
-        public async Task<IActionResult> UpsertStaticNavigationDataAsync([FromBody]Navigation navigationContent, Location location)
+        public async Task<IActionResult> UpsertStaticNavigationDataAsync([FromBody]Navigation navigationContent)
         {
             if (await userRoleBusinessLogic.ValidateOrganizationalUnit(navigationContent?.OrganizationalUnit))
             {
@@ -140,7 +140,7 @@ namespace Access2Justice.Api.Controllers
         [Permission(PermissionName.upsertstaticaboutpage)]
         [HttpPost]
         [Route("about/upsert")]
-        public async Task<IActionResult> UpsertStaticAboutPageDataAsync([FromBody]AboutContent aboutContent, Location location)
+        public async Task<IActionResult> UpsertStaticAboutPageDataAsync([FromBody]AboutContent aboutContent)
         {
             if (await userRoleBusinessLogic.ValidateOrganizationalUnit(aboutContent?.OrganizationalUnit))
             {
