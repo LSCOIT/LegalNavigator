@@ -21,15 +21,6 @@ namespace Access2Justice.Integration.Api.Tests
         private readonly ServiceProvidersBusinessLogic serviceProvidersBusinessLogic;
         private readonly ITopicsResourcesBusinessLogic topicsResourcesSettings;
 
-        //Mocked input data.
-        private readonly string serviceProviderId = ServiceProvidersTestData.serviceProviderId;
-        private readonly JArray serviceProviderData = ServiceProvidersTestData.serviceProviderData;
-
-        //Mocked result data.
-        private readonly JArray emptyLocationData = ServiceProvidersTestData.emptyLocationData;
-        private readonly JArray emptyReviewerData = ServiceProvidersTestData.emptyReviewerData;
-        private readonly JArray expectedServiceProviderData = ServiceProvidersTestData.expectedServiceProviderdata;
-
         public ServiceProvidersBusinessLogicTests()
         {
             dynamicQueries = Substitute.For<IDynamicQueries>();
@@ -43,19 +34,35 @@ namespace Access2Justice.Integration.Api.Tests
             cosmosDbSettings.TopicsCollectionId.Returns("TopicCollection");
             cosmosDbSettings.ResourcesCollectionId.Returns("ResourceCollection");         
         }
-
-        [Fact]
-        public void GetServiceProviderAsyncTestsShouldReturnProperData()
+        
+        [Theory]
+        [MemberData(nameof(ServiceProvidersTestData.ServiceProviderGetInputData), MemberType = typeof(ServiceProvidersTestData))]
+        public void GetServiceProviderAsyncTestsShouldReturnProperData(string serviceProviderId , JArray serviceProviderData, dynamic expectedServiceProviderdata)
         {
             //arrange
-            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.ResourcesCollectionId, Constants.Id, serviceProviderId);            
+            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.ResourcesCollectionId, Constants.Id, serviceProviderId);
             dbResponse.ReturnsForAnyArgs(serviceProviderData);
 
             //act
             var response = serviceProvidersBusinessLogic.GetServiceProviderDocumentAsync(serviceProviderId);
 
             //assert
-            Assert.Equal(expectedServiceProviderData.ToString(), response.Result.ToString());
+            Assert.Equal(expectedServiceProviderdata.ToString(), response.Result.ToString());
+        }
+
+        [Theory]
+        [MemberData(nameof(ServiceProvidersTestData.ServiceProviderDeleteInputData), MemberType = typeof(ServiceProvidersTestData))]
+        public void DeleteServiceProviderAsyncTestsShouldReturnProperData(string serviceProviderId, string serviceProviderData, dynamic expectedServiceProviderdata)
+        {
+            //arrange
+            var dbResponse = backendDatabaseService.DeleteItemAsync(serviceProviderId, cosmosDbSettings.ResourcesCollectionId);
+            dbResponse.Returns(serviceProviderData);
+
+            //act
+            var response = serviceProvidersBusinessLogic.DeleteServiceProviderDocumentAsync(serviceProviderId);
+
+            //assert
+            Assert.Equal(expectedServiceProviderdata.ToString(), response.Result.ToString());
         }
     }
 }
