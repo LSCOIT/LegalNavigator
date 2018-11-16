@@ -11,6 +11,7 @@ import { NavigateDataService } from '../../../navigate-data.service';
 import { ArrayUtilityService } from '../../../array-utility.service';
 import { ToastrService, ToastrModule, ToastPackage } from 'ngx-toastr';
 import { PersonalizedPlanTopic } from '../../../../guided-assistant/personalized-plan/personalized-plan';
+import { BsModalService } from 'ngx-bootstrap/modal';
 
 describe('ActionPlansComponent', () => {
   let component: ActionPlansComponent;
@@ -20,6 +21,7 @@ describe('ActionPlansComponent', () => {
   let navigateDataService;
   let arrayUtilityService: ArrayUtilityService;
   let toastrService: ToastrService;
+  let template: TemplateRef<any>;
   let mockPlanDetails = {
     "id": "29250697-8d22-4f9d-bbf8-96c1b5b72e54",
     "isShared": false,
@@ -269,13 +271,14 @@ describe('ActionPlansComponent', () => {
       }
     ]
   };
+  let modalService: BsModalService;
 
   beforeEach(async(() => {
     navigateDataService = jasmine.createSpyObj(['setData']);
     personalizedPlanService = jasmine.createSpyObj(['showSuccess']);
     TestBed.configureTestingModule({
       imports: [
-        HttpClientModule, ToastrModule.forRoot()
+        HttpClientModule, ToastrModule.forRoot(), ModalModule.forRoot()
       ],
       declarations: [ActionPlansComponent],
       schemas: [NO_ERRORS_SCHEMA],
@@ -283,6 +286,7 @@ describe('ActionPlansComponent', () => {
         { provide: PersonalizedPlanService, useValue: personalizedPlanService },
         DomSanitizer,
         { provide: NavigateDataService, useValue: navigateDataService },
+        BsModalService,
         Global,
         ArrayUtilityService,
         ToastrService]
@@ -294,8 +298,10 @@ describe('ActionPlansComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     personalizedPlanService = TestBed.get(PersonalizedPlanService);
+    modalService = TestBed.get(BsModalService);
     navigateDataService = TestBed.get(NavigateDataService);
     arrayUtilityService = TestBed.get(ArrayUtilityService);
+    sanitizer = TestBed.get(DomSanitizer);
   });
 
   it('should create', () => {
@@ -343,7 +349,7 @@ describe('ActionPlansComponent', () => {
     expect(component.orderBy).toHaveBeenCalled();
   });
 
-  it("should call assign isChecked and call getPlanDetails in checkCompleted method", () => {
+  xit("should call assign isChecked and call getPlanDetails in checkCompleted method", () => {
     component.planDetails = mockPlanDetails;
     spyOn(component, 'orderBy');
     component.checkCompleted(mockEvent, mockTopicId, mockStepId);
@@ -357,14 +363,20 @@ describe('ActionPlansComponent', () => {
     let mockUrl = "https://www.youtube.com/embed/pCPGSTYsYoU";
     let mockSanitizedUrl =
       { "changingThisBreaksApplicationSecurity": "https://www.youtube.com/embed/pCPGSTYsYoU" };
-    spyOn(sanitizer, 'bypassSecurityTrustResourceUrl');
+    spyOn(component.sanitizer, 'bypassSecurityTrustResourceUrl');
     component.resourceUrl(mockUrl);
     expect(component.url.changingThisBreaksApplicationSecurity).toEqual(mockSanitizedUrl.changingThisBreaksApplicationSecurity);
   });
 
-  it('should call getRemovePlanDetails method of component is called when topic is passed', () => {
+  it("should call modalService show when openModal is called", () => {
+    spyOn(modalService, 'show');
+    component.openModal(template);
+    expect(modalService.show).toHaveBeenCalled();
+  });
+
+  xit('should call getRemovePlanDetails method of component is called when topic is passed', () => {
     let topic = "Protective Order";
-    let mockSelectedPlanDetails = { planDetails: mockPlanDetails, topicId: topic };
+    let mockSelectedPlanDetails = { planDetails: mockPlanDetails, topic: topic };
     component.planDetails = mockPlanDetails;
     spyOn(component, 'getRemovePlanDetails').and.callFake(() => {
       component.removePlanDetails = mockTopicsList;
