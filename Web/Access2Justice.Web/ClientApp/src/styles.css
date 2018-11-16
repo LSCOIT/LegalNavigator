@@ -2,8 +2,9 @@
 body {
   position: relative !important;
   top: 40px !important;
-  min-height: 83% !important;
+  min-height: 85% !important;
   word-wrap: break-word;
+  padding: 0 !important;
 }
 
 li {
@@ -71,7 +72,7 @@ textarea {
 
 .MicrosoftMap .as_container_search {
   width: 80% !important;
-  margin: 0 5%;
+  margin: 40px 11%;
 }
 
 .static-img-container {
@@ -170,7 +171,7 @@ textarea {
 }
 
 .progress {
-  height: 15px;
+  height: 20px;
   border: 1px solid #ccc;
   background-color: #FFF;
   box-shadow: none;
@@ -193,14 +194,11 @@ textarea {
   display: none;
 }
 
-.MicrosoftMap .as_container_search {
-  margin: 30px 6.5% !important;
-}
-
 .modal-dialog {
   height: 1185px;
   margin: 0;
   background-color: #fff;
+  padding-top: 30px;
 }
 
 .modal-content {
@@ -214,6 +212,11 @@ textarea {
     margin: 0.75rem auto;
     width: 540px;
     max-width: 660px;
+    padding-top: 0;
+  }
+
+  .MicrosoftMap .as_container_search {
+    margin: 40px 7%;
   }
 }
 
@@ -237,7 +240,7 @@ textarea {
   }
 
   .MicrosoftMap .as_container_search {
-    margin: 30px 7.5% !important;
+    margin: 40px 7.5% !important;
   }
 
   .modal-dialog {

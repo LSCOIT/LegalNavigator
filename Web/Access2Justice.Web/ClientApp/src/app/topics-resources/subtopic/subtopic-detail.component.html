@@ -1,24 +1,26 @@
 <div *ngIf="subtopicDetails" class="container">
   <app-breadcrumb></app-breadcrumb>
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-6 col-sm-12">
       <h3 *ngIf="subtopics.id == activeSubtopicParam" class="subtopic-heading">{{subtopics.name}}</h3>
     </div>
-    <div class="col-md-6 user-action">
+    <div class="col-md-6 col-sm-12 user-action">
       <app-user-action-sidebar [mobile]="true" [id]="activeSubtopicParam" [type]="type"></app-user-action-sidebar>
     </div>
   </div>
   <div class="row">
     <div class="col-md-8 col-sm-12">
-      <div class="box-no-shadow">
+      <div class="box-no-shadow" *ngIf="subtopics.overview || relatedLinksData.length">
         <div class="subtopic-body">
-          <h4>Overview</h4>
-          <p>{{subtopics.overview}}</p>
-          <div class="row">
+          <div *ngIf="subtopics.overview">
+            <h4>Overview</h4>
+            <p>{{subtopics.overview}}</p>
+          </div>
+          <div class="row" *ngIf="relatedLinksData.length">
             <h5>Essential Reading</h5>
             <ul>
-              <li *ngFor="let resource of relatedLinksData" >
-                <a class="link" href="{{resource.url}}">{{resource.name}}</a>
+              <li *ngFor="let resource of relatedLinksData">
+                <a class="link p" href="{{resource.url}}">{{resource.name}}</a>
                 <div class="print-only">{{resource.url}}</div>
               </li>
             </ul>

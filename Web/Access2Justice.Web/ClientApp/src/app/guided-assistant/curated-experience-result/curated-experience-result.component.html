@@ -26,9 +26,9 @@
             <ul>
               <li *ngFor="let intent of relevantIntents">
                 <input type="checkbox" [id]="intent" [value]="intent" name="multiSelectOptions" ngModel>
-                <label [for]="intent" class="text-capitalize">{{intent}}</label>
+                <label [for]="intent" class="p text-capitalize">{{intent}}</label>
                 <div class="check"></div>
-                <a class="link" [routerLink]="['/topics/bdc07e7a-1f06-4517-88d8-9345bb87c3cf']">Learn More</a>
+                <a class="link p" [routerLink]="['/topics/bdc07e7a-1f06-4517-88d8-9345bb87c3cf']">Learn More</a>
               </li>
             </ul>
           </div>

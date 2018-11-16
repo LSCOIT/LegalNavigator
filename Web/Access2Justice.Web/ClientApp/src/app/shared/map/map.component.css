@@ -20,7 +20,7 @@ p.ps {
 }
 
 .edit-location {
-  padding: 20px 15px 10px 10px;
+  padding: 17px 15px 10px 10px;
   cursor: pointer;
   display: inline-block;
   height: 51px;
@@ -111,7 +111,7 @@ p.ps {
 }
 
 .btn {
-  margin: 20px auto;
+  margin: 10px auto;
 }
 
 #validation-error {
@@ -121,6 +121,10 @@ p.ps {
 
 .mobile-margin {
   margin: 15px;
+}
+
+.close {
+  margin-right: 15px;
 }
 
 @media only screen and (min-width : 540px) {
@@ -138,10 +142,6 @@ p.ps {
   
   .mobile-margin {
     margin: 0;
-  }
-
-  .nav-icon.mobile-margin {
-    margin: 20px;
   }
 
   .web-hidden {
