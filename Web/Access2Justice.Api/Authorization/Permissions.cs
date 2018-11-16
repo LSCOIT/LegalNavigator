@@ -24,7 +24,8 @@
             getuserprofile,
             getuserprofiledata,
             updateuserprofile,
-            upsertuserpersonalizedplan            
+            upsertuserpersonalizedplan,
+            importa2jtemplate
         }
 
         public enum Role
