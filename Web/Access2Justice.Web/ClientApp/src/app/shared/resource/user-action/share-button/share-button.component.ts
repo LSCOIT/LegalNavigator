@@ -97,7 +97,6 @@ export class ShareButtonComponent implements OnInit {
   }
 
   generateLink() {
-
     this.buildParams();
     this.shareService.generateLink(this.shareInput)
       .subscribe(response => {
