@@ -8,6 +8,8 @@ using Access2Justice.Shared;
 using Access2Justice.Shared.Utilities;
 using Access2Justice.Shared.Models.Integration;
 using Access2Justice.Shared.Models;
+using Newtonsoft.Json.Linq;
+using System.Globalization;
 
 namespace Access2Justice.Integration.Api.BusinessLogic
 {
@@ -111,16 +113,19 @@ namespace Access2Justice.Integration.Api.BusinessLogic
             Availability availability = new Availability();
             AcceptanceCriteria acceptanceCriteria = new AcceptanceCriteria();
             OnboardingInfo onboardingInfo = new OnboardingInfo();
-            SharedReferences sharedReferences = new SharedReferences();
-            var address = GetServiceProviderAddress(site.Address);
-            var phone = GetServiceProviderPhone(site.Phones);
-            var locations = GetServiceProviderLocation(site.Address);
-            var organizationUnit = GetServiceProviderOrgUnit(site.Address);
-            dynamic references = sharedReferences.GetReferences(site);
-            organizationReviewers = references[4];
-            availability = references[6];
-            acceptanceCriteria = references[7];
-            onboardingInfo = references[8];     
+            //var address = GetServiceProviderAddress(site.Address);
+            //var phone = GetServiceProviderPhone(site.Phones);
+            //var locations = GetServiceProviderLocation(site.Address);
+            //var organizationUnit = GetServiceProviderOrgUnit(site.Address);
+            dynamic references = GetServiceProviderReferences(site);
+            organizationReviewers = references[0];
+            availability = references[1];
+            acceptanceCriteria = references[2];
+            onboardingInfo = references[3];
+            var address = references[4];
+            var phone = references[5];
+            var locations = references[6];
+            var organizationUnit = references[7];
             serviceProvider = new ServiceProvider()
             {
                 SiteId = site.ID,
@@ -283,6 +288,171 @@ namespace Access2Justice.Integration.Api.BusinessLogic
                 }
             }
             return description;
+        }
+
+        /// <summary>
+        /// returns reviewer details
+        /// </summary>
+        /// <param name="reviewerValues"></param>
+        /// <returns></returns>
+        public dynamic GetReviewer(dynamic reviewerValues)
+        {
+            List<OrganizationReviewer> organizationReviewer = new List<OrganizationReviewer>();            
+            foreach (var reviewerDetails in reviewerValues)
+            {
+                string reviewerFullName = string.Empty, reviewerTitle = string.Empty, reviewText = string.Empty, reviewerImage = string.Empty;
+                foreach (JProperty reviewer in reviewerDetails)
+                {
+                    if (reviewer.Name == "reviewerFullName")
+                    {
+                        reviewerFullName = reviewer.Value.ToString();
+                    }
+                    else if (reviewer.Name == "reviewerTitle")
+                    {
+                        reviewerTitle = reviewer.Value.ToString();
+                    }
+                    else if (reviewer.Name == "reviewText")
+                    {
+                        reviewText = reviewer.Value.ToString();
+                    }
+                    else if (reviewer.Name == "reviewerImage")
+                    {
+                        reviewerImage = reviewer.Value.ToString();
+                    }
+                }
+                organizationReviewer.Add(new OrganizationReviewer { ReviewerFullName = reviewerFullName, ReviewerTitle = reviewerTitle, ReviewText = reviewText, ReviewerImage = reviewerImage });
+            }
+            return organizationReviewer;
+        }
+
+        /// <summary>
+        /// returns availability details
+        /// </summary>
+        /// <param name="availabilityValues"></param>
+        /// <returns></returns>
+        public dynamic GetAvailability(dynamic availabilityValues)
+        {
+            Availability availability = new Availability();
+            IEnumerable<Schedule> regularBusinessHours = null;
+            IEnumerable<Schedule> holidayBusinessHours = null;
+            var regularBusinessHoursData = availabilityValues.regularBusinessHours;
+            regularBusinessHours = regularBusinessHoursData != null && regularBusinessHoursData.Count > 0 ? GetBusinessHours(regularBusinessHoursData) : null;
+            holidayBusinessHours = availabilityValues.holidayBusinessHours != null && availabilityValues.holidayBusinessHours.Count > 0 ? GetBusinessHours(availabilityValues.holidayBusinessHours):null;
+            TimeSpan waitTime = TimeSpan.Parse(availabilityValues.waitTime.ToString(), CultureInfo.InvariantCulture);
+            availability = new Availability { RegularBusinessHours = regularBusinessHours, HolidayBusinessHours = holidayBusinessHours, WaitTime = waitTime };
+            return availability;
+        }
+
+        /// <summary>
+        /// returns open time and close time schedule
+        /// </summary>
+        /// <param name="businessHours"></param>
+        /// <returns></returns>
+        public dynamic GetBusinessHours(dynamic businessHours)
+        {
+            List<Schedule> schedules = new List<Schedule>();
+            Schedule schedule = new Schedule();
+            foreach (var businessHour in businessHours)
+            {
+                TimeSpan openTime = TimeSpan.Parse(businessHour.opensAt.ToString(), CultureInfo.InvariantCulture);
+                TimeSpan closeTime = TimeSpan.Parse(businessHour.opensAt.ToString(), CultureInfo.InvariantCulture);
+                schedule = (new Schedule { Day = businessHour.day, OpensAt = openTime, ClosesAt = closeTime });
+                schedules.Add(schedule);
+            }
+            return schedules;
+        }
+
+        /// <summary>
+        /// retruns acceptance criteria
+        /// </summary>
+        /// <param name="acceptanceCriteriaValues"></param>
+        /// <returns></returns>
+        public dynamic GetAcceptanceCriteria(dynamic acceptanceCriteriaValues)
+        {
+            AcceptanceCriteria acceptanceCriteria = new AcceptanceCriteria();
+            string description = string.Empty;
+            dynamic evaluatedRequirements = null;
+            description = acceptanceCriteriaValues.description.ToString();
+            evaluatedRequirements = acceptanceCriteriaValues.evaluatedRequirements != null && acceptanceCriteriaValues.evaluatedRequirements.Count > 0 ? GetEvaluatedRequirements(acceptanceCriteriaValues.evaluatedRequirements) : null;
+            acceptanceCriteria = new AcceptanceCriteria { Description = description, EvaluatedRequirements = evaluatedRequirements };
+            return acceptanceCriteria;
+        }
+
+        /// <summary>
+        /// returns evaluated requirements
+        /// </summary>
+        /// <param name="evaluatedRequirements"></param>
+        /// <returns></returns>
+        public dynamic GetEvaluatedRequirements(dynamic evaluatedRequirements)
+        {
+            List<Expression> expressions = new List<Expression>();
+            Expression expression = new Expression();
+            Shared.Models.Integration.Condition condition = new Shared.Models.Integration.Condition();
+            foreach (var evaluatedRequirement in evaluatedRequirements)
+            {
+                var displayLabel = evaluatedRequirement.condition.displayLabel;
+                var data = evaluatedRequirement.condition.data;
+                ConditionDataType dataType = evaluatedRequirement.condition.dataType;
+                Operator operatorData = evaluatedRequirement.operatorName;
+                string variableData = evaluatedRequirement.variable.ToString();
+                condition = new Shared.Models.Integration.Condition { DisplayLabel = displayLabel, Data = data, DataType = dataType };
+                expression = (new Expression { Condition = condition, Operator = operatorData, Variable = variableData });
+                expressions.Add(expression);
+            }
+            return expressions;
+        }
+
+        /// <summary>
+        /// returns onborading info
+        /// </summary>
+        /// <param name="onboardingInfoValues"></param>
+        /// <returns></returns>
+        public dynamic GetOnboardingInfo(dynamic onboardingInfoValues)
+        {
+            OnboardingInfo onboardingInfo = new OnboardingInfo();
+            Shared.Models.Integration.Field field = new Shared.Models.Integration.Field();
+            List<Shared.Models.Integration.Field> fields = new List<Shared.Models.Integration.Field>();
+            var onboardingInfoData = onboardingInfoValues.userFields != null && onboardingInfoValues.userFields.Count > 0 ? onboardingInfoValues.userFields : null;
+            foreach (var onboardingInfoValue in onboardingInfoData)
+            {
+                var name = onboardingInfoValue.name;
+                var value = onboardingInfoValue.value;
+                field = new Shared.Models.Integration.Field { Name = name, Value = value };
+                fields.Add(field);
+            }
+            onboardingInfo = new OnboardingInfo { UserFields = fields };
+            return onboardingInfo;
+        }
+
+        /// <summary>
+        /// returns service provider references
+        /// </summary>
+        /// <param name="resourceObject"></param>
+        /// <returns></returns>
+        public dynamic GetServiceProviderReferences(dynamic resourceObject)
+        {           
+            List<OrganizationReviewer> organizationReviewers = new List<OrganizationReviewer>();
+            Availability availability = new Availability();
+            AcceptanceCriteria acceptanceCriteria = new AcceptanceCriteria();
+            OnboardingInfo onboardingInfo = new OnboardingInfo();
+            List<dynamic> references = new List<dynamic>();
+            var address = GetServiceProviderAddress(resourceObject.Address);
+            var phone = GetServiceProviderPhone(resourceObject.Phones);
+            var locations = GetServiceProviderLocation(resourceObject.Address);
+            var organizationUnit = GetServiceProviderOrgUnit(resourceObject.Address);
+            organizationReviewers = resourceObject.reviewer != null && resourceObject.reviewer.Count > 0 ? GetReviewer(resourceObject.reviewer) : null;
+            availability = resourceObject.availability != null ? GetAvailability(resourceObject.availability) : null;
+            acceptanceCriteria = resourceObject.acceptanceCriteria != null ? GetAcceptanceCriteria(resourceObject.acceptanceCriteria) : null;
+            onboardingInfo = resourceObject.onboardingInfo != null ? GetOnboardingInfo(resourceObject.onboardingInfo) : null;
+            references.Add(organizationReviewers);
+            references.Add(availability);
+            references.Add(acceptanceCriteria);
+            references.Add(onboardingInfo);
+            references.Add(address);
+            references.Add(phone);
+            references.Add(locations);
+            references.Add(organizationUnit);
+            return references;
         }
     }          
 }
