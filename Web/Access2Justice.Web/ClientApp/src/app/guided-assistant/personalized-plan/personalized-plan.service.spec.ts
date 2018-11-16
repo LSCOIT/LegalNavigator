@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { PersonalizedPlanService } from './personalized-plan.service';
 import { api } from '../../../api/api';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { ArrayUtilityService } from '../../shared/array-utility.service';
 import { PersonalizedPlan, ProfileResources } from './personalized-plan';
 import { ToastrService } from 'ngx-toastr';
@@ -11,7 +11,6 @@ import { of } from 'rxjs/observable/of';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('Service:PersonalizedPlan', () => {
-  let httpTestingController: HttpTestingController;
   let mockPlanDetails = {
     "id": "29250697-8d22-4f9d-bbf8-96c1b5b72e54",
     "isShared": false,
@@ -354,11 +353,10 @@ describe('Service:PersonalizedPlan', () => {
   beforeEach(() => {
 
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, HttpClientModule],
+      imports: [HttpClientModule],
       providers: [PersonalizedPlanService, ArrayUtilityService,
         { provide: Global, useValue: { global, role: '', shareRouteUrl: '', userId: 'UserId' } }]
     });
-    httpTestingController = TestBed.get(HttpTestingController);
     service = new PersonalizedPlanService(httpSpy, arrayUtilityService, toastrService, global);
     global = TestBed.get(Global);
     arrayUtilityService = new ArrayUtilityService();
@@ -397,13 +395,6 @@ describe('Service:PersonalizedPlan', () => {
 
   it('service should be defined ', () => {
     expect(service).toBeDefined();
-  });
-
-  xit('should retrieve plan steps when the id  value is id', (done) => {
-    service.getActionPlanConditions('123').subscribe();
-    const req = httpTestingController.expectOne(api.planUrl + '?123');
-    req.flush(mockPlanDetails);
-    httpTestingController.verify();
   });
 
   it('should return user saved resources when oid value is passed', (done) => {
@@ -521,9 +512,9 @@ describe('Service:PersonalizedPlan', () => {
     let mockExists = false;
     service.resourceIndex = 1;
     service.resourceTags = mockSavedResources;
-    //spyOn(arrayUtilityService, 'checkObjectExistInArray').and.callFake(() => {
-    //  return Observable.from([mockExists]);
-    //});
+    spyOn(arrayUtilityService, 'checkObjectExistInArray').and.callFake(() => {
+      return Observable.from([mockExists]);
+    });
     spyOn(arrayUtilityService, 'checkObjectExistInArray').and.returnValue(of(mockExists));
     spyOn(service, 'saveResourcesToProfile');
     service.checkExistingSavedResources(mockSavedResources);

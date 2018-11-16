@@ -5,7 +5,6 @@ import { PersonalizedPlan } from '../../../../guided-assistant/personalized-plan
 import { Global } from '../../../../global';
 import { Router } from '@angular/router';
 import { ProfileComponent } from '../../../../profile/profile.component';
-import { PersonalizedPlanComponent } from '../../../../guided-assistant/personalized-plan/personalized-plan.component';
 
 @Injectable()
 export class SaveButtonService {
@@ -14,8 +13,7 @@ export class SaveButtonService {
 
   constructor(private personalizedPlanService: PersonalizedPlanService,
     private global: Global,
-    private profileComponent: ProfileComponent,
-    private personalizedPlanComponent: PersonalizedPlanComponent) { }
+    private profileComponent: ProfileComponent) { }
 
   savePlanToUserProfile(plan) {
     this.personalizedPlan = plan;
@@ -28,11 +26,7 @@ export class SaveButtonService {
         if (response) {
           this.personalizedPlanService.showSuccess('Plan saved to profile');
           sessionStorage.removeItem(this.global.planSessionKey);
-          if (this.global.userId) {
             this.profileComponent.getPersonalizedPlan();
-          } else {
-            this.personalizedPlanComponent.getTopics();
-          }
         }
       });
   }
