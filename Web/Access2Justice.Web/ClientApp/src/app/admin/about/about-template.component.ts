@@ -9,6 +9,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NavigateDataService } from '../../shared/navigate-data.service';
 import { ToastrService } from 'ngx-toastr';
+import { AdminService } from '../admin.service';
 
 @Component({
   selector: 'app-about-template',
@@ -39,6 +40,7 @@ export class AboutTemplateComponent implements OnInit {
     private activeRoute: ActivatedRoute,
     private navigateDataService: NavigateDataService,
     private toastr: ToastrService,
+    private adminService: AdminService
   ) {
     this.createForm();
   }
@@ -155,8 +157,16 @@ export class AboutTemplateComponent implements OnInit {
         }
       }
     }
-  }
 
+    this.adminService.saveAboutData(this.newAboutContent).subscribe(
+      response => {
+        this.spinner.hide();
+        if (response) {
+          console.log(response);
+          this.toastr.success("Page updated successfully");
+        }
+      });
+  }
 
   getAboutPageContent(): void {
     if (this.navigateDataService.getData()) {

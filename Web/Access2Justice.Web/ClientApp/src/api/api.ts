@@ -34,5 +34,6 @@ export const api = {
     getResourceLink: apiUrl + '/share/permalink/resource',
     checkPermaLink: apiUrl + '/share/permalink/check',
     updatePrivacyDataUrl: contentUrl + '/privacy/upsert',
+    updateAboutDataUrl: contentUrl + '/about/upsert',
     uploadCuratedExperienceTemplateUrl: adminUrl + '/curated-experience'    
 }
