@@ -119,6 +119,10 @@ namespace Access2Justice.Shared.Models
         [DefaultValue("")]
         [JsonProperty(PropertyName = "image")]
         public Image Image { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "url")]
+        public string Link { get; set; }
     }
 
     public class TitleDescription
