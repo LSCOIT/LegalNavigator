@@ -66,9 +66,7 @@ namespace Access2Justice.Integration.Api.Controllers
         [ProducesResponseType(404)]
         public IActionResult GetServiceProviders(string organizationalUnit, Topic topic)
         {
-            ServiceProviderAdaptee serviceProviderAdaptee = new ServiceProviderAdaptee( rtmSettings, webSearchBusinessLogic);
-            var serviceProvider = serviceProviderAdaptee.GetServiceProviders(organizationalUnit, topic);
-            return Ok(serviceProvider);
+            throw new NotImplementedException();
         }
     }
 }

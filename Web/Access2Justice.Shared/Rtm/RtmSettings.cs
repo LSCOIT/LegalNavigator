@@ -11,17 +11,23 @@ namespace Access2Justice.Shared.Rtm
         {
             try
             {
-                RtmApiUrl = new Uri(configuration.GetSection("RtmApiUrl").Value);                
                 RtmApiKey = configuration.GetSection("RtmApiKey").Value;
+                SessionURL = new Uri(configuration.GetSection("SessionURL").Value);
+                ServiceProviderURL = new Uri(configuration.GetSection("ServiceProviderURL").Value);
+                ServiceProviderDetailURL = new Uri(configuration.GetSection("ServiceProviderDetailURL").Value);
             }
             catch
             {
                 throw new Exception("Invalid Application configurations");
             }
         }
-        public Uri RtmApiUrl { get; set; }       
 
         public string RtmApiKey { get; set; }
 
+        public Uri SessionURL { get; set; }
+
+        public Uri ServiceProviderURL { get; set; }
+
+        public Uri ServiceProviderDetailURL { get; set; }
     }
 }

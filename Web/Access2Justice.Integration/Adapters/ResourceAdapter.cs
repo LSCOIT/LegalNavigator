@@ -17,8 +17,7 @@ namespace Access2Justice.Integration.Adapters
 
         public async Task<IEnumerable<Resource>> GetResources(string organizationalUnit, Topic topic)
         {
-            ResourceAdaptee resourceAdaptee = new ResourceAdaptee();
-            return await resourceAdaptee.GetResources(organizationalUnit, null).ConfigureAwait(false);           
+            throw new NotImplementedException();
         }
     }
 

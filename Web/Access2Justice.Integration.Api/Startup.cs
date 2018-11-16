@@ -12,6 +12,10 @@ using Access2Justice.Shared.Interfaces;
 using Access2Justice.CosmosDb;
 using Microsoft.Azure.Documents;
 using Access2Justice.Shared.Utilities;
+using Access2Justice.Integration.Interfaces;
+using Access2Justice.Integration.Adapters;
+using Access2Justice.Shared.Rtm;
+using Access2Justice.Shared;
 
 namespace Access2Justice.Integration.Api
 {
@@ -30,9 +34,16 @@ namespace Access2Justice.Integration.Api
             ConfigureSession(services);
 
             services.AddMvc();
+
             IKeyVaultSettings keyVaultSettings = new KeyVaultSettings(Configuration.GetSection("KeyVault"));
             services.AddSingleton(keyVaultSettings);
+
+            IRtmSettings rtmSettings = new RtmSettings(Configuration.GetSection("RtmSettings"));
+            services.AddSingleton(rtmSettings);
+
+            services.AddSingleton<IHttpClientService, HttpClientService>();
             services.AddSingleton<IServiceProvidersBusinessLogic, ServiceProvidersBusinessLogic>();
+            services.AddSingleton<IServiceProviderAdapter, ServiceProviderAdapter>();
             ConfigureCosmosDb(services);
             services.AddSwaggerGen(c =>
             {
