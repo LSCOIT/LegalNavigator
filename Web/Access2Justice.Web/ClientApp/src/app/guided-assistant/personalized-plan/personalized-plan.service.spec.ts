@@ -10,7 +10,7 @@ import { Global } from '../../global';
 import { of } from 'rxjs/observable/of';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 
-fdescribe('Service:PersonalizedPlan', () => {
+describe('Service:PersonalizedPlan', () => {
   let httpTestingController: HttpTestingController;
   let mockPlanDetails = {
     "id": "29250697-8d22-4f9d-bbf8-96c1b5b72e54",
@@ -477,8 +477,37 @@ fdescribe('Service:PersonalizedPlan', () => {
     expect(service.resourceTags).toEqual(mockSavedResources);
     expect(service.compareResources).toHaveBeenCalled();
   });
-  
-  it('checkExistingSavedResources for saved saved resource exists', () => {
+
+  xit('should call checkExistingSavedResources in compareResources method', () => {
+    let mockResourceTags = [{
+      "itemId": "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef",
+      "resourceType": "Topics",
+      "resourceDetails": {}
+    },
+    {
+      "itemId": "1d7fc811-dabe-4468-a179-c55075bd22b6",
+      "resourceType": "Organizations",
+      "resourceDetails": {}
+    },
+    {
+      "itemId": "Pro Bono Innovation Fund Grants 2016 | LSC - Legal ...",
+      "resourceType": "WebResources",
+      "resourceDetails": {
+        "id": "https://api.cognitive.microsoft.com/api/v7/#WebPages.9",
+        "name": "Pro Bono Innovation Fund Grants 2016 | LSC - Legal ...",
+        "url": "https://www.lsc.gov/pro-bono-innovation-fund-grants-2016"
+      }
+    }];
+    spyOn(service, 'getUserSavedResources').and.callFake(() => {
+      return Observable.from([mockUserSavedResources]);
+    });
+    spyOn(service,'checkExistingSavedResources');
+    service.compareResources(mockSavedResources);
+    expect(service.checkExistingSavedResources).toHaveBeenCalled();
+    expect(service.resourceTags).toEqual(mockResourceTags);
+  });
+
+  it('checkExistingSavedResources for saved resource exists', () => {
     let mockExists = true;
     spyOn(arrayUtilityService, 'checkObjectExistInArray').and.callFake(() => {
       return Observable.from([mockExists]);
@@ -492,59 +521,26 @@ fdescribe('Service:PersonalizedPlan', () => {
     let mockExists = false;
     service.resourceIndex = 1;
     service.resourceTags = mockSavedResources;
-    spyOn(arrayUtilityService, 'checkObjectExistInArray').and.callFake(() => {
-      return Observable.from([mockExists]);
-    });
+    //spyOn(arrayUtilityService, 'checkObjectExistInArray').and.callFake(() => {
+    //  return Observable.from([mockExists]);
+    //});
+    spyOn(arrayUtilityService, 'checkObjectExistInArray').and.returnValue(of(mockExists));
     spyOn(service, 'saveResourcesToProfile');
     service.checkExistingSavedResources(mockSavedResources);
     expect(service.saveResourcesToProfile).toHaveBeenCalled();
     expect(sessionStorage.getItem(global.sessionKey)).toBeNull;
   });
 
-  xit('should call showWarning if saved resources already exists in saveResourcesToProfile method', () => {
-    spyOn(service, 'showWarning');
-    let mockResponse = [mockUserSavedResources];
-    spyOn(service, 'getUserSavedResources').and.callFake(() => {
-      return Observable.from([mockResponse]);
+  it('should call saveResources in saveResourcesToProfile method', () => {
+    global.userId = "UserId";
+    let mockProfileResources = { oId: "UserId", resourceTags: mockSavedResources, type: 'resources' };
+    spyOn(service, 'saveResources').and.callFake(() => {
+      return Observable.from([mockSavedResources]);
     });
-
-    let mockExists = true;
-    spyOn(arrayUtilityService, 'checkObjectExistInArray').and.callFake(() => {
-      return Observable.from([mockExists]);
-    });
-    let mockSavedResource = {
-      "itemId": "1d7fc811-dabe-4468-a179-c55075bd22b6",
-      "resourceType": "Organizations",
-      "resourceDetails": {}
-    };
-    sessionStorage.setItem(global.sessionKey, "test");
-    let mockUserId = "mockUserId";
-    spyOn(service, 'saveResourcesToProfile');
-    service.saveResourcesToProfile(mockSavedResource);
-    expect(service.showWarning).toBeTruthy();
-    expect(sessionStorage.getItem(global.sessionKey)).toBeNull;
-  });
-
-  xit('should add resource by calling saveResourceToProfile if saved resources doesnot exists in saveResourcesToProfile method', () => {
-    let mockResponse = [mockUserSavedResources];
-    spyOn(service, 'getUserSavedResources').and.callFake(() => {
-      return Observable.from([mockResponse]);
-    });
-    spyOn(service, 'saveResourcesToProfile');
-    let mockExists = false;
-    spyOn(arrayUtilityService, 'checkObjectExistInArray').and.callFake(() => {
-      return Observable.from([mockExists]);
-    });
-    let mockSavedResource = {
-      "itemId": "1d7fc811-dabe-4468-a179-c43435bd22b6",
-      "resourceType": "Articles",
-      "resourceDetails": {}
-    };
-    global.userId = "userId";
-    sessionStorage.setItem(global.sessionKey, "test");
-    service.saveResourcesToProfile(mockSavedResource);
-    expect(service.saveResourcesToProfile).toHaveBeenCalledWith(service.resourceTags);
-    expect(sessionStorage.getItem(global.sessionKey)).toBeNull;
+    spyOn(service,'showSuccess');
+    service.saveResourcesToProfile(mockSavedResources);
+    expect(service.profileResources).toEqual(mockProfileResources);
+    expect(service.saveResources).toHaveBeenCalled();
   });
 
   it('should call showSuccess service method on saveResourceToProfile', () => {
@@ -563,4 +559,5 @@ fdescribe('Service:PersonalizedPlan', () => {
     service.getResourceIds(mockResources);
     expect(service.resourceIds).toEqual(mockResourceIds);
   });
+
 });
