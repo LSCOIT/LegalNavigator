@@ -3,11 +3,11 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { UploadCuratedExperienceTemplateComponent } from './upload-curated-experience-template.component';
+import { CuratedExperienceTemplateComponent } from './curated-experience-template.component';
 
-describe('UploadCuratedExperienceTemplateComponent', () => {
-  let component: UploadCuratedExperienceTemplateComponent;
-  let fixture: ComponentFixture<UploadCuratedExperienceTemplateComponent>;
+describe('CuratedExperienceTemplateComponent', () => {
+  let component: CuratedExperienceTemplateComponent;
+  let fixture: ComponentFixture<CuratedExperienceTemplateComponent>;
   let mockNgxSpinnerService;
   let mockRouter;
   let mockErrorMessage;
@@ -15,7 +15,7 @@ describe('UploadCuratedExperienceTemplateComponent', () => {
   beforeEach(async(() => {
     mockErrorMessage = "Please provide the required fields.";
     TestBed.configureTestingModule({
-      declarations: [UploadCuratedExperienceTemplateComponent],
+      declarations: [CuratedExperienceTemplateComponent],
       imports: [FormsModule, HttpClientModule],
       providers: [
         { provide: NgxSpinnerService, useValue: mockNgxSpinnerService },
@@ -26,7 +26,7 @@ describe('UploadCuratedExperienceTemplateComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UploadCuratedExperienceTemplateComponent);
+    fixture = TestBed.createComponent(CuratedExperienceTemplateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -11,6 +11,7 @@ describe('AdminAuthGuard', () => {
   let mockLoginService;
   let mockRouter;
   let mockUserProfile;
+  let mockGlobal;
 
   beforeEach(() => {
     mockLoginService = jasmine.createSpyObj(['getUserProfile']);
@@ -19,10 +20,11 @@ describe('AdminAuthGuard', () => {
       providers: [
         AdminAuthGuard,
         { provide: Router, useValue: mockRouter },
-        { provide: LoginService, useValue: mockLoginService }
+        { provide: LoginService, useValue: mockLoginService },
+        { provide: global, useValue: mockGlobal }
       ]
     });
-    adminAuthGuard = new AdminAuthGuard(mockRouter, mockLoginService);
+    adminAuthGuard = new AdminAuthGuard(mockRouter, mockLoginService, mockGlobal);
   });
 
   it('should be truthy', inject([AdminAuthGuard], (guard: AdminAuthGuard) => {

@@ -10,6 +10,7 @@ using static Access2Justice.Api.Authorization.Permissions;
 namespace Access2Justice.Api.Controllers
 {
     [Produces("application/json")]
+    [Route("api/static-resources")]
     public class StaticResourceController : Controller
     {
         private readonly IStaticResourceBusinessLogic staticResourceBusinessLogic;
@@ -31,7 +32,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="200">Get static resources by location for given input</response>
         /// <response code="500">Failure</response>
         [HttpPost]
-        [Route("api/static-resource/get-static-resources")]
+        [Route("")]
         public async Task<IActionResult> GetStaticResourcesDataAsync([FromBody]Location location)
         {
             var contents = await staticResourceBusinessLogic.GetPageStaticResourcesDataAsync(location);
@@ -49,8 +50,8 @@ namespace Access2Justice.Api.Controllers
         /// <response code="500">Failure</response>
         [Permission(PermissionName.upsertstatichomepage)]
         [HttpPost]
-        [Route("api/static-resource/upsert-static-home-page")]
-        public async Task<IActionResult> UpsertStaticHomePageDataAsync([FromBody]HomeContent homePageContent)
+        [Route("home/upsert")]
+        public async Task<IActionResult> UpsertStaticHomePageDataAsync([FromBody]HomeContent homePageContent, Location location)
         {
             if (await userRoleBusinessLogic.ValidateOrganizationalUnit(homePageContent?.OrganizationalUnit))
             {
@@ -71,7 +72,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="500">Failure</response>
         [Permission(PermissionName.upsertstaticprivacypage)]
         [HttpPost]
-        [Route("api/static-resource/upsert-static-privacy-page")]
+        [Route("privacy/upsert")]
         public async Task<IActionResult> UpsertStaticPrivacyPromisePageDataAsync([FromBody]PrivacyPromiseContent privacyPromiseContent)
         {
             if (await userRoleBusinessLogic.ValidateOrganizationalUnit(privacyPromiseContent?.OrganizationalUnit))
@@ -93,8 +94,8 @@ namespace Access2Justice.Api.Controllers
         /// <response code="500">Failure</response>
         [Permission(PermissionName.upsertstatichelpandfaqpage)]
         [HttpPost]
-        [Route("api/static-resource/upsert-static-help-and-faq-page")]
-        public async Task<IActionResult> UpsertStaticHelpAndFAQPageDataAsync([FromBody]HelpAndFaqsContent helpAndFAQPageContent)
+        [Route("help-and-faq/upsert")]
+        public async Task<IActionResult> UpsertStaticHelpAndFAQPageDataAsync(HelpAndFaqsContent helpAndFAQPageContent, Location location)
         {
             if (await userRoleBusinessLogic.ValidateOrganizationalUnit(helpAndFAQPageContent?.OrganizationalUnit))
             {
@@ -116,8 +117,8 @@ namespace Access2Justice.Api.Controllers
         /// <response code="500">Failure</response>
         [Permission(PermissionName.upsertstaticnavigation)]
         [HttpPost]
-        [Route("api/static-resource/upsert-static-navigation")]
-        public async Task<IActionResult> UpsertStaticNavigationDataAsync([FromBody]Navigation navigationContent)
+        [Route("navigation/upsert")]
+        public async Task<IActionResult> UpsertStaticNavigationDataAsync([FromBody]Navigation navigationContent, Location location)
         {
             if (await userRoleBusinessLogic.ValidateOrganizationalUnit(navigationContent?.OrganizationalUnit))
             {
@@ -138,8 +139,8 @@ namespace Access2Justice.Api.Controllers
         /// <response code="500">Failure</response>
         [Permission(PermissionName.upsertstaticaboutpage)]
         [HttpPost]
-        [Route("api/static-resource/upsert-static-about-page")]
-        public async Task<IActionResult> UpsertStaticAboutPageDataAsync([FromBody]AboutContent aboutContent)
+        [Route("about/upsert")]
+        public async Task<IActionResult> UpsertStaticAboutPageDataAsync([FromBody]AboutContent aboutContent, Location location)
         {
             if (await userRoleBusinessLogic.ValidateOrganizationalUnit(aboutContent?.OrganizationalUnit))
             {

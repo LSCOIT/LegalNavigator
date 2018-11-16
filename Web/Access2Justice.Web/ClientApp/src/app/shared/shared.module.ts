@@ -52,6 +52,7 @@ import { ShareService } from './resource/user-action/share-button/share.service'
 import { ShareButtonRouteComponent } from './resource/user-action/share-button/share-button-route/share-button-route.component';
 import { ReadMoreComponent } from './read-more/read-more.component';
 import { LoginService } from './login/login.service';
+import { UnauthorizedComponent } from './error/unauthorized/unauthorized.component';
 
 @NgModule({
   imports: [
@@ -100,7 +101,9 @@ import { LoginService } from './login/login.service';
     MapComponent,
     InternalErrorComponent,
     LoginComponent,   
-    ShareButtonRouteComponent, ReadMoreComponent
+    ShareButtonRouteComponent,
+    ReadMoreComponent,
+    UnauthorizedComponent
   ],
   exports: [
     ActionPlansComponent,
@@ -126,7 +129,8 @@ import { LoginService } from './login/login.service';
     UserActionSidebarComponent,
     WebResourceComponent,
     HelplineComponent,
-    LoginComponent
+    LoginComponent,
+    UnauthorizedComponent
   ],
   providers: [
     MapService,

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Global } from '../../global';
 import { StaticResourceService } from '../../shared/static-resource.service';
+import { Router } from '@angular/router';
+import { NavigateDataService } from '../../shared/navigate-data.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -14,10 +16,14 @@ export class AdminDashboardComponent implements OnInit {
   stateList: Array<string> = [];
   staticResource: any;
   showStaticContentPage: boolean = false;
+  location;
+  stateDropdown = "Select State";
 
   constructor(
     private global: Global,
-    private staticResourceService: StaticResourceService
+    private staticResourceService: StaticResourceService,
+    private router: Router,
+    private navigateDataService: NavigateDataService
   ) { }
 
   checkIfStateAdmin(roleInformation) {
@@ -33,13 +39,35 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   displayStatePage(event) {
-    let location = { state: event.target.innerText };
-    this.staticResourceService.getStaticContents(location).subscribe(response => {
+    this.stateDropdown = event.target.innerText;
+    this.location = { state: event.target.innerText };
+    this.staticResourceService.getStaticContents(this.location).subscribe(response => {
       this.staticResource = response;
       this.showStaticContentPage = true;
     });
   }
 
+  navigateToPage(event) {
+    let pageName = event.target.innerText;
+    this.navigateDataService.setData(this.staticResource);
+    switch (pageName) {
+      case 'HomePage':
+        this.router.navigate(['/admin/home'], { queryParams: { state: this.location.state } });
+        break;
+      case 'PrivacyPromisePage':
+        this.router.navigate(['/admin/privacy'], { queryParams: { state: this.location.state } });
+        break;
+      case 'AboutPage':
+        this.router.navigate(['/admin/about'], { queryParams: { state: this.location.state } });
+        break;
+      case 'HelpAndFAQPage':
+        this.router.navigate(['/admin/help'], { queryParams: { state: this.location.state } });
+        break;
+      //case 'Navigation':
+      //  this.router.navigate(['/admin/navigation'], { queryParams: { state: this.location.state } });
+      //  break;
+    }
+  }
     
   ngOnInit() {
     this.checkIfStateAdmin(this.global.roleInformation);

@@ -5,11 +5,11 @@ import { api } from '../../../api/api';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
-  selector: 'app-upload-curated-experience-template',
-  templateUrl: './upload-curated-experience-template.component.html',
-  styleUrls: ['./upload-curated-experience-template.component.css']
+  selector: 'app-curated-experience-template',
+  templateUrl: './curated-experience-template.component.html',
+  styleUrls: ['../admin-styles.css']
 })
-export class UploadCuratedExperienceTemplateComponent implements OnInit {
+export class CuratedExperienceTemplateComponent implements OnInit {
   successMessage: string;
   errorMessage: string;
   @ViewChild('file') file: ElementRef;

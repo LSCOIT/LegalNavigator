@@ -1,15 +1,15 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { PrivacyPromiseAdminComponent } from './privacy-promise-admin.component';
+import { PrivacyPromiseTemplateComponent } from './privacy-promise-template.component';
 import { StaticResourceService } from '../../shared/static-resource.service';
 import { Global } from '../../global';
 import { AdminService } from '../admin.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
 
-describe('PrivacyPromiseComponent', () => {
-  let component: PrivacyPromiseAdminComponent;
-  let fixture: ComponentFixture<PrivacyPromiseAdminComponent>;
+describe('PrivacyPromiseTemplateComponent', () => {
+  let component: PrivacyPromiseTemplateComponent;
+  let fixture: ComponentFixture<PrivacyPromiseTemplateComponent>;
   let mockStaticResourceService;
   let mockGlobal;
   let mockAdminService;
@@ -18,7 +18,7 @@ describe('PrivacyPromiseComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [PrivacyPromiseAdminComponent],
+      declarations: [PrivacyPromiseTemplateComponent],
       imports: [FormsModule],
       providers: [
         { provide: StaticResourceService, useValue: mockStaticResourceService },
@@ -32,7 +32,7 @@ describe('PrivacyPromiseComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PrivacyPromiseAdminComponent);
+    fixture = TestBed.createComponent(PrivacyPromiseTemplateComponent);
     component = fixture.componentInstance;
     spyOn(component, 'ngOnInit');
     fixture.detectChanges();
