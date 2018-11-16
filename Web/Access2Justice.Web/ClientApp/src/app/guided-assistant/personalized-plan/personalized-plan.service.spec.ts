@@ -10,7 +10,7 @@ import { Global } from '../../global';
 import { of } from 'rxjs/observable/of';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 
-fdescribe('Service:PersonalizedPlan', () => {
+describe('Service:PersonalizedPlan', () => {
   let httpTestingController: HttpTestingController;
   let mockPlanDetails = {
     "id": "29250697-8d22-4f9d-bbf8-96c1b5b72e54",

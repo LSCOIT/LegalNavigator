@@ -97,14 +97,14 @@ describe('AppComponent', () => {
       name: "mockUser",
       eMail: "mockUser@microsoft.com",
       roleInformation: [
-        { roleName: "Admin"}
+        { roleName: "Admin", organizationalUnit: null }
       ]
     }
 
     mockStaticResourceService = jasmine.createSpyObj(['getStaticContents', 'loadStateName']);
     mockGlobal = jasmine.createSpyObj(['setData','setProfileData']);
     msalService = jasmine.createSpyObj(['getUser']);
-    mockLoginService = jasmine.createSpyObj(['upsertUserProfile']);
+    mockLoginService = jasmine.createSpyObj(['upsertUserProfile','getUserProfile']);
     mockPersonalizedPlanService = jasmine.createSpyObj(['saveResourcesToUserProfile']);
     mockSaveButtonService = jasmine.createSpyObj(['getPlan']);
 
@@ -179,7 +179,7 @@ describe('AppComponent', () => {
   it('should call setProfileData from global', () => {
     mockLoginService.getUserProfile.and.returnValue(of(mockLoginResponse));
     component.createOrGetProfile();
-    expect(mockGlobal.setProfileData).toHaveBeenCalledWith("1234567890ABC", "mockUser", "mockUser@microsoft.com", [({ roleName: "Admin" })]);
+    expect(mockGlobal.setProfileData).toHaveBeenCalledWith("1234567890ABC", "mockUser", "mockUser@microsoft.com", [({ roleName: "Admin", organizationalUnit: null })]);
   });
 });
 
