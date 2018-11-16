@@ -13,18 +13,20 @@ import { MapResultsService } from '../../../sidebars/map-results/map-results.ser
 import { HttpClientModule, HttpHandler } from '@angular/common/http';
 import { ArrayUtilityService } from '../../../array-utility.service';
 import { ShareService } from '../../user-action/share-button/share.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
 import { ToastrService } from 'ngx-toastr';
 import { MsalService } from '@azure/msal-angular';
 import { SaveButtonService } from '../../user-action/save-button/save-button.service';
+import { NavigateDataService } from '../../../navigate-data.service';
 
-describe('OrganizationsComponent', () => {
+fdescribe('OrganizationsComponent', () => {
   let component: OrganizationsComponent;
   let fixture: ComponentFixture<OrganizationsComponent>;
   let mockBsModalService;
   let mockMapResultsService;
   let msalService;
+  let mockRouter;
   let mockResource = {
     resources:
       {
@@ -86,7 +88,9 @@ describe('OrganizationsComponent', () => {
         PersonalizedPlanService,
         { provide: ToastrService, useValue: mockToastr },
         { provide: MsalService, useValue: msalService },
-        { provide: SaveButtonService, useValue: mockSaveButtonService }
+        { provide: SaveButtonService, useValue: mockSaveButtonService },
+        NavigateDataService,
+        { provide: Router, useValue: mockRouter },
       ]
     })
       .compileComponents();
@@ -100,5 +104,9 @@ describe('OrganizationsComponent', () => {
 
   it('should create', () => {
     expect(component).toBeDefined();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
   });
 });
