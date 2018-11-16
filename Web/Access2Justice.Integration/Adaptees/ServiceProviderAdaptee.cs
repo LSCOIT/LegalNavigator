@@ -19,13 +19,13 @@ namespace Access2Justice.Integration.Adapters
         private readonly IRtmSettings rtmSettings;
         private readonly IWebSearchBusinessLogic webSearchBusinessLogic;
 
-        public ServiceProviderAdaptee(IRtmSettings rtmSettings, IWebSearchBusinessLogic webSearchBusinessLogic)
-        {
-            this.rtmSettings = rtmSettings;
-            this.webSearchBusinessLogic = webSearchBusinessLogic;
-        }
+        //public ServiceProviderAdaptee(IRtmSettings rtmSettings, IWebSearchBusinessLogic webSearchBusinessLogic)
+        //{
+        //    this.rtmSettings = rtmSettings;
+        //    this.webSearchBusinessLogic = webSearchBusinessLogic;
+        //}
 
-        public async Task<IEnumerable<ServiceProvider>> GetServiceProviders(string organizationalUnit, Topic topic)
+        public async Task<IEnumerable<ServiceProvider>> GetRTMServiceProviders(string organizationalUnit, Topic topic)
         {
             string rtmApi = "ServiceProviders";
             string rtmSessionId = "1ZWQL0mwagl6hB9yCyGV"; // await GetSessionId().ConfigureAwait(false);

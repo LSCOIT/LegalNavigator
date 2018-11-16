@@ -8,15 +8,14 @@ using System.Threading.Tasks;
 
 namespace Access2Justice.Integration.Adapters
 {
-    public class ServiceProviderAdapter : IServiceProviderAdapter
+    public class ServiceProviderAdapter : ServiceProviderAdaptee, IServiceProviderAdapter
     {
         private readonly IRtmSettings rtmSettings;
         private readonly IWebSearchBusinessLogic webSearchBusinessLogic;
-      
+
         public async Task<IEnumerable<ServiceProvider>> GetServiceProviders(string organizationalUnit, Topic topic)
         {
-            ServiceProviderAdaptee serviceProviderAdaptee = new ServiceProviderAdaptee(rtmSettings, webSearchBusinessLogic);
-            return await serviceProviderAdaptee.GetServiceProviders(organizationalUnit, null).ConfigureAwait(false);
+            return await GetRTMServiceProviders(organizationalUnit, null).ConfigureAwait(false);
         }
 
         public ServiceProvider GetServiceProviderDetails(string id)
@@ -24,6 +23,5 @@ namespace Access2Justice.Integration.Adapters
             throw new NotImplementedException();
         }
     }
-
 }
 
