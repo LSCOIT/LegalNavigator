@@ -349,42 +349,10 @@ describe('ActionPlansComponent', () => {
     expect(component.orderBy).toHaveBeenCalled();
   });
 
-  xit("should call assign isChecked and call getPlanDetails in checkCompleted method", () => {
-    component.planDetails = mockPlanDetails;
-    spyOn(component, 'orderBy');
-    component.checkCompleted(mockEvent, mockTopicId, mockStepId);
-    expect(component.isChecked).toBeTruthy();
-    expect(component.orderBy).toHaveBeenCalled();
-    expect(navigateDataService.setData).toHaveBeenCalled();
-    expect(personalizedPlanService.showSuccess).toHaveBeenCalled();
-  });
-
-  xit("should sanitize the resource url in resourceUrl method", () => {
-    let mockUrl = "https://www.youtube.com/embed/pCPGSTYsYoU";
-    let mockSanitizedUrl =
-      { "changingThisBreaksApplicationSecurity": "https://www.youtube.com/embed/pCPGSTYsYoU" };
-    spyOn(component.sanitizer, 'bypassSecurityTrustResourceUrl');
-    component.resourceUrl(mockUrl);
-    expect(component.url.changingThisBreaksApplicationSecurity).toEqual(mockSanitizedUrl.changingThisBreaksApplicationSecurity);
-  });
-
   it("should call modalService show when openModal is called", () => {
     spyOn(modalService, 'show');
     component.openModal(template);
     expect(modalService.show).toHaveBeenCalled();
-  });
-
-  xit('should call getRemovePlanDetails method of component is called when topic is passed', () => {
-    let topic = "Protective Order";
-    let mockSelectedPlanDetails = { planDetails: mockPlanDetails, topic: topic };
-    component.planDetails = mockPlanDetails;
-    spyOn(component, 'getRemovePlanDetails').and.callFake(() => {
-      component.removePlanDetails = mockTopicsList;
-    });
-    component.planTagOptions(topic);
-    expect(component.getRemovePlanDetails).toHaveBeenCalled();
-    expect(component.personalizedPlan).toEqual(mockPlanDetails);
-    expect(component.selectedPlanDetails).toEqual(mockSelectedPlanDetails);
   });
 
   it('should push filtered topics with all topics to removePlanDetails list in getRemovePlanDetails method', () => {

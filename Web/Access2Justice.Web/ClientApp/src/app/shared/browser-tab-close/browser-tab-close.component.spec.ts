@@ -65,26 +65,10 @@ describe('BrowserTabCloseComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  xit('should call show modal method in onInit if data exists in session key', () => {
-    spyOn(sessionStorage, 'getItem')
-      .and.returnValue(JSON.stringify("test data"));
-    spyOn(modalService, 'show');
-    component.ngOnInit();
-    expect(modalService.show).toHaveBeenCalled();
-  });
-
-  xit('should call hide method on Close', () => {
-    spyOn(sessionStorage, 'removeItem');
-    component.modalRef = modalRefInstance;
-    component.ngOnInit();
-    expect(modalRefInstance.isHideCalled).toBeTruthy();
-  });
-
   it('should assign global value in saveToProfile method if session key exists', () => {
     spyOn(sessionStorage, 'getItem')
       .and.returnValue(JSON.stringify("test data"));
     component.saveToProfile();
-    //expect(global.isLoginRedirect).toBeTruthy();
     expect(msalService.loginRedirect).toHaveBeenCalled();
   });
 });

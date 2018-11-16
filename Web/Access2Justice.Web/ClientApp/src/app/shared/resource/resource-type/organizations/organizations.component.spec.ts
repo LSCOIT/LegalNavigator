@@ -20,7 +20,7 @@ import { MsalService } from '@azure/msal-angular';
 import { SaveButtonService } from '../../user-action/save-button/save-button.service';
 import { NavigateDataService } from '../../../navigate-data.service';
 
-fdescribe('OrganizationsComponent', () => {
+describe('OrganizationsComponent', () => {
   let component: OrganizationsComponent;
   let fixture: ComponentFixture<OrganizationsComponent>;
   let mockBsModalService;
