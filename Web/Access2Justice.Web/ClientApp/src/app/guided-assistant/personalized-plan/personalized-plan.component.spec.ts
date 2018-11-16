@@ -289,17 +289,10 @@ describe('Component:PersonalizedPlan', () => {
     expect(component.getTopics).toHaveBeenCalled();
   });
 
-  xit('should call methods of personalized service and assing component values when gettopics is called', () => {
+  it('should call service methods in setPlan', () => {
     mockPersonalizedPlanService.createTopicsList.and.returnValue(of(mockTopicsList));
     mockPersonalizedPlanService.getPlanDetails.and.returnValue(of(mockPlanDetails));
-    component.getTopics();
-    expect(component.personalizedPlan).toEqual(mockPlanDetails);
-    //expect(component.topics).toEqual(mockPlanDetails.topics);
-    //expect(component.planDetailTags).toEqual(mockPlanDetails);
-    //expect(component.topicsList).toEqual(mockTopicsList);
-    //expect(component.planDetails).toEqual(mockPlanDetails);
-    //expect(mockPersonalizedPlanService.createTopicsList).toHaveBeenCalled();
-    //expect(mockPersonalizedPlanService.getPlanDetails).toHaveBeenCalled();
+    component.setPlan();
   });
 
   it('should call filterTopicsList method and  personalizedPlanService displayPlanDetails method when filterPlan is called', () => {
