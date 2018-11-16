@@ -22,7 +22,7 @@ namespace Access2Justice.Api.Controllers
         }
 
         [Permission(PermissionName.importa2jtemplate)]
-        [HttpPost("upload-curated-experience-template")]
+        [HttpPost("curated-experience")]
         public async Task<IActionResult> UploadCuratedExperienceTemplate([FromForm] CuratedTemplate curatedTemplate)
         {
             try

@@ -10,12 +10,6 @@ h2 {
   margin-bottom: 40px;
 }
 
-@media only screen and (min-width : 768px) {
-  .user-action {
-    margin-top: 10px;
-  }
-}
-
 @media only screen and (min-width : 992px) {
   .col-md-4 {
     padding-left: 5%;

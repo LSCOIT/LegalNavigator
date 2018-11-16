@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Access2Justice.Api.Controllers
 {
-    [Route("api/personalized-plan")]
+    [Route("api/personalized-plans")]
     public class PersonalizedPlanController : Controller
     {
         private readonly IPersonalizedPlanBusinessLogic personalizedPlanBusinessLogic;
@@ -73,7 +73,7 @@ namespace Access2Justice.Api.Controllers
         /// <param name="personalizedPlanId"></param>
         /// <response code="200">Returns personalized plan for curated experience </response>
         /// <response code="500">Failure</response>
-        [HttpGet("get-plan")]
+        [HttpGet("")]
         public async Task<IActionResult> GetPersonalizedPlanAsync([FromQuery] Guid personalizedPlanId)
         {
             var personalizedPlan = await personalizedPlanBusinessLogic.GetPersonalizedPlanAsync(personalizedPlanId);

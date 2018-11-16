@@ -3,15 +3,17 @@ a.btn-primary, a.btn-primary:hover {
 }
 
 .sidebar-block {
-  margin-bottom: 40px;
   width: 100%;
   margin-top: 30px;
   border-top: 1px solid #ddd;
+  padding: 50px 20px 0 20px;
 }
 
 @media only screen and (min-width : 768px) {
   .sidebar-block {
     border: 1px solid #ddd;
+    margin-bottom: 40px;
+    padding: 20px;
   }
 }
 
