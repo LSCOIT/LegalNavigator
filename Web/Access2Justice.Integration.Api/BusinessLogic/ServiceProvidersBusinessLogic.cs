@@ -113,10 +113,6 @@ namespace Access2Justice.Integration.Api.BusinessLogic
             Availability availability = new Availability();
             AcceptanceCriteria acceptanceCriteria = new AcceptanceCriteria();
             OnboardingInfo onboardingInfo = new OnboardingInfo();
-            //var address = GetServiceProviderAddress(site.Address);
-            //var phone = GetServiceProviderPhone(site.Phones);
-            //var locations = GetServiceProviderLocation(site.Address);
-            //var organizationUnit = GetServiceProviderOrgUnit(site.Address);
             dynamic references = GetServiceProviderReferences(site);
             organizationReviewers = references[0];
             availability = references[1];
@@ -355,7 +351,7 @@ namespace Access2Justice.Integration.Api.BusinessLogic
             foreach (var businessHour in businessHours)
             {
                 TimeSpan openTime = TimeSpan.Parse(businessHour.opensAt.ToString(), CultureInfo.InvariantCulture);
-                TimeSpan closeTime = TimeSpan.Parse(businessHour.opensAt.ToString(), CultureInfo.InvariantCulture);
+                TimeSpan closeTime = TimeSpan.Parse(businessHour.closesAt.ToString(), CultureInfo.InvariantCulture);
                 schedule = (new Schedule { Day = businessHour.day, OpensAt = openTime, ClosesAt = closeTime });
                 schedules.Add(schedule);
             }
