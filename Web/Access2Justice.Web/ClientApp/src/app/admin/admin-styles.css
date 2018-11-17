@@ -158,6 +158,11 @@ textarea {
 .required-star {
   color: red;
 }
+
+.new-img {
+  display: none;
+}
+
 @media only screen and (min-width : 768px) {
   input, textarea {
     margin-left: 0;
