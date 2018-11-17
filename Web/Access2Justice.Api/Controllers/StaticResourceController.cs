@@ -53,7 +53,7 @@ namespace Access2Justice.Api.Controllers
         [Route("home/upsert")]
         public async Task<IActionResult> UpsertStaticHomePageDataAsync([FromBody]HomeContent homePageContent)
         {
-            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(homePageContent?.OrganizationalUnit))
+            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(homePageContent.OrganizationalUnit))
             {
                 var contents = await staticResourceBusinessLogic.UpsertStaticHomePageDataAsync(homePageContent);
                 return Ok(contents);
@@ -75,7 +75,7 @@ namespace Access2Justice.Api.Controllers
         [Route("privacy/upsert")]
         public async Task<IActionResult> UpsertStaticPrivacyPromisePageDataAsync([FromBody]PrivacyPromiseContent privacyPromiseContent)
         {
-            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(privacyPromiseContent?.OrganizationalUnit))
+            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(privacyPromiseContent.OrganizationalUnit))
             {
                 var contents = await staticResourceBusinessLogic.UpsertStaticPrivacyPromisePageDataAsync(privacyPromiseContent);
                 return Ok(contents);
@@ -89,7 +89,7 @@ namespace Access2Justice.Api.Controllers
         /// <remarks>
         /// Helps to get helpAndFAQ page static contents inserted or updated
         /// </remarks>
-        /// <param name="helpAndFAQPageContent"></param>        
+        /// <param name="helpAndFAQPageContent"></param>
         /// <response code="200">Get helpAndFAQ page static contents inserted or updated</response>
         /// <response code="500">Failure</response>
         [Permission(PermissionName.upsertstatichelpandfaqpage)]
@@ -97,7 +97,7 @@ namespace Access2Justice.Api.Controllers
         [Route("help-and-faq/upsert")]
         public async Task<IActionResult> UpsertStaticHelpAndFAQPageDataAsync(HelpAndFaqsContent helpAndFAQPageContent)
         {
-            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(helpAndFAQPageContent?.OrganizationalUnit))
+            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(helpAndFAQPageContent.OrganizationalUnit))
             {
                 var contents = await staticResourceBusinessLogic.UpsertStaticHelpAndFAQPageDataAsync(helpAndFAQPageContent);
                 return Ok(contents);
@@ -120,7 +120,7 @@ namespace Access2Justice.Api.Controllers
         [Route("navigation/upsert")]
         public async Task<IActionResult> UpsertStaticNavigationDataAsync([FromBody]Navigation navigationContent)
         {
-            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(navigationContent?.OrganizationalUnit))
+            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(navigationContent.OrganizationalUnit))
             {
                 var contents = await staticResourceBusinessLogic.UpsertStaticNavigationDataAsync(navigationContent);
                 return Ok(contents);
@@ -142,7 +142,7 @@ namespace Access2Justice.Api.Controllers
         [Route("about/upsert")]
         public async Task<IActionResult> UpsertStaticAboutPageDataAsync([FromBody]AboutContent aboutContent)
         {
-            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(aboutContent?.OrganizationalUnit))
+            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(aboutContent.OrganizationalUnit))
             {
                 var contents = await staticResourceBusinessLogic.UpsertStaticAboutPageDataAsync(aboutContent);
                 return Ok(contents);
