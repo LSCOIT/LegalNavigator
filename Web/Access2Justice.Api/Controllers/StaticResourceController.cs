@@ -2,6 +2,7 @@
 using Access2Justice.Api.Interfaces;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
@@ -36,6 +37,10 @@ namespace Access2Justice.Api.Controllers
         public async Task<IActionResult> GetStaticResourcesDataAsync([FromBody]Location location)
         {
             var contents = await staticResourceBusinessLogic.GetPageStaticResourcesDataAsync(location);
+            if (contents == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound);
+            }
             return Ok(contents);
         }
 
