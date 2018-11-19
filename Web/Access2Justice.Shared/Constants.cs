@@ -37,6 +37,7 @@
         public const string HtmlLeftBracket = "<";
         public const string A2JAuthorCustomFunctionTags = "%%";
         public const string ServiceProviderResourceType = "Service Providers";
+        public const string RTMSessionId = "session_id";
 
         public static class ReasourceTypes
         {

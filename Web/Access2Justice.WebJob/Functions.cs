@@ -56,7 +56,7 @@ namespace Access2Justice.WebJob
                     dynamic sessionJson = JsonConvert.DeserializeObject(session);
                     string sessionId = sessionJson[0]["session_id"];
                     logger.LogInformation(sessionId);
-                    string serviceProviderLink = "https://www.referweb.net/pubres/api/ServiceProviders/?ip={{apikey:'61GV7G4Y',st:'s',catid:'',sn:'Family Based Services',zip:'99606',county:'',sid:'{0}'}}"; ;
+                    string serviceProviderLink = "https://www.referweb.net/pubres/api/ServiceProviders/?ip={{apikey:'61GV7G4Y',st:'s',catid:'',sn:'Family Based Services',zip:'99606',county:'',sid:'{0}'}}";
                     var spURL = string.Format(CultureInfo.InvariantCulture, serviceProviderLink, sessionId);
                     logger.LogInformation(spURL);
                     var spResponse = httpClient.GetAsync(spURL).Result;
