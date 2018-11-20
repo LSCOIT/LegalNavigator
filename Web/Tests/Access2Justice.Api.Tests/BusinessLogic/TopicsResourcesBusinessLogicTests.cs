@@ -75,8 +75,6 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly JArray expectedArticleData = TopicResourceTestData.expectedArticleData;
         private readonly JArray expectedVideoData = TopicResourceTestData.expectedVideoData;
         private readonly JArray expectedOrganizationData = TopicResourceTestData.expectedOrganizationData;
-        private readonly JArray expectedEssentialReadingData = TopicResourceTestData.expectedEssentialReadingData;
-        private readonly JArray expectedRelatedLinkData = TopicResourceTestData.expectedRelatedLinkData;
         private readonly JArray expectedTopicData = TopicResourceTestData.expectedTopicData;
         private readonly JArray expectedTopicsData = TopicResourceTestData.expectedTopicsData;
         private readonly string expectedTopicTagData = TopicResourceTestData.expectedTopicTagData;

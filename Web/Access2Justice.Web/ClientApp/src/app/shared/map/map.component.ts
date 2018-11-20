@@ -8,6 +8,7 @@ import { MapResultsService } from '../../shared/sidebars/map-results/map-results
 import { Navigation, Location, LocationNavContent } from '../navigation/navigation';
 import { StaticResourceService } from '../../shared/static-resource.service';
 import { Global } from '../../global';
+import { EventUtilityService } from '../event-utility.service';
 
 @Component({
   selector: 'app-map',
@@ -51,7 +52,9 @@ export class MapComponent implements OnInit {
     private mapService: MapService,
     private mapResultsService: MapResultsService,
     private staticResourceService: StaticResourceService,
-    private global: Global) { }
+    private global: Global,
+    private eventUtilityService: EventUtilityService
+    ) { }
 
   changeLocation(template) {
     this.config = {
@@ -60,6 +63,7 @@ export class MapComponent implements OnInit {
     };
     this.locationInputRequired = false;
     this.openModal(template);
+    this.eventUtilityService.closeSideNav(event);
   }
 
   openModal(template: TemplateRef<any>) {

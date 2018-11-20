@@ -4,8 +4,6 @@ import { Global } from '../../global';
 import { About } from '../../about/about';
 import { environment } from '../../../environments/environment';
 import { NgForm, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import Map1 = require("../../shared/map/map");
-import MapLocation = Map1.MapLocation;
 
 @Component({
   selector: 'app-about-admin',
@@ -19,7 +17,6 @@ export class AboutAdminComponent implements OnInit {
   staticContentSubcription: any;
   blobUrl: string = environment.blobUrl;
   form: FormGroup;
-  mapLocation: MapLocation;
 
   constructor(
     private staticResourceService: StaticResourceService,
@@ -139,6 +136,12 @@ export class AboutAdminComponent implements OnInit {
       .subscribe(() => {
         this.getAboutPageContent();
       });
+  }
+
+  ngOnDestroy() {
+    if (this.staticContentSubcription) {
+      this.staticContentSubcription.unsubscribe();
+    }
   }
 }
 

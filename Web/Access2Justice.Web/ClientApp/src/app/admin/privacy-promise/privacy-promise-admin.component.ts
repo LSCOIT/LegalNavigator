@@ -96,4 +96,10 @@ export class PrivacyPromiseAdminComponent implements OnInit {
         this.getPrivacyPageContent();
       });
   }
+
+  ngOnDestroy() {
+    if (this.staticContentSubcription) {
+      this.staticContentSubcription.unsubscribe();
+    }
+  }
 }

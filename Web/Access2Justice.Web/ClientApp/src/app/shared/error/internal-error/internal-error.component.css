@@ -1,34 +1,17 @@
 #wrapper {
-  height: 300px;
-  text-align: center;
-  background-color: #f4f4f4;
-  padding-top: 5%;
-  margin-top: 20px;
   margin-bottom: 20px;
   width: 100%;
-  padding: 5% 8%;
+  padding: 10% 5%;
 }
 
 h1 {
-  font-size: 3em;
   margin-bottom: 40px;
   text-align: center;
   font-weight: 600;
 }
 
-@media only screen and (min-width : 952px) {
+@media only screen and (min-width : 768px) {
   #wrapper {
-    font-size: 2em;
-  }
-}
-
-@media only screen and (min-width : 952px) {
-  h1 {
-    line-height: 80px;
-  }
-
-  #wrapper {
-    height: 400px;
     padding: 5% 15%;
   }
 }

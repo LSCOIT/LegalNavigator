@@ -38,8 +38,6 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly JArray expectedUserProfileSavedResourcesData = UserPersonalizedPlanTestData.expectedUserProfileSavedResourcesData;
         private readonly JArray expectedUserProfileSavedResourcesUpdateData = UserPersonalizedPlanTestData.expectedUserProfileSavedResourcesUpdateData;
         private readonly JArray userPlanData = UserPersonalizedPlanTestData.userPlanData;
-        private readonly JArray expectedUserPlanData = UserPersonalizedPlanTestData.expectedUserPlanData;
-        private readonly JArray expectedUserPlanUpdateData = UserPersonalizedPlanTestData.expectedUserPlanUpdateData;
         private readonly JArray userRoleData = UserPersonalizedPlanTestData.expectedUserRoleData;
         
         public UserProfileBusinessLogicTests()

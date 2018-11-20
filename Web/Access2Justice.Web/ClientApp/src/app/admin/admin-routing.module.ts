@@ -5,6 +5,8 @@ import { AboutAdminComponent } from './about/about-admin.component';
 import { PrivacyPromiseAdminComponent } from './privacy-promise/privacy-promise-admin.component';
 import { AdminAuthGuard } from './admin-auth/admin-auth.guard';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { UploadCuratedExperienceTemplateComponent } from './upload-curated-experience-template/upload-curated-experience-template.component';
+import { CuratedExperienceAuthGuard } from './curated-experience-auth/curated-experience-auth.guard';
 
 const adminRoutes: Routes = [
   {
@@ -17,6 +19,11 @@ const adminRoutes: Routes = [
         children: [
           { path: 'about', component: AboutAdminComponent },
           { path: 'privacy', component: PrivacyPromiseAdminComponent },
+          {
+            path: 'curated-experience',
+            component: UploadCuratedExperienceTemplateComponent,
+            canActivate: [CuratedExperienceAuthGuard]
+          },
           { path: '', component: AdminDashboardComponent }
         ]
       }

@@ -54,6 +54,7 @@ describe('SearchResultsComponent', () => {
   ];
   let mockToastr;
   let msalService;
+  let mockMapLocation: any = { state: 'Sample State', city: 'Sample City', county: 'Sample County', zipCode: '1009203' };
 
   beforeEach(async(() => {
     mockToastr = jasmine.createSpyObj(['success']);
@@ -119,6 +120,22 @@ describe('SearchResultsComponent', () => {
       resources: {}, webResources: { webPages: { value: {} } }, topIntent: ''
     };
 
+    let store = {};
+    const mockSessionStorage = {
+      getItem: (key: string): string => {
+        return key in store ? store[key] : null;
+      },
+      setItem: (key: string, value: string) => {
+        store[key] = `${value}`;
+      },
+      removeItem: (key: string) => {
+        delete store[key];
+      },
+      clear: () => {
+        store = {};
+      }
+    };
+
   });
 
   it('should create search result component', () => {
@@ -140,6 +157,36 @@ describe('SearchResultsComponent', () => {
     spyOn(component, 'getInternalResource');
     component.filterSearchResults(event);
     expect(component.getInternalResource).toHaveBeenCalledTimes(0);
+  });
+
+  it('should call getInternalResource with isServiceCall false', () => {
+    spyOn(component, 'checkResource');
+    spyOn(component, 'addResource');
+    component.isServiceCall = false;
+    component.getInternalResource("", 1);
+    expect(component.addResource).toHaveBeenCalledTimes(0);
+  });
+
+  it('should call getInternalResource with isServiceCall true and localsearch map defined', () => {
+    let mockLocationDetails = { location: mockMapLocation };
+    spyOn(component, 'checkResource');
+    spyOn(component, 'addResource');    
+    spyOn(sessionStorage, 'getItem').and.returnValue(JSON.stringify(mockLocationDetails));    
+    spyOn(paginationService, 'getPagedResources').and.returnValue(Observable.of());
+    component.isServiceCall = true;
+    component.getInternalResource("", 1);
+    expect(JSON.stringify(component.resourceFilter.Location)).toEqual(JSON.stringify(mockMapLocation));
+  });
+
+  it('should call getInternalResource with isServiceCall true and assign globalMapLocation value to request model', () => {
+    let mockLocationDetails = { location: null };
+    spyOn(component, 'checkResource');
+    spyOn(component, 'addResource');
+    spyOn(sessionStorage, 'getItem').and.returnValue(JSON.stringify(mockLocationDetails));
+    spyOn(paginationService, 'getPagedResources').and.returnValue(Observable.of());
+    component.isServiceCall = true;
+    component.getInternalResource("", 1);
+    expect(component.resourceFilter.Location).toEqual(null);
   });
 
   it('should call checkResource with resource name defined and resource list undefined', () => {

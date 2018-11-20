@@ -111,10 +111,10 @@ namespace Access2Justice.Shared.Models
         public string Overview { get; set; }
 
         [JsonProperty(PropertyName = "contents")]
-        public List<ArticleContents> Contents { get; set; }
+        public List<ArticleContent> Contents { get; set; }
     }
 
-    public class ArticleContents
+    public class ArticleContent
     {
         [JsonProperty(PropertyName = "headline")]
         public string Headline { get; set; }
@@ -203,5 +203,11 @@ namespace Access2Justice.Shared.Models
     {
         [JsonProperty(PropertyName = "curatedExperienceId")]
         public string CuratedExperienceId { get; set; }
+
+        [JsonProperty(PropertyName = "version")]
+        public Int64 Version { get; set; }
+
+        [JsonProperty(PropertyName = "isActive")]
+        public bool IsActive { get; set; }
     }
 }

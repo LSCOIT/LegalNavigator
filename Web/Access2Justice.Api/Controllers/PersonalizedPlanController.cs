@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Access2Justice.Api.Controllers
 {
-    [Route("api/personalized-plan")]
+    [Route("api/personalized-plans")]
     public class PersonalizedPlanController : Controller
     {
         private readonly IPersonalizedPlanBusinessLogic personalizedPlanBusinessLogic;
@@ -34,7 +34,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="200">Returns parsed user answers</response>
         /// <response code="500">Failure</response>
         [HttpPost("parser-test")]
-        public async Task<IActionResult> TestA2JAuthorLogicParser([FromBody] CuratedExperienceAnswers userAnswers)
+        public IActionResult TestA2JAuthorLogicParser([FromBody] CuratedExperienceAnswers userAnswers)
         {
             // Todo:@Alaa remove this endpoint, added it just to test the parser duing development
             return Ok(new LogicParser(new LogicInterpreter()).Parse(userAnswers));
@@ -73,7 +73,7 @@ namespace Access2Justice.Api.Controllers
         /// <param name="personalizedPlanId"></param>
         /// <response code="200">Returns personalized plan for curated experience </response>
         /// <response code="500">Failure</response>
-        [HttpGet("get-plan")]
+        [HttpGet("")]
         public async Task<IActionResult> GetPersonalizedPlanAsync([FromQuery] Guid personalizedPlanId)
         {
             var personalizedPlan = await personalizedPlanBusinessLogic.GetPersonalizedPlanAsync(personalizedPlanId);
@@ -97,7 +97,6 @@ namespace Access2Justice.Api.Controllers
         /// <remarks>
         /// Use to insert/update a personalized plan
         /// </remarks>
-        /// <param name="userPlan"></param>
         /// <response code="200">Returns the updated personalized plan </response>
         /// <response code="500">Failure</response>      
         //[Permission(PermissionName.updateplan)]

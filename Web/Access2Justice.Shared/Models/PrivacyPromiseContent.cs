@@ -14,10 +14,6 @@ namespace Access2Justice.Shared.Models
     public class PrivacyPromiseContent: NameLocation
     {
         [DefaultValue("")]
-        [JsonProperty(PropertyName = "id")]
-        public string Id { get; set; }
-
-        [DefaultValue("")]
         [JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
 

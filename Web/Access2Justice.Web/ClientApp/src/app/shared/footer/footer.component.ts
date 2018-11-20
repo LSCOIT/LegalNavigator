@@ -60,4 +60,10 @@ export class FooterComponent implements OnInit {
         this.getNavigationContent();
       });
   }
+
+  ngOnDestroy() {
+    if (this.staticContentSubcription) {
+      this.staticContentSubcription.unsubscribe();
+    }
+  }
 }
