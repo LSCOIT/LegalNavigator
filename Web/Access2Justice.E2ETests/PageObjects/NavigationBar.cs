@@ -18,37 +18,34 @@ namespace Access2Justice.E2ETests.PageObjects
         private DefaultWait<IWebDriver> FluentWait => ScenarioContext.Current.Get<DefaultWait<IWebDriver>>("fluentWait");
 
         [FindsBy(How = How.Id, Using = "language-dropdown")]
-        private IWebElement setLanguageButton;
+        private IWebElement setLanguageButton = null;
 
         [FindsBy(How = How.TagName, Using = "select")]
-        private IWebElement languageDropDown;
+        private IWebElement languageDropDown = null;
 
         [FindsBy(How = How.TagName, Using = "modal-container")]
-        private IList<IWebElement> modalList;
+        private IList<IWebElement> modalList = null;
 
         [FindsBy(How = How.Id, Using = "search-box")]
-        private IWebElement searchLocationInputBox;
-
-        [FindsBy(How = How.Id, Using = "search-location-button")]
-        private IWebElement searchLocationButton;
+        private IWebElement searchLocationInputBox = null;
 
         [FindsBy(How = How.Id, Using = "update-location-button")]
-        private IWebElement updateLocationButton;
+        private IWebElement updateLocationButton = null;
 
         [FindsBy(How = How.Id, Using = "search")]
-        private IWebElement searchPhraseInputField;
+        private IWebElement searchPhraseInputField = null;
 
         [FindsBy(How = How.Id, Using = "search-phrase-button")]
-        private IWebElement searchPhraseButton;
+        private IWebElement searchPhraseButton = null;
 
         [FindsBy(How = How.TagName, Using = "app-resource-card")]
-        private IList<IWebElement> searchPhraseResults;
+        private IList<IWebElement> searchPhraseResults = null;
 
         [FindsBy(How = How.TagName, Using = "app-web-resource")]
-        private IList<IWebElement> searchPhraseWebResults;
+        private IList<IWebElement> searchPhraseWebResults = null;
 
         [FindsBy(How = How.TagName, Using = "html")]
-        private IWebElement html;
+        private IWebElement html = null;
         #endregion
 
         BaseClass BaseClass = new BaseClass();
