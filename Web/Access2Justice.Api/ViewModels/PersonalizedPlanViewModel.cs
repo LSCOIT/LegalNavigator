@@ -2,9 +2,11 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Access2Justice.Api.ViewModels
 {
+    [ExcludeFromCodeCoverage]
     public class PersonalizedPlanViewModel
     {
         [JsonProperty(PropertyName = "id")]
@@ -19,9 +21,11 @@ namespace Access2Justice.Api.ViewModels
         public PersonalizedPlanViewModel()
         {
             Topics = new List<PlanTopic>();
+            IsShared = true; ;
         }
     }
 
+    [ExcludeFromCodeCoverage]
     public class PlanTopic
     {
         [JsonProperty(PropertyName = "topicId")]
@@ -46,12 +50,14 @@ namespace Access2Justice.Api.ViewModels
         }
     }
 
+    [ExcludeFromCodeCoverage]
     public class EssentialReadings
     {
         public string Text { get; set; }
         public string Url { get; set; }
     }
 
+    [ExcludeFromCodeCoverage]
     public class PlanStep
     {
         [JsonProperty(PropertyName = "stepId")]
@@ -78,6 +84,7 @@ namespace Access2Justice.Api.ViewModels
         }
     }
 
+    [ExcludeFromCodeCoverage]
     public class TopicDetails
     {
         [JsonProperty(PropertyName = "id")]
