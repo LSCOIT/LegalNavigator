@@ -23,7 +23,7 @@ import { TopicService } from '../shared/topic.service';
 import { of } from 'rxjs/observable/of';
 import { MsalService } from '@azure/msal-angular';
 import { Global } from '../../global';
- 
+
 
 describe('SubtopicDetailComponent', () => {
   let component: SubtopicDetailComponent;
@@ -32,15 +32,15 @@ describe('SubtopicDetailComponent', () => {
   let paginationService: PaginationService;
   let searchService: SearchService;
   let navigateDataService: NavigateDataService;
-  let topicService: TopicService; 
+  let topicService: TopicService;
   let resourceType: string = 'Action Plans';
-  let mockMapLocation: MapLocation = {
-    state: 'Sample State',
-    city: 'Sample City',
-    county: 'Sample County',
-    zipCode: '1009203',
-    locality: 'Sample Location',
-    address: 'Sample Address'
+  let mockMapLocation = {
+    location: {
+      state: 'Sample State',
+      city: 'Sample City',
+      county: 'Sample County',
+      zipCode: '1009203'
+    }
   };
   let topIntent = 'test';
   let searchResults: any = {
@@ -49,17 +49,17 @@ describe('SubtopicDetailComponent', () => {
   };
   let router = {
     navigate: jasmine.createSpy('navigate')
-  } 
+  }
   let mockMapService;
   let mockPaginationService;
   let mockNavigateDataService;
-  let mockTopicService, msalService; 
-  
+  let mockTopicService, msalService;
+
   beforeEach(async(() => {
     mockMapService = jasmine.createSpyObj(['updateLocation'])
     mockPaginationService = jasmine.createSpyObj(['getPagedResources'])
     mockNavigateDataService = jasmine.createSpyObj(['setData', 'getData'])
-    mockTopicService = jasmine.createSpyObj(['getSubtopicDetail','getDataOnReload'])
+    mockTopicService = jasmine.createSpyObj(['getSubtopicDetail', 'getDataOnReload'])
 
     TestBed.configureTestingModule({
       declarations: [
@@ -70,7 +70,7 @@ describe('SubtopicDetailComponent', () => {
         ResourceCardComponent,
         GuidedAssistantSidebarComponent,
         ServiceOrgSidebarComponent,
-        BreadcrumbComponent       
+        BreadcrumbComponent
       ],
       imports: [
         RouterModule.forRoot([
@@ -117,7 +117,10 @@ describe('SubtopicDetailComponent', () => {
 
   it("should call clickShowMore when Show More button is clicked", () => {
     component.topIntent = 'test2';
+    let mockLocationDetails = { location: mockMapLocation };
     mockMapService.updateLocation.and.returnValue(mockMapLocation);
+    spyOn(sessionStorage, 'getItem')
+      .and.returnValue(JSON.stringify(mockLocationDetails));
     mockPaginationService.getPagedResources.and.returnValue(of([searchResults]));
     const result = 'test';
     mockNavigateDataService.setData.and.returnValue(of([result]));

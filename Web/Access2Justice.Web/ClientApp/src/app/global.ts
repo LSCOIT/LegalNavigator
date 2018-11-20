@@ -24,7 +24,6 @@ export class Global {
   topicsData: any;
   organizationsData: any;
   roleInformation: any;
-  state: string;
 
   constructor() { }
 

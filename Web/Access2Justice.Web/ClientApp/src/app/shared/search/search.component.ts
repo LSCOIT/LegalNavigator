@@ -5,7 +5,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { SearchService } from './search.service';
 import { NavigateDataService } from '../navigate-data.service';
 import { ILuisInput } from './search-results/search-results.model';
-import { MapLocation } from '../map/map';
+import { MapLocation, LocationDetails } from '../map/map';
 
 
 @Component({
@@ -19,6 +19,7 @@ export class SearchComponent implements OnInit {
   searchResults: any;
   luisInput: ILuisInput = { Sentence: '', Location: '', TranslateFrom: '', TranslateTo: '', LuisTopScoringIntent: '' };
   mapLocation: MapLocation;
+  locationDetails: LocationDetails;
 
   constructor(
     private searchService: SearchService,
@@ -31,7 +32,8 @@ export class SearchComponent implements OnInit {
     this.spinner.show();
     this.luisInput.Sentence = searchForm.value.inputText;
     if (sessionStorage.getItem("globalMapLocation")) {
-      this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+      this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+      this.mapLocation = this.locationDetails.location;
       this.mapLocation.city = "";
       this.mapLocation.county = "";
       this.mapLocation.zipCode = "";

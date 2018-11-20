@@ -11,6 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Global } from '../../../global';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
+import { LocationDetails } from '../../map/map';
 
 @Component({
   selector: 'app-search-results',
@@ -41,7 +42,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   subscription: any;
   showRemoveOption: boolean;
   @Input() showRemove: boolean;
-  initialResourceLength:number;
+  initialResourceLength: number;
   displayMessage: boolean = false;
   loading = false;
   total = 0;
@@ -54,6 +55,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   showDefaultMessage: boolean = false;
   showNoResultsMessage: boolean = false;
   guidedAssistantId: string;
+  locationDetails: LocationDetails;
 
   constructor(
     private navigateDataService: NavigateDataService,
@@ -80,7 +82,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   bindData() {
     this.showDefaultMessage = false;
     this.showNoResultsMessage = false;
-    this.searchResults = this.navigateDataService.getData();    
+    this.searchResults = this.navigateDataService.getData();
     if (this.searchResults != undefined && this.personalizedResources === undefined) {
       this.guidedAssistantId = this.searchResults.guidedAssistantId;
       this.cacheSearchResultsData();
@@ -91,7 +93,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
       }
       else {
         this.topIntent = this.searchResults.topIntent;
-        if (this.searchResults.resources.length > 0) {          
+        if (this.searchResults.resources.length > 0) {
           this.mapInternalResource();
         } else {
           this.isInternalResource = false;
@@ -111,8 +113,8 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     this.searchResults = { resources: [] }
     this.searchResults.resources = personalizedResources.resources
       .concat(
-        personalizedResources.topics,
-        personalizedResources.webResources);
+      personalizedResources.topics,
+      personalizedResources.webResources);
     this.isPersonalizedresource = this.searchResults;
     this.applyFilter();
   }
@@ -160,8 +162,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     sessionStorage.removeItem("cacheSearchResults");
     sessionStorage.setItem("cacheSearchResults", JSON.stringify(this.searchResults));
     if (this.location) {
-      this.location = sessionStorage.setItem("localSearchMapLocation", JSON.stringify(this.location));
-      sessionStorage.setItem("searchedLocationMap", JSON.stringify(this.location));
+      sessionStorage.setItem("searchedLocationMap", JSON.stringify(this.locationDetails));
     }
   }
 
@@ -185,8 +186,9 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   }
 
   notifyLocationChange() {
-    if (sessionStorage.getItem("localMapLocation")) {
-      this.location = JSON.parse(sessionStorage.getItem("localMapLocation"));
+    if (sessionStorage.getItem("localSearchMapLocation")) {
+      this.locationDetails = JSON.parse(sessionStorage.getItem("localSearchMapLocation"));;
+      this.location = this.locationDetails.location;
     }
     this.subscription = this.mapService.notifyLocalLocation.subscribe((value) => {
       this.location = value;
@@ -228,7 +230,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   }
 
   displayFetchedResources() {
-    this.navigateDataService.setData(this.searchResults);    
+    this.navigateDataService.setData(this.searchResults);
     this.cacheSearchResultsData();
     this.isInternalResource = true;
     this.displayNoResultsMessage();
@@ -252,8 +254,9 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   getInternalResource(filterName, pageNumber): void {
     this.checkResource(filterName, pageNumber);
     if (this.isServiceCall) {
-      if (sessionStorage.getItem("localMapLocation")) {
-        this.resourceFilter.Location = JSON.parse(sessionStorage.getItem("localMapLocation"));
+      if (sessionStorage.getItem("localSearchMapLocation")) {
+        this.locationDetails = JSON.parse(sessionStorage.getItem("localSearchMapLocation"));
+        this.resourceFilter.Location = this.locationDetails.location;
       }
       this.paginationService.getPagedResources(this.resourceFilter).subscribe(response => {
         this.searchResults = response;
@@ -386,19 +389,19 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     }
   }
 
-  ngOnInit() {    
+  ngOnInit() {
     if (!this.navigateDataService.getData()
       && sessionStorage.getItem("cacheSearchResults")
       && !this.personalizedResources) {
-      this.navigateDataService.setData(JSON.parse(sessionStorage.getItem("cacheSearchResults")));      
+      this.navigateDataService.setData(JSON.parse(sessionStorage.getItem("cacheSearchResults")));
     }
     this.bindData();
-    this.notifyLocationChange();        
-    this.showRemoveOption = this.showRemove;    
+    this.notifyLocationChange();
+    this.showRemoveOption = this.showRemove;
   }
 
   ngOnDestroy() {
-    sessionStorage.removeItem("localMapLocation");
+    sessionStorage.removeItem("localSearchMapLocation");
     if (this.subscription != undefined) {
       this.subscription.unsubscribe();
     }
