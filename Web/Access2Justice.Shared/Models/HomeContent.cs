@@ -171,9 +171,14 @@ namespace Access2Justice.Shared.Models
 
     public class GADescription
     {
+        public GADescription()
+        {
+            GADescriptionDetails = new List<GADescriptionDetails>();
+        }
+
         [DefaultValue("")]
         [JsonProperty(PropertyName = "steps")]
-        public GADescriptionDetails GADescriptionDetails { get; set; }
+        public List<GADescriptionDetails> GADescriptionDetails { get; set; }
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "text")]
@@ -191,8 +196,8 @@ namespace Access2Justice.Shared.Models
         public int Order { get; set; }
 
         [DefaultValue("")]
-        [JsonProperty(PropertyName = "descritption")]
-        public string Descritption { get; set; }
+        [JsonProperty(PropertyName = "description")]
+        public string Description { get; set; }
     }
 
     public class ButtonStaticContent
@@ -241,6 +246,10 @@ namespace Access2Justice.Shared.Models
         {
             Location = new List<Location>();
         }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
 
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }

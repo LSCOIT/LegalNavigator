@@ -3,6 +3,7 @@ using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 using static Access2Justice.Api.Authorization.Permissions;
 

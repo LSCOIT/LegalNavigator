@@ -1,1 +1,0 @@
-{"version":3,"file":"timeline.component.js","sourceRoot":"","sources":["timeline.component.ts"],"names":[],"mappings":";;;;;;;;;;AAAA,sCAA0C;AAC1C,0CAAyC;AAKzC,IAAa,WAAW;IAEpB,qBAAoB,MAAc;QAAd,WAAM,GAAN,MAAM,CAAQ;IAAI,CAAC;IAC3C,kBAAC;AAAD,CAAC,AAHD,IAGC;AAHY,WAAW;IAJvB,gBAAS,CAAC;QACP,QAAQ,EAAE,UAAU;QACpB,WAAW,EAAE,2BAA2B;KAC3C,CAAC;qCAG8B,eAAM;GAFzB,WAAW,CAGvB;AAHY,kCAAW"}

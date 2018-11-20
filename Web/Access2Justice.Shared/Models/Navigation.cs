@@ -38,19 +38,19 @@ namespace Access2Justice.Shared.Models
         
         [DefaultValue("")]
         [JsonProperty(PropertyName = "home")]
-        public ButtonStaticContent Home { get; set; }
+        public ButtonContent Home { get; set; }
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "guidedAssistant")]
-        public ButtonStaticContent GuidedAssistant { get; set; }
+        public ButtonContent GuidedAssistant { get; set; }
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "topicAndResources")]
-        public ButtonStaticContent TopicAndResources { get; set; }
+        public ButtonContent TopicAndResources { get; set; }
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "about")]
-        public ButtonStaticContent About { get; set; }
+        public ButtonContent About { get; set; }
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "search")]
@@ -119,5 +119,12 @@ namespace Access2Justice.Shared.Models
         [DefaultValue("")]
         [JsonProperty(PropertyName = "link")]
         public string Link { get; set; }
+    }
+
+    public class ButtonContent
+    {
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "button")]
+        public ButtonStaticContent Button { get; set; }
     }
 }

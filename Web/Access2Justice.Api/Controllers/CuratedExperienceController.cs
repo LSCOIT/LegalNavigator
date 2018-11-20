@@ -59,9 +59,9 @@ namespace Access2Justice.Api.Controllers
         /// <response code="200">Returns first component for curated experience </response>
         /// <response code="500">Failure</response>
         [HttpGet("start")]
-        public IActionResult GetFirstComponent(Guid curatedExperienceId)
+        public async Task<IActionResult> GetFirstComponent(Guid curatedExperienceId)
         {
-            var component = curatedExperienceBusinessLogic.GetComponent(sessionManager.RetrieveCachedCuratedExperience(curatedExperienceId, HttpContext), Guid.Empty);
+            var component = await curatedExperienceBusinessLogic.GetComponent(sessionManager.RetrieveCachedCuratedExperience(curatedExperienceId, HttpContext), Guid.Empty);
             if (component == null) return NotFound();
 
             return Ok(component);
@@ -99,10 +99,10 @@ namespace Access2Justice.Api.Controllers
         /// <param name="componentId"></param>
         /// <response code="200">Returns specific component for curated experience </response>
         /// <response code="500">Failure</response>
-        [HttpGet("components")]
-        public IActionResult GetSpecificComponent([FromQuery] Guid curatedExperienceId, [FromQuery] Guid componentId)
+        [HttpGet("component")]
+        public async Task<IActionResult> GetSpecificComponent([FromQuery] Guid curatedExperienceId, [FromQuery] Guid componentId)
         {
-            var component = curatedExperienceBusinessLogic.GetComponent(sessionManager.RetrieveCachedCuratedExperience(curatedExperienceId, HttpContext), componentId);
+            var component = await curatedExperienceBusinessLogic.GetComponent(sessionManager.RetrieveCachedCuratedExperience(curatedExperienceId, HttpContext), componentId);
             if (component == null) return NotFound();
 
             return Ok(component);
