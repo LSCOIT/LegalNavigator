@@ -37,12 +37,15 @@
         public const string HtmlLeftBracket = "<";
         public const string A2JAuthorCustomFunctionTags = "%%";
         public const string ServiceProviderResourceType = "Service Providers";
+        public const string IntegrationAPI = "Integration API";
+        public const string SiteId = "siteId";
         public const string RTMSessionId = "session_id";
 
         public static class ReasourceTypes
         {
             public const string EssentialReadings = "Essential Readings";
         }
+        public const string A2JTemplateFileExtension = ".zip";
     }
 }
 

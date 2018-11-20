@@ -21,7 +21,7 @@ namespace Access2Justice.Integration.Api.Controllers
         private readonly IRtmSettings rtmSettings;
         private readonly IWebSearchBusinessLogic webSearchBusinessLogic;
         /// <summary>
-        /// Constructor call
+        /// Service Provider Constructor
         /// </summary>
         public ServiceProvidersController(IServiceProvidersBusinessLogic serviceProvidersBusinessLogic)
         {
@@ -33,7 +33,7 @@ namespace Access2Justice.Integration.Api.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}", Name = "get")]
         [ProducesResponseType(typeof(ServiceProvider), 200)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetServiceProviderAsync(string id)
@@ -51,7 +51,25 @@ namespace Access2Justice.Integration.Api.Controllers
         [ProducesResponseType(400)]
         public async Task<IActionResult> UpsertServiceProviders([FromBody]dynamic serviceProvider)
         {
-            var response = await serviceProvidersBusinessLogic.UpsertServiceProviderDocumentAsync(serviceProvider).ConfigureAwait(false);
+            var serviceProviderJson = serviceProvider[0];
+            var providerDetailJson = serviceProvider[1];
+            var topicName = serviceProvider[2];
+            var response = await serviceProvidersBusinessLogic.UpsertServiceProviderDocumentAsync(serviceProviderJson, providerDetailJson, topicName).ConfigureAwait(false);
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// Deletes service provider by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("{id}", Name = "delete")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> DeleteSerivceProviderAsync(string id)
+        {
+            var response = await serviceProvidersBusinessLogic.DeleteServiceProviderDocumentAsync(id).ConfigureAwait(false);
             return Ok(response);
         }
 

@@ -53,4 +53,10 @@ export class HelpFaqsComponent implements OnInit {
         this.getHelpFaqPageContent();
       });
   }
+
+  ngOnDestroy() {
+    if (this.staticContentSubcription) {
+      this.staticContentSubcription.unsubscribe();
+    }
+  }
 }

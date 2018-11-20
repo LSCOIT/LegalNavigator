@@ -8,14 +8,14 @@
             <li>
               <input *ngIf="field.type === 'radio'" type="radio" [id]="field.id" [value]="field.id" name="radioOptions" ngModel>
               <input *ngIf="field.type === 'list'" type="checkbox" [id]="field.id" [value]="field.label" name="multiSelectOptions" ngModel>
-              <label for={{field.id}}>{{field.label}}</label>
+              <label class="p" for={{field.id}}>{{field.label}}</label>
               <div class="check"></div>
             </li>
           </ul>
         </div>
         <ng-template #elseBlock>
           <div class="inputs">
-            <label>{{field.label}}</label>
+            <label class="p">{{field.label}}</label>
             <input class="textbox" *ngIf="field.type === 'text'" type="text" [name]="field.id" autocomplete="off" ngModel>
             <input class="textbox" *ngIf="field.type === 'numberzip'" type="number" [name]="field.id" autocomplete="off" ngModel>
             <input class="textbox" *ngIf="field.type === 'numberphone'" type="number" [name]="field.id" autocomplete="off" ngModel>
@@ -49,7 +49,7 @@
           <ul class="multi-button">
             <li *ngFor="let button of question.buttons">
               <input *ngIf="button.label !== 'Continue'" type="radio" [id]="button.id" [value]="button.id" name="buttonOptions" ngModel>
-              <label *ngIf="button.label !== 'Continue'" for={{button.id}}>{{button.label}}</label>
+              <label class="p" *ngIf="button.label !== 'Continue'" for={{button.id}}>{{button.label}}</label>
             </li>
           </ul>
         </div>

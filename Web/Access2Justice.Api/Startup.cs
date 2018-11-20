@@ -5,6 +5,7 @@ using Access2Justice.Api.Interfaces;
 using Access2Justice.CosmosDb;
 using Access2Justice.Shared;
 using Access2Justice.Shared.A2JAuthor;
+using Access2Justice.Shared.Admin;
 using Access2Justice.Shared.Bing;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Interfaces.A2JAuthor;
@@ -56,6 +57,9 @@ namespace Access2Justice.Api
             IKeyVaultSettings keyVaultSettings = new KeyVaultSettings(Configuration.GetSection("KeyVault"));
             services.AddSingleton(keyVaultSettings);
 
+            IAdminSettings adminSettings = new AdminSettings(Configuration.GetSection("Admin"));
+            services.AddSingleton(adminSettings);
+
 
             services.AddSingleton<ILuisProxy, LuisProxy>();
             services.AddSingleton<ILuisBusinessLogic, LuisBusinessLogic>();
@@ -76,6 +80,7 @@ namespace Access2Justice.Api
             services.AddSingleton<IUserRoleBusinessLogic, UserRoleBusinessLogic>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<ISessionManager, SessionManager>();
+            services.AddSingleton<IAdminBusinessLogic, AdminBusinessLogic>();
 
             services.AddAuthentication(sharedOptions =>
             {

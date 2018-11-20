@@ -38,7 +38,8 @@ li {
 
 .link {
   width: 100%;
-  height: 30px;
+  height: auto;
+  margin-bottom: 20px;
 }
 
 .link a {
@@ -68,5 +69,6 @@ li {
     width: 50%;
     display: inline-block;
     vertical-align: top;
+    padding-right: 20px;
   }
 }
