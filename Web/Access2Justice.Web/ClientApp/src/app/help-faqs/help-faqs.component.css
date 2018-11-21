@@ -5,9 +5,14 @@
   cursor: pointer;
 }
 
-.step-content {
-  margin-bottom: -5px;
-}
+  .media:hover {
+    background: #F4F4F4;
+    /*
+    border-style: solid;
+    border-width: 2px;
+    border-color: #0d3fb8;
+    */
+  }
 
 .accordion-img {
   background-position-y: 5px;

@@ -28,6 +28,13 @@ h3 {
   padding: 14px 20px 14px 50px;
 }
 
+  .button-container ul li label:hover {
+    background: #F4F4F4;
+    /*text-align: center;*/
+    transition: all ease-in 0.25s;
+  }
+
+
 .relevant-intent {
   padding: 10px;
   border-top: 1px solid #ccc;

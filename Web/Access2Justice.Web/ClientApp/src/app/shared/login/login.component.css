@@ -92,9 +92,11 @@ a:hover {
     padding: 20px 15px;
   }
 
-  .account-menu:hover {
-    background-color: #fff;
-  }
+    .account-menu:hover {
+      /*color: #0D3FB8;
+      font-weight: 900; Luke*/
+      background-color: #fff;
+    }
 
   .account-menu, .account-menu img {
     margin-left: 0;

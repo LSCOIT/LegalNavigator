@@ -1,6 +1,7 @@
 li > a:hover {
   text-decoration: none;
-  color: #333;
+  color: #0d3fb8;
+  font-weight: 600;
 }
 
 .lower-nav {
@@ -85,8 +86,14 @@ ul.web-hidden {
 }
 
 #sidenav a:hover {
-  color: #333;
-}
+  color: #0d3fb8;
+  font-weight: 600;
+ }
+
+#sidenav .account-menu:hover {   //Luke
+  color: #0d3fb8;
+  font-weight: 600;
+ }
 
 #sidenav .closebtn {
   float: right;
@@ -242,6 +249,11 @@ li.vertical-line {
   .left-menu li a {
     font-size: 16px;
   }
+
+    .left-menu li a:hover { 
+      color: #0d3fb8;
+      font-weight: 600;
+    }
 
   #logo {
     background-position: -10px -7px;

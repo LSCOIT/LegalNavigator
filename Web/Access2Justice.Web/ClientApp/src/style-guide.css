@@ -172,7 +172,12 @@ button:focus {
   border-radius: 4px;
 }
 
-ul li .check {
+  .button-container ul li label:hover {
+    background:#F4F4F4;
+  }
+
+
+  ul li .check {
   display: block;
   position: absolute;
   border: 1px solid #7E7E7E;

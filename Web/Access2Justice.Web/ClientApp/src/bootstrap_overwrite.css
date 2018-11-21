@@ -107,10 +107,19 @@ a:not([href]):not([tabindex]) {
   cursor: pointer;
 }
 
+
 a.carousel-control .icon-prev, a.carousel-control .icon-next {
   background-image: url('assets/images/small-icons/arrow_down.svg');
   width: 40px;
   height: 40px;
+}
+
+a.carousel-control .icon-prev:hover, a.carousel-control .icon-next:hover {
+  background-image: url('assets/images/small-icons/arrow_down.svg');
+  width: 45px;
+  height: 45px;
+  //padding-bottom: 40px;
+  transition: all ease-in-out .5s;
 }
 
 .carousel-control-next-icon {
