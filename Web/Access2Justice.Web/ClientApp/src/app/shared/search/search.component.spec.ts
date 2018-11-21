@@ -106,10 +106,7 @@ describe('SearchComponent', () => {
       "state": "Alaska"}
     };
     mockMapLocationParsed = {
-      state: "Alaska",
-      city: "",
-      county: "",
-      zipCode: ""
+      state: "Alaska"
     }
     store = {};
     mockSessionStorage = {

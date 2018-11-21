@@ -139,6 +139,9 @@ export class MapService {
     this.displayLocation.address = this.location.address.adminDistrict;
     this.locationDetails = { location: this.mapLocation, displayLocationDetails: this.displayLocation, country: country, formattedAddress: this.state }
     if (environment.map_type) {
+      this.locationDetails.location.city = "";
+      this.locationDetails.location.county = "";
+      this.locationDetails.location.zipCode = "";
       sessionStorage.setItem("globalSearchMapLocation", JSON.stringify(this.locationDetails));
     }
     else {

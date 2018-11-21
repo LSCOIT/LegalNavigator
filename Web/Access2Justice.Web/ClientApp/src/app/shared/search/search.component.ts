@@ -34,9 +34,6 @@ export class SearchComponent implements OnInit {
     if (sessionStorage.getItem("globalMapLocation")) {
       this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
       this.mapLocation = this.locationDetails.location;
-      this.mapLocation.city = "";
-      this.mapLocation.county = "";
-      this.mapLocation.zipCode = "";
     }
     this.luisInput.Location = this.mapLocation;
     sessionStorage.removeItem("cacheSearchResults"); 
