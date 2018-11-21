@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Access2Justice.Integration.Api.Interfaces;
 using System;
+using System.Collections.Generic;
 
 namespace Access2Justice.Integration.Api.Controllers
 {
@@ -35,35 +36,18 @@ namespace Access2Justice.Integration.Api.Controllers
             var serviceProvider = await serviceProvidersBusinessLogic.GetServiceProviderDocumentAsync(id).ConfigureAwait(false);
             return Ok(serviceProvider);
         }
-        
+
         /// <summary>
         /// Upserts a service provider
         /// </summary>
         /// <param name="serviceProvider"></param>
+        /// <param name="topicName"></param>
         [HttpPost("upsert")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> UpsertServiceProviders([FromBody]dynamic serviceProvider)
+        public async Task<IActionResult> UpsertServiceProviders([FromBody]List<ServiceProvider> serviceProvider, string topicName)
         {
-            var serviceProviderJson = serviceProvider[0];
-            var providerDetailJson = serviceProvider[1];
-            var topicName = serviceProvider[2];
-            var response = await serviceProvidersBusinessLogic.UpsertServiceProviderDocumentAsync(serviceProviderJson, providerDetailJson, topicName).ConfigureAwait(false);
-            return Ok(response);
-        }
-
-        /// <summary>
-        /// Deletes service provider by Id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpDelete("{id}", Name = "delete")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
-        public async Task<IActionResult> DeleteSerivceProviderAsync(string id)
-        {
-            var response = await serviceProvidersBusinessLogic.DeleteServiceProviderDocumentAsync(id).ConfigureAwait(false);
+            var response = await serviceProvidersBusinessLogic.UpsertServiceProviderDocumentAsync(serviceProvider, topicName).ConfigureAwait(false);
             return Ok(response);
         }
     }
