@@ -11,6 +11,7 @@ using Newtonsoft.Json.Linq;
 using NSubstitute;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using Xunit;
 
@@ -57,7 +58,21 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 			Assert.Equal(expectedResult, actualResult);
 		}
 
-		[Theory]
+        [Theory]
+        [MemberData(nameof(ShareTestData.ShareInputData), MemberType = typeof(ShareTestData))]
+        public void CheckPermaLinkDataAsyncShouldValidateNull(ShareInput shareInput, dynamic expectedResult)
+        {          
+            shareInput.UserId = null;
+            shareInput.Url = null;
+            //act
+            var response = shareBusinessLogic.CheckPermaLinkDataAsync(shareInput);
+            expectedResult =  JsonConvert.SerializeObject(null);
+            var actualResult = JsonConvert.SerializeObject(response.Result);
+            //assert
+            Assert.Contains(expectedResult, actualResult);
+        }
+      
+        [Theory]
 		[MemberData(nameof(ShareTestData.ShareGenerateInputData), MemberType = typeof(ShareTestData))]
 		public void ShareResourceDataAsyncShouldReturnResourceUrl(ShareInput shareInput, int permaLinkOutputLength, dynamic expectedResult)
 		{
@@ -127,23 +142,52 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 			Assert.Equal(expectedResult, actualResult);
 		}
 
+        [Theory]
+        [MemberData(nameof(ShareTestData.UserProfileWithSharedResourceDataForUpdate), MemberType = typeof(ShareTestData))]
+        public void UpsertSharedResourceValidate(UserProfile userProfile, SharedResource sharedResource, JArray sharedResourceResults, dynamic expectedResult)
+        {
+            //arrange            
+            var dbResponse = dynamicQueries.FindItemsWhereAsync(dbSettings.UserResourcesCollectionId, Constants.Id, Convert.ToString(userProfile.SharedResourceId, CultureInfo.InvariantCulture));
+            dbResponse.ReturnsForAnyArgs(sharedResourceResults);
+
+            Document updatedDocument = new Document();
+            JsonTextReader reader = new JsonTextReader(new StringReader(ShareTestData.upsertSharedResource));
+            updatedDocument.LoadFrom(reader);
+
+            dbService.UpdateItemAsync<SharedResources>(
+               Arg.Any<string>(),
+               Arg.Any<SharedResources>(),
+               Arg.Any<string>()).ReturnsForAnyArgs<Document>(updatedDocument);
+
+            dbService.CreateItemAsync<SharedResources>(
+               Arg.Any<SharedResources>(),
+               Arg.Any<string>()).ReturnsForAnyArgs<Document>(updatedDocument);
+
+            //act
+            var response = shareBusinessLogic.UpsertSharedResource(userProfile, sharedResource);
+            var actualResult = JsonConvert.SerializeObject(response.Result);
+
+            //assert
+            Assert.Equal(expectedResult, actualResult);
+        }
+
         // todo: fix this
-		//[Theory]
-		//[MemberData(nameof(ShareTestData.UpdatePersonalizedPlanData), MemberType = typeof(ShareTestData))]
-		//public void UpdatePersonalizedPlanShouldValidate(string planId, bool isShared, dynamic expectedResult)
-		//{
-		//	var personalizedPlan = personalizedPlanBusinessLogic.GetPersonalizedPlan(planId);
-		//	UserPersonalizedPlan userPlan = new UserPersonalizedPlan
-		//	{
-		//		OId="GFGDG8674"
-		//	};
-		//	var updatedPersonalizedPlan = personalizedPlanBusinessLogic.UpdatePersonalizedPlan(userPlan);
+        //[Theory]
+        //[MemberData(nameof(ShareTestData.UpdatePersonalizedPlanData), MemberType = typeof(ShareTestData))]
+        //public void UpdatePersonalizedPlanShouldValidate(string planId, bool isShared, dynamic expectedResult)
+        //{
+        //	var personalizedPlan = personalizedPlanBusinessLogic.GetPersonalizedPlan(planId);
+        //	UserPersonalizedPlan userPlan = new UserPersonalizedPlan
+        //	{
+        //		OId="GFGDG8674"
+        //	};
+        //	var updatedPersonalizedPlan = personalizedPlanBusinessLogic.UpdatePersonalizedPlan(userPlan);
 
-		//	var response = shareBusinessLogic.UpdatePersonalizedPlan(planId, isShared);
-		//	//assert
-		//	Assert.Equal(expectedResult, isShared);
-		//}
+        //	var response = shareBusinessLogic.UpdatePersonalizedPlan(planId, isShared);
+        //	//assert
+        //	Assert.Equal(expectedResult, isShared);
+        //}
 
-	}
+    }
 
 }
