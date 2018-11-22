@@ -50,7 +50,7 @@ namespace Access2Justice.Integration.Api.BusinessLogic
                 if (!string.IsNullOrEmpty(topic))
                 {
                     var topicDBData = await dbClient.FindItemsWhereContainsWithLocationAsync(dbSettings.TopicsCollectionId, Constants.Name, topic, serviceProviderLocation).ConfigureAwait(false);
-                    serviceProviderObject.TopicTags = GetServiceProviderTopicTags(topicDBData[0].id);
+                    serviceProviderObject.TopicTags = topicDBData.Count > 0 ? GetServiceProviderTopicTags(topicDBData[0].id) : null;
                 }
                 List<string> propertyNames = new List<string>() { Constants.ExternalId, Constants.ResourceType };
                 List<string> values = new List<string>() { serviceProviderObject.ExternalId, serviceProviderObject.ResourceType };
