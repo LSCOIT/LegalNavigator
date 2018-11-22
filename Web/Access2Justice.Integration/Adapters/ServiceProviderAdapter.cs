@@ -75,7 +75,7 @@ namespace Access2Justice.Integration.Adapters
         {
             ServiceProvider serviceProvider = new ServiceProvider()
             {
-                SiteId = site.ID,
+                ExternalId = site.ID,
                 Email = site.Email,
                // Availability = GetAvailability(site.availability),
                 AcceptanceCriteria = GetAcceptanceCriteria(site.acceptanceCriteria),
