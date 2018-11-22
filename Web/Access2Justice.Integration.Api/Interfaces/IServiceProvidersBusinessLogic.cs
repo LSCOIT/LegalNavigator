@@ -1,6 +1,5 @@
-﻿using System;
+﻿using Access2Justice.Shared.Models.Integration;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Access2Justice.Integration.Api.Interfaces
@@ -14,15 +13,10 @@ namespace Access2Justice.Integration.Api.Interfaces
         /// returns service provider based on id
         /// </summary>
         Task<dynamic> GetServiceProviderDocumentAsync(string id);
+        
         /// <summary>
         /// upserts service provider
         /// </summary>
-        Task<IEnumerable<object>> UpsertServiceProviderDocumentAsync(dynamic serviceProviderJson, dynamic providerDetailJson, dynamic topicName);
-        /// <summary>
-        /// deletes service provider based on id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        Task<dynamic> DeleteServiceProviderDocumentAsync(string id);
+        Task<IEnumerable<object>> UpsertServiceProviderDocumentAsync(List<ServiceProvider> serviceProvider, string topicName);
     }
 }

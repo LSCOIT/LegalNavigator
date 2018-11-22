@@ -9,6 +9,11 @@ namespace Access2Justice.Shared.Models
 {
     public class Resource
     {
+        public Resource()
+        {
+            TopicTags = new List<TopicTag>();
+        }
+
         [JsonProperty(PropertyName = "id")]
         public dynamic ResourceId { get; set; }
 

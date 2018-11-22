@@ -2,6 +2,8 @@
 using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
+using Access2Justice.Shared.Models.Integration;
+using Access2Justice.Shared.Utilities;
 using Microsoft.Azure.Documents;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -32,12 +34,12 @@ namespace Access2Justice.Integration.Api.Tests
             cosmosDbSettings.Endpoint.Returns(new System.Uri("https://bing.com"));
             cosmosDbSettings.DatabaseId.Returns("dbname");
             cosmosDbSettings.TopicsCollectionId.Returns("TopicCollection");
-            cosmosDbSettings.ResourcesCollectionId.Returns("ResourceCollection");         
+            cosmosDbSettings.ResourcesCollectionId.Returns("ResourceCollection");
         }
-        
+
         [Theory]
         [MemberData(nameof(ServiceProvidersTestData.ServiceProviderGetInputData), MemberType = typeof(ServiceProvidersTestData))]
-        public void GetServiceProviderAsyncTestsShouldReturnProperData(string serviceProviderId , JArray serviceProviderData, dynamic expectedServiceProviderdata)
+        public void GetServiceProviderAsyncTestsShouldReturnProperData(string serviceProviderId, JArray serviceProviderData, dynamic expectedServiceProviderdata)
         {
             //arrange
             var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.ResourcesCollectionId, Constants.Id, serviceProviderId);
@@ -51,18 +53,50 @@ namespace Access2Justice.Integration.Api.Tests
         }
 
         [Theory]
-        [MemberData(nameof(ServiceProvidersTestData.ServiceProviderDeleteInputData), MemberType = typeof(ServiceProvidersTestData))]
-        public void DeleteServiceProviderAsyncTestsShouldReturnProperData(string serviceProviderId, string serviceProviderData, dynamic expectedServiceProviderdata)
+        [MemberData(nameof(ServiceProvidersTestData.ServiceProviderUpsertInputData), MemberType = typeof(ServiceProvidersTestData))]
+        public void UpsertServiceProviderAsyncTestsShouldReturnProperData(string topicName, JArray topic, string externalId, JArray serviceProviderResponseData, string serviceProviderId, JArray serviceProviderData, List<ServiceProvider> serviceProvider, dynamic expectedServiceProviderdata)
         {
             //arrange
-            var dbResponse = backendDatabaseService.DeleteItemAsync(serviceProviderId, cosmosDbSettings.ResourcesCollectionId);
-            dbResponse.Returns(serviceProviderData);
+            dynamic actualServiceProviderData = null;
+            Location location = new Location();
+            var dbResponseFindTopic = dynamicQueries.FindItemsWhereContainsWithLocationAsync(cosmosDbSettings.TopicsCollectionId, Constants.Name, topicName, location);
+            dbResponseFindTopic.ReturnsForAnyArgs(topic);
+            List<string> propertyNames = new List<string>() { Constants.ExternalId, Constants.ResourceType };
+            List<string> values = new List<string>() { externalId, Constants.ServiceProviderResourceType };
+            var dbResponseFindItems = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.ResourcesCollectionId, propertyNames, values);
+            dbResponseFindItems.ReturnsForAnyArgs(serviceProviderResponseData);
+            Document updatedDocument = new Document();
+            JsonTextReader reader = new JsonTextReader(new StringReader(serviceProviderData[0].ToString()));
+            updatedDocument.LoadFrom(reader);
+            backendDatabaseService.UpdateItemAsync<dynamic>(serviceProviderId, serviceProviderData, cosmosDbSettings.ResourcesCollectionId)
+               .ReturnsForAnyArgs<Document>(updatedDocument);
+            backendDatabaseService.CreateItemAsync<dynamic>(serviceProviderData, cosmosDbSettings.ResourcesCollectionId)
+               .ReturnsForAnyArgs<Document>(updatedDocument);
 
             //act
-            var response = serviceProvidersBusinessLogic.DeleteServiceProviderDocumentAsync(serviceProviderId);
+            var response = serviceProvidersBusinessLogic.UpsertServiceProviderDocumentAsync(serviceProvider, topicName).Result;
+            foreach (var result in response)
+            {
+                actualServiceProviderData = result;
+            }
 
             //assert
-            Assert.Equal(expectedServiceProviderdata.ToString(), response.Result.ToString());
+            Assert.Equal(expectedServiceProviderdata[0].ToString(), actualServiceProviderData.ToString());
+        }
+
+        [Theory]
+        [MemberData(nameof(ServiceProvidersTestData.GetServiceProviderTopicTagsInputData), MemberType = typeof(ServiceProvidersTestData))]
+        public void GetServiceProviderTopicTagsTestsShouldReturnProperData(string id, dynamic expectedTopicTag)
+        {
+            //arrage
+            dynamic actualTopicTagData = null;
+
+            //act
+            var response = serviceProvidersBusinessLogic.GetServiceProviderTopicTags(id);
+            actualTopicTagData = JsonUtilities.DeserializeDynamicObject<object>(response);
+
+            //assert
+            Assert.Equal(expectedTopicTag.ToString(), actualTopicTagData.ToString());
         }
     }
 }
