@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Access2Justice.Integration.Api.Interfaces;
 using System;
 using Access2Justice.Integration;
-using Access2Justice.Integration.Adapters;
 using Access2Justice.Shared.Models;
 using Access2Justice.Shared.Interfaces;
 
@@ -18,8 +17,7 @@ namespace Access2Justice.Integration.Api.Controllers
     public class ServiceProvidersController : Controller
     {
         private readonly IServiceProvidersBusinessLogic serviceProvidersBusinessLogic;
-        private readonly IRtmSettings rtmSettings;
-        private readonly IWebSearchBusinessLogic webSearchBusinessLogic;
+        
         /// <summary>
         /// Service Provider Constructor
         /// </summary>
@@ -71,20 +69,6 @@ namespace Access2Justice.Integration.Api.Controllers
         {
             var response = await serviceProvidersBusinessLogic.DeleteServiceProviderDocumentAsync(id).ConfigureAwait(false);
             return Ok(response);
-        }
-
-        /// <summary>
-        /// Retrieves service provider by Id
-        /// </summary>
-        /// <param name="organizationalUnit"></param>
-        /// <param name="topic"></param>
-        /// <returns></returns>
-        [HttpGet("{id}", Name = "Get")]
-        [ProducesResponseType(typeof(ServiceProvider), 200)]
-        [ProducesResponseType(404)]
-        public IActionResult GetServiceProviders(string organizationalUnit, Topic topic)
-        {
-            throw new NotImplementedException();
         }
     }
 }

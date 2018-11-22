@@ -107,8 +107,7 @@ namespace Access2Justice.Integration.Api.BusinessLogic
         /// </summary>
         public dynamic UpsertServiceProvider(dynamic site, string id, dynamic topicTag, string description)
         {
-            ServiceProvider serviceProvider = new ServiceProvider();
-            Organization organizations = new Organization();
+            ServiceProvider serviceProvider = new ServiceProvider();            
             List<OrganizationReviewer> organizationReviewers = new List<OrganizationReviewer>();
             Availability availability = new Availability();
             AcceptanceCriteria acceptanceCriteria = new AcceptanceCriteria();
@@ -406,14 +405,14 @@ namespace Access2Justice.Integration.Api.BusinessLogic
         public dynamic GetOnboardingInfo(dynamic onboardingInfoValues)
         {
             OnboardingInfo onboardingInfo = new OnboardingInfo();
-            Shared.Models.Integration.Field field = new Shared.Models.Integration.Field();
-            List<Shared.Models.Integration.Field> fields = new List<Shared.Models.Integration.Field>();
+            UserField field = new UserField();
+            List<UserField> fields = new List<UserField>();
             var onboardingInfoData = onboardingInfoValues.userFields != null && onboardingInfoValues.userFields.Count > 0 ? onboardingInfoValues.userFields : null;
             foreach (var onboardingInfoValue in onboardingInfoData)
             {
                 var name = onboardingInfoValue.name;
                 var value = onboardingInfoValue.value;
-                field = new Shared.Models.Integration.Field { Name = name, Value = value };
+                field = new UserField { Name = name, Value = value };
                 fields.Add(field);
             }
             onboardingInfo = new OnboardingInfo { UserFields = fields };

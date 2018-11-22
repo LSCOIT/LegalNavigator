@@ -131,6 +131,11 @@ namespace Access2Justice.Shared.Models
 
     public class Organization: Resource
     {
+        public Organization()
+        {
+            Reviewer = new List<OrganizationReviewer>();
+        }
+
         [JsonProperty(PropertyName = "address")]
         public string Address { get; set; }
 

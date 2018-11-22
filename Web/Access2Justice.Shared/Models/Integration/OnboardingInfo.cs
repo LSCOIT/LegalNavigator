@@ -1,13 +1,16 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Access2Justice.Shared.Models.Integration
 {
     public class OnboardingInfo
     {
+        public OnboardingInfo()
+        {
+            UserFields = new List<UserField>();
+        }
+
         [JsonProperty(PropertyName = "userFields")]
-        public IEnumerable<Field> UserFields { get; set; }
+        public IEnumerable<UserField> UserFields { get; set; }
     }
 }

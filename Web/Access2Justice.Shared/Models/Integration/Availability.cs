@@ -7,6 +7,12 @@ namespace Access2Justice.Shared.Models.Integration
 {
     public class Availability
     {
+        public Availability()
+        {
+            RegularBusinessHours = new List<Schedule>();
+            HolidayBusinessHours = new List<Schedule>();
+        }
+
         /// <summary>
         /// Regular business hours
         /// </summary>
