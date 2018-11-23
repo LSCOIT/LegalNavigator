@@ -26,9 +26,11 @@ using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Reflection;
 using System.IO;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Access2Justice.Api
 {
+    [ExcludeFromCodeCoverage]
     public partial class Startup
     {
         public Startup(IConfiguration configuration)

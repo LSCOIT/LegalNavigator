@@ -33,23 +33,6 @@ namespace Access2Justice.Api.Tests.TestData
                EMail = "test@test.com"
            };
 
-        public static PersonalizedPlanViewModel PersonalizedPlanViewModelDataIsShared =>
-            new PersonalizedPlanViewModel
-            {
-                PersonalizedPlanId = Guid.Parse("a5a6346c-eab0-4e9d-86d9-0121c1e742be"),
-                Topics = {
-                new PlanTopic()
-                {
-                    TopicId = Guid.Parse("69be8e7c-975b-43c8-9af3-f61887a33ad3"),
-                    TopicName = "Protective Order",
-                    EssentialReadings = { new EssentialReadings() { } },
-                    Icon = null,
-                    Steps = { new PlanStep() { StepId = Guid.Parse("aeaa3c9d-5aa9-4a29-aea6-90c9dd30eb7f"), Title = "Short Term Protective Order", Description = "Personalized Action Plan", Order = 1, IsComplete = false, Resources = null } }
-                }
-                    },
-                IsShared = true
-            };
-
         public static IEnumerable<object[]> UserProfileWithSharedResourceDataForUpdate()
         {
             yield return new object[] { new UserProfile { Id = Guid.Parse("0693B88C-3866-4CCA-97C8-B8E3F3D1FF3C").ToString(), FirstName = "TestFirstName", LastName = "TestLastName", IsActive = "true", OId = "709709e7t0r7t96", EMail = "test@test.com",SharedResourceId = Guid.Parse("0568B88C-3866-4CCA-97C8-B8E3F3D1FF3C") },
@@ -143,27 +126,6 @@ namespace Access2Justice.Api.Tests.TestData
             new ShareViewModel() { PermaLink = "32803EF" } };
         }
 
-        public static IEnumerable<object[]> ShareGenerateInputDataIsShared()
-        {
-            yield return new object[] {
-                new ShareInput { ResourceId = Guid.Parse("5c035d27-2fdb-9776-6236-70983a918431"),
-                Url = new Uri("/topics/5c035d27-2fdb-9776-6236-70983a918431", UriKind.Relative),
-                UserId = "709709e7t0r7t96",
-                UniqueId = Guid.Parse("6D4826FD-24BB-41BA-9AD6-39AF7737C335")
-            },
-                true,
-                new PersonalizedPlanViewModel(){
-                    PersonalizedPlanId = Guid.Parse("a5a6346c-eab0-4e9d-86d9-0121c1e742be"),
-                    Topics = { new PlanTopic() { TopicId=Guid.Parse("69be8e7c-975b-43c8-9af3-f61887a33ad3"),
-                        TopicName = "Protective Order",
-                        EssentialReadings ={ new EssentialReadings() { } },
-                        Icon =null,
-                        Steps = {new PlanStep() { StepId= Guid.Parse("aeaa3c9d-5aa9-4a29-aea6-90c9dd30eb7f"),Title= "Short Term Protective Order", Description= "Personalized Action Plan", Order=1,IsComplete=false,Resources=null } }
-                    }
-                    },
-                    IsShared = true }
-            };
-        }
         public static IEnumerable<object[]> UpdatePersonalizedPlanData()
         {
             yield return new object[] { "132d8f82-96df-4d9b-8023-4332a1924da4", true, true };
@@ -177,43 +139,6 @@ namespace Access2Justice.Api.Tests.TestData
                                                   "\"eMail\": \"test@hotmail.com\"," +
                                                   "\"isActive\": \"Yes\"," +
                                                 "}";
-
-        public static string updatedSharedResourcesDataIsShared = "{" +
-            "  \"id\": \"a5a6346c-eab0-4e9d-86d9-0121c1e742be\"," +
-            "  \"topics\": [" +
-            "    {" +
-            "      \"topicId\": \"69be8e7c-975b-43c8-9af3-f61887a33ad3\"," +
-            "      \"name\": \"Protective Order\"," +
-            "      \"essentialReadings\": [" +
-            "       {" +
-            "          \"text\": \"Domestic Violence - What it is\"," +
-            "          \"url\": \"https://www.thehotline.org/is-this-abuse/abuse-defined/\"" +
-            "        }," +
-            "        {" +
-            "          \"text\": \"Safety Planning Tips\"," +
-            "          \"url\": \"https://www.thehotline.org/help/path-to-safety/\"" +
-            "        }" +
-            "      ]," +
-            "      \"icon\": null," +
-            "      \"steps\": [" +
-            "        {" +
-            "          \"stepId\": \"aeaa3c9d-5aa9-4a29-aea6-90c9dd30eb7f\"," +
-            "          \"title\": \"Short Term Protective Order\"," +
-            "          \"description\": \"Personalized Action Plan\"," +
-            "          \"order\": 1," +
-            "          \"isComplete\": false," +
-            "          \"resources\": []" +
-            "        }" +
-            "      ]" +
-            "    }" +
-            "  ]," +
-            "  \"isShared\": true," +
-            "  \"_rid\": \"2NR6APW7dhGFAAAAAAAAAA==\"," +
-            "  \"_self\": \"dbs/2NR6AA==/colls/2NR6APW7dhE=/docs/2NR6APW7dhGFAAAAAAAAAA==/\"," +
-            "  \"_etag\": \"\"30002e5c-0000-0000-0000-5bee797d0000\"\"," +
-            "  \"_attachments\": \"attachments/\"," +
-            "  \"_ts\": 1542355325" +
-            "}";
 
         public static string userProfileWithSharedResource = "{\"id\": \"0693B88C-3866-4CCA-97C8-B8E3F3D1FF3C\"," +
                                                 "\"oId\": \"709709e7t0r7t96\"," +

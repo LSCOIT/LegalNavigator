@@ -115,7 +115,7 @@ namespace Access2Justice.Api.Tests.TestData
                      JArray.Parse(@"[[{'id':''}],[{'state':'','county':'','city':'','zipCode':''}],[{'condition':[{'title':'','description':''}]}],[{'id':''}],[{'reviewerFullName':'','reviewerTitle':'','reviewText':'','reviewerImage':''}],[{'headline':'','content':''}]]");
         public static string expectedTopicId = "addf41e9-1a27-4aeb-bcbb-7959f95094ba";
         public static string expectedResourceId = "77d301e7-6df2-612e-4704-c04edf271806";
-        public static Location expectedLocationValue= new Location() { State="Hawaii",County="",City= "Honolulu", ZipCode= "96741" };
+        public static Location expectedLocationValue = new Location() { State = "Hawaii", County = "", City = "Honolulu", ZipCode = "96741" };
         public static string expectedpagedResource = "{\"ContinuationToken\":\"[]\",\"Results\":[],\"TopicIds\":[]}";
         public static string expectedResourceCount = "{\"ResourceName\":\"Organizations\",\"ResourceCount\":4}";
         public static string expectedEmptyResourceCount = "{\"ResourceName\":\"All\",\"ResourceCount\":0}";
@@ -154,7 +154,7 @@ namespace Access2Justice.Api.Tests.TestData
                     JArray.Parse(@"[{  'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec',  'name': 'Family',  'overview': 'overview details',  'parentTopicId': [    {      'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'    }  ],  'resourceType': 'Topics',  'keywords': 'HOUSING', 'organizationalUnit': 'Alaska', 'location': [    {      'state': 'Hawaii',      'county': '',      'city': 'Haiku-Pauwela',      'zipCode': ''    },    {      'state': 'Alaska',      'county': '',      'city': '',      'zipCode': ''    }  ],  'jsonContent': 'jsonContent',  'icon': './assets/images/resources/resource.png',  'createdBy': 'API',  'createdTimeStamp': '',  'modifiedBy': 'API',  'modifiedTimeStamp': ''}]");
         public static string expectedTopicTagData = "aaa085ef-96fb-4fd0-bcd0-0472ede66512";
         public static string expectedParentTopicIdData = "349fa67b-164f-4a65-bb5d-a5b3dd2640a6";
-        public static JArray expectedQuickLinksData = 
+        public static JArray expectedQuickLinksData =
                      JArray.Parse(@"[{'text':'Divorce - Hawaii State Judiciary','url':'www.courts.state.hi.us/self-help/divorce'}]");
         public static JArray expectedLocationData =
                      JArray.Parse(@"[{'state':'Hawaii','county':'','city':'Haiku-Pauwela','zipCode':''},{'state':'Alaska','county':'','city':'','zipCode':''}]");
@@ -188,5 +188,21 @@ namespace Access2Justice.Api.Tests.TestData
             Location = expectedLocation,
             IsShared = false
         };
+        public static TopicInput TopicInputIsSharedTrue = new TopicInput
+        {
+            Id = "aaa085ef-96fb-4fd0-bcd0-0472ede66512",
+            Location = expectedLocation,
+            IsShared = true
+        };
+        public static Topic TopicList = new Topic { Id = "addf41e9-1a27-4aeb-bcbb-7959f95094ba" };
+        public static IEnumerable<object[]> TopicInputEnumerable()
+        {
+            yield return new object[] { new TopicInput { Id = Guid.Parse("addf41e9-1a27-4aeb-bcbb-7959f95094ba").ToString(), Location = expectedLocation, IsShared = false }, TopicInput };
+            yield return new object[] { new TopicInput { Id = Guid.Parse("aaa085ef-96fb-4fd0-bcd0-0472ede66512").ToString(), Location = expectedLocation, IsShared = true }, TopicInputIsSharedTrue };
+        }
+        public static IEnumerable<object[]> Topics()
+        {
+            yield return new object[] { new Topic { Id = Guid.Parse("addf41e9-1a27-4aeb-bcbb-7959f95094ba").ToString() }, TopicList };
+        }
     }
 }

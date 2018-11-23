@@ -171,44 +171,24 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             Assert.Equal(expectedResult, actualResult);
         }
 
-        [Theory]
-        [MemberData(nameof(ShareTestData.ShareGenerateInputDataIsShared), MemberType = typeof(ShareTestData))]
-        public void UpdatePlanIsSharedStatusValidate(ShareInput shareInput, bool isSharedStatus, dynamic expectedResult)
-        {
-            //arrange
-            string planId = shareInput.Url.OriginalString.Substring(8);            
+        
+            // todo: fix this
+            //[Theory]
+            //[MemberData(nameof(ShareTestData.UpdatePersonalizedPlanData), MemberType = typeof(ShareTestData))]
+            //public void UpdatePersonalizedPlanShouldValidate(string planId, bool isShared, dynamic expectedResult)
+            //{
+            //	var personalizedPlan = personalizedPlanBusinessLogic.GetPersonalizedPlan(planId);
+            //	UserPersonalizedPlan userPlan = new UserPersonalizedPlan
+            //	{
+            //		OId="GFGDG8674"
+            //	};
+            //	var updatedPersonalizedPlan = personalizedPlanBusinessLogic.UpdatePersonalizedPlan(userPlan);
 
-            dynamic personalizedPlan = personalizedPlanBusinessLogic.GetPersonalizedPlanAsync(Guid.Parse(planId))
-            .Returns<PersonalizedPlanViewModel>(ShareTestData.PersonalizedPlanViewModelDataIsShared);
+            //	var response = shareBusinessLogic.UpdatePersonalizedPlan(planId, isShared);
+            //	//assert
+            //	Assert.Equal(expectedResult, isShared);
+            //}
 
-            // to improve below
-           // dbPersonalizedPlan.UpsertPersonalizedPlanAsync(plan)
-
-            //act
-            var response =shareBusinessLogic.UpdatePlanIsSharedStatus(planId, isSharedStatus);
-            var actualResult = JsonConvert.SerializeObject(response.Result);
-
-            //assert
-            Assert.Equal(expectedResult, actualResult);
         }
-
-        // todo: fix this
-        //[Theory]
-        //[MemberData(nameof(ShareTestData.UpdatePersonalizedPlanData), MemberType = typeof(ShareTestData))]
-        //public void UpdatePersonalizedPlanShouldValidate(string planId, bool isShared, dynamic expectedResult)
-        //{
-        //	var personalizedPlan = personalizedPlanBusinessLogic.GetPersonalizedPlan(planId);
-        //	UserPersonalizedPlan userPlan = new UserPersonalizedPlan
-        //	{
-        //		OId="GFGDG8674"
-        //	};
-        //	var updatedPersonalizedPlan = personalizedPlanBusinessLogic.UpdatePersonalizedPlan(userPlan);
-
-        //	var response = shareBusinessLogic.UpdatePersonalizedPlan(planId, isShared);
-        //	//assert
-        //	Assert.Equal(expectedResult, isShared);
-        //}
-
-    }
 
 }
