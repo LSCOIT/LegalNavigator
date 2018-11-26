@@ -24,6 +24,7 @@ describe('ReadMoreComponent', () => {
 
   it('should call determineView on ngOnChanges', () => {
     spyOn(component, 'determineView');
+    component.text = "test";
     component.ngOnChanges();
     expect(component.determineView).toHaveBeenCalled();
   });
