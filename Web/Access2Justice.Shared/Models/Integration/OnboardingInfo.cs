@@ -20,6 +20,11 @@ namespace Access2Justice.Shared.Models.Integration
         Field [] UserFields { get; set; }
 
         /// <summary>
+        /// Template for paylod to be delivered to service provider.
+        /// </summary>
+        string PayloadTemplate { get; set; }
+
+        /// <summary>
         /// Delivery methods that service provider supports 
         /// for accepting onboarding information.
         /// </summary>
