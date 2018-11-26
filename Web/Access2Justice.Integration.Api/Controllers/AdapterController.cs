@@ -27,14 +27,14 @@ namespace Access2Justice.Integration.Api.Controllers
         /// <summary>
         /// Fetches service provider details from RTM and converts to Service Provider object.
         /// </summary>
-        /// <param name="serviceProvider"></param>
+        /// <param name="topicName"></param>
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(typeof(List<ServiceProvider>), 200)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> GetServiceProviderAsync([FromBody]dynamic serviceProvider)
+        public async Task<IActionResult> GetServiceProviderAsync(string topicName)
         {
-            var response = await serviceProviderAdapter.GetServiceProviders(serviceProvider);
+            var response = await serviceProviderAdapter.GetServiceProviders(topicName).ConfigureAwait(false);
             return Ok(response);
         }
 

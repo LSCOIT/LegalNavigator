@@ -25,29 +25,29 @@ namespace Access2Justice.Integration.Adapters
             this.httpClient = httpClient;
         }
 
-        //public async Task<dynamic> GetServiceProviders(string TopicName)
-        public async Task<dynamic> GetServiceProviders(dynamic TopicName)
+        public async Task<List<ServiceProvider>> GetServiceProviders(string TopicName)
         {
             try
             {
-                return ProcessRTMData(TopicName);
-                //string sessionUrl = string.Format(CultureInfo.InvariantCulture, rtmSettings.SessionURL.OriginalString, rtmSettings.RtmApiKey);
-                //var sResponse = await httpClient.GetAsync(new Uri(sessionUrl)).ConfigureAwait(false);
-                //string session = sResponse.Content.ReadAsStringAsync().Result;
-                //dynamic sessionJson = JsonConvert.DeserializeObject(session);
-                //string sessionId = sessionJson[0][Constants.RTMSessionId];
-                //if (!string.IsNullOrEmpty(sessionId))
-                //{
-                //    string serviceProviderUrl = string.Format(CultureInfo.InvariantCulture, rtmSettings.ServiceProviderURL.OriginalString,
-                //                                              rtmSettings.RtmApiKey, sessionId);
-                //    var spResponse = await httpClient.GetAsync(new Uri(serviceProviderUrl)).ConfigureAwait(false);
-                //    string serviceProvider = spResponse.Content.ReadAsStringAsync().Result;
-                //    if (string.IsNullOrEmpty(serviceProvider))
-                //    {
-                //        var serviceProviderObjects = JsonUtilities.DeserializeDynamicObject<List<dynamic>>(serviceProvider);
-                //    }
-                //}
-                //return sessionId;
+                List<ServiceProvider> serviceProviders = new List<ServiceProvider>();
+                string sessionUrl = string.Format(CultureInfo.InvariantCulture, rtmSettings.SessionURL.OriginalString, rtmSettings.ApiKey);
+                var sResponse = await httpClient.GetAsync(new Uri(sessionUrl)).ConfigureAwait(false);
+                string session = sResponse.Content.ReadAsStringAsync().Result;
+                dynamic sessionJson = JsonConvert.DeserializeObject(session);
+                string sessionId = sessionJson[0][Constants.RTMSessionId];
+                if (!string.IsNullOrEmpty(sessionId))
+                {
+                    string serviceProviderUrl = string.Format(CultureInfo.InvariantCulture, rtmSettings.ServiceProviderURL.OriginalString,
+                                                              rtmSettings.ApiKey, sessionId);
+                    var spResponse = await httpClient.GetAsync(new Uri(serviceProviderUrl)).ConfigureAwait(false);
+                    string serviceProvider = spResponse.Content.ReadAsStringAsync().Result;
+                    if (string.IsNullOrEmpty(serviceProvider))
+                    {
+                        var serviceProviderObjects = JsonUtilities.DeserializeDynamicObject<List<dynamic>>(serviceProvider);
+                        serviceProviders = ProcessRTMData(serviceProviderObjects);
+                    }
+                }
+                return serviceProviders;
             }
             catch (Exception ex)
             {
@@ -64,8 +64,7 @@ namespace Access2Justice.Integration.Adapters
                 {
                     string siteId = site.ID.ToString();
                     ServiceProvider serviceProvider = ConvertToServiceProvider(site);
-                    serviceProviders.Add(serviceProvider);
-                    //var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(serviceProvider);                    
+                    serviceProviders.Add(serviceProvider);                   
                 }
             }
             return serviceProviders;

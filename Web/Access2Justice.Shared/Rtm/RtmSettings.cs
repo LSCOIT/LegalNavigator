@@ -11,7 +11,7 @@ namespace Access2Justice.Shared.Rtm
         {
             try
             {
-                RtmApiKey = configuration.GetSection("RtmApiKey").Value;
+                ApiKey = configuration.GetSection("ApiKey").Value;
                 SessionURL = new Uri(configuration.GetSection("SessionURL").Value);
                 ServiceProviderURL = new Uri(configuration.GetSection("ServiceProviderURL").Value);
                 ServiceProviderDetailURL = new Uri(configuration.GetSection("ServiceProviderDetailURL").Value);
@@ -22,7 +22,7 @@ namespace Access2Justice.Shared.Rtm
             }
         }
 
-        public string RtmApiKey { get; set; }
+        public string ApiKey { get; set; }
 
         public Uri SessionURL { get; set; }
 

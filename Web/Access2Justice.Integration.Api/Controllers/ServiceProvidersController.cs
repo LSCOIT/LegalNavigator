@@ -41,12 +41,12 @@ namespace Access2Justice.Integration.Api.Controllers
         /// Upserts a service provider
         /// </summary>
         /// <param name="serviceProvider"></param>
-        /// <param name="topicName"></param>
-        [HttpPost("upsert")]
+        [HttpPost]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> UpsertServiceProviders([FromBody]List<ServiceProvider> serviceProvider, string topicName)
+        public async Task<IActionResult> UpsertServiceProviders([FromBody]List<ServiceProvider> serviceProvider)
         {
+            string topicName = "Family";
             var response = await serviceProvidersBusinessLogic.UpsertServiceProviderDocumentAsync(serviceProvider, topicName).ConfigureAwait(false);
             return Ok(response);
         }

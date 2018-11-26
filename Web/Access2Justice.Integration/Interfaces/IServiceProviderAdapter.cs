@@ -1,13 +1,14 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Access2Justice.Shared.Models.Integration;
 
 namespace Access2Justice.Integration.Interfaces
 {
     public interface IServiceProviderAdapter
     {
-        //Task<dynamic> GetServiceProviders(string TopicName);
+        Task<List<ServiceProvider>> GetServiceProviders(string TopicName);
 
-        Task<dynamic> GetServiceProviders(dynamic TopicName);
+        //Task<List<ServiceProvider>> GetServiceProviders(dynamic TopicName);
 
         ServiceProvider GetServiceProviderDetails(string id);
     }
