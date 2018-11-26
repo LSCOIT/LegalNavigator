@@ -278,5 +278,9 @@ export class MapComponent implements OnInit {
     if (this.successSubscription) {
       this.successSubscription.unsubscribe();
     }
+
+    if (this.staticContentSubcription) {
+      this.staticContentSubcription.unsubscribe();
+    }
   }
 }
