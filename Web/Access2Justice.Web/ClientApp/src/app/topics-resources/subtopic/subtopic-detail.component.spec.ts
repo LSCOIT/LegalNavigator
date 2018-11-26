@@ -25,7 +25,7 @@ import { MsalService } from '@azure/msal-angular';
 import { Global } from '../../global';
 
 
-fdescribe('SubtopicDetailComponent', () => {
+describe('SubtopicDetailComponent', () => {
   let component: SubtopicDetailComponent;
   let fixture: ComponentFixture<SubtopicDetailComponent>;
   let mapService: MapService;
