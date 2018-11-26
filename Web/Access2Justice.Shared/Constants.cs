@@ -41,6 +41,7 @@
         {
             public const string EssentialReadings = "Essential Readings";
         }
+        public const string A2JTemplateFileExtension = ".zip";
     }
 }
 

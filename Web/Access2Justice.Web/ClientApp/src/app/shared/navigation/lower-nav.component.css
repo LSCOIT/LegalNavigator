@@ -162,10 +162,6 @@ li.vertical-line {
     padding-top: 25px;
   }
 
-  #logo {
-    width: 255px;
-  }
-
   #mobile-menu {
     margin-left: 30px;
   }
@@ -252,9 +248,9 @@ li.vertical-line {
   }
 
   #logo {
-    width: 250px;
     background-position: -10px -7px;
     margin-right: 3%;
+    width: 255px;
   }
 
   .search-text {

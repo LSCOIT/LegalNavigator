@@ -7,6 +7,8 @@
     <UserSecretsId>4f7db59e-40d4-40e5-b786-cabce6d2a91e</UserSecretsId>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);1591</NoWarn>
+    <ApplicationInsightsResourceId>/subscriptions/892808ef-ec24-447c-9441-2a832d7a3d04/resourcegroups/A2J-develop-rg/providers/microsoft.insights/components/Access2JusticeApiAppInsights</ApplicationInsightsResourceId>
+    <ApplicationInsightsAnnotationResourceId>/subscriptions/892808ef-ec24-447c-9441-2a832d7a3d04/resourcegroups/A2J-develop-rg/providers/microsoft.insights/components/Access2JusticeApiAppInsights</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -26,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.1.1" />
     <PackageReference Include="Microsoft.CodeAnalysis" Version="2.8.0" />
@@ -45,6 +48,10 @@
     <ProjectReference Include="..\Access2Justice.CosmosDb\Access2Justice.CosmosDb.csproj" />    
     <ProjectReference Include="..\Access2Justice.Shared\Access2Justice.Shared.csproj" />
 
+  </ItemGroup>
+
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
 </Project>

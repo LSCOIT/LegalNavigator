@@ -11,10 +11,10 @@
             upsertstaticaboutpage,
             createtopicsupload,
             createresourcesupload,
+            upsertresourcedocuments,
+            upserttopicdocuments,
             upsertresourcedocument,
             upserttopicdocument,
-            upserttopic,
-            upsertresource,
             import,
             updateplan,
             generatepermalink,
@@ -24,7 +24,8 @@
             getuserprofile,
             getuserprofiledata,
             updateuserprofile,
-            upsertuserpersonalizedplan            
+            upsertuserpersonalizedplan,
+            importa2jtemplate
         }
 
         public enum Role

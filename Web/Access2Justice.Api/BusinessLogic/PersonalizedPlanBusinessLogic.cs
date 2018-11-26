@@ -54,29 +54,21 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<Document> UpsertPersonalizedPlanAsync(PersonalizedPlanViewModel personalizedPlan)
         {
-            try
-            {
-                var userPersonalizedPlan = await GetPersonalizedPlanAsync(personalizedPlan.PersonalizedPlanId);
+            var userPersonalizedPlan = await GetPersonalizedPlanAsync(personalizedPlan.PersonalizedPlanId);
 
-                if (userPersonalizedPlan == null)
-                {
-                    var newPlan = await backendDatabaseService.CreateItemAsync(personalizedPlan, cosmosDbSettings.ActionPlansCollectionId);
-                    if (!Guid.TryParse(newPlan.Id, out Guid guid))
-                    {
-                        return null;
-                    }
-                    return newPlan;
-                }
-                else
-                {
-                    return await backendDatabaseService.UpdateItemAsync(
-                        personalizedPlan.PersonalizedPlanId.ToString(), personalizedPlan, cosmosDbSettings.ActionPlansCollectionId);
-                }
-            }
-            catch
+            if (userPersonalizedPlan == null)
             {
-                // Todo: log exception
-                return null;
+                var newPlan = await backendDatabaseService.CreateItemAsync(personalizedPlan, cosmosDbSettings.ActionPlansCollectionId);
+                if (!Guid.TryParse(newPlan.Id, out Guid guid))
+                {
+                    return null;
+                }
+                return newPlan;
+            }
+            else
+            {
+                return await backendDatabaseService.UpdateItemAsync(
+                    personalizedPlan.PersonalizedPlanId.ToString(), personalizedPlan, cosmosDbSettings.ActionPlansCollectionId);
             }
         }
     }

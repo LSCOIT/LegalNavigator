@@ -88,6 +88,7 @@ export class LanguageComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     setTimeout(() => this.addAttributes(), 1000);
   }
+
   ngOnDestroy() {
     if (this.staticContentSubcription) {
       this.staticContentSubcription.unsubscribe();
