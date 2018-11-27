@@ -18,30 +18,5 @@
 <body>
   <app-root>Loading...</app-root>
   <div id="google_translate_element"></div>
-  <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=Element.prototype.classList"></script>
-  <script src="https://unpkg.com/focus-visible"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      var translationWidget = document.getElementById("google_translate_element");
-      var languageDropdownButton = document.getElementById("language-dropdown");
-
-      // keydown and keyup don't produce the correct behavior for pressing Enter key
-      if (translationWidget) {
-        translationWidget.addEventListener('keypress', function onEvent(e) {
-          if (e.key === "Enter") {
-            languageDropdownButton.click();
-            languageDropdownButton.focus();
-          }
-        })
-
-        translationWidget.addEventListener('keydown', function onEvent(e) {
-          if (e.key === "Escape") {
-            languageDropdownButton.click();
-            languageDropdownButton.focus();
-          }
-        })
-      }
-    });
-  </script>
 </body>
 </html>

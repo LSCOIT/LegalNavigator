@@ -77,12 +77,44 @@ export class LanguageComponent implements OnInit, AfterViewInit {
     }
   }
 
+  loadScipts() {
+    var polyfill = document.createElement('script');
+    polyfill.src = 'https://cdn.polyfill.io/v2/polyfill.min.js?features=Element.prototype.classList';
+
+    var focusVisible = document.createElement('script');
+    focusVisible.src = 'https://unpkg.com/focus-visible';
+
+    var translationWidget = document.getElementById("google_translate_element");
+    var languageDropdownButton = document.getElementById("language-dropdown");
+
+    // keydown and keyup don't produce the correct behavior for pressing Enter key
+    if (translationWidget) {
+      translationWidget.addEventListener('keypress', function onEvent(e) {
+        if (e.key === "Enter") {
+          languageDropdownButton.click();
+          languageDropdownButton.focus();
+        }
+      })
+
+      translationWidget.addEventListener('keydown', function onEvent(e) {
+        if (e.key === "Escape") {
+          languageDropdownButton.click();
+          languageDropdownButton.focus();
+        }
+      })
+    }
+
+    document.body.appendChild(polyfill);
+    document.body.appendChild(focusVisible);
+  }
+
   ngOnInit() {
     this.getLanguagueNavigationContent();
     this.staticContentSubcription = this.global.notifyStaticData
       .subscribe((value) => {
         this.getLanguagueNavigationContent();
       });
+    this.loadScipts();
   }
 
   ngAfterViewInit() {

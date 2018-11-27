@@ -1,6 +1,6 @@
 #language-dropdown {
   padding: 15px 40px 16px 50px;
-  background-image: url('../../../assets/images/small-icons/language.svg'), url('../../../assets/images/small-icons/dropdown_arrow.svg');
+  background-image: url('https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/small-icons/language.svg'), url('https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/small-icons/dropdown_arrow.svg');
   background-repeat: no-repeat;
   background-position: 13% 50%, 88% 50%;
   background-size: 20px 20px, 12px;
@@ -12,7 +12,7 @@
   position: relative;
   background-color: #FFF !important;
   z-index: 1;
-  background-image: url('../../../assets/images/small-icons/language.svg'), url('../../../assets/images/small-icons/dropup_arrow.svg') !important;
+  background-image: url('https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/small-icons/language.svg'), url('https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/small-icons/dropdown_arrow.svg') !important;
 }
 
 #language-dropdown:hover {
