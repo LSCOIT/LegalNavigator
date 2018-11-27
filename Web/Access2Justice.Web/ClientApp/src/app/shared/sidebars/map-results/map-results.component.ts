@@ -49,16 +49,19 @@ export class MapResultsComponent implements OnChanges {
 
   displayMapResults() {
     for (let index = 0, len = this.addressList.length; index < len; index++) {
-      this.mapResultsService.getLocationDetails(this.addressList[index].toString().replace('\n', ' ').trim(), environment.bingmap_key).subscribe((locationCoordinates) => {
-        this.latlong = {
-          latitude: locationCoordinates.resourceSets[0].resources[0].point.coordinates[0],
-          longitude: locationCoordinates.resourceSets[0].resources[0].point.coordinates[1]
-        }
-        this.latitudeLongitude.push(this.latlong);
-        if (this.latitudeLongitude.length === this.addressList.length) {
-          this.mapResultsService.mapResults(this.latitudeLongitude);
-        }
-      });
+      let address = this.addressList[index].toString().replace('\n', ' ').trim();
+      if (address.toLowerCase() != 'na') {
+        this.mapResultsService.getLocationDetails(address, environment.bingmap_key).subscribe((locationCoordinates) => {
+          this.latlong = {
+            latitude: locationCoordinates.resourceSets[0].resources[0].point.coordinates[0],
+            longitude: locationCoordinates.resourceSets[0].resources[0].point.coordinates[1]
+          }
+          this.latitudeLongitude.push(this.latlong);
+          if (this.latitudeLongitude.length > 0) {
+            this.mapResultsService.mapResults(this.latitudeLongitude);
+          }
+        });
+      }
     }
   }
 
