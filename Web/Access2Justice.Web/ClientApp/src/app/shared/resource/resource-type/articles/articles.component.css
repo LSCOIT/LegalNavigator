@@ -6,10 +6,8 @@ h2 {
   margin-top: 20px;
 }
 
-@media only screen and (min-width : 768px) {
-  .user-action {
-    margin-top: 10px;
-  }
+.resource-sections:last-child {
+  margin-bottom: 40px;
 }
 
 @media only screen and (min-width : 992px) {

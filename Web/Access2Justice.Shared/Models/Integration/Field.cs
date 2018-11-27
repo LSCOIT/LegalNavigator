@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Newtonsoft.Json;
 
 namespace Access2Justice.Shared.Models.Integration
 {
-    public class Field
+    public class UserField
     {
+        [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
+        [JsonProperty(PropertyName = "value")]
         public string Value { get; set; }
     }
 }

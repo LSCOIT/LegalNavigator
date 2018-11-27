@@ -25,7 +25,7 @@ export class ReadMoreComponent implements OnChanges {
     this.isCollapsed = !this.isCollapsed;
     this.determineView();
   }
-  
+
   determineView() {
     if (this.text.length <= this.maxLength) {
       this.currentText = this.text;
@@ -34,6 +34,7 @@ export class ReadMoreComponent implements OnChanges {
       return;
     }
     this.hideToggle = false;
+
     if (this.isCollapsed) {
       this.currentText = this.text.substring(0, this.maxLength) + "...";
     } else {
@@ -42,7 +43,8 @@ export class ReadMoreComponent implements OnChanges {
   }
 
   ngOnChanges() {
-    this.determineView();       
+    if (this.text && this.text.length) {
+      this.determineView();       
+    }
   }
-
 }

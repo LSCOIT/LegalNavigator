@@ -8,8 +8,4 @@
     <ProjectReference Include="..\Access2Justice.Shared\Access2Justice.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Adapters\" />
-  </ItemGroup>
-
 </Project>

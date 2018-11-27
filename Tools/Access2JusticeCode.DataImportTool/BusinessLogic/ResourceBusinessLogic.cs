@@ -8,6 +8,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Configuration;
 
 namespace Access2Justice.DataImportTool.BusinessLogic
 {
@@ -17,7 +18,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
 
         public async static Task GetResources(string accessToken,string filePath)
         {
-            clientHttp.BaseAddress = new Uri("http://localhost:4200/");
+            clientHttp.BaseAddress = new Uri(ConfigurationManager.AppSettings["apiUrl"]);
             clientHttp.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             clientHttp.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             try
@@ -38,7 +39,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                         resourcesList.Add(jsonResult);
                     }
 
-                    var topicTag = await clientHttp.GetAsync("api/topics/get-all-topics").ConfigureAwait(false);
+                    var topicTag = await clientHttp.GetAsync("api/topics-resources/topics/all").ConfigureAwait(false);
                     var topicResult = topicTag.Content.ReadAsStringAsync().Result;
                     dynamic topicTagResult = JsonConvert.DeserializeObject(topicResult);
                     foreach (var resourceList in resourcesList)
@@ -100,7 +101,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
 
                     var serializedResources = JsonConvert.SerializeObject(resourcesList);
                     StringContent content = new StringContent(serializedResources, Encoding.UTF8, "application/json");
-                    var response = await clientHttp.PostAsync("api/upsert-resource-document", content).ConfigureAwait(false);
+                    var response = await clientHttp.PostAsync("api/topics-resources/resources/documents/upsert", content).ConfigureAwait(false);
                     var json = response.Content.ReadAsStringAsync().Result;
                     response.EnsureSuccessStatusCode();
                     if (response.IsSuccessStatusCode == true)

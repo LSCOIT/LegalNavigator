@@ -37,6 +37,8 @@ export class SubtopicDetailComponent implements OnInit {
   luisInput: ILuisInput = { Sentence: '', Location: '', TranslateFrom: '', TranslateTo: '', LuisTopScoringIntent: '' };
   resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: { "state": "", "county": "", "city": "", "zipCode": "" }, IsResourceCountRequired: true };
   subscription: any;
+  displayResources: number;
+
   constructor(
     private topicService: TopicService,
     private activeRoute: ActivatedRoute,
@@ -93,6 +95,7 @@ export class SubtopicDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.displayResources = this.global.displayResources;
     this.activeRoute.url
       .subscribe(routeParts => {
         for (let i = 1; i < routeParts.length; i++) {
@@ -111,5 +114,11 @@ export class SubtopicDetailComponent implements OnInit {
         }
         });
       });
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }

@@ -1,25 +1,27 @@
 <div *ngIf="subtopicDetails" class="container">
   <app-breadcrumb></app-breadcrumb>
   <div class="row">
-    <div class="col-md-6">
-      <h3 *ngIf="subtopics.id == activeSubtopicParam" class="subtopic-heading text-capitalize">{{subtopics.name}}</h3>
+    <div class="col-md-6 col-sm-12">
+      <h3 *ngIf="subtopics.id == activeSubtopicParam" class="subtopic-heading">{{subtopics.name}}</h3>
     </div>
-    <div class="col-md-6 user-action">
+    <div class="col-md-6 col-sm-12 user-action">
       <app-user-action-sidebar [mobile]="true" [id]="activeSubtopicParam" [type]="type"></app-user-action-sidebar>
     </div>
   </div>
   <div class="row">
     <div class="col-md-8 col-sm-12">
-      <div class="box-no-shadow">
+      <div class="box-no-shadow" *ngIf="subtopics.overview || relatedLinksData.length">
         <div class="subtopic-body">
-          <h4>Overview</h4>
-          <p>{{subtopics.overview}}</p>
-          <div class="row">
+          <div *ngIf="subtopics.overview">
+            <h4>Overview</h4>
+            <p>{{subtopics.overview}}</p>
+          </div>
+          <div class="row" *ngIf="relatedLinksData.length">
             <h5>Essential Reading</h5>
             <ul>
-              <li *ngFor="let resource of relatedLinksData" >
-                <a class="link" href="{{resource.url}}">{{resource.name}}</a>
-                <div class="print-only">{{resource.url}}</div>
+              <li *ngFor="let resource of relatedLinksData; let indexer=index">
+                <a *ngIf="indexer<displayResources" class="link p" href="{{resource.url}}">{{resource.name}}</a>
+                <div *ngIf="indexer<displayResources" class="print-only">{{resource.url}}</div>
               </li>
             </ul>
           </div>
@@ -30,40 +32,40 @@
           <h3>Action Plans</h3>
         </a>
         <p>Our action plans are based on common resolution steps for people dealing with eviction. Please ask a professional if you have questions.</p>
-        <div *ngFor="let resource of actionPlanData">
-          <app-resource-card [resource]="resource" [showRemoveOption]="showRemoveOption"></app-resource-card>
+        <div *ngFor="let resource of actionPlanData; let indexer=index">
+          <app-resource-card *ngIf="indexer<displayResources" [resource]="resource" [showRemoveOption]="showRemoveOption"></app-resource-card>
         </div>
         <button class="btn btn-primary no-print" (click)="clickSeeMoreOrganizationsFromSubtopicDetails(actionPlanData[0].resourceType)">See more Action Plans</button>
       </div>
       <div *ngIf="articleData.length > 0" class="row">
         <h3>Articles</h3>
-        <div *ngFor="let resource of articleData">
-          <app-resource-card [resource]="resource" [showRemoveOption]="showRemoveOption"></app-resource-card>
+        <div *ngFor="let resource of articleData; let indexer=index">
+          <app-resource-card *ngIf="indexer<displayResources" [resource]="resource" [showRemoveOption]="showRemoveOption"></app-resource-card>
         </div>
         <button class="btn btn-primary no-print" (click)="clickSeeMoreOrganizationsFromSubtopicDetails(articleData[0].resourceType)">See more Articles</button>
-        </div>
+      </div>
       <div *ngIf="organizationData.length > 0" class="row">
         <h3>Organizations That May Be Able To Help</h3>
-        <div *ngFor="let resource of organizationData">
-          <app-resource-card [resource]="resource" [showRemoveOption]="showRemoveOption"></app-resource-card>
+        <div *ngFor="let resource of organizationData; let indexer=index">
+          <app-resource-card *ngIf="indexer<displayResources" [resource]="resource" [showRemoveOption]="showRemoveOption"></app-resource-card>
         </div>
         <button class="btn btn-primary no-print" (click)="clickSeeMoreOrganizationsFromSubtopicDetails(organizationData[0].resourceType)">See more Organizations</button>
-        </div>
+      </div>
       <div *ngIf="videoData.length > 0" class="row">
         <h3>Videos</h3>
-        <div *ngFor="let resource of videoData">
-          <app-resource-card [resource]="resource" [showRemoveOption]="showRemoveOption"></app-resource-card>
+        <div *ngFor="let resource of videoData; let indexer=index">
+          <app-resource-card *ngIf="indexer<displayResources" [resource]="resource" [showRemoveOption]="showRemoveOption"></app-resource-card>
         </div>
         <button class="btn btn-primary no-print" (click)="clickSeeMoreOrganizationsFromSubtopicDetails(videoData[0].resourceType)">See more Videos</button>
-        </div>
+      </div>
       <div *ngIf="formData.length > 0" class="row">
         <h3>Forms</h3>
-        <div *ngFor="let resource of formData">
-          <app-resource-card [resource]="resource" [showRemoveOption]="showRemoveOption"></app-resource-card>
+        <div *ngFor="let resource of formData; let indexer=index">
+          <app-resource-card *ngIf="indexer<displayResources" [resource]="resource" [showRemoveOption]="showRemoveOption"></app-resource-card>
         </div>
         <button class="btn btn-primary no-print" (click)="clickSeeMoreOrganizationsFromSubtopicDetails(formData[0].resourceType)">See more Forms</button>
-        </div>
       </div>
+    </div>
     <div class="col-md-4 col-sm-12 sidebars">
       <app-guided-assistant-sidebar [activeSubTopic]="guidedSutopicDetailsInput"></app-guided-assistant-sidebar>
       <app-service-org-sidebar (showMoreOrganizations)="clickSeeMoreOrganizationsFromSubtopicDetails($event)"></app-service-org-sidebar>

@@ -33,28 +33,23 @@ namespace Access2Justice.Api.BusinessLogic
             return await dbService.GetItemAsync<CuratedExperience>(id.ToString(), dbSettings.CuratedExperiencesCollectionId);
         }
 
-        public CuratedExperienceComponentViewModel GetComponent(CuratedExperience curatedExperience, Guid componentId)
+        public async Task<CuratedExperienceComponentViewModel> GetComponent(CuratedExperience curatedExperience, Guid componentId)
         {
-            try
+            var dbComponent = new CuratedExperienceComponent();
+            var answers = new CuratedExperienceAnswers();
+            if (componentId == default(Guid))
             {
-                var dbComponent = new CuratedExperienceComponent();
-                if (componentId == default(Guid))
-                {
-                    dbComponent = curatedExperience.Components.First();
-                }
-                else
-                {
-                    dbComponent = curatedExperience.Components.Where(x => x.ComponentId == componentId).FirstOrDefault();
-                }
-                return MapComponentViewModel(curatedExperience, dbComponent, answersDocId: Guid.Empty); // In future, instead of sending an empty Guid
-                // for the answersDocId, we could pass the actual Id of the answers document (if any) so that we could return not only the component but also the
-                // answers associated with it.
+                answers.AnswersDocId = Guid.NewGuid();
+                answers.CuratedExperienceId = curatedExperience.CuratedExperienceId;
+                await dbService.CreateItemAsync(answers, dbSettings.GuidedAssistantAnswersCollectionId);
+                dbComponent = curatedExperience.Components.First();
             }
-            catch
+            else
             {
-                // log exception
-                return null;
+                dbComponent = curatedExperience.Components.Where(x => x.ComponentId == componentId).FirstOrDefault();
             }
+
+            return MapComponentViewModel(curatedExperience, dbComponent, answers.AnswersDocId);
         }
 
         public async Task<CuratedExperienceComponentViewModel> GetNextComponentAsync(CuratedExperience curatedExperience, CuratedExperienceAnswersViewModel component)
@@ -65,32 +60,17 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<Document> SaveAnswersAsync(CuratedExperienceAnswersViewModel viewModelAnswer, CuratedExperience curatedExperience)
         {
-            try
+            var dbAnswers = MapCuratedExperienceViewModel(viewModelAnswer, curatedExperience);
+            var savedAnswersDoc = await dbService.GetItemAsync<CuratedExperienceAnswers>(viewModelAnswer.AnswersDocId.ToString(), dbSettings.GuidedAssistantAnswersCollectionId);
+            if (savedAnswersDoc == null || savedAnswersDoc.AnswersDocId == default(Guid))
             {
-                // We could store the answers doc in the session and persist it to the db when the user
-                // answers the last question. This will save us a trip to the database each time the user moves to
-                // the next step. The caveat for this is that the users will need to repeat the survey from the
-                // beginning if the session expires which might be frustrating.
-                var answersDbCollection = dbSettings.UserResourcesCollectionId;
-                var dbAnswers = MapCuratedExperienceViewModel(viewModelAnswer, curatedExperience);
+                return await dbService.CreateItemAsync(dbAnswers, dbSettings.GuidedAssistantAnswersCollectionId);
+            }
 
-                var savedAnswersDoc = await dbService.GetItemAsync<CuratedExperienceAnswers>(viewModelAnswer.AnswersDocId.ToString(), answersDbCollection);
-                if (savedAnswersDoc == null)
-                {
-                    return await dbService.CreateItemAsync(dbAnswers, answersDbCollection);
-                }
-                else
-                {
-                    savedAnswersDoc.ButtonComponents.AddRange(dbAnswers.ButtonComponents);
-                    savedAnswersDoc.FieldComponents.AddRange(dbAnswers.FieldComponents);
-                    return await dbService.UpdateItemAsync(viewModelAnswer.AnswersDocId.ToString(), savedAnswersDoc, answersDbCollection);
-                }
-            }
-            catch
-            {
-                // log exception
-                return null;
-            }
+            savedAnswersDoc.ButtonComponents.AddRange(dbAnswers.ButtonComponents);
+            savedAnswersDoc.FieldComponents.AddRange(dbAnswers.FieldComponents);
+
+            return await dbService.UpdateItemAsync(viewModelAnswer.AnswersDocId.ToString(), savedAnswersDoc, dbSettings.GuidedAssistantAnswersCollectionId);
         }
 
         public async Task<CuratedExperienceComponent> FindDestinationComponentAsync(CuratedExperience curatedExperience, Guid buttonId, Guid answersDocId)
@@ -111,7 +91,7 @@ namespace Access2Justice.Api.BusinessLogic
             var currentComponent = curatedExperience.Components.Where(x => x.Buttons.Contains(currentButton)).FirstOrDefault();
             if (!string.IsNullOrWhiteSpace(currentComponent.Code.CodeAfter) && currentComponent.Code.CodeAfter.Contains(Tokens.GOTO))
             {
-                answers = await dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.UserResourcesCollectionId);
+                answers = await dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.GuidedAssistantAnswersCollectionId);
                 // get the answers so far - done
                 // get all the code in all the curated experience - to be done
                 var currentComponentLogic = ExtractLogic(currentComponent, answers);
@@ -136,7 +116,7 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 if (answers.AnswersDocId == default(Guid))
                 {
-                    answers = await dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.UserResourcesCollectionId);
+                    answers = await dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.GuidedAssistantAnswersCollectionId);
                 }
                 var currentComponentLogic = ExtractLogic(destinationComponent, answers);
                 if (currentComponentLogic != null)
@@ -182,13 +162,11 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 return null;
             }
-
-            var answerDocId = answersDocId == default(Guid) ? Guid.NewGuid() : answersDocId;
             var remainingQuestions = CalculateRemainingQuestions(curatedExperience, dbComponent);
             return new CuratedExperienceComponentViewModel
             {
                 CuratedExperienceId = curatedExperience.CuratedExperienceId,
-                AnswersDocId = answerDocId,
+                AnswersDocId = answersDocId,
                 QuestionsRemaining = remainingQuestions,
                 ComponentId = dbComponent.ComponentId,
                 Name = dbComponent.Name,

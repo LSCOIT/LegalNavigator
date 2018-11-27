@@ -7,31 +7,54 @@ a:hover {
   text-decoration: none;
 }
 
-.account-menu {
-  cursor: pointer;
+.nav .open > a, .nav .open > a:focus, .nav .open > a:hover {
+  background-color: #fff;
+}
+
+.nav-tabs > li > a:hover {
+  background-color: transparent;
+  border: none;
+}
+
+#signin-dropdown .dropdown-menu {
+  width: 100%;
+  margin-top: 5px;
+  text-align: left;
 }
 
 #signin-dropdown {
-  cursor: pointer;
-  min-width: 300px;
   position: relative;
-  background-image: url('../../../assets/images/small-icons/dropdown_arrow.svg');
-  background-repeat: no-repeat;
-  background-position: 50% 50%;
-  background-size: 12px;
 }
 
-#signin-dropdown.open  {
-  background-image: url('../../../assets/images/small-icons/dropup_arrow.svg');
-}
+.dropdown-btn {
+  background-position: 100% 50%;
 
-#signin-dropdown a {
-  padding-right: 35px;
+}
+#signin-dropdown a:first-child {
+  padding-right: 25px;
 }
 
 #signin-dropdown a:hover {
   color: #333;
   text-decoration: none;
+}
+
+#signin-dropdown .dropdown-menu li a {
+  border: 0;
+  border-bottom: 1px solid #ddd;
+  padding: 10px 5px 10px 35px;
+}
+
+#signin-dropdown .dropdown-menu li a:hover {
+  background-color: transparent;
+}
+
+#signin-dropdown .dropdown-menu li a:first-child {
+  border-top: 1px solid #ddd;
+}
+
+#signin-dropdown .dropdown-menu li a:last-child {
+  border: none;
 }
 
 .dropdown-menu {
@@ -57,7 +80,6 @@ a:hover {
 
   #signin-dropdown {
     margin-top: 0;
-    background-position: 57% 50%;
   }
 }
 
@@ -89,13 +111,20 @@ a:hover {
     width: auto;
     min-width: 160px;
     margin-top: 0;
-    background-position: 88% 50%;
     padding: 15px;
     height: 53px;
   }
 
   .open {
     background-color: #fff;
+  }
+
+  #signin-dropdown .dropdown-menu {
+    margin-top: -9px;
+  }
+
+  #signin-dropdown .dropdown-menu li a {
+    padding: 10px 20px 10px 48px;
   }
 }
 

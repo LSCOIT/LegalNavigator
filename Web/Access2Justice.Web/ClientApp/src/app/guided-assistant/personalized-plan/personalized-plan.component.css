@@ -1,5 +1,4 @@
 li a {
-  cursor: pointer;
   color: #333;
   font-weight: 600;
   border-bottom: 1px solid #ddd;
@@ -12,12 +11,6 @@ li a {
 li:last-child a {
   border-bottom: none;
   border-radius: 0 0 5px 5px;
-}
-
-li:hover {
-  -webkit-box-shadow: 0 4px 10px 0 rgba(0,0,0,0.2);
-  -moz-box-shadow: 0 4px 10px 0 rgba(0,0,0,0.2);
-  box-shadow: 0 4px 10px 0 rgba(0,0,0,0.2);
 }
 
 li a.selected-item {
@@ -77,17 +70,7 @@ li a.selected-item {
   text-align: left;
   width: 145px;
   font-size: 14px;
-  background-size: 13px;
-  background-repeat: no-repeat;
   background-position: 90% 50%;
-}
-
-#button-basic, #button-basic[aria-expanded=false] {
-  background-image: url('../../../assets/images/small-icons/dropdown_arrow.svg');
-}
-
-#button-basic[aria-expanded=true] {
-  background-image: url('../../../assets/images/small-icons/dropup_arrow.svg');
 }
 
 .dropdown-menu {
@@ -100,8 +83,16 @@ li a.selected-item {
   min-width: 145px;
 }
 
+.dropdown-menu.show {
+  top: 93% !important;
+}
+
 .dropdown-toggle:after {
   border: none;
+}
+
+.open .dropdown-toggle {
+  border-radius: 5px 5px 0 0;
 }
 
 .btn-selected {

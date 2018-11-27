@@ -1,3 +1,7 @@
+h2 {
+  margin: 20px 0;
+}
+
 .panel-heading {
   display: inline-block;
   border-radius: 25px;
@@ -19,5 +23,11 @@
 
   .label-display {
     margin-right: -15px;
+  }
+}
+
+@media only screen and (min-width : 992px) {
+  .col-md-4 {
+    padding-left: 5%;
   }
 }

@@ -8,6 +8,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Configuration;
 
 namespace Access2Justice.DataImportTool.BusinessLogic
 {
@@ -17,7 +18,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
 
         public async static Task GetTopics(string accessToken, string filePath)
         {
-            clientHttp.BaseAddress = new Uri("http://localhost:4200/");
+            clientHttp.BaseAddress = new Uri(ConfigurationManager.AppSettings["apiUrl"]);
             clientHttp.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             clientHttp.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             try
@@ -67,7 +68,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
 
                     var serializedTopics = JsonConvert.SerializeObject(topicsList);
                     StringContent content = new StringContent(serializedTopics, Encoding.UTF8, "application/json");
-                    var response = await clientHttp.PostAsync("api/upsert-topic-document", content).ConfigureAwait(false);
+                    var response = await clientHttp.PostAsync("api/topics-resources/topics/documents/upsert", content).ConfigureAwait(false);
                     var json = response.Content.ReadAsStringAsync().Result;
                     response.EnsureSuccessStatusCode();
                     if (response.IsSuccessStatusCode == true)

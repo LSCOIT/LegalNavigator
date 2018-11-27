@@ -11,6 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Global } from '../../../global';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
+import { isUndefined } from 'util';
 
 @Component({
   selector: 'app-search-results',
@@ -70,7 +71,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
       this.route.data.map(data => data.cres)
         .subscribe(response => {
           if (response) {
-            this.global.setProfileData(response.oId, response.name, response.eMail);
+            this.global.setProfileData(response.oId, response.name, response.eMail, response.roleInformation);
             this.personalizedPlanService.saveResourcesToUserProfile();
           }
         });
@@ -87,7 +88,13 @@ export class SearchResultsComponent implements OnInit, OnChanges {
       this.isInternalResource = this.searchResults.resources;
       this.isWebResource = this.searchResults.webResources;
       if (this.isWebResource) {
-        this.mapWebResources();
+        if (this.searchResults.webResources.webPages === undefined) {
+          this.showNoResultsMessage = true;
+          this.isWebResource = false;
+        }
+        else {
+          this.mapWebResources();
+        }
       }
       else {
         this.topIntent = this.searchResults.topIntent;
@@ -151,9 +158,9 @@ export class SearchResultsComponent implements OnInit, OnChanges {
 
   mapWebResources() {
     this.total = this.searchResults.webResources.webPages.totalEstimatedMatches;
-    this.searchText = this.searchResults.webResources.queryContext.originalQuery;
-    this.pagesToShow = environment.webResourcePagesToShow;
-    this.limit = environment.webResourceRecordsToDisplay;
+      this.searchText = this.searchResults.webResources.queryContext.originalQuery;
+      this.pagesToShow = environment.webResourcePagesToShow;
+      this.limit = environment.webResourceRecordsToDisplay;    
   }
 
   cacheSearchResultsData() {
@@ -184,8 +191,8 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   }
 
   notifyLocationChange() {
-    if (sessionStorage.getItem("localSearchMapLocation")) {
-      this.location = JSON.parse(sessionStorage.getItem("localSearchMapLocation"));
+    if (sessionStorage.getItem("searchedLocationMap")) {
+      this.location = JSON.parse(sessionStorage.getItem("searchedLocationMap"));
     }
     this.subscription = this.mapService.notifyLocalLocation.subscribe((value) => {
       this.location = value;
@@ -251,8 +258,10 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   getInternalResource(filterName, pageNumber): void {
     this.checkResource(filterName, pageNumber);
     if (this.isServiceCall) {
-      if (sessionStorage.getItem("localSearchMapLocation")) {
-        this.resourceFilter.Location = JSON.parse(sessionStorage.getItem("localSearchMapLocation"));
+      if (sessionStorage.getItem("searchedLocationMap")) {
+        this.resourceFilter.Location = JSON.parse(sessionStorage.getItem("searchedLocationMap"));
+      } else {
+        this.resourceFilter.Location = JSON.parse(sessionStorage.getItem("globalMapLocation"));
       }
       this.paginationService.getPagedResources(this.resourceFilter).subscribe(response => {
         this.searchResults = response;
@@ -397,7 +406,6 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   }
 
   ngOnDestroy() {
-    sessionStorage.removeItem("localSearchMapLocation");
     if (this.subscription != undefined) {
       this.subscription.unsubscribe();
     }

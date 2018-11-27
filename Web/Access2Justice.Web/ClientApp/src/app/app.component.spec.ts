@@ -92,13 +92,16 @@ describe('AppComponent', () => {
     mockLoginResponse = {
       oId: "1234567890ABC",
       name: "mockUser",
-      eMail: "mockUser@microsoft.com"
+      eMail: "mockUser@microsoft.com",
+      roleInformation: [
+        { roleName: "Admin"}
+      ]
     }
 
-    mockStaticResourceService = jasmine.createSpyObj(['getStaticContents']);
+    mockStaticResourceService = jasmine.createSpyObj(['getStaticContents', 'loadStateName']);
     mockGlobal = jasmine.createSpyObj(['setData','setProfileData']);
     msalService = jasmine.createSpyObj(['getUser']);
-    mockLoginService = jasmine.createSpyObj(['upsertUserProfile']);
+    mockLoginService = jasmine.createSpyObj(['getUserProfile']);
 
     TestBed.configureTestingModule({
       declarations: [
@@ -165,21 +168,11 @@ describe('AppComponent', () => {
     expect(component.staticContentResults).toEqual(staticContent);
     expect(mockGlobal.setData).toHaveBeenCalledWith(component.staticContentResults);
   });
-
-  it('should create the user profile by calling createOrGetProfile', () => {
-    msalService.getUser.and.returnValue(mockUserData);
-    mockLoginService.upsertUserProfile.and.returnValue(of(mockLoginResponse));
-    component.createOrGetProfile();
-    expect(component.userProfile.name).toEqual("mockUser");
-    expect(component.userProfile.firstName).toBe("");
-    expect(component.userProfile.eMail).toEqual("mockUser@microsoft.com");
-  });
   
   it('should call setProfileData from global', () => {
-    msalService.getUser.and.returnValue(mockUserData);
-    mockLoginService.upsertUserProfile.and.returnValue(of(mockLoginResponse));
+    mockLoginService.getUserProfile.and.returnValue(of(mockLoginResponse));
     component.createOrGetProfile();
-    expect(mockGlobal.setProfileData).toHaveBeenCalledWith("1234567890ABC", "mockUser", "mockUser@microsoft.com");
+    expect(mockGlobal.setProfileData).toHaveBeenCalledWith("1234567890ABC", "mockUser", "mockUser@microsoft.com", [({ roleName: "Admin" })]);
   });
 });
 

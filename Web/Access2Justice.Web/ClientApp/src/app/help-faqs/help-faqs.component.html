@@ -6,12 +6,12 @@
     <h1 class="inline">Help & FAQs</h1>
   </div>
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-10">
       <p>{{helpAndFaqsContent?.description}}</p>
     </div>
   </div>
-  <div class="row">
-    <div class="col-md-10 col-md-offset-1 col-sm-12">
+  <div class="row faqs">
+    <div class="col-md-10 col-sm-12">
       <accordion *ngFor="let content of faqData">
         <accordion-group>
           <div accordion-heading>
@@ -22,10 +22,8 @@
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-xs-12 step-content" *ngFor="let answer of content.answer">
-              <p>{{answer.description}}</p>
-            </div>
+          <div class="step-content" *ngFor="let answer of content.answer">
+            <p>{{answer.description}}</p>
           </div>
         </accordion-group>
       </accordion>

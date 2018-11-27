@@ -1,16 +1,17 @@
 #footer {
   position: absolute;
-  bottom: 0;
   left: 0;
   right: 0;
   background-color: transparent;
-  height: 10px;
+  height: 75px;
   vertical-align: middle;
+  top: 100%;
+  margin-bottom: 0;
 }
 
 .footer-nav {
   border-top: 1px solid #ddd;
-  margin-top: 40px;
+  margin-bottom: 0;
 }
 
 .footer-nav li {

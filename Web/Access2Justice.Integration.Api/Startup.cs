@@ -6,25 +6,59 @@ using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.IO;
 using System.Reflection;
+using Access2Justice.Integration.Api.Interfaces;
+using Access2Justice.Integration.Api.BusinessLogic;
+using Access2Justice.Shared.Interfaces;
+using Access2Justice.CosmosDb;
+using Microsoft.Azure.Documents;
+using Access2Justice.Shared.Utilities;
+using Access2Justice.Integration.Interfaces;
+using Access2Justice.Integration.Adapters;
+using Access2Justice.Shared.Rtm;
+using Access2Justice.Shared;
+using Microsoft.Azure.Documents.Client;
 
 namespace Access2Justice.Integration.Api
 {
+    /// <summary>
+    /// start up class
+    /// </summary>
     public class Startup
     {
+        /// <summary>
+        /// run time configuration
+        /// </summary>
+        /// <param name="configuration"></param>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
+        /// <summary>
+        /// configuration
+        /// </summary>
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to add services to the container.
+        /// </summary>
+        /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
             ConfigureSession(services);
 
             services.AddMvc();
 
+            IKeyVaultSettings keyVaultSettings = new KeyVaultSettings(Configuration.GetSection("KeyVault"));
+            services.AddSingleton(keyVaultSettings);
+
+            IRtmSettings rtmSettings = new RtmSettings(Configuration.GetSection("RtmSettings"));
+            services.AddSingleton(rtmSettings);
+
+            services.AddSingleton<IHttpClientService, HttpClientService>();
+            services.AddSingleton<IServiceProvidersBusinessLogic, ServiceProvidersBusinessLogic>();
+            services.AddSingleton<IServiceProviderAdapter, ServiceProviderAdapter>();
+            ConfigureCosmosDb(services);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Access2Justice Integration API", Version = "1.0.0", Description = "Access2Justice APIs for integration with external partners.", TermsOfService = "None" });
@@ -38,7 +72,11 @@ namespace Access2Justice.Integration.Api
 
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="env"></param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -57,6 +95,15 @@ namespace Access2Justice.Integration.Api
             app.UseAuthentication();
             app.UseMvc();
             ConfigureSwagger(app);
+        }
+
+        private void ConfigureCosmosDb(IServiceCollection services)
+        {
+            ICosmosDbSettings cosmosDbSettings = new CosmosDbSettings(Configuration.GetSection("CosmosDb"), (Configuration.GetSection("KeyVault")));
+            services.AddSingleton(cosmosDbSettings);
+            services.AddSingleton<IDocumentClient>(x => new DocumentClient(cosmosDbSettings.Endpoint, cosmosDbSettings.AuthKey));
+            services.AddSingleton<IBackendDatabaseService, CosmosDbService>();
+            services.AddSingleton<IDynamicQueries, CosmosDbDynamicQueries>();
         }
 
         private void ConfigureSession(IServiceCollection services)

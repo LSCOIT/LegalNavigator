@@ -1,18 +1,19 @@
-﻿using Microsoft.AspNetCore.JsonPatch.Operations;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Swashbuckle.AspNetCore.Swagger;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using System.Globalization;
 using System.Text;
-using System.Collections;
 
 namespace Access2Justice.Shared.Models
 {
     public class Resource
     {
+        public Resource()
+        {
+            TopicTags = new List<TopicTag>();
+        }
+
         [JsonProperty(PropertyName = "id")]
         public dynamic ResourceId { get; set; }
 
@@ -31,10 +32,10 @@ namespace Access2Justice.Shared.Models
         public string ResourceType { get; set; }
 
         [JsonProperty(PropertyName = "url")]
-        public string Urls { get; set; }
+        public string Url { get; set; }
 
         [JsonProperty(PropertyName = "topicTags")]
-        public IEnumerable<TopicTag> TopicTags { get; set; }
+        public List<TopicTag> TopicTags { get; set; }
 
         [Required(ErrorMessage = "Organizational Unit is a required field.")]
         [JsonProperty(PropertyName = "organizationalUnit")]
@@ -42,10 +43,7 @@ namespace Access2Justice.Shared.Models
 
         //[EnsureOneElementAttribute(ErrorMessage = "At least one location is required")]
         [JsonProperty(PropertyName = "location")]
-        public IEnumerable<Location> Location { get; set; }
-
-        [JsonProperty(PropertyName = "icon")]
-        public string Icon { get; set; }
+        public List<Location> Location { get; set; }
 
         [JsonProperty(PropertyName = "createdBy")]
         public string CreatedBy { get; set; }
@@ -89,13 +87,13 @@ namespace Access2Justice.Shared.Models
     public class ActionPlan : Resource
     {
         [JsonProperty(PropertyName = "conditions")]
-        public IEnumerable<Conditions> Conditions { get; set; }
+        public List<Conditions> Conditions { get; set; }
     }
 
     public class Conditions
     {
         [JsonProperty(PropertyName = "condition")]
-        public IEnumerable<Condition> ConditionDetail { get; set; }
+        public List<Condition> ConditionDetail { get; set; }
     }
 
     public class Condition
@@ -118,10 +116,10 @@ namespace Access2Justice.Shared.Models
         public string Overview { get; set; }
 
         [JsonProperty(PropertyName = "contents")]
-        public IEnumerable<ArticleContents> Contents { get; set; }
+        public List<ArticleContent> Contents { get; set; }
     }
 
-    public class ArticleContents
+    public class ArticleContent
     {
         [JsonProperty(PropertyName = "headline")]
         public string Headline { get; set; }
@@ -138,6 +136,11 @@ namespace Access2Justice.Shared.Models
 
     public class Organization: Resource
     {
+        public Organization()
+        {
+            Reviewer = new List<OrganizationReviewer>();
+        }
+
         [JsonProperty(PropertyName = "address")]
         public string Address { get; set; }
 
@@ -151,7 +154,7 @@ namespace Access2Justice.Shared.Models
         public string EligibilityInformation { get; set; }
 
         [JsonProperty(PropertyName = "reviewer")]
-        public IEnumerable<OrganizationReviewer> Reviewer { get; set; }
+        public List<OrganizationReviewer> Reviewer { get; set; }
 
         [JsonProperty(PropertyName = "specialties")]
         public string Specialties { get; set; }
@@ -211,5 +214,11 @@ namespace Access2Justice.Shared.Models
     {
         [JsonProperty(PropertyName = "curatedExperienceId")]
         public string CuratedExperienceId { get; set; }
+
+        [JsonProperty(PropertyName = "version")]
+        public Int64 Version { get; set; }
+
+        [JsonProperty(PropertyName = "isActive")]
+        public bool IsActive { get; set; }
     }
 }

@@ -1,26 +1,42 @@
 ﻿using Access2Justice.Shared.Models.Integration;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using Access2Justice.Integration.Api.Interfaces;
+using System;
+using System.Collections.Generic;
 
 namespace Access2Justice.Integration.Api.Controllers
 {
+    /// <summary>
+    /// Service Provider Controller
+    /// </summary>
     [Produces("application/json")]
-    [Route("api/ServiceProviders")]
+    [Route("api/service-providers")]
     public class ServiceProvidersController : Controller
     {
+        private readonly IServiceProvidersBusinessLogic serviceProvidersBusinessLogic;
+        /// <summary>
+        /// Service Provider Constructor
+        /// </summary>
+        public ServiceProvidersController(IServiceProvidersBusinessLogic serviceProvidersBusinessLogic)
+        {
+            this.serviceProvidersBusinessLogic = serviceProvidersBusinessLogic;
+        }
+
         /// <summary>
         /// Retrieves service provider by Id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}", Name = "get")]
         [ProducesResponseType(typeof(ServiceProvider), 200)]
         [ProducesResponseType(404)]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> GetServiceProviderAsync(string id)
         {
-            var serviceProvider = new ServiceProvider();
+            var serviceProvider = await serviceProvidersBusinessLogic.GetServiceProviderDocumentAsync(id).ConfigureAwait(false);
             return Ok(serviceProvider);
         }
-        
+
         /// <summary>
         /// Upserts a service provider
         /// </summary>
@@ -28,9 +44,11 @@ namespace Access2Justice.Integration.Api.Controllers
         [HttpPost]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public void Post([FromBody]ServiceProvider serviceProvider)
+        public async Task<IActionResult> UpsertServiceProviders([FromBody]List<ServiceProvider> serviceProvider)
         {
-            return;
+            string topicName = "Family";
+            var response = await serviceProvidersBusinessLogic.UpsertServiceProviderDocumentAsync(serviceProvider, topicName).ConfigureAwait(false);
+            return Ok(response);
         }
     }
 }

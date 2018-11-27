@@ -21,48 +21,18 @@
 
         public async Task<HttpResponseMessage> GetAsync(Uri apiUrl)
         {
-            HttpResponseMessage response = null;
-            try
-            {
-                response = await httpClient.GetAsync(apiUrl);
-            }
-            catch (Exception ex)
-            {
-                //TO DO : Need to implement exception logging..
-                Console.WriteLine(ex);
-            }
-            return response;
+            return await httpClient.GetAsync(apiUrl);
         }
 
         public async Task<HttpResponseMessage> PostAsync(Uri apiUrl, HttpContent httpContent)
         {
-            HttpResponseMessage response = null;
-            try
-            {
-                response = await httpClient.PostAsync(apiUrl, httpContent);
-            }
-            catch (Exception ex)
-            {
-                //TO DO : Need to implement exception logging..
-                Console.WriteLine(ex);
-            }
-            return response;
+            return await httpClient.PostAsync(apiUrl, httpContent);
         }
 
-        public async Task<HttpResponseMessage> GetDataAsync(Uri apiUrl,string subscriptionKey)
+        public async Task<HttpResponseMessage> GetDataAsync(Uri apiUrl, string subscriptionKey)
         {
-            HttpResponseMessage response = null;
-            try
-            {
-                httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", subscriptionKey);
-                response = await httpClient.GetAsync(apiUrl);
-            }
-            catch (Exception ex)
-            {
-                //TO DO : Need to implement exception logging..
-                Console.WriteLine(ex);
-            }
-            return response;
+            httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", subscriptionKey);
+            return await httpClient.GetAsync(apiUrl);
         }
 
         protected virtual void Dispose(bool disposing)

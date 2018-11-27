@@ -23,8 +23,8 @@ import { CuratedExperienceResultComponent } from './guided-assistant/curated-exp
 import { ProfileResolver } from './app-resolver/profile-resolver.service';
 
 const appRoutes: Routes = [
-  { path: 'search', component: SearchResultsComponent, resolve: { cres: ProfileResolver } },
-  { path: 'searchRefresh', component: SearchResultsComponent, resolve: { cres: ProfileResolver } },
+  { path: 'search', component: SearchResultsComponent },
+  { path: 'searchRefresh', component: SearchResultsComponent },
   { path: 'guidedassistant/:id', component: CuratedExperienceComponent },
   { path: 'guidedassistant', component: GuidedAssistantComponent },
   { path: 'guidedassistantSearch', component: CuratedExperienceResultComponent },
@@ -42,8 +42,7 @@ const appRoutes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'error', component: InternalErrorComponent},
   { path: '404', component: NotFoundComponent },
-  { path: '**', redirectTo: '/404' } 
-
+  { path: '**', redirectTo: '/404' }
 ];
 
 @NgModule({

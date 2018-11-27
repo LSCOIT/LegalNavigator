@@ -1,17 +1,17 @@
 <div class="container" *ngIf="privacyContent">
   <div class="static-img-container row">
     <div class="col-md-12 static-img">
-      <img *ngIf="privacyContent.image.source" [src]="blobUrl + privacyContent.image.source" [alt]="privacyContent.image.altText" />
+      <img *ngIf="privacyContent.image.source" [src]="blobUrl + privacyContent.image.source" [alt]="privacyContent.image.altText"/>
     </div>
     <h1 class="inline">Privacy</h1>
   </div>
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-10 resource-sections">
       <p>{{privacyContent?.description}}</p>
     </div>
   </div>
   <div class="row">
-    <div class="col-md-12" *ngFor="let content of privacyContent?.details">
+    <div class="col-md-10 resource-sections" *ngFor="let content of privacyContent?.details">
       <h3>{{content.title}}</h3>
       <p>{{content.description}}</p>
     </div>
