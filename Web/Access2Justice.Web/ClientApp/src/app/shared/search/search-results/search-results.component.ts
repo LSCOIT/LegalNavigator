@@ -11,6 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Global } from '../../../global';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
+import { isUndefined } from 'util';
 
 @Component({
   selector: 'app-search-results',
@@ -87,7 +88,13 @@ export class SearchResultsComponent implements OnInit, OnChanges {
       this.isInternalResource = this.searchResults.resources;
       this.isWebResource = this.searchResults.webResources;
       if (this.isWebResource) {
-        this.mapWebResources();
+        if (this.searchResults.webResources.webPages === undefined) {
+          this.showNoResultsMessage = true;
+          this.isWebResource = false;
+        }
+        else {
+          this.mapWebResources();
+        }
       }
       else {
         this.topIntent = this.searchResults.topIntent;
@@ -151,9 +158,9 @@ export class SearchResultsComponent implements OnInit, OnChanges {
 
   mapWebResources() {
     this.total = this.searchResults.webResources.webPages.totalEstimatedMatches;
-    this.searchText = this.searchResults.webResources.queryContext.originalQuery;
-    this.pagesToShow = environment.webResourcePagesToShow;
-    this.limit = environment.webResourceRecordsToDisplay;
+      this.searchText = this.searchResults.webResources.queryContext.originalQuery;
+      this.pagesToShow = environment.webResourcePagesToShow;
+      this.limit = environment.webResourceRecordsToDisplay;    
   }
 
   cacheSearchResultsData() {

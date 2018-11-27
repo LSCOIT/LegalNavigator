@@ -15,6 +15,8 @@ namespace Access2Justice.Api.Tests.TestData
                    "\"intent\": \"child\",\r\n      \"score\": 0.06267241\r\n    },\r\n    {\r\n      " +
                    "\"intent\": \"divorce\",\r\n      \"score\": 0.00997853652\r\n    },\r\n    {\r\n     " +
                    " \"intent\": \"None\",\r\n      \"score\": 0.00248154555\r\n    }\r\n  ],\r\n  \"entities\": []\r\n}";
+        public static string EmptyLuisResponse =
+                   "{\r\n  \"query\": \"child abuse\",\r\n  \"topScoringIntent\": { },\r\n  \"intents\": [\r\n    {\r\n }\r\n  ],\r\n  \"entities\": []\r\n}";
         public static string lowScoreLuisResponse =
                    "{\r\n  \"query\": \"child abuse\",\r\n  \"topScoringIntent\": {\r\n    " +
                    "\"intent\": \"Eviction\",\r\n    \"score\": 0.269329442\r\n  },\r\n  \"intents\": [\r\n    {\r\n     " +
@@ -64,6 +66,21 @@ namespace Access2Justice.Api.Tests.TestData
                     '_self':'dbs/mwoSAA==/colls/mwoSAJdNlwI=/docs/mwoSAJdNlwIBAAAAAAAAAA==/','_etag':'\'040007b5-0000-0000-0000-5b0792260000\'',
                     '_attachments':'attachments/','_ts':1527222822},{'id':'19a02209-ca38-4b74-bd67-6ea941d41518','name':'Legal Help Organization',
                     'description':'This action plan is for tenants who are facing Eviction and have experienced the following:','resourceType':'Organization'
+                    ,'externalUrl':'','url':'','topicTags':[{'id':'f102bfae-362d-4659-aaef-956c391f79de'},{'id':'3aa3a1be-8291-42b1-85c2-252f756febbc'}],
+                    'location':[{'state':'Hawaii','city':'Kalawao','zipCode':'96742'}],'icon':'./assets/images/resources/resource.png','createdBy':'',
+                    'createdTimeStamp':'','modifiedBy':'','modifiedTimeStamp':'','_rid':'mwoSAJdNlwIBAAAAAAAAAA==','_self':
+                    'dbs/mwoSAA==/colls/mwoSAJdNlwI=/docs/mwoSAJdNlwIBAAAAAAAAAA==/','_etag':'\'040007b5-0000-0000-0000-5b0792260000\'',
+                    '_attachments':'attachments/','_ts':1527222822}]");
+        public static JArray guidedAssistantResourcesData =
+                    JArray.Parse(@"[{'id':'77d301e7-6df2-612e-4704-c04edf271806','CuratedExperienceId':'77d301e7-6df2-612e-4704-c04edf271806','name':'Tenant Action Plan 
+                    for Eviction','description':'This action plan is for tenants who are facing Eviction and have experienced the following:',
+                    'resourceType':'Guided Assistant','externalUrl':'','url':'','topicTags':[{'id':'f102bfae-362d-4659-aaef-956c391f79de'},
+                    {'id':'2c0cc7b8-62b1-4efb-8568-b1f767f879bc'},{'id':'3aa3a1be-8291-42b1-85c2-252f756febbc'}],'location':[{'state':'Hawaii',
+                    'city':'Kalawao','zipCode':'96742'},{'zipCode':'96741'},{'state':'Alaska'}],'icon':'./assets/images/resources/resource.png',
+                    'createdBy':'','createdTimeStamp':'','modifiedBy':'','modifiedTimeStamp':'','_rid':'mwoSAJdNlwIBAAAAAAAAAA==',
+                    '_self':'dbs/mwoSAA==/colls/mwoSAJdNlwI=/docs/mwoSAJdNlwIBAAAAAAAAAA==/','_etag':'\'040007b5-0000-0000-0000-5b0792260000\'',
+                    '_attachments':'attachments/','_ts':1527222822},{'id':'19a02209-ca38-4b74-bd67-6ea941d41518','name':'Legal Help Organization',
+                    'description':'This action plan is for tenants who are facing Eviction and have experienced the following:','resourceType':'Guided Assistant'
                     ,'externalUrl':'','url':'','topicTags':[{'id':'f102bfae-362d-4659-aaef-956c391f79de'},{'id':'3aa3a1be-8291-42b1-85c2-252f756febbc'}],
                     'location':[{'state':'Hawaii','city':'Kalawao','zipCode':'96742'}],'icon':'./assets/images/resources/resource.png','createdBy':'',
                     'createdTimeStamp':'','modifiedBy':'','modifiedTimeStamp':'','_rid':'mwoSAJdNlwIBAAAAAAAAAA==','_self':
@@ -140,6 +157,8 @@ namespace Access2Justice.Api.Tests.TestData
         public static string expectedLuisTopIntent = "Eviction";
         public static string expectedTopicId = "addf41e9-1a27-4aeb-bcbb-7959f95094ba";
         public static string expectedInternalResponse = "topics";
+        public static string expectedGuidedResponse = "\"guidedAssistantId\": \"77d301e7-6df2-612e-4704-c04edf271806\"";
+        public static string expectedEmptyGuidedResponse = "\"guidedAssistantId\": null";
         public static string expectedWebResponse = "webResources";
         public static string expectedEmptyInternalResponse = "{\r\n  \"topics\": [],\r\n  \"resources\": [],\r\n  \"continuationToken\": [],\r\n  " +
                    "\"topicIds\": [],\r\n  \"resourceTypeFilter\": [],\r\n  \"topIntent\": \"Eviction\"\r\n}";
