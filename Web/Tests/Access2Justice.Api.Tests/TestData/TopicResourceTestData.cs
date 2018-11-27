@@ -194,15 +194,53 @@ namespace Access2Justice.Api.Tests.TestData
             Location = expectedLocation,
             IsShared = true
         };
-        public static Topic TopicList = new Topic { Id = "addf41e9-1a27-4aeb-bcbb-7959f95094ba" };
+        //public static Topic TopicIds = new Topic
+        //{
+        //    Id = "addf41e9-1a27-4aeb-bcbb-7959f95094ba",
+        //    Name = "test",
+        //    OrganizationalUnit = "Alaska"
+        //};
+
         public static IEnumerable<object[]> TopicInputEnumerable()
         {
             yield return new object[] { new TopicInput { Id = Guid.Parse("addf41e9-1a27-4aeb-bcbb-7959f95094ba").ToString(), Location = expectedLocation, IsShared = false }, TopicInput };
             yield return new object[] { new TopicInput { Id = Guid.Parse("aaa085ef-96fb-4fd0-bcd0-0472ede66512").ToString(), Location = expectedLocation, IsShared = true }, TopicInputIsSharedTrue };
         }
+        public static IEnumerable<object[]> FormData()
+        {
+            yield return new object[] { formData, expectedformData, propertyNames, values, TopicInput };
+        }
+        public static List<string> propertyNames = new List<string>() { "id", "resourceType" };
+        public static List<string> values = new List<string>() { "id", "Forms" };
         public static IEnumerable<object[]> Topics()
         {
-            yield return new object[] { new Topic { Id = Guid.Parse("addf41e9-1a27-4aeb-bcbb-7959f95094ba").ToString() }, TopicList };
+            yield return new object[] { new Topic { Id = Guid.Parse("addf41e9-1a27-4aeb-bcbb-7959f95094ba").ToString(), Name = "test", OrganizationalUnit = "Alaska" }, TopicIds };
         }
+        public static string ResourceObjects = "{\"name\":\"Form1\",\"type\":\"form\",\"description\":\"Subhead lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem\",\"resourceType\":\"Forms\",\"externalUrl\":\"www.youtube.com\",\"url\":\"access2justice.com\",\"topicTags\":[{\"id\":\"aaa085ef-96fb-4fd0-bcd0-0472ede66512\"},{\"id\":\"2c0cc7b8-62b1-4efb-8568-b1f767f879bc\"}],\"organizationalUnit\":\"Alaska\",\"location\":[{\"state\":\"Hawaii\",\"city\":\"Haiku-Pauwela\"},{\"state\":\"Alaska\"}],\"overview\":\"Form1\",\"fullDescription\":\"Below is the form you will need if you are looking to settle your child custody dispute in court. We have included helpful tips to guide you along the way.\",\"createdBy\":\"API\",\"createdTimeStamp\":\"\",\"modifiedBy\":\"API\",\"modifiedTimeStamp\":\"\"},{\"name\":\"Form2\",\"type\":\"form\",\"description\":\"Subhead lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem\",\"resourceType\":\"Forms\",\"externalUrl\":\"\",\"url\":\"\",\"topicTags\":[{\"id\":\"aaa085ef-96fb-4fd0-bcd0-0472ede66512\"},{\"id\":\"2c0cc7b8-62b1-4efb-8568-b1f767f879bc\"}],\"organizationalUnit\":\"Alaska\",\"location\":[{\"state\":\"Hawaii\",\"city\":\"Haiku-Pauwela\"},{\"state\":\"Hawaii\"}],\"overview\":\"Form2\",\"fullDescription\":\"Below is the form you will need if you are looking to settle your child custody dispute in court. We have included helpful tips to guide you along the way.\",\"createdBy\":\"\",\"createdTimeStamp\":\"\",\"modifiedBy\":\"\",\"modifiedTimeStamp\":\"\"}";
+        public static IEnumerable<object[]> LocationData()
+        {
+            yield return new object[] { locationDataHawaii };
+            yield return new object[] { locationDataAlaska };
+        }
+        public static IEnumerable<object[]> ReferencesData()
+        {
+            yield return new object[] { referencesConditions };
+            yield return new object[] { referencesTopicTags };
+            yield return new object[] { referencesLocations };
+            yield return new object[] { referencesParentTopicIds };
+            yield return new object[] { referencesReviewer };
+            yield return new object[] { referenceContents };
+        }
+        public static JArray locationDataHawaii =
+                    JArray.Parse(@"[{'state':'Hawaii','county':'','city':'Haiku-Pauwela','zipCode':''}]");
+        public static JArray locationDataAlaska =
+                    JArray.Parse(@"[{'state':'Alaska','county':'','city':'','zipCode':''}]");
+        public static JArray referencesConditions = JArray.Parse(@"[{'conditions': [{ 'title':'condition','description':'Take to your partner to see if you can come to an agreement' }]}]");
+        public static JArray referencesTopicTags = JArray.Parse(@"[{'topicTags': [{'id':'f102bfae-362d-4659-aaef-956c391f79de'},{'id':'3aa3a1be-8291-42b1-85c2-252f756febbc'}]}]");
+        public static JArray referencesLocations = JArray.Parse(@"[{'location': [{'state':'Hawaii','county':'','city':'Haiku-Pauwela','zipCode':''}]}]");
+        public static JArray referencesParentTopicIds = JArray.Parse(@"[{'parentTopicId': [{'id':'f102bfae-362d-4659-aaef-956c391f79de'},{'id':'3aa3a1be-8291-42b1-85c2-252f756febbc'}]}]");
+        public static JArray referencesReviewer = JArray.Parse(@"[{'reviewer': [{'reviewerFullName':'reviewerFullName','reviewerTitle':'reviewerTitle','reviewText':'reviewText','reviewerImage':'reviewerImage'}]}]");
+        public static JArray referenceContents = JArray.Parse(@"[{'contents': [{'headline':'headline','content':'content'}]}]");
+
     }
 }
