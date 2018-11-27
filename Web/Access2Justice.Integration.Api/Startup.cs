@@ -16,6 +16,7 @@ using Access2Justice.Integration.Interfaces;
 using Access2Justice.Integration.Adapters;
 using Access2Justice.Shared.Rtm;
 using Access2Justice.Shared;
+using Microsoft.Azure.Documents.Client;
 
 namespace Access2Justice.Integration.Api
 {
@@ -100,7 +101,7 @@ namespace Access2Justice.Integration.Api
         {
             ICosmosDbSettings cosmosDbSettings = new CosmosDbSettings(Configuration.GetSection("CosmosDb"), (Configuration.GetSection("KeyVault")));
             services.AddSingleton(cosmosDbSettings);
-            services.AddSingleton<IDocumentClient>(x => new Microsoft.Azure.Documents.Client.DocumentClient(cosmosDbSettings.Endpoint, cosmosDbSettings.AuthKey));
+            services.AddSingleton<IDocumentClient>(x => new DocumentClient(cosmosDbSettings.Endpoint, cosmosDbSettings.AuthKey));
             services.AddSingleton<IBackendDatabaseService, CosmosDbService>();
             services.AddSingleton<IDynamicQueries, CosmosDbDynamicQueries>();
         }

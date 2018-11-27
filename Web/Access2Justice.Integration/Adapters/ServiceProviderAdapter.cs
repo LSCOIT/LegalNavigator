@@ -41,16 +41,17 @@ namespace Access2Justice.Integration.Adapters
                                                               rtmSettings.ApiKey, sessionId);
                     var spResponse = await httpClient.GetAsync(new Uri(serviceProviderUrl)).ConfigureAwait(false);
                     string serviceProvider = spResponse.Content.ReadAsStringAsync().Result;
-                    if (string.IsNullOrEmpty(serviceProvider))
+                    if (!string.IsNullOrEmpty(serviceProvider))
                     {
-                        var serviceProviderObjects = JsonUtilities.DeserializeDynamicObject<List<dynamic>>(serviceProvider);
-                        serviceProviders = ProcessRTMData(serviceProviderObjects);
+                        var serviceProviderObject = JsonConvert.DeserializeObject(serviceProvider);
+                        serviceProviders = ProcessRTMData(serviceProviderObject);
                     }
                 }
                 return serviceProviders;
             }
             catch (Exception ex)
             {
+                #pragma warning disable CA2200 // Rethrow to preserve stack details.
                 throw ex;
             }
         }

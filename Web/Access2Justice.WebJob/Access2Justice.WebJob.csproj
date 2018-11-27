@@ -30,4 +30,7 @@
   <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Access2Justice.Shared\Access2Justice.Shared.csproj" />
+  </ItemGroup>
 </Project>
