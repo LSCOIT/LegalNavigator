@@ -67,11 +67,9 @@ export class PrivacyPromiseTemplateComponent implements OnInit {
     this.adminService.savePrivacyData(this.newPrivacyContent).subscribe(
       response => {
         this.spinner.hide();
-        if (response) {
-          this.privacyContent.description = response["description"];
-          this.privacyContent.details = response["details"];
-          this.toastr.success("Page updated successfully");
-        }
+        this.toastr.success("Page updated successfully");
+      }, error => {
+        this.toastr.error("Page was not updated. Please try again later");
       });
   }
 
@@ -82,6 +80,7 @@ export class PrivacyPromiseTemplateComponent implements OnInit {
     } else {
       this.staticResourceService.getStaticContents(this.location).subscribe(
         response => {
+          console.log(response);
           this.staticContent = response;
           this.privacyContent = this.staticContent.find(x => x.name === "PrivacyPromisePage");
         },
