@@ -99,7 +99,7 @@ namespace Access2Justice.Api.ViewModels
         }
     }
 
-	public class UserPlanModel
+	public class UserPlan
 	{
 		[JsonProperty(PropertyName = "personalizedPlan")]
 		public PersonalizedPlanViewModel PersonalizedPlan { get; set; }

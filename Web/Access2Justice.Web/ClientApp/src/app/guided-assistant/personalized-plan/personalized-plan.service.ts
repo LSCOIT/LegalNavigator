@@ -99,10 +99,10 @@ export class PersonalizedPlanService {
     this.resoureStorage.forEach(resource => {
       this.resourceTags.push(resource);
     });
-    this.compareResources(this.resourceTags);
+    this.saveResourceToProfilePostLogin(this.resourceTags);
   }
 
-  compareResources(savedResources) {
+  saveResourceToProfilePostLogin(savedResources) {
     this.resourceIndex = 0;
     this.resourceTags = [];
     let params = new HttpParams()

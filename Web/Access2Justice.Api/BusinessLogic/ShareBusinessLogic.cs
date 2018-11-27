@@ -145,15 +145,14 @@ namespace Access2Justice.Api.BusinessLogic
             return response;
         }
 
-        public async Task<Document> UpdatePlanIsSharedStatus(string planId, bool isShared)
+        public async Task UpdatePlanIsSharedStatus(string planId, bool isShared)
         {
             var plan = await dbPersonalizedPlan.GetPersonalizedPlanAsync(Guid.Parse(planId));
             if (plan != null && plan.PersonalizedPlanId != Guid.Empty)
             {
                 plan.IsShared = isShared;
-                return await dbService.UpdateItemAsync(planId, plan, dbSettings.ActionPlansCollectionId);
+                await dbService.UpdateItemAsync(planId, plan, dbSettings.ActionPlansCollectionId);
             }
-            return null;
         }
 
         public async Task<object> UnshareResourceDataAsync(ShareInput unShareInput)

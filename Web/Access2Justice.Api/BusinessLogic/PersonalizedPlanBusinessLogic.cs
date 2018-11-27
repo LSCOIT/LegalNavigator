@@ -55,12 +55,12 @@ namespace Access2Justice.Api.BusinessLogic
             return await backendDatabaseService.GetItemAsync<PersonalizedPlanViewModel>(personalizedPlanId.ToString(), cosmosDbSettings.ActionPlansCollectionId);
         }
 
-        public async Task<Document> UpsertPersonalizedPlanAsync(UserPlanModel userPlanModel)
+        public async Task<Document> UpsertPersonalizedPlanAsync(UserPlan userPlan)
         {
             try
             {
-                PersonalizedPlanViewModel personalizedPlan = userPlanModel.PersonalizedPlan;
-                string oId = userPlanModel.UserId;
+                PersonalizedPlanViewModel personalizedPlan = userPlan.PersonalizedPlan;
+                string oId = userPlan.UserId;
                 dynamic response = null;
 
                 var userPersonalizedPlan = await GetPersonalizedPlanAsync(personalizedPlan.PersonalizedPlanId);
@@ -79,7 +79,7 @@ namespace Access2Justice.Api.BusinessLogic
                     response = await backendDatabaseService.UpdateItemAsync(
                         personalizedPlan.PersonalizedPlanId.ToString(), personalizedPlan, cosmosDbSettings.ActionPlansCollectionId);
                 }
-                if (!userPlanModel.saveActionPlan)
+                if (!userPlan.saveActionPlan)
                 {
                     await UpdatePlanToProfile(personalizedPlan.PersonalizedPlanId, oId, personalizedPlan);
                 }

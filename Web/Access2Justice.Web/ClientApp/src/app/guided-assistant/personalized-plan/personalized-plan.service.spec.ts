@@ -460,13 +460,13 @@ describe('Service:PersonalizedPlan', () => {
     expect(service.tempPlanDetailTags).toEqual(mockFilteredPlanDetails);
   });
   
-  it('should call compareResources with session stored resources in saveResourcesToUserProfile method', () => {
+  it('should call saveResourceToProfilePostLogin with session stored resources in saveResourcesToUserProfile method', () => {
     spyOn(sessionStorage, 'getItem')
       .and.returnValue(JSON.stringify(mockSavedResources));
-    spyOn(service, 'compareResources');
+    spyOn(service, 'saveResourceToProfilePostLogin');
     service.saveResourcesToUserProfile();
     expect(service.resourceTags).toEqual(mockSavedResources);
-    expect(service.compareResources).toHaveBeenCalled();
+    expect(service.saveResourceToProfilePostLogin).toHaveBeenCalled();
   });
 
   it('checkExistingSavedResources for saved resource exists', () => {

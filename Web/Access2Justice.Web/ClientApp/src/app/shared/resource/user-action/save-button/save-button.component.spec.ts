@@ -102,7 +102,7 @@ describe('SaveButtonComponent', () => {
   };
 
   beforeEach(async(() => {
-    mockPersonalizedPlanService = jasmine.createSpyObj(['getActionPlanConditions', 'saveResourcesToProfile', 'userPlan', 'showSuccess', 'saveBookmarkedResource']);
+    mockPersonalizedPlanService = jasmine.createSpyObj(['getActionPlanConditions', 'saveResourceToProfilePostLogin', 'userPlan', 'showSuccess', 'saveBookmarkedResource']);
     msalService = jasmine.createSpyObj(['getUser']);
     mockPersonalizedPlanService.getActionPlanConditions.and.returnValue(of(mockPlanDetails));
     msalService.getUser.and.returnValue(mockUserData);
@@ -236,7 +236,7 @@ describe('SaveButtonComponent', () => {
     component.resourceDetails = mockSavedResources.resourceDetails;
     component.saveResourcesPostLogin();
     expect(component.tempResourceStorage).toEqual([mockSavedResources]);
-    expect(mockPersonalizedPlanService.saveResourcesToProfile).toHaveBeenCalled();
+    expect(mockPersonalizedPlanService.saveResourceToProfilePostLogin).toHaveBeenCalled();
   });
 
 });

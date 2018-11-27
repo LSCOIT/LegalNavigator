@@ -103,7 +103,7 @@ export class SaveButtonComponent implements OnInit {
     this.savedResources = { itemId: this.id, resourceType: this.type, resourceDetails: this.resourceDetails };
     this.tempResourceStorage = [];
     this.tempResourceStorage.push(this.savedResources);
-    this.personalizedPlanService.saveResourcesToProfile(this.tempResourceStorage);
+    this.personalizedPlanService.saveResourceToProfilePostLogin(this.tempResourceStorage);
   }
 
   ngOnInit() {
