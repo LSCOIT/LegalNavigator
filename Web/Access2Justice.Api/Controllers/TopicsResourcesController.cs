@@ -45,7 +45,7 @@ namespace Access2Justice.Api.Controllers
             var response = await topicsResourcesBusinessLogic.GetTopLevelTopicsAsync(location);
             if (response == null)
             {
-                return StatusCode(StatusCodes.Status204NoContent);
+                return StatusCode(StatusCodes.Status404NotFound);
             }
             return Ok(response);
         }
@@ -64,9 +64,13 @@ namespace Access2Justice.Api.Controllers
         public async Task<IActionResult> GetSubTopics([FromBody]TopicInput topicInput)
         {
             var topics = await topicsResourcesBusinessLogic.GetSubTopicsAsync(topicInput);
+            if (topics.Count == 0)
+            {
+                return StatusCode(StatusCodes.Status404NotFound);
+            }
             if (topics == null)
             {
-                return StatusCode(StatusCodes.Status204NoContent);
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
             return Ok(topics);
         }
@@ -85,9 +89,13 @@ namespace Access2Justice.Api.Controllers
         public async Task<IActionResult> GetResource([FromBody]TopicInput topicInput)
         {
             var resource = await topicsResourcesBusinessLogic.GetResourceByIdAsync(topicInput);
+            if (resource.Count == 0)
+            {
+                return StatusCode(StatusCodes.Status404NotFound);
+            }
             if (resource == null)
             {
-                return StatusCode(StatusCodes.Status204NoContent);
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
             return Ok(resource);
         }
@@ -106,9 +114,13 @@ namespace Access2Justice.Api.Controllers
         public async Task<IActionResult> GetResourceDetails([FromBody]TopicInput topicInput)
         {
             var topics = await topicsResourcesBusinessLogic.GetResourceAsync(topicInput);
+            if (topics.Count == 0)
+            {
+                return StatusCode(StatusCodes.Status404NotFound);
+            }
             if (topics == null)
             {
-                return StatusCode(StatusCodes.Status204NoContent);
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
             return Ok(topics);
         }
@@ -127,9 +139,13 @@ namespace Access2Justice.Api.Controllers
         public async Task<IActionResult> GetDocumentDataAsync([FromBody]TopicInput topicInput)
         {
             var topics = await topicsResourcesBusinessLogic.GetDocumentAsync(topicInput);
+            if (topics.Count == 0)
+            {
+                return StatusCode(StatusCodes.Status404NotFound);
+            }
             if (topics == null)
             {
-                return StatusCode(StatusCodes.Status204NoContent);
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
             return Ok(topics);
         }
@@ -148,9 +164,13 @@ namespace Access2Justice.Api.Controllers
         public async Task<IActionResult> GetPagedDataAsync([FromBody]ResourceFilter resourceInput)
         {
             var response = await topicsResourcesBusinessLogic.GetPagedResourceAsync(resourceInput);
+            if (response.Count == 0)
+            {
+                return StatusCode(StatusCodes.Status404NotFound);
+            }
             if (response == null)
             {
-                return StatusCode(StatusCodes.Status204NoContent);
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
             return Content(response);
         }
@@ -169,9 +189,13 @@ namespace Access2Justice.Api.Controllers
         public async Task<IActionResult> GetBreadcrumbAsync(string id)
         {
             var topics = await topicsResourcesBusinessLogic.GetBreadcrumbDataAsync(id);
+            if (topics.Count == 0)
+            {
+                return StatusCode(StatusCodes.Status404NotFound);
+            }
             if (topics == null)
             {
-                return StatusCode(StatusCodes.Status204NoContent);
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
             return Ok(topics);
         }
@@ -190,9 +214,13 @@ namespace Access2Justice.Api.Controllers
         public async Task<IActionResult> GetTopicDetails(string name)
         {
             var topics = await topicsResourcesBusinessLogic.GetTopicDetailsAsync(name);
+            if (topics.Count == 0)
+            {
+                return StatusCode(StatusCodes.Status404NotFound);
+            }
             if (topics == null)
             {
-                return StatusCode(StatusCodes.Status204NoContent);
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
             return Ok(topics);
         }
@@ -212,9 +240,13 @@ namespace Access2Justice.Api.Controllers
         public async Task<IActionResult> GetResourceDetails(string name, string type)
         {
             var resources = await topicsResourcesBusinessLogic.GetResourceDetailAsync(name, type);
-            if (resources == null)
+            if (resources.Count == 0)
             {
-                return StatusCode(StatusCodes.Status204NoContent);
+                return StatusCode(StatusCodes.Status404NotFound);
+            }
+            if(resources==null)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
             return Ok(resources);
         }
@@ -234,9 +266,13 @@ namespace Access2Justice.Api.Controllers
         public async Task<IActionResult> GetOrganizationsWhenParamsValuePassed([FromBody]Location location)
         {
             var organizations = await topicsResourcesBusinessLogic.GetOrganizationsAsync(location);
+            if (organizations.Count == 0)
+            {
+                return StatusCode(StatusCodes.Status404NotFound);
+            }
             if (organizations == null)
             {
-                return StatusCode(StatusCodes.Status204NoContent);
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
             return Ok(organizations);
         }
@@ -382,7 +418,7 @@ namespace Access2Justice.Api.Controllers
             var resources = await topicsResourcesBusinessLogic.UpsertResourceDocumentAsync(resource);
             if (resources == null)
             {
-                return StatusCode(StatusCodes.Status204NoContent);
+                return StatusCode(StatusCodes.Status404NotFound);
             }
             return Ok(resources);
         }
@@ -405,7 +441,7 @@ namespace Access2Justice.Api.Controllers
             var topics = await topicsResourcesBusinessLogic.UpsertTopicsUploadAsync(path);
             if (topics == null)
             {
-                return StatusCode(StatusCodes.Status204NoContent);
+                return StatusCode(StatusCodes.Status404NotFound);
             }
             return Ok(topics);
         }
@@ -427,7 +463,7 @@ namespace Access2Justice.Api.Controllers
             var topics = await topicsResourcesBusinessLogic.UpsertTopicDocumentAsync(topic);
             if (topics == null)
             {
-                return StatusCode(StatusCodes.Status204NoContent);
+                return StatusCode(StatusCodes.Status404NotFound);
             }
             return Ok(topics);
         }
@@ -483,7 +519,7 @@ namespace Access2Justice.Api.Controllers
             var response = await topicsResourcesBusinessLogic.GetPersonalizedResourcesAsync(resourceInput);
             if (response == null)
             {
-                return StatusCode(StatusCodes.Status204NoContent);
+                return StatusCode(StatusCodes.Status404NotFound);
             }
             return Content(response);
         }
@@ -502,7 +538,7 @@ namespace Access2Justice.Api.Controllers
             var response = await topicsResourcesBusinessLogic.GetAllTopics();
             if (response == null)
             {
-                return StatusCode(StatusCodes.Status204NoContent);
+                return StatusCode(StatusCodes.Status404NotFound);
             }
             return Ok(response);
         }

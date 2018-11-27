@@ -3,6 +3,7 @@ using System;
 using System.Threading.Tasks;
 using Access2Justice.Shared.Interfaces;
 using System.Globalization;
+using System.Net;
 
 namespace Access2Justice.Api.BusinessLogic
 {
@@ -20,11 +21,7 @@ namespace Access2Justice.Api.BusinessLogic
         public async Task<dynamic> SearchWebResourcesAsync(Uri uri)
         {
             var httpResponseMessage = await httpClientService.GetDataAsync(uri, bingSettings.SubscriptionKey);
-            if (httpResponseMessage.StatusCode.ToString() == "429")
-            {
-                return httpResponseMessage.RequestMessage.ToString();
-                    
-            }
+           
             if (httpResponseMessage.Content.Headers.ContentLength == 0)
             {
                 return System.Net.HttpStatusCode.NoContent;
