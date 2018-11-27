@@ -60,7 +60,7 @@ p.ps {
 }
 
   .change-location-btn:hover {
-    font-weight: 100;
+    text-decoration: underline;
   }
 
 #search-box {

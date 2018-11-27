@@ -114,13 +114,13 @@ a.carousel-control .icon-prev, a.carousel-control .icon-next {
   height: 40px;
 }
 
-a.carousel-control .icon-prev:hover, a.carousel-control .icon-next:hover {
-  background-image: url('assets/images/small-icons/arrow_down.svg');
-  width: 45px;
-  height: 45px;
-  //padding-bottom: 40px;
-  transition: all ease-in-out .5s;
-}
+  a.carousel-control .icon-prev:hover, a.carousel-control .icon-next:hover {
+    background-image: url('assets/images/small-icons/arrow_down.svg');
+    width: 60px;
+    height: 60px;
+    //filter: drop-shadow(0px -6px 6px rgba(0, 0, 0, 1));
+    transition: all ease-in-out .5s;
+  }
 
 .carousel-control-next-icon {
   transform: rotate(-90deg);
@@ -141,6 +141,14 @@ a.carousel-control .icon-prev:hover, a.carousel-control .icon-next:hover {
   height: 10px;
   margin: 0 5px;
 }
+
+  .carousel-indicators li:hover {
+    background-color: #;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.3));
+  }
 
 .carousel-indicators li {
   background-color: #7EB1ED;
