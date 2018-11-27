@@ -28,10 +28,9 @@ describe('Component:ServiceOrgSidebar', () => {
     state: 'teststate',
     city: 'testcity',
     county: 'testcounty',
-    zipCode: '000007',
-    locality: undefined,
-    address: undefined
+    zipCode: '000007'
   };
+  let mockLocationDetails = { location: mockMapLocation };
   let mockresourcesInput: IResourceFilter = {
     ResourceType: 'Organizations',
     ContinuationToken: '',
@@ -167,8 +166,7 @@ describe('Component:ServiceOrgSidebar', () => {
         store = {};
       }
     };
-    spyOn(sessionStorage, 'getItem')
-      .and.callFake(mockSessionStorage.getItem);
+    
     spyOn(sessionStorage, 'setItem')
       .and.callFake(mockSessionStorage.setItem);
     spyOn(sessionStorage, 'removeItem')
@@ -215,9 +213,10 @@ describe('Component:ServiceOrgSidebar', () => {
 
   it("should assign session storage details to map location on ngInit", () => {
     spyOn(component, 'getOrganizations');
-    sessionStorage.setItem("globalMapLocation", JSON.stringify(mockMapLocation));
+    spyOn(sessionStorage, 'getItem')
+      .and.returnValue(JSON.stringify(mockLocationDetails));
     component.ngOnInit();
-    expect(component.location).toEqual(JSON.parse(sessionStorage.getItem("globalMapLocation")));
+    expect(component.location).toEqual(mockMapLocation);
     expect(component.getOrganizations).toHaveBeenCalled();
   });
 
