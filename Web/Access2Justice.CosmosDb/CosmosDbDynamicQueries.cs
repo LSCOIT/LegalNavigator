@@ -126,11 +126,11 @@ namespace Access2Justice.CosmosDb
             EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
             string locationFilter = FindLocationWhereArrayContains(location);
             var query = string.Empty;
-            query = $"SELECT * FROM c WHERE ";
+            query = $"SELECT * FROM c";
 
             if (!string.IsNullOrEmpty(locationFilter))
             {
-                query = query + locationFilter;
+                query += " WHERE " + locationFilter;
             }
             return await backendDatabaseService.QueryItemsAsync(collectionId, query);
         }
@@ -146,7 +146,13 @@ namespace Access2Justice.CosmosDb
             if (resourceFilter.ResourceType.ToUpperInvariant() != Constants.ResourceTypeAll && !isResourceCountCall)
             {
                 arrayContainsWithAndClause += string.IsNullOrEmpty(arrayContainsWithAndClause) ? $" c.{andPropertyName} = '" + resourceFilter.ResourceType + "'"
-                                             : $" AND c.{andPropertyName} = '" + resourceFilter.ResourceType + "'";
+                                             : $" AND c.{andPropertyName} = '" + resourceFilter.ResourceType + "'";                
+            }
+            string resourceIsActiveFilter = FindItemsWhereResourceIsActive(resourceFilter.ResourceType);
+            if (!string.IsNullOrEmpty(resourceIsActiveFilter))
+            {
+                arrayContainsWithAndClause = string.IsNullOrEmpty(arrayContainsWithAndClause) ? resourceIsActiveFilter
+                                          : arrayContainsWithAndClause + " AND " + resourceIsActiveFilter;
             }
             string locationFilter = FindLocationWhereArrayContains(resourceFilter.Location);
             if (!string.IsNullOrEmpty(locationFilter))
@@ -217,6 +223,20 @@ namespace Access2Justice.CosmosDb
 
             var query = $"SELECT c.name, c.firstName, c.lastName, c.oId FROM c WHERE c.{propertyName} = '{value}'";
             return await backendDatabaseService.QueryItemsAsync(collectionId, query);
+        }
+
+        private string FindItemsWhereResourceIsActive(string resourceType)
+        {
+            string resourceIsActiveFilter = string.Empty;
+            if (resourceType.ToUpperInvariant() == Constants.GuidedAssistant.ToUpperInvariant())
+            {
+                resourceIsActiveFilter = $" c.isActive = true";
+            }
+            else if (resourceType.ToUpperInvariant() == Constants.All)
+            {
+                resourceIsActiveFilter = $" (c.resourceType != '{Constants.GuidedAssistant}' OR (c.resourceType = '{Constants.GuidedAssistant}' AND c.isActive = true))";
+            }
+            return resourceIsActiveFilter;
         }
 
         private dynamic FindLocationWhereArrayContains(Location location)

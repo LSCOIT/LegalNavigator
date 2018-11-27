@@ -27,6 +27,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
 
         #region Mocked Input Data
         private readonly string properLuisResponse = LuisBusinessLogicTestData.properLuisResponse;
+        private readonly string EmptyLuisResponse = LuisBusinessLogicTestData.EmptyLuisResponse;
         private readonly string meduimScoreLuisResponse = LuisBusinessLogicTestData.meduimScoreLuisResponse;
         private readonly string emptyLuisResponse = LuisBusinessLogicTestData.emptyLuisResponse;
         private readonly string noneLuisResponse = LuisBusinessLogicTestData.noneLuisResponse;
@@ -36,6 +37,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         private readonly JObject emptyResourceObject = LuisBusinessLogicTestData.emptyResourceObject;
         private readonly string searchText = LuisBusinessLogicTestData.searchText;
         private readonly JArray resourcesData = LuisBusinessLogicTestData.resourcesData;
+        private readonly JArray guidedAssistantResourcesData = LuisBusinessLogicTestData.guidedAssistantResourcesData;
         private readonly string webData = LuisBusinessLogicTestData.webData;
         private readonly Location location = new Location();
         private readonly LuisInput luisInput = new LuisInput();
@@ -51,6 +53,8 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         private readonly string expectedLuisTopIntent = LuisBusinessLogicTestData.expectedLuisTopIntent;
         private readonly string expectedTopicId = LuisBusinessLogicTestData.expectedTopicId;
         private readonly string expectedInternalResponse = LuisBusinessLogicTestData.expectedInternalResponse;
+        private readonly string expectedGuidedAssistant = LuisBusinessLogicTestData.expectedGuidedResponse;
+        private readonly string expectedEmptyGuidedAssistant = LuisBusinessLogicTestData.expectedEmptyGuidedResponse;
         private readonly string expectedWebResponse = LuisBusinessLogicTestData.expectedWebResponse;
         private readonly string expectedEmptyInternalResponse = LuisBusinessLogicTestData.expectedEmptyInternalResponse;
         #endregion
@@ -211,6 +215,125 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             Assert.Contains(keyword, result);
         }
 
+        [Fact]
+        public void GetInternalResourcesAsyncTestsShouldValidateGuidedAssistant()
+        {
+            //arrange
+            luisInput.Sentence = searchText;
+            luisInput.Location = locationInput;
+            var luisResponse = luisProxy.GetIntents(searchText);
+            luisResponse.ReturnsForAnyArgs(properLuisResponse);
+
+            //arrange
+            PagedResources pagedResources = new PagedResources() { Results = resourcesData, ContinuationToken = "[]", TopicIds = topicIds };
+            PagedResources pagedGuidedAssistantResources = new PagedResources() { Results = guidedAssistantResourcesData, ContinuationToken = "[]", TopicIds = topicIds };
+            var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, locationInput);
+            topicResponse.Returns(topicsData);
+            var resourceCount = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
+            resourceCount.ReturnsForAnyArgs<dynamic>(allResourcesCount);
+            var paginationResult = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
+            paginationResult.ReturnsForAnyArgs<dynamic>(pagedResources);
+            var guidedAssistantResult = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
+            paginationResult.ReturnsForAnyArgs<dynamic>(pagedGuidedAssistantResources);
+
+            var internalResponse = luis.GetInternalResourcesAsync(keyword, location, Arg.Any<IEnumerable<string>>());
+            internalResponse.ReturnsForAnyArgs<dynamic>(internalResponse);
+
+            //act
+            var result = luisBusinessLogic.GetResourceBasedOnThresholdAsync(luisInput).Result;
+
+            //assert
+            Assert.Contains(expectedGuidedAssistant, result.ToString());
+        }
+
+        [Fact]
+        public void GetInternalResourcesAsyncTestsShouldValidateEmptyGuidedAssistantId()
+        {
+            //arrange
+            luisInput.Sentence = searchText;
+            luisInput.Location = locationInput;
+            var luisResponse = luisProxy.GetIntents(searchText);
+            luisResponse.ReturnsForAnyArgs(properLuisResponse);
+
+            //arrange
+            PagedResources pagedResources = new PagedResources() { Results = resourcesData, ContinuationToken = "[]", TopicIds = topicIds };
+            PagedResources pagedGuidedAssistantResources = new PagedResources() { Results = resourcesData, ContinuationToken = "[]", TopicIds = topicIds };
+            var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, locationInput);
+            topicResponse.Returns(topicsData);
+            var resourceCount = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
+            resourceCount.ReturnsForAnyArgs<dynamic>(allResourcesCount);
+            var paginationResult = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
+            paginationResult.ReturnsForAnyArgs<dynamic>(pagedResources);
+            var guidedAssistantResult = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
+            paginationResult.ReturnsForAnyArgs<dynamic>(pagedGuidedAssistantResources);
+
+            var internalResponse = luis.GetInternalResourcesAsync(keyword, location, Arg.Any<IEnumerable<string>>());
+            internalResponse.ReturnsForAnyArgs<dynamic>(internalResponse);
+
+            //act
+            var result = luisBusinessLogic.GetResourceBasedOnThresholdAsync(luisInput).Result;
+
+            //assert
+            Assert.Contains(expectedEmptyGuidedAssistant, result.ToString());
+        }
+
+        [Fact]
+        public void ParseLuisIntentTestsShouldValidateData()
+        {
+            //act
+            var result = luisBusinessLogic.ParseLuisIntent(properLuisResponse);
+
+            //assert
+            Assert.Equal(expectedLuisTopIntent, result.TopScoringIntent);
+        }
+
+        [Fact]
+        public void ParseLuisIntentTestsShouldValidateEmptyObject()
+        {
+            //act
+            var result = luisBusinessLogic.ParseLuisIntent("");
+
+            //assert
+            Assert.Null(result.TopScoringIntent);
+        }
+
+        [Fact]
+        public void ParseLuisIntentTestsShouldValidateEmptyLuisResponse()
+        {
+            //act
+            var result = luisBusinessLogic.ParseLuisIntent(EmptyLuisResponse);
+
+            //assert
+            Assert.Null(result.TopScoringIntent);
+        }
+        
+
+       [Fact]
+        public void GetResourceBasedOnThresholdAsyncTestsShouldValidateLuisTopScoringIntentAndFetchResources()
+        {
+            //arrange
+            luisInput.Sentence = searchText;
+            luisInput.Location = locationInput;
+            luisInput.LuisTopScoringIntent = "Eviction";
+
+            //arrange
+            PagedResources pagedResources = new PagedResources() { Results = resourcesData, ContinuationToken = "[]", TopicIds = topicIds };
+            var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, locationInput);
+            topicResponse.Returns(topicsData);
+            var resourceCount = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
+            resourceCount.ReturnsForAnyArgs<dynamic>(allResourcesCount);
+            var paginationResult = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
+            paginationResult.ReturnsForAnyArgs<dynamic>(pagedResources);
+
+            var internalResponse = luis.GetInternalResourcesAsync(keyword, location, Arg.Any<IEnumerable<string>>());
+            internalResponse.ReturnsForAnyArgs<dynamic>(internalResponse);
+
+            //act
+            var result = luisBusinessLogic.GetResourceBasedOnThresholdAsync(luisInput).Result;
+
+            //assert
+            Assert.Contains(expectedInternalResponse, result.ToString());
+        }
 
         [Fact]
         public void GetResourceBasedOnThresholdAsyncTestsShouldValidateInternalResources()
@@ -242,7 +365,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         }
 
         [Fact]
-        public void GetResourceBasedOnThresholdAsyncTestsShouldValidateWebResources()
+        public void GetResourceBasedOnThresholdAsyncTestsShouldValidateEmptyResources()
         {
             //arrange
             luisInput.LuisTopScoringIntent = keyword;
@@ -265,5 +388,43 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             Assert.Contains(expectedInternalResponse, result);
         }
 
+        [Fact]
+        public void GetResourceBasedOnThresholdAsyncTestsShouldValidateWebResources()
+        {
+            //arrange
+            var luisResponse = luisProxy.GetIntents(searchText);
+            luisResponse.ReturnsForAnyArgs(properLuisResponse);
+
+            var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
+            topicResponse.ReturnsForAnyArgs<dynamic>(emptyTopicObject);
+
+            var internalResponse = luis.GetInternalResourcesAsync(keyword, location, Arg.Any<IEnumerable<string>>());
+            internalResponse.ReturnsForAnyArgs<dynamic>(internalResponse);
+
+            var webResponse = webSearchBusinessLogic.SearchWebResourcesAsync(new Uri("http://www.bing.com"));
+            webResponse.ReturnsForAnyArgs<dynamic>(webData);
+
+            //act
+            var result = luisBusinessLogic.GetResourceBasedOnThresholdAsync(luisInput).Result;
+
+            //assert
+            Assert.Contains(expectedWebResponse, result);
+        }
+
+        [Fact]
+        public void GetWebResourcesAsyncTestsShouldValidateWebResources()
+        {
+            //arrange
+            string searchText = "Eviction";
+
+            var webResponse = webSearchBusinessLogic.SearchWebResourcesAsync(new Uri("http://www.bing.com"));
+            webResponse.ReturnsForAnyArgs<dynamic>(webData);
+
+            //act
+            var result = luisBusinessLogic.GetWebResourcesAsync(searchText).Result;
+
+            //assert
+            Assert.Contains(expectedWebResponse, result);
+        }
     }
 }
