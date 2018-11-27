@@ -1,12 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-//using TechTalk.SpecFlow.Assist;
-//using OpenQA.Selenium.Support.PageObjects;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.PageObjects;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using TechTalk.SpecFlow;
 
 namespace Access2Justice.E2ETests.PageObjects
@@ -18,34 +15,34 @@ namespace Access2Justice.E2ETests.PageObjects
         private DefaultWait<IWebDriver> FluentWait => ScenarioContext.Current.Get<DefaultWait<IWebDriver>>("fluentWait");
 
         [FindsBy(How = How.Id, Using = "language-dropdown")]
-        private IWebElement setLanguageButton = null;
+        private IWebElement setLanguageButton;
 
         [FindsBy(How = How.TagName, Using = "select")]
-        private IWebElement languageDropDown = null;
+        private IWebElement languageDropDown;
 
         [FindsBy(How = How.TagName, Using = "modal-container")]
-        private IList<IWebElement> modalList = null;
+        private IList<IWebElement> modalList;
 
         [FindsBy(How = How.Id, Using = "search-box")]
-        private IWebElement searchLocationInputBox = null;
+        private IWebElement searchLocationInputBox;
 
         [FindsBy(How = How.Id, Using = "update-location-button")]
-        private IWebElement updateLocationButton = null;
+        private IWebElement updateLocationButton;
 
         [FindsBy(How = How.Id, Using = "search")]
-        private IWebElement searchPhraseInputField = null;
+        private IWebElement searchPhraseInputField;
 
         [FindsBy(How = How.Id, Using = "search-phrase-button")]
-        private IWebElement searchPhraseButton = null;
+        private IWebElement searchPhraseButton;
 
         [FindsBy(How = How.TagName, Using = "app-resource-card")]
-        private IList<IWebElement> searchPhraseResults = null;
+        private IList<IWebElement> searchPhraseResults;
 
         [FindsBy(How = How.TagName, Using = "app-web-resource")]
-        private IList<IWebElement> searchPhraseWebResults = null;
+        private IList<IWebElement> searchPhraseWebResults;
 
         [FindsBy(How = How.TagName, Using = "html")]
-        private IWebElement html = null;
+        private IWebElement html;
         #endregion
 
         BaseClass BaseClass = new BaseClass();
