@@ -1,7 +1,6 @@
-﻿using System;
-using System.Globalization;
-using Access2Justice.Shared.Interfaces;
+﻿using Access2Justice.Shared.Interfaces;
 using Microsoft.Extensions.Configuration;
+using System;
 
 namespace Access2Justice.Shared.Rtm
 {
