@@ -24,6 +24,7 @@ export class Global {
   topicsData: any;
   organizationsData: any;
   roleInformation: any;
+  displayResources: number = 3;
 
   constructor() { }
 
