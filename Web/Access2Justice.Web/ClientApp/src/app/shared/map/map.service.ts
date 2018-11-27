@@ -149,7 +149,7 @@ export class MapService {
       if ((this.location.entitySubType != undefined &&
         this.location.entitySubType.indexOf("Postcode") != -1)
         || (this.location.entityType != undefined &&
-          this.location.entityType.indexOf("PostalAddress") != -1)) {
+        this.location.entityType.indexOf("Postcode") != -1)) {
         this.mapLocation.state = "";
         this.mapLocation.county = "";
         this.mapLocation.city = "";
@@ -164,8 +164,10 @@ export class MapService {
         this.mapLocation.zipCode = "";
       }
       //County
-      else if (this.location.entitySubType != undefined &&
-        this.location.entitySubType.indexOf("AdminDivision2") != -1) {
+      else if ((this.location.entitySubType != undefined &&
+        this.location.entitySubType.indexOf("AdminDivision2") != -1)
+        || (this.location.entityType != undefined &&
+        this.location.entityType.indexOf("AdminDivision2") != -1)){
         this.mapLocation.state = "";
         this.mapLocation.city = "";
         this.mapLocation.zipCode = "";

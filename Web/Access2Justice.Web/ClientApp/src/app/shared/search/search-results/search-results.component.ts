@@ -11,6 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Global } from '../../../global';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
+import { isUndefined } from 'util';
 import { LocationDetails } from '../../map/map';
 
 @Component({
@@ -79,35 +80,41 @@ export class SearchResultsComponent implements OnInit, OnChanges {
         }
     }
 
-    bindData() {
-        this.showDefaultMessage = false;
-        this.showNoResultsMessage = false;
-        this.searchResults = this.navigateDataService.getData();
-        if (this.searchResults != undefined && this.personalizedResources === undefined) {
-            this.guidedAssistantId = this.searchResults.guidedAssistantId;
-            this.cacheSearchResultsData();
-            this.isInternalResource = this.searchResults.resources;
-            this.isWebResource = this.searchResults.webResources;
-            if (this.isWebResource) {
-                this.mapWebResources();
-            }
-            else {
-                this.topIntent = this.searchResults.topIntent;
-                if (this.searchResults.resources.length > 0) {
-                    this.mapInternalResource();
-                } else {
-                    this.isInternalResource = false;
-                    this.showNoResultsMessage = true;
-                }
-            }
+  bindData() {
+    this.showDefaultMessage = false;
+    this.showNoResultsMessage = false;
+    this.searchResults = this.navigateDataService.getData();    
+    if (this.searchResults != undefined && this.personalizedResources === undefined) {
+      this.guidedAssistantId = this.searchResults.guidedAssistantId;
+      this.cacheSearchResultsData();
+      this.isInternalResource = this.searchResults.resources;
+      this.isWebResource = this.searchResults.webResources;
+      if (this.isWebResource) {
+        if (this.searchResults.webResources.webPages === undefined) {
+          this.showNoResultsMessage = true;
+          this.isWebResource = false;
+        }
+        else {
+          this.mapWebResources();
+        }
+      }
+      else {
+        this.topIntent = this.searchResults.topIntent;
+        if (this.searchResults.resources.length > 0) {          
+          this.mapInternalResource();
         } else {
-            this.showDefaultMessage = true;
+          this.isInternalResource = false;
+          this.showNoResultsMessage = true;
         }
-        if (this.personalizedResources != undefined) {
-            this.showDefaultMessage = false;
-            this.mapPersonalizedResource(this.personalizedResources);
-        }
+      }
+    } else {
+      this.showDefaultMessage = true;
     }
+    if (this.personalizedResources != undefined) {
+      this.showDefaultMessage = false;
+      this.mapPersonalizedResource(this.personalizedResources);
+    }
+  }
 
     mapPersonalizedResource(personalizedResources) {
         this.searchResults = { resources: [] }
@@ -151,12 +158,12 @@ export class SearchResultsComponent implements OnInit, OnChanges {
         }
     }
 
-    mapWebResources() {
-        this.total = this.searchResults.webResources.webPages.totalEstimatedMatches;
-        this.searchText = this.searchResults.webResources.queryContext.originalQuery;
-        this.pagesToShow = environment.webResourcePagesToShow;
-        this.limit = environment.webResourceRecordsToDisplay;
-    }
+  mapWebResources() {
+    this.total = this.searchResults.webResources.webPages.totalEstimatedMatches;
+      this.searchText = this.searchResults.webResources.queryContext.originalQuery;
+      this.pagesToShow = environment.webResourcePagesToShow;
+      this.limit = environment.webResourceRecordsToDisplay;    
+  }
 
     cacheSearchResultsData() {
         sessionStorage.removeItem("cacheSearchResults");
