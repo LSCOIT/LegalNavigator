@@ -6,6 +6,7 @@ using Access2Justice.Shared;
 using Access2Justice.Shared.Utilities;
 using Access2Justice.Shared.Models.Integration;
 using Access2Justice.Shared.Models;
+using Microsoft.Azure.Documents;
 
 namespace Access2Justice.Integration.Api.BusinessLogic
 {
@@ -39,10 +40,9 @@ namespace Access2Justice.Integration.Api.BusinessLogic
         /// <summary>
         /// upserts service provider
         /// </summary>
-        public async Task<IEnumerable<object>> UpsertServiceProviderDocumentAsync(List<ServiceProvider> serviceProvider, string topic)
+        public async Task<IEnumerable<Document>> UpsertServiceProviderDocumentAsync(List<ServiceProvider> serviceProvider, string topic)
         {
-            List<dynamic> results = new List<dynamic>();
-            List<dynamic> resources = new List<dynamic>();
+            var resources = new List<Document>();
             var serviceProviderObjects = JsonUtilities.DeserializeDynamicObject<List<ServiceProvider>>(serviceProvider);
             foreach (var serviceProviderObject in serviceProviderObjects)
             {

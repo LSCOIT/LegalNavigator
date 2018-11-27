@@ -1,6 +1,7 @@
 ﻿using Access2Justice.Shared.Models.Integration;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.Azure.Documents;
 
 namespace Access2Justice.Integration.Api.Interfaces
 {
@@ -17,6 +18,6 @@ namespace Access2Justice.Integration.Api.Interfaces
         /// <summary>
         /// upserts service provider
         /// </summary>
-        Task<IEnumerable<object>> UpsertServiceProviderDocumentAsync(List<ServiceProvider> serviceProvider, string topicName);
+        Task<IEnumerable<Document>> UpsertServiceProviderDocumentAsync(List<ServiceProvider> serviceProvider, string topicName);
     }
 }
