@@ -1,9 +1,8 @@
-﻿using Access2Justice.Shared.Models.Integration;
+﻿using Access2Justice.Integration.Api.Interfaces;
+using Access2Justice.Shared.Models.Integration;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using Access2Justice.Integration.Api.Interfaces;
-using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Access2Justice.Integration.Api.Controllers
 {

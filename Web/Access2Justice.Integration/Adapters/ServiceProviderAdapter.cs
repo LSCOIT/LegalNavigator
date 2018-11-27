@@ -1,25 +1,23 @@
-﻿using Access2Justice.Shared.Models.Integration;
-using Access2Justice.Integration.Interfaces;
-using Access2Justice.Shared.Interfaces;
-using System.Threading.Tasks;
+﻿using Access2Justice.Integration.Interfaces;
 using Access2Justice.Shared;
-using System;
-using System.Globalization;
-using Newtonsoft.Json;
-using Access2Justice.Shared.Utilities;
-using System.Collections.Generic;
+using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
-using Newtonsoft.Json.Linq;
+using Access2Justice.Shared.Models.Integration;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Access2Justice.Integration.Adapters
 {
-    public class ServiceProviderAdapter : IServiceProviderAdapter
+    public class RtmServiceProviderAdapter : IServiceProviderAdapter
     {
         private readonly IRtmSettings rtmSettings;
         private readonly IHttpClientService httpClient;
 
-        public ServiceProviderAdapter(IRtmSettings rtmSettings, IHttpClientService httpClient)
+        public RtmServiceProviderAdapter(IRtmSettings rtmSettings, IHttpClientService httpClient)
         {
             this.rtmSettings = rtmSettings;
             this.httpClient = httpClient;
@@ -27,57 +25,52 @@ namespace Access2Justice.Integration.Adapters
 
         public async Task<List<ServiceProvider>> GetServiceProviders(string TopicName)
         {
-            try
+            var sessionUrl = string.Format(CultureInfo.InvariantCulture, rtmSettings.SessionURL.OriginalString, rtmSettings.ApiKey);
+            var sResponse = await httpClient.GetAsync(new Uri(sessionUrl)).ConfigureAwait(false);
+            var session = sResponse.Content.ReadAsStringAsync().Result;
+
+            dynamic sessionJson = JsonConvert.DeserializeObject(session);
+            var sessionId = sessionJson[0][Constants.RTMSessionId];
+            var serviceProviders = new List<ServiceProvider>();
+            if (!string.IsNullOrEmpty(sessionId))
             {
-                List<ServiceProvider> serviceProviders = new List<ServiceProvider>();
-                string sessionUrl = string.Format(CultureInfo.InvariantCulture, rtmSettings.SessionURL.OriginalString, rtmSettings.ApiKey);
-                var sResponse = await httpClient.GetAsync(new Uri(sessionUrl)).ConfigureAwait(false);
-                string session = sResponse.Content.ReadAsStringAsync().Result;
-                dynamic sessionJson = JsonConvert.DeserializeObject(session);
-                string sessionId = sessionJson[0][Constants.RTMSessionId];
-                if (!string.IsNullOrEmpty(sessionId))
+                var serviceProviderUrl = string.Format(CultureInfo.InvariantCulture, rtmSettings.ServiceProviderURL.OriginalString,
+                                                          rtmSettings.ApiKey, sessionId);
+                var spResponse = await httpClient.GetAsync(new Uri(serviceProviderUrl)).ConfigureAwait(false);
+                var serviceProvider = spResponse.Content.ReadAsStringAsync().Result;
+                if (!string.IsNullOrEmpty(serviceProvider))
                 {
-                    string serviceProviderUrl = string.Format(CultureInfo.InvariantCulture, rtmSettings.ServiceProviderURL.OriginalString,
-                                                              rtmSettings.ApiKey, sessionId);
-                    var spResponse = await httpClient.GetAsync(new Uri(serviceProviderUrl)).ConfigureAwait(false);
-                    string serviceProvider = spResponse.Content.ReadAsStringAsync().Result;
-                    if (!string.IsNullOrEmpty(serviceProvider))
-                    {
-                        var serviceProviderObject = JsonConvert.DeserializeObject(serviceProvider);
-                        serviceProviders = ProcessRTMData(serviceProviderObject);
-                    }
+                    var serviceProviderObject = JsonConvert.DeserializeObject(serviceProvider);
+                    serviceProviders = ProcessRTMData(serviceProviderObject);
                 }
-                return serviceProviders;
             }
-            catch (Exception ex)
-            {
-                #pragma warning disable CA2200 // Rethrow to preserve stack details.
-                throw ex;
-            }
+
+            return serviceProviders;
         }
 
         public List<ServiceProvider> ProcessRTMData(dynamic serviceProviderObjects)
         {
-            List<ServiceProvider> serviceProviders = new List<ServiceProvider>();
+            var serviceProviders = new List<ServiceProvider>();
             foreach (var serviceProviderObject in serviceProviderObjects)
             {
                 foreach (var site in serviceProviderObject.Sites)
                 {
                     string siteId = site.ID.ToString();
                     ServiceProvider serviceProvider = ConvertToServiceProvider(site);
-                    serviceProviders.Add(serviceProvider);                   
+                    serviceProviders.Add(serviceProvider);
                 }
             }
+
             return serviceProviders;
         }
 
         public dynamic ConvertToServiceProvider(dynamic site)
         {
-            ServiceProvider serviceProvider = new ServiceProvider()
+            return new ServiceProvider()
             {
                 ExternalId = site.ID,
                 Email = site.Email,
-               // Availability = GetAvailability(site.availability),
+                // Availability = GetAvailability(site.availability),
                 AcceptanceCriteria = GetAcceptanceCriteria(site.acceptanceCriteria),
                 OnboardingInfo = GetOnboardingInfo(site.onboardingInfo),
                 Name = site.Name,
@@ -94,9 +87,8 @@ namespace Access2Justice.Integration.Adapters
                 Specialties = site.specialties,
                 EligibilityInformation = site.eligibilityInformation,
                 //BusinessHours = GetBusinessHours(site.businessHours),
-                Qualifications = site.qualifications                
+                Qualifications = site.qualifications
             };
-            return serviceProvider;
         }
 
         /// <summary>
@@ -106,10 +98,10 @@ namespace Access2Justice.Integration.Adapters
         /// <returns></returns>
         public dynamic GetServiceProviderAddress(dynamic siteAddress)
         {
-            string serviceProviderAddresses = string.Empty;
+            var serviceProviderAddresses = string.Empty;
             foreach (var address in siteAddress)
             {
-                string fullAddress = FormAddress(address.Line1.ToString()) + FormAddress(address.Line2.ToString()) + 
+                string fullAddress = FormAddress(address.Line1.ToString()) + FormAddress(address.Line2.ToString()) +
                     FormAddress(address.Line3.ToString()) + FormAddress(address.City.ToString()) + FormAddress(address.County.ToString()) +
                     FormAddress(address.State.ToString()) + FormAddress(address.Zip.ToString());
                 fullAddress = fullAddress.Remove(fullAddress.Length - 2);
@@ -126,11 +118,12 @@ namespace Access2Justice.Integration.Adapters
         /// <returns></returns>
         public static string FormAddress(string address)
         {
-            string formedAddress = string.Empty;
+            var formedAddress = string.Empty;
             if (!string.IsNullOrEmpty(address))
             {
                 formedAddress = address + ", ";
             }
+
             return formedAddress;
         }
 
@@ -160,6 +153,7 @@ namespace Access2Justice.Integration.Adapters
                     locations.Add(location);
                 }
             }
+
             return locations;
         }
 
@@ -170,7 +164,7 @@ namespace Access2Justice.Integration.Adapters
         /// <returns></returns>
         public static dynamic GetServiceProviderOrgUnit(dynamic siteAddress)
         {
-            string serviceProviderOrgUnit = string.Empty;            
+            var serviceProviderOrgUnit = string.Empty;
             foreach (var address in siteAddress)
             {
                 string stateName = address.State.ToString();
@@ -179,6 +173,7 @@ namespace Access2Justice.Integration.Adapters
                     serviceProviderOrgUnit = serviceProviderOrgUnit + stateName + " | ";
                 }
             }
+
             return serviceProviderOrgUnit.Remove(serviceProviderOrgUnit.Length - 3);
         }
 
@@ -189,8 +184,8 @@ namespace Access2Justice.Integration.Adapters
         /// <returns></returns>
         public static dynamic GetServiceProviderPhone(dynamic sitePhone)
         {
-            string serviceProviderTelephones = string.Empty;
-            string telephone = string.Empty;
+            var serviceProviderTelephones = string.Empty;
+            var telephone = string.Empty;
             foreach (var phone in sitePhone)
             {
                 if (phone.Type == "st")
@@ -200,6 +195,7 @@ namespace Access2Justice.Integration.Adapters
                 serviceProviderTelephones = serviceProviderTelephones + telephone;
                 serviceProviderTelephones = serviceProviderTelephones + " | ";
             }
+
             return serviceProviderTelephones.Remove(serviceProviderTelephones.Length - 3);
         }
 
@@ -210,7 +206,7 @@ namespace Access2Justice.Integration.Adapters
         /// <returns></returns>
         public dynamic GetAvailability(dynamic availabilityValues)
         {
-            Availability availability = new Availability();
+            var availability = new Availability();
             if (availabilityValues != null)
             {
                 availability = new Availability
@@ -220,6 +216,7 @@ namespace Access2Justice.Integration.Adapters
                     WaitTime = TimeSpan.Parse(availabilityValues.waitTime.ToString(), CultureInfo.InvariantCulture),
                 };
             }
+
             return availability;
         }
 
@@ -230,8 +227,8 @@ namespace Access2Justice.Integration.Adapters
         /// <returns></returns>
         public dynamic GetBusinessHours(dynamic businessHours)
         {
-            List<Schedule> schedules = new List<Schedule>();
-            Schedule schedule = new Schedule();
+            var schedules = new List<Schedule>();
+            var schedule = new Schedule();
             foreach (var businessHour in businessHours)
             {
                 TimeSpan openTime = TimeSpan.Parse(businessHour.opensAt.ToString(), CultureInfo.InvariantCulture);
@@ -239,6 +236,7 @@ namespace Access2Justice.Integration.Adapters
                 schedule = (new Schedule { Day = businessHour.day, OpensAt = openTime, ClosesAt = closeTime });
                 schedules.Add(schedule);
             }
+
             return schedules;
         }
 
@@ -249,7 +247,7 @@ namespace Access2Justice.Integration.Adapters
         /// <returns></returns>
         public dynamic GetEvaluatedRequirements(dynamic evaluatedRequirements)
         {
-            List<Expression> expressions = new List<Expression>();
+            var expressions = new List<Expression>();
             if (evaluatedRequirements != null)
             {
                 foreach (var evaluatedRequirement in evaluatedRequirements)
@@ -268,6 +266,7 @@ namespace Access2Justice.Integration.Adapters
                     });
                 }
             }
+
             return expressions;
         }
 
@@ -278,15 +277,16 @@ namespace Access2Justice.Integration.Adapters
         /// <returns></returns>
         public dynamic GetAcceptanceCriteria(dynamic acceptanceCriteriaValues)
         {
-            AcceptanceCriteria acceptanceCriteria = new AcceptanceCriteria();
+            var acceptanceCriteria = new AcceptanceCriteria();
             if (acceptanceCriteriaValues != null)
             {
                 acceptanceCriteria = new AcceptanceCriteria
                 {
                     Description = acceptanceCriteriaValues.description.ToString(),
                     EvaluatedRequirements = GetEvaluatedRequirements(acceptanceCriteriaValues.evaluatedRequirements)
-                };             
+                };
             }
+
             return acceptanceCriteria;
         }
 
@@ -297,7 +297,7 @@ namespace Access2Justice.Integration.Adapters
         /// <returns></returns>
         public dynamic GetOnboardingInfo(dynamic onboardingInfoValues)
         {
-            OnboardingInfo onboardingInfo = new OnboardingInfo();
+            var onboardingInfo = new OnboardingInfo();
             if (onboardingInfoValues != null)
             {
                 List<UserField> userField = new List<UserField>();
@@ -309,6 +309,7 @@ namespace Access2Justice.Integration.Adapters
                 }
                 onboardingInfo = new OnboardingInfo { UserFields = userField };
             }
+
             return onboardingInfo;
         }
 

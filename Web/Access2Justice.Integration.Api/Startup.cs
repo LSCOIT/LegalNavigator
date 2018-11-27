@@ -53,7 +53,7 @@ namespace Access2Justice.Integration.Api
 
             services.AddSingleton<IHttpClientService, HttpClientService>();
             services.AddSingleton<IServiceProvidersBusinessLogic, ServiceProvidersBusinessLogic>();
-            services.AddSingleton<IServiceProviderAdapter, ServiceProviderAdapter>();
+            services.AddSingleton<IServiceProviderAdapter, RtmServiceProviderAdapter>();
             ConfigureCosmosDb(services);
             services.AddSwaggerGen(c =>
             {
@@ -123,7 +123,8 @@ namespace Access2Justice.Integration.Api
                 });
             });
 
-            app.UseSwaggerUI(c => {
+            app.UseSwaggerUI(c =>
+            {
                 c.SwaggerEndpoint(Configuration.GetValue<string>("Api:VirtualPath") + "/swagger/v1/swagger.json", "Access2Justice Integration API");
             });
 

@@ -1,7 +1,7 @@
 ﻿using Access2Justice.Shared.Models.Integration;
+using Microsoft.Azure.Documents;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Azure.Documents;
 
 namespace Access2Justice.Integration.Api.Interfaces
 {
@@ -14,7 +14,7 @@ namespace Access2Justice.Integration.Api.Interfaces
         /// returns service provider based on id
         /// </summary>
         Task<dynamic> GetServiceProviderDocumentAsync(string id);
-        
+
         /// <summary>
         /// upserts service provider
         /// </summary>
