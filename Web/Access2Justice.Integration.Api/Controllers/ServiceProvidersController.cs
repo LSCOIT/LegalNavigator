@@ -32,9 +32,8 @@ namespace Access2Justice.Integration.Api.Controllers
         [ProducesResponseType(typeof(ServiceProvider), 200)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetServiceProviderAsync(string id)
-        {
-            var serviceProvider = await serviceProvidersBusinessLogic.GetServiceProviderDocumentAsync(id).ConfigureAwait(false);
-            return Ok(serviceProvider);
+        {            
+            return Ok(await serviceProvidersBusinessLogic.GetServiceProviderDocumentAsync(id).ConfigureAwait(false));
         }
 
         /// <summary>
@@ -47,8 +46,7 @@ namespace Access2Justice.Integration.Api.Controllers
         [ProducesResponseType(400)]
         public async Task<IActionResult> UpsertServiceProviders([FromBody]List<ServiceProvider> serviceProvider, string topicName)
         {
-            var response = await serviceProvidersBusinessLogic.UpsertServiceProviderDocumentAsync(serviceProvider, topicName).ConfigureAwait(false);
-            return Ok(response);
+            return Ok(await serviceProvidersBusinessLogic.UpsertServiceProviderDocumentAsync(serviceProvider, topicName).ConfigureAwait(false));
         }
     }
 }
