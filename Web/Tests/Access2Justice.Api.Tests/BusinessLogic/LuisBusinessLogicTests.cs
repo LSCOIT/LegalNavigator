@@ -27,14 +27,12 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
 
         #region Mocked Input Data
         private readonly string properLuisResponse = LuisBusinessLogicTestData.properLuisResponse;
-        private readonly string EmptyLuisResponse = LuisBusinessLogicTestData.EmptyLuisResponse;
         private readonly string meduimScoreLuisResponse = LuisBusinessLogicTestData.meduimScoreLuisResponse;
         private readonly string emptyLuisResponse = LuisBusinessLogicTestData.emptyLuisResponse;
         private readonly string noneLuisResponse = LuisBusinessLogicTestData.noneLuisResponse;
         private readonly string keyword = LuisBusinessLogicTestData.keyword;
         private readonly JArray topicsData = LuisBusinessLogicTestData.topicsData;
         private readonly JObject emptyTopicObject = LuisBusinessLogicTestData.emptyTopicObject;
-        private readonly JObject emptyResourceObject = LuisBusinessLogicTestData.emptyResourceObject;
         private readonly string searchText = LuisBusinessLogicTestData.searchText;
         private readonly JArray resourcesData = LuisBusinessLogicTestData.resourcesData;
         private readonly JArray guidedAssistantResourcesData = LuisBusinessLogicTestData.guidedAssistantResourcesData;
@@ -49,12 +47,9 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
 
         #region Mocked Output Data         
         private readonly string expectedLuisNoneIntent = LuisBusinessLogicTestData.expectedLuisNoneIntent;
-        private readonly int expectedLowerthreshold = LuisBusinessLogicTestData.expectedLowerthreshold;
         private readonly string expectedLuisTopIntent = LuisBusinessLogicTestData.expectedLuisTopIntent;
         private readonly string expectedTopicId = LuisBusinessLogicTestData.expectedTopicId;
         private readonly string expectedInternalResponse = LuisBusinessLogicTestData.expectedInternalResponse;
-        private readonly string expectedGuidedAssistant = LuisBusinessLogicTestData.expectedGuidedResponse;
-        private readonly string expectedEmptyGuidedAssistant = LuisBusinessLogicTestData.expectedEmptyGuidedResponse;
         private readonly string expectedWebResponse = LuisBusinessLogicTestData.expectedWebResponse;
         private readonly string expectedEmptyInternalResponse = LuisBusinessLogicTestData.expectedEmptyInternalResponse;
         #endregion
