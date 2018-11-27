@@ -1,22 +1,21 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Access2Justice.CosmosDb;
+using Access2Justice.Integration.Adapters;
+using Access2Justice.Integration.Api.BusinessLogic;
+using Access2Justice.Integration.Api.Interfaces;
+using Access2Justice.Integration.Interfaces;
+using Access2Justice.Shared;
+using Access2Justice.Shared.Interfaces;
+using Access2Justice.Shared.Utilities;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Azure.Documents;
+using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.IO;
 using System.Reflection;
-using Access2Justice.Integration.Api.Interfaces;
-using Access2Justice.Integration.Api.BusinessLogic;
-using Access2Justice.Shared.Interfaces;
-using Access2Justice.CosmosDb;
-using Microsoft.Azure.Documents;
-using Access2Justice.Shared.Utilities;
-using Access2Justice.Integration.Interfaces;
-using Access2Justice.Integration.Adapters;
-using Access2Justice.Shared.Rtm;
-using Access2Justice.Shared;
-using Microsoft.Azure.Documents.Client;
 
 namespace Access2Justice.Integration.Api
 {
@@ -52,12 +51,9 @@ namespace Access2Justice.Integration.Api
             IKeyVaultSettings keyVaultSettings = new KeyVaultSettings(Configuration.GetSection("KeyVault"));
             services.AddSingleton(keyVaultSettings);
 
-            IRtmSettings rtmSettings = new RtmSettings(Configuration.GetSection("RtmSettings"));
-            services.AddSingleton(rtmSettings);
-
             services.AddSingleton<IHttpClientService, HttpClientService>();
             services.AddSingleton<IServiceProvidersBusinessLogic, ServiceProvidersBusinessLogic>();
-            services.AddSingleton<IServiceProviderAdapter, ServiceProviderAdapter>();
+            services.AddSingleton<IServiceProviderAdapter, RtmServiceProviderAdapter>();
             ConfigureCosmosDb(services);
             services.AddSwaggerGen(c =>
             {
@@ -127,7 +123,8 @@ namespace Access2Justice.Integration.Api
                 });
             });
 
-            app.UseSwaggerUI(c => {
+            app.UseSwaggerUI(c =>
+            {
                 c.SwaggerEndpoint(Configuration.GetValue<string>("Api:VirtualPath") + "/swagger/v1/swagger.json", "Access2Justice Integration API");
             });
 

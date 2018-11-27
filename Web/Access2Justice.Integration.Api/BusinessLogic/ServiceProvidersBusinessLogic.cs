@@ -1,12 +1,12 @@
-﻿using Access2Justice.Shared.Interfaces;
-using Access2Justice.Integration.Api.Interfaces;
+﻿using Access2Justice.Integration.Api.Interfaces;
+using Access2Justice.Shared;
+using Access2Justice.Shared.Interfaces;
+using Access2Justice.Shared.Models;
+using Access2Justice.Shared.Models.Integration;
+using Access2Justice.Shared.Utilities;
+using Microsoft.Azure.Documents;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Access2Justice.Shared;
-using Access2Justice.Shared.Utilities;
-using Access2Justice.Shared.Models.Integration;
-using Access2Justice.Shared.Models;
-using Microsoft.Azure.Documents;
 
 namespace Access2Justice.Integration.Api.BusinessLogic
 {
@@ -54,7 +54,7 @@ namespace Access2Justice.Integration.Api.BusinessLogic
                 }
                 List<string> propertyNames = new List<string>() { Constants.ExternalId, Constants.ResourceType };
                 List<string> values = new List<string>() { serviceProviderObject.ExternalId, serviceProviderObject.ResourceType };
-                var serviceProviderDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourcesCollectionId, propertyNames, values).ConfigureAwait(false);             
+                var serviceProviderDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourcesCollectionId, propertyNames, values).ConfigureAwait(false);
                 if (serviceProviderDBData.Count == 0)
                 {
                     var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(serviceProviderObject);
@@ -69,9 +69,10 @@ namespace Access2Justice.Integration.Api.BusinessLogic
                     resources.Add(result);
                 }
             }
+
             return resources;
         }
-        
+
         /// <summary>
         /// returns topic tags
         /// </summary>
@@ -79,11 +80,10 @@ namespace Access2Justice.Integration.Api.BusinessLogic
         /// <returns></returns>
         public dynamic GetServiceProviderTopicTags(dynamic id)
         {
-            List<TopicTag> topicTags = new List<TopicTag>
+            return new List<TopicTag>
             {
                 new TopicTag { TopicTags = id }
             };
-            return topicTags;
         }
-    }          
+    }
 }

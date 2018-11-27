@@ -1,7 +1,5 @@
 ﻿using Access2Justice.Integration.Interfaces;
-using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
-using Access2Justice.Shared.Models.Integration;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

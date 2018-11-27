@@ -2,7 +2,6 @@
 using Access2Justice.Shared.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Access2Justice.Integration.Adapters
@@ -18,6 +17,5 @@ namespace Access2Justice.Integration.Adapters
         {
             throw new NotImplementedException();
         }
-
     }
 }

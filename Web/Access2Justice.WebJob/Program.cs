@@ -5,6 +5,8 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using Access2Justice.Shared;
+using Access2Justice.Shared.Interfaces;
+using Access2Justice.Shared.Rtm;
 
 namespace Access2Justice.WebJob
 {
@@ -48,6 +50,9 @@ namespace Access2Justice.WebJob
             services.AddSingleton<IHttpClientService, HttpClientService>();
             services.AddTransient<Functions, Functions>();            
             services.AddLogging(builder => builder.AddConsole());
+
+            IRtmSettings rtmSettings = new RtmSettings(Configuration.GetSection("RtmSettings"));
+            services.AddSingleton(rtmSettings);
         }
     }
 }
