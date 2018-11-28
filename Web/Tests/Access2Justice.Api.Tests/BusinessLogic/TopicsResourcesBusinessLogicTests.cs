@@ -51,7 +51,6 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly JArray parentTopicIdData = TopicResourceTestData.parentTopicIdData;
         private readonly JArray locationData = TopicResourceTestData.locationData;
         private readonly JArray conditionData = TopicResourceTestData.conditionData;
-        private readonly JArray quickLinksData = TopicResourceTestData.quickLinksData;
         private readonly JArray emptyResourceData = TopicResourceTestData.emptyResourceData;
         private readonly JArray reviewerData = TopicResourceTestData.reviewerData;
         private readonly JArray contentData = TopicResourceTestData.contentData;
@@ -61,7 +60,6 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly string emptyTopicTagData = "";
         private readonly JArray emptyLocationData = TopicResourceTestData.emptyLocationData;
         private readonly JArray emptyConditionObject = TopicResourceTestData.emptyConditionObject;
-        private readonly JArray emptyQuickLinksData = TopicResourceTestData.emptyQuickLinksData;
         private readonly JArray EmptyReferences = TopicResourceTestData.EmptyReferences;
         private readonly JArray emptyReviewerData = TopicResourceTestData.emptyReviewerData;
         private readonly JArray emptyContentData = TopicResourceTestData.emptyContentData;
@@ -79,11 +77,9 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly JArray expectedTopicsData = TopicResourceTestData.expectedTopicsData;
         private readonly string expectedTopicTagData = TopicResourceTestData.expectedTopicTagData;
         private readonly string expectedParentTopicIdData = TopicResourceTestData.expectedParentTopicIdData;
-        private readonly JArray expectedQuickLinksData = TopicResourceTestData.expectedQuickLinksData;
         private readonly JArray expectedLocationData = TopicResourceTestData.expectedLocationData;
         private readonly JArray expectedReferenceLocationData = TopicResourceTestData.expectedReferenceLocationData;
         private readonly JArray expectedConditionData = TopicResourceTestData.expectedConditionData;
-        private readonly JArray expectedQuickLinkData = TopicResourceTestData.expectedQuickLinkData;
         private readonly JArray expectedResourceReferences = TopicResourceTestData.expectedResourceReferences;
         private readonly JArray expectedActionPlanReferences = TopicResourceTestData.expectedActionPlanReferences;
         private readonly JArray expectedReferencesData = TopicResourceTestData.expectedReferencesData;
