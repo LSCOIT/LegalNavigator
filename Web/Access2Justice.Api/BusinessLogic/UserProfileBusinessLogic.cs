@@ -47,7 +47,7 @@ namespace Access2Justice.Api.BusinessLogic
             }
             else if (type == "plan" && userProfile?.PersonalizedActionPlanId != null && userProfile?.PersonalizedActionPlanId != Guid.Empty)
             {
-                userResourcesDBData = await dbClient.FindItemsWhereAsync(dbSettings.UserResourcesCollectionId, Constants.Id, Convert.ToString(userProfile.PersonalizedActionPlanId, CultureInfo.InvariantCulture));
+                userResourcesDBData = await dbClient.FindItemsWhereAsync(dbSettings.ActionPlansCollectionId, Constants.Id, Convert.ToString(userProfile.PersonalizedActionPlanId, CultureInfo.InvariantCulture));
             }
             return userResourcesDBData;
         }

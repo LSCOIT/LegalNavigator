@@ -9,7 +9,7 @@
   type="ball-clip-rotate">
   <p style="font-size: 20px; color: white">Loading...</p>
 </ngx-spinner>
-
+<app-browser-tab-close *ngIf="showAlert"></app-browser-tab-close>
 <router-outlet (activate)="onActivate($event)"></router-outlet>
 <app-footer></app-footer>
 
