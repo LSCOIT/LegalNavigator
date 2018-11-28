@@ -5,7 +5,7 @@ import { NgForm } from '@angular/forms';
 import { environment } from '../../../environments/environment';
 import { StaticResourceService } from '../../shared/static-resource.service';
 import { AdminService } from '../admin.service';
-import { MapLocation } from '../../shared/map/map';
+import { MapLocation, LocationDetails } from '../../shared/map/map';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 
@@ -26,6 +26,7 @@ export class PrivacyPromiseAdminComponent implements OnInit {
   blobUrl: string = environment.blobUrl;
   location: MapLocation;
   mapLocation: MapLocation;
+  locationDetails: LocationDetails;
   state: string;
 
   constructor(
@@ -53,7 +54,8 @@ export class PrivacyPromiseAdminComponent implements OnInit {
     this.newPrivacyContent = privacyForm.value;
     this.mapSectionDescription(privacyForm.value);
     if (sessionStorage.getItem("globalMapLocation")) {
-      this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+      this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+      this.mapLocation = this.locationDetails.location;
     }
     let params = {
       "description": privacyForm.value.pageDescription,

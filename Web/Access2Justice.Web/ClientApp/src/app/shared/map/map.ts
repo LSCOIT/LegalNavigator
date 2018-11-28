@@ -3,12 +3,16 @@ export interface MapLocation {
   city?: string;
   county?: string;
   zipCode?: string;
-  locality?: string;
-  address?: string;
 }
 
 export interface LocationDetails {
   location?: MapLocation;
+  displayLocationDetails?: DisplayLocationDetails;
   country?: string;
   formattedAddress?: string;
+}
+
+export interface DisplayLocationDetails {
+  locality?: string;
+  address?: string;
 }

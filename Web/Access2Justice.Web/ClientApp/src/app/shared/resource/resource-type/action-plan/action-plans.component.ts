@@ -8,6 +8,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Title } from '@angular/platform-browser/src/browser/title';
 import { ToastrService } from 'ngx-toastr';
 import { Global, UserStatus } from '../../../../global';
+import { HttpParams } from '@angular/common/http';
+import { NavigateDataService } from '../../../navigate-data.service';
 
 @Component({
   selector: 'app-action-plans',
@@ -21,23 +23,18 @@ export class ActionPlansComponent implements OnChanges {
   updatedPlan: any;
   modalRef: BsModalRef;
   url: any;
+  safeUrl: any;
   isCompleted: boolean = false;
   isUser: boolean = false;
   isChecked: boolean = false;
-  personalizedPlanStep: PlanStep = { stepId: '', title: '', description: '', order: 1, isComplete: false, resources: [], topicIds: [] };
-  personalizedPlanSteps: Array<PlanStep>;
-  planTopic: PlanTopic = { topicId: '', steps: this.personalizedPlanSteps };
   planTopics: Array<PlanTopic>;
-  resourceIds: Array<string>;
   personalizedPlan: PersonalizedPlan = { id: '', topics: this.planTopics, isShared: false };
-  selectedPlanDetails: any = { planDetails: [], topicId: '' };
-  topics: Array<any> = [];
-  filteredtopicsList: Array<PersonalizedPlanTopic> = [];
+  selectedPlanDetails: any;
   tempFilteredtopicsList: Array<PersonalizedPlanTopic> = [];
-  personalizedPlanTopic: PersonalizedPlanTopic = { topic: {}, isSelected: false };
   @Output() notifyFilterTopics = new EventEmitter<object>();
   removePlanDetails: any;
   plan: any;
+  sortOrder: Array<string> = ["isComplete", "order"];
   resourceTypeList = [
     'Forms',
     'Guided Assistant',
@@ -51,8 +48,9 @@ export class ActionPlansComponent implements OnChanges {
     private personalizedPlanService: PersonalizedPlanService,
     public sanitizer: DomSanitizer,
     private toastr: ToastrService,
-    private global: Global) {
-    this.sanitizer = sanitizer;    
+    private global: Global,
+    private navigateDataService: NavigateDataService) {
+    this.sanitizer = sanitizer;
     if (global.role === UserStatus.Shared && location.pathname.indexOf(global.shareRouteUrl) >= 0) {
       global.showMarkComplete = false;
       global.showDropDown = false;
@@ -75,117 +73,34 @@ export class ActionPlansComponent implements OnChanges {
 
   sortStepsByOrder(planDetails) {
     planDetails.topics.forEach(topic => {
-      topic.steps = this.orderBy(topic.steps, "isComplete");
+      topic.steps = this.orderBy(topic.steps, this.sortOrder);
     });
   }
 
   checkCompleted(event, topicId, stepId) {
     this.isChecked = event.target.checked;
-    this.getPlanDetails(topicId, stepId, this.isChecked);
-  }
-
-  getPlanDetails(topicId, stepId, isChecked) {
-    this.personalizedPlanService.getActionPlanConditions(this.planDetails.id)
-      .subscribe(plan => {
-        if (plan) {
-          this.topics = plan.topics;
-        }
-        this.plan = this.personalizedPlanService.getPlanDetails(this.topics, plan);
-        this.updateMarkCompleted(topicId, stepId, isChecked);
-        this.updateProfilePlan(this.isChecked);
-      });
-  }
-
-  updateMarkCompleted(topicId, stepId, isChecked) {
-    this.planTopics = [];
-    this.personalizedPlanSteps = [];
-    this.planTopic = { topicId: '', steps: this.personalizedPlanSteps };
-    this.plan.topics.forEach(item => {
-      if (item.topicId === topicId) {
-        this.personalizedPlanSteps = this.updateStepTagForMatchingTopicId(item, stepId, isChecked);
-      } else {
-        this.personalizedPlanSteps = this.stepTagForNonMatchingTopicId(item);
+    this.planDetails.topics.forEach(topic => {
+      if (topic.topicId === topicId) {
+        topic.steps.forEach(step => {
+          if (step.stepId === stepId) {
+            step.isComplete = this.isChecked;
+          }
+        });
+        topic.steps = this.orderBy(topic.steps, this.sortOrder);
       }
-      this.planTopic = { topicId: item.topicId, steps: this.personalizedPlanSteps };
-      this.planTopics.push(this.planTopic);
     });
-    this.personalizedPlan = { id: this.planDetails.id, topics: this.planTopics, isShared: this.planDetails.isShared };
-  }
-
-  updateStepTagForMatchingTopicId(item, stepId, isChecked): Array<PlanStep> {
-    this.personalizedPlanSteps = [];
-    item.steps.forEach(step => {
-      this.personalizedPlanStep = {
-        stepId: step.stepId, title: step.title, description: step.description,
-        order: step.order, isComplete: step.isComplete, resources: this.personalizedPlanService.getResourceIds(step.resources), topicIds: []
-      };
-      if (step.stepId === stepId) {
-        this.personalizedPlanStep.isComplete = isChecked;
-      }
-      this.personalizedPlanSteps.push(this.personalizedPlanStep);
-    });
-    return this.personalizedPlanSteps;
-  }
-
-  stepTagForNonMatchingTopicId(item): Array<PlanStep> {
-    this.personalizedPlanSteps = [];
-    item.steps.forEach(step => {
-      this.personalizedPlanStep = {
-        stepId: step.stepId, title: step.title, description: step.description,
-        order: step.order, isComplete: step.isComplete, resources: this.personalizedPlanService.getResourceIds(step.resources), topicIds: []
-      };
-      this.personalizedPlanSteps.push(this.personalizedPlanStep);
-    });
-    return this.personalizedPlanSteps;
-  }
-
-  updateProfilePlan(isChecked) {
-    const params = {
-      "id": this.personalizedPlan.id,
-      "topics": this.personalizedPlan.topics,
-      "isShared": this.personalizedPlan.isShared
-    }
-    this.personalizedPlanService.userPlan(params)
-      .subscribe(response => {
-        if (response) {
-          this.filteredtopicsList = [];
-          response.topics.forEach(topic => {
-            for (let i = 0; i < this.tempFilteredtopicsList.length; i++) {
-              if (topic.topicId === this.tempFilteredtopicsList[i].topic.topicId) {
-                this.personalizedPlanTopic = { topic: topic, isSelected: this.tempFilteredtopicsList[i].isSelected };
-                this.filteredtopicsList.push(this.personalizedPlanTopic);
-              }
-            }
-          });
-          this.getUpdatedPersonalizedPlan(response, isChecked);
-        }
-      });
-  }
-
-  getUpdatedPersonalizedPlan(response, isChecked) {
-    this.notifyFilterTopics.emit({ plan: response, topicsList: this.filteredtopicsList });
-    this.loadPersonalizedPlan();
-    if (isChecked) {
-      this.isCompleted = true;
-      this.toastr.success("Step Completed.");
+    this.navigateDataService.setData(this.planDetails);
+    if (this.isChecked) {
+      this.personalizedPlanService.showSuccess("Step Completed");
     } else {
-      this.isCompleted = false;
-      this.toastr.success("Step Added Back");
+      this.personalizedPlanService.showSuccess("Step Added Back");
     }
-  }
-
-  loadPersonalizedPlan() {
-    this.planDetails.topics = [];
-    this.filteredtopicsList.forEach(topic => {
-      if (topic.isSelected) {
-        this.planDetails.topics.push(topic);
-      }
-    });
   }
 
   resourceUrl(url) {
-    this.url = this.sanitizer.bypassSecurityTrustResourceUrl(url);
-    return this.url;
+    this.url = url.replace("watch?v=", "embed/");
+    this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.url);
+    return this.safeUrl;
   }
 
   openModal(template: TemplateRef<any>) {
@@ -193,26 +108,15 @@ export class ActionPlansComponent implements OnChanges {
   }
 
   planTagOptions(topicId) {
-    this.planTopics = [];
-    this.planTopic = { topicId: '', steps: this.personalizedPlanSteps };
-    this.removePlanDetails = [];
     this.getRemovePlanDetails();
+    this.planTopics = [];
     if (this.removePlanDetails.length > 0) {
-      this.removePlanDetails.forEach(item => {
-        this.personalizedPlanSteps = [];
-        item.topic.steps.forEach(step => {
-          this.personalizedPlanStep = {
-            stepId: step.stepId, title: step.title, description: step.description,
-            order: step.order, isComplete: step.isComplete, resources: this.personalizedPlanService.getResourceIds(step.resources), topicIds: []
-          };
-          this.personalizedPlanSteps.push(this.personalizedPlanStep);
-        });
-        this.planTopic = { topicId: item.topic.topicId, steps: this.personalizedPlanSteps };
-        this.planTopics.push(this.planTopic);
+      this.removePlanDetails.forEach(planTopic => {
+        this.planTopics.push(planTopic.topic);
       });
     }
     this.personalizedPlan = { id: this.planDetails.id, topics: this.planTopics, isShared: this.planDetails.isShared };
-    this.selectedPlanDetails = { planDetails: this.personalizedPlan, topicId: topicId };
+    this.selectedPlanDetails = { planDetails: this.personalizedPlan, topic: topicId };
   }
 
   getRemovePlanDetails() {
@@ -226,16 +130,22 @@ export class ActionPlansComponent implements OnChanges {
     this.getPersonalizedPlan(this.planDetails);
     this.tempFilteredtopicsList = this.topicsList;
   }
-
+  
   orderBy(items, field) {
     return items.sort((a, b) => {
-      if (a[field] < b[field]) {
+      if (a[field[0]] < b[field[0]]) {
         return -1;
-      } else if (a[field] > b[field]) {
+      } else if (a[field[0]] > b[field[0]]) {
         return 1;
       } else {
+        if (a[field[1]] < b[field[1]]) {
+          return -1;
+        } else if (a[field[1]] > b[field[1]]) {
+          return 1;
+        }
         return 0;
       }
     });
   }
+
 }

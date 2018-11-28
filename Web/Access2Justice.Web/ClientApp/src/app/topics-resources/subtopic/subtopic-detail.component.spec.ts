@@ -34,13 +34,13 @@ describe('SubtopicDetailComponent', () => {
   let navigateDataService: NavigateDataService;
   let topicService: TopicService;
   let resourceType: string = 'Action Plans';
-  let mockMapLocation: MapLocation = {
-    state: 'Sample State',
-    city: 'Sample City',
-    county: 'Sample County',
-    zipCode: '1009203',
-    locality: 'Sample Location',
-    address: 'Sample Address'
+  let mockMapLocation = {
+    location: {
+      state: 'Sample State',
+      city: 'Sample City',
+      county: 'Sample County',
+      zipCode: '1009203'
+    }
   };
   let topIntent = 'test';
   let searchResults: any = {
@@ -147,7 +147,10 @@ describe('SubtopicDetailComponent', () => {
 
   it("should call clickShowMore when Show More button is clicked", () => {
     component.topIntent = 'test2';
+    let mockLocationDetails = { location: mockMapLocation };
     mockMapService.updateLocation.and.returnValue(mockMapLocation);
+    spyOn(sessionStorage, 'getItem')
+      .and.returnValue(JSON.stringify(mockLocationDetails));
     mockPaginationService.getPagedResources.and.returnValue(of([searchResults]));
     const result = 'test';
     mockNavigateDataService.setData.and.returnValue(of([result]));

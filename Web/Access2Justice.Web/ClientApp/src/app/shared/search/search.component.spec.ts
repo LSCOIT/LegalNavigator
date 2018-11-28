@@ -102,18 +102,11 @@ describe('SearchComponent', () => {
           }
         }
       }
-    mockMapLocation = `{
-      "state":"Alaska",
-      "locality":"Alaska",
-      "address":"Alaska"
-    }`
+    mockMapLocation = {location:{
+      "state": "Alaska"}
+    };
     mockMapLocationParsed = {
-      state: "Alaska",
-      locality: "Alaska",
-      address: "Alaska",
-      city: "",
-      county: "",
-      zipCode: ""
+      state: "Alaska"
     }
     store = {};
     mockSessionStorage = {
@@ -124,8 +117,7 @@ describe('SearchComponent', () => {
         delete store[key];
       }
     };
-    spyOn(sessionStorage, 'getItem')
-      .and.callFake(mockSessionStorage.getItem);
+    
     spyOn(sessionStorage, 'removeItem')
       .and.callFake(mockSessionStorage.removeItem);
     TestBed.configureTestingModule({
@@ -180,7 +172,8 @@ describe('SearchComponent', () => {
         inputText: "family"
       }
     }
-    store.globalMapLocation = mockMapLocation;
+    spyOn(sessionStorage, 'getItem')
+      .and.returnValue(JSON.stringify(mockMapLocation));
     mockSearchService.search.and.returnValue(of(mockResponse));
     component.onSubmit(mockSearchForm);
     expect(component.luisInput["Sentence"]).toEqual("family");

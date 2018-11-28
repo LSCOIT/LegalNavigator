@@ -31,8 +31,6 @@ describe('TopicService', () => {
         store[key] = `${value}`;
       }
     };
-    spyOn(sessionStorage, 'getItem')
-      .and.callFake(mockSessionStorage.getItem);
     spyOn(sessionStorage, 'setItem')
       .and.callFake(mockSessionStorage.setItem);
   });
@@ -43,8 +41,10 @@ describe('TopicService', () => {
      { id: '3', title: 'Public Benefit', icon: '' }
    ];
    let mockMapLocation: MapLocation = { state: 'test', city: '', county: '', zipCode: '' };
-   sessionStorage.setItem("globalMapLocation", JSON.stringify(mockMapLocation));
-   const mockResponse = Observable.of(mockTopics);
+    let mockLocationDetails = { location: mockMapLocation };
+    spyOn(sessionStorage, 'getItem')
+      .and.returnValue(JSON.stringify(mockLocationDetails));
+    const mockResponse = Observable.of(mockTopics);
    httpSpy.post.and.returnValue(mockResponse);
    service.getTopics().subscribe(topics => {
      service.loadStateName();

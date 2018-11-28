@@ -476,8 +476,10 @@ namespace Access2Justice.Api.Controllers
         [Route("topics/document/upsert")]
         public async Task<IActionResult> UpsertTopicDocument([FromBody]dynamic topic)
         {
-            List<dynamic> topicsList = new List<dynamic>();
-            topicsList.Add(topic);
+            List<dynamic> topicsList = new List<dynamic>
+            {
+                topic
+            };
             if (await userRoleBusinessLogic.ValidateOrganizationalUnit(topic?.organizationalUnit))
             {
                 var topics = await topicsResourcesBusinessLogic.UpsertTopicDocumentAsync(topicsList);
@@ -494,8 +496,10 @@ namespace Access2Justice.Api.Controllers
         [Route("resources/document/upsert")]
         public async Task<IActionResult> UpsertResourceDocument([FromBody]dynamic resource)
         {
-            List<dynamic> resourcesList = new List<dynamic>();
-            resourcesList.Add(resource);
+            List<dynamic> resourcesList = new List<dynamic>
+            {
+                resource
+            };
             if (await userRoleBusinessLogic.ValidateOrganizationalUnit(resource?.organizationalUnit))
             {
                 var resources = await topicsResourcesBusinessLogic.UpsertResourceDocumentAsync(resourcesList);

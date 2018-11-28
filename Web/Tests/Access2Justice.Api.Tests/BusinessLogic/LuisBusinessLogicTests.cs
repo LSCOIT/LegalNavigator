@@ -34,7 +34,6 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         private readonly string keyword = LuisBusinessLogicTestData.keyword;
         private readonly JArray topicsData = LuisBusinessLogicTestData.topicsData;
         private readonly JObject emptyTopicObject = LuisBusinessLogicTestData.emptyTopicObject;
-        private readonly JObject emptyResourceObject = LuisBusinessLogicTestData.emptyResourceObject;
         private readonly string searchText = LuisBusinessLogicTestData.searchText;
         private readonly JArray resourcesData = LuisBusinessLogicTestData.resourcesData;
         private readonly JArray guidedAssistantResourcesData = LuisBusinessLogicTestData.guidedAssistantResourcesData;
@@ -49,7 +48,6 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
 
         #region Mocked Output Data         
         private readonly string expectedLuisNoneIntent = LuisBusinessLogicTestData.expectedLuisNoneIntent;
-        private readonly int expectedLowerthreshold = LuisBusinessLogicTestData.expectedLowerthreshold;
         private readonly string expectedLuisTopIntent = LuisBusinessLogicTestData.expectedLuisTopIntent;
         private readonly string expectedTopicId = LuisBusinessLogicTestData.expectedTopicId;
         private readonly string expectedInternalResponse = LuisBusinessLogicTestData.expectedInternalResponse;

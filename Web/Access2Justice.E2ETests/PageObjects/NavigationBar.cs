@@ -1,12 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-//using TechTalk.SpecFlow.Assist;
-//using OpenQA.Selenium.Support.PageObjects;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.PageObjects;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using TechTalk.SpecFlow;
 
 namespace Access2Justice.E2ETests.PageObjects
@@ -28,9 +25,6 @@ namespace Access2Justice.E2ETests.PageObjects
 
         [FindsBy(How = How.Id, Using = "search-box")]
         private IWebElement searchLocationInputBox;
-
-        [FindsBy(How = How.Id, Using = "search-location-button")]
-        private IWebElement searchLocationButton;
 
         [FindsBy(How = How.Id, Using = "update-location-button")]
         private IWebElement updateLocationButton;
