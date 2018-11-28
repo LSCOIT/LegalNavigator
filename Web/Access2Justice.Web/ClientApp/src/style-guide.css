@@ -177,7 +177,7 @@ button:focus {
   }
 
 
-  ul li .check {
+  ul li .check { //CheckBorder
   display: block;
   position: absolute;
   border: 1px solid #7E7E7E;
@@ -189,6 +189,10 @@ button:focus {
   transition: border .25s linear;
   -webkit-transition: border .25s linear;
 }
+
+  .p text-capitalize:hover > .check{
+    border-color: black;
+  }
 
 input, textarea.form-control, select option {
   font-size: 16px !important;

@@ -29,8 +29,12 @@ h3 {
 }
 
   .button-container ul li label:hover {
-    background: #F4F4F4;
-    /*text-align: center;*/
+    background: #80bdff;
+    transition: all ease-in 0.25s;
+  }
+
+  .button-container ul li label :hover .check {
+    border-color: black;
     transition: all ease-in 0.25s;
   }
 
