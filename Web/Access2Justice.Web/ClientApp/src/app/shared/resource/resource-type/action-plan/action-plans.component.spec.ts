@@ -12,6 +12,7 @@ import { ArrayUtilityService } from '../../../array-utility.service';
 import { ToastrService, ToastrModule, ToastPackage } from 'ngx-toastr';
 import { PersonalizedPlanTopic } from '../../../../guided-assistant/personalized-plan/personalized-plan';
 import { BsModalService } from 'ngx-bootstrap/modal';
+import { of } from 'rxjs/observable/of';
 
 describe('ActionPlansComponent', () => {
   let component: ActionPlansComponent;
@@ -272,10 +273,13 @@ describe('ActionPlansComponent', () => {
     ]
   };
   let modalService: BsModalService;
+  let global;
 
   beforeEach(async(() => {
-    navigateDataService = jasmine.createSpyObj(['setData']);
-    personalizedPlanService = jasmine.createSpyObj(['showSuccess']);
+    navigateDataService = jasmine.createSpyObj(['setData','getData']);
+    personalizedPlanService = jasmine.createSpyObj(['showSuccess','userPlan']);
+    navigateDataService.getData.and.returnValue(JSON.stringify(mockPlanDetails));
+
     TestBed.configureTestingModule({
       imports: [
         HttpClientModule, ToastrModule.forRoot(), ModalModule.forRoot()
@@ -287,7 +291,8 @@ describe('ActionPlansComponent', () => {
         DomSanitizer,
         { provide: NavigateDataService, useValue: navigateDataService },
         BsModalService,
-        Global,
+        {
+          provide: Global, useValue: { global, userId:"User Id" }},
         ArrayUtilityService,
         ToastrService]
     })
@@ -347,6 +352,20 @@ describe('ActionPlansComponent', () => {
     spyOn(component, 'orderBy');
     component.sortStepsByOrder(mockPlanDetails);
     expect(component.orderBy).toHaveBeenCalled();
+  });
+
+  it("should call userPlan service in updatePlanToProfile method", () => {
+    personalizedPlanService.userPlan.and.returnValue(of(mockPlanDetails));
+    spyOn(component, 'showStepCompleteStatus');
+    component.updatePlanToProfile();
+    expect(personalizedPlanService.userPlan).toHaveBeenCalled();
+    expect(component.showStepCompleteStatus).toHaveBeenCalled();
+  });
+
+  it("should call showSuccess service in showStepCompleteStatus method", () => {
+    component.isChecked = true;
+    component.showStepCompleteStatus();
+    expect(personalizedPlanService.showSuccess).toHaveBeenCalled();
   });
 
   it("should call modalService show when openModal is called", () => {
