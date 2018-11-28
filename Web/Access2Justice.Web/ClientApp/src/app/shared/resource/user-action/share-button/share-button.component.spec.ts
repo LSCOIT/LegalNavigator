@@ -12,6 +12,8 @@ import { expand } from 'rxjs/operators';
 import { TemplateRef } from '@angular/core';
 import { empty } from 'rxjs/observable/empty';
 import { MsalService } from '@azure/msal-angular';
+import { NavigateDataService } from '../../../navigate-data.service';
+import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
 
 
 describe('ShareButtonComponent', () => {
@@ -32,6 +34,9 @@ describe('ShareButtonComponent', () => {
   let fixture: ComponentFixture<ShareButtonComponent>;
   let shareService: ShareService;
   let activeRoute: ActivatedRoute;
+  let personalizedPlanService;
+  let navigateDataService;
+  let global;
   let mockUserId = "7BAFDE5D6707167889AE7DBB3133CFF2CB4E06DA356F9E8982B9286F471799F18B631BD6BE3784501DE246AB9FF446E5437B48372C5BFEB170E6D11ACF6AB797";
   let mockSessionKey = "showModal";
   let mockBlank = "";
@@ -43,7 +48,6 @@ describe('ShareButtonComponent', () => {
     Url: "/topics/bdc07e7a-1f06-4517-88d8-9345bb87c3cf",
     ResourceId: "bdc07e7a-1f06-4517-88d8-9345bb87c3cf",
     UserId: "ACB833BB3F817C2FBE5A72CE37FE7AB9CD977E58580B9832B9ů64748F3098C9FE3374106B6F4A2B157FE091CA6332C88A89B",
-
   };
   let mockIstopics = "Topics";
   let mockIsGuidedAssistant = "Guided Assistant";
@@ -57,14 +61,17 @@ describe('ShareButtonComponent', () => {
       imports: [HttpClientModule],
       declarations: [ShareButtonComponent],
       providers: [
-        { provide: ActivatedRoute, useValue: ActivateRouteStub },
+        { provide: ActivatedRoute, useValue: { snapshot: { params: { 'id': '123' } } } },
         BsModalRef,
         BsModalService,
         ComponentLoaderFactory,
         PositioningService,
         ArrayUtilityService,
         ShareService,
-        Global,
+        { provide: Global, useValue: { global, userId: 'UserId' } },
+        { provide: NavigateDataService, useValue: navigateDataService },
+        { provide: Router, useValue: { url: '/plan/id' } },
+        { provide: PersonalizedPlanService, useValue: personalizedPlanService },
         { provide: MsalService, useValue: msalService },
       ]
     })

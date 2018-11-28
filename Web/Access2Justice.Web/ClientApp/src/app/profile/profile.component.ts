@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PersonalizedPlanService } from '../guided-assistant/personalized-plan/personalized-plan.service';
-import { PersonalizedPlanTopic } from '../guided-assistant/personalized-plan/personalized-plan';
+import { PersonalizedPlanTopic, PersonalizedPlan } from '../guided-assistant/personalized-plan/personalized-plan';
 import { IResourceFilter } from '../shared/search/search-results/search-results.model';
 import { EventUtilityService } from '../shared/event-utility.service';
 import { HttpParams } from '@angular/common/http';
@@ -17,17 +17,18 @@ import { environment } from '../../environments/environment';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {    
-  
-  topics: string;
+
+  topics: any;
   planDetails: any = [];
   resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: [], PageNumber: 0, Location: '', ResourceIds: [], IsResourceCountRequired: false };
   personalizedResources: { resources: any, topics: any, webResources: any };
   isSavedResources: boolean = false;
   planId: string;
+  plan: PersonalizedPlan;
   planDetailTags: any;
   topicsList: Array<PersonalizedPlanTopic> = [];
   tempTopicsList: Array<PersonalizedPlanTopic> = [];
-  planTopic: PersonalizedPlanTopic = { topic: {}, isSelected: true };
+  planTopic: PersonalizedPlanTopic;
   userId: string;
   userName: string;
   topicIds: string[] = [];
@@ -63,22 +64,14 @@ export class ProfileComponent implements OnInit {
   }
 
   getTopics(): void {
-    if (this.planId) {
-      this.spinner.show();
-      this.personalizedPlanService.getActionPlanConditions(this.planId)
-        .subscribe(plan => {
-          this.spinner.hide();
-          if (plan) {
-            this.topics = plan.topics;
-            this.planDetailTags = plan;
-          }
-          this.topicsList = this.personalizedPlanService.createTopicsList(this.topics);
-          this.planDetails = this.personalizedPlanService.getPlanDetails(this.topics, this.planDetailTags);
-        }, error => {
-          this.spinner.hide();
-          this.router.navigate(['/error']);
-        });
+    this.spinner.show();
+    if (this.plan) {
+      this.topics = this.plan.topics;
+      this.planDetailTags = this.plan;
+      this.topicsList = this.personalizedPlanService.createTopicsList(this.topics);
+      this.planDetails = this.personalizedPlanService.getPlanDetails(this.topics, this.planDetailTags);
     }
+    this.spinner.hide();
   }
 
   filterPlan(topic) {
@@ -90,7 +83,6 @@ export class ProfileComponent implements OnInit {
   filterTopicsList(topic) {
     this.topicsList = [];
     this.tempTopicsList.forEach(topicDetail => {
-      this.planTopic = { topic: {}, isSelected: true };
       if (topicDetail.topic.name === topic) {
         this.planTopic = { topic: topicDetail.topic, isSelected: !topicDetail.isSelected };
       } else {
@@ -155,6 +147,7 @@ export class ProfileComponent implements OnInit {
       .subscribe(response => {
         if (response) {
           this.planId = response[0].id;
+          this.plan = response[0];
         }
         this.getTopics();
       });
@@ -171,6 +164,8 @@ export class ProfileComponent implements OnInit {
     else if (this.global.isShared) {
       this.userId = this.global.sharedUserId;
       this.userName = this.global.sharedUserName;
+      this.getPersonalizedPlan();
+      this.showRemove = true;
     }
   }
 
