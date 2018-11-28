@@ -37,18 +37,18 @@ namespace Access2Justice.WebJob
         {
             try
             {
-                var serviceProviders = serviceProviderAdapter.GetServiceProviders("Family").ConfigureAwait(false);
-                var result = JsonConvert.SerializeObject(serviceProviders);
-                if (!string.IsNullOrEmpty(result))
+                var serviceProviders = serviceProviderAdapter.GetServiceProviders("Family").Result;
+                if (serviceProviders?.Count > 0)
                 {
-                    var bufferSP = System.Text.Encoding.UTF8.GetBytes(result);
+                    var spSerialized = JsonConvert.SerializeObject(serviceProviders);
+                    var bufferSP = System.Text.Encoding.UTF8.GetBytes(spSerialized);
                     var byteContentSP = new ByteArrayContent(bufferSP);
                     byteContentSP.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
                     var spResponse = httpClient.PostAsync(a2JSettings.ServiceProviderURL, byteContentSP).Result;
                     string spResult = spResponse.Content.ReadAsStringAsync().Result;
-                    if (!string.IsNullOrEmpty(spResult))
-                    {                        
+                    if (spResponse.IsSuccessStatusCode)
+                    {
                         logger.LogInformation(spResult);
                         logger.LogInformation("Transaction completed successfully");
                     }
