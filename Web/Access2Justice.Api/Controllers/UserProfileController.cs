@@ -36,6 +36,10 @@ namespace Access2Justice.Api.Controllers
         public async Task<IActionResult> GetUserDataAsync(string oid, string type)
         {
             var users = await userProfileBusinessLogic.GetUserResourceProfileDataAsync(oid, type);
+            if (users == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound);
+            }
             return Ok(users);
         }
 
@@ -54,6 +58,10 @@ namespace Access2Justice.Api.Controllers
         public async Task<IActionResult> GetUserProfileDataAsync(string oid)
         {
             UserProfile users = await userProfileBusinessLogic.GetUserProfileDataAsync(oid);
+            if (users == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound);
+            }
             return Ok(users);
         }
 
@@ -72,6 +80,10 @@ namespace Access2Justice.Api.Controllers
         public async Task<IActionResult> UpsertUserPersonalizedPlanAsync([FromBody]ProfileResources profileResources)
         {
             var users = await userProfileBusinessLogic.UpsertUserSavedResourcesAsync(profileResources);
+            if (users == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound);
+            }
             return Ok(users);
         }
 
