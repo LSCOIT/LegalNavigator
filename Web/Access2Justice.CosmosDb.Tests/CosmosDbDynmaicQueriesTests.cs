@@ -151,7 +151,7 @@ namespace Access2Justice.CosmosDb.Tests
             // Arrange
             var ids = new List<string>() { "guid1" };
             ResourceFilter resourceFilter = new ResourceFilter { TopicIds = ids, PageNumber = 0, ResourceType = "All" };
-            string query = @"SELECT * FROM c WHERE ( ARRAY_CONTAINS(c.topicTags, { 'id' : 'guid1'})) AND c.resourceType != 'Guided Assistant' OR (c.resourceType = 'Guided Assistant' AND c.isActive = 'true')";
+            string query = @"SELECT * FROM c WHERE ( ARRAY_CONTAINS(c.topicTags, { 'id' : 'guid1'})) AND  (c.resourceType != 'Guided Assistant' OR (c.resourceType = 'Guided Assistant' AND c.isActive = true))";
 
             //Act
             dynamicQueries.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter);
@@ -167,7 +167,7 @@ namespace Access2Justice.CosmosDb.Tests
             var ids = new List<string>() { "guid1" };
             Location location = new Location { State = "Hawaii" };
             ResourceFilter resourceFilter = new ResourceFilter { TopicIds = ids, PageNumber = 0, ResourceType = "All",Location = location };
-            string query = "SELECT * FROM c WHERE ( ARRAY_CONTAINS(c.topicTags, { 'id' : 'guid1'})) AND c.resourceType != 'Guided Assistant' OR (c.resourceType = 'Guided Assistant' AND c.isActive = 'true') AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\"},true))";
+            string query = "SELECT * FROM c WHERE ( ARRAY_CONTAINS(c.topicTags, { 'id' : 'guid1'})) AND  (c.resourceType != 'Guided Assistant' OR (c.resourceType = 'Guided Assistant' AND c.isActive = true)) AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\"},true))";
 
 
             //Act
@@ -184,7 +184,7 @@ namespace Access2Justice.CosmosDb.Tests
             var ids = new List<string>() { "guid1" };
             Location location = new Location { State = "Hawaii" };
             ResourceFilter resourceFilter = new ResourceFilter { TopicIds = ids, PageNumber = 2, ResourceType = "All", Location = location, ContinuationToken = "222" };
-            string query = "SELECT * FROM c WHERE ( ARRAY_CONTAINS(c.topicTags, { 'id' : 'guid1'})) AND c.resourceType != 'Guided Assistant' OR (c.resourceType = 'Guided Assistant' AND c.isActive = 'true') AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\"},true))";
+            string query = "SELECT * FROM c WHERE ( ARRAY_CONTAINS(c.topicTags, { 'id' : 'guid1'})) AND  (c.resourceType != 'Guided Assistant' OR (c.resourceType = 'Guided Assistant' AND c.isActive = true)) AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\"},true))";
 
 
             //Act
@@ -241,12 +241,28 @@ namespace Access2Justice.CosmosDb.Tests
         }
 
         [Fact]
+        public void FindItemsWhereArrayContainsWithAndClauseAsyncShouldVaildSqlQueryWithResourceTypePageNumberAndLocationDetails()
+        {
+            // Arrange
+            var ids = new List<string>() { "guid1" };
+            Location location = new Location { State = "Hawaii", City = "Honolulu", County = "Honolulu", ZipCode = "96801" };
+            ResourceFilter resourceFilter = new ResourceFilter { TopicIds = ids, PageNumber = 1, ResourceType = "Forms", Location = location, ContinuationToken = "continutationToken" };
+            string query = "SELECT * FROM c WHERE ( ARRAY_CONTAINS(c.topicTags, { 'id' : 'guid1'})) AND c.resourceType = 'Forms' AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\",\"county\":\"Honolulu\",\"city\":\"Honolulu\",\"zipCode\":\"96801\"},true))";
+
+            //Act
+            dynamicQueries.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter);
+
+            // Assert
+            cosmosDbService.Received().QueryPagedResourcesAsync(query, resourceFilter.ContinuationToken);
+        }
+
+        [Fact]
         public void FindItemsWhereArrayContainsWithAndClauseAsyncShouldVaildSqlQueryWithOnlyLocationDetails()
         {
             // Arrange
             Location location = new Location { State = "Hawaii", City = "Honolulu", County = "Honolulu", ZipCode = "96801" };
             ResourceFilter resourceFilter = new ResourceFilter { PageNumber = 0, ResourceType = "ALL", Location = location };
-            string query = "SELECT * FROM c WHERE  c.resourceType != 'Guided Assistant' OR (c.resourceType = 'Guided Assistant' AND c.isActive = 'true') AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\",\"county\":\"Honolulu\",\"city\":\"Honolulu\",\"zipCode\":\"96801\"},true))";            
+            string query = "SELECT * FROM c WHERE  (c.resourceType != 'Guided Assistant' OR (c.resourceType = 'Guided Assistant' AND c.isActive = true)) AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\",\"county\":\"Honolulu\",\"city\":\"Honolulu\",\"zipCode\":\"96801\"},true))";            
 
             //Act
             dynamicQueries.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter);
@@ -276,7 +292,7 @@ namespace Access2Justice.CosmosDb.Tests
             // Arrange
             Location location = new Location { State = "Hawaii", City = "Honolulu", County = "Honolulu", ZipCode = "96801" };
             ResourceFilter resourceFilter = new ResourceFilter { PageNumber = 0, ResourceType = "Guided Assistant", Location = location };
-            string query = "SELECT * FROM c WHERE  c.resourceType = 'Guided Assistant' AND c.isActive = 'true' AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\",\"county\":\"Honolulu\",\"city\":\"Honolulu\",\"zipCode\":\"96801\"},true))";
+            string query = "SELECT * FROM c WHERE  c.resourceType = 'Guided Assistant' AND  c.isActive = true AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\",\"county\":\"Honolulu\",\"city\":\"Honolulu\",\"zipCode\":\"96801\"},true))";
 
             //Act
             dynamicQueries.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter);
@@ -292,7 +308,7 @@ namespace Access2Justice.CosmosDb.Tests
             var ids = new List<string>() { "guid1" };
             Location location = new Location { State = "Hawaii" };
             ResourceFilter resourceFilter = new ResourceFilter { TopicIds = ids, PageNumber = 0, ResourceType = "ALL", Location = location };
-            string query = "SELECT c.resourceType FROM c WHERE ( ARRAY_CONTAINS(c.topicTags, { 'id' : 'guid1'})) AND c.resourceType != 'Guided Assistant' OR (c.resourceType = 'Guided Assistant' AND c.isActive = 'true') AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\"},true))";
+            string query = "SELECT c.resourceType FROM c WHERE ( ARRAY_CONTAINS(c.topicTags, { 'id' : 'guid1'})) AND  (c.resourceType != 'Guided Assistant' OR (c.resourceType = 'Guided Assistant' AND c.isActive = true)) AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\"},true))";
 
             //Act
             dynamicQueries.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter, true);
@@ -307,7 +323,7 @@ namespace Access2Justice.CosmosDb.Tests
             // Arrange
             Location location = new Location { State = "Hawaii" };
             ResourceFilter resourceFilter = new ResourceFilter { PageNumber = 0, ResourceType = "ALL", Location = location };
-            string query = "SELECT c.resourceType FROM c WHERE  c.resourceType != 'Guided Assistant' OR (c.resourceType = 'Guided Assistant' AND c.isActive = 'true') AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\"},true))";
+            string query = "SELECT c.resourceType FROM c WHERE  (c.resourceType != 'Guided Assistant' OR (c.resourceType = 'Guided Assistant' AND c.isActive = true)) AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\"},true))";
 
             //Act
             dynamicQueries.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter, true);
@@ -343,6 +359,34 @@ namespace Access2Justice.CosmosDb.Tests
 
             // Assert
             cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(),query);
+        }
+
+        [Fact]
+        public void FindItemsWhereWithLocationAsyncWithValidLocation()
+        {
+            // Arrange
+            Location location = new Location { State = "Hawaii", City = "Honolulu", County = "Honolulu", ZipCode = "96801" };
+            string query = "SELECT * FROM c WHERE  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\",\"county\":\"Honolulu\",\"city\":\"Honolulu\",\"zipCode\":\"96801\"},true))";
+
+            // Act
+            dynamicQueries.FindItemsWhereWithLocationAsync("TopicsCollections", "topicTags", location);
+
+            // Assert
+            cosmosDbService.Received().QueryItemsAsync("TopicsCollections", query);
+        }
+
+        [Fact]
+        public void FindItemsWhereWithLocationAsyncWithEmptyLocation()
+        {
+            // Arrange
+            Location location = new Location { State = "", City = "", County = "", ZipCode = "" };
+            string query = "SELECT * FROM c";
+
+            // Act
+            dynamicQueries.FindItemsWhereWithLocationAsync("TopicsCollections", "topicTags", location);
+
+            // Assert
+            cosmosDbService.Received().QueryItemsAsync("TopicsCollections", query);
         }
     }
 }

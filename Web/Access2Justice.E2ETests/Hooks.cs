@@ -18,10 +18,10 @@ namespace Access2Justice.E2ETests
     public sealed class Hooks : TechTalk.SpecFlow.Steps
     {
         #region
-        protected IWebDriver driver;
-        protected string baseUrl = ConfigurationManager.AppSettings["baseUrl"];
-        protected string browser = ConfigurationManager.AppSettings["browser"];
-        protected int globalTimeOut = Convert.ToInt32(ConfigurationManager.AppSettings["timeout"]);
+         IWebDriver driver;
+        readonly string baseUrl = ConfigurationManager.AppSettings["baseUrl"];
+        readonly string browser = ConfigurationManager.AppSettings["browser"];
+        readonly int globalTimeOut = Convert.ToInt32(ConfigurationManager.AppSettings["timeout"]);
         #endregion
 
         [BeforeScenario]
@@ -50,8 +50,10 @@ namespace Access2Justice.E2ETests
             options.AddArguments("--window-size=1024,768");
             // Start ChromeDriver in headless mode
             options.AddArguments("headless");
-            driver = new ChromeDriver(options);
-            driver.Url = baseUrl;
+            driver = new ChromeDriver(options)
+            {
+                Url = baseUrl
+            };
             ScenarioContext.Add("driver", driver);
             ScenarioContext.Add("baseUrl", driver.Url);
         }
@@ -61,10 +63,12 @@ namespace Access2Justice.E2ETests
         /// </summary>
         public void SetUpSmartWait()
         {
-            DefaultWait<IWebDriver> fluentWait = new DefaultWait<IWebDriver>(driver);
-            fluentWait.Timeout = TimeSpan.FromSeconds(globalTimeOut);
-            // Verify the condition every 200 miliseconds
-            fluentWait.PollingInterval = TimeSpan.FromMilliseconds(200);
+            DefaultWait<IWebDriver> fluentWait = new DefaultWait<IWebDriver>(driver)
+            {
+                Timeout = TimeSpan.FromSeconds(globalTimeOut),
+                // Verify the condition every 200 miliseconds
+                PollingInterval = TimeSpan.FromMilliseconds(200)
+            };
             fluentWait.IgnoreExceptionTypes(typeof(WebDriverException));
             fluentWait.IgnoreExceptionTypes(typeof(NoSuchElementException));
             fluentWait.IgnoreExceptionTypes(typeof(TimeoutException));

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MapLocation } from '../shared/map/map';
+import { LocationDetails } from '../shared/map/map';
 import { MapService } from '../shared/map/map.service';
 import { environment } from '../../environments/environment';
 
@@ -14,7 +14,7 @@ import { Global } from '../global';
 })
 export class HomeComponent implements OnInit {
   topicLength = 12;
-  mapLocation: MapLocation;
+  locationDetails: LocationDetails;
   state: string;
   subscription: any;
   slides = [
@@ -53,8 +53,8 @@ export class HomeComponent implements OnInit {
   }
   loadStateName() {
     if (sessionStorage.getItem("globalMapLocation")) {
-      this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
-      this.state = this.mapLocation.address;
+      this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+      this.state = this.locationDetails.displayLocationDetails.address;
     }
   }
 
