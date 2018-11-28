@@ -30,7 +30,7 @@ namespace Access2Justice.Integration.Adapters
             var session = sResponse.Content.ReadAsStringAsync().Result;
 
             dynamic sessionJson = JsonConvert.DeserializeObject(session);
-            var sessionId = sessionJson[0][Constants.RTMSessionId];
+            string sessionId = sessionJson[0][Constants.RTMSessionId];
             var serviceProviders = new List<ServiceProvider>();
             if (!string.IsNullOrEmpty(sessionId))
             {
