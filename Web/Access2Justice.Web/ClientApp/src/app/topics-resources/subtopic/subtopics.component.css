@@ -28,7 +28,7 @@
   margin: 20px 0 30px 10px;
 }
 
-  .subtopics li:hover {
+  .subtopics a:hover {
     color: #0d3fb8;
     font-weight: 600;
   }

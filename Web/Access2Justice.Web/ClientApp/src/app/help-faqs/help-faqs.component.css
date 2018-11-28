@@ -7,11 +7,12 @@
 
   .media:hover {
     background: #F4F4F4;
-    /*
-    border-style: solid;
-    border-width: 2px;
-    border-color: #0d3fb8;
-    */
+    padding-left:30px;
+    transition: padding-left 0.3s;
+  }
+
+  .media:focus {
+    background: red;
   }
 
 .accordion-img {

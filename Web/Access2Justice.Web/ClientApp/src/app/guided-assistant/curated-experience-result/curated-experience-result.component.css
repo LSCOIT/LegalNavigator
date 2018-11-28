@@ -13,6 +13,12 @@ h3 {
   font-size: 2em;
 }
 
+.btn-secondary:hover {
+  color: black;
+  background-color: #80bdff;
+  border-color: #0B2B78;
+}
+
 .button-container {
   width: 100%;
 }
@@ -29,13 +35,10 @@ h3 {
 }
 
   .button-container ul li label:hover {
-    background: #80bdff;
-    transition: all ease-in 0.25s;
-  }
-
-  .button-container ul li label :hover .check {
-    border-color: black;
-    transition: all ease-in 0.25s;
+    border-color: #80bdff;
+    outline: 0;
+    -webkit-box-shadow: 0 0 0 0.1rem rgba(0,123,255,.25);
+    box-shadow: 0 0 0 0.1rem rgba(0,123,255,.25);
   }
 
 
