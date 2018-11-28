@@ -41,6 +41,8 @@ namespace Access2Justice.Api.Tests.TestData
         public static JArray resourceCountData = JArray.Parse(@"[{'resourceType':'Organizations'},{'resourceType':'Organizations'},{'resourceType':'Organizations'},
                     {'resourceType':'Organizations'},{'resourceType':'All'},{'resourceType':'All'}]");
         public static ResourceFilter resourceFilter = new ResourceFilter { TopicIds = new List<string> { "addf41e9-1a27-4aeb-bcbb-7959f95094ba" }, PageNumber = 0, ResourceType = "ALL", Location = new Location() };
+        public static ResourceFilter resourceFilterTrue = new ResourceFilter { TopicIds = new List<string> { "addf41e9-1a27-4aeb-bcbb-7959f95094ba" }, PageNumber = 0, ResourceType = "ALL", Location = new Location(), IsResourceCountRequired = true };
+
         public static JArray formData =
                     JArray.Parse(@"[{'overview': 'Form1','fullDescription': 'Below is the form you will need if you are looking to settle your child custody dispute in court. We have included helpful tips to guide you along the way.',
                     'id':'77d301e7-6df2-612e-4704-c04edf271806','name': 'Form1','resourceCategory':'form','description': 'Subhead lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem',
@@ -194,13 +196,12 @@ namespace Access2Justice.Api.Tests.TestData
             Location = expectedLocation,
             IsShared = true
         };
-        //public static Topic TopicIds = new Topic
-        //{
-        //    Id = "addf41e9-1a27-4aeb-bcbb-7959f95094ba",
-        //    Name = "test",
-        //    OrganizationalUnit = "Alaska"
-        //};
-
+        public static Topic TopicIds = new Topic
+        {
+            Id = "addf41e9-1a27-4aeb-bcbb-7959f95094ba",
+            Name = "test",
+            OrganizationalUnit = "Alaska"
+        };
         public static IEnumerable<object[]> TopicInputEnumerable()
         {
             yield return new object[] { new TopicInput { Id = Guid.Parse("addf41e9-1a27-4aeb-bcbb-7959f95094ba").ToString(), Location = expectedLocation, IsShared = false }, TopicInput };
@@ -222,25 +223,55 @@ namespace Access2Justice.Api.Tests.TestData
             yield return new object[] { locationDataHawaii };
             yield return new object[] { locationDataAlaska };
         }
+        public static IEnumerable<object[]> TopicTagsData()
+        {
+            yield return new object[] { referencesTopicTags };
+        }
         public static IEnumerable<object[]> ReferencesData()
         {
-            yield return new object[] { referencesConditions };
-            yield return new object[] { referencesTopicTags };
-            yield return new object[] { referencesLocations };
-            yield return new object[] { referencesParentTopicIds };
-            yield return new object[] { referencesReviewer };
-            yield return new object[] { referenceContents };
+            yield return new object[] { referencesConditions, referencesConditionsExpected };
+            yield return new object[] { referencesConditionsEmpty, referencesEmptyExpected };
+            yield return new object[] { referencesTopicTags, referencesTopicTagsExpected };
+            yield return new object[] { referencesTopicTagsEmpty, referencesEmptyExpected };
+            yield return new object[] { referencesLocations, referencesLocationsExpected };
+            yield return new object[] { referencesParentTopicIds, referencesParentTopicIdsExpected };
+            yield return new object[] { referencesParentTopicIdsEmpty, referencesEmptyExpected };
+            yield return new object[] { referencesReviewer, referencesReviewerExpected };
+            yield return new object[] { referencesReviewerEmpty, referencesEmptyExpected };
+            yield return new object[] { referenceContents, referenceContentsExpected };
+            yield return new object[] { referenceContentsEmpty, referencesEmptyExpected };
         }
         public static JArray locationDataHawaii =
                     JArray.Parse(@"[{'state':'Hawaii','county':'','city':'Haiku-Pauwela','zipCode':''}]");
         public static JArray locationDataAlaska =
                     JArray.Parse(@"[{'state':'Alaska','county':'','city':'','zipCode':''}]");
-        public static JArray referencesConditions = JArray.Parse(@"[{'conditions': [{ 'title':'condition','description':'Take to your partner to see if you can come to an agreement' }]}]");
+        public static JArray referencesConditions = JArray.Parse(@"[{'conditions': [{'condition':{ 'title':'condition','description':'Take to your partner to see if you can come to an agreement' }}]}]");
+        public static JArray referencesConditionsExpected = JArray.Parse(@"[{ 'title':'condition','description':'Take to your partner to see if you can come to an agreement' }]");
+        //public static JArray referencesConditions2 = JArray.Parse(@"[{'conditions': [{ 'title':'condition','description':'Take to your partner to see if you can come to an agreement' }]}]");
+        public static JArray referencesConditionsEmpty = JArray.Parse(@"[{'conditions': []}]");
+        public static JArray referencesEmptyExpected = JArray.Parse(@"[]");
         public static JArray referencesTopicTags = JArray.Parse(@"[{'topicTags': [{'id':'f102bfae-362d-4659-aaef-956c391f79de'},{'id':'3aa3a1be-8291-42b1-85c2-252f756febbc'}]}]");
+        public static JArray referencesTopicTagsExpected = JArray.Parse(@"[{'id':'f102bfae-362d-4659-aaef-956c391f79de'},{'id':'3aa3a1be-8291-42b1-85c2-252f756febbc'}]");
+        public static JArray referencesTopicTagsEmpty = JArray.Parse(@"[{'topicTags': []}]");
         public static JArray referencesLocations = JArray.Parse(@"[{'location': [{'state':'Hawaii','county':'','city':'Haiku-Pauwela','zipCode':''}]}]");
+        public static JArray referencesLocationsExpected = JArray.Parse(@"[{'state':'Hawaii','county':'','city':'Haiku-Pauwela','zipCode':''}]");
         public static JArray referencesParentTopicIds = JArray.Parse(@"[{'parentTopicId': [{'id':'f102bfae-362d-4659-aaef-956c391f79de'},{'id':'3aa3a1be-8291-42b1-85c2-252f756febbc'}]}]");
+        public static JArray referencesParentTopicIdsExpected = JArray.Parse(@"[{'id':'f102bfae-362d-4659-aaef-956c391f79de'},{'id':'3aa3a1be-8291-42b1-85c2-252f756febbc'}]");
+        public static JArray referencesParentTopicIdsEmpty = JArray.Parse(@"[{'parentTopicId': []}]");
         public static JArray referencesReviewer = JArray.Parse(@"[{'reviewer': [{'reviewerFullName':'reviewerFullName','reviewerTitle':'reviewerTitle','reviewText':'reviewText','reviewerImage':'reviewerImage'}]}]");
+        public static JArray referencesReviewerExpected = JArray.Parse(@"[{'reviewerFullName':'reviewerFullName','reviewerTitle':'reviewerTitle','reviewText':'reviewText','reviewerImage':'reviewerImage'}]");
+        public static JArray referencesReviewerEmpty = JArray.Parse(@"[{'reviewer': []}]");
         public static JArray referenceContents = JArray.Parse(@"[{'contents': [{'headline':'headline','content':'content'}]}]");
+        public static JArray referenceContentsExpected = JArray.Parse(@"[{'headline':'headline','content':'content'}]");
+        public static JArray referenceContentsEmpty = JArray.Parse(@"[{'contents': []}]");
+        public static JArray topicTagsData = JArray.Parse(@"[{'id':'f102bfae-362d-4659-aaef-956c391f79de'},{'id':'3aa3a1be-8291-42b1-85c2-252f756febbc'}]");
+
+        public static IEnumerable<object[]> ResourceFilter()
+        {
+            yield return new object[] { new ResourceFilter { TopicIds = new List<string> { "addf41e9-1a27-4aeb-bcbb-7959f95094ba" }, PageNumber = 0, ResourceType = "ALL", Location = new Location() }, expectedTopicsEmpty };
+        }
+        public static string expectedTopicsEmpty = "{\"topics\":\"[]\",\"resources\":[]}";
+       // public static string expectedTopicsEmpty = "{\r\n  \"topics\": [],\r\n  \"resources\": []\r\n}";
 
     }
 }

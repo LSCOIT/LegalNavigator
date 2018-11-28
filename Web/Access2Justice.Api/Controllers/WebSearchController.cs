@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Threading.Tasks;
 using Access2Justice.Shared.Interfaces;
@@ -9,6 +10,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Access2Justice.Api.Controllers
 {
+    [ExcludeFromCodeCoverage]
     [Produces("application/json")]
     [Route("api/web-search")]
     public class WebSearchController : Controller
