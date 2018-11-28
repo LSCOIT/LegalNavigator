@@ -36,7 +36,7 @@ export class MapResultsComponent implements OnChanges {
       this.getMapResults(this.addressList);
     }
   }
- 
+
   getMapResults(address) {
     this.addressList = address;
     this.latitudeLongitude = [];
@@ -48,6 +48,7 @@ export class MapResultsComponent implements OnChanges {
   }
 
   displayMapResults() {
+    let num = 0;
     for (let index = 0, len = this.addressList.length; index < len; index++) {
       let address = this.addressList[index].toString().replace('\n', ' ').trim();
       if (address.toLowerCase() != 'na') {
@@ -57,10 +58,13 @@ export class MapResultsComponent implements OnChanges {
             longitude: locationCoordinates.resourceSets[0].resources[0].point.coordinates[1]
           }
           this.latitudeLongitude.push(this.latlong);
-          if (this.latitudeLongitude.length > 0) {
+          if (this.latitudeLongitude.length + num === this.addressList.length) {
             this.mapResultsService.mapResults(this.latitudeLongitude);
           }
         });
+      } else
+      {
+        num++;
       }
     }
   }
@@ -68,4 +72,8 @@ export class MapResultsComponent implements OnChanges {
   ngOnChanges() {
     this.getAddress();
   }
+
 }
+
+
+
