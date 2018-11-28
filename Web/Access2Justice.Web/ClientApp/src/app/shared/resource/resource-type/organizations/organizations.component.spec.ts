@@ -19,6 +19,7 @@ import { ToastrService } from 'ngx-toastr';
 import { MsalService } from '@azure/msal-angular';
 import { SaveButtonService } from '../../user-action/save-button/save-button.service';
 import { NavigateDataService } from '../../../navigate-data.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 describe('OrganizationsComponent', () => {
   let component: OrganizationsComponent;
@@ -91,6 +92,7 @@ describe('OrganizationsComponent', () => {
         { provide: SaveButtonService, useValue: mockSaveButtonService },
         NavigateDataService,
         { provide: Router, useValue: mockRouter },
+        NgxSpinnerService
       ]
     })
       .compileComponents();

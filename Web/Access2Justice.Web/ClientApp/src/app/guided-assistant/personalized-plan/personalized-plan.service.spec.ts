@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Global } from '../../global';
 import { of } from 'rxjs/observable/of';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 describe('Service:PersonalizedPlan', () => {
   let mockPlanDetails = {
@@ -219,27 +220,27 @@ describe('Service:PersonalizedPlan', () => {
       }
     ]
   },
-    {
-      "topicId": "ba74f857-eb7b-4dd6-a021-5b3e4525e3e4",
-      "name": "Divorce",
-      "icon": null,
-      "essentialReadings": [
-        {
-          "text": "Domestic Violence - What it is",
-          "url": "https://www.thehotline.org/is-this-abuse/abuse-defined/"
-        }
-      ],
-      "steps": [
-        {
-          "description": "Step Description",
-          "isComplete": false,
-          "order": 1,
-          "resources": [],
-          "stepId": "df822558-73c2-4ac8-8259-fabe2334eb71",
-          "title": "Step Title"
-        }
-      ]
-    }
+  {
+    "topicId": "ba74f857-eb7b-4dd6-a021-5b3e4525e3e4",
+    "name": "Divorce",
+    "icon": null,
+    "essentialReadings": [
+      {
+        "text": "Domestic Violence - What it is",
+        "url": "https://www.thehotline.org/is-this-abuse/abuse-defined/"
+      }
+    ],
+    "steps": [
+      {
+        "description": "Step Description",
+        "isComplete": false,
+        "order": 1,
+        "resources": [],
+        "stepId": "df822558-73c2-4ac8-8259-fabe2334eb71",
+        "title": "Step Title"
+      }
+    ]
+  }
   ];
   let mockFilteredTopicsList = [
     {
@@ -345,6 +346,7 @@ describe('Service:PersonalizedPlan', () => {
   let mockResponse = Observable.of(mockPlanDetails);
   let service: PersonalizedPlanService;
   let arrayUtilityService: ArrayUtilityService;
+  let ngxSpinnerService: NgxSpinnerService;
   const httpSpy = jasmine.createSpyObj('http', ['get', 'post', 'put']);
   let toastrService: ToastrService;
   let global: Global;
@@ -355,9 +357,10 @@ describe('Service:PersonalizedPlan', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
       providers: [PersonalizedPlanService, ArrayUtilityService,
-        { provide: Global, useValue: { global, role: '', shareRouteUrl: '', userId: 'UserId' } }]
+        { provide: Global, useValue: { global, role: '', shareRouteUrl: '', userId: 'UserId' } },
+        NgxSpinnerService]
     });
-    service = new PersonalizedPlanService(httpSpy, arrayUtilityService, toastrService, global);
+    service = new PersonalizedPlanService(httpSpy, arrayUtilityService, toastrService, global, ngxSpinnerService);
     global = TestBed.get(Global);
     arrayUtilityService = new ArrayUtilityService();
     httpSpy.get.calls.reset();
@@ -459,7 +462,7 @@ describe('Service:PersonalizedPlan', () => {
     service.displayPlanDetails(mockPlanDetails, mockFilteredTopicsList);
     expect(service.tempPlanDetailTags).toEqual(mockFilteredPlanDetails);
   });
-  
+
   it('should call saveResourceToProfilePostLogin with session stored resources in saveResourcesToUserProfile method', () => {
     spyOn(sessionStorage, 'getItem')
       .and.returnValue(JSON.stringify(mockSavedResources));
@@ -477,28 +480,6 @@ describe('Service:PersonalizedPlan', () => {
     service.checkExistingSavedResources(mockSavedResources);
     expect(service.showWarning).toBeTruthy();
     expect(sessionStorage.getItem(global.sessionKey)).toBeNull;
-  });
-
-  it('should call saveResources in saveResourcesToProfile method', () => {
-    global.userId = "UserId";
-    let mockProfileResources = { oId: "UserId", resourceTags: mockSavedResources, type: 'resources' };
-    spyOn(service, 'saveResources').and.callFake(() => {
-      return Observable.from([mockSavedResources]);
-    });
-    spyOn(service,'showSuccess');
-    service.saveResourcesToProfile(mockSavedResources);
-    expect(service.profileResources).toEqual(mockProfileResources);
-    expect(service.saveResources).toHaveBeenCalled();
-  });
-
-  it('should call showSuccess service method on saveResourceToProfile', () => {
-    let mockResourceTags = [];
-    spyOn(service, 'showSuccess');
-    spyOn(service, 'saveResources').and.callFake(() => {
-      return Observable.from([mockUserSavedResources]);
-    });
-    service.saveResourcesToProfile(mockResourceTags);
-    expect(service.showSuccess).toHaveBeenCalled();
   });
 
   it('should return resource ids from resources list', () => {
