@@ -32,12 +32,9 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly string expectedDefaultRole = "4bf9df8f-dfee-4b08-be4d-35cc053fa298";
 
         private readonly JArray userProfilePersonalizedPlanData = UserPersonalizedPlanTestData.userProfilePersonalizedPlanData;
-        private readonly JArray expectedUserProfilePersonalizedPlanData = UserPersonalizedPlanTestData.expectedUserProfilePersonalizedPlanData;
-        private readonly JArray expectedUserProfilePersonalizedPlanUpdateData = UserPersonalizedPlanTestData.expectedUserProfilePersonalizedPlanUpdateData;
         private readonly JArray userProfileSavedResourcesData = UserPersonalizedPlanTestData.userProfileSavedResourcesData;
         private readonly JArray expectedUserProfileSavedResourcesData = UserPersonalizedPlanTestData.expectedUserProfileSavedResourcesData;
         private readonly JArray expectedUserProfileSavedResourcesUpdateData = UserPersonalizedPlanTestData.expectedUserProfileSavedResourcesUpdateData;
-        private readonly JArray userPlanData = UserPersonalizedPlanTestData.userPlanData;
         private readonly JArray userRoleData = UserPersonalizedPlanTestData.expectedUserRoleData;
         
         public UserProfileBusinessLogicTests()

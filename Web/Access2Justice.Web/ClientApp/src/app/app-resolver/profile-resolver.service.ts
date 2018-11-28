@@ -13,6 +13,8 @@ export class ProfileResolver implements Resolve<any> {
   constructor(private loginService: LoginService) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
-    return this.loginService.getUserProfile();
+    if (document.URL.indexOf("/share/") <= -1) {
+      return this.loginService.getUserProfile();
+    }
   }
 }

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { NavigateDataService } from '../../navigate-data.service';
 import { PaginationService } from '../../pagination/pagination.service';
 import { IResourceFilter } from '../../search/search-results/search-results.model';
+import { LocationDetails } from '../../map/map';
 
 @Injectable()
 export class ShowMoreService {
@@ -17,16 +18,18 @@ export class ShowMoreService {
   resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: { "state": "", "county": "", "city": "", "zipCode": "" }, IsResourceCountRequired: true };
   topIntent: string;
   activeResource: any;
+  locationDetails: LocationDetails;
 
   clickSeeMoreOrganizations(resourceType: string, activeId: string) {
     sessionStorage.removeItem("cacheSearchResults");
     sessionStorage.removeItem("searchedLocationMap");
+    this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
     this.resourceFilter.ResourceType = resourceType;
     this.resourceFilter.TopicIds = [];
     if (activeId) {
       this.resourceFilter.TopicIds.push(activeId);
     }
-    this.resourceFilter.Location = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+    this.resourceFilter.Location = this.locationDetails.location;
     this.resourceFilter.IsResourceCountRequired = true;
     this.paginationService.getPagedResources(this.resourceFilter).subscribe(response => {
       if (response != undefined) {

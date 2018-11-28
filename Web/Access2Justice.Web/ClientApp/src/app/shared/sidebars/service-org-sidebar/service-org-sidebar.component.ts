@@ -4,7 +4,7 @@ import { MapService } from '../../map/map.service';
 import { IResourceFilter } from '../../search/search-results/search-results.model';
 import { NavigateDataService } from '../../navigate-data.service';
 import { PaginationService } from '../../pagination/pagination.service';
-import { MapLocation } from '../../map/map';
+import { MapLocation, LocationDetails } from '../../map/map';
 import { Global } from '../../../global';
 @Component({
   selector: 'app-service-org-sidebar',
@@ -15,6 +15,7 @@ export class ServiceOrgSidebarComponent implements OnInit {
   @Input() fullPage = false;
   organizations: any;
   location: MapLocation;
+  locationDetails: LocationDetails;
   subscription: any;
   activeTopic: string;
   @Output()
@@ -66,7 +67,8 @@ export class ServiceOrgSidebarComponent implements OnInit {
   ngOnInit() {
     if (!this.global.organizationsData || this.global.organizationsData.length == 0) {
       if (sessionStorage.getItem("globalMapLocation")) {
-        this.location = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+        this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+        this.location = this.locationDetails.location;
         this.getOrganizations();
       }
     } else {
@@ -76,7 +78,8 @@ export class ServiceOrgSidebarComponent implements OnInit {
     this.subscription = this.mapService.notifyLocation
       .subscribe((value) => {
         this.global.organizationsData = null;
-        this.location = value;
+        this.locationDetails = value;
+        this.location = this.locationDetails.location;
         this.getOrganizations();
       });
   }

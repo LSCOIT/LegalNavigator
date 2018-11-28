@@ -3,6 +3,7 @@ import { SearchService } from '../shared/search/search.service';
 import { NavigateDataService } from '../shared/navigate-data.service';
 import { ILuisInput } from '../shared/search/search-results/search-results.model';
 import { Router } from '@angular/router';
+import { LocationDetails } from '../shared/map/map';
 
 @Component({
   selector: 'app-guided-assistant',
@@ -13,7 +14,8 @@ export class GuidedAssistantComponent implements OnInit {
   searchText: string;
   topicLength = 12;
   luisInput: ILuisInput = { Sentence: '', Location: '', TranslateFrom: '', TranslateTo: '', LuisTopScoringIntent: '' };
-  guidedAssistantResults: any;  
+  guidedAssistantResults: any;
+  locationDetails: LocationDetails;
 
   constructor(
     private searchService: SearchService,
@@ -21,8 +23,9 @@ export class GuidedAssistantComponent implements OnInit {
     private navigateDataService: NavigateDataService) { }
 
   onSubmit(guidedAssistantForm) {
+    this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
     this.luisInput["Sentence"] = guidedAssistantForm.value.searchText;
-    this.luisInput["Location"] = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+    this.luisInput["Location"] = this.locationDetails.location;
     this.searchService.search(this.luisInput)
       .subscribe(response => {
         this.guidedAssistantResults = response;
