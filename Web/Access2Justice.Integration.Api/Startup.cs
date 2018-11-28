@@ -52,8 +52,7 @@ namespace Access2Justice.Integration.Api
             services.AddSingleton(keyVaultSettings);
 
             services.AddSingleton<IHttpClientService, HttpClientService>();
-            services.AddSingleton<IServiceProvidersBusinessLogic, ServiceProvidersBusinessLogic>();
-            services.AddSingleton<IServiceProviderAdapter, RtmServiceProviderAdapter>();
+            services.AddSingleton<IServiceProvidersBusinessLogic, ServiceProvidersBusinessLogic>();            
             ConfigureCosmosDb(services);
             services.AddSwaggerGen(c =>
             {

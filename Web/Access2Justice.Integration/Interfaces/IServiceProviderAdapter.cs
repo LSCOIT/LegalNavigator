@@ -8,8 +8,6 @@ namespace Access2Justice.Integration.Interfaces
     {
         Task<List<ServiceProvider>> GetServiceProviders(string TopicName);
 
-        //Task<List<ServiceProvider>> GetServiceProviders(dynamic TopicName);
-
         ServiceProvider GetServiceProviderDetails(string id);
     }
 }

@@ -2,11 +2,12 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System;
 using System.IO;
 using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
-using Access2Justice.Shared.Rtm;
+using Access2Justice.Integration.Interfaces;
+using Access2Justice.Integration.Adapters;
+using Access2Justice.Integration.Models;
 
 namespace Access2Justice.WebJob
 {
@@ -48,11 +49,15 @@ namespace Access2Justice.WebJob
 
             services.AddSingleton(Configuration);
             services.AddSingleton<IHttpClientService, HttpClientService>();
-            services.AddTransient<Functions, Functions>();            
+            services.AddSingleton<IServiceProviderAdapter, RtmServiceProviderAdapter>();
+            services.AddTransient<Functions, Functions>();
             services.AddLogging(builder => builder.AddConsole());
 
-            IRtmSettings rtmSettings = new RtmSettings(Configuration.GetSection("RtmSettings"));
+            IRtmSettings rtmSettings = new RtmSettings(Configuration.GetSection("RtmSettings"), Configuration.GetSection("KeyVault"));
             services.AddSingleton(rtmSettings);
+
+            IA2JSettings a2JSettings = new A2JSettings(Configuration.GetSection("A2JSettings"));
+            services.AddSingleton(a2JSettings);
         }
     }
 }
