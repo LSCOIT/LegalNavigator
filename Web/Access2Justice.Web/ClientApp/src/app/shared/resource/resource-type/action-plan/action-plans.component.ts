@@ -90,6 +90,28 @@ export class ActionPlansComponent implements OnChanges {
       }
     });
     this.navigateDataService.setData(this.planDetails);
+    if (this.global.userId) {
+      this.updatePlanToProfile();
+    } else {
+      this.showStepCompleteStatus();
+    }
+  }
+
+  updatePlanToProfile() {
+    const params = {
+      "personalizedPlan": this.navigateDataService.getData() ? this.navigateDataService.getData() : this.personalizedPlanService.planDetails,
+      "oId": this.global.userId,
+      "saveActionPlan": true
+    }
+    this.personalizedPlanService.userPlan(params)
+      .subscribe(response => {
+        if (response) {
+          this.showStepCompleteStatus();
+        }
+      });
+  }
+
+  showStepCompleteStatus() {
     if (this.isChecked) {
       this.personalizedPlanService.showSuccess("Step Completed");
     } else {
@@ -130,7 +152,7 @@ export class ActionPlansComponent implements OnChanges {
     this.getPersonalizedPlan(this.planDetails);
     this.tempFilteredtopicsList = this.topicsList;
   }
-  
+
   orderBy(items, field) {
     return items.sort((a, b) => {
       if (a[field[0]] < b[field[0]]) {
