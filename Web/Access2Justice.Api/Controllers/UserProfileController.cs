@@ -1,15 +1,12 @@
 ﻿using Access2Justice.Api.Authorization;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 using static Access2Justice.Api.Authorization.Permissions;
 
 namespace Access2Justice.Api.Controllers
-{	
+{
     [Produces("application/json")]
     [Route("api/user")]
     public class UserProfileController : Controller
@@ -35,8 +32,7 @@ namespace Access2Justice.Api.Controllers
         [Route("profile")]
         public async Task<IActionResult> GetUserDataAsync(string oid, string type)
         {
-            var users = await userProfileBusinessLogic.GetUserResourceProfileDataAsync(oid, type);
-            return Ok(users);
+            return Ok(await userProfileBusinessLogic.GetUserResourceProfileDataAsync(oid, type));
         }
 
         /// <summary>
@@ -53,8 +49,7 @@ namespace Access2Justice.Api.Controllers
         [Route("profile/{oid}")]
         public async Task<IActionResult> GetUserProfileDataAsync(string oid)
         {
-            UserProfile users = await userProfileBusinessLogic.GetUserProfileDataAsync(oid);
-            return Ok(users);
+            return Ok(await userProfileBusinessLogic.GetUserProfileDataAsync(oid));
         }
 
         /// <summary>
@@ -71,8 +66,7 @@ namespace Access2Justice.Api.Controllers
         [Route("personalized-plan/upsert")]
         public async Task<IActionResult> UpsertUserPersonalizedPlanAsync([FromBody]ProfileResources profileResources)
         {
-            var users = await userProfileBusinessLogic.UpsertUserSavedResourcesAsync(profileResources);
-            return Ok(users);
+            return Ok(await userProfileBusinessLogic.UpsertUserSavedResourcesAsync(profileResources));
         }
 
         /// <summary>
@@ -89,11 +83,7 @@ namespace Access2Justice.Api.Controllers
         [Route("profile/upsert")]
         public async Task<IActionResult> UpsertUserProfile([FromBody]UserProfile userProfile)
         {
-            var users = await userProfileBusinessLogic.UpsertUserProfileAsync(userProfile);
-            if (users == null) {
-                return StatusCode(StatusCodes.Status404NotFound);
-            }
-            return Ok(users);
+            return Ok(await userProfileBusinessLogic.UpsertUserProfileAsync(userProfile));
         }
     }
 }
