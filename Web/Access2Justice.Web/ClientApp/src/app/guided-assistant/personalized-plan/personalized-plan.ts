@@ -29,7 +29,15 @@ export interface PersonalizedPlan {
 
 export interface PlanTopic {
   topicId: string;
+  name: string;
+  essentialReadings: Array<EssentialReadings>;
+  icon: string;
   steps: Array<PlanStep>;
+}
+
+export interface EssentialReadings {
+  text: string;
+  url: string;
 }
 
 export interface PlanStep {
@@ -39,10 +47,9 @@ export interface PlanStep {
   order: number;
   isComplete: boolean;
   resources: Array<string>;
-  topicIds: Array<string>;
 }
 
 export interface PersonalizedPlanTopic {
-  topic: any;
+  topic: PlanTopic;
   isSelected: boolean;
 }

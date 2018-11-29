@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { api } from '../../../api/api';
-import { MapLocation } from '../map/map';
+import { MapLocation, LocationDetails } from '../map/map';
 import { ITopicInput } from '../../topics-resources/shared/topic';
 import { Global } from '../../global';
 
@@ -14,11 +14,14 @@ const httpOptions = {
 export class ResourceService {
   topicInput: ITopicInput = { Id: '', Location: '', IsShared: false };
   mapLocation: MapLocation = { state: '', city: '', county: '', zipCode: '' };
+  locationDetails: LocationDetails;
+
   constructor(private http: HttpClient, private global:Global) { }
 
   loadStateName(): MapLocation {
     if (sessionStorage.getItem("globalMapLocation")) {
-      this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+      this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+      this.mapLocation = this.locationDetails.location;
       return this.mapLocation;
     }
   }

@@ -4,7 +4,7 @@ import { IResourceFilter, ILuisInput } from '../../search/search-results/search-
 import { PaginationService } from '../../pagination/pagination.service';
 import { MapService } from '../../map/map.service';
 import { NavigateDataService } from '../../navigate-data.service';
-import { MapLocation } from '../../map/map';
+import { MapLocation, LocationDetails } from '../../map/map';
 import { environment } from '../../../../environments/environment';
 
 @Component({
@@ -14,6 +14,7 @@ import { environment } from '../../../../environments/environment';
 })
 export class GuidedAssistantSidebarComponent implements OnInit {
   location: MapLocation;
+  locationDetails: LocationDetails;
   activeTopic: any;
   @Input() activeSubTopic: any;
   @Input() guidedAssistantId: string;
@@ -87,13 +88,15 @@ export class GuidedAssistantSidebarComponent implements OnInit {
   ngOnInit() {
     if (!this.guidedAssistantId) {
       if (sessionStorage.getItem("globalMapLocation")) {
-        this.location = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+        this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+        this.location = this.locationDetails.location;
         this.activeTopic = this.activeRoute.snapshot.params['topic'];
         this.getGuidedAssistantResults();
       }
       this.subscription = this.mapService.notifyLocation
         .subscribe((value) => {
-          this.location = value;
+          this.locationDetails = value;
+          this.location = this.locationDetails.location;
           this.activeTopic = this.activeRoute.snapshot.params['topic'];
           this.getGuidedAssistantResults();
         });

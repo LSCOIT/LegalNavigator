@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { api } from '../../api/api';
-import { MapLocation } from './map/map';
+import { MapLocation, LocationDetails } from './map/map';
 import { About } from '../about/about';
 import { PrivacyContent } from '../privacy-promise/privacy-promise';
 import { HelpAndFaqs } from '../help-faqs/help-faqs';
@@ -22,15 +22,16 @@ export class StaticResourceService {
   helpAndFaqsContent: HelpAndFaqs;
   navigation: Navigation;
   homeContent: Home;
-  location: MapLocation;
+  locationDetails: LocationDetails;
 
   loadStateName(): MapLocation {
     if (sessionStorage.getItem("globalMapLocation")) {
-      this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
-      this.state = this.mapLocation.address;
+      this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+      this.mapLocation = this.locationDetails.location;
+      this.state = this.locationDetails.displayLocationDetails.address;
       return this.mapLocation;
     } else {
-      return {state:"Default"}
+      return { state: "Default" }
     }
   }
 

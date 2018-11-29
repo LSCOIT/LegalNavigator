@@ -168,9 +168,10 @@ describe('SearchResultsComponent', () => {
   });
 
   it('should call getInternalResource with isServiceCall true and localsearch map defined', () => {
+    let mockLocationDetails = { location: mockMapLocation };
     spyOn(component, 'checkResource');
     spyOn(component, 'addResource');    
-    spyOn(sessionStorage, 'getItem').and.returnValue(JSON.stringify(mockMapLocation));    
+    spyOn(sessionStorage, 'getItem').and.returnValue(JSON.stringify(mockLocationDetails));    
     spyOn(paginationService, 'getPagedResources').and.returnValue(Observable.of());
     component.isServiceCall = true;
     component.getInternalResource("", 1);
@@ -178,9 +179,10 @@ describe('SearchResultsComponent', () => {
   });
 
   it('should call getInternalResource with isServiceCall true and assign globalMapLocation value to request model', () => {
+    let mockLocationDetails = { location: null };
     spyOn(component, 'checkResource');
     spyOn(component, 'addResource');
-    spyOn(sessionStorage, 'getItem').and.returnValue(null);
+    spyOn(sessionStorage, 'getItem').and.returnValue(JSON.stringify(mockLocationDetails));
     spyOn(paginationService, 'getPagedResources').and.returnValue(Observable.of());
     component.isServiceCall = true;
     component.getInternalResource("", 1);

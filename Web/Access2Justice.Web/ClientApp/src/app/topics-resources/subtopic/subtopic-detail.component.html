@@ -17,7 +17,7 @@
             <p>{{subtopics.overview}}</p>
           </div>
           <div class="row" *ngIf="relatedLinksData.length">
-            <h5>Essential Reading</h5>
+            <h5>Additional Reading</h5>
             <ul>
               <li *ngFor="let resource of relatedLinksData; let indexer=index">
                 <a *ngIf="indexer<displayResources" class="link p" href="{{resource.url}}">{{resource.name}}</a>

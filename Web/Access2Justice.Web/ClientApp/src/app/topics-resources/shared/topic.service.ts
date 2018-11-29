@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Topic, ITopicInput } from './topic';
 import { api } from '../../../api/api';
-import { MapLocation } from '../../shared/map/map';
+import { MapLocation, LocationDetails } from '../../shared/map/map';
 import { Global } from '../../global';
 
 const httpOptions = {
@@ -16,11 +16,12 @@ export class TopicService {
 
   topicInput: ITopicInput = { Id: '', Location: '', IsShared: false  };
   mapLocation: MapLocation = { state: '', city: '', county: '', zipCode: '' };
+  locationDetails: LocationDetails;
 
   loadStateName(): MapLocation {
     if (sessionStorage.getItem("globalMapLocation")) {
-      this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
-      
+      this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+      this.mapLocation = this.locationDetails.location;
       return this.mapLocation;
     }
   }

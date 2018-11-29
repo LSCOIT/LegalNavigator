@@ -9,13 +9,17 @@ describe('MapService', () => {
     state: "California",
     city: "Riverside County",
     county: "Indio",
-    zipCode: "92201",
+    zipCode: "92201"
+  };
+
+  const mockDisplayLocationDetails = {
     locality: "Indio",
     address: "92201"
   };
 
   const mockLocationDetails = {
     location: mockMapLocation,
+    displayLocationDetails: mockDisplayLocationDetails,
     country: "United States",
     formattedAddress: "Hjorth St, Indio, California 92201, United States"
   };
@@ -55,9 +59,7 @@ describe('MapService', () => {
         store = {};
       }
     };
-
-    spyOn(sessionStorage, 'getItem')
-      .and.callFake(mockSessionStorage.getItem);
+    
     spyOn(sessionStorage, 'setItem')
       .and.callFake(mockSessionStorage.setItem);
     spyOn(sessionStorage, 'removeItem')
@@ -82,19 +84,11 @@ describe('MapService', () => {
   });
 
   it('should return searched global location details(map type is true) from session storage when updateLocation is called for global map', () => {
-    sessionStorage.setItem("globalSearchMapLocation", JSON.stringify(mockLocationDetails));
+    spyOn(sessionStorage, 'getItem')
+      .and.returnValue(JSON.stringify(mockLocationDetails));
     environment.map_type = true;
     service.updateLocation();
-    expect(service.mapLocation).toEqual(mockMapLocation);
-  });
-
-  it('should store searched global location details(map type is true) to session when updateLocation is called for global map', () => {
-    sessionStorage.setItem("globalSearchMapLocation", JSON.stringify(mockLocationDetails));
-    environment.map_type = true;
-    service.updateLocation();
-    expect(service.mapLocation).toEqual(mockMapLocation);
-    sessionStorage.setItem("mockGlobalMapLocation", JSON.stringify(mockMapLocation));
-    expect(JSON.parse(sessionStorage.getItem("mockGlobalMapLocation"))).toEqual(mockMapLocation);
+    expect(service.locationDetails).toEqual(mockLocationDetails);
   });
 
   it('should clear searched global location details from session storage when updateLocation is called for global map', () => {
@@ -105,17 +99,11 @@ describe('MapService', () => {
   });
 
   it('should return searched local location details(map type is false) from session storage when updateLocation is called for local map', () => {
-    sessionStorage.setItem("localSearchMapLocation", JSON.stringify(mockLocationDetails));
+    spyOn(sessionStorage, 'getItem')
+      .and.returnValue(JSON.stringify(mockLocationDetails));
     environment.map_type = false;
     service.updateLocation();
     expect(service.mapLocation).toEqual(mockMapLocation);
-  });
-
-  it('should clear searched local location details from session storage when updateLocation is called for global map', () => {
-    sessionStorage.setItem("localSearchMapLocation", JSON.stringify(mockMapLocation));
-    environment.map_type = false;
-    service.updateLocation();
-    expect(JSON.parse(sessionStorage.getItem("localSearchMapLocation"))).toEqual(mockMapLocation);
   });
 
   it("should set the variables of service when mapLocationDetails is called", () => {
@@ -141,8 +129,8 @@ describe('MapService', () => {
         }
     };
     service.mapLocationDetails(mockLocation);
-    expect(service.mapLocation.locality).toEqual(mockLocation.address.adminDistrict);
-    expect(service.mapLocation.address).toEqual(mockLocation.address.adminDistrict);
+    expect(service.locationDetails.displayLocationDetails.locality).toEqual(mockLocation.address.adminDistrict);
+    expect(service.locationDetails.displayLocationDetails.address).toEqual(mockLocation.address.adminDistrict);
   });
 
   it("should set district of map location with postal code if postal code and locality are undefined when mapLocationDetails is called", () => {
@@ -160,8 +148,8 @@ describe('MapService', () => {
         }
     };
     service.mapLocationDetails(mockLocation);
-    expect(service.mapLocation.locality).toEqual(mockLocation.address.district);
-    expect(service.mapLocation.address).toEqual(mockLocation.address.adminDistrict);
+    expect(service.locationDetails.displayLocationDetails.locality).toEqual(mockLocation.address.district);
+    expect(service.locationDetails.displayLocationDetails.address).toEqual(mockLocation.address.adminDistrict);
   });
 
   it("should set locality of map location with postal code if postal code is undefined when mapLocationDetails is called", () => {
@@ -179,8 +167,8 @@ describe('MapService', () => {
         }
     };
     service.mapLocationDetails(mockLocation);
-    expect(service.mapLocation.locality).toEqual(mockLocation.address.locality);
-    expect(service.mapLocation.address).toEqual(mockLocation.address.adminDistrict);
+    expect(service.locationDetails.displayLocationDetails.locality).toEqual(mockLocation.address.locality);
+    expect(service.locationDetails.displayLocationDetails.address).toEqual(mockLocation.address.adminDistrict);
   });
 
   it("should set locality of map location with postal code if postal code is not undefined when mapLocationDetails is called", () => {
@@ -198,8 +186,8 @@ describe('MapService', () => {
         }
     };
     service.mapLocationDetails(mockLocation);
-    expect(service.mapLocation.locality).toEqual(mockLocation.address.postalCode);
-    expect(service.mapLocation.address).toEqual(mockLocation.address.adminDistrict);
+    expect(service.locationDetails.displayLocationDetails.locality).toEqual(mockLocation.address.postalCode);
+    expect(service.locationDetails.displayLocationDetails.address).toEqual(mockLocation.address.adminDistrict);
   });
 
   it("should store global map location details to session storage when mapLocationDetails is called from global map(map type is true)", () => {
@@ -207,7 +195,6 @@ describe('MapService', () => {
     service.mapLocationDetails(mockLocation);
     expect(service.locationDetails.country).toEqual(mockLocation.address.countryRegion);
     expect(service.locationDetails.formattedAddress).toEqual("Indio, California 92201, United States");
-    expect(JSON.parse(sessionStorage.getItem("globalSearchMapLocation"))).toEqual(service.locationDetails);
   });
 
   it("should store local map location details to session storage when mapLocationDetails is called from global map(map type is flase)", () => {
@@ -215,7 +202,6 @@ describe('MapService', () => {
     service.mapLocationDetails(mockLocation);
     expect(service.locationDetails.country).toEqual(mockLocation.address.countryRegion);
     expect(service.locationDetails.formattedAddress).toEqual("Indio, California 92201, United States");
-    expect(JSON.parse(sessionStorage.getItem("localSearchMapLocation"))).toEqual(service.locationDetails);
   });
 
 });
