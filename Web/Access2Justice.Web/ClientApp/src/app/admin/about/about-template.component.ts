@@ -3,7 +3,7 @@ import { StaticResourceService } from '../../shared/static-resource.service';
 import { Global } from '../../global';
 import { About } from '../../about/about';
 import { environment } from '../../../environments/environment';
-import { NgForm, FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { NgForm, FormBuilder, FormGroup } from '@angular/forms';
 import { MapLocation } from '../../shared/map/map';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -199,7 +199,8 @@ export class AboutTemplateComponent implements OnInit {
   }
 
   showNewsUpload(image, index) {
-    this[`${image}`].toArray()[index].nativeElement.style.display = 'none'? 'block': 'none';
+    this[`${image}`].toArray()[index].nativeElement.style.display = 'none' ? 'block' : 'none';
+    console.log(image);
   }
 
   ngOnInit() {
