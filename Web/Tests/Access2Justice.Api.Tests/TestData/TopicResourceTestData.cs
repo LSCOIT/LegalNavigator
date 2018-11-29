@@ -48,6 +48,7 @@ namespace Access2Justice.Api.Tests.TestData
                     'id':'77d301e7-6df2-612e-4704-c04edf271806','name': 'Form1','resourceCategory':'form','description': 'Subhead lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem',
                     'resourceType': 'Forms','url': 'access2justice.com','topicTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'organizationalUnit': 'Alaska',
                     'location': [{'state': 'Hawaii','county':'','city': 'Haiku-Pauwela','zipCode':''}],'createdBy': 'API','createdTimeStamp': '','modifiedBy': 'API','modifiedTimeStamp': ''}]");
+        public static JArray resourcesEmpty = JArray.Parse(@"[]");
         public static JArray actionPlanData =
                     JArray.Parse(@"[{'conditions': [{'condition': {'title': 'Take to your partner to see if you can come to an agreement', 'description': 'Why you should do this dolor sit amet.'}}],
                     'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Action Plan','resourceCategory':'action plan','description': 'This action plan is for tenants who are facing Eviction and have experienced the following:',
@@ -126,6 +127,8 @@ namespace Access2Justice.Api.Tests.TestData
                     'id':'77d301e7-6df2-612e-4704-c04edf271806','name': 'Form1',resourceCategory:'form','description': 'Subhead lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem',
                     'resourceType': 'Forms','url': 'access2justice.com','topicTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'organizationalUnit': 'Alaska',
                     'location': [{'state': 'Hawaii','county':'','city': 'Haiku-Pauwela','zipCode':''}],'createdBy': 'API','createdTimeStamp': '','modifiedBy': 'API','modifiedTimeStamp': ''}]");
+        public static JArray expectedUserProfileSavedResourcesUpdateData =
+           JArray.Parse(@"[{'id': 'd984fc20-ae28-4749-942a-16e2b10f0a20','oId': 'outlookoremailOId','type': 'resources','resourceTags': [{'id': 'addf41e9-1a27-4aeb-bcbb-7959f95094ba'},{'id': 'd46aecee-8c79-df1b-4081-1ea02b5022df'}],'id':'f8d41156-4c7e-44c8-a543-b6c40f661900'}]");
         public static JArray expectedActionPlanData =
                     JArray.Parse(@"[{'conditions': [{'condition': [{'title': 'Take to your partner to see if you can come to an agreement', 'description': 'Why you should do this dolor sit amet.'}]}],
                     'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Action Plan',resourceCategory:'action plan','description': 'This action plan is for tenants who are facing Eviction and have experienced the following:',
@@ -199,7 +202,7 @@ namespace Access2Justice.Api.Tests.TestData
         public static Topic TopicIds = new Topic
         {
             Id = "addf41e9-1a27-4aeb-bcbb-7959f95094ba",
-            Name = "test",
+            Name = "Family",
             OrganizationalUnit = "Alaska"
         };
         public static IEnumerable<object[]> TopicInputEnumerable()
@@ -207,12 +210,10 @@ namespace Access2Justice.Api.Tests.TestData
             yield return new object[] { new TopicInput { Id = Guid.Parse("addf41e9-1a27-4aeb-bcbb-7959f95094ba").ToString(), Location = expectedLocation, IsShared = false }, TopicInput };
             yield return new object[] { new TopicInput { Id = Guid.Parse("aaa085ef-96fb-4fd0-bcd0-0472ede66512").ToString(), Location = expectedLocation, IsShared = true }, TopicInputIsSharedTrue };
         }
-        public static IEnumerable<object[]> FormData()
-        {
-            yield return new object[] { formData, expectedformData, propertyNames, values, TopicInput };
-        }
-        public static List<string> propertyNames = new List<string>() { "id", "resourceType" };
-        public static List<string> values = new List<string>() { "id", "Forms" };
+        //public static IEnumerable<object[]> FormData()
+        //{
+        //    yield return new object[] { formData, expectedformData, propertyNames, values, TopicInput };
+        //}
         public static IEnumerable<object[]> Topics()
         {
             yield return new object[] { new Topic { Id = Guid.Parse("addf41e9-1a27-4aeb-bcbb-7959f95094ba").ToString(), Name = "test", OrganizationalUnit = "Alaska" }, TopicIds };
@@ -268,10 +269,26 @@ namespace Access2Justice.Api.Tests.TestData
 
         public static IEnumerable<object[]> ResourceFilter()
         {
-            yield return new object[] { new ResourceFilter { TopicIds = new List<string> { "addf41e9-1a27-4aeb-bcbb-7959f95094ba" }, PageNumber = 0, ResourceType = "ALL", Location = new Location() }, expectedTopicsEmpty };
+            yield return new object[] { new ResourceFilter { TopicIds = new List<string> { "addf41e9-1a27-4aeb-bcbb-7959f95094ba" }, PageNumber = 0, ResourceType = "ALL", Location = new Location(), ResourceIds = new List<string> { "addf41e9-1a27-4aeb-bcbb-7959f95094ba" } }, expectedTopicsEmpty };
         }
-        public static string expectedTopicsEmpty = "{\"topics\":\"[]\",\"resources\":[]}";
-       // public static string expectedTopicsEmpty = "{\r\n  \"topics\": [],\r\n  \"resources\": []\r\n}";
+        public static string expectedTopicsEmpty = "{\"topics\\:[]\",\"resources\\:\"[]\"}";
+        public static IEnumerable<object[]> ResourceData()
+        {
+            yield return new object[] { formData, expectedformData, "Forms" };
+            yield return new object[] { formData, resourcesEmpty, "Forms" };
+            yield return new object[] { actionPlanData, expectedActionPlanData, "Action Plans" };
+            yield return new object[] { actionPlanData, resourcesEmpty, "Action Plans" };
+            yield return new object[] { articleData, expectedArticleData, "Articles" };
+            yield return new object[] { articleData, resourcesEmpty, "Articles" };
+            yield return new object[] { videoData, expectedVideoData, "Videos" };
+            yield return new object[] { videoData, resourcesEmpty, "Videos" };
+            yield return new object[] { organizationData, expectedOrganizationData, "Organizations" };
+            yield return new object[] { organizationData, resourcesEmpty, "Organizations" };
+            yield return new object[] { essentialReadingData, expectedEssentialReadingData, "Essential Readings" };
+            yield return new object[] { essentialReadingData, resourcesEmpty, "Essential Readings" };
+            yield return new object[] { relatedLinkData, expectedRelatedLinkData, "Related Links" };
+            yield return new object[] { relatedLinkData, resourcesEmpty, "Related Links" };
+        }
 
     }
 }
