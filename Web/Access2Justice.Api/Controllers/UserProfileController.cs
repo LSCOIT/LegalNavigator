@@ -32,7 +32,7 @@ namespace Access2Justice.Api.Controllers
         [Route("profile")]
         public async Task<IActionResult> GetUserDataAsync(string oid, string type)
         {
-            return Ok(await userProfileBusinessLogic.GetUserResourceProfileDataAsync(oid, type););
+            return Ok(await userProfileBusinessLogic.GetUserResourceProfileDataAsync(oid, type));
         }
 
         /// <summary>
