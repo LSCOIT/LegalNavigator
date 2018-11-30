@@ -175,7 +175,7 @@ button:focus {
 
 
 
-  ul li .check { 
+ul li .check { 
   display: block;
   position: absolute;
   border: 1px solid #7E7E7E;
