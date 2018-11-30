@@ -95,7 +95,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                     else if (!string.IsNullOrEmpty(cellValue))
                                     {
                                         string cellActualValue = string.Empty;
-                                        if (cell.DataType == Spreadsheet.CellValues.SharedString)
+                                        if (cell.DataType != null && cell.DataType == Spreadsheet.CellValues.SharedString)
                                         {
                                             cellActualValue = sharedStringTable.ElementAt(Int32.Parse(cellValue, CultureInfo.InvariantCulture)).InnerText;
                                         }
@@ -132,10 +132,13 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                             {
                                                 keyValue = from a in keyValuePairs where a.Value.Take(2).First() == cell.CellReference.Value.Take(2).First() select a.Key;
                                             }
+                                            else if (cell.CellReference.Value.Length == 4)
+                                            {
+                                                keyValue = from a in keyValuePairs where a.Value.Take(3).First() == cell.CellReference.Value.Take(3).First() select a.Key;
+                                            }
 
                                             if (keyValue.Count() > 0)
                                             {
-
                                                 UpdateFormData(keyValue, cellActualValue, resourceType);
                                             }
                                         }
@@ -254,7 +257,6 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                         {
                                             ResourceId = (string.IsNullOrEmpty(id) || string.IsNullOrWhiteSpace(id)) ? Guid.NewGuid() : id,
                                             Name = name,
-                                            //Description = description,
                                             ResourceType = resourceType,
                                             Url = url,
                                             TopicTags = topicTagIds,

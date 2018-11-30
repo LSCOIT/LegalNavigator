@@ -1,12 +1,13 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { Resources, PersonalizedPlanTopic, PersonalizedPlan, ProfileResources, SavedResources, UserPlan } from './personalized-plan';
-import { api } from '../../../api/api';
-import { IResourceFilter } from '../../shared/search/search-results/search-results.model';
-import { ArrayUtilityService } from '../../shared/array-utility.service';
+import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs/Observable';
+import { api } from '../../../api/api';
 import { Global } from "../../global";
+import { ArrayUtilityService } from '../../shared/array-utility.service';
+import { IResourceFilter } from '../../shared/search/search-results/search-results.model';
+import { PersonalizedPlan, PersonalizedPlanTopic, ProfileResources, Resources, SavedResources, UserPlan } from './personalized-plan';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -15,31 +16,34 @@ const httpOptions = {
 export class PersonalizedPlanService {
   tempStorage: Array<Resources> = [];
   resoureStorage: any = [];
-  sessionKey: string = "bookmarkedResource";
   isObjectExists: boolean = false;
   topics: string[] = [];
   resources: string[] = [];
   planId: string;
-  planTopic: PersonalizedPlanTopic = { topic: {}, isSelected: true };
+  planTopic: PersonalizedPlanTopic;
   topicsList: Array<PersonalizedPlanTopic> = [];
   planDetailTags: any;
-  tempPlanDetailTags: any;  
+  tempPlanDetailTags: any;
   planDetails: any = [];
-  planSessionKey: string = "bookmarkPlanId";
   profileResources: ProfileResources = { oId: '', resourceTags: [], type: '' };
   savedResources: SavedResources;
   resourceTags: Array<SavedResources> = [];
   resourceIds: Array<string>;
   personalizedPlan: PersonalizedPlan;
   userPersonalizedPlan: UserPlan = { oId: '', plan: this.personalizedPlan };
+  resourceIndex: number;
+  tempResourceStorage: any = [];
 
   constructor(private http: HttpClient,
-              private arrayUtilityService: ArrayUtilityService,
-              private toastr: ToastrService,
-              private global: Global) { }
-  
+    private arrayUtilityService: ArrayUtilityService,
+    private toastr: ToastrService,
+    private global: Global,
+    private spinner: NgxSpinnerService) { }
+
   getActionPlanConditions(planId): Observable<any> {
-    return this.http.get<PersonalizedPlan>(api.planUrl + '/' + planId);
+    let params = new HttpParams()
+      .set("personalizedPlanId", planId);
+    return this.http.get<any>(api.planUrl + '?' + params, httpOptions);
   }
 
   getUserSavedResources(params): Observable<any> {
@@ -50,9 +54,8 @@ export class PersonalizedPlanService {
     return this.http.post(api.userPlanUrl, resource, httpOptions);
   }
 
-  userPlan(plan: PersonalizedPlan) {
-    this.userPersonalizedPlan = { oId: this.global.userId, plan: plan };
-    return this.http.post<any>(api.updateUserPlanUrl, this.userPersonalizedPlan, httpOptions);
+  userPlan(plan): Observable<any> {
+    return this.http.post<any>(api.updateUserPlanUrl, plan, httpOptions);
   }
 
   getPersonalizedResources(resourceInput: IResourceFilter) {
@@ -60,7 +63,7 @@ export class PersonalizedPlanService {
   }
 
   getPlanDetails(topics, planDetailTags): any {
-    this.topicsList = this.createTopicsList(this.topics);
+    this.topicsList = this.createTopicsList(topics);
     this.planDetails = this.displayPlanDetails(planDetailTags, this.topicsList);
     return this.planDetails;
   }
@@ -88,19 +91,21 @@ export class PersonalizedPlanService {
   }
 
   saveResourcesToUserProfile() {
+    this.resoureStorage = [];
     this.savedResources = { itemId: '', resourceType: '', resourceDetails: {} };
-    this.resoureStorage = sessionStorage.getItem(this.sessionKey);
+    this.resoureStorage = sessionStorage.getItem(this.global.sessionKey);
     if (this.resoureStorage && this.resoureStorage.length > 0) {
       this.resoureStorage = JSON.parse(this.resoureStorage);
     }
-    this.savedResources = {
-      itemId: this.resoureStorage.itemId,
-      resourceType: this.resoureStorage.resourceType, resourceDetails: this.resoureStorage.resourceDetails
-    };
-    this.saveResourcesToProfile(this.savedResources);
+    this.resourceTags = [];
+    this.resoureStorage.forEach(resource => {
+      this.resourceTags.push(resource);
+    });
+    this.saveResourceToProfilePostLogin(this.resourceTags);
   }
 
-  saveResourcesToProfile(savedResources) {    
+  saveResourceToProfilePostLogin(savedResources) {
+    this.resourceIndex = 0;
     this.resourceTags = [];
     let params = new HttpParams()
       .set("oid", this.global.userId)
@@ -108,6 +113,7 @@ export class PersonalizedPlanService {
     this.getUserSavedResources(params)
       .subscribe(response => {
         if (response) {
+          this.spinner.show();
           response.forEach(property => {
             if (property.resources) {
               property.resources.forEach(resource => {
@@ -116,22 +122,53 @@ export class PersonalizedPlanService {
             }
           });
         }
-        if (this.arrayUtilityService.checkObjectExistInArray(this.resourceTags, savedResources)) {
-          this.showWarning('Resource already saved to profile');
-        } else {
-          this.resourceTags.push(savedResources);
-          this.saveResourceToProfile(this.resourceTags);
-        }
-        sessionStorage.removeItem(this.sessionKey);
+        this.checkExistingSavedResources(savedResources);
       });
   }
 
-  saveResourceToProfile(resourceTags) {
+  checkExistingSavedResources(savedResources) {
+    savedResources.forEach(savedResource => {
+      if (this.arrayUtilityService.checkObjectExistInArray(this.resourceTags, savedResource)) {
+        this.showWarning('Resource already saved to profile');
+        this.spinner.hide();
+      } else {
+        this.resourceIndex++;
+        this.resourceTags.push(savedResource);
+      }
+      if (this.resourceIndex > 0) {
+        this.saveResourcesToProfile(this.resourceTags);
+      }
+    });
+    sessionStorage.removeItem(this.global.sessionKey);
+  }
+
+  saveResourcesToProfile(resourceTags) {
     this.profileResources = { oId: this.global.userId, resourceTags: resourceTags, type: 'resources' };
     this.saveResources(this.profileResources)
       .subscribe(() => {
         this.showSuccess('Resource saved to profile');
+        this.spinner.hide();
       });
+  }
+
+  saveBookmarkedResource(savedResource) {
+    this.tempResourceStorage = [];
+    let tempStorage = sessionStorage.getItem(this.global.sessionKey);
+    if (tempStorage && tempStorage.length > 0) {
+      tempStorage = JSON.parse(tempStorage);
+      this.tempResourceStorage = tempStorage;
+    }
+    if (savedResource) {
+      if (!this.arrayUtilityService.checkObjectExistInArray(this.tempResourceStorage, savedResource)) {
+        this.tempResourceStorage.push(savedResource);
+        this.showSuccess('Resource saved to session');
+      } else {
+        this.showWarning('Resource already saved to session');
+      }
+    }
+    if (this.tempResourceStorage.length > 0) {
+      sessionStorage.setItem(this.global.sessionKey, JSON.stringify(this.tempResourceStorage));
+    }
   }
 
   getResourceIds(resources): Array<string> {

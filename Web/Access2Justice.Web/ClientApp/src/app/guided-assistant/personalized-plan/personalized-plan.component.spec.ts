@@ -15,375 +15,232 @@ describe('Component:PersonalizedPlan', () => {
   let component: PersonalizedPlanComponent;
   let fixture: ComponentFixture<PersonalizedPlanComponent>;
   let toastrService: ToastrService;
-  let mockactiveActionPlan = '3bd5b8cb-69f3-42fc-a74c-a9fa1c94f805';
+  let mockPersonalizedPlanService;
+  let mockNavigateDataService;
   let mockPlanDetails = {
-    "id": "3bd5b8cb-69f3-42fc-a74c-a9fa1c94f805",
+    "id": "29250697-8d22-4f9d-bbf8-96c1b5b72e54",
+    "isShared": false,
     "topics": [
       {
-        "topicId": "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef",
-        "name": "Divorce",
-        "quickLinks": [
+        "topicId": "69be8e7c-975b-43c8-9af3-f61887a33ad3",
+        "name": "Protective Order",
+        "icon": null,
+        "essentialReadings": [
           {
-            "text": "Filing for Dissolution or Divorce - Ending Your Marriage",
-            "url": "http://courts.alaska.gov/shc/family/shcstart.htm#issues"
-          }
-        ],
-        "icon": "https://cs4892808efec24x447cx944.blob.core.windows…/static-resource/assets/images/topics/housing.svg",
-        "steps": [
-          {
-            "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
-            "title": "File a motion to modify if there has been a change of circumstances.",
-            "description": "The Motion and Affidavit for Post-Decree relief are used to request changes to a divorce or make sure the other side is followin gthe orders.",
-            "order": 1,
-            "isComplete": false,
-            "resources": [
-              {
-                "id": "19a02209-ca38-4b74-bd67-6ea941d41518",
-                "resourceType": "Organizations"
-              },
-              {
-                "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5",
-                "resourceType": "Articles"
-              }
-            ]
+            "text": "Domestic Violence - What it is",
+            "url": "https://www.thehotline.org/is-this-abuse/abuse-defined/"
           },
           {
-            "description": "Jurisdiction is a very complicated subject and you should talk to an attorney to figure out where is the best place ot file your case. Here are some resources that could help you with this:",
-            "isComplete": true,
+            "text": "Safety Planning Tips",
+            "url": "https://www.thehotline.org/help/path-to-safety/"
+          }
+        ],
+        "steps": [
+          {
+            "description": "Short Term",
+            "isComplete": false,
+            "order": 1,
+            "resources": [],
+            "stepId": "ec78414b-2616-4d65-ae07-e08f3e2f697a",
+            "title": "Short Term Protective Order"
+          },
+          {
+            "description": "Long Term",
+            "isComplete": false,
             "order": 2,
-            "resources": [
-              {
-                "id": "19a02209-ca38-4b74-bd67-6ea941d41518",
-                "resourceType": "Organizations"
-              },
-              {
-                "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5",
-                "resourceType": "Articles"
-              }
-            ],
-            "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
-            "title": "Jurisdiction"
+            "resources": [],
+            "stepId": "ed56894b-2616-4d65-ae07-e08f3e2f697a",
+            "title": "Long Term Protective Order"
           }
         ]
       },
       {
-        "topicId": "e1fdbbc6-d66a-4275-9cd2-2be84d303e12",
-        "name": "Eviction",
-        "quickLinks": [
+        "topicId": "ba74f857-eb7b-4dd6-a021-5b3e4525e3e4",
+        "name": "Divorce",
+        "icon": null,
+        "essentialReadings": [
           {
-            "text": "Filing for Dissolution or Divorce - Ending Your Marriage",
-            "url": "http://courts.alaska.gov/shc/family/shcstart.htm#issues"
+            "text": "Domestic Violence - What it is",
+            "url": "https://www.thehotline.org/is-this-abuse/abuse-defined/"
           }
         ],
-        "icon": "https://cs4892808efec24x447cx944.blob.core.windows…/static-resource/assets/images/topics/housing.svg",
         "steps": [
           {
-            "stepId": "f79305c1-8767-4485-9e9b-0b5a573ea7b3",
-            "title": "File a motion to modify if there has been a change of circumstances.",
-            "description": "The Motion and Affidavit for Post-Decree relief are used to request changes to a divorce or make sure the other side is followin gthe orders.",
+            "description": "Step Description",
+            "isComplete": false,
             "order": 1,
-            "isComplete": false,
-            "resources": [
-              {
-                "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5",
-                "resourceType": "Forms"
-              },
-              {
-                "id": "49779468-1fe0-4183-850b-ff365e05893e",
-                "resourceType": "Organizations"
-              }
-            ]
-          },
-          {
-            "stepId": "e9337765-81fc-4d10-8850-8e872cde4ee8",
-            "title": "Jurisdiction",
-            "description": "Jurisdiction is a very complicated subject and you should talk to an attorney to figure out where is the best place ot file your case. Here are some resources that could help you with this:",
-            "order": 2,
-            "isComplete": false,
-            "resources": [
-              {
-                "id": "be0cb3e1-7054-403a-baac-d119ea5be007",
-                "resourceType": "Articles"
-              },
-              {
-                "id": "2fe9f117-bfb5-469f-b80c-877640a29f75",
-                "resourceType": "Forms"
-              }
-            ]
+            "resources": [],
+            "stepId": "df822558-73c2-4ac8-8259-fabe2334eb71",
+            "title": "Step Title"
           }
         ]
       }
-    ],
-    "isShared": false
+    ]
   };
   let mockTopicsList = [
     {
-      "isSelected": true,
-      "topic":
-        {
-          "topicId": "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef",
-          "name": "Divorce",
-          "quickLinks": [
-            {
-              "text": "Filing for Dissolution or Divorce - Ending Your Marriage",
-              "url": "http://courts.alaska.gov/shc/family/shcstart.htm#issues"
-            }
-          ],
-          "icon": "https://cs4892808efec24x447cx944.blob.core.windows…/static-resource/assets/images/topics/housing.svg",
-          "steps": [
-            {
-              "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
-              "title": "Jurisdiction",
-              "description": "Jurisdiction is a very complicated subject and you…are some resources that could help you with this:",
-              "order": 2,
-              "isComplete": false,
-              "resources": [
-                {
-                  "id": "19a02209-ca38-4b74-bd67-6ea941d41518"
-                },
-                {
-                  "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5"
-                }
-              ]
-            },
-            {
-              "description": "Jurisdiction is a very complicated subject and you should talk to an attorney to figure out where is the best place ot file your case. Here are some resources that could help you with this:",
-              "isComplete": true,
-              "order": 2,
-              "resources": [
-                {
-                  "id": "19a02209-ca38-4b74-bd67-6ea941d41518"
-                },
-                {
-                  "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5"
-                }
-              ],
-              "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
-              "title": "Jurisdiction"
-            }
-          ]
-        }
+      "topic": {
+        "topicId": "69be8e7c-975b-43c8-9af3-f61887a33ad3",
+        "name": "Protective Order",
+        "icon": null,
+        "essentialReadings": [
+          {
+            "text": "Domestic Violence - What it is",
+            "url": "https://www.thehotline.org/is-this-abuse/abuse-defined/"
+          },
+          {
+            "text": "Safety Planning Tips",
+            "url": "https://www.thehotline.org/help/path-to-safety/"
+          }
+        ],
+        "steps": [
+          {
+            "description": "Short Term",
+            "isComplete": false,
+            "order": 1,
+            "resources": [],
+            "stepId": "ec78414b-2616-4d65-ae07-e08f3e2f697a",
+            "title": "Short Term Protective Order"
+          },
+          {
+            "description": "Long Term",
+            "isComplete": false,
+            "order": 2,
+            "resources": [],
+            "stepId": "ed56894b-2616-4d65-ae07-e08f3e2f697a",
+            "title": "Long Term Protective Order"
+          }
+        ]
+      },
+      "isSelected": true
     },
     {
-      "isSelected": true,
       "topic": {
-        "topicId": "e1fdbbc6-d66a-4275-9cd2-2be84d303e12",
-        "name": "Eviction",
-        "quickLinks": [
+        "topicId": "ba74f857-eb7b-4dd6-a021-5b3e4525e3e4",
+        "name": "Divorce",
+        "icon": null,
+        "essentialReadings": [
           {
-            "text": "Filing for Dissolution or Divorce - Ending Your Marriage",
-            "url": "http://courts.alaska.gov/shc/family/shcstart.htm#issues"
+            "text": "Domestic Violence - What it is",
+            "url": "https://www.thehotline.org/is-this-abuse/abuse-defined/"
           }
         ],
-        "icon": "https://cs4892808efec24x447cx944.blob.core.windows…/static-resource/assets/images/topics/housing.svg",
         "steps": [
           {
-            "stepId": "f79305c1-8767-4485-9e9b-0b5a573ea7b3",
-            "title": "File a motion to modify if there has been a change of circumstances.",
-            "description": "The Motion and Affidavit for Post-Decree relief are used to request changes to a divorce or make sure the other side is followin gthe orders.",
+            "description": "Step Description",
+            "isComplete": false,
             "order": 1,
-            "isComplete": false,
-            "resources": [
-              {
-                "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5",
-                "resourceType": "Forms"
-              },
-              {
-                "id": "49779468-1fe0-4183-850b-ff365e05893e",
-                "resourceType": "Organizations"
-              }
-            ]
-          },
-          {
-            "stepId": "e9337765-81fc-4d10-8850-8e872cde4ee8",
-            "title": "Jurisdiction",
-            "description": "Jurisdiction is a very complicated subject and you should talk to an attorney to figure out where is the best place ot file your case. Here are some resources that could help you with this:",
-            "order": 2,
-            "isComplete": false,
-            "resources": [
-              {
-                "id": "be0cb3e1-7054-403a-baac-d119ea5be007",
-                "resourceType": "Articles"
-              },
-              {
-                "id": "2fe9f117-bfb5-469f-b80c-877640a29f75",
-                "resourceType": "Forms"
-              }
-            ]
+            "resources": [],
+            "stepId": "df822558-73c2-4ac8-8259-fabe2334eb71",
+            "title": "Step Title"
           }
         ]
-      }
-    }];
-  let mockFilteredPlanDetails = {
-    "id": "3bd5b8cb-69f3-42fc-a74c-a9fa1c94f805",
-    "topics": [
-      {
-        "topicId": "e1fdbbc6-d66a-4275-9cd2-2be84d303e12",
-        "name": "Eviction",
-        "quickLinks": [
-          {
-            "text": "Filing for Dissolution or Divorce - Ending Your Marriage",
-            "url": "http://courts.alaska.gov/shc/family/shcstart.htm#issues"
-          }
-        ],
-        "icon": "https://cs4892808efec24x447cx944.blob.core.windows…/static-resource/assets/images/topics/housing.svg",
-        "steps": [
-          {
-            "stepId": "f79305c1-8767-4485-9e9b-0b5a573ea7b3",
-            "title": "File a motion to modify if there has been a change of circumstances.",
-            "description": "The Motion and Affidavit for Post-Decree relief are used to request changes to a divorce or make sure the other side is followin gthe orders.",
-            "order": 1,
-            "isComplete": false,
-            "resources": [
-              {
-                "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5",
-                "resourceType": "Forms"
-              },
-              {
-                "id": "49779468-1fe0-4183-850b-ff365e05893e",
-                "resourceType": "Organizations"
-              }
-            ]
-          },
-          {
-            "stepId": "e9337765-81fc-4d10-8850-8e872cde4ee8",
-            "title": "Jurisdiction",
-            "description": "Jurisdiction is a very complicated subject and you should talk to an attorney to figure out where is the best place ot file your case. Here are some resources that could help you with this:",
-            "order": 2,
-            "isComplete": false,
-            "resources": [
-              {
-                "id": "be0cb3e1-7054-403a-baac-d119ea5be007",
-                "resourceType": "Articles"
-              },
-              {
-                "id": "2fe9f117-bfb5-469f-b80c-877640a29f75",
-                "resourceType": "Forms"
-              }
-            ]
-          }
-        ]
-      }
-    ],
-    "isShared": false
-  };
+      },
+      "isSelected": true
+    }
+  ];
   let mockFilteredTopicsList = [
     {
-      "isSelected": false,
-      "topic":
-        {
-          "topicId": "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef",
-          "name": "Divorce",
-          "quickLinks": [
-            {
-              "text": "Filing for Dissolution or Divorce - Ending Your Marriage",
-              "url": "http://courts.alaska.gov/shc/family/shcstart.htm#issues"
-            }
-          ],
-          "icon": "https://cs4892808efec24x447cx944.blob.core.windows…/static-resource/assets/images/topics/housing.svg",
-          "steps": [
-            {
-              "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
-              "title": "Jurisdiction",
-              "description": "Jurisdiction is a very complicated subject and you…are some resources that could help you with this:",
-              "order": 2,
-              "isComplete": false,
-              "resources": [
-                {
-                  "id": "19a02209-ca38-4b74-bd67-6ea941d41518"
-                },
-                {
-                  "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5"
-                }
-              ]
-            },
-            {
-              "description": "Jurisdiction is a very complicated subject and you should talk to an attorney to figure out where is the best place ot file your case. Here are some resources that could help you with this:",
-              "isComplete": true,
-              "order": 2,
-              "resources": [
-                {
-                  "id": "19a02209-ca38-4b74-bd67-6ea941d41518"
-                },
-                {
-                  "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5"
-                }
-              ],
-              "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
-              "title": "Jurisdiction"
-            }
-          ]
-        }
-    },
-    {
-      "isSelected": true,
       "topic": {
-        "topicId": "e1fdbbc6-d66a-4275-9cd2-2be84d303e12",
-        "name": "Eviction",
-        "quickLinks": [
+        "topicId": "69be8e7c-975b-43c8-9af3-f61887a33ad3",
+        "name": "Protective Order",
+        "icon": null,
+        "essentialReadings": [
           {
-            "text": "Filing for Dissolution or Divorce - Ending Your Marriage",
-            "url": "http://courts.alaska.gov/shc/family/shcstart.htm#issues"
-          }
-        ],
-        "icon": "https://cs4892808efec24x447cx944.blob.core.windows…/static-resource/assets/images/topics/housing.svg",
-        "steps": [
-          {
-            "stepId": "f79305c1-8767-4485-9e9b-0b5a573ea7b3",
-            "title": "File a motion to modify if there has been a change of circumstances.",
-            "description": "The Motion and Affidavit for Post-Decree relief are used to request changes to a divorce or make sure the other side is followin gthe orders.",
-            "order": 1,
-            "isComplete": false,
-            "resources": [
-              {
-                "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5",
-                "resourceType": "Forms"
-              },
-              {
-                "id": "49779468-1fe0-4183-850b-ff365e05893e",
-                "resourceType": "Organizations"
-              }
-            ]
+            "text": "Domestic Violence - What it is",
+            "url": "https://www.thehotline.org/is-this-abuse/abuse-defined/"
           },
           {
-            "stepId": "e9337765-81fc-4d10-8850-8e872cde4ee8",
-            "title": "Jurisdiction",
-            "description": "Jurisdiction is a very complicated subject and you should talk to an attorney to figure out where is the best place ot file your case. Here are some resources that could help you with this:",
-            "order": 2,
+            "text": "Safety Planning Tips",
+            "url": "https://www.thehotline.org/help/path-to-safety/"
+          }
+        ],
+        "steps": [
+          {
+            "description": "Short Term",
             "isComplete": false,
-            "resources": [
-              {
-                "id": "be0cb3e1-7054-403a-baac-d119ea5be007",
-                "resourceType": "Articles"
-              },
-              {
-                "id": "2fe9f117-bfb5-469f-b80c-877640a29f75",
-                "resourceType": "Forms"
-              }
-            ]
+            "order": 1,
+            "resources": [],
+            "stepId": "ec78414b-2616-4d65-ae07-e08f3e2f697a",
+            "title": "Short Term Protective Order"
+          },
+          {
+            "description": "Long Term",
+            "isComplete": false,
+            "order": 2,
+            "resources": [],
+            "stepId": "ed56894b-2616-4d65-ae07-e08f3e2f697a",
+            "title": "Long Term Protective Order"
+          }
+        ]
+      },
+      "isSelected": true
+    },
+    {
+      "topic": {
+        "topicId": "ba74f857-eb7b-4dd6-a021-5b3e4525e3e4",
+        "name": "Divorce",
+        "icon": null,
+        "essentialReadings": [
+          {
+            "text": "Domestic Violence - What it is",
+            "url": "https://www.thehotline.org/is-this-abuse/abuse-defined/"
+          }
+        ],
+        "steps": [
+          {
+            "description": "Step Description",
+            "isComplete": false,
+            "order": 1,
+            "resources": [],
+            "stepId": "df822558-73c2-4ac8-8259-fabe2334eb71",
+            "title": "Step Title"
+          }
+        ]
+      },
+      "isSelected": false
+    }
+  ];
+  let mockFilteredPlanDetails = {
+    "id": "29250697-8d22-4f9d-bbf8-96c1b5b72e54",
+    "isShared": false,
+    "topics": [
+      {
+        "topicId": "69be8e7c-975b-43c8-9af3-f61887a33ad3",
+        "name": "Protective Order",
+        "icon": null,
+        "essentialReadings": [
+          {
+            "text": "Domestic Violence - What it is",
+            "url": "https://www.thehotline.org/is-this-abuse/abuse-defined/"
+          },
+          {
+            "text": "Safety Planning Tips",
+            "url": "https://www.thehotline.org/help/path-to-safety/"
+          }
+        ],
+        "steps": [
+          {
+            "description": "Short Term",
+            "isComplete": false,
+            "order": 1,
+            "resources": [],
+            "stepId": "ec78414b-2616-4d65-ae07-e08f3e2f697a",
+            "title": "Short Term Protective Order"
+          },
+          {
+            "description": "Long Term",
+            "isComplete": false,
+            "order": 2,
+            "resources": [],
+            "stepId": "ed56894b-2616-4d65-ae07-e08f3e2f697a",
+            "title": "Long Term Protective Order"
           }
         ]
       }
-    }];
-  let mockFilterTopicName = "Divorce";
-  let mockTopicListBlank = [{
-    topic: '',
-    isSelected: false
-  }];
-  let mockPersonalizedPlanService;
-  let mockNavigateDataService;
-  let mockGeneratedPersonalizedPlan = {
-    id: "test12345",
-    isShared: false,
-    topics: [
-      {
-        icon: "",
-        name: "Divorce",
-        quickLinks: [],
-        steps: []
-      }
     ]
-  }
+  };
+  let mockFilterTopicName = "Divorce";
 
   beforeEach(async(() => {
     mockPersonalizedPlanService = jasmine.createSpyObj([
@@ -391,25 +248,26 @@ describe('Component:PersonalizedPlan', () => {
     ]);
     mockPersonalizedPlanService.getActionPlanConditions.and.returnValue(of(mockPlanDetails));
     mockNavigateDataService = jasmine.createSpyObj(['getData']);
+    mockNavigateDataService.getData.and.returnValue(of(mockPlanDetails));
 
     TestBed.configureTestingModule({
       imports: [ToastrModule.forRoot(),
-        RouterModule.forRoot([
-          { path: 'plan /: id', component: PersonalizedPlanComponent }
-        ]),
+      RouterModule.forRoot([
+        { path: 'plan /: id', component: PersonalizedPlanComponent }
+      ]),
         HttpClientModule],
       declarations: [PersonalizedPlanComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: APP_BASE_HREF, useValue: '/' },
-        { provide: PersonalizedPlanService, useValue: mockPersonalizedPlanService }, 
-        ArrayUtilityService, 
+        { provide: PersonalizedPlanService, useValue: mockPersonalizedPlanService },
+        ArrayUtilityService,
         ToastrService,
-        { provide: NavigateDataService, useValue: mockNavigateDataService}
+        { provide: NavigateDataService, useValue: mockNavigateDataService }
       ]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(PersonalizedPlanComponent);
     component = fixture.componentInstance;
     toastrService = TestBed.get(ToastrService);
@@ -431,17 +289,10 @@ describe('Component:PersonalizedPlan', () => {
     expect(component.getTopics).toHaveBeenCalled();
   });
 
-  it('should call methods of personalized service and assing component values when gettopics is called', () => {
-    component.activeActionPlan = mockactiveActionPlan;
-    mockPersonalizedPlanService.createTopicsList.and.returnValue(mockTopicsList);
-    mockPersonalizedPlanService.getPlanDetails.and.returnValue(mockPlanDetails);
-    component.getTopics();
-    expect(component.topics).toEqual(mockPlanDetails.topics);
-    expect(component.planDetailTags).toEqual(mockPlanDetails);
-    expect(mockPersonalizedPlanService.createTopicsList).toHaveBeenCalledWith(mockPlanDetails.topics);
-    expect(mockPersonalizedPlanService.getPlanDetails).toHaveBeenCalledWith(mockPlanDetails.topics, mockPlanDetails);
-    expect(component.topicsList).toEqual(mockTopicsList);
-    expect(component.planDetails).toEqual(mockPlanDetails);
+  it('should call service methods in setPlan', () => {
+    mockPersonalizedPlanService.createTopicsList.and.returnValue(of(mockTopicsList));
+    mockPersonalizedPlanService.getPlanDetails.and.returnValue(of(mockPlanDetails));
+    component.setPlan();
   });
 
   it('should call filterTopicsList method and  personalizedPlanService displayPlanDetails method when filterPlan is called', () => {
@@ -462,6 +313,10 @@ describe('Component:PersonalizedPlan', () => {
   });
 
   it('should return filtered topics list infilterTopicsList  method when input is blank in topic', () => {
+    let mockTopicListBlank = [{
+      topic: '',
+      isSelected: false
+    }];
     component.tempTopicsList = mockTopicsList;
     component.filterTopicsList(mockTopicListBlank);
     expect(component.topicsList).toEqual(mockTopicsList);
@@ -483,12 +338,4 @@ describe('Component:PersonalizedPlan', () => {
     expect(component.filterPlan).toHaveBeenCalledWith("");
   });
 
-  it('should not call getTopics if generate plan is defined and set component variables', () => {
-    mockNavigateDataService.getData.and.returnValue(mockGeneratedPersonalizedPlan);
-    spyOn(component, 'getTopics');
-    component.ngOnInit();
-    expect(component.topics).toEqual(mockGeneratedPersonalizedPlan.topics);
-    expect(component.planDetailTags).toEqual(mockGeneratedPersonalizedPlan);
-    expect(component.getTopics).toHaveBeenCalledTimes(0);
-  });
 });

@@ -2,41 +2,76 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { PersonalizedPlanService } from './personalized-plan.service';
 import { api } from '../../../api/api';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { ArrayUtilityService } from '../../shared/array-utility.service';
 import { PersonalizedPlan, ProfileResources } from './personalized-plan';
 import { ToastrService } from 'ngx-toastr';
 import { Global } from '../../global';
+import { of } from 'rxjs/observable/of';
+import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 describe('Service:PersonalizedPlan', () => {
-  let mockPlanDetailsJson = {
-    "id": "bf8d7e7e-2574-7b39-efc7-83cb94adae07",
-    "oId": "User Id",
-    "type": "plans",
-    "planTags": [
+  let mockPlanDetails = {
+    "id": "29250697-8d22-4f9d-bbf8-96c1b5b72e54",
+    "isShared": false,
+    "topics": [
       {
-        "topicId": "addf41e9-1a27-4aeb-bcbb-7959f95094ba",
-        "stepTags": [
+        "topicId": "69be8e7c-975b-43c8-9af3-f61887a33ad3",
+        "name": "Protective Order",
+        "icon": null,
+        "essentialReadings": [
           {
-            "id": "6b230be1-302b-7090-6cb3-fc6aa084274c",
-            "order": 1,
-            "markCompleted": false
+            "text": "Domestic Violence - What it is",
+            "url": "https://www.thehotline.org/is-this-abuse/abuse-defined/"
+          },
+          {
+            "text": "Safety Planning Tips",
+            "url": "https://www.thehotline.org/help/path-to-safety/"
           }
         ],
-        "id": "addf41e9-1a27-4aeb-bcbb-7959f95094ba"
+        "steps": [
+          {
+            "description": "Short Term",
+            "isComplete": false,
+            "order": 1,
+            "resources": [],
+            "stepId": "ec78414b-2616-4d65-ae07-e08f3e2f697a",
+            "title": "Short Term Protective Order"
+          },
+          {
+            "description": "Long Term",
+            "isComplete": false,
+            "order": 2,
+            "resources": [],
+            "stepId": "ed56894b-2616-4d65-ae07-e08f3e2f697a",
+            "title": "Long Term Protective Order"
+          }
+        ]
+      },
+      {
+        "topicId": "ba74f857-eb7b-4dd6-a021-5b3e4525e3e4",
+        "name": "Divorce",
+        "icon": null,
+        "essentialReadings": [
+          {
+            "text": "Domestic Violence - What it is",
+            "url": "https://www.thehotline.org/is-this-abuse/abuse-defined/"
+          }
+        ],
+        "steps": [
+          {
+            "description": "Step Description",
+            "isComplete": false,
+            "order": 1,
+            "resources": [],
+            "stepId": "df822558-73c2-4ac8-8259-fabe2334eb71",
+            "title": "Step Title"
+          }
+        ]
       }
     ]
   };
-  let mockPersonalizedPlan: PersonalizedPlan = {
-    "id": "bf8d7e7e-2574-7b39-efc7-83cb94adae07",
-    "topics": [],
-    "isShared": true
-  }
-  let mockProfileResources: ProfileResources = {
-    "oId": "mockUserId",
-    "resourceTags": [],
-    "type": "resources"
-  }
   let mockUserSavedResources = {
     "id": "1fb1b006-a8bc-487d-98a0-2457d9d9f78d",
     "resources": [
@@ -60,7 +95,12 @@ describe('Service:PersonalizedPlan', () => {
         }
       }
     ]
-  }
+  };
+  let mockProfileResources: ProfileResources = {
+    "oId": "mockUserId",
+    "resourceTags": [],
+    "type": "resources"
+  };
   let mockProfileSavedResources = {
     "resources": [{ "id": "afbb8dc1-f721-485f-ab92-1bab60137e24", "address": "Girdwood, Anchorage, Hawii 99587", "resourceType": "Organizations" }],
     "topics": [{
@@ -68,311 +108,245 @@ describe('Service:PersonalizedPlan', () => {
       "id": "5970328f-ceea-4903-b4dc-1ea559623582", "resourceType": "Topics"
     }]
   };
+  let mockSavedResources = [
+    {
+      "itemId": "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef",
+      "resourceType": "Topics",
+      "resourceDetails": {}
+    },
+    {
+      "itemId": "14a7dd22-f33d-4ed0-a4c3-9bad146f4fa6",
+      "resourceType": "Articles",
+      "resourceDetails": {}
+    }
+  ];
   let mockResourceInput = {
     "ContinuationToken": null, "IsResourceCountRequired": false, "Location": null,
     "PageNumber": 0, "ResourceIds": ["afbb8dc1-f721-485f-ab92-1bab60137e24"], "ResourceType": "ALL",
     "TopicIds": ["5970328f-ceea-4903-b4dc-1ea559623582"]
   };
-  let mockTopics = [
-    {
-      "topicId": "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef",
-      "name": "Divorce",
-      "quickLinks": [
-        {
-          "text": "Filing for Dissolution or Divorce - Ending Your Marriage",
-          "url": "http://courts.alaska.gov/shc/family/shcstart.htm#issues"
-        }
-      ],
-      "icon": "https://cs4892808efec24x447cx944.blob.core.windows…/static-resource/assets/images/topics/housing.svg",
-      "steps": [
-        {
-          "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
-          "title": "File a motion to modify if there has been a change of circumstances.",
-          "description": "The Motion and Affidavit for Post-Decree relief are used to request changes to a divorce or make sure the other side is followin gthe orders.",
-          "order": 1,
-          "isComplete": false,
-          "resources": [
-            {
-              "id": "19a02209-ca38-4b74-bd67-6ea941d41518",
-              "resourceType": "Organizations"
-            },
-            {
-              "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5",
-              "resourceType": "Articles"
-            }
-          ]
-        },
-        {
-          "description": "Jurisdiction is a very complicated subject and you should talk to an attorney to figure out where is the best place ot file your case. Here are some resources that could help you with this:",
-          "isComplete": true,
-          "order": 2,
-          "resources": [
-            {
-              "id": "19a02209-ca38-4b74-bd67-6ea941d41518",
-              "resourceType": "Organizations"
-            },
-            {
-              "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5",
-              "resourceType": "Articles"
-            }
-          ],
-          "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
-          "title": "Jurisdiction"
-        }
-      ]
-    },
-    {
-      "topicId": "e1fdbbc6-d66a-4275-9cd2-2be84d303e12",
-      "name": "Eviction",
-      "quickLinks": [
-        {
-          "text": "Filing for Dissolution or Divorce - Ending Your Marriage",
-          "url": "http://courts.alaska.gov/shc/family/shcstart.htm#issues"
-        }
-      ],
-      "icon": "https://cs4892808efec24x447cx944.blob.core.windows…/static-resource/assets/images/topics/housing.svg",
-      "steps": [
-        {
-          "stepId": "f79305c1-8767-4485-9e9b-0b5a573ea7b3",
-          "title": "File a motion to modify if there has been a change of circumstances.",
-          "description": "The Motion and Affidavit for Post-Decree relief are used to request changes to a divorce or make sure the other side is followin gthe orders.",
-          "order": 1,
-          "isComplete": false,
-          "resources": [
-            {
-              "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5",
-              "resourceType": "Forms"
-            },
-            {
-              "id": "49779468-1fe0-4183-850b-ff365e05893e",
-              "resourceType": "Organizations"
-            }
-          ]
-        },
-        {
-          "stepId": "e9337765-81fc-4d10-8850-8e872cde4ee8",
-          "title": "Jurisdiction",
-          "description": "Jurisdiction is a very complicated subject and you should talk to an attorney to figure out where is the best place ot file your case. Here are some resources that could help you with this:",
-          "order": 2,
-          "isComplete": false,
-          "resources": [
-            {
-              "id": "be0cb3e1-7054-403a-baac-d119ea5be007",
-              "resourceType": "Articles"
-            },
-            {
-              "id": "2fe9f117-bfb5-469f-b80c-877640a29f75",
-              "resourceType": "Forms"
-            }
-          ]
-        }
-      ]
-    }];
   let mockTopicsList = [
     {
-      "isSelected": true,
       "topic": {
-        "topicId": "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef",
-        "name": "Divorce",
-        "quickLinks": [
+        "topicId": "69be8e7c-975b-43c8-9af3-f61887a33ad3",
+        "name": "Protective Order",
+        "icon": null,
+        "essentialReadings": [
           {
-            "text": "Filing for Dissolution or Divorce - Ending Your Marriage",
-            "url": "http://courts.alaska.gov/shc/family/shcstart.htm#issues"
-          }
-        ],
-        "icon": "https://cs4892808efec24x447cx944.blob.core.windows…/static-resource/assets/images/topics/housing.svg",
-        "steps": [
-          {
-            "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
-            "title": "File a motion to modify if there has been a change of circumstances.",
-            "description": "The Motion and Affidavit for Post-Decree relief are used to request changes to a divorce or make sure the other side is followin gthe orders.",
-            "order": 1,
-            "isComplete": false,
-            "resources": [
-              {
-                "id": "19a02209-ca38-4b74-bd67-6ea941d41518",
-                "resourceType": "Organizations"
-              },
-              {
-                "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5",
-                "resourceType": "Articles"
-              }
-            ]
+            "text": "Domestic Violence - What it is",
+            "url": "https://www.thehotline.org/is-this-abuse/abuse-defined/"
           },
           {
-            "description": "Jurisdiction is a very complicated subject and you should talk to an attorney to figure out where is the best place ot file your case. Here are some resources that could help you with this:",
-            "isComplete": true,
-            "order": 2,
-            "resources": [
-              {
-                "id": "19a02209-ca38-4b74-bd67-6ea941d41518",
-                "resourceType": "Organizations"
-              },
-              {
-                "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5",
-                "resourceType": "Articles"
-              }
-            ],
-            "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
-            "title": "Jurisdiction"
-          }
-        ]
-      }
-    },
-    {
-      "isSelected": true,
-      "topic": {
-        "topicId": "e1fdbbc6-d66a-4275-9cd2-2be84d303e12",
-        "name": "Eviction",
-        "quickLinks": [
-          {
-            "text": "Filing for Dissolution or Divorce - Ending Your Marriage",
-            "url": "http://courts.alaska.gov/shc/family/shcstart.htm#issues"
+            "text": "Safety Planning Tips",
+            "url": "https://www.thehotline.org/help/path-to-safety/"
           }
         ],
-        "icon": "https://cs4892808efec24x447cx944.blob.core.windows…/static-resource/assets/images/topics/housing.svg",
         "steps": [
           {
-            "stepId": "f79305c1-8767-4485-9e9b-0b5a573ea7b3",
-            "title": "File a motion to modify if there has been a change of circumstances.",
-            "description": "The Motion and Affidavit for Post-Decree relief are used to request changes to a divorce or make sure the other side is followin gthe orders.",
-            "order": 1,
+            "description": "Short Term",
             "isComplete": false,
-            "resources": [
-              {
-                "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5",
-                "resourceType": "Forms"
-              },
-              {
-                "id": "49779468-1fe0-4183-850b-ff365e05893e",
-                "resourceType": "Organizations"
-              }
-            ]
+            "order": 1,
+            "resources": [],
+            "stepId": "ec78414b-2616-4d65-ae07-e08f3e2f697a",
+            "title": "Short Term Protective Order"
           },
           {
-            "stepId": "e9337765-81fc-4d10-8850-8e872cde4ee8",
-            "title": "Jurisdiction",
-            "description": "Jurisdiction is a very complicated subject and you should talk to an attorney to figure out where is the best place ot file your case. Here are some resources that could help you with this:",
-            "order": 2,
+            "description": "Long Term",
             "isComplete": false,
-            "resources": [
-              {
-                "id": "be0cb3e1-7054-403a-baac-d119ea5be007",
-                "resourceType": "Articles"
-              },
-              {
-                "id": "2fe9f117-bfb5-469f-b80c-877640a29f75",
-                "resourceType": "Forms"
-              }
-            ]
-          }
-        ]
-      }
-    }];
-  let mockPlanDetails = {
-    "id": "3bd5b8cb-69f3-42fc-a74c-a9fa1c94f805",
-    "topics": [
-      {
-        "topicId": "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef",
-        "name": "Divorce",
-        "quickLinks": [
-          {
-            "text": "Filing for Dissolution or Divorce - Ending Your Marriage",
-            "url": "http://courts.alaska.gov/shc/family/shcstart.htm#issues"
-          }
-        ],
-        "icon": "https://cs4892808efec24x447cx944.blob.core.windows…/static-resource/assets/images/topics/housing.svg",
-        "steps": [
-          {
-            "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
-            "title": "File a motion to modify if there has been a change of circumstances.",
-            "description": "The Motion and Affidavit for Post-Decree relief are used to request changes to a divorce or make sure the other side is followin gthe orders.",
-            "order": 1,
-            "isComplete": false,
-            "resources": [
-              {
-                "id": "19a02209-ca38-4b74-bd67-6ea941d41518",
-                "resourceType": "Organizations"
-              },
-              {
-                "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5",
-                "resourceType": "Articles"
-              }
-            ]
-          },
-          {
-            "description": "Jurisdiction is a very complicated subject and you should talk to an attorney to figure out where is the best place ot file your case. Here are some resources that could help you with this:",
-            "isComplete": true,
             "order": 2,
-            "resources": [
-              {
-                "id": "19a02209-ca38-4b74-bd67-6ea941d41518",
-                "resourceType": "Organizations"
-              },
-              {
-                "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5",
-                "resourceType": "Articles"
-              }
-            ],
-            "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
-            "title": "Jurisdiction"
+            "resources": [],
+            "stepId": "ed56894b-2616-4d65-ae07-e08f3e2f697a",
+            "title": "Long Term Protective Order"
           }
         ]
       },
-      {
-        "topicId": "e1fdbbc6-d66a-4275-9cd2-2be84d303e12",
-        "name": "Eviction",
-        "quickLinks": [
+      "isSelected": true
+    },
+    {
+      "topic": {
+        "topicId": "ba74f857-eb7b-4dd6-a021-5b3e4525e3e4",
+        "name": "Divorce",
+        "icon": null,
+        "essentialReadings": [
           {
-            "text": "Filing for Dissolution or Divorce - Ending Your Marriage",
-            "url": "http://courts.alaska.gov/shc/family/shcstart.htm#issues"
+            "text": "Domestic Violence - What it is",
+            "url": "https://www.thehotline.org/is-this-abuse/abuse-defined/"
           }
         ],
-        "icon": "https://cs4892808efec24x447cx944.blob.core.windows…/static-resource/assets/images/topics/housing.svg",
         "steps": [
           {
-            "stepId": "f79305c1-8767-4485-9e9b-0b5a573ea7b3",
-            "title": "File a motion to modify if there has been a change of circumstances.",
-            "description": "The Motion and Affidavit for Post-Decree relief are used to request changes to a divorce or make sure the other side is followin gthe orders.",
-            "order": 1,
+            "description": "Step Description",
             "isComplete": false,
-            "resources": [
-              {
-                "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5",
-                "resourceType": "Forms"
-              },
-              {
-                "id": "49779468-1fe0-4183-850b-ff365e05893e",
-                "resourceType": "Organizations"
-              }
-            ]
+            "order": 1,
+            "resources": [],
+            "stepId": "df822558-73c2-4ac8-8259-fabe2334eb71",
+            "title": "Step Title"
+          }
+        ]
+      },
+      "isSelected": true
+    }
+  ];
+  let mockTopics = [{
+    "topicId": "69be8e7c-975b-43c8-9af3-f61887a33ad3",
+    "name": "Protective Order",
+    "icon": null,
+    "essentialReadings": [
+      {
+        "text": "Domestic Violence - What it is",
+        "url": "https://www.thehotline.org/is-this-abuse/abuse-defined/"
+      },
+      {
+        "text": "Safety Planning Tips",
+        "url": "https://www.thehotline.org/help/path-to-safety/"
+      }
+    ],
+    "steps": [
+      {
+        "description": "Short Term",
+        "isComplete": false,
+        "order": 1,
+        "resources": [],
+        "stepId": "ec78414b-2616-4d65-ae07-e08f3e2f697a",
+        "title": "Short Term Protective Order"
+      },
+      {
+        "description": "Long Term",
+        "isComplete": false,
+        "order": 2,
+        "resources": [],
+        "stepId": "ed56894b-2616-4d65-ae07-e08f3e2f697a",
+        "title": "Long Term Protective Order"
+      }
+    ]
+  },
+  {
+    "topicId": "ba74f857-eb7b-4dd6-a021-5b3e4525e3e4",
+    "name": "Divorce",
+    "icon": null,
+    "essentialReadings": [
+      {
+        "text": "Domestic Violence - What it is",
+        "url": "https://www.thehotline.org/is-this-abuse/abuse-defined/"
+      }
+    ],
+    "steps": [
+      {
+        "description": "Step Description",
+        "isComplete": false,
+        "order": 1,
+        "resources": [],
+        "stepId": "df822558-73c2-4ac8-8259-fabe2334eb71",
+        "title": "Step Title"
+      }
+    ]
+  }
+  ];
+  let mockFilteredTopicsList = [
+    {
+      "topic": {
+        "topicId": "69be8e7c-975b-43c8-9af3-f61887a33ad3",
+        "name": "Protective Order",
+        "icon": null,
+        "essentialReadings": [
+          {
+            "text": "Domestic Violence - What it is",
+            "url": "https://www.thehotline.org/is-this-abuse/abuse-defined/"
           },
           {
-            "stepId": "e9337765-81fc-4d10-8850-8e872cde4ee8",
-            "title": "Jurisdiction",
-            "description": "Jurisdiction is a very complicated subject and you should talk to an attorney to figure out where is the best place ot file your case. Here are some resources that could help you with this:",
-            "order": 2,
+            "text": "Safety Planning Tips",
+            "url": "https://www.thehotline.org/help/path-to-safety/"
+          }
+        ],
+        "steps": [
+          {
+            "description": "Short Term",
             "isComplete": false,
-            "resources": [
-              {
-                "id": "be0cb3e1-7054-403a-baac-d119ea5be007",
-                "resourceType": "Articles"
-              },
-              {
-                "id": "2fe9f117-bfb5-469f-b80c-877640a29f75",
-                "resourceType": "Forms"
-              }
-            ]
+            "order": 1,
+            "resources": [],
+            "stepId": "ec78414b-2616-4d65-ae07-e08f3e2f697a",
+            "title": "Short Term Protective Order"
+          },
+          {
+            "description": "Long Term",
+            "isComplete": false,
+            "order": 2,
+            "resources": [],
+            "stepId": "ed56894b-2616-4d65-ae07-e08f3e2f697a",
+            "title": "Long Term Protective Order"
+          }
+        ]
+      },
+      "isSelected": true
+    },
+    {
+      "topic": {
+        "topicId": "ba74f857-eb7b-4dd6-a021-5b3e4525e3e4",
+        "name": "Divorce",
+        "icon": null,
+        "essentialReadings": [
+          {
+            "text": "Domestic Violence - What it is",
+            "url": "https://www.thehotline.org/is-this-abuse/abuse-defined/"
+          }
+        ],
+        "steps": [
+          {
+            "description": "Step Description",
+            "isComplete": false,
+            "order": 1,
+            "resources": [],
+            "stepId": "df822558-73c2-4ac8-8259-fabe2334eb71",
+            "title": "Step Title"
+          }
+        ]
+      },
+      "isSelected": false
+    }
+  ];
+  let mockFilteredPlanDetails = {
+    "id": "29250697-8d22-4f9d-bbf8-96c1b5b72e54",
+    "isShared": false,
+    "topics": [
+      {
+        "topicId": "69be8e7c-975b-43c8-9af3-f61887a33ad3",
+        "name": "Protective Order",
+        "icon": null,
+        "essentialReadings": [
+          {
+            "text": "Domestic Violence - What it is",
+            "url": "https://www.thehotline.org/is-this-abuse/abuse-defined/"
+          },
+          {
+            "text": "Safety Planning Tips",
+            "url": "https://www.thehotline.org/help/path-to-safety/"
+          }
+        ],
+        "steps": [
+          {
+            "description": "Short Term",
+            "isComplete": false,
+            "order": 1,
+            "resources": [],
+            "stepId": "ec78414b-2616-4d65-ae07-e08f3e2f697a",
+            "title": "Short Term Protective Order"
+          },
+          {
+            "description": "Long Term",
+            "isComplete": false,
+            "order": 2,
+            "resources": [],
+            "stepId": "ed56894b-2616-4d65-ae07-e08f3e2f697a",
+            "title": "Long Term Protective Order"
           }
         ]
       }
-    ],
-    "isShared": false
+    ]
   };
-  let mockResponse = Observable.of(mockPlanDetailsJson);
-  let mockid = "bf8d7e7e-2574-7b39-efc7-83cb94adae07";
+  let mockResponse = Observable.of(mockPlanDetails);
   let service: PersonalizedPlanService;
   let arrayUtilityService: ArrayUtilityService;
+  let ngxSpinnerService: NgxSpinnerService;
   const httpSpy = jasmine.createSpyObj('http', ['get', 'post', 'put']);
   let toastrService: ToastrService;
   let global: Global;
@@ -383,15 +357,39 @@ describe('Service:PersonalizedPlan', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
       providers: [PersonalizedPlanService, ArrayUtilityService,
-        { provide: Global, useValue: { role: '', shareRouteUrl: '', userId:'UserId' } }]
+        { provide: Global, useValue: { global, role: '', shareRouteUrl: '', userId: 'UserId' } },
+        NgxSpinnerService]
     });
-    service = new PersonalizedPlanService(httpSpy, arrayUtilityService, toastrService, global);
+    service = new PersonalizedPlanService(httpSpy, arrayUtilityService, toastrService, global, ngxSpinnerService);
     global = TestBed.get(Global);
     arrayUtilityService = new ArrayUtilityService();
     httpSpy.get.calls.reset();
 
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000000;
+
+    let store = {};
+    const mockSessionStorage = {
+      getItem: (key: string): string => {
+        return key in store ? store[key] : null;
+      },
+      setItem: (key: string, value: string) => {
+        store[key] = `${value}`;
+      },
+      removeItem: (key: string) => {
+        delete store[key];
+      },
+      clear: () => {
+        store = {};
+      }
+    };
+
+    spyOn(sessionStorage, 'setItem')
+      .and.callFake(mockSessionStorage.setItem);
+    spyOn(sessionStorage, 'removeItem')
+      .and.callFake(mockSessionStorage.removeItem);
+    spyOn(sessionStorage, 'clear')
+      .and.callFake(mockSessionStorage.clear);
   });
 
   it('service should be created', () => {
@@ -400,15 +398,6 @@ describe('Service:PersonalizedPlan', () => {
 
   it('service should be defined ', () => {
     expect(service).toBeDefined();
-  });
-
-  it('should retrieve plan steps when the id  value is id', (done) => {
-    httpSpy.get.and.returnValue(mockResponse);
-    service.getActionPlanConditions(mockid).subscribe(plans => {
-      expect(httpSpy.get).toHaveBeenCalledWith(`${api.planUrl}` + '/' + mockid);
-      expect(service.getActionPlanConditions(mockid)).toEqual(mockResponse);
-      done();
-    });
   });
 
   it('should return user saved resources when oid value is passed', (done) => {
@@ -432,12 +421,12 @@ describe('Service:PersonalizedPlan', () => {
   });
 
   it('should update userplan when plan details send to user plan method of service', (done) => {
-    const mockResponse = Observable.of(mockPersonalizedPlan);
+    const mockResponse = Observable.of(mockPlanDetails);
     spyOn(service, 'userPlan').and.returnValue(mockResponse);
     httpSpy.post.and.returnValue(mockResponse);
-    service.userPlan(mockPersonalizedPlan).subscribe(userplan => {
+    service.userPlan(mockPlanDetails).subscribe(userplan => {
       expect(httpSpy.post).toHaveBeenCalled();
-      expect(userplan).toEqual(mockPersonalizedPlan);
+      expect(userplan).toEqual(mockPlanDetails);
       done();
     });
   });
@@ -469,59 +458,28 @@ describe('Service:PersonalizedPlan', () => {
     expect(service.tempPlanDetailTags).toEqual(mockPlanDetails);
   });
 
-  it('should call showWarning if saved resources already exists in saveResourcesToProfile method', () => {
-    spyOn(service, 'showWarning');
-    let mockResponse = [mockUserSavedResources];
-    spyOn(service, 'getUserSavedResources').and.callFake(() => {
-      return Observable.from([mockResponse]);
-    });
+  it('should display filtered plan details when plandetailtags and topics list passed to displayPlanDetails service method', () => {
+    service.displayPlanDetails(mockPlanDetails, mockFilteredTopicsList);
+    expect(service.tempPlanDetailTags).toEqual(mockFilteredPlanDetails);
+  });
 
+  it('should call saveResourceToProfilePostLogin with session stored resources in saveResourcesToUserProfile method', () => {
+    spyOn(sessionStorage, 'getItem')
+      .and.returnValue(JSON.stringify(mockSavedResources));
+    spyOn(service, 'saveResourceToProfilePostLogin');
+    service.saveResourcesToUserProfile();
+    expect(service.resourceTags).toEqual(mockSavedResources);
+    expect(service.saveResourceToProfilePostLogin).toHaveBeenCalled();
+  });
+
+  it('checkExistingSavedResources for saved resource exists', () => {
     let mockExists = true;
     spyOn(arrayUtilityService, 'checkObjectExistInArray').and.callFake(() => {
       return Observable.from([mockExists]);
     });
-    let mockSavedResource = {
-      "itemId": "1d7fc811-dabe-4468-a179-c55075bd22b6",
-      "resourceType": "Organizations",
-      "resourceDetails": {}
-    };
-    sessionStorage.setItem(service.sessionKey, "test");
-    let mockUserId = "mockUserId";
-    spyOn(service, 'saveResourcesToProfile');
-    service.saveResourcesToProfile(mockSavedResource);
+    service.checkExistingSavedResources(mockSavedResources);
     expect(service.showWarning).toBeTruthy();
-    expect(sessionStorage.getItem(service.sessionKey)).toBeNull;
-  });
-
-  it('should add resource by calling saveResourceToProfile if saved resources doesnot exists in saveResourcesToProfile method', () => {
-    let mockResponse = [mockUserSavedResources];
-    spyOn(service, 'getUserSavedResources').and.callFake(() => {
-      return Observable.from([mockResponse]);
-    });
-    spyOn(service, 'saveResourceToProfile');
-    let mockExists = false;
-    spyOn(arrayUtilityService, 'checkObjectExistInArray').and.callFake(() => {
-      return Observable.from([mockExists]);
-    });
-    let mockSavedResource = {
-      "itemId": "1d7fc811-dabe-4468-a179-c43435bd22b6",
-      "resourceType": "Articles",
-      "resourceDetails": {}
-    };
-    sessionStorage.setItem(service.sessionKey, "test");
-    service.saveResourcesToProfile(mockSavedResource);
-    expect(service.saveResourceToProfile).toHaveBeenCalledWith(service.resourceTags);
-    expect(sessionStorage.getItem(service.sessionKey)).toBeNull;
-  });
-
-  it('should call showSuccess service method on saveResourceToProfile', () => {
-    let mockResourceTags = [];
-    spyOn(service, 'showSuccess');
-    spyOn(service, 'saveResources').and.callFake(() => {
-      return Observable.from([mockUserSavedResources]);
-    });
-    service.saveResourceToProfile(mockResourceTags);
-    expect(service.showSuccess).toHaveBeenCalled();
+    expect(sessionStorage.getItem(global.sessionKey)).toBeNull;
   });
 
   it('should return resource ids from resources list', () => {
@@ -530,4 +488,5 @@ describe('Service:PersonalizedPlan', () => {
     service.getResourceIds(mockResources);
     expect(service.resourceIds).toEqual(mockResourceIds);
   });
+
 });

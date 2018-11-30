@@ -1,9 +1,7 @@
-﻿using Access2Justice.Shared;
-using Access2Justice.Shared.Extensions;
+﻿using Access2Justice.Shared.Extensions;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Interfaces.A2JAuthor;
 using Access2Justice.Shared.Models;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -27,19 +25,21 @@ namespace Access2Justice.Api.BusinessLogic
 
         public CuratedExperience ConvertA2JAuthorToCuratedExperience(JObject a2jSchema, bool isFromAdminImport = false)
         {
-            var cx = new CuratedExperience();
+            var curatedExperience = new CuratedExperience();
             var a2jProperties = a2jSchema.Properties();
             GuidedAssistant resource = null;
 
-            cx.CuratedExperienceId = Guid.NewGuid();
-            cx.Title = a2jProperties.GetValue("title");
+            curatedExperience.CuratedExperienceId = Guid.NewGuid();
+            curatedExperience.Title = a2jProperties.GetValue("title");    
+
             if (!isFromAdminImport)
             { 
-                resource = MapResourceProperties(a2jProperties, cx.CuratedExperienceId);
+                resource = MapResourceProperties(a2jProperties, curatedExperience.CuratedExperienceId);
                 dbService.CreateItemAsync(resource, dbSettings.ResourcesCollectionId);
             }
 
             var pages = ((JObject)a2jProperties.Where(x => x.Name == "pages").FirstOrDefault()?.Value).Properties();
+
             foreach (var page in pages)
             {
                 var pageProperties = ((JObject)page.FirstOrDefault()).Properties();
@@ -47,7 +47,7 @@ namespace Access2Justice.Api.BusinessLogic
                 var componentButtons = GetButtons(pageProperties);
                 var componentCodes = GetCodes(pageProperties);
 
-                cx.Components.Add(new CuratedExperienceComponent
+                curatedExperience.Components.Add(new CuratedExperienceComponent
                 {
                     ComponentId = Guid.NewGuid(),
                     Name = pageProperties.GetValue("name"),
@@ -60,10 +60,15 @@ namespace Access2Justice.Api.BusinessLogic
                 });
             }
 
-            dbService.CreateItemAsync(cx, dbSettings.CuratedExperiencesCollectionId);
-            //dbService.CreateItemAsync(resource, dbSettings.ResourcesCollectionId);
+            // find out the first question in the list and add it to top (A2J Author doesn't order the pages in the json array, it depends on
+            // an additional xml file to arrange the questions!)
+            var firstQuestion = curatedExperience.Components.Where(x => x.Name == a2jProperties.GetValue("firstPage")).First();
+            var firstQuestionIndex = curatedExperience.Components.IndexOf(firstQuestion);
+            curatedExperience.Components.RemoveAt(firstQuestionIndex);
+            curatedExperience.Components.Insert(0, firstQuestion);
 
-            return cx;
+            dbService.CreateItemAsync(curatedExperience, dbSettings.CuratedExperiencesCollectionId);
+            return curatedExperience;
         }
 
         private GuidedAssistant MapResourceProperties(IEnumerable<JProperty> a2jProperties, Guid curatedExperienceId)
