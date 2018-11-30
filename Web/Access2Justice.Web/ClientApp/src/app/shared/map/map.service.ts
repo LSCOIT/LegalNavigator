@@ -23,6 +23,9 @@ export class MapService {
     location: this.mapLocation, displayLocationDetails: this.displayLocation,
     country: '', formattedAddress: ''
   };
+  stateCodes: any = [];
+  stateCode: any;
+  stateCodeSessionKey: string = "cachedStateCodes";
 
   constructor() { }
 
@@ -90,16 +93,31 @@ export class MapService {
   updateLocation(): LocationDetails {
     if (environment.map_type) {
       this.locationDetails = JSON.parse(sessionStorage.getItem("globalSearchMapLocation"));
+      if (this.locationDetails.location.state) {
+        this.locationDetails.location.state = this.filterStateCodeForState(this.locationDetails.location.state);
+      }
       sessionStorage.setItem("globalMapLocation", JSON.stringify(this.locationDetails));
       sessionStorage.removeItem('globalSearchMapLocation');
       this.notifyLocation.next(this.locationDetails);
     }
     else {
       this.locationDetails = JSON.parse(sessionStorage.getItem("localSearchMapLocation"));
+      if (this.locationDetails.location.state) {
+        this.locationDetails.location.state = this.filterStateCodeForState(this.locationDetails.location.state);
+      }
       this.mapLocation = this.locationDetails.location;
       this.notifyLocalLocation.next(this.mapLocation);
     }
     return this.locationDetails;
+  }
+
+  filterStateCodeForState(stateName): string {
+    if ((sessionStorage.getItem(this.stateCodeSessionKey))) {
+      this.stateCodes = JSON.parse(sessionStorage.getItem(this.stateCodeSessionKey));
+      this.stateCode = this.stateCodes
+        .filter((state) => state.name === stateName);
+    }
+    return this.stateCode[0].code;
   }
 
   mapLocationDetails(location) {

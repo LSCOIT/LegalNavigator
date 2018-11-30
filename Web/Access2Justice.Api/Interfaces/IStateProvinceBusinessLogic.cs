@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Access2Justice.Api.Interfaces
 {
-    public interface ILocationBusinessLogic
+    public interface IStateProvinceBusinessLogic
     {
         Task<List<StateCode>> GetStateCodes();
+
+        Task<string> GetStateCodeForState(string stateName);
     }
 }

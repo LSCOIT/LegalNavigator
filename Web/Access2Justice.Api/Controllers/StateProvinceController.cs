@@ -9,12 +9,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace Access2Justice.Api.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Location")]
-    public class LocationController : Controller
+    [Route("api/StateProvince")]
+    public class StateProvinceController : Controller
     {
-        private readonly ILocationBusinessLogic locationBusinessLogic;
+        private readonly IStateProvinceBusinessLogic locationBusinessLogic;
 
-        public LocationController(ILocationBusinessLogic locationBusinessLogic)
+        public StateProvinceController(IStateProvinceBusinessLogic locationBusinessLogic)
         {
             this.locationBusinessLogic = locationBusinessLogic;
         }
@@ -24,6 +24,15 @@ namespace Access2Justice.Api.Controllers
         {
             var stateCodes = await locationBusinessLogic.GetStateCodes();
             if (stateCodes == null) return NotFound();
+
+            return Ok(stateCodes);
+        }
+
+        [HttpGet("get-state-code")]
+        public async Task<IActionResult> GetStateCodeForState(string stateName)
+        {
+            var stateCodes = await locationBusinessLogic.GetStateCodeForState(stateName);
+            if (string.IsNullOrEmpty(stateCodes)) return NotFound();
 
             return Ok(stateCodes);
         }

@@ -6,20 +6,20 @@ using System.Threading.Tasks;
 
 namespace Access2Justice.Api.ViewModels
 {
-    public class StateCodeViewModel
+    public class StateProvinceViewModel
     {
         [JsonProperty(PropertyName = "id")]
         public string StateCodesId { get; set; }
 
-        [JsonProperty(PropertyName = "stateCodes")]
-        public List<StateCode> StateCodes { get; set; }
+        [JsonProperty(PropertyName = "stateProvinces")]
+        public List<StateCode> StateProvinces { get; set; }
 
         [JsonProperty(PropertyName = "type")]
         public string Type { get; set; }
 
-        public StateCodeViewModel()
+        public StateProvinceViewModel()
         {
-            StateCodes = new List<StateCode>();
+            StateProvinces = new List<StateCode>();
         }
     }
 

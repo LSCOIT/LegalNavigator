@@ -29,6 +29,7 @@ import { LoginService } from './shared/login/login.service';
 import { IUserProfile } from './shared/login/user-profile.model';
 import { TopicService } from './topics-resources/shared/topic.service';
 import { SaveButtonService } from './shared/resource/user-action/save-button/save-button.service';
+import { StateCodeService } from './shared/state-code.service';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -45,6 +46,17 @@ describe('AppComponent', () => {
   let mockLoginResponse;
   let mockPersonalizedPlanService;
   let mockSaveButtonService;
+  let mockStateCodeService;
+  let mockStateCodes = [
+    {
+      "code": "HI",
+      "name": "Hawaii"
+    },
+    {
+      "code": "AK",
+      "name": "Alaska"
+    }
+  ];
 
   beforeEach(async(() => {
 
@@ -107,6 +119,7 @@ describe('AppComponent', () => {
     mockLoginService = jasmine.createSpyObj(['upsertUserProfile','getUserProfile']);
     mockPersonalizedPlanService = jasmine.createSpyObj(['saveResourcesToUserProfile']);
     mockSaveButtonService = jasmine.createSpyObj(['getPlan']);
+    mockStateCodeService = jasmine.createSpyObj(['getStateCodes']);
 
     TestBed.configureTestingModule({
       declarations: [
@@ -138,6 +151,7 @@ describe('AppComponent', () => {
         { provide: LoginService, useValue: mockLoginService },
         { provide: PersonalizedPlanService, useValue: mockPersonalizedPlanService },
         { provide: SaveButtonService, useValue: mockSaveButtonService },
+        { provide: StateCodeService, useValue: mockStateCodeService },
         NgxSpinnerService,
         BroadcastService,
         TopicService
@@ -156,6 +170,23 @@ describe('AppComponent', () => {
     component = TestBed.get(AppComponent);
     toastrService = TestBed.get(ToastrService);
 
+    let store = {};
+    const mockSessionStorage = {
+      getItem: (key: string): string => {
+        return key in store ? store[key] : null;
+      },
+      setItem: (key: string, value: string) => {
+        store[key] = `${value}`;
+      },
+      removeItem: (key: string) => {
+        delete store[key];
+      },
+      clear: () => {
+        store = {};
+      }
+    };
+    spyOn(sessionStorage, 'setItem')
+      .and.callFake(mockSessionStorage.setItem);
   }));
 
   it('should create the app', async(() => {
@@ -181,5 +212,14 @@ describe('AppComponent', () => {
     component.createOrGetProfile();
     expect(mockGlobal.setProfileData).toHaveBeenCalledWith("1234567890ABC", "mockUser", "mockUser@microsoft.com", [({ roleName: "Admin", organizationalUnit: null })]);
   });
+
+  it('should get state codes in getStateCodes', () => {
+    mockStateCodeService.getStateCodes.and.returnValue(of(mockStateCodes));
+    spyOn(sessionStorage, 'getItem').and.returnValue(null);
+    component.getStateCodes();
+    expect(component.stateCodes).toEqual(mockStateCodes);
+    expect(sessionStorage.setItem).toHaveBeenCalled();
+  });
+
 });
 

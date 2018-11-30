@@ -84,26 +84,63 @@ describe('MapService', () => {
   });
 
   it('should return searched global location details(map type is true) from session storage when updateLocation is called for global map', () => {
+    let mockLocation = {
+      state: "CA",
+      city: "Riverside County",
+      county: "Indio",
+      zipCode: "92201"
+    };
+    let mockMapLocationDetails = mockLocationDetails;
+    mockMapLocationDetails.location = mockLocation;
     spyOn(sessionStorage, 'getItem')
       .and.returnValue(JSON.stringify(mockLocationDetails));
+    spyOn(service, 'filterStateCodeForState').and.returnValue('CA');
     environment.map_type = true;
     service.updateLocation();
-    expect(service.locationDetails).toEqual(mockLocationDetails);
+    expect(service.locationDetails).toEqual(mockMapLocationDetails);
   });
 
   it('should clear searched global location details from session storage when updateLocation is called for global map', () => {
-    sessionStorage.setItem("globalSearchMapLocation", JSON.stringify(mockMapLocation));
+    spyOn(sessionStorage, 'getItem').and.returnValue(JSON.stringify(mockLocationDetails));
+    spyOn(service, 'filterStateCodeForState');
     environment.map_type = true;
     service.updateLocation();
-    expect(JSON.parse(sessionStorage.getItem("globalSearchMapLocation"))).toBeNull();
+    expect(sessionStorage.removeItem).toHaveBeenCalled();
   });
 
   it('should return searched local location details(map type is false) from session storage when updateLocation is called for local map', () => {
+    let mockLocation = {
+      state: "CA",
+      city: "Riverside County",
+      county: "Indio",
+      zipCode: "92201"
+    };
+    let mockMapLocationDetails = mockLocationDetails;
+    mockMapLocationDetails.location = mockLocation;
     spyOn(sessionStorage, 'getItem')
       .and.returnValue(JSON.stringify(mockLocationDetails));
+    spyOn(service, 'filterStateCodeForState').and.returnValue('CA');
     environment.map_type = false;
     service.updateLocation();
-    expect(service.mapLocation).toEqual(mockMapLocation);
+    expect(service.mapLocation).toEqual(mockLocation);
+  });
+
+  it('should filter and return code by state name in filterStateCodeForState', () => {
+    let mockStateCodes = [
+      {
+        "code": "HI",
+        "name": "Hawaii"
+      },
+      {
+        "code": "AK",
+        "name": "Alaska"
+      }
+    ];
+    spyOn(sessionStorage, 'getItem')
+      .and.returnValue(JSON.stringify(mockStateCodes));
+    service.filterStateCodeForState("Alaska");
+    expect(service.stateCodes).toEqual(mockStateCodes);
+    expect(service.filterStateCodeForState("Alaska")).toBe("AK");
   });
 
   it("should set the variables of service when mapLocationDetails is called", () => {

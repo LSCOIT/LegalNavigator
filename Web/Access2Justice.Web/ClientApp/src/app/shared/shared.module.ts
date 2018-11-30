@@ -54,6 +54,7 @@ import { ReadMoreComponent } from './read-more/read-more.component';
 import { LoginService } from './login/login.service';
 import { BrowserTabCloseComponent } from './browser-tab-close/browser-tab-close.component';
 import { SaveButtonService } from './resource/user-action/save-button/save-button.service';
+import { StateCodeService } from './state-code.service';
 
 @NgModule({
   imports: [
@@ -142,7 +143,8 @@ import { SaveButtonService } from './resource/user-action/save-button/save-butto
     ResourceService,
     ShareService,
     LoginService,
-    SaveButtonService
+    SaveButtonService,
+    StateCodeService
   ]
 })
 export class SharedModule { }

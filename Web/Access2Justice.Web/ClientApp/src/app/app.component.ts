@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { TopicService } from './topics-resources/shared/topic.service';
 import { PersonalizedPlanService } from './guided-assistant/personalized-plan/personalized-plan.service';
 import { SaveButtonService } from './shared/resource/user-action/save-button/save-button.service';
+import { StateCodeService } from './shared/state-code.service';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +24,7 @@ export class AppComponent implements OnInit {
   userProfile: IUserProfile;
   resoureStorage: any = [];
   showAlert: boolean = false;
+  stateCodes: any = [];
 
   @HostListener('window:beforeunload', ['$event'])
   beforeUnloadHander(event) {
@@ -48,7 +50,8 @@ export class AppComponent implements OnInit {
     private router: Router,
     private topicService: TopicService,
     private personalizedPlanService: PersonalizedPlanService,
-    private saveButtonService: SaveButtonService
+    private saveButtonService: SaveButtonService,
+    private stateCodeService: StateCodeService
   ) { }
 
   createOrGetProfile() {
@@ -96,7 +99,19 @@ export class AppComponent implements OnInit {
       });
   }
 
+  getStateCodes() {
+    if (!(sessionStorage.getItem(this.global.stateCodeSessionKey))) {
+      this.stateCodeService.getStateCodes()
+        .subscribe(
+        response => {
+          this.stateCodes = response;
+          sessionStorage.setItem(this.global.stateCodeSessionKey, JSON.stringify(this.stateCodes));
+        });
+    }
+  }
+
   ngOnInit() {
+    this.getStateCodes();
     this.subscription = this.mapService.notifyLocation
       .subscribe((value) => {
         this.setStaticContentData();
