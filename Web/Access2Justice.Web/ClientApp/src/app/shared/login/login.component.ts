@@ -27,6 +27,7 @@ export class LoginComponent implements OnInit {
   isAdmin: boolean = false;
   roleInformationSubscription;
   receiveTab: boolean = false;
+  isMobile: boolean = false;
 
   constructor(private router: Router,
               private global: Global,
@@ -80,6 +81,10 @@ export class LoginComponent implements OnInit {
       .subscribe(value => {
         this.checkIfAdmin(value);
         });
+
+    if (document.getElementById('mobile-menu') && document.getElementById('mobile-menu').style.display !== 'none') {
+      this.isMobile = true;
+    }
   }
 
   ngOnDestroy() {
