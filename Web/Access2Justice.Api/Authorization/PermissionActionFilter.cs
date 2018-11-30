@@ -25,7 +25,7 @@ namespace Access2Justice.Api.Authorization
         }
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            bool isAuthorized = await PermissionValidator(context, action);
+            bool isAuthorized = await PermissionValidator(context);
             if (!isAuthorized)
             {
                 context.Result = new UnauthorizedResult();
@@ -33,7 +33,7 @@ namespace Access2Justice.Api.Authorization
             else { await next(); }
         }
 
-        public async Task<bool> PermissionValidator(ActionExecutingContext context, PermissionName action)
+        public async Task<bool> PermissionValidator(ActionExecutingContext context)
         {
             if (context.HttpContext.User.Claims.FirstOrDefault() != null)
             {

@@ -28,9 +28,7 @@ describe('GuidedAssistantSidebarComponent', () => {
     state: 'Sample State',
     city: 'Sample City',
     county: 'Sample County',
-    zipCode: '1009203',
-    locality: 'Sample Location',
-    address: 'Sample Address'
+    zipCode: '1009203'
   };
   let mockresourceInput: IResourceFilter = {
     ResourceType: mockResourceType,
@@ -106,8 +104,7 @@ describe('GuidedAssistantSidebarComponent', () => {
         store = {};
       }
     };
-    spyOn(sessionStorage, 'getItem')
-      .and.callFake(mockSessionStorage.getItem);
+
     spyOn(sessionStorage, 'setItem')
       .and.callFake(mockSessionStorage.setItem);
     spyOn(sessionStorage, 'removeItem')
@@ -122,7 +119,9 @@ describe('GuidedAssistantSidebarComponent', () => {
 
   it('should assign session storage values in ngOnInit', () => {
     component.guidedAssistantId = undefined;
-    sessionStorage.setItem("globalMapLocation", JSON.stringify(mockMapLocation));
+    let mockLocationDetails = { location: mockMapLocation };
+    spyOn(sessionStorage, 'getItem')
+      .and.returnValue(JSON.stringify(mockLocationDetails));
     component.activeTopic = mockActivetopic;
     spyOn(component, 'getGuidedAssistantResults');
     component.ngOnInit();

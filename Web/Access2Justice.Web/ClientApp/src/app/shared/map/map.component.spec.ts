@@ -33,7 +33,7 @@ describe('MapComponent', () => {
   let fixture: ComponentFixture<MapComponent>;
   let modalService: BsModalService;
   let template: TemplateRef<any>;  
-  let mockMapLocation: MapLocation = { state: 'Sample State', city: 'Sample City', county: 'Sample County', zipCode: '1009203', locality: 'Sample Location',    address: 'Sample Address' };
+  let mockMapLocation: MapLocation = { state: 'Sample State', city: 'Sample City', county: 'Sample County', zipCode: '1009203' };//, locality: 'Sample Location',    address: 'Sample Address' };
   let mapResultsService: MapResultsService;
   let mockGeolocationPositionLangitude: '77.33817429999999';
   let mockGeolocationPositionLatiitude: '28.5372834';
@@ -43,10 +43,12 @@ describe('MapComponent', () => {
   let mockResponse = { authenticationResultCode: "ValidCredentials", brandLogoUri: "http://dev.virtualearth.net/Branding/logo_powered_by.png", copyright: "Copyright © 2018 Microsoft and its suppliers. All …ss written permission from Microsoft Corporation.", resourceSets: Array(1), statusCode: 200, };
   let mockMapLocationDetails = '{authenticationResultCode:  "ValidCredentials"  brandLogoUri  :  "http://dev.virtualearth.net/Branding/logo_powered_by.png"  copyright  :  "Copyright © 2018 Microsoft and its suppliers. All rights reserved. This API cannot be accessed and the content and any results may not be used, reproduced or transmitted in any manner without express written permission from Microsoft Corporation."  resourceSets  :  Array(1)  0:  { estimatedTotal: 1, resources: Array(1) }  length  :  1  __proto__  :  Array(0)  statusCode  :  200  statusDescription  :  "OK"  traceId  :  "39bbf89d6d2b4691a1cfeb1d8a504eac|HK20240360|7.7.0.0|HK01EAP000001D3"  __proto__  :  Object}';
   let mockMapLocation2 = { "state": "UP", "city": "Noida", "zipCode": "201303", "locality": "201303", "address": "UP" };
-  let mockMapLocationWithFormatAddressGlobal = { "state": "UP", "city": "Sample City", "county": "Sample County", "zipCode": "1009203", "locality": "UP", "address": "UP" };
-  let mockMapLocationWithFormatAddressLocal = { "state": "Sample State", "city": "Sample City", "county": "Sample County", "zipCode": "1009203", "locality": "Sample Location", "address": "UP" };
+  let mockMapLocationWithFormatAddressGlobal = { "state": "UP", "city": "Sample City", "county": "Sample County", "zipCode": "1009203"};
+  let mockMapLocationWithFormatAddressLocal = { "state": "Sample State", "city": "Sample City", "county": "Sample County", "zipCode": "1009203"};
+  let mockDisplayLocationDetails = { "locality": "UP", "address": "UP" };
   let mockLocationDetailsWithFormatAddress = {
     location: mockMapLocation,
+    displayLocationDetails: mockDisplayLocationDetails,
     country: "United States",
     formattedAddress: "AK"
   };
@@ -168,6 +170,7 @@ describe('MapComponent', () => {
     component.getLocationDetails();
     expect(mapResultsService.getStateFullName).toHaveBeenCalled();
     expect(component.locationDetails.location).toEqual(mockMapLocationWithFormatAddressGlobal);
+    expect(component.locationDetails.displayLocationDetails).toEqual(mockDisplayLocationDetails);
     expect(component.updateLocationDetails).toHaveBeenCalled();
   });
 
@@ -182,6 +185,7 @@ describe('MapComponent', () => {
     component.getLocationDetails();
     expect(mapResultsService.getStateFullName).toHaveBeenCalled();
     expect(component.locationDetails.location).toEqual(mockMapLocationWithFormatAddressLocal);
+    expect(component.locationDetails.displayLocationDetails).toEqual(mockDisplayLocationDetails);
     expect(component.updateLocationDetails).toHaveBeenCalled();
   });
 
@@ -222,11 +226,17 @@ describe('MapComponent', () => {
 
   it("should set the address,locality and showLocation variables of component when displayLocationDetails is called", () => {
     spyOn(modalService, 'hide');
-    component.showLocation = true;
-    component.displayLocationDetails(mockMapLocation);
-    expect(component.address).toEqual(mockMapLocation.address);
-    expect(component.locality).toEqual(mockMapLocation.locality);
+    spyOn(component,'setDisplayLocationDetails');
+    component.displayLocationDetails(mockDisplayLocationDetails);
+    expect(component.displayLocation).toEqual(mockDisplayLocationDetails);
     expect(component.showLocation).toBeFalsy();
+  });
+
+  it('should set display location details', () => {
+    component.displayLocation = mockDisplayLocationDetails;
+    component.setDisplayLocationDetails();
+    expect(component.address).toEqual(mockDisplayLocationDetails.address);
+    expect(component.locality).toEqual(mockDisplayLocationDetails.locality);
   });
 
   it("should set the flag true on searchChange", () => {

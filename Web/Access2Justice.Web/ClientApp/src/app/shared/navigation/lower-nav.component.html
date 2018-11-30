@@ -11,10 +11,10 @@
       </ul>
     </div>
     <div class="right-menu">
-      <span class="search-form" (click)="toggleSearch()" *ngIf="!showSearch">
+      <button id="search-phrase-tab" class="search-form" (click)="toggleSearch()" *ngIf="!showSearch">
         <img *ngIf="search.image.source" class="search-icon" [src]="blobUrl + search?.image?.source" aria-hidden="true" />
-        <span id="search-phrase-tab" class="inline search-text">{{search?.button?.buttonText}}</span>
-      </span>
+        <span class="inline search-text">{{search?.button?.buttonText}}</span>
+      </button>
       <div id="mobile-menu">
         <img src="./assets/images/small-icons/menu_bars.svg" aria-label="Toggle Menu" class="web-hidden" id="nav-bar-toggle" *ngIf="showMenu" (click)="openNav()">
         <span *ngIf="showMenu">Menu</span>
@@ -29,24 +29,24 @@
       </span>
       <img class="nav-icon closebtn" src="./assets/images/small-icons/close.svg" aria-label="Close button" (click)="closeNav()">
       <ul class="sidenav-menu" (click)="closeNav()">
-        <li id="home-nav"><a [routerLink]="['/' + home?.button?.buttonLink]">{{home?.button?.buttonText}}</a></li>
+        <li id="home-nav"><a tabindex="-1" [routerLink]="['/' + home?.button?.buttonLink]">{{home?.button?.buttonText}}</a></li>
         <li class="vertical-line"></li>
-        <li><a [routerLink]="['/' + guidedAssistant?.button?.buttonLink]">{{guidedAssistant?.button?.buttonText}}</a></li>
+        <li><a tabindex="-1" [routerLink]="['/' + guidedAssistant?.button?.buttonLink]">{{guidedAssistant?.button?.buttonText}}</a></li>
         <li class="vertical-line"></li>
-        <li><a [routerLink]="['/' + topicAndResources?.button?.buttonLink]">{{topicAndResources?.button?.buttonText}}</a></li>
+        <li><a tabindex="-1" [routerLink]="['/' + topicAndResources?.button?.buttonLink]">{{topicAndResources?.button?.buttonText}}</a></li>
         <li class="vertical-line"></li>
-        <li><a [routerLink]="['/' + about?.button?.buttonLink]">{{about?.button?.buttonText}}</a></li>
+        <li><a tabindex="-1" [routerLink]="['/' + about?.button?.buttonLink]">{{about?.button?.buttonText}}</a></li>
       </ul>
       <div class="bottom-menu">
         <ul>
           <li *ngIf="privacyPromise" (click)="closeNav()">
-            <a [routerLink]="['/' + privacyPromise?.button?.buttonLink]">
+            <a tabindex="-1" [routerLink]="['/' + privacyPromise?.button?.buttonLink]">
               <img *ngIf="privacyPromise.image.source" class="nav-icon" [src]="blobUrl + privacyPromise?.image?.source" aria-hidden="true"/>
               {{privacyPromise?.button?.buttonText}}
             </a>
           </li>
           <li *ngIf="helpAndFAQ" (click)="closeNav()">
-            <a [routerLink]="['/'+ helpAndFAQ?.button?.buttonLink]">
+            <a tabindex="-1" [routerLink]="['/'+ helpAndFAQ?.button?.buttonLink]">
               <img *ngIf="helpAndFAQ.image.source" class="nav-icon" [src]="blobUrl + helpAndFAQ?.image?.source" aria-hidden="true"/>
               {{helpAndFAQ?.button?.buttonText}}
             </a>

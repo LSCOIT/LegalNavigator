@@ -48,7 +48,9 @@ namespace Access2Justice.Api.ViewModels
 
     public class EssentialReadings
     {
+        [JsonProperty(PropertyName = "text")]
         public string Text { get; set; }
+        [JsonProperty(PropertyName = "url")]
         public string Url { get; set; }
     }
 
@@ -95,5 +97,18 @@ namespace Access2Justice.Api.ViewModels
         {
             QuickLinks = new List<EssentialReadings>();
         }
+    }
+
+	public class UserPlan
+	{
+		[JsonProperty(PropertyName = "personalizedPlan")]
+		public PersonalizedPlanViewModel PersonalizedPlan { get; set; }
+
+		[JsonProperty(PropertyName = "oId")]
+		public string UserId { get; set; }
+
+
+        [JsonProperty(PropertyName = "saveActionPlan")]
+        public bool saveActionPlan { get; set; } = false;
     }
 }

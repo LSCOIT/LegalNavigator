@@ -220,58 +220,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
             }
             return parentTopicIds;
         }
-
-        //public List<QuickLinks> GetQuickLinks(string quickLinkText, string quickLinkLink)
-        //{
-
-        //    List<QuickLinks> quickLinks = new List<QuickLinks>();
-        //    if (string.IsNullOrEmpty(quickLinkText) || string.IsNullOrEmpty(quickLinkLink))
-        //    {
-        //        quickLinks = null;
-        //    }
-        //    else
-        //    {
-        //        string[] quickLinkTextsb = null;
-        //        string[] quickLinkUrlsb = null;
-        //        quickLinkTextsb = quickLinkText.Split('|');
-        //        quickLinkUrlsb = quickLinkLink.Split('|');
-        //        if (quickLinkTextsb.Length == quickLinkUrlsb.Length)
-        //        {
-        //            for (int quickLinkIterator = 0; quickLinkIterator < quickLinkTextsb.Length; quickLinkIterator++)
-        //            {
-        //                quickLinks.Add(new QuickLinks
-        //                {
-        //                    Text = (quickLinkTextsb[quickLinkIterator]).Trim(),
-        //                    Urls = (quickLinkUrlsb[quickLinkIterator]).Trim()
-        //                });
-        //            }
-        //        }
-        //        else if (quickLinkTextsb.Length < quickLinkUrlsb.Length)
-        //        {
-        //            for (int quickLinkIterator = 0; quickLinkIterator < quickLinkTextsb.Length; quickLinkIterator++)
-        //            {
-        //                quickLinks.Add(new QuickLinks
-        //                {
-        //                    Text = (quickLinkTextsb[quickLinkIterator]).Trim(),
-        //                    Urls = (quickLinkUrlsb[quickLinkIterator]).Trim()
-        //                });
-        //            }
-        //        }
-        //        else if (quickLinkUrlsb.Length < quickLinkTextsb.Length)
-        //        {
-        //            for (int quickLinkIterator = 0; quickLinkIterator < quickLinkUrlsb.Length; quickLinkIterator++)
-        //            {
-        //                quickLinks.Add(new QuickLinks
-        //                {
-        //                    Text = (quickLinkTextsb[quickLinkIterator]).Trim(),
-        //                    Urls = (quickLinkUrlsb[quickLinkIterator]).Trim()
-        //                });
-        //            }
-        //        }
-        //    }
-        //    return quickLinks;
-        //}
-
+                
         public dynamic GetLocations(string state, string county, string city, string zipcode)
         {
             List<Shared.Models.Location> location = new List<Shared.Models.Location>();
@@ -279,16 +228,16 @@ namespace Access2Justice.DataImportTool.BusinessLogic
             string[] countysb = null;
             string[] citysb = null;
             string[] zipcodesb = null;
-            statesb = state.Split('|');
-            countysb = county.Split('|');
-            citysb = city.Split('|');
-            zipcodesb = zipcode.Split('|');
+            statesb = !string.IsNullOrEmpty(state) ? state.Split('|') : null;
+            countysb = !string.IsNullOrEmpty(county) ? county.Split('|') : null;
+            citysb = !string.IsNullOrEmpty(city) ? city.Split('|') : null;
+            zipcodesb = !string.IsNullOrEmpty(zipcode) ? zipcode.Split('|') : null;
             List<Shared.Models.Location> states = new List<Shared.Models.Location>();
             List<Shared.Models.Location> counties = new List<Shared.Models.Location>();
             List<Shared.Models.Location> cities = new List<Shared.Models.Location>();
             List<Shared.Models.Location> zipcodes = new List<Shared.Models.Location>();
 
-            if (statesb.Length > 0 && (!string.IsNullOrEmpty(statesb.ToString())))
+            if (statesb != null)
             {
                 for (int locationIterator = 0; locationIterator < statesb.Length; locationIterator++)
                 {
@@ -302,7 +251,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                     location.Add(item);
                 }
             }
-            else if (countysb.Length > 0 && (!string.IsNullOrEmpty(countysb.ToString())))
+            if (countysb != null)
             {
                 for (int locationIterator = 0; locationIterator < countysb.Length; locationIterator++)
                 {
@@ -316,8 +265,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                     location.Add(item);
                 }
             }
-
-            else if (citysb.Length > 0 && (!string.IsNullOrEmpty(citysb.ToString())))
+            if (citysb != null)
             {
                 for (int locationIterator = 0; locationIterator < citysb.Length; locationIterator++)
                 {
@@ -331,8 +279,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                     location.Add(item);
                 }
             }
-
-            else if (zipcodesb.Length > 0 && (!string.IsNullOrEmpty(zipcodesb.ToString())))
+            if (zipcodesb != null)
             {
                 for (int locationIterator = 0; locationIterator < zipcodesb.Length; locationIterator++)
                 {
@@ -345,8 +292,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                 {
                     location.Add(item);
                 }
-            }
-            
+            }            
             return location;
         }
 
