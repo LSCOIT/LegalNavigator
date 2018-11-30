@@ -5,13 +5,9 @@
   cursor: pointer;
 }
 
-  .media:hover {
-    text-decoration: underline;
-  }
-
-  .media:focus {
-    background: red;
-  }
+.media:hover {
+  text-decoration: underline;
+}
 
 .accordion-img {
   background-position-y: 5px;
