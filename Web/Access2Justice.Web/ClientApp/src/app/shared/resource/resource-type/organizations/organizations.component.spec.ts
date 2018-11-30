@@ -13,10 +13,13 @@ import { MapResultsService } from '../../../sidebars/map-results/map-results.ser
 import { HttpClientModule, HttpHandler } from '@angular/common/http';
 import { ArrayUtilityService } from '../../../array-utility.service';
 import { ShareService } from '../../user-action/share-button/share.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
 import { ToastrService } from 'ngx-toastr';
 import { MsalService } from '@azure/msal-angular';
+import { SaveButtonService } from '../../user-action/save-button/save-button.service';
+import { NavigateDataService } from '../../../navigate-data.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 describe('OrganizationsComponent', () => {
   let component: OrganizationsComponent;
@@ -24,6 +27,7 @@ describe('OrganizationsComponent', () => {
   let mockBsModalService;
   let mockMapResultsService;
   let msalService;
+  let mockRouter;
   let mockResource = {
     resources:
       {
@@ -52,6 +56,7 @@ describe('OrganizationsComponent', () => {
   };
   let mockUrl = "https://www.microsoft.com/en-in/windows";
   let mockToastr;
+  let mockSaveButtonService;
   msalService = jasmine.createSpyObj(['getUser']);
   beforeEach(async(() => {
     mockBsModalService = jasmine.createSpyObj(['show']);
@@ -84,6 +89,10 @@ describe('OrganizationsComponent', () => {
         PersonalizedPlanService,
         { provide: ToastrService, useValue: mockToastr },
         { provide: MsalService, useValue: msalService },
+        { provide: SaveButtonService, useValue: mockSaveButtonService },
+        NavigateDataService,
+        { provide: Router, useValue: mockRouter },
+        NgxSpinnerService
       ]
     })
       .compileComponents();
@@ -97,5 +106,9 @@ describe('OrganizationsComponent', () => {
 
   it('should create', () => {
     expect(component).toBeDefined();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
   });
 });

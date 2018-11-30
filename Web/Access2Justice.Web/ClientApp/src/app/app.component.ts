@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Global, UserStatus } from './global';
 import { StaticResourceService } from './shared/static-resource.service';
 import { MapService } from './shared/map/map.service';
@@ -8,6 +8,8 @@ import { IUserProfile } from './shared/login/user-profile.model';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
 import { TopicService } from './topics-resources/shared/topic.service';
+import { PersonalizedPlanService } from './guided-assistant/personalized-plan/personalized-plan.service';
+import { SaveButtonService } from './shared/resource/user-action/save-button/save-button.service';
 
 @Component({
   selector: 'app-root',
@@ -19,8 +21,24 @@ export class AppComponent implements OnInit {
   staticContentResults: any;
   subscription: any;
   userProfile: IUserProfile;
-  
-  constructor(    
+  resoureStorage: any = [];
+  showAlert: boolean = false;
+
+  @HostListener('window:beforeunload', ['$event'])
+  beforeUnloadHander(event) {
+    if ((sessionStorage.getItem(this.global.sessionKey)
+      || sessionStorage.getItem(this.global.planSessionKey))
+      && (!this.global.isLoginRedirect) && !(this.global.userId)) {
+      this.showAlert = true;
+      if (confirm("You have unsaved changes! If you leave, your changes will be lost.")) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
+  constructor(
     private global: Global,
     private staticResourceService: StaticResourceService,
     private msalService: MsalService,
@@ -28,17 +46,33 @@ export class AppComponent implements OnInit {
     private loginService: LoginService,
     private spinner: NgxSpinnerService,
     private router: Router,
-    private topicService: TopicService
-  )
-  { }
+    private topicService: TopicService,
+    private personalizedPlanService: PersonalizedPlanService,
+    private saveButtonService: SaveButtonService
+  ) { }
 
-  createOrGetProfile() {    
+  createOrGetProfile() {
     this.loginService.getUserProfile()
       .subscribe(response => {
         if (response) {
           this.global.setProfileData(response.oId, response.name, response.eMail, response.roleInformation);
+          this.saveBookmarkedResource();
+          this.saveBookmarkedPlan();
         }
       });
+  }
+
+  saveBookmarkedPlan() {
+    if (sessionStorage.getItem(this.global.planSessionKey)) {
+      let plan = JSON.parse(sessionStorage.getItem(this.global.planSessionKey));
+      this.saveButtonService.savePlanToUserProfile(plan);
+    }
+  }
+
+  saveBookmarkedResource() {
+    if (sessionStorage.getItem(this.global.sessionKey)) {
+      this.personalizedPlanService.saveResourcesToUserProfile();
+    }
   }
 
   onActivate(event) {
@@ -50,17 +84,19 @@ export class AppComponent implements OnInit {
     let location = this.staticResourceService.loadStateName();
     this.staticResourceService.getStaticContents(location)
       .subscribe(
-        response => {
+      response => {
+        if (!(sessionStorage.getItem(this.global.sessionKey))) {
           this.spinner.hide();
-          this.staticContentResults = response;
-          this.global.setData(this.staticContentResults);
-        }, error => {
-          this.spinner.hide();
-          this.router.navigate(['/error']);
-        });
+        }
+        this.staticContentResults = response;
+        this.global.setData(this.staticContentResults);
+      }, error => {
+        this.spinner.hide();
+        this.router.navigate(['/error']);
+      });
   }
 
-  ngOnInit() {    
+  ngOnInit() {
     this.subscription = this.mapService.notifyLocation
       .subscribe((value) => {
         this.setStaticContentData();
@@ -75,5 +111,5 @@ export class AppComponent implements OnInit {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
-  } 
+  }
 }

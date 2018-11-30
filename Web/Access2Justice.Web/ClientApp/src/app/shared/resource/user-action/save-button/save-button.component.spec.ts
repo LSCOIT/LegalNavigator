@@ -10,116 +10,80 @@ import { SaveButtonComponent } from './save-button.component';
 import { ToastrService } from 'ngx-toastr';
 import { MsalService } from '@azure/msal-angular';
 import { of } from 'rxjs/observable/of';
+import { SaveButtonService } from './save-button.service';
+import { NavigateDataService } from '../../../navigate-data.service';
+import { Observable } from 'rxjs/Observable';
+import { expand } from 'rxjs/operators/expand';
 
 describe('SaveButtonComponent', () => {
   let component: SaveButtonComponent;
   let fixture: ComponentFixture<SaveButtonComponent>;
-  let mockToastr;
   let mockGlobal;
   let mockRouter;
   let msalService;
   let mockPersonalizedPlanService;
+  let mockSaveButtonService;
+  let mockMavigateDataService;
   let mockUserId = "testuserid";
-  let mockTopicID = 'e1fdbbc6-d66a-4275-9cd2-2be84d303e12';
   let mockPlanDetails = {
-    "id": "1fb1b006-a8bc-487d-98a0-2457d9d9f78d",
+    "id": "29250697-8d22-4f9d-bbf8-96c1b5b72e54",
+    "isShared": false,
     "topics": [
       {
-        "topicId": "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef",
-        "name": "Divorce",
-        "quickLinks": [
+        "topicId": "69be8e7c-975b-43c8-9af3-f61887a33ad3",
+        "name": "Protective Order",
+        "icon": null,
+        "essentialReadings": [
           {
-            "text": "Filing for Dissolution or Divorce - Ending Your Marriage",
-            "url": "http://courts.alaska.gov/shc/family/shcstart.htm#issues"
-          }
-        ],
-        "icon": "https://cs4892808efec24x447cx944.blob.core.windows…/static-resource/assets/images/topics/housing.svg",
-        "steps": [
-          {
-            "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
-            "title": "File a motion to modify if there has been a change of circumstances.",
-            "description": "The Motion and Affidavit for Post-Decree relief are used to request changes to a divorce or make sure the other side is followin gthe orders.",
-            "order": 1,
-            "isComplete": false,
-            "resources": [
-              {
-                "id": "19a02209-ca38-4b74-bd67-6ea941d41518",
-                "resourceType": "Organizations"
-              },
-              {
-                "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5",
-                "resourceType": "Articles"
-              }
-            ]
+            "text": "Domestic Violence - What it is",
+            "url": "https://www.thehotline.org/is-this-abuse/abuse-defined/"
           },
           {
-            "description": "Jurisdiction is a very complicated subject and you should talk to an attorney to figure out where is the best place ot file your case. Here are some resources that could help you with this:",
-            "isComplete": true,
+            "text": "Safety Planning Tips",
+            "url": "https://www.thehotline.org/help/path-to-safety/"
+          }
+        ],
+        "steps": [
+          {
+            "description": "Short Term",
+            "isComplete": false,
+            "order": 1,
+            "resources": [],
+            "stepId": "ec78414b-2616-4d65-ae07-e08f3e2f697a",
+            "title": "Short Term Protective Order"
+          },
+          {
+            "description": "Long Term",
+            "isComplete": false,
             "order": 2,
-            "resources": [
-              {
-                "id": "19a02209-ca38-4b74-bd67-6ea941d41518",
-                "resourceType": "Organizations"
-              },
-              {
-                "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5",
-                "resourceType": "Articles"
-              }
-            ],
-            "stepId": "f05ace00-c1cc-4618-a224-56aa4677d2aa",
-            "title": "Jurisdiction"
+            "resources": [],
+            "stepId": "ed56894b-2616-4d65-ae07-e08f3e2f697a",
+            "title": "Long Term Protective Order"
           }
         ]
       },
       {
-        "topicId": "e1fdbbc6-d66a-4275-9cd2-2be84d303e12",
-        "name": "Eviction",
-        "quickLinks": [
+        "topicId": "ba74f857-eb7b-4dd6-a021-5b3e4525e3e4",
+        "name": "Divorce",
+        "icon": null,
+        "essentialReadings": [
           {
-            "text": "Filing for Dissolution or Divorce - Ending Your Marriage",
-            "url": "http://courts.alaska.gov/shc/family/shcstart.htm#issues"
+            "text": "Domestic Violence - What it is",
+            "url": "https://www.thehotline.org/is-this-abuse/abuse-defined/"
           }
         ],
-        "icon": "https://cs4892808efec24x447cx944.blob.core.windows…/static-resource/assets/images/topics/housing.svg",
         "steps": [
           {
-            "stepId": "f79305c1-8767-4485-9e9b-0b5a573ea7b3",
-            "title": "File a motion to modify if there has been a change of circumstances.",
-            "description": "The Motion and Affidavit for Post-Decree relief are used to request changes to a divorce or make sure the other side is followin gthe orders.",
+            "description": "Step Description",
+            "isComplete": false,
             "order": 1,
-            "isComplete": false,
-            "resources": [
-              {
-                "id": "9ca4cf73-f6c0-4f63-a1e8-2a3774961df5",
-                "resourceType": "Forms"
-              },
-              {
-                "id": "49779468-1fe0-4183-850b-ff365e05893e",
-                "resourceType": "Organizations"
-              }
-            ]
-          },
-          {
-            "stepId": "e9337765-81fc-4d10-8850-8e872cde4ee8",
-            "title": "Jurisdiction",
-            "description": "Jurisdiction is a very complicated subject and you should talk to an attorney to figure out where is the best place ot file your case. Here are some resources that could help you with this:",
-            "order": 2,
-            "isComplete": false,
-            "resources": [
-              {
-                "id": "be0cb3e1-7054-403a-baac-d119ea5be007",
-                "resourceType": "Articles"
-              },
-              {
-                "id": "2fe9f117-bfb5-469f-b80c-877640a29f75",
-                "resourceType": "Forms"
-              }
-            ]
+            "resources": [],
+            "stepId": "df822558-73c2-4ac8-8259-fabe2334eb71",
+            "title": "Step Title"
           }
         ]
       }
-    ],
-    "isShared": false
+    ]
   };
   let mockUserData = {
     displayableId: "mockUser",
@@ -131,32 +95,31 @@ describe('SaveButtonComponent', () => {
     name: "mockUser",
     userIdentifier: "1234567890ABC"
   }
-  let mockUserDataEmpty = null;
-  let mockPlanId = '1fb1b006-a8bc-487d-98a0-2457d9d9f78d';
-  let mockEmptyResult = [];
+  let mockSavedResources = {
+    "itemId": "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef",
+    "resourceType": "Topics",
+    "resourceDetails": {}
+  };
 
   beforeEach(async(() => {
-    mockPersonalizedPlanService = jasmine.createSpyObj(['getActionPlanConditions', 'saveResourcesToProfile', 'getUserSavedResources', 'userPlan','showSuccess', 'showWarning' ]);
+    mockPersonalizedPlanService = jasmine.createSpyObj(['getActionPlanConditions', 'saveResourceToProfilePostLogin', 'userPlan', 'showSuccess', 'saveBookmarkedResource']);
     msalService = jasmine.createSpyObj(['getUser']);
     mockPersonalizedPlanService.getActionPlanConditions.and.returnValue(of(mockPlanDetails));
-    mockPersonalizedPlanService.getUserSavedResources.and.returnValue(of(mockEmptyResult));
-    mockPersonalizedPlanService.saveResourcesToProfile.and.returnValue(of(mockEmptyResult));
-    mockPersonalizedPlanService.userPlan.and.returnValue(of(mockEmptyResult));
     msalService.getUser.and.returnValue(mockUserData);
-   
+    mockMavigateDataService = jasmine.createSpyObj(['getData']);
+    mockMavigateDataService.getData.and.returnValue(JSON.stringify(mockPlanDetails));
+    mockSaveButtonService = jasmine.createSpyObj(['savePlanToUserProfile']);
+
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
       declarations: [SaveButtonComponent],
       providers: [
         { provide: PersonalizedPlanService, useValue: mockPersonalizedPlanService },
-        ArrayUtilityService,
-        EventUtilityService,
-        BsModalService,
-        { provide: ToastrService, useValue: mockToastr },
-        { provide: Global, useValue: { mockGlobal, userid : mockUserId}},
-        {provide: ActivatedRoute,useValue: { snapshot: { params: { 'id': '123' } } }},
-        { provide: Router, useValue: mockRouter },
+        { provide: Global, useValue: { mockGlobal, userid: mockUserId, planSessionKey: "planKey" } },
+        { provide: Router, useValue: { url: '/plan/id' }},
         { provide: MsalService, useValue: msalService },
+        { provide: SaveButtonService, useValue: mockSaveButtonService },
+        { provide: NavigateDataService, useValue: mockMavigateDataService },
       ]
     })
       .compileComponents();
@@ -183,8 +146,6 @@ describe('SaveButtonComponent', () => {
       }
     };
 
-    spyOn(sessionStorage, 'getItem')
-      .and.callFake(mockSessionStorage.getItem);
     spyOn(sessionStorage, 'setItem')
       .and.callFake(mockSessionStorage.setItem);
     spyOn(sessionStorage, 'removeItem')
@@ -201,21 +162,6 @@ describe('SaveButtonComponent', () => {
     expect(component).toBeDefined();
   });
 
-  it('should get topics for the given plan', () => {
-    spyOn(component, 'getPersonalizedPlanSteps');
-    component.getPlan(mockPlanId);
-    expect(component.planTopic.topicId).toEqual(mockTopicID);
-  });
-
-  it('should get called PlanResources post login', () => {
-    spyOn(component, 'getPersonalizedPlanSteps');
-    msalService.getUser.and.returnValue(mockUserData);
-    component.type = 'Plan';
-    component.id = mockPlanId;
-    component.savePlanResources();
-    expect(component.planId).toEqual(mockPlanId);
-  });
-
   it('should get called PlanResources post login have been called', () => {
     spyOn(component, 'savePlanResourcesPostLogin');
     component.savePlanResources();
@@ -224,29 +170,73 @@ describe('SaveButtonComponent', () => {
 
   it('should get called PlanResources pre login', () => {
     spyOn(component, 'savePlanResourcesPreLogin');
-    spyOn(component, 'externalLogin');
-    msalService.getUser.and.returnValue(mockUserDataEmpty);
+    msalService.getUser.and.returnValue(null);
     component.savePlanResources();
     expect(component.savePlanResourcesPreLogin).toHaveBeenCalled();
   });
 
   it('should set plan session key if plan type exists - savePlanResourcesPreLogin', () => {
-    component.type = 'Plan';
-    component.id = mockPlanId;
+    const router = TestBed.get(Router);
+    router.url = '/plan/id';
+    spyOn(component, 'savePersonalizationPlan');
     component.savePlanResourcesPreLogin();
-    expect(JSON.parse(sessionStorage.getItem("bookmarkPlanId"))).toEqual(mockPlanId);
+    expect(sessionStorage.setItem).toHaveBeenCalled();
+    expect(component.savePersonalizationPlan).toHaveBeenCalled();
   });
 
   it('should set plan session key if plan type not exists - savePlanResourcesPreLogin', () => {
-    component.type = 'NoPlan';
-    component.id = mockPlanId;
+    const router = TestBed.get(Router);
+    router.url = '/noPlan/id';
+    component.id = mockSavedResources.itemId;
+    component.type = mockSavedResources.resourceType;
+    component.resourceDetails = mockSavedResources.resourceDetails;
     component.savePlanResourcesPreLogin();
-    expect(component.savedResources.itemId).toEqual(mockPlanId);
-    expect(component.savedResources.resourceType).toEqual('NoPlan');
+    expect(component.savedResources).toEqual(mockSavedResources);
+    expect(mockPersonalizedPlanService.saveBookmarkedResource).toHaveBeenCalledWith(mockSavedResources);
   });
 
-  it('should get topic ids from plan or topics', () => {
-    component.getTopicIds(mockPlanDetails.topics);
-    expect(component.topicIds).toContain('d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef');
+  it('should call userPlan service in savePersonalizationPlan method', () => {
+    mockPersonalizedPlanService.userPlan.and.returnValue(of(mockPlanDetails));
+    component.savePersonalizationPlan();
+    expect(mockPersonalizedPlanService.userPlan).toHaveBeenCalled();
+    expect(mockPersonalizedPlanService.showSuccess).toHaveBeenCalled();
   });
- });
+
+  it('should call savePlanPostLogin - savePlanResourcesPostLogin', () => {
+    const router = TestBed.get(Router);
+    router.url = '/plan/id';
+    spyOn(component, 'savePlanPostLogin');
+    component.savePlanResourcesPostLogin();
+    expect(component.savePlanPostLogin).toHaveBeenCalled();
+  });
+
+  it('should call saveResourcesPostLogin - savePlanResourcesPostLogin', () => {
+    const router = TestBed.get(Router);
+    router.url = '/noPlan/id';
+    spyOn(component, 'saveResourcesPostLogin');
+    component.savePlanResourcesPostLogin();
+    expect(component.saveResourcesPostLogin).toHaveBeenCalled();
+  });
+
+  it('should call savePlanToUserProfile service in savePlanPostLogin', () => {
+    component.savePlanPostLogin();
+    expect(mockSaveButtonService.savePlanToUserProfile).toHaveBeenCalled();
+  });
+
+  it('should call getActionPlanConditions, savePlanToUserProfile service in savePlanPostLogin', () => {
+    mockMavigateDataService.getData.and.returnValue(null);
+    component.savePlanPostLogin();
+    expect(mockPersonalizedPlanService.getActionPlanConditions).toHaveBeenCalled();
+    expect(mockSaveButtonService.savePlanToUserProfile).toHaveBeenCalled();
+  });
+
+  it('should call savePlanToUserProfile service in saveResourcesPostLogin', () => {
+    component.id = mockSavedResources.itemId;
+    component.type = mockSavedResources.resourceType;
+    component.resourceDetails = mockSavedResources.resourceDetails;
+    component.saveResourcesPostLogin();
+    expect(component.tempResourceStorage).toEqual([mockSavedResources]);
+    expect(mockPersonalizedPlanService.saveResourceToProfilePostLogin).toHaveBeenCalled();
+  });
+
+});
