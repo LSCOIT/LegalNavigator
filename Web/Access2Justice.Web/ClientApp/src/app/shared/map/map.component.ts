@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, ViewChild, ElementRef } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { MapService } from './map.service';
@@ -47,6 +47,7 @@ export class MapComponent implements OnInit {
   errorSubscription: any;
   locationError: boolean;
   successSubscription: any;
+  @ViewChild('changeLocationButton') changeLocationButton: ElementRef;
 
   constructor(private modalService: BsModalService,
     private mapService: MapService,
@@ -121,7 +122,7 @@ export class MapComponent implements OnInit {
     this.displayLocationDetails(this.locationDetails.displayLocationDetails);
     if ((this.modalRef && this.mapLocation) || !this.mapType) {
       this.modalRef.hide();
-      document.getElementById("change-location-button").focus();
+      this.changeLocationButton.nativeElement.focus();
     } else {
       this.isError = true;
     }
