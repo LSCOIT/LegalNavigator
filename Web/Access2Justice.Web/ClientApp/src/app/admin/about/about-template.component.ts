@@ -200,7 +200,6 @@ export class AboutTemplateComponent implements OnInit {
 
   showNewsUpload(image, index) {
     this[`${image}`].toArray()[index].nativeElement.style.display = 'none' ? 'block' : 'none';
-    console.log(image);
   }
 
   ngOnInit() {
