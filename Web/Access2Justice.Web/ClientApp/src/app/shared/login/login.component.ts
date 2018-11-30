@@ -26,7 +26,6 @@ export class LoginComponent implements OnInit {
   isProfileSaved: boolean = false;
   isAdmin: boolean = false;
   roleInformationSubscription;
-  receiveTab: boolean = false;
   isMobile: boolean = false;
 
   constructor(private router: Router,
