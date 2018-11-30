@@ -6,9 +6,7 @@
 }
 
   .media:hover {
-    background: #F4F4F4;
-    padding-left:30px;
-    transition: padding-left 0.3s;
+    text-decoration: underline;
   }
 
   .media:focus {

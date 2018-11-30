@@ -13,12 +13,6 @@ h3 {
   font-size: 2em;
 }
 
-.btn-secondary:hover {
-  color: black;
-  background-color: #80bdff;
-  border-color: #0B2B78;
-}
-
 .button-container {
   width: 100%;
 }
@@ -32,15 +26,12 @@ h3 {
 
 .button-container ul li label {
   padding: 14px 20px 14px 50px;
+  z-index: 0;
 }
 
-  .button-container ul li label:hover {
-    border-color: #80bdff;
-    outline: 0;
-    -webkit-box-shadow: 0 0 0 0.1rem rgba(0,123,255,.25);
-    box-shadow: 0 0 0 0.1rem rgba(0,123,255,.25);
-  }
-
+.button-container ul li label:hover {
+  background-color: #D9F2F8;
+}
 
 .relevant-intent {
   padding: 10px;

@@ -106,6 +106,7 @@ button:focus {
   color: #0B2B78;
   background-color: #FFF;
   border-color: #0B2B78;
+  text-decoration: underline;
 }
 
 .btn-inactive {

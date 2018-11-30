@@ -230,11 +230,6 @@ ul>li>span {
     margin-bottom: 0;
   }
 
-  .btn-secondary:hover {
-    background-color: #80bdff;
-    color: black;
-  }
-
   .testimonial-img img {
     max-width: 280px;
     max-height: 280px;
