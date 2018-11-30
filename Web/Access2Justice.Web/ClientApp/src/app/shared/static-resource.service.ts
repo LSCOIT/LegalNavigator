@@ -23,6 +23,7 @@ export class StaticResourceService {
   navigation: Navigation;
   homeContent: Home;
   locationDetails: LocationDetails;
+  location: string='';
 
   loadStateName(): MapLocation {
     if (sessionStorage.getItem("globalMapLocation")) {
@@ -36,11 +37,11 @@ export class StaticResourceService {
   }
 
   getLocation() {
-    let location = this.loadStateName().state;
-    if (!((location == "Alaska") || (location == "Hawaii"))) {
-      location = "Default";
+    this.location = this.loadStateName().state;
+    if (!((this.location == "Alaska") || (this.location == "Hawaii"))) {
+      this.location = "Default";
     }
-    return location;
+    return this.location;
   }
 
   getStaticContents(location) {
