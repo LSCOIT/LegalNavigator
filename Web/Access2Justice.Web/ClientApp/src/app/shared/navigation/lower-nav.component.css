@@ -49,7 +49,6 @@ ul.web-hidden {
 #mobile-menu {
   float: right;
   margin-top: -2px;
-  margin-left: 15px;
 }
 
 #nav-bar-toggle {
@@ -151,6 +150,12 @@ li.vertical-line {
   top: 21px;
 }
 
+#search-phrase-tab {
+  background-color: white;
+  margin-right: 6px;
+  outline-offset: 21px;
+}
+
 @media only screen and (min-width : 768px) {
   .lower-nav {
     min-height: 80px;
@@ -225,7 +230,6 @@ li.vertical-line {
     display: inline-block;
     font-size: 14px;
   }
-
   .search-icon {
     margin-right: 10px;
     margin-bottom: 0;
