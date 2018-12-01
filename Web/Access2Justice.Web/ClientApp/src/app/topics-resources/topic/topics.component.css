@@ -87,9 +87,9 @@ ul {
   .topic-outline {
     display: block;
     padding-bottom: 20px;
-    position: absolute;
-    left: -1px;
-    top: -1px;
+    position: relative;
+    left: -10px;
+    top: -10px;
     width: 325px;
     height: 200px;
   }
