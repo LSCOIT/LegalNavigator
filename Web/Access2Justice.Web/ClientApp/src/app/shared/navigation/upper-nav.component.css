@@ -7,6 +7,10 @@ li {
   cursor: pointer;
 }
 
+li a {
+  padding: 16px 15px;
+}
+
 li:hover, #location:hover {
   background-color: #fff;
 }
@@ -38,10 +42,6 @@ li a img {
   padding: 15px 10px;
 }
 
-.right-menu li:last-child {
-  padding: 0;
-}
-
 #location {
   position: absolute;
   top: -2px;
@@ -54,28 +54,6 @@ li a img {
   margin-left: -10px;
 }
 
-#privacy-promise-navigation-link {
-  background-image: url('https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/small-icons/privacy.svg');
-  background-repeat: no-repeat;
-  background-position: 0% 50%;
-  background-size: 20px 20px;
-  padding-left: 28px;
-  padding-bottom: 2px;
-  outline-offset: 15px;
-  display: block;
-}
-
-#faq-navigation-link {
-  background-image: url('https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/small-icons/faq.svg');
-  background-repeat: no-repeat;
-  background-position: 0% 50%;
-  background-size: 20px 20px;
-  padding-left: 28px;
-  padding-bottom: 2px;
-  outline-offset: 15px;
-  display: block;
-}
-
 @media only screen and (min-width : 768px) {
   .upper-nav {
     min-height: 50px;
@@ -86,8 +64,17 @@ li a img {
     width: auto;
   }
 }
+
 @media only screen and (min-width : 1124px) {
+  .upper-nav {
+    height: 52px;
+  }
+
   .right-menu li {
-    padding: 15px;
+    padding: 15px 0;
+  }
+
+  #language {
+    height: 55px;
   }
 }
