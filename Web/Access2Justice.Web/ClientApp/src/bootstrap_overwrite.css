@@ -113,6 +113,13 @@ a.carousel-control .icon-prev, a.carousel-control .icon-next {
   height: 40px;
 }
 
+a.carousel-control .icon-prev:hover, a.carousel-control .icon-next:hover {
+  background-image: url('assets/images/small-icons/arrow_down.svg');
+  width: 60px;
+  height: 60px;
+  transition: all ease-in-out .5s;
+}
+
 .carousel-control-next-icon {
   transform: rotate(-90deg);
 }
@@ -131,6 +138,10 @@ a.carousel-control .icon-prev, a.carousel-control .icon-next {
   width: 10px;
   height: 10px;
   margin: 0 5px;
+}
+
+.carousel-indicators li:hover {
+  background-color: #0D3FBB;
 }
 
 .carousel-indicators li {
