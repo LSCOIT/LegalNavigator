@@ -83,7 +83,7 @@
         <div *ngIf="showGuidedAssistantUpload" class="description col-sm-12">
           <label class="col-md-2 col-sm-3">Upload New Image</label>
           <input class="form-control upload-img col-md-10 col-sm-9 " type="file" name="guidedAssistantImage" accept="image/*" (change)="encode('guidedAssistantImage')" ngModel />
-          <p class="pxs">Size limit: 400kg | Recommended dimension: 400px by 600px</p>
+          <p class="pxs">Size limit: 300kg | Recommended dimension: 300px by 400px</p>
         </div>
         <div class="description col-sm-12">
           <label class="col-md-2 col-sm-3">Image Alt Text (for accessibility)</label>
@@ -146,7 +146,7 @@
           <div #slideImageUpload class="description new-img col-sm-12">
             <label class="col-md-2 col-sm-3">Upload New Image</label>
             <input class="form-control upload-img col-md-10 col-sm-9 " type="file" [name]="'slideImage' + i" accept="image/*" (change)="encode('slideImage', i)" ngModel />
-            <p class="pxs">Size limit: 100kg | Recommended dimension: 100px by 100px</p>
+            <p class="pxs">Size limit: 300kg | Recommended dimension: 300px by 300px</p>
           </div>
           <div class="description col-sm-12">
             <label class="col-md-2 col-sm-3">Image Alt Text {{i}}</label>
@@ -177,7 +177,7 @@
           <div #sponsorImageUpload class="description new-img col-sm-12">
             <label class="col-md-2 col-sm-3">Upload New Image</label>
             <input class="form-control upload-img col-md-10 col-sm-9 " type="file" [name]="'sponsorImage' + i" accept="image/*" (change)="encode('sponsorImage', i)" ngModel />
-            <p class="pxs">Size limit: 100kg | Recommended dimension: 100px by 300px</p>
+            <p class="pxs">Size limit: 100kg | Recommended dimension: 200px by 50px</p>
           </div>
           <div class="description col-sm-12">
             <label class="col-md-2 col-sm-3">Image Alt Text {{i}}</label>
@@ -225,7 +225,7 @@
         <div *ngIf="showPrivacyImageUpload" class="description col-sm-12">
           <label class="col-md-2 col-sm-3">Upload New Image</label>
           <input class="form-control upload-img col-md-10 col-sm-9 " type="file" name="privacyImage" accept="image/*" (change)="encode('privacyImage')" ngModel />
-          <p class="pxs">Size limit: 400kg | Recommended dimension: 400px by 600px</p>
+          <p class="pxs">Size limit: 400kg | Recommended dimension: 400px by 400px</p>
         </div>
         <div class="description col-sm-12">
           <label class="col-md-2 col-sm-3">Image Alt Text (for accessibility)</label>
@@ -234,19 +234,19 @@
       </div>
     </div>
     <div class="box-shadow">
-      <h2>Privacy Promise</h2>
+      <h2>Helpline</h2>
       <div class="row sections">
         <div class="description col-sm-12">
           <label class="col-md-2 col-sm-3">Beginning Text</label>
-          <input class="form-control col-md-10 col-sm-9" type="text" name="helplineBeginningText" [(ngModel)]="homeContent.helpline.beginningText" />
+          <input class="form-control col-md-10 col-sm-9" type="text" name="helpTextBeginningText" [(ngModel)]="homeContent.helpText.beginningText" />
         </div>
         <div class="description col-sm-12">
-          <label class="col-md-2 col-sm-3">Beginning Text</label>
-          <input class="form-control col-md-10 col-sm-9" type="text" name="helplinePhone" [(ngModel)]="homeContent.helpline.phoneNumber" />
+          <label class="col-md-2 col-sm-3">Phone Number</label>
+          <input class="form-control col-md-10 col-sm-9" type="text" name="helpTextPhone" [(ngModel)]="homeContent.helpText.phoneNumber" />
         </div>
         <div class="description col-sm-12">
-          <label class="col-md-2 col-sm-3">Beginning Text</label>
-          <input class="form-control col-md-10 col-sm-9" type="text" name="helplineEndingText" [(ngModel)]="homeContent.helpline.endingText" />
+          <label class="col-md-2 col-sm-3">Ending Text</label>
+          <input class="form-control col-md-10 col-sm-9" type="text" name="helpTextEndingText" [(ngModel)]="homeContent.helpText.endingText" />
         </div>
       </div>
     </div>

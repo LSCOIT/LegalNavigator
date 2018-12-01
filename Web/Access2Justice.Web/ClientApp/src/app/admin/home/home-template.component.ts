@@ -16,7 +16,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['../admin-styles.css']
 })
 export class HomeTemplateComponent implements OnInit {
-  homeContent: Home;
+  homeContent: any;
   staticContent: any;
   name: string = 'HomePage';
   location: MapLocation = {
@@ -94,6 +94,24 @@ export class HomeTemplateComponent implements OnInit {
     });
   }
 
+  encode(image, index) {
+    index = index || '';
+    let reader = new FileReader();
+    if (event.target["files"] && event.target["files"].length > 0) {
+      let file = event.target["files"][0];
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.form.get(image + index).setValue({
+          filename: file.name,
+          filetype: file.type,
+          value: reader.result.split(',')[1]
+        });
+      }
+    }
+    console.log(this.form);
+
+  }
+
   getHomePageContent(): void {
     if (this.navigateDataService.getData()) {
       this.staticContent = this.navigateDataService.getData();
@@ -135,15 +153,15 @@ export class HomeTemplateComponent implements OnInit {
           steps: [
             {
               order: "1",
-              description: homeForm.value.guidedAssistantSteps0 || this.homeContent.guidedAssistantOverview.description.steps[0]["description"]
+              description: homeForm.value.guidedAssistantSteps1 || this.homeContent.guidedAssistantOverview.description.steps[0]["description"]
             },
             {
               order: "2",
-              description: homeForm.value.guidedAssistantSteps1 || this.homeContent.guidedAssistantOverview.description.steps[1]["description"]
+              description: homeForm.value.guidedAssistantSteps2 || this.homeContent.guidedAssistantOverview.description.steps[1]["description"]
             },
             {
               order: "3",
-              description: homeForm.value.guidedAssistantSteps2 || this.homeContent.guidedAssistantOverview.description.steps[2]["description"]
+              description: homeForm.value.guidedAssistantSteps3 || this.homeContent.guidedAssistantOverview.description.steps[2]["description"]
             }
           ],
           text: homeForm.value.gidedAssistantDescriptionText || this.homeContent.guidedAssistantOverview.description.text,
@@ -154,7 +172,7 @@ export class HomeTemplateComponent implements OnInit {
         },
         button: {
           buttonText: homeForm.value.guidedAssistantButtonText || this.homeContent.guidedAssistantOverview.button.buttonText,
-          buttonLink: homeForm.value.guidedAssistantButtonText || this.homeContent.guidedAssistantOverview.button.buttonLink
+          buttonLink: homeForm.value.guidedAssistantButtonLink || this.homeContent.guidedAssistantOverview.button.buttonLink
         },
         image: {
           source: this.form.value.guidedAssistantImage && this.form.value.guidedAssistantImage.value || this.homeContent.guidedAssistantOverview.image.source,
@@ -184,7 +202,7 @@ export class HomeTemplateComponent implements OnInit {
             author: homeForm.value.slideAuthor1 || this.homeContent.carousel.slides[1]["author"],
             location: homeForm.value.slideLocation1 || this.homeContent.carousel.slides[1]["location"],
             image: {
-              source: this.form.value.slideImage1 && this.form.value.slideImage.value || this.homeContent.carousel.slides[1].image.source,
+              source: this.form.value.slideImage1 && this.form.value.slideImage1.value || this.homeContent.carousel.slides[1].image.source,
               altText: homeForm.value.slideImageAltText1 || this.homeContent.carousel.slides[1].image.altText
             }
           },
@@ -193,7 +211,7 @@ export class HomeTemplateComponent implements OnInit {
             author: homeForm.value.slideAuthor2 || this.homeContent.carousel.slides[2]["author"],
             location: homeForm.value.slideLocation2 || this.homeContent.carousel.slides[2]["location"],
             image: {
-              source: this.form.value.slideImage2 && this.form.value.slideImage.value || this.homeContent.carousel.slides[2].image.source,
+              source: this.form.value.slideImage2 && this.form.value.slideImage2.value || this.homeContent.carousel.slides[2].image.source,
               altText: homeForm.value.slideImageAltText2 || this.homeContent.carousel.slides[2].image.altText
             }
           }
@@ -229,17 +247,20 @@ export class HomeTemplateComponent implements OnInit {
           altText: homeForm.value.guidedAssistantImageAltText || this.homeContent.privacy.image.altText
         }
       },
-      helpText: {
-        beginningText: homeForm.value.helplineBeginningText || this.homeContent.helpline.beginningText,
-        phoneNumber: homeForm.value.helplinePhone || this.homeContent.helpline.phoneNumber,
-        endingText: homeForm.value.helplineEndingText || this.homeContent.helpline.endingText
-      }
+      //helpText: {
+      //  beginningText: homeForm.value.helplineBeginningText || this.homeContent.helpText["beginningText"],
+      //  phoneNumber: homeForm.value.helplinePhone || this.homeContent.helpText["phoneNumber"],
+      //  endingText: homeForm.value.helplineEndingText || this.homeContent.helpText["endingText"]
+      //}
+      helpText: "Are you safe ? Call X-XXX-XXX-XXXX to get help."
     }
-
-    this.adminService.saveAboutData(this.newHomeContent).subscribe(
+    console.log(this.newHomeContent);
+    console.log(homeForm);
+    this.adminService.saveHomeData(this.newHomeContent).subscribe(
       response => {
         this.spinner.hide();
         if (response) {
+          this.homeContent = response;
           this.toastr.success("Page updated successfully");
         }
       });

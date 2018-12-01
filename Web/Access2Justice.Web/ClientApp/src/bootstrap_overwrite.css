@@ -282,7 +282,7 @@ span.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chev
   display: inline-block;
   float: left;
   margin-left: 4%;
-  margin-top: -133px;
+  margin-top: -80px;
 }
 
 #admin .nav-item {
@@ -388,6 +388,10 @@ span.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chev
 
   .carousel-indicators {
     bottom: -42px;
+  }
+
+  #admin .tab-content {
+    margin-top: -86px;
   }
 }
 
