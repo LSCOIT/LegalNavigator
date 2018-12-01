@@ -1,16 +1,18 @@
 #language-dropdown {
-  padding: 15px 40px 16px 50px;
-  background-image: url('https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/small-icons/language.svg'), url('https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/small-icons/dropdown_arrow.svg');
-  background-repeat: no-repeat;
-  background-position: 13% 50%, 88% 50%;
-  background-size: 20px 20px, 12px;
-  background-color: rgb(244, 244, 244);
-  height: 49px;
+  padding: 15px 40px 15px 15px;
+  background-position: 88% 50%;
+  background-color: transparent;
 }
+
+  #language-dropdown > a {
+    color: #333;
+    text-decoration: none;
+    cursor: pointer;
+  }
 
 .white-bg {
   position: relative;
-  background-color: #FFF !important;
+  background-color: #FFF!important;
   z-index: 1;
   background-image: url('https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/small-icons/language.svg'), url('https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/small-icons/dropdown_arrow.svg') !important;
 }
@@ -18,16 +20,4 @@
 #language-dropdown:hover {
   background-color: #FFF;
 
-}
-
-@media only screen and (min-width : 768px) {
-  #language-dropdown {
-    height: 51px;
-  }
-}
-
-@media only screen and (min-width : 992px) {
-  #language-dropdown {
-    height: 53px;
-  }
 }
