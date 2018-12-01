@@ -14,15 +14,15 @@
   margin-bottom: 0;
 }
 
-  .footer-nav li {
-    list-style: none;
-    display: block;
-  }
+.footer-nav li {
+  list-style: none;
+  display: block;
+}
 
-  .footer-nav a:hover {
-    color: #0d3fb8;
-    font-weight: 600;
-  }
+.footer-nav a:hover {
+  color: #0d3fb8;
+  font-weight: 600;
+}
 
 .footer-nav li.vertical-line {
   border-bottom: 1px solid #ddd;
