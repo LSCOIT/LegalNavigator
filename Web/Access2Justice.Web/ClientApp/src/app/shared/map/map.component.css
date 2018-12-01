@@ -55,9 +55,9 @@ p.ps {
   cursor: pointer;
 }
 
-  .change-location-btn:hover {
-    text-decoration: underline;
-  }
+.change-location-btn:hover {
+  text-decoration: underline;
+}
 
 #search-box {
   height: 40px;

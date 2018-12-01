@@ -89,11 +89,6 @@ ul.web-hidden {
   font-weight: 600;
  }
 
-#sidenav .account-menu:hover {   //Luke
-  color: #0d3fb8;
-  font-weight: 600;
- }
-
 #sidenav .closebtn {
   float: right;
   margin-right: 18px;
@@ -254,10 +249,10 @@ li.vertical-line {
     font-size: 16px;
   }
 
-    .left-menu li a:hover { 
-      color: #0d3fb8;
-      font-weight: 600;
-    }
+  .left-menu li a:hover { 
+    color: #0d3fb8;
+    font-weight: 600;
+  }
 
   #logo {
     background-position: -10px -7px;

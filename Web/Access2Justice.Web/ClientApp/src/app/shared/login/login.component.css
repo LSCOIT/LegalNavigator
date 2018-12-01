@@ -2,7 +2,7 @@ a:not([href]):not([tabindex]) {
   color: #333;
 }
 
-a:hover {
+.account-menu:hover {
   color: #0d3fb8;
   font-weight: 600;
 }
@@ -35,7 +35,6 @@ a:hover {
 }
 
 #signin-dropdown a:hover {
-  color: #333;
   text-decoration: none;
 }
 
@@ -74,11 +73,6 @@ a:hover {
 }
 
 @media only screen and (min-width : 768px) {
-
-  .dropdown-menu li a:hover {
-    color: #0d3fb8;
-    font-weight: 600;
-  }
   .dropdown-menu li a {
     font-size: 14px;
   }
@@ -97,10 +91,11 @@ a:hover {
     padding: 17px 15px 17px 15px;
   }
 
-    .account-menu:hover {
-      background-color: #fff;
-      font-weight: 400;
-    }
+  .account-menu:hover {
+    background-color: #fff;
+    color: #333;
+    font-weight: 400;
+  }
 
   .account-menu, .account-menu img {
     margin-left: 0;
