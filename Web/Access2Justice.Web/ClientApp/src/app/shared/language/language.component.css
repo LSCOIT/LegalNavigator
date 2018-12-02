@@ -14,4 +14,10 @@
   position: relative;
   background-color: #FFF!important;
   z-index: 1;
+  background-image: url('https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/small-icons/language.svg'), url('https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/small-icons/dropdown_arrow.svg') !important;
+}
+
+#language-dropdown:hover {
+  background-color: #FFF;
+
 }

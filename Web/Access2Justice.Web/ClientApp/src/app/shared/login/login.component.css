@@ -2,9 +2,9 @@ a:not([href]):not([tabindex]) {
   color: #333;
 }
 
-a:hover {
-  color: #333;
-  text-decoration: none;
+.account-menu:hover {
+  color: #0d3fb8;
+  font-weight: 600;
 }
 
 .nav .open > a, .nav .open > a:focus, .nav .open > a:hover {
@@ -35,7 +35,6 @@ a:hover {
 }
 
 #signin-dropdown a:hover {
-  color: #333;
   text-decoration: none;
 }
 
@@ -94,6 +93,8 @@ a:hover {
 
   .account-menu:hover {
     background-color: #fff;
+    color: #333;
+    font-weight: 400;
   }
 
   .account-menu, .account-menu img {
