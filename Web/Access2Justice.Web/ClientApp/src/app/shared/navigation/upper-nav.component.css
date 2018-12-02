@@ -7,21 +7,21 @@ li {
   cursor: pointer;
 }
 
-li a {
-  padding: 16px 15px;
-}
+  li a {
+    padding: 16px 15px;
+  }
 
-li:hover, #location:hover {
-  background-color: #fff;
-}
+  li:hover, #location:hover {
+    background-color: #fff;
+  }
 
-li a:hover {
-  color: #333;
-}
+  li a:hover {
+    color: #333;
+  }
 
-li a img {
-  margin-left: 0;
-}
+  li a img {
+    margin-left: 0;
+  }
 
 .upper-nav {
   background: #f4f4f4;
@@ -38,9 +38,9 @@ li a img {
   margin-right: -15px;
 }
 
-.right-menu li {
-  padding: 15px 10px;
-}
+  .right-menu li {
+    padding: 15px 10px;
+  }
 
 #location {
   position: absolute;
@@ -52,28 +52,6 @@ li a img {
 
 #language {
   margin-left: -10px;
-}
-
-#privacy-promise-navigation-link {
-  background-image: url('https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/small-icons/privacy.svg');
-  background-repeat: no-repeat;
-  background-position: 0% 50%;
-  background-size: 20px 20px;
-  padding-left: 28px;
-  padding-bottom: 2px;
-  outline-offset: 15px;
-  display: block;
-}
-
-#faq-navigation-link {
-  background-image: url('https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/small-icons/faq.svg');
-  background-repeat: no-repeat;
-  background-position: 0% 50%;
-  background-size: 20px 20px;
-  padding-left: 28px;
-  padding-bottom: 2px;
-  outline-offset: 15px;
-  display: block;
 }
 
 @media only screen and (min-width : 768px) {
