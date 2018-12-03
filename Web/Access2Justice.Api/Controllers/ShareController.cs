@@ -3,13 +3,12 @@ using Access2Justice.Api.Interfaces;
 using Access2Justice.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics.CodeAnalysis;
+using System.Net;
 using System.Threading.Tasks;
 using static Access2Justice.Api.Authorization.Permissions;
 
 namespace Access2Justice.Api.Controllers
 {
-    [ExcludeFromCodeCoverage]
     [Produces("application/json")]
     [Route("api/share")]
     public class ShareController : Controller
@@ -38,6 +37,10 @@ namespace Access2Justice.Api.Controllers
             if (shareInput != null)
             {
                 var response = await shareBusinessLogic.ShareResourceDataAsync(shareInput);
+                if (response == null)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+                }
                 return Ok(response);
             }
             return StatusCode(StatusCodes.Status412PreconditionFailed);
@@ -60,6 +63,10 @@ namespace Access2Justice.Api.Controllers
             if (shareInput != null)
             {
                 var response = await shareBusinessLogic.CheckPermaLinkDataAsync(shareInput);
+                if (response == null)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+                }
                 return Ok(response);
             }
             return StatusCode(StatusCodes.Status412PreconditionFailed);
@@ -82,6 +89,10 @@ namespace Access2Justice.Api.Controllers
             if (unShareInput != null)
             {
                 var response = await shareBusinessLogic.UnshareResourceDataAsync(unShareInput);
+                if (response == null)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+                }
                 return Ok(response);
             }
             return StatusCode(StatusCodes.Status412PreconditionFailed);
@@ -103,6 +114,10 @@ namespace Access2Justice.Api.Controllers
             if (permaLink != null)
             {
                 var response = await shareBusinessLogic.GetPermaLinkDataAsync(permaLink);
+                if (response == null)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+                }
                 return Ok(response);
             }
             return StatusCode(StatusCodes.Status412PreconditionFailed);

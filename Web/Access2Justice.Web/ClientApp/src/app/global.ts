@@ -23,7 +23,11 @@ export class Global {
   isLoggedIn: boolean = false;
   topicsData: any;
   organizationsData: any;
+  isLoginRedirect: boolean = false;
+  sessionKey: string = "bookmarkedResource";
+  planSessionKey: string = "bookmarkedPlan";
   roleInformation: any;
+  displayResources: number = 3;
 
   constructor() { }
 

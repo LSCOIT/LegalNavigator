@@ -5,8 +5,8 @@
   cursor: pointer;
 }
 
-.step-content {
-  margin-bottom: -5px;
+.media:hover {
+  text-decoration: underline;
 }
 
 .accordion-img {

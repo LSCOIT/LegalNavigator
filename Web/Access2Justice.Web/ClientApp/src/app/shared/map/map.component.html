@@ -7,7 +7,7 @@
   <ng-template #elseBlock>
     <span *ngIf="!showLocality"> {{locality}}(</span><span id="user-location">{{address}}</span><span *ngIf="!showLocality">)</span>
   </ng-template>
-  <button id="change-location-button" type="button" class="change-location-btn pxs mobile-hidden">{{locationNavContent?.button?.buttonText}}</button>
+  <button #changeLocationButton id="change-location-button" type="button" class="change-location-btn pxs mobile-hidden">{{locationNavContent?.button?.buttonText}}</button>
 </div>
 <ng-template #template>
   <form #mapForm="ngForm" (ngSubmit)="hideSearchPrediction()">
@@ -32,13 +32,13 @@
             autocomplete="off"
             placeholder="Enter a state name"
             (input)="onSearchChange()"
-            autofocus="autofocus"
             name="locationInput"
             [(ngModel)]='locationInput'
-            (keyup)="hideLocationError()"/>
+            (keyup)="hideLocationError()"
+            autofocus/>
           <button id="search-location-button" type="submit" class="search-btn" (click)="geocode()">Search</button>
         </div>
-        <span *ngIf="locationError" id="validation-error">Please enter a valid location</span>
+        <p *ngIf="locationError" id="validation-error">Please enter a valid location</p>
         <div id="my-map"></div>
       </div>
       <div class="row">

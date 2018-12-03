@@ -17,16 +17,15 @@ export const api = {
     searchOffsetUrl: apiUrl + '/web-search',
     breadcrumbsUrl: topic + '/topics/breadcrumbs',
     personalizedPlan: apiUrl + '/personalized-plans/generate',
-    planUrl: curatedExperience + "/get-plan-details",//this route doesn't exist in any controller
+    planUrl: apiUrl + '/personalized-plans',
     getPersonalizedResourcesUrl: topic + '/personalized-resources',
-    updatePlanUrl: userProfile + "/upsert-user-plan",//this route doesn't exist in any controller
     getProfileUrl: userProfile + "/profile",
     userPlanUrl: userProfile + "/personalized-plan/upsert",
     upsertUserProfileUrl: userProfile +"/profile/upsert",
     getOrganizationDetailsUrl: topic + '/organizations',
     questionUrl: curatedExperience + '/start',
     saveAndGetNextUrl: curatedExperience + '/components/save-and-get-next',
-    updateUserPlanUrl: curatedExperience + "/update-plan",//this route doesn't exist in any controller
+    updateUserPlanUrl: apiUrl + '/personalized-plans/save',
     resourceUrl: topic + '/resources',
     getContentsUrl: contentUrl,
     shareUrl: apiUrl + '/share/permalink/generate',
