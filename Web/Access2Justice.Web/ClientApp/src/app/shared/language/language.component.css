@@ -1,29 +1,17 @@
 #language-dropdown {
   padding: 15px 40px 15px 15px;
   background-position: 88% 50%;
-  height: 49px;
+  background-color: transparent;
 }
 
-#language-dropdown > a {
-  color: #333;
-  text-decoration: none;
-  cursor: pointer;
-}
+  #language-dropdown > a {
+    color: #333;
+    text-decoration: none;
+    cursor: pointer;
+  }
 
 .white-bg {
   position: relative;
-  background-color: #FFF;
+  background-color: #FFF!important;
   z-index: 1;
-}
-
-@media only screen and (min-width : 768px) {
-  #language-dropdown {
-    height: 51px;
-  }
-}
-
-@media only screen and (min-width : 992px) {
-  #language-dropdown {
-    height: 53px;
-  }
 }
