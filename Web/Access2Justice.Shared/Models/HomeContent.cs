@@ -39,7 +39,7 @@ namespace Access2Justice.Shared.Models
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "helpText")]
-        public string HelpText { get; set; }
+        public HelpText HelpText { get; set; }
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "organizationalUnit")]
@@ -134,6 +134,21 @@ namespace Access2Justice.Shared.Models
         [DefaultValue("")]
         [JsonProperty(PropertyName = "image")]
         public Image Image { get; set; }
+    }
+
+    public class HelpText
+    {
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "beginningText")]
+        public string BeginningText { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "phoneNumber")]
+        public string PhoneNumber { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "endingText")]
+        public string EndingText { get; set; }
     }
 
     public class Description

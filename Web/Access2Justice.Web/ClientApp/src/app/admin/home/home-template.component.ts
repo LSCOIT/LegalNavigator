@@ -247,12 +247,12 @@ export class HomeTemplateComponent implements OnInit {
           altText: homeForm.value.guidedAssistantImageAltText || this.homeContent.privacy.image.altText
         }
       },
-      //helpText: {
-      //  beginningText: homeForm.value.helplineBeginningText || this.homeContent.helpText["beginningText"],
-      //  phoneNumber: homeForm.value.helplinePhone || this.homeContent.helpText["phoneNumber"],
-      //  endingText: homeForm.value.helplineEndingText || this.homeContent.helpText["endingText"]
-      //}
-      helpText: "Are you safe ? Call X-XXX-XXX-XXXX to get help."
+      helpText: {
+        beginningText: homeForm.value.helpTextBeginningText || this.homeContent.helpText["beginningText"],
+        phoneNumber: homeForm.value.helpTextPhone || this.homeContent.helpText["phoneNumber"],
+        endingText: homeForm.value.helpTextEndingText || this.homeContent.helpText["endingText"]
+      }
+      //helpText: "Are you safe ? Call X-XXX-XXX-XXXX to get help."
     }
     console.log(this.newHomeContent);
     console.log(homeForm);
