@@ -6,7 +6,7 @@
     </a>
 
     <ng-template #elseblock>
-      <a class="topic-outline" [routerLink]="['/topics', topic.id]">
+      <a [routerLink]="['/topics', topic.id]">
         <img src="./assets/images/categories/topic.svg" alt="{{topic.name}}">
         <p [ngClass]="{ 'ps': !fullPage, 'p': fullPage }">{{ topic.name }}</p>
       </a>
