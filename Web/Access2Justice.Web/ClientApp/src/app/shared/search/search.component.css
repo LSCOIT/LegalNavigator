@@ -3,6 +3,7 @@ button {
   background-color: #fff;
   padding: 0;
   float: right;
+  outline-offset: 10px;
 }
 
 form {

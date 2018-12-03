@@ -31,6 +31,10 @@
   margin: 10px 0;
 }
 
+.multi-button li:hover {
+  background-color: #D9F2F8;
+}
+
 .multi-button li label {
   text-align: center;
   padding: 15px 20px;
