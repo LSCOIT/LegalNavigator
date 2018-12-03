@@ -2210,6 +2210,23 @@ namespace Access2Justice.Api.Tests.TestData
                 return "[\r\n    {\r\n      'id': 'e1fdbbc6-d66a-4275-9cd2-2be84d303e12',\r\n      'name': 'Family',\r\n      'overview': 'Overview of the Family topic',\r\n      'quickLinks': [\r\n        {\r\n          'text': 'Family Law Self-Help Center',\r\n          'url': 'http:////courts.alaska.gov//shc//family//selfhelp.htm'\r\n        },\r\n        {\r\n          'text': 'Introduction to Family Law Video Series',\r\n          'url': 'https:////alaskalawhelp.org/resource//introduction-to-family-law-video-series?ref=OEGQX'\r\n        }\r\n      ],\r\n      'parentTopicId': [],\r\n      'resourceType': 'Topics',\r\n      'keywords': 'Family',\r\n      'location': [\r\n        {\r\n          'state': 'Hawaii',\r\n          'city': 'Kalawao',\r\n          'zipCode': '96761'\r\n        },\r\n        {\r\n          'state': 'Hawaii',\r\n          'city': 'Honolulu',\r\n          'zipCode': '96741'\r\n        },\r\n        {\r\n          'state': 'Alaska',\r\n          'city': 'Juneau',\r\n          'zipCode': '96815'\r\n        },\r\n        {\r\n          'state': 'Alaska',\r\n          'city': 'Anchorage',\r\n          'zipCode': '99507'\r\n        }\r\n      ]";
             }
         }
+
+        public static IEnumerable<object[]> PersonalizedPlanIds()
+        {
+            yield return new object[] { personalizedPlanId, personalizedPlan };
+            //     yield return new object[] { personalizedPlanIdEmpty, personalizedPlanIdEmpty };
+
+        }
+        public static JArray personalizedPlanIdEmpty = JArray.Parse(@"[]");
+        public static JArray personalizedPlanId = JArray.Parse(@"['e1fdbbc6-d66a-4275-9cd2-2be84d303e12']");
+        public static JArray personalizedPlanIdExpected = JArray.Parse(@"['e1fdbbc6-d66a-4275-9cd2-2be84d303e12']");
+        public static IEnumerable<object[]> PersonalizedPlanData()
+        {
+            yield return new object[] { new PersonalizedPlanViewModel {IsShared=true,PersonalizedPlanId = Guid.Parse("e1fdbbc6-d66a-4275-9cd2-2be84d303e12")},
+                Guid.Parse("e1fdbbc6-d66a-4275-9cd2-2be84d303e12")
+            };
+        }
+        // IsShared=true, PersonalizedPlanId= Guid.Parse("e1fdbbc6-d66a-4275-9cd2-2be84d303e12"),Topics = new PlanTopic { TopicId= Guid.Parse("e1fdbbc6-d66a-4275-9cd2-2be84d303e12"), TopicName="Family", Steps = { }, EssentialReadings = { }, Icon=String.Empty  } 
     }
 }
 
