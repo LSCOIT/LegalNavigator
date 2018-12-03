@@ -28,10 +28,6 @@ namespace Access2Justice.Api.BusinessLogic
         {
             var stateProvinceDetails = await dbClient.FindItemsWhereAsync(dbSettings.StateProvincesCollectionId, Constants.Type, Constants.StateProvinceType);
             List<StateProvinceViewModel> stateProvince = JsonUtilities.DeserializeDynamicObject<List<StateProvinceViewModel>>(stateProvinceDetails);
-            if (!stateProvince.Any())
-            {
-                throw new Exception($"No state codes available");
-            }
             return stateProvince.Count() > 0 ? stateProvince[0].StateProvinces : null;
         }
 
@@ -39,11 +35,7 @@ namespace Access2Justice.Api.BusinessLogic
         {
             var response = await dbClient.FindFieldWhereArrayContainsAsync(dbSettings.StateProvincesCollectionId,
                 Constants.StateProvince, Constants.Name, stateName);
-            List<StateCode> stateCodes = JsonUtilities.DeserializeDynamicObject<List<StateCode>>(response);
-            if (!stateCodes.Any())
-            {
-                throw new Exception($"No state code available for the " + stateName);
-            }
+            List<StateCode> stateCodes = JsonUtilities.DeserializeDynamicObject<List<StateCode>>(response);            
             return stateCodes.Count() > 0 ? stateCodes[0].Code : null;
         }
     }

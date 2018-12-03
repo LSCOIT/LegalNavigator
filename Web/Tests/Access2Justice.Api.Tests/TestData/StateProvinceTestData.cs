@@ -25,7 +25,17 @@ namespace Access2Justice.Api.Tests.TestData
               'type': 'stateProvince'
             }]"),
               new List<StateCode>{ new StateCode { Code= "HI", Name="Hawaii"}, new StateCode { Code = "AK", Name = "Alaska" } } };
-            //yield return new object[] { JArray.Parse(@"[]"), null };
+            yield return new object[] { JArray.Parse(@"[]"), null };
+        }
+
+        public static IEnumerable<object[]> GetStateNameTestData()
+        {
+            yield return new object[] { "Hawaii", JArray.Parse(@"[
+                {
+                  'code': 'HI',
+                  'name': 'Hawaii'
+                }]"), "HI" };
+            yield return new object[] {"", JArray.Parse(@"[]"), null };
         }
     }
 }
