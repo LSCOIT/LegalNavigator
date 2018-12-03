@@ -83,14 +83,4 @@ ul {
   .half-size-list:nth-child(3n) {
     border-right: none;
   }
-
-  .topic-outline {
-    display: block;
-    padding-bottom: 20px;
-    position: relative;
-    left: -10px;
-    top: -10px;
-    width: 325px;
-    height: 200px;
-  }
 }
