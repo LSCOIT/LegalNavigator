@@ -67,15 +67,6 @@ describe('StaticResource', () => {
     expect(service.state).toEqual(mockMapLocationDetails.displayLocationDetails.address);
   });
  
-  it('should set global maplocation session storage values as null ', () => {
-    let mockstate = "Default";
-    spyOn(sessionStorage, 'getItem')
-      .and.returnValue("");
-    service.loadStateName();
-    service.state = mockstate;
-    expect(service.state).toEqual(mockstate);
-  });
- 
   it('should return list of static resources ', (done) => {
     let mockStaticContent = [
       {
