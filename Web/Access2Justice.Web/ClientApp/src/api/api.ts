@@ -36,5 +36,6 @@ export const api = {
     updatePrivacyDataUrl: contentUrl + '/privacy/upsert',
     updateAboutDataUrl: contentUrl + '/about/upsert',
     updateHomeDataUrl: contentUrl + '/home/upsert',
+    updateHelpAndFaqDataUrl: contentUrl + '/help-and-faq/upsert',
     uploadCuratedExperienceTemplateUrl: adminUrl + '/curated-experience'    
 }

@@ -1,22 +1,47 @@
-<div class="container">
+<div class="container" *ngIf="helpAndFaqsContent">
   <h1>Help & FAQ Page</h1>
-  <form [formGroup]="faqForm" (ngSubmit)="onSubmit(homeForm)">
+  <form #helpFaqForm="ngForm" (ngSubmit)="onSubmit(helpFaqForm)">
     <div class="box-shadow">
+      <h2>Heading</h2>
       <div class="row">
-        <h2>FAQs</h2><button (click)="addFAQs()">Add Questions</button>
-        <div class="description col-sm-12"  formArrayName="faqs" *ngFor="let faq of faqs.controls; let i=index">
-          <div [formGroupName]="i">
-            <label class="col-md-2 col-sm-3">
-              Questions:
-            </label>
-            <input type="text" formControlName="question" class="form-control col-md-10 col-sm-9">
-            <label class="col-md-2 col-sm-3">
-              Answers:
-            </label>
-            <input type="text" formControlName="answer" class="form-control col-md-10 col-sm-9">
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Page Description</label>
+          <textarea class="form-control col-md-10 col-sm-9" name="helpPageDescription" [value]="helpAndFaqsContent.description" [(ngModel)]="helpAndFaqsContent.description"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="box-shadow">
+      <h2>Current Questions</h2>
+      <div class="row">
+        <div class="row sections" *ngFor="let faq of helpAndFaqsContent.faqs; let i=index">
+          <div class="description col-sm-12">
+            <label class="col-md-2 col-sm-3">Question{{i}}</label>
+            <textarea class="form-control col-md-10 col-sm-9" [name]="'question'+i" [value]="faq.question" [(ngModel)]="faq.question"></textarea>
+          </div>
+          <div class="description col-sm-12">
+            <label class="col-md-2 col-sm-3">Answer{{i}}</label>
+            <textarea class="form-control col-md-10 col-sm-9" [name]="'answer'+i" [value]="faq.answer" [(ngModel)]="faq.answer"></textarea>
           </div>
         </div>
       </div>
+    </div>
+    <div class="box-shadow" [formGroup]="faqForm">
+      <h2>Add New FAQs</h2>
+      <div class="row">
+        <div class="description col-sm-12" formArrayName="faqs" *ngFor="let faq of faqs.controls; let i=index">
+          <div class="question-set" [formGroupName]="i">
+            <div>
+              <label class="col-md-2 col-sm-3">New Question{{i}}:</label>
+              <input type="text" formControlName="question" class="form-control col-md-10 col-sm-9">
+            </div>
+            <div>
+              <label class="col-md-2 col-sm-3">New Answer{{i}}:</label>
+              <input type="text" formControlName="answer" class="form-control col-md-10 col-sm-9">
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="button" (click)="addFAQs()" class="btn btn-secondary">Add Questions</button>
     </div>
     <div class="row">
       <button type="submit" class="btn btn-primary">Save Changes</button>

@@ -167,6 +167,10 @@ textarea {
   width: 400px;
 }
 
+.question-set div:first-child {
+  height: 50px
+}
+
 @media only screen and (min-width : 768px) {
   input, textarea {
     margin-left: 0;
