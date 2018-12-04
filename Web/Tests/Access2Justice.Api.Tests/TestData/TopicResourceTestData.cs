@@ -69,9 +69,9 @@ namespace Access2Justice.Api.Tests.TestData
                     'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Organization','resourceCategory':'org','description': 'Subhead lorem ipsum solor sit amet bibodem',
                     'resourceType': 'Organizations','url': 'access2justice.com','topicTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'organizationalUnit': 'Alaska','location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
                     'icon': './assets/images/resources/resource.png','createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]");
-        public static JArray essentialReadingData =
-                    JArray.Parse(@"[{'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Essential Reading in Hawaii','resourceCategory':'essential reading','description': 'Subhead lorem ipsum solor sit amet bibodem',
-                    'resourceType': 'Essential Readings','url': 'access2justice.com','topicTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'organizationalUnit': 'Alaska','location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
+        public static JArray additionalReadingData =
+                    JArray.Parse(@"[{'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Additional Reading in Hawaii','resourceCategory':'Additional reading','description': 'Subhead lorem ipsum solor sit amet bibodem',
+                    'resourceType': 'Additional Readings','url': 'access2justice.com','topicTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'organizationalUnit': 'Alaska','location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
                     'createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]");
         public static JArray relatedLinkData =
                     JArray.Parse(@"[{'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'External Link in Hawaii','resourceCategory':'Link','description': 'Subhead lorem ipsum solor sit amet bibodem',
@@ -140,9 +140,9 @@ namespace Access2Justice.Api.Tests.TestData
                     'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Organization',resourceCategory:'org','description': 'Subhead lorem ipsum solor sit amet bibodem',
                     'resourceType': 'Organizations','url': 'access2justice.com','topicTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'organizationalUnit': 'Alaska','location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
                     'createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]");
-        public static JArray expectedEssentialReadingData =
-                    JArray.Parse(@"[{'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Essential Reading in Hawaii',type:'essential reading','description': 'Subhead lorem ipsum solor sit amet bibodem',
-                    'resourceType': 'Essential Readings','url': 'access2justice.com','topicTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'organizationalUnit': 'Alaska','location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
+        public static JArray expectedAdditionalReadingData =
+                    JArray.Parse(@"[{'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Additional Reading in Hawaii',type:'Additional reading','description': 'Subhead lorem ipsum solor sit amet bibodem',
+                    'resourceType': 'Additional Readings','url': 'access2justice.com','topicTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'organizationalUnit': 'Alaska','location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
                     'createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]");
         public static JArray expectedRelatedLinkData =
                     JArray.Parse(@"[{'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'External Link in Hawaii','resourceCategory':'Link','description': 'Subhead lorem ipsum solor sit amet bibodem',

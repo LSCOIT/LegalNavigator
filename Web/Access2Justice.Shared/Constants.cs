@@ -39,7 +39,7 @@
 
         public static class ReasourceTypes
         {
-            public const string EssentialReadings = "Essential Readings";
+            public const string AdditionalReadings = "Additional Readings";
         }
         public const string A2JTemplateFileExtension = ".zip";
     }

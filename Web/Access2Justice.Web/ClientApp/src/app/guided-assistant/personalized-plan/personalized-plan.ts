@@ -30,12 +30,12 @@ export interface PersonalizedPlan {
 export interface PlanTopic {
   topicId: string;
   name: string;
-  essentialReadings: Array<EssentialReadings>;
+  additionalReadings: Array<AdditionalReadings>;
   icon: string;
   steps: Array<PlanStep>;
 }
 
-export interface EssentialReadings {
+export interface AdditionalReadings {
   text: string;
   url: string;
 }
