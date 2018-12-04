@@ -1,3 +1,25 @@
-<p>
-  help-faqs-template works!
-</p>
+<div class="container">
+  <h1>Help & FAQ Page</h1>
+  <form [formGroup]="faqForm" (ngSubmit)="onSubmit(homeForm)">
+    <div class="box-shadow">
+      <div class="row">
+        <h2>FAQs</h2><button (click)="addFAQs()">Add Questions</button>
+        <div class="description col-sm-12"  formArrayName="faqs" *ngFor="let faq of faqs.controls; let i=index">
+          <div [formGroupName]="i">
+            <label class="col-md-2 col-sm-3">
+              Questions:
+            </label>
+            <input type="text" formControlName="question" class="form-control col-md-10 col-sm-9">
+            <label class="col-md-2 col-sm-3">
+              Answers:
+            </label>
+            <input type="text" formControlName="answer" class="form-control col-md-10 col-sm-9">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <button type="submit" class="btn btn-primary">Save Changes</button>
+    </div>
+  </form>
+</div>
