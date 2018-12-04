@@ -134,7 +134,7 @@ export class HomeTemplateComponent implements OnInit {
       hero: {
         heading: homeForm.value.heroHeading || this.homeContent.hero.heading,
         description: {
-          text: homeForm.value.heroDescriptionTest || this.homeContent.hero.description.text,
+          text: homeForm.value.heroDescriptionText || this.homeContent.hero.description.text,
           textWithLink: {
             urlText: homeForm.value.heroDescriptionUrlText || this.homeContent.hero.description.textWithLink.urlText,
             url: homeForm.value.heroDescriptionUrl || this.homeContent.hero.description.textWithLink.url
