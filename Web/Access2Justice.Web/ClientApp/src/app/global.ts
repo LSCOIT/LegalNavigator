@@ -28,7 +28,6 @@ export class Global {
   planSessionKey: string = "bookmarkedPlan";
   roleInformation: any;
   displayResources: number = 3;
-  stateCodeSessionKey: string = "cachedStateCodes";
 
   constructor() { }
 

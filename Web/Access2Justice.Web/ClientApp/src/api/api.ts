@@ -34,5 +34,6 @@ export const api = {
   checkPermaLink: apiUrl + '/share/permalink/check',
   updatePrivacyDataUrl: contentUrl + '/privacy/upsert',
   uploadCuratedExperienceTemplateUrl: adminUrl + '/curated-experience',
-  getStateCodesUrl: apiUrl + '/StateProvince/get-state-codes'
+  getStateCodesUrl: apiUrl + '/StateProvince/state-codes',
+  getStateCodeUrl: apiUrl + '/StateProvince/state-code'
 }

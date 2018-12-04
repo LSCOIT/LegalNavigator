@@ -19,7 +19,7 @@ namespace Access2Justice.Api.Controllers
             this.locationBusinessLogic = locationBusinessLogic;
         }
 
-        [HttpGet("get-state-codes")]
+        [HttpGet("state-codes")]
         public async Task<IActionResult> GetStateCodes()
         {
             var stateCodes = await locationBusinessLogic.GetStateCodes();
@@ -28,7 +28,7 @@ namespace Access2Justice.Api.Controllers
             return Ok(stateCodes);
         }
 
-        [HttpGet("get-state-code")]
+        [HttpGet("state-code")]
         public async Task<IActionResult> GetStateCodeForState(string stateName)
         {
             var stateCodes = await locationBusinessLogic.GetStateCodeForState(stateName);

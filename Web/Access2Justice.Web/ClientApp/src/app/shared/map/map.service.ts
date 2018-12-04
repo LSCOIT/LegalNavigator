@@ -3,6 +3,8 @@ import { environment } from '../../../environments/environment';
 import { MapLocation, LocationDetails, DisplayLocationDetails } from './map';
 import { Subject } from 'rxjs';
 import { api } from '../../../api/api';
+import { StateCodeService } from '../state-code.service';
+
 declare var Microsoft: any;
 
 @Injectable()
@@ -23,11 +25,9 @@ export class MapService {
     location: this.mapLocation, displayLocationDetails: this.displayLocation,
     country: '', formattedAddress: ''
   };
-  stateCodes: any = [];
   stateCode: any;
-  stateCodeSessionKey: string = "cachedStateCodes";
 
-  constructor() { }
+  constructor(private stateCodeService: StateCodeService) { }
 
   getMap(mapType) {
     environment.map_type = mapType;
@@ -70,7 +70,7 @@ export class MapService {
         icon: '../../assets/images/location/poi_custom.png'
       });
 
-      let mapService = new MapService();
+      let mapService = new MapService(null);
       this.location.address.adminDistrict = (this.location.address.locality ? this.location.address.locality : this.location.address.formattedAddress);
       mapService.mapLocationDetails(this.location);
 
@@ -94,30 +94,43 @@ export class MapService {
     if (environment.map_type) {
       this.locationDetails = JSON.parse(sessionStorage.getItem("globalSearchMapLocation"));
       if (this.locationDetails.location.state) {
-        this.locationDetails.location.state = this.filterStateCodeForState(this.locationDetails.location.state);
+        this.stateCodeService.getStateCode(this.locationDetails.location.state)
+          .subscribe(
+          response => {
+            this.stateCode = response;
+            this.locationDetails.location.state = this.stateCode;
+            this.setGlobalMapLocationDetails();
+          });
+      } else {
+        this.setGlobalMapLocationDetails();
       }
-      sessionStorage.setItem("globalMapLocation", JSON.stringify(this.locationDetails));
-      sessionStorage.removeItem('globalSearchMapLocation');
-      this.notifyLocation.next(this.locationDetails);
     }
     else {
       this.locationDetails = JSON.parse(sessionStorage.getItem("localSearchMapLocation"));
       if (this.locationDetails.location.state) {
-        this.locationDetails.location.state = this.filterStateCodeForState(this.locationDetails.location.state);
+        this.stateCodeService.getStateCode(this.locationDetails.location.state)
+          .subscribe(
+          response => {
+            this.stateCode = response;
+            this.locationDetails.location.state = this.stateCode;
+            this.setLocalMapLocationDetails();
+          });
+      } else {
+        this.setLocalMapLocationDetails();
       }
-      this.mapLocation = this.locationDetails.location;
-      this.notifyLocalLocation.next(this.mapLocation);
     }
     return this.locationDetails;
   }
 
-  filterStateCodeForState(stateName): string {
-    if ((sessionStorage.getItem(this.stateCodeSessionKey))) {
-      this.stateCodes = JSON.parse(sessionStorage.getItem(this.stateCodeSessionKey));
-      this.stateCode = this.stateCodes
-        .filter((state) => state.name === stateName);
-    }
-    return this.stateCode[0].code;
+  setGlobalMapLocationDetails() {
+    sessionStorage.setItem("globalMapLocation", JSON.stringify(this.locationDetails));
+    sessionStorage.removeItem('globalSearchMapLocation');
+    this.notifyLocation.next(this.locationDetails);
+  }
+
+  setLocalMapLocationDetails() {
+    this.mapLocation = this.locationDetails.location;
+    this.notifyLocalLocation.next(this.mapLocation);
   }
 
   mapLocationDetails(location) {
@@ -219,6 +232,6 @@ function suggestionSelected(result) {
   });
   map.entities.push(pin);
   map.setView({ bounds: result.bestView, padding: 30 });
-  let mapService = new MapService();
+  let mapService = new MapService(null);
   mapService.mapLocationDetails(result);
 }

@@ -99,19 +99,7 @@ export class AppComponent implements OnInit {
       });
   }
 
-  getStateCodes() {
-    if (!(sessionStorage.getItem(this.global.stateCodeSessionKey))) {
-      this.stateCodeService.getStateCodes()
-        .subscribe(
-        response => {
-          this.stateCodes = response;
-          sessionStorage.setItem(this.global.stateCodeSessionKey, JSON.stringify(this.stateCodes));
-        });
-    }
-  }
-
   ngOnInit() {
-    this.getStateCodes();
     this.subscription = this.mapService.notifyLocation
       .subscribe((value) => {
         this.setStaticContentData();
