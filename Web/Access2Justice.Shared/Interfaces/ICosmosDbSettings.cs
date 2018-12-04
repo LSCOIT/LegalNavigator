@@ -18,5 +18,6 @@ namespace Access2Justice.Shared.Interfaces
         string A2JAuthorDocsCollectionId { get; }
         string RolesCollectionId { get; }
         string GuidedAssistantAnswersCollectionId { get; }
+        string ServiceProviderCollectionId { get; }        
     }
 }

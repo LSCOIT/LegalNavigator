@@ -1,8 +1,10 @@
 ﻿using Access2Justice.Integration.Interfaces;
+using Access2Justice.Integration.Models;
 using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Access2Justice.Shared.Models.Integration;
+using Access2Justice.Shared.Utilities;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -14,17 +16,13 @@ namespace Access2Justice.Integration.Adapters
 {
     public class RtmServiceProviderAdapter : IServiceProviderAdapter
     {
-        private readonly IRtmSettings rtmSettings;
-        private readonly IHttpClientService httpClient;
+        public RtmServiceProviderAdapter()
+        { }
 
-        public RtmServiceProviderAdapter(IRtmSettings rtmSettings, IHttpClientService httpClient)
+        //public async Task<List<ServiceProvider>> GetServiceProviders(string TopicName)
+        public async Task<List<ServiceProvider>> GetServiceProviders(dynamic adapterSettings, IHttpClientService httpClient)
         {
-            this.rtmSettings = rtmSettings;
-            this.httpClient = httpClient;
-        }
-
-        public async Task<List<ServiceProvider>> GetServiceProviders(string TopicName)
-        {
+            var rtmSettings = JsonUtilities.DeserializeDynamicObject<RtmSettings>(adapterSettings);
             var sessionUrl = string.Format(CultureInfo.InvariantCulture, rtmSettings.SessionURL.OriginalString, rtmSettings.ApiKey);
             var sResponse = await httpClient.GetAsync(new Uri(sessionUrl)).ConfigureAwait(false);
             var session = sResponse.Content.ReadAsStringAsync().Result;

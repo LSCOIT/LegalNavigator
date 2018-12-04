@@ -8,6 +8,10 @@ using Access2Justice.Shared.Interfaces;
 using Access2Justice.Integration.Interfaces;
 using Access2Justice.Integration.Adapters;
 using Access2Justice.Integration.Models;
+using Access2Justice.Integration;
+using Access2Justice.CosmosDb;
+using Microsoft.Azure.Documents;
+using Microsoft.Azure.Documents.Client;
 
 namespace Access2Justice.WebJob
 {
@@ -49,15 +53,23 @@ namespace Access2Justice.WebJob
 
             services.AddSingleton(Configuration);
             services.AddSingleton<IHttpClientService, HttpClientService>();
-            services.AddSingleton<IServiceProviderAdapter, RtmServiceProviderAdapter>();
+            services.AddSingleton<AdapterFactory, AdapterFactory>();
             services.AddTransient<Functions, Functions>();
             services.AddLogging(builder => builder.AddConsole());
 
-            IRtmSettings rtmSettings = new RtmSettings(Configuration.GetSection("RtmSettings"), Configuration.GetSection("KeyVault"));
-            services.AddSingleton(rtmSettings);
+            ConfigureCosmosDb(services);
 
             IA2JSettings a2JSettings = new A2JSettings(Configuration.GetSection("A2JSettings"));
             services.AddSingleton(a2JSettings);
+        }
+
+        private static void ConfigureCosmosDb(IServiceCollection services)
+        {
+            ICosmosDbSettings cosmosDbSettings = new CosmosDbSettings(Configuration.GetSection("CosmosDb"), Configuration.GetSection("KeyVault"));
+            services.AddSingleton(cosmosDbSettings);
+            services.AddSingleton<IDocumentClient>(x => new DocumentClient(cosmosDbSettings.Endpoint, cosmosDbSettings.AuthKey));
+            services.AddSingleton<IBackendDatabaseService, CosmosDbService>();
+            services.AddSingleton<IDynamicQueries, CosmosDbDynamicQueries>();
         }
     }
 }
