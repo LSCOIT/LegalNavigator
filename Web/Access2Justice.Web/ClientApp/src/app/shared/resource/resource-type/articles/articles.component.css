@@ -15,3 +15,7 @@ h2 {
     padding-left: 5%;
   }
 }
+
+.newlines {
+  white-space: pre-wrap;  
+}
