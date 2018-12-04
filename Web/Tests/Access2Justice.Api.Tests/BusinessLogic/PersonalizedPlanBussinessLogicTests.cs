@@ -24,17 +24,14 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly IBackendDatabaseService dbService;
         private readonly ICosmosDbSettings dbSettings;
         private readonly IDynamicQueries dynamicQueries;
-        private readonly IUserProfileBusinessLogic userProfileBusinessLogic;
-        private readonly PersonalizedPlanBusinessLogic personalizedPlan;
+        private readonly IUserProfileBusinessLogic userProfileBusinessLogic;        
         private readonly IPersonalizedPlanEngine personalizedPlanEngine;
-        private readonly IPersonalizedPlanViewModelMapper personalizedPlanViewModelMapper;
-        private readonly IPersonalizedPlanBusinessLogic personalizedPlanBusinessLogic;
+        private readonly IPersonalizedPlanViewModelMapper personalizedPlanViewModelMapper;        
+        private readonly IPersonalizedPlanBusinessLogic personalizedPlanBusinessLogicSettings;
 
         //Mocked input data
         private readonly dynamic topicId = Guid.Parse("e1fdbbc6-d66a-4275-9cd2-2be84d303e12");
-        private readonly string mockPlanId1 = "86e693bd-c673-419f-95c4-9ee76cccab3c";
         private readonly dynamic answersDocId = Guid.Parse("288af4da-06bb-4655-aa91-41314e248d6b");
-        private readonly string mockPlanId = "a9f6c0db-093b-4fa8-9cde-2495087b31f6";
         private readonly dynamic curatedExperience = PersonalizedPlanTestData.curatedExperience;
         private readonly dynamic generatedPersonalizedPlan = PersonalizedPlanTestData.personalizedPlan;
         private readonly dynamic userAnswers = PersonalizedPlanTestData.userAnswers;
@@ -50,49 +47,53 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly dynamic planStepsByTopicId = PersonalizedPlanTestData.planStepsByTopicId;
         private readonly JArray expectedPersonalizedPlanView = PersonalizedPlanTestData.personalizedPlanView;
         private readonly JArray expectedConvertedPersonalizedPlanSteps = PersonalizedPlanTestData.convertedPersonalizedPlanSteps;
-        
+        private readonly PersonalizedPlanBusinessLogic personalizedPlanBusinessLogic;
         public PersonalizedPlanBussinessLogicTests()
         {
-            dbSettings = Substitute.For<ICosmosDbSettings>();
             dbService = Substitute.For<IBackendDatabaseService>();
+            dbSettings = Substitute.For<ICosmosDbSettings>();
             dynamicQueries = Substitute.For<IDynamicQueries>();
             userProfileBusinessLogic = Substitute.For<IUserProfileBusinessLogic>();
-            personalizedPlanEngine = Substitute.For<IPersonalizedPlanEngine>();
-            personalizedPlanViewModelMapper = Substitute.For<IPersonalizedPlanViewModelMapper>();
-
-            personalizedPlan = new PersonalizedPlanBusinessLogic(dbSettings, dbService, dynamicQueries, userProfileBusinessLogic, personalizedPlanEngine, personalizedPlanViewModelMapper);
-            dbSettings.AuthKey.Returns("dummykey");
-            dbSettings.Endpoint.Returns(new Uri("https://bing.com"));
-            dbSettings.DatabaseId.Returns("DevDb");
-            dbSettings.TopicsCollectionId.Returns("Topics");
-            dbSettings.ResourcesCollectionId.Returns("Resources");
-            dbSettings.UserResourcesCollectionId.Returns("UserResources");
-            dbSettings.StaticResourcesCollectionId.Returns("StaticResources");
+            personalizedPlanBusinessLogicSettings = Substitute.For<IPersonalizedPlanBusinessLogic>();
+            personalizedPlanBusinessLogic = new PersonalizedPlanBusinessLogic(dbSettings, dbService, dynamicQueries, userProfileBusinessLogic, personalizedPlanEngine, personalizedPlanViewModelMapper);
             dbSettings.ActionPlansCollectionId.Returns("ActionPlans");
-            dbSettings.CuratedExperiencesCollectionId.Returns("CuratedExperiences");
-            dbSettings.RolesCollectionId.Returns("Roles");
-            dbSettings.A2JAuthorDocsCollectionId.Returns("A2JAuthorDocs");
         }
-
 
         [Theory]
         [MemberData(nameof(PersonalizedPlanTestData.PersonalizedPlanData), MemberType = typeof(PersonalizedPlanTestData))]
-        public void GetPersonalizedPlanAsyncValidate(PersonalizedPlanViewModel personalizedPlan, dynamic personalizedPlanId)
+        public void GetPersonalizedPlanAsyncValidate(PersonalizedPlanViewModel personalizedPlan, dynamic expectedData)
         {
             //arrange
-            //PagedResources pagedResources = new PagedResources { Results = new List<string>(), ContinuationToken = "[]" };
-            //dynamic inputJson = JsonConvert.DeserializeObject<PersonalizedPlanViewModel>(JsonConvert.SerializeObject(expectedData));
-            var dbResponse = dbService.GetItemAsync<PersonalizedPlanViewModel>(personalizedPlanId.ToString(), dbSettings.ActionPlansCollectionId);
-           // dbResponse.ReturnsForAnyArgs<dynamic>(personalizedPlan);
-            var response = personalizedPlanBusinessLogic.GetPersonalizedPlanAsync(personalizedPlanId);
+            var dbResponse = dbService.GetItemAsync<PersonalizedPlanViewModel>(personalizedPlan.PersonalizedPlanId.ToString(), dbSettings.ActionPlansCollectionId);           
             dbResponse.ReturnsForAnyArgs<PersonalizedPlanViewModel>(personalizedPlan);
+            var response = personalizedPlanBusinessLogic.GetPersonalizedPlanAsync(personalizedPlan.PersonalizedPlanId);          
+            
             //act
-            var actualResult = JsonConvert.SerializeObject(dbResponse.Result);
-            //var expectedResult = JsonConvert.SerializeObject(expectedData);      
+            var actualResult = JsonConvert.SerializeObject(response.Result);
+            var expectedResult = JsonConvert.SerializeObject(expectedData);      
 
             //assert
-            Assert.Contains("topics", actualResult, StringComparison.InvariantCultureIgnoreCase);
+            Assert.Equal(expectedResult, actualResult);
+        }
 
+        [Theory]
+        [MemberData(nameof(PersonalizedPlanTestData.PersonalizedPlanData), MemberType = typeof(PersonalizedPlanTestData))]
+        public void GetPersonalizedPlanAsyncCuratedValidate(PersonalizedPlanViewModel personalizedPlan, dynamic expectedData, dynamic curatedExperience)
+        {
+            //arrange
+            var a2jPersonalizedPlan =  dynamicQueries.FindItemWhereAsync<JObject>(dbSettings.A2JAuthorDocsCollectionId, Constants.Id,
+                curatedExperience);
+
+            var dbResponse = dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.GuidedAssistantAnswersCollectionId);            
+            dbResponse.ReturnsForAnyArgs<CuratedExperienceAnswers>(personalizedPlan);
+            var response = personalizedPlanBusinessLogic.GetPersonalizedPlanAsync(personalizedPlan.PersonalizedPlanId);
+
+            //act
+            var actualResult = JsonConvert.SerializeObject(response.Result);
+            var expectedResult = JsonConvert.SerializeObject(expectedData);
+
+            //assert
+            Assert.Equal(expectedResult, actualResult);
         }
         //[Fact]
         //public void GetTopicNameByTopicId()

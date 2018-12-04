@@ -2218,15 +2218,31 @@ namespace Access2Justice.Api.Tests.TestData
 
         }
         public static JArray personalizedPlanIdEmpty = JArray.Parse(@"[]");
-        public static JArray personalizedPlanId = JArray.Parse(@"['e1fdbbc6-d66a-4275-9cd2-2be84d303e12']");
-        public static JArray personalizedPlanIdExpected = JArray.Parse(@"['e1fdbbc6-d66a-4275-9cd2-2be84d303e12']");
+        public static JArray personalizedPlanId = JArray.Parse(@"['6a9f4c22-b1ab-46cf-8702-41a0b9522f82']");
+        public static JArray personalizedPlanIdExpected = JArray.Parse(@"['6a9f4c22-b1ab-46cf-8702-41a0b9522f82']");
         public static IEnumerable<object[]> PersonalizedPlanData()
         {
-            yield return new object[] { new PersonalizedPlanViewModel {IsShared=true,PersonalizedPlanId = Guid.Parse("e1fdbbc6-d66a-4275-9cd2-2be84d303e12")},
-                Guid.Parse("e1fdbbc6-d66a-4275-9cd2-2be84d303e12")
-            };
+            yield return new object[] { new PersonalizedPlanViewModel { IsShared = true, PersonalizedPlanId = Guid.Parse("6a9f4c22-b1ab-46cf-8702-41a0b9522f82"), Topics = new List<PlanTopic>() { new PlanTopic { TopicId = Guid.Parse("e1fdbbc6-d66a-4275-9cd2-2be84d303e12"), TopicName = "Family", Steps = { }, EssentialReadings = { }, Icon = String.Empty } } }, PersonalizedPlanViewModelExpectedData, "9a6a6131-657d-467d-b09b-c570b7dad242" };
         }
         // IsShared=true, PersonalizedPlanId= Guid.Parse("e1fdbbc6-d66a-4275-9cd2-2be84d303e12"),Topics = new PlanTopic { TopicId= Guid.Parse("e1fdbbc6-d66a-4275-9cd2-2be84d303e12"), TopicName="Family", Steps = { }, EssentialReadings = { }, Icon=String.Empty  } 
+        public static PersonalizedPlanViewModel PersonalizedPlanViewModelExpectedData =>
+            new PersonalizedPlanViewModel
+            {
+                IsShared = true,
+                PersonalizedPlanId = Guid.Parse("6a9f4c22-b1ab-46cf-8702-41a0b9522f82"),
+                Topics = new List<PlanTopic>() { new PlanTopic { TopicId = Guid.Parse("e1fdbbc6-d66a-4275-9cd2-2be84d303e12"), TopicName = "Family", Steps = { }, EssentialReadings = { }, Icon = String.Empty } }
+            };
+
+        public static CuratedExperienceAnswers CuratedExperienceAnswersData =>
+
+                new CuratedExperienceAnswers
+                {
+                     AnswersDocId = Guid.Parse("288af4da-06bb-4655-aa91-41314e248d6b"),
+                    ButtonComponents = new ButtonComponent {  ButtonId= Guid.Parse("288af4da-06bb-4655-aa91-41314e248d6b", CodeAfter='', CodeBefore="", Name="", Value=""  },
+                    CuratedExperienceId = Guid.Parse("9a6a6131-657d-467d-b09b-c570b7dad242"),
+                    FieldComponents="";
+                };
+
     }
 }
 

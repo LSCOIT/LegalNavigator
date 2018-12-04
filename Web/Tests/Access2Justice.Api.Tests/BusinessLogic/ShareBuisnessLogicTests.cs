@@ -99,6 +99,32 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Theory]
+        [MemberData(nameof(ShareTestData.ShareGenerateInputDataNull), MemberType = typeof(ShareTestData))]
+        public void ShareResourceDataAsyncShouldReturnResourceUserIdNull(ShareInput shareInput, int permaLinkOutputLength, dynamic expectedResult)
+        {
+            dynamic profileResponse = userProfileBusinessLogic.GetUserProfileDataAsync(shareInput.UserId).Returns<dynamic>(ShareTestData.UserProfileWithoutSharedResourceData);
+            dbShareSettings.PermaLinkMaxLength.Returns(permaLinkOutputLength);
+
+            Document updatedDocument = new Document();
+            JsonTextReader reader = new JsonTextReader(new StringReader(ShareTestData.userProfileWithSharedResource));
+            updatedDocument.LoadFrom(reader);
+
+            dbService.UpdateItemAsync<UserProfile>(
+               Arg.Any<string>(),
+               Arg.Any<UserProfile>(),
+               Arg.Any<string>()).ReturnsForAnyArgs<Document>(updatedDocument);
+
+            dbService.CreateItemAsync<SharedResources>(
+               Arg.Any<SharedResources>(),
+               Arg.Any<string>()).ReturnsForAnyArgs<Document>(updatedDocument);
+
+            //act
+            var result = shareBusinessLogic.ShareResourceDataAsync(shareInput).Result;
+            //assert
+            Assert.Equal(expectedResult.PermaLink, result);
+        }
+
+        [Theory]
         [MemberData(nameof(ShareTestData.UnShareInputData), MemberType = typeof(ShareTestData))]
         public void UnshareResourceDataAsyncShouldReturnTrue(ShareInput unShareInput, dynamic expectedResult)
         {

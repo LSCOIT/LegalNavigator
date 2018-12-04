@@ -124,8 +124,27 @@ namespace Access2Justice.Api.Tests.TestData
             },
             7,//permalink Length param
             new ShareViewModel() { PermaLink = "32803EF" } };
+
+            yield return new object[] { new ShareInput { ResourceId = Guid.Parse("5c035d27-2fdb-9776-6236-70983a918431"),
+                Url = new Uri("/plan/5c035d27-2fdb-9776-6236-70983a918431", UriKind.Relative),
+                UserId = "709709e7t0r7t96",
+                UniqueId = Guid.Parse("6D4826FD-24BB-41BA-9AD6-39AF7737C335")
+            },
+            7,//permalink Length param
+            new ShareViewModel() { PermaLink = "32803EF" } };
+
         }
 
+        public static IEnumerable<object[]> ShareGenerateInputDataNull()
+        {
+            yield return new object[] { new ShareInput { ResourceId = Guid.Parse("5c035d27-2fdb-9776-6236-70983a918431"),
+                Url = new Uri("/topics/5c035d27-2fdb-9776-6236-70983a918431", UriKind.Relative),
+                UserId = null,
+                UniqueId = Guid.Parse("6D4826FD-24BB-41BA-9AD6-39AF7737C335")
+            },
+            7,//permalink Length param
+            new ShareViewModel() { PermaLink = null } };
+        }
         public static IEnumerable<object[]> UpdatePersonalizedPlanData()
         {
             yield return new object[] { "132d8f82-96df-4d9b-8023-4332a1924da4", true, true };
