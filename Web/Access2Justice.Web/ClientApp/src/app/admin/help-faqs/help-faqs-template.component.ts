@@ -23,6 +23,7 @@ export class HelpFaqsTemplateComponent implements OnInit {
     state: this.activeRoute.snapshot.queryParams["state"]
   }
   newHelpAndFaqsContent: any;
+  faqParams: Array<Object>;
 
   constructor(
     private fb: FormBuilder,
@@ -72,22 +73,33 @@ export class HelpFaqsTemplateComponent implements OnInit {
     }
   }
 
+  mapSectionDescription(form) {
+    let numOfTitles = Object.keys(form).filter((key) => key.indexOf("question") > -1);
+
+    this.faqParams = numOfTitles.map((key, i) => {
+      return {
+        question: form[`question${i}`],
+        answer: form[`answer${i}`]
+      }
+    });
+  }
+
+
   onSubmit(helpFaqForm: NgForm) {
+    this.mapSectionDescription(helpFaqForm.value);
+
+    this.faqForm.value.faqs.forEach(faq => {
+      if (faq.question && faq.answer) {
+        this.faqParams.push(faq);
+      }
+    });
+
     this.newHelpAndFaqsContent = {
       name: this.name,
       location: [this.location],
       organizationalUnit: this.location.state,
       description: helpFaqForm.value.helpPageDescription || this.helpAndFaqsContent.description,
-      faqs: [
-        {
-          question: helpFaqForm.value.question0,
-          answer: helpFaqForm.value.answer0
-        },
-        {
-          question: helpFaqForm.value.question1,
-          answer: helpFaqForm.value.answer1
-        }
-      ],
+      faqs: this.faqParams,
       image: {
         source: this.helpAndFaqsContent.image.source,
         altText: this.helpAndFaqsContent.image.altText
