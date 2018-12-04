@@ -42,7 +42,6 @@ export class PrivacyPromiseTemplateComponent implements OnInit {
 
   mapSectionDescription(form) {
     let numOfTitles = Object.keys(form).filter((key) => key.indexOf("title") > -1);
-
     this.detailParams = numOfTitles.map((key, i) => {
         return {
           title: form[`title${i}`],
@@ -52,24 +51,28 @@ export class PrivacyPromiseTemplateComponent implements OnInit {
 
   }
 
+  createPrivacyParams(privacyForm) {
+    this.newPrivacyContent = {
+      description: privacyForm.value.pageDescription || this.privacyContent.description,
+      details: this.detailParams || this.privacyContent.details,
+      name: this.name,
+      location: [this.location],
+      image: this.privacyContent.image,
+      organizationalUnit: this.privacyContent.organizationalUnit
+    }
+  }
+
   onSubmit(privacyForm: NgForm) {
     this.spinner.show();
     this.mapSectionDescription(privacyForm.value);
-
-    this.newPrivacyContent = {
-      "description": privacyForm.value.pageDescription,
-      "details": this.detailParams,
-      "name": "PrivacyPromisePage",
-      "location": [this.location],
-      "image": this.privacyContent.image,
-      "organizationalUnit": this.privacyContent.organizationalUnit
-    }
+    this.createPrivacyParams(privacyForm);
     this.adminService.savePrivacyData(this.newPrivacyContent).subscribe(
       response => {
         this.spinner.hide();
         this.toastr.success("Page updated successfully");
       }, error => {
-        this.toastr.error("Page was not updated. Please try again later");
+        console.log(error);
+        this.toastr.warning("Page was not updated. Please check the console");
       });
   }
 
@@ -80,7 +83,6 @@ export class PrivacyPromiseTemplateComponent implements OnInit {
     } else {
       this.staticResourceService.getStaticContents(this.location).subscribe(
         response => {
-          console.log(response);
           this.staticContent = response;
           this.privacyContent = this.staticContent.find(x => x.name === "PrivacyPromisePage");
         },

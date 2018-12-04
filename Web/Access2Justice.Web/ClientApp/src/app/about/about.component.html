@@ -65,4 +65,6 @@
     </div>
   </div>
 </div>
-<app-helpline></app-helpline>
+<div *ngIf="helpText">
+  <app-helpline [helpText]="helpText"></app-helpline>
+</div>

@@ -73,7 +73,7 @@ export class AboutTemplateComponent implements OnInit {
     }
   }
 
-  onSubmit(aboutForm: NgForm) {
+  createAboutParams(aboutForm) {
     this.newAboutContent = {
       aboutImage: {
         source: this.aboutContent.aboutImage.source,
@@ -171,15 +171,21 @@ export class AboutTemplateComponent implements OnInit {
         }
       }
     }
+  }
 
+  onSubmit(aboutForm: NgForm) {
+    this.createAboutParams(aboutForm);
     this.adminService.saveAboutData(this.newAboutContent).subscribe(
       response => {
         this.spinner.hide();
         if (response) {
           this.toastr.success("Page updated successfully");
         }
+      },
+      error => {
+        console.log(error);
+        this.toastr.warning("Page was not updated. Please check the console");
       });
-
   }
 
   getAboutPageContent(): void {

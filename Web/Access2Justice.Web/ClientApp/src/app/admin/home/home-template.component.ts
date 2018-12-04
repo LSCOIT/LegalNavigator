@@ -108,8 +108,6 @@ export class HomeTemplateComponent implements OnInit {
         });
       }
     }
-    console.log(this.form);
-
   }
 
   getHomePageContent(): void {
@@ -128,7 +126,7 @@ export class HomeTemplateComponent implements OnInit {
     }
   }
 
-  onSubmit(homeForm: NgForm) {
+  createHomeParams(homeForm) {
     this.newHomeContent = {
       name: this.name,
       location: [this.location],
@@ -252,10 +250,11 @@ export class HomeTemplateComponent implements OnInit {
         phoneNumber: homeForm.value.helpTextPhone || this.homeContent.helpText["phoneNumber"],
         endingText: homeForm.value.helpTextEndingText || this.homeContent.helpText["endingText"]
       }
-      //helpText: "Are you safe ? Call X-XXX-XXX-XXXX to get help."
     }
-    console.log(this.newHomeContent);
-    console.log(homeForm);
+  }
+
+  onSubmit(homeForm: NgForm) {
+    this.createHomeParams(homeForm);
     this.adminService.saveHomeData(this.newHomeContent).subscribe(
       response => {
         this.spinner.hide();
@@ -263,8 +262,11 @@ export class HomeTemplateComponent implements OnInit {
           this.homeContent = response;
           this.toastr.success("Page updated successfully");
         }
+      },
+      error => {
+        console.log(error);
+        this.toastr.warning("Page was not updated. Check console for error");
       });
-
   }
 
   previewImage(event) {
