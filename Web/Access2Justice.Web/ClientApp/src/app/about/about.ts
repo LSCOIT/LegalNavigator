@@ -21,7 +21,7 @@ export interface Location {
 export interface Mission {
   title: string;
   description: string;
-  image: Image;
+  sponsors: Array<Image>;
 }
 
 export interface Service {

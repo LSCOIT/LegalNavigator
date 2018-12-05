@@ -72,6 +72,10 @@ a:not([href]):not([tabindex]) {
   background-color: #fff;
 }
 
+.account-menu {
+  cursor: pointer;
+}
+
 @media only screen and (min-width : 768px) {
   .dropdown-menu li a {
     font-size: 14px;

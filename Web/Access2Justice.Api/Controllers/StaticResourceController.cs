@@ -100,7 +100,7 @@ namespace Access2Justice.Api.Controllers
         [Permission(PermissionName.upsertstatichelpandfaqpage)]
         [HttpPost]
         [Route("help-and-faq/upsert")]
-        public async Task<IActionResult> UpsertStaticHelpAndFAQPageDataAsync(HelpAndFaqsContent helpAndFAQPageContent)
+        public async Task<IActionResult> UpsertStaticHelpAndFAQPageDataAsync([FromBody]HelpAndFaqsContent helpAndFAQPageContent)
         {
             if (await userRoleBusinessLogic.ValidateOrganizationalUnit(helpAndFAQPageContent.OrganizationalUnit))
             {

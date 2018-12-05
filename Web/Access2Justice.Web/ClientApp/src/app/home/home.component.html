@@ -63,7 +63,7 @@
         <slide *ngFor="let slide of carouselData.slides">
           <div class="row">
             <div class="col-sm-4 testimonial-img">
-              <img *ngIf="slide.image.source" [src]="blobUrl + slide?.image?.source" alt="slide?.image?.altText">
+              <img *ngIf="slide.image.source" [src]="'data:image/jpg;base64,'+ slide?.image?.source" [alt]="slide?.image?.altText" />
             </div>
             <div class="slide-content col-sm-8">
               <h4>{{slide.quote}}</h4>
@@ -89,9 +89,8 @@
     <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
       <h2>{{sponsorOverviewData?.heading}}</h2>
       <p>{{sponsorOverviewData?.description}}</p>
-      <div *ngFor="let sponsor of sponsors">
-        <img *ngIf="sponsor.source" class="secondary-img" [src]="blobUrl + sponsor?.source"
-             [alt]="sponsor?.altText">
+      <div *ngFor="let sponsor of sponsors" class="col-sm-4 col-sm-offset-2">
+        <img *ngIf="sponsor.source" class="secondary-img" [src]="'data:image/jpg;base64,'+sponsor?.source" [alt]="sponsor.altText" />
       </div>
       <a class="btn btn-primary" [routerLink]="sponsorOverviewData?.button?.buttonLink">
         {{sponsorOverviewData?.button?.buttonText}}
@@ -117,4 +116,6 @@
     </div>
   </div>
 </div>
-<app-helpline></app-helpline>
+<div *ngIf="homeContent?.helpText">
+  <app-helpline [helpText]="homeContent.helpText"></app-helpline>
+</div>
