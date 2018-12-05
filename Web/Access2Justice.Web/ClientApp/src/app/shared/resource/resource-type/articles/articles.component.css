@@ -17,5 +17,7 @@ h2 {
 }
 
 .newlines {
-  white-space: pre-wrap;  
+  white-space: pre-line;
+  margin-top: -20px;
+  margin-bottom: -40px
 }
