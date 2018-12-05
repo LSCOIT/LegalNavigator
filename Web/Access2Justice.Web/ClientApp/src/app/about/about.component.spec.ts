@@ -18,13 +18,21 @@ describe('AboutComponent', () => {
       location: [
         { state: "Default" }
       ]
-    },
-    globalData = [{
-      name: "AboutPage",
-      location: [
-        { state: "Default" }
-      ]
-    }]
+    }
+
+    globalData = [
+      {
+        name: "AboutPage",
+        location: [
+          { state: "Default" }
+        ]
+      },
+      {
+        name: "HomePage",
+        helpText: {}
+      }
+    ];
+
     mockStaticResourceService = jasmine.createSpyObj(['getLocation', 'getStaticContents']);
     mockGlobal = jasmine.createSpyObj(['getData']);
     mockGlobal.getData.and.returnValue(globalData);

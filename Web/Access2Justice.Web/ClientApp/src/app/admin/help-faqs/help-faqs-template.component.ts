@@ -109,6 +109,7 @@ export class HelpFaqsTemplateComponent implements OnInit {
         this.spinner.hide();
         if (response) {
           this.toastr.success("Page updated successfully");
+          this.faqParams = [];
         }
       },
       error => {

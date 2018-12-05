@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UnauthorizedComponent } from './unauthorized.component';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('UnauthorizedComponent', () => {
   let component: UnauthorizedComponent;
@@ -8,7 +9,11 @@ describe('UnauthorizedComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UnauthorizedComponent ]
+      declarations: [UnauthorizedComponent],
+      schemas: [
+        CUSTOM_ELEMENTS_SCHEMA,
+        NO_ERRORS_SCHEMA
+      ]
     })
     .compileComponents();
   }));
