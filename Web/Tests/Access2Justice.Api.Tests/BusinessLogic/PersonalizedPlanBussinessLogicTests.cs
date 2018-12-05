@@ -11,6 +11,7 @@ using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Interfaces.A2JAuthor;
 using Access2Justice.Shared.Models;
+using Microsoft.Azure.Documents;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NSubstitute;
@@ -24,9 +25,9 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly IBackendDatabaseService dbService;
         private readonly ICosmosDbSettings dbSettings;
         private readonly IDynamicQueries dynamicQueries;
-        private readonly IUserProfileBusinessLogic userProfileBusinessLogic;        
+        private readonly IUserProfileBusinessLogic userProfileBusinessLogic;
         private readonly IPersonalizedPlanEngine personalizedPlanEngine;
-        private readonly IPersonalizedPlanViewModelMapper personalizedPlanViewModelMapper;        
+        private readonly IPersonalizedPlanViewModelMapper personalizedPlanViewModelMapper;
         private readonly IPersonalizedPlanBusinessLogic personalizedPlanBusinessLogicSettings;
 
         //Mocked input data
@@ -57,6 +58,9 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             personalizedPlanBusinessLogicSettings = Substitute.For<IPersonalizedPlanBusinessLogic>();
             personalizedPlanBusinessLogic = new PersonalizedPlanBusinessLogic(dbSettings, dbService, dynamicQueries, userProfileBusinessLogic, personalizedPlanEngine, personalizedPlanViewModelMapper);
             dbSettings.ActionPlansCollectionId.Returns("ActionPlans");
+            dbSettings.A2JAuthorDocsCollectionId.Returns("A2JAuthorDocs");
+            dbSettings.GuidedAssistantAnswersCollectionId.Returns("GuidedAssistantAnswers");
+
         }
 
         [Theory]
@@ -64,28 +68,8 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         public void GetPersonalizedPlanAsyncValidate(PersonalizedPlanViewModel personalizedPlan, dynamic expectedData)
         {
             //arrange
-            var dbResponse = dbService.GetItemAsync<PersonalizedPlanViewModel>(personalizedPlan.PersonalizedPlanId.ToString(), dbSettings.ActionPlansCollectionId);           
+            var dbResponse = dbService.GetItemAsync<PersonalizedPlanViewModel>(personalizedPlan.PersonalizedPlanId.ToString(), dbSettings.ActionPlansCollectionId);
             dbResponse.ReturnsForAnyArgs<PersonalizedPlanViewModel>(personalizedPlan);
-            var response = personalizedPlanBusinessLogic.GetPersonalizedPlanAsync(personalizedPlan.PersonalizedPlanId);          
-            
-            //act
-            var actualResult = JsonConvert.SerializeObject(response.Result);
-            var expectedResult = JsonConvert.SerializeObject(expectedData);      
-
-            //assert
-            Assert.Equal(expectedResult, actualResult);
-        }
-
-        [Theory]
-        [MemberData(nameof(PersonalizedPlanTestData.PersonalizedPlanData), MemberType = typeof(PersonalizedPlanTestData))]
-        public void GetPersonalizedPlanAsyncCuratedValidate(PersonalizedPlanViewModel personalizedPlan, dynamic expectedData, dynamic curatedExperience)
-        {
-            //arrange
-            var a2jPersonalizedPlan =  dynamicQueries.FindItemWhereAsync<JObject>(dbSettings.A2JAuthorDocsCollectionId, Constants.Id,
-                curatedExperience);
-
-            var dbResponse = dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.GuidedAssistantAnswersCollectionId);            
-            dbResponse.ReturnsForAnyArgs<CuratedExperienceAnswers>(personalizedPlan);
             var response = personalizedPlanBusinessLogic.GetPersonalizedPlanAsync(personalizedPlan.PersonalizedPlanId);
 
             //act
@@ -94,6 +78,51 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 
             //assert
             Assert.Equal(expectedResult, actualResult);
+        }
+
+        [Theory]
+        [MemberData(nameof(PersonalizedPlanTestData.CuratedExperienceAnswersData), MemberType = typeof(PersonalizedPlanTestData))]
+        public void GetPersonalizedPlanAsyncCuratedValidate(dynamic curatedExperience, CuratedExperienceAnswers expectedData)
+        {
+            //arrange            
+            var a2jPersonalizedPlan = dynamicQueries.FindItemWhereAsync<JObject>(dbSettings.A2JAuthorDocsCollectionId, Constants.Id, curatedExperience.A2jPersonalizedPlanId.ToString());
+            var dbResponse = dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.GuidedAssistantAnswersCollectionId);
+            dbResponse.ReturnsForAnyArgs<JObject>(expectedData);
+            var response = personalizedPlanBusinessLogic.GeneratePersonalizedPlanAsync(curatedExperience, answersDocId);
+
+            //act
+            var actualResult = JsonConvert.SerializeObject(response.Result);
+            var expectedResult = JsonConvert.SerializeObject(expectedData);
+
+            //assert
+            Assert.Equal(null, actualResult);
+        }
+
+        [Theory]
+        [MemberData(nameof(PersonalizedPlanTestData.UserPlanData), MemberType = typeof(PersonalizedPlanTestData))]
+        public void UpsertPersonalizedPlanAsyncValidate(UserPlan userPlan)
+        {
+            //arrange            
+            dynamic expectedResult;
+            Document updatedDocument = new Document();
+            JsonTextReader reader = new JsonTextReader(new StringReader(ShareTestData.userProfileWithSharedResource));
+            updatedDocument.LoadFrom(reader);
+
+            dbService.UpdateItemAsync<UserProfile>(
+               Arg.Any<string>(),
+               Arg.Any<UserProfile>(),
+               Arg.Any<string>()).ReturnsForAnyArgs<Document>(updatedDocument);
+
+            dbService.CreateItemAsync<SharedResources>(
+               Arg.Any<SharedResources>(),
+               Arg.Any<string>()).ReturnsForAnyArgs<Document>(updatedDocument);
+
+            //act
+            var result = personalizedPlanBusinessLogic.UpsertPersonalizedPlanAsync(userPlan).Result;
+            expectedResult = null;
+
+            //assert
+            Assert.Equal(expectedResult, result);
         }
         //[Fact]
         //public void GetTopicNameByTopicId()
