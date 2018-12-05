@@ -1,4 +1,4 @@
-<a [attr.tabindex]="isMobile ? -1 : 0" id='login-link' *ngIf="!isLoggedIn && login" href="#" (click)="externalLogin()" class="account-menu">
+<a [attr.tabindex]="isMobile ? -1 : 0" id='login-link' *ngIf="!isLoggedIn && login" href="#" (click)="externalLogin($event)" class="account-menu">
   <img *ngIf="login.image.source" class="nav-icon" [src]="blobUrl + login?.image?.source" aria-hidden="true"/>{{login?.button?.buttonText}}
 </a>
 <div *ngIf="isLoggedIn" dropdown class="inline" id="signin-dropdown">
