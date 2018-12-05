@@ -52,6 +52,8 @@ import { ShareService } from './resource/user-action/share-button/share.service'
 import { ShareButtonRouteComponent } from './resource/user-action/share-button/share-button-route/share-button-route.component';
 import { ReadMoreComponent } from './read-more/read-more.component';
 import { LoginService } from './login/login.service';
+import { BrowserTabCloseComponent } from './browser-tab-close/browser-tab-close.component';
+import { SaveButtonService } from './resource/user-action/save-button/save-button.service';
 import { UnauthorizedComponent } from './error/unauthorized/unauthorized.component';
 
 @NgModule({
@@ -98,11 +100,11 @@ import { UnauthorizedComponent } from './error/unauthorized/unauthorized.compone
     ArticlesComponent,
     OrganizationsComponent,
     VideosComponent,
-    MapComponent,
     InternalErrorComponent,
     LoginComponent,   
     ShareButtonRouteComponent,
     ReadMoreComponent,
+    BrowserTabCloseComponent,
     UnauthorizedComponent
   ],
   exports: [
@@ -130,6 +132,7 @@ import { UnauthorizedComponent } from './error/unauthorized/unauthorized.compone
     WebResourceComponent,
     HelplineComponent,
     LoginComponent,
+    BrowserTabCloseComponent,
     UnauthorizedComponent
   ],
   providers: [
@@ -143,7 +146,8 @@ import { UnauthorizedComponent } from './error/unauthorized/unauthorized.compone
     EventUtilityService,
     ResourceService,
     ShareService,
-    LoginService
+    LoginService,
+    SaveButtonService
   ]
 })
 export class SharedModule { }

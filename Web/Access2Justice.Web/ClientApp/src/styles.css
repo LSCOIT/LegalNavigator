@@ -194,6 +194,23 @@ textarea {
   display: none;
 }
 
+.MicrosoftMap .as_container_search {
+  margin: 30px 6.5% !important;
+}
+
+/*
+  This will hide the focus indicator if the element receives focus via the mouse,
+  but it will still show up on keyboard focus.
+  */
+.js-focus-visible :focus:not(.focus-visible) {
+  outline: none;
+  background-color: none;
+}
+
+.js-focus-visible .focus-visible {
+  outline: 2px solid #80bdff;
+}
+
 .modal-dialog {
   height: 1185px;
   margin: 0;

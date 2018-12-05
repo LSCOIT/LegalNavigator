@@ -1,8 +1,8 @@
-import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, ViewChild, ElementRef } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { MapService } from './map.service';
-import { MapLocation, LocationDetails } from './map';
+import { MapLocation, LocationDetails, DisplayLocationDetails } from './map';
 import { environment } from '../../../environments/environment';
 import { MapResultsService } from '../../shared/sidebars/map-results/map-results.service';
 import { Navigation, Location, LocationNavContent } from '../navigation/navigation';
@@ -25,6 +25,7 @@ export class MapComponent implements OnInit {
   searchLocation: string;
   mapLocation: MapLocation;
   locationDetails: LocationDetails;
+  displayLocation: DisplayLocationDetails;
   geolocationPosition: any;
   selectedAddress: any;
   @ViewChild('template') public templateref: TemplateRef<any>;
@@ -46,6 +47,7 @@ export class MapComponent implements OnInit {
   errorSubscription: any;
   locationError: boolean;
   successSubscription: any;
+  @ViewChild('changeLocationButton') changeLocationButton: ElementRef;
 
   constructor(private modalService: BsModalService,
     private mapService: MapService,
@@ -69,6 +71,7 @@ export class MapComponent implements OnInit {
     this.isError = false;
     this.modalRef = this.modalService.show(template, this.config);
     this.mapService.getMap(this.mapType);
+    document.getElementById("search-box").focus();
   }
 
   geocode() {
@@ -95,10 +98,10 @@ export class MapComponent implements OnInit {
       if (this.locationDetails.formattedAddress.length < 3) {
         this.mapResultsService.getStateFullName(this.locationDetails.country, this.locationDetails.formattedAddress, environment.bingmap_key)
           .subscribe((location) => {
-            this.locationDetails.location.address = location.resourceSets[0].resources[0].name;
+            this.locationDetails.displayLocationDetails.address = location.resourceSets[0].resources[0].name;
             if (environment.map_type) {
               this.locationDetails.location.state = location.resourceSets[0].resources[0].name;
-              this.locationDetails.location.locality = location.resourceSets[0].resources[0].name;
+              this.locationDetails.displayLocationDetails.locality = location.resourceSets[0].resources[0].name;
               sessionStorage.setItem("globalSearchMapLocation", JSON.stringify(this.locationDetails));
             } else {
               sessionStorage.setItem("localSearchMapLocation", JSON.stringify(this.locationDetails));
@@ -116,9 +119,10 @@ export class MapComponent implements OnInit {
   updateLocationDetails() {
     this.locationDetails = this.mapService.updateLocation();
     this.mapLocation = this.locationDetails.location;
-    this.displayLocationDetails(this.mapLocation);
+    this.displayLocationDetails(this.locationDetails.displayLocationDetails);
     if ((this.modalRef && this.mapLocation) || !this.mapType) {
       this.modalRef.hide();
+      this.changeLocationButton.nativeElement.focus();
     } else {
       this.isError = true;
     }
@@ -131,19 +135,23 @@ export class MapComponent implements OnInit {
     this.isError = false;
   }
 
-  displayLocationDetails(mapLocation) {
-    this.mapLocation = mapLocation;
-    if (this.mapLocation && !this.mapType) {
-      this.address = this.mapLocation.address;
-      this.locality = this.mapLocation.locality;
+  displayLocationDetails(displayLocation) {
+    this.displayLocation = displayLocation;
+    if (this.displayLocation && !this.mapType) {
+      this.setDisplayLocationDetails();
     } else {
       if (JSON.parse(sessionStorage.getItem("globalMapLocation"))) {
-        let globalLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
-        this.address = globalLocation.address;
-        this.locality = globalLocation.locality;
+        this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+        this.displayLocation = this.locationDetails.displayLocationDetails;
+        this.setDisplayLocationDetails();
       }
     }
     this.showLocation = false;
+  }
+
+  setDisplayLocationDetails() {
+    this.address = this.displayLocation.address;
+    this.locality = this.displayLocation.locality;
   }
 
   loadCurrentLocation() {
@@ -162,8 +170,9 @@ export class MapComponent implements OnInit {
                     this.selectedAddress.resourceSets[0].resources[0].address.adminDistrict = stateFullName.resourceSets[0].resources[0].name;
                     this.mapService.mapLocationDetails(this.selectedAddress.resourceSets[0].resources[0]);
                     this.mapService.updateLocation();
-                    this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
-                    this.displayLocationDetails(this.mapLocation);
+                    this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+                    this.mapLocation = this.locationDetails.location;
+                    this.displayLocationDetails(this.locationDetails.displayLocationDetails);
                   });
               });
           this.detectLocation = false;
@@ -206,8 +215,9 @@ export class MapComponent implements OnInit {
 
   setLocalMapLocation() {
     if (!this.mapType && sessionStorage.getItem("searchedLocationMap")) {
-      this.mapLocation = JSON.parse(sessionStorage.getItem("searchedLocationMap"));
-      this.displayLocationDetails(this.mapLocation);
+      this.locationDetails = JSON.parse(sessionStorage.getItem("searchedLocationMap"));
+      this.mapLocation = this.locationDetails.location
+      this.displayLocationDetails(this.locationDetails.displayLocationDetails);
     }
   }
 
@@ -237,7 +247,8 @@ export class MapComponent implements OnInit {
 
     this.subscription = this.mapService.notifyLocation
       .subscribe((value) => {
-        this.displayLocationDetails(this.mapLocation);
+        this.locationDetails = value;
+        this.displayLocationDetails(this.locationDetails.displayLocationDetails);
       });
 
     this.staticContentSubcription = this.global.notifyStaticData
@@ -258,9 +269,9 @@ export class MapComponent implements OnInit {
     }
 
     if (sessionStorage.getItem("globalMapLocation")) {
-      this.mapLocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
-      this.mapLocation.locality = this.mapLocation.address;
-      this.displayLocationDetails(this.mapLocation);
+      this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+      this.locationDetails.displayLocationDetails.locality = this.locationDetails.displayLocationDetails.address;
+      this.displayLocationDetails(this.locationDetails.displayLocationDetails);
     }
 
     this.setLocalMapLocation();

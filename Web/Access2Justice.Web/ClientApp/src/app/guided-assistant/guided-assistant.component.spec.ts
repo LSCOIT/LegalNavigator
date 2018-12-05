@@ -97,15 +97,13 @@ describe('GuidedAssistantComponent', () => {
       ],
       "guidedAssistantId": ""
     }
-    mockMapLocation = `{
-      "state":"Alaska",
-      "locality":"Alaska",
-      "address":"Alaska"
-    }`
+    mockMapLocation = {
+      location: {
+        "state": "Alaska"
+      }
+    };
     mockMapLocationParsed = {
-      state:"Alaska",
-      locality:"Alaska",
-      address:"Alaska"
+      state:"Alaska"
     }
     store = {};
     mockSessionStorage = {
@@ -113,9 +111,6 @@ describe('GuidedAssistantComponent', () => {
         return key in store ? store[key] : null;
       }
     };
-
-    spyOn(sessionStorage, 'getItem')
-    .and.callFake(mockSessionStorage.getItem);
     
     TestBed.configureTestingModule({
       declarations: [
@@ -148,7 +143,8 @@ describe('GuidedAssistantComponent', () => {
   });
 
   it('should call onSubmit method when Continue button is clicked', () => {
-    store.globalMapLocation = mockMapLocation;
+    spyOn(sessionStorage, 'getItem')
+      .and.returnValue(JSON.stringify(mockMapLocation));
     mockSearchService.search.and.returnValue(of(mockSearchResponse));
 
     component.onSubmit(mockguidedAssistantSearchForm);

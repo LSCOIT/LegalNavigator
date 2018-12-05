@@ -106,6 +106,7 @@ button:focus {
   color: #0B2B78;
   background-color: #FFF;
   border-color: #0B2B78;
+  text-decoration: underline;
 }
 
 .btn-inactive {
@@ -172,7 +173,9 @@ button:focus {
   border-radius: 4px;
 }
 
-ul li .check {
+
+
+ul li .check { 
   display: block;
   position: absolute;
   border: 1px solid #7E7E7E;
@@ -184,6 +187,7 @@ ul li .check {
   transition: border .25s linear;
   -webkit-transition: border .25s linear;
 }
+
 
 input, textarea.form-control, select option {
   font-size: 16px !important;
