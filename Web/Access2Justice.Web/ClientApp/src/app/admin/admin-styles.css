@@ -130,6 +130,47 @@ textarea {
   box-shadow: none;
 }
 
+.admin-nav {
+  border: 1px solid #ddd;
+}
+
+#admin h2 {
+  width: 20%;
+  background-color: #ddd;
+  margin-bottom: 0;
+  padding: 30px 10px 30px 10px;
+}
+
+#admin h3 {
+  margin: 20px 0;
+}
+
+.validation-error {
+  display: block;
+  color: red;
+}
+
+.validation-success {
+  display: block;
+  color: green;
+}
+
+.required-star {
+  color: red;
+}
+
+.new-img {
+  display: none;
+}
+
+.hero-image {
+  width: 400px;
+}
+
+.question-set div:first-child {
+  height: 50px
+}
+
 @media only screen and (min-width : 768px) {
   input, textarea {
     margin-left: 0;

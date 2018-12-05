@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { HelpText } from '../../home/home';
 
 @Component({
   selector: 'app-helpline',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./helpline.component.css']
 })
 export class HelplineComponent implements OnInit {
+  @Input() helpText: HelpText;
 
   constructor() { }
 

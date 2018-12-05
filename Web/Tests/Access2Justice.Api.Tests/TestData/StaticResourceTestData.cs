@@ -173,7 +173,7 @@ namespace Access2Justice.Api.Tests.TestData
             "\"image\": {\"source\": \"/static-resource/alaska/assets/images/secondary-illustrations/help_faqs.svg\"," +
             "\"altText\": \"Help and FAQs Page\"}," +
             "\"faqs\": [{\"question\": \"Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias quo expedita, ab vero repellat voluptates molestiae? Ipsam, ducimus nam. Ducimus.\"," +
-            "\"answer\": [{\"description\": \"Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat reprehenderit laborum dicta architecto iusto at sed iste fugit necessitatibus rem, fuga ad minima provident neque est autem dolore officiis, ab nihil? Consectetur, nostrum nam eligendi praesentium illo dignissimos magni maxime.\"}]}]," +
+            "\"answer\": \"Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat reprehenderit laborum dicta architecto iusto at sed iste fugit necessitatibus rem, fuga ad minima provident neque est autem dolore officiis, ab nihil? Consectetur, nostrum nam eligendi praesentium illo dignissimos magni maxime.\"}]," +
             "\"organizationalUnit\": \"Alaska\"," +
             "\"id\": \"e84dee21-d4d1-7f30-f4b6-b5bde92d4c94\"," +
             "\"name\": \"HelpAndFAQPage\"," +
@@ -191,11 +191,7 @@ namespace Access2Justice.Api.Tests.TestData
   'faqs': [
     {
       'question': 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias quo expedita, ab vero repellat voluptates molestiae? Ipsam, ducimus nam. Ducimus.',
-      'answer': [
-        {
-          'description': 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat reprehenderit laborum dicta architecto iusto at sed iste fugit necessitatibus rem, fuga ad minima provident neque est autem dolore officiis, ab nihil? Consectetur, nostrum nam eligendi praesentium illo dignissimos magni maxime.'
-        }
-      ]
+      'answer': 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat reprehenderit laborum dicta architecto iusto at sed iste fugit necessitatibus rem, fuga ad minima provident neque est autem dolore officiis, ab nihil? Consectetur, nostrum nam eligendi praesentium illo dignissimos magni maxime.'        
     }
   ],
   'organizationalUnit': 'Alaska',
@@ -369,7 +365,11 @@ namespace Access2Justice.Api.Tests.TestData
         'altText': 'Privacy Illustration'
       }
     },
-    'helpText': 'Are you safe? Call X-XXX-XXX-XXXX to get help.',
+    'helpText': {
+             'beginningText': 'Are you safe? Call',
+             'phoneNumber': '123-456-7890',
+             'endText': 'to get help'
+          },
     'organizationalUnit': 'Alaska',
     'id': 'c586534a-9d6e-4434-ad30-f7457804c51a',
     'name': 'HomePage',

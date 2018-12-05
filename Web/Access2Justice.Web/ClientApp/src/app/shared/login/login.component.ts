@@ -52,7 +52,8 @@ export class LoginComponent implements OnInit {
       this.dropdown.nativeElement.style.display === 'none' ? 'block' : 'none';
   }
 
-  externalLogin() {
+  externalLogin(event) {
+    event.preventDefault();
     this.global.isLoginRedirect = true;
     this.msalService.loginRedirect(environment.consentScopes);
   }

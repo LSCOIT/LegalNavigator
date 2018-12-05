@@ -57,7 +57,7 @@ describe('HomeComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should set help and faq content to static resource content if it exists', () => {
+  it('should set home content to static resource content if it exists', () => {
     mockStaticResourceService.getLocation.and.returnValue('Default');
     mockStaticResourceService.helpAndFaqsContent = homeContent;
     spyOn(component, 'filterHomeContent');
