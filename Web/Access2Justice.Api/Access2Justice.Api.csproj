@@ -46,6 +46,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Access2Justice.CosmosDb\Access2Justice.CosmosDb.csproj" />
+    <ProjectReference Include="..\Access2Justice.Integration.Partners.Rtm\Access2Justice.Integration.Partners.Rtm.csproj" />
     <ProjectReference Include="..\Access2Justice.Integration\Access2Justice.Integration.csproj" />    
     <ProjectReference Include="..\Access2Justice.Shared\Access2Justice.Shared.csproj" />
 

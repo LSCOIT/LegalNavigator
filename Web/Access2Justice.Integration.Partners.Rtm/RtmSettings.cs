@@ -3,13 +3,36 @@ using Access2Justice.Shared.Utilities;
 using Microsoft.Extensions.Configuration;
 using System;
 
-namespace Access2Justice.Integration.Models
+namespace Access2Justice.Integration.Partners.Rtm
 {
-    public class RtmSettings 
+    public class RtmSettings : IRtmSettings
     {
-        public string TopicName { get; set; }
+        public RtmSettings(IConfiguration configuration, IConfiguration kvConfiguration)
+        {
+            try
+            {
+                if (kvConfiguration != null)
+                {
+                    IKeyVaultSettings kv = new KeyVaultSettings(kvConfiguration);
+                    var kvSecret = kv.GetKeyVaultSecrets("RtmApiKey");
+                    kvSecret.Wait();
+                    ApiKey = kvSecret.Result;
+                }
+                else
+                {
+                    ApiKey = configuration.GetSection("ApiKey").Value;
+                }
+                SessionURL = new Uri(configuration.GetSection("SessionURL").Value);
+                ServiceProviderURL = new Uri(configuration.GetSection("ServiceProviderURL").Value);
+                ServiceProviderDetailURL = new Uri(configuration.GetSection("ServiceProviderDetailURL").Value);
+            }
+            catch
+            {
+                throw new Exception("Invalid Application configurations");
+            }
+        }
 
-        public string ApiKey { get; set; }
+        public string ApiKey { get; private set; }
 
         public Uri SessionURL { get; set; }
 

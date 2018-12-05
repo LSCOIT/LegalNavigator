@@ -1,5 +1,4 @@
 ﻿using Access2Justice.Api.Authentication;
-using Access2Justice.Api.Authorization;
 using Access2Justice.Api.BusinessLogic;
 using Access2Justice.Api.Interfaces;
 using Access2Justice.CosmosDb;
@@ -26,8 +25,6 @@ using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Reflection;
 using System.IO;
-using Access2Justice.Integration.Adapters;
-using Access2Justice.Integration.Interfaces;
 
 namespace Access2Justice.Api
 {
@@ -94,7 +91,7 @@ namespace Access2Justice.Api
                 .Build();
             });
             ConfigureCosmosDb(services);
-            services.AddSingleton<IServiceProviderAdapter, RtmServiceProviderAdapter>();
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Access2Justice API", Version = "1.0.0" , Description ="List of all APIs for Access2Justice", TermsOfService = "None"});
