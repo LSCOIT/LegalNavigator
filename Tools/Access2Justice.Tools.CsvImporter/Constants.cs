@@ -6,7 +6,7 @@
         public const string OrganizationResourceType = "Organizations";
         public const string ArticleResourceType = "Articles";
         public const string VideoResourceType = "Videos";
-        public const string EssentialReadingResourceType = "Essential Readings";
+        public const string AdditionalReadingResourceType = "Additional Readings";
         public const string OrganizationReviews = "OrganizationReviews (Optional)";
         public const string Admin = "Admin Import tool";
 
