@@ -21,7 +21,7 @@ export class ArticlesComponent implements OnInit {
     this.showMoreService.clickSeeMoreOrganizations(resourceType, this.activeResource);
   }
 
-  showResourceData() {
+  displayResourceUrlData() {
     for (let iterator = 0; iterator < this.resource.contents.length; iterator++) {
       var contentData = this.resource.contents[iterator].content;
       var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
@@ -31,6 +31,6 @@ export class ArticlesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.showResourceData();
+    this.displayResourceUrlData();
   }
 }
