@@ -3,6 +3,7 @@ import { HelpFaqsComponent } from './help-faqs.component';
 import { StaticResourceService } from '../shared/static-resource.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Global } from '../global';
+import { StateCodeService } from '../shared/state-code.service';
 
 describe('HelpFaqsComponent', () => {
   let component: HelpFaqsComponent;
@@ -33,7 +34,8 @@ describe('HelpFaqsComponent', () => {
       declarations: [ HelpFaqsComponent ],
       providers: [ 
         { provide: StaticResourceService, useValue: mockStaticResourceService },
-        { provide: Global, useValue: mockGlobal }
+        { provide: Global, useValue: mockGlobal },
+        StateCodeService
       ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })

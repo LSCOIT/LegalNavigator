@@ -14,6 +14,7 @@ import { MapService } from '../../shared/map/map.service';
 import { of } from 'rxjs/observable/of';
 import { Global } from '../../global';
 import { QueryList } from '@angular/core';
+import { StateCodeService } from '../../shared/state-code.service';
 
 describe('TopicsComponent', () => {
   let component: TopicsComponent;
@@ -68,7 +69,8 @@ describe('TopicsComponent', () => {
         { provide: RouterModule, useValue: mockRouter },
         BreadcrumbService,
         MapService,
-        { provide: Global, useValue: mockGlobal }
+        { provide: Global, useValue: mockGlobal },
+        StateCodeService
       ]
     })
       .compileComponents();

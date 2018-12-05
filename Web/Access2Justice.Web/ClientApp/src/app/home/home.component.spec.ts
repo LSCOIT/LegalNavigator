@@ -4,8 +4,10 @@ import { StaticResourceService } from '../shared/static-resource.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Global } from '../global';
 import { MapService } from '../shared/map/map.service';
+import { StateCodeService } from '../shared/state-code.service';
+import { HttpClientModule } from '@angular/common/http';
 
-describe('HelpFaqsComponent', () => {
+describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
   let mockStaticResourceService;
@@ -31,11 +33,13 @@ describe('HelpFaqsComponent', () => {
     mockGlobal.getData.and.returnValue(globalData);
     
     TestBed.configureTestingModule({
+      imports: [HttpClientModule],
       declarations: [ HomeComponent ],
       providers: [ 
         { provide: StaticResourceService, useValue: mockStaticResourceService },
         { provide: Global, useValue: mockGlobal },
-        MapService
+        MapService,
+        StateCodeService
       ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })

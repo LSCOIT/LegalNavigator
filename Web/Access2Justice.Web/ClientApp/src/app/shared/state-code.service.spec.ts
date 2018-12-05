@@ -26,7 +26,7 @@ describe('StateCodeService', () => {
         { provide: Global, useValue: global }]
     });
 
-    service = new StateCodeService(httpSpy, global);
+    service = new StateCodeService(httpSpy);
     httpSpy.get.calls.reset();
   });
 

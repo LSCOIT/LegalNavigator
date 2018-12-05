@@ -14,6 +14,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import { Subject } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
 import { Global } from '../../../global';
+import { StateCodeService } from '../../state-code.service';
 
 describe('Component:ServiceOrgSidebar', () => {
   let component: ServiceOrgSidebarComponent;
@@ -144,7 +145,8 @@ describe('Component:ServiceOrgSidebar', () => {
         MapService,
         { provide: NavigateDataService, useValue: mockNavigateDataService },
         { provide: PaginationService, useValue: mockPaginationService },
-        Global
+        Global,
+        StateCodeService
 
       ],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]

@@ -25,7 +25,7 @@ export class MapService {
     location: this.mapLocation, displayLocationDetails: this.displayLocation,
     country: '', formattedAddress: ''
   };
-  stateCode: any;
+  stateCode: any = '';
 
   constructor(private stateCodeService: StateCodeService) { }
 
@@ -180,7 +180,7 @@ export class MapService {
       if ((this.location.entitySubType != undefined &&
         this.location.entitySubType.indexOf("Postcode") != -1)
         || (this.location.entityType != undefined &&
-        this.location.entityType.indexOf("Postcode") != -1)) {
+          this.location.entityType.indexOf("Postcode") != -1)) {
         this.mapLocation.state = "";
         this.mapLocation.county = "";
         this.mapLocation.city = "";
@@ -198,7 +198,7 @@ export class MapService {
       else if ((this.location.entitySubType != undefined &&
         this.location.entitySubType.indexOf("AdminDivision2") != -1)
         || (this.location.entityType != undefined &&
-        this.location.entityType.indexOf("AdminDivision2") != -1)){
+          this.location.entityType.indexOf("AdminDivision2") != -1)) {
         this.mapLocation.state = "";
         this.mapLocation.city = "";
         this.mapLocation.zipCode = "";

@@ -25,6 +25,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Global } from '../../../global';
 import { MsalService } from '@azure/msal-angular';
+import { StateCodeService } from '../../state-code.service';
 
 describe('SearchResultsComponent', () => {
   let component: SearchResultsComponent;
@@ -91,6 +92,7 @@ describe('SearchResultsComponent', () => {
         SearchResultsComponent,
         Global,
         { provide: MsalService, useValue: msalService },
+        StateCodeService
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
     })

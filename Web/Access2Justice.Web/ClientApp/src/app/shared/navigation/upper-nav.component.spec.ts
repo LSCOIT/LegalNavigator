@@ -5,6 +5,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Global } from '../../global';
 import { MapService } from '../map/map.service';
 import { HttpClientModule } from '@angular/common/http';
+import { StateCodeService } from '../state-code.service';
 
 describe('UpperNavComponent', () => {
   let component: UpperNavComponent;
@@ -37,7 +38,8 @@ describe('UpperNavComponent', () => {
       providers: [ 
         { provide: StaticResourceService, useValue: mockStaticResourceService },
         { provide: Global, useValue: mockGlobal },
-        MapService
+        MapService,
+        StateCodeService
       ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })
