@@ -102,9 +102,9 @@ describe('AppComponent', () => {
     }
 
     mockStaticResourceService = jasmine.createSpyObj(['getStaticContents', 'loadStateName']);
-    mockGlobal = jasmine.createSpyObj(['setData','setProfileData']);
+    mockGlobal = jasmine.createSpyObj(['setData', 'setProfileData']);
     msalService = jasmine.createSpyObj(['getUser']);
-    mockLoginService = jasmine.createSpyObj(['upsertUserProfile','getUserProfile']);
+    mockLoginService = jasmine.createSpyObj(['upsertUserProfile', 'getUserProfile']);
     mockPersonalizedPlanService = jasmine.createSpyObj(['saveResourcesToUserProfile']);
     mockSaveButtonService = jasmine.createSpyObj(['getPlan']);
 
@@ -175,7 +175,7 @@ describe('AppComponent', () => {
     expect(component.staticContentResults).toEqual(staticContent);
     expect(mockGlobal.setData).toHaveBeenCalledWith(component.staticContentResults);
   });
-  
+
   it('should call setProfileData from global', () => {
     mockLoginService.getUserProfile.and.returnValue(of(mockLoginResponse));
     component.createOrGetProfile();

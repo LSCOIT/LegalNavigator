@@ -56,6 +56,7 @@ import { BrowserTabCloseComponent } from './browser-tab-close/browser-tab-close.
 import { SaveButtonService } from './resource/user-action/save-button/save-button.service';
 import { UnauthorizedComponent } from './error/unauthorized/unauthorized.component';
 import { SanitizePipe } from './pipe/sanitize.pipe';
+import { StateCodeService } from './state-code.service';
 
 @NgModule({
   imports: [
@@ -150,7 +151,8 @@ import { SanitizePipe } from './pipe/sanitize.pipe';
     ResourceService,
     ShareService,
     LoginService,
-    SaveButtonService
+    SaveButtonService,
+    StateCodeService
   ]
 })
 export class SharedModule { }

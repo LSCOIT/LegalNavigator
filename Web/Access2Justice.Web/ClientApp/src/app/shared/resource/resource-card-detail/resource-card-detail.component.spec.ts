@@ -19,6 +19,7 @@ import { NavigateDataService } from '../../navigate-data.service';
 import { PaginationService } from '../../pagination/pagination.service';
 import { Global } from '../../../global';
 import { MapService } from '../../map/map.service';
+import { StateCodeService } from '../../state-code.service';
 
 describe('ResourceCardDetailComponent', () => {
   let component: ResourceCardDetailComponent;
@@ -91,7 +92,8 @@ describe('ResourceCardDetailComponent', () => {
          ShowMoreService,
          NavigateDataService,
          PaginationService,
-         MapService
+         MapService,
+         StateCodeService
        ],
        imports: [ HttpClientModule ]
     })
