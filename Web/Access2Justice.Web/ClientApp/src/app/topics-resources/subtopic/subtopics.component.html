@@ -13,7 +13,7 @@
       </div>
       <div class="subtopics">
         <ul *ngFor="let subtopic of subtopics">
-          <li><a [routerLink]="['/topics', subtopic.id]">{{subtopic.name}}</a></li>
+          <li><a class="link" [routerLink]="['/topics', subtopic.id]">{{subtopic.name}}</a></li>
         </ul>
       </div>
       <a [routerLink]="['/topics']" class="btn btn-primary">Back to main topics</a>
