@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Threading.Tasks;
 using static Access2Justice.Api.Authorization.Permissions;
+using Pomelo.AntiXSS;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -111,6 +112,7 @@ namespace Access2Justice.Api.Controllers
         [HttpGet("permalink/resource")]
         public async Task<IActionResult> PermaLinkAsync([FromQuery] string permaLink)
         {
+            permaLink = Instance.Sanitize(permaLink);
             if (permaLink != null)
             {
                 var response = await shareBusinessLogic.GetPermaLinkDataAsync(permaLink);
