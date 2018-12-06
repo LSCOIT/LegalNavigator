@@ -55,6 +55,7 @@ import { LoginService } from './login/login.service';
 import { BrowserTabCloseComponent } from './browser-tab-close/browser-tab-close.component';
 import { SaveButtonService } from './resource/user-action/save-button/save-button.service';
 import { UnauthorizedComponent } from './error/unauthorized/unauthorized.component';
+import { SanitizePipe } from './pipe/sanitize.pipe';
 import { StateCodeService } from './state-code.service';
 
 @NgModule({
@@ -106,7 +107,8 @@ import { StateCodeService } from './state-code.service';
     ShareButtonRouteComponent,
     ReadMoreComponent,
     BrowserTabCloseComponent,
-    UnauthorizedComponent
+    UnauthorizedComponent,
+    SanitizePipe
   ],
   exports: [
     ActionPlansComponent,
@@ -134,7 +136,8 @@ import { StateCodeService } from './state-code.service';
     HelplineComponent,
     LoginComponent,
     BrowserTabCloseComponent,
-    UnauthorizedComponent
+    UnauthorizedComponent,
+    SanitizePipe
   ],
   providers: [
     MapService,

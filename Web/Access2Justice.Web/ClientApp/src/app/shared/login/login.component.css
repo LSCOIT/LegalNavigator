@@ -116,8 +116,7 @@ a:not([href]):not([tabindex]) {
     width: auto;
     min-width: 160px;
     margin-top: 0;
-    padding: 15px;
-    height: 53px;
+    padding: 0 15px;
   }
 
   .open {
@@ -125,16 +124,10 @@ a:not([href]):not([tabindex]) {
   }
 
   #signin-dropdown .dropdown-menu {
-    margin-top: -9px;
+    margin-top: 8px;
   }
 
   #signin-dropdown .dropdown-menu li a {
     padding: 10px 20px 10px 48px;
-  }
-}
-
-@media only screen and (min-width : 1124px) {
-  #signin-dropdown {
-    padding: 15px;
   }
 }
