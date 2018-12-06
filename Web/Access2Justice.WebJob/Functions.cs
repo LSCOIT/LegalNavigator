@@ -29,18 +29,19 @@ namespace Access2Justice.WebJob
         public void ProcessQueueMessage([TimerTrigger("* * * * *")]TimerInfo timerInfo)
         {
             logger.LogInformation("Web Job started Running");
-            ProcessRTMData();
+            ProcessServiceProviders();
             logger.LogInformation("Web Job Completed");
         }
 
-        public void ProcessRTMData()
+        public void ProcessServiceProviders()
         {
             try
             {
-                var serviceProviders = serviceProviderAdapter.GetServiceProviders("Family").Result;
-                if (serviceProviders?.Count > 0)
+                var providerIds = serviceProviderAdapter.GetServiceProviders("Family").Result;                
+                foreach (var providerId in providerIds)
                 {
-                    var spSerialized = JsonConvert.SerializeObject(serviceProviders);
+                    var serviceProvider = serviceProviderAdapter.GetServiceProviderDetails(providerId);
+                    var spSerialized = JsonConvert.SerializeObject(serviceProvider);
                     var bufferSP = System.Text.Encoding.UTF8.GetBytes(spSerialized);
                     var byteContentSP = new ByteArrayContent(bufferSP);
                     byteContentSP.Headers.ContentType = new MediaTypeHeaderValue("application/json");

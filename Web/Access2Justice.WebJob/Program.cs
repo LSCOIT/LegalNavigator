@@ -53,9 +53,6 @@ namespace Access2Justice.WebJob
             services.AddTransient<Functions, Functions>();
             services.AddLogging(builder => builder.AddConsole());
 
-            IRtmSettings rtmSettings = new RtmSettings(Configuration.GetSection("RtmSettings"), Configuration.GetSection("KeyVault"));
-            services.AddSingleton(rtmSettings);
-
             IA2JSettings a2JSettings = new A2JSettings(Configuration.GetSection("A2JSettings"));
             services.AddSingleton(a2JSettings);
         }

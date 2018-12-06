@@ -6,8 +6,7 @@ namespace Access2Justice.Integration.Interfaces
 {
     public interface IServiceProviderAdapter
     {
-        Task<List<ServiceProvider>> GetServiceProviders(string TopicName);
-
-        ServiceProvider GetServiceProviderDetails(string id);
+        Task<List<string>> GetServiceProviders(string topicName);
+        Task<ServiceProvider> GetServiceProviderDetails(string providerId);
     }
 }

@@ -16,63 +16,73 @@ namespace Access2Justice.Integration.Partners.Rtm
 {
     public class RtmServiceProviderAdapter : IServiceProviderAdapter
     {
-        private readonly IRtmSettings rtmSettings;
-        private readonly IHttpClientService httpClient;
-
-        public RtmServiceProviderAdapter(IRtmSettings rtmSettings, IHttpClientService httpClient)
+        public RtmServiceProviderAdapter()
         {
-            this.rtmSettings = rtmSettings;
-            this.httpClient = httpClient;
         }
 
-        public async Task<List<ServiceProvider>> GetServiceProviders(string TopicName)
+        public async Task<List<string>> GetServiceProviders(string topicName)
         {
-            var sessionUrl = string.Format(CultureInfo.InvariantCulture, rtmSettings.SessionURL.OriginalString, rtmSettings.ApiKey);
+            return new List<string>() { "Family Based Services", "Family Violence Prevention", "Family Support Services" };
+        }
+
+        public async Task<ServiceProvider> GetServiceProviderDetails(string providerId)
+        {
+            var httpClient = new HttpClientService();
+            var sessionUrl = "https://www.referweb.net/pubres/api/GetSessionID/?ip={{apikey:'{61GV7G4Y}'}}";
             var sResponse = await httpClient.GetAsync(new Uri(sessionUrl)).ConfigureAwait(false);
             var session = sResponse.Content.ReadAsStringAsync().Result;
 
             dynamic sessionJson = JsonConvert.DeserializeObject(session);
             string sessionId = sessionJson[0][Constants.RTMSessionId];
-            var serviceProviders = new List<ServiceProvider>();
+            var serviceProvider = new ServiceProvider();
             if (!string.IsNullOrEmpty(sessionId))
             {
-                var serviceProviderUrl = string.Format(CultureInfo.InvariantCulture, rtmSettings.ServiceProviderURL.OriginalString,
-                                                          rtmSettings.ApiKey, sessionId);
-                var spResponse = await httpClient.GetAsync(new Uri(serviceProviderUrl)).ConfigureAwait(false);
-                var serviceProvider = spResponse.Content.ReadAsStringAsync().Result;
-                if (!string.IsNullOrEmpty(serviceProvider))
+                string spUrl = "https://www.referweb.net/pubres/api/ServiceProviders/?ip={{apikey:'{61GV7G4Y}',st:'s',catid:'',sn:'{0}',zip:'',county:'',sid:'{1}'}}";
+                var serviceProviderUrl = string.Format(CultureInfo.InvariantCulture, spUrl, providerId, sessionId);
+                var response = await httpClient.GetAsync(new Uri(serviceProviderUrl)).ConfigureAwait(false);
+                var serviceProviderResponse = response.Content.ReadAsStringAsync().Result;
+                if (!string.IsNullOrEmpty(serviceProviderResponse))
                 {
-                    var serviceProviderObject = JsonConvert.DeserializeObject(serviceProvider);
-                    serviceProviders = ProcessRTMData(serviceProviderObject);
+                    var serviceProviderObject = JsonConvert.DeserializeObject(serviceProviderResponse);
+                    serviceProvider = ProcessRTMData(serviceProviderObject);
                 }
             }
 
-            return serviceProviders;
+            return serviceProvider;
         }
 
-        public List<ServiceProvider> ProcessRTMData(dynamic serviceProviderObjects)
+         // ## TODO : Need to check with Andrew on this to implement further.... 
+        //private async Task<dynamic> ServiceProviderData(dynamic site, string sessionId, IHttpClientService httpClient)
+        //{
+        //    string siteID = site?.Sites[0]["ID"];
+        //    string serviceGroupID = site?.Sites[0]["ServiceGroup"][0]["ID"];
+        //    string serviceSiteID = site?.Sites[0]["ServiceGroup"][0]["ServiceSites"][0]["ID"];
+        //    string serviceDetailLink = "https://www.referweb.net/pubres/api/ProviderDetail/?ip={{apikey:'{0}',locid: '{1}',svid:'{2}',ssid:'{3}',sid:'{4}'}}";
+        //    string servicedetailURL = string.Format(CultureInfo.InvariantCulture, serviceDetailLink, siteID, serviceGroupID, serviceSiteID, sessionId);
+        //    var response = await httpClient.GetAsync(new Uri(servicedetailURL)).ConfigureAwait(false);
+        //    var spDetailResponse = response.Content.ReadAsStringAsync().Result;
+
+        //}
+
+        /// <summary>
+        /// Converts RTM Service Provider data into Service Provider Model.
+        /// </summary>
+        /// <param name="serviceProviderObject">RTM serviceProvider Object</param>
+        /// <returns></returns>
+        private ServiceProvider ProcessRTMData(dynamic serviceProviderObject)
         {
-            var serviceProviders = new List<ServiceProvider>();
-            foreach (var serviceProviderObject in serviceProviderObjects)
-            {
-                foreach (var site in serviceProviderObject.Sites)
-                {
-                    string siteId = site.ID.ToString();
-                    ServiceProvider serviceProvider = ConvertToServiceProvider(site);
-                    serviceProviders.Add(serviceProvider);
-                }
-            }
-
-            return serviceProviders;
+            var site = serviceProviderObject.Sites[0];
+            string siteId = site.ID.ToString();
+            return ConvertToServiceProvider(site);
         }
 
-        public dynamic ConvertToServiceProvider(dynamic site)
+        private dynamic ConvertToServiceProvider(dynamic site)
         {
             return new ServiceProvider()
             {
                 ExternalId = site.ID,
                 Email = site.Email,
-                // Availability = GetAvailability(site.availability),
+                //Availability = GetAvailability(site.availability),
                 AcceptanceCriteria = GetAcceptanceCriteria(site.acceptanceCriteria),
                 OnboardingInfo = GetOnboardingInfo(site.onboardingInfo),
                 Name = site.Name,
@@ -98,7 +108,7 @@ namespace Access2Justice.Integration.Partners.Rtm
         /// </summary>
         /// <param name="siteAddress"></param>
         /// <returns></returns>
-        public dynamic GetServiceProviderAddress(dynamic siteAddress)
+        private dynamic GetServiceProviderAddress(dynamic siteAddress)
         {
             var serviceProviderAddresses = string.Empty;
             foreach (var address in siteAddress)
@@ -118,7 +128,7 @@ namespace Access2Justice.Integration.Partners.Rtm
         /// </summary>
         /// <param name="address"></param>
         /// <returns></returns>
-        public static string FormAddress(string address)
+        private static string FormAddress(string address)
         {
             var formedAddress = string.Empty;
             if (!string.IsNullOrEmpty(address))
@@ -134,7 +144,7 @@ namespace Access2Justice.Integration.Partners.Rtm
         /// </summary>
         /// <param name="siteAddress"></param>
         /// <returns></returns>
-        public dynamic GetServiceProviderLocation(dynamic siteAddress)
+        private dynamic GetServiceProviderLocation(dynamic siteAddress)
         {
             List<Location> locations = new List<Location>();
             Location location = new Location();
@@ -164,7 +174,7 @@ namespace Access2Justice.Integration.Partners.Rtm
         /// </summary>
         /// <param name="siteAddress"></param>
         /// <returns></returns>
-        public static dynamic GetServiceProviderOrgUnit(dynamic siteAddress)
+        private static dynamic GetServiceProviderOrgUnit(dynamic siteAddress)
         {
             var serviceProviderOrgUnit = string.Empty;
             foreach (var address in siteAddress)
@@ -184,7 +194,7 @@ namespace Access2Justice.Integration.Partners.Rtm
         /// </summary>
         /// <param name="sitePhone"></param>
         /// <returns></returns>
-        public static dynamic GetServiceProviderPhone(dynamic sitePhone)
+        private static dynamic GetServiceProviderPhone(dynamic sitePhone)
         {
             var serviceProviderTelephones = string.Empty;
             var telephone = string.Empty;
@@ -206,7 +216,7 @@ namespace Access2Justice.Integration.Partners.Rtm
         /// </summary>
         /// <param name="availabilityValues"></param>
         /// <returns></returns>
-        public dynamic GetAvailability(dynamic availabilityValues)
+        private dynamic GetAvailability(dynamic availabilityValues)
         {
             var availability = new Availability();
             if (availabilityValues != null)
@@ -227,7 +237,7 @@ namespace Access2Justice.Integration.Partners.Rtm
         /// </summary>
         /// <param name="businessHours"></param>
         /// <returns></returns>
-        public dynamic GetBusinessHours(dynamic businessHours)
+        private dynamic GetBusinessHours(dynamic businessHours)
         {
             var schedules = new List<Schedule>();
             var schedule = new Schedule();
@@ -247,7 +257,7 @@ namespace Access2Justice.Integration.Partners.Rtm
         /// </summary>
         /// <param name="evaluatedRequirements"></param>
         /// <returns></returns>
-        public dynamic GetEvaluatedRequirements(dynamic evaluatedRequirements)
+        private dynamic GetEvaluatedRequirements(dynamic evaluatedRequirements)
         {
             var expressions = new List<Expression>();
             if (evaluatedRequirements != null)
@@ -277,7 +287,7 @@ namespace Access2Justice.Integration.Partners.Rtm
         /// </summary>
         /// <param name="acceptanceCriteriaValues"></param>
         /// <returns></returns>
-        public dynamic GetAcceptanceCriteria(dynamic acceptanceCriteriaValues)
+        private dynamic GetAcceptanceCriteria(dynamic acceptanceCriteriaValues)
         {
             var acceptanceCriteria = new AcceptanceCriteria();
             if (acceptanceCriteriaValues != null)
@@ -297,7 +307,7 @@ namespace Access2Justice.Integration.Partners.Rtm
         /// </summary>
         /// <param name="onboardingInfoValues"></param>
         /// <returns></returns>
-        public dynamic GetOnboardingInfo(dynamic onboardingInfoValues)
+        private dynamic GetOnboardingInfo(dynamic onboardingInfoValues)
         {
             var onboardingInfo = new OnboardingInfo();
             if (onboardingInfoValues != null)
@@ -313,11 +323,6 @@ namespace Access2Justice.Integration.Partners.Rtm
             }
 
             return onboardingInfo;
-        }
-
-        public ServiceProvider GetServiceProviderDetails(string id)
-        {
-            throw new NotImplementedException();
         }
     }
 }
