@@ -21,6 +21,32 @@ namespace Access2Justice.Api.Tests.TestData
                 EMail = "test@test.com",
                 SharedResourceId = Guid.Parse("0568B88C-3866-4CCA-97C8-B8E3F3D1FF3C")
             };
+        public static UserProfile UserProfileWithPlanId =>
+
+            new UserProfile
+            {
+                Id = Guid.Parse("0693B88C-3866-4CCA-97C8-B8E3F3D1FF3C").ToString(),
+                FirstName = "TestFirstName",
+                LastName = "TestLastName",
+                IsActive = "true",
+                OId = "709709e7t0r7t96",
+                EMail = "test@test.com",
+                SharedResourceId = Guid.Parse("0568B88C-3866-4CCA-97C8-B8E3F3D1FF3C"),
+                PersonalizedActionPlanId =Guid.Parse("132d8f82-96df-4d9b-8023-4332a1924da4")
+            };
+
+        public static UserProfile UserProfileWithoutPlanId =>
+
+           new UserProfile
+           {
+               Id = Guid.Parse("0693B88C-3866-4CCA-97C8-B8E3F3D1FF3C").ToString(),
+               FirstName = "TestFirstName",
+               LastName = "TestLastName",
+               IsActive = "true",
+               OId = "709709e7t0r7t96",
+               EMail = "test@test.com",
+               SharedResourceId = Guid.Parse("0568B88C-3866-4CCA-97C8-B8E3F3D1FF3C")               
+           };
 
         public static UserProfile UserProfileWithoutSharedResourceData =>
            new UserProfile
@@ -169,6 +195,7 @@ namespace Access2Justice.Api.Tests.TestData
                                                   "\"createdTimeStamp\": \"08/06/2018 09:02:50\"," +
                                                   "\"modifiedBy\": null," +
                                                   "\"modifiedTimeStamp\": null," +
+                                                  "\"personalizedActionPlanId\": \"132d8f82-96df-4d9b-8023-4332a1924da4\"," +
                                                   "\"sharedResource\": [{" +
                                                       "\"isShared\": true," +
                                                       "\"expirationDate\": \"2019-08-07T11:44:58.4928479Z\"," +

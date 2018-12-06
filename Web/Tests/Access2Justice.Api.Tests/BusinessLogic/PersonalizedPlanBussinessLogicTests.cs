@@ -60,7 +60,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             dbSettings.ActionPlansCollectionId.Returns("ActionPlans");
             dbSettings.A2JAuthorDocsCollectionId.Returns("A2JAuthorDocs");
             dbSettings.GuidedAssistantAnswersCollectionId.Returns("GuidedAssistantAnswers");
-
+            dbSettings.ProfilesCollectionId.Returns("Profiles");
         }
 
         [Theory]
@@ -82,12 +82,13 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 
         [Theory]
         [MemberData(nameof(PersonalizedPlanTestData.CuratedExperienceAnswersData), MemberType = typeof(PersonalizedPlanTestData))]
-        public void GetPersonalizedPlanAsyncCuratedValidate(dynamic curatedExperience, CuratedExperienceAnswers expectedData)
+        public void GeneratePersonalizedPlanAsyncValidate(CuratedExperience curatedExperience, CuratedExperienceAnswers expectedData, JObject personalizedPlan)
         {
             //arrange            
             var a2jPersonalizedPlan = dynamicQueries.FindItemWhereAsync<JObject>(dbSettings.A2JAuthorDocsCollectionId, Constants.Id, curatedExperience.A2jPersonalizedPlanId.ToString());
-            var dbResponse = dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.GuidedAssistantAnswersCollectionId);
-            dbResponse.ReturnsForAnyArgs<JObject>(expectedData);
+            a2jPersonalizedPlan.ReturnsForAnyArgs<JObject>(personalizedPlan);
+
+            var dbResponse = dbService.GetItemAsync<dynamic>(answersDocId.ToString(), dbSettings.GuidedAssistantAnswersCollectionId);
             var response = personalizedPlanBusinessLogic.GeneratePersonalizedPlanAsync(curatedExperience, answersDocId);
 
             //act
@@ -95,7 +96,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var expectedResult = JsonConvert.SerializeObject(expectedData);
 
             //assert
-            Assert.Equal(null, actualResult);
+            Assert.Equal("null", actualResult);
         }
 
         [Theory]
@@ -123,6 +124,37 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 
             //assert
             Assert.Equal(expectedResult, result);
+        }
+
+        [Theory]
+        [MemberData(nameof(PersonalizedPlanTestData.ProfileToPlan), MemberType = typeof(PersonalizedPlanTestData))]
+        public void UpdatePlanToProfileValidate(Guid planId, string oId, PersonalizedPlanViewModel personalizedPlan)
+        {
+            //arrange
+            var profileResponse = userProfileBusinessLogic.GetUserProfileDataAsync(oId);
+            profileResponse.ReturnsForAnyArgs(ShareTestData.UserProfileWithoutPlanId);
+            var dbResponse = dbService.GetItemAsync<PersonalizedPlanViewModel>(personalizedPlan.PersonalizedPlanId.ToString(), dbSettings.ActionPlansCollectionId);
+            dbResponse.ReturnsForAnyArgs<PersonalizedPlanViewModel>(personalizedPlan);
+            var response1 = personalizedPlanBusinessLogic.GetPersonalizedPlanAsync(personalizedPlan.PersonalizedPlanId);
+
+            Document updatedDocument = new Document();
+            JsonTextReader reader = new JsonTextReader(new StringReader(ShareTestData.userProfileWithSharedResource));
+            updatedDocument.LoadFrom(reader);
+    
+            dbService.UpdateItemAsync<UserProfile>(
+            Arg.Any<string>(),
+            Arg.Any<UserProfile>(),
+            Arg.Any<string>()).ReturnsForAnyArgs<Document>(updatedDocument);
+
+            dbService.CreateItemAsync<SharedResources>(
+               Arg.Any<SharedResources>(),
+               Arg.Any<string>()).ReturnsForAnyArgs<Document>(updatedDocument);
+
+            //act
+            dynamic response = personalizedPlanBusinessLogic.UpdatePlanToProfile(planId, oId, personalizedPlan);
+
+            //assert
+            Assert.Equal("RanToCompletion", response.Status.ToString());
         }
         //[Fact]
         //public void GetTopicNameByTopicId()
