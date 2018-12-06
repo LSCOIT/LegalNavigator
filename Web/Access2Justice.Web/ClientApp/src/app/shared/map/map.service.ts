@@ -97,7 +97,7 @@ export class MapService {
         this.stateCodeService.getStateCode(this.locationDetails.location.state)
           .subscribe(
           response => {
-            this.stateCode = response;
+            this.stateCode = response ? response:"Default";
             this.locationDetails.location.state = this.stateCode;
             this.setGlobalMapLocationDetails();
           });

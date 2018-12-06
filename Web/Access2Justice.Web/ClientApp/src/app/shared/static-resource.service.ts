@@ -37,8 +37,10 @@ export class StaticResourceService {
   }
 
   getLocation() {
-    this.location = this.loadStateName().state;
-    if (!((this.location == "Alaska") || (this.location == "Hawaii"))) {
+    if (this.mapLocation) {
+      this.location = this.mapLocation.state;
+    }
+    if (!((this.location == "AK") || (this.location == "HI"))) {
       this.location = "Default";
     }
     return this.location;

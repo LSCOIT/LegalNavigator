@@ -33,27 +33,23 @@ describe('StaticResource', () => {
   }));
 
 
-  it('should set location as alaska', inject([StaticResourceService], (service: StaticResourceService) => {
-    let mockMapLocation = { state: "Alaska"};
-    spyOn(service, 'loadStateName').and.returnValue(mockMapLocation);
+  it('should set location as AK', inject([StaticResourceService], (service: StaticResourceService) => {
+    let mockMapLocation = { state: "AK" };
+    service.mapLocation = mockMapLocation;
     service.getLocation();
-    expect(service.loadStateName).toHaveBeenCalled();
     expect(service.location).toEqual(mockMapLocation.state);
   }));
 
-  it('should set location as hawaii', inject([StaticResourceService], (service: StaticResourceService) => {
-    let mockMapLocation = { state: "Hawaii" };
-    spyOn(service, 'loadStateName').and.returnValue(mockMapLocation);
+  it('should set location as HI', inject([StaticResourceService], (service: StaticResourceService) => {
+    let mockMapLocation = { state: "HI" };
+    service.mapLocation = mockMapLocation;
     service.getLocation();
-    expect(service.loadStateName).toHaveBeenCalled();
     expect(service.location).toEqual(mockMapLocation.state);
   }));
 
   it('should set location as otherthan alaska and hawaii', inject([StaticResourceService], (service: StaticResourceService) => {
     let mockMapLocation = { state: "teststate" };
-    spyOn(service, 'loadStateName').and.returnValue(mockMapLocation);
     service.getLocation();
-    expect(service.loadStateName).toHaveBeenCalled();
     expect(service.location).toBe("Default");
   }));
 

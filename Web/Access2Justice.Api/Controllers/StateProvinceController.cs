@@ -23,8 +23,7 @@ namespace Access2Justice.Api.Controllers
         public async Task<IActionResult> GetStateCodes()
         {
             var stateCodes = await locationBusinessLogic.GetStateCodes();
-            if (stateCodes == null) return NotFound();
-
+            
             return Ok(stateCodes);
         }
 
@@ -32,8 +31,7 @@ namespace Access2Justice.Api.Controllers
         public async Task<IActionResult> GetStateCodeForState(string stateName)
         {
             var stateCodes = await locationBusinessLogic.GetStateCodeForState(stateName);
-            if (string.IsNullOrEmpty(stateCodes)) return NotFound();
-
+            
             return Ok(stateCodes);
         }
     }
