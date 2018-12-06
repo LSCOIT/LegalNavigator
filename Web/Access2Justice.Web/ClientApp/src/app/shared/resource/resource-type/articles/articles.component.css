@@ -15,3 +15,9 @@ h2 {
     padding-left: 5%;
   }
 }
+
+.newlines {
+  white-space: pre-line;
+  margin-top: -20px;
+  margin-bottom: -40px
+}

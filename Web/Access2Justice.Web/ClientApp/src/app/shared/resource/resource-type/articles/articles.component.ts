@@ -10,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 export class ArticlesComponent implements OnInit {
   @Input() resource;
   activeResource: any;
-
+  replacedContents: any;
   constructor(
     private showMoreService: ShowMoreService,
     private activeRoute: ActivatedRoute
@@ -21,5 +21,16 @@ export class ArticlesComponent implements OnInit {
     this.showMoreService.clickSeeMoreOrganizations(resourceType, this.activeResource);
   }
 
-  ngOnInit() {}
+  displayResourceUrlData() {
+    for (let iterator = 0; iterator < this.resource.contents.length; iterator++) {
+      var contentData = this.resource.contents[iterator].content;
+      var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+      this.replacedContents = contentData.replace(exp, "<a href='$1'>$1</a>");
+      this.resource.contents[iterator].content = this.replacedContents;
+    }        
+  }
+
+  ngOnInit() {
+    this.displayResourceUrlData();
+  }
 }
