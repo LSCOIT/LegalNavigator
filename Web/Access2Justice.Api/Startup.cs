@@ -125,7 +125,13 @@ namespace Access2Justice.Api
                         .AllowAnyOrigin()
                         .AllowAnyMethod()
                         .AllowAnyHeader());
-
+            //Enabling Framework Security Settings.
+            app.Use(async (context, next) =>
+            {
+                context.Response.Headers.Add("X-Xss-Protection", "1; mode=block");
+                context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
+                await next();
+            });
             app.UseSession();
 
             app.UseAuthentication();

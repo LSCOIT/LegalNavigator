@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using static Access2Justice.Api.Authorization.Permissions;
+using Pomelo.AntiXSS;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -17,7 +18,6 @@ namespace Access2Justice.Api.Controllers
         private readonly ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic;
         private readonly ILuisBusinessLogic luisBusinessLogic;
         private readonly IUserRoleBusinessLogic userRoleBusinessLogic;
-
         public TopicsResourcesController(ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic, ILuisBusinessLogic luisBusinessLogic,
             IUserRoleBusinessLogic userRoleBusinessLogic)
         {
@@ -197,6 +197,7 @@ namespace Access2Justice.Api.Controllers
         [Route("topics/{name}")]
         public async Task<IActionResult> GetTopicDetails(string name)
         {
+            name = Instance.Sanitize(name);
             var topics = await topicsResourcesBusinessLogic.GetTopicDetailsAsync(name);
 
             if (topics == null)
@@ -221,6 +222,8 @@ namespace Access2Justice.Api.Controllers
         [Route("resources/{name}/{type}")]
         public async Task<IActionResult> GetResourceDetails(string name, string type)
         {
+            name = Instance.Sanitize(name);
+            type = Instance.Sanitize(type);
             var resources = await topicsResourcesBusinessLogic.GetResourceDetailAsync(name, type);
 
             if (resources == null)
