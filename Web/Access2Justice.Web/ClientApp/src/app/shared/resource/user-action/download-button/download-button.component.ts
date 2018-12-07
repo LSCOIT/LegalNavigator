@@ -3,11 +3,14 @@ import * as jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-download-button',
-  template: `
- <span id="download" (click)="downloadFile_PDF()">
- <img src="./assets/images/small-icons/download.svg" class="nav-icon" aria-hidden="true" />
-  Download
-</span>
+  template:`
+<button id="download" class="user-button" (click)="downloadPDF()">
+   <img src="./assets/images/small-icons/download.svg" class="nav-icon" aria-hidden="true"/>
+    Download
+</button>
+<div class="popover-content">
+  <p class="popover-message">Are you using a public computer? Consider using the print option instead."</p>
+</div>
  `,
 })
 export class DownloadButtonComponent implements OnInit {
@@ -20,7 +23,7 @@ export class DownloadButtonComponent implements OnInit {
 
   constructor() { }
 
-  downloadFile_PDF(): void {
+  downloadPDF(): void {
     if (location.pathname.indexOf("/topics") >= 0) {
       this.template = 'app-subtopic-detail';
     } else if (location.pathname.indexOf("/plan") >= 0) {
