@@ -23,6 +23,7 @@ import { TopicService } from '../shared/topic.service';
 import { of } from 'rxjs/observable/of';
 import { MsalService } from '@azure/msal-angular';
 import { Global } from '../../global';
+import { PipeModule } from '../../shared/pipe/pipe.module';
 
 
 describe('SubtopicDetailComponent', () => {
@@ -102,7 +103,8 @@ describe('SubtopicDetailComponent', () => {
         RouterModule.forRoot([
           { path: 'subtopics/:topic', component: SubtopicDetailComponent }
         ]),
-        HttpClientModule
+        HttpClientModule,
+        PipeModule.forRoot()
       ],
       providers: [
         { provide: APP_BASE_HREF, useValue: '/' },

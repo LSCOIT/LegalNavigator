@@ -4,6 +4,7 @@ import { async, TestBed, ComponentFixture } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Global } from './global';
+import { PipeModule } from './shared/pipe/pipe.module';
 import { GuidedAssistantComponent } from './guided-assistant/guided-assistant.component';
 import { HelpFaqsComponent } from './help-faqs/help-faqs.component';
 import { HomeComponent } from './home/home.component';
@@ -125,7 +126,8 @@ describe('AppComponent', () => {
       ],
       imports: [
         FormsModule,
-        HttpClientModule
+        HttpClientModule,
+        PipeModule.forRoot()
       ],
       providers: [AppComponent, PersonalizedPlanService, ArrayUtilityService, ToastrService,
         { provide: MsalService, useValue: msalService },

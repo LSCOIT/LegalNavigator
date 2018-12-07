@@ -26,6 +26,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Global } from '../../../global';
 import { MsalService } from '@azure/msal-angular';
 import { StateCodeService } from '../../state-code.service';
+import { PipeModule } from '../../pipe/pipe.module';
 
 describe('SearchResultsComponent', () => {
   let component: SearchResultsComponent;
@@ -76,7 +77,8 @@ describe('SearchResultsComponent', () => {
         RouterModule.forRoot([
           { path: 'search', component: SearchResultsComponent }
         ]),
-        HttpClientModule
+        HttpClientModule,
+        PipeModule.forRoot()
       ],
       providers: [
         NavigateDataService,

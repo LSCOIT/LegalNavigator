@@ -22,6 +22,7 @@ import { ILuisInput } from './search-results/search-results.model';
 import { NgForm } from '@angular/forms/src/directives/ng_form';
 import { Input } from '@angular/core/src/metadata/directives';
 import { MsalService } from '@azure/msal-angular';
+import { PipeModule } from '../pipe/pipe.module';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
@@ -135,7 +136,10 @@ describe('SearchComponent', () => {
         RouterModule.forRoot([
           { path: 'search', component: SearchResultsComponent }
         ]),
-        HttpClientModule, FormsModule],
+        HttpClientModule,
+        FormsModule,
+        PipeModule.forRoot()
+        ],
       providers: [
         { provide: APP_BASE_HREF, useValue: '/' },
         { provide: Router, useValue: mockRouter },

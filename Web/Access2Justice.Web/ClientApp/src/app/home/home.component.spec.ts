@@ -6,6 +6,7 @@ import { Global } from '../global';
 import { MapService } from '../shared/map/map.service';
 import { StateCodeService } from '../shared/state-code.service';
 import { HttpClientModule } from '@angular/common/http';
+import { PipeModule } from '../shared/pipe/pipe.module';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -33,7 +34,10 @@ describe('HomeComponent', () => {
     mockGlobal.getData.and.returnValue(globalData);
     
     TestBed.configureTestingModule({
-      imports: [HttpClientModule],
+      imports: [
+        HttpClientModule,
+        PipeModule.forRoot()
+        ],
       declarations: [ HomeComponent ],
       providers: [ 
         { provide: StaticResourceService, useValue: mockStaticResourceService },
