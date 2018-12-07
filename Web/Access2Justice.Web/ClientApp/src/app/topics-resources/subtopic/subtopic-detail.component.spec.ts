@@ -24,6 +24,7 @@ import { of } from 'rxjs/observable/of';
 import { MsalService } from '@azure/msal-angular';
 import { Global } from '../../global';
 import { PipeModule } from '../../shared/pipe/pipe.module';
+import { BsDropdownModule } from 'ngx-bootstrap';
 
 
 describe('SubtopicDetailComponent', () => {
@@ -104,7 +105,8 @@ describe('SubtopicDetailComponent', () => {
           { path: 'subtopics/:topic', component: SubtopicDetailComponent }
         ]),
         HttpClientModule,
-        PipeModule.forRoot()
+        PipeModule.forRoot(),
+        BsDropdownModule.forRoot()
       ],
       providers: [
         { provide: APP_BASE_HREF, useValue: '/' },

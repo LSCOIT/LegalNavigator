@@ -27,6 +27,7 @@ import { Global } from '../../../global';
 import { MsalService } from '@azure/msal-angular';
 import { StateCodeService } from '../../state-code.service';
 import { PipeModule } from '../../pipe/pipe.module';
+import { BsDropdownModule } from 'ngx-bootstrap';
 
 describe('SearchResultsComponent', () => {
   let component: SearchResultsComponent;
@@ -78,7 +79,8 @@ describe('SearchResultsComponent', () => {
           { path: 'search', component: SearchResultsComponent }
         ]),
         HttpClientModule,
-        PipeModule.forRoot()
+        PipeModule.forRoot(),
+        BsDropdownModule.forRoot()
       ],
       providers: [
         NavigateDataService,

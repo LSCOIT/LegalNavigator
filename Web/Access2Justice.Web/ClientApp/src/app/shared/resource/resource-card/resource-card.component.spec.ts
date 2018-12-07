@@ -6,6 +6,7 @@ import { ShareButtonComponent } from '../user-action/share-button/share-button.c
 import { ResourceCardDetailComponent } from '../resource-card-detail/resource-card-detail.component';
 import { Global } from '../../../global';
 import { PipeModule } from '../../pipe/pipe.module';
+import { BsDropdownModule } from 'ngx-bootstrap';
 
 describe('ResourceCardComponent', () => {
   let component: ResourceCardComponent;
@@ -21,7 +22,8 @@ describe('ResourceCardComponent', () => {
         ResourceCardDetailComponent
       ],
       imports: [
-        PipeModule.forRoot()
+        PipeModule.forRoot(),
+        BsDropdownModule.forRoot()
         ],
       providers: [        
         { provide: Global, useValue: { role: '', shareRouteUrl: '' } },
