@@ -3,10 +3,6 @@ p {
   font-weight: 400;
 }
 
-p.ps {
-  margin-top: 10px
-}
-
 .row {
   margin: 5px auto;
 }
@@ -126,6 +122,12 @@ p.ps {
 
 .close {
   margin-right: 15px;
+}
+
+.location-support {
+  margin: 10px 30px;
+  padding: 10px;
+  background-color: #f4f4f4;
 }
 
 @media only screen and (min-width : 540px) {

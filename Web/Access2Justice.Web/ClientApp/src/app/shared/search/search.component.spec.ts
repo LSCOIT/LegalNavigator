@@ -23,6 +23,7 @@ import { NgForm } from '@angular/forms/src/directives/ng_form';
 import { Input } from '@angular/core/src/metadata/directives';
 import { MsalService } from '@azure/msal-angular';
 import { PipeModule } from '../pipe/pipe.module';
+import { BsDropdownModule } from 'ngx-bootstrap';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
@@ -138,7 +139,8 @@ describe('SearchComponent', () => {
         ]),
         HttpClientModule,
         FormsModule,
-        PipeModule.forRoot()
+        PipeModule.forRoot(),
+        BsDropdownModule.forRoot()
         ],
       providers: [
         { provide: APP_BASE_HREF, useValue: '/' },

@@ -4,10 +4,10 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-print-button',
   template:`
-  <span (click)="print()" [ngClass]="{'link': addLinkClass, '': !addLinkClass}">
+  <button (click)="print()" class="user-button" [ngClass]="{'link': addLinkClass, '': !addLinkClass}">
       <img *ngIf="showIcon" src="./assets/images/small-icons/print.svg" class="nav-icon" aria-hidden="true" />
       Print
-</span>
+</button>
  `
 })
 
