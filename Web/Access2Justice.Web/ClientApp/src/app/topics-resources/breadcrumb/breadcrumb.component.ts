@@ -41,7 +41,7 @@ export class BreadcrumbComponent implements OnInit {
           this.breadcrumbs = items.response.reverse();
           this.breadcrumbs.unshift({ id: "", name: "All Topics" });
           this.breadcrumbs.forEach(item => {
-            if (item.id === this.activeTopic) {
+            if (item.id[0] === this.activeTopic) {
               this.activeTopicName = item.name;
               this.activeTopicId = item.id;
             }
