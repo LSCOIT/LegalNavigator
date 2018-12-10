@@ -36,6 +36,8 @@
         public const string HtmlRightBracket = ">";
         public const string HtmlLeftBracket = "<";
         public const string A2JAuthorCustomFunctionTags = "%%";
+        public const string StateProvinceType = "stateProvince";
+        public const string StateProvince = "stateProvinces";
 
         public static class ReasourceTypes
         {

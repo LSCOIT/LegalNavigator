@@ -5,6 +5,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Global } from '../../global';
 import { MapService } from '../map/map.service';
 import { EventUtilityService } from '../event-utility.service';
+import { StateCodeService } from '../state-code.service';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('LowerNavComponent', () => {
   let component: LowerNavComponent;
@@ -32,12 +34,14 @@ describe('LowerNavComponent', () => {
     mockGlobal.getData.and.returnValue(globalData);
     
     TestBed.configureTestingModule({
+      imports: [HttpClientModule],
       declarations: [ LowerNavComponent ],
       providers: [ 
         { provide: StaticResourceService, useValue: mockStaticResourceService },
         { provide: Global, useValue: mockGlobal },
         MapService,
-        EventUtilityService
+        EventUtilityService,
+        StateCodeService
       ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })

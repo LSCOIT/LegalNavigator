@@ -1,14 +1,14 @@
 <div *ngIf="resource">
   <div class="box-no-shadow">
     <div class="resource-body">
-      <div class="pull-right" *ngIf="global.showDropDown">
-        <div class="btn-group" dropdown>
+      <div class="pull-right" *ngIf="global.showDropDown" tabindex="0" (keyup.enter)="dropdown.toggle(true)">
+        <div class="btn-group" dropdown #dropdown="bs-dropdown">
           <img dropdownToggle type="button" class="more-menu dropdown-toggle no-print" src="./assets/images/small-icons/more_menu.svg" alt="Menu" />
           <ul id="dropdown-disabled-item" *dropdownMenu class="dropdown-menu dropdown-menu-right"
               role="menu">
             <li role="menuitem" *ngIf="global.showShare">
               <a class="dropdown-item">
-                <app-share-button [showIcon]=false [id]="resource.id" [type]="resource.resourceType" [url]="resource?.url" [webResourceUrl]="resource?.resourceDetails?.url"></app-share-button>
+                <app-share-button [showIcon]=false [id]="resource.id" [type]="resource.resourceType" [url]="resource?.url | sanitize" [webResourceUrl]="resource?.resourceDetails?.url"></app-share-button>
               </a>
             </li>
             <li role="menuitem" id="save-dropdown" *ngIf="!showRemoveOption">
@@ -30,7 +30,7 @@
             <img class="media-object" src="/assets/images/icons/forms.svg" [alt]="resource.resourceType">
           </div>
           <div class="media-body">
-            <a [href]="resource.url"><h4 class="media-heading">{{resource.name}}</h4></a>
+            <a class="h4" [href]="resource.url | sanitize">{{resource.name}}</a>
             <div class="print-only">{{resource.url}}</div>
             <div class="external-link">
               <img src="./assets/images/small-icons/external_link.svg" alt="external link" class="nav-icon"/>
@@ -44,7 +44,7 @@
             <img class="media-object" src="{{resource.icon}}" [alt]=resource.resourceType>
           </div>
           <div class="media-body">
-            <a [routerLink]="['/subtopics', resource.id]"><h4 class="media-heading">{{resource.name}}</h4></a>
+            <a [routerLink]="['/subtopics', resource.id]" class="h4">{{resource.name}}</a>
             <div class="print-only">{{applicationUrl+'/subtopics'+'/'+resource.id}}</div>
             <p>{{resource.overview}}</p>
           </div>
@@ -54,7 +54,7 @@
             <img class="media-object" src="/assets/images/icons/action_plans.svg" [alt]=resource.resourceType>
           </div>
           <div class="media-body">
-            <a [routerLink]="['/guidedassistant', resource.curatedExperienceId]"><h4 class="media-heading">{{resource.name}}</h4></a>
+            <a class="h4" [routerLink]="['/guidedassistant', resource.curatedExperienceId]">{{resource.name}}</a>
             <div class="print-only">{{applicationUrl+'/guidedassistant'+'/'+resource.curatedExperienceId}}</div>
             <div class="media-body">
               <app-read-more *ngIf="resource.description" [text]="resource?.description" [maxLength]="240"></app-read-more>
@@ -66,7 +66,7 @@
             <img class="media-object" src="/assets/images/icons/videos.svg" [alt]="resource.resourceType">
           </div>
           <div class="media-body">
-            <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}</h4></a>
+            <a class="h4" [routerLink]="['/resource', resource.id]">{{resource.name}}</a>
             <div class="print-only">{{applicationUrl+'/resource'+'/'+resource.id}}</div>
             <app-read-more *ngIf="resource.description" [text]="resource?.description" [maxLength]="240"></app-read-more>
           </div>
@@ -76,7 +76,7 @@
             <img class="media-object" src="/assets/images/icons/articles.svg" [alt]="resource.resourceType">
           </div>
           <div class="media-body">
-            <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}</h4></a>
+            <a class="h4" [routerLink]="['/resource', resource.id]">{{resource.name}}</a>
             <div class="print-only">{{applicationUrl+'/resource'+'/'+resource.id}}</div>
             <app-read-more *ngIf="resource.description" [text]="resource?.description" [maxLength]="240"></app-read-more>
           </div>
@@ -86,7 +86,7 @@
             <img class="media-object" src="/assets/images/icons/organizations.svg" aria-hidden="true">
           </div>
           <div class="media-body">
-            <a [routerLink]="['/resource', resource.id]"><h4 class="media-heading">{{resource.name}}</h4></a>
+            <a class="h4" [routerLink]="['/resource', resource.id]">{{resource.name}}</a>
             <div class="print-only">{{applicationUrl+'/resource'+'/'+resource.id}}</div>
             <app-read-more *ngIf="resource.description" [text]="resource?.description" [maxLength]="240"></app-read-more>
             <div class="org-content span-text">
@@ -111,7 +111,7 @@
                   <img src="./assets/images/small-icons/url.svg" alt="Email" class="nav-icon no-print" />
                 </div>
                 <div class="col-sm-9 col-xs-9">
-                  <a class="link pxs" *ngIf="resource.url" [href]="resource.url">{{urlOrigin}}</a>
+                  <a class="link pxs" *ngIf="resource.url" [href]="resource.url  | sanitize">{{urlOrigin}}</a>
                 </div>
               </div>
             </div>
@@ -144,7 +144,7 @@
             <img class="media-object" src="/assets/images/icons/articles.svg" [alt]=resource.resourceType>
           </div>
           <div class="media-body">
-            <a [href]="resource.url"><h4 class="media-heading">{{resource.name}}</h4></a>
+            <a class="h4" [href]="resource.url  | sanitize">{{resource.name}}</a>
             <div class="external-link">
               <img src="./assets/images/small-icons/external_link.svg" alt="external link" class="nav-icon" />
               External Link

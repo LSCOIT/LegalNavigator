@@ -17,7 +17,7 @@ import { of } from 'rxjs/observable/of';
 import { environment } from '../../environments/environment.prod';
 import { expand } from 'rxjs/operator/expand';
 
-describe('component:profile', () => {
+describe('ProfileComponent', () => {
   let component: ProfileComponent;
   let fixture: ComponentFixture<ProfileComponent>;
   let arrayutilityservice: ArrayUtilityService;

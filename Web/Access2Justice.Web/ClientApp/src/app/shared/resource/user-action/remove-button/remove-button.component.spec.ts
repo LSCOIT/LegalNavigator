@@ -183,15 +183,6 @@ describe('RemoveButtonComponent', () => {
     expect(component.removePersonalizedPlan).toHaveBeenCalled();
   });
 
-  it('should call createRemovePlanTag, if selected plandetails exists', () => {
-    component.selectedPlanDetails = mockSelectedPlanDetails;
-    spyOn(component, 'createRemovePlanTag');
-    spyOn(component, 'removePersonalizedPlan');
-    component.removeSavedPlan();
-    expect(component.createRemovePlanTag).toHaveBeenCalled();
-    expect(component.removePersonalizedPlan).toHaveBeenCalled();
-  });
-
   it('should splice topics of plan details in createRemovePlanTag', () => {
     component.selectedPlanDetails = mockSelectedPlanDetails;
     component.createRemovePlanTag();

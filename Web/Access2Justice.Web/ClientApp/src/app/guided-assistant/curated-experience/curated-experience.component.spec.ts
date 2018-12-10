@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CuratedExperienceComponent } from './curated-experience.component';
+import { StateCodeService } from '../../shared/state-code.service';
 
 describe('CuratedExperienceComponent', () => {
   let component: CuratedExperienceComponent;
@@ -9,7 +10,8 @@ describe('CuratedExperienceComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CuratedExperienceComponent],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [StateCodeService]
     })
     .compileComponents();
   }));

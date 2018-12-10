@@ -3,12 +3,16 @@ import { AdminDashboardComponent } from './admin-dashboard.component';
 import { Global } from '../../global';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { StaticResourceService } from '../../shared/static-resource.service';
+import { Router } from '@angular/router';
+import { NavigateDataService } from '../../shared/navigate-data.service';
 
 describe('AdminDashboardComponent', () => {
   let component: AdminDashboardComponent;
   let fixture: ComponentFixture<AdminDashboardComponent>;
   let mockGlobal;
   let mockStaticResourceService;
+  let mockRouter;
+  let mockNavigateDataService;
 
   beforeEach(async(() => {
     mockGlobal = {
@@ -21,7 +25,9 @@ describe('AdminDashboardComponent', () => {
       declarations: [AdminDashboardComponent],
       providers: [
         { provide: Global, useValue: mockGlobal },
-        { provide: StaticResourceService, useValue: mockStaticResourceService }
+        { provide: StaticResourceService, useValue: mockStaticResourceService },
+        { provide: Router, useValue: mockRouter },
+        { provide: NavigateDataService, useValue: mockNavigateDataService }
       ],
       schemas: [
         CUSTOM_ELEMENTS_SCHEMA,

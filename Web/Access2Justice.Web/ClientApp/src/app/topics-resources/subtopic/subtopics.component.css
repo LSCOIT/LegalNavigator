@@ -46,3 +46,7 @@
     padding-left: 5%;
   }
 }
+
+.capitalize{
+  text-transform:capitalize;
+}

@@ -1,12 +1,5 @@
-﻿using Microsoft.AspNetCore.JsonPatch.Operations;
-using Newtonsoft.Json;
-using System;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using Swashbuckle.AspNetCore.Swagger;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using System.Globalization;
-using System.Text;
 using System.ComponentModel;
 
 namespace Access2Justice.Shared.Models

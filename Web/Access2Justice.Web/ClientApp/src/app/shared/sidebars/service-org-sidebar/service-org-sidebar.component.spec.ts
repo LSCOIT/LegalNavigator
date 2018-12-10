@@ -14,6 +14,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import { Subject } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
 import { Global } from '../../../global';
+import { StateCodeService } from '../../state-code.service';
 
 describe('Component:ServiceOrgSidebar', () => {
   let component: ServiceOrgSidebarComponent;
@@ -113,10 +114,15 @@ describe('Component:ServiceOrgSidebar', () => {
       }]
   }
   let nofityLocation: Subject<object> = new Subject<object>();
+  let mockEvent;
+
   beforeEach(async(() => {
     mockPaginationService = jasmine.createSpyObj(['getPagedResources']);
     mockNavigateDataService = jasmine.createSpyObj(['getData', 'setData']);
     mockPaginationService.getPagedResources.and.returnValue(of(mockOrganizations));
+    mockEvent = {
+      preventDefault: () => {}
+    }
 
     TestBed.configureTestingModule({
       declarations: [ServiceOrgSidebarComponent
@@ -144,7 +150,8 @@ describe('Component:ServiceOrgSidebar', () => {
         MapService,
         { provide: NavigateDataService, useValue: mockNavigateDataService },
         { provide: PaginationService, useValue: mockPaginationService },
-        Global
+        Global,
+        StateCodeService
 
       ],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
@@ -191,7 +198,7 @@ describe('Component:ServiceOrgSidebar', () => {
 
   it("should emit on callOrganizations", () => {
     spyOn(component.showMoreOrganizations, 'emit');
-    component.callOrganizations();
+    component.callOrganizations(mockEvent);
     expect(component.showMoreOrganizations.emit).toHaveBeenCalled();
     expect(component.showMoreOrganizations.emit).toHaveBeenCalledWith('Organizations');
   });

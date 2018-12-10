@@ -92,5 +92,7 @@ export interface Privacy {
 }
 
 export interface HelpText {
-  helpText?: string;
+  beginningText: string;
+  phoneNumber: string;
+  endingText: string;
 }

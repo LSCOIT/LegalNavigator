@@ -1,4 +1,4 @@
-<span id="save" (click)="savePlanResources()" [ngClass]="{'link': addLinkClass, '': !addLinkClass}">
+<button id="save" class="user-button" (click)="savePlanResources()" [ngClass]="{'link': addLinkClass, '': !addLinkClass}">
   <img *ngIf="showIcon" src="./assets/images/small-icons/save.svg" class="nav-icon" aria-hidden="true" />
   Save to profile
-</span>
+</button>

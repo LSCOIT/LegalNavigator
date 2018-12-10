@@ -14,7 +14,9 @@
     </div>
     <div class="resource-sections" *ngFor="let content of resource.contents">
       <h4>{{content.headline}}</h4>
-      <p>{{content.content}}</p>
+      <div class="newlines">
+        <p [innerHTML] ="content.content">{{content.content}}</p>
+      </div>
     </div>
   </div>
   <div class="col-md-4 col-sm-12 pull-right">

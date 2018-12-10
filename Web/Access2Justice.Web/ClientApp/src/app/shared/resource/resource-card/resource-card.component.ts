@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 import { Global, UserStatus } from '../../../global';
 
 @Component({
@@ -26,11 +25,7 @@ export class ResourceCardComponent implements OnInit {
     'WebResources'
     ];
 
-  constructor(
-    public sanitizer: DomSanitizer,
-    private global: Global
-  ) {
-    this.sanitizer = sanitizer;
+  constructor(private global: Global) {
     if (global.role === UserStatus.Shared && location.pathname.indexOf(global.shareRouteUrl) >= 0) {
       global.showShare = false;
       this.showRemoveOption = false;
@@ -41,11 +36,6 @@ export class ResourceCardComponent implements OnInit {
       this.showRemoveOption = true;
       global.showDropDown = true;
     }
-  }
-
-  resourceUrl() {
-    this.url = this.sanitizer.bypassSecurityTrustResourceUrl(this.resource.url);
-    return this.url;
   }
 
   ngOnInit() {

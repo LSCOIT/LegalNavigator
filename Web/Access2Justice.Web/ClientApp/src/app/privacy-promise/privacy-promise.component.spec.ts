@@ -5,7 +5,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Global } from '../global';
 import { MapService } from '../shared/map/map.service';
 
-describe('HelpFaqsComponent', () => {
+describe('PrivacyPromiseComponent', () => {
   let component: PrivacyPromiseComponent;
   let fixture: ComponentFixture<PrivacyPromiseComponent>;
   let mockStaticResourceService;
@@ -53,7 +53,7 @@ describe('HelpFaqsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should set help and faq content to static resource content if it exists', () => {
+  it('should set privacy promise content to static resource content if it exists', () => {
     mockStaticResourceService.getLocation.and.returnValue('Default');
     mockStaticResourceService.helpAndFaqsContent = privacyContent;
     component.getPrivacyPageContent();
