@@ -22,11 +22,8 @@ namespace Access2Justice.Integration.Partners.Rtm
 
         public async Task<List<string>> GetServiceProviders(string topicName)
         {
-            return new List<string>() { "Family Based Services", "Family Violence Prevention", "Family Support Services" };
-        }
-
-        public async Task<ServiceProvider> GetServiceProviderDetails(string providerId)
-        {
+            var serviceProviders = new List<string>();
+            topicName = string.IsNullOrEmpty(topicName) ? "Family Based Services" : topicName;
             var httpClient = new HttpClientService();
             var sessionUrl = "https://www.referweb.net/pubres/api/GetSessionID/?ip={{apikey:'{61GV7G4Y}'}}";
             var sResponse = await httpClient.GetAsync(new Uri(sessionUrl)).ConfigureAwait(false);
@@ -38,45 +35,81 @@ namespace Access2Justice.Integration.Partners.Rtm
             if (!string.IsNullOrEmpty(sessionId))
             {
                 string spUrl = "https://www.referweb.net/pubres/api/ServiceProviders/?ip={{apikey:'{61GV7G4Y}',st:'s',catid:'',sn:'{0}',zip:'',county:'',sid:'{1}'}}";
-                var serviceProviderUrl = string.Format(CultureInfo.InvariantCulture, spUrl, providerId, sessionId);
+                var serviceProviderUrl = string.Format(CultureInfo.InvariantCulture, spUrl, topicName, sessionId);
                 var response = await httpClient.GetAsync(new Uri(serviceProviderUrl)).ConfigureAwait(false);
                 var serviceProviderResponse = response.Content.ReadAsStringAsync().Result;
                 if (!string.IsNullOrEmpty(serviceProviderResponse))
                 {
-                    var serviceProviderObject = JsonConvert.DeserializeObject(serviceProviderResponse);
-                    serviceProvider = ProcessRTMData(serviceProviderObject);
+                    dynamic serviceProviderObject = JsonConvert.DeserializeObject(serviceProviderResponse);
+                    foreach (var site in serviceProviderObject.Sites)
+                    {
+                        serviceProviders.Add(topicName + "|" + site.Key);
+                    }
+                }
+            }
+            return serviceProviders;
+        }
+
+        public async Task<ServiceProvider> GetServiceProviderDetails(string providerId)
+        {
+            var httpClient = new HttpClientService();
+            var providerDetails = providerId.Split("|");
+            var sessionUrl = "https://www.referweb.net/pubres/api/GetSessionID/?ip={{apikey:'{61GV7G4Y}'}}";
+            var sResponse = await httpClient.GetAsync(new Uri(sessionUrl)).ConfigureAwait(false);
+            var session = sResponse.Content.ReadAsStringAsync().Result;
+
+            dynamic sessionJson = JsonConvert.DeserializeObject(session);
+            string sessionId = sessionJson[0][Constants.RTMSessionId];
+            var serviceProvider = new ServiceProvider();
+            if (!string.IsNullOrEmpty(sessionId))
+            {
+                string spUrl = "https://www.referweb.net/pubres/api/ServiceProviders/?ip={{apikey:'{61GV7G4Y}',st:'s',catid:'',sn:'{0}',zip:'',county:'',sid:'{1}'}}";
+                var serviceProviderUrl = string.Format(CultureInfo.InvariantCulture, spUrl, providerDetails[0], sessionId);
+                var response = await httpClient.GetAsync(new Uri(serviceProviderUrl)).ConfigureAwait(false);
+                var serviceProviderResponse = response.Content.ReadAsStringAsync().Result;
+                if (!string.IsNullOrEmpty(serviceProviderResponse))
+                {
+                    dynamic serviceProviderObject = JsonConvert.DeserializeObject(serviceProviderResponse);
+                    foreach (var site in serviceProviderObject.Sites)
+                    {
+                        if (site.Key == providerDetails[1].Trim())
+                        {
+                            var spDetailsResponse = await RTMProviderDetails(site, sessionId);
+                            serviceProvider = ProcessRTMData(serviceProviderObject, spDetailsResponse);
+                        }
+                    }                    
                 }
             }
 
             return serviceProvider;
         }
 
-         // ## TODO : Need to check with Andrew on this to implement further.... 
-        //private async Task<dynamic> ServiceProviderData(dynamic site, string sessionId, IHttpClientService httpClient)
-        //{
-        //    string siteID = site?.Sites[0]["ID"];
-        //    string serviceGroupID = site?.Sites[0]["ServiceGroup"][0]["ID"];
-        //    string serviceSiteID = site?.Sites[0]["ServiceGroup"][0]["ServiceSites"][0]["ID"];
-        //    string serviceDetailLink = "https://www.referweb.net/pubres/api/ProviderDetail/?ip={{apikey:'{0}',locid: '{1}',svid:'{2}',ssid:'{3}',sid:'{4}'}}";
-        //    string servicedetailURL = string.Format(CultureInfo.InvariantCulture, serviceDetailLink, siteID, serviceGroupID, serviceSiteID, sessionId);
-        //    var response = await httpClient.GetAsync(new Uri(servicedetailURL)).ConfigureAwait(false);
-        //    var spDetailResponse = response.Content.ReadAsStringAsync().Result;
-
-        //}
+        public async Task<dynamic> RTMProviderDetails(dynamic site, string sessionId)
+        {
+            var httpClient = new HttpClientService();
+            string siteID = site?.Sites[0]["ID"];
+            string serviceGroupID = site?.Sites[0]["ServiceGroup"][0]["ID"];
+            string serviceSiteID = site?.Sites[0]["ServiceGroup"][0]["ServiceSites"][0]["ID"];
+            string serviceDetailLink = "https://www.referweb.net/pubres/api/ProviderDetail/?ip={{apikey:'{0}',locid: '{1}',svid:'{2}',ssid:'{3}',sid:'{4}'}}";
+            string servicedetailURL = string.Format(CultureInfo.InvariantCulture, serviceDetailLink, siteID, serviceGroupID, serviceSiteID, sessionId);
+            var response = await httpClient.GetAsync(new Uri(servicedetailURL)).ConfigureAwait(false);
+            var spDetailResponse = response.Content.ReadAsStringAsync().Result;
+            return JsonConvert.DeserializeObject(spDetailResponse);
+        }
 
         /// <summary>
         /// Converts RTM Service Provider data into Service Provider Model.
         /// </summary>
         /// <param name="serviceProviderObject">RTM serviceProvider Object</param>
         /// <returns></returns>
-        private ServiceProvider ProcessRTMData(dynamic serviceProviderObject)
+        private ServiceProvider ProcessRTMData(dynamic serviceProviderObject, dynamic spDetails)
         {
             var site = serviceProviderObject.Sites[0];
             string siteId = site.ID.ToString();
-            return ConvertToServiceProvider(site);
+            return ConvertToServiceProvider(site, spDetails);
         }
 
-        private dynamic ConvertToServiceProvider(dynamic site)
+        private dynamic ConvertToServiceProvider(dynamic site, dynamic spDetails)
         {
             return new ServiceProvider()
             {
@@ -86,6 +119,7 @@ namespace Access2Justice.Integration.Partners.Rtm
                 AcceptanceCriteria = GetAcceptanceCriteria(site.acceptanceCriteria),
                 OnboardingInfo = GetOnboardingInfo(site.onboardingInfo),
                 Name = site.Name,
+                Description = GetDescription(spDetails),
                 ResourceCategory = site.resourceCategory,
                 ResourceType = Constants.ServiceProviderResourceType,
                 Url = site.URL,
@@ -98,7 +132,7 @@ namespace Access2Justice.Integration.Partners.Rtm
                 Overview = site.overview,
                 Specialties = site.specialties,
                 EligibilityInformation = site.eligibilityInformation,
-                //BusinessHours = GetBusinessHours(site.businessHours),
+                BusinessHours = GetBusinessHours(site.businessHours),
                 Qualifications = site.qualifications
             };
         }
@@ -140,7 +174,7 @@ namespace Access2Justice.Integration.Partners.Rtm
         }
 
         /// <summary>
-        /// return location
+        /// returns location
         /// </summary>
         /// <param name="siteAddress"></param>
         /// <returns></returns>
@@ -283,7 +317,7 @@ namespace Access2Justice.Integration.Partners.Rtm
         }
 
         /// <summary>
-        /// retruns acceptance criteria
+        /// returns acceptance criteria
         /// </summary>
         /// <param name="acceptanceCriteriaValues"></param>
         /// <returns></returns>
@@ -323,6 +357,31 @@ namespace Access2Justice.Integration.Partners.Rtm
             }
 
             return onboardingInfo;
+        }
+
+        /// <summary>
+        /// returns description for resource.
+        /// </summary>
+        /// <param name="spDetails"></param>
+        /// <returns></returns>
+        private static string GetDescription(dynamic spDetails)
+        {
+            string description = string.Empty;
+            if (spDetails?.Count > 0)
+            {
+                foreach (var item in spDetails)
+                {
+                    foreach (var detailText in item[0]?.DetailText)
+                    {
+                        if (detailText.Label == "SERVICE DESCRIPTION")
+                        {
+                            description = detailText.Text;
+                            break;
+                        }
+                    }
+                }
+            }
+            return description;
         }
     }
 }
