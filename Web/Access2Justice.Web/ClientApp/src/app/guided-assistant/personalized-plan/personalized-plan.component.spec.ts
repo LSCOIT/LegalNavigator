@@ -12,9 +12,8 @@ import { of } from 'rxjs/observable/of';
 import { NavigateDataService } from '../../shared/navigate-data.service';
 import { StaticResourceService } from '../../shared/static-resource.service';
 import { Global } from '../../global';
-import { FormsModule } from '@angular/forms';
 import { PersonalizedPlanDescription } from './personalized-plan';
-import { Mock } from 'protractor/built/driverProviders';
+
 
 describe('Component:PersonalizedPlan', () => {
 
@@ -289,7 +288,7 @@ describe('Component:PersonalizedPlan', () => {
       RouterModule.forRoot([
         { path: 'plan /: id', component: PersonalizedPlanComponent }
       ]),
-        HttpClientModule, FormsModule],
+        HttpClientModule],
       declarations: [PersonalizedPlanComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
