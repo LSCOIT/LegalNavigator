@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { PersonalizedPlanService } from '../personalized-plan/personalized-plan.service';
-import { PersonalizedPlanTopic, PersonalizedPlan } from '../personalized-plan/personalized-plan';
+import { PersonalizedPlanTopic, PersonalizedPlan, PersonalizedPlanDescription } from '../personalized-plan/personalized-plan';
 import { ActivatedRoute } from '@angular/router';
 import { NavigateDataService } from '../../shared/navigate-data.service';
+import { StaticResourceService } from '../../shared/static-resource.service';
+import { Global } from '../../global';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-personalized-plan',
@@ -20,10 +23,19 @@ export class PersonalizedPlanComponent implements OnInit {
   planDetailTags: any;
   type: string = "Plan";
 
+  name: string = 'PersonalizedActionPlanPage';
+  personalizedPlanContent: PersonalizedPlanDescription;
+  staticContent: any;
+  staticContentSubcription: any;
+  blobUrl: string = environment.blobUrl;
+  description: string = '';
+
   constructor(
     private personalizedPlanService: PersonalizedPlanService,
     private activeRoute: ActivatedRoute,
-    private navigateDataService: NavigateDataService
+    private navigateDataService: NavigateDataService,
+    private staticResourceService: StaticResourceService,
+    private global: Global
   ) { }
 
   getTopics(): void {
@@ -74,7 +86,32 @@ export class PersonalizedPlanComponent implements OnInit {
     this.filterPlan("");
   }
 
+  getPersonalizedPlanHeading(): void {
+    if (this.staticResourceService.PersonalizedPlanDescription && (this.staticResourceService.PersonalizedPlanDescription.location[0].state == this.staticResourceService.getLocation())) {
+      this.personalizedPlanContent = this.staticResourceService.PersonalizedPlanDescription;
+      this.description = this.personalizedPlanContent.description;
+    } else {
+      if (this.global.getData()) {
+        this.staticContent = this.global.getData();
+        this.personalizedPlanContent = this.staticContent.find(x => x.name === this.name);
+        this.staticResourceService.PersonalizedPlanDescription = this.personalizedPlanContent;
+        this.description = this.personalizedPlanContent.description;
+      }
+    }
+  }
+
   ngOnInit() {
     this.getTopics();
+    this.getPersonalizedPlanHeading();
+    this.staticContentSubcription = this.global.notifyStaticData
+      .subscribe(() => {
+        this.getPersonalizedPlanHeading();
+      });
+  }
+
+  ngOnDestroy() {
+    if (this.staticContentSubcription) {
+      this.staticContentSubcription.unsubscribe();
+    }
   }
 }
