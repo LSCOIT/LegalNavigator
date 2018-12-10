@@ -13,5 +13,7 @@ namespace Access2Justice.Shared.Interfaces
         Task<dynamic> UpsertStaticHelpAndFAQPageDataAsync(HelpAndFaqsContent helpAndFAQPageContent);
         Task<dynamic> UpsertStaticNavigationDataAsync(Navigation navigationContent);
         Task<dynamic> UpsertStaticAboutPageDataAsync(AboutContent aboutContent);
+        Task<dynamic> UpsertStaticPersnalizedPlanPageDataAsync(PersonalizedPlanContent personalizedPlanContent);
+
     }
 }
