@@ -11,6 +11,7 @@ using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Interfaces.A2JAuthor;
 using Access2Justice.Shared.Models;
+using Access2Justice.Shared.Utilities;
 using Microsoft.Azure.Documents;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -29,6 +30,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly IPersonalizedPlanEngine personalizedPlanEngine;
         private readonly IPersonalizedPlanViewModelMapper personalizedPlanViewModelMapper;
         private readonly IPersonalizedPlanBusinessLogic personalizedPlanBusinessLogicSettings;
+        private readonly ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic;
 
         //Mocked input data
         private readonly dynamic topicId = Guid.Parse("e1fdbbc6-d66a-4275-9cd2-2be84d303e12");
@@ -49,6 +51,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly JArray expectedPersonalizedPlanView = PersonalizedPlanTestData.personalizedPlanView;
         private readonly JArray expectedConvertedPersonalizedPlanSteps = PersonalizedPlanTestData.convertedPersonalizedPlanSteps;
         private readonly PersonalizedPlanBusinessLogic personalizedPlanBusinessLogic;
+        private readonly PersonalizedPlanViewModelMapper personalizedPlanBusinessLogicViewModelMapper;
         public PersonalizedPlanBussinessLogicTests()
         {
             dbService = Substitute.For<IBackendDatabaseService>();
@@ -56,11 +59,14 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             dynamicQueries = Substitute.For<IDynamicQueries>();
             userProfileBusinessLogic = Substitute.For<IUserProfileBusinessLogic>();
             personalizedPlanBusinessLogicSettings = Substitute.For<IPersonalizedPlanBusinessLogic>();
+            topicsResourcesBusinessLogic = Substitute.For<ITopicsResourcesBusinessLogic>();
             personalizedPlanBusinessLogic = new PersonalizedPlanBusinessLogic(dbSettings, dbService, dynamicQueries, userProfileBusinessLogic, personalizedPlanEngine, personalizedPlanViewModelMapper);
+            personalizedPlanBusinessLogicViewModelMapper = new PersonalizedPlanViewModelMapper(dbSettings, dynamicQueries, topicsResourcesBusinessLogic, dbService);
             dbSettings.ActionPlansCollectionId.Returns("ActionPlans");
             dbSettings.A2JAuthorDocsCollectionId.Returns("A2JAuthorDocs");
             dbSettings.GuidedAssistantAnswersCollectionId.Returns("GuidedAssistantAnswers");
             dbSettings.ProfilesCollectionId.Returns("Profiles");
+            dbSettings.ResourcesCollectionId.Returns("Resources");
         }
 
         [Theory]
@@ -140,7 +146,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             Document updatedDocument = new Document();
             JsonTextReader reader = new JsonTextReader(new StringReader(ShareTestData.userProfileWithSharedResource));
             updatedDocument.LoadFrom(reader);
-    
+
             dbService.UpdateItemAsync<UserProfile>(
             Arg.Any<string>(),
             Arg.Any<UserProfile>(),
@@ -156,6 +162,25 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             //assert
             Assert.Equal("RanToCompletion", response.Status.ToString());
         }
+
+        //[Theory]
+        //[MemberData(nameof(PersonalizedPlanTestData.UnprocessedPersonalizedPlan), MemberType = typeof(PersonalizedPlanTestData))]
+        //public void MapViewModelValidate(UnprocessedPersonalizedPlan unprocessedPersonalizedPlan, UnprocessedTopic unprocessedTopic)
+        //{
+        //    //arrange           
+        //    IEnumerable<string> resourceValues2 = new string[] { "6a9f4c22-b1ab-46cf-8702-41a0b9522f82", "6a9f4c22-b1ab-46cf-8702-41a0b9522f12" };
+        //    var resourceData = dynamicQueries.FindItemsWhereInClauseAsync(dbSettings.ResourcesCollectionId, Constants.Id, resourceValues2);
+        //    resourceData.ReturnsForAnyArgs(ResourceObjects);
+        //    var resourceDetails = JsonUtilities.DeserializeDynamicObject<List<Shared.Models.Resource>>(resourceData);
+
+        //    //act
+        //    var response = personalizedPlanBusinessLogicViewModelMapper.MapViewModel(unprocessedPersonalizedPlan);
+
+        //    //assert
+        //}
+        //public static string ResourceObjects = "{\"name\":\"Form1\",\"type\":\"form\",\"description\":\"Subhead lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem\",\"resourceType\":\"Forms\",\"externalUrl\":\"www.youtube.com\",\"url\":\"access2justice.com\",\"topicTags\":[{\"id\":\"aaa085ef-96fb-4fd0-bcd0-0472ede66512\"},{\"id\":\"2c0cc7b8-62b1-4efb-8568-b1f767f879bc\"}],\"organizationalUnit\":\"Alaska\",\"location\":[{\"state\":\"Hawaii\",\"city\":\"Haiku-Pauwela\"},{\"state\":\"Alaska\"}],\"overview\":\"Form1\",\"fullDescription\":\"Below is the form you will need if you are looking to settle your child custody dispute in court. We have included helpful tips to guide you along the way.\",\"createdBy\":\"API\",\"createdTimeStamp\":\"\",\"modifiedBy\":\"API\",\"modifiedTimeStamp\":\"\"},{\"name\":\"Form2\",\"type\":\"form\",\"description\":\"Subhead lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem\",\"resourceType\":\"Forms\",\"externalUrl\":\"\",\"url\":\"\",\"topicTags\":[{\"id\":\"aaa085ef-96fb-4fd0-bcd0-0472ede66512\"},{\"id\":\"2c0cc7b8-62b1-4efb-8568-b1f767f879bc\"}],\"organizationalUnit\":\"Alaska\",\"location\":[{\"state\":\"Hawaii\",\"city\":\"Haiku-Pauwela\"},{\"state\":\"Hawaii\"}],\"overview\":\"Form2\",\"fullDescription\":\"Below is the form you will need if you are looking to settle your child custody dispute in court. We have included helpful tips to guide you along the way.\",\"createdBy\":\"\",\"createdTimeStamp\":\"\",\"modifiedBy\":\"\",\"modifiedTimeStamp\":\"\"}";
+        //public static Shared.Models.Resource ResourceData =>
+        //     new Shared.Models.Resource { Name = "Form1", ResourceType = "Forms", ResourceId = Guid.Parse("19a02209-ca38-4b74-bd67-6ea941d41518"), Url = "access2justice.com", TopicTags = { new TopicTag { TopicTags = { "aaa085ef-96fb-4fd0-bcd0-0472ede66512", "2c0cc7b8-62b1-4efb-8568-b1f767f879bc" } } }, ResourceCategory = "test", OrganizationalUnit = "Alaska", Location = { new Location { State = "AL", City = "Alaska", County = "test", ZipCode = "test" } }, CreatedBy = "test", Description = "test", ModifiedBy = "test", CreatedTimeStamp = DateTime.UtcNow, ModifiedTimeStamp = DateTime.UtcNow };
         //[Fact]
         //public void GetTopicNameByTopicId()
         //{
