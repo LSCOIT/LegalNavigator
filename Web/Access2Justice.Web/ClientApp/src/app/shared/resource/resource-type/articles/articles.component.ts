@@ -9,6 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ArticlesComponent implements OnInit {
   @Input() resource;
+  @Input() activeSubtopicParam;
   activeResource: any;
   replacedContents: any;
   constructor(
@@ -17,8 +18,7 @@ export class ArticlesComponent implements OnInit {
   ) { }
 
   clickSeeMoreOrganizationsFromArticles(resourceType: string) {
-    this.activeResource = this.activeRoute.snapshot.params['id'];
-    this.showMoreService.clickSeeMoreOrganizations(resourceType, this.activeResource);
+    this.showMoreService.clickSeeMoreOrganizations(resourceType, this.activeSubtopicParam);
   }
 
   displayResourceUrlData() {

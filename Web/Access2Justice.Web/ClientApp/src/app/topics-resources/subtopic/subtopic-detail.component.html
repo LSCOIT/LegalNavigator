@@ -40,7 +40,7 @@
       <div *ngIf="articleData.length > 0" class="row">
         <h3>Articles</h3>
         <div *ngFor="let resource of articleData; let indexer=index">
-          <app-resource-card *ngIf="indexer<displayResources" [resource]="resource" [showRemoveOption]="showRemoveOption"></app-resource-card>
+          <app-resource-card *ngIf="indexer<displayResources" [resource]="resource" [showRemoveOption]="showRemoveOption" [activeSubtopicParam]="activeSubtopicParam"></app-resource-card>
         </div>
         <button class="btn btn-primary no-print" (click)="clickSeeMoreOrganizationsFromSubtopicDetails(articleData[0].resourceType)">See more Articles</button>
       </div>

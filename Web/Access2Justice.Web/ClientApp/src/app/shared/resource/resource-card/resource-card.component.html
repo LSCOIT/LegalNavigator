@@ -83,7 +83,7 @@
             <img class="media-object" src="/assets/images/icons/articles.svg" [alt]="resource.resourceType">
           </div>
           <div class="media-body">
-            <a class="h4 no-print" [routerLink]="['/resource', resource.id]">{{resource.name}}</a>
+            <a class="h4 no-print" [routerLink]="['/resource', resource.id, activeSubtopicParam]">{{resource.name}}</a>
             <h4 class="print-only">{{resource.name}}</h4>
             <div class="print-only">{{applicationUrl+'/resource'+'/'+resource.id}}</div>
             <app-read-more class="no-print" *ngIf="resource.description" [text]="resource?.description" [maxLength]="240"></app-read-more>
