@@ -226,6 +226,10 @@ textarea {
   border: none;
 }
 
+.popover-content {
+  display: none;
+}
+
 @media only screen and (min-width : 540px) {
   .modal-dialog {
     height: 570px;
@@ -272,6 +276,7 @@ textarea {
   }
 
   .popover-content {
+    display: block;
     opacity: 0;
     visibility: hidden;
     position: absolute;
