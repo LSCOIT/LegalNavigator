@@ -11,6 +11,7 @@ export class ArticlesComponent implements OnInit {
   @Input() resource;
   activeResource: any;
   replacedContents: any;
+  topIntent: string
   constructor(
     private showMoreService: ShowMoreService,
     private activeRoute: ActivatedRoute
@@ -18,7 +19,7 @@ export class ArticlesComponent implements OnInit {
 
   clickSeeMoreOrganizationsFromArticles(resourceType: string) {
     this.activeResource = this.activeRoute.snapshot.params['id'];
-    this.showMoreService.clickSeeMoreOrganizations(resourceType, this.activeResource);
+    this.showMoreService.clickSeeMoreOrganizations(resourceType, this.activeResource, this.topIntent);
   }
 
   displayResourceUrlData() {

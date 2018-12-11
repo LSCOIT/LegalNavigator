@@ -91,7 +91,7 @@ export class SubtopicDetailComponent implements OnInit {
       );
   }
   clickSeeMoreOrganizationsFromSubtopicDetails(resourceType: string) {
-    this.showMoreService.clickSeeMoreOrganizations(resourceType, this.activeSubtopicParam);
+    this.showMoreService.clickSeeMoreOrganizations(resourceType, this.activeSubtopicParam, this.topIntent);
   }
 
   ngOnInit() {
