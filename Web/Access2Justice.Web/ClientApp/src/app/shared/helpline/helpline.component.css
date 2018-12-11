@@ -17,11 +17,11 @@ a:hover {
   margin-bottom: -47px;
 }
 
-#helpline h2 {
+#helpline h3 {
   color: #FFF;
 }
 
-#helpline h2 a:focus {
+#helpline h3 a:focus {
   border-bottom: 2px solid white;
 }
 
