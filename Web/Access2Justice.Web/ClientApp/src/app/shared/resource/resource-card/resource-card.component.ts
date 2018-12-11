@@ -12,7 +12,6 @@ export class ResourceCardComponent implements OnInit {
   @Input() searchResource: any;
   @Input() isSearchResults: boolean;
   @Input() showRemoveOption: boolean;
-  @Input() activeSubtopicParam: any;
   url: any;
   urlOrigin: string;
   applicationUrl: any = window.location.origin;

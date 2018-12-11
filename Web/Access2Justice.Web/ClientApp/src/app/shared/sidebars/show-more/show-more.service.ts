@@ -15,12 +15,11 @@ export class ShowMoreService {
     private paginationService: PaginationService
   ) { }
   searchResults: any;
-  resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: { "state": "", "county": "", "city": "", "zipCode": "" }, IsResourceCountRequired: true };
-  topIntent: string;
+  resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: { "state": "", "county": "", "city": "", "zipCode": "" }, IsResourceCountRequired: true };  
   activeResource: any;
   locationDetails: LocationDetails;
 
-  clickSeeMoreOrganizations(resourceType: string, activeId: string) {
+  clickSeeMoreOrganizations(resourceType: string, activeId: string, topIntent: string) {
     sessionStorage.removeItem("cacheSearchResults");
     sessionStorage.removeItem("searchedLocationMap");
     this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
@@ -34,7 +33,7 @@ export class ShowMoreService {
     this.paginationService.getPagedResources(this.resourceFilter).subscribe(response => {
       if (response != undefined) {
         this.searchResults = response;
-        this.searchResults.topIntent = this.topIntent;
+        this.searchResults.topIntent = topIntent;
         this.searchResults.resourceType = resourceType;
         this.searchResults.isItFromTopicPage = true;
         this.navigateDataService.setData(this.searchResults);

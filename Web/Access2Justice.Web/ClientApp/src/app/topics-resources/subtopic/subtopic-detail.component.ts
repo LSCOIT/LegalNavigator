@@ -91,11 +91,13 @@ export class SubtopicDetailComponent implements OnInit {
       );
   }
   clickSeeMoreOrganizationsFromSubtopicDetails(resourceType: string) {
-    this.showMoreService.clickSeeMoreOrganizations(resourceType, this.activeSubtopicParam);
+    this.showMoreService.clickSeeMoreOrganizations(resourceType, this.activeSubtopicParam, this.topIntent);
   }
 
   ngOnInit() {
     this.displayResources = this.global.displayResources;
+    this.global.activeSubtopicParam = this.activeSubtopicParam;
+    this.global.topIntent = this.topIntent;
     this.activeRoute.url
       .subscribe(routeParts => {
         for (let i = 1; i < routeParts.length; i++) {
