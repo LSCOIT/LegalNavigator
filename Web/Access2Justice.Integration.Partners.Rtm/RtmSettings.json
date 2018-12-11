@@ -1,0 +1,6 @@
+{
+  "ApiKey": "DEEZ3KKT",
+  "SessionURL": "https://www.referweb.net/pubres/api/GetSessionID/?ip={{apikey:'{0}'}}",
+  "ServiceProviderURL": "https://www.referweb.net/pubres/api/ServiceProviders/?ip={{apikey:'{0}',st:'s',catid:'',sn:'{1}',zip:'99606',county:'',sid:'{2}'}}",
+  "ServiceProviderDetailURL": "https://www.referweb.net/pubres/api/ProviderDetail/?ip={{apikey:'{0}',locid: '{1}',svid:'{2}',ssid:'{3}',sid:'{4}'}}"
+}

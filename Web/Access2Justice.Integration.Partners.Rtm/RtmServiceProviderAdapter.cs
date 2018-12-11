@@ -9,8 +9,10 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Net;
 
 namespace Access2Justice.Integration.Partners.Rtm
 {
@@ -22,79 +24,124 @@ namespace Access2Justice.Integration.Partners.Rtm
 
         public async Task<List<string>> GetServiceProviders(string topicName)
         {
-            var serviceProviders = new List<string>();
-            topicName = string.IsNullOrEmpty(topicName) ? "Family Based Services" : topicName;
-            var httpClient = new HttpClientService();
-            var sessionUrl = "https://www.referweb.net/pubres/api/GetSessionID/?ip={{apikey:'{61GV7G4Y}'}}";
-            var sResponse = await httpClient.GetAsync(new Uri(sessionUrl)).ConfigureAwait(false);
-            var session = sResponse.Content.ReadAsStringAsync().Result;
-
-            dynamic sessionJson = JsonConvert.DeserializeObject(session);
-            string sessionId = sessionJson[0][Constants.RTMSessionId];
-            var serviceProvider = new ServiceProvider();
-            if (!string.IsNullOrEmpty(sessionId))
+            var rtmSettings = GetRTMConfiguration();
+            var providerIds = new List<string>();
+            if (rtmSettings != null && !string.IsNullOrEmpty(topicName))
             {
-                string spUrl = "https://www.referweb.net/pubres/api/ServiceProviders/?ip={{apikey:'{61GV7G4Y}',st:'s',catid:'',sn:'{0}',zip:'',county:'',sid:'{1}'}}";
-                var serviceProviderUrl = string.Format(CultureInfo.InvariantCulture, spUrl, topicName, sessionId);
-                var response = await httpClient.GetAsync(new Uri(serviceProviderUrl)).ConfigureAwait(false);
-                var serviceProviderResponse = response.Content.ReadAsStringAsync().Result;
-                if (!string.IsNullOrEmpty(serviceProviderResponse))
+                var httpClient = new HttpClientService();
+                string rtmSessionUrl = string.Format(CultureInfo.InvariantCulture, rtmSettings.SessionURL.OriginalString, rtmSettings.ApiKey);
+                string sessionId = await GetRTMSession(rtmSessionUrl, httpClient).ConfigureAwait(false);
+                if (!string.IsNullOrEmpty(sessionId))
                 {
-                    dynamic serviceProviderObject = JsonConvert.DeserializeObject(serviceProviderResponse);
-                    foreach (var site in serviceProviderObject.Sites)
+                    string rtmProviderUrl = string.Format(CultureInfo.InvariantCulture, rtmSettings.ServiceProviderURL.OriginalString, rtmSettings.ApiKey, topicName, sessionId);                    
+                    var serviceProviderResponse = await GetRTMProvider(rtmProviderUrl, httpClient).ConfigureAwait(false);
+                    if (!string.IsNullOrEmpty(serviceProviderResponse))
                     {
-                        serviceProviders.Add(topicName + "|" + site.Key);
+                        dynamic serviceProviderObject = JsonConvert.DeserializeObject(serviceProviderResponse);
+                        foreach (var site in serviceProviderObject.Sites)
+                        {
+                            providerIds.Add(topicName + "|" + site.Key);
+                        }
                     }
                 }
             }
-            return serviceProviders;
+            return providerIds;
         }
 
         public async Task<ServiceProvider> GetServiceProviderDetails(string providerId)
         {
-            var httpClient = new HttpClientService();
-            var providerDetails = providerId.Split("|");
-            var sessionUrl = "https://www.referweb.net/pubres/api/GetSessionID/?ip={{apikey:'{61GV7G4Y}'}}";
-            var sResponse = await httpClient.GetAsync(new Uri(sessionUrl)).ConfigureAwait(false);
-            var session = sResponse.Content.ReadAsStringAsync().Result;
-
-            dynamic sessionJson = JsonConvert.DeserializeObject(session);
-            string sessionId = sessionJson[0][Constants.RTMSessionId];
+            var rtmSettings = GetRTMConfiguration();
             var serviceProvider = new ServiceProvider();
-            if (!string.IsNullOrEmpty(sessionId))
+            if (rtmSettings != null && !string.IsNullOrEmpty(providerId))
             {
-                string spUrl = "https://www.referweb.net/pubres/api/ServiceProviders/?ip={{apikey:'{61GV7G4Y}',st:'s',catid:'',sn:'{0}',zip:'',county:'',sid:'{1}'}}";
-                var serviceProviderUrl = string.Format(CultureInfo.InvariantCulture, spUrl, providerDetails[0], sessionId);
-                var response = await httpClient.GetAsync(new Uri(serviceProviderUrl)).ConfigureAwait(false);
-                var serviceProviderResponse = response.Content.ReadAsStringAsync().Result;
-                if (!string.IsNullOrEmpty(serviceProviderResponse))
+                var providerDetail = providerId.Split("|");
+                var httpClient = new HttpClientService();
+                string rtmSessionUrl = string.Format(CultureInfo.InvariantCulture, rtmSettings.SessionURL.OriginalString, rtmSettings.ApiKey);
+                string sessionId = await GetRTMSession(rtmSessionUrl, httpClient).ConfigureAwait(false);
+                if (!string.IsNullOrEmpty(sessionId) && providerDetail.Count() > 0)
                 {
-                    dynamic serviceProviderObject = JsonConvert.DeserializeObject(serviceProviderResponse);
-                    foreach (var site in serviceProviderObject.Sites)
+                    string rtmProviderUrl = string.Format(CultureInfo.InvariantCulture, rtmSettings.ServiceProviderURL.OriginalString, rtmSettings.ApiKey, providerDetail[0], sessionId);
+                    var serviceProviderResponse = await GetRTMProvider(rtmProviderUrl, httpClient).ConfigureAwait(false);
+                    if (!string.IsNullOrEmpty(serviceProviderResponse))
                     {
-                        if (site.Key == providerDetails[1].Trim())
+                        dynamic serviceProviderObject = JsonConvert.DeserializeObject(serviceProviderResponse);
+                        foreach (var site in serviceProviderObject.Sites)
                         {
-                            var spDetailsResponse = await RTMProviderDetails(site, sessionId);
-                            serviceProvider = ProcessRTMData(serviceProviderObject, spDetailsResponse);
+                            if (site.Key == providerDetail[1].Trim())
+                            {
+                                var spDetailsResponse = await GetRTMProviderDetails(site, sessionId, rtmSettings.ServiceProviderDetailURL.OriginalString, httpClient);
+                                serviceProvider = ProcessRTMData(serviceProviderObject, spDetailsResponse);
+                            }
                         }
-                    }                    
+                    }
                 }
             }
-
             return serviceProvider;
         }
 
-        public async Task<dynamic> RTMProviderDetails(dynamic site, string sessionId)
+        #pragma warning disable CA1822 // Mark members as static
+        private async Task<string> GetRTMSession(string rtmSessionUrl, IHttpClientService httpClient)
         {
-            var httpClient = new HttpClientService();
+            string sessionId = string.Empty;
+            var sResponse = await httpClient.GetAsync(new Uri(rtmSessionUrl)).ConfigureAwait(false);
+            if (sResponse.StatusCode == HttpStatusCode.OK)
+            {
+                var session = sResponse.Content.ReadAsStringAsync().Result;
+                dynamic sessionJson = JsonConvert.DeserializeObject(session);
+                sessionId = sessionJson[0][Constants.RTMSessionId];
+            }
+            return sessionId;
+        }
+
+        private async Task<dynamic> GetRTMProvider(string rtmProviderUrl, IHttpClientService httpClient)
+        {
+            dynamic serviceProviderResponse = null;
+            var response = await httpClient.GetAsync(new Uri(rtmProviderUrl)).ConfigureAwait(false);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                serviceProviderResponse = response.Content.ReadAsStringAsync().Result;
+            }
+            return serviceProviderResponse;
+        }
+
+        private async Task<dynamic> GetRTMProviderDetails(dynamic site, string sessionId,string rtmProviderDetailUrl, IHttpClientService httpClient)
+        {
+            dynamic spDetails = null;
             string siteID = site?.Sites[0]["ID"];
             string serviceGroupID = site?.Sites[0]["ServiceGroup"][0]["ID"];
-            string serviceSiteID = site?.Sites[0]["ServiceGroup"][0]["ServiceSites"][0]["ID"];
-            string serviceDetailLink = "https://www.referweb.net/pubres/api/ProviderDetail/?ip={{apikey:'{0}',locid: '{1}',svid:'{2}',ssid:'{3}',sid:'{4}'}}";
-            string servicedetailURL = string.Format(CultureInfo.InvariantCulture, serviceDetailLink, siteID, serviceGroupID, serviceSiteID, sessionId);
+            string serviceSiteID = site?.Sites[0]["ServiceGroup"][0]["ServiceSites"][0]["ID"];            
+            string servicedetailURL = string.Format(CultureInfo.InvariantCulture, rtmProviderDetailUrl, siteID, serviceGroupID, serviceSiteID, sessionId);
             var response = await httpClient.GetAsync(new Uri(servicedetailURL)).ConfigureAwait(false);
-            var spDetailResponse = response.Content.ReadAsStringAsync().Result;
-            return JsonConvert.DeserializeObject(spDetailResponse);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                var spDetailResponse = response.Content.ReadAsStringAsync().Result;
+                spDetails = JsonConvert.DeserializeObject(spDetailResponse);
+            }
+            return spDetails;
+        }
+        #pragma warning restore CA1822 // Mark members as static
+
+        /// <summary>
+        /// Reads RTM configuration from json file.
+        /// </summary>
+        /// <returns>RTM configuration</returns>
+        private static RtmSettings GetRTMConfiguration()
+        {
+            try
+            {
+                RtmSettings rtmSettings = null;
+                var currentDirectory = Directory.GetCurrentDirectory();
+                using (StreamReader r = new StreamReader(currentDirectory + "\\RtmSettings.json"))
+                {
+                    string json = r.ReadToEnd();
+                    rtmSettings = JsonConvert.DeserializeObject<RtmSettings>(json);                    
+                }
+                return rtmSettings;
+            }
+            catch
+            {
+                throw new Exception("Invalid Application configurations");
+            }
         }
 
         /// <summary>
@@ -109,6 +156,12 @@ namespace Access2Justice.Integration.Partners.Rtm
             return ConvertToServiceProvider(site, spDetails);
         }
 
+        /// <summary>
+        /// Converts RTM data to ServiceProvider Model.
+        /// </summary>
+        /// <param name="site"></param>
+        /// <param name="spDetails"></param>
+        /// <returns></returns>
         private dynamic ConvertToServiceProvider(dynamic site, dynamic spDetails)
         {
             return new ServiceProvider()
