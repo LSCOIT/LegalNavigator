@@ -66,12 +66,8 @@ export class MapResultsComponent implements OnChanges {
     } else {
       let indexOfComma = address[0].indexOf(",") + 2;
       let newAddress = address[0].slice(indexOfComma, -1);
-      if (newAddress[0] === " ") {
-        newAddress = newAddress.slice(1, -1);
-        this.validAddress.push([newAddress]);
-      } else {
-        this.validAddress.push([newAddress]);
-      }
+      newAddress = newAddress.trim();
+      this.validAddress.push([newAddress]);
     }
   }
 
