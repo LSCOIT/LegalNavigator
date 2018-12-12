@@ -6,6 +6,7 @@ using Access2Justice.Shared.Interfaces.A2JAuthor;
 using Access2Justice.Shared.Models;
 using Microsoft.Azure.Documents;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using NSubstitute;
 using System;
 using System.IO;
@@ -109,6 +110,80 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 
             //assert
             Assert.Equal(expectedResult, actualResult);
+        }
+
+        [Theory]
+        [MemberData(nameof(CuratedExperienceTestData.NextComponentViewModelData2), MemberType = typeof(CuratedExperienceTestData))]
+        public void GetNextComponentAsyncCodeBeforeAfterValidate(CuratedExperience curatedExperiencedata, CuratedExperienceComponentViewModel expectedData, Guid answersDocId, CuratedExperienceAnswersViewModel component, CuratedExperienceAnswers curatedExperienceAnswers)
+        {
+            //arrange            
+            var dbResponse = dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.GuidedAssistantAnswersCollectionId);
+            dbResponse.ReturnsForAnyArgs<CuratedExperienceAnswers>(curatedExperienceAnswers);
+
+            //act
+            var response = curatedExperience.GetNextComponentAsync(curatedExperiencedata, component);
+            var actualResult = JsonConvert.SerializeObject(response.Result);
+            var expectedResult = JsonConvert.SerializeObject(expectedData);
+
+            //assert
+            Assert.Equal(expectedResult, actualResult);
+        }
+        [Theory]
+        [MemberData(nameof(CuratedExperienceTestData.SaveAnswersData), MemberType = typeof(CuratedExperienceTestData))]
+        public void SaveAnswersAsyncValidate(CuratedExperience curatedExperiencedata, dynamic expectedData, Guid answersDocId, CuratedExperienceAnswersViewModel viewModelAnswer, CuratedExperienceAnswers curatedExperienceAnswers, dynamic CuratedExperienceAnswersSchema)
+        {
+            //arrange 
+            var dbResponse = dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.GuidedAssistantAnswersCollectionId);
+            dbResponse.ReturnsForAnyArgs<CuratedExperienceAnswers>(curatedExperienceAnswers);
+
+            Document updatedDocument = new Document();
+            JsonTextReader reader = new JsonTextReader(new StringReader(CuratedExperienceAnswersSchema));
+            updatedDocument.LoadFrom(reader);
+
+            dbService.UpdateItemAsync<CuratedExperienceAnswersViewModel>(
+            Arg.Any<string>(),
+            Arg.Any<CuratedExperienceAnswersViewModel>(),
+            Arg.Any<string>()).ReturnsForAnyArgs<Document>(updatedDocument);
+
+            dbService.CreateItemAsync<CuratedExperienceAnswers>(
+            Arg.Any<CuratedExperienceAnswers>(),
+            Arg.Any<string>()).ReturnsForAnyArgs<Document>(updatedDocument);
+
+            //act
+            var response = curatedExperience.SaveAnswersAsync(viewModelAnswer, curatedExperiencedata);
+            var actualResult = JsonConvert.SerializeObject(response.Result);
+            var expectedResult = JsonConvert.SerializeObject(expectedData);
+
+            //assert
+            Assert.Equal(expectedResult, actualResult);
+        }
+        [Theory]
+        [MemberData(nameof(CuratedExperienceTestData.SaveAnswersData2), MemberType = typeof(CuratedExperienceTestData))]
+        public void SaveAnswersAsyncNoAnswersDocIdValidate(CuratedExperience curatedExperiencedata, dynamic expectedData, Guid answersDocId, CuratedExperienceAnswersViewModel viewModelAnswer, CuratedExperienceAnswers curatedExperienceAnswers, dynamic CuratedExperienceAnswersSchema)
+        {
+            //arrange 
+            var dbResponse = dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.GuidedAssistantAnswersCollectionId);
+            dbResponse.ReturnsForAnyArgs<CuratedExperienceAnswers>(curatedExperienceAnswers);
+
+            Document updatedDocument = new Document();
+            JsonTextReader reader = new JsonTextReader(new StringReader(CuratedExperienceAnswersSchema));
+            updatedDocument.LoadFrom(reader);
+
+            dbService.UpdateItemAsync<CuratedExperienceAnswersViewModel>(
+            Arg.Any<string>(),
+            Arg.Any<CuratedExperienceAnswersViewModel>(),
+            Arg.Any<string>()).ReturnsForAnyArgs<Document>(updatedDocument);
+
+            dbService.CreateItemAsync<CuratedExperienceAnswers>(
+            Arg.Any<CuratedExperienceAnswers>(),
+            Arg.Any<string>()).ReturnsForAnyArgs<Document>(updatedDocument);
+
+            //act
+            var response = curatedExperience.SaveAnswersAsync(viewModelAnswer, curatedExperiencedata);
+            var actualResult = JsonConvert.SerializeObject(response.Result);
+
+            //assert
+            Assert.Contains(expectedData, actualResult);
         }
         // Todo: fix these tests
 

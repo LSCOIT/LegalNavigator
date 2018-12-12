@@ -383,6 +383,29 @@ namespace Access2Justice.Api.Tests.TestData
     ]
   }]");
 
+        public static JArray staticPersonalizedPlanContent = JArray.Parse(@"[{
+    'id': '0cc3a8c0-9d97-2b80-3fc9-a7a7a8fb315e',
+    'name': 'PersonalizedActionPlanPage',
+    'location': [
+        {
+            'state': 'HI',
+            'county': null,
+            'city': null,
+            'zipCode': null
+        }
+    ],
+    'organizationalUnit': 'HI',
+    'description': 'the following information and resources are sponsored by the following organizations-Hawaii',
+    'sponsors': [
+        {
+            'image': {
+                'source': '',
+                'altText': ''
+            }
+        }
+    ]
+  }]");
+
 
 
         public static IEnumerable<object[]> UpsertNavigationContent()
@@ -423,7 +446,18 @@ namespace Access2Justice.Api.Tests.TestData
             yield return new object[] { new HomeContent { Location = new List<Location>{new Location(){ State="Alaska"} }, Name = "HomePage", OrganizationalUnit = "Alaska" },
              JArray.Parse(@"[]"), staticHomeContent};
         }
-
+        //public static IEnumerable<object[]> UpsertStaticPersnalizedPlanContent()
+        //{
+        //    //yield return new object[] { new PersonalizedPlanContent { Id="TestId", Description="TestDesc", Name="TestName", Location= new List<Location> { new Location() { State = "Alaska" } }, OrganizationalUnit= "Alaska", Sponsors = { new Sponsors {  Source= "/static-resource/alaska/assets/images/secondary-illustrations/privacy_promise.svg", AltText= "Privacy Illustration" } } }, JArray.Parse(@"[]"), staticHomeContent };
+        //    yield return new object[] { new PersonalizedPlanContent { Id = "0cc3a8c0-9d97-2b80-3fc9-a7a7a8fb315e", Description = "the following information and resources are sponsored by the following organizations-Hawaii", Name = "PersonalizedActionPlanPage", Location = new List<Location> { new Location() { State = "HI" } }, OrganizationalUnit = "HI", Sponsors = { } }, JArray.Parse(@"[]"), staticHomeContent };
+        //}
+        public static IEnumerable<object[]> UpsertStaticPersnalizedPlanContent()
+        {
+            yield return new object[] { new PersonalizedPlanContent { Id = "0cc3a8c0-9d97-2b80-3fc9-a7a7a8fb315e", Description = "the following information and resources are sponsored by the following organizations-Hawaii", Name = "PersonalizedActionPlanPage", Location = new List<Location> { new Location() { State = "HI" } }, OrganizationalUnit = "HI", Sponsors = new List<Sponsors> { new Sponsors() {  Source = "HI", AltText="Hawaii" } } },
+                staticPersonalizedPlanContent, staticPersonalizedPlanContent };
+            yield return new object[] { new PersonalizedPlanContent { Id = "0cc3a8c0-9d97-2b80-3fc9-a7a7a8fb315e", Description = "the following information and resources are sponsored by the following organizations-Hawaii", Name = "PersonalizedActionPlanPage", Location = new List<Location> { new Location() { State = "HI" } }, OrganizationalUnit = "HI", Sponsors = new List<Sponsors> { new Sponsors() {  Source = "HI", AltText="Hawaii" } } },
+                JArray.Parse(@"[]"), staticPersonalizedPlanContent };
+        }
     }
 
 }
