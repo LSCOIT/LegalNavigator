@@ -14,6 +14,7 @@ import { PaginationService } from '../shared/pagination/pagination.service';
 import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { of } from 'rxjs/observable/of';
 import { Global } from '../global';
+import { StateCodeService } from '../shared/state-code.service';
 
 describe('TopicsResourcesComponent', () => {
   let component: TopicsResourcesComponent;
@@ -63,7 +64,8 @@ describe('TopicsResourcesComponent', () => {
         Global,
         MapService,
         NavigateDataService,
-        PaginationService
+        PaginationService,
+        StateCodeService
       ],
       schemas: [ NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA ]
     })

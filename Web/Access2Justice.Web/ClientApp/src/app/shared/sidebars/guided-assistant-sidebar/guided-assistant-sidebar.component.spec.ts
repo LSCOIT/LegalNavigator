@@ -11,6 +11,7 @@ import { Observable } from 'rxjs/Observable';
 import { MapLocation } from '../../map/map';
 import { IResourceFilter } from '../../search/search-results/search-results.model';
 import { RouterStateSnapshot } from '@angular/router/src/router_state';
+import { StateCodeService } from '../../state-code.service';
 
 describe('GuidedAssistantSidebarComponent', () => {
   let component: GuidedAssistantSidebarComponent;
@@ -74,7 +75,8 @@ describe('GuidedAssistantSidebarComponent', () => {
         },
         MapService,
         NavigateDataService,
-        PaginationService
+        PaginationService,
+        StateCodeService
       ]
     })
       .compileComponents();

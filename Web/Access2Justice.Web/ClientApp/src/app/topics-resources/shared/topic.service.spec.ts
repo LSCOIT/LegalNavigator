@@ -34,6 +34,7 @@ describe('TopicService', () => {
     spyOn(sessionStorage, 'setItem')
       .and.callFake(mockSessionStorage.setItem);
   });
+
   it('should return list of topics', (done) => {
    let mockTopics = [
      { id: '1', title: 'Housing', icon: '' },
@@ -76,6 +77,25 @@ describe('TopicService', () => {
     });
   });
 
+  it('should return selected topic details', (done) => {
+    let mockDocument = {
+      id: "1",
+      title: "Family",
+      icon: '',
+      organizationalUnit: "Hawaii",
+      overview: "",
+      parentTopicId: null,
+      resourceType: "Topics"
+    }
+    const mockResponse = Observable.of(mockDocument);
+    httpSpy.post.and.returnValue(mockResponse);
+    service.getDocumentData(1).subscribe(document => {
+      expect(httpSpy.post).toHaveBeenCalled();
+      expect(document).toEqual(mockDocument);
+      done();
+    });
+  });
+
   it('should return details for the subtopic', (done) => {
     let mockSubtopicDetail = {
       title: "Eviction",
@@ -83,16 +103,12 @@ describe('TopicService', () => {
         "Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter. Solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter.",
       resources: []
     }
-
     const mockResponse = Observable.of(mockSubtopicDetail);
-
     httpSpy.post.and.returnValue(mockResponse);
-
     service.getSubtopicDetail(1).subscribe(subtopicDetail => {
       expect(httpSpy.post).toHaveBeenCalled();
       expect(subtopicDetail).toEqual(mockSubtopicDetail);
       done();
     });
-
   });
 });

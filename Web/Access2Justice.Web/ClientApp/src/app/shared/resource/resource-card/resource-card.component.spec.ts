@@ -5,6 +5,8 @@ import { SaveButtonComponent } from '../user-action/save-button/save-button.comp
 import { ShareButtonComponent } from '../user-action/share-button/share-button.component';
 import { ResourceCardDetailComponent } from '../resource-card-detail/resource-card-detail.component';
 import { Global } from '../../../global';
+import { PipeModule } from '../../pipe/pipe.module';
+import { BsDropdownModule } from 'ngx-bootstrap';
 
 describe('ResourceCardComponent', () => {
   let component: ResourceCardComponent;
@@ -19,7 +21,10 @@ describe('ResourceCardComponent', () => {
         ShareButtonComponent,
         ResourceCardDetailComponent
       ],
-      imports: [],
+      imports: [
+        PipeModule.forRoot(),
+        BsDropdownModule.forRoot()
+        ],
       providers: [        
         { provide: Global, useValue: { role: '', shareRouteUrl: '' } },
         { provide: ResourceCardComponent, useValue: { id: '', resources: [{ itemId: '', resourceType: '', resourceDetails: {}}] }}

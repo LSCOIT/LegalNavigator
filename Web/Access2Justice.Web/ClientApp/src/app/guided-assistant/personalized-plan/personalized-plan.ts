@@ -1,3 +1,4 @@
+import { Location } from "../../about/about";
 export interface Resources {
   url: string; 
   itemId: string;
@@ -53,3 +54,18 @@ export interface PersonalizedPlanTopic {
   topic: PlanTopic;
   isSelected: boolean;
 }
+
+export interface PersonalizedPlanDescription {
+  id: string;
+  name: string;
+  description: string;
+  image: Image;
+  location: Array<Location>;
+  organizationalUnit: string;
+}
+export interface Image {
+  source: string;
+  altText: string;
+}
+
+

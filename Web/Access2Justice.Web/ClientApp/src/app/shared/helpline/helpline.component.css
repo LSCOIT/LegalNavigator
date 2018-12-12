@@ -17,8 +17,12 @@ a:hover {
   margin-bottom: -47px;
 }
 
-#helpline h2 {
+#helpline h3 {
   color: #FFF;
+}
+
+#helpline h3 a:focus {
+  border-bottom: 2px solid white;
 }
 
 @media only screen and (min-width : 540px) {

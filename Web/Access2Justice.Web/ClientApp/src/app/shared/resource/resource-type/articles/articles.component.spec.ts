@@ -11,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Global } from '../../../../global';
 import { PaginationService } from '../../../pagination/pagination.service';
 import { MapService } from '../../../map/map.service';
+import { StateCodeService } from '../../../state-code.service';
 
 describe('ArticlesComponent', () => {
   let component: ArticlesComponent;
@@ -66,7 +67,8 @@ describe('ArticlesComponent', () => {
         { provide: Router, useValue: mockRouter },
         { provide: Global, useValue: { role: '', shareRouteUrl: '' } },
         { provide: ShowMoreService, uesValue: mockShowMoreService },
-        PaginationService
+        PaginationService,
+        StateCodeService
       ],
       schemas: [
         NO_ERRORS_SCHEMA,

@@ -16,6 +16,7 @@ import { TopicService } from '../shared/topic.service';
 import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Global } from '../../global';
+import { StateCodeService } from '../../shared/state-code.service';
 
 describe('SubtopicsComponent', () => {
   let component: SubtopicsComponent;
@@ -116,7 +117,8 @@ describe('SubtopicsComponent', () => {
         { provide: ShowMoreService, useValue: mockShowMoreService },
         MapService,
         PaginationService,
-        Global
+        Global,
+        StateCodeService
       ],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
     })

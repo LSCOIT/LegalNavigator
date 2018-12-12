@@ -1,12 +1,5 @@
-﻿using Microsoft.AspNetCore.JsonPatch.Operations;
-using Newtonsoft.Json;
-using System;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using Swashbuckle.AspNetCore.Swagger;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using System.Globalization;
-using System.Text;
 using System.ComponentModel;
 
 namespace Access2Justice.Shared.Models
@@ -39,7 +32,7 @@ namespace Access2Justice.Shared.Models
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "helpText")]
-        public string HelpText { get; set; }
+        public HelpText HelpText { get; set; }
 
         [DefaultValue("")]
         [JsonProperty(PropertyName = "organizationalUnit")]
@@ -134,6 +127,21 @@ namespace Access2Justice.Shared.Models
         [DefaultValue("")]
         [JsonProperty(PropertyName = "image")]
         public Image Image { get; set; }
+    }
+
+    public class HelpText
+    {
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "beginningText")]
+        public string BeginningText { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "phoneNumber")]
+        public string PhoneNumber { get; set; }
+
+        [DefaultValue("")]
+        [JsonProperty(PropertyName = "endingText")]
+        public string EndingText { get; set; }
     }
 
     public class Description

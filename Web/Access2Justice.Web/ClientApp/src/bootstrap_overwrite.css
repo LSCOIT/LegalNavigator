@@ -113,6 +113,13 @@ a.carousel-control .icon-prev, a.carousel-control .icon-next {
   height: 40px;
 }
 
+a.carousel-control .icon-prev:hover, a.carousel-control .icon-next:hover {
+  background-image: url('assets/images/small-icons/arrow_down.svg');
+  width: 60px;
+  height: 60px;
+  transition: all ease-in-out .5s;
+}
+
 .carousel-control-next-icon {
   transform: rotate(-90deg);
 }
@@ -131,6 +138,10 @@ a.carousel-control .icon-prev, a.carousel-control .icon-next {
   width: 10px;
   height: 10px;
   margin: 0 5px;
+}
+
+.carousel-indicators li:hover {
+  background-color: #0D3FBB;
 }
 
 .carousel-indicators li {
@@ -268,6 +279,36 @@ span.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chev
   text-decoration: none;
 }
 
+/*Admin Page*/
+#admin .nav-pills {
+  width: 20%;
+  display: inline-block;
+  float: left;
+  min-height: 500px;
+  background-color: #ddd;
+}
+
+#admin .tab-content {
+  width: 75%;
+  display: inline-block;
+  float: left;
+  margin-left: 4%;
+  margin-top: -80px;
+}
+
+#admin .nav-item {
+  border-bottom: 3px solid #fff;
+}
+
+#admin .nav-link {
+  padding: 20px 10px;
+  border-radius: 0;
+}
+
+#admin .nav-link.active {
+  background-color: #0D3FBB;
+}
+
 @media only screen and (min-width : 540px) {
   .row {
     display: table;
@@ -358,6 +399,10 @@ span.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chev
 
   .carousel-indicators {
     bottom: -42px;
+  }
+
+  #admin .tab-content {
+    margin-top: -86px;
   }
 }
 

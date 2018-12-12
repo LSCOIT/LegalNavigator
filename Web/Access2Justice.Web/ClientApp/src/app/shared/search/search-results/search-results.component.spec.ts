@@ -25,6 +25,9 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Global } from '../../../global';
 import { MsalService } from '@azure/msal-angular';
+import { StateCodeService } from '../../state-code.service';
+import { PipeModule } from '../../pipe/pipe.module';
+import { BsDropdownModule } from 'ngx-bootstrap';
 
 describe('SearchResultsComponent', () => {
   let component: SearchResultsComponent;
@@ -75,7 +78,9 @@ describe('SearchResultsComponent', () => {
         RouterModule.forRoot([
           { path: 'search', component: SearchResultsComponent }
         ]),
-        HttpClientModule
+        HttpClientModule,
+        PipeModule.forRoot(),
+        BsDropdownModule.forRoot()
       ],
       providers: [
         NavigateDataService,
@@ -91,6 +96,7 @@ describe('SearchResultsComponent', () => {
         SearchResultsComponent,
         Global,
         { provide: MsalService, useValue: msalService },
+        StateCodeService
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
     })

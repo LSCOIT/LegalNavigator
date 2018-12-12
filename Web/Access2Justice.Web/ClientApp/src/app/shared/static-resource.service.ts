@@ -8,6 +8,7 @@ import { PrivacyContent } from '../privacy-promise/privacy-promise';
 import { HelpAndFaqs } from '../help-faqs/help-faqs';
 import { Navigation } from './navigation/navigation';
 import { Home } from '../home/home';
+import { PersonalizedPlanDescription } from '../guided-assistant/personalized-plan/personalized-plan';
 
 @Injectable()
 export class StaticResourceService {
@@ -23,6 +24,8 @@ export class StaticResourceService {
   navigation: Navigation;
   homeContent: Home;
   locationDetails: LocationDetails;
+  PersonalizedPlanDescription: PersonalizedPlanDescription;
+  location: string='';
 
   loadStateName(): MapLocation {
     if (sessionStorage.getItem("globalMapLocation")) {
@@ -36,11 +39,13 @@ export class StaticResourceService {
   }
 
   getLocation() {
-    let location = this.loadStateName().state;
-    if (!((location == "Alaska") || (location == "Hawaii"))) {
-      location = "Default";
+    if (this.mapLocation) {
+      this.location = this.mapLocation.state;
     }
-    return location;
+    if (!((this.location == "AK") || (this.location == "HI"))) {
+      this.location = "Default";
+    }
+    return this.location;
   }
 
   getStaticContents(location) {
