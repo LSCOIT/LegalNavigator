@@ -115,6 +115,7 @@ describe('MapResultsComponent', () => {
   });
 
   it("should call getLocationDetails of service when displayMapResults is called", () => {
+    component.validAddress = ["123 Main St, Seattle WA 98911"];
     mockMapResultsService.getLocationDetails.and.returnValue(of());
     component.addressList = oneItemInAddressList;
     component.displayMapResults();
@@ -123,21 +124,21 @@ describe('MapResultsComponent', () => {
 
   it("should push 1 item into latitudeLongitude when displayMapResults is called", () => {
     mockMapResultsService.getLocationDetails.and.returnValue(of(onlyOneLocationCoordinates));
-    component.addressList = oneItemInAddressList;
+    component.validAddress = oneItemInAddressList;
     component.displayMapResults();
     expect(component.latitudeLongitude.length).toEqual(1);
   });
 
   it("should push 2 item into latitudeLongitude(subscribe should be called twice) when displayMapResults is called", () => {
     mockMapResultsService.getLocationDetails.and.returnValue(of(onlyOneLocationCoordinates));
-    component.addressList = twoItemsInAddressList;
+    component.validAddress = twoItemsInAddressList;
     component.displayMapResults();
     expect(component.latitudeLongitude.length).toEqual(2);
   });
 
   it("should call mapResults of mapResultsService when displayMapResults is called", () => {
     mockMapResultsService.getLocationDetails.and.returnValue(of(onlyOneLocationCoordinates));
-    component.addressList = oneItemInAddressList;
+    component.validAddress = oneItemInAddressList;
     component.displayMapResults();
     expect(mockMapResultsService.mapResults).toHaveBeenCalled();
   });
