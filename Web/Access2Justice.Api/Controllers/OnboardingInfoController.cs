@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Access2Justice.Api.Interfaces;
-using Microsoft.AspNetCore.Http;
+﻿using Access2Justice.Api.Interfaces;
+using Integration = Access2Justice.Shared.Models.Integration;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.Net.Http;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -35,5 +34,20 @@ namespace Access2Justice.Api.Controllers
             var response = onboardingInfoBusinessLogic.GetOnboardingInfo(organizationType);
             return Ok(response);
         }
+
+        [HttpPost("send")]
+        public async Task<IActionResult> PostAsync([FromBody] Integration.OnboardingInfo onboardingInfo)
+        {
+            //Organization Name may not be unique hence need to identify the unique id else need to consider the location of the organization while checking
+            var response = await onboardingInfoBusinessLogic.PostOnboardingInfo(onboardingInfo);
+            return Ok(response);
+        }
+
+        [HttpPost("submission")]
+        public IActionResult PostOrganizationAsync([FromBody] string json)
+        {
+            return Ok(json);
+        }
+
     }
 }

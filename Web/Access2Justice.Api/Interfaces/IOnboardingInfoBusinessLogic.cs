@@ -6,5 +6,6 @@ namespace Access2Justice.Api.Interfaces
     public interface IOnboardingInfoBusinessLogic
     {
         OnboardingInfo GetOnboardingInfo(string organizationType);
+        Task<object> PostOnboardingInfo(OnboardingInfo onboardingInfo);
     }
 }

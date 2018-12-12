@@ -102,6 +102,7 @@ namespace Access2Justice.Api
                 c.OrderActionsBy((apiDesc) => $"{apiDesc.RelativePath}_{apiDesc.HttpMethod}");
                 c.OperationFilter<FileUploadOperation>(); //Register File Upload Operation Filter
                 c.OperationFilter<FileUploadOperationResource>();
+                c.CustomSchemaIds(x => x.FullName);
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
