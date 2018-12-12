@@ -57,6 +57,7 @@ import { SaveButtonService } from './resource/user-action/save-button/save-butto
 import { UnauthorizedComponent } from './error/unauthorized/unauthorized.component';
 import { StateCodeService } from './state-code.service';
 import { PipeModule } from './pipe/pipe.module';
+import { IntakeFormComponent } from './resource/resource-type/organizations/intake-form/intake-form.component';
 
 @NgModule({
   imports: [
@@ -109,6 +110,7 @@ import { PipeModule } from './pipe/pipe.module';
     ReadMoreComponent,
     BrowserTabCloseComponent,
     UnauthorizedComponent,
+    IntakeFormComponent,
   ],
   exports: [
     ActionPlansComponent,
