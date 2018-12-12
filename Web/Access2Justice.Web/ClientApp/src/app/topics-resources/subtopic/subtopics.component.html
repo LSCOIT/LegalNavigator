@@ -7,13 +7,13 @@
           <img *ngIf="icon"class="media-object" [src]="icon" [alt]="breadcrumb.activeTopicName + ' icon'">
         </div>
         <div class="media-body">
-          <h4 class="media-heading">More Topics Related to {{breadcrumb.activeTopicName}}</h4>
+          <h4 class="media-heading capitalize">More Topics Related to {{breadcrumb.activeTopicName}}</h4>
           <p>Which topic would you like to learn more about?</p>
         </div>
       </div>
       <div class="subtopics">
         <ul *ngFor="let subtopic of subtopics">
-          <li><a [routerLink]="['/topics', subtopic.id]">{{subtopic.name}}</a></li>
+          <li><a class="link" [routerLink]="['/topics', subtopic.id]">{{subtopic.name}}</a></li>
         </ul>
       </div>
       <a [routerLink]="['/topics']" class="btn btn-primary">Back to main topics</a>

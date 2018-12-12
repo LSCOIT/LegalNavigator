@@ -9,6 +9,7 @@ import { PaginationService } from '../../../pagination/pagination.service';
 import { ServiceOrgSidebarComponent } from '../../../sidebars/service-org-sidebar/service-org-sidebar.component';
 import { VideosComponent } from './videos.component';
 import { Global } from '../../../../global';
+import { StateCodeService } from '../../../state-code.service';
 
 describe('VideosComponent', () => {
   let component: VideosComponent;
@@ -56,7 +57,8 @@ describe('VideosComponent', () => {
         MapService,
         NavigateDataService,
         PaginationService,
-        Global
+        Global,
+        StateCodeService
       ]
     });
     TestBed.compileComponents();

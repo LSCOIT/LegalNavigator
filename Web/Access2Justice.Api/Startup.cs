@@ -81,6 +81,7 @@ namespace Access2Justice.Api
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<ISessionManager, SessionManager>();
             services.AddSingleton<IAdminBusinessLogic, AdminBusinessLogic>();
+            services.AddSingleton<IStateProvinceBusinessLogic, StateProvinceBusinessLogic>();
 
             services.AddAuthentication(sharedOptions =>
             {

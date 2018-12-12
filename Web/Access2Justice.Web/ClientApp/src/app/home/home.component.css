@@ -201,6 +201,10 @@ ul>li>span {
   .privacy-promise img {
     width: 100%;
   }
+
+  .sponsor-img {
+    padding: 0 30px;
+  }
 }
 
 @media only screen and (min-width : 992px) {

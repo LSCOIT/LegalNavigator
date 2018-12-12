@@ -60,7 +60,8 @@ export class ServiceOrgSidebarComponent implements OnInit {
     });
   }
 
-  callOrganizations() {
+  callOrganizations(event) {
+    event.preventDefault();
     this.showMoreOrganizations.emit("Organizations");
   }
 

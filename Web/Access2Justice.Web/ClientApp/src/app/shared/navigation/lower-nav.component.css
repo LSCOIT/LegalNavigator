@@ -201,6 +201,10 @@ li.vertical-line {
   #home-nav {
     padding-top: 45px;
   }
+
+  #search-phrase-tab {
+    margin-right: 0;
+  }
 }
 
 @media only screen and (min-width : 992px) {

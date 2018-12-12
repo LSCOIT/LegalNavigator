@@ -54,6 +54,9 @@ import { ReadMoreComponent } from './read-more/read-more.component';
 import { LoginService } from './login/login.service';
 import { BrowserTabCloseComponent } from './browser-tab-close/browser-tab-close.component';
 import { SaveButtonService } from './resource/user-action/save-button/save-button.service';
+import { UnauthorizedComponent } from './error/unauthorized/unauthorized.component';
+import { StateCodeService } from './state-code.service';
+import { PipeModule } from './pipe/pipe.module';
 
 @NgModule({
   imports: [
@@ -65,7 +68,8 @@ import { SaveButtonService } from './resource/user-action/save-button/save-butto
     ModalModule.forRoot(),
     CarouselModule.forRoot(),
     BrowserAnimationsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    PipeModule.forRoot()
   ],
   declarations: [
     ActionPlansComponent,
@@ -101,7 +105,10 @@ import { SaveButtonService } from './resource/user-action/save-button/save-butto
     VideosComponent,
     InternalErrorComponent,
     LoginComponent,   
-    ShareButtonRouteComponent, ReadMoreComponent, BrowserTabCloseComponent
+    ShareButtonRouteComponent,
+    ReadMoreComponent,
+    BrowserTabCloseComponent,
+    UnauthorizedComponent,
   ],
   exports: [
     ActionPlansComponent,
@@ -128,7 +135,8 @@ import { SaveButtonService } from './resource/user-action/save-button/save-butto
     WebResourceComponent,
     HelplineComponent,
     LoginComponent,
-    BrowserTabCloseComponent
+    BrowserTabCloseComponent,
+    UnauthorizedComponent,
   ],
   providers: [
     MapService,
@@ -142,7 +150,8 @@ import { SaveButtonService } from './resource/user-action/save-button/save-butto
     ResourceService,
     ShareService,
     LoginService,
-    SaveButtonService
+    SaveButtonService,
+    StateCodeService,
   ]
 })
 export class SharedModule { }

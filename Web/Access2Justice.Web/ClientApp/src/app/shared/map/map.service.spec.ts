@@ -1,9 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { MapService } from './map.service';
 import { environment } from '../../../environments/environment';
+import { StateCodeService } from '../state-code.service';
 
 describe('MapService', () => {
   let service: MapService;
+  let mockStateCodeService: StateCodeService;
   let mockMapType: boolean = false;
   const mockMapLocation = {
     state: "California",
@@ -40,9 +42,9 @@ describe('MapService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [MapService]
+      providers: [MapService, StateCodeService]
     });
-    service = new MapService();
+    service = new MapService(mockStateCodeService);
 
     let store = {};
     const mockSessionStorage = {
@@ -83,35 +85,31 @@ describe('MapService', () => {
     expect(service.getMap).toHaveBeenCalled();
   });
 
-  it('should return searched global location details(map type is true) from session storage when updateLocation is called for global map', () => {
-    spyOn(sessionStorage, 'getItem')
-      .and.returnValue(JSON.stringify(mockLocationDetails));
+  it('should call only setGlobalMapLocationDetails when updateLocation is called for global map with no state details', () => {
+    mockLocationDetails.location.state = "";
+    spyOn(sessionStorage, 'getItem').and.returnValue(JSON.stringify(mockLocationDetails));
+    spyOn(service, 'setGlobalMapLocationDetails');
     environment.map_type = true;
     service.updateLocation();
-    expect(service.locationDetails).toEqual(mockLocationDetails);
+    expect(service.setGlobalMapLocationDetails).toHaveBeenCalled();
   });
 
-  it('should clear searched global location details from session storage when updateLocation is called for global map', () => {
-    sessionStorage.setItem("globalSearchMapLocation", JSON.stringify(mockMapLocation));
-    environment.map_type = true;
-    service.updateLocation();
-    expect(JSON.parse(sessionStorage.getItem("globalSearchMapLocation"))).toBeNull();
+  it('should set location in session in setGlobalMapLocationDetails', () => {
+    service.locationDetails = mockLocationDetails;
+    service.setGlobalMapLocationDetails();
+    expect(sessionStorage.setItem).toHaveBeenCalled();
+    expect(sessionStorage.removeItem).toHaveBeenCalled();
   });
 
-  it('should return searched local location details(map type is false) from session storage when updateLocation is called for local map', () => {
-    spyOn(sessionStorage, 'getItem')
-      .and.returnValue(JSON.stringify(mockLocationDetails));
-    environment.map_type = false;
-    service.updateLocation();
-    expect(service.mapLocation).toEqual(mockMapLocation);
+  it('should set maplocation in setLocalMapLocationDetails', () => {
+    service.locationDetails = mockLocationDetails;
+    service.setLocalMapLocationDetails();
+    expect(service.mapLocation).toEqual(mockLocationDetails.location);
   });
 
   it("should set the variables of service when mapLocationDetails is called", () => {
     service.mapLocationDetails(mockLocation);
     expect(service.mapLocation.state).toEqual(mockLocation.address.adminDistrict);
-    expect(service.mapLocation.county).toEqual(mockLocation.address.district);
-    expect(service.mapLocation.city).toEqual(mockLocation.address.locality);
-    expect(service.mapLocation.zipCode).toEqual(mockLocation.address.postalCode);
   });
 
   it("should set adminDistrict of map location with postal code if postal code, locality and district are undefined when mapLocationDetails is called", () => {
