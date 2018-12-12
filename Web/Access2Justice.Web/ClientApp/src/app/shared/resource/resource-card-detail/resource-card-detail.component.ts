@@ -10,6 +10,7 @@ import { ResourceService } from '../resource.service';
 export class ResourceCardDetailComponent implements OnInit {
   resource: any;
   resourceId: string;
+  activeSubtopicParam: any;
 
   constructor(
     private resourceService: ResourceService,
@@ -18,6 +19,7 @@ export class ResourceCardDetailComponent implements OnInit {
 
   getResource() {
     this.resourceId = this.activeRoute.snapshot.params["id"];
+    this.activeSubtopicParam = this.activeRoute.snapshot.params["topicid"];
     this.resourceService.getResource(this.resourceId)
       .subscribe(resource => {
         this.resource = resource[0];
