@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 import { TopicService } from './topics-resources/shared/topic.service';
 import { PersonalizedPlanService } from './guided-assistant/personalized-plan/personalized-plan.service';
 import { SaveButtonService } from './shared/resource/user-action/save-button/save-button.service';
+import { IntentInput } from './guided-assistant/personalized-plan/personalized-plan';
+import { LocationDetails } from './shared/map/map';
 
 @Component({
   selector: 'app-root',
@@ -23,11 +25,14 @@ export class AppComponent implements OnInit {
   userProfile: IUserProfile;
   resoureStorage: any = [];
   showAlert: boolean = false;
+  intentInput: IntentInput;
+  locationDetails: LocationDetails;
 
   @HostListener('window:beforeunload', ['$event'])
   beforeUnloadHander(event) {
     if ((sessionStorage.getItem(this.global.sessionKey)
-      || sessionStorage.getItem(this.global.planSessionKey))
+      || sessionStorage.getItem(this.global.planSessionKey)
+      || sessionStorage.getItem(this.global.topicsSessionKey))
       && (!this.global.isLoginRedirect) && !(this.global.userId)) {
       this.showAlert = true;
       if (confirm("You have unsaved changes! If you leave, your changes will be lost.")) {
@@ -46,7 +51,6 @@ export class AppComponent implements OnInit {
     private loginService: LoginService,
     private spinner: NgxSpinnerService,
     private router: Router,
-    private topicService: TopicService,
     private personalizedPlanService: PersonalizedPlanService,
     private saveButtonService: SaveButtonService
   ) { }
@@ -58,6 +62,7 @@ export class AppComponent implements OnInit {
           this.global.setProfileData(response.oId, response.name, response.eMail, response.roleInformation);
           this.saveBookmarkedResource();
           this.saveBookmarkedPlan();
+          this.saveBookmarkedTopicsFromGuidedAssisstant();
         }
       });
   }
@@ -75,6 +80,14 @@ export class AppComponent implements OnInit {
     }
   }
 
+  saveBookmarkedTopicsFromGuidedAssisstant() {
+    if (sessionStorage.getItem(this.global.topicsSessionKey)) {
+      this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+      this.intentInput = { location: this.locationDetails.location, intents: JSON.parse(sessionStorage.getItem(this.global.topicsSessionKey)) };
+      this.personalizedPlanService.saveTopicsToProfile(this.intentInput, true);
+    }
+  }
+
   onActivate(event) {
     window.scroll(0, 0);
   }
@@ -84,16 +97,16 @@ export class AppComponent implements OnInit {
     let location = this.staticResourceService.loadStateName();
     this.staticResourceService.getStaticContents(location)
       .subscribe(
-      response => {
-        if (!(sessionStorage.getItem(this.global.sessionKey))) {
+        response => {
+          if (!(sessionStorage.getItem(this.global.sessionKey))) {
+            this.spinner.hide();
+          }
+          this.staticContentResults = response;
+          this.global.setData(this.staticContentResults);
+        }, error => {
           this.spinner.hide();
-        }
-        this.staticContentResults = response;
-        this.global.setData(this.staticContentResults);
-      }, error => {
-        this.spinner.hide();
-        this.router.navigate(['/error']);
-      });
+          this.router.navigate(['/error']);
+        });
   }
 
   ngOnInit() {

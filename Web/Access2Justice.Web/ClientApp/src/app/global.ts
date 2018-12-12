@@ -26,6 +26,7 @@ export class Global {
   isLoginRedirect: boolean = false;
   sessionKey: string = "bookmarkedResource";
   planSessionKey: string = "bookmarkedPlan";
+  topicsSessionKey: string = "bookmarkedTopics";
   roleInformation: any;
   displayResources: number = 3;
 

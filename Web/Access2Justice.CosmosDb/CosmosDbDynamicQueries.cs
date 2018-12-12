@@ -52,11 +52,12 @@ namespace Access2Justice.CosmosDb
         public async Task<dynamic> FindItemsWhereAsync(string collectionId, List<string> propertyNames, List<string> values)
         {
             var query = "SELECT * FROM c WHERE ";
-            for (int iterator = 0; iterator< propertyNames.Count(); iterator++)
+            for (int iterator = 0; iterator < propertyNames.Count(); iterator++)
             {
                 EnsureParametersAreNotNullOrEmpty(collectionId, propertyNames[iterator]);
                 query += $"c.{propertyNames[iterator]}='{values[iterator]}'";
-                if (iterator != propertyNames.Count()-1) {
+                if (iterator != propertyNames.Count() - 1)
+                {
                     query += " AND ";
                 }
             }
@@ -113,12 +114,12 @@ namespace Access2Justice.CosmosDb
             {
                 query = $"SELECT * FROM c WHERE c.{propertyName}='{value}'";
             }
-           
+
             if (!string.IsNullOrEmpty(locationFilter))
             {
                 query = query + " AND " + locationFilter;
             }
-            return await backendDatabaseService.QueryItemsAsync(collectionId, query);           
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query);
         }
 
         public async Task<dynamic> FindItemsWhereWithLocationAsync(string collectionId, string propertyName, Location location)
@@ -146,7 +147,7 @@ namespace Access2Justice.CosmosDb
             if (resourceFilter.ResourceType.ToUpperInvariant() != Constants.ResourceTypeAll && !isResourceCountCall)
             {
                 arrayContainsWithAndClause += string.IsNullOrEmpty(arrayContainsWithAndClause) ? $" c.{andPropertyName} = '" + resourceFilter.ResourceType + "'"
-                                             : $" AND c.{andPropertyName} = '" + resourceFilter.ResourceType + "'";                
+                                             : $" AND c.{andPropertyName} = '" + resourceFilter.ResourceType + "'";
             }
             string resourceIsActiveFilter = FindItemsWhereResourceIsActive(resourceFilter.ResourceType);
             if (!string.IsNullOrEmpty(resourceIsActiveFilter))
@@ -186,13 +187,38 @@ namespace Access2Justice.CosmosDb
 
         public async Task<dynamic> FindItemsWhereInClauseAsync(string collectionId, string propertyName, IEnumerable<string> values)
         {
-            if(values == null || !values.Any())
+            if (values == null || !values.Any())
             {
                 return Constants.EmptyArray;
             }
 
             EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
+            var inClause = InClause(propertyName, values);
+            var query = $"SELECT * FROM c WHERE c.{propertyName} IN ({inClause})";
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query);
+        }
 
+        public async Task<dynamic> FindItemsWhereInClauseAsync(string collectionId, string propertyName, IEnumerable<string> values, Location location)
+        {
+            if (values == null || !values.Any())
+            {
+                return Constants.EmptyArray;
+            }
+
+            EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
+            var inClause = InClause(propertyName, values);
+            string locationFilter = FindLocationWhereArrayContains(location);
+            var query = $"SELECT * FROM c WHERE c.{propertyName} IN ({inClause})";
+
+            if (!string.IsNullOrEmpty(locationFilter))
+            {
+                query = query + " AND " + locationFilter;
+            }
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query);
+        }
+
+        private string InClause(string propertyName, IEnumerable<string> values)
+        {
             var inClause = string.Empty;
             var lastItem = values.LastOrDefault();
 
@@ -204,9 +230,7 @@ namespace Access2Justice.CosmosDb
                     inClause += ",";
                 }
             }
-
-            var query = $"SELECT * FROM c WHERE c.{propertyName} IN ({inClause})";
-            return await backendDatabaseService.QueryItemsAsync(collectionId, query);
+            return inClause;
         }
 
         public async Task<dynamic> FindFieldWhereArrayContainsAsync(string collectionId, string arrayName, string propertyName, string value, string dateProperty)
@@ -294,7 +318,7 @@ namespace Access2Justice.CosmosDb
                 }
             }
             return arrayContainsWithOrClause;
-        }       
+        }
 
         private void EnsureParametersAreNotOrEmpty(params string[] parameters)
         {
@@ -316,12 +340,13 @@ namespace Access2Justice.CosmosDb
 
             if (location == null || (string.IsNullOrEmpty(location.State) && string.IsNullOrEmpty(location.County)
                 && string.IsNullOrEmpty(location.City) && string.IsNullOrEmpty(location.ZipCode)))
-                {
+            {
                 return "";
             }
-            else {
+            else
+            {
                 string arrayContainsClause = ArrayContainsWithOrClause(arrayName, propertyName, ids);
-                 query = $"SELECT * FROM c WHERE {arrayContainsClause}";
+                query = $"SELECT * FROM c WHERE {arrayContainsClause}";
                 if (!string.IsNullOrEmpty(locationFilter))
                 {
                     query = query + " AND " + locationFilter;
@@ -331,8 +356,8 @@ namespace Access2Justice.CosmosDb
         }
 
         public async Task<dynamic> FindItemsAllAsync(string collectionId)
-        {            
-            var query = $"SELECT * FROM c";            
+        {
+            var query = $"SELECT * FROM c";
             return await backendDatabaseService.QueryItemsAsync(collectionId, query);
         }
     }

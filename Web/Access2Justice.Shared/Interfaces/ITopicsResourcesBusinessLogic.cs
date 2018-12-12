@@ -43,5 +43,6 @@ namespace Access2Justice.Shared.Interfaces
         Task<dynamic> GetAllTopics();
         dynamic GetReviewer(dynamic reviewerValues);
         dynamic GetContents(dynamic contentValues);
+        Task<dynamic> GetTopicDetailsAsync(IntentInput intentInput);
     }
 }
