@@ -74,7 +74,6 @@ export class AboutTemplateComponent implements OnInit {
   }
 
   createAboutParams(aboutForm) {
-    console.log(this.aboutContent["inTheNews"].news[0]);
     this.newAboutContent = {
       aboutImage: {
         source: this.aboutContent.aboutImage.source,

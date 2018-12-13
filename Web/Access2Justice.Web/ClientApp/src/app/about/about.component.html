@@ -40,7 +40,7 @@
   <div class="row" *ngIf="aboutContent.inTheNews">
     <div class="col-md-10 col-md-offset-1 col-sm-12">
       <h3 class="text-center">{{aboutContent?.inTheNews?.title}}</h3>
-      <p class="text-center">{{aboutContent?.inTheNews?.description}}</p>
+      <div class="text-center" [innerHTML]="aboutContent?.inTheNews?.description"></div>
       <div *ngFor="let news of aboutContent.inTheNews.news">
         <div class="media box-no-shadow" *ngIf="news.title">
           <div class="media-left" *ngIf="news.image.source">
