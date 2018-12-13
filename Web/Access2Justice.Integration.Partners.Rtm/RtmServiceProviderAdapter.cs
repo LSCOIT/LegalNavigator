@@ -37,10 +37,10 @@ namespace Access2Justice.Integration.Partners.Rtm
                     var serviceProviderResponse = await GetRTMProvider(rtmProviderUrl, httpClient).ConfigureAwait(false);
                     if (!string.IsNullOrEmpty(serviceProviderResponse))
                     {
-                        dynamic serviceProviderObject = JsonConvert.DeserializeObject(serviceProviderResponse);
-                        foreach (var site in serviceProviderObject.Sites)
+                        dynamic serviceProviderObjects = JsonConvert.DeserializeObject(serviceProviderResponse);
+                        foreach (var serviceProviderObject in serviceProviderObjects)
                         {
-                            providerIds.Add(topicName + "|" + site.Key);
+                            providerIds.Add(topicName + "|" + serviceProviderObject.Key);
                         }
                     }
                 }
@@ -64,13 +64,14 @@ namespace Access2Justice.Integration.Partners.Rtm
                     var serviceProviderResponse = await GetRTMProvider(rtmProviderUrl, httpClient).ConfigureAwait(false);
                     if (!string.IsNullOrEmpty(serviceProviderResponse))
                     {
-                        dynamic serviceProviderObject = JsonConvert.DeserializeObject(serviceProviderResponse);
-                        foreach (var site in serviceProviderObject.Sites)
+                        dynamic serviceProviderObjects = JsonConvert.DeserializeObject(serviceProviderResponse);
+                        foreach (var serviceProviderObject in serviceProviderObjects)
                         {
-                            if (site.Key == providerDetail[1].Trim())
+                            if (serviceProviderObject.Key == providerDetail[1].Trim())
                             {
-                                var spDetailsResponse = await GetRTMProviderDetails(site, sessionId, rtmSettings.ServiceProviderDetailURL.OriginalString, httpClient);
-                                serviceProvider = ProcessRTMData(serviceProviderObject, spDetailsResponse);
+                                var spDetailsResponse = await GetRTMProviderDetails(serviceProviderObject?.Sites[0], sessionId, rtmSettings.ServiceProviderDetailURL.OriginalString, httpClient);
+                                serviceProvider = ConvertToServiceProvider(serviceProviderObject?.Sites[0], spDetailsResponse);
+                                break;
                             }
                         }
                     }
@@ -107,9 +108,9 @@ namespace Access2Justice.Integration.Partners.Rtm
         private async Task<dynamic> GetRTMProviderDetails(dynamic site, string sessionId,string rtmProviderDetailUrl, IHttpClientService httpClient)
         {
             dynamic spDetails = null;
-            string siteID = site?.Sites[0]["ID"];
-            string serviceGroupID = site?.Sites[0]["ServiceGroup"][0]["ID"];
-            string serviceSiteID = site?.Sites[0]["ServiceGroup"][0]["ServiceSites"][0]["ID"];            
+            string siteID = site["ID"];
+            string serviceGroupID = site["ServiceGroup"][0]["ID"];
+            string serviceSiteID = site["ServiceGroup"][0]["ServiceSites"][0]["ID"];
             string servicedetailURL = string.Format(CultureInfo.InvariantCulture, rtmProviderDetailUrl, siteID, serviceGroupID, serviceSiteID, sessionId);
             var response = await httpClient.GetAsync(new Uri(servicedetailURL)).ConfigureAwait(false);
             if (response.StatusCode == HttpStatusCode.OK)
@@ -145,24 +146,12 @@ namespace Access2Justice.Integration.Partners.Rtm
         }
 
         /// <summary>
-        /// Converts RTM Service Provider data into Service Provider Model.
-        /// </summary>
-        /// <param name="serviceProviderObject">RTM serviceProvider Object</param>
-        /// <returns></returns>
-        private ServiceProvider ProcessRTMData(dynamic serviceProviderObject, dynamic spDetails)
-        {
-            var site = serviceProviderObject.Sites[0];
-            string siteId = site.ID.ToString();
-            return ConvertToServiceProvider(site, spDetails);
-        }
-
-        /// <summary>
-        /// Converts RTM data to ServiceProvider Model.
+        /// Converts RTM Service Provider data to ServiceProvider Model.
         /// </summary>
         /// <param name="site"></param>
         /// <param name="spDetails"></param>
         /// <returns></returns>
-        private dynamic ConvertToServiceProvider(dynamic site, dynamic spDetails)
+        private ServiceProvider ConvertToServiceProvider(dynamic site, dynamic spDetails)
         {
             return new ServiceProvider()
             {
@@ -185,7 +174,7 @@ namespace Access2Justice.Integration.Partners.Rtm
                 Overview = site.overview,
                 Specialties = site.specialties,
                 EligibilityInformation = site.eligibilityInformation,
-                BusinessHours = GetBusinessHours(site.businessHours),
+                //BusinessHours = GetBusinessHours(site.businessHours),
                 Qualifications = site.qualifications
             };
         }

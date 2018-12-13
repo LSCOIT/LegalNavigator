@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Access2Justice.Integration.Interfaces;
 using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
+using Access2Justice.Shared.Models.Integration;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -40,8 +42,10 @@ namespace Access2Justice.WebJob
                 var providerIds = serviceProviderAdapter.GetServiceProviders("Family").Result;                
                 foreach (var providerId in providerIds)
                 {
-                    var serviceProvider = serviceProviderAdapter.GetServiceProviderDetails(providerId);
-                    var spSerialized = JsonConvert.SerializeObject(serviceProvider);
+                    var serviceProvider = serviceProviderAdapter.GetServiceProviderDetails(providerId).Result;
+                    List<ServiceProvider> serviceProviders = new List<ServiceProvider>();
+                    serviceProviders.Add(serviceProvider);
+                    var spSerialized = JsonConvert.SerializeObject(serviceProviders);
                     var bufferSP = System.Text.Encoding.UTF8.GetBytes(spSerialized);
                     var byteContentSP = new ByteArrayContent(bufferSP);
                     byteContentSP.Headers.ContentType = new MediaTypeHeaderValue("application/json");
