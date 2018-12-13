@@ -37,8 +37,8 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 case DeliveryMethod.AvianCarrier:
                     break;
-                case DeliveryMethod.Email:
 
+                case DeliveryMethod.Email:
                     string body = onboardingInfo.PayloadTemplate;
                     ListDictionary replacements = new ListDictionary();
                     foreach (var field in onboardingInfo.UserFields)
@@ -60,10 +60,11 @@ namespace Access2Justice.Api.BusinessLogic
                     mailMessage.Body = body;
                     mailMessage.IsBodyHtml = true;
                     client.Send(mailMessage);
-
                     break;
+
                 case DeliveryMethod.Fax:
                     break;
+
                 case DeliveryMethod.WebApi:
                     
                     //Generate a template from the form data
@@ -75,6 +76,7 @@ namespace Access2Justice.Api.BusinessLogic
                     //response.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
                     var content = await response.Content.ReadAsStringAsync();
                     return JsonConvert.DeserializeObject(JsonConvert.DeserializeObject(content).ToString());
+
                 default:
                     //If delivery method not available in form data, need to fetch the details explicitly from the organization
                     getOrganizationDeliveryMethod();
