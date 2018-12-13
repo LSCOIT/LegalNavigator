@@ -254,6 +254,7 @@ export class HomeTemplateComponent implements OnInit {
   }
 
   onSubmit(homeForm: NgForm) {
+    this.spinner.show();
     this.createHomeParams(homeForm);
     this.adminService.saveHomeData(this.newHomeContent).subscribe(
       response => {
