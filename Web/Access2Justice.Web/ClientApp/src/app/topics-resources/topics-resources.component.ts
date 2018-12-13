@@ -11,7 +11,7 @@ export class TopicsResourcesComponent implements OnInit {
   constructor(private showMoreService: ShowMoreService) { }
 
   clickSeeMoreOrganizationsFromTopic(resourceType: string) {
-    this.showMoreService.clickSeeMoreOrganizations(resourceType, undefined);
+    this.showMoreService.clickSeeMoreOrganizations(resourceType, undefined, undefined);
   }
   ngOnInit() {
   }

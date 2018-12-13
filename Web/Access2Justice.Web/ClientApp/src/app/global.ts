@@ -28,6 +28,8 @@ export class Global {
   planSessionKey: string = "bookmarkedPlan";
   roleInformation: any;
   displayResources: number = 3;
+  activeSubtopicParam: string;
+  topIntent: string;
 
   constructor() { }
 
