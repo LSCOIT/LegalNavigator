@@ -219,22 +219,6 @@ namespace Access2Justice.Api.Tests.TestData
              A2jPersonalizedPlanId = Guid.Parse("9a6a6131-657d-467d-b09b-c570b7dad242"),
              Components = { new CuratedExperienceComponent { ComponentId = Guid.Parse("9a6a6131-657d-467d-b09b-c570b7dad242"), Buttons = { new Button { Id = Guid.Parse("2b92e07b-a555-48e8-ad7b-90b99ebc5c96"), Label = "Continue", Destination = "2-Gender", Name = "2-Gender", Value = "btnValue" } }, Code = { CodeAfter = "GOTO,PAGE1", CodeBefore = "TESTcODEbEFORE,page2" }, Fields = { }, Help = "", Learn = "", Name = "2-Gender", Tags = { }, Text = "" } }
          };
-        public static CuratedExperience CuratedExperience4 =>
-         new CuratedExperience
-         {
-             Title = "Test",
-             CuratedExperienceId = Guid.Parse("9a6a6131-657d-467d-b09b-c570b7dad242"),
-             A2jPersonalizedPlanId = Guid.Parse("9a6a6131-657d-467d-b09b-c570b7dad242"),
-             Components = { new CuratedExperienceComponent { ComponentId = Guid.Parse("9a6a6131-657d-467d-b09b-c570b7dad242"), Buttons = { new Button { Id = Guid.Parse("2b92e07b-a555-48e8-ad7b-90b99ebc5c96"), Label = "Continue", Destination = "2-Gender", Name = "2-Gender", Value = "btnValue" } }, Code = { CodeAfter = "GOTO,PAGE1", CodeBefore = "TESTcODEbEFORE,page2" }, Fields = { }, Help = "", Learn = "", Name = "2-Gender", Tags = { }, Text = "" } }
-         };
-        public static CuratedExperience CuratedExperience5 =>
-        new CuratedExperience
-        {
-            Title = "Test",
-            CuratedExperienceId = Guid.Parse("9a6a6131-657d-467d-b09b-c570b7dad242"),
-            A2jPersonalizedPlanId = Guid.Parse("9a6a6131-657d-467d-b09b-c570b7dad242"),
-            Components = { new CuratedExperienceComponent { ComponentId = Guid.Parse("9a6a6131-657d-467d-b09b-c570b7dad242"), Buttons = { new Button { Id = Guid.Parse("2b92e07b-a555-48e8-ad7b-90b99ebc5c96"), Label = "Continue", Destination = "2-Gender", Name = "2-Gender", Value = "btnValue" } }, Code = { CodeAfter = "testcode", CodeBefore = "GOTO,PAGE1" }, Fields = { }, Help = "", Learn = "", Name = "2-Gender", Tags = { }, Text = "" } }
-        };
         public static CuratedExperience CuratedExperienceWithNoComponent =>
          new CuratedExperience
          {
@@ -288,13 +272,7 @@ namespace Access2Justice.Api.Tests.TestData
         {
             yield return new object[] { CuratedExperience2, CuratedExperienceComponentViewModel2, Guid.Parse("2b281b6f-9668-4771-b16b-c2f10a317aac"), CuratedExperienceAnswersViewModel2, CuratedExperienceAnswers };
             yield return new object[] { CuratedExperience, null, Guid.Parse("2b281b6f-9668-4771-b16b-c2f10a317aac"), CuratedExperienceAnswersViewModel, CuratedExperienceAnswers };
-        }
-        public static IEnumerable<object[]> NextComponentViewModelData2()
-        {
-            yield return new object[] { CuratedExperience5, CuratedExperienceComponentViewModel2, Guid.Parse("2b281b6f-9668-4771-b16b-c2f10a317aac"), CuratedExperienceAnswersViewModel2, CuratedExperienceAnswers5 };
-            yield return new object[] { CuratedExperience4, CuratedExperienceComponentViewModel2, Guid.Parse("2b281b6f-9668-4771-b16b-c2f10a317aac"), CuratedExperienceAnswersViewModel2, CuratedExperienceAnswers4 };
-            //yield return new object[] { CuratedExperience3, CuratedExperienceComponentViewModel2, Guid.Parse("2b281b6f-9668-4771-b16b-c2f10a317aac"), CuratedExperienceAnswersViewModel2, CuratedExperienceAnswers };
-        }
+        }      
         public static IEnumerable<object[]> SaveAnswersData()
         {
             yield return new object[] { CuratedExperience2, null, Guid.Parse("2b281b6f-9668-4771-b16b-c2f10a317aac"), CuratedExperienceAnswersViewModel2, CuratedExperienceAnswers, CuratedExperienceAnswersSchema };
