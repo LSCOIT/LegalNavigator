@@ -524,5 +524,54 @@ namespace Access2Justice.Api.Controllers
             }
             return Ok(response);
         }
+
+        /// <summary>
+        /// Get resource by state and topic name
+        /// </summary>
+        /// <remarks>
+        /// Helps get all resources by state code and topic name
+        /// </remarks>
+        /// <param name="state"></param>
+        /// <param name="topicName"></param>
+        /// <response code="404">Get all resources for given state and topic name</response>
+        [HttpGet]
+        [Route("resource")]
+        public async Task<IActionResult> GetResource([FromQuery]string state, [FromQuery] string topicName)
+        {
+            var topic = await topicsResourcesBusinessLogic.GetTopic(topicName);
+            TopicInput topicInput = new TopicInput();
+            topicInput.Id = topic.Id;
+            topicInput.Location = new Location(){ State = state };
+            var resource = await topicsResourcesBusinessLogic.GetResourceAsync(topicInput);
+
+            if (resource == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound);
+            }
+
+            return Ok(resource);
+        }
+
+        /// <summary>
+        /// Get Topic names by state
+        /// </summary>
+        /// <remarks>
+        /// Helps to get all topic names by state code
+        /// </remarks>
+        /// <param name="state"></param>
+        /// <response code="404">Get all resources for given state and topic name</response>
+        [HttpGet]
+        [Route("topics")]
+        public async Task<IActionResult> GetTopics([FromQuery]string state)
+        {
+            var topics = await topicsResourcesBusinessLogic.GetTopicsAsync(state);
+
+            if (topics == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound);
+            }
+
+            return Ok(topics);
+        }
     }
 }
