@@ -5,10 +5,14 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Access2Justice.Api.BusinessLogic
 {
@@ -22,14 +26,11 @@ namespace Access2Justice.Api.BusinessLogic
 
         public Task<object> PostOnboardingInfo(OnboardingInfo onboardingInfo)
         {
-            //Generate a template from the form data
-            var updatedTemplate = UpdatePayLoadTemplate(onboardingInfo);
-
             //Send the information based on delivery method
-            return SendInformation(onboardingInfo, updatedTemplate);
+            return SendInformation(onboardingInfo);
         }
 
-        public async Task<dynamic> SendInformation(OnboardingInfo onboardingInfo, string updatedTemplate)
+        public async Task<dynamic> SendInformation(OnboardingInfo onboardingInfo)
         {
             //Check organization delivery method
             switch (onboardingInfo.DeliveryMethod)
@@ -37,14 +38,43 @@ namespace Access2Justice.Api.BusinessLogic
                 case DeliveryMethod.AvianCarrier:
                     break;
                 case DeliveryMethod.Email:
+
+                    string body = onboardingInfo.PayloadTemplate;
+                    ListDictionary replacements = new ListDictionary();
+                    foreach (var field in onboardingInfo.UserFields)
+                    {
+                        body = body.Replace("@" + field.Name + "@",field.Value.FirstOrDefault());
+                    }
+
+                    SmtpClient client = new SmtpClient("host", 587)
+                    {
+                        Credentials = new NetworkCredential("userName", 
+                        "passWord"),
+                        EnableSsl = false,
+                    };
+
+                    var mailMessage = new MailMessage();
+                    mailMessage.From = new MailAddress("fromAddress");
+                    mailMessage.To.Add("toAddress");
+                    mailMessage.Subject = "Onboarding form details";
+                    mailMessage.Body = body;
+                    mailMessage.IsBodyHtml = true;
+                    client.Send(mailMessage);
+
                     break;
                 case DeliveryMethod.Fax:
                     break;
                 case DeliveryMethod.WebApi:
+                    
+                    //Generate a template from the form data
+                    var updatedTemplate = UpdatePayLoadTemplate(onboardingInfo);
+
                     var stringContent = new StringContent(JsonConvert.SerializeObject(updatedTemplate), Encoding.UTF8, "application/json");
                     var response = await httpClientService.PostAsync(onboardingInfo.DeliveryDestination, stringContent);
                     response.EnsureSuccessStatusCode();
-                    return await response.Content.ReadAsStringAsync();
+                    //response.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+                    var content = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject(JsonConvert.DeserializeObject(content).ToString());
                 default:
                     //If delivery method not available in form data, need to fetch the details explicitly from the organization
                     getOrganizationDeliveryMethod();
@@ -71,18 +101,47 @@ namespace Access2Justice.Api.BusinessLogic
             return DeliveryMethod.WebApi;
         }
 
-        private string GetPayloadTemplate()
+        private string GetPayloadTemplate(DeliveryMethod deliveryMethod)
         {
-            return @"{
-                'First Name': '',
-                'Last Name': '',
-                'Age': '',
-                'Gender': '',
-                'Name':'',
-                'DateOfBirth':'',
-                'Telephone':''
-            }";
-
+            switch (deliveryMethod)
+            {
+                case DeliveryMethod.Email:
+                    return @"<html>
+                            <body>
+                                <h1>Hello @First Name@,</h1>
+                                <p>
+                                    Welcome to Organization Onboarding process. 
+                                </p>
+                                <ul>
+                                    Here are the details submitted as part of the Onboarding process.
+                                    <li>First Name: @First Name@</li>
+                                    <li>Last Name: @Last Name@</li>
+                                    <li>Gender: @Gender@</li>
+                                    <li>Age: @Age@</li>
+                                </ul>
+                            </body>
+                            </html>";
+                case DeliveryMethod.WebApi:
+                    return @"{
+                            'First Name': '',
+                            'Last Name': '',
+                            'Age': '',
+                            'Gender': '', 
+                            'Name':'',
+                            'DateOfBirth':'',
+                            'Telephone':''
+                            }";
+                default:
+                    return @"{
+                            'First Name': '',
+                            'Last Name': '',
+                            'Age': '',
+                            'Gender': '', 
+                            'Name':'',
+                            'DateOfBirth':'',
+                            'Telephone':''
+                            }";
+            }
         }
         public OnboardingInfo GetOnboardingInfo(string organizationType)
         {
@@ -167,7 +226,8 @@ namespace Access2Justice.Api.BusinessLogic
                 {
                     UserFields = fields,
                     DeliveryDestination = new Uri("http://example.com/onboarding-submission/"),
-                    DeliveryMethod = DeliveryMethod.AvianCarrier                    
+                    DeliveryMethod = DeliveryMethod.Email,
+                    PayloadTemplate = GetPayloadTemplate(DeliveryMethod.Email)
                 };
             }
             else
@@ -209,7 +269,7 @@ namespace Access2Justice.Api.BusinessLogic
                     UserFields = fields,
                     DeliveryDestination = new Uri("http://localhost:4200//api/OnboardingInfo/submission"),
                     DeliveryMethod = DeliveryMethod.WebApi,
-                    PayloadTemplate = GetPayloadTemplate()
+                    PayloadTemplate = GetPayloadTemplate(DeliveryMethod.WebApi)
                 };
             }
             return onboardingInfo;
