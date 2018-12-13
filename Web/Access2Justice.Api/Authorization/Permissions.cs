@@ -10,6 +10,7 @@
             upsertstaticnavigation,
             upsertstaticaboutpage,
             upsertstaticpersonalizedplanpage,
+            upsertstaticguidedassistantpage, 
             createtopicsupload,
             createresourcesupload,
             upsertresourcedocuments,

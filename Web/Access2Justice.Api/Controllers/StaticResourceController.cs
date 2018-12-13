@@ -177,9 +177,27 @@ namespace Access2Justice.Api.Controllers
             return StatusCode(403);
         }
 
-
-
-
+        /// <summary>
+        /// Insert and Update the guided assistant page static contents
+        /// </summary>
+        /// <remarks>
+        /// Helps to get guided assistant page static contents inserted or updated
+        /// </remarks>
+        /// <param name="guidedAssistantPagContent"></param>        
+        /// <response code="200">Get guided assistant page static contents inserted or updated</response>
+        /// <response code="500">Failure</response>
+        [Permission(PermissionName.upsertstaticguidedassistantpage)]
+        [HttpPost]
+        [Route("guidedassistant/upsert")]
+        public async Task<IActionResult> UpsertStaticGuidedAssistantPageDataAsync([FromBody]GuidedAssistantPageContent guidedAssistantPagContent)
+        {
+            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(guidedAssistantPagContent.OrganizationalUnit))
+            {
+                var contents = await staticResourceBusinessLogic.UpsertStaticGuidedAssistantPageDataAsync(guidedAssistantPagContent);
+                return Ok(contents);
+            }
+            return StatusCode(403);
+        }
 
     }
 }

@@ -10,6 +10,8 @@ import { of } from 'rxjs/observable/of';
 import { Router } from '@angular/router';
 import { SearchService } from '../shared/search/search.service';
 import { TopicService } from '../topics-resources/shared/topic.service';
+import { StaticResourceService } from '../shared/static-resource.service';
+import { Global } from '../global';
 
 describe('GuidedAssistantComponent', () => {
   let component: GuidedAssistantComponent;
@@ -23,6 +25,8 @@ describe('GuidedAssistantComponent', () => {
   let mockSessionStorage;
   let mockMapLocationParsed;
   let mockRouter;
+  let mockStaticResourceService;
+  let mockGlobalService;
 
   beforeEach(async(() => {
     mockguidedAssistantSearchForm = <NgForm>{
@@ -125,7 +129,9 @@ describe('GuidedAssistantComponent', () => {
         MapService,
         { provide: SearchService, useValue: mockSearchService },
         { provide: NavigateDataService, useValue: mockNavigateDataService},
-        { provide: Router, useValue: mockRouter}
+        { provide: Router, useValue: mockRouter },
+        { provide: StaticResourceService, useValue: mockStaticResourceService },
+        { provide: Global, useValue: mockGlobalService }
       ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })

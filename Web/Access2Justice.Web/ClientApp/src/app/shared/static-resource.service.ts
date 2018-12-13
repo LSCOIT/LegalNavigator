@@ -9,6 +9,7 @@ import { HelpAndFaqs } from '../help-faqs/help-faqs';
 import { Navigation } from './navigation/navigation';
 import { Home } from '../home/home';
 import { PersonalizedPlanDescription } from '../guided-assistant/personalized-plan/personalized-plan';
+import { GuidedAssistant } from '../guided-assistant/guided-assistant';
 
 @Injectable()
 export class StaticResourceService {
@@ -25,6 +26,7 @@ export class StaticResourceService {
   homeContent: Home;
   locationDetails: LocationDetails;
   PersonalizedPlanDescription: PersonalizedPlanDescription;
+  GuidedAssistantPageContent: GuidedAssistant;
   location: string='';
 
   loadStateName(): MapLocation {
