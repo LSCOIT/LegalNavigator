@@ -1,3 +1,8 @@
+li a {
+  color: #333;
+  font-weight: 400;
+}
+
 li > a:hover {
   text-decoration: none;
   color: #0d3fb8;
