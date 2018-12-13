@@ -262,7 +262,7 @@ describe('Component:PersonalizedPlan', () => {
         { state: "Alaska" }
       ]
     },
-      mockGlobalData = [{
+    mockGlobalData = [{
         name: "PersonalizedPlanDescription",
         location: [
           { state: "Alaska" }

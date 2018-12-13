@@ -27,12 +27,28 @@ describe('GuidedAssistantComponent', () => {
   let mockRouter;
   let mockStaticResourceService;
   let mockGlobalService;
+  let mockGuidedAssistantDescription;
+  let mockGlobalData;
+  let mockDescription = "test";
 
   beforeEach(async(() => {
     mockguidedAssistantSearchForm = <NgForm>{
       value: {
         searchText: "i am getting kicked out"}
     }
+    mockGuidedAssistantDescription = {
+      name: "GuidedAssistantDescription",
+      description: "test",
+      location: [
+        { state: "AK" }
+      ]
+    },
+      mockGlobalData = [{
+      name: "GuidedAssistantDescription",
+        location: [
+          { state: "AK" }
+        ]
+      }]
     mockNavigateDataService = jasmine.createSpyObj(['setData']);
     mockSearchService = jasmine.createSpyObj(['search']);
     mockRouter = jasmine.createSpyObj(['navigateByUrl']);
@@ -115,7 +131,13 @@ describe('GuidedAssistantComponent', () => {
         return key in store ? store[key] : null;
       }
     };
-    
+
+    mockStaticResourceService = jasmine.createSpyObj(['getLocation', 'getStaticContents']);
+    mockGlobalService = jasmine.createSpyObj(['getData']);
+    mockGlobalService.getData.and.returnValue([mockGuidedAssistantDescription]);
+    mockStaticResourceService.getStaticContents.and.returnValue(mockGuidedAssistantDescription);
+    mockStaticResourceService.getLocation.and.returnValue('AK');
+
     TestBed.configureTestingModule({
       declarations: [
         GuidedAssistantComponent,
@@ -136,13 +158,11 @@ describe('GuidedAssistantComponent', () => {
       schemas: [ NO_ERRORS_SCHEMA ]
     })
       .compileComponents();
-  }));
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(GuidedAssistantComponent);
     component = fixture.componentInstance;
+    spyOn(component, 'ngOnInit');
     fixture.detectChanges();
-  });
+  }));
 
   it('should create guided assisstant component', () => {
     expect(component).toBeTruthy();
@@ -159,5 +179,13 @@ describe('GuidedAssistantComponent', () => {
     expect(mockNavigateDataService.setData).toHaveBeenCalled();
     expect(component.guidedAssistantResults).toEqual(mockSearchResponse);
     expect(mockRouter.navigateByUrl).toHaveBeenCalledWith('/guidedassistantSearch', { skipLocationChange: true });
+  });
+
+  it('should set guided assistant page description to static resource guided assistant page description content if it exists', () => {
+    mockStaticResourceService.getLocation.and.returnValue('AK');
+    mockStaticResourceService.getStaticContents.and.returnValue(mockGuidedAssistantDescription);
+    component.name = mockGuidedAssistantDescription.name;
+    component.getGuidedAssistantContent();
+    expect(component.description).toEqual(mockDescription);
   });
 });
