@@ -35,7 +35,7 @@
             <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
                 role="menu" aria-labelledby="button-basic">
               <li role="menuitem" *ngFor="let page of staticResource">
-                <a *ngIf="page.name !== 'Navigation'" class="dropdown-item" (click)="navigateToPage($event)">{{page.name}}</a>
+                <a *ngIf="page.name !== 'Navigation' && page.name !== 'GuidedAssistantPrivacyPage'" class="dropdown-item" (click)="navigateToPage($event)">{{page.name}}</a>
               </li>
             </ul>
           </div>

@@ -3,6 +3,7 @@ import { Global } from '../../global';
 import { StaticResourceService } from '../../shared/static-resource.service';
 import { Router } from '@angular/router';
 import { NavigateDataService } from '../../shared/navigate-data.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -23,7 +24,8 @@ export class AdminDashboardComponent implements OnInit {
     private global: Global,
     private staticResourceService: StaticResourceService,
     private router: Router,
-    private navigateDataService: NavigateDataService
+    private navigateDataService: NavigateDataService,
+    private spinner: NgxSpinnerService
   ) { }
 
   checkIfStateAdmin(roleInformation) {
@@ -41,10 +43,14 @@ export class AdminDashboardComponent implements OnInit {
   displayStatePage(event) {
     this.stateDropdown = event.target.innerText;
     this.location = { state: event.target.innerText };
-    this.staticResourceService.getStaticContents(this.location).subscribe(response => {
-      this.staticResource = response;
-      this.showStaticContentPage = true;
-    });
+    this.spinner.show();
+    this.staticResourceService.getStaticContents(this.location).subscribe(
+      response => {
+        this.spinner.hide();
+        this.staticResource = response;
+        this.showStaticContentPage = true;
+      },
+      error => this.router.navigate(['/error']));
   }
 
   navigateToPage(event) {
@@ -62,6 +68,9 @@ export class AdminDashboardComponent implements OnInit {
         break;
       case 'HelpAndFAQPage':
         this.router.navigate(['/admin/help'], { queryParams: { state: this.location.state } });
+        break;
+      case 'PersonalizedActionPlanPage':
+        this.router.navigate(['/admin/plan'], { queryParams: { state: this.location.state } });
         break;
       //case 'Navigation':
       //  this.router.navigate(['/admin/navigation'], { queryParams: { state: this.location.state } });
