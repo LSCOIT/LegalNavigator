@@ -35,16 +35,21 @@ export class GuidedAssistantComponent implements OnInit {
         this.router.navigateByUrl('/guidedassistantSearch', { skipLocationChange: true });
       });
   }
-
+  
   ngOnInit() {
     
-    if (JSON.parse(sessionStorage.getItem("searchTextResults")) != null) {
+    var searchWidget = document.getElementById("guidedAssistantButton");
+    if (JSON.parse(sessionStorage.getItem("searchTextResults")) != null && searchWidget != null) {
+      sessionStorage.removeItem("searchTextResults");
+      this.router.navigateByUrl('/guidedassistant');
+    }
+    else if (JSON.parse(sessionStorage.getItem("searchTextResults")) != null) {
       this.navigateDataService.setData(JSON.parse(sessionStorage.getItem("searchTextResults")));
       this.router.navigateByUrl('/guidedassistantSearch', { skipLocationChange: true });
     }
     else {
       this.router.navigateByUrl('/guidedassistant');
     }
-  }
+  }  
 
 }
