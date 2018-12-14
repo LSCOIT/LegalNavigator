@@ -14,6 +14,7 @@ describe('Service:ServiceOrgService', () => {
   let mockActiveId: any = "5d7f773f-ef75-4fb7-9681-cc7c81dc2be7";
   let mockResourceType = 'Organizations';
   let mockTopicIds = ['test'];
+  let mocktTopIntent = "";
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -41,7 +42,7 @@ describe('Service:ServiceOrgService', () => {
     showMoreService.resourceFilter.TopicIds = mockTopicIds;
     showMoreService.resourceFilter.Location = 'Test';
     showMoreService.resourceFilter.IsResourceCountRequired = false;
-    showMoreService.clickSeeMoreOrganizations(mockResourceType, mockActiveId);
+    showMoreService.clickSeeMoreOrganizations(mockResourceType, mockActiveId, mocktTopIntent);
     expect(showMoreService.clickSeeMoreOrganizations).toHaveBeenCalled();
   });
 });

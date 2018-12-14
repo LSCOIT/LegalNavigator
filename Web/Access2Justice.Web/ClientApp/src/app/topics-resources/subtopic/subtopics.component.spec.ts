@@ -1,8 +1,6 @@
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { APP_BASE_HREF } from '@angular/common';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
-import { BreadcrumbService } from '../shared/breadcrumb.service';
 import { GuidedAssistantSidebarComponent } from '../../shared/sidebars/guided-assistant-sidebar/guided-assistant-sidebar.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MapService } from '../../shared/map/map.service';
@@ -13,7 +11,6 @@ import { ServiceOrgSidebarComponent } from '../../shared/sidebars/service-org-si
 import { ShowMoreService } from '../../shared/sidebars/show-more/show-more.service';
 import { SubtopicsComponent } from './subtopics.component';
 import { TopicService } from '../shared/topic.service';
-import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Global } from '../../global';
 import { StateCodeService } from '../../shared/state-code.service';
@@ -21,9 +18,6 @@ import { StateCodeService } from '../../shared/state-code.service';
 describe('SubtopicsComponent', () => {
   let component: SubtopicsComponent;
   let fixture: ComponentFixture<SubtopicsComponent>;
-  let topicService: TopicService;
-  let navigateDataService: NavigateDataService;
-  let showMoreService: ShowMoreService;
   let mockactiveTopic = "123";
   let mockDocumentData = [
     {
@@ -74,7 +68,6 @@ describe('SubtopicsComponent', () => {
   ];
   let mockTopicService;
   let mockNavigateDataService;
-  let mockBreadcrumbService;
   let mockShowMoreService;
   let mockTopic = "bd900039-2236-8c2c-8702-d31855c56b0f";
   let mockResourceType = "Organizations";
@@ -166,7 +159,8 @@ describe('SubtopicsComponent', () => {
 
   it('should call clickSeeMoreOrganizations method in clickSeeMoreOrganizationsFromSubtopic', () => {
     component.activeTopic = mockactiveTopic;
+    component.topicIntent = "test";
     component.clickSeeMoreOrganizationsFromSubtopic(mockResourceType);
-    expect(mockShowMoreService.clickSeeMoreOrganizations).toHaveBeenCalledWith(mockResourceType, mockactiveTopic);
+    expect(mockShowMoreService.clickSeeMoreOrganizations).toHaveBeenCalledWith(mockResourceType, mockactiveTopic,"test");
   });
 });

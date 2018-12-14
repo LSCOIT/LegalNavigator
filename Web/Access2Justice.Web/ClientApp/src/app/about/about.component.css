@@ -6,6 +6,10 @@ button {
   margin: 15px 15px 15px 0;
 }
 
+#about ul li {
+  list-style: disc!important;
+}
+
 .section-img img {
   width: 100%;
   margin-top: 40px;

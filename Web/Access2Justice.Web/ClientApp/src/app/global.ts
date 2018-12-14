@@ -29,6 +29,8 @@ export class Global {
   topicsSessionKey: string = "bookmarkedTopics";
   roleInformation: any;
   displayResources: number = 3;
+  activeSubtopicParam: string;
+  topIntent: string;
 
   constructor() { }
 
