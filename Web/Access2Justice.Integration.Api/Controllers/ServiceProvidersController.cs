@@ -32,7 +32,7 @@ namespace Access2Justice.Integration.Api.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("{id}", Name = "get")]
+        [HttpGet("get-service-provider/{id}")]
         [ProducesResponseType(typeof(ServiceProvider), 200)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetServiceProviderAsync(string id)
@@ -55,12 +55,16 @@ namespace Access2Justice.Integration.Api.Controllers
             return Ok(response);
         }
 
-        // Todo:@Rakesh create Azure function to call this endpoint
-        [HttpGet]
-        [Route("load-partners-data")]
+        /// <summary>
+        /// Process service provider data
+        /// </summary>
+        /// <param name="topicName"></param>
+        /// <returns></returns>
+        [HttpGet("load-partners-data/{topicName}")]
         public async Task<IActionResult> LoadPartnersData(string topicName)
         {
-            return Ok(serviceProvidersOrchestrator.LoadServiceProviders(topicName));
+            var response = await serviceProvidersOrchestrator.LoadServiceProviders(topicName);
+            return Ok(response);
         }
     }
 }

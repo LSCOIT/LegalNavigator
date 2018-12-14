@@ -2,6 +2,7 @@
 using Access2Justice.Integration.Api.BusinessLogic;
 using Access2Justice.Integration.Api.IntegrationAdapters;
 using Access2Justice.Integration.Api.Interfaces;
+using Access2Justice.Integration.Api.Model;
 using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Utilities;
@@ -100,6 +101,9 @@ namespace Access2Justice.Integration.Api
             services.AddSingleton<IBackendDatabaseService, CosmosDbService>();
             services.AddSingleton<IDynamicQueries, CosmosDbDynamicQueries>();
             services.AddSingleton<IServiceProvidersOrchestrator, ServiceProvidersOrchestrator>();
+
+            IA2JSettings a2jSettings = new A2JSettings(Configuration.GetSection("A2JSettings"));
+            services.AddSingleton(a2jSettings);
 
             // Inject the Service Providers at runtime
             var assembly = Assembly.LoadFrom(Assembly.GetExecutingAssembly().Location);

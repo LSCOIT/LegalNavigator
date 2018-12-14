@@ -8,13 +8,16 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
+using System.Net;
+using Microsoft.Extensions.Configuration;
 
 namespace Access2Justice.Integration.Api.IntegrationAdapters.RtmServiceProvider
 {
     public class RtmServiceProviderAdapter : IServiceProviderAdapter
     {
+        private static IConfiguration Configuration { get; set; }
+
         public async Task<List<string>> GetServiceProviders(string topicName)
         {
             var rtmSettings = GetRTMConfiguration();
@@ -30,10 +33,10 @@ namespace Access2Justice.Integration.Api.IntegrationAdapters.RtmServiceProvider
                     var serviceProviderResponse = await GetRTMProvider(rtmProviderUrl, httpClient).ConfigureAwait(false);
                     if (!string.IsNullOrEmpty(serviceProviderResponse))
                     {
-                        dynamic serviceProviderObject = JsonConvert.DeserializeObject(serviceProviderResponse);
-                        foreach (var site in serviceProviderObject.Sites)
+                        dynamic serviceProviderObjects = JsonConvert.DeserializeObject(serviceProviderResponse);
+                        foreach (var serviceProviderObject in serviceProviderObjects)
                         {
-                            providerIds.Add(topicName + "|" + site.Key);
+                            providerIds.Add(topicName + "|" + serviceProviderObject.Key);
                         }
                     }
                 }
@@ -57,13 +60,14 @@ namespace Access2Justice.Integration.Api.IntegrationAdapters.RtmServiceProvider
                     var serviceProviderResponse = await GetRTMProvider(rtmProviderUrl, httpClient).ConfigureAwait(false);
                     if (!string.IsNullOrEmpty(serviceProviderResponse))
                     {
-                        dynamic serviceProviderObject = JsonConvert.DeserializeObject(serviceProviderResponse);
-                        foreach (var site in serviceProviderObject.Sites)
+                        dynamic serviceProviderObjects = JsonConvert.DeserializeObject(serviceProviderResponse);
+                        foreach (var serviceProviderObject in serviceProviderObjects)
                         {
-                            if (site.Key == providerDetail[1].Trim())
+                            if (serviceProviderObject.Key == providerDetail[1].Trim())
                             {
-                                var spDetailsResponse = await GetRTMProviderDetails(site, sessionId, rtmSettings.ServiceProviderDetailURL.OriginalString, httpClient);
+                                var spDetailsResponse = await GetRTMProviderDetails(serviceProviderObject?.Sites[0], sessionId, rtmSettings, httpClient);
                                 serviceProvider = ProcessRTMData(serviceProviderObject, spDetailsResponse);
+                                break;
                             }
                         }
                     }
@@ -97,13 +101,13 @@ namespace Access2Justice.Integration.Api.IntegrationAdapters.RtmServiceProvider
             return serviceProviderResponse;
         }
 
-        private async Task<dynamic> GetRTMProviderDetails(dynamic site, string sessionId, string rtmProviderDetailUrl, IHttpClientService httpClient)
+        private async Task<dynamic> GetRTMProviderDetails(dynamic site, string sessionId, RtmSettings rtmSettings, IHttpClientService httpClient)
         {
             dynamic spDetails = null;
-            string siteID = site?.Sites[0]["ID"];
-            string serviceGroupID = site?.Sites[0]["ServiceGroup"][0]["ID"];
-            string serviceSiteID = site?.Sites[0]["ServiceGroup"][0]["ServiceSites"][0]["ID"];
-            string servicedetailURL = string.Format(CultureInfo.InvariantCulture, rtmProviderDetailUrl, siteID, serviceGroupID, serviceSiteID, sessionId);
+            string siteID = site["ID"];
+            string serviceGroupID = site["ServiceGroup"][0]["ID"];
+            string serviceSiteID = site["ServiceGroup"][0]["ServiceSites"][0]["ID"];
+            string servicedetailURL = string.Format(CultureInfo.InvariantCulture, rtmSettings.ServiceProviderDetailURL.OriginalString, rtmSettings.ApiKey, siteID, serviceGroupID, serviceSiteID, sessionId);
             var response = await httpClient.GetAsync(new Uri(servicedetailURL)).ConfigureAwait(false);
             if (response.StatusCode == HttpStatusCode.OK)
             {
@@ -123,13 +127,11 @@ namespace Access2Justice.Integration.Api.IntegrationAdapters.RtmServiceProvider
             try
             {
                 RtmSettings rtmSettings = null;
-                var currentDirectory = Directory.GetCurrentDirectory();
-                 // Todo:@Rakesh move settings to appsettings.json
-                using (StreamReader r = new StreamReader(currentDirectory + "\\IntegrationAdapters\\RtmServiceProvider\\RtmSettings.json"))
-                {
-                    string json = r.ReadToEnd();
-                    rtmSettings = JsonConvert.DeserializeObject<RtmSettings>(json);
-                }
+                Configuration = new ConfigurationBuilder()
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                    .Build();
+                rtmSettings = new RtmSettings(Configuration.GetSection("RtmSettings"));
                 return rtmSettings;
             }
             catch
@@ -180,7 +182,7 @@ namespace Access2Justice.Integration.Api.IntegrationAdapters.RtmServiceProvider
                 Overview = site.overview,
                 Specialties = site.specialties,
                 EligibilityInformation = site.eligibilityInformation,
-                BusinessHours = GetBusinessHours(site.businessHours),
+                //BusinessHours = GetBusinessHours(site.businessHours),
                 Qualifications = site.qualifications
             };
         }
@@ -419,7 +421,7 @@ namespace Access2Justice.Integration.Api.IntegrationAdapters.RtmServiceProvider
             {
                 foreach (var item in spDetails)
                 {
-                    foreach (var detailText in item[0]?.DetailText)
+                    foreach (var detailText in item?.DetailText)
                     {
                         if (detailText.Label == "SERVICE DESCRIPTION")
                         {
