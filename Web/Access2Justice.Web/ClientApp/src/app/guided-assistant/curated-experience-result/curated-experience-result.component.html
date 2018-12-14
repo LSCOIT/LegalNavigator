@@ -3,7 +3,7 @@
     <div *ngIf="guidedAssistantResults.guidedAssistantId; else elseIfBlock" class="col-sm-8 col-sm-offset-2 text-center top-intent">
       <h3>It looks like you are looking for information on:</h3>
       <p class="text-capitalize">{{guidedAssistantResults.topIntent}}</p>
-      <button id ="guidedAssistantButton"class="btn btn-primary" routerLink='/guidedassistant/{{guidedAssistantResults?.guidedAssistantId}}'>Start the Guided Assistant</button>
+      <button class="btn btn-primary" routerLink='/guidedassistant/{{guidedAssistantResults?.guidedAssistantId}}'>Start the Guided Assistant</button>
       <div class="row">
         <a class="link col-md-12 text-center" (click)="backToSearch()">Back</a>
       </div>

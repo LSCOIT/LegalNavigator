@@ -16,6 +16,7 @@ export class GuidedAssistantComponent implements OnInit {
   luisInput: ILuisInput = { Sentence: '', Location: '', TranslateFrom: '', TranslateTo: '', LuisTopScoringIntent: '' };
   guidedAssistantResults: any;
   locationDetails: LocationDetails;
+  previousSearchText: string;
 
   constructor(
     private searchService: SearchService,
@@ -24,31 +25,30 @@ export class GuidedAssistantComponent implements OnInit {
 
   onSubmit(guidedAssistantForm) {
     this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
-    this.luisInput["Sentence"] = guidedAssistantForm.value.searchText;
-    this.luisInput["Location"] = this.locationDetails.location;
-    this.searchService.search(this.luisInput)
-      .subscribe(response => {
-        this.guidedAssistantResults = response;
-        this.navigateDataService.setData(this.guidedAssistantResults);
-        if (this.guidedAssistantResults.guidedAssistantId && this.guidedAssistantResults.topicIds.length > 0)
-        sessionStorage.setItem("searchTextResults", JSON.stringify(response));
-        this.router.navigateByUrl('/guidedassistantSearch', { skipLocationChange: true });
-      });
+    if (guidedAssistantForm.value.searchText) {
+      this.luisInput["Sentence"] = guidedAssistantForm.value.searchText;
+      this.luisInput["Location"] = this.locationDetails.location;
+      this.searchService.search(this.luisInput)
+        .subscribe(response => {
+          this.guidedAssistantResults = response;
+          this.navigateDataService.setData(this.guidedAssistantResults);
+          if (this.guidedAssistantResults.guidedAssistantId && this.guidedAssistantResults.topicIds.length > 0) {
+            sessionStorage.setItem("searchTextResults", JSON.stringify(response));
+            sessionStorage.setItem("searchText", guidedAssistantForm.value.searchText);
+            this.router.navigateByUrl('/guidedassistant/search');
+          }
+        });
+    }
   }
   
   ngOnInit() {
-    
-    var searchWidget = document.getElementById("guidedAssistantButton");
-    if (JSON.parse(sessionStorage.getItem("searchTextResults")) != null && searchWidget != null) {
-      sessionStorage.removeItem("searchTextResults");
-      this.router.navigateByUrl('/guidedassistant');
-    }
-    else if (JSON.parse(sessionStorage.getItem("searchTextResults")) != null) {
+    if (JSON.parse(sessionStorage.getItem("searchTextResults")) != null) {
       this.navigateDataService.setData(JSON.parse(sessionStorage.getItem("searchTextResults")));
-      this.router.navigateByUrl('/guidedassistantSearch', { skipLocationChange: true });
-    }
-    else {
-      this.router.navigateByUrl('/guidedassistant');
+      this.router.navigateByUrl('/guidedassistant/search');
+    } else {
+      if (sessionStorage.getItem("searchText")) {
+        this.previousSearchText = sessionStorage.getItem("searchText");
+      };
     }
   }  
 
