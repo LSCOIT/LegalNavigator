@@ -34,9 +34,9 @@ export class GuidedAssistantComponent implements OnInit {
           this.navigateDataService.setData(this.guidedAssistantResults);
           if (this.guidedAssistantResults.guidedAssistantId && this.guidedAssistantResults.topicIds.length > 0) {
             sessionStorage.setItem("searchTextResults", JSON.stringify(response));
-            sessionStorage.setItem("searchText", guidedAssistantForm.value.searchText);
-            this.router.navigateByUrl('/guidedassistant/search');
           }
+          sessionStorage.setItem("searchText", guidedAssistantForm.value.searchText);
+          this.router.navigateByUrl('/guidedassistant/search');
         });
     }
   }
