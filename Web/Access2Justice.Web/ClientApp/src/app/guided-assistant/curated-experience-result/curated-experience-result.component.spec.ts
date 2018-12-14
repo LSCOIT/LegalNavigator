@@ -22,11 +22,33 @@ fdescribe('CuratedExperienceResultComponent', () => {
   let mockArrayUtilityService;
   let mockGlobal;
   let mockPersonalizedPlanService;
+  let mockMapLocation = {
+    state: "California",
+    city: "Riverside County",
+    county: "Indio",
+    zipCode: "92201"
+  };
+
+  let mockDisplayLocationDetails = {
+    locality: "Indio",
+    address: "92201"
+  };
+
+  let mockLocationDetails = {
+    location: mockMapLocation,
+    displayLocationDetails: mockDisplayLocationDetails,
+    country: "United States",
+    formattedAddress: "Hjorth St, Indio, California 92201, United States"
+  };
+
+  let mockSavedTopics = ["Divorce", "ChildCustody"];
 
   beforeEach(async(() => { 
     mockNavigateDataService = jasmine.createSpyObj(['getData']);
     mockToastr = jasmine.createSpyObj(['success']);
     mockRouter = jasmine.createSpyObj(['navigateByUrl']);
+    mockPersonalizedPlanService = jasmine.createSpyObj(['saveTopicsToProfile']);
+
     mockGuidedAssistantResults = {
       "topIntent": "Divorce",
       "relevantIntents": [
@@ -49,7 +71,7 @@ fdescribe('CuratedExperienceResultComponent', () => {
         { provide: Router, useValue: mockRouter }, MapService,
         StateCodeService,
         { provide: ArrayUtilityService, useValue: mockArrayUtilityService },
-        { provide: Global, useValue: mockGlobal },
+        { provide: Global, useValue: { mockGlobal, userId: 'UserId', topicsSessionKey:'test' } },
         { provide: PersonalizedPlanService, useValue: mockPersonalizedPlanService }
       ]
     })
@@ -62,6 +84,22 @@ fdescribe('CuratedExperienceResultComponent', () => {
     mockNavigateDataService.getData.and.returnValue(mockGuidedAssistantResults);
     component.ngOnInit();
     fixture.detectChanges();
+
+    let store = {};
+    const mockSessionStorage = {
+      getItem: (key: string): string => {
+        return key in store ? store[key] : null;
+      },
+      setItem: (key: string, value: string) => {
+        store[key] = `${value}`;
+      },
+      removeItem: (key: string) => {
+        delete store[key];
+      },
+      clear: () => {
+        store = {};
+      }
+    };
   });
   
   it('should create', () => {
@@ -88,6 +126,24 @@ fdescribe('CuratedExperienceResultComponent', () => {
       .triggerEventHandler('click', {stopPropogration: () => {}});
     const button = fixture.debugElement.query(By.css('.btn-secondary'));
     button.triggerEventHandler('click', {stopPropogration: () => {}});
+    expect(mockToastr.success).toHaveBeenCalled();
+  });
+
+  it('should call saveTopicsToProfile if user is logged in', () => {
+    let mockIntentInput = { location: mockMapLocation, intents: mockSavedTopics };
+    component.savedTopics = mockSavedTopics;
+    spyOn(sessionStorage, 'getItem').and.returnValue(JSON.stringify(mockLocationDetails));
+    component.saveForLater();
+    expect(component.locationDetails).toEqual(mockLocationDetails);
+    expect(component.intentInput).toEqual(mockIntentInput);
+    expect(mockPersonalizedPlanService.saveTopicsToProfile).toHaveBeenCalledWith(mockIntentInput, true);
+  });
+
+  it('should call saveTopicsToProfile if user is logged in', () => {
+    mockGlobal.userId = null;
+    component.savedTopics = mockSavedTopics;
+    spyOn(sessionStorage, 'setItem');
+    component.saveForLater();
     expect(mockToastr.success).toHaveBeenCalled();
   });
 });

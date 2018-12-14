@@ -36,7 +36,7 @@ export class CuratedExperienceResultComponent implements OnInit {
     if (this.global.userId) {
       this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
       this.intentInput = { location: this.locationDetails.location, intents: this.savedTopics };
-      this.personalizedPlanService.saveTopicsToProfile(this.intentInput, true);
+      this.personalizedPlanService.saveTopicsFromGuidedAssistantToProfile(this.intentInput, true);
     } else {
       sessionStorage.setItem(this.global.topicsSessionKey, JSON.stringify(this.savedTopics));
       this.toastr.success("Topics added to session. You can view them later once you login");

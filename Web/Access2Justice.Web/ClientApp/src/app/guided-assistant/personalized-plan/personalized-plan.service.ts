@@ -97,8 +97,32 @@ export class PersonalizedPlanService {
     }
     return this.tempPlanDetailTags;
   }
-  
-  saveTopicsToProfile(intentInput, isIntent) {
+
+  saveResourcesToUserProfile() {
+    this.resoureStorage = [];
+    this.savedResources = { itemId: '', resourceType: '', resourceDetails: {} };
+    this.resoureStorage = sessionStorage.getItem(this.global.sessionKey);
+    if (this.resoureStorage && this.resoureStorage.length > 0) {
+      this.resoureStorage = JSON.parse(this.resoureStorage);
+    }
+    this.resourceTags = [];
+    this.resoureStorage.forEach(resource => {
+      this.resourceTags.push(resource);
+    });
+    if (sessionStorage.getItem(this.global.topicsSessionKey)) {
+      this.getTopicsFromGuidedAssistant();
+    } else {
+      this.saveResourceToProfilePostLogin(this.resourceTags);
+    }
+  }
+
+  getTopicsFromGuidedAssistant() {
+    this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+    this.intentInput = { location: this.locationDetails.location, intents: JSON.parse(sessionStorage.getItem(this.global.topicsSessionKey)) };
+    this.saveTopicsFromGuidedAssistantToProfile(this.intentInput, false);
+  }
+
+  saveTopicsFromGuidedAssistantToProfile(intentInput, isIntent) {
     this.isIntent = isIntent;
     if (this.isIntent) {
       this.resourceTags = [];
@@ -114,29 +138,6 @@ export class PersonalizedPlanService {
         this.saveResourceToProfilePostLogin(this.resourceTags);
       }
     });
-  }
-
-  saveResourcesToUserProfile() {
-    this.resoureStorage = [];
-    this.savedResources = { itemId: '', resourceType: '', resourceDetails: {} };
-    this.resoureStorage = sessionStorage.getItem(this.global.sessionKey);
-    if (this.resoureStorage && this.resoureStorage.length > 0) {
-      this.resoureStorage = JSON.parse(this.resoureStorage);
-    }
-    this.resourceTags = [];
-    this.resoureStorage.forEach(resource => {
-      this.resourceTags.push(resource);
-    });
-    if (sessionStorage.getItem(this.global.topicsSessionKey)) {
-      this.getResourcesFromGuidedAssistant();
-    } else {
-      this.saveResourceToProfilePostLogin(this.resourceTags);
-    }
-  }
-  getResourcesFromGuidedAssistant() {
-    this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
-    this.intentInput = { location: this.locationDetails.location, intents: JSON.parse(sessionStorage.getItem(this.global.topicsSessionKey)) };
-    this.saveTopicsToProfile(this.intentInput, false);
   }
 
   saveResourceToProfilePostLogin(savedResources) {
@@ -161,7 +162,7 @@ export class PersonalizedPlanService {
       });
   }
 
-  checkExistingSavedResources(savedResources) { //this.resourceTags= user profile resources
+  checkExistingSavedResources(savedResources) {
     savedResources.forEach(savedResource => {
       if (this.arrayUtilityService.checkObjectExistInArray(this.resourceTags, savedResource)) {
         this.showWarning('Resource already saved to profile');

@@ -351,13 +351,39 @@ fdescribe('Service:PersonalizedPlan', () => {
   let toastrService: ToastrService;
   let global: Global;
   var originalTimeout;
+  let mockMapLocation = {
+    state: "California",
+    city: "Riverside County",
+    county: "Indio",
+    zipCode: "92201"
+  };
+
+  let mockDisplayLocationDetails = {
+    locality: "Indio",
+    address: "92201"
+  };
+
+  let mockLocationDetails = {
+    location: mockMapLocation,
+    displayLocationDetails: mockDisplayLocationDetails,
+    country: "United States",
+    formattedAddress: "Hjorth St, Indio, California 92201, United States"
+  };
+  let mockSavedTopics = ["Divorce", "ChildCustody"];
+  let mockTopicDetails = [
+    {
+      "name": "Divorce", "id": "Divorce", "resourceType": "Topics"
+    },
+    {
+      "name": "ChildCustody", "id": "ChildCustody", "resourceType": "Topics"
+    }];
 
   beforeEach(() => {
 
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
       providers: [PersonalizedPlanService, ArrayUtilityService,
-        { provide: Global, useValue: { global, role: '', shareRouteUrl: '', userId: 'UserId' } },
+        { provide: Global, useValue: { global, role: '', shareRouteUrl: '', userId: 'UserId', sessionKey: 'test', topicsSessionKey:'test2' } },
         NgxSpinnerService]
     });
     service = new PersonalizedPlanService(httpSpy, arrayUtilityService, toastrService, global, ngxSpinnerService);
@@ -441,6 +467,18 @@ fdescribe('Service:PersonalizedPlan', () => {
     });
   });
 
+  it('should get topics details in getTopicDetails method of service', (done) => {
+    let mockIntentInput = { location: mockMapLocation, intents: mockSavedTopics };
+    const mockResponse = Observable.of(mockTopicDetails);
+    spyOn(service, 'getTopicDetails').and.returnValue(mockTopicDetails);
+    httpSpy.post.and.returnValue(mockResponse);
+    service.getTopicDetails(mockIntentInput).subscribe(topics => {
+      expect(httpSpy.post).toHaveBeenCalled();
+      expect(topics).toEqual(mockTopicDetails);
+      done();
+    });
+  })
+
   it('should return plan details when topics, planDetailTags passed to the getPlanDetails method', () => {
     spyOn(service, 'createTopicsList').and.returnValue(mockTopicsList);
     spyOn(service, 'displayPlanDetails').and.returnValue(mockPlanDetails);
@@ -463,13 +501,13 @@ fdescribe('Service:PersonalizedPlan', () => {
     expect(service.tempPlanDetailTags).toEqual(mockFilteredPlanDetails);
   });
 
-  it('should call saveResourceToProfilePostLogin with session stored resources in saveResourcesToUserProfile method', () => {
+  it('should call getTopicsFromGuidedAssistant with session stored resources in saveResourcesToUserProfile method', () => {
     spyOn(sessionStorage, 'getItem')
       .and.returnValue(JSON.stringify(mockSavedResources));
     spyOn(service, 'saveResourceToProfilePostLogin');
     service.saveResourcesToUserProfile();
     expect(service.resourceTags).toEqual(mockSavedResources);
-    expect(service.saveResourceToProfilePostLogin).toHaveBeenCalled();
+    expect(service.getTopicsFromGuidedAssistant).toHaveBeenCalled();
   });
 
   it('checkExistingSavedResources for saved resource exists', () => {
@@ -487,6 +525,10 @@ fdescribe('Service:PersonalizedPlan', () => {
     let mockResourceIds = ["resource1", "resource2"];
     service.getResourceIds(mockResources);
     expect(service.resourceIds).toEqual(mockResourceIds);
+  });
+
+  it('', () = {
+
   });
 
 });
