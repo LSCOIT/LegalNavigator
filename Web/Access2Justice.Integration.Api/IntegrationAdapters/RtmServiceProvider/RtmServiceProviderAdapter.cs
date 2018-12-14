@@ -124,7 +124,8 @@ namespace Access2Justice.Integration.Api.IntegrationAdapters.RtmServiceProvider
             {
                 RtmSettings rtmSettings = null;
                 var currentDirectory = Directory.GetCurrentDirectory();
-                using (StreamReader r = new StreamReader(currentDirectory + "\\RtmSettings.json"))
+                 // Todo:@Rakesh move settings to appsettings.json
+                using (StreamReader r = new StreamReader(currentDirectory + "\\IntegrationAdapters\\RtmServiceProvider\\RtmSettings.json"))
                 {
                     string json = r.ReadToEnd();
                     rtmSettings = JsonConvert.DeserializeObject<RtmSettings>(json);

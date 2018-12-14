@@ -1,7 +1,9 @@
 ﻿using Access2Justice.Integration.Api.Interfaces;
+using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models.Integration;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Access2Justice.Integration.Api.Controllers
@@ -14,13 +16,15 @@ namespace Access2Justice.Integration.Api.Controllers
     public class ServiceProvidersController : Controller
     {
         private readonly IServiceProvidersBusinessLogic serviceProvidersBusinessLogic;
+        private readonly IServiceProvidersOrchestrator serviceProvidersOrchestrator;
 
         /// <summary>
         /// Service Provider Constructor
         /// </summary>
-        public ServiceProvidersController(IServiceProvidersBusinessLogic serviceProvidersBusinessLogic)
+        public ServiceProvidersController(IServiceProvidersBusinessLogic serviceProvidersBusinessLogic, IServiceProvidersOrchestrator serviceProvidersOrchestrator)
         {
             this.serviceProvidersBusinessLogic = serviceProvidersBusinessLogic;
+            this.serviceProvidersOrchestrator = serviceProvidersOrchestrator;
         }
 
         /// <summary>
@@ -49,6 +53,14 @@ namespace Access2Justice.Integration.Api.Controllers
             string topicName = "Family";
             var response = await serviceProvidersBusinessLogic.UpsertServiceProviderDocumentAsync(serviceProvider, topicName).ConfigureAwait(false);
             return Ok(response);
+        }
+
+        // Todo:@Rakesh create Azure function to call this endpoint
+        [HttpGet]
+        [Route("load-partners-data")]
+        public async Task<IActionResult> LoadPartnersData(string topicName)
+        {
+            return Ok(serviceProvidersOrchestrator.LoadServiceProviders(topicName));
         }
     }
 }

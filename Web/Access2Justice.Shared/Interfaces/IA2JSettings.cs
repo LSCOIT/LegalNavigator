@@ -6,7 +6,6 @@ namespace Access2Justice.Shared.Interfaces
 {
     public interface IA2JSettings
     {
-        Uri ServiceProviderURL { get; }     
-
+        Uri ServiceProviderURL { get; }
     }
 }
