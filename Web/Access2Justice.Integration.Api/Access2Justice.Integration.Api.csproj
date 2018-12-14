@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <CodeAnalysisRuleSet>..\Access2Justice.Shared\DotNetStandard.ruleset</CodeAnalysisRuleSet>
     <UserSecretsId>07746c1c-a02e-41aa-9a76-3cec8160f73f</UserSecretsId>
   </PropertyGroup>
 
@@ -30,7 +31,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Access2Justice.CosmosDb\Access2Justice.CosmosDb.csproj" />
-    <ProjectReference Include="..\Access2Justice.Integration\Access2Justice.Integration.csproj" />
     <ProjectReference Include="..\Access2Justice.Shared\Access2Justice.Shared.csproj" />
   </ItemGroup>
 

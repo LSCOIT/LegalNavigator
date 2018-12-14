@@ -1,5 +1,4 @@
 ﻿using Access2Justice.CosmosDb;
-using Access2Justice.Integration.Adapters;
 using Access2Justice.Integration.Api.BusinessLogic;
 using Access2Justice.Integration.Api.Interfaces;
 using Access2Justice.Integration.Interfaces;
@@ -14,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
@@ -99,6 +99,7 @@ namespace Access2Justice.Integration.Api
             services.AddSingleton<IDocumentClient>(x => new DocumentClient(cosmosDbSettings.Endpoint, cosmosDbSettings.AuthKey));
             services.AddSingleton<IBackendDatabaseService, CosmosDbService>();
             services.AddSingleton<IDynamicQueries, CosmosDbDynamicQueries>();
+            services.AddSingleton<IServiceProvidersOrchestrator, ServiceProvidersOrchestrator>();
         }
 
         private void ConfigureSession(IServiceCollection services)

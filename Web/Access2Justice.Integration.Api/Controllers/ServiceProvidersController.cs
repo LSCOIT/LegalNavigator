@@ -1,4 +1,5 @@
 ﻿using Access2Justice.Integration.Api.Interfaces;
+using Access2Justice.Integration.Interfaces;
 using Access2Justice.Shared.Models.Integration;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace Access2Justice.Integration.Api.Controllers
     public class ServiceProvidersController : Controller
     {
         private readonly IServiceProvidersBusinessLogic serviceProvidersBusinessLogic;
+
         /// <summary>
         /// Service Provider Constructor
         /// </summary>
