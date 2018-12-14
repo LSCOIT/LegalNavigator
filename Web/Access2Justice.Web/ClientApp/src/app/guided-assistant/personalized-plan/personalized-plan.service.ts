@@ -35,6 +35,8 @@ export class PersonalizedPlanService {
   resourceIndex: number;
   tempResourceStorage: any = [];
   isIntent: boolean = false;
+  intentInput: IntentInput;
+  locationDetails: LocationDetails;
 
   constructor(private http: HttpClient,
     private arrayUtilityService: ArrayUtilityService,
@@ -98,12 +100,16 @@ export class PersonalizedPlanService {
   
   saveTopicsToProfile(intentInput, isIntent) {
     this.isIntent = isIntent;
-    this.resoureStorage = [];
+    if (this.isIntent) {
+      this.resourceTags = [];
+    }
     this.getTopicDetails(intentInput).subscribe(response => {
       if (response) {
         response.forEach(topic => {
           this.savedResources = { itemId: topic.id, resourceType: topic.resourceType, resourceDetails: {} };
-          this.resourceTags.push(this.savedResources);
+          if (!(this.arrayUtilityService.checkObjectExistInArray(this.resourceTags, this.savedResources))) {
+            this.resourceTags.push(this.savedResources);
+          }
         });
         this.saveResourceToProfilePostLogin(this.resourceTags);
       }
@@ -121,7 +127,16 @@ export class PersonalizedPlanService {
     this.resoureStorage.forEach(resource => {
       this.resourceTags.push(resource);
     });
-    this.saveResourceToProfilePostLogin(this.resourceTags);
+    if (sessionStorage.getItem(this.global.topicsSessionKey)) {
+      this.getResourcesFromGuidedAssistant();
+    } else {
+      this.saveResourceToProfilePostLogin(this.resourceTags);
+    }
+  }
+  getResourcesFromGuidedAssistant() {
+    this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+    this.intentInput = { location: this.locationDetails.location, intents: JSON.parse(sessionStorage.getItem(this.global.topicsSessionKey)) };
+    this.saveTopicsToProfile(this.intentInput, false);
   }
 
   saveResourceToProfilePostLogin(savedResources) {
@@ -146,7 +161,7 @@ export class PersonalizedPlanService {
       });
   }
 
-  checkExistingSavedResources(savedResources) {
+  checkExistingSavedResources(savedResources) { //this.resourceTags= user profile resources
     savedResources.forEach(savedResource => {
       if (this.arrayUtilityService.checkObjectExistInArray(this.resourceTags, savedResource)) {
         this.showWarning('Resource already saved to profile');
@@ -159,9 +174,9 @@ export class PersonalizedPlanService {
         this.saveResourcesToProfile(this.resourceTags);
       }
     });
-    if (this.isIntent) {
+    if (sessionStorage.getItem(this.global.topicsSessionKey)) {
       sessionStorage.removeItem(this.global.topicsSessionKey);
-    } else {
+    } else if (sessionStorage.getItem(this.global.sessionKey)) {
       sessionStorage.removeItem(this.global.sessionKey);
     }
   }

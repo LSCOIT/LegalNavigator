@@ -8,14 +8,21 @@ import { Router } from '@angular/router';
 import { MapService } from '../../shared/map/map.service';
 import { StateCodeService } from '../../shared/state-code.service';
 import { HttpClientModule } from '@angular/common/http';
+import { ArrayUtilityService } from '../../shared/array-utility.service';
+import { Global } from '../../global';
+import { PersonalizedPlanService } from '../personalized-plan/personalized-plan.service';
 
-describe('CuratedExperienceResultComponent', () => {
+fdescribe('CuratedExperienceResultComponent', () => {
   let component: CuratedExperienceResultComponent;
   let fixture: ComponentFixture<CuratedExperienceResultComponent>;
   let mockToastr;
   let mockNavigateDataService;
   let mockGuidedAssistantResults;
   let mockRouter;
+  let mockArrayUtilityService;
+  let mockGlobal;
+  let mockPersonalizedPlanService;
+
   beforeEach(async(() => { 
     mockNavigateDataService = jasmine.createSpyObj(['getData']);
     mockToastr = jasmine.createSpyObj(['success']);
@@ -40,7 +47,10 @@ describe('CuratedExperienceResultComponent', () => {
         { provide: NavigateDataService, useValue: mockNavigateDataService},
         { provide: ToastrService, useValue: mockToastr },
         { provide: Router, useValue: mockRouter }, MapService,
-        StateCodeService
+        StateCodeService,
+        { provide: ArrayUtilityService, useValue: mockArrayUtilityService },
+        { provide: Global, useValue: mockGlobal },
+        { provide: PersonalizedPlanService, useValue: mockPersonalizedPlanService }
       ]
     })
     .compileComponents();

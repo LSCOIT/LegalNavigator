@@ -11,7 +11,7 @@ import { of } from 'rxjs/observable/of';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import { NgxSpinnerService } from 'ngx-spinner';
 
-describe('Service:PersonalizedPlan', () => {
+fdescribe('Service:PersonalizedPlan', () => {
   let mockPlanDetails = {
     "id": "29250697-8d22-4f9d-bbf8-96c1b5b72e54",
     "isShared": false,
