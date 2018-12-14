@@ -1,11 +1,13 @@
 ﻿using Access2Justice.Api.Interfaces;
 using Access2Justice.Shared;
+using Access2Justice.Shared.Extensions;
 using Access2Justice.Shared.Models.Integration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -19,9 +21,11 @@ namespace Access2Justice.Api.BusinessLogic
     public class OnboardingInfoBusinessLogic : IOnboardingInfoBusinessLogic
     {
         private IHttpClientService httpClientService;
-        public OnboardingInfoBusinessLogic(IHttpClientService httpClientService)
+        private IOnboardingInfoSettings onboardingInfoSettings;
+        public OnboardingInfoBusinessLogic(IHttpClientService httpClientService, IOnboardingInfoSettings onboardingInfoSettings)
         {
             this.httpClientService = httpClientService;
+            this.onboardingInfoSettings = onboardingInfoSettings;
         }
 
         public Task<object> PostOnboardingInfo(OnboardingInfo onboardingInfo)
@@ -46,18 +50,25 @@ namespace Access2Justice.Api.BusinessLogic
                         body = body.Replace("@" + field.Name + "@",field.Value.FirstOrDefault());
                     }
 
-                    SmtpClient client = new SmtpClient("host", 587)
+                    SmtpClient client = new SmtpClient(onboardingInfoSettings.HostAddress, Convert.ToInt16(onboardingInfoSettings.PortNumber,CultureInfo.InvariantCulture))
                     {
-                        Credentials = new NetworkCredential("userName", 
-                        "passWord"),
+                        Credentials = new NetworkCredential(onboardingInfoSettings.UserName, onboardingInfoSettings.Password),
                         EnableSsl = false,
                     };
 
                     var mailMessage = new MailMessage();
-                    mailMessage.From = new MailAddress("fromAddress");
-                    mailMessage.To.Add("toAddress");
-                    mailMessage.Subject = "Onboarding form details";
-                    mailMessage.Body = body;
+                    mailMessage.From = new MailAddress(onboardingInfoSettings.FromAddress);
+                    var toAddress = Convert.ToString(onboardingInfo.DeliveryDestination, CultureInfo.InvariantCulture);
+                    if (toAddress.IsValidEmailAddress()) {
+                        mailMessage.To.Add(toAddress);
+                    }
+                    else if(onboardingInfoSettings.FallbackToAddress.IsValidEmailAddress())
+                    {
+                        mailMessage.To.Add(onboardingInfoSettings.FallbackToAddress);
+                    }
+
+                    mailMessage.Subject = onboardingInfoSettings.Subject;
+                    mailMessage.Body = !string.IsNullOrEmpty(body) ? body : onboardingInfoSettings.FallbackBodyMessage;
                     mailMessage.IsBodyHtml = true;
                     client.Send(mailMessage);
                     break;

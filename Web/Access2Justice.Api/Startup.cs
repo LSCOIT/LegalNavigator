@@ -58,6 +58,9 @@ namespace Access2Justice.Api
             IAdminSettings adminSettings = new AdminSettings(Configuration.GetSection("Admin"));
             services.AddSingleton(adminSettings);
 
+            IOnboardingInfoSettings onboardingInfoSettings = new OnboardingInfoSettings(Configuration.GetSection("EmailService"), Configuration.GetSection("KeyVault"));
+            services.AddSingleton(onboardingInfoSettings);
+
 
             services.AddSingleton<ILuisProxy, LuisProxy>();
             services.AddSingleton<ILuisBusinessLogic, LuisBusinessLogic>();
