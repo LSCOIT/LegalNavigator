@@ -7,6 +7,7 @@ import { Global } from "../../global";
 import { ArrayUtilityService } from '../../shared/array-utility.service';
 import { IResourceFilter } from '../../shared/search/search-results/search-results.model';
 import { PersonalizedPlan, PersonalizedPlanTopic, ProfileResources, Resources, SavedResources, UserPlan } from './personalized-plan';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -36,7 +37,8 @@ export class PersonalizedPlanService {
   constructor(private http: HttpClient,
     private arrayUtilityService: ArrayUtilityService,
     private toastr: ToastrService,
-    private global: Global) { }
+    private global: Global,
+    private spinner: NgxSpinnerService) { }
 
   getActionPlanConditions(planId): Observable<any> {
     let params = new HttpParams()
@@ -111,6 +113,7 @@ export class PersonalizedPlanService {
     this.getUserSavedResources(params)
       .subscribe(response => {
         if (response) {
+          this.spinner.show();
           response.forEach(property => {
             if (property.resources) {
               property.resources.forEach(resource => {
@@ -127,6 +130,7 @@ export class PersonalizedPlanService {
     savedResources.forEach(savedResource => {
       if (this.arrayUtilityService.checkObjectExistInArray(this.resourceTags, savedResource)) {
         this.showWarning('Resource already saved to profile');
+        this.spinner.hide();
       } else {
         this.resourceIndex++;
         this.resourceTags.push(savedResource);
@@ -143,6 +147,7 @@ export class PersonalizedPlanService {
     this.saveResources(this.profileResources)
       .subscribe(() => {
         this.showSuccess('Resource saved to profile');
+        this.spinner.hide();
       });
   }
 

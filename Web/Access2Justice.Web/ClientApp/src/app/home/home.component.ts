@@ -17,11 +17,7 @@ export class HomeComponent implements OnInit {
   locationDetails: LocationDetails;
   state: string;
   subscription: any;
-  slides = [
-    { image: '' },
-    { image: '' },
-    { image: '' }
-  ];
+  slides = [];
   sponsors: Array<Sponsors>;
   button: { buttonText: '', buttonAltText: '', buttonLink: '' }
   blobUrl: string = environment.blobUrl;
@@ -58,16 +54,26 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  createSlideContent(slides) {
+    slides.forEach(slide => {
+      if (slide.quote) {
+        this.slides.push(slide);
+      }
+    });
+  }
+
   getHomePageContent(): void {
     let homePageRequest = { name: this.name };
     if (this.staticResourceService.homeContent && (this.staticResourceService.homeContent.location[0].state == this.staticResourceService.getLocation())) {
       this.homeContent = this.staticResourceService.homeContent;
       this.filterHomeContent(this.staticResourceService.homeContent);
+      this.createSlideContent(this.homeContent.carousel.slides);
     } else {
       if (this.global.getData()) {
         this.staticContent = this.global.getData();
         this.homeContent = this.staticContent.find(x => x.name === this.name);
         this.filterHomeContent(this.homeContent);
+        this.createSlideContent(this.homeContent.carousel.slides);
         this.staticResourceService.homeContent = this.homeContent;
       }
     }

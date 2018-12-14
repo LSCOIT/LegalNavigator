@@ -5,7 +5,6 @@ import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { GuidedAssistantSidebarComponent } from '../../shared/sidebars/guided-assistant-sidebar/guided-assistant-sidebar.component';
 import { HttpClientModule } from '@angular/common/http';
-import { MapLocation } from '../../shared/map/map';
 import { MapService } from '../../shared/map/map.service';
 import { NavigateDataService } from '../../shared/navigate-data.service';
 import { Observable } from 'rxjs/Observable';
@@ -23,30 +22,14 @@ import { TopicService } from '../shared/topic.service';
 import { of } from 'rxjs/observable/of';
 import { MsalService } from '@azure/msal-angular';
 import { Global } from '../../global';
+import { PipeModule } from '../../shared/pipe/pipe.module';
+import { BsDropdownModule } from 'ngx-bootstrap';
 
 
 describe('SubtopicDetailComponent', () => {
   let component: SubtopicDetailComponent;
   let fixture: ComponentFixture<SubtopicDetailComponent>;
-  let mapService: MapService;
-  let paginationService: PaginationService;
-  let searchService: SearchService;
-  let navigateDataService: NavigateDataService;
-  let topicService: TopicService;
   let resourceType: string = 'Action Plans';
-  let mockMapLocation = {
-    location: {
-      state: 'Sample State',
-      city: 'Sample City',
-      county: 'Sample County',
-      zipCode: '1009203'
-    }
-  };
-  let topIntent = 'test';
-  let searchResults: any = {
-    topIntent: topIntent,
-    resourceType: resourceType
-  };
   let mockSubTopicDetailData = [{
     id: "88b5060a-61e7-4739-aad2-df76a088fe35", name: "Self-Help Centers & Access to Justice Rooms",
     organizationalUnit: "Hawaii",
@@ -59,9 +42,6 @@ describe('SubtopicDetailComponent', () => {
     resourceType: "Essential Readings",
     url: "http://www.courts.state.hi.us/self-help/protective_orders/violations/order_violations"
   }];
-  let router = {
-    navigate: jasmine.createSpy('navigate')
-  };
   let mockgetData = [];
   let mockGetDocumentData = {
     icon: "https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/family.svg | https://cs4892808efec24x447cx944.blob.core.windows.net/static-resource/assets/images/categories/abuse.svg",
@@ -77,15 +57,17 @@ describe('SubtopicDetailComponent', () => {
   let mockPaginationService;
   let mockNavigateDataService;
   let mockTopicService, msalService;
+  let mockShowMoreService;
 
   beforeEach(async(() => {
-    mockMapService = jasmine.createSpyObj(['updateLocation'])
+    mockMapService = jasmine.createSpyObj(['updateLocation']);
     mockPaginationService = jasmine.createSpyObj(['getPagedResources'])
     mockNavigateDataService = jasmine.createSpyObj(['setData', 'getData'])
     mockTopicService = jasmine.createSpyObj(['getSubtopicDetail', 'getDocumentData'])
     mockTopicService.getSubtopicDetail.and.returnValue(of(mockSubTopicDetailData));
     mockTopicService.getDocumentData.and.returnValue(of([mockGetDocumentData]));
     mockNavigateDataService.getData.and.returnValue(of(mockgetData));
+    mockShowMoreService = jasmine.createSpyObj(['clickSeeMoreOrganizations'])
 
     TestBed.configureTestingModule({
       declarations: [
@@ -102,7 +84,9 @@ describe('SubtopicDetailComponent', () => {
         RouterModule.forRoot([
           { path: 'subtopics/:topic', component: SubtopicDetailComponent }
         ]),
-        HttpClientModule
+        HttpClientModule,
+        PipeModule.forRoot(),
+        BsDropdownModule.forRoot()
       ],
       providers: [
         { provide: APP_BASE_HREF, useValue: '/' },
@@ -123,7 +107,7 @@ describe('SubtopicDetailComponent', () => {
         },
         { provide: TopicService, useValue: mockTopicService },
         { provide: MsalService, useValue: msalService },
-        ShowMoreService,
+        { provide: ShowMoreService, useValue: mockShowMoreService },
         SearchService,
         {
           provide: Global, useValue: {
@@ -147,15 +131,9 @@ describe('SubtopicDetailComponent', () => {
 
   it("should call clickShowMore when Show More button is clicked", () => {
     component.topIntent = 'test2';
-    let mockLocationDetails = { location: mockMapLocation };
-    mockMapService.updateLocation.and.returnValue(mockMapLocation);
-    spyOn(sessionStorage, 'getItem')
-      .and.returnValue(JSON.stringify(mockLocationDetails));
-    mockPaginationService.getPagedResources.and.returnValue(of([searchResults]));
-    const result = 'test';
-    mockNavigateDataService.setData.and.returnValue(of([result]));
+    component.activeSubtopicParam = '123';
     component.clickSeeMoreOrganizationsFromSubtopicDetails(resourceType);
-    expect(component.clickSeeMoreOrganizationsFromSubtopicDetails).toBeTruthy(['']);
+    expect(mockShowMoreService.clickSeeMoreOrganizations).toHaveBeenCalled();
   });
 
   it("should call filterSubtopicDetail in getSubtopicDetail method", () => {

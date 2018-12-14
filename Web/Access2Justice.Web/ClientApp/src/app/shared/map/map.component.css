@@ -1,14 +1,6 @@
-input:focus {
-  outline: none;
-}
-
 p {
   margin-bottom: 0;
   font-weight: 400;
-}
-
-p.ps {
-  margin-top: 10px
 }
 
 .row {
@@ -57,6 +49,10 @@ p.ps {
   border: none;
   background-color: transparent;
   cursor: pointer;
+}
+
+.change-location-btn:hover {
+  text-decoration: underline;
 }
 
 #search-box {
@@ -117,6 +113,7 @@ p.ps {
 #validation-error {
   font-size: 14px;
   color: #ca3636;
+  clear: both;
 }
 
 .mobile-margin {
@@ -125,6 +122,12 @@ p.ps {
 
 .close {
   margin-right: 15px;
+}
+
+.location-support {
+  margin: 10px 30px;
+  padding: 10px;
+  background-color: #f4f4f4;
 }
 
 @media only screen and (min-width : 540px) {

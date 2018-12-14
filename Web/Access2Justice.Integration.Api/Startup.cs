@@ -1,7 +1,7 @@
 ﻿using Access2Justice.CosmosDb;
 using Access2Justice.Integration.Api.BusinessLogic;
+using Access2Justice.Integration.Api.IntegrationAdapters;
 using Access2Justice.Integration.Api.Interfaces;
-using Access2Justice.Integration.Interfaces;
 using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Utilities;
@@ -100,6 +100,14 @@ namespace Access2Justice.Integration.Api
             services.AddSingleton<IBackendDatabaseService, CosmosDbService>();
             services.AddSingleton<IDynamicQueries, CosmosDbDynamicQueries>();
             services.AddSingleton<IServiceProvidersOrchestrator, ServiceProvidersOrchestrator>();
+
+            // Inject the Service Providers at runtime
+            var assembly = Assembly.LoadFrom(Assembly.GetExecutingAssembly().Location);
+            var integrationAdaptersClassNames = Configuration.GetSection("IntegrationAdaptersFullyQualifiedClassNames").Get<List<string>>();
+            foreach (var className in integrationAdaptersClassNames)
+            {
+                services.AddSingleton(typeof(IServiceProviderAdapter), assembly.GetType(className));
+            }
         }
 
         private void ConfigureSession(IServiceCollection services)

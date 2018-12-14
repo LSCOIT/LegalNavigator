@@ -26,6 +26,11 @@ h3 {
 
 .button-container ul li label {
   padding: 14px 20px 14px 50px;
+  z-index: 0;
+}
+
+.button-container ul li label:hover {
+  background-color: #D9F2F8;
 }
 
 .relevant-intent {

@@ -1,0 +1,153 @@
+<div class="container" *ngIf="aboutContent">
+  <h1>About Page</h1>
+  <form #aboutForm="ngForm" (ngSubmit)="onSubmit(aboutForm)">
+    <div class="box-shadow">
+      <h2>Heading</h2>
+      <div class="row">
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Our Mission</label>
+          <textarea class="form-control col-md-10 col-sm-9" name="aboutMission" [value]="aboutContent.mission.description" [(ngModel)]="aboutContent.mission.description"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="box-shadow">
+      <h2>Sponsors</h2>
+      <div class="row sections" *ngFor="let sponsor of aboutContent.mission.sponsors; let i=index">
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Current Image {{i}}</label>
+          <img class="media-object" [src]="'data:image/jpg;base64,'+sponsor?.source" [alt]="sponsor.altText" />
+        </div>
+        <div class="description col-sm-12">
+          <button type="button" class="btn btn-secondary" (click)="showNewsUpload('sponsorImageUpload', i)">Upload new image</button>
+        </div>
+        <div #sponsorImageUpload class="description new-img col-sm-12">
+          <label class="col-md-2 col-sm-3">Upload New Sponsor Logo</label>
+          <input class="form-control upload-img col-md-10 col-sm-9 " type="file" [name]="'sponsorImage' + i" accept="image/*" (change)="encode('sponsorImage', i)" ngModel />
+          <p class="pxs">Size limit: 100kg | Recommended dimension: 200px by 50px</p>
+        </div>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Image Alt Text {{i}}</label>
+          <input class="form-control col-md-10 col-sm-9" type="text" [name]="'sponsorImageAltText'+i" [(ngModel)]="sponsor.altText" />
+        </div>
+      </div>
+    </div>
+    <div class="box-shadow">
+      <h2>Sections</h2>
+      <div class="row sections">
+        <h3>Our Service</h3>
+        <div>
+          <label class="col-md-2 col-sm-3">Description</label>
+          <textarea class="form-control col-md-10 col-sm-9" [(ngModel)]="aboutContent.service.description" name="serviceDescription"></textarea>
+        </div>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Current Image</label>
+          <img class="media-object" [src]="'data:image/jpg;base64,'+aboutContent?.service?.image?.source" [alt]="aboutContent?.service?.image?.altText" />
+        </div>
+        <div class="description col-sm-12">
+          <button type="button" class="btn btn-secondary" (click)="showServiceUpload = !showServiceUpload">Upload new image</button>
+        </div>
+        <div *ngIf="showServiceUpload" class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Upload New Image</label>
+          <input class="form-control upload-img col-md-10 col-sm-9 " type="file" name="serviceImage" accept="image/*" (change)="encode('serviceImage')" ngModel />
+          <p class="pxs">Size limit: 400kg | Recommended dimension: 400px by 600px</p>
+        </div>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Image Alt Text (for accessibility)</label>
+          <input class="form-control col-md-10 col-sm-9" type="text" name="serviceImageAltText" [(ngModel)]="aboutContent.service.image.altText" />
+        </div>
+      </div>
+      <div class="row sections">
+        <h3>Our Privacy Promise</h3>
+        <div>
+          <label class="col-md-2 col-sm-3">Description</label>
+          <textarea class="form-control col-md-10 col-sm-9" [(ngModel)]="aboutContent.privacyPromise.description" name="privacyPromiseDescription"></textarea>
+        </div>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Current Image</label>
+          <img class="media-object" [src]="'data:image/jpg;base64,'+aboutContent?.privacyPromise?.image?.source" [alt]="aboutContent?.privacyPromise?.image?.altText" />
+        </div>
+        <div class="description col-sm-12">
+          <button type="button" class="btn btn-secondary" (click)="showPrivacyUpload = !showPrivacyUpload">Upload new image</button>
+        </div>
+        <div *ngIf="showPrivacyUpload" class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Upload New Image</label>
+          <input class="form-control upload-img col-md-10 col-sm-9" (change)="encode('privacyPromiseImage')" type="file" name="privacyPromiseImage" accept="image/*" ngModel />
+          <p class="pxs">Size limit: 400kg | Recommended dimension: 400px by 600px</p>
+        </div>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Image Alt Text (for accessibility)</label>
+          <input class="form-control col-md-10 col-sm-9" type="text" name="privacyPromiseImageAltText" [(ngModel)]="aboutContent.privacyPromise.image.altText" />
+        </div>
+      </div>
+    </div>
+    <div class="box-shadow">
+      <h2>In the News</h2>
+      <div class="row sections">
+        <div class="row subsections">
+          <label class="col-md-2 col-sm-3">Description</label>
+          <textarea class="form-control col-md-10 col-sm-9" [(ngModel)]="aboutContent.inTheNews.description" name="inTheNewsDescription"></textarea>
+        </div>
+        <div *ngIf="aboutContent.inTheNews.news" >
+          <div class="row sections" *ngFor="let news of aboutContent.inTheNews.news; let i=index">
+          <div>
+            <label class="col-md-2 col-sm-3">News Title {{i}}</label>
+            <input class="form-control col-md-10 col-sm-9" type="text" [(ngModel)]="news.title" [name]="'newsTitle'+i" />
+          </div>
+          <div class="description col-sm-12">
+            <label class="col-md-2 col-sm-3">News Description {{i}}</label>
+            <textarea class="form-control col-md-10 col-sm-9" [(ngModel)]="news.description" [name]="'newsDescription'+i"></textarea>
+          </div>
+          <div class="description col-sm-12">
+            <label class="col-md-2 col-sm-3">Current Image {{i}}</label>
+            <img class="media-object" [src]="'data:image/jpg;base64,'+news?.image?.source" [alt]="news.image.altText" />
+          </div>
+          <div class="description col-sm-12">
+            <button type="button" class="btn btn-secondary" (click)="showNewsUpload('newsImageUpload', i)">Upload new image</button>
+          </div>
+          <div #newsImageUpload class="description new-img col-sm-12">
+            <label class="col-md-2 col-sm-3">Upload New Image</label>
+            <input class="form-control upload-img col-md-10 col-sm-9 " type="file" [name]="'newsImage' + i" accept="image/*" (change)="encode('newsImage', i)" ngModel />
+            <p class="pxs">Size limit: 100kg | Recommended dimension: 100px by 100px</p>
+          </div>
+          <div class="description col-sm-12">
+            <label class="col-md-2 col-sm-3">Image Alt Text {{i}}</label>
+            <input class="form-control col-md-10 col-sm-9" type="text" name="newsImageAltText{{i}}" [(ngModel)]="news.image.altText" />
+          </div>
+          <div class="description col-sm-12">
+            <label class="col-md-2 col-sm-3">Url {{i}}</label>
+            <input class="form-control col-md-10 col-sm-9" type="text" name="newsUrl{{i}}" [(ngModel)]="news.url" />
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+    <div class="box-shadow">
+      <h2>Contacts</h2>
+      <div class="row sections">
+        <h3>Contact Us</h3>
+        <div>
+          <label class="col-md-2 col-sm-3">Description</label>
+          <textarea class="form-control col-md-10 col-sm-9" [(ngModel)]="aboutContent.contactUs.description" name="contactUsDescription"></textarea>
+        </div>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Email</label>
+          <input class="form-control upload-img col-md-10 col-sm-9" type="text" name="contactUsEmail" [(ngModel)]="aboutContent.contactUs.email" />
+        </div>
+      </div>
+      <div class="row sections">
+        <h3>Media Inquiries</h3>
+        <div>
+          <label class="col-md-2 col-sm-3">Description</label>
+          <textarea class="form-control col-md-10 col-sm-9" [(ngModel)]="aboutContent.mediaInquiries.description" name="mediaInquiriesDescription"></textarea>
+        </div>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Email</label>
+          <input class="form-control upload-img col-md-10 col-sm-9" type="text" name="mediaInquiriesEmail" [(ngModel)]="aboutContent.mediaInquiries.email" />
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <button type="submit" class="btn btn-primary">Save Changes</button>
+    </div>
+  </form>
+</div>

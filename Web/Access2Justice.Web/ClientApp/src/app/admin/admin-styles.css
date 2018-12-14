@@ -73,7 +73,7 @@ textarea {
   margin-bottom: 0;
   margin-right: 0;
   text-align: left;
-  width: 200px;
+  width: 300px;
   font-size: 14px;
   background-size: 13px;
   background-repeat: no-repeat;
@@ -92,7 +92,7 @@ textarea {
 .dropdown-menu {
   border: 1px solid #7E7E7E;
   border-radius: 0 0 5px 5px;
-  width: 200px;
+  width: 300px;
   top: 86% !important;
   border-top: 1px solid #ddd;
   padding: 0;
@@ -128,6 +128,47 @@ textarea {
 
 .btn.focus, .btn:focus {
   box-shadow: none;
+}
+
+.admin-nav {
+  border: 1px solid #ddd;
+}
+
+#admin h2 {
+  width: 20%;
+  background-color: #ddd;
+  margin-bottom: 0;
+  padding: 30px 10px 30px 10px;
+}
+
+#admin h3 {
+  margin: 20px 0;
+}
+
+.validation-error {
+  display: block;
+  color: red;
+}
+
+.validation-success {
+  display: block;
+  color: green;
+}
+
+.required-star {
+  color: red;
+}
+
+.new-img {
+  display: none;
+}
+
+.hero-image {
+  width: 400px;
+}
+
+.question-set div:first-child {
+  height: 50px
 }
 
 @media only screen and (min-width : 768px) {

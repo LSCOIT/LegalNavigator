@@ -85,7 +85,9 @@ export class AppComponent implements OnInit {
     this.staticResourceService.getStaticContents(location)
       .subscribe(
       response => {
-        this.spinner.hide();
+        if (!(sessionStorage.getItem(this.global.sessionKey))) {
+          this.spinner.hide();
+        }
         this.staticContentResults = response;
         this.global.setData(this.staticContentResults);
       }, error => {

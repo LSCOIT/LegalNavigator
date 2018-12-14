@@ -1,7 +1,7 @@
-<span id="share" (click)="openModal(template)" *ngIf="global.showShare"  [ngClass]="{'link': addLinkClass, '': !addLinkClass}">
+<button id="share" (click)="openModal(template)" *ngIf="global.showShare" class="user-button" [ngClass]="{'link': addLinkClass, '': !addLinkClass}">
   <img *ngIf="showIcon" src="./assets/images/small-icons/share.svg" class="nav-icon" aria-hidden="true" />
   Share
-</span>
+</button>
 <ng-template #template>
   <div class="modal-body">
     <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
@@ -15,8 +15,9 @@
       </div>
       <div *ngIf="!showGenerateLink">
         <div id="input-button">
-          <input type="text" name="name" value="{{permaLink}}" #userinput/>
+          <input type="text" name="name" value="{{permaLink}}" #userinput />
           <button type="button" id="copy-btn" (click)="copyLink(userinput)">Copy Link</button>
+          <span class="ps">Note: Anyone with this link will be able to access this content. Link will automatically expire after 12 months.</span>
         </div>
         <p class="pxs">Note: Link will automatically expire after 12 months.</p>
         <div class="remove-share row">

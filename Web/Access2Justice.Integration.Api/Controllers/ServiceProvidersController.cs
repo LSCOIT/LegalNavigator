@@ -1,5 +1,4 @@
 ﻿using Access2Justice.Integration.Api.Interfaces;
-using Access2Justice.Integration.Interfaces;
 using Access2Justice.Shared.Models.Integration;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;

@@ -2,6 +2,7 @@
 using Access2Justice.Api.Interfaces;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
@@ -36,6 +37,10 @@ namespace Access2Justice.Api.Controllers
         public async Task<IActionResult> GetStaticResourcesDataAsync([FromBody]Location location)
         {
             var contents = await staticResourceBusinessLogic.GetPageStaticResourcesDataAsync(location);
+            if (contents == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound);
+            }
             return Ok(contents);
         }
 
@@ -95,7 +100,7 @@ namespace Access2Justice.Api.Controllers
         [Permission(PermissionName.upsertstatichelpandfaqpage)]
         [HttpPost]
         [Route("help-and-faq/upsert")]
-        public async Task<IActionResult> UpsertStaticHelpAndFAQPageDataAsync(HelpAndFaqsContent helpAndFAQPageContent)
+        public async Task<IActionResult> UpsertStaticHelpAndFAQPageDataAsync([FromBody]HelpAndFaqsContent helpAndFAQPageContent)
         {
             if (await userRoleBusinessLogic.ValidateOrganizationalUnit(helpAndFAQPageContent.OrganizationalUnit))
             {
@@ -149,5 +154,32 @@ namespace Access2Justice.Api.Controllers
             }
             return StatusCode(403);
         }
+
+        /// <summary>
+        /// Insert and Update the personalized plan static contents
+        /// </summary>
+        /// <remarks>
+        /// Helps to get personalized plan static contents inserted or updated
+        /// </remarks>
+        /// <param name="personalizedplanContent"></param>        
+        /// <response code="200">Get personalized plan page static contents inserted or updated</response>
+        /// <response code="500">Failure</response>
+        [Permission(PermissionName.upsertstaticpersonalizedplanpage)]
+        [HttpPost]
+        [Route("personalizedplan/upsert")]
+        public async Task<IActionResult> UpsertStaticPersonalizedPageDataAsync([FromBody]PersonalizedPlanContent personalizedplanContent)
+        {
+            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(personalizedplanContent.OrganizationalUnit))
+            {
+                var contents = await staticResourceBusinessLogic.UpsertStaticPersnalizedPlanPageDataAsync(personalizedplanContent);
+                return Ok(contents);
+            }
+            return StatusCode(403);
+        }
+
+
+
+
+
     }
 }

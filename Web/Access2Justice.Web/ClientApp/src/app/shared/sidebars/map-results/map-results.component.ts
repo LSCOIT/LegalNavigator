@@ -14,6 +14,8 @@ export class MapResultsComponent implements OnChanges {
   latitudeLongitude: Array<LatitudeLongitude> = [];
   latlong: LatitudeLongitude;
   @Input() searchResource: any;
+  showMap: boolean = false;
+  validAddress = [];
 
   constructor(private mapResultsService: MapResultsService) {
   }
@@ -36,33 +38,69 @@ export class MapResultsComponent implements OnChanges {
       this.getMapResults(this.addressList);
     }
   }
- 
+
   getMapResults(address) {
     this.addressList = address;
     this.latitudeLongitude = [];
     if (this.addressList.length === 0) {
-      this.mapResultsService.getMap();
+      this.showMap = false;
     } else {
-      this.displayMapResults();
+      this.addressList.forEach(address => {
+        if (this.hasNumber(address)) {
+          this.checkPoBoxAddresses(address);
+        };
+      });
+
+      if (this.validAddress.length > 0) {
+        this.displayMapResults();
+        this.showMap = true;
+      } else {
+        this.showMap = false;
+      }
     }
   }
 
+  checkPoBoxAddresses(address) {
+    if (!address[0].toLowerCase().includes("p.o.")) {
+      this.validAddress.push(address);
+    } else {
+      let indexOfComma = address[0].indexOf(",") + 2;
+      let newAddress = address[0].slice(indexOfComma, -1);
+      newAddress = newAddress.trim();
+      this.validAddress.push([newAddress]);
+    }
+  }
+
+  hasNumber(myString) {
+    return /\d/.test(myString);
+  }
+
   displayMapResults() {
-    for (let index = 0, len = this.addressList.length; index < len; index++) {
-      this.mapResultsService.getLocationDetails(this.addressList[index].toString().replace('\n', ' ').trim(), environment.bingmap_key).subscribe((locationCoordinates) => {
-        this.latlong = {
-          latitude: locationCoordinates.resourceSets[0].resources[0].point.coordinates[0],
-          longitude: locationCoordinates.resourceSets[0].resources[0].point.coordinates[1]
-        }
-        this.latitudeLongitude.push(this.latlong);
-        if (this.latitudeLongitude.length === this.addressList.length) {
-          this.mapResultsService.mapResults(this.latitudeLongitude);
-        }
-      });
+    let num = 0;
+    for (let index = 0, len = this.validAddress.length; index < len; index++) {
+      let address = this.validAddress[index].toString().replace('\n', ' ').trim();
+      if (address.toLowerCase() != 'na') {
+        this.mapResultsService.getLocationDetails(address, environment.bingmap_key).subscribe((locationCoordinates) => {
+          this.latlong = {
+            latitude: locationCoordinates.resourceSets[0].resources[0].point.coordinates[0],
+            longitude: locationCoordinates.resourceSets[0].resources[0].point.coordinates[1]
+          }
+          this.latitudeLongitude.push(this.latlong);
+          if (this.latitudeLongitude.length + num === this.validAddress.length) {
+            this.mapResultsService.mapResults(this.latitudeLongitude);
+          }
+        });
+      } else {
+        num++;
+      }
     }
   }
 
   ngOnChanges() {
     this.getAddress();
   }
+
 }
+
+
+

@@ -19,6 +19,16 @@
   display: block;
 }
 
+.footer-nav li a {
+  color: #333;
+  font-weight: 400;
+}
+
+.footer-nav li a:hover {
+  color: #0d3fb8;
+  font-weight: 600;
+}
+
 .footer-nav li.vertical-line {
   border-bottom: 1px solid #ddd;
   width: 185px;

@@ -2,15 +2,18 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdminRoutingModule } from './admin-routing.module';
-import { BsDropdownModule } from 'ngx-bootstrap';
+import { BsDropdownModule, TabsModule } from 'ngx-bootstrap';
 import { AdminComponent } from './admin/admin.component';
-import { PrivacyPromiseAdminComponent } from './privacy-promise/privacy-promise-admin.component';
+import { PrivacyPromiseTemplateComponent } from './privacy-promise/privacy-promise-template.component';
 import { AdminService } from './admin.service';
-import { AboutAdminComponent } from './about/about-admin.component';
+import { AboutTemplateComponent } from './about/about-template.component';
 import { AdminAuthGuard } from './admin-auth/admin-auth.guard';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
-import { UploadCuratedExperienceTemplateComponent } from './upload-curated-experience-template/upload-curated-experience-template.component';
-import { CuratedExperienceAuthGuard } from './curated-experience-auth/curated-experience-auth.guard';
+import { CuratedExperienceTemplateComponent } from './curated-experience/curated-experience-template.component';
+import { NavigateDataService } from '../shared/navigate-data.service';
+import { HomeTemplateComponent } from './home/home-template.component';
+import { HelpFaqsTemplateComponent } from './help-faqs/help-faqs-template.component';
+import { PersonalizedPlanTemplateComponent } from './personalized-plan/personalized-plan-template.component';
 
 @NgModule({
   imports: [
@@ -18,24 +21,29 @@ import { CuratedExperienceAuthGuard } from './curated-experience-auth/curated-ex
     FormsModule,
     AdminRoutingModule,
     ReactiveFormsModule,
-    BsDropdownModule.forRoot()
+    BsDropdownModule.forRoot(),
+    TabsModule.forRoot()
   ],
   declarations: [
     AdminComponent,
-    PrivacyPromiseAdminComponent,
-    AboutAdminComponent,
+    PrivacyPromiseTemplateComponent,
+    AboutTemplateComponent,
     AdminDashboardComponent,
-    UploadCuratedExperienceTemplateComponent
+    CuratedExperienceTemplateComponent,
+    HomeTemplateComponent,
+    HelpFaqsTemplateComponent,
+    PersonalizedPlanTemplateComponent
   ],
   exports: [
     AdminComponent,
-    PrivacyPromiseAdminComponent,
-    UploadCuratedExperienceTemplateComponent
+    PrivacyPromiseTemplateComponent,
+    AboutTemplateComponent,
+    CuratedExperienceTemplateComponent
   ],
   providers: [
     AdminService,
     AdminAuthGuard,
-    CuratedExperienceAuthGuard
+    NavigateDataService
   ]
 })
 export class AdminModule { }

@@ -61,9 +61,9 @@ describe('MapComponent', () => {
   let mockConfig = { ignoreBackdropClick: false, keyboard: true };
   let mockPositionError = { code: 1, message: "User denied Geolocation" };
   let mapService, msalService;
-  let returnLocationValue = 'Hawaii';
+  let returnLocationValue = { "value": "Hawaii" };
   let modalRefInstance = new MockBsModalRef();
-
+ 
   beforeEach(() => {
     mapService = jasmine.createSpyObj(['getMap', 'updateLocation', 'mapLocationDetails', 'identifyLocation']);
     msalService = jasmine.createSpyObj(['getUser']);
@@ -132,9 +132,13 @@ describe('MapComponent', () => {
   });
 
   it("should call modalService show when openModal is called", () => {
+    var testElement = document.createElement('div');
+    document.getElementById = jasmine.createSpy('HTML Element').and.returnValue(testElement);
     spyOn(modalService, 'show');
+    spyOn(document.getElementById("search-box"), 'focus');
     component.openModal(template);
     expect(modalService.show).toHaveBeenCalled();
+    expect(document.getElementById("search-box").focus).toBeDefined(); 
   });
 
   it("should call mapService getMap when openModal is called", () => {
@@ -204,9 +208,13 @@ describe('MapComponent', () => {
   it("should call hide of modal ref when updateLocationDetails of component is called", () => {    
     component.modalRef = modalRefInstance;
     component.mapType = false;
+    component.changeLocationButton = {
+      nativeElement: jasmine.createSpyObj('nativeElement', ['focus'])
+    }
     mapService.updateLocation.and.returnValue(mockLocationDetailsWithFormatAddress);
     spyOn(component,'displayLocationDetails');
     component.updateLocationDetails();
+    expect(component.changeLocationButton.nativeElement.focus).toHaveBeenCalled();
     expect(modalRefInstance.isHideCalled).toBeTruthy();
     expect(component.showLocality).toBeFalsy();
   });
@@ -290,24 +298,9 @@ describe('MapComponent', () => {
   });
 
   it('should get search text while executing geocode', async(() => {
-    spyOn(document, "getElementById").and.callFake(function () {
-      return {
-        value: returnLocationValue
-      }
-    });
+    document.getElementById = jasmine.createSpy('search - box').and.returnValue(returnLocationValue);
     component.geocode();
-    expect(component.searchLocation).toEqual(returnLocationValue);
-  }));
-
-  it('should get search text  by using location service', async(() => {
-    spyOn(document, "getElementById").and.callFake(function () {
-      return {
-        value: returnLocationValue
-      }
-    });
-    spyOn(component, 'geocode');
-    component.geocode();
-    expect(component.geocode).toHaveBeenCalled();
+    expect(component.searchLocation).toEqual(returnLocationValue.value);
   }));
 
   it("should call loadCurrentLocation and displayLocationDetails on ngOnInit", () => {
