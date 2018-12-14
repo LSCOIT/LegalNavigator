@@ -1,5 +1,6 @@
-a:not([href]):not([tabindex]) {
+a:not([href]):not([tabindex]), .account-menu {
   color: #333;
+  font-weight: 400;
 }
 
 .account-menu:hover {
