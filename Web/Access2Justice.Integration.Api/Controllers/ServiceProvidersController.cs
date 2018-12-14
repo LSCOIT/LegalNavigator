@@ -1,4 +1,5 @@
 ﻿using Access2Justice.Integration.Api.Interfaces;
+using Access2Justice.Integration.Interfaces;
 using Access2Justice.Shared.Models.Integration;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -14,12 +15,15 @@ namespace Access2Justice.Integration.Api.Controllers
     public class ServiceProvidersController : Controller
     {
         private readonly IServiceProvidersBusinessLogic serviceProvidersBusinessLogic;
+        private readonly IServiceProvidersOrchestrator serviceProvidersOrchestrator;
+
         /// <summary>
         /// Service Provider Constructor
         /// </summary>
-        public ServiceProvidersController(IServiceProvidersBusinessLogic serviceProvidersBusinessLogic)
+        public ServiceProvidersController(IServiceProvidersBusinessLogic serviceProvidersBusinessLogic, IServiceProvidersOrchestrator serviceProvidersOrchestrator)
         {
             this.serviceProvidersBusinessLogic = serviceProvidersBusinessLogic;
+            this.serviceProvidersOrchestrator = serviceProvidersOrchestrator;
         }
 
         /// <summary>
@@ -48,6 +52,17 @@ namespace Access2Justice.Integration.Api.Controllers
             string topicName = "Family";
             var response = await serviceProvidersBusinessLogic.UpsertServiceProviderDocumentAsync(serviceProvider, topicName).ConfigureAwait(false);
             return Ok(response);
+        }
+
+        /// <summary>
+        /// Load the service providers from all the configured integration parties
+        /// </summary>
+        /// <param name="topicName">Load service providers by topic name</param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> LoadServiceProviders(string topicName)
+        {
+            return Ok(await serviceProvidersOrchestrator.LoadServiceProviders(topicName));
         }
     }
 }

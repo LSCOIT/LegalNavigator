@@ -6,7 +6,6 @@ using System.IO;
 using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Integration.Interfaces;
-using Access2Justice.Integration.Models;
 using Access2Justice.Integration.Partners.Rtm;
 
 namespace Access2Justice.WebJob
