@@ -19,9 +19,9 @@
           <div class="row" *ngIf="relatedLinksData.length">
             <h3>Additional Reading</h3>
             <ul>
-              <li *ngFor="let resource of relatedLinksData; let indexer=index">
-                <a *ngIf="indexer<displayResources" class="link p" href="{{resource.url}}">{{resource.name}}</a>
-                <div *ngIf="indexer<displayResources" class="print-only">{{resource.url}}</div>
+              <li *ngFor="let resource of relatedLinksData">
+                <a class="link p" href="{{resource.url}}">{{resource.name}}</a>
+                <div class="print-only">{{resource.url}}</div>
               </li>
             </ul>
           </div>
