@@ -86,8 +86,9 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly Location expectedLocationValue = TopicResourceTestData.expectedLocationValue;
         private readonly JArray expectedReviewerData = TopicResourceTestData.expectedReviewerData;
         private readonly JArray expectedContentData = TopicResourceTestData.expectedContentData;
+		//private readonly JArray expectedIntentInputData = TopicResourceTestData.expectedIntentInputData;
 
-        public TopicsResourcesBusinessLogicTests()
+		public TopicsResourcesBusinessLogicTests()
         {
             dynamicQueries = Substitute.For<IDynamicQueries>();
             cosmosDbSettings = Substitute.For<ICosmosDbSettings>();
@@ -1075,5 +1076,34 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             Assert.Contains("[{}]", result, StringComparison.InvariantCultureIgnoreCase);
         }
 
-    }
+		[Fact]
+		public void GetTopicDetailsAsyncWithProperData()
+		{
+			//arrange
+			var dbResponse = dynamicQueries.FindItemsWhereInClauseAsync(cosmosDbSettings.TopicsCollectionId, Constants.Name, TopicResourceTestData.IntentInputData.Intents, TopicResourceTestData.IntentInputData.Location);
+			dbResponse.ReturnsForAnyArgs<dynamic>(topicData);
+			
+			//act
+			var response = topicsResourcesBusinessLogic.GetTopicDetailsAsync(TopicResourceTestData.IntentInputData);
+			string result = JsonConvert.SerializeObject(response);
+
+			//assert
+			Assert.Contains(expectedLocationValue.State, result, StringComparison.InvariantCulture);
+		}
+		[Fact]
+		public void GetTopicDetailsAsyncEmptyData()
+		{
+			//arrange
+			var dbResponse = dynamicQueries.FindItemsWhereInClauseAsync(cosmosDbSettings.TopicsCollectionId, Constants.Name, TopicResourceTestData.IntentInputData.Intents, TopicResourceTestData.IntentInputData.Location);
+			dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
+
+			//act
+			var response = topicsResourcesBusinessLogic.GetTopicDetailsAsync(TopicResourceTestData.IntentInputData);
+			string result = JsonConvert.SerializeObject(response);
+
+			//assert
+			Assert.Contains("[{}]", result, StringComparison.InvariantCultureIgnoreCase);
+		}
+
+	}
 }

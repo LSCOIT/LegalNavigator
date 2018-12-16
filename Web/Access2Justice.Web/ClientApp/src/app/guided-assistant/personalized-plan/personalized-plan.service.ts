@@ -101,14 +101,16 @@ export class PersonalizedPlanService {
   saveResourcesToUserProfile() {
     this.resoureStorage = [];
     this.savedResources = { itemId: '', resourceType: '', resourceDetails: {} };
-    this.resoureStorage = sessionStorage.getItem(this.global.sessionKey);
-    if (this.resoureStorage && this.resoureStorage.length > 0) {
-      this.resoureStorage = JSON.parse(this.resoureStorage);
+    if (sessionStorage.getItem(this.global.sessionKey)) {
+      this.resoureStorage = sessionStorage.getItem(this.global.sessionKey);
+      if (this.resoureStorage && this.resoureStorage.length > 0) {
+        this.resoureStorage = JSON.parse(this.resoureStorage);
+      }
+      this.resourceTags = [];
+      this.resoureStorage.forEach(resource => {
+        this.resourceTags.push(resource);
+      });
     }
-    this.resourceTags = [];
-    this.resoureStorage.forEach(resource => {
-      this.resourceTags.push(resource);
-    });
     if (sessionStorage.getItem(this.global.topicsSessionKey)) {
       this.getTopicsFromGuidedAssistant();
     } else {

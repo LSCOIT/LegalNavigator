@@ -527,8 +527,26 @@ fdescribe('Service:PersonalizedPlan', () => {
     expect(service.resourceIds).toEqual(mockResourceIds);
   });
 
-  it('', () = {
+  it('should call saveTopicsFromGuidedAssistantToProfile in getTopicsFromGuidedAssistant method', () => {
+    spyOn(sessionStorage, 'getItem').and.returnValue(JSON.stringify(mockLocationDetails));
+    service.getTopicsFromGuidedAssistant();
+    expect(service.saveTopicsFromGuidedAssistantToProfile).toHaveBeenCalled();
+  });
 
+  it('should call getTopicDetails and saveResourceToProfilePostLogin in saveTopicsFromGuidedAssistantToProfile method', () => {
+    let mockIntentInput = { location: mockMapLocation, intents: mockSavedTopics };
+    spyOn(service, 'getTopicDetails').and.returnValue(mockSavedResources);
+    spyOn(service, 'saveResourceToProfilePostLogin');
+    let mockExists = false;
+    spyOn(arrayUtilityService, 'checkObjectExistInArray').and.callFake(() => {
+      return Observable.from([mockExists]);
+    });
+    service.saveTopicsFromGuidedAssistantToProfile(mockIntentInput, false);
+    expect(service.isIntent).toBeFalsy();
+    expect(service.getTopicDetails).toHaveBeenCalled();
+    expect(arrayUtilityService.checkObjectExistInArray).toHaveBeenCalled();
+    expect(service.resourceTags).toEqual(mockSavedResources);
+    expect(service.saveResourceToProfilePostLogin).toHaveBeenCalled();
   });
 
 });
