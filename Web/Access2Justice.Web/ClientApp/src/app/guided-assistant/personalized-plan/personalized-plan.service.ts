@@ -6,8 +6,9 @@ import { api } from '../../../api/api';
 import { Global } from "../../global";
 import { ArrayUtilityService } from '../../shared/array-utility.service';
 import { IResourceFilter } from '../../shared/search/search-results/search-results.model';
-import { PersonalizedPlan, PersonalizedPlanTopic, ProfileResources, Resources, SavedResources, UserPlan } from './personalized-plan';
+import { PersonalizedPlan, PersonalizedPlanTopic, ProfileResources, Resources, SavedResources, UserPlan, IntentInput } from './personalized-plan';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { LocationDetails } from '../../shared/map/map';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -33,6 +34,7 @@ export class PersonalizedPlanService {
   userPersonalizedPlan: UserPlan = { oId: '', plan: this.personalizedPlan };
   resourceIndex: number;
   tempResourceStorage: any = [];
+  isIntent: boolean = false;
 
   constructor(private http: HttpClient,
     private arrayUtilityService: ArrayUtilityService,
@@ -62,6 +64,10 @@ export class PersonalizedPlanService {
     return this.http.put(api.getPersonalizedResourcesUrl, resourceInput, httpOptions);
   }
 
+  getTopicDetails(intentInput): Observable<any> {
+    return this.http.post<any>(api.getTopicDetailsUrl, intentInput, httpOptions);
+  }
+
   getPlanDetails(topics, planDetailTags): any {
     this.topicsList = this.createTopicsList(topics);
     this.planDetails = this.displayPlanDetails(planDetailTags, this.topicsList);
@@ -88,6 +94,20 @@ export class PersonalizedPlanService {
       }
     }
     return this.tempPlanDetailTags;
+  }
+  
+  saveTopicsToProfile(intentInput, isIntent) {
+    this.isIntent = isIntent;
+    this.resoureStorage = [];
+    this.getTopicDetails(intentInput).subscribe(response => {
+      if (response) {
+        response.forEach(topic => {
+          this.savedResources = { itemId: topic.id, resourceType: topic.resourceType, resourceDetails: {} };
+          this.resourceTags.push(this.savedResources);
+        });
+        this.saveResourceToProfilePostLogin(this.resourceTags);
+      }
+    });
   }
 
   saveResourcesToUserProfile() {
@@ -139,14 +159,22 @@ export class PersonalizedPlanService {
         this.saveResourcesToProfile(this.resourceTags);
       }
     });
-    sessionStorage.removeItem(this.global.sessionKey);
+    if (this.isIntent) {
+      sessionStorage.removeItem(this.global.topicsSessionKey);
+    } else {
+      sessionStorage.removeItem(this.global.sessionKey);
+    }
   }
 
   saveResourcesToProfile(resourceTags) {
     this.profileResources = { oId: this.global.userId, resourceTags: resourceTags, type: 'resources' };
     this.saveResources(this.profileResources)
       .subscribe(() => {
-        this.showSuccess('Resource saved to profile');
+        if (this.isIntent) {
+          this.showSuccess("Topics added to Profile. You can view them later once you've completed the guided assistant.");
+        } else {
+          this.showSuccess('Resource saved to profile');
+        }
         this.spinner.hide();
       });
   }

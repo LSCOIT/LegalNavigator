@@ -524,5 +524,28 @@ namespace Access2Justice.Api.Controllers
             }
             return Ok(response);
         }
+
+        /// <summary>
+        /// Get topic details by a topic name
+        /// </summary>
+        /// <remarks>
+        /// Helps to get topic details by a topic name
+        /// </remarks>
+        /// <param name="id"></param>
+        /// <response code="200">Get topic details by a topic name</response>
+        /// <response code="500">Failure</response>
+        [HttpPost]
+        [Route("get-topic-details")]
+        public async Task<IActionResult> GetTopicDetails([FromBody]IntentInput intentInput)
+        {
+            var topics = await topicsResourcesBusinessLogic.GetTopicDetailsAsync(intentInput);
+
+            if (topics == null)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+            return Ok(topics);
+        }
     }
 }
