@@ -100,6 +100,13 @@ textarea {
   margin-bottom: 0;
 }
 
+.validation-error {
+  font-size: 14px;
+  color: #ca3636;
+  clear: both;
+  font-weight: 600;
+}
+
 /* Language Dropdown */
 .dropdown-icon {
   width: 10px;
