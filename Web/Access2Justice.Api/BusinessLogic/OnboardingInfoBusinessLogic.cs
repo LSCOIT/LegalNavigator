@@ -41,43 +41,12 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 case DeliveryMethod.AvianCarrier:
                     break;
-
                 case DeliveryMethod.Email:
-                    string body = onboardingInfo.PayloadTemplate;
-                    ListDictionary replacements = new ListDictionary();
-                    foreach (var field in onboardingInfo.UserFields)
-                    {
-                        body = body.Replace("@" + field.Name + "@",field.Value.FirstOrDefault());
-                    }
-
-                    SmtpClient client = new SmtpClient(onboardingInfoSettings.HostAddress, Convert.ToInt16(onboardingInfoSettings.PortNumber,CultureInfo.InvariantCulture))
-                    {
-                        Credentials = new NetworkCredential(onboardingInfoSettings.UserName, onboardingInfoSettings.Password),
-                        EnableSsl = false,
-                    };
-
-                    var mailMessage = new MailMessage();
-                    mailMessage.From = new MailAddress(onboardingInfoSettings.FromAddress);
-                    var toAddress = Convert.ToString(onboardingInfo.DeliveryDestination, CultureInfo.InvariantCulture);
-                    if (toAddress.IsValidEmailAddress()) {
-                        mailMessage.To.Add(toAddress);
-                    }
-                    else if(onboardingInfoSettings.FallbackToAddress.IsValidEmailAddress())
-                    {
-                        mailMessage.To.Add(onboardingInfoSettings.FallbackToAddress);
-                    }
-
-                    mailMessage.Subject = onboardingInfoSettings.Subject;
-                    mailMessage.Body = !string.IsNullOrEmpty(body) ? body : onboardingInfoSettings.FallbackBodyMessage;
-                    mailMessage.IsBodyHtml = true;
-                    client.Send(mailMessage);
+                    SendMail(onboardingInfo);
                     break;
-
                 case DeliveryMethod.Fax:
                     break;
-
                 case DeliveryMethod.WebApi:
-                    
                     //Generate a template from the form data
                     var updatedTemplate = UpdatePayLoadTemplate(onboardingInfo);
 
@@ -94,6 +63,39 @@ namespace Access2Justice.Api.BusinessLogic
                     break;
             }
             return null;
+        }
+
+        public void SendMail(OnboardingInfo onboardingInfo)
+        {
+            string body = onboardingInfo.PayloadTemplate;
+            ListDictionary replacements = new ListDictionary();
+            foreach (var field in onboardingInfo.UserFields)
+            {
+                body = body.Replace("@" + field.Name + "@", field.Value.FirstOrDefault());
+            }
+
+            SmtpClient client = new SmtpClient(onboardingInfoSettings.HostAddress, Convert.ToInt16(onboardingInfoSettings.PortNumber, CultureInfo.InvariantCulture))
+            {
+                Credentials = new NetworkCredential(onboardingInfoSettings.UserName, onboardingInfoSettings.Password),
+                EnableSsl = false,
+            };
+
+            var mailMessage = new MailMessage();
+            mailMessage.From = new MailAddress(onboardingInfoSettings.FromAddress);
+            var toAddress = Convert.ToString(onboardingInfo.DeliveryDestination, CultureInfo.InvariantCulture);
+            if (toAddress.IsValidEmailAddress())
+            {
+                mailMessage.To.Add(toAddress);
+            }
+            else if (onboardingInfoSettings.FallbackToAddress.IsValidEmailAddress())
+            {
+                mailMessage.To.Add(onboardingInfoSettings.FallbackToAddress);
+            }
+
+            mailMessage.Subject = onboardingInfoSettings.Subject;
+            mailMessage.Body = !string.IsNullOrEmpty(body) ? body : onboardingInfoSettings.FallbackBodyMessage;
+            mailMessage.IsBodyHtml = true;
+            client.Send(mailMessage);
         }
 
         public string UpdatePayLoadTemplate(OnboardingInfo onboardingInfo)

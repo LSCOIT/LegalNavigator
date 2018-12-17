@@ -26,7 +26,6 @@ namespace Access2Justice.Shared.Admin
                 HostAddress = configuration.GetSection("HostAddress").Value;
                 PortNumber = configuration.GetSection("PortNumber").Value;
                 UserName = configuration.GetSection("UserName").Value;
-                Password = configuration.GetSection("Password").Value;
                 FromAddress = configuration.GetSection("FromAddress").Value;
                 Subject = configuration.GetSection("Subject").Value;
                 FallbackToAddress = configuration.GetSection("FallbackToAddress").Value;
