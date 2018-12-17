@@ -185,18 +185,24 @@ namespace Access2Justice.Api.Controllers
         /// </remarks>
         /// <param name="guidedAssistantPagContent"></param>        
         /// <response code="200">Get guided assistant page static contents inserted or updated</response>
-        /// <response code="500">Failure</response>
+        /// <response code="403">Returns if there is no valid orgranization present with given input</response>
+        /// <response code="400">Returns if there is no organization input has been passed</response>
+        /// 
         [Permission(PermissionName.upsertstaticguidedassistantpage)]
         [HttpPost]
         [Route("guidedassistant/upsert")]
         public async Task<IActionResult> UpsertStaticGuidedAssistantPageDataAsync([FromBody]GuidedAssistantPageContent guidedAssistantPagContent)
         {
-            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(guidedAssistantPagContent.OrganizationalUnit))
+            if (guidedAssistantPagContent != null)
             {
-                var contents = await staticResourceBusinessLogic.UpsertStaticGuidedAssistantPageDataAsync(guidedAssistantPagContent);
-                return Ok(contents);
+                if (await userRoleBusinessLogic.ValidateOrganizationalUnit(guidedAssistantPagContent.OrganizationalUnit))
+                {
+                    var contents = await staticResourceBusinessLogic.UpsertStaticGuidedAssistantPageDataAsync(guidedAssistantPagContent);
+                    return Ok(contents);
+                }
+                return StatusCode(403);
             }
-            return StatusCode(403);
+            return StatusCode(400);
         }
 
     }
