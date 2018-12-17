@@ -22,8 +22,7 @@
               </div>
             </div>
           </div>
-          <div #contentAnswer class="step-content" id="step-content{{i}}">
-            <p>{{content.answer}}</p>
+          <div [innerHTML]="content.answer" #contentAnswer class="step-content" id="step-content{{i}}">
           </div>
         </accordion-group>
       </accordion>

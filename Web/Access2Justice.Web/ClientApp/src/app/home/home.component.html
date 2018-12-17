@@ -60,10 +60,10 @@
   <div *ngIf="carouselData.slides.length > 0" class="outer-bg">
     <div class="container">
       <carousel>
-        <slide *ngFor="let slide of carouselData.slides">
+        <slide *ngFor="let slide of slides">
           <div class="row">
-            <div class="col-sm-4 testimonial-img">
-              <img *ngIf="slide.image.source" [src]="'data:image/jpg;base64,'+ slide?.image?.source | sanitize" [alt]="slide?.image?.altText" />
+            <div *ngIf="slide.image.source" class="col-sm-4 testimonial-img">
+              <img [src]="'data:image/jpg;base64,'+ slide?.image?.source | sanitize" [alt]="slide?.image?.altText" />
             </div>
             <div class="slide-content col-sm-8">
               <h4>{{slide.quote}}</h4>
@@ -88,7 +88,7 @@
   <div class="row">
     <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
       <h2>{{sponsorOverviewData?.heading}}</h2>
-      <p>{{sponsorOverviewData?.description}}</p>
+      <div class="row" [innerHTML]="sponsorOverviewData?.description"></div>
       <div *ngFor="let sponsor of sponsors" class="col-sm-6 sponsor-img">
         <img *ngIf="sponsor.source" [src]="'data:image/jpg;base64,'+sponsor?.source | sanitize" [alt]="sponsor.altText" />
       </div>

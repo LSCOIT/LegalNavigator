@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { MapService } from '../../shared/map/map.service';
 import { StateCodeService } from '../../shared/state-code.service';
 import { HttpClientModule } from '@angular/common/http';
+import { Location } from "@angular/common";
 
 describe('CuratedExperienceResultComponent', () => {
   let component: CuratedExperienceResultComponent;
@@ -16,6 +17,10 @@ describe('CuratedExperienceResultComponent', () => {
   let mockNavigateDataService;
   let mockGuidedAssistantResults;
   let mockRouter;
+  let mockLocation = {
+    subscribe: () => {}
+  };
+
   beforeEach(async(() => { 
     mockNavigateDataService = jasmine.createSpyObj(['getData']);
     mockToastr = jasmine.createSpyObj(['success']);
@@ -40,7 +45,8 @@ describe('CuratedExperienceResultComponent', () => {
         { provide: NavigateDataService, useValue: mockNavigateDataService},
         { provide: ToastrService, useValue: mockToastr },
         { provide: Router, useValue: mockRouter }, MapService,
-        StateCodeService
+        StateCodeService,
+        { provide: Location, useValue: mockLocation }
       ]
     })
     .compileComponents();

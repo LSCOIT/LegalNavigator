@@ -19,11 +19,15 @@ ul {
   padding-left: 0;
 }
 
+
 a {
-  color: #333;
+  color: #0D3FB8;
+  font-weight: 600;
+  text-decoration: none;
 }
 
 a:hover {
+  color: #0B2B78;
   text-decoration: none;
 }
 
@@ -94,6 +98,13 @@ textarea {
 
 .resource-sections:last-child {
   margin-bottom: 0;
+}
+
+.validation-error {
+  font-size: 14px;
+  color: #ca3636;
+  clear: both;
+  font-weight: 600;
 }
 
 /* Language Dropdown */

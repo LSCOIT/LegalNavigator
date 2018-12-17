@@ -115,7 +115,7 @@ describe('GuidedAssistantComponent', () => {
       "topicIds": [
         "1370ccb7-3f0a-4b0f-920e-2d12660fafa7"
       ],
-      "guidedAssistantId": ""
+      "guidedAssistantId": "12345"
     }
     mockMapLocation = {
       location: {
@@ -178,7 +178,7 @@ describe('GuidedAssistantComponent', () => {
     expect(component.luisInput["Location"]).toEqual(mockMapLocationParsed);
     expect(mockNavigateDataService.setData).toHaveBeenCalled();
     expect(component.guidedAssistantResults).toEqual(mockSearchResponse);
-    expect(mockRouter.navigateByUrl).toHaveBeenCalledWith('/guidedassistantSearch', { skipLocationChange: true });
+    expect(mockRouter.navigateByUrl).toHaveBeenCalledWith('/guidedassistant/search');
   });
 
   it('should set guided assistant page description to static resource guided assistant page description content if it exists', () => {
