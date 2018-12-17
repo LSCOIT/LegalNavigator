@@ -1,5 +1,6 @@
 ﻿using Access2Justice.Shared.A2JAuthor;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 using System.Web;
 using Vereyon.Web;
@@ -99,5 +100,7 @@ namespace Access2Justice.Shared.Extensions
             }
             return text;
         }
+
+        public static bool IsValidEmailAddress(this string address) => address != null && new EmailAddressAttribute().IsValid(address);
     }
 }

@@ -58,6 +58,9 @@ namespace Access2Justice.Api
             IAdminSettings adminSettings = new AdminSettings(Configuration.GetSection("Admin"));
             services.AddSingleton(adminSettings);
 
+            IOnboardingInfoSettings onboardingInfoSettings = new OnboardingInfoSettings(Configuration.GetSection("EmailService"), Configuration.GetSection("KeyVault"));
+            services.AddSingleton(onboardingInfoSettings);
+
 
             services.AddSingleton<ILuisProxy, LuisProxy>();
             services.AddSingleton<ILuisBusinessLogic, LuisBusinessLogic>();
@@ -103,6 +106,7 @@ namespace Access2Justice.Api
                 c.OrderActionsBy((apiDesc) => $"{apiDesc.RelativePath}_{apiDesc.HttpMethod}");
                 c.OperationFilter<FileUploadOperation>(); //Register File Upload Operation Filter
                 c.OperationFilter<FileUploadOperationResource>();
+                c.CustomSchemaIds(x => x.FullName);
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
