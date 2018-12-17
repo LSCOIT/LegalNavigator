@@ -100,9 +100,9 @@ namespace Access2Justice.Shared.Models
         public string ConditionDescription { get; set; }
     }
 
-    public class EssentialReading : Resource
+    public class AdditionalReading : Resource
     {
-        //for now there are no unique properties to essential reading.
+        //for now there are no unique properties to additional reading.
     }
 
     public class Article : Resource

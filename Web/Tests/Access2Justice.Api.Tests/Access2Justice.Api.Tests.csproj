@@ -28,7 +28,7 @@
     <None Update="TestData\ArticlesData.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="TestData\EssentialReadingsData.json">
+    <None Update="TestData\AdditionalReadingsData.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="TestData\FormsData.json">

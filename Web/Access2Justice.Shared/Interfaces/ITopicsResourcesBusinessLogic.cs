@@ -30,7 +30,7 @@ namespace Access2Justice.Shared.Interfaces
         dynamic UpsertResourcesArticles(dynamic resource);
         dynamic UpsertResourcesVideos(dynamic resource);
         dynamic UpsertResourcesOrganizations(dynamic resource);
-        dynamic UpsertResourcesEssentialReadings(dynamic resource);
+        dynamic UpsertResourcesAdditionalReadings(dynamic resource);
         dynamic UpsertResourcesRelatedLinks(dynamic resource);
         Task<IEnumerable<object>> UpsertTopicsUploadAsync(string path);
         Task<IEnumerable<object>> UpsertTopicDocumentAsync(dynamic topic);
