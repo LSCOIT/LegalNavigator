@@ -55,7 +55,8 @@ import { LoginService } from './login/login.service';
 import { BrowserTabCloseComponent } from './browser-tab-close/browser-tab-close.component';
 import { SaveButtonService } from './resource/user-action/save-button/save-button.service';
 import { UnauthorizedComponent } from './error/unauthorized/unauthorized.component';
-import { SanitizePipe } from './pipe/sanitize.pipe';
+import { StateCodeService } from './state-code.service';
+import { PipeModule } from './pipe/pipe.module';
 
 @NgModule({
   imports: [
@@ -67,7 +68,8 @@ import { SanitizePipe } from './pipe/sanitize.pipe';
     ModalModule.forRoot(),
     CarouselModule.forRoot(),
     BrowserAnimationsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    PipeModule.forRoot()
   ],
   declarations: [
     ActionPlansComponent,
@@ -107,7 +109,6 @@ import { SanitizePipe } from './pipe/sanitize.pipe';
     ReadMoreComponent,
     BrowserTabCloseComponent,
     UnauthorizedComponent,
-    SanitizePipe
   ],
   exports: [
     ActionPlansComponent,
@@ -136,7 +137,6 @@ import { SanitizePipe } from './pipe/sanitize.pipe';
     LoginComponent,
     BrowserTabCloseComponent,
     UnauthorizedComponent,
-    SanitizePipe
   ],
   providers: [
     MapService,
@@ -150,7 +150,8 @@ import { SanitizePipe } from './pipe/sanitize.pipe';
     ResourceService,
     ShareService,
     LoginService,
-    SaveButtonService
+    SaveButtonService,
+    StateCodeService,
   ]
 })
 export class SharedModule { }

@@ -36,10 +36,12 @@
         public const string HtmlRightBracket = ">";
         public const string HtmlLeftBracket = "<";
         public const string A2JAuthorCustomFunctionTags = "%%";
+        public const string StateProvinceType = "stateProvince";
+        public const string StateProvince = "stateProvinces";
 
         public static class ReasourceTypes
         {
-            public const string EssentialReadings = "Essential Readings";
+            public const string AdditionalReadings = "Additional Readings";
         }
         public const string A2JTemplateFileExtension = ".zip";
     }

@@ -12,18 +12,17 @@
   </div>
   <div class="row faqs">
     <div class="col-md-10 col-sm-12">
-      <accordion *ngFor="let content of faqData">
+      <accordion *ngFor="let content of faqData; let i=index">
         <accordion-group>
           <div accordion-heading>
-            <div class="media">
-              <div class="media-left accordion-img"></div>
+            <div class="media" id="step-question{{i}}" tabindex="0" (keyup.enter)="listenToExpandOnEnter($event)">
+              <div class="media-left accordion-img" id="accordion-img{{i}}"></div>
               <div class="media-body">
                 <h5>{{content.question}}</h5>
               </div>
             </div>
           </div>
-          <div class="step-content">
-            <p>{{content.answer}}</p>
+          <div [innerHTML]="content.answer" #contentAnswer class="step-content" id="step-content{{i}}">
           </div>
         </accordion-group>
       </accordion>

@@ -21,6 +21,7 @@ export class SubtopicsComponent implements OnInit {
   subtopicName: string;
   topic: any;
   icon: any;
+  topicIntent: string;
   guidedInput: ISubtopicGuidedInput = { activeId: '', name: '' };
   subscription: any;
   constructor(
@@ -56,7 +57,7 @@ export class SubtopicsComponent implements OnInit {
   }
 
   clickSeeMoreOrganizationsFromSubtopic(resourceType: string) {
-    this.showMoreService.clickSeeMoreOrganizations(resourceType, this.activeTopic);
+    this.showMoreService.clickSeeMoreOrganizations(resourceType, this.activeTopic, this.topicIntent);
   }
 
   sortAlphabetically(subtopics) {

@@ -89,31 +89,31 @@ export class AboutTemplateComponent implements OnInit {
         description: aboutForm.value.inTheNewsDescription || this.aboutContent["inTheNews"].description,
         news: [
           {
-            title: aboutForm.value.newsTitle0 || this.aboutContent["inTheNews"].news[0].title,
-            description: aboutForm.value.newsDescription0 || this.aboutContent["inTheNews"].news[0].description,
+            title: aboutForm.value.newsTitle0 || this.aboutContent["inTheNews"].news[0].title || '',
+            description: aboutForm.value.newsDescription0 || this.aboutContent["inTheNews"].news[0].description || '',
             image: {
-              source: this.form.value.newsImage && this.form.value.newsImage.value || this.aboutContent["inTheNews"].news[0].image.source,
-              altText: aboutForm.value.newsImageAltText0 || this.aboutContent["inTheNews"].news[0].image.altText
+              source: this.form.value.newsImage && this.form.value.newsImage.value || this.aboutContent["inTheNews"].news[0].image.source || '',
+              altText: aboutForm.value.newsImageAltText0 || this.aboutContent["inTheNews"].news[0].image.altText || ''
             },
-            url: aboutForm.value.newsUrl0 || this.aboutContent["inTheNews"].news[0].url
+            url: aboutForm.value.newsUrl0 || this.aboutContent["inTheNews"].news[0].url || ''
           },
           {
-            title: aboutForm.value.newsTitle1 || this.aboutContent["inTheNews"].news[1].title,
-            description: aboutForm.value.newsDescription1 || this.aboutContent["inTheNews"].news[1].description,
+            title: aboutForm.value.newsTitle1 || this.aboutContent["inTheNews"].news[1].title || '',
+            description: aboutForm.value.newsDescription1 || this.aboutContent["inTheNews"].news[1].description || '',
             image: {
-              source: this.form.value.newsImage1 && this.form.value.newsImage1.value || this.aboutContent["inTheNews"].news[1].image.source,
-              altText: aboutForm.value.newsImageAltText1 || this.aboutContent["inTheNews"].news[1].image.altText
+              source: this.form.value.newsImage1 && this.form.value.newsImage1.value || this.aboutContent["inTheNews"].news[1].image.source || '',
+              altText: aboutForm.value.newsImageAltText1 || this.aboutContent["inTheNews"].news[1].image.altText || ''
             },
-            url: aboutForm.value.newsUrl1 || this.aboutContent["inTheNews"].news[1].url
+            url: aboutForm.value.newsUrl1 || this.aboutContent["inTheNews"].news[1].url || ''
           },
           {
-            title: aboutForm.value.newsTitle2 || this.aboutContent["inTheNews"].news[2].title,
-            description: aboutForm.value.newsDescription2 || this.aboutContent["inTheNews"].news[2].description,
+            title: aboutForm.value.newsTitle2 || this.aboutContent["inTheNews"].news[2].title || '',
+            description: aboutForm.value.newsDescription2 || this.aboutContent["inTheNews"].news[2].description || '',
             image: {
-              source: this.form.value.newsImage2 && this.form.value.newsImage2.value || this.aboutContent["inTheNews"].news[2].image.source,
-              altText: aboutForm.value.newsImageAltText2 || this.aboutContent["inTheNews"].news[2].image.altText
+              source: this.form.value.newsImage2 && this.form.value.newsImage2.value || this.aboutContent["inTheNews"].news[2].image.source || '',
+              altText: aboutForm.value.newsImageAltText2 || this.aboutContent["inTheNews"].news[2].image.altText || ''
             },
-            url: aboutForm.value.newsUrl2 || this.aboutContent["inTheNews"].news[2].url
+            url: aboutForm.value.newsUrl2 || this.aboutContent["inTheNews"].news[2].url || ''
           }
         ]
       },

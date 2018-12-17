@@ -8,6 +8,7 @@ import { PrivacyContent } from '../privacy-promise/privacy-promise';
 import { HelpAndFaqs } from '../help-faqs/help-faqs';
 import { Navigation } from './navigation/navigation';
 import { Home } from '../home/home';
+import { PersonalizedPlanDescription } from '../guided-assistant/personalized-plan/personalized-plan';
 
 @Injectable()
 export class StaticResourceService {
@@ -23,6 +24,7 @@ export class StaticResourceService {
   navigation: Navigation;
   homeContent: Home;
   locationDetails: LocationDetails;
+  PersonalizedPlanDescription: PersonalizedPlanDescription;
   location: string='';
 
   loadStateName(): MapLocation {
@@ -37,8 +39,10 @@ export class StaticResourceService {
   }
 
   getLocation() {
-    this.location = this.loadStateName().state;
-    if (!((this.location == "Alaska") || (this.location == "Hawaii"))) {
+    if (this.mapLocation) {
+      this.location = this.mapLocation.state;
+    }
+    if (!((this.location == "AK") || (this.location == "HI"))) {
       this.location = "Default";
     }
     return this.location;

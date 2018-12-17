@@ -43,7 +43,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
             List<dynamic> articlesList = new List<dynamic>();
             List<dynamic> organizationReviewsList = new List<dynamic>();
             List<dynamic> Resources = new List<dynamic>();
-            List<string> sheetNames = new List<string>() { Constants.ArticleSheetName, Constants.ArticleSectionSheetName, Constants.VideoSheetName, Constants.EssentialReadingSheetName, Constants.FormSheetName, Constants.OrganizationSheetName, Constants.OrganizationReviewSheetName, Constants.RelatedLinkSheetName };
+            List<string> sheetNames = new List<string>() { Constants.ArticleSheetName, Constants.ArticleSectionSheetName, Constants.VideoSheetName, Constants.AdditionalReadingSheetName, Constants.FormSheetName, Constants.OrganizationSheetName, Constants.OrganizationReviewSheetName, Constants.RelatedLinkSheetName };
 
             try
             {
@@ -251,9 +251,9 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                         ResourcesList.Add(video);
                                         ClearVariableData();
                                     }
-                                    if (resourceType == Constants.EssentialReadingResourceType)
+                                    if (resourceType == Constants.AdditionalReadingResourceType)
                                     {
-                                        EssentialReading essentialReading = new EssentialReading()
+                                        AdditionalReading additionalReading = new AdditionalReading()
                                         {
                                             ResourceId = (string.IsNullOrEmpty(id) || string.IsNullOrWhiteSpace(id)) ? Guid.NewGuid() : id,
                                             Name = name,
@@ -265,8 +265,8 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                             CreatedBy = Constants.Admin,
                                             ModifiedBy = Constants.Admin
                                         };
-                                        essentialReading.Validate();
-                                        ResourcesList.Add(essentialReading);
+                                        additionalReading.Validate();
+                                        ResourcesList.Add(additionalReading);
                                         ClearVariableData();
                                     }
                                     if (resourceType == Constants.RelatedLinkResourceType)
@@ -415,8 +415,8 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                     return Constants.ArticleResourceType;
                 case Constants.VideoSheetName:
                     return Constants.VideoResourceType;
-                case Constants.EssentialReadingSheetName:
-                    return Constants.EssentialReadingResourceType;
+                case Constants.AdditionalReadingSheetName:
+                    return Constants.AdditionalReadingResourceType;
                 case Constants.FormSheetName:
                     return Constants.FormResourceType;
                 case Constants.OrganizationSheetName:
@@ -627,7 +627,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
             string[] expectedVideoHeader = {"Id", "Name*", "Description*", "Resource_Type*", "URL*", "Topic*", "Organizational_Unit*", "Location_State*", "Location_County", "Location_City",
                     "Location_Zip", "Resource_Category", "Overview" };
 
-            string[] expectedEssentialReadingHeader = {"Id", "Name*", "Resource_Type*", "URL*", "Topic*", "Organizational_Unit*", "Location_State*", "Location_County", "Location_City",
+            string[] expectedAdditionalReadingHeader = {"Id", "Name*", "Resource_Type*", "URL*", "Topic*", "Organizational_Unit*", "Location_State*", "Location_County", "Location_City",
                     "Location_Zip"};
 
             string[] expectedOrganizationReviewHeader = { "Organization*", "Reviewer_Full_Name*", "Reviewer_Title", "Review_Text*", "Reviewer_Image_URL" };
@@ -663,9 +663,9 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                     correctHeader = HeaderValidation(header, expectedVideoHeader, Constants.VideoResourceType);
                 }
 
-                else if (resourceType == Constants.EssentialReadingResourceType)
+                else if (resourceType == Constants.AdditionalReadingResourceType)
                 {
-                    correctHeader = HeaderValidation(header, expectedEssentialReadingHeader, Constants.EssentialReadingResourceType);
+                    correctHeader = HeaderValidation(header, expectedAdditionalReadingHeader, Constants.AdditionalReadingResourceType);
                 }
 
                 else if (resourceType == Constants.OrganizationReview)

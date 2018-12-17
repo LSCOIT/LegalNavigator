@@ -4,6 +4,7 @@ import { async, TestBed, ComponentFixture } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Global } from './global';
+import { PipeModule } from './shared/pipe/pipe.module';
 import { GuidedAssistantComponent } from './guided-assistant/guided-assistant.component';
 import { HelpFaqsComponent } from './help-faqs/help-faqs.component';
 import { HomeComponent } from './home/home.component';
@@ -102,9 +103,9 @@ describe('AppComponent', () => {
     }
 
     mockStaticResourceService = jasmine.createSpyObj(['getStaticContents', 'loadStateName']);
-    mockGlobal = jasmine.createSpyObj(['setData','setProfileData']);
+    mockGlobal = jasmine.createSpyObj(['setData', 'setProfileData']);
     msalService = jasmine.createSpyObj(['getUser']);
-    mockLoginService = jasmine.createSpyObj(['upsertUserProfile','getUserProfile']);
+    mockLoginService = jasmine.createSpyObj(['upsertUserProfile', 'getUserProfile']);
     mockPersonalizedPlanService = jasmine.createSpyObj(['saveResourcesToUserProfile']);
     mockSaveButtonService = jasmine.createSpyObj(['getPlan']);
 
@@ -125,7 +126,8 @@ describe('AppComponent', () => {
       ],
       imports: [
         FormsModule,
-        HttpClientModule
+        HttpClientModule,
+        PipeModule.forRoot()
       ],
       providers: [AppComponent, PersonalizedPlanService, ArrayUtilityService, ToastrService,
         { provide: MsalService, useValue: msalService },
@@ -175,7 +177,7 @@ describe('AppComponent', () => {
     expect(component.staticContentResults).toEqual(staticContent);
     expect(mockGlobal.setData).toHaveBeenCalledWith(component.staticContentResults);
   });
-  
+
   it('should call setProfileData from global', () => {
     mockLoginService.getUserProfile.and.returnValue(of(mockLoginResponse));
     component.createOrGetProfile();

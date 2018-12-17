@@ -9,6 +9,7 @@
             upsertstatichelpandfaqpage,
             upsertstaticnavigation,
             upsertstaticaboutpage,
+            upsertstaticpersonalizedplanpage,
             createtopicsupload,
             createresourcesupload,
             upsertresourcedocuments,

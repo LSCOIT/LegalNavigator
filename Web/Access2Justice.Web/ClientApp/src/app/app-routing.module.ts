@@ -26,9 +26,9 @@ import { UnauthorizedComponent } from './shared/error/unauthorized/unauthorized.
 const appRoutes: Routes = [
   { path: 'search', component: SearchResultsComponent },
   { path: 'searchRefresh', component: SearchResultsComponent },
+  { path: 'guidedassistant/search', component: CuratedExperienceResultComponent },
   { path: 'guidedassistant/:id', component: CuratedExperienceComponent },
   { path: 'guidedassistant', component: GuidedAssistantComponent },
-  { path: 'guidedassistantSearch', component: CuratedExperienceResultComponent },
   { path: 'resource/:id', component: ResourceCardDetailComponent },
   { path: 'subtopics/:topic', component: SubtopicDetailComponent },
   { path: 'topics/:topic', component: SubtopicsComponent},
