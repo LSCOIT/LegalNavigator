@@ -43,7 +43,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly JArray articleData = TopicResourceTestData.articleData;
         private readonly JArray videoData = TopicResourceTestData.videoData;
         private readonly JArray organizationData = TopicResourceTestData.organizationData;
-        private readonly JArray essentialReadingData = TopicResourceTestData.essentialReadingData;
+        private readonly JArray additionalReadingData = TopicResourceTestData.additionalReadingData;
         private readonly JArray relatedLinkData = TopicResourceTestData.relatedLinkData;
         private readonly JArray topicData = TopicResourceTestData.topicData;
         private readonly JArray topicUpsertData = TopicResourceTestData.topicUpsertData;
@@ -775,19 +775,19 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void UpsertResourcesEssentialReadingsTestsShouldReturnProperData()
+        public void UpsertResourcesAdditionalReadingsTestsShouldReturnProperData()
         {
             //arrange
-            var essentialReading = this.essentialReadingData[0];
+            var additionalReading = this.additionalReadingData[0];
 
             //act
             var dbResponseTopicTag = topicsResourcesSettings.GetTopicTags(referenceTagData).ReturnsForAnyArgs<dynamic>(expectedTopicTagData);
             var dbResponseLocation = topicsResourcesSettings.GetLocations(locationData).ReturnsForAnyArgs<dynamic>(expectedReferenceLocationData);
-            var dbResponse = topicsResourcesSettings.GetReferences(essentialReading).ReturnsForAnyArgs<dynamic>(expectedResourceReferences);
-            var response = topicsResourcesBusinessLogic.UpsertResourcesEssentialReadings(essentialReading);
+            var dbResponse = topicsResourcesSettings.GetReferences(additionalReading).ReturnsForAnyArgs<dynamic>(expectedResourceReferences);
+            var response = topicsResourcesBusinessLogic.UpsertResourcesAdditionalReadings(additionalReading);
             var result = JsonConvert.SerializeObject(response);
-            var essentialReadingResult = (JObject)JsonConvert.DeserializeObject(result);
-            result = essentialReadingResult;
+            var additionalReadingResult = (JObject)JsonConvert.DeserializeObject(result);
+            result = additionalReadingResult;
             foreach (JProperty field in result)
             {
                 if (field.Name == "createdTimeStamp")
@@ -802,7 +802,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             }
 
             //assert
-            Assert.Equal(essentialReading.ToString(), result.ToString());
+            Assert.Equal(additionalReading.ToString(), result.ToString());
         }
 
         [Fact]

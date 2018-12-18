@@ -85,11 +85,11 @@
           </accordion>
         </div>
         <div class="col-md-3 col-sm-12 quick-links">
-          <p>Additional Reading</p>
+          <p>Additional Readings</p>
           <ul>
-            <li *ngFor="let essentialReading of topic.essentialReadings">
-              <a href={{essentialReading.url}} class="link">{{essentialReading.text}}</a>
-              <div class="print-only">{{essentialReading.url}}</div>
+            <li *ngFor="let additionalReading of topic.additionalReadings">
+              <a href={{additionalReading.url}} class="link">{{additionalReading.text}}</a>
+              <div class="print-only">{{additionalReading.url}}</div>
             </li>              
           </ul>
         </div>

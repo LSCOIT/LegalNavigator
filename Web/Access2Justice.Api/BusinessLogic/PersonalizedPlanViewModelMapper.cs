@@ -48,7 +48,7 @@ namespace Access2Justice.Api.BusinessLogic
                     TopicId = Guid.Parse(topic.Id),
                     TopicName = topic.Name,
                     Icon = topic.Icon,
-                    EssentialReadings = await GetEssentialReadings(topic.Id),
+                    AdditionalReadings = await GetAdditionalReadings(topic.Id),
                     Steps = GetSteps(unprocessedTopic.UnprocessedSteps, resourceDetails)
 				});
 			}
@@ -57,22 +57,22 @@ namespace Access2Justice.Api.BusinessLogic
 			return actionPlan;
 		}
 
-        private async Task<List<EssentialReadings>> GetEssentialReadings(string topicId)
+        private async Task<List<AdditionalReadings>> GetAdditionalReadings(string topicId)
         {
-            var essentialReadings = await backendDatabaseService.GetItemsAsync<EssentialReading>(x => x.ResourceType == Constants.ReasourceTypes.EssentialReadings &&
+            var additionalReadings = await backendDatabaseService.GetItemsAsync<AdditionalReading>(x => x.ResourceType == Constants.ReasourceTypes.AdditionalReadings &&
             x.TopicTags.Contains(new TopicTag { TopicTags = topicId }), cosmosDbSettings.ResourcesCollectionId);
 
-            var essentialReadingsUrls = new List<EssentialReadings>();
-            foreach (var item in essentialReadings)
+            var additionalReadingsUrls = new List<AdditionalReadings>();
+            foreach (var item in additionalReadings)
             {
-                essentialReadingsUrls.Add(new EssentialReadings
+                additionalReadingsUrls.Add(new AdditionalReadings
                 {
                     Text = item.Name,
                     Url = item.Url,
                 });
             }
 
-            return essentialReadingsUrls;
+            return additionalReadingsUrls;
         }
 
         private List<PlanStep> GetSteps(List<UnprocessedStep> unprocessedSteps, List<Resource> resourceDetails)
