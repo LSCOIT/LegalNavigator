@@ -15,13 +15,10 @@
         /// <param name="httpContent">
         /// HttpContent to be POSTed.
         /// </param>
-        /// <param name="subscriptionKey">
-        /// 
-        /// </param>
         /// <returns>
         /// The <see cref="Task"/>.
         /// </returns>
-        Task<HttpResponseMessage> PostAsync(Uri apiUrl, HttpContent httpContent, string subscriptionKey);
+        Task<HttpResponseMessage> PostAsync(Uri apiUrl, HttpContent httpContent);
 
         /// <summary>
         /// The get async.
@@ -35,6 +32,13 @@
         Task<HttpResponseMessage> GetAsync(Uri apiUrl);
 
         Task<HttpResponseMessage> GetDataAsync(Uri apiUrl, string subscriptionKey);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        Task<HttpResponseMessage> SendAsync(HttpRequestMessage request);
 
     }
 }

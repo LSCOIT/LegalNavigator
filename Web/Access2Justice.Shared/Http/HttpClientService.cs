@@ -24,9 +24,8 @@
             return await httpClient.GetAsync(apiUrl);
         }
 
-        public async Task<HttpResponseMessage> PostAsync(Uri apiUrl, HttpContent httpContent, string subscriptionKey)
+        public async Task<HttpResponseMessage> PostAsync(Uri apiUrl, HttpContent httpContent)
         {
-            httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", subscriptionKey);
             return await httpClient.PostAsync(apiUrl, httpContent);
         }
 
@@ -34,6 +33,11 @@
         {
             httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", subscriptionKey);
             return await httpClient.GetAsync(apiUrl);
+        }
+
+        public async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request)
+        {
+            return await httpClient.SendAsync(request);
         }
 
         protected virtual void Dispose(bool disposing)

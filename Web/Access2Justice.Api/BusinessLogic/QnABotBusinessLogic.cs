@@ -16,24 +16,37 @@ namespace Access2Justice.Api.BusinessLogic
     {
 
         private readonly IQnAMakerSettings qnAMakerSettings;
+        private readonly ILuisProxy luisProxy;
         private readonly IHttpClientService httpClientService;
+        private readonly ILuisBusinessLogic luisBusinessLogic;
 
-        public QnABotBusinessLogic(IHttpClientService httpClientService, IQnAMakerSettings qnAMakerSettings)
+        public QnABotBusinessLogic(IHttpClientService httpClientService, ILuisProxy luisProxy,
+                                   IQnAMakerSettings qnAMakerSettings, ILuisBusinessLogic luisBusinessLogic)
         {
             this.qnAMakerSettings = qnAMakerSettings;
+            this.luisProxy = luisProxy;
             this.httpClientService = httpClientService;
+            this.luisBusinessLogic = luisBusinessLogic;
         }
 
         public async Task<dynamic> GetAnswersAsync(string question)
         {
+            dynamic luisResponse = await luisProxy.GetIntents(question);
+            var luisTopIntents = luisBusinessLogic.ParseLuisIntent(luisResponse);
+
             string result = string.Empty;
             var requestContent = JsonConvert.SerializeObject(new { question });
-            using (var content = new StringContent(requestContent, Encoding.UTF8, "application/json"))            
+            using (var request = new HttpRequestMessage())
             {
-                //httpClientService.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "<TODO: YOUR KEY>");
-                Uri QnAUrl = new Uri(string.Format(CultureInfo.InvariantCulture, qnAMakerSettings.Endpoint.OriginalString, qnAMakerSettings.KnowledgeId));
-                var response = await httpClientService.PostAsync(QnAUrl, content, qnAMakerSettings.AuthorizationKey);
-                if (response.IsSuccessStatusCode) {
+                request.Method = HttpMethod.Post;
+                request.RequestUri = new Uri(string.Format(CultureInfo.InvariantCulture, qnAMakerSettings.Endpoint.OriginalString, qnAMakerSettings.KnowledgeId));
+                request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
+                // set authorization
+                request.Headers.Add("Authorization", "EndpointKey " + qnAMakerSettings.AuthorizationKey);
+
+                var response = await httpClientService.SendAsync(request);
+                if (response.IsSuccessStatusCode)
+                {
                     result = response.Content.ReadAsStringAsync().Result;
                     //var result = JsonConvert.DeserializeObject<QnAMakerResult>(json);
                     //var bestAnswer = result.Answers.OrderBy(answer => answer.Score).LastOrDefault();
@@ -41,6 +54,5 @@ namespace Access2Justice.Api.BusinessLogic
                 return result;
             }
         }
-
     }
 }
