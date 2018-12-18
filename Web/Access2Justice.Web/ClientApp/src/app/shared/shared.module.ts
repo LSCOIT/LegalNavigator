@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from '../app-routing.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AccordionModule, BsDropdownModule, ModalModule, CarouselModule } from 'ngx-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
@@ -57,13 +57,16 @@ import { SaveButtonService } from './resource/user-action/save-button/save-butto
 import { UnauthorizedComponent } from './error/unauthorized/unauthorized.component';
 import { StateCodeService } from './state-code.service';
 import { PipeModule } from './pipe/pipe.module';
-import { IntakeFormComponent } from './resource/resource-type/organizations/intake-form/intake-form.component';
+import { IntakeFormComponent } from './dynamic-forms/intake-form/intake-form.component';
+import { IntakeQuestionService } from './dynamic-forms/intake-form/intake-question-service/intake-question.service';
+import { QuestionControlService } from './dynamic-forms/question-control.service';
 
 @NgModule({
   imports: [
     CommonModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     AccordionModule.forRoot(),
     BsDropdownModule.forRoot(),
     ModalModule.forRoot(),
@@ -110,7 +113,7 @@ import { IntakeFormComponent } from './resource/resource-type/organizations/inta
     ReadMoreComponent,
     BrowserTabCloseComponent,
     UnauthorizedComponent,
-    IntakeFormComponent,
+    IntakeFormComponent
   ],
   exports: [
     ActionPlansComponent,
@@ -154,6 +157,8 @@ import { IntakeFormComponent } from './resource/resource-type/organizations/inta
     LoginService,
     SaveButtonService,
     StateCodeService,
+    IntakeQuestionService,
+    QuestionControlService
   ]
 })
 export class SharedModule { }

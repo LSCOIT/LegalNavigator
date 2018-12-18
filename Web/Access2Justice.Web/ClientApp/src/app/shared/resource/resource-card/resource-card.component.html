@@ -98,7 +98,7 @@
             <a class="h4 no-print" [routerLink]="['/resource', resource.id]">{{resource.name}}</a>
             <h4 class="print-only">{{resource.name}}</h4>
             <div class="print-only">{{applicationUrl+'/resource'+'/'+resource.id}}</div>
-            <div class="onboarding-label">Supports automated onboarding</div><!--need to add logic to only display if true-->
+            <div class="onboarding-label">e-form available</div><!--need to add logic to only display if true-->
             <app-read-more class="no-print" *ngIf="resource.description" [text]="resource?.description" [maxLength]="240"></app-read-more>
             <div class="print-only">{{resource.description}}</div>
             <div class="org-content span-text">

@@ -127,6 +127,12 @@ button:focus {
   font-weight: 600;
 }
 
+.btn-primary:disabled {
+  background-color: #DDDDDD;
+  color: #585858;
+  border: 1px solid #7E7E7E;
+  cursor: not-allowed;
+}
 /*Button Selected Effect*/
 .button-container {
   display: block;

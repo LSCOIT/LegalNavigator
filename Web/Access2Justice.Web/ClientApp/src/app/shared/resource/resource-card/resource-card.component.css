@@ -118,7 +118,7 @@ h4 {
 
 .onboarding-label {
   background-color: #f9e9bd;
-  width: 215px;
+  width: 125px;
   padding: 5px;
   border-radius: 5px;
   margin: 10px 0;
@@ -154,7 +154,6 @@ h4 {
   }
 
   .onboarding-label {
-    width: 232px;
     font-size: 13px;
   }
 }

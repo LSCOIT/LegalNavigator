@@ -1,4 +1,4 @@
-export class QuestionBase<T> {
+export class IntakeFormQuestionBase<T> {
   type: string;
   label: string;
   name: string;

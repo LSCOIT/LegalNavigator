@@ -22,7 +22,6 @@ import { ShareButtonRouteComponent } from './shared/resource/user-action/share-b
 import { CuratedExperienceResultComponent } from './guided-assistant/curated-experience-result/curated-experience-result.component';
 import { ProfileResolver } from './app-resolver/profile-resolver.service';
 import { UnauthorizedComponent } from './shared/error/unauthorized/unauthorized.component';
-import { IntakeFormComponent } from './shared/resource/resource-type/organizations/intake-form/intake-form.component';
 
 const appRoutes: Routes = [
   { path: 'search', component: SearchResultsComponent },
@@ -37,7 +36,6 @@ const appRoutes: Routes = [
   { path: 'about', component: AboutComponent },
   { path: 'plan/:id', component: PersonalizedPlanComponent },
   { path: 'share/:id', component: ShareButtonRouteComponent },
-  { path: 'intake', component: IntakeFormComponent },
   { path: 'help', component: HelpFaqsComponent },
   { path: 'home', component: HomeComponent },
   { path: 'privacy', component: PrivacyPromiseComponent },

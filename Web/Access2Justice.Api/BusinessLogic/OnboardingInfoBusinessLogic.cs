@@ -123,16 +123,14 @@ namespace Access2Justice.Api.BusinessLogic
                 case DeliveryMethod.Email:
                     return @"<html>
                             <body>
-                                <h1>Hello @First Name@,</h1>
-                                <p>
-                                    Welcome to Organization Onboarding process. 
-                                </p>
+                                <h1>The following information was submitted through the Legal Navigator portal:</h1>
                                 <ul>
-                                    Here are the details submitted as part of the Onboarding process.
+                                    Here are the details submitted as part of the onboarding process.
                                     <li>First Name: @First Name@</li>
                                     <li>Last Name: @Last Name@</li>
                                     <li>Gender: @Gender@</li>
                                     <li>Age: @Age@</li>
+                                    <li>Telephone: @Telephone@</li>
                                 </ul>
                             </body>
                             </html>";
@@ -194,7 +192,7 @@ namespace Access2Justice.Api.BusinessLogic
                         Value = new List<string>(){ "Male","Female","Others"},
                         IsRequired = true
                     }
-                };
+								};
 
                 onboardingInfo = new OnboardingInfo()
                 {
@@ -227,15 +225,33 @@ namespace Access2Justice.Api.BusinessLogic
                         MinLength = "3",
                         MaxLength ="20"
                     },
-                    new Field()
-                    {
-                        Type = "ListBox",
-                        Label = "Age",
-                        Name = "Age",
-                        Value = new List<string>(),
-                        IsRequired = true
-                    }
-                };
+										new Field()
+										{
+												Type = "ListBox",
+												Label = "Gender",
+												Name = "Gender",
+												Value = new List<string>(){ "Male","Female","Others"},
+												IsRequired = true
+										},
+										new Field()
+										{
+											Type = "ListBox",
+											Label = "Age",
+											Name = "Age",
+											Value = new List<string>(){ "20 & under","21 - 29","30 -39", "40 - 49", "50 - 59", "60 & over"},
+											IsRequired = true
+										},
+										new Field()
+										{
+											Type = "TextBox",
+											Label = "Telephone",
+											Name = "Telephone",
+											Value = new List<string>(),
+											IsRequired = true,
+											MinLength = "10",
+											MaxLength ="10"
+										}
+								};
 
                 onboardingInfo = new OnboardingInfo()
                 {
