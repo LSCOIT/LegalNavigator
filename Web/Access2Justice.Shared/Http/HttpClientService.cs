@@ -24,8 +24,9 @@
             return await httpClient.GetAsync(apiUrl);
         }
 
-        public async Task<HttpResponseMessage> PostAsync(Uri apiUrl, HttpContent httpContent)
+        public async Task<HttpResponseMessage> PostAsync(Uri apiUrl, HttpContent httpContent, string subscriptionKey)
         {
+            httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", subscriptionKey);
             return await httpClient.PostAsync(apiUrl, httpContent);
         }
 

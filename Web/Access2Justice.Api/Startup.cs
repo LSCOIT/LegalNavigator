@@ -26,6 +26,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Reflection;
 using System.IO;
+using Access2Justice.Shared.QnAMaker;
 
 namespace Access2Justice.Api
 {
@@ -58,6 +59,9 @@ namespace Access2Justice.Api
             IAdminSettings adminSettings = new AdminSettings(Configuration.GetSection("Admin"));
             services.AddSingleton(adminSettings);
 
+            IQnAMakerSettings qnAMakerSettings = new QnAMakerSettings(Configuration.GetSection("QnAMaker"));
+            services.AddSingleton(qnAMakerSettings);
+
 
             services.AddSingleton<ILuisProxy, LuisProxy>();
             services.AddSingleton<ILuisBusinessLogic, LuisBusinessLogic>();
@@ -80,6 +84,7 @@ namespace Access2Justice.Api
             services.AddSingleton<ISessionManager, SessionManager>();
             services.AddSingleton<IAdminBusinessLogic, AdminBusinessLogic>();
             services.AddSingleton<IStateProvinceBusinessLogic, StateProvinceBusinessLogic>();
+            services.AddSingleton<IQnABotBusinessLogic, QnABotBusinessLogic>();
 
             services.AddAuthentication(sharedOptions =>
             {
