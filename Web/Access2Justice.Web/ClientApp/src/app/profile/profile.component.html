@@ -1,10 +1,9 @@
-<div class="container">
+<div *ngIf="userName" class="container">
   <div class="row user-action mobile-hidden no-print">
-    <app-user-action-sidebar
-      [mobile]=true
-      [showSave]=false
-      [showDownload]=true
-      [showSetting]=true>
+    <app-user-action-sidebar [mobile]=true
+                             [showSave]=false
+                             [showDownload]=true
+                             [showSetting]=true>
     </app-user-action-sidebar>
   </div>
   <div class="no-print">
