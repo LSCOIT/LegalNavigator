@@ -163,7 +163,7 @@ namespace Access2Justice.Api.BusinessLogic
                 var pageDocument = JsonUtilities.DeserializeDynamicObject<object>(guidedAssistantPageContent);
                 result = await dbService.CreateItemAsync(pageDocument, dbSettings.StaticResourcesCollectionId);
             }
-            return result;
+            return result; 
         }
 
     }
