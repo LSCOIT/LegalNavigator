@@ -9,6 +9,11 @@ namespace Access2Justice.Shared.Models
 {
     public class Resource
     {
+        public Resource()
+        {
+            TopicTags = new List<TopicTag>();
+        }
+
         [JsonProperty(PropertyName = "id")]
         public dynamic ResourceId { get; set; }
 
@@ -131,6 +136,11 @@ namespace Access2Justice.Shared.Models
 
     public class Organization: Resource
     {
+        public Organization()
+        {
+            Reviewer = new List<OrganizationReviewer>();
+        }
+
         [JsonProperty(PropertyName = "address")]
         public string Address { get; set; }
 
@@ -155,6 +165,7 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "businessHours")]
         public string BusinessHours { get; set; }
     }
+
 
     public class OrganizationReviewer
     {
