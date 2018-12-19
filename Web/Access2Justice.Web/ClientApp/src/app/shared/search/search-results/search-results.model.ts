@@ -6,6 +6,8 @@ export interface IResourceFilter {
   PageNumber: number;
   Location: any;
   IsResourceCountRequired: boolean;
+  IsOrder: boolean;
+  OrderByField: string;
 }
 
 export interface ILuisInput {

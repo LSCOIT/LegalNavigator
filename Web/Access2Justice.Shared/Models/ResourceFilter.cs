@@ -17,5 +17,7 @@ namespace Access2Justice.Shared.Models
         public Int16 PageNumber { get; set; }
         public Location Location { get; set; }
         public Boolean IsResourceCountRequired { get; set; }
+        public Boolean IsOrder { get; set; }
+        public string OrderByField { get; set; }
     }
 }

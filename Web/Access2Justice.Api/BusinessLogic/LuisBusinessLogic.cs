@@ -99,7 +99,10 @@ namespace Access2Justice.Api
 
             ResourceFilter resourceFilter = new ResourceFilter { TopicIds = topicIds, PageNumber = 0, ResourceType = Constants.All, Location = location };
             var GetResourcesTask = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
-            var ApplyPaginationTask = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
+            ResourceFilter sortResourceFilter = resourceFilter;
+            sortResourceFilter.IsOrder = true;
+            sortResourceFilter.OrderByField = "name";
+            var ApplyPaginationTask = topicsResourcesBusinessLogic.ApplyPaginationAsync(sortResourceFilter);
             //To get guided assistant id
             resourceFilter.ResourceType = Constants.GuidedAssistant;
             var GetGuidedAssistantId = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);

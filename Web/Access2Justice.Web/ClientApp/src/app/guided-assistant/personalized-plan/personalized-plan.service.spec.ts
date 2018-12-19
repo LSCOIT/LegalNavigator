@@ -4,11 +4,9 @@ import { PersonalizedPlanService } from './personalized-plan.service';
 import { api } from '../../../api/api';
 import { Observable } from 'rxjs/Observable';
 import { ArrayUtilityService } from '../../shared/array-utility.service';
-import { PersonalizedPlan, ProfileResources } from './personalized-plan';
+import { ProfileResources } from './personalized-plan';
 import { ToastrService } from 'ngx-toastr';
 import { Global } from '../../global';
-import { of } from 'rxjs/observable/of';
-import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 describe('Service:PersonalizedPlan', () => {

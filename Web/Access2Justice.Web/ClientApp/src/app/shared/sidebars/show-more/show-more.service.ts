@@ -15,7 +15,10 @@ export class ShowMoreService {
     private paginationService: PaginationService
   ) { }
   searchResults: any;
-  resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: { "state": "", "county": "", "city": "", "zipCode": "" }, IsResourceCountRequired: true };  
+  resourceFilter: IResourceFilter = {
+    ResourceType: '', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: { "state": "", "county": "", "city": "", "zipCode": "" }, IsResourceCountRequired: true,
+    IsOrder: false, OrderByField: ''
+  };  
   activeResource: any;
   locationDetails: LocationDetails;
 

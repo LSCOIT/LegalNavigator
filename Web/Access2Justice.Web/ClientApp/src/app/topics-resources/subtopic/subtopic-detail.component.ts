@@ -35,7 +35,7 @@ export class SubtopicDetailComponent implements OnInit {
   showRemoveOption: boolean;
   guidedSutopicDetailsInput: ISubtopicGuidedInput = { activeId: '', name: '' };
   luisInput: ILuisInput = { Sentence: '', Location: '', TranslateFrom: '', TranslateTo: '', LuisTopScoringIntent: '' };
-  resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: { "state": "", "county": "", "city": "", "zipCode": "" }, IsResourceCountRequired: true };
+  resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: { "state": "", "county": "", "city": "", "zipCode": "" }, IsResourceCountRequired: true, IsOrder: false, OrderByField:'' };
   subscription: any;
   displayResources: number;
 
