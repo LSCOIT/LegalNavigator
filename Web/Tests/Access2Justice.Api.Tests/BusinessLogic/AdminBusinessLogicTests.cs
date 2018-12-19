@@ -40,21 +40,6 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             cosmosDbSettings.CuratedExperiencesCollectionId.Returns("CuratedExperiences");
             cosmosDbSettings.GuidedAssistantAnswersCollectionId.Returns("GuidedAssistantAnswers");
             cosmosDbSettings.A2JAuthorDocsCollectionId.Returns("A2JAuthorDocs");
-        }
-
-        //CuratedTemplateContent Data issue to be resolved to proceed further with this unit test
-        //[Theory]
-        //[MemberData(nameof(AdminBusinessLogicTestData.CuratedTemplateContent), MemberType = typeof(AdminBusinessLogicTestData))]
-        //public void UploadCuratedContentPackageShouldValidate(CuratedTemplate curatedTemplate, dynamic expectedCuratedTemplate)
-        //{
-        //    //arrange
-
-        //    //act
-        //    var response = adminBusiness.UploadCuratedContentPackage(curatedTemplate);
-
-        //    //assert
-        //    var actualResult = JsonConvert.SerializeObject(response.Result);
-        //    var expectedResult = JsonConvert.SerializeObject(expectedCuratedTemplate);
-        //}       
+        }      
     }
 }
