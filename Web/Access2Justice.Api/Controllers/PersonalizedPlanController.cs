@@ -53,15 +53,19 @@ namespace Access2Justice.Api.Controllers
         [HttpGet("generate")]
         public async Task<IActionResult> GeneratePersonalizedPlanAsync([FromQuery] Guid curatedExperienceId, [FromQuery] Guid answersDocId)
         {
-            var personalizedPlan = await personalizedPlanBusinessLogic.GeneratePersonalizedPlanAsync(
-               sessionManager.RetrieveCachedCuratedExperience(curatedExperienceId, HttpContext), answersDocId);
-
-            if (personalizedPlan == null)
+            if (curatedExperienceId != null && answersDocId != null)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
+                var personalizedPlan = await personalizedPlanBusinessLogic.GeneratePersonalizedPlanAsync(
+                       sessionManager.RetrieveCachedCuratedExperience(curatedExperienceId, HttpContext), answersDocId);
 
-            return Ok(personalizedPlan);
+                if (personalizedPlan == null)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+                }
+
+                return Ok(personalizedPlan); 
+            }
+            return StatusCode(400);
         }
 
         /// <summary>
@@ -104,13 +108,17 @@ namespace Access2Justice.Api.Controllers
         [HttpPost("save")]
         public async Task<IActionResult> SavePersonalizedPlanAsync([FromBody] UserPlan userPlan)
         {
-            var newPlan = await personalizedPlanBusinessLogic.UpsertPersonalizedPlanAsync(userPlan);
-            if (newPlan == null)
+            if (userPlan != null)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
+                var newPlan = await personalizedPlanBusinessLogic.UpsertPersonalizedPlanAsync(userPlan);
+                if (newPlan == null)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+                }
 
-            return Ok(newPlan);
+                return Ok(newPlan); 
+            }
+            return StatusCode(400);
         }
     }
 }
