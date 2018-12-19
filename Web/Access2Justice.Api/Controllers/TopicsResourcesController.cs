@@ -535,8 +535,8 @@ namespace Access2Justice.Api.Controllers
         /// <param name="topicName"></param>
         /// <response code="404">Get all resources for given state and topic name</response>
         [HttpGet]
-        [Route("resource")]
-        public async Task<IActionResult> GetResource([FromQuery]string state, [FromQuery] string topicName)
+        [Route("resources")]
+        public async Task<IActionResult> GetResources([FromQuery]string state, [FromQuery] string topicName)
         {
             var topic = await topicsResourcesBusinessLogic.GetTopic(topicName);
             TopicInput topicInput = new TopicInput();
