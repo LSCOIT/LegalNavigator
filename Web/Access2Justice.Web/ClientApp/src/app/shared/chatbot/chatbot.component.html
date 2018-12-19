@@ -14,8 +14,8 @@
           <div *ngFor=" let lawType of message.types">
             <ul>
               <li style="list-style-type:none">
-                <span class="chatbot-message">{{lawType.label}}</span>
-                <p class="chat-time" *ngIf="lawType.destination">{{lawType.destination}}</p>
+                <div (click)="select(lawType.destination)"><span class="chatbot-message">{{lawType.label}}</span></div>
+                <!--<p class="chat-time" *ngIf="lawType.destination">{{lawType.destination}}</p>-->
               </li>
             </ul>
           </div>

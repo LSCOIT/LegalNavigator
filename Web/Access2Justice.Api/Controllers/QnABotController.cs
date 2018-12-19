@@ -19,16 +19,17 @@ namespace Access2Justice.Api.Controllers
         /// This makes Luis and QnA API call to get the answers for the user questions in chat window.
         /// </summary>
         /// <param name="question">input from chat window</param>
+        /// <param name="isLuisCallRequired"></param>
         /// <returns></returns>
-        [HttpGet("{question}")]
-        public async Task<IActionResult> GetAsync(string question)
+        [HttpGet("{question}/{isluiscallrequired}")]
+        public async Task<IActionResult> GetAsync(string question,bool isLuisCallRequired)
         {
             if (string.IsNullOrWhiteSpace(question))
             {
                 return BadRequest("Question cannot be empty string.");
             }
 
-            var response = await qnABotBusinessLogic.GetAnswersAsync(question);            
+            var response = await qnABotBusinessLogic.GetAnswersAsync(question, isLuisCallRequired);            
             return Content(response);
         }
     }

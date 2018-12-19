@@ -7,6 +7,6 @@ namespace Access2Justice.Api.Interfaces
 {
     public interface IQnABotBusinessLogic
     {
-        Task<dynamic> GetAnswersAsync(string question);
+        Task<dynamic> GetAnswersAsync(string question, bool isLuisCallRequired = true);
     }
 }

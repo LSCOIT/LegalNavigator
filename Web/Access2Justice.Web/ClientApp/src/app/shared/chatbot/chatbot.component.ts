@@ -13,6 +13,7 @@ export class ChatbotComponent implements OnInit {
   public show = false;
   contents: any;
   @Input() cntresult: any;
+  isLuisCallRequired: boolean = true;
   replyMessage = "";
   messages = [];
 
@@ -26,9 +27,16 @@ export class ChatbotComponent implements OnInit {
     }
   }
 
+  select(input: string)
+  {
+    this.replyMessage = input;
+    this.isLuisCallRequired = false;
+    this.reply();
+  }
+
   reply() {
     var query = this.replyMessage;
-    this.searchService.getAnswers(query).subscribe(response => {
+    this.searchService.getAnswers(query, this.isLuisCallRequired).subscribe(response => {
       this.cntresult = response;
       //this.cntresult = JSON.parse(response);
 
@@ -40,6 +48,7 @@ export class ChatbotComponent implements OnInit {
           "inputText": this.replyMessage
         })
         this.replyMessage = '';
+        this.isLuisCallRequired = true;
       }
     });
 

@@ -30,13 +30,13 @@ namespace Access2Justice.Api.BusinessLogic
             this.luisBusinessLogic = luisBusinessLogic;
         }
 
-        public async Task<dynamic> GetAnswersAsync(string question)
+        public async Task<dynamic> GetAnswersAsync(string question, bool isLuisCallRequired = true)
         {
             dynamic luisResponse = await luisProxy.GetIntents(question);
             IntentWithScore luisTopIntents = luisBusinessLogic.ParseLuisIntent(luisResponse);
             dynamic answerObject = null;
             string bestAnswer = "Sorry, not able to get you. please explain you problem in detail.";
-            if (luisTopIntents != null && luisBusinessLogic.IsIntentAccurate(luisTopIntents))
+            if (luisTopIntents != null && luisBusinessLogic.IsIntentAccurate(luisTopIntents) && isLuisCallRequired)
             {
                 question = luisTopIntents.TopScoringIntent;
             }
