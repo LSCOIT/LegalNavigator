@@ -28,7 +28,6 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         #region Mocked Input Data
         private readonly string properLuisResponse = LuisBusinessLogicTestData.properLuisResponse;
         private readonly string EmptyLuisResponse = LuisBusinessLogicTestData.EmptyLuisResponse;
-        private readonly string meduimScoreLuisResponse = LuisBusinessLogicTestData.meduimScoreLuisResponse;
         private readonly string emptyLuisResponse = LuisBusinessLogicTestData.emptyLuisResponse;
         private readonly string noneLuisResponse = LuisBusinessLogicTestData.noneLuisResponse;
         private readonly string keyword = LuisBusinessLogicTestData.keyword;
