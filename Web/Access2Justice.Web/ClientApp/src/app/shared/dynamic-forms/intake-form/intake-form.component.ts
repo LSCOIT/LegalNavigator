@@ -43,12 +43,12 @@ export class IntakeFormComponent implements OnInit {
     Object.keys(this.form.value).map(key => {
       this.payLoad.userFields.forEach(field => {
         if (field.name === key) {
-          field.value = [this.form.value[key]];
+          field.value = this.form.value[key];
         }
       });
     });
     this.spinner.show();
-    this.payLoad.deliveryDestination = "winnie.zhang@avanade.com";
+    this.payLoad.deliveryDestination = "";
     this.intakeQuestionService.sendIntakeResponse(this.payLoad)
       .subscribe(response => {
         this.modalRef.hide();

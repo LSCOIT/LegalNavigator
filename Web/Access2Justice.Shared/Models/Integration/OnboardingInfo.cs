@@ -28,12 +28,14 @@ namespace Access2Justice.Shared.Models.Integration
         /// <summary>
         /// Template for paylod to be delivered to service provider.
         /// </summary>
+        [JsonProperty(PropertyName = "payloadTemplate")]
         public string PayloadTemplate { get; set; }
 
         /// <summary>
         /// Delivery methods that service provider supports 
         /// for accepting onboarding information.
         /// </summary>
+        [JsonProperty(PropertyName = "deliveryMethod")]
         public DeliveryMethod DeliveryMethod { get; set; }
 
         /// <summary>
@@ -44,6 +46,7 @@ namespace Access2Justice.Shared.Models.Integration
         /// mailto:inbox@example.com (email submissions)
         /// tel:123-456-7890 (fax submissions)
         /// </example>
+        [JsonProperty(PropertyName = "deliveryDestination")]
         public Uri DeliveryDestination { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Net.Http;
+using Microsoft.AspNetCore.Http;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -38,7 +39,10 @@ namespace Access2Justice.Api.Controllers
         [HttpPost("send")]
         public async Task<IActionResult> PostAsync([FromBody] Integration.OnboardingInfo onboardingInfo)
         {
-            //Organization Name may not be unique hence need to identify the unique id else need to consider the location of the organization while checking
+            if(onboardingInfo == null)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
             var response = await onboardingInfoBusinessLogic.PostOnboardingInfo(onboardingInfo);
             return Ok(response);
         }

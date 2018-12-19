@@ -9,15 +9,19 @@
     <form (ngSubmit)="onSubmit()" [formGroup]="form">
       <div *ngFor="let intakeQuestion of intakeQuestions" class="form-row">
         <div class="question col-sm-12">
-          <label class="col-md-2 col-sm-3" [attr.for]="intakeQuestion.name">{{intakeQuestion.label}}</label>
-          <div [ngSwitch]="intakeQuestion.type">
+          <label class="col-md-2 col-sm-3" [attr.for]="intakeQuestion.name">{{intakeQuestion.name}}</label>
+          <div>
+            <input class="form-control col-md-10 col-sm-9" autocomplete="off" [formControlName]="intakeQuestion.name"
+                   [id]="intakeQuestion.name" type="text">
+          </div>
+          <!--<div [ngSwitch]="intakeQuestion.type">
             <input class="form-control col-md-10 col-sm-9" *ngSwitchCase="'TextBox'" autocomplete="off" [formControlName]="intakeQuestion.name"
                    [id]="intakeQuestion.name" type="text">
             <select class="form-control col-md-10 col-sm-9" [id]="intakeQuestion.name" *ngSwitchCase="'ListBox'" [formControlName]="intakeQuestion.name">
               <option hidden value="default">Select an option</option>
               <option *ngFor="let opt of intakeQuestion.value" [value]="opt">{{opt}}</option>
             </select>
-          </div>
+          </div>-->
         </div>
       </div>
       <p class="pxs">
