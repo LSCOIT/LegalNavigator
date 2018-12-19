@@ -123,16 +123,14 @@ namespace Access2Justice.Api.BusinessLogic
                 case DeliveryMethod.Email:
                     return @"<html>
                             <body>
-                                <h1>Hello @First Name@,</h1>
-                                <p>
-                                    Welcome to Organization Onboarding process. 
-                                </p>
+                                <h1>The following information was submitted through the Legal Navigator portal:</h1>
                                 <ul>
-                                    Here are the details submitted as part of the Onboarding process.
+                                    Here are the details submitted as part of the onboarding process.
                                     <li>First Name: @First Name@</li>
                                     <li>Last Name: @Last Name@</li>
                                     <li>Gender: @Gender@</li>
                                     <li>Age: @Age@</li>
+                                    <li>Telephone: @Telephone@</li>
                                 </ul>
                             </body>
                             </html>";
@@ -181,7 +179,7 @@ namespace Access2Justice.Api.BusinessLogic
                         Name = "Gender",
                         Value = string.Empty
                     }
-                };
+								};
 
                 onboardingInfo = new OnboardingInfo()
                 {

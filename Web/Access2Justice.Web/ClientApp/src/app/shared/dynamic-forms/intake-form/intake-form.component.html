@@ -1,0 +1,31 @@
+<button (click)="openModal(intakeTemplate)" type="button" class="btn btn-primary">Go to form</button>
+<ng-template #intakeTemplate>
+  <div class="modal-body container-fluid">
+    <img type="button" class="nav-icon pull-right close" src="./assets/images/small-icons/close.svg" aria-label="Close" (click)="modalRef.hide()">
+    <div class="row text-center">
+      <p class="pl text-center">Please add the following details to share with your provider.</p>
+      <p class="text-center">The service provider needs your contact information to contact you.</p>
+    </div>
+    <form (ngSubmit)="onSubmit()" [formGroup]="form">
+      <div *ngFor="let intakeQuestion of intakeQuestions" class="form-row">
+        <div class="question col-sm-12">
+          <label class="col-md-2 col-sm-3" [attr.for]="intakeQuestion.name">{{intakeQuestion.label}}</label>
+          <div [ngSwitch]="intakeQuestion.type">
+            <input class="form-control col-md-10 col-sm-9" *ngSwitchCase="'TextBox'" autocomplete="off" [formControlName]="intakeQuestion.name"
+                   [id]="intakeQuestion.name" type="text">
+            <select class="form-control col-md-10 col-sm-9" [id]="intakeQuestion.name" *ngSwitchCase="'ListBox'" [formControlName]="intakeQuestion.name">
+              <option hidden value="default">Select an option</option>
+              <option *ngFor="let opt of intakeQuestion.value" [value]="opt">{{opt}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <p class="pxs">
+        Sending your information to a legal service provider does not mean they will take your case. If you do not qualify for their help, they may refer you to other resources.
+      </p>
+      <div class="form-row">
+        <button class="btn btn-primary" type="submit" [disabled]="!form.valid">Submit</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
