@@ -3,6 +3,7 @@ import { NavigateDataService } from '../../shared/navigate-data.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { MapService } from '../../shared/map/map.service';
+import { Location } from "@angular/common";
 
 @Component({
   selector: 'app-curated-experience-result',
@@ -13,12 +14,14 @@ export class CuratedExperienceResultComponent implements OnInit {
   guidedAssistantResults;
   relevantIntents: Array<string>;
   subscription: any;
+  locationSubscription: any;
 
   constructor(
     private navigateDataService: NavigateDataService,
     private toastr: ToastrService,
     private router: Router,
-    private mapService: MapService) { }
+    private mapService: MapService,
+    private location: Location) { }
 
   saveForLater() {
     this.toastr.success("Topics added. You can view them later once you've completed the guided assistant.");
@@ -36,6 +39,11 @@ export class CuratedExperienceResultComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.locationSubscription = this.location.subscribe(x => {
+      if (x.type === "popstate") {
+        this.backToSearch();
+      }
+    });
     this.subscription = this.mapService.notifyLocation
       .subscribe((value) => {
         sessionStorage.removeItem('searchTextResults');
@@ -49,6 +57,9 @@ export class CuratedExperienceResultComponent implements OnInit {
   ngOnDestroy() {
     if (this.subscription) {
       this.subscription.unsubscribe();
+    }
+    if (this.locationSubscription) {
+      this.locationSubscription.unsubscribe();
     }
   }
 

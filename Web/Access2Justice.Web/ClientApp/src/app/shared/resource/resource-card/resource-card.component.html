@@ -42,7 +42,7 @@
           </div>
         </div>
         <div *ngIf="resource.resourceType === 'Topics'" class="media">
-          <div class="media-left no-print">
+          <div *ngIf="resource.icon" class="media-left no-print">
             <img class="media-object no-print" src="{{resource.icon}}" [alt]=resource.resourceType>
           </div>
           <div class="media-body">

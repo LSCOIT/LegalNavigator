@@ -1,0 +1,18 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+  "parameters": {
+    "prefix": {
+      "value": "legalnav"
+    },
+    "environmentName": {
+      "value": "prod"
+    },
+    "aadTenantId": {
+      "value": "9b1a4891-7cff-4903-b6a8-d963748b5a40"
+    },
+    "keyVaultInitialAccessPolicyUser": {
+      "value": "bee8706e-7847-4d42-9aae-27919e85e3c9"
+    }
+  }
+  }

@@ -87,7 +87,8 @@
           <label class="col-md-2 col-sm-3">Description</label>
           <textarea class="form-control col-md-10 col-sm-9" [(ngModel)]="aboutContent.inTheNews.description" name="inTheNewsDescription"></textarea>
         </div>
-        <div class="row sections" *ngFor="let news of aboutContent.inTheNews.news; let i=index">
+        <div *ngIf="aboutContent.inTheNews.news" >
+          <div class="row sections" *ngFor="let news of aboutContent.inTheNews.news; let i=index">
           <div>
             <label class="col-md-2 col-sm-3">News Title {{i}}</label>
             <input class="form-control col-md-10 col-sm-9" type="text" [(ngModel)]="news.title" [name]="'newsTitle'+i" />
@@ -116,6 +117,7 @@
             <label class="col-md-2 col-sm-3">Url {{i}}</label>
             <input class="form-control col-md-10 col-sm-9" type="text" name="newsUrl{{i}}" [(ngModel)]="news.url" />
           </div>
+        </div>
         </div>
       </div>
     </div>

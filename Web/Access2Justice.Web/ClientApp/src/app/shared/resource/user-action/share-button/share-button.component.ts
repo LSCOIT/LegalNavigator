@@ -175,7 +175,7 @@ export class ShareButtonComponent implements OnInit {
     if (this.type === 'Guided Assistant') {
       return "/guidedassistant/" + this.id;
     }
-    if (this.type === 'Forms' || this.type === 'Essential Readings') {
+    if (this.type === 'Forms' || this.type === 'Additional Readings') {
       return this.url;
     }
     if (this.type === 'WebResources') {

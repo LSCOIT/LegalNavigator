@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="personalizedPlanContent">
   <div class="user-action upper-action mobile-hidden">
     <app-user-action-sidebar [mobile]=true
                              [showDownload]=true
@@ -13,6 +13,9 @@
   <div class="row row-half-spacing">
     <div class="col-sm-8">
       <p> {{description}} </p>
+      <div *ngFor="let image of personalizedPlanContent?.sponsors" class="col-sm-6">
+        <img class="sponsor-img" [src]="'data:image/jpg;base64,'+image?.source" [alt]="image?.altText" />
+      </div>
     </div>
   </div>
   <div class="row plan-spacing filter-plan no-print">

@@ -22,7 +22,7 @@ p {
 #my-map {
   position: relative;
   width: 100%;
-  margin: 30px auto 0 auto;
+  margin: 15px auto 0 auto;
   height: 280px;
 }
 
@@ -125,7 +125,7 @@ p {
 }
 
 .location-support {
-  margin: 10px 30px;
+  margin: 25px 0 0 0;
   padding: 10px;
   background-color: #f4f4f4;
 }
@@ -150,6 +150,10 @@ p {
   .web-hidden {
     display: none;
   }
+
+  .location-support {
+    margin: 25px 30px 0 30px;
+  }
 }
 
 @media only screen and (min-width : 768px) {
@@ -172,10 +176,6 @@ p {
 }
 
 @media only screen and (min-width : 992px) {
-  .edit-location {
-    height: 53px;
-  }
-
   .mobile-hidden {
     display: inline-block;
   }

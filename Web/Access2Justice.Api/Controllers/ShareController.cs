@@ -65,10 +65,6 @@ namespace Access2Justice.Api.Controllers
             if (shareInput != null)
             {
                 var response = await shareBusinessLogic.CheckPermaLinkDataAsync(shareInput);
-                if (response == null)
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError);
-                }
                 return Ok(response);
             }
             return StatusCode(StatusCodes.Status412PreconditionFailed);
