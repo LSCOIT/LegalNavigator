@@ -1,14 +1,17 @@
-<div class="row">
-  <h2>{{resource.name}}</h2>
-  <p>{{resource?.resourceCategory}}</p>
-  <div *ngIf="resource.overview" class="row">
-    <p>{{resource.overview}}</p>
+<div class="container">
+  <app-breadcrumb #breadcrumb></app-breadcrumb>
+  <div class="row">
+    <h2>{{resource.name}}</h2>
+    <p>{{resource?.resourceCategory}}</p>
+    <div *ngIf="resource.overview" class="row">
+      <p>{{resource.overview}}</p>
+    </div>
+    <div class="col-md-8 col-sm-12">
+      <iframe [src]='this.safeUrl' frameborder="0" allowfullscreen></iframe>
+    </div>
+    <div class="col-md-4 col-sm-12 pull-right">
+      <app-guided-assistant-sidebar></app-guided-assistant-sidebar>
+      <app-service-org-sidebar (showMoreOrganizations)="clickSeeMoreOrganizationsFromVideos($event)"></app-service-org-sidebar>
+    </div>
   </div>
-  <div class="col-md-8 col-sm-12">
-    <iframe [src]='this.safeUrl' frameborder="0" allowfullscreen></iframe>
   </div>
-  <div class="col-md-4 col-sm-12 pull-right">
-    <app-guided-assistant-sidebar></app-guided-assistant-sidebar>
-    <app-service-org-sidebar (showMoreOrganizations)="clickSeeMoreOrganizationsFromVideos($event)"></app-service-org-sidebar>
-  </div>
-</div>

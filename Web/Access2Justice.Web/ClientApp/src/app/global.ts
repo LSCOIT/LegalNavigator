@@ -31,6 +31,7 @@ export class Global {
   displayResources: number = 3;
   activeSubtopicParam: string;
   topIntent: string;
+  previosUrl: string = "home";
 
   constructor() { }
 

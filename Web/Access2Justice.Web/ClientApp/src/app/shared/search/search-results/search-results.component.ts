@@ -56,7 +56,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     showDefaultMessage: boolean = false;
     showNoResultsMessage: boolean = false;
     guidedAssistantId: string;
-    locationDetails: LocationDetails;
+  locationDetails: LocationDetails;
 
     constructor(
         private navigateDataService: NavigateDataService,
@@ -76,8 +76,8 @@ export class SearchResultsComponent implements OnInit, OnChanges {
                         this.global.setProfileData(response.oId, response.name, response.eMail, response.roleInformation);
                         this.personalizedPlanService.saveResourcesToUserProfile();
                     }
-                });
-        }
+            });
+      }      
     }
 
   bindData() {
@@ -406,7 +406,8 @@ export class SearchResultsComponent implements OnInit, OnChanges {
         }
         this.bindData();
         this.notifyLocationChange();
-        this.showRemoveOption = this.showRemove;
+      this.showRemoveOption = this.showRemove;
+      this.global.previosUrl = "/search";
     }
 
     ngOnDestroy() {

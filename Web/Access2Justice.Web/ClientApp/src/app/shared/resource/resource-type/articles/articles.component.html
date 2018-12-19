@@ -1,26 +1,29 @@
-<div class="row">
-  <div class="col-md-6 col-sm-12">
-    <h2>{{resource.name}}</h2>
-    <p *ngIf="resource.resourceCategory">{{resource?.resourceCategory}}</p>
-  </div>
-  <div class="col-md-6 col-sm-12 user-action">
-    <app-user-action-sidebar [mobile]=true [id]="resource.id" [type]="resource.resourceType"></app-user-action-sidebar>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-8 col-sm-12">
-    <div *ngIf="resource.overview" class="resource-sections">
-      <p>{{resource.overview}}</p>
+<div class="container">
+  <app-breadcrumb #breadcrumb></app-breadcrumb>
+  <div class="row">
+    <div class="col-md-6 col-sm-12">
+      <h2>{{resource.name}}</h2>
+      <p *ngIf="resource.resourceCategory">{{resource?.resourceCategory}}</p>
     </div>
-    <div class="resource-sections" *ngFor="let content of resource.contents">
-      <h4>{{content.headline}}</h4>
-      <div class="newlines">
-        <p [innerHTML] ="content.content">{{content.content}}</p>
+    <div class="col-md-6 col-sm-12 user-action">
+      <app-user-action-sidebar [mobile]=true [id]="resource.id" [type]="resource.resourceType"></app-user-action-sidebar>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-8 col-sm-12">
+      <div *ngIf="resource.overview" class="resource-sections">
+        <p>{{resource.overview}}</p>
+      </div>
+      <div class="resource-sections" *ngFor="let content of resource.contents">
+        <h4>{{content.headline}}</h4>
+        <div class="newlines">
+          <p [innerHTML] ="content.content">{{content.content}}</p>
+        </div>
       </div>
     </div>
+    <div class="col-md-4 col-sm-12 pull-right">
+      <app-guided-assistant-sidebar></app-guided-assistant-sidebar>
+      <app-service-org-sidebar (showMoreOrganizations)="clickSeeMoreOrganizationsFromArticles($event)"></app-service-org-sidebar>
+    </div>
   </div>
-  <div class="col-md-4 col-sm-12 pull-right">
-    <app-guided-assistant-sidebar></app-guided-assistant-sidebar>
-    <app-service-org-sidebar (showMoreOrganizations)="clickSeeMoreOrganizationsFromArticles($event)"></app-service-org-sidebar>
   </div>
-</div>
