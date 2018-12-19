@@ -42,7 +42,7 @@ namespace Access2Justice.Tools.BusinessLogic
             List<dynamic> Resources = new List<dynamic>();
             string appSettings = ConfigurationManager.AppSettings.Get("Resources");
             string filePath = Path.Combine(Environment.CurrentDirectory, appSettings);
-            List<string> sheetNames = new List<string>() { "Brochures or Articles", "Videos", "Essential Readings", "Forms", "Organizations", "OrganizationReviews (Optional)" };
+            List<string> sheetNames = new List<string>() { "Brochures or Articles", "Videos", "Additional Readings", "Forms", "Organizations", "OrganizationReviews (Optional)" };
 
             try
             {
@@ -232,9 +232,9 @@ namespace Access2Justice.Tools.BusinessLogic
                                         ResourcesList.Add(video);
                                         ClearVariableData();
                                     }
-                                    if (resourceType == Constants.EssentialReadingResourceType)
+                                    if (resourceType == Constants.AdditionalReadingResourceType)
                                     {
-                                        EssentialReading essentialReading = new EssentialReading()
+                                        AdditionalReading additionalReading = new AdditionalReading()
                                         {
                                             ResourceId = (string.IsNullOrEmpty(id) || string.IsNullOrWhiteSpace(id)) ? Guid.NewGuid() : id,
                                             Name = name,
@@ -249,8 +249,8 @@ namespace Access2Justice.Tools.BusinessLogic
                                             CreatedBy = Constants.Admin,
                                             ModifiedBy = Constants.Admin
                                         };
-                                        essentialReading.Validate();
-                                        ResourcesList.Add(essentialReading);
+                                        additionalReading.Validate();
+                                        ResourcesList.Add(additionalReading);
                                         ClearVariableData();
                                     }
                                 }
@@ -356,8 +356,8 @@ namespace Access2Justice.Tools.BusinessLogic
                     return Constants.ArticleResourceType;
                 case "Videos":
                     return Constants.VideoResourceType;
-                case "Essential Readings":
-                    return Constants.EssentialReadingResourceType;
+                case "Additional Readings":
+                    return Constants.AdditionalReadingResourceType;
                 case "Forms":
                     return Constants.FormsResourceType;
                 case "Organizations":
@@ -597,9 +597,9 @@ namespace Access2Justice.Tools.BusinessLogic
                     correctHeader = HeaderValidation(header, expectedVideoHeader, Constants.VideoResourceType);
                 }
 
-                else if (resourceType == Constants.EssentialReadingResourceType)
+                else if (resourceType == Constants.AdditionalReadingResourceType)
                 {
-                    correctHeader = HeaderValidation(header, expectedRelatedLinkHeader, Constants.EssentialReadingResourceType);
+                    correctHeader = HeaderValidation(header, expectedRelatedLinkHeader, Constants.AdditionalReadingResourceType);
                 }
 
                 else if (resourceType == Constants.OrganizationReviews)

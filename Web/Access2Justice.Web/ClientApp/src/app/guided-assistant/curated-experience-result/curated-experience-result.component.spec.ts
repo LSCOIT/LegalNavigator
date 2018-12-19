@@ -6,6 +6,9 @@ import { ToastrService } from 'ngx-toastr';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { MapService } from '../../shared/map/map.service';
+import { StateCodeService } from '../../shared/state-code.service';
+import { HttpClientModule } from '@angular/common/http';
+import { Location } from "@angular/common";
 
 describe('CuratedExperienceResultComponent', () => {
   let component: CuratedExperienceResultComponent;
@@ -14,6 +17,10 @@ describe('CuratedExperienceResultComponent', () => {
   let mockNavigateDataService;
   let mockGuidedAssistantResults;
   let mockRouter;
+  let mockLocation = {
+    subscribe: () => {}
+  };
+
   beforeEach(async(() => { 
     mockNavigateDataService = jasmine.createSpyObj(['getData']);
     mockToastr = jasmine.createSpyObj(['success']);
@@ -31,12 +38,15 @@ describe('CuratedExperienceResultComponent', () => {
      "guidedAssistantId":"9a6a6131-657d-467d-b09b-c570b7dad242"
     }
     TestBed.configureTestingModule({
+      imports: [HttpClientModule],
       declarations: [ CuratedExperienceResultComponent ],
       schemas: [ NO_ERRORS_SCHEMA ],
       providers: [ 
         { provide: NavigateDataService, useValue: mockNavigateDataService},
         { provide: ToastrService, useValue: mockToastr },
-        { provide: Router, useValue: mockRouter }, MapService
+        { provide: Router, useValue: mockRouter }, MapService,
+        StateCodeService,
+        { provide: Location, useValue: mockLocation }
       ]
     })
     .compileComponents();

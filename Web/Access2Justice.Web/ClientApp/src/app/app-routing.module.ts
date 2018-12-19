@@ -21,13 +21,14 @@ import { InternalErrorComponent } from './shared/error/internal-error/internal-e
 import { ShareButtonRouteComponent } from './shared/resource/user-action/share-button/share-button-route/share-button-route.component';
 import { CuratedExperienceResultComponent } from './guided-assistant/curated-experience-result/curated-experience-result.component';
 import { ProfileResolver } from './app-resolver/profile-resolver.service';
+import { UnauthorizedComponent } from './shared/error/unauthorized/unauthorized.component';
 
 const appRoutes: Routes = [
   { path: 'search', component: SearchResultsComponent },
   { path: 'searchRefresh', component: SearchResultsComponent },
+  { path: 'guidedassistant/search', component: CuratedExperienceResultComponent },
   { path: 'guidedassistant/:id', component: CuratedExperienceComponent },
   { path: 'guidedassistant', component: GuidedAssistantComponent },
-  { path: 'guidedassistantSearch', component: CuratedExperienceResultComponent },
   { path: 'resource/:id', component: ResourceCardDetailComponent },
   { path: 'subtopics/:topic', component: SubtopicDetailComponent },
   { path: 'topics/:topic', component: SubtopicsComponent},
@@ -40,7 +41,8 @@ const appRoutes: Routes = [
   { path: 'privacy', component: PrivacyPromiseComponent },
   { path: 'profile', component: ProfileComponent, resolve: { cres: ProfileResolver } },
   { path: '', component: HomeComponent },
-  { path: 'error', component: InternalErrorComponent},
+  { path: 'error', component: InternalErrorComponent },
+  { path: '401', component: UnauthorizedComponent },
   { path: '404', component: NotFoundComponent },
   { path: '**', redirectTo: '/404' }
 ];

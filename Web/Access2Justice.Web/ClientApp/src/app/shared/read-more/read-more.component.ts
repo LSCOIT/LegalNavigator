@@ -4,7 +4,7 @@ import { Component, Input, ElementRef, OnChanges } from '@angular/core';
   selector: 'app-read-more',
   template: `
   <div class="p" [innerHTML]="currentText"></div>
-  <a class="link p" [class.d-none]="hideToggle" (click)="toggleView()">Read {{isCollapsed? 'more':'less'}}</a>`,
+  <a href="#" class="link p" [class.d-none]="hideToggle" (click)="toggleView($event)">Read {{isCollapsed? 'more':'less'}}</a>`,
   styles: [`
     a {
         cursor: pointer;
@@ -21,7 +21,8 @@ export class ReadMoreComponent implements OnChanges {
 
   constructor(private elementRef: ElementRef) { }
 
-  toggleView() {
+  toggleView(event) {
+    event.preventDefault();
     this.isCollapsed = !this.isCollapsed;
     this.determineView();
   }

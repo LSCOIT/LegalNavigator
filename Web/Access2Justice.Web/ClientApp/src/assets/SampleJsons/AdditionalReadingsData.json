@@ -1,0 +1,61 @@
+[
+  {
+    "name": "Additional Readings1",
+    "description": "Subhead lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem",
+    "resourceType": "Additional Readings",
+    "externalUrl": "www.youtube.com",
+    "url": "access2justice.com",
+    "topicTags": [
+      {
+        "id": "aaa085ef-96fb-4fd0-bcd0-0472ede66512"
+      },
+      {
+        "id": "2c0cc7b8-62b1-4efb-8568-b1f767f879bc"
+      }
+    ],
+    "location": [
+      {
+        "state": "Hawaii",
+        "city": "Haiku-Pauwela"
+      },
+      {
+        "state": "Alaska"
+      }
+    ],
+    "icon": "./assets/images/resources/resource.png",
+    "createdBy": "API",
+    "createdTimeStamp": "",
+    "modifiedBy": "API",
+    "modifiedTimeStamp": ""
+  },
+    {    
+    "name": "Additional Readings2",
+    "description": "Subhead lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem",
+    "resourceType": "Additional Readings",
+    "externalUrl": "www.youtube.com",
+    "url": "access2justice.com",
+    "topicTags": [
+      {
+        "id": "aaa085ef-96fb-4fd0-bcd0-0472ede66512"
+      },
+      {
+        "id": "2c0cc7b8-62b1-4efb-8568-b1f767f879bc"
+      }
+    ],
+    "location": [
+      {
+        "state": "Hawaii",
+        "city": "Haiku-Pauwela"
+      },
+      {
+        "state": "Alaska"
+      }
+    ],
+    "icon": "./assets/images/resources/resource.png",
+    "createdBy": "API",
+    "createdTimeStamp": "",
+    "modifiedBy": "API",
+    "modifiedTimeStamp": ""
+  }
+
+]

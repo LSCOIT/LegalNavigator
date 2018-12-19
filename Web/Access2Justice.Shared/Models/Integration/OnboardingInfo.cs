@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Access2Justice.Shared.Models.Integration
 {
@@ -11,7 +11,7 @@ namespace Access2Justice.Shared.Models.Integration
     {
         public OnboardingInfo()
         {
-            UserFields = new List<Field>();
+            UserFields = new List<UserField>();
         }
 
         /// <summary>
@@ -22,7 +22,8 @@ namespace Access2Justice.Shared.Models.Integration
         /// Age: 18-35
         /// Gender: Female
         /// </example>
-        public IEnumerable<Field> UserFields { get; set; }
+        [JsonProperty(PropertyName = "userFields")]
+        public IEnumerable<UserField> UserFields { get; set; }
 
         /// <summary>
         /// Template for paylod to be delivered to service provider.
@@ -44,31 +45,14 @@ namespace Access2Justice.Shared.Models.Integration
         /// tel:123-456-7890 (fax submissions)
         /// </example>
         public Uri DeliveryDestination { get; set; }
-
-    }
-
-    public class Field
-    {        
-        public string Type { get; set; }
-
-        public string Label { get; set; }
-        
-        public string Name { get; set; }
-        
-        public List<string> Value { get; set; }
-
-        public bool IsRequired { get; set; }
-
-        public string MinLength { get; set; }
-
-        public string MaxLength { get; set; }
-    }
-
-    public enum DeliveryMethod
-    {
-        WebApi,
-        Email,
-        Fax,
-        AvianCarrier
     }
 }
+
+public enum DeliveryMethod
+{
+    WebApi,
+    Email,
+    Fax,
+    AvianCarrier
+}
+

@@ -61,6 +61,7 @@ hr {
   max-width: 165px;
   max-height: 165px;
   border-radius: 10px;
+  width: 100%;
 }
 
 .slide-content-bottom {
@@ -200,6 +201,10 @@ ul>li>span {
 
   .privacy-promise img {
     width: 100%;
+  }
+
+  .sponsor-img {
+    padding: 0 30px;
   }
 }
 

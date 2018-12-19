@@ -7,6 +7,12 @@ li {
   cursor: pointer;
 }
 
+li a {
+  padding: 16px 10px;
+  color: #333;
+  font-weight: 400;
+}
+
 li:hover, #location:hover {
   background-color: #fff;
 }
@@ -35,11 +41,7 @@ li a img {
 }
 
 .right-menu li {
-  padding: 15px 10px;
-}
-
-.right-menu li:last-child {
-  padding: 0;
+  padding: 15px 0;
 }
 
 #location {
@@ -64,8 +66,17 @@ li a img {
     width: auto;
   }
 }
+
 @media only screen and (min-width : 1124px) {
-  .right-menu li {
-    padding: 15px;
+  li a {
+    padding: 16px 15px;
+  }
+
+  .upper-nav {
+    height: 52px;
+  }
+
+  #language {
+    height: 55px;
   }
 }

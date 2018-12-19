@@ -11,12 +11,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Global } from '../../../../global';
 import { PaginationService } from '../../../pagination/pagination.service';
 import { MapService } from '../../../map/map.service';
+import { StateCodeService } from '../../../state-code.service';
 
 describe('ArticlesComponent', () => {
   let component: ArticlesComponent;
   let fixture: ComponentFixture<ArticlesComponent>;
   let mockRouter;
   let mockShowMoreService;
+  let mockGlobal;
   let mockArticleResource = [
     {
       "id": "4f327a5b-9a79-466e-98be-2542eb28bb28",
@@ -46,6 +48,7 @@ describe('ArticlesComponent', () => {
         "There is no fee for investigations done by the court Custody Investigator’s Office. If out of town travel is involved, you and/or the other parent may be responsible for those expenses."
     }
   ];
+
   beforeEach(async(() => {
     mockShowMoreService = jasmine.createSpyObj(['clickSeeMoreOrganizations']);
     TestBed.configureTestingModule({
@@ -64,9 +67,10 @@ describe('ArticlesComponent', () => {
           useValue: { snapshot: { params: { 'id': '123' } } }
         },
         { provide: Router, useValue: mockRouter },
-        { provide: Global, useValue: { role: '', shareRouteUrl: '' } },
-        { provide: ShowMoreService, uesValue: mockShowMoreService },
-        PaginationService
+        { provide: Global, useValue: { mockGlobal, role: '', shareRouteUrl: '', activeSubtopicParam: '123', topIntent: 'Divorce' } },
+        { provide: ShowMoreService, useValue: mockShowMoreService },
+        PaginationService,
+        StateCodeService
       ],
       schemas: [
         NO_ERRORS_SCHEMA,
@@ -77,10 +81,16 @@ describe('ArticlesComponent', () => {
     fixture = TestBed.createComponent(ArticlesComponent);
     component = fixture.componentInstance;
     component.resource = mockArticleResource;
+    mockShowMoreService = TestBed.get(ShowMoreService);
     fixture.detectChanges();
   }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should call clickSeeMoreOrganizations service method', () => {
+    component.clickSeeMoreOrganizationsFromArticles("test");
+    expect(mockShowMoreService.clickSeeMoreOrganizations).toHaveBeenCalled();
   });
 });

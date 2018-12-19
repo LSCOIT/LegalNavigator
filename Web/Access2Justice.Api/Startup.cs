@@ -1,5 +1,4 @@
 ﻿using Access2Justice.Api.Authentication;
-using Access2Justice.Api.Authorization;
 using Access2Justice.Api.BusinessLogic;
 using Access2Justice.Api.Interfaces;
 using Access2Justice.CosmosDb;
@@ -82,6 +81,7 @@ namespace Access2Justice.Api
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<ISessionManager, SessionManager>();
             services.AddSingleton<IAdminBusinessLogic, AdminBusinessLogic>();
+            services.AddSingleton<IStateProvinceBusinessLogic, StateProvinceBusinessLogic>();
             services.AddSingleton<IOnboardingInfoBusinessLogic, OnboardingInfoBusinessLogic>();
 
             services.AddAuthentication(sharedOptions =>
@@ -96,7 +96,7 @@ namespace Access2Justice.Api
                 .Build();
             });
             ConfigureCosmosDb(services);
-        
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Access2Justice API", Version = "1.0.0" , Description ="List of all APIs for Access2Justice", TermsOfService = "None"});

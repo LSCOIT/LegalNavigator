@@ -1,5 +1,5 @@
 <div *ngIf="question" class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 text-center question">
-  <h4 id="question-text" [innerHTML]="question.text"></h4>
+  <h4 *ngIf="question.text" id="question-text" [innerHTML]="question.text"></h4>
   <form #gaForm="ngForm" (ngSubmit)="onSubmit(gaForm)">
     <div *ngIf="question.fields">
       <div *ngFor="let field of question.fields">
@@ -53,6 +53,7 @@
             </li>
           </ul>
         </div>
+        <p class="validation-error" *ngIf="validationError && gaForm.submitted">Please enter a valid search text.</p>
         <button type="submit" class="btn btn-primary">Continue</button>
       </div>
       <div class="row">
@@ -65,7 +66,7 @@
   <ng-template #viewPlanBlock>
     <div class="row">
       <div class="col-sm-6 col-sm-offset-3">
-        <button class="btn btn-primary" type="button"(click)="getActionPlan()">View Action Plan</button>
+        <button class="btn btn-primary" type="button" (click)="getActionPlan()">View Action Plan</button>
       </div>
     </div>
   </ng-template>

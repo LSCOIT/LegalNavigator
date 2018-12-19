@@ -71,7 +71,7 @@ namespace Access2Justice.Api.BusinessLogic
             ListDictionary replacements = new ListDictionary();
             foreach (var field in onboardingInfo.UserFields)
             {
-                body = body.Replace("@" + field.Name + "@", field.Value.FirstOrDefault());
+                body = body.Replace("@"+ field.Name + "@", field.Value);
             }
 
             SmtpClient client = new SmtpClient(onboardingInfoSettings.HostAddress, Convert.ToInt16(onboardingInfoSettings.PortNumber, CultureInfo.InvariantCulture))
@@ -164,35 +164,22 @@ namespace Access2Justice.Api.BusinessLogic
 
             if (organizationType.ToUpperInvariant() == "ORG1")
             {
-                var fields = new List<Field>
+                var fields = new List<UserField>
                 {
-                    new Field()
+                    new UserField()
                     {
-                        Type = "TextBox",
-                        Label = "First Name",
                         Name = "First Name",
-                        Value = new List<string>(),
-                        IsRequired = true,
-                        MinLength = "3",
-                        MaxLength ="20"
+                        Value = string.Empty
                     },
-                    new Field()
+                    new UserField()
                     {
-                        Type = "TextBox",
-                        Label = "Last Name",
                         Name = "Last Name",
-                        Value = new List<string>(),
-                        IsRequired = true,
-                        MinLength = "3",
-                        MaxLength ="20"
+                        Value = string.Empty
                     },
-                    new Field()
+                    new UserField()
                     {
-                        Type = "ListBox",
-                        Label = "Gender",
                         Name = "Gender",
-                        Value = new List<string>(){ "Male","Female","Others"},
-                        IsRequired = true
+                        Value = string.Empty
                     }
                 };
 
@@ -205,35 +192,22 @@ namespace Access2Justice.Api.BusinessLogic
             }
             else if (organizationType.ToUpperInvariant() == "ORG2")
             {
-                var fields = new List<Field>
+                var fields = new List<UserField>
                 {
-                    new Field()
+                    new UserField()
                     {
-                        Type = "TextBox",
-                        Label = "First Name",
                         Name = "First Name",
-                        Value =new List<string>(),
-                        IsRequired = true,
-                        MinLength = "3",
-                        MaxLength ="20"
+                        Value = string.Empty
                     },
-                    new Field()
+                    new UserField()
                     {
-                        Type = "TextBox",
-                        Label = "Last Name",
                         Name = "Last Name",
-                        Value = new List<string>(),
-                        IsRequired = true,
-                        MinLength = "3",
-                        MaxLength ="20"
+                        Value = string.Empty
                     },
-                    new Field()
+                    new UserField()
                     {
-                        Type = "ListBox",
-                        Label = "Age",
                         Name = "Age",
-                        Value = new List<string>(),
-                        IsRequired = true
+                        Value = string.Empty
                     }
                 };
 
@@ -247,35 +221,23 @@ namespace Access2Justice.Api.BusinessLogic
             }
             else
             {
-                var fields = new List<Field>
+
+                var fields = new List<UserField>
                 {
-                    new Field()
+                    new UserField()
                     {
-                        Type = "TextBox",
-                        Label = "Name",
                         Name = "Name",
-                        Value =new List<string>(),
-                        IsRequired = true,
-                        MinLength = "3",
-                        MaxLength ="20"
+                        Value = string.Empty
                     },
-                    new Field()
+                    new UserField()
                     {
-                        Type = "Calendar",
-                        Label = "DateOfBirth",
                         Name = "DateOfBirth",
-                        Value = new List<string>(),
-                        IsRequired = true
+                        Value = string.Empty
                     },
-                    new Field()
+                    new UserField()
                     {
-                        Type = "TextBox",
-                        Label = "Telephone",
                         Name = "Telephone",
-                        Value = new List<string>(),
-                        IsRequired = true,
-                        MinLength = "10",
-                        MaxLength ="10"
+                        Value = string.Empty
                     }
                 };
 

@@ -13,10 +13,10 @@ export const environment = {
   clientID: '15c4cbff-86ef-4c76-9b08-874ce0b55c8a',
   authority: 'https://login.microsoftonline.com/common/',
   consentScopes: ["api://15c4cbff-86ef-4c76-9b08-874ce0b55c8a/access_as_user"],
-  redirectUri: 'http://localhost:5150/',
+  redirectUri: 'https://a2jdevweb.azurewebsites.net',
   navigateToLoginRequestUrl: true,
-  postLogoutRedirectUri: 'http://localhost:5150/',
-  topicUrl: 'http://localhost:4200/api/topics',
-  userPersonalizedPlanUrl: 'http://localhost:4200/api/user/upsertuserpersonalizedplan',
+  postLogoutRedirectUri: 'https://a2jdevweb.azurewebsites.net',
+  topicUrl: 'https://access2justiceapi.azurewebsites.net/api/topics',
+  userPersonalizedPlanUrl: 'https://access2justiceapi.azurewebsites.net/api/user/upsertuserpersonalizedplan',
   apiScope: 'api://15c4cbff-86ef-4c76-9b08-874ce0b55c8a/access_as_user'
 };

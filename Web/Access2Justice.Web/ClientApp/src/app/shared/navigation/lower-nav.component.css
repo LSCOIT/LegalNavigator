@@ -1,6 +1,12 @@
+li a {
+  color: #333;
+  font-weight: 400;
+}
+
 li > a:hover {
   text-decoration: none;
-  color: #333;
+  color: #0d3fb8;
+  font-weight: 600;
 }
 
 .lower-nav {
@@ -49,7 +55,6 @@ ul.web-hidden {
 #mobile-menu {
   float: right;
   margin-top: -2px;
-  margin-left: 15px;
 }
 
 #nav-bar-toggle {
@@ -85,8 +90,9 @@ ul.web-hidden {
 }
 
 #sidenav a:hover {
-  color: #333;
-}
+  color: #0d3fb8;
+  font-weight: 600;
+ }
 
 #sidenav .closebtn {
   float: right;
@@ -151,6 +157,12 @@ li.vertical-line {
   top: 21px;
 }
 
+#search-phrase-tab {
+  background-color: white;
+  margin-right: 6px;
+  outline-offset: 21px;
+}
+
 @media only screen and (min-width : 768px) {
   .lower-nav {
     min-height: 80px;
@@ -194,6 +206,10 @@ li.vertical-line {
   #home-nav {
     padding-top: 45px;
   }
+
+  #search-phrase-tab {
+    margin-right: 0;
+  }
 }
 
 @media only screen and (min-width : 992px) {
@@ -225,7 +241,6 @@ li.vertical-line {
     display: inline-block;
     font-size: 14px;
   }
-
   .search-icon {
     margin-right: 10px;
     margin-bottom: 0;
@@ -241,6 +256,11 @@ li.vertical-line {
 
   .left-menu li a {
     font-size: 16px;
+  }
+
+  .left-menu li a:hover { 
+    color: #0d3fb8;
+    font-weight: 600;
   }
 
   #logo {

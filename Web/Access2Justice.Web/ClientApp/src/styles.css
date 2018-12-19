@@ -19,11 +19,15 @@ ul {
   padding-left: 0;
 }
 
+
 a {
-  color: #333;
+  color: #0D3FB8;
+  font-weight: 600;
+  text-decoration: none;
 }
 
 a:hover {
+  color: #0B2B78;
   text-decoration: none;
 }
 
@@ -96,6 +100,12 @@ textarea {
   margin-bottom: 0;
 }
 
+.validation-error {
+  font-size: 14px;
+  color: #ca3636;
+  clear: both;
+  font-weight: 600;
+}
 
 /* Language Dropdown */
 .dropdown-icon {
@@ -160,6 +170,10 @@ textarea {
   border-bottom: 1px solid #f4f4f4;
 }
 
+.user-button {
+  background-color: transparent;
+}
+
 /*Curated Experience*/
 #articles-dropdown .dropdown-menu {
   position: static;
@@ -194,6 +208,23 @@ textarea {
   display: none;
 }
 
+.MicrosoftMap .as_container_search {
+  margin: 30px 6.5% !important;
+}
+
+/*
+  This will hide the focus indicator if the element receives focus via the mouse,
+  but it will still show up on keyboard focus.
+  */
+.js-focus-visible :focus:not(.focus-visible) {
+  outline: none;
+  background-color: none;
+}
+
+.js-focus-visible .focus-visible {
+  outline: 2px solid #80bdff;
+}
+
 .modal-dialog {
   height: 1185px;
   margin: 0;
@@ -204,6 +235,10 @@ textarea {
 .modal-content {
   height: auto;
   border: none;
+}
+
+.popover-content {
+  display: none;
 }
 
 @media only screen and (min-width : 540px) {
@@ -245,6 +280,47 @@ textarea {
 
   .modal-dialog {
     width: 660px;
+  }
+
+  .popover-wrapper {
+    position: relative;
+  }
+
+  .popover-content {
+    display: block;
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    left: -150px;
+    transform: translate(0,10px);
+    background-color: #fff;
+    padding: 10px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+    width: auto;
+    top: 65px;
+  }
+
+    .popover-content:before {
+      position: absolute;
+      z-index: -1;
+      content: '';
+      right: calc(50% - 42px);
+      top: -10px;
+      border-style: solid;
+      border-width: 0 10px 10px 10px;
+      border-color: transparent transparent #f4f4f4 transparent;
+    }
+
+  .popover-wrapper:hover .popover-content {
+    z-index: 10;
+    opacity: 1;
+    visibility: visible;
+    transform: translate(0,-20px);
+  }
+
+  .popover-message {
+    text-align: center;
+    font-size: 12px;
   }
 }
 @media only screen and (min-width : 992px) {

@@ -47,6 +47,7 @@ import { ProfileResolver } from './app-resolver/profile-resolver.service';
 import { TokenInterceptor } from './token-interceptor';
 import { environment } from '../environments/environment';
 import { api } from '../api/api';
+import { PipeModule } from './shared/pipe/pipe.module';
 
 @NgModule({
   declarations: [
@@ -89,7 +90,8 @@ import { api } from '../api/api';
       redirectUri: environment.redirectUri,
       navigateToLoginRequestUrl: environment.navigateToLoginRequestUrl,
       postLogoutRedirectUri: environment.postLogoutRedirectUri      
-    })
+    }),
+    PipeModule.forRoot()
   ],
   providers: [
     {

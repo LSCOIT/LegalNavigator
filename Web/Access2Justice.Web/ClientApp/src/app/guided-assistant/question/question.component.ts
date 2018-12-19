@@ -24,6 +24,7 @@ export class QuestionComponent implements OnInit {
   @Output() sendTotalQuestionsEvent = new EventEmitter<number>();
   generatedPersonalizedPlan: PersonalizedPlan;
   answersDocId: string;
+  validationError: boolean = false;
 
   constructor(
     private questionService: QuestionService,
@@ -91,11 +92,16 @@ export class QuestionComponent implements OnInit {
       "fields": this.fieldParam
     }
 
-    this.questionService.getNextQuestion(params)
-      .subscribe(response => {
-        this.question = { ...response }
-        this.sendQuestionsRemaining(this.question.questionsRemaining);
-      });
+    if (this.buttonParam.length > 0 || this.fieldParam.length > 0) {
+      this.validationError = false;
+      this.questionService.getNextQuestion(params)
+        .subscribe(response => {
+          this.question = { ...response }
+          this.sendQuestionsRemaining(this.question.questionsRemaining);
+        });
+    } else {
+      this.validationError = true;
+    }
   };
 
   getActionPlan(): void {
@@ -114,6 +120,7 @@ export class QuestionComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.validationError = false;
     this.getQuestion();
   }
 }

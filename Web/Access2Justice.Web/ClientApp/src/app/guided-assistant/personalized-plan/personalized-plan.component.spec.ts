@@ -10,13 +10,22 @@ import { ToastrService, ToastrModule } from 'ngx-toastr';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { NavigateDataService } from '../../shared/navigate-data.service';
+import { StaticResourceService } from '../../shared/static-resource.service';
+import { Global } from '../../global';
+import { PersonalizedPlanDescription } from './personalized-plan';
+
 
 describe('Component:PersonalizedPlan', () => {
+
   let component: PersonalizedPlanComponent;
   let fixture: ComponentFixture<PersonalizedPlanComponent>;
+
   let toastrService: ToastrService;
   let mockPersonalizedPlanService;
   let mockNavigateDataService;
+  let mockStaticResourceService;
+  let mockGlobalService;
+
   let mockPlanDetails = {
     "id": "29250697-8d22-4f9d-bbf8-96c1b5b72e54",
     "isShared": false,
@@ -25,7 +34,7 @@ describe('Component:PersonalizedPlan', () => {
         "topicId": "69be8e7c-975b-43c8-9af3-f61887a33ad3",
         "name": "Protective Order",
         "icon": null,
-        "essentialReadings": [
+        "additionalReadings": [
           {
             "text": "Domestic Violence - What it is",
             "url": "https://www.thehotline.org/is-this-abuse/abuse-defined/"
@@ -58,7 +67,7 @@ describe('Component:PersonalizedPlan', () => {
         "topicId": "ba74f857-eb7b-4dd6-a021-5b3e4525e3e4",
         "name": "Divorce",
         "icon": null,
-        "essentialReadings": [
+        "additionalReadings": [
           {
             "text": "Domestic Violence - What it is",
             "url": "https://www.thehotline.org/is-this-abuse/abuse-defined/"
@@ -83,7 +92,7 @@ describe('Component:PersonalizedPlan', () => {
         "topicId": "69be8e7c-975b-43c8-9af3-f61887a33ad3",
         "name": "Protective Order",
         "icon": null,
-        "essentialReadings": [
+        "additionalReadings": [
           {
             "text": "Domestic Violence - What it is",
             "url": "https://www.thehotline.org/is-this-abuse/abuse-defined/"
@@ -119,7 +128,7 @@ describe('Component:PersonalizedPlan', () => {
         "topicId": "ba74f857-eb7b-4dd6-a021-5b3e4525e3e4",
         "name": "Divorce",
         "icon": null,
-        "essentialReadings": [
+        "additionalReadings": [
           {
             "text": "Domestic Violence - What it is",
             "url": "https://www.thehotline.org/is-this-abuse/abuse-defined/"
@@ -145,7 +154,7 @@ describe('Component:PersonalizedPlan', () => {
         "topicId": "69be8e7c-975b-43c8-9af3-f61887a33ad3",
         "name": "Protective Order",
         "icon": null,
-        "essentialReadings": [
+        "additionalReadings": [
           {
             "text": "Domestic Violence - What it is",
             "url": "https://www.thehotline.org/is-this-abuse/abuse-defined/"
@@ -181,7 +190,7 @@ describe('Component:PersonalizedPlan', () => {
         "topicId": "ba74f857-eb7b-4dd6-a021-5b3e4525e3e4",
         "name": "Divorce",
         "icon": null,
-        "essentialReadings": [
+        "additionalReadings": [
           {
             "text": "Domestic Violence - What it is",
             "url": "https://www.thehotline.org/is-this-abuse/abuse-defined/"
@@ -209,7 +218,7 @@ describe('Component:PersonalizedPlan', () => {
         "topicId": "69be8e7c-975b-43c8-9af3-f61887a33ad3",
         "name": "Protective Order",
         "icon": null,
-        "essentialReadings": [
+        "additionalReadings": [
           {
             "text": "Domestic Violence - What it is",
             "url": "https://www.thehotline.org/is-this-abuse/abuse-defined/"
@@ -241,14 +250,38 @@ describe('Component:PersonalizedPlan', () => {
     ]
   };
   let mockFilterTopicName = "Divorce";
+  let mockPersonalizedDescription;
+  let mockGlobalData;
+  let mockDescription = "test";
 
   beforeEach(async(() => {
+    mockPersonalizedDescription = {
+      name: "PersonalizedPlanDescription",
+      description: "test",
+      location: [
+        { state: "Alaska" }
+      ]
+    },
+      mockGlobalData = [{
+        name: "PersonalizedPlanDescription",
+        location: [
+          { state: "Alaska" }
+        ]
+      }]
+
     mockPersonalizedPlanService = jasmine.createSpyObj([
       'getActionPlanConditions', 'createTopicsList', 'getPlanDetails', 'displayPlanDetails'
     ]);
     mockPersonalizedPlanService.getActionPlanConditions.and.returnValue(of(mockPlanDetails));
+
     mockNavigateDataService = jasmine.createSpyObj(['getData']);
     mockNavigateDataService.getData.and.returnValue(of(mockPlanDetails));
+
+    mockStaticResourceService = jasmine.createSpyObj(['getLocation', 'getStaticContents']);
+    mockGlobalService = jasmine.createSpyObj(['getData']);
+    mockGlobalService.getData.and.returnValue([mockPersonalizedDescription]);
+    mockStaticResourceService.getStaticContents.and.returnValue(mockPersonalizedDescription);
+    mockStaticResourceService.getLocation.and.returnValue('Alaska');
 
     TestBed.configureTestingModule({
       imports: [ToastrModule.forRoot(),
@@ -263,17 +296,21 @@ describe('Component:PersonalizedPlan', () => {
         { provide: PersonalizedPlanService, useValue: mockPersonalizedPlanService },
         ArrayUtilityService,
         ToastrService,
-        { provide: NavigateDataService, useValue: mockNavigateDataService }
+        { provide: NavigateDataService, useValue: mockNavigateDataService },
+        { provide: StaticResourceService, useValue: mockStaticResourceService },
+        { provide: Global, useValue: mockGlobalService }
       ]
     })
       .compileComponents();
 
+
     fixture = TestBed.createComponent(PersonalizedPlanComponent);
     component = fixture.componentInstance;
     toastrService = TestBed.get(ToastrService);
-    component.ngOnInit();
+    spyOn(component, 'ngOnInit');
     fixture.detectChanges();
   }));
+
 
   it('should create personalized plan component', () => {
     expect(component).toBeTruthy();
@@ -281,12 +318,6 @@ describe('Component:PersonalizedPlan', () => {
 
   it('should define personalized plan component', () => {
     expect(component).toBeDefined();
-  });
-
-  it('should call getTopics method on ngOnInit', () => {
-    spyOn(component, 'getTopics');
-    component.ngOnInit();
-    expect(component.getTopics).toHaveBeenCalled();
   });
 
   it('should call service methods in setPlan', () => {
@@ -330,12 +361,20 @@ describe('Component:PersonalizedPlan', () => {
 
   it('should assign component values in filterTopics method', () => {
     let mockEvent = { "plan": mockPlanDetails, "topicsList": mockTopicsList };
-    spyOn(component,'filterPlan');
+    spyOn(component, 'filterPlan');
     component.filterTopics(mockEvent);
     expect(component.topics).toEqual(mockEvent.plan.topics);
     expect(component.planDetailTags).toEqual(mockEvent.plan);
     expect(component.topicsList).toEqual(mockEvent.topicsList);
     expect(component.filterPlan).toHaveBeenCalledWith("");
+  });
+
+  it('should set personalized plan description to static resource personalized plan description content if it exists', () => {
+    mockStaticResourceService.getLocation.and.returnValue('Alaska');
+    mockStaticResourceService.getStaticContents.and.returnValue(mockPersonalizedDescription);
+    component.name = mockPersonalizedDescription.name;
+    component.getPersonalizedPlanHeading();
+    expect(component.description).toEqual(mockDescription);
   });
 
 });

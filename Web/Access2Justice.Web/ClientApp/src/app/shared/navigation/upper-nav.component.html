@@ -1,4 +1,4 @@
-<div class="fixed-top upper-nav no-print">
+<div #upperNav class="fixed-top upper-nav no-print">
   <div class="container">
     <div class="left-menu inline ps">
       <ul>
@@ -16,7 +16,7 @@
           <a id="privacy-promise-navigation-link" [routerLink]="['/' + privacyPromise?.button?.buttonLink]">
             <img *ngIf="privacyPromise.image.source" class="nav-icon" [src]="blobUrl + privacyPromise?.image?.source" aria-hidden="true" />
             {{privacyPromise?.button?.buttonText}}
-          </a>          
+          </a>
         </li>
         <li *ngIf="helpAndFAQ">
           <a id="faq-navigation-link" [routerLink]="['/' + helpAndFAQ?.button?.buttonLink]">

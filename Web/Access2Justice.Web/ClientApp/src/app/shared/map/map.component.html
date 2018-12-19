@@ -7,7 +7,7 @@
   <ng-template #elseBlock>
     <span *ngIf="!showLocality"> {{locality}}(</span><span id="user-location">{{address}}</span><span *ngIf="!showLocality">)</span>
   </ng-template>
-  <button id="change-location-button" type="button" class="change-location-btn pxs mobile-hidden">{{locationNavContent?.button?.buttonText}}</button>
+  <button #changeLocationButton id="change-location-button" type="button" class="change-location-btn pxs mobile-hidden">{{locationNavContent?.button?.buttonText}}</button>
 </div>
 <ng-template #template>
   <form #mapForm="ngForm" (ngSubmit)="hideSearchPrediction()">
@@ -16,34 +16,36 @@
       <div class="row">
         <img *ngIf="locationNavContent && locationNavContent.image.source" class="location-icon" [src]="blobUrl + locationNavContent?.image?.source" aria-hidden="true"/>
         <h4>Location</h4>
-        <p class="pl">We currently support Alaska and Hawaii</p>
-        <p class="ps">
-          You can learn more about the states we support by visiting our
-          <a [routerLink]="['/about']" class="link">About</a>
-          page
-        </p>
+        <p class="p">Enter a state name to see relevant information for that location. </p>
       </div>
       <div class="row">
         <div id="searchbox-container">
-          <input
-            type="text"
-            id="search-box"
-            aria-label="search address box"
-            autocomplete="off"
-            placeholder="Enter a state name"
-            (input)="onSearchChange()"
-            autofocus="autofocus"
-            name="locationInput"
-            [(ngModel)]='locationInput'
-            (keyup)="hideLocationError()"/>
+          <input type="text"
+                 id="search-box"
+                 aria-label="search address box"
+                 autocomplete="off"
+                 placeholder="Enter a state name"
+                 (input)="onSearchChange()"
+                 name="locationInput"
+                 [(ngModel)]='locationInput'
+                 (keyup)="hideLocationError()"
+                 autofocus />
           <button id="search-location-button" type="submit" class="search-btn" (click)="geocode()">Search</button>
         </div>
-        <span *ngIf="locationError" id="validation-error">Please enter a valid location</span>
+        <p *ngIf="locationError" id="validation-error">Please enter a valid location</p>
+        <div class="location-support">
+          <p class="ps">We currently support Alaska and Hawaii</p>
+          <p class="ps">
+            You can learn more about the states we support by visiting our
+            <a [routerLink]="['/about']" class="link">About</a>
+            page
+          </p>
+        </div>
         <div id="my-map"></div>
       </div>
       <div class="row">
         <p class="privacy ps mobile-margin">
-          We promise to never share your location. View our
+          We do not store your location information. View our
           <a class="link" [routerLink]="['/privacy']">Privacy Promise</a>
           .
         </p>
