@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Access2Justice.Api.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Access2Justice.Api.Controllers
@@ -20,9 +16,9 @@ namespace Access2Justice.Api.Controllers
         }
 
         /// <summary>
-        /// 
+        /// This makes Luis and QnA API call to get the answers for the user questions in chat window.
         /// </summary>
-        /// <param name="question"></param>
+        /// <param name="question">input from chat window</param>
         /// <returns></returns>
         [HttpGet("{question}")]
         public async Task<IActionResult> GetAsync(string question)

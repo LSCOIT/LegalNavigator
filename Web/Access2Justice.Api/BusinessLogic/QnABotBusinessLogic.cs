@@ -32,9 +32,12 @@ namespace Access2Justice.Api.BusinessLogic
         public async Task<dynamic> GetAnswersAsync(string question)
         {
             dynamic luisResponse = await luisProxy.GetIntents(question);
-            var luisTopIntents = luisBusinessLogic.ParseLuisIntent(luisResponse);
-
+            IntentWithScore luisTopIntents = luisBusinessLogic.ParseLuisIntent(luisResponse);
             string result = string.Empty;
+            if (luisTopIntents != null && luisBusinessLogic.IsIntentAccurate(luisTopIntents))
+            {
+                question = luisTopIntents.TopScoringIntent;
+            }
             var requestContent = JsonConvert.SerializeObject(new { question });
             using (var request = new HttpRequestMessage())
             {
@@ -52,7 +55,7 @@ namespace Access2Justice.Api.BusinessLogic
                     //var bestAnswer = result.Answers.OrderBy(answer => answer.Score).LastOrDefault();
                 }
                 return result;
-            }
+            }            
         }
     }
 }
