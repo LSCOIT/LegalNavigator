@@ -346,18 +346,18 @@ namespace Access2Justice.Api.Controllers
         }
 
         /// <summary>
-        /// get essential reading schema
+        /// get additional reading schema
         /// </summary>
         /// <remarks>
-        /// Helps to get essential reading content.
+        /// Helps to get additional reading content.
         /// </remarks>
-        /// <response code="200">Returns essential reading content</response>
+        /// <response code="200">Returns additional reading content</response>
         /// <response code="500">Failure</response>
         [HttpGet]
-        [Route("essential-reading/schema")]
-        public EssentialReading GetSchemaEssentialReading()
+        [Route("additional-reading/schema")]
+        public AdditionalReading GetSchemaAdditionalReading()
         {
-            return new EssentialReading();
+            return new AdditionalReading();
         }
 
         /// <summary>

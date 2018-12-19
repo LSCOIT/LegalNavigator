@@ -39,7 +39,7 @@ describe('SubtopicDetailComponent', () => {
   {
     id: "64926e4e-2ea1-4d47-9b00-9e8f1bec501c", name: "Family Court - What to do if Your Projective Order is Violated",
     organizationalUnit: "Hawaii",
-    resourceType: "Essential Readings",
+    resourceType: "Additional Readings",
     url: "http://www.courts.state.hi.us/self-help/protective_orders/violations/order_violations"
   }];
   let mockgetData = [];

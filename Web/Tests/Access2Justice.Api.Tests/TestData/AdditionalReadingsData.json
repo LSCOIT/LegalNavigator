@@ -1,8 +1,8 @@
 [
   {
-    "name": "Essential Readings1",
+    "name": "Additional Readings1",
     "description": "Subhead lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem",
-    "resourceType": "Essential Readings",
+    "resourceType": "Additional Readings",
     "externalUrl": "www.youtube.com",
     "url": "access2justice.com",
     "topicTags": [
@@ -22,16 +22,15 @@
         "state": "Alaska"
       }
     ],
-    "icon": "./assets/images/resources/resource.png",
     "createdBy": "API",
     "createdTimeStamp": "",
     "modifiedBy": "API",
     "modifiedTimeStamp": ""
   },
     {    
-    "name": "Essential Readings2",
+    "name": "Additional Readings2",
     "description": "Subhead lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem",
-    "resourceType": "Essential Readings",
+    "resourceType": "Additional Readings",
     "externalUrl": "www.youtube.com",
     "url": "access2justice.com",
     "topicTags": [
@@ -51,7 +50,6 @@
         "state": "Alaska"
       }
     ],
-    "icon": "./assets/images/resources/resource.png",
     "createdBy": "API",
     "createdTimeStamp": "",
     "modifiedBy": "API",
