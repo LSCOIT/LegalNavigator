@@ -3,8 +3,8 @@ using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
@@ -34,6 +34,7 @@ namespace Access2Justice.Api.BusinessLogic
         {
             dynamic luisResponse = await luisProxy.GetIntents(question);
             IntentWithScore luisTopIntents = luisBusinessLogic.ParseLuisIntent(luisResponse);
+            dynamic answerObject = null;
             string bestAnswer = "Sorry, not able to get you. please explain you problem in detail.";
             if (luisTopIntents != null && luisBusinessLogic.IsIntentAccurate(luisTopIntents))
             {
@@ -53,13 +54,20 @@ namespace Access2Justice.Api.BusinessLogic
                 {
                     string qnaResponse = response.Content.ReadAsStringAsync().Result;
                     var qnAMakers = JsonConvert.DeserializeObject<QnAMakerResult>(qnaResponse);
-                    if (qnAMakers.Answers.LastOrDefault().Score == 0)
+                    if (qnAMakers.Answers.LastOrDefault().Score > 0)
                     {
-                        return bestAnswer;
+                        bestAnswer = qnAMakers.Answers.OrderBy(answer => answer.Score).LastOrDefault().Answer;
                     }
-                    bestAnswer = qnAMakers.Answers.OrderBy(answer => answer.Score).LastOrDefault().Answer;
                 }
-                return bestAnswer;
+                if (bestAnswer.Contains("{") && bestAnswer.Contains("}"))
+                {
+                    answerObject = JsonConvert.DeserializeObject(bestAnswer);
+                }
+                else
+                {
+                    answerObject = new JObject { { "description", bestAnswer } };
+                }
+                return answerObject.ToString();
             }
         }
     }

@@ -14,8 +14,8 @@
           <div *ngFor=" let lawType of message.types">
             <ul>
               <li style="list-style-type:none">
-                <span class="chatbot-message">{{lawType.LawName}}</span>
-                <p class="chat-time" *ngIf="lawType.LawDetails">{{lawType.LawDetails}}</p>
+                <span class="chatbot-message">{{lawType.label}}</span>
+                <p class="chat-time" *ngIf="lawType.destination">{{lawType.destination}}</p>
               </li>
             </ul>
           </div>
@@ -51,13 +51,15 @@
         <fieldset>
           <div class="input-box">
             <input type="text" placeholder="Type your message…" [(ngModel)]="replyMessage" name="replyMessage" autofocus>
-            <div class="message-icon">
-              <div type="button" class="glyphicon glyphicon-send" aria-hidden="true" (click)="reply()"></div>
-            </div>
-            <input type="hidden">
+            <!--<div class="message-icon" style="width: 30px;height: 30px;">
+              <div type="button" class="glyphicon glyphicon-send" aria-hidden="true" name="replyMe" (click)="reply()"></div>
+            </div>-->
+            <button id="search-phrase-button" type="submit" aria-label="search button" style="width: 30px;height: 30px;" (click)="reply()">
+              <img class="search-icon" src="/assets/images/small-icons/search.svg" aria-hidden="true" />
+            </button>
+            <!--<input type="hidden">-->
           </div>
         </fieldset>
       </form>
     </div>
-  </div>
   </div>

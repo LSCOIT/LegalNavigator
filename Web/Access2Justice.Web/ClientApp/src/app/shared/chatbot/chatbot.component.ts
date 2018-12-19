@@ -34,8 +34,8 @@ export class ChatbotComponent implements OnInit {
 
       if (this.cntresult != null && this.cntresult != '') {
         this.messages.push({
-          "text": this.cntresult.Description,
-          "types": this.cntresult.AbuseTypes,
+          "text": this.cntresult.description,
+          "types": this.cntresult.types,
           "class": "receive",
           "inputText": this.replyMessage
         })
