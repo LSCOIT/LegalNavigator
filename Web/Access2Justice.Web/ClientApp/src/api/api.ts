@@ -39,5 +39,6 @@ export const api = {
     updatePersonalizedPlanDataUrl: contentUrl + '/personalizedplan/upsert',
     uploadCuratedExperienceTemplateUrl: adminUrl + '/curated-experience',
     getStateCodesUrl: apiUrl + '/StateProvince/state-codes',
-    getStateCodeUrl: apiUrl + '/StateProvince/state-code'
+    getStateCodeUrl: apiUrl + '/StateProvince/state-code',
+    getAnswerUrl: apiUrl +"/qnabot/"
 }

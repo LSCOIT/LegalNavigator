@@ -1,4 +1,4 @@
-<div id="live-chat">	
+<div id="live-chat">
   <header [style.background-color] = "getStyle()" (click)="toggleStyle()" (click)="toggleChat()" class="clearfix">
     <a *ngIf="show" class="chat" href="#" class="chat-close">x</a>
     <span type="button" class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
@@ -8,40 +8,56 @@
   <div *ngIf="show" class="chat">
     <div class="chat-history">
       <div class="chat-message clearfix">
-        <div class="chat-message-content clearfix">
-          <p class="chatbot-message">Welcome. How can we help you?</p>
-          <span class="chat-time">9/17/18 9:00:00 AM PCT</span>
-        </div>
-      </div>
-      <div class="chat-message clearfix">
-        <div class="chat-message-content clearfix">
-          <p class="user-message">Hi there. I need help with...</p>
-          <span class="chat-time">9/17/18 9:01:00 AM PCT</span>
-        </div>
-      </div>
-      <div class="chat-message clearfix">
-        <div class="chat-message-content clearfix">
-          <p class="chatbot-message">Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
-          <span class="chat-time">9/17/18 9:02:00 AM PCT</span>
-        </div>
-      </div>
-      <div class="chat-message clearfix">
-        <div class="chat-message-content clearfix">
-          <p class="user-message">Hi there. I need help with...</p>
-          <span class="chat-time">9/17/18 9:01:00 AM PCT</span>
-        </div>
-    </div>
-    <!-- <p class="chat-feedback">Your partner is typing…</p> -->
-    <form id="chatbox-input" action="#" method="post">
-      <fieldset>
-        <div class="input-box">
-          <input type="text" placeholder="Type your message…" autofocus>
-          <div class="message-icon">
-              <span type="button" class="glyphicon glyphicon-send" aria-hidden="true"></span>
+        <div class="chat-message-content clearfix" *ngFor="let message of messages">
+          <div style="text-align:right">{{message.inputText}}</div>
+          <p class="chatbot-message">{{message.text}}</p><br />
+          <div *ngFor=" let lawType of message.types">
+            <ul>
+              <li style="list-style-type:none">
+                <span class="chatbot-message">{{lawType.LawName}}</span>
+                <p class="chat-time" *ngIf="lawType.LawDetails">{{lawType.LawDetails}}</p>
+              </li>
+            </ul>
           </div>
-          <input type="hidden">
         </div>
-      </fieldset>
-    </form>
+      </div>
+
+      <!--<div class="chat-message clearfix">
+      <div class="chat-message-content clearfix">
+        <p class="chatbot-message">Welcome. How can we help you?</p>
+        <span class="chat-time">9/17/18 9:00:00 AM PCT</span>
+      </div>
+    </div>
+    <div class="chat-message clearfix">
+      <div class="chat-message-content clearfix">
+        <p class="user-message">Hi there. I need help with...</p>
+        <span class="chat-time">9/17/18 9:01:00 AM PCT</span>
+      </div>
+    </div>
+    <div class="chat-message clearfix">
+      <div class="chat-message-content clearfix">
+        <p class="chatbot-message">Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
+        <span class="chat-time">9/17/18 9:02:00 AM PCT</span>
+      </div>
+    </div>
+    <div class="chat-message clearfix">
+      <div class="chat-message-content clearfix">
+        <p class="user-message">Hi there. I need help with...</p>
+        <span class="chat-time">9/17/18 9:01:00 AM PCT</span>
+      </div>
+  </div>-->
+      <!-- <p class="chat-feedback">Your partner is typing…</p> -->
+      <form id="chatbox-input" action="#" method="post">
+        <fieldset>
+          <div class="input-box">
+            <input type="text" placeholder="Type your message…" [(ngModel)]="replyMessage" name="replyMessage" autofocus>
+            <div class="message-icon">
+              <div type="button" class="glyphicon glyphicon-send" aria-hidden="true" (click)="reply()"></div>
+            </div>
+            <input type="hidden">
+          </div>
+        </fieldset>
+      </form>
+    </div>
   </div>
-</div>
+  </div>

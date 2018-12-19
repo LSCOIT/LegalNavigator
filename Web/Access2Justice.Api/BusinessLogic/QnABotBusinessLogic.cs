@@ -1,6 +1,7 @@
 ﻿using Access2Justice.Api.Interfaces;
 using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
+using Access2Justice.Shared.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -33,7 +34,7 @@ namespace Access2Justice.Api.BusinessLogic
         {
             dynamic luisResponse = await luisProxy.GetIntents(question);
             IntentWithScore luisTopIntents = luisBusinessLogic.ParseLuisIntent(luisResponse);
-            string result = string.Empty;
+            string bestAnswer = "Sorry, not able to get you. please explain you problem in detail.";
             if (luisTopIntents != null && luisBusinessLogic.IsIntentAccurate(luisTopIntents))
             {
                 question = luisTopIntents.TopScoringIntent;
@@ -41,21 +42,25 @@ namespace Access2Justice.Api.BusinessLogic
             var requestContent = JsonConvert.SerializeObject(new { question });
             using (var request = new HttpRequestMessage())
             {
+                // set request data.
                 request.Method = HttpMethod.Post;
                 request.RequestUri = new Uri(string.Format(CultureInfo.InvariantCulture, qnAMakerSettings.Endpoint.OriginalString, qnAMakerSettings.KnowledgeId));
-                request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
-                // set authorization
+                request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");                
                 request.Headers.Add("Authorization", "EndpointKey " + qnAMakerSettings.AuthorizationKey);
 
                 var response = await httpClientService.SendAsync(request);
                 if (response.IsSuccessStatusCode)
                 {
-                    result = response.Content.ReadAsStringAsync().Result;
-                    //var result = JsonConvert.DeserializeObject<QnAMakerResult>(json);
-                    //var bestAnswer = result.Answers.OrderBy(answer => answer.Score).LastOrDefault();
+                    string qnaResponse = response.Content.ReadAsStringAsync().Result;
+                    var qnAMakers = JsonConvert.DeserializeObject<QnAMakerResult>(qnaResponse);
+                    if (qnAMakers.Answers.LastOrDefault().Score == 0)
+                    {
+                        return bestAnswer;
+                    }
+                    bestAnswer = qnAMakers.Answers.OrderBy(answer => answer.Score).LastOrDefault().Answer;
                 }
-                return result;
-            }            
+                return bestAnswer;
+            }
         }
     }
 }
