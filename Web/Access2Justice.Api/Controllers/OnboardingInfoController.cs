@@ -1,10 +1,8 @@
 ﻿using Access2Justice.Api.Interfaces;
-using Integration = Access2Justice.Shared.Models.Integration;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using System.Net.Http;
-using Microsoft.AspNetCore.Http;
+using Integration = Access2Justice.Shared.Models.Integration;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -22,17 +20,17 @@ namespace Access2Justice.Api.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="organizationType"></param>
+        /// <param name="organizationId"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetAsync(string organizationType)
+        public async Task<IActionResult> GetAsync(string organizationId)
         {
-            if (string.IsNullOrWhiteSpace(organizationType))
+            if (string.IsNullOrWhiteSpace(organizationId))
             {
                 return BadRequest("please provide organization name");
             }
 
-            var response = onboardingInfoBusinessLogic.GetOnboardingInfo(organizationType);
+            var response = await onboardingInfoBusinessLogic.GetOrganizationOnboardingInfo(organizationId);
             return Ok(response);
         }
 

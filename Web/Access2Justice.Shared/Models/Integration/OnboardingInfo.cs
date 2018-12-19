@@ -29,7 +29,7 @@ namespace Access2Justice.Shared.Models.Integration
         /// Template for paylod to be delivered to service provider.
         /// </summary>
         [JsonProperty(PropertyName = "payloadTemplate")]
-        public string PayloadTemplate { get; set; }
+        public dynamic PayloadTemplate { get; set; }
 
         /// <summary>
         /// Delivery methods that service provider supports 

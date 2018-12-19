@@ -7,6 +7,7 @@ import { IntakeQuestionService } from './intake-question-service/intake-question
 import { HttpParams } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-intake-form',
@@ -24,13 +25,13 @@ export class IntakeFormComponent implements OnInit {
     private qcs: QuestionControlService,
     private intakeQuestionService: IntakeQuestionService,
     private toastr: ToastrService,
-    private spinner: NgxSpinnerService) {
+    private spinner: NgxSpinnerService,
+    private activeRoute: ActivatedRoute) {
     this.form = this.qcs.toFormGroup([]);
   }
 
   getIntakeQuestions() {
-    let param = new HttpParams()
-      .set("organizationType", "org2");
+    let param = new HttpParams().set("organizationId", this.activeRoute.snapshot.params['id']);
 
     this.intakeQuestionService.getIntakeQuestions(param).subscribe(response => {
       this.payLoad = response;
@@ -48,7 +49,6 @@ export class IntakeFormComponent implements OnInit {
       });
     });
     this.spinner.show();
-    this.payLoad.deliveryDestination = "";
     this.intakeQuestionService.sendIntakeResponse(this.payLoad)
       .subscribe(response => {
         this.modalRef.hide();

@@ -1,20 +1,18 @@
 ﻿using Access2Justice.Api.Interfaces;
 using Access2Justice.Shared;
 using Access2Justice.Shared.Extensions;
+using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models.Integration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace Access2Justice.Api.BusinessLogic
 {
@@ -22,10 +20,15 @@ namespace Access2Justice.Api.BusinessLogic
     {
         private IHttpClientService httpClientService;
         private IOnboardingInfoSettings onboardingInfoSettings;
-        public OnboardingInfoBusinessLogic(IHttpClientService httpClientService, IOnboardingInfoSettings onboardingInfoSettings)
+        private readonly IDynamicQueries dynamicQueries;
+        private readonly ICosmosDbSettings dbSettings;
+        public OnboardingInfoBusinessLogic(IHttpClientService httpClientService, IOnboardingInfoSettings onboardingInfoSettings,
+            IDynamicQueries dynamicQueries, ICosmosDbSettings dbSettings)
         {
             this.httpClientService = httpClientService;
             this.onboardingInfoSettings = onboardingInfoSettings;
+            this.dynamicQueries = dynamicQueries;
+            this.dbSettings = dbSettings;
         }
 
         public Task<object> PostOnboardingInfo(OnboardingInfo onboardingInfo)
@@ -49,18 +52,11 @@ namespace Access2Justice.Api.BusinessLogic
                 case DeliveryMethod.WebApi:
                     //Generate a template from the form data
                     var updatedTemplate = UpdatePayLoadTemplate(onboardingInfo);
-
                     var stringContent = new StringContent(JsonConvert.SerializeObject(updatedTemplate), Encoding.UTF8, "application/json");
                     var response = await httpClientService.PostAsync(onboardingInfo.DeliveryDestination, stringContent);
                     response.EnsureSuccessStatusCode();
-                    //response.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
                     var content = await response.Content.ReadAsStringAsync();
                     return JsonConvert.DeserializeObject(JsonConvert.DeserializeObject(content).ToString());
-
-                default:
-                    //If delivery method not available in form data, need to fetch the details explicitly from the organization
-                    getOrganizationDeliveryMethod();
-                    break;
             }
             return null;
         }
@@ -71,7 +67,7 @@ namespace Access2Justice.Api.BusinessLogic
             ListDictionary replacements = new ListDictionary();
             foreach (var field in onboardingInfo.UserFields)
             {
-                body = body.Replace("@"+ field.Name + "@", field.Value);
+                body = body.Replace("@" + field.Name + "@", field.Value);
             }
 
             SmtpClient client = new SmtpClient(onboardingInfoSettings.HostAddress, Convert.ToInt16(onboardingInfoSettings.PortNumber, CultureInfo.InvariantCulture))
@@ -100,154 +96,24 @@ namespace Access2Justice.Api.BusinessLogic
 
         public string UpdatePayLoadTemplate(OnboardingInfo onboardingInfo)
         {
-            JObject template = JObject.Parse(onboardingInfo.PayloadTemplate);
+            JObject template = onboardingInfo.PayloadTemplate;
 
             foreach (var field in onboardingInfo.UserFields)
             {
-                template.Property(field.Name).Value = field.Value.FirstOrDefault();
+                template.Property(field.Name).Value = field.Value;
             }
 
             return template.ToString();
         }
 
-        private DeliveryMethod getOrganizationDeliveryMethod()
+        public async Task<OnboardingInfo> GetOrganizationOnboardingInfo(string organizationId)
         {
-            //ToDo - Need to fetch the delivery method details from the backend database based on the organization name.
-            return DeliveryMethod.WebApi;
-        }
-
-        private string GetPayloadTemplate(DeliveryMethod deliveryMethod)
-        {
-            switch (deliveryMethod)
+            var response = await dynamicQueries.FindItemWhereAsync<JObject>(dbSettings.ResourcesCollectionId, Constants.Id, organizationId);
+            if (response == null)
             {
-                case DeliveryMethod.Email:
-                    return @"<html>
-                            <body>
-                                <h1>The following information was submitted through the Legal Navigator portal:</h1>
-                                <ul>
-                                    Here are the details submitted as part of the onboarding process.
-                                    <li>First Name: @First Name@</li>
-                                    <li>Last Name: @Last Name@</li>
-                                    <li>Gender: @Gender@</li>
-                                    <li>Age: @Age@</li>
-                                    <li>Telephone: @Telephone@</li>
-                                </ul>
-                            </body>
-                            </html>";
-                case DeliveryMethod.WebApi:
-                    return @"{
-                            'First Name': '',
-                            'Last Name': '',
-                            'Age': '',
-                            'Gender': '', 
-                            'Name':'',
-                            'DateOfBirth':'',
-                            'Telephone':''
-                            }";
-                default:
-                    return @"{
-                            'First Name': '',
-                            'Last Name': '',
-                            'Age': '',
-                            'Gender': '', 
-                            'Name':'',
-                            'DateOfBirth':'',
-                            'Telephone':''
-                            }";
+                return null;
             }
-        }
-        public OnboardingInfo GetOnboardingInfo(string organizationType)
-        {
-            var onboardingInfo = new OnboardingInfo();
-
-            if (organizationType.ToUpperInvariant() == "ORG1")
-            {
-                var fields = new List<UserField>
-                {
-                    new UserField()
-                    {
-                        Name = "First Name",
-                        Value = string.Empty
-                    },
-                    new UserField()
-                    {
-                        Name = "Last Name",
-                        Value = string.Empty
-                    },
-                    new UserField()
-                    {
-                        Name = "Gender",
-                        Value = string.Empty
-                    }
-								};
-
-                onboardingInfo = new OnboardingInfo()
-                {
-                    UserFields = fields,
-                    DeliveryDestination = new Uri("http://example.com/onboarding-submission/"),
-                    DeliveryMethod = DeliveryMethod.AvianCarrier
-                };
-            }
-            else if (organizationType.ToUpperInvariant() == "ORG2")
-            {
-                var fields = new List<UserField>
-                {
-                    new UserField()
-                    {
-                        Name = "First Name",
-                        Value = string.Empty
-                    },
-                    new UserField()
-                    {
-                        Name = "Last Name",
-                        Value = string.Empty
-                    },
-                    new UserField()
-                    {
-                        Name = "Age",
-                        Value = string.Empty
-                    }
-                };
-
-                onboardingInfo = new OnboardingInfo()
-                {
-                    UserFields = fields,
-                    DeliveryDestination = new Uri("http://example.com/onboarding-submission/"),
-                    DeliveryMethod = DeliveryMethod.Email,
-                    PayloadTemplate = GetPayloadTemplate(DeliveryMethod.Email)
-                };
-            }
-            else
-            {
-
-                var fields = new List<UserField>
-                {
-                    new UserField()
-                    {
-                        Name = "Name",
-                        Value = string.Empty
-                    },
-                    new UserField()
-                    {
-                        Name = "DateOfBirth",
-                        Value = string.Empty
-                    },
-                    new UserField()
-                    {
-                        Name = "Telephone",
-                        Value = string.Empty
-                    }
-                };
-
-                onboardingInfo = new OnboardingInfo()
-                {
-                    UserFields = fields,
-                    DeliveryDestination = new Uri("http://localhost:4200//api/OnboardingInfo/submission"),
-                    DeliveryMethod = DeliveryMethod.WebApi,
-                    PayloadTemplate = GetPayloadTemplate(DeliveryMethod.WebApi)
-                };
-            }
-            return onboardingInfo;
+            return JsonConvert.DeserializeObject<OnboardingInfo>(JsonConvert.SerializeObject(response.GetValue("onboardingInfo")));
         }
     }
 }
