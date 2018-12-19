@@ -36,7 +36,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="200">Get all topics for given location</response>
         /// <response code="500">Failure</response>
 
-        
+
         [Route("topics")]
         [HttpPost]
         public async Task<IActionResult> GetTopics([FromBody]Location location)
@@ -223,7 +223,7 @@ namespace Access2Justice.Api.Controllers
         {
             var resources = await topicsResourcesBusinessLogic.GetResourceDetailAsync(name, type);
 
-            if(resources==null)
+            if (resources == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
@@ -265,7 +265,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="500">Failure</response>
         [HttpGet]
         [Route("topics/schema")]
-        public  Topic GetSchemaTopic()
+        public Topic GetSchemaTopic()
         {
             return new Topic();
         }
@@ -346,18 +346,18 @@ namespace Access2Justice.Api.Controllers
         }
 
         /// <summary>
-        /// get essential reading schema
+        /// get additional reading schema
         /// </summary>
         /// <remarks>
-        /// Helps to get essential reading content.
+        /// Helps to get additional reading content.
         /// </remarks>
-        /// <response code="200">Returns essential reading content</response>
+        /// <response code="200">Returns additional reading content</response>
         /// <response code="500">Failure</response>
         [HttpGet]
-        [Route("essential-reading/schema")]
-        public EssentialReading GetSchemaEssentialReading()
+        [Route("additional-reading/schema")]
+        public AdditionalReading GetSchemaAdditionalReading()
         {
-            return new EssentialReading();
+            return new AdditionalReading();
         }
 
         /// <summary>

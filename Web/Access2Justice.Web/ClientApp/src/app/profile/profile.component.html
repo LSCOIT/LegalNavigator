@@ -1,10 +1,9 @@
-<div class="container">
+<div *ngIf="userName" class="container">
   <div class="row user-action mobile-hidden no-print">
-    <app-user-action-sidebar
-      [mobile]=true
-      [showSave]=false
-      [showDownload]=true
-      [showSetting]=true>
+    <app-user-action-sidebar [mobile]=true
+                             [showSave]=false
+                             [showDownload]=true
+                             [showSetting]=true>
     </app-user-action-sidebar>
   </div>
   <div class="no-print">
@@ -13,7 +12,7 @@
   </div>
   <div class="row row-half-spacing no-print">
     <div class="col-sm-12">
-      <p>We value your privacy and will never share your personal information with anyone without your lorem ipsum dolor sit amet. View our <a [routerLink]="['/privacy']" class="link">Privacy Promise</a>.</p>
+      <p>We value your privacy and will never share your personal information with anyone without your permission. Learn more about what information we collect and your <a class="link" [routerLink]="['/privacy']">privacy</a> options.</p>
     </div>
   </div>
   <div class="row row-half-spacing">
