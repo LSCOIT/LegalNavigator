@@ -17,7 +17,7 @@ export class BreadcrumbComponent implements OnInit {
   activeTopicName: string;
   activeTopicId: string;
   isSearch: boolean = false;
-  previousUrl: string;
+  isBookmarked: boolean = false;
 
   constructor(private breadcrumbService: BreadcrumbService,
     private activeRoute: ActivatedRoute,
@@ -49,6 +49,7 @@ export class BreadcrumbComponent implements OnInit {
     else {
       this.activeTopic = sessionStorage.getItem("ActiveTopic");
     }
+    if (this.activeTopic == null) { this.isBookmarked = true; }
     if (this.activeRoute.snapshot.params['id'] != null) {
       this.isResource = true;
     };

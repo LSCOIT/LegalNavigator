@@ -1,5 +1,5 @@
 <nav aria-label="breadcrumb" class="no-print">
-  <ol *ngIf="!isSearch" class="breadcrumb text-capitalize">
+  <ol *ngIf="!isSearch && !isBookmarked" class="breadcrumb text-capitalize">
     <li *ngFor="let item of breadcrumbs; last as islast" class="breadcrumb-item">
       <a *ngIf="!islast && item.id === ''" class="link" [routerLink]="['/topics']">
         {{item.name}}
