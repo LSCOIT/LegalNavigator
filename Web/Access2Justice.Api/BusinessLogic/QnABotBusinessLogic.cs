@@ -38,7 +38,7 @@ namespace Access2Justice.Api.BusinessLogic
         {
             //@TODO Need to make changes as per AI's are trained..
             dynamic answerObject = null;
-            string bestAnswer = "Sorry, not able to get you. please explain you problem in detail.";
+            string bestAnswer = "Sorry, not able to get you. Please explain your problem in detail.";
             string[] input = inputQuestion.Split("|");
             if (!isLuisCallRequired)
             {
