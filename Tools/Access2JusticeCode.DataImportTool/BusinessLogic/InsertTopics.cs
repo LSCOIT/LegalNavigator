@@ -313,7 +313,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
 
         public static void ErrorLogging(Exception ex, int recordNumber)
         {
-            string strPath = Path.Combine(Environment.CurrentDirectory + "Error.txt");
+            string strPath = Path.Combine(Environment.CurrentDirectory +"\\"+ "Error.txt");
             if (File.Exists(strPath))
             {
                 System.GC.Collect();
