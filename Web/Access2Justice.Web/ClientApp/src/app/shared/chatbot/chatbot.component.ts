@@ -29,29 +29,40 @@ export class ChatbotComponent implements OnInit {
 
   select(input: string)
   {
-    this.replyMessage = input;
     this.isLuisCallRequired = false;
-    this.reply();
+    this.getAnswers(input);
   }
 
   reply() {
     var query = this.replyMessage;
+    var maplocation = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+    query = query + "|" + maplocation.location.state;
+    this.getAnswers(query);  
+
+  }
+
+  getAnswers(query : string) {
     this.searchService.getAnswers(query, this.isLuisCallRequired).subscribe(response => {
       this.cntresult = response;
       //this.cntresult = JSON.parse(response);
+      if (this.cntresult.topic)
+      {
+        this.cntresult.description = "please browse below link for more details ";
+        this.cntresult.topic = window.location + this.cntresult.topic;
+      }
 
       if (this.cntresult != null && this.cntresult != '') {
         this.messages.push({
           "text": this.cntresult.description,
           "types": this.cntresult.types,
           "class": "receive",
-          "inputText": this.replyMessage
+          "inputText": this.replyMessage,
+          "topicLink": this.cntresult.topic
         })
         this.replyMessage = '';
         this.isLuisCallRequired = true;
       }
     });
-
   }
 
   toggleChat() {

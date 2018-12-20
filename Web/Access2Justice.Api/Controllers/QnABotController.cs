@@ -29,7 +29,7 @@ namespace Access2Justice.Api.Controllers
                 return BadRequest("Question cannot be empty string.");
             }
 
-            var response = await qnABotBusinessLogic.GetAnswersAsync(question, isLuisCallRequired);            
+            var response = await qnABotBusinessLogic.GetAnswersAsync(question, isLuisCallRequired);
             return Content(response);
         }
     }
