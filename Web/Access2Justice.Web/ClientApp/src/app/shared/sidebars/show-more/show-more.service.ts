@@ -17,7 +17,7 @@ export class ShowMoreService {
   searchResults: any;
   resourceFilter: IResourceFilter = {
     ResourceType: '', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: { "state": "", "county": "", "city": "", "zipCode": "" }, IsResourceCountRequired: true,
-    IsOrder: false, OrderByField: ''
+    IsOrder: false, OrderByField: '', OrderBy:''
   };  
   activeResource: any;
   locationDetails: LocationDetails;

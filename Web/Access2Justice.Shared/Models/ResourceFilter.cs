@@ -19,5 +19,6 @@ namespace Access2Justice.Shared.Models
         public Boolean IsResourceCountRequired { get; set; }
         public Boolean IsOrder { get; set; }
         public string OrderByField { get; set; }
+        public string OrderBy { get; set; }
     }
 }

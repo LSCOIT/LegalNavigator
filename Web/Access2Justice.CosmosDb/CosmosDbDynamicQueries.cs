@@ -177,7 +177,7 @@ namespace Access2Justice.CosmosDb
                         resourceFilter.OrderByField = "modifiedTimeStamp";
                     }
                     var orderByField = (resourceFilter.OrderByField != null) ? resourceFilter.OrderByField : "name";
-                    query = $"SELECT * FROM c WHERE {arrayContainsWithAndClause} order by c.{orderByField}";
+                    query = $"SELECT * FROM c WHERE {arrayContainsWithAndClause} order by c.{orderByField} {resourceFilter.OrderBy}";
                 }
                 if (resourceFilter.PageNumber == 0)
                 {

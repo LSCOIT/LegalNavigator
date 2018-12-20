@@ -8,6 +8,7 @@ export interface IResourceFilter {
   IsResourceCountRequired: boolean;
   IsOrder: boolean;
   OrderByField: string;
+  OrderBy: string;
 }
 
 export interface ILuisInput {
@@ -16,5 +17,7 @@ export interface ILuisInput {
   TranslateFrom?: string;
   TranslateTo?: string;
   LuisTopScoringIntent?: string;
+  OrderByField?: string;
+  OrderBy?: string;
 }
 

@@ -20,7 +20,7 @@ export class ProfileComponent implements OnInit {
 
   topics: any;
   planDetails: any = [];
-  resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: [], PageNumber: 0, Location: '', ResourceIds: [], IsResourceCountRequired: false, IsOrder: false, OrderByField:'' };
+  resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: [], PageNumber: 0, Location: '', ResourceIds: [], IsResourceCountRequired: false, IsOrder: false, OrderByField: '', OrderBy:'' };
   personalizedResources: { resources: any, topics: any, webResources: any };
   isSavedResources: boolean = false;
   planId: string;
@@ -120,7 +120,7 @@ export class ProfileComponent implements OnInit {
                   this.resourceIds.push(resource.itemId);
                 }
               });
-              this.resourceFilter = { TopicIds: this.topicIds, ResourceIds: this.resourceIds, ResourceType: 'ALL', PageNumber: 0, ContinuationToken: null, Location: null, IsResourceCountRequired: false, IsOrder: false, OrderByField:'' };
+              this.resourceFilter = { TopicIds: this.topicIds, ResourceIds: this.resourceIds, ResourceType: 'ALL', PageNumber: 0, ContinuationToken: null, Location: null, IsResourceCountRequired: false, IsOrder: false, OrderByField: '', OrderBy:'' };
               this.getSavedResource(this.resourceFilter);
             }
           });

@@ -102,6 +102,7 @@ namespace Access2Justice.Api
             ResourceFilter sortResourceFilter = resourceFilter;
             sortResourceFilter.IsOrder = true;
             sortResourceFilter.OrderByField = "name";
+            sortResourceFilter.OrderBy = "ASC";
             var ApplyPaginationTask = topicsResourcesBusinessLogic.ApplyPaginationAsync(sortResourceFilter);
             //To get guided assistant id
             resourceFilter.ResourceType = Constants.GuidedAssistant;

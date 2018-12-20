@@ -22,7 +22,7 @@ export class GuidedAssistantSidebarComponent implements OnInit {
   @Input() searchResultsData: any;
   resourceFilter: IResourceFilter = {
     ResourceType: '', ContinuationToken: '', TopicIds: [],
-    ResourceIds: [], PageNumber: 0, Location: {}, IsResourceCountRequired: false, IsOrder: false, OrderByField:''
+    ResourceIds: [], PageNumber: 0, Location: {}, IsResourceCountRequired: false, IsOrder: false, OrderByField: '', OrderBy:''
   };
   luisInput: ILuisInput = { Sentence: '', Location: '', TranslateFrom: '', TranslateTo: '', LuisTopScoringIntent: '' };
   topicIds: string[] = [];
@@ -47,7 +47,7 @@ export class GuidedAssistantSidebarComponent implements OnInit {
       this.resourceFilter = {
         ResourceType: 'Guided Assistant', ContinuationToken: '', TopicIds: this.topicIds,
         ResourceIds: [], PageNumber: 0, Location: this.location,
-        IsResourceCountRequired: false, IsOrder: false, OrderByField: ''
+        IsResourceCountRequired: false, IsOrder: false, OrderByField: '', OrderBy:''
       }
       this.paginationService.getPagedResources(this.resourceFilter).
         subscribe(response => {
@@ -72,7 +72,7 @@ export class GuidedAssistantSidebarComponent implements OnInit {
     }
     this.resourceFilter = {
       ResourceType: environment.All, TopicIds: this.topicIds, Location: this.location,
-      PageNumber: 0, ContinuationToken: '', IsResourceCountRequired: true, ResourceIds: [], IsOrder: false, OrderByField:''
+      PageNumber: 0, ContinuationToken: '', IsResourceCountRequired: true, ResourceIds: [], IsOrder: false, OrderByField: '', OrderBy:''
     }
     this.paginationService.getPagedResources(this.resourceFilter).
       subscribe(response => {

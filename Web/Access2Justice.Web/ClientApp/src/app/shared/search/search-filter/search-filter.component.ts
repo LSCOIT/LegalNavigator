@@ -11,18 +11,20 @@ export class SearchFilterComponent implements OnInit {
   @Output() notifyFilterCriteria = new EventEmitter<object>();
   selectedSortCriteria: string = 'A-Z';
   selectedFilterCriteria: string = 'All';
-  filterParam: string;
-  sortParam: string;
+  filterParam: string = 'All';
+  sortParam: string="name";
   @ViewChildren('filterButtons') filterButtons: QueryList<any>;
   @Input() initialResourceFilter: string;
   buttonToHighlight = [];
+  orderBy: string;
+  isSort: boolean = true;
 
   constructor() { }
 
   findButtonWith(initialResourceType) {
     this.buttonToHighlight =
       this.filterButtons
-      .filter(filterButton => filterButton.nativeElement.innerText.includes(initialResourceType));
+        .filter(filterButton => filterButton.nativeElement.innerText.includes(initialResourceType));
   }
 
   setInitialHighlightButton() {
@@ -48,13 +50,20 @@ export class SearchFilterComponent implements OnInit {
     this.resetButtonColor();
     event.target["classList"].add('button-highlight');
     this.filterParam = resourceType;
-    this.notifyFilterCriteria.emit({ filterParam: this.filterParam, sortParam: this.sortParam });
+    this.notifyFilterCriteria.emit({ filterParam: this.filterParam, sortParam: this.sortParam, order: this.orderBy });
     this.selectedFilterCriteria = this.filterParam;
   }
 
   sendSortCriteria(value, resourceType) {
+    if (this.sortParam === resourceType) {
+      this.isSort = !(this.isSort);
+      this.orderBy = this.isSort ? 'ASC' : 'DESC';
+    } else {
+      this.isSort = true;
+      this.orderBy = 'ASC';
+    }
     this.sortParam = resourceType;
-    this.notifyFilterCriteria.emit({ filterParam: this.filterParam, sortParam: this.sortParam });
+    this.notifyFilterCriteria.emit({ filterParam: this.filterParam, sortParam: this.sortParam, order: this.orderBy });
     this.selectedSortCriteria = value;
   }
 
