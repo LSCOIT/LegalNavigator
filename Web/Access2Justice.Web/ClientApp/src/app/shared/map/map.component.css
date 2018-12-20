@@ -95,13 +95,6 @@ p {
   padding: 5px;
 }
 
-.btn-primary:disabled {
-  background-color: #DDDDDD;
-  color: #585858;
-  border: 1px solid #7E7E7E;
-  cursor: not-allowed;
-}
-
 .privacy {
   margin: 10px auto;
 }
@@ -176,10 +169,6 @@ p {
 }
 
 @media only screen and (min-width : 992px) {
-  .edit-location {
-    height: 53px;
-  }
-
   .mobile-hidden {
     display: inline-block;
   }

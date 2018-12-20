@@ -22,7 +22,8 @@ export class ResourceCardComponent implements OnInit {
     'Organizations',
     'Topics',
     'Videos',
-    'WebResources'
+    'WebResources',
+    'Service Providers'
     ];
 
   constructor(private global: Global) {
