@@ -6,6 +6,7 @@ const userProfile = apiUrl + '/user';
 const curatedExperience = apiUrl + '/curated-experiences';
 const contentUrl = apiUrl + '/static-resources';
 const adminUrl = apiUrl + '/admin';
+const onboarding = apiUrl + '/onboarding-info';
 
 export const api = {
     topicUrl: topic + '/topics',
@@ -40,5 +41,7 @@ export const api = {
     uploadCuratedExperienceTemplateUrl: adminUrl + '/curated-experience',
     getStateCodesUrl: apiUrl + '/StateProvince/state-codes',
     getStateCodeUrl: apiUrl + '/StateProvince/state-code',
+    onboardingUrl: onboarding,
+    onboardingSubmissionUrl: onboarding + '/eform-submit',
     getAnswerUrl: apiUrl +"/qnabot/"
 }

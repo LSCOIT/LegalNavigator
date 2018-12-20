@@ -1,5 +1,4 @@
 ﻿using Access2Justice.Api.Authentication;
-using Access2Justice.Api.Authorization;
 using Access2Justice.Api.BusinessLogic;
 using Access2Justice.Api.Interfaces;
 using Access2Justice.CosmosDb;
@@ -59,9 +58,10 @@ namespace Access2Justice.Api
             IAdminSettings adminSettings = new AdminSettings(Configuration.GetSection("Admin"));
             services.AddSingleton(adminSettings);
 
+            IOnboardingInfoSettings onboardingInfoSettings = new OnboardingInfoSettings(Configuration.GetSection("EmailService"), Configuration.GetSection("KeyVault"));
+            services.AddSingleton(onboardingInfoSettings);
             IQnAMakerSettings qnAMakerSettings = new QnAMakerSettings(Configuration.GetSection("QnAMaker"));
             services.AddSingleton(qnAMakerSettings);
-
 
             services.AddSingleton<ILuisProxy, LuisProxy>();
             services.AddSingleton<ILuisBusinessLogic, LuisBusinessLogic>();
@@ -84,6 +84,7 @@ namespace Access2Justice.Api
             services.AddSingleton<ISessionManager, SessionManager>();
             services.AddSingleton<IAdminBusinessLogic, AdminBusinessLogic>();
             services.AddSingleton<IStateProvinceBusinessLogic, StateProvinceBusinessLogic>();
+            services.AddSingleton<IOnboardingInfoBusinessLogic, OnboardingInfoBusinessLogic>();
             services.AddSingleton<IQnABotBusinessLogic, QnABotBusinessLogic>();
 
             services.AddAuthentication(sharedOptions =>
@@ -98,7 +99,7 @@ namespace Access2Justice.Api
                 .Build();
             });
             ConfigureCosmosDb(services);
-        
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Access2Justice API", Version = "1.0.0" , Description ="List of all APIs for Access2Justice", TermsOfService = "None"});
@@ -107,6 +108,7 @@ namespace Access2Justice.Api
                 c.OrderActionsBy((apiDesc) => $"{apiDesc.RelativePath}_{apiDesc.HttpMethod}");
                 c.OperationFilter<FileUploadOperation>(); //Register File Upload Operation Filter
                 c.OperationFilter<FileUploadOperationResource>();
+                c.CustomSchemaIds(x => x.FullName);
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
@@ -126,7 +128,13 @@ namespace Access2Justice.Api
                         .AllowAnyOrigin()
                         .AllowAnyMethod()
                         .AllowAnyHeader());
-
+            //Enabling Framework Security Settings.
+            app.Use(async (context, next) =>
+            {
+                context.Response.Headers.Add("X-Xss-Protection", "1; mode=block");
+                context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
+                await next();
+            });
             app.UseSession();
 
             app.UseAuthentication();
