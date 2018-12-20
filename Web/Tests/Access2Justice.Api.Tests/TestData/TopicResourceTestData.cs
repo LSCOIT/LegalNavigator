@@ -142,7 +142,7 @@ namespace Access2Justice.Api.Tests.TestData
                     JArray.Parse(@"[{  'overview': 'Overview',  'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec',  'name': 'Video',  'resourceCategory': 'video',  'description': 'Subhead lorem ipsum solor sit amet bibodem',  'resourceType': 'Videos',    'url': 'access2justice.com',  'topicTags': [    {      'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'    }  ],'organizationalUnit': 'Alaska',  'location': [    {      'state': 'Hawaii',      'county': '',      'city': 'Haiku-Pauwela',      'zipCode': ''    },    {      'state': 'Alaska',      'county': '',      'city': '',      'zipCode': ''    }  ],  'createdBy': 'API',  'createdTimeStamp': '',  'modifiedBy': 'API',  'modifiedTimeStamp': ''}]");
         public static JArray expectedOrganizationData =
                     JArray.Parse(@"[{'address': '2900 E Parks Hwy Wasilla, AK 99654','telephone': '907-279-2457','overview': 'This site is a service that is made possible through the generosity of the Legal Services Corporation and is supported by a number of partner organizations throughout Alaska.  The web site was created by Pro Bono Net and is maintained by staff at Alaska Legal Services Corporation.','eligibilityInformation': 'Helping low-income individuals solve legal problems','reviewer':[{'reviewerFullName': 'Full Name','reviewerTitle': 'Title','reviewText':'Text','reviewerImage':'Image'}],'specialties':'spl', 'qualifications':'qual','businessHours':'',
-                    'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Organization',resourceCategory:'org','description': 'Subhead lorem ipsum solor sit amet bibodem',
+                    'isFormAvailable':false,'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Organization',resourceCategory:'org','description': 'Subhead lorem ipsum solor sit amet bibodem',
                     'resourceType': 'Organizations','url': 'access2justice.com','topicTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'organizationalUnit': 'Alaska','location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
                     'createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]");
         public static JArray expectedAdditionalReadingData =
@@ -247,8 +247,7 @@ namespace Access2Justice.Api.Tests.TestData
         public static JArray locationDataAlaska =
                     JArray.Parse(@"[{'state':'Alaska','county':'','city':'','zipCode':''}]");
         public static JArray referencesConditions = JArray.Parse(@"[{'conditions': [{'condition':{ 'title':'condition','description':'Take to your partner to see if you can come to an agreement' }}]}]");
-        public static JArray referencesConditionsExpected = JArray.Parse(@"[{ 'title':'condition','description':'Take to your partner to see if you can come to an agreement' }]");
-        //public static JArray referencesConditions2 = JArray.Parse(@"[{'conditions': [{ 'title':'condition','description':'Take to your partner to see if you can come to an agreement' }]}]");
+        public static JArray referencesConditionsExpected = JArray.Parse(@"[{ 'title':'condition','description':'Take to your partner to see if you can come to an agreement' }]");        
         public static JArray referencesConditionsEmpty = JArray.Parse(@"[{'conditions': []}]");
         public static JArray referencesEmptyExpected = JArray.Parse(@"[]");
         public static JArray referencesTopicTags = JArray.Parse(@"[{'topicTags': [{'id':'f102bfae-362d-4659-aaef-956c391f79de'},{'id':'3aa3a1be-8291-42b1-85c2-252f756febbc'}]}]");
@@ -284,8 +283,8 @@ namespace Access2Justice.Api.Tests.TestData
             yield return new object[] { videoData, resourcesEmpty, "Videos" };
             yield return new object[] { organizationData, expectedOrganizationData, "Organizations" };
             yield return new object[] { organizationData, resourcesEmpty, "Organizations" };
-            yield return new object[] { essentialReadingData, expectedEssentialReadingData, "Essential Readings" };
-            yield return new object[] { essentialReadingData, resourcesEmpty, "Essential Readings" };
+            yield return new object[] { additionalReadingData, expectedAdditionalReadingData, "Essential Readings" };
+            yield return new object[] { additionalReadingData, resourcesEmpty, "Essential Readings" };
             yield return new object[] { relatedLinkData, expectedRelatedLinkData, "Related Links" };
             yield return new object[] { relatedLinkData, resourcesEmpty, "Related Links" };
         }

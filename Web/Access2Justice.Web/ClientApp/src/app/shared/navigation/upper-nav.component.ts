@@ -27,7 +27,6 @@ export class UpperNavComponent implements OnInit {
   @ViewChild('upperNav') upperNav: ElementRef;
   @HostListener('window:scroll', ['$event'])
   onScroll(e) {
-    console.log(window.pageYOffset);
     if (window.pageYOffset > 100) {
       this.upperNav.nativeElement.classList.add("box-shadow");
     } else {

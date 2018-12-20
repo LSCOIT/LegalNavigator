@@ -28,7 +28,6 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         #region Mocked Input Data
         private readonly string properLuisResponse = LuisBusinessLogicTestData.properLuisResponse;
         private readonly string EmptyLuisResponse = LuisBusinessLogicTestData.EmptyLuisResponse;
-        private readonly string meduimScoreLuisResponse = LuisBusinessLogicTestData.meduimScoreLuisResponse;
         private readonly string emptyLuisResponse = LuisBusinessLogicTestData.emptyLuisResponse;
         private readonly string noneLuisResponse = LuisBusinessLogicTestData.noneLuisResponse;
         private readonly string keyword = LuisBusinessLogicTestData.keyword;
@@ -54,7 +53,6 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         private readonly string expectedGuidedAssistant = LuisBusinessLogicTestData.expectedGuidedResponse;
         private readonly string expectedEmptyGuidedAssistant = LuisBusinessLogicTestData.expectedEmptyGuidedResponse;
         private readonly string expectedWebResponse = LuisBusinessLogicTestData.expectedWebResponse;
-        private readonly string expectedEmptyInternalResponse = LuisBusinessLogicTestData.expectedEmptyInternalResponse;
         #endregion
 
 

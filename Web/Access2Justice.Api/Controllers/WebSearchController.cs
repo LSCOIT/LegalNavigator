@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Pomelo.AntiXSS;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -37,6 +38,7 @@ namespace Access2Justice.Api.Controllers
         [HttpGet("{searchTerm}/{offset}")]
         public async Task<IActionResult> GetAsync(string searchTerm, Int16 offset)
         {
+            searchTerm = Instance.Sanitize(searchTerm);
             var uri = string.Format(CultureInfo.InvariantCulture, bingSettings.BingSearchUrl.OriginalString, searchTerm, bingSettings.CustomConfigId, bingSettings.PageResultsCount, offset);
             var response = await webSearchBusinessLogic.SearchWebResourcesAsync(new Uri(uri));
 
