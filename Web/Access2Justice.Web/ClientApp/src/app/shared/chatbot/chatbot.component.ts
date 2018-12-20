@@ -10,7 +10,7 @@ import { SearchService } from '../search/search.service';
 
 export class ChatbotComponent implements OnInit {
   public showStyle = false;
-  public show = false;
+  public showChatbot = false;
   contents: any;
   @Input() cntresult: any;
   isLuisCallRequired: boolean = true;
@@ -55,7 +55,7 @@ export class ChatbotComponent implements OnInit {
   }
 
   toggleChat() {
-    this.show = !this.show;
+    this.showChatbot = !this.showChatbot;
   }
   
   toggleStyle() {

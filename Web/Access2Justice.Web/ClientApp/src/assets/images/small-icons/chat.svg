@@ -3,15 +3,15 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 37.2 27" style="enable-background:new 0 0 37.2 27;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:none;stroke:#0D3FB8;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;}
+	.st0{fill:none;stroke:#FFFFFF;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;}
 </style>
 <title>Asset 41</title>
 <g id="Layer_2_1_">
 	<g id="Small_Icons">
-		<path class="st0" d="M14.7,13.8h-3.4l-4.7,4l-0.5-4h-4c-0.6,0-1.1-0.5-1.1-1.1c0,0,0,0,0,0V2.1C1,1.5,1.5,1,2.1,1h18.6
+		<path class="st0" d="M14.7,13.8h-3.4l-4.7,4l-0.5-4h-4c-0.6,0-1.1-0.5-1.1-1.1l0,0V2.1C1,1.5,1.5,1,2.1,1h18.6
 			c0.6,0,1.1,0.5,1.1,1.1v5.7"/>
-		<path class="st0" d="M16.5,21h9.4l4.7,4l0.5-4h4c0.6,0,1.1-0.5,1.1-1.1c0,0,0,0,0,0V9.3c0-0.6-0.5-1.1-1.1-1.1H16.5
-			c-0.6,0-1.1,0.5-1.1,1.1v0v10.6C15.4,20.5,15.9,21,16.5,21C16.5,21,16.5,21,16.5,21z"/>
+		<path class="st0" d="M16.5,21h9.4l4.7,4l0.5-4h4c0.6,0,1.1-0.5,1.1-1.1l0,0V9.3c0-0.6-0.5-1.1-1.1-1.1H16.5
+			c-0.6,0-1.1,0.5-1.1,1.1l0,0v10.6C15.4,20.5,15.9,21,16.5,21L16.5,21z"/>
 	</g>
 </g>
 </svg>
