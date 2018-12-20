@@ -6,7 +6,7 @@ const userProfile = apiUrl + '/user';
 const curatedExperience = apiUrl + '/curated-experiences';
 const contentUrl = apiUrl + '/static-resources';
 const adminUrl = apiUrl + '/admin';
-const onboarding = apiUrl + '/onboardingInfo';
+const onboarding = apiUrl + '/onboarding-info';
 
 export const api = {
     topicUrl: topic + '/topics',
@@ -42,5 +42,5 @@ export const api = {
     getStateCodesUrl: apiUrl + '/StateProvince/state-codes',
     getStateCodeUrl: apiUrl + '/StateProvince/state-code',
     onboardingUrl: onboarding,
-    onboardingSubmissionUrl: onboarding + '/send'
+    onboardingSubmissionUrl: onboarding + '/eform-submit'
 }

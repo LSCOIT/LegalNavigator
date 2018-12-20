@@ -61,7 +61,7 @@ namespace Access2Justice.Api.BusinessLogic
                     return await PostData(onboardingInfo);
             }
 
-            throw new NotSupportedException("Delivery method not supported.");
+            return null;
         }
 
         private void SendMail(OnboardingInfo onboardingInfo)
