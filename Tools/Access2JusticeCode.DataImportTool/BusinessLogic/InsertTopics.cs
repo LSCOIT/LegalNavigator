@@ -102,6 +102,10 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                     {
                                         keyValue = from a in keyValuePairs where a.Value.Take(2).First() == cell.CellReference.Value.Take(2).First() select a.Key;
                                     }
+                                    else if (cell.CellReference.Value.Length == 4)
+                                    {
+                                        keyValue = from a in keyValuePairs where a.Value.Take(3).First() == cell.CellReference.Value.Take(3).First() select a.Key;
+                                    }
 
                                     if (keyValue.Count() > 0)
                                     {
@@ -309,7 +313,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
 
         public static void ErrorLogging(Exception ex, int recordNumber)
         {
-            string strPath = Path.Combine(Environment.CurrentDirectory, "..\\..\\SampleFiles\\Error.txt");
+            string strPath = Path.Combine(Environment.CurrentDirectory + "Error.txt");
             if (File.Exists(strPath))
             {
                 System.GC.Collect();
