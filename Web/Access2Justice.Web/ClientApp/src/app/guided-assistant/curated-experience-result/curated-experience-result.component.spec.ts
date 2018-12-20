@@ -13,7 +13,7 @@ import { Global } from '../../global';
 import { PersonalizedPlanService } from '../personalized-plan/personalized-plan.service';
 import { Location } from "@angular/common";
 
-fdescribe('CuratedExperienceResultComponent', () => {
+describe('CuratedExperienceResultComponent', () => {
 	let component: CuratedExperienceResultComponent;
 	let fixture: ComponentFixture<CuratedExperienceResultComponent>;
 	let mockToastr;
@@ -51,8 +51,7 @@ fdescribe('CuratedExperienceResultComponent', () => {
 		mockNavigateDataService = jasmine.createSpyObj(['getData']);
 		mockToastr = jasmine.createSpyObj(['success']);
 		mockRouter = jasmine.createSpyObj(['navigateByUrl']);
-		mockPersonalizedPlanService = jasmine.createSpyObj(['saveTopicsToProfile']);
-
+    mockPersonalizedPlanService = jasmine.createSpyObj(['saveTopicsFromGuidedAssistantToProfile']);
 		mockGuidedAssistantResults = {
 			"topIntent": "Divorce",
 			"relevantIntents": [
@@ -65,7 +64,7 @@ fdescribe('CuratedExperienceResultComponent', () => {
 			],
 			"guidedAssistantId": "9a6a6131-657d-467d-b09b-c570b7dad242"
 		}
-		TestBed.configureTestingModule({
+	    TestBed.configureTestingModule({
 			imports: [HttpClientModule],
 			declarations: [CuratedExperienceResultComponent],
 			schemas: [NO_ERRORS_SCHEMA],
@@ -75,7 +74,7 @@ fdescribe('CuratedExperienceResultComponent', () => {
 				{ provide: Router, useValue: mockRouter }, MapService,
 				StateCodeService,
 				{ provide: ArrayUtilityService, useValue: mockArrayUtilityService },
-				{ provide: Global, useValue: { mockGlobal, userId: 'UserId', topicsSessionKey: 'test' } },
+				{ provide: Global, useValue: mockGlobal },
 				{ provide: PersonalizedPlanService, useValue: mockPersonalizedPlanService },
 				{ provide: Location, useValue: mockLocation }
 			]
@@ -90,6 +89,10 @@ fdescribe('CuratedExperienceResultComponent', () => {
 		component.ngOnInit();
 		fixture.detectChanges();
 
+	  mockGlobal = {
+	    userId: 'UserId',
+	    topicsSessionKey: 'test'
+	  };
 		let store = {};
 		const mockSessionStorage = {
 			getItem: (key: string): string => {
@@ -113,15 +116,16 @@ fdescribe('CuratedExperienceResultComponent', () => {
 
 	it('should filter out relevant intents that are None', () => {
 		component.filterIntent();
-		expect(component.relevantIntents).toEqual(
-			[
-				"Domestic Violence",
-				"Tenant's rights"
-			]
-		)
+	  expect(component.relevantIntents).toEqual(
+	    [
+	      "Domestic Violence",
+	      "Tenant's rights"
+	    ]
+	  );
 	});
 
-	it('should call toastr when Save for Later button is clicked', () => {
+  it('should call toastr when Save for Later button is clicked', () => {
+    spyOn(component, "saveForLater");
 		component.relevantIntents = [
 			"Domestic Violence",
 			"Tenant's rights"
@@ -131,24 +135,16 @@ fdescribe('CuratedExperienceResultComponent', () => {
 			.triggerEventHandler('click', { stopPropogration: () => { } });
 		const button = fixture.debugElement.query(By.css('.btn-secondary'));
 		button.triggerEventHandler('click', { stopPropogration: () => { } });
-		expect(mockToastr.success).toHaveBeenCalled();
+		expect(component.saveForLater).toHaveBeenCalled();
 	});
 
-	it('should call saveTopicsToProfile if user is logged in', () => {
+  it('should call saveTopicsFromGuidedAssistantToProfile if user is logged in', () => {
 		let mockIntentInput = { location: mockMapLocation, intents: mockSavedTopics };
 		component.savedTopics = mockSavedTopics;
 		spyOn(sessionStorage, 'getItem').and.returnValue(JSON.stringify(mockLocationDetails));
 		component.saveForLater();
 		expect(component.locationDetails).toEqual(mockLocationDetails);
 		expect(component.intentInput).toEqual(mockIntentInput);
-		expect(mockPersonalizedPlanService.saveTopicsToProfile).toHaveBeenCalledWith(mockIntentInput, true);
-	});
-
-	it('should call saveTopicsToProfile if user is logged in', () => {
-		mockGlobal.userId = null;
-		component.savedTopics = mockSavedTopics;
-		spyOn(sessionStorage, 'setItem');
-		component.saveForLater();
-		expect(mockToastr.success).toHaveBeenCalled();
+    expect(mockPersonalizedPlanService.saveTopicsFromGuidedAssistantToProfile ).toHaveBeenCalledWith(mockIntentInput, true);
 	});
 });

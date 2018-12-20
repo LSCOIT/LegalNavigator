@@ -188,12 +188,12 @@ export class PersonalizedPlanService {
     this.profileResources = { oId: this.global.userId, resourceTags: resourceTags, type: 'resources' };
     this.saveResources(this.profileResources)
       .subscribe(() => {
+        this.spinner.hide();
         if (this.isIntent) {
           this.showSuccess("Topics added to Profile. You can view them later once you've completed the guided assistant.");
         } else {
           this.showSuccess('Resource saved to profile');
         }
-        this.spinner.hide();
       });
   }
 

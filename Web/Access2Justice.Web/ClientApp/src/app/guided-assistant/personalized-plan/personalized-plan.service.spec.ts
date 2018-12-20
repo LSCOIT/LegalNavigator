@@ -8,8 +8,9 @@ import { ProfileResources } from './personalized-plan';
 import { ToastrService } from 'ngx-toastr';
 import { Global } from '../../global';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { of } from 'rxjs/observable/of';
 
-fdescribe('Service:PersonalizedPlan', () => {
+describe('Service:PersonalizedPlan', () => {
   let mockPlanDetails = {
     "id": "29250697-8d22-4f9d-bbf8-96c1b5b72e54",
     "isShared": false,
@@ -505,7 +506,7 @@ fdescribe('Service:PersonalizedPlan', () => {
     let mockTopicsSessionKey = "bookmarkedTopics";
     spyOn(sessionStorage, 'getItem')
       .and.returnValue(JSON.stringify(mockSavedResources));
-    spyOn(service, 'saveResourceToProfilePostLogin');
+    spyOn(service, 'getTopicsFromGuidedAssistant');
     service.saveResourcesToUserProfile();
     expect(service.resourceTags).toEqual(mockSavedResources);
     expect(service.getTopicsFromGuidedAssistant).toHaveBeenCalled();
@@ -530,24 +531,22 @@ fdescribe('Service:PersonalizedPlan', () => {
 
   it('should call saveTopicsFromGuidedAssistantToProfile in getTopicsFromGuidedAssistant method', () => {
     spyOn(sessionStorage, 'getItem').and.returnValue(JSON.stringify(mockLocationDetails));
+    spyOn(service, 'saveTopicsFromGuidedAssistantToProfile');
     service.getTopicsFromGuidedAssistant();
     expect(service.saveTopicsFromGuidedAssistantToProfile).toHaveBeenCalled();
   });
 
   it('should call getTopicDetails and saveResourceToProfilePostLogin in saveTopicsFromGuidedAssistantToProfile method', () => {
     let mockIntentInput = { location: mockMapLocation, intents: mockSavedTopics };
-    spyOn(service, 'getTopicDetails').and.returnValue(mockSavedResources);
+    spyOn(service, 'getTopicDetails').and.returnValue(of(mockSavedResources));
     spyOn(service, 'saveResourceToProfilePostLogin');
     let mockExists = false;
     spyOn(arrayUtilityService, 'checkObjectExistInArray').and.callFake(() => {
-      return Observable.from([mockExists]);
+      (of(mockExists));
     });
     service.saveTopicsFromGuidedAssistantToProfile(mockIntentInput, false);
     expect(service.isIntent).toBeFalsy();
     expect(service.getTopicDetails).toHaveBeenCalled();
-    expect(arrayUtilityService.checkObjectExistInArray).toHaveBeenCalled();
-    expect(service.resourceTags).toEqual(mockSavedResources);
     expect(service.saveResourceToProfilePostLogin).toHaveBeenCalled();
   });
-
 });
