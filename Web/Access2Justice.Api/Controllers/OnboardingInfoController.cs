@@ -1,11 +1,13 @@
 ﻿using Access2Justice.Api.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Integration = Access2Justice.Shared.Models.Integration;
 
 namespace Access2Justice.Api.Controllers
 {
+    [ExcludeFromCodeCoverage]
     [Produces("application/json")]
     [Route("api/onboarding-info")]
     public class OnboardingInfoController : Controller
