@@ -53,7 +53,6 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         private readonly string expectedGuidedAssistant = LuisBusinessLogicTestData.expectedGuidedResponse;
         private readonly string expectedEmptyGuidedAssistant = LuisBusinessLogicTestData.expectedEmptyGuidedResponse;
         private readonly string expectedWebResponse = LuisBusinessLogicTestData.expectedWebResponse;
-        private readonly string expectedEmptyInternalResponse = LuisBusinessLogicTestData.expectedEmptyInternalResponse;
         #endregion
 
 

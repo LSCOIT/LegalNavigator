@@ -58,7 +58,7 @@ namespace Access2Justice.Shared.Models
         public DateTime? ModifiedTimeStamp { get; set; } = DateTime.UtcNow;
 
         public void Validate()
-        {            
+        {
             ValidationContext context = new ValidationContext(this, serviceProvider: null, items: null);
             List<ValidationResult> results = new List<ValidationResult>();
             bool isValid = Validator.TryValidateObject(this, context, results, true);
@@ -128,17 +128,18 @@ namespace Access2Justice.Shared.Models
         public string Content { get; set; }
     }
 
-    public class Video: Resource
+    public class Video : Resource
     {
         [JsonProperty(PropertyName = "overview")]
         public string Overview { get; set; }
     }
 
-    public class Organization: Resource
+    public class Organization : Resource
     {
         public Organization()
         {
             Reviewer = new List<OrganizationReviewer>();
+            IsFormAvailable = false;
         }
 
         [JsonProperty(PropertyName = "address")]
@@ -164,6 +165,9 @@ namespace Access2Justice.Shared.Models
 
         [JsonProperty(PropertyName = "businessHours")]
         public string BusinessHours { get; set; }
+
+        [JsonProperty(PropertyName = "isFormAvailable")]
+        public bool IsFormAvailable { get; set; }
     }
 
 
@@ -182,7 +186,7 @@ namespace Access2Justice.Shared.Models
         public string ReviewerImage { get; set; }
     }
 
-    public class Form: Resource
+    public class Form : Resource
     {
         [JsonProperty(PropertyName = "overview")]
         public string Overview { get; set; }
@@ -198,7 +202,7 @@ namespace Access2Justice.Shared.Models
 
     [AttributeUsage(AttributeTargets.Property)]
     public class EnsureOneElementAttribute : ValidationAttribute
-    {        
+    {
         public override bool IsValid(object value)
         {
             var list = value as IList;
