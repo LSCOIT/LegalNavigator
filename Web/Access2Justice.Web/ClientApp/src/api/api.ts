@@ -6,6 +6,7 @@ const userProfile = apiUrl + '/user';
 const curatedExperience = apiUrl + '/curated-experiences';
 const contentUrl = apiUrl + '/static-resources';
 const adminUrl = apiUrl + '/admin';
+const onboarding = apiUrl + '/onboarding-info';
 
 export const api = {
     topicUrl: topic + '/topics',
@@ -21,7 +22,7 @@ export const api = {
     getPersonalizedResourcesUrl: topic + '/personalized-resources',
     getProfileUrl: userProfile + "/profile",
     userPlanUrl: userProfile + "/personalized-plan/upsert",
-    upsertUserProfileUrl: userProfile +"/profile/upsert",
+    upsertUserProfileUrl: userProfile + "/profile/upsert",
     getOrganizationDetailsUrl: topic + '/organizations',
     questionUrl: curatedExperience + '/start',
     saveAndGetNextUrl: curatedExperience + '/components/save-and-get-next',
@@ -40,5 +41,7 @@ export const api = {
     uploadCuratedExperienceTemplateUrl: adminUrl + '/curated-experience',
     getStateCodesUrl: apiUrl + '/StateProvince/state-codes',
     getStateCodeUrl: apiUrl + '/StateProvince/state-code',
+    onboardingUrl: onboarding,
+    onboardingSubmissionUrl: onboarding + '/eform-submit',
     getTopicDetailsUrl: topic + '/get-topic-details'
 }

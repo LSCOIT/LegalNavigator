@@ -4,6 +4,7 @@ using Access2Justice.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using static Access2Justice.Api.Authorization.Permissions;
+using Pomelo.AntiXSS;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -32,6 +33,8 @@ namespace Access2Justice.Api.Controllers
         [Route("profile")]
         public async Task<IActionResult> GetUserDataAsync(string oid, string type)
         {
+            oid = Instance.Sanitize(oid);
+            type = Instance.Sanitize(type);
             return Ok(await userProfileBusinessLogic.GetUserResourceProfileDataAsync(oid, type));
         }
 
@@ -49,6 +52,7 @@ namespace Access2Justice.Api.Controllers
         [Route("profile/{oid}")]
         public async Task<IActionResult> GetUserProfileDataAsync(string oid)
         {
+            oid = Instance.Sanitize(oid);
             return Ok(await userProfileBusinessLogic.GetUserProfileDataAsync(oid));
         }
 
@@ -66,7 +70,11 @@ namespace Access2Justice.Api.Controllers
         [Route("personalized-plan/upsert")]
         public async Task<IActionResult> UpsertUserPersonalizedPlanAsync([FromBody]ProfileResources profileResources)
         {
-            return Ok(await userProfileBusinessLogic.UpsertUserSavedResourcesAsync(profileResources));
+            if (profileResources != null)
+            {
+                return Ok(await userProfileBusinessLogic.UpsertUserSavedResourcesAsync(profileResources));
+            }
+            return StatusCode(400);
         }
 
         /// <summary>
@@ -83,7 +91,11 @@ namespace Access2Justice.Api.Controllers
         [Route("profile/upsert")]
         public async Task<IActionResult> UpsertUserProfile([FromBody]UserProfile userProfile)
         {
-            return Ok(await userProfileBusinessLogic.UpsertUserProfileAsync(userProfile));
+            if (userProfile != null)
+            {
+                return Ok(await userProfileBusinessLogic.UpsertUserProfileAsync(userProfile));
+            }
+            return StatusCode(400);
         }
     }
 }

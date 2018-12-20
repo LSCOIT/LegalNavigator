@@ -116,6 +116,16 @@ h4 {
   border: 1px solid #7E7E7E;
 }
 
+.onboarding-label {
+  background-color: #f9e9bd;
+  width: 125px;
+  padding: 5px;
+  border-radius: 5px;
+  margin: 10px 0;
+  font-size: 12px;
+  font-weight: 600;
+}
+
 @media only screen and (min-width : 768px) {
   h4 {
     padding-right: 20px;
@@ -141,6 +151,10 @@ h4 {
   .org-phone-detail {
     margin-top: 0;
     margin-bottom: 0;
+  }
+
+  .onboarding-label {
+    font-size: 13px;
   }
 }
 

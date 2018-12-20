@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using static Access2Justice.Api.Authorization.Permissions;
+using Pomelo.AntiXSS;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -17,7 +18,6 @@ namespace Access2Justice.Api.Controllers
         private readonly ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic;
         private readonly ILuisBusinessLogic luisBusinessLogic;
         private readonly IUserRoleBusinessLogic userRoleBusinessLogic;
-
         public TopicsResourcesController(ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic, ILuisBusinessLogic luisBusinessLogic,
             IUserRoleBusinessLogic userRoleBusinessLogic)
         {
@@ -197,6 +197,7 @@ namespace Access2Justice.Api.Controllers
         [Route("topics/{name}")]
         public async Task<IActionResult> GetTopicDetails(string name)
         {
+            name = Instance.Sanitize(name);
             var topics = await topicsResourcesBusinessLogic.GetTopicDetailsAsync(name);
 
             if (topics == null)
@@ -221,6 +222,8 @@ namespace Access2Justice.Api.Controllers
         [Route("resources/{name}/{type}")]
         public async Task<IActionResult> GetResourceDetails(string name, string type)
         {
+            name = Instance.Sanitize(name);
+            type = Instance.Sanitize(type);
             var resources = await topicsResourcesBusinessLogic.GetResourceDetailAsync(name, type);
 
             if (resources == null)
@@ -552,15 +555,14 @@ namespace Access2Justice.Api.Controllers
         /// Get resource by state and topic name
         /// </summary>
         /// <remarks>
-        /// Helps to get all resources by state and topic name
+        /// Helps get all resources by state code and topic name
         /// </remarks>
         /// <param name="state"></param>
         /// <param name="topicName"></param>
-        /// <response code="200">Get all resources for given state and topic name</response>
-        /// <response code="500">Failure</response>
-        [HttpPost]
-        [Route("resource")]
-        public async Task<IActionResult> GetResource([FromQuery]string state, [FromQuery] string topicName)
+        /// <response code="404">Get all resources for given state and topic name</response>
+        [HttpGet]
+        [Route("resources")]
+        public async Task<IActionResult> GetResources([FromQuery]string state, [FromQuery] string topicName)
         {
             var topic = await topicsResourcesBusinessLogic.GetTopic(topicName);
             TopicInput topicInput = new TopicInput();
@@ -570,12 +572,32 @@ namespace Access2Justice.Api.Controllers
 
             if (resource == null)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return StatusCode(StatusCodes.Status404NotFound);
             }
 
             return Ok(resource);
         }
 
+        /// <summary>
+        /// Get Topic names by state
+        /// </summary>
+        /// <remarks>
+        /// Helps to get all topic names by state code
+        /// </remarks>
+        /// <param name="state"></param>
+        /// <response code="404">Get all resources for given state and topic name</response>
+        [HttpGet]
+        [Route("topics")]
+        public async Task<IActionResult> GetTopics([FromQuery]string state)
+        {
+            var topics = await topicsResourcesBusinessLogic.GetTopicsAsync(state);
 
+            if (topics == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound);
+            }
+
+            return Ok(topics);
+        }
     }
 }

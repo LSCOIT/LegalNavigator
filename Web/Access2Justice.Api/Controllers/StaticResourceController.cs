@@ -58,12 +58,16 @@ namespace Access2Justice.Api.Controllers
         [Route("home/upsert")]
         public async Task<IActionResult> UpsertStaticHomePageDataAsync([FromBody]HomeContent homePageContent)
         {
-            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(homePageContent.OrganizationalUnit))
+            if (homePageContent != null)
             {
-                var contents = await staticResourceBusinessLogic.UpsertStaticHomePageDataAsync(homePageContent);
-                return Ok(contents);
+                if (await userRoleBusinessLogic.ValidateOrganizationalUnit(homePageContent.OrganizationalUnit))
+                {
+                    var contents = await staticResourceBusinessLogic.UpsertStaticHomePageDataAsync(homePageContent);
+                    return Ok(contents);
+                }
+                return StatusCode(403); 
             }
-            return StatusCode(403);
+            return StatusCode(400);
         }
 
         /// <summary>
@@ -80,12 +84,16 @@ namespace Access2Justice.Api.Controllers
         [Route("privacy/upsert")]
         public async Task<IActionResult> UpsertStaticPrivacyPromisePageDataAsync([FromBody]PrivacyPromiseContent privacyPromiseContent)
         {
-            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(privacyPromiseContent.OrganizationalUnit))
+            if (privacyPromiseContent != null)
+            {
+                if (await userRoleBusinessLogic.ValidateOrganizationalUnit(privacyPromiseContent.OrganizationalUnit))
             {
                 var contents = await staticResourceBusinessLogic.UpsertStaticPrivacyPromisePageDataAsync(privacyPromiseContent);
                 return Ok(contents);
             }
             return StatusCode(403);
+            }
+            return StatusCode(400);
         }
 
         /// <summary>
@@ -102,12 +110,16 @@ namespace Access2Justice.Api.Controllers
         [Route("help-and-faq/upsert")]
         public async Task<IActionResult> UpsertStaticHelpAndFAQPageDataAsync([FromBody]HelpAndFaqsContent helpAndFAQPageContent)
         {
-            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(helpAndFAQPageContent.OrganizationalUnit))
+            if (helpAndFAQPageContent != null)
+            {
+                if (await userRoleBusinessLogic.ValidateOrganizationalUnit(helpAndFAQPageContent.OrganizationalUnit))
             {
                 var contents = await staticResourceBusinessLogic.UpsertStaticHelpAndFAQPageDataAsync(helpAndFAQPageContent);
                 return Ok(contents);
             }
             return StatusCode(403);
+            }
+            return StatusCode(400);
         }
 
         /// <summary>
@@ -125,12 +137,16 @@ namespace Access2Justice.Api.Controllers
         [Route("navigation/upsert")]
         public async Task<IActionResult> UpsertStaticNavigationDataAsync([FromBody]Navigation navigationContent)
         {
-            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(navigationContent.OrganizationalUnit))
+            if (navigationContent != null)
+            {
+                if (await userRoleBusinessLogic.ValidateOrganizationalUnit(navigationContent.OrganizationalUnit))
             {
                 var contents = await staticResourceBusinessLogic.UpsertStaticNavigationDataAsync(navigationContent);
                 return Ok(contents);
             }
             return StatusCode(403);
+            }
+            return StatusCode(400);
         }
 
         /// <summary>
@@ -147,12 +163,16 @@ namespace Access2Justice.Api.Controllers
         [Route("about/upsert")]
         public async Task<IActionResult> UpsertStaticAboutPageDataAsync([FromBody]AboutContent aboutContent)
         {
-            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(aboutContent.OrganizationalUnit))
+            if (aboutContent != null)
+            {
+                if (await userRoleBusinessLogic.ValidateOrganizationalUnit(aboutContent.OrganizationalUnit))
             {
                 var contents = await staticResourceBusinessLogic.UpsertStaticAboutPageDataAsync(aboutContent);
                 return Ok(contents);
             }
             return StatusCode(403);
+            }
+            return StatusCode(400);
         }
 
         /// <summary>
