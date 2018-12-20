@@ -111,7 +111,6 @@ namespace Access2Justice.Api.BusinessLogic
                     destinationComponent = curatedExperience.Components.Where(x => x.Name == currentButton.Destination).FirstOrDefault();
                 }
             }
-            // Todo:@Alaa must be refactored, making it like this during dev/test to make it easy to debug.
             if (!string.IsNullOrWhiteSpace(destinationComponent.Code.CodeBefore) && destinationComponent.Code.CodeBefore.Contains(Tokens.GOTO))
             {
                 if (answers.AnswersDocId == default(Guid))
@@ -268,7 +267,6 @@ namespace Access2Justice.Api.BusinessLogic
             return answers;
         }
 
-        // Todo:@Alaa must refactor this
         private CuratedExperienceComponent RemainingQuestions(CuratedExperience curatedExperience, Guid buttonId)
         {
             var allButtonsInCuratedExperience = curatedExperience.Components.Select(x => x.Buttons).ToList();

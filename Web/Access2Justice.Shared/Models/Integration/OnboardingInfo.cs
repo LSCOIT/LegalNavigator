@@ -55,7 +55,6 @@ public enum DeliveryMethod
 {
     WebApi,
     Email,
-    Fax,
-    AvianCarrier
+    Fax
 }
 

@@ -7,7 +7,7 @@ using Integration = Access2Justice.Shared.Models.Integration;
 namespace Access2Justice.Api.Controllers
 {
     [Produces("application/json")]
-    [Route("api/OnboardingInfo")]
+    [Route("api/onboarding-info")]
     public class OnboardingInfoController : Controller
     {
         private readonly IOnboardingInfoBusinessLogic onboardingInfoBusinessLogic;
@@ -30,11 +30,11 @@ namespace Access2Justice.Api.Controllers
                 return BadRequest("please provide organization name");
             }
 
-            var response = await onboardingInfoBusinessLogic.GetOrganizationOnboardingInfo(organizationId);
+            var response = await onboardingInfoBusinessLogic.GetOnboardingInfo(organizationId);
             return Ok(response);
         }
 
-        [HttpPost("send")]
+        [HttpPost("eform-submit")]
         public async Task<IActionResult> PostAsync([FromBody] Integration.OnboardingInfo onboardingInfo)
         {
             if(onboardingInfo == null)
@@ -44,12 +44,5 @@ namespace Access2Justice.Api.Controllers
             var response = await onboardingInfoBusinessLogic.PostOnboardingInfo(onboardingInfo);
             return Ok(response);
         }
-
-        [HttpPost("submission")]
-        public IActionResult PostOrganizationAsync([FromBody] string json)
-        {
-            return Ok(json);
-        }
-
     }
 }

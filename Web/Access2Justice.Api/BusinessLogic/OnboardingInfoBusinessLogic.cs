@@ -31,6 +31,16 @@ namespace Access2Justice.Api.BusinessLogic
             this.dbSettings = dbSettings;
         }
 
+        public async Task<OnboardingInfo> GetOnboardingInfo(string organizationId)
+        {
+            var response = await dynamicQueries.FindItemWhereAsync<JObject>(dbSettings.ResourcesCollectionId, Constants.Id, organizationId);
+            if (response == null)
+            {
+                return null;
+            }
+            return JsonConvert.DeserializeObject<OnboardingInfo>(JsonConvert.SerializeObject(response.GetValue(Constants.EFormFormFields)));
+        }
+
         public Task<object> PostOnboardingInfo(OnboardingInfo onboardingInfo)
         {
             //Send the information based on delivery method
@@ -42,26 +52,19 @@ namespace Access2Justice.Api.BusinessLogic
             //Check organization delivery method
             switch (onboardingInfo.DeliveryMethod)
             {
-                case DeliveryMethod.AvianCarrier:
-                    break;
                 case DeliveryMethod.Email:
                     SendMail(onboardingInfo);
                     break;
                 case DeliveryMethod.Fax:
                     break;
                 case DeliveryMethod.WebApi:
-                    //Generate a template from the form data
-                    var updatedTemplate = UpdatePayLoadTemplate(onboardingInfo);
-                    var stringContent = new StringContent(JsonConvert.SerializeObject(updatedTemplate), Encoding.UTF8, "application/json");
-                    var response = await httpClientService.PostAsync(onboardingInfo.DeliveryDestination, stringContent);
-                    response.EnsureSuccessStatusCode();
-                    var content = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject(JsonConvert.DeserializeObject(content).ToString());
+                    return await PostData(onboardingInfo);
             }
-            return null;
+
+            throw new NotSupportedException("Delivery method not supported.");
         }
 
-        public void SendMail(OnboardingInfo onboardingInfo)
+        private void SendMail(OnboardingInfo onboardingInfo)
         {
             string body = onboardingInfo.PayloadTemplate;
             ListDictionary replacements = new ListDictionary();
@@ -94,7 +97,20 @@ namespace Access2Justice.Api.BusinessLogic
             client.Send(mailMessage);
         }
 
-        public string UpdatePayLoadTemplate(OnboardingInfo onboardingInfo)
+        private async Task<dynamic> PostData(OnboardingInfo onboardingInfo)
+        {
+            //Generate a template from the form data
+            var updatedTemplate = UpdatePayLoadTemplate(onboardingInfo);
+            var stringContent = new StringContent(JsonConvert.SerializeObject(updatedTemplate), Encoding.UTF8, "application/json");
+
+            var response = await httpClientService.PostAsync(onboardingInfo.DeliveryDestination, stringContent);
+            response.EnsureSuccessStatusCode();
+
+            var content = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject(JsonConvert.DeserializeObject(content).ToString());
+        }
+
+        private string UpdatePayLoadTemplate(OnboardingInfo onboardingInfo)
         {
             JObject template = onboardingInfo.PayloadTemplate;
 
@@ -104,16 +120,6 @@ namespace Access2Justice.Api.BusinessLogic
             }
 
             return template.ToString();
-        }
-
-        public async Task<OnboardingInfo> GetOrganizationOnboardingInfo(string organizationId)
-        {
-            var response = await dynamicQueries.FindItemWhereAsync<JObject>(dbSettings.ResourcesCollectionId, Constants.Id, organizationId);
-            if (response == null)
-            {
-                return null;
-            }
-            return JsonConvert.DeserializeObject<OnboardingInfo>(JsonConvert.SerializeObject(response.GetValue("onboardingInfo")));
         }
     }
 }
