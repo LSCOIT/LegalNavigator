@@ -46,7 +46,7 @@ namespace Access2Justice.Api
             {
                 luisViewModel = await GetInternalResourcesAsync(
                    luisTopIntents?.TopScoringIntent ?? luisInput.LuisTopScoringIntent,
-                   luisInput.Location,
+                   luisInput,
                    luisTopIntents != null && luisTopIntents.TopNIntents != null ? luisTopIntents.TopNIntents : null);
             }
             //Will fetch web links only when there are no mapping LUIS Intent or no mapping resources to specific LUIS Intent
@@ -75,10 +75,11 @@ namespace Access2Justice.Api
             return intentWithScore.Score >= luisSettings.IntentAccuracyThreshold && intentWithScore.TopScoringIntent.ToUpperInvariant() != "NONE";
         }
 
-        public async Task<dynamic> GetInternalResourcesAsync(string keyword, Location location, IEnumerable<string> relevantIntents)
+        public async Task<dynamic> GetInternalResourcesAsync(string keyword, LuisInput luisInput, IEnumerable<string> relevantIntents)
         {
             CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
             TextInfo textInfo = cultureInfo.TextInfo;
+            Location location = luisInput.Location;
 
             var topics = await topicsResourcesBusinessLogic.GetTopicsAsync(textInfo.ToTitleCase(keyword), location);
 
@@ -101,8 +102,8 @@ namespace Access2Justice.Api
             var GetResourcesTask = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
             ResourceFilter sortResourceFilter = resourceFilter;
             sortResourceFilter.IsOrder = true;
-            sortResourceFilter.OrderByField = "name";
-            sortResourceFilter.OrderBy = "ASC";
+            sortResourceFilter.OrderByField = luisInput.OrderByField;
+            sortResourceFilter.OrderBy = luisInput.OrderBy;
             var ApplyPaginationTask = topicsResourcesBusinessLogic.ApplyPaginationAsync(sortResourceFilter);
             //To get guided assistant id
             resourceFilter.ResourceType = Constants.GuidedAssistant;
@@ -114,6 +115,9 @@ namespace Access2Justice.Api
             PagedResources guidedAssistantResponse = GetGuidedAssistantId.Result;
             var guidedAssistantResult = guidedAssistantResponse != null ? JsonUtilities.DeserializeDynamicObject<GuidedAssistant>(guidedAssistantResponse.Results.FirstOrDefault()) : null;
 
+            dynamic searchFilter = new JObject();
+            searchFilter.OrderByField = resourceFilter.OrderByField;
+            searchFilter.OrderBy = resourceFilter.OrderBy;
             return new LuisViewModel
             {
                 TopIntent = keyword,
@@ -123,7 +127,8 @@ namespace Access2Justice.Api
                 ContinuationToken = resources != null && resources.ContinuationToken != null ? JsonConvert.DeserializeObject(resources.ContinuationToken) : JsonConvert.DeserializeObject(Constants.EmptyArray),
                 TopicIds = topicIds != null ? JsonUtilities.DeserializeDynamicObject<dynamic>(topicIds) : JsonConvert.DeserializeObject(Constants.EmptyArray),
                 ResourceTypeFilter = groupedResourceType != null ? JsonUtilities.DeserializeDynamicObject<dynamic>(groupedResourceType) : JsonConvert.DeserializeObject(Constants.EmptyArray),
-                GuidedAssistantId = guidedAssistantResult != null ? guidedAssistantResult.CuratedExperienceId : string.Empty
+                GuidedAssistantId = guidedAssistantResult != null ? guidedAssistantResult.CuratedExperienceId : string.Empty,
+                SearchFilter = searchFilter
             };
         }
 

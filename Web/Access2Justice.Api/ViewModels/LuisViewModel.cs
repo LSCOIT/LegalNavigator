@@ -34,6 +34,9 @@ namespace Access2Justice.Api.ViewModels
         [JsonProperty(PropertyName = "guidedAssistantId")]
         public string GuidedAssistantId { get; set; }
 
+        [JsonProperty(PropertyName = "searchFilter")]
+        public dynamic SearchFilter { get; set; }
+
         public LuisViewModel()
         {
             RelevantIntents = JsonConvert.DeserializeObject(Constants.EmptyArray);

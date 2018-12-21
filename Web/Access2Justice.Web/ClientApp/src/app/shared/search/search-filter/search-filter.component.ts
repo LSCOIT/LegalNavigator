@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChildren, QueryList } from '@angular/core';
+import { Global } from '../../../global';
 
 @Component({
   selector: 'app-search-filter',
@@ -8,18 +9,19 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChildren, QueryList
 export class SearchFilterComponent implements OnInit {
   @Input()
   resourceResults: any;
+  @Input() searchResultDetails: any;
   @Output() notifyFilterCriteria = new EventEmitter<object>();
   selectedSortCriteria: string = 'A-Z';
   selectedFilterCriteria: string = 'All';
-  filterParam: string = 'All';
+  filterParam: string;
   sortParam: string="name";
   @ViewChildren('filterButtons') filterButtons: QueryList<any>;
   @Input() initialResourceFilter: string;
   buttonToHighlight = [];
-  orderBy: string;
+  orderBy: string = "ASC";
   isSort: boolean = true;
 
-  constructor() { }
+  constructor(private global: Global) { }
 
   findButtonWith(initialResourceType) {
     this.buttonToHighlight =
@@ -50,8 +52,15 @@ export class SearchFilterComponent implements OnInit {
     this.resetButtonColor();
     event.target["classList"].add('button-highlight');
     this.filterParam = resourceType;
-    this.notifyFilterCriteria.emit({ filterParam: this.filterParam, sortParam: this.sortParam, order: this.orderBy });
+    if (this.sortParam === resourceType) {
+      this.isSort = !(this.isSort);
+      this.orderBy = this.isSort ? 'ASC' : 'DESC';
+    } else {
+      this.isSort = true;
+      this.orderBy = 'ASC';
+    }
     this.selectedFilterCriteria = this.filterParam;
+    this.notifyFilterCriteria.emit({ filterParam: this.filterParam, sortParam: this.sortParam, order: this.orderBy });
   }
 
   sendSortCriteria(value, resourceType) {
@@ -63,11 +72,14 @@ export class SearchFilterComponent implements OnInit {
       this.orderBy = 'ASC';
     }
     this.sortParam = resourceType;
-    this.notifyFilterCriteria.emit({ filterParam: this.filterParam, sortParam: this.sortParam, order: this.orderBy });
     this.selectedSortCriteria = value;
+    this.notifyFilterCriteria.emit({ filterParam: this.filterParam, sortParam: this.sortParam, order: this.orderBy });
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.selectedFilterCriteria = this.searchResultDetails.sortParam;
+    this.orderBy = this.searchResultDetails.order;
+  }
 
   ngAfterViewInit() {
     this.setInitialHighlightButton();

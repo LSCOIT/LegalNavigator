@@ -31,7 +31,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   filterType: string = environment.All;
   resourceTypeFilter: any[];
   resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: {}, IsResourceCountRequired: false, IsOrder: true, OrderByField: 'name', OrderBy: 'ASC' };
-  luisInput: ILuisInput = { Sentence: '', Location: {}, LuisTopScoringIntent: '', TranslateFrom: '', TranslateTo: '' };
+  luisInput: ILuisInput = { Sentence: '', Location: {}, LuisTopScoringIntent: '', TranslateFrom: '', TranslateTo: '', OrderByField: 'name', OrderBy:'ASC' };
   location: any;
   topicIds: any[];
   isServiceCall: boolean;
@@ -57,7 +57,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   guidedAssistantId: string;
   locationDetails: LocationDetails;
   orderBy: string;
-  searchResultDetails: any = { filterParam: '', sortParam: '', order: '' };
+  searchResultDetails: any = { filterParam: 'All', sortParam: 'name', order: 'ASC', topIntent:'' };
   isBindData: boolean;
 
   constructor(
@@ -185,8 +185,10 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   }
 
   filterSearchResults(event) {
-    if (event !== this.searchResultDetails) {
+    if (event.sortParam !== this.searchResultDetails.sortParam || event.order !== this.searchResultDetails.order) {
       this.searchResultDetails = event;
+      this.global.searchResultDetails.sortParam = this.searchResultDetails.sortParam;
+      this.global.searchResultDetails.order = this.searchResultDetails.order;
       this.isBindData = true;
       if (sessionStorage.getItem("searchedLocationMap")) {
         this.locationDetails = JSON.parse(sessionStorage.getItem("searchedLocationMap"));
@@ -195,19 +197,25 @@ export class SearchResultsComponent implements OnInit, OnChanges {
       }
       this.luisInput.Location = this.locationDetails.location;
       this.luisInput.LuisTopScoringIntent = this.searchResults.topIntent;
-      this.luisInput.Sentence = this.searchResults.topIntent;
+      this.luisInput.Sentence = this.searchResults.topIntent ? this.searchResults.topIntent : this.global.searchResultDetails.topIntent;
+      this.luisInput.OrderByField = this.global.searchResultDetails.sortParam;
+      this.luisInput.OrderBy = this.global.searchResultDetails.order;
       this.searchService.search(this.luisInput)
         .subscribe(response => {
           this.spinner.hide();
           if (response != undefined) {
-            this.searchResults = response;
+            this.searchResults = response; 
             this.navigateDataService.setData(this.searchResults);
-            this.bindData();
+            //this.bindData();
+            this.router.navigateByUrl('/searchRefresh', { skipLocationChange: true })
+              .then(() =>
+                this.router.navigate(['/search'])
+              );
           }
         });
     }
-    this.sortType = event;
-    this.orderBy = event.order;
+    //this.sortType = event;
+    //this.orderBy = event.order;
     if (this.isInternalResource && event != undefined && event.filterParam != undefined) {
       this.page = 1;
       this.currentPage = 0;
@@ -251,6 +259,8 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     this.luisInput.Location = this.location;
     this.luisInput.LuisTopScoringIntent = this.topIntent;
     this.luisInput.Sentence = this.topIntent;
+    this.luisInput.OrderByField = this.global.searchResultDetails.sortParam;
+    this.luisInput.OrderBy = this.global.searchResultDetails.order;
     this.searchService.search(this.luisInput)
       .subscribe(response => {
         if (response != undefined) {
@@ -291,8 +301,8 @@ export class SearchResultsComponent implements OnInit, OnChanges {
         this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
       }
       this.resourceFilter.Location = this.locationDetails.location;
-      this.resourceFilter.OrderBy = this.orderBy;
-      this.resourceFilter.OrderByField = this.sortType.sortParam;
+      this.resourceFilter.OrderBy = this.global.searchResultDetails.order;
+      this.resourceFilter.OrderByField = this.global.searchResultDetails.sortParam;
       this.paginationService.getPagedResources(this.resourceFilter).subscribe(response => {
         this.searchResults = response;
         if (this.page == 1) {
@@ -370,6 +380,8 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     } else {
       this.currentPage = n;
     }
+    this.global.searchResultDetails.topIntent = this.searchResults.topIntent;
+    //console.log(this.searchResultDetails);
     this.page = n;
     if (this.isWebResource) {
       this.searchResource(this.calculateOffsetValue(n));
@@ -381,6 +393,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   onNext(): void {
     this.currentPage = this.page;
     this.page++;
+    //this.searchResultDetails.topIntent = this.searchResults.topIntent;
     if (this.isWebResource) {
       this.searchResource(this.calculateOffsetValue(this.page));
     } else {
@@ -391,6 +404,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   onPrev(): void {
     this.currentPage = this.page;
     this.page--;
+    //this.searchResultDetails.topIntent = this.searchResults.topIntent;
     if (this.isWebResource) {
       this.searchResource(this.calculateOffsetValue(this.page));
     } else {
@@ -433,6 +447,11 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     this.bindData();
     this.notifyLocationChange();
     this.showRemoveOption = this.showRemove;
+    if (this.searchResults.searchFilter.OrderByField === 'modifiedTimeStamp') {
+      this.searchResults.searchFilter.OrderByField = 'date';
+    }
+    this.global.searchResultDetails.sortParam = this.searchResults.searchFilter.OrderByField;
+    this.global.searchResultDetails.order = this.searchResults.searchFilter.OrderBy;
   }
 
   ngOnDestroy() {

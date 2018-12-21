@@ -29,6 +29,7 @@ export class Global {
   roleInformation: any;
   displayResources: number = 3;
   activeSubtopicParam: string;
+  searchResultDetails: any= { filterParam: 'All', sortParam: 'name', order: 'ASC', topIntent: '' };
   topIntent: string;
 
   constructor() { }
