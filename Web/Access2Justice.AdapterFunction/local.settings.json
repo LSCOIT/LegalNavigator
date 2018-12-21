@@ -1,0 +1,8 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "AzureWebJobsDashboard": "UseDevelopmentStorage=true",
+    "AdapterApiUrl": "https://a2jdevintegrationapi.azurewebsites.net/api/service-providers/load-partners-data/{0}"
+  }
+}

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { StaticResourceService } from '../../shared/static-resource.service';
 import { Navigation, Language, Location, Logo, Home, GuidedAssistant, TopicAndResources, About, Search, PrivacyPromise, HelpAndFAQ, Login } from './navigation';
@@ -24,6 +24,15 @@ export class UpperNavComponent implements OnInit {
   subscription: any;
   staticContent: any;
   staticContentSubcription: any;
+  @ViewChild('upperNav') upperNav: ElementRef;
+  @HostListener('window:scroll', ['$event'])
+  onScroll(e) {
+    if (window.pageYOffset > 100) {
+      this.upperNav.nativeElement.classList.add("box-shadow");
+    } else {
+      this.upperNav.nativeElement.classList.remove("box-shadow");
+    };
+  }
 
   constructor(private http: HttpClient,
     private staticResourceService: StaticResourceService,

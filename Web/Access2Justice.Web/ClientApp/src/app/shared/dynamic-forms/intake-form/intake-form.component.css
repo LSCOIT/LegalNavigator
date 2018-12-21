@@ -1,0 +1,19 @@
+form {
+  padding: 15px;
+}
+
+input {
+  padding: 0 5px;
+}
+
+label {
+  font-weight: 600;
+}
+
+.question {
+  margin: 20px 0;
+}
+
+.close {
+  margin-bottom: 15px;
+}

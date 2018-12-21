@@ -33,15 +33,4 @@ describe('StateCodeService', () => {
   it('should be created', inject([StateCodeService], (service: StateCodeService) => {
     expect(service).toBeTruthy();
   }));
-
-  it('should get all state codes', inject([StateCodeService], (service: StateCodeService) => {
-    const mockResponse = Observable.of(mockStateCodes);
-    httpSpy.get.and.returnValue(mockResponse);
-    service.getStateCodes().subscribe(stateCodes => {
-      service.getStateCodes();
-      expect(httpSpy.get).toHaveBeenCalled();
-      expect(stateCodes).toEqual(mockStateCodes);
-    });
-  }));
-
 });
