@@ -100,11 +100,6 @@ describe('MapResultsComponent', () => {
     expect(component.getMapResults).toHaveBeenCalled();
   });
 
-  it("should call getMap of mapResultsService when getMapResults is called with no address in addresslist", () => {
-    component.getMapResults(noItemsInAddressList);
-    expect(mockMapResultsService.getMap).toHaveBeenCalled();
-  });
-
   it("should call displayMapResults of when getMapResults is called with addresslist", () => {
     mockMapResultsService.getLocationDetails.and.returnValue(of());
     component.addressList = oneItemInAddressList;

@@ -29,8 +29,11 @@
       <Visible>False</Visible>
     </None>
     <Content Include="Deploy-AzureResourceGroup.ps1" />
+    <Content Include="parameters-dev-lsc.json" />
     <Content Include="parameters-devSandbox.json" />
+    <Content Include="parameters-prod-lsc.json" />
     <Content Include="parameters-prod.json" />
+    <Content Include="parameters-stage-lsc.json" />
     <Content Include="parameters-stage.json" />
     <Content Include="parameters-dev.json" />
     <Content Include="template.json" />

@@ -21,14 +21,43 @@ describe('HomeComponent', () => {
       name: "HomePage",
       location: [
         { state: "Default" }
-      ]
-    },
-    globalData = [{
-      name: "HomePage",
-      location: [
-        { state: "Default" }
-      ]
-    }]
+      ],
+      carousel: {
+        slides: [
+          {
+            quote: "This project will help people understand that the legal system is a public service to use and employ that may help them.",
+            author: "- Alaska community member",
+            location: "",
+            image: {
+              source: "test image",
+              altText: "Sample Image"
+            }
+          }
+        ]
+      }
+    }
+
+    globalData = [
+      {
+        name: "HomePage",
+        location: [
+          { state: "Default" }
+        ],
+        carousel: {
+          slides: [
+            {
+              quote: "This project will help people understand that the legal system is a public service to use and employ that may help them.",
+              author: "- Alaska community member",
+              location: "",
+              image: {
+                source: "test image",
+                altText: "Sample Image"
+              }
+            }
+          ]
+        }
+      }
+    ];
     mockStaticResourceService = jasmine.createSpyObj(['getLocation', 'getStaticContents']);
     mockGlobal = jasmine.createSpyObj(['getData']);
     mockGlobal.getData.and.returnValue(globalData);
@@ -53,6 +82,7 @@ describe('HomeComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
+    component.slides = [];
     spyOn(component, 'ngOnInit');
     fixture.detectChanges();
   });
@@ -63,10 +93,10 @@ describe('HomeComponent', () => {
 
   it('should set home content to static resource content if it exists', () => {
     mockStaticResourceService.getLocation.and.returnValue('Default');
-    mockStaticResourceService.helpAndFaqsContent = homeContent;
+    mockStaticResourceService.homeContent = homeContent;
     spyOn(component, 'filterHomeContent');
     component.getHomePageContent();
-    expect(component.homeContent).toEqual(mockStaticResourceService.helpAndFaqsContent);
-    expect(component.filterHomeContent).toHaveBeenCalledWith(mockStaticResourceService.helpAndFaqsContent);
+    expect(component.homeContent).toEqual(mockStaticResourceService.homeContent);
+    expect(component.filterHomeContent).toHaveBeenCalledWith(mockStaticResourceService.homeContent);
   });
 });

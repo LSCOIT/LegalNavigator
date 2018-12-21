@@ -1,5 +1,5 @@
 input {
-  height: 40px;
+  height: 45px;
   width: 64%;
   float: left;
   margin-left: 10%;
@@ -37,7 +37,7 @@ h4 {
 }
 
 .text-center {
-  margin-top: 40px;
+  margin-top: 60px;
 }
 
 #remove-btn {

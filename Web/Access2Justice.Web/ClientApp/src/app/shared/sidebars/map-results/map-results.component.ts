@@ -43,7 +43,7 @@ export class MapResultsComponent implements OnChanges {
     this.addressList = address;
     this.latitudeLongitude = [];
     if (this.addressList.length === 0) {
-      this.mapResultsService.getMap();
+      this.showMap = false;
     } else {
       this.addressList.forEach(address => {
         if (this.hasNumber(address)) {

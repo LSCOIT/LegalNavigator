@@ -13,6 +13,7 @@ import { CuratedExperienceTemplateComponent } from './curated-experience/curated
 import { NavigateDataService } from '../shared/navigate-data.service';
 import { HomeTemplateComponent } from './home/home-template.component';
 import { HelpFaqsTemplateComponent } from './help-faqs/help-faqs-template.component';
+import { PersonalizedPlanTemplateComponent } from './personalized-plan/personalized-plan-template.component';
 
 @NgModule({
   imports: [
@@ -30,7 +31,8 @@ import { HelpFaqsTemplateComponent } from './help-faqs/help-faqs-template.compon
     AdminDashboardComponent,
     CuratedExperienceTemplateComponent,
     HomeTemplateComponent,
-    HelpFaqsTemplateComponent
+    HelpFaqsTemplateComponent,
+    PersonalizedPlanTemplateComponent
   ],
   exports: [
     AdminComponent,

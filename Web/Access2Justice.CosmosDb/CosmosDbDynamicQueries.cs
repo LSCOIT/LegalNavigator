@@ -80,6 +80,18 @@ namespace Access2Justice.CosmosDb
             return await FindItemsWhereArrayContainsAsync(collectionId, arrayName, propertyName, ids);
         }
 
+        public async Task<dynamic> FindItemsWhereArrayContainsAsync(string collectionId, string arrayName, string propertyName, string value, bool isPartialQuery)
+        {
+            EnsureParametersAreNotNullOrEmpty(collectionId, arrayName, propertyName);
+
+            if (isPartialQuery)
+            {
+                return await backendDatabaseService.QueryItemsAsync(collectionId, $"SELECT * FROM c WHERE ARRAY_CONTAINS(c.{arrayName}, {{ '{propertyName}' : '" + value + "'}, true)");
+            }
+
+            return await FindItemsWhereArrayContainsAsync(collectionId, arrayName, propertyName, value);
+        }
+
         public async Task<dynamic> FindItemsWhereArrayContainsAsync(string collectionId, string arrayName, string propertyName, IEnumerable<string> values)
         {
             EnsureParametersAreNotNullOrEmpty(collectionId, arrayName, propertyName);

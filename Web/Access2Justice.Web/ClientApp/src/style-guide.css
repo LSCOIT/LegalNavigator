@@ -5,6 +5,7 @@
 * {
   font-family: 'Montserrat', sans-serif;
 }
+
 /* Heading */
 h1 {
   font-size: 30px;
@@ -63,7 +64,7 @@ h1, h2, h3, h4, h5, .h4 {
 }
 
 /* Buttons */
-button, .btn {
+button, .btn, a.btn {
   border: none;
   cursor: pointer;
 }
@@ -72,61 +73,67 @@ button:focus {
   outline: transparent;
 }
 
-.btn {
+.btn, a.btn {
   border-radius: 24px;
   padding: 10px 40px;
   font-weight: 600;
   margin: 20px auto;
 }
 
-.btn-sm {
+.btn-sm, a.btn-sm {
   border-radius: 24px;
   padding: 10px;
   font-weight: 600;
 }
 
-.btn-primary {
+.btn-primary, a.btn-primary {
   background-color: #0D3FBB;
   color: #fff;
   cursor: pointer;
 }
 
-.btn-primary:hover {
+.btn-primary:hover, a.btn-primary:hover {
   background-color: #0B2B78;
   text-decoration: none;
 }
 
-.btn-secondary {
+.btn-secondary, a.btn-secondary {
   border: 1px solid #0D3FBB;
   color: #0D3FB8;
   background-color: #FFF;
 }
 
-.btn-secondary:hover {
+.btn-secondary:hover, a.btn-secondary:hover {
   color: #0B2B78;
   background-color: #FFF;
   border-color: #0B2B78;
   text-decoration: underline;
 }
 
-.btn-inactive {
+.btn-inactive, a.btn-inactive {
   background-color: #DDD;
   color: #585858;
   border: 1px solid #7E7E7E;
 }
 
-.btn-selected {
+.btn-selected, a.btn-selected {
   border: 1px solid #7E7E7E;
   height: 45px;
-  background-color:  #fff;
+  background-color: #fff;
   border-radius: 5px;
   padding: 10px 40px;
 }
 
-.btn-selected label {
+.btn-selected label, a.btn-selected label {
   font-weight: 600;
 }
 
+.btn-primary:disabled {
+  background-color: #DDDDDD;
+  color: #585858;
+  border: 1px solid #7E7E7E;
+  cursor: not-allowed;
+}
 /*Button Selected Effect*/
 .button-container {
   display: block;
