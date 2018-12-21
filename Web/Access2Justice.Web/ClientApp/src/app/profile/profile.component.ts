@@ -11,6 +11,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap';
+import { MapService } from '../shared/map/map.service';
 
 @Component({
   selector: 'app-profile',
@@ -38,6 +39,7 @@ export class ProfileComponent implements OnInit {
   showRemove: boolean;
   modalRef: BsModalRef;
   @ViewChild('template') public templateref: TemplateRef<any>;
+  subscription: any;
 
   constructor(
     private personalizedPlanService: PersonalizedPlanService,
@@ -47,7 +49,8 @@ export class ProfileComponent implements OnInit {
     private router: Router,
     private msalService: MsalService,
     private route: ActivatedRoute,
-    private modalService: BsModalService) {
+    private modalService: BsModalService,
+    private mapService: MapService) {
     if (this.msalService.getUser()) {
       this.route.data.map(data => data.cres)
         .subscribe(response => {
@@ -159,6 +162,12 @@ export class ProfileComponent implements OnInit {
 
   close() {
     this.modalRef.hide();
+  }
+
+  continue() {
+    this.modalRef.hide();
+    //this.router.navigateByUrl('/topics');
+    this.router.navigateByUrl('/subtopics/');
   }
 
   ngOnInit() {
