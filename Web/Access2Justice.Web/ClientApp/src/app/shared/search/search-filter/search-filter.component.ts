@@ -65,8 +65,13 @@ export class SearchFilterComponent implements OnInit, OnChanges {
 
   sendSortCriteria(value, resourceType) {
     if (this.sortParam === resourceType) {
-      this.isSort = !(this.isSort);
-      this.orderBy = this.isSort ? 'ASC' : 'DESC';
+      //this.isSort = !(this.isSort);
+      //this.orderBy = this.isSort ? 'ASC' : 'DESC';
+      if (this.orderBy === 'ASC') {
+        this.orderBy = 'DESC';
+      } else if(this.orderBy === 'DESC') {
+        this.orderBy = 'ASC';
+      }
     } else {
       this.isSort = true;
       this.orderBy = 'ASC';

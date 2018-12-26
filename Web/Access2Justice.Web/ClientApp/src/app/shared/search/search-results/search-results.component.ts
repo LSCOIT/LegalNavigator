@@ -186,7 +186,8 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   }
 
   filterSearchResults(event) {
-    if (event.sortParam !== this.searchResultDetails.sortParam || event.order !== this.searchResultDetails.order) {
+    this.sortType = event;
+    if (event.sortParam !== this.searchResultDetails.sortParam || event.order !== this.global.searchResultDetails.order) {
       this.searchResultDetails = event;
       this.global.searchResultDetails.sortParam = this.searchResultDetails.sortParam;
       this.global.searchResultDetails.order = this.searchResultDetails.order;
