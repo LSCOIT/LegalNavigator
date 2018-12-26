@@ -57,7 +57,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var actualResult = JsonConvert.SerializeObject(response.Result);
             //assert
             Assert.Equal(expectedResult, actualResult);
-        }
+        }                 
     }
 }
 
