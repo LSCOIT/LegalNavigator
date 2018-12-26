@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChildren, QueryList, OnChanges } from '@angular/core';
 import { Global } from '../../../global';
 
 @Component({
@@ -6,10 +6,10 @@ import { Global } from '../../../global';
   templateUrl: './search-filter.component.html',
   styleUrls: ['./search-filter.component.css']
 })
-export class SearchFilterComponent implements OnInit {
+export class SearchFilterComponent implements OnInit, OnChanges {
   @Input()
   resourceResults: any;
-  @Input() searchResultDetails: any;
+  @Input() searchResults: any;
   @Output() notifyFilterCriteria = new EventEmitter<object>();
   selectedSortCriteria: string = 'A-Z';
   selectedFilterCriteria: string = 'All';
@@ -52,13 +52,13 @@ export class SearchFilterComponent implements OnInit {
     this.resetButtonColor();
     event.target["classList"].add('button-highlight');
     this.filterParam = resourceType;
-    if (this.sortParam === resourceType) {
-      this.isSort = !(this.isSort);
-      this.orderBy = this.isSort ? 'ASC' : 'DESC';
-    } else {
-      this.isSort = true;
-      this.orderBy = 'ASC';
-    }
+    //if (this.sortParam === resourceType) {
+    //  //this.isSort = !(this.isSort);
+    //  this.orderBy = this.isSort ? 'ASC' : 'DESC';
+    //} else {
+    //  this.isSort = true;
+    //  this.orderBy = 'ASC';
+    //}
     this.selectedFilterCriteria = this.filterParam;
     this.notifyFilterCriteria.emit({ filterParam: this.filterParam, sortParam: this.sortParam, order: this.orderBy });
   }
@@ -72,16 +72,34 @@ export class SearchFilterComponent implements OnInit {
       this.orderBy = 'ASC';
     }
     this.sortParam = resourceType;
+    if (value === "name") {
+      value = 'A-Z';
+    } else if(value === "date") {
+      value = 'Newest to Oldest'
+    }
     this.selectedSortCriteria = value;
     this.notifyFilterCriteria.emit({ filterParam: this.filterParam, sortParam: this.sortParam, order: this.orderBy });
   }
 
   ngOnInit() {
-    this.selectedFilterCriteria = this.searchResultDetails.sortParam;
-    this.orderBy = this.searchResultDetails.order;
+    //this.selectedSortCriteria = this.searchResultDetails.sortParam;
+    //this.orderBy = this.searchResultDetails.order;
   }
 
   ngAfterViewInit() {
     this.setInitialHighlightButton();
+  }
+
+  ngOnChanges() {
+    if (this.searchResults.searchFilter) {
+      this.sortParam = this.searchResults.searchFilter.OrderByField;
+      if (this.searchResults.searchFilter.OrderByField === "name") {
+        this.searchResults.searchFilter.OrderByField = 'A-Z';
+      } else if (this.searchResults.searchFilter.OrderByField === "date") {
+        this.searchResults.searchFilter.OrderByField = 'Newest to Oldest'
+      }
+      this.selectedSortCriteria = this.searchResults.searchFilter.OrderByField;
+      this.orderBy = this.searchResults.searchFilter.OrderBy;
+    }
   }
 }

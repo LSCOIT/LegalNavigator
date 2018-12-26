@@ -21,6 +21,9 @@ namespace Access2Justice.Api.ViewModels
         [JsonProperty(PropertyName = "topicIds")]
         public dynamic TopicIds { get; set; }
 
+        [JsonProperty(PropertyName = "searchFilter")]
+        public dynamic SearchFilter { get; set; }
+
         public PagedResourceViewModel()
         {
             Resources = JsonConvert.DeserializeObject(Constants.EmptyArray);

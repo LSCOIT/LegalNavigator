@@ -134,12 +134,15 @@ namespace Access2Justice.Api.BusinessLogic
                 var groupedResourceType = await GetResourcesCountAsync(resourceFilter);
                 pagedResourceViewModel.ResourceTypeFilter = JsonUtilities.DeserializeDynamicObject<dynamic>(groupedResourceType);
             }
+            dynamic searchFilter = new JObject();
+            searchFilter.OrderByField = resourceFilter.OrderByField;
+            searchFilter.OrderBy = resourceFilter.OrderBy;
             PagedResources pagedResources = await ApplyPaginationAsync(resourceFilter);
             dynamic serializedToken = pagedResources?.ContinuationToken ?? Constants.EmptyArray;
             pagedResourceViewModel.Resources = JsonUtilities.DeserializeDynamicObject<dynamic>(pagedResources?.Results);
             pagedResourceViewModel.ContinuationToken = JsonConvert.DeserializeObject(serializedToken);
             pagedResourceViewModel.TopicIds = JsonUtilities.DeserializeDynamicObject<dynamic>(pagedResources?.TopicIds);
-
+            pagedResourceViewModel.SearchFilter = searchFilter;
             return JObject.FromObject(pagedResourceViewModel).ToString();
         }
 

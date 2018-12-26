@@ -26,7 +26,7 @@
   </div>
   <div class="row" *ngIf="isInternalResource  || isPersonalizedresource">
     <div class="col-sm-12">
-      <app-search-filter (notifyFilterCriteria)='filterSearchResults($event)' [resourceResults]="resourceResults" [initialResourceFilter]="initialResourceFilter" [searchResultDetails]="searchResultDetails" ></app-search-filter>
+      <app-search-filter (notifyFilterCriteria)='filterSearchResults($event)' [resourceResults]="resourceResults" [initialResourceFilter]="initialResourceFilter" [searchResults]="searchResults" ></app-search-filter>
     </div>
   </div>
   <div class="row">

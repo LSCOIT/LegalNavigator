@@ -31,7 +31,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   filterType: string = environment.All;
   resourceTypeFilter: any[];
   resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: {}, IsResourceCountRequired: false, IsOrder: true, OrderByField: 'name', OrderBy: 'ASC' };
-  luisInput: ILuisInput = { Sentence: '', Location: {}, LuisTopScoringIntent: '', TranslateFrom: '', TranslateTo: '', OrderByField: 'name', OrderBy:'ASC' };
+  luisInput: ILuisInput = { Sentence: '', Location: {}, LuisTopScoringIntent: '', TranslateFrom: '', TranslateTo: '', OrderByField: 'name', OrderBy: 'ASC' };
   location: any;
   topicIds: any[];
   isServiceCall: boolean;
@@ -57,7 +57,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   guidedAssistantId: string;
   locationDetails: LocationDetails;
   orderBy: string;
-  searchResultDetails: any = { filterParam: 'All', sortParam: 'name', order: 'ASC', topIntent:'' };
+  searchResultDetails: any = { filterParam: 'All', sortParam: 'name', order: 'ASC', topIntent: '' };
   isBindData: boolean;
 
   constructor(
@@ -136,6 +136,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     } else {
       this.filterType = environment.All;
     }
+    console.log(this.searchResults);
     // need to revisit this logic..
     this.resourceResults = this.searchResults.resourceTypeFilter;
     this.navigateDataService.setData(undefined);
@@ -196,6 +197,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
         this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
       }
       this.luisInput.Location = this.locationDetails.location;
+      this.searchResults.topIntent = this.topIntent;
       this.luisInput.LuisTopScoringIntent = this.searchResults.topIntent;
       this.luisInput.Sentence = this.searchResults.topIntent ? this.searchResults.topIntent : this.global.searchResultDetails.topIntent;
       this.luisInput.OrderByField = this.global.searchResultDetails.sortParam;
@@ -204,7 +206,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
         .subscribe(response => {
           this.spinner.hide();
           if (response != undefined) {
-            this.searchResults = response; 
+            this.searchResults = response;
             this.navigateDataService.setData(this.searchResults);
             //this.bindData();
             this.router.navigateByUrl('/searchRefresh', { skipLocationChange: true })
@@ -447,11 +449,15 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     this.bindData();
     this.notifyLocationChange();
     this.showRemoveOption = this.showRemove;
-    if (this.searchResults.searchFilter.OrderByField === 'modifiedTimeStamp') {
-      this.searchResults.searchFilter.OrderByField = 'date';
+    if (this.searchResults.searchFilter) {
+      if (this.searchResults.searchFilter.OrderByField === 'modifiedTimeStamp') {
+        this.searchResults.searchFilter.OrderByField = 'date';
+      }
     }
-    this.global.searchResultDetails.sortParam = this.searchResults.searchFilter.OrderByField;
-    this.global.searchResultDetails.order = this.searchResults.searchFilter.OrderBy;
+    if (this.searchResults.searchFilter) {
+      this.global.searchResultDetails.sortParam = this.searchResults.searchFilter.OrderByField;
+      this.global.searchResultDetails.order = this.searchResults.searchFilter.OrderBy;
+    }
   }
 
   ngOnDestroy() {
