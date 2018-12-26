@@ -11,15 +11,14 @@ namespace Access2Justice.DataImportTool.Authentication
     public class Authentication
     {
         private PublicClientApplication app = null;
-        private static string aadInstance = ConfigurationManager.AppSettings["ida:AADInstance"];
-        private static string tenant = ConfigurationManager.AppSettings["ida:Tenant"];
-        private static string clientId = ConfigurationManager.AppSettings["ida:ClientId"];
+        private static readonly string aadInstance = ConfigurationManager.AppSettings["ida:AADInstance"];
+        private static readonly string tenant = ConfigurationManager.AppSettings["ida:Tenant"];
+        private static readonly string clientId = ConfigurationManager.AppSettings["ida:ClientId"];
 
         private static string authority = String.Format(CultureInfo.InvariantCulture, aadInstance, tenant);
 
-        private static string todoListScope = ConfigurationManager.AppSettings["todo:TodoListScope"];
-        private static string todoListBaseAddress = ConfigurationManager.AppSettings["todo:TodoListBaseAddress"];
-        private static string[] scopes = new string[] { todoListScope };
+        private static readonly string todoListScope = ConfigurationManager.AppSettings["ida:Scopes"];
+        private static readonly string[] scopes = new string[] { todoListScope };
         
         public Authentication()
         {
