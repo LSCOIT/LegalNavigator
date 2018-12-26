@@ -43,7 +43,7 @@
             this.button1.TabIndex = 0;
             this.button1.Text = "Login";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.Button1_Click);
+            this.button1.Click += new System.EventHandler(this.Login_Click);
             // 
             // button2
             // 
@@ -53,7 +53,7 @@
             this.button2.TabIndex = 1;
             this.button2.Text = "Import Topics";
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.Button2_Click);
+            this.button2.Click += new System.EventHandler(this.ImportTopics_Click);
             // 
             // label1
             // 
@@ -76,7 +76,7 @@
             this.button3.TabIndex = 3;
             this.button3.Text = "Import Resources";
             this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.Button3_Click);
+            this.button3.Click += new System.EventHandler(this.ImportResources_Click);
             // 
             // DataImport
             // 
@@ -87,6 +87,7 @@
             this.Controls.Add(this.button1);
             this.Name = "DataImport";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Data Import Tool";
             this.ResumeLayout(false);
             this.PerformLayout();
 
