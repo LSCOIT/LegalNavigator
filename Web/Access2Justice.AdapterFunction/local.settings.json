@@ -3,6 +3,7 @@
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "AzureWebJobsDashboard": "UseDevelopmentStorage=true",
-    "AdapterApiUrl": "https://a2jdevintegrationapi.azurewebsites.net/api/service-providers/load-partners-data/{0}"
+    "AdapterApiUrl": "https://a2jdevintegrationapi.azurewebsites.net/api/service-providers/load-partners-data/{0}",
+    "TopicName": "Child Advocacy Centers"
   }
 }
