@@ -250,6 +250,7 @@
       <Link>Models\Topic.cs</Link>
     </Compile>
     <Compile Include="Authentication\Authentication.cs" />
+    <Compile Include="Authentication\TokenCacheHelper.cs" />
     <Compile Include="BusinessLogic\InsertResources.cs" />
     <Compile Include="BusinessLogic\InsertTopics.cs" />
     <Compile Include="BusinessLogic\ResourceBusinessLogic.cs" />

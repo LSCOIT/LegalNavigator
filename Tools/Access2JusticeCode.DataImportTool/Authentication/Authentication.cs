@@ -22,7 +22,7 @@ namespace Access2Justice.DataImportTool.Authentication
         
         public Authentication()
         {
-            app = new PublicClientApplication(clientId, authority);
+            app = new PublicClientApplication(clientId, authority, TokenCacheHelper.GetUserCache());
         }
 
         public async Task<AuthenticationResult> Login()
@@ -77,21 +77,14 @@ namespace Access2Justice.DataImportTool.Authentication
 
         public async Task<string> Logout()
         {
-            try
-            {
-                var accounts = await app.GetAccountsAsync().ConfigureAwait(false);
+            var accounts = await app.GetAccountsAsync().ConfigureAwait(false);
 
-                while (accounts.Any())
-                {
-                    await app.RemoveAsync(accounts.First());
-                    accounts = await app.GetAccountsAsync();
-                }
-                return "";
+            while (accounts.Any())
+            {
+                await app.RemoveAsync(accounts.First());
+                accounts = await app.GetAccountsAsync();
             }
-            catch (Exception ex) {
-                MessageBox.Show(ex.Message);
-                return "";
-            }
+            return "";
         }
     }
 }
