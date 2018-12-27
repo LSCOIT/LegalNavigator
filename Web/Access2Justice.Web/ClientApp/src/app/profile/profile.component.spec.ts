@@ -58,6 +58,9 @@ describe('ProfileComponent', () => {
     Location: mocklocation,
     IsResourceCountRequired: false,
     ResourceIds: mockresourceids,
+    IsOrder: false,
+    OrderByField: "",
+    OrderBy:""
   };
   let mockwebresources = ["test1", "test2"];
   let mockresources = "testResources";

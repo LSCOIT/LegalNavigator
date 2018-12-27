@@ -29,7 +29,7 @@ import { StateCodeService } from '../../state-code.service';
 import { PipeModule } from '../../pipe/pipe.module';
 import { BsDropdownModule } from 'ngx-bootstrap';
 
-describe('SearchResultsComponent', () => {
+fdescribe('SearchResultsComponent', () => {
   let component: SearchResultsComponent;
   let fixture: ComponentFixture<SearchResultsComponent>;
   let searchService: SearchService;

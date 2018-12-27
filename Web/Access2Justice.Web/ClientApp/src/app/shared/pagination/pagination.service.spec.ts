@@ -28,7 +28,10 @@ describe('PaginationService', () => {
     ResourceIds: mockResourceIds,
     PageNumber: 1,
     Location: mockLocation,
-    IsResourceCountRequired: false
+    IsResourceCountRequired: false,
+    IsOrder: true,
+    OrderByField: "name",
+    OrderBy: "ASC"
   }; 
   
   beforeEach(() => {

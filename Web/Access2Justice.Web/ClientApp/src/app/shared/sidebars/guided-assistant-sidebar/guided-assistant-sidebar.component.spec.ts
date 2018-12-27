@@ -38,7 +38,10 @@ describe('GuidedAssistantSidebarComponent', () => {
     ResourceIds: [],
     PageNumber: 0,
     Location: mockMapLocation,
-    IsResourceCountRequired: false
+    IsResourceCountRequired: false,
+    IsOrder: true,
+    OrderByField: "name",
+    OrderBy: "ASC"
   };
   let mockresourcesInput: IResourceFilter = {
     ResourceType: 'All',
@@ -47,7 +50,10 @@ describe('GuidedAssistantSidebarComponent', () => {
     ResourceIds: [],
     PageNumber: 0,
     Location: mockMapLocation,
-    IsResourceCountRequired: true
+    IsResourceCountRequired: true,
+    IsOrder: true,
+    OrderByField: "name",
+    OrderBy: "ASC"
   };
   let mockRouter = {
     navigate:jasmine.createSpyObj('Router', ['navigateByUrl'])

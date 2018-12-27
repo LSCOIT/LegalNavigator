@@ -19,7 +19,6 @@ export class SearchFilterComponent implements OnInit, OnChanges {
   @Input() initialResourceFilter: string;
   buttonToHighlight = [];
   orderBy: string = "ASC";
-  isSort: boolean = true;
 
   constructor(private global: Global) { }
 
@@ -52,43 +51,36 @@ export class SearchFilterComponent implements OnInit, OnChanges {
     this.resetButtonColor();
     event.target["classList"].add('button-highlight');
     this.filterParam = resourceType;
-    //if (this.sortParam === resourceType) {
-    //  //this.isSort = !(this.isSort);
-    //  this.orderBy = this.isSort ? 'ASC' : 'DESC';
-    //} else {
-    //  this.isSort = true;
-    //  this.orderBy = 'ASC';
-    //}
     this.selectedFilterCriteria = this.filterParam;
     this.notifyFilterCriteria.emit({ filterParam: this.filterParam, sortParam: this.sortParam, order: this.orderBy });
   }
 
   sendSortCriteria(value, resourceType) {
     if (this.sortParam === resourceType) {
-      //this.isSort = !(this.isSort);
-      //this.orderBy = this.isSort ? 'ASC' : 'DESC';
       if (this.orderBy === 'ASC') {
         this.orderBy = 'DESC';
       } else if(this.orderBy === 'DESC') {
         this.orderBy = 'ASC';
       }
     } else {
-      this.isSort = true;
       this.orderBy = 'ASC';
     }
     this.sortParam = resourceType;
-    if (value === "name") {
-      value = 'A-Z';
-    } else if(value === "date") {
-      value = 'Newest to Oldest'
-    }
-    this.selectedSortCriteria = value;
+    this.selectedSortCriteria = this.getOrderByFieldName(value);
     this.notifyFilterCriteria.emit({ filterParam: this.filterParam, sortParam: this.sortParam, order: this.orderBy });
   }
 
+  getOrderByFieldName(inputFieldName): string {
+    let orderByField = '';
+    if (inputFieldName === "name") {
+      orderByField = 'A-Z';
+    } else if (inputFieldName === "date") {
+      orderByField = 'Newest to Oldest'
+    }
+    return orderByField;
+  }
+
   ngOnInit() {
-    //this.selectedSortCriteria = this.searchResultDetails.sortParam;
-    //this.orderBy = this.searchResultDetails.order;
   }
 
   ngAfterViewInit() {
@@ -98,12 +90,7 @@ export class SearchFilterComponent implements OnInit, OnChanges {
   ngOnChanges() {
     if (this.searchResults.searchFilter) {
       this.sortParam = this.searchResults.searchFilter.OrderByField;
-      if (this.searchResults.searchFilter.OrderByField === "name") {
-        this.searchResults.searchFilter.OrderByField = 'A-Z';
-      } else if (this.searchResults.searchFilter.OrderByField === "date") {
-        this.searchResults.searchFilter.OrderByField = 'Newest to Oldest'
-      }
-      this.selectedSortCriteria = this.searchResults.searchFilter.OrderByField;
+      this.selectedSortCriteria = this.getOrderByFieldName(this.searchResults.searchFilter.OrderByField);
       this.orderBy = this.searchResults.searchFilter.OrderBy;
     }
   }

@@ -3,10 +3,12 @@ import { NO_ERRORS_SCHEMA, QueryList } from '@angular/core';
 import { SearchFilterComponent } from './search-filter.component';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute } from '@angular/router';
+import { Global } from '../../../global';
 
-describe('SearchFilterComponent', () => {
+fdescribe('SearchFilterComponent', () => {
   let component: SearchFilterComponent;
   let fixture: ComponentFixture<SearchFilterComponent>;
+  let global;
   
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -18,7 +20,8 @@ describe('SearchFilterComponent', () => {
             snapshot: { params: { id: 1 } }, 
             paramMap: Observable.of({ get: () => 1 }) 
           } 
-        }
+        },
+        { provide: Global, useValue: global }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

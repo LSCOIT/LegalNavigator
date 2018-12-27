@@ -136,7 +136,6 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     } else {
       this.filterType = environment.All;
     }
-    console.log(this.searchResults);
     // need to revisit this logic..
     this.resourceResults = this.searchResults.resourceTypeFilter;
     this.navigateDataService.setData(undefined);
@@ -187,7 +186,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
 
   filterSearchResults(event) {
     this.sortType = event;
-    if (event.sortParam !== this.searchResultDetails.sortParam || event.order !== this.global.searchResultDetails.order) {
+    if (event.sortParam !== this.global.searchResultDetails.sortParam || event.order !== this.global.searchResultDetails.order) {
       this.searchResultDetails = event;
       this.global.searchResultDetails.sortParam = this.searchResultDetails.sortParam;
       this.global.searchResultDetails.order = this.searchResultDetails.order;
@@ -209,7 +208,6 @@ export class SearchResultsComponent implements OnInit, OnChanges {
           if (response != undefined) {
             this.searchResults = response;
             this.navigateDataService.setData(this.searchResults);
-            //this.bindData();
             this.router.navigateByUrl('/searchRefresh', { skipLocationChange: true })
               .then(() =>
                 this.router.navigate(['/search'])
@@ -217,8 +215,6 @@ export class SearchResultsComponent implements OnInit, OnChanges {
           }
         });
     }
-    //this.sortType = event;
-    //this.orderBy = event.order;
     if (this.isInternalResource && event != undefined && event.filterParam != undefined) {
       this.page = 1;
       this.currentPage = 0;
@@ -384,7 +380,6 @@ export class SearchResultsComponent implements OnInit, OnChanges {
       this.currentPage = n;
     }
     this.global.searchResultDetails.topIntent = this.searchResults.topIntent;
-    //console.log(this.searchResultDetails);
     this.page = n;
     if (this.isWebResource) {
       this.searchResource(this.calculateOffsetValue(n));
@@ -396,7 +391,6 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   onNext(): void {
     this.currentPage = this.page;
     this.page++;
-    //this.searchResultDetails.topIntent = this.searchResults.topIntent;
     if (this.isWebResource) {
       this.searchResource(this.calculateOffsetValue(this.page));
     } else {
@@ -407,7 +401,6 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   onPrev(): void {
     this.currentPage = this.page;
     this.page--;
-    //this.searchResultDetails.topIntent = this.searchResults.topIntent;
     if (this.isWebResource) {
       this.searchResource(this.calculateOffsetValue(this.page));
     } else {
