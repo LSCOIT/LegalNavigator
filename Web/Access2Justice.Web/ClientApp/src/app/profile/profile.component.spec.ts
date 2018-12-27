@@ -294,7 +294,7 @@ describe('ProfileComponent', () => {
         "topicId": "69be8e7c-975b-43c8-9af3-f61887a33ad3",
         "name": "Protective Order",
         "icon": null,
-        "essentialReadings": [
+        "additionalReadings": [
           {
             "text": "Domestic Violence - What it is",
             "url": "https://www.thehotline.org/is-this-abuse/abuse-defined/"
@@ -330,7 +330,7 @@ describe('ProfileComponent', () => {
         "topicId": "ba74f857-eb7b-4dd6-a021-5b3e4525e3e4",
         "name": "Divorce",
         "icon": null,
-        "essentialReadings": [
+        "additionalReadings": [
           {
             "text": "Domestic Violence - What it is",
             "url": "https://www.thehotline.org/is-this-abuse/abuse-defined/"
@@ -356,7 +356,7 @@ describe('ProfileComponent', () => {
         "topicId": "69be8e7c-975b-43c8-9af3-f61887a33ad3",
         "name": "Protective Order",
         "icon": null,
-        "essentialReadings": [
+        "additionalReadings": [
           {
             "text": "Domestic Violence - What it is",
             "url": "https://www.thehotline.org/is-this-abuse/abuse-defined/"
@@ -392,7 +392,7 @@ describe('ProfileComponent', () => {
         "topicId": "ba74f857-eb7b-4dd6-a021-5b3e4525e3e4",
         "name": "Divorce",
         "icon": null,
-        "essentialReadings": [
+        "additionalReadings": [
           {
             "text": "Domestic Violence - What it is",
             "url": "https://www.thehotline.org/is-this-abuse/abuse-defined/"
@@ -420,7 +420,7 @@ describe('ProfileComponent', () => {
         "topicId": "69be8e7c-975b-43c8-9af3-f61887a33ad3",
         "name": "Protective Order",
         "icon": null,
-        "essentialReadings": [
+        "additionalReadings": [
           {
             "text": "Domestic Violence - What it is",
             "url": "https://www.thehotline.org/is-this-abuse/abuse-defined/"

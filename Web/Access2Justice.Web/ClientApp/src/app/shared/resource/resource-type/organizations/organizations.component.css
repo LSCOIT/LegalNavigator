@@ -72,6 +72,10 @@ h2 {
   margin-top: 20px;
 }
 
+.go-to-form-btn {
+  margin: 0;
+}
+
 @media only screen and (min-width : 768px) {
   .user-action {
     margin-top: 10px;

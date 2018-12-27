@@ -20,6 +20,8 @@ import { MsalService } from '@azure/msal-angular';
 import { SaveButtonService } from '../../user-action/save-button/save-button.service';
 import { NavigateDataService } from '../../../navigate-data.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { of } from 'rxjs/observable/of';
 
 describe('OrganizationsComponent', () => {
   let component: OrganizationsComponent;
@@ -29,30 +31,27 @@ describe('OrganizationsComponent', () => {
   let msalService;
   let mockRouter;
   let mockResource = {
-    resources:
+    "id": "19a02209-ca38-4b74-bd67-6ea941d41518",
+    "name": "Alaska Law Help",
+    "resourceCategory": "Civil Legal Services",
+    "description": "",
+    "url": "https://alaskalawhelp.org/",
+    "topicTags": [
       {
-        "id": "19a02209-ca38-4b74-bd67-6ea941d41518",
-        "name": "Alaska Law Help",
-        "resourceCategory": "Civil Legal Services",
-        "description": "",
-        "url": "https://alaskalawhelp.org/",
-        "topicTags": [
-          {
-            "id": "e1fdbbc6-d66a-4275-9cd2-2be84d303e12"
-          }
-        ],
-        "location": [
-          {
-            "state": "Hawaii",
-            "city": "Kalawao",
-            "zipCode": "96761"
-          }
-        ],
-        "icon": "./assets/images/resources/resource.png",
-        "address": "2900 E Parks Hwy Wasilla, AK 99654",
-        "telephone": "907-279-2457"
-      },
-    "url": "https://alaskalawhelp.org/"
+        "id": "e1fdbbc6-d66a-4275-9cd2-2be84d303e12"
+      }
+    ],
+    "location": [
+      {
+        "state": "Hawaii",
+        "city": "Kalawao",
+        "zipCode": "96761"
+      }
+    ],
+    "icon": "./assets/images/resources/resource.png",
+    "address": "2900 E Parks Hwy Wasilla, AK 99654",
+    "telephone": "907-279-2457",
+    "reviewer": [],
   };
   let mockUrl = "https://www.microsoft.com/en-in/windows";
   let mockToastr;
@@ -60,7 +59,7 @@ describe('OrganizationsComponent', () => {
   msalService = jasmine.createSpyObj(['getUser']);
   beforeEach(async(() => {
     mockBsModalService = jasmine.createSpyObj(['show']);
-    mockMapResultsService = jasmine.createSpyObj(['getMap']);
+    mockMapResultsService = jasmine.createSpyObj(['getLocationDetails', 'displayMapResults', 'getAddress']);
     mockToastr = jasmine.createSpyObj(['success']);
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
@@ -93,7 +92,8 @@ describe('OrganizationsComponent', () => {
         NavigateDataService,
         { provide: Router, useValue: mockRouter },
         NgxSpinnerService
-      ]
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
 
@@ -101,6 +101,7 @@ describe('OrganizationsComponent', () => {
     component = fixture.componentInstance;
     component.resource = mockResource;
     component.urlOrigin = mockUrl;
+    spyOn(component, 'ngOnInit');
     fixture.detectChanges();
   }));
 

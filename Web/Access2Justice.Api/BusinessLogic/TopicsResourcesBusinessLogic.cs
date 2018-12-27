@@ -42,6 +42,11 @@ namespace Access2Justice.Api.BusinessLogic
             return await dbClient.FindItemsWhereContainsWithLocationAsync(dbSettings.TopicsCollectionId, "keywords", keyword, location);
         }
 
+        public async Task<dynamic> GetTopicsAsync(string stateCode)
+        {
+            return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.TopicsCollectionId, Constants.Location, Constants.StateCode, stateCode, true);
+        }
+
         public async Task<dynamic> GetTopLevelTopicsAsync(Location location)
         {
             return await dbClient.FindItemsWhereWithLocationAsync(dbSettings.TopicsCollectionId, Constants.ParentTopicId, "", location);
@@ -401,7 +406,7 @@ namespace Access2Justice.Api.BusinessLogic
             Article articles = new Article();
             Video videos = new Video();
             Organization organizations = new Organization();
-            EssentialReading essentialReadings = new EssentialReading();
+            AdditionalReading additionalReadings = new AdditionalReading();
             RelatedLink relatedLinks = new RelatedLink();
 
             foreach (var resourceObject in resourceObjects)
@@ -503,10 +508,10 @@ namespace Access2Justice.Api.BusinessLogic
                     }
                 }
 
-                else if (resourceObject.resourceType == "Essential Readings")
+                else if (resourceObject.resourceType == "Additional Readings")
                 {
-                    essentialReadings = UpsertResourcesEssentialReadings(resourceObject);
-                    var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(essentialReadings);
+                    additionalReadings = UpsertResourcesAdditionalReadings(resourceObject);
+                    var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(additionalReadings);
                     List<string> propertyNames = new List<string>() { Constants.Id, Constants.ResourceType };
                     List<string> values = new List<string>() { id, resourceType };
                     var resourceDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourcesCollectionId, propertyNames, values);
@@ -700,16 +705,16 @@ namespace Access2Justice.Api.BusinessLogic
             return organizations;
         }
 
-        public dynamic UpsertResourcesEssentialReadings(dynamic resourceObject)
+        public dynamic UpsertResourcesAdditionalReadings(dynamic resourceObject)
         {
-            EssentialReading essentialReadings = new EssentialReading();
+            AdditionalReading additionalReadings = new AdditionalReading();
             List<TopicTag> topicTags = new List<TopicTag>();
             List<Location> locations = new List<Location>();
             dynamic references = GetReferences(resourceObject);
             topicTags = references[0];
             locations = references[1];
 
-            essentialReadings = new EssentialReading()
+            additionalReadings = new AdditionalReading()
             {
                 ResourceId = resourceObject.id == "" ? Guid.NewGuid() : resourceObject.id,
                 Name = resourceObject.name,
@@ -723,8 +728,8 @@ namespace Access2Justice.Api.BusinessLogic
                 CreatedBy = resourceObject.createdBy,
                 ModifiedBy = resourceObject.modifiedBy
             };
-            essentialReadings.Validate();
-            return essentialReadings;
+            additionalReadings.Validate();
+            return additionalReadings;
         }
 
         public dynamic UpsertResourcesRelatedLinks(dynamic resourceObject)
