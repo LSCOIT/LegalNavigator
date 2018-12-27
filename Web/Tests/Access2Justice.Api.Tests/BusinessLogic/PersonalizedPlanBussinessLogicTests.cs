@@ -20,7 +20,6 @@ using Xunit;
 
 namespace Access2Justice.Api.Tests.BusinessLogic
 {
-    //Todo this entire class must be revisited after the new personalized plan logic is in place.
     public class PersonalizedPlanBussinessLogicTests
     {
         private readonly IBackendDatabaseService dbService;
