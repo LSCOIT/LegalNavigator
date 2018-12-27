@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PersonalizedPlanService } from '../guided-assistant/personalized-plan/personalized-plan.service';
 import { PersonalizedPlanTopic, PersonalizedPlan } from '../guided-assistant/personalized-plan/personalized-plan';
 import { IResourceFilter } from '../shared/search/search-results/search-results.model';
@@ -10,8 +10,6 @@ import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap';
-import { MapService } from '../shared/map/map.service';
 
 @Component({
   selector: 'app-profile',
@@ -37,9 +35,6 @@ export class ProfileComponent implements OnInit {
   resourceIds: string[] = [];
   webResources: any[] = [];
   showRemove: boolean;
-  modalRef: BsModalRef;
-  @ViewChild('template') public templateref: TemplateRef<any>;
-  subscription: any;
 
   constructor(
     private personalizedPlanService: PersonalizedPlanService,
@@ -48,9 +43,7 @@ export class ProfileComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private router: Router,
     private msalService: MsalService,
-    private route: ActivatedRoute,
-    private modalService: BsModalService,
-    private mapService: MapService) {
+    private route: ActivatedRoute) {
     if (this.msalService.getUser()) {
       this.route.data.map(data => data.cres)
         .subscribe(response => {
@@ -160,16 +153,6 @@ export class ProfileComponent implements OnInit {
       });
   }
 
-  close() {
-    this.modalRef.hide();
-  }
-
-  continue() {
-    this.modalRef.hide();
-    //this.router.navigateByUrl('/topics');
-    this.router.navigateByUrl('/subtopics/');
-  }
-
   ngOnInit() {
     if (!this.msalService.getUser() && !this.global.isShared) {      
       this.msalService.loginRedirect(environment.consentScopes);
@@ -183,9 +166,6 @@ export class ProfileComponent implements OnInit {
       this.userName = this.global.sharedUserName;
       this.getPersonalizedPlan();
       this.showRemove = true;
-    }
-    if (!this.global.locationMatch) {
-      this.modalRef = this.modalService.show(this.templateref);
     }
   }
 
