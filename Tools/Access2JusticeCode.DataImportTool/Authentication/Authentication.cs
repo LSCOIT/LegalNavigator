@@ -40,7 +40,7 @@ namespace Access2Justice.DataImportTool.Authentication
             AuthenticationResult result = null;
             try
             {
-                result = await app.AcquireTokenAsync(scopes, accounts.FirstOrDefault(), UIBehavior.SelectAccount, string.Empty);
+                result = await app.AcquireTokenAsync(scopes, accounts.FirstOrDefault(), UIBehavior.SelectAccount, string.Empty).ConfigureAwait(false); ;
                 return result;
             }
             catch (MsalException ex)
