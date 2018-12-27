@@ -1,4 +1,9 @@
-﻿namespace Access2Justice.Api.Tests.TestData
+﻿using Access2Justice.Api.ViewModels;
+using Access2Justice.Shared.Models;
+using System;
+using System.Collections.Generic;
+
+namespace Access2Justice.Api.Tests.TestData
 {
     public static class CuratedExperienceTestData
     {
@@ -171,10 +176,159 @@
 
         public static string CuratedExperienceAnswersSchema
         {
-            get {
+            get
+            {
                 return
                   " {\r\n  'id': '288af4da-06bb-4655-aa91-41314e248d6b',\r\n  'curatedExperienceId': '9a6a6131-657d-467d-b09b-c570b7dad242',\r\n  'answers': [\r\n    {\r\n      'answerButtonId': 'f3a1e369-edba-4152-bbc7-a52e8e77b56e',\r\n      'answerFields': []\r\n    },\r\n    {\r\n      'answerButtonId': '2b92e07b-a555-48e8-ad7b-90b99ebc5c96',\r\n      'answerFields': [\r\n        {\r\n          'fieldId': '22cbf2ac-a8d3-48c5-b230-297111e0e85c',\r\n          'value': 'gh'\r\n        },\r\n        {\r\n          'fieldId': '6c8312eb-131d-4cfb-a542-0e3f6d07a1d3',\r\n          'value': 'fgh'\r\n        },\r\n        {\r\n          'fieldId': 'd2a935b4-bb07-494f-9c59-f3115b19d002',\r\n          'value': 'gh'\r\n        }\r\n      ]\r\n    },\r\n    {\r\n      'answerButtonId': 'cafc4de0-91c5-4f67-a59f-bbffc2534236',\r\n      'answerFields': [\r\n        {\r\n          'fieldId': '78da510a-180c-4757-b75d-fd87f470ae76',\r\n          'value': 'fh'\r\n        },\r\n        {\r\n          'fieldId': '6a81a78e-7692-4256-88d6-651dc4e9ce0f',\r\n          'value': 'fh'\r\n        },\r\n        {\r\n          'fieldId': '9471103f-7868-47fd-b1ab-581cc3934493',\r\n          'value': '54'\r\n        }\r\n      ]\r\n    },\r\n    {\r\n      'answerButtonId': 'aa3777d0-e7dd-48dd-afb3-6d61fc172768',\r\n      'answerFields': [\r\n        {\r\n          'fieldId': 'd63e24a3-4a4d-4fec-a1aa-9c72b2fcab5e',\r\n          'value': '46'\r\n        }\r\n      ]\r\n    },\r\n    {\r\n      'answerButtonId': '5846cabb-1826-47bc-b2cd-6168f78fc4f2',\r\n      'answerFields': [\r\n        {\r\n          'fieldId': '0bc5ccb7-e1d2-40b6-b20c-4fbd6cb85de9',\r\n          'value': null\r\n        }\r\n      ]\r\n    },\r\n    {\r\n      'answerButtonId': '98613482-53ad-458f-988c-5b473358c7bf',\r\n      'answerFields': [\r\n        {\r\n          'fieldId': 'cfd6fd1d-2974-43ef-8e3c-6fb0e9a0d8cf',\r\n          'value': '546h'\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}";
             }
         }
+        public static string CuratedExperienceAnswersSchema2
+        {
+            get
+            {
+                return "{{  'id': '288af4da-06bb-4655-aa91-41314e248d6b', 'curatedExperienceId': '9a6a6131-657d-467d-b09b-c570b7dad242',  'answers': [    {      'answerButtonId': 'f3a1e369-edba-4152-bbc7-a52e8e77b56e',      'answerFields': []    },    {      'answerButtonId': '2b92e07b-a555-48e8-ad7b-90b99ebc5c96',      'answerFields': [        {          'fieldId': '22cbf2ac-a8d3-48c5-b230-297111e0e85c',          'value': 'gh'        },        {          'fieldId': '6c8312eb-131d-4cfb-a542-0e3f6d07a1d3',          'value': 'fgh'        },        {          'fieldId': 'd2a935b4-bb07-494f-9c59-f3115b19d002',          'value': 'gh'        }      ]    },    {      'answerButtonId': 'cafc4de0-91c5-4f67-a59f-bbffc2534236',      'answerFields': [        {          'fieldId': '78da510a-180c-4757-b75d-fd87f470ae76',          'value': 'fh'        },        {          'fieldId': '6a81a78e-7692-4256-88d6-651dc4e9ce0f',          'value': 'fh'        },        {          'fieldId': '9471103f-7868-47fd-b1ab-581cc3934493',          'value': '54'        }      ]    },    {      'answerButtonId': 'aa3777d0-e7dd-48dd-afb3-6d61fc172768',      'answerFields': [        {          'fieldId': 'd63e24a3-4a4d-4fec-a1aa-9c72b2fcab5e',          'value': '46'        }      ]    },    {      'answerButtonId': '5846cabb-1826-47bc-b2cd-6168f78fc4f2',      'answerFields': [        {          'fieldId': '0bc5ccb7-e1d2-40b6-b20c-4fbd6cb85de9',          'value': null        }      ]    },    {      'answerButtonId': '98613482-53ad-458f-988c-5b473358c7bf',      'answerFields': [        {          'fieldId': 'cfd6fd1d-2974-43ef-8e3c-6fb0e9a0d8cf',          'value': '546h'        }      ]    }  ]}}";
+            }
+        }
+
+        public static IEnumerable<object[]> CuratedExperienceData()
+        {
+            yield return new object[] { CuratedExperience,CuratedExperience, Guid.Parse("9a6a6131-657d-467d-b09b-c570b7dad242")
+            };
+        }
+        public static CuratedExperience CuratedExperience =>
+          new CuratedExperience
+          {
+              Title = "Test",
+              CuratedExperienceId = Guid.Parse("9a6a6131-657d-467d-b09b-c570b7dad242"),
+              A2jPersonalizedPlanId = Guid.Parse("9a6a6131-657d-467d-b09b-c570b7dad242"),
+              Components = { new CuratedExperienceComponent { ComponentId = Guid.Parse("9a6a6131-657d-467d-b09b-c570b7dad242"), Buttons = { new Button { Id = Guid.Parse("2b92e07b-a555-48e8-ad7b-90b99ebc5c96"), Label = "Continue", Destination = "2-Gender", Name = "3-Address", Value = "btnValue" } }, Code = { }, Fields = { }, Help = "", Learn = "", Name = "", Tags = { }, Text = "" } }
+          };
+        public static CuratedExperience CuratedExperience2 =>
+          new CuratedExperience
+          {
+              Title = "Test",
+              CuratedExperienceId = Guid.Parse("9a6a6131-657d-467d-b09b-c570b7dad242"),
+              A2jPersonalizedPlanId = Guid.Parse("9a6a6131-657d-467d-b09b-c570b7dad242"),
+              Components = { new CuratedExperienceComponent { ComponentId = Guid.Parse("9a6a6131-657d-467d-b09b-c570b7dad242"), Buttons = { new Button { Id = Guid.Parse("2b92e07b-a555-48e8-ad7b-90b99ebc5c96"), Label = "Continue", Destination = "2-Gender", Name = "2-Gender", Value = "btnValue" } }, Code = { }, Fields = { }, Help = "", Learn = "", Name = "2-Gender", Tags = { }, Text = "" } }
+          };
+        public static CuratedExperience CuratedExperience3 =>
+         new CuratedExperience
+         {
+             Title = "Test",
+             CuratedExperienceId = Guid.Parse("9a6a6131-657d-467d-b09b-c570b7dad242"),
+             A2jPersonalizedPlanId = Guid.Parse("9a6a6131-657d-467d-b09b-c570b7dad242"),
+             Components = { new CuratedExperienceComponent { ComponentId = Guid.Parse("9a6a6131-657d-467d-b09b-c570b7dad242"), Buttons = { new Button { Id = Guid.Parse("2b92e07b-a555-48e8-ad7b-90b99ebc5c96"), Label = "Continue", Destination = "2-Gender", Name = "2-Gender", Value = "btnValue" } }, Code = { CodeAfter = "GOTO,PAGE1", CodeBefore = "TESTcODEbEFORE,page2" }, Fields = { }, Help = "", Learn = "", Name = "2-Gender", Tags = { }, Text = "" } }
+         };
+        public static CuratedExperience CuratedExperienceWithNoComponent =>
+         new CuratedExperience
+         {
+             Title = "Test",
+             CuratedExperienceId = Guid.Parse("9a6a6131-657d-467d-b09b-c570b7dad242"),
+             A2jPersonalizedPlanId = Guid.Parse("9a6a6131-657d-467d-b09b-c570b7dad242"),
+             Components = { new CuratedExperienceComponent { ComponentId = Guid.Parse("00000000-0000-0000-0000-000000000000"), Buttons = { new Button { Id = Guid.Parse("2b92e07b-a555-48e8-ad7b-90b99ebc5c96"), Label = "Continue", Destination = "2-Gender", Name = "3-Address", Value = "btnValue" } }, Code = { }, Fields = { }, Help = "", Learn = "", Name = "", Tags = { }, Text = "" } }
+         };
+        public static IEnumerable<object[]> CuratedExperienceComponentViewModelData()
+        {
+            yield return new object[] { CuratedExperience, CuratedExperienceComponentViewModel, Guid.Parse("9a6a6131-657d-467d-b09b-c570b7dad242"), CuratedExperienceAnswersSchema };
+            yield return new object[] { CuratedExperienceWithNoComponent, null, Guid.Parse("9a6a6131-657d-467d-b09b-c570b7dad242"), CuratedExperienceAnswersSchema };
+        }
+        public static IEnumerable<object[]> CuratedExperienceComponentViewModelDataWithDefaultComponentId()
+        {
+            yield return new object[] { CuratedExperience, CuratedExperienceComponentViewModel, Guid.Parse("00000000-0000-0000-0000-000000000000"), CuratedExperienceAnswersSchema };
+        }
+        public static CuratedExperienceComponentViewModel CuratedExperienceComponentViewModel =>
+            new CuratedExperienceComponentViewModel
+            {
+                ComponentId = Guid.Parse("9a6a6131-657d-467d-b09b-c570b7dad242"),
+                Buttons = { new Button { Id = Guid.Parse("2b92e07b-a555-48e8-ad7b-90b99ebc5c96"), Label = "Continue", Destination = "2-Gender", Name = "3-Address", Value = "btnValue" } },
+                Code = { },
+                Fields = { },
+                Help = "",
+                Learn = "",
+                Name = "",
+                Tags = { },
+                Text = "",
+                AnswersDocId = Guid.Parse("00000000-0000-0000-0000-000000000000"),
+                CuratedExperienceId = Guid.Parse("9a6a6131-657d-467d-b09b-c570b7dad242"),
+                QuestionsRemaining = 0
+            };
+        public static CuratedExperienceComponentViewModel CuratedExperienceComponentViewModel2 =>
+            new CuratedExperienceComponentViewModel
+            {
+                ComponentId = Guid.Parse("9a6a6131-657d-467d-b09b-c570b7dad242"),
+                Buttons = { new Button { Id = Guid.Parse("2b92e07b-a555-48e8-ad7b-90b99ebc5c96"), Label = "Continue", Destination = "2-Gender", Name = "2-Gender", Value = "btnValue" } },
+                Code = { },
+                Fields = { },
+                Help = "",
+                Learn = "",
+                Name = "2-Gender",
+                Tags = { },
+                Text = "",
+                AnswersDocId = Guid.Parse("00000000-0000-0000-0000-000000000000"),
+                CuratedExperienceId = Guid.Parse("9a6a6131-657d-467d-b09b-c570b7dad242"),
+                QuestionsRemaining = 1
+            };
+        public static IEnumerable<object[]> NextComponentViewModelData()
+        {
+            yield return new object[] { CuratedExperience2, CuratedExperienceComponentViewModel2, Guid.Parse("2b281b6f-9668-4771-b16b-c2f10a317aac"), CuratedExperienceAnswersViewModel2, CuratedExperienceAnswers };
+            yield return new object[] { CuratedExperience, null, Guid.Parse("2b281b6f-9668-4771-b16b-c2f10a317aac"), CuratedExperienceAnswersViewModel, CuratedExperienceAnswers };
+        }      
+        public static IEnumerable<object[]> SaveAnswersData()
+        {
+            yield return new object[] { CuratedExperience2, null, Guid.Parse("2b281b6f-9668-4771-b16b-c2f10a317aac"), CuratedExperienceAnswersViewModel2, CuratedExperienceAnswers, CuratedExperienceAnswersSchema };
+        }
+        public static IEnumerable<object[]> SaveAnswersData2()
+        {
+            yield return new object[] { CuratedExperience, "288af4da-06bb-4655-aa91-41314e248d6b", Guid.Parse("2b281b6f-9668-4771-b16b-c2f10a317aac"), CuratedExperienceAnswersViewModel2, CuratedExperienceAnswersSave, CuratedExperienceAnswersSchema };
+        }
+        public static CuratedExperienceAnswersViewModel CuratedExperienceAnswersViewModel =>
+           new CuratedExperienceAnswersViewModel
+           {
+               AnswersDocId = Guid.Parse("2b281b6f-9668-4771-b16b-c2f10a317aac"),
+               ButtonId = Guid.Parse("2b92e07b-a555-48e8-ad7b-90b99ebc5c96"),
+               CuratedExperienceId = Guid.Parse("9a6a6131-657d-467d-b09b-c570b7dad242"),
+               Fields = { }
+           };
+        public static CuratedExperienceAnswersViewModel CuratedExperienceAnswersViewModel2 =>
+           new CuratedExperienceAnswersViewModel
+           {
+               AnswersDocId = Guid.Parse("00000000-0000-0000-0000-000000000000"),
+               ButtonId = Guid.Parse("2b92e07b-a555-48e8-ad7b-90b99ebc5c96"),
+               CuratedExperienceId = Guid.Parse("9a6a6131-657d-467d-b09b-c570b7dad242"),
+               Fields = {  }
+           };
+        public static CuratedExperienceAnswers CuratedExperienceAnswers =>
+               new CuratedExperienceAnswers
+               {
+                   AnswersDocId = Guid.Parse("288af4da-06bb-4655-aa91-41314e248d6b"),
+                   ButtonComponents = new List<ButtonComponent>() { new ButtonComponent { ButtonId = Guid.Parse("288af4da-06bb-4655-aa91-41314e248d6b"), CodeAfter = "GOTO,PAGE1", CodeBefore = "TESTcODEbEFORE,page2", Name = "test", Value = "test" } },
+                   CuratedExperienceId = Guid.Parse("9a6a6131-657d-467d-b09b-c570b7dad242"),
+                   FieldComponents = new List<FieldComponent>() { new FieldComponent { CodeAfter = "GOTO,PAGE1", CodeBefore = "TESTcODEbEFORE,page2", Fields = new List<AnswerField>() { new AnswerField { FieldId = Guid.Parse("288af4da-06bb-4655-aa91-41314e248d6b"), Name = "test", Value = "test", Text = "test" } } } }
+               };
+        public static CuratedExperienceAnswers CuratedExperienceAnswers4 =>
+              new CuratedExperienceAnswers
+              {
+                  AnswersDocId = Guid.Parse("288af4da-06bb-4655-aa91-41314e248d6b"),
+                  ButtonComponents = new List<ButtonComponent>() { new ButtonComponent { ButtonId = Guid.Parse("288af4da-06bb-4655-aa91-41314e248d6b"), CodeAfter = "GOTO,PAGE1", CodeBefore = "TESTcODEbEFORE,page2", Name = "test", Value = "test" } },
+                  CuratedExperienceId = Guid.Parse("9a6a6131-657d-467d-b09b-c570b7dad242"),
+                  FieldComponents = new List<FieldComponent>() { new FieldComponent { CodeAfter = "GOTO,PAGE1", CodeBefore = "TESTcODEbEFORE,page2", Fields = new List<AnswerField>() { new AnswerField { FieldId = Guid.Parse("288af4da-06bb-4655-aa91-41314e248d6b"), Name = "test", Value = "test", Text = "test" } } } }
+              };
+        public static CuratedExperienceAnswers CuratedExperienceAnswers5 =>
+      new CuratedExperienceAnswers
+      {
+          AnswersDocId = Guid.Parse("288af4da-06bb-4655-aa91-41314e248d6b"),
+          ButtonComponents = new List<ButtonComponent>() { new ButtonComponent { ButtonId = Guid.Parse("288af4da-06bb-4655-aa91-41314e248d6b"), CodeAfter = "GOTO,PAGE1", CodeBefore = "TESTcODEbEFORE,page2", Name = "test", Value = "test" } },
+          CuratedExperienceId = Guid.Parse("9a6a6131-657d-467d-b09b-c570b7dad242"),
+          FieldComponents = new List<FieldComponent>() { new FieldComponent { CodeAfter = "testcode", CodeBefore = "GOTO,PAGE1", Fields = new List<AnswerField>() { new AnswerField { FieldId = Guid.Parse("288af4da-06bb-4655-aa91-41314e248d6b"), Name = "test", Value = "test", Text = "test" } } } }
+      };
+        public static CuratedExperienceAnswers CuratedExperienceAnswersSave =>
+               new CuratedExperienceAnswers
+               {
+                   AnswersDocId = Guid.Parse("00000000-0000-0000-0000-000000000000"),
+                   ButtonComponents = new List<ButtonComponent>() { new ButtonComponent { ButtonId = Guid.Parse("288af4da-06bb-4655-aa91-41314e248d6b"), CodeAfter = "GOTO,PAGE1", CodeBefore = "TESTcODEbEFORE,page2", Name = "test", Value = "test" } },
+                   CuratedExperienceId = Guid.Parse("9a6a6131-657d-467d-b09b-c570b7dad242"),
+                   FieldComponents = new List<FieldComponent>() { new FieldComponent { CodeAfter = "GOTO,PAGE1", CodeBefore = "TESTcODEbEFORE,page2", Fields = new List<AnswerField>() { new AnswerField { FieldId = Guid.Parse("288af4da-06bb-4655-aa91-41314e248d6b"), Name = "test", Value = "test", Text = "test" } } } }
+               };
+        
     }
 }

@@ -2,18 +2,21 @@
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using static Access2Justice.Api.Authorization.Permissions;
 using Pomelo.AntiXSS;
 
 namespace Access2Justice.Api.Controllers
 {
+    [ExcludeFromCodeCoverage]
     [Produces("application/json")]
     [Route("api/user")]
     public class UserProfileController : Controller
     {
         private readonly IUserProfileBusinessLogic userProfileBusinessLogic;
 
+        [ExcludeFromCodeCoverage]
         public UserProfileController(IUserProfileBusinessLogic userProfileBusinessLogic)
         {
             this.userProfileBusinessLogic = userProfileBusinessLogic;
@@ -29,6 +32,7 @@ namespace Access2Justice.Api.Controllers
         /// <param name="type"></param>
         /// <response code="200">Get user resource and plan details for given id</response>
         /// <response code="500">Failure</response>
+        [ExcludeFromCodeCoverage]
         [HttpPost]
         [Route("profile")]
         public async Task<IActionResult> GetUserDataAsync(string oid, string type)
@@ -47,6 +51,7 @@ namespace Access2Justice.Api.Controllers
         /// <param name="oid"></param>
         /// <response code="200">Get user details for given id</response>
         /// <response code="500">Failure</response>
+        [ExcludeFromCodeCoverage]
         [Permission(PermissionName.getuserprofiledata)]
         [HttpGet]
         [Route("profile/{oid}")]
@@ -65,6 +70,7 @@ namespace Access2Justice.Api.Controllers
         /// <param name="profileResources"></param>
         /// <response code="200">Get user personalized plan created or updated</response>
         /// <response code="500">Failure</response>
+        [ExcludeFromCodeCoverage]
         [Permission(PermissionName.upsertuserpersonalizedplan)]
         [HttpPost]
         [Route("personalized-plan/upsert")]
@@ -87,6 +93,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="200">Get user profile</response>
         /// <response code="404">Nor found</response>
         /// <response code="500">Failure</response>
+        [ExcludeFromCodeCoverage]
         [HttpPost]
         [Route("profile/upsert")]
         public async Task<IActionResult> UpsertUserProfile([FromBody]UserProfile userProfile)

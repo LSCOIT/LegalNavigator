@@ -120,6 +120,5 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 
             Assert.Contains(expectedEmptyWebResponse, responseContent);
         }
-
     }
 }
