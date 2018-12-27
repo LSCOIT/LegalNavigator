@@ -11,5 +11,7 @@ namespace Access2Justice.Api.Interfaces
         Task<List<StateCode>> GetStateCodes();
 
         Task<string> GetStateCodeForState(string stateName);
+
+        Task<string> GetStateNameForStateCode(string stateCode);
     }
 }

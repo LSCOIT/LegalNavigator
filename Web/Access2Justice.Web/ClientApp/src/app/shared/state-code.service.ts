@@ -21,4 +21,10 @@ export class StateCodeService {
       .set("stateName", stateName);
     return this.httpClient.get(api.getStateCodeUrl + '?' + params, httpOptions);
   }
+
+  getStateName(stateCode) {
+    let params = new HttpParams()
+      .set("stateCode", stateCode);
+    return this.httpClient.get(api.getStateNameUrl + '?' + params, httpOptions);
+  }
 }

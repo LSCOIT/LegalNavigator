@@ -38,6 +38,7 @@
         public const string A2JAuthorCustomFunctionTags = "%%";
         public const string StateProvinceType = "stateProvince";
         public const string StateProvince = "stateProvinces";
+        public const string Code = "code";
 
         public static class ReasourceTypes
         {

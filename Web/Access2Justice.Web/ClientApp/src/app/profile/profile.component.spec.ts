@@ -1,12 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { HttpClient, HttpClientModule, HttpParams } from '@angular/common/http';
+import { NO_ERRORS_SCHEMA, TemplateRef } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ProfileComponent } from './profile.component';
 import { PersonalizedPlanService } from '../guided-assistant/personalized-plan/personalized-plan.service';
 import { ArrayUtilityService } from '../shared/array-utility.service';
 import { EventUtilityService } from '../shared/event-utility.service';
-import { Tree } from '@angular/router/src/utils/tree';
 import { IResourceFilter } from '../shared/search/search-results/search-results.model';
 import { Global } from '../global';
 import { ToastrModule } from 'ngx-toastr';
@@ -14,8 +13,16 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MsalService } from '@azure/msal-angular';
 import { of } from 'rxjs/observable/of';
-import { environment } from '../../environments/environment.prod';
-import { expand } from 'rxjs/operator/expand';
+import { BsModalService, ModalModule } from 'ngx-bootstrap/modal';
+import { MapService } from '../shared/map/map.service';
+
+class MockBsModalRef {
+  public isHideCalled = false;
+
+  hide() {
+    this.isHideCalled = true;
+  }
+}
 
 describe('ProfileComponent', () => {
   let component: ProfileComponent;
@@ -28,6 +35,9 @@ describe('ProfileComponent', () => {
   let msalService;
   let mockIsShared = false;
   let mockIsLoggedIn = true;
+  let modalService: BsModalService;
+  let template: TemplateRef<any>;
+  let mapService;
   let mockUserData = {
     idToken: {
       "aio": "DZDuEYiMtCxKoHcGm3TJ07gibmKOCd6rr1l7or7fHQNC9wnEM9Uv2SIH8gvR1m!7Stj16*869uxH4lBU4tEGGcEZGZ8KXLr9w9gqxwbr2uwn",
@@ -461,7 +471,8 @@ describe('ProfileComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         HttpClientModule,
-        ToastrModule.forRoot()
+        ToastrModule.forRoot(),
+        ModalModule.forRoot()
       ],
       declarations: [
         ProfileComponent
@@ -470,6 +481,7 @@ describe('ProfileComponent', () => {
       providers: [
         { provide: PersonalizedPlanService, useValue: mockPersonalizedPlanService },
         EventUtilityService,
+        BsModalService,
         ArrayUtilityService,
         {
           provide: Global, useValue: {
@@ -481,9 +493,12 @@ describe('ProfileComponent', () => {
         NgxSpinnerService,
         { provide: Router, useValue: mockRouter },
         { provide: MsalService, useValue: msalService },
-        { provide: ActivatedRoute, useValue: ActivateRouteStub }
+        { provide: ActivatedRoute, useValue: ActivateRouteStub },
+        { provide: MapService, useValue: mapService }
       ]
     }).compileComponents();
+    modalService = TestBed.get(BsModalService);
+    mapService = TestBed.get(MapService);
     msalService = TestBed.get(MsalService);
     fixture = TestBed.createComponent(ProfileComponent);
     component = fixture.componentInstance;
