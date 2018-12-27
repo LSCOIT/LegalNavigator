@@ -6,9 +6,6 @@ using Access2Justice.Shared.Models.Integration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NSubstitute;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace Access2Justice.Api.Tests.BusinessLogic
@@ -29,6 +26,15 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             dbSettings = Substitute.For<ICosmosDbSettings>();
             dynamicQueries = Substitute.For<IDynamicQueries>();
             onboardingInfo = new OnboardingInfoBusinessLogic(httpClientService, onboardingInfoSettings, dynamicQueries, dbSettings);
+
+            onboardingInfoSettings.HostAddress.Returns("http://smtpservice");
+            onboardingInfoSettings.PortNumber.Returns("467");
+            onboardingInfoSettings.UserName.Returns("Test");
+            onboardingInfoSettings.Password.Returns("Test");
+            onboardingInfoSettings.FromAddress.Returns("test@test.com");
+            onboardingInfoSettings.FallbackToAddress.Returns("test@test.com");
+            onboardingInfoSettings.Subject.Returns("Test Mail");
+            onboardingInfoSettings.FallbackBodyMessage.Returns("Test Mail Body");
         }
 
         [Theory]

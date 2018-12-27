@@ -64,7 +64,7 @@ namespace Access2Justice.Api.BusinessLogic
             return null;
         }
 
-        private void SendMail(OnboardingInfo onboardingInfo)
+        private bool SendMail(OnboardingInfo onboardingInfo)
         {
             string body = onboardingInfo.PayloadTemplate;
             ListDictionary replacements = new ListDictionary();
@@ -73,28 +73,40 @@ namespace Access2Justice.Api.BusinessLogic
                 body = body.Replace("@" + field.Name + "@", field.Value);
             }
 
+            MailAddress toMailAddress = null;
+            var toAddress = Convert.ToString(onboardingInfo.DeliveryDestination, CultureInfo.InvariantCulture);
+            if (toAddress.IsValidEmailAddress())
+            {
+                toMailAddress = new MailAddress(toAddress);
+            }
+            else if (onboardingInfoSettings.FallbackToAddress.IsValidEmailAddress())
+            {
+                toMailAddress = new MailAddress(onboardingInfoSettings.FallbackToAddress);
+            }
+
+            var fromAddress = new MailAddress(onboardingInfoSettings.FromAddress);
+            var mailMessage = new MailMessage(fromAddress, toMailAddress)
+            {
+                Subject = onboardingInfoSettings.Subject,
+                Body = !string.IsNullOrEmpty(body) ? body : onboardingInfoSettings.FallbackBodyMessage,
+                IsBodyHtml = true
+            };
+
             SmtpClient client = new SmtpClient(onboardingInfoSettings.HostAddress, Convert.ToInt16(onboardingInfoSettings.PortNumber, CultureInfo.InvariantCulture))
             {
                 Credentials = new NetworkCredential(onboardingInfoSettings.UserName, onboardingInfoSettings.Password),
                 EnableSsl = false,
             };
 
-            var mailMessage = new MailMessage();
-            mailMessage.From = new MailAddress(onboardingInfoSettings.FromAddress);
-            var toAddress = Convert.ToString(onboardingInfo.DeliveryDestination, CultureInfo.InvariantCulture);
-            if (toAddress.IsValidEmailAddress())
+            try
             {
-                mailMessage.To.Add(toAddress);
+                client.Send(mailMessage);
+                return true;
             }
-            else if (onboardingInfoSettings.FallbackToAddress.IsValidEmailAddress())
+            catch
             {
-                mailMessage.To.Add(onboardingInfoSettings.FallbackToAddress);
+                return false;
             }
-
-            mailMessage.Subject = onboardingInfoSettings.Subject;
-            mailMessage.Body = !string.IsNullOrEmpty(body) ? body : onboardingInfoSettings.FallbackBodyMessage;
-            mailMessage.IsBodyHtml = true;
-            client.Send(mailMessage);
         }
 
         private async Task<dynamic> PostData(OnboardingInfo onboardingInfo)
@@ -104,6 +116,10 @@ namespace Access2Justice.Api.BusinessLogic
             var stringContent = new StringContent(JsonConvert.SerializeObject(updatedTemplate), Encoding.UTF8, "application/json");
 
             var response = await httpClientService.PostAsync(onboardingInfo.DeliveryDestination, stringContent);
+            if (response == null)
+            {
+                return null;
+            }
             response.EnsureSuccessStatusCode();
 
             var content = await response.Content.ReadAsStringAsync();
