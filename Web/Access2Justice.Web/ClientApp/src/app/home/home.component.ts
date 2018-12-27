@@ -55,11 +55,8 @@ export class HomeComponent implements OnInit {
   }
 
   createSlideContent(slides) {
-    slides.forEach(slide => {
-      if (slide.quote) {
-        this.slides.push(slide);
-      }
-    });
+    this.slides = slides.filter(slide =>
+      typeof slide.quote !== "undefined" && slide.quote.length > 0);
   }
 
   getHomePageContent(): void {
