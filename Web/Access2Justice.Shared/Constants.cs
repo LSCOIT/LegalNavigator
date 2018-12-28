@@ -38,6 +38,14 @@
         public const string A2JAuthorCustomFunctionTags = "%%";
         public const string StateProvinceType = "stateProvince";
         public const string StateProvince = "stateProvinces";
+        public const string Location = "location";
+        public const string StateCode = "state";
+        public const string ServiceProviderResourceType = "Service Providers";
+        public const string IntegrationAPI = "Integration API";
+        public const string ExternalId = "externalId";        
+        public const string RTMSessionId = "session_id";
+        public const string EFormFormFields = "onboardingInfo";
+        public const string Plans = "plan";
         public const string Code = "code";
 
         public static class ReasourceTypes

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Access2Justice.Api.Interfaces;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Access2Justice.Api.Controllers
 {
+    [ExcludeFromCodeCoverage]
     [Produces("application/json")]
     [Route("api/StateProvince")]
     public class StateProvinceController : Controller

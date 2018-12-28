@@ -1,4 +1,4 @@
-<div *ngIf="subtopicDetails" class="container">
+<div *ngIf="subtopicDetails && subtopics" class="container">
   <app-breadcrumb></app-breadcrumb>
   <div class="row">
     <div class="col-md-6 col-sm-12">
@@ -42,28 +42,28 @@
         <div *ngFor="let resource of articleData; let indexer=index">
           <app-resource-card *ngIf="indexer<displayResources" [resource]="resource" [showRemoveOption]="showRemoveOption"></app-resource-card>
         </div>
-        <button class="btn btn-primary no-print" (click)="clickSeeMoreOrganizationsFromSubtopicDetails(articleData[0].resourceType)">See more Articles</button>
+        <button *ngIf="articleData.length > 3" class="btn btn-primary no-print" (click)="clickSeeMoreOrganizationsFromSubtopicDetails(articleData[0].resourceType)">See more Articles</button>
       </div>
       <div *ngIf="organizationData.length > 0" class="row">
         <h3>Organizations That May Be Able To Help</h3>
         <div *ngFor="let resource of organizationData; let indexer=index">
           <app-resource-card *ngIf="indexer<displayResources" [resource]="resource" [showRemoveOption]="showRemoveOption"></app-resource-card>
         </div>
-        <button class="btn btn-primary no-print" (click)="clickSeeMoreOrganizationsFromSubtopicDetails(organizationData[0].resourceType)">See more Organizations</button>
+        <button *ngIf="organizationData.length > 3" class="btn btn-primary no-print" (click)="clickSeeMoreOrganizationsFromSubtopicDetails(organizationData[0].resourceType)">See more Organizations</button>
       </div>
       <div *ngIf="videoData.length > 0" class="row">
         <h3>Videos</h3>
         <div *ngFor="let resource of videoData; let indexer=index">
           <app-resource-card *ngIf="indexer<displayResources" [resource]="resource" [showRemoveOption]="showRemoveOption"></app-resource-card>
         </div>
-        <button class="btn btn-primary no-print" (click)="clickSeeMoreOrganizationsFromSubtopicDetails(videoData[0].resourceType)">See more Videos</button>
+        <button *ngIf="videoData.length > 3" class="btn btn-primary no-print" (click)="clickSeeMoreOrganizationsFromSubtopicDetails(videoData[0].resourceType)">See more Videos</button>
       </div>
       <div *ngIf="formData.length > 0" class="row">
         <h3>Forms</h3>
         <div *ngFor="let resource of formData; let indexer=index">
           <app-resource-card *ngIf="indexer<displayResources" [resource]="resource" [showRemoveOption]="showRemoveOption"></app-resource-card>
         </div>
-        <button class="btn btn-primary no-print" (click)="clickSeeMoreOrganizationsFromSubtopicDetails(formData[0].resourceType)">See more Forms</button>
+        <button *ngIf="formData.length > 3" class="btn btn-primary no-print" (click)="clickSeeMoreOrganizationsFromSubtopicDetails(formData[0].resourceType)">See more Forms</button>
       </div>
     </div>
     <div class="col-md-4 col-sm-12 sidebars">

@@ -3,6 +3,7 @@ using Access2Justice.Api.Tests.TestData;
 using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
+using Access2Justice.Shared.Utilities;
 using Microsoft.Azure.Documents;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -28,7 +29,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly string procedureName = "GetParentTopics";
         private readonly string topicId = "addf41e9-1a27-4aeb-bcbb-7959f95094ba";
         private readonly List<string> topicIds = new List<string> { "addf41e9-1a27-4aeb-bcbb-7959f95094ba" };
-        private readonly Location location = new Location();  
+        private readonly Location location = new Location();
         private readonly string topicName = "Family";
         private readonly string resourceName = "Action Plan";
         private readonly JArray emptyData = JArray.Parse(@"[{}]");
@@ -37,6 +38,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly JArray resourcesData = TopicResourceTestData.resourcesData;
         private readonly JArray resourceCountData = TopicResourceTestData.resourceCountData;
         private readonly ResourceFilter resourceFilter = TopicResourceTestData.resourceFilter;
+        private readonly ResourceFilter resourceFilterTrue = TopicResourceTestData.resourceFilterTrue;
         private readonly JArray formData = TopicResourceTestData.formData;
         private readonly JArray actionPlanData = TopicResourceTestData.actionPlanData;
         private readonly JArray referencesInputData = TopicResourceTestData.referencesInputData;
@@ -101,14 +103,14 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             cosmosDbSettings.TopicsCollectionId.Returns("TopicCollection");
             cosmosDbSettings.ResourcesCollectionId.Returns("ResourceCollection");
 
-            topicsResourcesBusinessLogic = new TopicsResourcesBusinessLogic(dynamicQueries, cosmosDbSettings, backendDatabaseService);            
+            topicsResourcesBusinessLogic = new TopicsResourcesBusinessLogic(dynamicQueries, cosmosDbSettings, backendDatabaseService);
         }
 
         [Fact]
         public void GetTopicAsyncTestsShouldReturnProperData()
         {
             //arrange
-            var dbResponse = dynamicQueries.FindItemsWhereContainsWithLocationAsync(cosmosDbSettings.TopicsCollectionId, "keywords", keyword, location);            
+            var dbResponse = dynamicQueries.FindItemsWhereContainsWithLocationAsync(cosmosDbSettings.TopicsCollectionId, "keywords", keyword, location);
             dbResponse.ReturnsForAnyArgs(topicsData);
 
             //act
@@ -139,11 +141,27 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         {
             //arrange
             PagedResources pagedResources = new PagedResources { Results = resourcesData, ContinuationToken = "[]" };
-            var dbResponse = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);            
+            var dbResponse = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
             dbResponse.ReturnsForAnyArgs(pagedResources);
 
             //act
             var response = topicsResourcesBusinessLogic.GetPagedResourceAsync(resourceFilter);
+            string result = JsonConvert.SerializeObject(response);
+
+            //assert
+            Assert.Contains(expectedResourceId, result, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        [Fact]
+        public void GetPagedResourceAsyncTestsShouldReturnProperDataFilteredTrue()
+        {
+            //arrange
+            PagedResources pagedResources = new PagedResources { Results = resourcesData, ContinuationToken = "[]" };
+            var dbResponse = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilterTrue);
+            dbResponse.ReturnsForAnyArgs(pagedResources);
+
+            //act
+            var response = topicsResourcesBusinessLogic.GetPagedResourceAsync(resourceFilterTrue);
             string result = JsonConvert.SerializeObject(response);
 
             //assert
@@ -156,7 +174,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             //arrange
             PagedResources pagedResources = new PagedResources { Results = emptyData, ContinuationToken = null };
             var dbResponse = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
-            dbResponse.ReturnsForAnyArgs(pagedResources);            
+            dbResponse.ReturnsForAnyArgs(pagedResources);
 
             //act
             var response = topicsResourcesBusinessLogic.GetPagedResourceAsync(resourceFilter);
@@ -170,7 +188,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         public void GetTopicsAsyncTestsShouldReturnProperData()
         {
             //arrange
-            var dbResponse = dynamicQueries.FindItemsWhereWithLocationAsync(cosmosDbSettings.TopicsCollectionId, query, "",location);
+            var dbResponse = dynamicQueries.FindItemsWhereWithLocationAsync(cosmosDbSettings.TopicsCollectionId, query, "", location);
             dbResponse.ReturnsForAnyArgs<dynamic>(topicsData);
             //act
             var response = topicsResourcesBusinessLogic.GetTopLevelTopicsAsync(expectedLocationValue).Result;
@@ -183,7 +201,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         public void GetTopicsAsyncTestsShouldReturnEmptyData()
         {
             //arrange
-            var dbResponse = dynamicQueries.FindItemsWhereWithLocationAsync(cosmosDbSettings.TopicsCollectionId, query, "",location);
+            var dbResponse = dynamicQueries.FindItemsWhereWithLocationAsync(cosmosDbSettings.TopicsCollectionId, query, "", location);
             dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
 
             //act
@@ -228,7 +246,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         public void GetSubTopicsAsyncTestsShouldReturnProperData()
         {
             //arrange
-            var dbResponse = dynamicQueries.FindItemsWhereArrayContainsAsyncWithLocation(cosmosDbSettings.TopicsCollectionId, query, "", "",location);
+            var dbResponse = dynamicQueries.FindItemsWhereArrayContainsAsyncWithLocation(cosmosDbSettings.TopicsCollectionId, query, "", "", location);
             dbResponse.ReturnsForAnyArgs<dynamic>(resourcesData);
             //act
             var response = topicsResourcesBusinessLogic.GetSubTopicsAsync(TopicResourceTestData.TopicInput).Result;
@@ -238,10 +256,23 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
+        public void GetSubTopicsAsyncTestsShouldReturnProperDataForIsShared()
+        {
+            //arrange
+            var dbResponse = dynamicQueries.FindItemsWhereArrayContainsAsyncWithLocation(cosmosDbSettings.TopicsCollectionId, query, "", "", location);
+            dbResponse.ReturnsForAnyArgs<dynamic>(resourcesData);
+            //act
+            var response = topicsResourcesBusinessLogic.GetSubTopicsAsync(TopicResourceTestData.TopicInputIsSharedTrue).Result;
+            string result = JsonConvert.SerializeObject(response);
+            //assert
+            Assert.Contains("null", result, StringComparison.InvariantCulture);
+        }
+
+        [Fact]
         public void GetSubTopicsAsyncTestsShouldReturnEmptyData()
         {
             //arrange
-            var dbResponse = dynamicQueries.FindItemsWhereArrayContainsAsyncWithLocation(cosmosDbSettings.TopicsCollectionId, query, "", "",location);
+            var dbResponse = dynamicQueries.FindItemsWhereArrayContainsAsyncWithLocation(cosmosDbSettings.TopicsCollectionId, query, "", "", location);
             dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
 
             //act
@@ -256,7 +287,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         public void GetSubTopicDetailsAsyncTestsShouldReturnProperData()
         {
             //arrange
-            var dbResponse = dynamicQueries.FindItemsWhereArrayContainsAsyncWithLocation(cosmosDbSettings.ResourcesCollectionId, "topicTags", "id", topicId,location);
+            var dbResponse = dynamicQueries.FindItemsWhereArrayContainsAsyncWithLocation(cosmosDbSettings.ResourcesCollectionId, "topicTags", "id", topicId, location);
             dbResponse.ReturnsForAnyArgs<dynamic>(topicsData);
             //act
             var response = topicsResourcesBusinessLogic.GetResourceAsync(TopicResourceTestData.TopicInput).Result;
@@ -269,7 +300,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         public void GetSubTopicDetailsAsyncTestsShouldReturnEmptyData()
         {
             //arrange
-            var dbResponse = dynamicQueries.FindItemsWhereArrayContainsAsyncWithLocation(cosmosDbSettings.ResourcesCollectionId, "topicTags", "id", "",location);
+            var dbResponse = dynamicQueries.FindItemsWhereArrayContainsAsyncWithLocation(cosmosDbSettings.ResourcesCollectionId, "topicTags", "id", "", location);
             dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
 
             //act
@@ -279,7 +310,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             //assert
             Assert.Contains("[{}]", result, StringComparison.InvariantCultureIgnoreCase);
         }
-                
+
         [Fact]
         public void GetTopicDetailsAsyncTestsShouldReturnProperData()
         {
@@ -320,7 +351,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             List<string> values = new List<string>() { resourceName, resourceType };
             var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.ResourcesCollectionId, propertyNames, values);
             dbResponse.ReturnsForAnyArgs<dynamic>(actionPlanData);
-            
+
             //act
             var response = topicsResourcesBusinessLogic.GetResourceDetailAsync(resourceName, resourceType).Result;
             string result = JsonConvert.SerializeObject(response);
@@ -371,7 +402,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var response = topicsResourcesBusinessLogic.GetReferences(referenceInput[0]);
             var expectedReferenceData = JsonConvert.SerializeObject(expectedReferencesData);
             var actualReferenceData = JsonConvert.SerializeObject(response);
-            
+
             //assert
             Assert.Equal(expectedReferenceData, actualReferenceData);
         }
@@ -411,7 +442,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 
             //act
             var response = topicsResourcesBusinessLogic.GetTopicTags(referenceTag);
-            
+
             //assert
             Assert.Equal(expectedTopicTagData, response[0].TopicTags);
         }
@@ -420,11 +451,11 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         public void GetTopicTagsTestsShouldReturnEmptyData()
         {
             //arrange
-            var referenceTag = this.emptyData;            
+            var referenceTag = this.emptyData;
 
             //act
             var response = topicsResourcesBusinessLogic.GetTopicTags(referenceTag);
-            
+
             //assert
             Assert.Equal(emptyTopicTagData, response[0].TopicTags);
         }
@@ -549,7 +580,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             //assert
             Assert.Equal(expectedCondition, actualCondition);
         }
-        
+
         [Fact]
         public void CreateResourceUploadAsyncTestsShouldReturnProperData()
         {
@@ -880,7 +911,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
                 string json = r.ReadToEnd();
                 topicObjects = JsonConvert.DeserializeObject<List<dynamic>>(json);
             }
-            
+
             //act            
             var dbResponseFind = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.TopicsCollectionId, Constants.Id, id).ReturnsForAnyArgs(topicObjects);
             var dbResponse = backendDatabaseService.CreateItemAsync<dynamic>(topic, cosmosDbSettings.TopicsCollectionId).ReturnsForAnyArgs(document);
@@ -983,7 +1014,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         {
             //arrange
             PagedResources pagedResources = new PagedResources { Results = resourcesData, ContinuationToken = "[]" };
-            var dbResponse = dynamicQueries.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter);            
+            var dbResponse = dynamicQueries.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter);
             dbResponse.ReturnsForAnyArgs(pagedResources);
 
             //act
@@ -1075,5 +1106,189 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             Assert.Contains("[{}]", result, StringComparison.InvariantCultureIgnoreCase);
         }
 
+        [Theory]
+        [MemberData(nameof(TopicResourceTestData.TopicInputEnumerable), MemberType = typeof(TopicResourceTestData))]
+        public void GetResourceByIdAsyncValidate(TopicInput topicInput, dynamic expectedData)
+        {
+            //arrange
+            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.ResourcesCollectionId, Constants.Id, topicInput.Id);
+            dbResponse.ReturnsForAnyArgs<dynamic>(topicInput);
+            var dbResponse2 = dynamicQueries.FindItemsWhereWithLocationAsync(cosmosDbSettings.ResourcesCollectionId, Constants.Id, topicInput.Id, topicInput.Location);
+            dbResponse.ReturnsForAnyArgs<dynamic>(topicInput);
+
+            //act
+            var response = topicsResourcesBusinessLogic.GetResourceByIdAsync(topicInput);
+            var actualResult = JsonConvert.SerializeObject(response.Result);
+            var expectedResult = JsonConvert.SerializeObject(expectedData);
+
+            //assert
+            Assert.Equal(expectedResult, actualResult);
+        }
+
+        [Theory]
+        [MemberData(nameof(TopicResourceTestData.TopicInputEnumerable), MemberType = typeof(TopicResourceTestData))]
+        public void GetResourceAsyncValidate(TopicInput topicInput, dynamic expectedData)
+        {
+            //arrange
+            var dbResponseIsShared = dynamicQueries.FindItemsWhereArrayContainsAsync(cosmosDbSettings.ResourcesCollectionId, Constants.TopicTags, Constants.Id, topicInput.Id);
+            dbResponseIsShared.ReturnsForAnyArgs<dynamic>(topicInput);
+            var dbResponseIsNotShared = dynamicQueries.FindItemsWhereArrayContainsAsyncWithLocation(cosmosDbSettings.ResourcesCollectionId, Constants.TopicTags, Constants.Id, topicInput.Id, topicInput.Location);
+            dbResponseIsNotShared.ReturnsForAnyArgs<dynamic>(topicInput);
+
+            //act
+            var response = topicsResourcesBusinessLogic.GetResourceAsync(topicInput);
+            var actualResult = JsonConvert.SerializeObject(response.Result);
+            var expectedResult = JsonConvert.SerializeObject(expectedData);
+
+            //assert
+            Assert.Equal(expectedResult, actualResult);
+        }
+
+        [Theory]
+        [MemberData(nameof(TopicResourceTestData.LocationData), MemberType = typeof(TopicResourceTestData))]
+        public void GetLocationsValidate(dynamic locationValues)
+        {
+            //arrange
+            dynamic expectedData = locationValues;
+
+            //act
+            var dbResponse = topicsResourcesBusinessLogic.GetLocations(locationValues);
+            var actualResult = JsonConvert.SerializeObject(dbResponse);
+            var expectedResult = JsonConvert.SerializeObject(expectedData);
+
+            //assert
+            Assert.Equal(expectedResult, actualResult);
+        }
+
+        [Theory]
+        [MemberData(nameof(TopicResourceTestData.ReferencesData), MemberType = typeof(TopicResourceTestData))]
+        public void GetReferencesValidate(dynamic resourceObjects, dynamic expectedObjects)
+        {
+            //arrange
+            dynamic dbResponse = string.Empty;
+            dynamic actualResult = string.Empty;
+            var resource = resourceObjects[0];
+            dbResponse = topicsResourcesBusinessLogic.GetReferences(resource);
+
+            //act
+            actualResult = JsonConvert.SerializeObject(dbResponse);
+            var expectedResult = JsonConvert.SerializeObject(expectedObjects);
+
+            //assert
+            //Assert.NotNull(actualResult);
+            Assert.Contains(expectedResult, actualResult);
+
+        }
+        [Theory]
+        [MemberData(nameof(TopicResourceTestData.TopicTagsData), MemberType = typeof(TopicResourceTestData))]
+        public void GetTopicTagsValidate(dynamic tagValues)
+        {
+            //arrange
+            dynamic expectedData = tagValues[0].topicTags;
+
+            //act
+            var dbResponse = topicsResourcesBusinessLogic.GetTopicTags(expectedData);
+            var actualResult = JsonConvert.SerializeObject(dbResponse);
+            var expectedResult = JsonConvert.SerializeObject(expectedData);
+
+            //assert
+            Assert.Equal(expectedResult, actualResult);
+        }
+
+        [Fact]
+        public void GetDocumentAsyncTestsShouldReturnProperData()
+        {
+            //arrange
+            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.TopicsCollectionId, Constants.Id, "Id");
+            dbResponse.ReturnsForAnyArgs<dynamic>(resourcesData);
+
+            //act
+            var response = topicsResourcesBusinessLogic.GetDocumentAsync(TopicResourceTestData.TopicInputIsSharedTrue);
+            string result = JsonConvert.SerializeObject(response);
+
+            //assert
+            Assert.Contains(expectedResourceId, result, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        [Fact]
+        public void GetDocumentAsyncTestsLocationShouldReturnProperData()
+        {
+            //arrange
+            var dbResponse = dynamicQueries.FindItemsWhereWithLocationAsync(cosmosDbSettings.TopicsCollectionId, Constants.Id, "Id", TopicResourceTestData.TopicInput.Location);
+            dbResponse.ReturnsForAnyArgs<dynamic>(resourcesData);
+
+            //act
+            var response = topicsResourcesBusinessLogic.GetDocumentAsync(TopicResourceTestData.TopicInput);
+            string result = JsonConvert.SerializeObject(response);
+
+            //assert
+            Assert.Contains(expectedResourceId, result, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        [Fact]
+        public void GetAllTopicsShouldReturnProperData()
+        {
+            //arrange
+            var dbResponse = dynamicQueries.FindItemsAllAsync(cosmosDbSettings.TopicsCollectionId);
+            dbResponse.ReturnsForAnyArgs<dynamic>(topicsData);
+
+            //act
+            var response = topicsResourcesBusinessLogic.GetAllTopics();
+            string result = JsonConvert.SerializeObject(response);
+
+            //assert
+            Assert.Contains(topicId, result, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        [Theory]
+        [MemberData(nameof(TopicResourceTestData.ResourceFilter), MemberType = typeof(TopicResourceTestData))]
+        public void GetPersonalizedResourcesAsyncValidate(ResourceFilter resourceFilter, dynamic expectedData)
+        {
+            //arrange            
+            var dbResponseTopics = dynamicQueries.FindItemsWhereInClauseAsync(cosmosDbSettings.TopicsCollectionId, "id", resourceFilter.TopicIds);
+
+            //act
+            var dbResponse = topicsResourcesBusinessLogic.GetPersonalizedResourcesAsync(resourceFilter);
+            var actualResult = JsonConvert.SerializeObject(dbResponse.Result);
+            var expectedResult = JsonConvert.SerializeObject(expectedData);
+
+            //assert
+            Assert.Contains("topics", actualResult, StringComparison.InvariantCultureIgnoreCase);
+
+        }
+
+        [Theory]
+        [MemberData(nameof(TopicResourceTestData.ResourceData), MemberType = typeof(TopicResourceTestData))]
+        public void UpsertResourceDocumentAsyncValidate(dynamic resource, JArray expectedData, string resourceType)
+        {
+            //arrange
+            var resourceObjects = JsonUtilities.DeserializeDynamicObject<List<dynamic>>(resource);
+            List<string> propertyNames = new List<string>() { Constants.Id, Constants.ResourceType };
+            string id = "77d301e7-6df2-612e-4704-c04edf271806";            
+            List<string> values = new List<string>() { id, resourceType };
+
+            var resourceDBData = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.ResourcesCollectionId, propertyNames, values);
+            resourceDBData.ReturnsForAnyArgs<dynamic>(expectedData);
+
+            Document updatedDocument = new Document();
+            JsonTextReader reader = new JsonTextReader(new StringReader(ShareTestData.userProfileWithSharedResource));
+            updatedDocument.LoadFrom(reader);
+
+            backendDatabaseService.UpdateItemAsync<UserProfile>(
+               Arg.Any<string>(),
+               Arg.Any<UserProfile>(),
+               Arg.Any<string>()).ReturnsForAnyArgs<Document>(updatedDocument);
+
+            backendDatabaseService.CreateItemAsync<SharedResources>(
+               Arg.Any<SharedResources>(),
+               Arg.Any<string>()).ReturnsForAnyArgs<Document>(updatedDocument);
+
+            //act
+            var result = topicsResourcesBusinessLogic.UpsertResourceDocumentAsync(resource);
+            var expectedResult = JsonConvert.SerializeObject(expectedData);            
+
+            Assert.True(result.Result.Count > 0);
+        }
+     
     }
 }

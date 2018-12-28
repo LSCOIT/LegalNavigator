@@ -5,10 +5,12 @@ using Access2Justice.Shared.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
 namespace Access2Justice.Api.Controllers
 {
+    [ExcludeFromCodeCoverage]
     [Route("api/personalized-plans")]
     public class PersonalizedPlanController : Controller
     {
@@ -25,22 +27,6 @@ namespace Access2Justice.Api.Controllers
         }
 
         /// <summary>
-        /// Parser test
-        /// </summary>
-        /// <remarks>
-        /// Helps to parse user answers
-        /// </remarks>
-        /// <param name="userAnswers"></param>
-        /// <response code="200">Returns parsed user answers</response>
-        /// <response code="500">Failure</response>
-        [HttpPost("parser-test")]
-        public IActionResult TestA2JAuthorLogicParser([FromBody] CuratedExperienceAnswers userAnswers)
-        {
-            // Todo:@Alaa remove this endpoint, added it just to test the parser duing development
-            return Ok(new LogicParser(new LogicInterpreter()).Parse(userAnswers));
-        }
-
-        /// <summary>
         /// Generate personalized plan
         /// </summary>
         /// <remarks>
@@ -53,15 +39,19 @@ namespace Access2Justice.Api.Controllers
         [HttpGet("generate")]
         public async Task<IActionResult> GeneratePersonalizedPlanAsync([FromQuery] Guid curatedExperienceId, [FromQuery] Guid answersDocId)
         {
-            var personalizedPlan = await personalizedPlanBusinessLogic.GeneratePersonalizedPlanAsync(
-               sessionManager.RetrieveCachedCuratedExperience(curatedExperienceId, HttpContext), answersDocId);
-
-            if (personalizedPlan == null)
+            if (curatedExperienceId != null && answersDocId != null)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
+                var personalizedPlan = await personalizedPlanBusinessLogic.GeneratePersonalizedPlanAsync(
+                       sessionManager.RetrieveCachedCuratedExperience(curatedExperienceId, HttpContext), answersDocId);
 
-            return Ok(personalizedPlan);
+                if (personalizedPlan == null)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+                }
+
+                return Ok(personalizedPlan); 
+            }
+            return StatusCode(400);
         }
 
         /// <summary>
@@ -104,13 +94,17 @@ namespace Access2Justice.Api.Controllers
         [HttpPost("save")]
         public async Task<IActionResult> SavePersonalizedPlanAsync([FromBody] UserPlan userPlan)
         {
-            var newPlan = await personalizedPlanBusinessLogic.UpsertPersonalizedPlanAsync(userPlan);
-            if (newPlan == null)
+            if (userPlan != null)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
+                var newPlan = await personalizedPlanBusinessLogic.UpsertPersonalizedPlanAsync(userPlan);
+                if (newPlan == null)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+                }
 
-            return Ok(newPlan);
+                return Ok(newPlan); 
+            }
+            return StatusCode(400);
         }
     }
 }

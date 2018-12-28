@@ -32,8 +32,9 @@ export class ResourceCardComponent implements OnInit {
     'Organizations',
     'Topics',
     'Videos',
-    'WebResources'
-  ];
+    'WebResources',
+    'Service Providers'
+    ];
 
   constructor(private global: Global, private modalService: BsModalService, private router: Router, private stateCodeService: StateCodeService) {
     if (global.role === UserStatus.Shared && location.pathname.indexOf(global.shareRouteUrl) >= 0) {

@@ -2,15 +2,18 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Access2Justice.Api.ViewModels
 {
+    [ExcludeFromCodeCoverage]
     public class ShareViewModel
     {
         [JsonProperty(PropertyName = "permaLink")]
         public string PermaLink { get; set; }
     }
 
+    [ExcludeFromCodeCoverage]
     public class ShareProfileViewModel
     {
         [JsonProperty(PropertyName = "userId")]
@@ -21,6 +24,7 @@ namespace Access2Justice.Api.ViewModels
         public string ResourceLink { get; set; }
     }
 
+    [ExcludeFromCodeCoverage]
     public class ShareProfileDetails
     {
         [JsonProperty(PropertyName = "id")]
@@ -30,6 +34,7 @@ namespace Access2Justice.Api.ViewModels
         public string Link { get; set; }
     }
 
+    [ExcludeFromCodeCoverage]
     public class ShareProfileResponse
     {
         [JsonProperty(PropertyName = "name")]
