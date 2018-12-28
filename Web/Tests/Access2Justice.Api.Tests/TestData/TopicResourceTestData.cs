@@ -289,5 +289,11 @@ namespace Access2Justice.Api.Tests.TestData
             yield return new object[] { relatedLinkData, resourcesEmpty, "Related Links" };
         }
 
+        public static IntentInput IntentInputData = new IntentInput
+        {
+            Location = new Location() { State = "Hawaii", County = "", City = "Honolulu", ZipCode = "96741" },
+            Intents = new List<string>() { "Divorce", "Family" }
+        };
+
     }
 }
