@@ -9,6 +9,7 @@ import { IResourceFilter } from '../../shared/search/search-results/search-resul
 import { PersonalizedPlan, PersonalizedPlanTopic, ProfileResources, Resources, SavedResources, UserPlan, IntentInput } from './personalized-plan';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { LocationDetails } from '../../shared/map/map';
+import { Router } from '@angular/router';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -42,7 +43,8 @@ export class PersonalizedPlanService {
     private arrayUtilityService: ArrayUtilityService,
     private toastr: ToastrService,
     private global: Global,
-    private spinner: NgxSpinnerService) { }
+    private spinner: NgxSpinnerService,
+    private router: Router) { }
 
   getActionPlanConditions(planId): Observable<any> {
     let params = new HttpParams()
@@ -130,7 +132,7 @@ export class PersonalizedPlanService {
       this.resourceTags = [];
     }
     this.getTopicDetails(intentInput).subscribe(response => {
-      if (response) {
+      if (response && response.length > 0) {
         response.forEach(topic => {
           this.savedResources = { itemId: topic.id, resourceType: topic.resourceType, resourceDetails: {} };
           if (!(this.arrayUtilityService.checkObjectExistInArray(this.resourceTags, this.savedResources))) {
@@ -138,6 +140,10 @@ export class PersonalizedPlanService {
           }
         });
         this.saveResourceToProfilePostLogin(this.resourceTags);
+      } else {
+        this.showWarning("Resource doesn't exists");
+        this.router.navigateByUrl("/guidedassistant");
+        this.spinner.hide();
       }
     });
   }

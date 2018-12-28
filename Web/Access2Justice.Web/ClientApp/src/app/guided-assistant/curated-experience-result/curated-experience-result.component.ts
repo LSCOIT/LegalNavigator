@@ -56,7 +56,7 @@ export class CuratedExperienceResultComponent implements OnInit {
 	}
 
 	filterIntent() {
-		if (this.guidedAssistantResults.relevantIntents) {
+		if (this.guidedAssistantResults) {
 			this.relevantIntents = this.guidedAssistantResults.relevantIntents
 				.filter(resource => resource !== 'None');
 		}
