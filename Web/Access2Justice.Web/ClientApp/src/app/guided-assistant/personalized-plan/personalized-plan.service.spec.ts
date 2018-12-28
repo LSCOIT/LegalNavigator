@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Global } from '../../global';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { of } from 'rxjs/observable/of';
+import { Router } from '@angular/router';
 
 describe('Service:PersonalizedPlan', () => {
   let mockPlanDetails = {
@@ -377,6 +378,7 @@ describe('Service:PersonalizedPlan', () => {
     {
       "name": "ChildCustody", "id": "ChildCustody", "resourceType": "Topics"
     }];
+  let router;
 
   beforeEach(() => {
 
@@ -385,9 +387,10 @@ describe('Service:PersonalizedPlan', () => {
       providers: [{ provide: PersonalizedPlanService, useValue: mockPersonalizedPlanService },
         ArrayUtilityService,
       { provide: Global, useValue: { global, role: '', shareRouteUrl: '', userId: 'UserId', sessionKey: 'test', topicsSessionKey: 'test2' } },
-        NgxSpinnerService]
+        NgxSpinnerService,
+        { provide: Router, useValue: router}]
     });
-    service = new PersonalizedPlanService(httpSpy, arrayUtilityService, toastrService, global, ngxSpinnerService);
+    service = new PersonalizedPlanService(httpSpy, arrayUtilityService, toastrService, global, ngxSpinnerService, router);
     global = TestBed.get(Global);
     arrayUtilityService = new ArrayUtilityService();
     httpSpy.get.calls.reset();
