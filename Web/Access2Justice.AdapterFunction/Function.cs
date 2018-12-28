@@ -14,19 +14,19 @@ namespace Access2Justice.AdapterFunction
         {
             try
             {
-                    Uri adapterApiUrl = new Uri(Environment.GetEnvironmentVariable("AdapterApiUrl", EnvironmentVariableTarget.Process));
-                    if (adapterApiUrl != null)
+                Uri adapterApiUrl = new Uri(Environment.GetEnvironmentVariable("AdapterApiUrl", EnvironmentVariableTarget.Process));
+                string topicName = Environment.GetEnvironmentVariable("TopicName", EnvironmentVariableTarget.Process);
+                if (adapterApiUrl != null && !string.IsNullOrWhiteSpace(topicName))
+                {
+                    HttpClient httpClient = new HttpClient();
+                    string serviceProviderUrl = string.Format(CultureInfo.InvariantCulture, adapterApiUrl.OriginalString, topicName);
+                    var response = httpClient.GetAsync(serviceProviderUrl).Result;
+                    if (response.StatusCode == HttpStatusCode.OK)
                     {
-                        string topicName = "Child Advocacy Centers";
-                        HttpClient httpClient = new HttpClient();
-                        string serviceProviderUrl = string.Format(CultureInfo.InvariantCulture, adapterApiUrl.OriginalString, topicName);
-                        var response = httpClient.GetAsync(serviceProviderUrl).Result;
-                        if (response.StatusCode == HttpStatusCode.OK)
-                        {
-                            log.LogInformation("service providers call with ok status code");
-                        }
-                        log.LogInformation(response.Content.ReadAsStringAsync().Result);
+                        log.LogInformation("service providers call with ok status code");
                     }
+                    log.LogInformation(response.Content.ReadAsStringAsync().Result);
+                }
             }
             catch (Exception ex)
             {

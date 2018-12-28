@@ -11,19 +11,18 @@ namespace Access2Justice.DataImportTool.Authentication
     public class Authentication
     {
         private PublicClientApplication app = null;
-        private static string aadInstance = ConfigurationManager.AppSettings["ida:AADInstance"];
-        private static string tenant = ConfigurationManager.AppSettings["ida:Tenant"];
-        private static string clientId = ConfigurationManager.AppSettings["ida:ClientId"];
+        private static readonly string aadInstance = ConfigurationManager.AppSettings["ida:AADInstance"];
+        private static readonly string tenant = ConfigurationManager.AppSettings["ida:Tenant"];
+        private static readonly string clientId = ConfigurationManager.AppSettings["ida:ClientId"];
 
         private static string authority = String.Format(CultureInfo.InvariantCulture, aadInstance, tenant);
 
-        private static string todoListScope = ConfigurationManager.AppSettings["todo:TodoListScope"];
-        private static string todoListBaseAddress = ConfigurationManager.AppSettings["todo:TodoListBaseAddress"];
-        private static string[] scopes = new string[] { todoListScope };
+        private static readonly string todoListScope = ConfigurationManager.AppSettings["ida:Scopes"];
+        private static readonly string[] scopes = new string[] { todoListScope };
         
         public Authentication()
         {
-            app = new PublicClientApplication(clientId, authority, TokenCacheHelper.GetUserCache());
+            app = new PublicClientApplication(clientId, authority);
         }
 
         public async Task<AuthenticationResult> Login()
@@ -41,7 +40,7 @@ namespace Access2Justice.DataImportTool.Authentication
             AuthenticationResult result = null;
             try
             {
-                result = await app.AcquireTokenAsync(scopes, accounts.FirstOrDefault(), UIBehavior.SelectAccount, string.Empty);
+                result = await app.AcquireTokenAsync(scopes, accounts.FirstOrDefault(), UIBehavior.SelectAccount, string.Empty).ConfigureAwait(false); ;
                 return result;
             }
             catch (MsalException ex)
@@ -78,14 +77,21 @@ namespace Access2Justice.DataImportTool.Authentication
 
         public async Task<string> Logout()
         {
-            var accounts = await app.GetAccountsAsync().ConfigureAwait(false);
-
-            while (accounts.Any())
+            try
             {
-                await app.RemoveAsync(accounts.First());
-                accounts = await app.GetAccountsAsync();
+                var accounts = await app.GetAccountsAsync().ConfigureAwait(false);
+
+                while (accounts.Any())
+                {
+                    await app.RemoveAsync(accounts.First());
+                    accounts = await app.GetAccountsAsync();
+                }
+                return "";
             }
-            return "";
+            catch (Exception ex) {
+                MessageBox.Show(ex.Message);
+                return "";
+            }
         }
     }
 }

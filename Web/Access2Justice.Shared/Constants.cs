@@ -45,6 +45,7 @@
         public const string ExternalId = "externalId";        
         public const string RTMSessionId = "session_id";
         public const string EFormFormFields = "onboardingInfo";
+        public const string Plans = "plan";
 
         public static class ReasourceTypes
         {

@@ -21,6 +21,32 @@ namespace Access2Justice.Api.Tests.TestData
                 EMail = "test@test.com",
                 SharedResourceId = Guid.Parse("0568B88C-3866-4CCA-97C8-B8E3F3D1FF3C")
             };
+        public static UserProfile UserProfileWithPlanId =>
+
+            new UserProfile
+            {
+                Id = Guid.Parse("0693B88C-3866-4CCA-97C8-B8E3F3D1FF3C").ToString(),
+                FirstName = "TestFirstName",
+                LastName = "TestLastName",
+                IsActive = "true",
+                OId = "709709e7t0r7t96",
+                EMail = "test@test.com",
+                SharedResourceId = Guid.Parse("0568B88C-3866-4CCA-97C8-B8E3F3D1FF3C"),
+                PersonalizedActionPlanId =Guid.Parse("132d8f82-96df-4d9b-8023-4332a1924da4")
+            };
+
+        public static UserProfile UserProfileWithoutPlanId =>
+
+           new UserProfile
+           {
+               Id = Guid.Parse("0693B88C-3866-4CCA-97C8-B8E3F3D1FF3C").ToString(),
+               FirstName = "TestFirstName",
+               LastName = "TestLastName",
+               IsActive = "true",
+               OId = "709709e7t0r7t96",
+               EMail = "test@test.com",
+               SharedResourceId = Guid.Parse("0568B88C-3866-4CCA-97C8-B8E3F3D1FF3C")               
+           };
 
         public static UserProfile UserProfileWithoutSharedResourceData =>
            new UserProfile
@@ -32,6 +58,18 @@ namespace Access2Justice.Api.Tests.TestData
                OId = "709709e7t0r7t96",
                EMail = "test@test.com"
            };
+
+        public static IEnumerable<object[]> UserProfileWithSharedResourceDataForUpdate()
+        {
+            yield return new object[] { new UserProfile { Id = Guid.Parse("0693B88C-3866-4CCA-97C8-B8E3F3D1FF3C").ToString(), FirstName = "TestFirstName", LastName = "TestLastName", IsActive = "true", OId = "709709e7t0r7t96", EMail = "test@test.com",SharedResourceId = Guid.Parse("0568B88C-3866-4CCA-97C8-B8E3F3D1FF3C") },
+                new SharedResource { IsShared = true, PermaLink = "32803EFB57602FF080B32575F327410A41A3346A2DC12809EBE7B2E3F307BCF7", Url= new Uri("/topics/5c035d27-2fdb-9776-6236-70983a918431", UriKind.RelativeOrAbsolute)},
+                                sharedResourcesData, "{\"id\":\"0693B88C-3866-4CCA-97C8-B8E3F3D1FF3C\",\"_rid\":\"ap9UAKM1MRMbAAAAAAAAAA==\",\"_self\":\"dbs/ap9UAA==/colls/ap9UAKM1MRM=/docs/ap9UAKM1MRMbAAAAAAAAAA==/\",\"_ts\":1533750586,\"_etag\":\"0000dc11-0000-0000-0000-5b6b2d3a0000\",\"oId\":\"709709e7t0r7t96\",\"firstName\":\"TestFirstName\",\"lastName\":\"TestLastName\",\"eMail\":\"test@hotmail.com\",\"isActive\":\"Yes\",\"createdBy\":\"TestUser\",\"createdTimeStamp\":\"08/06/2018 09:02:50\",\"modifiedBy\":null,\"modifiedTimeStamp\":null,\"sharedResource\":[{\"isShared\":true,\"expirationDate\":\"2019-08-07T11:44:58.4928479Z\",\"permaLink\":\"32803EFBBCA0D461EDA14F1BF56C5CA8C455AB6707F76A65026725F8DB7D3E8C\",\"url\":\"/topics/5c035d27-2fdb-9776-6236-70983a918431\"}]}"
+            };
+            yield return new object[] { new UserProfile { Id = Guid.Parse("0693B88C-3866-4CCA-97C8-B8E3F3D1FF3C").ToString(), FirstName = "TestFirstName", LastName = "TestLastName", IsActive = "true", OId = "709709e7t0r7t96", EMail = "test@test.com" },
+                new SharedResource { IsShared = true, PermaLink = "32803EFB57602FF080B32575F327410A41A3346A2DC12809EBE7B2E3F307BCF7", Url= new Uri("/topics/5c035d27-2fdb-9776-6236-70983a918431", UriKind.RelativeOrAbsolute)},
+                                sharedResourcesData, "{\"id\":\"0693B88C-3866-4CCA-97C8-B8E3F3D1FF3C\",\"_rid\":\"ap9UAKM1MRMbAAAAAAAAAA==\",\"_self\":\"dbs/ap9UAA==/colls/ap9UAKM1MRM=/docs/ap9UAKM1MRMbAAAAAAAAAA==/\",\"_ts\":1533750586,\"_etag\":\"0000dc11-0000-0000-0000-5b6b2d3a0000\",\"oId\":\"709709e7t0r7t96\",\"firstName\":\"TestFirstName\",\"lastName\":\"TestLastName\",\"eMail\":\"test@hotmail.com\",\"isActive\":\"Yes\",\"createdBy\":\"TestUser\",\"createdTimeStamp\":\"08/06/2018 09:02:50\",\"modifiedBy\":null,\"modifiedTimeStamp\":null,\"sharedResource\":[{\"isShared\":true,\"expirationDate\":\"2019-08-07T11:44:58.4928479Z\",\"permaLink\":\"32803EFBBCA0D461EDA14F1BF56C5CA8C455AB6707F76A65026725F8DB7D3E8C\",\"url\":\"/topics/5c035d27-2fdb-9776-6236-70983a918431\"}]}"
+            };
+        }
 
         public static IEnumerable<object[]> ShareInputData()
         {
@@ -112,17 +150,36 @@ namespace Access2Justice.Api.Tests.TestData
             },
             7,//permalink Length param
             new ShareViewModel() { PermaLink = "32803EF" } };
+
+            yield return new object[] { new ShareInput { ResourceId = Guid.Parse("5c035d27-2fdb-9776-6236-70983a918431"),
+                Url = new Uri("/plan/5c035d27-2fdb-9776-6236-70983a918431", UriKind.Relative),
+                UserId = "709709e7t0r7t96",
+                UniqueId = Guid.Parse("6D4826FD-24BB-41BA-9AD6-39AF7737C335")
+            },
+            7,//permalink Length param
+            new ShareViewModel() { PermaLink = "32803EF" } };
+
         }
 
-		public static IEnumerable<object[]> UpdatePersonalizedPlanData()
-		{
-			yield return new object[] { "132d8f82-96df-4d9b-8023-4332a1924da4", true, true };
-			yield return new object[] { "132d8f82-96df-4d9b-8023-4332a1924da4", false, false };
-		}
+        public static IEnumerable<object[]> ShareGenerateInputDataNull()
+        {
+            yield return new object[] { new ShareInput { ResourceId = Guid.Parse("5c035d27-2fdb-9776-6236-70983a918431"),
+                Url = new Uri("/topics/5c035d27-2fdb-9776-6236-70983a918431", UriKind.Relative),
+                UserId = null,
+                UniqueId = Guid.Parse("6D4826FD-24BB-41BA-9AD6-39AF7737C335")
+            },
+            7,//permalink Length param
+            new ShareViewModel() { PermaLink = null } };
+        }
+        public static IEnumerable<object[]> UpdatePersonalizedPlanData()
+        {
+            yield return new object[] { "132d8f82-96df-4d9b-8023-4332a1924da4", true, true };
+            yield return new object[] { "132d8f82-96df-4d9b-8023-4332a1924da4", false, false };
+        }
 
-		public static string userProfile = "{\"id\": \"0693B88C-3866-4CCA-97C8-B8E3F3D1FF3C\"," +
-                                                "\"oId\": \"709709e7t0r7t96\"," +
-                                                "\"firstName\": \"TestFirstName\"," +
+        public static string userProfile = "{\"id\": \"0693B88C-3866-4CCA-97C8-B8E3F3D1FF3C\"," +
+                                                "\"topics\": \"5c035d27-2fdb-9776-6236-70983a918431\"," +
+                                                "\"isShared\": \"TestFirstName\"," +
                                                   "\"lastName\": \"TestLastName\"," +
                                                   "\"eMail\": \"test@hotmail.com\"," +
                                                   "\"isActive\": \"Yes\"," +
@@ -138,6 +195,7 @@ namespace Access2Justice.Api.Tests.TestData
                                                   "\"createdTimeStamp\": \"08/06/2018 09:02:50\"," +
                                                   "\"modifiedBy\": null," +
                                                   "\"modifiedTimeStamp\": null," +
+                                                  "\"personalizedActionPlanId\": \"132d8f82-96df-4d9b-8023-4332a1924da4\"," +
                                                   "\"sharedResource\": [{" +
                                                       "\"isShared\": true," +
                                                       "\"expirationDate\": \"2019-08-07T11:44:58.4928479Z\"," +
@@ -179,5 +237,30 @@ namespace Access2Justice.Api.Tests.TestData
     '_attachments': 'attachments/',
     '_ts': 1535632386
   }]");
+
+        public static string upsertSharedResource = "{\"id\": \"0693B88C-3866-4CCA-97C8-B8E3F3D1FF3C\"," +
+                                " \"oId\": \"709709e7t0r7t96\"," +
+                                " \"firstName\": \"TestFirstName\"," +
+                                " \"lastName\": \"TestLastName\"," +
+                                " \"eMail\": \"test@hotmail.com\"," +
+                                " \"isActive\": \"Yes\"," +
+                                " \"createdBy\": \"TestUser\"," +
+                                " \"createdTimeStamp\": \"08/06/2018 09:02:50\"," +
+                                "  \"modifiedBy\": null," +
+                                "  \"modifiedTimeStamp\": null," +
+                                "  \"sharedResource\": [" +
+                                "    {" +
+                                "      \"isShared\": true," +
+                                "      \"expirationDate\": \"2019-08-07T11:44:58.4928479Z\"," +
+                                "      \"permaLink\": \"32803EFBBCA0D461EDA14F1BF56C5CA8C455AB6707F76A65026725F8DB7D3E8C\"," +
+                                "      \"url\": \"/topics/5c035d27-2fdb-9776-6236-70983a918431\"" +
+                                "    }" +
+                                "  ]," +
+                                "  \"_rid\": \"ap9UAKM1MRMbAAAAAAAAAA==\"," +
+            "  \"_self\": \"dbs/ap9UAA==/colls/ap9UAKM1MRM=/docs/ap9UAKM1MRMbAAAAAAAAAA==/\"," +
+            "  \"_etag\": \"0000dc11-0000-0000-0000-5b6b2d3a0000\"," +
+            "  \"_attachments\": \"attachments/\"," +
+            "  \"_ts\": 1533750586" +
+            "}";
     }
 }
