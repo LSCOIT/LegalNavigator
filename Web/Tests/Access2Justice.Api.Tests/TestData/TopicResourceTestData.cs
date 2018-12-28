@@ -6,18 +6,18 @@ using System.Text;
 
 namespace Access2Justice.Api.Tests.TestData
 {
-    class TopicResourceTestData
-    {
-        public static JArray topicsData =
-                  JArray.Parse(@"[{'id':'addf41e9-1a27-4aeb-bcbb-7959f95094ba','name':'Family',
+	class TopicResourceTestData
+	{
+		public static JArray topicsData =
+				  JArray.Parse(@"[{'id':'addf41e9-1a27-4aeb-bcbb-7959f95094ba','name':'Family',
                    'ParentTopicId':'','keywords':'Eviction','location':[{'state':'Hawaii','county':'Kalawao County','city':'Kalawao',
                     'zipCode':'96742'},{'zipCode':'96741'},{'state':'Hawaii','county':'Honolulu County','city':'Honolulu'},{'state':
                    'Hawaii','city':'Hawaiian Beaches'},{'state':'Hawaii','city':'Haiku-Pauwela'},{'state':'Alaska'}],'jsonContent':'',
                    'icon':'./assets/images/topics/topic14.png','createdBy':'','createdTimeStamp':'','modifiedBy':'','modifiedTimeStamp':'
                    ','_rid':'mwoSALHtpAEBAAAAAAAAAA==','_self':'dbs/mwoSAA==/colls/mwoSALHtpAE=/docs/mwoSALHtpAEBAAAAAAAAAA==/',
                     '_etag':'\'05008e57-0000-0000-0000-5b0797c10000\'','_attachments':'attachments/','_ts':1527224257}]");
-        public static JArray resourcesData =
-                    JArray.Parse(@"[{'id':'77d301e7-6df2-612e-4704-c04edf271806','name':'Tenant Action Plan 
+		public static JArray resourcesData =
+					JArray.Parse(@"[{'id':'77d301e7-6df2-612e-4704-c04edf271806','name':'Tenant Action Plan 
                     for Eviction','description':'This action plan is for tenants who are facing Eviction and have experienced the following:',
                     'resourceType':'Action','externalUrl':'','url':'','topicTags':[{'id':'f102bfae-362d-4659-aaef-956c391f79de'},
                     {'id':'2c0cc7b8-62b1-4efb-8568-b1f767f879bc'},{'id':'3aa3a1be-8291-42b1-85c2-252f756febbc'}],'location':[{'state':'Hawaii',
@@ -31,14 +31,14 @@ namespace Access2Justice.Api.Tests.TestData
                     'createdTimeStamp':'','modifiedBy':'','modifiedTimeStamp':'','_rid':'mwoSAJdNlwIBAAAAAAAAAA==','_self':
                     'dbs/mwoSAA==/colls/mwoSAJdNlwI=/docs/mwoSAJdNlwIBAAAAAAAAAA==/','_etag':'\'040007b5-0000-0000-0000-5b0792260000\'',
                     '_attachments':'attachments/','_ts':1527222822}]");
-        public static JArray breadcrumbData =
-                    JArray.Parse(@"[{'id': '4589592f-3312-eca7-64ed-f3561bbb7398',
+		public static JArray breadcrumbData =
+					JArray.Parse(@"[{'id': '4589592f-3312-eca7-64ed-f3561bbb7398',
                     'parentId': '5c035d27-2fdb-9776-6236-70983a918431', 'name': 'family1.2.1'},
                     {'id': '5c035d27-2fdb-9776-6236-70983a918431','parentId': 'f102bfae-362d-4659-aaef-956c391f79de',
                     'name': 'family1.1.1'},{'id': 'f102bfae-362d-4659-aaef-956c391f79de',
                     'parentId': 'addf41e9-1a27-4aeb-bcbb-7959f95094ba','name': 'family subtopic name 1.1'
                     },{'id': 'addf41e9-1a27-4aeb-bcbb-7959f95094ba','name': 'family'}]");
-        public static JArray resourceCountData = JArray.Parse(@"[{'resourceType':'Organizations'},{'resourceType':'Organizations'},{'resourceType':'Organizations'},
+		public static JArray resourceCountData = JArray.Parse(@"[{'resourceType':'Organizations'},{'resourceType':'Organizations'},{'resourceType':'Organizations'},
                     {'resourceType':'Organizations'},{'resourceType':'All'},{'resourceType':'All'}]");
         public static ResourceFilter resourceFilter = new ResourceFilter { TopicIds = new List<string> { "addf41e9-1a27-4aeb-bcbb-7959f95094ba" }, PageNumber = 0, ResourceType = "ALL", Location = new Location() };
         public static ResourceFilter resourceFilterTrue = new ResourceFilter { TopicIds = new List<string> { "addf41e9-1a27-4aeb-bcbb-7959f95094ba" }, PageNumber = 0, ResourceType = "ALL", Location = new Location(), IsResourceCountRequired = true };
@@ -54,21 +54,21 @@ namespace Access2Justice.Api.Tests.TestData
                     'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Action Plan','resourceCategory':'action plan','description': 'This action plan is for tenants who are facing Eviction and have experienced the following:',
                     'resourceType': 'Action Plans', 'url': 'access2justice.com','topicTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'organizationalUnit': 'Alaska','location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
                     'icon': './assets/images/resources/resource.png','createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]");
-        public static JArray referencesInputData =
-                    JArray.Parse(@"[{'conditions': [{'condition': {'title': 'Take to your partner to see if you can come to an agreement', 'description': 'Why you should do this dolor sit amet.'}}],
+		public static JArray referencesInputData =
+					JArray.Parse(@"[{'conditions': [{'condition': {'title': 'Take to your partner to see if you can come to an agreement', 'description': 'Why you should do this dolor sit amet.'}}],
                     'parentTopicId': [{'id': '349fa67b-164f-4a65-bb5d-a5b3dd2640a6'}], 'quickLinks':[{'text':'Divorce - Hawaii State Judiciary','url':'www.courts.state.hi.us/self-help/divorce'}],'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Action Plan','description': 'This action plan is for tenants who are facing Eviction and have experienced the following:',
                     'resourceType': 'Action Plans','url': 'access2justice.com','topicTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}], reviewer: [{'reviewerFullName':'Full Name','reviewerTitle':'Title','reviewText':'Text','reviewerImage':'Image'}], 'contents': [{'headline':'headline','content':'content'}],
                     'icon': './assets/images/resources/resource.png','createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]");
-        public static JArray articleData =
-                    JArray.Parse(@"[{'overview': 'Overview','contents':[{'headline':'headline','content':'content'}],'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Article1','resourceCategory':'article','description': 'Subhead lorem ipsum solor sit amet bibodem',
+		public static JArray articleData =
+					JArray.Parse(@"[{'overview': 'Overview','contents':[{'headline':'headline','content':'content'}],'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Article1','resourceCategory':'article','description': 'Subhead lorem ipsum solor sit amet bibodem',
                     'resourceType': 'Articles','url': 'access2justice.com','topicTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'organizationalUnit': 'Alaska','location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
                     'icon': './assets/images/resources/resource.png','createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]");
-        public static JArray videoData =
-                    JArray.Parse(@"[{'overview': 'Overview','isRecommended': 'Yes','videoUrl': 'Url','id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Video','resourceCategory':'video','description': 'Subhead lorem ipsum solor sit amet bibodem',
+		public static JArray videoData =
+					JArray.Parse(@"[{'overview': 'Overview','isRecommended': 'Yes','videoUrl': 'Url','id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Video','resourceCategory':'video','description': 'Subhead lorem ipsum solor sit amet bibodem',
                     'resourceType': 'Videos','url': 'access2justice.com','topicTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'organizationalUnit': 'Alaska','location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
                     'icon': './assets/images/resources/resource.png','createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]");
-        public static JArray organizationData =
-                    JArray.Parse(@"[{'address': '2900 E Parks Hwy Wasilla, AK 99654','telephone': '907-279-2457','overview': 'This site is a service that is made possible through the generosity of the Legal Services Corporation and is supported by a number of partner organizations throughout Alaska.  The web site was created by Pro Bono Net and is maintained by staff at Alaska Legal Services Corporation.','eligibilityInformation': 'Helping low-income individuals solve legal problems','reviewer':[{'reviewerFullName': 'Full Name','reviewerTitle': 'Title','reviewText':'Text','reviewerImage':'Image'}],'specialties':'spl', 'qualifications':'qual','businessHours':'',
+		public static JArray organizationData =
+					JArray.Parse(@"[{'address': '2900 E Parks Hwy Wasilla, AK 99654','telephone': '907-279-2457','overview': 'This site is a service that is made possible through the generosity of the Legal Services Corporation and is supported by a number of partner organizations throughout Alaska.  The web site was created by Pro Bono Net and is maintained by staff at Alaska Legal Services Corporation.','eligibilityInformation': 'Helping low-income individuals solve legal problems','reviewer':[{'reviewerFullName': 'Full Name','reviewerTitle': 'Title','reviewText':'Text','reviewerImage':'Image'}],'specialties':'spl', 'qualifications':'qual','businessHours':'',
                     'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Organization','resourceCategory':'org','description': 'Subhead lorem ipsum solor sit amet bibodem',
                     'resourceType': 'Organizations','url': 'access2justice.com','topicTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'organizationalUnit': 'Alaska','location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
                     'icon': './assets/images/resources/resource.png','createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]");
@@ -76,16 +76,16 @@ namespace Access2Justice.Api.Tests.TestData
                     JArray.Parse(@"[{'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Additional Reading in Hawaii','resourceCategory':'Additional reading','description': 'Subhead lorem ipsum solor sit amet bibodem',
                     'resourceType': 'Additional Readings','url': 'access2justice.com','topicTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'organizationalUnit': 'Alaska','location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
                     'createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]");
-        public static JArray relatedLinkData =
-                    JArray.Parse(@"[{'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'External Link in Hawaii','resourceCategory':'Link','description': 'Subhead lorem ipsum solor sit amet bibodem',
+		public static JArray relatedLinkData =
+					JArray.Parse(@"[{'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'External Link in Hawaii','resourceCategory':'Link','description': 'Subhead lorem ipsum solor sit amet bibodem',
                     'resourceType': 'Related Links','url': 'access2justice.com','topicTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'organizationalUnit': 'Alaska','location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
                     'createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]");
-        public static JArray topicData =
-                    JArray.Parse(@"[{'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Family','overview':'overview details','parentTopicId': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'resourceType':'Topics','keywords': 'HOUSING','organizationalUnit': 'Alaska',
+		public static JArray topicData =
+					JArray.Parse(@"[{'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Family','overview':'overview details','parentTopicId': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'resourceType':'Topics','keywords': 'HOUSING','organizationalUnit': 'Alaska',
                     'location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
                     'jsonContent':'jsonContent','icon': './assets/images/resources/resource.png','createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]");
-        public static JArray topicUpsertData =
-                    JArray.Parse(@"[[{'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Family','overview':'overview details','quickLinks': [{'text':'Divorce - Hawaii State Judiciary','url':'www.courts.state.hi.us/self-help/divorce'}],'parentTopicId': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'resourceType':'Topics','keywords': 'HOUSING','organizationalUnit': 'Alaska',
+		public static JArray topicUpsertData =
+					JArray.Parse(@"[[{'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Family','overview':'overview details','quickLinks': [{'text':'Divorce - Hawaii State Judiciary','url':'www.courts.state.hi.us/self-help/divorce'}],'parentTopicId': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'resourceType':'Topics','keywords': 'HOUSING','organizationalUnit': 'Alaska',
                     'location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
                     'jsonContent':'jsonContent','icon': './assets/images/resources/resource.png','createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]]");
         public static JArray referenceTagData =
@@ -134,8 +134,8 @@ namespace Access2Justice.Api.Tests.TestData
                     'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Action Plan',resourceCategory:'action plan','description': 'This action plan is for tenants who are facing Eviction and have experienced the following:',
                     'resourceType': 'Action Plans','url': 'access2justice.com','topicTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'organizationalUnit': 'Alaska','location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
                     'createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]");
-        public static JArray expectedArticleData =
-                    JArray.Parse(@"[{'overview': 'Overview','contents':[{'headline':'headline','content':'content'}],'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Article1',resourceCategory:'article','description': 'Subhead lorem ipsum solor sit amet bibodem',
+		public static JArray expectedArticleData =
+					JArray.Parse(@"[{'overview': 'Overview','contents':[{'headline':'headline','content':'content'}],'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Article1',resourceCategory:'article','description': 'Subhead lorem ipsum solor sit amet bibodem',
                     'resourceType': 'Articles','url': 'access2justice.com','topicTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'organizationalUnit': 'Alaska','location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
                     'createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]");
         public static JArray expectedVideoData =
@@ -149,8 +149,8 @@ namespace Access2Justice.Api.Tests.TestData
                     JArray.Parse(@"[{'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'Additional Reading in Hawaii',type:'Additional reading','description': 'Subhead lorem ipsum solor sit amet bibodem',
                     'resourceType': 'Additional Readings','url': 'access2justice.com','topicTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'organizationalUnit': 'Alaska','location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
                     'createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]");
-        public static JArray expectedRelatedLinkData =
-                    JArray.Parse(@"[{'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'External Link in Hawaii','resourceCategory':'Link','description': 'Subhead lorem ipsum solor sit amet bibodem',
+		public static JArray expectedRelatedLinkData =
+					JArray.Parse(@"[{'id': '807f2e0d-c431-4f1c-b8c8-1223e6750bec','name': 'External Link in Hawaii','resourceCategory':'Link','description': 'Subhead lorem ipsum solor sit amet bibodem',
                     'resourceType': 'Related Links','url': 'access2justice.com','topicTags': [{'id': 'aaa085ef-96fb-4fd0-bcd0-0472ede66512'}],'organizationalUnit': 'Alaska','location': [{'state': 'Hawaii','county': '','city': 'Haiku-Pauwela','zipCode': ''},{'state': 'Alaska','county': '','city': '','zipCode': ''}],
                     'createdBy': 'API','createdTimeStamp':'','modifiedBy': 'API','modifiedTimeStamp':''}]");
         public static JArray expectedTopicData =
@@ -288,6 +288,12 @@ namespace Access2Justice.Api.Tests.TestData
             yield return new object[] { relatedLinkData, expectedRelatedLinkData, "Related Links" };
             yield return new object[] { relatedLinkData, resourcesEmpty, "Related Links" };
         }
+
+        public static IntentInput IntentInputData = new IntentInput
+        {
+            Location = new Location() { State = "Hawaii", County = "", City = "Honolulu", ZipCode = "96741" },
+            Intents = new List<string>() { "Divorce", "Family" }
+        };
 
     }
 }
