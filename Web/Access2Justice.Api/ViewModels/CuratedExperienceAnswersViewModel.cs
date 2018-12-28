@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Access2Justice.Api.ViewModels
 {
+    [ExcludeFromCodeCoverage]
     public class CuratedExperienceAnswersViewModel
     {
         [JsonProperty(PropertyName = "curatedExperienceId")]
@@ -23,6 +25,7 @@ namespace Access2Justice.Api.ViewModels
         }
     }
 
+    [ExcludeFromCodeCoverage]
     public class Field
     {
         [JsonProperty(PropertyName = "fieldId")]

@@ -857,5 +857,10 @@ namespace Access2Justice.Api.BusinessLogic
         {
             return await dbClient.FindItemsAllAsync(dbSettings.TopicsCollectionId);
         }
+
+        public async Task<dynamic> GetTopicDetailsAsync(IntentInput intentInput)
+        {
+            return await dbClient.FindItemsWhereInClauseAsync(dbSettings.TopicsCollectionId, Constants.Name, intentInput.Intents, intentInput.Location);
+        }
     }
 }

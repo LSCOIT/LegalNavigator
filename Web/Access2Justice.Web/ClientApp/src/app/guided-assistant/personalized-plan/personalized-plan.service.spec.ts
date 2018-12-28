@@ -8,6 +8,8 @@ import { ProfileResources } from './personalized-plan';
 import { ToastrService } from 'ngx-toastr';
 import { Global } from '../../global';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { of } from 'rxjs/observable/of';
+import { Router } from '@angular/router';
 
 describe('Service:PersonalizedPlan', () => {
   let mockPlanDetails = {
@@ -349,16 +351,46 @@ describe('Service:PersonalizedPlan', () => {
   let toastrService: ToastrService;
   let global: Global;
   var originalTimeout;
+  let mockPersonalizedPlanService;
+  let mockMapLocation = {
+    state: "California",
+    city: "Riverside County",
+    county: "Indio",
+    zipCode: "92201"
+  };
+
+  let mockDisplayLocationDetails = {
+    locality: "Indio",
+    address: "92201"
+  };
+
+  let mockLocationDetails = {
+    location: mockMapLocation,
+    displayLocationDetails: mockDisplayLocationDetails,
+    country: "United States",
+    formattedAddress: "Hjorth St, Indio, California 92201, United States"
+  };
+  let mockSavedTopics = ["Divorce", "ChildCustody"];
+  let mockTopicDetails = [
+    {
+      "name": "Divorce", "id": "Divorce", "resourceType": "Topics"
+    },
+    {
+      "name": "ChildCustody", "id": "ChildCustody", "resourceType": "Topics"
+    }];
+  let router;
 
   beforeEach(() => {
 
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
-      providers: [PersonalizedPlanService, ArrayUtilityService,
-        { provide: Global, useValue: { global, role: '', shareRouteUrl: '', userId: 'UserId' } },
-        NgxSpinnerService]
+      providers: [{ provide: PersonalizedPlanService, useValue: mockPersonalizedPlanService },
+        ArrayUtilityService,
+      { provide: Global, useValue: { global, role: '', shareRouteUrl: '', userId: 'UserId', sessionKey: 'test', topicsSessionKey: 'test2' } },
+        NgxSpinnerService,
+        { provide: Router, useValue: router}]
     });
-    service = new PersonalizedPlanService(httpSpy, arrayUtilityService, toastrService, global, ngxSpinnerService);
+    service = new PersonalizedPlanService(httpSpy, arrayUtilityService, toastrService, global, ngxSpinnerService, router);
     global = TestBed.get(Global);
     arrayUtilityService = new ArrayUtilityService();
     httpSpy.get.calls.reset();
@@ -439,6 +471,18 @@ describe('Service:PersonalizedPlan', () => {
     });
   });
 
+  it('should get topics details in getTopicDetails method of service', (done) => {
+    let mockIntentInput = { location: mockMapLocation, intents: mockSavedTopics };
+    const mockResponse = Observable.of(mockTopicDetails);
+    mockPersonalizedPlanService = jasmine.createSpyObj(['getTopicDetails']);
+    mockPersonalizedPlanService.getTopicDetails.and.returnValue(mockResponse);
+    mockPersonalizedPlanService.getTopicDetails(mockIntentInput).subscribe(topics => {
+      expect(httpSpy.post).toHaveBeenCalled();
+      expect(topics).toEqual(mockTopicDetails);
+      done();
+    });
+  })
+
   it('should return plan details when topics, planDetailTags passed to the getPlanDetails method', () => {
     spyOn(service, 'createTopicsList').and.returnValue(mockTopicsList);
     spyOn(service, 'displayPlanDetails').and.returnValue(mockPlanDetails);
@@ -461,13 +505,14 @@ describe('Service:PersonalizedPlan', () => {
     expect(service.tempPlanDetailTags).toEqual(mockFilteredPlanDetails);
   });
 
-  it('should call saveResourceToProfilePostLogin with session stored resources in saveResourcesToUserProfile method', () => {
+  it('should call getTopicsFromGuidedAssistant with session stored resources in saveResourcesToUserProfile method', () => {
+    let mockTopicsSessionKey = "bookmarkedTopics";
     spyOn(sessionStorage, 'getItem')
       .and.returnValue(JSON.stringify(mockSavedResources));
-    spyOn(service, 'saveResourceToProfilePostLogin');
+    spyOn(service, 'getTopicsFromGuidedAssistant');
     service.saveResourcesToUserProfile();
     expect(service.resourceTags).toEqual(mockSavedResources);
-    expect(service.saveResourceToProfilePostLogin).toHaveBeenCalled();
+    expect(service.getTopicsFromGuidedAssistant).toHaveBeenCalled();
   });
 
   it('checkExistingSavedResources for saved resource exists', () => {
@@ -487,4 +532,24 @@ describe('Service:PersonalizedPlan', () => {
     expect(service.resourceIds).toEqual(mockResourceIds);
   });
 
+  it('should call saveTopicsFromGuidedAssistantToProfile in getTopicsFromGuidedAssistant method', () => {
+    spyOn(sessionStorage, 'getItem').and.returnValue(JSON.stringify(mockLocationDetails));
+    spyOn(service, 'saveTopicsFromGuidedAssistantToProfile');
+    service.getTopicsFromGuidedAssistant();
+    expect(service.saveTopicsFromGuidedAssistantToProfile).toHaveBeenCalled();
+  });
+
+  it('should call getTopicDetails and saveResourceToProfilePostLogin in saveTopicsFromGuidedAssistantToProfile method', () => {
+    let mockIntentInput = { location: mockMapLocation, intents: mockSavedTopics };
+    spyOn(service, 'getTopicDetails').and.returnValue(of(mockSavedResources));
+    spyOn(service, 'saveResourceToProfilePostLogin');
+    let mockExists = false;
+    spyOn(arrayUtilityService, 'checkObjectExistInArray').and.callFake(() => {
+      (of(mockExists));
+    });
+    service.saveTopicsFromGuidedAssistantToProfile(mockIntentInput, false);
+    expect(service.isIntent).toBeFalsy();
+    expect(service.getTopicDetails).toHaveBeenCalled();
+    expect(service.saveResourceToProfilePostLogin).toHaveBeenCalled();
+  });
 });

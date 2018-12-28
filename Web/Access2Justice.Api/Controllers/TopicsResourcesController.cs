@@ -8,9 +8,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using static Access2Justice.Api.Authorization.Permissions;
 using Pomelo.AntiXSS;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Access2Justice.Api.Controllers
 {
+    [ExcludeFromCodeCoverage]
     [Produces("application/json")]
     [Route("api/topics-resources")]
     public class TopicsResourcesController : Controller
@@ -526,6 +528,29 @@ namespace Access2Justice.Api.Controllers
                 return StatusCode(StatusCodes.Status404NotFound);
             }
             return Ok(response);
+        }
+
+        /// <summary>
+        /// Get topic details by a topic name
+        /// </summary>
+        /// <remarks>
+        /// Helps to get topic details by a topic name
+        /// </remarks>
+        /// <param name="id"></param>
+        /// <response code="200">Get topic details by a topic name</response>
+        /// <response code="500">Failure</response>
+        [HttpPost]
+        [Route("get-topic-details")]
+        public async Task<IActionResult> GetTopicDetails([FromBody]IntentInput intentInput)
+        {
+            var topics = await topicsResourcesBusinessLogic.GetTopicDetailsAsync(intentInput);
+
+            if (topics == null)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+            return Ok(topics);
         }
 
         /// <summary>

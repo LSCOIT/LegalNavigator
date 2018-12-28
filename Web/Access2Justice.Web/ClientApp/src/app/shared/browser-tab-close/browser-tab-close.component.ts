@@ -15,13 +15,13 @@ export class BrowserTabCloseComponent implements OnInit {
   @ViewChild('template') public templateref: TemplateRef<any>;
 
   constructor(private modalService: BsModalService,
-    private personalizedPlanService: PersonalizedPlanService,
     private msalService: MsalService,
     private global: Global) { }
 
   saveToProfile() {
     if (sessionStorage.getItem(this.global.sessionKey)
-      || sessionStorage.getItem(this.global.planSessionKey)) {
+      || sessionStorage.getItem(this.global.planSessionKey)
+      || sessionStorage.getItem(this.global.topicsSessionKey)) {
       this.global.isLoginRedirect = true;
       this.msalService.loginRedirect(environment.consentScopes);
     }
@@ -35,7 +35,8 @@ export class BrowserTabCloseComponent implements OnInit {
 
   ngOnInit() {
     if (sessionStorage.getItem(this.global.sessionKey)
-      || sessionStorage.getItem(this.global.planSessionKey)) {
+      || sessionStorage.getItem(this.global.planSessionKey)
+      || sessionStorage.getItem(this.global.topicsSessionKey)) {
       this.modalRef = this.modalService.show(this.templateref);
     }
   }

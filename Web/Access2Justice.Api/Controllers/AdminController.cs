@@ -4,11 +4,13 @@ using Access2Justice.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Documents;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using static Access2Justice.Api.Authorization.Permissions;
 
 namespace Access2Justice.Api.Controllers
 {
+    [ExcludeFromCodeCoverage]
     [Route("api/admin")]
     public class AdminController : Controller
     {

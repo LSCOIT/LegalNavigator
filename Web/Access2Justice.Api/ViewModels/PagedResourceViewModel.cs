@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using System.ComponentModel;
 using Access2Justice.Shared;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Access2Justice.Api.ViewModels
 {
+    [ExcludeFromCodeCoverage]
     public class PagedResourceViewModel
     {
         [JsonProperty(PropertyName = "resources")]

@@ -22,7 +22,7 @@ namespace Access2Justice.DataImportTool.Authentication
         
         public Authentication()
         {
-            app = new PublicClientApplication(clientId, authority, TokenCacheHelper.GetUserCache());
+            app = new PublicClientApplication(clientId, authority);
         }
 
         public async Task<AuthenticationResult> Login()
@@ -40,7 +40,7 @@ namespace Access2Justice.DataImportTool.Authentication
             AuthenticationResult result = null;
             try
             {
-                result = await app.AcquireTokenAsync(scopes, accounts.FirstOrDefault(), UIBehavior.SelectAccount, string.Empty);
+                result = await app.AcquireTokenAsync(scopes, accounts.FirstOrDefault(), UIBehavior.SelectAccount, string.Empty).ConfigureAwait(false); ;
                 return result;
             }
             catch (MsalException ex)
@@ -77,14 +77,21 @@ namespace Access2Justice.DataImportTool.Authentication
 
         public async Task<string> Logout()
         {
-            var accounts = await app.GetAccountsAsync().ConfigureAwait(false);
-
-            while (accounts.Any())
+            try
             {
-                await app.RemoveAsync(accounts.First());
-                accounts = await app.GetAccountsAsync();
+                var accounts = await app.GetAccountsAsync().ConfigureAwait(false);
+
+                while (accounts.Any())
+                {
+                    await app.RemoveAsync(accounts.First());
+                    accounts = await app.GetAccountsAsync();
+                }
+                return "";
             }
-            return "";
+            catch (Exception ex) {
+                MessageBox.Show(ex.Message);
+                return "";
+            }
         }
     }
 }

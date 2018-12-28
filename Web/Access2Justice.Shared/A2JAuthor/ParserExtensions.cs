@@ -136,7 +136,7 @@ namespace Access2Justice.Shared.A2JAuthor
             }
             else
             {
-                // todo: you could take this an extra step by double checking the var you extracted 
+                // you could take this an extra step by double checking the var you extracted 
                 // matches some curated experience step name.
                 varsValues.Add(Tokens.GOTO + "-" + Guid.NewGuid(), inputText.RemoveQuotes());
             }
