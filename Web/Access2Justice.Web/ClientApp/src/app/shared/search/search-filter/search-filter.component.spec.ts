@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute } from '@angular/router';
 import { Global } from '../../../global';
 
-fdescribe('SearchFilterComponent', () => {
+describe('SearchFilterComponent', () => {
   let component: SearchFilterComponent;
   let fixture: ComponentFixture<SearchFilterComponent>;
   let global;
@@ -50,11 +50,31 @@ fdescribe('SearchFilterComponent', () => {
     expect(component.filterParam).toEqual(resourceType);
   });
 
-  it('should create current sort criteria', () => {
-    let value = "Best Match";
-    let resourceType = "bestMatch";
+  it('should set order by and sort criteria', () => {
+    component.sortParam = "All";
+    component.orderBy = 'ASC';
+    let value = "name";
+    let resourceType = "All";
+    let orderBy = 'DESC';
+    spyOn(component,'getOrderByFieldName');
     component.sendSortCriteria(value, resourceType);
-    expect(component.selectedSortCriteria).toEqual(value);
+    expect(component.sortParam).toEqual(resourceType);
+    expect(component.orderBy).toEqual(orderBy);
+    expect(component.getOrderByFieldName).toHaveBeenCalled;
+  });
+
+  it('should set order by and sort criteria', () => {
+    component.sortParam = "All";
+    component.orderBy = 'DESC';
+    let value = "name";
+    let resourceType = "All";
+    let orderBy = 'ASC';
+    let orderByField = 'A-Z';
+    spyOn(component, 'getOrderByFieldName').and.returnValue(orderByField);
+    component.sendSortCriteria(value, resourceType);
+    expect(component.selectedSortCriteria).toEqual(orderByField);
+    expect(component.orderBy).toEqual(orderBy);
+    expect(component.getOrderByFieldName).toHaveBeenCalled;
   });
 
 });
