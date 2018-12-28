@@ -22,7 +22,7 @@ export const api = {
     getPersonalizedResourcesUrl: topic + '/personalized-resources',
     getProfileUrl: userProfile + "/profile",
     userPlanUrl: userProfile + "/personalized-plan/upsert",
-    upsertUserProfileUrl: userProfile +"/profile/upsert",
+    upsertUserProfileUrl: userProfile + "/profile/upsert",
     getOrganizationDetailsUrl: topic + '/organizations',
     questionUrl: curatedExperience + '/start',
     saveAndGetNextUrl: curatedExperience + '/components/save-and-get-next',
@@ -42,5 +42,6 @@ export const api = {
     getStateCodesUrl: apiUrl + '/StateProvince/state-codes',
     getStateCodeUrl: apiUrl + '/StateProvince/state-code',
     onboardingUrl: onboarding,
-    onboardingSubmissionUrl: onboarding + '/eform-submit'
+    onboardingSubmissionUrl: onboarding + '/eform-submit',
+    getTopicDetailsUrl: topic + '/get-topic-details'
 }
