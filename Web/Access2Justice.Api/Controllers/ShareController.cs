@@ -7,9 +7,11 @@ using System.Net;
 using System.Threading.Tasks;
 using static Access2Justice.Api.Authorization.Permissions;
 using Pomelo.AntiXSS;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Access2Justice.Api.Controllers
 {
+    [ExcludeFromCodeCoverage]
     [Produces("application/json")]
     [Route("api/share")]
     public class ShareController : Controller

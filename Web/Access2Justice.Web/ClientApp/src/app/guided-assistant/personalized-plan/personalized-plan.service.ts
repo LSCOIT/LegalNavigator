@@ -9,6 +9,7 @@ import { IResourceFilter } from '../../shared/search/search-results/search-resul
 import { PersonalizedPlan, PersonalizedPlanTopic, ProfileResources, Resources, SavedResources, UserPlan, IntentInput } from './personalized-plan';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { LocationDetails } from '../../shared/map/map';
+import { Router } from '@angular/router';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -35,12 +36,15 @@ export class PersonalizedPlanService {
   resourceIndex: number;
   tempResourceStorage: any = [];
   isIntent: boolean = false;
+  intentInput: IntentInput;
+  locationDetails: LocationDetails;
 
   constructor(private http: HttpClient,
     private arrayUtilityService: ArrayUtilityService,
     private toastr: ToastrService,
     private global: Global,
-    private spinner: NgxSpinnerService) { }
+    private spinner: NgxSpinnerService,
+    private router: Router) { }
 
   getActionPlanConditions(planId): Observable<any> {
     let params = new HttpParams()
@@ -95,33 +99,53 @@ export class PersonalizedPlanService {
     }
     return this.tempPlanDetailTags;
   }
-  
-  saveTopicsToProfile(intentInput, isIntent) {
-    this.isIntent = isIntent;
-    this.resoureStorage = [];
-    this.getTopicDetails(intentInput).subscribe(response => {
-      if (response) {
-        response.forEach(topic => {
-          this.savedResources = { itemId: topic.id, resourceType: topic.resourceType, resourceDetails: {} };
-          this.resourceTags.push(this.savedResources);
-        });
-        this.saveResourceToProfilePostLogin(this.resourceTags);
-      }
-    });
-  }
 
   saveResourcesToUserProfile() {
     this.resoureStorage = [];
     this.savedResources = { itemId: '', resourceType: '', resourceDetails: {} };
-    this.resoureStorage = sessionStorage.getItem(this.global.sessionKey);
-    if (this.resoureStorage && this.resoureStorage.length > 0) {
-      this.resoureStorage = JSON.parse(this.resoureStorage);
+    if (sessionStorage.getItem(this.global.sessionKey)) {
+      this.resoureStorage = sessionStorage.getItem(this.global.sessionKey);
+      if (this.resoureStorage && this.resoureStorage.length > 0) {
+        this.resoureStorage = JSON.parse(this.resoureStorage);
+      }
+      this.resourceTags = [];
+      this.resoureStorage.forEach(resource => {
+        this.resourceTags.push(resource);
+      });
     }
-    this.resourceTags = [];
-    this.resoureStorage.forEach(resource => {
-      this.resourceTags.push(resource);
+    if (sessionStorage.getItem(this.global.topicsSessionKey)) {
+      this.getTopicsFromGuidedAssistant();
+    } else {
+      this.saveResourceToProfilePostLogin(this.resourceTags);
+    }
+  }
+
+  getTopicsFromGuidedAssistant() {
+    this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+    this.intentInput = { location: this.locationDetails.location, intents: JSON.parse(sessionStorage.getItem(this.global.topicsSessionKey)) };
+    this.saveTopicsFromGuidedAssistantToProfile(this.intentInput, false);
+  }
+
+  saveTopicsFromGuidedAssistantToProfile(intentInput, isIntent) {
+    this.isIntent = isIntent;
+    if (this.isIntent) {
+      this.resourceTags = [];
+    }
+    this.getTopicDetails(intentInput).subscribe(response => {
+      if (response && response.length > 0) {
+        response.forEach(topic => {
+          this.savedResources = { itemId: topic.id, resourceType: topic.resourceType, resourceDetails: {} };
+          if (!(this.arrayUtilityService.checkObjectExistInArray(this.resourceTags, this.savedResources))) {
+            this.resourceTags.push(this.savedResources);
+          }
+        });
+        this.saveResourceToProfilePostLogin(this.resourceTags);
+      } else {
+        this.showWarning("Resource doesn't exists");
+        this.router.navigateByUrl("/guidedassistant");
+        this.spinner.hide();
+      }
     });
-    this.saveResourceToProfilePostLogin(this.resourceTags);
   }
 
   saveResourceToProfilePostLogin(savedResources) {
@@ -159,9 +183,9 @@ export class PersonalizedPlanService {
         this.saveResourcesToProfile(this.resourceTags);
       }
     });
-    if (this.isIntent) {
+    if (sessionStorage.getItem(this.global.topicsSessionKey)) {
       sessionStorage.removeItem(this.global.topicsSessionKey);
-    } else {
+    } else if (sessionStorage.getItem(this.global.sessionKey)) {
       sessionStorage.removeItem(this.global.sessionKey);
     }
   }
@@ -170,12 +194,12 @@ export class PersonalizedPlanService {
     this.profileResources = { oId: this.global.userId, resourceTags: resourceTags, type: 'resources' };
     this.saveResources(this.profileResources)
       .subscribe(() => {
+        this.spinner.hide();
         if (this.isIntent) {
           this.showSuccess("Topics added to Profile. You can view them later once you've completed the guided assistant.");
         } else {
           this.showSuccess('Resource saved to profile');
         }
-        this.spinner.hide();
       });
   }
 

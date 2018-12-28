@@ -1,5 +1,5 @@
 import { Component, OnInit, HostListener } from '@angular/core';
-import { Global, UserStatus } from './global';
+import { Global } from './global';
 import { StaticResourceService } from './shared/static-resource.service';
 import { MapService } from './shared/map/map.service';
 import { MsalService } from '@azure/msal-angular';
@@ -7,11 +7,8 @@ import { LoginService } from './shared/login/login.service';
 import { IUserProfile } from './shared/login/user-profile.model';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
-import { TopicService } from './topics-resources/shared/topic.service';
 import { PersonalizedPlanService } from './guided-assistant/personalized-plan/personalized-plan.service';
 import { SaveButtonService } from './shared/resource/user-action/save-button/save-button.service';
-import { IntentInput } from './guided-assistant/personalized-plan/personalized-plan';
-import { LocationDetails } from './shared/map/map';
 
 @Component({
   selector: 'app-root',
@@ -25,8 +22,6 @@ export class AppComponent implements OnInit {
   userProfile: IUserProfile;
   resoureStorage: any = [];
   showAlert: boolean = false;
-  intentInput: IntentInput;
-  locationDetails: LocationDetails;
 
   @HostListener('window:beforeunload', ['$event'])
   beforeUnloadHander(event) {
@@ -62,7 +57,6 @@ export class AppComponent implements OnInit {
           this.global.setProfileData(response.oId, response.name, response.eMail, response.roleInformation);
           this.saveBookmarkedResource();
           this.saveBookmarkedPlan();
-          this.saveBookmarkedTopicsFromGuidedAssisstant();
         }
       });
   }
@@ -75,16 +69,8 @@ export class AppComponent implements OnInit {
   }
 
   saveBookmarkedResource() {
-    if (sessionStorage.getItem(this.global.sessionKey)) {
+    if (sessionStorage.getItem(this.global.sessionKey) || sessionStorage.getItem(this.global.topicsSessionKey)) {
       this.personalizedPlanService.saveResourcesToUserProfile();
-    }
-  }
-
-  saveBookmarkedTopicsFromGuidedAssisstant() {
-    if (sessionStorage.getItem(this.global.topicsSessionKey)) {
-      this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
-      this.intentInput = { location: this.locationDetails.location, intents: JSON.parse(sessionStorage.getItem(this.global.topicsSessionKey)) };
-      this.personalizedPlanService.saveTopicsToProfile(this.intentInput, true);
     }
   }
 

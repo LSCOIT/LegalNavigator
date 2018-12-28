@@ -66,6 +66,6 @@ namespace Access2Justice.Api.Tests.TestData
                 JArray.Parse(@"[{'oId':'7576F1E59E1296195ECD8A08614E4F904093B2DCD2F4D7F39973A957D33880C08BE648DA853B8350944862D45A7B7FD297C78467DD0579A9F4DECA4068AB9E6A','name':'TestFirstName TestLastName','eMail':null,'isActive':'Yes','sharedResourceId':'00000000-0000-0000-0000-000000000000','personalizedActionPlanId':'00000000-0000-0000-0000-000000000000','curatedExperienceAnswersId':'5c035d27-2fdb-9776-6236-70983a918431','savedResourcesId':'00000000-0000-0000-0000-000000000000','roleInformationId':null,'roleInformation':[{'roleName':'Authenticated','organizationalUnit':''}] }]"),
                 "08f68ff8-37ed-44e6-8f29-c8616a4c2d23"
             };
-        }
+        }      
     }
 }
