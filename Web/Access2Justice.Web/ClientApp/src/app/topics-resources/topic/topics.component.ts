@@ -94,7 +94,6 @@ export class TopicsComponent implements OnInit {
         this.global.topicsData = null;
         this.getTopics();
       });
-    this.global.previosUrl = "topics";
   }
 
   ngOnDestroy() {

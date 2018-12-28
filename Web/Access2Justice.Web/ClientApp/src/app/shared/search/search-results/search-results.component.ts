@@ -407,7 +407,6 @@ export class SearchResultsComponent implements OnInit, OnChanges {
         this.bindData();
         this.notifyLocationChange();
       this.showRemoveOption = this.showRemove;
-      this.global.previosUrl = "/search";
     }
 
     ngOnDestroy() {
