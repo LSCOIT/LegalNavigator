@@ -48,20 +48,5 @@
   </div>
   <div class="row user-action web-hidden text-center no-print">
     <app-user-action-sidebar [mobile]=true [showSave]=false [showPrint]=false [showDownload]=true [showSetting]=true></app-user-action-sidebar>
-  </div>
-
-  <ng-template #template>
-    <div class="container">
-      <button type="button" class="close" aria-label="Close" (click)="close()">
-        <span aria-hidden="true">&times;</span>
-      </button>
-      <div class="row text-center">
-        <h3>The resource you are trying to access is for a different location. In order to view this resource, your current location will be changed. Do you want to continue?</h3>
-      </div>
-      <div class="row text-center">
-        <button type="button" (click)="continue()" class="btn btn-primary">Yes</button>
-        <button type="button" (click)="close()" class="btn btn-primary">No</button>
-      </div>
-    </div>
-  </ng-template>
+  </div>  
 </div>
