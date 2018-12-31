@@ -8,7 +8,7 @@ const virtualEarthUrl = environment.virtualEarthUrl;
 @Injectable()
 export class MapResultsService {
   latitudeLongitude: Array<LatitudeLongitude> = [];
-   
+
   constructor(private http: HttpClient) {
   }
   getLocationDetails(address, credentials): any {
@@ -38,18 +38,34 @@ export class MapResultsService {
 
   mapResults(locationCoordinates) {
     this.latitudeLongitude = locationCoordinates;
-    let map = new Microsoft.Maps.Map('#my-map-results',
-      {
-        credentials: environment.bingmap_key
+    if (this.latitudeLongitude.length === 1) {
+      let latitude = this.latitudeLongitude[0].latitude;
+      let longitude = this.latitudeLongitude[0].longitude;
+      let streetMap = new Microsoft.Maps.Map('#my-map-results', {
+        credentials: environment.bingmap_key,
+        mapTypeId: Microsoft.Maps.MapTypeId.streetside,
+        zoom: 14,
+        center: new Microsoft.Maps.Location(latitude, longitude)
       });
-    for (let i = 0, len = this.latitudeLongitude.length; i < len; i++) {
-      var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(this.latitudeLongitude[i].latitude, this.latitudeLongitude[i].longitude), {
+      var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(latitude, longitude), {
         icon: '../../assets/images/location/poi_custom.png'
       });
-      map.entities.push(pin);
-      let bestview = Microsoft.Maps.LocationRect.fromLocations(this.latitudeLongitude);
-      map.setView({ bounds: bestview, zoom: 5 });
+      streetMap.entities.push(pin);
+      streetMap.setView({ mapTypeId: Microsoft.Maps.MapTypeId.streetside });
     }
-
+    else {
+      let map = new Microsoft.Maps.Map('#my-map-results',
+        {
+          credentials: environment.bingmap_key
+        });
+      for (let i = 0, len = this.latitudeLongitude.length; i < len; i++) {
+        var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(this.latitudeLongitude[i].latitude, this.latitudeLongitude[i].longitude), {
+          icon: '../../assets/images/location/poi_custom.png'
+        });
+        map.entities.push(pin);
+        let bestview = Microsoft.Maps.LocationRect.fromLocations(this.latitudeLongitude);
+        map.setView({ bounds: bestview, zoom: 5 });
+      }
+    }
   }
 }

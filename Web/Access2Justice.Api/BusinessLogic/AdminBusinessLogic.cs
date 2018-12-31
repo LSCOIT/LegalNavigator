@@ -181,7 +181,7 @@ namespace Access2Justice.Api.BusinessLogic
                 guidedAssistantResource.CuratedExperienceId = curatedExperienceId;
 
                 await backendDatabaseService.CreateItemAsync(guidedAssistantResource, cosmosDbSettings.ResourcesCollectionId);
-                return adminSettings.SuccessMessage;
+                return adminSettings.SuccessMessage + " New Curated Experience ID " + curatedExperienceId;
             }
             return string.Format(CultureInfo.InvariantCulture, adminSettings.MissingTopicMessage, resourceTitle);
         }

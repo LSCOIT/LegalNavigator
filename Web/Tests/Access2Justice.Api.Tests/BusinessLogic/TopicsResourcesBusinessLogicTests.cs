@@ -651,7 +651,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void UpsertResourcesFormsTestsShouldReturnProperData()  //To do - CreateFormsAsyncEmptyData after excpetion logging
+        public void UpsertResourcesFormsTestsShouldReturnProperData()
         {
             //arrange
             var form = this.formData[0];
@@ -682,7 +682,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void UpsertResourcesActionPlansTestsShouldReturnProperData()  //To do - CreateActionPlansAsyncEmptyData after excpetion logging
+        public void UpsertResourcesActionPlansTestsShouldReturnProperData()
         {
             //arrange
             var actionPlan = this.actionPlanData[0];

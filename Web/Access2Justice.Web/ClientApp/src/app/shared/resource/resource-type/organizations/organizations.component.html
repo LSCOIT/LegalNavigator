@@ -1,9 +1,10 @@
+<app-breadcrumb [resourceTopic]="resource.topicTags[0].id" [resourceType]="resource.resourceType" #breadcrumb></app-breadcrumb>
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-6 col-sm-12">
     <h2>{{resource.name}}</h2>
     <p>{{resource?.resourceCategory}}</p>
   </div>
-  <div class="col-md-6 user-action">
+  <div class="col-md-6 col-sm-12 user-action">
     <app-user-action-sidebar [mobile]=true [id]="resource.id" [type]="resource.resourceType"></app-user-action-sidebar>
   </div>
 </div>
@@ -103,17 +104,17 @@
       </div>
     </div>
   </div>
-    <div class="col-md-4 col-sm-12 pull-right">
-      <div class="no-print">
-        <app-map-results [searchResource]="searchResource"></app-map-results>
-      </div>
-      <div class="box-no-shadow" *ngIf="resource.businessHours">
-        <div class="resource-body">
-          <h5>Business Hours</h5>
-          <ul class="hours">
-            <li><span>{{resource.businessHours}}</span></li>
-          </ul>
-        </div>
+  <div class="col-md-4 col-sm-12 pull-right">
+    <div class="no-print">
+      <app-map-results [searchResource]="searchResource"></app-map-results>
+    </div>
+    <div class="box-no-shadow" *ngIf="resource.businessHours">
+      <div class="resource-body">
+        <h5>Business Hours</h5>
+        <ul class="hours">
+          <li><span>{{resource.businessHours}}</span></li>
+        </ul>
       </div>
     </div>
   </div>
+</div>

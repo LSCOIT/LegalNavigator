@@ -19,35 +19,48 @@ describe('ArticlesComponent', () => {
   let mockRouter;
   let mockShowMoreService;
   let mockGlobal;
-  let mockArticleResource = [
+  let mockArticleResource = 
     {
-      "id": "4f327a5b-9a79-466e-98be-2542eb28bb28",
-      "name": "Guardian ad Litem or Custody Investigator?",
-      "type": "Legal Info",
-      "description":
-        "In any case where a Judge has to make a decision about what is best for a child, they can appoint a Guardian ad Litem (GAL) to represent the child's interests in the court, or a Custody Investigator (CI) to provide information to the judge about the family situation. It is the responsibility of the GAL or CI to report to the Court what they believe is in the best interests of the child, regardless of what the parents, grandparents, or children think.",
+      "overview": "This article gives introductory information about registering a custody or child support order from another state with the Alaska courts.  An order from another state is sometimes called a \"foreign order.\"",
+      "contents": [
+        {
+          "headline": "Why would I want to register my order?",
+          "content": "If you want the Alaska courts or Alaska police to take action here in Alaska on the court order you have from another state, you generally must register the foreign order in Alaska. Some people register a foreign order simply to be able to enforce it; other people register a foreign order as the first step in a modification procedure."
+        },
+        {
+          "headline": "When can I register an order?",
+          "content": "Registration of a valid foreign court order for the purpose of enforcement is allowed at any time, and is a fairly straightforward process. Registration for the purpose of a modification is much more complicated because only a court with jurisdiction can modify an order. The laws controlling jurisdiction are very complicated. If you have any questions at all, you are urged to seek the advice of an attorney."
+        },
+        {
+          "headline": "How long does it take for the registration to become effective?",
+          "content": "The out-of-state order is registered when you file it with the Alaska court with the required attachments and pay the filing fee if there is one. Once the court has processed your packet, the clerk's office will serve the documents on the other party. The other party has 20 calendar days from the date they received the notice to request a hearing."
+        },
+        {
+          "headline": "Do I have to register a domestic violence protective order from another state?",
+          "content": "You don't have to file special forms at the court to register the protective order from another state. But for the police to enforce the out-of-state protective order, you can bring a certified copy to the court for filing. There is no filing fee. The clerk will send a copy of the filed order to Alaska law enforcement who will enter it into their system. The court or the police will not give the respondent a copy of the protective order or notice that you have filed the order with the Alaska court."
+        }
+      ],
+      "id": "a882a5eb-0c39-44e9-9ecb-85fc486c690f",
+      "name": "Introduction to Registering a Custody or Child Support Order from Another State",
+      "resourceCategory": null,
+      "description": "Introductory information about registering a custody or child support order from another state with the Alaska courts.",
       "resourceType": "Articles",
-      "url": "www.courtrecords.alaska.gov",
+      "url": null,
       "topicTags": [
         {
-          "id": "e1fdbbc6-d66a-4275-9cd2-2be84d303e12"
+          "id": "8cce15a2-3c0e-45a3-b77d-61f1915445fd"
         }
       ],
+      "organizationalUnit": "AK",
       "location": [
         {
-          "state": "Alaska",
-          "city": "Juneau",
-          "zipCode": "96815"
+          "state": "AK",
+          "county": "",
+          "city": "",
+          "zipCode": ""
         }
-      ],
-      "icon": "./assets/images/resources/resource.png",
-      "overview":
-        "The judge referred you to the Custody Investigator’s Office for a child custody/visitation investigation. You may have questions about the role of the investigator and what you can expect during the investigation. We know this is a very stressful time for you. We hope this introduction helps you understand the nature of our involvement.",
-      "headline1": "How much does a custody evaluation cost?",
-      "content1":
-        "There is no fee for investigations done by the court Custody Investigator’s Office. If out of town travel is involved, you and/or the other parent may be responsible for those expenses."
-    }
-  ];
+      ]
+    };
 
   beforeEach(async(() => {
     mockShowMoreService = jasmine.createSpyObj(['clickSeeMoreOrganizations']);
@@ -81,7 +94,6 @@ describe('ArticlesComponent', () => {
     fixture = TestBed.createComponent(ArticlesComponent);
     component = fixture.componentInstance;
     component.resource = mockArticleResource;
-    mockShowMoreService = TestBed.get(ShowMoreService);
     fixture.detectChanges();
   }));
 
