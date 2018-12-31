@@ -38,17 +38,13 @@ export class MapResultsService {
 
   mapResults(locationCoordinates) {
     this.latitudeLongitude = locationCoordinates;
-    let map = new Microsoft.Maps.Map('#my-map-results',
-      {
-        credentials: environment.bingmap_key
-      });
-    if (this.latitudeLongitude.length == 1) {
+    if (this.latitudeLongitude.length === 1) {
       let latitude = this.latitudeLongitude[0].latitude;
       let longitude = this.latitudeLongitude[0].longitude;
       let streetMap = new Microsoft.Maps.Map('#my-map-results', {
         credentials: environment.bingmap_key,
         mapTypeId: Microsoft.Maps.MapTypeId.streetside,
-        zoom: 18,
+        zoom: 14,
         center: new Microsoft.Maps.Location(latitude, longitude)
       });
       var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(latitude, longitude), {
@@ -58,6 +54,10 @@ export class MapResultsService {
       streetMap.setView({ mapTypeId: Microsoft.Maps.MapTypeId.streetside });
     }
     else {
+      let map = new Microsoft.Maps.Map('#my-map-results',
+        {
+          credentials: environment.bingmap_key
+        });
       for (let i = 0, len = this.latitudeLongitude.length; i < len; i++) {
         var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(this.latitudeLongitude[i].latitude, this.latitudeLongitude[i].longitude), {
           icon: '../../assets/images/location/poi_custom.png'
