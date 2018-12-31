@@ -13,18 +13,18 @@ li > a:hover {
   background: #fff;
   border: none;
   box-shadow: 0 4px 10px 0 rgba(0,0,0,0.1);
-  min-height: 75px;
+  min-height: 80px;
   margin-bottom: 4px;
   padding-top: 29px;
 }
 
 #logo {
   background-image: url('../../../assets/images/logo/one-word-logo.svg');
-  width: 220px;
+  width: 215px;
   height: 45px;
   background-repeat: no-repeat;
   float: left;
-  background-position: -10px -4px;
+  background-position: -10px 0px;
 }
 
 .active {
@@ -165,8 +165,12 @@ li.vertical-line {
 
 @media only screen and (min-width : 768px) {
   .lower-nav {
-    min-height: 80px;
     padding-top: 25px;
+  }
+
+  #logo {
+    width: 220px;
+    background-position: -10px -4px;
   }
 
   #mobile-menu {

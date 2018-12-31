@@ -7,11 +7,29 @@ import { ResourceCardDetailComponent } from '../resource-card-detail/resource-ca
 import { Global } from '../../../global';
 import { PipeModule } from '../../pipe/pipe.module';
 import { BsDropdownModule } from 'ngx-bootstrap';
+import { BsModalService, ModalModule } from 'ngx-bootstrap/modal';
+import { TemplateRef } from '@angular/core';
+import { Router } from '@angular/router';
+import { StateCodeService } from '../../state-code.service';
+//import { HttpClient } from 'selenium-webdriver/http';
+import { HttpClientModule } from '@angular/common/http';
+
+class MockBsModalRef {
+  public isHideCalled = false;
+
+  hide() {
+    this.isHideCalled = true;
+  }
+}
 
 describe('ResourceCardComponent', () => {
   let component: ResourceCardComponent;
   let fixture: ComponentFixture<ResourceCardComponent>;
   let mockGlobal;
+  let modalService: BsModalService;
+  let template: TemplateRef<any>;
+  let mapService;
+  let mockRouter;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -23,16 +41,21 @@ describe('ResourceCardComponent', () => {
       ],
       imports: [
         PipeModule.forRoot(),
-        BsDropdownModule.forRoot()
+        BsDropdownModule.forRoot(),
+        HttpClientModule
         ],
-      providers: [        
+      providers: [
+        BsModalService,
         { provide: Global, useValue: { role: '', shareRouteUrl: '' } },
-        { provide: ResourceCardComponent, useValue: { id: '', resources: [{ itemId: '', resourceType: '', resourceDetails: {}}] }}
+        { provide: ResourceCardComponent, useValue: { id: '', resources: [{ itemId: '', resourceType: '', resourceDetails: {} }] } },
+        { provide: Router, useValue: mockRouter },
+        StateCodeService
       ],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA ]
     })
       .compileComponents();
 
+    modalService = TestBed.get(BsModalService);
     fixture = TestBed.createComponent(ResourceCardComponent);
     component = fixture.componentInstance;
     spyOn(component, 'ngOnInit');

@@ -45,7 +45,6 @@ namespace Access2Justice.CosmosDb
                 }
                 else
                 {
-                    // todo: log the error
                     throw;
                 }
             }

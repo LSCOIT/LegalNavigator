@@ -87,7 +87,6 @@ namespace Access2Justice.Api.BusinessLogic
             }
             catch
             {
-                // Todo: log exception
                 return null;
             }
         }

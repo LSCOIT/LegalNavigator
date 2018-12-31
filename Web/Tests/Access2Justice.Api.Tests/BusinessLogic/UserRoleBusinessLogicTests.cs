@@ -4,6 +4,7 @@ using Access2Justice.Api.Tests.TestData;
 using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
+using Access2Justice.Shared.Utilities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -26,6 +27,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly UserRoleBusinessLogic userRoleBusinessLogic;
         private readonly IOptions<AzureAdOptions> azureOptions;
+        
         public UserRoleBusinessLogicTests()
         {
             dbClient = Substitute.For<IDynamicQueries>();
@@ -43,6 +45,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         [MemberData(nameof(UserRoleTestData.GetPermissionData), MemberType = typeof(UserRoleTestData))]
         public void GetUserRoleDataAsyncShouldValidate(UserProfile userProfile, JArray roleResponse, dynamic expectedResult)
         {
+            //arrange
             dynamic profileResponse = dbUserProfile.GetUserProfileDataAsync(userProfile.OId).Returns<dynamic>(userProfile);
             var ids = new List<string>() { "guid1" };
             var dbResponse = dbClient.FindItemsWhereInClauseAsync(dbSettings.RolesCollectionId, Constants.Id, ids);
@@ -61,12 +64,30 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         [MemberData(nameof(UserRoleTestData.ValidateOUForRole), MemberType = typeof(UserRoleTestData))]
         public void ValidateOUForRoleShouldValidate(List<string> roleInformationId, string ou, List<Role> roleResponse, dynamic expectedResult)
         {
-            var ids = new List<string>() { "guid1" };            
+            //arrange
             var Response = dbUserProfile.GetRoleDetailsAsync(roleInformationId);
             Response.ReturnsForAnyArgs(roleResponse);
 
             //act
             var response = userRoleBusinessLogic.ValidateOUForRole(roleInformationId, ou);
+            expectedResult = JsonConvert.SerializeObject(expectedResult);
+            var actualResult = JsonConvert.SerializeObject(response.Result);
+
+            //assert
+            Assert.Equal(expectedResult, actualResult);
+        }
+
+        [Theory]
+        [MemberData(nameof(UserRoleTestData.ValidateOrganizationalUnitData), MemberType = typeof(UserRoleTestData))]
+        public void OrganizationalUnitValidate(string ou, List<Role> roleResponse, dynamic expectedResult)
+        {
+            //arrange
+            var ids = new List<string>() { "guid1" };
+            var Response = dbUserProfile.GetUserProfileDataAsync(ou);
+            Response.ReturnsForAnyArgs(roleResponse);
+            
+            //act
+            var response = userRoleBusinessLogic.ValidateOrganizationalUnit(ou);
             expectedResult = JsonConvert.SerializeObject(expectedResult);
             var actualResult = JsonConvert.SerializeObject(response.Result);
 

@@ -10,8 +10,7 @@ export class ArticlesResourcesComponent implements OnInit {
   guidedAssistantResults: any;
   constructor(private navigateDataService: NavigateDataService) { }
 
-  ngOnInit() {
-    //Todo - When user come from other pages need to pass the respective resource data & topic name.
+  ngOnInit() {    
     if (this.navigateDataService != undefined) {
       this.guidedAssistantResults = this.navigateDataService.getData();
     }

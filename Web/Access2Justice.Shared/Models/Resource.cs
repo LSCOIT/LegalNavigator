@@ -71,9 +71,8 @@ namespace Access2Justice.Shared.Models
                     {
                         sbrErrors.AppendLine(validationResult.ErrorMessage);
                     }
-                    throw new ValidationException(sbrErrors.ToString());//TO DO - excpetions to be logged
+                    throw new ValidationException(sbrErrors.ToString());
                 }
-                //TO DO log errors
             }
         }
     }

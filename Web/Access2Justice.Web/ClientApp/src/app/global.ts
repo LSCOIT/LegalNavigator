@@ -26,10 +26,12 @@ export class Global {
   isLoginRedirect: boolean = false;
   sessionKey: string = "bookmarkedResource";
   planSessionKey: string = "bookmarkedPlan";
+  topicsSessionKey: string = "bookmarkedTopics";
   roleInformation: any;
   displayResources: number = 3;
   activeSubtopicParam: string;
   topIntent: string;
+  notifyLocationUpate: Subject<any> = new Subject<any>();
 
   constructor() { }
 
@@ -49,6 +51,11 @@ export class Global {
     this.data = data;
     this.notifyStaticData.next(this.data);
   }
+
+  notifyLocationUpdate(location: any) {
+    this.notifyLocationUpate.next(location);
+  }
+
 }
 
 export enum UserStatus {
