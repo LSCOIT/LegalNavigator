@@ -242,8 +242,6 @@ export class SearchResultsComponent implements OnInit, OnChanges {
         this.isInternalResource = true;
         this.displayNoResultsMessage();
         this.mapInternalResource();
-        //TODO: There is reload issue in ngFor and data is not loading.
-        // So we are triggering Filter method.
         let event = { filterParam: environment.All };
         this.filterSearchResults(event);
     }
