@@ -59,5 +59,21 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             //assert
             Assert.Equal(expectedResult, actualResult);
         }
+
+        [Theory]
+        [MemberData(nameof(StateProvinceTestData.GetStateCodeTestData), MemberType = typeof(StateProvinceTestData))]
+        public void GetStateNameForStateCodeShouldValidate(string stateCode, JArray StateDetails, dynamic expectedResult)
+        {
+            var dbResponse = dbClient.FindFieldWhereArrayContainsAsync(dbSettings.StateProvincesCollectionId,
+                Constants.StateProvince, Constants.Code, stateCode);
+            dbResponse.ReturnsForAnyArgs(StateDetails);
+
+            //act
+            var response = stateProvinceBusinessLogic.GetStateNameForStateCode(stateCode);
+            expectedResult = JsonConvert.SerializeObject(expectedResult);
+            var actualResult = JsonConvert.SerializeObject(response.Result);
+            //assert
+            Assert.Equal(expectedResult, actualResult);
+        }
     }
 }

@@ -43,5 +43,6 @@ export const api = {
     getStateCodeUrl: apiUrl + '/StateProvince/state-code',
     onboardingUrl: onboarding,
     onboardingSubmissionUrl: onboarding + '/eform-submit',
-    getTopicDetailsUrl: topic + '/get-topic-details'
+    getTopicDetailsUrl: topic + '/get-topic-details',
+    getStateNameUrl: apiUrl + '/StateProvince/state-name'
 }

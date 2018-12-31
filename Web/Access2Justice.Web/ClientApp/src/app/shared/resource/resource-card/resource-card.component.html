@@ -46,7 +46,7 @@
             <img class="media-object no-print" src="{{resource.icon}}" [alt]=resource.resourceType>
           </div>
           <div class="media-body">
-            <a [routerLink]="['/subtopics', resource.id]" class="h4 no-print">{{resource.name}}</a>
+            <a [routerLink]="getLocation(resource) ?['/subtopics', resource.id] : null" class="h4 no-print" (click)="openWarningPopup(resource)">{{resource.name}}</a>
             <h4 class="print-only">{{resource.name}}</h4>
             <div class="print-only">{{applicationUrl+'/subtopics'+'/'+resource.id}}</div>
             <p>{{resource.overview}}</p>
@@ -71,7 +71,7 @@
             <img class="media-object" src="/assets/images/icons/videos.svg" [alt]="resource.resourceType">
           </div>
           <div class="media-body">
-            <a class="h4 no-print" [routerLink]="['/resource', resource.id]">{{resource.name}}</a>
+            <a class="h4 no-print" [routerLink]="getLocation(resource) ?['/resource', resource.id] : null" (click)="openWarningPopup(resource)">{{resource.name}}</a>
             <h4 class="print-only">{{resource.name}}</h4>
             <div class="print-only">{{applicationUrl+'/resource'+'/'+resource.id}}</div>
             <app-read-more class="no-print" *ngIf="resource.description" [text]="resource?.description" [maxLength]="240"></app-read-more>
@@ -83,7 +83,7 @@
             <img class="media-object" src="/assets/images/icons/articles.svg" [alt]="resource.resourceType">
           </div>
           <div class="media-body">
-            <a class="h4 no-print" [routerLink]="['/resource', resource.id]">{{resource.name}}</a>
+            <a class="h4 no-print" [routerLink]="getLocation(resource) ?['/resource', resource.id] : null" (click)="openWarningPopup(resource)">{{resource.name}}</a>
             <h4 class="print-only">{{resource.name}}</h4>
             <div class="print-only">{{applicationUrl+'/resource'+'/'+resource.id}}</div>
             <app-read-more class="no-print" *ngIf="resource.description" [text]="resource?.description" [maxLength]="240"></app-read-more>
@@ -95,7 +95,7 @@
             <img class="media-object" src="/assets/images/icons/organizations.svg" aria-hidden="true">
           </div>
           <div class="media-body">
-            <a class="h4 no-print" [routerLink]="['/resource', resource.id]">{{resource.name}}</a>
+            <a class="h4 no-print" [routerLink]="getLocation(resource) ?['/resource', resource.id] : null" (click)="openWarningPopup(resource)">{{resource.name}}</a>
             <h4 class="print-only">{{resource.name}}</h4>
             <div class="print-only">{{applicationUrl+'/resource'+'/'+resource.id}}</div>
             <div class="onboarding-label" *ngIf="resource.isFormAvailable">e-form available</div>
@@ -170,4 +170,17 @@
       </ng-template>
     </div>
   </div>
+  <ng-template #template>
+    <div class="container">
+      <img type="button" class="nav-icon pull-right close" src="./assets/images/small-icons/close.svg" aria-label="Close" (click)="close()">
+      <div class="row text-center">
+        <h3>Switch Location</h3>
+        <p>The resource you are trying to access is for a different location. In order to view this resource, your current location will be changed. Do you want to continue?</p>
+      </div>
+      <div class="row text-center">
+        <button type="button" (click)="continue()" class="btn btn-primary">Yes</button>
+        <button type="button" (click)="close()" class="btn btn-primary">No</button>
+      </div>
+    </div>
+  </ng-template>
 </div>

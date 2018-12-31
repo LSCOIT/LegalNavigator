@@ -31,6 +31,7 @@ export class Global {
   displayResources: number = 3;
   activeSubtopicParam: string;
   topIntent: string;
+  notifyLocationUpate: Subject<any> = new Subject<any>();
 
   constructor() { }
 
@@ -50,6 +51,11 @@ export class Global {
     this.data = data;
     this.notifyStaticData.next(this.data);
   }
+
+  notifyLocationUpdate(location: any) {
+    this.notifyLocationUpate.next(location);
+  }
+
 }
 
 export enum UserStatus {

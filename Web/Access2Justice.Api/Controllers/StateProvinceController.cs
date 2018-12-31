@@ -36,5 +36,13 @@ namespace Access2Justice.Api.Controllers
             
             return Ok(stateCodes);
         }
+
+        [HttpGet("state-name")]
+        public async Task<IActionResult> GetStateNameForStateCode(string stateCode)
+        {
+            var stateName = await locationBusinessLogic.GetStateNameForStateCode(stateCode);
+
+            return Ok(stateName);
+        }
     }
 }

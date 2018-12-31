@@ -38,5 +38,13 @@ namespace Access2Justice.Api.BusinessLogic
             List<StateCode> stateCodes = JsonUtilities.DeserializeDynamicObject<List<StateCode>>(response);            
             return stateCodes.Count() > 0 ? stateCodes[0].Code : null;
         }
+
+        public async Task<string> GetStateNameForStateCode(string stateCode)
+        {
+            var response = await dbClient.FindFieldWhereArrayContainsAsync(dbSettings.StateProvincesCollectionId,
+                Constants.StateProvince, Constants.Code, stateCode);
+            List<StateCode> stateCodes = JsonUtilities.DeserializeDynamicObject<List<StateCode>>(response);
+            return stateCodes.Count() > 0 ? stateCodes[0].Name : null;
+        }
     }
 }
