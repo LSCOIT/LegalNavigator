@@ -31,7 +31,6 @@ export class Global {
   displayResources: number = 3;
   activeSubtopicParam: string;
   topIntent: string;
-  locationMatch: boolean = true;
   notifyLocationUpate: Subject<any> = new Subject<any>();
 
   constructor() { }

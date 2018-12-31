@@ -83,19 +83,12 @@ export class SubtopicDetailComponent implements OnInit {
 
   getSubtopicDetail(): void {
     this.topicService.getSubtopicDetail(this.activeSubtopicParam)
-      .subscribe(
-      data => {
-        if (data.length > 0) {
-          this.subtopicDetails = data;
-          this.filterSubtopicDetail();
-          this.global.locationMatch = true;
-        } else {
-          this.router.navigate([this.global.profileRouteUrl]);
-          this.global.locationMatch = false;
-        }
-      }
-      );
+      .subscribe(data => {
+        this.subtopicDetails = data;
+        this.filterSubtopicDetail();
+      });
   }
+
   clickSeeMoreOrganizationsFromSubtopicDetails(resourceType: string) {
     this.showMoreService.clickSeeMoreOrganizations(resourceType, this.activeSubtopicParam, this.topIntent);
   }
