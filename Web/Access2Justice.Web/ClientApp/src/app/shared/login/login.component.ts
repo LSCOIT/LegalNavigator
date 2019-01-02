@@ -19,7 +19,6 @@ export class LoginComponent implements OnInit {
   userProfileName: string ;
   isLoggedIn: boolean = false;
   blobUrl: any = environment.blobUrl;
-  @ViewChild('dropdownMenu') dropdown: ElementRef;
   @Output() sendProfileOptionClickEvent = new EventEmitter<string>();  
   private subscription: Subscription;
   userProfile: any;
@@ -47,9 +46,10 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  toggleDropdown() {
-    this.dropdown.nativeElement.style.display =
-      this.dropdown.nativeElement.style.display === 'none' ? 'block' : 'none';
+  toggleDropdown(e) {
+    e.target.click();
+    console.log(e);
+    console.log(document.getElementsByClassName("dropdown-menu"));
   }
 
   externalLogin(event) {

@@ -44,6 +44,14 @@ li a img {
   padding: 15px 0;
 }
 
+.right-menu li:last-child {
+  padding: 0;
+}
+
+.right-menu li:last-child:hover {
+  background-color: transparent;
+}
+
 #location {
   position: absolute;
   top: -2px;
