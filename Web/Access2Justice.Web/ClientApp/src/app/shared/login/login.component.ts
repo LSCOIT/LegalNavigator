@@ -48,8 +48,6 @@ export class LoginComponent implements OnInit {
 
   toggleDropdown(e) {
     e.target.click();
-    console.log(e);
-    console.log(document.getElementsByClassName("dropdown-menu"));
   }
 
   externalLogin(event) {
