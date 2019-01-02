@@ -1,7 +1,7 @@
-import { Component, OnInit} from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { TopicService } from '../shared/topic.service';
 import { ActivatedRoute } from '@angular/router';
-import { Router } from '@angular/router'; 
+import { Router } from '@angular/router';
 import { NavigateDataService } from '../../shared/navigate-data.service';
 import { IResourceFilter, ILuisInput } from "../../shared/search/search-results/search-results.model";
 import { SearchService } from '../../shared/search/search.service';
@@ -18,7 +18,7 @@ import { Global } from "../../global";
 })
 
 export class SubtopicDetailComponent implements OnInit {
-  searchResults: any; 
+  searchResults: any;
   subtopicDetails: any;
   activeSubtopicParam = this.activeRoute.snapshot.params['topic'];
   actionPlanData: any;
@@ -29,7 +29,7 @@ export class SubtopicDetailComponent implements OnInit {
   relatedLinksData: any;
   subtopics: any;
   subtopic: any;
-  topIntent: string; 
+  topIntent: string;
   savedFrom: string = "subTopicDetails";
   type: string = "Topics";
   showRemoveOption: boolean;
@@ -76,20 +76,19 @@ export class SubtopicDetailComponent implements OnInit {
           this.subtopics = data[0];
           this.topIntent = data[0].name;
           this.guidedSutopicDetailsInput = { activeId: this.activeSubtopicParam, name: this.subtopics.name };
-        }); 
+        });
     }
     this.getSubtopicDetail();
   }
 
   getSubtopicDetail(): void {
     this.topicService.getSubtopicDetail(this.activeSubtopicParam)
-      .subscribe(
-        data => {
-          this.subtopicDetails = data;
-          this.filterSubtopicDetail();
-        }
-      );
+      .subscribe(data => {
+        this.subtopicDetails = data;
+        this.filterSubtopicDetail();
+      });
   }
+
   clickSeeMoreOrganizationsFromSubtopicDetails(resourceType: string) {
     this.showMoreService.clickSeeMoreOrganizations(resourceType, this.activeSubtopicParam, this.topIntent);
   }
@@ -108,12 +107,12 @@ export class SubtopicDetailComponent implements OnInit {
     this.subscription = this.mapService.notifyLocation
       .subscribe((value) => {
         this.topicService.getTopics().subscribe(response => {
-        if (response != undefined) {
-        this.global.topicsData = response;
-        if (this.router.url.startsWith('/topics') || this.router.url.startsWith('/subtopics')) {
-          this.router.navigateByUrl('/topics');
-        }
-        }
+          if (response != undefined) {
+            this.global.topicsData = response;
+            if (this.router.url.startsWith('/topics') || this.router.url.startsWith('/subtopics')) {
+              this.router.navigateByUrl('/topics');
+            }
+          }
         });
       });
   }

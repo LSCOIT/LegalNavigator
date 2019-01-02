@@ -28,7 +28,7 @@ li a img {
 .upper-nav {
   background: #f4f4f4;
   color: #333;
-  min-height: 40px;
+  height: 52px;
 }
 
 .left-menu {
@@ -44,23 +44,29 @@ li a img {
   padding: 15px 0;
 }
 
+.right-menu li:last-child {
+  padding: 0;
+}
+
+.right-menu li:last-child:hover {
+  background-color: transparent;
+}
+
 #location {
   position: absolute;
   top: -2px;
   right: 0;
   width: auto;
   background: #f4f4f4;
+  height: 52px;
 }
 
 #language {
   margin-left: -10px;
+  height: 52px;
 }
 
 @media only screen and (min-width : 768px) {
-  .upper-nav {
-    min-height: 50px;
-  }
-
   #location {
     position: static;
     width: auto;
@@ -70,13 +76,5 @@ li a img {
 @media only screen and (min-width : 1124px) {
   li a {
     padding: 16px 15px;
-  }
-
-  .upper-nav {
-    height: 52px;
-  }
-
-  #language {
-    height: 55px;
   }
 }

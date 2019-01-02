@@ -1,5 +1,5 @@
 <div *ngIf="subtopicDetails && subtopics" class="container">
-  <app-breadcrumb></app-breadcrumb>
+  <app-breadcrumb #breadcrumb></app-breadcrumb>
   <div class="row">
     <div class="col-md-6 col-sm-12">
       <h1 *ngIf="subtopics.id == activeSubtopicParam" class="subtopic-heading">{{subtopics.name}}</h1>

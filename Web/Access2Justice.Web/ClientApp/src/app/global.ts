@@ -32,6 +32,7 @@ export class Global {
   activeSubtopicParam: string;
   searchResultDetails: any= { filterParam: 'All', sortParam: 'name', order: 'ASC', topIntent: '' };
   topIntent: string;
+  notifyLocationUpate: Subject<any> = new Subject<any>();
 
   constructor() { }
 
@@ -51,6 +52,11 @@ export class Global {
     this.data = data;
     this.notifyStaticData.next(this.data);
   }
+
+  notifyLocationUpdate(location: any) {
+    this.notifyLocationUpate.next(location);
+  }
+
 }
 
 export enum UserStatus {
