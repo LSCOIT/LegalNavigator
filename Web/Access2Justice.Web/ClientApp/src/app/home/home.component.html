@@ -89,8 +89,10 @@
     <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
       <h2>{{sponsorOverviewData?.heading}}</h2>
       <div class="row" [innerHTML]="sponsorOverviewData?.description"></div>
-      <div *ngFor="let sponsor of sponsors" class="col-sm-6 sponsor-img">
-        <img *ngIf="sponsor.source" [src]="'data:image/jpg;base64,'+sponsor?.source | sanitize" [alt]="sponsor.altText" />
+      <div class="row">
+        <div *ngFor="let sponsor of sponsors" class="col-sm-6 sponsor-img">
+          <img *ngIf="sponsor.source" [src]="'data:image/jpg;base64,'+sponsor?.source | sanitize" [alt]="sponsor.altText" />
+        </div>
       </div>
       <a class="btn btn-primary" [routerLink]="sponsorOverviewData?.button?.buttonLink">
         {{sponsorOverviewData?.button?.buttonText}}
