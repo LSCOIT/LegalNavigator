@@ -89,7 +89,8 @@ a:not([href]):not([tabindex]), .account-menu, .dropdown-btn {
   }
 
   .account-menu {
-    padding: 17px 15px 17px 15px;
+    padding: 17px 15px 18px 15px;
+    margin-right: 10px;
   }
 
   .account-menu:hover {
