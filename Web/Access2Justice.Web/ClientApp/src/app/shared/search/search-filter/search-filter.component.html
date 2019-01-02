@@ -26,12 +26,14 @@
     <div class="col-md-1 col-sm-2 p">Sort:</div>
     <div class="btn-group col-md-10" dropdown>
       <button id="button-basic" dropdownToggle type="button" class="btn btn-selected dropdown-toggle dropdown-btn" aria-controls="button-basic">
-        {{selectedSortCriteria}} ({{orderBy}})
+        {{selectedSortCriteria}}
       </button>
       <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
           role="menu" aria-labelledby="button-basic">
-        <li role="menuitem"><a class="dropdown-item" (click)="sendSortCriteria('A-Z','name')">A-Z</a></li>
-        <li role="menuitem"><a class="dropdown-item" (click)="sendSortCriteria('Newest to Oldest','date')">Newest to Oldest</a></li>
+        <li *ngIf="selectedSortCriteria != 'A-Z'" role="menuitem"><a class="dropdown-item" (click)="sendSortCriteria('name','ASC')">A-Z</a></li>
+        <li *ngIf="selectedSortCriteria != 'Z-A'" role="menuitem"><a class="dropdown-item" (click)="sendSortCriteria('name','DESC')">Z-A</a></li>
+        <li *ngIf="selectedSortCriteria != 'Newest to Oldest'" role="menuitem"><a class="dropdown-item" (click)="sendSortCriteria('date','ASC')">Newest to Oldest</a></li>
+        <li *ngIf="selectedSortCriteria != 'Oldest to Newest'" role="menuitem"><a class="dropdown-item" (click)="sendSortCriteria('date','DESC')">Oldest to Newest</a></li>
       </ul>
     </div>
   </div>
