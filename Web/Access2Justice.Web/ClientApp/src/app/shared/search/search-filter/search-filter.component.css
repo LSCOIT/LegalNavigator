@@ -41,7 +41,7 @@ li:last-child a {
   margin-bottom: 0;
   margin-right: 0;
   text-align: left;
-  width: 145px;
+  width: 175px;
   font-size: 14px;
   background-size: 13px;
   background-position: 90% 50%;
@@ -50,11 +50,11 @@ li:last-child a {
 .dropdown-menu {
   border: 1px solid #7E7E7E;
   border-radius: 0 0 5px 5px;
-  width: 145px;
+  width: 175px;
   top: 86% !important;
   border-top: 1px solid #ddd;
   padding: 0;
-  min-width: 145px;
+  min-width: 175px;
 }
 
 .dropdown-menu.show {
@@ -102,13 +102,13 @@ li:last-child a {
   }
 
   #button-basic {
-    width: 190px;
+    width: 215px;
     font-size: 16px;
     background-size: 15px;
   }
 
   .dropdown-menu {
-    width: 190px;
+    width: 215px;
   }
 
   .desktop-filter {

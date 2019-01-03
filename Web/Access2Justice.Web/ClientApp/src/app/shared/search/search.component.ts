@@ -17,7 +17,7 @@ export class SearchComponent implements OnInit {
   inputText: string; 
   @Input()
   searchResults: any;
-  luisInput: ILuisInput = { Sentence: '', Location: '', TranslateFrom: '', TranslateTo: '', LuisTopScoringIntent: '', OrderByField: 'name', OrderBy:'ASC' };
+  luisInput: ILuisInput = { Sentence: '', Location: '', TranslateFrom: '', TranslateTo: '', LuisTopScoringIntent: '', OrderByField: 'date', OrderBy:'ASC' };
   mapLocation: MapLocation;
   locationDetails: LocationDetails;
 
