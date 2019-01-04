@@ -58,20 +58,21 @@ export class SearchFilterComponent implements OnInit, OnChanges {
   sendSortCriteria(resourceType, orderBy) {
     this.sortParam = resourceType;
     this.orderBy = orderBy;
+    this.selectedSortCriteria = this.getOrderByFieldName(this.sortParam, this.orderBy);
     this.notifyFilterCriteria.emit({ filterParam: this.filterParam, sortParam: this.sortParam, order: this.orderBy });
   }
 
-  getOrderByFieldName(inputFieldName): string {
+  getOrderByFieldName(inputFieldName, orderBy): string {
     let orderByField = '';
     if (inputFieldName === "name") {
-      if (this.orderBy === 'ASC') {
+      if (orderBy === 'ASC') {
         orderByField = 'A-Z';
       } else {
         orderByField = 'Z-A';
       }
     } else if (inputFieldName === "date") {
-      if (this.orderBy === 'ASC') {
-        orderByField = 'Newest to Oldest';;
+      if (orderBy === 'DESC') {
+        orderByField = 'Newest to Oldest';
       } else {
         orderByField = 'Oldest to Newest';
       }
@@ -90,7 +91,7 @@ export class SearchFilterComponent implements OnInit, OnChanges {
     if (this.searchResults.searchFilter) {
       this.sortParam = this.searchResults.searchFilter.OrderByField;
       this.orderBy = this.searchResults.searchFilter.OrderBy;
-      this.selectedSortCriteria = this.getOrderByFieldName(this.searchResults.searchFilter.OrderByField);
+      this.selectedSortCriteria = this.getOrderByFieldName(this.sortParam, this.orderBy);
     }
   }
 }

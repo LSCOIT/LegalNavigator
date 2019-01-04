@@ -30,8 +30,8 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   resourceResults: ResourceResult[] = [];
   filterType: string = environment.All;
   resourceTypeFilter: any[];
-  resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: {}, IsResourceCountRequired: false, IsOrder: true, OrderByField: 'name', OrderBy: 'ASC' };
-  luisInput: ILuisInput = { Sentence: '', Location: {}, LuisTopScoringIntent: '', TranslateFrom: '', TranslateTo: '', OrderByField: 'name', OrderBy: 'ASC' };
+  resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: {}, IsResourceCountRequired: false, IsOrder: true, OrderByField: 'date', OrderBy: 'DESC' };
+  luisInput: ILuisInput = { Sentence: '', Location: {}, LuisTopScoringIntent: '', TranslateFrom: '', TranslateTo: '', OrderByField: 'date', OrderBy: 'DESC' };
   location: any;
   topicIds: any[];
   isServiceCall: boolean;
@@ -57,7 +57,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   guidedAssistantId: string;
   locationDetails: LocationDetails;
   orderBy: string;
-  searchResultDetails: any = { filterParam: 'All', sortParam: 'name', order: 'ASC', topIntent: '' };
+  searchResultDetails: any = { filterParam: 'All', sortParam: 'date', order: 'DESC', topIntent: '' };
   isBindData: boolean;
 
   constructor(
@@ -140,7 +140,6 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     this.resourceResults = this.searchResults.resourceTypeFilter;
     this.navigateDataService.setData(undefined);
     if (this.resourceTypeFilter != undefined) {
-
       for (let index = 0; index < this.resourceTypeFilter.length; index++) {
         if ((this.searchResults.isItFromTopicPage &&
           this.resourceTypeFilter[index].ResourceName === this.searchResults.resourceType)
@@ -186,34 +185,42 @@ export class SearchResultsComponent implements OnInit, OnChanges {
 
   filterSearchResults(event) {
     this.sortType = event;
-    if (event.sortParam !== this.global.searchResultDetails.sortParam || event.order !== this.global.searchResultDetails.order) {
-      this.searchResultDetails = event;
-      this.global.searchResultDetails.sortParam = this.searchResultDetails.sortParam;
-      this.global.searchResultDetails.order = this.searchResultDetails.order;
-      this.isBindData = true;
-      if (sessionStorage.getItem("searchedLocationMap")) {
-        this.locationDetails = JSON.parse(sessionStorage.getItem("searchedLocationMap"));
-      } else {
-        this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+    console.log(this.sortType);
+    if (!this.isPersonalizedresource) {
+      if (event.sortParam !== this.global.searchResultDetails.sortParam ||
+        event.order !== this.global.searchResultDetails.order) {
+        this.searchResultDetails = event;
+        this.global.searchResultDetails.sortParam = this.searchResultDetails.sortParam;
+        this.global.searchResultDetails.order = this.searchResultDetails.order;
+        this.isBindData = true;
+        if (sessionStorage.getItem("searchedLocationMap")) {
+          this.locationDetails = JSON.parse(sessionStorage.getItem("searchedLocationMap"));
+        } else {
+          this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+        }
+        this.luisInput.Location = this.locationDetails.location;
+        this.searchResults.topIntent = this.topIntent;
+        this.luisInput.LuisTopScoringIntent = this.searchResults.topIntent;
+        this.luisInput.Sentence = this.searchResults.topIntent
+          ? this.searchResults.topIntent
+          : this.global.searchResultDetails.topIntent;
+        this.luisInput.OrderByField = this.global.searchResultDetails.sortParam;
+        this.luisInput.OrderBy = this.global.searchResultDetails.order;
+        this.searchService.search(this.luisInput)
+          .subscribe(response => {
+            this.spinner.hide();
+            if (response != undefined) {
+              this.searchResults = response;
+              this.navigateDataService.setData(this.searchResults);
+              this.router.navigateByUrl('/searchRefresh', { skipLocationChange: true })
+                .then(() =>
+                  this.router.navigate(['/search'])
+                );
+            }
+          });
       }
-      this.luisInput.Location = this.locationDetails.location;
-      this.searchResults.topIntent = this.topIntent;
-      this.luisInput.LuisTopScoringIntent = this.searchResults.topIntent;
-      this.luisInput.Sentence = this.searchResults.topIntent ? this.searchResults.topIntent : this.global.searchResultDetails.topIntent;
-      this.luisInput.OrderByField = this.global.searchResultDetails.sortParam;
-      this.luisInput.OrderBy = this.global.searchResultDetails.order;
-      this.searchService.search(this.luisInput)
-        .subscribe(response => {
-          this.spinner.hide();
-          if (response != undefined) {
-            this.searchResults = response;
-            this.navigateDataService.setData(this.searchResults);
-            this.router.navigateByUrl('/searchRefresh', { skipLocationChange: true })
-              .then(() =>
-                this.router.navigate(['/search'])
-              );
-          }
-        });
+    } else {
+      console.log(this.searchResults);
     }
     if (this.isInternalResource && event != undefined && event.filterParam != undefined) {
       this.page = 1;
@@ -269,15 +276,15 @@ export class SearchResultsComponent implements OnInit, OnChanges {
       });
   }
 
-    displayFetchedResources() {
-        this.navigateDataService.setData(this.searchResults);
-        this.cacheSearchResultsData();
-        this.isInternalResource = true;
-        this.displayNoResultsMessage();
-        this.mapInternalResource();
-        let event = { filterParam: environment.All };
-        this.filterSearchResults(event);
-    }
+  displayFetchedResources() {
+      this.navigateDataService.setData(this.searchResults);
+      this.cacheSearchResultsData();
+      this.isInternalResource = true;
+      this.displayNoResultsMessage();
+      this.mapInternalResource();
+      let event = { filterParam: environment.All };
+      this.filterSearchResults(event);
+  }
 
   displayNoResultsMessage() {
     this.displayMessage = false;
@@ -445,6 +452,8 @@ export class SearchResultsComponent implements OnInit, OnChanges {
       if (this.searchResults.searchFilter.OrderByField === 'modifiedTimeStamp') {
         this.searchResults.searchFilter.OrderByField = 'date';
       }
+    } else {
+      this.sortType = { filterParam: undefined, sortParam: "date", order: "DESC" };
     }
     if (this.searchResults.searchFilter) {
       this.global.searchResultDetails.sortParam = this.searchResults.searchFilter.OrderByField;
