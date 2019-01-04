@@ -88,9 +88,9 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly Location expectedLocationValue = TopicResourceTestData.expectedLocationValue;
         private readonly JArray expectedReviewerData = TopicResourceTestData.expectedReviewerData;
         private readonly JArray expectedContentData = TopicResourceTestData.expectedContentData;
-		//private readonly JArray expectedIntentInputData = TopicResourceTestData.expectedIntentInputData;
+        //private readonly JArray expectedIntentInputData = TopicResourceTestData.expectedIntentInputData;
 
-		public TopicsResourcesBusinessLogicTests()
+        public TopicsResourcesBusinessLogicTests()
         {
             dynamicQueries = Substitute.For<IDynamicQueries>();
             cosmosDbSettings = Substitute.For<ICosmosDbSettings>();
@@ -1265,7 +1265,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             //arrange
             var resourceObjects = JsonUtilities.DeserializeDynamicObject<List<dynamic>>(resource);
             List<string> propertyNames = new List<string>() { Constants.Id, Constants.ResourceType };
-            string id = "77d301e7-6df2-612e-4704-c04edf271806";            
+            string id = "77d301e7-6df2-612e-4704-c04edf271806";
             List<string> values = new List<string>() { id, resourceType };
 
             var resourceDBData = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.ResourcesCollectionId, propertyNames, values);
@@ -1286,7 +1286,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 
             //act
             var result = topicsResourcesBusinessLogic.UpsertResourceDocumentAsync(resource);
-            var expectedResult = JsonConvert.SerializeObject(expectedData);            
+            var expectedResult = JsonConvert.SerializeObject(expectedData);
 
             Assert.True(result.Result.Count > 0);
         }
