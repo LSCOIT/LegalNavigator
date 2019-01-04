@@ -26,6 +26,7 @@ using System;
 using System.Reflection;
 using System.IO;
 using System.Diagnostics.CodeAnalysis;
+using Access2Justice.Shared.QnAMaker;
 
 namespace Access2Justice.Api
 {
@@ -61,7 +62,8 @@ namespace Access2Justice.Api
 
             IOnboardingInfoSettings onboardingInfoSettings = new OnboardingInfoSettings(Configuration.GetSection("EmailService"), Configuration.GetSection("KeyVault"));
             services.AddSingleton(onboardingInfoSettings);
-
+            IQnAMakerSettings qnAMakerSettings = new QnAMakerSettings(Configuration.GetSection("QnAMaker"));
+            services.AddSingleton(qnAMakerSettings);
 
             services.AddSingleton<ILuisProxy, LuisProxy>();
             services.AddSingleton<ILuisBusinessLogic, LuisBusinessLogic>();
@@ -85,6 +87,7 @@ namespace Access2Justice.Api
             services.AddSingleton<IAdminBusinessLogic, AdminBusinessLogic>();
             services.AddSingleton<IStateProvinceBusinessLogic, StateProvinceBusinessLogic>();
             services.AddSingleton<IOnboardingInfoBusinessLogic, OnboardingInfoBusinessLogic>();
+            services.AddSingleton<IQnABotBusinessLogic, QnABotBusinessLogic>();
 
             services.AddAuthentication(sharedOptions =>
             {

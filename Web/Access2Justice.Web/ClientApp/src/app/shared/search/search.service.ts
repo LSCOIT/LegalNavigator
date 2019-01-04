@@ -14,4 +14,12 @@ export class SearchService {
     };
     return this.httpClient.post(api.searchUrl, luisInput, httpOptions);
   }
+
+  getAnswers(question: string, isLuisCallRequired: boolean)
+  {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    };
+    return this.httpClient.get(api.getAnswerUrl + question + "/" + isLuisCallRequired, httpOptions);
+  }
 }

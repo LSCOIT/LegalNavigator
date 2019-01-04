@@ -33,5 +33,12 @@
 
         Task<HttpResponseMessage> GetDataAsync(Uri apiUrl, string subscriptionKey);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        Task<HttpResponseMessage> SendAsync(HttpRequestMessage request);
+
     }
 }
