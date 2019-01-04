@@ -16,4 +16,17 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "isShared")]
         public bool IsShared { get; set; } = false;
     }
+
+    public class IntentInput
+    {
+        [JsonProperty(PropertyName = "location")]
+        public Location Location { get; set; }
+
+        [JsonProperty(PropertyName = "intents")]
+        public List<string> Intents { get; set; }
+        public IntentInput()
+        {
+            Intents = new List<string>();
+        }
+    }
 }

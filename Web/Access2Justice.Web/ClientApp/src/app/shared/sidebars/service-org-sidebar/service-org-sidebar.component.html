@@ -2,14 +2,13 @@
   <img [ngClass]="{ 'full-page-img': fullPage, 'sidebar-img': !fullPage }" src="./assets/images/secondary-illustrations/service_org.svg" alt="Service Organizations">
   <div>
     <h5>Service organizations in your community</h5>
-    <p>Free local services available to all.</p>
     <div>
       <div class="sidebar-block">
         <ul
             *ngFor="let organization of organizations"
             [ngClass]="{ 'full-page': fullPage, 'sidebar-page': !fullPage }">
           <li><a class="org-name" href="#" [routerLink]="['/resource', organization.id]">{{organization.name}}</a></li>
-          <li><a class="link" [href]="'tel:'+ organization.telephone"><img class="nav-icon" src="./assets/images/small-icons/call.svg" alt="Phone number"/>{{organization.telephone}}</a></li>
+          <li><a class="link ps" [href]="'tel:'+ organization.telephone"><img class="nav-icon" src="./assets/images/small-icons/call.svg" alt="Phone number"/>{{organization.telephone}}</a></li>
         </ul>
       </div>
     </div>

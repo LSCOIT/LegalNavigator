@@ -4,7 +4,7 @@
       <h3>It looks like you are looking for information on:</h3>
       <p class="text-capitalize">{{guidedAssistantResults.topIntent}}</p>
       <button class="btn btn-primary" routerLink='/guidedassistant/{{guidedAssistantResults?.guidedAssistantId}}'>Start the Guided Assistant</button>
-      <div class="row">
+      <div>
         <a class="link col-md-12 text-center" (click)="backToSearch()">Back</a>
       </div>
     </div>
@@ -25,7 +25,7 @@
           <div class="button-container">
             <ul>
               <li *ngFor="let intent of relevantIntents">
-                <input type="checkbox" [id]="intent" [value]="intent" name="multiSelectOptions" ngModel>
+                <input type="checkbox" [id]="intent" [value]="intent" name="multiSelectOptions" ngModel (change)="onSelectTopic($event, intent)">
                 <label [for]="intent" class="p text-capitalize">{{intent}}</label>
                 <div class="check"></div>
                 <a class="link p" [routerLink]="['/topics/bdc07e7a-1f06-4517-88d8-9345bb87c3cf']">Learn More</a>

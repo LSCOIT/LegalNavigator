@@ -1,17 +1,14 @@
-
 <ng-template #template>
-  <div class="container">
-    <button type="button" class="close" aria-label="Close" (click)="close()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+  <div class="modal-body container-fluid">
+    <div class="close" (click)="close()">
+    </div>
     <div class="row text-center">
-      <h3>You have items saved in Session. Do you want to save them to your profile?</h3>
+      <h3>Unsaved Resources</h3>
+      <p>You have resources saved to broswser session. Do you want to save them to your profile?</p>
     </div>
     <div class="row text-center">
       <button type="button" (click)="saveToProfile()" class="btn btn-primary">Yes</button>
       <button type="button" (click)="close()" class="btn btn-primary">No</button>
     </div>
   </div>
-
-
 </ng-template>

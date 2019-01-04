@@ -1,3 +1,7 @@
+.btn, a.btn {
+  margin: 10px auto 20px 0;
+}
+
 a.btn-primary, a.btn-primary:hover {
   color: #fff;
 }

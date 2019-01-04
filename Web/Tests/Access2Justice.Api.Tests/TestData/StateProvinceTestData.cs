@@ -37,5 +37,15 @@ namespace Access2Justice.Api.Tests.TestData
                 }]"), "HI" };
             yield return new object[] {"", JArray.Parse(@"[]"), null };
         }
+
+        public static IEnumerable<object[]> GetStateCodeTestData()
+        {
+            yield return new object[] { "HI", JArray.Parse(@"[
+                {
+                  'code': 'HI',
+                  'name': 'Hawaii'
+                }]"), "Hawaii" };
+            yield return new object[] { "", JArray.Parse(@"[]"), null };
+        }
     }
 }

@@ -13,7 +13,7 @@
   <div class="row row-half-spacing">
     <div class="col-sm-8">
       <p> {{description}} </p>
-      <div *ngFor="let image of personalizedPlanContent?.sponsors" class="col-sm-6">
+      <div *ngFor="let image of personalizedPlanContent?.sponsors" class="col-sm-6 no-print">
         <img class="sponsor-img" [src]="'data:image/jpg;base64,'+image?.source" [alt]="image?.altText" />
       </div>
     </div>

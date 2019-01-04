@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
-import { HttpParams } from '@angular/common/http';
 import { PersonalizedPlan } from '../../../../guided-assistant/personalized-plan/personalized-plan';
 import { Global } from '../../../../global';
-import { Router } from '@angular/router';
 import { ProfileComponent } from '../../../../profile/profile.component';
 
 @Injectable()

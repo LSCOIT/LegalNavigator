@@ -181,8 +181,8 @@ namespace Access2Justice.Integration.Api.IntegrationAdapters.RtmServiceProvider
                 Telephone = GetServiceProviderPhone(site.Phones),
                 Overview = site.overview,
                 Specialties = site.specialties,
-                EligibilityInformation = site.eligibilityInformation,
-                //BusinessHours = GetBusinessHours(site.businessHours),
+                EligibilityInformation = GetEligibility(spDetails),
+                BusinessHours = GetBusinessHours(spDetails),
                 Qualifications = site.qualifications
             };
         }
@@ -317,23 +317,28 @@ namespace Access2Justice.Integration.Api.IntegrationAdapters.RtmServiceProvider
         }
 
         /// <summary>
-        /// returns open time and close time schedule
+        /// returns business hours.
         /// </summary>
-        /// <param name="businessHours"></param>
+        /// <param name="spDetails"></param>
         /// <returns></returns>
-        private dynamic GetBusinessHours(dynamic businessHours)
+        private dynamic GetBusinessHours(dynamic spDetails)
         {
-            var schedules = new List<Schedule>();
-            var schedule = new Schedule();
-            foreach (var businessHour in businessHours)
+            string businessHours = string.Empty;
+            if (spDetails?.Count > 0)
             {
-                TimeSpan openTime = TimeSpan.Parse(businessHour.opensAt.ToString(), CultureInfo.InvariantCulture);
-                TimeSpan closeTime = TimeSpan.Parse(businessHour.closesAt.ToString(), CultureInfo.InvariantCulture);
-                schedule = (new Schedule { Day = businessHour.day, OpensAt = openTime, ClosesAt = closeTime });
-                schedules.Add(schedule);
+                foreach (var item in spDetails)
+                {
+                    foreach (var detailText in item?.DetailText)
+                    {
+                        if (detailText.Label == "SITE HOURS")
+                        {
+                            businessHours = detailText.Text;
+                            break;
+                        }
+                    }
+                }
             }
-
-            return schedules;
+            return businessHours;
         }
 
         /// <summary>
@@ -432,6 +437,31 @@ namespace Access2Justice.Integration.Api.IntegrationAdapters.RtmServiceProvider
                 }
             }
             return description;
+        }
+
+        /// <summary>
+        /// returns eligibility information for service provider
+        /// </summary>
+        /// <param name="spDetails"></param>
+        /// <returns></returns>
+        private static string GetEligibility(dynamic spDetails)
+        {
+            string eligibility = string.Empty;
+            if (spDetails?.Count > 0)
+            {
+                foreach (var item in spDetails)
+                {
+                    foreach (var detailText in item?.DetailText)
+                    {
+                        if (detailText.Label == "ELIGIBILITY")
+                        {
+                            eligibility = detailText.Text;
+                            break;
+                        }
+                    }
+                }
+            }
+            return eligibility;
         }
     }
 }

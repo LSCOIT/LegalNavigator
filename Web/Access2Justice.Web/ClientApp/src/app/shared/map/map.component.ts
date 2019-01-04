@@ -275,6 +275,13 @@ export class MapComponent implements OnInit {
     }
 
     this.setLocalMapLocation();
+
+    this.subscription = this.global.notifyLocationUpate
+      .subscribe((value) => {
+        environment.map_type = true;
+        this.updateLocation();
+      });
+
   }
 
   ngOnDestroy() {

@@ -15,7 +15,7 @@ p {
   padding: 17px 15px 10px 10px;
   cursor: pointer;
   display: inline-block;
-  height: 51px;
+  height: 54px;
   margin-left: -4px;
 }
 
@@ -44,15 +44,7 @@ p {
 }
 
 .change-location-btn {
-  color: #0D3FB8;
-  font-weight: 600;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-}
-
-.change-location-btn:hover {
-  text-decoration: underline;
+   display: none;
 }
 
 #search-box {
@@ -152,6 +144,7 @@ p {
 @media only screen and (min-width : 768px) {
   .edit-location {
     padding: 15px 10px;
+    height: 52px;
   }
 
   #search-box {
@@ -165,6 +158,19 @@ p {
 
   .nav-icon.mobile-margin {
     margin: 0;
+  }
+
+  .change-location-btn {
+    display: inline-block;
+    color: #0D3FB8;
+    font-weight: 600;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+  }
+
+  .change-location-btn:hover {
+    text-decoration: underline;
   }
 }
 
