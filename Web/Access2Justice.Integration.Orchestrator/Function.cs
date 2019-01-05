@@ -5,7 +5,7 @@ using System.Net.Http;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 
-namespace Access2Justice.AdapterFunction
+namespace Access2Justice.Integration.Orchestrator
 {
     public static class Function
     {
