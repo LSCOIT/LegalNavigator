@@ -100,7 +100,7 @@ namespace Access2Justice.Api.BusinessLogic
                     var parsedCode = parser.Parse(currentComponentLogic);
                     if (parsedCode.Any())
                     {
-                        destinationComponent = curatedExperience.Components.Where(x => x.Name.Contains(parsedCode.Values.LastOrDefault())).FirstOrDefault();
+                        destinationComponent = curatedExperience.Components.Where(x => x.Name.Contains(parsedCode.Values.FirstOrDefault())).FirstOrDefault();
                     }
                 }
             }

@@ -44,6 +44,6 @@ export const api = {
     onboardingUrl: onboarding,
     onboardingSubmissionUrl: onboarding + '/eform-submit',
     getTopicDetailsUrl: topic + '/get-topic-details',
-    getStateNameUrl: apiUrl + '/StateProvince/state-name'
-    getAnswerUrl: apiUrl +"/qnabot/"
-}
+    getStateNameUrl: apiUrl + '/StateProvince/state-name',
+    getAnswerUrl: apiUrl + '/qnabot/'
+};
