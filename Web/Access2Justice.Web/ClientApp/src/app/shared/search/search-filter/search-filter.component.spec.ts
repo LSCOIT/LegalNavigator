@@ -51,31 +51,19 @@ describe('SearchFilterComponent', () => {
   });
 
   it('should set order by and sort criteria', () => {
-    component.sortParam = "All";
-    component.orderBy = 'ASC';
-    let value = "name";
-    let resourceType = "All";
-    let orderBy = 'DESC';
-    spyOn(component,'getOrderByFieldName');
-    component.sendSortCriteria(value, resourceType);
-    expect(component.sortParam).toEqual(resourceType);
-    expect(component.orderBy).toEqual(orderBy);
-    expect(component.getOrderByFieldName).toHaveBeenCalled;
+    spyOn(component, 'getOrderByFieldName');
+    component.sendSortCriteria("name", "DESC");
+    expect(component.sortParam).toBe("name");
+    expect(component.orderBy).toBe("DESC");
+    expect(component.getOrderByFieldName).toHaveBeenCalledWith("name", "DESC");
   });
 
   it('should set order by and sort criteria', () => {
-    component.sortParam = "All";
-    component.orderBy = 'DESC';
-    let value = "name";
-    let resourceType = "All";
-    let orderBy = 'ASC';
-    let orderByField = 'A-Z';
-    spyOn(component, 'getOrderByFieldName').and.returnValue(orderByField);
-    component.sendSortCriteria(value, resourceType);
-    expect(component.selectedSortCriteria).toEqual(orderByField);
-    expect(component.orderBy).toEqual(orderBy);
-    expect(component.getOrderByFieldName).toHaveBeenCalled;
+    component.sendSortCriteria("date", "ASC");
+    expect(component.sortParam).toBe("date");
+    expect(component.orderBy).toBe("ASC");
+    component.getOrderByFieldName("date", "ASC");
+    expect(component.selectedSortCriteria).toEqual("Oldest to Newest");
   });
-
 });
 

@@ -33,7 +33,6 @@ describe('SearchResultsComponent', () => {
   let component: SearchResultsComponent;
   let fixture: ComponentFixture<SearchResultsComponent>;
   let searchService: SearchService;
-  let paginationService: PaginationService;
   let navigateDataService: NavigateDataService;
   let currentPage: number = 0;
   let mockPageNumber: number = 0;
@@ -58,9 +57,11 @@ describe('SearchResultsComponent', () => {
   let mockToastr;
   let msalService;
   let mockMapLocation: any = { state: 'Sample State', city: 'Sample City', county: 'Sample County', zipCode: '1009203' };
-
+  let mockPaginationService;
+  let mockGlobal;
   beforeEach(async(() => {
     mockToastr = jasmine.createSpyObj(['success']);
+    mockPaginationService = jasmine.createSpyObj(['getPagedResources', 'searchByOffset']);
     TestBed.configureTestingModule({
       declarations: [
         SearchResultsComponent,
@@ -85,7 +86,7 @@ describe('SearchResultsComponent', () => {
       providers: [
         NavigateDataService,
         SearchService,
-        PaginationService,
+        { provide: PaginationService, useValue: mockPaginationService },
         ShowMoreService,
         MapService,
         PersonalizedPlanService,
@@ -94,7 +95,7 @@ describe('SearchResultsComponent', () => {
         { provide: APP_BASE_HREF, useValue: '/' },
         { provide: ToastrService, useValue: mockToastr },
         SearchResultsComponent,
-        Global,
+        { provide: Global, useValue: mockGlobal },
         { provide: MsalService, useValue: msalService },
         StateCodeService
       ],
@@ -108,40 +109,6 @@ describe('SearchResultsComponent', () => {
     fixture = TestBed.createComponent(SearchResultsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    searchService = TestBed.get(SearchService);
-    paginationService = TestBed.get(PaginationService);
-    navigateDataService = TestBed.get(NavigateDataService);
-
-    component.isWebResource = false;
-    component.isInternalResource = true;
-    component.isLuisResponse = false;
-    component.pagesToShow = 10;
-    component.searchResults = {};
-    component.total = 0;
-    component.page = 1;
-    component.limit = 0;
-    component.offset = 0;
-    component.resourceResults = [{}];
-    component.searchResults = {
-      resources: {}, webResources: { webPages: { value: {} } }, topIntent: ''
-    };
-
-    let store = {};
-    const mockSessionStorage = {
-      getItem: (key: string): string => {
-        return key in store ? store[key] : null;
-      },
-      setItem: (key: string, value: string) => {
-        store[key] = `${value}`;
-      },
-      removeItem: (key: string) => {
-        delete store[key];
-      },
-      clear: () => {
-        store = {};
-      }
-    };
-
   });
 
   it('should create search result component', () => {
@@ -150,19 +117,6 @@ describe('SearchResultsComponent', () => {
 
   it('should define search result component', () => {
     expect(component).toBeDefined();
-  });
-
-  it('should call filterSearchResults with event defined', () => {
-    spyOn(component, 'getInternalResource');
-    let event = { filterParam: "All" };
-    component.filterSearchResults(event);
-    expect(component.getInternalResource).toHaveBeenCalled();
-  });
-
-  it('should call filterSearchResults with event undefined', () => {
-    spyOn(component, 'getInternalResource');
-    component.filterSearchResults(event);
-    expect(component.getInternalResource).toHaveBeenCalledTimes(0);
   });
 
   it('should call getInternalResource with isServiceCall false', () => {
@@ -178,7 +132,7 @@ describe('SearchResultsComponent', () => {
     spyOn(component, 'checkResource');
     spyOn(component, 'addResource');    
     spyOn(sessionStorage, 'getItem').and.returnValue(JSON.stringify(mockLocationDetails));    
-    spyOn(paginationService, 'getPagedResources').and.returnValue(Observable.of());
+    mockPaginationService.getPagedResources.and.returnValue(Observable.of());
     component.isServiceCall = true;
     component.getInternalResource("", 1);
     expect(JSON.stringify(component.resourceFilter.Location)).toEqual(JSON.stringify(mockMapLocation));
@@ -189,7 +143,7 @@ describe('SearchResultsComponent', () => {
     spyOn(component, 'checkResource');
     spyOn(component, 'addResource');
     spyOn(sessionStorage, 'getItem').and.returnValue(JSON.stringify(mockLocationDetails));
-    spyOn(paginationService, 'getPagedResources').and.returnValue(Observable.of());
+    mockPaginationService.getPagedResources.and.returnValue(Observable.of());
     component.isServiceCall = true;
     component.getInternalResource("", 1);
     expect(component.resourceFilter.Location).toEqual(null);
@@ -244,17 +198,11 @@ describe('SearchResultsComponent', () => {
   });
 
   it('should call Search Resource by offset', () => {
-    spyOn(paginationService, 'searchByOffset').and.returnValue(Observable.of());
+    mockPaginationService.searchByOffset.and.returnValue(Observable.of());
     component.searchText = mockSearchText;
     component.offset = 1;
     component.searchResource(1);
-    expect(paginationService.searchByOffset).toHaveBeenCalled();
-  });
-
-  it('should call goToPage - web resource page', () => {
-    spyOn(component, 'getInternalResource');
-    component.goToPage(currentPage);
-    expect(component.getInternalResource).toHaveBeenCalled();
+    expect(mockPaginationService.searchByOffset).toHaveBeenCalled();
   });
 
   it("should call bindData and notifyLocationChange on ngOnInit", () => {

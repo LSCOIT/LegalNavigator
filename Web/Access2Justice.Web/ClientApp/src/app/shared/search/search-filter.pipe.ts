@@ -2,7 +2,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({ name: 'searchFilter', pure: true })
 export class SearchFilterPipe implements PipeTransform {
-  //reverse: boolean = false;
   source: any;
   filterParam: string;
   sortParam: string;
@@ -37,10 +36,7 @@ export class SearchFilterPipe implements PipeTransform {
 
   sortOrder(items) {
     if (this.order === "DESC") {
-      //this.reverse = false;
       items = items.slice().reverse();
-    //} else if (!this.reverse) {
-    //  this.reverse = true;
     } return items;
   }
 

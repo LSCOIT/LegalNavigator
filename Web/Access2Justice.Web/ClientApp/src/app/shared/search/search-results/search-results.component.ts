@@ -471,7 +471,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     this.bindData();
     this.notifyLocationChange();
     this.showRemoveOption = this.showRemove;
-    if (this.searchResults.searchFilter) {
+    if (this.searchResults && this.searchResults.searchFilter) {
       if (this.searchResults.searchFilter.OrderByField === 'modifiedTimeStamp') {
         this.searchResults.searchFilter.OrderByField = 'date';
       }
