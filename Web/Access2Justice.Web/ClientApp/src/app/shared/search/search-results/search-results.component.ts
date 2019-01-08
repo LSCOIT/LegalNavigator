@@ -191,8 +191,6 @@ export class SearchResultsComponent implements OnInit, OnChanges {
       this.page = 1;
       this.currentPage = 0;
     }
-    console.log("this.sortType.filterParam", this.sortType.filterParam);
-    console.log("this.global.searchResultDetails.filterParam", this.global.searchResultDetails.filterParam);
     if (!this.isPersonalizedresource) {
       if (this.sortType.sortParam !== this.global.searchResultDetails.sortParam ||
         this.sortType.order !== this.global.searchResultDetails.order) {
@@ -383,7 +381,6 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   }
 
   goToPage(n: number): void {
-    debugger;
     if (this.page < n) {
       this.currentPage = this.page;
     } else {
