@@ -3,10 +3,12 @@ import { NO_ERRORS_SCHEMA, QueryList } from '@angular/core';
 import { SearchFilterComponent } from './search-filter.component';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute } from '@angular/router';
+import { Global } from '../../../global';
 
 describe('SearchFilterComponent', () => {
   let component: SearchFilterComponent;
   let fixture: ComponentFixture<SearchFilterComponent>;
+  let global;
   
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -18,7 +20,8 @@ describe('SearchFilterComponent', () => {
             snapshot: { params: { id: 1 } }, 
             paramMap: Observable.of({ get: () => 1 }) 
           } 
-        }
+        },
+        { provide: Global, useValue: global }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -47,12 +50,20 @@ describe('SearchFilterComponent', () => {
     expect(component.filterParam).toEqual(resourceType);
   });
 
-  it('should create current sort criteria', () => {
-    let value = "Best Match";
-    let resourceType = "bestMatch";
-    component.sendSortCriteria(value, resourceType);
-    expect(component.selectedSortCriteria).toEqual(value);
+  it('should set order by and sort criteria', () => {
+    spyOn(component, 'getOrderByFieldName');
+    component.sendSortCriteria("name", "DESC");
+    expect(component.sortParam).toBe("name");
+    expect(component.orderBy).toBe("DESC");
+    expect(component.getOrderByFieldName).toHaveBeenCalledWith("name", "DESC");
   });
 
+  it('should set order by and sort criteria', () => {
+    component.sendSortCriteria("date", "ASC");
+    expect(component.sortParam).toBe("date");
+    expect(component.orderBy).toBe("ASC");
+    component.getOrderByFieldName("date", "ASC");
+    expect(component.selectedSortCriteria).toEqual("Oldest to Newest");
+  });
 });
 

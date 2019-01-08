@@ -1,9 +1,5 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Http;
-using System.ComponentModel;
-using Access2Justice.Shared;
+﻿using Access2Justice.Shared;
+using Newtonsoft.Json;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Access2Justice.Api.ViewModels
@@ -22,6 +18,9 @@ namespace Access2Justice.Api.ViewModels
 
         [JsonProperty(PropertyName = "topicIds")]
         public dynamic TopicIds { get; set; }
+
+        [JsonProperty(PropertyName = "searchFilter")]
+        public dynamic SearchFilter { get; set; }
 
         public PagedResourceViewModel()
         {

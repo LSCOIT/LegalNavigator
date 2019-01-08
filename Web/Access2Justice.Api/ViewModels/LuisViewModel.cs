@@ -1,9 +1,6 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Http;
+﻿using Access2Justice.Shared;
+using Newtonsoft.Json;
 using System.ComponentModel;
-using Access2Justice.Shared;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Access2Justice.Api.ViewModels
@@ -35,6 +32,9 @@ namespace Access2Justice.Api.ViewModels
         [DefaultValue("")]
         [JsonProperty(PropertyName = "guidedAssistantId")]
         public string GuidedAssistantId { get; set; }
+
+        [JsonProperty(PropertyName = "searchFilter")]
+        public dynamic SearchFilter { get; set; }
 
         public LuisViewModel()
         {

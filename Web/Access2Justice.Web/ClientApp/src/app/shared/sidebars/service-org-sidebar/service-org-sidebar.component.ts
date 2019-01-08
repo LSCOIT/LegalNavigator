@@ -20,7 +20,7 @@ export class ServiceOrgSidebarComponent implements OnInit {
   activeTopic: string;
   @Output()
   showMoreOrganizations = new EventEmitter<string>();
-  resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: {}, IsResourceCountRequired: false };
+  resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: {}, IsResourceCountRequired: false, IsOrder: false, OrderByField: '', OrderBy:'' };
   topicIds: string[] = [];
   total: number = 5;
 
@@ -46,7 +46,7 @@ export class ServiceOrgSidebarComponent implements OnInit {
     }
     this.resourceFilter = {
       ResourceType: 'Organizations', TopicIds: this.topicIds, Location: this.location,
-      PageNumber: 0, ContinuationToken: '', IsResourceCountRequired: false, ResourceIds: []
+      PageNumber: 0, ContinuationToken: '', IsResourceCountRequired: false, ResourceIds: [], IsOrder: false, OrderByField: '', OrderBy:''
     }
     this.paginationService.getPagedResources(this.resourceFilter).subscribe(response => {
       if (response != undefined) {

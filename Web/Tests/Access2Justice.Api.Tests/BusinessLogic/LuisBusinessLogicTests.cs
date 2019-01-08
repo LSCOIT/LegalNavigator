@@ -156,14 +156,15 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             //arrange
             PagedResources pagedResources = new PagedResources() { Results = resourcesData, ContinuationToken = "[]", TopicIds = topicIds };
             var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
-            topicResponse.Returns(topicsData);
+            topicResponse.ReturnsForAnyArgs(topicsData);
             var resourceCount = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
             resourceCount.ReturnsForAnyArgs<dynamic>(allResourcesCount);
             var paginationResult = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
             paginationResult.ReturnsForAnyArgs<dynamic>(pagedResources);
+            luisInput.Location = new Location { State = "AK" };
 
             //act
-            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword, location, Arg.Any<IEnumerable<string>>()).Result;
+            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword, luisInput, Arg.Any<IEnumerable<string>>()).Result;
             result = JsonConvert.SerializeObject(result);
 
             //assert            
@@ -177,14 +178,15 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             //arrange
             PagedResources pagedResources = new PagedResources() { TopicIds = new List<string>() };
             var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
-            topicResponse.Returns(topicsData);
+            topicResponse.ReturnsForAnyArgs(topicsData);
             var resourceCount = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
             resourceCount.ReturnsForAnyArgs<dynamic>(new List<dynamic>());
             var paginationResult = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
             paginationResult.ReturnsForAnyArgs<dynamic>(pagedResources);
+            luisInput.Location = new Location{State="AK"};
 
             //act
-            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword, location, Arg.Any<IEnumerable<string>>()).Result;
+            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword, luisInput, Arg.Any<IEnumerable<string>>()).Result;
             result = JsonConvert.SerializeObject(result);
 
             //assert            
@@ -197,14 +199,14 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             //arrange
             PagedResources pagedResources = new PagedResources() { Results = resourcesData, ContinuationToken = "[]", TopicIds = topicIds };
             var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
-            topicResponse.Returns(topicsData);
+            topicResponse.ReturnsForAnyArgs(topicsData);
             var resourceCount = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
             resourceCount.ReturnsForAnyArgs<dynamic>(allResourcesCount);
             var paginationResult = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
             paginationResult.ReturnsForAnyArgs<dynamic>(pagedResources);
 
             //act
-            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword, location, Arg.Any<IEnumerable<string>>()).Result;
+            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword, luisInput, Arg.Any<IEnumerable<string>>()).Result;
             result = JsonConvert.SerializeObject(result);
 
             //assert            
@@ -232,7 +234,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             var guidedAssistantResult = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
             paginationResult.ReturnsForAnyArgs<dynamic>(pagedGuidedAssistantResources);
 
-            var internalResponse = luis.GetInternalResourcesAsync(keyword, location, Arg.Any<IEnumerable<string>>());
+            var internalResponse = luis.GetInternalResourcesAsync(keyword, luisInput, Arg.Any<IEnumerable<string>>());
             internalResponse.ReturnsForAnyArgs<dynamic>(internalResponse);
 
             //act
@@ -263,7 +265,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             var guidedAssistantResult = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
             paginationResult.ReturnsForAnyArgs<dynamic>(pagedGuidedAssistantResources);
 
-            var internalResponse = luis.GetInternalResourcesAsync(keyword, location, Arg.Any<IEnumerable<string>>());
+            var internalResponse = luis.GetInternalResourcesAsync(keyword, luisInput, Arg.Any<IEnumerable<string>>());
             internalResponse.ReturnsForAnyArgs<dynamic>(internalResponse);
 
             //act
@@ -321,7 +323,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             var paginationResult = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
             paginationResult.ReturnsForAnyArgs<dynamic>(pagedResources);
 
-            var internalResponse = luis.GetInternalResourcesAsync(keyword, location, Arg.Any<IEnumerable<string>>());
+            var internalResponse = luis.GetInternalResourcesAsync(keyword, luisInput, Arg.Any<IEnumerable<string>>());
             internalResponse.ReturnsForAnyArgs<dynamic>(internalResponse);
 
             //act
@@ -349,7 +351,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             var paginationResult = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
             paginationResult.ReturnsForAnyArgs<dynamic>(pagedResources);
 
-            var internalResponse = luis.GetInternalResourcesAsync(keyword, location, Arg.Any<IEnumerable<string>>());
+            var internalResponse = luis.GetInternalResourcesAsync(keyword, luisInput, Arg.Any<IEnumerable<string>>());
             internalResponse.ReturnsForAnyArgs<dynamic>(internalResponse);
 
             //act
@@ -371,7 +373,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
             topicResponse.ReturnsForAnyArgs<dynamic>(emptyTopicObject);
 
-            var internalResponse = luis.GetInternalResourcesAsync(keyword, location, Arg.Any<IEnumerable<string>>());
+            var internalResponse = luis.GetInternalResourcesAsync(keyword, luisInput, Arg.Any<IEnumerable<string>>());
             internalResponse.ReturnsForAnyArgs<dynamic>(internalResponse);
 
             var webResponse = webSearchBusinessLogic.SearchWebResourcesAsync(new Uri("http://www.bing.com"));
@@ -394,7 +396,7 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
             topicResponse.ReturnsForAnyArgs<dynamic>(emptyTopicObject);
 
-            var internalResponse = luis.GetInternalResourcesAsync(keyword, location, Arg.Any<IEnumerable<string>>());
+            var internalResponse = luis.GetInternalResourcesAsync(keyword, luisInput, Arg.Any<IEnumerable<string>>());
             internalResponse.ReturnsForAnyArgs<dynamic>(internalResponse);
 
             var webResponse = webSearchBusinessLogic.SearchWebResourcesAsync(new Uri("http://www.bing.com"));

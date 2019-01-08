@@ -39,7 +39,10 @@ describe('Component:ServiceOrgSidebar', () => {
     ResourceIds: [],
     PageNumber: 0,
     Location: mockMapLocation,
-    IsResourceCountRequired: true
+    IsResourceCountRequired: true,
+    IsOrder: true,
+    OrderByField: "name",
+    OrderBy: "ASC"
   };
   let mockOrganizations = {
     "resources": [{
@@ -237,7 +240,9 @@ describe('Component:ServiceOrgSidebar', () => {
     mockRouter.url = '/topics';
     component.location = mockMapLocation;
     component.activeTopic = mockTopicId;
-    let resourceFilter: IResourceFilter = { ResourceType: 'Organizations', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: {}, IsResourceCountRequired: false };
+    let resourceFilter: IResourceFilter = {
+      ResourceType: 'Organizations', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: {}, IsResourceCountRequired: false, IsOrder: true,
+      OrderByField: "name", OrderBy: "ASC" };
     component.resourceFilter = resourceFilter;
     component.getOrganizations();    
     expect(component.activeTopic).toContain(mockTopicId);
@@ -247,7 +252,9 @@ describe('Component:ServiceOrgSidebar', () => {
     mockRouter.url = '/search';
     component.location = mockMapLocation;
     component.activeTopic = mockTopicId;
-    let resourceFilter: IResourceFilter = { ResourceType: 'Organizations', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: {}, IsResourceCountRequired: false };
+    let resourceFilter: IResourceFilter = {
+      ResourceType: 'Organizations', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: {}, IsResourceCountRequired: false, IsOrder: true,
+      OrderByField: "name", OrderBy: "ASC" };
     component.resourceFilter = resourceFilter;    
     component.getOrganizations();
     expect(component.activeTopic).toContain(mockTopicId);

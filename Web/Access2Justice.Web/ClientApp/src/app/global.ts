@@ -30,6 +30,7 @@ export class Global {
   roleInformation: any;
   displayResources: number = 3;
   activeSubtopicParam: string;
+  searchResultDetails: any= { filterParam: 'All', sortParam: 'date', order: 'DESC', topIntent: '' };
   topIntent: string;
   notifyLocationUpate: Subject<any> = new Subject<any>();
 

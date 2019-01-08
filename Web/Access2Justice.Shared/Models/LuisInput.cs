@@ -17,6 +17,10 @@ namespace Access2Justice.Shared
         public string LuisTopScoringIntent { get; set; }
 
         public bool IsFromCuratedExperience { get; set; } = false;
-        
+
+        public string OrderByField { get; set; }
+
+        public string OrderBy { get; set; }
+
     }
 }

@@ -183,6 +183,15 @@ namespace Access2Justice.CosmosDb
             else
             {
                 var query = $"SELECT * FROM c WHERE {arrayContainsWithAndClause}";
+                if (resourceFilter.IsOrder)
+                {
+                    if (resourceFilter?.OrderByField == "date")
+                    {
+                        resourceFilter.OrderByField = "modifiedTimeStamp";
+                    }
+                    var orderByField = (resourceFilter.OrderByField != null) ? resourceFilter.OrderByField : "name";
+                    query = $"SELECT * FROM c WHERE {arrayContainsWithAndClause} order by c.{orderByField} {resourceFilter.OrderBy}";
+                }
                 if (resourceFilter.PageNumber == 0)
                 {
                     pagedResources = await backendDatabaseService.QueryPagedResourcesAsync(query, "");

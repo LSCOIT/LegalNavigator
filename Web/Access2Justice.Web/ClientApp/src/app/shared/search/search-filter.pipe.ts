@@ -2,10 +2,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({ name: 'searchFilter', pure: true })
 export class SearchFilterPipe implements PipeTransform {
-  reverse: boolean = false;
   source: any;
   filterParam: string;
   sortParam: string;
+  order: string;
   transform(items: Array<any>, args: any[]): any[] {
     let filter = args['filter'];
     if (!items || !args || !filter) {
@@ -15,6 +15,7 @@ export class SearchFilterPipe implements PipeTransform {
     this.source = args['source']
     this.filterParam = filter['filterParam'];
     this.sortParam = filter['sortParam'];
+    this.order = filter['order'];
 
     if (this.filterParam != undefined) {
       if (this.filterParam !== 'All') {
@@ -34,17 +35,16 @@ export class SearchFilterPipe implements PipeTransform {
   }
 
   sortOrder(items) {
-    if (this.reverse) {
-      this.reverse = false;
+    if (this.order === "DESC") {
       items = items.slice().reverse();
-    } else if (!this.reverse) {
-      this.reverse = true;
     } return items;
   }
 
   sortDate(items, field) {
     let data = items.sort((a, b) => {
-      return new Date(b[field]).getTime() - new Date(a[field]).getTime();
+      a = new Date(a[field]).getTime();
+      b = new Date(b[field]).getTime();
+      return  a < b ? -1 : a > b ? 1 : 0;
     });
     return data;
   }

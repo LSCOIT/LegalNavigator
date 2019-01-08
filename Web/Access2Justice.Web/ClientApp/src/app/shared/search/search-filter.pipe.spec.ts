@@ -1,21 +1,18 @@
 import { SearchFilterPipe } from '../search/search-filter.pipe';
-import { SearchComponent } from './search.component';
 
 describe('Pipe: SearchFilterPipe', () => {
   let pipe: SearchFilterPipe;
-  let items: Array<any>;
-  let sortedItems: Array<any>;
+  let items;
   let args: any[];
-  let itemsWithNull: Array<any>;
+  let itemsWithNull;
   let argsWithNull: any[];
   let mockBlankitems = ['', '', '', '', '', ''];
   let mockDate = ['07/19/2018 10:12:30', '07/16/2018 08:12:30', '07/18/2018 14:12:30']
-  let args2: Array<any>;
 
   beforeEach(() => {
     pipe = new SearchFilterPipe();
     items = ['item1', 'item2', 'item3', 'item4', 'item5', 'item6'];
-    args = ['source', 'filter', 'args3']
+    args = ['source', 'filter', 'args3'];
   });
 
   it("should provide value for item type", () => {
@@ -51,31 +48,19 @@ describe('Pipe: SearchFilterPipe', () => {
   });
 
   it("should call sortOrder method in transform and with ascending order", () => {
-    pipe.reverse = false;
     let sortedItems = pipe.sortOrder(items);
     expect(sortedItems.length).toBe(6);
     expect(sortedItems[0]).toBe('item1');
     expect(sortedItems[5]).toBe('item6');
   });
 
-  it("should call sortOrder method in transform and with reverse order", () => {
-    pipe.reverse = true;
-    let sortedItems = pipe.sortOrder(items);
-    expect(pipe.transform(items, args)).toBeUndefined;
-    expect(sortedItems[0]).toBe('item6');
-    expect(sortedItems[5]).toBe('item1');
-  });
-
   it("should call sortOrder method in transform in reverse with other params i.e. reverse, date, internal", () => {
     spyOn(pipe, 'transform');
-    spyOn(pipe, 'reverse');
     pipe.sortParam = "date";
     pipe.source = "internal";
     pipe.filterParam = 'filterParam';
-    pipe.reverse = false;
-    expect(pipe.sortOrder).not.toBeTruthy;
     let sortedItems = pipe.sortOrder(items);
-    expect(pipe.transform(items, args)).toBeUndefined;
+    expect(pipe.transform(items, args)).toBeUndefined();
     expect(sortedItems[0]).toBe('item1');
     expect(sortedItems[5]).toBe('item6');
   });
@@ -96,22 +81,17 @@ describe('Pipe: SearchFilterPipe', () => {
   it("should call sortDate method in transform and sort the items with date", () => {
     spyOn(pipe, 'sortDate');
     pipe.sortDate(items, 'Yellow');
-    expect(pipe.sortDate).toBeTruthy;
+    expect(pipe.sortDate).toBeTruthy();
   });
 
   it("should provide no sort params for transform -undefined", () => {
     pipe.sortParam = "";
-    expect(pipe.transform(argsWithNull, items)).not.toBeDefined;
+    expect(pipe.transform(argsWithNull, items)).not.toBeDefined();
   });
 
   it("should provide no filter params for transform -filter undefined", () => {
     pipe.filterParam = "";
-    expect(pipe.transform(argsWithNull, items)).not.toBeDefined;
-  });
-
-  it("should provide filter params for transform - filter defined", () => {
-    pipe.filterParam = "mockparams";
-    expect(pipe.transform(argsWithNull, items)).toBeDefined;
+    expect(pipe.transform(argsWithNull, items)).not.toBeDefined();
   });
 
   it("should provide no value for item type", () => {

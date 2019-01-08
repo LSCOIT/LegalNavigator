@@ -123,7 +123,7 @@ describe('Service:PersonalizedPlan', () => {
   let mockResourceInput = {
     "ContinuationToken": null, "IsResourceCountRequired": false, "Location": null,
     "PageNumber": 0, "ResourceIds": ["afbb8dc1-f721-485f-ab92-1bab60137e24"], "ResourceType": "ALL",
-    "TopicIds": ["5970328f-ceea-4903-b4dc-1ea559623582"]
+    "TopicIds": ["5970328f-ceea-4903-b4dc-1ea559623582"], "IsOrder": true, "OrderByField": "name", "OrderBy":"ASC"
   };
   let mockTopicsList = [
     {

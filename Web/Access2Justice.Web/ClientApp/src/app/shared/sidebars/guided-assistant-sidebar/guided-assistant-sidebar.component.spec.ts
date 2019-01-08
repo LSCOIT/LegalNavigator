@@ -10,7 +10,6 @@ import { PaginationService } from '../../pagination/pagination.service';
 import { Observable } from 'rxjs/Observable';
 import { MapLocation } from '../../map/map';
 import { IResourceFilter } from '../../search/search-results/search-results.model';
-import { RouterStateSnapshot } from '@angular/router/src/router_state';
 import { StateCodeService } from '../../state-code.service';
 
 describe('GuidedAssistantSidebarComponent', () => {
@@ -18,10 +17,8 @@ describe('GuidedAssistantSidebarComponent', () => {
   let fixture: ComponentFixture<GuidedAssistantSidebarComponent>;
   let router: Router;
   let activateRouter: ActivatedRoute;
-  let mapService: MapService;
   let navigateDataService: NavigateDataService;
   let paginationService: PaginationService;
-  let mockGuidedAssistantId = "9a6a6131-657d-467d-b09b-c570b7dad242";
   let mockResourceType = 'Guided Assistant';
   let mockActivetopic = "bd900039-2236-8c2c-8702-d31855c56b0f";
   let mockEmpty = "";
@@ -38,16 +35,10 @@ describe('GuidedAssistantSidebarComponent', () => {
     ResourceIds: [],
     PageNumber: 0,
     Location: mockMapLocation,
-    IsResourceCountRequired: false
-  };
-  let mockresourcesInput: IResourceFilter = {
-    ResourceType: 'All',
-    ContinuationToken: '',
-    TopicIds: [mockActivetopic],
-    ResourceIds: [],
-    PageNumber: 0,
-    Location: mockMapLocation,
-    IsResourceCountRequired: true
+    IsResourceCountRequired: false,
+    IsOrder: false,
+    OrderByField: "",
+    OrderBy: ""
   };
   let mockRouter = {
     navigate:jasmine.createSpyObj('Router', ['navigateByUrl'])
