@@ -48,6 +48,9 @@ export class SearchFilterComponent implements OnInit, OnChanges {
   }
 
   sendFilterCriteria(event, resourceType) {
+    console.log(event);
+    console.log(this.sortParam);
+    console.log(this.orderBy);
     this.resetButtonColor();
     event.target["classList"].add('button-highlight');
     this.filterParam = resourceType;
@@ -60,6 +63,7 @@ export class SearchFilterComponent implements OnInit, OnChanges {
     this.orderBy = orderBy;
     this.selectedSortCriteria = this.getOrderByFieldName(this.sortParam, this.orderBy);
     this.notifyFilterCriteria.emit({ filterParam: this.filterParam, sortParam: this.sortParam, order: this.orderBy });
+    console.log(this.selectedSortCriteria);
   }
 
   getOrderByFieldName(inputFieldName, orderBy): string {
@@ -89,9 +93,13 @@ export class SearchFilterComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     if (this.searchResults.searchFilter) {
+      console.log(this.searchResults);
       this.sortParam = this.searchResults.searchFilter.OrderByField;
       this.orderBy = this.searchResults.searchFilter.OrderBy;
       this.selectedSortCriteria = this.getOrderByFieldName(this.sortParam, this.orderBy);
+      if (!this.selectedSortCriteria) {
+        this.selectedSortCriteria = 'Newest to Oldest';
+      }
     }
   }
 }
