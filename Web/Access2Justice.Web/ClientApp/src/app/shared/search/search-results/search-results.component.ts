@@ -30,8 +30,8 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   resourceResults: ResourceResult[] = [];
   filterType: string = environment.All;
   resourceTypeFilter: any[];
-  resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: {}, IsResourceCountRequired: false, IsOrder: true, OrderByField: 'name', OrderBy: 'ASC' };
-  luisInput: ILuisInput = { Sentence: '', Location: {}, LuisTopScoringIntent: '', TranslateFrom: '', TranslateTo: '', OrderByField: 'name', OrderBy: 'ASC' };
+  resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: {}, IsResourceCountRequired: false, IsOrder: true, OrderByField: 'date', OrderBy: 'DESC' };
+  luisInput: ILuisInput = { Sentence: '', Location: {}, LuisTopScoringIntent: '', TranslateFrom: '', TranslateTo: '', OrderByField: 'date', OrderBy: 'DESC' };
   location: any;
   topicIds: any[];
   isServiceCall: boolean;
@@ -57,7 +57,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   guidedAssistantId: string;
   locationDetails: LocationDetails;
   orderBy: string;
-  searchResultDetails: any = { filterParam: 'All', sortParam: 'name', order: 'ASC', topIntent: '' };
+  searchResultDetails: any = { filterParam: 'All', sortParam: 'date', order: 'DESC', topIntent: '' };
   isBindData: boolean;
 
   constructor(
@@ -136,11 +136,9 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     } else {
       this.filterType = environment.All;
     }
-    // need to revisit this logic..
     this.resourceResults = this.searchResults.resourceTypeFilter;
     this.navigateDataService.setData(undefined);
     if (this.resourceTypeFilter != undefined) {
-
       for (let index = 0; index < this.resourceTypeFilter.length; index++) {
         if ((this.searchResults.isItFromTopicPage &&
           this.resourceTypeFilter[index].ResourceName === this.searchResults.resourceType)
@@ -186,40 +184,55 @@ export class SearchResultsComponent implements OnInit, OnChanges {
 
   filterSearchResults(event) {
     this.sortType = event;
-    if (event.sortParam !== this.global.searchResultDetails.sortParam || event.order !== this.global.searchResultDetails.order) {
-      this.searchResultDetails = event;
-      this.global.searchResultDetails.sortParam = this.searchResultDetails.sortParam;
-      this.global.searchResultDetails.order = this.searchResultDetails.order;
-      this.isBindData = true;
-      if (sessionStorage.getItem("searchedLocationMap")) {
-        this.locationDetails = JSON.parse(sessionStorage.getItem("searchedLocationMap"));
-      } else {
-        this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
-      }
-      this.luisInput.Location = this.locationDetails.location;
-      this.searchResults.topIntent = this.topIntent;
-      this.luisInput.LuisTopScoringIntent = this.searchResults.topIntent;
-      this.luisInput.Sentence = this.searchResults.topIntent ? this.searchResults.topIntent : this.global.searchResultDetails.topIntent;
-      this.luisInput.OrderByField = this.global.searchResultDetails.sortParam;
-      this.luisInput.OrderBy = this.global.searchResultDetails.order;
-      this.searchService.search(this.luisInput)
-        .subscribe(response => {
-          this.spinner.hide();
-          if (response != undefined) {
-            this.searchResults = response;
-            this.navigateDataService.setData(this.searchResults);
-            this.router.navigateByUrl('/searchRefresh', { skipLocationChange: true })
-              .then(() =>
-                this.router.navigate(['/search'])
-              );
-          }
-        });
+    if (event.filterParam == undefined) {
+      this.sortType.filterParam = "All";
     }
-    if (this.isInternalResource && event != undefined && event.filterParam != undefined) {
+    if (this.isInternalResource && event != undefined) {
       this.page = 1;
       this.currentPage = 0;
-      this.filterType = event.filterParam;
-      this.getInternalResource(event.filterParam, 0);
+    }
+    if (!this.isPersonalizedresource) {
+      if (this.sortType.sortParam !== this.global.searchResultDetails.sortParam ||
+        this.sortType.order !== this.global.searchResultDetails.order) {
+        if (this.sortType.filterParam === this.global.searchResultDetails.filterParam) {
+          this.searchResultDetails = event;
+          this.global.searchResultDetails.sortParam = this.searchResultDetails.sortParam;
+          this.global.searchResultDetails.order = this.searchResultDetails.order;
+          this.global.searchResultDetails.filterParam = "All";
+          this.isBindData = true;
+          if (sessionStorage.getItem("searchedLocationMap")) {
+            this.locationDetails = JSON.parse(sessionStorage.getItem("searchedLocationMap"));
+          } else {
+            this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+          }
+          this.luisInput.Location = this.locationDetails.location;
+          this.searchResults.topIntent = this.topIntent;
+          this.luisInput.LuisTopScoringIntent = this.searchResults.topIntent;
+          this.luisInput.Sentence = this.searchResults.topIntent
+            ? this.searchResults.topIntent
+            : this.global.searchResultDetails.topIntent;
+          this.luisInput.OrderByField = this.global.searchResultDetails.sortParam;
+          this.luisInput.OrderBy = this.global.searchResultDetails.order;
+          this.searchService.search(this.luisInput)
+            .subscribe(response => {
+              this.spinner.hide();
+              if (response != undefined) {
+                this.searchResults = response;
+                this.navigateDataService.setData(this.searchResults);
+                this.router.navigateByUrl('/searchRefresh', { skipLocationChange: true })
+                  .then(() =>
+                    this.router.navigate(['/search'])
+                  );
+              }
+            });
+        } else {
+          this.global.searchResultDetails.filterParam = event.filterParam;
+          this.getInternalResource(event.filterParam, 0);
+        }
+      } else {
+        this.global.searchResultDetails.filterParam = event.filterParam;
+        this.getInternalResource(event.filterParam, this.currentPage);
+      }
     }
   }
 
@@ -262,31 +275,27 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     this.luisInput.OrderBy = this.global.searchResultDetails.order;
     this.searchService.search(this.luisInput)
       .subscribe(response => {
-        if (response != undefined) {
+        if (response["resources"].length) {
           this.searchResults = response;
           this.displayFetchedResources();
+        } else {
+          this.displayNoResultsMessage();
         }
       });
   }
 
-    displayFetchedResources() {
-        this.navigateDataService.setData(this.searchResults);
-        this.cacheSearchResultsData();
-        this.isInternalResource = true;
-        this.displayNoResultsMessage();
-        this.mapInternalResource();
-        let event = { filterParam: environment.All };
-        this.filterSearchResults(event);
-    }
+  displayFetchedResources() {
+    this.navigateDataService.setData(this.searchResults);
+    this.cacheSearchResultsData();
+    this.isInternalResource = true;
+    this.mapInternalResource();
+    let event = { filterParam: environment.All };
+    this.filterSearchResults(event);
+  }
 
   displayNoResultsMessage() {
-    this.displayMessage = false;
-    if (this.searchResults != undefined &&
-      this.searchResults.resources != undefined &&
-      this.searchResults.resources.length === 0) {
-      this.displayMessage = true;
-      this.isInternalResource = false;
-    }
+    this.displayMessage = true;
+    this.isInternalResource = false;
   }
 
   getInternalResource(filterName, pageNumber): void {
@@ -298,11 +307,11 @@ export class SearchResultsComponent implements OnInit, OnChanges {
         this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
       }
       this.resourceFilter.Location = this.locationDetails.location;
-      this.resourceFilter.OrderBy = this.global.searchResultDetails.order;
-      this.resourceFilter.OrderByField = this.global.searchResultDetails.sortParam;
+      this.resourceFilter.OrderBy = this.sortType.order;
+      this.resourceFilter.OrderByField = this.sortType.sortParam;
       this.paginationService.getPagedResources(this.resourceFilter).subscribe(response => {
         this.searchResults = response;
-        if (this.page == 1) {
+        if (this.page === 1) {
           this.updateCacheStorage(filterName);
         }
         this.addResource(filterName);
@@ -317,8 +326,8 @@ export class SearchResultsComponent implements OnInit, OnChanges {
         && this.resourceTypeFilter[index].ResourceList[this.page - 1] != undefined) {
         this.total = this.resourceTypeFilter[index].ResourceCount;
         this.searchResults = this.resourceTypeFilter[index].ResourceList[this.page - 1];
-        if (this.page == 1) {
-          this.updateCacheStorage(this.filterType);
+        if (this.page === 1) {
+          this.updateCacheStorage(resourceName);
         }
         this.isServiceCall = false;
         break;
@@ -326,7 +335,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
       else if (this.resourceTypeFilter[index].ResourceName === resourceName) {
         this.total = this.resourceTypeFilter[index].ResourceCount;
         this.resourceFilter.ResourceType = this.resourceTypeFilter[index].ResourceName;
-        this.resourceFilter.PageNumber = this.currentPage;
+        this.resourceFilter.PageNumber = this.page - 1;
         this.resourceFilter.TopicIds = this.topicIds;
         if (this.resourceTypeFilter[index].ResourceList != undefined
           && this.resourceTypeFilter[index].ResourceList[pageNumber] != undefined) {
@@ -382,7 +391,14 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     if (this.isWebResource) {
       this.searchResource(this.calculateOffsetValue(n));
     } else {
-      this.getInternalResource(this.filterType, this.currentPage - 1);
+      if (!this.sortType) {
+        this.sortType = {
+          filterParam: this.global.searchResultDetails.filterParam,
+          sortParam: this.global.searchResultDetails.sortParam,
+          order: this.global.searchResultDetails.order
+        };
+      }
+      this.getInternalResource(this.global.searchResultDetails.filterParam, this.currentPage - 1);
     }
   }
 
@@ -392,7 +408,14 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     if (this.isWebResource) {
       this.searchResource(this.calculateOffsetValue(this.page));
     } else {
-      this.getInternalResource(this.filterType, this.currentPage - 1);
+      if (!this.sortType) {
+        this.sortType = {
+          filterParam: this.global.searchResultDetails.filterParam,
+          sortParam: this.global.searchResultDetails.sortParam,
+          order: this.global.searchResultDetails.order
+        };
+      }
+      this.getInternalResource(this.global.searchResultDetails.filterParam, this.currentPage - 1);
     }
   }
 
@@ -402,7 +425,14 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     if (this.isWebResource) {
       this.searchResource(this.calculateOffsetValue(this.page));
     } else {
-      this.getInternalResource(this.filterType, this.page - 1);
+      if (!this.sortType) {
+        this.sortType = {
+          filterParam: this.global.searchResultDetails.filterParam,
+          sortParam: this.global.searchResultDetails.sortParam,
+          order: this.global.searchResultDetails.order
+        };
+      }
+      this.getInternalResource(this.global.searchResultDetails.filterParam, this.currentPage - 1);
     }
   }
 
@@ -445,10 +475,11 @@ export class SearchResultsComponent implements OnInit, OnChanges {
       if (this.searchResults.searchFilter.OrderByField === 'modifiedTimeStamp') {
         this.searchResults.searchFilter.OrderByField = 'date';
       }
-    }
-    if (this.searchResults.searchFilter) {
       this.global.searchResultDetails.sortParam = this.searchResults.searchFilter.OrderByField;
       this.global.searchResultDetails.order = this.searchResults.searchFilter.OrderBy;
+      this.global.searchResultDetails.filterParam = this.searchResults.resourceType;
+    } else {
+      this.sortType = { filterParam: undefined, sortParam: "date", order: "DESC" };
     }
   }
 

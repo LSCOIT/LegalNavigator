@@ -33,6 +33,8 @@ export class ShowMoreService {
     }
     this.resourceFilter.Location = this.locationDetails.location;
     this.resourceFilter.IsResourceCountRequired = true;
+    this.resourceFilter.OrderBy = "DESC";
+    this.resourceFilter.OrderByField = "date";
     this.paginationService.getPagedResources(this.resourceFilter).subscribe(response => {
       if (response != undefined) {
         this.searchResults = response;
