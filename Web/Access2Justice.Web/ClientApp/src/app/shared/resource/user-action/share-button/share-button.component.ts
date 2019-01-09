@@ -6,7 +6,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { environment } from '../../../../../environments/environment';
 import { Global, UserStatus } from '../../../../global';
 import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
-import { NavigateDataService } from '../../../navigate-data.service';
+import { NavigateDataService } from '../../../services/navigate-data.service';
 import { Share } from '../share-button/share.model';
 import { ShareService } from '../share-button/share.service';
 

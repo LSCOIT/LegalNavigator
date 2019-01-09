@@ -1,12 +1,12 @@
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule, NgForm } from '@angular/forms';
 import { PersonalizedPlanTemplateComponent } from './personalized-plan-template.component';
-import { StaticResourceService } from '../../shared/static-resource.service';
+import { StaticResourceService } from '../../shared/services/static-resource.service';
 import { Global } from '../../global';
 import { NO_ERRORS_SCHEMA, QueryList } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router, ActivatedRoute } from '@angular/router';
-import { NavigateDataService } from '../../shared/navigate-data.service';
+import { NavigateDataService } from '../../shared/services/navigate-data.service';
 import { ToastrService } from 'ngx-toastr';
 import { AdminService } from '../admin.service';
 import { of } from 'rxjs/observable/of';
@@ -67,25 +67,52 @@ describe('PersonalizedPlanTemplateComponent', () => {
         ]
       }
     ];
-
     formValue = <NgForm>{
       value: {
         personalizedPlanDescription: "test description"
       }
     };
+
     TestBed.configureTestingModule({
         imports: [FormsModule, ReactiveFormsModule],
         declarations: [PersonalizedPlanTemplateComponent],
         providers: [
-          { provide: StaticResourceService, useValue: mockStaticResource },
-          { provide: Global, useValue: mockGlobal },
-          { provide: NgxSpinnerService, useValue: mockNgxSpinnerService },
-          { provide: Router, useValue: mockRouter },
-          { provide: ActivatedRoute, useValue: mockActiveRoute },
-          { provide: NavigateDataService, useValue: mockNavigateDataService },
-          { provide: ToastrService, useValue: mockToastr },
-          { provide: AdminService, useValue: mockAdminService },
-          { provide: StaticResourceService, useValue: mockStaticResourceService }
+          {
+            provide: StaticResourceService,
+            useValue: mockStaticResource
+          },
+          {
+            provide: Global,
+            useValue: mockGlobal
+          },
+          {
+            provide: NgxSpinnerService,
+            useValue: mockNgxSpinnerService
+          },
+          {
+            provide: Router,
+            useValue: mockRouter
+          },
+          {
+            provide: ActivatedRoute,
+            useValue: mockActiveRoute
+          },
+          {
+            provide: NavigateDataService,
+            useValue: mockNavigateDataService
+          },
+          {
+            provide: ToastrService,
+            useValue: mockToastr
+          },
+          {
+            provide: AdminService,
+            useValue: mockAdminService
+          },
+          {
+            provide: StaticResourceService,
+            useValue: mockStaticResourceService
+          }
         ],
         schemas: [NO_ERRORS_SCHEMA]
     })

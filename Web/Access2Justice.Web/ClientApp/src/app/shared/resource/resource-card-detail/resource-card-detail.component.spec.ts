@@ -15,11 +15,11 @@ import { ServiceOrgSidebarComponent } from '../../sidebars/service-org-sidebar/s
 import { UserActionSidebarComponent } from '../../sidebars/user-action-sidebar/user-action-sidebar.component';
 import { VideosComponent } from '../resource-type/videos/videos.component';
 import { ShowMoreService } from '../../sidebars/show-more/show-more.service';
-import { NavigateDataService } from '../../navigate-data.service';
+import { NavigateDataService } from '../../services/navigate-data.service';
 import { PaginationService } from '../../pagination/pagination.service';
 import { Global } from '../../../global';
 import { MapService } from '../../map/map.service';
-import { StateCodeService } from '../../state-code.service';
+import { StateCodeService } from '../../services/state-code.service';
 
 describe('ResourceCardDetailComponent', () => {
   let component: ResourceCardDetailComponent;
@@ -75,7 +75,15 @@ describe('ResourceCardDetailComponent', () => {
          NO_ERRORS_SCHEMA 
        ],
        providers: [ 
-         { provide: ResourceService, useValue: mockResourceService },
+         ShowMoreService,
+         NavigateDataService,
+         PaginationService,
+         MapService,
+         StateCodeService,
+         {
+           provide: ResourceService,
+           useValue: mockResourceService
+         },
          { 
            provide: ActivatedRoute,
            useValue: {
@@ -86,14 +94,21 @@ describe('ResourceCardDetailComponent', () => {
                 }
             }
          }, 
-         { provide: Router, useValue: mockRouter },
-         { provide: Global, useValue: mockGlobal },
-         { provide: Global, useValue: { role: '', shareRouteUrl: '' } },         
-         ShowMoreService,
-         NavigateDataService,
-         PaginationService,
-         MapService,
-         StateCodeService
+         {
+           provide: Router,
+           useValue: mockRouter
+         },
+         {
+           provide: Global,
+           useValue: mockGlobal
+         },
+         {
+           provide: Global,
+           useValue: {
+             role: '',
+             shareRouteUrl: ''
+           }
+         }   
        ],
        imports: [ HttpClientModule ]
     })
@@ -110,7 +125,7 @@ describe('ResourceCardDetailComponent', () => {
     expect(component).toBeTruthy();
   });
   
-  it('should call getResource ', function () {
+  it('should call getResource ', () => {
     spyOn(component, 'getResource');
     component.resourceId = component.resource.id;
     mockResourceService.getResource();

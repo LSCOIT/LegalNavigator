@@ -1,5 +1,5 @@
 import { ShowMoreService } from './show-more.service';
-import { NavigateDataService } from '../../navigate-data.service';
+import { NavigateDataService } from '../../services/navigate-data.service';
 import { PaginationService } from '../../pagination/pagination.service';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
@@ -9,12 +9,11 @@ describe('Service:ServiceOrgService', () => {
   let navigateDataService: NavigateDataService;
   let paginationService: PaginationService;
   let router: Router;
-
-  const httpSpy = jasmine.createSpyObj('http', ['get', 'post']);
   let mockActiveId: any = "5d7f773f-ef75-4fb7-9681-cc7c81dc2be7";
   let mockResourceType = 'Organizations';
   let mockTopicIds = ['test'];
   let mocktTopIntent = "";
+  let httpSpy;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -23,6 +22,7 @@ describe('Service:ServiceOrgService', () => {
         NavigateDataService,
         PaginationService]
     });
+    httpSpy = jasmine.createSpyObj('http', ['get', 'post']);
     showMoreService = new ShowMoreService(httpSpy, navigateDataService, router, paginationService);
     navigateDataService = new NavigateDataService();
     paginationService = new PaginationService(httpSpy);

@@ -6,9 +6,9 @@ import { MapLocation, LocationDetails, DisplayLocationDetails } from './map';
 import { environment } from '../../../environments/environment';
 import { MapResultsService } from '../../shared/sidebars/map-results/map-results.service';
 import { Navigation, Location, LocationNavContent } from '../navigation/navigation';
-import { StaticResourceService } from '../../shared/static-resource.service';
+import { StaticResourceService } from '../../shared/services/static-resource.service';
 import { Global } from '../../global';
-import { EventUtilityService } from '../event-utility.service';
+import { EventUtilityService } from '../../shared/services/event-utility.service';
 
 @Component({
   selector: 'app-map',
@@ -267,15 +267,12 @@ export class MapComponent implements OnInit {
     } else {
       this.showLocality = false;
     }
-
     if (sessionStorage.getItem("globalMapLocation")) {
       this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
       this.locationDetails.displayLocationDetails.locality = this.locationDetails.displayLocationDetails.address;
       this.displayLocationDetails(this.locationDetails.displayLocationDetails);
     }
-
     this.setLocalMapLocation();
-
     this.subscription = this.global.notifyLocationUpate
       .subscribe((value) => {
         environment.map_type = true;

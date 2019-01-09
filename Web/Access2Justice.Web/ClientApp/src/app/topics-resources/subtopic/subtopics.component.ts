@@ -1,10 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { TopicService } from '../shared/topic.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NavigateDataService } from '../../shared/navigate-data.service';
+import { NavigateDataService } from '../../shared/services/navigate-data.service';
 import { ShowMoreService } from "../../shared/sidebars/show-more/show-more.service";
 import { ISubtopicGuidedInput } from "../shared/topic";
-import { Input } from "@angular/core/src/metadata/directives";
 import { MapService } from "../../shared/map/map.service";
 import { Global } from '../../global';
 

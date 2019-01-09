@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { Global } from './global';
-import { StaticResourceService } from './shared/static-resource.service';
+import { StaticResourceService } from './shared/services/static-resource.service';
 import { MapService } from './shared/map/map.service';
 import { MsalService } from '@azure/msal-angular';
 import { LoginService } from './shared/login/login.service';
@@ -36,7 +36,7 @@ export class AppComponent implements OnInit {
         return false;
       }
     }
-  }
+  };
 
   constructor(
     private global: Global,

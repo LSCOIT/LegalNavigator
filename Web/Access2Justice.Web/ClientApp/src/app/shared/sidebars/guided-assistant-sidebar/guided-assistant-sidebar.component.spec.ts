@@ -5,12 +5,12 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ModalModule, BsModalService } from 'ngx-bootstrap';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { MapService } from '../../map/map.service';
-import { NavigateDataService } from '../../navigate-data.service';
+import { NavigateDataService } from '../../services/navigate-data.service';
 import { PaginationService } from '../../pagination/pagination.service';
 import { Observable } from 'rxjs/Observable';
 import { MapLocation } from '../../map/map';
 import { IResourceFilter } from '../../search/search-results/search-results.model';
-import { StateCodeService } from '../../state-code.service';
+import { StateCodeService } from '../../services/state-code.service';
 
 describe('GuidedAssistantSidebarComponent', () => {
   let component: GuidedAssistantSidebarComponent;
@@ -52,15 +52,26 @@ describe('GuidedAssistantSidebarComponent', () => {
       declarations: [GuidedAssistantSidebarComponent],
       providers: [
         BsModalService,
-        { provide: Router, useValue: mockRouter },        
+        {
+          provide: Router,
+          useValue: mockRouter
+        },        
         { provide: ActivatedRoute, 
           useValue: {
             snapshot: {
-              params: { 'id': 'bd900039-2236-8c2c-8702-d31855c56b0f' }
+              params: {
+                 'id': 'bd900039-2236-8c2c-8702-d31855c56b0f'
+              }
             },
             url: Observable.of([
-              { path: 'guidedassistant', params: {} },
-              { path: 'bd900039-2236-8c2c-8702-d31855c56b0f', params: {} }
+              {
+                path: 'guidedassistant',
+                params: {}
+              },
+              {
+                path: 'bd900039-2236-8c2c-8702-d31855c56b0f',
+                params: {}
+              }
             ])
           }
         },

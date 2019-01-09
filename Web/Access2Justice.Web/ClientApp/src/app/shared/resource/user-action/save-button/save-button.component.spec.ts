@@ -1,8 +1,8 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import { ArrayUtilityService } from '../../../array-utility.service';
+import { ArrayUtilityService } from '../../../services/array-utility.service';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { BsModalService } from 'ngx-bootstrap';
-import { EventUtilityService } from '../../../event-utility.service';
+import { EventUtilityService } from '../../../services/event-utility.service';
 import { Global } from '../../../../global';
 import { HttpClientModule } from '@angular/common/http';
 import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
@@ -11,7 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 import { MsalService } from '@azure/msal-angular';
 import { of } from 'rxjs/observable/of';
 import { SaveButtonService } from './save-button.service';
-import { NavigateDataService } from '../../../navigate-data.service';
+import { NavigateDataService } from '../../../services/navigate-data.service';
 import { Observable } from 'rxjs/Observable';
 import { expand } from 'rxjs/operators/expand';
 
@@ -102,7 +102,13 @@ describe('SaveButtonComponent', () => {
   };
 
   beforeEach(async(() => {
-    mockPersonalizedPlanService = jasmine.createSpyObj(['getActionPlanConditions', 'saveResourceToProfilePostLogin', 'userPlan', 'showSuccess', 'saveBookmarkedResource']);
+    mockPersonalizedPlanService = jasmine.createSpyObj([
+      'getActionPlanConditions',
+      'saveResourceToProfilePostLogin',
+      'userPlan',
+      'showSuccess',
+      'saveBookmarkedResource'
+    ]);
     msalService = jasmine.createSpyObj(['getUser']);
     mockPersonalizedPlanService.getActionPlanConditions.and.returnValue(of(mockPlanDetails));
     msalService.getUser.and.returnValue(mockUserData);
@@ -114,12 +120,36 @@ describe('SaveButtonComponent', () => {
       imports: [HttpClientModule],
       declarations: [SaveButtonComponent],
       providers: [
-        { provide: PersonalizedPlanService, useValue: mockPersonalizedPlanService },
-        { provide: Global, useValue: { mockGlobal, userid: mockUserId, planSessionKey: "planKey" } },
-        { provide: Router, useValue: { url: '/plan/id' }},
-        { provide: MsalService, useValue: msalService },
-        { provide: SaveButtonService, useValue: mockSaveButtonService },
-        { provide: NavigateDataService, useValue: mockMavigateDataService },
+        {
+          provide: PersonalizedPlanService,
+          useValue: mockPersonalizedPlanService
+        },
+        {
+          provide: Global,
+          useValue: {
+            mockGlobal,
+            userid: mockUserId,
+            planSessionKey: "planKey"
+          }
+        },
+        {
+          provide: Router,
+          useValue: {
+             url: '/plan/id'
+          }
+        },
+        {
+          provide: MsalService,
+          useValue: msalService
+        },
+        {
+          provide: SaveButtonService,
+          useValue: mockSaveButtonService
+        },
+        {
+          provide: NavigateDataService,
+          useValue: mockMavigateDataService
+        }
       ]
     })
       .compileComponents();

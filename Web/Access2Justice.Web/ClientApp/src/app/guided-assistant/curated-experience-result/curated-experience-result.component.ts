@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { NavigateDataService } from '../../shared/navigate-data.service';
+import { NavigateDataService } from '../../shared/services/navigate-data.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { MapService } from '../../shared/map/map.service';
-import { ArrayUtilityService } from '../../shared/array-utility.service';
+import { ArrayUtilityService } from '../../shared/services/array-utility.service';
 import { Global } from '../../global';
 import { PersonalizedPlanService } from '../personalized-plan/personalized-plan.service';
 import { IntentInput } from '../personalized-plan/personalized-plan';

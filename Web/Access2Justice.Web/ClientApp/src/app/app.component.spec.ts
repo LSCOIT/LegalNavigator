@@ -11,7 +11,7 @@ import { HomeComponent } from './home/home.component';
 import { PrivacyPromiseComponent } from './privacy-promise/privacy-promise.component';
 import { QuestionComponent } from './guided-assistant/question/question.component';
 import { SearchComponent } from './shared/search/search.component';
-import { StaticResourceService } from './shared/static-resource.service';
+import { StaticResourceService } from './shared/services/static-resource.service';
 import { SubtopicDetailComponent } from './topics-resources/subtopic/subtopic-detail.component';
 import { SubtopicsComponent } from './topics-resources/subtopic/subtopics.component';
 import { TopicsComponent } from './topics-resources/topic/topics.component';
@@ -24,7 +24,7 @@ import { MsalService, BroadcastService } from '@azure/msal-angular';
 import { MSAL_CONFIG } from '@azure/msal-angular/dist/msal.service';
 import { PersonalizedPlanService } from './guided-assistant/personalized-plan/personalized-plan.service';
 import { HttpClientModule } from '@angular/common/http';
-import { ArrayUtilityService } from './shared/array-utility.service';
+import { ArrayUtilityService } from './shared/services/array-utility.service';
 import { ToastrService } from 'ngx-toastr';
 import { LoginService } from './shared/login/login.service';
 import { IUserProfile } from './shared/login/user-profile.model';
@@ -129,20 +129,54 @@ describe('AppComponent', () => {
         HttpClientModule,
         PipeModule.forRoot()
       ],
-      providers: [AppComponent, PersonalizedPlanService, ArrayUtilityService, ToastrService,
-        { provide: MsalService, useValue: msalService },
-        { provide: StaticResourceService, useValue: mockStaticResourceService },
-        { provide: Global, useValue: mockGlobal },
-        { provide: MapService, useValue: mockMapService },
-        { provide: Router, useValue: mockRouter },
-        { provide: MSAL_CONFIG, useValue: {} },
-        { provide: ToastrService, useValue: toastrService },
-        { provide: LoginService, useValue: mockLoginService },
-        { provide: PersonalizedPlanService, useValue: mockPersonalizedPlanService },
-        { provide: SaveButtonService, useValue: mockSaveButtonService },
+      providers: [
+        AppComponent,
+        PersonalizedPlanService,
+        ArrayUtilityService,
+        ToastrService,
         NgxSpinnerService,
         BroadcastService,
-        TopicService
+        TopicService,
+        {
+          provide: MsalService,
+          useValue: msalService
+        },
+        {
+          provide: StaticResourceService,
+          useValue: mockStaticResourceService
+        },
+        {
+          provide: Global,
+          useValue: mockGlobal
+        },
+        {
+          provide: MapService,
+          useValue: mockMapService
+        },
+        {
+          provide: Router,
+          useValue: mockRouter
+        },
+        {
+          provide: MSAL_CONFIG,
+          useValue: {}
+        },
+        {
+          provide: ToastrService,
+          useValue: toastrService
+        },
+        {
+          provide: LoginService,
+          useValue: mockLoginService
+        },
+        {
+          provide: PersonalizedPlanService,
+          useValue: mockPersonalizedPlanService
+        },
+        {
+          provide: SaveButtonService,
+          useValue: mockSaveButtonService
+        }
       ],
       schemas: [
         NO_ERRORS_SCHEMA,
@@ -150,14 +184,10 @@ describe('AppComponent', () => {
       ]
     }).compileComponents();
 
-    //create component and test fixture
     fixture = TestBed.createComponent(AppComponent);
-
-    // UserService provided to the TestBed
     msalService = TestBed.get(MsalService);
     component = TestBed.get(AppComponent);
     toastrService = TestBed.get(ToastrService);
-
   }));
 
   it('should create the app', async(() => {

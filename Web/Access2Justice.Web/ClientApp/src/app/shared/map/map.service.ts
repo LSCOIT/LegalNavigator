@@ -3,7 +3,7 @@ import { environment } from '../../../environments/environment';
 import { MapLocation, LocationDetails, DisplayLocationDetails } from './map';
 import { Subject } from 'rxjs';
 import { api } from '../../../api/api';
-import { StateCodeService } from '../state-code.service';
+import { StateCodeService } from '../services/state-code.service';
 
 declare var Microsoft: any;
 
@@ -54,7 +54,6 @@ export class MapService {
       }
     };
 
-    //Make the geocode request.
     let map = new Microsoft.Maps.Map('#my-map',
       {
         credentials: environment.bingmap_key
@@ -79,7 +78,6 @@ export class MapService {
           credentials: environment.bingmap_key
         });
       this.map.entities.push(this.pin);
-      //Determine a bounding box to best view the results.
       let bounds = this.location.bestView;
       this.map.setView({ bounds: bounds, padding: 30 });
       this.notifyLocationSuccess.next("success");
@@ -176,38 +174,34 @@ export class MapService {
       sessionStorage.setItem("globalSearchMapLocation", JSON.stringify(this.locationDetails));
     }
     else {
-      //Zipcode
       if ((this.location.entitySubType != undefined &&
-        this.location.entitySubType.indexOf("Postcode") != -1)
+        this.location.entitySubType.indexOf("Postcode") !== -1)
         || (this.location.entityType != undefined &&
-          this.location.entityType.indexOf("Postcode") != -1)) {
+          this.location.entityType.indexOf("Postcode") !== -1)) {
         this.mapLocation.state = "";
         this.mapLocation.county = "";
         this.mapLocation.city = "";
       }
-      //State
       else if ((this.location.entitySubType != undefined &&
-        this.location.entitySubType.indexOf("AdminDivision1") != -1)
+        this.location.entitySubType.indexOf("AdminDivision1") !== -1)
         || (this.location.entityType != undefined &&
-          this.location.entityType.indexOf("AdminDivision1") != -1)) {
+          this.location.entityType.indexOf("AdminDivision1") !== -1)) {
         this.mapLocation.county = "";
         this.mapLocation.city = "";
         this.mapLocation.zipCode = "";
       }
-      //County
       else if ((this.location.entitySubType != undefined &&
-        this.location.entitySubType.indexOf("AdminDivision2") != -1)
+        this.location.entitySubType.indexOf("AdminDivision2") !== -1)
         || (this.location.entityType != undefined &&
-          this.location.entityType.indexOf("AdminDivision2") != -1)) {
+          this.location.entityType.indexOf("AdminDivision2") !== -1)) {
         this.mapLocation.state = "";
         this.mapLocation.city = "";
         this.mapLocation.zipCode = "";
       }
-      //City
       else if ((this.location.entitySubType != undefined &&
-        this.location.entitySubType.indexOf("PopulatedPlace") != -1)
+        this.location.entitySubType.indexOf("PopulatedPlace") !== -1)
         || (this.location.entityType != undefined &&
-          this.location.entityType.indexOf("PopulatedPlace") != -1)) {
+          this.location.entityType.indexOf("PopulatedPlace") !== -1)) {
         this.mapLocation.state = "";
         this.mapLocation.county = "";
         this.mapLocation.zipCode = "";
@@ -224,9 +218,7 @@ function suggestionSelected(result) {
     {
       credentials: environment.bingmap_key
     });
-  //Remove previously selected suggestions from the map.
   map.entities.clear();
-  //Show the suggestion as a pushpin and center map over it.
   var pin = new Microsoft.Maps.Pushpin(result.location, {
     icon: '../../assets/images/location/poi_custom.png'
   });

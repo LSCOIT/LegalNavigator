@@ -1,22 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { api } from '../../api/api';
-import { MapLocation, LocationDetails } from './map/map';
-import { About } from '../about/about';
-import { PrivacyContent } from '../privacy-promise/privacy-promise';
-import { HelpAndFaqs } from '../help-faqs/help-faqs';
-import { Navigation } from './navigation/navigation';
-import { Home } from '../home/home';
-import { PersonalizedPlanDescription } from '../guided-assistant/personalized-plan/personalized-plan';
-import { GuidedAssistant } from '../guided-assistant/guided-assistant';
+import { api } from '../../../api/api';
+import { MapLocation, LocationDetails } from './../map/map';
+import { About } from '../../about/about';
+import { PrivacyContent } from '../../privacy-promise/privacy-promise';
+import { HelpAndFaqs } from '../../help-faqs/help-faqs';
+import { Navigation } from './../navigation/navigation';
+import { Home } from '../../home/home';
+import { PersonalizedPlanDescription } from '../../guided-assistant/personalized-plan/personalized-plan';
+import { GuidedAssistant } from '../../guided-assistant/guided-assistant';
 
 @Injectable()
 export class StaticResourceService {
 
-  name: any;
   constructor(private httpClient: HttpClient) { }
-
+  name: any;
   mapLocation: MapLocation;
   state: string;
   aboutContent: About;

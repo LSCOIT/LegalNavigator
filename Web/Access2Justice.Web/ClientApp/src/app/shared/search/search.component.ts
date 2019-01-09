@@ -3,10 +3,9 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SearchService } from './search.service';
-import { NavigateDataService } from '../navigate-data.service';
+import { NavigateDataService } from '../services/navigate-data.service';
 import { ILuisInput } from './search-results/search-results.model';
 import { MapLocation, LocationDetails } from '../map/map';
-
 
 @Component({
   selector: 'app-search',
@@ -17,7 +16,15 @@ export class SearchComponent implements OnInit {
   inputText: string; 
   @Input()
   searchResults: any;
-  luisInput: ILuisInput = { Sentence: '', Location: '', TranslateFrom: '', TranslateTo: '', LuisTopScoringIntent: '', OrderByField: 'date', OrderBy:'DESC' };
+  luisInput: ILuisInput = {
+    Sentence: '',
+    Location: '',
+    TranslateFrom: '',
+    TranslateTo: '',
+    LuisTopScoringIntent: '',
+    OrderByField: 'date',
+    OrderBy: 'DESC'
+  };
   mapLocation: MapLocation;
   locationDetails: LocationDetails;
 

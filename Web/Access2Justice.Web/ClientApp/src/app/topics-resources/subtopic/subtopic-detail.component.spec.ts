@@ -6,7 +6,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { GuidedAssistantSidebarComponent } from '../../shared/sidebars/guided-assistant-sidebar/guided-assistant-sidebar.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MapService } from '../../shared/map/map.service';
-import { NavigateDataService } from '../../shared/navigate-data.service';
+import { NavigateDataService } from '../../shared/services/navigate-data.service';
 import { Observable } from 'rxjs/Observable';
 import { PaginationService } from '../../shared/pagination/pagination.service';
 import { PrintButtonComponent } from '../../shared/resource/user-action/print-button/print-button.component';
@@ -30,8 +30,10 @@ describe('SubtopicDetailComponent', () => {
   let component: SubtopicDetailComponent;
   let fixture: ComponentFixture<SubtopicDetailComponent>;
   let resourceType: string = 'Action Plans';
-  let mockSubTopicDetailData = [{
-    id: "88b5060a-61e7-4739-aad2-df76a088fe35", name: "Self-Help Centers & Access to Justice Rooms",
+  let mockSubTopicDetailData = [
+    {
+    id: "88b5060a-61e7-4739-aad2-df76a088fe35",
+    name: "Self-Help Centers & Access to Justice Rooms",
     organizationalUnit: "Hawaii",
     resourceType: "Related Links",
     url: "https://www.lawhelp.org/hi/resource/self-help-centers-access-to-justice-rooms"
@@ -82,40 +84,74 @@ describe('SubtopicDetailComponent', () => {
       ],
       imports: [
         RouterModule.forRoot([
-          { path: 'subtopics/:topic', component: SubtopicDetailComponent }
+          {
+            path: 'subtopics/:topic',
+            component: SubtopicDetailComponent
+          }
         ]),
         HttpClientModule,
         PipeModule.forRoot(),
         BsDropdownModule.forRoot()
       ],
       providers: [
-        { provide: APP_BASE_HREF, useValue: '/' },
-        { provide: NavigateDataService, useValue: mockNavigateDataService },
-        { provide: MapService, useValue: mockMapService },
-        { provide: PaginationService, useValue: mockPaginationService },
+        SearchService,
+        {
+          provide: APP_BASE_HREF,
+          useValue: '/'
+        },
+        {
+          provide: NavigateDataService,
+          useValue: mockNavigateDataService
+        },
+        {
+          provide: MapService,
+          useValue: mockMapService
+        },
+        {
+          provide: PaginationService,
+          useValue: mockPaginationService
+        },
         {
           provide: ActivatedRoute,
           useValue: {
             snapshot: {
-              params: { 'topic': 'bd900039-2236-8c2c-8702-d31855c56b0f' }
+              params: {
+                 'topic': 'bd900039-2236-8c2c-8702-d31855c56b0f'
+              }
             },
             url: Observable.of([
-              { path: 'subtopics', params: {} },
-              { path: 'bd900039-2236-8c2c-8702-d31855c56b0f', params: {} }
+              {
+                path: 'subtopics',
+                params: {}
+              },
+              {
+                path: 'bd900039-2236-8c2c-8702-d31855c56b0f',
+                params: {}
+              }
             ])
           }
         },
-        { provide: TopicService, useValue: mockTopicService },
-        { provide: MsalService, useValue: msalService },
-        { provide: ShowMoreService, useValue: mockShowMoreService },
-        SearchService,
+        {
+          provide: TopicService,
+          useValue: mockTopicService
+        },
+        {
+          provide: MsalService,
+          useValue: msalService
+        },
+        {
+          provide: ShowMoreService,
+          useValue: mockShowMoreService
+        },
         {
           provide: Global, useValue: {
             global, displayResources: 5
           }
         }
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
+      schemas: [
+        CUSTOM_ELEMENTS_SCHEMA,
+        NO_ERRORS_SCHEMA]
     })
       .compileComponents();
 

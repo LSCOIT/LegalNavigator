@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AboutComponent } from './about.component';
-import { StaticResourceService } from '../shared/static-resource.service';
+import { StaticResourceService } from '../shared/services/static-resource.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Global } from '../global';
 
@@ -18,8 +18,7 @@ describe('AboutComponent', () => {
       location: [
         { state: "Default" }
       ]
-    }
-
+    };
     globalData = [
       {
         name: "AboutPage",
@@ -32,16 +31,26 @@ describe('AboutComponent', () => {
         helpText: {}
       }
     ];
-
-    mockStaticResourceService = jasmine.createSpyObj(['getLocation', 'getStaticContents']);
+    mockStaticResourceService = jasmine.createSpyObj(
+      [
+        'getLocation',
+        'getStaticContents'
+      ]
+    );
     mockGlobal = jasmine.createSpyObj(['getData']);
     mockGlobal.getData.and.returnValue(globalData);
     
     TestBed.configureTestingModule({
       declarations: [ AboutComponent ],
       providers: [ 
-        { provide: StaticResourceService, useValue: mockStaticResourceService },
-        { provide: Global, useValue: mockGlobal }
+        {
+          provide: StaticResourceService,
+          useValue: mockStaticResourceService
+        },
+        {
+          provide: Global,
+          useValue: mockGlobal
+        }
       ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })

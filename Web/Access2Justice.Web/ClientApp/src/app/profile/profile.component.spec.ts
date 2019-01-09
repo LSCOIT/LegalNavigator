@@ -4,8 +4,8 @@ import { HttpClient, HttpClientModule, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ProfileComponent } from './profile.component';
 import { PersonalizedPlanService } from '../guided-assistant/personalized-plan/personalized-plan.service';
-import { ArrayUtilityService } from '../shared/array-utility.service';
-import { EventUtilityService } from '../shared/event-utility.service';
+import { ArrayUtilityService } from '../shared/services/array-utility.service';
+import { EventUtilityService } from '../shared/services/event-utility.service';
 import { Tree } from '@angular/router/src/utils/tree';
 import { IResourceFilter } from '../shared/search/search-results/search-results.model';
 import { Global } from '../global';
@@ -65,8 +65,15 @@ describe('ProfileComponent', () => {
   let mockwebresources = ["test1", "test2"];
   let mockresources = "testResources";
   let mocktopics = "testTopics";
-  let mockresponse = { resources: mockresources, topics: mocktopics };
-  let mockPersonalizedPlanResources = { resources: mockresources, topics: mocktopics, webResources: mockwebresources };
+  let mockresponse = {
+    resources: mockresources,
+    topics: mocktopics
+  };
+  let mockPersonalizedPlanResources = {
+    resources: mockresources,
+    topics: mocktopics,
+    webResources: mockwebresources
+  };
   let mockUserSavedResources = [{
     "id": "1fb1b006-a8bc-487d-98a0-2457d9d9f78d",
     "topics": [
@@ -459,8 +466,21 @@ describe('ProfileComponent', () => {
   let activeRoute: ActivatedRoute;
   beforeEach(async(() => {
     mockGlobal = jasmine.createSpyObj(['externalLogin']);
-    mockPersonalizedPlanService = jasmine.createSpyObj(['getPersonalizedResources', 'getUserSavedResources', 'getActionPlanConditions', 'createTopicsList', 'getPlanDetails']);
-    msalService = jasmine.createSpyObj(['getUser', 'loginRedirect']);
+    mockPersonalizedPlanService = jasmine.createSpyObj(
+      [
+        'getPersonalizedResources',
+        'getUserSavedResources',
+        'getActionPlanConditions',
+        'createTopicsList',
+        'getPlanDetails'
+      ]
+    );
+    msalService = jasmine.createSpyObj(
+      [
+        'getUser',
+        'loginRedirect'
+      ]
+    );
     TestBed.configureTestingModule({
       imports: [
         HttpClientModule,
@@ -471,20 +491,37 @@ describe('ProfileComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        { provide: PersonalizedPlanService, useValue: mockPersonalizedPlanService },
         EventUtilityService,
         ArrayUtilityService,
+        NgxSpinnerService,
         {
-          provide: Global, useValue: {
-            mockGlobal, userId: mockUserId, userName: mockUserName,
-            isShared: mockIsShared, isLoggedIn: mockIsLoggedIn,
-            sharedUserId: mockSharedUserId, sharedUserName: mockSharedUserName
+          provide: PersonalizedPlanService,
+          useValue: mockPersonalizedPlanService
+        },
+        {
+          provide: Global,
+          useValue: {
+            mockGlobal,
+            userId: mockUserId,
+            userName: mockUserName,
+            isShared: mockIsShared,
+            isLoggedIn: mockIsLoggedIn,
+            sharedUserId: mockSharedUserId,
+            sharedUserName: mockSharedUserName
           }
         },
-        NgxSpinnerService,
-        { provide: Router, useValue: mockRouter },
-        { provide: MsalService, useValue: msalService },
-        { provide: ActivatedRoute, useValue: ActivateRouteStub }
+        {
+          provide: Router,
+          useValue: mockRouter
+        },
+        {
+          provide: MsalService,
+          useValue: msalService
+        },
+        {
+          provide: ActivatedRoute,
+          useValue: ActivateRouteStub
+        }
       ]
     }).compileComponents();
     msalService = TestBed.get(MsalService);

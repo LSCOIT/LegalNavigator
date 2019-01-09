@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PersonalizedPlanService } from '../guided-assistant/personalized-plan/personalized-plan.service';
 import { PersonalizedPlanTopic, PersonalizedPlan } from '../guided-assistant/personalized-plan/personalized-plan';
 import { IResourceFilter } from '../shared/search/search-results/search-results.model';
-import { EventUtilityService } from '../shared/event-utility.service';
+import { EventUtilityService } from '../shared/services/event-utility.service';
 import { HttpParams } from '@angular/common/http';
 import { Global } from '../global';
 import { MsalService } from '@azure/msal-angular';
@@ -17,11 +17,25 @@ import { environment } from '../../environments/environment';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {    
-
   topics: any;
   planDetails: any = [];
-  resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: [], PageNumber: 0, Location: '', ResourceIds: [], IsResourceCountRequired: false, IsOrder: false, OrderByField: '', OrderBy:'' };
-  personalizedResources: { resources: any, topics: any, webResources: any };
+  resourceFilter: IResourceFilter = {
+    ResourceType: '',
+    ContinuationToken: '',
+    TopicIds: [],
+    PageNumber: 0,
+    Location: '',
+    ResourceIds: [],
+    IsResourceCountRequired: false,
+    IsOrder: false,
+    OrderByField: '',
+    OrderBy: ''
+  };
+  personalizedResources: {
+    resources: any,
+    topics: any,
+    webResources: any
+  };
   isSavedResources: boolean = false;
   planId: string;
   plan: PersonalizedPlan;
@@ -84,9 +98,15 @@ export class ProfileComponent implements OnInit {
     this.topicsList = [];
     this.tempTopicsList.forEach(topicDetail => {
       if (topicDetail.topic.name === topic) {
-        this.planTopic = { topic: topicDetail.topic, isSelected: !topicDetail.isSelected };
+        this.planTopic = {
+          topic: topicDetail.topic,
+          isSelected: !topicDetail.isSelected
+        };
       } else {
-        this.planTopic = { topic: topicDetail.topic, isSelected: topicDetail.isSelected };
+        this.planTopic = {
+          topic: topicDetail.topic,
+          isSelected: topicDetail.isSelected
+        };
       }
       this.topicsList.push(this.planTopic);
     });
@@ -120,7 +140,17 @@ export class ProfileComponent implements OnInit {
                   this.resourceIds.push(resource.itemId);
                 }
               });
-              this.resourceFilter = { TopicIds: this.topicIds, ResourceIds: this.resourceIds, ResourceType: 'ALL', PageNumber: 0, ContinuationToken: null, Location: null, IsResourceCountRequired: false, IsOrder: false, OrderByField: '', OrderBy:'' };
+              this.resourceFilter = {
+                TopicIds: this.topicIds,
+                ResourceIds: this.resourceIds,
+                ResourceType: 'ALL',
+                PageNumber: 0,
+                ContinuationToken: null,
+                Location: null,
+                IsResourceCountRequired: false,
+                IsOrder: false,
+                OrderByField: '', OrderBy: ''
+              };
               this.getSavedResource(this.resourceFilter);
             }
           });
@@ -129,11 +159,19 @@ export class ProfileComponent implements OnInit {
   }
 
   getSavedResource(resourceFilter: IResourceFilter) {
-    this.personalizedResources = { resources: [], topics: [], webResources: this.webResources };
+    this.personalizedResources = {
+      resources: [],
+      topics: [],
+      webResources: this.webResources
+    };
     this.personalizedPlanService.getPersonalizedResources(resourceFilter)
       .subscribe(response => {
         if (response != undefined) {
-          this.personalizedResources = { resources: response["resources"], topics: response["topics"], webResources: this.webResources };
+          this.personalizedResources = {
+            resources: response["resources"],
+            topics: response["topics"],
+            webResources: this.webResources
+          };
           this.isSavedResources = true;
         }
       });

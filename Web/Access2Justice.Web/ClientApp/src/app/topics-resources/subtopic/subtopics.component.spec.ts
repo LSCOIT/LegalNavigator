@@ -4,7 +4,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { GuidedAssistantSidebarComponent } from '../../shared/sidebars/guided-assistant-sidebar/guided-assistant-sidebar.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MapService } from '../../shared/map/map.service';
-import { NavigateDataService } from '../../shared/navigate-data.service';
+import { NavigateDataService } from '../../shared/services/navigate-data.service';
 import { of } from 'rxjs/observable/of';
 import { PaginationService } from '../../shared/pagination/pagination.service';
 import { ServiceOrgSidebarComponent } from '../../shared/sidebars/service-org-sidebar/service-org-sidebar.component';
@@ -13,7 +13,7 @@ import { SubtopicsComponent } from './subtopics.component';
 import { TopicService } from '../shared/topic.service';
 import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Global } from '../../global';
-import { StateCodeService } from '../../shared/state-code.service';
+import { StateCodeService } from '../../shared/services/state-code.service';
 
 describe('SubtopicsComponent', () => {
   let component: SubtopicsComponent;
@@ -87,33 +87,55 @@ describe('SubtopicsComponent', () => {
       ],
       imports: [
         RouterModule.forRoot([
-          { path: 'topics/:topic', component: SubtopicsComponent }
+          {
+            path: 'topics/:topic',
+            component: SubtopicsComponent
+          }
         ]),
         HttpClientModule
       ],
       providers: [
-        { provide: APP_BASE_HREF, useValue: '/' },
-        { provide: TopicService, useValue: mockTopicService },
-        { provide: NavigateDataService, useValue: mockNavigateDataService },
+        MapService,
+        PaginationService,
+        Global,
+        StateCodeService,
+        {
+          provide: APP_BASE_HREF,
+          useValue: '/'
+        },
+        {
+          provide: TopicService,
+          useValue: mockTopicService
+        },
+        {
+          provide: NavigateDataService,
+          useValue: mockNavigateDataService
+        },
         {
           provide: ActivatedRoute,
           useValue: {
             snapshot: {
-              params: { 'topic': 'bd900039-2236-8c2c-8702-d31855c56b0f' }
+              params: {
+                 'topic': 'bd900039-2236-8c2c-8702-d31855c56b0f'
+              }
             },
             url: of([
-              { path: 'subtopics', params: {} },
-              { path: 'bd900039-2236-8c2c-8702-d31855c56b0f', params: {} }
+              {
+                path: 'subtopics',
+                params: {}
+              },
+              {
+                path: 'bd900039-2236-8c2c-8702-d31855c56b0f',
+                params: {}
+              }
             ])
           }
         },
-        { provide: ShowMoreService, useValue: mockShowMoreService },
-        MapService,
-        PaginationService,
-        Global,
-        StateCodeService
+        { provide: ShowMoreService, useValue: mockShowMoreService }
       ],
-      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
+      schemas: [
+        NO_ERRORS_SCHEMA,
+        CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents();
   }));

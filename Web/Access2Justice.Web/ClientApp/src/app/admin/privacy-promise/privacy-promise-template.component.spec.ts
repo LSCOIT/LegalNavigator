@@ -1,13 +1,13 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, NgForm } from '@angular/forms';
 import { PrivacyPromiseTemplateComponent } from './privacy-promise-template.component';
-import { StaticResourceService } from '../../shared/static-resource.service';
+import { StaticResourceService } from '../../shared/services/static-resource.service';
 import { Global } from '../../global';
 import { AdminService } from '../admin.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { NavigateDataService } from '../../shared/navigate-data.service';
+import { NavigateDataService } from '../../shared/services/navigate-data.service';
 import { of } from 'rxjs/observable/of';
 
 describe('PrivacyPromiseTemplateComponent', () => {
@@ -96,7 +96,6 @@ describe('PrivacyPromiseTemplateComponent', () => {
         ]
       }
     ];
-
     mockNewPrivacyContent = {
       description: "Our privacy policy describes how we collect and use information about you. This policy doesn't apply to other sites you reach through Legal Navigator. You should read the privacy policies of other Web sites to learn how they collect and use information about you.↵↵We do not sell, trade, or rent your personal information to others. We may use the information:↵↵1. to train website specialists↵2. to evaluate help↵3. to report on the project's success↵4. to inform the development of new resources and tools for people in need of legal assistance↵5. to perform other administrative tasks",
       details: [
@@ -123,18 +122,43 @@ describe('PrivacyPromiseTemplateComponent', () => {
       },
       organizationalUnit: "Alaska"
     }
+
     TestBed.configureTestingModule({
       declarations: [PrivacyPromiseTemplateComponent],
       imports: [FormsModule],
       providers: [
-        { provide: StaticResourceService, useValue: mockStaticResourceService },
-        { provide: Global, useValue: mockGlobal },
-        { provide: AdminService, useValue: mockAdminService },
-        { provide: NgxSpinnerService, useValue: mockNgxSpinnerService },
-        { provide: Router, useValue: mockRouter },
-        { provide: ActivatedRoute, useValue: mockActiveRoute },
-        { provide: NavigateDataService, useValue: mockNavigateDataService },
-        { provide: ToastrService, useValue: mockToastr }
+        {
+          provide: StaticResourceService,
+          useValue: mockStaticResourceService
+        },
+        {
+          provide: Global,
+          useValue: mockGlobal
+        },
+        {
+          provide: AdminService,
+          useValue: mockAdminService
+        },
+        {
+          provide: NgxSpinnerService,
+          useValue: mockNgxSpinnerService
+        },
+        {
+          provide: Router,
+          useValue: mockRouter
+        },
+        {
+          provide: ActivatedRoute,
+          useValue: mockActiveRoute
+        },
+        {
+          provide: NavigateDataService,
+          useValue: mockNavigateDataService
+        },
+        {
+          provide: ToastrService,
+          useValue: mockToastr
+        }
       ]
     })
     .compileComponents();

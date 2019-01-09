@@ -4,7 +4,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { GuidedAssistantSidebarComponent } from '../../sidebars/guided-assistant-sidebar/guided-assistant-sidebar.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MapService } from '../../map/map.service';
-import { NavigateDataService } from '../../navigate-data.service';
+import { NavigateDataService } from '../../services/navigate-data.service';
 import { Observable } from 'rxjs';
 import { PaginationComponent } from '../../../shared/pagination/pagination.component';
 import { PaginationService } from '../../pagination/pagination.service';
@@ -12,7 +12,7 @@ import { ResourceCardComponent } from '../../resource/resource-card/resource-car
 import { RouterModule } from '@angular/router';
 import { SaveButtonComponent } from '../../resource/user-action/save-button/save-button.component';
 import { SearchFilterComponent } from '../search-filter/search-filter.component';
-import { SearchFilterPipe } from '../search-filter.pipe';
+import { SearchFilterPipe } from '../../pipe/search-filter.pipe';
 import { SearchResultsComponent } from './search-results.component';
 import { SearchService } from '../search.service';
 import { ServiceOrgSidebarComponent } from '../../sidebars/service-org-sidebar/service-org-sidebar.component';
@@ -20,12 +20,12 @@ import { ShareButtonComponent } from '../../resource/user-action/share-button/sh
 import { ShowMoreService } from '../../sidebars/show-more/show-more.service';
 import { WebResourceComponent } from './web-resource/web-resource.component';
 import { PersonalizedPlanService } from '../../../guided-assistant/personalized-plan/personalized-plan.service';
-import { ArrayUtilityService } from '../../array-utility.service';
+import { ArrayUtilityService } from '../../services/array-utility.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Global } from '../../../global';
 import { MsalService } from '@azure/msal-angular';
-import { StateCodeService } from '../../state-code.service';
+import { StateCodeService } from '../../services/state-code.service';
 import { PipeModule } from '../../pipe/pipe.module';
 import { BsDropdownModule } from 'ngx-bootstrap';
 
@@ -77,7 +77,10 @@ describe('SearchResultsComponent', () => {
       ],
       imports: [
         RouterModule.forRoot([
-          { path: 'search', component: SearchResultsComponent }
+          {
+            path: 'search',
+            component: SearchResultsComponent
+          }
         ]),
         HttpClientModule,
         PipeModule.forRoot(),
@@ -86,18 +89,33 @@ describe('SearchResultsComponent', () => {
       providers: [
         NavigateDataService,
         SearchService,
-        { provide: PaginationService, useValue: mockPaginationService },
         ShowMoreService,
         MapService,
         PersonalizedPlanService,
         ArrayUtilityService,
         NgxSpinnerService,
-        { provide: APP_BASE_HREF, useValue: '/' },
-        { provide: ToastrService, useValue: mockToastr },
         SearchResultsComponent,
-        { provide: Global, useValue: mockGlobal },
-        { provide: MsalService, useValue: msalService },
-        StateCodeService
+        StateCodeService,
+        {
+          provide: PaginationService,
+          useValue: mockPaginationService
+        },
+        {
+          provide: APP_BASE_HREF,
+          useValue: '/'
+        },
+        {
+          provide: ToastrService,
+          useValue: mockToastr
+        },
+        {
+          provide: Global,
+          useValue: mockGlobal
+        },
+        {
+          provide: MsalService,
+          useValue: msalService
+        }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
     })

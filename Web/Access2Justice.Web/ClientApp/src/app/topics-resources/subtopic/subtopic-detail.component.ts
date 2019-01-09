@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { TopicService } from '../shared/topic.service';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
-import { NavigateDataService } from '../../shared/navigate-data.service';
+import { NavigateDataService } from '../../shared/services/navigate-data.service';
 import { IResourceFilter, ILuisInput } from "../../shared/search/search-results/search-results.model";
 import { SearchService } from '../../shared/search/search.service';
 import { PaginationService } from "../../shared/pagination/pagination.service";
@@ -33,9 +33,34 @@ export class SubtopicDetailComponent implements OnInit {
   savedFrom: string = "subTopicDetails";
   type: string = "Topics";
   showRemoveOption: boolean;
-  guidedSutopicDetailsInput: ISubtopicGuidedInput = { activeId: '', name: '' };
-  luisInput: ILuisInput = { Sentence: '', Location: '', TranslateFrom: '', TranslateTo: '', LuisTopScoringIntent: '' };
-  resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: { "state": "", "county": "", "city": "", "zipCode": "" }, IsResourceCountRequired: true, IsOrder: false, OrderByField: '', OrderBy:'' };
+  guidedSutopicDetailsInput: ISubtopicGuidedInput = {
+    activeId: '',
+    name: ''
+  };
+  luisInput: ILuisInput = {
+    Sentence: '',
+    Location: '',
+    TranslateFrom: '',
+    TranslateTo: '',
+    LuisTopScoringIntent: ''
+  };
+  resourceFilter: IResourceFilter = {
+    ResourceType: '',
+    ContinuationToken: '',
+    TopicIds: [],
+    ResourceIds: [],
+    PageNumber: 0,
+    Location: {
+      "state": "",
+      "county": "",
+      "city": "",
+      "zipCode": ""
+    },
+    IsResourceCountRequired: true,
+    IsOrder: false,
+    OrderByField: '',
+    OrderBy: ''
+  };
   subscription: any;
   displayResources: number;
 
@@ -75,7 +100,10 @@ export class SubtopicDetailComponent implements OnInit {
         data => {
           this.subtopics = data[0];
           this.topIntent = data[0].name;
-          this.guidedSutopicDetailsInput = { activeId: this.activeSubtopicParam, name: this.subtopics.name };
+          this.guidedSutopicDetailsInput = {
+            activeId: this.activeSubtopicParam,
+            name: this.subtopics.name
+          };
         });
     }
     this.getSubtopicDetail();

@@ -1,7 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
-
-import { ArrayUtilityService } from '../shared/array-utility.service';
-import { Component } from '@angular/core/src/metadata/directives';
+import { ArrayUtilityService } from './array-utility.service';
 
 describe('UtilityService', () => {
   let mockDataItems = ['test1', 'test2', 'test3'];

@@ -18,7 +18,6 @@ import {
 } from 'ngx-bootstrap';
 import { MsalModule } from '@azure/msal-angular';
 import { NgxSpinnerModule } from 'ngx-spinner';
-
 import { AppComponent } from './app.component';
 import { AboutComponent } from './about/about.component';
 import { GuidedAssistantComponent } from './guided-assistant/guided-assistant.component';
@@ -39,14 +38,13 @@ import { PersonalizedPlanService } from './guided-assistant/personalized-plan/pe
 import { DidYouKnowComponent } from './guided-assistant/did-you-know/did-you-know.component';
 import { ArticlesResourcesComponent } from './guided-assistant/articles-resources/articles-resources.component';
 import { CuratedExperienceComponent } from './guided-assistant/curated-experience/curated-experience.component';
-import { StaticResourceService } from './shared/static-resource.service';
+import { StaticResourceService } from './shared/services/static-resource.service';
 import { ResponseInterceptor } from './response-interceptor';
 import { Global } from './global';
 import { CuratedExperienceResultComponent } from './guided-assistant/curated-experience-result/curated-experience-result.component';
 import { ProfileResolver } from './app-resolver/profile-resolver.service';
 import { TokenInterceptor } from './token-interceptor';
 import { environment } from '../environments/environment';
-import { api } from '../api/api';
 import { PipeModule } from './shared/pipe/pipe.module';
 
 @NgModule({

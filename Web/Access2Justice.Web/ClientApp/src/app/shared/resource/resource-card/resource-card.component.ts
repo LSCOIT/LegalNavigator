@@ -3,7 +3,7 @@ import { Global, UserStatus } from '../../../global';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap';
 import { Router } from '@angular/router';
 import { LocationDetails } from '../../map/map';
-import { StateCodeService } from '../../state-code.service';
+import { StateCodeService } from '../../../shared/services/state-code.service';
 
 @Component({
   selector: 'app-resource-card',
@@ -20,10 +20,19 @@ export class ResourceCardComponent implements OnInit {
   urlOrigin: string;
   applicationUrl: any = window.location.origin;
   location: any;
-  locationDetails: LocationDetails = { location: { state: '', city: '', county: '', zipCode: '' }, displayLocationDetails: { locality: '', address:'' } };
-
+  locationDetails: LocationDetails = {
+     location: {
+       state: '',
+       city: '',
+       county: '',
+       zipCode: ''
+    },
+     displayLocationDetails: {
+       locality: '',
+       address: ''
+     }
+  };
   @ViewChild('template') public templateref: TemplateRef<any>;
-
   modalRef: BsModalRef;
   resourceTypeList = [
     'Articles',
@@ -36,7 +45,11 @@ export class ResourceCardComponent implements OnInit {
     'Service Providers'
     ];
 
-  constructor(private global: Global, private modalService: BsModalService, private router: Router, private stateCodeService: StateCodeService) {
+  constructor(
+    private global: Global,
+    private modalService: BsModalService,
+    private router: Router,
+    private stateCodeService: StateCodeService) {
     if (global.role === UserStatus.Shared && location.pathname.indexOf(global.shareRouteUrl) >= 0) {
       global.showShare = false;
       this.showRemoveOption = false;
@@ -104,6 +117,6 @@ export class ResourceCardComponent implements OnInit {
   }
 }
 
-function  sleep(ms  =  0) {
-  return  new  Promise(r  =>  setTimeout(r,  ms));
+function sleep(ms  =  0) {
+  return new Promise(r => setTimeout(r, ms));
 }

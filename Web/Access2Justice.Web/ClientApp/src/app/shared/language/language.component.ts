@@ -1,9 +1,9 @@
 import { Component, OnInit, AfterViewInit, ElementRef, HostListener } from '@angular/core';
-import { StaticResourceService } from '../../shared/static-resource.service';
+import { StaticResourceService } from '../../shared/services/static-resource.service';
 import { Navigation, Language, Location } from '../../shared/navigation/navigation';
 import { environment } from '../../../environments/environment';
 import { Global } from '../../global';
-import { EventUtilityService } from '../event-utility.service';
+import { EventUtilityService } from '../../shared/services/event-utility.service';
 
 @Component({
   selector: 'app-language',
@@ -78,30 +78,32 @@ export class LanguageComponent implements OnInit, AfterViewInit {
   }
 
   loadScipts() {
-    var polyfill = document.createElement('script');
+    let polyfill = document.createElement('script');
     polyfill.src = 'https://cdn.polyfill.io/v2/polyfill.min.js?features=Element.prototype.classList';
 
-    var focusVisible = document.createElement('script');
+    let focusVisible = document.createElement('script');
     focusVisible.src = 'https://unpkg.com/focus-visible';
 
-    var translationWidget = document.getElementById("google_translate_element");
-    var languageDropdownButton = document.getElementById("language-dropdown");
+    let translationWidget = document.getElementById("google_translate_element");
+    let languageDropdownButton = document.getElementById("language-dropdown");
 
     // keydown and keyup don't produce the correct behavior for pressing Enter key
     if (translationWidget) {
-      translationWidget.addEventListener('keypress', function onEvent(e) {
-        if (e.key === "Enter") {
-          languageDropdownButton.click();
-          languageDropdownButton.focus();
-        }
-      })
+      translationWidget.addEventListener('keypress',
+        function onEvent(e) {
+          if (e.key === "Enter") {
+            languageDropdownButton.click();
+            languageDropdownButton.focus();
+          }
+        });
 
-      translationWidget.addEventListener('keydown', function onEvent(e) {
-        if (e.key === "Escape") {
-          languageDropdownButton.click();
-          languageDropdownButton.focus();
-        }
-      })
+      translationWidget.addEventListener('keydown',
+        function onEvent(e) {
+          if (e.key === "Escape") {
+            languageDropdownButton.click();
+            languageDropdownButton.focus();
+          }
+        });
     }
 
     document.body.appendChild(polyfill);

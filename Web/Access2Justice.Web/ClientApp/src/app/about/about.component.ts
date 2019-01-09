@@ -1,7 +1,7 @@
 import { About  } from '../about/about';
 import { Component, OnInit } from '@angular/core';
 import { Global } from '../global';
-import { StaticResourceService } from '../shared/static-resource.service';
+import { StaticResourceService } from '../shared/services/static-resource.service';
 import { environment } from '../../environments/environment';
 import { HelpText } from '../home/home';
 

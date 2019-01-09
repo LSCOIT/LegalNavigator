@@ -3,7 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { PersonalizedPlanService } from './personalized-plan.service';
 import { api } from '../../../api/api';
 import { Observable } from 'rxjs/Observable';
-import { ArrayUtilityService } from '../../shared/array-utility.service';
+import { ArrayUtilityService } from '../../shared/services/array-utility.service';
 import { ProfileResources } from './personalized-plan';
 import { ToastrService } from 'ngx-toastr';
 import { Global } from '../../global';
@@ -384,17 +384,32 @@ describe('Service:PersonalizedPlan', () => {
 
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
-      providers: [{ provide: PersonalizedPlanService, useValue: mockPersonalizedPlanService },
+      providers: [
         ArrayUtilityService,
-      { provide: Global, useValue: { global, role: '', shareRouteUrl: '', userId: 'UserId', sessionKey: 'test', topicsSessionKey: 'test2' } },
         NgxSpinnerService,
-        { provide: Router, useValue: router}]
+        {
+        provide: PersonalizedPlanService,
+        useValue: mockPersonalizedPlanService
+        },
+        {
+          provide: Global,
+          useValue: {
+            global, role: '',
+            shareRouteUrl: '',
+            userId: 'UserId',
+            sessionKey: 'test',
+            topicsSessionKey: 'test2'
+          }
+        },
+        {
+          provide: Router,
+          useValue: router
+        }]
     });
     service = new PersonalizedPlanService(httpSpy, arrayUtilityService, toastrService, global, ngxSpinnerService, router);
     global = TestBed.get(Global);
     arrayUtilityService = new ArrayUtilityService();
     httpSpy.get.calls.reset();
-
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000000;
 

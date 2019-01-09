@@ -1,5 +1,5 @@
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { StaticResourceService } from '../../shared/static-resource.service';
+import { StaticResourceService } from '../../shared/services/static-resource.service';
 import { Global } from '../../global';
 import { About } from '../../about/about';
 import { environment } from '../../../environments/environment';
@@ -7,7 +7,7 @@ import { NgForm, FormBuilder, FormGroup } from '@angular/forms';
 import { MapLocation } from '../../shared/map/map';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { NavigateDataService } from '../../shared/navigate-data.service';
+import { NavigateDataService } from '../../shared/services/navigate-data.service';
 import { ToastrService } from 'ngx-toastr';
 import { AdminService } from '../admin.service';
 import { PersonalizedPlan } from '../../guided-assistant/personalized-plan/personalized-plan';

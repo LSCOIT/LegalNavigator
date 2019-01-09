@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Global } from '../../global';
-import { StaticResourceService } from '../../shared/static-resource.service';
+import { StaticResourceService } from '../../shared/services/static-resource.service';
 import { Router } from '@angular/router';
-import { NavigateDataService } from '../../shared/navigate-data.service';
+import { NavigateDataService } from '../../shared/services/navigate-data.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
@@ -72,9 +72,6 @@ export class AdminDashboardComponent implements OnInit {
       case 'PersonalizedActionPlanPage':
         this.router.navigate(['/admin/plan'], { queryParams: { state: this.location.state } });
         break;
-      //case 'Navigation':
-      //  this.router.navigate(['/admin/navigation'], { queryParams: { state: this.location.state } });
-      //  break;
     }
   }
     

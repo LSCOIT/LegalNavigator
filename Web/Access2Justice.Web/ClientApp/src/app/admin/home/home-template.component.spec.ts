@@ -1,12 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HomeTemplateComponent } from './home-template.component';
 import { FormsModule, ReactiveFormsModule, NgForm } from '@angular/forms';
-import { StaticResourceService } from '../../shared/static-resource.service';
+import { StaticResourceService } from '../../shared/services/static-resource.service';
 import { Global } from '../../global';
 import { AdminService } from '../admin.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router, ActivatedRoute } from '@angular/router';
-import { NavigateDataService } from '../../shared/navigate-data.service';
+import { NavigateDataService } from '../../shared/services/navigate-data.service';
 import { ToastrService } from 'ngx-toastr';
 import { of } from 'rxjs/observable/of';
 
@@ -191,14 +191,38 @@ describe('HomeTemplateComponent', () => {
       declarations: [HomeTemplateComponent],
       imports: [FormsModule, ReactiveFormsModule],
       providers: [
-        { provide: StaticResourceService, useValue: mockStaticResourceService },
-        { provide: Global, useValue: mockGlobal },
-        { provide: AdminService, useValue: mockAdminService },
-        { provide: NgxSpinnerService, useValue: mockNgxSpinnerService },
-        { provide: Router, useValue: mockRouter },
-        { provide: ActivatedRoute, useValue: mockActiveRoute },
-        { provide: NavigateDataService, useValue: mockNavigateDataService },
-        { provide: ToastrService, useValue: mockToastr }
+        {
+          provide: StaticResourceService,
+          useValue: mockStaticResourceService
+        },
+        {
+          provide: Global,
+          useValue: mockGlobal
+        },
+        {
+          provide: AdminService,
+          useValue: mockAdminService
+        },
+        {
+          provide: NgxSpinnerService,
+          useValue: mockNgxSpinnerService
+        },
+        {
+          provide: Router,
+          useValue: mockRouter
+        },
+        {
+          provide: ActivatedRoute,
+          useValue: mockActiveRoute
+        },
+        {
+          provide: NavigateDataService,
+          useValue: mockNavigateDataService
+        },
+        {
+          provide: ToastrService,
+          useValue: mockToastr
+        }
       ]
     })
     .compileComponents();

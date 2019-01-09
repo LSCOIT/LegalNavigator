@@ -5,27 +5,24 @@ import { PersonalizedPlanService } from './personalized-plan.service';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { APP_BASE_HREF } from '@angular/common';
-import { ArrayUtilityService } from '../../shared/array-utility.service';
+import { ArrayUtilityService } from '../../shared/services/array-utility.service';
 import { ToastrService, ToastrModule } from 'ngx-toastr';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
-import { NavigateDataService } from '../../shared/navigate-data.service';
-import { StaticResourceService } from '../../shared/static-resource.service';
+import { NavigateDataService } from '../../shared/services/navigate-data.service';
+import { StaticResourceService } from '../../shared/services/static-resource.service';
 import { Global } from '../../global';
 import { PersonalizedPlanDescription } from './personalized-plan';
 
 
 describe('Component:PersonalizedPlan', () => {
-
   let component: PersonalizedPlanComponent;
   let fixture: ComponentFixture<PersonalizedPlanComponent>;
-
   let toastrService: ToastrService;
   let mockPersonalizedPlanService;
   let mockNavigateDataService;
   let mockStaticResourceService;
   let mockGlobalService;
-
   let mockPlanDetails = {
     "id": "29250697-8d22-4f9d-bbf8-96c1b5b72e54",
     "isShared": false,
@@ -261,22 +258,26 @@ describe('Component:PersonalizedPlan', () => {
       location: [
         { state: "Alaska" }
       ]
-    },
-    mockGlobalData = [{
+    }
+    mockGlobalData = [
+      {
         name: "PersonalizedPlanDescription",
         location: [
           { state: "Alaska" }
         ]
-      }]
-
-    mockPersonalizedPlanService = jasmine.createSpyObj([
-      'getActionPlanConditions', 'createTopicsList', 'getPlanDetails', 'displayPlanDetails'
-    ]);
+      }
+    ];
+    mockPersonalizedPlanService = jasmine.createSpyObj(
+      [
+        'getActionPlanConditions',
+        'createTopicsList',
+        'getPlanDetails',
+        'displayPlanDetails'
+      ]
+    );
     mockPersonalizedPlanService.getActionPlanConditions.and.returnValue(of(mockPlanDetails));
-
     mockNavigateDataService = jasmine.createSpyObj(['getData']);
     mockNavigateDataService.getData.and.returnValue(of(mockPlanDetails));
-
     mockStaticResourceService = jasmine.createSpyObj(['getLocation', 'getStaticContents']);
     mockGlobalService = jasmine.createSpyObj(['getData']);
     mockGlobalService.getData.and.returnValue([mockPersonalizedDescription]);
@@ -284,25 +285,44 @@ describe('Component:PersonalizedPlan', () => {
     mockStaticResourceService.getLocation.and.returnValue('Alaska');
 
     TestBed.configureTestingModule({
-      imports: [ToastrModule.forRoot(),
-      RouterModule.forRoot([
-        { path: 'plan /: id', component: PersonalizedPlanComponent }
-      ]),
-        HttpClientModule],
+      imports: [
+        ToastrModule.forRoot(),
+        RouterModule.forRoot([
+          {
+            path: 'plan /: id',
+            component: PersonalizedPlanComponent
+          }
+        ]),
+        HttpClientModule
+      ],
       declarations: [PersonalizedPlanComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        { provide: APP_BASE_HREF, useValue: '/' },
-        { provide: PersonalizedPlanService, useValue: mockPersonalizedPlanService },
         ArrayUtilityService,
         ToastrService,
-        { provide: NavigateDataService, useValue: mockNavigateDataService },
-        { provide: StaticResourceService, useValue: mockStaticResourceService },
-        { provide: Global, useValue: mockGlobalService }
+        {
+          provide: APP_BASE_HREF,
+          useValue: '/'
+        },
+        {
+          provide: PersonalizedPlanService,
+          useValue: mockPersonalizedPlanService
+        },
+        {
+          provide: NavigateDataService,
+          useValue: mockNavigateDataService
+        },
+        {
+          provide: StaticResourceService,
+          useValue: mockStaticResourceService
+        },
+        {
+          provide: Global,
+          useValue: mockGlobalService
+        }
       ]
     })
       .compileComponents();
-
 
     fixture = TestBed.createComponent(PersonalizedPlanComponent);
     component = fixture.componentInstance;
@@ -310,7 +330,6 @@ describe('Component:PersonalizedPlan', () => {
     spyOn(component, 'ngOnInit');
     fixture.detectChanges();
   }));
-
 
   it('should create personalized plan component', () => {
     expect(component).toBeTruthy();

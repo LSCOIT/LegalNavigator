@@ -3,13 +3,13 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { GuidedAssistantSidebarComponent } from '../../../sidebars/guided-assistant-sidebar/guided-assistant-sidebar.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MapService } from '../../../map/map.service';
-import { NavigateDataService } from '../../../navigate-data.service';
+import { NavigateDataService } from '../../../services/navigate-data.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { PaginationService } from '../../../pagination/pagination.service';
 import { ServiceOrgSidebarComponent } from '../../../sidebars/service-org-sidebar/service-org-sidebar.component';
 import { VideosComponent } from './videos.component';
 import { Global } from '../../../../global';
-import { StateCodeService } from '../../../state-code.service';
+import { StateCodeService } from '../../../services/state-code.service';
 import { ShowMoreService } from '../../../sidebars/show-more/show-more.service';
 
 describe('VideosComponent', () => {
@@ -54,17 +54,36 @@ describe('VideosComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        {
-          provide: ActivatedRoute,
-          useValue: { snapshot: { params: { 'id': '123' } } }
-        },
-        { provide: Router, useValue: mockRouter },
         MapService,
         NavigateDataService,
         PaginationService,
-        { provide: Global, useValue: { mockGlobal, activeSubtopicParam: '123', topIntent: 'Divorce' } },
         StateCodeService,
-        { provide: ShowMoreService, useValue: mockShowMoreService }
+        {
+          provide: ActivatedRoute,
+          useValue: {
+             snapshot: {
+                params: {
+                   'id': '123'
+                }
+             }
+          }
+        },
+        {
+          provide: Router,
+          useValue: mockRouter
+        },
+        {
+          provide: Global,
+          useValue: {
+            mockGlobal,
+            activeSubtopicParam: '123',
+            topIntent: 'Divorce'
+          }
+        },
+        {
+          provide: ShowMoreService,
+          useValue: mockShowMoreService
+        }
       ]
     });
     TestBed.compileComponents();

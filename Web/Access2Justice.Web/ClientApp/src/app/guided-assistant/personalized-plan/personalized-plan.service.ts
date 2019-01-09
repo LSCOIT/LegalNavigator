@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs/Observable';
 import { api } from '../../../api/api';
 import { Global } from "../../global";
-import { ArrayUtilityService } from '../../shared/array-utility.service';
+import { ArrayUtilityService } from '../../shared/services/array-utility.service';
 import { IResourceFilter } from '../../shared/search/search-results/search-results.model';
 import { PersonalizedPlan, PersonalizedPlanTopic, ProfileResources, Resources, SavedResources, UserPlan, IntentInput } from './personalized-plan';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -122,7 +122,10 @@ export class PersonalizedPlanService {
 
   getTopicsFromGuidedAssistant() {
     this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
-    this.intentInput = { location: this.locationDetails.location, intents: JSON.parse(sessionStorage.getItem(this.global.topicsSessionKey)) };
+    this.intentInput = {
+      location: this.locationDetails.location,
+      intents: JSON.parse(sessionStorage.getItem(this.global.topicsSessionKey))
+    };
     this.saveTopicsFromGuidedAssistantToProfile(this.intentInput, false);
   }
 

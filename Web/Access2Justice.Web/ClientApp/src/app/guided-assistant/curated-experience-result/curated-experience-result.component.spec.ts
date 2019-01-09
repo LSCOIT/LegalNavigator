@@ -1,14 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CuratedExperienceResultComponent } from './curated-experience-result.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { NavigateDataService } from '../../shared/navigate-data.service';
+import { NavigateDataService } from '../../shared/services/navigate-data.service';
 import { ToastrService } from 'ngx-toastr';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { MapService } from '../../shared/map/map.service';
-import { StateCodeService } from '../../shared/state-code.service';
+import { StateCodeService } from '../../shared/services/state-code.service';
 import { HttpClientModule } from '@angular/common/http';
-import { ArrayUtilityService } from '../../shared/array-utility.service';
+import { ArrayUtilityService } from '../../shared/services/array-utility.service';
 import { Global } from '../../global';
 import { PersonalizedPlanService } from '../personalized-plan/personalized-plan.service';
 import { Location } from "@angular/common";
@@ -69,14 +69,36 @@ describe('CuratedExperienceResultComponent', () => {
 			declarations: [CuratedExperienceResultComponent],
 			schemas: [NO_ERRORS_SCHEMA],
 			providers: [
-				{ provide: NavigateDataService, useValue: mockNavigateDataService },
-				{ provide: ToastrService, useValue: mockToastr },
-				{ provide: Router, useValue: mockRouter }, MapService,
+			  MapService,
 				StateCodeService,
-				{ provide: ArrayUtilityService, useValue: mockArrayUtilityService },
-				{ provide: Global, useValue: mockGlobal },
-				{ provide: PersonalizedPlanService, useValue: mockPersonalizedPlanService },
-				{ provide: Location, useValue: mockLocation }
+        {
+          provide: NavigateDataService,
+          useValue: mockNavigateDataService
+        },
+        {
+          provide: ToastrService,
+          useValue: mockToastr
+        },
+        {
+          provide: Router,
+          useValue: mockRouter
+        },
+        {
+          provide: ArrayUtilityService,
+          useValue: mockArrayUtilityService
+        },
+        {
+          provide: Global,
+          useValue: mockGlobal
+        },
+        {
+          provide: PersonalizedPlanService,
+          useValue: mockPersonalizedPlanService
+        },
+        {
+          provide: Location,
+          useValue: mockLocation
+        }
 			]
 		})
 			.compileComponents();

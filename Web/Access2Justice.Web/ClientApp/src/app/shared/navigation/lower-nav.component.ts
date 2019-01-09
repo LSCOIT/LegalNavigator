@@ -3,8 +3,8 @@ import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular
 import { environment } from '../../../environments/environment';
 import { Global } from '../../global';
 import { MapService } from '../map/map.service';
-import { StaticResourceService } from '../../shared/static-resource.service';
-import { EventUtilityService } from '../event-utility.service';
+import { StaticResourceService } from '../../shared/services/static-resource.service';
+import { EventUtilityService } from '../../shared/services/event-utility.service';
 
 @Component({
   selector: 'app-lower-nav',

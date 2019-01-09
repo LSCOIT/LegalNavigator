@@ -3,12 +3,12 @@ import { PrivacyContent } from "../../privacy-promise/privacy-promise";
 import { Global } from "../../global";
 import { NgForm } from '@angular/forms';
 import { environment } from '../../../environments/environment';
-import { StaticResourceService } from '../../shared/static-resource.service';
+import { StaticResourceService } from '../../shared/services/static-resource.service';
 import { AdminService } from '../admin.service';
 import { MapLocation } from '../../shared/map/map';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { NavigateDataService } from '../../shared/navigate-data.service';
+import { NavigateDataService } from '../../shared/services/navigate-data.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({

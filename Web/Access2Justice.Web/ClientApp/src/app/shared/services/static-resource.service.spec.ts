@@ -1,7 +1,7 @@
 import { HttpClientModule } from '@angular/common/http';
 import { inject, TestBed } from '@angular/core/testing';
 import { StaticResourceService } from './static-resource.service';
-import { MapLocation, LocationDetails } from './map/map';
+import { MapLocation, LocationDetails } from '../map/map';
 import { Observable } from 'rxjs/Observable';
 
 describe('StaticResource', () => {

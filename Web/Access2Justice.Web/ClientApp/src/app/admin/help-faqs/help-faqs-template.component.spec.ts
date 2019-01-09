@@ -1,12 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { HelpFaqsTemplateComponent } from './help-faqs-template.component';
-import { StaticResourceService } from '../../shared/static-resource.service';
+import { StaticResourceService } from '../../shared/services/static-resource.service';
 import { Global } from '../../global';
 import { AdminService } from '../admin.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router, ActivatedRoute } from '@angular/router';
-import { NavigateDataService } from '../../shared/navigate-data.service';
+import { NavigateDataService } from '../../shared/services/navigate-data.service';
 import { ToastrService } from 'ngx-toastr';
 import { of } from 'rxjs/observable/of';
 import { NgForm, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -73,7 +72,6 @@ describe('HelpFaqsTemplateComponent', () => {
         ]
       }
     ];
-
     formValue = <NgForm>{
       value: {
         helpPageDescription: "help page Description",
@@ -81,7 +79,6 @@ describe('HelpFaqsTemplateComponent', () => {
         answer1: "old answer"
       }
     };
-
     mockFaqForm = {
       value: {
         faqs: [
@@ -97,14 +94,38 @@ describe('HelpFaqsTemplateComponent', () => {
       declarations: [HelpFaqsTemplateComponent],
       imports: [FormsModule, ReactiveFormsModule],
       providers: [
-        { provide: StaticResourceService, useValue: mockStaticResourceService },
-        { provide: Global, useValue: mockGlobal },
-        { provide: AdminService, useValue: mockAdminService },
-        { provide: NgxSpinnerService, useValue: mockNgxSpinnerService },
-        { provide: Router, useValue: mockRouter },
-        { provide: ActivatedRoute, useValue: mockActiveRoute },
-        { provide: NavigateDataService, useValue: mockNavigateDataService },
-        { provide: ToastrService, useValue: mockToastr }
+        {
+          provide: StaticResourceService,
+          useValue: mockStaticResourceService
+        },
+        {
+          provide: Global,
+          useValue: mockGlobal
+        },
+        {
+          provide: AdminService,
+          useValue: mockAdminService
+        },
+        {
+          provide: NgxSpinnerService,
+          useValue: mockNgxSpinnerService
+        },
+        {
+          provide: Router,
+          useValue: mockRouter
+        },
+        {
+          provide: ActivatedRoute,
+          useValue: mockActiveRoute
+        },
+        {
+          provide: NavigateDataService,
+          useValue: mockNavigateDataService
+        },
+        {
+          provide: ToastrService,
+          useValue: mockToastr
+        }
       ]
     })
     .compileComponents();

@@ -4,7 +4,7 @@ import { MapService } from '../../map/map.service'
 import { ServiceOrgSidebarComponent } from './service-org-sidebar.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MapLocation } from '../../map/map';
-import { NavigateDataService } from '../../navigate-data.service';
+import { NavigateDataService } from '../../services/navigate-data.service';
 import { PaginationService } from '../../pagination/pagination.service';
 import { ShowMoreService } from '../show-more/show-more.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -14,7 +14,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import { Subject } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
 import { Global } from '../../../global';
-import { StateCodeService } from '../../state-code.service';
+import { StateCodeService } from '../../services/state-code.service';
 
 describe('Component:ServiceOrgSidebar', () => {
   let component: ServiceOrgSidebarComponent;
@@ -132,32 +132,54 @@ describe('Component:ServiceOrgSidebar', () => {
       ],
       imports: [
         RouterModule.forRoot([
-          { path: 'topics/:topic', component: ServiceOrgSidebarComponent }
+          {
+            path: 'topics/:topic',
+            component: ServiceOrgSidebarComponent
+          }
         ]),
         HttpClientModule
       ],
       providers: [
-        { provide: APP_BASE_HREF, useValue: '/' },
+        MapService,
+        Global,
+        StateCodeService,
+        {
+          provide: APP_BASE_HREF,
+          useValue: '/'
+        },
         {
           provide: ActivatedRoute,
           useValue: {
             snapshot: {
-              params: { 'topic': 'bd900039-2236-8c2c-8702-d31855c56b0f' }
+              params: {
+                 'topic': 'bd900039-2236-8c2c-8702-d31855c56b0f'
+              }
             },
             url: of([
-              { path: 'subtopics', params: {} },
-              { path: 'bd900039-2236-8c2c-8702-d31855c56b0f', params: {} }
+              {
+                path: 'subtopics',
+                params: {}
+              },
+              {
+                path: 'bd900039-2236-8c2c-8702-d31855c56b0f',
+                params: {}
+              }
             ])
           }
         },
-        MapService,
-        { provide: NavigateDataService, useValue: mockNavigateDataService },
-        { provide: PaginationService, useValue: mockPaginationService },
-        Global,
-        StateCodeService
-
+        {
+          provide: NavigateDataService,
+          useValue: mockNavigateDataService
+        },
+        {
+          provide: PaginationService,
+          useValue: mockPaginationService
+        }
       ],
-      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
+      schemas: [
+        NO_ERRORS_SCHEMA,
+        CUSTOM_ELEMENTS_SCHEMA
+      ]
     })
       .compileComponents();
 
@@ -240,9 +262,19 @@ describe('Component:ServiceOrgSidebar', () => {
     mockRouter.url = '/topics';
     component.location = mockMapLocation;
     component.activeTopic = mockTopicId;
-    let resourceFilter: IResourceFilter = {
-      ResourceType: 'Organizations', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: {}, IsResourceCountRequired: false, IsOrder: true,
-      OrderByField: "name", OrderBy: "ASC" };
+    let resourceFilter:
+      IResourceFilter = {
+        ResourceType: 'Organizations',
+        ContinuationToken: '',
+        TopicIds: [],
+        ResourceIds: [],
+        PageNumber: 0,
+        Location: {},
+        IsResourceCountRequired: false,
+        IsOrder: true,
+        OrderByField: "name",
+        OrderBy: "ASC"
+    };
     component.resourceFilter = resourceFilter;
     component.getOrganizations();    
     expect(component.activeTopic).toContain(mockTopicId);
@@ -252,9 +284,19 @@ describe('Component:ServiceOrgSidebar', () => {
     mockRouter.url = '/search';
     component.location = mockMapLocation;
     component.activeTopic = mockTopicId;
-    let resourceFilter: IResourceFilter = {
-      ResourceType: 'Organizations', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: {}, IsResourceCountRequired: false, IsOrder: true,
-      OrderByField: "name", OrderBy: "ASC" };
+    let resourceFilter:
+      IResourceFilter = {
+        ResourceType: 'Organizations',
+        ContinuationToken: '',
+        TopicIds: [],
+        ResourceIds: [],
+        PageNumber: 0,
+        Location: {},
+        IsResourceCountRequired: false,
+        IsOrder: true,
+        OrderByField: "name",
+        OrderBy: "ASC"
+    };
     component.resourceFilter = resourceFilter;    
     component.getOrganizations();
     expect(component.activeTopic).toContain(mockTopicId);

@@ -1,17 +1,16 @@
 import { ArticlesResourcesComponent } from './articles-resources.component';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NavigateDataService } from '../../shared/navigate-data.service';
+import { NavigateDataService } from '../../shared/services/navigate-data.service';
 
 describe('ArticlesResourcesComponent', () => {
   let component: ArticlesResourcesComponent;
   let fixture: ComponentFixture<ArticlesResourcesComponent>;
   let mockNavigateDataService;
   let mockGuidedAssistantResults;
-  let mockGuidedAssistId = '9a6a6131-657d-467d-b09b-c570b7dad242'
+  let mockGuidedAssistId = '9a6a6131-657d-467d-b09b-c570b7dad242';
 
   beforeEach(async(() => {
-    mockNavigateDataService = jasmine.createSpyObj(['setData', 'getData'])
-
+    mockNavigateDataService = jasmine.createSpyObj(['setData', 'getData']);
     mockGuidedAssistantResults = {
       "topIntent": "Divorce",
       "relevantIntents": [
@@ -23,11 +22,16 @@ describe('ArticlesResourcesComponent', () => {
         "e1fdbbc6-d66a-4275-9cd2-2be84d303e12"
       ],
       "guidedAssistantId": "9a6a6131-657d-467d-b09b-c570b7dad242"
-    }
+    };
 
     TestBed.configureTestingModule({
       declarations: [ ArticlesResourcesComponent ],
-      providers: [{ provide: NavigateDataService, useValue: mockNavigateDataService }, ]
+      providers: [
+        {
+        provide: NavigateDataService,
+        useValue: mockNavigateDataService
+        }
+      ]
     })
     .compileComponents();
   }));

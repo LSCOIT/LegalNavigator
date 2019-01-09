@@ -11,14 +11,14 @@ import { BsModalService } from 'ngx-bootstrap';
 import { Global } from '../../../../global';
 import { MapResultsService } from '../../../sidebars/map-results/map-results.service';
 import { HttpClientModule, HttpHandler } from '@angular/common/http';
-import { ArrayUtilityService } from '../../../array-utility.service';
+import { ArrayUtilityService } from '../../../services/array-utility.service';
 import { ShareService } from '../../user-action/share-button/share.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
 import { ToastrService } from 'ngx-toastr';
 import { MsalService } from '@azure/msal-angular';
 import { SaveButtonService } from '../../user-action/save-button/save-button.service';
-import { NavigateDataService } from '../../../navigate-data.service';
+import { NavigateDataService } from '../../../services/navigate-data.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { of } from 'rxjs/observable/of';
@@ -56,11 +56,14 @@ describe('OrganizationsComponent', () => {
   let mockUrl = "https://www.microsoft.com/en-in/windows";
   let mockToastr;
   let mockSaveButtonService;
-  msalService = jasmine.createSpyObj(['getUser']);
+
   beforeEach(async(() => {
+
+    msalService = jasmine.createSpyObj(['getUser']);
     mockBsModalService = jasmine.createSpyObj(['show']);
     mockMapResultsService = jasmine.createSpyObj(['getLocationDetails', 'displayMapResults', 'getAddress']);
     mockToastr = jasmine.createSpyObj(['success']);
+
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
       declarations: [
@@ -76,22 +79,52 @@ describe('OrganizationsComponent', () => {
       providers: [
         ArrayUtilityService,
         ShareService,
-        { provide: MapResultsService, useValue: mockMapResultsService },
         HttpClientModule,
         HttpHandler,
-        { provide: BsModalService, useValue: mockBsModalService },
-        { provide: Global, useValue: { role: '', shareRouteUrl: '' } },
+        PersonalizedPlanService,
+        NavigateDataService,
+        NgxSpinnerService,
+        {
+          provide: MapResultsService,
+          useValue: mockMapResultsService
+        },
+        {
+          provide: BsModalService,
+          useValue: mockBsModalService
+        },
+        {
+          provide: Global,
+          useValue: {
+            role: '',
+            shareRouteUrl: ''
+          }
+        },
         {
           provide: ActivatedRoute,
-          useValue: { snapshot: { params: { 'id': '123' } } }
+          useValue: {
+             snapshot: {
+                params: {
+                   'id': '123'
+                }
+             }
+          }
         },
-        PersonalizedPlanService,
-        { provide: ToastrService, useValue: mockToastr },
-        { provide: MsalService, useValue: msalService },
-        { provide: SaveButtonService, useValue: mockSaveButtonService },
-        NavigateDataService,
-        { provide: Router, useValue: mockRouter },
-        NgxSpinnerService
+        {
+          provide: ToastrService,
+          useValue: mockToastr
+        },
+        {
+          provide: MsalService,
+          useValue: msalService
+        },
+        {
+          provide: SaveButtonService,
+          useValue: mockSaveButtonService
+        },
+        {
+          provide: Router,
+          useValue: mockRouter
+        }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

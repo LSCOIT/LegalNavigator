@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { StaticResourceService } from '../static-resource.service';
+import { StaticResourceService } from '../services/static-resource.service';
 import { Navigation, PrivacyPromise, HelpAndFAQ, Home, GuidedAssistant, TopicAndResources, About} from '../navigation/navigation';
 import { Global } from '../../global';
 

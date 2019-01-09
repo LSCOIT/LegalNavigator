@@ -6,7 +6,7 @@ import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuestionService } from './question.service';
 import { HttpParams } from '@angular/common/http';
-import { NavigateDataService } from '../../shared/navigate-data.service';
+import { NavigateDataService } from '../../shared/services/navigate-data.service';
 
 describe('QuestionComponent', () => {
   let component: QuestionComponent;
@@ -52,9 +52,18 @@ describe('QuestionComponent', () => {
             }
           }
         },
-        { provide: QuestionService, useValue: mockQuestionService },
-        { provide: Router, useValue: mockRouter },
-        { provide: NavigateDataService, useValue: mockNavigateDataService }
+        {
+          provide: QuestionService,
+          useValue: mockQuestionService
+        },
+        {
+          provide: Router,
+          useValue: mockRouter
+        },
+        {
+          provide: NavigateDataService,
+          useValue: mockNavigateDataService
+        }
       ]
     })
     .compileComponents();

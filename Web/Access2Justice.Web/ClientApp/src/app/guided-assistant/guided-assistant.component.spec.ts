@@ -4,13 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { GuidedAssistantComponent } from './guided-assistant.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MapService } from '../shared/map/map.service';
-import { NavigateDataService } from '../shared/navigate-data.service';
+import { NavigateDataService } from '../shared/services/navigate-data.service';
 import { NgForm } from '@angular/forms';
 import { of } from 'rxjs/observable/of';
 import { Router } from '@angular/router';
 import { SearchService } from '../shared/search/search.service';
 import { TopicService } from '../topics-resources/shared/topic.service';
-import { StaticResourceService } from '../shared/static-resource.service';
+import { StaticResourceService } from '../shared/services/static-resource.service';
 import { Global } from '../global';
 
 describe('GuidedAssistantComponent', () => {
@@ -42,13 +42,15 @@ describe('GuidedAssistantComponent', () => {
       location: [
         { state: "AK" }
       ]
-    },
-      mockGlobalData = [{
-      name: "GuidedAssistantDescription",
+    }
+    mockGlobalData = [
+      {
+        name: "GuidedAssistantDescription",
         location: [
           { state: "AK" }
         ]
-      }]
+      }
+    ];
     mockNavigateDataService = jasmine.createSpyObj(['setData']);
     mockSearchService = jasmine.createSpyObj(['search']);
     mockRouter = jasmine.createSpyObj(['navigateByUrl']);
@@ -131,7 +133,6 @@ describe('GuidedAssistantComponent', () => {
         return key in store ? store[key] : null;
       }
     };
-
     mockStaticResourceService = jasmine.createSpyObj(['getLocation', 'getStaticContents']);
     mockGlobalService = jasmine.createSpyObj(['getData']);
     mockGlobalService.getData.and.returnValue([mockGuidedAssistantDescription]);
@@ -149,11 +150,26 @@ describe('GuidedAssistantComponent', () => {
       providers: [
         TopicService,
         MapService,
-        { provide: SearchService, useValue: mockSearchService },
-        { provide: NavigateDataService, useValue: mockNavigateDataService},
-        { provide: Router, useValue: mockRouter },
-        { provide: StaticResourceService, useValue: mockStaticResourceService },
-        { provide: Global, useValue: mockGlobalService }
+        {
+          provide: SearchService,
+          useValue: mockSearchService
+        },
+        {
+          provide: NavigateDataService,
+          useValue: mockNavigateDataService
+        },
+        {
+          provide: Router,
+          useValue: mockRouter
+        },
+        {
+          provide: StaticResourceService,
+          useValue: mockStaticResourceService
+        },
+        {
+          provide: Global,
+          useValue: mockGlobalService
+        }
       ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })
@@ -172,7 +188,6 @@ describe('GuidedAssistantComponent', () => {
     spyOn(sessionStorage, 'getItem')
       .and.returnValue(JSON.stringify(mockMapLocation));
     mockSearchService.search.and.returnValue(of(mockSearchResponse));
-
     component.onSubmit(mockguidedAssistantSearchForm);
     expect(component.luisInput["Sentence"]).toEqual("i am getting kicked out");
     expect(component.luisInput["Location"]).toEqual(mockMapLocationParsed);

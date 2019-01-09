@@ -1,7 +1,7 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { StateCodeService } from './state-code.service';
 import { HttpClientModule } from '@angular/common/http';
-import { Global } from '../global';
+import { Global } from '../../global';
 import { Observable } from 'rxjs/Observable';
 
 describe('StateCodeService', () => {
@@ -23,7 +23,10 @@ describe('StateCodeService', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
       providers: [StateCodeService,
-        { provide: Global, useValue: global }]
+        {
+          provide: Global,
+          useValue: global
+        }]
     });
 
     service = new StateCodeService(httpSpy);

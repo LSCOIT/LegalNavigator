@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ShareButtonComponent } from './share-button.component';
 import { BsModalService, ComponentLoaderFactory, PositioningService, BsModalRef } from 'ngx-bootstrap';
-import { ArrayUtilityService } from '../../../array-utility.service';
+import { ArrayUtilityService } from '../../../services/array-utility.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ShareService } from './share.service';
 import { Observable } from 'rxjs';
@@ -12,12 +12,10 @@ import { expand } from 'rxjs/operators';
 import { TemplateRef } from '@angular/core';
 import { empty } from 'rxjs/observable/empty';
 import { MsalService } from '@azure/msal-angular';
-import { NavigateDataService } from '../../../navigate-data.service';
+import { NavigateDataService } from '../../../services/navigate-data.service';
 import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
 
-
 describe('ShareButtonComponent', () => {
-
   class ActivateRouteStub {
     params: Observable<any> = Observable.empty();
   }
@@ -61,18 +59,47 @@ describe('ShareButtonComponent', () => {
       imports: [HttpClientModule],
       declarations: [ShareButtonComponent],
       providers: [
-        { provide: ActivatedRoute, useValue: { snapshot: { params: { 'id': '123' } } } },
         BsModalRef,
         BsModalService,
         ComponentLoaderFactory,
         PositioningService,
         ArrayUtilityService,
         ShareService,
-        { provide: Global, useValue: { global, userId: 'UserId' } },
-        { provide: NavigateDataService, useValue: navigateDataService },
-        { provide: Router, useValue: { url: '/plan/id' } },
-        { provide: PersonalizedPlanService, useValue: personalizedPlanService },
-        { provide: MsalService, useValue: msalService },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+             snapshot: {
+                params: {
+                   'id': '123'
+                }
+             }
+          }
+        },
+        {
+          provide: Global,
+          useValue: {
+            global,
+            userId: 'UserId'
+          }
+        },
+        {
+          provide: NavigateDataService,
+          useValue: navigateDataService
+        },
+        {
+          provide: Router,
+          useValue: {
+             url: '/plan/id'
+          }
+        },
+        {
+          provide: PersonalizedPlanService,
+          useValue: personalizedPlanService
+        },
+        {
+          provide: MsalService,
+          useValue: msalService
+        }
       ]
     })
       .compileComponents();
@@ -185,20 +212,21 @@ describe('ShareButtonComponent', () => {
   });
 
   it('should build input parameter values when buildParams method of component', () => {
-    component.type = mockIstopics;  // topics
+    component.type = mockIstopics;
     component.id = mockId;
     component.buildParams();
     expect(component.shareInput.Url).toEqual(mockResourceTopics);
   });
+
   it('should build input parameter values when buildParams method of component', () => {
-    component.type = mockIsGuidedAssistant; //guided assistant
+    component.type = mockIsGuidedAssistant;
     component.id = mockId;
     component.buildParams();
     expect(component.shareInput.Url).toEqual(mockGuidedAssistance);
   });
 
   it('should return correct url when buildUrl method of component', () => {
-    component.type = mockIstopics;  // topics
+    component.type = mockIstopics;
     component.id = mockId;
     let buidlurl = component.buildUrl();
     expect(buidlurl).toEqual(mockResourceTopics);

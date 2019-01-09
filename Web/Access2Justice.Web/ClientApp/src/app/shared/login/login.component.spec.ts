@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { MsalService, BroadcastService } from '@azure/msal-angular';
 import { PersonalizedPlanService } from '../../guided-assistant/personalized-plan/personalized-plan.service';
 import { HttpClientModule } from '@angular/common/http';
-import { ArrayUtilityService } from '../array-utility.service';
+import { ArrayUtilityService } from '../services/array-utility.service';
 import { ToastrService } from 'ngx-toastr';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { LoginService } from './login.service';
@@ -18,21 +18,38 @@ describe('LoginComponent', () => {
   let msalService;
   let mockToastr;
   let mockLoginService;
-  msalService = jasmine.createSpyObj(['getUser']);
+
   beforeEach(async(() => {
+    msalService = jasmine.createSpyObj(['getUser']);
     mockGlobal = jasmine.createSpyObj(['notifyRoleInformation']);
+
     TestBed.configureTestingModule({
       declarations: [LoginComponent],
       imports: [HttpClientModule],
       providers: [
-        { provide: Router, useValue: mockRouter },
-        { provide: Global, useValue: mockGlobal },
-        { provide: MsalService, useValue: msalService },
-        { provide: ToastrService, useValue: mockToastr },
-        { provide: LoginService, useValue: mockLoginService },
         BroadcastService,
         PersonalizedPlanService,
-        ArrayUtilityService
+        ArrayUtilityService,
+        {
+          provide: Router,
+          useValue: mockRouter
+        },
+        {
+          provide: Global,
+          useValue: mockGlobal
+        },
+        {
+          provide: MsalService,
+          useValue: msalService
+        },
+        {
+          provide: ToastrService,
+          useValue: mockToastr
+        },
+        {
+          provide: LoginService,
+          useValue: mockLoginService
+        }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

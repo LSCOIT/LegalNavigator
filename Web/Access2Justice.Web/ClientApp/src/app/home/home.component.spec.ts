@@ -1,10 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HomeComponent } from './home.component';
-import { StaticResourceService } from '../shared/static-resource.service';
+import { StaticResourceService } from '../shared/services/static-resource.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Global } from '../global';
 import { MapService } from '../shared/map/map.service';
-import { StateCodeService } from '../shared/state-code.service';
+import { StateCodeService } from '../shared/services/state-code.service';
 import { HttpClientModule } from '@angular/common/http';
 import { PipeModule } from '../shared/pipe/pipe.module';
 
@@ -36,7 +36,6 @@ describe('HomeComponent', () => {
         ]
       }
     }
-
     globalData = [
       {
         name: "HomePage",
@@ -58,7 +57,12 @@ describe('HomeComponent', () => {
         }
       }
     ];
-    mockStaticResourceService = jasmine.createSpyObj(['getLocation', 'getStaticContents']);
+    mockStaticResourceService = jasmine.createSpyObj(
+      [
+        'getLocation',
+        'getStaticContents'
+      ]
+    );
     mockGlobal = jasmine.createSpyObj(['getData']);
     mockGlobal.getData.and.returnValue(globalData);
     
@@ -69,10 +73,16 @@ describe('HomeComponent', () => {
         ],
       declarations: [ HomeComponent ],
       providers: [ 
-        { provide: StaticResourceService, useValue: mockStaticResourceService },
-        { provide: Global, useValue: mockGlobal },
         MapService,
-        StateCodeService
+        StateCodeService,
+        {
+          provide: StaticResourceService,
+          useValue: mockStaticResourceService
+        },
+        {
+          provide: Global,
+          useValue: mockGlobal
+        }
       ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })

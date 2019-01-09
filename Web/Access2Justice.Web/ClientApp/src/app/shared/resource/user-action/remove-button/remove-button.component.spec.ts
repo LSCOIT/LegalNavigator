@@ -1,8 +1,8 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import { ArrayUtilityService } from '../../../array-utility.service';
+import { ArrayUtilityService } from '../../../services/array-utility.service';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { BsModalService } from 'ngx-bootstrap';
-import { EventUtilityService } from '../../../event-utility.service';
+import { EventUtilityService } from '../../../services/event-utility.service';
 import { Global } from '../../../../global';
 import { HttpClientModule } from '@angular/common/http';
 import { PersonalizedPlanComponent } from '../../../../guided-assistant/personalized-plan/personalized-plan.component';
@@ -13,7 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MsalService } from '@azure/msal-angular/dist/msal.service';
-import { NavigateDataService } from '../../../navigate-data.service';
+import { NavigateDataService } from '../../../services/navigate-data.service';
 import { expand } from 'rxjs/operator/expand';
 import { of } from 'rxjs/observable/of';
 
@@ -130,21 +130,63 @@ describe('RemoveButtonComponent', () => {
       imports: [HttpClientModule],
       declarations: [RemoveButtonComponent],
       providers: [
-        { provide: PersonalizedPlanService, useValue: mockPersonalizedPlanService },
-        ArrayUtilityService,
-        { provide: ProfileComponent, useValue: mockProfileComponent },
-        { provide: EventUtilityService, useValue: mockEventUtilityService },
         BsModalService,
-        { provide: PersonalizedPlanComponent, useValue: mockPersonalizedPlanComponent },
         NgxSpinnerService,
-        { provide: ToastrService, useValue: mockToastr },
-        { provide: Global, useValue: { mockGlobal, userId: 'UserId' } },
-        { provide: ActivatedRoute, useValue: { snapshot: { params: { 'id': '123' } } } },
-        { provide: Router, useValue: { url: '/plan/id' }},
-        { provide: MsalService, useValue: msalService },
-        { provide: NavigateDataService, useValue: mockNavigateDataService }
+        ArrayUtilityService,
+        {
+          provide: PersonalizedPlanService,
+          useValue: mockPersonalizedPlanService
+        },
+        {
+          provide: ProfileComponent,
+          useValue: mockProfileComponent
+        },
+        {
+          provide: EventUtilityService,
+          useValue: mockEventUtilityService
+        },
+        {
+          provide: PersonalizedPlanComponent,
+          useValue: mockPersonalizedPlanComponent
+        },
+        {
+          provide: ToastrService,
+          useValue: mockToastr
+        },
+        {
+          provide: Global,
+          useValue: {
+            mockGlobal,
+            userId: 'UserId'
+          }
+        },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+             snapshot: {
+                params: {
+                   'id': '123'
+                }
+             }
+          }
+        },
+        {
+          provide: Router,
+          useValue: { url: '/plan/id' }
+        },
+        {
+          provide: MsalService,
+          useValue: msalService
+        },
+        {
+          provide: NavigateDataService,
+          useValue: mockNavigateDataService
+        }
       ],
-      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
+      schemas: [
+        NO_ERRORS_SCHEMA,
+        CUSTOM_ELEMENTS_SCHEMA
+      ]
     })
       .compileComponents();
     mockGlobal = TestBed.get(Global);

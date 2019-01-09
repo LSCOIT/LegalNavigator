@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FooterComponent } from './footer.component';
-import { StaticResourceService } from '../../shared/static-resource.service';
+import { StaticResourceService } from '../../shared/services/static-resource.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Global } from '../../global';
 
@@ -16,15 +16,19 @@ describe('FooterComponent', () => {
     navigation = {
       name: "Navigation",
       location: [
-        { state: "Default" }
+        {
+           state: "Default"
+        }
       ]
-    },
+    };
     globalData = [{
       name: "Navigation",
       location: [
-        { state: "Default" }
+        {
+           state: "Default"
+        }
       ]
-    }]
+    }];
     mockStaticResourceService = jasmine.createSpyObj(['getLocation', 'getStaticContents']);
     mockGlobal = jasmine.createSpyObj(['getData']);
     mockGlobal.getData.and.returnValue(globalData);
@@ -32,8 +36,14 @@ describe('FooterComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ FooterComponent ],
       providers: [ 
-        { provide: StaticResourceService, useValue: mockStaticResourceService },
-        { provide: Global, useValue: mockGlobal }
+        {
+          provide: StaticResourceService,
+          useValue: mockStaticResourceService
+        },
+        {
+          provide: Global,
+          useValue: mockGlobal
+        }
       ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })

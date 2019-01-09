@@ -9,7 +9,7 @@ import { Title } from '@angular/platform-browser/src/browser/title';
 import { ToastrService } from 'ngx-toastr';
 import { Global, UserStatus } from '../../../../global';
 import { HttpParams } from '@angular/common/http';
-import { NavigateDataService } from '../../../navigate-data.service';
+import { NavigateDataService } from '../../../services/navigate-data.service';
 
 @Component({
   selector: 'app-action-plans',

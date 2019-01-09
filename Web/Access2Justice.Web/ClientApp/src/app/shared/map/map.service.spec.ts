@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { MapService } from './map.service';
 import { environment } from '../../../environments/environment';
-import { StateCodeService } from '../state-code.service';
+import { StateCodeService } from '../services/state-code.service';
 
 describe('MapService', () => {
   let service: MapService;

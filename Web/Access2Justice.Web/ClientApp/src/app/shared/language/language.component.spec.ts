@@ -1,10 +1,10 @@
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { LanguageComponent } from './language.component';
-import { StaticResourceService } from '../../shared/static-resource.service';
+import { StaticResourceService } from '../../shared/services/static-resource.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Global } from '../../global';
 import { By } from '@angular/platform-browser';
-import { EventUtilityService } from '../event-utility.service';
+import { EventUtilityService } from '../../shared/services/event-utility.service';
 
 describe('LanguageComponent', () => {
   let component: LanguageComponent;
@@ -34,9 +34,15 @@ describe('LanguageComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ LanguageComponent ],
       providers: [ 
-        { provide: StaticResourceService, useValue: mockStaticResourceService },
-        { provide: Global, useValue: mockGlobal },
-        EventUtilityService
+        EventUtilityService,
+        {
+          provide: StaticResourceService,
+          useValue: mockStaticResourceService
+        },
+        {
+          provide: Global,
+          useValue: mockGlobal
+        }
       ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })

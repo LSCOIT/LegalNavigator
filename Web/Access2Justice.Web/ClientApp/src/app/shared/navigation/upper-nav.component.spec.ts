@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { UpperNavComponent } from './upper-nav.component';
-import { StaticResourceService } from '../../shared/static-resource.service';
+import { StaticResourceService } from '../../shared/services/static-resource.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Global } from '../../global';
 import { MapService } from '../map/map.service';
 import { HttpClientModule } from '@angular/common/http';
-import { StateCodeService } from '../state-code.service';
+import { StateCodeService } from '../../shared/services/state-code.service';
 
 describe('UpperNavComponent', () => {
   let component: UpperNavComponent;
@@ -21,13 +21,17 @@ describe('UpperNavComponent', () => {
       location: [
         { state: "Default" }
       ]
-    },
-    globalData = [{
-      name: "Navigation",
-      location: [
-        { state: "Default" }
-      ]
-    }]
+    };
+    globalData = [
+      {
+        name: "Navigation",
+        location: [
+          {
+             state: "Default"
+          }
+        ]
+      }
+    ];
     mockStaticResourceService = jasmine.createSpyObj(['getLocation', 'getStaticContents']);
     mockGlobal = jasmine.createSpyObj(['getData']);
     mockGlobal.getData.and.returnValue(globalData);
@@ -36,10 +40,16 @@ describe('UpperNavComponent', () => {
       imports: [ HttpClientModule ],
       declarations: [ UpperNavComponent ],
       providers: [ 
-        { provide: StaticResourceService, useValue: mockStaticResourceService },
-        { provide: Global, useValue: mockGlobal },
         MapService,
-        StateCodeService
+        StateCodeService,
+        {
+          provide: StaticResourceService,
+          useValue: mockStaticResourceService
+        },
+        {
+          provide: Global,
+          useValue: mockGlobal
+        }
       ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })

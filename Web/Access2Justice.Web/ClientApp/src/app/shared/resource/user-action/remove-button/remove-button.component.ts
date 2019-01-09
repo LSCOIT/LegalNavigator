@@ -4,9 +4,9 @@ import { SavedResources, ProfileResources } from '../../../../guided-assistant/p
 import { ProfileComponent } from '../../../../profile/profile.component';
 import { PersonalizedPlanComponent } from '../../../../guided-assistant/personalized-plan/personalized-plan.component';
 import { Router } from '@angular/router';
-import { EventUtilityService } from '../../../event-utility.service';
+import { EventUtilityService } from '../../../services/event-utility.service';
 import { Global, UserStatus } from '../../../../global';
-import { NavigateDataService } from '../../../navigate-data.service';
+import { NavigateDataService } from '../../../services/navigate-data.service';
 
 @Component({
   selector: 'app-remove-button',

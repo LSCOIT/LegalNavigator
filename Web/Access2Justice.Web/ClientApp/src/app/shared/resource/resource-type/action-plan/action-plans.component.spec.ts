@@ -7,8 +7,8 @@ import { ModalModule } from 'ngx-bootstrap';
 import { Global } from '../../../../global';
 import { Observable } from 'rxjs/Observable';
 import { DomSanitizer } from '@angular/platform-browser';
-import { NavigateDataService } from '../../../navigate-data.service';
-import { ArrayUtilityService } from '../../../array-utility.service';
+import { NavigateDataService } from '../../../services/navigate-data.service';
+import { ArrayUtilityService } from '../../../services/array-utility.service';
 import { ToastrService, ToastrModule, ToastPackage } from 'ngx-toastr';
 import { PersonalizedPlanTopic } from '../../../../guided-assistant/personalized-plan/personalized-plan';
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -282,17 +282,30 @@ describe('ActionPlansComponent', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        HttpClientModule, ToastrModule.forRoot(), ModalModule.forRoot()
+        HttpClientModule,
+        ToastrModule.forRoot(),
+        ModalModule.forRoot()
       ],
       declarations: [ActionPlansComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        { provide: PersonalizedPlanService, useValue: personalizedPlanService },
+        {
+          provide: PersonalizedPlanService,
+          useValue: personalizedPlanService
+        },
         DomSanitizer,
-        { provide: NavigateDataService, useValue: navigateDataService },
+        {
+          provide: NavigateDataService,
+          useValue: navigateDataService
+        },
         BsModalService,
         {
-          provide: Global, useValue: { global, userId:"User Id" }},
+          provide: Global,
+          useValue: {
+            global,
+            userId: "User Id"
+          }
+        },
         ArrayUtilityService,
         ToastrService]
     })

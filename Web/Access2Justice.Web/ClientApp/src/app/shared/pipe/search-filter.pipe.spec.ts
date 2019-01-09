@@ -1,4 +1,4 @@
-import { SearchFilterPipe } from '../search/search-filter.pipe';
+import { SearchFilterPipe } from '../pipe/search-filter.pipe';
 
 describe('Pipe: SearchFilterPipe', () => {
   let pipe: SearchFilterPipe;
@@ -7,7 +7,7 @@ describe('Pipe: SearchFilterPipe', () => {
   let itemsWithNull;
   let argsWithNull: any[];
   let mockBlankitems = ['', '', '', '', '', ''];
-  let mockDate = ['07/19/2018 10:12:30', '07/16/2018 08:12:30', '07/18/2018 14:12:30']
+  let mockDate = ['07/19/2018 10:12:30', '07/16/2018 08:12:30', '07/18/2018 14:12:30'];
 
   beforeEach(() => {
     pipe = new SearchFilterPipe();
@@ -76,7 +76,7 @@ describe('Pipe: SearchFilterPipe', () => {
     spyOn(pipe, 'orderBy');
     pipe.orderBy('', '');
     expect(pipe.orderBy).not.toBe("");
-  })
+  });
 
   it("should call sortDate method in transform and sort the items with date", () => {
     spyOn(pipe, 'sortDate');

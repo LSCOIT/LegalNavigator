@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormArray, NgForm, FormGroup } from '@angular/forms';
-import { NavigateDataService } from '../../shared/navigate-data.service';
-import { StaticResourceService } from '../../shared/static-resource.service';
+import { NavigateDataService } from '../../shared/services/navigate-data.service';
+import { StaticResourceService } from '../../shared/services/static-resource.service';
 import { MapLocation } from '../../shared/map/map';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AdminService } from '../admin.service';

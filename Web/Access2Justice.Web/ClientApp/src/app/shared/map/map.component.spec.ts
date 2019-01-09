@@ -9,16 +9,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MapResultsService } from '../sidebars/map-results/map-results.service';
 import { Observable } from 'rxjs/Observable';
-import { StaticResourceService } from '../static-resource.service';
+import { StaticResourceService } from '../services/static-resource.service';
 import { Global } from '../../global';
 import { MsalService } from '@azure/msal-angular';
-import { of } from 'rxjs/observable/of';
-import 'rxjs/add/observable/fromPromise';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/mergeMap';
 import { FormsModule } from '@angular/forms';
 import { environment } from '../../../environments/environment';
-import { EventUtilityService } from '../event-utility.service';
+import { EventUtilityService } from '../services/event-utility.service';
 
 class MockBsModalRef {
   public isHideCalled = false;
@@ -33,52 +29,121 @@ describe('MapComponent', () => {
   let fixture: ComponentFixture<MapComponent>;
   let modalService: BsModalService;
   let template: TemplateRef<any>;  
-  let mockMapLocation: MapLocation = { state: 'Sample State', city: 'Sample City', county: 'Sample County', zipCode: '1009203' };//, locality: 'Sample Location',    address: 'Sample Address' };
+  let mockMapLocation: MapLocation = {
+    state: 'Sample State',
+    city: 'Sample City',
+    county: 'Sample County',
+    zipCode: '1009203'
+  };
   let mapResultsService: MapResultsService;
   let mockGeolocationPositionLangitude: '77.33817429999999';
   let mockGeolocationPositionLatiitude: '28.5372834';
   let mockBingKey = 'testAqpcQxjuTmheUzCm8b5kUhV9UhjfsK66Ctest';
   let mockselectedAddress: any;
   let mockType = true;
-  let mockResponse = { authenticationResultCode: "ValidCredentials", brandLogoUri: "http://dev.virtualearth.net/Branding/logo_powered_by.png", copyright: "Copyright © 2018 Microsoft and its suppliers. All …ss written permission from Microsoft Corporation.", resourceSets: Array(1), statusCode: 200, };
-  let mockMapLocationDetails = '{authenticationResultCode:  "ValidCredentials"  brandLogoUri  :  "http://dev.virtualearth.net/Branding/logo_powered_by.png"  copyright  :  "Copyright © 2018 Microsoft and its suppliers. All rights reserved. This API cannot be accessed and the content and any results may not be used, reproduced or transmitted in any manner without express written permission from Microsoft Corporation."  resourceSets  :  Array(1)  0:  { estimatedTotal: 1, resources: Array(1) }  length  :  1  __proto__  :  Array(0)  statusCode  :  200  statusDescription  :  "OK"  traceId  :  "39bbf89d6d2b4691a1cfeb1d8a504eac|HK20240360|7.7.0.0|HK01EAP000001D3"  __proto__  :  Object}';
-  let mockMapLocation2 = { "state": "UP", "city": "Noida", "zipCode": "201303", "locality": "201303", "address": "UP" };
-  let mockMapLocationWithFormatAddressGlobal = { "state": "UP", "city": "Sample City", "county": "Sample County", "zipCode": "1009203"};
-  let mockMapLocationWithFormatAddressLocal = { "state": "Sample State", "city": "Sample City", "county": "Sample County", "zipCode": "1009203"};
-  let mockDisplayLocationDetails = { "locality": "UP", "address": "UP" };
+  let mockResponse = {
+    authenticationResultCode: "ValidCredentials",
+    brandLogoUri: "http://dev.virtualearth.net/Branding/logo_powered_by.png",
+    copyright: "Copyright © 2018 Microsoft and its suppliers. All …ss written permission from Microsoft Corporation.",
+    resourceSets: Array(1),
+    statusCode: 200,
+  };
+  let mockMapLocationDetails = '{' +
+    'authenticationResultCode:  "ValidCredentials"  ' +
+    'brandLogoUri  :  "http://dev.virtualearth.net/Branding/logo_powered_by.png"  ' +
+    'copyright  :  "Copyright © 2018 Microsoft and its suppliers. All rights reserved. This API cannot be accessed and the content and any results may not be used, reproduced or transmitted in any manner without express written permission from Microsoft Corporation."  resourceSets  :  Array(1)  0:  { estimatedTotal: 1, resources: Array(1) }  length  :  1  __proto__  :  Array(0)  statusCode  :  200  statusDescription  :  "OK"  traceId  :  "39bbf89d6d2b4691a1cfeb1d8a504eac|HK20240360|7.7.0.0|HK01EAP000001D3"  __proto__  :  Object}';
+  let mockMapLocation2 = {
+    "state": "UP",
+    "city": "Noida",
+    "zipCode": "201303",
+    "locality": "201303",
+    "address": "UP"
+  };
+  let mockMapLocationWithFormatAddressGlobal = {
+    "state": "UP",
+    "city": "Sample City",
+    "county": "Sample County",
+    "zipCode": "1009203"
+  };
+  let mockMapLocationWithFormatAddressLocal = {
+    "state": "Sample State",
+    "city": "Sample City",
+    "county": "Sample County",
+    "zipCode": "1009203"
+  };
+  let mockDisplayLocationDetails = {
+    "locality": "UP",
+    "address": "UP"
+  };
   let mockLocationDetailsWithFormatAddress = {
     location: mockMapLocation,
     displayLocationDetails: mockDisplayLocationDetails,
     country: "United States",
     formattedAddress: "AK"
   };
-  let mockMapResultsLocation = { "resourceSets": [{ "resources": [{"name":"UP"}]}]};
+  let mockMapResultsLocation = {
+    "resourceSets": [
+      {
+        "resources": [
+          {
+             "name": "UP"
+          }
+        ]
+      }
+    ]
+  };
   let mockLocationDetailsWithOutFormatAddress = {
     location: mockMapLocation,
     country: "United States",
     formattedAddress: "Hjorth St, Indio, California 92201, United States"
   };
-  let mockConfig = { ignoreBackdropClick: false, keyboard: true };
-  let mockPositionError = { code: 1, message: "User denied Geolocation" };
+  let mockConfig = {
+    ignoreBackdropClick: false,
+    keyboard: true
+  };
+  let mockPositionError = {
+    code: 1,
+    message: "User denied Geolocation"
+  };
   let mapService, msalService;
-  let returnLocationValue = { "value": "Hawaii" };
+  let returnLocationValue = {
+     "value": "Hawaii"
+  };
   let modalRefInstance = new MockBsModalRef();
  
   beforeEach(() => {
-    mapService = jasmine.createSpyObj(['getMap', 'updateLocation', 'mapLocationDetails', 'identifyLocation']);
+    mapService = jasmine.createSpyObj(
+      [
+        'getMap',
+        'updateLocation',
+        'mapLocationDetails',
+        'identifyLocation'
+      ]
+    );
     msalService = jasmine.createSpyObj(['getUser']);
     
     TestBed.configureTestingModule({
-      imports: [HttpClientModule, RouterTestingModule, ModalModule.forRoot(), FormsModule],
+      imports: [
+        HttpClientModule,
+        RouterTestingModule,
+        ModalModule.forRoot(),
+        FormsModule
+      ],
       declarations: [MapComponent],
       providers: [
         BsModalService,
         MapResultsService,
         StaticResourceService,
         Global,
-        { provide: MsalService, useValue: msalService },
-        { provide: MapService, useValue: mapService },
-        EventUtilityService
+        EventUtilityService,
+        {
+          provide: MsalService,
+          useValue: msalService
+        },
+        {
+          provide: MapService,
+          useValue: mapService
+        }
       ],
       schemas: [
         CUSTOM_ELEMENTS_SCHEMA

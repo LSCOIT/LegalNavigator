@@ -2,10 +2,11 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MapService } from '../../map/map.service';
 import { IResourceFilter } from '../../search/search-results/search-results.model';
-import { NavigateDataService } from '../../navigate-data.service';
+import { NavigateDataService } from '../../services/navigate-data.service';
 import { PaginationService } from '../../pagination/pagination.service';
 import { MapLocation, LocationDetails } from '../../map/map';
 import { Global } from '../../../global';
+
 @Component({
   selector: 'app-service-org-sidebar',
   templateUrl: './service-org-sidebar.component.html',
@@ -20,7 +21,19 @@ export class ServiceOrgSidebarComponent implements OnInit {
   activeTopic: string;
   @Output()
   showMoreOrganizations = new EventEmitter<string>();
-  resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: {}, IsResourceCountRequired: false, IsOrder: false, OrderByField: '', OrderBy:'' };
+  resourceFilter:
+    IResourceFilter = {
+      ResourceType: '',
+      ContinuationToken: '',
+      TopicIds: [],
+      ResourceIds: [],
+      PageNumber: 0,
+      Location: {},
+      IsResourceCountRequired: false,
+      IsOrder: false,
+      OrderByField: '',
+      OrderBy: ''
+    };
   topicIds: string[] = [];
   total: number = 5;
 
@@ -66,7 +79,7 @@ export class ServiceOrgSidebarComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (!this.global.organizationsData || this.global.organizationsData.length == 0) {
+    if (!this.global.organizationsData || this.global.organizationsData.length === 0) {
       if (sessionStorage.getItem("globalMapLocation")) {
         this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
         this.location = this.locationDetails.location;
@@ -84,6 +97,7 @@ export class ServiceOrgSidebarComponent implements OnInit {
         this.getOrganizations();
       });
   }
+
   ngOnDestroy() {
     if (this.subscription != undefined) {
       this.subscription.unsubscribe();

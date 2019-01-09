@@ -14,7 +14,7 @@ import { MapService } from '../../shared/map/map.service';
 import { of } from 'rxjs/observable/of';
 import { Global } from '../../global';
 import { QueryList } from '@angular/core';
-import { StateCodeService } from '../../shared/state-code.service';
+import { StateCodeService } from '../../shared/services/state-code.service';
 
 describe('TopicsComponent', () => {
   let component: TopicsComponent;
@@ -44,7 +44,6 @@ describe('TopicsComponent', () => {
   };
 
   beforeEach(async(() => {
-
     mockTopicService = jasmine.createSpyObj(['getTopics']);
     mockTopicService.getTopics.and.returnValue(of(mockTopics));
     mockGlobal = {};
@@ -59,18 +58,33 @@ describe('TopicsComponent', () => {
       ],
       imports: [
         RouterModule.forRoot([
-          { path: 'topics/:topic', component: SubtopicsComponent }
+          {
+            path: 'topics/:topic',
+            component: SubtopicsComponent
+          }
         ]),
         HttpClientModule
       ],
       providers: [
-        { provide: APP_BASE_HREF, useValue: '/' },
-        { provide: TopicService, useValue: mockTopicService },
-        { provide: RouterModule, useValue: mockRouter },
         BreadcrumbService,
         MapService,
-        { provide: Global, useValue: mockGlobal },
-        StateCodeService
+        StateCodeService,
+        {
+          provide: APP_BASE_HREF,
+          useValue: '/'
+        },
+        {
+          provide: TopicService,
+          useValue: mockTopicService
+        },
+        {
+          provide: RouterModule,
+          useValue: mockRouter
+        },
+        {
+          provide: Global,
+          useValue: mockGlobal
+        }
       ]
     })
       .compileComponents();

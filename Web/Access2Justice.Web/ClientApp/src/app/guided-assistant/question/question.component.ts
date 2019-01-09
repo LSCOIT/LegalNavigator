@@ -6,7 +6,7 @@ import { QuestionService } from './question.service';
 import { Question } from './question';
 import { Answer } from './answers';
 import { ActivatedRoute } from '@angular/router';
-import { NavigateDataService } from '../../shared/navigate-data.service';
+import { NavigateDataService } from '../../shared/services/navigate-data.service';
 import { PersonalizedPlan } from '../personalized-plan/personalized-plan';
 
 @Component({

@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { PersonalizedPlanService } from '../personalized-plan/personalized-plan.service';
 import { PersonalizedPlanTopic, PersonalizedPlan, PersonalizedPlanDescription } from '../personalized-plan/personalized-plan';
 import { ActivatedRoute } from '@angular/router';
-import { NavigateDataService } from '../../shared/navigate-data.service';
-import { StaticResourceService } from '../../shared/static-resource.service';
+import { NavigateDataService } from '../../shared/services/navigate-data.service';
+import { StaticResourceService } from '../../shared/services/static-resource.service';
 import { Global } from '../../global';
 import { environment } from '../../../environments/environment';
 
@@ -22,7 +22,6 @@ export class PersonalizedPlanComponent implements OnInit {
   planDetails: any = [];
   planDetailTags: any;
   type: string = "Plan";
-
   name: string = 'PersonalizedActionPlanPage';
   personalizedPlanContent: PersonalizedPlanDescription;
   staticContent: any;

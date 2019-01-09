@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { SearchService } from '../shared/search/search.service';
-import { NavigateDataService } from '../shared/navigate-data.service';
+import { NavigateDataService } from '../shared/services/navigate-data.service';
 import { ILuisInput } from '../shared/search/search-results/search-results.model';
 import { Router } from '@angular/router';
 import { LocationDetails } from '../shared/map/map';
 import { GuidedAssistant } from './guided-assistant';
 import { environment } from '../../environments/environment';
-import { StaticResourceService } from '../shared/static-resource.service';
+import { StaticResourceService } from '../shared/services/static-resource.service';
 import { Global } from '../global';
 
 @Component({
@@ -17,12 +17,16 @@ import { Global } from '../global';
 export class GuidedAssistantComponent implements OnInit {
   searchText: string;
   topicLength = 12;
-  luisInput: ILuisInput = { Sentence: '', Location: '', TranslateFrom: '', TranslateTo: '', LuisTopScoringIntent: '' };
+  luisInput: ILuisInput = {
+    Sentence: '',
+    Location: '',
+    TranslateFrom: '',
+    TranslateTo: '',
+    LuisTopScoringIntent: ''
+  };
   guidedAssistantResults: any;
   locationDetails: LocationDetails;
   previousSearchText: string;
-
-
   name: string = 'GuidedAssistantPrivacyPage';
   GuidedAssistantPageContent: GuidedAssistant;
   staticContent: any;

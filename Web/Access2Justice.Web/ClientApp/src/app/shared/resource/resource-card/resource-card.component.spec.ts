@@ -10,13 +10,11 @@ import { BsDropdownModule } from 'ngx-bootstrap';
 import { BsModalService, ModalModule } from 'ngx-bootstrap/modal';
 import { TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { StateCodeService } from '../../state-code.service';
-//import { HttpClient } from 'selenium-webdriver/http';
+import { StateCodeService } from '../../../shared/services/state-code.service';
 import { HttpClientModule } from '@angular/common/http';
 
 class MockBsModalRef {
-  public isHideCalled = false;
-
+  isHideCalled = false;
   hide() {
     this.isHideCalled = true;
   }
@@ -46,12 +44,35 @@ describe('ResourceCardComponent', () => {
         ],
       providers: [
         BsModalService,
-        { provide: Global, useValue: { role: '', shareRouteUrl: '' } },
-        { provide: ResourceCardComponent, useValue: { id: '', resources: [{ itemId: '', resourceType: '', resourceDetails: {} }] } },
-        { provide: Router, useValue: mockRouter },
-        StateCodeService
+        StateCodeService,
+        {
+          provide: Global,
+          useValue: {
+            role: '',
+            shareRouteUrl: ''
+          }
+        },
+        {
+          provide: ResourceCardComponent,
+          useValue: {
+            id: '',
+            resources: [
+              {
+                itemId: '',
+                resourceType: '',
+                resourceDetails: {}
+              }]
+          }
+        },
+        {
+          provide: Router,
+          useValue: mockRouter
+        }
       ],
-      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA ]
+      schemas: [
+        NO_ERRORS_SCHEMA,
+        CUSTOM_ELEMENTS_SCHEMA
+      ]
     })
       .compileComponents();
 
@@ -60,7 +81,6 @@ describe('ResourceCardComponent', () => {
     component = fixture.componentInstance;
     spyOn(component, 'ngOnInit');
     fixture.detectChanges();
-
   }));
 
   it('should create', () => {

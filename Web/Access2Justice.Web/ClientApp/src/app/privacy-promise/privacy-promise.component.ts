@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PrivacyContent, Image, Details } from '../privacy-promise/privacy-promise';
-import { StaticResourceService } from '../shared/static-resource.service';
+import { StaticResourceService } from '../shared/services/static-resource.service';
 import { Global } from '../global';
 import { environment } from '../../environments/environment';
 

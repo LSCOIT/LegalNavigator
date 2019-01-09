@@ -5,7 +5,7 @@ import { environment } from '../../../../../environments/environment';
 import { Global } from '../../../../global';
 import { SavedResources } from '../../../../guided-assistant/personalized-plan/personalized-plan';
 import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
-import { NavigateDataService } from '../../../navigate-data.service';
+import { NavigateDataService } from '../../../services/navigate-data.service';
 import { SaveButtonService } from './save-button.service';
 
 @Component({

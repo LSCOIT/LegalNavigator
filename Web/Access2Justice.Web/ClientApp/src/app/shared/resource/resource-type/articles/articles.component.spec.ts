@@ -6,12 +6,12 @@ import { ServiceOrgSidebarComponent } from '../../../sidebars/service-org-sideba
 import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ShowMoreService } from '../../../sidebars/show-more/show-more.service';
 import { HttpClientModule } from '@angular/common/http';
-import { NavigateDataService } from '../../../navigate-data.service';
+import { NavigateDataService } from '../../../services/navigate-data.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Global } from '../../../../global';
 import { PaginationService } from '../../../pagination/pagination.service';
 import { MapService } from '../../../map/map.service';
-import { StateCodeService } from '../../../state-code.service';
+import { StateCodeService } from '../../../services/state-code.service';
 
 describe('ArticlesComponent', () => {
   let component: ArticlesComponent;
@@ -75,15 +75,36 @@ describe('ArticlesComponent', () => {
       providers: [
         NavigateDataService,
         MapService,
+        PaginationService,
+        StateCodeService,
         {
           provide: ActivatedRoute,
-          useValue: { snapshot: { params: { 'id': '123' } } }
+          useValue: {
+             snapshot: {
+                params: {
+                   'id': '123'
+                }
+             }
+          }
         },
-        { provide: Router, useValue: mockRouter },
-        { provide: Global, useValue: { mockGlobal, role: '', shareRouteUrl: '', activeSubtopicParam: '123', topIntent: 'Divorce' } },
-        { provide: ShowMoreService, useValue: mockShowMoreService },
-        PaginationService,
-        StateCodeService
+        {
+          provide: Router,
+          useValue: mockRouter
+        },
+        {
+          provide: Global,
+          useValue: {
+            mockGlobal,
+            role: '',
+            shareRouteUrl: '',
+            activeSubtopicParam: '123',
+            topIntent: 'Divorce'
+          }
+        },
+        {
+          provide: ShowMoreService,
+          useValue: mockShowMoreService
+        }
       ],
       schemas: [
         NO_ERRORS_SCHEMA,

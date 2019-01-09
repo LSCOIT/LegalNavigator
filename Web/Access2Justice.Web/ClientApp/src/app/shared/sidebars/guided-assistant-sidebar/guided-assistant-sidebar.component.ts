@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IResourceFilter, ILuisInput } from '../../search/search-results/search-results.model';
 import { PaginationService } from '../../pagination/pagination.service';
 import { MapService } from '../../map/map.service';
-import { NavigateDataService } from '../../navigate-data.service';
+import { NavigateDataService } from '../../services/navigate-data.service';
 import { MapLocation, LocationDetails } from '../../map/map';
 import { environment } from '../../../../environments/environment';
 
@@ -71,8 +71,16 @@ export class GuidedAssistantSidebarComponent implements OnInit {
       this.router.navigateByUrl('/guidedassistant/' + this.guidedAssistantId);
     }
     this.resourceFilter = {
-      ResourceType: environment.All, TopicIds: this.topicIds, Location: this.location,
-      PageNumber: 0, ContinuationToken: '', IsResourceCountRequired: true, ResourceIds: [], IsOrder: false, OrderByField: '', OrderBy:''
+      ResourceType: environment.All,
+      TopicIds: this.topicIds,
+      Location: this.location,
+      PageNumber: 0,
+      ContinuationToken: '',
+      IsResourceCountRequired: true,
+      ResourceIds: [],
+      IsOrder: false,
+      OrderByField: '',
+      OrderBy: ''
     }
     this.paginationService.getPagedResources(this.resourceFilter).
       subscribe(response => {

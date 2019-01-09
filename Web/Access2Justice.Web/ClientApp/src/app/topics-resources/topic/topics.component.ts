@@ -2,7 +2,7 @@ import { Component, OnInit, Input, QueryList, ViewChildren, HostListener } from 
 import { TopicService } from '../shared/topic.service';
 import { Topic } from '../shared/topic';
 import { MapService } from '../../shared/map/map.service';
-import { NavigateDataService } from '../../shared/navigate-data.service';
+import { NavigateDataService } from '../../shared/services/navigate-data.service';
 import { Global } from '../../global';
 
 @Component({

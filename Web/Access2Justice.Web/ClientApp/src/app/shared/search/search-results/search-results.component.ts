@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
-import { NavigateDataService } from '../../navigate-data.service';
+import { NavigateDataService } from '../../services/navigate-data.service';
 import { ResourceResult } from './search-result';
 import { SearchService } from '../search.service';
 import { PaginationService } from '../../pagination/pagination.service';

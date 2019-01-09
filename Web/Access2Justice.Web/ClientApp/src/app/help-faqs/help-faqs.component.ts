@@ -1,7 +1,7 @@
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Global } from '../global';
-import { StaticResourceService } from '../shared/static-resource.service';
+import { StaticResourceService } from '../shared/services/static-resource.service';
 import { HelpAndFaqs, ImageUrl, Faq, } from '../help-faqs/help-faqs';
 
 @Component({
@@ -10,7 +10,6 @@ import { HelpAndFaqs, ImageUrl, Faq, } from '../help-faqs/help-faqs';
   styleUrls: ['./help-faqs.component.css']
 })
 export class HelpFaqsComponent implements OnInit {
-
   helpAndFaqsContent: HelpAndFaqs;
   faqData: Array<Faq> = [];
   imageData: ImageUrl;

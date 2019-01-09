@@ -1,9 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HelpFaqsComponent } from './help-faqs.component';
-import { StaticResourceService } from '../shared/static-resource.service';
+import { StaticResourceService } from '../shared/services/static-resource.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Global } from '../global';
-import { StateCodeService } from '../shared/state-code.service';
+import { StateCodeService } from '../shared/services/state-code.service';
 
 describe('HelpFaqsComponent', () => {
   let component: HelpFaqsComponent;
@@ -19,23 +19,36 @@ describe('HelpFaqsComponent', () => {
       location: [
         { state: "Default" }
       ]
-    },
-    globalData = [{
-      name: "HelpAndFAQPage",
-      location: [
-        { state: "Default" }
+    };
+    globalData = [
+      {
+        name: "HelpAndFAQPage",
+        location: [
+          { state: "Default" }
+        ]
+      }
+    ];
+    mockStaticResourceService = jasmine.createSpyObj(
+      [
+        'getLocation',
+        'getStaticContents'
       ]
-    }]
-    mockStaticResourceService = jasmine.createSpyObj(['getLocation', 'getStaticContents']);
+    );
     mockGlobal = jasmine.createSpyObj(['getData']);
     mockGlobal.getData.and.returnValue(globalData);
     
     TestBed.configureTestingModule({
       declarations: [ HelpFaqsComponent ],
       providers: [ 
-        { provide: StaticResourceService, useValue: mockStaticResourceService },
-        { provide: Global, useValue: mockGlobal },
-        StateCodeService
+        StateCodeService,
+        {
+          provide: StaticResourceService,
+          useValue: mockStaticResourceService
+        },
+        {
+          provide: Global,
+          useValue: mockGlobal
+        }
       ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })

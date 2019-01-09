@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { NavigateDataService } from '../navigate-data.service';
+import { NavigateDataService } from '../services/navigate-data.service';
 import { Observable } from 'rxjs';
 import { PrintButtonComponent } from '../../shared/resource/user-action/print-button/print-button.component';
 import { ResourceCardComponent } from '../resource/resource-card/resource-card.component';
@@ -11,7 +11,7 @@ import { RouterModule, Router } from '@angular/router';
 import { SaveButtonComponent } from '../../shared/resource/user-action/save-button/save-button.component';
 import { SearchComponent } from './search.component';
 import { SearchFilterComponent } from './search-filter/search-filter.component';
-import { SearchFilterPipe } from './search-filter.pipe';
+import { SearchFilterPipe } from '../pipe/search-filter.pipe';
 import { SearchResultsComponent } from './search-results/search-results.component';
 import { SearchService } from './search.service';
 import { ShareButtonComponent } from '../../shared/resource/user-action/share-button/share-button.component';
@@ -104,8 +104,10 @@ describe('SearchComponent', () => {
           }
         }
       }
-    mockMapLocation = {location:{
-      "state": "Alaska"}
+    mockMapLocation = {
+      location: {
+        "state": "Alaska"
+      }
     };
     mockMapLocationParsed = {
       state: "Alaska"
@@ -135,7 +137,10 @@ describe('SearchComponent', () => {
       ],
       imports: [
         RouterModule.forRoot([
-          { path: 'search', component: SearchResultsComponent }
+          {
+            path: 'search',
+            component: SearchResultsComponent
+          }
         ]),
         HttpClientModule,
         FormsModule,
@@ -143,14 +148,32 @@ describe('SearchComponent', () => {
         BsDropdownModule.forRoot()
         ],
       providers: [
-        { provide: APP_BASE_HREF, useValue: '/' },
-        { provide: Router, useValue: mockRouter },
-        { provide: SearchService, useValue: mockSearchService },
-        { provide: NavigateDataService, useValue: mockNavigateDataService },
-        { provide: MsalService, useValue: msalService },
-        NgxSpinnerService
+        NgxSpinnerService,
+        {
+          provide: APP_BASE_HREF,
+          useValue: '/'
+        },
+        {
+          provide: Router,
+          useValue: mockRouter
+        },
+        {
+          provide: SearchService,
+          useValue: mockSearchService
+        },
+        {
+          provide: NavigateDataService,
+          useValue: mockNavigateDataService
+        },
+        {
+          provide: MsalService,
+          useValue: msalService
+        }
       ],
-      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
+      schemas: [
+        NO_ERRORS_SCHEMA,
+        CUSTOM_ELEMENTS_SCHEMA
+      ]
     })
       .compileComponents();
   }));
