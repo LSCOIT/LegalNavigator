@@ -1,17 +1,15 @@
 <app-breadcrumb [resourceTopic]="resource.topicTags[0].id"
                 [resourceType]="resource.resourceType"
                 #breadcrumb></app-breadcrumb>
-<div class="row">
-  <div class="col-md-6 col-sm-12 user-action mobile-hidden pull-right">
-    <app-user-action-sidebar
-      [mobile]="true"
-      [id]="resource.id"
-      [type]="resource.resourceType"
-      [showDownload]="false"
-      [showPrint]="false"
-    >
-    </app-user-action-sidebar>
-  </div>
+<div class="user-action mobile-hidden pull-right">
+  <app-user-action-sidebar
+    [mobile]="true"
+    [id]="resource.id"
+    [type]="resource.resourceType"
+    [showDownload]="false"
+    [showPrint]="false"
+  >
+  </app-user-action-sidebar>
 </div>
 <div class="row">
   <div class="col-md-10 col-sm-12">

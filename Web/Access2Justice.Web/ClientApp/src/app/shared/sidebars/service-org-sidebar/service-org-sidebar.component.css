@@ -30,6 +30,7 @@
 
 .full-page-img {
   width: 250px;
+  padding: 20px;
 }
 
 a.btn-primary {
@@ -58,6 +59,19 @@ a.btn-primary:hover {
   .sidebar-page:last-child {
     border-right: none;
   }
+
+  .full-page {
+    margin-bottom: 20px;
+    width: 33.3333%;
+    display: inline-block;
+    padding: 0 10px;
+    float: left;
+    border-right: 1px solid #ddd;
+  }
+
+    .full-page:last-child {
+      border-right: none;
+    }
 }
 
 @media only screen and (min-width: 992px) {

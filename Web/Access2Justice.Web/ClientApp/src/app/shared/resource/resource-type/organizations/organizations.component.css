@@ -45,6 +45,10 @@
   margin: 20px 0;
 }
 
+.box-no-shadow:first-child {
+  margin: 0 auto 20px auto;
+}
+
 .resource-body {
   padding: 20px;
 }
@@ -87,7 +91,7 @@ h2 {
   }
 
   .user-action {
-    margin-top: 10px;
+    margin: 10px auto;
   }
 }
 

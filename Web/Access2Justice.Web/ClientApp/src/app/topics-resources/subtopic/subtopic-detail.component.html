@@ -1,17 +1,17 @@
 <div *ngIf="subtopicDetails && subtopics" class="container">
   <app-breadcrumb #breadcrumb></app-breadcrumb>
+  <div class="user-action mobile-hidden pull-right">
+    <app-user-action-sidebar
+      [mobile]="true"
+      [id]="activeSubtopicParam"
+      [type]="type"
+    ></app-user-action-sidebar>
+  </div>
   <div class="row">
-    <div class="col-md-6 col-sm-12">
+    <div class="col-md-10 col-sm-12">
       <h1 *ngIf="subtopics.id == activeSubtopicParam" class="subtopic-heading">
         {{ subtopics.name }}
       </h1>
-    </div>
-    <div class="col-md-6 col-sm-12 user-action mobile-hidden">
-      <app-user-action-sidebar
-        [mobile]="true"
-        [id]="activeSubtopicParam"
-        [type]="type"
-      ></app-user-action-sidebar>
     </div>
   </div>
   <div class="row">

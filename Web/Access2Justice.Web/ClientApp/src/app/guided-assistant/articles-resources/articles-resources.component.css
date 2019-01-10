@@ -28,7 +28,7 @@ li {
   border-radius: 4px 4px 0 0;
   background-color: #fff;
   margin-bottom: -1.5px;
-  padding: 10px 40px 10px 10px;
+  padding: 10px 40px 9px 10px;
   background-position: 94% 50%;
 }
 
@@ -60,12 +60,13 @@ li {
   border-bottom: 1px solid #ccc;
   width: 100%;
 }
+@media only screen and (min-width: 768px) {
+  .show-articles {
+    padding: 10px 40px 8px 10px;
+  }
+}
 
 @media only screen and (min-width: 992px) {
-  .show-articles {
-    padding-bottom: 8px;
-  }
-
   .link {
     width: 50%;
     display: inline-block;

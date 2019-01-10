@@ -25,7 +25,6 @@ li a.selected-item {
 
 .upper-action {
   float: right;
-  margin-bottom: -30px;
 }
 
 .row-half-spacing {
@@ -121,6 +120,10 @@ li a.selected-item {
   .filter-plan span,
   .filter-plan .mobile-hidden {
     padding-top: 10px;
+  }
+
+  .user-action {
+    margin-bottom: 10px;
   }
 }
 

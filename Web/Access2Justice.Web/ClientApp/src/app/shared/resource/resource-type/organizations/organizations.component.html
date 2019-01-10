@@ -3,14 +3,12 @@
   [resourceType]="resource.resourceType"
   #breadcrumb
 ></app-breadcrumb>
-<div class="row">
-  <div class="col-md-6 col-sm-12 user-action mobile-hidden pull-right">
-    <app-user-action-sidebar
-      [mobile]="true"
-      [id]="resource.id"
-      [type]="resource.resourceType"
-    ></app-user-action-sidebar>
-  </div>
+<div class="user-action mobile-hidden pull-right">
+  <app-user-action-sidebar
+    [mobile]="true"
+    [id]="resource.id"
+    [type]="resource.resourceType"
+  ></app-user-action-sidebar>
 </div>
 <div class="row">
   <div class="col-md-10 col-sm-12">
@@ -20,7 +18,7 @@
 </div>
 <div class="row">
   <div class="col-md-8 col-sm-12">
-    <div class="expanded-image no-print">
+    <!--<div class="expanded-image no-print">
       <img
         *ngIf="currentImage; else elseblock"
         [src]="currentImage"
@@ -99,7 +97,7 @@
           </div>
         </ng-template>
       </div>
-    </div>
+    </div>-->
     <div class="box-no-shadow">
       <div class="resource-body">
         <div>{{ resource.address }}</div>

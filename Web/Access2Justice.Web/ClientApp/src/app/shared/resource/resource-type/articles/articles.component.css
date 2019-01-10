@@ -2,10 +2,6 @@ h2 {
   margin-top: 0;
 }
 
-.user-action {
-  margin-top: 10px;
-}
-
 .resource-sections:last-child {
   margin-bottom: 40px;
 }
@@ -17,6 +13,10 @@ h2 {
 
   .web-hidden {
     display: none;
+  }
+  
+  .user-action {
+    margin: 10px auto;
   }
 }
 
