@@ -14,7 +14,6 @@ import { PaginationComponent } from "../../../shared/pagination/pagination.compo
 import { MapService } from "../../map/map.service";
 import { PaginationService } from "../../pagination/pagination.service";
 import { PipeModule } from "../../pipe/pipe.module";
-import { SearchFilterPipe } from "../../pipe/search-filter.pipe";
 import { ResourceCardComponent } from "../../resource/resource-card/resource-card.component";
 import { SaveButtonComponent } from "../../resource/user-action/save-button/save-button.component";
 import { ShareButtonComponent } from "../../resource/user-action/share-button/share-button.component";
@@ -201,7 +200,6 @@ describe("SearchResultsComponent", () => {
       declarations: [
         SearchResultsComponent,
         SearchFilterComponent,
-        SearchFilterPipe,
         ResourceCardComponent,
         GuidedAssistantSidebarComponent,
         ServiceOrgSidebarComponent,

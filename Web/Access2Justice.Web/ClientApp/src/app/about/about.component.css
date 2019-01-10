@@ -55,6 +55,10 @@ p + .btn-sm {
     margin-top: 0;
     margin-bottom: 0;
   }
+
+  .browse-topic {
+    margin-left: 20px;
+  }
 }
 
 @media only screen and (min-width: 992px) {

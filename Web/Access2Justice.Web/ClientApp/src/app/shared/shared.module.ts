@@ -26,7 +26,6 @@ import { UpperNavComponent } from "./navigation/upper-nav.component";
 import { PaginationComponent } from "./pagination/pagination.component";
 import { PaginationService } from "./pagination/pagination.service";
 import { PipeModule } from "./pipe/pipe.module";
-import { SearchFilterPipe } from "./pipe/search-filter.pipe";
 import { ReadMoreComponent } from "./read-more/read-more.component";
 import { ResourceCardDetailComponent } from "./resource/resource-card-detail/resource-card-detail.component";
 import { ResourceCardComponent } from "./resource/resource-card/resource-card.component";
@@ -95,7 +94,6 @@ import { UserActionSidebarComponent } from "./sidebars/user-action-sidebar/user-
     ShareButtonComponent,
     UpperNavComponent,
     WebResourceComponent,
-    SearchFilterPipe,
     BreadcrumbComponent,
     MapResultsComponent,
     PaginationComponent,

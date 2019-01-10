@@ -13,7 +13,6 @@ import { PrintButtonComponent } from "../../shared/resource/user-action/print-bu
 import { SaveButtonComponent } from "../../shared/resource/user-action/save-button/save-button.component";
 import { ShareButtonComponent } from "../../shared/resource/user-action/share-button/share-button.component";
 import { PipeModule } from "../pipe/pipe.module";
-import { SearchFilterPipe } from "../pipe/search-filter.pipe";
 import { ResourceCardComponent } from "../resource/resource-card/resource-card.component";
 import { NavigateDataService } from "../services/navigate-data.service";
 import { SearchFilterComponent } from "./search-filter/search-filter.component";
@@ -124,8 +123,7 @@ describe("SearchComponent", () => {
         ShareButtonComponent,
         PrintButtonComponent,
         SearchFilterComponent,
-        ResourceCardComponent,
-        SearchFilterPipe
+        ResourceCardComponent
       ],
       imports: [
         RouterModule.forRoot([
