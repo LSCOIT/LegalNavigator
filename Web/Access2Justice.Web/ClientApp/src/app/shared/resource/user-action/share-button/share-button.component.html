@@ -1,30 +1,62 @@
-<button id="share" (click)="openModal(template)" *ngIf="global.showShare" class="user-button" [ngClass]="{'link': addLinkClass, '': !addLinkClass}">
-  <img *ngIf="showIcon" src="./assets/images/small-icons/share.svg" class="nav-icon" aria-hidden="true" />
+<button
+  id="share"
+  (click)="openModal(template)"
+  *ngIf="global.showShare"
+  class="user-button"
+  [ngClass]="{ link: addLinkClass, '': !addLinkClass }"
+>
+  <img
+    *ngIf="showIcon"
+    src="./assets/images/small-icons/share.svg"
+    class="nav-icon"
+    aria-hidden="true"
+  />
   Share
 </button>
 <ng-template #template>
   <div class="modal-body">
-    <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
-      <img class="nav-icon" src="./assets/images/small-icons/close.svg" >
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="close()"
+    >
+      <img class="nav-icon" src="./assets/images/small-icons/close.svg" />
     </button>
     <div class="text-center">
       <h4>Share Link</h4>
       <div *ngIf="showGenerateLink">
         <p>Share this content with anyone using a link.</p>
-        <button class="btn btn-primary" (click)="generateLink()">Generate Link</button>
+        <button class="btn btn-primary" (click)="generateLink()">
+          Generate Link
+        </button>
       </div>
       <div *ngIf="!showGenerateLink">
         <div id="input-button">
-          <input type="text" name="name" value="{{permaLink}}" #userinput />
-          <button type="button" id="copy-btn" (click)="copyLink(userinput)">Copy Link</button>
+          <input type="text" name="name" value="{{ permaLink }}" #userinput />
+          <button type="button" id="copy-btn" (click)="copyLink(userinput)">
+            Copy Link
+          </button>
         </div>
-        <p class="pxs">Note: Anyone with this link will be able to access this content. <br/>Link will automatically expire after 12 months.</p>
+        <p class="pxs">
+          Note: Anyone with this link will be able to access this content.
+          <br />Link will automatically expire after 12 months.
+        </p>
         <div class="remove-share row">
           <h4>Disable Link</h4>
-          <p>Clicking this button will make this content no longer viewable to anyone you share the link with.</p>
-          <button class="btn btn-primary" id="remove-btn" (click)="removeLink()">Remove Link</button>
+          <p>
+            Clicking this button will make this content no longer viewable to
+            anyone you share the link with.
+          </p>
+          <button
+            class="btn btn-primary"
+            id="remove-btn"
+            (click)="removeLink()"
+          >
+            Remove Link
+          </button>
         </div>
       </div>
-    </div>    
+    </div>
   </div>
 </ng-template>

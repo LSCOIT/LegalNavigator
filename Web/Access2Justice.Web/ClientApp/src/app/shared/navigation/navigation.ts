@@ -18,13 +18,13 @@ export interface LocationNavContent {
   text?: string;
   altText?: string;
   button?: Button;
-  image?: Image
+  image?: Image;
 }
 
 export interface Button {
-    buttonText?: string;
-    buttonAltText?: string;
-    buttonLink?: string;
+  buttonText?: string;
+  buttonAltText?: string;
+  buttonLink?: string;
 }
 
 export interface Image {
@@ -35,7 +35,7 @@ export interface Image {
 export interface Language {
   button?: Button;
   navigationImage?: Image;
-  dropDownImage?: Image
+  dropDownImage?: Image;
 }
 
 export interface Location {

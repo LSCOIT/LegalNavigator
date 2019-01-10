@@ -45,7 +45,7 @@ li:last-child a {
   display: inline-block;
 }
 
-.org-card-heading>.glyphicon {
+.org-card-heading > .glyphicon {
   margin-left: 15px;
 }
 
@@ -113,7 +113,7 @@ h4 {
 }
 
 .dropdown-menu {
-  border: 1px solid #7E7E7E;
+  border: 1px solid #7e7e7e;
 }
 
 .onboarding-label {
@@ -130,11 +130,12 @@ h4 {
   margin: 15px auto;
 }
 
-.btn, .btn-primary {
+.btn,
+.btn-primary {
   margin: 0 10px 20px 10px;
 }
 
-@media only screen and (min-width : 768px) {
+@media only screen and (min-width: 768px) {
   h4 {
     padding-right: 20px;
   }
@@ -166,7 +167,7 @@ h4 {
   }
 }
 
-@media only screen and (min-width : 992px) {
+@media only screen and (min-width: 992px) {
   .org-content .col-md-4 {
     padding-right: 10px;
   }

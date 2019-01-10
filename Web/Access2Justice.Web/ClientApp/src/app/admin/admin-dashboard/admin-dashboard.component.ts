@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { Global } from '../../global';
-import { StaticResourceService } from '../../shared/services/static-resource.service';
-import { Router } from '@angular/router';
-import { NavigateDataService } from '../../shared/services/navigate-data.service';
-import { NgxSpinnerService } from 'ngx-spinner';
+import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { NgxSpinnerService } from "ngx-spinner";
+import { Global } from "../../global";
+import { NavigateDataService } from "../../shared/services/navigate-data.service";
+import { StaticResourceService } from "../../shared/services/static-resource.service";
 
 @Component({
-  selector: 'app-admin-dashboard',
-  templateUrl: './admin-dashboard.component.html',
-  styleUrls: ['../admin-styles.css']
+  selector: "app-admin-dashboard",
+  templateUrl: "./admin-dashboard.component.html",
+  styleUrls: ["../admin-styles.css"]
 })
 export class AdminDashboardComponent implements OnInit {
   roleInformationSubscription;
@@ -26,15 +26,15 @@ export class AdminDashboardComponent implements OnInit {
     private router: Router,
     private navigateDataService: NavigateDataService,
     private spinner: NgxSpinnerService
-  ) { }
+  ) {}
 
   checkIfStateAdmin(roleInformation) {
     roleInformation.forEach(role => {
-      if (role.roleName === 'StateAdmin') {
+      if (role.roleName === "StateAdmin") {
         this.isStateAdmin = true;
         this.stateList.push(role.organizationalUnit);
       }
-      if (role.roleName === 'PortalAdmin') {
+      if (role.roleName === "PortalAdmin") {
         this.isPortalAdmin = true;
       }
     });
@@ -50,33 +50,43 @@ export class AdminDashboardComponent implements OnInit {
         this.staticResource = response;
         this.showStaticContentPage = true;
       },
-      error => this.router.navigate(['/error']));
+      error => this.router.navigate(["/error"])
+    );
   }
 
   navigateToPage(event) {
     let pageName = event.target.innerText;
     this.navigateDataService.setData(this.staticResource);
     switch (pageName) {
-      case 'HomePage':
-        this.router.navigate(['/admin/home'], { queryParams: { state: this.location.state } });
+      case "HomePage":
+        this.router.navigate(["/admin/home"], {
+          queryParams: { state: this.location.state }
+        });
         break;
-      case 'PrivacyPromisePage':
-        this.router.navigate(['/admin/privacy'], { queryParams: { state: this.location.state } });
+      case "PrivacyPromisePage":
+        this.router.navigate(["/admin/privacy"], {
+          queryParams: { state: this.location.state }
+        });
         break;
-      case 'AboutPage':
-        this.router.navigate(['/admin/about'], { queryParams: { state: this.location.state } });
+      case "AboutPage":
+        this.router.navigate(["/admin/about"], {
+          queryParams: { state: this.location.state }
+        });
         break;
-      case 'HelpAndFAQPage':
-        this.router.navigate(['/admin/help'], { queryParams: { state: this.location.state } });
+      case "HelpAndFAQPage":
+        this.router.navigate(["/admin/help"], {
+          queryParams: { state: this.location.state }
+        });
         break;
-      case 'PersonalizedActionPlanPage':
-        this.router.navigate(['/admin/plan'], { queryParams: { state: this.location.state } });
+      case "PersonalizedActionPlanPage":
+        this.router.navigate(["/admin/plan"], {
+          queryParams: { state: this.location.state }
+        });
         break;
     }
   }
-    
+
   ngOnInit() {
     this.checkIfStateAdmin(this.global.roleInformation);
   }
-
 }

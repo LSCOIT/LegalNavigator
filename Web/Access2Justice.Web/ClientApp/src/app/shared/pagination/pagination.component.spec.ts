@@ -1,7 +1,7 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { PaginationComponent } from './pagination.component';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { PaginationComponent } from "./pagination.component";
 
-describe('PaginationComponent', () => {
+describe("PaginationComponent", () => {
   let component: PaginationComponent;
   let fixture: ComponentFixture<PaginationComponent>;
   let mockRecordCount = 105;
@@ -10,13 +10,11 @@ describe('PaginationComponent', () => {
   let mockEndPage = 11;
   let mockBeginLine = 11;
   let mockEndLine = 20;
-  let beTrue = false;
   let expectedPages: number[] = [];
   expectedPages[0] = 1;
   expectedPages[1] = 2;
   expectedPages[2] = 3;
   expectedPages[3] = 4;
-
   let expectedLastPages: number[] = [];
   expectedLastPages[0] = 8;
   expectedLastPages[1] = 9;
@@ -26,8 +24,7 @@ describe('PaginationComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [PaginationComponent]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -36,32 +33,32 @@ describe('PaginationComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 
-  it('should get start line number for a specified page: min', () => {
+  it("should get start line number for a specified page: min", () => {
     component.perPage = mockPageSize;
     component.page = mockCurrentPage;
     let line = component.getMin();
     expect(line).toBe(mockBeginLine);
   });
 
-  it('should get end line number for a specified page: max', () => {
+  it("should get end line number for a specified page: max", () => {
     component.perPage = mockPageSize;
     component.page = mockCurrentPage;
     let line = component.getMax();
     expect(line).toBe(mockEndLine);
   });
 
-  it('should be on specified page to be defined', () => {
+  it("should be on specified page to be defined", () => {
     component.count = mockRecordCount;
     component.perPage = mockPageSize;
     let numberofPages = component.totalPages();
     expect(numberofPages).toBe(11);
   });
 
-  it('should be defined - the page is not last page', () => {
+  it("should be defined - the page is not last page", () => {
     component.count = mockRecordCount;
     component.page = mockCurrentPage;
     component.perPage = mockPageSize;
@@ -69,7 +66,7 @@ describe('PaginationComponent', () => {
     expect(isLastPage).toBe(false);
   });
 
-  it('should be defined - the page is last page', () => {
+  it("should be defined - the page is last page", () => {
     component.count = mockRecordCount;
     component.page = mockEndPage;
     component.perPage = mockPageSize;
@@ -77,25 +74,23 @@ describe('PaginationComponent', () => {
     expect(isLastPage).toBe(true);
   });
 
-  it('should be displayed the four pages along with current page', () => {
+  it("should be displayed the four pages along with current page", () => {
     component.count = mockRecordCount;
     component.page = mockCurrentPage;
     component.perPage = mockPageSize;
     component.pagesToShow = 4;
     let returnPages: number[] = [];
     returnPages = component.getPages();
-    expect(component.getPages).toHaveBeenCalled;
     expect(expectedPages).toEqual(returnPages);
   });
 
-  it('should be displayed last four pages if the current page is last page', () => {
+  it("should be displayed last four pages if the current page is last page", () => {
     component.count = mockRecordCount;
-    component.page = mockEndPage
+    component.page = mockEndPage;
     component.perPage = mockPageSize;
     component.pagesToShow = 4;
     let returnPages: number[] = [];
     returnPages = component.getPages();
-    expect(component.getPages).toHaveBeenCalled;
     expect(expectedLastPages).toEqual(returnPages);
   });
 });

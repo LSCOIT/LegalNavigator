@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { LocationDetails } from '../shared/map/map';
-import { MapService } from '../shared/map/map.service';
-import { environment } from '../../environments/environment';
-import { Home, Hero, GuidedAssistantOverview, TopicAndResources, Carousel, SponsorOverview, Privacy, Sponsors } from './home';
-import { StaticResourceService } from '../shared/services/static-resource.service';
-import { Global } from '../global';
+import { Component, OnInit } from "@angular/core";
+import { environment } from "../../environments/environment";
+import { Global } from "../global";
+import { LocationDetails } from "../shared/map/map";
+import { MapService } from "../shared/map/map.service";
+import { StaticResourceService } from "../shared/services/static-resource.service";
+import { Carousel, GuidedAssistantOverview, Hero, Home, Privacy, SponsorOverview, Sponsors, TopicAndResources } from "./home";
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  selector: "app-home",
+  templateUrl: "./home.component.html",
+  styleUrls: ["./home.component.css"]
 })
 export class HomeComponent implements OnInit {
   topicLength = 12;
@@ -18,12 +18,12 @@ export class HomeComponent implements OnInit {
   subscription: any;
   slides = [];
   sponsors: Array<Sponsors>;
-  button: { buttonText: '', buttonAltText: '', buttonLink: '' }
+  button: { buttonText: ""; buttonAltText: ""; buttonLink: "" };
   blobUrl: string = environment.blobUrl;
-  name: string = 'HomePage';
+  name: string = "HomePage";
   homeContent: Home;
   heroData: Hero;
-  guidedAssistantOverviewData: GuidedAssistantOverview
+  guidedAssistantOverviewData: GuidedAssistantOverview;
   topicAndResourcesData: TopicAndResources;
   carouselData: Carousel;
   sponsorOverviewData: SponsorOverview;
@@ -31,9 +31,11 @@ export class HomeComponent implements OnInit {
   staticContent: any;
   staticContentSubcription: any;
 
-  constructor(private staticResourceService: StaticResourceService,
+  constructor(
+    private staticResourceService: StaticResourceService,
     private mapService: MapService,
-    private global: Global) { }
+    private global: Global
+  ) {}
 
   filterHomeContent(homeContent): void {
     if (homeContent) {
@@ -48,19 +50,25 @@ export class HomeComponent implements OnInit {
   }
   loadStateName() {
     if (sessionStorage.getItem("globalMapLocation")) {
-      this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+      this.locationDetails = JSON.parse(
+        sessionStorage.getItem("globalMapLocation")
+      );
       this.state = this.locationDetails.displayLocationDetails.address;
     }
   }
 
   createSlideContent(slides) {
-    this.slides = slides.filter(slide =>
-      typeof slide.quote !== "undefined" && slide.quote.length > 0);
+    this.slides = slides.filter(
+      slide => typeof slide.quote !== "undefined" && slide.quote.length > 0
+    );
   }
 
   getHomePageContent(): void {
-    let homePageRequest = { name: this.name };
-    if (this.staticResourceService.homeContent && (this.staticResourceService.homeContent.location[0].state == this.staticResourceService.getLocation())) {
+    if (
+      this.staticResourceService.homeContent &&
+      this.staticResourceService.homeContent.location[0].state ==
+        this.staticResourceService.getLocation()
+    ) {
       this.homeContent = this.staticResourceService.homeContent;
       this.filterHomeContent(this.staticResourceService.homeContent);
       this.createSlideContent(this.homeContent.carousel.slides);
@@ -78,23 +86,23 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.loadStateName();
     this.getHomePageContent();
-    this.subscription = this.mapService.notifyLocation
-      .subscribe((value) => {
-       this.loadStateName();
-        this.getHomePageContent();
-      });
-    this.staticContentSubcription = this.global.notifyStaticData
-      .subscribe((value) => {
+    this.subscription = this.mapService.notifyLocation.subscribe(value => {
+      this.loadStateName();
+      this.getHomePageContent();
+    });
+    this.staticContentSubcription = this.global.notifyStaticData.subscribe(
+      value => {
         this.loadStateName();
         this.getHomePageContent();
-      });
+      }
+    );
   }
 
   ngOnDestroy() {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
-    if (this.staticContentSubcription) {    
+    if (this.staticContentSubcription) {
       this.staticContentSubcription.unsubscribe();
     }
   }

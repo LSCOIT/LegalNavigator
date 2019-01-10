@@ -1,7 +1,7 @@
 <div class="container" id="admin">
   <div class="static-img-container row">
     <div class="col-md-12 static-img">
-      <img src="./assets/images/secondary-illustrations/admin.svg"/>
+      <img src="./assets/images/secondary-illustrations/admin.svg" />
     </div>
     <h1 class="inline">Admin Portal</h1>
   </div>
@@ -13,15 +13,33 @@
         <div class="row">
           <label class="col-md-2">State:</label>
           <div class="btn-group col-md-10" dropdown>
-            <button id="button-basic" dropdownToggle type="button" class="btn btn-selected dropdown-toggle" aria-controls="button-basic"> {{stateDropdown}}
+            <button
+              id="button-basic"
+              dropdownToggle
+              type="button"
+              class="btn btn-selected dropdown-toggle"
+              aria-controls="button-basic"
+            >
+              {{ stateDropdown }}
             </button>
-            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-                role="menu" aria-labelledby="button-basic">
+            <ul
+              id="dropdown-basic"
+              *dropdownMenu
+              class="dropdown-menu"
+              role="menu"
+              aria-labelledby="button-basic"
+            >
               <li role="menuitem">
                 <!--need an endpoint that has all the states with static resource content-->
-                <a class="dropdown-item" (click)="displayStatePage($event)">AK</a>
-                <a class="dropdown-item" (click)="displayStatePage($event)">HI</a>
-                <a class="dropdown-item" (click)="displayStatePage($event)">Default</a>
+                <a class="dropdown-item" (click)="displayStatePage($event)"
+                  >AK</a
+                >
+                <a class="dropdown-item" (click)="displayStatePage($event)"
+                  >HI</a
+                >
+                <a class="dropdown-item" (click)="displayStatePage($event)"
+                  >Default</a
+                >
               </li>
             </ul>
           </div>
@@ -29,13 +47,32 @@
         <div *ngIf="showStaticContentPage" class="row">
           <label class="col-md-2">Select page to edit:</label>
           <div class="btn-group col-md-10" dropdown>
-            <button id="button-basic" dropdownToggle type="button" class="btn btn-selected dropdown-toggle" aria-controls="button-basic">
+            <button
+              id="button-basic"
+              dropdownToggle
+              type="button"
+              class="btn btn-selected dropdown-toggle"
+              aria-controls="button-basic"
+            >
               Page
             </button>
-            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-                role="menu" aria-labelledby="button-basic">
+            <ul
+              id="dropdown-basic"
+              *dropdownMenu
+              class="dropdown-menu"
+              role="menu"
+              aria-labelledby="button-basic"
+            >
               <li role="menuitem" *ngFor="let page of staticResource">
-                <a *ngIf="page.name !== 'Navigation' && page.name !== 'GuidedAssistantPrivacyPage'" class="dropdown-item" (click)="navigateToPage($event)">{{page.name}}</a>
+                <a
+                  *ngIf="
+                    page.name !== 'Navigation' &&
+                    page.name !== 'GuidedAssistantPrivacyPage'
+                  "
+                  class="dropdown-item"
+                  (click)="navigateToPage($event)"
+                  >{{ page.name }}</a
+                >
               </li>
             </ul>
           </div>

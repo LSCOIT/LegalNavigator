@@ -1,40 +1,46 @@
-import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MsalService } from '@azure/msal-angular';
-import { BsModalService } from 'ngx-bootstrap/modal';
-import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
-import { environment } from '../../../../../environments/environment';
-import { Global, UserStatus } from '../../../../global';
-import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
-import { NavigateDataService } from '../../../services/navigate-data.service';
-import { Share } from '../share-button/share.model';
-import { ShareService } from '../share-button/share.service';
+import { Component, Input, OnInit, TemplateRef, ViewChild } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { MsalService } from "@azure/msal-angular";
+import { BsModalService } from "ngx-bootstrap/modal";
+import { BsModalRef } from "ngx-bootstrap/modal/bs-modal-ref.service";
+import { environment } from "../../../../../environments/environment";
+import { Global, UserStatus } from "../../../../global";
+import { PersonalizedPlanService } from "../../../../guided-assistant/personalized-plan/personalized-plan.service";
+import { NavigateDataService } from "../../../services/navigate-data.service";
+import { Share } from "../share-button/share.model";
+import { ShareService } from "../share-button/share.service";
 
 @Component({
-  selector: 'app-share-button',
-  templateUrl: './share-button.component.html',
-  styleUrls: ['./share-button.component.css']
+  selector: "app-share-button",
+  templateUrl: "./share-button.component.html",
+  styleUrls: ["./share-button.component.css"]
 })
 export class ShareButtonComponent implements OnInit {
   @Input() showIcon = true;
   modalRef: BsModalRef;
-  @Input() id: string;//resource Id
-  @Input() type: string; //resource Type
-  @Input() url: string; //resource Url
-  @Input() webResourceUrl: string;//web resource Url
-  @ViewChild('template') public templateref: TemplateRef<any>;
+  @Input() id: string;
+  @Input() type: string;
+  @Input() url: string;
+  @Input() webResourceUrl: string;
+  @ViewChild("template") public templateref: TemplateRef<any>;
   userId: string;
   sessionKey: string = "showModal";
-  shareInput: Share = { ResourceId: '', UserId: '', Url: '' };
+  shareInput: Share = {
+    ResourceId: "",
+    UserId: "",
+    Url: ""
+  };
   shareView: any;
   blank: string = "";
   permaLink: string = "";
   showGenerateLink: boolean = true;
-  resourceUrl: string = window.location.protocol + "//" + window.location.host + "/share/";
+  resourceUrl: string =
+    window.location.protocol + "//" + window.location.host + "/share/";
   emptyId: string = "{00000000-0000-0000-0000-000000000000}";
   @Input() addLinkClass: boolean = false;
 
-  constructor(private modalService: BsModalService,
+  constructor(
+    private modalService: BsModalService,
     private shareService: ShareService,
     private activeRoute: ActivatedRoute,
     public global: Global,
@@ -43,10 +49,12 @@ export class ShareButtonComponent implements OnInit {
     private router: Router,
     private personalizedPlanService: PersonalizedPlanService
   ) {
-    if (global.role === UserStatus.Shared && location.pathname.indexOf(global.shareRouteUrl) >= 0) {
+    if (
+      global.role === UserStatus.Shared &&
+      location.pathname.indexOf(global.shareRouteUrl) >= 0
+    ) {
       global.showShare = false;
-    }
-    else {
+    } else {
       global.showShare = true;
     }
   }
@@ -67,79 +75,74 @@ export class ShareButtonComponent implements OnInit {
 
   checkPermaLink(template) {
     this.buildParams();
-    this.shareService.checkLink(this.shareInput)
-      .subscribe(response => {
-        if (response != undefined) {
-          this.shareView = response;
-          if (this.shareView.permaLink) {
-            this.showGenerateLink = false;
-            this.permaLink = this.getPermaLink();
-          }
+    this.shareService.checkLink(this.shareInput).subscribe(response => {
+      if (response != undefined) {
+        this.shareView = response;
+        if (this.shareView.permaLink) {
+          this.showGenerateLink = false;
+          this.permaLink = this.getPermaLink();
         }
-        this.modalRef = this.modalService.show(template);
-      });
+      }
+      this.modalRef = this.modalService.show(template);
+    });
   }
 
   savePersonalizationPlan() {
     if (this.router.url.indexOf("/plan") !== -1) {
       const params = {
-        "personalizedPlan": this.navigateDataService.getData(),
-        "oId": this.global.userId,
-        "saveActionPlan": true
-      }
-      this.personalizedPlanService.userPlan(params)
-        .subscribe(response => {
-          if (response) {
-            console.log("Plan Added to Session");
-          }
-        });
+        personalizedPlan: this.navigateDataService.getData(),
+        oId: this.global.userId,
+        saveActionPlan: true
+      };
+      this.personalizedPlanService.userPlan(params).subscribe(response => {
+        if (response) {
+          console.log("Plan Added to Session");
+        }
+      });
     }
   }
 
   generateLink() {
     this.buildParams();
-    this.shareService.generateLink(this.shareInput)
-      .subscribe(response => {
-        if (response != undefined) {
-          this.shareView = response;
-          this.permaLink = this.getPermaLink();
-          this.showGenerateLink = false;
-        }
-      });
+    this.shareService.generateLink(this.shareInput).subscribe(response => {
+      if (response != undefined) {
+        this.shareView = response;
+        this.permaLink = this.getPermaLink();
+        this.showGenerateLink = false;
+      }
+    });
   }
 
   removeLink(): void {
     this.buildParams();
-    this.shareService.removeLink(this.shareInput)
-      .subscribe(response => {
-        if (response != undefined) {
-          this.close();
-          this.showGenerateLink = true;
-          this.permaLink = this.blank;
-        }
-      });
+    this.shareService.removeLink(this.shareInput).subscribe(response => {
+      if (response != undefined) {
+        this.close();
+        this.showGenerateLink = true;
+        this.permaLink = this.blank;
+      }
+    });
   }
 
   getActiveParam() {
-    if (this.activeRoute.snapshot.params['topic'] != null) {
-      return this.activeRoute.snapshot.params['topic'];
-    };
-    if (this.activeRoute.snapshot.params['id'] != null) {
-      return this.activeRoute.snapshot.params['topic'];
-    };
+    if (this.activeRoute.snapshot.params["topic"] != null) {
+      return this.activeRoute.snapshot.params["topic"];
+    }
+    if (this.activeRoute.snapshot.params["id"] != null) {
+      return this.activeRoute.snapshot.params["topic"];
+    }
   }
 
   copyLink(inputElement) {
     inputElement.select();
-    document.execCommand('copy');
+    document.execCommand("copy");
     inputElement.setSelectionRange(0, 0);
   }
 
   getPermaLink() {
     if (this.shareView.permaLink)
       return this.resourceUrl + this.shareView.permaLink;
-    else
-      return this.blank;
+    else return this.blank;
   }
 
   externalLogin() {
@@ -157,11 +160,10 @@ export class ShareButtonComponent implements OnInit {
   }
 
   buildParams() {
-    if (this.id || this.type === 'WebResources') {
+    if (this.id || this.type === "WebResources") {
       this.shareInput.Url = this.buildUrl();
       this.shareInput.ResourceId = this.id;
-    }
-    else {
+    } else {
       this.shareInput.Url = location.pathname;
       this.shareInput.ResourceId = this.getActiveParam();
     }
@@ -169,26 +171,24 @@ export class ShareButtonComponent implements OnInit {
   }
 
   buildUrl() {
-    if (this.type === 'Topics') {
+    if (this.type === "Topics") {
       return "/topics/" + this.id;
     }
-    if (this.type === 'Guided Assistant') {
+    if (this.type === "Guided Assistant") {
       return "/guidedassistant/" + this.id;
     }
-    if (this.type === 'Forms' || this.type === 'Additional Readings') {
+    if (this.type === "Forms" || this.type === "Additional Readings") {
       return this.url;
     }
-    if (this.type === 'WebResources') {
+    if (this.type === "WebResources") {
       this.id = this.emptyId;
       if (this.url) {
         return this.url;
       } else if (this.webResourceUrl) {
-        return this.webResourceUrl
+        return this.webResourceUrl;
       }
-    }
-    else {
+    } else {
       return "/resource/" + this.id;
     }
   }
-
 }

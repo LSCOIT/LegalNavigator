@@ -38,13 +38,13 @@
 .footer-nav li:nth-child(odd) {
   padding: 25px;
 }
-@media only screen and (min-width : 768px) {
+@media only screen and (min-width: 768px) {
   .footer-nav li.vertical-line {
     width: 250px;
   }
 }
 
-@media only screen and (min-width : 992px) {
+@media only screen and (min-width: 992px) {
   .footer-nav li {
     display: inline-block;
     padding: 10px 20px;

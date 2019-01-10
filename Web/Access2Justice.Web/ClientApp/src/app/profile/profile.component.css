@@ -3,18 +3,18 @@
   margin: 20px 0 0 0;
   width: 100%;
 }
-  
+
 .row-half-spacing {
   margin: 20px auto;
 }
 
 .page-heading {
   display: inline-block;
-  margin-left: 10px;  
+  margin-left: 10px;
 }
 
 .filter-plan {
-  background-color: #F4F4F4;
+  background-color: #f4f4f4;
   padding: 10px;
 }
 
@@ -40,7 +40,7 @@
 }
 
 .highlighted {
-  background-color: #D9F2F8;
+  background-color: #d9f2f8;
 }
 
 .btn-selected {
@@ -52,7 +52,7 @@
   height: 60px;
 }
 
-@media only screen and (min-width : 768px) {
+@media only screen and (min-width: 768px) {
   .mobile-hidden {
     display: inline-block;
   }
@@ -64,8 +64,9 @@
   .filter-plan button {
     margin: 0 10px 10px 10px;
   }
-  
-  .filter-plan span, .filter-plan .mobile-hidden {
+
+  .filter-plan span,
+  .filter-plan .mobile-hidden {
     padding-top: 10px;
   }
 
@@ -74,7 +75,7 @@
   }
 }
 
-@media only screen and (min-width : 992px) {
+@media only screen and (min-width: 992px) {
   .plan-steps {
     border-left: 1px solid #ddd;
   }

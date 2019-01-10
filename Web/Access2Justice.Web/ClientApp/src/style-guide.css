@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat:400,600)');
-@import '~bootstrap/dist/css/bootstrap.min.css';
-@import '~ngx-toastr/toastr.css';
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,600)");
+@import "~bootstrap/dist/css/bootstrap.min.css";
+@import "~ngx-toastr/toastr.css";
 
 * {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 /* Heading */
@@ -22,7 +22,8 @@ h3 {
   line-height: 30px;
 }
 
-.h4, h4 {
+.h4,
+h4 {
   font-size: 20px;
   line-height: 28px;
 }
@@ -43,7 +44,8 @@ h5 {
   font-weight: 600;
 }
 
-p, .p {
+p,
+.p {
   font-size: 14px;
   line-height: 22px;
 }
@@ -58,13 +60,20 @@ p, .p {
   line-height: 20px;
 }
 
-h1, h2, h3, h4, h5, .h4 {
-  color: #0B2B78;
+h1,
+h2,
+h3,
+h4,
+h5,
+.h4 {
+  color: #0b2b78;
   font-family: Georgia, serif;
 }
 
 /* Buttons */
-button, .btn, a.btn {
+button,
+.btn,
+a.btn {
   border: none;
   cursor: pointer;
 }
@@ -73,65 +82,74 @@ button:focus {
   outline: transparent;
 }
 
-.btn, a.btn {
+.btn,
+a.btn {
   border-radius: 24px;
   padding: 10px 40px;
   font-weight: 600;
   margin: 20px auto;
 }
 
-.btn-sm, a.btn-sm {
+.btn-sm,
+a.btn-sm {
   border-radius: 24px;
   padding: 10px;
   font-weight: 600;
 }
 
-.btn-primary, a.btn-primary {
-  background-color: #0D3FBB;
+.btn-primary,
+a.btn-primary {
+  background-color: #0d3fbb;
   color: #fff;
   cursor: pointer;
 }
 
-.btn-primary:hover, a.btn-primary:hover {
-  background-color: #0B2B78;
+.btn-primary:hover,
+a.btn-primary:hover {
+  background-color: #0b2b78;
   text-decoration: none;
 }
 
-.btn-secondary, a.btn-secondary {
-  border: 1px solid #0D3FBB;
-  color: #0D3FB8;
-  background-color: #FFF;
+.btn-secondary,
+a.btn-secondary {
+  border: 1px solid #0d3fbb;
+  color: #0d3fb8;
+  background-color: #fff;
 }
 
-.btn-secondary:hover, a.btn-secondary:hover {
-  color: #0B2B78;
-  background-color: #FFF;
-  border-color: #0B2B78;
+.btn-secondary:hover,
+a.btn-secondary:hover {
+  color: #0b2b78;
+  background-color: #fff;
+  border-color: #0b2b78;
   text-decoration: underline;
 }
 
-.btn-inactive, a.btn-inactive {
-  background-color: #DDD;
+.btn-inactive,
+a.btn-inactive {
+  background-color: #ddd;
   color: #585858;
-  border: 1px solid #7E7E7E;
+  border: 1px solid #7e7e7e;
 }
 
-.btn-selected, a.btn-selected {
-  border: 1px solid #7E7E7E;
+.btn-selected,
+a.btn-selected {
+  border: 1px solid #7e7e7e;
   height: 45px;
   background-color: #fff;
   border-radius: 5px;
   padding: 10px 40px;
 }
 
-.btn-selected label, a.btn-selected label {
+.btn-selected label,
+a.btn-selected label {
   font-weight: 600;
 }
 
 .btn-primary:disabled {
-  background-color: #DDDDDD;
+  background-color: #dddddd;
   color: #585858;
-  border: 1px solid #7E7E7E;
+  border: 1px solid #7e7e7e;
   cursor: not-allowed;
 }
 /*Button Selected Effect*/
@@ -157,12 +175,12 @@ button:focus {
   width: 100%;
 }
 
-.button-container ul li input[type=radio] {
+.button-container ul li input[type="radio"] {
   position: absolute;
   visibility: hidden;
 }
 
-.button-container ul li input[type=checkbox] {
+.button-container ul li input[type="checkbox"] {
   position: absolute;
   visibility: hidden;
 }
@@ -176,42 +194,41 @@ button:focus {
   -webkit-transition: all 0.25s linear;
   text-align: left;
   margin: 0;
-  border: 1px solid #7E7E7E;
+  border: 1px solid #7e7e7e;
   border-radius: 4px;
 }
 
-
-
-ul li .check { 
+ul li .check {
   display: block;
   position: absolute;
-  border: 1px solid #7E7E7E;
+  border: 1px solid #7e7e7e;
   height: 20px;
   width: 20px;
   top: 15px;
   left: 20px;
   z-index: 5;
-  transition: border .25s linear;
-  -webkit-transition: border .25s linear;
+  transition: border 0.25s linear;
+  -webkit-transition: border 0.25s linear;
 }
 
-
-input, textarea.form-control, select option {
+input,
+textarea.form-control,
+select option {
   font-size: 16px !important;
 }
 
-input[type=radio] ~ .check {
+input[type="radio"] ~ .check {
   border-radius: 100%;
 }
 
-input[type=checkbox] ~ .check {
+input[type="checkbox"] ~ .check {
   border-radius: 4px;
 }
 
-input[type=radio] ~ .check::before {
+input[type="radio"] ~ .check::before {
   display: block;
   position: absolute;
-  content: '';
+  content: "";
   border-radius: 100%;
   height: 12px;
   width: 12px;
@@ -222,10 +239,10 @@ input[type=radio] ~ .check::before {
   -webkit-transition: background 0.25s linear;
 }
 
-input[type=checkbox] ~ .check::before {
+input[type="checkbox"] ~ .check::before {
   display: block;
   position: absolute;
-  content: '';
+  content: "";
   border-radius: 4px;
   height: 20px;
   width: 20px;
@@ -236,28 +253,28 @@ input[type=checkbox] ~ .check::before {
   -webkit-transition: background 0.25s linear;
 }
 
-input[type=radio]:checked ~ .check::before {
-  background: #0D3FB8;
+input[type="radio"]:checked ~ .check::before {
+  background: #0d3fb8;
 }
 
-input[type=checkbox]:checked ~ .check::before {
-  background: #0D3FB8;
-  content: '\2714';
-  color: #FFF;
+input[type="checkbox"]:checked ~ .check::before {
+  background: #0d3fb8;
+  content: "\2714";
+  color: #fff;
 }
 
-.button-container input[type=radio]:checked ~ label {
-  background-color: #D9F2F8;
+.button-container input[type="radio"]:checked ~ label {
+  background-color: #d9f2f8;
   z-index: 0;
 }
 
-.button-container input[type=checkbox]:checked ~ label {
-  background-color: #D9F2F8;
+.button-container input[type="checkbox"]:checked ~ label {
+  background-color: #d9f2f8;
   z-index: 0;
 }
 
 .button-highlight {
-  background-color: #D9F2F8;
+  background-color: #d9f2f8;
 }
 
 /* Links */
@@ -274,12 +291,12 @@ input[type=checkbox]:checked ~ .check::before {
 }
 
 .link {
-  color: #0D3FB8;
+  color: #0d3fb8;
   font-weight: 600;
 }
 
 .link:hover {
-  color: #0B2B78;
+  color: #0b2b78;
 }
 
 /*Images*/
@@ -287,8 +304,9 @@ input[type=checkbox]:checked ~ .check::before {
   width: 80px;
 }
 
-@media only screen and (min-width : 768px) {
-  .h1, h1 {
+@media only screen and (min-width: 768px) {
+  .h1,
+  h1 {
     font-size: 36px;
     line-height: 45px;
   }
@@ -323,8 +341,9 @@ input[type=checkbox]:checked ~ .check::before {
   }
 }
 
-@media only screen and (min-width : 992px) {
-  .h1, h1 {
+@media only screen and (min-width: 992px) {
+  .h1,
+  h1 {
     font-size: 42px;
     line-height: 54px;
   }
@@ -344,7 +363,8 @@ input[type=checkbox]:checked ~ .check::before {
     line-height: 36px;
   }
 
-  h5, .pxl {
+  h5,
+  .pxl {
     font-size: 20px;
     line-height: 30px;
   }
@@ -354,7 +374,8 @@ input[type=checkbox]:checked ~ .check::before {
     line-height: 26px;
   }
 
-  p, .p {
+  p,
+  .p {
     font-size: 16px;
     line-height: 24px;
   }

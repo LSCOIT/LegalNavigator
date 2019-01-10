@@ -4,14 +4,14 @@
   background-color: transparent;
 }
 
-  #language-dropdown > a {
-    color: #333;
-    text-decoration: none;
-    cursor: pointer;
-  }
+#language-dropdown > a {
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+}
 
 .white-bg {
   position: relative;
-  background-color: #FFF!important;
+  background-color: #fff !important;
   z-index: 1;
 }

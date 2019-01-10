@@ -1,16 +1,16 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Global } from '../../global';
-import { LoginComponent } from './login.component';
-import { Router } from '@angular/router';
-import { MsalService, BroadcastService } from '@azure/msal-angular';
-import { PersonalizedPlanService } from '../../guided-assistant/personalized-plan/personalized-plan.service';
-import { HttpClientModule } from '@angular/common/http';
-import { ArrayUtilityService } from '../services/array-utility.service';
-import { ToastrService } from 'ngx-toastr';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { LoginService } from './login.service';
+import { HttpClientModule } from "@angular/common/http";
+import { NO_ERRORS_SCHEMA } from "@angular/core";
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { Router } from "@angular/router";
+import { BroadcastService, MsalService } from "@azure/msal-angular";
+import { ToastrService } from "ngx-toastr";
+import { Global } from "../../global";
+import { PersonalizedPlanService } from "../../guided-assistant/personalized-plan/personalized-plan.service";
+import { ArrayUtilityService } from "../services/array-utility.service";
+import { LoginComponent } from "./login.component";
+import { LoginService } from "./login.service";
 
-describe('LoginComponent', () => {
+describe("LoginComponent", () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
   let mockRouter;
@@ -20,8 +20,8 @@ describe('LoginComponent', () => {
   let mockLoginService;
 
   beforeEach(async(() => {
-    msalService = jasmine.createSpyObj(['getUser']);
-    mockGlobal = jasmine.createSpyObj(['notifyRoleInformation']);
+    msalService = jasmine.createSpyObj(["getUser"]);
+    mockGlobal = jasmine.createSpyObj(["notifyRoleInformation"]);
 
     TestBed.configureTestingModule({
       declarations: [LoginComponent],
@@ -52,22 +52,21 @@ describe('LoginComponent', () => {
         }
       ],
       schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
-    spyOn(component, 'ngOnInit');
+    spyOn(component, "ngOnInit");
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 
-  it('should checkAdmin role', () => {
+  it("should checkAdmin role", () => {
     let mockRoleInformation = [
       {
         roleName: "Authenticated"

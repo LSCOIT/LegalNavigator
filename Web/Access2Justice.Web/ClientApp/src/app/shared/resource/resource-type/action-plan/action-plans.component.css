@@ -32,40 +32,40 @@ h3.inline {
 }
 
 .more-menu {
-	margin-top: 20px;
-	width: 30px;
-	cursor: pointer;
+  margin-top: 20px;
+  width: 30px;
+  cursor: pointer;
 }
 
 .plan-steps .btn-selected {
-	padding: 10px;
-	width: 120px;
-	float: right;
-	margin-top: -5px;
+  padding: 10px;
+  width: 120px;
+  float: right;
+  margin-top: -5px;
 }
 
 .quick-links {
-	margin-top: 0;
-	padding-top: 0;
-	font-weight: 600;
-	padding: 20px 10px 20px 20px;
+  margin-top: 0;
+  padding-top: 0;
+  font-weight: 600;
+  padding: 20px 10px 20px 20px;
 }
 
 .quick-links li {
-	padding: 10px 0;
+  padding: 10px 0;
 }
 
 .plan-steps {
-	padding: 20px 0;
+  padding: 20px 0;
 }
 
 .media-body h3 {
-	margin-top: -3px;
+  margin-top: -3px;
   cursor: pointer;
 }
 
 #complete-btn {
-	float: left;
+  float: left;
   position: absolute;
   margin-top: -30px;
 }
@@ -113,7 +113,7 @@ iframe {
 }
 
 .accordion-img-grey {
-  background-image: url('../../../../../assets/images/small-icons/open_accordion_grey.svg');
+  background-image: url("../../../../../assets/images/small-icons/open_accordion_grey.svg");
 }
 
 #additional-resource .media-left {
@@ -129,7 +129,7 @@ iframe {
   cursor: pointer;
 }
 
-@media only screen and (min-width : 768px) {
+@media only screen and (min-width: 768px) {
   .step-content div {
     margin-top: 0;
   }
@@ -152,14 +152,14 @@ iframe {
   }
 }
 
-@media only screen and (min-width : 992px) {
+@media only screen and (min-width: 992px) {
   .plan-spacing {
     padding: 20px 20px 30px 20px;
   }
 
   .plan-steps {
     border-left: 1.5px solid #ddd;
-	  padding: 20px 20px 0 20px;
+    padding: 20px 20px 0 20px;
   }
 
   .quick-links {

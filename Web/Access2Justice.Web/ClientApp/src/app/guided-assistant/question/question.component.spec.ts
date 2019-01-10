@@ -1,27 +1,27 @@
-import { FormsModule, NgForm } from '@angular/forms';
-import { QuestionComponent } from './question.component';
-import { of } from 'rxjs/observable/of';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
-import { ActivatedRoute, Router } from '@angular/router';
-import { QuestionService } from './question.service';
-import { HttpParams } from '@angular/common/http';
-import { NavigateDataService } from '../../shared/services/navigate-data.service';
+import { HttpParams } from "@angular/common/http";
+import { NO_ERRORS_SCHEMA } from "@angular/core";
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { FormsModule, NgForm } from "@angular/forms";
+import { ActivatedRoute, Router } from "@angular/router";
+import { of } from "rxjs/observable/of";
+import { NavigateDataService } from "../../shared/services/navigate-data.service";
+import { QuestionComponent } from "./question.component";
+import { QuestionService } from "./question.service";
 
-describe('QuestionComponent', () => {
+describe("QuestionComponent", () => {
   let component: QuestionComponent;
   let fixture: ComponentFixture<QuestionComponent>;
   let mockQuestionService;
   let mockRouter;
   let mockQuestion = {
-    curatedExperienceId: '123',
-    answersDocId: '456',
+    curatedExperienceId: "123",
+    answersDocId: "456",
     questionsRemaining: 9,
-    componentId: '789',
-    name: '',
-    text: '',
-    learn: '',
-    help: '',
+    componentId: "789",
+    name: "",
+    text: "",
+    learn: "",
+    help: "",
     tags: [],
     buttons: [
       {
@@ -31,23 +31,27 @@ describe('QuestionComponent', () => {
       }
     ],
     fields: []
-  }
+  };
   let mockNavigateDataService;
 
-  beforeEach(async(() => { 
-    mockQuestionService = jasmine.createSpyObj(['getQuestion', 'getNextQuestion']);
-    mockNavigateDataService = jasmine.createSpyObj((['setData']));
+  beforeEach(async(() => {
+    mockQuestionService = jasmine.createSpyObj([
+      "getQuestion",
+      "getNextQuestion"
+    ]);
+    mockNavigateDataService = jasmine.createSpyObj(["setData"]);
 
     TestBed.configureTestingModule({
-      imports: [ FormsModule ],
-      declarations: [ QuestionComponent ],
-      schemas: [ NO_ERRORS_SCHEMA ],
-      providers: [ 
-        { provide: ActivatedRoute,
+      imports: [FormsModule],
+      declarations: [QuestionComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [
+        {
+          provide: ActivatedRoute,
           useValue: {
             snapshot: {
               params: {
-                'id': '123'
+                id: "123"
               }
             }
           }
@@ -65,57 +69,58 @@ describe('QuestionComponent', () => {
           useValue: mockNavigateDataService
         }
       ]
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
-  
+
   beforeEach(() => {
     fixture = TestBed.createComponent(QuestionComponent);
     component = fixture.componentInstance;
   });
-  
-  it('should get initial set of question and send id as param', () => {
+
+  it("should get initial set of question and send id as param", () => {
     mockQuestionService.getQuestion.and.returnValue(of(mockQuestion));
     component.ngOnInit();
     component.getQuestion();
     expect(component.curatedExperienceId).toBe("123");
-    spyOn(component, 'sendTotalQuestions');
+    spyOn(component, "sendTotalQuestions");
     expect(component.question).toEqual(mockQuestion);
-    let params = new HttpParams()
-      .set("curatedExperienceId", component.curatedExperienceId);
+    let params = new HttpParams().set(
+      "curatedExperienceId",
+      component.curatedExperienceId
+    );
     expect(mockQuestionService.getQuestion).toHaveBeenCalledWith(params);
   });
 
-  it('should map input value to correct parameter', () => {
-      let formValue = {
-        value: {
-          "111": "abc",
-          "222": "def",
-          "333": "ghi"
-        }
-      };
-      let mockFieldParam = [
-        { "fieldId": "111", "value": "abc" },
-        { "fieldId": "222", "value": "def" },
-        { "fieldId": "333", "value": "ghi" }
-      ];
-      component.createFieldParam(formValue);
-      expect(component.fieldParam).toEqual(mockFieldParam);
-  });
-
-  it('should map radio value to crrect parameter', () => {
+  it("should map input value to correct parameter", () => {
     let formValue = {
       value: {
-        "radioOptions": "111"
+        "111": "abc",
+        "222": "def",
+        "333": "ghi"
       }
     };
-    let mockFieldParam = [{ "fieldId": "111" }];
+    let mockFieldParam = [
+      { fieldId: "111", value: "abc" },
+      { fieldId: "222", value: "def" },
+      { fieldId: "333", value: "ghi" }
+    ];
     component.createFieldParam(formValue);
     expect(component.fieldParam).toEqual(mockFieldParam);
   });
 
-  it('should call getNextQuestion if remaining question is greater than 1', () => {
-    spyOn(component, 'sendQuestionsRemaining');
+  it("should map radio value to crrect parameter", () => {
+    let formValue = {
+      value: {
+        radioOptions: "111"
+      }
+    };
+    let mockFieldParam = [{ fieldId: "111" }];
+    component.createFieldParam(formValue);
+    expect(component.fieldParam).toEqual(mockFieldParam);
+  });
+
+  it("should call getNextQuestion if remaining question is greater than 1", () => {
+    spyOn(component, "sendQuestionsRemaining");
     component.answersDocId = "456";
     let formValue = <NgForm>{
       value: {
@@ -127,18 +132,16 @@ describe('QuestionComponent', () => {
     mockQuestionService.getNextQuestion.and.returnValue(of(mockQuestion));
     component.question = mockQuestion;
     component.onSubmit(formValue);
-
     expect(mockQuestionService.getNextQuestion).toHaveBeenCalledWith({
-      "curatedExperienceId": "123",
-      "answersDocId": "456",
-      "buttonId": "111",
-      "fields": [
-        { "fieldId": "111", "value": "abc" },
-        { "fieldId": "222", "value": "def" },
-        { "fieldId": "333", "value": "ghi" }
+      curatedExperienceId: "123",
+      answersDocId: "456",
+      buttonId: "111",
+      fields: [
+        { fieldId: "111", value: "abc" },
+        { fieldId: "222", value: "def" },
+        { fieldId: "333", value: "ghi" }
       ]
     });
-
     expect(component.sendQuestionsRemaining).toHaveBeenCalled();
   });
 });

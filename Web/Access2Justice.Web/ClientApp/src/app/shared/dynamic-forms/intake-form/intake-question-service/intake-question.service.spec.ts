@@ -1,10 +1,10 @@
-import { TestBed, inject } from '@angular/core/testing';
-import { HttpClientModule } from '@angular/common/http';
-import { IntakeQuestionService } from './intake-question.service';
+import { HttpClientModule } from "@angular/common/http";
+import { inject, TestBed } from "@angular/core/testing";
+import { IntakeQuestionService } from "./intake-question.service";
 
-describe('IntakeQuestionService', () => {
+describe("IntakeQuestionService", () => {
   let service: IntakeQuestionService;
-  const httpSpy = jasmine.createSpyObj('http', ['get', 'post']);
+  const httpSpy = jasmine.createSpyObj("http", ["get", "post"]);
 
   beforeEach(() => {
     service = new IntakeQuestionService(httpSpy);
@@ -15,7 +15,10 @@ describe('IntakeQuestionService', () => {
     });
   });
 
-  it('should be created', inject([IntakeQuestionService], (service: IntakeQuestionService) => {
-    expect(service).toBeTruthy();
-  }));
+  it("should be created", inject(
+    [IntakeQuestionService],
+    (service: IntakeQuestionService) => {
+      expect(service).toBeTruthy();
+    }
+  ));
 });

@@ -1,8 +1,7 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { HelplineComponent } from "./helpline.component";
 
-import { HelplineComponent } from './helpline.component';
-
-describe('HelplineComponent', () => {
+describe("HelplineComponent", () => {
   let component: HelplineComponent;
   let fixture: ComponentFixture<HelplineComponent>;
   let mockHelpText;
@@ -14,12 +13,11 @@ describe('HelplineComponent', () => {
         phoneNumber: "X-XXX-XXX-XXXX",
         endingText: "to get help."
       }
-    }
+    };
 
     TestBed.configureTestingModule({
-      declarations: [ HelplineComponent ]
-    })
-    .compileComponents();
+      declarations: [HelplineComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -29,7 +27,7 @@ describe('HelplineComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

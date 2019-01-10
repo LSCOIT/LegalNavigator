@@ -1,17 +1,17 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { MsalService } from '@azure/msal-angular';
-import { environment } from '../../../../../environments/environment';
-import { Global } from '../../../../global';
-import { SavedResources } from '../../../../guided-assistant/personalized-plan/personalized-plan';
-import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
-import { NavigateDataService } from '../../../services/navigate-data.service';
-import { SaveButtonService } from './save-button.service';
+import { Component, Input, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { MsalService } from "@azure/msal-angular";
+import { environment } from "../../../../../environments/environment";
+import { Global } from "../../../../global";
+import { SavedResources } from "../../../../guided-assistant/personalized-plan/personalized-plan";
+import { PersonalizedPlanService } from "../../../../guided-assistant/personalized-plan/personalized-plan.service";
+import { NavigateDataService } from "../../../services/navigate-data.service";
+import { SaveButtonService } from "./save-button.service";
 
 @Component({
-  selector: 'app-save-button',
-  templateUrl: './save-button.component.html',
-  styleUrls: ['./save-button.component.css']
+  selector: "app-save-button",
+  templateUrl: "./save-button.component.html",
+  styleUrls: ["./save-button.component.css"]
 })
 export class SaveButtonComponent implements OnInit {
   @Input() showIcon = true;
@@ -35,8 +35,8 @@ export class SaveButtonComponent implements OnInit {
     private global: Global,
     private saveButtonService: SaveButtonService,
     private navigateDataService: NavigateDataService,
-    private router: Router) {
-  }
+    private router: Router
+  ) {}
 
   externalLogin() {
     this.msalService.loginRedirect(environment.consentScopes);
@@ -53,29 +53,40 @@ export class SaveButtonComponent implements OnInit {
   savePlanResourcesPreLogin() {
     if (this.router.url.indexOf("/plan") !== -1) {
       if (this.navigateDataService.getData()) {
-        sessionStorage.setItem(this.global.planSessionKey, JSON.stringify(this.navigateDataService.getData()));
+        sessionStorage.setItem(
+          this.global.planSessionKey,
+          JSON.stringify(this.navigateDataService.getData())
+        );
       } else if (document.URL.indexOf("/share/") !== -1) {
-        sessionStorage.setItem(this.global.planSessionKey, JSON.stringify(this.personalizedPlanService.planDetails));
+        sessionStorage.setItem(
+          this.global.planSessionKey,
+          JSON.stringify(this.personalizedPlanService.planDetails)
+        );
       }
       this.savePersonalizationPlan();
     } else {
-      this.savedResources = { itemId: this.id, resourceType: this.type, resourceDetails: this.resourceDetails };
+      this.savedResources = {
+        itemId: this.id,
+        resourceType: this.type,
+        resourceDetails: this.resourceDetails
+      };
       this.personalizedPlanService.saveBookmarkedResource(this.savedResources);
     }
   }
 
   savePersonalizationPlan() {
     const params = {
-      "personalizedPlan": this.navigateDataService.getData() ? this.navigateDataService.getData() : this.personalizedPlanService.planDetails,
-      "oId": this.global.userId,
-      "saveActionPlan": true
-    }
-    this.personalizedPlanService.userPlan(params)
-      .subscribe(response => {
-        if (response) {
-          this.personalizedPlanService.showSuccess("Plan Added to Session");
-        }
-      });
+      personalizedPlan: this.navigateDataService.getData()
+        ? this.navigateDataService.getData()
+        : this.personalizedPlanService.planDetails,
+      oId: this.global.userId,
+      saveActionPlan: true
+    };
+    this.personalizedPlanService.userPlan(params).subscribe(response => {
+      if (response) {
+        this.personalizedPlanService.showSuccess("Plan Added to Session");
+      }
+    });
   }
 
   savePlanResourcesPostLogin() {
@@ -88,9 +99,12 @@ export class SaveButtonComponent implements OnInit {
 
   savePlanPostLogin() {
     if (this.navigateDataService.getData()) {
-      this.saveButtonService.savePlanToUserProfile(this.navigateDataService.getData());
+      this.saveButtonService.savePlanToUserProfile(
+        this.navigateDataService.getData()
+      );
     } else {
-      this.personalizedPlanService.getActionPlanConditions(this.id)
+      this.personalizedPlanService
+        .getActionPlanConditions(this.id)
         .subscribe(plan => {
           if (plan) {
             this.saveButtonService.savePlanToUserProfile(plan);
@@ -100,12 +114,17 @@ export class SaveButtonComponent implements OnInit {
   }
 
   saveResourcesPostLogin() {
-    this.savedResources = { itemId: this.id, resourceType: this.type, resourceDetails: this.resourceDetails };
+    this.savedResources = {
+      itemId: this.id,
+      resourceType: this.type,
+      resourceDetails: this.resourceDetails
+    };
     this.tempResourceStorage = [];
     this.tempResourceStorage.push(this.savedResources);
-    this.personalizedPlanService.saveResourceToProfilePostLogin(this.tempResourceStorage);
+    this.personalizedPlanService.saveResourceToProfilePostLogin(
+      this.tempResourceStorage
+    );
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 }

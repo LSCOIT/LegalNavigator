@@ -13,7 +13,8 @@ li a {
   font-weight: 400;
 }
 
-li:hover, #location:hover {
+li:hover,
+#location:hover {
   background-color: #fff;
 }
 
@@ -66,14 +67,14 @@ li a img {
   height: 52px;
 }
 
-@media only screen and (min-width : 768px) {
+@media only screen and (min-width: 768px) {
   #location {
     position: static;
     width: auto;
   }
 }
 
-@media only screen and (min-width : 1124px) {
+@media only screen and (min-width: 1124px) {
   li a {
     padding: 16px 15px;
   }

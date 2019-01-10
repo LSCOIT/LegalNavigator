@@ -1,26 +1,22 @@
 import { Component, OnInit } from "@angular/core";
-import { TopicService } from '../shared/topic.service';
-import { ActivatedRoute } from '@angular/router';
-import { Router } from '@angular/router';
-import { NavigateDataService } from '../../shared/services/navigate-data.service';
-import { IResourceFilter, ILuisInput } from "../../shared/search/search-results/search-results.model";
-import { SearchService } from '../../shared/search/search.service';
-import { PaginationService } from "../../shared/pagination/pagination.service";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Global } from "../../global";
+import { MapService } from "../../shared/map/map.service";
+import { ILuisInput, IResourceFilter } from "../../shared/search/search-results/search-results.model";
+import { NavigateDataService } from "../../shared/services/navigate-data.service";
 import { ShowMoreService } from "../../shared/sidebars/show-more/show-more.service";
 import { ISubtopicGuidedInput } from "../shared/topic";
-import { MapService } from "../../shared/map/map.service";
-import { Global } from "../../global";
+import { TopicService } from "../shared/topic.service";
 
 @Component({
-  selector: 'app-subtopic-detail',
-  templateUrl: './subtopic-detail.component.html',
-  styleUrls: ['./subtopic-detail.component.css']
+  selector: "app-subtopic-detail",
+  templateUrl: "./subtopic-detail.component.html",
+  styleUrls: ["./subtopic-detail.component.css"]
 })
-
 export class SubtopicDetailComponent implements OnInit {
   searchResults: any;
   subtopicDetails: any;
-  activeSubtopicParam = this.activeRoute.snapshot.params['topic'];
+  activeSubtopicParam = this.activeRoute.snapshot.params["topic"];
   actionPlanData: any;
   articleData: any;
   videoData: any;
@@ -34,32 +30,32 @@ export class SubtopicDetailComponent implements OnInit {
   type: string = "Topics";
   showRemoveOption: boolean;
   guidedSutopicDetailsInput: ISubtopicGuidedInput = {
-    activeId: '',
-    name: ''
+    activeId: "",
+    name: ""
   };
   luisInput: ILuisInput = {
-    Sentence: '',
-    Location: '',
-    TranslateFrom: '',
-    TranslateTo: '',
-    LuisTopScoringIntent: ''
+    Sentence: "",
+    Location: "",
+    TranslateFrom: "",
+    TranslateTo: "",
+    LuisTopScoringIntent: ""
   };
   resourceFilter: IResourceFilter = {
-    ResourceType: '',
-    ContinuationToken: '',
+    ResourceType: "",
+    ContinuationToken: "",
     TopicIds: [],
     ResourceIds: [],
     PageNumber: 0,
     Location: {
-      "state": "",
-      "county": "",
-      "city": "",
-      "zipCode": ""
+      state: "",
+      county: "",
+      city: "",
+      zipCode: ""
     },
     IsResourceCountRequired: true,
     IsOrder: false,
-    OrderByField: '',
-    OrderBy: ''
+    OrderByField: "",
+    OrderBy: ""
   };
   subscription: any;
   displayResources: number;
@@ -72,32 +68,38 @@ export class SubtopicDetailComponent implements OnInit {
     private mapService: MapService,
     private global: Global,
     private router: Router
-  ) { }
+  ) {}
 
   filterSubtopicDetail(): void {
     if (this.subtopicDetails) {
-      this.actionPlanData = this.subtopicDetails
-        .filter((resource) => resource.resourceType === 'Action Plans');
-      this.articleData = this.subtopicDetails
-        .filter((resource) => resource.resourceType === 'Articles');
-      this.videoData = this.subtopicDetails
-        .filter((resource) => resource.resourceType === 'Videos');
-      this.organizationData = this.subtopicDetails
-        .filter((resource) => resource.resourceType === 'Organizations');
-      this.formData = this.subtopicDetails
-        .filter((resource) => resource.resourceType === 'Forms');
-      this.relatedLinksData = this.subtopicDetails
-        .filter((resource) => resource.resourceType === 'Additional Readings');
+      this.actionPlanData = this.subtopicDetails.filter(
+        resource => resource.resourceType === "Action Plans"
+      );
+      this.articleData = this.subtopicDetails.filter(
+        resource => resource.resourceType === "Articles"
+      );
+      this.videoData = this.subtopicDetails.filter(
+        resource => resource.resourceType === "Videos"
+      );
+      this.organizationData = this.subtopicDetails.filter(
+        resource => resource.resourceType === "Organizations"
+      );
+      this.formData = this.subtopicDetails.filter(
+        resource => resource.resourceType === "Forms"
+      );
+      this.relatedLinksData = this.subtopicDetails.filter(
+        resource => resource.resourceType === "Additional Readings"
+      );
     }
   }
 
   getDataOnReload() {
-    this.activeSubtopicParam = this.activeRoute.snapshot.params['topic'];
+    this.activeSubtopicParam = this.activeRoute.snapshot.params["topic"];
     this.subtopics = this.navigateDataService.getData();
     if (this.subtopics) {
-      this.topicService.getDocumentData(this.activeSubtopicParam)
-        .subscribe(
-        data => {
+      this.topicService
+        .getDocumentData(this.activeSubtopicParam)
+        .subscribe(data => {
           this.subtopics = data[0];
           this.topIntent = data[0].name;
           this.guidedSutopicDetailsInput = {
@@ -110,7 +112,8 @@ export class SubtopicDetailComponent implements OnInit {
   }
 
   getSubtopicDetail(): void {
-    this.topicService.getSubtopicDetail(this.activeSubtopicParam)
+    this.topicService
+      .getSubtopicDetail(this.activeSubtopicParam)
       .subscribe(data => {
         this.subtopicDetails = data;
         this.filterSubtopicDetail();
@@ -118,31 +121,36 @@ export class SubtopicDetailComponent implements OnInit {
   }
 
   clickSeeMoreOrganizationsFromSubtopicDetails(resourceType: string) {
-    this.showMoreService.clickSeeMoreOrganizations(resourceType, this.activeSubtopicParam, this.topIntent);
+    this.showMoreService.clickSeeMoreOrganizations(
+      resourceType,
+      this.activeSubtopicParam,
+      this.topIntent
+    );
   }
 
   ngOnInit() {
     this.displayResources = this.global.displayResources;
     this.global.activeSubtopicParam = this.activeSubtopicParam;
     this.global.topIntent = this.topIntent;
-    this.activeRoute.url
-      .subscribe(routeParts => {
-        for (let i = 1; i < routeParts.length; i++) {
-          this.getDataOnReload();
+    this.activeRoute.url.subscribe(routeParts => {
+      for (let i = 1; i < routeParts.length; i++) {
+        this.getDataOnReload();
+      }
+    });
+    this.showRemoveOption = false;
+    this.subscription = this.mapService.notifyLocation.subscribe(value => {
+      this.topicService.getTopics().subscribe(response => {
+        if (response != undefined) {
+          this.global.topicsData = response;
+          if (
+            this.router.url.startsWith("/topics") ||
+            this.router.url.startsWith("/subtopics")
+          ) {
+            this.router.navigateByUrl("/topics");
+          }
         }
       });
-    this.showRemoveOption = false;
-    this.subscription = this.mapService.notifyLocation
-      .subscribe((value) => {
-        this.topicService.getTopics().subscribe(response => {
-          if (response != undefined) {
-            this.global.topicsData = response;
-            if (this.router.url.startsWith('/topics') || this.router.url.startsWith('/subtopics')) {
-              this.router.navigateByUrl('/topics');
-            }
-          }
-        });
-      });
+    });
   }
 
   ngOnDestroy() {

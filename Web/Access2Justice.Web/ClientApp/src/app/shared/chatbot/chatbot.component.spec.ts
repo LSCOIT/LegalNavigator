@@ -1,17 +1,24 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from "@angular/core";
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { SearchService } from "../search/search.service";
+import { ChatbotComponent } from "./chatbot.component";
 
-import { ChatbotComponent } from './chatbot.component';
-import { expand } from 'rxjs/operator/expand';
-
-describe('ChatbotComponent', () => {
+describe("ChatbotComponent", () => {
   let component: ChatbotComponent;
   let fixture: ComponentFixture<ChatbotComponent>;
+  let mockSearchService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ChatbotComponent ]
-    })
-    .compileComponents();
+      declarations: [ChatbotComponent],
+      providers: [
+        {
+          provide: SearchService,
+          useValue: mockSearchService
+        }
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -20,21 +27,7 @@ describe('ChatbotComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should return style if showtyle:true by calling getStyle', () => {   
-    component.showStyle = true;
-    let mockStyle = '#1d0dff';
-    let tmpStyle = component.getStyle();
-    expect(tmpStyle.length).toEqual(mockStyle.length);
-  });
-
-  it('should return null if showstyle:false by calling getStyle', () => {
-    component.showStyle = false;
-    let mockStyle = '#1d0dff';
-    let tmpStyle = component.getStyle();
-    expect(tmpStyle.length).toBeLessThan(7);
   });
 });

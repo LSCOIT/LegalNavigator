@@ -16,7 +16,7 @@ h2 {
   margin-bottom: 0;
 }
 
-@media only screen and (min-width : 768px) {
+@media only screen and (min-width: 768px) {
   .panel-heading {
     padding: 0;
   }
@@ -26,7 +26,7 @@ h2 {
   }
 }
 
-@media only screen and (min-width : 992px) {
+@media only screen and (min-width: 992px) {
   .col-md-4 {
     padding-left: 5%;
   }

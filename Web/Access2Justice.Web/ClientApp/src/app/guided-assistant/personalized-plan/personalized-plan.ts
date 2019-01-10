@@ -1,7 +1,8 @@
 import { Location } from "../../about/about";
 import { MapLocation } from "../../shared/map/map";
+
 export interface Resources {
-  url: string; 
+  url: string;
   itemId: string;
   type: string;
 }
@@ -73,5 +74,3 @@ export interface IntentInput {
   location: MapLocation;
   intents: Array<string>;
 }
-
-

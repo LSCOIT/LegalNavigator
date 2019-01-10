@@ -20,7 +20,7 @@ img {
   cursor: pointer;
   width: 90px;
   height: 90px;
-  background: #0D3FB8;
+  background: #0d3fb8;
   border-radius: 50%;
   padding-top: 15px;
   position: absolute;
@@ -33,7 +33,7 @@ img {
 }
 
 .chat-header {
-  background-color: #0D3FB8;
+  background-color: #0d3fb8;
   padding: 10px 20px;
   border-radius: 9px 9px 0 0;
   border: none;
@@ -62,7 +62,7 @@ chat-header img {
 }
 
 #search-phrase-button {
-  background-color: #0D3FB8;
+  background-color: #0d3fb8;
   padding: 5px;
   border-radius: 0 5px 5px 0;
   color: #fff;
@@ -109,5 +109,5 @@ chat-header img {
 
 .user-input {
   margin: 10px 0 10px 20%;
-  background-color: #D9F2F8;
+  background-color: #d9f2f8;
 }

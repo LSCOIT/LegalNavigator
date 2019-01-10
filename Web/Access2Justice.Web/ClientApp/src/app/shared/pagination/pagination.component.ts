@@ -1,27 +1,24 @@
-import { Component, Input, EventEmitter, Output } from '@angular/core';
+import { Component, Input, EventEmitter, Output } from "@angular/core";
 
 @Component({
-  selector: 'app-pagination',
-  templateUrl: './pagination.component.html',
-  styleUrls: ['./pagination.component.css']
+  selector: "app-pagination",
+  templateUrl: "./pagination.component.html",
+  styleUrls: ["./pagination.component.css"]
 })
-
 export class PaginationComponent {
-
   @Input() page: number;
   @Input() count: number;
   @Input() perPage: number;
   @Input() loading: boolean;
   @Input() pagesToShow: number;
-
   @Output() goPrev = new EventEmitter<boolean>();
   @Output() goNext = new EventEmitter<boolean>();
   @Output() goPage = new EventEmitter<number>();
 
-  constructor() { }
+  constructor() {}
 
   getMin(): number {
-    return ((this.perPage * this.page) - this.perPage) + 1;
+    return this.perPage * this.page - this.perPage + 1;
   }
 
   getMax(): number {

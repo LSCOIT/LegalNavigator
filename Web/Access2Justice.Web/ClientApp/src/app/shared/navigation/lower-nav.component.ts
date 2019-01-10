@@ -1,25 +1,25 @@
-import { About, GuidedAssistant, HelpAndFAQ, Home, Language, Location, Login, Logo,Navigation, PrivacyPromise, Search, TopicAndResources } from './navigation';
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
-import { environment } from '../../../environments/environment';
-import { Global } from '../../global';
-import { MapService } from '../map/map.service';
-import { StaticResourceService } from '../../shared/services/static-resource.service';
-import { EventUtilityService } from '../../shared/services/event-utility.service';
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { environment } from "../../../environments/environment";
+import { Global } from "../../global";
+import { EventUtilityService } from "../../shared/services/event-utility.service";
+import { StaticResourceService } from "../../shared/services/static-resource.service";
+import { MapService } from "../map/map.service";
+import { About, GuidedAssistant, HelpAndFAQ, Home, Language, Login, Logo, Navigation, PrivacyPromise, Search, TopicAndResources } from "./navigation";
 
 @Component({
-  selector: 'app-lower-nav',
-  templateUrl: './lower-nav.component.html',
-  styleUrls: ['./lower-nav.component.css']
+  selector: "app-lower-nav",
+  templateUrl: "./lower-nav.component.html",
+  styleUrls: ["./lower-nav.component.css"]
 })
 export class LowerNavComponent implements OnInit {
   width = 0;
   showSearch = false;
   showMenu = true;
-  my_Class = '';
+  myClass = "";
   staticContentSubcription: any;
   blobUrl: any = environment.blobUrl;
   navigation: Navigation;
-  name: string = 'Navigation';
+  name: string = "Navigation";
   language: Language;
   location: any = Location;
   privacyPromise: PrivacyPromise;
@@ -33,7 +33,7 @@ export class LowerNavComponent implements OnInit {
   search: Search;
   subscription: any;
   staticContent: any;
-  @ViewChild('sidenav') sidenav: ElementRef;
+  @ViewChild("sidenav") sidenav: ElementRef;
 
   constructor(
     private staticResourceService: StaticResourceService,
@@ -48,7 +48,7 @@ export class LowerNavComponent implements OnInit {
 
   openNav() {
     let windowWidth = window.innerWidth;
-    this.my_Class = "dimmer";
+    this.myClass = "dimmer";
     if (windowWidth >= 768) {
       this.sidenav.nativeElement.style.width = "400px";
       this.sidenav.nativeElement.style.height = "100%";
@@ -60,7 +60,7 @@ export class LowerNavComponent implements OnInit {
 
   closeNav() {
     let windowWidth = window.innerWidth;
-    this.my_Class = "";
+    this.myClass = "";
     if (windowWidth >= 768) {
       this.sidenav.nativeElement.style.width = "0";
     } else {
@@ -70,7 +70,7 @@ export class LowerNavComponent implements OnInit {
 
   toggleSearch() {
     let windowWidth = window.innerWidth;
-    this.showSearch = !this.showSearch; 
+    this.showSearch = !this.showSearch;
     if (windowWidth < 768) {
       this.showMenu = !this.showMenu;
     }
@@ -94,7 +94,11 @@ export class LowerNavComponent implements OnInit {
   }
 
   getNavigationContent(): void {
-    if (this.staticResourceService.navigation && (this.staticResourceService.navigation.location[0].state == this.staticResourceService.getLocation())) {
+    if (
+      this.staticResourceService.navigation &&
+      this.staticResourceService.navigation.location[0].state ==
+        this.staticResourceService.getLocation()
+    ) {
       this.navigation = this.staticResourceService.navigation;
       this.filterNavigationContent(this.staticResourceService.navigation);
     } else {
@@ -109,14 +113,14 @@ export class LowerNavComponent implements OnInit {
 
   ngOnInit() {
     this.getNavigationContent();
-    this.subscription = this.mapService.notifyLocation
-      .subscribe((value) => {
+    this.subscription = this.mapService.notifyLocation.subscribe(value => {
+      this.getNavigationContent();
+    });
+    this.staticContentSubcription = this.global.notifyStaticData.subscribe(
+      value => {
         this.getNavigationContent();
-      });
-    this.staticContentSubcription = this.global.notifyStaticData
-      .subscribe((value) => {
-        this.getNavigationContent();
-      });
+      }
+    );
   }
 
   ngOnDestroy() {
@@ -126,5 +130,5 @@ export class LowerNavComponent implements OnInit {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
-  } 
+  }
 }

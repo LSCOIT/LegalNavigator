@@ -20,4 +20,3 @@ export interface ILuisInput {
   OrderByField?: string;
   OrderBy?: string;
 }
-

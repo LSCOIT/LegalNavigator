@@ -1,24 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { environment } from '../../../environments/environment';
-import { StaticResourceService } from '../services/static-resource.service';
-import { Navigation, PrivacyPromise, HelpAndFAQ, Home, GuidedAssistant, TopicAndResources, About} from '../navigation/navigation';
-import { Global } from '../../global';
+import { Component, OnInit } from "@angular/core";
+import { environment } from "../../../environments/environment";
+import { Global } from "../../global";
+import { About, GuidedAssistant, HelpAndFAQ, Home, Navigation, PrivacyPromise, TopicAndResources } from "../navigation/navigation";
+import { StaticResourceService } from "../services/static-resource.service";
 
 @Component({
-  selector: 'app-footer',
-  templateUrl: './footer.component.html',
-  styleUrls: ['./footer.component.css']
+  selector: "app-footer",
+  templateUrl: "./footer.component.html",
+  styleUrls: ["./footer.component.css"]
 })
 export class FooterComponent implements OnInit {
-
   constructor(
     private staticResourceService: StaticResourceService,
     private global: Global
-  ) { }
+  ) {}
 
   blobUrl: any = environment.blobUrl;
   navigation: Navigation;
-  name: string = 'Navigation';
+  name: string = "Navigation";
   privacyPromise: PrivacyPromise;
   helpAndFAQ: HelpAndFAQ;
   home: Home;
@@ -40,7 +39,11 @@ export class FooterComponent implements OnInit {
   }
 
   getNavigationContent(): void {
-    if (this.staticResourceService.navigation && (this.staticResourceService.navigation.location[0].state == this.staticResourceService.getLocation())) {
+    if (
+      this.staticResourceService.navigation &&
+      this.staticResourceService.navigation.location[0].state ==
+        this.staticResourceService.getLocation()
+    ) {
       this.navigation = this.staticResourceService.navigation;
       this.filterNavigationContent(this.staticResourceService.navigation);
     } else {
@@ -55,10 +58,11 @@ export class FooterComponent implements OnInit {
 
   ngOnInit() {
     this.getNavigationContent();
-    this.staticContentSubcription = this.global.notifyStaticData
-      .subscribe((value) => {
+    this.staticContentSubcription = this.global.notifyStaticData.subscribe(
+      value => {
         this.getNavigationContent();
-      });
+      }
+    );
   }
 
   ngOnDestroy() {

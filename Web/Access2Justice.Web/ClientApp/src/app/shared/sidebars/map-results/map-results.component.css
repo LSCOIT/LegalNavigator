@@ -4,7 +4,8 @@
   height: 410px;
 }
 
-#my-map-results, h5 {
+#my-map-results,
+h5 {
   border: 1px solid #ddd;
 }
 

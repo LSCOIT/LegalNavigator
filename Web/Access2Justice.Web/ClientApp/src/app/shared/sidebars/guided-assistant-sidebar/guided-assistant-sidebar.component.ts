@@ -1,16 +1,16 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { IResourceFilter, ILuisInput } from '../../search/search-results/search-results.model';
-import { PaginationService } from '../../pagination/pagination.service';
-import { MapService } from '../../map/map.service';
-import { NavigateDataService } from '../../services/navigate-data.service';
-import { MapLocation, LocationDetails } from '../../map/map';
-import { environment } from '../../../../environments/environment';
+import { Component, Input, OnInit } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { environment } from "../../../../environments/environment";
+import { LocationDetails, MapLocation } from "../../map/map";
+import { MapService } from "../../map/map.service";
+import { PaginationService } from "../../pagination/pagination.service";
+import { ILuisInput, IResourceFilter } from "../../search/search-results/search-results.model";
+import { NavigateDataService } from "../../services/navigate-data.service";
 
 @Component({
-  selector: 'app-guided-assistant-sidebar',
-  templateUrl: './guided-assistant-sidebar.component.html',
-  styleUrls: ['./guided-assistant-sidebar.component.css']
+  selector: "app-guided-assistant-sidebar",
+  templateUrl: "./guided-assistant-sidebar.component.html",
+  styleUrls: ["./guided-assistant-sidebar.component.css"]
 })
 export class GuidedAssistantSidebarComponent implements OnInit {
   location: MapLocation;
@@ -21,10 +21,24 @@ export class GuidedAssistantSidebarComponent implements OnInit {
   @Input() showSidebar: boolean;
   @Input() searchResultsData: any;
   resourceFilter: IResourceFilter = {
-    ResourceType: '', ContinuationToken: '', TopicIds: [],
-    ResourceIds: [], PageNumber: 0, Location: {}, IsResourceCountRequired: false, IsOrder: false, OrderByField: '', OrderBy:''
+    ResourceType: "",
+    ContinuationToken: "",
+    TopicIds: [],
+    ResourceIds: [],
+    PageNumber: 0,
+    Location: {},
+    IsResourceCountRequired: false,
+    IsOrder: false,
+    OrderByField: "",
+    OrderBy: ""
   };
-  luisInput: ILuisInput = { Sentence: '', Location: '', TranslateFrom: '', TranslateTo: '', LuisTopScoringIntent: '' };
+  luisInput: ILuisInput = {
+    Sentence: "",
+    Location: "",
+    TranslateFrom: "",
+    TranslateTo: "",
+    LuisTopScoringIntent: ""
+  };
   topicIds: string[] = [];
   resources: any;
   subscription: any;
@@ -38,26 +52,33 @@ export class GuidedAssistantSidebarComponent implements OnInit {
     private mapService: MapService,
     private navigateDataService: NavigateDataService,
     private paginationService: PaginationService
-  ) { }
+  ) {}
 
   getGuidedAssistantResults() {
     this.topicIds = [];
     if (this.activeTopic) {
       this.topicIds.push(this.activeTopic);
       this.resourceFilter = {
-        ResourceType: 'Guided Assistant', ContinuationToken: '', TopicIds: this.topicIds,
-        ResourceIds: [], PageNumber: 0, Location: this.location,
-        IsResourceCountRequired: false, IsOrder: false, OrderByField: '', OrderBy:''
-      }
-      this.paginationService.getPagedResources(this.resourceFilter).
-        subscribe(response => {
+        ResourceType: "Guided Assistant",
+        ContinuationToken: "",
+        TopicIds: this.topicIds,
+        ResourceIds: [],
+        PageNumber: 0,
+        Location: this.location,
+        IsResourceCountRequired: false,
+        IsOrder: false,
+        OrderByField: "",
+        OrderBy: ""
+      };
+      this.paginationService
+        .getPagedResources(this.resourceFilter)
+        .subscribe(response => {
           if (response != undefined) {
             this.resources = response["resources"];
             if (this.resources.length > 0) {
               this.guidedAssistantId = this.resources[0].curatedExperienceId;
             }
-          }
-          else {
+          } else {
             this.guidedAssistantId = this.emptyResult;
           }
         });
@@ -68,27 +89,31 @@ export class GuidedAssistantSidebarComponent implements OnInit {
   getGuidedAssistantLinkResult() {
     if (this.router.url.startsWith("/search")) {
       this.navigateDataService.setData(this.searchResultsData);
-      this.router.navigateByUrl('/guidedassistant/' + this.guidedAssistantId);
+      this.router.navigateByUrl("/guidedassistant/" + this.guidedAssistantId);
     }
     this.resourceFilter = {
       ResourceType: environment.All,
       TopicIds: this.topicIds,
       Location: this.location,
       PageNumber: 0,
-      ContinuationToken: '',
+      ContinuationToken: "",
       IsResourceCountRequired: true,
       ResourceIds: [],
       IsOrder: false,
-      OrderByField: '',
-      OrderBy: ''
-    }
-    this.paginationService.getPagedResources(this.resourceFilter).
-      subscribe(response => {
+      OrderByField: "",
+      OrderBy: ""
+    };
+    this.paginationService
+      .getPagedResources(this.resourceFilter)
+      .subscribe(response => {
         if (response != undefined) {
           this.guidedAssistantResults = response;
           this.guidedAssistantResults.topIntent = this.activeSubTopic.name;
           this.navigateDataService.setData(this.guidedAssistantResults);
-          this.router.navigateByUrl('/guidedassistant/' + this.guidedAssistantId, { skipLocationChange: true });
+          this.router.navigateByUrl(
+            "/guidedassistant/" + this.guidedAssistantId,
+            { skipLocationChange: true }
+          );
         }
       });
   }
@@ -96,18 +121,19 @@ export class GuidedAssistantSidebarComponent implements OnInit {
   ngOnInit() {
     if (!this.guidedAssistantId) {
       if (sessionStorage.getItem("globalMapLocation")) {
-        this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+        this.locationDetails = JSON.parse(
+          sessionStorage.getItem("globalMapLocation")
+        );
         this.location = this.locationDetails.location;
-        this.activeTopic = this.activeRoute.snapshot.params['topic'];
+        this.activeTopic = this.activeRoute.snapshot.params["topic"];
         this.getGuidedAssistantResults();
       }
-      this.subscription = this.mapService.notifyLocation
-        .subscribe((value) => {
-          this.locationDetails = value;
-          this.location = this.locationDetails.location;
-          this.activeTopic = this.activeRoute.snapshot.params['topic'];
-          this.getGuidedAssistantResults();
-        });
+      this.subscription = this.mapService.notifyLocation.subscribe(value => {
+        this.locationDetails = value;
+        this.location = this.locationDetails.location;
+        this.activeTopic = this.activeRoute.snapshot.params["topic"];
+        this.getGuidedAssistantResults();
+      });
     }
   }
   ngOnDestroy() {

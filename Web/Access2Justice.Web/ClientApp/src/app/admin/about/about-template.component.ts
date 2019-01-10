@@ -1,23 +1,23 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { StaticResourceService } from '../../shared/services/static-resource.service';
-import { Global } from '../../global';
-import { About } from '../../about/about';
-import { environment } from '../../../environments/environment';
-import { NgForm, FormBuilder, FormGroup } from '@angular/forms';
-import { MapLocation } from '../../shared/map/map';
-import { Router, ActivatedRoute } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { NavigateDataService } from '../../shared/services/navigate-data.service';
-import { ToastrService } from 'ngx-toastr';
-import { AdminService } from '../admin.service';
+import { Component, OnInit, QueryList, ViewChildren } from "@angular/core";
+import { FormBuilder, FormGroup, NgForm } from "@angular/forms";
+import { ActivatedRoute, Router } from "@angular/router";
+import { NgxSpinnerService } from "ngx-spinner";
+import { ToastrService } from "ngx-toastr";
+import { environment } from "../../../environments/environment";
+import { About } from "../../about/about";
+import { Global } from "../../global";
+import { MapLocation } from "../../shared/map/map";
+import { NavigateDataService } from "../../shared/services/navigate-data.service";
+import { StaticResourceService } from "../../shared/services/static-resource.service";
+import { AdminService } from "../admin.service";
 
 @Component({
-  selector: 'app-about-template',
-  templateUrl: './about-template.component.html',
-  styleUrls: ['../admin-styles.css']
+  selector: "app-about-template",
+  templateUrl: "./about-template.component.html",
+  styleUrls: ["../admin-styles.css"]
 })
 export class AboutTemplateComponent implements OnInit {
-  name: string = 'AboutPage';
+  name: string = "AboutPage";
   aboutContent: About;
   staticContent: any;
   staticContentSubcription: any;
@@ -28,10 +28,10 @@ export class AboutTemplateComponent implements OnInit {
   state: string;
   location: MapLocation = {
     state: this.activeRoute.snapshot.queryParams["state"]
-  }
+  };
   newsImage;
-  @ViewChildren('newsImageUpload') newsImageUpload: QueryList<any>;
-  @ViewChildren('sponsorImageUpload') sponsorImageUpload: QueryList<any>;
+  @ViewChildren("newsImageUpload") newsImageUpload: QueryList<any>;
+  @ViewChildren("sponsorImageUpload") sponsorImageUpload: QueryList<any>;
 
   constructor(
     private staticResourceService: StaticResourceService,
@@ -58,18 +58,18 @@ export class AboutTemplateComponent implements OnInit {
   }
 
   encode(image, index) {
-    index = index || '';
+    index = index || "";
     let reader = new FileReader();
     if (event.target["files"] && event.target["files"].length > 0) {
       let file = event.target["files"][0];
       reader.readAsDataURL(file);
       reader.onload = () => {
-        this.form.get(image+index).setValue({
+        this.form.get(image + index).setValue({
           filename: file.name,
           filetype: file.type,
-          value: reader.result.split(',')[1]
+          value: reader.result.split(",")[1]
         });
-      }
+      };
     }
   }
 
@@ -81,69 +81,145 @@ export class AboutTemplateComponent implements OnInit {
       },
       contactUs: {
         title: this.aboutContent["contactUs"].title,
-        description: aboutForm.value.contactUsDescription || this.aboutContent["contactUs"].description,
-        email: aboutForm.value.contactUsEmail || this.aboutContent["contactUs"].email
+        description:
+          aboutForm.value.contactUsDescription ||
+          this.aboutContent["contactUs"].description,
+        email:
+          aboutForm.value.contactUsEmail || this.aboutContent["contactUs"].email
       },
       inTheNews: {
         title: this.aboutContent["inTheNews"].title,
-        description: aboutForm.value.inTheNewsDescription || this.aboutContent["inTheNews"].description,
+        description:
+          aboutForm.value.inTheNewsDescription ||
+          this.aboutContent["inTheNews"].description,
         news: [
           {
-            title: aboutForm.value.newsTitle0 || this.aboutContent["inTheNews"].news[0].title || '',
-            description: aboutForm.value.newsDescription0 || this.aboutContent["inTheNews"].news[0].description || '',
+            title:
+              aboutForm.value.newsTitle0 ||
+              this.aboutContent["inTheNews"].news[0].title ||
+              "",
+            description:
+              aboutForm.value.newsDescription0 ||
+              this.aboutContent["inTheNews"].news[0].description ||
+              "",
             image: {
-              source: this.form.value.newsImage && this.form.value.newsImage.value || this.aboutContent["inTheNews"].news[0].image.source || '',
-              altText: aboutForm.value.newsImageAltText0 || this.aboutContent["inTheNews"].news[0].image.altText || ''
+              source:
+                (this.form.value.newsImage &&
+                  this.form.value.newsImage.value) ||
+                this.aboutContent["inTheNews"].news[0].image.source ||
+                "",
+              altText:
+                aboutForm.value.newsImageAltText0 ||
+                this.aboutContent["inTheNews"].news[0].image.altText ||
+                ""
             },
-            url: aboutForm.value.newsUrl0 || this.aboutContent["inTheNews"].news[0].url || ''
+            url:
+              aboutForm.value.newsUrl0 ||
+              this.aboutContent["inTheNews"].news[0].url ||
+              ""
           },
           {
-            title: aboutForm.value.newsTitle1 || this.aboutContent["inTheNews"].news[1].title || '',
-            description: aboutForm.value.newsDescription1 || this.aboutContent["inTheNews"].news[1].description || '',
+            title:
+              aboutForm.value.newsTitle1 ||
+              this.aboutContent["inTheNews"].news[1].title ||
+              "",
+            description:
+              aboutForm.value.newsDescription1 ||
+              this.aboutContent["inTheNews"].news[1].description ||
+              "",
             image: {
-              source: this.form.value.newsImage1 && this.form.value.newsImage1.value || this.aboutContent["inTheNews"].news[1].image.source || '',
-              altText: aboutForm.value.newsImageAltText1 || this.aboutContent["inTheNews"].news[1].image.altText || ''
+              source:
+                (this.form.value.newsImage1 &&
+                  this.form.value.newsImage1.value) ||
+                this.aboutContent["inTheNews"].news[1].image.source ||
+                "",
+              altText:
+                aboutForm.value.newsImageAltText1 ||
+                this.aboutContent["inTheNews"].news[1].image.altText ||
+                ""
             },
-            url: aboutForm.value.newsUrl1 || this.aboutContent["inTheNews"].news[1].url || ''
+            url:
+              aboutForm.value.newsUrl1 ||
+              this.aboutContent["inTheNews"].news[1].url ||
+              ""
           },
           {
-            title: aboutForm.value.newsTitle2 || this.aboutContent["inTheNews"].news[2].title || '',
-            description: aboutForm.value.newsDescription2 || this.aboutContent["inTheNews"].news[2].description || '',
+            title:
+              aboutForm.value.newsTitle2 ||
+              this.aboutContent["inTheNews"].news[2].title ||
+              "",
+            description:
+              aboutForm.value.newsDescription2 ||
+              this.aboutContent["inTheNews"].news[2].description ||
+              "",
             image: {
-              source: this.form.value.newsImage2 && this.form.value.newsImage2.value || this.aboutContent["inTheNews"].news[2].image.source || '',
-              altText: aboutForm.value.newsImageAltText2 || this.aboutContent["inTheNews"].news[2].image.altText || ''
+              source:
+                (this.form.value.newsImage2 &&
+                  this.form.value.newsImage2.value) ||
+                this.aboutContent["inTheNews"].news[2].image.source ||
+                "",
+              altText:
+                aboutForm.value.newsImageAltText2 ||
+                this.aboutContent["inTheNews"].news[2].image.altText ||
+                ""
             },
-            url: aboutForm.value.newsUrl2 || this.aboutContent["inTheNews"].news[2].url || ''
+            url:
+              aboutForm.value.newsUrl2 ||
+              this.aboutContent["inTheNews"].news[2].url ||
+              ""
           }
         ]
       },
       location: [this.location],
       mediaInquiries: {
         title: "Media Inquiries",
-        description: aboutForm.value.mediaInquiriesDescription || this.aboutContent["mediaInquiries"].description,
-        email: aboutForm.value.mediaInquiriesEmail || this.aboutContent["mediaInquiries"].email,
+        description:
+          aboutForm.value.mediaInquiriesDescription ||
+          this.aboutContent["mediaInquiries"].description,
+        email:
+          aboutForm.value.mediaInquiriesEmail ||
+          this.aboutContent["mediaInquiries"].email
       },
       mission: {
         title: "Our Mission",
-        description: aboutForm.value.aboutMission || this.aboutContent["mission"].description,
+        description:
+          aboutForm.value.aboutMission ||
+          this.aboutContent["mission"].description,
         sponsors: [
           {
-            source: this.form.value.sponsorImage && this.form.value.sponsorImage.value || this.aboutContent["mission"].sponsors[0].source,
-            altText: aboutForm.value.sponsorImageAltText0 || this.aboutContent["mission"].sponsors[0].altText
+            source:
+              (this.form.value.sponsorImage &&
+                this.form.value.sponsorImage.value) ||
+              this.aboutContent["mission"].sponsors[0].source,
+            altText:
+              aboutForm.value.sponsorImageAltText0 ||
+              this.aboutContent["mission"].sponsors[0].altText
           },
           {
-            source: this.form.value.sponsorImage1 && this.form.value.sponsorImage1.value || this.aboutContent["mission"].sponsors[1].source,
-            altText: aboutForm.value.sponsorImageAltText1 || this.aboutContent["mission"].sponsors[1].altText
+            source:
+              (this.form.value.sponsorImage1 &&
+                this.form.value.sponsorImage1.value) ||
+              this.aboutContent["mission"].sponsors[1].source,
+            altText:
+              aboutForm.value.sponsorImageAltText1 ||
+              this.aboutContent["mission"].sponsors[1].altText
           }
         ]
       },
       name: "AboutPage",
       organizationalUnit: this.location.state,
       privacyPromise: {
-        description: aboutForm.value.privacyPromiseDescription || this.aboutContent["privacyPromise"].description,
+        description:
+          aboutForm.value.privacyPromiseDescription ||
+          this.aboutContent["privacyPromise"].description,
         image: {
-          source: this.form.value.privacyPromiseImage && this.form.value.privacyPromiseImage.value || this.aboutContent["privacyPromise"].image.source,
-          altText: aboutForm.value.privacyPromiseImageAltText || this.aboutContent["privacyPromise"].image.altText
+          source:
+            (this.form.value.privacyPromiseImage &&
+              this.form.value.privacyPromiseImage.value) ||
+            this.aboutContent["privacyPromise"].image.source,
+          altText:
+            aboutForm.value.privacyPromiseImageAltText ||
+            this.aboutContent["privacyPromise"].image.altText
         },
         privacyPromiseButton: {
           buttonText: "View our privacy promise",
@@ -160,8 +236,13 @@ export class AboutTemplateComponent implements OnInit {
           buttonLink: "guidedassistant"
         },
         image: {
-          source: this.form.value.serviceImage && this.form.value.serviceImage.value || this.aboutContent["service"].image.source,
-          altText: aboutForm.value.serviceImageAltText || this.aboutContent["service"].image.altText
+          source:
+            (this.form.value.serviceImage &&
+              this.form.value.serviceImage.value) ||
+            this.aboutContent["service"].image.source,
+          altText:
+            aboutForm.value.serviceImageAltText ||
+            this.aboutContent["service"].image.altText
         },
         title: "Our Service",
         topicsAndResourcesButton: {
@@ -170,7 +251,7 @@ export class AboutTemplateComponent implements OnInit {
           buttonLink: "topics"
         }
       }
-    }
+    };
   }
 
   onSubmit(aboutForm: NgForm) {
@@ -185,7 +266,8 @@ export class AboutTemplateComponent implements OnInit {
       error => {
         console.log(error);
         this.toastr.warning("Page was not updated. Please check the console");
-      });
+      }
+    );
   }
 
   getAboutPageContent(): void {
@@ -197,15 +279,20 @@ export class AboutTemplateComponent implements OnInit {
       this.staticResourceService.getStaticContents(this.location).subscribe(
         response => {
           this.staticContent = response;
-          this.aboutContent = this.staticContent.find(x => x.name === this.name);
+          this.aboutContent = this.staticContent.find(
+            x => x.name === this.name
+          );
           this.createForm();
         },
-        error => this.router.navigateByUrl('error'));
+        error => this.router.navigateByUrl("error")
+      );
     }
   }
 
   showNewsUpload(image, index) {
-    this[`${image}`].toArray()[index].nativeElement.style.display = 'none' ? 'block' : 'none';
+    this[`${image}`].toArray()[index].nativeElement.style.display = "none"
+      ? "block"
+      : "none";
   }
 
   ngOnInit() {

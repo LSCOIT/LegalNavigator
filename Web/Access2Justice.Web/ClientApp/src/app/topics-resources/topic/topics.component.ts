@@ -1,14 +1,13 @@
-import { Component, OnInit, Input, QueryList, ViewChildren, HostListener } from '@angular/core';
-import { TopicService } from '../shared/topic.service';
-import { Topic } from '../shared/topic';
-import { MapService } from '../../shared/map/map.service';
-import { NavigateDataService } from '../../shared/services/navigate-data.service';
-import { Global } from '../../global';
+import { Component, HostListener, Input, OnInit, QueryList, ViewChildren } from "@angular/core";
+import { Global } from "../../global";
+import { MapService } from "../../shared/map/map.service";
+import { Topic } from "../shared/topic";
+import { TopicService } from "../shared/topic.service";
 
 @Component({
-  selector: 'app-topics',
-  templateUrl: './topics.component.html',
-  styleUrls: ['./topics.component.css']
+  selector: "app-topics",
+  templateUrl: "./topics.component.html",
+  styleUrls: ["./topics.component.css"]
 })
 export class TopicsComponent implements OnInit {
   topics: Topic;
@@ -16,12 +15,12 @@ export class TopicsComponent implements OnInit {
   @Input() fullPage: true;
   subscription: any;
   bottomRowTopics: number;
-  @ViewChildren('topicList') topicList: QueryList<any>;
+  @ViewChildren("topicList") topicList: QueryList<any>;
   newTopicList = [];
   windowResizeSubscription;
   windowWidth: number = window.innerWidth;
 
-  @HostListener('window:resize', ['$event'])
+  @HostListener("window:resize", ["$event"])
   onResize(event) {
     this.windowWidth = event.target.innerWidth;
     this.addBorder();
@@ -31,15 +30,15 @@ export class TopicsComponent implements OnInit {
   constructor(
     private topicService: TopicService,
     private mapService: MapService,
-    private global: Global) {}
+    private global: Global
+  ) {}
 
   getTopics(): void {
-    this.topicService.getTopics()
-      .subscribe(topics => {
-        this.topics = topics;
-        this.global.topicsData = topics;
-        setTimeout(() => this.findBottomRowTopics(), 0);
-      });
+    this.topicService.getTopics().subscribe(topics => {
+      this.topics = topics;
+      this.global.topicsData = topics;
+      setTimeout(() => this.findBottomRowTopics(), 0);
+    });
   }
 
   findBottomRowTopics() {
@@ -50,7 +49,10 @@ export class TopicsComponent implements OnInit {
       } else {
         this.setBottomBorder(this.bottomRowTopics);
       }
-    } else if (this.windowWidth >= 768 && window.innerWidth < 992 || !this.fullPage && this.windowWidth >= 768) {
+    } else if (
+      (this.windowWidth >= 768 && window.innerWidth < 992) ||
+      (!this.fullPage && this.windowWidth >= 768)
+    ) {
       this.bottomRowTopics = this.topicList.length % 3;
       if (this.bottomRowTopics === 0) {
         this.setBottomBorder(3);
@@ -60,7 +62,7 @@ export class TopicsComponent implements OnInit {
     } else if (this.windowWidth > 992 && this.fullPage) {
       this.bottomRowTopics = this.topicList.length % 4;
       if (this.bottomRowTopics === 0) {
-        this.setBottomBorder( 4);
+        this.setBottomBorder(4);
       } else {
         this.setBottomBorder(this.bottomRowTopics);
       }
@@ -68,18 +70,20 @@ export class TopicsComponent implements OnInit {
   }
 
   addBorder() {
-    this.topicList.toArray().slice(-4).forEach(topic => {
-      topic.nativeElement.style.borderBottom = "1px solid #ddd";
-    });
+    this.topicList
+      .toArray()
+      .slice(-4)
+      .forEach(topic => {
+        topic.nativeElement.style.borderBottom = "1px solid #ddd";
+      });
   }
 
   setBottomBorder(lastTopic) {
     this.newTopicList = this.topicList.toArray().slice(-lastTopic);
     this.newTopicList.forEach(topic => {
-      topic.nativeElement.style.borderBottom = 'none';
+      topic.nativeElement.style.borderBottom = "none";
     });
   }
-
 
   ngOnInit() {
     if (!this.global.topicsData) {
@@ -88,12 +92,10 @@ export class TopicsComponent implements OnInit {
       this.topics = this.global.topicsData;
       setTimeout(() => this.findBottomRowTopics(), 0);
     }
-
-    this.subscription = this.mapService.notifyLocation
-      .subscribe((value) => {
-        this.global.topicsData = null;
-        this.getTopics();
-      });
+    this.subscription = this.mapService.notifyLocation.subscribe(() => {
+      this.global.topicsData = null;
+      this.getTopics();
+    });
   }
 
   ngOnDestroy() {
@@ -101,6 +103,4 @@ export class TopicsComponent implements OnInit {
       this.subscription.unsubscribe();
     }
   }
-
-
 }

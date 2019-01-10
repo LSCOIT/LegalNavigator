@@ -1,22 +1,48 @@
 <div *ngIf="!mobile" class="container text-center sidebar no-print">
   <div class="row">
     <div class="col-sm-4 sidebar-block">
-      <img src="./assets/images/secondary-illustrations/save.svg" alt="Save your Plan">
+      <img
+        src="./assets/images/secondary-illustrations/save.svg"
+        alt="Save your Plan"
+      />
       <p class="pl">Save your plan</p>
-      <p>Access it later on a computer or phone. Your information will never be shared without your permission.</p>
-      <app-save-button [id]="resourceId" [type]="resourceType" [showIcon]="false" [addLinkClass]="true"></app-save-button>
+      <p>
+        Access it later on a computer or phone. Your information will never be
+        shared without your permission.
+      </p>
+      <app-save-button
+        [id]="resourceId"
+        [type]="resourceType"
+        [showIcon]="false"
+        [addLinkClass]="true"
+      ></app-save-button>
     </div>
     <div class="col-sm-4 sidebar-block" *ngIf="global.showShare">
-      <img src="./assets/images/secondary-illustrations/share.svg" alt="Share your Plan">
+      <img
+        src="./assets/images/secondary-illustrations/share.svg"
+        alt="Share your Plan"
+      />
       <p class="pl">Share your plan</p>
-      <p>Send a link to this information to a friend, family member, or advocate that is helping you. Such as a lawyer or social worker.</p>
-      <app-share-button [showIcon]="false" [addLinkClass]="true"></app-share-button>
+      <p>
+        Send a link to this information to a friend, family member, or advocate
+        that is helping you. Such as a lawyer or social worker.
+      </p>
+      <app-share-button
+        [showIcon]="false"
+        [addLinkClass]="true"
+      ></app-share-button>
     </div>
     <div class="col-sm-4 sidebar-block">
-      <img src="./assets/images/secondary-illustrations/print.svg" alt="Print your Plan">
+      <img
+        src="./assets/images/secondary-illustrations/print.svg"
+        alt="Print your Plan"
+      />
       <p class="pl">Print your plan</p>
       <p>You can also just print this page too so you can take it with you.</p>
-      <app-print-button [showIcon]="false" [addLinkClass]="true"></app-print-button>
+      <app-print-button
+        [showIcon]="false"
+        [addLinkClass]="true"
+      ></app-print-button>
     </div>
   </div>
 </div>
@@ -24,17 +50,17 @@
   <li *ngIf="showSave">
     <app-save-button [id]="resourceId" [type]="resourceType"></app-save-button>
   </li>
-  <li>
-    <app-share-button></app-share-button>
-  </li>
-  <li *ngIf="showPrint">
-    <app-print-button></app-print-button>
-  </li>
+  <li><app-share-button></app-share-button></li>
+  <li *ngIf="showPrint"><app-print-button></app-print-button></li>
   <li class="popover-wrapper" *ngIf="showDownload">
     <app-download-button></app-download-button>
   </li>
   <li *ngIf="showSetting && global.showSetting">
-    <img src="./assets/images/small-icons/settings.svg" class="nav-icon" aria-hidden="true" />
+    <img
+      src="./assets/images/small-icons/settings.svg"
+      class="nav-icon"
+      aria-hidden="true"
+    />
     <app-setting-button></app-setting-button>
   </li>
 </ul>

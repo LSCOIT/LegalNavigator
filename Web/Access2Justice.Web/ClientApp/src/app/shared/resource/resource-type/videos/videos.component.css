@@ -3,13 +3,13 @@ iframe {
   height: 200px;
 }
 
-@media only screen and (min-width : 768px) {
+@media only screen and (min-width: 768px) {
   iframe {
     height: 300px;
   }
 }
 
-@media only screen and (min-width : 992px) {
+@media only screen and (min-width: 992px) {
   iframe {
     height: 400px;
     max-width: 800px;

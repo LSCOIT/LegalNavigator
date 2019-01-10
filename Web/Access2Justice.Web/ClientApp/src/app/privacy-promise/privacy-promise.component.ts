@@ -1,19 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { PrivacyContent, Image, Details } from '../privacy-promise/privacy-promise';
-import { StaticResourceService } from '../shared/services/static-resource.service';
-import { Global } from '../global';
-import { environment } from '../../environments/environment';
+import { Component, OnInit } from "@angular/core";
+import { environment } from "../../environments/environment";
+import { Global } from "../global";
+import { Details, Image, PrivacyContent } from "../privacy-promise/privacy-promise";
+import { StaticResourceService } from "../shared/services/static-resource.service";
 
 @Component({
-  selector: 'app-privacy-promise',
-  templateUrl: './privacy-promise.component.html',
-  styleUrls: ['./privacy-promise.component.css']
+  selector: "app-privacy-promise",
+  templateUrl: "./privacy-promise.component.html",
+  styleUrls: ["./privacy-promise.component.css"]
 })
 export class PrivacyPromiseComponent implements OnInit {
   privacyContent: PrivacyContent;
   informationData: Array<Details> = [];
   imageData: Image;
-  name: string = 'PrivacyPromisePage';
+  name: string = "PrivacyPromisePage";
   staticContent: any;
   staticContentSubcription: any;
   blobUrl: string = environment.blobUrl;
@@ -21,15 +21,21 @@ export class PrivacyPromiseComponent implements OnInit {
   constructor(
     private staticResourceService: StaticResourceService,
     private global: Global
-  ) { }
+  ) {}
 
   getPrivacyPageContent(): void {
-    if ((this.staticResourceService.privacyContent) && (this.staticResourceService.privacyContent.location[0].state == this.staticResourceService.getLocation())) {
+    if (
+      this.staticResourceService.privacyContent &&
+      this.staticResourceService.privacyContent.location[0].state ==
+        this.staticResourceService.getLocation()
+    ) {
       this.privacyContent = this.staticResourceService.privacyContent;
     } else {
       if (this.global.getData()) {
         this.staticContent = this.global.getData();
-        this.privacyContent = this.staticContent.find(x => x.name === this.name);
+        this.privacyContent = this.staticContent.find(
+          x => x.name === this.name
+        );
         this.staticResourceService.privacyContent = this.privacyContent;
       }
     }
@@ -37,10 +43,11 @@ export class PrivacyPromiseComponent implements OnInit {
 
   ngOnInit() {
     this.getPrivacyPageContent();
-    this.staticContentSubcription = this.global.notifyStaticData
-      .subscribe((value) => {
+    this.staticContentSubcription = this.global.notifyStaticData.subscribe(
+      value => {
         this.getPrivacyPageContent();
-      });
+      }
+    );
   }
 
   ngOnDestroy() {

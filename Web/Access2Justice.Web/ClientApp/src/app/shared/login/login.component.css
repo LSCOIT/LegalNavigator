@@ -1,4 +1,6 @@
-a:not([href]):not([tabindex]), .account-menu, .dropdown-btn {
+a:not([href]):not([tabindex]),
+.account-menu,
+.dropdown-btn {
   color: #333;
   font-weight: 400;
 }
@@ -33,10 +35,11 @@ a:not([href]):not([tabindex]), .account-menu, .dropdown-btn {
   padding: 15px 35px 17px 15px;
 }
 
-#signin-dropdown a:hover, .account-menu:hover {
+#signin-dropdown a:hover,
+.account-menu:hover {
   text-decoration: none;
   font-weight: 600;
-  color: #0056B3;
+  color: #0056b3;
 }
 
 #signin-dropdown .dropdown-menu li a {
@@ -77,13 +80,13 @@ a:not([href]):not([tabindex]), .account-menu, .dropdown-btn {
   cursor: pointer;
 }
 
-@media only screen and (min-width : 768px) {
+@media only screen and (min-width: 768px) {
   .dropdown-menu li a {
     font-size: 14px;
   }
 }
 
-@media only screen and (min-width : 992px) {
+@media only screen and (min-width: 992px) {
   .create-account {
     margin-right: -25px;
   }
@@ -99,7 +102,8 @@ a:not([href]):not([tabindex]), .account-menu, .dropdown-btn {
     font-weight: 400;
   }
 
-  .account-menu, .account-menu img {
+  .account-menu,
+  .account-menu img {
     margin-left: 0;
   }
 
@@ -117,7 +121,8 @@ a:not([href]):not([tabindex]), .account-menu, .dropdown-btn {
     margin-right: 10px;
   }
 
-  #signin-dropdown.open a, #signin-dropdown a:hover {
+  #signin-dropdown.open a,
+  #signin-dropdown a:hover {
     background-color: #fff;
     color: #333;
     font-weight: 400;

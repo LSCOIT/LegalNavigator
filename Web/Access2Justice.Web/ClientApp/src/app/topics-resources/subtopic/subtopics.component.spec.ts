@@ -1,69 +1,68 @@
-import { ActivatedRoute, RouterModule } from '@angular/router';
-import { APP_BASE_HREF } from '@angular/common';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { GuidedAssistantSidebarComponent } from '../../shared/sidebars/guided-assistant-sidebar/guided-assistant-sidebar.component';
-import { HttpClientModule } from '@angular/common/http';
-import { MapService } from '../../shared/map/map.service';
-import { NavigateDataService } from '../../shared/services/navigate-data.service';
-import { of } from 'rxjs/observable/of';
-import { PaginationService } from '../../shared/pagination/pagination.service';
-import { ServiceOrgSidebarComponent } from '../../shared/sidebars/service-org-sidebar/service-org-sidebar.component';
-import { ShowMoreService } from '../../shared/sidebars/show-more/show-more.service';
-import { SubtopicsComponent } from './subtopics.component';
-import { TopicService } from '../shared/topic.service';
-import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { Global } from '../../global';
-import { StateCodeService } from '../../shared/services/state-code.service';
+import { APP_BASE_HREF } from "@angular/common";
+import { HttpClientModule } from "@angular/common/http";
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from "@angular/core";
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { ActivatedRoute, RouterModule } from "@angular/router";
+import { of } from "rxjs/observable/of";
+import { Global } from "../../global";
+import { MapService } from "../../shared/map/map.service";
+import { PaginationService } from "../../shared/pagination/pagination.service";
+import { NavigateDataService } from "../../shared/services/navigate-data.service";
+import { StateCodeService } from "../../shared/services/state-code.service";
+import { GuidedAssistantSidebarComponent } from "../../shared/sidebars/guided-assistant-sidebar/guided-assistant-sidebar.component";
+import { ServiceOrgSidebarComponent } from "../../shared/sidebars/service-org-sidebar/service-org-sidebar.component";
+import { ShowMoreService } from "../../shared/sidebars/show-more/show-more.service";
+import { TopicService } from "../shared/topic.service";
+import { SubtopicsComponent } from "./subtopics.component";
 
-describe('SubtopicsComponent', () => {
+describe("SubtopicsComponent", () => {
   let component: SubtopicsComponent;
   let fixture: ComponentFixture<SubtopicsComponent>;
   let mockactiveTopic = "123";
   let mockDocumentData = [
     {
-      "name": "Family1",
-      "parentTopicId": [
+      name: "Family1",
+      parentTopicId: [
         {
-          "id": "111"
+          id: "111"
         },
         {
-          "id": "222"
+          id: "222"
         }
       ],
-      "keywords": "HOUSING",
-      "location": [
+      keywords: "HOUSING",
+      location: [
         {
-          "state": "Hawaii",
-          "county": "Kalawao County",
-          "city": "Kalawao",
-          "zipCode": "96742"
+          state: "Hawaii",
+          county: "Kalawao County",
+          city: "Kalawao",
+          zipCode: "96742"
         }
-
       ],
-      "icon": "../../../assets/images/categories/topic.svg",
+      icon: "../../../assets/images/categories/topic.svg"
     }
   ];
   let mockSubTopics = [
     {
-      "id": "333",
-      "name": "Custody / Visitation",
-      "overview": "Overview of the Custody/Visitation topic",
-      "quickLinks": [],
-      "parentTopicId": [
+      id: "333",
+      name: "Custody / Visitation",
+      overview: "Overview of the Custody/Visitation topic",
+      quickLinks: [],
+      parentTopicId: [
         {
-          "id": "123"
+          id: "123"
         }
       ],
-      "resourceType": "Topics",
-      "keywords": "Custody | Child Abuse | Child Custody",
-      "location": [
+      resourceType: "Topics",
+      keywords: "Custody | Child Abuse | Child Custody",
+      location: [
         {
-          "state": "Hawaii",
-          "city": "Kalawao",
-          "zipCode": "96761"
+          state: "Hawaii",
+          city: "Kalawao",
+          zipCode: "96761"
         }
       ],
-      "icon": ""
+      icon: ""
     }
   ];
   let mockTopicService;
@@ -73,9 +72,12 @@ describe('SubtopicsComponent', () => {
   let mockResourceType = "Organizations";
 
   beforeEach(async(() => {
-    mockTopicService = jasmine.createSpyObj(['getDocumentData', 'getSubtopics']);
-    mockNavigateDataService = jasmine.createSpyObj(['getData', 'setData']);
-    mockShowMoreService = jasmine.createSpyObj(['clickSeeMoreOrganizations']);
+    mockTopicService = jasmine.createSpyObj([
+      "getDocumentData",
+      "getSubtopics"
+    ]);
+    mockNavigateDataService = jasmine.createSpyObj(["getData", "setData"]);
+    mockShowMoreService = jasmine.createSpyObj(["clickSeeMoreOrganizations"]);
     mockTopicService.getDocumentData.and.returnValue(of(mockDocumentData));
     mockTopicService.getSubtopics.and.returnValue(of(mockSubTopics));
 
@@ -88,7 +90,7 @@ describe('SubtopicsComponent', () => {
       imports: [
         RouterModule.forRoot([
           {
-            path: 'topics/:topic',
+            path: "topics/:topic",
             component: SubtopicsComponent
           }
         ]),
@@ -101,7 +103,7 @@ describe('SubtopicsComponent', () => {
         StateCodeService,
         {
           provide: APP_BASE_HREF,
-          useValue: '/'
+          useValue: "/"
         },
         {
           provide: TopicService,
@@ -116,16 +118,16 @@ describe('SubtopicsComponent', () => {
           useValue: {
             snapshot: {
               params: {
-                 'topic': 'bd900039-2236-8c2c-8702-d31855c56b0f'
+                topic: "bd900039-2236-8c2c-8702-d31855c56b0f"
               }
             },
             url: of([
               {
-                path: 'subtopics',
+                path: "subtopics",
                 params: {}
               },
               {
-                path: 'bd900039-2236-8c2c-8702-d31855c56b0f',
+                path: "bd900039-2236-8c2c-8702-d31855c56b0f",
                 params: {}
               }
             ])
@@ -134,10 +136,10 @@ describe('SubtopicsComponent', () => {
         { provide: ShowMoreService, useValue: mockShowMoreService }
       ],
       schemas: [
-        NO_ERRORS_SCHEMA,
-        CUSTOM_ELEMENTS_SCHEMA]
-    })
-      .compileComponents();
+        NO_ERRORS_SCHEMA, 
+        CUSTOM_ELEMENTS_SCHEMA
+      ]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -146,19 +148,22 @@ describe('SubtopicsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create subtopics component', () => {
+  it("should create subtopics component", () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call getSubtopics method in ngOnInit', () => {
-    spyOn(component, 'getSubtopics');
+  it("should call getSubtopics method in ngOnInit", () => {
+    spyOn(component, "getSubtopics");
     component.ngOnInit();
     expect(component.getSubtopics).toHaveBeenCalled();
     expect(component.getSubtopics).toHaveBeenCalledTimes(1);
   });
 
-  it('should return document data when getdoucmentdata method of topic service called', () => {
-    let mockGuidedInput = { activeId: mockTopic, name: mockDocumentData[0].name };
+  it("should return document data when getdoucmentdata method of topic service called", () => {
+    let mockGuidedInput = {
+      activeId: mockTopic,
+      name: mockDocumentData[0].name
+    };
     component.getSubtopics();
     expect(component.activeTopic).toEqual(mockTopic);
     expect(component.topic).toEqual(mockDocumentData[0]);
@@ -168,8 +173,11 @@ describe('SubtopicsComponent', () => {
     expect(mockNavigateDataService.setData).toHaveBeenCalledWith(mockSubTopics);
   });
 
-  it('should return document data when getdoucmentdata method of topic service called', () => {
-    let mockGuidedInput = { activeId: mockTopic, name: mockDocumentData[0].name };
+  it("should return document data when getdoucmentdata method of topic service called", () => {
+    let mockGuidedInput = {
+      activeId: mockTopic,
+      name: mockDocumentData[0].name
+    };
     component.getSubtopics();
     expect(component.activeTopic).toEqual(mockTopic);
     expect(component.topic).toEqual(mockDocumentData[0]);
@@ -179,10 +187,14 @@ describe('SubtopicsComponent', () => {
     expect(mockNavigateDataService.setData).toHaveBeenCalledWith(mockSubTopics);
   });
 
-  it('should call clickSeeMoreOrganizations method in clickSeeMoreOrganizationsFromSubtopic', () => {
+  it("should call clickSeeMoreOrganizations method in clickSeeMoreOrganizationsFromSubtopic", () => {
     component.activeTopic = mockactiveTopic;
     component.topicIntent = "test";
     component.clickSeeMoreOrganizationsFromSubtopic(mockResourceType);
-    expect(mockShowMoreService.clickSeeMoreOrganizations).toHaveBeenCalledWith(mockResourceType, mockactiveTopic,"test");
+    expect(mockShowMoreService.clickSeeMoreOrganizations).toHaveBeenCalledWith(
+      mockResourceType,
+      mockactiveTopic,
+      "test"
+    );
   });
 });

@@ -1,8 +1,25 @@
-<form #searchForm="ngForm" (ngSubmit)="onSubmit(searchForm)" aria-label="search box">
+<form
+  #searchForm="ngForm"
+  (ngSubmit)="onSubmit(searchForm)"
+  aria-label="search box"
+>
   <div>
-    <input autofocus type="text" name="inputText" aria-label="search text box" value="text" id="search" autocomplete="off" [(ngModel)]="inputText" />
+    <input
+      autofocus
+      type="text"
+      name="inputText"
+      aria-label="search text box"
+      value="text"
+      id="search"
+      autocomplete="off"
+      [(ngModel)]="inputText"
+    />
     <button id="search-phrase-button" type="submit" aria-label="search button">
-      <img class="search-icon" src="/assets/images/small-icons/search.svg" aria-hidden="true" />
+      <img
+        class="search-icon"
+        src="/assets/images/small-icons/search.svg"
+        aria-hidden="true"
+      />
     </button>
   </div>
 </form>

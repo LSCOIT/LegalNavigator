@@ -1,8 +1,10 @@
-.btn, a.btn {
+.btn,
+a.btn {
   margin: 10px auto 20px 0;
 }
 
-a.btn-primary, a.btn-primary:hover {
+a.btn-primary,
+a.btn-primary:hover {
   color: #fff;
 }
 
@@ -13,7 +15,7 @@ a.btn-primary, a.btn-primary:hover {
   padding: 50px 20px 0 20px;
 }
 
-@media only screen and (min-width : 768px) {
+@media only screen and (min-width: 768px) {
   .sidebar-block {
     border: 1px solid #ddd;
     margin-bottom: 40px;
@@ -21,7 +23,7 @@ a.btn-primary, a.btn-primary:hover {
   }
 }
 
-@media only screen and (min-width : 992px) {
+@media only screen and (min-width: 992px) {
   .sidebar-block {
     margin-top: 0;
   }
@@ -32,7 +34,7 @@ a.btn-primary, a.btn-primary:hover {
   }
 }
 
-@media only screen and (min-width : 1224px) {
+@media only screen and (min-width: 1224px) {
   .btn-primary {
     font-size: 16px;
   }

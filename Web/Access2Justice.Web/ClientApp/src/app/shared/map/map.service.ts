@@ -1,9 +1,8 @@
-import { Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment';
-import { MapLocation, LocationDetails, DisplayLocationDetails } from './map';
-import { Subject } from 'rxjs';
-import { api } from '../../../api/api';
-import { StateCodeService } from '../services/state-code.service';
+import { Injectable } from "@angular/core";
+import { Subject } from "rxjs";
+import { environment } from "../../../environments/environment";
+import { StateCodeService } from "../services/state-code.service";
+import { DisplayLocationDetails, LocationDetails, MapLocation } from "./map";
 
 declare var Microsoft: any;
 
@@ -14,34 +13,50 @@ export class MapService {
   locAddress: any;
   location: any;
   pin: any;
-  mapLocation: MapLocation = { state: '', city: '', county: '', zipCode: '' };
-  displayLocation: DisplayLocationDetails = { locality: '', address: '' };
+  mapLocation: MapLocation = {
+    state: "",
+    city: "",
+    county: "",
+    zipCode: ""
+  };
+  displayLocation: DisplayLocationDetails = {
+    locality: "",
+    address: ""
+  };
   notifyLocalLocation: Subject<MapLocation> = new Subject<MapLocation>();
   notifyLocation: Subject<LocationDetails> = new Subject<LocationDetails>();
   notifyLocationError: Subject<any> = new Subject<any>();
   notifyLocationSuccess: Subject<any> = new Subject<any>();
   state: string;
   locationDetails: LocationDetails = {
-    location: this.mapLocation, displayLocationDetails: this.displayLocation,
-    country: '', formattedAddress: ''
+    location: this.mapLocation,
+    displayLocationDetails: this.displayLocation,
+    country: "",
+    formattedAddress: ""
   };
-  stateCode: any = '';
+  stateCode: any = "";
 
-  constructor(private stateCodeService: StateCodeService) { }
+  constructor(private stateCodeService: StateCodeService) {}
 
   getMap(mapType) {
     environment.map_type = mapType;
-    Microsoft.Maps.loadModule(['Microsoft.Maps.AutoSuggest', 'Microsoft.Maps.Search'], this.loadSearchManager);
+    Microsoft.Maps.loadModule(
+      ["Microsoft.Maps.AutoSuggest", "Microsoft.Maps.Search"],
+      this.loadSearchManager
+    );
   }
 
   loadSearchManager() {
     let searchManager;
-    let map = new Microsoft.Maps.Map('#my-map',
-      {
-        credentials: environment.bingmap_key,
-      });
+    let map = new Microsoft.Maps.Map("#my-map", {
+      credentials: environment.bingmap_key
+    });
     let manager = new Microsoft.Maps.AutosuggestManager(map);
-    manager.attachAutosuggest('#search-box', '#searchbox-container', suggestionSelected);
+    manager.attachAutosuggest(
+      "#search-box",
+      "#searchbox-container",
+      suggestionSelected
+    );
     searchManager = new Microsoft.Maps.Search.SearchManager(map);
   }
 
@@ -54,10 +69,9 @@ export class MapService {
       }
     };
 
-    let map = new Microsoft.Maps.Map('#my-map',
-      {
-        credentials: environment.bingmap_key
-      });
+    let map = new Microsoft.Maps.Map("#my-map", {
+      credentials: environment.bingmap_key
+    });
     this.searchManager = new Microsoft.Maps.Search.SearchManager(map);
     this.searchManager.geocode(searchRequest);
   }
@@ -66,17 +80,18 @@ export class MapService {
     if (r && r.results && r.results.length > 0) {
       this.location = r.results[0];
       this.pin = new Microsoft.Maps.Pushpin(this.location.location, {
-        icon: '../../assets/images/location/poi_custom.png'
+        icon: "../../assets/images/location/poi_custom.png"
       });
 
       let mapService = new MapService(null);
-      this.location.address.adminDistrict = (this.location.address.locality ? this.location.address.locality : this.location.address.formattedAddress);
+      this.location.address.adminDistrict = this.location.address.locality
+        ? this.location.address.locality
+        : this.location.address.formattedAddress;
       mapService.mapLocationDetails(this.location);
 
-      this.map = new Microsoft.Maps.Map('#my-map',
-        {
-          credentials: environment.bingmap_key
-        });
+      this.map = new Microsoft.Maps.Map("#my-map", {
+        credentials: environment.bingmap_key
+      });
       this.map.entities.push(this.pin);
       let bounds = this.location.bestView;
       this.map.setView({ bounds: bounds, padding: 30 });
@@ -90,25 +105,28 @@ export class MapService {
 
   updateLocation(): LocationDetails {
     if (environment.map_type) {
-      this.locationDetails = JSON.parse(sessionStorage.getItem("globalSearchMapLocation"));
+      this.locationDetails = JSON.parse(
+        sessionStorage.getItem("globalSearchMapLocation")
+      );
       if (this.locationDetails.location.state) {
-        this.stateCodeService.getStateCode(this.locationDetails.location.state)
-          .subscribe(
-          response => {
-            this.stateCode = response ? response:"Default";
+        this.stateCodeService
+          .getStateCode(this.locationDetails.location.state)
+          .subscribe(response => {
+            this.stateCode = response ? response : "Default";
             this.locationDetails.location.state = this.stateCode;
             this.setGlobalMapLocationDetails();
           });
       } else {
         this.setGlobalMapLocationDetails();
       }
-    }
-    else {
-      this.locationDetails = JSON.parse(sessionStorage.getItem("localSearchMapLocation"));
+    } else {
+      this.locationDetails = JSON.parse(
+        sessionStorage.getItem("localSearchMapLocation")
+      );
       if (this.locationDetails.location.state) {
-        this.stateCodeService.getStateCode(this.locationDetails.location.state)
-          .subscribe(
-          response => {
+        this.stateCodeService
+          .getStateCode(this.locationDetails.location.state)
+          .subscribe(response => {
             this.stateCode = response;
             this.locationDetails.location.state = this.stateCode;
             this.setLocalMapLocationDetails();
@@ -121,8 +139,11 @@ export class MapService {
   }
 
   setGlobalMapLocationDetails() {
-    sessionStorage.setItem("globalMapLocation", JSON.stringify(this.locationDetails));
-    sessionStorage.removeItem('globalSearchMapLocation');
+    sessionStorage.setItem(
+      "globalMapLocation",
+      JSON.stringify(this.locationDetails)
+    );
+    sessionStorage.removeItem("globalSearchMapLocation");
     this.notifyLocation.next(this.locationDetails);
   }
 
@@ -133,94 +154,108 @@ export class MapService {
 
   mapLocationDetails(location) {
     this.location = location;
-    this.mapLocation = { state: '', city: '', county: '', zipCode: '' };
-    this.displayLocation = { locality: '', address: '' };
-    this.location.address.adminDistrict = (this.location.address.adminDistrict ? this.location.address.adminDistrict : this.location.address.formattedAddress);
+    this.mapLocation = { state: "", city: "", county: "", zipCode: "" };
+    this.displayLocation = { locality: "", address: "" };
+    this.location.address.adminDistrict = this.location.address.adminDistrict
+      ? this.location.address.adminDistrict
+      : this.location.address.formattedAddress;
     this.mapLocation.state = this.location.address.adminDistrict;
     this.mapLocation.county = this.location.address.district;
     this.mapLocation.city = this.location.address.locality;
     this.mapLocation.zipCode = this.location.address.postalCode;
-
     let country: string;
     let fullStateName = this.location.address.formattedAddress;
-    if (fullStateName.indexOf(',') > 0) {
+    if (fullStateName.indexOf(",") > 0) {
       country = this.location.address.countryRegion;
-      this.state = fullStateName.slice(fullStateName.indexOf(',') + 2, fullStateName.length);
+      this.state = fullStateName.slice(
+        fullStateName.indexOf(",") + 2,
+        fullStateName.length
+      );
       this.locationDetails = { country: country, formattedAddress: this.state };
     }
     if (this.location.address.postalCode === undefined) {
       if (this.location.address.locality === undefined) {
         if (this.location.address.district === undefined) {
           this.locAddress = this.location.address.adminDistrict;
-        }
-        else {
+        } else {
           this.locAddress = this.location.address.district;
         }
-      }
-      else {
+      } else {
         this.locAddress = this.location.address.locality;
       }
-    }
-    else {
+    } else {
       this.locAddress = this.location.address.postalCode;
     }
     this.displayLocation.locality = this.locAddress;
     this.displayLocation.address = this.location.address.adminDistrict;
-    this.locationDetails = { location: this.mapLocation, displayLocationDetails: this.displayLocation, country: country, formattedAddress: this.state }
+    this.locationDetails = {
+      location: this.mapLocation,
+      displayLocationDetails: this.displayLocation,
+      country: country,
+      formattedAddress: this.state
+    };
     if (environment.map_type) {
       this.locationDetails.location.city = "";
       this.locationDetails.location.county = "";
       this.locationDetails.location.zipCode = "";
-      sessionStorage.setItem("globalSearchMapLocation", JSON.stringify(this.locationDetails));
-    }
-    else {
-      if ((this.location.entitySubType != undefined &&
-        this.location.entitySubType.indexOf("Postcode") !== -1)
-        || (this.location.entityType != undefined &&
-          this.location.entityType.indexOf("Postcode") !== -1)) {
+      sessionStorage.setItem(
+        "globalSearchMapLocation",
+        JSON.stringify(this.locationDetails)
+      );
+    } else {
+      if (
+        (this.location.entitySubType != undefined &&
+          this.location.entitySubType.indexOf("Postcode") !== -1) ||
+        (this.location.entityType != undefined &&
+          this.location.entityType.indexOf("Postcode") !== -1)
+      ) {
         this.mapLocation.state = "";
         this.mapLocation.county = "";
         this.mapLocation.city = "";
-      }
-      else if ((this.location.entitySubType != undefined &&
-        this.location.entitySubType.indexOf("AdminDivision1") !== -1)
-        || (this.location.entityType != undefined &&
-          this.location.entityType.indexOf("AdminDivision1") !== -1)) {
+      } else if (
+        (this.location.entitySubType != undefined &&
+          this.location.entitySubType.indexOf("AdminDivision1") !== -1) ||
+        (this.location.entityType != undefined &&
+          this.location.entityType.indexOf("AdminDivision1") !== -1)
+      ) {
         this.mapLocation.county = "";
         this.mapLocation.city = "";
         this.mapLocation.zipCode = "";
-      }
-      else if ((this.location.entitySubType != undefined &&
-        this.location.entitySubType.indexOf("AdminDivision2") !== -1)
-        || (this.location.entityType != undefined &&
-          this.location.entityType.indexOf("AdminDivision2") !== -1)) {
+      } else if (
+        (this.location.entitySubType != undefined &&
+          this.location.entitySubType.indexOf("AdminDivision2") !== -1) ||
+        (this.location.entityType != undefined &&
+          this.location.entityType.indexOf("AdminDivision2") !== -1)
+      ) {
         this.mapLocation.state = "";
         this.mapLocation.city = "";
         this.mapLocation.zipCode = "";
-      }
-      else if ((this.location.entitySubType != undefined &&
-        this.location.entitySubType.indexOf("PopulatedPlace") !== -1)
-        || (this.location.entityType != undefined &&
-          this.location.entityType.indexOf("PopulatedPlace") !== -1)) {
+      } else if (
+        (this.location.entitySubType != undefined &&
+          this.location.entitySubType.indexOf("PopulatedPlace") !== -1) ||
+        (this.location.entityType != undefined &&
+          this.location.entityType.indexOf("PopulatedPlace") !== -1)
+      ) {
         this.mapLocation.state = "";
         this.mapLocation.county = "";
         this.mapLocation.zipCode = "";
       }
       this.locationDetails.location = this.mapLocation;
-      sessionStorage.setItem("localSearchMapLocation", JSON.stringify(this.locationDetails));
+      sessionStorage.setItem(
+        "localSearchMapLocation",
+        JSON.stringify(this.locationDetails)
+      );
     }
   }
-
 }
 
 function suggestionSelected(result) {
-  let map = new Microsoft.Maps.Map('#my-map',
-    {
-      credentials: environment.bingmap_key
-    });
+  let map = new Microsoft.Maps.Map("#my-map", {
+    credentials: environment.bingmap_key
+  });
   map.entities.clear();
   var pin = new Microsoft.Maps.Pushpin(result.location, {
-    icon: '../../assets/images/location/poi_custom.png'
+    icon: "../../assets/images/location/poi_custom.png"
   });
   map.entities.push(pin);
   map.setView({ bounds: result.bestView, padding: 30 });

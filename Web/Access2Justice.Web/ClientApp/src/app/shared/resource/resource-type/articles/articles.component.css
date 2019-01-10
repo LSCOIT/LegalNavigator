@@ -10,7 +10,7 @@ h2 {
   margin-bottom: 40px;
 }
 
-@media only screen and (min-width : 992px) {
+@media only screen and (min-width: 992px) {
   .col-md-4 {
     padding-left: 5%;
   }
@@ -19,5 +19,5 @@ h2 {
 .newlines {
   white-space: pre-line;
   margin-top: -20px;
-  margin-bottom: -40px
+  margin-bottom: -40px;
 }

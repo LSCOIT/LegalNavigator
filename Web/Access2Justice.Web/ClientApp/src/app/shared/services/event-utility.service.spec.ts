@@ -1,15 +1,17 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { inject, TestBed } from "@angular/core/testing";
+import { EventUtilityService } from "./event-utility.service";
 
-import { EventUtilityService } from './event-utility.service';
-
-describe('EventUtilityService', () => {
+describe("EventUtilityService", () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [EventUtilityService]
     });
   });
 
-  it('should be created', inject([EventUtilityService], (service: EventUtilityService) => {
-    expect(service).toBeTruthy();
-  }));
+  it("should be created", inject(
+    [EventUtilityService],
+    (service: EventUtilityService) => {
+      expect(service).toBeTruthy();
+    }
+  ));
 });

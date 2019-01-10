@@ -1,9 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 
 @Injectable()
 export class ArrayUtilityService {
-
-  constructor() { }
+  constructor() {}
 
   checkObjectExistInArray(objects, object): boolean {
     let isObjectExists = false;
@@ -14,5 +13,4 @@ export class ArrayUtilityService {
     });
     return isObjectExists;
   }
-
 }

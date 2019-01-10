@@ -1,18 +1,18 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs/Observable';
-import { api } from '../../../api/api';
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
+import { NgxSpinnerService } from "ngx-spinner";
+import { ToastrService } from "ngx-toastr";
+import { Observable } from "rxjs/Observable";
+import { api } from "../../../api/api";
 import { Global } from "../../global";
-import { ArrayUtilityService } from '../../shared/services/array-utility.service';
-import { IResourceFilter } from '../../shared/search/search-results/search-results.model';
-import { PersonalizedPlan, PersonalizedPlanTopic, ProfileResources, Resources, SavedResources, UserPlan, IntentInput } from './personalized-plan';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { LocationDetails } from '../../shared/map/map';
-import { Router } from '@angular/router';
+import { LocationDetails } from "../../shared/map/map";
+import { IResourceFilter } from "../../shared/search/search-results/search-results.model";
+import { ArrayUtilityService } from "../../shared/services/array-utility.service";
+import { IntentInput, PersonalizedPlan, PersonalizedPlanTopic, ProfileResources, Resources, SavedResources, UserPlan } from "./personalized-plan";
 
 const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  headers: new HttpHeaders({ "Content-Type": "application/json" })
 };
 @Injectable()
 export class PersonalizedPlanService {
@@ -27,29 +27,30 @@ export class PersonalizedPlanService {
   planDetailTags: any;
   tempPlanDetailTags: any;
   planDetails: any = [];
-  profileResources: ProfileResources = { oId: '', resourceTags: [], type: '' };
+  profileResources: ProfileResources = { oId: "", resourceTags: [], type: "" };
   savedResources: SavedResources;
   resourceTags: Array<SavedResources> = [];
   resourceIds: Array<string>;
   personalizedPlan: PersonalizedPlan;
-  userPersonalizedPlan: UserPlan = { oId: '', plan: this.personalizedPlan };
+  userPersonalizedPlan: UserPlan = { oId: "", plan: this.personalizedPlan };
   resourceIndex: number;
   tempResourceStorage: any = [];
   isIntent: boolean = false;
   intentInput: IntentInput;
   locationDetails: LocationDetails;
 
-  constructor(private http: HttpClient,
+  constructor(
+    private http: HttpClient,
     private arrayUtilityService: ArrayUtilityService,
     private toastr: ToastrService,
     private global: Global,
     private spinner: NgxSpinnerService,
-    private router: Router) { }
+    private router: Router
+  ) {}
 
   getActionPlanConditions(planId): Observable<any> {
-    let params = new HttpParams()
-      .set("personalizedPlanId", planId);
-    return this.http.get<any>(api.planUrl + '?' + params, httpOptions);
+    let params = new HttpParams().set("personalizedPlanId", planId);
+    return this.http.get<any>(api.planUrl + "?" + params, httpOptions);
   }
 
   getUserSavedResources(params): Observable<any> {
@@ -65,11 +66,19 @@ export class PersonalizedPlanService {
   }
 
   getPersonalizedResources(resourceInput: IResourceFilter) {
-    return this.http.put(api.getPersonalizedResourcesUrl, resourceInput, httpOptions);
+    return this.http.put(
+      api.getPersonalizedResourcesUrl,
+      resourceInput,
+      httpOptions
+    );
   }
 
   getTopicDetails(intentInput): Observable<any> {
-    return this.http.post<any>(api.getTopicDetailsUrl, intentInput, httpOptions);
+    return this.http.post<any>(
+      api.getTopicDetailsUrl,
+      intentInput,
+      httpOptions
+    );
   }
 
   getPlanDetails(topics, planDetailTags): any {
@@ -91,7 +100,11 @@ export class PersonalizedPlanService {
     this.planDetailTags = planDetailTags;
     this.topicsList = topicsList;
     this.tempPlanDetailTags = JSON.parse(JSON.stringify(this.planDetailTags));
-    for (let index = 0, planTagIndex = 0; index < this.topicsList.length; index++ , planTagIndex++) {
+    for (
+      let index = 0, planTagIndex = 0;
+      index < this.topicsList.length;
+      index++, planTagIndex++
+    ) {
       if (!this.topicsList[index].isSelected) {
         this.tempPlanDetailTags.topics.splice(planTagIndex, 1);
         planTagIndex--;
@@ -102,7 +115,7 @@ export class PersonalizedPlanService {
 
   saveResourcesToUserProfile() {
     this.resoureStorage = [];
-    this.savedResources = { itemId: '', resourceType: '', resourceDetails: {} };
+    this.savedResources = { itemId: "", resourceType: "", resourceDetails: {} };
     if (sessionStorage.getItem(this.global.sessionKey)) {
       this.resoureStorage = sessionStorage.getItem(this.global.sessionKey);
       if (this.resoureStorage && this.resoureStorage.length > 0) {
@@ -121,7 +134,9 @@ export class PersonalizedPlanService {
   }
 
   getTopicsFromGuidedAssistant() {
-    this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+    this.locationDetails = JSON.parse(
+      sessionStorage.getItem("globalMapLocation")
+    );
     this.intentInput = {
       location: this.locationDetails.location,
       intents: JSON.parse(sessionStorage.getItem(this.global.topicsSessionKey))
@@ -137,8 +152,17 @@ export class PersonalizedPlanService {
     this.getTopicDetails(intentInput).subscribe(response => {
       if (response && response.length > 0) {
         response.forEach(topic => {
-          this.savedResources = { itemId: topic.id, resourceType: topic.resourceType, resourceDetails: {} };
-          if (!(this.arrayUtilityService.checkObjectExistInArray(this.resourceTags, this.savedResources))) {
+          this.savedResources = {
+            itemId: topic.id,
+            resourceType: topic.resourceType,
+            resourceDetails: {}
+          };
+          if (
+            !this.arrayUtilityService.checkObjectExistInArray(
+              this.resourceTags,
+              this.savedResources
+            )
+          ) {
             this.resourceTags.push(this.savedResources);
           }
         });
@@ -157,26 +181,30 @@ export class PersonalizedPlanService {
     let params = new HttpParams()
       .set("oid", this.global.userId)
       .set("type", "resources");
-    this.getUserSavedResources(params)
-      .subscribe(response => {
-        if (response) {
-          this.spinner.show();
-          response.forEach(property => {
-            if (property.resources) {
-              property.resources.forEach(resource => {
-                this.resourceTags.push(resource);
-              });
-            }
-          });
-        }
-        this.checkExistingSavedResources(savedResources);
-      });
+    this.getUserSavedResources(params).subscribe(response => {
+      if (response) {
+        this.spinner.show();
+        response.forEach(property => {
+          if (property.resources) {
+            property.resources.forEach(resource => {
+              this.resourceTags.push(resource);
+            });
+          }
+        });
+      }
+      this.checkExistingSavedResources(savedResources);
+    });
   }
 
   checkExistingSavedResources(savedResources) {
     savedResources.forEach(savedResource => {
-      if (this.arrayUtilityService.checkObjectExistInArray(this.resourceTags, savedResource)) {
-        this.showWarning('Resource already saved to profile');
+      if (
+        this.arrayUtilityService.checkObjectExistInArray(
+          this.resourceTags,
+          savedResource
+        )
+      ) {
+        this.showWarning("Resource already saved to profile");
         this.spinner.hide();
       } else {
         this.resourceIndex++;
@@ -194,16 +222,21 @@ export class PersonalizedPlanService {
   }
 
   saveResourcesToProfile(resourceTags) {
-    this.profileResources = { oId: this.global.userId, resourceTags: resourceTags, type: 'resources' };
-    this.saveResources(this.profileResources)
-      .subscribe(() => {
-        this.spinner.hide();
-        if (this.isIntent) {
-          this.showSuccess("Topics added to Profile. You can view them later once you've completed the guided assistant.");
-        } else {
-          this.showSuccess('Resource saved to profile');
-        }
-      });
+    this.profileResources = {
+      oId: this.global.userId,
+      resourceTags: resourceTags,
+      type: "resources"
+    };
+    this.saveResources(this.profileResources).subscribe(() => {
+      this.spinner.hide();
+      if (this.isIntent) {
+        this.showSuccess(
+          "Topics added to Profile. You can view them later once you've completed the guided assistant."
+        );
+      } else {
+        this.showSuccess("Resource saved to profile");
+      }
+    });
   }
 
   saveBookmarkedResource(savedResource) {
@@ -214,15 +247,23 @@ export class PersonalizedPlanService {
       this.tempResourceStorage = tempStorage;
     }
     if (savedResource) {
-      if (!this.arrayUtilityService.checkObjectExistInArray(this.tempResourceStorage, savedResource)) {
+      if (
+        !this.arrayUtilityService.checkObjectExistInArray(
+          this.tempResourceStorage,
+          savedResource
+        )
+      ) {
         this.tempResourceStorage.push(savedResource);
-        this.showSuccess('Resource saved to session');
+        this.showSuccess("Resource saved to session");
       } else {
-        this.showWarning('Resource already saved to session');
+        this.showWarning("Resource already saved to session");
       }
     }
     if (this.tempResourceStorage.length > 0) {
-      sessionStorage.setItem(this.global.sessionKey, JSON.stringify(this.tempResourceStorage));
+      sessionStorage.setItem(
+        this.global.sessionKey,
+        JSON.stringify(this.tempResourceStorage)
+      );
     }
   }
 
@@ -241,5 +282,4 @@ export class PersonalizedPlanService {
   showWarning(message) {
     this.toastr.warning(message);
   }
-
 }

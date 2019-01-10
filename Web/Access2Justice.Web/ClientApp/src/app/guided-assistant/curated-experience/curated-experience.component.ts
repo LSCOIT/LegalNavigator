@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 
 @Component({
-  selector: 'app-curated-experience',
-  templateUrl: './curated-experience.component.html',
-  styleUrls: ['./curated-experience.component.css']
+  selector: "app-curated-experience",
+  templateUrl: "./curated-experience.component.html",
+  styleUrls: ["./curated-experience.component.css"]
 })
 export class CuratedExperienceComponent implements OnInit {
   questionsRemaining: number;
@@ -13,7 +13,7 @@ export class CuratedExperienceComponent implements OnInit {
   prevQuestionProgress: number = 0;
   newQuestionProgress: number;
 
-  constructor() { }
+  constructor() {}
 
   receiveQuestionsRemaining($event) {
     this.questionsRemaining = $event;
@@ -39,7 +39,5 @@ export class CuratedExperienceComponent implements OnInit {
     this.prevQuestionProgress = this.questionProgress;
   }
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

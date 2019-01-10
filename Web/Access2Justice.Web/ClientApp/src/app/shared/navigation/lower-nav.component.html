@@ -1,58 +1,165 @@
-<div [className]="my_Class" id="dimmer"></div>
+<div [className]="myClass" id="dimmer"></div>
 <div *ngIf="search" class="lower-nav no-print">
   <div class="container">
     <a id="logo" aria-label="Logo" [routerLink]="['/']"></a>
     <div class="left-menu">
       <ul class="mobile-hidden">
-        <li><a [routerLink]="['/' + home?.button?.buttonLink]" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">{{home?.button?.buttonText}}</a></li>
-        <li><a id="guided-assistant-navigation-link" [routerLink]="['/' + guidedAssistant?.button?.buttonLink]" routerLinkActive="active">{{guidedAssistant?.button?.buttonText}}</a></li>
-        <li><a id="topics-and-resources-navigation-link" [routerLink]="['/' + topicAndResources?.button?.buttonLink]" routerLinkActive="active">{{topicAndResources?.button?.buttonText}}</a></li>
-        <li><a id="about-navigation-link" [routerLink]="['/' + about?.button?.buttonLink]" routerLinkActive="active">{{about?.button?.buttonText}}</a></li>
+        <li>
+          <a
+            [routerLink]="['/' + home?.button?.buttonLink]"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            >{{ home?.button?.buttonText }}</a
+          >
+        </li>
+        <li>
+          <a
+            id="guided-assistant-navigation-link"
+            [routerLink]="['/' + guidedAssistant?.button?.buttonLink]"
+            routerLinkActive="active"
+            >{{ guidedAssistant?.button?.buttonText }}</a
+          >
+        </li>
+        <li>
+          <a
+            id="topics-and-resources-navigation-link"
+            [routerLink]="['/' + topicAndResources?.button?.buttonLink]"
+            routerLinkActive="active"
+            >{{ topicAndResources?.button?.buttonText }}</a
+          >
+        </li>
+        <li>
+          <a
+            id="about-navigation-link"
+            [routerLink]="['/' + about?.button?.buttonLink]"
+            routerLinkActive="active"
+            >{{ about?.button?.buttonText }}</a
+          >
+        </li>
       </ul>
     </div>
     <div class="right-menu">
-      <button id="search-phrase-tab" class="search-form" (click)="toggleSearch()" *ngIf="!showSearch">
-        <img *ngIf="search.image.source" class="search-icon" [src]="blobUrl + search?.image?.source" aria-hidden="true" />
-        <span class="inline search-text">{{search?.button?.buttonText}}</span>
+      <button
+        id="search-phrase-tab"
+        class="search-form"
+        (click)="toggleSearch()"
+        *ngIf="!showSearch"
+      >
+        <img
+          *ngIf="search.image.source"
+          class="search-icon"
+          [src]="blobUrl + search?.image?.source"
+          aria-hidden="true"
+        />
+        <span class="inline search-text">{{ search?.button?.buttonText }}</span>
       </button>
       <div id="mobile-menu">
-        <img src="./assets/images/small-icons/menu_bars.svg" aria-label="Toggle Menu" class="web-hidden" id="nav-bar-toggle" *ngIf="showMenu" (click)="openNav()">
+        <img
+          src="./assets/images/small-icons/menu_bars.svg"
+          aria-label="Toggle Menu"
+          class="web-hidden"
+          id="nav-bar-toggle"
+          *ngIf="showMenu"
+          (click)="openNav()"
+        />
         <span *ngIf="showMenu">Menu</span>
-        <img *ngIf="!showMenu" src="./assets/images/small-icons/close.svg" class="nav-icon" id="search-close" (click)="toggleSearch()">
+        <img
+          *ngIf="!showMenu"
+          src="./assets/images/small-icons/close.svg"
+          class="nav-icon"
+          id="search-close"
+          (click)="toggleSearch()"
+        />
       </div>
     </div>
     <app-search *ngIf="showSearch"></app-search>
     <div #sidenav id="sidenav">
-      <span class="search-form" id="nav-search" (click)="toggleSearch(); closeNav()" *ngIf="!showSearch">
-        <img *ngIf="search.image.source" class="search-icon" [src]="blobUrl + search?.image?.source" aria-hidden="true" />
-        <span id="search-phrase-tab" class="inline search-text">{{search?.button?.buttonText}}</span>
+      <span
+        class="search-form"
+        id="nav-search"
+        (click)="toggleSearch(); closeNav()"
+        *ngIf="!showSearch"
+      >
+        <img
+          *ngIf="search.image.source"
+          class="search-icon"
+          [src]="blobUrl + search?.image?.source"
+          aria-hidden="true"
+        />
+        <span id="search-phrase-tab" class="inline search-text">{{
+          search?.button?.buttonText
+        }}</span>
       </span>
-      <img class="nav-icon closebtn" src="./assets/images/small-icons/close.svg" aria-label="Close button" (click)="closeNav()">
+      <img
+        class="nav-icon closebtn"
+        src="./assets/images/small-icons/close.svg"
+        aria-label="Close button"
+        (click)="closeNav()"
+      />
       <ul class="sidenav-menu" (click)="closeNav()">
-        <li id="home-nav"><a tabindex="-1" [routerLink]="['/' + home?.button?.buttonLink]">{{home?.button?.buttonText}}</a></li>
+        <li id="home-nav">
+          <a tabindex="-1" [routerLink]="['/' + home?.button?.buttonLink]">{{
+            home?.button?.buttonText
+          }}</a>
+        </li>
         <li class="vertical-line"></li>
-        <li><a tabindex="-1" [routerLink]="['/' + guidedAssistant?.button?.buttonLink]">{{guidedAssistant?.button?.buttonText}}</a></li>
+        <li>
+          <a
+            tabindex="-1"
+            [routerLink]="['/' + guidedAssistant?.button?.buttonLink]"
+            >{{ guidedAssistant?.button?.buttonText }}</a
+          >
+        </li>
         <li class="vertical-line"></li>
-        <li><a tabindex="-1" [routerLink]="['/' + topicAndResources?.button?.buttonLink]">{{topicAndResources?.button?.buttonText}}</a></li>
+        <li>
+          <a
+            tabindex="-1"
+            [routerLink]="['/' + topicAndResources?.button?.buttonLink]"
+            >{{ topicAndResources?.button?.buttonText }}</a
+          >
+        </li>
         <li class="vertical-line"></li>
-        <li><a tabindex="-1" [routerLink]="['/' + about?.button?.buttonLink]">{{about?.button?.buttonText}}</a></li>
+        <li>
+          <a tabindex="-1" [routerLink]="['/' + about?.button?.buttonLink]">{{
+            about?.button?.buttonText
+          }}</a>
+        </li>
       </ul>
       <div class="bottom-menu">
         <ul>
           <li *ngIf="privacyPromise" (click)="closeNav()">
-            <a tabindex="-1" [routerLink]="['/' + privacyPromise?.button?.buttonLink]">
-              <img *ngIf="privacyPromise.image.source" class="nav-icon" [src]="blobUrl + privacyPromise?.image?.source" aria-hidden="true"/>
-              {{privacyPromise?.button?.buttonText}}
+            <a
+              tabindex="-1"
+              [routerLink]="['/' + privacyPromise?.button?.buttonLink]"
+            >
+              <img
+                *ngIf="privacyPromise.image.source"
+                class="nav-icon"
+                [src]="blobUrl + privacyPromise?.image?.source"
+                aria-hidden="true"
+              />
+              {{ privacyPromise?.button?.buttonText }}
             </a>
           </li>
           <li *ngIf="helpAndFAQ" (click)="closeNav()">
-            <a tabindex="-1" [routerLink]="['/'+ helpAndFAQ?.button?.buttonLink]">
-              <img *ngIf="helpAndFAQ.image.source" class="nav-icon" [src]="blobUrl + helpAndFAQ?.image?.source" aria-hidden="true"/>
-              {{helpAndFAQ?.button?.buttonText}}
+            <a
+              tabindex="-1"
+              [routerLink]="['/' + helpAndFAQ?.button?.buttonLink]"
+            >
+              <img
+                *ngIf="helpAndFAQ.image.source"
+                class="nav-icon"
+                [src]="blobUrl + helpAndFAQ?.image?.source"
+                aria-hidden="true"
+              />
+              {{ helpAndFAQ?.button?.buttonText }}
             </a>
           </li>
           <li>
-              <app-login (sendProfileOptionClickEvent)="closeNav()" [login]="login"></app-login>
+            <app-login
+              (sendProfileOptionClickEvent)="closeNav()"
+              [login]="login"
+            ></app-login>
           </li>
         </ul>
       </div>

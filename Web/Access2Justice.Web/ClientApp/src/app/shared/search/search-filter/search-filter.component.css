@@ -29,7 +29,8 @@ li:last-child a {
   border: none;
 }
 
-.btn.focus, .btn:focus {
+.btn.focus,
+.btn:focus {
   box-shadow: none;
 }
 
@@ -48,7 +49,7 @@ li:last-child a {
 }
 
 .dropdown-menu {
-  border: 1px solid #7E7E7E;
+  border: 1px solid #7e7e7e;
   border-radius: 0 0 5px 5px;
   width: 175px;
   top: 86% !important;
@@ -84,10 +85,10 @@ li:last-child a {
 }
 
 .button-highlight {
-  background-color: #FFF;
+  background-color: #fff;
 }
 
-@media only screen and (min-width : 992px) {
+@media only screen and (min-width: 992px) {
   li a {
     padding: 7px 20px;
     font-size: 16px;
@@ -120,6 +121,6 @@ li:last-child a {
   }
 
   .button-highlight {
-    background-color: #D9F2F8;
+    background-color: #d9f2f8;
   }
 }

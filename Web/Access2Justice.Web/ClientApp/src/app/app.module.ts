@@ -1,51 +1,41 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
-import { AdminModule } from './admin/admin.module';
-import { AppRoutingModule } from './app-routing.module';
-import { SharedModule } from './shared/shared.module';
-
-import {
-  AccordionModule,
-  BsDropdownModule,
-  CarouselModule,
-  CollapseModule,
-  ModalModule,
-  ProgressbarModule,
-  ProgressbarConfig,
-  TabsModule
-} from 'ngx-bootstrap';
-import { MsalModule } from '@azure/msal-angular';
-import { NgxSpinnerModule } from 'ngx-spinner';
-import { AppComponent } from './app.component';
-import { AboutComponent } from './about/about.component';
-import { GuidedAssistantComponent } from './guided-assistant/guided-assistant.component';
-import { HelpFaqsComponent } from './help-faqs/help-faqs.component';
-import { HomeComponent } from './home/home.component';
-import { PrivacyPromiseComponent } from './privacy-promise/privacy-promise.component';
-import { QuestionComponent } from './guided-assistant/question/question.component';
-import { QuestionService } from './guided-assistant/question/question.service';
-import { TopicService } from './topics-resources/shared/topic.service';
-import { SubtopicsComponent } from './topics-resources/subtopic/subtopics.component';
-import { SubtopicDetailComponent } from './topics-resources/subtopic/subtopic-detail.component';
-import { TopicsResourcesComponent } from './topics-resources/topics-resources.component';
-import { TopicsComponent } from './topics-resources/topic/topics.component';
-import { PersonalizedPlanComponent } from './guided-assistant/personalized-plan/personalized-plan.component';
-import { ProfileComponent } from './profile/profile.component';
-import { BreadcrumbService } from './topics-resources/shared/breadcrumb.service';
-import { PersonalizedPlanService } from './guided-assistant/personalized-plan/personalized-plan.service';
-import { DidYouKnowComponent } from './guided-assistant/did-you-know/did-you-know.component';
-import { ArticlesResourcesComponent } from './guided-assistant/articles-resources/articles-resources.component';
-import { CuratedExperienceComponent } from './guided-assistant/curated-experience/curated-experience.component';
-import { StaticResourceService } from './shared/services/static-resource.service';
-import { ResponseInterceptor } from './response-interceptor';
-import { Global } from './global';
-import { CuratedExperienceResultComponent } from './guided-assistant/curated-experience-result/curated-experience-result.component';
-import { ProfileResolver } from './app-resolver/profile-resolver.service';
-import { TokenInterceptor } from './token-interceptor';
-import { environment } from '../environments/environment';
-import { PipeModule } from './shared/pipe/pipe.module';
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
+import { NgModule } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { BrowserModule } from "@angular/platform-browser";
+import { MsalModule } from "@azure/msal-angular";
+import { AccordionModule, BsDropdownModule, CarouselModule, CollapseModule, ModalModule, ProgressbarConfig, ProgressbarModule, TabsModule } from "ngx-bootstrap";
+import { NgxSpinnerModule } from "ngx-spinner";
+import { environment } from "../environments/environment";
+import { AboutComponent } from "./about/about.component";
+import { AdminModule } from "./admin/admin.module";
+import { ProfileResolver } from "./app-resolver/profile-resolver.service";
+import { AppRoutingModule } from "./app-routing.module";
+import { AppComponent } from "./app.component";
+import { Global } from "./global";
+import { ArticlesResourcesComponent } from "./guided-assistant/articles-resources/articles-resources.component";
+import { CuratedExperienceResultComponent } from "./guided-assistant/curated-experience-result/curated-experience-result.component";
+import { CuratedExperienceComponent } from "./guided-assistant/curated-experience/curated-experience.component";
+import { DidYouKnowComponent } from "./guided-assistant/did-you-know/did-you-know.component";
+import { GuidedAssistantComponent } from "./guided-assistant/guided-assistant.component";
+import { PersonalizedPlanComponent } from "./guided-assistant/personalized-plan/personalized-plan.component";
+import { PersonalizedPlanService } from "./guided-assistant/personalized-plan/personalized-plan.service";
+import { QuestionComponent } from "./guided-assistant/question/question.component";
+import { QuestionService } from "./guided-assistant/question/question.service";
+import { HelpFaqsComponent } from "./help-faqs/help-faqs.component";
+import { HomeComponent } from "./home/home.component";
+import { PrivacyPromiseComponent } from "./privacy-promise/privacy-promise.component";
+import { ProfileComponent } from "./profile/profile.component";
+import { ResponseInterceptor } from "./response-interceptor";
+import { PipeModule } from "./shared/pipe/pipe.module";
+import { StaticResourceService } from "./shared/services/static-resource.service";
+import { SharedModule } from "./shared/shared.module";
+import { TokenInterceptor } from "./token-interceptor";
+import { BreadcrumbService } from "./topics-resources/shared/breadcrumb.service";
+import { TopicService } from "./topics-resources/shared/topic.service";
+import { SubtopicDetailComponent } from "./topics-resources/subtopic/subtopic-detail.component";
+import { SubtopicsComponent } from "./topics-resources/subtopic/subtopics.component";
+import { TopicsComponent } from "./topics-resources/topic/topics.component";
+import { TopicsResourcesComponent } from "./topics-resources/topics-resources.component";
 
 @NgModule({
   declarations: [
@@ -65,7 +55,8 @@ import { PipeModule } from './shared/pipe/pipe.module';
     DidYouKnowComponent,
     ArticlesResourcesComponent,
     CuratedExperienceComponent,
-    CuratedExperienceResultComponent],
+    CuratedExperienceResultComponent
+  ],
   imports: [
     BrowserModule,
     FormsModule,
@@ -87,7 +78,7 @@ import { PipeModule } from './shared/pipe/pipe.module';
       consentScopes: environment.consentScopes,
       redirectUri: environment.redirectUri,
       navigateToLoginRequestUrl: environment.navigateToLoginRequestUrl,
-      postLogoutRedirectUri: environment.postLogoutRedirectUri      
+      postLogoutRedirectUri: environment.postLogoutRedirectUri
     }),
     PipeModule.forRoot()
   ],
@@ -96,7 +87,8 @@ import { PipeModule } from './shared/pipe/pipe.module';
       provide: HTTP_INTERCEPTORS,
       useClass: ResponseInterceptor,
       multi: true
-    }, {
+    },
+    {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true
@@ -114,5 +106,4 @@ import { PipeModule } from './shared/pipe/pipe.module';
   ],
   bootstrap: [AppComponent]
 })
-
-export class AppModule { }
+export class AppModule {}
