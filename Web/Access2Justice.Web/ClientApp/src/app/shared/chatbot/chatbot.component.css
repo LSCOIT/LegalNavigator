@@ -1,6 +1,6 @@
 img {
-  width: 35px;
-  height: 35px;
+  width: 25px;
+  height: 25px;
   margin: 0 auto;
 }
 
@@ -14,12 +14,12 @@ img {
 
 .chat-icon {
   color: #fff;
-  font-size: 14px;
+  font-size: 12px;
   text-align: center;
   margin-top: 18px;
   cursor: pointer;
-  width: 90px;
-  height: 90px;
+  width: 75px;
+  height: 75px;
   background: #0d3fb8;
   border-radius: 50%;
   padding-top: 15px;
@@ -110,4 +110,22 @@ chat-header img {
 .user-input {
   margin: 10px 0 10px 20%;
   background-color: #d9f2f8;
+}
+
+.close {
+  width: 15px;
+  height: 15px;
+}
+
+@media only screen and (min-width: 768px) {
+  img {
+    width: 35px;
+    height: 35px;
+  }
+
+  .chat-icon {
+    font-size: 14px;
+    width: 90px;
+    height: 90px;
+  }
 }
