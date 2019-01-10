@@ -53,3 +53,14 @@ h4 {
 .close {
   margin-top: -15px;
 }
+
+#share img {
+  display: block;
+  margin: 0 auto;
+}
+
+@media only screen and (min-width: 768px) {
+  #share img {
+    display: inline-block;
+  }
+}

@@ -4,16 +4,18 @@
   #breadcrumb
 ></app-breadcrumb>
 <div class="row">
-  <div class="col-md-6 col-sm-12">
-    <h2>{{ resource.name }}</h2>
-    <p>{{ resource?.resourceCategory }}</p>
-  </div>
-  <div class="col-md-6 col-sm-12 user-action">
+  <div class="col-md-6 col-sm-12 user-action mobile-hidden pull-right">
     <app-user-action-sidebar
       [mobile]="true"
       [id]="resource.id"
       [type]="resource.resourceType"
     ></app-user-action-sidebar>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-10 col-sm-12">
+    <h2>{{ resource.name }}</h2>
+    <p>{{ resource?.resourceCategory }}</p>
   </div>
 </div>
 <div class="row">
@@ -190,5 +192,14 @@
         </ul>
       </div>
     </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12 user-action web-hidden">
+    <app-user-action-sidebar
+      [mobile]="true"
+      [id]="resource.id"
+      [type]="resource.resourceType"
+    ></app-user-action-sidebar>
   </div>
 </div>

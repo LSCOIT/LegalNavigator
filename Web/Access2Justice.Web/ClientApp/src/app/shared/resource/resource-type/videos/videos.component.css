@@ -7,6 +7,14 @@ iframe {
   iframe {
     height: 300px;
   }
+
+  .mobile-hidden {
+    display: inline-block;
+  }
+
+  .web-hidden {
+    display: none;
+  }
 }
 
 @media only screen and (min-width: 992px) {

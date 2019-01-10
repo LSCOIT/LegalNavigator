@@ -6,7 +6,7 @@
         {{ subtopics.name }}
       </h1>
     </div>
-    <div class="col-md-6 col-sm-12 user-action">
+    <div class="col-md-6 col-sm-12 user-action mobile-hidden">
       <app-user-action-sidebar
         [mobile]="true"
         [id]="activeSubtopicParam"
@@ -133,6 +133,15 @@
       <app-service-org-sidebar
         (showMoreOrganizations)="clickSeeMoreOrganizationsFromSubtopicDetails($event)">
       </app-service-org-sidebar>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 user-action web-hidden">
+      <app-user-action-sidebar
+        [mobile]="true"
+        [id]="activeSubtopicParam"
+        [type]="type"
+      ></app-user-action-sidebar>
     </div>
   </div>
 </div>

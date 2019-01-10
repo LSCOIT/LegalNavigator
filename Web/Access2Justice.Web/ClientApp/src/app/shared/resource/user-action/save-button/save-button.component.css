@@ -1,6 +1,7 @@
 #save {
   cursor: pointer;
   display: block;
+  margin: 0 auto;
 }
 
 #save:hover {
@@ -10,4 +11,15 @@
 
 .resource-saved {
   color: #ccc;
+}
+
+#save img {
+  display: block;
+  margin: 0 auto;
+}
+
+@media only screen and (min-width: 768px) {
+  #save img {
+    display: inline-block;
+  }
 }

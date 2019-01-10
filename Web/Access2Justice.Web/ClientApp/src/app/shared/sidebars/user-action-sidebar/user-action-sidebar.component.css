@@ -12,6 +12,10 @@
   margin-bottom: 20px;
 }
 
+.user-action li {
+  min-width: 75px;
+}
+
 @media only screen and (min-width: 768px) {
   .mobile-hidden {
     display: inline-block;
@@ -21,5 +25,9 @@
     display: none;
     background-color: #fff;
     margin: 0 auto;
+  }
+
+  .user-action {
+    float: right;
   }
 }

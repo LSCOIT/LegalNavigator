@@ -3,10 +3,11 @@ import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: "app-print-button",
-  template: `
+  template:`
     <button
       (click)="print()"
       class="user-button"
+      id="print"
       [ngClass]="{ link: addLinkClass, '': !addLinkClass }"
     >
       <img
