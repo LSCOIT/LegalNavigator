@@ -84,8 +84,8 @@
       </div>
     </div>
     <div *ngIf="isInternalResource" class="col-md-4 col-sm-12 pull-right">
-      <app-map-results [searchResource]="searchResults"></app-map-results>
-      <div class="row guided-assistant">
+      <app-map-results [searchResource]="searchResults" (mapDisplayEvent)="receiveMapEvent($event)"></app-map-results>
+      <div class="guided-assistant" [ngClass]="{ '' : !showMap, 'row' : showMap }">
         <app-guided-assistant-sidebar
           [guidedAssistantId]="guidedAssistantId"
           [searchResultsData]="searchResults"

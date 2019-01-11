@@ -82,6 +82,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     topIntent: ""
   };
   isBindData: boolean;
+  showMap: boolean;
 
   constructor(
     private navigateDataService: NavigateDataService,
@@ -587,6 +588,10 @@ export class SearchResultsComponent implements OnInit, OnChanges {
         order: "DESC"
       };
     }
+  }
+
+  receiveMapEvent(event) {
+    this.showMap = event;
   }
 
   ngOnDestroy() {

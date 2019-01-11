@@ -1,3 +1,7 @@
+.row {
+  margin: 0 auto 20px auto;
+}
+
 .subtopic-heading {
   display: inline-block;
   margin-top: 0;
@@ -32,15 +36,15 @@
   .web-hidden {
     display: none;
   }
+
+  .user-action {
+    margin: 15px auto;
+  }
 }
 
 @media only screen and (min-width: 992px) {
   .sidebars {
     float: right;
-  }
-
-  .user-action {
-    margin-top: 15px;
   }
 
   .col-md-4 {

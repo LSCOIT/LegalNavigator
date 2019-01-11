@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from "@angular/core";
+import { Component, Input, OnChanges, Output, EventEmitter } from "@angular/core";
 import { environment } from "../../../../environments/environment";
 import { LatitudeLongitude, MapLocationResult } from "./map-results";
 import { MapResultsService } from "./map-results.service";
@@ -15,6 +15,7 @@ export class MapResultsComponent implements OnChanges {
   @Input() searchResource: any;
   showMap: boolean = false;
   validAddress = [];
+  @Output() mapDisplayEvent = new EventEmitter<boolean>();
 
   constructor(private mapResultsService: MapResultsService) {}
 
@@ -57,6 +58,7 @@ export class MapResultsComponent implements OnChanges {
       } else {
         this.showMap = false;
       }
+      this.mapDisplay();
     }
   }
 
@@ -82,7 +84,7 @@ export class MapResultsComponent implements OnChanges {
         .toString()
         .replace("\n", " ")
         .trim();
-      if (address.toLowerCase() != "na") {
+      if (address.toLowerCase() !== "na" || address.toLowerCase() !== "n/a") {
         this.mapResultsService
           .getLocationDetails(address, environment.bingmap_key)
           .subscribe(locationCoordinates => {
@@ -106,6 +108,10 @@ export class MapResultsComponent implements OnChanges {
         num++;
       }
     }
+  }
+
+  mapDisplay() {
+    this.mapDisplayEvent.emit(this.showMap);
   }
 
   ngOnChanges() {
