@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace A2JDbCreator
 {
@@ -27,11 +27,11 @@ namespace A2JDbCreator
             configuration.GetSection("DbCollections").Bind(dbCollections);
 
             // run the creator
-            CreateAsync(dbSettings, dbCollections);
+            CreateAsync(dbSettings, dbCollections).Wait();
             Console.ReadKey();
         }
 
-        private static async System.Threading.Tasks.Task CreateAsync(DbSettings dbSettings, List<DbCollection> collections)
+        private static async Task CreateAsync(DbSettings dbSettings, List<DbCollection> collections)
         {
             using (var client = new DocumentClient(new Uri(dbSettings.Endpoint), dbSettings.AuthKey))
             {
