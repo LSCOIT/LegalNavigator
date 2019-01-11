@@ -9,7 +9,8 @@ li {
   height: 200px;
 }
 
-a, a:hover {
+a,
+a:hover {
   color: #333;
   font-weight: 400;
 }
@@ -29,7 +30,7 @@ li:nth-child(2n) {
   margin: 20px auto;
 }
 
-@media only screen and (min-width : 768px) {
+@media only screen and (min-width: 768px) {
   li {
     height: 235px;
   }
@@ -55,7 +56,7 @@ li:nth-child(2n) {
   }
 }
 
-@media only screen and (min-width : 992px) {
+@media only screen and (min-width: 992px) {
   li {
     height: 290px;
   }

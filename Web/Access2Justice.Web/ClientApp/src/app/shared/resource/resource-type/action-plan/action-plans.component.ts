@@ -1,20 +1,18 @@
-import { Component, Input, EventEmitter, Output, TemplateRef } from '@angular/core';
-import { PlanTopic, PersonalizedPlan, PlanStep, PersonalizedPlanTopic } from '../../../../guided-assistant/personalized-plan/personalized-plan';
-import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
-import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
-import { BsModalService } from 'ngx-bootstrap/modal';
-import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
-import { DomSanitizer } from '@angular/platform-browser';
-import { Title } from '@angular/platform-browser/src/browser/title';
-import { ToastrService } from 'ngx-toastr';
-import { Global, UserStatus } from '../../../../global';
-import { HttpParams } from '@angular/common/http';
-import { NavigateDataService } from '../../../navigate-data.service';
+import { Component, EventEmitter, Input, Output, TemplateRef } from "@angular/core";
+import { OnChanges } from "@angular/core/src/metadata/lifecycle_hooks";
+import { DomSanitizer } from "@angular/platform-browser";
+import { BsModalService } from "ngx-bootstrap/modal";
+import { BsModalRef } from "ngx-bootstrap/modal/bs-modal-ref.service";
+import { ToastrService } from "ngx-toastr";
+import { Global, UserStatus } from "../../../../global";
+import { PersonalizedPlan, PersonalizedPlanTopic, PlanTopic } from "../../../../guided-assistant/personalized-plan/personalized-plan";
+import { PersonalizedPlanService } from "../../../../guided-assistant/personalized-plan/personalized-plan.service";
+import { NavigateDataService } from "../../../services/navigate-data.service";
 
 @Component({
-  selector: 'app-action-plans',
-  templateUrl: './action-plans.component.html',
-  styleUrls: ['./action-plans.component.css']
+  selector: "app-action-plans",
+  templateUrl: "./action-plans.component.html",
+  styleUrls: ["./action-plans.component.css"]
 })
 export class ActionPlansComponent implements OnChanges {
   @Input() planDetails;
@@ -28,7 +26,11 @@ export class ActionPlansComponent implements OnChanges {
   isUser: boolean = false;
   isChecked: boolean = false;
   planTopics: Array<PlanTopic>;
-  personalizedPlan: PersonalizedPlan = { id: '', topics: this.planTopics, isShared: false };
+  personalizedPlan: PersonalizedPlan = {
+    id: "",
+    topics: this.planTopics,
+    isShared: false
+  };
   selectedPlanDetails: any;
   tempFilteredtopicsList: Array<PersonalizedPlanTopic> = [];
   @Output() notifyFilterTopics = new EventEmitter<object>();
@@ -36,11 +38,11 @@ export class ActionPlansComponent implements OnChanges {
   plan: any;
   sortOrder: Array<string> = ["isComplete", "order"];
   resourceTypeList = [
-    'Forms',
-    'Guided Assistant',
-    'Organizations',
-    'Videos',
-    'Articles'
+    "Forms",
+    "Guided Assistant",
+    "Organizations",
+    "Videos",
+    "Articles"
   ];
 
   constructor(
@@ -49,13 +51,16 @@ export class ActionPlansComponent implements OnChanges {
     public sanitizer: DomSanitizer,
     private toastr: ToastrService,
     private global: Global,
-    private navigateDataService: NavigateDataService) {
+    private navigateDataService: NavigateDataService
+  ) {
     this.sanitizer = sanitizer;
-    if (global.role === UserStatus.Shared && location.pathname.indexOf(global.shareRouteUrl) >= 0) {
+    if (
+      global.role === UserStatus.Shared &&
+      location.pathname.indexOf(global.shareRouteUrl) >= 0
+    ) {
       global.showMarkComplete = false;
       global.showDropDown = false;
-    }
-    else {
+    } else {
       global.showMarkComplete = true;
       global.showDropDown = true;
     }
@@ -63,7 +68,7 @@ export class ActionPlansComponent implements OnChanges {
 
   getPersonalizedPlan(planDetails): void {
     this.planDetails = planDetails;
-    if (!(planDetails) || planDetails.length === 0) {
+    if (!planDetails || planDetails.length === 0) {
       this.displaySteps = false;
     } else if (this.planDetails.topics) {
       this.sortStepsByOrder(planDetails);
@@ -99,16 +104,17 @@ export class ActionPlansComponent implements OnChanges {
 
   updatePlanToProfile() {
     const params = {
-      "personalizedPlan": this.navigateDataService.getData() ? this.navigateDataService.getData() : this.personalizedPlanService.planDetails,
-      "oId": this.global.userId,
-      "saveActionPlan": true
-    }
-    this.personalizedPlanService.userPlan(params)
-      .subscribe(response => {
-        if (response) {
-          this.showStepCompleteStatus();
-        }
-      });
+      personalizedPlan: this.navigateDataService.getData()
+        ? this.navigateDataService.getData()
+        : this.personalizedPlanService.planDetails,
+      oId: this.global.userId,
+      saveActionPlan: true
+    };
+    this.personalizedPlanService.userPlan(params).subscribe(response => {
+      if (response) {
+        this.showStepCompleteStatus();
+      }
+    });
   }
 
   showStepCompleteStatus() {
@@ -137,8 +143,15 @@ export class ActionPlansComponent implements OnChanges {
         this.planTopics.push(planTopic.topic);
       });
     }
-    this.personalizedPlan = { id: this.planDetails.id, topics: this.planTopics, isShared: this.planDetails.isShared };
-    this.selectedPlanDetails = { planDetails: this.personalizedPlan, topic: topicId };
+    this.personalizedPlan = {
+      id: this.planDetails.id,
+      topics: this.planTopics,
+      isShared: this.planDetails.isShared
+    };
+    this.selectedPlanDetails = {
+      planDetails: this.personalizedPlan,
+      topic: topicId
+    };
   }
 
   getRemovePlanDetails() {
@@ -169,5 +182,4 @@ export class ActionPlansComponent implements OnChanges {
       }
     });
   }
-
 }

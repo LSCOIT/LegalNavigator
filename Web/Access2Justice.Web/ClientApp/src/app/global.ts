@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
-import { api } from '../api/api';
-import { Subject } from 'rxjs';
+import { Injectable } from "@angular/core";
+import { Subject } from "rxjs";
 
 @Injectable()
 export class Global {
@@ -30,13 +29,23 @@ export class Global {
   roleInformation: any;
   displayResources: number = 3;
   activeSubtopicParam: string;
-  searchResultDetails: any= { filterParam: 'All', sortParam: 'date', order: 'DESC', topIntent: '' };
+  searchResultDetails: any = {
+    filterParam: "All",
+    sortParam: "date",
+    order: "DESC",
+    topIntent: ""
+  };
   topIntent: string;
   notifyLocationUpate: Subject<any> = new Subject<any>();
 
-  constructor() { }
+  constructor() {}
 
-  setProfileData(oId: string, name: string, eMail: string, roleInformation: any) {
+  setProfileData(
+    oId: string,
+    name: string,
+    eMail: string,
+    roleInformation: any
+  ) {
     this.userId = oId;
     this.userName = name ? name : eMail;
     this.roleInformation = roleInformation;
@@ -56,7 +65,6 @@ export class Global {
   notifyLocationUpdate(location: any) {
     this.notifyLocationUpate.next(location);
   }
-
 }
 
 export enum UserStatus {

@@ -1,18 +1,18 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
-import { IntakeFormQuestionBase } from './intake-form-question-base';
-import { FormGroup } from '@angular/forms';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap';
-import { QuestionControlService } from '../question-control.service';
-import { IntakeQuestionService } from './intake-question-service/intake-question.service';
-import { HttpParams } from '@angular/common/http';
-import { ToastrService } from 'ngx-toastr';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { ActivatedRoute } from '@angular/router';
+import { HttpParams } from "@angular/common/http";
+import { Component, OnInit, TemplateRef } from "@angular/core";
+import { FormGroup } from "@angular/forms";
+import { ActivatedRoute } from "@angular/router";
+import { BsModalRef, BsModalService } from "ngx-bootstrap";
+import { NgxSpinnerService } from "ngx-spinner";
+import { ToastrService } from "ngx-toastr";
+import { QuestionControlService } from "../question-control.service";
+import { IntakeFormQuestionBase } from "./intake-form-question-base";
+import { IntakeQuestionService } from "./intake-question-service/intake-question.service";
 
 @Component({
-  selector: 'app-intake-form',
-  templateUrl: './intake-form.component.html',
-  styleUrls: ['./intake-form.component.css']
+  selector: "app-intake-form",
+  templateUrl: "./intake-form.component.html",
+  styleUrls: ["./intake-form.component.css"]
 })
 export class IntakeFormComponent implements OnInit {
   modalRef: BsModalRef;
@@ -26,13 +26,16 @@ export class IntakeFormComponent implements OnInit {
     private intakeQuestionService: IntakeQuestionService,
     private toastr: ToastrService,
     private spinner: NgxSpinnerService,
-    private activeRoute: ActivatedRoute) {
+    private activeRoute: ActivatedRoute
+  ) {
     this.form = this.qcs.toFormGroup([]);
   }
 
   getIntakeQuestions() {
-    let param = new HttpParams().set("organizationId", this.activeRoute.snapshot.params['id']);
-
+    let param = new HttpParams().set(
+      "organizationId",
+      this.activeRoute.snapshot.params["id"]
+    );
     this.intakeQuestionService.getIntakeQuestions(param).subscribe(response => {
       this.payLoad = response;
       this.intakeQuestions = response["userFields"];
@@ -49,7 +52,8 @@ export class IntakeFormComponent implements OnInit {
       });
     });
     this.spinner.show();
-    this.intakeQuestionService.sendIntakeResponse(this.payLoad)
+    this.intakeQuestionService
+      .sendIntakeResponse(this.payLoad)
       .subscribe(response => {
         this.modalRef.hide();
         this.spinner.hide();
@@ -64,5 +68,4 @@ export class IntakeFormComponent implements OnInit {
   ngOnInit() {
     this.getIntakeQuestions();
   }
-
 }

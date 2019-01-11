@@ -7,7 +7,7 @@ button {
 }
 
 #about ul li {
-  list-style: disc!important;
+  list-style: disc !important;
 }
 
 .section-img img {
@@ -50,14 +50,18 @@ p + .btn-sm {
   width: 200px;
 }
 
-@media only screen and (min-width : 768px) {
+@media only screen and (min-width: 768px) {
   .media-inquiries {
     margin-top: 0;
     margin-bottom: 0;
   }
+
+  .browse-topic {
+    margin-left: 20px;
+  }
 }
 
-@media only screen and (min-width : 992px) {
+@media only screen and (min-width: 992px) {
   .row {
     margin: 60px auto;
   }

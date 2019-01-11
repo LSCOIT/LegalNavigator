@@ -12,14 +12,14 @@ li > a:hover {
 .lower-nav {
   background: #fff;
   border: none;
-  box-shadow: 0 4px 10px 0 rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1);
   min-height: 80px;
   margin-bottom: 4px;
   padding-top: 29px;
 }
 
 #logo {
-  background-image: url('../../../assets/images/logo/one-word-logo.svg');
+  background-image: url("../../../assets/images/logo/one-word-logo.svg");
   width: 215px;
   height: 45px;
   background-repeat: no-repeat;
@@ -28,7 +28,7 @@ li > a:hover {
 }
 
 .active {
-  border-bottom: 3px solid #0D3FB8;
+  border-bottom: 3px solid #0d3fb8;
 }
 
 .right-menu {
@@ -41,9 +41,9 @@ li > a:hover {
   height: 100%;
   position: fixed;
   top: 0;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0, 0, 0, 0.6);
   z-index: 1;
-  transition: background-color .5s;
+  transition: background-color 0.5s;
 }
 
 ul.web-hidden {
@@ -92,7 +92,7 @@ ul.web-hidden {
 #sidenav a:hover {
   color: #0d3fb8;
   font-weight: 600;
- }
+}
 
 #sidenav .closebtn {
   float: right;
@@ -107,7 +107,7 @@ ul.web-hidden {
   text-align: center;
 }
 
-.sidenav-menu>li {
+.sidenav-menu > li {
   margin-right: 10px;
 }
 
@@ -121,14 +121,14 @@ ul.web-hidden {
   text-align: left;
 }
 
-.bottom-menu>ul {
+.bottom-menu > ul {
   width: 325px;
   margin: 15px auto;
   text-align: left;
   padding: 20px 0;
 }
 
-.bottom-menu>ul>li:last-child {
+.bottom-menu > ul > li:last-child {
   margin-left: 32px;
   margin-top: 20px;
 }
@@ -163,7 +163,7 @@ li.vertical-line {
   outline-offset: 21px;
 }
 
-@media only screen and (min-width : 768px) {
+@media only screen and (min-width: 768px) {
   .lower-nav {
     padding-top: 25px;
   }
@@ -189,7 +189,7 @@ li.vertical-line {
     padding: 30px 8px 30px 32px;
   }
 
-  .bottom-menu>ul {
+  .bottom-menu > ul {
     width: 365px;
     margin: 15px 5%;
   }
@@ -216,7 +216,7 @@ li.vertical-line {
   }
 }
 
-@media only screen and (min-width : 992px) {
+@media only screen and (min-width: 992px) {
   .left-menu {
     display: inline-block;
     padding-top: 0;
@@ -232,7 +232,7 @@ li.vertical-line {
     padding: 26px 2px;
     font-size: 14px;
   }
-  
+
   li.web-hidden {
     display: none;
   }
@@ -251,7 +251,7 @@ li.vertical-line {
   }
 }
 
-@media only screen and (min-width : 1124px) {
+@media only screen and (min-width: 1124px) {
   .left-menu {
     display: inline-block;
     padding: 5px;
@@ -262,7 +262,7 @@ li.vertical-line {
     font-size: 16px;
   }
 
-  .left-menu li a:hover { 
+  .left-menu li a:hover {
     color: #0d3fb8;
     font-weight: 600;
   }

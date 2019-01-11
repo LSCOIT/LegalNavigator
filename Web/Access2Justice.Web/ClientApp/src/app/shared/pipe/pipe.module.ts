@@ -1,19 +1,24 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { SanitizePipe } from './sanitize.pipe';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { SanitizePipe } from "./sanitize.pipe";
+import { SearchFilterPipe } from "./search-filter.pipe";
 
 @NgModule({
-  imports: [
-    CommonModule
+  imports: [CommonModule],
+  declarations: [
+    SanitizePipe,
+    SearchFilterPipe
   ],
-  declarations: [SanitizePipe],
-  exports: [SanitizePipe]
+  exports: [
+    SanitizePipe,
+    SearchFilterPipe
+  ]
 })
 export class PipeModule {
   static forRoot() {
     return {
       ngModule: PipeModule,
-      providers: [],
+      providers: []
     };
   }
 }

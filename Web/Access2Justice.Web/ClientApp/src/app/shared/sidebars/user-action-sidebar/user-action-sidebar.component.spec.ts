@@ -1,20 +1,25 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { UserActionSidebarComponent } from './user-action-sidebar.component';
-import { Global } from '../../../global';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from "@angular/core";
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { Global } from "../../../global";
+import { UserActionSidebarComponent } from "./user-action-sidebar.component";
 
-describe('UserActionSidebarComponent', () => {
+describe("UserActionSidebarComponent", () => {
   let component: UserActionSidebarComponent;
   let fixture: ComponentFixture<UserActionSidebarComponent>;
-  let mockGlobal;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UserActionSidebarComponent ],
-      providers: [ { provide: Global, useValue: { role: '', shareRouteUrl: '' } } ],
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA ]
-    })
-    .compileComponents();
+      declarations: [UserActionSidebarComponent],
+      providers: [
+        { provide: Global, 
+          useValue: { 
+            role: "", 
+            shareRouteUrl: "" 
+          } 
+        }
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -23,7 +28,7 @@ describe('UserActionSidebarComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

@@ -28,10 +28,10 @@
   margin: 20px 0 30px 10px;
 }
 
-  .subtopics a:hover {
-    color: #0d3fb8;
-    font-weight: 600;
-  }
+.subtopics a:hover {
+  color: #0d3fb8;
+  font-weight: 600;
+}
 
 .media-body {
   vertical-align: bottom;
@@ -41,12 +41,12 @@
   margin-bottom: 40px;
 }
 
-@media only screen and (min-width : 992px) {
+@media only screen and (min-width: 992px) {
   .col-md-4 {
     padding-left: 5%;
   }
 }
 
-.capitalize{
-  text-transform:capitalize;
+.capitalize {
+  text-transform: capitalize;
 }

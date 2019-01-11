@@ -30,7 +30,7 @@ export interface TextWithLink {
 
 export interface Image {
   source?: string;
-  altText?: string
+  altText?: string;
 }
 
 export interface GuidedAssistantOverview {
@@ -62,14 +62,14 @@ export interface TopicAndResources {
 }
 
 export interface Carousel {
-  slides?: Array<Slides>
+  slides?: Array<Slides>;
 }
 
 export interface Slides {
   quote?: string;
   author?: string;
   location?: string;
-  image?: Image
+  image?: Image;
 }
 
 export interface SponsorOverview {

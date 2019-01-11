@@ -6,20 +6,35 @@
       <div class="row">
         <div class="description col-sm-12">
           <label class="col-md-2 col-sm-3">Page Description</label>
-          <textarea class="form-control col-md-10 col-sm-9" name="pageDescription" [(ngModel)]="privacyContent.description"></textarea>
+          <textarea
+            class="form-control col-md-10 col-sm-9"
+            name="pageDescription"
+            [(ngModel)]="privacyContent.description"
+          ></textarea>
         </div>
       </div>
     </div>
     <div class="box-shadow">
       <h2>Sections</h2>
-      <div class="row sections" *ngFor="let content of privacyContent?.details; let i = index">
+      <div
+        class="row sections"
+        *ngFor="let content of privacyContent?.details; let i = index"
+      >
         <div>
           <label class="col-md-2 col-sm-3">Section Title</label>
-          <input class="form-control col-md-10 col-sm-9" [(ngModel)]="content.title" [name]="'title'+i"/>
+          <input
+            class="form-control col-md-10 col-sm-9"
+            [(ngModel)]="content.title"
+            [name]="'title' + i"
+          />
         </div>
         <div class="description col-sm-12">
           <label class="col-md-2 col-sm-3">Section Description</label>
-          <textarea class="form-control col-md-10 col-sm-9" [(ngModel)]="content.description" [name]="'description'+i"></textarea>
+          <textarea
+            class="form-control col-md-10 col-sm-9"
+            [(ngModel)]="content.description"
+            [name]="'description' + i"
+          ></textarea>
         </div>
       </div>
     </div>

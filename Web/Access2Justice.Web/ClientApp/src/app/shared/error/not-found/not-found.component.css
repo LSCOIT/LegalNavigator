@@ -13,7 +13,7 @@ h1 {
   font-weight: 600;
 }
 
-@media only screen and (min-width : 768px) {
+@media only screen and (min-width: 768px) {
   img {
     width: 315px;
     float: right;
@@ -32,9 +32,9 @@ h1 {
   }
 }
 
-@media only screen and (min-width : 992px) {
+@media only screen and (min-width: 992px) {
   img {
     width: 385px;
-    margin-top: 21%
+    margin-top: 21%;
   }
 }

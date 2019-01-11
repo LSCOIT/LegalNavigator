@@ -21,7 +21,7 @@ h4 {
 }
 
 #copy-btn {
-  background-color: #0D3FB8;
+  background-color: #0d3fb8;
   padding: 3px;
   border-radius: 0 5px 5px 0;
   color: #fff;
@@ -42,7 +42,7 @@ h4 {
 
 #remove-btn {
   margin: 0 auto;
-  background-color: #CA3636;
+  background-color: #ca3636;
 }
 
 .remove-share {
@@ -54,3 +54,13 @@ h4 {
   margin-top: -15px;
 }
 
+#share img {
+  display: block;
+  margin: 0 auto;
+}
+
+@media only screen and (min-width: 768px) {
+  #share img {
+    display: inline-block;
+  }
+}

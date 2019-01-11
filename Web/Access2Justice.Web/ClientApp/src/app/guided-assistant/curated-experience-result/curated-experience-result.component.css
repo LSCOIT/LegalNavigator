@@ -34,7 +34,7 @@ h5 {
 }
 
 .button-container ul li label:hover {
-  background-color: #D9F2F8;
+  background-color: #d9f2f8;
 }
 
 .relevant-intent {
@@ -47,12 +47,12 @@ h5 {
   display: block;
 }
 
-.button-container .link{
+.button-container .link {
   display: block;
   margin: 10px 0 20px 10px;
 }
 
-input[type=checkbox]:checked ~ .check::before {
+input[type="checkbox"]:checked ~ .check::before {
   padding-left: 3px;
 }
 
@@ -64,12 +64,12 @@ input[type=checkbox]:checked ~ .check::before {
   margin-bottom: 20px;
 }
 
-@media only screen and (min-width : 768px) {
+@media only screen and (min-width: 768px) {
   .button-container ul li {
     width: 30%;
   }
 
-  .button-container .link{
+  .button-container .link {
     display: block;
     margin: 20px 0 0 10px;
   }

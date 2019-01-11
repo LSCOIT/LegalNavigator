@@ -1,20 +1,16 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { DidYouKnowComponent } from './did-you-know.component';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from "@angular/core";
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { DidYouKnowComponent } from "./did-you-know.component";
 
-describe('DidYouKnowComponent', () => {
+describe("DidYouKnowComponent", () => {
   let component: DidYouKnowComponent;
   let fixture: ComponentFixture<DidYouKnowComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DidYouKnowComponent],
-      schemas: [
-        NO_ERRORS_SCHEMA,
-        CUSTOM_ELEMENTS_SCHEMA
-      ]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -23,7 +19,7 @@ describe('DidYouKnowComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

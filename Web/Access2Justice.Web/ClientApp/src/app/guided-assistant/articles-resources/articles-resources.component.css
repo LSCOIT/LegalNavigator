@@ -2,7 +2,8 @@ button:after {
   content: unset;
 }
 
-h5, span {
+h5,
+span {
   color: #000;
   font-weight: 600;
 }
@@ -16,18 +17,18 @@ li {
 }
 
 .verticle-line {
-  border-bottom: 1.5px solid #0D3FBB;
+  border-bottom: 1.5px solid #0d3fbb;
   margin-bottom: 20px;
   height: 45px;
 }
 
 .show-articles {
-  border: 1.5px solid #0D3FBB;
+  border: 1.5px solid #0d3fbb;
   border-bottom: 1px solid #fff;
   border-radius: 4px 4px 0 0;
-  background-color: #FFF;
+  background-color: #fff;
   margin-bottom: -1.5px;
-  padding: 10px 40px 10px 10px;
+  padding: 10px 40px 9px 10px;
   background-position: 94% 50%;
 }
 
@@ -43,7 +44,7 @@ li {
 }
 
 .link a {
-  color: #0D3FBB;
+  color: #0d3fbb;
 }
 
 .topic-section {
@@ -59,12 +60,13 @@ li {
   border-bottom: 1px solid #ccc;
   width: 100%;
 }
-
-@media only screen and (min-width : 992px) {
+@media only screen and (min-width: 768px) {
   .show-articles {
-    padding-bottom: 9px;
+    padding: 10px 40px 8px 10px;
   }
+}
 
+@media only screen and (min-width: 992px) {
   .link {
     width: 50%;
     display: inline-block;

@@ -1,17 +1,43 @@
 <div class="container text-center">
   <h2>Tell us what's going on</h2>
-  <form #guidedAssistantSearchForm="ngForm" (ngSubmit)="onSubmit(guidedAssistantSearchForm)" aria-label="search box">
+  <form
+    #guidedAssistantSearchForm="ngForm"
+    (ngSubmit)="onSubmit(guidedAssistantSearchForm)"
+    aria-label="search box"
+  >
     <div class="row">
       <div class="col-md-6 col-sm-8 col-md-offset-3 col-sm-offset-2 form-group">
-        <textarea class="form-control" rows="3"  autocomplete="off" placeholder="Keyword or phrase" aria-label="Search Box" name="searchText" [(ngModel)]="previousSearchText"></textarea>
+        <textarea
+          class="form-control"
+          rows="3"
+          autocomplete="off"
+          placeholder="Keyword or phrase"
+          aria-label="Search Box"
+          name="searchText"
+          [(ngModel)]="previousSearchText"
+        ></textarea>
         <!--<img src="./assets/images/small-icons/microphone.svg" class="nav-icon" alt="voice search" />-->
       </div>
       <div class="col-sm-10 col-sm-offset-1">
-        <p class="pxs">{{description}}</p>
+        <p class="pxs">{{ description }}</p>
       </div>
       <div class="col-sm-12 text-center">
-        <p class="validation-error" *ngIf="!guidedAssistantSearchForm.value.searchText && guidedAssistantSearchForm.submitted">Please enter a valid search text.</p>
-        <button class="btn btn-primary" type="submit" aria-label="search button">Continue</button>
+        <p
+          class="validation-error"
+          *ngIf="
+            !guidedAssistantSearchForm.value.searchText &&
+            guidedAssistantSearchForm.submitted
+          "
+        >
+          Please enter a valid search text.
+        </p>
+        <button
+          class="btn btn-primary"
+          type="submit"
+          aria-label="search button"
+        >
+          Continue
+        </button>
       </div>
     </div>
   </form>
@@ -25,7 +51,14 @@
   </div>
   <div class="row">
     <div class="col-sm-12 text-center">
-      <button id="see-more-topics-button-guided-assistant" [routerLink]="['/topics']" type="button" class="btn btn-primary">See More Topics</button>
+      <button
+        id="see-more-topics-button-guided-assistant"
+        [routerLink]="['/topics']"
+        type="button"
+        class="btn btn-primary"
+      >
+        See More Topics
+      </button>
     </div>
   </div>
 </div>

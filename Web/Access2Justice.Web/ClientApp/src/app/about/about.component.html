@@ -1,72 +1,126 @@
 <div class="container" id="about" *ngIf="aboutContent">
   <div class="static-img-container row">
     <div class="static-img">
-      <img *ngIf="aboutContent.aboutImage.source" [src]="blobUrl + aboutContent.aboutImage.source" alt="aboutContent.aboutImage.altText" />
+      <img
+        *ngIf="aboutContent.aboutImage.source"
+        [src]="blobUrl + aboutContent.aboutImage.source"
+        alt="aboutContent.aboutImage.altText"
+      />
     </div>
     <h1 class="inline">About</h1>
   </div>
   <div class="row">
     <div class="col-md-10 col-sm-12">
-      <h3>{{aboutContent?.mission.title}}</h3>
+      <h3>{{ aboutContent?.mission.title }}</h3>
       <div [innerHTML]="aboutContent?.mission.description"></div>
       <div class="row">
-        <div class="col-md-3 col-sm-12" *ngFor="let sponsor of aboutContent?.mission?.sponsors">
-          <img class="sponsor-logo" [src]="'data:image/jpg;base64,'+sponsor.source" [alt]="sponsor.altText" />
+        <div
+          class="col-md-3 col-sm-12"
+          *ngFor="let sponsor of aboutContent?.mission?.sponsors"
+        >
+          <img
+            class="sponsor-logo"
+            [src]="'data:image/jpg;base64,' + sponsor.source"
+            [alt]="sponsor.altText"
+          />
         </div>
       </div>
     </div>
   </div>
   <div class="row">
     <div class="col-md-6 col-sm-12">
-      <h3>{{aboutContent?.service.title}}</h3>
+      <h3>{{ aboutContent?.service.title }}</h3>
       <div [innerHTML]="aboutContent?.service.description"></div>
-      <a class="btn btn-primary btn-sm" [routerLink]="'/' + aboutContent?.service.guidedAssistantButton.buttonLink">{{aboutContent?.service.guidedAssistantButton.buttonText}}</a>
-      <a class="btn btn-primary btn-sm" [routerLink]="'/' + aboutContent?.service.topicsAndResourcesButton.buttonLink">{{aboutContent?.service.topicsAndResourcesButton.buttonText}}</a>
+      <a
+        class="btn btn-primary btn-sm"
+        [routerLink]="
+          '/' + aboutContent?.service.guidedAssistantButton.buttonLink
+        "
+        >{{ aboutContent?.service.guidedAssistantButton.buttonText }}</a
+      >
+      <a
+        class="btn btn-primary btn-sm browse-topic"
+        [routerLink]="
+          '/' + aboutContent?.service.topicsAndResourcesButton.buttonLink
+        "
+        >{{ aboutContent?.service.topicsAndResourcesButton.buttonText }}</a
+      >
     </div>
     <div class="col-md-5 col-sm-12 section-img pull-right">
-      <img [src]="'data:image/jpg;base64,'+aboutContent?.service?.image?.source" [alt]="aboutContent.service.image.altText" />
+      <img
+        [src]="'data:image/jpg;base64,' + aboutContent?.service?.image?.source"
+        [alt]="aboutContent.service.image.altText"
+      />
     </div>
   </div>
   <div class="row">
     <div class="col-md-6 col-sm-12 even-rows">
-      <h3>{{aboutContent?.privacyPromise.title}}</h3>
+      <h3>{{ aboutContent?.privacyPromise.title }}</h3>
       <div [innerHTML]="aboutContent?.privacyPromise.description"></div>
-      <a class="btn btn-primary" [routerLink]="'/' + aboutContent?.privacyPromise.privacyPromiseButton.buttonLink">{{aboutContent?.privacyPromise.privacyPromiseButton.buttonText}}</a>
+      <a
+        class="btn btn-primary"
+        [routerLink]="
+          '/' + aboutContent?.privacyPromise.privacyPromiseButton.buttonLink
+        "
+        >{{ aboutContent?.privacyPromise.privacyPromiseButton.buttonText }}</a
+      >
     </div>
     <div class="col-md-5 col-sm-12 section-img pull-left">
-      <img [src]="'data:image/jpg;base64,'+aboutContent?.privacyPromise?.image?.source" [alt]="aboutContent.privacyPromise.image.altText"/>
+      <img
+        [src]="
+          'data:image/jpg;base64,' + aboutContent?.privacyPromise?.image?.source
+        "
+        [alt]="aboutContent.privacyPromise.image.altText"
+      />
     </div>
   </div>
   <div class="row" *ngIf="aboutContent.inTheNews">
     <div class="col-md-10 col-md-offset-1 col-sm-12">
-      <h3 class="text-center">{{aboutContent?.inTheNews?.title}}</h3>
-      <div class="text-center" [innerHTML]="aboutContent?.inTheNews?.description"></div>
+      <h3 class="text-center">{{ aboutContent?.inTheNews?.title }}</h3>
+      <div
+        class="text-center"
+        [innerHTML]="aboutContent?.inTheNews?.description"
+      ></div>
       <div *ngFor="let news of aboutContent.inTheNews.news">
         <div class="media box-no-shadow" *ngIf="news.title">
           <div class="media-left" *ngIf="news.image.source">
-            <img class="media-object" [src]="'data:image/jpg;base64,'+news?.image?.source" [alt]="news.image.altText"/>
+            <img
+              class="media-object"
+              [src]="'data:image/jpg;base64,' + news?.image?.source"
+              [alt]="news.image.altText"
+            />
           </div>
           <div class="media-body">
-            <a [href]="news.url"><h4 class="media-heading">{{news.title}}</h4></a>
-            <p>{{news.description}}</p>
+            <a [href]="news.url"
+              ><h4 class="media-heading">{{ news.title }}</h4></a
+            >
+            <p>{{ news.description }}</p>
           </div>
         </div>
       </div>
     </div>
   </div>
   <div class="row">
-    <div class="col-md-4 col-md-offset-1 col-sm-6" *ngIf="aboutContent.contactUs">
-      <h4>{{aboutContent.contactUs.title}}</h4>
-      <p>{{aboutContent.contactUs.description}}</p>
-      <a [href]="'mailto:'+aboutContent.contactUs.email" class="link">{{aboutContent.contactUs.email}}</a>
+    <div
+      class="col-sm-4 col-sm-offset-1"
+      *ngIf="aboutContent.contactUs"
+    >
+      <h4>{{ aboutContent.contactUs.title }}</h4>
+      <p>{{ aboutContent.contactUs.description }}</p>
+      <a [href]="'mailto:' + aboutContent.contactUs.email" class="link">{{
+        aboutContent.contactUs.email
+      }}</a>
     </div>
-    <div class="col-md-4 col-md-offset-2 col-sm-6 media-inquiries" *ngIf="aboutContent.mediaInquiries">
-      <h4>{{aboutContent.mediaInquiries.title}}</h4>
-      <p>{{aboutContent.mediaInquiries.description}}</p>
-      <a [href]="'mailto:'+aboutContent.mediaInquiries.email" class="link">{{aboutContent.mediaInquiries.email}}</a>
+    <div
+      class="col-sm-4 col-sm-offset-2 media-inquiries"
+      *ngIf="aboutContent.mediaInquiries"
+    >
+      <h4>{{ aboutContent.mediaInquiries.title }}</h4>
+      <p>{{ aboutContent.mediaInquiries.description }}</p>
+      <a [href]="'mailto:' + aboutContent.mediaInquiries.email" class="link">{{
+        aboutContent.mediaInquiries.email
+      }}</a>
     </div>
   </div>
 </div>
-<div *ngIf="helpText">
-  <app-helpline [helpText]="helpText"></app-helpline>
-</div>
+<div *ngIf="helpText"><app-helpline [helpText]="helpText"></app-helpline></div>

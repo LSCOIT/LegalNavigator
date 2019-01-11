@@ -5,5 +5,5 @@
 .close {
   width: 20px;
   height: 20px;
-  background-image: url('../../../assets/images/small-icons/close.svg');
+  background-image: url("../../../assets/images/small-icons/close.svg");
 }

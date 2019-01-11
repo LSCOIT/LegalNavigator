@@ -4,20 +4,43 @@
       <div class="col-xs-12 plan-spacing plan-heading">
         <div class="col-xs-11">
           <div class="main-icon col-sm-1 col-xs-2 no-print">
-            <img class="subtopic-icon" src="./assets/images/categories/housing.svg" alt="eviction icon" />
+            <img
+              class="subtopic-icon"
+              src="./assets/images/categories/housing.svg"
+              alt="eviction icon"
+            />
           </div>
           <div class="col-sm-11 col-xs-10">
-            <h3 class="inline">{{topic.name}}</h3>
+            <h3 class="inline">{{ topic.name }}</h3>
           </div>
         </div>
         <div class="col-xs-1 no-print">
-          <div class="btn-group pull-right more-menu" dropdown *ngIf="global.showDropDown">
-            <img id="button-basic" dropdownToggle type="button" aria-controls="dropdown-basic" src="./assets/images/small-icons/more_menu.svg" alt="plan menu" (click)="planTagOptions(topic.name)" />
-            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-                role="menu" aria-labelledby="button-basic">
+          <div
+            class="btn-group pull-right more-menu"
+            dropdown
+            *ngIf="global.showDropDown"
+          >
+            <img
+              id="button-basic"
+              dropdownToggle
+              type="button"
+              aria-controls="dropdown-basic"
+              src="./assets/images/small-icons/more_menu.svg"
+              alt="plan menu"
+              (click)="planTagOptions(topic.name)"
+            />
+            <ul
+              id="dropdown-basic"
+              *dropdownMenu
+              class="dropdown-menu"
+              role="menu"
+              aria-labelledby="button-basic"
+            >
               <li role="menuitem">
                 <a class="dropdown-item">
-                  <app-remove-button [selectedPlanDetails]="selectedPlanDetails"></app-remove-button>
+                  <app-remove-button
+                    [selectedPlanDetails]="selectedPlanDetails"
+                  ></app-remove-button>
                 </a>
               </li>
             </ul>
@@ -31,51 +54,152 @@
               <div accordion-heading>
                 <div class="col-sm-9 col-xs-12">
                   <div class="media">
-                    <div class="media-left accordion-img" [ngClass]="{'accordion-img-grey':step.isComplete, '': !step.isComplete}">
-                    </div>
+                    <div
+                      class="media-left accordion-img"
+                      [ngClass]="{
+                        'accordion-img-grey': step.isComplete,
+                        '': !step.isComplete
+                      }"
+                    ></div>
                     <div class="media-body">
-                      <h3 [ngClass]="{'header-completed':step.isComplete, '': !step.isComplete}">Step {{step.order}}. {{step.title}}</h3>
+                      <h3
+                        [ngClass]="{
+                          'header-completed': step.isComplete,
+                          '': !step.isComplete
+                        }"
+                      >
+                        Step {{ step.order }}. {{ step.title }}
+                      </h3>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="col-xs-12 step-content">
                 <h4 class="print-only" *ngIf="step.isComplete">Completed</h4>
-                <h4 class="print-only" *ngIf="!step.isComplete">Not Completed</h4>
-                <div [ngClass]="{'checkbox disabled':!global.showMarkComplete, '':global.showMarkComplete}" class="col-sm-3 col-xs-12 btn-selected" id="complete-btn">
+                <h4 class="print-only" *ngIf="!step.isComplete">
+                  Not Completed
+                </h4>
+                <div
+                  [ngClass]="{
+                    'checkbox disabled': !global.showMarkComplete,
+                    '': global.showMarkComplete
+                  }"
+                  class="col-sm-3 col-xs-12 btn-selected"
+                  id="complete-btn"
+                >
                   <label class="ps no-print">
-                    <input id="checkBox" class="no-print" type="checkbox" (change)="checkCompleted($event,topic.topicId,step.stepId)"
-                            [ngModel]="step.isComplete" [disabled]="!global.showMarkComplete">
+                    <input
+                      id="checkBox"
+                      class="no-print"
+                      type="checkbox"
+                      (change)="
+                        checkCompleted($event, topic.topicId, step.stepId)
+                      "
+                      [ngModel]="step.isComplete"
+                      [disabled]="!global.showMarkComplete"
+                    />
                     Completed
                   </label>
                 </div>
-                <div>
-                  <p [innerHTML]="step.description"></p>
-                </div>
+                <div><p [innerHTML]="step.description"></p></div>
                 <div *ngIf="step.resources.length">
                   <h4>Additional Resources</h4>
-                  <div *ngFor="let resource of step.resources" id="additional-resource" class="row">
-                    <div *ngIf="resourceTypeList.includes(resource.resourceType); else otherResourceType" class="media-left no-print">
-                      <img *ngIf="resource.resourceType === 'Videos'" class="nav-icon" src="../../../assets/images/icons/videos.svg" aria-label="Video">
-                      <img *ngIf="resource.resourceType === 'Forms'" class="nav-icon" src="../../../assets/images/icons/forms.svg" aria-label="Forms">
-                      <img *ngIf="resource.resourceType === 'Organizations'" class="nav-icon" src="../../../assets/images/icons/organizations.svg" aria-label="Organizations">
-                      <img *ngIf="resource.resourceType === 'Guided Assistant'" class="nav-icon" src="../../../assets/images/icons/action-plans.svg" aria-label="Video">
-                      <img *ngIf="resource.resourceType === 'Articles'" class="nav-icon" src="../../../assets/images/icons/videos.svg" aria-label="Artiles">
+                  <div
+                    *ngFor="let resource of step.resources"
+                    id="additional-resource"
+                    class="row"
+                  >
+                    <div
+                      *ngIf="
+                        resourceTypeList.includes(resource.resourceType);
+                        else otherResourceType
+                      "
+                      class="media-left no-print"
+                    >
+                      <img
+                        *ngIf="resource.resourceType === 'Videos'"
+                        class="nav-icon"
+                        src="../../../assets/images/icons/videos.svg"
+                        aria-label="Video"
+                      />
+                      <img
+                        *ngIf="resource.resourceType === 'Forms'"
+                        class="nav-icon"
+                        src="../../../assets/images/icons/forms.svg"
+                        aria-label="Forms"
+                      />
+                      <img
+                        *ngIf="resource.resourceType === 'Organizations'"
+                        class="nav-icon"
+                        src="../../../assets/images/icons/organizations.svg"
+                        aria-label="Organizations"
+                      />
+                      <img
+                        *ngIf="resource.resourceType === 'Guided Assistant'"
+                        class="nav-icon"
+                        src="../../../assets/images/icons/action-plans.svg"
+                        aria-label="Video"
+                      />
+                      <img
+                        *ngIf="resource.resourceType === 'Articles'"
+                        class="nav-icon"
+                        src="../../../assets/images/icons/videos.svg"
+                        aria-label="Artiles"
+                      />
                     </div>
                     <div class="media-body">
-                      <a *ngIf="resource.resourceType === 'Videos'" class="link" (click)="openModal(videoTemplate)">{{resource.name}}</a>
-                      <a *ngIf="resource.resourceType === 'Forms'" [href]="resource.url" class="link">{{resource.name}}<img class="nav-icon" src="../../../assets/images/small-icons/external_link.svg"/></a>
-                      <a *ngIf="resource.resourceType !== 'Forms' && resource.resourceType !== 'Videos'" [routerLink]="['/resource', resource.id]" class="link">{{resource.name}}</a>
+                      <a
+                        *ngIf="resource.resourceType === 'Videos'"
+                        class="link"
+                        (click)="openModal(videoTemplate)"
+                        >{{ resource.name }}</a
+                      >
+                      <a
+                        *ngIf="resource.resourceType === 'Forms'"
+                        [href]="resource.url"
+                        class="link"
+                        >{{ resource.name
+                        }}<img
+                          class="nav-icon"
+                          src="../../../assets/images/small-icons/external_link.svg"
+                      /></a>
+                      <a
+                        *ngIf="
+                          resource.resourceType !== 'Forms' &&
+                          resource.resourceType !== 'Videos'
+                        "
+                        [routerLink]="['/resource', resource.id]"
+                        class="link"
+                        >{{ resource.name }}</a
+                      >
                     </div>
                     <ng-template #videoTemplate>
-                      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-                        <img src="../../../assets/images/small-icons/close.svg"  class="nav-icon" alt="Close modal" />
+                      <button
+                        type="button"
+                        class="close pull-right"
+                        aria-label="Close"
+                        (click)="modalRef.hide()"
+                      >
+                        <img
+                          src="../../../assets/images/small-icons/close.svg"
+                          class="nav-icon"
+                          alt="Close modal"
+                        />
                       </button>
-                      <iframe title="{{resource.name}}" [src]='resourceUrl(resource.url)' frameborder="0" allowfullscreen></iframe>
+                      <iframe
+                        title="{{ resource.name }}"
+                        [src]="resourceUrl(resource.url)"
+                        frameborder="0"
+                        allowfullscreen
+                      ></iframe>
                     </ng-template>
                     <ng-template #otherResourceType>
                       <div class="media-left no-print">
-                        <img class="nav-icon" src="../../../assets/images/icons/articles.svg" aria-label="Miscellaneous Resource Type">
+                        <img
+                          class="nav-icon"
+                          src="../../../assets/images/icons/articles.svg"
+                          aria-label="Miscellaneous Resource Type"
+                        />
                       </div>
                     </ng-template>
                   </div>
@@ -88,9 +212,11 @@
           <p>Additional Readings</p>
           <ul>
             <li *ngFor="let additionalReading of topic.additionalReadings">
-              <a href={{additionalReading.url}} class="link">{{additionalReading.text}}</a>
-              <div class="print-only">{{additionalReading.url}}</div>
-            </li>              
+              <a href="{{ additionalReading.url }}" class="link">{{
+                additionalReading.text
+              }}</a>
+              <div class="print-only">{{ additionalReading.url }}</div>
+            </li>
           </ul>
         </div>
       </div>

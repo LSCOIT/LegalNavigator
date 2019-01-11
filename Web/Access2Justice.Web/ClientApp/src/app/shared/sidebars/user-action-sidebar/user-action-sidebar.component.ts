@@ -1,10 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Global, UserStatus } from '../../../global';
+import { Component, Input, OnInit } from "@angular/core";
+import { Global, UserStatus } from "../../../global";
 
 @Component({
-  selector: 'app-user-action-sidebar',
-  templateUrl: './user-action-sidebar.component.html',
-  styleUrls: ['./user-action-sidebar.component.css']
+  selector: "app-user-action-sidebar",
+  templateUrl: "./user-action-sidebar.component.html",
+  styleUrls: ["./user-action-sidebar.component.css"]
 })
 export class UserActionSidebarComponent implements OnInit {
   @Input() mobile = false;
@@ -18,11 +18,13 @@ export class UserActionSidebarComponent implements OnInit {
   resourceType: string;
 
   constructor(private global: Global) {
-    if (global.role === UserStatus.Shared && location.pathname.indexOf(global.shareRouteUrl) >= 0) {
+    if (
+      global.role === UserStatus.Shared &&
+      location.pathname.indexOf(global.shareRouteUrl) >= 0
+    ) {
       global.showShare = false;
       global.showSetting = false;
-    }
-    else {
+    } else {
       global.showShare = true;
     }
   }

@@ -1,47 +1,46 @@
-import { Component, OnInit, Input, ElementRef, ViewChild, Output, EventEmitter } from '@angular/core';
-import { api } from '../../../api/api';
-import { environment } from '../../../environments/environment';
-import { Login } from '../navigation/navigation';
-import { Router } from '@angular/router';
-import { Subscription } from "rxjs/Subscription";
-import { Global, UserStatus } from '../../global';
-import { MsalService } from '@azure/msal-angular';
-import { IUserProfile } from './user-profile.model';
-import { LoginService } from './login.service';
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Router } from "@angular/router";
+import { MsalService } from "@azure/msal-angular";
+import { environment } from "../../../environments/environment";
+import { Global, UserStatus } from "../../global";
+import { Login } from "../navigation/navigation";
+import { LoginService } from "./login.service";
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  selector: "app-login",
+  templateUrl: "./login.component.html",
+  styleUrls: ["./login.component.css"]
 })
 export class LoginComponent implements OnInit {
   @Input() login: Login;
-  userProfileName: string ;
+  userProfileName: string;
   isLoggedIn: boolean = false;
   blobUrl: any = environment.blobUrl;
-  @Output() sendProfileOptionClickEvent = new EventEmitter<string>();  
-  private subscription: Subscription;
+  @Output() sendProfileOptionClickEvent = new EventEmitter<string>();
   userProfile: any;
   isProfileSaved: boolean = false;
   isAdmin: boolean = false;
   roleInformationSubscription;
   isMobile: boolean = false;
 
-  constructor(private router: Router,
-              private global: Global,
-              private msalService: MsalService,
-              private loginService: LoginService) { }
+  constructor(
+    private router: Router,
+    private global: Global,
+    private msalService: MsalService,
+    private loginService: LoginService
+  ) {}
 
   onProfileOptionClick() {
     this.sendProfileOptionClickEvent.emit();
   }
 
   profile() {
-    if (this.global.role === UserStatus.Shared
-      && location.pathname.indexOf(this.global.shareRouteUrl) >= 0) {
+    if (
+      this.global.role === UserStatus.Shared &&
+      location.pathname.indexOf(this.global.shareRouteUrl) >= 0
+    ) {
       location.href = this.global.profileRouteUrl;
-    }
-    else {
+    } else {
       this.router.navigate([this.global.profileRouteUrl]);
     }
   }
@@ -62,7 +61,7 @@ export class LoginComponent implements OnInit {
 
   checkIfAdmin(roleInformation) {
     roleInformation.forEach(role => {
-      if (role.roleName.includes("Admin") || role.roleName === 'Developer') {
+      if (role.roleName.includes("Admin") || role.roleName === "Developer") {
         this.isAdmin = true;
       }
     });
@@ -72,16 +71,21 @@ export class LoginComponent implements OnInit {
     this.userProfile = this.msalService.getUser();
     if (this.userProfile) {
       this.isLoggedIn = true;
-      this.userProfileName = this.userProfile.idToken['name'] ? this.userProfile.idToken['name'] : this.userProfile.idToken['preferred_username'];
+      this.userProfileName = this.userProfile.idToken["name"]
+        ? this.userProfile.idToken["name"]
+        : this.userProfile.idToken["preferred_username"];
     }
 
-    this.roleInformationSubscription = 
-      this.global.notifyRoleInformation
-      .subscribe(value => {
+    this.roleInformationSubscription = this.global.notifyRoleInformation.subscribe(
+      value => {
         this.checkIfAdmin(value);
-        });
+      }
+    );
 
-    if (document.getElementById('mobile-menu') && document.getElementById('mobile-menu').style.display !== 'none') {
+    if (
+      document.getElementById("mobile-menu") &&
+      document.getElementById("mobile-menu").style.display !== "none"
+    ) {
       this.isMobile = true;
     }
   }

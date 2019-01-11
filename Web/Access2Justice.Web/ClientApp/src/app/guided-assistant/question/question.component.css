@@ -11,12 +11,13 @@
   width: 80px;
 }
 
-.textbox, .dropdown-toggle {
+.textbox,
+.dropdown-toggle {
   text-align: left;
   width: 250px;
   height: 45px;
-  background-color: #FFF;
-  border: 1px solid #7E7E7E;
+  background-color: #fff;
+  border: 1px solid #7e7e7e;
   padding: 10px;
   border-radius: 4px;
 }
@@ -32,7 +33,7 @@
 }
 
 .multi-button li:hover {
-  background-color: #D9F2F8;
+  background-color: #d9f2f8;
 }
 
 .multi-button li label {

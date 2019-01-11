@@ -1,8 +1,15 @@
-<button type="button" class="inline" [ngClass]="{'white-bg': setBgColor, '': !setBgColor}" id="language-dropdown">
-  <img *ngIf="language && language.navigationImage.source"
-       class="nav-icon"
-       [src]="blobUrl + language?.navigationImage?.source"
-       aria-hidden="true"
-       alt="language?.navigationImage?.altText" />
+<button
+  type="button"
+  class="inline"
+  [ngClass]="{ 'white-bg': setBgColor, '': !setBgColor }"
+  id="language-dropdown"
+>
+  <img
+    *ngIf="language && language.navigationImage.source"
+    class="nav-icon"
+    [src]="blobUrl + language?.navigationImage?.source"
+    aria-hidden="true"
+    alt="language?.navigationImage?.altText"
+  />
   <span>Language</span>
 </button>

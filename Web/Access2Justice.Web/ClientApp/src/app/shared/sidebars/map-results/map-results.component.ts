@@ -1,14 +1,13 @@
-import { Component, Input, OnChanges } from '@angular/core';
-import { MapResultsService } from './map-results.service';
-import { environment } from '../../../../environments/environment';
-import { MapLocationResult, LatitudeLongitude } from './map-results';
+import { Component, Input, OnChanges, Output, EventEmitter } from "@angular/core";
+import { environment } from "../../../../environments/environment";
+import { LatitudeLongitude, MapLocationResult } from "./map-results";
+import { MapResultsService } from "./map-results.service";
 
 @Component({
-  selector: 'app-map-results',
-  templateUrl: './map-results.component.html',
-  styleUrls: ['./map-results.component.css']
+  selector: "app-map-results",
+  templateUrl: "./map-results.component.html",
+  styleUrls: ["./map-results.component.css"]
 })
-
 export class MapResultsComponent implements OnChanges {
   addressList: Array<MapLocationResult> = [];
   latitudeLongitude: Array<LatitudeLongitude> = [];
@@ -16,9 +15,9 @@ export class MapResultsComponent implements OnChanges {
   @Input() searchResource: any;
   showMap: boolean = false;
   validAddress = [];
+  @Output() mapDisplayEvent = new EventEmitter<boolean>();
 
-  constructor(private mapResultsService: MapResultsService) {
-  }
+  constructor(private mapResultsService: MapResultsService) {}
 
   getAddress() {
     this.addressList = [];
@@ -26,7 +25,9 @@ export class MapResultsComponent implements OnChanges {
       if (this.searchResource.resources) {
         for (let i = 0; i < this.searchResource.resources.length; i++) {
           if (this.searchResource.resources[i].address) {
-            let addressList = this.searchResource.resources[i].address.split('|');
+            let addressList = this.searchResource.resources[i].address.split(
+              "|"
+            );
             if (addressList.length == 1) {
               this.addressList.push(addressList);
             } else {
@@ -48,7 +49,7 @@ export class MapResultsComponent implements OnChanges {
       this.addressList.forEach(address => {
         if (this.hasNumber(address)) {
           this.checkPoBoxAddresses(address);
-        };
+        }
       });
 
       if (this.validAddress.length > 0) {
@@ -57,6 +58,7 @@ export class MapResultsComponent implements OnChanges {
       } else {
         this.showMap = false;
       }
+      this.mapDisplay();
     }
   }
 
@@ -78,29 +80,41 @@ export class MapResultsComponent implements OnChanges {
   displayMapResults() {
     let num = 0;
     for (let index = 0, len = this.validAddress.length; index < len; index++) {
-      let address = this.validAddress[index].toString().replace('\n', ' ').trim();
-      if (address.toLowerCase() != 'na') {
-        this.mapResultsService.getLocationDetails(address, environment.bingmap_key).subscribe((locationCoordinates) => {
-          this.latlong = {
-            latitude: locationCoordinates.resourceSets[0].resources[0].point.coordinates[0],
-            longitude: locationCoordinates.resourceSets[0].resources[0].point.coordinates[1]
-          }
-          this.latitudeLongitude.push(this.latlong);
-          if (this.latitudeLongitude.length + num === this.validAddress.length) {
-            this.mapResultsService.mapResults(this.latitudeLongitude);
-          }
-        });
+      let address = this.validAddress[index]
+        .toString()
+        .replace("\n", " ")
+        .trim();
+      if (address.toLowerCase() !== "na" || address.toLowerCase() !== "n/a") {
+        this.mapResultsService
+          .getLocationDetails(address, environment.bingmap_key)
+          .subscribe(locationCoordinates => {
+            this.latlong = {
+              latitude:
+                locationCoordinates.resourceSets[0].resources[0].point
+                  .coordinates[0],
+              longitude:
+                locationCoordinates.resourceSets[0].resources[0].point
+                  .coordinates[1]
+            };
+            this.latitudeLongitude.push(this.latlong);
+            if (
+              this.latitudeLongitude.length + num ===
+              this.validAddress.length
+            ) {
+              this.mapResultsService.mapResults(this.latitudeLongitude);
+            }
+          });
       } else {
         num++;
       }
     }
   }
 
+  mapDisplay() {
+    this.mapDisplayEvent.emit(this.showMap);
+  }
+
   ngOnChanges() {
     this.getAddress();
   }
-
 }
-
-
-

@@ -1,5 +1,9 @@
 <div class="row helpline-wrapper">
   <div class="col-md-12 text-center" id="helpline">
-    <h3>{{helpText.beginningText}} <a [href]="'tel:+'+helpText.phoneNumber">{{helpText.phoneNumber}}</a> {{helpText.endingText}}</h3>
+    <h3>
+      {{ helpText.beginningText }}
+      <a [href]="'tel:+' + helpText.phoneNumber">{{ helpText.phoneNumber }}</a>
+      {{ helpText.endingText }}
+    </h3>
   </div>
 </div>

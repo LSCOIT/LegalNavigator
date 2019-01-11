@@ -1,29 +1,45 @@
 <div class="container">
   <div class="static-img-container row">
     <div class="static-img">
-      <img *ngIf="helpAndFaqsContent?.image?.source" [src]="blobUrl + helpAndFaqsContent?.image?.source" alt="helpAndFaqsContent?.image?.altText" />
+      <img
+        *ngIf="helpAndFaqsContent?.image?.source"
+        [src]="blobUrl + helpAndFaqsContent?.image?.source"
+        alt="helpAndFaqsContent?.image?.altText"
+      />
     </div>
     <h1 class="inline">Help & FAQs</h1>
   </div>
   <div class="row">
     <div class="col-md-10">
-      <p>{{helpAndFaqsContent?.description}}</p>
+      <p>{{ helpAndFaqsContent?.description }}</p>
     </div>
   </div>
   <div class="row faqs">
     <div class="col-md-10 col-sm-12">
-      <accordion *ngFor="let content of faqData; let i=index">
+      <accordion *ngFor="let content of faqData; let i = index">
         <accordion-group>
           <div accordion-heading>
-            <div class="media" id="step-question{{i}}" tabindex="0" (keyup.enter)="listenToExpandOnEnter($event)">
-              <div class="media-left accordion-img" id="accordion-img{{i}}"></div>
+            <div
+              class="media"
+              id="step-question{{ i }}"
+              tabindex="0"
+              (keyup.enter)="listenToExpandOnEnter($event)"
+            >
+              <div
+                class="media-left accordion-img"
+                id="accordion-img{{ i }}"
+              ></div>
               <div class="media-body">
-                <h5>{{content.question}}</h5>
+                <h5>{{ content.question }}</h5>
               </div>
             </div>
           </div>
-          <div [innerHTML]="content.answer" #contentAnswer class="step-content" id="step-content{{i}}">
-          </div>
+          <div
+            [innerHTML]="content.answer"
+            #contentAnswer
+            class="step-content"
+            id="step-content{{ i }}"
+          ></div>
         </accordion-group>
       </accordion>
     </div>

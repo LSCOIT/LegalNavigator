@@ -14,7 +14,7 @@ li:last-child a {
 }
 
 li a.selected-item {
-  background-color: #0D3FBB;
+  background-color: #0d3fbb;
   color: #fff;
 }
 
@@ -25,7 +25,6 @@ li a.selected-item {
 
 .upper-action {
   float: right;
-  margin-bottom: -30px;
 }
 
 .row-half-spacing {
@@ -34,11 +33,11 @@ li a.selected-item {
 
 .page-heading {
   display: inline-block;
-  margin-left: 10px;  
+  margin-left: 10px;
 }
 
 .filter-plan {
-  background-color: #F4F4F4;
+  background-color: #f4f4f4;
   padding: 10px;
 }
 
@@ -61,7 +60,7 @@ li a.selected-item {
 }
 
 .highlighted {
-  background-color: #D9F2F8;
+  background-color: #d9f2f8;
 }
 
 #button-basic {
@@ -74,7 +73,7 @@ li a.selected-item {
 }
 
 .dropdown-menu {
-  border: 1px solid #7E7E7E;
+  border: 1px solid #7e7e7e;
   border-radius: 0 0 5px 5px;
   width: 145px;
   top: 86% !important;
@@ -105,7 +104,7 @@ li a.selected-item {
   max-height: 300px;
 }
 
-@media only screen and (min-width : 768px) {
+@media only screen and (min-width: 768px) {
   .mobile-hidden {
     display: block;
   }
@@ -117,13 +116,18 @@ li a.selected-item {
   .filter-plan button {
     margin: 0 10px 10px 10px;
   }
-  
-  .filter-plan span, .filter-plan .mobile-hidden {
+
+  .filter-plan span,
+  .filter-plan .mobile-hidden {
     padding-top: 10px;
+  }
+
+  .user-action {
+    margin-bottom: 10px;
   }
 }
 
-@media only screen and (min-width : 992px) {
+@media only screen and (min-width: 992px) {
   .plan-steps {
     border-left: 1px solid #ddd;
   }

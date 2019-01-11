@@ -2,7 +2,12 @@
   <div *ngIf="resource.resourceType === 'Articles'">
     <app-articles [resource]="resource"></app-articles>
   </div>
-  <div *ngIf="resource.resourceType === 'Organizations' || resource.resourceType === 'Service Providers'">
+  <div
+    *ngIf="
+      resource.resourceType === 'Organizations' ||
+      resource.resourceType === 'Service Providers'
+    "
+  >
     <app-organizations [resource]="resource"></app-organizations>
   </div>
   <div *ngIf="resource.resourceType === 'Videos'">
@@ -12,4 +17,3 @@
     <app-action-plans></app-action-plans>
   </div>
 </div>
-

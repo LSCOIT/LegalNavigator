@@ -1,6 +1,6 @@
-<div [ngClass]="{ 'no-container': fullPage, 'container': !fullPage }">
+<div [ngClass]="{ 'no-container': fullPage, container: !fullPage }">
   <div class="row" *ngIf="isInternalResource || displayMessage">
-    <h2>Results for {{topIntent}}.</h2>
+    <h2>Results for {{ topIntent }}.</h2>
   </div>
   <div *ngIf="isInternalResource || displayMessage">
     <div class="panel-heading box-shadow">
@@ -19,44 +19,77 @@
   </div>
   <div *ngIf="displayMessage">
     <h2>Your search for this location did not match any resources.</h2>
-    <ul>Suggestions:
+    <ul>
+      Suggestions:
       <li>Try to search within a larger area.</li>
       <li>Change the location.</li>
     </ul>
   </div>
-  <div class="row" *ngIf="isInternalResource  || isPersonalizedresource">
+  <div class="row" *ngIf="isInternalResource || isPersonalizedresource">
     <div class="col-sm-12">
-      <app-search-filter (notifyFilterCriteria)='filterSearchResults($event)' [resourceResults]="resourceResults" [initialResourceFilter]="initialResourceFilter" [searchResults]="searchResults" ></app-search-filter>
+      <app-search-filter
+        (notifyFilterCriteria)="filterSearchResults($event)"
+        [resourceResults]="resourceResults"
+        [initialResourceFilter]="initialResourceFilter"
+        [searchResults]="searchResults"
+      ></app-search-filter>
     </div>
   </div>
   <div class="row">
     <div [ngClass]="{ 'col-sm-12': fullPage, 'col-md-8 col-sm-12': !fullPage }">
       <div *ngIf="isInternalResource || isPersonalizedresource">
-        <div *ngFor="let searchResource of searchResults.resources | searchFilter:{ filter : sortType, source : 'internal'} ">
-          <app-resource-card [searchResource]="searchResource" [isSearchResults]="true" [personalizedResources]="personalizedResources" [showRemoveOption]="showRemoveOption"></app-resource-card>
+        <div
+          *ngFor="
+            let searchResource of (searchResults.resources
+              | searchFilter: { filter: sortType, source: 'internal' })
+          "
+        >
+          <app-resource-card
+            [searchResource]="searchResource"
+            [isSearchResults]="true"
+            [personalizedResources]="personalizedResources"
+            [showRemoveOption]="showRemoveOption"
+          ></app-resource-card>
         </div>
       </div>
       <div *ngIf="isWebResource">
-        <div *ngIf="searchResults && searchResults.webResources && searchResults.webResources.webPages">
-          <div *ngFor="let webResult of searchResults.webResources.webPages.value | searchFilter:{ filter : sortType, source : 'external'}" class="col-md-12 sidebar">
+        <div
+          *ngIf="
+            searchResults &&
+            searchResults.webResources &&
+            searchResults.webResources.webPages
+          "
+        >
+          <div
+            *ngFor="
+              let webResult of (searchResults.webResources.webPages.value
+                | searchFilter: { filter: sortType, source: 'external' })
+            "
+            class="col-md-12 sidebar"
+          >
             <app-web-resource [webResult]="webResult"></app-web-resource>
           </div>
         </div>
       </div>
       <div *ngIf="isInternalResource || isWebResource">
-        <app-pagination (goPage)="goToPage($event)"
-                        (goNext)="onNext()"
-                        (goPrev)="onPrev()"
-                        [pagesToShow]="pagesToShow"
-                        [page]="page"
-                        [perPage]="limit"
-                        [count]="total"></app-pagination>
+        <app-pagination
+          (goPage)="goToPage($event)"
+          (goNext)="onNext()"
+          (goPrev)="onPrev()"
+          [pagesToShow]="pagesToShow"
+          [page]="page"
+          [perPage]="limit"
+          [count]="total"
+        ></app-pagination>
       </div>
     </div>
     <div *ngIf="isInternalResource" class="col-md-4 col-sm-12 pull-right">
-      <app-map-results [searchResource]="searchResults"></app-map-results>
-      <div class="row guided-assistant">
-        <app-guided-assistant-sidebar [guidedAssistantId]="guidedAssistantId" [searchResultsData]="searchResults"></app-guided-assistant-sidebar>
+      <app-map-results [searchResource]="searchResults" (mapDisplayEvent)="receiveMapEvent($event)"></app-map-results>
+      <div class="guided-assistant" [ngClass]="{ '' : !showMap, 'row' : showMap }">
+        <app-guided-assistant-sidebar
+          [guidedAssistantId]="guidedAssistantId"
+          [searchResultsData]="searchResults"
+        ></app-guided-assistant-sidebar>
       </div>
     </div>
   </div>

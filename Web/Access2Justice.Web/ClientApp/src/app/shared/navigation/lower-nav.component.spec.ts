@@ -1,14 +1,14 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { LowerNavComponent } from './lower-nav.component';
-import { StaticResourceService } from '../../shared/static-resource.service';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { Global } from '../../global';
-import { MapService } from '../map/map.service';
-import { EventUtilityService } from '../event-utility.service';
-import { StateCodeService } from '../state-code.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from "@angular/common/http";
+import { NO_ERRORS_SCHEMA } from "@angular/core";
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { Global } from "../../global";
+import { EventUtilityService } from "../../shared/services/event-utility.service";
+import { StateCodeService } from "../../shared/services/state-code.service";
+import { StaticResourceService } from "../../shared/services/static-resource.service";
+import { MapService } from "../map/map.service";
+import { LowerNavComponent } from "./lower-nav.component";
 
-describe('LowerNavComponent', () => {
+describe("LowerNavComponent", () => {
   let component: LowerNavComponent;
   let fixture: ComponentFixture<LowerNavComponent>;
   let mockStaticResourceService;
@@ -19,52 +19,64 @@ describe('LowerNavComponent', () => {
   beforeEach(async(() => {
     navigation = {
       name: "Navigation",
-      location: [
-        { state: "Default" }
-      ]
-    },
-    globalData = [{
-      name: "Navigation",
-      location: [
-        { state: "Default" }
-      ]
-    }];
-    mockStaticResourceService = jasmine.createSpyObj(['getLocation', 'getStaticContents']);
-    mockGlobal = jasmine.createSpyObj(['getData']);
+      location: [{ state: "Default" }]
+    };
+    globalData = [
+      {
+        name: "Navigation",
+        location: [
+          {
+            state: "Default"
+          }
+        ]
+      }
+    ];
+    mockStaticResourceService = jasmine.createSpyObj([
+      "getLocation",
+      "getStaticContents"
+    ]);
+    mockGlobal = jasmine.createSpyObj(["getData"]);
     mockGlobal.getData.and.returnValue(globalData);
-    
+
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
-      declarations: [ LowerNavComponent ],
-      providers: [ 
-        { provide: StaticResourceService, useValue: mockStaticResourceService },
-        { provide: Global, useValue: mockGlobal },
+      declarations: [LowerNavComponent],
+      providers: [
         MapService,
         EventUtilityService,
-        StateCodeService
+        StateCodeService,
+        {
+          provide: StaticResourceService,
+          useValue: mockStaticResourceService
+        },
+        {
+          provide: Global,
+          useValue: mockGlobal
+        }
       ],
-      schemas: [ NO_ERRORS_SCHEMA ]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LowerNavComponent);
     component = fixture.componentInstance;
-    spyOn(component, 'ngOnInit');
+    spyOn(component, "ngOnInit");
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 
-  it('should set about content to static resource about content if it exists', () => {
-    mockStaticResourceService.getLocation.and.returnValue('Default');
+  it("should set about content to static resource about content if it exists", () => {
+    mockStaticResourceService.getLocation.and.returnValue("Default");
     mockStaticResourceService.navigation = navigation;
-    spyOn(component, 'filterNavigationContent');
+    spyOn(component, "filterNavigationContent");
     component.getNavigationContent();
     expect(component.navigation).toEqual(mockStaticResourceService.navigation);
-    expect(component.filterNavigationContent).toHaveBeenCalledWith(mockStaticResourceService.navigation);
+    expect(component.filterNavigationContent).toHaveBeenCalledWith(
+      mockStaticResourceService.navigation
+    );
   });
 });

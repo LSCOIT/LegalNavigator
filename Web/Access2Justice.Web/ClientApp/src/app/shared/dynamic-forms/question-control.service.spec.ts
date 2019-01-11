@@ -1,15 +1,17 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { inject, TestBed } from "@angular/core/testing";
+import { QuestionControlService } from "./question-control.service";
 
-import { QuestionControlService } from './question-control.service';
-
-describe('QuestionControlService', () => {
+describe("QuestionControlService", () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [QuestionControlService]
     });
   });
 
-  it('should be created', inject([QuestionControlService], (service: QuestionControlService) => {
-    expect(service).toBeTruthy();
-  }));
+  it("should be created", inject(
+    [QuestionControlService],
+    (service: QuestionControlService) => {
+      expect(service).toBeTruthy();
+    }
+  ));
 });

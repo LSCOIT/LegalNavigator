@@ -1,33 +1,68 @@
 <div class="container" *ngIf="personalizedPlanContent">
   <h1>Personalized Plan Page</h1>
-  <form #personalizedPlanForm="ngForm" (ngSubmit)="onSubmit(personalizedPlanForm)">
+  <form
+    #personalizedPlanForm="ngForm"
+    (ngSubmit)="onSubmit(personalizedPlanForm)"
+  >
     <div class="box-shadow">
       <h2>Heading</h2>
       <div class="row">
         <div class="description col-sm-12">
           <label class="col-md-2 col-sm-3">Our Mission</label>
-          <textarea class="form-control col-md-10 col-sm-9" name="personalizedPlanDescription" [value]="personalizedPlanContent.description" [(ngModel)]="personalizedPlanContent.description"></textarea>
+          <textarea
+            class="form-control col-md-10 col-sm-9"
+            name="personalizedPlanDescription"
+            [value]="personalizedPlanContent.description"
+            [(ngModel)]="personalizedPlanContent.description"
+          ></textarea>
         </div>
       </div>
     </div>
     <div class="box-shadow">
       <h2>Sponsors</h2>
-      <div class="row sections" *ngFor="let sponsor of personalizedPlanContent.sponsors; let i=index">
+      <div
+        class="row sections"
+        *ngFor="let sponsor of personalizedPlanContent.sponsors; let i = index"
+      >
         <div class="description col-sm-12">
-          <label class="col-md-2 col-sm-3">Current Image {{i}}</label>
-          <img class="media-object" [src]="'data:image/jpg;base64,'+sponsor?.source" [alt]="sponsor.altText" />
+          <label class="col-md-2 col-sm-3">Current Image {{ i }}</label>
+          <img
+            class="media-object"
+            [src]="'data:image/jpg;base64,' + sponsor?.source"
+            [alt]="sponsor.altText"
+          />
         </div>
         <div class="description col-sm-12">
-          <button type="button" class="btn btn-secondary" (click)="showNewsUpload('sponsorImageUpload', i)">Upload new image</button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="showNewsUpload('sponsorImageUpload', i)"
+          >
+            Upload new image
+          </button>
         </div>
         <div #sponsorImageUpload class="description new-img col-sm-12">
           <label class="col-md-2 col-sm-3">Upload New Sponsor Logo</label>
-          <input class="form-control upload-img col-md-10 col-sm-9 " type="file" [name]="'sponsorImage' + i" accept="image/*" (change)="encode('sponsorImage', i)" ngModel />
-          <p class="pxs">Size limit: 100kg | Recommended dimension: 200px by 50px</p>
+          <input
+            class="form-control upload-img col-md-10 col-sm-9 "
+            type="file"
+            [name]="'sponsorImage' + i"
+            accept="image/*"
+            (change)="encode('sponsorImage', i)"
+            ngModel
+          />
+          <p class="pxs">
+            Size limit: 100kg | Recommended dimension: 200px by 50px
+          </p>
         </div>
         <div class="description col-sm-12">
-          <label class="col-md-2 col-sm-3">Image Alt Text {{i}}</label>
-          <input class="form-control col-md-10 col-sm-9" type="text" [name]="'sponsorImageAltText'+i" [(ngModel)]="sponsor.altText" />
+          <label class="col-md-2 col-sm-3">Image Alt Text {{ i }}</label>
+          <input
+            class="form-control col-md-10 col-sm-9"
+            type="text"
+            [name]="'sponsorImageAltText' + i"
+            [(ngModel)]="sponsor.altText"
+          />
         </div>
       </div>
     </div>

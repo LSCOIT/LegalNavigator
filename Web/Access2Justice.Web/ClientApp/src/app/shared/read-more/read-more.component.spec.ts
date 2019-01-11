@@ -1,15 +1,14 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReadMoreComponent } from './read-more.component';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { ReadMoreComponent } from "./read-more.component";
 
-describe('ReadMoreComponent', () => {
+describe("ReadMoreComponent", () => {
   let component: ReadMoreComponent;
   let fixture: ComponentFixture<ReadMoreComponent>;
-  
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ReadMoreComponent ]
-    })
-    .compileComponents();
+      declarations: [ReadMoreComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -18,18 +17,18 @@ describe('ReadMoreComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call determineView on ngOnChanges', () => {
-    spyOn(component, 'determineView');
+  it("should call determineView on ngOnChanges", () => {
+    spyOn(component, "determineView");
     component.text = "test";
     component.ngOnChanges();
     expect(component.determineView).toHaveBeenCalled();
   });
 
-  it('should hide toggle show full text when text is less than maxLength', () => {
+  it("should hide toggle show full text when text is less than maxLength", () => {
     component.text = "File this when finishing the custody case";
     component.maxLength = 200;
     component.determineView();
@@ -37,7 +36,7 @@ describe('ReadMoreComponent', () => {
     expect(component.hideToggle).toBe(true);
   });
 
-  it('should show toggle and collapsed text when text is more than maxLength', () => {
+  it("should show toggle and collapsed text when text is more than maxLength", () => {
     component.text = "File this when finishing the custody case";
     component.maxLength = 10;
     component.determineView();

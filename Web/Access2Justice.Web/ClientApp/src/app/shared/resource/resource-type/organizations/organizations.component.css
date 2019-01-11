@@ -25,7 +25,8 @@
   background-color: #000;
 }
 
-.thumbnails img, .modal-thumbnails img {
+.thumbnails img,
+.modal-thumbnails img {
   width: 65px;
   max-height: 65px;
   margin: 0 3px;
@@ -42,6 +43,10 @@
 
 .box-no-shadow {
   margin: 20px 0;
+}
+
+.box-no-shadow:first-child {
+  margin: 0 auto 20px auto;
 }
 
 .resource-body {
@@ -76,15 +81,22 @@ h2 {
   margin: 0;
 }
 
-@media only screen and (min-width : 768px) {
+@media only screen and (min-width: 768px) {
+  .mobile-hidden {
+    display: inline-block;
+  }
+
+  .web-hidden {
+    display: none;
+  }
+
   .user-action {
-    margin-top: 10px;
+    margin: 10px auto;
   }
 }
 
-@media only screen and (min-width : 992px) {
+@media only screen and (min-width: 992px) {
   .col-md-4 {
     padding-left: 5%;
   }
 }
-

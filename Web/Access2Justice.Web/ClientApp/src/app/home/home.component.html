@@ -1,45 +1,88 @@
 <div *ngIf="homeContent">
   <div class="container hero-content">
     <div class="row">
-      <div [ngClass]="{'col-sm-6': heroData.image.source, 'col-sm-12': !heroData.image.source }" class="tagline">
-        <h1>{{heroData.heading}} {{state}}</h1>
+      <div
+        [ngClass]="{
+          'col-sm-6': heroData.image.source,
+          'col-sm-12': !heroData.image.source
+        }"
+        class="tagline"
+      >
+        <h1>{{ heroData.heading }} {{ state }}</h1>
         <p class="hero-description">
-          {{heroData.description.text}}
-          <a class="link" [routerLink]="heroData?.description?.textWithLink?.url">{{heroData?.description?.textWithLink?.urlText}}.</a>
+          {{ heroData.description.text }}
+          <a
+            class="link"
+            [routerLink]="heroData?.description?.textWithLink?.url"
+            >{{ heroData?.description?.textWithLink?.urlText }}.</a
+          >
         </p>
         <div class="panel-heading box-shadow">
           <span class="label-display p">Showing Information for </span>
           <app-map [mapType]="true"></app-map>
         </div>
-        <p class="ps add-state">Add your state to get specific information for your location.</p>
+        <p class="ps add-state">
+          Add your state to get specific information for your location.
+        </p>
       </div>
       <div *ngIf="heroData.image.source" class="col-sm-6">
-        <img id="home-img" [src]="blobUrl + heroData?.image?.source" [alt]="heroData?.image?.altText">
-        <img id="dropdown-arrow" src="../../assets/images/small-icons/arrow_down.svg" alt="dropdown arrow"/>
+        <img
+          id="home-img"
+          [src]="blobUrl + heroData?.image?.source"
+          [alt]="heroData?.image?.altText"
+        />
+        <img
+          id="dropdown-arrow"
+          src="../../assets/images/small-icons/arrow_down.svg"
+          alt="dropdown arrow"
+        />
       </div>
     </div>
   </div>
   <div class="outer-bg text-center" id="guided-assistant-overview">
     <div class="container">
       <div class="row">
-        <h2>{{guidedAssistantOverviewData?.heading}}</h2>
+        <h2>{{ guidedAssistantOverviewData?.heading }}</h2>
       </div>
       <div class="row">
         <div *ngIf="guidedAssistantOverviewData.image.source">
           <div class="col-sm-4">
-            <img class="secondary-img" [src]="blobUrl + guidedAssistantOverviewData?.image?.source"
-                 [alt]="guidedAssistantOverviewData?.image?.altText">
+            <img
+              class="secondary-img"
+              [src]="blobUrl + guidedAssistantOverviewData?.image?.source"
+              [alt]="guidedAssistantOverviewData?.image?.altText"
+            />
           </div>
           <div class="guided-assistant-steps col-sm-7">
-            <ul class="p" *ngFor="let steps of guidedAssistantOverviewData?.description?.steps">
-              <li><span>{{steps?.order}}.</span>{{steps?.description}}</li>
+            <ul
+              class="p"
+              *ngFor="
+                let steps of guidedAssistantOverviewData?.description?.steps
+              "
+            >
+              <li>
+                <span>{{ steps?.order }}.</span>{{ steps?.description }}
+              </li>
             </ul>
             <p>
-              {{guidedAssistantOverviewData?.description?.text}}
-              <a class="link" [routerLink]="guidedAssistantOverviewData?.description?.textWithLink?.url">{{guidedAssistantOverviewData?.description?.textWithLink?.urlText}}.</a>
+              {{ guidedAssistantOverviewData?.description?.text }}
+              <a
+                class="link"
+                [routerLink]="
+                  guidedAssistantOverviewData?.description?.textWithLink?.url
+                "
+                >{{
+                  guidedAssistantOverviewData?.description?.textWithLink
+                    ?.urlText
+                }}.</a
+              >
             </p>
             <div>
-              <a class="btn btn-primary" [routerLink]="guidedAssistantOverviewData?.button?.buttonLink">{{guidedAssistantOverviewData?.button?.buttonText}}</a>
+              <a
+                class="btn btn-primary"
+                [routerLink]="guidedAssistantOverviewData?.button?.buttonLink"
+                >{{ guidedAssistantOverviewData?.button?.buttonText }}</a
+              >
             </div>
           </div>
         </div>
@@ -48,13 +91,19 @@
   </div>
   <div class="container">
     <div class="row">
-      <h2 class="text-center">{{topicAndResourcesData?.heading}}</h2>
+      <h2 class="text-center">{{ topicAndResourcesData?.heading }}</h2>
     </div>
     <div class="row">
       <app-topics [topicLength]="topicLength" [fullPage]="true"></app-topics>
     </div>
     <div class="text-center topic-button row">
-      <a id="see-more-topics-button" class="btn btn-primary" [routerLink]="topicAndResourcesData?.button?.buttonLink"> {{topicAndResourcesData?.button?.buttonText}} </a>
+      <a
+        id="see-more-topics-button"
+        class="btn btn-primary"
+        [routerLink]="topicAndResourcesData?.button?.buttonLink"
+      >
+        {{ topicAndResourcesData?.button?.buttonText }}
+      </a>
     </div>
   </div>
   <div *ngIf="carouselData.slides.length > 0" class="outer-bg">
@@ -63,39 +112,51 @@
         <slide *ngFor="let slide of slides">
           <div class="row">
             <div *ngIf="slide.image.source" class="col-sm-4 testimonial-img">
-              <img [src]="'data:image/jpg;base64,'+ slide?.image?.source | sanitize" [alt]="slide?.image?.altText" />
+              <img
+                [src]="
+                  'data:image/jpg;base64,' + slide?.image?.source | sanitize
+                "
+                [alt]="slide?.image?.altText"
+              />
             </div>
             <div class="slide-content col-sm-8">
-              <h4>{{slide.quote}}</h4>
+              <h4>{{ slide.quote }}</h4>
               <div class="mobile-hidden">
-                <hr/>
-                <p>{{slide?.author}}</p>
-                <p class="ps">{{slide?.location}}</p>
+                <hr />
+                <p>{{ slide?.author }}</p>
+                <p class="ps">{{ slide?.location }}</p>
               </div>
             </div>
             <div class="slide-content-bottom web-hidden">
-              <hr/>
-              <p>{{slide?.author}}</p>
-              <p class="ps">{{slide?.location}}</p>
+              <hr />
+              <p>{{ slide?.author }}</p>
+              <p class="ps">{{ slide?.location }}</p>
             </div>
           </div>
         </slide>
-        </carousel>
+      </carousel>
     </div>
   </div>
 </div>
 <div *ngIf="sponsorOverviewData" class="container text-center sponsor-overview">
   <div class="row">
     <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
-      <h2>{{sponsorOverviewData?.heading}}</h2>
+      <h2>{{ sponsorOverviewData?.heading }}</h2>
       <div class="row" [innerHTML]="sponsorOverviewData?.description"></div>
       <div class="row">
         <div *ngFor="let sponsor of sponsors" class="col-sm-6 sponsor-img">
-          <img *ngIf="sponsor.source" [src]="'data:image/jpg;base64,'+sponsor?.source | sanitize" [alt]="sponsor.altText" />
+          <img
+            *ngIf="sponsor.source"
+            [src]="'data:image/jpg;base64,' + sponsor?.source | sanitize"
+            [alt]="sponsor.altText"
+          />
         </div>
       </div>
-      <a class="btn btn-primary" [routerLink]="sponsorOverviewData?.button?.buttonLink">
-        {{sponsorOverviewData?.button?.buttonText}}
+      <a
+        class="btn btn-primary"
+        [routerLink]="sponsorOverviewData?.button?.buttonLink"
+      >
+        {{ sponsorOverviewData?.button?.buttonText }}
       </a>
     </div>
   </div>
@@ -104,14 +165,20 @@
   <div class="container">
     <div class="row">
       <div *ngIf="privacyData.image.source" class="col-sm-4 col-sm-offset-1">
-        <img [src]="blobUrl + privacyData?.image?.source" [alt]="privacyData?.image?.altText">
+        <img
+          [src]="blobUrl + privacyData?.image?.source"
+          [alt]="privacyData?.image?.altText"
+        />
       </div>
       <div class="col-sm-5 col-sm-offset-1 privacy-content">
-        <h2>{{privacyData?.heading}}</h2>
-        <p>{{privacyData?.description}}</p>
+        <h2>{{ privacyData?.heading }}</h2>
+        <p>{{ privacyData?.description }}</p>
         <div>
-          <a class="btn btn-secondary" [routerLink]="privacyData?.button?.buttonLink">
-            {{privacyData?.button?.buttonText}}
+          <a
+            class="btn btn-secondary"
+            [routerLink]="privacyData?.button?.buttonLink"
+          >
+            {{ privacyData?.button?.buttonText }}
           </a>
         </div>
       </div>

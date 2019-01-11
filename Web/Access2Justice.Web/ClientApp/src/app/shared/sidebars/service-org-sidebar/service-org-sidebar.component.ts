@@ -1,15 +1,16 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MapService } from '../../map/map.service';
-import { IResourceFilter } from '../../search/search-results/search-results.model';
-import { NavigateDataService } from '../../navigate-data.service';
-import { PaginationService } from '../../pagination/pagination.service';
-import { MapLocation, LocationDetails } from '../../map/map';
-import { Global } from '../../../global';
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Global } from "../../../global";
+import { LocationDetails, MapLocation } from "../../map/map";
+import { MapService } from "../../map/map.service";
+import { PaginationService } from "../../pagination/pagination.service";
+import { IResourceFilter } from "../../search/search-results/search-results.model";
+import { NavigateDataService } from "../../services/navigate-data.service";
+
 @Component({
-  selector: 'app-service-org-sidebar',
-  templateUrl: './service-org-sidebar.component.html',
-  styleUrls: ['./service-org-sidebar.component.css']
+  selector: "app-service-org-sidebar",
+  templateUrl: "./service-org-sidebar.component.html",
+  styleUrls: ["./service-org-sidebar.component.css"]
 })
 export class ServiceOrgSidebarComponent implements OnInit {
   @Input() fullPage = false;
@@ -20,7 +21,18 @@ export class ServiceOrgSidebarComponent implements OnInit {
   activeTopic: string;
   @Output()
   showMoreOrganizations = new EventEmitter<string>();
-  resourceFilter: IResourceFilter = { ResourceType: '', ContinuationToken: '', TopicIds: [], ResourceIds: [], PageNumber: 0, Location: {}, IsResourceCountRequired: false, IsOrder: false, OrderByField: '', OrderBy:'' };
+  resourceFilter: IResourceFilter = {
+    ResourceType: "",
+    ContinuationToken: "",
+    TopicIds: [],
+    ResourceIds: [],
+    PageNumber: 0,
+    Location: {},
+    IsResourceCountRequired: false,
+    IsOrder: false,
+    OrderByField: "",
+    OrderBy: ""
+  };
   topicIds: string[] = [];
   total: number = 5;
 
@@ -31,11 +43,14 @@ export class ServiceOrgSidebarComponent implements OnInit {
     private navigateDataService: NavigateDataService,
     private paginationService: PaginationService,
     private global: Global
-  ) { }
+  ) {}
 
   getOrganizations() {
-    if (this.router.url.startsWith("/topics") || this.router.url.startsWith("/subtopics")) {
-      this.activeTopic = this.activeRoute.snapshot.params['topic'];
+    if (
+      this.router.url.startsWith("/topics") ||
+      this.router.url.startsWith("/subtopics")
+    ) {
+      this.activeTopic = this.activeRoute.snapshot.params["topic"];
       if (this.activeTopic) {
         this.topicIds.push(this.activeTopic);
       }
@@ -45,19 +60,32 @@ export class ServiceOrgSidebarComponent implements OnInit {
       this.topicIds = searchResponse["topicIds"];
     }
     this.resourceFilter = {
-      ResourceType: 'Organizations', TopicIds: this.topicIds, Location: this.location,
-      PageNumber: 0, ContinuationToken: '', IsResourceCountRequired: false, ResourceIds: [], IsOrder: false, OrderByField: '', OrderBy:''
-    }
-    this.paginationService.getPagedResources(this.resourceFilter).subscribe(response => {
-      if (response != undefined) {
-        this.organizations = response["resources"];
-        this.global.organizationsData = response["resources"];
+      ResourceType: "Organizations",
+      TopicIds: this.topicIds,
+      Location: this.location,
+      PageNumber: 0,
+      ContinuationToken: "",
+      IsResourceCountRequired: false,
+      ResourceIds: [],
+      IsOrder: false,
+      OrderByField: "",
+      OrderBy: ""
+    };
+    this.paginationService
+      .getPagedResources(this.resourceFilter)
+      .subscribe(response => {
+        if (response != undefined) {
+          this.organizations = response["resources"];
+          this.global.organizationsData = response["resources"];
 
-        if (this.global.organizationsData.length > 3) {
-          this.global.organizationsData.splice(3, (this.global.organizationsData.length) - 1);
+          if (this.global.organizationsData.length > 3) {
+            this.global.organizationsData.splice(
+              3,
+              this.global.organizationsData.length - 1
+            );
+          }
         }
-      }
-    });
+      });
   }
 
   callOrganizations(event) {
@@ -66,9 +94,14 @@ export class ServiceOrgSidebarComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (!this.global.organizationsData || this.global.organizationsData.length == 0) {
+    if (
+      !this.global.organizationsData ||
+      this.global.organizationsData.length === 0
+    ) {
       if (sessionStorage.getItem("globalMapLocation")) {
-        this.locationDetails = JSON.parse(sessionStorage.getItem("globalMapLocation"));
+        this.locationDetails = JSON.parse(
+          sessionStorage.getItem("globalMapLocation")
+        );
         this.location = this.locationDetails.location;
         this.getOrganizations();
       }
@@ -76,14 +109,14 @@ export class ServiceOrgSidebarComponent implements OnInit {
       this.organizations = this.global.organizationsData;
     }
 
-    this.subscription = this.mapService.notifyLocation
-      .subscribe((value) => {
-        this.global.organizationsData = null;
-        this.locationDetails = value;
-        this.location = this.locationDetails.location;
-        this.getOrganizations();
-      });
+    this.subscription = this.mapService.notifyLocation.subscribe(value => {
+      this.global.organizationsData = null;
+      this.locationDetails = value;
+      this.location = this.locationDetails.location;
+      this.getOrganizations();
+    });
   }
+
   ngOnDestroy() {
     if (this.subscription != undefined) {
       this.subscription.unsubscribe();

@@ -1,45 +1,53 @@
-import { TestBed, inject, tick, fakeAsync } from '@angular/core/testing';
-import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
-import { RouterTestingModule } from '@angular/router/testing';
-import { LoginService } from '../shared/login/login.service';
-import { ProfileResolver } from './profile-resolver.service';
-import { of } from 'rxjs/observable/of';
+import { HttpClientModule } from "@angular/common/http";
+import { fakeAsync, inject, TestBed, tick } from "@angular/core/testing";
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from "@angular/router";
+import { RouterTestingModule } from "@angular/router/testing";
+import { of } from "rxjs/observable/of";
+import { LoginService } from "../shared/login/login.service";
+import { ProfileResolver } from "./profile-resolver.service";
 
-describe('ProfileResolverService', () => {
+describe("ProfileResolverService", () => {
   let profileResolverService: ProfileResolver;
   let mockLoginService;
   let mockRoute: ActivatedRouteSnapshot;
   let mockState: RouterStateSnapshot;
-  
+
   beforeEach(() => {
-    mockLoginService = jasmine.createSpyObj(['getUserProfile']);
+    mockLoginService = jasmine.createSpyObj(["getUserProfile"]);
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, HttpClientModule],
-      providers: [ProfileResolver,
-        { provide: LoginService, useValue: mockLoginService }
+      providers: [
+        ProfileResolver,
+        {
+          provide: LoginService,
+          useValue: mockLoginService
+        }
       ]
     });
     profileResolverService = new ProfileResolver(mockLoginService);
   });
 
-  it('should be defined', inject([ProfileResolver], (profileResolverService: ProfileResolver) => {
-    expect(profileResolverService).toBeDefined();
-  }));
+  it("should be defined", inject(
+    [ProfileResolver],
+    (profileResolverService: ProfileResolver) => {
+      expect(profileResolverService).toBeDefined();
+    }
+  ));
 
-  it('should be created', inject([ProfileResolver], (profileResolverService: ProfileResolver) => {
-    expect(profileResolverService).toBeTruthy();
-  }));
+  it("should be created", inject(
+    [ProfileResolver],
+    (profileResolverService: ProfileResolver) => {
+      expect(profileResolverService).toBeTruthy();
+    }
+  ));
 
-  it('should call LoginService getUser profile when resolve is called', fakeAsync(() => {
-
+  it("should call LoginService getUser profile when resolve is called", fakeAsync(() => {
     let mockLoginResponse = {
       oId: "1234567890ABC",
       name: "mockUser",
       eMail: "mockUser@microsoft.com"
-    }
-
+    };
     mockLoginService.getUserProfile.and.returnValue(of(mockLoginResponse));
     profileResolverService.resolve(mockRoute, mockState);
     tick(250);

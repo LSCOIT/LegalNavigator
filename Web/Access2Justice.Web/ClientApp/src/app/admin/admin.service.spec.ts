@@ -1,8 +1,8 @@
-import { TestBed, inject } from '@angular/core/testing';
-import { HttpClientModule } from '@angular/common/http';
-import { AdminService } from './admin.service';
+import { HttpClientModule } from "@angular/common/http";
+import { inject, TestBed } from "@angular/core/testing";
+import { AdminService } from "./admin.service";
 
-describe('AdminService', () => {
+describe("AdminService", () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
@@ -10,7 +10,7 @@ describe('AdminService', () => {
     });
   });
 
-  it('should be created', inject([AdminService], (service: AdminService) => {
+  it("should be created", inject([AdminService], (service: AdminService) => {
     expect(service).toBeTruthy();
   }));
 });

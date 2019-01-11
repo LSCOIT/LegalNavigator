@@ -1,24 +1,31 @@
 <div id="live-chat">
   <div *ngIf="!showChatbot" class="chat-icon" (click)="toggleChat()">
-    <img src="./assets/images/small-icons/chat.svg" alt="Chatbot" />
-    Chat
+    <img src="./assets/images/small-icons/chat.svg" alt="Chatbot" /> Chat
   </div>
   <div *ngIf="showChatbot" class="chat">
     <div class="chat-header">
       <img src="./assets/images/small-icons/chat.svg" alt="Chatbot" />
       <span>Chat</span>
+      <img src="./assets/images/small-icons/close_white.svg" (click)="toggleChat()" class="pull-right close" alt="Close" />
     </div>
     <div class="chat-history">
       <div class="chat-message">
-        <div class="chat-message-content">Welcome. What would you like help with?</div>
+        <div class="chat-message-content">
+          Welcome. What would you like help with?
+        </div>
         <div *ngFor="let message of messages">
-          <p class="chat-message-content user-input">{{message.inputText}}</p>
-          <p class="chat-message-content chat-response">{{message.text}}</p><br/>
-          <a *ngIf="message.topicLink" href="{{message.topicLink}}">internal resource</a>
-          <div *ngFor=" let lawType of message.types">
+          <p class="chat-message-content user-input">{{ message.inputText }}</p>
+          <p class="chat-message-content chat-response">{{ message.text }}</p>
+          <br />
+          <a *ngIf="message.topicLink" href="{{ message.topicLink }}"
+            >internal resource</a
+          >
+          <div *ngFor="let lawType of message.types">
             <ul>
               <li>
-                <div (click)="select(lawType.destination)"><span class="chatbot-message">{{lawType.label}}</span></div>
+                <div (click)="select(lawType.destination)">
+                  <span class="chatbot-message">{{ lawType.label }}</span>
+                </div>
                 <!--<p class="chat-time" *ngIf="lawType.destination">{{lawType.destination}}</p>-->
               </li>
             </ul>
@@ -27,8 +34,19 @@
       </div>
       <form id="chatbox-input" action="#" method="post">
         <div class="input-box">
-          <input type="text" placeholder="Type your message…" [(ngModel)]="replyMessage" name="replyMessage" autofocus>
-          <button id="search-phrase-button" type="submit" aria-label="search button" (click)="reply()">
+          <input
+            type="text"
+            placeholder="Type your message…"
+            [(ngModel)]="replyMessage"
+            name="replyMessage"
+            autofocus
+          />
+          <button
+            id="search-phrase-button"
+            type="submit"
+            aria-label="search button"
+            (click)="reply()"
+          >
             Send
           </button>
         </div>

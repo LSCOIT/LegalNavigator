@@ -18,15 +18,14 @@ ul {
   padding-left: 0;
 }
 
-
 a {
-  color: #0D3FB8;
+  color: #0d3fb8;
   font-weight: 600;
   text-decoration: none;
 }
 
 a:hover {
-  color: #0B2B78;
+  color: #0b2b78;
   text-decoration: none;
 }
 
@@ -79,7 +78,7 @@ textarea {
 }
 
 .static-img-container {
-  border-bottom: 1.5px solid #0D3FBB;
+  border-bottom: 1.5px solid #0d3fbb;
   margin: 40px 0;
 }
 
@@ -135,10 +134,10 @@ textarea {
 #google_translate_element {
   left: 0;
   padding: 20px 20px 10px 10px;
-  position: fixed; 
-  top: 42px; 
-  background: #fff; 
-  width: 275px; 
+  position: fixed;
+  top: 42px;
+  background: #fff;
+  width: 275px;
   height: 385px;
 }
 
@@ -186,17 +185,17 @@ textarea {
 .progress {
   height: 20px;
   border: 1px solid #ccc;
-  background-color: #FFF;
+  background-color: #fff;
   box-shadow: none;
   border-radius: 10px;
 }
 
 .progress-bar {
-  background-color: #0D3FBB;
+  background-color: #0d3fbb;
 }
 
 #question-text a {
-  color: #0D3FB8;
+  color: #0d3fb8;
   font-weight: 600;
   margin-left: 10px;
   font-size: 21px;
@@ -225,7 +224,7 @@ textarea {
 }
 
 .modal-dialog {
-  height: 1185px;
+  height: 1225px;
   margin: 0;
   background-color: #fff;
   padding-top: 30px;
@@ -240,7 +239,22 @@ textarea {
   display: none;
 }
 
-@media only screen and (min-width : 540px) {
+#download img,
+#print img,
+#settings img {
+  display: block;
+  margin: 0 auto;
+}
+
+#download,
+#print,
+#settings,
+#save,
+#share {
+  font-size: 12px;
+}
+
+@media only screen and (min-width: 540px) {
   .modal-dialog {
     height: auto;
     margin: 0.75rem auto;
@@ -254,14 +268,14 @@ textarea {
   }
 }
 
-@media only screen and (min-width : 768px) {
+@media only screen and (min-width: 768px) {
   body {
     top: 50px !important;
   }
 
   #google_translate_element {
     left: 1.9%;
-    padding: 30px 20px 10px 20px; 
+    padding: 30px 20px 10px 20px;
   }
 
   .static-img {
@@ -291,7 +305,7 @@ textarea {
     visibility: hidden;
     position: absolute;
     left: -150px;
-    transform: translate(0,10px);
+    transform: translate(0, 10px);
     background-color: #fff;
     padding: 10px;
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
@@ -299,30 +313,44 @@ textarea {
     top: 65px;
   }
 
-    .popover-content:before {
-      position: absolute;
-      z-index: -1;
-      content: '';
-      right: calc(50% - 42px);
-      top: -10px;
-      border-style: solid;
-      border-width: 0 10px 10px 10px;
-      border-color: transparent transparent #f4f4f4 transparent;
-    }
+  .popover-content:before {
+    position: absolute;
+    z-index: -1;
+    content: "";
+    right: calc(50% - 42px);
+    top: -10px;
+    border-style: solid;
+    border-width: 0 10px 10px 10px;
+    border-color: transparent transparent #f4f4f4 transparent;
+  }
 
   .popover-wrapper:hover .popover-content {
     z-index: 10;
     opacity: 1;
     visibility: visible;
-    transform: translate(0,-20px);
+    transform: translate(0, -20px);
   }
 
   .popover-message {
     text-align: center;
     font-size: 12px;
   }
+
+  #download,
+  #print,
+  #settings,
+  #save,
+  #share {
+    font-size: 16px;
+  }
+
+  #download img,
+  #print img,
+  #settings img {
+    display: inline-block;
+  }
 }
-@media only screen and (min-width : 992px) {
+@media only screen and (min-width: 992px) {
   .web-hidden {
     display: none;
   }

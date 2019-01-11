@@ -7,5 +7,3 @@ export interface GuidedAssistant {
   location: Array<Location>;
   organizationalUnit: string;
 }
-
-
