@@ -20,8 +20,6 @@ namespace A2JDbCreator
                 .AddEnvironmentVariables();
             IConfigurationRoot configuration = builder.Build();
 
-            Console.WriteLine("Starting DB creation -");
-
             // read configs
             var dbSettings = new DbSettings();
             configuration.GetSection("DbSettings").Bind(dbSettings);
@@ -30,8 +28,6 @@ namespace A2JDbCreator
 
             // run the creator
             CreateAsync(dbSettings, dbCollections);
-
-            Console.WriteLine("All DBs were created successfully. Click any key to exit.");
             Console.ReadKey();
         }
 
@@ -39,20 +35,26 @@ namespace A2JDbCreator
         {
             using (var client = new DocumentClient(new Uri(dbSettings.Endpoint), dbSettings.AuthKey))
             {
+                // create databae if it doesn't exist
+                Console.Write($"Creating '{dbSettings.Name}'");
                 var db = new Database { Id = dbSettings.Name };
-                await client.CreateDatabaseAsync(db);
+                await client.CreateDatabaseIfNotExistsAsync(db);
+                Console.WriteLine("...finished successfully.");
 
-                var coll = new DocumentCollection { Id = "Resources" };
-                coll.PartitionKey.Paths.Add("/organizationalUnit");
+                // create collection(s) if not exist
+                foreach (var collection in collections)
+                {
+                    Console.Write($"Creating '{collection.Name}'");
+                    var coll = new DocumentCollection { Id = collection.Name };
+                    coll.PartitionKey.Paths.Add(collection.PartitionKey);
 
-                var dbUri = UriFactory.CreateDatabaseUri("DevDb");
-                await client.CreateDocumentCollectionAsync(dbUri, coll, new RequestOptions { OfferThroughput = 20000 });
+                    var dbUri = UriFactory.CreateDatabaseUri(dbSettings.Name);
+                    await client.CreateDocumentCollectionIfNotExistsAsync(dbUri, coll, new RequestOptions { OfferThroughput = collection.Throughput });
+                    Console.WriteLine("...finished successfully.");
+                }
             }
-            Console.WriteLine(dbSettings.Name);
-            Console.WriteLine(collections.First().Name);
 
-
-            Console.WriteLine();
+            Console.WriteLine("You are all set. Click any key to exit.");
         }
     }
 }
