@@ -30,49 +30,32 @@ namespace Access2Justice.CosmosDb
 
         public async Task<T> GetItemAsync<T>(string id, string collectionId)
         {
-            try
+            var uri = UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, collectionId);
+            var query = new SqlQuerySpec
             {
-                //    //Document document = await documentClient.ReadDocumentAsync(
-                //    //        UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, collectionId, id));
-
-                //    var query = $"SELECT * FROM c WHERE c.id = \"{id}\"";
-                //    var docQuery = documentClient.CreateDocumentQuery<dynamic>(UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, collectionId, id), query, new FeedOptions { EnableCrossPartitionQuery = true }).AsDocumentQuery();
-
-                ////    var docQuery = documentClient.CreateDocumentQuery(UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, collectionId, id), new SqlQuerySpec
-                ////    {
-                ////        QueryText = "SELECT * FROM c WHERE c.id = @id",
-                ////        Parameters = new SqlParameterCollection()
-                ////{
-                ////              new SqlParameter("@id", id)
-                ////        }
-                ////    }, new FeedOptions { EnableCrossPartitionQuery = true }).AsDocumentQuery();
-
-                //    var results = new List<dynamic>();
-                //    while (docQuery.HasMoreResults)
-                //    {
-                //        results.AddRange(await docQuery.ExecuteNextAsync());
-                //    }
-
-                //    var temp = results;
-                var query = $"SELECT * FROM c WHERE c.id = \"{id}\"";
-                var results = (List<dynamic>)await QueryItemsAsync(collectionId, query);
-
-                var temp3 = (T)results.FirstOrDefault();
-
-
-                return temp3;
-            }
-            catch (DocumentClientException e)
+                QueryText = "SELECT * FROM c WHERE c.id = @id",
+                Parameters = new SqlParameterCollection() { new SqlParameter("@id", id) }
+            };
+            var options = new FeedOptions
             {
-                if (e.StatusCode == System.Net.HttpStatusCode.NotFound)
-                {
-                    return Activator.CreateInstance<T>();
-                }
-                else
-                {
-                    throw;
-                }
+                EnableCrossPartitionQuery = true
+            };
+
+            // I'm not using the documentClient.ReadDocumentAsync() because Microsoft recently made cosmos partitioning a 
+            // mandatory query param and I don't want to explicitly specify a partition key.
+            var docQuery = documentClient.CreateDocumentQuery<dynamic>(uri, query, options).AsDocumentQuery();
+
+            var results = new List<dynamic>();
+            while (docQuery.HasMoreResults)
+            {
+                results.AddRange(await docQuery.ExecuteNextAsync());
             }
+            if (results == null || !results.Any())
+            {
+                return default(T);
+            }
+
+            return (T)results.FirstOrDefault();
         }
 
         public async Task<IEnumerable<T>> GetItemsAsync<T>(Expression<Func<T, bool>> predicate, string collectionId)
