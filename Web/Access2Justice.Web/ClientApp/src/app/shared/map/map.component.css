@@ -1,0 +1,191 @@
+p {
+  margin-bottom: 0;
+  font-weight: 400;
+}
+
+.row {
+  margin: 5px auto;
+}
+
+.modal-body {
+  padding: 0;
+}
+
+.edit-location {
+  padding: 17px 15px 10px 10px;
+  cursor: pointer;
+  display: inline-block;
+  height: 54px;
+  margin-left: -4px;
+}
+
+#my-map {
+  position: relative;
+  width: 100%;
+  margin: 15px auto 0 auto;
+  height: 280px;
+}
+
+#searchbox-container {
+  margin-top: 10px;
+  height: 30px;
+}
+
+.location-icon {
+  width: 20px;
+  margin-right: 15px;
+  margin-bottom: 15px;
+  display: inline-block;
+}
+
+.location-icon ~ h4 {
+  display: inline-block;
+  margin: 0;
+}
+
+.change-location-btn {
+  display: none;
+}
+
+#search-box {
+  height: 40px;
+  width: 60%;
+  float: left;
+  margin-left: 13%;
+}
+
+.search-btn {
+  background-color: #0d3fb8;
+  padding: 5px;
+  border-radius: 0 5px 5px 0;
+  color: #fff;
+  margin-left: -5px;
+  font-weight: 600;
+  float: left;
+  height: 40px;
+  font-size: 12px;
+  width: 20%;
+  max-width: 70px;
+}
+
+.dimmer {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1;
+  transition: background-color 0.5s;
+}
+
+.no-dimmer {
+  display: none;
+}
+
+#search-box {
+  padding: 5px;
+}
+
+.privacy {
+  margin: 10px auto;
+}
+
+.btn {
+  margin: 10px auto;
+}
+
+#validation-error {
+  font-size: 14px;
+  color: #ca3636;
+  clear: both;
+}
+
+.mobile-margin {
+  margin: 15px;
+}
+
+.close {
+  margin-right: 15px;
+}
+
+.location-support {
+  margin: 25px 0 0 0;
+  padding: 10px;
+  background-color: #f4f4f4;
+}
+
+@media only screen and (min-width: 540px) {
+  .modal-body {
+    padding: 15px;
+  }
+
+  #my-map {
+    width: 90%;
+  }
+
+  #search-box {
+    max-width: 300px;
+  }
+
+  .mobile-margin {
+    margin: 0;
+  }
+
+  .web-hidden {
+    display: none;
+  }
+
+  .location-support {
+    margin: 25px 30px 0 30px;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .edit-location {
+    padding: 15px 10px;
+    height: 52px;
+  }
+
+  #search-box {
+    margin-left: 21%;
+  }
+
+  .search-btn {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .nav-icon.mobile-margin {
+    margin: 0;
+  }
+
+  .change-location-btn {
+    display: inline-block;
+    color: #0d3fb8;
+    font-weight: 600;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+  }
+
+  .change-location-btn:hover {
+    text-decoration: underline;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .mobile-hidden {
+    display: inline-block;
+  }
+
+  #my-map {
+    height: 265px;
+  }
+}
+
+@media only screen and (min-width: 1124px) {
+  .edit-location {
+    padding: 15px;
+  }
+}

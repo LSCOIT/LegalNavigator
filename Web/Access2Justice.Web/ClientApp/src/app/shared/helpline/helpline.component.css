@@ -1,0 +1,38 @@
+a {
+  color: #fff;
+  font-family: Georgia, serif;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.helpline-wrapper {
+  margin-top: 0;
+}
+
+#helpline {
+  background: #0d3fb8;
+  padding: 25px;
+  margin-bottom: -47px;
+}
+
+#helpline h3 {
+  color: #fff;
+}
+
+#helpline h3 a:focus {
+  border-bottom: 2px solid white;
+}
+
+@media only screen and (min-width: 540px) {
+  #helpline {
+    margin-bottom: -20px;
+  }
+}
+
+@media only screen and (min-width: 1224px) {
+  #helpline {
+    margin-bottom: -30px;
+  }
+}

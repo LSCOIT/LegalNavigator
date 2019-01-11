@@ -1,0 +1,68 @@
+[
+  {
+    "name": "Article1",
+    "description": "Subhead lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem",
+    "resourceType": "Articles",
+    "externalUrl": "www.youtube.com",
+    "url": "access2justice.com",
+    "topicTags": [
+      {
+        "id": "aaa085ef-96fb-4fd0-bcd0-0472ede66512"
+      },
+      {
+        "id": "2c0cc7b8-62b1-4efb-8568-b1f767f879bc"
+      }
+    ],
+    "organizationalUnit": "Alaska",
+    "location": [
+      {
+        "state": "Hawaii",
+        "city": "Haiku-Pauwela"
+      },
+      {
+        "state": "Alaska"
+      }
+    ],
+    "overview": "Overview",
+    "headline1": "HL1",
+    "headline2": "HL2",
+    "headline3": "HL3",
+    "createdBy": "API",
+    "createdTimeStamp": "",
+    "modifiedBy": "API",
+    "modifiedTimeStamp": ""
+  },
+  {
+    "name": "Article2",
+    "description": "Subhead lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem",
+    "resourceType": "Articles",
+    "externalUrl": "",
+    "url": "",
+    "topicTags": [
+      {
+        "id": "aaa085ef-96fb-4fd0-bcd0-0472ede66512"
+      },
+      {
+        "id": "2c0cc7b8-62b1-4efb-8568-b1f767f879bc"
+      }
+    ],
+    "organizationalUnit": "Alaska",
+    "location": [
+      {
+        "state": "Hawaii",
+        "city": "Haiku-Pauwela"
+      },
+      {
+        "state": "Hawaii"
+      }
+    ],
+    "overview": "Overview",
+    "headline1": "HL1",
+    "headline2": "HL2",
+    "headline3": "HL3",
+    "createdBy": "",
+    "createdTimeStamp": "",
+    "modifiedBy": "",
+    "modifiedTimeStamp": ""
+  }
+]

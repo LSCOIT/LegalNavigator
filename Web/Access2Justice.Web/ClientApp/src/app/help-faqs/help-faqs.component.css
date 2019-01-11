@@ -1,0 +1,32 @@
+.media {
+  margin-bottom: -14px;
+  margin-top: -12px;
+  padding: 30px 10px 30px 0;
+  cursor: pointer;
+}
+
+.media:hover {
+  text-decoration: underline;
+}
+
+.accordion-img {
+  background-position-y: 5px;
+}
+
+h1 {
+  margin-top: 5%;
+}
+
+.static-img-container {
+  margin-top: 40px;
+}
+
+.faqs .col-md-10 {
+  margin-bottom: 10%;
+}
+
+@media only screen and (min-width: 768px) {
+  .static-img-container {
+    margin-top: 15px;
+  }
+}

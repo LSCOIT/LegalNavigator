@@ -1,0 +1,66 @@
+input {
+  height: 45px;
+  width: 64%;
+  float: left;
+  margin-left: 10%;
+  padding: 5px;
+}
+
+p {
+  margin: 20px auto;
+  clear: both;
+}
+
+h4 {
+  margin-bottom: 20px;
+}
+
+#input-button {
+  margin: 0 10%;
+  height: 40px;
+}
+
+#copy-btn {
+  background-color: #0d3fb8;
+  padding: 3px;
+  border-radius: 0 5px 5px 0;
+  color: #fff;
+  margin-left: -1px;
+  font-weight: 600;
+  float: left;
+  height: 45px;
+}
+
+#share {
+  margin: 0;
+  cursor: pointer;
+}
+
+.text-center {
+  margin-top: 30px;
+}
+
+#remove-btn {
+  margin: 0 auto;
+  background-color: #ca3636;
+}
+
+.remove-share {
+  border-top: 1px solid #ddd;
+  padding-top: 40px;
+}
+
+.close {
+  margin-top: -15px;
+}
+
+#share img {
+  display: block;
+  margin: 0 auto;
+}
+
+@media only screen and (min-width: 768px) {
+  #share img {
+    display: inline-block;
+  }
+}

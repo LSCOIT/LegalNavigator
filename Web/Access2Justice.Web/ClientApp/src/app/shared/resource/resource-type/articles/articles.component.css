@@ -1,0 +1,33 @@
+h2 {
+  margin-top: 0;
+}
+
+.resource-sections:last-child {
+  margin-bottom: 40px;
+}
+
+@media only screen and (min-width: 768px) {
+  .mobile-hidden {
+    display: inline-block;
+  }
+
+  .web-hidden {
+    display: none;
+  }
+  
+  .user-action {
+    margin: 10px auto;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .col-md-4 {
+    padding-left: 5%;
+  }
+}
+
+.newlines {
+  white-space: pre-line;
+  margin-top: -20px;
+  margin-bottom: -40px;
+}

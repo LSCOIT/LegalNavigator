@@ -1,0 +1,173 @@
+ul {
+  font-size: 16px;
+}
+
+ul li {
+  font-size: 14px;
+}
+
+.box-shadow {
+  margin: 20px 0 40px 0;
+}
+
+.plan-heading {
+  border-bottom: 1px solid #ddd;
+}
+
+.plan-spacing {
+  padding: 20px;
+}
+
+.main-icon {
+  margin-top: 10px;
+}
+
+.subtopic-icon {
+  width: 45px;
+}
+
+h3.inline {
+  margin-bottom: 0;
+  margin-top: 25px;
+}
+
+.more-menu {
+  margin-top: 20px;
+  width: 30px;
+  cursor: pointer;
+}
+
+.plan-steps .btn-selected {
+  padding: 10px;
+  width: 120px;
+  float: right;
+  margin-top: -5px;
+}
+
+.quick-links {
+  margin-top: 0;
+  padding-top: 0;
+  font-weight: 600;
+  padding: 20px 10px 20px 20px;
+}
+
+.quick-links li {
+  padding: 10px 0;
+}
+
+.plan-steps {
+  padding: 20px 0;
+}
+
+.media-body h3 {
+  margin-top: -3px;
+  cursor: pointer;
+}
+
+#complete-btn {
+  float: left;
+  position: absolute;
+  margin-top: -30px;
+}
+
+.step-content div {
+  margin-bottom: 20px;
+  margin-top: 30px;
+}
+
+.step-content div ul li {
+  padding: 5px 0;
+}
+
+iframe {
+  width: 86%;
+  height: 325px;
+  margin: 9% 7% 5% 7%;
+}
+
+.resource-video iframe {
+  width: 100%;
+  height: 250px;
+}
+
+.media-object {
+  width: 50px;
+  margin: 5px;
+}
+
+.text-center {
+  padding: 30px;
+  text-align: center;
+}
+
+.step-completed {
+  color: #ccc;
+}
+
+.video-heading {
+  cursor: pointer;
+}
+
+.header-completed {
+  color: #ccc;
+}
+
+.accordion-img-grey {
+  background-image: url("../../../../../assets/images/small-icons/open_accordion_grey.svg");
+}
+
+#additional-resource .media-left {
+  width: 50px;
+}
+
+#additional-resource .media-left img {
+  width: 30px;
+  height: 30px;
+}
+
+.link {
+  cursor: pointer;
+}
+
+@media only screen and (min-width: 768px) {
+  .step-content div {
+    margin-top: 0;
+  }
+
+  .plan-spacing {
+    padding: 15px 15px 25px 15px;
+  }
+
+  .step-content {
+    margin-left: 33px;
+    padding-right: 35px;
+  }
+
+  #complete-btn {
+    float: right;
+    margin-bottom: 0;
+    right: 15px;
+    left: auto;
+    top: 40px;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .plan-spacing {
+    padding: 20px 20px 30px 20px;
+  }
+
+  .plan-steps {
+    border-left: 1.5px solid #ddd;
+    padding: 20px 20px 0 20px;
+  }
+
+  .quick-links {
+    margin-top: 10px;
+    padding-top: 20px;
+  }
+
+  h3.inline {
+    margin-top: 10px;
+  }
+}

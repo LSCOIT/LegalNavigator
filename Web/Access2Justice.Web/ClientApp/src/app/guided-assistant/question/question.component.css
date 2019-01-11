@@ -1,0 +1,42 @@
+.question {
+  margin-top: 40px;
+}
+
+.inputs {
+  padding: 10px 0;
+}
+
+.inputs label {
+  text-align: left;
+  width: 80px;
+}
+
+.textbox,
+.dropdown-toggle {
+  text-align: left;
+  width: 250px;
+  height: 45px;
+  background-color: #fff;
+  border: 1px solid #7e7e7e;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.button-choice {
+  display: inline-block;
+  margin: 0 20px;
+}
+
+.multi-button li {
+  width: 100%;
+  margin: 10px 0;
+}
+
+.multi-button li:hover {
+  background-color: #d9f2f8;
+}
+
+.multi-button li label {
+  text-align: center;
+  padding: 15px 20px;
+}

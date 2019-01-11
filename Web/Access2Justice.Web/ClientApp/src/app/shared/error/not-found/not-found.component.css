@@ -1,0 +1,40 @@
+img {
+  width: 200px;
+  margin: 30px auto;
+  display: block;
+}
+
+.container:first-child {
+  text-align: center;
+}
+
+h1 {
+  font-size: 50px;
+  font-weight: 600;
+}
+
+@media only screen and (min-width: 768px) {
+  img {
+    width: 315px;
+    float: right;
+    padding-right: 10%;
+    margin-top: 21%;
+  }
+
+  h1 {
+    font-size: 80px;
+    margin-top: 23%;
+    margin-bottom: 7%;
+  }
+
+  .container:first-child {
+    text-align: left;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  img {
+    width: 385px;
+    margin-top: 21%;
+  }
+}

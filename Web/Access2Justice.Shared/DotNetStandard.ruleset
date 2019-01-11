@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="New Rule Set" Description=" " ToolsVersion="15.0">
+  <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
+    <Rule Id="CA1304" Action="None" />
+  </Rules>
+  <Rules AnalyzerId="Microsoft.CodeQuality.Analyzers" RuleNamespace="Microsoft.CodeQuality.Analyzers">
+    <Rule Id="CA1034" Action="None" />
+    <Rule Id="CA1052" Action="None" />
+    <Rule Id="CA1307" Action="None" />
+    <Rule Id="CA1716" Action="None" />
+    <Rule Id="CA1822" Action="None" />
+    <Rule Id="CA2007" Action="None" />
+    <Rule Id="CA2227" Action="None" />
+    <Rule Id="CA1056" Action="None" />
+    <Rule Id="CS0649" Action="None" />
+    <Rule Id="CS1591" Action="None" />
+  </Rules>
+</RuleSet>

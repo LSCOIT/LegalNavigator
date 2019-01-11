@@ -1,0 +1,33 @@
+.user-action {
+  margin-bottom: 0;
+}
+
+.sidebar {
+  margin: 20px auto;
+}
+
+.sidebar-block img {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 20px;
+}
+
+.user-action li {
+  min-width: 75px;
+}
+
+@media only screen and (min-width: 768px) {
+  .mobile-hidden {
+    display: inline-block;
+  }
+
+  .web-hidden {
+    display: none;
+    background-color: #fff;
+    margin: 0 auto;
+  }
+
+  .user-action {
+    float: right;
+  }
+}

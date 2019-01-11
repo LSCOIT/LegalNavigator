@@ -1,0 +1,43 @@
+<div id="articles-dropdown" dropdown>
+  <div class="button-wrapper">
+    <div class="col-sm-offset-1">
+      <button
+        type="button"
+        id="button-basic"
+        dropdownToggle
+        aria-controls="button-basic"
+        class="show-articles dropdown-btn dropdown-toggle"
+        appChangeDropdownImg
+      >
+        <img
+          class="nav-icon"
+          src="./assets/images/small-icons/articles_resources.svg"
+          aria-hidden="true"
+        />
+        <span>Articles &amp; Resources</span>
+      </button>
+    </div>
+  </div>
+  <div class="verticle-line"></div>
+  <div
+    class="dropdown-menu"
+    id="dropdown-basic"
+    *dropdownMenu
+    role="article"
+    aria-labelledby="button-basic"
+  >
+    <div class="articles-content">
+      <div class="topic-section">
+        <h6 class="pl">{{ guidedAssistantResults?.topIntent }}</h6>
+        <ul>
+          <li
+            class="link p"
+            *ngFor="let resource of guidedAssistantResults?.resources"
+          >
+            <a href="/resource/{{ resource.id }}">{{ resource.name }}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

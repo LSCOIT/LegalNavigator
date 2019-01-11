@@ -1,0 +1,539 @@
+<div class="container" *ngIf="homeContent">
+  <h1>Home Page</h1>
+  <form #homeForm="ngForm" (ngSubmit)="onSubmit(homeForm)">
+    <div class="box-shadow">
+      <h2>Hero</h2>
+      <div class="row">
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Hero Heading</label>
+          <input
+            class="form-control col-md-10 col-sm-9"
+            name="heroHeading"
+            [value]="homeContent.hero.heading"
+            [(ngModel)]="homeContent.hero.heading"
+          />
+        </div>
+        <h3>Hero Description</h3>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Hero Text</label>
+          <input
+            class="form-control col-md-10 col-sm-9"
+            name="heroDescriptionText"
+            [value]="homeContent.hero.description.text"
+            [(ngModel)]="homeContent.hero.description.text"
+          />
+        </div>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Hero End Text with Link</label>
+          <input
+            class="form-control col-md-10 col-sm-9"
+            name="heroDescriptionUrlText"
+            [value]="homeContent.hero.description.textWithLink.urlText"
+            [(ngModel)]="homeContent.hero.description.textWithLink.urlText"
+          />
+        </div>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Hero End Text Link To Page</label>
+          <input
+            class="form-control col-md-10 col-sm-9"
+            name="heroDescriptionUrl"
+            [value]="homeContent.hero.description.textWithLink.url"
+            [(ngModel)]="homeContent.hero.description.textWithLink.url"
+          />
+        </div>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Current Image</label>
+          <img
+            class="hero-image media-object"
+            [src]="blobUrl + homeContent?.hero?.image?.source"
+            [alt]="homeContent?.hero?.image?.altText"
+          />
+        </div>
+        <div class="description col-md-offset-2">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="showHeroUpload = !showHeroUpload"
+          >
+            Upload new image
+          </button>
+        </div>
+        <div *ngIf="showHeroUpload" class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Upload New Image</label>
+          <select
+            class="form-control col-md-10 col-sm-9"
+            (change)="previewImage($event)"
+          >
+            <option hidden value="default">Select a New Image</option>
+            <option
+              *ngFor="let image of regionalIllustrations"
+              [value]="image.blobLocation"
+              >{{ image.name }}</option
+            >
+          </select>
+        </div>
+        <div *ngIf="heroImageSelected" class="description col-md-offset-2">
+          <img
+            class="hero-image"
+            #newHeroImage
+            [src]="blobUrl + heroImageSelected"
+          />
+        </div>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Hero Image Alt Text</label>
+          <input
+            class="form-control col-md-10 col-sm-9"
+            name="heroImageAltText"
+            [value]="homeContent.hero.image.altText"
+            [(ngModel)]="homeContent.hero.image.altText"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="box-shadow">
+      <h2>Guided Assistant Overview</h2>
+      <div class="row sections">
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Heading</label>
+          <input
+            class="form-control col-md-10 col-sm-9"
+            [(ngModel)]="homeContent.guidedAssistantOverview.heading"
+            name="guidedAssistantHeading"
+          />
+        </div>
+        <div class="description col-sm-12">
+          <h4>Steps</h4>
+          <ul>
+            <li
+              *ngFor="
+                let step of homeContent.guidedAssistantOverview.description
+                  .steps
+              "
+            >
+              <label class="col-md-2 col-sm-3">{{ step.order }}.</label>
+              <input
+                class="form-control col-md-10 col-sm-9"
+                [(ngModel)]="step.description"
+                [name]="'guidedAssistantSteps' + step.order"
+              />
+            </li>
+          </ul>
+        </div>
+        <h4>Guided Asssistant Overview Description</h4>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Hero Text</label>
+          <input
+            class="form-control col-md-10 col-sm-9"
+            name="guidedAssistantDescriptionText"
+            [value]="homeContent.guidedAssistantOverview.description.text"
+            [(ngModel)]="homeContent.hero.description.text"
+          />
+        </div>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Hero End Text with Link</label>
+          <input
+            class="form-control col-md-10 col-sm-9"
+            name="guidedAssistantDescriptionUrlText"
+            [value]="
+              homeContent.guidedAssistantOverview.description.textWithLink
+                .urlText
+            "
+            [(ngModel)]="
+              homeContent.guidedAssistantOverview.description.textWithLink
+                .urlText
+            "
+          />
+        </div>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Hero End Text Link To</label>
+          <input
+            class="form-control col-md-10 col-sm-9"
+            name="guidedAssistantDescriptionUrl"
+            [value]="
+              homeContent.guidedAssistantOverview.description.textWithLink.url
+            "
+            [(ngModel)]="
+              homeContent.guidedAssistantOverview.description.textWithLink.url
+            "
+          />
+        </div>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Current Image</label>
+          <img
+            class="hero-image"
+            [src]="
+              blobUrl + homeContent?.guidedAssistantOverview?.image?.source
+            "
+            [alt]="homeContent?.guidedAssistantOverview?.image?.altText"
+          />
+        </div>
+        <div class="description col-md-offset-2">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="showGuidedAssistantUpload = !showGuidedAssistantUpload"
+          >
+            Upload new image
+          </button>
+        </div>
+        <div *ngIf="showGuidedAssistantUpload" class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Upload New Image</label>
+          <input
+            class="form-control upload-img col-md-10 col-sm-9 "
+            type="file"
+            name="guidedAssistantImage"
+            accept="image/*"
+            (change)="encode('guidedAssistantImage')"
+            ngModel
+          />
+          <p class="pxs">
+            Size limit: 300kg | Recommended dimension: 300px by 400px
+          </p>
+        </div>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3"
+            >Image Alt Text (for accessibility)</label
+          >
+          <input
+            class="form-control col-md-10 col-sm-9"
+            type="text"
+            name="guidedAssistantImageAltText"
+            [(ngModel)]="homeContent.guidedAssistantOverview.image.altText"
+          />
+        </div>
+        <div class="description col-sm-12"><h4>Button</h4></div>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Button Text</label>
+          <input
+            class="form-control col-md-10 col-sm-9"
+            type="text"
+            name="guidedAssistantButtonText"
+            [(ngModel)]="homeContent.guidedAssistantOverview.button.buttonText"
+          />
+        </div>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Button Link</label>
+          <input
+            class="form-control col-md-10 col-sm-9"
+            type="text"
+            name="guidedAssistantButtonLink"
+            [(ngModel)]="homeContent.guidedAssistantOverview.button.buttonLink"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="box-shadow">
+      <h2>Topics and Resource</h2>
+      <div class="row sections">
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Heading</label>
+          <input
+            class="form-control col-md-10 col-sm-9"
+            [(ngModel)]="homeContent.topicAndResources.heading"
+            name="topicResourcesHeading"
+          />
+        </div>
+        <h4>Button</h4>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Button Text</label>
+          <input
+            class="form-control col-md-10 col-sm-9"
+            type="text"
+            name="topicResourcesButtonText"
+            [(ngModel)]="homeContent.topicAndResources.button.buttonText"
+          />
+        </div>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Button Link</label>
+          <input
+            class="form-control col-md-10 col-sm-9"
+            type="text"
+            name="topicResourcesButtonLink"
+            [(ngModel)]="homeContent.topicAndResources.button.buttonLink"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="box-shadow">
+      <h2>Testimonial</h2>
+      <div class="row sections">
+        <div
+          class="row sections"
+          *ngFor="let slide of homeContent.carousel.slides; let i = index"
+        >
+          <div class="description col-sm-12">
+            <label class="col-md-2 col-sm-3">Slide Quote {{ i }}</label>
+            <textarea
+              class="form-control col-md-10 col-sm-9"
+              [(ngModel)]="slide.quote"
+              [name]="'slideQuote' + i"
+            ></textarea>
+          </div>
+          <div class="description col-sm-12">
+            <label class="col-md-2 col-sm-3">Slide Author {{ i }}</label>
+            <input
+              class="form-control col-md-10 col-sm-9"
+              [(ngModel)]="slide.author"
+              [name]="'slideAuthor' + i"
+            />
+          </div>
+          <div class="description col-sm-12">
+            <label class="col-md-2 col-sm-3"
+              >Slide Author Location {{ i }}</label
+            >
+            <input
+              class="form-control col-md-10 col-sm-9"
+              [(ngModel)]="slide.location"
+              [name]="'slideLocation' + i"
+            />
+          </div>
+          <div class="description col-sm-12">
+            <label class="col-md-2 col-sm-3">Current Image {{ i }}</label>
+            <img
+              class="media-object"
+              [src]="'data:image/jpg;base64,' + slide?.image?.source"
+              [alt]="slide.image.altText"
+            />
+          </div>
+          <div class="description col-sm-12">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="showImageUpload('slideImageUpload', i)"
+            >
+              Upload new image
+            </button>
+          </div>
+          <div #slideImageUpload class="description new-img col-sm-12">
+            <label class="col-md-2 col-sm-3">Upload New Image</label>
+            <input
+              class="form-control upload-img col-md-10 col-sm-9 "
+              type="file"
+              [name]="'slideImage' + i"
+              accept="image/*"
+              (change)="encode('slideImage', i)"
+              ngModel
+            />
+            <p class="pxs">
+              Size limit: 300kg | Recommended dimension: 300px by 300px
+            </p>
+          </div>
+          <div class="description col-sm-12">
+            <label class="col-md-2 col-sm-3">Image Alt Text {{ i }}</label>
+            <input
+              class="form-control col-md-10 col-sm-9"
+              type="text"
+              name="slideImageAltText{{ i }}"
+              [(ngModel)]="slide.image.altText"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="box-shadow">
+      <h2>Sponsor Overview</h2>
+      <div class="row sections">
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Heading</label>
+          <input
+            class="form-control col-md-10 col-sm-9"
+            [(ngModel)]="homeContent.sponsorOverview.heading"
+            name="sponsorOverviewHeading"
+          />
+        </div>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Description</label>
+          <textarea
+            class="form-control col-md-10 col-sm-9"
+            [(ngModel)]="homeContent.sponsorOverview.description"
+            name="sponsorOverviewDescription"
+          ></textarea>
+        </div>
+        <div
+          class="row sections"
+          *ngFor="
+            let sponsor of homeContent.sponsorOverview.sponsors;
+            let i = index
+          "
+        >
+          <div class="description col-sm-12">
+            <label class="col-md-2 col-sm-3">Sponsor {{ i }}</label>
+            <img
+              class="media-object"
+              [src]="'data:image/jpg;base64,' + sponsor?.source"
+              [alt]="sponsor.altText"
+            />
+          </div>
+          <div class="description col-sm-12">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="showImageUpload('sponsorImageUpload', i)"
+            >
+              Upload new image
+            </button>
+          </div>
+          <div #sponsorImageUpload class="description new-img col-sm-12">
+            <label class="col-md-2 col-sm-3">Upload New Image</label>
+            <input
+              class="form-control upload-img col-md-10 col-sm-9 "
+              type="file"
+              [name]="'sponsorImage' + i"
+              accept="image/*"
+              (change)="encode('sponsorImage', i)"
+              ngModel
+            />
+            <p class="pxs">
+              Size limit: 100kg | Recommended dimension: 200px by 50px
+            </p>
+          </div>
+          <div class="description col-sm-12">
+            <label class="col-md-2 col-sm-3">Image Alt Text {{ i }}</label>
+            <input
+              class="form-control col-md-10 col-sm-9"
+              type="text"
+              name="sponsorImageAltText{{ i }}"
+              [(ngModel)]="sponsor.altText"
+            />
+          </div>
+        </div>
+        <h4>Button</h4>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Button Text</label>
+          <input
+            class="form-control col-md-10 col-sm-9"
+            type="text"
+            name="sponsorButtonText"
+            [(ngModel)]="homeContent.sponsorOverview.button.buttonText"
+          />
+        </div>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Button Link</label>
+          <input
+            class="form-control col-md-10 col-sm-9"
+            type="text"
+            name="sponsorButtonLink"
+            [(ngModel)]="homeContent.sponsorOverview.button.buttonLink"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="box-shadow">
+      <h2>Privacy Promise</h2>
+      <div class="row sections">
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Heading</label>
+          <input
+            class="form-control col-md-10 col-sm-9"
+            [(ngModel)]="homeContent.privacy.heading"
+            name="privacyHeading"
+          />
+        </div>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Description</label>
+          <input
+            class="form-control col-md-10 col-sm-9"
+            [(ngModel)]="homeContent.privacy.description"
+            name="privacyDescription"
+          />
+        </div>
+        <h4>Button</h4>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Button Text</label>
+          <input
+            class="form-control col-md-10 col-sm-9"
+            type="text"
+            name="privacyButtonText"
+            [(ngModel)]="homeContent.privacy.button.buttonText"
+          />
+        </div>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Button Link</label>
+          <input
+            class="form-control col-md-10 col-sm-9"
+            type="text"
+            name="privacyButtonLink"
+            [(ngModel)]="homeContent.privacy.button.buttonLink"
+          />
+        </div>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Current Image</label>
+          <img
+            class="hero-image"
+            [src]="blobUrl + homeContent?.privacy?.image?.source"
+            [alt]="homeContent?.privacy?.image?.altText"
+          />
+        </div>
+        <div class="description col-md-offset-2">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="showPrivacyImageUpload = !showPrivacyImageUpload"
+          >
+            Upload new image
+          </button>
+        </div>
+        <div *ngIf="showPrivacyImageUpload" class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Upload New Image</label>
+          <input
+            class="form-control upload-img col-md-10 col-sm-9 "
+            type="file"
+            name="privacyImage"
+            accept="image/*"
+            (change)="encode('privacyImage')"
+            ngModel
+          />
+          <p class="pxs">
+            Size limit: 400kg | Recommended dimension: 400px by 400px
+          </p>
+        </div>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3"
+            >Image Alt Text (for accessibility)</label
+          >
+          <input
+            class="form-control col-md-10 col-sm-9"
+            type="text"
+            name="guidedAssistantImageAltText"
+            [(ngModel)]="homeContent.privacy.image.altText"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="box-shadow">
+      <h2>Helpline</h2>
+      <div class="row sections">
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Beginning Text</label>
+          <input
+            class="form-control col-md-10 col-sm-9"
+            type="text"
+            name="helpTextBeginningText"
+            [(ngModel)]="homeContent.helpText.beginningText"
+          />
+        </div>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Phone Number</label>
+          <input
+            class="form-control col-md-10 col-sm-9"
+            type="text"
+            name="helpTextPhone"
+            [(ngModel)]="homeContent.helpText.phoneNumber"
+          />
+        </div>
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Ending Text</label>
+          <input
+            class="form-control col-md-10 col-sm-9"
+            type="text"
+            name="helpTextEndingText"
+            [(ngModel)]="homeContent.helpText.endingText"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <button type="submit" class="btn btn-primary">Save Changes</button>
+    </div>
+  </form>
+</div>

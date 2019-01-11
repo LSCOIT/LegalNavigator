@@ -1,0 +1,43 @@
+<app-breadcrumb [resourceTopic]="resource.topicTags[0].id"
+                [resourceType]="resource.resourceType"
+                #breadcrumb></app-breadcrumb>
+<div class="user-action mobile-hidden pull-right">
+  <app-user-action-sidebar
+    [mobile]="true"
+    [id]="resource.id"
+    [type]="resource.resourceType"
+    [showDownload]="false"
+    [showPrint]="false"
+  >
+  </app-user-action-sidebar>
+</div>
+<div class="row">
+  <div class="col-md-10 col-sm-12">
+    <h2>{{ resource.name }}</h2>
+    <p>{{ resource?.resourceCategory }}</p>
+  </div>
+</div>
+<div *ngIf="resource.overview" class="row">
+  <p>{{ resource.overview }}</p>
+</div>
+<div class="row">
+  <div class="col-md-8 col-sm-12">
+    <iframe [src]="this.safeUrl" frameborder="0" allowfullscreen></iframe>
+  </div>
+  <div class="col-md-4 col-sm-12 pull-right">
+    <app-guided-assistant-sidebar></app-guided-assistant-sidebar>
+    <app-service-org-sidebar (showMoreOrganizations)="clickSeeMoreOrganizationsFromVideos($event)"></app-service-org-sidebar>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12 user-action web-hidden">
+    <app-user-action-sidebar
+      [mobile]="true"
+      [id]="resource.id"
+      [type]="resource.resourceType"
+      [showDownload]="false"
+      [showPrint]="false"
+    >
+    </app-user-action-sidebar>
+  </div>
+</div>

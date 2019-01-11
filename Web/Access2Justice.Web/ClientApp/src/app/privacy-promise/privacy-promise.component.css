@@ -1,0 +1,17 @@
+h1 {
+  margin-top: 40px;
+}
+
+.static-img-container {
+  margin-top: 15px;
+}
+
+.static-img {
+  margin-bottom: 15px;
+}
+
+@media only screen and (min-width: 768px) {
+  h1 {
+    margin-top: 5%;
+  }
+}

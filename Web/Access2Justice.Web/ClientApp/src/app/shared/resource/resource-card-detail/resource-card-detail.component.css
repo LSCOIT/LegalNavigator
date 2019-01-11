@@ -1,0 +1,5 @@
+@media only screen and (min-width: 992px) {
+  .col-md-9 {
+    padding-right: 30px;
+  }
+}

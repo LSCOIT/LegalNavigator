@@ -1,0 +1,76 @@
+button:after {
+  content: unset;
+}
+
+h5,
+span {
+  color: #000;
+  font-weight: 600;
+}
+
+li {
+  margin: 10px 0;
+}
+
+.button-wrapper {
+  margin-bottom: 0;
+}
+
+.verticle-line {
+  border-bottom: 1.5px solid #0d3fbb;
+  margin-bottom: 20px;
+  height: 45px;
+}
+
+.show-articles {
+  border: 1.5px solid #0d3fbb;
+  border-bottom: 1px solid #fff;
+  border-radius: 4px 4px 0 0;
+  background-color: #fff;
+  margin-bottom: -1.5px;
+  padding: 10px 40px 9px 10px;
+  background-position: 94% 50%;
+}
+
+.dropdown-icon {
+  width: 12px;
+  margin: 0 5px 2px 5px;
+}
+
+.link {
+  width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.link a {
+  color: #0d3fbb;
+}
+
+.topic-section {
+  padding: 0 15px;
+}
+
+.articles-content {
+  margin: 0 8%;
+}
+
+.articles-content:after {
+  content: "";
+  border-bottom: 1px solid #ccc;
+  width: 100%;
+}
+@media only screen and (min-width: 768px) {
+  .show-articles {
+    padding: 10px 40px 8px 10px;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .link {
+    width: 50%;
+    display: inline-block;
+    vertical-align: top;
+    padding-right: 20px;
+  }
+}

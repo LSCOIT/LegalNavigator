@@ -1,0 +1,21 @@
+<nav *ngIf="breadcrumbs" aria-label="breadcrumb" class="no-print">
+  <ol class="breadcrumb text-capitalize">
+    <li
+      *ngFor="let item of breadcrumbs; last as islast"
+      class="breadcrumb-item">
+      <a
+        *ngIf="!islast && item.id === ''"
+        class="link"
+        [routerLink]="['/topics']">
+        {{ item.name }}
+      </a>
+      <a
+        *ngIf="!islast && item.id !== ''"
+        class="link"
+        [routerLink]="['/topics', item.id]">
+        {{ item.name }}
+      </a>
+      <span *ngIf="islast" aria-current="page">{{ item.name }}</span>
+    </li>
+  </ol>
+</nav>

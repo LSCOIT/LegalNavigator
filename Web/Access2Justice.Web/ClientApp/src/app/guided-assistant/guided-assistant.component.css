@@ -1,0 +1,75 @@
+.container > h2 {
+  margin: 40px auto;
+}
+
+.panel-heading {
+  margin-right: 50%;
+  background-color: lightgrey;
+  width: 38%;
+  border-radius: 25px;
+  height: 40px;
+}
+
+.panel-heading-space {
+  margin: 10px;
+}
+
+.label-display {
+  float: left;
+  padding-right: 10px;
+}
+
+.media {
+  padding: 20px;
+}
+
+.media-object {
+  margin: 0 auto;
+}
+
+.media .col-sm-10 {
+  text-align: center;
+}
+
+.learn-more {
+  margin-top: 20px;
+}
+
+.learn-more button {
+  display: block;
+  margin: 0 auto 20px auto;
+}
+
+textarea {
+  position: relative;
+}
+
+.nav-icon {
+  position: absolute;
+  top: 50px;
+  right: 10px;
+}
+
+@media only screen and (min-width: 768px) {
+  .media {
+    padding: 40px;
+  }
+
+  .media-object {
+    margin-top: 20px;
+  }
+
+  .media .col-sm-10 {
+    padding-left: 10%;
+    text-align: left;
+  }
+
+  .learn-more button {
+    display: inline-block;
+    margin: 0 auto;
+  }
+
+  .learn-more a {
+    margin-left: 20px;
+  }
+}

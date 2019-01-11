@@ -1,0 +1,82 @@
+<div class="container" *ngIf="helpAndFaqsContent">
+  <h1>Help & FAQ Page</h1>
+  <form #helpFaqForm="ngForm" (ngSubmit)="onSubmit(helpFaqForm)">
+    <div class="box-shadow">
+      <h2>Heading</h2>
+      <div class="row">
+        <div class="description col-sm-12">
+          <label class="col-md-2 col-sm-3">Page Description</label>
+          <textarea
+            class="form-control col-md-10 col-sm-9"
+            name="helpPageDescription"
+            [value]="helpAndFaqsContent.description"
+            [(ngModel)]="helpAndFaqsContent.description"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="box-shadow">
+      <h2>Current Questions</h2>
+      <div class="row">
+        <div
+          class="row sections"
+          *ngFor="let faq of helpAndFaqsContent.faqs; let i = index"
+        >
+          <div class="description col-sm-12">
+            <label class="col-md-2 col-sm-3">Question{{ i }}</label>
+            <textarea
+              class="form-control col-md-10 col-sm-9"
+              [name]="'question' + i"
+              [value]="faq.question"
+              [(ngModel)]="faq.question"
+            ></textarea>
+          </div>
+          <div class="description col-sm-12">
+            <label class="col-md-2 col-sm-3">Answer{{ i }}</label>
+            <textarea
+              class="form-control col-md-10 col-sm-9"
+              [name]="'answer' + i"
+              [value]="faq.answer"
+              [(ngModel)]="faq.answer"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="box-shadow" [formGroup]="faqForm">
+      <h2>Add New FAQs</h2>
+      <div class="row">
+        <div
+          class="description col-sm-12"
+          formArrayName="faqs"
+          *ngFor="let faq of faqs.controls; let i = index"
+        >
+          <div [formGroupName]="i">
+            <div class="row">
+              <label class="col-md-2 col-sm-3">New Question{{ i }}:</label>
+              <textarea
+                type="text"
+                formControlName="question"
+                class="form-control col-md-10 col-sm-9"
+              ></textarea>
+            </div>
+            <div class="row">
+              <label class="col-md-2 col-sm-3">New Answer{{ i }}:</label>
+              <textarea
+                type="text"
+                formControlName="answer"
+                class="form-control col-md-10 col-sm-9"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="button" (click)="addFaqs()" class="btn btn-secondary">
+        Add Questions
+      </button>
+    </div>
+    <div class="row">
+      <button type="submit" class="btn btn-primary">Save Changes</button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,178 @@
+li a {
+  color: #333;
+  border-bottom: 1px solid #ddd;
+  padding: 5px 10px;
+  font-weight: 600;
+}
+
+li:last-child a {
+  border: none;
+}
+
+.open [aria-expanded="true"] {
+  background-image: none !important;
+}
+
+.col-sm-4 {
+  word-wrap: break-word;
+}
+
+.media-left {
+  width: 50px;
+}
+
+.media-body {
+  padding: 0 20px;
+}
+
+.box-no-shadow {
+  margin-bottom: 20px;
+}
+
+.resource-body {
+  margin: 20px;
+}
+
+.resource-body media {
+  padding-top: 15px;
+}
+
+.span-text {
+  font-size: 0.8em;
+}
+
+.org-card-heading {
+  display: inline-block;
+}
+
+.org-card-heading > .glyphicon {
+  margin-left: 15px;
+}
+
+.org-content {
+  margin-top: 20px;
+}
+
+.org-content div {
+  padding-left: 0;
+}
+
+.org-content .nav-icon {
+  margin-left: 0;
+}
+
+.address-content {
+  display: inline-block;
+}
+
+.org-url {
+  margin-top: 10px;
+}
+
+.resource-video iframe {
+  width: 100%;
+  height: 250px;
+}
+
+.glyphicon-option-horizontal {
+  cursor: pointer;
+}
+
+.media-object {
+  width: 40px;
+  margin: 5px;
+}
+
+iframe {
+  width: 100%;
+  height: 450px;
+  padding: 20px;
+}
+
+h4 {
+  cursor: pointer;
+  padding-right: 10px;
+}
+
+.more-menu {
+  width: 20px;
+  cursor: pointer;
+}
+
+.org-phone-detail {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.org-content img {
+  padding-right: 5px;
+}
+
+.external-link {
+  margin-bottom: 10px;
+}
+
+.dropdown-menu {
+  border: 1px solid #7e7e7e;
+}
+
+.onboarding-label {
+  background-color: #f9e9bd;
+  width: 125px;
+  padding: 5px;
+  border-radius: 5px;
+  margin: 10px 0;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.close {
+  margin: 15px auto;
+}
+
+.btn,
+.btn-primary {
+  margin: 0 10px 20px 10px;
+}
+
+@media only screen and (min-width: 768px) {
+  h4 {
+    padding-right: 20px;
+  }
+
+  .box-no-shadow {
+    margin-bottom: 40px;
+  }
+
+  .org-url {
+    margin-top: 0;
+  }
+
+  .resource-video iframe {
+    width: 200px;
+    height: 150px;
+  }
+
+  .org-content .col-md-4:last-child {
+    padding-right: 0;
+  }
+
+  .org-phone-detail {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .onboarding-label {
+    font-size: 13px;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .org-content .col-md-4 {
+    padding-right: 10px;
+  }
+
+  .org-phone-detail {
+    margin-top: 0;
+  }
+}

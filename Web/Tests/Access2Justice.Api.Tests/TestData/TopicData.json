@@ -1,0 +1,34 @@
+[
+  {
+    "id": "f47a01e9-c5dc-48f1-993f-6a69324317e6",
+    "name": "Family1",
+    "parentTopicId": [
+      {
+        "id": "addf41e9-1a27-4aeb-bcbb-7959f95094ba"
+      },
+      {
+        "id": "f102bfae-362d-4659-aaef-956c391f79de"
+      }
+    ],
+    "overview": "overview details",
+    "resourceType": "Topics",
+    "keywords": "HOUSING",
+    "organizationalUnit": "Alaska",
+    "location": [
+      {
+        "state": "Hawaii",
+        "county": "Kalawao County",
+        "city": "Kalawao",
+        "zipCode": "96742"
+      },
+      {
+        "zipCode": "96742"
+      }
+
+    ],
+    "jsonContent": "jsonContent",
+    "icon": "./assets/images/topics/topic14.png",
+    "createdBy": "API",
+    "modifiedBy": "API"
+  } 
+]

@@ -1,0 +1,8 @@
+.breadcrumb {
+  padding: 8px 3px;
+  margin-top: 20px;
+}
+
+.breadcrumb span {
+  font-weight: 600;
+}

@@ -1,0 +1,102 @@
+.org-review img {
+  width: 50px;
+  height: 50px;
+}
+
+.org-review .media-body {
+  padding-left: 20px;
+}
+
+.expanded-image {
+  position: relative;
+}
+
+.expanded-image img {
+  width: 100%;
+  max-height: 350px;
+}
+
+.thumbnails {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  padding: 8px;
+  opacity: 0.7;
+  background-color: #000;
+}
+
+.thumbnails img,
+.modal-thumbnails img {
+  width: 65px;
+  max-height: 65px;
+  margin: 0 3px;
+  cursor: pointer;
+}
+
+.thumbnails a {
+  font-weight: 600;
+  text-decoration: underline;
+  color: #fff;
+  cursor: pointer;
+  margin-left: 15px;
+}
+
+.box-no-shadow {
+  margin: 20px 0;
+}
+
+.box-no-shadow:first-child {
+  margin: 0 auto 20px auto;
+}
+
+.resource-body {
+  padding: 20px;
+}
+
+.hours span {
+  width: 100%;
+  display: inline-block;
+  margin: 5px 0 5px 0px;
+  white-space: pre-wrap;
+}
+
+.modal-thumbnails {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.current-img {
+  text-align: center;
+}
+
+h2 {
+  margin-top: 0;
+}
+
+.user-action {
+  margin-top: 20px;
+}
+
+.go-to-form-btn {
+  margin: 0;
+}
+
+@media only screen and (min-width: 768px) {
+  .mobile-hidden {
+    display: inline-block;
+  }
+
+  .web-hidden {
+    display: none;
+  }
+
+  .user-action {
+    margin: 10px auto;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .col-md-4 {
+    padding-left: 5%;
+  }
+}

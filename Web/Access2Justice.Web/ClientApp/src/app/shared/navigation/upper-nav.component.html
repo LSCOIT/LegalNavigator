@@ -1,0 +1,45 @@
+<div #upperNav class="fixed-top upper-nav no-print">
+  <div class="container">
+    <div class="left-menu inline ps">
+      <ul>
+        <li id="language"><app-language></app-language></li>
+        <li id="location">
+          <app-map [mapType]="true" [displayInitialModal]="true"></app-map>
+        </li>
+      </ul>
+    </div>
+    <div class="right-menu">
+      <ul class="mobile-hidden ps">
+        <li *ngIf="privacyPromise">
+          <a
+            id="privacy-promise-navigation-link"
+            [routerLink]="['/' + privacyPromise?.button?.buttonLink]"
+          >
+            <img
+              *ngIf="privacyPromise.image.source"
+              class="nav-icon"
+              [src]="blobUrl + privacyPromise?.image?.source"
+              aria-hidden="true"
+            />
+            {{ privacyPromise?.button?.buttonText }}
+          </a>
+        </li>
+        <li *ngIf="helpAndFAQ">
+          <a
+            id="faq-navigation-link"
+            [routerLink]="['/' + helpAndFAQ?.button?.buttonLink]"
+          >
+            <img
+              *ngIf="helpAndFAQ.image.source"
+              class="nav-icon"
+              [src]="blobUrl + helpAndFAQ?.image?.source"
+              aria-hidden="true"
+            />
+            {{ helpAndFAQ?.button?.buttonText }}
+          </a>
+        </li>
+        <li><app-login [login]="login"></app-login></li>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,161 @@
+<div
+  *ngIf="question"
+  class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 text-center question"
+>
+  <h4 *ngIf="question.text" id="question-text" [innerHTML]="question.text"></h4>
+  <form #gaForm="ngForm" (ngSubmit)="onSubmit(gaForm)">
+    <div *ngIf="question.fields">
+      <div *ngFor="let field of question.fields">
+        <div
+          class="button-container"
+          *ngIf="
+            field.type === 'radio' || field.type === 'list';
+            else elseBlock
+          "
+        >
+          <ul>
+            <li>
+              <input
+                *ngIf="field.type === 'radio'"
+                type="radio"
+                [id]="field.id"
+                [value]="field.id"
+                name="radioOptions"
+                ngModel
+              />
+              <input
+                *ngIf="field.type === 'list'"
+                type="checkbox"
+                [id]="field.id"
+                [value]="field.label"
+                name="multiSelectOptions"
+                ngModel
+              />
+              <label class="p" for="{{ field.id }}">{{ field.label }}</label>
+              <div class="check"></div>
+            </li>
+          </ul>
+        </div>
+        <ng-template #elseBlock>
+          <div class="inputs">
+            <label class="p" for="{{ field.label }}"></label>
+            <input
+              class="textbox"
+              *ngIf="field.type === 'text'"
+              type="text"
+              [name]="field.id"
+              autocomplete="off"
+              ngModel
+            />
+            <input
+              class="textbox"
+              *ngIf="field.type === 'numberzip'"
+              type="number"
+              [name]="field.id"
+              autocomplete="off"
+              ngModel
+            />
+            <input
+              class="textbox"
+              *ngIf="field.type === 'numberphone'"
+              type="number"
+              [name]="field.id"
+              autocomplete="off"
+              ngModel
+            />
+            <input
+              class="textbox"
+              *ngIf="field.type === 'datemdy'"
+              type="date"
+              [name]="field.id"
+              autocomplete="off"
+              ngModel
+            />
+            <div
+              *ngIf="field.type === 'textpick' || field.type === 'numberpick'"
+              class="btn-group"
+              dropdown
+            >
+              <button
+                id="button-basic"
+                dropdownToggle
+                type="button"
+                class="dropdown-toggle"
+                aria-controls="dropdown-basic"
+              >
+                State <span class="caret"></span>
+              </button>
+              <ul
+                id="dropdown-basic"
+                *dropdownMenu
+                class="dropdown-menu"
+                role="menu"
+                aria-labelledby="button-basic"
+              >
+                <li role="menuitem"><a class="dropdown-item">Action</a></li>
+                <li role="menuitem">
+                  <a class="dropdown-item">Another action</a>
+                </li>
+                <li role="menuitem">
+                  <a class="dropdown-item">Something else here</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div
+            *ngIf="field.type === 'textlong'"
+            class="col-md-6 col-sm-8 col-md-offset-3 col-sm-offset-2"
+          >
+            <textarea class="form-control" rows="3" [name]="field.id" ngModel>
+            </textarea>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+    <div *ngIf="question.questionsRemaining > 1; else viewPlanBlock">
+      <div class="row button-row" *ngIf="question.buttons">
+        <div *ngIf="question.buttons.length > 1" class="button-container">
+          <ul class="multi-button">
+            <li *ngFor="let button of question.buttons">
+              <input
+                *ngIf="button.label !== 'Continue'"
+                type="radio"
+                [id]="button.id"
+                [value]="button.id"
+                name="buttonOptions"
+                ngModel
+              />
+              <label
+                class="p"
+                *ngIf="button.label !== 'Continue'"
+                for="{{ button.id }}"
+                >{{ button.label }}</label
+              >
+            </li>
+          </ul>
+        </div>
+        <p class="validation-error" *ngIf="validationError && gaForm.submitted">
+          Please enter a valid search text.
+        </p>
+        <button type="submit" class="btn btn-primary">Continue</button>
+      </div>
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1 col-sm-12 col-sm-offset-0">
+          <app-did-you-know
+            [didYouKnowHeading]="question.learn"
+            [didYouKnowBody]="question.help"
+          ></app-did-you-know>
+        </div>
+      </div>
+    </div>
+  </form>
+  <ng-template #viewPlanBlock>
+    <div class="row">
+      <div class="col-sm-6 col-sm-offset-3">
+        <button class="btn btn-primary" type="button" (click)="getActionPlan()">
+          View Action Plan
+        </button>
+      </div>
+    </div>
+  </ng-template>
+</div>

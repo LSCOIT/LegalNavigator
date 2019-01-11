@@ -1,0 +1,88 @@
+h3 {
+  margin-top: 0;
+}
+
+button {
+  margin: 15px 15px 15px 0;
+}
+
+#about ul li {
+  list-style: disc !important;
+}
+
+.section-img img {
+  width: 100%;
+  margin-top: 40px;
+  max-height: 400px;
+  margin-bottom: 40px;
+}
+
+.even-rows {
+  float: left;
+}
+
+.even-rows + div {
+  margin-bottom: 30px;
+}
+
+p + .btn-sm {
+  margin-right: 20px;
+}
+
+.media-object {
+  height: 100px;
+  width: 100px;
+  padding: 10px;
+}
+
+.box-no-shadow {
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.media-inquiries {
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.sponsor-logo {
+  height: 50px;
+  width: 200px;
+}
+
+@media only screen and (min-width: 768px) {
+  .media-inquiries {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .browse-topic {
+    margin-left: 20px;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .row {
+    margin: 60px auto;
+  }
+
+  .section-img {
+    width: 45%;
+  }
+
+  .section-img img {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .even-rows {
+    padding-left: 5%;
+    float: right;
+  }
+
+  .media-object {
+    height: 120px;
+    width: 120px;
+    padding: 10px;
+  }
+}

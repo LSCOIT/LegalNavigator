@@ -1,0 +1,69 @@
+<div class="box-no-shadow">
+  <div class="resource-body">
+    <div class="btn-group pull-right" dropdown>
+      <div class="no-print">
+        <img
+          dropdownToggle
+          type="button"
+          class="more-menu dropdown-toggle"
+          src="./assets/images/small-icons/more_menu.svg"
+          alt="Menu"
+        />
+      </div>
+      <ul
+        id="dropdown-disabled-item"
+        *dropdownMenu
+        class="dropdown-menu dropdown-menu-right"
+        role="menu"
+      >
+        <li role="menuitem" id="save-dropdown">
+          <a class="dropdown-item">
+            <app-save-button
+              [showIcon]="false"
+              [id]="webResult.name"
+              [type]="type"
+              [resourceDetails]="webResult"
+            ></app-save-button>
+          </a>
+        </li>
+        <li role="menuitem">
+          <a class="dropdown-item">
+            <app-share-button
+              [showIcon]="false"
+              [type]="type"
+              [url]="webResult.url"
+            ></app-share-button>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="web-resource">
+      <p class="ps">{{ webResult.dateLastCrawled }}</p>
+      <a href="{{ webResult.url }}">
+        <p class="pl">{{ webResult.name }}</p>
+      </a>
+      <a href="{{ webResult.url }}">
+        <span class="link">{{ webResult.displayUrl }}</span>
+      </a>
+      <app-read-more
+        [text]="webResult.snippet"
+        [maxLength]="120"
+      ></app-read-more>
+      <div class="web-resource" *ngIf="webResult.deepLinks">
+        <div *ngFor="let deepLink of webResult.deepLinks">
+          <p class="ps">{{ webResult.dateLastCrawled }}</p>
+          <a href="{{ deepLink.url }}">
+            <p class="pl">{{ deepLink.name }}</p>
+          </a>
+          <a href="{{ deepLink.url }}">
+            <span class="link">{{ deepLink.url }}</span>
+          </a>
+          <app-read-more
+            [text]="deepLink.snippet"
+            [maxLength]="120"
+          ></app-read-more>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

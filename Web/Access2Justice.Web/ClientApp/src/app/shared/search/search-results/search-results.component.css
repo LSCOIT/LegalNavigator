@@ -1,0 +1,33 @@
+h2 {
+  margin: 20px 0;
+}
+
+.panel-heading {
+  display: inline-block;
+  border-radius: 25px;
+  padding: 10px;
+}
+
+.label-display {
+  padding-left: 15px;
+}
+
+.guided-assistant {
+  margin-bottom: 0;
+}
+
+@media only screen and (min-width: 768px) {
+  .panel-heading {
+    padding: 0;
+  }
+
+  .label-display {
+    margin-right: -15px;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .col-md-4 {
+    padding-left: 5%;
+  }
+}

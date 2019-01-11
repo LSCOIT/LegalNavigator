@@ -1,0 +1,29 @@
+.pagination-heading {
+  font-weight: 600;
+  margin: 25px 0 10px 0;
+}
+
+li button {
+  background-color: transparent;
+  border: 1px solid #ddd;
+  padding: 5px 10px;
+  margin-right: -1px;
+  cursor: pointer;
+}
+
+.prev-btn {
+  border-radius: 5px 0 0 5px;
+}
+
+.next-btn {
+  border-radius: 0 5px 5px 0;
+}
+
+.active button {
+  background-color: #0d3fbb;
+  color: #fff;
+}
+
+.disabled {
+  color: #ddd;
+}

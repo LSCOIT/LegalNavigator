@@ -1,0 +1,279 @@
+li a {
+  color: #333;
+  font-weight: 400;
+}
+
+li > a:hover {
+  text-decoration: none;
+  color: #0d3fb8;
+  font-weight: 600;
+}
+
+.lower-nav {
+  background: #fff;
+  border: none;
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1);
+  min-height: 80px;
+  margin-bottom: 4px;
+  padding-top: 29px;
+}
+
+#logo {
+  background-image: url("../../../assets/images/logo/one-word-logo.svg");
+  width: 215px;
+  height: 45px;
+  background-repeat: no-repeat;
+  float: left;
+  background-position: -10px 0px;
+}
+
+.active {
+  border-bottom: 3px solid #0d3fb8;
+}
+
+.right-menu {
+  float: right;
+  cursor: pointer;
+}
+
+.dimmer {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1;
+  transition: background-color 0.5s;
+}
+
+ul.web-hidden {
+  background-color: #f4f4f4;
+  margin: 0;
+  text-align: left;
+}
+
+#mobile-menu {
+  float: right;
+  margin-top: -2px;
+}
+
+#nav-bar-toggle {
+  width: 30px;
+  height: 31px;
+  float: right;
+}
+
+#nav-bar-toggle + span {
+  font-size: 10px;
+  display: block;
+}
+
+#sidenav {
+  height: 0;
+  width: 100%;
+  position: fixed;
+  z-index: 10;
+  top: 40px;
+  right: 0;
+  background-color: #fff;
+  overflow: scroll;
+  transition: 0.5s;
+  font-size: 14px;
+}
+
+#sidenav a {
+  padding: 20px 8px 20px 32px;
+  text-decoration: none;
+  color: #333;
+  display: block;
+  transition: 0.3s;
+}
+
+#sidenav a:hover {
+  color: #0d3fb8;
+  font-weight: 600;
+}
+
+#sidenav .closebtn {
+  float: right;
+  margin-right: 18px;
+  padding: 0;
+  margin-top: 25px;
+}
+
+.sidenav-menu {
+  width: 80%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.sidenav-menu > li {
+  margin-right: 10px;
+}
+
+#home-nav {
+  clear: both;
+}
+
+.bottom-menu {
+  background-color: #f4f4f4;
+  height: 100%;
+  text-align: left;
+}
+
+.bottom-menu > ul {
+  width: 325px;
+  margin: 15px auto;
+  text-align: left;
+  padding: 20px 0;
+}
+
+.bottom-menu > ul > li:last-child {
+  margin-left: 32px;
+  margin-top: 20px;
+}
+
+.search-text {
+  display: none;
+  margin-top: 5px;
+}
+
+.search-icon {
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  margin-top: 2px;
+}
+
+li.vertical-line {
+  border-bottom: 1.5px solid #f2f2f2;
+  width: 100%;
+  margin: 10px auto;
+}
+
+#nav-search {
+  position: absolute;
+  right: 61.5px;
+  top: 21px;
+}
+
+#search-phrase-tab {
+  background-color: white;
+  margin-right: 6px;
+  outline-offset: 21px;
+}
+
+@media only screen and (min-width: 768px) {
+  .lower-nav {
+    padding-top: 25px;
+  }
+
+  #logo {
+    width: 220px;
+    background-position: -10px -4px;
+  }
+
+  #mobile-menu {
+    margin-left: 30px;
+  }
+
+  #sidenav {
+    height: 100%;
+    width: 0;
+    top: 0;
+    padding-top: 40px;
+    font-size: 16px;
+  }
+
+  #sidenav a {
+    padding: 30px 8px 30px 32px;
+  }
+
+  .bottom-menu > ul {
+    width: 365px;
+    margin: 15px 5%;
+  }
+
+  .search-icon {
+    margin-right: 8px;
+  }
+
+  #sidenav .closebtn {
+    margin-top: 40px;
+  }
+
+  #nav-search {
+    right: 75px;
+    top: 75px;
+  }
+
+  #home-nav {
+    padding-top: 45px;
+  }
+
+  #search-phrase-tab {
+    margin-right: 0;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .left-menu {
+    display: inline-block;
+    padding-top: 0;
+    margin-top: 5px;
+  }
+
+  .left-menu li {
+    display: inline-block;
+    padding: 0 10px;
+  }
+
+  .left-menu li a {
+    padding: 26px 2px;
+    font-size: 14px;
+  }
+
+  li.web-hidden {
+    display: none;
+  }
+
+  #mobile-menu {
+    display: none;
+  }
+
+  .search-text {
+    display: inline-block;
+    font-size: 14px;
+  }
+  .search-icon {
+    margin-right: 10px;
+    margin-bottom: 0;
+  }
+}
+
+@media only screen and (min-width: 1124px) {
+  .left-menu {
+    display: inline-block;
+    padding: 5px;
+    margin-top: 0;
+  }
+
+  .left-menu li a {
+    font-size: 16px;
+  }
+
+  .left-menu li a:hover {
+    color: #0d3fb8;
+    font-weight: 600;
+  }
+
+  #logo {
+    background-position: -10px -7px;
+    margin-right: 3%;
+    width: 255px;
+  }
+
+  .search-text {
+    font-size: 16px;
+  }
+}

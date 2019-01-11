@@ -1,0 +1,57 @@
+button {
+  border: none;
+  background-color: #fff;
+  padding: 0;
+  float: right;
+  outline-offset: 10px;
+}
+
+form {
+  display: inline-block;
+  width: 100%;
+  padding-bottom: 15px;
+  margin-top: 15px;
+}
+
+form > div {
+  margin-top: -5px;
+  padding-right: 10px;
+}
+
+.search-icon {
+  width: 22px;
+  height: 22px;
+  margin-bottom: -2px;
+  margin-right: -5px;
+}
+
+#search {
+  width: 90%;
+  display: inline-block;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid #ccc;
+  margin-top: 3px;
+}
+
+@media only screen and (min-width: 768px) {
+  form {
+    float: right;
+    display: inline-block;
+    width: 265px;
+    padding-bottom: 0;
+    margin-top: 5px;
+    height: auto;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  form {
+    width: 210px;
+    margin-top: 2px;
+  }
+
+  #search {
+    width: 80%;
+  }
+}

@@ -1,0 +1,53 @@
+.row {
+  margin: 0 auto 20px auto;
+}
+
+.subtopic-heading {
+  display: inline-block;
+  margin-top: 0;
+}
+
+.subtopic-body {
+  margin: 20px;
+}
+
+.subtopic-body media {
+  padding-top: 15px;
+}
+
+.user-action {
+  margin-top: 20px;
+}
+
+.box-no-shadow {
+  margin-bottom: 40px;
+}
+
+.link {
+  margin-bottom: 10px;
+  display: block;
+}
+
+@media only screen and (min-width: 768px) {
+  .mobile-hidden {
+    display: inline-block;
+  }
+
+  .web-hidden {
+    display: none;
+  }
+
+  .user-action {
+    margin: 15px auto;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .sidebars {
+    float: right;
+  }
+
+  .col-md-4 {
+    padding-left: 5%;
+  }
+}

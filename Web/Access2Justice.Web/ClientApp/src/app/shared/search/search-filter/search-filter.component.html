@@ -1,0 +1,83 @@
+<div class="filter row no-print">
+  <div class="filter-type col-md-8 col-sm-6 col-xs-6">
+    <div class="col-md-1 p">Show:</div>
+    <div class="col-md-10 desktop-filter">
+      <button
+        #filterButtons
+        *ngFor="let resource of resourceResults"
+        class="btn btn-selected"
+        (click)="sendFilterCriteria($event, resource.ResourceName)"
+      >
+        {{ resource.ResourceName }}({{ resource.ResourceCount }})
+      </button>
+    </div>
+    <div class="btn-group col-md-8 col-sm-6 col-xs-6 mobile-filter" dropdown>
+      <button
+        id="button-basic"
+        dropdownToggle
+        type="button"
+        class="btn btn-selected dropdown-btn"
+        aria-controls="button-basic"
+      >
+        {{ selectedFilterCriteria }}
+      </button>
+      <ul
+        id="dropdown-basic"
+        *dropdownMenu
+        class="dropdown-menu"
+        role="menu"
+        aria-labelledby="button-basic"
+      >
+        <li *ngFor="let resource of resourceResults" role="menuitem">
+          <a
+            class="dropdown-item"
+            (click)="sendFilterCriteria($event, resource.ResourceName)"
+            >{{ resource.ResourceName }}({{ resource.ResourceCount }})
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-md-4 col-sm-6 col-xs-6 sort-type">
+    <div class="col-md-1 col-sm-2 p">Sort:</div>
+    <div class="btn-group col-md-10" dropdown>
+      <button
+        id="button-basic"
+        dropdownToggle
+        type="button"
+        class="btn btn-selected dropdown-toggle dropdown-btn"
+        aria-controls="button-basic"
+      >
+        {{ selectedSortCriteria }}
+      </button>
+      <ul
+        id="dropdown-basic"
+        *dropdownMenu
+        class="dropdown-menu"
+        role="menu"
+        aria-labelledby="button-basic"
+      >
+        <li *ngIf="selectedSortCriteria != 'A-Z'" role="menuitem">
+          <a class="dropdown-item" (click)="sendSortCriteria('name', 'ASC')">
+            A-Z
+          </a>
+        </li>
+        <li *ngIf="selectedSortCriteria != 'Z-A'" role="menuitem">
+          <a class="dropdown-item" (click)="sendSortCriteria('name', 'DESC')">
+            Z-A
+          </a>
+        </li>
+        <li *ngIf="selectedSortCriteria != 'Newest to Oldest'" role="menuitem">
+          <a class="dropdown-item" (click)="sendSortCriteria('date', 'DESC')">
+            Newest to Oldest
+          </a>
+        </li>
+        <li *ngIf="selectedSortCriteria != 'Oldest to Newest'" role="menuitem">
+          <a class="dropdown-item" (click)="sendSortCriteria('date', 'ASC')">
+            Oldest to Newest
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

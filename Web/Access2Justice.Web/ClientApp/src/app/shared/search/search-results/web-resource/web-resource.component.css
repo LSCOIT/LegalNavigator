@@ -1,0 +1,17 @@
+.web-resource .ps {
+  font-weight: 600;
+  color: #585858;
+}
+
+.resource-body {
+  padding: 20px;
+}
+
+.box-no-shadow {
+  margin-bottom: 20px;
+}
+
+.more-menu {
+  width: 20px;
+  cursor: pointer;
+}

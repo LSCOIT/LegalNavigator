@@ -1,0 +1,369 @@
+/*Shared Resources*/
+body {
+  position: relative !important;
+  top: 40px !important;
+  min-height: 85% !important;
+  word-wrap: break-word;
+}
+
+li {
+  list-style: none;
+}
+
+li label {
+  font-weight: 600;
+}
+
+ul {
+  padding-left: 0;
+}
+
+a {
+  color: #0d3fb8;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #0b2b78;
+  text-decoration: none;
+}
+
+.nav-icon {
+  width: 20px;
+  height: 20px;
+  margin: 0 5px 2px 5px;
+  cursor: pointer;
+}
+
+.inline {
+  display: inline-block;
+}
+
+.web-hidden {
+  background-color: transparent;
+  margin: 0;
+  display: block;
+}
+
+.mobile-hidden {
+  display: none;
+  text-align: center;
+}
+
+.center-align {
+  margin: 0 auto;
+}
+
+.sidebar-block {
+  display: inline-block;
+  padding: 20px;
+}
+
+.box-shadow {
+  box-shadow: 0 0 5px 3px #ddd;
+}
+
+.box-no-shadow {
+  border: 1px solid #ddd;
+}
+
+textarea {
+  resize: none;
+}
+
+.MicrosoftMap .as_container_search {
+  width: 80% !important;
+  margin: 40px 11%;
+}
+
+.static-img-container {
+  border-bottom: 1.5px solid #0d3fbb;
+  margin: 40px 0;
+}
+
+.static-img {
+  display: inline-block;
+  width: 15%;
+  margin-bottom: 20px;
+  margin-right: 20px;
+  min-width: 120px;
+}
+
+.resource-sections {
+  margin-bottom: 40px;
+}
+
+.resource-sections:last-child {
+  margin-bottom: 0;
+}
+
+.validation-error {
+  font-size: 14px;
+  color: #ca3636;
+  clear: both;
+  font-weight: 600;
+}
+
+/* Language Dropdown */
+.dropdown-icon {
+  width: 10px;
+  margin-left: 5px;
+}
+
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+
+.goog-te-combo {
+  font-size: 16px !important;
+}
+
+.goog-te-combo option {
+  cursor: pointer;
+}
+
+.goog-te-combo option:hover {
+  background-color: #f4f4f4;
+}
+
+.left-menu .navbar-nav {
+  margin: 0;
+}
+
+#google_translate_element {
+  left: 0;
+  padding: 20px 20px 10px 10px;
+  position: fixed;
+  top: 42px;
+  background: #fff;
+  width: 275px;
+  height: 385px;
+}
+
+#goog-gt-tt {
+  visibility: hidden !important;
+}
+
+/*Topics & Resources Page - Accordion */
+.angle-bracket {
+  padding: 0 5px;
+}
+
+.user-action {
+  padding-left: 0;
+  text-align: center;
+}
+
+.user-action li {
+  display: inline-block;
+  padding: 0 5px;
+  cursor: pointer;
+}
+
+.breadcrumb {
+  background-color: #fff;
+  border-radius: 0;
+  border-top: 1px solid #f4f4f4;
+  border-bottom: 1px solid #f4f4f4;
+}
+
+.user-button {
+  background-color: transparent;
+}
+
+/*Curated Experience*/
+#articles-dropdown .dropdown-menu {
+  position: static;
+  z-index: 0;
+  padding: 0;
+  border: none;
+  box-shadow: none;
+  width: 100%;
+}
+
+.progress {
+  height: 20px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  box-shadow: none;
+  border-radius: 10px;
+}
+
+.progress-bar {
+  background-color: #0d3fbb;
+}
+
+#question-text a {
+  color: #0d3fb8;
+  font-weight: 600;
+  margin-left: 10px;
+  font-size: 21px;
+}
+
+/*Print & Download*/
+.print-only {
+  display: none;
+}
+
+.MicrosoftMap .as_container_search {
+  margin: 30px 6.5% !important;
+}
+
+/*
+  This will hide the focus indicator if the element receives focus via the mouse,
+  but it will still show up on keyboard focus.
+  */
+.js-focus-visible :focus:not(.focus-visible) {
+  outline: none;
+  background-color: none;
+}
+
+.js-focus-visible .focus-visible {
+  outline: 2px solid #80bdff;
+}
+
+.modal-dialog {
+  height: 1225px;
+  margin: 0;
+  background-color: #fff;
+  padding-top: 30px;
+}
+
+.modal-content {
+  height: auto;
+  border: none;
+}
+
+.popover-content {
+  display: none;
+}
+
+#download img,
+#print img,
+#settings img {
+  display: block;
+  margin: 0 auto;
+}
+
+#download,
+#print,
+#settings,
+#save,
+#share {
+  font-size: 12px;
+}
+
+@media only screen and (min-width: 540px) {
+  .modal-dialog {
+    height: auto;
+    margin: 0.75rem auto;
+    width: 540px;
+    max-width: 660px;
+    padding-top: 0;
+  }
+
+  .MicrosoftMap .as_container_search {
+    margin: 40px 7%;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  body {
+    top: 50px !important;
+  }
+
+  #google_translate_element {
+    left: 1.9%;
+    padding: 30px 20px 10px 20px;
+  }
+
+  .static-img {
+    margin-bottom: 40px;
+    margin-right: 40px;
+  }
+
+  #goog-gt-tt {
+    visibility: visible !important;
+  }
+
+  .MicrosoftMap .as_container_search {
+    margin: 40px 7.5% !important;
+  }
+
+  .modal-dialog {
+    width: 660px;
+  }
+
+  .popover-wrapper {
+    position: relative;
+  }
+
+  .popover-content {
+    display: block;
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    left: -150px;
+    transform: translate(0, 10px);
+    background-color: #fff;
+    padding: 10px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+    width: auto;
+    top: 65px;
+  }
+
+  .popover-content:before {
+    position: absolute;
+    z-index: -1;
+    content: "";
+    right: calc(50% - 42px);
+    top: -10px;
+    border-style: solid;
+    border-width: 0 10px 10px 10px;
+    border-color: transparent transparent #f4f4f4 transparent;
+  }
+
+  .popover-wrapper:hover .popover-content {
+    z-index: 10;
+    opacity: 1;
+    visibility: visible;
+    transform: translate(0, -20px);
+  }
+
+  .popover-message {
+    text-align: center;
+    font-size: 12px;
+  }
+
+  #download,
+  #print,
+  #settings,
+  #save,
+  #share {
+    font-size: 16px;
+  }
+
+  #download img,
+  #print img,
+  #settings img {
+    display: inline-block;
+  }
+}
+@media only screen and (min-width: 992px) {
+  .web-hidden {
+    display: none;
+  }
+
+  .mobile-hidden {
+    display: inline-block;
+  }
+
+  .user-action {
+    text-align: right;
+  }
+
+  #google_translate_element {
+    left: 7.1%;
+  }
+}

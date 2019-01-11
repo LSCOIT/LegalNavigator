@@ -1,0 +1,17 @@
+#language-dropdown {
+  padding: 15px 40px 15px 15px;
+  background-position: 88% 50%;
+  background-color: transparent;
+}
+
+#language-dropdown > a {
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.white-bg {
+  position: relative;
+  background-color: #fff !important;
+  z-index: 1;
+}

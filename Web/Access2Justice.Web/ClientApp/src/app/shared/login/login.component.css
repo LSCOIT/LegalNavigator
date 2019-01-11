@@ -1,0 +1,138 @@
+a:not([href]):not([tabindex]),
+.account-menu,
+.dropdown-btn {
+  color: #333;
+  font-weight: 400;
+}
+
+.nav-tabs > li > a:hover {
+  background-color: transparent;
+  border: none;
+}
+
+#signin-dropdown .dropdown-menu {
+  width: 100%;
+  margin-top: 5px;
+  text-align: left;
+}
+
+#signin-dropdown {
+  position: relative;
+  margin-left: -15px;
+}
+
+#signin-drodown a {
+  background-color: transparent;
+  color: #ccc;
+  font-weight: 400;
+}
+
+.dropdown-btn {
+  background-position: 92% 50%;
+}
+
+#signin-dropdown a:first-child {
+  padding: 15px 35px 17px 15px;
+}
+
+#signin-dropdown a:hover,
+.account-menu:hover {
+  text-decoration: none;
+  font-weight: 600;
+  color: #0056b3;
+}
+
+#signin-dropdown .dropdown-menu li a {
+  border: 0;
+  border-bottom: 1px solid #ddd;
+  padding: 10px 5px 10px 35px;
+}
+
+#signin-dropdown .dropdown-menu li a:hover {
+  background-color: transparent;
+}
+
+#signin-dropdown .dropdown-menu li a:first-child {
+  border-top: 1px solid #ddd;
+}
+
+#signin-dropdown .dropdown-menu li a:last-child {
+  border: none;
+}
+
+.dropdown-menu {
+  position: absolute;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  background-color: #f4f4f4;
+}
+
+.dropdown-menu li a {
+  font-size: 14px;
+}
+
+.dropdown-menu li a:hover {
+  background-color: #fff;
+}
+
+.account-menu {
+  cursor: pointer;
+}
+
+@media only screen and (min-width: 768px) {
+  .dropdown-menu li a {
+    font-size: 14px;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .create-account {
+    margin-right: -25px;
+  }
+
+  .account-menu {
+    padding: 17px 15px 18px 15px;
+    margin-right: 5px;
+  }
+
+  .account-menu:hover {
+    background-color: #fff;
+    color: #333;
+    font-weight: 400;
+  }
+
+  .account-menu,
+  .account-menu img {
+    margin-left: 0;
+  }
+
+  .dropdown-menu {
+    background-color: #fff;
+    box-shadow: 0 6px 12px -3px #ddd;
+    right: 0 !important;
+    left: unset !important;
+  }
+
+  #signin-dropdown {
+    width: auto;
+    min-width: 160px;
+    margin-left: 0;
+    margin-right: 10px;
+  }
+
+  #signin-dropdown.open a,
+  #signin-dropdown a:hover {
+    background-color: #fff;
+    color: #333;
+    font-weight: 400;
+  }
+
+  #signin-dropdown .dropdown-menu {
+    margin-top: 8px;
+  }
+
+  #signin-dropdown .dropdown-menu li a {
+    padding: 10px 20px 10px 48px;
+  }
+}
