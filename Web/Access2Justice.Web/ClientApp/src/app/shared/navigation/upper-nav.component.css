@@ -59,7 +59,7 @@ li a img {
   right: 0;
   width: auto;
   background: #f4f4f4;
-  height: 52px;
+  height: 54px;
 }
 
 #language {
@@ -71,6 +71,7 @@ li a img {
   #location {
     position: static;
     width: auto;
+    height: 52px;
   }
 }
 
