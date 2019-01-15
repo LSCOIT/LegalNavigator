@@ -12,24 +12,49 @@ li {
   margin: 10px 0;
 }
 
-.button-wrapper {
-  margin-bottom: 0;
+#articles-dropdown {
+  height: 43px;
+  margin-top: 30px;
 }
 
-.verticle-line {
+#articles-dropdown .button-wrapper {
+  margin-bottom: 0;
+  position: absolute;
+  bottom: 0;
+}
+
+#articles-dropdown.open.show .button-wrapper {
+  bottom: unset;
+}
+
+.button-wrapper > div {
+  margin-left: 12%;
+}
+
+#articles-dropdown .verticle-line {
   border-bottom: 1.5px solid #0d3fbb;
-  margin-bottom: 20px;
+  margin-bottom: -2px;
   height: 45px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  z-index: -1;
+}
+
+#articles-dropdown.open.show .verticle-line {
+  position: unset;
 }
 
 .show-articles {
   border: 1.5px solid #0d3fbb;
-  border-bottom: 1px solid #fff;
+  border-bottom: 1.5px solid #fff;
   border-radius: 4px 4px 0 0;
   background-color: #fff;
-  margin-bottom: -1.5px;
+  margin-bottom: -2px;
   padding: 10px 40px 9px 10px;
-  background-position: 94% 50%;
+  background-position: 86% 50%;
+  padding-bottom: 8px;
+  width: 300px;
 }
 
 .dropdown-icon {
@@ -52,7 +77,7 @@ li {
 }
 
 .articles-content {
-  margin: 0 8%;
+  margin: 20px 60px;
 }
 
 .articles-content:after {
@@ -60,6 +85,12 @@ li {
   border-bottom: 1px solid #ccc;
   width: 100%;
 }
+
+.link.p a:hover {
+  box-shadow: none;
+  color: #0b2b78;
+}
+
 @media only screen and (min-width: 768px) {
   .show-articles {
     padding: 10px 40px 8px 10px;
@@ -72,5 +103,19 @@ li {
     display: inline-block;
     vertical-align: top;
     padding-right: 20px;
+  }
+
+  .button-wrapper > div {
+    margin-left: 14%;
+  }
+}
+
+@media only screen and (min-width: 1224px) {
+  .button-wrapper > div {
+    margin-left: 37%;
+  }
+
+  .articles-content {
+    margin: 20px 135px;
   }
 }
