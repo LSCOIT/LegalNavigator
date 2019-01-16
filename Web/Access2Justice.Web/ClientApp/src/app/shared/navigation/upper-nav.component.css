@@ -55,11 +55,11 @@ li a img {
 
 #location {
   position: absolute;
-  top: -2px;
+  top: 0;
   right: 0;
   width: auto;
   background: #f4f4f4;
-  height: 54px;
+  height: 52px;
 }
 
 #language {
