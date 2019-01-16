@@ -1,9 +1,10 @@
 {
-  "luis_schema_version": "3.0.0",
+  "luis_schema_version": "3.2.0",
   "versionId": "0.1",
   "name": "A2JLegalIntentEngine",
   "desc": "Intent identification model for the A2J portal. This is a copy of the LegalAssist LUIS app.",
   "culture": "en-us",
+  "tokenizerVersion": "1.0.0",
   "intents": [
     {
       "name": "Adoption"
@@ -138,6 +139,9 @@
       "name": "Paternity/Parentage"
     },
     {
+      "name": "Protective order"
+    },
+    {
       "name": "Public & subsidized housing"
     },
     {
@@ -265,7 +269,7 @@
   "regex_entities": [],
   "prebuiltEntities": [
     {
-      "name": "geography",
+      "name": "geographyV2",
       "roles": []
     }
   ],
@@ -273,6 +277,11 @@
   "regex_features": [],
   "patterns": [],
   "utterances": [
+    {
+      "text": "{0}",
+      "intent": "None",
+      "entities": []
+    },
     {
       "text": "a payday lender sued me. it got a judgment against me. my only income is from social security or a pension. can they collect on that judgment?",
       "intent": "Debt",
@@ -289,6 +298,52 @@
       "entities": []
     },
     {
+      "text": "abuse",
+      "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
+      "text": "abuse & harassment subtopicname 1.1",
+      "intent": "None",
+      "entities": [
+        {
+          "entity": "Events.PlaceName",
+          "startPos": 0,
+          "endPos": 8
+        }
+      ]
+    },
+    {
+      "text": "abuse and harassment",
+      "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
+      "text": "abuse and harrassment",
+      "intent": "Sexual Assault",
+      "entities": []
+    },
+    {
+      "text": "adoption",
+      "intent": "Guardianship",
+      "entities": []
+    },
+    {
+      "text": "adoption, guardianship",
+      "intent": "Adoption",
+      "entities": []
+    },
+    {
+      "text": "adoption, guardianship and poa",
+      "intent": "Guardianship",
+      "entities": []
+    },
+    {
+      "text": "adoption, guardingship and poa",
+      "intent": "Guardianship",
+      "entities": []
+    },
+    {
       "text": "affordable insurance washington ave albany ny 12222 please",
       "intent": "None",
       "entities": [
@@ -302,11 +357,6 @@
     {
       "text": "after the foreclosure sale, to whom do i pay rent?",
       "intent": "Foreclosure",
-      "entities": []
-    },
-    {
-      "text": "agencies and other organizations that can help",
-      "intent": "Mobile home park tenants",
       "entities": []
     },
     {
@@ -350,8 +400,18 @@
       "entities": []
     },
     {
+      "text": "an i get my children to stay with me? my wife took them away after we split",
+      "intent": "child custody",
+      "entities": []
+    },
+    {
       "text": "anti-harassment orders",
       "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
+      "text": "apartment",
+      "intent": "Tenant's rights",
       "entities": []
     },
     {
@@ -472,6 +532,16 @@
           "endPos": 4
         }
       ]
+    },
+    {
+      "text": "bankruptcy",
+      "intent": "Bankrucptcy",
+      "entities": []
+    },
+    {
+      "text": "bankrupty",
+      "intent": "Bankrucptcy",
+      "entities": []
     },
     {
       "text": "bayonne yellow cab please",
@@ -884,7 +954,7 @@
     },
     {
       "text": "can i get a temporary license to get to and from work?",
-      "intent": "Car issues",
+      "intent": "Driver & Professional licenses",
       "entities": []
     },
     {
@@ -920,6 +990,11 @@
     {
       "text": "can i get more information on evictions (\"unlawful detainers\")?",
       "intent": "Tenant's rights",
+      "entities": []
+    },
+    {
+      "text": "can i get my children to stay with me? my wife took them away after we split",
+      "intent": "child custody",
       "entities": []
     },
     {
@@ -1079,7 +1154,7 @@
       "entities": []
     },
     {
-      "text": "can my wife take our kids to [geography] after we get a divorce?",
+      "text": "can my wife take our kids to [geographyV2] after we get a divorce?",
       "intent": "child custody",
       "entities": []
     },
@@ -1141,7 +1216,7 @@
     },
     {
       "text": "can the landlord force me to start paying my own utility bill?",
-      "intent": "Mobile home park tenants",
+      "intent": "Tenant's rights",
       "entities": []
     },
     {
@@ -1181,7 +1256,7 @@
     },
     {
       "text": "can they tow my vehicle if they pull me over and arrest me?",
-      "intent": "Car issues",
+      "intent": "Other Consumer",
       "entities": []
     },
     {
@@ -1249,6 +1324,21 @@
       ]
     },
     {
+      "text": "cant pay rent",
+      "intent": "Eviction",
+      "entities": []
+    },
+    {
+      "text": "car",
+      "intent": "Car issues",
+      "entities": []
+    },
+    {
+      "text": "car problems",
+      "intent": "Car issues",
+      "entities": []
+    },
+    {
       "text": "cheap housing in anchorage",
       "intent": "Public & subsidized housing",
       "entities": [
@@ -1298,12 +1388,17 @@
     },
     {
       "text": "child custody",
-      "intent": "child custody",
+      "intent": "Custody",
       "entities": []
     },
     {
       "text": "child custody after domestic violence",
-      "intent": "Child support",
+      "intent": "child custody",
+      "entities": []
+    },
+    {
+      "text": "child custody/visitation",
+      "intent": "Custody",
       "entities": []
     },
     {
@@ -1313,6 +1408,11 @@
     },
     {
       "text": "child support after domestic violence",
+      "intent": "Child support",
+      "entities": []
+    },
+    {
+      "text": "children",
       "intent": "Child support",
       "entities": []
     },
@@ -1384,8 +1484,23 @@
       "entities": []
     },
     {
+      "text": "concerts",
+      "intent": "None",
+      "entities": []
+    },
+    {
       "text": "considering a rent-to-own deal? think again what is \"rent-to-own\"?",
       "intent": "Home buyers & owners",
+      "entities": []
+    },
+    {
+      "text": "contest speeding ticket",
+      "intent": "Going to court",
+      "entities": []
+    },
+    {
+      "text": "court forms",
+      "intent": "Going to court",
       "entities": []
     },
     {
@@ -1395,7 +1510,27 @@
     },
     {
       "text": "custody",
+      "intent": "Custody",
+      "entities": []
+    },
+    {
+      "text": "custody / visitation",
       "intent": "child custody",
+      "entities": []
+    },
+    {
+      "text": "custody of my kids",
+      "intent": "child custody",
+      "entities": []
+    },
+    {
+      "text": "custody/visitation",
+      "intent": "Custody",
+      "entities": []
+    },
+    {
+      "text": "debt collection",
+      "intent": "Debt",
       "entities": []
     },
     {
@@ -1406,6 +1541,16 @@
     {
       "text": "debt collectors are calling and constantly harassing me. what should i do?",
       "intent": "Managing money",
+      "entities": []
+    },
+    {
+      "text": "desist from abusing",
+      "intent": "Protective order",
+      "entities": []
+    },
+    {
+      "text": "discrimination",
+      "intent": "Housing discrimination",
       "entities": []
     },
     {
@@ -1432,6 +1577,16 @@
     {
       "text": "divorce vs separation",
       "intent": "Separation",
+      "entities": []
+    },
+    {
+      "text": "divorce):",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "divorcing my husband",
+      "intent": "Divorce",
       "entities": []
     },
     {
@@ -1752,8 +1907,23 @@
       ]
     },
     {
+      "text": "dogs",
+      "intent": "None",
+      "entities": []
+    },
+    {
       "text": "dol sent me a notice of suspension. what can i do?",
       "intent": "Car issues",
+      "entities": []
+    },
+    {
+      "text": "domestic abuse",
+      "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
+      "text": "domestic violence",
+      "intent": "Domestic Violence",
       "entities": []
     },
     {
@@ -1777,17 +1947,37 @@
       "entities": []
     },
     {
+      "text": "domestic violence order for protection",
+      "intent": "Protective order",
+      "entities": []
+    },
+    {
       "text": "domestic violence-related homicides and suicides?",
       "intent": "Domestic Violence",
       "entities": []
     },
     {
+      "text": "domestive violence",
+      "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
       "text": "ending the rental agreement and/or tenancy",
-      "intent": "Mobile home park tenants",
+      "intent": "Tenant's rights",
       "entities": []
     },
     {
       "text": "evacuate",
+      "intent": "Eviction",
+      "entities": []
+    },
+    {
+      "text": "evicition",
+      "intent": "Eviction",
+      "entities": []
+    },
+    {
+      "text": "evicted",
       "intent": "Eviction",
       "entities": []
     },
@@ -1812,6 +2002,11 @@
       "entities": []
     },
     {
+      "text": "family",
+      "intent": "None",
+      "entities": []
+    },
+    {
       "text": "fatima luas stop dublin please",
       "intent": "None",
       "entities": [
@@ -1821,6 +2016,11 @@
           "endPos": 22
         }
       ]
+    },
+    {
+      "text": "filing a restraining order",
+      "intent": "Protective order",
+      "entities": []
     },
     {
       "text": "find 2 tickets to the steven tyler show in seattle",
@@ -1914,6 +2114,11 @@
       ]
     },
     {
+      "text": "foreclosure",
+      "intent": "Foreclosure",
+      "entities": []
+    },
+    {
       "text": "from lax to disneyland please",
       "intent": "None",
       "entities": [
@@ -1945,6 +2150,16 @@
           "endPos": 7
         }
       ]
+    },
+    {
+      "text": "getting a job needs me to drive.",
+      "intent": "Driver & Professional licenses",
+      "entities": []
+    },
+    {
+      "text": "getting kicked out",
+      "intent": "Eviction",
+      "entities": []
     },
     {
       "text": "getting your deposit back",
@@ -1983,6 +2198,31 @@
       "entities": []
     },
     {
+      "text": "guardianship",
+      "intent": "Guardianship",
+      "entities": []
+    },
+    {
+      "text": "guiardianship",
+      "intent": "Guardianship",
+      "entities": []
+    },
+    {
+      "text": "harassment",
+      "intent": "Sexual Assault",
+      "entities": []
+    },
+    {
+      "text": "harrasment",
+      "intent": "Sexual Assault",
+      "entities": []
+    },
+    {
+      "text": "harrassment",
+      "intent": "Sexual Assault",
+      "entities": []
+    },
+    {
       "text": "he hasn't actually hit me. does that mean it's not domestic violence?",
       "intent": "Domestic Violence",
       "entities": []
@@ -1993,8 +2233,18 @@
       "entities": []
     },
     {
+      "text": "hello",
+      "intent": "None",
+      "entities": []
+    },
+    {
       "text": "hello from the other side",
       "intent": "Consumer Fraud",
+      "entities": []
+    },
+    {
+      "text": "help me",
+      "intent": "Domestic Violence",
       "entities": []
     },
     {
@@ -2025,6 +2275,11 @@
       "entities": []
     },
     {
+      "text": "hitting me",
+      "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
       "text": "holomap stockholm metro (3d map) please",
       "intent": "None",
       "entities": [
@@ -2034,6 +2289,11 @@
           "endPos": 16
         }
       ]
+    },
+    {
+      "text": "home",
+      "intent": "Home buyers & owners",
+      "entities": []
     },
     {
       "text": "home improvement store 10 minutes from home",
@@ -2065,6 +2325,21 @@
     {
       "text": "homestead rights",
       "intent": "Mobile home park tenants",
+      "entities": []
+    },
+    {
+      "text": "house related",
+      "intent": "Public & subsidized housing",
+      "entities": []
+    },
+    {
+      "text": "housing",
+      "intent": "Public & subsidized housing",
+      "entities": []
+    },
+    {
+      "text": "how",
+      "intent": "None",
       "entities": []
     },
     {
@@ -2119,6 +2394,16 @@
       "entities": []
     },
     {
+      "text": "how can i contest a speeding ticket?",
+      "intent": "Going to court",
+      "entities": []
+    },
+    {
+      "text": "how can i contest a traffic ticket?",
+      "intent": "Going to court",
+      "entities": []
+    },
+    {
       "text": "how can i file an eeoc claim",
       "intent": "Employment Discrimination",
       "entities": []
@@ -2126,6 +2411,41 @@
     {
       "text": "how can i get more information?",
       "intent": "Tenant's rights",
+      "entities": []
+    },
+    {
+      "text": "how can i get my children back from my ex-wife",
+      "intent": "child custody",
+      "entities": []
+    },
+    {
+      "text": "how can i get my children back from my wife?",
+      "intent": "child custody",
+      "entities": []
+    },
+    {
+      "text": "how can i get my children to stay with me",
+      "intent": "child custody",
+      "entities": []
+    },
+    {
+      "text": "how can i get my children to stay with me? my wife took them away after we split",
+      "intent": "child custody",
+      "entities": []
+    },
+    {
+      "text": "how can i get my children to stay with me? my wife took them away after we split.",
+      "intent": "child custody",
+      "entities": []
+    },
+    {
+      "text": "how can i get my kids to live with me.",
+      "intent": "Custody",
+      "entities": []
+    },
+    {
+      "text": "how can i get my tenant to pay rent?",
+      "intent": "Eviction",
       "entities": []
     },
     {
@@ -2139,6 +2459,11 @@
       "entities": []
     },
     {
+      "text": "how can i keep my children? my wife has taken them away after we split.",
+      "intent": "child custody",
+      "entities": []
+    },
+    {
       "text": "how can i prepare to leave my wife?",
       "intent": "child custody",
       "entities": []
@@ -2146,6 +2471,21 @@
     {
       "text": "how can i prevent online identity theft?",
       "intent": "Credit problems",
+      "entities": []
+    },
+    {
+      "text": "how can i protect my children from my ex husband?",
+      "intent": "child custody",
+      "entities": []
+    },
+    {
+      "text": "how can i protect my children from my ex wife?",
+      "intent": "child custody",
+      "entities": []
+    },
+    {
+      "text": "how can i protect my children from my husband?",
+      "intent": "Domestic Violence",
       "entities": []
     },
     {
@@ -2229,6 +2569,11 @@
       "entities": []
     },
     {
+      "text": "how do i file for a protective order",
+      "intent": "Protective order",
+      "entities": []
+    },
+    {
       "text": "how do i file for non-parent custody in washington state?",
       "intent": "Non-parent custody",
       "entities": []
@@ -2305,17 +2650,12 @@
     },
     {
       "text": "how do i know if my landlord has not paid the water bill?",
-      "intent": "Mobile home park tenants",
+      "intent": "Tenant's rights",
       "entities": []
     },
     {
       "text": "how do i know if water is my landlord's responsibility?",
-      "intent": "Mobile home park tenants",
-      "entities": []
-    },
-    {
-      "text": "how do i make sure i am following the rules?",
-      "intent": "Mobile home park tenants",
+      "intent": "Tenant's rights",
       "entities": []
     },
     {
@@ -2773,7 +3113,7 @@
     },
     {
       "text": "how to start driving",
-      "intent": "Car issues",
+      "intent": "Driver & Professional licenses",
       "entities": []
     },
     {
@@ -2844,6 +3184,16 @@
     {
       "text": "https://eviction",
       "intent": "Eviction",
+      "entities": []
+    },
+    {
+      "text": "husband beating up",
+      "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
+      "text": "husband is beating me up",
+      "intent": "Domestic Violence",
       "entities": []
     },
     {
@@ -2949,6 +3299,11 @@
       ]
     },
     {
+      "text": "i am 35 and i have 4 children. my wife is taking them away. how can i have my children back.",
+      "intent": "child custody",
+      "entities": []
+    },
+    {
       "text": "i am a disabled veteran. am i eligible for a discharge?",
       "intent": "Student loans",
       "entities": []
@@ -2971,6 +3326,11 @@
     {
       "text": "i am a grandparent/other relative. may i object to the move?",
       "intent": "Relocation",
+      "entities": []
+    },
+    {
+      "text": "i am a homeless drug addict and would like to have my boyfriends family take care of my children's permanently. how do i do that?",
+      "intent": "Guardianship",
       "entities": []
     },
     {
@@ -3034,6 +3394,71 @@
       "entities": []
     },
     {
+      "text": "i am facing workplace harassment",
+      "intent": "Employment Discrimination",
+      "entities": []
+    },
+    {
+      "text": "i am forced to quit",
+      "intent": "Employment Discrimination",
+      "entities": []
+    },
+    {
+      "text": "i am geeting kicked out of my house",
+      "intent": "Eviction",
+      "entities": []
+    },
+    {
+      "text": "i am getting a",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "i am getting a divorce",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "i am getting an eviction",
+      "intent": "Eviction",
+      "entities": []
+    },
+    {
+      "text": "i am getting an eviction letter",
+      "intent": "Eviction",
+      "entities": []
+    },
+    {
+      "text": "i am getting beat up",
+      "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
+      "text": "i am getting kicked out",
+      "intent": "Eviction",
+      "entities": []
+    },
+    {
+      "text": "i am getting kicked out of my home",
+      "intent": "Eviction",
+      "entities": []
+    },
+    {
+      "text": "i am getting kicked out yo",
+      "intent": "Eviction",
+      "entities": []
+    },
+    {
+      "text": "i am getting stalked and need protection",
+      "intent": "Protective order",
+      "entities": []
+    },
+    {
+      "text": "i am getting stalked by a stranger and i fear for my life",
+      "intent": "Protective order",
+      "entities": []
+    },
+    {
       "text": "i am homess in honolulu",
       "intent": "Public & subsidized housing",
       "entities": [
@@ -3047,6 +3472,16 @@
     {
       "text": "i am in a payday loan debt trap or i think the payday lender has violated the law. where can i get help?",
       "intent": "Debt",
+      "entities": []
+    },
+    {
+      "text": "i am leaving my husband",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "i am leaving my partner",
+      "intent": "Divorce",
       "entities": []
     },
     {
@@ -3065,6 +3500,21 @@
       "entities": []
     },
     {
+      "text": "i am looking for getting a passport",
+      "intent": "Identity",
+      "entities": []
+    },
+    {
+      "text": "i am looking to divorce my husband",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "i am looking to get birth certificate",
+      "intent": "Identity",
+      "entities": []
+    },
+    {
       "text": "i am married. do i have to file my taxes as married, filing jointly to be eligible for premium tax credits to help with the costs of my health insurance?",
       "intent": "Other family",
       "entities": []
@@ -3077,6 +3527,21 @@
     {
       "text": "i am not eligible for any medical assistance. are there any other options for help with medical expenses?",
       "intent": "Medical bills",
+      "entities": []
+    },
+    {
+      "text": "i am not geeting a job as i dont have a valid drivers license. need help !",
+      "intent": "Driver & Professional licenses",
+      "entities": []
+    },
+    {
+      "text": "i am not getting along with my husband.",
+      "intent": "marriage",
+      "entities": []
+    },
+    {
+      "text": "i am not getting along with my spouse",
+      "intent": "marriage",
       "entities": []
     },
     {
@@ -3135,6 +3600,16 @@
       "entities": []
     },
     {
+      "text": "i can no longer care for my children and would like my mother to take care of them. how do i do that legally?",
+      "intent": "Guardianship",
+      "entities": []
+    },
+    {
+      "text": "i can no longer take care of my affairs and would like my son to make decisions for me. how do i do that?",
+      "intent": "Guardianship",
+      "entities": []
+    },
+    {
       "text": "i cannot afford a lawyer. i do not qualify for free legal services.",
       "intent": "Child support",
       "entities": []
@@ -3167,6 +3642,11 @@
     {
       "text": "i can't get work because i am disabled. what are my options?",
       "intent": "Employment Discrimination",
+      "entities": []
+    },
+    {
+      "text": "i can't pay my rent",
+      "intent": "Eviction",
       "entities": []
     },
     {
@@ -3215,6 +3695,16 @@
       "entities": []
     },
     {
+      "text": "i do not want to live with my spouse",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "i do not want to live with my wife anymore",
+      "intent": "marriage",
+      "entities": []
+    },
+    {
       "text": "i don't have a job, will my husband still have to help support me?",
       "intent": "alimony",
       "entities": []
@@ -3225,8 +3715,23 @@
       "entities": []
     },
     {
+      "text": "i don't know what i want to search for",
+      "intent": "None",
+      "entities": []
+    },
+    {
       "text": "i don't like this tv program",
       "intent": "Utilities & phones",
+      "entities": []
+    },
+    {
+      "text": "i don't like this tv show",
+      "intent": "Utilities & phones",
+      "entities": []
+    },
+    {
+      "text": "i dont want to live with my spouse anymore and we have two kids",
+      "intent": "child custody",
       "entities": []
     },
     {
@@ -3345,6 +3850,11 @@
       "entities": []
     },
     {
+      "text": "i got divorced",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
       "text": "i got laid off from my job",
       "intent": "Unemployment",
       "entities": []
@@ -3355,8 +3865,44 @@
       "entities": []
     },
     {
+      "text": "i had a car accident and dont have a drivers license",
+      "intent": "Driver & Professional licenses",
+      "entities": [
+        {
+          "entity": "Places.Amenities",
+          "startPos": 37,
+          "endPos": 51
+        }
+      ]
+    },
+    {
       "text": "i had a drinking problem in the past. i am in recovery now. will the ha proceed to cut off my voucher?",
       "intent": "Public & subsidized housing",
+      "entities": []
+    },
+    {
+      "text": "i had a fight with my spouse and we decided to not live together anymore. what should i do next?",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "i had to go to the er and now cant pay my bills",
+      "intent": "Debt",
+      "entities": []
+    },
+    {
+      "text": "i hate my husband",
+      "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
+      "text": "i have 2 gramdchildren that i need to take care of while their parents are away.",
+      "intent": "Guardianship",
+      "entities": []
+    },
+    {
+      "text": "i have 2 kids and i am getting kicked out of my apartment. i have no where to live",
+      "intent": "Emergency shelter & assistance",
       "entities": []
     },
     {
@@ -3380,8 +3926,18 @@
       "entities": []
     },
     {
+      "text": "i have a debt and need help to pay it back",
+      "intent": "Debt",
+      "entities": []
+    },
+    {
       "text": "i have a dhhs certification or child eligibility letter. what benefits can i receive",
       "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
+      "text": "i have a grandchild that i need to take care of while her parents are away.",
+      "intent": "Guardianship",
       "entities": []
     },
     {
@@ -3465,6 +4021,11 @@
       "entities": []
     },
     {
+      "text": "i have early onset dementia and need to give control of my care to my brother. how do i do that?",
+      "intent": "Guardianship",
+      "entities": []
+    },
+    {
       "text": "i have earned income. how do i pay taxes?",
       "intent": "Managing money",
       "entities": []
@@ -3472,6 +4033,16 @@
     {
       "text": "i have filled out the documents (notice of appearance and/or answer). now what?",
       "intent": "Debt",
+      "entities": []
+    },
+    {
+      "text": "i have grandchildren i need to take care while the parents are out",
+      "intent": "Guardianship",
+      "entities": []
+    },
+    {
+      "text": "i have grandchildren. i need to take care of them for a year.",
+      "intent": "Guardianship",
       "entities": []
     },
     {
@@ -3500,6 +4071,11 @@
       "entities": []
     },
     {
+      "text": "i have no money",
+      "intent": "Bankrucptcy",
+      "entities": []
+    },
+    {
       "text": "i have offered to make small payments on my bill, or i have told the plaintiff i would make full payments as soon as possible. can the plaintiff sue me anyway?",
       "intent": "Debt",
       "entities": []
@@ -3517,6 +4093,26 @@
     {
       "text": "i have sold or transferred my car. what do i do next?",
       "intent": "Car issues",
+      "entities": []
+    },
+    {
+      "text": "i have to get documents for school admission",
+      "intent": "Identity",
+      "entities": []
+    },
+    {
+      "text": "i have to take care of my grandchildren while the parents are away",
+      "intent": "Guardianship",
+      "entities": []
+    },
+    {
+      "text": "i i leave my husband",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "i leave my husband",
+      "intent": "Divorce",
       "entities": []
     },
     {
@@ -3550,6 +4146,11 @@
       "entities": []
     },
     {
+      "text": "i lost my puppy",
+      "intent": "None",
+      "entities": []
+    },
+    {
       "text": "i lost the court case. now what?",
       "intent": "Public & subsidized housing",
       "entities": []
@@ -3557,6 +4158,21 @@
     {
       "text": "i moved out before the time on the eviction notice is up. can my landlord still take me to court?",
       "intent": "Eviction",
+      "entities": []
+    },
+    {
+      "text": "i need a divorce",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "i need a place to stay for tonight",
+      "intent": "Public & subsidized housing",
+      "entities": []
+    },
+    {
+      "text": "i need a volunteer",
+      "intent": "None",
       "entities": []
     },
     {
@@ -3576,13 +4192,43 @@
       "entities": []
     },
     {
+      "text": "i need help getting a job. i have to drive for this work and need help with that too",
+      "intent": "Driver & Professional licenses",
+      "entities": []
+    },
+    {
       "text": "i need help getting away from my boyfriend",
       "intent": "Domestic Violence",
       "entities": []
     },
     {
+      "text": "i need help in getting paperwork for driving",
+      "intent": "Driver & Professional licenses",
+      "entities": []
+    },
+    {
+      "text": "i need help with divorce",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "i need more divorce",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
       "text": "i need my ex-husband to pay for my child's school. what can i do ?",
       "intent": "alimony",
+      "entities": []
+    },
+    {
+      "text": "i need to divorce my husband",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "i need to drive for my job. where can i get help?",
+      "intent": "Driver & Professional licenses",
       "entities": []
     },
     {
@@ -3601,8 +4247,58 @@
       "entities": []
     },
     {
+      "text": "i need to leave my husband",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "i need to leave my spouse",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
       "text": "i need to register my protective order",
       "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
+      "text": "i need to separate from my husband",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "i need to take care of my grandchildren",
+      "intent": "Guardianship",
+      "entities": []
+    },
+    {
+      "text": "i need to take care of my grandchildren for a year",
+      "intent": "Guardianship",
+      "entities": []
+    },
+    {
+      "text": "i need to take care of my grandchildren for a year.",
+      "intent": "Guardianship",
+      "entities": []
+    },
+    {
+      "text": "i need to take care of my grandchildren for an extended period of time. can i take them to doctors and school ?",
+      "intent": "Guardianship",
+      "entities": []
+    },
+    {
+      "text": "i need to take care of my grandchildren while their mom is out of country",
+      "intent": "Guardianship",
+      "entities": []
+    },
+    {
+      "text": "i need to take care of our grandchildren while their parents are out of the country",
+      "intent": "Guardianship",
+      "entities": []
+    },
+    {
+      "text": "i need volunteers",
+      "intent": "None",
       "entities": []
     },
     {
@@ -3617,7 +4313,7 @@
     },
     {
       "text": "i put my water in my name and deducted the cost from my rent. will the landlord retaliate?",
-      "intent": "Mobile home park tenants",
+      "intent": "Tenant's rights",
       "entities": []
     },
     {
@@ -3696,6 +4392,16 @@
       "entities": []
     },
     {
+      "text": "i wan to leave my husband",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "i want a divorce",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
       "text": "i want a romantic restaurant for my newly married friends",
       "intent": "None",
       "entities": [
@@ -3707,8 +4413,33 @@
       ]
     },
     {
+      "text": "i want divorce",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "i want divorce from my husband",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
       "text": "i want equal time with the children. will the court order this?",
       "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "i want leave from my husband",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "i want leave my husband",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "i want to adopt a child.",
+      "intent": "Adoption",
       "entities": []
     },
     {
@@ -3761,6 +4492,11 @@
       "entities": []
     },
     {
+      "text": "i want to buy house",
+      "intent": "Home buyers & owners",
+      "entities": []
+    },
+    {
       "text": "i want to buy nick jonas tickets",
       "intent": "None",
       "entities": [
@@ -3772,8 +4508,28 @@
       ]
     },
     {
+      "text": "i want to divorce",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "i want to end my marriage",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "i want to file for bankruptcy",
+      "intent": "Bankrucptcy",
+      "entities": []
+    },
+    {
       "text": "i want to file for non-parent custody of an indian child. do i need a lawyer?",
       "intent": "Non-parent custody",
+      "entities": []
+    },
+    {
+      "text": "i want to get a poa",
+      "intent": "Guardianship",
       "entities": []
     },
     {
@@ -3784,6 +4540,26 @@
     {
       "text": "i want to get a separation from my wife",
       "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "i want to get away from my abusive uncle. i need help to make sure he does not come near me.",
+      "intent": "Protective order",
+      "entities": []
+    },
+    {
+      "text": "i want to get away from my uncle. he is making unwanted advances",
+      "intent": "Protective order",
+      "entities": []
+    },
+    {
+      "text": "i want to get away from my uncle. he keeps making unwanted advances and beats me up. how can i make sure he stays away from me ?",
+      "intent": "Protective order",
+      "entities": []
+    },
+    {
+      "text": "i want to get away from my uncle. he keeps making unwanted advances and beats me up. how can i make sure he stays away from me?",
+      "intent": "Protective order",
       "entities": []
     },
     {
@@ -3798,8 +4574,58 @@
       ]
     },
     {
+      "text": "i want to keep my children",
+      "intent": "child custody",
+      "entities": []
+    },
+    {
+      "text": "i want to leav my husband",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "i want to leave from my husband",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
       "text": "i want to leave my husband",
       "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "i want to leave my husband and i need to fight for my children rights",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "i want to leave my husband i want to get custody",
+      "intent": "child custody",
+      "entities": []
+    },
+    {
+      "text": "i want to leave my spouse",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "i want to leave my wife",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "i want to leave my wife.",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "i want to leve husband and get my chilen",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "i want to make sure my uncle stays away from me. what can i do?",
+      "intent": "Protective order",
       "entities": []
     },
     {
@@ -3810,6 +4636,11 @@
     {
       "text": "i want to move. do i have to give a 60-day notice to terminate the tenancy?",
       "intent": "Tenant's rights",
+      "entities": []
+    },
+    {
+      "text": "i want to my house back",
+      "intent": "Foreclosure",
       "entities": []
     },
     {
@@ -3845,6 +4676,81 @@
       ]
     },
     {
+      "text": "i want to see my children",
+      "intent": "child custody",
+      "entities": []
+    },
+    {
+      "text": "i want to see my children after my divorce",
+      "intent": "child custody",
+      "entities": []
+    },
+    {
+      "text": "i want to see my kids",
+      "intent": "child custody",
+      "entities": []
+    },
+    {
+      "text": "i want to see my mom",
+      "intent": "child custody",
+      "entities": []
+    },
+    {
+      "text": "i want to separate",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "i want to separate from my husband",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "i want to separate from my spouse",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "i want to split",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "i want to take care of my grandchildren while the parents are out",
+      "intent": "Guardianship",
+      "entities": []
+    },
+    {
+      "text": "i want to take divorce from my husband",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "i want to take divorce with my husband",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "i want to take my kids and leave my husband",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "i want to take my kids with me.",
+      "intent": "Custody",
+      "entities": []
+    },
+    {
+      "text": "i want to to take divorce my husband",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "i want to visit my children who are with my husband",
+      "intent": "child custody",
+      "entities": []
+    },
+    {
       "text": "i want to watch a metallica concert",
       "intent": "None",
       "entities": [
@@ -3859,6 +4765,16 @@
           "endPos": 34
         }
       ]
+    },
+    {
+      "text": "i was asked to vacate my apartment tonight. i have no where to sleep. need help.",
+      "intent": "Public & subsidized housing",
+      "entities": []
+    },
+    {
+      "text": "i was beat up on my way to work",
+      "intent": "None",
+      "entities": []
     },
     {
       "text": "i was denied housing because of my mental illness",
@@ -3901,7 +4817,22 @@
       "entities": []
     },
     {
+      "text": "i would really like to visit my dad, but my mom doesn't want me to see him.",
+      "intent": "child custody",
+      "entities": []
+    },
+    {
+      "text": "i’m getting evicted",
+      "intent": "Eviction",
+      "entities": []
+    },
+    {
       "text": "i’m getting evicted from my home",
+      "intent": "Eviction",
+      "entities": []
+    },
+    {
+      "text": "i’m getting kicked out",
       "intent": "Eviction",
       "entities": []
     },
@@ -3912,7 +4843,7 @@
     },
     {
       "text": "if i cannot or do not want to go ahead with the deal, can i get my money back?",
-      "intent": "Mobile home park tenants",
+      "intent": "Home buyers & owners",
       "entities": []
     },
     {
@@ -3926,7 +4857,7 @@
       "entities": []
     },
     {
-      "text": "if i leave my husband can i take my kids to [$geography]?",
+      "text": "if i leave my husband can i take my kids to [$geographyV2]?",
       "intent": "Debt",
       "entities": []
     },
@@ -3981,13 +4912,83 @@
       "entities": []
     },
     {
+      "text": "i'm getting divorced",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "i'm getting evicted",
+      "intent": "Eviction",
+      "entities": []
+    },
+    {
+      "text": "i'm getting kick out",
+      "intent": "Eviction",
+      "entities": []
+    },
+    {
       "text": "i'm getting kicked out",
       "intent": "Tenant's rights",
       "entities": []
     },
     {
+      "text": "i'm getting kicked out of my house",
+      "intent": "Eviction",
+      "entities": []
+    },
+    {
+      "text": "i'm getting kicked out.",
+      "intent": "Eviction",
+      "entities": []
+    },
+    {
+      "text": "i'm husband kicked me out of house",
+      "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
+      "text": "i'm in an abusive marriage",
+      "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
+      "text": "i'm in an abusive relation",
+      "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
+      "text": "i'm in an unhappy marriage",
+      "intent": "marriage",
+      "entities": []
+    },
+    {
       "text": "'i'm in need of an attorney. i'm a single mom. i have one income. i'm in default on my mortgage. foreclosure is very close. i'm extremeiy in debt with an underwater mortgage and unaffordable lot rent. i need to speak to somebody and i have no extra money to retain services. i wish to inquire about bankruptcy. can you help me?",
       "intent": "Eviction",
+      "entities": []
+    },
+    {
+      "text": "i'm leaving my husband",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "i'm not getting along with my spouse",
+      "intent": "marriage",
+      "entities": []
+    },
+    {
+      "text": "i'm unemployed and need help to find a job",
+      "intent": "Unemployment",
+      "entities": []
+    },
+    {
+      "text": "i'm unhappy in my marriage",
+      "intent": "marriage",
+      "entities": []
+    },
+    {
+      "text": "immigration",
+      "intent": "None",
       "entities": []
     },
     {
@@ -4144,8 +5145,23 @@
       ]
     },
     {
+      "text": "job discrimination",
+      "intent": "Employment Discrimination",
+      "entities": []
+    },
+    {
+      "text": "kick",
+      "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
       "text": "kick out",
       "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
+      "text": "kicked out",
+      "intent": "Eviction",
       "entities": []
     },
     {
@@ -4164,8 +5180,23 @@
       "entities": []
     },
     {
+      "text": "landlord",
+      "intent": "Tenant's rights",
+      "entities": []
+    },
+    {
+      "text": "landlord harassment",
+      "intent": "Tenant's rights",
+      "entities": []
+    },
+    {
+      "text": "landlord tells me to move out tomorrow",
+      "intent": "Tenant's rights",
+      "entities": []
+    },
+    {
       "text": "lawsuits or arbitration",
-      "intent": "Mobile home park tenants",
+      "intent": "Going to court",
       "entities": []
     },
     {
@@ -4181,6 +5212,11 @@
     {
       "text": "leave me alone",
       "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
+      "text": "leave my husband",
+      "intent": "Divorce",
       "entities": []
     },
     {
@@ -4258,6 +5294,16 @@
       ]
     },
     {
+      "text": "make an adoption",
+      "intent": "Adoption",
+      "entities": []
+    },
+    {
+      "text": "marriage",
+      "intent": "marriage",
+      "entities": []
+    },
+    {
       "text": "may a landlord still turn down my rental application for other reasons?",
       "intent": "Tenant's rights",
       "entities": []
@@ -4269,7 +5315,7 @@
     },
     {
       "text": "may i get financing from someone other than the dealer?",
-      "intent": "Mobile home park tenants",
+      "intent": "Car issues",
       "entities": []
     },
     {
@@ -4299,7 +5345,7 @@
     },
     {
       "text": "mediation",
-      "intent": "Mobile home park tenants",
+      "intent": "Going to court",
       "entities": []
     },
     {
@@ -4319,6 +5365,21 @@
       ]
     },
     {
+      "text": "mobile homes",
+      "intent": "Mobile home park tenants",
+      "entities": []
+    },
+    {
+      "text": "money issues",
+      "intent": "Bankrucptcy",
+      "entities": []
+    },
+    {
+      "text": "money problems",
+      "intent": "Managing money",
+      "entities": []
+    },
+    {
       "text": "month-to-month agreements",
       "intent": "Tenant's rights",
       "entities": []
@@ -4330,7 +5391,7 @@
     },
     {
       "text": "move out",
-      "intent": "Mobile home park tenants",
+      "intent": "Eviction",
       "entities": []
     },
     {
@@ -4339,8 +5400,23 @@
       "entities": []
     },
     {
+      "text": "murder",
+      "intent": "None",
+      "entities": []
+    },
+    {
       "text": "my abusive husband petitioned for me. he filled out an affidavit of support saying he will support my children and me. can dshs deny me assistance",
       "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
+      "text": "my apartment has a leak",
+      "intent": "Tenant's rights",
+      "entities": []
+    },
+    {
+      "text": "my best friends children have been orphaned and i want to become their care taker, how do i do that?",
+      "intent": "Guardianship",
       "entities": []
     },
     {
@@ -4349,8 +5425,28 @@
       "entities": []
     },
     {
+      "text": "my boss keeps making advances towards me",
+      "intent": "Protective order",
+      "entities": []
+    },
+    {
       "text": "my boyfriend hits me",
       "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
+      "text": "my brother is abusive to his children, i want to take them away. how do i do that?",
+      "intent": "child custody",
+      "entities": []
+    },
+    {
+      "text": "my brother passed away and i need to take care of my niece. how do i do that?",
+      "intent": "Guardianship",
+      "entities": []
+    },
+    {
+      "text": "my car is a lemon",
+      "intent": "Car issues",
       "entities": []
     },
     {
@@ -4379,6 +5475,26 @@
       "entities": []
     },
     {
+      "text": "my ex is stalking me",
+      "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
+      "text": "my ex-wife does not want me to see my children. how can i get my children back?",
+      "intent": "child custody",
+      "entities": []
+    },
+    {
+      "text": "my father has dementia and i need to take care control over his decision making",
+      "intent": "Guardianship",
+      "entities": []
+    },
+    {
+      "text": "my father has dementia and want to be legally responsible for his care care as he is unable to manage their own affairs.",
+      "intent": "Guardianship",
+      "entities": []
+    },
+    {
       "text": "my former landlord did not refund my security deposit and says i owe damages. what can i do?",
       "intent": "Tenant's rights",
       "entities": []
@@ -4404,12 +5520,87 @@
       "entities": []
     },
     {
+      "text": "my husband and i are fighting",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "my husband beats me up",
+      "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
       "text": "my husband cheated on me",
       "intent": "child custody",
       "entities": []
     },
     {
+      "text": "my husband doesn't care for me",
+      "intent": "marriage",
+      "entities": []
+    },
+    {
+      "text": "my husband doesn't let me see the kids",
+      "intent": "child custody",
+      "entities": []
+    },
+    {
+      "text": "my husband is abusing me and i need protection",
+      "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
       "text": "my husband is beating me",
+      "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
+      "text": "my husband is getting kicked out",
+      "intent": "Eviction",
+      "entities": []
+    },
+    {
+      "text": "my husband is hitting me",
+      "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
+      "text": "my husband is kicking me out of house",
+      "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
+      "text": "my husband is leaving me and kickin gme out of the house",
+      "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
+      "text": "my husband is stalking me",
+      "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
+      "text": "my husband is supposed to drop of the kids every weekend, but he hasn't dropped them off yet.",
+      "intent": "child custody",
+      "entities": []
+    },
+    {
+      "text": "my husband is taking my kids away, what can i do?",
+      "intent": "child custody",
+      "entities": []
+    },
+    {
+      "text": "my husband just left me",
+      "intent": "marriage",
+      "entities": []
+    },
+    {
+      "text": "my husband keeps hitting me",
+      "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
+      "text": "my husband kicked me out of house",
       "intent": "Domestic Violence",
       "entities": []
     },
@@ -4419,8 +5610,28 @@
       "entities": []
     },
     {
+      "text": "my husband sucks",
+      "intent": "marriage",
+      "entities": []
+    },
+    {
+      "text": "my husband threw me out of the house",
+      "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
+      "text": "my husband took all the money",
+      "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
       "text": "my landlord asked me to leave my home”",
       "intent": "Eviction",
+      "entities": []
+    },
+    {
+      "text": "my landlord came last night and asked me to get out of the house. what can i do ?",
+      "intent": "Tenant's rights",
       "entities": []
     },
     {
@@ -4436,6 +5647,11 @@
     {
       "text": "my landlord has sexually assaulted, stalked or harassed me. may i change the locks?",
       "intent": "Tenant's rights",
+      "entities": []
+    },
+    {
+      "text": "my landlord kicked me out",
+      "intent": "Eviction",
       "entities": []
     },
     {
@@ -4455,6 +5671,11 @@
       ]
     },
     {
+      "text": "my landlord wants to put me on the street.",
+      "intent": "Tenant's rights",
+      "entities": []
+    },
+    {
       "text": "my landlord went into foreclosure. can i get my security deposit back?",
       "intent": "Tenant's rights",
       "entities": []
@@ -4470,6 +5691,11 @@
       "entities": []
     },
     {
+      "text": "my landlord won't fix the washing machine.",
+      "intent": "Tenant's rights",
+      "entities": []
+    },
+    {
       "text": "my landlord won't make reasonable accomodations for my disability",
       "intent": "Housing discrimination",
       "entities": []
@@ -4480,6 +5706,56 @@
       "entities": []
     },
     {
+      "text": "my marriage is not working out",
+      "intent": "marriage",
+      "entities": []
+    },
+    {
+      "text": "my marriage is over",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "my mom and dad are fighting all the time.",
+      "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
+      "text": "my mom doesn't let me go over to my dad's place.",
+      "intent": "child custody",
+      "entities": []
+    },
+    {
+      "text": "my neighbor is harassing me and i feel threatened",
+      "intent": "Protective order",
+      "entities": []
+    },
+    {
+      "text": "my neighbor keeps peeping through the window and try's to come in to my house without my permission. i want to make sure he maintains distance from me. i need help !",
+      "intent": "Protective order",
+      "entities": []
+    },
+    {
+      "text": "my neighbor keeps trying to come near me and enter my house. i don't like him contacting me. what i do to keep him away",
+      "intent": "Protective order",
+      "entities": []
+    },
+    {
+      "text": "my neighbor keeps trying to come near me and enter my house. i don't like him contacting me. what i do to keep him away ?",
+      "intent": "Protective order",
+      "entities": []
+    },
+    {
+      "text": "my nephew is autistic and now an orphan, i would like to assume care for him. how do i do that legally?",
+      "intent": "Guardianship",
+      "entities": []
+    },
+    {
+      "text": "my partner left me",
+      "intent": "Unmarried couples",
+      "entities": []
+    },
+    {
       "text": "my rental application was denied. i think it is because i am race",
       "intent": "Housing discrimination",
       "entities": []
@@ -4487,6 +5763,26 @@
     {
       "text": "my rental needs repairs. what should i do?",
       "intent": "Tenant's rights",
+      "entities": []
+    },
+    {
+      "text": "my son died and he has 2 children that i would like to take care of his children. how do i do that?",
+      "intent": "Guardianship",
+      "entities": []
+    },
+    {
+      "text": "my son died and i want to become the care taker of his children. how can i do that?",
+      "intent": "Guardianship",
+      "entities": []
+    },
+    {
+      "text": "my son left and now i have to take care of my grandchildren. what can i do ?",
+      "intent": "Guardianship",
+      "entities": []
+    },
+    {
+      "text": "my son ran away from home",
+      "intent": "None",
       "entities": []
     },
     {
@@ -4505,6 +5801,31 @@
       "entities": []
     },
     {
+      "text": "my spouse is beating me up",
+      "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
+      "text": "my spouse is hitting me",
+      "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
+      "text": "my spouse is leaving me",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "my spouse is mistreating me",
+      "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
+      "text": "my spouse is not letting me in the house",
+      "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
       "text": "my spouse is on active military duty. does this excuse him/her from paying child support?",
       "intent": "Veteran/Military Families",
       "entities": []
@@ -4515,8 +5836,28 @@
       "entities": []
     },
     {
+      "text": "my spouse is taking children",
+      "intent": "child custody",
+      "entities": []
+    },
+    {
+      "text": "my spouse is taking my children",
+      "intent": "child custody",
+      "entities": []
+    },
+    {
+      "text": "my spouse just left me",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
       "text": "my spouse left and i cannot find him/her.",
       "intent": "Other family",
+      "entities": []
+    },
+    {
+      "text": "my spouse left me",
+      "intent": "marriage",
       "entities": []
     },
     {
@@ -4530,8 +5871,38 @@
       "entities": []
     },
     {
+      "text": "my tenant hasn't paid rent in 3 months.",
+      "intent": "Eviction",
+      "entities": []
+    },
+    {
+      "text": "my tenant won't leave even though the lease expired.",
+      "intent": "Eviction",
+      "entities": []
+    },
+    {
+      "text": "my uncle keeps making unwanted advances and beats me up. how can i make sure he stays away from me ?",
+      "intent": "Protective order",
+      "entities": []
+    },
+    {
+      "text": "my uncle keeps making unwanted advances. how can i make sure he stays away from me ?",
+      "intent": "Protective order",
+      "entities": []
+    },
+    {
       "text": "my wages are being garnished. how long does it take to stop the garnishment if i file for bankruptcy?",
       "intent": "Bankrucptcy",
+      "entities": []
+    },
+    {
+      "text": "my wife always has an excuse when i want to see the kids.",
+      "intent": "child custody",
+      "entities": []
+    },
+    {
+      "text": "my wife always has an excuse when she is supposed to bring over the kids.",
+      "intent": "None",
       "entities": []
     },
     {
@@ -4540,8 +5911,88 @@
       "entities": []
     },
     {
+      "text": "my wife has my kids after my divorce how can i see my kids",
+      "intent": "child custody",
+      "entities": []
+    },
+    {
+      "text": "my wife has my kids after my divorce, how can i see my kids",
+      "intent": "child custody",
+      "entities": []
+    },
+    {
+      "text": "my wife has my kids after my divorce, how can i see my kids?",
+      "intent": "child custody",
+      "entities": []
+    },
+    {
+      "text": "my wife has my kids with her after our divorce. how can i see my kids ?",
+      "intent": "Custody",
+      "entities": []
+    },
+    {
+      "text": "my wife has my kids with her after our divorce. how can i visit my kids ?",
+      "intent": "Custody",
+      "entities": []
+    },
+    {
+      "text": "my wife is hitting me what can i do ?",
+      "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
+      "text": "my wife is hitting me. need help",
+      "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
+      "text": "my wife is kicking me out of the house",
+      "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
+      "text": "my wife is taking custody of my children how can i stop that",
+      "intent": "child custody",
+      "entities": []
+    },
+    {
+      "text": "my wife is taking my children and i want to stop that",
+      "intent": "child custody",
+      "entities": []
+    },
+    {
       "text": "my wife is taking my kids away",
       "intent": "child custody",
+      "entities": []
+    },
+    {
+      "text": "my wife is taking the kids. what can i do?",
+      "intent": "Custody",
+      "entities": []
+    },
+    {
+      "text": "my wife just left me",
+      "intent": "marriage",
+      "entities": []
+    },
+    {
+      "text": "my wife sucks",
+      "intent": "marriage",
+      "entities": []
+    },
+    {
+      "text": "my wife took my children away, how can i see them?",
+      "intent": "child custody",
+      "entities": []
+    },
+    {
+      "text": "my wife wants to separate",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "need to find a shelter to stay toinight",
+      "intent": "Emergency shelter & assistance",
       "entities": []
     },
     {
@@ -4569,6 +6020,11 @@
           "endPos": 3
         }
       ]
+    },
+    {
+      "text": "order of protection",
+      "intent": "Domestic Violence",
+      "entities": []
     },
     {
       "text": "park closures and financial assistance to move",
@@ -4627,6 +6083,36 @@
           "endPos": 59
         }
       ]
+    },
+    {
+      "text": "poa",
+      "intent": "Guardianship",
+      "entities": []
+    },
+    {
+      "text": "pretective order",
+      "intent": "Protective order",
+      "entities": []
+    },
+    {
+      "text": "protection order",
+      "intent": "Protective order",
+      "entities": []
+    },
+    {
+      "text": "protective order",
+      "intent": "Protective order",
+      "entities": []
+    },
+    {
+      "text": "protective orders",
+      "intent": "Protective order",
+      "entities": []
+    },
+    {
+      "text": "public benefits",
+      "intent": "Public & subsidized housing",
+      "entities": []
     },
     {
       "text": "public transportation to the hospital ?",
@@ -4783,8 +6269,23 @@
       "entities": []
     },
     {
+      "text": "separation",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "separation from my husband",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "seperation",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
       "text": "service of the notice by the landlord",
-      "intent": "Mobile home park tenants",
+      "intent": "Tenant's rights",
       "entities": []
     },
     {
@@ -4820,11 +6321,6 @@
     {
       "text": "should i purchase a warranty or service contract?",
       "intent": "Car issues",
-      "entities": []
-    },
-    {
-      "text": "should i sign a written contract?",
-      "intent": "Mobile home park tenants",
       "entities": []
     },
     {
@@ -4967,6 +6463,16 @@
       "entities": []
     },
     {
+      "text": "split from wife",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "spouse is beating me up",
+      "intent": "Domestic Violence",
+      "entities": []
+    },
+    {
       "text": "spouse taking my kid",
       "intent": "child custody",
       "entities": []
@@ -5004,6 +6510,11 @@
       ]
     },
     {
+      "text": "test",
+      "intent": "None",
+      "entities": []
+    },
+    {
       "text": "the buyer is still paying on the car. am i responsible for parking tickets or towing charges during this time?",
       "intent": "Car issues",
       "entities": []
@@ -5011,6 +6522,16 @@
     {
       "text": "the car dealer did not offer any warranties (guarantees) on my used car. does this mean that my car is not covered by any warranties even if it develops major problems soon after i bought it?",
       "intent": "Car issues",
+      "entities": []
+    },
+    {
+      "text": "the cops gave me a speeding ticket. what can i do ?",
+      "intent": "Going to court",
+      "entities": []
+    },
+    {
+      "text": "the cops gave me a speeidng ticket. what can i do ?",
+      "intent": "Going to court",
       "entities": []
     },
     {
@@ -5116,6 +6637,11 @@
     {
       "text": "there has been domestic violence. should i use mediation?",
       "intent": "Contracts",
+      "entities": []
+    },
+    {
+      "text": "there's mold in the bathroom",
+      "intent": "Tenant's rights",
       "entities": []
     },
     {
@@ -5251,7 +6777,7 @@
     },
     {
       "text": "unlawful detainer/eviction process",
-      "intent": "Mobile home park tenants",
+      "intent": "Eviction",
       "entities": []
     },
     {
@@ -5276,8 +6802,43 @@
       "entities": []
     },
     {
+      "text": "veteran rights",
+      "intent": "Veteran/Military Families",
+      "entities": []
+    },
+    {
+      "text": "violation of my rights",
+      "intent": "Employment Discrimination",
+      "entities": []
+    },
+    {
+      "text": "visitation",
+      "intent": "Custody",
+      "entities": []
+    },
+    {
+      "text": "volunteer",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "want divorce from my husband",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
+      "text": "want to keep husband away from me.",
+      "intent": "Protective order",
+      "entities": []
+    },
+    {
       "text": "washington does not have jurisdiction over the child. what can i do?",
       "intent": "Non-parents caring for children",
+      "entities": []
+    },
+    {
+      "text": "we are a looking to help out our community members. they have to leave the country for a while. how can we take care of their kids legally when they are gone.",
+      "intent": "Guardianship",
       "entities": []
     },
     {
@@ -5523,7 +7084,7 @@
     },
     {
       "text": "what can i do to keep my water from being shut off?",
-      "intent": "Mobile home park tenants",
+      "intent": "Tenant's rights",
       "entities": []
     },
     {
@@ -5753,7 +7314,7 @@
     },
     {
       "text": "what if i am confused or my landlord is threatening action if i follow this process?",
-      "intent": "Mobile home park tenants",
+      "intent": "Tenant's rights",
       "entities": []
     },
     {
@@ -5803,7 +7364,7 @@
     },
     {
       "text": "what if i cannot find my spouse?",
-      "intent": "Divorce",
+      "intent": "None",
       "entities": []
     },
     {
@@ -5828,7 +7389,7 @@
     },
     {
       "text": "what if i cannot put the water utility in my name?",
-      "intent": "Mobile home park tenants",
+      "intent": "Tenant's rights",
       "entities": []
     },
     {
@@ -6108,7 +7669,7 @@
     },
     {
       "text": "what if my spouse has hurt me?",
-      "intent": "Divorce",
+      "intent": "Domestic Violence",
       "entities": []
     },
     {
@@ -6188,7 +7749,7 @@
     },
     {
       "text": "what if the home i buy needs repair, something in it breaks, or it is not otherwise right?",
-      "intent": "Mobile home park tenants",
+      "intent": "Home buyers & owners",
       "entities": []
     },
     {
@@ -6343,7 +7904,7 @@
     },
     {
       "text": "what is a \"course of conduct\" showing water is my landlord's responsibility?",
-      "intent": "Mobile home park tenants",
+      "intent": "Tenant's rights",
       "entities": []
     },
     {
@@ -6438,7 +7999,7 @@
     },
     {
       "text": "what is a loan for chattel or a chattel mortgage?",
-      "intent": "Mobile home park tenants",
+      "intent": "Home buyers & owners",
       "entities": []
     },
     {
@@ -6583,7 +8144,7 @@
     },
     {
       "text": "what is child support?",
-      "intent": "Divorce",
+      "intent": "Child support",
       "entities": []
     },
     {
@@ -7074,6 +8635,11 @@
       "entities": []
     },
     {
+      "text": "where can i get help with working with my landlord to provide heating?",
+      "intent": "Tenant's rights",
+      "entities": []
+    },
+    {
       "text": "where can i get more information about hen?",
       "intent": "Emergency shelter & assistance",
       "entities": []
@@ -7305,6 +8871,11 @@
       "entities": []
     },
     {
+      "text": "wife leaving me",
+      "intent": "Divorce",
+      "entities": []
+    },
+    {
       "text": "will a crop apply to any future criminal problems i might have?",
       "intent": "Driver & Professional licenses",
       "entities": []
@@ -7430,18 +9001,23 @@
       "entities": []
     },
     {
+      "text": "workplace",
+      "intent": "Employment Discrimination",
+      "entities": []
+    },
+    {
       "text": "would the court set support lower than the basic support obligation?",
       "intent": "Child support",
       "entities": []
     },
     {
       "text": "you are entitled to a written rental agreement for a term of one year or more",
-      "intent": "Mobile home park tenants",
+      "intent": "Tenant's rights",
       "entities": []
     },
     {
       "text": "you can waive the right to a one-year agreement",
-      "intent": "Mobile home park tenants",
+      "intent": "Tenant's rights",
       "entities": []
     },
     {
@@ -7449,5 +9025,6 @@
       "intent": "None",
       "entities": []
     }
-  ]
+  ],
+  "settings": []
 }
