@@ -32,7 +32,7 @@ a:not([href]):not([tabindex]),
 }
 
 #signin-dropdown a:first-child {
-  padding: 15px 35px 17px 15px;
+  padding: 17px 35px 18px 15px
 }
 
 #signin-dropdown a:hover,
@@ -66,6 +66,7 @@ a:not([href]):not([tabindex]),
   border-radius: 0;
   box-shadow: none;
   background-color: #f4f4f4;
+  padding-bottom: 0;
 }
 
 .dropdown-menu li a {
@@ -125,7 +126,14 @@ a:not([href]):not([tabindex]),
   #signin-dropdown a:hover {
     background-color: #fff;
     color: #333;
+  }
+
+  #signin-dropdown a:hover {
     font-weight: 400;
+  }
+
+  #signin-dropdown.open a {
+    font-weight: 600;
   }
 
   #signin-dropdown .dropdown-menu {
@@ -134,5 +142,6 @@ a:not([href]):not([tabindex]),
 
   #signin-dropdown .dropdown-menu li a {
     padding: 10px 20px 10px 48px;
+    font-weight: 600;
   }
 }

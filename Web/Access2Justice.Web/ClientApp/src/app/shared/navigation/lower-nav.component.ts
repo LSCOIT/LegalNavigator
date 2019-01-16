@@ -14,7 +14,6 @@ import { About, GuidedAssistant, HelpAndFAQ, Home, Language, Login, Logo, Naviga
 export class LowerNavComponent implements OnInit {
   width = 0;
   showSearch = false;
-  showMenu = true;
   myClass = "";
   staticContentSubcription: any;
   blobUrl: any = environment.blobUrl;
@@ -69,11 +68,7 @@ export class LowerNavComponent implements OnInit {
   }
 
   toggleSearch() {
-    let windowWidth = window.innerWidth;
     this.showSearch = !this.showSearch;
-    if (windowWidth < 768) {
-      this.showMenu = !this.showMenu;
-    }
   }
 
   filterNavigationContent(navigation): void {

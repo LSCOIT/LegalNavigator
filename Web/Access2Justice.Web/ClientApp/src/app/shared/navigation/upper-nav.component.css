@@ -55,7 +55,7 @@ li a img {
 
 #location {
   position: absolute;
-  top: -2px;
+  top: 0;
   right: 0;
   width: auto;
   background: #f4f4f4;
@@ -71,6 +71,7 @@ li a img {
   #location {
     position: static;
     width: auto;
+    height: 52px;
   }
 }
 

@@ -59,12 +59,12 @@
           aria-label="Toggle Menu"
           class="web-hidden"
           id="nav-bar-toggle"
-          *ngIf="showMenu"
+          *ngIf="!showSearch"
           (click)="openNav()"
         />
-        <span *ngIf="showMenu">Menu</span>
+        <span *ngIf="!showSearch">Menu</span>
         <img
-          *ngIf="!showMenu"
+          *ngIf="showSearch"
           src="./assets/images/small-icons/close.svg"
           class="nav-icon"
           id="search-close"
@@ -77,8 +77,7 @@
       <span
         class="search-form"
         id="nav-search"
-        (click)="toggleSearch(); closeNav()"
-        *ngIf="!showSearch"
+        (click)="showSearch=true; closeNav()"
       >
         <img
           *ngIf="search.image.source"

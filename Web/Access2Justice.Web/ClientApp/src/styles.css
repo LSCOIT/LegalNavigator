@@ -241,9 +241,11 @@ textarea {
 
 #download img,
 #print img,
-#settings img {
+#settings img,
+#share img,
+#save img {
   display: block;
-  margin: 0 auto;
+  margin: 5px auto;
 }
 
 #download,
@@ -252,6 +254,13 @@ textarea {
 #save,
 #share {
   font-size: 12px;
+}
+
+.dropdown-item #share,
+.dropdown-item #save {
+  padding: 0;
+  font-weight: 600;
+  margin: 0;
 }
 
 @media only screen and (min-width: 540px) {
@@ -346,7 +355,9 @@ textarea {
 
   #download img,
   #print img,
-  #settings img {
+  #settings img,
+  #share img,
+  #save img {
     display: inline-block;
   }
 }

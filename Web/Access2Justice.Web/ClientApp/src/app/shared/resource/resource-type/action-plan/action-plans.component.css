@@ -6,6 +6,10 @@ ul li {
   font-size: 14px;
 }
 
+.open [aria-expanded="true"] {
+  background-image: none !important;
+}
+
 .box-shadow {
   margin: 20px 0 40px 0;
 }
@@ -127,6 +131,12 @@ iframe {
 
 .link {
   cursor: pointer;
+}
+
+.dropdown-menu.show {
+  left: auto !important;
+  right: 0 !important;
+  border: 1px solid #7e7e7e;
 }
 
 @media only screen and (min-width: 768px) {
