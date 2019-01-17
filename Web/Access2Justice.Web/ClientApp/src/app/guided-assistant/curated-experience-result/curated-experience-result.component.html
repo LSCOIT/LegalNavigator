@@ -8,9 +8,7 @@
       <p class="text-capitalize">{{ guidedAssistantResults.topIntent }}</p>
       <button
         class="btn btn-primary"
-        routerLink="/guidedassistant/{{
-          guidedAssistantResults?.guidedAssistantId
-        }}"
+        routerLink="/guidedassistant/{{ guidedAssistantResults?.guidedAssistantId }}"
       >
         Start the Guided Assistant
       </button>
@@ -21,30 +19,29 @@
     <ng-template #elseIfBlock>
       <div
         class="col-sm-8 col-sm-offset-2 text-center top-intent"
-        *ngIf="
-          !guidedAssistantResults.guidedAssistantId &&
-            guidedAssistantResults.topicIds.length > 0;
-          else elseblock
-        "
+        *ngIf="!guidedAssistantResults.guidedAssistantId && guidedAssistantResults.topicIds.length > 0; else elseblock"
       >
         <h3>It looks like you are looking for information on:</h3>
         <p class="text-capitalize">{{ guidedAssistantResults.topIntent }}</p>
-        <span class="p"
-          >We currently do not have a curated experience for that topic. Please
+        <span class="p">
+          We currently do not have a curated experience for that topic. Please
           checkout the
           <a
             class="link"
             routerLink="/topics/{{ guidedAssistantResults.topicIds[0] }}"
-            >{{ guidedAssistantResults?.topIntent }}</a
           >
+            {{ guidedAssistantResults?.topIntent }}
+          </a>
           page to view other information and resources that may be helpful to
-          you.</span
-        >
+          you.
+        </span>
       </div>
       <div class="row">
-        <a routerLink="/guidedassistant" class="link col-md-12 text-center"
-          >Back</a
-        >
+        <a
+          routerLink="/guidedassistant"
+          class="link col-md-12 text-center">
+          Back
+        </a>
       </div>
     </ng-template>
     <div class="row" *ngIf="relevantIntents.length > 0">
@@ -62,17 +59,15 @@
                   ngModel
                   (change)="onSelectTopic($event, intent)"
                 />
-                <label [for]="intent" class="p text-capitalize">{{
-                  intent
-                }}</label>
+                <label [for]="intent" class="p text-capitalize">
+                  {{intent}}
+                </label>
                 <div class="check"></div>
                 <a
                   class="link p"
-                  [routerLink]="[
-                    '/topics/bdc07e7a-1f06-4517-88d8-9345bb87c3cf'
-                  ]"
-                  >Learn More</a
-                >
+                  [routerLink]="['/topics/bdc07e7a-1f06-4517-88d8-9345bb87c3cf']">
+                  Learn More
+                </a>
               </li>
             </ul>
           </div>
