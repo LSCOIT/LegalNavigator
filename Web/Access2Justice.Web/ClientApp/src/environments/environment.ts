@@ -15,14 +15,14 @@ export const environment = {
   blobUrl: "https://cs4892808efec24x447cx944.blob.core.windows.net",
   virtualEarthUrl: "https://dev.virtualearth.net/REST/v1/Locations/",
   All: "All",
-  clientID: "15c4cbff-86ef-4c76-9b08-874ce0b55c8a",
+  clientID: "d528c88c-301c-4a5c-8967-96d571a5be96",
   authority: "https://login.microsoftonline.com/common/",
-  consentScopes: ["api://15c4cbff-86ef-4c76-9b08-874ce0b55c8a/access_as_user"],
+  consentScopes: ["api://d528c88c-301c-4a5c-8967-96d571a5be96/access_as_user"],
   redirectUri: "http://localhost:5150/",
   navigateToLoginRequestUrl: true,
   postLogoutRedirectUri: "http://localhost:5150/",
   topicUrl: "http://localhost:4200/api/topics",
   userPersonalizedPlanUrl:
     "http://localhost:4200/api/user/upsertuserpersonalizedplan",
-  apiScope: "api://15c4cbff-86ef-4c76-9b08-874ce0b55c8a/access_as_user"
+  apiScope: "api://d528c88c-301c-4a5c-8967-96d571a5be96/access_as_user"
 };
