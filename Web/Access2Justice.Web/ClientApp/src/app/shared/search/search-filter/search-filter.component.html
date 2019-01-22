@@ -1,7 +1,7 @@
 <div class="filter row no-print">
   <div class="filter-type col-md-8 col-sm-6 col-xs-6">
-    <div class="col-md-1 p">Show:</div>
-    <div class="col-md-10 desktop-filter">
+    <div class="p">Show:</div>
+    <div class="col-md-11 col-sm-10 desktop-filter">
       <button
         #filterButtons
         *ngFor="let resource of resourceResults"
@@ -11,7 +11,7 @@
         {{ resource.ResourceName }}({{ resource.ResourceCount }})
       </button>
     </div>
-    <div class="btn-group col-md-8 col-sm-6 col-xs-6 mobile-filter" dropdown>
+    <div class="btn-group col-md-10 mobile-filter" dropdown>
       <button
         id="button-basic"
         dropdownToggle
@@ -39,7 +39,7 @@
     </div>
   </div>
   <div class="col-md-4 col-sm-6 col-xs-6 sort-type">
-    <div class="col-md-1 col-sm-2 p">Sort:</div>
+    <div class="p">Sort:</div>
     <div class="btn-group col-md-10" dropdown>
       <button
         id="button-basic"

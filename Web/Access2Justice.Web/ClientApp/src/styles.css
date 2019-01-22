@@ -359,6 +359,7 @@ textarea {
   #share img,
   #save img {
     display: inline-block;
+    margin: 5px 10px 5px auto;
   }
 }
 @media only screen and (min-width: 992px) {

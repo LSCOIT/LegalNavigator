@@ -22,6 +22,8 @@
 .filter-plan {
   background-color: #f4f4f4;
   padding: 10px;
+  height: 96px;
+  padding: 25px 10px;
 }
 
 .filter-plan button {
@@ -29,8 +31,9 @@
 }
 
 .filter-plan span {
-  margin-right: 10px;
   margin-left: 10px;
+  float: left;
+  width: 50px;
 }
 
 .capitalize {
@@ -82,7 +85,7 @@
   margin-right: 0;
   text-align: left;
   width: 145px;
-  font-size: 12px;
+  font-size: 11px;
   background-position: 90% 50%;
   padding: 0 10px;
 }
@@ -97,7 +100,7 @@
   color: #333;
   font-weight: 600;
   border-bottom: 1px solid #ddd;
-  font-size: 12px;
+  font-size: 11px;
   display: block;
   background-color: transparent;
 }
@@ -118,6 +121,10 @@
 
 .dropdown-toggle::after {
   border: none;
+}
+
+.privacy {
+  text-align: center;
 }
 
 @media only screen and (min-width: 768px) {
@@ -144,6 +151,11 @@
 
   .profile-heading {
     margin-top: 0;
+  }
+
+  .privacy {
+    text-align: left;
+    margin-left: 75px;
   }
 }
 

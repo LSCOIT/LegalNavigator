@@ -17,7 +17,7 @@
     <h3 class="page-heading capitalize">{{ userName }}'s Profile</h3>
   </div>
   <div class="row row-half-spacing no-print">
-    <div class="col-sm-12">
+    <div class="col-sm-8 privacy">
       <p>
         We value your privacy and will never share your personal information
         with anyone without your permission. Learn more about what information
@@ -26,11 +26,13 @@
       </p>
     </div>
   </div>
-  <div class="row row-half-spacing">
-    <tabset>
-      <tab heading="My Plan">
+</div>
+<div class="row">
+  <tabset>
+    <tab heading="My Plan">
+      <div class="container">
         <div class="row plan-spacing filter-plan no-print">
-          <span class="col-sm-1 col-xs-2">Show:</span>
+          <span class="p">Show:</span>
           <div class="mobile-hidden col-sm-10">
             <button
               *ngFor="let topic of topicsList"
@@ -40,8 +42,7 @@
                 highlighted: topic.isSelected,
                 '': !topic.isSelected
               }"
-              (click)="filterPlan(topic.topic.name)"
-            >
+              (click)="filterPlan(topic.topic.name)">
               {{ topic.topic.name }}
             </button>
           </div>
@@ -51,8 +52,7 @@
               dropdownToggle
               type="button"
               class="btn btn-selected dropdown-toggle"
-              aria-controls="dropdown-basic"
-            >
+              aria-controls="dropdown-basic">
               All Topics <span class="caret"></span>
             </button>
             <ul
@@ -60,19 +60,16 @@
               *dropdownMenu
               class="dropdown-menu"
               role="menu"
-              aria-labelledby="button-basic"
-            >
+              aria-labelledby="button-basic">
               <li
                 *ngFor="let topic of topicsList"
                 role="menuitem"
-                (click)="filterPlan(topic.topic.name)"
-              >
+                (click)="filterPlan(topic.topic.name)">
                 <a
                   [ngClass]="{
                     'selected-item dropdown-item': topic.isSelected,
                     'dropdown-item': !topic.isSelected
-                  }"
-                >
+                  }">
                   {{ topic.topic.name }}
                 </a>
               </li>
@@ -82,19 +79,23 @@
         <app-action-plans
           [planDetails]="planDetails"
           [topicsList]="topicsList"
-          (notifyFilterTopics)="filterTopics($event)"
-        ></app-action-plans>
-      </tab>
-      <tab heading="My Saved Resources" (select)="getpersonalizedResources()">
+          (notifyFilterTopics)="filterTopics($event)">
+        </app-action-plans>
+      </div>
+    </tab>
+    <tab heading="My Saved Resources" (select)="getpersonalizedResources()">
+      <div class="container">
         <app-search-results
           [fullPage]="true"
           [personalizedResources]="personalizedResources"
           [showRemove]="showRemove"
-          *ngIf="isSavedResources"
-        ></app-search-results>
-      </tab>
-    </tabset>
-  </div>
+          *ngIf="isSavedResources">
+        </app-search-results>
+      </div>
+    </tab>
+  </tabset>
+</div>
+<div class="container">
   <div class="row user-action web-hidden text-center no-print">
     <app-user-action-sidebar
       [mobile]="true"

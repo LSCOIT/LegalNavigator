@@ -3,7 +3,7 @@ li a {
   color: #333;
   font-weight: 600;
   border-bottom: 1px solid #ddd;
-  font-size: 12px;
+  font-size: 11px;
 }
 
 li:last-child a {
@@ -18,17 +18,21 @@ li:last-child a {
 
 .filter {
   background: #f4f4f4;
-  padding: 15px 15px 5px 15px;
+  padding: 10px 15px 5px 15px;
   margin: 0;
+  height: 96px;
 }
 
-.filter-type {
-  display: inline-block;
-  padding-right: 15px;
+.filter-type .p, .sort-type .p {
+  float: left;
 }
 
-.filter-type .col-md-1 {
-  margin-right: 40px;
+.filter-type .p {
+  width: 60px;
+}
+
+.sort-type .p {
+  width: 60px;
 }
 
 .dropdown-btn:after {
@@ -49,7 +53,7 @@ li:last-child a {
   margin-right: 0;
   text-align: left;
   width: 145px;
-  font-size: 12px;
+  font-size: 11px;
   background-size: 13px;
   background-position: 90% 50%;
 }
@@ -74,7 +78,7 @@ li:last-child a {
 
 .btn-selected {
   padding: 10px;
-  margin-right: 10px;
+  margin-right: 20px;
   margin-bottom: 10px;
 }
 
@@ -94,14 +98,20 @@ li:last-child a {
   background-color: #fff;
 }
 
+@media only screen and (min-width: 768px) {
+  .filter-type .p, .sort-type .p {
+    display: inline-block;
+  }
+
+  .filter {
+    padding: 25px 15px 25px 15px;
+  }
+}
+
 @media only screen and (min-width: 992px) {
   li a {
     padding: 7px 20px;
     font-size: 16px;
-  }
-
-  .filter-type .col-md-1 {
-    margin-right: 10px;
   }
 
   .btn-selected {
@@ -128,5 +138,9 @@ li:last-child a {
 
   .button-highlight {
     background-color: #d9f2f8;
+  }
+
+  .sort-type .p {
+    width: 45px;
   }
 }
