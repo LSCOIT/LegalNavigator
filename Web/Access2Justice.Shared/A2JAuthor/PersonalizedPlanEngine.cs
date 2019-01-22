@@ -49,11 +49,8 @@ namespace Access2Justice.Shared.A2JAuthor
             var unprocessedPlan = new UnprocessedPersonalizedPlan();
             unprocessedPlan.Id = Guid.NewGuid();
 
-
             var unprocessedTopic = new UnprocessedTopic();
-            var cultureInfo = Thread.CurrentThread.CurrentCulture;
-            var textInfo = cultureInfo.TextInfo;
-            unprocessedTopic.Name = textInfo.ToTitleCase(personalizedPlan.Properties().GetValue("title"));
+            unprocessedTopic.Name = personalizedPlan.Properties().GetValue("title");
 
             foreach (var step in stepsInScope)
             {
