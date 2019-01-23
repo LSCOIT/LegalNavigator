@@ -12,9 +12,8 @@ p {
 }
 
 .edit-location {
-  padding: 17px 15px 10px 10px;
+  padding: 15px;
   cursor: pointer;
-  display: inline-block;
   height: 52px;
 }
 
@@ -40,10 +39,6 @@ p {
 .location-icon ~ h4 {
   display: inline-block;
   margin: 0;
-}
-
-.change-location-btn {
-  display: none;
 }
 
 #search-box {
@@ -114,6 +109,14 @@ p {
   background-color: #f4f4f4;
 }
 
+.change-location-btn {
+  color: #0d3fb8;
+  font-weight: 600;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
 @media only screen and (min-width: 540px) {
   .modal-body {
     padding: 15px;
@@ -157,15 +160,6 @@ p {
 
   .nav-icon.mobile-margin {
     margin: 0;
-  }
-
-  .change-location-btn {
-    display: inline-block;
-    color: #0d3fb8;
-    font-weight: 600;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
   }
 
   .change-location-btn:hover {

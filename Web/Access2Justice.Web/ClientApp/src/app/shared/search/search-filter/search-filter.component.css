@@ -31,6 +31,10 @@ li:last-child a {
   width: 60px;
 }
 
+.sort-type .btn-group {
+  display: block;
+}
+
 .sort-type .p {
   width: 60px;
 }
@@ -78,8 +82,6 @@ li:last-child a {
 
 .btn-selected {
   padding: 10px;
-  margin-right: 20px;
-  margin-bottom: 10px;
 }
 
 .desktop-filter {
@@ -106,6 +108,10 @@ li:last-child a {
   .filter {
     padding: 25px 15px 25px 15px;
   }
+
+  .sort-type .btn-group {
+    display: inline-block;
+  }
 }
 
 @media only screen and (min-width: 992px) {
@@ -115,13 +121,16 @@ li:last-child a {
   }
 
   .btn-selected {
-    padding: 10px 20px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    padding: 10px 40px;
   }
 
   #button-basic {
     width: 215px;
     font-size: 16px;
     background-size: 15px;
+    padding: 10px 20px;
   }
 
   .dropdown-menu {

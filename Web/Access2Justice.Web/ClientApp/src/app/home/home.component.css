@@ -103,8 +103,8 @@ ul > li > span {
   border-radius: 25px;
   margin-top: 15px;
   margin-bottom: 10px;
-  min-width: 250px;
   position: relative;
+  min-width: 200px;
 }
 
 .label-display {
@@ -220,7 +220,8 @@ ul > li > span {
 
   .label-display {
     position: static;
-    padding: 15px 0 15px 15px;
+    padding: 15px 5px 15px 40px;
+    margin-right: -8px;
   }
 
   .slide-content .mobile-hidden {
