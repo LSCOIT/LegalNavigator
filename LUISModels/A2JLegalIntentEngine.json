@@ -265,7 +265,7 @@
   "regex_entities": [],
   "prebuiltEntities": [
     {
-      "name": "geography",
+      "name": "geographyV2",
       "roles": []
     }
   ],
@@ -1079,7 +1079,7 @@
       "entities": []
     },
     {
-      "text": "can my wife take our kids to [geography] after we get a divorce?",
+      "text": "can my wife take our kids to [geographyV2] after we get a divorce?",
       "intent": "child custody",
       "entities": []
     },
@@ -3926,7 +3926,7 @@
       "entities": []
     },
     {
-      "text": "if i leave my husband can i take my kids to [$geography]?",
+      "text": "if i leave my husband can i take my kids to [$geographyV2]?",
       "intent": "Debt",
       "entities": []
     },
