@@ -10,18 +10,17 @@
         'hide-part-one': questionsRemaining < 0,
         '': questionsRemaining > 0
       }"
-      class="col-md-7 col-sm-8 col-xs-12 p steps"
+      class="col-md-7 col-sm-8 col-xs-12 ps steps"
       >Part 1: Understanding your needs</span
     >
-    <span
-      [ngClass]="{
-        'hide-part-two': questionsRemaining < 0,
+    <span [ngClass]="{
+          'hide-part-two' : questionsRemaining < 0,
         '': questionsRemaining > 0
       }"
-      class="col-md-2 col-sm-4 col-xs-12 p steps part-two"
+      class="col-md-2 col-sm-4 col-xs-12 ps steps part-two"
       >Part 2: View Action plan</span
     >
-    <ul class="col-md-3 p user-action upper-action">
+    <ul class="col-md-3 ps user-action upper-action">
       <li><img class="save-icon" src="./assets/images/small-icons/save.svg" aria-hidden="true" />Save</li>
       <li><img class="close-icon" src="./assets/images/small-icons/close.svg" aria-hidden="true" />Exit</li>
     </ul>
@@ -31,7 +30,7 @@
     (sendQuestionsRemainingEvent)="receiveQuestionsRemaining($event)"
   >
   </app-question>
-  <ul class="col-md-3 col-sm-12 p user-action lower-action">
+  <ul class="col-md-3 col-sm-12 ps user-action lower-action">
     <li><img class="save-icon" src="./assets/images/small-icons/save.svg" aria-hidden="true" />Save</li>
     <li><img class="close-icon" src="./assets/images/small-icons/close.svg" aria-hidden="true" />Exit</li>
   </ul>
