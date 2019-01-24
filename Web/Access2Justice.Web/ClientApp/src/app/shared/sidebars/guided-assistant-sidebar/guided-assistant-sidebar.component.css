@@ -22,20 +22,22 @@ a.btn-primary:hover {
 }
 
 @media only screen and (min-width: 768px) {
-  .sidebar-block {
-    border: 1px solid #ddd;
-    margin: 40px 0 40px 0;
-    padding: 20px;
+  .mobile-border {
+    height: 1px;
+    margin: 40px -40px 0 -40px;
   }
 
-  .web-hidden {
-    display: none;
+  .sidebar-block {
+    margin: 40px -40px 40px -40px;
+    padding: 20px 0 20px 90px;
   }
 }
 
 @media only screen and (min-width: 992px) {
   .sidebar-block {
     margin: 0 0 40px 0;
+    border: 1px solid #ddd;
+    padding: 20px;
   }
 
   .btn-primary {
