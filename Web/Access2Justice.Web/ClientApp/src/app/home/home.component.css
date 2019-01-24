@@ -249,7 +249,7 @@ ul > li > span {
     padding-top: 5%;
   }
 
-  .outer-bg {
+  #guided-assistant-overview {
     margin-top: -100px;
   }
 }
@@ -259,7 +259,7 @@ ul > li > span {
     margin-top: 10%;
   }
 
-  .outer-bg {
+  #guided-assistant-overview {
     margin-top: -110px;
   }
 

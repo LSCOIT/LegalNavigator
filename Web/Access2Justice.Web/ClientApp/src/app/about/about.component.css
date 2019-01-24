@@ -12,21 +12,12 @@ button {
 
 .section-img img {
   width: 100%;
-  margin-top: 40px;
   max-height: 400px;
-  margin-bottom: 40px;
+  margin-bottom: 10px;
 }
 
 .even-rows {
   float: left;
-}
-
-.even-rows + div {
-  margin-bottom: 30px;
-}
-
-p + .btn-sm {
-  margin-right: 20px;
 }
 
 .media-object {
@@ -40,24 +31,53 @@ p + .btn-sm {
   margin-bottom: 20px;
 }
 
-.media-inquiries {
-  margin-top: 40px;
-  margin-bottom: 40px;
-}
-
 .sponsor-logo {
   height: 50px;
   width: 200px;
 }
 
+.sponsors .sponsor-logo:nth-child(odd) {
+  margin-right: 30px;
+  margin-bottom: 30px;
+}
+
+.browse-topic {
+  margin-left: 0;
+}
+
+.col-sm-4 {
+  margin-bottom: 40px;
+}
+
+.in-the-news {
+  text-align: left;
+}
+
+.contacts div{
+  padding-bottom: 40px;
+}
+
+@media only screen and (min-width: 540px) {
+  .browse-topic {
+    margin-left: 2%;
+  }
+}
+
 @media only screen and (min-width: 768px) {
-  .media-inquiries {
-    margin-top: 0;
-    margin-bottom: 0;
+  .in-the-news {
+    text-align: center;
   }
 
-  .browse-topic {
-    margin-left: 20px;
+  .contact div {
+    padding-bottom: 0;
+  }
+
+  .contacts div:first-child {
+    padding-right: 15px;
+  }
+
+  .contacts div:last-child {
+    padding-left: 15px;
   }
 }
 
@@ -84,5 +104,13 @@ p + .btn-sm {
     height: 120px;
     width: 120px;
     padding: 10px;
+  }
+
+  .contacts div:first-child {
+    padding-right: 0;
+  }
+
+  .contacts div:last-child {
+    padding-left: 0;
   }
 }
