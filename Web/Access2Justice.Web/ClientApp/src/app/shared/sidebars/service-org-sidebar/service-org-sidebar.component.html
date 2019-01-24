@@ -1,6 +1,6 @@
 <div
   *ngIf="organizations && organizations.length > 0"
-  class="col-sm-12 text-center row service-org no-print"
+  class="text-center service-org no-print"
 >
   <img
     [ngClass]="{ 'full-page-img': fullPage, 'sidebar-img': !fullPage }"
@@ -37,7 +37,7 @@
         </ul>
       </div>
     </div>
-    <div class="col-sm-12">
+    <div>
       <a class="btn btn-primary" (click)="callOrganizations($event)" href="#">
         See more organizations
       </a>
