@@ -8,7 +8,7 @@ export const environment = {
   internalResourceRecordsToDisplay: 10,
   webResourcePagesToShow: 10,
   webResourceRecordsToDisplay: 10,
-  blobUrl: "https://cs4892808efec24x447cx944.blob.core.windows.net",
+  blobUrl: "https://legalnavprodstor.blob.core.windows.net",
   virtualEarthUrl: "https://dev.virtualearth.net/REST/v1/Locations/",
   All: "All",
   clientID: "14c21c74-5579-43c3-9c55-cf5cf265d518",
