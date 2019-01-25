@@ -1,3 +1,7 @@
+label:focus {
+  border: 1.5px solid #80bdff;
+}
+
 .question {
   margin-top: 40px;
 }

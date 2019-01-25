@@ -1,7 +1,7 @@
 .service-org {
   background-color: #f4f4f4;
   padding: 20px 5%;
-  margin-top: 40px;
+  margin: 40px -15px 0 -15px;
 }
 
 .sidebar-wrapper {
@@ -45,7 +45,7 @@ a.btn-primary:hover {
 @media only screen and (min-width: 768px) {
   .service-org {
     padding: 20px 0;
-    margin-top: 0;
+    margin: 40px -40px 0 -40px;
   }
 
   .sidebar-page {
@@ -77,6 +77,7 @@ a.btn-primary:hover {
 @media only screen and (min-width: 992px) {
   .service-org {
     padding: 20px;
+    margin: 0;
   }
 
   .sidebar-page {

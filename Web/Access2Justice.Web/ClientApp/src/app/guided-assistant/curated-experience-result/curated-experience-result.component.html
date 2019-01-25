@@ -50,7 +50,9 @@
         <form>
           <div class="button-container">
             <ul>
-              <li *ngFor="let intent of relevantIntents">
+              <li
+                *ngFor="let intent of relevantIntents"
+              >
                 <input
                   type="checkbox"
                   [id]="intent"
@@ -59,7 +61,12 @@
                   ngModel
                   (change)="onSelectTopic($event, intent)"
                 />
-                <label [for]="intent" class="p text-capitalize">
+                <label
+                  [for]="intent"
+                  class="p text-capitalize"
+                  tabindex="0"
+                  (keyup.enter)="$event.target.click()"
+                >
                   {{intent}}
                 </label>
                 <div class="check"></div>

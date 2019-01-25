@@ -5,7 +5,7 @@
   (click)="changeLocation(template)"
 >
   <img
-    *ngIf="locationNavContent.image.source"
+    *ngIf="locationNavContent.image.source && displayInitialModal"
     class="nav-icon"
     [src]="blobUrl + locationNavContent?.image?.source"
     aria-hidden="true"
@@ -14,9 +14,9 @@
     {{ locationNavContent?.text }}
   </span>
   <ng-template #elseBlock>
-    <span *ngIf="!showLocality"> {{ locality }}(</span
-    ><span id="user-location">{{ address }}</span
-    ><span *ngIf="!showLocality">)</span>
+    <span *ngIf="!showLocality"> {{ locality }} (</span>
+    <span id="user-location">{{ address }}</span>
+    <span *ngIf="!showLocality">)</span>
   </ng-template>
   <button
     #changeLocationButton

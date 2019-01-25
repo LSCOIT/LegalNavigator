@@ -103,8 +103,8 @@ ul > li > span {
   border-radius: 25px;
   margin-top: 15px;
   margin-bottom: 10px;
-  min-width: 250px;
   position: relative;
+  min-width: 200px;
 }
 
 .label-display {
@@ -112,6 +112,10 @@ ul > li > span {
   top: -35px;
   left: 0;
   right: 0;
+}
+
+.sponsor-img {
+  margin-bottom: 15px;
 }
 
 @media only screen and (min-width: 768px) {
@@ -205,6 +209,7 @@ ul > li > span {
 
   .sponsor-img {
     padding: 0 30px;
+    margin-bottom: 0;
   }
 }
 
@@ -220,7 +225,8 @@ ul > li > span {
 
   .label-display {
     position: static;
-    padding: 15px 0 15px 15px;
+    padding: 15px 5px 15px 40px;
+    margin-right: -8px;
   }
 
   .slide-content .mobile-hidden {
@@ -248,7 +254,7 @@ ul > li > span {
     padding-top: 5%;
   }
 
-  .outer-bg {
+  #guided-assistant-overview {
     margin-top: -100px;
   }
 }
@@ -258,7 +264,7 @@ ul > li > span {
     margin-top: 10%;
   }
 
-  .outer-bg {
+  #guided-assistant-overview {
     margin-top: -110px;
   }
 
