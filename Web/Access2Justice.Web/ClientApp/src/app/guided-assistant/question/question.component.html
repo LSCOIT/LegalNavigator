@@ -31,7 +31,14 @@
                 name="multiSelectOptions"
                 ngModel
               />
-              <label class="p" for="{{ field.id }}">{{ field.label }}</label>
+              <label
+                class="p"
+                for="{{ field.id }}"
+                tabindex="0"
+                (keyup.enter)="listenToEnter($event)"
+              >
+              {{ field.label }}
+              </label>
               <div class="check"></div>
             </li>
           </ul>
@@ -126,11 +133,14 @@
                 ngModel
               />
               <label
+                tabindex="0"
+                (keyup.enter)="listenToEnter($event)"
                 class="p"
                 *ngIf="button.label !== 'Continue'"
                 for="{{ button.id }}"
-                >{{ button.label }}</label
               >
+              {{ button.label }}
+              </label>
             </li>
           </ul>
         </div>
