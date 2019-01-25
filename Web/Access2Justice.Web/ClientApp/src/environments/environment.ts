@@ -5,8 +5,7 @@
 export const environment = {
   production: false,
   apiUrl: "http://localhost:4200/api",
-  bingmap_key:
-    "AlyLqEyg06sSOQJUwYsqcsm69zWmVKYgmaGvqdBPISKCJ59IQqqfCCaQ42KgqTyG",
+  bingmap_key: "AkaN9T4QD5xmxp3PbDCeEmnIi-BDrMd7Hi4Lp8P_orTTQ2L_s1QKSumVBlefNKrk",
   map_type: false,
   internalResourcePagesToShow: 2,
   internalResourceRecordsToDisplay: 10,

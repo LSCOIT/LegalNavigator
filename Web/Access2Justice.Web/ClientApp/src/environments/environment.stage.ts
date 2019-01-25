@@ -1,8 +1,7 @@
 export const environment = {
   production: true,
   apiUrl: "https://api-stage.legalnav.org/api",
-  bingmap_key:
-    "AlyLqEyg06sSOQJUwYsqcsm69zWmVKYgmaGvqdBPISKCJ59IQqqfCCaQ42KgqTyG",
+  bingmap_key: "AoJiv5Zm4MxwY45PlkVGv893kDc404xvIjxKmE5JP1T0Ma7JlSjCQ-9Wi4cpkLTV",
   map_type: false,
   internalResourcePagesToShow: 2,
   internalResourceRecordsToDisplay: 10,
