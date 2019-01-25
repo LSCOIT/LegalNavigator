@@ -91,10 +91,6 @@ export class CuratedExperienceResultComponent implements OnInit {
     this.router.navigateByUrl("/guidedassistant");
   }
 
-  listenToEnter(e) {
-    e.target.click();
-  }
-
   ngOnInit() {
     this.locationSubscription = this.location.subscribe(x => {
       if (x.type === "popstate") {

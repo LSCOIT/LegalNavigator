@@ -117,10 +117,6 @@ export class QuestionComponent implements OnInit {
     });
   }
 
-  listenToEnter(e) {
-    e.target.click();
-  }
-
   ngOnInit() {
     this.validationError = false;
     this.getQuestion();

@@ -35,7 +35,7 @@
                 class="p"
                 for="{{ field.id }}"
                 tabindex="0"
-                (keyup.enter)="listenToEnter($event)"
+                (keyup.enter)="$event.target.click()"
               >
               {{ field.label }}
               </label>
@@ -134,7 +134,7 @@
               />
               <label
                 tabindex="0"
-                (keyup.enter)="listenToEnter($event)"
+                (keyup.enter)="$event.target.click()"
                 class="p"
                 *ngIf="button.label !== 'Continue'"
                 for="{{ button.id }}"

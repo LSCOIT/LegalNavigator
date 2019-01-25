@@ -65,7 +65,7 @@
                   [for]="intent"
                   class="p text-capitalize"
                   tabindex="0"
-                  (keyup.enter)="listenToEnter($event)"
+                  (keyup.enter)="$event.target.click()"
                 >
                   {{intent}}
                 </label>

@@ -45,10 +45,6 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  toggleDropdown(e) {
-    e.target.click();
-  }
-
   externalLogin(event) {
     event.preventDefault();
     this.global.isLoginRedirect = true;

@@ -271,6 +271,12 @@ textarea {
   margin: 0;
 }
 
+#remove {
+  background-color: transparent;
+  font-weight: 600;
+  padding: 0;
+}
+
 @media only screen and (min-width: 540px) {
   .modal-dialog {
     height: auto;

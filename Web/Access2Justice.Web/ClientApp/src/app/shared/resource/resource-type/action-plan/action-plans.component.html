@@ -27,7 +27,9 @@
               aria-controls="dropdown-basic"
               src="./assets/images/small-icons/more_menu.svg"
               alt="plan menu"
+              (keyup.enter)="$event.target.click()"
               (click)="planTagOptions(topic.name)"
+              tabindex="0"
             />
             <ul
               id="dropdown-basic"
@@ -55,6 +57,8 @@
                 <div class="col-sm-9 col-xs-12">
                   <div class="media">
                     <div
+                      tabindex="0"
+                      (keyup.enter)="$event.target.click()"
                       class="media-left accordion-img"
                       [ngClass]="{
                         'accordion-img-grey': step.isComplete,
@@ -87,7 +91,10 @@
                   class="col-sm-3 col-xs-12 btn-selected"
                   id="complete-btn"
                 >
-                  <label class="ps no-print">
+                  <label
+                    (keyup.enter)="$event.target.click()"
+                    class="ps no-print"
+                  >
                     <input
                       id="checkBox"
                       class="no-print"

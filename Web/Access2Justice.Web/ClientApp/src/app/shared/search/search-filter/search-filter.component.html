@@ -28,11 +28,17 @@
         role="menu"
         aria-labelledby="button-basic"
       >
-        <li *ngFor="let resource of resourceResults" role="menuitem">
+        <li
+          *ngFor="let resource of resourceResults"
+          role="menuitem"
+        >
           <a
+            tabindex="0"
             class="dropdown-item"
+            (keyup.enter)="sendFilterCriteria($event, resource.ResourceName)"
             (click)="sendFilterCriteria($event, resource.ResourceName)"
-            >{{ resource.ResourceName }}({{ resource.ResourceCount }})
+          >
+            {{ resource.ResourceName }}({{ resource.ResourceCount }})
           </a>
         </li>
       </ul>
@@ -47,7 +53,7 @@
         type="button"
         class="btn btn-selected dropdown-toggle dropdown-btn"
         aria-controls="button-basic"
-      >
+      >           
         {{ selectedSortCriteria }}
       </button>
       <ul
@@ -57,23 +63,53 @@
         role="menu"
         aria-labelledby="button-basic"
       >
-        <li *ngIf="selectedSortCriteria != 'A-Z'" role="menuitem">
-          <a class="dropdown-item" (click)="sendSortCriteria('name', 'ASC')">
+        <li
+          *ngIf="selectedSortCriteria != 'A-Z'"
+          role="menuitem"
+        >
+          <a
+            class="dropdown-item"
+            tabindex="0"
+            (keyup.enter)="sendSortCriteria('name', 'ASC')"
+            (click)="sendSortCriteria('name', 'ASC')"
+          >
             A-Z
           </a>
         </li>
-        <li *ngIf="selectedSortCriteria != 'Z-A'" role="menuitem">
-          <a class="dropdown-item" (click)="sendSortCriteria('name', 'DESC')">
+        <li
+          *ngIf="selectedSortCriteria != 'Z-A'"
+          role="menuitem"
+        >
+          <a
+            class="dropdown-item"
+            tabindex="0"
+            (keyup.enter)="sendSortCriteria('name', 'DESC')"
+            (click)="sendSortCriteria('name', 'DESC')"
+          >
             Z-A
           </a>
         </li>
-        <li *ngIf="selectedSortCriteria != 'Newest to Oldest'" role="menuitem">
-          <a class="dropdown-item" (click)="sendSortCriteria('date', 'DESC')">
+        <li
+          *ngIf="selectedSortCriteria != 'Newest to Oldest'"
+          role="menuitem"
+        >
+          <a
+            class="dropdown-item"
+            tabindex="0"
+            (keyup.enter)="sendSortCriteria('date', 'DESC')"
+            (click)="sendSortCriteria('date', 'DESC')">
             Newest to Oldest
           </a>
         </li>
-        <li *ngIf="selectedSortCriteria != 'Oldest to Newest'" role="menuitem">
-          <a class="dropdown-item" (click)="sendSortCriteria('date', 'ASC')">
+        <li
+          *ngIf="selectedSortCriteria != 'Oldest to Newest'"
+          role="menuitem"
+        >
+          <a
+            class="dropdown-item"
+            tabindex="0"
+            (keyup.enter)="sendSortCriteria('date', 'ASC')"
+            (click)="sendSortCriteria('date', 'ASC')">
             Oldest to Newest
           </a>
         </li>
