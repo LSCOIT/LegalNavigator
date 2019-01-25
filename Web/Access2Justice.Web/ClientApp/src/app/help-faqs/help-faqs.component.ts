@@ -17,7 +17,6 @@ export class HelpFaqsComponent implements OnInit {
   blobUrl: string = environment.blobUrl;
   staticContent: any;
   staticContentSubcription: any;
-  @ViewChildren("contentAnswer") contentAnswer: QueryList<any>;
 
   constructor(
     private staticResourceService: StaticResourceService,
@@ -51,31 +50,6 @@ export class HelpFaqsComponent implements OnInit {
         this.filterHelpAndFaqContent(this.helpAndFaqsContent);
         this.staticResourceService.helpAndFaqsContent = this.helpAndFaqsContent;
       }
-    }
-  }
-
-  listenToExpandOnEnter(e) {
-    let indexOfAccordion = e.target.id.substr(-1);
-    let currentAnswer = this.contentAnswer
-      .toArray()
-      .find(
-        element => element.nativeElement.id.substr(-1) === indexOfAccordion
-      );
-    if (
-      currentAnswer.nativeElement.parentElement.parentElement.style.display ===
-      "none"
-    ) {
-      currentAnswer.nativeElement.parentElement.parentElement.style.display =
-        "block";
-      document
-        .getElementsByTagName("accordion-group")
-        [indexOfAccordion].classList.add("panel-open");
-    } else {
-      currentAnswer.nativeElement.parentElement.parentElement.style.display =
-        "none";
-      document
-        .getElementsByTagName("accordion-group")
-        [indexOfAccordion].classList.remove("panel-open");
     }
   }
 

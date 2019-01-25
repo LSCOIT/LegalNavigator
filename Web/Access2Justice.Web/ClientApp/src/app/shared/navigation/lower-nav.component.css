@@ -13,9 +13,13 @@ li > a:hover {
   background: #fff;
   border: none;
   box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1);
-  min-height: 80px;
+  min-height: 78px;
   margin-bottom: 4px;
   padding-top: 29px;
+}
+
+ul.mobile-hidden {
+  margin: 0;
 }
 
 #logo {
@@ -27,8 +31,16 @@ li > a:hover {
   background-position: -10px 0px;
 }
 
-.active {
-  border-bottom: 3px solid #0d3fb8;
+.active::after {
+  content: "";
+  border-top: 2px solid #0d3fb8;
+  border-bottom: 2px solid #0d3fb8;
+  height: 4px;
+  width: 100%;
+  display: block;
+  border-radius: 5px;
+  position: relative;
+  top: 20px;
 }
 
 .right-menu {
@@ -235,7 +247,6 @@ li.vertical-line {
   }
 
   .left-menu li a {
-    padding: 26px 2px;
     font-size: 14px;
   }
 

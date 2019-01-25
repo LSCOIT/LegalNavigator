@@ -19,15 +19,11 @@
       <accordion *ngFor="let content of faqData; let i = index">
         <accordion-group>
           <div accordion-heading>
-            <div
-              class="media"
-              id="step-question{{ i }}"
-              tabindex="0"
-              (keyup.enter)="listenToExpandOnEnter($event)"
-            >
+            <div class="media">
               <div
                 class="media-left accordion-img"
-                id="accordion-img{{ i }}"
+                tabindex="0"
+               (keyup.enter)="$event.target.click()"
               ></div>
               <div class="media-body">
                 <h5>{{ content.question }}</h5>
@@ -36,9 +32,7 @@
           </div>
           <div
             [innerHTML]="content.answer"
-            #contentAnswer
             class="step-content"
-            id="step-content{{ i }}"
           ></div>
         </accordion-group>
       </accordion>
