@@ -321,9 +321,22 @@ span.carousel-control .glyphicon-chevron-left,
   background-color: #0d3fbb;
 }
 
+/*Profile Page*/
+.nav .nav-item:first-child {
+  padding-left: 15px;
+}
+
+.nav-link {
+  padding: 10px 15px;
+}
+
 @media only screen and (min-width: 540px) {
   .row {
     display: table;
+  }
+
+  .nav-link {
+    padding: 10px 40px;
   }
 }
 
@@ -416,6 +429,10 @@ span.carousel-control .glyphicon-chevron-left,
   #admin .tab-content {
     margin-top: -86px;
   }
+
+  .nav .nav-item:first-child {
+    margin-left: 2.5%;
+  }
 }
 
 @media only screen and (min-width: 992px) {
@@ -507,5 +524,9 @@ span.carousel-control .glyphicon-chevron-left,
 
   .carousel-indicators {
     bottom: -55px;
+  }
+
+  .nav .nav-item:first-child {
+    margin-left: 7.5%;
   }
 }

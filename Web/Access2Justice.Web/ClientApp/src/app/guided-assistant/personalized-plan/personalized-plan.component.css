@@ -2,7 +2,7 @@ li a {
   color: #333;
   font-weight: 600;
   border-bottom: 1px solid #ddd;
-  font-size: 14px;
+  font-size: 11px;
   padding: 10px;
   display: block;
   width: 143px;
@@ -68,7 +68,7 @@ li a.selected-item {
   margin-right: 0;
   text-align: left;
   width: 145px;
-  font-size: 14px;
+  font-size: 11px;
   background-position: 90% 50%;
 }
 

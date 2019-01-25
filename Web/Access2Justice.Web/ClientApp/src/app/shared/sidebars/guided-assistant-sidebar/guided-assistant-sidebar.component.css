@@ -8,24 +8,36 @@ a.btn-primary:hover {
   color: #fff;
 }
 
+.mobile-border {
+  height: 1px;
+  margin: 40px -15px 0 -15px;
+  background-color: #ddd;
+}
+
 .sidebar-block {
   width: 100%;
   margin-top: 30px;
-  border-top: 1px solid #ddd;
-  padding: 50px 20px 0 20px;
+  padding: 50px 10px 0 30px;
+  margin: 0 -15px 40px -15px;
 }
 
 @media only screen and (min-width: 768px) {
+  .mobile-border {
+    height: 1px;
+    margin: 40px -40px 0 -40px;
+  }
+
   .sidebar-block {
-    border: 1px solid #ddd;
-    margin-bottom: 40px;
-    padding: 20px;
+    margin: 40px -40px 40px -40px;
+    padding: 20px 0 20px 90px;
   }
 }
 
 @media only screen and (min-width: 992px) {
   .sidebar-block {
-    margin-top: 0;
+    margin: 0 0 40px 0;
+    border: 1px solid #ddd;
+    padding: 20px;
   }
 
   .btn-primary {
