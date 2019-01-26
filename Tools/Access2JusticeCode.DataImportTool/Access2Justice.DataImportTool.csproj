@@ -276,6 +276,8 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="App.Prod.config" />
+    <None Include="App.Stage.config" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -298,6 +300,7 @@
   <ItemGroup>
     <None Include="App.config">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
