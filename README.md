@@ -1,4 +1,3 @@
-[![CI Build Status](https://dev.azure.com/asaperski/A2J/_apis/build/status/A2J-CI?branchName=develop)](https://dev.azure.com/asaperski/A2J/_build/latest?definitionId=3?branchName=develop)
 
 # Contributing
 
