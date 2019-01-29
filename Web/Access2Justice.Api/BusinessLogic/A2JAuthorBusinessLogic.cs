@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Access2Justice.Api.BusinessLogic
 {
@@ -23,19 +24,19 @@ namespace Access2Justice.Api.BusinessLogic
             personalizedPlanEngine = a2JAuthorParserBusinessLogic;
         }
 
-        public CuratedExperience ConvertA2JAuthorToCuratedExperience(JObject a2jSchema, bool isFromAdminImport = false)
+        public async Task<CuratedExperience> ConvertA2JAuthorToCuratedExperienceAsync(JObject a2jSchema, bool isFromAdminImport = false)
         {
             var curatedExperience = new CuratedExperience();
             var a2jProperties = a2jSchema.Properties();
             GuidedAssistant resource = null;
 
             curatedExperience.CuratedExperienceId = Guid.NewGuid();
-            curatedExperience.Title = a2jProperties.GetValue("title");    
+            curatedExperience.Title = a2jProperties.GetValue("title");
 
             if (!isFromAdminImport)
             { 
                 resource = MapResourceProperties(a2jProperties, curatedExperience.CuratedExperienceId);
-                dbService.CreateItemAsync(resource, dbSettings.ResourcesCollectionId);
+                await dbService.CreateItemAsync(resource, dbSettings.ResourcesCollectionId);
             }
 
             var pages = ((JObject)a2jProperties.Where(x => x.Name == "pages").FirstOrDefault()?.Value).Properties();
@@ -67,7 +68,7 @@ namespace Access2Justice.Api.BusinessLogic
             curatedExperience.Components.RemoveAt(firstQuestionIndex);
             curatedExperience.Components.Insert(0, firstQuestion);
 
-            dbService.CreateItemAsync(curatedExperience, dbSettings.CuratedExperiencesCollectionId);
+            await dbService.CreateItemAsync(curatedExperience, dbSettings.CuratedExperiencesCollectionId);
             return curatedExperience;
         }
 

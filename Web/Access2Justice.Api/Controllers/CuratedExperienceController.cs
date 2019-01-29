@@ -38,12 +38,12 @@ namespace Access2Justice.Api.Controllers
         /// <response code="200">Returns converted JSON </response>
         /// <response code="500">Failure</response>
         [HttpPost("import")]
-        public IActionResult ImportA2JAuthorGuidedInterview([FromBody] JObject a2jSchema)
+        public async Task<IActionResult> ImportA2JAuthorGuidedInterview([FromBody] JObject a2jSchema)
         {
             try
             {
                 JObject.Parse(a2jSchema.ToString());
-                return Json(a2jAuthorBuisnessLogic.ConvertA2JAuthorToCuratedExperience(a2jSchema));
+                return Json(await a2jAuthorBuisnessLogic.ConvertA2JAuthorToCuratedExperienceAsync(a2jSchema));
             }
             catch
             {

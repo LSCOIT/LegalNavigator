@@ -125,7 +125,7 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<Document> ImportCuratedTemplate(JObject guideTemplate, Guid newTemplateId)
         {
-            var curatedExprienceJson = a2jAuthorBuisnessLogic.ConvertA2JAuthorToCuratedExperience(guideTemplate, true);
+            var curatedExprienceJson = await a2jAuthorBuisnessLogic.ConvertA2JAuthorToCuratedExperienceAsync(guideTemplate, true);
 
             curatedExprienceJson.A2jPersonalizedPlanId = newTemplateId;
 

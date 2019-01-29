@@ -33,7 +33,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             // Arrange
             var a2j = A2JAuthorTestData.A2JAuthorSampleSchema;
             var a2jJson = (JObject)JsonConvert.DeserializeObject(a2j);
-            var curatedExperienceJson = a2jAuthor.ConvertA2JAuthorToCuratedExperience(a2jJson);
+            var curatedExperienceJson = a2jAuthor.ConvertA2JAuthorToCuratedExperienceAsync(a2jJson).Result;
 
             var expectedComponantText = "Enter your name.";
             var expectedButtonLabel = "Continue";
