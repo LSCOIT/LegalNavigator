@@ -23,14 +23,15 @@ namespace Access2Justice.Api.BusinessLogic
             personalizedPlanEngine = a2JAuthorParserBusinessLogic;
         }
 
-        public CuratedExperience ConvertA2JAuthorToCuratedExperience(JObject a2jSchema, bool isFromAdminImport = false)
+        public CuratedExperience ConvertA2JAuthorToCuratedExperience(JObject a2jSchema, bool isFromAdminImport = false, Guid a2jPersonalizedPlanId = default(Guid))
         {
             var curatedExperience = new CuratedExperience();
             var a2jProperties = a2jSchema.Properties();
             GuidedAssistant resource = null;
 
             curatedExperience.CuratedExperienceId = Guid.NewGuid();
-            curatedExperience.Title = a2jProperties.GetValue("title");    
+            curatedExperience.A2jPersonalizedPlanId = a2jPersonalizedPlanId;
+            curatedExperience.Title = a2jProperties.GetValue("title");            
 
             if (!isFromAdminImport)
             { 

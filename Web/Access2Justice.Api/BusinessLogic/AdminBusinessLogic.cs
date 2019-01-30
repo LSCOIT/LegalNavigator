@@ -67,10 +67,10 @@ namespace Access2Justice.Api.BusinessLogic
                     var response = await ImportA2JTemplate(mainTemplate, newTemplateId);
                     if (response != null && response.Id != null)
                     {
-                        var curatedDocumentResponse = await ImportCuratedTemplate(guideTemplate, newTemplateId);
-                        if (curatedDocumentResponse != null && curatedDocumentResponse.Id != null)
+                        var curatedDocumentResponse = ImportCuratedTemplate(guideTemplate, newTemplateId);
+                        if (curatedDocumentResponse != null && curatedDocumentResponse.CuratedExperienceId != null)
                         {
-                            return await CreateGuidedAssistantResource(resourceTitle, curatedTemplate, curatedDocumentResponse.Id);
+                            return await CreateGuidedAssistantResource(resourceTitle, curatedTemplate, curatedDocumentResponse.CuratedExperienceId.ToString());
                         }
                     }
                 }
@@ -123,14 +123,9 @@ namespace Access2Justice.Api.BusinessLogic
                 cosmosDbSettings.A2JAuthorDocsCollectionId);
         }
 
-        public async Task<Document> ImportCuratedTemplate(JObject guideTemplate, Guid newTemplateId)
+        public CuratedExperience ImportCuratedTemplate(JObject guideTemplate, Guid newTemplateId)
         {
-            var curatedExprienceJson = a2jAuthorBuisnessLogic.ConvertA2JAuthorToCuratedExperience(guideTemplate, true);
-
-            curatedExprienceJson.A2jPersonalizedPlanId = newTemplateId;
-
-            return await backendDatabaseService.UpdateItemAsync(curatedExprienceJson.CuratedExperienceId.ToString(),
-                JObject.FromObject(curatedExprienceJson), cosmosDbSettings.CuratedExperiencesCollectionId);
+            return a2jAuthorBuisnessLogic.ConvertA2JAuthorToCuratedExperience(guideTemplate, true, newTemplateId);
         }
 
         public async Task<object> CreateGuidedAssistantResource(string resourceTitle, CuratedTemplate curatedTemplate, string curatedExperienceId)
