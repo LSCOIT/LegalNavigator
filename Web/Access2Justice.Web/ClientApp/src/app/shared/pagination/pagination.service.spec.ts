@@ -1,4 +1,5 @@
-import { Observable } from "rxjs/Rx";
+import { Observable } from "rxjs";
+
 import { IResourceFilter } from "../search/search-results/search-results.model";
 import { PaginationService } from "./pagination.service";
 

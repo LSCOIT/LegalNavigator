@@ -1,4 +1,5 @@
-import { Observable } from "rxjs/Rx";
+import { Observable } from "rxjs";
+
 import { MapResultsService } from "./map-results.service";
 
 describe("MapResults Service", () => {

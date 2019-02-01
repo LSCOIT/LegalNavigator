@@ -1,8 +1,9 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs/Observable";
+import { Observable } from "rxjs";
+
 import { api } from "../../../../../api/api";
-import { Share, ShareView } from "../share-button/share.model";
+import { Share, ShareView } from "./share.model";
 
 @Injectable()
 export class ShareService {

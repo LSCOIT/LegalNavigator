@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, NgForm } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from "ngx-toastr";
+
 import { environment } from "../../../environments/environment";
 import { PersonalizedPlan } from "../../guided-assistant/personalized-plan/personalized-plan";
 import { MapLocation } from "../../shared/map/map";
@@ -16,7 +17,7 @@ import { AdminService } from "../admin.service";
   styleUrls: ["../admin-styles.css"]
 })
 export class PersonalizedPlanTemplateComponent implements OnInit {
-  name: string = "PersonalizedActionPlanPage";
+  name = "PersonalizedActionPlanPage";
   personalizedPlanContent: PersonalizedPlan;
   staticContent: any;
   staticContentSubcription: any;
@@ -57,7 +58,8 @@ export class PersonalizedPlanTemplateComponent implements OnInit {
         this.form.get(image + index).setValue({
           filename: file.name,
           filetype: file.type,
-          value: reader.result.split(",")[1]
+          // cast based on readAsDataURL call
+          value: (reader.result as string).split(",")[1]
         });
       };
     }

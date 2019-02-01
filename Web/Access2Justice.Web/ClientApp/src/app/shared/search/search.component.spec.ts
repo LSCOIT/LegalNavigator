@@ -8,10 +8,11 @@ import { Router, RouterModule } from "@angular/router";
 import { MsalService } from "@azure/msal-angular";
 import { BsDropdownModule } from "ngx-bootstrap";
 import { NgxSpinnerService } from "ngx-spinner";
-import { of } from "rxjs/observable/of";
-import { PrintButtonComponent } from "../../shared/resource/user-action/print-button/print-button.component";
-import { SaveButtonComponent } from "../../shared/resource/user-action/save-button/save-button.component";
-import { ShareButtonComponent } from "../../shared/resource/user-action/share-button/share-button.component";
+import { of } from "rxjs";
+
+import { PrintButtonComponent } from "../resource/user-action/print-button/print-button.component";
+import { SaveButtonComponent } from "../resource/user-action/save-button/save-button.component";
+import { ShareButtonComponent } from "../resource/user-action/share-button/share-button.component";
 import { PipeModule } from "../pipe/pipe.module";
 import { ResourceCardComponent } from "../resource/resource-card/resource-card.component";
 import { NavigateDataService } from "../services/navigate-data.service";

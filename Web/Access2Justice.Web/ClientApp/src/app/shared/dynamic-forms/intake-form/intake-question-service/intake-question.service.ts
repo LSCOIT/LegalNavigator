@@ -1,8 +1,9 @@
 import { Injectable } from "@angular/core";
-import { IntakeFormQuestionBase } from "../intake-form-question-base";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Observable } from "rxjs/Observable";
+import { Observable } from "rxjs";
+
 import { api } from "../../../../../api/api";
+import { IntakeFormQuestionBase } from "../intake-form-question-base";
 
 @Injectable()
 export class IntakeQuestionService {

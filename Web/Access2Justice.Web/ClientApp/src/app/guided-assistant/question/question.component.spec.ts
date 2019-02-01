@@ -3,7 +3,8 @@ import { NO_ERRORS_SCHEMA } from "@angular/core";
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import { FormsModule, NgForm } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
-import { of } from "rxjs/observable/of";
+import { of } from "rxjs";
+
 import { NavigateDataService } from "../../shared/services/navigate-data.service";
 import { QuestionComponent } from "./question.component";
 import { QuestionService } from "./question.service";

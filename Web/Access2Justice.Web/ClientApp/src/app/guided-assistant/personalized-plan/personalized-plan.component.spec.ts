@@ -4,7 +4,8 @@ import { NO_ERRORS_SCHEMA } from "@angular/core";
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import { RouterModule } from "@angular/router";
 import { ToastrModule, ToastrService } from "ngx-toastr";
-import { of } from "rxjs/observable/of";
+import { of } from "rxjs";
+
 import { Global } from "../../global";
 import { ArrayUtilityService } from "../../shared/services/array-utility.service";
 import { NavigateDataService } from "../../shared/services/navigate-data.service";

@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
-import { HttpModule } from "@angular/http";
 import { DownloadButtonComponent } from "./download-button.component";
 
 describe("DownloadButtonComponent", () => {
@@ -11,8 +10,7 @@ describe("DownloadButtonComponent", () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [DownloadButtonComponent],
-      imports: [HttpModule]
+      declarations: [DownloadButtonComponent]
     }).compileComponents();
   }));
 

@@ -3,7 +3,8 @@ import { FormsModule, NgForm } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from "ngx-toastr";
-import { of } from "rxjs/observable/of";
+import { of } from "rxjs";
+
 import { Global } from "../../global";
 import { NavigateDataService } from "../../shared/services/navigate-data.service";
 import { StaticResourceService } from "../../shared/services/static-resource.service";

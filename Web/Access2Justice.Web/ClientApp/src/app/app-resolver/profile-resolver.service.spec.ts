@@ -2,7 +2,8 @@ import { HttpClientModule } from "@angular/common/http";
 import { fakeAsync, inject, TestBed, tick } from "@angular/core/testing";
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from "@angular/router";
 import { RouterTestingModule } from "@angular/router/testing";
-import { of } from "rxjs/observable/of";
+import { of } from "rxjs";
+
 import { LoginService } from "../shared/login/login.service";
 import { ProfileResolver } from "./profile-resolver.service";
 

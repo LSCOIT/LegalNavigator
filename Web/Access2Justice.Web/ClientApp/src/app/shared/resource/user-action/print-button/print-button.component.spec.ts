@@ -1,7 +1,8 @@
 import { APP_BASE_HREF } from "@angular/common";
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import { ActivatedRoute } from "@angular/router";
-import { of } from "rxjs/observable/of";
+import { of } from "rxjs";
+
 import { PrintButtonComponent } from "./print-button.component";
 
 describe("PrintButtonComponent", () => {

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, NgForm } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from "ngx-toastr";
+
 import { environment } from "../../../environments/environment";
 import { MapLocation } from "../../shared/map/map";
 import { NavigateDataService } from "../../shared/services/navigate-data.service";
@@ -17,7 +18,7 @@ import { AdminService } from "../admin.service";
 export class HomeTemplateComponent implements OnInit {
   homeContent: any;
   staticContent: any;
-  name: string = "HomePage";
+  name = "HomePage";
   location: MapLocation = {
     state: this.activeRoute.snapshot.queryParams["state"]
   };
@@ -98,15 +99,16 @@ export class HomeTemplateComponent implements OnInit {
 
   encode(image, index) {
     index = index || "";
-    let reader = new FileReader();
+    const reader = new FileReader();
     if (event.target["files"] && event.target["files"].length > 0) {
-      let file = event.target["files"][0];
+      const file = event.target["files"][0];
       reader.readAsDataURL(file);
       reader.onload = () => {
         this.form.get(image + index).setValue({
           filename: file.name,
           filetype: file.type,
-          value: reader.result.split(",")[1]
+          // cast based on readAsDataURL call
+          value: (reader.result as string).split(",")[1]
         });
       };
     }

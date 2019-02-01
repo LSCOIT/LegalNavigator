@@ -1,6 +1,8 @@
+import {map} from 'rxjs/operators';
 import { Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
+
 import { environment } from "../../../../environments/environment";
 import { Global } from "../../../global";
 import { PersonalizedPlanService } from "../../../guided-assistant/personalized-plan/personalized-plan.service";
@@ -96,9 +98,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     private router: Router
   ) {
     if (sessionStorage.getItem("bookmarkedResource")) {
-      this.route.data
-        .map(data => data.cres)
-        .subscribe(response => {
+      this.route.data.pipe(map(data => data.cres)).subscribe(response => {
           if (response) {
             this.global.setProfileData(
               response.oId,
@@ -108,7 +108,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
             );
             this.personalizedPlanService.saveResourcesToUserProfile();
           }
-        });
+      });
     }
   }
 

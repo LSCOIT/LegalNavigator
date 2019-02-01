@@ -5,8 +5,8 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { MsalService } from "@azure/msal-angular";
 import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrModule } from "ngx-toastr";
-import { Observable } from "rxjs";
-import { of } from "rxjs/observable/of";
+import { Observable, of, empty } from "rxjs";
+
 import { Global } from "../global";
 import { PersonalizedPlanService } from "../guided-assistant/personalized-plan/personalized-plan.service";
 import { IResourceFilter } from "../shared/search/search-results/search-results.model";
@@ -328,7 +328,7 @@ describe("ProfileComponent", () => {
   let mockFilterTopicName = "Divorce";
 
   class ActivateRouteStub {
-    params: Observable<any> = Observable.empty();
+    params: Observable<any> = empty();
   }
   beforeEach(async(() => {
     mockGlobal = jasmine.createSpyObj(["externalLogin"]);

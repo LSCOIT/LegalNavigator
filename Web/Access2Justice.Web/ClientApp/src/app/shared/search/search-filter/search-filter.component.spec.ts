@@ -1,7 +1,8 @@
 import { NO_ERRORS_SCHEMA, QueryList } from "@angular/core";
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import { ActivatedRoute } from "@angular/router";
-import { Observable } from "rxjs/Observable";
+import { Observable } from "rxjs";
+
 import { Global } from "../../../global";
 import { SearchFilterComponent } from "./search-filter.component";
 

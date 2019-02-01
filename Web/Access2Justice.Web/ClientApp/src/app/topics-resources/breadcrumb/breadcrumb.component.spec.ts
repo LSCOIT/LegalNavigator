@@ -1,5 +1,6 @@
-import { ActivatedRoute } from "@angular/router/src/router_state";
-import { Observable } from "rxjs/Rx";
+import { ActivatedRoute } from "@angular/router";
+import { Observable } from "rxjs";
+
 import { api } from "../../../api/api";
 import { BreadcrumbService } from "../shared/breadcrumb.service";
 import { BreadcrumbComponent } from "./breadcrumb.component";
@@ -8,7 +9,7 @@ describe("Breadcrumb Component", () => {
   let service: BreadcrumbService;
   let breadcrumbComponent: BreadcrumbComponent;
   const httpSpy = jasmine.createSpyObj("http", ["get"]);
-  let id: string = "19a02209-ca38-4b74-bd67-6ea941d41518";
+  const id = "19a02209-ca38-4b74-bd67-6ea941d41518";
   let activatedRoute: ActivatedRoute;
 
   beforeEach(() => {
