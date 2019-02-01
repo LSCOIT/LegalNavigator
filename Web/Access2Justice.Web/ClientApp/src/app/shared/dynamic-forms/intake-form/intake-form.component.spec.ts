@@ -5,7 +5,8 @@ import { ModalModule } from "ngx-bootstrap";
 import { BsModalService } from "ngx-bootstrap/modal";
 import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from "ngx-toastr";
-import { of } from "rxjs/observable/of";
+import { of } from "rxjs";
+
 import { QuestionControlService } from "../question-control.service";
 import { IntakeFormComponent } from "./intake-form.component";
 import { IntakeQuestionService } from "./intake-question-service/intake-question.service";

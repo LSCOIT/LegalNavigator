@@ -7,7 +7,8 @@ import { BroadcastService, MsalService } from "@azure/msal-angular";
 import { MSAL_CONFIG } from "@azure/msal-angular/dist/msal.service";
 import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from "ngx-toastr";
-import { of } from "rxjs/observable/of";
+import { of } from "rxjs";
+
 import { AboutComponent } from "./about/about.component";
 import { AppComponent } from "./app.component";
 import { Global } from "./global";
@@ -105,8 +106,8 @@ describe("AppComponent", () => {
         SubtopicsComponent
       ],
       imports: [
-        FormsModule, 
-        HttpClientModule, 
+        FormsModule,
+        HttpClientModule,
         PipeModule.forRoot()
       ],
       providers: [
@@ -159,7 +160,7 @@ describe("AppComponent", () => {
         }
       ],
       schemas: [
-        NO_ERRORS_SCHEMA, 
+        NO_ERRORS_SCHEMA,
         CUSTOM_ELEMENTS_SCHEMA
       ]
     }).compileComponents();

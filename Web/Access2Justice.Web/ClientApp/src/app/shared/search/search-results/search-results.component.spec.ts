@@ -8,9 +8,10 @@ import { BsDropdownModule } from "ngx-bootstrap";
 import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from "ngx-toastr";
 import { Observable } from "rxjs";
+
 import { Global } from "../../../global";
 import { PersonalizedPlanService } from "../../../guided-assistant/personalized-plan/personalized-plan.service";
-import { PaginationComponent } from "../../../shared/pagination/pagination.component";
+import { PaginationComponent } from "../../pagination/pagination.component";
 import { MapService } from "../../map/map.service";
 import { PaginationService } from "../../pagination/pagination.service";
 import { PipeModule } from "../../pipe/pipe.module";

@@ -5,8 +5,8 @@ import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import { ActivatedRoute, RouterModule } from "@angular/router";
 import { MsalService } from "@azure/msal-angular";
 import { BsDropdownModule } from "ngx-bootstrap";
-import { Observable } from "rxjs/Observable";
-import { of } from "rxjs/observable/of";
+import { Observable, of } from "rxjs";
+
 import { Global } from "../../global";
 import { MapService } from "../../shared/map/map.service";
 import { PaginationService } from "../../shared/pagination/pagination.service";

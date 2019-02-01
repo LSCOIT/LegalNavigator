@@ -1,5 +1,6 @@
 import { inject, TestBed } from "@angular/core/testing";
-import { of } from "rxjs/observable/of";
+import { of } from "rxjs";
+
 import { Global } from "../../../../global";
 import { PersonalizedPlanService } from "../../../../guided-assistant/personalized-plan/personalized-plan.service";
 import { ProfileComponent } from "../../../../profile/profile.component";

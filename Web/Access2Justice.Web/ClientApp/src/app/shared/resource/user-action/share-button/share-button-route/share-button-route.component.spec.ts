@@ -1,49 +1,43 @@
-import { HttpClientModule } from "@angular/common/http";
-import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from "@angular/core";
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
-import { FormsModule, NgForm } from "@angular/forms";
-import { BrowserModule } from "@angular/platform-browser";
-import { ActivatedRoute, Router } from "@angular/router";
-import { ModalModule } from "ngx-bootstrap";
-import { BsModalService } from "ngx-bootstrap/modal";
-import { ToastrService } from "ngx-toastr";
-import { of } from "rxjs/observable/of";
-import { Global } from "../../../../../global";
-import { ShareView } from "../share.model";
-import { ShareService } from "../share.service";
-import { ShareButtonRouteComponent } from "./share-button-route.component";
+import { HttpClientModule } from '@angular/common/http';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule, NgForm } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BsModalRef, ModalModule } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { ToastrService } from 'ngx-toastr';
+import { of } from 'rxjs';
 
-class MockBsModalRef {
-  public isHideCalled = true;
-  hide() {
-    this.isHideCalled = false;
-  }
-}
+import { Global } from '../../../../../global';
+import { ShareView } from '../share.model';
+import { ShareService } from '../share.service';
+import { ShareButtonRouteComponent } from './share-button-route.component';
 
-describe("ShareButtonRouteComponent", () => {
+describe('ShareButtonRouteComponent', () => {
   let component: ShareButtonRouteComponent;
   let fixture: ComponentFixture<ShareButtonRouteComponent>;
   let modalService: BsModalService;
   let mockRouter = {
-    navigate: jasmine.createSpy("navigate"),
-    navigateByUrl: jasmine.createSpy("navigateByUrl")
+    navigate: jasmine.createSpy('navigate'),
+    navigateByUrl: jasmine.createSpy('navigateByUrl')
   };
   let mockShareService;
   let mockToastr;
   let mockResponse = {
-    userId: "",
-    userName: "",
-    resourceLink: "/topics/9c9a59cc-34ac-4a6f-80c4-90ac041abba7"
+    userId: '',
+    userName: '',
+    resourceLink: '/topics/9c9a59cc-34ac-4a6f-80c4-90ac041abba7'
   };
-  let mockProfileData: ShareView = { 
-    UserId: "", 
-    UserName: "", 
-    IsShared: true 
+  let mockProfileData: ShareView = {
+    UserId: '',
+    UserName: '',
+    IsShared: true
   };
 
   beforeEach(async(() => {
-    mockShareService = jasmine.createSpyObj(["getResourceLink"]);
-    mockToastr = jasmine.createSpyObj(["success"]);
+    mockShareService = jasmine.createSpyObj(['getResourceLink']);
+    mockToastr = jasmine.createSpyObj(['success']);
     mockShareService.getResourceLink.and.returnValue(of(mockResponse));
 
     TestBed.configureTestingModule({
@@ -65,8 +59,8 @@ describe("ShareButtonRouteComponent", () => {
         {
           provide: Global,
           useValue: {
-            role: "",
-            shareRouteUrl: ""
+            role: '',
+            shareRouteUrl: ''
           }
         },
         {
@@ -74,7 +68,7 @@ describe("ShareButtonRouteComponent", () => {
           useValue: {
             snapshot: {
               params: {
-                id: "123"
+                id: '123'
               }
             }
           }
@@ -92,7 +86,7 @@ describe("ShareButtonRouteComponent", () => {
     }).compileComponents();
     fixture = TestBed.createComponent(ShareButtonRouteComponent);
     component = fixture.componentInstance;
-    spyOn(component, "getResourceLink");
+    spyOn(component, 'getResourceLink');
     fixture.detectChanges();
 
     let store = {};
@@ -111,8 +105,8 @@ describe("ShareButtonRouteComponent", () => {
       }
     };
 
-    spyOn(sessionStorage, "getItem").and.callFake(mockSessionStorage.getItem);
-    spyOn(sessionStorage, "setItem").and.callFake(mockSessionStorage.setItem);
+    spyOn(sessionStorage, 'getItem').and.callFake(mockSessionStorage.getItem);
+    spyOn(sessionStorage, 'setItem').and.callFake(mockSessionStorage.setItem);
   }));
   beforeEach(() => {
     fixture = TestBed.createComponent(ShareButtonRouteComponent);
@@ -120,26 +114,26 @@ describe("ShareButtonRouteComponent", () => {
     fixture.detectChanges();
   });
 
-  it("should create share button route component", () => {
+  it('should create share button route component', () => {
     expect(component).toBeTruthy();
   });
 
-  it("should call  getResourceLink method when ngOninit loads first time", () => {
-    spyOn(component, "getResourceLink");
+  it('should call  getResourceLink method when ngOninit loads first time', () => {
+    spyOn(component, 'getResourceLink');
     component.ngOnInit();
     expect(component.getResourceLink).toHaveBeenCalled();
   });
 
-  it("should call  getResourceLink method of shareService called", () => {
-    let mocklocationchange = Object({ skipLocationChange: true });
-    sessionStorage.setItem("profileData", JSON.stringify(mockProfileData));
+  it('should call  getResourceLink method of shareService called', () => {
+    let mocklocationchange = Object({skipLocationChange: true});
+    sessionStorage.setItem('profileData', JSON.stringify(mockProfileData));
     component.getResourceLink();
     component.profileData.IsShared = true;
     expect(component.profileData.UserId).toBe(mockResponse.userId);
     expect(component.profileData.UserName).toEqual(mockResponse.userName);
     expect(component.profileData.IsShared).toBe(mockProfileData.IsShared);
     expect(component.profileData).toEqual(
-      JSON.parse(sessionStorage.getItem("profileData"))
+      JSON.parse(sessionStorage.getItem('profileData'))
     );
     expect(mockRouter.navigateByUrl).toHaveBeenCalledWith(
       mockResponse.resourceLink,
@@ -147,17 +141,17 @@ describe("ShareButtonRouteComponent", () => {
     );
   });
 
-  it("should hide model ref when agreement form value is available in onSubmit method of component called", () => {
+  it('should hide model ref when agreement form value is available in onSubmit method of component called', () => {
     modalService = TestBed.get(BsModalService);
-    let mockSAgreementForm = <NgForm>{
+    const mockSAgreementForm = <NgForm>{
       value: {
-        inputText: "test"
+        inputText: 'test'
       }
     };
-    spyOn(modalService, "hide");
-    let modalRefInstance = new MockBsModalRef();
+    spyOn(modalService, 'hide');
+    const modalRefInstance: jasmine.SpyObj<BsModalRef> = jasmine.createSpyObj<BsModalRef>('BsModalRef', ['hide']);
     component.modalRef = modalRefInstance;
     component.onSubmit(mockSAgreementForm);
-    expect(modalRefInstance.isHideCalled).toBeTruthy();
+    expect(modalRefInstance.hide).toBeTruthy();
   });
 });

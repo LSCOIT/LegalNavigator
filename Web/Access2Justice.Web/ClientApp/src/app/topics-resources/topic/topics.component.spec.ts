@@ -2,7 +2,7 @@ import { APP_BASE_HREF } from "@angular/common";
 import { HttpClientModule } from "@angular/common/http";
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import { RouterModule } from "@angular/router";
-import { of } from "rxjs/observable/of";
+import { of } from "rxjs";
 import { Global } from "../../global";
 import { MapService } from "../../shared/map/map.service";
 import { StateCodeService } from "../../shared/services/state-code.service";

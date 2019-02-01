@@ -1,6 +1,7 @@
 import { HttpClientModule } from "@angular/common/http";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { of } from "rxjs/observable/of";
+import { of } from "rxjs";
+
 import { MapLocationResult } from "./map-results";
 import { MapResultsComponent } from "./map-results.component";
 import { MapResultsService } from "./map-results.service";

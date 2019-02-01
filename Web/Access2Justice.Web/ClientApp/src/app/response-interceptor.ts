@@ -1,15 +1,14 @@
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { Router } from "@angular/router";
-import "rxjs/add/observable/throw";
-import { Observable } from "rxjs/Observable";
-import { tap } from "rxjs/operators";
-import { catchError } from "rxjs/operators/catchError";
+import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Router} from '@angular/router';
+import {Observable, throwError} from 'rxjs';
+import {catchError, tap} from 'rxjs/operators';
 
 @Injectable()
 export class ResponseInterceptor implements HttpInterceptor {
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+  }
 
   intercept(
     request: HttpRequest<any>,
@@ -23,9 +22,9 @@ export class ResponseInterceptor implements HttpInterceptor {
       }),
       catchError((response: HttpErrorResponse) => {
         if (response.status === 404) {
-          this.router.navigate(["/404"]);
+          this.router.navigate(['/404']);
         } else {
-          return Observable.throw(response);
+          return throwError(response);
         }
       })
     );

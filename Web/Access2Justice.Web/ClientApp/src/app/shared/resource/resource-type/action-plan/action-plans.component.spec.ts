@@ -5,7 +5,8 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { ModalModule } from "ngx-bootstrap";
 import { BsModalService } from "ngx-bootstrap/modal";
 import { ToastrModule, ToastrService } from "ngx-toastr";
-import { of } from "rxjs/observable/of";
+import { of } from "rxjs";
+
 import { Global } from "../../../../global";
 import { PersonalizedPlanService } from "../../../../guided-assistant/personalized-plan/personalized-plan.service";
 import { ArrayUtilityService } from "../../../services/array-utility.service";
@@ -78,7 +79,7 @@ describe("ActionPlansComponent", () => {
       }
     ]
   };
-  let mockTopicsList = [
+  const mockTopicsList = [
     {
       topic: {
         topicId: "69be8e7c-975b-43c8-9af3-f61887a33ad3",
@@ -140,7 +141,7 @@ describe("ActionPlansComponent", () => {
       isSelected: true
     }
   ];
-  let mockFilteredTopicsList = [
+  const mockFilteredTopicsList = [
     {
       topic: {
         topicId: "69be8e7c-975b-43c8-9af3-f61887a33ad3",
@@ -270,14 +271,14 @@ describe("ActionPlansComponent", () => {
   });
 
   it("should assign values for planDetails and displaySteps if planDetails list is empty in getPersonalizedPlan method", () => {
-    let emptyPlanDetails = {};
+    const emptyPlanDetails = {};
     component.getPersonalizedPlan(emptyPlanDetails);
     expect(component.planDetails).toEqual(emptyPlanDetails);
     expect(component.displaySteps).toBeFalsy();
   });
 
   it("should assign values for planDetails and displaySteps if planDetails is not defined in getPersonalizedPlan method", () => {
-    let noPlanDetails = [];
+    const noPlanDetails = [];
     component.getPersonalizedPlan(noPlanDetails);
     expect(component.planDetails).toEqual(noPlanDetails);
     expect(component.displaySteps).toBeFalsy();

@@ -6,7 +6,8 @@ import { MsalService } from "@azure/msal-angular/dist/msal.service";
 import { BsModalService } from "ngx-bootstrap";
 import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from "ngx-toastr";
-import { of } from "rxjs/observable/of";
+import { of } from "rxjs";
+
 import { Global } from "../../../../global";
 import { PersonalizedPlanComponent } from "../../../../guided-assistant/personalized-plan/personalized-plan.component";
 import { PersonalizedPlanService } from "../../../../guided-assistant/personalized-plan/personalized-plan.service";
