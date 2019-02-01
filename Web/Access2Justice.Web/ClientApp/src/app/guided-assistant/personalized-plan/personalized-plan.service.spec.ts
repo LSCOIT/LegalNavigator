@@ -3,8 +3,8 @@ import { TestBed } from "@angular/core/testing";
 import { Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from "ngx-toastr";
-import { Observable } from "rxjs/Observable";
-import { of } from "rxjs/observable/of";
+import { Observable, of, from } from "rxjs";
+
 import { api } from "../../../api/api";
 import { Global } from "../../global";
 import { ArrayUtilityService } from "../../shared/services/array-utility.service";
@@ -571,7 +571,7 @@ describe("Service:PersonalizedPlan", () => {
   it("checkExistingSavedResources for saved resource exists", () => {
     let mockExists = true;
     spyOn(arrayUtilityService, "checkObjectExistInArray").and.callFake(() => {
-      return Observable.from([mockExists]);
+      return from([mockExists]);
     });
     service.checkExistingSavedResources(mockSavedResources);
     expect(service.showWarning).toBeTruthy();

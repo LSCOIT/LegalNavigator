@@ -2,7 +2,8 @@ import { HttpClientModule } from "@angular/common/http";
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import { Router } from "@angular/router";
 import { MsalService } from "@azure/msal-angular";
-import { of } from "rxjs/observable/of";
+import { of } from "rxjs";
+
 import { Global } from "../../../../global";
 import { PersonalizedPlanService } from "../../../../guided-assistant/personalized-plan/personalized-plan.service";
 import { NavigateDataService } from "../../../services/navigate-data.service";

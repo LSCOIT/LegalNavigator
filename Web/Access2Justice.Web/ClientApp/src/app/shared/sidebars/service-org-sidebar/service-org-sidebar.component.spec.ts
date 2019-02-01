@@ -3,8 +3,8 @@ import { HttpClientModule } from "@angular/common/http";
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from "@angular/core";
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import { ActivatedRoute, RouterModule } from "@angular/router";
-import { Subject } from "rxjs";
-import { of } from "rxjs/observable/of";
+import { Subject, of } from "rxjs";
+
 import { Global } from "../../../global";
 import { MapLocation } from "../../map/map";
 import { MapService } from "../../map/map.service";

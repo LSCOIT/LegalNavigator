@@ -1,5 +1,6 @@
-import { Observable } from "rxjs/Rx";
-import { ILuisInput } from "../search/search-results/search-results.model";
+import { Observable } from "rxjs";
+
+import { ILuisInput } from "./search-results/search-results.model";
 import { SearchService } from "./search.service";
 
 describe("SearchService", () => {

@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Subject } from "rxjs";
+
 import { environment } from "../../../environments/environment";
 import { StateCodeService } from "../services/state-code.service";
 import { DisplayLocationDetails, LocationDetails, MapLocation } from "./map";
@@ -48,10 +49,10 @@ export class MapService {
 
   loadSearchManager() {
     let searchManager;
-    let map = new Microsoft.Maps.Map("#my-map", {
+    const map = new Microsoft.Maps.Map("#my-map", {
       credentials: environment.bingmap_key
     });
-    let manager = new Microsoft.Maps.AutosuggestManager(map);
+    const manager = new Microsoft.Maps.AutosuggestManager(map);
     manager.attachAutosuggest(
       "#search-box",
       "#searchbox-container",

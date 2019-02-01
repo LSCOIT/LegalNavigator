@@ -3,13 +3,22 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from "ngx-toastr";
-import { Observable } from "rxjs/Observable";
+import { Observable } from "rxjs";
+
 import { api } from "../../../api/api";
 import { Global } from "../../global";
 import { LocationDetails } from "../../shared/map/map";
 import { IResourceFilter } from "../../shared/search/search-results/search-results.model";
 import { ArrayUtilityService } from "../../shared/services/array-utility.service";
-import { IntentInput, PersonalizedPlan, PersonalizedPlanTopic, ProfileResources, Resources, SavedResources, UserPlan } from "./personalized-plan";
+import {
+  IntentInput,
+  PersonalizedPlan,
+  PersonalizedPlanTopic,
+  ProfileResources,
+  Resources,
+  SavedResources,
+  UserPlan
+} from "./personalized-plan";
 
 const httpOptions = {
   headers: new HttpHeaders({ "Content-Type": "application/json" })

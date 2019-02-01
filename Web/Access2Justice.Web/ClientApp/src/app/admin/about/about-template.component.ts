@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, NgForm } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from "ngx-toastr";
+
 import { environment } from "../../../environments/environment";
 import { About } from "../../about/about";
 import { Global } from "../../global";
@@ -17,13 +18,12 @@ import { AdminService } from "../admin.service";
   styleUrls: ["../admin-styles.css"]
 })
 export class AboutTemplateComponent implements OnInit {
-  name: string = "AboutPage";
+  name = "AboutPage";
   aboutContent: About;
   staticContent: any;
   staticContentSubcription: any;
   blobUrl: string = environment.blobUrl;
   form: FormGroup;
-  detailParams: any;
   newAboutContent: any;
   state: string;
   location: MapLocation = {
@@ -59,15 +59,17 @@ export class AboutTemplateComponent implements OnInit {
 
   encode(image, index) {
     index = index || "";
-    let reader = new FileReader();
+    const reader = new FileReader();
+
     if (event.target["files"] && event.target["files"].length > 0) {
-      let file = event.target["files"][0];
+      const file = event.target["files"][0];
       reader.readAsDataURL(file);
       reader.onload = () => {
         this.form.get(image + index).setValue({
           filename: file.name,
           filetype: file.type,
-          value: reader.result.split(",")[1]
+          // cast based on readAsDataURL call
+          value: (reader.result as string).split(",")[1]
         });
       };
     }

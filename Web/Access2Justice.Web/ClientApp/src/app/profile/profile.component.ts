@@ -1,8 +1,10 @@
 import { HttpParams } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
+import {map} from 'rxjs/operators';
 import { MsalService } from "@azure/msal-angular";
 import { NgxSpinnerService } from "ngx-spinner";
+
 import { environment } from "../../environments/environment";
 import { Global } from "../global";
 import { PersonalizedPlan, PersonalizedPlanTopic } from "../guided-assistant/personalized-plan/personalized-plan";
@@ -35,7 +37,7 @@ export class ProfileComponent implements OnInit {
     topics: any;
     webResources: any;
   };
-  isSavedResources: boolean = false;
+  isSavedResources = false;
   planId: string;
   plan: PersonalizedPlan;
   planDetailTags: any;
@@ -59,9 +61,7 @@ export class ProfileComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     if (this.msalService.getUser()) {
-      this.route.data
-        .map(data => data.cres)
-        .subscribe(response => {
+      this.route.data.pipe(map(data => data.cres)).subscribe(response => {
           if (response) {
             this.userId = response.oId;
             this.global.setProfileData(
@@ -73,7 +73,7 @@ export class ProfileComponent implements OnInit {
             this.getPersonalizedPlan();
             this.showRemove = true;
           }
-        });
+      });
     }
 
     eventUtilityService.resourceUpdated$.subscribe(response => {
@@ -137,7 +137,7 @@ export class ProfileComponent implements OnInit {
     this.topicIds = [];
     this.resourceIds = [];
     this.webResources = [];
-    let params = new HttpParams()
+    const params = new HttpParams()
       .set("oid", this.userId)
       .set("type", "resources");
     this.personalizedPlanService

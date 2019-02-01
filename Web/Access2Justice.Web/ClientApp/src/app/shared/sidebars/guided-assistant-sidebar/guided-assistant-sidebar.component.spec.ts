@@ -3,7 +3,8 @@ import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import { ActivatedRoute, Router } from "@angular/router";
 import { RouterTestingModule } from "@angular/router/testing";
 import { BsModalService, ModalModule } from "ngx-bootstrap";
-import { Observable } from "rxjs/Observable";
+import { Observable, from } from "rxjs";
+
 import { MapLocation } from "../../map/map";
 import { MapService } from "../../map/map.service";
 import { PaginationService } from "../../pagination/pagination.service";
@@ -142,7 +143,7 @@ describe("GuidedAssistantSidebarComponent", () => {
       resources: [{ externalUrl: mockExternalUrl }]
     };
     spyOn(paginationService, "getPagedResources").and.callFake(() => {
-      return Observable.from([mockResponse]);
+      return from([mockResponse]);
     });
     component.location = mockMapLocation;
     component.activeTopic = mockActivetopic;
@@ -157,7 +158,7 @@ describe("GuidedAssistantSidebarComponent", () => {
       resources: [{ externalUrl: mockExternalUrl }]
     };
     spyOn(paginationService, "getPagedResources").and.callFake(() => {
-      return Observable.from([undefined]);
+      return from([undefined]);
     });
     component.location = mockMapLocation;
     component.activeTopic = mockActivetopic;

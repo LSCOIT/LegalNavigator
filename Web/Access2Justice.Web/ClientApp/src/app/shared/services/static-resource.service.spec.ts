@@ -1,6 +1,7 @@
 import { HttpClientModule } from "@angular/common/http";
 import { inject, TestBed } from "@angular/core/testing";
-import { Observable } from "rxjs/Observable";
+import { Observable } from "rxjs";
+
 import { MapLocation } from "../map/map";
 import { StaticResourceService } from "./static-resource.service";
 

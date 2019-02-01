@@ -1,10 +1,10 @@
 import { HttpClientModule } from "@angular/common/http";
-import { TemplateRef } from "@angular/core";
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MsalService } from "@azure/msal-angular";
 import { BsModalRef, BsModalService, ComponentLoaderFactory, PositioningService } from "ngx-bootstrap";
-import { Observable } from "rxjs";
+import { from } from "rxjs";
+
 import { Global } from "../../../../global";
 import { PersonalizedPlanService } from "../../../../guided-assistant/personalized-plan/personalized-plan.service";
 import { ArrayUtilityService } from "../../../services/array-utility.service";
@@ -14,23 +14,14 @@ import { Share } from "./share.model";
 import { ShareService } from "./share.service";
 
 describe("ShareButtonComponent", () => {
-  class MockBsModalRef {
-    public isHideCalled = false;
-
-    hide() {
-      this.isHideCalled = true;
-    }
-  }
   let modalService: BsModalService;
-  let template: TemplateRef<any>;
   let component: ShareButtonComponent;
   let fixture: ComponentFixture<ShareButtonComponent>;
   let shareService: ShareService;
-  let activeRoute: ActivatedRoute;
   let personalizedPlanService;
   let navigateDataService;
   let global;
-  let mockUserId =
+  const mockUserId =
     "7BAFDE5D6707167889AE7DBB3133CFF2CB4E06DA356F9E8982B9286F471799F18B631BD6BE3784501DE246AB9FF446E5437B48372C5BFEB170E6D11ACF6AB797";
   let mockSessionKey = "showModal";
   let mockBlank = "";
@@ -51,6 +42,7 @@ describe("ShareButtonComponent", () => {
   let mockGuidedAssistance =
     "/guidedassistant/6d7dd07a-c454-4b67-b2d8-ed844dadabd9";
   let msalService;
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
@@ -142,14 +134,14 @@ describe("ShareButtonComponent", () => {
 
   it("should hide model popup when close method of component called", () => {
     spyOn(modalService, "hide");
-    let modalRefInstance = new MockBsModalRef();
+    const modalRefInstance: jasmine.SpyObj<BsModalRef> = jasmine.createSpyObj<BsModalRef>('BsModalRef', ['hide']);
     component.modalRef = modalRefInstance;
     component.close();
-    expect(modalRefInstance.isHideCalled).toBeTruthy();
+    expect(modalRefInstance.hide).toHaveBeenCalled();
   });
 
   it("should check permalink is created or not when checklink method of share service called", () => {
-    spyOn(shareService, "checkLink").and.returnValue(Observable.from([]));
+    spyOn(shareService, "checkLink").and.returnValue(from([]));
     spyOn(modalService, "show");
     let mockTem = "template";
     component.shareInput = mockShareInput;
@@ -160,7 +152,7 @@ describe("ShareButtonComponent", () => {
 
   it("should generate perma link when generateLink  method of share service called", () => {
     spyOn(shareService, "generateLink").and.returnValue(
-      Observable.from([mockPermaLink])
+      from([mockPermaLink])
     );
     spyOn(component, "generateLink");
     component.generateLink();
@@ -175,7 +167,7 @@ describe("ShareButtonComponent", () => {
   });
 
   it("should remove permalink when removeLink method of component called", () => {
-    spyOn(shareService, "removeLink").and.returnValue(Observable.from([true]));
+    spyOn(shareService, "removeLink").and.returnValue(from([true]));
     spyOn(component, "removeLink");
     component.removeLink();
     component.permaLink = mockBlank;
