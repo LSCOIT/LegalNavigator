@@ -63,7 +63,7 @@ describe("HomeComponent", () => {
     mockGlobal.getData.and.returnValue(globalData);
 
     TestBed.configureTestingModule({
-      imports: [HttpClientModule, PipeModule.forRoot()],
+      imports: [HttpClientModule, PipeModule],
       declarations: [HomeComponent],
       providers: [
         MapService,

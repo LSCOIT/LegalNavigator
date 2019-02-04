@@ -1,11 +1,12 @@
 import { Component, ElementRef, Input, OnInit, TemplateRef, ViewChild } from "@angular/core";
 import { BsModalService } from "ngx-bootstrap/modal";
 import { BsModalRef } from "ngx-bootstrap/modal/bs-modal-ref.service";
-import { environment } from "../../../environments/environment";
+
+import ENV from 'env';
 import { Global } from "../../global";
-import { EventUtilityService } from "../../shared/services/event-utility.service";
-import { StaticResourceService } from "../../shared/services/static-resource.service";
-import { MapResultsService } from "../../shared/sidebars/map-results/map-results.service";
+import { EventUtilityService } from '../services/event-utility.service';
+import { StaticResourceService } from '../services/static-resource.service';
+import { MapResultsService } from '../sidebars/map-results/map-results.service';
 import { Location, LocationNavContent, Navigation } from "../navigation/navigation";
 import { DisplayLocationDetails, LocationDetails, MapLocation } from "./map";
 import { MapService } from "./map.service";
@@ -35,7 +36,7 @@ export class MapComponent implements OnInit {
   showLocality: boolean = true;
   subscription: any;
   state: string;
-  blobUrl: any = environment.blobUrl;
+  blobUrl: any = ENV.blobUrl;
   navigation: Navigation;
   locationNavContent: LocationNavContent;
   location: Array<Location>;
@@ -97,7 +98,7 @@ export class MapComponent implements OnInit {
   }
 
   getLocationDetails() {
-    this.locationDetails = environment.map_type
+    this.locationDetails = ENV.map_type
       ? JSON.parse(sessionStorage.getItem("globalSearchMapLocation"))
       : JSON.parse(sessionStorage.getItem("localSearchMapLocation"));
     if (this.locationDetails.formattedAddress) {
@@ -106,12 +107,12 @@ export class MapComponent implements OnInit {
           .getStateFullName(
             this.locationDetails.country,
             this.locationDetails.formattedAddress,
-            environment.bingmap_key
+            ENV.bingmap_key
           )
           .subscribe(location => {
             this.locationDetails.displayLocationDetails.address =
               location.resourceSets[0].resources[0].name;
-            if (environment.map_type) {
+            if (ENV.map_type) {
               this.locationDetails.location.state =
                 location.resourceSets[0].resources[0].name;
               this.locationDetails.displayLocationDetails.locality =
@@ -186,18 +187,18 @@ export class MapComponent implements OnInit {
               .getAddressBasedOnPoints(
                 this.geolocationPosition.coords.latitude,
                 this.geolocationPosition.coords.longitude,
-                environment.bingmap_key
+                ENV.bingmap_key
               )
               .subscribe(response => {
                 this.selectedAddress = response;
-                environment.map_type = true;
+                ENV.map_type = true;
                 this.mapResultsService
                   .getStateFullName(
                     this.selectedAddress.resourceSets[0].resources[0].address
                       .countryRegion,
                     this.selectedAddress.resourceSets[0].resources[0].address
                       .adminDistrict,
-                    environment.bingmap_key
+                    ENV.bingmap_key
                   )
                   .subscribe(stateFullName => {
                     this.selectedAddress.resourceSets[0].resources[0].address.adminDistrict =
@@ -327,7 +328,7 @@ export class MapComponent implements OnInit {
     }
     this.setLocalMapLocation();
     this.subscription = this.global.notifyLocationUpate.subscribe(value => {
-      environment.map_type = true;
+      ENV.map_type = true;
       this.updateLocation();
     });
   }

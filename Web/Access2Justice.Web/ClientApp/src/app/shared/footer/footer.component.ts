@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { environment } from "../../../environments/environment";
+
+import ENV from 'env';
 import { Global } from "../../global";
 import { About, GuidedAssistant, HelpAndFAQ, Home, Navigation, PrivacyPromise, TopicAndResources } from "../navigation/navigation";
 import { StaticResourceService } from "../services/static-resource.service";
@@ -15,9 +16,9 @@ export class FooterComponent implements OnInit {
     private global: Global
   ) {}
 
-  blobUrl: any = environment.blobUrl;
+  blobUrl: any = ENV.blobUrl;
   navigation: Navigation;
-  name: string = "Navigation";
+  name = "Navigation";
   privacyPromise: PrivacyPromise;
   helpAndFAQ: HelpAndFAQ;
   home: Home;
@@ -41,8 +42,7 @@ export class FooterComponent implements OnInit {
   getNavigationContent(): void {
     if (
       this.staticResourceService.navigation &&
-      this.staticResourceService.navigation.location[0].state ==
-        this.staticResourceService.getLocation()
+      this.staticResourceService.navigation.location[0].state == this.staticResourceService.getLocation()
     ) {
       this.navigation = this.staticResourceService.navigation;
       this.filterNavigationContent(this.staticResourceService.navigation);

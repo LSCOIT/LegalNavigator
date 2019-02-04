@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Subject } from "rxjs";
 
-import { environment } from "../../../environments/environment";
+import ENV from 'env';
 import { StateCodeService } from "../services/state-code.service";
 import { DisplayLocationDetails, LocationDetails, MapLocation } from "./map";
 
@@ -40,7 +40,7 @@ export class MapService {
   constructor(private stateCodeService: StateCodeService) {}
 
   getMap(mapType) {
-    environment.map_type = mapType;
+    ENV.map_type = mapType;
     Microsoft.Maps.loadModule(
       ["Microsoft.Maps.AutoSuggest", "Microsoft.Maps.Search"],
       this.loadSearchManager
@@ -50,7 +50,7 @@ export class MapService {
   loadSearchManager() {
     let searchManager;
     const map = new Microsoft.Maps.Map("#my-map", {
-      credentials: environment.bingmap_key
+      credentials: ENV.bingmap_key
     });
     const manager = new Microsoft.Maps.AutosuggestManager(map);
     manager.attachAutosuggest(
@@ -71,7 +71,7 @@ export class MapService {
     };
 
     let map = new Microsoft.Maps.Map("#my-map", {
-      credentials: environment.bingmap_key
+      credentials: ENV.bingmap_key
     });
     this.searchManager = new Microsoft.Maps.Search.SearchManager(map);
     this.searchManager.geocode(searchRequest);
@@ -91,7 +91,7 @@ export class MapService {
       mapService.mapLocationDetails(this.location);
 
       this.map = new Microsoft.Maps.Map("#my-map", {
-        credentials: environment.bingmap_key
+        credentials: ENV.bingmap_key
       });
       this.map.entities.push(this.pin);
       let bounds = this.location.bestView;
@@ -105,7 +105,7 @@ export class MapService {
   }
 
   updateLocation(): LocationDetails {
-    if (environment.map_type) {
+    if (ENV.map_type) {
       this.locationDetails = JSON.parse(
         sessionStorage.getItem("globalSearchMapLocation")
       );
@@ -195,7 +195,7 @@ export class MapService {
       country: country,
       formattedAddress: this.state
     };
-    if (environment.map_type) {
+    if (ENV.map_type) {
       this.locationDetails.location.city = "";
       this.locationDetails.location.county = "";
       this.locationDetails.location.zipCode = "";
@@ -252,7 +252,7 @@ export class MapService {
 
 function suggestionSelected(result) {
   let map = new Microsoft.Maps.Map("#my-map", {
-    credentials: environment.bingmap_key
+    credentials: ENV.bingmap_key
   });
   map.entities.clear();
   var pin = new Microsoft.Maps.Pushpin(result.location, {

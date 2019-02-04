@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
-import { environment } from "../../../../environments/environment";
+
+import ENV from 'env';
 import { LocationDetails, MapLocation } from "../../map/map";
 import { MapService } from "../../map/map.service";
 import { PaginationService } from "../../pagination/pagination.service";
@@ -12,7 +13,7 @@ import { NavigateDataService } from "../../services/navigate-data.service";
   templateUrl: "./guided-assistant-sidebar.component.html",
   styleUrls: ["./guided-assistant-sidebar.component.css"]
 })
-export class GuidedAssistantSidebarComponent implements OnInit {
+export class GuidedAssistantSidebarComponent implements OnInit, OnDestroy {
   location: MapLocation;
   locationDetails: LocationDetails;
   activeTopic: any;
@@ -42,7 +43,7 @@ export class GuidedAssistantSidebarComponent implements OnInit {
   topicIds: string[] = [];
   resources: any;
   subscription: any;
-  emptyResult: string = "";
+  emptyResult = "";
   guidedAssistantResults: any;
   topIntent: string;
 
@@ -92,7 +93,7 @@ export class GuidedAssistantSidebarComponent implements OnInit {
       this.router.navigateByUrl("/guidedassistant/" + this.guidedAssistantId);
     }
     this.resourceFilter = {
-      ResourceType: environment.All,
+      ResourceType: ENV.All,
       TopicIds: this.topicIds,
       Location: this.location,
       PageNumber: 0,

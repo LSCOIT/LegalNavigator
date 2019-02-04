@@ -4,7 +4,9 @@ import { Observable } from "rxjs";
 
 import { api } from "../../../api/api";
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class BreadcrumbService {
   constructor(private http: HttpClient) {}
 

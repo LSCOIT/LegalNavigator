@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { environment } from "../../environments/environment";
+
+import ENV from 'env';
 import { Global } from "../global";
-import { Details, Image, PrivacyContent } from "../privacy-promise/privacy-promise";
+import { Details, Image, PrivacyContent } from './privacy-promise';
 import { StaticResourceService } from "../shared/services/static-resource.service";
 
 @Component({
@@ -16,7 +17,7 @@ export class PrivacyPromiseComponent implements OnInit {
   name: string = "PrivacyPromisePage";
   staticContent: any;
   staticContentSubcription: any;
-  blobUrl: string = environment.blobUrl;
+  blobUrl: string = ENV.blobUrl;
 
   constructor(
     private staticResourceService: StaticResourceService,

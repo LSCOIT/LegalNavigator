@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { MsalService } from "@azure/msal-angular";
-import { environment } from "../../../../../environments/environment";
+
+import ENV from 'env';
 import { Global } from "../../../../global";
 import { SavedResources } from "../../../../guided-assistant/personalized-plan/personalized-plan";
 import { PersonalizedPlanService } from "../../../../guided-assistant/personalized-plan/personalized-plan.service";
@@ -39,7 +40,7 @@ export class SaveButtonComponent implements OnInit {
   ) {}
 
   externalLogin() {
-    this.msalService.loginRedirect(environment.consentScopes);
+    this.msalService.loginRedirect(ENV.consentScopes);
   }
 
   savePlanResources(): void {

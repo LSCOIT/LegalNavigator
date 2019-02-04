@@ -4,7 +4,7 @@ import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest
 import { Injectable } from '@angular/core';
 import { MsalService } from '@azure/msal-angular';
 
-import { environment } from '../environments/environment';
+import ENV from 'env';
 import { Global } from './global';
 
 @Injectable()
@@ -18,7 +18,7 @@ export class TokenInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
 
-    const scopes = environment.consentScopes;
+    const scopes = ENV.consentScopes;
     const tokenStored = this.auth.getCachedTokenInternal(scopes);
     if (tokenStored && tokenStored.token) {
       req = req.clone({setHeaders: this.getAuthHeaders(tokenStored.token)});

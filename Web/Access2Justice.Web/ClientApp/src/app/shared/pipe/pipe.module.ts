@@ -15,10 +15,4 @@ import { SearchFilterPipe } from "./search-filter.pipe";
   ]
 })
 export class PipeModule {
-  static forRoot() {
-    return {
-      ngModule: PipeModule,
-      providers: []
-    };
-  }
 }

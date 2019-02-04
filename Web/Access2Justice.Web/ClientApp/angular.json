@@ -26,7 +26,8 @@
               "src/styles.css"
             ],
             "scripts": [
-              "node_modules/jspdf/dist/jspdf.min.js"
+              "node_modules/jspdf/dist/jspdf.min.js",
+              "src/scripts/env.js"
             ]
           },
           "configurations": {
@@ -39,13 +40,7 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ]
+              "buildOptimizer": true
             }
           }
         },

@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges, Output, EventEmitter } from "@angular/core";
-import { environment } from "../../../../environments/environment";
+
+import ENV from 'env';
 import { LatitudeLongitude, MapLocationResult } from "./map-results";
 import { MapResultsService } from "./map-results.service";
 
@@ -86,7 +87,7 @@ export class MapResultsComponent implements OnChanges {
         .trim();
       if (address.toLowerCase() !== "na" || address.toLowerCase() !== "n/a") {
         this.mapResultsService
-          .getLocationDetails(address, environment.bingmap_key)
+          .getLocationDetails(address, ENV.bingmap_key)
           .subscribe(locationCoordinates => {
             this.latlong = {
               latitude:

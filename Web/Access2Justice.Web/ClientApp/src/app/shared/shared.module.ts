@@ -71,7 +71,7 @@ import { UserActionSidebarComponent } from "./sidebars/user-action-sidebar/user-
     CarouselModule.forRoot(),
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    PipeModule.forRoot()
+    PipeModule
   ],
   declarations: [
     ActionPlansComponent,

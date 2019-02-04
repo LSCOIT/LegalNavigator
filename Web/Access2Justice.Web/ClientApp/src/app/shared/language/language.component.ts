@@ -1,25 +1,26 @@
-import { AfterViewInit, Component, ElementRef, HostListener, OnInit } from "@angular/core";
-import { environment } from "../../../environments/environment";
+import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit } from '@angular/core';
+
+import ENV from 'env';
 import { Global } from "../../global";
-import { Language, Location, Navigation } from "../../shared/navigation/navigation";
-import { EventUtilityService } from "../../shared/services/event-utility.service";
-import { StaticResourceService } from "../../shared/services/static-resource.service";
+import { Language, Location, Navigation } from '../navigation/navigation';
+import { EventUtilityService } from '../services/event-utility.service';
+import { StaticResourceService } from '../services/static-resource.service';
 
 @Component({
   selector: "app-language",
   templateUrl: "./language.component.html",
   styleUrls: ["./language.component.css"]
 })
-export class LanguageComponent implements OnInit, AfterViewInit {
-  blobUrl: any = environment.blobUrl;
+export class LanguageComponent implements OnInit, AfterViewInit, OnDestroy {
+  blobUrl: any = ENV.blobUrl;
   navigation: Navigation;
-  name: string = "Navigation";
+  name = "Navigation";
   language: Language;
   location: Location;
   staticContent: any;
   staticContentSubcription: any;
-  showLanguage: boolean = false;
-  setBgColor: boolean = false;
+  showLanguage = false;
+  setBgColor = false;
   width: number;
   @HostListener("document:click", ["$event"])
   onClick(event) {

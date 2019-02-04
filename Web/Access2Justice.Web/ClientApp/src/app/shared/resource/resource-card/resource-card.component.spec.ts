@@ -26,7 +26,7 @@ describe("ResourceCardComponent", () => {
         ResourceCardDetailComponent
       ],
       imports: [
-        PipeModule.forRoot(),
+        PipeModule,
         BsDropdownModule.forRoot(),
         HttpClientModule
       ],
